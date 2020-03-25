@@ -1,0 +1,27 @@
+{
+	"version": "0.0.1",
+	"private": true,
+	"name": "spruce-cli-workspace",
+	"workspaces": [
+		"packages/spruce-cli",
+		"packages/spruce-templates"
+	],
+	"engines": {
+		"node": "^10",
+		"npm": "^6"
+	},
+	"scripts": {
+		"lint": "lerna run lint",
+		"lint:fix": "lerna run lint:fix",
+		"build": "lerna run build",
+		"watch": "lerna run watch --no-sort --stream",
+		"test": "lerna run test --parallel",
+		"publish": "lerna publish",
+		"clean": "lerna run clean && rm -rf node_modules; for d in packages/*/node_modules; do echo $d; rm -rf $d; done"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"conventional-changelog-sprucelabs": "^1.1.0",
+		"lerna": "^3.20.2"
+	}
+}

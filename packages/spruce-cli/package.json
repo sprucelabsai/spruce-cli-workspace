@@ -1,0 +1,77 @@
+{
+  "name": "@sprucelabs/spruce-cli",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "build"
+  ],
+  "version": "0.0.1",
+  "bin": {
+    "spruce": "./build/src/index.js"
+  },
+  "types": "./build/index.d.ts",
+  "description": "Command line interface for building Spruce skills",
+  "keywords": [
+    "node",
+    "components",
+    "sprucebot",
+    "spruce",
+    "skills",
+    "sprucelabs"
+  ],
+  "homepage": "https://github.com/sprucelabsai/spruce-cli-workspace",
+  "bugs": {
+    "url": "https://github.com/sprucelabsai/spruce-cli-workspace/issues"
+  },
+  "scripts": {
+    "build": "npm run clean && npm run build:node",
+    "build:node": "tsc",
+    "watch": "chokidar 'src/**/*' -c 'npm run build'",
+    "clean": "rm -rf build/",
+    "lint": "eslint '**/*.ts' && tsc -p . --noEmit",
+    "release": "semantic-release",
+    "local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS"
+  },
+  "dependencies": {
+    "@sprucelabs/log": "^2.2.2",
+    "@sprucelabs/mercury": "9.1.1-pre-89e92490.0",
+    "@sprucelabs/spruce-types": "9.1.1-pre-89e92490.0",
+    "@types/google-libphonenumber": "^7.4.17",
+    "commander": "^4.1.1",
+    "debug": "^4.1.1",
+    "fs-extra": "^8.1.0",
+    "globby": "^11.0.0",
+    "google-libphonenumber": "^3.2.8",
+    "graphql": "^14.6.0",
+    "graphql-tag": "^2.10.3",
+    "handlebars": "^4.7.3",
+    "inquirer": "^7.0.6",
+    "jsonwebtoken": "^8.5.1",
+    "libphonenumber-js": "^1.7.48",
+    "lodash": "^4.17.15",
+    "ora": "^4.0.3",
+    "slug": "^2.1.1",
+    "typescript": "^3.8"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.5",
+    "@types/fs-extra": "^8.1.0",
+    "@types/inquirer": "^6.5.0",
+    "@types/jsonwebtoken": "^8.3.8",
+    "@types/lodash": "^4.14.149",
+    "@types/mkdirp": "^1.0.0",
+    "@types/node": "^13.7.7",
+    "@types/slug": "^0.9.1",
+    "@types/superagent": "^4.1.7",
+    "chokidar-cli": "^2.1.0",
+    "concurrently": "^5.0.2",
+    "conventional-changelog-sprucelabs": "^1.1.0",
+    "eslint": "^5",
+    "eslint-config-spruce": "^9.0.0",
+    "mkdirp": "^1.0.3",
+    "prettier": "^1.13",
+    "yarn": "^1.2.1"
+  },
+  "peerDependencies": {}
+}
