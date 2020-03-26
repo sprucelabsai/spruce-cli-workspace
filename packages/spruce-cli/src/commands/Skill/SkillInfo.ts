@@ -1,6 +1,6 @@
 import { Command } from 'commander'
 import CommandBase from '../Base'
-import skillState from '../../store/Skill'
+import skillState from '../../stores/Skill'
 
 export default class CreateSkill extends CommandBase {
 	/** Sets up commands */

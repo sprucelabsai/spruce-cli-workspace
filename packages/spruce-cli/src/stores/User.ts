@@ -1,6 +1,5 @@
 import BaseStore from './Base'
 import { Schema, FieldType } from '@sprucelabs/schema'
-import mercury from '../utilities/mercury'
 import { SpruceEvents } from '../types/events-generated'
 
 export default class UserStore extends BaseStore {
@@ -29,37 +28,35 @@ export default class UserStore extends BaseStore {
 		// will validate the phone number
 		user.set('phoneNumber', phone)
 
-		// send for pin
-		await mercury.emit<
-			SpruceEvents.core.RequestLogin.IPayload,
-			SpruceEvents.core.RequestLogin.IResponseBody
-		>({
-			eventName: SpruceEvents.core.RequestLogin.name,
-			payload: {
-				phoneNumber: phone,
-				method: 'pin'
-			}
-		})
+		// // send for pin
+		// await mercury.emit<
+		// 	SpruceEvents.core.RequestLogin.IPayload,
+		// 	SpruceEvents.core.RequestLogin.IResponseBody
+		// >({
+		// 	eventName: SpruceEvents.core.RequestLogin.name,
+		// 	payload: {
+		// 		phoneNumber: phone,
+		// 		method: 'pin'
+		// 	}
+		// })
 	}
 
 	public async login(phone: string, pin: string) {
-		const loginResult = await mercury.emit<
-			SpruceEvents.core.Login.IPayload,
-			SpruceEvents.core.Login.IResponseBody
-		>({
-			eventName: SpruceEvents.core.Login.name,
-			payload: {
-				phoneNumber: phone,
-				code: pin
-			}
-		})
-
-		const token = loginResult.responses[0]?.payload.jwt
-		if (!token) {
-			throw new Error('User login failed. Check pin and try again.')
-		}
-
-		return this.fetchUser(token)
+		// const loginResult = await mercury.emit<
+		// 	SpruceEvents.core.Login.IPayload,
+		// 	SpruceEvents.core.Login.IResponseBody
+		// >({
+		// 	eventName: SpruceEvents.core.Login.name,
+		// 	payload: {
+		// 		phoneNumber: phone,
+		// 		code: pin
+		// 	}
+		// })
+		// const token = loginResult.responses[0]?.payload.jwt
+		// if (!token) {
+		// 	throw new Error('User login failed. Check pin and try again.')
+		// }
+		// return this.fetchUser(token)
 	}
 
 	public async fetchUser(token: string) {

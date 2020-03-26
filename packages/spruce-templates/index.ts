@@ -1,5 +1,6 @@
-// TODO: Export anything here we need
 import handlebars from 'handlebars'
+import fs from 'fs'
+import path from 'path'
 import _ from 'lodash'
 import { IFieldDefinition, FieldBase, FieldType } from '@sprucelabs/schema'
 
@@ -73,5 +74,15 @@ handlebars.registerHelper('fieldValueType', function(
 
 	return typeLiteral
 })
+
+// import actual templates
+const templatePath = path.join(__dirname, 'src', 'templates')
+
+// schema definitions
+const schemaDefinitions: string = fs
+	.readFileSync(path.join(templatePath, 'schema/definition.hbs'))
+	.toString()
+
+export const templates = { schemaDefinitions }
 
 export default handlebars

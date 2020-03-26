@@ -19,6 +19,7 @@
       "console": "integratedTerminal",
       "port": 5200,
       "restart": true,
+      "cwd": "${workspaceFolder}/packages/spruce-cli",
       "localRoot": "${workspaceRoot}/packages/spruce-cli",
       "remoteRoot": "${workspaceRoot}/packages/spruce-cli",
       "env": {
@@ -30,8 +31,8 @@
     {
       "id": "commands",
       "type": "promptString",
-      "default": "",
-      "description": "🌲🤖 The input commands"
+      "default": "types:sync",
+      "description": "🌲🤖 Command (user:login) + args"
     }
   ]
 }

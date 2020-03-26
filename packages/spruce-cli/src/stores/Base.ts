@@ -86,10 +86,4 @@ export default abstract class BaseStore {
 			file: filePath
 		}
 	}
-
-	/** called early to load data from store */
-	abstract async load(): Promise<this>
-
-	/** called externally to save data to store */
-	abstract async save(): Promise<this>
 }

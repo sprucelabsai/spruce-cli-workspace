@@ -2,7 +2,7 @@ import { Command } from 'commander'
 import CommandBase from '../Base'
 import { RemoteType } from '../../utilities/Config'
 import { FieldType } from '@sprucelabs/schema'
-import { RemoteStoreRemoteType, RemoteStoreChoices } from '../../store'
+import { RemoteStoreRemoteType, RemoteStoreChoices } from '../../stores'
 
 export default class Remote extends CommandBase {
 	/** Sets up commands */

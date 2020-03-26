@@ -4,9 +4,8 @@ import { terminal } from './utilities/Terminal'
 import { Command } from 'commander'
 import globby from 'globby'
 import pkg from '../package.json'
-import './addons/handlebars'
 import CliError from './lib/CliError'
-import { stores } from './store'
+import { stores } from './stores'
 import { services } from './services'
 
 import { Mercury } from '@sprucelabs/mercury'
@@ -14,16 +13,13 @@ import { Mercury } from '@sprucelabs/mercury'
 /**
  * For handling debugger not attaching right away
  */
-const attachTimeoutMs = 1000
-
 async function setup(argv: string[], debugging: boolean): Promise<void> {
 	const program = new Command()
 	const commands = []
-	if (debugging && attachTimeoutMs > 0) {
-		terminal.info('Waiting for debugger to really attach...')
-		await new Promise(resolve => {
-			setTimeout(resolve, attachTimeoutMs)
-		})
+	if (debugging) {
+		// eslint-disable-next-line no-debugger
+		debugger // (breakpoints and debugger works after this one is missed)
+		terminal.info('Extra debugger dropped in so future debuggers work... 🤷‍♂️')
 	}
 
 	program.version(pkg.version).description(pkg.description)

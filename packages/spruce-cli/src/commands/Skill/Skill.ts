@@ -5,7 +5,7 @@ import CommandBase from '../Base'
 import globby from 'globby'
 import fs from 'fs-extra'
 import handlebars from 'handlebars'
-import skillState from '../../store/Skill'
+import skillState from '../../stores/Skill'
 
 export default class Skill extends CommandBase {
 	/** Sets up commands */

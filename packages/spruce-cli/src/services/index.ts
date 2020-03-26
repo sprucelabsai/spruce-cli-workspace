@@ -1,9 +1,5 @@
-import TypeService from './Type'
+// import { stores } from '../stores'
 
-export interface IServices {
-	types: TypeService
-}
+export interface IServices {}
 
-export const services: IServices = {
-	types: new TypeService()
-}
+export const services: IServices = {}

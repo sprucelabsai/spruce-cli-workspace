@@ -89,12 +89,6 @@ export default class RemoteStore extends BaseStore {
 		return url
 	}
 
-	public async load() {
-		const saved = this.readValues<IRemoteStoreValues>()
-		this.schema.setValues(saved)
-		return this
-	}
-
 	public async save() {
 		const values = this.schema.getValues()
 		this.writeValues(values)

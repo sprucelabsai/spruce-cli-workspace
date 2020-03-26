@@ -2,7 +2,7 @@ import { Command } from 'commander'
 import chalk from 'chalk'
 import config from '../../utilities/Config'
 import CommandBase from '../Base'
-import usersState from '../../store/User'
+import usersState from '../../stores/User'
 import { FieldType, IFieldSelectDefinitionChoice } from '@sprucelabs/schema'
 
 export default class User extends CommandBase {

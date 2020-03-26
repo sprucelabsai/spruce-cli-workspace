@@ -1,5 +1,6 @@
 import { Command } from 'commander'
 import CommandBase from '../Base'
+import handlebars, { templates } from '@sprucelabs/spruce-templates'
 
 export default class Cli extends CommandBase {
 	/** Sets up commands */
@@ -17,18 +18,29 @@ export default class Cli extends CommandBase {
 			.description(
 				'Generates types file holding all interfaces, types, and enums needed to dev fast'
 			)
-			.option('-t, --types <types>', 'What should I sync?', 'all')
+			.option(
+				'-t, --types <types>',
+				'What should I sync? all|schemas|events',
+				'all'
+			)
 			.option(
 				'-o, --outFile <file>',
 				'Where should I write the types file?',
 				'./.spruce'
 			)
-			.action(this.sync)
+			.action(this.sync.bind(this))
 	}
 
 	/** Create a new skill */
-	public async sync() {
-		// this.info('TODO: Sync all types')
+	public async sync(cmd: Command) {
+		const { types, outFile }: { types: string; outFile: string } = cmd
+
+		const schemaMap = await this.store.schema.schemaMap()
+		console.log(templates, handlebars, schemaMap)
+
+		debugger
+		this.writeLn('go team')
+		this.info('TODO: Sync all types')
 	}
 
 	/** Fetches the generated events file from API */

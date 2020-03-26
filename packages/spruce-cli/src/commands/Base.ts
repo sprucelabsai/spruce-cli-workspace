@@ -4,7 +4,7 @@ import path from 'path'
 import { Command } from 'commander'
 import FormBuilder from '../builders/FormBuilder'
 import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
-import { IStores } from '../store'
+import { IStores } from '../stores'
 import { Mercury } from '@sprucelabs/mercury'
 import { IServices } from '../services'
 
