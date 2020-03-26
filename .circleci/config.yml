@@ -94,12 +94,14 @@ workflows:
   do_build:
     jobs:
       - test:
+          context: public_package_publish
           filters:
             branches:
               ignore:
                 - master
                 - canary
       - pre_release:
+          context: public_package_publish
           requires:
             - test
           filters:
@@ -107,11 +109,13 @@ workflows:
               only:
                 - /prerelease\/.*/
       - canary:
+          context: public_package_publish
           filters:
             branches:
               only:
                 - canary
       - dev_release:
+          context: public_package_publish
           requires:
             - test
           filters:

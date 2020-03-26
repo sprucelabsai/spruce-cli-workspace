@@ -6,10 +6,11 @@
   "files": [
     "build"
   ],
-  "version": "0.0.1",
+  "version": "10.0.0",
   "bin": {
     "spruce": "./build/src/index.js"
   },
+  "main": "./build/src/index.js",
   "types": "./build/index.d.ts",
   "description": "Command line interface for building Spruce skills",
   "keywords": [
@@ -26,8 +27,8 @@
   },
   "scripts": {
     "build": "npm run clean && npm run build:node",
-    "build:node": "tsc",
-    "watch": "chokidar 'src/**/*' -c 'npm run build'",
+    "build:node": "tsc | true",
+    "watch": "chokidar 'src/**/*' 'index.ts' -c 'npm run build'",
     "clean": "rm -rf build/",
     "lint": "eslint '**/*.ts' && tsc -p . --noEmit",
     "release": "semantic-release",
@@ -37,6 +38,7 @@
     "@sprucelabs/log": "^2.2.2",
     "@sprucelabs/mercury": "9.1.1-pre-89e92490.0",
     "@sprucelabs/schema": "^1.0.0-dev.1",
+    "@sprucelabs/spruce-templates": "10.0.0",
     "@sprucelabs/spruce-types": "9.1.1-pre-89e92490.0",
     "commander": "^4.1.1",
     "debug": "^4.1.1",
