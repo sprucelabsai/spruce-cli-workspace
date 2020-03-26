@@ -4,14 +4,12 @@ import fs from 'fs'
 import config from '../../utilities/Config'
 import Skill from './Skill'
 import slug from 'slug'
-import skillState from '../../state/Skill'
-import userState from '../../state/Users'
+import skillState from '../../store/Skill'
+import userState from '../../store/User'
 import { SpruceEvents } from '../../types/events-generated'
-import { FieldType } from '@sprucelabs/spruce-types'
+import { FieldType } from '@sprucelabs/schema'
 
 export default class CreateSkill extends Skill {
-	private readonly lastStateKey = 'CreateSkill-lastState'
-
 	/** Sets up commands */
 	public attachCommands(program: Command) {
 		program
@@ -24,10 +22,6 @@ export default class CreateSkill extends Skill {
 			.action(this.createSkill)
 	}
 
-	something() {
-		return 'testing'
-	}
-
 	/**
 	 * Create a new skill
 	 *
@@ -37,7 +31,7 @@ export default class CreateSkill extends Skill {
 	 * 4. current directory or new directory
 	 * 5.
 	 */
-	createSkill = async (name: string | null, cmd: Command) => {
+	public async createSkill(name: string | null, cmd: Command) {
 		// if (cmd.reset) {
 		// 	this.resetState()
 		// }
@@ -49,7 +43,7 @@ export default class CreateSkill extends Skill {
 		// 	throw new Error('INVALID_DIRECTORY')
 		// }
 
-		const state = config.get(this.lastStateKey) || {}
+		const state = {}
 
 		const formBuilder = this.formBuilder(
 			{
@@ -83,10 +77,6 @@ export default class CreateSkill extends Skill {
 		state.name = values.name
 		state.slug = values.slug
 		state.description = values.description
-
-		config.save({
-			[this.lastStateKey]: state
-		})
 	}
 
 	// private resetState() {
@@ -245,99 +235,99 @@ export default class CreateSkill extends Skill {
 	// 	return false
 	// }
 
-	private async saveNewSkill() {
-		const state = config.get(this.lastStateKey) || {}
+	// private async saveNewSkill() {
+	// 	const state = config.get(this.lastStateKey) || {}
 
-		if (!userState.currentUser) {
-			this.fatal(
-				'You need be be logged in to create a new skill. Try "spruce user:login"'
-			)
-			return
-		}
+	// 	if (!userState.currentUser) {
+	// 		this.fatal(
+	// 			'You need be be logged in to create a new skill. Try "spruce user:login"'
+	// 		)
+	// 		return
+	// 	}
 
-		const directory = `${process.cwd()}/${state.slug}`
+	// 	const directory = `${process.cwd()}/${state.slug}`
 
-		const useNewDirectoryResult = await inquirer.prompt({
-			type: 'list',
-			name: 'answer',
-			message: 'Where should I create this skill?',
-			choices: [
-				{
-					name: `This directory: ${process.cwd()}`,
-					value: 'thisDirectory'
-				},
-				{
-					name: `New directory: ${directory}`,
-					value: 'newDirectory'
-				}
-			]
-		})
+	// 	const useNewDirectoryResult = await inquirer.prompt({
+	// 		type: 'list',
+	// 		name: 'answer',
+	// 		message: 'Where should I create this skill?',
+	// 		choices: [
+	// 			{
+	// 				name: `This directory: ${process.cwd()}`,
+	// 				value: 'thisDirectory'
+	// 			},
+	// 			{
+	// 				name: `New directory: ${directory}`,
+	// 				value: 'newDirectory'
+	// 			}
+	// 		]
+	// 	})
 
-		const originalDirectory = process.cwd()
+	// 	const originalDirectory = process.cwd()
 
-		if (useNewDirectoryResult.answer === 'newDirectory') {
-			// Create the new directory and change to it
-			if (!fs.existsSync(directory)) {
-				fs.mkdirSync(directory)
-			} else {
-				// Directory exists...should we warn?
-				this.log.debug(`${directory} already exists. Not creating it.`)
-			}
-			process.chdir(directory)
-		}
+	// 	if (useNewDirectoryResult.answer === 'newDirectory') {
+	// 		// Create the new directory and change to it
+	// 		if (!fs.existsSync(directory)) {
+	// 			fs.mkdirSync(directory)
+	// 		} else {
+	// 			// Directory exists...should we warn?
+	// 			this.log.debug(`${directory} already exists. Not creating it.`)
+	// 		}
+	// 		process.chdir(directory)
+	// 	}
 
-		// const response = await userState.currentUser.mercury.emit<SpruceEvents.core.RegisterSkill.IPayload>
-		let result
-		try {
-			result = await userState.currentUser.mercury.emit<
-				SpruceEvents.core.RegisterSkill.IPayload,
-				SpruceEvents.core.RegisterSkill.IResponseBody
-			>({
-				eventName: SpruceEvents.core.RegisterSkill.name,
-				payload: {
-					name: state.name,
-					slug: state.slug,
-					description: state.description
-				}
-			})
-		} catch (e) {
-			process.chdir(originalDirectory)
-			if (e.message === 'SLUG_TAKEN') {
-				await this.handleChoice(
-					Choice.Slug,
-					`The slug "${state.slug}" is already taken. Try a different slug. Or, if you meant to connect to an existing skill run "spruce skill:set"`
-				)
-			} else if (e.message === 'NAME_TAKEN') {
-				await this.handleChoice(
-					Choice.Name,
-					`The name "${state.name}" is already taken. Try a different name. Or, if you meant to connect to an existing skill run "spruce skill:set"`
-				)
-			} else {
-				this.log.debug(e)
-			}
-			return
-		}
+	// 	// const response = await userState.currentUser.mercury.emit<SpruceEvents.core.RegisterSkill.IPayload>
+	// 	let result
+	// 	try {
+	// 		result = await userState.currentUser.mercury.emit<
+	// 			SpruceEvents.core.RegisterSkill.IPayload,
+	// 			SpruceEvents.core.RegisterSkill.IResponseBody
+	// 		>({
+	// 			eventName: SpruceEvents.core.RegisterSkill.name,
+	// 			payload: {
+	// 				name: state.name,
+	// 				slug: state.slug,
+	// 				description: state.description
+	// 			}
+	// 		})
+	// 	} catch (e) {
+	// 		process.chdir(originalDirectory)
+	// 		if (e.message === 'SLUG_TAKEN') {
+	// 			await this.handleChoice(
+	// 				Choice.Slug,
+	// 				`The slug "${state.slug}" is already taken. Try a different slug. Or, if you meant to connect to an existing skill run "spruce skill:set"`
+	// 			)
+	// 		} else if (e.message === 'NAME_TAKEN') {
+	// 			await this.handleChoice(
+	// 				Choice.Name,
+	// 				`The name "${state.name}" is already taken. Try a different name. Or, if you meant to connect to an existing skill run "spruce skill:set"`
+	// 			)
+	// 		} else {
+	// 			this.log.debug(e)
+	// 		}
+	// 		return
+	// 	}
 
-		if (result?.responses[0]?.payload.slug) {
-			skillState.id = result.responses[0].payload.id
-			skillState.apiKey = result.responses[0].payload.apiKey
-			skillState.name = result.responses[0].payload.name
-			skillState.description = result.responses[0].payload.description
-			skillState.slug = result.responses[0].payload.slug
-			skillState.remote = config.remote
-			skillState.save()
-		} else {
-			this.crit('Unable to create skill')
-		}
+	// 	if (result?.responses[0]?.payload.slug) {
+	// 		skillState.id = result.responses[0].payload.id
+	// 		skillState.apiKey = result.responses[0].payload.apiKey
+	// 		skillState.name = result.responses[0].payload.name
+	// 		skillState.description = result.responses[0].payload.description
+	// 		skillState.slug = result.responses[0].payload.slug
+	// 		skillState.remote = config.remote
+	// 		skillState.save()
+	// 	} else {
+	// 		this.crit('Unable to create skill')
+	// 	}
 
-		this.copyBaseFiles()
-	}
+	// 	this.copyBaseFiles()
+	// }
 
-	private slugify(name: string) {
-		return slug(name, {
-			lower: true,
-			replacement: '_',
-			remove: /[-]/g
-		})
-	}
+	// private slugify(name: string) {
+	// 	return slug(name, {
+	// 		lower: true,
+	// 		replacement: '_',
+	// 		remove: /[-]/g
+	// 	})
+	// }
 }

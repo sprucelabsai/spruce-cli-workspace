@@ -1,9 +1,12 @@
 import logger, { ISpruceLog } from '@sprucelabs/log'
-import Terminal from './utilities/Terminal'
+import Terminal from '../utilities/Terminal'
 import path from 'path'
 import { Command } from 'commander'
-import FormBuilder from './builders/FormBuilder'
-import { ISpruceSchema, SchemaToValues } from '@sprucelabs/spruce-types'
+import FormBuilder from '../builders/FormBuilder'
+import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
+import { IStores } from '../store'
+import { Mercury } from '@sprucelabs/mercury'
+import { IServices } from '../services'
 
 // @ts-ignore
 const _log = logger.log
@@ -13,17 +16,30 @@ _log.setOptions({
 
 export default abstract class CommandBase extends Terminal {
 	/** spruce logger */
-	log: ISpruceLog = _log
+	public log: ISpruceLog = _log
+	public store: IStores
+	public mercury: Mercury
+	public services: IServices
 
-	constructor() {
+	public constructor(options: {
+		stores: IStores
+		mercury: Mercury
+		services: IServices
+	}) {
 		super()
+
+		const { stores, mercury, services } = options
+
+		this.store = stores
+		this.mercury = mercury
+		this.services = services
 	}
 
 	/** preps a form builder, you will need to call present() */
-	formBuilder = <T extends ISpruceSchema>(
+	public formBuilder<T extends ISchemaDefinition>(
 		definition: T,
-		initialValues: Partial<SchemaToValues<T>> = {}
-	): FormBuilder<T> => {
+		initialValues: Partial<SchemaDefinitionValues<T>> = {}
+	): FormBuilder<T> {
 		const formBuilder = new FormBuilder(this, definition, initialValues)
 		return formBuilder
 	}

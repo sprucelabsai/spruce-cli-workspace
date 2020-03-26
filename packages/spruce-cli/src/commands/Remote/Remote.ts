@@ -1,8 +1,8 @@
 import { Command } from 'commander'
-import _ from 'lodash'
-import CommandBase from '../../CommandBase'
-import config, { RemoteType } from '../../utilities/Config'
-import { IFieldSelectChoice, FieldType } from '@sprucelabs/spruce-types'
+import CommandBase from '../Base'
+import { RemoteType } from '../../utilities/Config'
+import { FieldType } from '@sprucelabs/schema'
+import { RemoteStoreRemoteType, RemoteStoreChoices } from '../../store'
 
 export default class Remote extends CommandBase {
 	/** Sets up commands */
@@ -13,32 +13,22 @@ export default class Remote extends CommandBase {
 			.action(this.setEnvironment)
 	}
 
-	public setEnvironment = async (environmentParam?: RemoteType | string) => {
+	public async setEnvironment(environmentParam?: RemoteType | string) {
 		let environment = environmentParam
 
-		if (environment && !(environment in RemoteType)) {
-			this.warn('Invalid remote')
-			environment = undefined
-		}
-
 		if (!environment) {
-			const choices: IFieldSelectChoice[] = Object.keys(RemoteType).map(k => {
-				const value = k
-				return { label: k.toLowerCase(), value }
-			})
-
-			choices.push('yay')
-
 			environment = await this.prompt({
 				type: FieldType.Select,
 				isRequired: true,
 				label: 'Select a remote',
 				options: {
-					choices
+					choices: RemoteStoreChoices
 				}
 			})
 		}
 
-		config.setRemote(environment)
+		debugger
+
+		this.store.config.setRemote(environment as RemoteStoreRemoteType).save()
 	}
 }

@@ -1,11 +1,9 @@
 import { Command } from 'commander'
 import chalk from 'chalk'
 import config from '../../utilities/Config'
-import mercury from '../../utilities/mercury'
-import CommandBase from '../../CommandBase'
-import { SpruceEvents } from '../../types/events-generated'
-import usersState from '../../state/Users'
-import { FieldType, IFieldSelectChoice } from '@sprucelabs/spruce-types'
+import CommandBase from '../Base'
+import usersState from '../../store/User'
+import { FieldType, IFieldSelectDefinitionChoice } from '@sprucelabs/schema'
 
 export default class User extends CommandBase {
 	/** Sets up commands */
@@ -46,17 +44,8 @@ export default class User extends CommandBase {
 
 		this.startLoading('Requesting pin')
 
-		// send for pin
-		await mercury.emit<
-			SpruceEvents.core.RequestLogin.IPayload,
-			SpruceEvents.core.RequestLogin.IResponseBody
-		>({
-			eventName: SpruceEvents.core.RequestLogin.name,
-			payload: {
-				phoneNumber: phone,
-				method: 'pin'
-			}
-		})
+		await this.store.user.requestPin(phone)
+
 		this.stopLoading()
 
 		do {
@@ -69,16 +58,7 @@ export default class User extends CommandBase {
 			this.startLoading('Verifying identity...')
 
 			try {
-				const loginResult = await mercury.emit<
-					SpruceEvents.core.Login.IPayload,
-					SpruceEvents.core.Login.IResponseBody
-				>({
-					eventName: SpruceEvents.core.Login.name,
-					payload: {
-						phoneNumber: phone,
-						code: pin
-					}
-				})
+				const token = await this.store.user.login(phone, pin)
 
 				this.stopLoading()
 
@@ -137,15 +117,15 @@ export default class User extends CommandBase {
 			return
 		}
 
-		const choices: IFieldSelectChoice[] = Object.keys(usersState.users).map(
-			userId => {
-				const u = usersState.users[userId]
-				return {
-					label: `${u.name} (${u.remote})`,
-					value: u.id || '**missing id**'
-				}
+		const choices: IFieldSelectDefinitionChoice[] = Object.keys(
+			usersState.users
+		).map(userId => {
+			const u = usersState.users[userId]
+			return {
+				label: `${u.name} (${u.remote})`,
+				value: u.id || '**missing id**'
 			}
-		)
+		})
 
 		const result = await this.prompt({
 			type: FieldType.Select,

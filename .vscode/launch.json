@@ -1,46 +1,37 @@
 {
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
     {
       "type": "node",
       "request": "attach",
-      "name": "Attach",
-      "port": 4080
+      "name": "cli:attach",
+      "port": 5200,
+      "restart": true,
+      "timeout": 10000
     },
     {
-      "name": "Mocha (Test single file)",
       "type": "node",
       "request": "launch",
-      "runtimeArgs": [
-        "${workspaceRoot}/node_modules/.bin/mocha",
-        "-r",
-        "ts-node/register/transpile-only",
-        "--exit",
-        "--inspect-brk",
-        "${relativeFile}"
-      ],
-      "runtimeExecutable": "${env:NVM_BIN}/node",
+      "name": "cli:debug",
+      "protocol": "inspector",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": ["run", "local"],
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "port": 9229,
-      "cwd": "${workspaceRoot}",
+      "port": 5200,
+      "restart": true,
+      "localRoot": "${workspaceRoot}/packages/spruce-cli",
+      "remoteRoot": "${workspaceRoot}/packages/spruce-cli",
       "env": {
-        // "NODE_ENV": "local",
-        "ENV_PATH": "${workspaceRoot}/packages/spruce-skill",
-        "DEBUG": "config spruce-skill-server",
-        "NODE_CONFIG_DIR": "${workspaceRoot}/packages/spruce-skill/.spruce/config",
-        "PORT": "8010",
-        "BLUEBIRD_W_FORGOTTEN_RETURN": "0",
-        "ALLOW_NON_SSL": "true",
-        "ORM_LOGGING": "true",
-        "API_ONLY": "true",
-        "TESTING": "true",
-        "TESTING_SKILLS_KIT": "true",
-        "DISABLE_MIGRATIONS": "true"
+        "COMMANDS": "${input:commands}"
       }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "commands",
+      "type": "promptString",
+      "default": "",
+      "description": "🌲🤖 The input commands"
     }
   ]
 }

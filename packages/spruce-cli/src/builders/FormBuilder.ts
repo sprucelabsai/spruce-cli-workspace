@@ -1,13 +1,13 @@
 import {
-	ISpruceSchema,
+	ISchemaDefinition,
 	FieldType,
-	SchemaToValues,
-	SpruceSchema,
-	SchemaFieldNames,
-	IFieldSelectChoice,
-	IField,
+	SchemaDefinitionValues,
+	Schema,
+	SchemaDefinitionFieldNames,
+	IFieldSelectDefinitionChoice,
+	IFieldDefinition,
 	ISchemaValidationError
-} from '@sprucelabs/spruce-types'
+} from '@sprucelabs/schema'
 import ITerminal, { ITerminalEffect } from '../utilities/Terminal'
 
 export enum FormBuilderActionType {
@@ -27,24 +27,24 @@ export interface IFormBuilderActionCancel {
 }
 
 /** in overview mode, this is when the user selects to edit a field */
-export type IFormBuilderActionEditField<T extends ISpruceSchema> = {
+export type IFormBuilderActionEditField<T extends ISchemaDefinition> = {
 	type: FormBuilderActionType.EditField
-	fieldName: SchemaFieldNames<T>
+	fieldName: SchemaDefinitionFieldNames<T>
 }
 /** actions that can be taken in overview mode */
-export type IFormBuilderAction<T extends ISpruceSchema> =
+export type IFormBuilderAction<T extends ISchemaDefinition> =
 	| IFormBuilderActionDone
 	| IFormBuilderActionCancel
 	| IFormBuilderActionEditField<T>
 
 /** controls for when presenting the form */
-export interface IPresentationOptions<T extends ISpruceSchema> {
+export interface IPresentationOptions<T extends ISchemaDefinition> {
 	headline?: string
 	showOverview?: boolean
-	fields?: SchemaFieldNames<T>
+	fields?: SchemaDefinitionFieldNames<T>
 }
 
-export default class FormBuilder<T extends ISpruceSchema> extends SpruceSchema<
+export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 	T
 > {
 	term: ITerminal
@@ -52,7 +52,7 @@ export default class FormBuilder<T extends ISpruceSchema> extends SpruceSchema<
 	constructor(
 		term: ITerminal,
 		definition: T,
-		initialValues: Partial<SchemaToValues<T>> = {}
+		initialValues: Partial<SchemaDefinitionValues<T>> = {}
 	) {
 		// setup schema
 		super(definition, initialValues)
@@ -62,9 +62,9 @@ export default class FormBuilder<T extends ISpruceSchema> extends SpruceSchema<
 	}
 
 	/** pass me a schema and i'll give you back an object that conforms to it based on user input */
-	public present = async (
+	public async present(
 		options: IPresentationOptions<T> = {}
-	): Promise<SchemaToValues<T>> => {
+	): Promise<SchemaDefinitionValues<T>> {
 		const { term } = this
 		const { headline, showOverview } = options
 
@@ -128,15 +128,15 @@ export default class FormBuilder<T extends ISpruceSchema> extends SpruceSchema<
 	}
 
 	/** ask a question based on a field */
-	public askQuestion(fieldName: SchemaFieldNames<T>) {
+	public askQuestion(fieldName: SchemaDefinitionFieldNames<T>) {
 		const field = this.fields[fieldName]
 		// TODO: why is this requiring me to cast?
-		const definition = field.definition as IField
+		const definition = field.definition as IFieldDefinition
 		return this.term.prompt(definition)
 	}
 
 	/** pass it schema errors */
-	public renderErrors = (errors: ISchemaValidationError<T>[]) => {
+	public renderErrors(errors: ISchemaValidationError<T>[]) {
 		this.term.bar()
 		this.term.headline('Please fix the following...', [
 			ITerminalEffect.Red,
@@ -151,33 +151,35 @@ export default class FormBuilder<T extends ISpruceSchema> extends SpruceSchema<
 	}
 
 	/** render every field and a select to chose what to edit (or done/cancel) */
-	public renderOverview = async (): Promise<IFormBuilderAction<T>> => {
+	public async renderOverview(): Promise<IFormBuilderAction<T>> {
 		const { term } = this
 
 		// track actions while building choices
 		const actionMap: Record<string, IFormBuilderAction<T>> = {}
 
 		// create all choices
-		const choices: IFieldSelectChoice[] = this.getNamedFields().map(item => {
-			const { field, name } = item
+		const choices: IFieldSelectDefinitionChoice[] = this.getNamedFields().map(
+			item => {
+				const { field, name } = item
 
-			const actionKey = `field:${name}`
-			const action: IFormBuilderActionEditField<T> = {
-				type: FormBuilderActionType.EditField,
-				fieldName: name
+				const actionKey = `field:${name}`
+				const action: IFormBuilderActionEditField<T> = {
+					type: FormBuilderActionType.EditField,
+					fieldName: name
+				}
+
+				// track the action for checking after selection
+				actionMap[actionKey] = action
+
+				// get the current value, don't validate
+				const value = this.get(name, { validate: false })
+
+				return {
+					value: actionKey,
+					label: `${field.getLabel()}: ${value ? value : '***missing***'}`
+				}
 			}
-
-			// track the action for checking after selection
-			actionMap[actionKey] = action
-
-			// get the current value, don't validate
-			const value = this.get(name, { validate: false })
-
-			return {
-				value: actionKey,
-				label: `${field.getLabel()}: ${value ? value : '***missing***'}`
-			}
-		})
+		)
 
 		// done choice
 		actionMap['done'] = {

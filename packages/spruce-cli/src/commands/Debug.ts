@@ -1,5 +1,5 @@
 import { Command } from 'commander'
-import CommandBase from '../CommandBase'
+import CommandBase from './Base'
 
 export default class Debug extends CommandBase {
 	/** Sets up commands */

@@ -1,11 +1,11 @@
 import { Command } from 'commander'
 import config from '../../utilities/Config'
 import { Mercury } from '@sprucelabs/mercury'
-import CommandBase from '../../CommandBase'
+import CommandBase from '../Base'
 import globby from 'globby'
 import fs from 'fs-extra'
 import handlebars from 'handlebars'
-import skillState from '../../state/Skill'
+import skillState from '../../store/Skill'
 
 export default class Skill extends CommandBase {
 	/** Sets up commands */

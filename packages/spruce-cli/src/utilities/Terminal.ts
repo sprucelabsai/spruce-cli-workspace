@@ -1,8 +1,14 @@
 import chalk from 'chalk'
 import Debug from 'debug'
-import { FieldType, FieldTypeMap, IField } from '@sprucelabs/spruce-types'
+import {
+	FieldType,
+	FieldDefinitionMap,
+	IFieldDefinition,
+	Field,
+	FieldSelect,
+	FieldClassMap
+} from '@sprucelabs/schema'
 import inquirer from 'inquirer'
-import PhoneNumber from './PhoneNumber'
 import ora from 'ora'
 
 let fieldCount = 0
@@ -58,14 +64,14 @@ export enum ITerminalEffect {
 }
 
 /** what prompt() returns if isRequired=true */
-type PromptReturnTypeRequired<T extends IField> = Required<
-	FieldTypeMap[T['type']]
+type PromptReturnTypeRequired<T extends IFieldDefinition> = Required<
+	FieldDefinitionMap[T['type']]
 >['value']
 
 /** what prompt() returns if isRequired!==true */
 type PromptReturnTypeOptional<
-	T extends IField
-> = FieldTypeMap[T['type']]['value']
+	T extends IFieldDefinition
+> = FieldDefinitionMap[T['type']]['value']
 
 const debug = Debug('@sprucelabs/cli')
 
@@ -73,7 +79,7 @@ export default class Terminal {
 	private loader?: ora.Ora | null
 
 	/** write a line with various effects applied */
-	writeLn = (message: any, effects: ITerminalEffect[] = []) => {
+	writeLn(message: any, effects: ITerminalEffect[] = []) {
 		let write = chalk
 		effects.forEach(effect => {
 			write = write[effect]
@@ -82,17 +88,17 @@ export default class Terminal {
 	}
 
 	/** write an array of lines quickly */
-	writeLns = (lines: any[], effects?: ITerminalEffect[]) => {
+	writeLns(lines: any[], effects?: ITerminalEffect[]) {
 		lines.forEach(line => {
 			this.writeLn(line, effects)
 		})
 	}
 
 	/** output an ojbect, one key per line */
-	object = (
+	object(
 		object: Record<string, any>,
 		effects: ITerminalEffect[] = [ITerminalEffect.Green]
-	) => {
+	) {
 		this.bar()
 		Object.keys(object).forEach(key => {
 			this.writeLn(`${key}: ${JSON.stringify(object[key])}`, effects)
@@ -101,14 +107,14 @@ export default class Terminal {
 	}
 
 	/** a section draws a box around what you are writing */
-	section = (options: {
+	section(options: {
 		headline?: string
 		lines?: string[]
 		object?: Record<string, any>
 		headlineEffects?: ITerminalEffect[]
 		bodyEffects?: ITerminalEffect[]
 		barEffects?: ITerminalEffect[]
-	}) => {
+	}) {
 		const {
 			headline,
 			lines,
@@ -141,16 +147,16 @@ export default class Terminal {
 	}
 
 	/** draw a bar (horizontal ruler) */
-	bar = (effects?: ITerminalEffect[]) => {
+	bar(effects?: ITerminalEffect[]) {
 		const bar = '=================================================='
 		this.writeLn(bar, effects)
 	}
 
 	/** a headline */
-	headline = (
+	headline(
 		message: string,
 		effects: ITerminalEffect[] = [ITerminalEffect.Blue, ITerminalEffect.Bold]
-	) => {
+	) {
 		this.writeLn(message, effects)
 	}
 
@@ -166,7 +172,7 @@ export default class Terminal {
 	}
 
 	/** the user did something wrong, like entered a bad value */
-	warn = (message: string) => {
+	warn(message: string) {
 		if (typeof message !== 'string') {
 			debug('Invalid warn log')
 			debug(message)
@@ -180,7 +186,7 @@ export default class Terminal {
 	}
 
 	/** the user did something wrong, like entered a bad value */
-	error = (message: string) => {
+	error(message: string) {
 		if (typeof message !== 'string') {
 			debug('Invalid error log')
 			debug(message)
@@ -191,7 +197,7 @@ export default class Terminal {
 	}
 
 	/** something major or a critical information but program will not die */
-	crit = (message: string) => {
+	crit(message: string) {
 		if (typeof message !== 'string') {
 			debug('Invalid crit log')
 			debug(message)
@@ -201,7 +207,7 @@ export default class Terminal {
 		this.writeLn(`🛑 ${message}`, [ITerminalEffect.Red, ITerminalEffect.Bold])
 	}
 	/** everything is crashing! */
-	fatal = (message: string) => {
+	fatal(message: string) {
 		if (typeof message !== 'string') {
 			debug('Invalid fatal log')
 			debug(message)
@@ -211,20 +217,20 @@ export default class Terminal {
 		this.writeLn(`💥 ${message}`, [ITerminalEffect.Red, ITerminalEffect.Bold])
 	}
 
-	startLoading = async (message?: string) => {
+	async startLoading(message?: string) {
 		this.stopLoading()
 		this.loader = ora({
 			text: message
 		}).start()
 	}
 
-	stopLoading = async () => {
+	async stopLoading() {
 		this.loader?.stop()
 		this.loader = null
 	}
 
 	/** ask the user to confirm something */
-	confirm = async (question: string): Promise<boolean> => {
+	async confirm(question: string): Promise<boolean> {
 		const confirmResult = await inquirer.prompt({
 			type: 'confirm',
 			name: 'answer',
@@ -235,21 +241,21 @@ export default class Terminal {
 	}
 
 	/** clear the console */
-	clear = () => {
+	clear() {
 		console.clear()
 	}
 
 	/** ask the user for something */
-	prompt = async <T extends IField>(
-		field: T
+	async prompt<T extends IFieldDefinition>(
+		definition: T
 	): Promise<
 		T['isRequired'] extends true
 			? PromptReturnTypeRequired<T>
 			: PromptReturnTypeOptional<T>
-	> => {
+	> {
 		const name = generateInquirerFieldName()
-		const fieldDefinition: IField = field
-		const { isRequired, defaultValue, label } = field
+		const fieldDefinition: IFieldDefinition = definition
+		const { isRequired, defaultValue, label } = fieldDefinition
 
 		// universal is required validator
 		const validateIsRequired = (input: any): boolean => {
@@ -267,13 +273,26 @@ export default class Terminal {
 			validate: validateIsRequired
 		}
 
-		switch (fieldDefinition.type) {
+		// @ts-ignore TODO Why does this mapping not work?
+		const field: Field = new FieldClassMap[fieldDefinition.type](
+			fieldDefinition
+		)
+
+		// setup transform and validate
+		promptOptions.transform = field.toValueType.bind(field)
+		promptOptions.validate = (value: string) => {
+			return field.validate(value).length > 0
+		}
+
+		switch (field.getType()) {
 			case FieldType.Select:
 				promptOptions.type = 'list'
-				promptOptions.choices = fieldDefinition.options.choices.map(choice => ({
-					name: choice.label,
-					value: choice.value
-				}))
+				promptOptions.choices = (field as FieldSelect)
+					.getChoices()
+					.map(choice => ({
+						name: choice.label,
+						value: choice.value
+					}))
 
 				if (!isRequired) {
 					promptOptions.choices.push(new inquirer.Separator())
@@ -283,25 +302,7 @@ export default class Terminal {
 					})
 				}
 				break
-			case FieldType.Phone:
-				promptOptions.type = 'input'
-				promptOptions.transformer = (value: string) => {
-					const number = PhoneNumber.format(value)
-					return number
-				}
-				promptOptions.validate = (value: string) => {
-					// if it's not required and they entered a zero length string
-					if (!isRequired && value.length === 0) {
-						return true
-					}
-					try {
-						PhoneNumber.format(value, false)
-						return true
-					} catch (err) {
-						return false
-					}
-				}
-				break
+
 			default:
 				promptOptions.type = 'input'
 		}
@@ -311,7 +312,7 @@ export default class Terminal {
 		return response[name]
 	}
 
-	handleError = (e: Error) => {
+	handleError(e: Error) {
 		this.stopLoading()
 
 		this.section({

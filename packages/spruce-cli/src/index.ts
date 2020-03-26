@@ -2,17 +2,19 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 import { terminal } from './utilities/Terminal'
 import { Command } from 'commander'
-import config from './utilities/Config'
 import globby from 'globby'
 import pkg from '../package.json'
-import path from 'path'
-import './utilities/handlebarsHelpers'
+import './addons/handlebars'
 import CliError from './lib/CliError'
+import { stores } from './store'
+import { services } from './services'
+
+import { Mercury } from '@sprucelabs/mercury'
 
 /**
  * For handling debugger not attaching right away
  */
-const attachTimeoutMs = 0
+const attachTimeoutMs = 1000
 
 async function setup(argv: string[], debugging: boolean): Promise<void> {
 	const program = new Command()
@@ -33,18 +35,33 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 
 	program.on('option:directory', function() {
 		if (program.directory) {
-			process.chdir(path.resolve(program.directory))
-			config.init()
+			throw new Error('another path forward')
+			// process.chdir(path.resolve(program.directory))
+			// config.init()
 		}
+	})
+
+	// setup mercury
+	const remoteUrl = stores.remote.getRemoteUrl()
+	const mercury = new Mercury({
+		spruceApiUrl: remoteUrl
 	})
 
 	// Load commands and actions
 	globby.sync(`${__dirname}/commands/**/*.js`).forEach(file => {
 		try {
+			// instantiate the command
 			const cmdClass = require(file).default
-			const command = new cmdClass()
+			const command = new cmdClass({
+				stores,
+				mercury,
+				services
+			})
 
+			// attach commands to the program
 			command.attachCommands && command.attachCommands(program)
+
+			// track all commands
 			commands.push(command)
 		} catch (err) {
 			throw new CliError(`I could not load the command at ${file}`, err)

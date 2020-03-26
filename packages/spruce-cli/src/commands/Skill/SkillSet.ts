@@ -1,12 +1,12 @@
 import { Command } from 'commander'
-import CommandBase from '../../CommandBase'
+import CommandBase from '../Base'
 import config from '../../utilities/Config'
-import skillState from '../../state/Skill'
-import userState from '../../state/Users'
+import skillState from '../../store/Skill'
+import userState from '../../store/User'
 import { SpruceEvents } from '../../types/events-generated'
 import { RemoteConfig } from '../../utilities/Config'
-import { IFieldSelectChoice } from '@sprucelabs/spruce-types'
-import { FieldType } from '@sprucelabs/spruce-types'
+import { IFieldSelectDefinitionChoice } from '@sprucelabs/schema'
+import { FieldType } from '@sprucelabs/schema'
 
 export default class CreateSkill extends CommandBase {
 	/** Sets up commands */
@@ -62,7 +62,7 @@ export default class CreateSkill extends CommandBase {
 			return 0
 		})
 
-		const choices: IFieldSelectChoice[] = [
+		const choices: IFieldSelectDefinitionChoice[] = [
 			...skills.map(s => ({
 				label: `${s.name} (${s.slug})`,
 				value: s.id
