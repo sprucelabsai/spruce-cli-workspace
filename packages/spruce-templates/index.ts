@@ -31,6 +31,55 @@ handlebars.registerHelper('fieldTypeEnum', function(
 	return `SpruceSchema.FieldType.${keys[match]}`
 })
 
+handlebars.registerHelper('fieldDefinitionOptions', function(
+	fieldDefinition: IFieldDefinition,
+	options
+) {
+	const {
+		data: { root }
+	} = options
+
+	const namespaces = root && root.namespaces
+	const updatedOptions = fieldDefinition.options && {
+		...fieldDefinition.options
+	}
+
+	// if this is a schema type, we need to map it to the related definition
+	if (fieldDefinition.type === FieldType.Schema && updatedOptions) {
+		for (const namespace of namespaces) {
+			if (namespace.schemas[fieldDefinition.options.schemaId || '']) {
+				// pull out schema
+				const schema = namespace.schemas[fieldDefinition.options.schemaId || '']
+
+				// path to schema including namespaces
+				// @ts-ignore TODO find out how to type this properly
+				delete updatedOptions.schemaId
+				// @ts-ignore TODO find out how to type this properly
+				updatedOptions.schemaId = `SpruceSchemas.${namespace.namespace}.${schema.typeName}.id`
+				break
+			}
+		}
+	}
+
+	let template = `{`
+	Object.keys(updatedOptions ?? {}).forEach(key => {
+		// @ts-ignore TODO how to type this
+		const value = updatedOptions[key]
+		template += `${key}: `
+		if (key === 'schemaId') {
+			template += `${value},`
+		} else if (typeof value !== 'string') {
+			template += `${JSON.stringify(value)},`
+		} else {
+			template += `'${value.replace(/(['])/g, '\\$1')}',`
+		}
+	})
+
+	template += '}'
+
+	return template
+})
+
 /* the type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */
 handlebars.registerHelper('fieldValueType', function(
 	fieldDefinition: IFieldDefinition,
