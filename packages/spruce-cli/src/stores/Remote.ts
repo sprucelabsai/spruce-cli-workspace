@@ -69,12 +69,19 @@ export default class StoreRemote extends StoreBase {
 		}
 	})
 
+	public constructor() {
+		super()
+		this.load()
+	}
+
+	/** set your remote (defaults to prod) */
 	public setRemote(remote: RemoteStoreRemoteType) {
 		this.schema.set('remote', remote)
 		this.save()
 		return this
 	}
 
+	/** get your selected remote */
 	public getRemote(): RemoteStoreRemoteType {
 		return (
 			(this.schema.get('remote') as RemoteStoreRemoteType) ||
@@ -82,15 +89,24 @@ export default class StoreRemote extends StoreBase {
 		)
 	}
 
+	/** get a remote url */
 	public getRemoteUrl(remote?: RemoteStoreRemoteType): string {
 		const selectedRemote = remote || this.getRemote()
 		const url = StoreRemote.remotes[selectedRemote].url
 		return url
 	}
 
+	/** save changes to filesystem */
 	public async save() {
 		const values = this.schema.getValues()
 		this.writeValues(values)
+		return this
+	}
+
+	/** load everything into the store (called in constructor) */
+	public async load() {
+		const saved = this.readValues<IRemoteStoreValues>()
+		this.schema.setValues(saved)
 		return this
 	}
 }

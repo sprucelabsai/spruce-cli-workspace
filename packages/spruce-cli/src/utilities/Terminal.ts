@@ -79,8 +79,8 @@ export default class Terminal {
 	private loader?: ora.Ora | null
 
 	/** write a line with various effects applied */
-	writeLn(message: any, effects: ITerminalEffect[] = []) {
-		let write = chalk
+	public writeLn(message: any, effects: ITerminalEffect[] = []) {
+		let write: any = chalk
 		effects.forEach(effect => {
 			write = write[effect]
 		})
@@ -88,14 +88,14 @@ export default class Terminal {
 	}
 
 	/** write an array of lines quickly */
-	writeLns(lines: any[], effects?: ITerminalEffect[]) {
+	public writeLns(lines: any[], effects?: ITerminalEffect[]) {
 		lines.forEach(line => {
 			this.writeLn(line, effects)
 		})
 	}
 
 	/** output an ojbect, one key per line */
-	object(
+	public object(
 		object: Record<string, any>,
 		effects: ITerminalEffect[] = [ITerminalEffect.Green]
 	) {
@@ -107,7 +107,7 @@ export default class Terminal {
 	}
 
 	/** a section draws a box around what you are writing */
-	section(options: {
+	public section(options: {
 		headline?: string
 		lines?: string[]
 		object?: Record<string, any>
@@ -147,13 +147,13 @@ export default class Terminal {
 	}
 
 	/** draw a bar (horizontal ruler) */
-	bar(effects?: ITerminalEffect[]) {
+	public bar(effects?: ITerminalEffect[]) {
 		const bar = '=================================================='
 		this.writeLn(bar, effects)
 	}
 
 	/** a headline */
-	headline(
+	public headline(
 		message: string,
 		effects: ITerminalEffect[] = [ITerminalEffect.Blue, ITerminalEffect.Bold]
 	) {
@@ -161,7 +161,7 @@ export default class Terminal {
 	}
 
 	/** when outputing something information */
-	info(message: string) {
+	public info(message: string) {
 		if (typeof message !== 'string') {
 			debug('Invalid info log')
 			debug(message)
@@ -172,7 +172,7 @@ export default class Terminal {
 	}
 
 	/** the user did something wrong, like entered a bad value */
-	warn(message: string) {
+	public warn(message: string) {
 		if (typeof message !== 'string') {
 			debug('Invalid warn log')
 			debug(message)
@@ -186,7 +186,7 @@ export default class Terminal {
 	}
 
 	/** the user did something wrong, like entered a bad value */
-	error(message: string) {
+	public error(message: string) {
 		if (typeof message !== 'string') {
 			debug('Invalid error log')
 			debug(message)
@@ -197,7 +197,7 @@ export default class Terminal {
 	}
 
 	/** something major or a critical information but program will not die */
-	crit(message: string) {
+	public crit(message: string) {
 		if (typeof message !== 'string') {
 			debug('Invalid crit log')
 			debug(message)
@@ -207,7 +207,7 @@ export default class Terminal {
 		this.writeLn(`🛑 ${message}`, [ITerminalEffect.Red, ITerminalEffect.Bold])
 	}
 	/** everything is crashing! */
-	fatal(message: string) {
+	public fatal(message: string) {
 		if (typeof message !== 'string') {
 			debug('Invalid fatal log')
 			debug(message)
@@ -217,20 +217,20 @@ export default class Terminal {
 		this.writeLn(`💥 ${message}`, [ITerminalEffect.Red, ITerminalEffect.Bold])
 	}
 
-	async startLoading(message?: string) {
+	public async startLoading(message?: string) {
 		this.stopLoading()
 		this.loader = ora({
 			text: message
 		}).start()
 	}
 
-	async stopLoading() {
+	public async stopLoading() {
 		this.loader?.stop()
 		this.loader = null
 	}
 
 	/** ask the user to confirm something */
-	async confirm(question: string): Promise<boolean> {
+	public async confirm(question: string): Promise<boolean> {
 		const confirmResult = await inquirer.prompt({
 			type: 'confirm',
 			name: 'answer',
@@ -241,12 +241,12 @@ export default class Terminal {
 	}
 
 	/** clear the console */
-	clear() {
+	public clear() {
 		console.clear()
 	}
 
 	/** ask the user for something */
-	async prompt<T extends IFieldDefinition>(
+	public async prompt<T extends IFieldDefinition>(
 		definition: T
 	): Promise<
 		T['isRequired'] extends true
@@ -279,9 +279,11 @@ export default class Terminal {
 		)
 
 		// setup transform and validate
-		promptOptions.transform = field.toValueType.bind(field)
+		promptOptions.transformer = (value: string) => {
+			return field.toValueType(value)
+		}
 		promptOptions.validate = (value: string) => {
-			return field.validate(value).length > 0
+			return field.validate(value).length === 0
 		}
 
 		switch (field.getType()) {
@@ -312,7 +314,7 @@ export default class Terminal {
 		return response[name]
 	}
 
-	handleError(e: Error) {
+	public handleError(e: Error) {
 		this.stopLoading()
 
 		this.section({

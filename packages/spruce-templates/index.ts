@@ -2,7 +2,12 @@ import handlebars from 'handlebars'
 import fs from 'fs'
 import path from 'path'
 import _ from 'lodash'
-import { IFieldDefinition, FieldType, FieldClassMap } from '@sprucelabs/schema'
+import {
+	IFieldDefinition,
+	FieldType,
+	FieldClassMap,
+	ISchemaDefinition
+} from '@sprucelabs/schema'
 
 /* start case (cap first letter, lower rest) */
 handlebars.registerHelper('startCase', val => {
@@ -20,7 +25,7 @@ handlebars.registerHelper('isEqual', function(arg1, arg2, options) {
 	return arg1 == arg2 ? options.fn(this) : options.inverse(this)
 })
 
-/* The enum for schema.fields.fieldName.type as a string */
+/* the enum for schema.fields.fieldName.type as a string */
 handlebars.registerHelper('fieldTypeEnum', function(
 	fieldDefinition: IFieldDefinition
 ) {
@@ -31,6 +36,21 @@ handlebars.registerHelper('fieldTypeEnum', function(
 	return `SpruceSchema.FieldType.${keys[match]}`
 })
 
+/** drop in the value of a field which quotes if needed */
+handlebars.registerHelper('fieldValue', function(
+	fieldDefinition: IFieldDefinition,
+	value: any
+) {
+	if (value) {
+		// TODO finish this
+		console.log(fieldDefinition, value)
+		throw new Error('field value not yet implemented')
+	}
+
+	return value
+})
+
+/** renders field options */
 handlebars.registerHelper('fieldDefinitionOptions', function(
 	fieldDefinition: IFieldDefinition,
 	options
@@ -49,13 +69,15 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 		for (const namespace of namespaces) {
 			if (namespace.schemas[fieldDefinition.options.schemaId || '']) {
 				// pull out schema
-				const schema = namespace.schemas[fieldDefinition.options.schemaId || '']
+				const schema = namespace.schemas[
+					fieldDefinition.options.schemaId || ''
+				] as ISchemaDefinition
 
-				// path to schema including namespaces
 				// @ts-ignore TODO find out how to type this properly
 				delete updatedOptions.schemaId
+
 				// @ts-ignore TODO find out how to type this properly
-				updatedOptions.schemaId = `SpruceSchemas.${namespace.namespace}.${schema.typeName}.id`
+				updatedOptions.schema = `SpruceSchemas.${namespace.namespace}.${schema.typeName}.definition`
 				break
 			}
 		}
@@ -81,7 +103,7 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 })
 
 /* the type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */
-handlebars.registerHelper('fieldValueType', function(
+handlebars.registerHelper('fieldDefinitionValueType', function(
 	fieldDefinition: IFieldDefinition,
 	options
 ) {

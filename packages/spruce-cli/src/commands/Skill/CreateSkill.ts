@@ -19,7 +19,7 @@ export default class CreateSkill extends Skill {
 				'Resets the current saved state for skill creation'
 			)
 			.description('Create a new skill')
-			.action(this.createSkill)
+			.action(this.createSkill.bind(this))
 	}
 
 	/**

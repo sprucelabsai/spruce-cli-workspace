@@ -35,7 +35,8 @@ const userDefinition: ISchemaDefinition = {
 	fields: {
 		id: {
 			label: 'Id',
-			type: FieldType.Id
+			type: FieldType.Id,
+			isRequired: true
 		},
 		firstName: {
 			label: 'First name',

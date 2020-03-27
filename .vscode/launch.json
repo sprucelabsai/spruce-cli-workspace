@@ -31,7 +31,6 @@
     {
       "id": "commands",
       "type": "promptString",
-      "default": "types:sync",
       "description": "🌲🤖 Command (user:login) + args"
     }
   ]

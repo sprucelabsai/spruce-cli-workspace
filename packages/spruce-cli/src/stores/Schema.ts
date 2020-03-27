@@ -15,6 +15,7 @@ import {
 	groupDefinition,
 	aclDefinition
 } from '../temporary/schemas'
+import { Mercury } from '@sprucelabs/mercury'
 
 /** namespace is core or a skill slug */
 export interface ISchemaNamespace {
@@ -28,6 +29,14 @@ export interface IFieldTypeMap {
 
 export default class StoreSchema extends StoreBase {
 	public name = 'schema'
+
+	/** mercury locked and loaded */
+	public mercury: Mercury
+
+	public constructor(mercury: Mercury) {
+		super()
+		this.mercury = mercury
+	}
 
 	/** get the schema map */
 	public async schemasWithNamespace(): Promise<ISchemaNamespace[]> {

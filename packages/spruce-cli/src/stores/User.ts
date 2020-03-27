@@ -1,48 +1,56 @@
 import StoreBase from './Base'
 import Schema from '@sprucelabs/schema'
 import { SpruceSchemas } from '../.spruce/schemas'
+import { Mercury } from '@sprucelabs/mercury'
+import { SpruceEvents } from '../types/events-generated'
 
 export default class StoreUser extends StoreBase {
 	public name = 'user'
 
-	/* build a new user */
-	public static user() {
-		return new Schema(SpruceSchemas.core.User.definition)
+	/** mercury locked and loaded */
+	public mercury: Mercury
+
+	public constructor(mercury: Mercury) {
+		super()
+		this.mercury = mercury
 	}
 
+	/** build a new user */
+	public static user(values?: Partial<SpruceSchemas.core.User.IUser>) {
+		return new Schema(SpruceSchemas.core.User.definition, values)
+	}
+
+	/** give me a phone and i'll send you a pin */
 	public async requestPin(phone: string) {
-		const user = StoreUser.user()
-
-		// will validate the phone number
-		user.set('phoneNumber', phone)
-
-		// // send for pin
-		// await mercury.emit<
-		// 	SpruceEvents.core.RequestLogin.IPayload,
-		// 	SpruceEvents.core.RequestLogin.IResponseBody
-		// >({
-		// 	eventName: SpruceEvents.core.RequestLogin.name,
-		// 	payload: {
-		// 		phoneNumber: phone,
-		// 		method: 'pin'
-		// 	}
-		// })
+		await this.mercury.emit<
+			SpruceEvents.core.RequestLogin.IPayload,
+			SpruceEvents.core.RequestLogin.IResponseBody
+		>({
+			eventName: SpruceEvents.core.RequestLogin.name,
+			payload: {
+				phoneNumber: phone,
+				method: 'pin'
+			}
+		})
 	}
 
 	public async login(
 		phone: string,
 		pin: string
 	): SpruceSchemas.core.User.IUser {
-		// const loginResult = await mercury.emit<
-		// 	SpruceEvents.core.Login.IPayload,
-		// 	SpruceEvents.core.Login.IResponseBody
-		// >({
-		// 	eventName: SpruceEvents.core.Login.name,
-		// 	payload: {
-		// 		phoneNumber: phone,
-		// 		code: pin
-		// 	}
-		// })
+		const loginResult = await this.mercury.emit<
+			SpruceEvents.core.Login.IPayload,
+			SpruceEvents.core.Login.IResponseBody
+		>({
+			eventName: SpruceEvents.core.Login.name,
+			payload: {
+				phoneNumber: phone,
+				code: pin
+			}
+		})
+
+		console.log(loginResult)
+		debugger
 		// const token = loginResult.responses[0]?.payload.jwt
 		// if (!token) {
 		// 	throw new Error('User login failed. Check pin and try again.')
@@ -52,6 +60,9 @@ export default class StoreUser extends StoreBase {
 
 	public async fetchUser(token: string) {
 		const user = StoreUser.user()
+		const profileImages = user.get('profileImages')
+		const defaultProfileImages = user.get('defaultProfileImages')
+		
 		debugger
 	}
 

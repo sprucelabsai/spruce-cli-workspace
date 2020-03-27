@@ -10,7 +10,7 @@ export default class Remote extends CommandBase {
 		program
 			.command('remote:set [environment]')
 			.description('Set the environment to use')
-			.action(this.setEnvironment)
+			.action(this.setEnvironment.bind(this))
 	}
 
 	public async setEnvironment(environmentParam?: RemoteType | string) {
@@ -27,8 +27,6 @@ export default class Remote extends CommandBase {
 			})
 		}
 
-		debugger
-
-		this.store.config.setRemote(environment as RemoteStoreRemoteType).save()
+		this.store.remote.setRemote(environment as RemoteStoreRemoteType).save()
 	}
 }

@@ -14,7 +14,7 @@ export default class User extends CommandBase {
 			.action(this.userInfo.bind(this))
 
 		program
-			.command('user:login <phoneNumber>')
+			.command('user:login [phoneNumber]')
 			.description('Authenticate with the CLI as a user')
 			.action(this.login.bind(this))
 
@@ -56,13 +56,14 @@ export default class User extends CommandBase {
 			})
 
 			this.startLoading('Verifying identity...')
+			debugger
 
 			try {
 				const token = await this.store.user.login(phone, pin)
 
 				this.stopLoading()
 
-				const token = loginResult?.responses[0]?.payload.jwt
+				// const token = loginResult?.responses[0]?.payload.jwt
 
 				if (token) {
 					await usersState.addUserByJWT({ jwt: token, remote: config.remote })

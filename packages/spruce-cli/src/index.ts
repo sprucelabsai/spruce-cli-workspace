@@ -5,10 +5,14 @@ import { Command } from 'commander'
 import globby from 'globby'
 import pkg from '../package.json'
 import CliError from './lib/CliError'
-import { stores } from './stores'
 import { services } from './services'
 
 import { Mercury } from '@sprucelabs/mercury'
+import { IStores } from './stores'
+import StoreRemote from './stores/Remote'
+import StoreSkill from './stores/Skill'
+import StoreUser from './stores/User'
+import StoreSchema from './stores/Schema'
 
 /**
  * For handling debugger not attaching right away
@@ -37,11 +41,22 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		}
 	})
 
+	// setup remote store to load mercury
+	const remoteStore = new StoreRemote()
+
 	// setup mercury
-	const remoteUrl = stores.remote.getRemoteUrl()
+	const remoteUrl = remoteStore.getRemoteUrl()
 	const mercury = new Mercury({
 		spruceApiUrl: remoteUrl
 	})
+
+	// setup stores
+	const stores: IStores = {
+		remote: remoteStore,
+		skill: new StoreSkill(),
+		user: new StoreUser(mercury),
+		schema: new StoreSchema(mercury)
+	}
 
 	// Load commands and actions
 	globby.sync(`${__dirname}/commands/**/*.js`).forEach(file => {
