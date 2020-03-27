@@ -24,40 +24,48 @@ export namespace SpruceSchemas.core.User {
 		id: "user",
 		name: "User",
 		description: "A human being.",
+
 		fields: {
 			id: {
-				label: "",
+				label: "Id",
 				type: SpruceSchema.FieldType.Id,
+
 				options: {}
 			},
 			firstName: {
-				label: "",
+				label: "First name",
 				type: SpruceSchema.FieldType.Text,
+
 				options: {}
 			},
 			lastName: {
-				label: "",
+				label: "Last name",
 				type: SpruceSchema.FieldType.Text,
+
 				options: {}
 			},
 			casualName: {
-				label: "",
+				label: "Casual name",
 				type: SpruceSchema.FieldType.Text,
+
 				options: {}
 			},
 			phoneNumber: {
-				label: "",
+				label: "Phone",
 				type: SpruceSchema.FieldType.Phone,
+
 				options: {}
 			},
 			profileImages: {
-				label: "",
+				label: "Profile photos",
 				type: SpruceSchema.FieldType.Schema,
+
 				options: {}
 			},
 			defaultProfileImages: {
-				label: "",
+				label: "Default profile photos",
 				type: SpruceSchema.FieldType.Schema,
+
 				options: {}
 			}
 		}
@@ -68,40 +76,48 @@ export namespace SpruceSchemas.core.User {
 		id: "user";
 		name: "User";
 		description: "A human being.";
+
 		fields: {
 			id: {
-				label: "";
+				label: "Id";
 				type: SpruceSchema.FieldType.Id;
+
 				options: {};
 			};
 			firstName: {
-				label: "";
+				label: "First name";
 				type: SpruceSchema.FieldType.Text;
+
 				options: {};
 			};
 			lastName: {
-				label: "";
+				label: "Last name";
 				type: SpruceSchema.FieldType.Text;
+
 				options: {};
 			};
 			casualName: {
-				label: "";
+				label: "Casual name";
 				type: SpruceSchema.FieldType.Text;
+
 				options: {};
 			};
 			phoneNumber: {
-				label: "";
+				label: "Phone";
 				type: SpruceSchema.FieldType.Phone;
+
 				options: {};
 			};
 			profileImages: {
-				label: "";
+				label: "Profile photos";
 				type: SpruceSchema.FieldType.Schema;
+
 				options: {};
 			};
 			defaultProfileImages: {
-				label: "";
+				label: "Default profile photos";
 				type: SpruceSchema.FieldType.Schema;
+
 				options: {};
 			};
 		};
@@ -126,25 +142,30 @@ export namespace SpruceSchemas.core.ProfileImage {
 		id: "profileImage",
 		name: "Profile Image Sizes",
 		description: "Profile images at various helpful sizes and resolutions.",
+
 		fields: {
 			profile60: {
-				label: "",
+				label: "60x60",
 				type: SpruceSchema.FieldType.Text,
+
 				options: {}
 			},
 			profile150: {
-				label: "",
+				label: "150x150",
 				type: SpruceSchema.FieldType.Text,
+
 				options: {}
 			},
 			"profile60@2x": {
-				label: "",
+				label: "60x60",
 				type: SpruceSchema.FieldType.Text,
+
 				options: {}
 			},
 			"profile150@2x": {
-				label: "",
+				label: "150x150",
 				type: SpruceSchema.FieldType.Text,
+
 				options: {}
 			}
 		}
@@ -155,25 +176,30 @@ export namespace SpruceSchemas.core.ProfileImage {
 		id: "profileImage";
 		name: "Profile Image Sizes";
 		description: "Profile images at various helpful sizes and resolutions.";
+
 		fields: {
 			profile60: {
-				label: "";
+				label: "60x60";
 				type: SpruceSchema.FieldType.Text;
+
 				options: {};
 			};
 			profile150: {
-				label: "";
+				label: "150x150";
 				type: SpruceSchema.FieldType.Text;
+
 				options: {};
 			};
 			"profile60@2x": {
-				label: "";
+				label: "60x60";
 				type: SpruceSchema.FieldType.Text;
+
 				options: {};
 			};
 			"profile150@2x": {
-				label: "";
+				label: "150x150";
 				type: SpruceSchema.FieldType.Text;
+
 				options: {};
 			};
 		};
@@ -202,35 +228,42 @@ export namespace SpruceSchemas.core.Skill {
 		id: "skill",
 		name: "Skill",
 		description: "An ability Sprucebot has learned.",
+
 		fields: {
 			id: {
-				label: "",
+				label: "Id",
 				type: SpruceSchema.FieldType.Id,
+
 				options: {}
 			},
 			apiKey: {
-				label: "",
+				label: "Id",
 				type: SpruceSchema.FieldType.Id,
+
 				options: {}
 			},
 			name: {
-				label: "",
+				label: "Name",
 				type: SpruceSchema.FieldType.Text,
+
 				options: {}
 			},
 			description: {
-				label: "",
+				label: "Description",
 				type: SpruceSchema.FieldType.Text,
+
 				options: {}
 			},
 			slug: {
-				label: "",
+				label: "Slug",
 				type: SpruceSchema.FieldType.Text,
+
 				options: {}
 			},
 			icon: {
-				label: "",
+				label: "Icon",
 				type: SpruceSchema.FieldType.Text,
+
 				options: {}
 			}
 		}
@@ -241,35 +274,42 @@ export namespace SpruceSchemas.core.Skill {
 		id: "skill";
 		name: "Skill";
 		description: "An ability Sprucebot has learned.";
+
 		fields: {
 			id: {
-				label: "";
+				label: "Id";
 				type: SpruceSchema.FieldType.Id;
+
 				options: {};
 			};
 			apiKey: {
-				label: "";
+				label: "Id";
 				type: SpruceSchema.FieldType.Id;
+
 				options: {};
 			};
 			name: {
-				label: "";
+				label: "Name";
 				type: SpruceSchema.FieldType.Text;
+
 				options: {};
 			};
 			description: {
-				label: "";
+				label: "Description";
 				type: SpruceSchema.FieldType.Text;
+
 				options: {};
 			};
 			slug: {
-				label: "";
+				label: "Slug";
 				type: SpruceSchema.FieldType.Text;
+
 				options: {};
 			};
 			icon: {
-				label: "";
+				label: "Icon";
 				type: SpruceSchema.FieldType.Text;
+
 				options: {};
 			};
 		};
@@ -301,40 +341,48 @@ export namespace SpruceSchemas.core.Location {
 		name: "Location",
 		description:
 			"A physical location where people meet. An organization has at least one of them.",
+
 		fields: {
 			id: {
-				label: "",
+				label: "Id",
 				type: SpruceSchema.FieldType.Id,
+
 				options: {}
 			},
 			name: {
-				label: "",
+				label: "Name",
 				type: SpruceSchema.FieldType.Text,
+
 				options: {}
 			},
 			num: {
-				label: "",
+				label: "Store number",
 				type: SpruceSchema.FieldType.Text,
+
 				options: {}
 			},
 			isPublic: {
-				label: "",
+				label: "Public",
 				type: SpruceSchema.FieldType.Boolean,
+
 				options: {}
 			},
 			phone: {
-				label: "",
+				label: "Main Phone",
 				type: SpruceSchema.FieldType.Phone,
+
 				options: {}
 			},
 			timezone: {
-				label: "",
+				label: "Timezone",
 				type: SpruceSchema.FieldType.Select,
+
 				options: {}
 			},
 			address: {
-				label: "",
+				label: "Address",
 				type: SpruceSchema.FieldType.Address,
+
 				options: {}
 			}
 		}
@@ -345,40 +393,48 @@ export namespace SpruceSchemas.core.Location {
 		id: "location";
 		name: "Location";
 		description: "A physical location where people meet. An organization has at least one of them.";
+
 		fields: {
 			id: {
-				label: "";
+				label: "Id";
 				type: SpruceSchema.FieldType.Id;
+
 				options: {};
 			};
 			name: {
-				label: "";
+				label: "Name";
 				type: SpruceSchema.FieldType.Text;
+
 				options: {};
 			};
 			num: {
-				label: "";
+				label: "Store number";
 				type: SpruceSchema.FieldType.Text;
+
 				options: {};
 			};
 			isPublic: {
-				label: "";
+				label: "Public";
 				type: SpruceSchema.FieldType.Boolean;
+
 				options: {};
 			};
 			phone: {
-				label: "";
+				label: "Main Phone";
 				type: SpruceSchema.FieldType.Phone;
+
 				options: {};
 			};
 			timezone: {
-				label: "";
+				label: "Timezone";
 				type: SpruceSchema.FieldType.Select;
+
 				options: {};
 			};
 			address: {
-				label: "";
+				label: "Address";
 				type: SpruceSchema.FieldType.Address;
+
 				options: {};
 			};
 		};
@@ -411,45 +467,54 @@ export namespace SpruceSchemas.core.UserLocation {
 		id: "userLocation",
 		name: "User location",
 		description: "A location a person has given access to themselves.",
+
 		fields: {
 			id: {
-				label: "",
+				label: "Id",
 				type: SpruceSchema.FieldType.Id,
+
 				options: {}
 			},
 			role: {
-				label: "",
+				label: "Name",
 				type: SpruceSchema.FieldType.Select,
+
 				options: {}
 			},
 			status: {
-				label: "",
+				label: "Status",
 				type: SpruceSchema.FieldType.Text,
+
 				options: {}
 			},
 			visits: {
-				label: "",
+				label: "Total visits",
 				type: SpruceSchema.FieldType.Number,
+
 				options: {}
 			},
 			lastRecordedVisit: {
-				label: "",
+				label: "Last visit",
 				type: SpruceSchema.FieldType.DateTime,
+
 				options: {}
 			},
 			job: {
-				label: "",
+				label: "Job",
 				type: SpruceSchema.FieldType.Schema,
+
 				options: {}
 			},
 			location: {
-				label: "",
+				label: "Location",
 				type: SpruceSchema.FieldType.Schema,
+
 				options: {}
 			},
 			user: {
-				label: "",
+				label: "User",
 				type: SpruceSchema.FieldType.Schema,
+
 				options: {}
 			}
 		}
@@ -460,45 +525,54 @@ export namespace SpruceSchemas.core.UserLocation {
 		id: "userLocation";
 		name: "User location";
 		description: "A location a person has given access to themselves.";
+
 		fields: {
 			id: {
-				label: "";
+				label: "Id";
 				type: SpruceSchema.FieldType.Id;
+
 				options: {};
 			};
 			role: {
-				label: "";
+				label: "Name";
 				type: SpruceSchema.FieldType.Select;
+
 				options: {};
 			};
 			status: {
-				label: "";
+				label: "Status";
 				type: SpruceSchema.FieldType.Text;
+
 				options: {};
 			};
 			visits: {
-				label: "";
+				label: "Total visits";
 				type: SpruceSchema.FieldType.Number;
+
 				options: {};
 			};
 			lastRecordedVisit: {
-				label: "";
+				label: "Last visit";
 				type: SpruceSchema.FieldType.DateTime;
+
 				options: {};
 			};
 			job: {
-				label: "";
+				label: "Job";
 				type: SpruceSchema.FieldType.Schema;
+
 				options: {};
 			};
 			location: {
-				label: "";
+				label: "Location";
 				type: SpruceSchema.FieldType.Schema;
+
 				options: {};
 			};
 			user: {
-				label: "";
+				label: "User";
 				type: SpruceSchema.FieldType.Schema;
+
 				options: {};
 			};
 		};
@@ -528,35 +602,42 @@ export namespace SpruceSchemas.core.Job {
 		name: "Job",
 		description:
 			"A position at a company. The answer to the question; What is your job?",
+
 		fields: {
 			id: {
-				label: "",
+				label: "Id",
 				type: SpruceSchema.FieldType.Id,
+
 				options: {}
 			},
 			isDefault: {
-				label: "",
+				label: "Is default",
 				type: SpruceSchema.FieldType.Text,
+
 				options: {}
 			},
 			name: {
-				label: "",
+				label: "Name",
 				type: SpruceSchema.FieldType.Text,
+
 				options: {}
 			},
 			role: {
-				label: "",
+				label: "Role",
 				type: SpruceSchema.FieldType.Select,
+
 				options: {}
 			},
 			inStoreAcls: {
-				label: "",
+				label: "On work permissions",
 				type: SpruceSchema.FieldType.Schema,
+
 				options: {}
 			},
 			acls: {
-				label: "",
+				label: "Off work permissions",
 				type: SpruceSchema.FieldType.Schema,
+
 				options: {}
 			}
 		}
@@ -567,35 +648,42 @@ export namespace SpruceSchemas.core.Job {
 		id: "job";
 		name: "Job";
 		description: "A position at a company. The answer to the question; What is your job?";
+
 		fields: {
 			id: {
-				label: "";
+				label: "Id";
 				type: SpruceSchema.FieldType.Id;
+
 				options: {};
 			};
 			isDefault: {
-				label: "";
+				label: "Is default";
 				type: SpruceSchema.FieldType.Text;
+
 				options: {};
 			};
 			name: {
-				label: "";
+				label: "Name";
 				type: SpruceSchema.FieldType.Text;
+
 				options: {};
 			};
 			role: {
-				label: "";
+				label: "Role";
 				type: SpruceSchema.FieldType.Select;
+
 				options: {};
 			};
 			inStoreAcls: {
-				label: "";
+				label: "On work permissions";
 				type: SpruceSchema.FieldType.Schema;
+
 				options: {};
 			};
 			acls: {
-				label: "";
+				label: "Off work permissions";
 				type: SpruceSchema.FieldType.Schema;
+
 				options: {};
 			};
 		};
@@ -613,7 +701,13 @@ export namespace SpruceSchemas.core.Acl {
 	export const definition: SpruceSchemas.core.Acl.IAclDefinition = {
 		id: "acl",
 		name: "Access control list lookup table",
-		description: ""
+		description: "",
+		dynamicKeySignature: {
+			label: "Permissions grouped by slug",
+			type: SpruceSchema.FieldType.Text,
+
+			options: {}
+		}
 	};
 
 	/* the interface for the schema definition for a Acl */
@@ -621,5 +715,11 @@ export namespace SpruceSchemas.core.Acl {
 		id: "acl";
 		name: "Access control list lookup table";
 		description: "";
+		dynamicKeySignature: {
+			label: "Permissions grouped by slug";
+			type: SpruceSchema.FieldType.Text;
+
+			options: {};
+		};
 	}
 }

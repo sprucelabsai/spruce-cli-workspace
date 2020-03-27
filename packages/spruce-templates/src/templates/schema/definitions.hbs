@@ -11,17 +11,23 @@ import * as SpruceSchema from '@sprucelabs/schema'
 	{{/each}}
 {{/inline}}
 
+{{#* inline "fieldDefinition"}}
+	label: '{{{escape label}}}',
+	type: {{fieldTypeEnum this}},
+	{{#if description}}description: '{{{escape description}}}'{{/if}}
+	options: {}
+{{/inline}}
+
 {{#* inline "schemaDefinition"}}
   id: '{{{escape id}}}',
   name: '{{{escape name}}}',
   description: '{{{escape description}}}',
+  {{#if dynamicKeySignature}}dynamicKeySignature: { {{> fieldDefinition dynamicKeySignature}} }{{/if}}
   {{#if fields}}
   fields: {
   	{{#each fields}}
     	'{{@key}}': {
-        	label: '{{id}}',
-            type: {{fieldTypeEnum this}},
-			options: {}
+        	{{> fieldDefinition this}}
         },
     {{/each}}
   }

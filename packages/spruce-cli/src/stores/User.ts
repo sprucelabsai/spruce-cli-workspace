@@ -29,7 +29,10 @@ export default class StoreUser extends StoreBase {
 		// })
 	}
 
-	public async login(phone: string, pin: string) {
+	public async login(
+		phone: string,
+		pin: string
+	): SpruceSchemas.core.User.IUser {
 		// const loginResult = await mercury.emit<
 		// 	SpruceEvents.core.Login.IPayload,
 		// 	SpruceEvents.core.Login.IResponseBody

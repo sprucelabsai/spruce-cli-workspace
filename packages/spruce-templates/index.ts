@@ -4,34 +4,34 @@ import path from 'path'
 import _ from 'lodash'
 import { IFieldDefinition, FieldType, FieldClassMap } from '@sprucelabs/schema'
 
-/** start case (cap first letter, lower rest) */
+/* start case (cap first letter, lower rest) */
 handlebars.registerHelper('startCase', val => {
 	return _.startCase(val)
 })
 
-/** escape quotes */
+/* escape quotes */
 handlebars.registerHelper('escape', function(variable) {
 	return variable && variable.replace(/(['])/g, '\\$1')
 })
 
-/** quick way to do an equals check against 2 values */
+/* quick way to do an equals check against 2 values */
 handlebars.registerHelper('isEqual', function(arg1, arg2, options) {
 	//@ts-ignore // TODO how should this work in a typed environment?
 	return arg1 == arg2 ? options.fn(this) : options.inverse(this)
 })
 
-/** The enum for schema.fields.fieldName.type as a string */
+/* The enum for schema.fields.fieldName.type as a string */
 handlebars.registerHelper('fieldTypeEnum', function(
 	fieldDefinition: IFieldDefinition
 ) {
-	const { type } = fieldDefinition
-	const FieldClass = FieldClassMap[type]
-	const { typeEnum } = FieldClass.templateDetails()
+	const keys = Object.keys(FieldType)
+	const values = Object.values(FieldType)
+	const match = values.indexOf(fieldDefinition.type)
 
-	return `SpruceSchema.${typeEnum}`
+	return `SpruceSchema.FieldType.${keys[match]}`
 })
 
-/** the type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */
+/* the type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */
 handlebars.registerHelper('fieldValueType', function(
 	fieldDefinition: IFieldDefinition,
 	options
