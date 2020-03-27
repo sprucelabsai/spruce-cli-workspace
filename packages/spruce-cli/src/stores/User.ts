@@ -1,8 +1,8 @@
-import BaseStore from './Base'
-import { Schema, FieldType } from '@sprucelabs/schema'
-import { SpruceEvents } from '../types/events-generated'
+import StoreBase from './Base'
+import Schema, { FieldType } from '@sprucelabs/schema'
+// import { SpruceEvents } from '../types/events-generated'
 
-export default class UserStore extends BaseStore {
+export default class StoreUser extends StoreBase {
 	public name = 'user'
 
 	public static user() {
@@ -23,7 +23,7 @@ export default class UserStore extends BaseStore {
 	}
 
 	public async requestPin(phone: string) {
-		const user = UserStore.user()
+		const user = StoreUser.user()
 
 		// will validate the phone number
 		user.set('phoneNumber', phone)
@@ -60,7 +60,7 @@ export default class UserStore extends BaseStore {
 	}
 
 	public async fetchUser(token: string) {
-		const user = UserStore.user()
+		const user = StoreUser.user()
 		debugger
 	}
 

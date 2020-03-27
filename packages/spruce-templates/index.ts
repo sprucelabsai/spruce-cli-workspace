@@ -2,7 +2,7 @@ import handlebars from 'handlebars'
 import fs from 'fs'
 import path from 'path'
 import _ from 'lodash'
-import { IFieldDefinition, FieldBase, FieldType } from '@sprucelabs/schema'
+import { IFieldDefinition, FieldType, FieldClassMap } from '@sprucelabs/schema'
 
 /** start case (cap first letter, lower rest) */
 handlebars.registerHelper('startCase', val => {
@@ -11,7 +11,7 @@ handlebars.registerHelper('startCase', val => {
 
 /** escape quotes */
 handlebars.registerHelper('escape', function(variable) {
-	return variable.replace(/(['])/g, '\\$1')
+	return variable && variable.replace(/(['])/g, '\\$1')
 })
 
 /** quick way to do an equals check against 2 values */
@@ -24,8 +24,11 @@ handlebars.registerHelper('isEqual', function(arg1, arg2, options) {
 handlebars.registerHelper('fieldTypeEnum', function(
 	fieldDefinition: IFieldDefinition
 ) {
-	const field = FieldBase.field(fieldDefinition)
-	return field.typeEnumString
+	const { type } = fieldDefinition
+	const FieldClass = FieldClassMap[type]
+	const { typeEnum } = FieldClass.templateDetails()
+
+	return `SpruceSchema.${typeEnum}`
 })
 
 /** the type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */
@@ -46,14 +49,22 @@ handlebars.registerHelper('fieldValueType', function(
 		)
 	}
 
+	const { type } = fieldDefinition
+	const FieldClass = FieldClassMap[type]
+	const { valueType } = FieldClass.templateDetails()
+
 	let typeLiteral
 	switch (fieldDefinition.type) {
 		case FieldType.Schema: {
+			// if this is a schema field, find the other interface to point to
 			for (const namespace of namespaces) {
 				if (namespace.schemas[fieldDefinition.options.schemaId || '']) {
-					typeLiteral =
+					// pull out schema
+					const schema =
 						namespace.schemas[fieldDefinition.options.schemaId || '']
-							.interfaceName
+
+					// path to schema including namespaces
+					typeLiteral = `SpruceSchemas.${namespace.namespace}.${schema.typeName}.${schema.interfaceName}`
 					break
 				}
 			}
@@ -65,14 +76,16 @@ handlebars.registerHelper('fieldValueType', function(
 			break
 		}
 		default:
-			typeLiteral = 'text'
+			typeLiteral = valueType
 	}
 
 	if (fieldDefinition.isArray) {
 		typeLiteral = typeLiteral + '[]'
 	}
 
-	return typeLiteral
+	// if the type points to an interface, pull it off the schema
+	// TODO handle when skill introduce their own field types
+	return typeLiteral[0] === 'I' ? `SpruceSchema.${typeLiteral}` : typeLiteral
 })
 
 // import actual templates
@@ -80,9 +93,11 @@ const templatePath = path.join(__dirname, 'src', 'templates')
 
 // schema definitions
 const schemaDefinitions: string = fs
-	.readFileSync(path.join(templatePath, 'schema/definition.hbs'))
+	.readFileSync(path.join(templatePath, 'schema/definitions.hbs'))
 	.toString()
 
-export const templates = { schemaDefinitions }
+export const templates = {
+	schemaDefinitions: handlebars.compile(schemaDefinitions)
+}
 
 export default handlebars

@@ -1,6 +1,5 @@
-import BaseStore from './Base'
-import {
-	Schema,
+import StoreBase from './Base'
+import Schema, {
 	FieldType,
 	IFieldSelectDefinitionChoice
 } from '@sprucelabs/schema'
@@ -27,7 +26,7 @@ export interface IRemoteStoreValues {
 	remote?: RemoteStoreRemoteType
 }
 
-export default class RemoteStore extends BaseStore {
+export default class StoreRemote extends StoreBase {
 	/** map of remote urls and subscriptions url */
 	public static remotes = {
 		[RemoteStoreRemoteType.Production]: {
@@ -85,7 +84,7 @@ export default class RemoteStore extends BaseStore {
 
 	public getRemoteUrl(remote?: RemoteStoreRemoteType): string {
 		const selectedRemote = remote || this.getRemote()
-		const url = RemoteStore.remotes[selectedRemote].url
+		const url = StoreRemote.remotes[selectedRemote].url
 		return url
 	}
 

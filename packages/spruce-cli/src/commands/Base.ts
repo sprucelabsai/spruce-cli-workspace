@@ -7,6 +7,7 @@ import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
 import { IStores } from '../stores'
 import { Mercury } from '@sprucelabs/mercury'
 import { IServices } from '../services'
+import fs from 'fs-extra'
 
 // @ts-ignore
 const _log = logger.log
@@ -42,6 +43,33 @@ export default abstract class CommandBase extends Terminal {
 	): FormBuilder<T> {
 		const formBuilder = new FormBuilder(this, definition, initialValues)
 		return formBuilder
+	}
+
+	/** helper to resolve paths absolutely and relatively */
+	public resolvePath(...filePath: string[]): string {
+		const cwd = process.cwd()
+		let builtPath = path.join(...filePath)
+
+		if (filePath[0] !== '/') {
+			// reletave to the cwd
+			if (filePath[0] === '.') {
+				builtPath = builtPath.substr(1)
+			}
+
+			builtPath = path.join(cwd, builtPath)
+		}
+
+		return builtPath
+	}
+
+	/** write a file to a place handling all directory creation (overwrites everything) */
+	public writeFile(destination: string, contents: string) {
+		fs.outputFileSync(destination, contents)
+	}
+
+	/** make a file pass lint */
+	public prettyFormat(filePath: string) {
+		console.log('prettier on', filePath)
 	}
 
 	/** Parses a file path to parts needed for building the files */

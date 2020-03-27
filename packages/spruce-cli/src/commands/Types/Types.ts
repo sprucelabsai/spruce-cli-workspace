@@ -1,6 +1,6 @@
 import { Command } from 'commander'
 import CommandBase from '../Base'
-import handlebars, { templates } from '@sprucelabs/spruce-templates'
+import { templates } from '@sprucelabs/spruce-templates'
 
 export default class Cli extends CommandBase {
 	/** Sets up commands */
@@ -33,14 +33,26 @@ export default class Cli extends CommandBase {
 
 	/** Create a new skill */
 	public async sync(cmd: Command) {
-		const { types, outFile }: { types: string; outFile: string } = cmd
+		const { outFile }: { types: string; outFile: string } = cmd
 
-		const schemaMap = await this.store.schema.schemaMap()
-		console.log(templates, handlebars, schemaMap)
+		this.startLoading('Fetching schemas and field types')
+		const namespaces = await this.store.schema.schemasWithNamespace()
+		const typeMap = await this.store.schema.fieldTypeMap()
+		this.stopLoading()
 
-		debugger
-		this.writeLn('go team')
-		this.info('TODO: Sync all types')
+		// fill out template
+		const contents = templates.schemaDefinitions({
+			namespaces,
+			typeMap
+		})
+
+		this.info(`Found schemas, writing definition file.`)
+
+		//write it out
+		const destination = this.resolvePath(outFile, 'schemas.ts')
+		this.writeFile(destination, contents)
+
+		this.info('All done')
 	}
 
 	/** Fetches the generated events file from API */

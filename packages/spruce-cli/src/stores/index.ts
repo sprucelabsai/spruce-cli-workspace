@@ -1,20 +1,20 @@
-import RemoteStore from './Remote'
-import SkillStore from './Skill'
-import UserStore from './User'
-import SchemaStore from './Schema'
+import StoreRemote from './Remote'
+import StoreSkill from './Skill'
+import StoreUser from './User'
+import StoreSchema from './Schema'
 
 export interface IStores {
-	remote: RemoteStore
-	skill: SkillStore
-	user: UserStore
-	schema: SchemaStore
+	remote: StoreRemote
+	skill: StoreSkill
+	user: StoreUser
+	schema: StoreSchema
 }
 
 export const stores: IStores = {
-	remote: new RemoteStore(),
-	skill: new SkillStore(),
-	user: new UserStore(),
-	schema: new SchemaStore()
+	remote: new StoreRemote(),
+	skill: new StoreSkill(),
+	user: new StoreUser(),
+	schema: new StoreSchema()
 }
 
 export * from './Base'

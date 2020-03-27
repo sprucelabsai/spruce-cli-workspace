@@ -19,7 +19,7 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	if (debugging) {
 		// eslint-disable-next-line no-debugger
 		debugger // (breakpoints and debugger works after this one is missed)
-		terminal.info('Extra debugger dropped in so future debuggers work... 🤷‍♂️')
+		terminal.info('Extra debugger dropped in so future debuggers work... 🤷‍')
 	}
 
 	program.version(pkg.version).description(pkg.description)

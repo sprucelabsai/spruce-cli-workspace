@@ -5,7 +5,7 @@ export enum StoreScope {
 	Local = 'local'
 }
 
-export default abstract class BaseStore {
+export default abstract class StoreBase {
 	/** the current scope */
 	public scope = StoreScope.Global
 

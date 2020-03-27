@@ -1,8 +1,7 @@
-import {
+import Schema, {
 	ISchemaDefinition,
 	FieldType,
 	SchemaDefinitionValues,
-	Schema,
 	SchemaDefinitionFieldNames,
 	IFieldSelectDefinitionChoice,
 	IFieldDefinition,
@@ -49,7 +48,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 > {
 	term: ITerminal
 
-	constructor(
+	public constructor(
 		term: ITerminal,
 		definition: T,
 		initialValues: Partial<SchemaDefinitionValues<T>> = {}

@@ -1,6 +1,6 @@
-import BaseStore from './Base'
+import StoreBase from './Base'
 
-export default class SkillStore extends BaseStore {
+export default class StoreSkill extends StoreBase {
 	public name = 'skill'
 }
 
