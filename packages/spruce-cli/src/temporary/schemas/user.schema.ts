@@ -53,6 +53,12 @@ const userDefinition: ISchemaDefinition = {
 			hint: 'Generated name that defaults to Friend!',
 			isRequired: true
 		},
+		phoneNumber: {
+			label: 'Phone',
+			type: FieldType.Phone,
+			hint: "The person's phone number!",
+			isRequired: true
+		},
 		profileImages: {
 			label: 'Profile photos',
 			type: FieldType.Schema,

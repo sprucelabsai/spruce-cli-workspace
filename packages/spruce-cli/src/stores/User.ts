@@ -1,25 +1,13 @@
 import StoreBase from './Base'
-import Schema, { FieldType } from '@sprucelabs/schema'
-// import { SpruceEvents } from '../types/events-generated'
+import Schema from '@sprucelabs/schema'
+import { SpruceSchemas } from '../.spruce/schemas'
 
 export default class StoreUser extends StoreBase {
 	public name = 'user'
 
+	/* build a new user */
 	public static user() {
-		return new Schema({
-			id: 'user',
-			name: 'User',
-			fields: {
-				id: {
-					type: FieldType.Id,
-					label: 'Id'
-				},
-				phoneNumber: {
-					type: FieldType.Phone,
-					label: 'Cell'
-				}
-			}
-		})
+		return new Schema(SpruceSchemas.core.User.definition)
 	}
 
 	public async requestPin(phone: string) {

@@ -3,11 +3,10 @@ import * as SpruceSchema from '@sprucelabs/schema'
 {{! the definition partial, pass a schema and get back object that is the values and types }}
 {{#* inline "schemaValues"}}
 	{{#if dynamicKeySignature }}
-    	/** {{dynamicKeySignature.label}}.{{#if dynamicKeySignature.hint}} {{dynamicKeySignature.hint}}{{/if}} **/
-    	[{{dynamicKeySignature.key}}:string]{{#unless isRequired}}?{{/unless}}: {{dynamicKeySignature.type}}
-    {{/if}}{{#if dynamicKeySignature.isArray}}[]{{/if}}
+    	/* {{dynamicKeySignature.label}}.{{#if dynamicKeySignature.hint}} {{dynamicKeySignature.hint}}{{/if}} */
+    	[{{dynamicKeySignature.key}}:string]: string{{/if}}{{#if dynamicKeySignature.isArray}}[]{{/if}}
 	{{#each fields}}
-    	/** {{label}}.{{#if hint}} {{hint}}{{/if}} **/
+    	/* {{label}}.{{#if hint}} {{hint}}{{/if}} */
 		'{{@key}}'{{#unless isRequired}}?{{/unless}}: {{fieldValueType this }}
 	{{/each}}
 {{/inline}}
@@ -21,7 +20,8 @@ import * as SpruceSchema from '@sprucelabs/schema'
   	{{#each fields}}
     	'{{@key}}': {
         	label: '{{id}}',
-            type: {{fieldTypeEnum this}}
+            type: {{fieldTypeEnum this}},
+			options: {}
         },
     {{/each}}
   }
@@ -34,17 +34,17 @@ import * as SpruceSchema from '@sprucelabs/schema'
   
   	
 	  	export namespace SpruceSchemas.{{../namespace}}.{{this.typeName}} {
-			/** {{this.definition.description}} **/
+			/* {{this.definition.description}} */
 			export interface {{this.interfaceName}} {
 				{{> schemaValues this.definition }}
 			}
             
-			/** the schema definition for a {{this.typeName}} **/
+			/* the schema definition for a {{this.typeName}} */
 			export const definition: SpruceSchemas.{{../namespace}}.{{this.typeName}}.{{this.interfaceName}}Definition = {
 				{{> schemaDefinition this.definition }}
 			}
 			
-			/** the interface for the schema definition for a {{this.typeName}} **/
+			/* the interface for the schema definition for a {{this.typeName}} */
 			export interface {{this.interfaceName}}Definition {
 				{{> schemaDefinition this.definition }}
 			}

@@ -24,16 +24,16 @@ export default class Cli extends CommandBase {
 				'all'
 			)
 			.option(
-				'-o, --outFile <file>',
-				'Where should I write the types file?',
-				'./.spruce'
+				'-d, --destinationDir <dir>',
+				'Where should I write the types files?',
+				'./src/.spruce'
 			)
 			.action(this.sync.bind(this))
 	}
 
 	/** Create a new skill */
 	public async sync(cmd: Command) {
-		const { outFile }: { types: string; outFile: string } = cmd
+		const destinationDir = cmd.destinationDir as string
 
 		this.startLoading('Fetching schemas and field types')
 		const namespaces = await this.store.schema.schemasWithNamespace()
@@ -49,7 +49,7 @@ export default class Cli extends CommandBase {
 		this.info(`Found schemas, writing definition file.`)
 
 		//write it out
-		const destination = this.resolvePath(outFile, 'schemas.ts')
+		const destination = this.resolvePath(destinationDir, 'schemas.ts')
 		this.writeFile(destination, contents)
 
 		this.info('All done')
