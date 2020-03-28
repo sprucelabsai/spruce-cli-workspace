@@ -30,18 +30,20 @@ export default class Cli extends CommandBase {
 		this.startLoading('Fetching schemas and field types')
 
 		// load types and namespaces
-		const namespaces = await this.store.schema.schemasWithNamespace()
+		const schemaTemplateItems = await this.store.schema.schemaTemplateItemsWithNamespace()
 		const typeMap = await this.store.schema.fieldTypeMap()
-
-		this.stopLoading()
 
 		// fill out template
 		const contents = templates.schemaDefinitions({
-			namespaces,
+			schemaTemplateItems,
 			typeMap
 		})
 
-		this.info(`Found schemas, writing definition file...`)
+		this.stopLoading()
+
+		this.info(
+			`Found ${schemaTemplateItems.length} schemas, writing definition file...`
+		)
 
 		//write it out
 		const destination = this.resolvePath(destinationDir, 'schemas.ts')

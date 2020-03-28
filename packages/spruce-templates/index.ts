@@ -6,7 +6,7 @@ import {
 	IFieldDefinition,
 	FieldType,
 	FieldClassMap,
-	ISchemaDefinitionMapValue
+	ISchemaTemplateItem
 } from '@sprucelabs/schema'
 
 /* start case (cap first letter, lower rest) */
@@ -72,32 +72,40 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 		data: { root }
 	} = options
 
-	const namespaces = root && root.namespaces
-	const updatedOptions = fieldDefinition.options && {
+	const schemaTemplateItems:
+		| (ISchemaTemplateItem & { namespace: string })[]
+		| undefined = root && root.schemaTemplateItems
+
+	if (!schemaTemplateItems) {
+		throw new Error(
+			'fiendDefinitionOptions nees schemaTemplateItems passed to parent template'
+		)
+	}
+
+	const updatedOptions:
+		| Record<string, any>
+		| undefined = fieldDefinition.options && {
 		...fieldDefinition.options
 	}
 
 	// if this is a schema type, we need to map it to the related definition
 	if (fieldDefinition.type === FieldType.Schema && updatedOptions) {
-		for (const namespace of namespaces) {
-			if (namespace.schemas[fieldDefinition.options.schemaId || '']) {
-				// pull out schema
-				const map = namespace.schemas[
-					fieldDefinition.options.schemaId || ''
-				] as ISchemaDefinitionMapValue
+		const matchedTemplateItem = schemaTemplateItems.find(
+			item => item.id === updatedOptions.schemaId
+		)
 
-				// @ts-ignore TODO find out how to type this properly
-				delete updatedOptions.schemaId
-
-				// @ts-ignore TODO find out how to type this properly
-				updatedOptions.schema = `SpruceSchemas.${namespace.namespace}.${
-					map.typeName
-				}.${renderAs === 'type' ? 'IDefinition' : 'definition'}`
-				break
-			}
+		// swap out id for reference
+		if (matchedTemplateItem) {
+			delete updatedOptions.schemaId
+			updatedOptions.schema = `SpruceSchemas.${matchedTemplateItem.namespace}.${
+				matchedTemplateItem.typeName
+			}.${renderAs === 'type' ? 'IDefinition' : 'definition'}`
+		} else {
+			throw new Error('fieldDefinitionOptions could not find schem ${}')
 		}
 	}
 
+	// no options, undefined is acceptable
 	if (Object.keys(updatedOptions ?? {}).length === 0) {
 		return 'undefined'
 	}
@@ -130,12 +138,15 @@ handlebars.registerHelper('fieldDefinitionValueType', function(
 		data: { root }
 	} = options
 
-	const namespaces = root && root.namespaces
+	// pull vars off context
+	const schemaTemplateItems:
+		| (ISchemaTemplateItem & { namespace: string })[]
+		| undefined = root && root.schemaTemplateItems
 	const typeMap = root && root.typeMap
 
-	if (!namespaces || !typeMap) {
+	if (!schemaTemplateItems || !typeMap) {
 		throw new Error(
-			'You must pass namespaces and a typeMap to render this script'
+			'You must pass schemaTemplateItems and a typeMap to render this script'
 		)
 	}
 
@@ -146,23 +157,18 @@ handlebars.registerHelper('fieldDefinitionValueType', function(
 	let typeLiteral
 	switch (fieldDefinition.type) {
 		case FieldType.Schema: {
-			// if this is a schema field, find the other interface to point to
-			for (const namespace of namespaces) {
-				if (namespace.schemas[fieldDefinition.options.schemaId || '']) {
-					// pull out schema
-					const schema =
-						namespace.schemas[fieldDefinition.options.schemaId || '']
+			const matchedTemplateItem = schemaTemplateItems.find(
+				item => item.id === fieldDefinition.options.schemaId
+			)
 
-					// path to schema including namespaces
-					typeLiteral = `SpruceSchemas.${namespace.namespace}.${schema.typeName}.${schema.interfaceName}`
-					break
-				}
-			}
-			if (!typeLiteral) {
+			if (matchedTemplateItem) {
+				typeLiteral = `SpruceSchemas.${matchedTemplateItem.namespace}.${matchedTemplateItem.typeName}.${matchedTemplateItem.interfaceName}`
+			} else {
 				throw new Error(
-					`could not find schema with id ${fieldDefinition.options.schemaId}`
+					`fieldDefinitionValueType help colud not find schema ${fieldDefinition.options.schemaId}`
 				)
 			}
+
 			break
 		}
 		default:

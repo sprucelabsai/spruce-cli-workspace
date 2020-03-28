@@ -1,11 +1,12 @@
 import jwt from 'jsonwebtoken'
 import StoreBase from './Base'
-import Schema from '@sprucelabs/schema'
+import Schema, { FieldType } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../.spruce/schemas'
-import { Mercury } from '@sprucelabs/mercury'
+import { Mercury, IMercuryGQLBody } from '@sprucelabs/mercury'
 import { SpruceEvents } from '../types/events-generated'
 import CliError from '../errors/CliError'
 import { CliErrorCode } from '../errors/types'
+import gql from 'graphql-tag'
 
 export default class StoreUser extends StoreBase {
 	public name = 'user'
@@ -16,6 +17,22 @@ export default class StoreUser extends StoreBase {
 	public constructor(mercury: Mercury) {
 		super()
 		this.mercury = mercury
+	}
+
+	/** build a new user with an added token */
+	public static userWithToken(
+		values?: Partial<SpruceSchemas.core.User.IUser & { jwt: string }>
+	) {
+		return new Schema(
+			{
+				...SpruceSchemas.core.User.definition,
+				fields: {
+					...SpruceSchemas.core.User.definition.fields,
+					jwt: { type: FieldType.Text }
+				}
+			},
+			values
+		)
 	}
 
 	/** build a new user */
@@ -49,10 +66,8 @@ export default class StoreUser extends StoreBase {
 		}
 	}
 
-	public async login(
-		phone: string,
-		pin: string
-	): Promise<SpruceSchemas.core.User.IInstance> {
+	/** login and get a user instance back */
+	public async userWithTokenFromPhone(phone: string, pin: string) {
 		//
 		const loginResult = await this.mercury.emit<
 			SpruceEvents.core.Login.IPayload,
@@ -64,6 +79,8 @@ export default class StoreUser extends StoreBase {
 				code: pin
 			}
 		})
+
+		debugger
 
 		const token = loginResult.responses[0]?.payload.jwt
 
@@ -79,7 +96,7 @@ export default class StoreUser extends StoreBase {
 			})
 		}
 
-		const user = await this.userFromToken(token)
+		const user = await this.userWithTokenFromToken(token)
 
 		if (!user) {
 			throw new CliError({
@@ -91,9 +108,8 @@ export default class StoreUser extends StoreBase {
 		return user
 	}
 
-	public async userFromToken(
-		token: string
-	): Promise<SpruceSchemas.core.User.IUserDefinition | undefined> {
+	/** load a user from their jwt */
+	public async userWithTokenFromToken(token: string) {
 		const decoded = jwt.decode(token) as Record<string, any> | null
 		if (!decoded) {
 			throw new CliError({
@@ -101,11 +117,81 @@ export default class StoreUser extends StoreBase {
 				friendlyMessage: 'Invalid token!'
 			})
 		}
+		debugger
+		const userId: string = decoded.userId
+		return this.userWithTokenFromId(userId)
 	}
 
-	public async userFromId(): Promise<
-		SpruceSchemas.core.User.IInstance | undefined
-	> {}
+	/** load a user from id */
+	public async userWithTokenFromId(id: string) {
+		debugger
+		const query =
+			gql`
+				query User($userId: ID!) {
+					User(id: $userId) {
+						id
+						name
+						firstName
+						lastName
+						UserLocations {
+							edges {
+								node {
+									role
+									LocationId
+									Job {
+										name
+										isDefault
+										role
+									}
+								}
+							}
+						}
+						UserGroups {
+							edges {
+								node {
+									Group {
+										name
+									}
+									Job {
+										name
+										isDefault
+										role
+									}
+								}
+							}
+						}
+						UserOrganizations {
+							edges {
+								node {
+									role
+									OrganizationId
+								}
+							}
+						}
+					}
+				}
+			`.loc?.source.body || ''
+
+		const result = await this.mercury.emit<
+			SpruceEvents.core.Gql.IPayload,
+			IMercuryGQLBody<{
+				User: SpruceSchemas.core.User.IUser
+			}>
+		>({
+			eventName: SpruceEvents.core.Gql.name,
+			payload: {
+				query,
+				variables: {
+					userId: id
+				}
+			}
+		})
+
+		debugger
+		console.log(result)
+		const user = StoreUser.userWithToken()
+		return user
+	}
 
 	public async load() {}
 	public async save() {}

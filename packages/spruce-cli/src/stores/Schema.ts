@@ -1,11 +1,11 @@
 import StoreBase from './Base'
 import {
-	ISchemaDefinitionMap,
 	ISchemaDefinition,
-	Mapper as SchemaMapper,
+	Template as SchemaTemplate,
 	FieldClassMap,
 	FieldType,
-	IFieldTemplateDetails
+	IFieldTemplateDetails,
+	ISchemaTemplateItem
 } from '@sprucelabs/schema'
 import {
 	userDefinition,
@@ -17,11 +17,11 @@ import {
 } from '../temporary/schemas'
 import { Mercury } from '@sprucelabs/mercury'
 
-/** namespace is core or a skill slug */
-export interface ISchemaNamespace {
+/** the schema template with namespace dropped in */
+export interface ISchemaTemplateNamespaceItem extends ISchemaTemplateItem {
 	namespace: string
-	schemas: ISchemaDefinitionMap
 }
+
 /** the mapping of type keys (string, phoneNumber) to definitions */
 export interface IFieldTypeMap {
 	[fieldType: string]: IFieldTemplateDetails
@@ -39,7 +39,9 @@ export default class StoreSchema extends StoreBase {
 	}
 
 	/** get the schema map */
-	public async schemasWithNamespace(): Promise<ISchemaNamespace[]> {
+	public async schemaTemplateItemsWithNamespace(): Promise<
+		ISchemaTemplateNamespaceItem[]
+	> {
 		/** get all schemas from api (TODO load from API) */
 		const schemas: ISchemaDefinition[] = [
 			userDefinition,
@@ -50,14 +52,13 @@ export default class StoreSchema extends StoreBase {
 			aclDefinition
 		]
 
-		const map = SchemaMapper.generateSchemaMap(schemas)
+		const templateItems = SchemaTemplate.generateTemplateItems(schemas)
+		const coreTemplateItems = templateItems.map(item => ({
+			...item,
+			namespace: 'core'
+		}))
 
-		return [
-			{
-				namespace: 'core',
-				schemas: map
-			}
-		]
+		return coreTemplateItems
 	}
 
 	public async fieldTypeMap(): Promise<IFieldTypeMap> {

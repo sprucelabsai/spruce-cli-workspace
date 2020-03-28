@@ -4,6 +4,7 @@ import config from '../../utilities/Config'
 import CommandBase from '../Base'
 import usersState from '../../stores/User'
 import { FieldType, IFieldSelectDefinitionChoice } from '@sprucelabs/schema'
+import CliError from '../../errors/CliError'
 
 export default class User extends CommandBase {
 	/** Sets up commands */
@@ -59,7 +60,7 @@ export default class User extends CommandBase {
 			debugger
 
 			try {
-				const token = await this.store.user.login(phone, pin)
+				const token = await this.store.user.userWithTokenFromPhone(phone, pin)
 
 				this.stopLoading()
 
@@ -85,8 +86,11 @@ export default class User extends CommandBase {
 					pinLabel = 'Pin again, please'
 				}
 			} catch (err) {
+				debugger
 				this.stopLoading()
-				if (err.message === 'PIN_NOT_FOUND') {
+				if (err instanceof CliError) {
+					throw err
+				} else if (err.message === 'PIN_NOT_FOUND') {
 					this.error('That was the wrong pin!')
 					pinLabel = "Let's give it another try, pin please"
 				} else {

@@ -13,31 +13,30 @@ import * as SpruceSchema from '@sprucelabs/schema'
 {{/inline}}
 
 
-{{#each namespaces}}
-	{{#each schemas}}
-  	
-	  	export namespace SpruceSchemas.{{../namespace}}.{{typeName}} {
-			export const id = '{{{escape @key}}}'
+{{#each schemaTemplateItems}}
 
-			/* {{definition.description}} */
-			export interface {{interfaceName}} {
-				{{> schemaValues definition }}
-			}
+	export namespace SpruceSchemas.{{namespace}}.{{typeName}} {
+		export const id = '{{{escape id}}}'
 
-			/* the interface for the schema definition for a {{typeName}} */
-			export interface IDefinition {
-				{{> schemaDefinition schema=definition renderAs="type" }}
-			}
-
-			/* the schema definition for a {{typeName}} */
-			export const definition: SpruceSchemas.{{../namespace}}.{{typeName}}.IDefinition = {
-				{{> schemaDefinition schema=definition renderAs="value" }}
-			}
-
-			export type Instance = Schema<SpruceSchemas.{{../namespace}}.{{typeName}}.IDefinition>
+		/* {{definition.description}} */
+		export interface {{interfaceName}} {
+			{{> schemaValues definition }}
 		}
-      
-	{{/each}}
+
+		/* the interface for the schema definition for a {{typeName}} */
+		export interface IDefinition {
+			{{> schemaDefinition schema=definition renderAs="type" }}
+		}
+
+		/* the schema definition for a {{typeName}} */
+		export const definition: SpruceSchemas.{{namespace}}.{{typeName}}.IDefinition = {
+			{{> schemaDefinition schema=definition renderAs="value" }}
+		}
+
+		export type Instance = Schema<SpruceSchemas.{{namespace}}.{{typeName}}.IDefinition>
+	}
+	
 {{/each}}
+
 
 
