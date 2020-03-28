@@ -1,0 +1,16 @@
+id: '{{{escape schema.id}}}',
+name: '{{{escape schema.name}}}',
+description: '{{{escape schema.description}}}',
+
+{{#if schema.dynamicKeySignature}}dynamicKeySignature: { 
+    {{> fieldDefinition field=schema.dynamicKeySignature renderAs=renderAs}} 
+}{{/if}}
+{{#if schema.fields}}
+    fields: {
+        {{#each schema.fields}}
+            '{{@key}}': {
+                {{> fieldDefinition renderAs=../renderAs field=this }}
+            },
+        {{/each}}
+    }
+{{/if}}

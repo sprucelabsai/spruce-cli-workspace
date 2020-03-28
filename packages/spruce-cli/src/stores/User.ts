@@ -1,8 +1,11 @@
+import jwt from 'jsonwebtoken'
 import StoreBase from './Base'
 import Schema from '@sprucelabs/schema'
 import { SpruceSchemas } from '../.spruce/schemas'
 import { Mercury } from '@sprucelabs/mercury'
 import { SpruceEvents } from '../types/events-generated'
+import CliError from '../errors/CliError'
+import { CliErrorCode } from '../errors/types'
 
 export default class StoreUser extends StoreBase {
 	public name = 'user'
@@ -22,22 +25,35 @@ export default class StoreUser extends StoreBase {
 
 	/** give me a phone and i'll send you a pin */
 	public async requestPin(phone: string) {
-		await this.mercury.emit<
-			SpruceEvents.core.RequestLogin.IPayload,
-			SpruceEvents.core.RequestLogin.IResponseBody
-		>({
-			eventName: SpruceEvents.core.RequestLogin.name,
-			payload: {
-				phoneNumber: phone,
-				method: 'pin'
-			}
-		})
+		try {
+			await this.mercury.emit<
+				SpruceEvents.core.RequestLogin.IPayload,
+				SpruceEvents.core.RequestLogin.IResponseBody
+			>({
+				eventName: SpruceEvents.core.RequestLogin.name,
+				payload: {
+					phoneNumber: phone,
+					method: 'pin'
+				}
+			})
+		} catch (err) {
+			throw new CliError({
+				code: CliErrorCode.GenericMercury,
+				eventName: SpruceEvents.core.RequestLogin.name,
+				payload: {
+					phoneNumber: phone,
+					method: 'pin'
+				},
+				lastError: err
+			})
+		}
 	}
 
 	public async login(
 		phone: string,
 		pin: string
-	): SpruceSchemas.core.User.IUser {
+	): Promise<SpruceSchemas.core.User.IInstance> {
+		//
 		const loginResult = await this.mercury.emit<
 			SpruceEvents.core.Login.IPayload,
 			SpruceEvents.core.Login.IResponseBody
@@ -49,22 +65,47 @@ export default class StoreUser extends StoreBase {
 			}
 		})
 
-		console.log(loginResult)
-		debugger
-		// const token = loginResult.responses[0]?.payload.jwt
-		// if (!token) {
-		// 	throw new Error('User login failed. Check pin and try again.')
-		// }
-		// return this.fetchUser(token)
+		const token = loginResult.responses[0]?.payload.jwt
+
+		if (!token) {
+			throw new CliError({
+				code: CliErrorCode.GenericMercury,
+				eventName: SpruceEvents.core.Login.name,
+				payload: {
+					phoneNumber: phone,
+					code: pin
+				},
+				friendlyMessage: "Login event didn't return a jwt?"
+			})
+		}
+
+		const user = await this.userFromToken(token)
+
+		if (!user) {
+			throw new CliError({
+				code: CliErrorCode.UserNotFound,
+				token
+			})
+		}
+
+		return user
 	}
 
-	public async fetchUser(token: string) {
-		const user = StoreUser.user()
-		const profileImages = user.get('profileImages')
-		const defaultProfileImages = user.get('defaultProfileImages')
-		
-		debugger
+	public async userFromToken(
+		token: string
+	): Promise<SpruceSchemas.core.User.IUserDefinition | undefined> {
+		const decoded = jwt.decode(token) as Record<string, any> | null
+		if (!decoded) {
+			throw new CliError({
+				code: CliErrorCode.Generic,
+				friendlyMessage: 'Invalid token!'
+			})
+		}
 	}
+
+	public async userFromId(): Promise<
+		SpruceSchemas.core.User.IInstance | undefined
+	> {}
 
 	public async load() {}
 	public async save() {}

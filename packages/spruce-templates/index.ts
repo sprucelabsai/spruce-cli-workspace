@@ -6,7 +6,7 @@ import {
 	IFieldDefinition,
 	FieldType,
 	FieldClassMap,
-	ISchemaDefinition
+	ISchemaDefinitionMapValue
 } from '@sprucelabs/schema'
 
 /* start case (cap first letter, lower rest) */
@@ -29,6 +29,10 @@ handlebars.registerHelper('isEqual', function(arg1, arg2, options) {
 handlebars.registerHelper('fieldTypeEnum', function(
 	fieldDefinition: IFieldDefinition
 ) {
+	if (!fieldDefinition) {
+		return '"**fieldTypeEnum error: MISSING FIELD TYPE ENUM**"'
+	}
+
 	const keys = Object.keys(FieldType)
 	const values = Object.values(FieldType)
 	const match = values.indexOf(fieldDefinition.type)
@@ -53,8 +57,17 @@ handlebars.registerHelper('fieldValue', function(
 /** renders field options */
 handlebars.registerHelper('fieldDefinitionOptions', function(
 	fieldDefinition: IFieldDefinition,
+	renderAs,
 	options
 ) {
+	if (!fieldDefinition) {
+		return '"**fieldDefinitionOptions error: MISSING FIELD DEFINITION"'
+	}
+
+	if (!options || (renderAs !== 'type' && renderAs !== 'value')) {
+		throw new Error("fieldDefinitionOptions helper's second arg as type|value")
+	}
+
 	const {
 		data: { root }
 	} = options
@@ -69,18 +82,24 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 		for (const namespace of namespaces) {
 			if (namespace.schemas[fieldDefinition.options.schemaId || '']) {
 				// pull out schema
-				const schema = namespace.schemas[
+				const map = namespace.schemas[
 					fieldDefinition.options.schemaId || ''
-				] as ISchemaDefinition
+				] as ISchemaDefinitionMapValue
 
 				// @ts-ignore TODO find out how to type this properly
 				delete updatedOptions.schemaId
 
 				// @ts-ignore TODO find out how to type this properly
-				updatedOptions.schema = `SpruceSchemas.${namespace.namespace}.${schema.typeName}.definition`
+				updatedOptions.schema = `SpruceSchemas.${namespace.namespace}.${
+					map.typeName
+				}.${renderAs === 'type' ? 'IDefinition' : 'definition'}`
 				break
 			}
 		}
+	}
+
+	if (Object.keys(updatedOptions ?? {}).length === 0) {
+		return 'undefined'
 	}
 
 	let template = `{`
@@ -88,7 +107,7 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 		// @ts-ignore TODO how to type this
 		const value = updatedOptions[key]
 		template += `${key}: `
-		if (key === 'schemaId') {
+		if (key === 'schemaId' || key === 'schema') {
 			template += `${value},`
 		} else if (typeof value !== 'string') {
 			template += `${JSON.stringify(value)},`
@@ -170,5 +189,18 @@ const schemaDefinitions: string = fs
 export const templates = {
 	schemaDefinitions: handlebars.compile(schemaDefinitions)
 }
+
+// partials
+const schemaPartial: string = fs
+	.readFileSync(path.join(templatePath, 'schema/schemaDefinition.hbs'))
+	.toString()
+
+handlebars.registerPartial('schemaDefinition', schemaPartial)
+
+const fieldPartial: string = fs
+	.readFileSync(path.join(templatePath, 'schema/fieldDefinition.hbs'))
+	.toString()
+
+handlebars.registerPartial('fieldDefinition', fieldPartial)
 
 export default handlebars

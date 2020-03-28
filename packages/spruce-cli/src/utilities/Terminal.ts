@@ -10,6 +10,7 @@ import {
 } from '@sprucelabs/schema'
 import inquirer from 'inquirer'
 import ora from 'ora'
+import { SpruceError } from '../errors/types'
 
 let fieldCount = 0
 function generateInquirerFieldName() {
@@ -314,12 +315,16 @@ export default class Terminal {
 		return response[name]
 	}
 
-	public handleError(e: Error) {
+	/** generic way to handle error */
+	public handleError(err: Error) {
 		this.stopLoading()
 
+		const message =
+			err instanceof SpruceError ? err.friendlyMessage() : err.message
+
 		this.section({
-			headline: `Fatal error: ${e.message}`,
-			lines: (e.stack || '').split('/n'),
+			headline: message,
+			lines: (err.stack || '').split('/n'),
 			headlineEffects: [ITerminalEffect.Bold, ITerminalEffect.Red],
 			barEffects: [ITerminalEffect.Red],
 			bodyEffects: [ITerminalEffect.Red]

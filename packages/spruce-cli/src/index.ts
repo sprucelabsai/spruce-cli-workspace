@@ -4,7 +4,7 @@ import { terminal } from './utilities/Terminal'
 import { Command } from 'commander'
 import globby from 'globby'
 import pkg from '../package.json'
-import CliError from './lib/CliError'
+import CliError from './errors/CliError'
 import { services } from './services'
 
 import { Mercury } from '@sprucelabs/mercury'
@@ -13,6 +13,7 @@ import StoreRemote from './stores/Remote'
 import StoreSkill from './stores/Skill'
 import StoreUser from './stores/User'
 import StoreSchema from './stores/Schema'
+import { CliErrorCode } from './errors/types'
 
 /**
  * For handling debugger not attaching right away
@@ -75,7 +76,11 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 			// track all commands
 			commands.push(command)
 		} catch (err) {
-			throw new CliError(`I could not load the command at ${file}`, err)
+			throw new CliError({
+				code: CliErrorCode.CouldNotLoadCommand,
+				lastError: err,
+				file
+			})
 		}
 	})
 
@@ -83,10 +88,8 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	program.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
 
 	// error on unknown commands
-	program.action(() => {
-		terminal.fatal(`Invalid command: ${program.args.join(' ')}`)
-		terminal.fatal('See --help for a list of available commands.')
-		process.exit(1)
+	program.action((command, args) => {
+		throw new CliError({ code: CliErrorCode.InvalidCommand, args })
 	})
 
 	const commandResult = await program.parseAsync(argv)
