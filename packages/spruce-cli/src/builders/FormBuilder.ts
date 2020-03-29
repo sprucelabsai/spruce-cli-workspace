@@ -5,10 +5,10 @@ import Schema, {
 	SchemaDefinitionFieldNames,
 	IFieldSelectDefinitionChoice,
 	IFieldDefinition,
-	SchemaErrorCode
+	SchemaErrorCode,
+	SchemaError
 } from '@sprucelabs/schema'
 import ITerminal, { ITerminalEffect } from '../utilities/Terminal'
-import CliError from '../errors/CliError'
 
 export enum FormBuilderActionType {
 	Done = 'done',
@@ -44,21 +44,39 @@ export interface IPresentationOptions<T extends ISchemaDefinition> {
 	fields?: SchemaDefinitionFieldNames<T>
 }
 
+export interface IFormBuilderOptions<T extends ISchemaDefinition> {
+	onWillAskQuestion?: <K extends SchemaDefinitionFieldNames<T>>(
+		name: K,
+		fieldDefinition: IFieldDefinition,
+		values: Partial<SchemaDefinitionValues<T>>
+	) => IFieldDefinition
+}
+
+interface IHandlers<T extends ISchemaDefinition> {
+	onWillAskQuestion?: IFormBuilderOptions<T>['onWillAskQuestion']
+}
+
 export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 	T
 > {
 	public term: ITerminal
+	public handlers: IHandlers<T> = {}
 
 	public constructor(
 		term: ITerminal,
 		definition: T,
-		initialValues: Partial<SchemaDefinitionValues<T>> = {}
+		initialValues: Partial<SchemaDefinitionValues<T>> = {},
+		options: IFormBuilderOptions<T> = {}
 	) {
 		// setup schema
 		super(definition, initialValues)
 
 		// save term for writing, saving
 		this.term = term
+
+		// handlers
+		const { onWillAskQuestion } = options
+		this.handlers.onWillAskQuestion = onWillAskQuestion
 	}
 
 	/** pass me a schema and i'll give you back an object that conforms to it based on user input */
@@ -102,13 +120,14 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 			} else {
 				// asking one question at a time
 				const namedFields = this.getNamedFields()
-				await Promise.all(
-					namedFields.map(async namedField => {
-						const { name } = namedField
-						const answer = await this.askQuestion(name)
-						this.set(name, answer)
-					})
-				)
+
+				for (const namedField of namedFields) {
+					const { name } = namedField
+
+					const answer = await this.askQuestion(name)
+					this.set(name, answer)
+				}
+
 				done = true
 			}
 
@@ -118,18 +137,30 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 					valid = true
 				} catch (err) {
 					this.renderError(err)
+					await this.term.wait()
 				}
 			}
-		} while (!done && !valid)
+		} while (!done || !valid)
 
 		return this.getValues()
 	}
 
 	/** ask a question based on a field */
-	public askQuestion(fieldName: SchemaDefinitionFieldNames<T>) {
+	public askQuestion<F extends SchemaDefinitionFieldNames<T>>(fieldName: F) {
 		const field = this.fields[fieldName]
-		// TODO: why is this requiring me to cast?
-		const definition = field.definition as IFieldDefinition
+
+		let definition = { ...field.definition }
+		definition.defaultValue = this.values[fieldName]
+
+		// do we have a lister?
+		if (this.handlers.onWillAskQuestion) {
+			definition = this.handlers.onWillAskQuestion(
+				fieldName,
+				definition,
+				this.values
+			)
+		}
+
 		return this.term.prompt(definition)
 	}
 
@@ -141,20 +172,19 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 			ITerminalEffect.Bold
 		])
 
+		this.term.writeLn('')
+
 		// special handling for spruce errors
-		if (error instanceof CliError) {
+		if (error instanceof SchemaError) {
 			const options = error.options
 
 			switch (options.code) {
 				// invalid fields
 				case SchemaErrorCode.InvalidField:
-					// ouput all errors under all fields
+					// output all errors under all fields
 					options.errors.forEach(error => {
 						const { fieldName, errors } = error
-						const field = this.fields[
-							fieldName as SchemaDefinitionFieldNames<T>
-						]
-						this.term.error(`${field.getLabel()} errors: ${errors.join(', ')}`)
+						this.term.error(`field: ${fieldName} errors: ${errors.join(', ')}`)
 					})
 					break
 				default:
@@ -163,6 +193,8 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 		} else {
 			this.term.error(`Unexpected error ${error.message}`)
 		}
+
+		this.term.writeLn('')
 	}
 
 	/** render every field and a select to chose what to edit (or done/cancel) */

@@ -4,7 +4,7 @@ import { FieldType, IFieldSelectDefinitionChoice } from '@sprucelabs/schema'
 import CliError from '../../errors/CliError'
 import { CliErrorCode } from '../../errors/types'
 import SpruceError from '@sprucelabs/error'
-import { UserWithToken } from '../../schemas/userWithToken.definition'
+import { UserWithToken } from '../../definitions/userWithToken.definition'
 import { StoreAuth } from '../../stores'
 
 export default class UserCommand extends BaseCommand {

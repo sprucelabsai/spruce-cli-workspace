@@ -6,7 +6,8 @@ import {
 	IFieldDefinition,
 	FieldType,
 	FieldClassMap,
-	ISchemaTemplateItem
+	ISchemaTemplateItem,
+	IFieldTemplateDetails
 } from '@sprucelabs/schema'
 
 /* start case (cap first letter, lower rest) */
@@ -192,8 +193,30 @@ const schemaDefinitions: string = fs
 	.readFileSync(path.join(templatePath, 'schema/definitions.hbs'))
 	.toString()
 
+const createDefinition: string = fs
+	.readFileSync(path.join(templatePath, 'schema/definition.hbs'))
+	.toString()
+
 export const templates = {
-	schemaDefinitions: handlebars.compile(schemaDefinitions)
+	/** all definitions */
+	schemaDefinitions(options: {
+		schemaTemplateItems: ISchemaTemplateItem[]
+		typeMap: { [fieldType: string]: IFieldTemplateDetails }
+	}) {
+		const template = handlebars.compile(schemaDefinitions)
+		return template(options)
+	},
+
+	/** when building a definition ina  skill */
+	createDefinition(options: {
+		camelName: string
+		description: string
+		pascalName: string
+		readableName: string
+	}) {
+		const template = handlebars.compile(createDefinition)
+		return template(options)
+	}
 }
 
 // partials

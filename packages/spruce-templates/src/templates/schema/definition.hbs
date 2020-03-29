@@ -1,0 +1,30 @@
+import Schema, {
+	buildSchemaDefinition,
+	FieldType,
+	SchemaDefinitionValues
+} from '@sprucelabs/schema'
+
+const {{camelName}}Definition = buildSchemaDefinition({
+	id: '{{camelName}}',
+	name: '{{{escape readableName}}}',
+    description: '{{{escape description}}}',
+	fields: {
+		fieldName1: {
+			type: FieldType.Boolean,
+			label: 'First Field',
+			isRequired: true
+		},
+		fieldName2: {
+			type: FieldType.Number,
+			label: 'Second Field',
+			isRequired: true,
+			hint:
+				'A hint'
+		}
+	}
+})
+
+export default {{camelName}}Definition
+
+export type {{pascalName}} = SchemaDefinitionValues<typeof {{camelName}}Definition>
+export type {{pascalName}}Instance = Schema<typeof {{camelName}}Definition>

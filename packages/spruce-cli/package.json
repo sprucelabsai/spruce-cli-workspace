@@ -42,6 +42,7 @@
     "@sprucelabs/mercury": "9.1.1-pre-89e92490.0",
     "@sprucelabs/schema": "^1.0.0-dev.1",
     "@sprucelabs/spruce-templates": "10.0.0",
+    "cfonts": "^2.8.1",
     "commander": "^4.1.1",
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",

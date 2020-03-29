@@ -9,8 +9,10 @@ import {
 	FieldClassMap
 } from '@sprucelabs/schema'
 import inquirer from 'inquirer'
+import fonts from 'cfonts'
 import ora from 'ora'
 import SpruceError from '@sprucelabs/error'
+import { omit } from 'lodash'
 
 let fieldCount = 0
 function generateInquirerFieldName() {
@@ -95,7 +97,7 @@ export default class Terminal {
 		})
 	}
 
-	/** output an ojbect, one key per line */
+	/** output an object, one key per line */
 	public object(
 		object: Record<string, any>,
 		effects: ITerminalEffect[] = [ITerminalEffect.Green]
@@ -132,7 +134,7 @@ export default class Terminal {
 			this.bar(barEffects)
 			this.writeLn('')
 
-			this.headline(`🌲🤖 ${headline} 🌲🤖`, headlineEffects)
+			this.headline(`${headline} 🌲🤖`, headlineEffects)
 			this.writeLn('')
 		}
 
@@ -159,12 +161,34 @@ export default class Terminal {
 		this.writeLn(bar, effects)
 	}
 
-	/** a headline */
 	public headline(
 		message: string,
 		effects: ITerminalEffect[] = [ITerminalEffect.Blue, ITerminalEffect.Bold]
 	) {
 		this.writeLn(message, effects)
+	}
+
+	/** a headline */
+	public hero(
+		message: string,
+		effects: ITerminalEffect[] = [ITerminalEffect.Blue, ITerminalEffect.Bold]
+	) {
+		// TODO map effects to cfonts
+		fonts.say(message, {
+			// font: 'tiny',
+			align: 'center',
+			colors: omit(effects, [
+				ITerminalEffect.Reset,
+				ITerminalEffect.Bold,
+				ITerminalEffect.Dim,
+				ITerminalEffect.Italic,
+				ITerminalEffect.Underline,
+				ITerminalEffect.Inverse,
+				ITerminalEffect.Hidden,
+				ITerminalEffect.Strikethrough,
+				ITerminalEffect.Visible
+			])
+		})
 	}
 
 	/** some helpful info or suggestion */
@@ -205,6 +229,7 @@ export default class Terminal {
 		this.writeLn(`💥 ${message}`, [ITerminalEffect.Red, ITerminalEffect.Bold])
 	}
 
+	/** show a simple loader */
 	public async startLoading(message?: string) {
 		this.stopLoading()
 		this.loader = ora({
@@ -212,6 +237,7 @@ export default class Terminal {
 		}).start()
 	}
 
+	/** hide loader */
 	public async stopLoading() {
 		this.loader?.stop()
 		this.loader = null
@@ -226,6 +252,14 @@ export default class Terminal {
 		})
 
 		return !!confirmResult.answer
+	}
+
+	public async wait(message?: string) {
+		await this.prompt({
+			type: FieldType.Text,
+			label: message ?? 'Hit enter to continue'
+		})
+		return
 	}
 
 	/** clear the console */
@@ -245,20 +279,10 @@ export default class Terminal {
 		const fieldDefinition: IFieldDefinition = definition
 		const { isRequired, defaultValue, label } = fieldDefinition
 
-		// universal is required validator
-		const validateIsRequired = (input: any): boolean => {
-			if (isRequired) {
-				return input?.length > 0
-			}
-
-			return true
-		}
-
 		const promptOptions: Record<string, any> = {
 			default: defaultValue,
 			name,
-			message: label,
-			validate: validateIsRequired
+			message: `${label}:`
 		}
 
 		// @ts-ignore TODO Why does this mapping not work?

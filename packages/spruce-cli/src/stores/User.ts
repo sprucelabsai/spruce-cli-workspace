@@ -9,8 +9,8 @@ import gql from 'graphql-tag'
 import Schema from '@sprucelabs/schema'
 import userWithTokenDefinition, {
 	UserWithToken
-} from '../schemas/userWithToken.definition'
-import userDefinition, { User } from '../schemas/user.definition'
+} from '../definitions/userWithToken.definition'
+import userDefinition, { User } from '../definitions/user.definition'
 
 /** settings i need to save */
 interface IUserStoreSettings extends IBaseStoreSettings {
