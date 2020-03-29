@@ -1,13 +1,13 @@
-import StoreRemote from './Remote'
-import StoreSkill from './Skill'
-import StoreUser from './User'
-import StoreSchema from './Schema'
+import RemoteStore from './Remote'
+import SkillStore from './Skill'
+import UserStore from './User'
+import SchemaStore from './Schema'
 
 export interface IStores {
-	remote: StoreRemote
-	skill: StoreSkill
-	user: StoreUser
-	schema: StoreSchema
+	remote: RemoteStore
+	skill: SkillStore
+	user: UserStore
+	schema: SchemaStore
 }
 
 export * from './Base'

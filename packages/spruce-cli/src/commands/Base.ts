@@ -15,10 +15,10 @@ _log.setOptions({
 	level: 'info'
 })
 
-export default abstract class CommandBase extends Terminal {
+export default abstract class BaseCommand extends Terminal {
 	/** spruce logger */
 	public log: ISpruceLog = _log
-	public store: IStores
+	public stores: IStores
 	public mercury: Mercury
 	public services: IServices
 
@@ -31,7 +31,7 @@ export default abstract class CommandBase extends Terminal {
 
 		const { stores, mercury, services } = options
 
-		this.store = stores
+		this.stores = stores
 		this.mercury = mercury
 		this.services = services
 	}

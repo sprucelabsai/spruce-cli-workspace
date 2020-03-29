@@ -1,6 +1,5 @@
 import { ISpruceErrorOptions, SpruceErrorOptions } from '@sprucelabs/error'
-
-export * from '@sprucelabs/error'
+import { SchemaErrorOptions } from '@sprucelabs/schema'
 
 /** all the error codes */
 export enum CliErrorCode {
@@ -18,6 +17,7 @@ export type CliErrorOptions =
 	| ICliErrorOptionsGenericMercury
 	| ICliErrorOptionsGeneric
 	| ICliErrorOptionsUserNotFound
+	| SchemaErrorOptions
 	| SpruceErrorOptions
 
 /** invalid command */

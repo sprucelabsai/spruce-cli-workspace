@@ -5,7 +5,7 @@ export enum StoreScope {
 	Local = 'local'
 }
 
-export default abstract class StoreBase {
+export default abstract class BaseStore<Settings extends {} = {}> {
 	/** the current scope */
 	public scope = StoreScope.Global
 
@@ -26,7 +26,7 @@ export default abstract class StoreBase {
 		}
 	}
 	/** write a value to disk (should only be used in save()) */
-	protected writeValue(key: string, value: any) {
+	protected writeValue<F extends keyof Settings>(key: F, value: Settings[F]) {
 		this.writeValues({ [key]: value })
 		return
 	}
@@ -47,8 +47,14 @@ export default abstract class StoreBase {
 		return this
 	}
 
+	/** read a single value */
+	protected readValue<F extends keyof Settings>(key: F) {
+		const settings = this.readValues()
+		return settings[key]
+	}
+
 	/** read values from disk */
-	protected readValues<T extends Record<string, any>>(): Partial<T> {
+	protected readValues<T extends Settings>(): Partial<T> {
 		const { file } =
 			this.scope === StoreScope.Local
 				? this.getLocalConfigPath()

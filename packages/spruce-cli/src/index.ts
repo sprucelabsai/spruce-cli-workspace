@@ -5,15 +5,16 @@ import { Command } from 'commander'
 import globby from 'globby'
 import pkg from '../package.json'
 import CliError from './errors/CliError'
-import { services } from './services'
+import { IServices } from './services'
 
-import { Mercury } from '@sprucelabs/mercury'
+import { Mercury, IMercuryConnectOptions } from '@sprucelabs/mercury'
 import { IStores } from './stores'
-import StoreRemote from './stores/Remote'
-import StoreSkill from './stores/Skill'
-import StoreUser from './stores/User'
-import StoreSchema from './stores/Schema'
+import RemoteStore from './stores/Remote'
+import SkillStore from './stores/Skill'
+import UserStore from './stores/User'
+import SchemaStore from './stores/Schema'
 import { CliErrorCode } from './errors/types'
+import PinService from './services/Pin'
 
 /**
  * For handling debugger not attaching right away
@@ -42,21 +43,33 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		}
 	})
 
-	// setup remote store to load mercury
-	const remoteStore = new StoreRemote()
-
 	// setup mercury
-	const remoteUrl = remoteStore.getRemoteUrl()
-	const mercury = new Mercury({
-		spruceApiUrl: remoteUrl
-	})
+	const mercury = new Mercury()
 
 	// setup stores
 	const stores: IStores = {
-		remote: remoteStore,
-		skill: new StoreSkill(),
-		user: new StoreUser(mercury),
-		schema: new StoreSchema(mercury)
+		remote: new RemoteStore(),
+		skill: new SkillStore(),
+		user: new UserStore(mercury),
+		schema: new SchemaStore(mercury)
+	}
+
+	// is there anyone logged in?
+	const loggedInUser = stores.user.loggedInUser()
+	const remoteUrl = stores.remote.getRemoteUrl()
+
+	const connectOptions: IMercuryConnectOptions = {
+		spruceApiUrl: remoteUrl,
+		credentials: loggedInUser && {
+			token: loggedInUser.token
+		}
+	}
+
+	await mercury.connect(connectOptions)
+
+	// setup services
+	const services: IServices = {
+		pin: new PinService(mercury)
 	}
 
 	// Load commands and actions

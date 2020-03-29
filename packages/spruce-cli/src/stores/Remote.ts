@@ -1,4 +1,4 @@
-import StoreBase from './Base'
+import BaseStore from './Base'
 import Schema, {
 	FieldType,
 	IFieldSelectDefinitionChoice
@@ -26,7 +26,7 @@ export interface IRemoteStoreValues {
 	remote?: RemoteStoreRemoteType
 }
 
-export default class StoreRemote extends StoreBase {
+export default class RemoteStore extends BaseStore {
 	/** map of remote urls and subscriptions url */
 	public static remotes = {
 		[RemoteStoreRemoteType.Production]: {
@@ -92,7 +92,7 @@ export default class StoreRemote extends StoreBase {
 	/** get a remote url */
 	public getRemoteUrl(remote?: RemoteStoreRemoteType): string {
 		const selectedRemote = remote || this.getRemote()
-		const url = StoreRemote.remotes[selectedRemote].url
+		const url = RemoteStore.remotes[selectedRemote].url
 		return url
 	}
 

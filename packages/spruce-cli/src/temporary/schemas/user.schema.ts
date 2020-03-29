@@ -57,8 +57,7 @@ const userDefinition: ISchemaDefinition = {
 		phoneNumber: {
 			label: 'Phone',
 			type: FieldType.Phone,
-			hint: "The person's phone number!",
-			isRequired: true
+			hint: "The person's phone number!"
 		},
 		profileImages: {
 			label: 'Profile photos',

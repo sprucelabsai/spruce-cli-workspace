@@ -1,7 +1,7 @@
 import { Command } from 'commander'
-import CommandBase from './Base'
+import BaseCommand from './Base'
 
-export default class Debug extends CommandBase {
+export default class Debug extends BaseCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
 		program

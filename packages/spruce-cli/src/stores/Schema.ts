@@ -1,4 +1,4 @@
-import StoreBase from './Base'
+import BaseStore from './Base'
 import {
 	ISchemaDefinition,
 	Template as SchemaTemplate,
@@ -27,7 +27,7 @@ export interface IFieldTypeMap {
 	[fieldType: string]: IFieldTemplateDetails
 }
 
-export default class StoreSchema extends StoreBase {
+export default class SchemaStore extends BaseStore {
 	public name = 'schema'
 
 	/** mercury locked and loaded */

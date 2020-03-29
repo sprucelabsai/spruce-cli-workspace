@@ -1,18 +1,18 @@
 import { Command } from 'commander'
-import chalk from 'chalk'
-import config from '../../utilities/Config'
-import CommandBase from '../Base'
-import usersState from '../../stores/User'
+import BaseCommand from '../Base'
 import { FieldType, IFieldSelectDefinitionChoice } from '@sprucelabs/schema'
 import CliError from '../../errors/CliError'
+import { CliErrorCode } from '../../errors/types'
+import SpruceError from '@sprucelabs/error'
+import { UserWithToken } from '../../schemas/userWithToken.schema'
 
-export default class User extends CommandBase {
+export default class User extends BaseCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
 		program
-			.command('user')
+			.command('whoami')
 			.description('Get information about your logged in user(s)')
-			.action(this.userInfo.bind(this))
+			.action(this.whoAmI.bind(this))
 
 		program
 			.command('user:login [phoneNumber]')
@@ -30,9 +30,9 @@ export default class User extends CommandBase {
 			.action(this.switchUser.bind(this))
 	}
 
+	/** log a person in */
 	public async login(phoneNumber?: string): Promise<void> {
 		let phone = phoneNumber
-		let valid = false
 		let pinLabel = 'Enter the pin I just sent!'
 
 		if (!phone) {
@@ -44,10 +44,12 @@ export default class User extends CommandBase {
 		}
 
 		this.startLoading('Requesting pin')
-
-		await this.store.user.requestPin(phone)
-
+		await this.services.pin.requestPin(phone)
 		this.stopLoading()
+
+		let user: UserWithToken | undefined
+
+		let valid = false
 
 		do {
 			const pin = await this.prompt({
@@ -57,133 +59,86 @@ export default class User extends CommandBase {
 			})
 
 			this.startLoading('Verifying identity...')
-			debugger
 
 			try {
-				const token = await this.store.user.userWithTokenFromPhone(phone, pin)
+				user = await this.stores.user.userWithTokenFromPhone(phone, pin)
+				valid = true
 
 				this.stopLoading()
-
-				// const token = loginResult?.responses[0]?.payload.jwt
-
-				if (token) {
-					await usersState.addUserByJWT({ jwt: token, remote: config.remote })
-					valid = true
-					this.section({
-						headline: 'Login successful',
-						lines: [
-							'Your token:',
-							'',
-							token,
-							'',
-							'This token can be used when working directly with the api (through Mercury).'
-						]
-					})
-				} else {
-					this.error(
-						"I'm not sure what happened, but the response I got is bad. Maybe a routing issue?"
-					)
-					pinLabel = 'Pin again, please'
-				}
 			} catch (err) {
-				debugger
 				this.stopLoading()
-				if (err instanceof CliError) {
+
+				if (err instanceof SpruceError) {
+					this.error(err.friendlyMessage())
 					throw err
 				} else if (err.message === 'PIN_NOT_FOUND') {
 					this.error('That was the wrong pin!')
 					pinLabel = "Let's give it another try, pin please"
 				} else {
-					this.error(err)
+					this.error(err.message)
 				}
 			}
-
-			// pin should arrive any moment, s
 		} while (!valid)
+
+		if (!user || !user.id) {
+			throw new CliError({
+				code: CliErrorCode.UserNotFound,
+				friendlyMessage:
+					'This should never have happened, but the user is missing.'
+			})
+		}
+
+		this.info(`You are now logged in as ${user.casualName}`)
+
+		// log in the user
+		this.stores.user.setLoggedInUser(user)
 	}
 
 	public logout() {
+		this.stores.user.logout()
 		this.info('Logout successful')
-
-		config.save({
-			userToken: null
-		})
 	}
 
 	public async switchUser() {
-		const numUsers = Object.keys(usersState.users).length
-		if (numUsers === 0) {
-			this.warn('You haven\'t logged in yet! run "spruce user:login"')
-			return
-		} else if (numUsers === 1) {
-			this.warn(
-				'There is only 1 user logged in, log in with different phone number using "spruce user:login"'
-			)
-			return
+		const users = this.stores.user.users()
+
+		if (users.length === 0) {
+			this.warn('You are not logged in as anyone, try `spruce user:login`')
 		}
 
-		const choices: IFieldSelectDefinitionChoice[] = Object.keys(
-			usersState.users
-		).map(userId => {
-			const u = usersState.users[userId]
-			return {
-				label: `${u.name} (${u.remote})`,
-				value: u.id || '**missing id**'
-			}
-		})
+		const choices: IFieldSelectDefinitionChoice[] = users.map((user, idx) => ({
+			value: String(idx),
+			label: user.casualName
+		}))
 
-		const result = await this.prompt({
+		const userIdx = await this.prompt({
 			type: FieldType.Select,
+			label: 'Select previously logged in user',
 			isRequired: true,
-			label: 'Select a current user',
 			options: {
 				choices
 			}
 		})
 
-		usersState.setCurrentUser(result)
+		const selectedUser = users[parseInt(userIdx, 10)]
 
-		const token = usersState.users[result].jwt
-
-		this.section({
-			headline: `Active user set to ${usersState.users[result].name}`,
-			lines: ['Your token:', '', token || '']
-		})
+		this.stores.user.setLoggedInUser(selectedUser)
+		this.whoAmI()
 	}
 
-	/** Create a new skill */
-	public async createSkill(options?: { name?: string }) {
-		let name = options?.name
-
-		if (!name) {
-			name = await this.prompt({
-				type: FieldType.Text,
-				isRequired: true,
-				name: 'skillName',
-				message: 'What name should we use for your new skill?'
+	public async whoAmI() {
+		const user = this.stores.user.loggedInUser()
+		if (user) {
+			this.section({
+				headline: `Logged in as ${user.casualName}`,
+				object: {
+					you: user.casualName,
+					id: user.id,
+					token: user.token
+				}
 			})
+		} else {
+			this.writeLn('Not currently logged in')
 		}
-
-		this.log.debug({ name })
-	}
-
-	public async userInfo() {
-		const currentUser = usersState.currentUser
-		const lines = [
-			chalk.bold('Current User:'),
-			chalk.magenta(
-				` ${currentUser?.name} (${currentUser?.id}) (${currentUser?.remote})`
-			),
-			'',
-			chalk.bold('Available Users:')
-		]
-		Object.keys(usersState.users).forEach(userId => {
-			const user = usersState.users[userId]
-			if (user.id !== currentUser?.id) {
-				lines.push(` ${user.name} (${user.id}) (${user.remote})`)
-			}
-		})
-
-		this.writeLns(lines)
 	}
 }

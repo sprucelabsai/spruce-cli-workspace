@@ -5,9 +5,10 @@ import Schema, {
 	SchemaDefinitionFieldNames,
 	IFieldSelectDefinitionChoice,
 	IFieldDefinition,
-	ISchemaValidationError
+	SchemaErrorCode
 } from '@sprucelabs/schema'
 import ITerminal, { ITerminalEffect } from '../utilities/Terminal'
+import CliError from '../errors/CliError'
 
 export enum FormBuilderActionType {
 	Done = 'done',
@@ -46,7 +47,7 @@ export interface IPresentationOptions<T extends ISchemaDefinition> {
 export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 	T
 > {
-	term: ITerminal
+	public term: ITerminal
 
 	public constructor(
 		term: ITerminal,
@@ -112,13 +113,11 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 			}
 
 			if (done) {
-				const errors = this.validate()
-
-				if (errors.length > 0) {
-					this.renderErrors(errors)
-					valid = false
-				} else {
+				try {
+					this.validate()
 					valid = true
+				} catch (err) {
+					this.renderError(err)
 				}
 			}
 		} while (!done && !valid)
@@ -135,18 +134,35 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 	}
 
 	/** pass it schema errors */
-	public renderErrors(errors: ISchemaValidationError<T>[]) {
+	public renderError(error: Error) {
 		this.term.bar()
 		this.term.headline('Please fix the following...', [
 			ITerminalEffect.Red,
 			ITerminalEffect.Bold
 		])
 
-		errors.forEach(error => {
-			const { fieldName, errors } = error
-			const field = this.fields[fieldName]
-			this.term.error(`${field.getLabel()} errors: ${errors.join(', ')}`)
-		})
+		// special handling for spruce errors
+		if (error instanceof CliError) {
+			const options = error.options
+
+			switch (options.code) {
+				// invalid fields
+				case SchemaErrorCode.InvalidField:
+					// ouput all errors under all fields
+					options.errors.forEach(error => {
+						const { fieldName, errors } = error
+						const field = this.fields[
+							fieldName as SchemaDefinitionFieldNames<T>
+						]
+						this.term.error(`${field.getLabel()} errors: ${errors.join(', ')}`)
+					})
+					break
+				default:
+					this.term.error(error.friendlyMessage())
+			}
+		} else {
+			this.term.error(`Unexpected error ${error.message}`)
+		}
 	}
 
 	/** render every field and a select to chose what to edit (or done/cancel) */

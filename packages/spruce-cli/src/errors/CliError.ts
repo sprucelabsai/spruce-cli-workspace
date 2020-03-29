@@ -1,4 +1,4 @@
-import { SpruceError } from '@sprucelabs/error'
+import SpruceError from '@sprucelabs/error'
 import { CliErrorCode, CliErrorOptions } from './types'
 
 export default class CliError extends SpruceError<CliErrorOptions> {

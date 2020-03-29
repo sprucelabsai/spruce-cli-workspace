@@ -1,8 +1,8 @@
 import { Command } from 'commander'
-import CommandBase from '../Base'
+import BaseCommand from '../Base'
 import skillState from '../../stores/Skill'
 
-export default class CreateSkill extends CommandBase {
+export default class CreateSkill extends BaseCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
 		program

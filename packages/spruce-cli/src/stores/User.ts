@@ -1,14 +1,23 @@
 import jwt from 'jsonwebtoken'
-import StoreBase from './Base'
-import Schema, { FieldType } from '@sprucelabs/schema'
+import BaseStore from './Base'
 import { SpruceSchemas } from '../.spruce/schemas'
 import { Mercury, IMercuryGQLBody } from '@sprucelabs/mercury'
 import { SpruceEvents } from '../types/events-generated'
 import CliError from '../errors/CliError'
 import { CliErrorCode } from '../errors/types'
 import gql from 'graphql-tag'
+import Schema from '@sprucelabs/schema'
+import userWithTokenDefinition, {
+	UserWithToken
+} from '../schemas/userWithToken.schema'
+import userDefinition, { User } from '../schemas/user.schema'
 
-export default class StoreUser extends StoreBase {
+/** settings i need to save */
+interface IUserStoreSettings {
+	authedUsers: UserWithToken[]
+}
+
+export default class UserStore extends BaseStore<IUserStoreSettings> {
 	public name = 'user'
 
 	/** mercury locked and loaded */
@@ -20,50 +29,13 @@ export default class StoreUser extends StoreBase {
 	}
 
 	/** build a new user with an added token */
-	public static userWithToken(
-		values?: Partial<SpruceSchemas.core.User.IUser & { jwt: string }>
-	) {
-		return new Schema(
-			{
-				...SpruceSchemas.core.User.definition,
-				fields: {
-					...SpruceSchemas.core.User.definition.fields,
-					jwt: { type: FieldType.Text }
-				}
-			},
-			values
-		)
+	public static userWithToken(values?: Partial<UserWithToken>) {
+		return new Schema(userWithTokenDefinition, values)
 	}
 
-	/** build a new user */
-	public static user(values?: Partial<SpruceSchemas.core.User.IUser>) {
-		return new Schema(SpruceSchemas.core.User.definition, values)
-	}
-
-	/** give me a phone and i'll send you a pin */
-	public async requestPin(phone: string) {
-		try {
-			await this.mercury.emit<
-				SpruceEvents.core.RequestLogin.IPayload,
-				SpruceEvents.core.RequestLogin.IResponseBody
-			>({
-				eventName: SpruceEvents.core.RequestLogin.name,
-				payload: {
-					phoneNumber: phone,
-					method: 'pin'
-				}
-			})
-		} catch (err) {
-			throw new CliError({
-				code: CliErrorCode.GenericMercury,
-				eventName: SpruceEvents.core.RequestLogin.name,
-				payload: {
-					phoneNumber: phone,
-					method: 'pin'
-				},
-				lastError: err
-			})
-		}
+	/** build a basic user */
+	public static user(values?: Partial<User>) {
+		return new Schema(userDefinition, values)
 	}
 
 	/** login and get a user instance back */
@@ -79,8 +51,6 @@ export default class StoreUser extends StoreBase {
 				code: pin
 			}
 		})
-
-		debugger
 
 		const token = loginResult.responses[0]?.payload.jwt
 
@@ -108,8 +78,10 @@ export default class StoreUser extends StoreBase {
 		return user
 	}
 
-	/** load a user from their jwt */
-	public async userWithTokenFromToken(token: string) {
+	/** load a user from their jwt (WARNING, ALTERS THE AUTH OF MERCURY) */
+	public async userWithTokenFromToken(
+		token: string
+	): Promise<UserWithToken | undefined> {
 		const decoded = jwt.decode(token) as Record<string, any> | null
 		if (!decoded) {
 			throw new CliError({
@@ -117,14 +89,37 @@ export default class StoreUser extends StoreBase {
 				friendlyMessage: 'Invalid token!'
 			})
 		}
-		debugger
+
+		// setup mercury to use creds
+		const { connectionOptions } = this.mercury
+		if (!connectionOptions) {
+			throw new CliError({
+				code: CliErrorCode.GenericMercury,
+				eventName: 'na',
+				friendlyMessage:
+					'user store was trying to auth on mercury but had not options (meaning it was never connected)'
+			})
+		}
+		// connect with new creds
+		await this.mercury.connect({
+			...(connectionOptions || {}),
+			credentials: { token }
+		})
+
+		// now load from id
 		const userId: string = decoded.userId
-		return this.userWithTokenFromId(userId)
+		const user = await this.userFromId(userId)
+
+		if (!user) {
+			return undefined
+		}
+
+		const userWithToken = UserStore.userWithToken({ ...user, token })
+		return userWithToken.getValues()
 	}
 
 	/** load a user from id */
-	public async userWithTokenFromId(id: string) {
-		debugger
+	public async userFromId(id: string): Promise<Omit<User, 'id'>> {
 		const query =
 			gql`
 				query User($userId: ID!) {
@@ -133,6 +128,9 @@ export default class StoreUser extends StoreBase {
 						name
 						firstName
 						lastName
+						casualName
+						profileImages
+						defaultProfileImages
 						UserLocations {
 							edges {
 								node {
@@ -187,128 +185,60 @@ export default class StoreUser extends StoreBase {
 			}
 		})
 
-		debugger
-		console.log(result)
-		const user = StoreUser.userWithToken()
-		return user
+		const values = result.responses[0].payload.data.User
+		const user = UserStore.user(values)
+
+		// will throw
+		user.validate()
+
+		return user.getValues()
 	}
 
-	public async load() {}
-	public async save() {}
+	/** this person will be logged in going forward */
+	public setLoggedInUser(user: Omit<UserWithToken, 'isLoggedIn'>) {
+		// pull authed user
+		const authedUsers = this.readValue('authedUsers') || []
+		const newAuthedUsers: UserWithToken[] = []
+
+		// remove this user if already authed
+		authedUsers.forEach(authed => {
+			if (authed.id !== user.id) {
+				newAuthedUsers.push({ ...authed, isLoggedIn: false })
+			}
+		})
+
+		newAuthedUsers.push({
+			...user,
+			isLoggedIn: true
+		})
+
+		this.writeValue('authedUsers', newAuthedUsers)
+	}
+
+	/** get the logged in user */
+	public loggedInUser(): UserWithToken | undefined {
+		const loggedInUsers = this.readValue('authedUsers') || []
+		const loggedInUser = loggedInUsers.find(auth => auth.isLoggedIn)
+		return loggedInUser
+	}
+
+	/** log everyone out */
+	public logout() {
+		// pull authed user
+		const authedUsers = this.readValue('authedUsers') || []
+		const newAuthedUsers: UserWithToken[] = []
+
+		// remove this user if already authed
+		authedUsers.forEach(authed => {
+			newAuthedUsers.push({ ...authed, isLoggedIn: false })
+		})
+
+		this.writeValue('authedUsers', authedUsers)
+	}
+
+	/** users who have ever been on */
+	public users(): UserWithToken[] {
+		const users = this.readValue('authedUsers') || []
+		return users
+	}
 }
-// import config, { RemoteType } from '../utilities/Config'
-// import User from '../models/User'
-// import logger from '@sprucelabs/log'
-// // @ts-ignore
-// const log = logger.log
-
-// export type StateUsers = {
-// 	[environment in RemoteType]: User[]
-// }
-
-// export class UserStore {
-// 	public currentUser?: User
-// 	public users: {
-// 		[userId: string]: User
-// 	} = {}
-// 	private readonly stateKey = 'AuthenticatedUsers'
-// 	private readonly stateKeyCurrentUserId = 'currentUserId'
-
-// 	public constructor() {
-// 		this.loadSavedUsers()
-// 	}
-
-// 	public async addUserByJWT(options: { jwt: string; remote: RemoteType }) {
-// 		// Fetch the user and save them
-// 		const user = new User(options)
-// 		try {
-// 			await user.syncUser()
-// 			if (this.isValidUser(user) && user.id) {
-// 				this.users[user.id] = user
-// 				this.save()
-// 			}
-// 		} catch (e) {
-// 			log.warn(e)
-// 		}
-// 	}
-
-// 	public setCurrentUser(userId: string) {
-// 		const user = this.users[userId]
-// 		if (user) {
-// 			this.currentUser = user
-// 			config.save({
-// 				[this.stateKeyCurrentUserId]: user.id
-// 			})
-// 		}
-// 	}
-
-// 	/** Loads saved users from saved config */
-// 	private loadSavedUsers() {
-// 		const users = config.get(this.stateKey) || {}
-// 		if (typeof users !== 'object' || users === null) {
-// 			// Something's not right
-// 			log.crit('Unable to load saved users. Re-initializing.')
-// 			this.resetState()
-// 		}
-// 		Object.keys(users).forEach((userId: string) => {
-// 			const user = new User(users[userId])
-// 			if (this.isValidUser(user) && user.id) {
-// 				this.users[user.id] = user
-// 			}
-// 		})
-
-// 		this.setCurrentUserFromSaved()
-// 	}
-
-// 	/** Sets the current user based on what's been saved or the first user if there isn't one saved */
-// 	private setCurrentUserFromSaved() {
-// 		const currentUserId = config.get(this.stateKeyCurrentUserId)
-// 		if (currentUserId) {
-// 			const user = this.users[currentUserId]
-// 			if (user) {
-// 				this.currentUser = user
-// 				return
-// 			}
-// 		}
-
-// 		// If a current user hasn't already been set and we've loaded some users, set the first one
-// 		const userIds = Object.keys(this.users)
-// 		if (userIds.length > 0 && userIds[0]) {
-// 			this.setCurrentUser(userIds[0])
-// 		}
-// 	}
-
-// 	private isValidUser(user: User) {
-// 		if (user.id && user.jwt && user.remote) {
-// 			return true
-// 		}
-
-// 		return false
-// 	}
-
-// 	/** Converts users to saveable format */
-// 	private usersToData() {
-// 		const data: Record<string, any> = {}
-// 		const userIds = Object.keys(this.users)
-// 		userIds.forEach(uid => {
-// 			data[uid] = this.users[uid].toData()
-// 		})
-
-// 		return data
-// 	}
-
-// 	private save() {
-// 		config.save({
-// 			[this.stateKey]: this.usersToData()
-// 		})
-// 	}
-
-// 	private resetState() {
-// 		config.save({
-// 			[this.stateKey]: {}
-// 		})
-// 	}
-// }
-
-// const users = new UserStore()
-// export default users

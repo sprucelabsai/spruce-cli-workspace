@@ -10,7 +10,7 @@ import {
 } from '@sprucelabs/schema'
 import inquirer from 'inquirer'
 import ora from 'ora'
-import { SpruceError } from '../errors/types'
+import SpruceError from '@sprucelabs/error'
 
 let fieldCount = 0
 function generateInquirerFieldName() {
@@ -101,9 +101,11 @@ export default class Terminal {
 		effects: ITerminalEffect[] = [ITerminalEffect.Green]
 	) {
 		this.bar()
+		this.writeLn('')
 		Object.keys(object).forEach(key => {
 			this.writeLn(`${key}: ${JSON.stringify(object[key])}`, effects)
 		})
+		this.writeLn('')
 		this.bar()
 	}
 
@@ -125,25 +127,29 @@ export default class Terminal {
 			bodyEffects = [ITerminalEffect.Green]
 		} = options
 
-		this.writeLn('')
-		this.bar(barEffects)
-		this.writeLn('')
-
 		if (headline) {
+			this.writeLn('')
+			this.bar(barEffects)
+			this.writeLn('')
+
 			this.headline(`🌲🤖 ${headline} 🌲🤖`, headlineEffects)
 			this.writeLn('')
 		}
 
 		if (lines) {
+			this.writeLn('')
+			this.bar(barEffects)
+
 			this.writeLns(lines, bodyEffects)
+
+			this.writeLn('')
+			this.bar(barEffects)
 		}
 
 		if (object) {
 			this.object(object, bodyEffects)
 		}
 
-		this.writeLn('')
-		this.bar(barEffects)
 		this.writeLn('')
 	}
 
@@ -191,6 +197,7 @@ export default class Terminal {
 		if (typeof message !== 'string') {
 			debug('Invalid error log')
 			debug(message)
+			this.warn('INVALID ERROR LOG')
 			return
 		}
 
