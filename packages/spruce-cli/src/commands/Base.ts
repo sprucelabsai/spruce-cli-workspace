@@ -16,7 +16,7 @@ _log.setOptions({
 })
 
 /** all commanders get this */
-export interface IBaseCommandOptions {
+export interface ICommandOptions {
 	stores: IStores
 	mercury: Mercury
 	services: IServices
@@ -31,7 +31,7 @@ export default abstract class BaseCommand extends Terminal {
 	public services: IServices
 	public cwd: string
 
-	public constructor(options: IBaseCommandOptions) {
+	public constructor(options: ICommandOptions) {
 		super()
 
 		const { stores, mercury, services, cwd } = options

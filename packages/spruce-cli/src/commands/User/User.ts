@@ -7,7 +7,7 @@ import SpruceError from '@sprucelabs/error'
 import { UserWithToken } from '../../schemas/userWithToken.definition'
 import { StoreAuth } from '../../stores'
 
-export default class User extends BaseCommand {
+export default class UserCommand extends BaseCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
 		program

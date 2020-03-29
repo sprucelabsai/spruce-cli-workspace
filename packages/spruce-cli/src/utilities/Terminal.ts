@@ -172,7 +172,7 @@ export default class Terminal {
 		return this.writeLn(`👨‍🏫 ${message}`)
 	}
 
-	/** when outputing something information */
+	/** when outputting something information */
 	public info(message: string) {
 		if (typeof message !== 'string') {
 			debug('Invalid info log')

@@ -2,14 +2,14 @@ import { Command } from 'commander'
 import inquirer from 'inquirer'
 import fs from 'fs'
 import config from '../../utilities/Config'
-import Skill from './Skill'
+import SkillCommand from './Skill'
 import slug from 'slug'
 import skillState from '../../stores/Skill'
 import userState from '../../stores/User'
 import { SpruceEvents } from '../../types/events-generated'
 import { FieldType } from '@sprucelabs/schema'
 
-export default class CreateSkill extends Skill {
+export default class CreateSkillCommand extends SkillCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
 		program

@@ -19,7 +19,8 @@ import UserStore from './stores/User'
 import SchemaStore from './stores/Schema'
 import { CliErrorCode } from './errors/types'
 import PinService from './services/Pin'
-import BaseCommand, { IBaseCommandOptions } from './commands/Base'
+import BaseCommand, { ICommandOptions } from './commands/Base'
+import OnboardingStore from './stores/Onboarding'
 
 /**
  * For handling debugger not attaching right away
@@ -64,7 +65,8 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		remote: new RemoteStore(storeOptions),
 		skill: new SkillStore(storeOptions),
 		user: new UserStore(storeOptions),
-		schema: new SchemaStore(storeOptions)
+		schema: new SchemaStore(storeOptions),
+		onboarding: new OnboardingStore(storeOptions)
 	}
 
 	// setup mercury
@@ -108,7 +110,7 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		try {
 			// import and type the command
 			const cmdClass: new (
-				options: IBaseCommandOptions
+				options: ICommandOptions
 			) => BaseCommand = require(file).default
 
 			// instantiate the command

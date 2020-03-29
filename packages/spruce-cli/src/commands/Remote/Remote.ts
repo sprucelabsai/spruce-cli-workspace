@@ -1,10 +1,9 @@
 import { Command } from 'commander'
 import BaseCommand from '../Base'
-import { RemoteType } from '../../utilities/Config'
 import { FieldType } from '@sprucelabs/schema'
 import { RemoteStoreRemoteType, RemoteStoreChoices } from '../../stores'
 
-export default class Remote extends BaseCommand {
+export default class RemoteCommand extends BaseCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
 		program
@@ -13,7 +12,9 @@ export default class Remote extends BaseCommand {
 			.action(this.setEnvironment.bind(this))
 	}
 
-	public async setEnvironment(environmentParam?: RemoteType | string) {
+	public async setEnvironment(
+		environmentParam?: RemoteStoreRemoteType | string
+	) {
 		let environment = environmentParam
 
 		if (!environment) {

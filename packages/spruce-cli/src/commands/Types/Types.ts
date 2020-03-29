@@ -2,7 +2,7 @@ import { Command } from 'commander'
 import BaseCommand from '../Base'
 import { templates } from '@sprucelabs/spruce-templates'
 
-export default class Cli extends BaseCommand {
+export default class TypesCommand extends BaseCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
 		program

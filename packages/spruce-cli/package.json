@@ -27,6 +27,7 @@
   },
   "scripts": {
     "types:sync": "node ./build/src/index.js types:sync",
+    "onboarding": "node ./build/src/index.js onboarding",
     "build": "npm run clean && npm run build:node",
     "build:node": "tsc | true",
     "watch": "chokidar 'src/**/*' 'index.ts' '../spruce-templates/src/templates/**/*' -c 'npm run build'",

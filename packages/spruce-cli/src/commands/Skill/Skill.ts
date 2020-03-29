@@ -9,7 +9,7 @@ import { CliErrorCode } from '../../errors/types'
 // import handlebars from 'handlebars'
 // import skillState from '../../stores/Skill'
 
-export default class Skill extends BaseCommand {
+export default class SkillCommand extends BaseCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
 		program
