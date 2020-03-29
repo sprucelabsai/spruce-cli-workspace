@@ -2,6 +2,8 @@ import { default  as Schema } from '@sprucelabs/schema'
 import * as SpruceSchema from '@sprucelabs/schema'
 
 
+// Schemas by namespace
+
 
 
 	export namespace SpruceSchemas.core.ProfileImage {
@@ -365,9 +367,9 @@ import * as SpruceSchema from '@sprucelabs/schema'
 		export interface ISkill {
 			
 			    	/* Id. */
-					'id'?: string
+					'id': string
 			    	/* Id. */
-					'apiKey'?: string
+					'apiKey': string
 			    	/* Name. */
 					'name': string
 			    	/* Description. */
@@ -390,7 +392,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                label: 'Id',
 			                type: SpruceSchema.FieldType.Id,
 			                
-			                
+			                isRequired: true,
 			                
 			                
 			                
@@ -402,7 +404,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                label: 'Id',
 			                type: SpruceSchema.FieldType.Id,
 			                
-			                
+			                isRequired: true,
 			                
 			                
 			                
@@ -473,7 +475,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                label: 'Id',
 			                type: SpruceSchema.FieldType.Id,
 			                
-			                
+			                isRequired: true,
 			                
 			                
 			                
@@ -485,7 +487,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                label: 'Id',
 			                type: SpruceSchema.FieldType.Id,
 			                
-			                
+			                isRequired: true,
 			                
 			                
 			                

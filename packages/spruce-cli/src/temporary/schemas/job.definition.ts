@@ -1,7 +1,9 @@
 import { ISchemaDefinition, FieldType } from '@sprucelabs/schema'
-import { RoleSelectChoices } from './role.schema'
+import { RoleSelectChoices } from './role.definition'
+import aclDefinition from './acl.definition'
 
-const groupDefinition: ISchemaDefinition = {
+/** A permission keyed by skill slug or "core" and values are an array of permission keys starting with "can-" */
+const jobDefinition: ISchemaDefinition = {
 	id: 'job',
 	name: 'Job',
 	description:
@@ -35,17 +37,17 @@ const groupDefinition: ISchemaDefinition = {
 			label: 'On work permissions',
 			type: FieldType.Schema,
 			options: {
-				schemaId: 'acl'
+				schema: aclDefinition
 			}
 		},
 		acls: {
 			label: 'Off work permissions',
 			type: FieldType.Schema,
 			options: {
-				schemaId: 'acl'
+				schema: aclDefinition
 			}
 		}
 	}
 }
 
-export default groupDefinition
+export default jobDefinition

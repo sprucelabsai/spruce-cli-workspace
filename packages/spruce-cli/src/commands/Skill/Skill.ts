@@ -1,6 +1,9 @@
-// import { Command } from 'commander'
-// import { Mercury } from '@sprucelabs/mercury'
+import { Command } from 'commander'
 import BaseCommand from '../Base'
+import { StoreAuth } from '../../stores'
+import { IFieldSelectDefinitionChoice, FieldType } from '@sprucelabs/schema'
+import CliError from '../../errors/CliError'
+import { CliErrorCode } from '../../errors/types'
 // import globby from 'globby'
 // import fs from 'fs-extra'
 // import handlebars from 'handlebars'
@@ -8,15 +11,141 @@ import BaseCommand from '../Base'
 
 export default class Skill extends BaseCommand {
 	/** Sets up commands */
-	public attachCommands(/*program: Command*/) {
-		// program
-		// 	.command('skill:auth [skillId] [skillApiKey]')
-		// 	.description('Authenticate with the CLI as a skill')
-		// 	.action(this.auth.bind(this))
-		// program
-		// 	.command('skill:repair')
-		// 	.description('Attempt to recover corrupted skill configuration')
-		// 	.action(this.repair.bind(this))
+	public attachCommands(program: Command) {
+		program
+			.command('skill:login [skillId] [skillApiKey]')
+			.description('Authenticate as a skill')
+			.action(this.login.bind(this))
+		program
+			.command('skill:switch')
+			.description('Switch to a different skill')
+			.action(this.switch.bind(this))
+	}
+
+	public async login(skillId?: string, skillApiKey?: string): Promise<void> {
+		const loggedInUser = this.stores.user.loggedInUser()
+		const loggedInSkill = this.stores.skill.loggedInSkill()
+		const authType = this.stores.user.authType
+
+		if (skillId) {
+			throw new CliError({
+				code: CliErrorCode.NotImplemented,
+				command: 'skill:login with skill id',
+				args: [skillId, skillApiKey]
+			})
+		}
+
+		// if they passed nothing and we're in a skill dir, lets ask if they want to use that
+		if (this.isInSkillDirectory() && (!skillId || !skillApiKey)) {
+			const skillFromDir = this.stores.skill.skillFromDir(this.cwd)
+
+			// are we in a different directory that the logged in one?
+			if (
+				skillFromDir &&
+				(loggedInSkill?.id !== skillFromDir.id || authType !== StoreAuth.Skill)
+			) {
+				const confirm = await this.confirm(
+					`You are in the ${skillFromDir.slug} directory, want to login as that?`
+				)
+
+				if (confirm) {
+					this.stores.skill.setLoggedInSkill(skillFromDir)
+					this.writeLn(`You are now authenticated as ${skillFromDir.slug}`)
+					return
+				}
+			}
+		}
+
+		if (!loggedInUser && (!skillId || !skillApiKey)) {
+			this.error(
+				'You must first login as a user to get access to skills (unless you know the id and api key)'
+			)
+
+			this.hint('Try user:login or skill:login SKILL_ID API_KEY')
+			return
+		}
+
+		// if we are authing as a user, lets confirm we want to login as a user going forward
+		if (loggedInUser && authType === StoreAuth.User) {
+			const pass = await this.confirm(
+				`You are currently logged as ${loggedInUser.casualName}, are you sure you want to log out as a user and in as a skill?`
+			)
+			if (!pass) {
+				this.info('OK, bailing out...')
+				return
+			}
+		}
+
+		//lets find all skills by this user
+		if (loggedInUser && (!skillId || !skillApiKey)) {
+			const skills = await this.stores.skill.skills(loggedInUser.token)
+			if (skills.length === 0) {
+				this.warn(`You don't have any skills tied to you as a developer.`)
+				this.hint('Try spruce skill:create to get started')
+				return
+			}
+
+			//select a skill
+			const skillChoices: IFieldSelectDefinitionChoice[] = skills.map(
+				(skill, idx) => ({
+					value: String(idx),
+					label: skill.name
+				})
+			)
+
+			const selectedIdx = await this.prompt({
+				type: FieldType.Select,
+				label: 'Select a skill',
+				isRequired: true,
+				options: {
+					choices: skillChoices
+				}
+			})
+
+			const selectedSkill = skills[parseInt(selectedIdx, 10)]
+			if (selectedSkill) {
+				this.stores.skill.setLoggedInSkill(selectedSkill)
+			}
+		}
+	}
+
+	public async switch() {
+		const loggedInUser = this.stores.user.loggedInUser()
+		if (!loggedInUser) {
+			this.fatal('You are not logged in as a person!')
+			this.hint('Try spruce user:login')
+			return
+		}
+
+		const skills = await this.stores.skill.skills(loggedInUser.token)
+
+		if (skills.length === 0) {
+			this.warn(`You don't have any skills tied to you as a developer.`)
+			this.hint('Try spruce skill:create to get started')
+			return
+		}
+
+		//select a skill
+		const skillChoices: IFieldSelectDefinitionChoice[] = skills.map(
+			(skill, idx) => ({
+				value: String(idx),
+				label: skill.name
+			})
+		)
+
+		const selectedIdx = await this.prompt({
+			type: FieldType.Select,
+			label: 'Select a skill',
+			isRequired: true,
+			options: {
+				choices: skillChoices
+			}
+		})
+
+		const selectedSkill = skills[parseInt(selectedIdx, 10)]
+		if (selectedSkill) {
+			this.stores.skill.setLoggedInSkill(selectedSkill)
+		}
 	}
 
 	// public auth(skillId?: string, skillApiKey?: string): Promise<void> {

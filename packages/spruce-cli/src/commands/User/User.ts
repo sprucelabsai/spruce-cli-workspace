@@ -4,7 +4,7 @@ import { FieldType, IFieldSelectDefinitionChoice } from '@sprucelabs/schema'
 import CliError from '../../errors/CliError'
 import { CliErrorCode } from '../../errors/types'
 import SpruceError from '@sprucelabs/error'
-import { UserWithToken } from '../../schemas/userWithToken.schema'
+import { UserWithToken } from '../../schemas/userWithToken.definition'
 
 export default class User extends BaseCommand {
 	/** Sets up commands */
@@ -111,10 +111,12 @@ export default class User extends BaseCommand {
 			label: user.casualName
 		}))
 
+		const loggedInUser = this.stores.user.loggedInUser()
 		const userIdx = await this.prompt({
 			type: FieldType.Select,
 			label: 'Select previously logged in user',
 			isRequired: true,
+			defaultValue: loggedInUser && loggedInUser.id,
 			options: {
 				choices
 			}

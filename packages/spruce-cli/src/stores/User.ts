@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
-import BaseStore from './Base'
+import BaseStore, { StoreAuth, IBaseStoreSettings } from './Base'
 import { SpruceSchemas } from '../.spruce/schemas'
-import { Mercury, IMercuryGQLBody } from '@sprucelabs/mercury'
+import { IMercuryGQLBody } from '@sprucelabs/mercury'
 import { SpruceEvents } from '../types/events-generated'
 import CliError from '../errors/CliError'
 import { CliErrorCode } from '../errors/types'
@@ -9,24 +9,16 @@ import gql from 'graphql-tag'
 import Schema from '@sprucelabs/schema'
 import userWithTokenDefinition, {
 	UserWithToken
-} from '../schemas/userWithToken.schema'
-import userDefinition, { User } from '../schemas/user.schema'
+} from '../schemas/userWithToken.definition'
+import userDefinition, { User } from '../schemas/user.definition'
 
 /** settings i need to save */
-interface IUserStoreSettings {
+interface IUserStoreSettings extends IBaseStoreSettings {
 	authedUsers: UserWithToken[]
 }
 
 export default class UserStore extends BaseStore<IUserStoreSettings> {
 	public name = 'user'
-
-	/** mercury locked and loaded */
-	public mercury: Mercury
-
-	public constructor(mercury: Mercury) {
-		super()
-		this.mercury = mercury
-	}
 
 	/** build a new user with an added token */
 	public static userWithToken(values?: Partial<UserWithToken>) {
@@ -91,20 +83,7 @@ export default class UserStore extends BaseStore<IUserStoreSettings> {
 		}
 
 		// setup mercury to use creds
-		const { connectionOptions } = this.mercury
-		if (!connectionOptions) {
-			throw new CliError({
-				code: CliErrorCode.GenericMercury,
-				eventName: 'na',
-				friendlyMessage:
-					'user store was trying to auth on mercury but had not options (meaning it was never connected)'
-			})
-		}
-		// connect with new creds
-		await this.mercury.connect({
-			...(connectionOptions || {}),
-			credentials: { token }
-		})
+		this.mercury = await this.mercuryForUser(token)
 
 		// now load from id
 		const userId: string = decoded.userId
@@ -131,41 +110,6 @@ export default class UserStore extends BaseStore<IUserStoreSettings> {
 						casualName
 						profileImages
 						defaultProfileImages
-						UserLocations {
-							edges {
-								node {
-									role
-									LocationId
-									Job {
-										name
-										isDefault
-										role
-									}
-								}
-							}
-						}
-						UserGroups {
-							edges {
-								node {
-									Group {
-										name
-									}
-									Job {
-										name
-										isDefault
-										role
-									}
-								}
-							}
-						}
-						UserOrganizations {
-							edges {
-								node {
-									role
-									OrganizationId
-								}
-							}
-						}
 					}
 				}
 			`.loc?.source.body || ''
@@ -207,19 +151,39 @@ export default class UserStore extends BaseStore<IUserStoreSettings> {
 			}
 		})
 
+		// lets validate the user and pull out values
+		const instance = new Schema(userWithTokenDefinition, user)
+		instance.validate()
+
 		newAuthedUsers.push({
-			...user,
+			...instance.getValues(),
 			isLoggedIn: true
 		})
 
-		this.writeValue('authedUsers', newAuthedUsers)
+		this.writeValues({
+			authType: StoreAuth.User,
+			authedUsers: newAuthedUsers
+		})
 	}
 
 	/** get the logged in user */
 	public loggedInUser(): UserWithToken | undefined {
 		const loggedInUsers = this.readValue('authedUsers') || []
 		const loggedInUser = loggedInUsers.find(auth => auth.isLoggedIn)
-		return loggedInUser
+
+		// valid the saved user we have is valid
+		if (loggedInUser) {
+			try {
+				const instance = new Schema(userWithTokenDefinition, loggedInUser)
+				instance.validate()
+				return instance.getValues()
+			} catch (err) {
+				this.log.crit(`Loading logged in user failed`)
+				this.log.crit(err)
+			}
+		}
+
+		return undefined
 	}
 
 	/** log everyone out */

@@ -7,14 +7,19 @@ import pkg from '../package.json'
 import CliError from './errors/CliError'
 import { IServices } from './services'
 
-import { Mercury, IMercuryConnectOptions } from '@sprucelabs/mercury'
-import { IStores } from './stores'
+import {
+	Mercury,
+	IMercuryConnectOptions,
+	MercuryAuth
+} from '@sprucelabs/mercury'
+import { IStores, StoreAuth } from './stores'
 import RemoteStore from './stores/Remote'
 import SkillStore from './stores/Skill'
 import UserStore from './stores/User'
 import SchemaStore from './stores/Schema'
 import { CliErrorCode } from './errors/types'
 import PinService from './services/Pin'
+import BaseCommand, { IBaseCommandOptions } from './commands/Base'
 
 /**
  * For handling debugger not attaching right away
@@ -43,26 +48,52 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		}
 	})
 
+	// starting cwd
+	const cwd = process.cwd()
+
 	// setup mercury
 	const mercury = new Mercury()
 
 	// setup stores
-	const stores: IStores = {
-		remote: new RemoteStore(),
-		skill: new SkillStore(),
-		user: new UserStore(mercury),
-		schema: new SchemaStore(mercury)
+	const storeOptions = {
+		mercury,
+		cwd
 	}
 
-	// is there anyone logged in?
-	const loggedInUser = stores.user.loggedInUser()
+	const stores: IStores = {
+		remote: new RemoteStore(storeOptions),
+		skill: new SkillStore(storeOptions),
+		user: new UserStore(storeOptions),
+		schema: new SchemaStore(storeOptions)
+	}
+
+	// setup mercury
 	const remoteUrl = stores.remote.getRemoteUrl()
+
+	// who is logged in?
+	const loggedInUser = stores.user.loggedInUser()
+	const loggedInSkill = stores.skill.loggedInSkill()
+
+	// build mercury creds
+	let creds: MercuryAuth | undefined
+
+	const authType = stores.remote.authType
+
+	switch (authType) {
+		case StoreAuth.User:
+			creds = loggedInUser && { token: loggedInUser.token }
+			break
+		case StoreAuth.Skill:
+			creds = loggedInSkill && {
+				id: loggedInSkill.id,
+				apiKey: loggedInSkill.apiKey
+			}
+			break
+	}
 
 	const connectOptions: IMercuryConnectOptions = {
 		spruceApiUrl: remoteUrl,
-		credentials: loggedInUser && {
-			token: loggedInUser.token
-		}
+		credentials: creds
 	}
 
 	await mercury.connect(connectOptions)
@@ -75,12 +106,17 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	// Load commands and actions
 	globby.sync(`${__dirname}/commands/**/*.js`).forEach(file => {
 		try {
+			// import and type the command
+			const cmdClass: new (
+				options: IBaseCommandOptions
+			) => BaseCommand = require(file).default
+
 			// instantiate the command
-			const cmdClass = require(file).default
 			const command = new cmdClass({
 				stores,
 				mercury,
-				services
+				services,
+				cwd
 			})
 
 			// attach commands to the program

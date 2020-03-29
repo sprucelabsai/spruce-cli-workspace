@@ -69,8 +69,8 @@ export default class RemoteStore extends BaseStore {
 		}
 	})
 
-	public constructor() {
-		super()
+	public constructor(options) {
+		super(options)
 		this.load()
 	}
 

@@ -1,4 +1,4 @@
-import {
+import Schema, {
 	buildSchemaDefinition,
 	SchemaDefinitionValues
 } from '@sprucelabs/schema'
@@ -17,3 +17,4 @@ const userDefinition = buildSchemaDefinition({
 export default userDefinition
 
 export type User = SchemaDefinitionValues<typeof userDefinition>
+export type UserInstance = Schema<typeof userDefinition>

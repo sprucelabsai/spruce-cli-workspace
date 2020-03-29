@@ -15,7 +15,6 @@ import {
 	groupDefinition,
 	aclDefinition
 } from '../temporary/schemas'
-import { Mercury } from '@sprucelabs/mercury'
 
 /** the schema template with namespace dropped in */
 export interface ISchemaTemplateNamespaceItem extends ISchemaTemplateItem {
@@ -29,14 +28,6 @@ export interface IFieldTypeMap {
 
 export default class SchemaStore extends BaseStore {
 	public name = 'schema'
-
-	/** mercury locked and loaded */
-	public mercury: Mercury
-
-	public constructor(mercury: Mercury) {
-		super()
-		this.mercury = mercury
-	}
 
 	/** get the schema map */
 	public async schemaTemplateItemsWithNamespace(): Promise<

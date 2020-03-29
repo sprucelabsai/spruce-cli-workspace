@@ -7,12 +7,14 @@ const skillDefinition: ISchemaDefinition = {
 	fields: {
 		id: {
 			label: 'Id',
-			type: FieldType.Id
+			type: FieldType.Id,
+			isRequired: true
 		},
 		apiKey: {
 			label: 'Id',
 			isPrivate: true,
-			type: FieldType.Id
+			type: FieldType.Id,
+			isRequired: true
 		},
 		name: {
 			label: 'Name',

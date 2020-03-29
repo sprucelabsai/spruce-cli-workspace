@@ -1,18 +1,74 @@
+import logger, { ISpruceLog } from '@sprucelabs/log'
 import fs from 'fs'
+import { Mercury } from '@sprucelabs/mercury'
+import CliError from '../errors/CliError'
+import { CliErrorCode } from '../errors/types'
 
+/** are we running globally or locally? */
 export enum StoreScope {
 	Global = 'global',
 	Local = 'local'
 }
 
-export default abstract class BaseStore<Settings extends {} = {}> {
+/** are we authed as a user or a skill? */
+export enum StoreAuth {
+	User = 'user',
+	Skill = 'skill'
+}
+
+// @ts-ignore
+const _log = logger.log
+_log.setOptions({
+	level: 'info'
+})
+
+/** options needed by the store on instantiation */
+export interface IStoreOptions {
+	mercury: Mercury
+	cwd: string
+	scope?: StoreScope
+	authType?: StoreAuth
+}
+
+export interface IBaseStoreSettings {
+	authType: StoreAuth
+}
+
+export default abstract class BaseStore<
+	Settings extends IBaseStoreSettings = IBaseStoreSettings
+> {
 	/** the current scope */
 	public scope = StoreScope.Global
+
+	/** for logging */
+	public log: ISpruceLog = _log
+
+	/** how we're logged in, user or skill */
+	public get authType() {
+		return this.readValue('authType') ?? StoreAuth.User
+	}
+
+	public set authType(type: StoreAuth) {
+		this.writeValue('authType', type)
+	}
+
+	/** for making calls to the world */
+	public mercury: Mercury
+
+	/** current directory for all operations */
+	public cwd: string
 
 	/** a name each store must set */
 	abstract name: string
 
-	public constructor() {
+	public constructor(options: IStoreOptions) {
+		const { mercury, cwd, scope, authType } = options
+
+		this.mercury = mercury
+		this.cwd = cwd
+		this.scope = scope ?? this.scope
+		this.authType = authType ?? this.authType
+
 		// create save dir
 		const { directory: globalDirectory } = this.getGlobalConfigPath()
 		const { directory: localDirectory } = this.getLocalConfigPath()
@@ -21,7 +77,7 @@ export default abstract class BaseStore<Settings extends {} = {}> {
 			fs.mkdirSync(globalDirectory)
 		}
 
-		if (!fs.existsSync(localDirectory)) {
+		if (scope === StoreScope.Local && !fs.existsSync(localDirectory)) {
 			fs.mkdirSync(localDirectory)
 		}
 	}
@@ -36,10 +92,15 @@ export default abstract class BaseStore<Settings extends {} = {}> {
 		const currentValues = this.readValues()
 		const updatedValues = { ...currentValues, ...values }
 
-		const { file } =
+		const { file, directory } =
 			this.scope === StoreScope.Local
 				? this.getLocalConfigPath()
 				: this.getGlobalConfigPath()
+
+		// make sure dir exists
+		if (!fs.existsSync(directory)) {
+			fs.mkdirSync(directory)
+		}
 
 		const contents = JSON.stringify(updatedValues)
 		fs.writeFileSync(file, contents)
@@ -55,12 +116,17 @@ export default abstract class BaseStore<Settings extends {} = {}> {
 
 	/** read values from disk */
 	protected readValues<T extends Settings>(): Partial<T> {
-		const { file } =
+		const { file, directory } =
 			this.scope === StoreScope.Local
 				? this.getLocalConfigPath()
 				: this.getGlobalConfigPath()
 
 		try {
+			// make sure dir exists
+			if (!fs.existsSync(directory)) {
+				fs.mkdirSync(directory)
+			}
+
 			const contents = fs.readFileSync(file, 'utf8')
 			const values = JSON.parse(contents) as T
 			return values
@@ -69,6 +135,26 @@ export default abstract class BaseStore<Settings extends {} = {}> {
 		}
 		// falls back to an empty object
 		return {}
+	}
+
+	/** a copy of mercury authed against the token you sent */
+	protected async mercuryForUser(token: string): Promise<Mercury> {
+		const { connectionOptions } = this.mercury
+		if (!connectionOptions) {
+			throw new CliError({
+				code: CliErrorCode.GenericMercury,
+				eventName: 'na',
+				friendlyMessage:
+					'user store was trying to auth on mercury but had not options (meaning it was never connected)'
+			})
+		}
+		// connect with new creds
+		await this.mercury.connect({
+			...(connectionOptions || {}),
+			credentials: { token }
+		})
+
+		return this.mercury
 	}
 
 	private getGlobalConfigPath() {
@@ -83,7 +169,7 @@ export default abstract class BaseStore<Settings extends {} = {}> {
 	}
 
 	private getLocalConfigPath() {
-		const homedir = process.cwd()
+		const homedir = this.cwd
 		const configDirectory = `${homedir}/.spruce`
 		const filePath = `${homedir}/.spruce/settings.json`
 

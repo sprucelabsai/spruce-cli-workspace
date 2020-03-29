@@ -167,6 +167,11 @@ export default class Terminal {
 		this.writeLn(message, effects)
 	}
 
+	/** some helpful info or suggestion */
+	public hint(message: string) {
+		return this.writeLn(`👨‍🏫 ${message}`)
+	}
+
 	/** when outputing something information */
 	public info(message: string) {
 		if (typeof message !== 'string') {
@@ -180,12 +185,6 @@ export default class Terminal {
 
 	/** the user did something wrong, like entered a bad value */
 	public warn(message: string) {
-		if (typeof message !== 'string') {
-			debug('Invalid warn log')
-			debug(message)
-			return
-		}
-
 		this.writeLn(`⚠️ ${message}`, [
 			ITerminalEffect.Bold,
 			ITerminalEffect.Yellow
@@ -194,34 +193,15 @@ export default class Terminal {
 
 	/** the user did something wrong, like entered a bad value */
 	public error(message: string) {
-		if (typeof message !== 'string') {
-			debug('Invalid error log')
-			debug(message)
-			this.warn('INVALID ERROR LOG')
-			return
-		}
-
 		this.writeLn(`🛑 ${message}`, [ITerminalEffect.Bold, ITerminalEffect.Bold])
 	}
 
 	/** something major or a critical information but program will not die */
 	public crit(message: string) {
-		if (typeof message !== 'string') {
-			debug('Invalid crit log')
-			debug(message)
-			return
-		}
-
 		this.writeLn(`🛑 ${message}`, [ITerminalEffect.Red, ITerminalEffect.Bold])
 	}
 	/** everything is crashing! */
 	public fatal(message: string) {
-		if (typeof message !== 'string') {
-			debug('Invalid fatal log')
-			debug(message)
-			return
-		}
-
 		this.writeLn(`💥 ${message}`, [ITerminalEffect.Red, ITerminalEffect.Bold])
 	}
 

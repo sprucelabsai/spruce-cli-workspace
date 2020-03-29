@@ -1,5 +1,5 @@
 import { ISchemaDefinition, FieldType } from '@sprucelabs/schema'
-import { RoleSelectChoices } from './role.schema'
+import { RoleSelectChoices } from './role.definition'
 
 const userlocationDefinition: ISchemaDefinition = {
 	id: 'userLocation',

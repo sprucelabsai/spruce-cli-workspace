@@ -8,6 +8,7 @@ export enum CliErrorCode {
 	GenericMercury = 'GENERIC_MERCURY',
 	Generic = 'GENERIC',
 	UserNotFound = 'USER_NOT_FOUND'
+	NotImplemented = 'NOT_IMPLEMENTED'
 }
 
 /** all errors */
@@ -17,6 +18,7 @@ export type CliErrorOptions =
 	| ICliErrorOptionsGenericMercury
 	| ICliErrorOptionsGeneric
 	| ICliErrorOptionsUserNotFound
+	| ICliErrorNotImplemented
 	| SchemaErrorOptions
 	| SpruceErrorOptions
 
@@ -55,4 +57,11 @@ export interface ICliErrorOptionsUserNotFound
 	code: CliErrorCode.UserNotFound
 	userId?: string
 	token?: string
+}
+
+export interface ICliErrorNotImplemented
+	extends ISpruceErrorOptions<CliErrorCode> {
+	code: CliErrorCode.NotImplemented
+	command: string,
+	args?: any[]
 }

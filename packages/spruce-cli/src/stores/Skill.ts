@@ -1,158 +1,89 @@
-import BaseStore from './Base'
+import BaseStore, { IBaseStoreSettings, StoreAuth } from './Base'
+import { SpruceSchemas } from '../.spruce/schemas'
+import { SpruceEvents } from '../types/events-generated'
+import Schema from '@sprucelabs/schema'
+import { parse as parseEnv } from 'dotenv'
+import fs from 'fs-extra'
+import path from 'path'
+import { Skill } from '../schemas/skill.definition'
 
-export default class SkillStore extends BaseStore {
-	public name = 'skill'
+export interface ISkillStoreSettings extends IBaseStoreSettings {
+	loggedInSkill: SpruceSchemas.core.Skill.ISkill
 }
 
-// import config, { ConfigScope, RemoteType } from '../utilities/Config'
+export default class SkillStore extends BaseStore<ISkillStoreSettings> {
+	public name = 'skill'
 
-// /** The currently authenticated skill */
-// export class Skill {
-// 	public id?: string
-// 	public apiKey?: string
-// 	public host?: string
-// 	public name?: string
-// 	public description?: string
-// 	public slug?: string
-// 	public interfaceUrl?: string
-// 	public serverUrl?: string
-// 	public remote?: RemoteType
+	/** build a skill with the passed values */
+	public static skill(values?: Partial<Skill>) {
+		return new Schema(SpruceSchemas.core.Skill.definition, values)
+	}
 
-// 	private readonly stateKey = 'Skill'
+	/** get all skills the user has access to */
+	public async skills(userToken: string): Promise<Skill[]> {
+		const mercury = await this.mercuryForUser(userToken)
+		const result = await mercury.emit<
+			SpruceEvents.core.GetDeveloperSkills.IPayload,
+			SpruceEvents.core.GetDeveloperSkills.IResponseBody
+		>({ eventName: SpruceEvents.core.GetDeveloperSkills.name })
 
-// 	/** Whether there is a skill set for the current directory */
-// 	public isSet(): boolean {
-// 		this.loadSavedSkill()
-// 		return (
-// 			typeof this.id === 'string' &&
-// 			typeof this.apiKey === 'string' &&
-// 			typeof this.name === 'string' &&
-// 			typeof this.slug === 'string' &&
-// 			typeof this.remote === 'string'
-// 		)
-// 	}
+		const skills = result.responses[0].payload.skills.map(values => {
+			const instance = SkillStore.skill(values)
+			instance.validate()
+			return instance.getValues()
+		})
 
-// 	public toData() {
-// 		return {
-// 			id: this.id,
-// 			apiKey: this.apiKey,
-// 			host: this.host,
-// 			name: this.name,
-// 			description: this.description,
-// 			slug: this.slug,
-// 			interfaceUrl: this.interfaceUrl,
-// 			serverUrl: this.serverUrl,
-// 			remote: this.remote
-// 		}
-// 	}
+		return skills
+	}
 
-// 	public save() {
-// 		config.save(
-// 			{
-// 				[this.stateKey]: this.toData()
-// 			},
-// 			ConfigScope.Directory
-// 		)
-// 		this.loadSavedSkill()
-// 	}
+	/** set logged in skill */
+	public setLoggedInSkill(skill: Skill) {
+		// validate what we were passed
+		const instance = SkillStore.skill(skill)
+		instance.validate()
 
-// 	public resetState() {
-// 		config.save(
-// 			{
-// 				[this.stateKey]: {}
-// 			},
-// 			ConfigScope.Directory
-// 		)
-// 		this.loadSavedSkill()
-// 	}
+		this.writeValues({
+			loggedInSkill: instance.getValues(),
+			authType: StoreAuth.Skill
+		})
+	}
 
-// 	public set(options: {
-// 		id?: string
-// 		apiKey?: string
-// 		host?: string
-// 		name?: string
-// 		description?: string
-// 		slug?: string
-// 		interfaceUrl?: string
-// 		serverUrl?: string
-// 		remote?: RemoteType
-// 	}) {
-// 		const {
-// 			id,
-// 			apiKey,
-// 			host,
-// 			name,
-// 			description,
-// 			slug,
-// 			interfaceUrl,
-// 			serverUrl,
-// 			remote
-// 		} = options
+	/** gets a logged in skill of one is set */
+	public loggedInSkill(): Skill | undefined {
+		const loggedIn = this.readValue('loggedInSkill')
 
-// 		if (typeof id !== 'undefined') {
-// 			this.id = id
-// 		}
-// 		if (typeof apiKey !== 'undefined') {
-// 			this.apiKey = apiKey
-// 		}
-// 		if (typeof host !== 'undefined') {
-// 			this.host = host
-// 		}
-// 		if (typeof name !== 'undefined') {
-// 			this.name = name
-// 		}
-// 		if (typeof description !== 'undefined') {
-// 			this.description = description
-// 		}
-// 		if (typeof slug !== 'undefined') {
-// 			this.slug = slug
-// 		}
-// 		if (typeof interfaceUrl !== 'undefined') {
-// 			this.interfaceUrl = interfaceUrl
-// 		}
-// 		if (typeof serverUrl !== 'undefined') {
-// 			this.serverUrl = serverUrl
-// 		}
-// 		if (typeof remote !== 'undefined') {
-// 			this.remote = remote
-// 		}
+		if (loggedIn) {
+			const instance = SkillStore.skill(loggedIn)
+			instance.validate()
+			return instance.getValues()
+		}
 
-// 		this.save()
-// 	}
+		return undefined
+	}
 
-// 	/** Prints info about the current skill */
-// 	public async printInfo() {
-// 		this.loadSavedSkill()
-// 		if (!this.isSet()) {
-// 			log.fatal(
-// 				`A skill has not been set for ${process.cwd()}\n\nTry "spruce skill:create"`
-// 			)
-// 			return
-// 		}
-// 		const skillName = this.name || 'Skill'
-// 		log.printState({
-// 			headline: skillName,
-// 			state: this.toData()
-// 		})
-// 	}
+	// Get a skill from the current directly
+	public skillFromDir(dir: string): Skill | undefined {
+		const file = path.join(dir, '.env')
 
-// 	/** Loads saved skill from saved config */
-// 	private loadSavedSkill() {
-// 		const skill = config.get(this.stateKey, ConfigScope.Directory) || {}
+		if (!fs.existsSync(file)) {
+			return undefined
+		}
 
-// 		if (skill) {
-// 			this.id = skill.id
-// 			this.apiKey = skill.apiKey
-// 			this.host = skill.host
-// 			this.name = skill.name
-// 			this.description = skill.description
-// 			this.slug = skill.slug
-// 			this.interfaceUrl = skill.interfaceUrl
-// 			this.serverUrl = skill.serverUrl
-// 			this.remote = skill.remote
-// 		}
-// 	}
-// }
+		const fileContents = fs.readFileSync(file)
 
-// const skill = new Skill()
-// export default skill
+		const env = parseEnv(fileContents)
+		const instance = SkillStore.skill({
+			id: env.ID,
+			name: env.NAME,
+			slug: env.SLUG,
+			apiKey: env.API_KEY
+		})
+		try {
+			instance.validate()
+			return instance.getValues()
+		} catch (err) {
+			this.log.warn('INVALID skill ENV')
+			return undefined
+		}
+	}
+}
