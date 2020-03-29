@@ -5,6 +5,7 @@ import CliError from '../../errors/CliError'
 import { CliErrorCode } from '../../errors/types'
 import SpruceError from '@sprucelabs/error'
 import { UserWithToken } from '../../schemas/userWithToken.definition'
+import { StoreAuth } from '../../stores'
 
 export default class User extends BaseCommand {
 	/** Sets up commands */
@@ -130,14 +131,18 @@ export default class User extends BaseCommand {
 
 	public async whoAmI() {
 		const user = this.stores.user.loggedInUser()
-		if (user) {
+		const skill = this.stores.skill.loggedInSkill()
+		const authType = this.stores.remote.authType
+
+		if (user && authType === StoreAuth.User) {
 			this.section({
-				headline: `Logged in as ${user.casualName}`,
-				object: {
-					you: user.casualName,
-					id: user.id,
-					token: user.token
-				}
+				headline: `Logged in as human: ${user.casualName}`,
+				object: user
+			})
+		} else if (skill && authType === StoreAuth.Skill) {
+			this.section({
+				headline: `Logged in as skill: ${skill.name}`,
+				object: skill
 			})
 		} else {
 			this.writeLn('Not currently logged in')
