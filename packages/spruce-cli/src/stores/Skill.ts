@@ -1,11 +1,11 @@
 import BaseStore, { IBaseStoreSettings, StoreAuth } from './Base'
-import { SpruceSchemas } from '../.spruce/schemas'
+import { SpruceSchemas } from '../.spruce/schemas/types'
 import { SpruceEvents } from '../types/events-generated'
 import Schema from '@sprucelabs/schema'
 import { parse as parseEnv } from 'dotenv'
 import fs from 'fs-extra'
 import path from 'path'
-import { Skill } from '../definitions/skill.definition'
+import { Skill } from '../schemas/skill.definition'
 
 export interface ISkillStoreSettings extends IBaseStoreSettings {
 	loggedInSkill: SpruceSchemas.core.Skill.ISkill

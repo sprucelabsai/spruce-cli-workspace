@@ -1,8 +1,8 @@
-import logger, { ISpruceLog } from '@sprucelabs/log'
 import fs from 'fs'
 import { Mercury } from '@sprucelabs/mercury'
 import CliError from '../errors/CliError'
 import { CliErrorCode } from '../errors/types'
+import { Log } from '@sprucelabs/log'
 
 /** are we running globally or locally? */
 export enum StoreScope {
@@ -16,18 +16,13 @@ export enum StoreAuth {
 	Skill = 'skill'
 }
 
-// @ts-ignore
-const _log = logger.log
-_log.setOptions({
-	level: 'info'
-})
-
 /** options needed by the store on instantiation */
 export interface IStoreOptions {
 	mercury: Mercury
 	cwd: string
 	scope?: StoreScope
 	authType?: StoreAuth
+	log: Log
 }
 
 export interface IBaseStoreSettings {
@@ -41,7 +36,7 @@ export default abstract class BaseStore<
 	public scope = StoreScope.Global
 
 	/** for logging */
-	public log: ISpruceLog = _log
+	public log: Log
 
 	/** how we're logged in, user or skill */
 	public get authType() {
@@ -62,12 +57,13 @@ export default abstract class BaseStore<
 	abstract name: string
 
 	public constructor(options: IStoreOptions) {
-		const { mercury, cwd, scope, authType } = options
+		const { mercury, cwd, scope, authType, log } = options
 
 		this.mercury = mercury
 		this.cwd = cwd
 		this.scope = scope ?? this.scope
 		this.authType = authType ?? this.authType
+		this.log = log
 
 		// create save dir
 		const { directory: globalDirectory } = this.getGlobalConfigPath()
@@ -131,7 +127,9 @@ export default abstract class BaseStore<
 			const values = JSON.parse(contents) as T
 			return values
 		} catch (err) {
-			console.log('could not read file')
+			this.log.warn(
+				`AbstractStore.readValues failed to read settings file at ${file}`
+			)
 		}
 		// falls back to an empty object
 		return {}

@@ -4,7 +4,7 @@ import { FieldType, IFieldSelectDefinitionChoice } from '@sprucelabs/schema'
 import CliError from '../../errors/CliError'
 import { CliErrorCode } from '../../errors/types'
 import SpruceError from '@sprucelabs/error'
-import { UserWithToken } from '../../definitions/userWithToken.definition'
+import { UserWithToken } from '../../schemas/userWithToken.definition'
 import { StoreAuth } from '../../stores'
 
 export default class UserCommand extends BaseCommand {
@@ -63,6 +63,7 @@ export default class UserCommand extends BaseCommand {
 
 			try {
 				user = await this.stores.user.userWithTokenFromPhone(phone, pin)
+				user.casualName
 				valid = true
 
 				this.stopLoading()

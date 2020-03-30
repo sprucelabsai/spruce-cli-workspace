@@ -1,5 +1,6 @@
 import SpruceError from '@sprucelabs/error'
 import { CliErrorCode, CliErrorOptions } from './types'
+import log from '@sprucelabs/log'
 
 export default class CliError extends SpruceError<CliErrorOptions> {
 	public friendlyMessage(): string {
@@ -18,8 +19,9 @@ export default class CliError extends SpruceError<CliErrorOptions> {
 				break
 
 			case CliErrorCode.GenericMercury:
-				console.log('finish')
-				debugger
+				log.debug(
+					`Cli Error is not handling generic mercury error yet. Consider dropping in details about the event`
+				)
 				message = super.friendlyMessage()
 				break
 			case CliErrorCode.Generic:

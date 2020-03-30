@@ -25,7 +25,7 @@ export default class PinService extends BaseService {
 					phoneNumber: phone,
 					method: 'pin'
 				},
-				lastError: err
+				originalError: err
 			})
 		}
 	}

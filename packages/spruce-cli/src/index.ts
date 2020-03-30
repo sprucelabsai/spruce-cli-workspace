@@ -6,7 +6,7 @@ import globby from 'globby'
 import pkg from '../package.json'
 import CliError from './errors/CliError'
 import { IServices } from './services'
-
+import log from '@sprucelabs/log'
 import {
 	Mercury,
 	IMercuryConnectOptions,
@@ -58,7 +58,8 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	// setup stores
 	const storeOptions = {
 		mercury,
-		cwd
+		cwd,
+		log
 	}
 
 	const stores: IStores = {
@@ -78,7 +79,6 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 
 	// build mercury creds
 	let creds: MercuryAuth | undefined
-
 	const authType = stores.remote.authType
 
 	switch (authType) {
@@ -93,6 +93,7 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 			break
 	}
 
+	// mercury connection options
 	const connectOptions: IMercuryConnectOptions = {
 		spruceApiUrl: remoteUrl,
 		credentials: creds
@@ -118,7 +119,8 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 				stores,
 				mercury,
 				services,
-				cwd
+				cwd,
+				log
 			})
 
 			// attach commands to the program
@@ -129,7 +131,7 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		} catch (err) {
 			throw new CliError({
 				code: CliErrorCode.CouldNotLoadCommand,
-				lastError: err,
+				originalError: err,
 				file
 			})
 		}

@@ -1,4 +1,4 @@
-import logger, { ISpruceLog } from '@sprucelabs/log'
+import { Log } from '@sprucelabs/log'
 import Terminal from '../utilities/Terminal'
 import path from 'path'
 import { Command } from 'commander'
@@ -9,23 +9,18 @@ import { Mercury } from '@sprucelabs/mercury'
 import { IServices } from '../services'
 import fs from 'fs-extra'
 
-// @ts-ignore
-const _log = logger.log
-_log.setOptions({
-	level: 'info'
-})
-
 /** all commanders get this */
 export interface ICommandOptions {
 	stores: IStores
 	mercury: Mercury
 	services: IServices
+	log: Log
 	cwd: string
 }
 
 export default abstract class BaseCommand extends Terminal {
 	/** spruce logger */
-	public log: ISpruceLog = _log
+	public log: Log
 	public stores: IStores
 	public mercury: Mercury
 	public services: IServices
@@ -34,12 +29,13 @@ export default abstract class BaseCommand extends Terminal {
 	public constructor(options: ICommandOptions) {
 		super()
 
-		const { stores, mercury, services, cwd } = options
+		const { stores, mercury, services, cwd, log } = options
 
 		this.cwd = cwd
 		this.stores = stores
 		this.mercury = mercury
 		this.services = services
+		this.log = log
 	}
 
 	/** preps a form builder, you will need to call present() */

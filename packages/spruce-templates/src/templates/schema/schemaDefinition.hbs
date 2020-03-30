@@ -8,6 +8,7 @@ description: '{{{escape schema.description}}}',
 {{#if schema.fields}}
     fields: {
         {{#each schema.fields}}
+            /** {{{label}}}.{{#if hint}} {{{hint}}}{{/if}} */
             '{{@key}}': {
                 {{> fieldDefinition renderAs=../renderAs field=this }}
             },

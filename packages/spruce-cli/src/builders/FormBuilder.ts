@@ -9,6 +9,8 @@ import Schema, {
 	SchemaError
 } from '@sprucelabs/schema'
 import ITerminal, { ITerminalEffect } from '../utilities/Terminal'
+import CliError from '../errors/CliError'
+import SpruceError from '@sprucelabs/error'
 
 export enum FormBuilderActionType {
 	Done = 'done',
@@ -96,6 +98,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 			// start with headline
 			if (headline) {
 				term.headline(headline)
+				term.writeLn('')
 			}
 
 			if (showOverview) {
@@ -175,7 +178,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 		this.term.writeLn('')
 
 		// special handling for spruce errors
-		if (error instanceof SchemaError) {
+		if (error instanceof SchemaError || error instanceof CliError) {
 			const options = error.options
 
 			switch (options.code) {
@@ -190,6 +193,8 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 				default:
 					this.term.error(error.friendlyMessage())
 			}
+		} else if (error instanceof SpruceError) {
+			this.term.error(error.friendlyMessage())
 		} else {
 			this.term.error(`Unexpected error ${error.message}`)
 		}

@@ -4,11 +4,10 @@ import {
 	FieldType,
 	FieldDefinitionMap,
 	IFieldDefinition,
-	Field,
-	FieldSelect,
-	FieldClassMap
+	FieldBase
 } from '@sprucelabs/schema'
 import inquirer from 'inquirer'
+// @ts-ignore
 import fonts from 'cfonts'
 import ora from 'ora'
 import SpruceError from '@sprucelabs/error'
@@ -255,10 +254,12 @@ export default class Terminal {
 	}
 
 	public async wait(message?: string) {
+		this.writeLn('')
 		await this.prompt({
 			type: FieldType.Text,
 			label: message ?? 'Hit enter to continue'
 		})
+		this.writeLn('')
 		return
 	}
 
@@ -285,10 +286,7 @@ export default class Terminal {
 			message: `${label}:`
 		}
 
-		// @ts-ignore TODO Why does this mapping not work?
-		const field: Field = new FieldClassMap[fieldDefinition.type](
-			fieldDefinition
-		)
+		const field = FieldBase.field(fieldDefinition)
 
 		// setup transform and validate
 		promptOptions.transformer = (value: string) => {
@@ -298,15 +296,13 @@ export default class Terminal {
 			return field.validate(value).length === 0
 		}
 
-		switch (field.getType()) {
+		switch (fieldDefinition.type) {
 			case FieldType.Select:
 				promptOptions.type = 'list'
-				promptOptions.choices = (field as FieldSelect)
-					.getChoices()
-					.map(choice => ({
-						name: choice.label,
-						value: choice.value
-					}))
+				promptOptions.choices = fieldDefinition.options.choices.map(choice => ({
+					name: choice.label,
+					value: choice.value
+				}))
 
 				if (!isRequired) {
 					promptOptions.choices.push(new inquirer.Separator())
