@@ -4,8 +4,8 @@ import { FieldType, IFieldSelectDefinitionChoice } from '@sprucelabs/schema'
 import CliError from '../../errors/CliError'
 import { CliErrorCode } from '../../errors/types'
 import SpruceError from '@sprucelabs/error'
-import { UserWithToken } from '../../schemas/userWithToken.definition'
 import { StoreAuth } from '../../stores'
+import { IUserWithToken } from '../../.spruce/types/userWithToken.types'
 
 export default class UserCommand extends BaseCommand {
 	/** Sets up commands */
@@ -48,7 +48,7 @@ export default class UserCommand extends BaseCommand {
 		await this.services.pin.requestPin(phone)
 		this.stopLoading()
 
-		let user: UserWithToken | undefined
+		let user: IUserWithToken | undefined
 
 		let valid = false
 

@@ -1,11 +1,7 @@
-import Schema, {
-	buildSchemaDefinition,
-	FieldType,
-	SchemaDefinitionValues
-} from '@sprucelabs/schema'
-import { SpruceSchemas } from '../.spruce/schemas'
+import { buildSchemaDefinition, FieldType } from '@sprucelabs/schema'
+import { SpruceSchemas } from '../.spruce/types/core.types'
 
-const userWithTokenDefinition = buildSchemaDefinition({
+const userWithToken = buildSchemaDefinition({
 	...SpruceSchemas.core.User.definition,
 	id: 'userWithToken',
 	description: 'A stripped down cli user with token details for login',
@@ -20,9 +16,4 @@ const userWithTokenDefinition = buildSchemaDefinition({
 	}
 })
 
-export default userWithTokenDefinition
-
-export type UserWithToken = SchemaDefinitionValues<
-	typeof userWithTokenDefinition
->
-export type UserWithTokenInstance = Schema<typeof userWithTokenDefinition>
+export default userWithToken

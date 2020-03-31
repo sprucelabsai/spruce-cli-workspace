@@ -189,25 +189,29 @@ handlebars.registerHelper('fieldDefinitionValueType', function(
 const templatePath = path.join(__dirname, 'src', 'templates')
 
 // schema definitions
-const schemaDefinitions: string = fs
-	.readFileSync(path.join(templatePath, 'schema/definitions.hbs'))
+const schemaTypes: string = fs
+	.readFileSync(path.join(templatePath, 'schema/schema.types.hbs'))
 	.toString()
 
 const createDefinition: string = fs
 	.readFileSync(path.join(templatePath, 'schema/definition.hbs'))
 	.toString()
 
+const createDefinitionTypes: string = fs
+	.readFileSync(path.join(templatePath, 'schema/definition.types.hbs'))
+	.toString()
+
 export const templates = {
 	/** all definitions */
-	schemaDefinitions(options: {
+	schemaTypes(options: {
 		schemaTemplateItems: ISchemaTemplateItem[]
 		typeMap: { [fieldType: string]: IFieldTemplateDetails }
 	}) {
-		const template = handlebars.compile(schemaDefinitions)
+		const template = handlebars.compile(schemaTypes)
 		return template(options)
 	},
 
-	/** when building a definition ina  skill */
+	/** when building a definition in a skill */
 	createDefinition(options: {
 		camelName: string
 		description: string
@@ -215,6 +219,16 @@ export const templates = {
 		readableName: string
 	}) {
 		const template = handlebars.compile(createDefinition)
+		return template(options)
+	},
+
+	/** the types file to support a definition */
+	createDefinitionTypes(options: {
+		camelName: string
+		pascalName: string
+		relativeToDefinition: string
+	}) {
+		const template = handlebars.compile(createDefinitionTypes)
 		return template(options)
 	}
 }

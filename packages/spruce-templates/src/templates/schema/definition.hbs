@@ -1,7 +1,5 @@
-import Schema, {
-	buildSchemaDefinition,
+import  { buildSchemaDefinition,
 	FieldType,
-	SchemaDefinitionValues
 } from '@sprucelabs/schema'
 
 const {{camelName}}Definition = buildSchemaDefinition({
@@ -25,6 +23,3 @@ const {{camelName}}Definition = buildSchemaDefinition({
 })
 
 export default {{camelName}}Definition
-
-export type {{pascalName}} = SchemaDefinitionValues<typeof {{camelName}}Definition>
-export type {{pascalName}}Instance = Schema<typeof {{camelName}}Definition>

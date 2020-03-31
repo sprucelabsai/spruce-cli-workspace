@@ -1,8 +1,4 @@
-import Schema, {
-	buildSchemaDefinition,
-	FieldType,
-	SchemaDefinitionValues
-} from '@sprucelabs/schema'
+import { buildSchemaDefinition, FieldType } from '@sprucelabs/schema'
 
 const onboardingDefinition = buildSchemaDefinition({
 	id: 'onboarding-store',
@@ -24,6 +20,3 @@ const onboardingDefinition = buildSchemaDefinition({
 })
 
 export default onboardingDefinition
-
-export type Onboarding = SchemaDefinitionValues<typeof onboardingDefinition>
-export type OnboardingInstance = Schema<typeof onboardingDefinition>

@@ -1,11 +1,11 @@
 import BaseStore, { IBaseStoreSettings, StoreAuth } from './Base'
-import { SpruceSchemas } from '../.spruce/schemas/types'
+import { SpruceSchemas } from '../.spruce/types/core.types'
 import { SpruceEvents } from '../types/events-generated'
 import Schema from '@sprucelabs/schema'
 import { parse as parseEnv } from 'dotenv'
 import fs from 'fs-extra'
 import path from 'path'
-import { Skill } from '../schemas/skill.definition'
+import { ISkill } from '../.spruce/types/skill.types'
 
 export interface ISkillStoreSettings extends IBaseStoreSettings {
 	loggedInSkill: SpruceSchemas.core.Skill.ISkill
@@ -15,12 +15,12 @@ export default class SkillStore extends BaseStore<ISkillStoreSettings> {
 	public name = 'skill'
 
 	/** build a skill with the passed values */
-	public static skill(values?: Partial<Skill>) {
+	public static skill(values?: Partial<ISkill>) {
 		return new Schema(SpruceSchemas.core.Skill.definition, values)
 	}
 
 	/** get all skills the user has access to */
-	public async skills(userToken: string): Promise<Skill[]> {
+	public async skills(userToken: string): Promise<ISkill[]> {
 		const mercury = await this.mercuryForUser(userToken)
 		const result = await mercury.emit<
 			SpruceEvents.core.GetDeveloperSkills.IPayload,
@@ -37,7 +37,7 @@ export default class SkillStore extends BaseStore<ISkillStoreSettings> {
 	}
 
 	/** set logged in skill */
-	public setLoggedInSkill(skill: Skill) {
+	public setLoggedInSkill(skill: ISkill) {
 		// validate what we were passed
 		const instance = SkillStore.skill(skill)
 		instance.validate()
@@ -49,7 +49,7 @@ export default class SkillStore extends BaseStore<ISkillStoreSettings> {
 	}
 
 	/** gets a logged in skill of one is set */
-	public loggedInSkill(): Skill | undefined {
+	public loggedInSkill(): ISkill | undefined {
 		const loggedIn = this.readValue('loggedInSkill')
 
 		if (loggedIn) {
@@ -62,7 +62,7 @@ export default class SkillStore extends BaseStore<ISkillStoreSettings> {
 	}
 
 	// Get a skill from the current directly
-	public skillFromDir(dir: string): Skill | undefined {
+	public skillFromDir(dir: string): ISkill | undefined {
 		const file = path.join(dir, '.env')
 
 		if (!fs.existsSync(file)) {

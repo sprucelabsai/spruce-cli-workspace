@@ -73,6 +73,13 @@ export default abstract class BaseCommand extends Terminal {
 	/** write a file to a place handling all directory creation (overwrites everything) */
 	public writeFile(destination: string, contents: string) {
 		fs.outputFileSync(destination, contents)
+		this.prettyFormatFile(destination)
+	}
+
+	public deleteFile(destination: string) {
+		if (fs.existsSync(destination)) {
+			fs.removeSync(destination)
+		}
 	}
 
 	/** make a file pass lint */

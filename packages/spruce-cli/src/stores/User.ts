@@ -1,32 +1,32 @@
 import jwt from 'jsonwebtoken'
 import BaseStore, { StoreAuth, IBaseStoreSettings } from './Base'
-import { SpruceSchemas } from '../.spruce/schemas'
+import { SpruceSchemas } from '../.spruce/types/core.types'
 import { IMercuryGQLBody } from '@sprucelabs/mercury'
 import { SpruceEvents } from '../types/events-generated'
 import CliError from '../errors/CliError'
 import { CliErrorCode } from '../errors/types'
 import gql from 'graphql-tag'
 import Schema from '@sprucelabs/schema'
-import userWithTokenDefinition, {
-	UserWithToken
-} from '../definitions/userWithToken.definition'
-import userDefinition, { User } from '../definitions/user.definition'
+import userWithTokenDefinition from '../schemas/userWithToken.definition'
+import userDefinition from '../schemas/user.definition'
+import { IUserWithToken } from '../.spruce/types/userWithToken.types'
+import { IUser } from '../.spruce/types/user.types'
 
 /** settings i need to save */
 interface IUserStoreSettings extends IBaseStoreSettings {
-	authedUsers: UserWithToken[]
+	authedUsers: IUserWithToken[]
 }
 
 export default class UserStore extends BaseStore<IUserStoreSettings> {
 	public name = 'user'
 
 	/** build a new user with an added token */
-	public static userWithToken(values?: Partial<UserWithToken>) {
+	public static userWithToken(values?: Partial<IUserWithToken>) {
 		return new Schema(userWithTokenDefinition, values)
 	}
 
 	/** build a basic user */
-	public static user(values?: Partial<User>) {
+	public static user(values?: Partial<IUser>) {
 		return new Schema(userDefinition, values)
 	}
 
@@ -73,7 +73,7 @@ export default class UserStore extends BaseStore<IUserStoreSettings> {
 	/** load a user from their jwt (WARNING, ALTERS THE AUTH OF MERCURY) */
 	public async userWithTokenFromToken(
 		token: string
-	): Promise<UserWithToken | undefined> {
+	): Promise<IUserWithToken | undefined> {
 		const decoded = jwt.decode(token) as Record<string, any> | null
 		if (!decoded) {
 			throw new CliError({
@@ -98,7 +98,7 @@ export default class UserStore extends BaseStore<IUserStoreSettings> {
 	}
 
 	/** load a user from id */
-	public async userFromId(id: string): Promise<Omit<User, 'id'>> {
+	public async userFromId(id: string): Promise<Omit<IUser, 'id'>> {
 		const query =
 			gql`
 				query User($userId: ID!) {
@@ -139,10 +139,10 @@ export default class UserStore extends BaseStore<IUserStoreSettings> {
 	}
 
 	/** this person will be logged in going forward */
-	public setLoggedInUser(user: Omit<UserWithToken, 'isLoggedIn'>) {
+	public setLoggedInUser(user: Omit<IUserWithToken, 'isLoggedIn'>) {
 		// pull authed user
 		const authedUsers = this.readValue('authedUsers') || []
-		const newAuthedUsers: UserWithToken[] = []
+		const newAuthedUsers: IUserWithToken[] = []
 
 		// remove this user if already authed
 		authedUsers.forEach(authed => {
@@ -167,7 +167,7 @@ export default class UserStore extends BaseStore<IUserStoreSettings> {
 	}
 
 	/** get the logged in user */
-	public loggedInUser(): UserWithToken | undefined {
+	public loggedInUser(): IUserWithToken | undefined {
 		const loggedInUsers = this.readValue('authedUsers') || []
 		const loggedInUser = loggedInUsers.find(auth => auth.isLoggedIn)
 
@@ -190,7 +190,7 @@ export default class UserStore extends BaseStore<IUserStoreSettings> {
 	public logout() {
 		// pull authed user
 		const authedUsers = this.readValue('authedUsers') || []
-		const newAuthedUsers: UserWithToken[] = []
+		const newAuthedUsers: IUserWithToken[] = []
 
 		// remove this user if already authed
 		authedUsers.forEach(authed => {
@@ -201,7 +201,7 @@ export default class UserStore extends BaseStore<IUserStoreSettings> {
 	}
 
 	/** users who have ever been on */
-	public users(): UserWithToken[] {
+	public users(): IUserWithToken[] {
 		const users = this.readValue('authedUsers') || []
 		return users
 	}

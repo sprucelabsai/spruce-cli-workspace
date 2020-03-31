@@ -3,6 +3,8 @@ import BaseCommand from '../Base'
 import { templates } from '@sprucelabs/spruce-templates'
 import { FieldType } from '@sprucelabs/schema'
 import { camelCase } from 'lodash'
+import globby from 'globby'
+import path from 'path'
 
 function capitalize(s: string) {
 	return s.charAt(0).toUpperCase() + s.slice(1)
@@ -11,6 +13,7 @@ function capitalize(s: string) {
 export default class TypesCommand extends BaseCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
+		/** sync everything */
 		program
 			.command('types:sync')
 			.description(
@@ -24,19 +27,41 @@ export default class TypesCommand extends BaseCommand {
 			.option(
 				'-d, --destinationDir <dir>',
 				'Where should I write the types files?',
-				'./src/.spruce'
+				'./src/.spruce/types'
 			)
 			.action(this.sync.bind(this))
 
+		/** create a new schema definition */
 		program
-			.command('definition:create [named]')
+			.command('schema:create [named]')
 			.description('Define a new thing!')
 			.option(
-				'-d, --destinationDir <dir>',
-				'Where should I write the types files?',
-				'./src/definitions'
+				'-dd, --definitionDestinationDir <dir>',
+				'Where should I write the definition file?',
+				'./src/schemas'
+			)
+			.option(
+				'-td --typesDestinationDir <typesDir>',
+				'Where should I write the types file that supports the definition?',
+				'./src/.spruce/types'
 			)
 			.action(this.createDefinition.bind(this))
+
+		/** generate schema definition types files */
+		program
+			.command('schema:generateTypes')
+			.description('Generates type files on all definition files.')
+			.option(
+				'-l, --lookupDir <dir>',
+				'Where should I look for definitions files (*.definition.ts)?',
+				'./src'
+			)
+			.option(
+				'-d, --destinationDir <dir>',
+				'Where should I write the definitions file?',
+				'./src/.spruce/types'
+			)
+			.action(this.regenerateDefinitionTypes.bind(this))
 	}
 
 	/** Create a new skill */
@@ -50,7 +75,7 @@ export default class TypesCommand extends BaseCommand {
 		const typeMap = await this.stores.schema.fieldTypeMap()
 
 		// fill out template
-		const contents = templates.schemaDefinitions({
+		const contents = templates.schemaTypes({
 			schemaTemplateItems,
 			typeMap
 		})
@@ -62,10 +87,74 @@ export default class TypesCommand extends BaseCommand {
 		)
 
 		//write it out
-		const destination = this.resolvePath(destinationDir, 'schemas.ts')
+		const destination = this.resolvePath(destinationDir, 'core.types.ts')
 		this.writeFile(destination, contents)
 
 		this.info(`All done 👊: ${destination}`)
+	}
+
+	public async regenerateDefinitionTypes(cmd: Command) {
+		const lookupDir = cmd.lookupDir as string
+		const destinationDir = cmd.destinationDir as string
+		const search = path.join(lookupDir, '**', '*.definition.ts')
+
+		const matches = await globby(search)
+
+		matches.forEach(filePath => {
+			// names
+			const pathStr = path.dirname(filePath)
+			const filename = filePath.substr(pathStr.length + 1)
+			const nameParts = filename.split('.')
+			const camelName = nameParts[0]
+			const pascalName = capitalize(camelName)
+
+			// files
+			const newFileName = `${camelName}.types.ts`
+			const destination = path.join(destinationDir, newFileName)
+
+			// relative paths
+			const relativeToDefinition = path.relative(
+				path.dirname(destination),
+				filePath
+			)
+
+			// contents
+			const contents = templates.createDefinitionTypes({
+				camelName,
+				pascalName,
+				relativeToDefinition: relativeToDefinition.replace(
+					path.extname(relativeToDefinition),
+					''
+				)
+			})
+
+			// does a file exist already, erase it
+			this.deleteFile(destination)
+
+			// write
+			this.writeFile(destination, contents)
+
+			// tell them how to use it
+			this.headline(`Imported ${pascalName}. Examples:`)
+
+			this.writeLn(
+				`Importing your definition:  import ${camelName}Definition from '${relativeToDefinition}'`
+			)
+
+			this.writeLn(
+				`Importing interfaces: import { I${pascalName}, I${pascalName}Instance } from '#spruce/schemas/${camelName}.types'`
+			)
+
+			this.writeLn(
+				`Creating schema: const ${camelName} = new Schema(${camelName}Definition, values)`
+			)
+
+			this.writeLn(`${camelName}.set('fieldName', newValue);`)
+			this.writeLn(`const value ${camelName}.get('fieldName');`)
+			this.writeLn(`${camelName}.validate()`)
+
+			this.bar()
+		})
 	}
 
 	public async createDefinition(name: string | undefined, cmd: Command) {
@@ -144,14 +233,34 @@ export default class TypesCommand extends BaseCommand {
 		)
 
 		const values = await form.present({ showOverview })
-		const destination = this.resolvePath(
-			cmd.destinationDir as string,
+		const definitionDestination = this.resolvePath(
+			cmd.definitionDestinationDir as string,
 			`${values.camelName}.definition.ts`
 		)
+		const typesDestination = this.resolvePath(
+			cmd.typesDestinationDir as string,
+			`${values.camelName}.types.ts`
+		)
 
-		const contents = templates.createDefinition(values)
+		// relative paths
+		const relativeToDefinition = path.relative(
+			path.dirname(typesDestination),
+			definitionDestination
+		)
 
-		this.writeFile(destination, contents)
-		this.writeLn(`Definition created at ${destination}`)
+		const definition = templates.createDefinition(values)
+		const types = templates.createDefinitionTypes({
+			...values,
+			relativeToDefinition: relativeToDefinition.replace(
+				path.extname(relativeToDefinition),
+				''
+			)
+		})
+
+		this.writeFile(definitionDestination, definition)
+		this.writeFile(typesDestination, types)
+
+		this.writeLn(`Definition created at ${definitionDestination}`)
+		this.writeLn(`Definition types created at ${typesDestination}`)
 	}
 }

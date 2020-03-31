@@ -1,12 +1,11 @@
 import BaseStore, { IBaseStoreSettings, IStoreOptions } from './Base'
 import Schema from '@sprucelabs/schema'
-import onboardingDefinition, {
-	Onboarding
-} from '../schemas/onboarding.definition'
+import onboardingDefinition from '../schemas/onboarding.definition'
+import { IOnboarding } from '../.spruce/types/onboarding.types'
 
 export interface IOnboardingStoreSettings
 	extends IBaseStoreSettings,
-		Onboarding {}
+		IOnboarding {}
 
 export default class OnboardingStore extends BaseStore<
 	IOnboardingStoreSettings

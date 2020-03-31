@@ -1,0 +1,8 @@
+import Schema, {
+	SchemaDefinitionValues
+} from '@sprucelabs/schema'
+
+import {{camelName}}Definition from '{{relativeToDefinition}}'
+
+export interface I{{pascalName}} extends SchemaDefinitionValues<typeof {{camelName}}Definition> {}
+export interface I{{pascalName}}Instance extends Schema<typeof {{camelName}}Definition> {}

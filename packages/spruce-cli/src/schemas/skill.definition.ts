@@ -1,8 +1,5 @@
-import Schema, {
-	buildSchemaDefinition,
-	SchemaDefinitionValues
-} from '@sprucelabs/schema'
-import { SpruceSchemas } from '../.spruce/schemas'
+import { buildSchemaDefinition } from '@sprucelabs/schema'
+import { SpruceSchemas } from '../.spruce/types/core.types'
 
 const skillDefinition = buildSchemaDefinition({
 	...SpruceSchemas.core.Skill.definition,
@@ -17,6 +14,3 @@ const skillDefinition = buildSchemaDefinition({
 })
 
 export default skillDefinition
-
-export type Skill = SchemaDefinitionValues<typeof skillDefinition>
-export type SkillInstance = Schema<typeof skillDefinition>
