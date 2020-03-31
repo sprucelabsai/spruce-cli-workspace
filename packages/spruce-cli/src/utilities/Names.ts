@@ -1,9 +1,6 @@
-import { camelCase, snakeCase, upperCase, upperFirst } from 'lodash'
-import {
-	IFieldDefinition,
-	ISchemaDefinition,
-	SchemaDefinitionValues
-} from '@sprucelabs/schema'
+import { camelCase, snakeCase, upperFirst } from 'lodash'
+import { IFieldDefinition } from '@sprucelabs/schema'
+import { INamedTemplateItem } from '../.spruce/schemas/namedTemplateItem.types'
 
 export default class NamesUtility {
 	/** first name => FirstName */
@@ -16,27 +13,33 @@ export default class NamesUtility {
 	}
 	/** first name => FIRST_NAME */
 	public toConst(name: string) {
-		return upperCase(snakeCase(name))
+		return snakeCase(name).toUpperCase()
 	}
 
-	// public onWillAskQuestionHelper<
-	// 	T extends INamed,
-	// 	V extends Partial<SchemaDefinitionValues<T>>
-	// >(fieldName: string, fieldDefinition: IFieldDefinition, values: V) {
-	// 	switch (name) {
-	// 		case 'camelName':
-	// 			if (!values.camelName) {
-	// 				fieldDefinition.defaultValue = this.toCamel(values.readableName || '')
-	// 			}
-	// 			break
-	// 		case 'pascalName':
-	// 			if (!values.pascalName) {
-	// 				fieldDefinition.defaultValue = this.toPascal(
-	// 					values.readableName || ''
-	// 				)
-	// 			}
-	// 			break
-	// 	}
-	// 	return fieldDefinition
-	// }
+	/** help guess on answers */
+	public onWillAskQuestionHandler<
+		K extends keyof INamedTemplateItem = keyof INamedTemplateItem,
+		V extends Partial<INamedTemplateItem> = Partial<INamedTemplateItem>
+	>(fieldName: K, fieldDefinition: IFieldDefinition, values: V) {
+		switch (fieldName) {
+			case 'camelName':
+				if (!values.camelName) {
+					fieldDefinition.defaultValue = this.toCamel(values.readableName || '')
+				}
+				break
+			case 'pascalName':
+				if (!values.pascalName) {
+					fieldDefinition.defaultValue = this.toPascal(
+						values.readableName || ''
+					)
+				}
+				break
+			case 'constName':
+				if (!values.constName) {
+					fieldDefinition.defaultValue = this.toConst(values.readableName || '')
+				}
+				break
+		}
+		return fieldDefinition
+	}
 }

@@ -2,8 +2,10 @@ import Schema, {
 	SchemaDefinitionValues
 } from '@sprucelabs/schema'
 
-import skillDefinition from ''
+import skillDefinition from '../../schemas/skill.definition'
 
-export type SkillDefinition = typeof skillDefinition
-export interface ISkill extends SchemaDefinitionValues<SkillDefinition> {}
-export interface ISkillInstance extends Schema<SkillDefinition> {}
+type SkillDefinition = typeof skillDefinition
+
+export interface ISkillDefinition extends SkillDefinition {}
+export interface ISkill extends SchemaDefinitionValues<ISkillDefinition> {}
+export interface ISkillInstance extends Schema<ISkillDefinition> {}

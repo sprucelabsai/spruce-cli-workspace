@@ -108,7 +108,7 @@ export default class SchemaCommand extends AbstractCommand {
 			const {
 				pascalName,
 				camelName
-			} = this.generators.schema.generateTypeFromDefinition(
+			} = this.generators.schema.generateTypesFromDefinition(
 				filePath,
 				this.resolvePath(destinationDir)
 			)

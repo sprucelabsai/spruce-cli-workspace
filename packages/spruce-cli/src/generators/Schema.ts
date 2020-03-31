@@ -3,9 +3,9 @@ import AbstractGenerator from './Abstract'
 
 export default class SchemaGenerator extends AbstractGenerator {
 	/** generate a type file from a definition file */
-	public generateTypeFromDefinition(
-		absoluteSourceFile: string,
-		absoluteDestinationDir: string
+	public generateTypesFromDefinition(
+		definitionFile: string,
+		destinationDir: string
 	): {
 		destination: string
 		camelName: string
@@ -14,8 +14,8 @@ export default class SchemaGenerator extends AbstractGenerator {
 	} {
 		// names
 		//strip out file name from path
-		const pathStr = path.dirname(absoluteSourceFile)
-		const filename = absoluteSourceFile.substr(pathStr.length + 1)
+		const pathStr = path.dirname(definitionFile)
+		const filename = definitionFile.substr(pathStr.length + 1)
 		const nameParts = filename.split('.')
 
 		//get variations on name
@@ -24,16 +24,16 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 		// files
 		const newFileName = `${camelName}.types.ts`
-		const destination = path.join(absoluteDestinationDir, newFileName)
+		const destination = path.join(destinationDir, newFileName)
 
 		// relative paths
 		const relativeToDefinition = path.relative(
 			path.dirname(destination),
-			absoluteDestinationDir
+			definitionFile
 		)
 
 		// contents
-		const contents = this.templates.createDefinitionTypes({
+		const contents = this.templates.definitionTypes({
 			camelName,
 			pascalName,
 			relativeToDefinition: relativeToDefinition.replace(

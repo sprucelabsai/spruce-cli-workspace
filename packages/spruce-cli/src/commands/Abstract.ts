@@ -9,6 +9,7 @@ import { Mercury } from '@sprucelabs/mercury'
 import { IServices } from '../services'
 import { IGenerators } from '../generators'
 import { IUtilities } from '../utilities'
+import { Templates } from '@sprucelabs/spruce-templates'
 
 /** all commanders get this */
 export interface ICommandOptions {
@@ -19,6 +20,7 @@ export interface ICommandOptions {
 	log: Log
 	cwd: string
 	utilities: IUtilities
+	templates: Templates
 }
 
 export default abstract class AbstractCommand extends Terminal {
@@ -30,6 +32,7 @@ export default abstract class AbstractCommand extends Terminal {
 	public cwd: string
 	public generators: IGenerators
 	public utilities: IUtilities
+	public templates: Templates
 
 	public constructor(options: ICommandOptions) {
 		super()
@@ -41,7 +44,8 @@ export default abstract class AbstractCommand extends Terminal {
 			cwd,
 			log,
 			generators,
-			utilities
+			utilities,
+			templates
 		} = options
 
 		this.cwd = cwd
@@ -51,6 +55,7 @@ export default abstract class AbstractCommand extends Terminal {
 		this.log = log
 		this.generators = generators
 		this.utilities = utilities
+		this.templates = templates
 	}
 
 	/** preps a form builder, you will need to call present() */
@@ -99,6 +104,11 @@ export default abstract class AbstractCommand extends Terminal {
 	/** delete a file */
 	public deleteFile(destination: string) {
 		return this.generators.core.deleteFile(destination)
+	}
+
+	/** does a file exist */
+	public doesFileExist(destination: string) {
+		return this.generators.core.doesFileExist(this.resolvePath(destination))
 	}
 
 	/** make a file pass lint */

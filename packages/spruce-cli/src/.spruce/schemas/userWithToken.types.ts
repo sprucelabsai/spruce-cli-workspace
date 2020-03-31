@@ -2,8 +2,10 @@ import Schema, {
 	SchemaDefinitionValues
 } from '@sprucelabs/schema'
 
-import userWithTokenDefinition from ''
+import userWithTokenDefinition from '../../schemas/userWithToken.definition'
 
-export type UserWithTokenDefinition = typeof userWithTokenDefinition
-export interface IUserWithToken extends SchemaDefinitionValues<UserWithTokenDefinition> {}
-export interface IUserWithTokenInstance extends Schema<UserWithTokenDefinition> {}
+type UserWithTokenDefinition = typeof userWithTokenDefinition
+
+export interface IUserWithTokenDefinition extends UserWithTokenDefinition {}
+export interface IUserWithToken extends SchemaDefinitionValues<IUserWithTokenDefinition> {}
+export interface IUserWithTokenInstance extends Schema<IUserWithTokenDefinition> {}

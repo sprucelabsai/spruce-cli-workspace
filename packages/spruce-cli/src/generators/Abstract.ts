@@ -36,4 +36,9 @@ export default abstract class AbstractGenerator {
 			fs.removeSync(destination)
 		}
 	}
+
+	/** does this file exist */
+	public doesFileExist(destination: string) {
+		return fs.existsSync(destination)
+	}
 }

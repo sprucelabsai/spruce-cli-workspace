@@ -1,0 +1,27 @@
+import  { 
+	FieldType,
+} from '@sprucelabs/schema'
+
+import { buildErrorDefinition } from '@sprucelabs/error'
+
+const {{camelName}}Definition = buildErrorDefinition({
+	id: '{{camelName}}',
+	name: '{{{escape readableName}}}',
+    description: '{{{escape description}}}',
+	fields: {
+		fieldName1: {
+			type: FieldType.Boolean,
+			label: 'First Field',
+			isRequired: true
+		},
+		fieldName2: {
+			type: FieldType.Number,
+			label: 'Second Field',
+			isRequired: true,
+			hint:
+				'A hint'
+		}
+	}
+})
+
+export default {{camelName}}Definition

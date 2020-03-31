@@ -17,7 +17,6 @@ export default class CliError extends SpruceError<CliErrorOptions> {
 				message = `Failed to load command at ${options.file}!\n`
 				message += 'This is likely a syntax or lint error.'
 				break
-
 			case CliErrorCode.GenericMercury:
 				log.debug(
 					`Cli Error is not handling generic mercury error yet. Consider dropping in details about the event`
@@ -28,6 +27,7 @@ export default class CliError extends SpruceError<CliErrorOptions> {
 			default:
 				message = super.friendlyMessage()
 		}
+
 		return message
 	}
 }

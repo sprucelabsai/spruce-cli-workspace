@@ -1,206 +1,64 @@
 import handlebars from 'handlebars'
 import fs from 'fs'
 import path from 'path'
-import _ from 'lodash'
-import {
-	IFieldDefinition,
-	FieldType,
-	FieldClassMap,
-	ISchemaTemplateItem,
-	IFieldTemplateDetails
-} from '@sprucelabs/schema'
+import log from '@sprucelabs/log'
 
-/* start case (cap first letter, lower rest) */
-handlebars.registerHelper('startCase', val => {
-	return _.startCase(val)
-})
+import { ISchemaTemplateItem, IFieldTemplateDetails } from '@sprucelabs/schema'
 
-/* escape quotes */
-handlebars.registerHelper('escape', function(variable) {
-	return variable && variable.replace(/(['])/g, '\\$1')
-})
+// import addons
+import * as escape from './src/addons/escape.addon'
+import * as fieldDefinitionOptions from './src/addons/fieldDefinitionOptions.addon'
+import * as fieldDefinitionValueType from './src/addons/fieldDefinitionValueType.addon'
+import * as fieldTypeEnum from './src/addons/fieldTypeEnum.addon'
+import * as fieldValue from './src/addons/fieldValue.addon'
+import * as isEqual from './src/addons/isEqual.addon'
+import * as startCase from './src/addons/startCase.addon'
 
-/* quick way to do an equals check against 2 values */
-handlebars.registerHelper('isEqual', function(arg1, arg2, options) {
-	//@ts-ignore // TODO how should this work in a typed environment?
-	return arg1 == arg2 ? options.fn(this) : options.inverse(this)
-})
-
-/* the enum for schema.fields.fieldName.type as a string */
-handlebars.registerHelper('fieldTypeEnum', function(
-	fieldDefinition: IFieldDefinition
-) {
-	if (!fieldDefinition) {
-		return '"**fieldTypeEnum error: MISSING FIELD TYPE ENUM**"'
-	}
-
-	const keys = Object.keys(FieldType)
-	const values = Object.values(FieldType)
-	const match = values.indexOf(fieldDefinition.type)
-
-	return `SpruceSchema.FieldType.${keys[match]}`
-})
-
-/** drop in the value of a field which quotes if needed */
-handlebars.registerHelper('fieldValue', function(
-	fieldDefinition: IFieldDefinition,
-	value: any
-) {
-	if (value) {
-		// TODO finish this
-		console.log(fieldDefinition, value)
-		throw new Error('field value not yet implemented')
-	}
-
-	return value
-})
-
-/** renders field options */
-handlebars.registerHelper('fieldDefinitionOptions', function(
-	fieldDefinition: IFieldDefinition,
-	renderAs,
-	options
-) {
-	if (!fieldDefinition) {
-		return '"**fieldDefinitionOptions error: MISSING FIELD DEFINITION"'
-	}
-
-	if (!options || (renderAs !== 'type' && renderAs !== 'value')) {
-		throw new Error("fieldDefinitionOptions helper's second arg as type|value")
-	}
-
-	const {
-		data: { root }
-	} = options
-
-	const schemaTemplateItems:
-		| (ISchemaTemplateItem & { namespace: string })[]
-		| undefined = root && root.schemaTemplateItems
-
-	if (!schemaTemplateItems) {
-		throw new Error(
-			'fiendDefinitionOptions nees schemaTemplateItems passed to parent template'
-		)
-	}
-
-	const updatedOptions:
-		| Record<string, any>
-		| undefined = fieldDefinition.options && {
-		...fieldDefinition.options
-	}
-
-	// if this is a schema type, we need to map it to the related definition
-	if (fieldDefinition.type === FieldType.Schema && updatedOptions) {
-		const matchedTemplateItem = schemaTemplateItems.find(
-			item => item.id === updatedOptions.schemaId
-		)
-
-		// swap out id for reference
-		if (matchedTemplateItem) {
-			delete updatedOptions.schemaId
-			updatedOptions.schema = `SpruceSchemas.${matchedTemplateItem.namespace}.${
-				matchedTemplateItem.typeName
-			}.${renderAs === 'type' ? 'IDefinition' : 'definition'}`
-		} else {
-			throw new Error('fieldDefinitionOptions could not find schem ${}')
-		}
-	}
-
-	// no options, undefined is acceptable
-	if (Object.keys(updatedOptions ?? {}).length === 0) {
-		return 'undefined'
-	}
-
-	let template = `{`
-	Object.keys(updatedOptions ?? {}).forEach(key => {
-		// @ts-ignore TODO how to type this
-		const value = updatedOptions[key]
-		template += `${key}: `
-		if (key === 'schemaId' || key === 'schema') {
-			template += `${value},`
-		} else if (typeof value !== 'string') {
-			template += `${JSON.stringify(value)},`
-		} else {
-			template += `'${value.replace(/(['])/g, '\\$1')}',`
-		}
-	})
-
-	template += '}'
-
-	return template
-})
-
-/* the type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */
-handlebars.registerHelper('fieldDefinitionValueType', function(
-	fieldDefinition: IFieldDefinition,
-	options
-) {
-	const {
-		data: { root }
-	} = options
-
-	// pull vars off context
-	const schemaTemplateItems:
-		| (ISchemaTemplateItem & { namespace: string })[]
-		| undefined = root && root.schemaTemplateItems
-	const typeMap = root && root.typeMap
-
-	if (!schemaTemplateItems || !typeMap) {
-		throw new Error(
-			'You must pass schemaTemplateItems and a typeMap to render this script'
-		)
-	}
-
-	const { type } = fieldDefinition
-	const FieldClass = FieldClassMap[type]
-	const { valueType } = FieldClass.templateDetails()
-
-	let typeLiteral
-	switch (fieldDefinition.type) {
-		case FieldType.Schema: {
-			const matchedTemplateItem = schemaTemplateItems.find(
-				item => item.id === fieldDefinition.options.schemaId
-			)
-
-			if (matchedTemplateItem) {
-				typeLiteral = `SpruceSchemas.${matchedTemplateItem.namespace}.${matchedTemplateItem.typeName}.${matchedTemplateItem.interfaceName}`
-			} else {
-				throw new Error(
-					`fieldDefinitionValueType help colud not find schema ${fieldDefinition.options.schemaId}`
-				)
-			}
-
-			break
-		}
-		default:
-			typeLiteral = valueType
-	}
-
-	if (fieldDefinition.isArray) {
-		typeLiteral = typeLiteral + '[]'
-	}
-
-	// if the type points to an interface, pull it off the schema
-	// TODO handle when skill introduce their own field types
-	return typeLiteral[0] === 'I' ? `SpruceSchema.${typeLiteral}` : typeLiteral
-})
+log.info('addon', escape)
+log.info('addon', fieldDefinitionOptions)
+log.info('addon', fieldDefinitionValueType)
+log.info('addon', fieldTypeEnum)
+log.info('addon', fieldValue)
+log.info('addon', isEqual)
+log.info('addon', startCase)
 
 // import actual templates
 const templatePath = path.join(__dirname, 'src', 'templates')
 
-// schema definitions
+// template files
 const schemaTypes: string = fs
-	.readFileSync(path.join(templatePath, 'schema/schema.types.hbs'))
+	.readFileSync(path.join(templatePath, 'schemas/schema.types.hbs'))
 	.toString()
 
-const createDefinition: string = fs
-	.readFileSync(path.join(templatePath, 'schema/definition.hbs'))
+const definition: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/definition.hbs'))
 	.toString()
 
-const createDefinitionTypes: string = fs
-	.readFileSync(path.join(templatePath, 'schema/definition.types.hbs'))
+const definitionTypes: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/definition.types.hbs'))
 	.toString()
 
+const error: string = fs
+	.readFileSync(path.join(templatePath, 'errors/Error.hbs'))
+	.toString()
+
+const errorTypes: string = fs
+	.readFileSync(path.join(templatePath, 'errors/error.types.hbs'))
+	.toString()
+
+const errorOptionsTypes: string = fs
+	.readFileSync(path.join(templatePath, 'errors/options.types.hbs'))
+	.toString()
+
+const errorCodesTypes: string = fs
+	.readFileSync(path.join(templatePath, 'errors/codes.types.hbs'))
+	.toString()
+
+const errorDefinition: string = fs
+	.readFileSync(path.join(templatePath, 'errors/definition.hbs'))
+	.toString()
+
+// template generators
 export const templates = {
 	/** all definitions */
 	schemaTypes(options: {
@@ -212,38 +70,86 @@ export const templates = {
 	},
 
 	/** when building a definition in a skill */
-	createDefinition(options: {
+	definition(options: {
 		camelName: string
 		description: string
 		pascalName: string
 		readableName: string
 	}) {
-		const template = handlebars.compile(createDefinition)
+		const template = handlebars.compile(definition)
 		return template(options)
 	},
 
 	/** the types file to support a definition */
-	createDefinitionTypes(options: {
+	definitionTypes(options: {
 		camelName: string
 		pascalName: string
 		relativeToDefinition: string
 	}) {
-		const template = handlebars.compile(createDefinitionTypes)
+		const template = handlebars.compile(definitionTypes)
+		return template(options)
+	},
+
+	/** for creating an error class */
+	error(options: {
+		pascalName: string
+		readableName: string
+		renderClassDefinition?: boolean
+	}) {
+		const template = handlebars.compile(error)
+		return template({ renderClassDefinition: true, ...options })
+	},
+
+	/** for generating types file this error (the ISpruceErrorOptions sub-interface) */
+	errorTypes(options: {
+		camelName: string
+		relativeToDefinition: string
+		pascalName: string
+		description: string
+	}) {
+		const template = handlebars.compile(errorTypes)
+		return template(options)
+	},
+
+	/** for generating types for all the options (the ISpruceErrorOptions sub-interface) */
+	errorOptionsTypes(options: {
+		options: { camelName: string; pascalName: string }[]
+	}) {
+		const template = handlebars.compile(errorOptionsTypes)
+		return template(options)
+	},
+
+	/** for generating types for all the options (the ISpruceErrorOptions sub-interface) */
+	errorCodesTypes(options: {
+		codes: { pascalName: string; constName: string; description: string }[]
+	}) {
+		const template = handlebars.compile(errorCodesTypes)
+		return template(options)
+	},
+
+	/** an error definition file */
+	errorDefinition(options: {
+		camelName: string
+		readableName: string
+		description: string
+	}) {
+		const template = handlebars.compile(errorDefinition)
 		return template(options)
 	}
 }
 
+/** all the templates */
 export type Templates = typeof templates
 
 // partials
 const schemaPartial: string = fs
-	.readFileSync(path.join(templatePath, 'schema/schemaDefinition.hbs'))
+	.readFileSync(path.join(templatePath, 'schemas/schemaDefinition.hbs'))
 	.toString()
 
 handlebars.registerPartial('schemaDefinition', schemaPartial)
 
 const fieldPartial: string = fs
-	.readFileSync(path.join(templatePath, 'schema/fieldDefinition.hbs'))
+	.readFileSync(path.join(templatePath, 'schemas/fieldDefinition.hbs'))
 	.toString()
 
 handlebars.registerPartial('fieldDefinition', fieldPartial)

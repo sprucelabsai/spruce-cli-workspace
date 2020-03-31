@@ -6,7 +6,7 @@ import globby from 'globby'
 import pkg from '../package.json'
 import CliError from './errors/CliError'
 import { IServices } from './services'
-import log from '@sprucelabs/log'
+import log, { LogLevel } from '@sprucelabs/log'
 import {
 	Mercury,
 	IMercuryConnectOptions,
@@ -29,6 +29,7 @@ import { StoreAuth } from './stores/Abstract'
 import CoreGenerator from './generators/Core'
 import { IGeneratorOptions } from './generators/Abstract'
 import { templates } from '@sprucelabs/spruce-templates'
+import ErrorGenerator from './generators/Error'
 
 /**
  * For handling debugger not attaching right away
@@ -59,6 +60,9 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 
 	// starting cwd
 	const cwd = process.cwd()
+
+	// setup log
+	log.setOptions({ level: LogLevel.Info })
 
 	// setup mercury
 	const mercury = new Mercury()
@@ -127,7 +131,8 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 
 	const generators: IGenerators = {
 		schema: new SchemaGenerator(generatorOptions),
-		core: new CoreGenerator(generatorOptions)
+		core: new CoreGenerator(generatorOptions),
+		error: new ErrorGenerator(generatorOptions)
 	}
 
 	// Load commands and actions
@@ -146,7 +151,8 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 				cwd,
 				log,
 				generators,
-				utilities
+				utilities,
+				templates
 			})
 
 			// attach commands to the program
