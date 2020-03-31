@@ -19,7 +19,7 @@ import UserStore from './stores/User'
 import SchemaStore from './stores/Schema'
 import { CliErrorCode } from './errors/types'
 import PinService from './services/Pin'
-import BaseCommand, { ICommandOptions } from './commands/Base'
+import AbstractCommand, { ICommandOptions } from './commands/Abstract'
 import OnboardingStore from './stores/Onboarding'
 
 /**
@@ -112,7 +112,7 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 			// import and type the command
 			const cmdClass: new (
 				options: ICommandOptions
-			) => BaseCommand = require(file).default
+			) => AbstractCommand = require(file).default
 
 			// instantiate the command
 			const command = new cmdClass({

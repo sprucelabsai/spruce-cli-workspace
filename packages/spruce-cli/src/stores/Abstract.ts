@@ -29,7 +29,7 @@ export interface IBaseStoreSettings {
 	authType: StoreAuth
 }
 
-export default abstract class BaseStore<
+export default abstract class AbstractStore<
 	Settings extends IBaseStoreSettings = IBaseStoreSettings
 > {
 	/** the current scope */

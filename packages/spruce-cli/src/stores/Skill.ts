@@ -1,4 +1,4 @@
-import BaseStore, { IBaseStoreSettings, StoreAuth } from './Base'
+import AbstractStore, { IBaseStoreSettings, StoreAuth } from './Abstract'
 import { SpruceSchemas } from '../.spruce/types/core.types'
 import { SpruceEvents } from '../types/events-generated'
 import Schema from '@sprucelabs/schema'
@@ -11,7 +11,7 @@ export interface ISkillStoreSettings extends IBaseStoreSettings {
 	loggedInSkill: SpruceSchemas.core.Skill.ISkill
 }
 
-export default class SkillStore extends BaseStore<ISkillStoreSettings> {
+export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
 	public name = 'skill'
 
 	/** build a skill with the passed values */

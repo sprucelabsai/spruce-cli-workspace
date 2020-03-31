@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import BaseStore, { StoreAuth, IBaseStoreSettings } from './Base'
+import AbstractStore, { StoreAuth, IBaseStoreSettings } from './Abstract'
 import { SpruceSchemas } from '../.spruce/types/core.types'
 import { IMercuryGQLBody } from '@sprucelabs/mercury'
 import { SpruceEvents } from '../types/events-generated'
@@ -17,7 +17,7 @@ interface IUserStoreSettings extends IBaseStoreSettings {
 	authedUsers: IUserWithToken[]
 }
 
-export default class UserStore extends BaseStore<IUserStoreSettings> {
+export default class UserStore extends AbstractStore<IUserStoreSettings> {
 	public name = 'user'
 
 	/** build a new user with an added token */

@@ -18,7 +18,7 @@ export interface ICommandOptions {
 	cwd: string
 }
 
-export default abstract class BaseCommand extends Terminal {
+export default abstract class AbstractCommand extends Terminal {
 	/** spruce logger */
 	public log: Log
 	public stores: IStores

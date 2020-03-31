@@ -12,7 +12,7 @@ export interface IStores {
 	onboarding: OnboardingStore
 }
 
-export * from './Base'
+export * from './Abstract'
 export * from './Remote'
 export * from './Skill'
 export * from './User'

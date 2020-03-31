@@ -1,5 +1,5 @@
 import { Command } from 'commander'
-import BaseCommand from '../Base'
+import AbstractCommand from '../Abstract'
 import { StoreAuth } from '../../stores'
 import { IFieldSelectDefinitionChoice, FieldType } from '@sprucelabs/schema'
 import CliError from '../../errors/CliError'
@@ -9,7 +9,7 @@ import { CliErrorCode } from '../../errors/types'
 // import handlebars from 'handlebars'
 // import skillState from '../../stores/Skill'
 
-export default class SkillCommand extends BaseCommand {
+export default class SkillCommand extends AbstractCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
 		program

@@ -1,5 +1,5 @@
 import { Command } from 'commander'
-import BaseCommand from '../Base'
+import AbstractCommand from '../Abstract'
 import { templates } from '@sprucelabs/spruce-templates'
 import { FieldType } from '@sprucelabs/schema'
 import { camelCase } from 'lodash'
@@ -10,7 +10,7 @@ function capitalize(s: string) {
 	return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
-export default class TypesCommand extends BaseCommand {
+export default class TypesCommand extends AbstractCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
 		/** sync everything */

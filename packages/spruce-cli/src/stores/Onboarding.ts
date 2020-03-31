@@ -1,4 +1,4 @@
-import BaseStore, { IBaseStoreSettings, IStoreOptions } from './Base'
+import AbstractStore, { IBaseStoreSettings, IStoreOptions } from './Abstract'
 import Schema from '@sprucelabs/schema'
 import onboardingDefinition from '../schemas/onboarding.definition'
 import { IOnboarding } from '../.spruce/types/onboarding.types'
@@ -7,7 +7,7 @@ export interface IOnboardingStoreSettings
 	extends IBaseStoreSettings,
 		IOnboarding {}
 
-export default class OnboardingStore extends BaseStore<
+export default class OnboardingStore extends AbstractStore<
 	IOnboardingStoreSettings
 > {
 	public name = 'onboarding'

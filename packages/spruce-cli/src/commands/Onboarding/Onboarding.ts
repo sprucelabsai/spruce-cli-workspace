@@ -1,4 +1,4 @@
-import BaseCommand from '../Base'
+import AbstractCommand from '../Abstract'
 import { Command } from 'commander'
 import {
 	IFieldSelectDefinitionChoice,
@@ -7,7 +7,7 @@ import {
 } from '@sprucelabs/schema'
 import { shuffle } from 'lodash'
 
-export default class OnboardingCommand extends BaseCommand {
+export default class OnboardingCommand extends AbstractCommand {
 	public attachCommands(program: Command) {
 		program
 			.command('onboarding')

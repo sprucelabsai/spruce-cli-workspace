@@ -1,4 +1,4 @@
-import BaseStore from './Base'
+import AbstractStore from './Abstract'
 import {
 	ISchemaDefinition,
 	Template as SchemaTemplate,
@@ -26,7 +26,7 @@ export interface IFieldTypeMap {
 	[fieldType: string]: IFieldTemplateDetails
 }
 
-export default class SchemaStore extends BaseStore {
+export default class SchemaStore extends AbstractStore {
 	public name = 'schema'
 
 	/** get the schema map */

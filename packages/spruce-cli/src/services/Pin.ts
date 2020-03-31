@@ -1,9 +1,9 @@
-import BaseService from './Base'
+import AbstractService from './Abstract'
 import CliError from '../errors/CliError'
 import { CliErrorCode } from '../errors/types'
 import { SpruceEvents } from '../types/events-generated'
 
-export default class PinService extends BaseService {
+export default class PinService extends AbstractService {
 	/** give me a phone and i'll send you a pin */
 	public async requestPin(phone: string) {
 		try {

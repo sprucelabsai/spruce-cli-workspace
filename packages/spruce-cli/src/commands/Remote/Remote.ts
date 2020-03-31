@@ -1,9 +1,9 @@
 import { Command } from 'commander'
-import BaseCommand from '../Base'
+import AbstractCommand from '../Abstract'
 import { FieldType } from '@sprucelabs/schema'
 import { RemoteStoreRemoteType, RemoteStoreChoices } from '../../stores'
 
-export default class RemoteCommand extends BaseCommand {
+export default class RemoteCommand extends AbstractCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
 		program

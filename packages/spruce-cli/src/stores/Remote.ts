@@ -1,4 +1,4 @@
-import BaseStore, { IBaseStoreSettings, IStoreOptions } from './Base'
+import AbstractStore, { IBaseStoreSettings, IStoreOptions } from './Abstract'
 import Schema, {
 	FieldType,
 	IFieldSelectDefinitionChoice
@@ -26,7 +26,7 @@ export interface IRemoteStoreSettings extends IBaseStoreSettings {
 	remote?: RemoteStoreRemoteType
 }
 
-export default class RemoteStore extends BaseStore<IRemoteStoreSettings> {
+export default class RemoteStore extends AbstractStore<IRemoteStoreSettings> {
 	/** map of remote urls and subscriptions url */
 	public static remotes = {
 		[RemoteStoreRemoteType.Production]: {
