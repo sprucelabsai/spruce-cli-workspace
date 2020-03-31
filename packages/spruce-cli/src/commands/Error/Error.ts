@@ -3,6 +3,8 @@ import { Command } from 'commander'
 import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definition'
 import CliError from '../../errors/CliError'
 import { CliErrorCode } from '../../errors/types'
+import path from 'path'
+import globby from 'globby'
 
 export default class ErrorCommand extends AbstractCommand {
 	public attachCommands(program: Command): void {
@@ -20,6 +22,21 @@ export default class ErrorCommand extends AbstractCommand {
 				'./src/.spruce/errors'
 			)
 			.action(this.createError.bind(this))
+
+		program
+			.command('error:sync')
+			.description('Generates type files on all error definitions.')
+			.option(
+				'-l, --lookupDir <dir>',
+				'Where should I look for definitions files (*.definition.ts)?',
+				'./src/errors'
+			)
+			.option(
+				'-d, --destinationDir <dir>',
+				'Where should I write the definitions file?',
+				'./src/.spruce/errors'
+			)
+			.action(this.sync.bind(this))
 	}
 
 	public async createError(cmd: Command) {
@@ -117,7 +134,48 @@ export default class ErrorCommand extends AbstractCommand {
 			destinationFile: this.resolvePath(typesDestinationDir, 'options.types.ts')
 		})
 
-		console.log(names)
-		debugger
+		this.section({
+			headline: 'Success!',
+			lines: [`Error class ${errorFileDestination}`]
+		})
+	}
+
+	public async sync(cmd: Command) {
+		const lookupDir = cmd.lookupDir as string
+		const destinationDir = cmd.destinationDir as string
+		const search = path.join(lookupDir, '**', '*.definition.ts')
+
+		const matches = await globby(search)
+
+		// lets clear out the current error dir
+		// this.deleteFile()
+		await Promise.all(
+			matches.map(async filePath => {
+				// does this file contain buildErrorDefinition?
+				const currentContents = this.readFile(filePath)
+				if (currentContents.search(/buildErrorDefinition\({/) === -1) {
+					this.log.debug(`Skipping ${filePath}`)
+					return
+				}
+
+				//generate error option types based on new file
+				this.generators.error.generateTypesFromDefinitionFile(
+					filePath,
+					this.resolvePath(destinationDir)
+				)
+			})
+		)
+
+		// rebuild the errors codes
+		await this.generators.error.rebuildCodesTypesFile({
+			lookupDir: this.resolvePath(lookupDir),
+			destinationFile: this.resolvePath(destinationDir, 'codes.types.ts')
+		})
+
+		// rebuild options union
+		await this.generators.error.rebuildOptionsTypesFile({
+			lookupDir: this.resolvePath(lookupDir),
+			destinationFile: this.resolvePath(destinationDir, 'options.types.ts')
+		})
 	}
 }

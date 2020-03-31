@@ -202,8 +202,8 @@ export default class SchemaCommand extends AbstractCommand {
 			definitionDestination
 		)
 
-		const definition = templates.createDefinition(values)
-		const types = templates.createDefinitionTypes({
+		const definition = templates.definition(values)
+		const types = templates.definitionTypes({
 			...values,
 			relativeToDefinition: relativeToDefinition.replace(
 				path.extname(relativeToDefinition),

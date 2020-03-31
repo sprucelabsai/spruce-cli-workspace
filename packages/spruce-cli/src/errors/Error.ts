@@ -8,14 +8,20 @@ export default class SpruceError extends BaseError<ErrorOptions> {
 		const { options } = this
 		let message
 		switch (options?.code) {
+			// invalid command
 			case ErrorCode.InvalidCommand:
-				message = 'this command is bad'
-
+				message = `Invalid command: ${options.args.join(' ')}\n`
+				message += `Try running spruce --help`
 				break
-
-			case ErrorCode.InvalidParams:
-				message = 'taoehustnaoeh usntaoh eu'
-
+			case ErrorCode.CouldNotLoadCommand:
+				message = `Failed to load command at ${options.file}!\n`
+				message += 'This is likely a syntax or lint error.'
+				break
+			case ErrorCode.GenericMercury:
+				log.debug(
+					`Cli Error is not handling generic mercury error yet. Consider dropping in details about the event`
+				)
+				message = super.friendlyMessage()
 				break
 
 			default:
