@@ -5,7 +5,7 @@ import CliError from '../../errors/CliError'
 import { CliErrorCode } from '../../errors/types'
 import SpruceError from '@sprucelabs/error'
 import { StoreAuth } from '../../stores'
-import { IUserWithToken } from '../../.spruce/types/userWithToken.types'
+import { IUserWithToken } from '../../.spruce/schemas/userWithToken.types'
 
 export default class UserCommand extends AbstractCommand {
 	/** Sets up commands */

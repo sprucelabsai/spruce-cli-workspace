@@ -1,0 +1,10 @@
+import Schema, {
+	SchemaDefinitionValues
+} from '@sprucelabs/schema'
+
+import {{camelName}}Definition from '{{relativeToDefinition}}'
+import { ISpruceErrorOptions } from '@sprucelabs/error'
+import { ErrorCode } from './codes.types'
+
+
+export interface IErrorOptions{{PascalName}} extends SchemaDefinitionValues<typeof {{camelName}}>, ISpruceErrorOptions<ErrorCode> {} 

@@ -4,5 +4,6 @@ import Schema, {
 
 import {{camelName}}Definition from '{{relativeToDefinition}}'
 
-export interface I{{pascalName}} extends SchemaDefinitionValues<typeof {{camelName}}Definition> {}
-export interface I{{pascalName}}Instance extends Schema<typeof {{camelName}}Definition> {}
+export type {{pascalName}}Definition = typeof {{camelName}}Definition
+export interface I{{pascalName}} extends SchemaDefinitionValues<{{pascalName}}Definition> {}
+export interface I{{pascalName}}Instance extends Schema<{{pascalName}}Definition> {}

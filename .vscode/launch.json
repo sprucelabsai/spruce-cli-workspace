@@ -18,7 +18,6 @@
       "runtimeArgs": ["run", "local"],
       "console": "integratedTerminal",
       "port": 5200,
-      "restart": true,
       "cwd": "${workspaceFolder}/packages/spruce-cli",
       "localRoot": "${workspaceRoot}/packages/spruce-cli",
       "remoteRoot": "${workspaceRoot}/packages/spruce-cli",

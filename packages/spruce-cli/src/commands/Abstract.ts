@@ -7,15 +7,18 @@ import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
 import { IStores } from '../stores'
 import { Mercury } from '@sprucelabs/mercury'
 import { IServices } from '../services'
-import fs from 'fs-extra'
+import { IGenerators } from '../generators'
+import { IUtilities } from '../utilities'
 
 /** all commanders get this */
 export interface ICommandOptions {
 	stores: IStores
 	mercury: Mercury
 	services: IServices
+	generators: IGenerators
 	log: Log
 	cwd: string
+	utilities: IUtilities
 }
 
 export default abstract class AbstractCommand extends Terminal {
@@ -25,17 +28,29 @@ export default abstract class AbstractCommand extends Terminal {
 	public mercury: Mercury
 	public services: IServices
 	public cwd: string
+	public generators: IGenerators
+	public utilities: IUtilities
 
 	public constructor(options: ICommandOptions) {
 		super()
 
-		const { stores, mercury, services, cwd, log } = options
+		const {
+			stores,
+			mercury,
+			services,
+			cwd,
+			log,
+			generators,
+			utilities
+		} = options
 
 		this.cwd = cwd
 		this.stores = stores
 		this.mercury = mercury
 		this.services = services
 		this.log = log
+		this.generators = generators
+		this.utilities = utilities
 	}
 
 	/** preps a form builder, you will need to call present() */
@@ -58,9 +73,9 @@ export default abstract class AbstractCommand extends Terminal {
 		const cwd = process.cwd()
 		let builtPath = path.join(...filePath)
 
-		if (filePath[0] !== '/') {
+		if (builtPath[0] !== '/') {
 			// relative to the cwd
-			if (filePath[0] === '.') {
+			if (builtPath[0] === '.') {
 				builtPath = builtPath.substr(1)
 			}
 
@@ -72,20 +87,24 @@ export default abstract class AbstractCommand extends Terminal {
 
 	/** write a file to a place handling all directory creation (overwrites everything) */
 	public writeFile(destination: string, contents: string) {
-		fs.outputFileSync(destination, contents)
+		this.generators.core.writeFile(this.resolvePath(destination), contents)
 		this.prettyFormatFile(destination)
 	}
 
+	/** read a file */
+	public readFile(destination: string) {
+		return this.generators.core.readFile(this.resolvePath(destination))
+	}
+
+	/** delete a file */
 	public deleteFile(destination: string) {
-		if (fs.existsSync(destination)) {
-			fs.removeSync(destination)
-		}
+		return this.generators.core.deleteFile(destination)
 	}
 
 	/** make a file pass lint */
 	public prettyFormatFile(filePath: string) {
 		// TODO get this to work
-		console.log('prettier on', filePath)
+		console.log('prettier on', this.resolvePath(filePath))
 	}
 
 	/** are we in a skills dir? */

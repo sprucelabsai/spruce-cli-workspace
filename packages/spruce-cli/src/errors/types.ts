@@ -1,5 +1,11 @@
 import { ISpruceErrorOptions, SpruceErrorOptions } from '@sprucelabs/error'
-import { SchemaErrorOptions } from '@sprucelabs/schema'
+import { SchemaErrorOptions, ISchemaDefinition } from '@sprucelabs/schema'
+
+export function buildErrorDefinition<T extends ISchemaDefinition>(
+	definition: T
+): T {
+	return definition
+}
 
 /** all the error codes */
 export enum CliErrorCode {

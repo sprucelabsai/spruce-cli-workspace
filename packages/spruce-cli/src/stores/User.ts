@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import AbstractStore, { StoreAuth, IBaseStoreSettings } from './Abstract'
-import { SpruceSchemas } from '../.spruce/types/core.types'
+import { SpruceSchemas } from '../.spruce/schemas/core.types'
 import { IMercuryGQLBody } from '@sprucelabs/mercury'
 import { SpruceEvents } from '../types/events-generated'
 import CliError from '../errors/CliError'
@@ -9,8 +9,8 @@ import gql from 'graphql-tag'
 import Schema from '@sprucelabs/schema'
 import userWithTokenDefinition from '../schemas/userWithToken.definition'
 import userDefinition from '../schemas/user.definition'
-import { IUserWithToken } from '../.spruce/types/userWithToken.types'
-import { IUser } from '../.spruce/types/user.types'
+import { IUserWithToken } from '../.spruce/schemas/userWithToken.types'
+import { IUser } from '../.spruce/schemas/user.types'
 
 /** settings i need to save */
 interface IUserStoreSettings extends IBaseStoreSettings {

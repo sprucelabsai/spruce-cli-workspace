@@ -11,6 +11,7 @@ import Schema, {
 import ITerminal, { ITerminalEffect } from '../utilities/Terminal'
 import CliError from '../errors/CliError'
 import SpruceError from '@sprucelabs/error'
+import { pick } from 'lodash'
 
 export enum FormBuilderActionType {
 	Done = 'done',
@@ -40,10 +41,13 @@ export type IFormBuilderAction<T extends ISchemaDefinition> =
 	| IFormBuilderActionEditField<T>
 
 /** controls for when presenting the form */
-export interface IPresentationOptions<T extends ISchemaDefinition> {
+export interface IPresentationOptions<
+	T extends ISchemaDefinition,
+	F extends SchemaDefinitionFieldNames<T>
+> {
 	headline?: string
 	showOverview?: boolean
-	fields?: SchemaDefinitionFieldNames<T>
+	fields?: F[]
 }
 
 export interface IFormBuilderOptions<T extends ISchemaDefinition> {
@@ -82,11 +86,17 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 	}
 
 	/** pass me a schema and i'll give you back an object that conforms to it based on user input */
-	public async present(
-		options: IPresentationOptions<T> = {}
-	): Promise<SchemaDefinitionValues<T>> {
+	public async present<
+		F extends SchemaDefinitionFieldNames<T> = SchemaDefinitionFieldNames<T>
+	>(
+		options: IPresentationOptions<T, F> = {}
+	): Promise<Pick<SchemaDefinitionValues<T>, F>> {
 		const { term } = this
-		const { headline, showOverview } = options
+		const {
+			headline,
+			showOverview,
+			fields = Object.keys(this.fields) as F[]
+		} = options
 
 		let done = false
 		let valid = false
@@ -103,7 +113,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 
 			if (showOverview) {
 				// overview mode
-				const action = await this.renderOverview()
+				const action = await this.renderOverview({ fields })
 
 				switch (action.type) {
 					case FormBuilderActionType.EditField: {
@@ -122,11 +132,10 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 				}
 			} else {
 				// asking one question at a time
-				const namedFields = this.getNamedFields()
+				const namedFields = this.getNamedFields({ fields })
 
 				for (const namedField of namedFields) {
 					const { name } = namedField
-
 					const answer = await this.askQuestion(name)
 					this.set(name, answer)
 				}
@@ -136,7 +145,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 
 			if (done) {
 				try {
-					this.validate()
+					this.validate({ fields })
 					valid = true
 				} catch (err) {
 					this.renderError(err)
@@ -145,7 +154,9 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 			}
 		} while (!done || !valid)
 
-		return this.getValues()
+		const values = this.getValues({ fields })
+
+		return pick(values, fields) as Pick<SchemaDefinitionValues<T>, F>
 	}
 
 	/** ask a question based on a field */
@@ -203,16 +214,20 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 	}
 
 	/** render every field and a select to chose what to edit (or done/cancel) */
-	public async renderOverview(): Promise<IFormBuilderAction<T>> {
+	public async renderOverview<F extends SchemaDefinitionFieldNames<T>>(
+		options: { fields?: F[] } = {}
+	): Promise<IFormBuilderAction<T>> {
 		const { term } = this
+		const { fields = Object.keys(this.fields) } = options
 
 		// track actions while building choices
 		const actionMap: Record<string, IFormBuilderAction<T>> = {}
 
 		// create all choices
-		const choices: IFieldSelectDefinitionChoice[] = this.getNamedFields().map(
-			item => {
-				const { field, name } = item
+		const choices: IFieldSelectDefinitionChoice[] = this.getNamedFields()
+			.filter(namedField => fields.indexOf(namedField.name) > -1)
+			.map(namedField => {
+				const { field, name } = namedField
 
 				const actionKey = `field:${name}`
 				const action: IFormBuilderActionEditField<T> = {
@@ -230,8 +245,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 					value: actionKey,
 					label: `${field.getLabel()}: ${value ? value : '***missing***'}`
 				}
-			}
-		)
+			})
 
 		// done choice
 		actionMap['done'] = {

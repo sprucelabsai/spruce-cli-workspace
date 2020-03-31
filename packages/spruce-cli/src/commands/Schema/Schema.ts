@@ -1,21 +1,16 @@
 import { Command } from 'commander'
 import AbstractCommand from '../Abstract'
 import { templates } from '@sprucelabs/spruce-templates'
-import { FieldType } from '@sprucelabs/schema'
-import { camelCase } from 'lodash'
 import globby from 'globby'
 import path from 'path'
+import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definition'
 
-function capitalize(s: string) {
-	return s.charAt(0).toUpperCase() + s.slice(1)
-}
-
-export default class TypesCommand extends AbstractCommand {
+export default class SchemaCommand extends AbstractCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
 		/** sync everything */
 		program
-			.command('types:sync')
+			.command('schema:pull')
 			.description(
 				'Generates types file holding all interfaces, types, and enums needed to dev fast'
 			)
@@ -27,9 +22,9 @@ export default class TypesCommand extends AbstractCommand {
 			.option(
 				'-d, --destinationDir <dir>',
 				'Where should I write the types files?',
-				'./src/.spruce/types'
+				'./src/.spruce/schemas'
 			)
-			.action(this.sync.bind(this))
+			.action(this.pull.bind(this))
 
 		/** create a new schema definition */
 		program
@@ -43,13 +38,13 @@ export default class TypesCommand extends AbstractCommand {
 			.option(
 				'-td --typesDestinationDir <typesDir>',
 				'Where should I write the types file that supports the definition?',
-				'./src/.spruce/types'
+				'./src/.spruce/schemas'
 			)
-			.action(this.createDefinition.bind(this))
+			.action(this.create.bind(this))
 
 		/** generate schema definition types files */
 		program
-			.command('schema:generateTypes')
+			.command('schema:sync')
 			.description('Generates type files on all definition files.')
 			.option(
 				'-l, --lookupDir <dir>',
@@ -59,13 +54,13 @@ export default class TypesCommand extends AbstractCommand {
 			.option(
 				'-d, --destinationDir <dir>',
 				'Where should I write the definitions file?',
-				'./src/.spruce/types'
+				'./src/.spruce/schemas'
 			)
-			.action(this.regenerateDefinitionTypes.bind(this))
+			.action(this.sync.bind(this))
 	}
 
-	/** Create a new skill */
-	public async sync(cmd: Command) {
+	/** Pull schemas from server */
+	public async pull(cmd: Command) {
 		const destinationDir = cmd.destinationDir as string
 
 		this.startLoading('Fetching schemas and field types')
@@ -93,7 +88,8 @@ export default class TypesCommand extends AbstractCommand {
 		this.info(`All done 👊: ${destination}`)
 	}
 
-	public async regenerateDefinitionTypes(cmd: Command) {
+	/** generate types and other files based definitions */
+	public async sync(cmd: Command) {
 		const lookupDir = cmd.lookupDir as string
 		const destinationDir = cmd.destinationDir as string
 		const search = path.join(lookupDir, '**', '*.definition.ts')
@@ -101,44 +97,27 @@ export default class TypesCommand extends AbstractCommand {
 		const matches = await globby(search)
 
 		matches.forEach(filePath => {
-			// names
-			const pathStr = path.dirname(filePath)
-			const filename = filePath.substr(pathStr.length + 1)
-			const nameParts = filename.split('.')
-			const camelName = nameParts[0]
-			const pascalName = capitalize(camelName)
+			// does this file contain buildSchemaDefinition?
+			const currentContents = this.readFile(filePath)
+			if (currentContents.search(/buildSchemaDefinition\({/) === -1) {
+				this.log.debug(`Skipping ${filePath}`)
+				return
+			}
 
-			// files
-			const newFileName = `${camelName}.types.ts`
-			const destination = path.join(destinationDir, newFileName)
-
-			// relative paths
-			const relativeToDefinition = path.relative(
-				path.dirname(destination),
-				filePath
-			)
-
-			// contents
-			const contents = templates.createDefinitionTypes({
-				camelName,
+			// write to the destination
+			const {
 				pascalName,
-				relativeToDefinition: relativeToDefinition.replace(
-					path.extname(relativeToDefinition),
-					''
-				)
-			})
-
-			// does a file exist already, erase it
-			this.deleteFile(destination)
-
-			// write
-			this.writeFile(destination, contents)
+				camelName
+			} = this.generators.schema.generateTypeFromDefinition(
+				filePath,
+				this.resolvePath(destinationDir)
+			)
 
 			// tell them how to use it
 			this.headline(`Imported ${pascalName}. Examples:`)
 
 			this.writeLn(
-				`Importing your definition:  import ${camelName}Definition from '${relativeToDefinition}'`
+				`Importing your definition:  import ${camelName}Definition from '../.spruce/schemas/${camelName}.types.ts'`
 			)
 
 			this.writeLn(
@@ -157,7 +136,7 @@ export default class TypesCommand extends AbstractCommand {
 		})
 	}
 
-	public async createDefinition(name: string | undefined, cmd: Command) {
+	public async create(name: string | undefined, cmd: Command) {
 		const readableName = name
 		let camelName = ''
 		let pascalName = ''
@@ -167,45 +146,12 @@ export default class TypesCommand extends AbstractCommand {
 		// if they passed a name, show overview
 		if (readableName) {
 			showOverview = true
-			camelName = camelCase(readableName)
-			pascalName = capitalize(camelName)
+			camelName = this.utilities.names.toCamel(readableName)
+			pascalName = this.utilities.names.toPascal(camelName)
 		}
 
 		const form = this.formBuilder(
-			{
-				id: 'definition-file',
-				name: 'Definition creator',
-				fields: {
-					readableName: {
-						type: FieldType.Text,
-						isRequired: true,
-						label: readableName
-							? 'Name'
-							: 'What is the name of the thing you wish to define? e.g. Horse, Battle of the Year Event'
-					},
-					camelName: {
-						type: FieldType.Text,
-						isRequired: true,
-						label: readableName
-							? 'camelCaseName'
-							: 'camelCaseName. e.g. horse, battleOfTheYearEvent'
-					},
-					pascalName: {
-						type: FieldType.Text,
-						isRequired: true,
-						label: readableName
-							? 'PascalCaseName'
-							: 'PascalCaseName. e.g. Horse, BattleOfTheYearEvent'
-					},
-					description: {
-						type: FieldType.Text,
-						isRequired: true,
-						label: readableName
-							? 'Description'
-							: 'Describe this thing. e.g. Another mammal that wears shoes, An international breakdance competition.'
-					}
-				}
-			},
+			namedTemplateItemDefinition,
 			{
 				readableName,
 				camelName,
@@ -216,13 +162,15 @@ export default class TypesCommand extends AbstractCommand {
 					switch (name) {
 						case 'camelName':
 							if (!values.camelName) {
-								fieldDefinition.defaultValue = camelCase(values.readableName)
+								fieldDefinition.defaultValue = this.utilities.names.toCamel(
+									values.readableName || ''
+								)
 							}
 							break
 						case 'pascalName':
 							if (!values.pascalName) {
-								fieldDefinition.defaultValue = capitalize(
-									camelCase(values.readableName)
+								fieldDefinition.defaultValue = this.utilities.names.toPascal(
+									values.readableName || ''
 								)
 							}
 							break
@@ -232,7 +180,13 @@ export default class TypesCommand extends AbstractCommand {
 			}
 		)
 
-		const values = await form.present({ showOverview })
+		// all the values
+		const values = await form.present({
+			showOverview,
+			fields: ['readableName', 'camelName', 'pascalName', 'description']
+		})
+
+		// build paths
 		const definitionDestination = this.resolvePath(
 			cmd.definitionDestinationDir as string,
 			`${values.camelName}.definition.ts`

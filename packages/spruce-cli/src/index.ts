@@ -12,7 +12,7 @@ import {
 	IMercuryConnectOptions,
 	MercuryAuth
 } from '@sprucelabs/mercury'
-import { IStores, StoreAuth } from './stores'
+import { IStores } from './stores'
 import RemoteStore from './stores/Remote'
 import SkillStore from './stores/Skill'
 import UserStore from './stores/User'
@@ -21,6 +21,14 @@ import { CliErrorCode } from './errors/types'
 import PinService from './services/Pin'
 import AbstractCommand, { ICommandOptions } from './commands/Abstract'
 import OnboardingStore from './stores/Onboarding'
+import { IGenerators } from './generators'
+import SchemaGenerator from './generators/Schema'
+import { IUtilities } from './utilities'
+import NamesUtility from './utilities/Names'
+import { StoreAuth } from './stores/Abstract'
+import CoreGenerator from './generators/Core'
+import { IGeneratorOptions } from './generators/Abstract'
+import { templates } from '@sprucelabs/spruce-templates'
 
 /**
  * For handling debugger not attaching right away
@@ -106,6 +114,22 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		pin: new PinService(mercury)
 	}
 
+	// setup utilities
+	const utilities: IUtilities = {
+		names: new NamesUtility()
+	}
+
+	// setup generators
+	const generatorOptions: IGeneratorOptions = {
+		utilities,
+		templates
+	}
+
+	const generators: IGenerators = {
+		schema: new SchemaGenerator(generatorOptions),
+		core: new CoreGenerator(generatorOptions)
+	}
+
 	// Load commands and actions
 	globby.sync(`${__dirname}/commands/**/*.js`).forEach(file => {
 		try {
@@ -120,7 +144,9 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 				mercury,
 				services,
 				cwd,
-				log
+				log,
+				generators,
+				utilities
 			})
 
 			// attach commands to the program

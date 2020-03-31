@@ -233,6 +233,8 @@ export const templates = {
 	}
 }
 
+export type Templates = typeof templates
+
 // partials
 const schemaPartial: string = fs
 	.readFileSync(path.join(templatePath, 'schema/schemaDefinition.hbs'))
