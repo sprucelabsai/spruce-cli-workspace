@@ -50,10 +50,10 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 			throw new SpruceError({
 				code: ErrorCode.GenericMercury,
 				eventName: SpruceEvents.core.Login.name,
-				payload: {
-					phoneNumber: phone,
-					code: pin
-				},
+				payloadArgs: [
+					{ name: 'phone', value: phone },
+					{ name: 'pin', value: pin }
+				],
 				friendlyMessage: "Login event didn't return a jwt?"
 			})
 		}

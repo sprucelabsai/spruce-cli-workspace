@@ -5,6 +5,8 @@ export enum ErrorCode {
     /** * coming soon */
     Generic = 'GENERIC',
     /** * coming soon */
+    GenericMercury = 'GENERIC_MERCURY',
+    /** * coming soon */
     InvalidCommand = 'INVALID_COMMAND',
     /** * coming soon */
     NotImplemented = 'NOT_IMPLEMENTED',

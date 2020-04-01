@@ -141,7 +141,6 @@ export default abstract class AbstractStore<
 		if (!connectionOptions) {
 			throw new SpruceError({
 				code: ErrorCode.GenericMercury,
-				eventName: 'na',
 				friendlyMessage:
 					'user store was trying to auth on mercury but had not options (meaning it was never connected)'
 			})
