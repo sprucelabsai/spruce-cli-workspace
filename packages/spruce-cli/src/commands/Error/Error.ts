@@ -143,7 +143,11 @@ export default class ErrorCommand extends AbstractCommand {
 	public async sync(cmd: Command) {
 		const lookupDir = cmd.lookupDir as string
 		const destinationDir = cmd.destinationDir as string
-		const search = path.join(lookupDir, '**', '*.definition.ts')
+		const search = path.join(
+			this.resolvePath(lookupDir),
+			'**',
+			'*.definition.ts'
+		)
 
 		const matches = await globby(search)
 

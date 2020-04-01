@@ -1,10 +1,11 @@
 import path from 'path'
 import AbstractGenerator from './Abstract'
+import { ISchemaDefinition } from '@sprucelabs/schema'
 
 export default class SchemaGenerator extends AbstractGenerator {
 	/** generate a type file from a definition file */
 	public generateTypesFromDefinition(
-		definitionFile: string,
+		sourceFile: string,
 		destinationDir: string
 	): {
 		destination: string
@@ -12,15 +13,23 @@ export default class SchemaGenerator extends AbstractGenerator {
 		pascalName: string
 		contents: string
 	} {
-		// names
-		//strip out file name from path
-		const pathStr = path.dirname(definitionFile)
-		const filename = definitionFile.substr(pathStr.length + 1)
-		const nameParts = filename.split('.')
+		let definition: ISchemaDefinition | undefined
+
+		try {
+			definition = this.utilities.vm.importDefinition(sourceFile)
+		} catch (err) {
+			this.log.crit('I could not load the error definition file')
+			this.log.crit(err)
+		}
+
+		if (!definition) {
+			throw new Error('Importing error definition failed')
+		}
 
 		//get variations on name
-		const camelName = this.utilities.names.toCamel(nameParts[0])
-		const pascalName = this.utilities.names.toPascal(camelName)
+		const camelName = this.utilities.names.toCamel(definition.id)
+		const pascalName = this.utilities.names.toPascal(definition.name)
+		const description = definition.description
 
 		// files
 		const newFileName = `${camelName}.types.ts`
@@ -29,13 +38,15 @@ export default class SchemaGenerator extends AbstractGenerator {
 		// relative paths
 		const relativeToDefinition = path.relative(
 			path.dirname(destination),
-			definitionFile
+			sourceFile
 		)
 
 		// contents
 		const contents = this.templates.definitionTypes({
 			camelName,
 			pascalName,
+			description:
+				description || `Description missing in schema defined in ${sourceFile}`,
 			relativeToDefinition: relativeToDefinition.replace(
 				path.extname(relativeToDefinition),
 				''

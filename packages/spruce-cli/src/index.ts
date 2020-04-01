@@ -30,6 +30,9 @@ import { templates } from '@sprucelabs/spruce-templates'
 import ErrorGenerator from './generators/Error'
 import SpruceError from './errors/Error'
 import { ErrorCode } from './.spruce/errors/codes.types'
+import NodeUtility from './utilities/Vm'
+import path from 'path'
+import fs from 'fs-extra'
 
 /**
  * For handling debugger not attaching right away
@@ -119,14 +122,25 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	}
 
 	// setup utilities
+	const tsConfigPath = path.join(cwd, 'tsconfig.json')
+	if (!fs.existsSync(tsConfigPath)) {
+		throw new Error(
+			'Could not load tsconfig, make sure you are in a skill directory'
+		)
+	}
+	const tsConfigContents = fs.readFileSync(tsConfigPath).toString()
+	const tsConfig = JSON.parse(tsConfigContents)
+
 	const utilities: IUtilities = {
-		names: new NamesUtility()
+		names: new NamesUtility(),
+		vm: new NodeUtility({ compilerOptions: tsConfig.compilerOptions })
 	}
 
 	// setup generators
 	const generatorOptions: IGeneratorOptions = {
 		utilities,
-		templates
+		templates,
+		log
 	}
 
 	const generators: IGenerators = {

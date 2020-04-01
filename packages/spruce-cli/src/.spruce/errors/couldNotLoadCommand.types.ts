@@ -12,7 +12,7 @@ type CouldNotLoadCommandDefinition = typeof couldNotLoadCommandDefinition
 export interface ICouldNotLoadCommandDefinition extends CouldNotLoadCommandDefinition {}
 
 export interface ICouldNotLoadCommandErrorOptions extends SchemaDefinitionValues<ICouldNotLoadCommandDefinition>, ISpruceErrorOptions<ErrorCode> {
-	/** * coming soon */
+	/** * A command failed to load, probably because of a syntax error */
 	code: ErrorCode.CouldNotLoadCommand
 } 
 

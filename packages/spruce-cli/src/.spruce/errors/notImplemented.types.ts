@@ -12,7 +12,7 @@ type NotImplementedDefinition = typeof notImplementedDefinition
 export interface INotImplementedDefinition extends NotImplementedDefinition {}
 
 export interface INotImplementedErrorOptions extends SchemaDefinitionValues<INotImplementedDefinition>, ISpruceErrorOptions<ErrorCode> {
-	/** * coming soon */
+	/** * This command has not yet been implemented  */
 	code: ErrorCode.NotImplemented
 } 
 

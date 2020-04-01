@@ -12,7 +12,7 @@ type UserNotFoundDefinition = typeof userNotFoundDefinition
 export interface IUserNotFoundDefinition extends UserNotFoundDefinition {}
 
 export interface IUserNotFoundErrorOptions extends SchemaDefinitionValues<IUserNotFoundDefinition>, ISpruceErrorOptions<ErrorCode> {
-	/** * coming soon */
+	/** * Could not find a user */
 	code: ErrorCode.UserNotFound
 } 
 

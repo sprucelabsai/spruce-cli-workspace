@@ -1,20 +1,27 @@
 import { IUtilities } from '../utilities'
 import fs from 'fs-extra'
 import { Templates } from '@sprucelabs/spruce-templates'
+import { Log } from '@sprucelabs/log'
 
 export interface IGeneratorOptions {
 	utilities: IUtilities
 	templates: Templates
+	log: Log
+	cwd: string
 }
 
 export default abstract class AbstractGenerator {
 	public utilities: IUtilities
 	public templates: Templates
+	public log: Log
+	public cwd: string
 
 	public constructor(options: IGeneratorOptions) {
-		const { utilities, templates } = options
+		const { utilities, templates, log, cwd } = options
 		this.utilities = utilities
 		this.templates = templates
+		this.log = log
+		this.cwd = cwd
 	}
 	/** write a file to a place handling all directory creation (overwrites everything) */
 	public writeFile(destination: string, contents: string) {
@@ -22,12 +29,12 @@ export default abstract class AbstractGenerator {
 	}
 
 	/** read a file */
-	public readFile(destination: string) {
-		if (!fs.existsSync(destination)) {
+	public readFile(source: string) {
+		if (!fs.existsSync(source)) {
 			return ''
 		}
 
-		return fs.readFileSync(destination).toString()
+		return fs.readFileSync(source).toString()
 	}
 
 	/** delete a file */

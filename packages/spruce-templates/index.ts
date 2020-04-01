@@ -23,7 +23,7 @@ log.info('addon', isEqual)
 log.info('addon', startCase)
 
 // import actual templates
-const templatePath = path.join(__dirname, 'src', 'templates')
+const templatePath = path.join(__dirname, 'src', 'templates', 'typescript')
 
 // template files
 const schemaTypes: string = fs
@@ -85,6 +85,7 @@ export const templates = {
 		camelName: string
 		pascalName: string
 		relativeToDefinition: string
+		description: string
 	}) {
 		const template = handlebars.compile(definitionTypes)
 		return template(options)
@@ -143,13 +144,15 @@ export type Templates = typeof templates
 
 // partials
 const schemaPartial: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/schemaDefinition.hbs'))
+	.readFileSync(
+		path.join(templatePath, 'schemas/partials/schemaDefinition.hbs')
+	)
 	.toString()
 
 handlebars.registerPartial('schemaDefinition', schemaPartial)
 
 const fieldPartial: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/fieldDefinition.hbs'))
+	.readFileSync(path.join(templatePath, 'schemas/partials/fieldDefinition.hbs'))
 	.toString()
 
 handlebars.registerPartial('fieldDefinition', fieldPartial)

@@ -1,11 +1,12 @@
 import path from 'path'
 import AbstractGenerator from './Abstract'
 import globby from 'globby'
+import { ISchemaDefinition } from '@sprucelabs/schema'
 
 export default class ErrorGenerator extends AbstractGenerator {
 	/** take a definition file and generate options type */
 	public generateTypesFromDefinitionFile(
-		definitionFile: string,
+		sourceFile: string,
 		destinationDir: string
 	): {
 		destination: string
@@ -13,15 +14,23 @@ export default class ErrorGenerator extends AbstractGenerator {
 		pascalName: string
 		contents: string
 	} {
-		// names
-		//strip out file name from path
-		const pathStr = path.dirname(definitionFile)
-		const filename = definitionFile.substr(pathStr.length + 1)
-		const nameParts = filename.split('.')
+		let definition: ISchemaDefinition | undefined
+
+		try {
+			definition = this.utilities.vm.importDefinition(sourceFile)
+		} catch (err) {
+			this.log.crit('I could not load the error definition file')
+			this.log.crit(err)
+		}
+
+		if (!definition) {
+			throw new Error('Importing error definition failed')
+		}
 
 		//get variations on name
-		const camelName = this.utilities.names.toCamel(nameParts[0])
-		const pascalName = this.utilities.names.toPascal(camelName)
+		const camelName = this.utilities.names.toCamel(definition.id)
+		const pascalName = this.utilities.names.toPascal(definition.name)
+		const description = definition.description
 
 		// files
 		const newFileName = `${camelName}.types.ts`
@@ -30,14 +39,14 @@ export default class ErrorGenerator extends AbstractGenerator {
 		// relative paths
 		const relativeToDefinition = path.relative(
 			path.dirname(destination),
-			definitionFile
+			sourceFile
 		)
 
 		// contents
 		const contents = this.templates.errorTypes({
 			camelName,
 			pascalName,
-			description: 'coming soon',
+			description: description ?? `description missing, add to ${sourceFile}`,
 			relativeToDefinition: relativeToDefinition.replace(
 				path.extname(relativeToDefinition),
 				''

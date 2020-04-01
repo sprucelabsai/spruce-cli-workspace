@@ -12,7 +12,7 @@ type GenericMercuryDefinition = typeof genericMercuryDefinition
 export interface IGenericMercuryDefinition extends GenericMercuryDefinition {}
 
 export interface IGenericMercuryErrorOptions extends SchemaDefinitionValues<IGenericMercuryDefinition>, ISpruceErrorOptions<ErrorCode> {
-	/** * coming soon */
+	/** * Not sure what happened, but it has something to do with Mercury */
 	code: ErrorCode.GenericMercury
 } 
 
