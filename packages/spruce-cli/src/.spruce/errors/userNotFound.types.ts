@@ -8,7 +8,6 @@ import userNotFoundDefinition from '../../errors/userNotFound.definition'
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { ErrorCode } from './codes.types'
 
-
 type UserNotFoundDefinition = typeof userNotFoundDefinition
 export interface IUserNotFoundDefinition extends UserNotFoundDefinition {}
 

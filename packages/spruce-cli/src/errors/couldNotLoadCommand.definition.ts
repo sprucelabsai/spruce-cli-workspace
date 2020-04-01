@@ -11,7 +11,7 @@ const couldNotLoadCommandDefinition = buildErrorDefinition({
 			type: FieldType.Text,
 			label: 'Command file path',
 			isRequired: true,
-			hint: 'Path to the command'
+			hint: 'Path to the file defining the Command class'
 		}
 	}
 })
