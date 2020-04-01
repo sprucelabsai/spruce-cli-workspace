@@ -31,7 +31,7 @@ export default class SkillCommand extends AbstractCommand {
 			throw new SpruceError({
 				code: ErrorCode.NotImplemented,
 				command: 'skill:login with skill id',
-				args: [skillId, skillApiKey]
+				args: [skillId, skillApiKey || '**no api key**']
 			})
 		}
 

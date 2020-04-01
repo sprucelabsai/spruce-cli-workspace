@@ -1,16 +1,16 @@
 import Schema, {
 	ISchemaDefinition,
 	FieldType,
-	SchemaDefinitionValues,
-	SchemaDefinitionFieldNames,
+	SchemaDefinitionAllValues as SchemaDefinitionValues,
+	SchemaFieldNames,
 	IFieldSelectDefinitionChoice,
 	IFieldDefinition,
 	SchemaErrorCode,
 	SchemaError
 } from '@sprucelabs/schema'
 import ITerminal, { ITerminalEffect } from '../utilities/Terminal'
-import SpruceError from '@sprucelabs/error'
 import { pick } from 'lodash'
+import SpruceError from '../errors/Error'
 
 export enum FormBuilderActionType {
 	Done = 'done',
@@ -31,7 +31,7 @@ export interface IFormBuilderActionCancel {
 /** in overview mode, this is when the user selects to edit a field */
 export type IFormBuilderActionEditField<T extends ISchemaDefinition> = {
 	type: FormBuilderActionType.EditField
-	fieldName: SchemaDefinitionFieldNames<T>
+	fieldName: SchemaFieldNames<T>
 }
 /** actions that can be taken in overview mode */
 export type IFormBuilderAction<T extends ISchemaDefinition> =
@@ -42,7 +42,7 @@ export type IFormBuilderAction<T extends ISchemaDefinition> =
 /** controls for when presenting the form */
 export interface IPresentationOptions<
 	T extends ISchemaDefinition,
-	F extends SchemaDefinitionFieldNames<T>
+	F extends SchemaFieldNames<T>
 > {
 	headline?: string
 	showOverview?: boolean
@@ -50,7 +50,7 @@ export interface IPresentationOptions<
 }
 
 export interface IFormBuilderOptions<T extends ISchemaDefinition> {
-	onWillAskQuestion?: <K extends SchemaDefinitionFieldNames<T>>(
+	onWillAskQuestion?: <K extends SchemaFieldNames<T>>(
 		name: K,
 		fieldDefinition: IFieldDefinition,
 		values: Partial<SchemaDefinitionValues<T>>
@@ -85,9 +85,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 	}
 
 	/** pass me a schema and i'll give you back an object that conforms to it based on user input */
-	public async present<
-		F extends SchemaDefinitionFieldNames<T> = SchemaDefinitionFieldNames<T>
-	>(
+	public async present<F extends SchemaFieldNames<T> = SchemaFieldNames<T>>(
 		options: IPresentationOptions<T, F> = {}
 	): Promise<Pick<SchemaDefinitionValues<T>, F>> {
 		const { term } = this
@@ -159,7 +157,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 	}
 
 	/** ask a question based on a field */
-	public askQuestion<F extends SchemaDefinitionFieldNames<T>>(fieldName: F) {
+	public askQuestion<F extends SchemaFieldNames<T>>(fieldName: F) {
 		const field = this.fields[fieldName]
 
 		let definition = { ...field.definition }
@@ -213,7 +211,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 	}
 
 	/** render every field and a select to chose what to edit (or done/cancel) */
-	public async renderOverview<F extends SchemaDefinitionFieldNames<T>>(
+	public async renderOverview<F extends SchemaFieldNames<T>>(
 		options: { fields?: F[] } = {}
 	): Promise<IFormBuilderAction<T>> {
 		const { term } = this

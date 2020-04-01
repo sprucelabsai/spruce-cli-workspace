@@ -1,7 +1,7 @@
 import { Command } from 'commander'
 import AbstractCommand from '../Abstract'
 import { FieldType } from '@sprucelabs/schema'
-import { RemoteStoreRemoteType, RemoteStoreChoices } from '../../stores'
+import { RemoteStoreRemoteType, RemoteStoreChoices } from '../../stores/Remote'
 
 export default class RemoteCommand extends AbstractCommand {
 	/** Sets up commands */
