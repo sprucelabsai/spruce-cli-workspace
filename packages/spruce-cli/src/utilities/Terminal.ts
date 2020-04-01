@@ -10,7 +10,7 @@ import inquirer from 'inquirer'
 // @ts-ignore
 import fonts from 'cfonts'
 import ora from 'ora'
-import SpruceError from '@sprucelabs/error'
+import AbstractSpruceError from '@sprucelabs/error'
 import { omit } from 'lodash'
 
 let fieldCount = 0
@@ -327,7 +327,7 @@ export default class Terminal {
 		this.stopLoading()
 
 		const message =
-			err instanceof SpruceError ? err.friendlyMessage() : err.message
+			err instanceof AbstractSpruceError ? err.friendlyMessage() : err.message
 
 		this.section({
 			headline: message,

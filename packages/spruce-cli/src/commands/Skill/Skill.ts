@@ -1,9 +1,9 @@
 import { Command } from 'commander'
 import AbstractCommand from '../Abstract'
-import { StoreAuth } from '../../stores'
 import { IFieldSelectDefinitionChoice, FieldType } from '@sprucelabs/schema'
-import CliError from '../../errors/CliError'
-import { CliErrorCode } from '../../errors/types'
+import { StoreAuth } from '../../stores/Abstract'
+import SpruceError from '../../errors/Error'
+import { ErrorCode } from '../../.spruce/errors/codes.types'
 // import globby from 'globby'
 // import fs from 'fs-extra'
 // import handlebars from 'handlebars'
@@ -28,8 +28,8 @@ export default class SkillCommand extends AbstractCommand {
 		const authType = this.stores.user.authType
 
 		if (skillId) {
-			throw new CliError({
-				code: CliErrorCode.NotImplemented,
+			throw new SpruceError({
+				code: ErrorCode.NotImplemented,
 				command: 'skill:login with skill id',
 				args: [skillId, skillApiKey]
 			})

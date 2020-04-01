@@ -4,7 +4,6 @@ import { terminal } from './utilities/Terminal'
 import { Command } from 'commander'
 import globby from 'globby'
 import pkg from '../package.json'
-import CliError from './errors/CliError'
 import { IServices } from './services'
 import log, { LogLevel } from '@sprucelabs/log'
 import {
@@ -17,7 +16,6 @@ import RemoteStore from './stores/Remote'
 import SkillStore from './stores/Skill'
 import UserStore from './stores/User'
 import SchemaStore from './stores/Schema'
-import { CliErrorCode } from './errors/types'
 import PinService from './services/Pin'
 import AbstractCommand, { ICommandOptions } from './commands/Abstract'
 import OnboardingStore from './stores/Onboarding'
@@ -30,6 +28,8 @@ import CoreGenerator from './generators/Core'
 import { IGeneratorOptions } from './generators/Abstract'
 import { templates } from '@sprucelabs/spruce-templates'
 import ErrorGenerator from './generators/Error'
+import SpruceError from './errors/Error'
+import { ErrorCode } from './.spruce/errors/codes.types'
 
 /**
  * For handling debugger not attaching right away
@@ -161,8 +161,8 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 			// track all commands
 			commands.push(command)
 		} catch (err) {
-			throw new CliError({
-				code: CliErrorCode.CouldNotLoadCommand,
+			throw new SpruceError({
+				code: ErrorCode.CouldNotLoadCommand,
 				originalError: err,
 				file
 			})
@@ -174,7 +174,7 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 
 	// error on unknown commands
 	program.action((command, args) => {
-		throw new CliError({ code: CliErrorCode.InvalidCommand, args })
+		throw new SpruceError({ code: ErrorCode.InvalidCommand, args })
 	})
 
 	const commandResult = await program.parseAsync(argv)

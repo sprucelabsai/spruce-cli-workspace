@@ -1,8 +1,8 @@
 import fs from 'fs'
 import { Mercury } from '@sprucelabs/mercury'
-import CliError from '../errors/CliError'
-import { CliErrorCode } from '../errors/types'
 import { Log } from '@sprucelabs/log'
+import SpruceError from '../errors/Error'
+import { ErrorCode } from '../.spruce/errors/codes.types'
 
 /** are we running globally or locally? */
 export enum StoreScope {
@@ -139,8 +139,8 @@ export default abstract class AbstractStore<
 	protected async mercuryForUser(token: string): Promise<Mercury> {
 		const { connectionOptions } = this.mercury
 		if (!connectionOptions) {
-			throw new CliError({
-				code: CliErrorCode.GenericMercury,
+			throw new SpruceError({
+				code: ErrorCode.GenericMercury,
 				eventName: 'na',
 				friendlyMessage:
 					'user store was trying to auth on mercury but had not options (meaning it was never connected)'

@@ -1,10 +1,10 @@
 import AbstractCommand from '../Abstract'
 import { Command } from 'commander'
 import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definition'
-import CliError from '../../errors/CliError'
-import { CliErrorCode } from '../../errors/types'
 import path from 'path'
 import globby from 'globby'
+import SpruceError from '../../errors/Error'
+import { ErrorCode } from '../../.spruce/errors/codes.types'
 
 export default class ErrorCommand extends AbstractCommand {
 	public attachCommands(program: Command): void {
@@ -75,8 +75,8 @@ export default class ErrorCommand extends AbstractCommand {
 
 		// if there is already a definition file, blow up
 		if (this.doesFileExist(errorDefinitionFileDestination)) {
-			throw new CliError({
-				code: CliErrorCode.Generic,
+			throw new SpruceError({
+				code: ErrorCode.Generic,
 				friendlyMessage: 'This error already exists!'
 			})
 		}

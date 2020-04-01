@@ -9,7 +9,6 @@ import Schema, {
 	SchemaError
 } from '@sprucelabs/schema'
 import ITerminal, { ITerminalEffect } from '../utilities/Terminal'
-import CliError from '../errors/CliError'
 import SpruceError from '@sprucelabs/error'
 import { pick } from 'lodash'
 
@@ -189,7 +188,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 		this.term.writeLn('')
 
 		// special handling for spruce errors
-		if (error instanceof SchemaError || error instanceof CliError) {
+		if (error instanceof SchemaError || error instanceof SpruceError) {
 			const options = error.options
 
 			switch (options.code) {

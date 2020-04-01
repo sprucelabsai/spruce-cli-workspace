@@ -3,14 +3,14 @@ import AbstractStore, { StoreAuth, IBaseStoreSettings } from './Abstract'
 import { SpruceSchemas } from '../.spruce/schemas/core.types'
 import { IMercuryGQLBody } from '@sprucelabs/mercury'
 import { SpruceEvents } from '../types/events-generated'
-import CliError from '../errors/CliError'
-import { CliErrorCode } from '../errors/types'
 import gql from 'graphql-tag'
 import Schema from '@sprucelabs/schema'
 import userWithTokenDefinition from '../schemas/userWithToken.definition'
 import userDefinition from '../schemas/user.definition'
 import { IUserWithToken } from '../.spruce/schemas/userWithToken.types'
 import { IUser } from '../.spruce/schemas/user.types'
+import SpruceError from '../errors/Error'
+import { ErrorCode } from '../.spruce/errors/codes.types'
 
 /** settings i need to save */
 interface IUserStoreSettings extends IBaseStoreSettings {
@@ -47,8 +47,8 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 		const token = loginResult.responses[0]?.payload.jwt
 
 		if (!token) {
-			throw new CliError({
-				code: CliErrorCode.GenericMercury,
+			throw new SpruceError({
+				code: ErrorCode.GenericMercury,
 				eventName: SpruceEvents.core.Login.name,
 				payload: {
 					phoneNumber: phone,
@@ -61,8 +61,8 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 		const user = await this.userWithTokenFromToken(token)
 
 		if (!user) {
-			throw new CliError({
-				code: CliErrorCode.UserNotFound,
+			throw new SpruceError({
+				code: ErrorCode.UserNotFound,
 				token
 			})
 		}
@@ -76,8 +76,8 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 	): Promise<IUserWithToken | undefined> {
 		const decoded = jwt.decode(token) as Record<string, any> | null
 		if (!decoded) {
-			throw new CliError({
-				code: CliErrorCode.Generic,
+			throw new SpruceError({
+				code: ErrorCode.Generic,
 				friendlyMessage: 'Invalid token!'
 			})
 		}

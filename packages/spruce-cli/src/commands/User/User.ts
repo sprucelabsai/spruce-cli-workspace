@@ -1,11 +1,19 @@
 import { Command } from 'commander'
 import AbstractCommand from '../Abstract'
-import { FieldType, IFieldSelectDefinitionChoice } from '@sprucelabs/schema'
-import CliError from '../../errors/CliError'
-import { CliErrorCode } from '../../errors/types'
+import {
+	FieldType,
+	IFieldSelectDefinitionChoice,
+	RequiredFieldNames,
+	OptionalFieldNames,
+	SchemaDefinitionValues
+} from '@sprucelabs/schema'
 import SpruceError from '@sprucelabs/error'
-import { StoreAuth } from '../../stores'
-import { IUserWithToken } from '../../.spruce/schemas/userWithToken.types'
+import {
+	IUserWithToken,
+	IUserWithTokenDefinition
+} from '../../.spruce/schemas/userWithToken.types'
+import { ErrorCode } from '../../.spruce/errors/codes.types'
+import { StoreAuth } from '../../stores/Abstract'
 
 export default class UserCommand extends AbstractCommand {
 	/** Sets up commands */
@@ -63,7 +71,6 @@ export default class UserCommand extends AbstractCommand {
 
 			try {
 				user = await this.stores.user.userWithTokenFromPhone(phone, pin)
-				user.casualName
 				valid = true
 
 				this.stopLoading()
@@ -83,8 +90,8 @@ export default class UserCommand extends AbstractCommand {
 		} while (!valid)
 
 		if (!user || !user.id) {
-			throw new CliError({
-				code: CliErrorCode.UserNotFound,
+			throw new SpruceError({
+				code: ErrorCode.UserNotFound,
 				friendlyMessage:
 					'This should never have happened, but the user is missing.'
 			})

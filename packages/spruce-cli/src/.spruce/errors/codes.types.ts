@@ -3,5 +3,9 @@ export enum ErrorCode {
     /** * coming soon */
     CouldNotLoadCommand = 'COULD_NOT_LOAD_COMMAND',
     /** * coming soon */
-    InvalidCommand = 'INVALID_COMMAND'
+    Generic = 'GENERIC',
+    /** * coming soon */
+    InvalidCommand = 'INVALID_COMMAND',
+    /** * coming soon */
+    UserNotFound = 'USER_NOT_FOUND',
 }
