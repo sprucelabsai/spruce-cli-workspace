@@ -21,10 +21,10 @@ export default class PinService extends AbstractService {
 			throw new SpruceError({
 				code: ErrorCode.GenericMercury,
 				eventName: SpruceEvents.core.RequestLogin.name,
-				payload: {
-					phoneNumber: phone,
-					method: 'pin'
-				},
+				payloadArgs: [
+					{ name: 'phoneNumber', value: phone },
+					{ name: 'method', value: 'pin' }
+				],
 				originalError: err
 			})
 		}

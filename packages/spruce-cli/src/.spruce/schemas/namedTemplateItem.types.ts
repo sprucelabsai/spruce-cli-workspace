@@ -4,8 +4,9 @@ import Schema, {
 
 import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definition'
 
-export type NamedTemplateItemDefinition = typeof namedTemplateItemDefinition
-
+type NamedTemplateItemDefinition = typeof namedTemplateItemDefinition
 export interface INamedTemplateItemDefinition extends NamedTemplateItemDefinition {}
+
+Used to collect input on the names of a class or interface
 export interface INamedTemplateItem extends SchemaDefinitionValues<INamedTemplateItemDefinition> {}
 export interface INamedTemplateItemInstance extends Schema<INamedTemplateItemDefinition> {}

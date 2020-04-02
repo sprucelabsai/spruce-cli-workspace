@@ -1,7 +1,8 @@
 import Schema, {
 	ISchemaDefinition,
 	FieldType,
-	SchemaDefinitionAllValues as SchemaDefinitionValues,
+	SchemaDefinitionAllValues,
+	SchemaDefinitionPartialValues,
 	SchemaFieldNames,
 	IFieldSelectDefinitionChoice,
 	IFieldDefinition,
@@ -53,7 +54,7 @@ export interface IFormBuilderOptions<T extends ISchemaDefinition> {
 	onWillAskQuestion?: <K extends SchemaFieldNames<T>>(
 		name: K,
 		fieldDefinition: IFieldDefinition,
-		values: Partial<SchemaDefinitionValues<T>>
+		values: SchemaDefinitionPartialValues<T>
 	) => IFieldDefinition
 }
 
@@ -70,7 +71,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 	public constructor(
 		term: ITerminal,
 		definition: T,
-		initialValues: Partial<SchemaDefinitionValues<T>> = {},
+		initialValues: SchemaDefinitionPartialValues<T> = {},
 		options: IFormBuilderOptions<T> = {}
 	) {
 		// setup schema
@@ -87,7 +88,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 	/** pass me a schema and i'll give you back an object that conforms to it based on user input */
 	public async present<F extends SchemaFieldNames<T> = SchemaFieldNames<T>>(
 		options: IPresentationOptions<T, F> = {}
-	): Promise<Pick<SchemaDefinitionValues<T>, F>> {
+	): Promise<Pick<SchemaDefinitionAllValues<T>, F>> {
 		const { term } = this
 		const {
 			headline,
@@ -153,7 +154,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 
 		const values = this.getValues({ fields })
 
-		return pick(values, fields) as Pick<SchemaDefinitionValues<T>, F>
+		return pick(values, fields) as Pick<SchemaDefinitionAllValues<T>, F>
 	}
 
 	/** ask a question based on a field */

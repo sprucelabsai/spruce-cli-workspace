@@ -33,6 +33,7 @@ import { ErrorCode } from './.spruce/errors/codes.types'
 import NodeUtility from './utilities/Vm'
 import path from 'path'
 import fs from 'fs-extra'
+import { IUtilityOptions } from './utilities/Abstract'
 
 /**
  * For handling debugger not attaching right away
@@ -131,16 +132,24 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	const tsConfigContents = fs.readFileSync(tsConfigPath).toString()
 	const tsConfig = JSON.parse(tsConfigContents)
 
+	const utilityOptions: IUtilityOptions = {
+		cwd
+	}
+
 	const utilities: IUtilities = {
-		names: new NamesUtility(),
-		vm: new NodeUtility({ compilerOptions: tsConfig.compilerOptions })
+		names: new NamesUtility(utilityOptions),
+		vm: new NodeUtility({
+			...utilityOptions,
+			compilerOptions: tsConfig.compilerOptions
+		})
 	}
 
 	// setup generators
 	const generatorOptions: IGeneratorOptions = {
 		utilities,
 		templates,
-		log
+		log,
+		cwd
 	}
 
 	const generators: IGenerators = {

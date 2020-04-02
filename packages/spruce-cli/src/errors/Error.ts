@@ -32,19 +32,17 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				break
 
 			case ErrorCode.GenericMercury:
-				message = 'Not sure what happened'
+				message = `Not sure what happened: Event ${options.eventName}`
 				break
 			case ErrorCode.TranspileFailed:
 				message = 'Could not transpile (ts -> js) a script'
 
 				break
 
+			case ErrorCode.DefinitionFailedToImport:
+				message = `The definition at ${options.file} failed to import: ${options.details}`
 
-            case ErrorCode.DefinitionFailedToImport:
-
-                message = 'The definition file failed to import'
-                
-                break
+				break
 
 			default:
 				message = super.friendlyMessage()

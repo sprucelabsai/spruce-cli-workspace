@@ -3,7 +3,10 @@ import Terminal from '../utilities/Terminal'
 import path from 'path'
 import { Command } from 'commander'
 import FormBuilder, { IFormBuilderOptions } from '../builders/FormBuilder'
-import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
+import {
+	ISchemaDefinition,
+	SchemaDefinitionPartialValues
+} from '@sprucelabs/schema'
 import { IStores } from '../stores'
 import { Mercury } from '@sprucelabs/mercury'
 import { IServices } from '../services'
@@ -61,7 +64,7 @@ export default abstract class AbstractCommand extends Terminal {
 	/** preps a form builder, you will need to call present() */
 	public formBuilder<T extends ISchemaDefinition>(
 		definition: T,
-		initialValues: Partial<SchemaDefinitionValues<T>> = {},
+		initialValues: SchemaDefinitionPartialValues<T> = {},
 		options: IFormBuilderOptions<T> = {}
 	): FormBuilder<T> {
 		const formBuilder = new FormBuilder(

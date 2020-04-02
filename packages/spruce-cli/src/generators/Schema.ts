@@ -18,7 +18,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 		try {
 			definition = this.utilities.vm.importDefinition(sourceFile)
 		} catch (err) {
-			this.log.crit('I could not load the error definition file')
+			this.log.crit(`I could not load the error definition file ${sourceFile}`)
 			this.log.crit(err)
 		}
 

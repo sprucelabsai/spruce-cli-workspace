@@ -1,8 +1,9 @@
 import { camelCase, snakeCase, upperFirst } from 'lodash'
 import { IFieldDefinition } from '@sprucelabs/schema'
 import { INamedTemplateItem } from '../.spruce/schemas/namedTemplateItem.types'
+import AbstractUtility from './Abstract'
 
-export default class NamesUtility {
+export default class NamesUtility extends AbstractUtility {
 	/** first name => FirstName */
 	public toPascal(name: string) {
 		return upperFirst(this.toCamel(name))

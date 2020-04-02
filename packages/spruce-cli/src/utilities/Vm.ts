@@ -4,11 +4,19 @@ import SpruceError from '../errors/Error'
 import { ErrorCode } from '../.spruce/errors/codes.types'
 import Schema, { ISchemaDefinition } from '@sprucelabs/schema'
 import fs from 'fs-extra'
+import path from 'path'
+import AbstractUtility from './Abstract'
+import { cloneDeep } from 'lodash'
 
-export default class NodeUtility {
+export default class NodeUtility extends AbstractUtility {
 	public compilerOptions: CompilerOptions
+	private fileMapCache: Record<string, string> = {}
 
-	public constructor(options: { compilerOptions: CompilerOptions }) {
+	public constructor(options: {
+		compilerOptions: CompilerOptions
+		cwd: string
+	}) {
+		super(options)
 		this.compilerOptions = options.compilerOptions
 	}
 
@@ -16,36 +24,60 @@ export default class NodeUtility {
 	public importDefinition(file: string) {
 		let definitionProxy: ISchemaDefinition | undefined
 
+		// lets make sure there is a complimentary build for for this or we can't continue
+		const builtFile = path.join(this.cwd, 'build', file.replace('.ts', '.js'))
+
+		if (!fs.existsSync(builtFile)) {
+			throw new SpruceError({
+				code: ErrorCode.DefinitionFailedToImport,
+				file,
+				details: `It looks like you haven't built your project yet. try 'y build' or 'y watch'`
+			})
+		}
+
 		// construct new vm
 		const vm = new NodeVM({
 			sandbox: {
-				_define: (def: ISchemaDefinition) => {
+				_define(def: ISchemaDefinition) {
 					// build initial definition
-					definitionProxy = {
-						id: def.id,
-						name: def.name,
-						description: def.description
-					}
-
-					// bring over all fields
-					Object.keys(def).forEach(key => {
-						// @ts-ignore TODO see how to do this "properly" or if it's even possible
-						definitionProxy[key] = def[key]
-					})
+					definitionProxy = cloneDeep(def)
 				}
 			},
 			require: {
-				external: true
+				external: true,
+				// our own resolver for local files
+				resolve: (name, dir) => {
+					if (this.fileMapCache[name]) {
+						return this.fileMapCache[name]
+					}
+
+					// TODO better way to resolve to built file
+					const filename = (path.join(dir, name) + '.js').replace(
+						'/src/',
+						'/build/src/'
+					)
+
+					if (!fs.existsSync(filename)) {
+						throw new SpruceError({
+							code: ErrorCode.DefinitionFailedToImport,
+							file,
+							details: `It looks like you haven't built your project yet. try 'y build' or 'y watch'`
+						})
+					}
+
+					this.fileMapCache[name] = filename
+					return filename
+				}
 			}
 		})
 
 		// import source and transpile it
-		const sourceCode = fs.readFileSync(file).toString()
-		const js = this.transpileCode(sourceCode)
+		const sourceCode = fs.readFileSync(builtFile).toString()
+		// const js = this.transpileCode(sourceCode)
 
 		// find name of schema definition variable
 		const pattern = /exports.default = (.*?);/m
-		const matches = js.match(pattern)
+		const matches = sourceCode.match(pattern)
 		const definitionName = matches?.[1]
 
 		if (!definitionName) {
@@ -57,7 +89,7 @@ export default class NodeUtility {
 		}
 
 		// drop in define call
-		const modifiedJs = js + `\n\n_define(${definitionName});`
+		const modifiedJs = sourceCode + `\n\n_define(${definitionName});`
 
 		// run it
 		vm.run(modifiedJs, file)

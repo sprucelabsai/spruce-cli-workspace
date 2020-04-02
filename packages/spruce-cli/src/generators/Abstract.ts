@@ -10,7 +10,7 @@ export interface IGeneratorOptions {
 	cwd: string
 }
 
-export default abstract class AbstractGenerator {
+export default class AbstractGenerator {
 	public utilities: IUtilities
 	public templates: Templates
 	public log: Log
