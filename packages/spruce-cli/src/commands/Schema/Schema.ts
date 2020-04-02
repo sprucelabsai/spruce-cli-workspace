@@ -111,7 +111,8 @@ export default class SchemaCommand extends AbstractCommand {
 			// write to the destination
 			const {
 				pascalName,
-				camelName
+				camelName,
+				definition
 			} = this.generators.schema.generateTypesFromDefinitionFile(
 				filePath,
 				this.resolvePath(destinationDir)
@@ -121,7 +122,9 @@ export default class SchemaCommand extends AbstractCommand {
 			this.headline(`${pascalName} examples:`)
 
 			this.writeLn('')
-			this.codeSample(this.templates.schemaExample({ pascalName, camelName }))
+			this.codeSample(
+				this.templates.schemaExample({ pascalName, camelName, definition })
+			)
 
 			this.writeLn('')
 			this.writeLn('')

@@ -118,9 +118,10 @@ export default class ErrorCommand extends AbstractCommand {
 		}
 
 		//generate error option types based on new file
-		this.generators.error.generateTypesFromDefinitionFile(
+		this.generators.schema.generateTypesFromDefinitionFile(
 			errorDefinitionFileDestination,
-			this.resolvePath(typesDestinationDir)
+			this.resolvePath(typesDestinationDir),
+			'errorTypes'
 		)
 
 		// rebuild the errors codes
@@ -166,7 +167,8 @@ export default class ErrorCommand extends AbstractCommand {
 				//generate error option types based on new file
 				const {
 					pascalName,
-					camelName
+					camelName,
+					definition
 				} = this.generators.schema.generateTypesFromDefinitionFile(
 					filePath,
 					this.resolvePath(destinationDir),
@@ -177,7 +179,9 @@ export default class ErrorCommand extends AbstractCommand {
 				this.headline(`${pascalName} examples:`)
 
 				this.writeLn('')
-				this.codeSample(this.templates.schemaExample({ pascalName, camelName }))
+				this.codeSample(
+					this.templates.schemaExample({ pascalName, camelName, definition })
+				)
 
 				this.writeLn('')
 				this.writeLn('')

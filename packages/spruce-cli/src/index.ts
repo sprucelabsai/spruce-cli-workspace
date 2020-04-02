@@ -129,8 +129,6 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 			'Could not load tsconfig, make sure you are in a skill directory'
 		)
 	}
-	const tsConfigContents = fs.readFileSync(tsConfigPath).toString()
-	const tsConfig = JSON.parse(tsConfigContents)
 
 	const utilityOptions: IUtilityOptions = {
 		cwd
@@ -139,8 +137,7 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	const utilities: IUtilities = {
 		names: new NamesUtility(utilityOptions),
 		vm: new NodeUtility({
-			...utilityOptions,
-			compilerOptions: tsConfig.compilerOptions
+			...utilityOptions
 		})
 	}
 

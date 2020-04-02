@@ -12,6 +12,7 @@ import fonts from 'cfonts'
 import ora from 'ora'
 import AbstractSpruceError from '@sprucelabs/error'
 import { omit } from 'lodash'
+// @ts-ignore
 import emphasize from 'emphasize'
 
 let fieldCount = 0

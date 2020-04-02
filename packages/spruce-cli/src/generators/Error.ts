@@ -1,7 +1,6 @@
 import path from 'path'
 import AbstractGenerator from './Abstract'
 import globby from 'globby'
-import { ISchemaDefinition } from '@sprucelabs/schema'
 
 export default class ErrorGenerator extends AbstractGenerator {
 	/** rebuilds the codes */
