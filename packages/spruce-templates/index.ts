@@ -3,7 +3,11 @@ import fs from 'fs'
 import path from 'path'
 import log from '@sprucelabs/log'
 
-import { ISchemaTemplateItem, IFieldTemplateDetails } from '@sprucelabs/schema'
+import {
+	ISchemaTemplateItem,
+	IFieldTemplateDetails,
+	ISchemaDefinition
+} from '@sprucelabs/schema'
 
 // import addons
 import * as escape from './src/addons/escape.addon'
@@ -14,13 +18,13 @@ import * as fieldValue from './src/addons/fieldValue.addon'
 import * as isEqual from './src/addons/isEqual.addon'
 import * as startCase from './src/addons/startCase.addon'
 
-log.info('addon', escape)
-log.info('addon', fieldDefinitionOptions)
-log.info('addon', fieldDefinitionValueType)
-log.info('addon', fieldTypeEnum)
-log.info('addon', fieldValue)
-log.info('addon', isEqual)
-log.info('addon', startCase)
+log.info('addon escape', escape)
+log.info('addon fieldDefinitionOptions', fieldDefinitionOptions)
+log.info('addon fieldDefinitionValueType', fieldDefinitionValueType)
+log.info('addon fieldTypeEnum', fieldTypeEnum)
+log.info('addon fieldValue', fieldValue)
+log.info('addon isEqual', isEqual)
+log.info('addon startCase', startCase)
 
 // import actual templates
 const templatePath = path.join(__dirname, 'src', 'templates', 'typescript')
@@ -60,6 +64,10 @@ const errorCodesTypes: string = fs
 
 const errorDefinition: string = fs
 	.readFileSync(path.join(templatePath, 'errors/definition.hbs'))
+	.toString()
+
+const errorExample: string = fs
+	.readFileSync(path.join(templatePath, 'errors/example.hbs'))
 	.toString()
 
 // template generators
@@ -143,8 +151,22 @@ export const templates = {
 	},
 
 	/** schema example */
-	schemaExample(options: { camelName: string; pascalName: string }) {
+	schemaExample(options: {
+		camelName: string
+		pascalName: string
+		definition: ISchemaDefinition
+	}) {
 		const template = handlebars.compile(schemaExample)
+		return template(options)
+	},
+
+	/** error example */
+	errorExample(options: {
+		camelName: string
+		pascalName: string
+		definition: ISchemaDefinition
+	}) {
+		const template = handlebars.compile(errorExample)
 		return template(options)
 	}
 }

@@ -4,67 +4,6 @@ import globby from 'globby'
 import { ISchemaDefinition } from '@sprucelabs/schema'
 
 export default class ErrorGenerator extends AbstractGenerator {
-	/** take a definition file and generate options type */
-	public generateTypesFromDefinitionFile(
-		sourceFile: string,
-		destinationDir: string
-	): {
-		camelName: string
-		pascalName: string
-		description: string
-	} {
-		let definition: ISchemaDefinition | undefined
-
-		try {
-			definition = this.utilities.vm.importDefinition(sourceFile)
-		} catch (err) {
-			this.log.crit('I could not load the error definition file')
-			this.log.crit(err)
-		}
-
-		if (!definition) {
-			throw new Error('Importing error definition failed')
-		}
-
-		//get variations on name
-		const camelName = this.utilities.names.toCamel(definition.id)
-		const pascalName = this.utilities.names.toPascal(definition.name)
-		const description = definition.description
-
-		// files
-		const newFileName = `${camelName}.types.ts`
-		const destination = path.join(destinationDir, newFileName)
-
-		// relative paths
-		const relativeToDefinition = path.relative(
-			path.dirname(destination),
-			sourceFile
-		)
-
-		// contents
-		const contents = this.templates.errorTypes({
-			camelName,
-			pascalName,
-			description: description ?? `description missing, add to ${sourceFile}`,
-			relativeToDefinition: relativeToDefinition.replace(
-				path.extname(relativeToDefinition),
-				''
-			)
-		})
-
-		// does a file exist already, erase it
-		this.deleteFile(destination)
-
-		// write
-		this.writeFile(destination, contents)
-
-		return {
-			camelName,
-			pascalName,
-			description: description || '**missing description'
-		}
-	}
-
 	/** rebuilds the codes */
 	public async rebuildCodesTypesFile(options: {
 		lookupDir: string

@@ -4,9 +4,9 @@ import Schema, {
 
 import userWithTokenDefinition from '../../schemas/userWithToken.definition'
 
-type UserDefinition = typeof userWithTokenDefinition
-export interface IUserDefinition extends UserDefinition {}
+type UserWithTokenDefinition = typeof userWithTokenDefinition
+export interface IUserWithTokenDefinition extends UserWithTokenDefinition {}
 
 // A stripped down cli user with token details for login
-export interface IUser extends SchemaDefinitionValues<IUserDefinition> {}
-export interface IUserInstance extends Schema<IUserDefinition> {}
+export interface IUserWithToken extends SchemaDefinitionValues<IUserWithTokenDefinition> {}
+export interface IUserWithTokenInstance extends Schema<IUserWithTokenDefinition> {}

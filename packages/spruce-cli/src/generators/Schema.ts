@@ -6,8 +6,14 @@ export default class SchemaGenerator extends AbstractGenerator {
 	/** generate a type file from a definition file */
 	public generateTypesFromDefinitionFile(
 		sourceFile: string,
-		destinationDir: string
-	): { camelName: string; pascalName: string; description: string } {
+		destinationDir: string,
+		template: 'definitionTypes' | 'errorTypes' = 'definitionTypes'
+	): {
+		camelName: string
+		pascalName: string
+		description: string
+		definition: ISchemaDefinition
+	} {
 		let definition: ISchemaDefinition | undefined
 
 		try {
@@ -23,7 +29,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 		//get variations on name
 		const camelName = this.utilities.names.toCamel(definition.id)
-		const pascalName = this.utilities.names.toPascal(definition.name)
+		const pascalName = this.utilities.names.toPascal(definition.id)
 		const description = definition.description
 
 		// files
@@ -37,7 +43,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 		)
 
 		// contents
-		const contents = this.templates.definitionTypes({
+		const contents = this.templates[template]({
 			camelName,
 			pascalName,
 			description:
@@ -57,6 +63,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 		return {
 			camelName,
 			pascalName,
+			definition,
 			description: description || '*definition missing*'
 		}
 	}
