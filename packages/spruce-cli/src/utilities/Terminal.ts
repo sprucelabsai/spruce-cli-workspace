@@ -170,7 +170,7 @@ export default class Terminal {
 		// this.writeLn(message, effects)
 		fonts.say(message, {
 			font: 'console',
-			color: 'candy',
+			// color: 'candy',
 			align: 'left',
 			colors: omit(effects, [
 				ITerminalEffect.Reset,

@@ -10,8 +10,10 @@ const {{camelName}} = new Schema({{camelName}}Definition, values)
 // Set a value
 {{camelName}}.set('fieldName', newValue);
 
-// Get a value
-const value = {{camelName}}.get('fieldName');
+// Get some values
+{{#each definition.fields}}
+const {{@key}} = {{../camelName}}.get('{{@key}}');
+{{/each}}
 
-// ensure validity
+// ensure validitye
 {{camelName}}.validate() // throws SchemaFieldValidationError

@@ -118,7 +118,11 @@ export default class ErrorCommand extends AbstractCommand {
 		}
 
 		//generate error option types based on new file
-		this.generators.schema.generateTypesFromDefinitionFile(
+		const {
+			pascalName,
+			definition,
+			camelName
+		} = this.generators.schema.generateTypesFromDefinitionFile(
 			errorDefinitionFileDestination,
 			this.resolvePath(typesDestinationDir),
 			'errorTypes'
@@ -136,10 +140,17 @@ export default class ErrorCommand extends AbstractCommand {
 			destinationFile: this.resolvePath(typesDestinationDir, 'options.types.ts')
 		})
 
-		this.section({
-			headline: 'Success!',
-			lines: [`Error class ${errorFileDestination}`]
-		})
+		// give an example
+		this.headline(`${names.pascalName} examples:`)
+
+		this.writeLn('')
+		this.codeSample(
+			this.templates.errorExample({
+				pascalName,
+				camelName,
+				definition
+			})
+		)
 	}
 
 	public async sync(cmd: Command) {
@@ -172,15 +183,15 @@ export default class ErrorCommand extends AbstractCommand {
 				} = this.generators.schema.generateTypesFromDefinitionFile(
 					filePath,
 					this.resolvePath(destinationDir),
-					'definitionTypes'
+					'errorTypes'
 				)
 
 				// tell them how to use it
-				this.headline(`${pascalName} examples:`)
+				this.headline(`${pascalName}Error examples:`)
 
 				this.writeLn('')
 				this.codeSample(
-					this.templates.schemaExample({ pascalName, camelName, definition })
+					this.templates.errorExample({ pascalName, camelName, definition })
 				)
 
 				this.writeLn('')

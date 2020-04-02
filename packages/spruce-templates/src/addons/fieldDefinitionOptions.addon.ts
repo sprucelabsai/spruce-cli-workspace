@@ -1,5 +1,9 @@
 import handlebars from 'handlebars'
-import { IFieldDefinition, ISchemaTemplateItem, FieldType } from '@sprucelabs/schema'
+import {
+	IFieldDefinition,
+	ISchemaTemplateItem,
+	FieldType
+} from '@sprucelabs/schema'
 
 /** renders field options */
 handlebars.registerHelper('fieldDefinitionOptions', function(

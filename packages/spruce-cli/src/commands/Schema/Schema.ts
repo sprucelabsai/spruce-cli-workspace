@@ -189,7 +189,8 @@ export default class SchemaCommand extends AbstractCommand {
 		this.codeSample(
 			this.templates.schemaExample({
 				pascalName: names.pascalName,
-				camelName: names.camelName
+				camelName: names.camelName,
+				definition: names.definition
 			})
 		)
 	}
