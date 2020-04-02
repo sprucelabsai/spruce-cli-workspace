@@ -46,6 +46,7 @@
     "commander": "^4.1.1",
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
+    "emphasize": "^3.0.0",
     "fs-extra": "^8.1.0",
     "globby": "^11.0.0",
     "graphql": "^14.6.0",
@@ -74,8 +75,8 @@
     "eslint-config-spruce": "^10.0.3",
     "mkdirp": "^1.0.3",
     "prettier": "^1.13",
-    "yarn": "^1.2.1",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "yarn": "^1.2.1"
   },
   "peerDependencies": {}
 }

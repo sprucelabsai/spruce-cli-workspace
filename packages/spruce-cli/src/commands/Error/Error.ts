@@ -21,7 +21,7 @@ export default class ErrorCommand extends AbstractCommand {
 				'Where should I write the types file that supports the error?',
 				'./src/.spruce/errors'
 			)
-			.action(this.createError.bind(this))
+			.action(this.create.bind(this))
 
 		program
 			.command('error:sync')
@@ -39,7 +39,8 @@ export default class ErrorCommand extends AbstractCommand {
 			.action(this.sync.bind(this))
 	}
 
-	public async createError(cmd: Command) {
+	// TODO allow passing of name
+	public async create(cmd: Command) {
 		const form = this.formBuilder(
 			namedTemplateItemDefinition,
 			{},

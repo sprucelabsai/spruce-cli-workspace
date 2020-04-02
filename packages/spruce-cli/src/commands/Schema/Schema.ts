@@ -114,23 +114,25 @@ export default class SchemaCommand extends AbstractCommand {
 			)
 
 			// tell them how to use it
-			this.headline(`Imported ${pascalName}. Examples:`)
+			this.headline(`Imported ${pascalName} Examples:`)
 
-			this.writeLn(
-				`Importing your definition:  import ${camelName}Definition from '../.spruce/schemas/${camelName}.types.ts'`
+			this.codeSample(
+				`// Importing your definition
+				import ${camelName}Definition from '../.spruce/schemas/${camelName}.types.ts'
+				
+				// Importing interfaces
+				import { I${pascalName}, I${pascalName}Instance } from '#spruce/schemas/${camelName}.types'
+				
+				// Create an instance of a schema based on a definition
+				const ${camelName} = new Schema(${camelName}Definition, values)
+				
+				${camelName}.set('fieldName', newValue);
+				const value = ${camelName}.get('fieldName');
+
+				// ensure validity
+				${camelName}.validate() // throws SchemaFieldValidationError
+				`
 			)
-
-			this.writeLn(
-				`Importing interfaces: import { I${pascalName}, I${pascalName}Instance } from '#spruce/schemas/${camelName}.types'`
-			)
-
-			this.writeLn(
-				`Creating schema: const ${camelName} = new Schema(${camelName}Definition, values)`
-			)
-
-			this.writeLn(`${camelName}.set('fieldName', newValue);`)
-			this.writeLn(`const value ${camelName}.get('fieldName');`)
-			this.writeLn(`${camelName}.validate()`)
 
 			this.bar()
 		})
@@ -138,6 +140,7 @@ export default class SchemaCommand extends AbstractCommand {
 
 	public async create(name: string | undefined, cmd: Command) {
 		const readableName = name
+
 		let camelName = ''
 		let pascalName = ''
 
@@ -158,25 +161,9 @@ export default class SchemaCommand extends AbstractCommand {
 				pascalName
 			},
 			{
-				onWillAskQuestion: (name, fieldDefinition, values) => {
-					switch (name) {
-						case 'camelName':
-							if (!values.camelName) {
-								fieldDefinition.defaultValue = this.utilities.names.toCamel(
-									values.readableName || ''
-								)
-							}
-							break
-						case 'pascalName':
-							if (!values.pascalName) {
-								fieldDefinition.defaultValue = this.utilities.names.toPascal(
-									values.readableName || ''
-								)
-							}
-							break
-					}
-					return fieldDefinition
-				}
+				onWillAskQuestion: this.utilities.names.onWillAskQuestionHandler.bind(
+					this.utilities.names
+				)
 			}
 		)
 
@@ -196,23 +183,15 @@ export default class SchemaCommand extends AbstractCommand {
 			`${values.camelName}.types.ts`
 		)
 
-		// relative paths
-		const relativeToDefinition = path.relative(
-			path.dirname(typesDestination),
-			definitionDestination
-		)
-
 		const definition = templates.definition(values)
-		const types = templates.definitionTypes({
-			...values,
-			relativeToDefinition: relativeToDefinition.replace(
-				path.extname(relativeToDefinition),
-				''
-			)
-		})
 
 		this.writeFile(definitionDestination, definition)
-		this.writeFile(typesDestination, types)
+
+		// generate types
+		this.generators.schema.generateTypesFromDefinition(
+			definitionDestination,
+			typesDestination
+		)
 
 		this.writeLn(`Definition created at ${definitionDestination}`)
 		this.writeLn(`Definition types created at ${typesDestination}`)

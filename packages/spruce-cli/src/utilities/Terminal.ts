@@ -12,6 +12,7 @@ import fonts from 'cfonts'
 import ora from 'ora'
 import AbstractSpruceError from '@sprucelabs/error'
 import { omit } from 'lodash'
+import emphasize from 'emphasize'
 
 let fieldCount = 0
 function generateInquirerFieldName() {
@@ -266,6 +267,14 @@ export default class Terminal {
 	/** clear the console */
 	public clear() {
 		console.clear()
+	}
+
+	/** print some code beautifully */
+	public codeSample(code: string) {
+		this.bar()
+		const colored = emphasize.highlightDoc(code).value
+		console.log(colored)
+		this.bar()
 	}
 
 	/** ask the user for something */
