@@ -1,6 +1,8 @@
 // All the error codes this skill can throw
 export enum ErrorCode {
     /** * coming soon */
+    BuildFailed = 'BUILD_FAILED',
+    /** * coming soon */
     CouldNotLoadCommand = 'COULD_NOT_LOAD_COMMAND',
     /** * coming soon */
     DefinitionFailedToImport = 'DEFINITION_FAILED_TO_IMPORT',

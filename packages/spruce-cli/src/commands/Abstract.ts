@@ -13,6 +13,8 @@ import { IServices } from '../services'
 import { IGenerators } from '../generators'
 import { IUtilities } from '../utilities'
 import { Templates } from '@sprucelabs/spruce-templates'
+import SpruceError from '../errors/Error'
+import { ErrorCode } from '../.spruce/errors/codes.types'
 
 /** all commanders get this */
 export interface ICommandOptions {
@@ -98,7 +100,7 @@ export default abstract class AbstractCommand extends Terminal {
 		this.generators.core.writeFile(this.resolvePath(destination), contents)
 		if (destination.substr(-3) === '.ts') {
 			this.prettyFormatFile(destination)
-			await this.build()
+			await this.build(destination)
 		}
 	}
 
@@ -124,14 +126,36 @@ export default abstract class AbstractCommand extends Terminal {
 	}
 
 	/** kick off a build */
-	public async build(/*file?: string*/) {
+	public async build(file?: string) {
 		// Todo make this better and building
 		// const command = `tsc ${file ? file : ''}`
 		// const command = `y build`
 		// existsSync(command)
 
-		// because watch is running, we'll just wait for this to finish
-		return new Promise(resolve => setTimeout(resolve, 2000))
+		this.startLoading('Waiting for build to complete')
+
+		if (file) {
+			const builtFile = this.resolvePath(file)
+				.replace('/src/', '/build/src/')
+				.replace('.ts', '.js')
+
+			let attemptCount = 0
+			do {
+				if (attemptCount > 5) {
+					throw new SpruceError({
+						code: ErrorCode.BuildFailed,
+						file
+					})
+				}
+				attemptCount++
+				await new Promise(resolve => setTimeout(resolve, 2000))
+			} while (!this.doesFileExist(builtFile))
+		} else {
+			// because watch is running, we'll just wait for this to finish
+			await new Promise(resolve => setTimeout(resolve, 5000))
+		}
+
+		this.stopLoading()
 	}
 
 	/** are we in a skills dir? */

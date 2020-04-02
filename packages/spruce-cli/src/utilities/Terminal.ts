@@ -168,7 +168,8 @@ export default class Terminal {
 		this.bar()
 		// this.writeLn(message, effects)
 		fonts.say(message, {
-			font: 'simple',
+			font: 'console',
+			color: 'candy',
 			align: 'left',
 			colors: omit(effects, [
 				ITerminalEffect.Reset,

@@ -44,6 +44,13 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 
 				break
 
+			case ErrorCode.BuildFailed:
+				message = `Build${
+					options.file ? `ing ${options.file}` : ''
+				} failed. It looks like you're not running 'y watch'. Run it and then run 'spruce all:sync'.`
+
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}
