@@ -165,7 +165,24 @@ export default class Terminal {
 		message: string,
 		effects: ITerminalEffect[] = [ITerminalEffect.Blue, ITerminalEffect.Bold]
 	) {
-		this.writeLn(message, effects)
+		this.bar()
+		// this.writeLn(message, effects)
+		fonts.say(message, {
+			font: 'simple',
+			align: 'left',
+			colors: omit(effects, [
+				ITerminalEffect.Reset,
+				ITerminalEffect.Bold,
+				ITerminalEffect.Dim,
+				ITerminalEffect.Italic,
+				ITerminalEffect.Underline,
+				ITerminalEffect.Inverse,
+				ITerminalEffect.Hidden,
+				ITerminalEffect.Strikethrough,
+				ITerminalEffect.Visible
+			])
+		})
+		this.bar()
 	}
 
 	/** a headline */
@@ -271,10 +288,12 @@ export default class Terminal {
 
 	/** print some code beautifully */
 	public codeSample(code: string) {
-		this.bar()
-		const colored = emphasize.highlightDoc(code).value
-		console.log(colored)
-		this.bar()
+		try {
+			const colored = emphasize.highlight('js', code).value
+			console.log(colored)
+		} catch (err) {
+			this.error(err)
+		}
 	}
 
 	/** ask the user for something */

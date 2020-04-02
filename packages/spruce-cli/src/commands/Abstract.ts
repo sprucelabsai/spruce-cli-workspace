@@ -94,9 +94,12 @@ export default abstract class AbstractCommand extends Terminal {
 	}
 
 	/** write a file to a place handling all directory creation (overwrites everything) */
-	public writeFile(destination: string, contents: string) {
+	public async writeFile(destination: string, contents: string) {
 		this.generators.core.writeFile(this.resolvePath(destination), contents)
-		this.prettyFormatFile(destination)
+		if (destination.substr(-3) === '.ts') {
+			this.prettyFormatFile(destination)
+			await this.build()
+		}
 	}
 
 	/** read a file */
@@ -118,6 +121,17 @@ export default abstract class AbstractCommand extends Terminal {
 	public prettyFormatFile(filePath: string) {
 		// TODO get this to work
 		console.log('prettier on', this.resolvePath(filePath))
+	}
+
+	/** kick off a build */
+	public async build(/*file?: string*/) {
+		// Todo make this better and building
+		// const command = `tsc ${file ? file : ''}`
+		// const command = `y build`
+		// existsSync(command)
+
+		// because watch is running, we'll just wait for this to finish
+		return new Promise(resolve => setTimeout(resolve, 2000))
 	}
 
 	/** are we in a skills dir? */

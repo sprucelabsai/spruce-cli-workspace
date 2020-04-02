@@ -19,7 +19,7 @@ export default class NodeUtility extends AbstractUtility {
 		let definitionProxy: ISchemaDefinition | undefined
 
 		// lets make sure there is a complimentary build for for this or we can't continue
-		const builtFile = path.join(this.cwd, 'build', file.replace('.ts', '.js'))
+		const builtFile = file.replace('.ts', '.js').replace('/src/', '/build/src/')
 
 		if (!fs.existsSync(builtFile)) {
 			throw new SpruceError({

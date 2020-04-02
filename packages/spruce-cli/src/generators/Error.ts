@@ -9,10 +9,9 @@ export default class ErrorGenerator extends AbstractGenerator {
 		sourceFile: string,
 		destinationDir: string
 	): {
-		destination: string
 		camelName: string
 		pascalName: string
-		contents: string
+		description: string
 	} {
 		let definition: ISchemaDefinition | undefined
 
@@ -60,10 +59,9 @@ export default class ErrorGenerator extends AbstractGenerator {
 		this.writeFile(destination, contents)
 
 		return {
-			destination,
-			contents,
 			camelName,
-			pascalName
+			pascalName,
+			description: description || '**missing description'
 		}
 	}
 

@@ -7,6 +7,6 @@ import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definit
 type NamedTemplateItemDefinition = typeof namedTemplateItemDefinition
 export interface INamedTemplateItemDefinition extends NamedTemplateItemDefinition {}
 
-Used to collect input on the names of a class or interface
+// Used to collect input on the names of a class or interface
 export interface INamedTemplateItem extends SchemaDefinitionValues<INamedTemplateItemDefinition> {}
 export interface INamedTemplateItemInstance extends Schema<INamedTemplateItemDefinition> {}

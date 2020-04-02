@@ -4,15 +4,10 @@ import { ISchemaDefinition } from '@sprucelabs/schema'
 
 export default class SchemaGenerator extends AbstractGenerator {
 	/** generate a type file from a definition file */
-	public generateTypesFromDefinition(
+	public generateTypesFromDefinitionFile(
 		sourceFile: string,
 		destinationDir: string
-	): {
-		destination: string
-		camelName: string
-		pascalName: string
-		contents: string
-	} {
+	): { camelName: string; pascalName: string; description: string } {
 		let definition: ISchemaDefinition | undefined
 
 		try {
@@ -60,10 +55,9 @@ export default class SchemaGenerator extends AbstractGenerator {
 		this.writeFile(destination, contents)
 
 		return {
-			destination,
-			contents,
 			camelName,
-			pascalName
+			pascalName,
+			description: description || '*definition missing*'
 		}
 	}
 }

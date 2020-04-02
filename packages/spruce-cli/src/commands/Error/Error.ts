@@ -83,7 +83,7 @@ export default class ErrorCommand extends AbstractCommand {
 		}
 
 		// write the definition
-		this.writeFile(
+		await this.writeFile(
 			errorDefinitionFileDestination,
 			this.templates.errorDefinition(names)
 		)
@@ -91,7 +91,7 @@ export default class ErrorCommand extends AbstractCommand {
 		// if there is no error file, lets write one
 		if (!this.doesFileExist(errorFileDestination)) {
 			const errorContents = this.templates.error(names)
-			this.writeFile(errorFileDestination, errorContents)
+			await this.writeFile(errorFileDestination, errorContents)
 		} else {
 			const errorBlock = this.templates.error({
 				...names,
@@ -109,7 +109,7 @@ export default class ErrorCommand extends AbstractCommand {
 					'\n' +
 					currentErrorContents.substring(blockMatches)
 
-				this.writeFile(errorFileDestination, newErrorContents)
+				await this.writeFile(errorFileDestination, newErrorContents)
 			} else {
 				// could not write to file, output snippet suggestion
 				this.warn('Failed to add to Error.ts, here is the block to drop in')

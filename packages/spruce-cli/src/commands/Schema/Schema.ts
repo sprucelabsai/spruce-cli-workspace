@@ -83,7 +83,7 @@ export default class SchemaCommand extends AbstractCommand {
 
 		//write it out
 		const destination = this.resolvePath(destinationDir, 'core.types.ts')
-		this.writeFile(destination, contents)
+		await this.writeFile(destination, contents)
 
 		this.info(`All done 👊: ${destination}`)
 	}
@@ -92,11 +92,15 @@ export default class SchemaCommand extends AbstractCommand {
 	public async sync(cmd: Command) {
 		const lookupDir = cmd.lookupDir as string
 		const destinationDir = cmd.destinationDir as string
-		const search = path.join(lookupDir, '**', '*.definition.ts')
+		const search = path.join(
+			this.resolvePath(lookupDir),
+			'**',
+			'*.definition.ts'
+		)
 
 		const matches = await globby(search)
 
-		matches.forEach(filePath => {
+		matches.forEach(async filePath => {
 			// does this file contain buildSchemaDefinition?
 			const currentContents = this.readFile(filePath)
 			if (currentContents.search(/buildSchemaDefinition\({/) === -1) {
@@ -108,33 +112,19 @@ export default class SchemaCommand extends AbstractCommand {
 			const {
 				pascalName,
 				camelName
-			} = this.generators.schema.generateTypesFromDefinition(
+			} = this.generators.schema.generateTypesFromDefinitionFile(
 				filePath,
 				this.resolvePath(destinationDir)
 			)
 
 			// tell them how to use it
-			this.headline(`Imported ${pascalName} Examples:`)
+			this.headline(`${pascalName} examples:`)
 
-			this.codeSample(
-				`// Importing your definition
-				import ${camelName}Definition from '../.spruce/schemas/${camelName}.types.ts'
-				
-				// Importing interfaces
-				import { I${pascalName}, I${pascalName}Instance } from '#spruce/schemas/${camelName}.types'
-				
-				// Create an instance of a schema based on a definition
-				const ${camelName} = new Schema(${camelName}Definition, values)
-				
-				${camelName}.set('fieldName', newValue);
-				const value = ${camelName}.get('fieldName');
+			this.writeLn('')
+			this.codeSample(this.templates.schemaExample({ pascalName, camelName }))
 
-				// ensure validity
-				${camelName}.validate() // throws SchemaFieldValidationError
-				`
-			)
-
-			this.bar()
+			this.writeLn('')
+			this.writeLn('')
 		})
 	}
 
@@ -178,22 +168,22 @@ export default class SchemaCommand extends AbstractCommand {
 			cmd.definitionDestinationDir as string,
 			`${values.camelName}.definition.ts`
 		)
-		const typesDestination = this.resolvePath(
-			cmd.typesDestinationDir as string,
-			`${values.camelName}.types.ts`
-		)
+		const typesDestination = this.resolvePath(cmd.typesDestinationDir as string)
 
 		const definition = templates.definition(values)
 
-		this.writeFile(definitionDestination, definition)
+		await this.writeFile(definitionDestination, definition)
 
 		// generate types
-		this.generators.schema.generateTypesFromDefinition(
+		this.generators.schema.generateTypesFromDefinitionFile(
 			definitionDestination,
 			typesDestination
 		)
 
-		this.writeLn(`Definition created at ${definitionDestination}`)
-		this.writeLn(`Definition types created at ${typesDestination}`)
+		// tell them how to use it
+		this.headline(`${pascalName} examples:`)
+
+		this.writeLn('')
+		this.codeSample(this.templates.schemaExample({ pascalName, camelName }))
 	}
 }

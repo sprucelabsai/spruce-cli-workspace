@@ -38,6 +38,10 @@ const definitionTypes: string = fs
 	.readFileSync(path.join(templatePath, 'schemas/definition.types.hbs'))
 	.toString()
 
+const schemaExample: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/example.hbs'))
+	.toString()
+
 const error: string = fs
 	.readFileSync(path.join(templatePath, 'errors/Error.hbs'))
 	.toString()
@@ -135,6 +139,12 @@ export const templates = {
 		description: string
 	}) {
 		const template = handlebars.compile(errorDefinition)
+		return template(options)
+	},
+
+	/** schema example */
+	schemaExample(options: { camelName: string; pascalName: string }) {
+		const template = handlebars.compile(schemaExample)
 		return template(options)
 	}
 }
