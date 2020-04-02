@@ -55,7 +55,6 @@
     "lodash": "^4.17.15",
     "ora": "^4.0.3",
     "slug": "^2.1.1",
-    "typescript": "^3.8.3",
     "vm2": "^3.9.1"
   },
   "devDependencies": {
@@ -75,7 +74,8 @@
     "eslint-config-spruce": "^10.0.3",
     "mkdirp": "^1.0.3",
     "prettier": "^1.13",
-    "yarn": "^1.2.1"
+    "yarn": "^1.2.1",
+    "typescript": "^3.8.3"
   },
   "peerDependencies": {}
 }

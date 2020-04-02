@@ -1,5 +1,4 @@
 import { NodeVM } from 'vm2'
-import typescript, { CompilerOptions } from 'typescript'
 import SpruceError from '../errors/Error'
 import { ErrorCode } from '../.spruce/errors/codes.types'
 import Schema, { ISchemaDefinition } from '@sprucelabs/schema'
@@ -9,15 +8,10 @@ import AbstractUtility from './Abstract'
 import { cloneDeep } from 'lodash'
 
 export default class NodeUtility extends AbstractUtility {
-	public compilerOptions: CompilerOptions
 	private fileMapCache: Record<string, string> = {}
 
-	public constructor(options: {
-		compilerOptions: CompilerOptions
-		cwd: string
-	}) {
+	public constructor(options: { cwd: string }) {
 		super(options)
-		this.compilerOptions = options.compilerOptions
 	}
 
 	/** import a schema definition from any file */
@@ -109,20 +103,5 @@ export default class NodeUtility extends AbstractUtility {
 		}
 
 		return definitionProxy as ISchemaDefinition
-	}
-
-	/** typescript transpiler, just send the code */
-	public transpileCode(sourceCode: string) {
-		const result = typescript.transpileModule(sourceCode, {
-			compilerOptions: { module: typescript.ModuleKind.CommonJS }
-		})
-		const { outputText } = result
-		if (!outputText) {
-			throw new SpruceError({
-				code: ErrorCode.TranspileFailed,
-				source: sourceCode
-			})
-		}
-		return outputText
 	}
 }
