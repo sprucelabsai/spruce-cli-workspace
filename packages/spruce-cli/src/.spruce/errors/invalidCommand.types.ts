@@ -12,7 +12,7 @@ type InvalidCommandDefinition = typeof invalidCommandDefinition
 export interface IInvalidCommandDefinition extends InvalidCommandDefinition {}
 
 export interface IInvalidCommandErrorOptions extends SchemaDefinitionValues<IInvalidCommandDefinition>, ISpruceErrorOptions<ErrorCode> {
-	/** * The command is not valid, try --help */
+	/** * .InvalidCommand - The command is not valid, try --help */
 	code: ErrorCode.InvalidCommand
 } 
 

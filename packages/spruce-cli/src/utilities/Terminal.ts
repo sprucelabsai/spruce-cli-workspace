@@ -64,7 +64,10 @@ export enum ITerminalEffect {
 	BgBlueBright = 'bgBlueBright',
 	BgMagentaBright = 'bgMagentaBright',
 	BgCyanBright = 'bgCyanBright',
-	BgWhiteBright = 'bgWhiteBright'
+	BgWhiteBright = 'bgWhiteBright',
+
+	/** spruce header style */
+	SpruceHeader = 'shade'
 }
 
 /** what prompt() returns if isRequired=true */
@@ -167,23 +170,28 @@ export default class Terminal {
 		effects: ITerminalEffect[] = [ITerminalEffect.Blue, ITerminalEffect.Bold]
 	) {
 		this.bar()
-		// this.writeLn(message, effects)
-		fonts.say(message, {
-			font: 'console',
-			// color: 'candy',
-			align: 'left',
-			colors: omit(effects, [
-				ITerminalEffect.Reset,
-				ITerminalEffect.Bold,
-				ITerminalEffect.Dim,
-				ITerminalEffect.Italic,
-				ITerminalEffect.Underline,
-				ITerminalEffect.Inverse,
-				ITerminalEffect.Hidden,
-				ITerminalEffect.Strikethrough,
-				ITerminalEffect.Visible
-			])
-		})
+		const isSpruce = effects[0] === ITerminalEffect.SpruceHeader
+
+		if (isSpruce) {
+			fonts.say(message, {
+				font: ITerminalEffect.SpruceHeader,
+				color: 'candy',
+				align: 'left',
+				colors: omit(effects, [
+					ITerminalEffect.Reset,
+					ITerminalEffect.Bold,
+					ITerminalEffect.Dim,
+					ITerminalEffect.Italic,
+					ITerminalEffect.Underline,
+					ITerminalEffect.Inverse,
+					ITerminalEffect.Hidden,
+					ITerminalEffect.Strikethrough,
+					ITerminalEffect.Visible
+				])
+			})
+		} else {
+			this.writeLn(message, effects)
+		}
 		this.bar()
 	}
 
@@ -277,7 +285,9 @@ export default class Terminal {
 		this.writeLn('')
 		await this.prompt({
 			type: FieldType.Text,
-			label: message ?? 'Hit enter to continue'
+			label: `${message ? message + ' ' : ''}${chalk.bgGreen.white(
+				'hit enter'
+			)}`
 		})
 		this.writeLn('')
 		return

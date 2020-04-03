@@ -146,19 +146,17 @@ export default class SchemaCommand extends AbstractCommand {
 			pascalName = this.utilities.names.toPascal(camelName)
 		}
 
-		const form = this.formBuilder(
-			namedTemplateItemDefinition,
-			{
+		const form = this.formBuilder({
+			definition: namedTemplateItemDefinition,
+			initialValues: {
 				readableName,
 				camelName,
 				pascalName
 			},
-			{
-				onWillAskQuestion: this.utilities.names.onWillAskQuestionHandler.bind(
-					this.utilities.names
-				)
-			}
-		)
+			onWillAskQuestion: this.utilities.names.onWillAskQuestionHandler.bind(
+				this.utilities.names
+			)
+		})
 
 		// all the values
 		const values = await form.present({

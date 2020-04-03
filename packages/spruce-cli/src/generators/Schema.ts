@@ -1,6 +1,8 @@
 import path from 'path'
 import AbstractGenerator from './Abstract'
 import { ISchemaDefinition } from '@sprucelabs/schema'
+import SpruceError from '../errors/Error'
+import { ErrorCode } from '../.spruce/errors/codes.types'
 
 export default class SchemaGenerator extends AbstractGenerator {
 	/** generate a type file from a definition file */
@@ -14,18 +16,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 		description: string
 		definition: ISchemaDefinition
 	} {
-		let definition: ISchemaDefinition | undefined
-
-		try {
-			definition = this.utilities.vm.importDefinition(sourceFile)
-		} catch (err) {
-			this.log.crit(`I could not load the error definition file ${sourceFile}`)
-			this.log.crit(err)
-		}
-
-		if (!definition) {
-			throw new Error('Importing error definition failed')
-		}
+		const definition = this.utilities.vm.importDefinition(sourceFile)
 
 		//get variations on name
 		const camelName = this.utilities.names.toCamel(definition.id)

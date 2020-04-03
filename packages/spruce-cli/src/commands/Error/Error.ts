@@ -41,15 +41,12 @@ export default class ErrorCommand extends AbstractCommand {
 
 	// TODO allow passing of name
 	public async create(cmd: Command) {
-		const form = this.formBuilder(
-			namedTemplateItemDefinition,
-			{},
-			{
-				onWillAskQuestion: this.utilities.names.onWillAskQuestionHandler.bind(
-					this.utilities.names
-				)
-			}
-		)
+		const form = this.formBuilder({
+			definition: namedTemplateItemDefinition,
+			onWillAskQuestion: this.utilities.names.onWillAskQuestionHandler.bind(
+				this.utilities.names
+			)
+		})
 
 		const names = await form.present({
 			fields: [

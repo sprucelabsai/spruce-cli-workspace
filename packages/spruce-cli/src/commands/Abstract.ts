@@ -2,11 +2,8 @@ import { Log } from '@sprucelabs/log'
 import Terminal from '../utilities/Terminal'
 import path from 'path'
 import { Command } from 'commander'
-import FormBuilder, { IFormBuilderOptions } from '../builders/FormBuilder'
-import {
-	ISchemaDefinition,
-	SchemaDefinitionPartialValues
-} from '@sprucelabs/schema'
+import FormBuilder, { IFormOptions } from '../builders/FormBuilder'
+import { ISchemaDefinition } from '@sprucelabs/schema'
 import { IStores } from '../stores'
 import { Mercury } from '@sprucelabs/mercury'
 import { IServices } from '../services'
@@ -15,6 +12,10 @@ import { IUtilities } from '../utilities'
 import { Templates } from '@sprucelabs/spruce-templates'
 import SpruceError from '../errors/Error'
 import { ErrorCode } from '../.spruce/errors/codes.types'
+import QuizBuilder, {
+	IQuizOptions,
+	IQuizQuestions
+} from '../builders/QuizBuilder'
 
 /** all commanders get this */
 export interface ICommandOptions {
@@ -65,17 +66,18 @@ export default abstract class AbstractCommand extends Terminal {
 
 	/** preps a form builder, you will need to call present() */
 	public formBuilder<T extends ISchemaDefinition>(
-		definition: T,
-		initialValues: SchemaDefinitionPartialValues<T> = {},
-		options: IFormBuilderOptions<T> = {}
+		options: Omit<IFormOptions<T>, 'term'>
 	): FormBuilder<T> {
-		const formBuilder = new FormBuilder(
-			this,
-			definition,
-			initialValues,
-			options
-		)
+		const formBuilder = new FormBuilder({ term: this, ...options })
 		return formBuilder
+	}
+
+	/** preps a quiz builder, you will need to call present() */
+	public quizBuilder<T extends ISchemaDefinition, Q extends IQuizQuestions>(
+		options: Omit<IQuizOptions<T, Q>, 'term' | 'definition'>
+	): QuizBuilder<T, Q> {
+		const quizBuilder = new QuizBuilder({ term: this, ...options })
+		return quizBuilder
 	}
 
 	/** helper to resolve paths absolutely and relatively */

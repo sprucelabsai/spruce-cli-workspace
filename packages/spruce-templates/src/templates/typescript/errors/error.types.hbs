@@ -12,7 +12,7 @@ type {{pascalName}}Definition = typeof {{camelName}}Definition
 export interface I{{pascalName}}Definition extends {{pascalName}}Definition {}
 
 export interface I{{pascalName}}ErrorOptions extends SchemaDefinitionValues<I{{pascalName}}Definition>, ISpruceErrorOptions<ErrorCode> {
-	/** * {{{escape description}}} */
+	/** * .{{pascalName}} - {{{escape description}}} */
 	code: ErrorCode.{{pascalName}}
 } 
 

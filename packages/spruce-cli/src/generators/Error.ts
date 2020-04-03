@@ -1,6 +1,9 @@
 import path from 'path'
 import AbstractGenerator from './Abstract'
 import globby from 'globby'
+import { ISchemaDefinition } from '@sprucelabs/schema'
+import SpruceError from '../errors/Error'
+import { ErrorCode } from '../.spruce/errors/codes.types'
 
 export default class ErrorGenerator extends AbstractGenerator {
 	/** rebuilds the codes */
@@ -21,16 +24,20 @@ export default class ErrorGenerator extends AbstractGenerator {
 		}[] = []
 
 		matches.forEach(file => {
-			const pathStr = path.dirname(file)
-			const filename = file.substr(pathStr.length + 1)
-			const nameParts = filename.split('.')
+			const definition = this.utilities.vm.importDefinition(file)
 
 			//get variations on name
-			const camelName = this.utilities.names.toCamel(nameParts[0])
+			const camelName = this.utilities.names.toCamel(definition.id)
 			const pascalName = this.utilities.names.toPascal(camelName)
 			const constName = this.utilities.names.toConst(camelName)
 
-			codes.push({ pascalName, constName, description: 'coming soon' })
+			codes.push({
+				pascalName,
+				constName,
+				description:
+					definition.description ||
+					'*** error definition missing description ***'
+			})
 		})
 
 		const contents = this.templates.errorCodesTypes({ codes })

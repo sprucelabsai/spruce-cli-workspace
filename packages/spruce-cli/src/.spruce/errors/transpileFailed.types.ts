@@ -12,7 +12,7 @@ type TranspileFailedDefinition = typeof transpileFailedDefinition
 export interface ITranspileFailedDefinition extends TranspileFailedDefinition {}
 
 export interface ITranspileFailedErrorOptions extends SchemaDefinitionValues<ITranspileFailedDefinition>, ISpruceErrorOptions<ErrorCode> {
-	/** * Could not transpile (ts -> js) a script */
+	/** * .TranspileFailed - Could not transpile (ts -> js) a script */
 	code: ErrorCode.TranspileFailed
 } 
 

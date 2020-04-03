@@ -1,11 +1,6 @@
 import AbstractCommand from '../Abstract'
 import { Command } from 'commander'
-import {
-	IFieldSelectDefinitionChoice,
-	ISchemaFieldsDefinition,
-	FieldType
-} from '@sprucelabs/schema'
-import { shuffle } from 'lodash'
+import { FieldType } from '@sprucelabs/schema'
 
 export default class OnboardingCommand extends AbstractCommand {
 	public attachCommands(program: Command) {
@@ -31,15 +26,12 @@ export default class OnboardingCommand extends AbstractCommand {
 		this.hero(runCount == 0 ? 'You made it!' : 'Onboarding')
 
 		if (runCount === 0) {
-			this.writeLn(
+			await this.wait(
 				`It's Sprucebot again. It's a lot more cozy in here than online, but that won't slow us down!`
 			)
 		} else {
-			this.writeLn('You ready to get this party started?')
+			await this.wait('You ready to get this party started?')
 		}
-
-		// wait
-		await this.wait()
 
 		this.writeLn(
 			`Ok, before we get started you should understand the Pillars of a Skill. Since humans hate writing documentation, take a sec and review ${
@@ -53,113 +45,49 @@ export default class OnboardingCommand extends AbstractCommand {
 			`Wow, you read that fast! You read everything?`
 		)
 
-		this.writeLn('')
-		this.writeLn(
+		await this.wait(
 			confirm
 				? 'Great, so lets prove it!'
 				: '**ERROR INVALID ANSWER** Great, so lets prove it!'
 		)
 
-		await this.wait()
-
-		const questions: {
-			key: string
-			question: string
-			choices: IFieldSelectDefinitionChoice[]
-		}[] = [
-			{
-				key: 'events',
-				question: 'The event engine is driven by',
-				choices: [
-					{
-						value: 'mercury',
-						label: 'Mercury'
-					},
-					{
-						value: 'jupiter',
-						label: 'Jupiter'
-					},
-					{
-						value: 'eventEmitter',
-						label: 'EventEmitter'
-					},
-					{
-						value: 'apollo',
-						label: 'Apollo'
-					}
-				]
-			},
-			{
-				key: 'definitions',
-				question: 'How do you model data to work across the wire in Spruce?',
-				choices: [
-					{
-						value: 'definitions',
-						label: 'Using schemas definitions {{name}}.definitions.ts'
-					},
-					{
-						value: 'dataModels',
-						label: 'Using data models {{name}}.dataModel.ts'
-					},
-					{
-						value: 'orm',
-						label: 'Using the ORM'
-					},
-					{
-						value: 'json',
-						label: 'using json file {{name}}.json'
-					}
-				]
-			},
-			{
-				key: 'builders',
-				question: 'How do you render front end components?',
-				choices: [
-					{
-						value: 'builders',
-						label: 'Builders'
-					},
-					{
-						value: 'react',
-						label: 'Writing TSX files'
-					},
-					{
-						value: 'nextjs',
-						label: 'Nextjs'
-					},
-					{
-						value: 'na',
-						label: 'Front ends are not possible in skills'
-					}
-				]
-			}
-		]
-
-		const fields: ISchemaFieldsDefinition = {}
-		shuffle(questions).forEach(q => {
-			fields[q.key] = {
-				type: FieldType.Select,
-				label: q.question,
-				isRequired: true,
-				options: {
-					choices: shuffle(q.choices)
+		const quiz = this.quizBuilder({
+			questions: {
+				events: {
+					type: FieldType.Select,
+					question: 'The event engine is driven by',
+					answers: ['Mercury', 'Jupiter', 'EventEmitter', 'Apollo']
+				},
+				definitions: {
+					type: FieldType.Select,
+					question: 'How do you model data to work over the wire in Spruce?',
+					answers: [
+						'Using schemas definitions {{name}}.definitions.ts',
+						'Using data models {{name}}.dataModel.ts',
+						'Using the ORM',
+						'Using json file {{name}}.json'
+					]
+				},
+				builders: {
+					type: FieldType.Select,
+					question: 'How do you render front end components?',
+					answers: [
+						'builders',
+						'React',
+						'Nextjs',
+						'Front ends are not possible'
+					]
 				}
 			}
 		})
 
-		const form = this.formBuilder({
-			id: 'quiz',
-			name: 'onboarding quiz',
-			fields
-		})
-
-		const values = await form.present({ headline: 'Spruce POP QUIZ!' })
-		console.log(values)
+		await quiz.present({ headline: 'Spruce POP QUIZ!' })
 
 		this.clear()
 		this.writeLn('All done! Lets see how you did!')
+
 		await this.wait()
 
-		this.clear()
+		await quiz.scorecard()
 	}
 }
