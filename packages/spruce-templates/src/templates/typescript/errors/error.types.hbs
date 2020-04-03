@@ -1,0 +1,18 @@
+// the options for the {{pascalName}} error
+
+import {
+	SchemaDefinitionValues
+} from '@sprucelabs/schema'
+
+import {{camelName}}Definition from '{{relativeToDefinition}}'
+import { ISpruceErrorOptions } from '@sprucelabs/error'
+import { ErrorCode } from './codes.types'
+
+type {{pascalName}}Definition = typeof {{camelName}}Definition
+export interface I{{pascalName}}Definition extends {{pascalName}}Definition {}
+
+export interface I{{pascalName}}ErrorOptions extends SchemaDefinitionValues<I{{pascalName}}Definition>, ISpruceErrorOptions<ErrorCode> {
+	/** * {{{escape description}}} */
+	code: ErrorCode.{{pascalName}}
+} 
+

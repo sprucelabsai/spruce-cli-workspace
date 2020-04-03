@@ -1,4 +1,4 @@
-import StoreBase from './Base'
+import AbstractStore, { IBaseStoreSettings, IStoreOptions } from './Abstract'
 import Schema, {
 	FieldType,
 	IFieldSelectDefinitionChoice
@@ -22,11 +22,11 @@ export const RemoteStoreChoices = Object.keys(RemoteStoreRemoteType).map(
 ) as IFieldSelectDefinitionChoice[]
 
 /** the structure of the data remote saves */
-export interface IRemoteStoreValues {
+export interface IRemoteStoreSettings extends IBaseStoreSettings {
 	remote?: RemoteStoreRemoteType
 }
 
-export default class StoreRemote extends StoreBase {
+export default class RemoteStore extends AbstractStore<IRemoteStoreSettings> {
 	/** map of remote urls and subscriptions url */
 	public static remotes = {
 		[RemoteStoreRemoteType.Production]: {
@@ -69,8 +69,8 @@ export default class StoreRemote extends StoreBase {
 		}
 	})
 
-	public constructor() {
-		super()
+	public constructor(options: IStoreOptions) {
+		super(options)
 		this.load()
 	}
 
@@ -92,7 +92,7 @@ export default class StoreRemote extends StoreBase {
 	/** get a remote url */
 	public getRemoteUrl(remote?: RemoteStoreRemoteType): string {
 		const selectedRemote = remote || this.getRemote()
-		const url = StoreRemote.remotes[selectedRemote].url
+		const url = RemoteStore.remotes[selectedRemote].url
 		return url
 	}
 
@@ -105,7 +105,7 @@ export default class StoreRemote extends StoreBase {
 
 	/** load everything into the store (called in constructor) */
 	public async load() {
-		const saved = this.readValues<IRemoteStoreValues>()
+		const saved = this.readValues()
 		this.schema.setValues(saved)
 		return this
 	}

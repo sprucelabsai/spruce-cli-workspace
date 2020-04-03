@@ -1,0 +1,10 @@
+label: '{{{escape field.label}}}',
+type: {{fieldTypeEnum field}},
+{{#if field.key}}key: '{{{escape field.key}}}',{{/if}}
+{{#if field.isRequired}}isRequired: true,{{/if}}
+{{#if field.hint}}hint: '{{{escape field.hint}}}',{{/if}}
+{{#if field.value}}value: {{{fieldValue field field.value}}},{{/if}}
+{{#if field.defaultValue}}defaultValue: {{{fieldValue field field.defaultValue}}},{{/if}}
+{{#if field.isArray}}isArray: true,{{/if}}
+{{#if field.description}}description: '{{{escape field.description}}}'{{/if}}
+options: {{{fieldDefinitionOptions field renderAs}}}

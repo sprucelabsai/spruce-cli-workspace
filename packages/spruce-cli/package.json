@@ -26,21 +26,27 @@
     "url": "https://github.com/sprucelabsai/spruce-cli-workspace/issues"
   },
   "scripts": {
+    "types:sync": "node ./build/src/index.js types:sync",
+    "onboarding": "node ./build/src/index.js onboarding",
     "build": "npm run clean && npm run build:node",
     "build:node": "tsc | true",
-    "watch": "chokidar 'src/**/*' 'index.ts' -c 'npm run build'",
+    "watch": "chokidar 'src/**/*' 'index.ts' '../spruce-templates/src/templates/**/*' -c 'npm run build'",
     "clean": "rm -rf build/",
     "lint": "eslint '**/*.ts' && tsc -p . --noEmit",
     "release": "semantic-release",
     "local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS"
   },
   "dependencies": {
-    "@sprucelabs/log": "^2.2.2",
+    "@sprucelabs/error": "^1.0.1",
+    "@sprucelabs/log": "^10.0.11",
     "@sprucelabs/mercury": "9.1.1-pre-89e92490.0",
     "@sprucelabs/schema": "^1.0.0-dev.1",
     "@sprucelabs/spruce-templates": "10.0.0",
+    "cfonts": "^2.8.1",
     "commander": "^4.1.1",
     "debug": "^4.1.1",
+    "dotenv": "^8.2.0",
+    "emphasize": "^3.0.0",
     "fs-extra": "^8.1.0",
     "globby": "^11.0.0",
     "graphql": "^14.6.0",
@@ -50,7 +56,7 @@
     "lodash": "^4.17.15",
     "ora": "^4.0.3",
     "slug": "^2.1.1",
-    "typescript": "^3.8"
+    "vm2": "^3.9.1"
   },
   "devDependencies": {
     "@types/debug": "^4.1.5",
@@ -67,6 +73,7 @@
     "conventional-changelog-sprucelabs": "^1.1.0",
     "mkdirp": "^1.0.3",
     "prettier": "^1.13",
+    "typescript": "^3.8.3",
     "yarn": "^1.2.1"
   },
   "peerDependencies": {}

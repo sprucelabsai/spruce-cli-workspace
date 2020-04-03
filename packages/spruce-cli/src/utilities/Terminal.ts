@@ -4,12 +4,16 @@ import {
 	FieldType,
 	FieldDefinitionMap,
 	IFieldDefinition,
-	Field,
-	FieldSelect,
-	FieldClassMap
+	FieldBase
 } from '@sprucelabs/schema'
 import inquirer from 'inquirer'
+// @ts-ignore
+import fonts from 'cfonts'
 import ora from 'ora'
+import AbstractSpruceError from '@sprucelabs/error'
+import { omit } from 'lodash'
+// @ts-ignore
+import emphasize from 'emphasize'
 
 let fieldCount = 0
 function generateInquirerFieldName() {
@@ -94,15 +98,17 @@ export default class Terminal {
 		})
 	}
 
-	/** output an ojbect, one key per line */
+	/** output an object, one key per line */
 	public object(
 		object: Record<string, any>,
 		effects: ITerminalEffect[] = [ITerminalEffect.Green]
 	) {
 		this.bar()
+		this.writeLn('')
 		Object.keys(object).forEach(key => {
 			this.writeLn(`${key}: ${JSON.stringify(object[key])}`, effects)
 		})
+		this.writeLn('')
 		this.bar()
 	}
 
@@ -124,25 +130,29 @@ export default class Terminal {
 			bodyEffects = [ITerminalEffect.Green]
 		} = options
 
-		this.writeLn('')
-		this.bar(barEffects)
-		this.writeLn('')
-
 		if (headline) {
-			this.headline(`🌲🤖 ${headline} 🌲🤖`, headlineEffects)
+			this.writeLn('')
+			this.bar(barEffects)
+			this.writeLn('')
+
+			this.headline(`${headline} 🌲🤖`, headlineEffects)
 			this.writeLn('')
 		}
 
 		if (lines) {
+			this.writeLn('')
+			this.bar(barEffects)
+
 			this.writeLns(lines, bodyEffects)
+
+			this.writeLn('')
+			this.bar(barEffects)
 		}
 
 		if (object) {
 			this.object(object, bodyEffects)
 		}
 
-		this.writeLn('')
-		this.bar(barEffects)
 		this.writeLn('')
 	}
 
@@ -152,15 +162,60 @@ export default class Terminal {
 		this.writeLn(bar, effects)
 	}
 
-	/** a headline */
 	public headline(
 		message: string,
 		effects: ITerminalEffect[] = [ITerminalEffect.Blue, ITerminalEffect.Bold]
 	) {
-		this.writeLn(message, effects)
+		this.bar()
+		// this.writeLn(message, effects)
+		fonts.say(message, {
+			font: 'console',
+			// color: 'candy',
+			align: 'left',
+			colors: omit(effects, [
+				ITerminalEffect.Reset,
+				ITerminalEffect.Bold,
+				ITerminalEffect.Dim,
+				ITerminalEffect.Italic,
+				ITerminalEffect.Underline,
+				ITerminalEffect.Inverse,
+				ITerminalEffect.Hidden,
+				ITerminalEffect.Strikethrough,
+				ITerminalEffect.Visible
+			])
+		})
+		this.bar()
 	}
 
-	/** when outputing something information */
+	/** a headline */
+	public hero(
+		message: string,
+		effects: ITerminalEffect[] = [ITerminalEffect.Blue, ITerminalEffect.Bold]
+	) {
+		// TODO map effects to cfonts
+		fonts.say(message, {
+			// font: 'tiny',
+			align: 'center',
+			colors: omit(effects, [
+				ITerminalEffect.Reset,
+				ITerminalEffect.Bold,
+				ITerminalEffect.Dim,
+				ITerminalEffect.Italic,
+				ITerminalEffect.Underline,
+				ITerminalEffect.Inverse,
+				ITerminalEffect.Hidden,
+				ITerminalEffect.Strikethrough,
+				ITerminalEffect.Visible
+			])
+		})
+	}
+
+	/** some helpful info or suggestion */
+	public hint(message: string) {
+		return this.writeLn(`👨‍🏫 ${message}`)
+	}
+
+	/** when outputting something information */
 	public info(message: string) {
 		if (typeof message !== 'string') {
 			debug('Invalid info log')
@@ -173,12 +228,6 @@ export default class Terminal {
 
 	/** the user did something wrong, like entered a bad value */
 	public warn(message: string) {
-		if (typeof message !== 'string') {
-			debug('Invalid warn log')
-			debug(message)
-			return
-		}
-
 		this.writeLn(`⚠️ ${message}`, [
 			ITerminalEffect.Bold,
 			ITerminalEffect.Yellow
@@ -187,36 +236,19 @@ export default class Terminal {
 
 	/** the user did something wrong, like entered a bad value */
 	public error(message: string) {
-		if (typeof message !== 'string') {
-			debug('Invalid error log')
-			debug(message)
-			return
-		}
-
 		this.writeLn(`🛑 ${message}`, [ITerminalEffect.Bold, ITerminalEffect.Bold])
 	}
 
 	/** something major or a critical information but program will not die */
 	public crit(message: string) {
-		if (typeof message !== 'string') {
-			debug('Invalid crit log')
-			debug(message)
-			return
-		}
-
 		this.writeLn(`🛑 ${message}`, [ITerminalEffect.Red, ITerminalEffect.Bold])
 	}
 	/** everything is crashing! */
 	public fatal(message: string) {
-		if (typeof message !== 'string') {
-			debug('Invalid fatal log')
-			debug(message)
-			return
-		}
-
 		this.writeLn(`💥 ${message}`, [ITerminalEffect.Red, ITerminalEffect.Bold])
 	}
 
+	/** show a simple loader */
 	public async startLoading(message?: string) {
 		this.stopLoading()
 		this.loader = ora({
@@ -224,6 +256,7 @@ export default class Terminal {
 		}).start()
 	}
 
+	/** hide loader */
 	public async stopLoading() {
 		this.loader?.stop()
 		this.loader = null
@@ -240,9 +273,29 @@ export default class Terminal {
 		return !!confirmResult.answer
 	}
 
+	public async wait(message?: string) {
+		this.writeLn('')
+		await this.prompt({
+			type: FieldType.Text,
+			label: message ?? 'Hit enter to continue'
+		})
+		this.writeLn('')
+		return
+	}
+
 	/** clear the console */
 	public clear() {
 		console.clear()
+	}
+
+	/** print some code beautifully */
+	public codeSample(code: string) {
+		try {
+			const colored = emphasize.highlight('js', code).value
+			console.log(colored)
+		} catch (err) {
+			this.error(err)
+		}
 	}
 
 	/** ask the user for something */
@@ -257,26 +310,13 @@ export default class Terminal {
 		const fieldDefinition: IFieldDefinition = definition
 		const { isRequired, defaultValue, label } = fieldDefinition
 
-		// universal is required validator
-		const validateIsRequired = (input: any): boolean => {
-			if (isRequired) {
-				return input?.length > 0
-			}
-
-			return true
-		}
-
 		const promptOptions: Record<string, any> = {
 			default: defaultValue,
 			name,
-			message: label,
-			validate: validateIsRequired
+			message: `${label}:`
 		}
 
-		// @ts-ignore TODO Why does this mapping not work?
-		const field: Field = new FieldClassMap[fieldDefinition.type](
-			fieldDefinition
-		)
+		const field = FieldBase.field(fieldDefinition)
 
 		// setup transform and validate
 		promptOptions.transformer = (value: string) => {
@@ -286,15 +326,13 @@ export default class Terminal {
 			return field.validate(value).length === 0
 		}
 
-		switch (field.getType()) {
+		switch (fieldDefinition.type) {
 			case FieldType.Select:
 				promptOptions.type = 'list'
-				promptOptions.choices = (field as FieldSelect)
-					.getChoices()
-					.map(choice => ({
-						name: choice.label,
-						value: choice.value
-					}))
+				promptOptions.choices = fieldDefinition.options.choices.map(choice => ({
+					name: choice.label,
+					value: choice.value
+				}))
 
 				if (!isRequired) {
 					promptOptions.choices.push(new inquirer.Separator())
@@ -314,12 +352,16 @@ export default class Terminal {
 		return response[name]
 	}
 
-	public handleError(e: Error) {
+	/** generic way to handle error */
+	public handleError(err: Error) {
 		this.stopLoading()
 
+		const message =
+			err instanceof AbstractSpruceError ? err.friendlyMessage() : err.message
+
 		this.section({
-			headline: `Fatal error: ${e.message}`,
-			lines: (e.stack || '').split('/n'),
+			headline: message,
+			lines: (err.stack || '').split('/n'),
 			headlineEffects: [ITerminalEffect.Bold, ITerminalEffect.Red],
 			barEffects: [ITerminalEffect.Red],
 			bodyEffects: [ITerminalEffect.Red]

@@ -1,164 +1,291 @@
 import { Command } from 'commander'
-import config from '../../utilities/Config'
-import { Mercury } from '@sprucelabs/mercury'
-import CommandBase from '../Base'
-import globby from 'globby'
-import fs from 'fs-extra'
-import handlebars from 'handlebars'
-import skillState from '../../stores/Skill'
+import AbstractCommand from '../Abstract'
+import { IFieldSelectDefinitionChoice, FieldType } from '@sprucelabs/schema'
+import { StoreAuth } from '../../stores/Abstract'
+import SpruceError from '../../errors/Error'
+import { ErrorCode } from '../../.spruce/errors/codes.types'
+// import globby from 'globby'
+// import fs from 'fs-extra'
+// import handlebars from 'handlebars'
+// import skillState from '../../stores/Skill'
 
-export default class Skill extends CommandBase {
+export default class SkillCommand extends AbstractCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
 		program
-			.command('skill:auth [skillId] [skillApiKey]')
-			.description('Authenticate with the CLI as a skill')
-			.action(this.auth.bind(this))
-
+			.command('skill:login [skillId] [skillApiKey]')
+			.description('Authenticate as a skill')
+			.action(this.login.bind(this))
 		program
-			.command('skill:repair')
-			.description('Attempt to recover corrupted skill configuration')
-			.action(this.repair.bind(this))
+			.command('skill:switch')
+			.description('Switch to a different skill')
+			.action(this.switch.bind(this))
 	}
 
-	public auth(skillId?: string, skillApiKey?: string): Promise<void> {
-		return new Promise(async (resolve, reject) => {
-			if (!skillId || !skillApiKey) {
-				return reject('MISSING_PARAMETERS')
+	public async login(skillId?: string, skillApiKey?: string): Promise<void> {
+		const loggedInUser = this.stores.user.loggedInUser()
+		const loggedInSkill = this.stores.skill.loggedInSkill()
+		const authType = this.stores.user.authType
+
+		if (skillId) {
+			throw new SpruceError({
+				code: ErrorCode.NotImplemented,
+				command: 'skill:login with skill id',
+				args: [skillId, skillApiKey || '**no api key**']
+			})
+		}
+
+		// if they passed nothing and we're in a skill dir, lets ask if they want to use that
+		if (this.isInSkillDirectory() && (!skillId || !skillApiKey)) {
+			const skillFromDir = this.stores.skill.skillFromDir(this.cwd)
+
+			// are we in a different directory that the logged in one?
+			if (
+				skillFromDir &&
+				(loggedInSkill?.id !== skillFromDir.id || authType !== StoreAuth.Skill)
+			) {
+				const confirm = await this.confirm(
+					`You are in the ${skillFromDir.slug} directory, want to login as that?`
+				)
+
+				if (confirm) {
+					this.stores.skill.setLoggedInSkill(skillFromDir)
+					this.writeLn(`You are now authenticated as ${skillFromDir.slug}`)
+					return
+				}
 			}
-			const m = new Mercury({
-				spruceApiUrl: config.getApiUrl(config.remote),
-				credentials: {
-					id: skillId,
-					apiKey: skillApiKey
-				},
-				onDisconnect: () => {
-					console.log('on onDisconnect')
-				},
-				onConnect: () => {
-					console.log('onConnect')
-					// resolve()
-					const result = m.emit<
-						{
-							test: string
-						},
-						{
-							asdlfkjasdf: string
-						}
-					>(
-						{
-							eventName: 'booking:get-providers',
-							payload: {
-								s: 'test'
-							}
-						},
-						() => {
-							console.log('return')
-							log.debug({
-								result,
-								skillId,
-								skillApiKey
-							})
-							resolve()
-						}
-					)
+		}
+
+		if (!loggedInUser && (!skillId || !skillApiKey)) {
+			this.error(
+				'You must first login as a user to get access to skills (unless you know the id and api key)'
+			)
+
+			this.hint('Try user:login or skill:login SKILL_ID API_KEY')
+			return
+		}
+
+		// if we are authing as a user, lets confirm we want to login as a user going forward
+		if (loggedInUser && authType === StoreAuth.User) {
+			const pass = await this.confirm(
+				`You are currently logged as ${loggedInUser.casualName}, are you sure you want to log out as a user and in as a skill?`
+			)
+			if (!pass) {
+				this.info('OK, bailing out...')
+				return
+			}
+		}
+
+		//lets find all skills by this user
+		if (loggedInUser && (!skillId || !skillApiKey)) {
+			const skills = await this.stores.skill.skills(loggedInUser.token)
+			if (skills.length === 0) {
+				this.warn(`You don't have any skills tied to you as a developer.`)
+				this.hint('Try spruce skill:create to get started')
+				return
+			}
+
+			//select a skill
+			const skillChoices: IFieldSelectDefinitionChoice[] = skills.map(
+				(skill, idx) => ({
+					value: String(idx),
+					label: skill.name
+				})
+			)
+
+			const selectedIdx = await this.prompt({
+				type: FieldType.Select,
+				label: 'Select a skill',
+				isRequired: true,
+				options: {
+					choices: skillChoices
 				}
 			})
-			// console.log('connect', { remote: config.remote })
-			// await m.connect({
-			// 	spruceApiUrl: config.remote
-			// })
-		})
-		// if (!skillId) {
-		// 	const result = await inquirer.prompt({
-		// 		type: 'input',
-		// 		name: 'skillId',
-		// 		message: "What's your skill id?"
-		// 	})
-		// 	skillId = result.skillId
-		// }
 
-		// if (!skillApiKey) {
-		// 	const result = await inquirer.prompt({
-		// 		type: 'input',
-		// 		name: 'skillApiKey',
-		// 		message: "What's your skill api key?"
-		// 	})
-		// 	skillApiKey = result.skillApiKey
-		// }
-
-		// const result = await gqlClient.query({
-		// 	query: gql`
-		// 		query Skill($skillId: ID!) {
-		// 			Skill(id: $skillId) {
-		// 				id
-		// 				name
-		// 				eventContract
-		// 				apiKey
-		// 			}
-		// 		}
-		// 	`,
-		// 	variables: {
-		// 		skillId
-		// 	}
-		// })
-	}
-
-	protected async copyBaseFiles() {
-		if (!skillState.isSet()) {
-			this.crit(
-				`Unable to create skill files because the skill data is not set for this directory: ${process.cwd()}`
-			)
-			throw new Error('SKILL_NOT_INITIALIZED')
-		}
-		const files = globby.sync(`${__dirname}/../../templates/baseSkill/**/*`, {
-			dot: true
-		})
-		for (let i = 0; i < files.length; i += 1) {
-			const file = files[i]
-			this.log.debug({ file })
-			const {
-				isHandlebarsTemplate,
-				relativeBaseDirectory,
-				filename
-			} = this.parseTemplateFilePath(file)
-
-			const dirPathToWrite = `${process.cwd()}/${relativeBaseDirectory}`
-			const filePathToWrite = `${dirPathToWrite}/${filename}`
-
-			this.object({
-				isHandlebarsTemplate,
-				relativeBaseDirectory,
-				filename,
-				dirPathToWrite,
-				filePathToWrite
-			})
-
-			await fs.ensureDir(dirPathToWrite)
-			console.log('wrote path')
-			if (isHandlebarsTemplate) {
-				const template = fs.readFileSync(file)
-				// Compile the file
-				const compiledTemplate = handlebars.compile(template.toString())
-				const result = compiledTemplate(skillState.toData())
-
-				console.log({
-					data: skillState.toData()
-				})
-
-				await fs.writeFile(filePathToWrite, result)
-			} else {
-				// By default just copy the file over as-is
-				console.log('COPY***')
-				console.log(file)
-				console.log(filePathToWrite)
-				await fs.copy(file, filePathToWrite)
+			const selectedSkill = skills[parseInt(selectedIdx, 10)]
+			if (selectedSkill) {
+				this.stores.skill.setLoggedInSkill(selectedSkill)
 			}
 		}
 	}
 
-	private async repair() {
-		this.writeLn('Repairing...')
-		await this.copyBaseFiles()
+	public async switch() {
+		const loggedInUser = this.stores.user.loggedInUser()
+		if (!loggedInUser) {
+			this.fatal('You are not logged in as a person!')
+			this.hint('Try spruce user:login')
+			return
+		}
+
+		const skills = await this.stores.skill.skills(loggedInUser.token)
+
+		if (skills.length === 0) {
+			this.warn(`You don't have any skills tied to you as a developer.`)
+			this.hint('Try spruce skill:create to get started')
+			return
+		}
+
+		//select a skill
+		const skillChoices: IFieldSelectDefinitionChoice[] = skills.map(
+			(skill, idx) => ({
+				value: String(idx),
+				label: skill.name
+			})
+		)
+
+		const selectedIdx = await this.prompt({
+			type: FieldType.Select,
+			label: 'Select a skill',
+			isRequired: true,
+			options: {
+				choices: skillChoices
+			}
+		})
+
+		const selectedSkill = skills[parseInt(selectedIdx, 10)]
+		if (selectedSkill) {
+			this.stores.skill.setLoggedInSkill(selectedSkill)
+		}
 	}
+
+	// public auth(skillId?: string, skillApiKey?: string): Promise<void> {
+	// 	return new Promise(async (resolve, reject) => {
+	// 		if (!skillId || !skillApiKey) {
+	// 			return reject('MISSING_PARAMETERS')
+	// 		}
+	// 		const m = new Mercury({
+	// 			spruceApiUrl: config.getApiUrl(config.remote),
+	// 			credentials: {
+	// 				id: skillId,
+	// 				apiKey: skillApiKey
+	// 			},
+	// 			onDisconnect: () => {
+	// 				console.log('on onDisconnect')
+	// 			},
+	// 			onConnect: () => {
+	// 				console.log('onConnect')
+	// 				// resolve()
+	// 				const result = m.emit<
+	// 					{
+	// 						test: string
+	// 					},
+	// 					{
+	// 						asdlfkjasdf: string
+	// 					}
+	// 				>(
+	// 					{
+	// 						eventName: 'booking:get-providers',
+	// 						payload: {
+	// 							s: 'test'
+	// 						}
+	// 					},
+	// 					() => {
+	// 						console.log('return')
+	// 						log.debug({
+	// 							result,
+	// 							skillId,
+	// 							skillApiKey
+	// 						})
+	// 						resolve()
+	// 					}
+	// 				)
+	// 			}
+	// 		})
+	// 		// console.log('connect', { remote: config.remote })
+	// 		// await m.connect({
+	// 		// 	spruceApiUrl: config.remote
+	// 		// })
+	// 	})
+	// 	// if (!skillId) {
+	// 	// 	const result = await inquirer.prompt({
+	// 	// 		type: 'input',
+	// 	// 		name: 'skillId',
+	// 	// 		message: "What's your skill id?"
+	// 	// 	})
+	// 	// 	skillId = result.skillId
+	// 	// }
+
+	// 	// if (!skillApiKey) {
+	// 	// 	const result = await inquirer.prompt({
+	// 	// 		type: 'input',
+	// 	// 		name: 'skillApiKey',
+	// 	// 		message: "What's your skill api key?"
+	// 	// 	})
+	// 	// 	skillApiKey = result.skillApiKey
+	// 	// }
+
+	// 	// const result = await gqlClient.query({
+	// 	// 	query: gql`
+	// 	// 		query Skill($skillId: ID!) {
+	// 	// 			Skill(id: $skillId) {
+	// 	// 				id
+	// 	// 				name
+	// 	// 				eventContract
+	// 	// 				apiKey
+	// 	// 			}
+	// 	// 		}
+	// 	// 	`,
+	// 	// 	variables: {
+	// 	// 		skillId
+	// 	// 	}
+	// 	// })
+	// }
+
+	// protected async copyBaseFiles() {
+	// 	if (!skillState.isSet()) {
+	// 		this.crit(
+	// 			`Unable to create skill files because the skill data is not set for this directory: ${process.cwd()}`
+	// 		)
+	// 		throw new Error('SKILL_NOT_INITIALIZED')
+	// 	}
+	// 	const files = globby.sync(`${__dirname}/../../templates/baseSkill/**/*`, {
+	// 		dot: true
+	// 	})
+	// 	for (let i = 0; i < files.length; i += 1) {
+	// 		const file = files[i]
+	// 		this.log.debug({ file })
+	// 		const {
+	// 			isHandlebarsTemplate,
+	// 			relativeBaseDirectory,
+	// 			filename
+	// 		} = this.parseTemplateFilePath(file)
+
+	// 		const dirPathToWrite = `${process.cwd()}/${relativeBaseDirectory}`
+	// 		const filePathToWrite = `${dirPathToWrite}/${filename}`
+
+	// 		this.object({
+	// 			isHandlebarsTemplate,
+	// 			relativeBaseDirectory,
+	// 			filename,
+	// 			dirPathToWrite,
+	// 			filePathToWrite
+	// 		})
+
+	// 		await fs.ensureDir(dirPathToWrite)
+	// 		console.log('wrote path')
+	// 		if (isHandlebarsTemplate) {
+	// 			const template = fs.readFileSync(file)
+	// 			// Compile the file
+	// 			const compiledTemplate = handlebars.compile(template.toString())
+	// 			const result = compiledTemplate(skillState.toData())
+
+	// 			console.log({
+	// 				data: skillState.toData()
+	// 			})
+
+	// 			await fs.writeFile(filePathToWrite, result)
+	// 		} else {
+	// 			// By default just copy the file over as-is
+	// 			console.log('COPY***')
+	// 			console.log(file)
+	// 			console.log(filePathToWrite)
+	// 			await fs.copy(file, filePathToWrite)
+	// 		}
+	// 	}
+	// }
+
+	// private async repair() {
+	// 	this.writeLn('Repairing...')
+	// 	await this.copyBaseFiles()
+	// }
 }

@@ -33,10 +33,10 @@
     "local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS"
   },
   "dependencies": {
+    "@sprucelabs/log": "^10.0.11",
     "@sprucelabs/schema": "^1.0.0-dev.1",
     "handlebars": "^4.7.3",
-    "lodash": "^4.17.15",
-    "typescript": "^3.8"
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.149",
@@ -46,7 +46,8 @@
     "concurrently": "^5.0.2",
     "conventional-changelog-sprucelabs": "^1.1.0",
     "mkdirp": "^1.0.3",
-    "prettier": "^1.13"
+    "prettier": "^1.13",
+    "typescript": "^3.8"
   },
   "peerDependencies": {}
 }

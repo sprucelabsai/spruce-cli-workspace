@@ -1,174 +1,192 @@
 import handlebars from 'handlebars'
 import fs from 'fs'
 import path from 'path'
-import _ from 'lodash'
+import log from '@sprucelabs/log'
+
 import {
-	IFieldDefinition,
-	FieldType,
-	FieldClassMap,
+	ISchemaTemplateItem,
+	IFieldTemplateDetails,
 	ISchemaDefinition
 } from '@sprucelabs/schema'
 
-/* start case (cap first letter, lower rest) */
-handlebars.registerHelper('startCase', val => {
-	return _.startCase(val)
-})
+// import addons
+import * as escape from './src/addons/escape.addon'
+import * as fieldDefinitionOptions from './src/addons/fieldDefinitionOptions.addon'
+import * as fieldDefinitionValueType from './src/addons/fieldDefinitionValueType.addon'
+import * as fieldTypeEnum from './src/addons/fieldTypeEnum.addon'
+import * as fieldValue from './src/addons/fieldValue.addon'
+import * as isEqual from './src/addons/isEqual.addon'
+import * as startCase from './src/addons/startCase.addon'
 
-/* escape quotes */
-handlebars.registerHelper('escape', function(variable) {
-	return variable && variable.replace(/(['])/g, '\\$1')
-})
-
-/* quick way to do an equals check against 2 values */
-handlebars.registerHelper('isEqual', function(arg1, arg2, options) {
-	//@ts-ignore // TODO how should this work in a typed environment?
-	return arg1 == arg2 ? options.fn(this) : options.inverse(this)
-})
-
-/* the enum for schema.fields.fieldName.type as a string */
-handlebars.registerHelper('fieldTypeEnum', function(
-	fieldDefinition: IFieldDefinition
-) {
-	const keys = Object.keys(FieldType)
-	const values = Object.values(FieldType)
-	const match = values.indexOf(fieldDefinition.type)
-
-	return `SpruceSchema.FieldType.${keys[match]}`
-})
-
-/** drop in the value of a field which quotes if needed */
-handlebars.registerHelper('fieldValue', function(
-	fieldDefinition: IFieldDefinition,
-	value: any
-) {
-	if (value) {
-		// TODO finish this
-		console.log(fieldDefinition, value)
-		throw new Error('field value not yet implemented')
-	}
-
-	return value
-})
-
-/** renders field options */
-handlebars.registerHelper('fieldDefinitionOptions', function(
-	fieldDefinition: IFieldDefinition,
-	options
-) {
-	const {
-		data: { root }
-	} = options
-
-	const namespaces = root && root.namespaces
-	const updatedOptions = fieldDefinition.options && {
-		...fieldDefinition.options
-	}
-
-	// if this is a schema type, we need to map it to the related definition
-	if (fieldDefinition.type === FieldType.Schema && updatedOptions) {
-		for (const namespace of namespaces) {
-			if (namespace.schemas[fieldDefinition.options.schemaId || '']) {
-				// pull out schema
-				const schema = namespace.schemas[
-					fieldDefinition.options.schemaId || ''
-				] as ISchemaDefinition
-
-				// @ts-ignore TODO find out how to type this properly
-				delete updatedOptions.schemaId
-
-				// @ts-ignore TODO find out how to type this properly
-				updatedOptions.schema = `SpruceSchemas.${namespace.namespace}.${schema.typeName}.definition`
-				break
-			}
-		}
-	}
-
-	let template = `{`
-	Object.keys(updatedOptions ?? {}).forEach(key => {
-		// @ts-ignore TODO how to type this
-		const value = updatedOptions[key]
-		template += `${key}: `
-		if (key === 'schemaId') {
-			template += `${value},`
-		} else if (typeof value !== 'string') {
-			template += `${JSON.stringify(value)},`
-		} else {
-			template += `'${value.replace(/(['])/g, '\\$1')}',`
-		}
-	})
-
-	template += '}'
-
-	return template
-})
-
-/* the type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */
-handlebars.registerHelper('fieldDefinitionValueType', function(
-	fieldDefinition: IFieldDefinition,
-	options
-) {
-	const {
-		data: { root }
-	} = options
-
-	const namespaces = root && root.namespaces
-	const typeMap = root && root.typeMap
-
-	if (!namespaces || !typeMap) {
-		throw new Error(
-			'You must pass namespaces and a typeMap to render this script'
-		)
-	}
-
-	const { type } = fieldDefinition
-	const FieldClass = FieldClassMap[type]
-	const { valueType } = FieldClass.templateDetails()
-
-	let typeLiteral
-	switch (fieldDefinition.type) {
-		case FieldType.Schema: {
-			// if this is a schema field, find the other interface to point to
-			for (const namespace of namespaces) {
-				if (namespace.schemas[fieldDefinition.options.schemaId || '']) {
-					// pull out schema
-					const schema =
-						namespace.schemas[fieldDefinition.options.schemaId || '']
-
-					// path to schema including namespaces
-					typeLiteral = `SpruceSchemas.${namespace.namespace}.${schema.typeName}.${schema.interfaceName}`
-					break
-				}
-			}
-			if (!typeLiteral) {
-				throw new Error(
-					`could not find schema with id ${fieldDefinition.options.schemaId}`
-				)
-			}
-			break
-		}
-		default:
-			typeLiteral = valueType
-	}
-
-	if (fieldDefinition.isArray) {
-		typeLiteral = typeLiteral + '[]'
-	}
-
-	// if the type points to an interface, pull it off the schema
-	// TODO handle when skill introduce their own field types
-	return typeLiteral[0] === 'I' ? `SpruceSchema.${typeLiteral}` : typeLiteral
-})
+log.info('addon escape', escape)
+log.info('addon fieldDefinitionOptions', fieldDefinitionOptions)
+log.info('addon fieldDefinitionValueType', fieldDefinitionValueType)
+log.info('addon fieldTypeEnum', fieldTypeEnum)
+log.info('addon fieldValue', fieldValue)
+log.info('addon isEqual', isEqual)
+log.info('addon startCase', startCase)
 
 // import actual templates
-const templatePath = path.join(__dirname, 'src', 'templates')
+const templatePath = path.join(__dirname, 'src', 'templates', 'typescript')
 
-// schema definitions
-const schemaDefinitions: string = fs
-	.readFileSync(path.join(templatePath, 'schema/definitions.hbs'))
+// template files
+const schemaTypes: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/schema.types.hbs'))
 	.toString()
 
+const definition: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/definition.hbs'))
+	.toString()
+
+const definitionTypes: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/definition.types.hbs'))
+	.toString()
+
+const schemaExample: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/example.hbs'))
+	.toString()
+
+const error: string = fs
+	.readFileSync(path.join(templatePath, 'errors/Error.hbs'))
+	.toString()
+
+const errorTypes: string = fs
+	.readFileSync(path.join(templatePath, 'errors/error.types.hbs'))
+	.toString()
+
+const errorOptionsTypes: string = fs
+	.readFileSync(path.join(templatePath, 'errors/options.types.hbs'))
+	.toString()
+
+const errorCodesTypes: string = fs
+	.readFileSync(path.join(templatePath, 'errors/codes.types.hbs'))
+	.toString()
+
+const errorDefinition: string = fs
+	.readFileSync(path.join(templatePath, 'errors/definition.hbs'))
+	.toString()
+
+const errorExample: string = fs
+	.readFileSync(path.join(templatePath, 'errors/example.hbs'))
+	.toString()
+
+// template generators
 export const templates = {
-	schemaDefinitions: handlebars.compile(schemaDefinitions)
+	/** all definitions */
+	schemaTypes(options: {
+		schemaTemplateItems: ISchemaTemplateItem[]
+		typeMap: { [fieldType: string]: IFieldTemplateDetails }
+	}) {
+		const template = handlebars.compile(schemaTypes)
+		return template(options)
+	},
+
+	/** when building a definition in a skill */
+	definition(options: {
+		camelName: string
+		description: string
+		pascalName: string
+		readableName: string
+	}) {
+		const template = handlebars.compile(definition)
+		return template(options)
+	},
+
+	/** the types file to support a definition */
+	definitionTypes(options: {
+		camelName: string
+		pascalName: string
+		relativeToDefinition: string
+		description: string
+	}) {
+		const template = handlebars.compile(definitionTypes)
+		return template(options)
+	},
+
+	/** for creating an error class */
+	error(options: {
+		pascalName: string
+		readableName: string
+		renderClassDefinition?: boolean
+	}) {
+		const template = handlebars.compile(error)
+		return template({ renderClassDefinition: true, ...options })
+	},
+
+	/** for generating types file this error (the ISpruceErrorOptions sub-interface) */
+	errorTypes(options: {
+		camelName: string
+		relativeToDefinition: string
+		pascalName: string
+		description: string
+	}) {
+		const template = handlebars.compile(errorTypes)
+		return template(options)
+	},
+
+	/** for generating types for all the options (the ISpruceErrorOptions sub-interface) */
+	errorOptionsTypes(options: {
+		options: { camelName: string; pascalName: string }[]
+	}) {
+		const template = handlebars.compile(errorOptionsTypes)
+		return template(options)
+	},
+
+	/** for generating types for all the options (the ISpruceErrorOptions sub-interface) */
+	errorCodesTypes(options: {
+		codes: { pascalName: string; constName: string; description: string }[]
+	}) {
+		const template = handlebars.compile(errorCodesTypes)
+		return template(options)
+	},
+
+	/** an error definition file */
+	errorDefinition(options: {
+		camelName: string
+		readableName: string
+		description: string
+	}) {
+		const template = handlebars.compile(errorDefinition)
+		return template(options)
+	},
+
+	/** schema example */
+	schemaExample(options: {
+		camelName: string
+		pascalName: string
+		definition: ISchemaDefinition
+	}) {
+		const template = handlebars.compile(schemaExample)
+		return template(options)
+	},
+
+	/** error example */
+	errorExample(options: {
+		camelName: string
+		pascalName: string
+		definition: ISchemaDefinition
+	}) {
+		const template = handlebars.compile(errorExample)
+		return template(options)
+	}
 }
+
+/** all the templates */
+export type Templates = typeof templates
+
+// partials
+const schemaPartial: string = fs
+	.readFileSync(
+		path.join(templatePath, 'schemas/partials/schemaDefinition.hbs')
+	)
+	.toString()
+
+handlebars.registerPartial('schemaDefinition', schemaPartial)
+
+const fieldPartial: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/partials/fieldDefinition.hbs'))
+	.toString()
+
+handlebars.registerPartial('fieldDefinition', fieldPartial)
 
 export default handlebars

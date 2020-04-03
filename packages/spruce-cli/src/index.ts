@@ -4,15 +4,34 @@ import { terminal } from './utilities/Terminal'
 import { Command } from 'commander'
 import globby from 'globby'
 import pkg from '../package.json'
-import CliError from './lib/CliError'
-import { services } from './services'
-
-import { Mercury } from '@sprucelabs/mercury'
+import { IServices } from './services'
+import log, { LogLevel } from '@sprucelabs/log'
+import {
+	Mercury,
+	IMercuryConnectOptions,
+	MercuryAuth
+} from '@sprucelabs/mercury'
 import { IStores } from './stores'
-import StoreRemote from './stores/Remote'
-import StoreSkill from './stores/Skill'
-import StoreUser from './stores/User'
-import StoreSchema from './stores/Schema'
+import RemoteStore from './stores/Remote'
+import SkillStore from './stores/Skill'
+import UserStore from './stores/User'
+import SchemaStore from './stores/Schema'
+import PinService from './services/Pin'
+import AbstractCommand, { ICommandOptions } from './commands/Abstract'
+import OnboardingStore from './stores/Onboarding'
+import { IGenerators } from './generators'
+import SchemaGenerator from './generators/Schema'
+import { IUtilities } from './utilities'
+import NamesUtility from './utilities/Names'
+import { StoreAuth } from './stores/Abstract'
+import CoreGenerator from './generators/Core'
+import { IGeneratorOptions } from './generators/Abstract'
+import { templates } from '@sprucelabs/spruce-templates'
+import ErrorGenerator from './generators/Error'
+import SpruceError from './errors/Error'
+import { ErrorCode } from './.spruce/errors/codes.types'
+import NodeUtility from './utilities/Vm'
+import { IUtilityOptions } from './utilities/Abstract'
 
 /**
  * For handling debugger not attaching right away
@@ -41,32 +60,110 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		}
 	})
 
-	// setup remote store to load mercury
-	const remoteStore = new StoreRemote()
+	// starting cwd
+	const cwd = process.cwd()
+
+	// setup log
+	log.setOptions({ level: LogLevel.Info })
 
 	// setup mercury
-	const remoteUrl = remoteStore.getRemoteUrl()
-	const mercury = new Mercury({
-		spruceApiUrl: remoteUrl
-	})
+	const mercury = new Mercury()
 
 	// setup stores
+	const storeOptions = {
+		mercury,
+		cwd,
+		log
+	}
+
 	const stores: IStores = {
-		remote: remoteStore,
-		skill: new StoreSkill(),
-		user: new StoreUser(mercury),
-		schema: new StoreSchema(mercury)
+		remote: new RemoteStore(storeOptions),
+		skill: new SkillStore(storeOptions),
+		user: new UserStore(storeOptions),
+		schema: new SchemaStore(storeOptions),
+		onboarding: new OnboardingStore(storeOptions)
+	}
+
+	// setup mercury
+	const remoteUrl = stores.remote.getRemoteUrl()
+
+	// who is logged in?
+	const loggedInUser = stores.user.loggedInUser()
+	const loggedInSkill = stores.skill.loggedInSkill()
+
+	// build mercury creds
+	let creds: MercuryAuth | undefined
+	const authType = stores.remote.authType
+
+	switch (authType) {
+		case StoreAuth.User:
+			creds = loggedInUser && { token: loggedInUser.token }
+			break
+		case StoreAuth.Skill:
+			creds = loggedInSkill && {
+				id: loggedInSkill.id,
+				apiKey: loggedInSkill.apiKey
+			}
+			break
+	}
+
+	// mercury connection options
+	const connectOptions: IMercuryConnectOptions = {
+		spruceApiUrl: remoteUrl,
+		credentials: creds
+	}
+
+	await mercury.connect(connectOptions)
+
+	// setup services
+	const services: IServices = {
+		pin: new PinService(mercury)
+	}
+
+	// setup utilities
+	const utilityOptions: IUtilityOptions = {
+		cwd
+	}
+
+	const utilities: IUtilities = {
+		names: new NamesUtility(utilityOptions),
+		vm: new NodeUtility({
+			...utilityOptions
+		})
+	}
+
+	// setup generators
+	const generatorOptions: IGeneratorOptions = {
+		utilities,
+		templates,
+		log,
+		cwd
+	}
+
+	const generators: IGenerators = {
+		schema: new SchemaGenerator(generatorOptions),
+		core: new CoreGenerator(generatorOptions),
+		error: new ErrorGenerator(generatorOptions)
 	}
 
 	// Load commands and actions
 	globby.sync(`${__dirname}/commands/**/*.js`).forEach(file => {
 		try {
+			// import and type the command
+			const cmdClass: new (
+				options: ICommandOptions
+			) => AbstractCommand = require(file).default
+
 			// instantiate the command
-			const cmdClass = require(file).default
 			const command = new cmdClass({
 				stores,
 				mercury,
-				services
+				services,
+				cwd,
+				log,
+				generators,
+				utilities,
+				templates
 			})
 
 			// attach commands to the program
@@ -75,7 +172,11 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 			// track all commands
 			commands.push(command)
 		} catch (err) {
-			throw new CliError(`I could not load the command at ${file}`, err)
+			throw new SpruceError({
+				code: ErrorCode.CouldNotLoadCommand,
+				originalError: err,
+				file
+			})
 		}
 	})
 
@@ -83,10 +184,8 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	program.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
 
 	// error on unknown commands
-	program.action(() => {
-		terminal.fatal(`Invalid command: ${program.args.join(' ')}`)
-		terminal.fatal('See --help for a list of available commands.')
-		process.exit(1)
+	program.action((command, args) => {
+		throw new SpruceError({ code: ErrorCode.InvalidCommand, args })
 	})
 
 	const commandResult = await program.parseAsync(argv)

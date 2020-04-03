@@ -1,6 +1,6 @@
 /* eslint-disable */
 // DO NOT EDIT. THIS FILE IS GENERATED FROM https://local-api.spruce.ai//api/2.0/types/events
-import { IHWCalendarEvent, IHWCalendarEventDetailsItem, IHWAction, ISpruceSettingsSection } from '@sprucelabs/spruce-types'
+// import { IHWCalendarEvent, IHWCalendarEventDetailsItem, IHWAction, ISpruceSettingsSection } from '@sprucelabs/spruce-types'
 import { DocumentNode } from 'graphql'
 
 
@@ -459,11 +459,11 @@ export namespace SpruceEvents.core.GetUiEnhancements {
 			/**
 			 * Event detail items to place in this section
 			 */
-			eventDetailsItems?: IHWCalendarEventDetailsItem[] | null
+			// eventDetailsItems?: IHWCalendarEventDetailsItem[] | null
 			/**
 			 * Actions that should be added to the context menu of this section
 			 */
-			actions?: IHWAction[] | null
+			// actions?: IHWAction[] | null
 		}[]
 	}
 
@@ -494,7 +494,7 @@ export namespace SpruceEvents.core.DidCreateCalendarEvent {
 		/**
 		 * The calendar event that was created
 		 */
-		calendarEvent: IHWCalendarEvent
+		// calendarEvent: IHWCalendarEvent
 
 	}
 
@@ -566,7 +566,7 @@ export namespace SpruceEvents.core.GetSettings {
 			/**
 			 * The settings sections.
 			 */
-			sections?: ISpruceSettingsSection[]
+			// sections?: ISpruceSettingsSection[]
 		}[]
 	}
 

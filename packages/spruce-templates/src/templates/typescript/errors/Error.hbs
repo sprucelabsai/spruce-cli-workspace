@@ -1,0 +1,29 @@
+{{#if renderClassDefinition}}
+import AbstractSpruceError from '@sprucelabs/error'
+import { ErrorCode } from '../.spruce/errors/codes.types'
+import { ErrorOptions } from '../.spruce/errors/options.types'
+
+export default class SpruceError extends AbstractSpruceError<ErrorOptions>{
+	
+    /** an easy to understand version of the errors */
+    public friendlyMessage():string {
+
+        const { options } = this
+        let message
+        switch (options?.code) {
+{{/if}}
+            case ErrorCode.{{pascalName}}:
+
+                message = '{{#if description}}{{{escape description}}}{{else}}A {{{escape readableName}}} just happened!{{/if}}'
+                message + '\n\nThe rest of this error message needs to be customized with options'
+                
+                break
+{{#if renderClassDefinition}}
+            default:
+                message = super.friendlyMessage()
+        }
+
+        return message
+    }
+}
+{{/if}}

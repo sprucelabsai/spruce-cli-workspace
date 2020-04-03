@@ -1,10 +1,9 @@
 import { Command } from 'commander'
-import CommandBase from '../Base'
-import { RemoteType } from '../../utilities/Config'
+import AbstractCommand from '../Abstract'
 import { FieldType } from '@sprucelabs/schema'
-import { RemoteStoreRemoteType, RemoteStoreChoices } from '../../stores'
+import { RemoteStoreRemoteType, RemoteStoreChoices } from '../../stores/Remote'
 
-export default class Remote extends CommandBase {
+export default class RemoteCommand extends AbstractCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
 		program
@@ -13,7 +12,9 @@ export default class Remote extends CommandBase {
 			.action(this.setEnvironment.bind(this))
 	}
 
-	public async setEnvironment(environmentParam?: RemoteType | string) {
+	public async setEnvironment(
+		environmentParam?: RemoteStoreRemoteType | string
+	) {
 		let environment = environmentParam
 
 		if (!environment) {
@@ -27,6 +28,6 @@ export default class Remote extends CommandBase {
 			})
 		}
 
-		this.store.remote.setRemote(environment as RemoteStoreRemoteType).save()
+		this.stores.remote.setRemote(environment as RemoteStoreRemoteType).save()
 	}
 }

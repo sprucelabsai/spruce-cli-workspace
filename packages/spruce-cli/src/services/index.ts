@@ -1,5 +1,5 @@
-// import { stores } from '../stores'
+import PinService from './Pin'
 
-export interface IServices {}
-
-export const services: IServices = {}
+export interface IServices {
+	pin: PinService
+}

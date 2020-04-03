@@ -1,0 +1,19 @@
+// Importing your definition
+import {{camelName}}Definition from '../schemas/{{camelName}}.definition.ts'
+
+// Importing interfaces
+import { I{{pascalName}}, I{{pascalName}}Instance } from '#spruce/schemas/{{camelName}}.types'
+
+// Create an instance of a schema based on a definition
+const {{camelName}} = new Schema({{camelName}}Definition, values)
+
+// Set a value
+{{camelName}}.set('fieldName', newValue);
+
+// Get some values
+{{#each definition.fields}}
+const {{@key}} = {{../camelName}}.get('{{@key}}');
+{{/each}}
+
+// ensure validitye
+{{camelName}}.validate() // throws SchemaFieldValidationError
