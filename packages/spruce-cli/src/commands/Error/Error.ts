@@ -167,6 +167,8 @@ export default class ErrorCommand extends AbstractCommand {
 			matches.map(async filePath => {
 				// does this file contain buildErrorDefinition?
 				const currentContents = this.readFile(filePath)
+
+				// TODO remove this check
 				if (currentContents.search(/buildErrorDefinition\({/) === -1) {
 					this.log.debug(`Skipping ${filePath}`)
 					return

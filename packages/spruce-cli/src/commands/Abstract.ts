@@ -129,11 +129,6 @@ export default abstract class AbstractCommand extends Terminal {
 
 	/** kick off a build */
 	public async build(file?: string) {
-		// Todo make this better and building
-		// const command = `tsc ${file ? file : ''}`
-		// const command = `y build`
-		// existsSync(command)
-
 		this.startLoading('Waiting for build to complete')
 
 		if (file) {

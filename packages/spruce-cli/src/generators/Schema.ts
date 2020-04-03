@@ -1,8 +1,6 @@
 import path from 'path'
 import AbstractGenerator from './Abstract'
 import { ISchemaDefinition } from '@sprucelabs/schema'
-import SpruceError from '../errors/Error'
-import { ErrorCode } from '../.spruce/errors/codes.types'
 
 export default class SchemaGenerator extends AbstractGenerator {
 	/** generate a type file from a definition file */

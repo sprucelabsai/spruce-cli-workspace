@@ -11,7 +11,8 @@ import FormBuilder, {
 import Terminal from '../utilities/Terminal'
 import { shuffle } from 'lodash'
 import SpruceError from '../errors/Error'
-import { ErrorCode } from '../.spruce/errors/codes.types'
+import chalk from 'chalk'
+import { SpruceErrorCode } from '@sprucelabs/error'
 
 /** multiple choice question */
 export interface IQuizMultipleChoiceQuestion {
@@ -231,7 +232,7 @@ export default class QuizBuilder<
 
 		if (!results) {
 			throw new SpruceError({
-				code: ErrorCode.InvalidParameters,
+				code: SpruceErrorCode.InvalidParameters,
 				parameters: []
 			})
 		}
@@ -239,44 +240,50 @@ export default class QuizBuilder<
 		term.clear()
 		term.hero(headline ?? 'Quiz results!')
 
-		const object: Record<string, string> = {}
+		const testResults: Record<string, string> = {}
 
 		this.formBuilder.getNamedFields().forEach(namedField => {
 			const { name, field } = namedField
 			const questionFieldName = name as QuizAnswerFieldNames<Q>
-			const fieldDefinition = field.definition
 
 			// get results
-			const isCorrect = results.answerValidities[questionFieldName]
+			const isCorrect =
+				results.answerValidities[questionFieldName] === AnswerValidity.Correct
 			const guessedAnswer = `${results.answers[questionFieldName]}`
 
 			// build the real answer
-			let realAnswer = ''
+			let correctAnswer = ''
 
-			switch (fieldDefinition.type) {
+			const originalQuestion = this.originalQuestions[questionFieldName]
+
+			switch (originalQuestion.type) {
 				case FieldType.Select:
-					realAnswer = fieldDefinition.options.choices[0].label
+					correctAnswer = originalQuestion.answers[0]
 					break
 				default:
 					// all options just pass through the answer tied to the question during instantiation
-					realAnswer = (this.originalQuestions[
-						questionFieldName
-					] as IQuizTextQuestion).answer
+					correctAnswer = originalQuestion.answer
 			}
 
 			const objectKey = field.getLabel() || '**missing'
 
 			if (isCorrect) {
-				object[objectKey] = `${chalk}`
+				testResults[objectKey] = `${chalk.bgGreenBright.black(
+					'Correct!'
+				)} ${guessedAnswer} `
+			} else {
+				testResults[objectKey] = `${chalk.bgRedBright.black(
+					'Wrong!'
+				)}  ${chalk.strikethrough(guessedAnswer)} -> ${correctAnswer}`
 			}
-			debugger
 		})
 
-		term.section({
-			object: {
-				'question test': 'answer test'
-			}
-		})
+		term.object(testResults)
+
+		term.writeLn(`# questions: ${results.totalQuestions}`)
+		term.writeLn(`# correct: ${results.totalCorrect}`)
+
+		term.headline(`Your score: ${(results.percentCorrect * 100).toFixed(1)}%`)
 
 		await term.wait()
 	}

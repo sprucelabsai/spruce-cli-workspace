@@ -1,7 +1,7 @@
 import AbstractStore, { IBaseStoreSettings, IStoreOptions } from './Abstract'
 import Schema, {
 	FieldType,
-	IFieldSelectDefinitionChoice
+	ISelectFieldDefinitionChoice
 } from '@sprucelabs/schema'
 
 export enum RemoteStoreRemoteType {
@@ -19,7 +19,7 @@ export const RemoteStoreChoices = Object.keys(RemoteStoreRemoteType).map(
 		// @ts-ignore https://github.com/microsoft/TypeScript/issues/33123
 		label: RemoteStoreRemoteType[remote]
 	})
-) as IFieldSelectDefinitionChoice[]
+) as ISelectFieldDefinitionChoice[]
 
 /** the structure of the data remote saves */
 export interface IRemoteStoreSettings extends IBaseStoreSettings {

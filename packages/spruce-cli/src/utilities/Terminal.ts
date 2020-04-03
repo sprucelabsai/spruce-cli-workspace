@@ -4,7 +4,7 @@ import {
 	FieldType,
 	FieldDefinitionMap,
 	IFieldDefinition,
-	FieldBase
+	BaseField
 } from '@sprucelabs/schema'
 import inquirer from 'inquirer'
 // @ts-ignore
@@ -109,7 +109,14 @@ export default class Terminal {
 		this.bar()
 		this.writeLn('')
 		Object.keys(object).forEach(key => {
-			this.writeLn(`${key}: ${JSON.stringify(object[key])}`, effects)
+			this.writeLn(
+				`${chalk.bold(key)}: ${
+					typeof object[key] === 'string'
+						? object[key]
+						: JSON.stringify(object[key])
+				}`,
+				effects
+			)
 		})
 		this.writeLn('')
 		this.bar()
@@ -285,7 +292,7 @@ export default class Terminal {
 		this.writeLn('')
 		await this.prompt({
 			type: FieldType.Text,
-			label: `${message ? message + ' ' : ''}${chalk.bgGreen.white(
+			label: `${message ? message + ' ' : ''}${chalk.bgGreenBright.black(
 				'hit enter'
 			)}`
 		})
@@ -326,7 +333,7 @@ export default class Terminal {
 			message: `${label}:`
 		}
 
-		const field = FieldBase.field(fieldDefinition)
+		const field = BaseField.field(fieldDefinition)
 
 		// setup transform and validate
 		promptOptions.transformer = (value: string) => {

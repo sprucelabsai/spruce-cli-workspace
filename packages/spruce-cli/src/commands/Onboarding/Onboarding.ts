@@ -81,7 +81,7 @@ export default class OnboardingCommand extends AbstractCommand {
 			}
 		})
 
-		await quiz.present({ headline: 'Spruce POP QUIZ!' })
+		const results = await quiz.present({ headline: 'Spruce POP QUIZ!' })
 
 		this.clear()
 		this.writeLn('All done! Lets see how you did!')
@@ -89,5 +89,15 @@ export default class OnboardingCommand extends AbstractCommand {
 		await this.wait()
 
 		await quiz.scorecard()
+
+		if (results.percentCorrect < 1) {
+			this.wait('Hmmmmm...')
+		}
+
+		this.writeLn(
+			"Ok, that's all for now. When you're ready to start your skill, run `spruce skill:create`."
+		)
+
+		this.wait(`I'll see you there!`)
 	}
 }

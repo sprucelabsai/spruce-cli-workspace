@@ -25,7 +25,7 @@ export default class NodeUtility extends AbstractUtility {
 			throw new SpruceError({
 				code: ErrorCode.DefinitionFailedToImport,
 				file,
-				details: `It looks like you haven't built your project yet. try 'y build' or 'y watch'`
+				details: `It looks like you haven't built your project yet. try 'y watch'`
 			})
 		}
 

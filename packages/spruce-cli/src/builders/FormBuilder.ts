@@ -4,7 +4,7 @@ import Schema, {
 	SchemaDefinitionAllValues,
 	SchemaDefinitionPartialValues,
 	SchemaFieldNames,
-	IFieldSelectDefinitionChoice,
+	ISelectFieldDefinitionChoice,
 	IFieldDefinition,
 	SchemaErrorCode,
 	SchemaError
@@ -222,7 +222,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 		const actionMap: Record<string, IFormAction<T>> = {}
 
 		// create all choices
-		const choices: IFieldSelectDefinitionChoice[] = this.getNamedFields()
+		const choices: ISelectFieldDefinitionChoice[] = this.getNamedFields()
 			.filter(namedField => fields.indexOf(namedField.name) > -1)
 			.map(namedField => {
 				const { field, name } = namedField
