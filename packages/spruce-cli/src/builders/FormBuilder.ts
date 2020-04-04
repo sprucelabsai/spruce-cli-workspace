@@ -9,7 +9,7 @@ import Schema, {
 	SchemaErrorCode,
 	SchemaError
 } from '@sprucelabs/schema'
-import ITerminal, { ITerminalEffect } from '../utilities/Terminal'
+import ITerminal, { ITerminalEffect } from '../utilities/TerminalUtility'
 import { pick } from 'lodash'
 import AbstractSpruceError from '@sprucelabs/error'
 

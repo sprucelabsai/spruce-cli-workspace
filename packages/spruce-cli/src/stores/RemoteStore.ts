@@ -1,4 +1,7 @@
-import AbstractStore, { IBaseStoreSettings, IStoreOptions } from './Abstract'
+import AbstractStore, {
+	IBaseStoreSettings,
+	IStoreOptions
+} from './AbstractStore'
 import Schema, {
 	FieldType,
 	ISelectFieldDefinitionChoice

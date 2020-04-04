@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
-import { terminal } from './utilities/Terminal'
+import { terminal } from './utilities/TerminalUtility'
 import { Command } from 'commander'
 import globby from 'globby'
 import pkg from '../package.json'
@@ -12,26 +12,26 @@ import {
 	MercuryAuth
 } from '@sprucelabs/mercury'
 import { IStores } from './stores'
-import RemoteStore from './stores/Remote'
-import SkillStore from './stores/Skill'
-import UserStore from './stores/User'
-import SchemaStore from './stores/Schema'
-import PinService from './services/Pin'
+import RemoteStore from './stores/RemoteStore'
+import SkillStore from './stores/SkillStore'
+import UserStore from './stores/UserStore'
+import SchemaStore from './stores/SchemaStore'
+import PinService from './services/PinService'
 import AbstractCommand, { ICommandOptions } from './commands/Abstract'
-import OnboardingStore from './stores/Onboarding'
+import OnboardingStore from './stores/OnboardingStore'
 import { IGenerators } from './generators'
 import SchemaGenerator from './generators/Schema'
 import { IUtilities } from './utilities'
 import NamesUtility from './utilities/NamesUtility'
-import { StoreAuth } from './stores/Abstract'
+import { StoreAuth } from './stores/AbstractStore'
 import CoreGenerator from './generators/Core'
 import { IGeneratorOptions } from './generators/Abstract'
 import { templates } from '@sprucelabs/spruce-templates'
 import ErrorGenerator from './generators/Error'
 import SpruceError from './errors/Error'
 import { ErrorCode } from './.spruce/errors/codes.types'
-import NodeUtility from './utilities/Vm'
-import { IUtilityOptions } from './utilities/Abstract'
+import VmService from './services/VmService'
+import { IUtilityOptions } from './utilities/AbstractUtility'
 
 /**
  * For handling debugger not attaching right away
@@ -61,7 +61,9 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	})
 
 	// starting cwd
-	const cwd = process.cwd()
+	// const cwd = process.cwd()
+	// Force run in schema for now
+	const cwd = '/Users/taylorromero/Development/SpruceLabs/spruce-schema'
 
 	// setup log
 	log.setOptions({ level: LogLevel.Info })
@@ -115,9 +117,15 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 
 	await mercury.connect(connectOptions)
 
+	const serviceOptions = {
+		mercury,
+		cwd
+	}
+
 	// setup services
 	const services: IServices = {
-		pin: new PinService(mercury)
+		pin: new PinService(serviceOptions),
+		vm: new VmService(serviceOptions)
 	}
 
 	// setup utilities
@@ -126,10 +134,7 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	}
 
 	const utilities: IUtilities = {
-		names: new NamesUtility(utilityOptions),
-		vm: new NodeUtility({
-			...utilityOptions
-		})
+		names: new NamesUtility(utilityOptions)
 	}
 
 	// setup generators

@@ -1,4 +1,4 @@
-import AbstractService from './Abstract'
+import AbstractService from './AbstractService'
 import { SpruceEvents } from '../types/events-generated'
 import SpruceError from '../errors/Error'
 import { ErrorCode } from '../.spruce/errors/codes.types'

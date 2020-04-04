@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import AbstractStore, { StoreAuth, IBaseStoreSettings } from './Abstract'
+import AbstractStore, { StoreAuth, IBaseStoreSettings } from './AbstractStore'
 import { SpruceSchemas } from '../.spruce/schemas/core.types'
 import { IMercuryGQLBody } from '@sprucelabs/mercury'
 import { SpruceEvents } from '../types/events-generated'

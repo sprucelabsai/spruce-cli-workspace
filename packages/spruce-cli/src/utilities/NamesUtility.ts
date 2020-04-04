@@ -1,7 +1,7 @@
 import { camelCase, snakeCase, upperFirst } from 'lodash'
 import { IFieldDefinition } from '@sprucelabs/schema'
 import { INamedTemplateItem } from '../.spruce/schemas/namedTemplateItem.types'
-import AbstractUtility from './Abstract'
+import AbstractUtility from './AbstractUtility'
 
 export default class NamesUtility extends AbstractUtility {
 	/** first name => FirstName */

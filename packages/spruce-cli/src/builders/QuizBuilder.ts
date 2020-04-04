@@ -8,7 +8,7 @@ import FormBuilder, {
 	IFormOptions,
 	IFormPresentationOptions
 } from './FormBuilder'
-import Terminal from '../utilities/Terminal'
+import Terminal from '../utilities/TerminalUtility'
 import { shuffle } from 'lodash'
 import SpruceError from '../errors/Error'
 import chalk from 'chalk'

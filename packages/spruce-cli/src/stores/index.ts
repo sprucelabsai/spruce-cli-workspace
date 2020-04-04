@@ -1,8 +1,8 @@
-import RemoteStore from './Remote'
-import SkillStore from './Skill'
-import UserStore from './User'
-import SchemaStore from './Schema'
-import OnboardingStore from './Onboarding'
+import RemoteStore from './RemoteStore'
+import SkillStore from './SkillStore'
+import UserStore from './UserStore'
+import SchemaStore from './SchemaStore'
+import OnboardingStore from './OnboardingStore'
 
 export interface IStores {
 	remote: RemoteStore

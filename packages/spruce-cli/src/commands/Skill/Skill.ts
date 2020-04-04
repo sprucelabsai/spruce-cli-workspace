@@ -1,7 +1,7 @@
 import { Command } from 'commander'
 import AbstractCommand from '../Abstract'
 import { ISelectFieldDefinitionChoice, FieldType } from '@sprucelabs/schema'
-import { StoreAuth } from '../../stores/Abstract'
+import { StoreAuth } from '../../stores/AbstractStore'
 import SpruceError from '../../errors/Error'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
 // import globby from 'globby'

@@ -1,5 +1,5 @@
 import { Log } from '@sprucelabs/log'
-import Terminal from '../utilities/Terminal'
+import Terminal from '../utilities/TerminalUtility'
 import path from 'path'
 import { Command } from 'commander'
 import FormBuilder, { IFormOptions } from '../builders/FormBuilder'

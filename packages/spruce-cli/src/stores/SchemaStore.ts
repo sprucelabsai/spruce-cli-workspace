@@ -1,4 +1,4 @@
-import AbstractStore from './Abstract'
+import AbstractStore from './AbstractStore'
 import {
 	ISchemaDefinition,
 	Template as SchemaTemplate,

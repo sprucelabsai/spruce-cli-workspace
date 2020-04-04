@@ -3,7 +3,7 @@ import AbstractCommand from '../Abstract'
 import { FieldType, ISelectFieldDefinitionChoice } from '@sprucelabs/schema'
 import { IUserWithToken } from '../../.spruce/schemas/userWithToken.types'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
-import { StoreAuth } from '../../stores/Abstract'
+import { StoreAuth } from '../../stores/AbstractStore'
 import SpruceError from '../../errors/Error'
 
 export default class UserCommand extends AbstractCommand {

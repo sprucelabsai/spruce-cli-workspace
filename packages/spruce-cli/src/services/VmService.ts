@@ -4,15 +4,11 @@ import { ErrorCode } from '../.spruce/errors/codes.types'
 import Schema, { ISchemaDefinition } from '@sprucelabs/schema'
 import fs from 'fs-extra'
 import path from 'path'
-import AbstractUtility from './Abstract'
 import { cloneDeep } from 'lodash'
+import AbstractService from './AbstractService'
 
-export default class NodeUtility extends AbstractUtility {
+export default class VmService extends AbstractService {
 	private fileMapCache: Record<string, string> = {}
-
-	public constructor(options: { cwd: string }) {
-		super(options)
-	}
 
 	/** import a schema definition from any file */
 	public importDefinition(file: string) {
