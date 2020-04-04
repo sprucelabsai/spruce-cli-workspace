@@ -1,5 +1,5 @@
 import { NodeVM } from 'vm2'
-import SpruceError from '../errors/Error'
+import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../.spruce/errors/codes.types'
 import Schema, { ISchemaDefinition } from '@sprucelabs/schema'
 import fs from 'fs-extra'
@@ -41,22 +41,24 @@ export default class VmService extends AbstractService {
 						return this.fileMapCache[name]
 					}
 
-					// TODO better way to resolve to built file
-					const filename = (path.join(dir, name) + '.js').replace(
-						'/src/',
-						'/build/src/'
-					)
+					// there are a few options that could work
+					const resolved = [path.join(dir, name), path.join(dir, name, 'index')]
 
-					if (!fs.existsSync(filename)) {
-						throw new SpruceError({
-							code: ErrorCode.DefinitionFailedToImport,
-							file,
-							details: `It looks like you haven't built your project yet. try 'y build' or 'y watch'`
-						})
+					for (const path of resolved) {
+						const filename = (path + '.js').replace('/src', '/build/src')
+						if (fs.existsSync(filename) && fs.lstatSync(filename).isFile()) {
+							this.fileMapCache[name] = filename
+							return filename
+						}
 					}
 
-					this.fileMapCache[name] = filename
-					return filename
+					throw new SpruceError({
+						code: ErrorCode.DefinitionFailedToImport,
+						file,
+						details: `Could not resolve definition import "${name}". Tried ${resolved.join(
+							', '
+						)}`
+					})
 				}
 			}
 		})

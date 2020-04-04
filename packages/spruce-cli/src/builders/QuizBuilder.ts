@@ -10,7 +10,7 @@ import FormBuilder, {
 } from './FormBuilder'
 import Terminal from '../utilities/TerminalUtility'
 import { shuffle } from 'lodash'
-import SpruceError from '../errors/Error'
+import SpruceError from '../errors/SpruceError'
 import chalk from 'chalk'
 import { SpruceErrorCode } from '@sprucelabs/error'
 

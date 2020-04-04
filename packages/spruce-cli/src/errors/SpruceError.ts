@@ -40,7 +40,7 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				break
 
 			case ErrorCode.DefinitionFailedToImport:
-				message = `The definition at ${options.file} failed to import: ${options.details}`
+				message = `Error in "${options.file}". ${options.details}.`
 
 				break
 

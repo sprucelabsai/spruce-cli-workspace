@@ -28,7 +28,7 @@ import CoreGenerator from './generators/Core'
 import { IGeneratorOptions } from './generators/Abstract'
 import { templates } from '@sprucelabs/spruce-templates'
 import ErrorGenerator from './generators/Error'
-import SpruceError from './errors/Error'
+import SpruceError from './errors/SpruceError'
 import { ErrorCode } from './.spruce/errors/codes.types'
 import VmService from './services/VmService'
 import { IUtilityOptions } from './utilities/AbstractUtility'
@@ -61,9 +61,9 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	})
 
 	// starting cwd
-	const cwd = process.cwd()
+	// const cwd = process.cwd()
 	// Force run in schema for now
-	// const cwd = '/Users/taylorromero/Development/SpruceLabs/spruce-schema'
+	const cwd = '/Users/taylorromero/Development/SpruceLabs/spruce-schema/'
 
 	// setup log
 	log.setOptions({ level: LogLevel.Info })
@@ -139,6 +139,7 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 
 	// setup generators
 	const generatorOptions: IGeneratorOptions = {
+		services,
 		utilities,
 		templates,
 		log,

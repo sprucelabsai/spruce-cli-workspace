@@ -9,7 +9,7 @@ import userWithTokenDefinition from '../schemas/userWithToken.definition'
 import userDefinition from '../schemas/user.definition'
 import { IUserWithToken } from '../.spruce/schemas/userWithToken.types'
 import { IUser } from '../.spruce/schemas/user.types'
-import SpruceError from '../errors/Error'
+import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../.spruce/errors/codes.types'
 
 /** settings i need to save */

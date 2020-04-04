@@ -21,7 +21,7 @@ export default class ErrorGenerator extends AbstractGenerator {
 		}[] = []
 
 		matches.forEach(file => {
-			const definition = this.utilities.vm.importDefinition(file)
+			const definition = this.services.vm.importDefinition(file)
 
 			//get variations on name
 			const camelName = this.utilities.names.toCamel(definition.id)
@@ -58,7 +58,7 @@ export default class ErrorGenerator extends AbstractGenerator {
 		}[] = []
 
 		matches.forEach(file => {
-			const definition = this.utilities.vm.importDefinition(file)
+			const definition = this.services.vm.importDefinition(file)
 
 			//get variations on name
 			const camelName = this.utilities.names.toCamel(definition.id)

@@ -12,13 +12,15 @@ export default class SchemaGenerator extends AbstractGenerator {
 		camelName: string
 		pascalName: string
 		description: string
+		readableName: string
 		definition: ISchemaDefinition
 	} {
-		const definition = this.utilities.vm.importDefinition(sourceFile)
+		const definition = this.services.vm.importDefinition(sourceFile)
 
 		//get variations on name
 		const camelName = this.utilities.names.toCamel(definition.id)
 		const pascalName = this.utilities.names.toPascal(definition.id)
+		const readableName = definition.name
 		const description = definition.description
 
 		// files
@@ -53,7 +55,8 @@ export default class SchemaGenerator extends AbstractGenerator {
 			camelName,
 			pascalName,
 			definition,
-			description: description || '*definition missing*'
+			description: description || '*definition missing*',
+			readableName
 		}
 	}
 }

@@ -10,7 +10,6 @@ import inquirer from 'inquirer'
 // @ts-ignore
 import fonts from 'cfonts'
 import ora from 'ora'
-import BaseSpruceError from '@sprucelabs/error'
 import { omit } from 'lodash'
 // @ts-ignore
 import emphasize from 'emphasize'
@@ -373,11 +372,8 @@ export default class Terminal {
 	public handleError(err: Error) {
 		this.stopLoading()
 
-		const message =
-			err instanceof BaseSpruceError ? err.friendlyMessage() : err.message
-
 		this.section({
-			headline: message,
+			headline: err.message,
 			lines: (err.stack || '').split('/n'),
 			headlineEffects: [ITerminalEffect.Bold, ITerminalEffect.Red],
 			barEffects: [ITerminalEffect.Red],

@@ -10,7 +10,7 @@ import { IServices } from '../services'
 import { IGenerators } from '../generators'
 import { IUtilities } from '../utilities'
 import { Templates } from '@sprucelabs/spruce-templates'
-import SpruceError from '../errors/Error'
+import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../.spruce/errors/codes.types'
 import QuizBuilder, {
 	IQuizOptions,
@@ -82,7 +82,7 @@ export default abstract class AbstractCommand extends Terminal {
 
 	/** helper to resolve paths absolutely and relatively */
 	public resolvePath(...filePath: string[]): string {
-		const cwd = process.cwd()
+		const cwd = this.cwd
 		let builtPath = path.join(...filePath)
 
 		if (builtPath[0] !== '/') {

@@ -47,7 +47,7 @@ const schemaExample: string = fs
 	.toString()
 
 const error: string = fs
-	.readFileSync(path.join(templatePath, 'errors/Error.hbs'))
+	.readFileSync(path.join(templatePath, 'errors/SpruceError.hbs'))
 	.toString()
 
 const errorTypes: string = fs
@@ -105,8 +105,7 @@ export const templates = {
 
 	/** for creating an error class */
 	error(options: {
-		pascalName: string
-		readableName: string
+		errors: { pascalName: string; readableName: string }[]
 		renderClassDefinition?: boolean
 	}) {
 		const template = handlebars.compile(error)

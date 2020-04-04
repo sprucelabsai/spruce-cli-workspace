@@ -1,6 +1,6 @@
 import AbstractService from './AbstractService'
 import { SpruceEvents } from '../types/events-generated'
-import SpruceError from '../errors/Error'
+import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../.spruce/errors/codes.types'
 
 export default class PinService extends AbstractService {

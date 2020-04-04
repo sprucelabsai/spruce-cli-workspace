@@ -3,7 +3,7 @@ import { Command } from 'commander'
 import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definition'
 import path from 'path'
 import globby from 'globby'
-import SpruceError from '../../errors/Error'
+import SpruceError from '../../errors/SpruceError'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
 
 export default class ErrorCommand extends AbstractCommand {
@@ -13,7 +13,7 @@ export default class ErrorCommand extends AbstractCommand {
 			.description('Define a new type of error')
 			.option(
 				'-dd, --errorDestinationDir <dir>',
-				'Where should I write the definition file?',
+				'Where should I write the definition and Error class file?',
 				'./src/errors'
 			)
 			.option(
@@ -32,9 +32,14 @@ export default class ErrorCommand extends AbstractCommand {
 				'./src/errors'
 			)
 			.option(
-				'-d, --destinationDir <dir>',
+				'-td, --typesDestinationDir <dir>',
 				'Where should I write the definitions file?',
 				'./src/.spruce/errors'
+			)
+			.option(
+				'-dd, --errorDestinationDir <dir>',
+				'Where should I write the Error class file?',
+				'./src/errors'
 			)
 			.action(this.sync.bind(this))
 	}
@@ -63,7 +68,7 @@ export default class ErrorCommand extends AbstractCommand {
 
 		const errorFileDestination = this.resolvePath(
 			errorDestinationDir,
-			'Error.ts'
+			'SpruceError.ts'
 		)
 
 		const errorDefinitionFileDestination = this.resolvePath(
@@ -87,11 +92,11 @@ export default class ErrorCommand extends AbstractCommand {
 
 		// if there is no error file, lets write one
 		if (!this.doesFileExist(errorFileDestination)) {
-			const errorContents = this.templates.error(names)
+			const errorContents = this.templates.error({ errors: [names] })
 			await this.writeFile(errorFileDestination, errorContents)
 		} else {
 			const errorBlock = this.templates.error({
-				...names,
+				errors: [names],
 				renderClassDefinition: false
 			})
 
@@ -152,7 +157,9 @@ export default class ErrorCommand extends AbstractCommand {
 
 	public async sync(cmd: Command) {
 		const lookupDir = cmd.lookupDir as string
-		const destinationDir = cmd.destinationDir as string
+		const typesDestinationDir = cmd.typesDestinationDir as string
+		const errorDestinationDir = cmd.errorDestinationDir as string
+
 		const search = path.join(
 			this.resolvePath(lookupDir),
 			'**',
@@ -160,6 +167,11 @@ export default class ErrorCommand extends AbstractCommand {
 		)
 
 		const matches = await globby(search)
+		const allErrors: {
+			pascalName: string
+			description: string
+			readableName: string
+		}[] = []
 
 		// lets clear out the current error dir
 		// this.deleteFile()
@@ -178,10 +190,12 @@ export default class ErrorCommand extends AbstractCommand {
 				const {
 					pascalName,
 					camelName,
-					definition
+					definition,
+					description,
+					readableName
 				} = this.generators.schema.generateTypesFromDefinitionFile(
 					filePath,
-					this.resolvePath(destinationDir),
+					this.resolvePath(typesDestinationDir),
 					'errorTypes'
 				)
 
@@ -195,19 +209,33 @@ export default class ErrorCommand extends AbstractCommand {
 
 				this.writeLn('')
 				this.writeLn('')
+
+				// track all errors
+				allErrors.push({ pascalName, readableName, description })
 			})
 		)
+
+		// write error class if it does not exist
+		const errorFileDestination = this.resolvePath(
+			errorDestinationDir,
+			'SpruceError.ts'
+		)
+
+		if (!this.doesFileExist(errorFileDestination)) {
+			const errorContents = this.templates.error({ errors: allErrors })
+			await this.writeFile(errorFileDestination, errorContents)
+		}
 
 		// rebuild the errors codes
 		await this.generators.error.rebuildCodesTypesFile({
 			lookupDir: this.resolvePath(lookupDir),
-			destinationFile: this.resolvePath(destinationDir, 'codes.types.ts')
+			destinationFile: this.resolvePath(typesDestinationDir, 'codes.types.ts')
 		})
 
 		// rebuild error options
 		await this.generators.error.rebuildOptionsTypesFile({
 			lookupDir: this.resolvePath(lookupDir),
-			destinationFile: this.resolvePath(destinationDir, 'options.types.ts')
+			destinationFile: this.resolvePath(typesDestinationDir, 'options.types.ts')
 		})
 	}
 }
