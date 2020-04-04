@@ -61,9 +61,9 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	})
 
 	// starting cwd
-	// const cwd = process.cwd()
+	const cwd = process.cwd()
 	// Force run in schema for now
-	const cwd = '/Users/taylorromero/Development/SpruceLabs/spruce-schema'
+	// const cwd = '/Users/taylorromero/Development/SpruceLabs/spruce-schema'
 
 	// setup log
 	log.setOptions({ level: LogLevel.Info })
