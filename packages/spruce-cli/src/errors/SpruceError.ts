@@ -3,12 +3,12 @@ import { ErrorCode } from '../.spruce/errors/codes.types'
 import { ErrorOptions } from '../.spruce/errors/options.types'
 
 export default class SpruceError extends BaseSpruceError<ErrorOptions> {
-	/** an easy to understand version of the errors */
+	/** An easy to understand version of the errors */
 	public friendlyMessage(): string {
 		const { options } = this
 		let message
 		switch (options?.code) {
-			// invalid command
+			// Invalid command
 			case ErrorCode.InvalidCommand:
 				message = `Invalid command: ${options.args.join(' ')}\n`
 				message += `Try running spruce --help`

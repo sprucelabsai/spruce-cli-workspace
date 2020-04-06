@@ -9,7 +9,7 @@ import {
 	ISchemaDefinition
 } from '@sprucelabs/schema'
 
-// import addons
+// Import addons
 import * as escape from './src/addons/escape.addon'
 import * as fieldDefinitionOptions from './src/addons/fieldDefinitionOptions.addon'
 import * as fieldDefinitionValueType from './src/addons/fieldDefinitionValueType.addon'
@@ -26,10 +26,10 @@ log.info('addon fieldValue', fieldValue)
 log.info('addon isEqual', isEqual)
 log.info('addon startCase', startCase)
 
-// import actual templates
+// Import actual templates
 const templatePath = path.join(__dirname, 'src', 'templates', 'typescript')
 
-// template files
+// Template files
 const schemaTypes: string = fs
 	.readFileSync(path.join(templatePath, 'schemas/schema.types.hbs'))
 	.toString()
@@ -70,9 +70,9 @@ const errorExample: string = fs
 	.readFileSync(path.join(templatePath, 'errors/example.hbs'))
 	.toString()
 
-// template generators
+// Template generators
 export const templates = {
-	/** all definitions */
+	/** All definitions */
 	schemaTypes(options: {
 		schemaTemplateItems: ISchemaTemplateItem[]
 		typeMap: { [fieldType: string]: IFieldTemplateDetails }
@@ -81,7 +81,7 @@ export const templates = {
 		return template(options)
 	},
 
-	/** when building a definition in a skill */
+	/** When building a definition in a skill */
 	definition(options: {
 		camelName: string
 		description: string
@@ -92,7 +92,7 @@ export const templates = {
 		return template(options)
 	},
 
-	/** the types file to support a definition */
+	/** The types file to support a definition */
 	definitionTypes(options: {
 		camelName: string
 		pascalName: string
@@ -103,7 +103,7 @@ export const templates = {
 		return template(options)
 	},
 
-	/** for creating an error class */
+	/** For creating an error class */
 	error(options: {
 		errors: { pascalName: string; readableName: string }[]
 		renderClassDefinition?: boolean
@@ -112,7 +112,7 @@ export const templates = {
 		return template({ renderClassDefinition: true, ...options })
 	},
 
-	/** for generating types file this error (the ISpruceErrorOptions sub-interface) */
+	/** For generating types file this error (the ISpruceErrorOptions sub-interface) */
 	errorTypes(options: {
 		camelName: string
 		relativeToDefinition: string
@@ -123,7 +123,7 @@ export const templates = {
 		return template(options)
 	},
 
-	/** for generating types for all the options (the ISpruceErrorOptions sub-interface) */
+	/** For generating types for all the options (the ISpruceErrorOptions sub-interface) */
 	errorOptionsTypes(options: {
 		options: { camelName: string; pascalName: string }[]
 	}) {
@@ -131,7 +131,7 @@ export const templates = {
 		return template(options)
 	},
 
-	/** for generating types for all the options (the ISpruceErrorOptions sub-interface) */
+	/** For generating types for all the options (the ISpruceErrorOptions sub-interface) */
 	errorCodesTypes(options: {
 		codes: { pascalName: string; constName: string; description: string }[]
 	}) {
@@ -139,7 +139,7 @@ export const templates = {
 		return template(options)
 	},
 
-	/** an error definition file */
+	/** An error definition file */
 	errorDefinition(options: {
 		camelName: string
 		readableName: string
@@ -149,7 +149,7 @@ export const templates = {
 		return template(options)
 	},
 
-	/** schema example */
+	/** Schema example */
 	schemaExample(options: {
 		camelName: string
 		pascalName: string
@@ -159,7 +159,7 @@ export const templates = {
 		return template(options)
 	},
 
-	/** error example */
+	/** Error example */
 	errorExample(options: {
 		camelName: string
 		pascalName: string
@@ -170,10 +170,10 @@ export const templates = {
 	}
 }
 
-/** all the templates */
+/** All the templates */
 export type Templates = typeof templates
 
-// partials
+// Partials
 const schemaPartial: string = fs
 	.readFileSync(
 		path.join(templatePath, 'schemas/partials/schemaDefinition.hbs')

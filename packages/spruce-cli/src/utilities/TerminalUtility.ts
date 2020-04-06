@@ -65,16 +65,16 @@ export enum ITerminalEffect {
 	BgCyanBright = 'bgCyanBright',
 	BgWhiteBright = 'bgWhiteBright',
 
-	/** spruce header style */
+	/** Spruce header style */
 	SpruceHeader = 'shade'
 }
 
-/** what prompt() returns if isRequired=true */
+/** What prompt() returns if isRequired=true */
 type PromptReturnTypeRequired<T extends IFieldDefinition> = Required<
 	FieldDefinitionMap[T['type']]
 >['value']
 
-/** what prompt() returns if isRequired!==true */
+/** What prompt() returns if isRequired!==true */
 type PromptReturnTypeOptional<
 	T extends IFieldDefinition
 > = FieldDefinitionMap[T['type']]['value']
@@ -84,7 +84,7 @@ const debug = Debug('@sprucelabs/cli')
 export default class Terminal {
 	private loader?: ora.Ora | null
 
-	/** write a line with various effects applied */
+	/** Write a line with various effects applied */
 	public writeLn(message: any, effects: ITerminalEffect[] = []) {
 		let write: any = chalk
 		effects.forEach(effect => {
@@ -93,14 +93,14 @@ export default class Terminal {
 		console.log(effects.length > 0 ? write(message) : message)
 	}
 
-	/** write an array of lines quickly */
+	/** Write an array of lines quickly */
 	public writeLns(lines: any[], effects?: ITerminalEffect[]) {
 		lines.forEach(line => {
 			this.writeLn(line, effects)
 		})
 	}
 
-	/** output an object, one key per line */
+	/** Output an object, one key per line */
 	public object(
 		object: Record<string, any>,
 		effects: ITerminalEffect[] = [ITerminalEffect.Green]
@@ -121,7 +121,7 @@ export default class Terminal {
 		this.bar()
 	}
 
-	/** a section draws a box around what you are writing */
+	/** A section draws a box around what you are writing */
 	public section(options: {
 		headline?: string
 		lines?: string[]
@@ -165,7 +165,7 @@ export default class Terminal {
 		this.writeLn('')
 	}
 
-	/** draw a bar (horizontal ruler) */
+	/** Draw a bar (horizontal ruler) */
 	public bar(effects?: ITerminalEffect[]) {
 		const bar = '=================================================='
 		this.writeLn(bar, effects)
@@ -201,14 +201,14 @@ export default class Terminal {
 		this.bar()
 	}
 
-	/** a headline */
+	/** A headline */
 	public hero(
 		message: string,
 		effects: ITerminalEffect[] = [ITerminalEffect.Blue, ITerminalEffect.Bold]
 	) {
 		// TODO map effects to cfonts
 		fonts.say(message, {
-			// font: 'tiny',
+			// Font: 'tiny',
 			align: 'center',
 			colors: omit(effects, [
 				ITerminalEffect.Reset,
@@ -224,12 +224,12 @@ export default class Terminal {
 		})
 	}
 
-	/** some helpful info or suggestion */
+	/** Some helpful info or suggestion */
 	public hint(message: string) {
 		return this.writeLn(`👨‍🏫 ${message}`)
 	}
 
-	/** when outputting something information */
+	/** When outputting something information */
 	public info(message: string) {
 		if (typeof message !== 'string') {
 			debug('Invalid info log')
@@ -240,7 +240,7 @@ export default class Terminal {
 		this.writeLn(`🌲🤖 ${message}`, [ITerminalEffect.Cyan])
 	}
 
-	/** the user did something wrong, like entered a bad value */
+	/** The user did something wrong, like entered a bad value */
 	public warn(message: string) {
 		this.writeLn(`⚠️ ${message}`, [
 			ITerminalEffect.Bold,
@@ -248,21 +248,21 @@ export default class Terminal {
 		])
 	}
 
-	/** the user did something wrong, like entered a bad value */
+	/** The user did something wrong, like entered a bad value */
 	public error(message: string) {
 		this.writeLn(`🛑 ${message}`, [ITerminalEffect.Bold, ITerminalEffect.Bold])
 	}
 
-	/** something major or a critical information but program will not die */
+	/** Something major or a critical information but program will not die */
 	public crit(message: string) {
 		this.writeLn(`🛑 ${message}`, [ITerminalEffect.Red, ITerminalEffect.Bold])
 	}
-	/** everything is crashing! */
+	/** Everything is crashing! */
 	public fatal(message: string) {
 		this.writeLn(`💥 ${message}`, [ITerminalEffect.Red, ITerminalEffect.Bold])
 	}
 
-	/** show a simple loader */
+	/** Show a simple loader */
 	public async startLoading(message?: string) {
 		this.stopLoading()
 		this.loader = ora({
@@ -270,13 +270,13 @@ export default class Terminal {
 		}).start()
 	}
 
-	/** hide loader */
+	/** Hide loader */
 	public async stopLoading() {
 		this.loader?.stop()
 		this.loader = null
 	}
 
-	/** ask the user to confirm something */
+	/** Ask the user to confirm something */
 	public async confirm(question: string): Promise<boolean> {
 		const confirmResult = await inquirer.prompt({
 			type: 'confirm',
@@ -299,12 +299,12 @@ export default class Terminal {
 		return
 	}
 
-	/** clear the console */
+	/** Clear the console */
 	public clear() {
 		console.clear()
 	}
 
-	/** print some code beautifully */
+	/** Print some code beautifully */
 	public codeSample(code: string) {
 		try {
 			const colored = emphasize.highlight('js', code).value
@@ -314,7 +314,7 @@ export default class Terminal {
 		}
 	}
 
-	/** ask the user for something */
+	/** Ask the user for something */
 	public async prompt<T extends IFieldDefinition>(
 		definition: T
 	): Promise<
@@ -334,7 +334,7 @@ export default class Terminal {
 
 		const field = BaseField.field(fieldDefinition)
 
-		// setup transform and validate
+		// Setup transform and validate
 		promptOptions.transformer = (value: string) => {
 			return field.toValueType(value)
 		}
@@ -368,7 +368,7 @@ export default class Terminal {
 		return response[name]
 	}
 
-	/** generic way to handle error */
+	/** Generic way to handle error */
 	public handleError(err: Error) {
 		this.stopLoading()
 

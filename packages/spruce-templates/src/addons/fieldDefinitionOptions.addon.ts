@@ -5,7 +5,7 @@ import {
 	FieldType
 } from '@sprucelabs/schema'
 
-/** renders field options */
+/** Renders field options */
 handlebars.registerHelper('fieldDefinitionOptions', function(
 	fieldDefinition: IFieldDefinition,
 	renderAs,
@@ -39,13 +39,13 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 		...fieldDefinition.options
 	}
 
-	// if this is a schema type, we need to map it to the related definition
+	// If this is a schema type, we need to map it to the related definition
 	if (fieldDefinition.type === FieldType.Schema && updatedOptions) {
 		const matchedTemplateItem = schemaTemplateItems.find(
 			item => item.id === updatedOptions.schemaId
 		)
 
-		// swap out id for reference
+		// Swap out id for reference
 		if (matchedTemplateItem) {
 			delete updatedOptions.schemaId
 			updatedOptions.schema = `SpruceSchemas.${matchedTemplateItem.namespace}.${
@@ -56,7 +56,7 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 		}
 	}
 
-	// no options, undefined is acceptable
+	// No options, undefined is acceptable
 	if (Object.keys(updatedOptions ?? {}).length === 0) {
 		return 'undefined'
 	}

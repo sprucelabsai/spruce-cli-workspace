@@ -57,23 +57,23 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	program.on('option:directory', function() {
 		if (program.directory) {
 			throw new Error('another path forward')
-			// process.chdir(path.resolve(program.directory))
+			// Process.chdir(path.resolve(program.directory))
 			// config.init()
 		}
 	})
 
-	// starting cwd
+	// Starting cwd
 	// const cwd = process.cwd()
 	// Force run in schema for now
 	const cwd = '/Users/taylorromero/Development/SpruceLabs/spruce-schema/'
 
-	// setup log
+	// Setup log
 	log.setOptions({ level: LogLevel.Info })
 
-	// setup mercury
+	// Setup mercury
 	const mercury = new Mercury()
 
-	// setup stores
+	// Setup stores
 	const storeOptions = {
 		mercury,
 		cwd,
@@ -88,14 +88,14 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		onboarding: new OnboardingStore(storeOptions)
 	}
 
-	// setup mercury
+	// Setup mercury
 	const remoteUrl = stores.remote.getRemoteUrl()
 
-	// who is logged in?
+	// Who is logged in?
 	const loggedInUser = stores.user.loggedInUser()
 	const loggedInSkill = stores.skill.loggedInSkill()
 
-	// build mercury creds
+	// Build mercury creds
 	let creds: MercuryAuth | undefined
 	const authType = stores.remote.authType
 
@@ -111,7 +111,7 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 			break
 	}
 
-	// mercury connection options
+	// Mercury connection options
 	const connectOptions: IMercuryConnectOptions = {
 		spruceApiUrl: remoteUrl,
 		credentials: creds
@@ -119,21 +119,21 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 
 	await mercury.connect(connectOptions)
 
-	// setup services
+	// Setup services
 	const serviceOptions: IServiceOptions = {
 		mercury,
 		cwd,
 		log
 	}
 
-	// setup services
+	// Setup services
 	const services: IServices = {
 		pin: new PinService(serviceOptions),
 		vm: new VmService(serviceOptions),
 		yarn: new YarnService(serviceOptions)
 	}
 
-	// setup utilities
+	// Setup utilities
 	const utilityOptions: IUtilityOptions = {
 		cwd,
 		log
@@ -143,7 +143,7 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		names: new NamesUtility(utilityOptions)
 	}
 
-	// setup generators
+	// Setup generators
 	const generatorOptions: IGeneratorOptions = {
 		services,
 		utilities,
@@ -161,12 +161,12 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	// Load commands and actions
 	globby.sync(`${__dirname}/commands/**/*.js`).forEach(file => {
 		try {
-			// import and type the command
+			// Import and type the command
 			const cmdClass: new (
 				options: ICommandOptions
 			) => AbstractCommand = require(file).default
 
-			// instantiate the command
+			// Instantiate the command
 			const command = new cmdClass({
 				stores,
 				mercury,
@@ -178,10 +178,10 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 				templates
 			})
 
-			// attach commands to the program
+			// Attach commands to the program
 			command.attachCommands && command.attachCommands(program)
 
-			// track all commands
+			// Track all commands
 			commands.push(command)
 		} catch (err) {
 			throw new SpruceError({
@@ -195,7 +195,7 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	// Alphabetical sort of help output
 	program.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
 
-	// error on unknown commands
+	// Error on unknown commands
 	program.action((command, args) => {
 		throw new SpruceError({ code: ErrorCode.InvalidCommand, args })
 	})

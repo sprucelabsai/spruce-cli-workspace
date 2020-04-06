@@ -24,13 +24,13 @@ export const RemoteStoreChoices = Object.keys(RemoteStoreRemoteType).map(
 	})
 ) as ISelectFieldDefinitionChoice[]
 
-/** the structure of the data remote saves */
+/** The structure of the data remote saves */
 export interface IRemoteStoreSettings extends IBaseStoreSettings {
 	remote?: RemoteStoreRemoteType
 }
 
 export default class RemoteStore extends AbstractStore<IRemoteStoreSettings> {
-	/** map of remote urls and subscriptions url */
+	/** Map of remote urls and subscriptions url */
 	public static remotes = {
 		[RemoteStoreRemoteType.Production]: {
 			url: 'https://api.spruce.ai',
@@ -54,10 +54,10 @@ export default class RemoteStore extends AbstractStore<IRemoteStoreSettings> {
 		}
 	}
 
-	/** store name */
+	/** Store name */
 	public name = 'config'
 
-	/** the schema that defines the config */
+	/** The schema that defines the config */
 	public schema = new Schema({
 		id: 'config-store',
 		name: 'Config store',
@@ -77,14 +77,14 @@ export default class RemoteStore extends AbstractStore<IRemoteStoreSettings> {
 		this.load()
 	}
 
-	/** set your remote (defaults to prod) */
+	/** Set your remote (defaults to prod) */
 	public setRemote(remote: RemoteStoreRemoteType) {
 		this.schema.set('remote', remote)
 		this.save()
 		return this
 	}
 
-	/** get your selected remote */
+	/** Get your selected remote */
 	public getRemote(): RemoteStoreRemoteType {
 		return (
 			(this.schema.get('remote') as RemoteStoreRemoteType) ||
@@ -92,21 +92,21 @@ export default class RemoteStore extends AbstractStore<IRemoteStoreSettings> {
 		)
 	}
 
-	/** get a remote url */
+	/** Get a remote url */
 	public getRemoteUrl(remote?: RemoteStoreRemoteType): string {
 		const selectedRemote = remote || this.getRemote()
 		const url = RemoteStore.remotes[selectedRemote].url
 		return url
 	}
 
-	/** save changes to filesystem */
+	/** Save changes to filesystem */
 	public async save() {
 		const values = this.schema.getValues()
 		this.writeValues(values)
 		return this
 	}
 
-	/** load everything into the store (called in constructor) */
+	/** Load everything into the store (called in constructor) */
 	public async load() {
 		const saved = this.readValues()
 		this.schema.setValues(saved)

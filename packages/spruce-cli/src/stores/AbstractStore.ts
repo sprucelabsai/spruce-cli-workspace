@@ -4,19 +4,19 @@ import { Log } from '@sprucelabs/log'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../.spruce/errors/codes.types'
 
-/** are we running globally or locally? */
+/** Are we running globally or locally? */
 export enum StoreScope {
 	Global = 'global',
 	Local = 'local'
 }
 
-/** are we authed as a user or a skill? */
+/** Are we authed as a user or a skill? */
 export enum StoreAuth {
 	User = 'user',
 	Skill = 'skill'
 }
 
-/** options needed by the store on instantiation */
+/** Options needed by the store on instantiation */
 export interface IStoreOptions {
 	mercury: Mercury
 	cwd: string
@@ -32,13 +32,13 @@ export interface IBaseStoreSettings {
 export default abstract class AbstractStore<
 	Settings extends IBaseStoreSettings = IBaseStoreSettings
 > {
-	/** the current scope */
+	/** The current scope */
 	public scope = StoreScope.Global
 
-	/** for logging */
+	/** For logging */
 	public log: Log
 
-	/** how we're logged in, user or skill */
+	/** How we're logged in, user or skill */
 	public get authType() {
 		return this.readValue('authType') ?? StoreAuth.User
 	}
@@ -47,13 +47,13 @@ export default abstract class AbstractStore<
 		this.writeValue('authType', type)
 	}
 
-	/** for making calls to the world */
+	/** For making calls to the world */
 	public mercury: Mercury
 
-	/** current directory for all operations */
+	/** Current directory for all operations */
 	public cwd: string
 
-	/** a name each store must set */
+	/** A name each store must set */
 	abstract name: string
 
 	public constructor(options: IStoreOptions) {
@@ -65,7 +65,7 @@ export default abstract class AbstractStore<
 		this.authType = authType ?? this.authType
 		this.log = log
 
-		// create save dir
+		// Create save dir
 		const { directory: globalDirectory } = this.getGlobalConfigPath()
 		const { directory: localDirectory } = this.getLocalConfigPath()
 
@@ -77,13 +77,13 @@ export default abstract class AbstractStore<
 			fs.mkdirSync(localDirectory)
 		}
 	}
-	/** write a value to disk (should only be used in save()) */
+	/** Write a value to disk (should only be used in save()) */
 	protected writeValue<F extends keyof Settings>(key: F, value: Settings[F]) {
 		this.writeValues({ [key]: value })
 		return
 	}
 
-	/** write a whole object to disk (should only be used in save()) */
+	/** Write a whole object to disk (should only be used in save()) */
 	protected writeValues<T extends Record<string, any>>(values: T) {
 		const currentValues = this.readValues()
 		const updatedValues = { ...currentValues, ...values }
@@ -93,7 +93,7 @@ export default abstract class AbstractStore<
 				? this.getLocalConfigPath()
 				: this.getGlobalConfigPath()
 
-		// make sure dir exists
+		// Make sure dir exists
 		if (!fs.existsSync(directory)) {
 			fs.mkdirSync(directory)
 		}
@@ -104,13 +104,13 @@ export default abstract class AbstractStore<
 		return this
 	}
 
-	/** read a single value */
+	/** Read a single value */
 	protected readValue<F extends keyof Settings>(key: F) {
 		const settings = this.readValues()
 		return settings[key]
 	}
 
-	/** read values from disk */
+	/** Read values from disk */
 	protected readValues<T extends Settings>(): Partial<T> {
 		const { file, directory } =
 			this.scope === StoreScope.Local
@@ -118,7 +118,7 @@ export default abstract class AbstractStore<
 				: this.getGlobalConfigPath()
 
 		try {
-			// make sure dir exists
+			// Make sure dir exists
 			if (!fs.existsSync(directory)) {
 				fs.mkdirSync(directory)
 			}
@@ -131,11 +131,11 @@ export default abstract class AbstractStore<
 				`AbstractStore.readValues failed to read settings file at ${file}`
 			)
 		}
-		// falls back to an empty object
+		// Falls back to an empty object
 		return {}
 	}
 
-	/** a copy of mercury authed against the token you sent */
+	/** A copy of mercury authed against the token you sent */
 	protected async mercuryForUser(token: string): Promise<Mercury> {
 		const { connectionOptions } = this.mercury
 		if (!connectionOptions) {
@@ -145,7 +145,7 @@ export default abstract class AbstractStore<
 					'user store was trying to auth on mercury but had not options (meaning it was never connected)'
 			})
 		}
-		// connect with new creds
+		// Connect with new creds
 		await this.mercury.connect({
 			...(connectionOptions || {}),
 			credentials: { token }

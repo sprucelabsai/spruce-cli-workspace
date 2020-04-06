@@ -16,12 +16,12 @@ import {
 	aclDefinition
 } from '../temporary/schemas'
 
-/** the schema template with namespace dropped in */
+/** The schema template with namespace dropped in */
 export interface ISchemaTemplateNamespaceItem extends ISchemaTemplateItem {
 	namespace: string
 }
 
-/** the mapping of type keys (string, phoneNumber) to definitions */
+/** The mapping of type keys (string, phoneNumber) to definitions */
 export interface IFieldTypeMap {
 	[fieldType: string]: IFieldTemplateDetails
 }
@@ -29,11 +29,11 @@ export interface IFieldTypeMap {
 export default class SchemaStore extends AbstractStore {
 	public name = 'schema'
 
-	/** get the schema map */
+	/** Get the schema map */
 	public async schemaTemplateItemsWithNamespace(): Promise<
 		ISchemaTemplateNamespaceItem[]
 	> {
-		/** get all schemas from api (TODO load from API) */
+		/** Get all schemas from api (TODO load from API) */
 		const schemas: ISchemaDefinition[] = [
 			userDefinition,
 			skillDefinition,

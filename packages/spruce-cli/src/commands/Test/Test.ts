@@ -10,7 +10,9 @@ export default class TestCommand extends AbstractCommand {
 			.action(this.create.bind(this))
 	}
 
-	public create(cmd: Command) {
+	public async create(cmd: Command) {
+		// Make sure schema module is installed
+		await this.services.yarn.install('@sprucelabs/test')
 		debugger
 	}
 }

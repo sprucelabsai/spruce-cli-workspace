@@ -44,14 +44,14 @@ export default class OnboardingStore extends AbstractStore<
 		this.save()
 	}
 
-	/** save changes to filesystem */
+	/** Save changes to filesystem */
 	public async save() {
 		const values = this.schema.getValues()
 		this.writeValues(values)
 		return this
 	}
 
-	/** load everything into the store (called in constructor) */
+	/** Load everything into the store (called in constructor) */
 	public async load() {
 		const saved = this.readValues()
 		this.schema.setValues({

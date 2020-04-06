@@ -8,7 +8,7 @@ import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definit
 export default class SchemaCommand extends AbstractCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
-		/** sync everything */
+		/** Sync everything */
 		program
 			.command('schema:pull')
 			.description(
@@ -26,7 +26,7 @@ export default class SchemaCommand extends AbstractCommand {
 			)
 			.action(this.pull.bind(this))
 
-		/** create a new schema definition */
+		/** Create a new schema definition */
 		program
 			.command('schema:create [named]')
 			.description('Define a new thing!')
@@ -42,7 +42,7 @@ export default class SchemaCommand extends AbstractCommand {
 			)
 			.action(this.create.bind(this))
 
-		/** generate schema definition types files */
+		/** Generate schema definition types files */
 		program
 			.command('schema:sync')
 			.description('Generates type files on all definition files.')
@@ -63,13 +63,16 @@ export default class SchemaCommand extends AbstractCommand {
 	public async pull(cmd: Command) {
 		const destinationDir = cmd.destinationDir as string
 
+		// Make sure schema module is installed
+		await this.services.yarn.install('@sprucelabs/schema')
+
 		this.startLoading('Fetching schemas and field types')
 
-		// load types and namespaces
+		// Load types and namespaces
 		const schemaTemplateItems = await this.stores.schema.schemaTemplateItemsWithNamespace()
 		const typeMap = await this.stores.schema.fieldTypeMap()
 
-		// fill out template
+		// Fill out template
 		const contents = templates.schemaTypes({
 			schemaTemplateItems,
 			typeMap
@@ -81,14 +84,14 @@ export default class SchemaCommand extends AbstractCommand {
 			`Found ${schemaTemplateItems.length} schemas, writing definition file...`
 		)
 
-		//write it out
+		//Write it out
 		const destination = this.resolvePath(destinationDir, 'core.types.ts')
 		await this.writeFile(destination, contents)
 
 		this.info(`All done 👊: ${destination}`)
 	}
 
-	/** generate types and other files based definitions */
+	/** Generate types and other files based definitions */
 	public async sync(cmd: Command) {
 		const lookupDir = cmd.lookupDir as string
 		const destinationDir = cmd.destinationDir as string
@@ -98,17 +101,20 @@ export default class SchemaCommand extends AbstractCommand {
 			'*.definition.ts'
 		)
 
+		// Make sure schema module is installed
+		await this.services.yarn.install('@sprucelabs/schema')
+
 		const matches = await globby(search)
 
 		matches.forEach(async filePath => {
-			// does this file contain buildSchemaDefinition?
+			// Does this file contain buildSchemaDefinition?
 			const currentContents = this.readFile(filePath)
 			if (currentContents.search(/buildSchemaDefinition\({/) === -1) {
 				this.log.debug(`Skipping ${filePath}`)
 				return
 			}
 
-			// write to the destination
+			// Write to the destination
 			const {
 				pascalName,
 				camelName,
@@ -118,7 +124,7 @@ export default class SchemaCommand extends AbstractCommand {
 				this.resolvePath(destinationDir)
 			)
 
-			// tell them how to use it
+			// Tell them how to use it
 			this.headline(`${pascalName} examples:`)
 
 			this.writeLn('')
@@ -139,7 +145,7 @@ export default class SchemaCommand extends AbstractCommand {
 
 		let showOverview = false
 
-		// if they passed a name, show overview
+		// If they passed a name, show overview
 		if (readableName) {
 			showOverview = true
 			camelName = this.utilities.names.toCamel(readableName)
@@ -158,13 +164,16 @@ export default class SchemaCommand extends AbstractCommand {
 			)
 		})
 
-		// all the values
+		// All the values
 		const values = await form.present({
 			showOverview,
 			fields: ['readableName', 'camelName', 'pascalName', 'description']
 		})
 
-		// build paths
+		// Make sure schema module is installed
+		await this.services.yarn.install('@sprucelabs/schema')
+
+		// Build paths
 		const definitionDestination = this.resolvePath(
 			cmd.definitionDestinationDir as string,
 			`${values.camelName}.definition.ts`
@@ -174,13 +183,13 @@ export default class SchemaCommand extends AbstractCommand {
 
 		await this.writeFile(definitionDestination, definition)
 
-		// generate types
+		// Generate types
 		const names = this.generators.schema.generateTypesFromDefinitionFile(
 			definitionDestination,
 			typesDestination
 		)
 
-		// tell them how to use it
+		// Tell them how to use it
 		this.headline(`${names.pascalName} examples:`)
 
 		this.writeLn('')

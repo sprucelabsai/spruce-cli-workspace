@@ -30,7 +30,7 @@ export default class UserCommand extends AbstractCommand {
 			.action(this.switchUser.bind(this))
 	}
 
-	/** log a person in */
+	/** Log a person in */
 	public async login(phoneNumber?: string): Promise<void> {
 		let phone = phoneNumber
 		let pinLabel = 'Enter the pin I just sent!'
@@ -90,7 +90,7 @@ export default class UserCommand extends AbstractCommand {
 
 		this.info(`You are now logged in as ${user.casualName}`)
 
-		// log in the user
+		// Log in the user
 		this.stores.user.setLoggedInUser(user)
 	}
 

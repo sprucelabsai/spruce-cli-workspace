@@ -18,7 +18,7 @@ export default class OnboardingCommand extends AbstractCommand {
 
 		const runCount = this.stores.onboarding.getRunCount()
 
-		// enable onboarding and increment count
+		// Enable onboarding and increment count
 		this.stores.onboarding.setIsEnabled(true)
 		this.stores.onboarding.incrementRunCount()
 

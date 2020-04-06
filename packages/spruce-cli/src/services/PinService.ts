@@ -4,7 +4,7 @@ import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../.spruce/errors/codes.types'
 
 export default class PinService extends AbstractService {
-	/** give me a phone and i'll send you a pin */
+	/** Give me a phone and i'll send you a pin */
 	public async requestPin(phone: string) {
 		try {
 			await this.mercury.emit<

@@ -4,20 +4,20 @@ import { INamedTemplateItem } from '../.spruce/schemas/namedTemplateItem.types'
 import AbstractUtility from './AbstractUtility'
 
 export default class NamesUtility extends AbstractUtility {
-	/** first name => FirstName */
+	/** First name => FirstName */
 	public toPascal(name: string) {
 		return upperFirst(this.toCamel(name))
 	}
-	/** first name => FirstName */
+	/** First name => FirstName */
 	public toCamel(name: string) {
 		return camelCase(name)
 	}
-	/** first name => FIRST_NAME */
+	/** First name => FIRST_NAME */
 	public toConst(name: string) {
 		return snakeCase(name).toUpperCase()
 	}
 
-	/** help guess on answers */
+	/** Help guess on answers */
 	public onWillAskQuestionHandler<
 		K extends keyof INamedTemplateItem = keyof INamedTemplateItem,
 		V extends Partial<INamedTemplateItem> = Partial<INamedTemplateItem>

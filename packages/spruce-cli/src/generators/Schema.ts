@@ -3,7 +3,7 @@ import AbstractGenerator from './Abstract'
 import { ISchemaDefinition } from '@sprucelabs/schema'
 
 export default class SchemaGenerator extends AbstractGenerator {
-	/** generate a type file from a definition file */
+	/** Generate a type file from a definition file */
 	public generateTypesFromDefinitionFile(
 		sourceFile: string,
 		destinationDir: string,
@@ -17,23 +17,23 @@ export default class SchemaGenerator extends AbstractGenerator {
 	} {
 		const definition = this.services.vm.importDefinition(sourceFile)
 
-		//get variations on name
+		//Get variations on name
 		const camelName = this.utilities.names.toCamel(definition.id)
 		const pascalName = this.utilities.names.toPascal(definition.id)
 		const readableName = definition.name
 		const description = definition.description
 
-		// files
+		// Files
 		const newFileName = `${camelName}.types.ts`
 		const destination = path.join(destinationDir, newFileName)
 
-		// relative paths
+		// Relative paths
 		const relativeToDefinition = path.relative(
 			path.dirname(destination),
 			sourceFile
 		)
 
-		// contents
+		// Contents
 		const contents = this.templates[template]({
 			camelName,
 			pascalName,
@@ -45,10 +45,10 @@ export default class SchemaGenerator extends AbstractGenerator {
 			)
 		})
 
-		// does a file exist already, erase it
+		// Does a file exist already, erase it
 		this.deleteFile(destination)
 
-		// write
+		// Write
 		this.writeFile(destination, contents)
 
 		return {

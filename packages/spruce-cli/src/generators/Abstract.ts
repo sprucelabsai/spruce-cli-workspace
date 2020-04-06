@@ -27,12 +27,12 @@ export default class AbstractGenerator {
 		this.cwd = cwd
 		this.services = services
 	}
-	/** write a file to a place handling all directory creation (overwrites everything) */
+	/** Write a file to a place handling all directory creation (overwrites everything) */
 	public writeFile(destination: string, contents: string) {
 		fs.outputFileSync(destination, contents)
 	}
 
-	/** read a file */
+	/** Read a file */
 	public readFile(source: string) {
 		if (!fs.existsSync(source)) {
 			return ''
@@ -41,14 +41,14 @@ export default class AbstractGenerator {
 		return fs.readFileSync(source).toString()
 	}
 
-	/** delete a file */
+	/** Delete a file */
 	public deleteFile(destination: string) {
 		if (fs.existsSync(destination)) {
 			fs.removeSync(destination)
 		}
 	}
 
-	/** does this file exist */
+	/** Does this file exist */
 	public doesFileExist(destination: string) {
 		return fs.existsSync(destination)
 	}

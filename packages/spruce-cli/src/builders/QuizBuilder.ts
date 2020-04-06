@@ -14,98 +14,98 @@ import SpruceError from '../errors/SpruceError'
 import chalk from 'chalk'
 import { SpruceErrorCode } from '@sprucelabs/error'
 
-/** multiple choice question */
+/** Multiple choice question */
 export interface IQuizMultipleChoiceQuestion {
 	type: FieldType.Select
-	/** the question to ask */
+	/** The question to ask */
 	question: string
-	/** all answers, first one is correct  */
+	/** All answers, first one is correct  */
 	answers: string[]
 }
 
 export interface IQuizTextQuestion {
 	type: FieldType.Text
-	/** the question to ask */
+	/** The question to ask */
 	question: string
-	/** all answers, first one is correct  */
+	/** All answers, first one is correct  */
 	answer: string
 }
 
-/** quiz questions */
+/** Quiz questions */
 export interface IQuizQuestions {
 	[key: string]: IQuizMultipleChoiceQuestion | IQuizTextQuestion
 }
 
-/** answer status */
+/** Answer status */
 export enum AnswerValidity {
 	Correct = 'correct',
 	Incorrect = 'incorrect'
 }
 
-/** options to present */
+/** Options to present */
 export interface IQuizPresentationOptions<
 	T extends ISchemaDefinition,
 	Q extends IQuizQuestions
 > extends Omit<IFormPresentationOptions<T>, 'fields'> {
-	/** select which questions you want to output? random still applies */
+	/** Select which questions you want to output? random still applies */
 	questions?: QuizAnswerFieldNames<Q>[]
 
-	/** overrides the randomize setting on the builder */
+	/** Overrides the randomize setting on the builder */
 	randomizeQuestions?: boolean
 }
 
-/** all field names */
+/** All field names */
 export type QuizAnswerFieldNames<Q extends IQuizQuestions> = Extract<
 	keyof Q,
 	string
 >
 
-/** the values returned by present */
+/** The values returned by present */
 export type QuizAnswers<Q extends IQuizQuestions> = {
 	[K in QuizAnswerFieldNames<Q>]: string
 }
 
-/** tracking of right/wrongs */
+/** Tracking of right/wrongs */
 export type QuizAnswerValidities<Q extends IQuizQuestions> = {
 	[K in QuizAnswerFieldNames<Q>]: AnswerValidity
 }
 
-/** response from all questions */
+/** Response from all questions */
 export type QuizPresentationResults<Q extends IQuizQuestions> = {
-	/** the answers that were given */
+	/** The answers that were given */
 	answers: QuizAnswers<Q>
 
-	/** the answers right or wrong */
+	/** The answers right or wrong */
 	answerValidities: QuizAnswerValidities<Q>
 
-	/** the percent of correct answers given  */
+	/** The percent of correct answers given  */
 	percentCorrect: number
 
-	/** how long it took them to take the quiz in ms */
+	/** How long it took them to take the quiz in ms */
 	time: {
 		startTimeMs: number
 		endTimeMs: number
 		totalTimeSec: number
 	}
 
-	/** how many were correct */
+	/** How many were correct */
 	totalCorrect: number
 
-	/** how many were wrong */
+	/** How many were wrong */
 	totalWrong: number
 
-	/** how many questions we ended up taking */
+	/** How many questions we ended up taking */
 	totalQuestions: number
 }
 
-/** options for instantiating a new quiz */
+/** Options for instantiating a new quiz */
 export interface IQuizOptions<
 	T extends ISchemaDefinition,
 	Q extends IQuizQuestions
 > extends Omit<IFormOptions<T>, 'definition'> {
-	/** should we randomize the questions */
+	/** Should we randomize the questions */
 	randomizeQuestions?: boolean
-	/** the questions we are asking */
+	/** The questions we are asking */
 	questions: Q
 }
 
@@ -120,24 +120,24 @@ export default class QuizBuilder<
 	public lastResults?: QuizPresentationResults<Q>
 
 	public constructor(options: IQuizOptions<T, Q>) {
-		// we're going to build a schema from the questions and pass that to the form builder
+		// We're going to build a schema from the questions and pass that to the form builder
 		const definition = this.buildSchemaFromQuestions(options.questions)
 
-		// track questions for later reference
+		// Track questions for later reference
 		this.originalQuestions = options.questions
 
-		// construct new form builder
+		// Construct new form builder
 		this.formBuilder = new FormBuilder<T>({
 			...options,
 			definition
 		})
 
-		// set state locally
+		// Set state locally
 		this.term = options.term
 		this.randomizeQuestions = options.randomizeQuestions ?? true
 	}
 
-	/** present the quiz */
+	/** Present the quiz */
 	public async present(
 		options: IQuizPresentationOptions<T, Q> = {}
 	): Promise<QuizPresentationResults<Q>> {
@@ -150,16 +150,16 @@ export default class QuizBuilder<
 
 		const startTime = new Date().getTime()
 
-		// pull out answers
+		// Pull out answers
 		const fields = randomizeQuestions ? shuffle(questions) : questions
 
-		// ask for the answers
+		// Ask for the answers
 		const results = await this.formBuilder.present({
 			...options,
 			fields: fields as SchemaFieldNames<T>[]
 		})
 
-		// generate stats
+		// Generate stats
 		const answers: Partial<QuizAnswers<Q>> = {}
 		const answerValidities: Partial<QuizAnswerValidities<Q>> = {}
 
@@ -172,13 +172,13 @@ export default class QuizBuilder<
 			const fieldName = questionName as SchemaFieldNames<T>
 			const [validity, idx] = results[fieldName].split('-')
 
-			// get the field to tell type
+			// Get the field to tell type
 			const field = this.formBuilder.fields[fieldName]
 			const fieldDefinition = field.definition
 
 			switch (fieldDefinition.type) {
 				case FieldType.Select:
-					// pull the original multiple choice, we can cast it as multiple choice
+					// Pull the original multiple choice, we can cast it as multiple choice
 					// question with confidence
 					answers[questionName] = (this.originalQuestions[
 						questionName
@@ -189,7 +189,7 @@ export default class QuizBuilder<
 					answers[questionName] = results[fieldName]
 			}
 
-			// track validity
+			// Track validity
 			if (validity === AnswerValidity.Correct) {
 				totalCorrect = totalCorrect + 1
 				answerValidities[questionName] = AnswerValidity.Correct
@@ -200,7 +200,7 @@ export default class QuizBuilder<
 
 		const totalWrong = totalQuestions - totalCorrect
 
-		// track time
+		// Track time
 		const endTime = new Date().getTime()
 
 		this.lastResults = {
@@ -220,7 +220,7 @@ export default class QuizBuilder<
 		return this.lastResults
 	}
 
-	/** render the scorecard (last results by default) */
+	/** Render the scorecard (last results by default) */
 	public async scorecard(
 		options: {
 			results?: QuizPresentationResults<Q>
@@ -246,12 +246,12 @@ export default class QuizBuilder<
 			const { name, field } = namedField
 			const questionFieldName = name as QuizAnswerFieldNames<Q>
 
-			// get results
+			// Get results
 			const isCorrect =
 				results.answerValidities[questionFieldName] === AnswerValidity.Correct
 			const guessedAnswer = `${results.answers[questionFieldName]}`
 
-			// build the real answer
+			// Build the real answer
 			let correctAnswer = ''
 
 			const originalQuestion = this.originalQuestions[questionFieldName]
@@ -261,7 +261,7 @@ export default class QuizBuilder<
 					correctAnswer = originalQuestion.answers[0]
 					break
 				default:
-					// all options just pass through the answer tied to the question during instantiation
+					// All options just pass through the answer tied to the question during instantiation
 					correctAnswer = originalQuestion.answer
 			}
 
@@ -288,7 +288,7 @@ export default class QuizBuilder<
 		await term.wait()
 	}
 
-	/** takes questions and builds a schema */
+	/** Takes questions and builds a schema */
 	private buildSchemaFromQuestions(questions: IQuizQuestions): T {
 		// TODO change ISchemaDefinitionFields to something based on schema generated from questions
 		const fields: ISchemaDefinitionFields = {}

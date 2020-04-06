@@ -11,7 +11,7 @@ export default class Debug extends AbstractCommand {
 	}
 
 	public async debug(): Promise<void> {
-		// log.debug({ debug: 'test' })
+		// Log.debug({ debug: 'test' })
 		// log.info('Testing info log')
 		// log.warn('Testing warn log')
 		// log.crit('Testing crit log')

@@ -12,7 +12,7 @@ import { IUser } from '../.spruce/schemas/user.types'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../.spruce/errors/codes.types'
 
-/** settings i need to save */
+/** Settings i need to save */
 interface IUserStoreSettings extends IBaseStoreSettings {
 	authedUsers: IUserWithToken[]
 }
@@ -20,17 +20,17 @@ interface IUserStoreSettings extends IBaseStoreSettings {
 export default class UserStore extends AbstractStore<IUserStoreSettings> {
 	public name = 'user'
 
-	/** build a new user with an added token */
+	/** Build a new user with an added token */
 	public static userWithToken(values?: Partial<IUserWithToken>) {
 		return new Schema(userWithTokenDefinition, values)
 	}
 
-	/** build a basic user */
+	/** Build a basic user */
 	public static user(values?: Partial<IUser>) {
 		return new Schema(userDefinition, values)
 	}
 
-	/** login and get a user instance back */
+	/** Login and get a user instance back */
 	public async userWithTokenFromPhone(phone: string, pin: string) {
 		//
 		const loginResult = await this.mercury.emit<
@@ -70,7 +70,7 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 		return user
 	}
 
-	/** load a user from their jwt (WARNING, ALTERS THE AUTH OF MERCURY) */
+	/** Load a user from their jwt (WARNING, ALTERS THE AUTH OF MERCURY) */
 	public async userWithTokenFromToken(
 		token: string
 	): Promise<IUserWithToken | undefined> {
@@ -82,10 +82,10 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 			})
 		}
 
-		// setup mercury to use creds
+		// Setup mercury to use creds
 		this.mercury = await this.mercuryForUser(token)
 
-		// now load from id
+		// Now load from id
 		const userId: string = decoded.userId
 		const user = await this.userFromId(userId)
 
@@ -97,7 +97,7 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 		return userWithToken.getValues()
 	}
 
-	/** load a user from id */
+	/** Load a user from id */
 	public async userFromId(id: string): Promise<Omit<IUser, 'id'>> {
 		const query =
 			gql`
@@ -132,26 +132,26 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 		const values = result.responses[0].payload.data.User
 		const user = UserStore.user(values)
 
-		// will throw
+		// Will throw
 		user.validate()
 
 		return user.getValues()
 	}
 
-	/** this person will be logged in going forward */
+	/** This person will be logged in going forward */
 	public setLoggedInUser(user: Omit<IUserWithToken, 'isLoggedIn'>) {
-		// pull authed user
+		// Pull authed user
 		const authedUsers = this.readValue('authedUsers') || []
 		const newAuthedUsers: IUserWithToken[] = []
 
-		// remove this user if already authed
+		// Remove this user if already authed
 		authedUsers.forEach(authed => {
 			if (authed.id !== user.id) {
 				newAuthedUsers.push({ ...authed, isLoggedIn: false })
 			}
 		})
 
-		// lets validate the user and pull out values
+		// Lets validate the user and pull out values
 		const instance = new Schema(userWithTokenDefinition, user)
 		instance.validate()
 
@@ -166,12 +166,12 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 		})
 	}
 
-	/** get the logged in user */
+	/** Get the logged in user */
 	public loggedInUser(): IUserWithToken | undefined {
 		const loggedInUsers = this.readValue('authedUsers') || []
 		const loggedInUser = loggedInUsers.find(auth => auth.isLoggedIn)
 
-		// valid the saved user we have is valid
+		// Valid the saved user we have is valid
 		if (loggedInUser) {
 			try {
 				const instance = new Schema(userWithTokenDefinition, loggedInUser)
@@ -186,13 +186,13 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 		return undefined
 	}
 
-	/** log everyone out */
+	/** Log everyone out */
 	public logout() {
-		// pull authed user
+		// Pull authed user
 		const authedUsers = this.readValue('authedUsers') || []
 		const newAuthedUsers: IUserWithToken[] = []
 
-		// remove this user if already authed
+		// Remove this user if already authed
 		authedUsers.forEach(authed => {
 			newAuthedUsers.push({ ...authed, isLoggedIn: false })
 		})
@@ -200,7 +200,7 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 		this.writeValue('authedUsers', authedUsers)
 	}
 
-	/** users who have ever been on */
+	/** Users who have ever been on */
 	public users(): IUserWithToken[] {
 		const users = this.readValue('authedUsers') || []
 		return users

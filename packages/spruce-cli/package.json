@@ -1,79 +1,81 @@
 {
-  "name": "@sprucelabs/spruce-cli",
-  "publishConfig": {
-    "access": "public"
-  },
-  "files": [
-    "build"
-  ],
-  "version": "10.0.0",
-  "bin": {
-    "spruce": "./build/src/index.js"
-  },
-  "main": "./build/src/index.js",
-  "types": "./build/index.d.ts",
-  "description": "Command line interface for building Spruce skills",
-  "keywords": [
-    "node",
-    "components",
-    "sprucebot",
-    "spruce",
-    "skills",
-    "sprucelabs"
-  ],
-  "homepage": "https://github.com/sprucelabsai/spruce-cli-workspace",
-  "bugs": {
-    "url": "https://github.com/sprucelabsai/spruce-cli-workspace/issues"
-  },
-  "scripts": {
-    "types:sync": "node ./build/src/index.js types:sync",
-    "build": "npm run clean && npm run build:node",
-    "build:node": "tsc | true",
-    "watch": "chokidar 'src/**/*' 'index.ts' '../spruce-templates/src/templates/**/*' -c 'npm run build'",
-    "clean": "rm -rf build/",
-    "lint": "eslint '**/*.ts' && tsc -p . --noEmit",
-    "release": "semantic-release",
-    "local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS"
-  },
-  "dependencies": {
-    "@sprucelabs/error": "^1.0.8",
-    "@sprucelabs/log": "^10.0.11",
-    "@sprucelabs/mercury": "9.1.1-pre-89e92490.0",
-    "@sprucelabs/schema": "^1.0.2",
-    "@sprucelabs/spruce-templates": "10.0.0",
-    "cfonts": "^2.8.1",
-    "commander": "^4.1.1",
-    "debug": "^4.1.1",
-    "dotenv": "^8.2.0",
-    "emphasize": "^3.0.0",
-    "fs-extra": "^8.1.0",
-    "globby": "^11.0.0",
-    "graphql": "^14.6.0",
-    "graphql-tag": "^2.10.3",
-    "inquirer": "^7.0.6",
-    "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.15",
-    "ora": "^4.0.3",
-    "slug": "^2.1.1",
-    "vm2": "^3.9.1"
-  },
-  "devDependencies": {
-    "@types/debug": "^4.1.5",
-    "@types/fs-extra": "^8.1.0",
-    "@types/inquirer": "^6.5.0",
-    "@types/jsonwebtoken": "^8.3.8",
-    "@types/lodash": "^4.14.149",
-    "@types/mkdirp": "^1.0.0",
-    "@types/node": "^13.7.7",
-    "@types/slug": "^0.9.1",
-    "@types/superagent": "^4.1.7",
-    "chokidar-cli": "^2.1.0",
-    "concurrently": "^5.0.2",
-    "conventional-changelog-sprucelabs": "^1.1.0",
-    "mkdirp": "^1.0.3",
-    "prettier": "^1.13",
-    "typescript": "^3.8.3",
-    "yarn": "^1.2.1"
-  },
-  "peerDependencies": {}
+	"name": "@sprucelabs/spruce-cli",
+	"publishConfig": {
+		"access": "public"
+	},
+	"files": [
+		"build"
+	],
+	"version": "10.0.0",
+	"bin": {
+		"spruce": "./build/src/index.js"
+	},
+	"main": "./build/src/index.js",
+	"types": "./build/index.d.ts",
+	"description": "Command line interface for building Spruce skills",
+	"keywords": [
+		"node",
+		"components",
+		"sprucebot",
+		"spruce",
+		"skills",
+		"sprucelabs"
+	],
+	"homepage": "https://github.com/sprucelabsai/spruce-cli-workspace",
+	"bugs": {
+		"url": "https://github.com/sprucelabsai/spruce-cli-workspace/issues"
+	},
+	"scripts": {
+		"types:sync": "node ./build/src/index.js types:sync",
+		"build": "npm run clean && npm run build:node",
+		"build:node": "tsc | true",
+		"watch": "chokidar 'src/**/*' 'index.ts' '../spruce-templates/src/templates/**/*' -c 'npm run build'",
+		"clean": "rm -rf build/",
+		"lint": "eslint '**/*.ts' && tsc -p . --noEmit",
+		"lint:fix": "eslint --fix '**/*.ts'",
+		"release": "semantic-release",
+		"local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS"
+	},
+	"dependencies": {
+		"@sprucelabs/error": "^1.0.8",
+		"@sprucelabs/log": "^10.0.11",
+		"@sprucelabs/mercury": "9.1.1-pre-89e92490.0",
+		"@sprucelabs/schema": "^1.0.2",
+		"@sprucelabs/spruce-templates": "10.0.0",
+		"cfonts": "^2.8.1",
+		"commander": "^4.1.1",
+		"debug": "^4.1.1",
+		"dotenv": "^8.2.0",
+		"emphasize": "^3.0.0",
+		"fs-extra": "^8.1.0",
+		"globby": "^11.0.0",
+		"graphql": "^14.6.0",
+		"graphql-tag": "^2.10.3",
+		"inquirer": "^7.0.6",
+		"jsonwebtoken": "^8.5.1",
+		"lodash": "^4.17.15",
+		"ora": "^4.0.3",
+		"slug": "^2.1.1",
+		"vm2": "^3.9.1",
+		"yarn-programmatic": "^0.1.2"
+	},
+	"devDependencies": {
+		"@types/debug": "^4.1.5",
+		"@types/fs-extra": "^8.1.0",
+		"@types/inquirer": "^6.5.0",
+		"@types/jsonwebtoken": "^8.3.8",
+		"@types/lodash": "^4.14.149",
+		"@types/mkdirp": "^1.0.0",
+		"@types/node": "^13.7.7",
+		"@types/slug": "^0.9.1",
+		"@types/superagent": "^4.1.7",
+		"chokidar-cli": "^2.1.0",
+		"concurrently": "^5.0.2",
+		"conventional-changelog-sprucelabs": "^1.1.0",
+		"mkdirp": "^1.0.3",
+		"prettier": "^1.13",
+		"typescript": "^3.8.3",
+		"yarn": "^1.2.1"
+	},
+	"peerDependencies": {}
 }

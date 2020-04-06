@@ -4,7 +4,7 @@ import { ISelectFieldDefinitionChoice, FieldType } from '@sprucelabs/schema'
 import { StoreAuth } from '../../stores/AbstractStore'
 import SpruceError from '../../errors/SpruceError'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
-// import globby from 'globby'
+// Import globby from 'globby'
 // import fs from 'fs-extra'
 // import handlebars from 'handlebars'
 // import skillState from '../../stores/Skill'
@@ -35,11 +35,11 @@ export default class SkillCommand extends AbstractCommand {
 			})
 		}
 
-		// if they passed nothing and we're in a skill dir, lets ask if they want to use that
+		// If they passed nothing and we're in a skill dir, lets ask if they want to use that
 		if (this.isInSkillDirectory() && (!skillId || !skillApiKey)) {
 			const skillFromDir = this.stores.skill.skillFromDir(this.cwd)
 
-			// are we in a different directory that the logged in one?
+			// Are we in a different directory that the logged in one?
 			if (
 				skillFromDir &&
 				(loggedInSkill?.id !== skillFromDir.id || authType !== StoreAuth.Skill)
@@ -65,7 +65,7 @@ export default class SkillCommand extends AbstractCommand {
 			return
 		}
 
-		// if we are authing as a user, lets confirm we want to login as a user going forward
+		// If we are authing as a user, lets confirm we want to login as a user going forward
 		if (loggedInUser && authType === StoreAuth.User) {
 			const pass = await this.confirm(
 				`You are currently logged as ${loggedInUser.casualName}, are you sure you want to log out as a user and in as a skill?`
@@ -76,7 +76,7 @@ export default class SkillCommand extends AbstractCommand {
 			}
 		}
 
-		//lets find all skills by this user
+		//Lets find all skills by this user
 		if (loggedInUser && (!skillId || !skillApiKey)) {
 			const skills = await this.stores.skill.skills(loggedInUser.token)
 			if (skills.length === 0) {
@@ -85,7 +85,7 @@ export default class SkillCommand extends AbstractCommand {
 				return
 			}
 
-			//select a skill
+			//Select a skill
 			const skillChoices: ISelectFieldDefinitionChoice[] = skills.map(
 				(skill, idx) => ({
 					value: String(idx),
@@ -125,7 +125,7 @@ export default class SkillCommand extends AbstractCommand {
 			return
 		}
 
-		//select a skill
+		//Select a skill
 		const skillChoices: ISelectFieldDefinitionChoice[] = skills.map(
 			(skill, idx) => ({
 				value: String(idx),
@@ -148,7 +148,7 @@ export default class SkillCommand extends AbstractCommand {
 		}
 	}
 
-	// public auth(skillId?: string, skillApiKey?: string): Promise<void> {
+	// Public auth(skillId?: string, skillApiKey?: string): Promise<void> {
 	// 	return new Promise(async (resolve, reject) => {
 	// 		if (!skillId || !skillApiKey) {
 	// 			return reject('MISSING_PARAMETERS')

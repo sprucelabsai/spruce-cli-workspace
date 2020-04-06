@@ -82,7 +82,7 @@ export default class ErrorCommand extends AbstractCommand {
 			`${names.camelName}.definition.ts`
 		)
 
-		// if there is already a definition file, blow up
+		// If there is already a definition file, blow up
 		if (this.doesFileExist(errorDefinitionFileDestination)) {
 			throw new SpruceError({
 				code: ErrorCode.Generic,
@@ -90,13 +90,16 @@ export default class ErrorCommand extends AbstractCommand {
 			})
 		}
 
-		// write the definition
+		// Make sure error module is installed
+		await this.services.yarn.install('@sprucelabs/error')
+
+		// Write the definition
 		await this.writeFile(
 			errorDefinitionFileDestination,
 			this.templates.errorDefinition(names)
 		)
 
-		// if there is no error file, lets write one
+		// If there is no error file, lets write one
 		if (!this.doesFileExist(errorFileDestination)) {
 			const errorContents = this.templates.error({ errors: [names] })
 			await this.writeFile(errorFileDestination, errorContents)
@@ -106,7 +109,7 @@ export default class ErrorCommand extends AbstractCommand {
 				renderClassDefinition: false
 			})
 
-			// try and drop in the block right before "default:"
+			// Try and drop in the block right before "default:"
 			const currentErrorContents = this.readFile(errorFileDestination)
 			const blockMatches = currentErrorContents.search(/\t\t\tdefault:/g)
 			if (blockMatches > -1) {
@@ -119,13 +122,13 @@ export default class ErrorCommand extends AbstractCommand {
 
 				await this.writeFile(errorFileDestination, newErrorContents)
 			} else {
-				// could not write to file, output snippet suggestion
+				// Could not write to file, output snippet suggestion
 				this.warn('Failed to add to Error.ts, here is the block to drop in')
 				this.section({ headline: 'Code block example', lines: [errorBlock] })
 			}
 		}
 
-		//generate error option types based on new file
+		//Generate error option types based on new file
 		const {
 			pascalName,
 			definition,
@@ -136,19 +139,19 @@ export default class ErrorCommand extends AbstractCommand {
 			'errorTypes'
 		)
 
-		// rebuild the errors codes
+		// Rebuild the errors codes
 		await this.generators.error.rebuildCodesTypesFile({
 			lookupDir: this.resolvePath(errorDestinationDir),
 			destinationFile: this.resolvePath(typesDestinationDir, 'codes.types.ts')
 		})
 
-		// rebuild options union
+		// Rebuild options union
 		await this.generators.error.rebuildOptionsTypesFile({
 			lookupDir: this.resolvePath(errorDestinationDir),
 			destinationFile: this.resolvePath(typesDestinationDir, 'options.types.ts')
 		})
 
-		// give an example
+		// Give an example
 		this.headline(`${names.pascalName} examples:`)
 
 		this.writeLn('')
@@ -179,11 +182,14 @@ export default class ErrorCommand extends AbstractCommand {
 			readableName: string
 		}[] = []
 
-		// lets clear out the current error dir
+		// Make sure error module is installed
+		await this.services.yarn.install('@sprucelabs/error')
+
+		// Lets clear out the current error dir
 		// this.deleteFile()
 		await Promise.all(
 			matches.map(async filePath => {
-				// does this file contain buildErrorDefinition?
+				// Does this file contain buildErrorDefinition?
 				const currentContents = this.readFile(filePath)
 
 				// TODO remove this check
@@ -192,7 +198,7 @@ export default class ErrorCommand extends AbstractCommand {
 					return
 				}
 
-				//generate error option types based on new file
+				//Generate error option types based on new file
 				const {
 					pascalName,
 					camelName,
@@ -205,7 +211,7 @@ export default class ErrorCommand extends AbstractCommand {
 					'errorTypes'
 				)
 
-				// tell them how to use it
+				// Tell them how to use it
 				this.headline(`${pascalName}Error examples:`)
 
 				this.writeLn('')
@@ -216,12 +222,12 @@ export default class ErrorCommand extends AbstractCommand {
 				this.writeLn('')
 				this.writeLn('')
 
-				// track all errors
+				// Track all errors
 				allErrors.push({ pascalName, readableName, description })
 			})
 		)
 
-		// write error class if it does not exist
+		// Write error class if it does not exist
 		const errorFileDestination = this.resolvePath(
 			errorDestinationDir,
 			'SpruceError.ts'
@@ -232,13 +238,13 @@ export default class ErrorCommand extends AbstractCommand {
 			await this.writeFile(errorFileDestination, errorContents)
 		}
 
-		// rebuild the errors codes
+		// Rebuild the errors codes
 		await this.generators.error.rebuildCodesTypesFile({
 			lookupDir: this.resolvePath(lookupDir),
 			destinationFile: this.resolvePath(typesDestinationDir, 'codes.types.ts')
 		})
 
-		// rebuild error options
+		// Rebuild error options
 		await this.generators.error.rebuildOptionsTypesFile({
 			lookupDir: this.resolvePath(lookupDir),
 			destinationFile: this.resolvePath(typesDestinationDir, 'options.types.ts')

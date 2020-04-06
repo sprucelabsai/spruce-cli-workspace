@@ -17,7 +17,7 @@ import QuizBuilder, {
 	IQuizQuestions
 } from '../builders/QuizBuilder'
 
-/** all commanders get this */
+/** All commanders get this */
 export interface ICommandOptions {
 	stores: IStores
 	mercury: Mercury
@@ -30,7 +30,7 @@ export interface ICommandOptions {
 }
 
 export default abstract class AbstractCommand extends Terminal {
-	/** spruce logger */
+	/** Spruce logger */
 	public log: Log
 	public stores: IStores
 	public mercury: Mercury
@@ -64,7 +64,7 @@ export default abstract class AbstractCommand extends Terminal {
 		this.templates = templates
 	}
 
-	/** preps a form builder, you will need to call present() */
+	/** Preps a form builder, you will need to call present() */
 	public formBuilder<T extends ISchemaDefinition>(
 		options: Omit<IFormOptions<T>, 'term'>
 	): FormBuilder<T> {
@@ -72,7 +72,7 @@ export default abstract class AbstractCommand extends Terminal {
 		return formBuilder
 	}
 
-	/** preps a quiz builder, you will need to call present() */
+	/** Preps a quiz builder, you will need to call present() */
 	public quizBuilder<T extends ISchemaDefinition, Q extends IQuizQuestions>(
 		options: Omit<IQuizOptions<T, Q>, 'term' | 'definition'>
 	): QuizBuilder<T, Q> {
@@ -80,13 +80,13 @@ export default abstract class AbstractCommand extends Terminal {
 		return quizBuilder
 	}
 
-	/** helper to resolve paths absolutely and relatively */
+	/** Helper to resolve paths absolutely and relatively */
 	public resolvePath(...filePath: string[]): string {
 		const cwd = this.cwd
 		let builtPath = path.join(...filePath)
 
 		if (builtPath[0] !== '/') {
-			// relative to the cwd
+			// Relative to the cwd
 			if (builtPath[0] === '.') {
 				builtPath = builtPath.substr(1)
 			}
@@ -97,7 +97,7 @@ export default abstract class AbstractCommand extends Terminal {
 		return builtPath
 	}
 
-	/** write a file to a place handling all directory creation (overwrites everything) */
+	/** Write a file to a place handling all directory creation (overwrites everything) */
 	public async writeFile(destination: string, contents: string) {
 		this.generators.core.writeFile(this.resolvePath(destination), contents)
 		if (destination.substr(-3) === '.ts') {
@@ -106,28 +106,28 @@ export default abstract class AbstractCommand extends Terminal {
 		}
 	}
 
-	/** read a file */
+	/** Read a file */
 	public readFile(destination: string) {
 		return this.generators.core.readFile(this.resolvePath(destination))
 	}
 
-	/** delete a file */
+	/** Delete a file */
 	public deleteFile(destination: string) {
 		return this.generators.core.deleteFile(destination)
 	}
 
-	/** does a file exist */
+	/** Does a file exist */
 	public doesFileExist(destination: string) {
 		return this.generators.core.doesFileExist(this.resolvePath(destination))
 	}
 
-	/** make a file pass lint */
+	/** Make a file pass lint */
 	public prettyFormatFile(filePath: string) {
 		// TODO get this to work
 		console.log('prettier on', this.resolvePath(filePath))
 	}
 
-	/** kick off a build */
+	/** Kick off a build */
 	public async build(file?: string) {
 		this.startLoading('Waiting for build to complete')
 
@@ -148,14 +148,14 @@ export default abstract class AbstractCommand extends Terminal {
 				await new Promise(resolve => setTimeout(resolve, 2000))
 			} while (!this.doesFileExist(builtFile))
 		} else {
-			// because watch is running, we'll just wait for this to finish
+			// Because watch is running, we'll just wait for this to finish
 			await new Promise(resolve => setTimeout(resolve, 5000))
 		}
 
 		this.stopLoading()
 	}
 
-	/** are we in a skills dir? */
+	/** Are we in a skills dir? */
 	public isInSkillDirectory() {
 		return !!this.stores.skill.skillFromDir(this.cwd)
 	}

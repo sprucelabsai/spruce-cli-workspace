@@ -6,7 +6,7 @@ import {
 	FieldType
 } from '@sprucelabs/schema'
 
-/* the type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */
+/* The type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */
 handlebars.registerHelper('fieldDefinitionValueType', function(
 	fieldDefinition: IFieldDefinition,
 	options
@@ -15,7 +15,7 @@ handlebars.registerHelper('fieldDefinitionValueType', function(
 		data: { root }
 	} = options
 
-	// pull vars off context
+	// Pull vars off context
 	const schemaTemplateItems:
 		| (ISchemaTemplateItem & { namespace: string })[]
 		| undefined = root && root.schemaTemplateItems
@@ -56,7 +56,7 @@ handlebars.registerHelper('fieldDefinitionValueType', function(
 		typeLiteral = typeLiteral + '[]'
 	}
 
-	// if the type points to an interface, pull it off the schema
+	// If the type points to an interface, pull it off the schema
 	// TODO handle when skill introduce their own field types
 	return typeLiteral[0] === 'I' ? `SpruceSchema.${typeLiteral}` : typeLiteral
 })

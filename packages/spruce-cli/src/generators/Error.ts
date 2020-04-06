@@ -3,14 +3,14 @@ import AbstractGenerator from './Abstract'
 import globby from 'globby'
 
 export default class ErrorGenerator extends AbstractGenerator {
-	/** rebuilds the codes */
+	/** Rebuilds the codes */
 	public async rebuildCodesTypesFile(options: {
 		lookupDir: string
 		destinationFile: string
 	}) {
 		const { lookupDir, destinationFile } = options
 
-		// find all definition files in the lookup dir
+		// Find all definition files in the lookup dir
 		const search = path.join(lookupDir, '*.definition.ts')
 		const matches = await globby(search)
 
@@ -23,7 +23,7 @@ export default class ErrorGenerator extends AbstractGenerator {
 		matches.forEach(file => {
 			const definition = this.services.vm.importDefinition(file)
 
-			//get variations on name
+			//Get variations on name
 			const camelName = this.utilities.names.toCamel(definition.id)
 			const pascalName = this.utilities.names.toPascal(camelName)
 			const constName = this.utilities.names.toConst(camelName)
@@ -41,14 +41,14 @@ export default class ErrorGenerator extends AbstractGenerator {
 		this.writeFile(destinationFile, contents)
 	}
 
-	/** rebuilds the options  */
+	/** Rebuilds the options  */
 	public async rebuildOptionsTypesFile(options: {
 		lookupDir: string
 		destinationFile: string
 	}) {
 		const { lookupDir, destinationFile } = options
 
-		// find all definition files in the lookup dir
+		// Find all definition files in the lookup dir
 		const search = path.join(lookupDir, '*.definition.ts')
 		const matches = await globby(search)
 
@@ -60,7 +60,7 @@ export default class ErrorGenerator extends AbstractGenerator {
 		matches.forEach(file => {
 			const definition = this.services.vm.importDefinition(file)
 
-			//get variations on name
+			//Get variations on name
 			const camelName = this.utilities.names.toCamel(definition.id)
 			const pascalName = this.utilities.names.toPascal(camelName)
 

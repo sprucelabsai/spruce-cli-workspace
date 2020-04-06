@@ -14,12 +14,12 @@ export interface ISkillStoreSettings extends IBaseStoreSettings {
 export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
 	public name = 'skill'
 
-	/** build a skill with the passed values */
+	/** Build a skill with the passed values */
 	public static skill(values?: Partial<ISkill>) {
 		return new Schema(SpruceSchemas.core.Skill.definition, values)
 	}
 
-	/** get all skills the user has access to */
+	/** Get all skills the user has access to */
 	public async skills(userToken: string): Promise<ISkill[]> {
 		const mercury = await this.mercuryForUser(userToken)
 		const result = await mercury.emit<
@@ -36,9 +36,9 @@ export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
 		return skills
 	}
 
-	/** set logged in skill */
+	/** Set logged in skill */
 	public setLoggedInSkill(skill: ISkill) {
-		// validate what we were passed
+		// Validate what we were passed
 		const instance = SkillStore.skill(skill)
 		instance.validate()
 
@@ -48,7 +48,7 @@ export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
 		})
 	}
 
-	/** gets a logged in skill of one is set */
+	/** Gets a logged in skill of one is set */
 	public loggedInSkill(): ISkill | undefined {
 		const loggedIn = this.readValue('loggedInSkill')
 
