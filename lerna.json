@@ -7,10 +7,9 @@
 			"allowBranch": [
 				"dev",
 				"canary",
-				"prerelease/*"
+				"prerelease-*"
 			],
 			"conventionalCommits": true,
-			"conventionalPrerelease": true,
 			"changelogPreset": "sprucelabs"
 		}
 	}
