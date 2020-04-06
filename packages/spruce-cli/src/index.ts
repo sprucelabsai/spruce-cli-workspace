@@ -31,7 +31,9 @@ import ErrorGenerator from './generators/Error'
 import SpruceError from './errors/Error'
 import { ErrorCode } from './.spruce/errors/codes.types'
 import NodeUtility from './utilities/Vm'
-import { IUtilityOptions } from './utilities/Abstract'
+import { IUtilityOptions } from './utilities/AbstractUtility'
+import YarnService from './services/Yarn'
+import { IServiceOptions } from './services/AbstractService'
 
 /**
  * For handling debugger not attaching right away
@@ -115,14 +117,29 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 
 	await mercury.connect(connectOptions)
 
+<<<<<<< Updated upstream
 	// setup services
 	const services: IServices = {
 		pin: new PinService(mercury)
+=======
+	const serviceOptions: IServiceOptions = {
+		mercury,
+		cwd,
+		log
+	}
+
+	// setup services
+	const services: IServices = {
+		pin: new PinService(serviceOptions),
+		vm: new VmService(serviceOptions),
+		yarn: new YarnService(serviceOptions)
+>>>>>>> Stashed changes
 	}
 
 	// setup utilities
 	const utilityOptions: IUtilityOptions = {
-		cwd
+		cwd,
+		log
 	}
 
 	const utilities: IUtilities = {

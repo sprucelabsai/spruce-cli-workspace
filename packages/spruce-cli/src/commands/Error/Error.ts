@@ -12,12 +12,12 @@ export default class ErrorCommand extends AbstractCommand {
 			.command('error:create')
 			.description('Define a new type of error')
 			.option(
-				'-dd, --errorDestinationDir <dir>',
-				'Where should I write the definition file?',
+				'-dd, --errorDestinationDir <errorDestinationDir>',
+				'Where should I write the definition and Error class file?',
 				'./src/errors'
 			)
 			.option(
-				'-td --typesDestinationDir <typesDir>',
+				'-td --typesDestinationDir <typesDestinationDir>',
 				'Where should I write the types file that supports the error?',
 				'./src/.spruce/errors'
 			)
@@ -27,15 +27,27 @@ export default class ErrorCommand extends AbstractCommand {
 			.command('error:sync')
 			.description('Generates type files on all error definitions.')
 			.option(
-				'-l, --lookupDir <dir>',
+				'-l, --lookupDir <lookupDir>',
 				'Where should I look for definitions files (*.definition.ts)?',
 				'./src/errors'
 			)
 			.option(
+<<<<<<< Updated upstream
 				'-d, --destinationDir <dir>',
 				'Where should I write the definitions file?',
 				'./src/.spruce/errors'
 			)
+=======
+				'-td, --typesDestinationDir <typesDestinationDir>',
+				'Where should I write the definitions file?',
+				'./src/.spruce/errors'
+			)
+			.option(
+				'-dd, --errorDestinationDir <errorDestinationDir>',
+				'Where should I write the Error class file?',
+				'./src/errors'
+			)
+>>>>>>> Stashed changes
 			.action(this.sync.bind(this))
 	}
 

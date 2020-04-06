@@ -1,0 +1,52 @@
+import BaseTest, { ISpruce, test } from '@sprucelabs/test'
+import log from '@sprucelabs/log'
+
+/** Context just for this test */
+interface IContext {
+	 hello: string
+}
+
+export default class {{camelName}}Test extends BaseTest {
+  // Run before all tests
+  protected static before(spruce: ISpruce<IContext>) {
+    // Do things in here to setup your environment  
+  }
+
+  // Run before each test
+	protected static beforeEach(spruce: ISpruce<IContext>) {
+    // Do things in here to setup your test
+		// Put something to the context
+		spruce.context.hello = 'world'
+	} 
+
+  // Run after each test
+  protected static afterEach(spruce: ISpruce<IContext>) {
+    log.info('Test complete')
+  }
+
+  // Run after all tests
+  protected static after(spruce: ISpruce<IContext>) {
+    // Do things to tear down your environment
+  }
+
+  // use the @test decorator to hook up your tests (tests run in parallel)
+	@test('can access context')
+	protected static async canAccessContext(spruce: ISpruce<IContext>) {
+
+    // the Spruce object gives you all assertion controls
+    spruce.assert(true || true)
+    spruce.true(true)
+		spruce.false(false)
+    // find more at https://github.com/avajs/ava
+
+    // pull something off context
+		spruce.is(spruce.context.hello, 'world', 'Setting context failed')
+	}
+
+  // force only 1 test to run with 
+  @test.only('will only only this test')
+  protected static async willOnlyRunThisText(spruce: ISpruce<IContext>) {
+    spruce.  
+  }
+
+}
