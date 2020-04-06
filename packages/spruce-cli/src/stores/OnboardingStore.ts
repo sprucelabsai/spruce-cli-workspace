@@ -1,4 +1,7 @@
-import AbstractStore, { IBaseStoreSettings, IStoreOptions } from './Abstract'
+import AbstractStore, {
+	IBaseStoreSettings,
+	IStoreOptions
+} from './AbstractStore'
 import Schema from '@sprucelabs/schema'
 import onboardingDefinition from '../schemas/onboarding.definition'
 import { IOnboarding } from '../.spruce/schemas/onboarding.types'

@@ -432,7 +432,7 @@ export namespace SpruceSchemas.core.Location {
 		/** Timezone. */
 		timezone?: string;
 		/** Address. */
-		address: SpruceSchema.IFieldAddressValue;
+		address: SpruceSchema.IAddressFieldValue;
 	}
 
 	/** The interface for the schema definition for a Location */
@@ -1066,7 +1066,7 @@ export namespace SpruceSchemas.core.UserLocation {
 		/** Total visits. */
 		visits: number;
 		/** Last visit. */
-		lastRecordedVisit?: SpruceSchema.IFieldDateTimeValue;
+		lastRecordedVisit?: SpruceSchema.IDateTimeFieldValue;
 		/** Job. */
 		job: SpruceSchemas.core.Job.IJob;
 		/** Location. */

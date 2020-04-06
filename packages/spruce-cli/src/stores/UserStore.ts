@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import AbstractStore, { StoreAuth, IBaseStoreSettings } from './Abstract'
+import AbstractStore, { StoreAuth, IBaseStoreSettings } from './AbstractStore'
 import { SpruceSchemas } from '../.spruce/schemas/core.types'
 import { IMercuryGQLBody } from '@sprucelabs/mercury'
 import { SpruceEvents } from '../types/events-generated'
@@ -9,7 +9,7 @@ import userWithTokenDefinition from '../schemas/userWithToken.definition'
 import userDefinition from '../schemas/user.definition'
 import { IUserWithToken } from '../.spruce/schemas/userWithToken.types'
 import { IUser } from '../.spruce/schemas/user.types'
-import SpruceError from '../errors/Error'
+import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../.spruce/errors/codes.types'
 
 /** settings i need to save */

@@ -1,10 +1,10 @@
 import { Command } from 'commander'
 import AbstractCommand from '../Abstract'
-import { FieldType, IFieldSelectDefinitionChoice } from '@sprucelabs/schema'
+import { FieldType, ISelectFieldDefinitionChoice } from '@sprucelabs/schema'
 import { IUserWithToken } from '../../.spruce/schemas/userWithToken.types'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
-import { StoreAuth } from '../../stores/Abstract'
-import SpruceError from '../../errors/Error'
+import { StoreAuth } from '../../stores/AbstractStore'
+import SpruceError from '../../errors/SpruceError'
 
 export default class UserCommand extends AbstractCommand {
 	/** Sets up commands */
@@ -106,7 +106,7 @@ export default class UserCommand extends AbstractCommand {
 			this.warn('You are not logged in as anyone, try `spruce user:login`')
 		}
 
-		const choices: IFieldSelectDefinitionChoice[] = users.map((user, idx) => ({
+		const choices: ISelectFieldDefinitionChoice[] = users.map((user, idx) => ({
 			value: String(idx),
 			label: user.casualName
 		}))

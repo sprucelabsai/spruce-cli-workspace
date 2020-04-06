@@ -4,13 +4,12 @@ import {
 	FieldType,
 	FieldDefinitionMap,
 	IFieldDefinition,
-	FieldBase
+	BaseField
 } from '@sprucelabs/schema'
 import inquirer from 'inquirer'
 // @ts-ignore
 import fonts from 'cfonts'
 import ora from 'ora'
-import AbstractSpruceError from '@sprucelabs/error'
 import { omit } from 'lodash'
 // @ts-ignore
 import emphasize from 'emphasize'
@@ -64,7 +63,10 @@ export enum ITerminalEffect {
 	BgBlueBright = 'bgBlueBright',
 	BgMagentaBright = 'bgMagentaBright',
 	BgCyanBright = 'bgCyanBright',
-	BgWhiteBright = 'bgWhiteBright'
+	BgWhiteBright = 'bgWhiteBright',
+
+	/** spruce header style */
+	SpruceHeader = 'shade'
 }
 
 /** what prompt() returns if isRequired=true */
@@ -106,7 +108,14 @@ export default class Terminal {
 		this.bar()
 		this.writeLn('')
 		Object.keys(object).forEach(key => {
-			this.writeLn(`${key}: ${JSON.stringify(object[key])}`, effects)
+			this.writeLn(
+				`${chalk.bold(key)}: ${
+					typeof object[key] === 'string'
+						? object[key]
+						: JSON.stringify(object[key])
+				}`,
+				effects
+			)
 		})
 		this.writeLn('')
 		this.bar()
@@ -167,23 +176,28 @@ export default class Terminal {
 		effects: ITerminalEffect[] = [ITerminalEffect.Blue, ITerminalEffect.Bold]
 	) {
 		this.bar()
-		// this.writeLn(message, effects)
-		fonts.say(message, {
-			font: 'console',
-			// color: 'candy',
-			align: 'left',
-			colors: omit(effects, [
-				ITerminalEffect.Reset,
-				ITerminalEffect.Bold,
-				ITerminalEffect.Dim,
-				ITerminalEffect.Italic,
-				ITerminalEffect.Underline,
-				ITerminalEffect.Inverse,
-				ITerminalEffect.Hidden,
-				ITerminalEffect.Strikethrough,
-				ITerminalEffect.Visible
-			])
-		})
+		const isSpruce = effects[0] === ITerminalEffect.SpruceHeader
+
+		if (isSpruce) {
+			fonts.say(message, {
+				font: ITerminalEffect.SpruceHeader,
+				color: 'candy',
+				align: 'left',
+				colors: omit(effects, [
+					ITerminalEffect.Reset,
+					ITerminalEffect.Bold,
+					ITerminalEffect.Dim,
+					ITerminalEffect.Italic,
+					ITerminalEffect.Underline,
+					ITerminalEffect.Inverse,
+					ITerminalEffect.Hidden,
+					ITerminalEffect.Strikethrough,
+					ITerminalEffect.Visible
+				])
+			})
+		} else {
+			this.writeLn(message, effects)
+		}
 		this.bar()
 	}
 
@@ -277,7 +291,9 @@ export default class Terminal {
 		this.writeLn('')
 		await this.prompt({
 			type: FieldType.Text,
-			label: message ?? 'Hit enter to continue'
+			label: `${message ? message + ' ' : ''}${chalk.bgGreenBright.black(
+				'hit enter'
+			)}`
 		})
 		this.writeLn('')
 		return
@@ -316,7 +332,7 @@ export default class Terminal {
 			message: `${label}:`
 		}
 
-		const field = FieldBase.field(fieldDefinition)
+		const field = BaseField.field(fieldDefinition)
 
 		// setup transform and validate
 		promptOptions.transformer = (value: string) => {
@@ -356,11 +372,8 @@ export default class Terminal {
 	public handleError(err: Error) {
 		this.stopLoading()
 
-		const message =
-			err instanceof AbstractSpruceError ? err.friendlyMessage() : err.message
-
 		this.section({
-			headline: message,
+			headline: err.message,
 			lines: (err.stack || '').split('/n'),
 			headlineEffects: [ITerminalEffect.Bold, ITerminalEffect.Red],
 			barEffects: [ITerminalEffect.Red],

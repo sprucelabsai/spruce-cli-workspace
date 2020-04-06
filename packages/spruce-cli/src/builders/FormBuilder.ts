@@ -4,14 +4,14 @@ import Schema, {
 	SchemaDefinitionAllValues,
 	SchemaDefinitionPartialValues,
 	SchemaFieldNames,
-	IFieldSelectDefinitionChoice,
+	ISelectFieldDefinitionChoice,
 	IFieldDefinition,
 	SchemaErrorCode,
 	SchemaError
 } from '@sprucelabs/schema'
-import ITerminal, { ITerminalEffect } from '../utilities/Terminal'
+import ITerminal, { ITerminalEffect } from '../utilities/TerminalUtility'
 import { pick } from 'lodash'
-import SpruceError from '../errors/Error'
+import AbstractSpruceError from '@sprucelabs/error'
 
 export enum FormBuilderActionType {
 	Done = 'done',
@@ -20,37 +20,40 @@ export enum FormBuilderActionType {
 }
 
 /** in overview mode, this is when the user selects "done" */
-export interface IFormBuilderActionDone {
+export interface IFormActionDone {
 	type: FormBuilderActionType.Done
 }
 
 /** in overview mode, this is when the user select "cancel". TODO: in normal mode, this is if they escape out of the questions. */
-export interface IFormBuilderActionCancel {
+export interface IFormActionCancel {
 	type: FormBuilderActionType.Cancel
 }
 
 /** in overview mode, this is when the user selects to edit a field */
-export type IFormBuilderActionEditField<T extends ISchemaDefinition> = {
+export type IFormActionEditField<T extends ISchemaDefinition> = {
 	type: FormBuilderActionType.EditField
 	fieldName: SchemaFieldNames<T>
 }
 /** actions that can be taken in overview mode */
-export type IFormBuilderAction<T extends ISchemaDefinition> =
-	| IFormBuilderActionDone
-	| IFormBuilderActionCancel
-	| IFormBuilderActionEditField<T>
+export type IFormAction<T extends ISchemaDefinition> =
+	| IFormActionDone
+	| IFormActionCancel
+	| IFormActionEditField<T>
 
 /** controls for when presenting the form */
-export interface IPresentationOptions<
+export interface IFormPresentationOptions<
 	T extends ISchemaDefinition,
-	F extends SchemaFieldNames<T>
+	F extends SchemaFieldNames<T> = SchemaFieldNames<T>
 > {
 	headline?: string
 	showOverview?: boolean
 	fields?: F[]
 }
 
-export interface IFormBuilderOptions<T extends ISchemaDefinition> {
+export interface IFormOptions<T extends ISchemaDefinition> {
+	term: ITerminal
+	definition: T
+	initialValues?: SchemaDefinitionPartialValues<T>
 	onWillAskQuestion?: <K extends SchemaFieldNames<T>>(
 		name: K,
 		fieldDefinition: IFieldDefinition,
@@ -59,7 +62,7 @@ export interface IFormBuilderOptions<T extends ISchemaDefinition> {
 }
 
 interface IHandlers<T extends ISchemaDefinition> {
-	onWillAskQuestion?: IFormBuilderOptions<T>['onWillAskQuestion']
+	onWillAskQuestion?: IFormOptions<T>['onWillAskQuestion']
 }
 
 export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
@@ -68,14 +71,11 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 	public term: ITerminal
 	public handlers: IHandlers<T> = {}
 
-	public constructor(
-		term: ITerminal,
-		definition: T,
-		initialValues: SchemaDefinitionPartialValues<T> = {},
-		options: IFormBuilderOptions<T> = {}
-	) {
+	public constructor(options: IFormOptions<T>) {
 		// setup schema
-		super(definition, initialValues)
+		super(options.definition, options.initialValues)
+
+		const { term } = options
 
 		// save term for writing, saving
 		this.term = term
@@ -87,7 +87,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 
 	/** pass me a schema and i'll give you back an object that conforms to it based on user input */
 	public async present<F extends SchemaFieldNames<T> = SchemaFieldNames<T>>(
-		options: IPresentationOptions<T, F> = {}
+		options: IFormPresentationOptions<T, F> = {}
 	): Promise<Pick<SchemaDefinitionAllValues<T>, F>> {
 		const { term } = this
 		const {
@@ -105,7 +105,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 
 			// start with headline
 			if (headline) {
-				term.headline(headline)
+				term.headline(headline, [ITerminalEffect.SpruceHeader])
 				term.writeLn('')
 			}
 
@@ -187,7 +187,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 		this.term.writeLn('')
 
 		// special handling for spruce errors
-		if (error instanceof SchemaError || error instanceof SpruceError) {
+		if (error instanceof SchemaError) {
 			const options = error.options
 
 			switch (options.code) {
@@ -202,7 +202,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 				default:
 					this.term.error(error.friendlyMessage())
 			}
-		} else if (error instanceof SpruceError) {
+		} else if (error instanceof AbstractSpruceError) {
 			this.term.error(error.friendlyMessage())
 		} else {
 			this.term.error(`Unexpected error ${error.message}`)
@@ -214,21 +214,21 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 	/** render every field and a select to chose what to edit (or done/cancel) */
 	public async renderOverview<F extends SchemaFieldNames<T>>(
 		options: { fields?: F[] } = {}
-	): Promise<IFormBuilderAction<T>> {
+	): Promise<IFormAction<T>> {
 		const { term } = this
 		const { fields = Object.keys(this.fields) } = options
 
 		// track actions while building choices
-		const actionMap: Record<string, IFormBuilderAction<T>> = {}
+		const actionMap: Record<string, IFormAction<T>> = {}
 
 		// create all choices
-		const choices: IFieldSelectDefinitionChoice[] = this.getNamedFields()
+		const choices: ISelectFieldDefinitionChoice[] = this.getNamedFields()
 			.filter(namedField => fields.indexOf(namedField.name) > -1)
 			.map(namedField => {
 				const { field, name } = namedField
 
 				const actionKey = `field:${name}`
-				const action: IFormBuilderActionEditField<T> = {
+				const action: IFormActionEditField<T> = {
 					type: FormBuilderActionType.EditField,
 					fieldName: name
 				}

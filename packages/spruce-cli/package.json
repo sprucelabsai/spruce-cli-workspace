@@ -27,7 +27,6 @@
   },
   "scripts": {
     "types:sync": "node ./build/src/index.js types:sync",
-    "onboarding": "node ./build/src/index.js onboarding",
     "build": "npm run clean && npm run build:node",
     "build:node": "tsc | true",
     "watch": "chokidar 'src/**/*' 'index.ts' '../spruce-templates/src/templates/**/*' -c 'npm run build'",
@@ -37,10 +36,10 @@
     "local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS"
   },
   "dependencies": {
-    "@sprucelabs/error": "^1.0.1",
+    "@sprucelabs/error": "^1.0.8",
     "@sprucelabs/log": "^10.0.11",
     "@sprucelabs/mercury": "9.1.1-pre-89e92490.0",
-    "@sprucelabs/schema": "^1.0.0-dev.1",
+    "@sprucelabs/schema": "^1.0.2",
     "@sprucelabs/spruce-templates": "10.0.0",
     "cfonts": "^2.8.1",
     "commander": "^4.1.1",

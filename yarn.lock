@@ -997,10 +997,15 @@
   dependencies:
     "@types/node" ">= 8"
 
-"@sprucelabs/error@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-1.0.1.tgz#ff9067df95b61753f8b29f1aacedf9101f9a0aa7"
-  integrity sha512-tR9V0ZJB+Qw74xHUKPJ4J/wsfuuuTzBK7BsXlr5YU0tFQ/tlj9qNmh8pTwW9ZNRL++/03s0d0Tsqc6b8ekiggw==
+"@sprucelabs/error@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-1.0.7.tgz#f22c60b64111006dcf2ed4c5cf1d603cf4051294"
+  integrity sha512-GpTywvR0DmVu+oazlU1W/DBXwFWyc+v2MnBMf299tMFKlKocU2aPFEgDvTMat85lb/VWEzxrXyQyf6/hcY+vNA==
+
+"@sprucelabs/error@^1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-1.0.8.tgz#2a3f3d842faeec20a3cd786d8773f2ced0508cef"
+  integrity sha512-oL2Btuo0tDSM248edEbIFWz2cKOm57Z2C2T4lkYRGeKTKe8wzw9cWn4C7vWwbUEQNzv4fB8eEsf/M5DhcSgFFQ==
 
 "@sprucelabs/log@^10.0.11":
   version "10.0.11"
@@ -1022,11 +1027,21 @@
     superagent "^5.1.2"
     uuid "^3.3.3"
 
-"@sprucelabs/schema@^1.0.0-dev.1":
-  version "1.0.0-dev.1"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.0.0-dev.1.tgz#b57a92aa47d77498ec65bc60741b8841afc18f4d"
-  integrity sha512-WqYFkV7owo77ntXwFUHwwylP+x6HsuQC08PfManhLtSX/79Ol7Qt/yOFCXq97N43spuDvVh78ASb4sW8wFxnag==
+"@sprucelabs/schema@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.0.2.tgz#591bd367f6416d834108bbfb3ae11576211ca5e3"
+  integrity sha512-5g4e0vl2g/ySZnNUCaBccY+13RMAtvXPNMTQqaw7/9cV87aFV3F7cc1C0iXLy/HVCDCC8UBStQIDcHUrSOqSDA==
   dependencies:
+    "@sprucelabs/error" "^1.0.7"
+    google-libphonenumber "^3.2.8"
+    libphonenumber-js "^1.7.48"
+
+"@sprucelabs/schema@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.0.3.tgz#cbdf1cd5b43a94b903b39f708ebd54d65a0e3c2e"
+  integrity sha512-AhF53KFWoqE0AqOCpwOyjh1pzDiEnff5rTSnLj+b/tZkpXifPqC9BXHyXPQ+0oZpO+z7ICLGgSSo4dVGxfAMZg==
+  dependencies:
+    "@sprucelabs/error" "^1.0.7"
     google-libphonenumber "^3.2.8"
     libphonenumber-js "^1.7.48"
 

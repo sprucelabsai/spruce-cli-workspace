@@ -12,7 +12,7 @@ type DefinitionFailedToImportDefinition = typeof definitionFailedToImportDefinit
 export interface IDefinitionFailedToImportDefinition extends DefinitionFailedToImportDefinition {}
 
 export interface IDefinitionFailedToImportErrorOptions extends SchemaDefinitionValues<IDefinitionFailedToImportDefinition>, ISpruceErrorOptions<ErrorCode> {
-	/** * The definition file failed to import */
+	/** * .DefinitionFailedToImport - The definition file failed to import */
 	code: ErrorCode.DefinitionFailedToImport
 } 
 

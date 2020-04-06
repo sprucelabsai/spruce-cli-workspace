@@ -1,8 +1,8 @@
 import { Command } from 'commander'
 import AbstractCommand from '../Abstract'
-import { IFieldSelectDefinitionChoice, FieldType } from '@sprucelabs/schema'
-import { StoreAuth } from '../../stores/Abstract'
-import SpruceError from '../../errors/Error'
+import { ISelectFieldDefinitionChoice, FieldType } from '@sprucelabs/schema'
+import { StoreAuth } from '../../stores/AbstractStore'
+import SpruceError from '../../errors/SpruceError'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
 // import globby from 'globby'
 // import fs from 'fs-extra'
@@ -86,7 +86,7 @@ export default class SkillCommand extends AbstractCommand {
 			}
 
 			//select a skill
-			const skillChoices: IFieldSelectDefinitionChoice[] = skills.map(
+			const skillChoices: ISelectFieldDefinitionChoice[] = skills.map(
 				(skill, idx) => ({
 					value: String(idx),
 					label: skill.name
@@ -126,7 +126,7 @@ export default class SkillCommand extends AbstractCommand {
 		}
 
 		//select a skill
-		const skillChoices: IFieldSelectDefinitionChoice[] = skills.map(
+		const skillChoices: ISelectFieldDefinitionChoice[] = skills.map(
 			(skill, idx) => ({
 				value: String(idx),
 				label: skill.name

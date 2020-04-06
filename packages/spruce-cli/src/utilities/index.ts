@@ -1,7 +1,5 @@
-import NamesUtility from './Names'
-import NodeUtility from './Vm'
+import NamesUtility from './NamesUtility'
 
 export interface IUtilities {
 	names: NamesUtility
-	vm: NodeUtility
 }

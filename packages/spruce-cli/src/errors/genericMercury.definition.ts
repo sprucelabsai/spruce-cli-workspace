@@ -1,5 +1,4 @@
-import { FieldType } from '@sprucelabs/schema'
-import { buildErrorDefinition } from '@sprucelabs/error'
+import { FieldType, buildErrorDefinition } from '@sprucelabs/schema'
 
 const genericMercuryDefinition = buildErrorDefinition({
 	id: 'genericMercury',

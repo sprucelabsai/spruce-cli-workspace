@@ -1,4 +1,4 @@
-import AbstractStore, { IBaseStoreSettings, StoreAuth } from './Abstract'
+import AbstractStore, { IBaseStoreSettings, StoreAuth } from './AbstractStore'
 import { SpruceSchemas } from '../.spruce/schemas/core.types'
 import { SpruceEvents } from '../types/events-generated'
 import Schema from '@sprucelabs/schema'

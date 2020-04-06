@@ -1,7 +1,7 @@
 import fs from 'fs'
 import { Mercury } from '@sprucelabs/mercury'
 import { Log } from '@sprucelabs/log'
-import SpruceError from '../errors/Error'
+import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../.spruce/errors/codes.types'
 
 /** are we running globally or locally? */

@@ -1,7 +1,7 @@
 import {
 	ISchemaDefinition,
 	FieldType,
-	IFieldSelectDefinitionChoice
+	ISelectFieldDefinitionChoice
 } from '@sprucelabs/schema'
 
 const roleDefinition: ISchemaDefinition = {
@@ -32,7 +32,7 @@ export enum RoleSlugs {
 	Guest = 'guest'
 }
 
-export const RoleSelectChoices: IFieldSelectDefinitionChoice[] = [
+export const RoleSelectChoices: ISelectFieldDefinitionChoice[] = [
 	{
 		value: 'owner',
 		label: 'Owner'
