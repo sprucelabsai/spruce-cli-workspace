@@ -11,7 +11,6 @@ export default class TestCommand extends AbstractCommand {
 	}
 
 	public create(cmd: Command) {
-    debugger
-    const file 
+		debugger
 	}
 }
