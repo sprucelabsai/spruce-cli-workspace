@@ -55,7 +55,7 @@ export default class SchemaCommand extends AbstractCommand {
 				'Where should I write the definitions file?',
 				'./.spruce/schemas'
 			)
-			.options('--clean', 'Should I clean out the directory before syncing?')
+			.option('--clean', 'Should I clean out the directory before syncing?')
 			.action(this.sync.bind(this))
 	}
 
