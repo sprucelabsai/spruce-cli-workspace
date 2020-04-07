@@ -48,7 +48,7 @@ export default class SchemaCommand extends AbstractCommand {
 			.option(
 				'-l, --lookupDir <lookupDir>',
 				'Where should I look for definitions files (*.definition.ts)?',
-				'./src'
+				'./src/schemas'
 			)
 			.option(
 				'-d, --destinationDir <destinationDir>',
@@ -94,6 +94,7 @@ export default class SchemaCommand extends AbstractCommand {
 
 	/** Generate types and other files based definitions */
 	public async sync(cmd: Command) {
+		debugger
 		const lookupDir = cmd.lookupDir as string
 		const destinationDir = cmd.destinationDir as string
 		const search = path.join(
@@ -110,13 +111,6 @@ export default class SchemaCommand extends AbstractCommand {
 		const matches = await globby(search)
 
 		matches.forEach(async filePath => {
-			// Does this file contain buildSchemaDefinition?
-			const currentContents = this.readFile(filePath)
-			if (currentContents.search(/buildSchemaDefinition\({/) === -1) {
-				this.log.debug(`Skipping ${filePath}`)
-				return
-			}
-
 			// Write to the destination
 			const {
 				pascalName,
