@@ -42,10 +42,19 @@ export default class VmService extends AbstractService {
 					}
 
 					// There are a few options that could work
-					const resolved = [path.join(dir, name), path.join(dir, name, 'index')]
+					const filePath = path.join(dir, name)
+					const resolved = [
+						filePath,
+						filePath.replace('/src', '/build/src'),
+						filePath.replace('/.spruce/', '/build/.spruce/'),
+						path.join(filePath, 'index'),
+						path.join(filePath, 'index').replace('/src', '/build/src'),
+						path.join(filePath, 'index').replace('/.spruce/', '/build/.spruce/')
+					]
 
 					for (const path of resolved) {
-						const filename = (path + '.js').replace('/src', '/build/src')
+						const filename = path + '.js'
+
 						if (fs.existsSync(filename) && fs.lstatSync(filename).isFile()) {
 							this.fileMapCache[name] = filename
 							return filename
@@ -91,7 +100,7 @@ export default class VmService extends AbstractService {
 			throw new SpruceError({
 				code: ErrorCode.DefinitionFailedToImport,
 				file,
-				details: `No proxy object was returned from the vm`
+				details: `No proxy object was returned from the vm. The file probably does not have a definition.`
 			})
 		}
 

@@ -39,7 +39,7 @@
 		"test:watch": "ava  **/*.test.ts --watch"
 	},
 	"dependencies": {
-		"@sprucelabs/error": "^1.0.9",
+		"@sprucelabs/error": "^1.0.11",
 		"@sprucelabs/log": "^10.0.11",
 		"@sprucelabs/mercury": "9.1.1-pre-89e92490.0",
 		"@sprucelabs/schema": "^1.0.6",
@@ -69,6 +69,7 @@
 		"@types/lodash": "^4.14.149",
 		"@types/mkdirp": "^1.0.0",
 		"@types/node": "^13.7.7",
+		"@types/rimraf": "^3.0.0",
 		"@types/slug": "^0.9.1",
 		"@types/superagent": "^4.1.7",
 		"ava": "^3.6.0",

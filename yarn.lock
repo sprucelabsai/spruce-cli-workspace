@@ -1009,17 +1009,15 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
   integrity sha512-9NET910DNaIPngYnLLPeg+Ogzqsi9uM4mSboU5y6p8S5DzMTVEsJZrawi+BoDNUVBa2DhJqQYUFvMDfgU062LQ==
 
+"@sprucelabs/error@^1.0.11":
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-1.0.11.tgz#05c74c0b272bd5b2cc62aaf62bbecc7bac45702d"
+  integrity sha512-ehuKZuQZe8BM9jfjN2k2apqkDSTryexC+ChePSQYAjO9K/My31RMWQ0g3KEGcSwNbtEUobHr6O8DxIfnnWW0eQ==
+
 "@sprucelabs/error@^1.0.7":
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-1.0.7.tgz#f22c60b64111006dcf2ed4c5cf1d603cf4051294"
   integrity sha512-GpTywvR0DmVu+oazlU1W/DBXwFWyc+v2MnBMf299tMFKlKocU2aPFEgDvTMat85lb/VWEzxrXyQyf6/hcY+vNA==
-
-"@sprucelabs/error@^1.0.9":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-1.0.9.tgz#2c45cee92f0f295e67d4c7cebca27a4d3f510ede"
-  integrity sha512-rbt2lNI8dl7oY1z1+o//ERFJbXHu2r7bJ3K/M64ML/w57DFZFMhxy8qKeQXkr0KYSqrl22eqJCdMD8fkE77obQ==
-  dependencies:
-    stack-utils "^2.0.1"
 
 "@sprucelabs/log@^10.0.11":
   version "10.0.11"
@@ -1103,7 +1101,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/glob@^7.1.1":
+"@types/glob@*", "@types/glob@^7.1.1":
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/@types/glob/-/glob-7.1.1.tgz#aa59a1c6e3fbc421e07ccd31a944c30eba521575"
   integrity sha512-1Bh06cbWJUHMC97acuD6UMG29nMt0Aqz1vF3guLfG+kHHJhy3AyohZFFxYk2f7Q1SQIrNwvncxAE0N/9s70F2w==
@@ -1163,6 +1161,14 @@
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
   integrity sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
+
+"@types/rimraf@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/rimraf/-/rimraf-3.0.0.tgz#b9d03f090ece263671898d57bb7bb007023ac19f"
+  integrity sha512-7WhJ0MdpFgYQPXlF4Dx+DhgvlPCfz/x5mHaeDQAKhcenvQP1KCpLQ18JklAqeGMYSAT2PxLpzd0g2/HE7fj7hQ==
+  dependencies:
+    "@types/glob" "*"
+    "@types/node" "*"
 
 "@types/slug@^0.9.1":
   version "0.9.1"
