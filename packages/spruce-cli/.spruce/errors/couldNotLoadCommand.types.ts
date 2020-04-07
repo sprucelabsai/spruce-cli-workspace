@@ -4,7 +4,7 @@ import {
 	SchemaDefinitionValues
 } from '@sprucelabs/schema'
 
-import couldNotLoadCommandDefinition from '../../errors/couldNotLoadCommand.definition'
+import couldNotLoadCommandDefinition from '../../src/errors/couldNotLoadCommand.definition'
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { ErrorCode } from './codes.types'
 

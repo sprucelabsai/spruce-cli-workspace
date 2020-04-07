@@ -22,7 +22,7 @@ export default class SchemaCommand extends AbstractCommand {
 			.option(
 				'-d, --destinationDir <dir>',
 				'Where should I write the types files?',
-				'./src/.spruce/schemas'
+				'./.spruce/schemas'
 			)
 			.action(this.pull.bind(this))
 
@@ -38,7 +38,7 @@ export default class SchemaCommand extends AbstractCommand {
 			.option(
 				'-td --typesDestinationDir <typesDir>',
 				'Where should I write the types file that supports the definition?',
-				'./src/.spruce/schemas'
+				'./.spruce/schemas'
 			)
 			.action(this.create.bind(this))
 
@@ -54,7 +54,7 @@ export default class SchemaCommand extends AbstractCommand {
 			.option(
 				'-d, --destinationDir <dir>',
 				'Where should I write the definitions file?',
-				'./src/.spruce/schemas'
+				'./.spruce/schemas'
 			)
 			.action(this.sync.bind(this))
 	}

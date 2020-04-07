@@ -2,7 +2,7 @@ import Schema, {
 	SchemaDefinitionValues
 } from '@sprucelabs/schema'
 
-import onboardingStoreDefinition from '../../schemas/onboarding.definition'
+import onboardingStoreDefinition from '../../src/schemas/onboarding.definition'
 
 type OnboardingStoreDefinition = typeof onboardingStoreDefinition
 export interface IOnboardingStoreDefinition extends OnboardingStoreDefinition {}

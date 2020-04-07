@@ -1,5 +1,5 @@
 import { buildSchemaDefinition, FieldType } from '@sprucelabs/schema'
-import { SpruceSchemas } from '../.spruce/schemas/core.types'
+import { SpruceSchemas } from '../../.spruce/schemas/core.types'
 
 const userWithToken = buildSchemaDefinition({
 	...SpruceSchemas.core.User.definition,

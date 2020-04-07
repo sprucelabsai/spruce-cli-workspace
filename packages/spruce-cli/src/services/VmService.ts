@@ -1,6 +1,6 @@
 import { NodeVM } from 'vm2'
 import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '../.spruce/errors/codes.types'
+import { ErrorCode } from '../../.spruce/errors/codes.types'
 import Schema, { ISchemaDefinition } from '@sprucelabs/schema'
 import fs from 'fs-extra'
 import path from 'path'

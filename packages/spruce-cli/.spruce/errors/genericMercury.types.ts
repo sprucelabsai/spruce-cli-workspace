@@ -4,7 +4,7 @@ import {
 	SchemaDefinitionValues
 } from '@sprucelabs/schema'
 
-import genericMercuryDefinition from '../../errors/genericMercury.definition'
+import genericMercuryDefinition from '../../src/errors/genericMercury.definition'
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { ErrorCode } from './codes.types'
 

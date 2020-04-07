@@ -11,7 +11,7 @@ import { IGenerators } from '../generators'
 import { IUtilities } from '../utilities'
 import { Templates } from '@sprucelabs/spruce-templates'
 import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '../.spruce/errors/codes.types'
+import { ErrorCode } from '../../.spruce/errors/codes.types'
 import QuizBuilder, {
 	IQuizOptions,
 	IQuizQuestions

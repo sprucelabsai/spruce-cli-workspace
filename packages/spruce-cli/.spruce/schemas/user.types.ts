@@ -2,7 +2,7 @@ import Schema, {
 	SchemaDefinitionValues
 } from '@sprucelabs/schema'
 
-import userDefinition from '../../schemas/user.definition'
+import userDefinition from '../../src/schemas/user.definition'
 
 type UserDefinition = typeof userDefinition
 export interface IUserDefinition extends UserDefinition {}
