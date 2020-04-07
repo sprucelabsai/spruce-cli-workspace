@@ -3,8 +3,9 @@ import AbstractCommand from '../Abstract'
 import { templates } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import path from 'path'
-
+import rimraf from 'rimraf'
 import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definition'
+
 export default class SchemaCommand extends AbstractCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
@@ -112,6 +113,7 @@ export default class SchemaCommand extends AbstractCommand {
 
 			if (confirm) {
 				console.log('go team')
+				await rimraf(this.resolvePath(destinationDir))
 			}
 		}
 
