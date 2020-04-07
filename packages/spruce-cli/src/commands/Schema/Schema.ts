@@ -31,7 +31,7 @@ export default class SchemaCommand extends AbstractCommand {
 			.command('schema:create [named]')
 			.description('Define a new thing!')
 			.option(
-				'-dd, --definitionDestinationDir <dir>',
+				'-dd, --definitionDestinationDir <definitionDir>',
 				'Where should I write the definition file?',
 				'./src/schemas'
 			)
@@ -47,12 +47,12 @@ export default class SchemaCommand extends AbstractCommand {
 			.command('schema:sync')
 			.description('Generates type files on all definition files.')
 			.option(
-				'-l, --lookupDir <dir>',
+				'-l, --lookupDir <lookupDir>',
 				'Where should I look for definitions files (*.definition.ts)?',
 				'./src'
 			)
 			.option(
-				'-d, --destinationDir <dir>',
+				'-d, --destinationDir <destinationDir>',
 				'Where should I write the definitions file?',
 				'./.spruce/schemas'
 			)
