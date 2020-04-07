@@ -31,9 +31,12 @@ import ErrorGenerator from './generators/Error'
 import SpruceError from './errors/SpruceError'
 import { ErrorCode } from './.spruce/errors/codes.types'
 import { IUtilityOptions } from './utilities/AbstractUtility'
-import YarnService from './services/Yarn'
 import { IServiceOptions } from './services/AbstractService'
 import VmService from './services/VmService'
+
+/** Addons */
+import './addons/filePrompt.addon'
+import PackageUtility from './utilities/PackageUtility'
 
 /**
  * For handling debugger not attaching right away
@@ -119,20 +122,6 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 
 	await mercury.connect(connectOptions)
 
-	// Setup services
-	const serviceOptions: IServiceOptions = {
-		mercury,
-		cwd,
-		log
-	}
-
-	// Setup services
-	const services: IServices = {
-		pin: new PinService(serviceOptions),
-		vm: new VmService(serviceOptions),
-		yarn: new YarnService(serviceOptions)
-	}
-
 	// Setup utilities
 	const utilityOptions: IUtilityOptions = {
 		cwd,
@@ -140,7 +129,22 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	}
 
 	const utilities: IUtilities = {
-		names: new NamesUtility(utilityOptions)
+		names: new NamesUtility(utilityOptions),
+		package: new PackageUtility(utilityOptions)
+	}
+
+	// Setup services
+	const serviceOptions: IServiceOptions = {
+		mercury,
+		cwd,
+		log,
+		utilities
+	}
+
+	// Setup services
+	const services: IServices = {
+		pin: new PinService(serviceOptions),
+		vm: new VmService(serviceOptions)
 	}
 
 	// Setup generators

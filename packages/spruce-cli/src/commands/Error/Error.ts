@@ -91,7 +91,9 @@ export default class ErrorCommand extends AbstractCommand {
 		}
 
 		// Make sure error module is installed
-		await this.services.yarn.install('@sprucelabs/error')
+		this.startLoading()
+		await this.utilities.package.install('@sprucelabs/error')
+		this.stopLoading()
 
 		// Write the definition
 		await this.writeFile(
@@ -183,7 +185,9 @@ export default class ErrorCommand extends AbstractCommand {
 		}[] = []
 
 		// Make sure error module is installed
-		await this.services.yarn.install('@sprucelabs/error')
+		this.startLoading()
+		await this.utilities.package.install('@sprucelabs/error')
+		this.stopLoading()
 
 		// Lets clear out the current error dir
 		// this.deleteFile()

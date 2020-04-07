@@ -15,6 +15,7 @@
 		"sourceMap": true,
 		"outDir": "build",
 		"baseUrl": ".",
+		"experimentalDecorators": true,
 		"paths": {
 			"*": ["node_modules/*"]
 		}

@@ -171,7 +171,7 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 		const loggedInUsers = this.readValue('authedUsers') || []
 		const loggedInUser = loggedInUsers.find(auth => auth.isLoggedIn)
 
-		// Valid the saved user we have is valid
+		// Validate the saved user
 		if (loggedInUser) {
 			try {
 				const instance = new Schema(userWithTokenDefinition, loggedInUser)

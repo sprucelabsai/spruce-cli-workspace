@@ -64,7 +64,8 @@ export default class SchemaCommand extends AbstractCommand {
 		const destinationDir = cmd.destinationDir as string
 
 		// Make sure schema module is installed
-		await this.services.yarn.install('@sprucelabs/schema')
+		this.startLoading()
+		await this.utilities.package.install('@sprucelabs/schema')
 
 		this.startLoading('Fetching schemas and field types')
 
@@ -102,7 +103,9 @@ export default class SchemaCommand extends AbstractCommand {
 		)
 
 		// Make sure schema module is installed
-		await this.services.yarn.install('@sprucelabs/schema')
+		this.startLoading()
+		await this.utilities.package.install('@sprucelabs/schema')
+		this.stopLoading()
 
 		const matches = await globby(search)
 
@@ -171,7 +174,9 @@ export default class SchemaCommand extends AbstractCommand {
 		})
 
 		// Make sure schema module is installed
-		await this.services.yarn.install('@sprucelabs/schema')
+		this.startLoading()
+		await this.utilities.package.install('@sprucelabs/schema')
+		this.stopLoading()
 
 		// Build paths
 		const definitionDestination = this.resolvePath(

@@ -70,11 +70,15 @@ const errorExample: string = fs
 	.readFileSync(path.join(templatePath, 'errors/example.hbs'))
 	.toString()
 
+const test: string = fs
+	.readFileSync(path.join(templatePath, 'tests/Test.test.hbs'))
+	.toString()
+
 // Template generators
 export const templates = {
 	/** All definitions */
 	schemaTypes(options: {
-		schemaTemplateItems: ISchemaTemplateItem[]
+		schemaTemplateItems: (ISchemaTemplateItem & { namespace: string })[]
 		typeMap: { [fieldType: string]: IFieldTemplateDetails }
 	}) {
 		const template = handlebars.compile(schemaTypes)
@@ -166,6 +170,12 @@ export const templates = {
 		definition: ISchemaDefinition
 	}) {
 		const template = handlebars.compile(errorExample)
+		return template(options)
+	},
+
+	/** Test file */
+	test(options: { pascalName: string }) {
+		const template = handlebars.compile(test)
 		return template(options)
 	}
 }

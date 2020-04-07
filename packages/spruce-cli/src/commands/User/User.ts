@@ -5,6 +5,7 @@ import { IUserWithToken } from '../../.spruce/schemas/userWithToken.types'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
 import { StoreAuth } from '../../stores/AbstractStore'
 import SpruceError from '../../errors/SpruceError'
+import { ITerminalEffect } from '../../utilities/TerminalUtility'
 
 export default class UserCommand extends AbstractCommand {
 	/** Sets up commands */
@@ -88,10 +89,11 @@ export default class UserCommand extends AbstractCommand {
 			})
 		}
 
-		this.info(`You are now logged in as ${user.casualName}`)
-
 		// Log in the user
 		this.stores.user.setLoggedInUser(user)
+
+		// Show their deets (plus jwt)
+		this.whoAmI()
 	}
 
 	public logout() {
@@ -132,16 +134,24 @@ export default class UserCommand extends AbstractCommand {
 		const user = this.stores.user.loggedInUser()
 		const skill = this.stores.skill.loggedInSkill()
 		const authType = this.stores.remote.authType
+		const headerEffects = [
+			ITerminalEffect.SpruceHeader,
+			ITerminalEffect.Red,
+			ITerminalEffect.Blue,
+			ITerminalEffect.Green
+		]
 
 		if (user && authType === StoreAuth.User) {
 			this.section({
 				headline: `Logged in as human: ${user.casualName}`,
-				object: user
+				object: user,
+				headlineEffects: headerEffects
 			})
 		} else if (skill && authType === StoreAuth.Skill) {
 			this.section({
 				headline: `Logged in as skill: ${skill.name}`,
-				object: skill
+				object: skill,
+				headlineEffects: headerEffects
 			})
 		} else {
 			this.writeLn('Not currently logged in')
