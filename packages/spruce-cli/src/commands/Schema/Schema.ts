@@ -4,7 +4,6 @@ import { templates } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import path from 'path'
 import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definition'
-
 export default class SchemaCommand extends AbstractCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
@@ -56,6 +55,7 @@ export default class SchemaCommand extends AbstractCommand {
 				'Where should I write the definitions file?',
 				'./.spruce/schemas'
 			)
+			.options('--clean', 'Should I clean out the directory before syncing?')
 			.action(this.sync.bind(this))
 	}
 
