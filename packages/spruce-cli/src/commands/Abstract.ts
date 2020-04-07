@@ -87,7 +87,7 @@ export default abstract class AbstractCommand extends TerminalUtility {
 
 		if (builtPath[0] !== '/') {
 			// Relative to the cwd
-			if (builtPath[0] === '.') {
+			if (builtPath.substr(0, 2) === './') {
 				builtPath = builtPath.substr(1)
 			}
 

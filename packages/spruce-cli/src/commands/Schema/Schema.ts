@@ -3,8 +3,8 @@ import AbstractCommand from '../Abstract'
 import { templates } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import path from 'path'
-import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definition'
 
+import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definition'
 export default class SchemaCommand extends AbstractCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
@@ -49,13 +49,15 @@ export default class SchemaCommand extends AbstractCommand {
 			.option(
 				'-l, --lookupDir <lookupDir>',
 				'Where should I look for definitions files (*.definition.ts)?',
-				'./src'
+				'./src/schemas'
 			)
 			.option(
 				'-d, --destinationDir <destinationDir>',
 				'Where should I write the definitions file?',
 				'./.spruce/schemas'
 			)
+			.option('-c, --clean', 'Should I clean out the directory before syncing?')
+			.option('-f ,--force', 'Ignore all confirmations when cleaning')
 			.action(this.sync.bind(this))
 	}
 
@@ -64,7 +66,7 @@ export default class SchemaCommand extends AbstractCommand {
 		const destinationDir = cmd.destinationDir as string
 
 		// Make sure schema module is installed
-		this.startLoading()
+		this.startLoading('Installing dependencies')
 		await this.utilities.package.install('@sprucelabs/schema')
 
 		this.startLoading('Fetching schemas and field types')
@@ -102,21 +104,25 @@ export default class SchemaCommand extends AbstractCommand {
 			'*.definition.ts'
 		)
 
+		// Are they looking to clean?
+		if (cmd.clean) {
+			// Are we forcing clean? If not, confirm...
+			const confirm =
+				cmd.force || (await this.confirm(`Clean out ${destinationDir}?`))
+
+			if (confirm) {
+				console.log('go team')
+			}
+		}
+
 		// Make sure schema module is installed
-		this.startLoading()
+		this.startLoading('Installing dependencies')
 		await this.utilities.package.install('@sprucelabs/schema')
 		this.stopLoading()
 
 		const matches = await globby(search)
 
 		matches.forEach(async filePath => {
-			// Does this file contain buildSchemaDefinition?
-			const currentContents = this.readFile(filePath)
-			if (currentContents.search(/buildSchemaDefinition\({/) === -1) {
-				this.log.debug(`Skipping ${filePath}`)
-				return
-			}
-
 			// Write to the destination
 			const {
 				pascalName,
@@ -174,7 +180,7 @@ export default class SchemaCommand extends AbstractCommand {
 		})
 
 		// Make sure schema module is installed
-		this.startLoading()
+		this.startLoading('Installing dependencies')
 		await this.utilities.package.install('@sprucelabs/schema')
 		this.stopLoading()
 

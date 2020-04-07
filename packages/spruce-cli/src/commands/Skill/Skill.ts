@@ -170,7 +170,7 @@ export default class SkillCommand extends AbstractCommand {
 	// 						test: string
 	// 					},
 	// 					{
-	// 						asdlfkjasdf: string
+	// 						testAgain: string
 	// 					}
 	// 				>(
 	// 					{
