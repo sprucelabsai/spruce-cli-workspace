@@ -2,7 +2,7 @@ import Schema, {
 	SchemaDefinitionValues
 } from '@sprucelabs/schema'
 
-import readableNameDefinition from '../../schemas/readableName.definition'
+import readableNameDefinition from '../../src/schemas/readableName.definition'
 
 type ReadableNameDefinition = typeof readableNameDefinition
 export interface IReadableNameDefinition extends ReadableNameDefinition {}

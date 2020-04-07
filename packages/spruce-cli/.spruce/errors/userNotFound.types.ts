@@ -4,7 +4,7 @@ import {
 	SchemaDefinitionValues
 } from '@sprucelabs/schema'
 
-import userNotFoundDefinition from '../../errors/userNotFound.definition'
+import userNotFoundDefinition from '../../src/errors/userNotFound.definition'
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { ErrorCode } from './codes.types'
 

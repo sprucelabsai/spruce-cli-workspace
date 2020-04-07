@@ -8,7 +8,7 @@ import FormBuilder, {
 	IFormOptions,
 	IFormPresentationOptions
 } from './FormBuilder'
-import Terminal from '../utilities/TerminalUtility'
+import TerminalUtility from '../utilities/TerminalUtility'
 import { shuffle } from 'lodash'
 import SpruceError from '../errors/SpruceError'
 import chalk from 'chalk'
@@ -114,7 +114,7 @@ export default class QuizBuilder<
 	Q extends IQuizQuestions
 > {
 	public formBuilder: FormBuilder<T>
-	public term: Terminal
+	public term: TerminalUtility
 	public randomizeQuestions = true
 	public originalQuestions: IQuizQuestions
 	public lastResults?: QuizPresentationResults<Q>

@@ -2,7 +2,7 @@ import Schema, {
 	SchemaDefinitionValues
 } from '@sprucelabs/schema'
 
-import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definition'
+import namedTemplateItemDefinition from '../../src/schemas/namedTemplateItem.definition'
 
 type NamedTemplateItemDefinition = typeof namedTemplateItemDefinition
 export interface INamedTemplateItemDefinition extends NamedTemplateItemDefinition {}

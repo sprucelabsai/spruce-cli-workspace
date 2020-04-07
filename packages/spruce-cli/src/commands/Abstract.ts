@@ -1,5 +1,5 @@
 import { Log } from '@sprucelabs/log'
-import Terminal from '../utilities/TerminalUtility'
+import TerminalUtility from '../utilities/TerminalUtility'
 import path from 'path'
 import { Command } from 'commander'
 import FormBuilder, { IFormOptions } from '../builders/FormBuilder'
@@ -11,7 +11,7 @@ import { IGenerators } from '../generators'
 import { IUtilities } from '../utilities'
 import { Templates } from '@sprucelabs/spruce-templates'
 import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '../.spruce/errors/codes.types'
+import { ErrorCode } from '../../.spruce/errors/codes.types'
 import QuizBuilder, {
 	IQuizOptions,
 	IQuizQuestions
@@ -29,7 +29,7 @@ export interface ICommandOptions {
 	templates: Templates
 }
 
-export default abstract class AbstractCommand extends Terminal {
+export default abstract class AbstractCommand extends TerminalUtility {
 	/** Spruce logger */
 	public log: Log
 	public stores: IStores
@@ -41,7 +41,7 @@ export default abstract class AbstractCommand extends Terminal {
 	public templates: Templates
 
 	public constructor(options: ICommandOptions) {
-		super()
+		super(options)
 
 		const {
 			stores,
@@ -122,9 +122,9 @@ export default abstract class AbstractCommand extends Terminal {
 	}
 
 	/** Make a file pass lint */
-	public prettyFormatFile(filePath: string) {
-		// TODO get this to work
-		console.log('prettier on', this.resolvePath(filePath))
+	public async prettyFormatFile(filePath: string) {
+		this.log.info(`lint running on all files, not just ${filePath}`)
+		return this.utilities.package.lintFix()
 	}
 
 	/** Kick off a build */

@@ -2,7 +2,7 @@ import fs from 'fs'
 import { Mercury } from '@sprucelabs/mercury'
 import { Log } from '@sprucelabs/log'
 import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '../.spruce/errors/codes.types'
+import { ErrorCode } from '../../.spruce/errors/codes.types'
 
 /** Are we running globally or locally? */
 export enum StoreScope {
@@ -142,7 +142,7 @@ export default abstract class AbstractStore<
 			throw new SpruceError({
 				code: ErrorCode.GenericMercury,
 				friendlyMessage:
-					'user store was trying to auth on mercury but had not options (meaning it was never connected)'
+					'user store was trying to auth on mercury but had no options (meaning it was never connected)'
 			})
 		}
 		// Connect with new creds

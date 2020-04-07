@@ -22,7 +22,7 @@ export default class SchemaCommand extends AbstractCommand {
 			.option(
 				'-d, --destinationDir <dir>',
 				'Where should I write the types files?',
-				'./src/.spruce/schemas'
+				'./.spruce/schemas'
 			)
 			.action(this.pull.bind(this))
 
@@ -31,14 +31,14 @@ export default class SchemaCommand extends AbstractCommand {
 			.command('schema:create [named]')
 			.description('Define a new thing!')
 			.option(
-				'-dd, --definitionDestinationDir <dir>',
+				'-dd, --definitionDestinationDir <definitionDir>',
 				'Where should I write the definition file?',
 				'./src/schemas'
 			)
 			.option(
 				'-td --typesDestinationDir <typesDir>',
 				'Where should I write the types file that supports the definition?',
-				'./src/.spruce/schemas'
+				'./.spruce/schemas'
 			)
 			.action(this.create.bind(this))
 
@@ -47,14 +47,14 @@ export default class SchemaCommand extends AbstractCommand {
 			.command('schema:sync')
 			.description('Generates type files on all definition files.')
 			.option(
-				'-l, --lookupDir <dir>',
+				'-l, --lookupDir <lookupDir>',
 				'Where should I look for definitions files (*.definition.ts)?',
 				'./src'
 			)
 			.option(
-				'-d, --destinationDir <dir>',
+				'-d, --destinationDir <destinationDir>',
 				'Where should I write the definitions file?',
-				'./src/.spruce/schemas'
+				'./.spruce/schemas'
 			)
 			.action(this.sync.bind(this))
 	}
@@ -64,7 +64,8 @@ export default class SchemaCommand extends AbstractCommand {
 		const destinationDir = cmd.destinationDir as string
 
 		// Make sure schema module is installed
-		await this.services.yarn.install('@sprucelabs/schema')
+		this.startLoading()
+		await this.utilities.package.install('@sprucelabs/schema')
 
 		this.startLoading('Fetching schemas and field types')
 
@@ -102,7 +103,9 @@ export default class SchemaCommand extends AbstractCommand {
 		)
 
 		// Make sure schema module is installed
-		await this.services.yarn.install('@sprucelabs/schema')
+		this.startLoading()
+		await this.utilities.package.install('@sprucelabs/schema')
+		this.stopLoading()
 
 		const matches = await globby(search)
 
@@ -171,7 +174,9 @@ export default class SchemaCommand extends AbstractCommand {
 		})
 
 		// Make sure schema module is installed
-		await this.services.yarn.install('@sprucelabs/schema')
+		this.startLoading()
+		await this.utilities.package.install('@sprucelabs/schema')
+		this.stopLoading()
 
 		// Build paths
 		const definitionDestination = this.resolvePath(

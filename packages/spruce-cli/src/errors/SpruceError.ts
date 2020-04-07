@@ -1,6 +1,6 @@
 import BaseSpruceError from '@sprucelabs/error'
-import { ErrorCode } from '../.spruce/errors/codes.types'
-import { ErrorOptions } from '../.spruce/errors/options.types'
+import { ErrorCode } from '../../.spruce/errors/codes.types'
+import { ErrorOptions } from '../../.spruce/errors/options.types'
 
 export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 	/** An easy to understand version of the errors */
@@ -20,7 +20,7 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 
 			case ErrorCode.UserNotFound:
 				message = 'Could not find a user.'
-				message += `token: "${options.token}", userId: "${options.userId}"`
+				message += ` token: "${options.token}", userId: "${options.userId}"`
 				break
 
 			case ErrorCode.Generic:
@@ -32,7 +32,8 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				break
 
 			case ErrorCode.GenericMercury:
-				message = `Not sure what happened: Event ${options.eventName}`
+				message = `Not sure what happened: Event "${options.eventName ??
+					'n/a'}": ${options.friendlyMessage}`
 				break
 			case ErrorCode.TranspileFailed:
 				message = 'Could not transpile (ts -> js) a script'

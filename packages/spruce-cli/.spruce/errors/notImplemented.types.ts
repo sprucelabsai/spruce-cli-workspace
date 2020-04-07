@@ -4,7 +4,7 @@ import {
 	SchemaDefinitionValues
 } from '@sprucelabs/schema'
 
-import notImplementedDefinition from '../../errors/notImplemented.definition'
+import notImplementedDefinition from '../../src/errors/notImplemented.definition'
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { ErrorCode } from './codes.types'
 

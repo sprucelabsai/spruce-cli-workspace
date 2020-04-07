@@ -4,7 +4,7 @@ import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definit
 import path from 'path'
 import globby from 'globby'
 import SpruceError from '../../errors/SpruceError'
-import { ErrorCode } from '../../.spruce/errors/codes.types'
+import { ErrorCode } from '../../../.spruce/errors/codes.types'
 
 export default class ErrorCommand extends AbstractCommand {
 	public attachCommands(program: Command): void {
@@ -19,7 +19,7 @@ export default class ErrorCommand extends AbstractCommand {
 			.option(
 				'-td --typesDestinationDir <typesDestinationDir>',
 				'Where should I write the types file that supports the error?',
-				'./src/.spruce/errors'
+				'./.spruce/errors'
 			)
 			.action(this.create.bind(this))
 
@@ -34,12 +34,12 @@ export default class ErrorCommand extends AbstractCommand {
 			.option(
 				'-d, --destinationDir <dir>',
 				'Where should I write the definitions file?',
-				'./src/.spruce/errors'
+				'./.spruce/errors'
 			)
 			.option(
 				'-td, --typesDestinationDir <typesDestinationDir>',
 				'Where should I write the definitions file?',
-				'./src/.spruce/errors'
+				'./.spruce/errors'
 			)
 			.option(
 				'-dd, --errorDestinationDir <errorDestinationDir>',
@@ -91,7 +91,9 @@ export default class ErrorCommand extends AbstractCommand {
 		}
 
 		// Make sure error module is installed
-		await this.services.yarn.install('@sprucelabs/error')
+		this.startLoading()
+		await this.utilities.package.install('@sprucelabs/error')
+		this.stopLoading()
 
 		// Write the definition
 		await this.writeFile(
@@ -183,7 +185,9 @@ export default class ErrorCommand extends AbstractCommand {
 		}[] = []
 
 		// Make sure error module is installed
-		await this.services.yarn.install('@sprucelabs/error')
+		this.startLoading()
+		await this.utilities.package.install('@sprucelabs/error')
+		this.stopLoading()
 
 		// Lets clear out the current error dir
 		// this.deleteFile()

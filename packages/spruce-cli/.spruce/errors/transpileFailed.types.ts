@@ -4,7 +4,7 @@ import {
 	SchemaDefinitionValues
 } from '@sprucelabs/schema'
 
-import transpileFailedDefinition from '../../errors/transpileFailed.definition'
+import transpileFailedDefinition from '../../src/errors/transpileFailed.definition'
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { ErrorCode } from './codes.types'
 

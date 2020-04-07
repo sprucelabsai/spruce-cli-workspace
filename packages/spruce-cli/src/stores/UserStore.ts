@@ -1,16 +1,16 @@
 import jwt from 'jsonwebtoken'
 import AbstractStore, { StoreAuth, IBaseStoreSettings } from './AbstractStore'
-import { SpruceSchemas } from '../.spruce/schemas/core.types'
+import { SpruceSchemas } from '../../.spruce/schemas/core.types'
 import { IMercuryGQLBody } from '@sprucelabs/mercury'
 import { SpruceEvents } from '../types/events-generated'
 import gql from 'graphql-tag'
 import Schema from '@sprucelabs/schema'
 import userWithTokenDefinition from '../schemas/userWithToken.definition'
 import userDefinition from '../schemas/user.definition'
-import { IUserWithToken } from '../.spruce/schemas/userWithToken.types'
-import { IUser } from '../.spruce/schemas/user.types'
+import { IUserWithToken } from '../../.spruce/schemas/userWithToken.types'
+import { IUser } from '../../.spruce/schemas/user.types'
 import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '../.spruce/errors/codes.types'
+import { ErrorCode } from '../../.spruce/errors/codes.types'
 
 /** Settings i need to save */
 interface IUserStoreSettings extends IBaseStoreSettings {
@@ -171,7 +171,7 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 		const loggedInUsers = this.readValue('authedUsers') || []
 		const loggedInUser = loggedInUsers.find(auth => auth.isLoggedIn)
 
-		// Valid the saved user we have is valid
+		// Validate the saved user
 		if (loggedInUser) {
 			try {
 				const instance = new Schema(userWithTokenDefinition, loggedInUser)

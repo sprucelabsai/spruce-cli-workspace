@@ -1,5 +1,4 @@
 import chalk from 'chalk'
-import Debug from 'debug'
 import {
 	FieldType,
 	FieldDefinitionMap,
@@ -10,9 +9,13 @@ import inquirer from 'inquirer'
 // @ts-ignore
 import fonts from 'cfonts'
 import ora from 'ora'
-import { omit } from 'lodash'
+import { filter } from 'lodash'
 // @ts-ignore
 import emphasize from 'emphasize'
+import AbstractUtility from './AbstractUtility'
+import log from '@sprucelabs/log'
+import fs from 'fs-extra'
+import path from 'path'
 
 let fieldCount = 0
 function generateInquirerFieldName() {
@@ -69,6 +72,26 @@ export enum ITerminalEffect {
 	SpruceHeader = 'shade'
 }
 
+/** Remove effects cfonts does not support */
+function filterEffectsForCFonts(effects: ITerminalEffect[]) {
+	return filter(
+		effects,
+		effect =>
+			[
+				ITerminalEffect.SpruceHeader,
+				ITerminalEffect.Reset,
+				ITerminalEffect.Bold,
+				ITerminalEffect.Dim,
+				ITerminalEffect.Italic,
+				ITerminalEffect.Underline,
+				ITerminalEffect.Inverse,
+				ITerminalEffect.Hidden,
+				ITerminalEffect.Strikethrough,
+				ITerminalEffect.Visible
+			].indexOf(effect) === -1
+	)
+}
+
 /** What prompt() returns if isRequired=true */
 type PromptReturnTypeRequired<T extends IFieldDefinition> = Required<
 	FieldDefinitionMap[T['type']]
@@ -79,9 +102,7 @@ type PromptReturnTypeOptional<
 	T extends IFieldDefinition
 > = FieldDefinitionMap[T['type']]['value']
 
-const debug = Debug('@sprucelabs/cli')
-
-export default class Terminal {
+export default class TerminalUtility extends AbstractUtility {
 	private loader?: ora.Ora | null
 
 	/** Write a line with various effects applied */
@@ -141,16 +162,14 @@ export default class Terminal {
 
 		if (headline) {
 			this.writeLn('')
-			this.bar(barEffects)
 			this.writeLn('')
 
-			this.headline(`${headline} 🌲🤖`, headlineEffects)
+			this.headline(`${headline} 🌲🤖`, headlineEffects, barEffects)
 			this.writeLn('')
 		}
 
 		if (lines) {
 			this.writeLn('')
-			this.bar(barEffects)
 
 			this.writeLns(lines, bodyEffects)
 
@@ -173,32 +192,23 @@ export default class Terminal {
 
 	public headline(
 		message: string,
-		effects: ITerminalEffect[] = [ITerminalEffect.Blue, ITerminalEffect.Bold]
+		effects: ITerminalEffect[] = [ITerminalEffect.Blue, ITerminalEffect.Bold],
+		barEffects: ITerminalEffect[] = []
 	) {
-		this.bar()
-		const isSpruce = effects[0] === ITerminalEffect.SpruceHeader
+		const isSpruce = effects.indexOf(ITerminalEffect.SpruceHeader) > -1
 
 		if (isSpruce) {
 			fonts.say(message, {
 				font: ITerminalEffect.SpruceHeader,
-				color: 'candy',
 				align: 'left',
-				colors: omit(effects, [
-					ITerminalEffect.Reset,
-					ITerminalEffect.Bold,
-					ITerminalEffect.Dim,
-					ITerminalEffect.Italic,
-					ITerminalEffect.Underline,
-					ITerminalEffect.Inverse,
-					ITerminalEffect.Hidden,
-					ITerminalEffect.Strikethrough,
-					ITerminalEffect.Visible
-				])
+				space: false,
+				colors: filterEffectsForCFonts(effects)
 			})
 		} else {
+			this.bar(barEffects)
 			this.writeLn(message, effects)
+			this.bar(barEffects)
 		}
-		this.bar()
 	}
 
 	/** A headline */
@@ -210,17 +220,7 @@ export default class Terminal {
 		fonts.say(message, {
 			// Font: 'tiny',
 			align: 'center',
-			colors: omit(effects, [
-				ITerminalEffect.Reset,
-				ITerminalEffect.Bold,
-				ITerminalEffect.Dim,
-				ITerminalEffect.Italic,
-				ITerminalEffect.Underline,
-				ITerminalEffect.Inverse,
-				ITerminalEffect.Hidden,
-				ITerminalEffect.Strikethrough,
-				ITerminalEffect.Visible
-			])
+			colors: filterEffectsForCFonts(effects)
 		})
 	}
 
@@ -232,8 +232,8 @@ export default class Terminal {
 	/** When outputting something information */
 	public info(message: string) {
 		if (typeof message !== 'string') {
-			debug('Invalid info log')
-			debug(message)
+			this.log.debug('Invalid info log')
+			this.log.debug(message)
 			return
 		}
 
@@ -343,8 +343,10 @@ export default class Terminal {
 		}
 
 		switch (fieldDefinition.type) {
+			// Map select options to prompt list choices
 			case FieldType.Select:
 				promptOptions.type = 'list'
+
 				promptOptions.choices = fieldDefinition.options.choices.map(choice => ({
 					name: choice.label,
 					value: choice.value
@@ -358,7 +360,27 @@ export default class Terminal {
 					})
 				}
 				break
+			// File select
+			case FieldType.File:
+				promptOptions.type = 'file'
+				promptOptions.root = path.join(defaultValue ?? this.cwd, '/')
 
+				// Only let people select an actual file
+				promptOptions.validate = (value: string) => {
+					return (
+						fs.existsSync(value) &&
+						!fs.lstatSync(value).isDirectory() &&
+						path.extname(value) === '.ts'
+					)
+				}
+				// Strip out cwd from the paths while selecting
+				promptOptions.transformer = (path: string) => {
+					const cleanedPath = path.replace(promptOptions.root, '')
+					return cleanedPath.length === 0 ? promptOptions.root : cleanedPath
+				}
+				break
+
+			// Defaults to input
 			default:
 				promptOptions.type = 'input'
 		}
@@ -372,9 +394,13 @@ export default class Terminal {
 	public handleError(err: Error) {
 		this.stopLoading()
 
+		const message = err.message
+		// Remove message from stack so the message is not doubled up
+		const stack = err.stack ? err.stack.replace(message, '') : ''
+
 		this.section({
-			headline: err.message,
-			lines: (err.stack || '').split('/n'),
+			headline: message,
+			lines: stack.split('/n'),
 			headlineEffects: [ITerminalEffect.Bold, ITerminalEffect.Red],
 			barEffects: [ITerminalEffect.Red],
 			bodyEffects: [ITerminalEffect.Red]
@@ -382,4 +408,4 @@ export default class Terminal {
 	}
 }
 
-export const terminal = new Terminal()
+export const terminal = new TerminalUtility({ cwd: process.cwd(), log })
