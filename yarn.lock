@@ -1007,10 +1007,10 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-1.0.8.tgz#2a3f3d842faeec20a3cd786d8773f2ced0508cef"
   integrity sha512-oL2Btuo0tDSM248edEbIFWz2cKOm57Z2C2T4lkYRGeKTKe8wzw9cWn4C7vWwbUEQNzv4fB8eEsf/M5DhcSgFFQ==
 
-"@sprucelabs/log@^10.0.11":
-  version "10.0.11"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.0.11.tgz#0f34e7f769aa38c2ba32b19f44860961a6485cdb"
-  integrity sha512-m+DFnsOA/58LwgUD59SqhjaEr1xQFxp8G/ZGZSOTrNC+lv2uJiNobV4I3lI7A5oCr7ZeQ6MYipThXA6zZ8p4Sg==
+"@sprucelabs/log@10.1.0-prerelease-namespace.3":
+  version "10.1.0-prerelease-namespace.3"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.1.0-prerelease-namespace.3.tgz#5e406eb3d168402b9f71c532eaa1247e2a528508"
+  integrity sha512-paRsLGNZOgzcXp38uchH5Q0vNkbOXm3/m4wJbZX1veQ6OUyML+z9OW2PvkNUzupt8HPq+N5Mo5btMjfKluEqHw==
 
 "@sprucelabs/mercury@9.1.1-pre-89e92490.0":
   version "9.1.1-pre-89e92490.0"

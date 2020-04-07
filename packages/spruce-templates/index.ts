@@ -1,7 +1,7 @@
 import handlebars from 'handlebars'
 import fs from 'fs'
 import path from 'path'
-import log from '@sprucelabs/log'
+import log from './src/lib/log'
 
 import {
 	ISchemaTemplateItem,

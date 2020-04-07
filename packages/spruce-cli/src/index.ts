@@ -5,7 +5,7 @@ import { Command } from 'commander'
 import globby from 'globby'
 import pkg from '../package.json'
 import { IServices } from './services'
-import log, { LogLevel } from '@sprucelabs/log'
+import log from './lib/log'
 import {
 	Mercury,
 	IMercuryConnectOptions,
@@ -66,9 +66,6 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	// const cwd = process.cwd()
 	// Force run in schema for now
 	const cwd = '/Users/taylorromero/Development/SpruceLabs/spruce-schema/'
-
-	// Setup log
-	log.setOptions({ level: LogLevel.Info })
 
 	// Setup mercury
 	const mercury = new Mercury()
