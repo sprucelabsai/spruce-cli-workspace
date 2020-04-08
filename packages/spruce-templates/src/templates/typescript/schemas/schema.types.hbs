@@ -17,26 +17,26 @@ import * as SpruceSchema from '@sprucelabs/schema'
 
 {{#each schemaTemplateItems}}
 
-	export namespace SpruceSchemas.{{namespace}}.{{typeName}} {
+	export namespace SpruceSchemas.{{namespace}}.{{pascalName}} {
 		export const id = '{{{escape id}}}'
 
 		/** {{definition.description}} */
-		export interface {{interfaceName}} {
+		export interface {{pascalName}} {
 			{{> schemaValues definition }}
 		}
 
-		/** The interface for the schema definition for a {{typeName}} */
+		/** The interface for the schema definition for a {{readableName}} */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 			{{> schemaDefinition schema=definition renderAs="type" }}
 		}
 
-		/** The schema definition for a {{typeName}} */
-		export const definition: SpruceSchemas.{{namespace}}.{{typeName}}.IDefinition = {
+		/** The schema definition for a {{pascalName}} */
+		export const definition: SpruceSchemas.{{namespace}}.{{pascalName}}.IDefinition = {
 			{{> schemaDefinition schema=definition renderAs="value" }}
 		}
 
 		/** The type of a schema instance built off this definition */
-		export type Instance = Schema<SpruceSchemas.{{namespace}}.{{typeName}}.IDefinition>
+		export type Instance = Schema<SpruceSchemas.{{namespace}}.{{pascalName}}.IDefinition>
 	}
 	
 {{/each}}

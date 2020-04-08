@@ -1,6 +1,6 @@
 import handlebars from 'handlebars'
 import {
-	IFieldDefinition,
+	FieldDefinition,
 	ISchemaTemplateItem,
 	FieldClassMap,
 	FieldType
@@ -8,7 +8,7 @@ import {
 
 /* The type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */
 handlebars.registerHelper('fieldDefinitionValueType', function(
-	fieldDefinition: IFieldDefinition,
+	fieldDefinition: FieldDefinition,
 	options
 ) {
 	const {

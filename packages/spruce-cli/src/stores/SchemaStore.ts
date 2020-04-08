@@ -1,12 +1,11 @@
 import AbstractStore from './AbstractStore'
 import {
 	ISchemaDefinition,
-	Template as SchemaTemplate,
 	FieldClassMap,
 	FieldType,
-	IFieldTemplateDetails,
-	ISchemaTemplateItem
+	IFieldTemplateDetails
 } from '@sprucelabs/schema'
+import { ISchemaTypesTemplateItem } from '@sprucelabs/spruce-templates'
 import {
 	userDefinition,
 	userLocationDefinition,
@@ -15,11 +14,6 @@ import {
 	groupDefinition,
 	aclDefinition
 } from '../temporary/schemas'
-
-/** The schema template with namespace dropped in */
-export interface ISchemaTemplateNamespaceItem extends ISchemaTemplateItem {
-	namespace: string
-}
 
 /** The mapping of type keys (string, phoneNumber) to definitions */
 export interface IFieldTypeMap {
@@ -30,10 +24,9 @@ export default class SchemaStore extends AbstractStore {
 	public name = 'schema'
 
 	/** Get the schema map */
-	public async schemaTemplateItemsWithNamespace(): Promise<
-		ISchemaTemplateNamespaceItem[]
-	> {
-		/** Get all schemas from api (TODO load from API) */
+	public async schemaTemplateItems(): Promise<ISchemaTypesTemplateItem[]> {
+		/** Get all schemas from api  */
+		// TODO load from api
 		const schemas: ISchemaDefinition[] = [
 			userDefinition,
 			skillDefinition,
@@ -43,13 +36,13 @@ export default class SchemaStore extends AbstractStore {
 			aclDefinition
 		]
 
-		const templateItems = SchemaTemplate.generateTemplateItems(schemas)
-		const coreTemplateItems = templateItems.map(item => ({
-			...item,
-			namespace: 'core'
-		}))
+		// Each skill's slug will be the namespace
+		const templateItems = this.utilities.schema.generateTemplateItems({
+			namespace: 'core',
+			definitions: schemas
+		})
 
-		return coreTemplateItems
+		return templateItems
 	}
 
 	public async fieldTypeMap(): Promise<IFieldTypeMap> {

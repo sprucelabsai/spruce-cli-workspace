@@ -5,7 +5,7 @@ import Schema, {
 	SchemaDefinitionPartialValues,
 	SchemaFieldNames,
 	ISelectFieldDefinitionChoice,
-	IFieldDefinition,
+	FieldDefinition,
 	SchemaErrorCode,
 	SchemaError
 } from '@sprucelabs/schema'
@@ -56,9 +56,9 @@ export interface IFormOptions<T extends ISchemaDefinition> {
 	initialValues?: SchemaDefinitionPartialValues<T>
 	onWillAskQuestion?: <K extends SchemaFieldNames<T>>(
 		name: K,
-		fieldDefinition: IFieldDefinition,
+		fieldDefinition: FieldDefinition,
 		values: SchemaDefinitionPartialValues<T>
-	) => IFieldDefinition
+	) => FieldDefinition
 }
 
 interface IHandlers<T extends ISchemaDefinition> {

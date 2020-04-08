@@ -37,6 +37,7 @@ import VmService from './services/VmService'
 /** Addons */
 import './addons/filePrompt.addon'
 import PackageUtility from './utilities/PackageUtility'
+import SchemaUtility from './utilities/SchemaUtility'
 
 /**
  * For handling debugger not attaching right away
@@ -73,6 +74,18 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	// Setup log
 	log.setOptions({ level: LogLevel.Info })
 
+	// Setup utilities
+	const utilityOptions: IUtilityOptions = {
+		cwd,
+		log
+	}
+
+	const utilities: IUtilities = {
+		names: new NamesUtility(utilityOptions),
+		package: new PackageUtility(utilityOptions),
+		schema: new SchemaUtility(utilityOptions)
+	}
+
 	// Setup mercury
 	const mercury = new Mercury()
 
@@ -80,7 +93,8 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	const storeOptions = {
 		mercury,
 		cwd,
-		log
+		log,
+		utilities
 	}
 
 	const stores: IStores = {
@@ -121,17 +135,6 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	}
 
 	await mercury.connect(connectOptions)
-
-	// Setup utilities
-	const utilityOptions: IUtilityOptions = {
-		cwd,
-		log
-	}
-
-	const utilities: IUtilities = {
-		names: new NamesUtility(utilityOptions),
-		package: new PackageUtility(utilityOptions)
-	}
 
 	// Setup services
 	const serviceOptions: IServiceOptions = {

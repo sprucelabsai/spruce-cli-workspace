@@ -2,8 +2,8 @@ import chalk from 'chalk'
 import {
 	FieldType,
 	FieldDefinitionMap,
-	IFieldDefinition,
-	BaseField
+	FieldDefinition,
+	AbstractField
 } from '@sprucelabs/schema'
 import inquirer from 'inquirer'
 // @ts-ignore
@@ -93,13 +93,13 @@ function filterEffectsForCFonts(effects: ITerminalEffect[]) {
 }
 
 /** What prompt() returns if isRequired=true */
-type PromptReturnTypeRequired<T extends IFieldDefinition> = Required<
+type PromptReturnTypeRequired<T extends FieldDefinition> = Required<
 	FieldDefinitionMap[T['type']]
 >['value']
 
 /** What prompt() returns if isRequired!==true */
 type PromptReturnTypeOptional<
-	T extends IFieldDefinition
+	T extends FieldDefinition
 > = FieldDefinitionMap[T['type']]['value']
 
 export default class TerminalUtility extends AbstractUtility {
@@ -315,7 +315,7 @@ export default class TerminalUtility extends AbstractUtility {
 	}
 
 	/** Ask the user for something */
-	public async prompt<T extends IFieldDefinition>(
+	public async prompt<T extends FieldDefinition>(
 		definition: T
 	): Promise<
 		T['isRequired'] extends true
@@ -323,7 +323,7 @@ export default class TerminalUtility extends AbstractUtility {
 			: PromptReturnTypeOptional<T>
 	> {
 		const name = generateInquirerFieldName()
-		const fieldDefinition: IFieldDefinition = definition
+		const fieldDefinition: FieldDefinition = definition
 		const { isRequired, defaultValue, label } = fieldDefinition
 
 		const promptOptions: Record<string, any> = {
@@ -332,7 +332,7 @@ export default class TerminalUtility extends AbstractUtility {
 			message: `${label}:`
 		}
 
-		const field = BaseField.field(fieldDefinition)
+		const field = AbstractField.field(fieldDefinition)
 
 		// Setup transform and validate
 		promptOptions.transformer = (value: string) => {

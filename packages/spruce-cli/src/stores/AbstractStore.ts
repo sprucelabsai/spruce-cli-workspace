@@ -3,6 +3,7 @@ import { Mercury } from '@sprucelabs/mercury'
 import { Log } from '@sprucelabs/log'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
+import { IUtilities } from '../utilities'
 
 /** Are we running globally or locally? */
 export enum StoreScope {
@@ -18,6 +19,7 @@ export enum StoreAuth {
 
 /** Options needed by the store on instantiation */
 export interface IStoreOptions {
+	utilities: IUtilities
 	mercury: Mercury
 	cwd: string
 	scope?: StoreScope
@@ -38,6 +40,9 @@ export default abstract class AbstractStore<
 	/** For logging */
 	public log: Log
 
+	/** All the utilities */
+	public utilities: IUtilities
+
 	/** How we're logged in, user or skill */
 	public get authType() {
 		return this.readValue('authType') ?? StoreAuth.User
@@ -57,13 +62,14 @@ export default abstract class AbstractStore<
 	abstract name: string
 
 	public constructor(options: IStoreOptions) {
-		const { mercury, cwd, scope, authType, log } = options
+		const { mercury, cwd, scope, authType, log, utilities } = options
 
 		this.mercury = mercury
 		this.cwd = cwd
 		this.scope = scope ?? this.scope
 		this.authType = authType ?? this.authType
 		this.log = log
+		this.utilities = utilities
 
 		// Create save dir
 		const { directory: globalDirectory } = this.getGlobalConfigPath()

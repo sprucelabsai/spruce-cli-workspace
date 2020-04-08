@@ -18,9 +18,11 @@ export default class SchemaGenerator extends AbstractGenerator {
 		const definition = this.services.vm.importDefinition(sourceFile)
 
 		//Get variations on name
-		const camelName = this.utilities.names.toCamel(definition.id)
-		const pascalName = this.utilities.names.toPascal(definition.id)
-		const readableName = definition.name
+		const {
+			camelName,
+			pascalName,
+			readableName
+		} = this.utilities.schema.generateNames(definition)
 		const description = definition.description
 
 		// Files

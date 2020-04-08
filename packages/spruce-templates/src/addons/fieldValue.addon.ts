@@ -1,9 +1,9 @@
 import handlebars from 'handlebars'
-import { IFieldDefinition } from '@sprucelabs/schema'
+import { FieldDefinition } from '@sprucelabs/schema'
 
 /** Drop in the value of a field which quotes if needed */
 handlebars.registerHelper('fieldValue', function(
-	fieldDefinition: IFieldDefinition,
+	fieldDefinition: FieldDefinition,
 	value: any
 ) {
 	if (value) {

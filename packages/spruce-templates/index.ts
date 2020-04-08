@@ -3,11 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import log from '@sprucelabs/log'
 
-import {
-	ISchemaTemplateItem,
-	IFieldTemplateDetails,
-	ISchemaDefinition
-} from '@sprucelabs/schema'
+import { IFieldTemplateDetails, ISchemaDefinition } from '@sprucelabs/schema'
 
 // Import addons
 import * as escape from './src/addons/escape.addon'
@@ -25,6 +21,19 @@ log.info('addon fieldTypeEnum', fieldTypeEnum)
 log.info('addon fieldValue', fieldValue)
 log.info('addon isEqual', isEqual)
 log.info('addon startCase', startCase)
+
+// Extra definitions
+// TODO where do these go?
+export interface ISchemaTemplateNames {
+	pascalName: string
+	camelName: string
+	readableName: string
+}
+export interface ISchemaTypesTemplateItem extends ISchemaTemplateNames {
+	namespace: string
+	id: string
+	definition: ISchemaDefinition
+}
 
 // Import actual templates
 const templatePath = path.join(__dirname, 'src', 'templates', 'typescript')
@@ -74,11 +83,15 @@ const test: string = fs
 	.readFileSync(path.join(templatePath, 'tests/Test.test.hbs'))
 	.toString()
 
+const fieldTypes: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/fields/fields.types.hbs'))
+	.toString()
+
 // Template generators
 export const templates = {
 	/** All definitions */
 	schemaTypes(options: {
-		schemaTemplateItems: (ISchemaTemplateItem & { namespace: string })[]
+		schemaTemplateItems: ISchemaTypesTemplateItem[]
 		typeMap: { [fieldType: string]: IFieldTemplateDetails }
 	}) {
 		const template = handlebars.compile(schemaTypes)
@@ -176,6 +189,17 @@ export const templates = {
 	/** Test file */
 	test(options: { pascalName: string }) {
 		const template = handlebars.compile(test)
+		return template(options)
+	},
+
+	/** The types file for all the schema fields being used*/
+	fieldTypes(options: {
+		fields: {
+			pascalName: string
+			className: string
+		}[]
+	}) {
+		const template = handlebars.compile(fieldTypes)
 		return template(options)
 	}
 }

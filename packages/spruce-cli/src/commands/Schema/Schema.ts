@@ -71,7 +71,7 @@ export default class SchemaCommand extends AbstractCommand {
 		this.startLoading('Fetching schemas and field types')
 
 		// Load types and namespaces
-		const schemaTemplateItems = await this.stores.schema.schemaTemplateItemsWithNamespace()
+		const schemaTemplateItems = await this.stores.schema.schemaTemplateItems()
 		const typeMap = await this.stores.schema.fieldTypeMap()
 
 		// Fill out template

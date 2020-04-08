@@ -1,13 +1,13 @@
 import handlebars from 'handlebars'
 import {
-	IFieldDefinition,
+	FieldDefinition,
 	ISchemaTemplateItem,
 	FieldType
 } from '@sprucelabs/schema'
 
 /** Renders field options */
 handlebars.registerHelper('fieldDefinitionOptions', function(
-	fieldDefinition: IFieldDefinition,
+	fieldDefinition: FieldDefinition,
 	renderAs,
 	options
 ) {
