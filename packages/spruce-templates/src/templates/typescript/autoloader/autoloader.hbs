@@ -1,14 +1,19 @@
-{{#each interfaces}}
-import { {{interfaceName}} } from '{{relativeFilePath}}'
-{{/each}}
+// Import base class
+import {{abstractClassName}} from '{{abstractClassRelativePath}}'
 
+// Import each matching class that will be autoloaded
 {{#each classes}}
 import {{className}} from '{{relativeFilePath}}'
 {{/each}}
 
+// Import necessary interface(s)
+{{#each interfaces}}
+import { {{interfaceName}} } from '{{relativeFilePath}}'
+{{/each}}
+
 export default async function autoloader(options: {
-	constructorOptions: ICommandOptions
-	after: (instance: AbstractCommand) => Promise<void>
+	constructorOptions: {{#each interfaces}}{{#if @first}}{{interfaceName}}{{else}} | {{interfaceName}}{{/if}}{{/each}}
+	after: (instance: {{abstractClassName}}) => Promise<void>
 }) {
 	const { constructorOptions, after } = options
 

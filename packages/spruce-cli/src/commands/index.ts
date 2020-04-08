@@ -1,9 +1,20 @@
+// Import base class
+import AbstractCommand from './AbstractCommand'
+
+// Import each matching class that will be autoloaded
 import Autoloader from './Autoloader/AutoloaderCommand'
 import Error from './Error/ErrorCommand'
-import Remote from './Remote/Remote'
-import AbstractCommand, { ICommandOptions } from './AbstractCommand'
+import Onboarding from './Onboarding/OnboardingCommand'
+import Remote from './Remote/RemoteCommand'
+import Schema from './Schema/SchemaCommand'
+import Skill from './Skill/SkillCommand'
+import Test from './Test/TestCommand'
+import User from './User/UserCommand'
 
-export default async function autoLoader(options: {
+// Import necessary interface(s)
+import { ICommandOptions } from './AbstractCommand'
+
+export default async function autoloader(options: {
 	constructorOptions: ICommandOptions
 	after: (instance: AbstractCommand) => Promise<void>
 }) {
@@ -17,14 +28,39 @@ export default async function autoLoader(options: {
 	if (after) {
 		await after(error)
 	}
+	const onboarding = new Onboarding(constructorOptions)
+	if (after) {
+		await after(onboarding)
+	}
 	const remote = new Remote(constructorOptions)
 	if (after) {
 		await after(remote)
+	}
+	const schema = new Schema(constructorOptions)
+	if (after) {
+		await after(schema)
+	}
+	const skill = new Skill(constructorOptions)
+	if (after) {
+		await after(skill)
+	}
+	const test = new Test(constructorOptions)
+	if (after) {
+		await after(test)
+	}
+	const user = new User(constructorOptions)
+	if (after) {
+		await after(user)
 	}
 
 	return {
 		autoloader,
 		error,
-		remote
+		onboarding,
+		remote,
+		schema,
+		skill,
+		test,
+		user
 	}
 }

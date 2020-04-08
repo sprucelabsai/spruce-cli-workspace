@@ -186,6 +186,8 @@ export const templates = {
 
 	/** Autoloader */
 	autoloader(options: {
+		abstractClassName: string
+		abstractClassRelativePath: string
 		classes: {
 			constructorOptionsInterfaceName?: string
 			className: string

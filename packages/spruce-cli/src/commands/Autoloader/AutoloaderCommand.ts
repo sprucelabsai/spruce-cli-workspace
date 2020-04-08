@@ -108,6 +108,20 @@ export default class AutoloaderCommand extends AbstractCommand {
 
 		const info: {
 			classes: {
+				parentClassName: string
+				parentClassPath: string
+				constructorOptionsInterfaceName?: string
+				className: string
+				relativeFilePath: string
+			}[]
+			mismatchClasses: {
+				parentClassName: string
+				parentClassPath: string
+				constructorOptionsInterfaceName?: string
+				className: string
+				relativeFilePath: string
+			}[]
+			abstractClasses: {
 				constructorOptionsInterfaceName?: string
 				className: string
 				relativeFilePath: string
@@ -118,6 +132,8 @@ export default class AutoloaderCommand extends AbstractCommand {
 			}[]
 		} = {
 			classes: [],
+			mismatchClasses: [],
+			abstractClasses: [],
 			interfaces: []
 		}
 
@@ -134,6 +150,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 				ts.forEachChild(sourceFile, node => {
 					if (ts.isClassDeclaration(node) && node.name) {
 						const symbol = checker.getSymbolAtLocation(node.name)
+
 						checker.getSignaturesOfType
 						if (symbol) {
 							console.log({ symbol })
@@ -144,25 +161,55 @@ export default class AutoloaderCommand extends AbstractCommand {
 								symbol.valueDeclaration
 							)
 
+							// Const baseType = checker.getBaseTypeOfLiteralType(constructorType)
+							// checker.getFullyQualifiedName(baseType.symbol)
+							// const parentType = baseType.symbol.escapedName
+
+							let parentClassSymbol: ts.Symbol | undefined
+							if (node.heritageClauses && node.heritageClauses[0]) {
+								parentClassSymbol = checker
+									.getTypeAtLocation(node.heritageClauses[0].types[0])
+									.getSymbol()
+							}
+
+							const parentClassName =
+								// @ts-ignore
+								parentClassSymbol?.valueDeclaration.name.text
+							// @ts-ignore
+							const parentClassPath = parentClassSymbol?.parent.getName()
+
 							const isAbstractClass = tsutils.isModifierFlagSet(
 								node,
 								ts.ModifierFlags.Abstract
 							)
+							details.constructors = constructorType
+								.getConstructSignatures()
+								.map(s => this.serializeSignature({ signature: s, checker }))
 
-							if (!isAbstractClass) {
-								details.constructors = constructorType
-									.getConstructSignatures()
-									.map(s => this.serializeSignature({ signature: s, checker }))
+							const isIncludedClassRegex = new RegExp(`${suffix}$`)
+							const isIncludedClass = isIncludedClassRegex.test(node.name.text)
 
-								info.classes.push({
-									className: node.name.text.replace(suffix, ''),
-									constructorOptionsInterfaceName:
-										details.constructors &&
-										details.constructors[0].parameters &&
-										details.constructors[0].parameters[0] &&
-										details.constructors[0].parameters[0].type,
-									relativeFilePath
-								})
+							const classInfo = {
+								parentClassName,
+								parentClassPath,
+								className: node.name.text.replace(suffix, ''),
+								constructorOptionsInterfaceName:
+									details.constructors &&
+									details.constructors[0].parameters &&
+									details.constructors[0].parameters[0] &&
+									details.constructors[0].parameters[0].type,
+								relativeFilePath
+							}
+
+							if (isAbstractClass) {
+								info.abstractClasses.push(classInfo)
+							} else if (isIncludedClass) {
+								info.classes.push(classInfo)
+							} else {
+								info.mismatchClasses.push(classInfo)
+								// Log.debug(
+								// 	`Class not included because it did not match suffix: ${classInfo.className}`
+								// )
 							}
 
 							// TODO
@@ -181,6 +228,13 @@ export default class AutoloaderCommand extends AbstractCommand {
 		console.log({ info })
 
 		// Find what interface(s) we need to import
+		const abstractClassName = info.classes[0].parentClassName
+		const abstractClassRelativePath = info.classes[0].parentClassPath
+			.replace(/'/g, '')
+			.replace(/"/g, '')
+			.replace(fullDirectory, '.')
+			.replace(/\.ts$/, '')
+
 		const interfacesHash: Record<string, string> = {}
 		info.classes.forEach(c => {
 			if (c.constructorOptionsInterfaceName) {
@@ -197,6 +251,8 @@ export default class AutoloaderCommand extends AbstractCommand {
 
 		// Now generate the autoloader file
 		const autoloaderFileContents = this.templates.autoloader({
+			abstractClassName,
+			abstractClassRelativePath,
 			classes: info.classes,
 			interfaces
 		})
