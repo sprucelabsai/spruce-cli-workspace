@@ -18,6 +18,7 @@ export default class RemoteCommand extends AbstractCommand {
 	public async setEnvironment(
 		environmentParam?: RemoteStoreRemoteType | string
 	) {
+		console.log('************ setEnvironment')
 		let environment = environmentParam
 
 		if (!environment) {

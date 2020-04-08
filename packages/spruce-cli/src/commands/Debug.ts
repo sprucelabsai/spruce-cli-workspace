@@ -1,7 +1,7 @@
 import { Command } from 'commander'
 import AbstractCommand from './Abstract'
 
-export default class Debug extends AbstractCommand {
+export class Debug extends AbstractCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
 		program
@@ -20,3 +20,5 @@ export default class Debug extends AbstractCommand {
 		this.info(process.cwd())
 	}
 }
+
+export default Debug

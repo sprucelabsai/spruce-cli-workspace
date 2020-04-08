@@ -10,21 +10,22 @@ import {
 } from '@sprucelabs/schema'
 
 // Import addons
-import * as escape from './src/addons/escape.addon'
-import * as fieldDefinitionOptions from './src/addons/fieldDefinitionOptions.addon'
-import * as fieldDefinitionValueType from './src/addons/fieldDefinitionValueType.addon'
-import * as fieldTypeEnum from './src/addons/fieldTypeEnum.addon'
-import * as fieldValue from './src/addons/fieldValue.addon'
-import * as isEqual from './src/addons/isEqual.addon'
-import * as startCase from './src/addons/startCase.addon'
-
-log.info('addon escape', escape)
-log.info('addon fieldDefinitionOptions', fieldDefinitionOptions)
-log.info('addon fieldDefinitionValueType', fieldDefinitionValueType)
-log.info('addon fieldTypeEnum', fieldTypeEnum)
-log.info('addon fieldValue', fieldValue)
-log.info('addon isEqual', isEqual)
-log.info('addon startCase', startCase)
+import './src/addons/escape.addon'
+import './src/addons/fieldDefinitionOptions.addon'
+import './src/addons/fieldDefinitionValueType.addon'
+import './src/addons/fieldTypeEnum.addon'
+import './src/addons/fieldValue.addon'
+import './src/addons/isEqual.addon'
+import './src/addons/startCase.addon'
+import './src/addons/camelCase.addon'
+log.info('Addons imported')
+// Log.info('addon escape', escape)
+// log.info('addon fieldDefinitionOptions', fieldDefinitionOptions)
+// log.info('addon fieldDefinitionValueType', fieldDefinitionValueType)
+// log.info('addon fieldTypeEnum', fieldTypeEnum)
+// log.info('addon fieldValue', fieldValue)
+// log.info('addon isEqual', isEqual)
+// log.info('addon startCase', startCase)
 
 // Import actual templates
 const templatePath = path.join(__dirname, 'src', 'templates', 'typescript')
@@ -72,6 +73,10 @@ const errorExample: string = fs
 
 const test: string = fs
 	.readFileSync(path.join(templatePath, 'tests/Test.test.hbs'))
+	.toString()
+
+const autoloader: string = fs
+	.readFileSync(path.join(templatePath, 'autoloader/autoloader.hbs'))
 	.toString()
 
 // Template generators
@@ -176,6 +181,18 @@ export const templates = {
 	/** Test file */
 	test(options: { pascalName: string }) {
 		const template = handlebars.compile(test)
+		return template(options)
+	},
+
+	/** Autoloader */
+	autoloader(options: {
+		classes: {
+			constructorOptionsInterfaceName?: string
+			className: string
+			relativeFilePath: string
+		}[]
+	}) {
+		const template = handlebars.compile(autoloader)
 		return template(options)
 	}
 }

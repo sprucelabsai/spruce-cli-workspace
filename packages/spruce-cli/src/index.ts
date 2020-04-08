@@ -2,7 +2,8 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 import { terminal } from './utilities/TerminalUtility'
 import { Command } from 'commander'
-import globby from 'globby'
+// TODO: remove
+// import globby from 'globby'
 import pkg from '../package.json'
 import { IServices } from './services'
 import log from './lib/log'
@@ -17,7 +18,8 @@ import SkillStore from './stores/SkillStore'
 import UserStore from './stores/UserStore'
 import SchemaStore from './stores/SchemaStore'
 import PinService from './services/PinService'
-import AbstractCommand, { ICommandOptions } from './commands/Abstract'
+// TODO: remove
+// import AbstractCommand, { ICommandOptions } from './commands/Abstract'
 import OnboardingStore from './stores/OnboardingStore'
 import { IGenerators } from './generators'
 import SchemaGenerator from './generators/Schema'
@@ -38,12 +40,14 @@ import VmService from './services/VmService'
 import './addons/filePrompt.addon'
 import PackageUtility from './utilities/PackageUtility'
 
+import commandLoader from './commands'
+
 /**
  * For handling debugger not attaching right away
  */
 async function setup(argv: string[], debugging: boolean): Promise<void> {
 	const program = new Command()
-	const commands = []
+	// Const commands = []
 	if (debugging) {
 		// eslint-disable-next-line no-debugger
 		debugger // (breakpoints and debugger works after this one is missed)
@@ -160,37 +164,53 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	}
 
 	// Load commands and actions
-	globby.sync(`${__dirname}/commands/**/*.js`).forEach(file => {
-		try {
-			// Import and type the command
-			const cmdClass: new (
-				options: ICommandOptions
-			) => AbstractCommand = require(file).default
+	// globby.sync(`${__dirname}/commands/**/*.js`).forEach(async file => {
+	// 	try {
+	// 		// Import and type the command
+	// 		// const cmdClass: new (
+	// 		// 	options: ICommandOptions
+	// 		// ) => AbstractCommand = require(file).default
+	// 		const cmdClass = await import(file)
 
-			// Instantiate the command
-			const command = new cmdClass({
-				stores,
-				mercury,
-				services,
-				cwd,
-				log,
-				generators,
-				utilities,
-				templates
-			})
+	// 		// Instantiate the command
+	// 		const command = new cmdClass({
+	// 			stores,
+	// 			mercury,
+	// 			services,
+	// 			cwd,
+	// 			log,
+	// 			generators,
+	// 			utilities,
+	// 			templates
+	// 		})
 
-			// Attach commands to the program
-			command.attachCommands && command.attachCommands(program)
+	// 		// Attach commands to the program
+	// 		command.attachCommands && command.attachCommands(program)
 
-			// Track all commands
-			commands.push(command)
-		} catch (err) {
-			throw new SpruceError({
-				code: ErrorCode.CouldNotLoadCommand,
-				originalError: err,
-				file
-			})
-		}
+	// 		// Track all commands
+	// 		commands.push(command)
+	// 	} catch (err) {
+	// 		throw new SpruceError({
+	// 			code: ErrorCode.CouldNotLoadCommand,
+	// 			originalError: err,
+	// 			file
+	// 		})
+	// 	}
+	// })
+
+	commandLoader({
+		constructorOptions: {
+			stores,
+			mercury,
+			services,
+			cwd,
+			log,
+			generators,
+			utilities,
+			templates
+		},
+		after: async instance =>
+			instance.attachCommands && instance.attachCommands(program)
 	})
 
 	// Alphabetical sort of help output

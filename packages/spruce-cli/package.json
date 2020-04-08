@@ -34,14 +34,15 @@
 		"lint": "eslint '**/*.ts' && tsc -p . --noEmit",
 		"lint:fix": "eslint --fix '**/*.ts'",
 		"release": "semantic-release",
-		"local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS",
+		"#local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~trace node --inspect=5200 ./build/src/index.js $COMMANDS",
+		"local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~trace node -r ts-node/register --inspect=5200 ./src/index $COMMANDS",
 		"test": "ava **/*.test.ts",
 		"test:watch": "ava  **/*.test.ts --watch"
 	},
 	"dependencies": {
 		"@sprucelabs/error": "^1.0.9",
 		"@sprucelabs/log": "^10.2.0",
-		"@sprucelabs/mercury": "9.1.1-pre-89e92490.0",
+		"@sprucelabs/mercury": "^10.2.0",
 		"@sprucelabs/schema": "^1.0.6",
 		"@sprucelabs/spruce-templates": "10.0.0",
 		"cfonts": "^2.8.1",

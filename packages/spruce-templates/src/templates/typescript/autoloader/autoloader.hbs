@@ -1,0 +1,27 @@
+{{#each classes}}
+import {{className}} from '{{relativeFilePath}}'
+{{/each}}
+
+export default async function autoloader(options: {
+	constructorOptions: ICommandOptions
+	after: (instance: AbstractCommand) => Promise<void>
+}) {
+	const { constructorOptions, after } = options
+
+	{{#each classes}}
+	const {{camelCase className}} = new {{className}}(constructorOptions)
+	if (after) {
+		await after({{camelCase className}})
+	}
+	{{/each}}
+
+	return {
+		{{#each classes}}
+		{{#if @last}}
+		{{camelCase className}}
+		{{else}}
+		{{camelCase className}},
+		{{/if}}
+		{{/each}}
+	}
+}
