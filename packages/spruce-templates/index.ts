@@ -191,6 +191,10 @@ export const templates = {
 			className: string
 			relativeFilePath: string
 		}[]
+		interfaces: {
+			interfaceName: string
+			relativeFilePath: string
+		}[]
 	}) {
 		const template = handlebars.compile(autoloader)
 		return template(options)

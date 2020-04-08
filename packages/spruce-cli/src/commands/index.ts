@@ -1,7 +1,7 @@
 import Autoloader from './Autoloader/AutoloaderCommand'
 import Error from './Error/ErrorCommand'
 import Remote from './Remote/Remote'
-import AbstractCommand, { ICommandOptions } from './Abstract'
+import AbstractCommand, { ICommandOptions } from './AbstractCommand'
 
 export default async function autoLoader(options: {
 	constructorOptions: ICommandOptions

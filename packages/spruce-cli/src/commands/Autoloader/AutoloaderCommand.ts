@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { Command } from 'commander'
-import AbstractCommand from '../Abstract'
+import AbstractCommand from '../AbstractCommand'
 import log from '../../lib/log'
 import * as ts from 'typescript'
 import _ from 'lodash'
 // TODO will be used
 // import path from 'path'
 import globby from 'globby'
+import * as tsutils from 'tsutils'
 
 interface IDocEntry {
 	name?: string
@@ -125,6 +126,10 @@ export default class AutoloaderCommand extends AbstractCommand {
 		for (let i = 0; i < filePaths.length; i += 1) {
 			const filePath = filePaths[i]
 			const sourceFile = program.getSourceFile(filePath)
+			const relativeFilePath = filePath
+				.replace(fullDirectory, '.')
+				.replace(/\.ts$/, '')
+
 			if (sourceFile && _.includes(filePaths, sourceFile.fileName)) {
 				ts.forEachChild(sourceFile, node => {
 					if (ts.isClassDeclaration(node) && node.name) {
@@ -138,23 +143,27 @@ export default class AutoloaderCommand extends AbstractCommand {
 								symbol,
 								symbol.valueDeclaration
 							)
-							details.constructors = constructorType
-								.getConstructSignatures()
-								.map(s => this.serializeSignature({ signature: s, checker }))
 
-							const relativeFilePath = filePath
-								.replace(fullDirectory, '.')
-								.replace(/\.ts$/, '')
+							const isAbstractClass = tsutils.isModifierFlagSet(
+								node,
+								ts.ModifierFlags.Abstract
+							)
 
-							info.classes.push({
-								className: node.name.text.replace(suffix, ''),
-								constructorOptionsInterfaceName:
-									details.constructors &&
-									details.constructors[0].parameters &&
-									details.constructors[0].parameters[0] &&
-									details.constructors[0].parameters[0].type,
-								relativeFilePath
-							})
+							if (!isAbstractClass) {
+								details.constructors = constructorType
+									.getConstructSignatures()
+									.map(s => this.serializeSignature({ signature: s, checker }))
+
+								info.classes.push({
+									className: node.name.text.replace(suffix, ''),
+									constructorOptionsInterfaceName:
+										details.constructors &&
+										details.constructors[0].parameters &&
+										details.constructors[0].parameters[0] &&
+										details.constructors[0].parameters[0].type,
+									relativeFilePath
+								})
+							}
 
 							// TODO
 							// console.log({ sourceFile, details })
@@ -162,7 +171,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 					} else if (ts.isInterfaceDeclaration(node)) {
 						info.interfaces.push({
 							interfaceName: node.name.text,
-							relativeFilePath: filePath.replace(fullDirectory, '.')
+							relativeFilePath
 						})
 					}
 				})
@@ -171,9 +180,25 @@ export default class AutoloaderCommand extends AbstractCommand {
 
 		console.log({ info })
 
+		// Find what interface(s) we need to import
+		const interfacesHash: Record<string, string> = {}
+		info.classes.forEach(c => {
+			if (c.constructorOptionsInterfaceName) {
+				interfacesHash[c.constructorOptionsInterfaceName] =
+					c.constructorOptionsInterfaceName
+			}
+		})
+
+		const interfaceNamesToImport = Object.values(interfacesHash)
+
+		const interfaces = info.interfaces.filter(i => {
+			return _.includes(interfaceNamesToImport, i.interfaceName)
+		})
+
 		// Now generate the autoloader file
 		const autoloaderFileContents = this.templates.autoloader({
-			classes: info.classes
+			classes: info.classes,
+			interfaces
 		})
 
 		console.log(autoloaderFileContents)

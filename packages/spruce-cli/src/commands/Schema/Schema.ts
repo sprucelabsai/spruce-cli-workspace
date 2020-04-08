@@ -1,5 +1,5 @@
 import { Command } from 'commander'
-import AbstractCommand from '../Abstract'
+import AbstractCommand from '../AbstractCommand'
 import { templates } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import path from 'path'

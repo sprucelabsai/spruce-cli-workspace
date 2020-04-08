@@ -1,5 +1,5 @@
 import { Command } from 'commander'
-import AbstractCommand from './Abstract'
+import AbstractCommand from './AbstractCommand'
 
 export class Debug extends AbstractCommand {
 	/** Sets up commands */

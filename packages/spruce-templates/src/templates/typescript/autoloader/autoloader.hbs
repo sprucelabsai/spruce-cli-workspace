@@ -1,3 +1,7 @@
+{{#each interfaces}}
+import { {{interfaceName}} } from '{{relativeFilePath}}'
+{{/each}}
+
 {{#each classes}}
 import {{className}} from '{{relativeFilePath}}'
 {{/each}}
