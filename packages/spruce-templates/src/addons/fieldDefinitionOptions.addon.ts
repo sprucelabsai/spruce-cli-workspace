@@ -1,9 +1,6 @@
 import handlebars from 'handlebars'
-import {
-	FieldDefinition,
-	ISchemaTemplateItem,
-	FieldType
-} from '@sprucelabs/schema'
+import { FieldDefinition, FieldType } from '@sprucelabs/schema'
+import { ISchemaTypesTemplateItem } from '../../build'
 
 /** Renders field options */
 handlebars.registerHelper('fieldDefinitionOptions', function(
@@ -23,9 +20,8 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 		data: { root }
 	} = options
 
-	const schemaTemplateItems:
-		| (ISchemaTemplateItem & { namespace: string })[]
-		| undefined = root && root.schemaTemplateItems
+	const schemaTemplateItems: ISchemaTypesTemplateItem[] | undefined =
+		root && root.schemaTemplateItems
 
 	if (!schemaTemplateItems) {
 		throw new Error(
@@ -49,7 +45,7 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 		if (matchedTemplateItem) {
 			delete updatedOptions.schemaId
 			updatedOptions.schema = `SpruceSchemas.${matchedTemplateItem.namespace}.${
-				matchedTemplateItem.typeName
+				matchedTemplateItem.pascalName
 			}.${renderAs === 'type' ? 'IDefinition' : 'definition'}`
 		} else {
 			throw new Error('fieldDefinitionOptions could not find schema ${}')

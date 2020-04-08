@@ -1,10 +1,6 @@
 import handlebars from 'handlebars'
-import {
-	FieldDefinition,
-	ISchemaTemplateItem,
-	FieldClassMap,
-	FieldType
-} from '@sprucelabs/schema'
+import { FieldDefinition, FieldClassMap, FieldType } from '@sprucelabs/schema'
+import { ISchemaTypesTemplateItem } from '../..'
 
 /* The type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */
 handlebars.registerHelper('fieldDefinitionValueType', function(
@@ -16,10 +12,9 @@ handlebars.registerHelper('fieldDefinitionValueType', function(
 	} = options
 
 	// Pull vars off context
-	const schemaTemplateItems:
-		| (ISchemaTemplateItem & { namespace: string })[]
-		| undefined = root && root.schemaTemplateItems
-	const typeMap = root && root.typeMap
+	const schemaTemplateItems: ISchemaTypesTemplateItem[] | undefined =
+		root?.schemaTemplateItems
+	const typeMap = root?.typeMap
 
 	if (!schemaTemplateItems || !typeMap) {
 		throw new Error(
@@ -39,7 +34,7 @@ handlebars.registerHelper('fieldDefinitionValueType', function(
 			)
 
 			if (matchedTemplateItem) {
-				typeLiteral = `SpruceSchemas.${matchedTemplateItem.namespace}.${matchedTemplateItem.typeName}.${matchedTemplateItem.interfaceName}`
+				typeLiteral = `SpruceSchemas.${matchedTemplateItem.namespace}.${matchedTemplateItem.pascalName}.I${matchedTemplateItem.pascalName}`
 			} else {
 				throw new Error(
 					`fieldDefinitionValueType help could not find schema ${fieldDefinition.options.schemaId}`

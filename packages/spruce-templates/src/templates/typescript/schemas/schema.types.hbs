@@ -21,7 +21,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 		export const id = '{{{escape id}}}'
 
 		/** {{definition.description}} */
-		export interface {{pascalName}} {
+		export interface I{{pascalName}} {
 			{{> schemaValues definition }}
 		}
 
@@ -30,7 +30,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			{{> schemaDefinition schema=definition renderAs="type" }}
 		}
 
-		/** The schema definition for a {{pascalName}} */
+		/** The schema definition for a {{readableName}} */
 		export const definition: SpruceSchemas.{{namespace}}.{{pascalName}}.IDefinition = {
 			{{> schemaDefinition schema=definition renderAs="value" }}
 		}

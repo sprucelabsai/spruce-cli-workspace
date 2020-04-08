@@ -29,7 +29,7 @@
 		"types:sync": "node ./build/src/index.js types:sync",
 		"build": "npm run clean && npm run build:node",
 		"build:node": "tsc | true",
-		"watch": "chokidar 'src/**/*' 'index.ts' '../spruce-templates/src/templates/**/*' -c 'npm run build'",
+		"watch": "chokidar '.spruce/**' 'src/**/*' 'index.ts' '../spruce-templates/src/templates/**/*' -c 'npm run build'",
 		"clean": "rm -rf build/",
 		"lint": "eslint '**/*.ts' && tsc -p . --noEmit",
 		"lint:fix": "eslint --fix '**/*.ts'",

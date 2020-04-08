@@ -133,6 +133,7 @@ export default abstract class AbstractCommand extends TerminalUtility {
 
 		if (file) {
 			const builtFile = this.resolvePath(file)
+				.replace('/.spruce/', '/build/.spruce/')
 				.replace('/src/', '/build/src/')
 				.replace('.ts', '.js')
 
