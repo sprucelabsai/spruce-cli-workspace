@@ -12,14 +12,12 @@ export interface IServiceOptions {
 export default abstract class AbstractService {
 	public mercury: Mercury
 	public cwd: string
-	public log: Log
 	public utilities: IUtilities
 
 	public constructor(options: IServiceOptions) {
-		const { cwd, log, mercury, utilities } = options
+		const { cwd, mercury, utilities } = options
 		this.mercury = mercury
 		this.cwd = cwd
-		this.log = log
 		this.utilities = utilities
 	}
 }

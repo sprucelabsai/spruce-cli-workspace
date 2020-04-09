@@ -232,8 +232,8 @@ export default class TerminalUtility extends AbstractUtility {
 	/** When outputting something information */
 	public info(message: string) {
 		if (typeof message !== 'string') {
-			this.log.debug('Invalid info log')
-			this.log.debug(message)
+			log.debug('Invalid info log')
+			log.debug(message)
 			return
 		}
 
@@ -266,7 +266,7 @@ export default class TerminalUtility extends AbstractUtility {
 	public async startLoading(message?: string) {
 		this.stopLoading()
 		this.loader = ora({
-			text: message
+			text: `${message}\n`
 		}).start()
 	}
 
@@ -408,4 +408,4 @@ export default class TerminalUtility extends AbstractUtility {
 	}
 }
 
-export const terminal = new TerminalUtility({ cwd: process.cwd(), log })
+export const terminal = new TerminalUtility({ cwd: process.cwd() })

@@ -3,6 +3,7 @@ import { Command } from 'commander'
 import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definition'
 import path from 'path'
 import globby from 'globby'
+import log from '../../lib/log'
 import SpruceError from '../../errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
 
@@ -200,7 +201,7 @@ export default class ErrorCommand extends AbstractCommand {
 
 				// TODO remove this check
 				if (currentContents.search(/buildErrorDefinition\({/) === -1) {
-					this.log.debug(`Skipping ${filePath}`)
+					log.debug(`Skipping ${filePath}`)
 					return
 				}
 

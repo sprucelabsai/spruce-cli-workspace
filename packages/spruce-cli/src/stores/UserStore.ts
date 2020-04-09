@@ -9,6 +9,7 @@ import userWithTokenDefinition from '../schemas/userWithToken.definition'
 import userDefinition from '../schemas/user.definition'
 import { IUserWithToken } from '#spruce/schemas/userWithToken.types'
 import { IUser } from '#spruce/schemas/user.types'
+import log from '../lib/log'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
 
@@ -178,8 +179,8 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 				instance.validate()
 				return instance.getValues()
 			} catch (err) {
-				this.log.crit(`Loading logged in user failed`)
-				this.log.crit(err)
+				log.crit(`Loading logged in user failed`)
+				log.crit(err)
 			}
 		}
 

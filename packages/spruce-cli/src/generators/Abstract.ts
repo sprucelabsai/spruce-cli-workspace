@@ -16,14 +16,12 @@ export default class AbstractGenerator {
 	public utilities: IUtilities
 	public templates: Templates
 	public services: IServices
-	public log: Log
 	public cwd: string
 
 	public constructor(options: IGeneratorOptions) {
-		const { utilities, templates, log, cwd, services } = options
+		const { utilities, templates, cwd, services } = options
 		this.utilities = utilities
 		this.templates = templates
-		this.log = log
 		this.cwd = cwd
 		this.services = services
 	}

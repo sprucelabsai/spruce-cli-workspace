@@ -1,6 +1,6 @@
 import fs from 'fs'
 import { Mercury } from '@sprucelabs/mercury'
-import { Log } from '@sprucelabs/log'
+import log from '../lib/log'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
 
@@ -22,7 +22,6 @@ export interface IStoreOptions {
 	cwd: string
 	scope?: StoreScope
 	authType?: StoreAuth
-	log: Log
 }
 
 export interface IBaseStoreSettings {
@@ -34,9 +33,6 @@ export default abstract class AbstractStore<
 > {
 	/** The current scope */
 	public scope = StoreScope.Global
-
-	/** For logging */
-	public log: Log
 
 	/** How we're logged in, user or skill */
 	public get authType() {
@@ -57,13 +53,12 @@ export default abstract class AbstractStore<
 	abstract name: string
 
 	public constructor(options: IStoreOptions) {
-		const { mercury, cwd, scope, authType, log } = options
+		const { mercury, cwd, scope, authType } = options
 
 		this.mercury = mercury
 		this.cwd = cwd
 		this.scope = scope ?? this.scope
 		this.authType = authType ?? this.authType
-		this.log = log
 
 		// Create save dir
 		const { directory: globalDirectory } = this.getGlobalConfigPath()
@@ -127,7 +122,7 @@ export default abstract class AbstractStore<
 			const values = JSON.parse(contents) as T
 			return values
 		} catch (err) {
-			this.log.warn(
+			log.warn(
 				`AbstractStore.readValues failed to read settings file at ${file}`
 			)
 		}

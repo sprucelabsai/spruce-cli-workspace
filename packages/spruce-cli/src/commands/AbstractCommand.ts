@@ -1,4 +1,4 @@
-import { Log } from '@sprucelabs/log'
+import log from '../lib/log'
 import TerminalUtility from '../utilities/TerminalUtility'
 import path from 'path'
 import { Command } from 'commander'
@@ -23,7 +23,6 @@ export interface ICommandOptions {
 	mercury: Mercury
 	services: IServices
 	generators: IGenerators
-	log: Log
 	cwd: string
 	utilities: IUtilities
 	templates: Templates
@@ -31,7 +30,6 @@ export interface ICommandOptions {
 
 export default abstract class AbstractCommand extends TerminalUtility {
 	/** Spruce logger */
-	public log: Log
 	public stores: IStores
 	public mercury: Mercury
 	public services: IServices
@@ -48,7 +46,6 @@ export default abstract class AbstractCommand extends TerminalUtility {
 			mercury,
 			services,
 			cwd,
-			log,
 			generators,
 			utilities,
 			templates
@@ -58,7 +55,6 @@ export default abstract class AbstractCommand extends TerminalUtility {
 		this.stores = stores
 		this.mercury = mercury
 		this.services = services
-		this.log = log
 		this.generators = generators
 		this.utilities = utilities
 		this.templates = templates
@@ -123,7 +119,7 @@ export default abstract class AbstractCommand extends TerminalUtility {
 
 	/** Make a file pass lint */
 	public async prettyFormatFile(filePath: string) {
-		this.log.info(`lint running on all files, not just ${filePath}`)
+		log.info(`lint running on all files, not just ${filePath}`)
 		return this.utilities.package.lintFix()
 	}
 

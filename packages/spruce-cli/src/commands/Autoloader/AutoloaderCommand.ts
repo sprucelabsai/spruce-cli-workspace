@@ -5,7 +5,7 @@ import log from '../../lib/log'
 import * as ts from 'typescript'
 import _ from 'lodash'
 // TODO will be used
-// import path from 'path'
+import path from 'path'
 import globby from 'globby'
 import * as tsutils from 'tsutils'
 
@@ -90,7 +90,13 @@ export default class AutoloaderCommand extends AbstractCommand {
 			interfaces: info.interfaces
 		})
 
-		console.log(autoloaderFileContents)
+		// Write the file
+		const fileName = `${path.basename(fullDirectory)}`
+		this.writeFile(`.spruce/autoloaders/${fileName}.ts`, autoloaderFileContents)
+
+		this.info(
+			`Autoloader created. Import it with: import ${fileName} from '#spruce/autoloaders/${fileName}'`
+		)
 	}
 
 	private async parseFiles(options: {
@@ -115,7 +121,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 			const filePath = filePaths[i]
 			const sourceFile = program.getSourceFile(filePath)
 			const relativeFilePath = filePath
-				.replace(this.cwd, '.')
+				.replace(this.cwd, '../..')
 				.replace(/\.ts$/, '')
 
 			if (sourceFile && _.includes(filePaths, sourceFile.fileName)) {
@@ -125,7 +131,6 @@ export default class AutoloaderCommand extends AbstractCommand {
 
 						checker.getSignaturesOfType
 						if (symbol) {
-							console.log({ symbol })
 							const details = this.serializeSymbol({ checker, symbol })
 							// Get the construct signatures
 							const constructorType = checker.getTypeOfSymbolAtLocation(
@@ -197,7 +202,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 		const abstractClassRelativePath = info.classes[0].parentClassPath
 			.replace(/'/g, '')
 			.replace(/"/g, '')
-			.replace(this.cwd, '.')
+			.replace(this.cwd, '../..')
 			.replace(/\.ts$/, '')
 
 		const interfacesHash: Record<string, string> = {}

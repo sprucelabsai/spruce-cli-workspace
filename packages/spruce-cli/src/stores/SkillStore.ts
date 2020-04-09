@@ -5,6 +5,7 @@ import Schema from '@sprucelabs/schema'
 import { parse as parseEnv } from 'dotenv'
 import fs from 'fs-extra'
 import path from 'path'
+import log from '../lib/log'
 import { ISkill } from '#spruce/schemas/skill.types'
 
 export interface ISkillStoreSettings extends IBaseStoreSettings {
@@ -82,7 +83,7 @@ export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
 			instance.validate()
 			return instance.getValues()
 		} catch (err) {
-			this.log.warn('INVALID skill ENV')
+			log.warn('INVALID skill ENV')
 			return undefined
 		}
 	}
