@@ -8,6 +8,8 @@ import _ from 'lodash'
 import path from 'path'
 import globby from 'globby'
 import * as tsutils from 'tsutils'
+import SpruceError from '../../errors/SpruceError'
+import { ErrorCode } from '../../../.spruce/errors/codes.types'
 
 interface IDocEntry {
 	name?: string
@@ -38,8 +40,8 @@ interface IIntermediateAutoloadInfo {
 }
 
 interface IAutoloadInfo extends IIntermediateAutoloadInfo {
-	abstractClassName: string
-	abstractClassRelativePath: string
+	abstractClassName: string | null
+	abstractClassRelativePath: string | null
 }
 
 export default class AutoloaderCommand extends AbstractCommand {
@@ -84,6 +86,29 @@ export default class AutoloaderCommand extends AbstractCommand {
 		const fileName = `${path.basename(fullDirectory)}`
 
 		// Generate the autoloader file
+		if (!info.abstractClassName || !info.abstractClassRelativePath) {
+			throw new SpruceError({
+				code: ErrorCode.CreateAutoloaderFailed,
+				directory: fullDirectory,
+				globbyPattern,
+				filePaths,
+				suffix,
+				friendlyMessage:
+					'An abstract class that your classes extend could not be found.'
+			})
+		}
+
+		if (info.classes.length === 0) {
+			throw new SpruceError({
+				code: ErrorCode.CreateAutoloaderFailed,
+				directory: fullDirectory,
+				globbyPattern,
+				filePaths,
+				suffix,
+				friendlyMessage:
+					'No classes were found. Check the suffix and/or pattern'
+			})
+		}
 		const autoloaderFileContents = this.templates.autoloader({
 			abstractClassName: info.abstractClassName,
 			abstractClassRelativePath: info.abstractClassRelativePath,
@@ -204,7 +229,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 			info.classes[0] &&
 			typeof info.classes[0].parentClassName === 'string'
 				? info.classes[0].parentClassName
-				: ''
+				: null
 		const abstractClassRelativePath =
 			info.classes &&
 			info.classes[0] &&
@@ -214,7 +239,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 						.replace(/"/g, '')
 						.replace(this.cwd, '../..')
 						.replace(/\.ts$/, '')
-				: ''
+				: null
 
 		const interfacesHash: Record<string, string> = {}
 		info.classes.forEach(c => {

@@ -1,28 +1,14 @@
-// All the error codes this skill can throw
+/** All the error codes this skill can throw */
 export enum ErrorCode {
-    /** * We are not sure what happened */
-    UnknownError = 'UNKNOWN_ERROR',
-
-    /** * Some parameter is missing */
-	MissingParameters = 'MISSING_PARAMETERS',
-
-    /** * Some parameter is invalid */
-	InvalidParameters = 'INVALID_PARAMETERS',
-
-    /** * Schema was not found */
-	SchemaNotFound = 'SCHEMA_NOT_FOUND',
-
-	/** * Schema by id already exists */
-	DuplicateSchemaId = 'DUPLICATE_SCHEMA_ID',
-
-	/** * Field failed validate() */
-	InvalidField = 'INVALID_FIELD',
-
+   
     /** * It looks like you're not running `y watch`. Run it and then run `spruce all:sync`. */
     BuildFailed = 'BUILD_FAILED',
     
     /** * A command failed to load, probably because of a syntax error */
     CouldNotLoadCommand = 'COULD_NOT_LOAD_COMMAND',
+    
+    /** * Autoloader creation failed */
+    CreateAutoloaderFailed = 'CREATE_AUTOLOADER_FAILED',
     
     /** * The definition file failed to import */
     DefinitionFailedToImport = 'DEFINITION_FAILED_TO_IMPORT',
