@@ -1,6 +1,6 @@
-import SchemaGenerator from './Schema'
-import CoreGenerator from './Core'
-import ErrorGenerator from './Error'
+import SchemaGenerator from './SchemaGenerator'
+import CoreGenerator from './CoreGenerator'
+import ErrorGenerator from './ErrorGenerator'
 
 export interface IGenerators {
 	schema: SchemaGenerator

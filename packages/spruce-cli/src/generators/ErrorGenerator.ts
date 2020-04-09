@@ -1,5 +1,5 @@
 import path from 'path'
-import AbstractGenerator from './Abstract'
+import AbstractGenerator from './AbstractGenerator'
 import globby from 'globby'
 
 export default class ErrorGenerator extends AbstractGenerator {

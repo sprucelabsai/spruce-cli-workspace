@@ -11,14 +11,7 @@ export default class SchemaCommand extends AbstractCommand {
 		/** Sync everything */
 		program
 			.command('schema:pull')
-			.description(
-				'Generates types file holding all interfaces, types, and enums needed to dev fast'
-			)
-			.option(
-				'-t, --types <types>',
-				'What should I sync? all|schemas|events',
-				'all'
-			)
+			.description('Pull all schema definitions down from the cloud')
 			.option(
 				'-d, --destinationDir <dir>',
 				'Where should I write the types files?',
@@ -72,10 +65,16 @@ export default class SchemaCommand extends AbstractCommand {
 
 		// Load types and namespaces
 		const schemaTemplateItems = await this.stores.schema.schemaTemplateItems()
+		const fieldTemplateItems = await this.stores.schema.fieldTemplateItems()
 		const typeMap = await this.stores.schema.fieldTypeMap()
 
-		// Fill out template
-		const contents = templates.schemaTypes({
+		// Field Types
+		const fieldTypesContent = templates.fieldTypes({
+			fields: fieldTemplateItems
+		})
+
+		// Schema types
+		const schemaTypesContents = templates.schemaTypes({
 			schemaTemplateItems,
 			typeMap
 		})
@@ -83,14 +82,25 @@ export default class SchemaCommand extends AbstractCommand {
 		this.stopLoading()
 
 		this.info(
-			`Found ${schemaTemplateItems.length} schemas, writing definition file...`
+			`Found ${schemaTemplateItems.length} schemas and ${fieldTypesContent.length} types of fields, writing types files`
 		)
 
-		//Write it out
-		const destination = this.resolvePath(destinationDir, 'core.types.ts')
-		await this.writeFile(destination, contents)
+		// Write out field types
+		const fieldTypesDestination = this.resolvePath(
+			destinationDir,
+			'fields.type.ts'
+		)
 
-		this.info(`All done 👊: ${destination}`)
+		await this.writeFile(fieldTypesDestination, fieldTypesContent)
+
+		//Write out schema types
+		const schemaTypesDestination = this.resolvePath(
+			destinationDir,
+			'schemas.types.ts'
+		)
+		await this.writeFile(schemaTypesDestination, schemaTypesContents)
+
+		this.info(`All done 👊: ${schemaTypesDestination}`)
 	}
 
 	/** Generate types and other files based definitions */

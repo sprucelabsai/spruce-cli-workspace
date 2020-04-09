@@ -1,0 +1,51 @@
+{
+	"folders": [
+		{
+			"name": "spruce-cli",
+			"path": "packages/spruce-cli"
+		},
+		{
+			"name": "spruce-templates",
+			"path": "packages/spruce-templates"
+		}
+	],
+	"settings": {
+		"debug.node.autoAttach": "off",
+		"git.ignoreLimitWarning": true,
+		"typescript.validate.enable": true,
+		"javascript.validate.enable": false,
+		"editor.formatOnSave": true,
+		"files.watcherExclude": {
+			"**/.git/objects/**": true,
+			"**/.git/subtree-cache/**": true,
+			"**/node_modules/**": true,
+			"**/build/**": true,
+			"**/dist/**": true,
+			"**/.next/**": true
+		},
+		"search.exclude": {
+			"**/node_modules/**": true,
+			"**/build/**": true,
+			"**/dist/**": true,
+			"**/.next/**": true
+		},
+		"eslint.enable": true,
+		"eslint.nodePath": "node_modules",
+		"eslint.validate": [
+			"javascript",
+			"javascriptreact",
+			"typescript",
+			"typescriptreact"
+		],
+		"eslint.options": {
+			"extensions": [".js", ".jsx", ".ts", ".tsx"]
+		},
+		"typescript.tsdk": "Workspace/node_modules/typescript/lib",
+		"atlascode.jira.workingSite": {
+			"baseUrlSuffix": "atlassian.net"
+		},
+		"files.exclude": {
+			"**/build": true
+		}
+	}
+}

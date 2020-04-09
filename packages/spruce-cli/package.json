@@ -42,7 +42,7 @@
 		"@sprucelabs/error": "^1.0.11",
 		"@sprucelabs/log": "^10.0.11",
 		"@sprucelabs/mercury": "10.2.0",
-		"@sprucelabs/schema": "^1.0.6",
+		"@sprucelabs/schema": "^1.0.7",
 		"@sprucelabs/spruce-templates": "10.0.0",
 		"cfonts": "^2.8.1",
 		"commander": "^4.1.1",

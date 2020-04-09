@@ -1,26 +1,17 @@
 import handlebars from 'handlebars'
 import fs from 'fs'
 import path from 'path'
-import log from '@sprucelabs/log'
 
 import { IFieldTemplateDetails, ISchemaDefinition } from '@sprucelabs/schema'
 
 // Import addons
-import * as escape from './src/addons/escape.addon'
-import * as fieldDefinitionOptions from './src/addons/fieldDefinitionOptions.addon'
-import * as fieldDefinitionValueType from './src/addons/fieldDefinitionValueType.addon'
-import * as fieldTypeEnum from './src/addons/fieldTypeEnum.addon'
-import * as fieldValue from './src/addons/fieldValue.addon'
-import * as isEqual from './src/addons/isEqual.addon'
-import * as startCase from './src/addons/startCase.addon'
-
-log.info('addon escape', escape)
-log.info('addon fieldDefinitionOptions', fieldDefinitionOptions)
-log.info('addon fieldDefinitionValueType', fieldDefinitionValueType)
-log.info('addon fieldTypeEnum', fieldTypeEnum)
-log.info('addon fieldValue', fieldValue)
-log.info('addon isEqual', isEqual)
-log.info('addon startCase', startCase)
+import './src/addons/escape.addon'
+import './src/addons/fieldDefinitionOptions.addon'
+import './src/addons/fieldDefinitionValueType.addon'
+import './src/addons/fieldTypeEnum.addon'
+import './src/addons/fieldValue.addon'
+import './src/addons/isEqual.addon'
+import './src/addons/startCase.addon'
 
 // Extra definitions
 // TODO where do these go?
@@ -35,10 +26,20 @@ export interface ISchemaTypesTemplateItem extends ISchemaTemplateNames {
 	definition: ISchemaDefinition
 }
 
+export interface IFieldTypesTemplateItem extends ISchemaTemplateNames {
+	/** There package where the field definition lives */
+	package: string
+	/** The key for the FieldType enum */
+	pascalType: string
+	/** The value used for the FieldType enum */
+	camelType: string
+}
+
 // Import actual templates
 const templatePath = path.join(__dirname, 'src', 'templates', 'typescript')
 
 // Template files
+// TODO this can be done in a loop perhaps
 const schemaTypes: string = fs
 	.readFileSync(path.join(templatePath, 'schemas/schema.types.hbs'))
 	.toString()
@@ -193,12 +194,7 @@ export const templates = {
 	},
 
 	/** The types file for all the schema fields being used*/
-	fieldTypes(options: {
-		fields: {
-			pascalName: string
-			className: string
-		}[]
-	}) {
+	fieldTypes(options: { fields: IFieldTypesTemplateItem[] }) {
 		const template = handlebars.compile(fieldTypes)
 		return template(options)
 	}

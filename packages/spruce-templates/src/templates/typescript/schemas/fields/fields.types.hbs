@@ -1,6 +1,34 @@
-/** Field class */
-export 
+{{#each fields}}
+import { I{{pascalName}}FieldDefinition, {{pascalName}}Field } from {{package}}
+{{/each}}
 
 
-/** All field definitions */
-export type FieldDefinition = {{#each fieldDefinitions}}| I{{pascalName}}{{/each}}
+/** Field definition union */
+export type FieldDefinition = {{#each fields}}| I{{pascalName}}FieldDefinition{{/each}}
+
+/** Field class union */
+export type FieldClass = {{#each fields}}| typeof {{pascalName}}Field{{/each}}
+
+/** Field instance union **/
+export type Field = {{#each fields}}| {{pascalName}}Field{{/each}}
+
+/** Field Types */
+export enum FieldType {
+	{{#each fields}}
+	{{pascalType}} = '{{camelType}}',
+	{{/each}}
+}
+
+/** Type for looking up field definitions by field type */
+export type FieldDefinitionMap = {
+	{{#each fields}}
+	[FieldType.{{pascalName}}]: I{{pascalName}}Definition
+	{{/each}}
+}
+
+/** Value for looking up field classes by field type */
+export const FieldClassMap: Record<FieldType, FieldClass> = {
+		{{#each fields}}
+		[FieldType.{{pascalName}}]: {{pascalName}}Field
+		{{/each}}
+}

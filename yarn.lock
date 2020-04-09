@@ -1045,10 +1045,10 @@
     google-libphonenumber "^3.2.8"
     libphonenumber-js "^1.7.48"
 
-"@sprucelabs/schema@^1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.0.6.tgz#c2af2a2eafa4c30dd99d6c07ac0b15f734702868"
-  integrity sha512-Ukbrw/tnrzbGQiqKNjZYlSzfloc0c7pDyq8ttKf9QlS4iWA2rIFYk9Qs971Q+Pataj0Y7lZNePMDKKMGKjfcrw==
+"@sprucelabs/schema@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.0.7.tgz#b62d8be4ee49ab9cf832b60d973292c969c5c7db"
+  integrity sha512-rk6AD/MJnT+45f3fNIUdgxSXYLUdzN1k7E9DxnwoFT8AZXNieWQczrbyjQ19IAhvztXUA8elU6Ch9MHsn6YXNw==
   dependencies:
     "@sprucelabs/error" "^1.0.7"
     google-libphonenumber "^3.2.8"
