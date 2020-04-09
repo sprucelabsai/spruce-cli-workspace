@@ -32,7 +32,7 @@ import { IGeneratorOptions } from './generators/Abstract'
 import { templates } from '@sprucelabs/spruce-templates'
 import ErrorGenerator from './generators/Error'
 import SpruceError from './errors/SpruceError'
-import { ErrorCode } from '../.spruce/errors/codes.types'
+import { ErrorCode } from '#spruce/errors/codes.types'
 import { IUtilityOptions } from './utilities/AbstractUtility'
 import { IServiceOptions } from './services/AbstractService'
 import VmService from './services/VmService'
@@ -164,42 +164,7 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		error: new ErrorGenerator(generatorOptions)
 	}
 
-	// Load commands and actions
-	// globby.sync(`${__dirname}/commands/**/*.js`).forEach(async file => {
-	// 	try {
-	// 		// Import and type the command
-	// 		// const cmdClass: new (
-	// 		// 	options: ICommandOptions
-	// 		// ) => AbstractCommand = require(file).default
-	// 		const cmdClass = await import(file)
-
-	// 		// Instantiate the command
-	// 		const command = new cmdClass({
-	// 			stores,
-	// 			mercury,
-	// 			services,
-	// 			cwd,
-	// 			log,
-	// 			generators,
-	// 			utilities,
-	// 			templates
-	// 		})
-
-	// 		// Attach commands to the program
-	// 		command.attachCommands && command.attachCommands(program)
-
-	// 		// Track all commands
-	// 		commands.push(command)
-	// 	} catch (err) {
-	// 		throw new SpruceError({
-	// 			code: ErrorCode.CouldNotLoadCommand,
-	// 			originalError: err,
-	// 			file
-	// 		})
-	// 	}
-	// })
-
-	const commands = await commandLoader({
+	await commandLoader({
 		constructorOptions: {
 			stores,
 			mercury,
