@@ -266,7 +266,7 @@ export default class TerminalUtility extends AbstractUtility {
 	public async startLoading(message?: string) {
 		this.stopLoading()
 		this.loader = ora({
-			text: `${message}\n`
+			text: `${message}\n\n`
 		}).start()
 	}
 

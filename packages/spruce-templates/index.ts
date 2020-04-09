@@ -18,6 +18,7 @@ import './src/addons/fieldValue.addon'
 import './src/addons/isEqual.addon'
 import './src/addons/startCase.addon'
 import './src/addons/camelCase.addon'
+import './src/addons/pascalCase.addon'
 log.info('Addons imported')
 // Log.info('addon escape', escape)
 // log.info('addon fieldDefinitionOptions', fieldDefinitionOptions)
@@ -197,6 +198,7 @@ export const templates = {
 			interfaceName: string
 			relativeFilePath: string
 		}[]
+		fileName: string
 	}) {
 		const template = handlebars.compile(autoloader)
 		return template(options)

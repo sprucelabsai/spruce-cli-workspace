@@ -81,21 +81,22 @@ export default class AutoloaderCommand extends AbstractCommand {
 		})
 		// Parse all the files in the directory
 		const info = await this.parseFiles({ filePaths, fullDirectory, suffix })
+		const fileName = `${path.basename(fullDirectory)}`
 
 		// Generate the autoloader file
 		const autoloaderFileContents = this.templates.autoloader({
 			abstractClassName: info.abstractClassName,
 			abstractClassRelativePath: info.abstractClassRelativePath,
 			classes: info.classes,
-			interfaces: info.interfaces
+			interfaces: info.interfaces,
+			fileName
 		})
 
 		// Write the file
-		const fileName = `${path.basename(fullDirectory)}`
 		this.writeFile(`.spruce/autoloaders/${fileName}.ts`, autoloaderFileContents)
 
 		this.info(
-			`Autoloader created. Import it with: import ${fileName} from '#spruce/autoloaders/${fileName}'`
+			`Autoloader created 🎉. Import it with:\nimport ${fileName} from '#spruce/autoloaders/${fileName}'`
 		)
 	}
 
@@ -198,12 +199,22 @@ export default class AutoloaderCommand extends AbstractCommand {
 		}
 
 		// Find what interface(s) we need to import
-		const abstractClassName = info.classes[0].parentClassName
-		const abstractClassRelativePath = info.classes[0].parentClassPath
-			.replace(/'/g, '')
-			.replace(/"/g, '')
-			.replace(this.cwd, '../..')
-			.replace(/\.ts$/, '')
+		const abstractClassName =
+			info.classes &&
+			info.classes[0] &&
+			typeof info.classes[0].parentClassName === 'string'
+				? info.classes[0].parentClassName
+				: ''
+		const abstractClassRelativePath =
+			info.classes &&
+			info.classes[0] &&
+			typeof info.classes[0].parentClassPath === 'string'
+				? info.classes[0].parentClassPath
+						.replace(/'/g, '')
+						.replace(/"/g, '')
+						.replace(this.cwd, '../..')
+						.replace(/\.ts$/, '')
+				: ''
 
 		const interfacesHash: Record<string, string> = {}
 		info.classes.forEach(c => {

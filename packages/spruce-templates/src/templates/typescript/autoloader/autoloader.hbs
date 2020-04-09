@@ -11,10 +11,16 @@ import {{className}} from '{{relativeFilePath}}'
 import { {{interfaceName}} } from '{{relativeFilePath}}'
 {{/each}}
 
+export interface I{{pascalCase fileName}} {
+	{{#each classes}}
+	{{camelCase className}}: {{className}}
+	{{/each}}
+}
+
 export default async function autoloader(options: {
 	constructorOptions: {{#each interfaces}}{{#if @first}}{{interfaceName}}{{else}} | {{interfaceName}}{{/if}}{{/each}}
-	after: (instance: {{abstractClassName}}) => Promise<void>
-}) {
+	after?: (instance: {{abstractClassName}}) => Promise<void>
+}): Promise<I{{pascalCase fileName}}> {
 	const { constructorOptions, after } = options
 
 	{{#each classes}}

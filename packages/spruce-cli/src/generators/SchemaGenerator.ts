@@ -1,5 +1,5 @@
 import path from 'path'
-import AbstractGenerator from './Abstract'
+import AbstractGenerator from './AbstractGenerator'
 import { ISchemaDefinition } from '@sprucelabs/schema'
 
 export default class SchemaGenerator extends AbstractGenerator {

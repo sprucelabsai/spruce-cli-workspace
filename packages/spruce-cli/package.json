@@ -35,7 +35,7 @@
 		"lint:fix": "eslint --fix '**/*.ts'",
 		"release": "semantic-release",
 		"start": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node --inspect=5200 ./build/src/index.js $COMMANDS",
-		"local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node -r ts-node/register --inspect=5200 ./src/index $COMMANDS",
+		"local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node -r ts-node/register -r tsconfig-paths/register --inspect=5200 ./src/index $COMMANDS",
 		"test": "ava **/*.test.ts",
 		"test:watch": "ava  **/*.test.ts --watch"
 	},
@@ -60,10 +60,10 @@
 		"ora": "^4.0.3",
 		"rimraf": "^3.0.2",
 		"slug": "^2.1.1",
-		"tsutils": "^3.17.1",
-		"vm2": "^3.9.1",
 		"ts-node": "^8.8.2",
-		"typescript": "^3.8.3"
+		"tsutils": "^3.17.1",
+		"typescript": "^3.8.3",
+		"vm2": "^3.9.1"
 	},
 	"devDependencies": {
 		"@sprucelabs/test": "^1.0.2",
@@ -81,7 +81,8 @@
 		"concurrently": "^5.0.2",
 		"conventional-changelog-sprucelabs": "^1.1.0",
 		"mkdirp": "^1.0.3",
-		"prettier": "^1.13"
+		"prettier": "^1.13",
+		"tsconfig-paths": "^3.9.0"
 	},
 	"peerDependencies": {},
 	"ava": {

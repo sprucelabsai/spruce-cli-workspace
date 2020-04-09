@@ -22,15 +22,15 @@ import PinService from './services/PinService'
 // TODO: remove
 // import AbstractCommand, { ICommandOptions } from './commands/Abstract'
 import OnboardingStore from './stores/OnboardingStore'
-import { IGenerators } from './generators'
-import SchemaGenerator from './generators/Schema'
+// Import { IGenerators } from './generators'
+// import SchemaGenerator from './generators/SchemaGenerator'
 import { IUtilities } from './utilities'
 import NamesUtility from './utilities/NamesUtility'
 import { StoreAuth } from './stores/AbstractStore'
-import CoreGenerator from './generators/Core'
-import { IGeneratorOptions } from './generators/Abstract'
+// Import CoreGenerator from './generators/CoreGenerator'
+import { IGeneratorOptions } from './generators/AbstractGenerator'
 import { templates } from '@sprucelabs/spruce-templates'
-import ErrorGenerator from './generators/Error'
+// Import ErrorGenerator from './generators/ErrorGenerator'
 import SpruceError from './errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
 import { IUtilityOptions } from './utilities/AbstractUtility'
@@ -41,7 +41,8 @@ import VmService from './services/VmService'
 import './addons/filePrompt.addon'
 import PackageUtility from './utilities/PackageUtility'
 
-import commandLoader from './commands'
+import commandsLoader from '#spruce/autoloaders/commands'
+import generatorsLoader from '#spruce/autoloaders/generators'
 
 /**
  * For handling debugger not attaching right away
@@ -157,13 +158,17 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		cwd
 	}
 
-	const generators: IGenerators = {
-		schema: new SchemaGenerator(generatorOptions),
-		core: new CoreGenerator(generatorOptions),
-		error: new ErrorGenerator(generatorOptions)
-	}
+	// Const generators: IGenerators = {
+	// 	schema: new SchemaGenerator(generatorOptions),
+	// 	core: new CoreGenerator(generatorOptions),
+	// 	error: new ErrorGenerator(generatorOptions)
+	// }
 
-	await commandLoader({
+	const generators = await generatorsLoader({
+		constructorOptions: generatorOptions
+	})
+
+	await commandsLoader({
 		constructorOptions: {
 			stores,
 			mercury,
