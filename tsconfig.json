@@ -13,7 +13,11 @@
 		"noUnusedLocals": true,
 		"resolveJsonModule": true,
 		"moduleResolution": "node",
-		"sourceMap": true
+		"sourceMap": true,
+		"paths": {
+			"*": ["node_modules/*"],
+			"#spruce/*": ["packages/spruce-cli/.spruce/*"]
+		}
 	},
 	"exclude": ["**/node_modules/**"]
 }
