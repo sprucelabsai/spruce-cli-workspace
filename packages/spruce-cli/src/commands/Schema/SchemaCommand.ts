@@ -76,6 +76,8 @@ export default class SchemaCommand extends AbstractCommand {
 
 		// Fill out template
 		const contents = templates.schemaTypes({
+			// TODO: Fix this
+			// @ts-ignore
 			schemaTemplateItems,
 			typeMap
 		})
@@ -126,6 +128,8 @@ export default class SchemaCommand extends AbstractCommand {
 
 			this.writeLn('')
 			this.codeSample(
+				// TODO: Fix this
+				// @ts-ignore
 				this.templates.schemaExample({ pascalName, camelName, definition })
 			)
 
@@ -196,6 +200,8 @@ export default class SchemaCommand extends AbstractCommand {
 			this.templates.schemaExample({
 				pascalName: names.pascalName,
 				camelName: names.camelName,
+				// TODO: Fix this
+				// @ts-ignore
 				definition: names.definition
 			})
 		)
