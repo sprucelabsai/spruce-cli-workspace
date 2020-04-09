@@ -10,14 +10,27 @@ import Schema from '../../src/commands/Schema/SchemaCommand'
 import Skill from '../../src/commands/Skill/SkillCommand'
 import Test from '../../src/commands/Test/TestCommand'
 import User from '../../src/commands/User/UserCommand'
+import Watch from '../../src/commands/Watch/Watch'
 
 // Import necessary interface(s)
 import { ICommandOptions } from '../../src/commands/AbstractCommand'
 
+export interface ICommands {
+	autoloader: Autoloader
+	error: Error
+	onboarding: Onboarding
+	remote: Remote
+	schema: Schema
+	skill: Skill
+	test: Test
+	user: User
+	watch: Watch
+}
+
 export default async function autoloader(options: {
 	constructorOptions: ICommandOptions
-	after: (instance: AbstractCommand) => Promise<void>
-}) {
+	after?: (instance: AbstractCommand) => Promise<void>
+}): Promise<ICommands> {
 	const { constructorOptions, after } = options
 
 	const autoloader = new Autoloader(constructorOptions)
@@ -52,6 +65,10 @@ export default async function autoloader(options: {
 	if (after) {
 		await after(user)
 	}
+	const watch = new Watch(constructorOptions)
+	if (after) {
+		await after(watch)
+	}
 
 	return {
 		autoloader,
@@ -61,6 +78,7 @@ export default async function autoloader(options: {
 		schema,
 		skill,
 		test,
-		user
+		user,
+		watch
 	}
 }
