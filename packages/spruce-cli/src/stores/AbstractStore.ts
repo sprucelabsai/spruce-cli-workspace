@@ -2,7 +2,7 @@ import fs from 'fs'
 import { Mercury } from '@sprucelabs/mercury'
 import { Log } from '@sprucelabs/log'
 import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '../../.spruce/errors/codes.types'
+import { ErrorCode } from '#spruce/errors/codes.types'
 
 /** Are we running globally or locally? */
 export enum StoreScope {

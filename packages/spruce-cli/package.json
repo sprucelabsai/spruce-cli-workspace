@@ -40,7 +40,7 @@
 		"test:watch": "ava  **/*.test.ts --watch"
 	},
 	"dependencies": {
-		"@sprucelabs/error": "^1.0.9",
+		"@sprucelabs/error": "^1.0.11",
 		"@sprucelabs/log": "^10.2.0",
 		"@sprucelabs/mercury": "^10.2.0",
 		"@sprucelabs/schema": "^1.0.6",
@@ -58,6 +58,7 @@
 		"jsonwebtoken": "^8.5.1",
 		"lodash": "^4.17.15",
 		"ora": "^4.0.3",
+		"rimraf": "^3.0.2",
 		"slug": "^2.1.1",
 		"tsutils": "^3.17.1",
 		"vm2": "^3.9.1"
@@ -70,6 +71,7 @@
 		"@types/lodash": "^4.14.149",
 		"@types/mkdirp": "^1.0.0",
 		"@types/node": "^13.7.7",
+		"@types/rimraf": "^3.0.0",
 		"@types/slug": "^0.9.1",
 		"@types/superagent": "^4.1.7",
 		"ava": "^3.6.0",

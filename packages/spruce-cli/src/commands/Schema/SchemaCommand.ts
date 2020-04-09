@@ -3,8 +3,8 @@ import AbstractCommand from '../AbstractCommand'
 import { templates } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import path from 'path'
-
 import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definition'
+
 export default class SchemaCommand extends AbstractCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
@@ -56,8 +56,7 @@ export default class SchemaCommand extends AbstractCommand {
 				'Where should I write the definitions file?',
 				'./.spruce/schemas'
 			)
-			.option('-c, --clean', 'Should I clean out the directory before syncing?')
-			.option('-f ,--force', 'Ignore all confirmations when cleaning')
+
 			.action(this.sync.bind(this))
 	}
 
@@ -103,17 +102,6 @@ export default class SchemaCommand extends AbstractCommand {
 			'**',
 			'*.definition.ts'
 		)
-
-		// Are they looking to clean?
-		if (cmd.clean) {
-			// Are we forcing clean? If not, confirm...
-			const confirm =
-				cmd.force || (await this.confirm(`Clean out ${destinationDir}?`))
-
-			if (confirm) {
-				console.log('go team')
-			}
-		}
 
 		// Make sure schema module is installed
 		this.startLoading('Installing dependencies')

@@ -4,7 +4,7 @@ import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definit
 import path from 'path'
 import globby from 'globby'
 import SpruceError from '../../errors/SpruceError'
-import { ErrorCode } from '../../../.spruce/errors/codes.types'
+import { ErrorCode } from '#spruce/errors/codes.types'
 
 export default class ErrorCommand extends AbstractCommand {
 	public attachCommands(program: Command): void {
