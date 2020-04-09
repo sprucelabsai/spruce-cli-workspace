@@ -30,12 +30,19 @@
 			"**/.next/**": true
 		},
 		"eslint.enable": true,
+		"eslint.autoFixOnSave": true,
 		"eslint.nodePath": "node_modules",
 		"eslint.validate": [
 			"javascript",
 			"javascriptreact",
-			"typescript",
-			"typescriptreact"
+			{
+				"language": "typescript",
+				"autoFix": true
+			},
+			{
+				"language": "typescriptreact",
+				"autoFix": true
+			}
 		],
 		"eslint.options": {
 			"extensions": [".js", ".jsx", ".ts", ".tsx"]
