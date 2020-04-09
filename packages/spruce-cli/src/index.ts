@@ -198,7 +198,7 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	// 	}
 	// })
 
-	commandLoader({
+	const commands = await commandLoader({
 		constructorOptions: {
 			stores,
 			mercury,
