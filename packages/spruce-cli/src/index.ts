@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+import '../.spruce/bootstrap'
 import { terminal } from './utilities/TerminalUtility'
 import { Command } from 'commander'
 import globby from 'globby'
