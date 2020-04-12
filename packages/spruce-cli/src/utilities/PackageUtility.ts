@@ -16,9 +16,9 @@ export default class PackageUtility extends AbstractUtility {
 	) {
 		const contents = this.readPackage(dir)
 		const updated = set(contents, path, value)
-		const source = dir ?? this.cwd
-		const destination = pathUtil.join(source, 'package.json')
-		fs.outputFileSync(destination, JSON.stringify(updated))
+		const destination = pathUtil.join(dir, 'package.json')
+
+		fs.outputFileSync(destination, JSON.stringify(updated, null, 2))
 	}
 
 	/** Read a package.json */
@@ -63,10 +63,12 @@ export default class PackageUtility extends AbstractUtility {
 
 	/** Lint everything */
 	public async lintFix() {
-		return new Promise((resolve, reject) => {
+		// Await this.install(['eslint', 'eslint-config-spruce'], { dev: true })
+		return new Promise(resolve => {
 			exec(`yarn lint:fix`, err => {
 				if (err) {
-					reject(err)
+					this.log.warn('Linting skill failed! Moving on...')
+					this.log.debug(err)
 				}
 				resolve()
 			})

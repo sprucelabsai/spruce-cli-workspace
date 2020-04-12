@@ -1,24 +1,7 @@
-// All the error codes this skill can throw
+/** All the error codes this skill can throw */
 export enum ErrorCode {
-    /** * We are not sure what happened */
-    UnknownError = 'UNKNOWN_ERROR',
-
-    /** * Some parameter is missing */
-	MissingParameters = 'MISSING_PARAMETERS',
-
-    /** * Some parameter is invalid */
-	InvalidParameters = 'INVALID_PARAMETERS',
-
-    /** * Schema was not found */
-	SchemaNotFound = 'SCHEMA_NOT_FOUND',
-
-	/** * Schema by id already exists */
-	DuplicateSchemaId = 'DUPLICATE_SCHEMA_ID',
-
-	/** * Field failed validate() */
-	InvalidField = 'INVALID_FIELD',
-
-    /** * It looks like you're not running `y watch`. Run it and then run `spruce all:sync`. */
+   
+    /** * Error thrown when building or linting failed. Happens when a yarn command fails inside the package utility. */
     BuildFailed = 'BUILD_FAILED',
     
     /** * A command failed to load, probably because of a syntax error */

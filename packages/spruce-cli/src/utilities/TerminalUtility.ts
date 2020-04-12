@@ -3,7 +3,7 @@ import {
 	FieldType,
 	FieldDefinitionMap,
 	FieldDefinition,
-	AbstractField
+	FieldFactory
 } from '@sprucelabs/schema'
 import inquirer from 'inquirer'
 // @ts-ignore
@@ -250,7 +250,7 @@ export default class TerminalUtility extends AbstractUtility {
 
 	/** The user did something wrong, like entered a bad value */
 	public error(message: string) {
-		this.writeLn(`🛑 ${message}`, [ITerminalEffect.Bold, ITerminalEffect.Bold])
+		this.writeLn(`🛑 ${message}`, [ITerminalEffect.Bold, ITerminalEffect.Red])
 	}
 
 	/** Something major or a critical information but program will not die */
@@ -332,7 +332,7 @@ export default class TerminalUtility extends AbstractUtility {
 			message: `${label}:`
 		}
 
-		const field = AbstractField.field(fieldDefinition)
+		const field = FieldFactory.field(fieldDefinition)
 
 		// Setup transform and validate
 		promptOptions.transformer = (value: string) => {
@@ -363,7 +363,7 @@ export default class TerminalUtility extends AbstractUtility {
 			// File select
 			case FieldType.File:
 				promptOptions.type = 'file'
-				promptOptions.root = path.join(defaultValue ?? this.cwd, '/')
+				promptOptions.root = path.join(defaultValue?.path ?? this.cwd, '/')
 
 				// Only let people select an actual file
 				promptOptions.validate = (value: string) => {
@@ -387,7 +387,9 @@ export default class TerminalUtility extends AbstractUtility {
 
 		// TODO update method signature to type this properly
 		const response = (await inquirer.prompt(promptOptions)) as any
-		return response[name]
+		return typeof response[name] !== 'undefined'
+			? field.toValueType(response[name])
+			: response[name]
 	}
 
 	/** Generic way to handle error */

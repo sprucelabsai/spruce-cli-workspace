@@ -60,7 +60,7 @@ export default class SchemaCommand extends AbstractCommand {
 		// Make sure schema module is installed
 		this.startLoading('Installing dependencies')
 		await this.utilities.package.install('@sprucelabs/schema')
-
+		this.utilities.tsConfig.setupForSchemas()
 		this.startLoading('Fetching schemas and field types')
 
 		// Load types and namespaces
@@ -73,6 +73,11 @@ export default class SchemaCommand extends AbstractCommand {
 			fields: fieldTemplateItems
 		})
 
+		// Field type enum
+		const fieldTypeContent = templates.fieldType({
+			fields: fieldTemplateItems
+		})
+
 		// Schema types
 		const schemaTypesContents = templates.schemaTypes({
 			schemaTemplateItems,
@@ -82,16 +87,26 @@ export default class SchemaCommand extends AbstractCommand {
 		this.stopLoading()
 
 		this.info(
-			`Found ${schemaTemplateItems.length} schemas and ${fieldTypesContent.length} types of fields, writing types files`
+			`Found ${schemaTemplateItems.length} schema definitions and ${fieldTemplateItems.length} field types, writing files`
 		)
 
 		// Write out field types
 		const fieldTypesDestination = this.resolvePath(
 			destinationDir,
-			'fields.type.ts'
+			'fields',
+			'fields.types.ts'
 		)
 
 		await this.writeFile(fieldTypesDestination, fieldTypesContent)
+
+		// Write out field type enum
+		const fieldTypeDestination = this.resolvePath(
+			destinationDir,
+			'fields',
+			'fieldType.ts'
+		)
+
+		await this.writeFile(fieldTypeDestination, fieldTypeContent)
 
 		//Write out schema types
 		const schemaTypesDestination = this.resolvePath(
@@ -99,6 +114,9 @@ export default class SchemaCommand extends AbstractCommand {
 			'schemas.types.ts'
 		)
 		await this.writeFile(schemaTypesDestination, schemaTypesContents)
+
+		await this.pretty()
+		await this.build()
 
 		this.info(`All done 👊: ${schemaTypesDestination}`)
 	}
@@ -116,6 +134,7 @@ export default class SchemaCommand extends AbstractCommand {
 		// Make sure schema module is installed
 		this.startLoading('Installing dependencies')
 		await this.utilities.package.install('@sprucelabs/schema')
+		this.utilities.tsConfig.setupForSchemas()
 		this.stopLoading()
 
 		const matches = await globby(search)

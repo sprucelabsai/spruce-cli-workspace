@@ -50,9 +50,9 @@ export default class SchemaUtility extends AbstractUtility {
 			if (matchIdx > -1) {
 				if (definition !== items[matchIdx].definition) {
 					throw new SchemaError({
-						code: SchemaErrorCode.DuplicateSchemaId,
+						code: SchemaErrorCode.DuplicateSchema,
 						schemaId: definition.id,
-						additionalDetails: 'Found while generating template items'
+						friendlyMessage: 'Found while generating template items'
 					})
 				}
 				return
@@ -73,7 +73,7 @@ export default class SchemaUtility extends AbstractUtility {
 								field.options.schemaId ||
 								field.options.schema?.id ||
 								'**MISSING ID**',
-							additionalDetails: 'Error while resolving schema fields'
+							friendlyMessage: 'Error while resolving schema fields'
 						})
 					}
 					newItems = this.generateTemplateItems({

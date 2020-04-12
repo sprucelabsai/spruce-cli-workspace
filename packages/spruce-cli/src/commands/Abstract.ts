@@ -16,6 +16,7 @@ import QuizBuilder, {
 	IQuizOptions,
 	IQuizQuestions
 } from '../builders/QuizBuilder'
+import { exec } from 'child_process'
 
 /** All commanders get this */
 export interface ICommandOptions {
@@ -29,6 +30,10 @@ export interface ICommandOptions {
 	templates: Templates
 }
 
+export interface IWriteOptions {
+	pretty?: boolean
+	build?: boolean
+}
 export default abstract class AbstractCommand extends TerminalUtility {
 	/** Spruce logger */
 	public log: Log
@@ -98,11 +103,15 @@ export default abstract class AbstractCommand extends TerminalUtility {
 	}
 
 	/** Write a file to a place handling all directory creation (overwrites everything) */
-	public async writeFile(destination: string, contents: string) {
+	public async writeFile(
+		destination: string,
+		contents: string,
+		options: IWriteOptions = {}
+	) {
 		this.generators.core.writeFile(this.resolvePath(destination), contents)
 		if (destination.substr(-3) === '.ts') {
-			this.prettyFormatFile(destination)
-			await this.build(destination)
+			options.pretty && this.pretty(destination)
+			options.build && (await this.build(destination))
 		}
 	}
 
@@ -122,17 +131,37 @@ export default abstract class AbstractCommand extends TerminalUtility {
 	}
 
 	/** Make a file pass lint */
-	public async prettyFormatFile(filePath: string) {
-		this.log.info(`lint running on all files, not just ${filePath}`)
+	public async pretty(filePath?: string) {
+		filePath && this.log.info(`lint running on all files, not just ${filePath}`)
 		return this.utilities.package.lintFix()
 	}
 
 	/** Kick off a build */
 	public async build(file?: string) {
-		this.startLoading('Waiting for build to complete')
+		this.startLoading('Building')
+
+		// Starting build
+		await new Promise(resolve => {
+			exec(
+				`node_modules/.bin/tsc ${file ? this.resolvePath(file) : ''}`,
+				{ cwd: this.cwd },
+				(err, stdout) => {
+					if (err) {
+						debugger
+						this.stopLoading()
+						this.error(file ? `Building ${file} failed!` : 'Build failed!')
+						this.error(stdout)
+					}
+					resolve()
+				}
+			)
+		})
 
 		if (file) {
-			const builtFile = this.resolvePath(file)
+			debugger
+			const resolved = this.resolvePath(file)
+
+			const builtFile = resolved
 				.replace('/.spruce/', '/build/.spruce/')
 				.replace('/src/', '/build/src/')
 				.replace('.ts', '.js')

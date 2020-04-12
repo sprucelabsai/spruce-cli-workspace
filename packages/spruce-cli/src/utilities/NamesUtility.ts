@@ -2,6 +2,7 @@ import { camelCase, snakeCase, upperFirst } from 'lodash'
 import { FieldDefinition } from '@sprucelabs/schema'
 import { INamedTemplateItem } from '../../.spruce/schemas/namedTemplateItem.types'
 import AbstractUtility from './AbstractUtility'
+import path from 'path'
 
 /** First name => FirstName */
 export function toCamel(name: string) {
@@ -18,6 +19,14 @@ export function toConst(name: string) {
 	return snakeCase(name).toUpperCase()
 }
 
+/** Gets you a name good for using in an import statement based off a file path */
+export function toFileNameWithoutExtension(filePath: string) {
+	return filePath
+		.replace(path.dirname(filePath), '')
+		.replace(path.extname(filePath), '')
+		.replace('/', '')
+}
+
 export default class NamesUtility extends AbstractUtility {
 	/** First name => FirstName */
 	public toCamel = toCamel
@@ -27,6 +36,9 @@ export default class NamesUtility extends AbstractUtility {
 
 	/** First name => FIRST_NAME */
 	public toConst = toConst
+
+	/** Gets you a name good for using in an import statement based off a file path */
+	public toFileNameWithoutExtension = toFileNameWithoutExtension
 
 	/** Help guess on answers */
 	public onWillAskQuestionHandler<

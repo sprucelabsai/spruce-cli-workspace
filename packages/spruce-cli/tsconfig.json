@@ -17,6 +17,7 @@
 		"baseUrl": ".",
 		"experimentalDecorators": true,
 		"paths": {
+			"#spruce:schema/*": ["node_modules/@sprucelabs/schema/build/src/*"],
 			"#spruce/*": [".spruce/*"]
 		}
 	},

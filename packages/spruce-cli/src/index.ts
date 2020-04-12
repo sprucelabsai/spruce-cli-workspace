@@ -39,7 +39,9 @@ import VmService from './services/VmService'
 import './addons/filePrompt.addon'
 import PackageUtility from './utilities/PackageUtility'
 import SchemaUtility from './utilities/SchemaUtility'
-
+import TsConfigUtility from './utilities/TsConfigUtility'
+import BootstrapUtility from './utilities/BootstrapUtility'
+import '#spruce/schemas/fields.types'
 /**
  * For handling debugger not attaching right away
  */
@@ -68,9 +70,10 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	})
 
 	// Starting cwd
-	const cwd = process.cwd()
-	// Force run in schema for now
-	// const cwd = '/Users/taylorromero/Development/SpruceLabs/spruce-schema/'
+	// const cwd = process.cwd()
+	// Force run when testing
+	const cwd =
+		'/Users/taylorromero/Development/SpruceLabs/spruce-heartwood-workspace/packages/heartwood-skill'
 
 	// Setup log
 	log.setOptions({ level: LogLevel.Info })
@@ -84,7 +87,9 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	const utilities: IUtilities = {
 		names: new NamesUtility(utilityOptions),
 		package: new PackageUtility(utilityOptions),
-		schema: new SchemaUtility(utilityOptions)
+		schema: new SchemaUtility(utilityOptions),
+		tsConfig: new TsConfigUtility(utilityOptions),
+		bootstrap: new BootstrapUtility(utilityOptions)
 	}
 
 	// Setup mercury
@@ -209,14 +214,17 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	})
 
 	const commandResult = await program.parseAsync(argv)
-
 	if (commandResult.length === 0) {
 		// No commands were found / executed
 		program.outputHelp()
 	}
 }
 
-setup(process.argv, process.debugPort > 0)
+setup(
+	process.argv,
+	typeof global.v8debug === 'object' ||
+		/--debug|--inspect/.test(process.execArgv.join(' '))
+)
 	.then(() => {
 		process.exit(0)
 	})

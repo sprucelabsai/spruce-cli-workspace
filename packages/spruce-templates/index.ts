@@ -33,6 +33,8 @@ export interface IFieldTypesTemplateItem extends ISchemaTemplateNames {
 	pascalType: string
 	/** The value used for the FieldType enum */
 	camelType: string
+	/** Is this field type introduced by the skill be worked on right meow */
+	isLocal: boolean
 }
 
 // Import actual templates
@@ -86,6 +88,10 @@ const test: string = fs
 
 const fieldTypes: string = fs
 	.readFileSync(path.join(templatePath, 'schemas/fields/fields.types.hbs'))
+	.toString()
+
+const fieldType: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/fields/fieldType.hbs'))
 	.toString()
 
 // Template generators
@@ -196,6 +202,12 @@ export const templates = {
 	/** The types file for all the schema fields being used*/
 	fieldTypes(options: { fields: IFieldTypesTemplateItem[] }) {
 		const template = handlebars.compile(fieldTypes)
+		return template(options)
+	},
+
+	/** The field type enum */
+	fieldType(options: { fields: IFieldTypesTemplateItem[] }) {
+		const template = handlebars.compile(fieldType)
 		return template(options)
 	}
 }

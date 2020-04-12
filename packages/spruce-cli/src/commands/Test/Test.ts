@@ -16,11 +16,17 @@ export default class TestCommand extends AbstractCommand {
 		let target = cmd.targetFileOrDir as string
 
 		if (!target) {
-			target = await this.prompt({
+			const file = await this.prompt({
 				type: FieldType.File,
 				label: 'Which file would you like to test?',
-				defaultValue: path.join(this.cwd, 'src')
+				isRequired: true,
+				defaultValue: {
+					path: path.join(this.cwd, 'src'),
+					acceptableTypes: ['']
+				}
 			})
+			// Get the path to the file off the file
+			target = path.join(file.path ?? this.cwd, file.name)
 		}
 
 		// Make sure test module is installed
@@ -28,9 +34,7 @@ export default class TestCommand extends AbstractCommand {
 		await this.utilities.package.setupForTesting()
 		this.stopLoading()
 
-		const name = target
-			.replace(path.dirname(target), '')
-			.replace(path.extname(target), '')
+		const name = this.utilities.names.toFileNameWithoutExtension(target)
 
 		const pascalName = this.utilities.names.toPascal(name)
 		const destination = path.join(path.dirname(target), pascalName) + '.test.ts'
@@ -39,6 +43,6 @@ export default class TestCommand extends AbstractCommand {
 		this.writeFile(destination, contents)
 		this.info(`Test created at ${destination}`)
 		this.info('Updated package.json')
-		this.hint('Try `y test` or `y test:watch`')
+		this.hint('Try `yarn test` or `yarn test:watch`')
 	}
 }
