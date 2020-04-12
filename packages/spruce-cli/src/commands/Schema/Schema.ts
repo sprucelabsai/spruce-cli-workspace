@@ -118,7 +118,12 @@ export default class SchemaCommand extends AbstractCommand {
 		await this.pretty()
 		await this.build()
 
-		this.info(`All done 👊: ${schemaTypesDestination}`)
+		this.clear()
+		this.info(`All done 👊. I created 3 files.`)
+		this.bar()
+		this.info(`1. Schema definitions ${schemaTypesDestination}`)
+		this.info(`2. Field definitions ${fieldTypesDestination}`)
+		this.info(`3. Field type enum ${fieldTypeDestination}`)
 	}
 
 	/** Generate types and other files based definitions */

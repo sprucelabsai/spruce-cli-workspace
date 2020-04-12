@@ -1,6 +1,6 @@
 import { default  as Schema } from '@sprucelabs/schema'
-import { FieldType, ISchemaDefinition } from '@sprucelabs/schema'
 import * as SpruceSchema from '@sprucelabs/schema'
+
 
 // Schemas by namespace
 
@@ -23,7 +23,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 		}
 
 		/** The interface for the schema definition for a Profile Image Sizes */
-		export interface IDefinition extends ISchemaDefinition {
+		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 			id: 'profileImage',
 			name: 'Profile Image Sizes',
 			description: 'Profile images at various helpful sizes and resolutions.',
@@ -33,7 +33,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** 60x60. */
 			            'profile60': {
 			                label: '60x60',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                isRequired: true,
 			                
@@ -46,7 +46,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** 150x150. */
 			            'profile150': {
 			                label: '150x150',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                isRequired: true,
 			                
@@ -59,7 +59,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** 60x60. */
 			            'profile60@2x': {
 			                label: '60x60',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                isRequired: true,
 			                
@@ -72,7 +72,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** 150x150. */
 			            'profile150@2x': {
 			                label: '150x150',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                isRequired: true,
 			                
@@ -96,7 +96,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** 60x60. */
 			            'profile60': {
 			                label: '60x60',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                isRequired: true,
 			                
@@ -109,7 +109,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** 150x150. */
 			            'profile150': {
 			                label: '150x150',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                isRequired: true,
 			                
@@ -122,7 +122,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** 60x60. */
 			            'profile60@2x': {
 			                label: '60x60',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                isRequired: true,
 			                
@@ -135,7 +135,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** 150x150. */
 			            'profile150@2x': {
 			                label: '150x150',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                isRequired: true,
 			                
@@ -176,7 +176,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 		}
 
 		/** The interface for the schema definition for a User */
-		export interface IDefinition extends ISchemaDefinition {
+		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 			id: 'user',
 			name: 'User',
 			description: 'A human being.',
@@ -186,7 +186,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Id. */
 			            'id': {
 			                label: 'Id',
-			                type: FieldType.Id,
+			                type: SpruceSchema.FieldType.Id,
 			                
 			                isRequired: true,
 			                
@@ -199,7 +199,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** First name. */
 			            'firstName': {
 			                label: 'First name',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                
 			                
@@ -212,7 +212,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Last name. */
 			            'lastName': {
 			                label: 'Last name',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                
 			                
@@ -225,7 +225,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Casual name. Generated name that defaults to Friend! */
 			            'casualName': {
 			                label: 'Casual name',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                isRequired: true,
 			                hint: 'Generated name that defaults to Friend!',
@@ -238,7 +238,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Phone. The person's phone number! */
 			            'phoneNumber': {
 			                label: 'Phone',
-			                type: FieldType.Phone,
+			                type: SpruceSchema.FieldType.Phone,
 			                
 			                
 			                hint: 'The person\'s phone number!',
@@ -251,7 +251,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Profile photos. */
 			            'profileImages': {
 			                label: 'Profile photos',
-			                type: FieldType.Schema,
+			                type: SpruceSchema.FieldType.Schema,
 			                
 			                
 			                
@@ -264,7 +264,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Default profile photos. */
 			            'defaultProfileImages': {
 			                label: 'Default profile photos',
-			                type: FieldType.Schema,
+			                type: SpruceSchema.FieldType.Schema,
 			                
 			                isRequired: true,
 			                
@@ -288,7 +288,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Id. */
 			            'id': {
 			                label: 'Id',
-			                type: FieldType.Id,
+			                type: SpruceSchema.FieldType.Id,
 			                
 			                isRequired: true,
 			                
@@ -301,7 +301,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** First name. */
 			            'firstName': {
 			                label: 'First name',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                
 			                
@@ -314,7 +314,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Last name. */
 			            'lastName': {
 			                label: 'Last name',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                
 			                
@@ -327,7 +327,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Casual name. Generated name that defaults to Friend! */
 			            'casualName': {
 			                label: 'Casual name',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                isRequired: true,
 			                hint: 'Generated name that defaults to Friend!',
@@ -340,7 +340,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Phone. The person's phone number! */
 			            'phoneNumber': {
 			                label: 'Phone',
-			                type: FieldType.Phone,
+			                type: SpruceSchema.FieldType.Phone,
 			                
 			                
 			                hint: 'The person\'s phone number!',
@@ -353,7 +353,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Profile photos. */
 			            'profileImages': {
 			                label: 'Profile photos',
-			                type: FieldType.Schema,
+			                type: SpruceSchema.FieldType.Schema,
 			                
 			                
 			                
@@ -366,7 +366,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Default profile photos. */
 			            'defaultProfileImages': {
 			                label: 'Default profile photos',
-			                type: FieldType.Schema,
+			                type: SpruceSchema.FieldType.Schema,
 			                
 			                isRequired: true,
 			                
@@ -405,7 +405,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 		}
 
 		/** The interface for the schema definition for a Skill */
-		export interface IDefinition extends ISchemaDefinition {
+		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 			id: 'skill',
 			name: 'Skill',
 			description: 'An ability Sprucebot has learned.',
@@ -415,7 +415,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Id. */
 			            'id': {
 			                label: 'Id',
-			                type: FieldType.Id,
+			                type: SpruceSchema.FieldType.Id,
 			                
 			                isRequired: true,
 			                
@@ -428,7 +428,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Id. */
 			            'apiKey': {
 			                label: 'Id',
-			                type: FieldType.Id,
+			                type: SpruceSchema.FieldType.Id,
 			                
 			                isRequired: true,
 			                
@@ -441,7 +441,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Name. */
 			            'name': {
 			                label: 'Name',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                isRequired: true,
 			                
@@ -454,7 +454,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Description. */
 			            'description': {
 			                label: 'Description',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                
 			                
@@ -467,7 +467,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Slug. */
 			            'slug': {
 			                label: 'Slug',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                
 			                
@@ -480,7 +480,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Icon. */
 			            'icon': {
 			                label: 'Icon',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                
 			                
@@ -504,7 +504,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Id. */
 			            'id': {
 			                label: 'Id',
-			                type: FieldType.Id,
+			                type: SpruceSchema.FieldType.Id,
 			                
 			                isRequired: true,
 			                
@@ -517,7 +517,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Id. */
 			            'apiKey': {
 			                label: 'Id',
-			                type: FieldType.Id,
+			                type: SpruceSchema.FieldType.Id,
 			                
 			                isRequired: true,
 			                
@@ -530,7 +530,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Name. */
 			            'name': {
 			                label: 'Name',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                isRequired: true,
 			                
@@ -543,7 +543,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Description. */
 			            'description': {
 			                label: 'Description',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                
 			                
@@ -556,7 +556,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Slug. */
 			            'slug': {
 			                label: 'Slug',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                
 			                
@@ -569,7 +569,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Icon. */
 			            'icon': {
 			                label: 'Icon',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                
 			                
@@ -610,7 +610,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 		}
 
 		/** The interface for the schema definition for a Location */
-		export interface IDefinition extends ISchemaDefinition {
+		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 			id: 'location',
 			name: 'Location',
 			description: 'A physical location where people meet. An organization has at least one of them.',
@@ -620,7 +620,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Id. */
 			            'id': {
 			                label: 'Id',
-			                type: FieldType.Id,
+			                type: SpruceSchema.FieldType.Id,
 			                
 			                
 			                
@@ -633,7 +633,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Name. */
 			            'name': {
 			                label: 'Name',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                isRequired: true,
 			                
@@ -646,7 +646,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Store number. You can use other symbols, like # or dashes. #123 or 32-US-5 */
 			            'num': {
 			                label: 'Store number',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                
 			                hint: 'You can use other symbols, like # or dashes. #123 or 32-US-5',
@@ -659,7 +659,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Public. Is this location viewable by guests? */
 			            'isPublic': {
 			                label: 'Public',
-			                type: FieldType.Boolean,
+			                type: SpruceSchema.FieldType.Boolean,
 			                
 			                
 			                hint: 'Is this location viewable by guests?',
@@ -672,7 +672,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Main Phone. */
 			            'phone': {
 			                label: 'Main Phone',
-			                type: FieldType.Phone,
+			                type: SpruceSchema.FieldType.Phone,
 			                
 			                
 			                
@@ -685,7 +685,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Timezone. */
 			            'timezone': {
 			                label: 'Timezone',
-			                type: FieldType.Select,
+			                type: SpruceSchema.FieldType.Select,
 			                
 			                
 			                
@@ -698,7 +698,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Address. */
 			            'address': {
 			                label: 'Address',
-			                type: FieldType.Address,
+			                type: SpruceSchema.FieldType.Address,
 			                
 			                isRequired: true,
 			                
@@ -722,7 +722,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Id. */
 			            'id': {
 			                label: 'Id',
-			                type: FieldType.Id,
+			                type: SpruceSchema.FieldType.Id,
 			                
 			                
 			                
@@ -735,7 +735,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Name. */
 			            'name': {
 			                label: 'Name',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                isRequired: true,
 			                
@@ -748,7 +748,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Store number. You can use other symbols, like # or dashes. #123 or 32-US-5 */
 			            'num': {
 			                label: 'Store number',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                
 			                hint: 'You can use other symbols, like # or dashes. #123 or 32-US-5',
@@ -761,7 +761,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Public. Is this location viewable by guests? */
 			            'isPublic': {
 			                label: 'Public',
-			                type: FieldType.Boolean,
+			                type: SpruceSchema.FieldType.Boolean,
 			                
 			                
 			                hint: 'Is this location viewable by guests?',
@@ -774,7 +774,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Main Phone. */
 			            'phone': {
 			                label: 'Main Phone',
-			                type: FieldType.Phone,
+			                type: SpruceSchema.FieldType.Phone,
 			                
 			                
 			                
@@ -787,7 +787,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Timezone. */
 			            'timezone': {
 			                label: 'Timezone',
-			                type: FieldType.Select,
+			                type: SpruceSchema.FieldType.Select,
 			                
 			                
 			                
@@ -800,7 +800,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Address. */
 			            'address': {
 			                label: 'Address',
-			                type: FieldType.Address,
+			                type: SpruceSchema.FieldType.Address,
 			                
 			                isRequired: true,
 			                
@@ -828,14 +828,14 @@ import * as SpruceSchema from '@sprucelabs/schema'
 		}
 
 		/** The interface for the schema definition for a Access control list lookup table */
-		export interface IDefinition extends ISchemaDefinition {
+		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 			id: 'acl',
 			name: 'Access control list lookup table',
 			description: '',
 			
 			dynamicKeySignature: { 
 			    label: 'Permissions grouped by slug',
-			    type: FieldType.Text,
+			    type: SpruceSchema.FieldType.Text,
 			    key: 'slug',
 			    
 			    
@@ -855,7 +855,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			
 			dynamicKeySignature: { 
 			    label: 'Permissions grouped by slug',
-			    type: FieldType.Text,
+			    type: SpruceSchema.FieldType.Text,
 			    key: 'slug',
 			    
 			    
@@ -893,7 +893,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 		}
 
 		/** The interface for the schema definition for a Job */
-		export interface IDefinition extends ISchemaDefinition {
+		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 			id: 'job',
 			name: 'Job',
 			description: 'A position at a company. The answer to the question; What is your job?',
@@ -903,7 +903,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Id. */
 			            'id': {
 			                label: 'Id',
-			                type: FieldType.Id,
+			                type: SpruceSchema.FieldType.Id,
 			                
 			                
 			                
@@ -916,7 +916,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Is default. Is this job one that comes with every org? Mapped to roles (owner, groupManager, managar, guest). */
 			            'isDefault': {
 			                label: 'Is default',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                isRequired: true,
 			                hint: 'Is this job one that comes with every org? Mapped to roles (owner, groupManager, managar, guest).',
@@ -929,7 +929,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Name. */
 			            'name': {
 			                label: 'Name',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                isRequired: true,
 			                
@@ -942,7 +942,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Role. */
 			            'role': {
 			                label: 'Role',
-			                type: FieldType.Select,
+			                type: SpruceSchema.FieldType.Select,
 			                
 			                isRequired: true,
 			                
@@ -955,7 +955,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** On work permissions. */
 			            'inStoreAcls': {
 			                label: 'On work permissions',
-			                type: FieldType.Schema,
+			                type: SpruceSchema.FieldType.Schema,
 			                
 			                
 			                
@@ -968,7 +968,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Off work permissions. */
 			            'acls': {
 			                label: 'Off work permissions',
-			                type: FieldType.Schema,
+			                type: SpruceSchema.FieldType.Schema,
 			                
 			                
 			                
@@ -992,7 +992,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Id. */
 			            'id': {
 			                label: 'Id',
-			                type: FieldType.Id,
+			                type: SpruceSchema.FieldType.Id,
 			                
 			                
 			                
@@ -1005,7 +1005,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Is default. Is this job one that comes with every org? Mapped to roles (owner, groupManager, managar, guest). */
 			            'isDefault': {
 			                label: 'Is default',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                isRequired: true,
 			                hint: 'Is this job one that comes with every org? Mapped to roles (owner, groupManager, managar, guest).',
@@ -1018,7 +1018,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Name. */
 			            'name': {
 			                label: 'Name',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                isRequired: true,
 			                
@@ -1031,7 +1031,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Role. */
 			            'role': {
 			                label: 'Role',
-			                type: FieldType.Select,
+			                type: SpruceSchema.FieldType.Select,
 			                
 			                isRequired: true,
 			                
@@ -1044,7 +1044,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** On work permissions. */
 			            'inStoreAcls': {
 			                label: 'On work permissions',
-			                type: FieldType.Schema,
+			                type: SpruceSchema.FieldType.Schema,
 			                
 			                
 			                
@@ -1057,7 +1057,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Off work permissions. */
 			            'acls': {
 			                label: 'Off work permissions',
-			                type: FieldType.Schema,
+			                type: SpruceSchema.FieldType.Schema,
 			                
 			                
 			                
@@ -1100,7 +1100,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 		}
 
 		/** The interface for the schema definition for a User location */
-		export interface IDefinition extends ISchemaDefinition {
+		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 			id: 'userLocation',
 			name: 'User location',
 			description: 'A location a person has given access to themselves.',
@@ -1110,7 +1110,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Id. */
 			            'id': {
 			                label: 'Id',
-			                type: FieldType.Id,
+			                type: SpruceSchema.FieldType.Id,
 			                
 			                
 			                
@@ -1123,7 +1123,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Name. */
 			            'role': {
 			                label: 'Name',
-			                type: FieldType.Select,
+			                type: SpruceSchema.FieldType.Select,
 			                
 			                isRequired: true,
 			                
@@ -1136,7 +1136,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Status. */
 			            'status': {
 			                label: 'Status',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                
 			                
@@ -1149,7 +1149,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Total visits. */
 			            'visits': {
 			                label: 'Total visits',
-			                type: FieldType.Number,
+			                type: SpruceSchema.FieldType.Number,
 			                
 			                isRequired: true,
 			                
@@ -1162,7 +1162,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Last visit. */
 			            'lastRecordedVisit': {
 			                label: 'Last visit',
-			                type: FieldType.DateTime,
+			                type: SpruceSchema.FieldType.DateTime,
 			                
 			                
 			                
@@ -1175,7 +1175,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Job. */
 			            'job': {
 			                label: 'Job',
-			                type: FieldType.Schema,
+			                type: SpruceSchema.FieldType.Schema,
 			                
 			                isRequired: true,
 			                
@@ -1188,7 +1188,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Location. */
 			            'location': {
 			                label: 'Location',
-			                type: FieldType.Schema,
+			                type: SpruceSchema.FieldType.Schema,
 			                
 			                isRequired: true,
 			                
@@ -1201,7 +1201,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** User. */
 			            'user': {
 			                label: 'User',
-			                type: FieldType.Schema,
+			                type: SpruceSchema.FieldType.Schema,
 			                
 			                isRequired: true,
 			                
@@ -1225,7 +1225,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Id. */
 			            'id': {
 			                label: 'Id',
-			                type: FieldType.Id,
+			                type: SpruceSchema.FieldType.Id,
 			                
 			                
 			                
@@ -1238,7 +1238,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Name. */
 			            'role': {
 			                label: 'Name',
-			                type: FieldType.Select,
+			                type: SpruceSchema.FieldType.Select,
 			                
 			                isRequired: true,
 			                
@@ -1251,7 +1251,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Status. */
 			            'status': {
 			                label: 'Status',
-			                type: FieldType.Text,
+			                type: SpruceSchema.FieldType.Text,
 			                
 			                
 			                
@@ -1264,7 +1264,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Total visits. */
 			            'visits': {
 			                label: 'Total visits',
-			                type: FieldType.Number,
+			                type: SpruceSchema.FieldType.Number,
 			                
 			                isRequired: true,
 			                
@@ -1277,7 +1277,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Last visit. */
 			            'lastRecordedVisit': {
 			                label: 'Last visit',
-			                type: FieldType.DateTime,
+			                type: SpruceSchema.FieldType.DateTime,
 			                
 			                
 			                
@@ -1290,7 +1290,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Job. */
 			            'job': {
 			                label: 'Job',
-			                type: FieldType.Schema,
+			                type: SpruceSchema.FieldType.Schema,
 			                
 			                isRequired: true,
 			                
@@ -1303,7 +1303,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** Location. */
 			            'location': {
 			                label: 'Location',
-			                type: FieldType.Schema,
+			                type: SpruceSchema.FieldType.Schema,
 			                
 			                isRequired: true,
 			                
@@ -1316,7 +1316,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			            /** User. */
 			            'user': {
 			                label: 'User',
-			                type: FieldType.Schema,
+			                type: SpruceSchema.FieldType.Schema,
 			                
 			                isRequired: true,
 			                

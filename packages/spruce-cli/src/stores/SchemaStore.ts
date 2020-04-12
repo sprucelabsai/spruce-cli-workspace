@@ -62,6 +62,10 @@ export default class SchemaStore extends AbstractStore {
 				path.join(
 					this.cwd,
 					'node_modules/@sprucelabs/schema/build/src/addons/*Field.addon.js'
+				),
+				path.join(
+					this.cwd,
+					'../../node_modules/@sprucelabs/schema/build/src/addons/*Field.addon.js'
 				)
 			])
 		).map(path => ({ path, isLocal: false }))
