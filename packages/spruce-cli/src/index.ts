@@ -70,10 +70,10 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	})
 
 	// Starting cwd
-	// const cwd = process.cwd()
+	const cwd = process.cwd()
 	// Force run when testing
-	const cwd =
-		'/Users/taylorromero/Development/SpruceLabs/spruce-heartwood-workspace/packages/heartwood-skill'
+	// const cwd =
+	// 	'/Users/taylorromero/Development/SpruceLabs/spruce-heartwood-workspace/packages/heartwood-skill'
 
 	// Setup log
 	log.setOptions({ level: LogLevel.Info })
