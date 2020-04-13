@@ -1047,14 +1047,16 @@
     mime-db "^1.43.0"
     mime-type "^3.0.7"
 
-"@sprucelabs/schema@^1.0.6":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.0.7.tgz#b62d8be4ee49ab9cf832b60d973292c969c5c7db"
-  integrity sha512-rk6AD/MJnT+45f3fNIUdgxSXYLUdzN1k7E9DxnwoFT8AZXNieWQczrbyjQ19IAhvztXUA8elU6Ch9MHsn6YXNw==
+"@sprucelabs/schema@^1.0.11":
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.0.11.tgz#72353f2ff06e6d0efc6e244a3ab63871008c279c"
+  integrity sha512-xkGNBra+SXfFPtJmFkVgBvqg5Trjl7tqUaTI610tomyiKPVzCCf0SSNxMpz+7OKczbnZ0fhO6WX/azqeVKJ5Mw==
   dependencies:
     "@sprucelabs/error" "^1.0.7"
     google-libphonenumber "^3.2.8"
     libphonenumber-js "^1.7.48"
+    mime-db "^1.43.0"
+    mime-type "^3.0.7"
 
 "@sprucelabs/test@^1.1.0":
   version "1.1.0"

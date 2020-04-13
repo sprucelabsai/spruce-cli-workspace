@@ -35,6 +35,8 @@ export interface IFieldTypesTemplateItem extends ISchemaTemplateNames {
 	camelType: string
 	/** Is this field type introduced by the skill be worked on right meow */
 	isLocal: boolean
+	/** The description associated with the field */
+	description: string
 }
 
 // Import actual templates

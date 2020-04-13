@@ -147,7 +147,6 @@ export default abstract class AbstractCommand extends TerminalUtility {
 				{ cwd: this.cwd },
 				(err, stdout) => {
 					if (err) {
-						debugger
 						this.stopLoading()
 						this.error(file ? `Building ${file} failed!` : 'Build failed!')
 						this.error(stdout)
@@ -156,31 +155,6 @@ export default abstract class AbstractCommand extends TerminalUtility {
 				}
 			)
 		})
-
-		if (file) {
-			debugger
-			const resolved = this.resolvePath(file)
-
-			const builtFile = resolved
-				.replace('/.spruce/', '/build/.spruce/')
-				.replace('/src/', '/build/src/')
-				.replace('.ts', '.js')
-
-			let attemptCount = 0
-			do {
-				if (attemptCount > 5) {
-					throw new SpruceError({
-						code: ErrorCode.BuildFailed,
-						file
-					})
-				}
-				attemptCount++
-				await new Promise(resolve => setTimeout(resolve, 2000))
-			} while (!this.doesFileExist(builtFile))
-		} else {
-			// Because watch is running, we'll just wait for this to finish
-			await new Promise(resolve => setTimeout(resolve, 5000))
-		}
 
 		this.stopLoading()
 	}

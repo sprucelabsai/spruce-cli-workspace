@@ -12,6 +12,7 @@ import {
 } from '@sprucelabs/spruce-templates'
 
 import path from 'path'
+import { uniqBy } from 'lodash'
 
 // TODO move these into mercury api and pull from there
 import {
@@ -68,18 +69,29 @@ export default class SchemaStore extends AbstractStore {
 					'../../node_modules/@sprucelabs/schema/build/src/addons/*Field.addon.js'
 				)
 			])
-		).map(path => ({ path, isLocal: false }))
+		).map(path => ({
+			path,
+			registration: require(path).default,
+			isLocal: false
+		}))
 
 		const localAddons = (
 			await globby([path.join(this.cwd, '/build/src/addons/*Field.addon.js')])
-		).map(path => ({ path, isLocal: true }))
+		).map(path => ({
+			path,
+			registration: require(path).default,
+			isLocal: true
+		}))
 
-		const allAddons = [...coreAddons, ...localAddons]
+		const allAddons = uniqBy(
+			[...coreAddons, ...localAddons],
+			'registration.type'
+		)
 		const types: IFieldTypesTemplateItem[] = []
 
 		for (const addon of allAddons) {
-			const type: IFieldRegistration = require(addon.path).default
-			let pkg = type.package
+			const registration: IFieldRegistration = addon.registration
+			let pkg = registration.package
 
 			if (addon.isLocal) {
 				const camelName = this.utilities.names
@@ -91,15 +103,16 @@ export default class SchemaStore extends AbstractStore {
 			}
 
 			// Map registration to template item
-			const name = type.className
+			const name = registration.className
 			types.push({
 				pascalName: this.utilities.names.toPascal(name),
 				camelName: this.utilities.names.toCamel(name),
 				package: pkg,
-				readableName: type.className,
-				pascalType: this.utilities.names.toPascal(type.type),
-				camelType: this.utilities.names.toCamel(type.type),
-				isLocal: addon.isLocal
+				readableName: registration.className,
+				pascalType: this.utilities.names.toPascal(registration.type),
+				camelType: this.utilities.names.toCamel(registration.type),
+				isLocal: addon.isLocal,
+				description: registration.description
 			})
 		}
 
