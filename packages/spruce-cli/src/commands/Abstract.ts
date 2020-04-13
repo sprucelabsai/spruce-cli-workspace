@@ -14,7 +14,6 @@ import QuizBuilder, {
 	IQuizOptions,
 	IQuizQuestions
 } from '../builders/QuizBuilder'
-import { exec } from 'child_process'
 
 /** All commanders get this */
 export interface ICommandOptions {
@@ -136,25 +135,24 @@ export default abstract class AbstractCommand extends TerminalUtility {
 
 	/** Kick off a build */
 	public async build(file?: string) {
-		this.startLoading('Building')
-
-		// Starting build
-		await new Promise(resolve => {
-			exec(
-				`node_modules/.bin/tsc ${file ? this.resolvePath(file) : ''}`,
-				{ cwd: this.cwd },
-				(err, stdout) => {
-					if (err) {
-						this.stopLoading()
-						this.error(file ? `Building ${file} error!` : 'Build error!')
-						this.error(stdout)
-					}
-					resolve()
-				}
-			)
-		})
-
-		this.stopLoading()
+		this.log.info(`Ignoring build of ${file ?? 'entire project'}`)
+		// This.startLoading('Building')
+		// // Starting build
+		// await new Promise(resolve => {
+		// 	exec(
+		// 		`node_modules/.bin/tsc ${file ? this.resolvePath(file) : ''}`,
+		// 		{ cwd: this.cwd },
+		// 		(err, stdout) => {
+		// 			if (err) {
+		// 				this.stopLoading()
+		// 				this.error(file ? `Building ${file} error!` : 'Build error!')
+		// 				this.error(stdout)
+		// 			}
+		// 			resolve()
+		// 		}
+		// 	)
+		// })
+		// this.stopLoading()
 	}
 
 	/** Are we in a skills dir? */

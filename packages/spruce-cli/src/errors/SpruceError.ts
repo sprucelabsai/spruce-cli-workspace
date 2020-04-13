@@ -44,7 +44,7 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				break
 
 			case ErrorCode.DefinitionFailedToImport:
-				message = `Error in "${options.file}". ${options.details}.`
+				message = `Error importing "${options.file}". ${options.details}.`
 
 				break
 
@@ -59,6 +59,6 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				message = super.friendlyMessage()
 		}
 
-		return message
+		return `${options.code} ${message}`
 	}
 }

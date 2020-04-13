@@ -75,8 +75,19 @@ export default class PackageUtility extends AbstractUtility {
 		})
 	}
 
+	public async setupSkill() {
+		await this.install(['@sprucelabs/path-resolver'])
+		await this.install(['ts-node', 'tsconfig-paths'], { dev: true })
+	}
+
+	public async setupForSchemas() {
+		await this.setupSkill()
+		await this.install(['@sprucelabs/schema'])
+	}
+
 	/** Set all the things needed for testing */
 	public async setupForTesting() {
+		await this.setupSkill()
 		await this.install(['@sprucelabs/test', 'ava', 'ts-node'], {
 			dev: true
 		})

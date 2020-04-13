@@ -15,19 +15,21 @@ export default class VmService extends AbstractService {
 		let definitionProxy: ISchemaDefinition | undefined
 
 		// Lets make sure there is a complimentary build for for this or we can't continue
-		const builtFile =
-			file.replace('.ts', '').replace('/src/', '/build/src/') + '.js'
+		// const builtFile =
+		// 	file.replace('.ts', '').replace('/src/', '/build/src/') + '.js'
+		const builtFile = file
 
 		if (!fs.existsSync(builtFile)) {
 			throw new SpruceError({
 				code: ErrorCode.DefinitionFailedToImport,
 				file,
-				details: `It looks like you haven't built your project yet. try 'yarn watch'`
+				details: `I couldn't find the definition file`
 			})
 		}
 
 		// Construct new vm
 		const vm = new NodeVM({
+			sourceExtensions: ['ts', 'js'],
 			sandbox: {
 				define(def: { default: ISchemaDefinition }) {
 					// Build initial definition
@@ -40,6 +42,14 @@ export default class VmService extends AbstractService {
 				resolve: (name, dir) => {
 					if (this.fileMapCache[name]) {
 						return this.fileMapCache[name]
+					}
+
+					if (
+						name === 'ts-node/register' ||
+						name === 'tsconfig-paths/register'
+					) {
+						return name
+						// Return path.join(this.cwd, 'node_modules', name)
 					}
 
 					if (name === '#spruce/definition') {
@@ -79,9 +89,11 @@ export default class VmService extends AbstractService {
 
 		// Import source and transpile it
 		const sourceCode = `
-		require('ts-node').register();
+		require('ts-node/register');
+		require('tsconfig-paths/register');
+		
 		const definition = require("#spruce/definition");
-define(definition);
+		define(definition);
 		`
 
 		// Run it

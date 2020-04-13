@@ -59,7 +59,7 @@ export default class SchemaCommand extends AbstractCommand {
 
 		// Make sure schema module is installed
 		this.startLoading('Installing dependencies')
-		await this.utilities.package.install('@sprucelabs/schema')
+		await this.utilities.package.setupForSchemas()
 		this.utilities.tsConfig.setupForSchemas()
 		this.startLoading('Fetching schemas and field types')
 
@@ -138,34 +138,36 @@ export default class SchemaCommand extends AbstractCommand {
 
 		// Make sure schema module is installed
 		this.startLoading('Installing dependencies')
-		await this.utilities.package.install('@sprucelabs/schema')
+		await this.utilities.package.setupForSchemas()
 		this.utilities.tsConfig.setupForSchemas()
 		this.stopLoading()
 
 		const matches = await globby(search)
 
-		matches.forEach(async filePath => {
-			// Write to the destination
-			const {
-				pascalName,
-				camelName,
-				definition
-			} = this.generators.schema.generateTypesFromDefinitionFile(
-				filePath,
-				this.resolvePath(destinationDir)
-			)
+		await Promise.all(
+			matches.map(async filePath => {
+				// Write to the destination
+				const {
+					pascalName,
+					camelName,
+					definition
+				} = this.generators.schema.generateTypesFromDefinitionFile(
+					filePath,
+					this.resolvePath(destinationDir)
+				)
 
-			// Tell them how to use it
-			this.headline(`${pascalName} examples:`)
+				// Tell them how to use it
+				this.headline(`${pascalName} examples:`)
 
-			this.writeLn('')
-			this.codeSample(
-				this.templates.schemaExample({ pascalName, camelName, definition })
-			)
+				this.writeLn('')
+				this.codeSample(
+					this.templates.schemaExample({ pascalName, camelName, definition })
+				)
 
-			this.writeLn('')
-			this.writeLn('')
-		})
+				this.writeLn('')
+				this.writeLn('')
+			})
+		)
 	}
 
 	public async create(name: string | undefined, cmd: Command) {
@@ -203,7 +205,7 @@ export default class SchemaCommand extends AbstractCommand {
 
 		// Make sure schema module is installed
 		this.startLoading('Installing dependencies')
-		await this.utilities.package.install('@sprucelabs/schema')
+		await this.utilities.package.setupForSchemas()
 		this.stopLoading()
 
 		// Build paths

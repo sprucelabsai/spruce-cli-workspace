@@ -14,9 +14,10 @@
 		"resolveJsonModule": true,
 		"moduleResolution": "node",
 		"sourceMap": true,
+		"baseUrl": ".",
 		"paths": {
-			"*": ["node_modules/*"],
-			"#spruce/*": ["packages/spruce-cli/.spruce/*"]
+			"#spruce:schema/*": ["node_modules/@sprucelabs/schema/build/src/*"],
+			"#spruce/*": [".spruce/*"]
 		}
 	},
 	"exclude": ["**/node_modules/**"]

@@ -76,7 +76,10 @@ export default class SchemaStore extends AbstractStore {
 		}))
 
 		const localAddons = (
-			await globby([path.join(this.cwd, '/build/src/addons/*Field.addon.js')])
+			await globby([
+				path.join(this.cwd, '/build/src/addons/*Field.addon.js'),
+				path.join(this.cwd, '/src/addons/*Field.addon.ts')
+			])
 		).map(path => ({
 			path,
 			registration: require(path).default,
