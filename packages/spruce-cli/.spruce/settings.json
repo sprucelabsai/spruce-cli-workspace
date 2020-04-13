@@ -1,1 +1,1 @@
-{"watchers":{"src/commands/**/*.ts":["yarn local autoloader -s Command ./src/commands"]}}
+{"watchers":{"src/commands/**/*.ts":["DEBUG=@sprucelabs/cli~debug node -r ts-node/register -r tsconfig-paths/register ./src/index autoloader -s Command ./src/commands"]}}

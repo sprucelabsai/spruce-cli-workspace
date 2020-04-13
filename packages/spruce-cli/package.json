@@ -28,7 +28,7 @@
 	"scripts": {
 		"types:sync": "node ./build/src/index.js types:sync",
 		"build": "npm run clean && npm run build:node",
-		"build:node": "tsc | true",
+		"build:node": "tsc",
 		"watch": "chokidar 'src/**/*' 'index.ts' '../spruce-templates/src/templates/**/*' -c 'npm run build'",
 		"clean": "rm -rf build/",
 		"lint": "eslint '**/*.ts' && tsc -p . --noEmit",
@@ -36,6 +36,7 @@
 		"release": "semantic-release",
 		"start": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node --inspect=5200 ./build/src/index.js $COMMANDS",
 		"local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node -r ts-node/register -r tsconfig-paths/register --inspect=5200 ./src/index $COMMANDS",
+		"local:noDebug": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node -r ts-node/register -r tsconfig-paths/register ./src/index $COMMANDS",
 		"test": "ava **/*.test.ts",
 		"test:watch": "ava  **/*.test.ts --watch"
 	},
@@ -62,6 +63,7 @@
 		"ora": "^4.0.3",
 		"rimraf": "^3.0.2",
 		"slug": "^2.1.1",
+		"string-argv": "^0.3.1",
 		"ts-node": "^8.8.2",
 		"tsutils": "^3.17.1",
 		"typescript": "^3.8.3",

@@ -1,3 +1,4 @@
+import { exec } from 'child_process'
 import log from '../lib/log'
 import TerminalUtility from '../utilities/TerminalUtility'
 import path from 'path'
@@ -154,6 +155,26 @@ export default abstract class AbstractCommand extends TerminalUtility {
 	/** Are we in a skills dir? */
 	public isInSkillDirectory() {
 		return !!this.stores.skill.skillFromDir(this.cwd)
+	}
+
+	/** Execute a command and get back the result */
+	public executeCommand(
+		cmd: string
+	): Promise<{
+		stdout: string
+	}> {
+		log.trace(`Executing command: ${cmd}`, { cwd: this.cwd })
+		return new Promise((resolve, reject) => {
+			exec(cmd, { cwd: this.cwd }, (e, stdout) => {
+				if (e) {
+					reject(e)
+					return
+				}
+				resolve({
+					stdout
+				})
+			})
+		})
 	}
 
 	/** Parses a file path to parts needed for building the files */

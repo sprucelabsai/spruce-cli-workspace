@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-// import readline from 'readline'
 import { Command } from 'commander'
 import chokidar, { FSWatcher } from 'chokidar'
 import minimatch from 'minimatch'
@@ -94,8 +93,9 @@ export default class WatchCommand extends AbstractCommand {
 		this.resolve()
 	}
 
-	private handleFileChange(path: string) {
+	private async handleFileChange(path: string) {
 		log.debug(`${path} changed`)
+		let commandsToExecute: string[] = []
 		// Check if the path matches any of the glob patterns
 		Object.keys(this.watchers).forEach(pattern => {
 			const isMatch = minimatch(path, pattern)
@@ -103,9 +103,23 @@ export default class WatchCommand extends AbstractCommand {
 			if (isMatch) {
 				// Execute the command
 				const cmd = this.watchers[pattern]
+				commandsToExecute = commandsToExecute.concat(cmd)
 				log.debug(`Executing command: ${cmd}`)
 			}
 		})
+
+		if (commandsToExecute.length > 0) {
+			const promises = commandsToExecute.map(c => this.executeCommand(c))
+			const results = await Promise.allSettled(promises)
+			this.writeLn('Finished running watchers')
+			results.forEach(result => {
+				if (result.status === 'fulfilled') {
+					this.writeLn(result.value.stdout)
+				}
+			})
+		} else {
+			log.debug('Nothing run. No matching glob patterns.')
+		}
 	}
 
 	private handleFileAdd(path: string) {
