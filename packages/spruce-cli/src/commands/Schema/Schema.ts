@@ -215,6 +215,7 @@ export default class SchemaCommand extends AbstractCommand {
 		const definition = templates.definition(values)
 
 		await this.writeFile(definitionDestination, definition)
+		await this.build(definitionDestination)
 
 		// Generate types
 		const names = this.generators.schema.generateTypesFromDefinitionFile(

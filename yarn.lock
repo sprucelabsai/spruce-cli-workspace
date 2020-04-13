@@ -1019,10 +1019,10 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-1.0.7.tgz#f22c60b64111006dcf2ed4c5cf1d603cf4051294"
   integrity sha512-GpTywvR0DmVu+oazlU1W/DBXwFWyc+v2MnBMf299tMFKlKocU2aPFEgDvTMat85lb/VWEzxrXyQyf6/hcY+vNA==
 
-"@sprucelabs/log@^10.0.11":
-  version "10.0.11"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.0.11.tgz#0f34e7f769aa38c2ba32b19f44860961a6485cdb"
-  integrity sha512-m+DFnsOA/58LwgUD59SqhjaEr1xQFxp8G/ZGZSOTrNC+lv2uJiNobV4I3lI7A5oCr7ZeQ6MYipThXA6zZ8p4Sg==
+"@sprucelabs/log@^10.2.0", "@sprucelabs/log@^10.2.1":
+  version "10.2.1"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.1.tgz#acd368915e5d763ec4588165e8ccc69db6ed8c42"
+  integrity sha512-hJA7RfEudH+jpMCeR/MYjS3/YVK0ZYa6CmkJIxlYalM2DtWl5M//4uuE+JqYDa1q84QE/gwiZlDR1DvSBx12xA==
 
 "@sprucelabs/mercury@10.2.0":
   version "10.2.0"
@@ -1036,16 +1036,12 @@
     superagent "^5.1.2"
     uuid "^3.3.3"
 
-"@sprucelabs/schema@^1.0.10":
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.0.10.tgz#c11e6bc236d6bd0149d18a4770c1535267483a46"
-  integrity sha512-pSgs4ORCCDnot62/0McWnzp8/BU5k6w3RrPXZzpc21wA4Qi+oRitMTmCpuKbJOSzU60eT4HUFxWv+Mnf+Y1ajQ==
+"@sprucelabs/path-resolver@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/path-resolver/-/path-resolver-1.0.2.tgz#484d5a2558200dcef102eb0eac794e05d32675cd"
+  integrity sha512-HnbIx16Z+DlC+ia7npHz9iAMrFUh3T/XoPrnfG2CRvnQ/EVh6AAlnAAHhGQ+tVNNouHFmdTCkqoT6upqAIrDrg==
   dependencies:
-    "@sprucelabs/error" "^1.0.7"
-    google-libphonenumber "^3.2.8"
-    libphonenumber-js "^1.7.48"
-    mime-db "^1.43.0"
-    mime-type "^3.0.7"
+    "@sprucelabs/log" "^10.2.0"
 
 "@sprucelabs/schema@^1.0.11":
   version "1.0.11"
@@ -1123,6 +1119,11 @@
   version "7.0.4"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.4.tgz#38fd73ddfd9b55abb1e1b2ed578cb55bd7b7d339"
   integrity sha512-8+KAKzEvSUdeo+kmqnKrqgeE+LcA0tjYWFY7RPProVYwnqDjukzO+3b6dLD56rYX5TdWejnEOLJYOIeh4CXKuA==
+
+"@types/json5@^0.0.29":
+  version "0.0.29"
+  resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
+  integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
 
 "@types/jsonwebtoken@^8.3.8":
   version "8.3.8"
@@ -4458,6 +4459,13 @@ json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
   integrity sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus=
 
+json5@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/json5/-/json5-1.0.1.tgz#779fb0018604fa854eacbf6252180d83543e3dbe"
+  integrity sha512-aKS4WQjPenRxiQsC93MNfjx+nbF4PAdYzmd/1JIj8HYzqfbu86beTuNgXDzPknWk0n0uARlyewZo4s++ES36Ow==
+  dependencies:
+    minimist "^1.2.0"
+
 jsonfile@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/jsonfile/-/jsonfile-4.0.0.tgz#8771aae0799b64076b76640fca058f9c10e33ecb"
@@ -7259,6 +7267,16 @@ ts-node@^8.8.2:
     make-error "^1.1.1"
     source-map-support "^0.5.6"
     yn "3.1.1"
+
+tsconfig-paths@^3.9.0:
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/tsconfig-paths/-/tsconfig-paths-3.9.0.tgz#098547a6c4448807e8fcb8eae081064ee9a3c90b"
+  integrity sha512-dRcuzokWhajtZWkQsDVKbWyY+jgcLC5sqJhg2PSgf4ZkH2aHPvaOY8YWGhmjb68b5qqTfasSsDO9k7RUiEmZAw==
+  dependencies:
+    "@types/json5" "^0.0.29"
+    json5 "^1.0.1"
+    minimist "^1.2.0"
+    strip-bom "^3.0.0"
 
 tslib@^1.8.1, tslib@^1.9.0:
   version "1.11.1"

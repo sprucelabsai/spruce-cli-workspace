@@ -10,8 +10,6 @@ import { IServices } from '../services'
 import { IGenerators } from '../generators'
 import { IUtilities } from '../utilities'
 import { Templates } from '@sprucelabs/spruce-templates'
-import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '../../.spruce/errors/codes.types'
 import QuizBuilder, {
 	IQuizOptions,
 	IQuizQuestions
@@ -148,7 +146,7 @@ export default abstract class AbstractCommand extends TerminalUtility {
 				(err, stdout) => {
 					if (err) {
 						this.stopLoading()
-						this.error(file ? `Building ${file} failed!` : 'Build failed!')
+						this.error(file ? `Building ${file} error!` : 'Build error!')
 						this.error(stdout)
 					}
 					resolve()

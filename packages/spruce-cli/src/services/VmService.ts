@@ -78,7 +78,9 @@ export default class VmService extends AbstractService {
 		})
 
 		// Import source and transpile it
-		const sourceCode = `const definition = require("#spruce/definition");
+		const sourceCode = `
+		require('ts-node').register();
+		const definition = require("#spruce/definition");
 define(definition);
 		`
 

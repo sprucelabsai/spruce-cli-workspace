@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
-import '../.spruce/bootstrap'
+import '@sprucelabs/path-resolver'
 import { terminal } from './utilities/TerminalUtility'
 import { Command } from 'commander'
 import globby from 'globby'
@@ -172,7 +172,7 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	}
 
 	// Load commands and actions
-	globby.sync(`${__dirname}/commands/**/*.js`).forEach(file => {
+	globby.sync(`${__dirname}/commands/**/*.ts`).forEach(file => {
 		try {
 			// Import and type the command
 			const cmdClass: new (

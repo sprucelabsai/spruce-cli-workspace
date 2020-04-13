@@ -34,7 +34,7 @@
 		"local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS"
 	},
 	"dependencies": {
-		"@sprucelabs/log": "^10.0.11",
+		"@sprucelabs/log": "^10.2.1",
 		"@sprucelabs/schema": "^1.0.11",
 		"handlebars": "^4.7.3",
 		"lodash": "^4.17.15"
