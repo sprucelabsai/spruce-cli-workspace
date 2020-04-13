@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+import readline from 'readline'
 import { Command } from 'commander'
 import chokidar, { FSWatcher } from 'chokidar'
 import minimatch from 'minimatch'
@@ -8,28 +9,28 @@ import { FieldType } from '@sprucelabs/schema'
 import { IWatchers } from '../../stores/WatcherStore'
 
 enum WatchAction {
-	Add = 'add',
-	Edit = 'edit',
-	Unwatch = 'unwatch'
+	Add = 'a',
+	Edit = 'e',
+	Unwatch = 'u',
+	Quit = 'q'
 }
 
-const watchChoices = [
-	{
-		label: 'Add a pattern',
-		value: WatchAction.Add
-	},
-	{
-		label: 'Edit a pattern',
-		value: WatchAction.Edit
-	},
-	{
-		label: 'Unwatch a pattern',
-		value: WatchAction.Unwatch
-	}
-]
+// Const watchChoices = [
+// 	{
+// 		label: 'Add a pattern',
+// 		value: WatchAction.Add
+// 	},
+// 	{
+// 		label: 'Edit a pattern',
+// 		value: WatchAction.Edit
+// 	},
+// 	{
+// 		label: 'Unwatch a pattern',
+// 		value: WatchAction.Unwatch
+// 	}
+// ]
 
 export default class WatchCommand extends AbstractCommand {
-	private isDone = false
 	private watcher!: FSWatcher
 	/** Key / value where key is the glob and value is the command to execute */
 	private watchers: IWatchers = {}
@@ -47,6 +48,9 @@ export default class WatchCommand extends AbstractCommand {
 	}
 
 	private async watch() {
+		readline.emitKeypressEvents(process.stdin)
+		process.stdin.setRawMode(true)
+		process.stdin.on('keypress', this.handleKeypress.bind(this))
 		this.loadWatchers()
 		// Watch everything. We'll check individual glob patterns on each file change
 		this.watcher = chokidar.watch('**/*', {
@@ -64,37 +68,52 @@ export default class WatchCommand extends AbstractCommand {
 		await finishedPromise
 	}
 
+	private async showStatus(lines?: string[]) {
+		this.clear()
+		this.section({
+			headline: 'Spruce Watcher',
+			lines: [
+				'Use these commands:',
+				'  l - list all watchers',
+				'  a - create a new watcher',
+				'  e - edit a watcher',
+				'  q - quit'
+			]
+		})
+
+		if (lines) {
+			this.writeLns(lines)
+		}
+	}
+
 	/** Loads the watchers and starts watching anything new */
 	private async loadWatchers() {
 		const watchers = this.stores.watcher.getWatchers()
 		this.watchers = watchers
 	}
 
-	private async waitForInput() {
-		const action = await this.prompt({
-			type: FieldType.Select,
-			label: 'What should we do?',
-			options: {
-				choices: watchChoices
-			}
-		})
+	// TODO
+	// private async showMenu() {
+	// 	const action = await this.prompt({
+	// 		type: FieldType.Select,
+	// 		label: 'What should we do?',
+	// 		options: {
+	// 			choices: watchChoices
+	// 		}
+	// 	})
 
-		if (action) {
-			await this.handleSelection(action as WatchAction)
-		}
-	}
+	// 	if (action) {
+	// 		await this.handleSelection(action as WatchAction)
+	// 	}
+	// }
 
 	private async handleReady() {
 		this.clear()
-		// TODO: print out currently watched files
-		while (!this.isDone) {
-			await this.waitForInput()
-		}
-		this.resolve()
+		this.showStatus()
 	}
 
 	private async handleFileChange(path: string) {
-		log.debug(`${path} changed`)
+		log.trace(`${path} changed`)
 		let commandsToExecute: string[] = []
 		// Check if the path matches any of the glob patterns
 		Object.keys(this.watchers).forEach(pattern => {
@@ -104,26 +123,30 @@ export default class WatchCommand extends AbstractCommand {
 				// Execute the command
 				const cmd = this.watchers[pattern]
 				commandsToExecute = commandsToExecute.concat(cmd)
-				log.debug(`Executing command: ${cmd}`)
 			}
 		})
 
 		if (commandsToExecute.length > 0) {
+			await this.startLoading(
+				`Executing ${commandsToExecute.length} watcher commands`
+			)
 			const promises = commandsToExecute.map(c => this.executeCommand(c))
 			const results = await Promise.allSettled(promises)
-			this.writeLn('Finished running watchers')
+			await this.stopLoading()
+			const lines: string[] = []
 			results.forEach(result => {
 				if (result.status === 'fulfilled') {
-					this.writeLn(result.value.stdout)
+					lines.push(result.value.stdout)
 				}
 			})
+			this.showStatus(lines)
 		} else {
-			log.debug('Nothing run. No matching glob patterns.')
+			log.trace('Nothing run. No matching glob patterns.')
 		}
 	}
 
 	private handleFileAdd(path: string) {
-		log.debug(`${path} added`)
+		log.trace(`${path} added`)
 	}
 
 	private handleWatcherError(e: Error) {
@@ -131,28 +154,29 @@ export default class WatchCommand extends AbstractCommand {
 		this.reject(e)
 	}
 
-	private async handleSelection(
-		/** The selected action */
-		selection: WatchAction
-	) {
-		log.debug(`Selection made: ${selection}`)
+	// Private async handleSelection(
+	// 	/** The selected action */
+	// 	selection: WatchAction
+	// ) {
+	// 	log.debug(`Selection made: ${selection}`)
 
-		switch (selection) {
-			case WatchAction.Add:
-			case WatchAction.Add.toUpperCase():
-				await this.handleAddPatten()
-				break
+	// 	switch (selection) {
+	// 		case WatchAction.Add:
+	// 		case WatchAction.Add.toUpperCase():
+	// 			await this.handleAddPatten()
+	// 			break
 
-			case WatchAction.Edit:
-			case WatchAction.Edit.toUpperCase():
-				break
+	// 		case WatchAction.Edit:
+	// 		case WatchAction.Edit.toUpperCase():
+	// 			break
 
-			default:
-				break
-		}
-	}
+	// 		default:
+	// 			break
+	// 	}
+	// }
 
 	private async handleAddPatten() {
+		this.isPromptActive = true
 		let pattern: string | undefined
 		let commandStr: string | undefined
 		let isPatternValid = false
@@ -182,5 +206,39 @@ export default class WatchCommand extends AbstractCommand {
 
 		this.stores.watcher.addWatcher(pattern as string, commandStr as string)
 		this.loadWatchers()
+		this.isPromptActive = false
+	}
+
+	private async handleKeypress(str: string, key: readline.Key) {
+		try {
+			if (key.ctrl && key.name === 'c') {
+				this.resolve()
+			} else if (key.name === 'escape') {
+				this.cancelPrompt()
+				this.showStatus()
+			} else {
+				if (this.isPromptActive) {
+					// The prompt is up so we shouldn't handle this keypress
+					return
+				}
+
+				switch (str) {
+					case WatchAction.Add:
+					case WatchAction.Add.toUpperCase():
+						await this.handleAddPatten()
+						break
+
+					case WatchAction.Quit:
+					case WatchAction.Quit.toUpperCase():
+						this.resolve()
+						break
+
+					default:
+						break
+				}
+			}
+		} catch (e) {
+			log.debug('Nothing to do')
+		}
 	}
 }

@@ -10,6 +10,7 @@ import globby from 'globby'
 import * as tsutils from 'tsutils'
 import SpruceError from '../../errors/SpruceError'
 import { ErrorCode } from '../../../.spruce/errors/codes.types'
+import { ITerminalEffect } from '../../utilities/TerminalUtility'
 
 interface IDocEntry {
 	name?: string
@@ -120,9 +121,12 @@ export default class AutoloaderCommand extends AbstractCommand {
 		// Write the file
 		this.writeFile(`.spruce/autoloaders/${fileName}.ts`, autoloaderFileContents)
 
-		this.info(
-			`Autoloader created 🎉. Import it with:\nimport ${fileName} from '#spruce/autoloaders/${fileName}'`
-		)
+		this.writeLn(`Autoloader created for ${fileName} 🎉`, [
+			ITerminalEffect.Blue
+		])
+		this.writeLn(`import ${fileName} from '#spruce/autoloaders/${fileName}'`, [
+			ITerminalEffect.Yellow
+		])
 	}
 
 	private async parseFiles(options: {

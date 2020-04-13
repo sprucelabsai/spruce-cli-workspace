@@ -103,6 +103,9 @@ type PromptReturnTypeOptional<
 > = FieldDefinitionMap[T['type']]['value']
 
 export default class TerminalUtility extends AbstractUtility {
+	protected isPromptActive = false
+	private cancelPromptPromiseRejection?: (() => void) | null
+
 	private loader?: ora.Ora | null
 
 	/** Write a line with various effects applied */
@@ -314,8 +317,56 @@ export default class TerminalUtility extends AbstractUtility {
 		}
 	}
 
+	/** Cancels showing the prompt */
+	public async cancelPrompt() {
+		if (this.cancelPromptPromiseRejection) {
+			this.cancelPromptPromiseRejection()
+		}
+
+		this.cancelPromptPromiseRejection = null
+		this.isPromptActive = false
+	}
+
+	/** Generic way to handle error */
+	public handleError(err: Error) {
+		this.stopLoading()
+
+		const message = err.message
+		// Remove message from stack so the message is not doubled up
+		const stack = err.stack ? err.stack.replace(message, '') : ''
+
+		this.section({
+			headline: message,
+			lines: stack.split('/n'),
+			headlineEffects: [ITerminalEffect.Bold, ITerminalEffect.Red],
+			barEffects: [ITerminalEffect.Red],
+			bodyEffects: [ITerminalEffect.Red]
+		})
+	}
+
 	/** Ask the user for something */
 	public async prompt<T extends IFieldDefinition>(
+		definition: T
+	): Promise<
+		T['isRequired'] extends true
+			? PromptReturnTypeRequired<T>
+			: PromptReturnTypeOptional<T>
+	> {
+		this.isPromptActive = true
+		return new Promise(async (resolve, reject) => {
+			this.cancelPromptPromiseRejection = reject
+			try {
+				const result = await this.showPrompt(definition)
+				resolve(result)
+			} catch (e) {
+				reject(e)
+			}
+			this.isPromptActive = false
+		})
+	}
+
+	/** Ask the user for something */
+	private async showPrompt<T extends IFieldDefinition>(
 		definition: T
 	): Promise<
 		T['isRequired'] extends true
@@ -388,23 +439,6 @@ export default class TerminalUtility extends AbstractUtility {
 		// TODO update method signature to type this properly
 		const response = (await inquirer.prompt(promptOptions)) as any
 		return response[name]
-	}
-
-	/** Generic way to handle error */
-	public handleError(err: Error) {
-		this.stopLoading()
-
-		const message = err.message
-		// Remove message from stack so the message is not doubled up
-		const stack = err.stack ? err.stack.replace(message, '') : ''
-
-		this.section({
-			headline: message,
-			lines: stack.split('/n'),
-			headlineEffects: [ITerminalEffect.Bold, ITerminalEffect.Red],
-			barEffects: [ITerminalEffect.Red],
-			bodyEffects: [ITerminalEffect.Red]
-		})
 	}
 }
 

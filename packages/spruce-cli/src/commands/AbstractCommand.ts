@@ -120,7 +120,7 @@ export default abstract class AbstractCommand extends TerminalUtility {
 
 	/** Make a file pass lint */
 	public async prettyFormatFile(filePath: string) {
-		log.info(`lint running on all files, not just ${filePath}`)
+		log.trace(`lint running on all files, not just ${filePath}`)
 		return this.utilities.package.lintFix()
 	}
 
