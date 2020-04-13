@@ -1,0 +1,1 @@
+{"watchers":{"src/commands/**/*.ts":["yarn local autoloader -s Command ./src/commands"]}}

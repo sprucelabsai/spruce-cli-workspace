@@ -13,15 +13,16 @@ import {
 	IMercuryConnectOptions,
 	MercuryAuth
 } from '@sprucelabs/mercury'
-import { IStores } from './stores'
-import RemoteStore from './stores/RemoteStore'
-import SkillStore from './stores/SkillStore'
-import UserStore from './stores/UserStore'
-import SchemaStore from './stores/SchemaStore'
+// TODO remove
+// import { IStores } from '#spruce/autoloaders/stores'
+// import RemoteStore from './stores/RemoteStore'
+// import SkillStore from './stores/SkillStore'
+// import UserStore from './stores/UserStore'
+// import SchemaStore from './stores/SchemaStore'
 import PinService from './services/PinService'
 // TODO: remove
 // import AbstractCommand, { ICommandOptions } from './commands/Abstract'
-import OnboardingStore from './stores/OnboardingStore'
+// import OnboardingStore from './stores/OnboardingStore'
 // Import { IGenerators } from './generators'
 // import SchemaGenerator from './generators/SchemaGenerator'
 import { IUtilities } from './utilities'
@@ -43,6 +44,7 @@ import PackageUtility from './utilities/PackageUtility'
 
 import commandsLoader from '#spruce/autoloaders/commands'
 import generatorsLoader from '#spruce/autoloaders/generators'
+import storesLoader from '#spruce/autoloaders/stores'
 
 /**
  * For handling debugger not attaching right away
@@ -86,13 +88,17 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		log
 	}
 
-	const stores: IStores = {
-		remote: new RemoteStore(storeOptions),
-		skill: new SkillStore(storeOptions),
-		user: new UserStore(storeOptions),
-		schema: new SchemaStore(storeOptions),
-		onboarding: new OnboardingStore(storeOptions)
-	}
+	// Const stores: IStores = {
+	// 	remote: new RemoteStore(storeOptions),
+	// 	skill: new SkillStore(storeOptions),
+	// 	user: new UserStore(storeOptions),
+	// 	schema: new SchemaStore(storeOptions),
+	// 	onboarding: new OnboardingStore(storeOptions)
+	// }
+
+	const stores = await storesLoader({
+		constructorOptions: storeOptions
+	})
 
 	// Setup mercury
 	const remoteUrl = stores.remote.getRemoteUrl()

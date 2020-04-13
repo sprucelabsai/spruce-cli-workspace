@@ -122,7 +122,7 @@ export default abstract class AbstractStore<
 			const values = JSON.parse(contents) as T
 			return values
 		} catch (err) {
-			log.warn(
+			log.debug(
 				`AbstractStore.readValues failed to read settings file at ${file}`
 			)
 		}
