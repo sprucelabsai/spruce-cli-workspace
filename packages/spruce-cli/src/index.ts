@@ -1,6 +1,12 @@
 #!/usr/bin/env node
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
-import '@sprucelabs/path-resolver'
+import path from 'path'
+import { register } from '@sprucelabs/path-resolver'
+register({
+	tsConfigDir: path.join(__dirname, '../'),
+	extensions: ['.js', '.ts']
+})
+
 import { terminal } from './utilities/TerminalUtility'
 import { Command } from 'commander'
 import globby from 'globby'
