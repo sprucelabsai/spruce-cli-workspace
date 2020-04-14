@@ -71,7 +71,7 @@ export default class SchemaStore extends AbstractStore {
 			])
 		).map(path => ({
 			path,
-			registration: require(path).default,
+			registration: this.services.vm.importAddon<IFieldRegistration>(path),
 			isLocal: false
 		}))
 
@@ -82,7 +82,7 @@ export default class SchemaStore extends AbstractStore {
 			])
 		).map(path => ({
 			path,
-			registration: require(path).default,
+			registration: this.services.vm.importAddon<IFieldRegistration>(path),
 			isLocal: true
 		}))
 

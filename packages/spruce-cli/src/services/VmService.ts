@@ -10,9 +10,15 @@ import AbstractService from './AbstractService'
 export default class VmService extends AbstractService {
 	private fileMapCache: Record<string, string> = {}
 
-	/** Import a schema definition from any file */
-	public importDefinition(file: string) {
-		let definitionProxy: ISchemaDefinition | undefined
+	/** Import an addon from any file (should end in .addon.ts) */
+	public importAddon<T extends {}>(file: string): T {
+		const addon = this.importDefault<T>(file)
+		return addon
+	}
+
+	/** Import any default export in a script in a vm loaded against the cwd */
+	public importDefault<T extends {}>(file: string): T {
+		let defaultImported: T | undefined
 
 		// Lets make sure there is a complimentary build for for this or we can't continue
 		// const builtFile =
@@ -21,7 +27,7 @@ export default class VmService extends AbstractService {
 
 		if (!fs.existsSync(builtFile)) {
 			throw new SpruceError({
-				code: ErrorCode.DefinitionFailedToImport,
+				code: ErrorCode.FailedToImport,
 				file,
 				details: `I couldn't find the definition file`
 			})
@@ -31,9 +37,9 @@ export default class VmService extends AbstractService {
 		const vm = new NodeVM({
 			sourceExtensions: ['ts', 'js'],
 			sandbox: {
-				define(def: { default: ISchemaDefinition }) {
+				define(def: { default: T }) {
 					// Build initial definition
-					definitionProxy = cloneDeep(def.default)
+					defaultImported = cloneDeep(def.default)
 				}
 			},
 			require: {
@@ -52,7 +58,7 @@ export default class VmService extends AbstractService {
 						// Return path.join(this.cwd, 'node_modules', name)
 					}
 
-					if (name === '#spruce/definition') {
+					if (name === '#spruce:vm/import') {
 						return builtFile
 					}
 
@@ -77,9 +83,9 @@ export default class VmService extends AbstractService {
 					}
 
 					throw new SpruceError({
-						code: ErrorCode.DefinitionFailedToImport,
+						code: ErrorCode.FailedToImport,
 						file,
-						details: `Could not resolve definition import "${name}". Tried ${resolved.join(
+						details: `Could not resolve import "${name}". Tried ${resolved.join(
 							', '
 						)}`
 					})
@@ -92,15 +98,15 @@ export default class VmService extends AbstractService {
 		require('ts-node/register');
 		require('tsconfig-paths/register');
 		
-		const definition = require("#spruce/definition");
-		define(definition);
+		const imported = require("#spruce:vm/import");
+		define(imported);
 		`
 
 		// Run it
 		vm.run(sourceCode, file)
 
 		// Did the definition get fixed
-		if (!definitionProxy) {
+		if (!defaultImported) {
 			throw new SpruceError({
 				code: ErrorCode.DefinitionFailedToImport,
 				file,
@@ -108,13 +114,20 @@ export default class VmService extends AbstractService {
 			})
 		}
 
+		return defaultImported
+	}
+
+	/** Import a schema definition from any file */
+	public importDefinition(file: string) {
+		const definitionProxy = this.importDefault<ISchemaDefinition>(file)
+
 		// Is this a valid schema?
 		if (!Schema.isDefinitionValid(definitionProxy)) {
 			throw new SpruceError({
 				code: ErrorCode.DefinitionFailedToImport,
-				file: builtFile,
+				file,
 				details:
-					'The definition imported is not valid. Make sure it is "export default build*Definition"'
+					'The definition imported is not valid. Make sure it is "export default build[Schema|Error|Field]Definition"'
 			})
 		}
 

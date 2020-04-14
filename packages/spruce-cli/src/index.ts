@@ -3,7 +3,10 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 import path from 'path'
 import { register } from '@sprucelabs/path-resolver'
 register({
-	tsConfigDir: path.join(__dirname, '../'),
+	tsConfigDirs: [
+		path.join(__dirname, '../'),
+		path.join(__dirname, '..', '...')
+	],
 	extensions: ['.js', '.ts']
 })
 
@@ -21,7 +24,7 @@ import {
 import { terminal } from './utilities/TerminalUtility'
 import pkg from '../package.json'
 import log from './lib/log'
-import { StoreAuth } from './stores/AbstractStore'
+import { StoreAuth, IStoreOptions } from './stores/AbstractStore'
 import { IGeneratorOptions } from './generators/AbstractGenerator'
 import SpruceError from './errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
@@ -85,11 +88,24 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	// Setup mercury
 	const mercury = new Mercury()
 
-	// Setup stores
-	const storeOptions = {
+	// Setup services
+	const serviceOptions: IServiceOptions = {
 		mercury,
 		cwd,
 		log,
+		utilities
+	}
+
+	// Setup services
+	const services = await servicesAutoloader({
+		constructorOptions: serviceOptions
+	})
+
+	// Setup services
+	const storeOptions: IStoreOptions = {
+		mercury,
+		cwd,
+		services,
 		utilities
 	}
 
@@ -127,19 +143,6 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	}
 
 	await mercury.connect(connectOptions)
-
-	// Setup services
-	const serviceOptions: IServiceOptions = {
-		mercury,
-		cwd,
-		log,
-		utilities
-	}
-
-	// Setup services
-	const services = await servicesAutoloader({
-		constructorOptions: serviceOptions
-	})
 
 	// Setup generators
 	const generatorOptions: IGeneratorOptions = {

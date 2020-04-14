@@ -3,6 +3,7 @@ import { IBuildFailedErrorOptions } from "./buildFailed.types";
 import { ICouldNotLoadCommandErrorOptions } from "./couldNotLoadCommand.types";
 import { ICreateAutoloaderFailedErrorOptions } from "./createAutoloaderFailed.types";
 import { IDefinitionFailedToImportErrorOptions } from "./definitionFailedToImport.types";
+import { IFailedToImportErrorOptions } from "./failedToImport.types";
 import { IGenericErrorOptions } from "./generic.types";
 import { IGenericMercuryErrorOptions } from "./genericMercury.types";
 import { IInvalidCommandErrorOptions } from "./invalidCommand.types";
@@ -13,4 +14,4 @@ import { IUserNotFoundErrorOptions } from "./userNotFound.types";
 import { SpruceErrorOptions } from "@sprucelabs/error";
 import {SchemaErrorOptions} from '@sprucelabs/schema'
 
-export type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | IBuildFailedErrorOptions | ICouldNotLoadCommandErrorOptions | ICreateAutoloaderFailedErrorOptions | IDefinitionFailedToImportErrorOptions | IGenericErrorOptions | IGenericMercuryErrorOptions | IInvalidCommandErrorOptions | INotImplementedErrorOptions | IReservedKeywordErrorOptions | ITranspileFailedErrorOptions | IUserNotFoundErrorOptions
+export type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | IBuildFailedErrorOptions | ICouldNotLoadCommandErrorOptions | ICreateAutoloaderFailedErrorOptions | IDefinitionFailedToImportErrorOptions | IFailedToImportErrorOptions | IGenericErrorOptions | IGenericMercuryErrorOptions | IInvalidCommandErrorOptions | INotImplementedErrorOptions | IReservedKeywordErrorOptions | ITranspileFailedErrorOptions | IUserNotFoundErrorOptions
