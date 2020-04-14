@@ -7,6 +7,10 @@ register({
 	extensions: ['.js', '.ts']
 })
 
+// Shim
+import allSettled from 'promise.allsettled'
+allSettled.shim()
+
 import { Command } from 'commander'
 import { templates } from '@sprucelabs/spruce-templates'
 import {
