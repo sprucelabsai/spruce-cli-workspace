@@ -3,7 +3,7 @@ import { Mercury } from '@sprucelabs/mercury'
 import log from '../lib/log'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
-import { IUtilities } from '../utilities'
+import { IUtilities } from '#spruce/autoloaders/utilities'
 
 /** Are we running globally or locally? */
 export enum StoreScope {

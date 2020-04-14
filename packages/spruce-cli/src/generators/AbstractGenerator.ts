@@ -1,8 +1,8 @@
-import { IUtilities } from '../utilities'
+import { IUtilities } from '#spruce/autoloaders/utilities'
 import fs from 'fs-extra'
 import { Templates } from '@sprucelabs/spruce-templates'
 import { Log } from '@sprucelabs/log'
-import { IServices } from '../services'
+import { IServices } from '#spruce/autoloaders/services'
 
 export interface IGeneratorOptions {
 	utilities: IUtilities

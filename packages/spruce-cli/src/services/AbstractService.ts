@@ -1,6 +1,6 @@
 import { Mercury } from '@sprucelabs/mercury'
 import { Log } from '@sprucelabs/log'
-import { IUtilities } from '../utilities'
+import { IUtilities } from '#spruce/autoloaders/utilities'
 
 export interface IServiceOptions {
 	cwd: string

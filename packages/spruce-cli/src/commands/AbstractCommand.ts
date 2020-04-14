@@ -7,9 +7,9 @@ import FormBuilder, { IFormOptions } from '../builders/FormBuilder'
 import { ISchemaDefinition } from '@sprucelabs/schema'
 import { IStores } from '#spruce/autoloaders/stores'
 import { Mercury } from '@sprucelabs/mercury'
-import { IServices } from '../services'
-import { IGenerators } from '../generators'
-import { IUtilities } from '../utilities'
+import { IServices } from '#spruce/autoloaders/services'
+import { IGenerators } from '#spruce/autoloaders/generators'
+import { IUtilities } from '#spruce/autoloaders/utilities'
 import { Templates } from '@sprucelabs/spruce-templates'
 import QuizBuilder, {
 	IQuizOptions,
