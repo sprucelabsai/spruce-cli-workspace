@@ -3,6 +3,7 @@ import _ from 'lodash'
 /** https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#Keywords */
 export const reservedWords = [
 	'abstract',
+	'arguments',
 	'async',
 	'await',
 	'boolean',
@@ -28,6 +29,7 @@ export const reservedWords = [
 	'float',
 	'for',
 	'function',
+	'get',
 	'goto',
 	'if',
 	'implements',
@@ -45,6 +47,7 @@ export const reservedWords = [
 	'protected',
 	'public',
 	'return',
+	'set',
 	'short',
 	'static',
 	'super',
