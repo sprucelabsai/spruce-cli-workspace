@@ -10,6 +10,9 @@ export enum ErrorCode {
     /** * The definition file failed to import */
     DefinitionFailedToImport = 'DEFINITION_FAILED_TO_IMPORT',
     
+    /** * Failed to import a file through VM */
+    FailedToImport = 'FAILED_TO_IMPORT',
+    
     /** * When you're too lazy to make a new error */
     Generic = 'GENERIC',
     

@@ -33,7 +33,7 @@ import { IGenerators } from './generators'
 import SchemaGenerator from './generators/SchemaGenerator'
 import { IUtilities } from './utilities'
 import NamesUtility from './utilities/NamesUtility'
-import { StoreAuth } from './stores/AbstractStore'
+import { StoreAuth, IStoreOptions } from './stores/AbstractStore'
 import CoreGenerator from './generators/CoreGenerator'
 import { IGeneratorOptions } from './generators/AbstractGenerator'
 import { templates } from '@sprucelabs/spruce-templates'
@@ -104,12 +104,27 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	// Setup mercury
 	const mercury = new Mercury()
 
-	// Setup stores
-	const storeOptions = {
+	// Setup services
+	const serviceOptions: IServiceOptions = {
 		mercury,
 		cwd,
 		log,
 		utilities
+	}
+
+	// Setup services
+	const services: IServices = {
+		pin: new PinService(serviceOptions),
+		vm: new VmService(serviceOptions)
+	}
+
+	// Setup stores
+	const storeOptions: IStoreOptions = {
+		mercury,
+		cwd,
+		log,
+		utilities,
+		services
 	}
 
 	const stores: IStores = {
@@ -150,20 +165,6 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	}
 
 	await mercury.connect(connectOptions)
-
-	// Setup services
-	const serviceOptions: IServiceOptions = {
-		mercury,
-		cwd,
-		log,
-		utilities
-	}
-
-	// Setup services
-	const services: IServices = {
-		pin: new PinService(serviceOptions),
-		vm: new VmService(serviceOptions)
-	}
 
 	// Setup generators
 	const generatorOptions: IGeneratorOptions = {

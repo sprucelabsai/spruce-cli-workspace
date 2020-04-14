@@ -55,6 +55,14 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 
 				break
 
+			case ErrorCode.FailedToImport:
+				message = 'Failed to import a file through VM'
+				message + options.friendlyMessage
+					? `\n\n${options.friendlyMessage}`
+					: ''
+
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}
