@@ -11,8 +11,6 @@ import { IServices } from '../services'
 import { IGenerators } from '../generators'
 import { IUtilities } from '../utilities'
 import { Templates } from '@sprucelabs/spruce-templates'
-import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '#spruce/errors/codes.types'
 import QuizBuilder, {
 	IQuizOptions,
 	IQuizQuestions
@@ -29,6 +27,10 @@ export interface ICommandOptions {
 	templates: Templates
 }
 
+export interface IWriteOptions {
+	pretty?: boolean
+	build?: boolean
+}
 export default abstract class AbstractCommand extends TerminalUtility {
 	/** Spruce logger */
 	public stores: IStores
@@ -95,11 +97,15 @@ export default abstract class AbstractCommand extends TerminalUtility {
 	}
 
 	/** Write a file to a place handling all directory creation (overwrites everything) */
-	public async writeFile(destination: string, contents: string) {
+	public async writeFile(
+		destination: string,
+		contents: string,
+		options: IWriteOptions = {}
+	) {
 		this.generators.core.writeFile(this.resolvePath(destination), contents)
 		if (destination.substr(-3) === '.ts') {
-			this.prettyFormatFile(destination)
-			await this.build(destination)
+			options.pretty && this.pretty(destination)
+			options.build && (await this.build(destination))
 		}
 	}
 
@@ -119,37 +125,31 @@ export default abstract class AbstractCommand extends TerminalUtility {
 	}
 
 	/** Make a file pass lint */
-	public async prettyFormatFile(filePath: string) {
-		log.trace(`lint running on all files, not just ${filePath}`)
+	public async pretty(filePath?: string) {
+		filePath && log.info(`lint running on all files, not just ${filePath}`)
 		return this.utilities.package.lintFix()
 	}
 
 	/** Kick off a build */
 	public async build(file?: string) {
-		this.startLoading('Waiting for build to complete')
-
-		if (file) {
-			const builtFile = this.resolvePath(file)
-				.replace('/src/', '/build/src/')
-				.replace('.ts', '.js')
-
-			let attemptCount = 0
-			do {
-				if (attemptCount > 5) {
-					throw new SpruceError({
-						code: ErrorCode.BuildFailed,
-						file
-					})
-				}
-				attemptCount++
-				await new Promise(resolve => setTimeout(resolve, 2000))
-			} while (!this.doesFileExist(builtFile))
-		} else {
-			// Because watch is running, we'll just wait for this to finish
-			await new Promise(resolve => setTimeout(resolve, 5000))
-		}
-
-		this.stopLoading()
+		log.info(`Ignoring build of ${file ?? 'entire project'}`)
+		// This.startLoading('Building')
+		// // Starting build
+		// await new Promise(resolve => {
+		// 	exec(
+		// 		`node_modules/.bin/tsc ${file ? this.resolvePath(file) : ''}`,
+		// 		{ cwd: this.cwd },
+		// 		(err, stdout) => {
+		// 			if (err) {
+		// 				this.stopLoading()
+		// 				this.error(file ? `Building ${file} error!` : 'Build error!')
+		// 				this.error(stdout)
+		// 			}
+		// 			resolve()
+		// 		}
+		// 	)
+		// })
+		// this.stopLoading()
 	}
 
 	/** Are we in a skills dir? */

@@ -12,7 +12,7 @@ type BuildFailedDefinition = typeof buildFailedDefinition
 export interface IBuildFailedDefinition extends BuildFailedDefinition {}
 
 export interface IBuildFailedErrorOptions extends SchemaDefinitionValues<IBuildFailedDefinition>, ISpruceErrorOptions<ErrorCode> {
-	/** * .BuildFailed - It looks like you\'re not running `y watch`. Run it and then run `spruce all:sync`. */
+	/** * .BuildFailed - Error thrown when building or linting failed. Happens when a yarn command fails inside the package utility. */
 	code: ErrorCode.BuildFailed
 } 
 

@@ -3,11 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import log from './src/lib/log'
 
-import {
-	ISchemaTemplateItem,
-	IFieldTemplateDetails,
-	ISchemaDefinition
-} from '@sprucelabs/schema'
+import { IFieldTemplateDetails, ISchemaDefinition } from '@sprucelabs/schema'
 
 // Import addons
 import './src/addons/escape.addon'
@@ -20,18 +16,38 @@ import './src/addons/startCase.addon'
 import './src/addons/camelCase.addon'
 import './src/addons/pascalCase.addon'
 log.info('Addons imported')
-// Log.info('addon escape', escape)
-// log.info('addon fieldDefinitionOptions', fieldDefinitionOptions)
-// log.info('addon fieldDefinitionValueType', fieldDefinitionValueType)
-// log.info('addon fieldTypeEnum', fieldTypeEnum)
-// log.info('addon fieldValue', fieldValue)
-// log.info('addon isEqual', isEqual)
-// log.info('addon startCase', startCase)
+
+// Extra definitions
+// TODO where do these go?
+export interface ISchemaTemplateNames {
+	pascalName: string
+	camelName: string
+	readableName: string
+}
+export interface ISchemaTypesTemplateItem extends ISchemaTemplateNames {
+	namespace: string
+	id: string
+	definition: ISchemaDefinition
+}
+
+export interface IFieldTypesTemplateItem extends ISchemaTemplateNames {
+	/** There package where the field definition lives */
+	package: string
+	/** The key for the FieldType enum */
+	pascalType: string
+	/** The value used for the FieldType enum */
+	camelType: string
+	/** Is this field type introduced by the skill be worked on right meow */
+	isLocal: boolean
+	/** The description associated with the field */
+	description: string
+}
 
 // Import actual templates
 const templatePath = path.join(__dirname, 'src', 'templates', 'typescript')
 
 // Template files
+// TODO this can be done in a loop perhaps
 const schemaTypes: string = fs
 	.readFileSync(path.join(templatePath, 'schemas/schema.types.hbs'))
 	.toString()
@@ -80,11 +96,19 @@ const autoloader: string = fs
 	.readFileSync(path.join(templatePath, 'autoloader/autoloader.hbs'))
 	.toString()
 
+const fieldTypes: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/fields/fields.types.hbs'))
+	.toString()
+
+const fieldType: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/fields/fieldType.hbs'))
+	.toString()
+
 // Template generators
 export const templates = {
 	/** All definitions */
 	schemaTypes(options: {
-		schemaTemplateItems: (ISchemaTemplateItem & { namespace: string })[]
+		schemaTemplateItems: ISchemaTypesTemplateItem[]
 		typeMap: { [fieldType: string]: IFieldTemplateDetails }
 	}) {
 		const template = handlebars.compile(schemaTypes)
@@ -201,6 +225,18 @@ export const templates = {
 		fileName: string
 	}) {
 		const template = handlebars.compile(autoloader)
+		return template(options)
+	},
+
+	/** The types file for all the schema fields being used*/
+	fieldTypes(options: { fields: IFieldTypesTemplateItem[] }) {
+		const template = handlebars.compile(fieldTypes)
+		return template(options)
+	},
+
+	/** The field type enum */
+	fieldType(options: { fields: IFieldTypesTemplateItem[] }) {
+		const template = handlebars.compile(fieldType)
 		return template(options)
 	}
 }

@@ -18,7 +18,7 @@ export namespace SpruceSchemas.core.ProfileImage {
 		"profile150@2x": string;
 	}
 
-	/** The interface for the schema definition for a ProfileImage */
+	/** The interface for the schema definition for a Profile Image Sizes */
 	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 		id: "profileImage";
 		name: "Profile Image Sizes";
@@ -64,7 +64,7 @@ export namespace SpruceSchemas.core.ProfileImage {
 		};
 	}
 
-	/** The schema definition for a ProfileImage */
+	/** The schema definition for a Profile Image Sizes */
 	export const definition: SpruceSchemas.core.ProfileImage.IDefinition = {
 		id: "profileImage",
 		name: "Profile Image Sizes",
@@ -855,7 +855,7 @@ export namespace SpruceSchemas.core.Acl {
 		[slug: string]: string[];
 	}
 
-	/** The interface for the schema definition for a Acl */
+	/** The interface for the schema definition for a Access control list lookup table */
 	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 		id: "acl";
 		name: "Access control list lookup table";
@@ -872,7 +872,7 @@ export namespace SpruceSchemas.core.Acl {
 		};
 	}
 
-	/** The schema definition for a Acl */
+	/** The schema definition for a Access control list lookup table */
 	export const definition: SpruceSchemas.core.Acl.IDefinition = {
 		id: "acl",
 		name: "Access control list lookup table",
@@ -1075,7 +1075,7 @@ export namespace SpruceSchemas.core.UserLocation {
 		user: SpruceSchemas.core.User.IUser;
 	}
 
-	/** The interface for the schema definition for a UserLocation */
+	/** The interface for the schema definition for a User location */
 	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 		id: "userLocation";
 		name: "User location";
@@ -1167,7 +1167,7 @@ export namespace SpruceSchemas.core.UserLocation {
 		};
 	}
 
-	/** The schema definition for a UserLocation */
+	/** The schema definition for a User location */
 	export const definition: SpruceSchemas.core.UserLocation.IDefinition = {
 		id: "userLocation",
 		name: "User location",

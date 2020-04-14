@@ -15,22 +15,25 @@ export default class VmService extends AbstractService {
 		let definitionProxy: ISchemaDefinition | undefined
 
 		// Lets make sure there is a complimentary build for for this or we can't continue
-		const builtFile = file.replace('.ts', '.js').replace('/src/', '/build/src/')
+		// const builtFile =
+		// 	file.replace('.ts', '').replace('/src/', '/build/src/') + '.js'
+		const builtFile = file
 
 		if (!fs.existsSync(builtFile)) {
 			throw new SpruceError({
 				code: ErrorCode.DefinitionFailedToImport,
 				file,
-				details: `It looks like you haven't built your project yet. try 'y watch'`
+				details: `I couldn't find the definition file`
 			})
 		}
 
 		// Construct new vm
 		const vm = new NodeVM({
+			sourceExtensions: ['ts', 'js'],
 			sandbox: {
-				_define(def: ISchemaDefinition) {
+				define(def: { default: ISchemaDefinition }) {
 					// Build initial definition
-					definitionProxy = cloneDeep(def)
+					definitionProxy = cloneDeep(def.default)
 				}
 			},
 			require: {
@@ -39,6 +42,18 @@ export default class VmService extends AbstractService {
 				resolve: (name, dir) => {
 					if (this.fileMapCache[name]) {
 						return this.fileMapCache[name]
+					}
+
+					if (
+						name === 'ts-node/register' ||
+						name === 'tsconfig-paths/register'
+					) {
+						return name
+						// Return path.join(this.cwd, 'node_modules', name)
+					}
+
+					if (name === '#spruce/definition') {
+						return builtFile
 					}
 
 					// There are a few options that could work
@@ -73,27 +88,16 @@ export default class VmService extends AbstractService {
 		})
 
 		// Import source and transpile it
-		const sourceCode = fs.readFileSync(builtFile).toString()
-		// Const js = this.transpileCode(sourceCode)
-
-		// find name of schema definition variable
-		const pattern = /exports.default = (.*?);/m
-		const matches = sourceCode.match(pattern)
-		const definitionName = matches?.[1]
-
-		if (!definitionName) {
-			throw new SpruceError({
-				code: ErrorCode.DefinitionFailedToImport,
-				file,
-				details: `Could not match the pattern ${pattern}`
-			})
-		}
-
-		// Drop in define call
-		const modifiedJs = sourceCode + `\n\n_define(${definitionName});`
+		const sourceCode = `
+		require('ts-node/register');
+		require('tsconfig-paths/register');
+		
+		const definition = require("#spruce/definition");
+		define(definition);
+		`
 
 		// Run it
-		vm.run(modifiedJs, file)
+		vm.run(sourceCode, file)
 
 		// Did the definition get fixed
 		if (!definitionProxy) {
@@ -106,7 +110,12 @@ export default class VmService extends AbstractService {
 
 		// Is this a valid schema?
 		if (!Schema.isDefinitionValid(definitionProxy)) {
-			throw new Error('definition is bad')
+			throw new SpruceError({
+				code: ErrorCode.DefinitionFailedToImport,
+				file: builtFile,
+				details:
+					'The definition imported is not valid. Make sure it is "export default build*Definition"'
+			})
 		}
 
 		return definitionProxy as ISchemaDefinition

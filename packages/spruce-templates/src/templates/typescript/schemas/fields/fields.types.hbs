@@ -1,0 +1,42 @@
+import { FieldType } from '#spruce:schema/fields/fieldType'
+
+{{#each fields}}
+{{#if isLocal}}
+import {{pascalName}}, { I{{pascalName}}Definition } from "{{package}}"
+{{/if}}
+{{#unless isLocal}}
+import { I{{pascalName}}Definition, {{pascalName}} } from "{{package}}"
+{{/unless}}
+{{/each}}
+
+
+/** Field definition union */
+export type FieldDefinition = {{#each fields}}| I{{pascalName}}Definition{{/each}}
+
+/** Field class union */
+export type FieldClass = {{#each fields}}| typeof {{pascalName}}{{/each}}
+
+/** Field instance union **/
+export type Field = {{#each fields}}| {{pascalName}}{{/each}}
+
+
+/** Type for looking up field definitions by field type */
+export type FieldDefinitionMap = {
+	{{#each fields}}
+	[FieldType.{{pascalType}}]: I{{pascalName}}Definition
+	{{/each}}
+}
+
+/** Value for looking up field classes by field type */
+export const FieldClassMap: Record<FieldType, FieldClass> = {
+		{{#each fields}}
+		[FieldType.{{pascalType}}]: {{pascalName}},
+		{{/each}}
+}
+
+/** Interface for looking up classes by field type */
+export interface IFieldClassMap {
+		{{#each fields}}
+		[FieldType.{{pascalType}}]: {{pascalName}},
+		{{/each}}
+}

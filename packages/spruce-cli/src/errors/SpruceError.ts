@@ -32,8 +32,11 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				break
 
 			case ErrorCode.GenericMercury:
-				message = `Not sure what happened: Event "${options.eventName ??
-					'n/a'}": ${options.friendlyMessage}`
+				message = `Error: Event "${options.eventName ?? 'n/a'}"${
+					options.friendlyMessage
+						? `: ${options.friendlyMessage}`
+						: `: ${this.originalError?.message}`
+				}`
 				break
 			case ErrorCode.TranspileFailed:
 				message = 'Could not transpile (ts -> js) a script'
@@ -41,14 +44,14 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				break
 
 			case ErrorCode.DefinitionFailedToImport:
-				message = `Error in "${options.file}". ${options.details}.`
+				message = `Error importing "${options.file}". ${options.details}.`
 
 				break
 
 			case ErrorCode.BuildFailed:
 				message = `Build${
 					options.file ? `ing ${options.file}` : ''
-				} failed. It looks like you're not running 'y watch'. Run it and then run 'spruce all:sync'.`
+				} failed. It looks like you're not running 'yarn watch'. Run it and then run 'spruce all:sync'.`
 
 				break
 
@@ -56,6 +59,6 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				message = super.friendlyMessage()
 		}
 
-		return message
+		return `${options.code} ${message}`
 	}
 }

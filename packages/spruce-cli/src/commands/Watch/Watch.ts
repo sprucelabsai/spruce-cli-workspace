@@ -214,7 +214,6 @@ export default class WatchCommand extends AbstractCommand {
 			if (key.ctrl && key.name === 'c') {
 				this.resolve()
 			} else if (key.name === 'escape') {
-				this.cancelPrompt()
 				this.showStatus()
 			} else {
 				if (this.isPromptActive) {

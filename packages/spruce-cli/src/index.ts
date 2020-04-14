@@ -1,6 +1,12 @@
 #!/usr/bin/env node
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
-import '../.spruce/bootstrap'
+import path from 'path'
+import { register } from '@sprucelabs/path-resolver'
+register({
+	tsConfigDir: path.join(__dirname, '../'),
+	extensions: ['.js', '.ts']
+})
+
 import { terminal } from './utilities/TerminalUtility'
 import { Command } from 'commander'
 // TODO: remove
@@ -32,6 +38,12 @@ import { StoreAuth } from './stores/AbstractStore'
 import { IGeneratorOptions } from './generators/AbstractGenerator'
 import { templates } from '@sprucelabs/spruce-templates'
 // Import ErrorGenerator from './generators/ErrorGenerator'
+// import AbstractCommand, { ICommandOptions } from './commands/Abstract'
+// import OnboardingStore from './stores/OnboardingStore'
+// import { IGenerators } from './generators'
+// import SchemaGenerator from './generators/SchemaGenerator'
+// import CoreGenerator from './generators/CoreGenerator'
+// import ErrorGenerator from './generators/ErrorGenerator'
 import SpruceError from './errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
 import { IUtilityOptions } from './utilities/AbstractUtility'
@@ -46,6 +58,10 @@ import commandsLoader from '#spruce/autoloaders/commands'
 import generatorsLoader from '#spruce/autoloaders/generators'
 import storesLoader from '#spruce/autoloaders/stores'
 
+import SchemaUtility from './utilities/SchemaUtility'
+import TsConfigUtility from './utilities/TsConfigUtility'
+import BootstrapUtility from './utilities/BootstrapUtility'
+import '#spruce/schemas/fields.types'
 /**
  * For handling debugger not attaching right away
  */
@@ -75,8 +91,24 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 
 	// Starting cwd
 	const cwd = process.cwd()
-	// Force run in schema for now
-	// const cwd = '/Users/taylorromero/Development/SpruceLabs/spruce-schema/'
+	// Force run when testing
+	// const cwd =
+	// 	'/Users/taylorromero/Development/SpruceLabs/spruce-heartwood-workspace/packages/heartwood-skill'
+
+	// Setup log
+
+	// Setup utilities
+	const utilityOptions: IUtilityOptions = {
+		cwd
+	}
+
+	const utilities: IUtilities = {
+		names: new NamesUtility(utilityOptions),
+		package: new PackageUtility(utilityOptions),
+		schema: new SchemaUtility(utilityOptions),
+		tsConfig: new TsConfigUtility(utilityOptions),
+		bootstrap: new BootstrapUtility(utilityOptions)
+	}
 
 	// Setup mercury
 	const mercury = new Mercury()
@@ -85,7 +117,8 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	const storeOptions = {
 		mercury,
 		cwd,
-		log
+		log,
+		utilities
 	}
 
 	// Const stores: IStores = {
@@ -130,16 +163,6 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	}
 
 	await mercury.connect(connectOptions)
-
-	// Setup utilities
-	const utilityOptions: IUtilityOptions = {
-		cwd
-	}
-
-	const utilities: IUtilities = {
-		names: new NamesUtility(utilityOptions),
-		package: new PackageUtility(utilityOptions)
-	}
 
 	// Setup services
 	const serviceOptions: IServiceOptions = {
@@ -197,14 +220,17 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	})
 
 	const commandResult = await program.parseAsync(argv)
-
 	if (commandResult.length === 0) {
 		// No commands were found / executed
 		program.outputHelp()
 	}
 }
 
-setup(process.argv, process.debugPort > 0)
+setup(
+	process.argv,
+	typeof global.v8debug === 'object' ||
+		/--debug|--inspect/.test(process.execArgv.join(' '))
+)
 	.then(() => {
 		process.exit(0)
 	})

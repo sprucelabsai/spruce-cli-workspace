@@ -1,9 +1,9 @@
 import handlebars from 'handlebars'
-import { IFieldDefinition, FieldType } from '@sprucelabs/schema'
+import { FieldDefinition, FieldType } from '@sprucelabs/schema'
 
 /* The enum for schema.fields.fieldName.type as a string */
 handlebars.registerHelper('fieldTypeEnum', function(
-	fieldDefinition: IFieldDefinition
+	fieldDefinition: FieldDefinition
 ) {
 	if (!fieldDefinition) {
 		return '"**fieldTypeEnum error: MISSING FIELD TYPE ENUM**"'

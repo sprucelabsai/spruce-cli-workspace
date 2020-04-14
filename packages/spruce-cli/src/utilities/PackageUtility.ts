@@ -3,6 +3,7 @@ import fs from 'fs-extra'
 import pathUtil from 'path'
 import { exec } from 'child_process'
 import { set } from 'lodash'
+import log from '../lib/log'
 
 export interface IAddOptions {
 	dev?: boolean
@@ -16,9 +17,9 @@ export default class PackageUtility extends AbstractUtility {
 	) {
 		const contents = this.readPackage(dir)
 		const updated = set(contents, path, value)
-		const source = dir ?? this.cwd
-		const destination = pathUtil.join(source, 'package.json')
-		fs.outputFileSync(destination, JSON.stringify(updated))
+		const destination = pathUtil.join(dir, 'package.json')
+
+		fs.outputFileSync(destination, JSON.stringify(updated, null, 2))
 	}
 
 	/** Read a package.json */
@@ -63,18 +64,31 @@ export default class PackageUtility extends AbstractUtility {
 
 	/** Lint everything */
 	public async lintFix() {
-		return new Promise((resolve, reject) => {
+		// Await this.install(['eslint', 'eslint-config-spruce'], { dev: true })
+		return new Promise(resolve => {
 			exec(`yarn lint:fix`, err => {
 				if (err) {
-					reject(err)
+					log.warn('Linting skill failed! Moving on...')
+					log.debug(err)
 				}
 				resolve()
 			})
 		})
 	}
 
+	public async setupSkill() {
+		await this.install(['@sprucelabs/path-resolver'])
+		await this.install(['ts-node', 'tsconfig-paths'], { dev: true })
+	}
+
+	public async setupForSchemas() {
+		await this.setupSkill()
+		await this.install(['@sprucelabs/schema'])
+	}
+
 	/** Set all the things needed for testing */
 	public async setupForTesting() {
+		await this.setupSkill()
 		await this.install(['@sprucelabs/test', 'ava', 'ts-node'], {
 			dev: true
 		})

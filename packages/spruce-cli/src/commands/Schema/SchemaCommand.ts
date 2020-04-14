@@ -11,14 +11,7 @@ export default class SchemaCommand extends AbstractCommand {
 		/** Sync everything */
 		program
 			.command('schema:pull')
-			.description(
-				'Generates types file holding all interfaces, types, and enums needed to dev fast'
-			)
-			.option(
-				'-t, --types <types>',
-				'What should I sync? all|schemas|events',
-				'all'
-			)
+			.description('Pull all schema definitions down from the cloud')
 			.option(
 				'-d, --destinationDir <dir>',
 				'Where should I write the types files?',
@@ -66,18 +59,27 @@ export default class SchemaCommand extends AbstractCommand {
 
 		// Make sure schema module is installed
 		this.startLoading('Installing dependencies')
-		await this.utilities.package.install('@sprucelabs/schema')
-
+		await this.utilities.package.setupForSchemas()
+		this.utilities.tsConfig.setupForSchemas()
 		this.startLoading('Fetching schemas and field types')
 
 		// Load types and namespaces
-		const schemaTemplateItems = await this.stores.schema.schemaTemplateItemsWithNamespace()
+		const schemaTemplateItems = await this.stores.schema.schemaTemplateItems()
+		const fieldTemplateItems = await this.stores.schema.fieldTemplateItems()
 		const typeMap = await this.stores.schema.fieldTypeMap()
 
-		// Fill out template
-		const contents = templates.schemaTypes({
-			// TODO: Fix this
-			// @ts-ignore
+		// Field Types
+		const fieldTypesContent = templates.fieldTypes({
+			fields: fieldTemplateItems
+		})
+
+		// Field type enum
+		const fieldTypeContent = templates.fieldType({
+			fields: fieldTemplateItems
+		})
+
+		// Schema types
+		const schemaTypesContents = templates.schemaTypes({
 			schemaTemplateItems,
 			typeMap
 		})
@@ -85,14 +87,43 @@ export default class SchemaCommand extends AbstractCommand {
 		this.stopLoading()
 
 		this.info(
-			`Found ${schemaTemplateItems.length} schemas, writing definition file...`
+			`Found ${schemaTemplateItems.length} schema definitions and ${fieldTemplateItems.length} field types, writing files`
 		)
 
-		//Write it out
-		const destination = this.resolvePath(destinationDir, 'core.types.ts')
-		await this.writeFile(destination, contents)
+		// Write out field types
+		const fieldTypesDestination = this.resolvePath(
+			destinationDir,
+			'fields',
+			'fields.types.ts'
+		)
 
-		this.info(`All done 👊: ${destination}`)
+		await this.writeFile(fieldTypesDestination, fieldTypesContent)
+
+		// Write out field type enum
+		const fieldTypeDestination = this.resolvePath(
+			destinationDir,
+			'fields',
+			'fieldType.ts'
+		)
+
+		await this.writeFile(fieldTypeDestination, fieldTypeContent)
+
+		//Write out schema types
+		const schemaTypesDestination = this.resolvePath(
+			destinationDir,
+			'schemas.types.ts'
+		)
+		await this.writeFile(schemaTypesDestination, schemaTypesContents)
+
+		await this.pretty()
+		await this.build()
+
+		this.clear()
+		this.info(`All done 👊. I created 3 files.`)
+		this.bar()
+		this.info(`1. Schema definitions ${schemaTypesDestination}`)
+		this.info(`2. Field definitions ${fieldTypesDestination}`)
+		this.info(`3. Field type enum ${fieldTypeDestination}`)
 	}
 
 	/** Generate types and other files based definitions */
@@ -107,35 +138,36 @@ export default class SchemaCommand extends AbstractCommand {
 
 		// Make sure schema module is installed
 		this.startLoading('Installing dependencies')
-		await this.utilities.package.install('@sprucelabs/schema')
+		await this.utilities.package.setupForSchemas()
+		this.utilities.tsConfig.setupForSchemas()
 		this.stopLoading()
 
 		const matches = await globby(search)
 
-		matches.forEach(async filePath => {
-			// Write to the destination
-			const {
-				pascalName,
-				camelName,
-				definition
-			} = this.generators.schema.generateTypesFromDefinitionFile(
-				filePath,
-				this.resolvePath(destinationDir)
-			)
+		await Promise.all(
+			matches.map(async filePath => {
+				// Write to the destination
+				const {
+					pascalName,
+					camelName,
+					definition
+				} = this.generators.schema.generateTypesFromDefinitionFile(
+					filePath,
+					this.resolvePath(destinationDir)
+				)
 
-			// Tell them how to use it
-			this.headline(`${pascalName} examples:`)
+				// Tell them how to use it
+				this.headline(`${pascalName} examples:`)
 
-			this.writeLn('')
-			this.codeSample(
-				// TODO: Fix this
-				// @ts-ignore
-				this.templates.schemaExample({ pascalName, camelName, definition })
-			)
+				this.writeLn('')
+				this.codeSample(
+					this.templates.schemaExample({ pascalName, camelName, definition })
+				)
 
-			this.writeLn('')
-			this.writeLn('')
-		})
+				this.writeLn('')
+				this.writeLn('')
+			})
+		)
 	}
 
 	public async create(name: string | undefined, cmd: Command) {
@@ -173,7 +205,7 @@ export default class SchemaCommand extends AbstractCommand {
 
 		// Make sure schema module is installed
 		this.startLoading('Installing dependencies')
-		await this.utilities.package.install('@sprucelabs/schema')
+		await this.utilities.package.setupForSchemas()
 		this.stopLoading()
 
 		// Build paths
@@ -185,6 +217,7 @@ export default class SchemaCommand extends AbstractCommand {
 		const definition = templates.definition(values)
 
 		await this.writeFile(definitionDestination, definition)
+		await this.build(definitionDestination)
 
 		// Generate types
 		const names = this.generators.schema.generateTypesFromDefinitionFile(

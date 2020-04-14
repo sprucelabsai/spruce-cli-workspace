@@ -34,19 +34,17 @@
 		"local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS"
 	},
 	"dependencies": {
-		"@sprucelabs/log": "^10.2.0",
-		"@sprucelabs/schema": "^1.0.3",
+		"@sprucelabs/log": "^10.2.1",
+		"@sprucelabs/schema": "^1.0.11",
 		"handlebars": "^4.7.3",
 		"lodash": "^4.17.15"
 	},
 	"devDependencies": {
 		"@types/lodash": "^4.14.149",
-		"@types/mkdirp": "^1.0.0",
 		"@types/node": "^13.7.7",
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^5.0.2",
 		"conventional-changelog-sprucelabs": "^1.1.0",
-		"mkdirp": "^1.0.3",
 		"prettier": "^1.13",
 		"typescript": "^3.8"
 	},

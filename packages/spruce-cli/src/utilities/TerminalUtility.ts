@@ -2,8 +2,8 @@ import chalk from 'chalk'
 import {
 	FieldType,
 	FieldDefinitionMap,
-	IFieldDefinition,
-	BaseField
+	FieldDefinition,
+	FieldFactory
 } from '@sprucelabs/schema'
 import inquirer from 'inquirer'
 // @ts-ignore
@@ -13,7 +13,7 @@ import { filter } from 'lodash'
 // @ts-ignore
 import emphasize from 'emphasize'
 import AbstractUtility from './AbstractUtility'
-import log from '@sprucelabs/log'
+import log from '../lib/log'
 import fs from 'fs-extra'
 import path from 'path'
 
@@ -93,18 +93,17 @@ function filterEffectsForCFonts(effects: ITerminalEffect[]) {
 }
 
 /** What prompt() returns if isRequired=true */
-type PromptReturnTypeRequired<T extends IFieldDefinition> = Required<
+type PromptReturnTypeRequired<T extends FieldDefinition> = Required<
 	FieldDefinitionMap[T['type']]
 >['value']
 
 /** What prompt() returns if isRequired!==true */
 type PromptReturnTypeOptional<
-	T extends IFieldDefinition
+	T extends FieldDefinition
 > = FieldDefinitionMap[T['type']]['value']
 
 export default class TerminalUtility extends AbstractUtility {
 	protected isPromptActive = false
-	private cancelPromptPromiseRejection?: (() => void) | null
 
 	private loader?: ora.Ora | null
 
@@ -253,7 +252,7 @@ export default class TerminalUtility extends AbstractUtility {
 
 	/** The user did something wrong, like entered a bad value */
 	public error(message: string) {
-		this.writeLn(`🛑 ${message}`, [ITerminalEffect.Bold, ITerminalEffect.Bold])
+		this.writeLn(`🛑 ${message}`, [ITerminalEffect.Bold, ITerminalEffect.Red])
 	}
 
 	/** Something major or a critical information but program will not die */
@@ -269,7 +268,7 @@ export default class TerminalUtility extends AbstractUtility {
 	public async startLoading(message?: string) {
 		this.stopLoading()
 		this.loader = ora({
-			text: `${message}\n\n`
+			text: message
 		}).start()
 	}
 
@@ -317,35 +316,8 @@ export default class TerminalUtility extends AbstractUtility {
 		}
 	}
 
-	/** Cancels showing the prompt */
-	public async cancelPrompt() {
-		if (this.cancelPromptPromiseRejection) {
-			this.cancelPromptPromiseRejection()
-		}
-
-		this.cancelPromptPromiseRejection = null
-		this.isPromptActive = false
-	}
-
-	/** Generic way to handle error */
-	public handleError(err: Error) {
-		this.stopLoading()
-
-		const message = err.message
-		// Remove message from stack so the message is not doubled up
-		const stack = err.stack ? err.stack.replace(message, '') : ''
-
-		this.section({
-			headline: message,
-			lines: stack.split('/n'),
-			headlineEffects: [ITerminalEffect.Bold, ITerminalEffect.Red],
-			barEffects: [ITerminalEffect.Red],
-			bodyEffects: [ITerminalEffect.Red]
-		})
-	}
-
 	/** Ask the user for something */
-	public async prompt<T extends IFieldDefinition>(
+	public async prompt<T extends FieldDefinition>(
 		definition: T
 	): Promise<
 		T['isRequired'] extends true
@@ -353,28 +325,8 @@ export default class TerminalUtility extends AbstractUtility {
 			: PromptReturnTypeOptional<T>
 	> {
 		this.isPromptActive = true
-		return new Promise(async (resolve, reject) => {
-			this.cancelPromptPromiseRejection = reject
-			try {
-				const result = await this.showPrompt(definition)
-				resolve(result)
-			} catch (e) {
-				reject(e)
-			}
-			this.isPromptActive = false
-		})
-	}
-
-	/** Ask the user for something */
-	private async showPrompt<T extends IFieldDefinition>(
-		definition: T
-	): Promise<
-		T['isRequired'] extends true
-			? PromptReturnTypeRequired<T>
-			: PromptReturnTypeOptional<T>
-	> {
 		const name = generateInquirerFieldName()
-		const fieldDefinition: IFieldDefinition = definition
+		const fieldDefinition: FieldDefinition = definition
 		const { isRequired, defaultValue, label } = fieldDefinition
 
 		const promptOptions: Record<string, any> = {
@@ -383,7 +335,7 @@ export default class TerminalUtility extends AbstractUtility {
 			message: `${label}:`
 		}
 
-		const field = BaseField.field(fieldDefinition)
+		const field = FieldFactory.field(fieldDefinition)
 
 		// Setup transform and validate
 		promptOptions.transformer = (value: string) => {
@@ -414,7 +366,7 @@ export default class TerminalUtility extends AbstractUtility {
 			// File select
 			case FieldType.File:
 				promptOptions.type = 'file'
-				promptOptions.root = path.join(defaultValue ?? this.cwd, '/')
+				promptOptions.root = path.join(defaultValue?.path ?? this.cwd, '/')
 
 				// Only let people select an actual file
 				promptOptions.validate = (value: string) => {
@@ -438,7 +390,27 @@ export default class TerminalUtility extends AbstractUtility {
 
 		// TODO update method signature to type this properly
 		const response = (await inquirer.prompt(promptOptions)) as any
-		return response[name]
+		this.isPromptActive = false
+		return typeof response[name] !== 'undefined'
+			? field.toValueType(response[name])
+			: response[name]
+	}
+
+	/** Generic way to handle error */
+	public handleError(err: Error) {
+		this.stopLoading()
+
+		const message = err.message
+		// Remove message from stack so the message is not doubled up
+		const stack = err.stack ? err.stack.replace(message, '') : ''
+
+		this.section({
+			headline: message,
+			lines: stack.split('/n'),
+			headlineEffects: [ITerminalEffect.Bold, ITerminalEffect.Red],
+			barEffects: [ITerminalEffect.Red],
+			bodyEffects: [ITerminalEffect.Red]
+		})
 	}
 }
 
