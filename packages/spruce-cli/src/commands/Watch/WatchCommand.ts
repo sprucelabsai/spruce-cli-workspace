@@ -32,6 +32,7 @@ export default class WatchCommand extends AbstractCommand {
 	}
 
 	private async watch() {
+		process.stdin.on('keypress', this.handleKeypress.bind(this))
 		this.loadWatchers()
 		// Watch everything. We'll check individual glob patterns on each file change
 		this.watcher = chokidar.watch('**/*', {
@@ -53,7 +54,6 @@ export default class WatchCommand extends AbstractCommand {
 		readline.emitKeypressEvents(process.stdin)
 		process.stdin.setRawMode(true)
 		process.stdin.resume()
-		process.stdin.on('keypress', this.handleKeypress.bind(this))
 	}
 
 	private showStatus(lines?: string[]) {
