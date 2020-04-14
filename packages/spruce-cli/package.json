@@ -37,8 +37,8 @@
 		"start": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node --inspect=5200 ./build/src/index.js $COMMANDS",
 		"local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node -r ts-node/register -r tsconfig-paths/register --inspect=5200 ./src/index $COMMANDS",
 		"local:noDebug": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node -r ts-node/register -r tsconfig-paths/register ./src/index $COMMANDS",
-		"test": "ava **/*.test.ts",
-		"test:watch": "ava  **/*.test.ts --watch"
+		"#test": "ava **/*.test.ts",
+		"#test:watch": "ava  **/*.test.ts --watch"
 	},
 	"dependencies": {
 		"@sprucelabs/error": "^1.0.11",
