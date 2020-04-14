@@ -13,7 +13,6 @@ enum WatchAction {
 	Add = 'a',
 	Edit = 'e',
 	List = 'l',
-	Unwatch = 'u',
 	Quit = 'q'
 }
 
