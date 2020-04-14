@@ -9,7 +9,7 @@ export interface IAddOptions {
 	dev?: boolean
 }
 
-export default class PackageUtility extends AbstractUtility {
+export default class PkgUtility extends AbstractUtility {
 	public set(
 		path: string,
 		value: string | Record<string, any>,

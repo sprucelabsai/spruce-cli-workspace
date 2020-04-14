@@ -2,7 +2,7 @@ export interface IUtilityOptions {
 	cwd: string
 }
 
-export default class AbstractUtility {
+export default abstract class AbstractUtility {
 	public cwd: string
 	public constructor(options: IUtilityOptions) {
 		const { cwd } = options

@@ -93,7 +93,7 @@ export default class ErrorCommand extends AbstractCommand {
 
 		// Make sure error module is installed
 		this.startLoading()
-		await this.utilities.package.install('@sprucelabs/error')
+		await this.utilities.pkg.install('@sprucelabs/error')
 		this.stopLoading()
 
 		// Write the definition
@@ -189,7 +189,7 @@ export default class ErrorCommand extends AbstractCommand {
 
 		// Make sure error module is installed
 		this.startLoading()
-		await this.utilities.package.install('@sprucelabs/error')
+		await this.utilities.pkg.install('@sprucelabs/error')
 		this.stopLoading()
 
 		// Lets clear out the current error dir

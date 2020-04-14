@@ -127,7 +127,7 @@ export default abstract class AbstractCommand extends TerminalUtility {
 	/** Make a file pass lint */
 	public async pretty(filePath?: string) {
 		filePath && log.info(`lint running on all files, not just ${filePath}`)
-		return this.utilities.package.lintFix()
+		return this.utilities.pkg.lintFix()
 	}
 
 	/** Kick off a build */

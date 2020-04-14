@@ -7,61 +7,33 @@ register({
 	extensions: ['.js', '.ts']
 })
 
-import { terminal } from './utilities/TerminalUtility'
 import { Command } from 'commander'
-// TODO: remove
-// import globby from 'globby'
-import pkg from '../package.json'
-import { IServices } from './services'
-import log from './lib/log'
+import { templates } from '@sprucelabs/spruce-templates'
 import {
 	Mercury,
 	IMercuryConnectOptions,
 	MercuryAuth
 } from '@sprucelabs/mercury'
-// TODO remove
-// import { IStores } from '#spruce/autoloaders/stores'
-// import RemoteStore from './stores/RemoteStore'
-// import SkillStore from './stores/SkillStore'
-// import UserStore from './stores/UserStore'
-// import SchemaStore from './stores/SchemaStore'
-import PinService from './services/PinService'
-// TODO: remove
-// import AbstractCommand, { ICommandOptions } from './commands/Abstract'
-// import OnboardingStore from './stores/OnboardingStore'
-// Import { IGenerators } from './generators'
-// import SchemaGenerator from './generators/SchemaGenerator'
-import { IUtilities } from './utilities'
-import NamesUtility from './utilities/NamesUtility'
+import { terminal } from './utilities/TerminalUtility'
+import pkg from '../package.json'
+import log from './lib/log'
 import { StoreAuth } from './stores/AbstractStore'
-// Import CoreGenerator from './generators/CoreGenerator'
 import { IGeneratorOptions } from './generators/AbstractGenerator'
-import { templates } from '@sprucelabs/spruce-templates'
-// Import ErrorGenerator from './generators/ErrorGenerator'
-// import AbstractCommand, { ICommandOptions } from './commands/Abstract'
-// import OnboardingStore from './stores/OnboardingStore'
-// import { IGenerators } from './generators'
-// import SchemaGenerator from './generators/SchemaGenerator'
-// import CoreGenerator from './generators/CoreGenerator'
-// import ErrorGenerator from './generators/ErrorGenerator'
 import SpruceError from './errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
 import { IUtilityOptions } from './utilities/AbstractUtility'
 import { IServiceOptions } from './services/AbstractService'
-import VmService from './services/VmService'
-
-/** Addons */
-import './addons/filePrompt.addon'
-import PackageUtility from './utilities/PackageUtility'
 
 import commandsLoader from '#spruce/autoloaders/commands'
 import generatorsLoader from '#spruce/autoloaders/generators'
 import storesLoader from '#spruce/autoloaders/stores'
+import utilitiesAutoloader from '#spruce/autoloaders/utilities'
+import servicesAutoloader from '#spruce/autoloaders/services'
 
-import SchemaUtility from './utilities/SchemaUtility'
-import TsConfigUtility from './utilities/TsConfigUtility'
-import BootstrapUtility from './utilities/BootstrapUtility'
+/** Addons */
+import './addons/filePrompt.addon'
 import '#spruce/schemas/fields.types'
+
 /**
  * For handling debugger not attaching right away
  */
@@ -83,17 +55,17 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 
 	program.on('option:directory', function() {
 		if (program.directory) {
-			throw new Error('another path forward')
-			// Process.chdir(path.resolve(program.directory))
-			// config.init()
+			// TODO: Implement ability to set cwd
+			throw new SpruceError({
+				code: ErrorCode.NotImplemented,
+				command: 'option:directory',
+				friendlyMessage: 'Setting the cwd is not yet implemented'
+			})
 		}
 	})
 
 	// Starting cwd
 	const cwd = process.cwd()
-	// Force run when testing
-	// const cwd =
-	// 	'/Users/taylorromero/Development/SpruceLabs/spruce-heartwood-workspace/packages/heartwood-skill'
 
 	// Setup log
 
@@ -102,13 +74,9 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		cwd
 	}
 
-	const utilities: IUtilities = {
-		names: new NamesUtility(utilityOptions),
-		package: new PackageUtility(utilityOptions),
-		schema: new SchemaUtility(utilityOptions),
-		tsConfig: new TsConfigUtility(utilityOptions),
-		bootstrap: new BootstrapUtility(utilityOptions)
-	}
+	const utilities = await utilitiesAutoloader({
+		constructorOptions: utilityOptions
+	})
 
 	// Setup mercury
 	const mercury = new Mercury()
@@ -120,14 +88,6 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		log,
 		utilities
 	}
-
-	// Const stores: IStores = {
-	// 	remote: new RemoteStore(storeOptions),
-	// 	skill: new SkillStore(storeOptions),
-	// 	user: new UserStore(storeOptions),
-	// 	schema: new SchemaStore(storeOptions),
-	// 	onboarding: new OnboardingStore(storeOptions)
-	// }
 
 	const stores = await storesLoader({
 		constructorOptions: storeOptions
@@ -173,10 +133,9 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	}
 
 	// Setup services
-	const services: IServices = {
-		pin: new PinService(serviceOptions),
-		vm: new VmService(serviceOptions)
-	}
+	const services = await servicesAutoloader({
+		constructorOptions: serviceOptions
+	})
 
 	// Setup generators
 	const generatorOptions: IGeneratorOptions = {
@@ -186,12 +145,6 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		log,
 		cwd
 	}
-
-	// Const generators: IGenerators = {
-	// 	schema: new SchemaGenerator(generatorOptions),
-	// 	core: new CoreGenerator(generatorOptions),
-	// 	error: new ErrorGenerator(generatorOptions)
-	// }
 
 	const generators = await generatorsLoader({
 		constructorOptions: generatorOptions

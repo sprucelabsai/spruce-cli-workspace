@@ -1,16 +1,15 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { Command } from 'commander'
-import AbstractCommand from '../AbstractCommand'
-import log from '../../lib/log'
 import * as ts from 'typescript'
 import _ from 'lodash'
-// TODO will be used
 import path from 'path'
 import globby from 'globby'
 import * as tsutils from 'tsutils'
+import AbstractCommand from '../AbstractCommand'
+import log from '../../lib/log'
+import { isReservedWord } from '../../lib/reservedWords'
 import SpruceError from '../../errors/SpruceError'
 import { ErrorCode } from '../../../.spruce/errors/codes.types'
-import { ITerminalEffect } from '../../utilities/TerminalUtility'
 
 interface IDocEntry {
 	name?: string
@@ -121,12 +120,13 @@ export default class AutoloaderCommand extends AbstractCommand {
 		// Write the file
 		this.writeFile(`.spruce/autoloaders/${fileName}.ts`, autoloaderFileContents)
 
-		this.writeLn(`Autoloader created for ${fileName} 🎉`, [
-			ITerminalEffect.Blue
-		])
-		this.writeLn(`import ${fileName} from '#spruce/autoloaders/${fileName}'`, [
-			ITerminalEffect.Yellow
-		])
+		this.section({
+			headline: `Autoloader Created 🎉`,
+			lines: [
+				`import ${fileName}Autoloader from '#spruce/autoloaders/${fileName}'`,
+				`const ${fileName} = await ${fileName}Autoloader({ constructorOptions: options })`
+			]
+		})
 	}
 
 	private async parseFiles(options: {
@@ -202,6 +202,14 @@ export default class AutoloaderCommand extends AbstractCommand {
 									details.constructors[0].parameters[0] &&
 									details.constructors[0].parameters[0].type,
 								relativeFilePath
+							}
+
+							if (isReservedWord(classInfo.className)) {
+								throw new SpruceError({
+									code: ErrorCode.ReservedKeyword,
+									keyword: classInfo.className,
+									friendlyMessage: `Your class can not use the javascript keyword: "${classInfo.className}" as your class name. Rename your class at ${classInfo.relativeFilePath} and re-run this command.`
+								})
 							}
 
 							if (isAbstractClass) {
