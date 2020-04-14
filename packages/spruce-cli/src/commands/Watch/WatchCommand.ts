@@ -8,6 +8,7 @@ import AbstractCommand from '../AbstractCommand'
 import log from '../../lib/log'
 import { FieldType } from '@sprucelabs/schema'
 import { IWatchers } from '../../stores/WatcherStore'
+import { ITerminalEffect } from '../../utilities/TerminalUtility'
 
 enum WatchAction {
 	Add = 'a',
@@ -56,7 +57,7 @@ export default class WatchCommand extends AbstractCommand {
 		process.stdin.resume()
 	}
 
-	private showStatus(lines?: string[]) {
+	private showStatus(lines?: string[], lineEffects?: ITerminalEffect[]) {
 		this.resetReadline()
 		this.clear()
 		this.section({
@@ -72,7 +73,7 @@ export default class WatchCommand extends AbstractCommand {
 		})
 
 		if (lines) {
-			this.writeLns(lines)
+			this.writeLns(lines, lineEffects)
 		}
 	}
 
@@ -113,12 +114,18 @@ export default class WatchCommand extends AbstractCommand {
 			const results = await Promise.allSettled(promises)
 			await this.stopLoading()
 			const lines: string[] = []
+			const lineEffects: ITerminalEffect[] = []
 			results.forEach(result => {
 				if (result.status === 'fulfilled') {
 					lines.push(result.value.stdout)
+				} else if (result.status === 'rejected') {
+					lines.push('Error generating autoloader')
+					lines.push(result.reason)
+					lineEffects.push(ITerminalEffect.Bold)
+					lineEffects.push(ITerminalEffect.Red)
 				}
 			})
-			this.showStatus(lines)
+			this.showStatus(lines, lineEffects)
 		} else {
 			log.trace('Nothing run. No matching glob patterns.')
 		}
