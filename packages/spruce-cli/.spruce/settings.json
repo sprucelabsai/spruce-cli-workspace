@@ -1,19 +1,34 @@
 {
 	"watchers": {
-		"src/commands/**/*.ts": [
-			"node -r ts-node/register -r tsconfig-paths/register ./src/index autoloader -s Command ./src/commands"
-		],
-		"src/services/**/*.ts": [
-			"node -r ts-node/register -r tsconfig-paths/register ./src/index autoloader -s Service ./src/services"
-		],
-		"src/utilities/**/*.ts": [
-			"node -r ts-node/register -r tsconfig-paths/register ./src/index autoloader -s Utility ./src/utilities"
-		],
-		"src/generators/**/*.ts": [
-			"node -r ts-node/register -r tsconfig-paths/register ./src/index autoloader -s Generator ./src/generators"
-		],
-		"src/schemas/**/*.ts": [
-			"node -r ts-node/register -r tsconfig-paths/register ./src/index autoloader -s Schema ./src/schemas"
-		]
+		"src/commands/**/*.ts": {
+			"isEnabled": true,
+			"commands": [
+				"node -r ts-node/register -r tsconfig-paths/register ./src/index autoloader -s Command ./src/commands"
+			]
+		},
+		"src/services/**/*.ts": {
+			"isEnabled": true,
+			"commands": [
+				"node -r ts-node/register -r tsconfig-paths/register ./src/index autoloader -s Service ./src/services"
+			]
+		},
+		"src/utilities/**/*.ts": {
+			"isEnabled": true,
+			"commands": [
+				"node -r ts-node/register -r tsconfig-paths/register ./src/index autoloader -s Utility ./src/utilities"
+			]
+		},
+		"src/generators/**/*.ts": {
+			"isEnabled": false,
+			"commands": [
+				"node -r ts-node/register -r tsconfig-paths/register ./src/index autoloader -s Generator ./src/generators"
+			]
+		},
+		"src/schemas/**/*.ts": {
+			"isEnabled": true,
+			"commands": [
+				"node -r ts-node/register -r tsconfig-paths/register ./src/index autoloader -s Schema ./src/schemas"
+			]
+		}
 	}
 }

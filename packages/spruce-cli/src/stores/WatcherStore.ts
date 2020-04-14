@@ -2,7 +2,10 @@ import AbstractStore, { IBaseStoreSettings, StoreScope } from './AbstractStore'
 
 type CommandToExecute = string
 export interface IWatchers {
-	[globbyPattern: string]: CommandToExecute[]
+	[globbyPattern: string]: {
+		isEnabled: boolean
+		commands: CommandToExecute[]
+	}
 }
 
 export interface IWatcherStoreSettings extends IBaseStoreSettings {
@@ -24,9 +27,43 @@ export default class WatcherStore extends AbstractStore<IWatcherStoreSettings> {
 	public addWatcher(globbyPattern: string, cmd: CommandToExecute) {
 		const watchers = this.getWatchers()
 		if (!watchers[globbyPattern]) {
-			watchers[globbyPattern] = []
+			watchers[globbyPattern] = {
+				isEnabled: true,
+				commands: []
+			}
 		}
-		watchers[globbyPattern].push(cmd)
+		watchers[globbyPattern].commands.push(cmd)
+		this.writeValue('watchers', watchers)
+	}
+
+	/** Enable or disable multiple watchers */
+	public setWatchStatus(
+		watchersToUpdate: { globbyPattern: string; isEnabled: boolean }[]
+	) {
+		const watchers = this.getWatchers()
+		watchersToUpdate.forEach(wtu => {
+			if (typeof watchers[wtu.globbyPattern]?.isEnabled === 'boolean') {
+				watchers[wtu.globbyPattern].isEnabled = wtu.isEnabled
+			}
+		})
+		this.writeValue('watchers', watchers)
+	}
+
+	/** Enables a watcher as long as it has previously been set */
+	public enableWatcher(globbyPattern: string) {
+		const watchers = this.getWatchers()
+		if (typeof watchers[globbyPattern]?.isEnabled === 'boolean') {
+			watchers[globbyPattern].isEnabled = true
+		}
+		this.writeValue('watchers', watchers)
+	}
+
+	/** Disables a watcher if it's been set */
+	public disableWatcher(globbyPattern: string) {
+		const watchers = this.getWatchers()
+		if (typeof watchers[globbyPattern]?.isEnabled === 'boolean') {
+			watchers[globbyPattern].isEnabled = false
+		}
 		this.writeValue('watchers', watchers)
 	}
 }

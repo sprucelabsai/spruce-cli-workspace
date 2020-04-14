@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import readline from 'readline'
+import _ from 'lodash'
 import { Command } from 'commander'
 import chokidar, { FSWatcher } from 'chokidar'
 import minimatch from 'minimatch'
@@ -16,32 +17,14 @@ enum WatchAction {
 	Quit = 'q'
 }
 
-// Const watchChoices = [
-// 	{
-// 		label: 'Add a pattern',
-// 		value: WatchAction.Add
-// 	},
-// 	{
-// 		label: 'Edit a pattern',
-// 		value: WatchAction.Edit
-// 	},
-// 	{
-// 		label: 'Unwatch a pattern',
-// 		value: WatchAction.Unwatch
-// 	}
-// ]
-
 export default class WatchCommand extends AbstractCommand {
 	private watcher!: FSWatcher
 	/** Key / value where key is the glob and value is the command to execute */
 	private watchers: IWatchers = {}
-	/**  */
 	private resolve!: () => void
 	private reject!: (e: Error) => void
 
 	public attachCommands(program: Command): void {
-		// TODO: add option to override globby
-		// Or .autoloader
 		program
 			.command('watch')
 			.description('Watch and regenerate types')
@@ -93,21 +76,6 @@ export default class WatchCommand extends AbstractCommand {
 		this.watchers = watchers
 	}
 
-	// TODO
-	// private async showMenu() {
-	// 	const action = await this.prompt({
-	// 		type: FieldType.Select,
-	// 		label: 'What should we do?',
-	// 		options: {
-	// 			choices: watchChoices
-	// 		}
-	// 	})
-
-	// 	if (action) {
-	// 		await this.handleSelection(action as WatchAction)
-	// 	}
-	// }
-
 	private async handleReady() {
 		this.clear()
 		this.showStatus()
@@ -122,8 +90,12 @@ export default class WatchCommand extends AbstractCommand {
 
 			if (isMatch) {
 				// Execute the command
-				const cmd = this.watchers[pattern]
-				commandsToExecute = commandsToExecute.concat(cmd)
+				const watcher = this.watchers[pattern]
+				if (watcher.isEnabled) {
+					commandsToExecute = commandsToExecute.concat(watcher.commands)
+				} else {
+					log.debug(`Pattern disabled: ${pattern}`)
+				}
 			}
 		})
 
@@ -155,29 +127,7 @@ export default class WatchCommand extends AbstractCommand {
 		this.reject(e)
 	}
 
-	// Private async handleSelection(
-	// 	/** The selected action */
-	// 	selection: WatchAction
-	// ) {
-	// 	log.debug(`Selection made: ${selection}`)
-
-	// 	switch (selection) {
-	// 		case WatchAction.Add:
-	// 		case WatchAction.Add.toUpperCase():
-	// 			await this.handleAddPatten()
-	// 			break
-
-	// 		case WatchAction.Edit:
-	// 		case WatchAction.Edit.toUpperCase():
-	// 			break
-
-	// 		default:
-	// 			break
-	// 	}
-	// }
-
 	private async handleAddPatten() {
-		this.isPromptActive = true
 		let pattern: string | undefined
 		let commandStr: string | undefined
 		let isPatternValid = false
@@ -207,7 +157,6 @@ export default class WatchCommand extends AbstractCommand {
 
 		this.stores.watcher.addWatcher(pattern as string, commandStr as string)
 		this.loadWatchers()
-		this.isPromptActive = false
 	}
 
 	private async handleKeypress(str: string, key: readline.Key) {
@@ -238,6 +187,11 @@ export default class WatchCommand extends AbstractCommand {
 						this.listWatchers()
 						break
 
+					case WatchAction.Edit:
+					case WatchAction.Edit.toUpperCase():
+						await this.editWatchers()
+						break
+
 					default:
 						break
 				}
@@ -251,8 +205,11 @@ export default class WatchCommand extends AbstractCommand {
 		const lines: string[] = []
 
 		Object.keys(this.watchers).forEach(pattern => {
-			const commands = this.watchers[pattern]
-			lines.push(`Pattern: ${pattern}`)
+			const watcher = this.watchers[pattern]
+			const commands = watcher.commands
+			lines.push(
+				`Pattern: ${pattern} (${watcher.isEnabled ? 'ENABLED' : 'DISABLED'})`
+			)
 			lines.push(`Commands:`)
 			commands.forEach(command => {
 				lines.push(`  ${command}`)
@@ -264,5 +221,40 @@ export default class WatchCommand extends AbstractCommand {
 			headline: 'Current watchers',
 			lines
 		})
+	}
+
+	private async editWatchers() {
+		const choices = Object.keys(this.watchers).map(pattern => {
+			const watcher = this.watchers[pattern]
+			return {
+				label: `${pattern} (${watcher.commands.length})`,
+				value: pattern,
+				checked: watcher.isEnabled
+			}
+		})
+		const result = await this.prompt({
+			type: FieldType.Select,
+			label: 'Enable or disable watchers',
+			isRequired: true,
+			options: {
+				choices,
+				multiSelect: true
+			}
+		})
+
+		const watchersToUpdate: {
+			globbyPattern: string
+			isEnabled: boolean
+		}[] = Object.keys(this.watchers).map(pattern => {
+			const isEnabled = _.includes(result, pattern)
+
+			return {
+				globbyPattern: pattern,
+				isEnabled
+			}
+		})
+
+		this.stores.watcher.setWatchStatus(watchersToUpdate)
+		await this.loadWatchers()
 	}
 }

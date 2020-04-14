@@ -348,11 +348,17 @@ export default class TerminalUtility extends AbstractUtility {
 		switch (fieldDefinition.type) {
 			// Map select options to prompt list choices
 			case FieldType.Select:
-				promptOptions.type = 'list'
+				// TODO: Is there a way we can fix this TS error w/ schema definitions?
+				// @ts-ignore extra option "multiSelect"
+				promptOptions.type = fieldDefinition.options.multiSelect
+					? 'checkbox'
+					: 'list'
 
 				promptOptions.choices = fieldDefinition.options.choices.map(choice => ({
 					name: choice.label,
-					value: choice.value
+					value: choice.value,
+					// @ts-ignore
+					checked: choice.checked
 				}))
 
 				if (!isRequired) {
