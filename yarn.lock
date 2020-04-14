@@ -1036,10 +1036,10 @@
     superagent "^5.1.2"
     uuid "^3.3.3"
 
-"@sprucelabs/path-resolver@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/path-resolver/-/path-resolver-1.0.5.tgz#4057521cbfbf59fcf797799af61a6c1d2bad7800"
-  integrity sha512-LjvwN33uoQQUf9AcqTca5iPe6pLS0xgWsriPOsgbYWI5x6poscayag7rR+4Tyff/Q1YkzLPrK1EmbH+xdZ+H/A==
+"@sprucelabs/path-resolver@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/path-resolver/-/path-resolver-1.0.7.tgz#d5fc30503719780340d20396ab5562a2ff825d02"
+  integrity sha512-3Vnv3QrOQi1BvYxytI02x5KPfyOaD5zdQ4QcNW2zkWKJi9Ns1DHgocE/DAcM2mgW353i4JJnFk6P3wFsVnJEmQ==
   dependencies:
     "@sprucelabs/log" "^10.2.1"
 
