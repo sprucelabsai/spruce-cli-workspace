@@ -11,6 +11,7 @@ import { IWatchers } from '../../stores/WatcherStore'
 
 enum WatchAction {
 	Add = 'a',
+	Delete = 'd',
 	Edit = 'e',
 	List = 'l',
 	Quit = 'q'
@@ -64,6 +65,7 @@ export default class WatchCommand extends AbstractCommand {
 				'Use these commands:',
 				'  l - list all watchers',
 				'  a - create a new watcher',
+				'  d - delete a watcher',
 				'  e - edit a watcher',
 				'  q - quit'
 			]
@@ -169,7 +171,8 @@ export default class WatchCommand extends AbstractCommand {
 			if (key.ctrl && key.name === 'c') {
 				this.resolve()
 			} else if (key.name === 'escape') {
-				this.showStatus()
+				// TODO: Figure out if there's a way to abort inquirer
+				// this.showStatus()
 			} else {
 				if (this.isPromptActive) {
 					// The prompt is up so we shouldn't handle this keypress
@@ -194,7 +197,12 @@ export default class WatchCommand extends AbstractCommand {
 
 					case WatchAction.Edit:
 					case WatchAction.Edit.toUpperCase():
-						await this.editWatchers()
+						await this.handleEditWatchers()
+						break
+
+					case WatchAction.Delete:
+					case WatchAction.Delete.toUpperCase():
+						await this.handleDeleteWatcher()
 						break
 
 					default:
@@ -228,7 +236,7 @@ export default class WatchCommand extends AbstractCommand {
 		})
 	}
 
-	private async editWatchers() {
+	private async handleEditWatchers() {
 		const choices = Object.keys(this.watchers).map(pattern => {
 			const watcher = this.watchers[pattern]
 			return {
@@ -261,6 +269,31 @@ export default class WatchCommand extends AbstractCommand {
 
 		this.stores.watcher.setWatchStatus(watchersToUpdate)
 		await this.loadWatchers()
+		this.showStatus()
+		this.listWatchers()
+	}
+
+	private async handleDeleteWatcher() {
+		const choices = Object.keys(this.watchers).map(pattern => {
+			const watcher = this.watchers[pattern]
+			return {
+				label: `${pattern} (${watcher.commands.length})`,
+				value: pattern,
+				checked: watcher.isEnabled
+			}
+		})
+		const result = await this.prompt({
+			type: FieldType.Select,
+			label: 'Select the watcher to delete',
+			options: {
+				choices
+			}
+		})
+
+		if (result) {
+			this.stores.watcher.deleteWatcher(result)
+			await this.loadWatchers()
+		}
 		this.showStatus()
 		this.listWatchers()
 	}
