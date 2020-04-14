@@ -66,6 +66,7 @@
 		"promise.allsettled": "^1.0.2",
 		"rimraf": "^3.0.2",
 		"slug": "^2.1.1",
+		"string-argv": "^0.3.1",
 		"ts-node": "^8.8.2",
 		"tsutils": "^3.17.1",
 		"typescript": "^3.8.3",

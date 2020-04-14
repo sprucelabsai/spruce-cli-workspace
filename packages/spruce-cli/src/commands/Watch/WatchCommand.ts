@@ -39,7 +39,8 @@ export default class WatchCommand extends AbstractCommand {
 		this.watcher = chokidar.watch('**/*', {
 			ignoreInitial: true
 		})
-		this.watcher.on('change', this.handleFileChange.bind(this))
+
+		this.watcher.on('change', _.debounce(this.handleFileChange.bind(this), 100))
 		this.watcher.on('add', this.handleFileAdd.bind(this))
 		this.watcher.on('error', this.handleWatcherError.bind(this))
 		this.watcher.on('ready', this.handleReady.bind(this))

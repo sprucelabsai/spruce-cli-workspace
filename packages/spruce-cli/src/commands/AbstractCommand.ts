@@ -1,4 +1,4 @@
-import { spawn } from 'child_process'
+import { spawn, SpawnOptions } from 'child_process'
 import stringArgv from 'string-argv'
 import log from '../lib/log'
 import TerminalUtility from '../utilities/TerminalUtility'
@@ -158,37 +158,40 @@ export default abstract class AbstractCommand extends TerminalUtility {
 		return !!this.stores.skill.skillFromDir(this.cwd)
 	}
 
-	/** Execute a command and get back the result */
+	/** Execute a shell command and get back the result */
 	public executeCommand(
-		cmd: string
+		cmd: string,
+		options?: {
+			/** When set to true will stream the results from the child process in real time instead of waiting to return */
+			stream?: boolean
+		}
 	): Promise<{
 		stdout: string
 	}> {
 		log.trace(`Executing command: ${cmd}`, { cwd: this.cwd })
-		// Return new Promise((resolve, reject) => {
-		// 	exec(cmd, { cwd: this.cwd }, (e, stdout) => {
-		// 		if (e) {
-		// 			reject(e)
-		// 			return
-		// 		}
-		// 		resolve({
-		// 			stdout
-		// 		})
-		// 	})
-		// })
 		return new Promise((resolve, reject) => {
 			const args = stringArgv(cmd)
 			const executable = args.shift()
-			const stdout = ''
+			let stdout = ''
 			let stderr: string | undefined
 			if (executable) {
-				const child = spawn(executable, args, { stdio: 'inherit' })
-				// Child.stdout?.on('data', data => {
-				// 	stdout += data
-				// })
-				// child.stderr?.on('data', data => {
-				// 	stderr += data
-				// })
+				const spawnOptions: SpawnOptions = options?.stream
+					? { stdio: 'inherit' }
+					: {
+							env: {
+								...process.env,
+								FORCE_COLOR: '1'
+							},
+							shell: true
+					  }
+
+				const child = spawn(executable, args, spawnOptions)
+				child.stdout?.on('data', data => {
+					stdout += data
+				})
+				child.stderr?.on('data', data => {
+					stderr += data
+				})
 				child.on('close', code => {
 					if (code === 0) {
 						resolve({ stdout })
