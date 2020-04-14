@@ -10,7 +10,7 @@ import Schema from '../../src/commands/Schema/SchemaCommand'
 import Skill from '../../src/commands/Skill/SkillCommand'
 import Test from '../../src/commands/Test/TestCommand'
 import User from '../../src/commands/User/UserCommand'
-import Watch from '../../src/commands/Watch/Watch'
+import Watch from '../../src/commands/Watch/WatchCommand'
 
 // Import necessary interface(s)
 import { ICommandOptions } from '../../src/commands/AbstractCommand'

@@ -32,9 +32,6 @@ export default class WatchCommand extends AbstractCommand {
 	}
 
 	private async watch() {
-		readline.emitKeypressEvents(process.stdin)
-		process.stdin.setRawMode(true)
-		process.stdin.on('keypress', this.handleKeypress.bind(this))
 		this.loadWatchers()
 		// Watch everything. We'll check individual glob patterns on each file change
 		this.watcher = chokidar.watch('**/*', {
@@ -52,7 +49,15 @@ export default class WatchCommand extends AbstractCommand {
 		await finishedPromise
 	}
 
-	private async showStatus(lines?: string[]) {
+	private resetReadline() {
+		readline.emitKeypressEvents(process.stdin)
+		process.stdin.setRawMode(true)
+		process.stdin.resume()
+		process.stdin.on('keypress', this.handleKeypress.bind(this))
+	}
+
+	private showStatus(lines?: string[]) {
+		this.resetReadline()
 		this.clear()
 		this.section({
 			headline: 'Spruce Watcher',
@@ -76,7 +81,7 @@ export default class WatchCommand extends AbstractCommand {
 		this.watchers = watchers
 	}
 
-	private async handleReady() {
+	private handleReady() {
 		this.clear()
 		this.showStatus()
 	}
@@ -157,6 +162,7 @@ export default class WatchCommand extends AbstractCommand {
 
 		this.stores.watcher.addWatcher(pattern as string, commandStr as string)
 		this.loadWatchers()
+		this.showStatus()
 	}
 
 	private async handleKeypress(str: string, key: readline.Key) {
@@ -256,5 +262,7 @@ export default class WatchCommand extends AbstractCommand {
 
 		this.stores.watcher.setWatchStatus(watchersToUpdate)
 		await this.loadWatchers()
+		this.showStatus()
+		this.listWatchers()
 	}
 }
