@@ -11,6 +11,7 @@ import { IWatchers } from '../../stores/WatcherStore'
 enum WatchAction {
 	Add = 'a',
 	Edit = 'e',
+	List = 'l',
 	Unwatch = 'u',
 	Quit = 'q'
 }
@@ -232,6 +233,11 @@ export default class WatchCommand extends AbstractCommand {
 						this.resolve()
 						break
 
+					case WatchAction.List:
+					case WatchAction.List.toUpperCase():
+						this.listWatchers()
+						break
+
 					default:
 						break
 				}
@@ -239,5 +245,24 @@ export default class WatchCommand extends AbstractCommand {
 		} catch (e) {
 			log.debug('Nothing to do')
 		}
+	}
+
+	private async listWatchers() {
+		const lines: string[] = []
+
+		Object.keys(this.watchers).forEach(pattern => {
+			const commands = this.watchers[pattern]
+			lines.push(`Pattern: ${pattern}`)
+			lines.push(`Commands:`)
+			commands.forEach(command => {
+				lines.push(`  ${command}`)
+			})
+			lines.push('\n')
+		})
+
+		this.section({
+			headline: 'Current watchers',
+			lines
+		})
 	}
 }
