@@ -1,4 +1,5 @@
-import { exec } from 'child_process'
+import { spawn } from 'child_process'
+import stringArgv from 'string-argv'
 import log from '../lib/log'
 import TerminalUtility from '../utilities/TerminalUtility'
 import path from 'path'
@@ -164,16 +165,38 @@ export default abstract class AbstractCommand extends TerminalUtility {
 		stdout: string
 	}> {
 		log.trace(`Executing command: ${cmd}`, { cwd: this.cwd })
+		// Return new Promise((resolve, reject) => {
+		// 	exec(cmd, { cwd: this.cwd }, (e, stdout) => {
+		// 		if (e) {
+		// 			reject(e)
+		// 			return
+		// 		}
+		// 		resolve({
+		// 			stdout
+		// 		})
+		// 	})
+		// })
 		return new Promise((resolve, reject) => {
-			exec(cmd, { cwd: this.cwd }, (e, stdout) => {
-				if (e) {
-					reject(e)
-					return
-				}
-				resolve({
-					stdout
+			const args = stringArgv(cmd)
+			const executable = args.shift()
+			const stdout = ''
+			let stderr: string | undefined
+			if (executable) {
+				const child = spawn(executable, args, { stdio: 'inherit' })
+				// Child.stdout?.on('data', data => {
+				// 	stdout += data
+				// })
+				// child.stderr?.on('data', data => {
+				// 	stderr += data
+				// })
+				child.on('close', code => {
+					if (code === 0) {
+						resolve({ stdout })
+					} else {
+						reject(stderr)
+					}
 				})
-			})
+			}
 		})
 	}
 

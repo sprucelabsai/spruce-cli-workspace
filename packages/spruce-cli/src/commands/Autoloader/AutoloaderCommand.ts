@@ -10,6 +10,7 @@ import log from '../../lib/log'
 import { isReservedWord } from '../../lib/reservedWords'
 import SpruceError from '../../errors/SpruceError'
 import { ErrorCode } from '../../../.spruce/errors/codes.types'
+import { ITerminalEffect } from '../../utilities/TerminalUtility'
 
 interface IDocEntry {
 	name?: string
@@ -125,7 +126,9 @@ export default class AutoloaderCommand extends AbstractCommand {
 			lines: [
 				`import ${fileName}Autoloader from '#spruce/autoloaders/${fileName}'`,
 				`const ${fileName} = await ${fileName}Autoloader({ constructorOptions: options })`
-			]
+			],
+			barEffects: [ITerminalEffect.Bold, ITerminalEffect.Green],
+			bodyEffects: [ITerminalEffect.Bold, ITerminalEffect.Green]
 		})
 	}
 
@@ -204,7 +207,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 								relativeFilePath
 							}
 
-							if (isReservedWord(classInfo.className)) {
+							if (!isAbstractClass && isReservedWord(classInfo.className)) {
 								throw new SpruceError({
 									code: ErrorCode.ReservedKeyword,
 									keyword: classInfo.className,
