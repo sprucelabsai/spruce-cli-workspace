@@ -16,7 +16,10 @@
 		"sourceMap": true,
 		"baseUrl": ".",
 		"paths": {
-			"#spruce:schema/*": ["node_modules/@sprucelabs/schema/build/src/*"],
+			"#spruce:schema/*": [
+				"node_modules/@sprucelabs/schema/build/*",
+				"node_modules/@sprucelabs/schema/build/src/*"
+			],
 			"#spruce/*": [".spruce/*"]
 		}
 	},

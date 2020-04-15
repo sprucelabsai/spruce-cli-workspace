@@ -162,8 +162,6 @@ export default class ErrorCommand extends AbstractCommand {
 			this.templates.errorExample({
 				pascalName,
 				camelName,
-				// TODO: Fix this
-				// @ts-ignore
 				definition
 			})
 		)
@@ -223,8 +221,6 @@ export default class ErrorCommand extends AbstractCommand {
 
 				this.writeLn('')
 				this.codeSample(
-					// TODO: Fix this
-					// @ts-ignore
 					this.templates.errorExample({ pascalName, camelName, definition })
 				)
 

@@ -52,7 +52,6 @@ export default class VmService extends AbstractService {
 
 		// 			if (
 		// 				name === 'ts-node/register' ||
-		// 				name === 'tsconfig-paths/register' ||
 		// 				name === '@sprucelabs/path-resolver'
 		// 			) {
 		// 				return name

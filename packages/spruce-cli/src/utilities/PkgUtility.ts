@@ -78,7 +78,7 @@ export default class PkgUtility extends AbstractUtility {
 
 	public async setupSkill() {
 		await this.install(['@sprucelabs/path-resolver'])
-		await this.install(['ts-node', 'tsconfig-paths'], { dev: true })
+		await this.install(['ts-node'], { dev: true })
 	}
 
 	public async setupForSchemas() {
