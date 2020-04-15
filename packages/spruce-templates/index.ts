@@ -1,6 +1,7 @@
 import handlebars from 'handlebars'
 import fs from 'fs'
 import path from 'path'
+import log from './src/lib/log'
 
 import { IFieldTemplateDetails, ISchemaDefinition } from '@sprucelabs/schema'
 
@@ -12,6 +13,9 @@ import './src/addons/fieldTypeEnum.addon'
 import './src/addons/fieldValue.addon'
 import './src/addons/isEqual.addon'
 import './src/addons/startCase.addon'
+import './src/addons/camelCase.addon'
+import './src/addons/pascalCase.addon'
+log.info('Addons imported')
 
 // Extra definitions
 // TODO where do these go?
@@ -86,6 +90,10 @@ const errorExample: string = fs
 
 const test: string = fs
 	.readFileSync(path.join(templatePath, 'tests/Test.test.hbs'))
+	.toString()
+
+const autoloader: string = fs
+	.readFileSync(path.join(templatePath, 'autoloader/autoloader.hbs'))
 	.toString()
 
 const fieldTypes: string = fs
@@ -198,6 +206,25 @@ export const templates = {
 	/** Test file */
 	test(options: { pascalName: string }) {
 		const template = handlebars.compile(test)
+		return template(options)
+	},
+
+	/** Autoloader */
+	autoloader(options: {
+		abstractClassName: string
+		abstractClassRelativePath: string
+		classes: {
+			constructorOptionsInterfaceName?: string
+			className: string
+			relativeFilePath: string
+		}[]
+		interfaces: {
+			interfaceName: string
+			relativeFilePath: string
+		}[]
+		fileName: string
+	}) {
+		const template = handlebars.compile(autoloader)
 		return template(options)
 	},
 

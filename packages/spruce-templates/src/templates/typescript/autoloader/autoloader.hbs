@@ -1,0 +1,42 @@
+// Import base class
+import {{abstractClassName}} from '{{abstractClassRelativePath}}'
+
+// Import each matching class that will be autoloaded
+{{#each classes}}
+import {{className}} from '{{relativeFilePath}}'
+{{/each}}
+
+// Import necessary interface(s)
+{{#each interfaces}}
+import { {{interfaceName}} } from '{{relativeFilePath}}'
+{{/each}}
+
+export interface I{{pascalCase fileName}} {
+	{{#each classes}}
+	{{camelCase className}}: {{className}}
+	{{/each}}
+}
+
+export default async function autoloader(options: {
+	constructorOptions: {{#each interfaces}}{{#if @first}}{{interfaceName}}{{else}} | {{interfaceName}}{{/if}}{{/each}}
+	after?: (instance: {{abstractClassName}}) => Promise<void>
+}): Promise<I{{pascalCase fileName}}> {
+	const { constructorOptions, after } = options
+
+	{{#each classes}}
+	const {{camelCase className}} = new {{className}}(constructorOptions)
+	if (after) {
+		await after({{camelCase className}})
+	}
+	{{/each}}
+
+	return {
+		{{#each classes}}
+		{{#if @last}}
+		{{camelCase className}}
+		{{else}}
+		{{camelCase className}},
+		{{/if}}
+		{{/each}}
+	}
+}

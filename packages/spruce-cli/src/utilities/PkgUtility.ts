@@ -3,12 +3,13 @@ import fs from 'fs-extra'
 import pathUtil from 'path'
 import { exec } from 'child_process'
 import { set } from 'lodash'
+import log from '../lib/log'
 
 export interface IAddOptions {
 	dev?: boolean
 }
 
-export default class PackageUtility extends AbstractUtility {
+export default class PkgUtility extends AbstractUtility {
 	public set(
 		path: string,
 		value: string | Record<string, any>,
@@ -67,8 +68,8 @@ export default class PackageUtility extends AbstractUtility {
 		return new Promise(resolve => {
 			exec(`yarn lint:fix`, err => {
 				if (err) {
-					this.log.warn('Linting skill failed! Moving on...')
-					this.log.debug(err)
+					log.warn('Linting skill failed! Moving on...')
+					log.debug(err)
 				}
 				resolve()
 			})

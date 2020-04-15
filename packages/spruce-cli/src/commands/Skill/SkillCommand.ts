@@ -1,5 +1,5 @@
 import { Command } from 'commander'
-import AbstractCommand from '../Abstract'
+import AbstractCommand from '../AbstractCommand'
 import { ISelectFieldDefinitionChoice, FieldType } from '@sprucelabs/schema'
 import { StoreAuth } from '../../stores/AbstractStore'
 import SpruceError from '../../errors/SpruceError'

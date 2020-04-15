@@ -1,4 +1,4 @@
-import AbstractCommand from '../Abstract'
+import AbstractCommand from '../AbstractCommand'
 import { Command } from 'commander'
 import { FieldType } from '@sprucelabs/schema'
 import path from 'path'
@@ -31,7 +31,7 @@ export default class TestCommand extends AbstractCommand {
 
 		// Make sure test module is installed
 		this.startLoading('Installing dependencies')
-		await this.utilities.package.setupForTesting()
+		await this.utilities.pkg.setupForTesting()
 		this.stopLoading()
 
 		const name = this.utilities.names.toFileNameWithoutExtension(target)

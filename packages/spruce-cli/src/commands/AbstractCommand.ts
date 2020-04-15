@@ -1,14 +1,16 @@
-import { Log } from '@sprucelabs/log'
+import { spawn, SpawnOptions } from 'child_process'
+import stringArgv from 'string-argv'
+import log from '../lib/log'
 import TerminalUtility from '../utilities/TerminalUtility'
 import path from 'path'
 import { Command } from 'commander'
 import FormBuilder, { IFormOptions } from '../builders/FormBuilder'
 import { ISchemaDefinition } from '@sprucelabs/schema'
-import { IStores } from '../stores'
+import { IStores } from '#spruce/autoloaders/stores'
 import { Mercury } from '@sprucelabs/mercury'
-import { IServices } from '../services'
-import { IGenerators } from '../generators'
-import { IUtilities } from '../utilities'
+import { IServices } from '#spruce/autoloaders/services'
+import { IGenerators } from '#spruce/autoloaders/generators'
+import { IUtilities } from '#spruce/autoloaders/utilities'
 import { Templates } from '@sprucelabs/spruce-templates'
 import QuizBuilder, {
 	IQuizOptions,
@@ -21,7 +23,6 @@ export interface ICommandOptions {
 	mercury: Mercury
 	services: IServices
 	generators: IGenerators
-	log: Log
 	cwd: string
 	utilities: IUtilities
 	templates: Templates
@@ -33,7 +34,6 @@ export interface IWriteOptions {
 }
 export default abstract class AbstractCommand extends TerminalUtility {
 	/** Spruce logger */
-	public log: Log
 	public stores: IStores
 	public mercury: Mercury
 	public services: IServices
@@ -50,7 +50,6 @@ export default abstract class AbstractCommand extends TerminalUtility {
 			mercury,
 			services,
 			cwd,
-			log,
 			generators,
 			utilities,
 			templates
@@ -60,7 +59,6 @@ export default abstract class AbstractCommand extends TerminalUtility {
 		this.stores = stores
 		this.mercury = mercury
 		this.services = services
-		this.log = log
 		this.generators = generators
 		this.utilities = utilities
 		this.templates = templates
@@ -129,13 +127,13 @@ export default abstract class AbstractCommand extends TerminalUtility {
 
 	/** Make a file pass lint */
 	public async pretty(filePath?: string) {
-		filePath && this.log.info(`lint running on all files, not just ${filePath}`)
-		return this.utilities.package.lintFix()
+		filePath && log.info(`lint running on all files, not just ${filePath}`)
+		return this.utilities.pkg.lintFix()
 	}
 
 	/** Kick off a build */
 	public async build(file?: string) {
-		this.log.info(`Ignoring build of ${file ?? 'entire project'}`)
+		log.info(`Ignoring build of ${file ?? 'entire project'}`)
 		// This.startLoading('Building')
 		// // Starting build
 		// await new Promise(resolve => {
@@ -158,6 +156,51 @@ export default abstract class AbstractCommand extends TerminalUtility {
 	/** Are we in a skills dir? */
 	public isInSkillDirectory() {
 		return !!this.stores.skill.skillFromDir(this.cwd)
+	}
+
+	/** Execute a shell command and get back the result */
+	public executeCommand(
+		cmd: string,
+		options?: {
+			/** When set to true will stream the results from the child process in real time instead of waiting to return */
+			stream?: boolean
+		}
+	): Promise<{
+		stdout: string
+	}> {
+		log.trace(`Executing command: ${cmd}`, { cwd: this.cwd })
+		return new Promise((resolve, reject) => {
+			const args = stringArgv(cmd)
+			const executable = args.shift()
+			let stdout = ''
+			let stderr: string | undefined
+			if (executable) {
+				const spawnOptions: SpawnOptions = options?.stream
+					? { stdio: 'inherit' }
+					: {
+							env: {
+								...process.env,
+								FORCE_COLOR: '1'
+							},
+							shell: true
+					  }
+
+				const child = spawn(executable, args, spawnOptions)
+				child.stdout?.on('data', data => {
+					stdout += data
+				})
+				child.stderr?.on('data', data => {
+					stderr += data
+				})
+				child.on('close', code => {
+					if (code === 0) {
+						resolve({ stdout })
+					} else {
+						reject(stderr)
+					}
+				})
+			}
+		})
 	}
 
 	/** Parses a file path to parts needed for building the files */

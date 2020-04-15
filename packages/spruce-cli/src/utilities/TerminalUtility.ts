@@ -1,4 +1,5 @@
 import chalk from 'chalk'
+import _ from 'lodash'
 import {
 	FieldType,
 	FieldDefinitionMap,
@@ -13,7 +14,7 @@ import { filter } from 'lodash'
 // @ts-ignore
 import emphasize from 'emphasize'
 import AbstractUtility from './AbstractUtility'
-import log from '@sprucelabs/log'
+import log from '../lib/log'
 import fs from 'fs-extra'
 import path from 'path'
 
@@ -103,6 +104,8 @@ type PromptReturnTypeOptional<
 > = FieldDefinitionMap[T['type']]['value']
 
 export default class TerminalUtility extends AbstractUtility {
+	protected isPromptActive = false
+
 	private loader?: ora.Ora | null
 
 	/** Write a line with various effects applied */
@@ -232,8 +235,8 @@ export default class TerminalUtility extends AbstractUtility {
 	/** When outputting something information */
 	public info(message: string) {
 		if (typeof message !== 'string') {
-			this.log.debug('Invalid info log')
-			this.log.debug(message)
+			log.debug('Invalid info log')
+			log.debug(message)
 			return
 		}
 
@@ -322,6 +325,7 @@ export default class TerminalUtility extends AbstractUtility {
 			? PromptReturnTypeRequired<T>
 			: PromptReturnTypeOptional<T>
 	> {
+		this.isPromptActive = true
 		const name = generateInquirerFieldName()
 		const fieldDefinition: FieldDefinition = definition
 		const { isRequired, defaultValue, label } = fieldDefinition
@@ -345,11 +349,12 @@ export default class TerminalUtility extends AbstractUtility {
 		switch (fieldDefinition.type) {
 			// Map select options to prompt list choices
 			case FieldType.Select:
-				promptOptions.type = 'list'
+				promptOptions.type = fieldDefinition.isArray ? 'checkbox' : 'list'
 
 				promptOptions.choices = fieldDefinition.options.choices.map(choice => ({
 					name: choice.label,
-					value: choice.value
+					value: choice.value,
+					checked: _.includes(defaultValue, choice.value)
 				}))
 
 				if (!isRequired) {
@@ -387,6 +392,7 @@ export default class TerminalUtility extends AbstractUtility {
 
 		// TODO update method signature to type this properly
 		const response = (await inquirer.prompt(promptOptions)) as any
+		this.isPromptActive = false
 		return typeof response[name] !== 'undefined'
 			? field.toValueType(response[name])
 			: response[name]
@@ -410,4 +416,4 @@ export default class TerminalUtility extends AbstractUtility {
 	}
 }
 
-export const terminal = new TerminalUtility({ cwd: process.cwd(), log })
+export const terminal = new TerminalUtility({ cwd: process.cwd() })

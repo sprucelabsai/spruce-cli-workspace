@@ -36,17 +36,20 @@
 		"release": "semantic-release",
 		"start": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node --inspect=5200 ./build/src/index.js $COMMANDS",
 		"local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node -r ts-node/register --inspect=5200 ./src/index $COMMANDS",
-		"test": "ava **/*.test.ts",
-		"test:watch": "ava  **/*.test.ts --watch"
+		"local:noDebug": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node -r ts-node/register ./src/index $COMMANDS",
+		"#test": "ava **/*.test.ts",
+		"#test:watch": "ava  **/*.test.ts --watch"
 	},
 	"dependencies": {
 		"@sprucelabs/error": "^1.0.11",
 		"@sprucelabs/log": "^10.2.1",
 		"@sprucelabs/mercury": "10.2.0",
-		"@sprucelabs/path-resolver": "^1.0.9",
-		"@sprucelabs/schema": "^1.0.11",
+		"@sprucelabs/path-resolver": "^1.0.10",
+		"@sprucelabs/schema": "^1.0.13",
 		"@sprucelabs/spruce-templates": "10.0.0",
+		"@types/promise.allsettled": "^1.0.3",
 		"cfonts": "^2.8.1",
+		"chokidar": "^3.3.1",
 		"commander": "^4.1.1",
 		"dotenv": "^8.2.0",
 		"emphasize": "^3.0.0",
@@ -58,9 +61,15 @@
 		"inquirer-file-tree-selection-prompt": "^1.0.5",
 		"jsonwebtoken": "^8.5.1",
 		"lodash": "^4.17.15",
+		"minimatch": "^3.0.4",
 		"ora": "^4.0.3",
+		"promise.allsettled": "^1.0.2",
 		"rimraf": "^3.0.2",
 		"slug": "^2.1.1",
+		"string-argv": "^0.3.1",
+		"ts-node": "^8.8.2",
+		"tsutils": "^3.17.1",
+		"typescript": "^3.8.3",
 		"vm2": "^3.9.1"
 	},
 	"devDependencies": {
@@ -79,10 +88,7 @@
 		"concurrently": "^5.0.2",
 		"conventional-changelog-sprucelabs": "^1.1.0",
 		"mkdirp": "^1.0.3",
-		"prettier": "^1.13",
-		"ts-node": "^8.8.2",
-		"tsconfig-paths": "^3.9.0",
-		"typescript": "^3.8.3"
+		"prettier": "^1.13"
 	},
 	"peerDependencies": {},
 	"ava": {

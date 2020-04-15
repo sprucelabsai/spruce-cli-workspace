@@ -1,10 +1,10 @@
 import fs from 'fs'
 import { Mercury } from '@sprucelabs/mercury'
-import { Log } from '@sprucelabs/log'
+import log from '../lib/log'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
-import { IUtilities } from '../utilities'
-import { IServices } from '../services'
+import { IUtilities } from '#spruce/autoloaders/utilities'
+import { IServices } from '#spruce/autoloaders/services'
 
 /** Are we running globally or locally? */
 export enum StoreScope {
@@ -26,7 +26,6 @@ export interface IStoreOptions {
 	cwd: string
 	scope?: StoreScope
 	authType?: StoreAuth
-	log: Log
 }
 
 export interface IBaseStoreSettings {
@@ -38,9 +37,6 @@ export default abstract class AbstractStore<
 > {
 	/** The current scope */
 	public scope = StoreScope.Global
-
-	/** For logging */
-	public log: Log
 
 	/** All the utilities */
 	public utilities: IUtilities
@@ -67,13 +63,12 @@ export default abstract class AbstractStore<
 	abstract name: string
 
 	public constructor(options: IStoreOptions) {
-		const { mercury, cwd, scope, authType, log, utilities, services } = options
+		const { mercury, cwd, scope, authType, utilities, services } = options
 
 		this.mercury = mercury
 		this.cwd = cwd
 		this.scope = scope ?? this.scope
 		this.authType = authType ?? this.authType
-		this.log = log
 		this.utilities = utilities
 		this.services = services
 
@@ -139,7 +134,7 @@ export default abstract class AbstractStore<
 			const values = JSON.parse(contents) as T
 			return values
 		} catch (err) {
-			this.log.warn(
+			log.debug(
 				`AbstractStore.readValues failed to read settings file at ${file}`
 			)
 		}
