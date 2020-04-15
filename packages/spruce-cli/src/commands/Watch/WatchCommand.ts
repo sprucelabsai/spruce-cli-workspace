@@ -36,6 +36,7 @@ export default class WatchCommand extends AbstractCommand {
 		process.stdin.on('keypress', this.handleKeypress.bind(this))
 		this.loadWatchers()
 		// Watch everything. We'll check individual glob patterns on each file change
+		// TODO: Ignore node_modules
 		this.watcher = chokidar.watch('**/*', {
 			ignoreInitial: true
 		})
@@ -245,21 +246,27 @@ export default class WatchCommand extends AbstractCommand {
 	}
 
 	private async handleEditWatchers() {
+		const defaultValue: string[] = []
 		const choices = Object.keys(this.watchers).map(pattern => {
 			const watcher = this.watchers[pattern]
+			if (watcher.isEnabled) {
+				defaultValue.push(pattern)
+			}
 			return {
 				label: `${pattern} (${watcher.commands.length})`,
-				value: pattern,
-				checked: watcher.isEnabled
+				value: pattern
 			}
 		})
+
+		// @ts-ignore Array support needed for defaultValue
 		const result = await this.prompt({
 			type: FieldType.Select,
 			label: 'Enable or disable watchers',
 			isRequired: true,
+			isArray: true,
+			defaultValue,
 			options: {
-				choices,
-				multiSelect: true
+				choices
 			}
 		})
 

@@ -10,7 +10,7 @@ import log from '../../lib/log'
 import { isReservedWord } from '../../lib/reservedWords'
 import SpruceError from '../../errors/SpruceError'
 import { ErrorCode } from '../../../.spruce/errors/codes.types'
-import { ITerminalEffect } from '../../utilities/TerminalUtility'
+// Import { ITerminalEffect } from '../../utilities/TerminalUtility'
 
 interface IDocEntry {
 	name?: string
@@ -121,15 +121,10 @@ export default class AutoloaderCommand extends AbstractCommand {
 		// Write the file
 		this.writeFile(`.spruce/autoloaders/${fileName}.ts`, autoloaderFileContents)
 
-		this.section({
-			headline: `Autoloader Created 🎉`,
-			lines: [
-				`import ${fileName}Autoloader from '#spruce/autoloaders/${fileName}'`,
-				`const ${fileName} = await ${fileName}Autoloader({ constructorOptions: options })`
-			],
-			barEffects: [ITerminalEffect.Bold, ITerminalEffect.Green],
-			bodyEffects: [ITerminalEffect.Bold, ITerminalEffect.Green]
-		})
+		this.headline('Autoloader Created 🎉')
+		this.codeSample(
+			`import ${fileName}Autoloader from '#spruce/autoloaders/${fileName}'\nconst ${fileName} = await ${fileName}Autoloader({ constructorOptions: options })`
+		)
 	}
 
 	private async parseFiles(options: {

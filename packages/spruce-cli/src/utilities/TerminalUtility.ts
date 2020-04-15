@@ -1,4 +1,5 @@
 import chalk from 'chalk'
+import _ from 'lodash'
 import {
 	FieldType,
 	FieldDefinitionMap,
@@ -348,17 +349,12 @@ export default class TerminalUtility extends AbstractUtility {
 		switch (fieldDefinition.type) {
 			// Map select options to prompt list choices
 			case FieldType.Select:
-				// TODO: Is there a way we can fix this TS error w/ schema definitions?
-				// @ts-ignore extra option "multiSelect"
-				promptOptions.type = fieldDefinition.options.multiSelect
-					? 'checkbox'
-					: 'list'
+				promptOptions.type = fieldDefinition.isArray ? 'checkbox' : 'list'
 
 				promptOptions.choices = fieldDefinition.options.choices.map(choice => ({
 					name: choice.label,
 					value: choice.value,
-					// @ts-ignore
-					checked: choice.checked
+					checked: _.includes(defaultValue, choice.value)
 				}))
 
 				if (!isRequired) {
