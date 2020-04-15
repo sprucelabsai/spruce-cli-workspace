@@ -10,10 +10,7 @@
 	"main": "./build/src/index.js",
 	"types": "./build/index.d.ts",
 	"files": [
-		"build/**/*",
-		".spruce/**/*",
-		"tsconfig.json",
-		"package.json"
+		"**/*"
 	],
 	"description": "Command line interface for building Spruce skills",
 	"keywords": [
@@ -31,7 +28,7 @@
 	"scripts": {
 		"types:sync": "node ./build/src/index.js types:sync",
 		"build": "npm run clean && npm run build:node",
-		"build:node": "tsc | true",
+		"build:node": "tsc",
 		"watch": "chokidar '.spruce/**' 'src/**/*' 'index.ts' '../spruce-templates/src/templates/**/*' -c 'npm run build'",
 		"clean": "rm -rf build/",
 		"lint": "eslint '**/*.ts' && tsc -p . --noEmit",
