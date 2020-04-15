@@ -58,33 +58,47 @@ export default class SchemaStore extends AbstractStore {
 	/** All field types from all skills we depend on */
 	public async fieldTemplateItems(): Promise<IFieldTypesTemplateItem[]> {
 		// TODO load from core
-		const coreAddons = (
-			await globby([
-				path.join(
-					this.cwd,
-					'node_modules/@sprucelabs/schema/build/src/addons/*Field.addon.js'
-				),
-				path.join(
-					this.cwd,
-					'../../node_modules/@sprucelabs/schema/build/src/addons/*Field.addon.js'
-				)
-			])
-		).map(path => ({
-			path,
-			registration: this.services.vm.importAddon<IFieldRegistration>(path),
-			isLocal: false
-		}))
+		const coreAddons = await Promise.all(
+			(
+				await globby([
+					path.join(
+						this.cwd,
+						'node_modules/@sprucelabs/schema/build/addons/*Field.addon.js'
+					),
+					path.join(
+						this.cwd,
+						'../../node_modules/@sprucelabs/schema/build/addons/*Field.addon.js'
+					)
+				])
+			).map(async path => {
+				const registration = await this.services.vm.importAddon<
+					IFieldRegistration
+				>(path)
+				return {
+					path,
+					registration,
+					isLocal: false
+				}
+			})
+		)
 
-		const localAddons = (
-			await globby([
-				path.join(this.cwd, '/build/src/addons/*Field.addon.js'),
-				path.join(this.cwd, '/src/addons/*Field.addon.ts')
-			])
-		).map(path => ({
-			path,
-			registration: this.services.vm.importAddon<IFieldRegistration>(path),
-			isLocal: true
-		}))
+		const localAddons = await Promise.all(
+			(
+				await globby([
+					path.join(this.cwd, '/build/src/addons/*Field.addon.js'),
+					path.join(this.cwd, '/src/addons/*Field.addon.ts')
+				])
+			).map(async path => {
+				const registration = await this.services.vm.importAddon<
+					IFieldRegistration
+				>(path)
+				return {
+					path,
+					registration,
+					isLocal: true
+				}
+			})
+		)
 
 		const allAddons = uniqBy(
 			[...coreAddons, ...localAddons],

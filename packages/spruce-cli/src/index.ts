@@ -1,12 +1,8 @@
 #!/usr/bin/env node
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
-import path from 'path'
 import { register } from '@sprucelabs/path-resolver'
 register({
-	tsConfigDirs: [
-		path.join(__dirname, '../'),
-		path.join(__dirname, '..', '...')
-	],
+	cwd: __dirname,
 	extensions: ['.js', '.ts']
 })
 
@@ -79,10 +75,10 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	})
 
 	// Starting cwd
-	const cwd = process.cwd()
+	// const cwd = process.cwd()
 	// Force run when testing
-	// const cwd =
-	// 	'/Users/taylorromero/Development/SpruceLabs/spruce-heartwood-workspace/packages/heartwood-skill'
+	const cwd =
+		'/Users/taylorromero/Development/SpruceLabs/spruce-heartwood-workspace/packages/heartwood-skill'
 
 	// Setup log
 	log.setOptions({ level: LogLevel.Info })

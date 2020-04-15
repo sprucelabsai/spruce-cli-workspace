@@ -135,7 +135,7 @@ export default class ErrorCommand extends AbstractCommand {
 			pascalName,
 			definition,
 			camelName
-		} = this.generators.schema.generateTypesFromDefinitionFile(
+		} = await this.generators.schema.generateTypesFromDefinitionFile(
 			errorDefinitionFileDestination,
 			this.resolvePath(typesDestinationDir),
 			'errorTypes'
@@ -209,7 +209,7 @@ export default class ErrorCommand extends AbstractCommand {
 					definition,
 					description,
 					readableName
-				} = this.generators.schema.generateTypesFromDefinitionFile(
+				} = await this.generators.schema.generateTypesFromDefinitionFile(
 					filePath,
 					this.resolvePath(typesDestinationDir),
 					'errorTypes'

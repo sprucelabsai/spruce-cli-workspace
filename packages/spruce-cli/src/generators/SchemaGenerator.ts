@@ -4,18 +4,18 @@ import { ISchemaDefinition } from '@sprucelabs/schema'
 
 export default class SchemaGenerator extends AbstractGenerator {
 	/** Generate a type file from a definition file */
-	public generateTypesFromDefinitionFile(
+	public async generateTypesFromDefinitionFile(
 		sourceFile: string,
 		destinationDir: string,
 		template: 'definitionTypes' | 'errorTypes' = 'definitionTypes'
-	): {
+	): Promise<{
 		camelName: string
 		pascalName: string
 		description: string
 		readableName: string
 		definition: ISchemaDefinition
-	} {
-		const definition = this.services.vm.importDefinition(sourceFile)
+	}> {
+		const definition = await this.services.vm.importDefinition(sourceFile)
 
 		//Get variations on name
 		const {

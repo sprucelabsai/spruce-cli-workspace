@@ -151,7 +151,7 @@ export default class SchemaCommand extends AbstractCommand {
 					pascalName,
 					camelName,
 					definition
-				} = this.generators.schema.generateTypesFromDefinitionFile(
+				} = await this.generators.schema.generateTypesFromDefinitionFile(
 					filePath,
 					this.resolvePath(destinationDir)
 				)
@@ -220,7 +220,7 @@ export default class SchemaCommand extends AbstractCommand {
 		await this.build(definitionDestination)
 
 		// Generate types
-		const names = this.generators.schema.generateTypesFromDefinitionFile(
+		const names = await this.generators.schema.generateTypesFromDefinitionFile(
 			definitionDestination,
 			typesDestination
 		)

@@ -20,22 +20,24 @@ export default class ErrorGenerator extends AbstractGenerator {
 			description: string
 		}[] = []
 
-		matches.forEach(file => {
-			const definition = this.services.vm.importDefinition(file)
+		await Promise.all(
+			matches.map(async file => {
+				const definition = await this.services.vm.importDefinition(file)
 
-			//Get variations on name
-			const camelName = this.utilities.names.toCamel(definition.id)
-			const pascalName = this.utilities.names.toPascal(camelName)
-			const constName = this.utilities.names.toConst(camelName)
+				//Get variations on name
+				const camelName = this.utilities.names.toCamel(definition.id)
+				const pascalName = this.utilities.names.toPascal(camelName)
+				const constName = this.utilities.names.toConst(camelName)
 
-			codes.push({
-				pascalName,
-				constName,
-				description:
-					definition.description ||
-					'*** error definition missing description ***'
+				codes.push({
+					pascalName,
+					constName,
+					description:
+						definition.description ||
+						'*** error definition missing description ***'
+				})
 			})
-		})
+		)
 
 		const contents = this.templates.errorCodesTypes({ codes })
 		this.writeFile(destinationFile, contents)
@@ -57,15 +59,17 @@ export default class ErrorGenerator extends AbstractGenerator {
 			camelName: string
 		}[] = []
 
-		matches.forEach(file => {
-			const definition = this.services.vm.importDefinition(file)
+		await Promise.all(
+			matches.map(async file => {
+				const definition = await this.services.vm.importDefinition(file)
 
-			//Get variations on name
-			const camelName = this.utilities.names.toCamel(definition.id)
-			const pascalName = this.utilities.names.toPascal(camelName)
+				//Get variations on name
+				const camelName = this.utilities.names.toCamel(definition.id)
+				const pascalName = this.utilities.names.toPascal(camelName)
 
-			errorOptions.push({ pascalName, camelName })
-		})
+				errorOptions.push({ pascalName, camelName })
+			})
+		)
 
 		const contents = this.templates.errorOptionsTypes({ options: errorOptions })
 		this.writeFile(destinationFile, contents)
