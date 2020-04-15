@@ -10,8 +10,8 @@
 	"main": "./build/src/index.js",
 	"types": "./build/index.d.ts",
 	"files": [
-		"build",
-		".spruce",
+		"build/**/*",
+		".spruce/**/*",
 		"tsconfig.json",
 		"package.json"
 	],
