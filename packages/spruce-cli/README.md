@@ -1,6 +1,6 @@
 # Spruce CLI
 
-Spruce Experience Platform via CLI.
+Spruce Experience Platform via CLI
 
 ## Local CLI Development
 
