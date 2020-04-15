@@ -10,57 +10,47 @@ register({
 	extensions: ['.js', '.ts']
 })
 
-import { terminal } from './utilities/TerminalUtility'
+// Shim
+import allSettled from 'promise.allsettled'
+allSettled.shim()
+
 import { Command } from 'commander'
-import globby from 'globby'
-import pkg from '../package.json'
-import { IServices } from './services'
-import log, { LogLevel } from '@sprucelabs/log'
+import { templates } from '@sprucelabs/spruce-templates'
 import {
 	Mercury,
 	IMercuryConnectOptions,
 	MercuryAuth
 } from '@sprucelabs/mercury'
-import { IStores } from './stores'
-import RemoteStore from './stores/RemoteStore'
-import SkillStore from './stores/SkillStore'
-import UserStore from './stores/UserStore'
-import SchemaStore from './stores/SchemaStore'
-import PinService from './services/PinService'
-import AbstractCommand, { ICommandOptions } from './commands/Abstract'
-import OnboardingStore from './stores/OnboardingStore'
-import { IGenerators } from './generators'
-import SchemaGenerator from './generators/SchemaGenerator'
-import { IUtilities } from './utilities'
-import NamesUtility from './utilities/NamesUtility'
+import { terminal } from './utilities/TerminalUtility'
+import pkg from '../package.json'
+import log from './lib/log'
 import { StoreAuth, IStoreOptions } from './stores/AbstractStore'
-import CoreGenerator from './generators/CoreGenerator'
 import { IGeneratorOptions } from './generators/AbstractGenerator'
-import { templates } from '@sprucelabs/spruce-templates'
-import ErrorGenerator from './generators/ErrorGenerator'
 import SpruceError from './errors/SpruceError'
-import { ErrorCode } from '../.spruce/errors/codes.types'
+import { ErrorCode } from '#spruce/errors/codes.types'
 import { IUtilityOptions } from './utilities/AbstractUtility'
 import { IServiceOptions } from './services/AbstractService'
-import VmService from './services/VmService'
+
+import commandsLoader from '#spruce/autoloaders/commands'
+import generatorsLoader from '#spruce/autoloaders/generators'
+import storesLoader from '#spruce/autoloaders/stores'
+import utilitiesAutoloader from '#spruce/autoloaders/utilities'
+import servicesAutoloader from '#spruce/autoloaders/services'
 
 /** Addons */
 import './addons/filePrompt.addon'
-import PackageUtility from './utilities/PackageUtility'
-import SchemaUtility from './utilities/SchemaUtility'
-import TsConfigUtility from './utilities/TsConfigUtility'
-import BootstrapUtility from './utilities/BootstrapUtility'
 import '#spruce/schemas/fields.types'
+
 /**
  * For handling debugger not attaching right away
  */
 async function setup(argv: string[], debugging: boolean): Promise<void> {
 	const program = new Command()
-	const commands = []
+	// Const commands = []
 	if (debugging) {
 		// eslint-disable-next-line no-debugger
 		debugger // (breakpoints and debugger works after this one is missed)
-		terminal.info('Extra debugger dropped in so future debuggers work... 🤷‍')
+		log.trace('Extra debugger dropped in so future debuggers work... 🤷‍')
 	}
 
 	program.version(pkg.version).description(pkg.description)
@@ -72,34 +62,28 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 
 	program.on('option:directory', function() {
 		if (program.directory) {
-			throw new Error('another path forward')
-			// Process.chdir(path.resolve(program.directory))
-			// config.init()
+			// TODO: Implement ability to set cwd
+			throw new SpruceError({
+				code: ErrorCode.NotImplemented,
+				command: 'option:directory',
+				friendlyMessage: 'Setting the cwd is not yet implemented'
+			})
 		}
 	})
 
 	// Starting cwd
 	const cwd = process.cwd()
-	// Force run when testing
-	// const cwd =
-	// 	'/Users/taylorromero/Development/SpruceLabs/spruce-heartwood-workspace/packages/heartwood-skill'
 
 	// Setup log
-	log.setOptions({ level: LogLevel.Info })
 
 	// Setup utilities
 	const utilityOptions: IUtilityOptions = {
-		cwd,
-		log
+		cwd
 	}
 
-	const utilities: IUtilities = {
-		names: new NamesUtility(utilityOptions),
-		package: new PackageUtility(utilityOptions),
-		schema: new SchemaUtility(utilityOptions),
-		tsConfig: new TsConfigUtility(utilityOptions),
-		bootstrap: new BootstrapUtility(utilityOptions)
-	}
+	const utilities = await utilitiesAutoloader({
+		constructorOptions: utilityOptions
+	})
 
 	// Setup mercury
 	const mercury = new Mercury()
@@ -113,27 +97,21 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	}
 
 	// Setup services
-	const services: IServices = {
-		pin: new PinService(serviceOptions),
-		vm: new VmService(serviceOptions)
-	}
+	const services = await servicesAutoloader({
+		constructorOptions: serviceOptions
+	})
 
-	// Setup stores
+	// Setup services
 	const storeOptions: IStoreOptions = {
 		mercury,
 		cwd,
-		log,
-		utilities,
-		services
+		services,
+		utilities
 	}
 
-	const stores: IStores = {
-		remote: new RemoteStore(storeOptions),
-		skill: new SkillStore(storeOptions),
-		user: new UserStore(storeOptions),
-		schema: new SchemaStore(storeOptions),
-		onboarding: new OnboardingStore(storeOptions)
-	}
+	const stores = await storesLoader({
+		constructorOptions: storeOptions
+	})
 
 	// Setup mercury
 	const remoteUrl = stores.remote.getRemoteUrl()
@@ -175,44 +153,22 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		cwd
 	}
 
-	const generators: IGenerators = {
-		schema: new SchemaGenerator(generatorOptions),
-		core: new CoreGenerator(generatorOptions),
-		error: new ErrorGenerator(generatorOptions)
-	}
+	const generators = await generatorsLoader({
+		constructorOptions: generatorOptions
+	})
 
-	// Load commands and actions
-	globby.sync(`${__dirname}/commands/**/*.ts`).forEach(file => {
-		try {
-			// Import and type the command
-			const cmdClass: new (
-				options: ICommandOptions
-			) => AbstractCommand = require(file).default
-
-			// Instantiate the command
-			const command = new cmdClass({
-				stores,
-				mercury,
-				services,
-				cwd,
-				log,
-				generators,
-				utilities,
-				templates
-			})
-
-			// Attach commands to the program
-			command.attachCommands && command.attachCommands(program)
-
-			// Track all commands
-			commands.push(command)
-		} catch (err) {
-			throw new SpruceError({
-				code: ErrorCode.CouldNotLoadCommand,
-				originalError: err,
-				file
-			})
-		}
+	await commandsLoader({
+		constructorOptions: {
+			stores,
+			mercury,
+			services,
+			cwd,
+			generators,
+			utilities,
+			templates
+		},
+		after: async instance =>
+			instance.attachCommands && instance.attachCommands(program)
 	})
 
 	// Alphabetical sort of help output

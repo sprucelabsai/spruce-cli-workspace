@@ -7,6 +7,9 @@ export enum ErrorCode {
     /** * A command failed to load, probably because of a syntax error */
     CouldNotLoadCommand = 'COULD_NOT_LOAD_COMMAND',
     
+    /** * Autoloader creation failed */
+    CreateAutoloaderFailed = 'CREATE_AUTOLOADER_FAILED',
+    
     /** * The definition file failed to import */
     DefinitionFailedToImport = 'DEFINITION_FAILED_TO_IMPORT',
     
@@ -24,6 +27,9 @@ export enum ErrorCode {
     
     /** * This command has not yet been implemented  */
     NotImplemented = 'NOT_IMPLEMENTED',
+    
+    /** * A reserved js keyword was used */
+    ReservedKeyword = 'RESERVED_KEYWORD',
     
     /** * Could not transpile (ts -> js) a script */
     TranspileFailed = 'TRANSPILE_FAILED',

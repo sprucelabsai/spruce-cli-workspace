@@ -1,8 +1,8 @@
-import { IUtilities } from '../utilities'
+import { IUtilities } from '#spruce/autoloaders/utilities'
 import fs from 'fs-extra'
 import { Templates } from '@sprucelabs/spruce-templates'
 import { Log } from '@sprucelabs/log'
-import { IServices } from '../services'
+import { IServices } from '#spruce/autoloaders/services'
 
 export interface IGeneratorOptions {
 	utilities: IUtilities
@@ -12,18 +12,16 @@ export interface IGeneratorOptions {
 	cwd: string
 }
 
-export default class AbstractGenerator {
+export default abstract class AbstractGenerator {
 	public utilities: IUtilities
 	public templates: Templates
 	public services: IServices
-	public log: Log
 	public cwd: string
 
 	public constructor(options: IGeneratorOptions) {
-		const { utilities, templates, log, cwd, services } = options
+		const { utilities, templates, cwd, services } = options
 		this.utilities = utilities
 		this.templates = templates
-		this.log = log
 		this.cwd = cwd
 		this.services = services
 	}

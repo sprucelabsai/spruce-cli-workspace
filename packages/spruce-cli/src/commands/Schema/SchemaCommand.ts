@@ -1,5 +1,5 @@
 import { Command } from 'commander'
-import AbstractCommand from '../Abstract'
+import AbstractCommand from '../AbstractCommand'
 import { templates } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import path from 'path'
@@ -59,7 +59,7 @@ export default class SchemaCommand extends AbstractCommand {
 
 		// Make sure schema module is installed
 		this.startLoading('Installing dependencies')
-		await this.utilities.package.setupForSchemas()
+		await this.utilities.pkg.setupForSchemas()
 		this.utilities.tsConfig.setupForSchemas()
 		this.startLoading('Fetching schemas and field types')
 
@@ -138,7 +138,7 @@ export default class SchemaCommand extends AbstractCommand {
 
 		// Make sure schema module is installed
 		this.startLoading('Installing dependencies')
-		await this.utilities.package.setupForSchemas()
+		await this.utilities.pkg.setupForSchemas()
 		this.utilities.tsConfig.setupForSchemas()
 		this.stopLoading()
 
@@ -205,7 +205,7 @@ export default class SchemaCommand extends AbstractCommand {
 
 		// Make sure schema module is installed
 		this.startLoading('Installing dependencies')
-		await this.utilities.package.setupForSchemas()
+		await this.utilities.pkg.setupForSchemas()
 		this.stopLoading()
 
 		// Build paths
@@ -233,6 +233,8 @@ export default class SchemaCommand extends AbstractCommand {
 			this.templates.schemaExample({
 				pascalName: names.pascalName,
 				camelName: names.camelName,
+				// TODO: Fix this
+				// @ts-ignore
 				definition: names.definition
 			})
 		)

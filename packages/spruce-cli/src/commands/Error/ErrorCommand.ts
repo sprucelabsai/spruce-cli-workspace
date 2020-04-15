@@ -1,8 +1,9 @@
-import AbstractCommand from '../Abstract'
+import AbstractCommand from '../AbstractCommand'
 import { Command } from 'commander'
 import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definition'
 import path from 'path'
 import globby from 'globby'
+import log from '../../lib/log'
 import SpruceError from '../../errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
 
@@ -92,7 +93,7 @@ export default class ErrorCommand extends AbstractCommand {
 
 		// Make sure error module is installed
 		this.startLoading()
-		await this.utilities.package.install('@sprucelabs/error')
+		await this.utilities.pkg.install('@sprucelabs/error')
 		this.stopLoading()
 
 		// Write the definition
@@ -161,6 +162,8 @@ export default class ErrorCommand extends AbstractCommand {
 			this.templates.errorExample({
 				pascalName,
 				camelName,
+				// TODO: Fix this
+				// @ts-ignore
 				definition
 			})
 		)
@@ -186,7 +189,7 @@ export default class ErrorCommand extends AbstractCommand {
 
 		// Make sure error module is installed
 		this.startLoading()
-		await this.utilities.package.install('@sprucelabs/error')
+		await this.utilities.pkg.install('@sprucelabs/error')
 		this.stopLoading()
 
 		// Lets clear out the current error dir
@@ -198,7 +201,7 @@ export default class ErrorCommand extends AbstractCommand {
 
 				// TODO remove this check
 				if (currentContents.search(/buildErrorDefinition\({/) === -1) {
-					this.log.debug(`Skipping ${filePath}`)
+					log.debug(`Skipping ${filePath}`)
 					return
 				}
 
@@ -220,6 +223,8 @@ export default class ErrorCommand extends AbstractCommand {
 
 				this.writeLn('')
 				this.codeSample(
+					// TODO: Fix this
+					// @ts-ignore
 					this.templates.errorExample({ pascalName, camelName, definition })
 				)
 
