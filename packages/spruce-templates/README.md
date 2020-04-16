@@ -2,6 +2,8 @@
 
 ## Local CLI Development
 
+.
+
 ```
 yarn
 yarn local <command>

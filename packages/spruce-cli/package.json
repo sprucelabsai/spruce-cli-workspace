@@ -3,15 +3,15 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"files": [
-		"build"
-	],
-	"version": "10.0.1",
+	"version": "10.0.10",
 	"bin": {
 		"spruce": "./build/src/index.js"
 	},
 	"main": "./build/src/index.js",
 	"types": "./build/index.d.ts",
+	"files": [
+		"**/*"
+	],
 	"description": "Command line interface for building Spruce skills",
 	"keywords": [
 		"node",
@@ -28,7 +28,7 @@
 	"scripts": {
 		"types:sync": "node ./build/src/index.js types:sync",
 		"build": "npm run clean && npm run build:node",
-		"build:node": "tsc | true",
+		"build:node": "tsc",
 		"watch": "chokidar '.spruce/**' 'src/**/*' 'index.ts' '../spruce-templates/src/templates/**/*' -c 'npm run build'",
 		"clean": "rm -rf build/",
 		"lint": "eslint '**/*.ts' && tsc -p . --noEmit",
