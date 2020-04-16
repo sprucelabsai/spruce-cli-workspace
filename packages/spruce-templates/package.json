@@ -3,7 +3,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"version": "10.0.10",
+	"version": "10.0.12",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
 	"files": [
@@ -38,7 +38,7 @@
 	},
 	"dependencies": {
 		"@sprucelabs/log": "^10.2.1",
-		"@sprucelabs/schema": "^1.0.15",
+		"@sprucelabs/schema": "^1.0.20",
 		"handlebars": "^4.7.3",
 		"lodash": "^4.17.15"
 	},

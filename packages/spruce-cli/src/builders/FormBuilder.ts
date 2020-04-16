@@ -12,6 +12,8 @@ import Schema, {
 import ITerminal, { ITerminalEffect } from '../utilities/TerminalUtility'
 import { pick } from 'lodash'
 import AbstractSpruceError from '@sprucelabs/error'
+import SpruceError from '../errors/SpruceError'
+import { ErrorCode } from '../../.spruce/errors/codes.types'
 
 export enum FormBuilderActionType {
 	Done = 'done',
@@ -162,7 +164,17 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 		const field = this.fields[fieldName]
 
 		let definition = { ...field.definition }
-		definition.defaultValue = this.values[fieldName]
+		const value = this.values[fieldName]
+		if (definition.isArray) {
+			throw new SpruceError({
+				code: ErrorCode.NotImplemented,
+				command: 'FormBuilder.askQuestion',
+				friendlyMessage: 'Form builder does not support isArray yet'
+			})
+		}
+		// TODO need is array support
+		// @ts-ignore
+		definition.defaultValue = value
 
 		// Do we have a lister?
 		if (this.handlers.onWillAskQuestion) {
