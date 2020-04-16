@@ -192,45 +192,48 @@ export default class ErrorCommand extends AbstractCommand {
 
 		// Lets clear out the current error dir
 		// this.deleteFile()
-		await Promise.all(
-			matches.map(async filePath => {
-				// Does this file contain buildErrorDefinition?
-				const currentContents = this.readFile(filePath)
+		// await Promise.all(
+		// 	matches.map(async filePath => {
+		for (let i = 0; i < matches.length; i += 1) {
+			const filePath = matches[i]
+			// Does this file contain buildErrorDefinition?
+			const currentContents = this.readFile(filePath)
 
-				// TODO remove this check
-				if (currentContents.search(/buildErrorDefinition\({/) === -1) {
-					log.debug(`Skipping ${filePath}`)
-					return
-				}
+			// TODO remove this check
+			if (currentContents.search(/buildErrorDefinition\({/) === -1) {
+				log.debug(`Skipping ${filePath}`)
+				return
+			}
 
-				//Generate error option types based on new file
-				const {
-					pascalName,
-					camelName,
-					definition,
-					description,
-					readableName
-				} = await this.generators.schema.generateTypesFromDefinitionFile(
-					filePath,
-					this.resolvePath(typesDestinationDir),
-					'errorTypes'
-				)
+			//Generate error option types based on new file
+			const {
+				pascalName,
+				camelName,
+				definition,
+				description,
+				readableName
+			} = await this.generators.schema.generateTypesFromDefinitionFile(
+				filePath,
+				this.resolvePath(typesDestinationDir),
+				'errorTypes'
+			)
 
-				// Tell them how to use it
-				this.headline(`${pascalName}Error examples:`)
+			// Tell them how to use it
+			this.headline(`${pascalName}Error examples:`)
 
-				this.writeLn('')
-				this.codeSample(
-					this.templates.errorExample({ pascalName, camelName, definition })
-				)
+			this.writeLn('')
+			this.codeSample(
+				this.templates.errorExample({ pascalName, camelName, definition })
+			)
 
-				this.writeLn('')
-				this.writeLn('')
+			this.writeLn('')
+			this.writeLn('')
 
-				// Track all errors
-				allErrors.push({ pascalName, readableName, description })
-			})
-		)
+			// Track all errors
+			allErrors.push({ pascalName, readableName, description })
+		}
+		// 	})
+		// )
 
 		// Write error class if it does not exist
 		const errorFileDestination = this.resolvePath(

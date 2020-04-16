@@ -9,7 +9,8 @@ const buildFailedDefinition = buildErrorDefinition({
 		file: {
 			type: FieldType.Text,
 			label: 'File',
-			hint: 'File we wanted to build, if not set we wanted to build everything.'
+			hint:
+				'File we wanted to build, if not set we wanted to build everything..'
 		}
 	}
 })

@@ -35,7 +35,7 @@
 		"lint:fix": "eslint --fix '**/*.ts'",
 		"release": "semantic-release",
 		"start": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node --inspect=5200 ./build/src/index.js $COMMANDS",
-		"local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node -r ts-node/register --inspect=5200 ./src/index $COMMANDS",
+		"local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~trace node -r ts-node/register --inspect=5200 ./src/index $COMMANDS",
 		"local:noDebug": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node -r ts-node/register ./src/index $COMMANDS",
 		"#test": "ava **/*.test.ts",
 		"#test:watch": "ava  **/*.test.ts --watch"

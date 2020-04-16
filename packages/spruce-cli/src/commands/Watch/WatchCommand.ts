@@ -112,7 +112,9 @@ export default class WatchCommand extends AbstractCommand {
 			await this.startLoading(
 				`Executing ${commandsToExecute.length} watcher commands`
 			)
-			const promises = commandsToExecute.map(c => this.executeCommand(c))
+			const promises = commandsToExecute.map(c =>
+				this.services.child.executeCommand(c)
+			)
 			const results = await Promise.allSettled(promises)
 			await this.stopLoading()
 			const lines: string[] = []
@@ -258,6 +260,7 @@ export default class WatchCommand extends AbstractCommand {
 			}
 		})
 
+		// @ts-ignore
 		const result = await this.prompt({
 			type: FieldType.Select,
 			label: 'Enable or disable watchers',
