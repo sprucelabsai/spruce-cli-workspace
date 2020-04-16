@@ -5,9 +5,9 @@
 	},
 	"version": "10.0.10",
 	"bin": {
-		"spruce": "./build/src/index.js"
+		"spruce": "./index.js"
 	},
-	"main": "./build/src/index.js",
+	"main": "./index.js",
 	"types": "./build/index.d.ts",
 	"files": [
 		"**/*"
@@ -34,11 +34,8 @@
 		"lint": "eslint '**/*.ts' && tsc -p . --noEmit",
 		"lint:fix": "eslint --fix '**/*.ts'",
 		"release": "semantic-release",
-		"start": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node --inspect=5200 ./build/src/index.js $COMMANDS",
-		"local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~trace node -r ts-node/register --inspect=5200 ./src/index $COMMANDS",
-		"local:noDebug": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node -r ts-node/register ./src/index $COMMANDS",
-		"#test": "ava **/*.test.ts",
-		"#test:watch": "ava  **/*.test.ts --watch"
+		"start": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node . $COMMANDS",
+		"local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node --inspect=5200 . $COMMANDS"
 	},
 	"dependencies": {
 		"@sprucelabs/error": "^1.0.11",
