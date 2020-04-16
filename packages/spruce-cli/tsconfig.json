@@ -1,6 +1,5 @@
 {
 	"compilerOptions": {
-		"emitDeclarationOnly": true,
 		"module": "commonjs",
 		"esModuleInterop": true,
 		"target": "ES2017",
