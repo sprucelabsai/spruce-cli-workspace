@@ -28,7 +28,14 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				break
 
 			case ErrorCode.NotImplemented:
-				message = 'This command has not yet been implemented '
+				message = `${options.command} is not yet been implemented. ${
+					options.args ? `Args: ${options.args.join(', ')}` : ''
+				}`
+
+				if (options.friendlyMessage) {
+					message += `\n\n${options.friendlyMessage}`
+				}
+
 				break
 
 			case ErrorCode.GenericMercury:

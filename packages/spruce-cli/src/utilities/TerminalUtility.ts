@@ -2,9 +2,9 @@ import chalk from 'chalk'
 import _ from 'lodash'
 import {
 	FieldType,
-	FieldDefinitionMap,
 	FieldDefinition,
-	FieldFactory
+	FieldFactory,
+	FieldDefinitionValueType
 } from '@sprucelabs/schema'
 import inquirer from 'inquirer'
 // @ts-ignore
@@ -17,6 +17,8 @@ import AbstractUtility from './AbstractUtility'
 import log from '../lib/log'
 import fs from 'fs-extra'
 import path from 'path'
+import SpruceError from '../errors/SpruceError'
+import { ErrorCode } from '../../.spruce/errors/codes.types'
 
 let fieldCount = 0
 function generateInquirerFieldName() {
@@ -92,16 +94,6 @@ function filterEffectsForCFonts(effects: ITerminalEffect[]) {
 			].indexOf(effect) === -1
 	)
 }
-
-/** What prompt() returns if isRequired=true */
-type PromptReturnTypeRequired<T extends FieldDefinition> = Required<
-	FieldDefinitionMap[T['type']]
->['value']
-
-/** What prompt() returns if isRequired!==true */
-type PromptReturnTypeOptional<
-	T extends FieldDefinition
-> = FieldDefinitionMap[T['type']]['value']
 
 export default class TerminalUtility extends AbstractUtility {
 	protected isPromptActive = false
@@ -320,11 +312,7 @@ export default class TerminalUtility extends AbstractUtility {
 	/** Ask the user for something */
 	public async prompt<T extends FieldDefinition>(
 		definition: T
-	): Promise<
-		T['isRequired'] extends true
-			? PromptReturnTypeRequired<T>
-			: PromptReturnTypeOptional<T>
-	> {
+	): Promise<FieldDefinitionValueType<T>> {
 		this.isPromptActive = true
 		const name = generateInquirerFieldName()
 		const fieldDefinition: FieldDefinition = definition
@@ -354,7 +342,7 @@ export default class TerminalUtility extends AbstractUtility {
 				promptOptions.choices = fieldDefinition.options.choices.map(choice => ({
 					name: choice.label,
 					value: choice.value,
-					checked: _.includes(defaultValue, choice.value)
+					checked: _.includes(fieldDefinition.defaultValue, choice.value)
 				}))
 
 				if (!isRequired) {
@@ -367,8 +355,19 @@ export default class TerminalUtility extends AbstractUtility {
 				break
 			// File select
 			case FieldType.File:
+				if (fieldDefinition.isArray) {
+					throw new SpruceError({
+						code: ErrorCode.NotImplemented,
+						command: 'TerminalUtility.prompt',
+						friendlyMessage:
+							'isArray file field not supported, prompt needs to be rewritten with isArray support'
+					})
+				}
 				promptOptions.type = 'file'
-				promptOptions.root = path.join(defaultValue?.path ?? this.cwd, '/')
+				promptOptions.root = path.join(
+					fieldDefinition.defaultValue?.path ?? this.cwd,
+					'/'
+				)
 
 				// Only let people select an actual file
 				promptOptions.validate = (value: string) => {
