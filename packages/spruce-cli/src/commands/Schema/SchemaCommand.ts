@@ -233,8 +233,6 @@ export default class SchemaCommand extends AbstractCommand {
 			this.templates.schemaExample({
 				pascalName: names.pascalName,
 				camelName: names.camelName,
-				// TODO: Fix this
-				// @ts-ignore
 				definition: names.definition
 			})
 		)
