@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 require('ts-node').register({
-	project: `${__dirname}/tsconfig.json`
+	dir: __dirname,
+	transpileOnly: true
 })
 require('./src/index.ts')
