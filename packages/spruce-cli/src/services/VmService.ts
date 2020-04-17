@@ -37,10 +37,10 @@ export default class VmService extends AbstractService {
 			const vm = new NodeVM({
 				console: 'inherit',
 				sandbox: {},
+				sourceExtensions: ['ts', 'js'],
 				require: {
 					external: true,
 					builtin: ['fs', 'path', 'util'],
-					root: './',
 					context: 'host'
 				}
 			})

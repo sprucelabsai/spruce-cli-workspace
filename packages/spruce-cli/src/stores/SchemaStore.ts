@@ -139,11 +139,13 @@ export default class SchemaStore extends AbstractStore {
 	/** Get all fields */
 	public async fieldTypeMap(): Promise<IFieldTypeMap> {
 		const map: IFieldTypeMap = {}
-		Object.keys(FieldClassMap).forEach(type => {
-			const FieldClass = FieldClassMap[type as FieldType]
-			const templateDetails = FieldClass.templateDetails()
-			map[type] = templateDetails
-		})
+		if (typeof FieldClassMap === 'object') {
+			Object.keys(FieldClassMap).forEach(type => {
+				const FieldClass = FieldClassMap[type as FieldType]
+				const templateDetails = FieldClass.templateDetails()
+				map[type] = templateDetails
+			})
+		}
 		return map
 	}
 }
