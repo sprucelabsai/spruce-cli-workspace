@@ -1050,10 +1050,10 @@
   dependencies:
     "@sprucelabs/log" "^10.2.1"
 
-"@sprucelabs/schema@^1.0.18":
-  version "1.0.18"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.0.18.tgz#f782ffd5e46c14c0c96d40442b3a1dbc11b71ee9"
-  integrity sha512-2nTyiZpVF929PGtz2e7zB3bqruvxyDYO3iMYzXO9Rfz5/FsyPe9XX8HsT3ObEp2zBv6M3LpqPYTzmafXwHDfXw==
+"@sprucelabs/schema@^1.0.20":
+  version "1.0.20"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.0.20.tgz#dc40877c0e9e53fc7ea8f3fe40b0edd6a9bba670"
+  integrity sha512-/W+4kDMI6KwZZkoIU3b03BNGAdIiXm7Rf9B8nl0x7A3LiGxCRuOk0AzYGM5m2XtERIoZuwFw5l0siN/n6lSDJg==
   dependencies:
     "@sprucelabs/error" "^1.0.7"
     "@sprucelabs/path-resolver" "^1.0.13"
@@ -1062,10 +1062,10 @@
     mime-db "^1.43.0"
     mime-type "^3.0.7"
 
-"@sprucelabs/schema@^1.0.20":
-  version "1.0.20"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.0.20.tgz#dc40877c0e9e53fc7ea8f3fe40b0edd6a9bba670"
-  integrity sha512-/W+4kDMI6KwZZkoIU3b03BNGAdIiXm7Rf9B8nl0x7A3LiGxCRuOk0AzYGM5m2XtERIoZuwFw5l0siN/n6lSDJg==
+"@sprucelabs/schema@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.1.1.tgz#498008134f86f5cef36309c5fea910857c952731"
+  integrity sha512-m8SQpAQpNuXpGlK4F3CiN0UnnFkruJM0jIx2rpDBAlfJf9Co3imtIjVgeWEHmz69QYmPeUV20QqflMDGV/NKVg==
   dependencies:
     "@sprucelabs/error" "^1.0.7"
     "@sprucelabs/path-resolver" "^1.0.13"
