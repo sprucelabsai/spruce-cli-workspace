@@ -260,7 +260,6 @@ export default class WatchCommand extends AbstractCommand {
 			}
 		})
 
-		// @ts-ignore
 		const result = await this.prompt({
 			type: FieldType.Select,
 			label: 'Enable or disable watchers',
