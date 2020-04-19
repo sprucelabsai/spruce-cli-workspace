@@ -89,6 +89,8 @@ export default class PkgUtility extends AbstractUtility {
 	/** Set all the things needed for testing */
 	public async setupForTesting() {
 		await this.setupSkill()
+		await this.setupForSchemas()
+
 		await this.install(['@sprucelabs/test', 'ava', 'ts-node'], {
 			dev: true
 		})
@@ -100,5 +102,10 @@ export default class PkgUtility extends AbstractUtility {
 			extensions: ['ts'],
 			require: ['ts-node/register']
 		})
+	}
+
+	/** Everything needed for errors */
+	public async setupForErrors() {
+		await this.install('@sprucelabs/error')
 	}
 }

@@ -31,7 +31,7 @@ export default class TestCommand extends AbstractCommand {
 
 		// Make sure test module is installed
 		this.startLoading('Installing dependencies')
-		await this.utilities.pkg.setupForTesting()
+		await this.utilities.tsConfig.setupForSchemas()
 		this.stopLoading()
 
 		const name = this.utilities.names.toFileNameWithoutExtension(target)

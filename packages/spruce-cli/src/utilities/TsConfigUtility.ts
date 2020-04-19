@@ -48,4 +48,9 @@ export default class TsConfigUtility extends AbstractUtility {
 			this.setPath('#spruce:schema/*', ['.spruce/schemas/*'])
 		}
 	}
+
+	/** Setup for testing */
+	public setupForErrors(dir = this.cwd) {
+		this.setupForSchemas(dir)
+	}
 }
