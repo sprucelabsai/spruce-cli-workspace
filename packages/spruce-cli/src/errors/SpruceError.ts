@@ -74,6 +74,10 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				message = super.friendlyMessage()
 		}
 
-		return `${options.code}: ${message}`
+		return `${options.code}: ${message} ${
+			this.originalError
+				? `\n\nOriginal error: ${this.originalError.message}\n${this.originalError.stack}`
+				: ''
+		}`
 	}
 }
