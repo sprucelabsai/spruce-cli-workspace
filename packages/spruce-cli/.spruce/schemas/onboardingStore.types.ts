@@ -78,7 +78,7 @@ export const onboardingStoreDefinition : IOnboardingStoreDefinition = {
 	    }
 }
 
-// Description missing in schema defined in /Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli/src/schemas/onboarding.definition.ts
+// Description missing in schema defined in /Users/ken/projects/spruce/spruce-cli-workspace/packages/spruce-cli/src/schemas/onboarding.definition.ts
 export interface IOnboardingStore {
 	
 		/** Remote. */

@@ -48,7 +48,9 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 				matchedTemplateItem.pascalName
 			}.${renderAs === 'type' ? 'IDefinition' : 'definition'}`
 		} else {
-			throw new Error('fieldDefinitionOptions could not find schema ${}')
+			throw new Error(
+				`fieldDefinitionOptions could not find schema ${updatedOptions.schemaId}`
+			)
 		}
 	}
 
