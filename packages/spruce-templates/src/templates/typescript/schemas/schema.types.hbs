@@ -1,20 +1,6 @@
 import { default  as Schema } from '@sprucelabs/schema'
 import * as SpruceSchema from '@sprucelabs/schema'
 
-
-// Schemas by namespace
-{{! the definition partial, pass a schema and get back object that is the values and types }}
-{{#* inline "schemaValues"}}
-	{{#if dynamicKeySignature }}
-    	/** {{dynamicKeySignature.label}}.{{#if dynamicKeySignature.hint}} {{dynamicKeySignature.hint}}{{/if}} */
-    	[{{dynamicKeySignature.key}}:string]: string{{/if}}{{#if dynamicKeySignature.isArray}}[]{{/if}}
-	{{#each fields}}
-    	/** {{{label}}}.{{#if hint}} {{{hint}}}{{/if}} */
-		'{{@key}}'{{#unless isRequired}}?{{/unless}}: {{fieldDefinitionValueType this }}
-	{{/each}}
-{{/inline}}
-
-
 {{#each schemaTemplateItems}}
 
 	export namespace SpruceSchemas.{{namespace}}.{{pascalName}} {

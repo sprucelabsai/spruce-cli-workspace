@@ -15,6 +15,10 @@ import './src/addons/isEqual.addon'
 import './src/addons/startCase.addon'
 import './src/addons/camelCase.addon'
 import './src/addons/pascalCase.addon'
+import './src/addons/fieldDefinitionPartial.addon'
+import './src/addons/schemaDefinitionPartial.addon'
+import './src/addons/schemaValuesPartial.addon'
+
 log.info('Addons imported')
 
 // Extra definitions
@@ -243,20 +247,5 @@ export const templates = {
 
 /** All the templates */
 export type Templates = typeof templates
-
-// Partials
-const schemaPartial: string = fs
-	.readFileSync(
-		path.join(templatePath, 'schemas/partials/schemaDefinition.hbs')
-	)
-	.toString()
-
-handlebars.registerPartial('schemaDefinition', schemaPartial)
-
-const fieldPartial: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/partials/fieldDefinition.hbs'))
-	.toString()
-
-handlebars.registerPartial('fieldDefinition', fieldPartial)
 
 export default handlebars

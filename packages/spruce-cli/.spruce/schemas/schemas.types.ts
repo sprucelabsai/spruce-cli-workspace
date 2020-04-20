@@ -2,24 +2,20 @@ import { default  as Schema } from '@sprucelabs/schema'
 import * as SpruceSchema from '@sprucelabs/schema'
 
 
-// Schemas by namespace
-
-
-
 	export namespace SpruceSchemas.core.ProfileImage {
 		export const id = 'profileImage'
 
 		/** Profile images at various helpful sizes and resolutions. */
 		export interface IProfileImage {
 			
-			    	/** 60x60. */
-					'profile60': string
-			    	/** 150x150. */
-					'profile150': string
-			    	/** 60x60. */
-					'profile60@2x': string
-			    	/** 150x150. */
-					'profile150@2x': string
+				/** 60x60. */
+				'profile60': string
+				/** 150x150. */
+				'profile150': string
+				/** 60x60. */
+				'profile60@2x': string
+				/** 150x150. */
+				'profile150@2x': string
 		}
 
 		/** The interface for the schema definition for a Profile Image Sizes */
@@ -159,20 +155,20 @@ import * as SpruceSchema from '@sprucelabs/schema'
 		/** A human being. */
 		export interface IUser {
 			
-			    	/** Id. */
-					'id': string
-			    	/** First name. */
-					'firstName'?: string
-			    	/** Last name. */
-					'lastName'?: string
-			    	/** Casual name. Generated name that defaults to Friend! */
-					'casualName': string
-			    	/** Phone. The person's phone number! */
-					'phoneNumber'?: string
-			    	/** Profile photos. */
-					'profileImages'?: SpruceSchemas.core.ProfileImage.IProfileImage
-			    	/** Default profile photos. */
-					'defaultProfileImages': SpruceSchemas.core.ProfileImage.IProfileImage
+				/** Id. */
+				'id': string
+				/** First name. */
+				'firstName'?: string
+				/** Last name. */
+				'lastName'?: string
+				/** Casual name. Generated name that defaults to Friend! */
+				'casualName': string
+				/** Phone. The person's phone number! */
+				'phoneNumber'?: string
+				/** Profile photos. */
+				'profileImages'?: SpruceSchemas.core.ProfileImage.IProfileImage
+				/** Default profile photos. */
+				'defaultProfileImages': SpruceSchemas.core.ProfileImage.IProfileImage
 		}
 
 		/** The interface for the schema definition for a User */
@@ -390,18 +386,18 @@ import * as SpruceSchema from '@sprucelabs/schema'
 		/** An ability Sprucebot has learned. */
 		export interface ISkill {
 			
-			    	/** Id. */
-					'id': string
-			    	/** Id. */
-					'apiKey': string
-			    	/** Name. */
-					'name': string
-			    	/** Description. */
-					'description'?: string
-			    	/** Slug. */
-					'slug'?: string
-			    	/** Icon. */
-					'icon'?: string
+				/** Id. */
+				'id': string
+				/** Id. */
+				'apiKey': string
+				/** Name. */
+				'name': string
+				/** Description. */
+				'description'?: string
+				/** Slug. */
+				'slug'?: string
+				/** Icon. */
+				'icon'?: string
 		}
 
 		/** The interface for the schema definition for a Skill */
@@ -593,20 +589,20 @@ import * as SpruceSchema from '@sprucelabs/schema'
 		/** A physical location where people meet. An organization has at least one of them. */
 		export interface ILocation {
 			
-			    	/** Id. */
-					'id'?: string
-			    	/** Name. */
-					'name': string
-			    	/** Store number. You can use other symbols, like # or dashes. #123 or 32-US-5 */
-					'num'?: string
-			    	/** Public. Is this location viewable by guests? */
-					'isPublic'?: boolean
-			    	/** Main Phone. */
-					'phone'?: string
-			    	/** Timezone. */
-					'timezone'?: string
-			    	/** Address. */
-					'address': SpruceSchema.IAddressFieldValue
+				/** Id. */
+				'id'?: string
+				/** Name. */
+				'name': string
+				/** Store number. You can use other symbols, like # or dashes. #123 or 32-US-5 */
+				'num'?: string
+				/** Public. Is this location viewable by guests? */
+				'isPublic'?: boolean
+				/** Main Phone. */
+				'phone'?: string
+				/** Timezone. */
+				'timezone'?: string
+				/** Address. */
+				'address': SpruceSchema.IAddressFieldValue
 		}
 
 		/** The interface for the schema definition for a Location */
@@ -823,8 +819,8 @@ import * as SpruceSchema from '@sprucelabs/schema'
 
 		/**  */
 		export interface IAcl {
-			    	/** Permissions grouped by slug. */
-			    	[slug:string]: string[]
+				/** Permissions grouped by slug. */
+				[slug:string]: string[]
 		}
 
 		/** The interface for the schema definition for a Access control list lookup table */
@@ -878,18 +874,18 @@ import * as SpruceSchema from '@sprucelabs/schema'
 		/** A position at a company. The answer to the question; What is your job? */
 		export interface IJob {
 			
-			    	/** Id. */
-					'id'?: string
-			    	/** Is default. Is this job one that comes with every org? Mapped to roles (owner, groupManager, managar, guest). */
-					'isDefault': string
-			    	/** Name. */
-					'name': string
-			    	/** Role. */
-					'role': string
-			    	/** On work permissions. */
-					'inStoreAcls'?: SpruceSchemas.core.Acl.IAcl
-			    	/** Off work permissions. */
-					'acls'?: SpruceSchemas.core.Acl.IAcl
+				/** Id. */
+				'id'?: string
+				/** Is default. Is this job one that comes with every org? Mapped to roles (owner, groupManager, managar, guest). */
+				'isDefault': string
+				/** Name. */
+				'name': string
+				/** Role. */
+				'role': string
+				/** On work permissions. */
+				'inStoreAcls'?: SpruceSchemas.core.Acl.IAcl
+				/** Off work permissions. */
+				'acls'?: SpruceSchemas.core.Acl.IAcl
 		}
 
 		/** The interface for the schema definition for a Job */
@@ -1081,22 +1077,22 @@ import * as SpruceSchema from '@sprucelabs/schema'
 		/** A location a person has given access to themselves. */
 		export interface IUserLocation {
 			
-			    	/** Id. */
-					'id'?: string
-			    	/** Name. */
-					'role': string
-			    	/** Status. */
-					'status'?: string
-			    	/** Total visits. */
-					'visits': number
-			    	/** Last visit. */
-					'lastRecordedVisit'?: SpruceSchema.IDateTimeFieldValue
-			    	/** Job. */
-					'job': SpruceSchemas.core.Job.IJob
-			    	/** Location. */
-					'location': SpruceSchemas.core.Location.ILocation
-			    	/** User. */
-					'user': SpruceSchemas.core.User.IUser
+				/** Id. */
+				'id'?: string
+				/** Name. */
+				'role': string
+				/** Status. */
+				'status'?: string
+				/** Total visits. */
+				'visits': number
+				/** Last visit. */
+				'lastRecordedVisit'?: SpruceSchema.IDateTimeFieldValue
+				/** Job. */
+				'job': SpruceSchemas.core.Job.IJob
+				/** Location. */
+				'location': SpruceSchemas.core.Location.ILocation
+				/** User. */
+				'user': SpruceSchemas.core.User.IUser
 		}
 
 		/** The interface for the schema definition for a User location */

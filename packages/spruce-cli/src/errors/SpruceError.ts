@@ -52,7 +52,7 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 
 			case ErrorCode.DefinitionFailedToImport:
 				message = `Error importing "${options.file}". ${options.details}.`
-
+				message += `\nVm Error: ${this.originalError?.message}`
 				break
 
 			case ErrorCode.BuildFailed:

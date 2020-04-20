@@ -1,0 +1,7 @@
+{{#if dynamicKeySignature }}
+	/** {{dynamicKeySignature.label}}.{{#if dynamicKeySignature.hint}} {{dynamicKeySignature.hint}}{{/if}} */
+	[{{dynamicKeySignature.key}}:string]: string{{/if}}{{#if dynamicKeySignature.isArray}}[]{{/if}}
+{{#each fields}}
+	/** {{{label}}}.{{#if hint}} {{{hint}}}{{/if}} */
+	'{{@key}}'{{#unless isRequired}}?{{/unless}}: {{fieldDefinitionValueType this }}
+{{/each}}

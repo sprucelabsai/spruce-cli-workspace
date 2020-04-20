@@ -1,6 +1,6 @@
 /** Field Types */
 export enum FieldType {
-	/** An address with geocoding ability */
+	/** An address with geocoding ability *coming soon* */
 	Address = 'address',
 	/** A true/false. Converts false string to false, all other strings to true. */
 	Boolean = 'boolean',
