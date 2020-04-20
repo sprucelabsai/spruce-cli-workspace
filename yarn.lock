@@ -1036,19 +1036,32 @@
     superagent "^5.1.2"
     uuid "^3.3.3"
 
-"@sprucelabs/path-resolver@^1.0.10":
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/path-resolver/-/path-resolver-1.0.10.tgz#d1616931a15c40d9853806e301408dd92ea4f9ae"
-  integrity sha512-JmywsehbT5ZHric7c8ibrWvmWb3yNchxSMXuopEzEcMH7YqRUc0KQk+BNJkBA+Ktst62xUNnbyHIS4NGV63fMQ==
-  dependencies:
-    "@sprucelabs/log" "^10.2.1"
-
 "@sprucelabs/path-resolver@^1.0.13":
   version "1.0.13"
   resolved "https://registry.yarnpkg.com/@sprucelabs/path-resolver/-/path-resolver-1.0.13.tgz#3e18cf080be42de2b29deb2b215d5a5c4a69c2c8"
   integrity sha512-lIpFuW1R0r8WufV0a0ZwZCn70N0EVKMOPs4geF07i/GaGwlIaOJumwFqgmRBZiAm8wkJBZgC4MhsW3ks1V1YPw==
   dependencies:
     "@sprucelabs/log" "^10.2.1"
+
+"@sprucelabs/path-resolver@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/path-resolver/-/path-resolver-1.2.0.tgz#4b5476b68cc023974074b41e430b29d9b97c0a9f"
+  integrity sha512-RyEUs8IWob/Fl17SKyOaIFKkceHdtJ5sz4iBCNfemZC0+EhHiuuLqEsldDmOldy2NS4MmKctEVSZSurO+uXFUg==
+  dependencies:
+    "@sprucelabs/error" "^1.0.11"
+    "@sprucelabs/log" "^10.2.1"
+
+"@sprucelabs/schema@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.3.1.tgz#1f2b5fa9773fb894e17a2f981287fae11f960b53"
+  integrity sha512-I1GNNAZSsGcZcMojzinQ5TvQDQ6gyZbfjlWUzZ8gNUZdv2KAapAkznOW/xOtgARHSXL2JK6oCldGNIItZeCi4Q==
+  dependencies:
+    "@sprucelabs/error" "^1.0.7"
+    "@sprucelabs/path-resolver" "^1.0.13"
+    google-libphonenumber "^3.2.8"
+    libphonenumber-js "^1.7.48"
+    mime-db "^1.43.0"
+    mime-type "^3.0.7"
 
 "@sprucelabs/schema@^1.3.2":
   version "1.3.2"

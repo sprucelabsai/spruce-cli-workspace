@@ -3,6 +3,7 @@ import AbstractUtility from '../../src/utilities/AbstractUtility'
 
 // Import each matching class that will be autoloaded
 import Bootstrap from '../../src/utilities/BootstrapUtility'
+import Child from '../../src/utilities/ChildUtility'
 import Names from '../../src/utilities/NamesUtility'
 import Pkg from '../../src/utilities/PkgUtility'
 import Schema from '../../src/utilities/SchemaUtility'
@@ -14,6 +15,7 @@ import { IUtilityOptions } from '../../src/utilities/AbstractUtility'
 
 export interface IUtilities {
 	bootstrap: Bootstrap
+	child: Child
 	names: Names
 	pkg: Pkg
 	schema: Schema
@@ -30,6 +32,10 @@ export default async function autoloader(options: {
 	const bootstrap = new Bootstrap(constructorOptions)
 	if (after) {
 		await after(bootstrap)
+	}
+	const child = new Child(constructorOptions)
+	if (after) {
+		await after(child)
 	}
 	const names = new Names(constructorOptions)
 	if (after) {
@@ -54,6 +60,7 @@ export default async function autoloader(options: {
 
 	return {
 		bootstrap,
+		child,
 		names,
 		pkg,
 		schema,

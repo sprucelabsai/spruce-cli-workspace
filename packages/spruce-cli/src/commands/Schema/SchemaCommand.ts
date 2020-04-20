@@ -4,7 +4,6 @@ import { templates } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import path from 'path'
 import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definition'
-import { fail } from 'assert'
 import SpruceError from '../../errors/SpruceError'
 import { ITerminalEffect } from '../../utilities/TerminalUtility'
 
