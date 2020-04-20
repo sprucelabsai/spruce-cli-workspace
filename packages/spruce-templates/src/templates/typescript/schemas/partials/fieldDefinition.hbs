@@ -6,5 +6,5 @@ type: {{fieldTypeEnum field}},
 {{#if field.value}}value: {{{fieldValue field field.value}}},{{/if}}
 {{#if field.defaultValue}}defaultValue: {{{fieldValue field field.defaultValue}}},{{/if}}
 {{#if field.isArray}}isArray: true,{{/if}}
-{{#if field.description}}description: '{{{escape field.description}}}'{{/if}}
+{{#if field.description}}description: '{{{escape field.description}}}',{{/if}}
 options: {{{fieldDefinitionOptions field renderAs}}}

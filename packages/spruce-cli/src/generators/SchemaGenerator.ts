@@ -35,8 +35,13 @@ export default class SchemaGenerator extends AbstractGenerator {
 			sourceFile
 		)
 
+		// TODO what should the namespace be? slug pulled from somewhere
+		const schemaTemplateItems = await this.stores.schema.schemaTemplateItems()
+
 		// Contents
 		const contents = this.templates[template]({
+			schemaTemplateItems,
+			definition,
 			camelName,
 			pascalName,
 			description:

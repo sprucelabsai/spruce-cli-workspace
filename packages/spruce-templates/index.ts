@@ -132,6 +132,8 @@ export const templates = {
 
 	/** The types file to support a definition */
 	definitionTypes(options: {
+		definition: ISchemaDefinition
+		schemaTemplateItems: ISchemaTypesTemplateItem[]
 		camelName: string
 		pascalName: string
 		relativeToDefinition: string
@@ -152,6 +154,8 @@ export const templates = {
 
 	/** For generating types file this error (the ISpruceErrorOptions sub-interface) */
 	errorTypes(options: {
+		definition: ISchemaDefinition
+		schemaTemplateItems: ISchemaTypesTemplateItem[]
 		camelName: string
 		relativeToDefinition: string
 		pascalName: string

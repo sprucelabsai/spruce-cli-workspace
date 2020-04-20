@@ -25,7 +25,7 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 
 	if (!schemaTemplateItems) {
 		throw new Error(
-			'fiendDefinitionOptions needs schemaTemplateItems passed to parent template'
+			'fieldDefinitionOptions needs schemaTemplateItems passed to parent template'
 		)
 	}
 

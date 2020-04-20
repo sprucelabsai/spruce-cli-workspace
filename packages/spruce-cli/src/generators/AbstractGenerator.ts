@@ -3,11 +3,13 @@ import fs from 'fs-extra'
 import { Templates } from '@sprucelabs/spruce-templates'
 import { Log } from '@sprucelabs/log'
 import { IServices } from '#spruce/autoloaders/services'
+import { IStores } from '../../.spruce/autoloaders/stores'
 
 export interface IGeneratorOptions {
 	utilities: IUtilities
 	services: IServices
 	templates: Templates
+	stores: IStores
 	log: Log
 	cwd: string
 }
@@ -17,13 +19,15 @@ export default abstract class AbstractGenerator {
 	public templates: Templates
 	public services: IServices
 	public cwd: string
+	public stores: IStores
 
 	public constructor(options: IGeneratorOptions) {
-		const { utilities, templates, cwd, services } = options
+		const { utilities, templates, cwd, services, stores } = options
 		this.utilities = utilities
 		this.templates = templates
 		this.cwd = cwd
 		this.services = services
+		this.stores = stores
 	}
 	/** Write a file to a place handling all directory creation (overwrites everything) */
 	public writeFile(destination: string, contents: string) {

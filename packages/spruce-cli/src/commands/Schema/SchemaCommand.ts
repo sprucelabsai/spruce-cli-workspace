@@ -4,6 +4,9 @@ import { templates } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import path from 'path'
 import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definition'
+import { fail } from 'assert'
+import SpruceError from '../../errors/SpruceError'
+import { ITerminalEffect } from '../../utilities/TerminalUtility'
 
 export default class SchemaCommand extends AbstractCommand {
 	/** Sets up commands */
@@ -143,33 +146,58 @@ export default class SchemaCommand extends AbstractCommand {
 		this.stopLoading()
 
 		const matches = await globby(search)
+		const fails: Error[] = []
+		const passes: string[] = []
 
 		await Promise.all(
 			matches.map(async filePath => {
 				// Write to the destination
-				const {
-					pascalName,
-					camelName,
-					definition
-				} = await this.generators.schema.generateTypesFromDefinitionFile(
-					filePath,
-					this.resolvePath(destinationDir)
-				)
+				try {
+					const {
+						pascalName,
+						camelName,
+						definition
+					} = await this.generators.schema.generateTypesFromDefinitionFile(
+						filePath,
+						this.resolvePath(destinationDir)
+					)
 
-				// Tell them how to use it
-				this.headline(`${pascalName} examples:`)
+					// Tell them how to use it
+					this.headline(`${pascalName} examples:`)
 
-				this.writeLn('')
-				this.codeSample(
-					this.templates.schemaExample({ pascalName, camelName, definition })
-				)
+					this.writeLn('')
+					this.codeSample(
+						this.templates.schemaExample({ pascalName, camelName, definition })
+					)
 
-				this.writeLn('')
-				this.writeLn('')
+					this.writeLn('')
+					this.writeLn('')
+
+					passes.push(pascalName)
+				} catch (err) {
+					fails.push(err)
+				}
 			})
 		)
+
+		if (fails.length > 0) {
+			this.bar()
+			this.crit(
+				`${fails.length} out of ${matches.length} definitions failed to import`
+			)
+			this.writeLns(
+				fails.map(err => {
+					if (err instanceof SpruceError) {
+						return err.friendlyMessage()
+					}
+					return err.message
+				}),
+				[ITerminalEffect.Red, ITerminalEffect.Bold]
+			)
+		}
 	}
 
+	/** Define a new schema */
 	public async create(name: string | undefined, cmd: Command) {
 		const readableName = name
 

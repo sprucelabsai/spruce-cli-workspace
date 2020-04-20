@@ -33,7 +33,7 @@ export interface IFieldTypeMap {
 export default class SchemaStore extends AbstractStore {
 	public name = 'schema'
 
-	/** Get the schema map */
+	/** Get the schema map supplied by core */
 	public async schemaTemplateItems(): Promise<ISchemaTypesTemplateItem[]> {
 		/** Get all schemas from api  */
 		// TODO load from api

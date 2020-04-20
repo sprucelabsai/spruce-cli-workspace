@@ -145,7 +145,8 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		utilities,
 		templates,
 		log,
-		cwd
+		cwd,
+		stores
 	}
 
 	const generators = await generatorsLoader({

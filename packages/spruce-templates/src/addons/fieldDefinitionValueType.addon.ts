@@ -14,12 +14,9 @@ handlebars.registerHelper('fieldDefinitionValueType', function(
 	// Pull vars off context
 	const schemaTemplateItems: ISchemaTypesTemplateItem[] | undefined =
 		root?.schemaTemplateItems
-	const typeMap = root?.typeMap
 
-	if (!schemaTemplateItems || !typeMap) {
-		throw new Error(
-			'You must pass schemaTemplateItems and a typeMap to render this script'
-		)
+	if (!schemaTemplateItems) {
+		throw new Error('You must pass schemaTemplateItems to render this script')
 	}
 
 	const { type } = fieldDefinition
