@@ -1043,10 +1043,10 @@
   dependencies:
     "@sprucelabs/log" "^10.2.1"
 
-"@sprucelabs/path-resolver@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/path-resolver/-/path-resolver-1.2.0.tgz#4b5476b68cc023974074b41e430b29d9b97c0a9f"
-  integrity sha512-RyEUs8IWob/Fl17SKyOaIFKkceHdtJ5sz4iBCNfemZC0+EhHiuuLqEsldDmOldy2NS4MmKctEVSZSurO+uXFUg==
+"@sprucelabs/path-resolver@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/path-resolver/-/path-resolver-1.2.1.tgz#9407a2b35b88ac6eeb42083d420095e830b76c31"
+  integrity sha512-zM69ggcTi0MSNm35f1HmenMwnIEAz5mz2MKtiWnKUMEgdWeJhoW10Nzr5N6G9FYAifJmmUZwkvNP+nPixisPPg==
   dependencies:
     "@sprucelabs/error" "^1.0.11"
     "@sprucelabs/log" "^10.2.1"

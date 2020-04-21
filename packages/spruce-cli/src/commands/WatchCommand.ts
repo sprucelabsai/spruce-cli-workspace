@@ -18,6 +18,7 @@ enum WatchAction {
 	Quit = 'q'
 }
 
+/** Debounce keypresses triggering add/change/remove events */
 const DEBOUNCE_MS = 100
 
 export default class WatchCommand extends AbstractCommand {
