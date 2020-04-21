@@ -1,5 +1,5 @@
 import handlebars from 'handlebars'
-import { FieldDefinition, FieldType, SchemaField } from '@sprucelabs/schema'
+import { FieldDefinition, FieldType } from '@sprucelabs/schema'
 import { ISchemaTypesTemplateItem } from '../../index'
 
 /** Renders field options */
