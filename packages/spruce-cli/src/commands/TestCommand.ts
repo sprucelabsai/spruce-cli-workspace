@@ -1,4 +1,4 @@
-import AbstractCommand from '../AbstractCommand'
+import AbstractCommand from './AbstractCommand'
 import { Command } from 'commander'
 import { FieldType } from '@sprucelabs/schema'
 import path from 'path'

@@ -1,10 +1,10 @@
-import AbstractCommand from '../AbstractCommand'
+import AbstractCommand from './AbstractCommand'
 import { Command } from 'commander'
-import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definition'
+import namedTemplateItemDefinition from '../schemas/namedTemplateItem.definition'
 import path from 'path'
 import globby from 'globby'
-import log from '../../lib/log'
-import SpruceError from '../../errors/SpruceError'
+import log from '../lib/log'
+import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
 
 export default class ErrorCommand extends AbstractCommand {

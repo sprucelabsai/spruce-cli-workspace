@@ -2,15 +2,15 @@
 import AbstractCommand from '../../src/commands/AbstractCommand'
 
 // Import each matching class that will be autoloaded
-import Autoloader from '../../src/commands/Autoloader/AutoloaderCommand'
-import Error from '../../src/commands/Error/ErrorCommand'
-import Onboarding from '../../src/commands/Onboarding/OnboardingCommand'
-import Remote from '../../src/commands/Remote/RemoteCommand'
-import Schema from '../../src/commands/Schema/SchemaCommand'
-import Skill from '../../src/commands/Skill/SkillCommand'
-import Test from '../../src/commands/Test/TestCommand'
-import User from '../../src/commands/User/UserCommand'
-import Watch from '../../src/commands/Watch/WatchCommand'
+import Autoloader from '../../src/commands/AutoloaderCommand'
+import Error from '../../src/commands/ErrorCommand'
+import Onboarding from '../../src/commands/OnboardingCommand'
+import Remote from '../../src/commands/RemoteCommand'
+import Schema from '../../src/commands/SchemaCommand'
+import Skill from '../../src/commands/SkillCommand'
+import Test from '../../src/commands/TestCommand'
+import User from '../../src/commands/UserCommand'
+import Watch from '../../src/commands/WatchCommand'
 
 // Import necessary interface(s)
 import { ICommandOptions } from '../../src/commands/AbstractCommand'

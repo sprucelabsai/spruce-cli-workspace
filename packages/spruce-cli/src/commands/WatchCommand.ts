@@ -4,11 +4,11 @@ import _ from 'lodash'
 import { Command } from 'commander'
 import chokidar, { FSWatcher } from 'chokidar'
 import minimatch from 'minimatch'
-import AbstractCommand from '../AbstractCommand'
-import log from '../../lib/log'
+import AbstractCommand from './AbstractCommand'
+import log from '../lib/log'
 import { FieldType } from '@sprucelabs/schema'
-import { IWatchers } from '../../stores/WatcherStore'
-import { ITerminalEffect } from '../../utilities/TerminalUtility'
+import { IWatchers } from '../stores/WatcherStore'
+import { ITerminalEffect } from '../utilities/TerminalUtility'
 
 enum WatchAction {
 	Add = 'a',

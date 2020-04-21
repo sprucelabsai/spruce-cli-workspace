@@ -1,11 +1,11 @@
 import { Command } from 'commander'
-import AbstractCommand from '../AbstractCommand'
+import AbstractCommand from './AbstractCommand'
 import { templates } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import path from 'path'
-import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definition'
-import SpruceError from '../../errors/SpruceError'
-import { ITerminalEffect } from '../../utilities/TerminalUtility'
+import namedTemplateItemDefinition from '../schemas/namedTemplateItem.definition'
+import SpruceError from '../errors/SpruceError'
+import { ITerminalEffect } from '../utilities/TerminalUtility'
 
 export default class SchemaCommand extends AbstractCommand {
 	/** Sets up commands */
