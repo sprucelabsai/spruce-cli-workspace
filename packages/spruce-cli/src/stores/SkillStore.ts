@@ -1,5 +1,5 @@
 import AbstractStore, { IBaseStoreSettings, StoreAuth } from './AbstractStore'
-import { SpruceSchemas } from '#spruce/schemas/core.types'
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import { SpruceEvents } from '../types/events-generated'
 import Schema from '@sprucelabs/schema'
 import { parse as parseEnv } from 'dotenv'

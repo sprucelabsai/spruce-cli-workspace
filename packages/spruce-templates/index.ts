@@ -60,10 +60,6 @@ const definition: string = fs
 	.readFileSync(path.join(templatePath, 'schemas/definition.hbs'))
 	.toString()
 
-const definitionTypes: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/definition.types.hbs'))
-	.toString()
-
 const schemaExample: string = fs
 	.readFileSync(path.join(templatePath, 'schemas/example.hbs'))
 	.toString()

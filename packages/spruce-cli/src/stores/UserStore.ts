@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import AbstractStore, { StoreAuth, IBaseStoreSettings } from './AbstractStore'
-import { SpruceSchemas } from '#spruce/schemas/core.types'
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import { IMercuryGQLBody } from '@sprucelabs/mercury'
 import { SpruceEvents } from '../types/events-generated'
 import gql from 'graphql-tag'

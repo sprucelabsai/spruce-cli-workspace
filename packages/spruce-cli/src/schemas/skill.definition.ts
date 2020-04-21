@@ -1,5 +1,5 @@
 import { buildSchemaDefinition } from '@sprucelabs/schema'
-import { SpruceSchemas } from '#spruce/schemas/core.types'
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 const skillDefinition = buildSchemaDefinition({
 	...SpruceSchemas.core.Skill.definition,
 	id: 'skill',
