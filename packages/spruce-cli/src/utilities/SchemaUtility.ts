@@ -5,13 +5,11 @@ import {
 	ISchemaDefinitionFields,
 	SchemaError,
 	SchemaErrorCode,
-	SchemaField
+	SchemaField,
+	ISchemaTemplateItem,
+	ISchemaTemplateNames
 } from '@sprucelabs/schema'
 import { toPascal, toCamel } from './NamesUtility'
-import {
-	ISchemaTypesTemplateItem,
-	ISchemaTemplateNames
-} from '@sprucelabs/spruce-templates'
 import Schema from '@sprucelabs/schema'
 
 export default class SchemaUtility extends AbstractUtility {
@@ -30,10 +28,10 @@ export default class SchemaUtility extends AbstractUtility {
 		/** Array of schema definitions */
 		definitions: ISchemaDefinition[]
 		/** The items built recursively returned an the end */
-		items?: ISchemaTypesTemplateItem[]
+		items?: ISchemaTemplateItem[]
 		/** For tracking recursively to keep from infinite depth */
 		definitionsById?: { [id: string]: ISchemaDefinition }
-	}): ISchemaTypesTemplateItem[] {
+	}): ISchemaTemplateItem[] {
 		const { definitions, items = [], definitionsById = {}, namespace } = options
 
 		let newItems = [...items]

@@ -1,5 +1,7 @@
-import { default  as Schema } from '@sprucelabs/schema'
-import * as SpruceSchema from '@sprucelabs/schema'
+import { default as Schema } from '@sprucelabs/schema'
+{{#each imports}}
+import * as {{importAs}} from '{{package}}'
+{{/each}}
 
 {{#each schemaTemplateItems}}
 

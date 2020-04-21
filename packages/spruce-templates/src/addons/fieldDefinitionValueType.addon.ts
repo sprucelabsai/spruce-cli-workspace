@@ -2,15 +2,15 @@ import handlebars from 'handlebars'
 import {
 	FieldDefinition,
 	FieldClassMap,
-	FieldType,
-	SchemaField
+	ISchemaTemplateItem,
+	TemplateRenderAs,
+	IFieldTemplateItem
 } from '@sprucelabs/schema'
-import { ISchemaTypesTemplateItem } from '../..'
 
 /* The type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */
 handlebars.registerHelper('fieldDefinitionValueType', function(
 	fieldDefinition: FieldDefinition,
-	renderAs: string,
+	renderAs: TemplateRenderAs,
 	options
 ) {
 	const {
@@ -18,16 +18,18 @@ handlebars.registerHelper('fieldDefinitionValueType', function(
 	} = options
 
 	// Pull vars off context
-	const schemaTemplateItems: ISchemaTypesTemplateItem[] | undefined =
+	const schemaTemplateItems: ISchemaTemplateItem[] | undefined =
 		root?.schemaTemplateItems
+	const fieldTemplateItems: IFieldTemplateItem[] | undefined =
+		root?.fieldTemplateItems
 
 	if (
-		renderAs !== 'value' &&
-		renderAs !== 'type' &&
-		renderAs !== 'definition'
+		renderAs !== TemplateRenderAs.Value &&
+		renderAs !== TemplateRenderAs.Type &&
+		renderAs !== TemplateRenderAs.DefinitionType
 	) {
 		throw new Error(
-			'fieldDefinitionValueType helper needs renderAs to be "type" or "value"'
+			'fieldDefinitionValueType helper needs renderAs to be "TemplateRenderAs.Type" or "TemplateRenderAs.Value" or "TemplateRenderAs.DefinitionType"'
 		)
 	}
 
@@ -37,61 +39,36 @@ handlebars.registerHelper('fieldDefinitionValueType', function(
 		)
 	}
 
+	if (!fieldTemplateItems) {
+		throw new Error(
+			'fieldDefinitionValueType helper needs fieldTemplateItems is the root context'
+		)
+	}
+
 	const { type } = fieldDefinition
 	const FieldClass = FieldClassMap[type]
-	const { valueType } = FieldClass.templateDetails()
 
-	let typeLiteral
-	switch (fieldDefinition.type) {
-		case FieldType.Schema: {
-			const schemaIds = SchemaField.normalizeOptionsToSchemaIds(fieldDefinition)
-			const ids: string[] = []
+	// Find the matching field templateItem for this field type
+	const fieldTemplateItem = fieldTemplateItems.find(
+		item => item.pascalName === FieldClass.name
+	)
 
-			schemaIds.forEach(schemaId => {
-				const matchedTemplateItem = schemaTemplateItems.find(
-					item => item.id === schemaId
-				)
-
-				if (matchedTemplateItem) {
-					ids.push(
-						`SpruceSchemas.${matchedTemplateItem.namespace}.${
-							renderAs === 'type'
-								? `I${matchedTemplateItem.pascalName}`
-								: matchedTemplateItem.pascalName
-						}${
-							renderAs === 'type'
-								? ``
-								: renderAs === 'definition'
-								? `.IDefinition`
-								: `.definition`
-						}`
-					)
-				} else {
-					throw new Error(
-						`fieldDefinitionValueType help could not find schema ${fieldDefinition.options.schemaIds?.join(
-							', '
-						)}`
-					)
-				}
-			})
-
-			if (renderAs === 'type') {
-				typeLiteral = ids.join(' | ')
-			} else {
-				typeLiteral = '[' + ids.join(', ') + ']'
-			}
-
-			break
-		}
-		default:
-			typeLiteral = valueType
+	if (!fieldTemplateItem) {
+		throw new Error(
+			'Field was not found in template items, not sure how this could ever happen. TODO improve this error message when we know more!'
+		)
 	}
 
-	if (fieldDefinition.isArray) {
-		typeLiteral = typeLiteral + '[]'
-	}
+	const { valueType } = FieldClass.templateDetails({
+		renderAs,
+		importAs: fieldTemplateItem.importAs,
+		templateItems: schemaTemplateItems,
+		language: 'ts',
+		globalNamespace: 'SpruceSchemas',
+		// TODO why does this not pass?
+		// @ts-ignore
+		definition: fieldDefinition
+	})
 
-	// If the type points to an interface, pull it off the schema
-	// TODO handle when skill introduce their own field types
-	return typeLiteral[0] === 'I' ? `SpruceSchema.${typeLiteral}` : typeLiteral
+	return valueType
 })

@@ -1,7 +1,7 @@
 import { Command } from 'commander'
 import AbstractCommand from '../AbstractCommand'
 import { templates } from '@sprucelabs/spruce-templates'
-import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definition'
+import { SpruceSchemas } from '../../../.spruce/schemas/schemas.types'
 
 export default class SchemaCommand extends AbstractCommand {
 	/** Sets up commands */
@@ -61,22 +61,21 @@ export default class SchemaCommand extends AbstractCommand {
 		// Load types and namespaces
 		const schemaTemplateItems = await this.stores.schema.schemaTemplateItems()
 		const fieldTemplateItems = await this.stores.schema.fieldTemplateItems()
-		const typeMap = await this.stores.schema.fieldTypeMap()
 
 		// Field Types
-		const fieldTypesContent = templates.fieldTypes({
-			fields: fieldTemplateItems
+		const fieldTypesContent = templates.fieldsTypes({
+			fieldTemplateItems
 		})
 
 		// Field type enum
 		const fieldTypeContent = templates.fieldType({
-			fields: fieldTemplateItems
+			fieldTemplateItems
 		})
 
 		// Schema types
-		const schemaTypesContents = templates.schemaTypes({
+		const schemaTypesContents = templates.schemasTypes({
 			schemaTemplateItems,
-			typeMap
+			fieldTemplateItems
 		})
 
 		this.stopLoading()
@@ -149,7 +148,7 @@ export default class SchemaCommand extends AbstractCommand {
 		}
 
 		const form = this.formBuilder({
-			definition: namedTemplateItemDefinition,
+			definition: SpruceSchemas.local.NamedTemplateItem.definition,
 			initialValues: {
 				readableName,
 				camelName,

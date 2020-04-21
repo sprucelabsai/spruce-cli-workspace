@@ -1,4 +1,4 @@
-import { default  as Schema } from '@sprucelabs/schema'
+import { default as Schema } from '@sprucelabs/schema'
 import * as SpruceSchema from '@sprucelabs/schema'
 
 
@@ -158,17 +158,17 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** Id. */
 				'id': string
 				/** First name. */
-				'firstName'?: string
+				'firstName'?: string| undefined
 				/** Last name. */
-				'lastName'?: string
+				'lastName'?: string| undefined
 				/** Casual name. Generated name that defaults to Friend! */
 				'casualName': string
 				/** Phone. The person's phone number! */
-				'phoneNumber'?: string
+				'phoneNumber'?: string| undefined
 				/** Profile photos. */
-				'profileImages'?: SpruceSchemas.core.IProfileImage
+				'profileImages'?: (SpruceSchemas.core.IProfileImage)| undefined
 				/** Default profile photos. */
-				'defaultProfileImages': SpruceSchemas.core.IProfileImage
+				'defaultProfileImages': (SpruceSchemas.core.IProfileImage)
 		}
 	}	 
 
@@ -259,7 +259,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schemas: [SpruceSchemas.core.ProfileImage.IDefinition],}
+			                options: {schemas: ([SpruceSchemas.core.ProfileImage.IDefinition]),}
 			            },
 			            /** Default profile photos. */
 			            'defaultProfileImages': {
@@ -272,7 +272,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schemas: [SpruceSchemas.core.ProfileImage.IDefinition],}
+			                options: {schemas: ([SpruceSchemas.core.ProfileImage.IDefinition]),}
 			            },
 			    }
 		}
@@ -361,7 +361,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schemas: [SpruceSchemas.core.ProfileImage.definition],}
+			                options: {schemas: ([SpruceSchemas.core.ProfileImage.definition]),}
 			            },
 			            /** Default profile photos. */
 			            'defaultProfileImages': {
@@ -374,7 +374,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schemas: [SpruceSchemas.core.ProfileImage.definition],}
+			                options: {schemas: ([SpruceSchemas.core.ProfileImage.definition]),}
 			            },
 			    }
 		}
@@ -395,11 +395,11 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** Name. */
 				'name': string
 				/** Description. */
-				'description'?: string
+				'description'?: string| undefined
 				/** Slug. */
-				'slug'?: string
+				'slug'?: string| undefined
 				/** Icon. */
-				'icon'?: string
+				'icon'?: string| undefined
 		}
 	}	 
 
@@ -594,17 +594,17 @@ import * as SpruceSchema from '@sprucelabs/schema'
 		export interface ILocation {
 			
 				/** Id. */
-				'id'?: string
+				'id'?: string| undefined
 				/** Name. */
 				'name': string
 				/** Store number. You can use other symbols, like # or dashes. #123 or 32-US-5 */
-				'num'?: string
+				'num'?: string| undefined
 				/** Public. Is this location viewable by guests? */
-				'isPublic'?: boolean
+				'isPublic'?: boolean| undefined
 				/** Main Phone. */
-				'phone'?: string
+				'phone'?: string| undefined
 				/** Timezone. */
-				'timezone'?: string
+				'timezone'?: ("etc/gmt+12" | "pacific/midway" | "pacific/honolulu" | "us/alaska" | "america/los_Angeles" | "america/tijuana" | "us/arizona" | "america/chihuahua" | "us/mountain" | "america/managua" | "us/central" | "america/mexico_City" | "Canada/Saskatchewan" | "america/bogota" | "us/eastern" | "us/east-indiana" | "Canada/atlantic" | "america/caracas" | "america/manaus" | "america/Santiago" | "Canada/Newfoundland" | "america/Sao_Paulo" | "america/argentina/buenos_Aires" | "america/godthab" | "america/montevideo" | "america/Noronha" | "atlantic/cape_Verde" | "atlantic/azores" | "africa/casablanca" | "etc/gmt" | "europe/amsterdam" | "europe/belgrade" | "europe/brussels" | "europe/Sarajevo" | "africa/lagos" | "asia/amman" | "europe/athens" | "asia/beirut" | "africa/cairo" | "africa/Harare" | "europe/Helsinki" | "asia/Jerusalem" | "europe/minsk" | "africa/Windhoek" | "asia/Kuwait" | "europe/moscow" | "africa/Nairobi" | "asia/tbilisi" | "asia/tehran" | "asia/muscat" | "asia/baku" | "asia/Yerevan" | "asia/Kabul" | "asia/Yekaterinburg" | "asia/Karachi" | "asia/calcutta" | "asia/calcutta" | "asia/Katmandu" | "asia/almaty" | "asia/Dhaka" | "asia/Rangoon" | "asia/bangkok" | "asia/Krasnoyarsk" | "asia/Hong_Kong" | "asia/Kuala_Lumpur" | "asia/Irkutsk" | "Australia/Perth" | "asia/taipei" | "asia/tokyo" | "asia/Seoul" | "asia/Yakutsk" | "Australia/adelaide" | "Australia/Darwin" | "Australia/brisbane" | "Australia/canberra" | "Australia/Hobart" | "pacific/guam" | "asia/Vladivostok" | "asia/magadan" | "pacific/auckland" | "pacific/Fiji" | "pacific/tongatapu")| undefined
 				/** Address. */
 				'address': SpruceSchema.IAddressFieldValue
 		}
@@ -883,17 +883,17 @@ import * as SpruceSchema from '@sprucelabs/schema'
 		export interface IJob {
 			
 				/** Id. */
-				'id'?: string
+				'id'?: string| undefined
 				/** Is default. Is this job one that comes with every org? Mapped to roles (owner, groupManager, managar, guest). */
 				'isDefault': string
 				/** Name. */
 				'name': string
 				/** Role. */
-				'role': string
+				'role': ("owner" | "groupManager" | "manager" | "teammate" | "guest")
 				/** On work permissions. */
-				'inStoreAcls'?: SpruceSchemas.core.IAcl
+				'inStoreAcls'?: (SpruceSchemas.core.IAcl)| undefined
 				/** Off work permissions. */
-				'acls'?: SpruceSchemas.core.IAcl
+				'acls'?: (SpruceSchemas.core.IAcl)| undefined
 		}
 	}	 
 
@@ -971,7 +971,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schemas: [SpruceSchemas.core.Acl.IDefinition],}
+			                options: {schemas: ([SpruceSchemas.core.Acl.IDefinition]),}
 			            },
 			            /** Off work permissions. */
 			            'acls': {
@@ -984,7 +984,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schemas: [SpruceSchemas.core.Acl.IDefinition],}
+			                options: {schemas: ([SpruceSchemas.core.Acl.IDefinition]),}
 			            },
 			    }
 		}
@@ -1060,7 +1060,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schemas: [SpruceSchemas.core.Acl.definition],}
+			                options: {schemas: ([SpruceSchemas.core.Acl.definition]),}
 			            },
 			            /** Off work permissions. */
 			            'acls': {
@@ -1073,7 +1073,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schemas: [SpruceSchemas.core.Acl.definition],}
+			                options: {schemas: ([SpruceSchemas.core.Acl.definition]),}
 			            },
 			    }
 		}
@@ -1088,21 +1088,21 @@ import * as SpruceSchema from '@sprucelabs/schema'
 		export interface IUserLocation {
 			
 				/** Id. */
-				'id'?: string
+				'id'?: string| undefined
 				/** Name. */
-				'role': string
+				'role': ("owner" | "groupManager" | "manager" | "teammate" | "guest")
 				/** Status. */
-				'status'?: string
+				'status'?: string| undefined
 				/** Total visits. */
 				'visits': number
 				/** Last visit. */
-				'lastRecordedVisit'?: SpruceSchema.IDateTimeFieldValue
+				'lastRecordedVisit'?: SpruceSchema.IDateTimeFieldValue| undefined
 				/** Job. */
-				'job': SpruceSchemas.core.IJob
+				'job': (SpruceSchemas.core.IJob)
 				/** Location. */
-				'location': SpruceSchemas.core.ILocation
+				'location': (SpruceSchemas.core.ILocation)
 				/** User. */
-				'user': SpruceSchemas.core.IUser
+				'user': (SpruceSchemas.core.IUser)
 		}
 	}	 
 
@@ -1193,7 +1193,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schemas: [SpruceSchemas.core.Job.IDefinition],}
+			                options: {schemas: ([SpruceSchemas.core.Job.IDefinition]),}
 			            },
 			            /** Location. */
 			            'location': {
@@ -1206,7 +1206,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schemas: [SpruceSchemas.core.Location.IDefinition],}
+			                options: {schemas: ([SpruceSchemas.core.Location.IDefinition]),}
 			            },
 			            /** User. */
 			            'user': {
@@ -1219,7 +1219,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schemas: [SpruceSchemas.core.User.IDefinition],}
+			                options: {schemas: ([SpruceSchemas.core.User.IDefinition]),}
 			            },
 			    }
 		}
@@ -1308,7 +1308,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schemas: [SpruceSchemas.core.Job.definition],}
+			                options: {schemas: ([SpruceSchemas.core.Job.definition]),}
 			            },
 			            /** Location. */
 			            'location': {
@@ -1321,7 +1321,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schemas: [SpruceSchemas.core.Location.definition],}
+			                options: {schemas: ([SpruceSchemas.core.Location.definition]),}
 			            },
 			            /** User. */
 			            'user': {
@@ -1334,7 +1334,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schemas: [SpruceSchemas.core.User.definition],}
+			                options: {schemas: ([SpruceSchemas.core.User.definition]),}
 			            },
 			    }
 		}
@@ -1625,7 +1625,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** Name. */
 				'name': string
 				/** Slug. */
-				'slug'?: string
+				'slug'?: string| undefined
 		}
 	}	 
 
@@ -1867,7 +1867,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** . */
 				'token': string
 				/** Logged in. */
-				'isLoggedIn'?: boolean
+				'isLoggedIn'?: boolean| undefined
 		}
 	}	 
 

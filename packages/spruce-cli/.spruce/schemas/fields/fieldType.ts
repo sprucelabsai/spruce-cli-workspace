@@ -12,13 +12,13 @@ export enum FieldType {
 	File = 'file',
 	/** A unique identifier field, UUID\'s in our case. */
 	Id = 'id',
-	/** Casts things to numbers. String numbers are supported. */
+	/** Handles all types of numbers with min/max and clamp support */
 	Number = 'number',
 	/** Takes anything close to a phone number and formats it. Also great at validating numbers. */
 	Phone = 'phone',
 	/** Deprecated. For internal purposes only (will be deleted soon) */
 	Raw = 'raw',
-	/** A way to map relationships. You only need to map relationships one way, two way is currently not supported. */
+	/** A way to map relationships. */
 	Schema = 'schema',
 	/** Stored as string, lets user select between available options. */
 	Select = 'select',

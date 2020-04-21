@@ -1,15 +1,10 @@
 import AbstractStore from './AbstractStore'
 import {
 	ISchemaDefinition,
-	FieldClassMap,
-	FieldType,
 	IFieldRegistration,
-	IFieldTemplateDetails
+	ISchemaTemplateItem,
+	IFieldTemplateItem
 } from '@sprucelabs/schema'
-import {
-	ISchemaTypesTemplateItem,
-	IFieldTypesTemplateItem
-} from '@sprucelabs/spruce-templates'
 
 import path from 'path'
 import { uniqBy } from 'lodash'
@@ -26,15 +21,15 @@ import {
 import globby from 'globby'
 
 /** The mapping of type keys (string, phoneNumber) to definitions */
-export interface IFieldTypeMap {
-	[fieldType: string]: IFieldTemplateDetails
-}
+// export interface IFieldTypeMap {
+// 	[fieldType: string]: IFieldTemplateDetails
+// }
 
 export default class SchemaStore extends AbstractStore {
 	public name = 'schema'
 
 	/** Get the schema map supplied by core */
-	public async schemaTemplateItems(): Promise<ISchemaTypesTemplateItem[]> {
+	public async schemaTemplateItems(): Promise<ISchemaTemplateItem[]> {
 		/** Get all schemas from api  */
 		// TODO load from api
 		const schemas: ISchemaDefinition[] = [
@@ -76,7 +71,7 @@ export default class SchemaStore extends AbstractStore {
 	}
 
 	/** All field types from all skills we depend on */
-	public async fieldTemplateItems(): Promise<IFieldTypesTemplateItem[]> {
+	public async fieldTemplateItems(): Promise<IFieldTemplateItem[]> {
 		// TODO load from core
 		const coreAddons = await Promise.all(
 			(
@@ -124,7 +119,7 @@ export default class SchemaStore extends AbstractStore {
 			[...coreAddons, ...localAddons],
 			'registration.type'
 		)
-		const types: IFieldTypesTemplateItem[] = []
+		const types: IFieldTemplateItem[] = []
 
 		for (const addon of allAddons) {
 			const registration: IFieldRegistration = addon.registration
@@ -145,6 +140,7 @@ export default class SchemaStore extends AbstractStore {
 				pascalName: this.utilities.names.toPascal(name),
 				camelName: this.utilities.names.toCamel(name),
 				package: pkg,
+				importAs: registration.importAs,
 				readableName: registration.className,
 				pascalType: this.utilities.names.toPascal(registration.type),
 				camelType: this.utilities.names.toCamel(registration.type),
@@ -156,16 +152,18 @@ export default class SchemaStore extends AbstractStore {
 		return types
 	}
 
-	/** Get all fields */
-	public async fieldTypeMap(): Promise<IFieldTypeMap> {
-		const map: IFieldTypeMap = {}
-		if (typeof FieldClassMap === 'object') {
-			Object.keys(FieldClassMap).forEach(type => {
-				const FieldClass = FieldClassMap[type as FieldType]
-				const templateDetails = FieldClass.templateDetails()
-				map[type] = templateDetails
-			})
-		}
-		return map
-	}
+	// TODO this may need to be brought back to hold an entire class map
+	// so we don't have to rely on the generated file before doing anything
+	// /** Get all fields */
+	// public async fieldTypeMap(): Promise<IFieldTypeMap> {
+	// 	const map: IFieldTypeMap = {}
+	// 	if (typeof FieldClassMap === 'object') {
+	// 		Object.keys(FieldClassMap).forEach(type => {
+	// 			const FieldClass = FieldClassMap[type as FieldType]
+	// 			const templateDetails = FieldClass.description
+	// 			map[type] = templateDetails
+	// 		})
+	// 	}
+	// 	return map
+	// }
 }

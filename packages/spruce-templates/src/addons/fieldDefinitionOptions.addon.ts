@@ -1,18 +1,25 @@
 import handlebars from 'handlebars'
-import { FieldDefinition, FieldType } from '@sprucelabs/schema'
-import { ISchemaTypesTemplateItem } from '../../index'
+import {
+	FieldDefinition,
+	FieldType,
+	ISchemaTemplateItem,
+	TemplateRenderAs
+} from '@sprucelabs/schema'
 
 /** Renders field options */
 handlebars.registerHelper('fieldDefinitionOptions', function(
 	fieldDefinition: FieldDefinition,
-	renderAs,
+	renderAs: TemplateRenderAs,
 	options
 ) {
 	if (!fieldDefinition) {
 		return '"**fieldDefinitionOptions error: MISSING FIELD DEFINITION"'
 	}
 
-	if (!options || (renderAs !== 'type' && renderAs !== 'value')) {
+	if (
+		!options ||
+		(renderAs !== TemplateRenderAs.Type && renderAs !== TemplateRenderAs.Value)
+	) {
 		throw new Error("fieldDefinitionOptions helper's second arg as type|value")
 	}
 
@@ -20,7 +27,7 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 		data: { root }
 	} = options
 
-	const schemaTemplateItems: ISchemaTypesTemplateItem[] | undefined =
+	const schemaTemplateItems: ISchemaTemplateItem[] | undefined =
 		root && root.schemaTemplateItems
 
 	if (!schemaTemplateItems) {
@@ -39,7 +46,9 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 	if (fieldDefinition.type === FieldType.Schema && updatedOptions) {
 		const value = handlebars.helpers.fieldDefinitionValueType(
 			fieldDefinition,
-			renderAs === 'type' ? 'definition' : 'value',
+			renderAs === TemplateRenderAs.Type
+				? TemplateRenderAs.DefinitionType
+				: TemplateRenderAs.Value,
 			options
 		)
 

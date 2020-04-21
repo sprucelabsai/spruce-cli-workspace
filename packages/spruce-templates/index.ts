@@ -3,14 +3,17 @@ import fs from 'fs'
 import path from 'path'
 import log from './src/lib/log'
 
-import { IFieldTemplateDetails, ISchemaDefinition } from '@sprucelabs/schema'
+import {
+	ISchemaDefinition,
+	ISchemaTemplateItem,
+	IFieldTemplateItem
+} from '@sprucelabs/schema'
 
 // Import addons
 import './src/addons/escape.addon'
 import './src/addons/fieldDefinitionOptions.addon'
 import './src/addons/fieldDefinitionValueType.addon'
 import './src/addons/fieldTypeEnum.addon'
-import './src/addons/fieldValue.addon'
 import './src/addons/isEqual.addon'
 import './src/addons/startCase.addon'
 import './src/addons/camelCase.addon'
@@ -18,42 +21,17 @@ import './src/addons/pascalCase.addon'
 import './src/addons/fieldDefinitionPartial.addon'
 import './src/addons/schemaDefinitionPartial.addon'
 import './src/addons/schemaValuesPartial.addon'
+import importExtractor from './src/utilities/importExtractor'
 
 log.info('Addons imported')
-
-// Extra definitions
-// TODO where do these go?
-export interface ISchemaTemplateNames {
-	pascalName: string
-	camelName: string
-	readableName: string
-}
-export interface ISchemaTypesTemplateItem extends ISchemaTemplateNames {
-	namespace: string
-	id: string
-	definition: ISchemaDefinition
-}
-
-export interface IFieldTypesTemplateItem extends ISchemaTemplateNames {
-	/** There package where the field definition lives */
-	package: string
-	/** The key for the FieldType enum */
-	pascalType: string
-	/** The value used for the FieldType enum */
-	camelType: string
-	/** Is this field type introduced by the skill be worked on right meow */
-	isLocal: boolean
-	/** The description associated with the field */
-	description: string
-}
 
 // Import actual templates
 const templatePath = path.join(__dirname, 'src', 'templates', 'typescript')
 
 // Template files
 // TODO this can be done in a loop perhaps
-const schemaTypes: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/schema.types.hbs'))
+const schemasTypes: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/schemas.types.hbs'))
 	.toString()
 
 const definition: string = fs
@@ -96,7 +74,7 @@ const autoloader: string = fs
 	.readFileSync(path.join(templatePath, 'autoloader/autoloader.hbs'))
 	.toString()
 
-const fieldTypes: string = fs
+const fieldsTypes: string = fs
 	.readFileSync(path.join(templatePath, 'schemas/fields/fields.types.hbs'))
 	.toString()
 
@@ -107,12 +85,13 @@ const fieldType: string = fs
 // Template generators
 export const templates = {
 	/** All definitions */
-	schemaTypes(options: {
-		schemaTemplateItems: ISchemaTypesTemplateItem[]
-		typeMap: { [fieldType: string]: IFieldTemplateDetails }
+	schemasTypes(options: {
+		schemaTemplateItems: ISchemaTemplateItem[]
+		fieldTemplateItems: IFieldTemplateItem[]
 	}) {
-		const template = handlebars.compile(schemaTypes)
-		return template(options)
+		const imports = importExtractor(options.fieldTemplateItems)
+		const template = handlebars.compile(schemasTypes)
+		return template({ ...options, imports })
 	},
 
 	/** When building a definition in a skill */
@@ -138,7 +117,7 @@ export const templates = {
 	/** For generating types file this error (the ISpruceErrorOptions sub-interface) */
 	errorTypes(options: {
 		definition: ISchemaDefinition
-		schemaTemplateItems: ISchemaTypesTemplateItem[]
+		schemaTemplateItems: ISchemaTemplateItem[]
 		camelName: string
 		relativeToDefinition: string
 		pascalName: string
@@ -219,14 +198,14 @@ export const templates = {
 		return template(options)
 	},
 
-	/** The types file for all the schema fields being used*/
-	fieldTypes(options: { fields: IFieldTypesTemplateItem[] }) {
-		const template = handlebars.compile(fieldTypes)
+	/** The types file for all the schema fields being used */
+	fieldsTypes(options: { fieldTemplateItems: IFieldTemplateItem[] }) {
+		const template = handlebars.compile(fieldsTypes)
 		return template(options)
 	},
 
 	/** The field type enum */
-	fieldType(options: { fields: IFieldTypesTemplateItem[] }) {
+	fieldType(options: { fieldTemplateItems: IFieldTemplateItem[] }) {
 		const template = handlebars.compile(fieldType)
 		return template(options)
 	}
