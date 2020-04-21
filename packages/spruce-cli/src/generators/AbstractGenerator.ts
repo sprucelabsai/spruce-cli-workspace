@@ -3,7 +3,7 @@ import fs from 'fs-extra'
 import { Templates } from '@sprucelabs/spruce-templates'
 import { Log } from '@sprucelabs/log'
 import { IServices } from '#spruce/autoloaders/services'
-import { IStores } from '../../.spruce/autoloaders/stores'
+import { IStores } from '#spruce/autoloaders/stores'
 
 export interface IGeneratorOptions {
 	utilities: IUtilities

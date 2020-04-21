@@ -69,10 +69,6 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	// Starting cwd
 	const cwd = process.cwd()
 
-	// Temp
-	// const cwd =
-	// 	'/Users/taylorromero/Development/SpruceLabs/spruce-heartwood-workspace/packages/heartwood-skill'
-
 	// Setup utilities
 	const utilityOptions: IUtilityOptions = {
 		cwd
