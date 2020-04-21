@@ -3,7 +3,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 
 {{#each schemaTemplateItems}}
 
-	export namespace SpruceSchema.{{namespace}} {
+	export namespace SpruceSchemas.{{namespace}} {
 		/** {{definition.description}} */
 		export interface I{{pascalName}} {
 			{{> schemaValues schema=definition renderAs="type" }}

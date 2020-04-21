@@ -55,13 +55,15 @@ handlebars.registerHelper('fieldDefinitionValueType', function(
 				if (matchedTemplateItem) {
 					ids.push(
 						`SpruceSchemas.${matchedTemplateItem.namespace}.${
-							matchedTemplateItem.pascalName
-						}.${
 							renderAs === 'type'
 								? `I${matchedTemplateItem.pascalName}`
+								: matchedTemplateItem.pascalName
+						}${
+							renderAs === 'type'
+								? ``
 								: renderAs === 'definition'
-								? `IDefinition`
-								: `definition`
+								? `.IDefinition`
+								: `.definition`
 						}`
 					)
 				} else {

@@ -35,7 +35,6 @@ import servicesAutoloader from '#spruce/autoloaders/services'
 
 /** Addons */
 import './addons/filePrompt.addon'
-import '#spruce/schemas/fields.types'
 
 /**
  * For handling debugger not attaching right away

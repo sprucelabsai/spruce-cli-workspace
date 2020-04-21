@@ -2,9 +2,7 @@ import { default  as Schema } from '@sprucelabs/schema'
 import * as SpruceSchema from '@sprucelabs/schema'
 
 
-	export namespace SpruceSchemas.core.ProfileImage {
-		export const id = 'profileImage'
-
+	export namespace SpruceSchemas.core {
 		/** Profile images at various helpful sizes and resolutions. */
 		export interface IProfileImage {
 			
@@ -17,6 +15,10 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** 150x150. */
 				'profile150@2x': string
 		}
+	}	 
+
+	export namespace SpruceSchemas.core.ProfileImage {
+		export const id = 'profileImage'
 
 		/** The interface for the schema definition for a Profile Image Sizes */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
@@ -149,9 +151,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 	}
 	
 
-	export namespace SpruceSchemas.core.User {
-		export const id = 'user'
-
+	export namespace SpruceSchemas.core {
 		/** A human being. */
 		export interface IUser {
 			
@@ -166,10 +166,14 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** Phone. The person's phone number! */
 				'phoneNumber'?: string
 				/** Profile photos. */
-				'profileImages'?: SpruceSchemas.core.ProfileImage.IProfileImage
+				'profileImages'?: SpruceSchemas.core.IProfileImage
 				/** Default profile photos. */
-				'defaultProfileImages': SpruceSchemas.core.ProfileImage.IProfileImage
+				'defaultProfileImages': SpruceSchemas.core.IProfileImage
 		}
+	}	 
+
+	export namespace SpruceSchemas.core.User {
+		export const id = 'user'
 
 		/** The interface for the schema definition for a User */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
@@ -380,9 +384,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 	}
 	
 
-	export namespace SpruceSchemas.core.Skill {
-		export const id = 'skill'
-
+	export namespace SpruceSchemas.core {
 		/** An ability Sprucebot has learned. */
 		export interface ISkill {
 			
@@ -399,6 +401,10 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** Icon. */
 				'icon'?: string
 		}
+	}	 
+
+	export namespace SpruceSchemas.core.Skill {
+		export const id = 'skill'
 
 		/** The interface for the schema definition for a Skill */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
@@ -583,9 +589,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 	}
 	
 
-	export namespace SpruceSchemas.core.Location {
-		export const id = 'location'
-
+	export namespace SpruceSchemas.core {
 		/** A physical location where people meet. An organization has at least one of them. */
 		export interface ILocation {
 			
@@ -604,6 +608,10 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** Address. */
 				'address': SpruceSchema.IAddressFieldValue
 		}
+	}	 
+
+	export namespace SpruceSchemas.core.Location {
+		export const id = 'location'
 
 		/** The interface for the schema definition for a Location */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
@@ -814,14 +822,16 @@ import * as SpruceSchema from '@sprucelabs/schema'
 	}
 	
 
-	export namespace SpruceSchemas.core.Acl {
-		export const id = 'acl'
-
+	export namespace SpruceSchemas.core {
 		/**  */
 		export interface IAcl {
 				/** Permissions grouped by slug. */
 				[slug:string]: string[]
 		}
+	}	 
+
+	export namespace SpruceSchemas.core.Acl {
+		export const id = 'acl'
 
 		/** The interface for the schema definition for a Access control list lookup table */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
@@ -868,9 +878,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 	}
 	
 
-	export namespace SpruceSchemas.core.Job {
-		export const id = 'job'
-
+	export namespace SpruceSchemas.core {
 		/** A position at a company. The answer to the question; What is your job? */
 		export interface IJob {
 			
@@ -883,10 +891,14 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** Role. */
 				'role': string
 				/** On work permissions. */
-				'inStoreAcls'?: SpruceSchemas.core.Acl.IAcl
+				'inStoreAcls'?: SpruceSchemas.core.IAcl
 				/** Off work permissions. */
-				'acls'?: SpruceSchemas.core.Acl.IAcl
+				'acls'?: SpruceSchemas.core.IAcl
 		}
+	}	 
+
+	export namespace SpruceSchemas.core.Job {
+		export const id = 'job'
 
 		/** The interface for the schema definition for a Job */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
@@ -1071,9 +1083,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 	}
 	
 
-	export namespace SpruceSchemas.core.UserLocation {
-		export const id = 'userLocation'
-
+	export namespace SpruceSchemas.core {
 		/** A location a person has given access to themselves. */
 		export interface IUserLocation {
 			
@@ -1088,12 +1098,16 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** Last visit. */
 				'lastRecordedVisit'?: SpruceSchema.IDateTimeFieldValue
 				/** Job. */
-				'job': SpruceSchemas.core.Job.IJob
+				'job': SpruceSchemas.core.IJob
 				/** Location. */
-				'location': SpruceSchemas.core.Location.ILocation
+				'location': SpruceSchemas.core.ILocation
 				/** User. */
-				'user': SpruceSchemas.core.User.IUser
+				'user': SpruceSchemas.core.IUser
 		}
+	}	 
+
+	export namespace SpruceSchemas.core.UserLocation {
+		export const id = 'userLocation'
 
 		/** The interface for the schema definition for a User location */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
@@ -1330,9 +1344,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 	}
 	
 
-	export namespace SpruceSchemas.local.NamedTemplateItem {
-		export const id = 'namedTemplateItem'
-
+	export namespace SpruceSchemas.local {
 		/** Used to collect input on the names of a class or interface */
 		export interface INamedTemplateItem {
 			
@@ -1347,6 +1359,10 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** Description. */
 				'description': string
 		}
+	}	 
+
+	export namespace SpruceSchemas.local.NamedTemplateItem {
+		export const id = 'namedTemplateItem'
 
 		/** The interface for the schema definition for a NamedTemplateItem */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
@@ -1505,9 +1521,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 	}
 	
 
-	export namespace SpruceSchemas.local.OnboardingStore {
-		export const id = 'onboarding-store'
-
+	export namespace SpruceSchemas.local {
 		/**  */
 		export interface IOnboardingStore {
 			
@@ -1516,6 +1530,10 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** Run count. How many times spruce onboarding has been called (the story changes based on count) */
 				'runCount': number
 		}
+	}	 
+
+	export namespace SpruceSchemas.local.OnboardingStore {
+		export const id = 'onboarding-store'
 
 		/** The interface for the schema definition for a Onboarding store */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
@@ -1596,9 +1614,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 	}
 	
 
-	export namespace SpruceSchemas.local.Skill {
-		export const id = 'skill'
-
+	export namespace SpruceSchemas.local {
 		/** A stripped down skill for the cli */
 		export interface ISkill {
 			
@@ -1611,6 +1627,10 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** Slug. */
 				'slug'?: string
 		}
+	}	 
+
+	export namespace SpruceSchemas.local.Skill {
+		export const id = 'skill'
 
 		/** The interface for the schema definition for a Skill */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
@@ -1743,9 +1763,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 	}
 	
 
-	export namespace SpruceSchemas.local.User {
-		export const id = 'user'
-
+	export namespace SpruceSchemas.local {
 		/** A stripped down user for the cli */
 		export interface IUser {
 			
@@ -1754,6 +1772,10 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** Casual name. Generated name that defaults to Friend! */
 				'casualName': string
 		}
+	}	 
+
+	export namespace SpruceSchemas.local.User {
+		export const id = 'user'
 
 		/** The interface for the schema definition for a User */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
@@ -1834,9 +1856,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 	}
 	
 
-	export namespace SpruceSchemas.local.UserWithToken {
-		export const id = 'userWithToken'
-
+	export namespace SpruceSchemas.local {
 		/** A stripped down cli user with token details for login */
 		export interface IUserWithToken {
 			
@@ -1849,6 +1869,10 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** Logged in. */
 				'isLoggedIn'?: boolean
 		}
+	}	 
+
+	export namespace SpruceSchemas.local.UserWithToken {
+		export const id = 'userWithToken'
 
 		/** The interface for the schema definition for a User */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {

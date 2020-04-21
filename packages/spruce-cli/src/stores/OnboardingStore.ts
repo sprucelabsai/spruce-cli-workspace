@@ -7,7 +7,7 @@ import { SpruceSchemas } from '../../.spruce/schemas/schemas.types'
 
 export interface IOnboardingStoreSettings
 	extends IBaseStoreSettings,
-		SpruceSchemas.local.OnboardingStore.IOnboardingStore {}
+		SpruceSchemas.local.IOnboardingStore {}
 
 export default class OnboardingStore extends AbstractStore<
 	IOnboardingStoreSettings

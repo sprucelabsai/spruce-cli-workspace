@@ -42,10 +42,10 @@ export default class NamesUtility extends AbstractUtility {
 
 	/** Help guess on answers */
 	public onWillAskQuestionHandler<
-		K extends keyof SpruceSchemas.local.NamedTemplateItem.INamedTemplateItem = keyof SpruceSchemas.local.NamedTemplateItem.INamedTemplateItem,
-		V extends Partial<
-			SpruceSchemas.local.NamedTemplateItem.INamedTemplateItem
-		> = Partial<SpruceSchemas.local.NamedTemplateItem.INamedTemplateItem>
+		K extends keyof SpruceSchemas.local.INamedTemplateItem = keyof SpruceSchemas.local.INamedTemplateItem,
+		V extends Partial<SpruceSchemas.local.INamedTemplateItem> = Partial<
+			SpruceSchemas.local.INamedTemplateItem
+		>
 	>(fieldName: K, fieldDefinition: FieldDefinition, values: V) {
 		switch (fieldName) {
 			case 'camelName':

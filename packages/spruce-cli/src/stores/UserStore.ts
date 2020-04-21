@@ -11,8 +11,8 @@ import log from '../lib/log'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
 
-type UserWithToken = SpruceSchemas.local.UserWithToken.IUserWithToken
-type User = SpruceSchemas.local.User.IUser
+type UserWithToken = SpruceSchemas.local.IUserWithToken
+type User = SpruceSchemas.local.IUser
 
 /** Settings i need to save */
 interface IUserStoreSettings extends IBaseStoreSettings {
@@ -119,7 +119,7 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 		const result = await this.mercury.emit<
 			SpruceEvents.core.Gql.IPayload,
 			IMercuryGQLBody<{
-				User: SpruceSchemas.core.User.IUser
+				User: SpruceSchemas.core.IUser
 			}>
 		>({
 			eventName: SpruceEvents.core.Gql.name,
