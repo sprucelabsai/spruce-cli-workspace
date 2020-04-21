@@ -1,4 +1,5 @@
 // Importing your definition
+import SpruceSchemas from '#spruce/schemas/schemas.types'
 import {{camelName}}Definition from '../schemas/{{camelName}}.definition.ts'
 
 // Importing interfaces
@@ -15,5 +16,5 @@ const {{camelName}} = new Schema({{camelName}}Definition, values)
 const {{@key}} = {{../camelName}}.get('{{@key}}');
 {{/each}}
 
-// ensure validitye
+// ensure it validates
 {{camelName}}.validate() // throws SchemaFieldValidationError

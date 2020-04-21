@@ -4,13 +4,15 @@ import {
 	FieldType,
 	ISchemaDefinitionFields,
 	SchemaError,
-	SchemaErrorCode
+	SchemaErrorCode,
+	SchemaField
 } from '@sprucelabs/schema'
 import { toPascal, toCamel } from './NamesUtility'
 import {
 	ISchemaTypesTemplateItem,
 	ISchemaTemplateNames
 } from '@sprucelabs/spruce-templates'
+import Schema from '@sprucelabs/schema'
 
 export default class SchemaUtility extends AbstractUtility {
 	/** Generate interface and type names based off schema name */
@@ -59,29 +61,45 @@ export default class SchemaUtility extends AbstractUtility {
 			}
 
 			// Check children
-			Object.values(definition.fields ?? {}).forEach(field => {
-				if (field.type === FieldType.Schema) {
-					// Find schema reference based on sub schema or looping through all definitions
-					const schemaDefinition =
-						field.options.schema ||
-						definitionsById[field.options.schemaId || 'missing']
+			Object.keys(definition.fields ?? {}).forEach(fieldName => {
+				const field = definition.fields?.[fieldName]
 
-					if (!schemaDefinition) {
-						throw new SchemaError({
-							code: SchemaErrorCode.SchemaNotFound,
-							schemaId:
-								field.options.schemaId ||
-								field.options.schema?.id ||
-								'**MISSING ID**',
-							friendlyMessage: 'Error while resolving schema fields'
+				if (!field) {
+					return
+				}
+
+				if (field.type === FieldType.Schema) {
+					const schemasOrIds = SchemaField.normalizeOptionsToSchemasOrIds(field)
+
+					const schemaDefinitions: ISchemaDefinition[] = schemasOrIds.map(
+						schemaOrId => {
+							const id =
+								typeof schemaOrId === 'string' ? schemaOrId : schemaOrId.id
+							let definition: ISchemaDefinition | undefined
+
+							if (typeof schemaOrId === 'string') {
+								definition = definitionsById[id]
+							} else {
+								if (!definitionsById[id]) {
+									definitionsById[id] = schemaOrId
+								}
+								definition = schemaOrId
+							}
+
+							Schema.validateDefinition(definition)
+							return definition
+						}
+					)
+
+					// Find schema reference based on sub schema or looping through all definitions
+					for (const schemaDefinition of schemaDefinitions) {
+						newItems = this.generateTemplateItems({
+							namespace,
+							definitions: [schemaDefinition],
+							items: newItems,
+							definitionsById
 						})
 					}
-					newItems = this.generateTemplateItems({
-						namespace,
-						definitions: [schemaDefinition],
-						items: newItems,
-						definitionsById
-					})
 				}
 			})
 
@@ -105,33 +123,28 @@ export default class SchemaUtility extends AbstractUtility {
 			Object.keys(definition.fields ?? {}).forEach(name => {
 				const field = definition.fields?.[name]
 
-				// If this is a schema field, lets make sure schema id is set correctly
-				if (
-					field &&
-					field.type === FieldType.Schema &&
-					!field.options.schemaId
-				) {
+				// If this is a schema field, lets make sure schemaIds is set correctly
+				if (field && field.type === FieldType.Schema) {
+					const schemaIds = SchemaField.normalizeOptionsToSchemaIds(field)
+
 					if (!newFields) {
 						newFields = {}
 					}
 
-					// Get the one true id
-					const schemaId = field.options.schema
-						? field.options.schema.id
-						: field.options.schemaId
-
 					// Build new options
 					const newOptions = { ...field.options }
 
-					// No schema or schema id options (set again below)
+					// Everything is normalized as schemaIds
 					delete newOptions.schema
+					delete newOptions.schemas
+					delete newOptions.schemaId
 
 					// Setup new field
 					newFields[name] = {
 						...field,
 						options: {
 							...newOptions,
-							schemaId
+							schemaIds
 						}
 					}
 				}

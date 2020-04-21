@@ -8,7 +8,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 
 		/** {{definition.description}} */
 		export interface I{{pascalName}} {
-			{{> schemaValues definition }}
+			{{> schemaValues schema=definition renderAs="type" }}
 		}
 
 		/** The interface for the schema definition for a {{readableName}} */

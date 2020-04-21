@@ -1,5 +1,5 @@
 import handlebars from 'handlebars'
-import { FieldDefinition, FieldType } from '@sprucelabs/schema'
+import { FieldDefinition, FieldType, SchemaField } from '@sprucelabs/schema'
 import { ISchemaTypesTemplateItem } from '../../index'
 
 /** Renders field options */
@@ -35,23 +35,20 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 		...fieldDefinition.options
 	}
 
-	// If this is a schema type, we need to map it to the related definition
+	// If this is a schema type, we need to map it to it's proper value type
 	if (fieldDefinition.type === FieldType.Schema && updatedOptions) {
-		const matchedTemplateItem = schemaTemplateItems.find(
-			item => item.id === updatedOptions.schemaId
+		const value = handlebars.helpers.fieldDefinitionValueType(
+			fieldDefinition,
+			renderAs === 'type' ? 'definition' : 'value',
+			options
 		)
 
 		// Swap out id for reference
-		if (matchedTemplateItem) {
-			delete updatedOptions.schemaId
-			updatedOptions.schema = `SpruceSchemas.${matchedTemplateItem.namespace}.${
-				matchedTemplateItem.pascalName
-			}.${renderAs === 'type' ? 'IDefinition' : 'definition'}`
-		} else {
-			throw new Error(
-				`fieldDefinitionOptions could not find schema ${updatedOptions.schemaId}`
-			)
-		}
+		delete updatedOptions.schemaId
+		delete updatedOptions.schema
+		delete updatedOptions.schemaIds
+
+		updatedOptions.schemas = value
 	}
 
 	// No options, undefined is acceptable
@@ -64,7 +61,7 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 		// @ts-ignore TODO how to type this
 		const value = updatedOptions[key]
 		template += `${key}: `
-		if (key === 'schemaId' || key === 'schema') {
+		if (key === 'schemas') {
 			template += `${value},`
 		} else if (typeof value !== 'string') {
 			template += `${JSON.stringify(value)},`

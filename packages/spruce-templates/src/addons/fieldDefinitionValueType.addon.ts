@@ -1,10 +1,16 @@
 import handlebars from 'handlebars'
-import { FieldDefinition, FieldClassMap, FieldType } from '@sprucelabs/schema'
+import {
+	FieldDefinition,
+	FieldClassMap,
+	FieldType,
+	SchemaField
+} from '@sprucelabs/schema'
 import { ISchemaTypesTemplateItem } from '../..'
 
 /* The type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */
 handlebars.registerHelper('fieldDefinitionValueType', function(
 	fieldDefinition: FieldDefinition,
+	renderAs: string,
 	options
 ) {
 	const {
@@ -15,8 +21,20 @@ handlebars.registerHelper('fieldDefinitionValueType', function(
 	const schemaTemplateItems: ISchemaTypesTemplateItem[] | undefined =
 		root?.schemaTemplateItems
 
+	if (
+		renderAs !== 'value' &&
+		renderAs !== 'type' &&
+		renderAs !== 'definition'
+	) {
+		throw new Error(
+			'fieldDefinitionValueType helper needs renderAs to be "type" or "value"'
+		)
+	}
+
 	if (!schemaTemplateItems) {
-		throw new Error('You must pass schemaTemplateItems to render this script')
+		throw new Error(
+			'fieldDefinitionValueType helper needs schemaTemplateItems is the root context'
+		)
 	}
 
 	const { type } = fieldDefinition
@@ -26,16 +44,39 @@ handlebars.registerHelper('fieldDefinitionValueType', function(
 	let typeLiteral
 	switch (fieldDefinition.type) {
 		case FieldType.Schema: {
-			const matchedTemplateItem = schemaTemplateItems.find(
-				item => item.id === fieldDefinition.options.schemaId
-			)
+			const schemaIds = SchemaField.normalizeOptionsToSchemaIds(fieldDefinition)
+			const ids: string[] = []
 
-			if (matchedTemplateItem) {
-				typeLiteral = `SpruceSchemas.${matchedTemplateItem.namespace}.${matchedTemplateItem.pascalName}.I${matchedTemplateItem.pascalName}`
-			} else {
-				throw new Error(
-					`fieldDefinitionValueType help could not find schema ${fieldDefinition.options.schemaId}`
+			schemaIds.forEach(schemaId => {
+				const matchedTemplateItem = schemaTemplateItems.find(
+					item => item.id === schemaId
 				)
+
+				if (matchedTemplateItem) {
+					ids.push(
+						`SpruceSchemas.${matchedTemplateItem.namespace}.${
+							matchedTemplateItem.pascalName
+						}.${
+							renderAs === 'type'
+								? `I${matchedTemplateItem.pascalName}`
+								: renderAs === 'definition'
+								? `IDefinition`
+								: `definition`
+						}`
+					)
+				} else {
+					throw new Error(
+						`fieldDefinitionValueType help could not find schema ${fieldDefinition.options.schemaIds?.join(
+							', '
+						)}`
+					)
+				}
+			})
+
+			if (renderAs === 'type') {
+				typeLiteral = ids.join(' | ')
+			} else {
+				typeLiteral = '[' + ids.join(', ') + ']'
 			}
 
 			break

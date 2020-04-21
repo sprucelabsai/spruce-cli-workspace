@@ -130,19 +130,6 @@ export const templates = {
 		return template(options)
 	},
 
-	/** The types file to support a definition */
-	definitionTypes(options: {
-		definition: ISchemaDefinition
-		schemaTemplateItems: ISchemaTypesTemplateItem[]
-		camelName: string
-		pascalName: string
-		relativeToDefinition: string
-		description: string
-	}) {
-		const template = handlebars.compile(definitionTypes)
-		return template(options)
-	},
-
 	/** For creating an error class */
 	error(options: {
 		errors: { pascalName: string; readableName: string }[]

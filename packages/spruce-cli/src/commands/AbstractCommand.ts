@@ -118,6 +118,11 @@ export default abstract class AbstractCommand extends TerminalUtility {
 		return this.generators.core.deleteFile(destination)
 	}
 
+	/** Delete a directory */
+	public deleteDir(destination: string) {
+		return this.generators.core.deleteDir(destination)
+	}
+
 	/** Does a file exist */
 	public doesFileExist(destination: string) {
 		return this.generators.core.doesFileExist(this.resolvePath(destination))

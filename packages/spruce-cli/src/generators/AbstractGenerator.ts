@@ -50,6 +50,13 @@ export default abstract class AbstractGenerator {
 		}
 	}
 
+	/** Delete a directory and all it's contents */
+	public deleteDir(destination: string) {
+		if (fs.existsSync(destination)) {
+			fs.removeSync(destination)
+		}
+	}
+
 	/** Does this file exist */
 	public doesFileExist(destination: string) {
 		return fs.existsSync(destination)

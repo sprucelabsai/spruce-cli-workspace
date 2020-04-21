@@ -3,8 +3,8 @@ import {
 	ISchemaDefinition,
 	FieldClassMap,
 	FieldType,
-	IFieldTemplateDetails,
-	IFieldRegistration
+	IFieldRegistration,
+	IFieldTemplateDetails
 } from '@sprucelabs/schema'
 import {
 	ISchemaTypesTemplateItem,
@@ -47,12 +47,32 @@ export default class SchemaStore extends AbstractStore {
 		]
 
 		// Each skill's slug will be the namespace
-		const templateItems = this.utilities.schema.generateTemplateItems({
+		const coreTemplateItems = this.utilities.schema.generateTemplateItems({
 			namespace: 'core',
 			definitions: schemas
 		})
 
-		return templateItems
+		// Local
+		const localDefinitions = await Promise.all(
+			(
+				await globby([
+					path.join(this.cwd, '/build/src/schemas/*.definition.js'),
+					path.join(this.cwd, '/src/schemas/*.definition.ts')
+				])
+			).map(async path => {
+				const definition = await this.utilities.child.importDefault<
+					ISchemaDefinition
+				>(path)
+				return definition
+			})
+		)
+
+		const localTemplateItems = this.utilities.schema.generateTemplateItems({
+			namespace: 'local',
+			definitions: localDefinitions
+		})
+
+		return [...coreTemplateItems, ...localTemplateItems]
 	}
 
 	/** All field types from all skills we depend on */
