@@ -39,7 +39,7 @@
 		"src/errors/**/*.ts": {
 			"isEnabled": true,
 			"commands": [
-				"node ./index error:sync"
+				"node ./index error:sync --clean"
 			]
 		}
 	}

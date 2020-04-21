@@ -10,14 +10,14 @@ export enum ErrorCode {
     /** * Autoloader creation failed */
     CreateAutoloaderFailed = 'CREATE_AUTOLOADER_FAILED',
     
+    /** * When you're too lazy to make a new error */
+    Generic = 'GENERIC',
+    
     /** * The definition file failed to import */
     DefinitionFailedToImport = 'DEFINITION_FAILED_TO_IMPORT',
     
     /** * Failed to import a file through VM */
     FailedToImport = 'FAILED_TO_IMPORT',
-    
-    /** * When you're too lazy to make a new error */
-    Generic = 'GENERIC',
     
     /** * Not sure what happened, but it has something to do with Mercury */
     GenericMercury = 'GENERIC_MERCURY',
@@ -25,11 +25,11 @@ export enum ErrorCode {
     /** * The command is not valid, try --help */
     InvalidCommand = 'INVALID_COMMAND',
     
-    /** * This command has not yet been implemented  */
-    NotImplemented = 'NOT_IMPLEMENTED',
-    
     /** * A reserved js keyword was used */
     ReservedKeyword = 'RESERVED_KEYWORD',
+    
+    /** * This command has not yet been implemented  */
+    NotImplemented = 'NOT_IMPLEMENTED',
     
     /** * Could not transpile (ts -> js) a script */
     TranspileFailed = 'TRANSPILE_FAILED',
