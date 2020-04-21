@@ -1,8 +1,8 @@
 import { camelCase, snakeCase, upperFirst } from 'lodash'
 import { FieldDefinition } from '@sprucelabs/schema'
-import { INamedTemplateItem } from '../../.spruce/schemas/namedTemplateItem.types'
 import AbstractUtility from './AbstractUtility'
 import path from 'path'
+import { SpruceSchemas } from '../../.spruce/schemas/schemas.types'
 
 /** First name => FirstName */
 export function toCamel(name: string) {
@@ -42,8 +42,10 @@ export default class NamesUtility extends AbstractUtility {
 
 	/** Help guess on answers */
 	public onWillAskQuestionHandler<
-		K extends keyof INamedTemplateItem = keyof INamedTemplateItem,
-		V extends Partial<INamedTemplateItem> = Partial<INamedTemplateItem>
+		K extends keyof SpruceSchemas.local.NamedTemplateItem.INamedTemplateItem = keyof SpruceSchemas.local.NamedTemplateItem.INamedTemplateItem,
+		V extends Partial<
+			SpruceSchemas.local.NamedTemplateItem.INamedTemplateItem
+		> = Partial<SpruceSchemas.local.NamedTemplateItem.INamedTemplateItem>
 	>(fieldName: K, fieldDefinition: FieldDefinition, values: V) {
 		switch (fieldName) {
 			case 'camelName':

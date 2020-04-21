@@ -6,7 +6,8 @@ import { parse as parseEnv } from 'dotenv'
 import fs from 'fs-extra'
 import path from 'path'
 import log from '../lib/log'
-import { ISkill } from '#spruce/schemas/skill.types'
+
+type ISkill = SpruceSchemas.local.Skill.ISkill
 
 export interface ISkillStoreSettings extends IBaseStoreSettings {
 	loggedInSkill: SpruceSchemas.core.Skill.ISkill

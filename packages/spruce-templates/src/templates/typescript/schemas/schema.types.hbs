@@ -3,13 +3,15 @@ import * as SpruceSchema from '@sprucelabs/schema'
 
 {{#each schemaTemplateItems}}
 
-	export namespace SpruceSchemas.{{namespace}}.{{pascalName}} {
-		export const id = '{{{escape id}}}'
-
+	export namespace SpruceSchema.{{namespace}} {
 		/** {{definition.description}} */
 		export interface I{{pascalName}} {
 			{{> schemaValues schema=definition renderAs="type" }}
 		}
+	}	 
+
+	export namespace SpruceSchemas.{{namespace}}.{{pascalName}} {
+		export const id = '{{{escape id}}}'
 
 		/** The interface for the schema definition for a {{readableName}} */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
