@@ -18,6 +18,8 @@ enum WatchAction {
 	Quit = 'q'
 }
 
+const DEBOUNCE_MS = 100
+
 export default class WatchCommand extends AbstractCommand {
 	private watcher!: FSWatcher
 	/** Key / value where key is the glob and value is the command to execute */
@@ -41,8 +43,14 @@ export default class WatchCommand extends AbstractCommand {
 			ignoreInitial: true
 		})
 
-		this.watcher.on('change', _.debounce(this.handleFileChange.bind(this), 100))
-		this.watcher.on('add', this.handleFileAdd.bind(this))
+		this.watcher.on(
+			'change',
+			_.debounce(this.handleFileChange.bind(this), DEBOUNCE_MS)
+		)
+		this.watcher.on(
+			'add',
+			_.debounce(this.handleFileAdd.bind(this), DEBOUNCE_MS)
+		)
 		this.watcher.on('error', this.handleWatcherError.bind(this))
 		this.watcher.on('ready', this.handleReady.bind(this))
 
@@ -136,7 +144,7 @@ export default class WatchCommand extends AbstractCommand {
 	}
 
 	private handleFileAdd(path: string) {
-		log.trace(`${path} added`)
+		return this.handleFileChange(path)
 	}
 
 	private handleWatcherError(e: Error) {

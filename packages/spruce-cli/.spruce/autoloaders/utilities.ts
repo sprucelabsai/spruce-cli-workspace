@@ -5,6 +5,7 @@ import AbstractUtility from '../../src/utilities/AbstractUtility'
 import Bootstrap from '../../src/utilities/BootstrapUtility'
 import Child from '../../src/utilities/ChildUtility'
 import Names from '../../src/utilities/NamesUtility'
+import Parser from '../../src/utilities/ParserUtility'
 import Pkg from '../../src/utilities/PkgUtility'
 import Schema from '../../src/utilities/SchemaUtility'
 import Terminal from '../../src/utilities/TerminalUtility'
@@ -17,6 +18,7 @@ export interface IUtilities {
 	bootstrap: Bootstrap
 	child: Child
 	names: Names
+	parser: Parser
 	pkg: Pkg
 	schema: Schema
 	terminal: Terminal
@@ -41,6 +43,10 @@ export default async function autoloader(options: {
 	if (after) {
 		await after(names)
 	}
+	const parser = new Parser(constructorOptions)
+	if (after) {
+		await after(parser)
+	}
 	const pkg = new Pkg(constructorOptions)
 	if (after) {
 		await after(pkg)
@@ -62,6 +68,7 @@ export default async function autoloader(options: {
 		bootstrap,
 		child,
 		names,
+		parser,
 		pkg,
 		schema,
 		terminal,
