@@ -13,7 +13,7 @@ export default class ChildUtility extends AbstractUtility {
 			throw new SpruceError({
 				code: ErrorCode.FailedToImport,
 				file,
-				details: `I couldn't find the definition file`
+				friendlyMessage: `I couldn't find the definition file`
 			})
 		}
 

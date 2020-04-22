@@ -51,8 +51,8 @@ export default class SchemaStore extends AbstractStore {
 		const localDefinitions = await Promise.all(
 			(
 				await globby([
-					path.join(this.cwd, '/build/src/schemas/*.definition.js'),
-					path.join(this.cwd, '/src/schemas/*.definition.ts')
+					path.join(this.cwd, '/build/src/schemas/**/*.definition.js'),
+					path.join(this.cwd, '/src/schemas/**/*.definition.ts')
 				])
 			).map(async path => {
 				const definition = await this.utilities.child.importDefault<

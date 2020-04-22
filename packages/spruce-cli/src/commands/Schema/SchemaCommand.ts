@@ -180,8 +180,19 @@ export default class SchemaCommand extends AbstractCommand {
 
 		await this.writeFile(definitionDestination, definition)
 
+		this.info(`Definition created at ${definitionDestination}`)
+
 		// TODO don't call one command from another
-		cmd.destinationDir = typesDestination
-		await this.sync(cmd)
+		try {
+			cmd.destinationDir = typesDestination
+			await this.sync(cmd)
+		} catch (err) {
+			this.stopLoading()
+			this.warn('I was not able to sync it with #spruce/schemas/schemas.types')
+			this.warn(
+				"You won't be able to use your new definition until the below error is fixed and you run `spruce schema:sync`"
+			)
+			this.handleError(err)
+		}
 	}
 }

@@ -21,7 +21,7 @@ export default class VmService extends AbstractService {
 				code: ErrorCode.DefinitionFailedToImport,
 				file,
 				originalError: err,
-				details:
+				friendlyMessage:
 					'The definition imported is not valid. Make sure it is "export default build[Schema|Error|Field]Definition"'
 			})
 		}

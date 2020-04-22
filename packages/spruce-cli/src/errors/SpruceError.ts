@@ -51,7 +51,7 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				break
 
 			case ErrorCode.DefinitionFailedToImport:
-				message = `Error importing "${options.file}". ${options.details}.`
+				message = `Error importing "${options.file}". ${options.friendlyMessage}.`
 				message += `\nVm Error: ${this.originalError?.message}`
 				break
 
@@ -63,7 +63,7 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				break
 
 			case ErrorCode.FailedToImport:
-				message = `Failed to import ${options.file} through VM`
+				message = `Failed to import ${options.file}`
 				message + options.friendlyMessage
 					? `\n\n${options.friendlyMessage}`
 					: ''
@@ -76,7 +76,7 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 
 		return `${options.code}: ${message} ${
 			this.originalError
-				? `\n\nOriginal error: ${this.originalError.message}\n${this.originalError.stack}`
+				? `\n\nOriginal error: ${this.originalError.message}`
 				: ''
 		}`
 	}

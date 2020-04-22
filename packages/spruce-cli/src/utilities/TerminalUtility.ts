@@ -404,14 +404,18 @@ export default class TerminalUtility extends AbstractUtility {
 		const message = err.message
 		// Remove message from stack so the message is not doubled up
 		const stack = err.stack ? err.stack.replace(message, '') : ''
-
+		const stackLines = stack.split('\n')
 		this.section({
 			headline: message,
-			lines: stack.split('/n'),
+			lines: stackLines.splice(0, 100),
 			headlineEffects: [ITerminalEffect.Bold, ITerminalEffect.Red],
 			barEffects: [ITerminalEffect.Red],
 			bodyEffects: [ITerminalEffect.Red]
 		})
+
+		this.info(
+			'You can always run `DEBUG=@sprucelabs/cli spruce [command]` to get debug information'
+		)
 	}
 }
 

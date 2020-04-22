@@ -4,6 +4,8 @@ import pathUtil from 'path'
 import { exec } from 'child_process'
 import { set } from 'lodash'
 import log from '../lib/log'
+import SpruceError from '../errors/SpruceError'
+import { ErrorCode } from '../../.spruce/errors/codes.types'
 
 export interface IAddOptions {
 	dev?: boolean
@@ -27,8 +29,17 @@ export default class PkgUtility extends AbstractUtility {
 		const source = dir ?? this.cwd
 		const packagePath = pathUtil.join(source, 'package.json')
 		const contents = fs.readFileSync(packagePath).toString()
-		const parsed = JSON.parse(contents)
-		return parsed
+		try {
+			const parsed = JSON.parse(contents)
+			return parsed
+		} catch (err) {
+			throw new SpruceError({
+				code: ErrorCode.FailedToImport,
+				file: packagePath,
+				originalError: err,
+				friendlyMessage: 'Bad JSON'
+			})
+		}
 	}
 
 	/** Check if a package is installed */
