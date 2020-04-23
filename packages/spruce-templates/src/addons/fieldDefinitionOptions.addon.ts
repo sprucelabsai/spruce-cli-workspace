@@ -13,7 +13,9 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 	options
 ) {
 	if (!fieldDefinition) {
-		return '"**fieldDefinitionOptions error: MISSING FIELD DEFINITION"'
+		throw new Error(
+			'fieldDefinitionOptions helper needs a FieldDefinition as the first argument'
+		)
 	}
 
 	if (

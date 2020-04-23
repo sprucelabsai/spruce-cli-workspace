@@ -7,7 +7,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import log from '../lib/log'
 
-type ISkill = SpruceSchemas.local.ISkill
+type ISkill = SpruceSchemas.local.ICliSkill
 
 export interface ISkillStoreSettings extends IBaseStoreSettings {
 	loggedInSkill: ISkill

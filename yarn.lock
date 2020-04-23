@@ -1955,6 +1955,19 @@
     mime-db "^1.43.0"
     mime-type "^3.0.7"
 
+"@sprucelabs/schema@^1.5.2":
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.5.2.tgz#a155d2009c655010f5d9fb3c870a6c9c921067a6"
+  integrity sha512-MQaH+hZB5EzyQjNaY+OpBJGHAKpSlbQyGfXa9hPTXAR0Coo4Br2gtZ9a2+6AFA3+A94r2Yx5ASoXq1tIWaZerA==
+  dependencies:
+    "@sprucelabs/error" "^1.2.0"
+    "@sprucelabs/log" "^10.2.1"
+    "@sprucelabs/path-resolver" "^1.2.1"
+    google-libphonenumber "^3.2.8"
+    libphonenumber-js "^1.7.48"
+    mime-db "^1.43.0"
+    mime-type "^3.0.7"
+
 "@sprucelabs/test@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-2.0.0.tgz#4cddf11be3090b14c3fa173cccae271ff210dd60"

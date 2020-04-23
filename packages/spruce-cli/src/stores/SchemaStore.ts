@@ -32,7 +32,9 @@ export default class SchemaStore extends AbstractStore {
 	public name = 'schema'
 
 	/** Get the schema map supplied by core */
-	public async schemaTemplateItems(): Promise<ISchemaTemplateItem[]> {
+	public async schemaTemplateItems(): Promise<
+		(ISchemaTemplateItem | SpruceError)[]
+	> {
 		/** Get all schemas from api  */
 		// TODO load from api
 		const schemas: ISchemaDefinition[] = [
@@ -51,7 +53,7 @@ export default class SchemaStore extends AbstractStore {
 		})
 
 		// Local
-		const localDefinitions = await Promise.all(
+		const localErrorsOrDefinitions = await Promise.all(
 			(
 				await globby([path.join(this.cwd, '/src/schemas/**/*.definition.ts')])
 			).map(async file => {
@@ -60,7 +62,7 @@ export default class SchemaStore extends AbstractStore {
 					Schema.validateDefinition(definition)
 					return definition
 				} catch (err) {
-					throw new SpruceError({
+					return new SpruceError({
 						code: ErrorCode.DefinitionFailedToImport,
 						file,
 						originalError: err
@@ -69,8 +71,18 @@ export default class SchemaStore extends AbstractStore {
 			})
 		)
 
+		// Break out errors and definitions for
+		const errors = localErrorsOrDefinitions.filter(
+			local => !Schema.isDefinitionValid(local)
+		) as SpruceError[]
+
+		const localDefinitions = localErrorsOrDefinitions.filter(local =>
+			Schema.isDefinitionValid(local)
+		) as ISchemaDefinition[]
+
 		// If a local schema points to a core one, it requires the core one to be tracked in "definitionsById"
 		const definitionsById: { [id: string]: ISchemaDefinition } = {}
+
 		coreTemplateItems.forEach(templateItem => {
 			definitionsById[templateItem.id] = templateItem.definition
 		})
@@ -81,7 +93,7 @@ export default class SchemaStore extends AbstractStore {
 			items: coreTemplateItems
 		})
 
-		return allTemplateItems
+		return [...allTemplateItems, ...errors]
 	}
 
 	/** All field types from all skills we depend on */
@@ -139,7 +151,7 @@ export default class SchemaStore extends AbstractStore {
 			let importAs = registration.importAs
 
 			if (addon.isLocal) {
-				pkg = `../../src/fields/${registration.className}`
+				pkg = `#spruce/../src/fields/${registration.className}`
 				importAs = `generated_import_${generatedImportAsCount++}`
 			}
 

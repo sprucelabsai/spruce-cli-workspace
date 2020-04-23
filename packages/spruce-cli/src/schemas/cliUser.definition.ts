@@ -1,9 +1,9 @@
 import { buildSchemaDefinition } from '@sprucelabs/schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
-const userDefinition = buildSchemaDefinition({
+const cliUserDefinition = buildSchemaDefinition({
 	...SpruceSchemas.core.User.definition,
-	id: 'user',
+	id: 'cliUser',
 	description: 'A stripped down user for the cli',
 	fields: {
 		id: SpruceSchemas.core.User.definition.fields.id,
@@ -11,4 +11,4 @@ const userDefinition = buildSchemaDefinition({
 	}
 })
 
-export default userDefinition
+export default cliUserDefinition
