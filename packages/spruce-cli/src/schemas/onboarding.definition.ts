@@ -1,7 +1,7 @@
 import { buildSchemaDefinition, FieldType } from '@sprucelabs/schema'
 
 const onboardingDefinition = buildSchemaDefinition({
-	id: 'onboarding-store',
+	id: 'onboardingStore',
 	name: 'Onboarding store',
 	fields: {
 		isEnabled: {

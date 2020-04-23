@@ -5,12 +5,12 @@ import {
 	ISchemaDefinitionFields,
 	SchemaError,
 	SchemaErrorCode,
-	SchemaField,
 	ISchemaTemplateItem,
-	ISchemaTemplateNames
+	ISchemaTemplateNames,
+	default as Schema
 } from '@sprucelabs/schema'
+import SchemaField from '@sprucelabs/schema/build/fields/SchemaField'
 import { toPascal, toCamel } from './NamesUtility'
-import Schema from '@sprucelabs/schema'
 import log from '../lib/log'
 
 export default class SchemaUtility extends AbstractUtility {
@@ -38,7 +38,28 @@ export default class SchemaUtility extends AbstractUtility {
 		let newItems = [...items]
 		const newDefinitions: ISchemaDefinition[] = []
 		const alreadyImported = function(definition: ISchemaDefinition) {
-			return !!newItems.find(item => item.definition.id === definition.id)
+			// Find a match
+			const match = newItems.find(
+				item => item.definition.id.toLowerCase() === definition.id.toLowerCase()
+			)
+
+			// If we found a match but it does not match that we already imported, throw an error
+			if (
+				match &&
+				!Schema.areDefinitionsTheSame(match.definition, definition)
+			) {
+				throw new SchemaError({
+					code: SchemaErrorCode.DuplicateSchema,
+					schemaId: definition.id,
+					friendlyMessage: `This can happen if two definitions have the same id. Checkout the 2 schemas (labeled left/right). Try running \`DEBUG=* spruce schema:sync\` to see additional logging. If you still can't figure it out, checkout the docs for more debugging tips: \n\nhttps://developer.spruce.ai/#/schemas/index?id=relationships\n\nLeft: ${JSON.stringify(
+						definition,
+						null,
+						2
+					)}\n\nRight: ${JSON.stringify(match.definition, null, 2)}`
+				})
+			}
+
+			return !!match
 		}
 
 		// Keep track of all definitions (and make sure two with the same id weren't passed)

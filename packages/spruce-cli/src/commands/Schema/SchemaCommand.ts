@@ -2,6 +2,7 @@ import { Command } from 'commander'
 import AbstractCommand from '../AbstractCommand'
 import { templates } from '@sprucelabs/spruce-templates'
 import { SpruceSchemas } from '../../../.spruce/schemas/schemas.types'
+import { ISchemaTemplateItem } from '@sprucelabs/schema'
 
 export default class SchemaCommand extends AbstractCommand {
 	/** Sets up commands */
@@ -59,8 +60,21 @@ export default class SchemaCommand extends AbstractCommand {
 		this.startLoading('Fetching schemas and field types')
 
 		// Load types and namespaces
-		const schemaTemplateItems = await this.stores.schema.schemaTemplateItems()
+		const schemaTemplateItemsOrErrors = await this.stores.schema.schemaTemplateItems()
 		const fieldTemplateItems = await this.stores.schema.fieldTemplateItems()
+
+		// Pull out errors and schemaTemplateItems
+		const schemaTemplateItems = schemaTemplateItemsOrErrors.filter(
+			item => !(item instanceof Error)
+		) as ISchemaTemplateItem[]
+
+		const schemaTemplateErrors = schemaTemplateItemsOrErrors.filter(
+			item => item instanceof Error
+		) as Error[]
+
+		if (!schemaTemplateErrors) {
+			throw new Error('work in progress')
+		}
 
 		// Field Types
 		const fieldTypesContent = templates.fieldsTypes({
@@ -94,10 +108,6 @@ export default class SchemaCommand extends AbstractCommand {
 
 		this.stopLoading()
 
-		this.info(
-			`Found ${schemaTemplateItems.length} schema definitions and ${fieldTemplateItems.length} field types, writing files`
-		)
-
 		if (clean) {
 			const pass =
 				force ||
@@ -114,6 +124,10 @@ export default class SchemaCommand extends AbstractCommand {
 			destinationDir,
 			'fields',
 			'fields.types.ts'
+		)
+
+		this.startLoading(
+			`Found ${schemaTemplateItems.length} schema definitions and ${fieldTemplateItems.length} field types, writing files`
 		)
 
 		await this.writeFile(fieldTypesDestination, fieldTypesContent)
@@ -133,8 +147,9 @@ export default class SchemaCommand extends AbstractCommand {
 			'schemas.types.ts'
 		)
 		await this.writeFile(schemaTypesDestination, schemaTypesContents)
-
 		await this.pretty()
+
+		this.stopLoading()
 
 		this.clear()
 		this.info(`All done 👊. I created 3 files.`)

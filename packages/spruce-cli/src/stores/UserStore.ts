@@ -5,14 +5,14 @@ import { IMercuryGQLBody } from '@sprucelabs/mercury'
 import { SpruceEvents } from '../types/events-generated'
 import gql from 'graphql-tag'
 import Schema from '@sprucelabs/schema'
-import userWithTokenDefinition from '../schemas/userWithToken.definition'
-import userDefinition from '../schemas/user.definition'
+import userWithTokenDefinition from '../schemas/cliUserWithToken.definition'
+import userDefinition from '../schemas/cliUser.definition'
 import log from '../lib/log'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
 
-type UserWithToken = SpruceSchemas.local.IUserWithToken
-type User = SpruceSchemas.local.IUser
+type UserWithToken = SpruceSchemas.local.ICliUserWithToken
+type User = SpruceSchemas.local.ICliUser
 
 /** Settings i need to save */
 interface IUserStoreSettings extends IBaseStoreSettings {
