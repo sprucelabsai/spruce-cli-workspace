@@ -1019,6 +1019,11 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-1.0.12.tgz#16cdae2b17e661eb54c4140bc5a8eeeafb3b376a"
   integrity sha512-fri1ulGDaDVXrTNNf6Cn51LWmlISnWo3024Ufb0hMi3gmnMcgqonAwbb8/4v09AidDUvCuwkEBw7VkR3LGWjVw==
 
+"@sprucelabs/error@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-1.2.0.tgz#db78e68eaf1fd18b09810ea5a377baae67dd5d06"
+  integrity sha512-vpC9NgI/0GEEh8X79peu/dDPOaw/jdVok0JUB2KoNhrgZChdZSPmWy9D4CNY6AkCRICDHhbmE5GSYpqUTsi8Dw==
+
 "@sprucelabs/log@^10.2.1":
   version "10.2.1"
   resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.1.tgz#acd368915e5d763ec4588165e8ccc69db6ed8c42"
@@ -1043,10 +1048,10 @@
   dependencies:
     "@sprucelabs/log" "^10.2.1"
 
-"@sprucelabs/path-resolver@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/path-resolver/-/path-resolver-1.2.0.tgz#4b5476b68cc023974074b41e430b29d9b97c0a9f"
-  integrity sha512-RyEUs8IWob/Fl17SKyOaIFKkceHdtJ5sz4iBCNfemZC0+EhHiuuLqEsldDmOldy2NS4MmKctEVSZSurO+uXFUg==
+"@sprucelabs/path-resolver@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/path-resolver/-/path-resolver-1.2.1.tgz#9407a2b35b88ac6eeb42083d420095e830b76c31"
+  integrity sha512-zM69ggcTi0MSNm35f1HmenMwnIEAz5mz2MKtiWnKUMEgdWeJhoW10Nzr5N6G9FYAifJmmUZwkvNP+nPixisPPg==
   dependencies:
     "@sprucelabs/error" "^1.0.11"
     "@sprucelabs/log" "^10.2.1"
@@ -1059,6 +1064,19 @@
     "@sprucelabs/error" "^1.0.12"
     "@sprucelabs/log" "^10.2.1"
     "@sprucelabs/path-resolver" "^1.0.13"
+    google-libphonenumber "^3.2.8"
+    libphonenumber-js "^1.7.48"
+    mime-db "^1.43.0"
+    mime-type "^3.0.7"
+
+"@sprucelabs/schema@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.5.0.tgz#a2c9ac134709f7e551eb1dc456ed6f91770c69b6"
+  integrity sha512-Jw4yWzNHne+GjZdzeW54wdqCVZAaNvwfWiP51ZUNVb5g9mt/w0GZQ4N9D0pW17XNmDB4oYP2BK7T63tmsUtw+g==
+  dependencies:
+    "@sprucelabs/error" "^1.2.0"
+    "@sprucelabs/log" "^10.2.1"
+    "@sprucelabs/path-resolver" "^1.2.1"
     google-libphonenumber "^3.2.8"
     libphonenumber-js "^1.7.48"
     mime-db "^1.43.0"
