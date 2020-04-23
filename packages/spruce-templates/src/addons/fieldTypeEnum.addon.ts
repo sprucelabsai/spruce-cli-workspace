@@ -1,5 +1,5 @@
 import handlebars from 'handlebars'
-import { FieldDefinition, FieldType } from '@sprucelabs/schema'
+import { FieldDefinition } from '@sprucelabs/schema'
 
 /* The enum for schema.fields.fieldName.type as a string */
 handlebars.registerHelper('fieldTypeEnum', function(
@@ -9,9 +9,12 @@ handlebars.registerHelper('fieldTypeEnum', function(
 		return '"**fieldTypeEnum error: MISSING FIELD TYPE ENUM**"'
 	}
 
-	const keys = Object.keys(FieldType)
-	const values = Object.values(FieldType)
-	const match = values.indexOf(fieldDefinition.type)
+	debugger
 
-	return `SpruceSchema.FieldType.${keys[match]}`
+	// Const keys = Object.keys(FieldType)
+	// const values = Object.values(FieldType)
+	// const match = values.indexOf(fieldDefinition.type)
+
+	const type = 'Text'
+	return `SpruceSchema.FieldType.${type}`
 })

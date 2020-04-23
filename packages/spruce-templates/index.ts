@@ -6,7 +6,9 @@ import log from './src/lib/log'
 import {
 	ISchemaDefinition,
 	ISchemaTemplateItem,
-	IFieldTemplateItem
+	IFieldTemplateItem,
+	FieldDefinition,
+	TemplateRenderAs
 } from '@sprucelabs/schema'
 
 // Import addons
@@ -24,6 +26,10 @@ import './src/addons/schemaValuesPartial.addon'
 import importExtractor from './src/utilities/importExtractor'
 
 log.info('Addons imported')
+
+export interface IValueTypeGenerator {
+	(renderAs: TemplateRenderAs, definition: FieldDefinition): string
+}
 
 // Import actual templates
 const templatePath = path.join(__dirname, 'src', 'templates', 'typescript')
@@ -88,6 +94,7 @@ export const templates = {
 	schemasTypes(options: {
 		schemaTemplateItems: ISchemaTemplateItem[]
 		fieldTemplateItems: IFieldTemplateItem[]
+		valueTypeGenerator: IValueTypeGenerator
 	}) {
 		const imports = importExtractor(options.fieldTemplateItems)
 		const template = handlebars.compile(schemasTypes)
@@ -213,5 +220,6 @@ export const templates = {
 
 /** All the templates */
 export type Templates = typeof templates
+export { default as importExtractor } from './src/utilities/importExtractor'
 
 export default handlebars

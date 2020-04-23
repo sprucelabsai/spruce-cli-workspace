@@ -72,10 +72,24 @@ export default class SchemaCommand extends AbstractCommand {
 			fieldTemplateItems
 		})
 
+		// Build the FieldClassMap to pass to schemasTypes
+		const valueTypes = await this.services.valueType.allValueTypes({
+			schemaTemplateItems,
+			fieldTemplateItems
+		})
+
 		// Schema types
 		const schemaTypesContents = templates.schemasTypes({
 			schemaTemplateItems,
-			fieldTemplateItems
+			fieldTemplateItems,
+			valueTypeGenerator: (renderAs, definition) => {
+				const key = this.services.valueType.generateKey(renderAs, definition)
+				const valueType = valueTypes[key]
+				if (!valueType) {
+					throw new Error(`failed to find ${renderAs} for ${key}`)
+				}
+				return valueType
+			}
 		})
 
 		this.stopLoading()
@@ -121,7 +135,6 @@ export default class SchemaCommand extends AbstractCommand {
 		await this.writeFile(schemaTypesDestination, schemaTypesContents)
 
 		await this.pretty()
-		await this.build()
 
 		this.clear()
 		this.info(`All done 👊. I created 3 files.`)

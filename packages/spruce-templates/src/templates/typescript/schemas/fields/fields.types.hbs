@@ -2,10 +2,10 @@ import { FieldType } from '#spruce:schema/fields/fieldType'
 
 {{#each fieldTemplateItems}}
 {{#if isLocal}}
-import {{pascalName}}, { I{{pascalName}}Definition } from "{{package}}"
+import {{className}}, { I{{pascalName}}Definition } from '{{package}}'
 {{/if}}
 {{#unless isLocal}}
-import { I{{pascalName}}Definition, {{pascalName}} } from "{{package}}"
+import { I{{pascalName}}Definition, {{className}} } from '{{package}}'
 {{/unless}}
 {{/each}}
 
@@ -14,10 +14,10 @@ import { I{{pascalName}}Definition, {{pascalName}} } from "{{package}}"
 export type FieldDefinition = {{#each fieldTemplateItems}}| I{{pascalName}}Definition{{/each}}
 
 /** Field class union */
-export type FieldClass = {{#each fieldTemplateItems}}| typeof {{pascalName}}{{/each}}
+export type FieldClass = {{#each fieldTemplateItems}}| typeof {{className}}{{/each}}
 
 /** Field instance union **/
-export type Field = {{#each fieldTemplateItems}}| {{pascalName}}{{/each}}
+export type Field = {{#each fieldTemplateItems}}| {{className}}{{/each}}
 
 
 /** Type for looking up field definitions by field type */
@@ -30,13 +30,13 @@ export type FieldDefinitionMap = {
 /** Value for looking up field classes by field type */
 export const FieldClassMap: Record<FieldType, FieldClass> = {
 		{{#each fieldTemplateItems}}
-		[FieldType.{{pascalType}}]: {{pascalName}},
+		[FieldType.{{pascalType}}]: {{className}},
 		{{/each}}
 }
 
 /** Interface for looking up classes by field type */
 export interface IFieldClassMap {
 		{{#each fieldTemplateItems}}
-		[FieldType.{{pascalType}}]: {{pascalName}},
+		[FieldType.{{pascalType}}]: {{className}},
 		{{/each}}
 }

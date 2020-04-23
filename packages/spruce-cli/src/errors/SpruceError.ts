@@ -51,8 +51,7 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				break
 
 			case ErrorCode.DefinitionFailedToImport:
-				message = `Error importing "${options.file}". ${options.friendlyMessage}.`
-				message += `\nVm Error: ${this.originalError?.message}`
+				message = `Error importing "${options.file}"`
 				break
 
 			case ErrorCode.BuildFailed:
@@ -64,9 +63,6 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 
 			case ErrorCode.FailedToImport:
 				message = `Failed to import ${options.file}`
-				message + options.friendlyMessage
-					? `\n\n${options.friendlyMessage}`
-					: ''
 
 				break
 
@@ -74,9 +70,19 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				message = super.friendlyMessage()
 		}
 
-		return `${options.code}: ${message} ${
-			this.originalError
-				? `\n\nOriginal error: ${this.originalError.message}`
+		// Drop on code and friendly message
+		message = `${options.code}: ${message}`
+		const fullMessage = `${message}${
+			options.friendlyMessage ? `\n\n${options.friendlyMessage}` : ''
+		}`
+
+		// Handle repeating text from original message by remove it
+		return `${fullMessage}${
+			this.originalError && this.originalError.message !== fullMessage
+				? `\n\nOriginal error: ${this.originalError.message.replace(
+						message,
+						''
+				  )}`
 				: ''
 		}`
 	}
