@@ -38,7 +38,7 @@
 		"local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node --inspect=5200 . $COMMANDS"
 	},
 	"dependencies": {
-		"@sprucelabs/error": "^1.0.11",
+		"@sprucelabs/error": "^1.2.0",
 		"@sprucelabs/log": "^10.2.1",
 		"@sprucelabs/mercury": "10.2.0",
 		"@sprucelabs/path-resolver": "^1.2.1",
