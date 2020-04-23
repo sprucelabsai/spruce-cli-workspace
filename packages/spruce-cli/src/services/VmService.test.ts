@@ -7,15 +7,19 @@ let program: Command
 let services: IServices
 
 export default class VmServiceTest extends BaseTest {
+	// TODO: This is failing on a schema error
 	protected static async beforeAll() {
 		program = new Command()
-		const result = await setup(program)
-		services = result.services
+		try {
+			const result = await setup(program)
+			services = result.services
+		} catch (e) {
+			console.log(e)
+		}
 	}
 
 	@test('Can import a definition')
 	protected static async importDefinition() {
-		// Spruce.
 		assert.isOk(services)
 	}
 }

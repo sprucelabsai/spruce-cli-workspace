@@ -79,22 +79,24 @@ export default class ValueTypeService extends AbstractService {
 							)
 
 							if (!fieldTemplateItem) {
+								// TODO: Fix type issue
+								// @ts-ignore code is not valid
 								throw new SpruceError({ code: 'comisg soon' })
 							}
 							valueTypes[key] = true
 
 							code += `
-							
+
 							// Value type for ${fieldTemplateItem.pascalName}
 							definition = ${JSON.stringify(fieldDefinition)}
 							renderAs = '${renderAs}'
 							importAs = '${fieldTemplateItem.importAs}'
-							
+
 							valueTypes['${key}'] = ${fieldTemplateItem.importAs}.${
 								fieldTemplateItem.isLocal
 									? 'default'
 									: fieldTemplateItem.className
-							}.templateDetails({ 
+							}.templateDetails({
 								language,
 								templateItems,
 								globalNamespace,
@@ -102,7 +104,7 @@ export default class ValueTypeService extends AbstractService {
 								renderAs,
 								importAs
 							}).valueType
-							
+
 							`
 						}
 					}

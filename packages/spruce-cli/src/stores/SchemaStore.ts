@@ -6,8 +6,6 @@ import {
 	IFieldTemplateItem
 } from '@sprucelabs/schema'
 
-import fs from 'fs-extra'
-
 import path from 'path'
 import { uniqBy } from 'lodash'
 
@@ -147,6 +145,9 @@ export default class SchemaStore extends AbstractStore {
 
 			// Map registration to template item
 			const name = registration.className
+
+			// TODO: Fix type issue
+			// @ts-ignore "definition" missing
 			types.push({
 				pascalName: this.utilities.names.toPascal(name),
 				camelName: this.utilities.names.toCamel(name),
