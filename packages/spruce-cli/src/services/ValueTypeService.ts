@@ -79,7 +79,7 @@ export default class ValueTypeService extends AbstractService {
 							)
 
 							if (!fieldTemplateItem) {
-								throw new SpruceError({ code: 'comisg soon' })
+								throw new Error('unknown')
 							}
 							valueTypes[key] = true
 
