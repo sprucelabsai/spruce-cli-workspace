@@ -58,16 +58,6 @@ export default class SchemaStore extends AbstractStore {
 				await globby([path.join(this.cwd, '/src/schemas/**/*.definition.ts')])
 			).map(async file => {
 				try {
-					// Definitions can't import #spruce/schemas because it could break and then definitions can't ever import
-					const contents = fs.readFileSync(file).toString()
-					if (contents.search('#spruce/schemas') > -1) {
-						throw new SpruceError({
-							code: ErrorCode.DefinitionFailedToImport,
-							file,
-							friendlyMessage: `Remove all "import ... from '#spruce/schemas'" from your definitions. Since definitions generate '#spruce*' files, you can't reference them from your definition. If you are trying to point to a definition you pulled from remote, use it's id as a string literal. If you are pointing to a local definition, import it using a relative path.`
-						})
-					}
-
 					const definition = await this.utilities.child.importDefault(file)
 					Schema.validateDefinition(definition)
 					return definition
