@@ -3,7 +3,7 @@ import fs from 'fs-extra'
 import { Templates } from '@sprucelabs/spruce-templates'
 import { Log } from '@sprucelabs/log'
 import { IServices } from '#spruce/autoloaders/services'
-import { IStores } from '../../.spruce/autoloaders/stores'
+import { IStores } from '#spruce/autoloaders/stores'
 
 export interface IGeneratorOptions {
 	utilities: IUtilities
@@ -45,6 +45,13 @@ export default abstract class AbstractGenerator {
 
 	/** Delete a file */
 	public deleteFile(destination: string) {
+		if (fs.existsSync(destination)) {
+			fs.removeSync(destination)
+		}
+	}
+
+	/** Delete a directory and all it's contents */
+	public deleteDir(destination: string) {
 		if (fs.existsSync(destination)) {
 			fs.removeSync(destination)
 		}

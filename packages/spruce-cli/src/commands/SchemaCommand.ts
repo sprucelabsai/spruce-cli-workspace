@@ -1,25 +1,33 @@
 import { Command } from 'commander'
 import AbstractCommand from './AbstractCommand'
 import { templates } from '@sprucelabs/spruce-templates'
-import globby from 'globby'
-import path from 'path'
-import namedTemplateItemDefinition from '../schemas/namedTemplateItem.definition'
-import SpruceError from '../errors/SpruceError'
-import { ITerminalEffect } from '../utilities/TerminalUtility'
+import { SpruceSchemas } from '../../.spruce/schemas/schemas.types'
 
 export default class SchemaCommand extends AbstractCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
 		/** Sync everything */
 		program
-			.command('schema:pull')
-			.description('Pull all schema definitions down from the cloud')
+			.command('schema:sync')
+			.description(
+				'Sync all schema definitions and fields (also pulls from the cloud)'
+			)
 			.option(
 				'-d, --destinationDir <dir>',
 				'Where should I write the types files?',
 				'./.spruce/schemas'
 			)
-			.action(this.pull.bind(this))
+			.option(
+				'-c, --clean',
+				'Where should I clean out the destination dir?',
+				false
+			)
+			.option(
+				'-f, --force',
+				'If cleaning, should I suppress confirmations and warnings',
+				false
+			)
+			.action(this.sync.bind(this))
 
 		/** Create a new schema definition */
 		program
@@ -36,28 +44,13 @@ export default class SchemaCommand extends AbstractCommand {
 				'./.spruce/schemas'
 			)
 			.action(this.create.bind(this))
-
-		/** Generate schema definition types files */
-		program
-			.command('schema:sync')
-			.description('Generates type files on all definition files.')
-			.option(
-				'-l, --lookupDir <lookupDir>',
-				'Where should I look for definitions files (*.definition.ts)?',
-				'./src/schemas'
-			)
-			.option(
-				'-d, --destinationDir <destinationDir>',
-				'Where should I write the definitions file?',
-				'./.spruce/schemas'
-			)
-
-			.action(this.sync.bind(this))
 	}
 
-	/** Pull schemas from server */
-	public async pull(cmd: Command) {
+	/** Sync all schemas and fields (also pulls from the cloud) */
+	public async sync(cmd: Command) {
 		const destinationDir = cmd.destinationDir as string
+		const clean = !!cmd.clean
+		const force = !!cmd.force
 
 		// Make sure schema module is installed
 		this.startLoading('Installing dependencies')
@@ -68,22 +61,35 @@ export default class SchemaCommand extends AbstractCommand {
 		// Load types and namespaces
 		const schemaTemplateItems = await this.stores.schema.schemaTemplateItems()
 		const fieldTemplateItems = await this.stores.schema.fieldTemplateItems()
-		const typeMap = await this.stores.schema.fieldTypeMap()
 
 		// Field Types
-		const fieldTypesContent = templates.fieldTypes({
-			fields: fieldTemplateItems
+		const fieldTypesContent = templates.fieldsTypes({
+			fieldTemplateItems
 		})
 
 		// Field type enum
 		const fieldTypeContent = templates.fieldType({
-			fields: fieldTemplateItems
+			fieldTemplateItems
+		})
+
+		// Build the FieldClassMap to pass to schemasTypes
+		const valueTypes = await this.services.valueType.allValueTypes({
+			schemaTemplateItems,
+			fieldTemplateItems
 		})
 
 		// Schema types
-		const schemaTypesContents = templates.schemaTypes({
+		const schemaTypesContents = templates.schemasTypes({
 			schemaTemplateItems,
-			typeMap
+			fieldTemplateItems,
+			valueTypeGenerator: (renderAs, definition) => {
+				const key = this.services.valueType.generateKey(renderAs, definition)
+				const valueType = valueTypes[key]
+				if (!valueType) {
+					throw new Error(`failed to find ${renderAs} for ${key}`)
+				}
+				return valueType
+			}
 		})
 
 		this.stopLoading()
@@ -91,6 +97,17 @@ export default class SchemaCommand extends AbstractCommand {
 		this.info(
 			`Found ${schemaTemplateItems.length} schema definitions and ${fieldTemplateItems.length} field types, writing files`
 		)
+
+		if (clean) {
+			const pass =
+				force ||
+				(await this.confirm(
+					`Are you sure you want me delete the contents of ${destinationDir}?`
+				))
+			if (pass) {
+				this.deleteDir(destinationDir)
+			}
+		}
 
 		// Write out field types
 		const fieldTypesDestination = this.resolvePath(
@@ -118,7 +135,6 @@ export default class SchemaCommand extends AbstractCommand {
 		await this.writeFile(schemaTypesDestination, schemaTypesContents)
 
 		await this.pretty()
-		await this.build()
 
 		this.clear()
 		this.info(`All done 👊. I created 3 files.`)
@@ -126,74 +142,6 @@ export default class SchemaCommand extends AbstractCommand {
 		this.info(`1. Schema definitions ${schemaTypesDestination}`)
 		this.info(`2. Field definitions ${fieldTypesDestination}`)
 		this.info(`3. Field type enum ${fieldTypeDestination}`)
-	}
-
-	/** Generate types and other files based definitions */
-	public async sync(cmd: Command) {
-		const lookupDir = cmd.lookupDir as string
-		const destinationDir = cmd.destinationDir as string
-		const search = path.join(
-			this.resolvePath(lookupDir),
-			'**',
-			'*.definition.ts'
-		)
-
-		// Make sure schema module is installed
-		this.startLoading('Installing dependencies')
-		await this.utilities.pkg.setupForSchemas()
-		this.utilities.tsConfig.setupForSchemas()
-		this.stopLoading()
-
-		const matches = await globby(search)
-		const fails: Error[] = []
-		const passes: string[] = []
-
-		await Promise.all(
-			matches.map(async filePath => {
-				// Write to the destination
-				try {
-					const {
-						pascalName,
-						camelName,
-						definition
-					} = await this.generators.schema.generateTypesFromDefinitionFile(
-						filePath,
-						this.resolvePath(destinationDir)
-					)
-
-					// Tell them how to use it
-					this.headline(`${pascalName} examples:`)
-
-					this.writeLn('')
-					this.codeSample(
-						this.templates.schemaExample({ pascalName, camelName, definition })
-					)
-
-					this.writeLn('')
-					this.writeLn('')
-
-					passes.push(pascalName)
-				} catch (err) {
-					fails.push(err)
-				}
-			})
-		)
-
-		if (fails.length > 0) {
-			this.bar()
-			this.crit(
-				`${fails.length} out of ${matches.length} definitions failed to import`
-			)
-			this.writeLns(
-				fails.map(err => {
-					if (err instanceof SpruceError) {
-						return err.friendlyMessage()
-					}
-					return err.message
-				}),
-				[ITerminalEffect.Red, ITerminalEffect.Bold]
-			)
-		}
 	}
 
 	/** Define a new schema */
@@ -213,7 +161,7 @@ export default class SchemaCommand extends AbstractCommand {
 		}
 
 		const form = this.formBuilder({
-			definition: namedTemplateItemDefinition,
+			definition: SpruceSchemas.local.NamedTemplateItem.definition,
 			initialValues: {
 				readableName,
 				camelName,
@@ -244,24 +192,20 @@ export default class SchemaCommand extends AbstractCommand {
 		const definition = templates.definition(values)
 
 		await this.writeFile(definitionDestination, definition)
-		await this.build(definitionDestination)
 
-		// Generate types
-		const names = await this.generators.schema.generateTypesFromDefinitionFile(
-			definitionDestination,
-			typesDestination
-		)
+		this.info(`Definition created at ${definitionDestination}`)
 
-		// Tell them how to use it
-		this.headline(`${names.pascalName} examples:`)
-
-		this.writeLn('')
-		this.codeSample(
-			this.templates.schemaExample({
-				pascalName: names.pascalName,
-				camelName: names.camelName,
-				definition: names.definition
-			})
-		)
+		// TODO don't call one command from another
+		try {
+			cmd.destinationDir = typesDestination
+			await this.sync(cmd)
+		} catch (err) {
+			this.stopLoading()
+			this.warn('I was not able to sync it with #spruce/schemas/schemas.types')
+			this.warn(
+				"You won't be able to use your new definition until the below error is fixed and you run `spruce schema:sync`"
+			)
+			this.handleError(err)
+		}
 	}
 }

@@ -7,7 +7,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 	public async generateTypesFromDefinitionFile(
 		sourceFile: string,
 		destinationDir: string,
-		template: 'definitionTypes' | 'errorTypes' = 'definitionTypes'
+		template: 'errorTypes' = 'errorTypes'
 	): Promise<{
 		camelName: string
 		pascalName: string

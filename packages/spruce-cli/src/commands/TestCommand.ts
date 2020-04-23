@@ -8,12 +8,12 @@ export default class TestCommand extends AbstractCommand {
 		program
 			.command('test:create')
 			.description('Create a new test')
-			.option('-t, --targetFileOrDir <target>')
+			.option('-t, --targetFile <target>')
 			.action(this.create.bind(this))
 	}
 
 	public async create(cmd: Command) {
-		let target = cmd.targetFileOrDir as string
+		let target = cmd.targetFile as string
 
 		if (!target) {
 			const file = await this.prompt({

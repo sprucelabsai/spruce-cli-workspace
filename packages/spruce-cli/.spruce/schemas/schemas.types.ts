@@ -1,10 +1,8 @@
-import { default  as Schema } from '@sprucelabs/schema'
+import { default as Schema } from '@sprucelabs/schema'
 import * as SpruceSchema from '@sprucelabs/schema'
 
 
-	export namespace SpruceSchemas.core.ProfileImage {
-		export const id = 'profileImage'
-
+	export namespace SpruceSchemas.core {
 		/** Profile images at various helpful sizes and resolutions. */
 		export interface IProfileImage {
 			
@@ -17,6 +15,10 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** 150x150. */
 				'profile150@2x': string
 		}
+	}	 
+
+	export namespace SpruceSchemas.core.ProfileImage {
+		export const id = 'profileImage'
 
 		/** The interface for the schema definition for a Profile Image Sizes */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
@@ -149,27 +151,29 @@ import * as SpruceSchema from '@sprucelabs/schema'
 	}
 	
 
-	export namespace SpruceSchemas.core.User {
-		export const id = 'user'
-
+	export namespace SpruceSchemas.core {
 		/** A human being. */
 		export interface IUser {
 			
 				/** Id. */
 				'id': string
 				/** First name. */
-				'firstName'?: string
+				'firstName'?: string| undefined
 				/** Last name. */
-				'lastName'?: string
+				'lastName'?: string| undefined
 				/** Casual name. Generated name that defaults to Friend! */
 				'casualName': string
 				/** Phone. The person's phone number! */
-				'phoneNumber'?: string
+				'phoneNumber'?: string| undefined
 				/** Profile photos. */
-				'profileImages'?: SpruceSchemas.core.ProfileImage.IProfileImage
+				'profileImages'?: (SpruceSchemas.core.IProfileImage)| undefined
 				/** Default profile photos. */
-				'defaultProfileImages': SpruceSchemas.core.ProfileImage.IProfileImage
+				'defaultProfileImages': (SpruceSchemas.core.IProfileImage)
 		}
+	}	 
+
+	export namespace SpruceSchemas.core.User {
+		export const id = 'user'
 
 		/** The interface for the schema definition for a User */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
@@ -255,7 +259,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schema: SpruceSchemas.core.ProfileImage.IDefinition,}
+			                options: {schemas: ([SpruceSchemas.core.ProfileImage.IDefinition]),}
 			            },
 			            /** Default profile photos. */
 			            'defaultProfileImages': {
@@ -268,7 +272,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schema: SpruceSchemas.core.ProfileImage.IDefinition,}
+			                options: {schemas: ([SpruceSchemas.core.ProfileImage.IDefinition]),}
 			            },
 			    }
 		}
@@ -357,7 +361,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schema: SpruceSchemas.core.ProfileImage.definition,}
+			                options: {schemas: ([SpruceSchemas.core.ProfileImage.definition]),}
 			            },
 			            /** Default profile photos. */
 			            'defaultProfileImages': {
@@ -370,7 +374,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schema: SpruceSchemas.core.ProfileImage.definition,}
+			                options: {schemas: ([SpruceSchemas.core.ProfileImage.definition]),}
 			            },
 			    }
 		}
@@ -380,9 +384,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 	}
 	
 
-	export namespace SpruceSchemas.core.Skill {
-		export const id = 'skill'
-
+	export namespace SpruceSchemas.core {
 		/** An ability Sprucebot has learned. */
 		export interface ISkill {
 			
@@ -393,12 +395,16 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** Name. */
 				'name': string
 				/** Description. */
-				'description'?: string
+				'description'?: string| undefined
 				/** Slug. */
-				'slug'?: string
+				'slug'?: string| undefined
 				/** Icon. */
-				'icon'?: string
+				'icon'?: string| undefined
 		}
+	}	 
+
+	export namespace SpruceSchemas.core.Skill {
+		export const id = 'skill'
 
 		/** The interface for the schema definition for a Skill */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
@@ -583,27 +589,29 @@ import * as SpruceSchema from '@sprucelabs/schema'
 	}
 	
 
-	export namespace SpruceSchemas.core.Location {
-		export const id = 'location'
-
+	export namespace SpruceSchemas.core {
 		/** A physical location where people meet. An organization has at least one of them. */
 		export interface ILocation {
 			
 				/** Id. */
-				'id'?: string
+				'id'?: string| undefined
 				/** Name. */
 				'name': string
 				/** Store number. You can use other symbols, like # or dashes. #123 or 32-US-5 */
-				'num'?: string
+				'num'?: string| undefined
 				/** Public. Is this location viewable by guests? */
-				'isPublic'?: boolean
+				'isPublic'?: boolean| undefined
 				/** Main Phone. */
-				'phone'?: string
+				'phone'?: string| undefined
 				/** Timezone. */
-				'timezone'?: string
+				'timezone'?: ("etc/gmt+12" | "pacific/midway" | "pacific/honolulu" | "us/alaska" | "america/los_Angeles" | "america/tijuana" | "us/arizona" | "america/chihuahua" | "us/mountain" | "america/managua" | "us/central" | "america/mexico_City" | "Canada/Saskatchewan" | "america/bogota" | "us/eastern" | "us/east-indiana" | "Canada/atlantic" | "america/caracas" | "america/manaus" | "america/Santiago" | "Canada/Newfoundland" | "america/Sao_Paulo" | "america/argentina/buenos_Aires" | "america/godthab" | "america/montevideo" | "america/Noronha" | "atlantic/cape_Verde" | "atlantic/azores" | "africa/casablanca" | "etc/gmt" | "europe/amsterdam" | "europe/belgrade" | "europe/brussels" | "europe/Sarajevo" | "africa/lagos" | "asia/amman" | "europe/athens" | "asia/beirut" | "africa/cairo" | "africa/Harare" | "europe/Helsinki" | "asia/Jerusalem" | "europe/minsk" | "africa/Windhoek" | "asia/Kuwait" | "europe/moscow" | "africa/Nairobi" | "asia/tbilisi" | "asia/tehran" | "asia/muscat" | "asia/baku" | "asia/Yerevan" | "asia/Kabul" | "asia/Yekaterinburg" | "asia/Karachi" | "asia/calcutta" | "asia/calcutta" | "asia/Katmandu" | "asia/almaty" | "asia/Dhaka" | "asia/Rangoon" | "asia/bangkok" | "asia/Krasnoyarsk" | "asia/Hong_Kong" | "asia/Kuala_Lumpur" | "asia/Irkutsk" | "Australia/Perth" | "asia/taipei" | "asia/tokyo" | "asia/Seoul" | "asia/Yakutsk" | "Australia/adelaide" | "Australia/Darwin" | "Australia/brisbane" | "Australia/canberra" | "Australia/Hobart" | "pacific/guam" | "asia/Vladivostok" | "asia/magadan" | "pacific/auckland" | "pacific/Fiji" | "pacific/tongatapu")| undefined
 				/** Address. */
 				'address': SpruceSchema.IAddressFieldValue
 		}
+	}	 
+
+	export namespace SpruceSchemas.core.Location {
+		export const id = 'location'
 
 		/** The interface for the schema definition for a Location */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
@@ -814,14 +822,16 @@ import * as SpruceSchema from '@sprucelabs/schema'
 	}
 	
 
-	export namespace SpruceSchemas.core.Acl {
-		export const id = 'acl'
-
+	export namespace SpruceSchemas.core {
 		/**  */
 		export interface IAcl {
 				/** Permissions grouped by slug. */
 				[slug:string]: string[]
 		}
+	}	 
+
+	export namespace SpruceSchemas.core.Acl {
+		export const id = 'acl'
 
 		/** The interface for the schema definition for a Access control list lookup table */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
@@ -868,25 +878,27 @@ import * as SpruceSchema from '@sprucelabs/schema'
 	}
 	
 
-	export namespace SpruceSchemas.core.Job {
-		export const id = 'job'
-
+	export namespace SpruceSchemas.core {
 		/** A position at a company. The answer to the question; What is your job? */
 		export interface IJob {
 			
 				/** Id. */
-				'id'?: string
+				'id'?: string| undefined
 				/** Is default. Is this job one that comes with every org? Mapped to roles (owner, groupManager, managar, guest). */
 				'isDefault': string
 				/** Name. */
 				'name': string
 				/** Role. */
-				'role': string
+				'role': ("owner" | "groupManager" | "manager" | "teammate" | "guest")
 				/** On work permissions. */
-				'inStoreAcls'?: SpruceSchemas.core.Acl.IAcl
+				'inStoreAcls'?: (SpruceSchemas.core.IAcl)| undefined
 				/** Off work permissions. */
-				'acls'?: SpruceSchemas.core.Acl.IAcl
+				'acls'?: (SpruceSchemas.core.IAcl)| undefined
 		}
+	}	 
+
+	export namespace SpruceSchemas.core.Job {
+		export const id = 'job'
 
 		/** The interface for the schema definition for a Job */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
@@ -959,7 +971,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schema: SpruceSchemas.core.Acl.IDefinition,}
+			                options: {schemas: ([SpruceSchemas.core.Acl.IDefinition]),}
 			            },
 			            /** Off work permissions. */
 			            'acls': {
@@ -972,7 +984,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schema: SpruceSchemas.core.Acl.IDefinition,}
+			                options: {schemas: ([SpruceSchemas.core.Acl.IDefinition]),}
 			            },
 			    }
 		}
@@ -1048,7 +1060,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schema: SpruceSchemas.core.Acl.definition,}
+			                options: {schemas: ([SpruceSchemas.core.Acl.definition]),}
 			            },
 			            /** Off work permissions. */
 			            'acls': {
@@ -1061,7 +1073,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schema: SpruceSchemas.core.Acl.definition,}
+			                options: {schemas: ([SpruceSchemas.core.Acl.definition]),}
 			            },
 			    }
 		}
@@ -1071,29 +1083,31 @@ import * as SpruceSchema from '@sprucelabs/schema'
 	}
 	
 
-	export namespace SpruceSchemas.core.UserLocation {
-		export const id = 'userLocation'
-
+	export namespace SpruceSchemas.core {
 		/** A location a person has given access to themselves. */
 		export interface IUserLocation {
 			
 				/** Id. */
-				'id'?: string
+				'id'?: string| undefined
 				/** Name. */
-				'role': string
+				'role': ("owner" | "groupManager" | "manager" | "teammate" | "guest")
 				/** Status. */
-				'status'?: string
+				'status'?: string| undefined
 				/** Total visits. */
 				'visits': number
 				/** Last visit. */
-				'lastRecordedVisit'?: SpruceSchema.IDateTimeFieldValue
+				'lastRecordedVisit'?: SpruceSchema.IDateTimeFieldValue| undefined
 				/** Job. */
-				'job': SpruceSchemas.core.Job.IJob
+				'job': (SpruceSchemas.core.IJob)
 				/** Location. */
-				'location': SpruceSchemas.core.Location.ILocation
+				'location': (SpruceSchemas.core.ILocation)
 				/** User. */
-				'user': SpruceSchemas.core.User.IUser
+				'user': (SpruceSchemas.core.IUser)
 		}
+	}	 
+
+	export namespace SpruceSchemas.core.UserLocation {
+		export const id = 'userLocation'
 
 		/** The interface for the schema definition for a User location */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
@@ -1179,7 +1193,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schema: SpruceSchemas.core.Job.IDefinition,}
+			                options: {schemas: ([SpruceSchemas.core.Job.IDefinition]),}
 			            },
 			            /** Location. */
 			            'location': {
@@ -1192,7 +1206,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schema: SpruceSchemas.core.Location.IDefinition,}
+			                options: {schemas: ([SpruceSchemas.core.Location.IDefinition]),}
 			            },
 			            /** User. */
 			            'user': {
@@ -1205,7 +1219,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schema: SpruceSchemas.core.User.IDefinition,}
+			                options: {schemas: ([SpruceSchemas.core.User.IDefinition]),}
 			            },
 			    }
 		}
@@ -1294,7 +1308,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schema: SpruceSchemas.core.Job.definition,}
+			                options: {schemas: ([SpruceSchemas.core.Job.definition]),}
 			            },
 			            /** Location. */
 			            'location': {
@@ -1307,7 +1321,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schema: SpruceSchemas.core.Location.definition,}
+			                options: {schemas: ([SpruceSchemas.core.Location.definition]),}
 			            },
 			            /** User. */
 			            'user': {
@@ -1320,13 +1334,674 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                
 			                
 			                
-			                options: {schema: SpruceSchemas.core.User.definition,}
+			                options: {schemas: ([SpruceSchemas.core.User.definition]),}
 			            },
 			    }
 		}
 
 		/** The type of a schema instance built off this definition */
 		export type Instance = Schema<SpruceSchemas.core.UserLocation.IDefinition>
+	}
+	
+
+	export namespace SpruceSchemas.local {
+		/** Used to collect input on the names of a class or interface */
+		export interface INamedTemplateItem {
+			
+				/** Readable name. The name people will read */
+				'readableName': string
+				/** Camel case name. camelCase version of the name */
+				'camelName': string
+				/** Pascal case name. PascalCase of the name */
+				'pascalName': string
+				/** Constant case name. CONST_CASE of the name */
+				'constName': string
+				/** Description. */
+				'description': string
+		}
+	}	 
+
+	export namespace SpruceSchemas.local.NamedTemplateItem {
+		export const id = 'namedTemplateItem'
+
+		/** The interface for the schema definition for a NamedTemplateItem */
+		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+			id: 'namedTemplateItem',
+			name: 'NamedTemplateItem',
+			description: 'Used to collect input on the names of a class or interface',
+			
+			
+			    fields: {
+			            /** Readable name. The name people will read */
+			            'readableName': {
+			                label: 'Readable name',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                hint: 'The name people will read',
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Camel case name. camelCase version of the name */
+			            'camelName': {
+			                label: 'Camel case name',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                hint: 'camelCase version of the name',
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Pascal case name. PascalCase of the name */
+			            'pascalName': {
+			                label: 'Pascal case name',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                hint: 'PascalCase of the name',
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Constant case name. CONST_CASE of the name */
+			            'constName': {
+			                label: 'Constant case name',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                hint: 'CONST_CASE of the name',
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Description. */
+			            'description': {
+			                label: 'Description',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                description: 'Describe a bit more here',
+			                options: undefined
+			            },
+			    }
+		}
+
+		/** The schema definition for a NamedTemplateItem */
+		export const definition: SpruceSchemas.local.NamedTemplateItem.IDefinition = {
+			id: 'namedTemplateItem',
+			name: 'NamedTemplateItem',
+			description: 'Used to collect input on the names of a class or interface',
+			
+			
+			    fields: {
+			            /** Readable name. The name people will read */
+			            'readableName': {
+			                label: 'Readable name',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                hint: 'The name people will read',
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Camel case name. camelCase version of the name */
+			            'camelName': {
+			                label: 'Camel case name',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                hint: 'camelCase version of the name',
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Pascal case name. PascalCase of the name */
+			            'pascalName': {
+			                label: 'Pascal case name',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                hint: 'PascalCase of the name',
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Constant case name. CONST_CASE of the name */
+			            'constName': {
+			                label: 'Constant case name',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                hint: 'CONST_CASE of the name',
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Description. */
+			            'description': {
+			                label: 'Description',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                description: 'Describe a bit more here',
+			                options: undefined
+			            },
+			    }
+		}
+
+		/** The type of a schema instance built off this definition */
+		export type Instance = Schema<SpruceSchemas.local.NamedTemplateItem.IDefinition>
+	}
+	
+
+	export namespace SpruceSchemas.local {
+		/**  */
+		export interface IOnboardingStore {
+			
+				/** Remote. */
+				'isEnabled': boolean
+				/** Run count. How many times spruce onboarding has been called (the story changes based on count) */
+				'runCount': number
+		}
+	}	 
+
+	export namespace SpruceSchemas.local.OnboardingStore {
+		export const id = 'onboarding-store'
+
+		/** The interface for the schema definition for a Onboarding store */
+		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+			id: 'onboarding-store',
+			name: 'Onboarding store',
+			description: '',
+			
+			
+			    fields: {
+			            /** Remote. */
+			            'isEnabled': {
+			                label: 'Remote',
+			                type: SpruceSchema.FieldType.Boolean,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Run count. How many times spruce onboarding has been called (the story changes based on count) */
+			            'runCount': {
+			                label: 'Run count',
+			                type: SpruceSchema.FieldType.Number,
+			                
+			                isRequired: true,
+			                hint: 'How many times spruce onboarding has been called (the story changes based on count)',
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			    }
+		}
+
+		/** The schema definition for a Onboarding store */
+		export const definition: SpruceSchemas.local.OnboardingStore.IDefinition = {
+			id: 'onboarding-store',
+			name: 'Onboarding store',
+			description: '',
+			
+			
+			    fields: {
+			            /** Remote. */
+			            'isEnabled': {
+			                label: 'Remote',
+			                type: SpruceSchema.FieldType.Boolean,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Run count. How many times spruce onboarding has been called (the story changes based on count) */
+			            'runCount': {
+			                label: 'Run count',
+			                type: SpruceSchema.FieldType.Number,
+			                
+			                isRequired: true,
+			                hint: 'How many times spruce onboarding has been called (the story changes based on count)',
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			    }
+		}
+
+		/** The type of a schema instance built off this definition */
+		export type Instance = Schema<SpruceSchemas.local.OnboardingStore.IDefinition>
+	}
+	
+
+	export namespace SpruceSchemas.local {
+		/** A stripped down skill for the cli */
+		export interface ISkill {
+			
+				/** Id. */
+				'id': string
+				/** Id. */
+				'apiKey': string
+				/** Name. */
+				'name': string
+				/** Slug. */
+				'slug'?: string| undefined
+		}
+	}	 
+
+	export namespace SpruceSchemas.local.Skill {
+		export const id = 'skill'
+
+		/** The interface for the schema definition for a Skill */
+		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+			id: 'skill',
+			name: 'Skill',
+			description: 'A stripped down skill for the cli',
+			
+			
+			    fields: {
+			            /** Id. */
+			            'id': {
+			                label: 'Id',
+			                type: SpruceSchema.FieldType.Id,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Id. */
+			            'apiKey': {
+			                label: 'Id',
+			                type: SpruceSchema.FieldType.Id,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Name. */
+			            'name': {
+			                label: 'Name',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Slug. */
+			            'slug': {
+			                label: 'Slug',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			    }
+		}
+
+		/** The schema definition for a Skill */
+		export const definition: SpruceSchemas.local.Skill.IDefinition = {
+			id: 'skill',
+			name: 'Skill',
+			description: 'A stripped down skill for the cli',
+			
+			
+			    fields: {
+			            /** Id. */
+			            'id': {
+			                label: 'Id',
+			                type: SpruceSchema.FieldType.Id,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Id. */
+			            'apiKey': {
+			                label: 'Id',
+			                type: SpruceSchema.FieldType.Id,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Name. */
+			            'name': {
+			                label: 'Name',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Slug. */
+			            'slug': {
+			                label: 'Slug',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			    }
+		}
+
+		/** The type of a schema instance built off this definition */
+		export type Instance = Schema<SpruceSchemas.local.Skill.IDefinition>
+	}
+	
+
+	export namespace SpruceSchemas.local {
+		/** A stripped down user for the cli */
+		export interface IUser {
+			
+				/** Id. */
+				'id': string
+				/** Casual name. Generated name that defaults to Friend! */
+				'casualName': string
+		}
+	}	 
+
+	export namespace SpruceSchemas.local.User {
+		export const id = 'user'
+
+		/** The interface for the schema definition for a User */
+		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+			id: 'user',
+			name: 'User',
+			description: 'A stripped down user for the cli',
+			
+			
+			    fields: {
+			            /** Id. */
+			            'id': {
+			                label: 'Id',
+			                type: SpruceSchema.FieldType.Id,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Casual name. Generated name that defaults to Friend! */
+			            'casualName': {
+			                label: 'Casual name',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                hint: 'Generated name that defaults to Friend!',
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			    }
+		}
+
+		/** The schema definition for a User */
+		export const definition: SpruceSchemas.local.User.IDefinition = {
+			id: 'user',
+			name: 'User',
+			description: 'A stripped down user for the cli',
+			
+			
+			    fields: {
+			            /** Id. */
+			            'id': {
+			                label: 'Id',
+			                type: SpruceSchema.FieldType.Id,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Casual name. Generated name that defaults to Friend! */
+			            'casualName': {
+			                label: 'Casual name',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                hint: 'Generated name that defaults to Friend!',
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			    }
+		}
+
+		/** The type of a schema instance built off this definition */
+		export type Instance = Schema<SpruceSchemas.local.User.IDefinition>
+	}
+	
+
+	export namespace SpruceSchemas.local {
+		/** A stripped down cli user with token details for login */
+		export interface IUserWithToken {
+			
+				/** Id. */
+				'id': string
+				/** Casual name. Generated name that defaults to Friend! */
+				'casualName': string
+				/** . */
+				'token': string
+				/** Logged in. */
+				'isLoggedIn'?: boolean| undefined
+		}
+	}	 
+
+	export namespace SpruceSchemas.local.UserWithToken {
+		export const id = 'userWithToken'
+
+		/** The interface for the schema definition for a User */
+		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+			id: 'userWithToken',
+			name: 'User',
+			description: 'A stripped down cli user with token details for login',
+			
+			
+			    fields: {
+			            /** Id. */
+			            'id': {
+			                label: 'Id',
+			                type: SpruceSchema.FieldType.Id,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Casual name. Generated name that defaults to Friend! */
+			            'casualName': {
+			                label: 'Casual name',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                hint: 'Generated name that defaults to Friend!',
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** . */
+			            'token': {
+			                label: '',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Logged in. */
+			            'isLoggedIn': {
+			                label: 'Logged in',
+			                type: SpruceSchema.FieldType.Boolean,
+			                
+			                
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			    }
+		}
+
+		/** The schema definition for a User */
+		export const definition: SpruceSchemas.local.UserWithToken.IDefinition = {
+			id: 'userWithToken',
+			name: 'User',
+			description: 'A stripped down cli user with token details for login',
+			
+			
+			    fields: {
+			            /** Id. */
+			            'id': {
+			                label: 'Id',
+			                type: SpruceSchema.FieldType.Id,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Casual name. Generated name that defaults to Friend! */
+			            'casualName': {
+			                label: 'Casual name',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                hint: 'Generated name that defaults to Friend!',
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** . */
+			            'token': {
+			                label: '',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** Logged in. */
+			            'isLoggedIn': {
+			                label: 'Logged in',
+			                type: SpruceSchema.FieldType.Boolean,
+			                
+			                
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			    }
+		}
+
+		/** The type of a schema instance built off this definition */
+		export type Instance = Schema<SpruceSchemas.local.UserWithToken.IDefinition>
 	}
 	
 

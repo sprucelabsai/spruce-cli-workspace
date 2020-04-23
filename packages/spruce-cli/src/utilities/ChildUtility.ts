@@ -7,19 +7,26 @@ import { ErrorCode } from '../../.spruce/errors/codes.types'
 import AbstractUtility from './AbstractUtility'
 
 export default class ChildUtility extends AbstractUtility {
+	private divider = '## SPRUCE-CLI DIVIDER ##'
+	private errorDivider = '## SPRUCE-CLI ERROR DIVIDER ##'
+
 	public async importDefault<T extends {}>(file: string): Promise<T> {
+		const imported: any = await this.importAll(file)
+		return imported.default as T
+	}
+
+	/** Import the default export from any file */
+	public async importAll<T extends {}>(file: string): Promise<T> {
 		let defaultImported: T | undefined
 		if (!fs.existsSync(file)) {
 			throw new SpruceError({
 				code: ErrorCode.FailedToImport,
 				file,
-				details: `I couldn't find the definition file`
+				friendlyMessage: `I couldn't find the definition file`
 			})
 		}
 
 		log.debug(`Import default for: ${file}`)
-
-		const divider = '## SPRUCE-CLI DIVIDER ##'
 
 		try {
 			const { stdout } = await this.executeCommand('node', {
@@ -29,16 +36,44 @@ export default class ChildUtility extends AbstractUtility {
 					'-r',
 					'@sprucelabs/path-resolver/register',
 					'-e',
-					`"const definition = require('${file}');console.log('${divider}');console.log(JSON.stringify(definition));"`
+					`"try { const imported = require('${file}');console.log('${this.divider}');console.log(JSON.stringify(imported)); } catch(err) { console.log('${this.errorDivider}');console.log(err.toString()); }"`
 				]
 			})
 			log.debug({ stdout })
 
-			const parts = stdout.split(divider)
+			const successParts = stdout.split(this.divider)
+			const errParts = stdout.split(this.errorDivider)
 
-			defaultImported = JSON.parse(parts[1]).default
-		} catch (e) {
-			console.log(e)
+			if (errParts.length > 1) {
+				let err: Record<string, any> = {}
+				try {
+					err = JSON.parse(errParts[1])
+					if (!err.options) {
+						throw Error('Capture and reported below')
+					}
+				} catch {
+					err = {
+						options: {
+							code: ErrorCode.FailedToImport,
+							file,
+							friendlyMessage: `Unknown error from import, output was: "${stdout}"`
+						}
+					}
+				}
+				const proxyError = new SpruceError(err.options)
+				if (err.stack) {
+					proxyError.stack = err.stack
+				}
+				throw proxyError
+			} else {
+				defaultImported = JSON.parse(successParts[1])
+			}
+		} catch (err) {
+			throw new SpruceError({
+				code: ErrorCode.FailedToImport,
+				file,
+				originalError: err
+			})
 		}
 
 		return defaultImported as T

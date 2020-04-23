@@ -1,7 +1,7 @@
-{{#if dynamicKeySignature }}
-	/** {{dynamicKeySignature.label}}.{{#if dynamicKeySignature.hint}} {{dynamicKeySignature.hint}}{{/if}} */
-	[{{dynamicKeySignature.key}}:string]: string{{/if}}{{#if dynamicKeySignature.isArray}}[]{{/if}}
-{{#each fields}}
+{{#if schema.dynamicKeySignature }}
+	/** {{schema.dynamicKeySignature.label}}.{{#if schema.dynamicKeySignature.hint}} {{schema.dynamicKeySignature.hint}}{{/if}} */
+	[{{schema.dynamicKeySignature.key}}:string]: string{{/if}}{{#if schema.dynamicKeySignature.isArray}}[]{{/if}}
+{{#each schema.fields}}
 	/** {{{label}}}.{{#if hint}} {{{hint}}}{{/if}} */
-	'{{@key}}'{{#unless isRequired}}?{{/unless}}: {{fieldDefinitionValueType this }}
+	'{{@key}}'{{#unless isRequired}}?{{/unless}}: {{{fieldDefinitionValueType this ../renderAs }}}{{#unless isRequired}}| undefined{{/unless}}
 {{/each}}

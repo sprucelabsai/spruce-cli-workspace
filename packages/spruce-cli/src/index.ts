@@ -29,13 +29,12 @@ import { IServiceOptions } from './services/AbstractService'
 
 import commandsLoader from '#spruce/autoloaders/commands'
 import generatorsLoader from '#spruce/autoloaders/generators'
-import storesLoader from '#spruce/autoloaders/stores'
+import storesAutoLoader from '#spruce/autoloaders/stores'
 import utilitiesAutoloader from '#spruce/autoloaders/utilities'
 import servicesAutoloader from '#spruce/autoloaders/services'
 
 /** Addons */
 import './addons/filePrompt.addon'
-import '#spruce/schemas/fields.types'
 
 /**
  * For handling debugger not attaching right away
@@ -56,21 +55,22 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		'The working directory to execute the command'
 	)
 
+	// Track everything autoloaded to handle env changes at runtime
+	const autoLoaded: any[] = []
+
+	// Update state for the entire process
+	// TODO move this out and give more control when handling cross skill, e.g. "update something on only utilities"
+	const updateState = function(key: string, value: any) {
+		autoLoaded.forEach(loaded => (loaded[key] = value))
+	}
+
 	program.on('option:directory', function() {
 		if (program.directory) {
-			// TODO: Implement ability to set cwd
-			throw new SpruceError({
-				code: ErrorCode.NotImplemented,
-				command: 'option:directory',
-				friendlyMessage: 'Setting the cwd is not yet implemented'
-			})
+			updateState('cwd', program.directory)
 		}
 	})
 
-	// Starting cwd
 	const cwd = process.cwd()
-
-	// Setup log
 
 	// Setup utilities
 	const utilityOptions: IUtilityOptions = {
@@ -80,6 +80,8 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	const utilities = await utilitiesAutoloader({
 		constructorOptions: utilityOptions
 	})
+
+	autoLoaded.push(...Object.values(utilities))
 
 	// Setup mercury
 	const mercury = new Mercury()
@@ -96,6 +98,8 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		constructorOptions: serviceOptions
 	})
 
+	autoLoaded.push(...Object.values(services))
+
 	// Setup services
 	const storeOptions: IStoreOptions = {
 		mercury,
@@ -104,9 +108,11 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		utilities
 	}
 
-	const stores = await storesLoader({
+	const stores = await storesAutoLoader({
 		constructorOptions: storeOptions
 	})
+
+	autoLoaded.push(...Object.values(stores))
 
 	// Setup mercury
 	const remoteUrl = stores.remote.getRemoteUrl()
@@ -153,7 +159,9 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		constructorOptions: generatorOptions
 	})
 
-	await commandsLoader({
+	autoLoaded.push(...Object.values(generators))
+
+	const commands = await commandsLoader({
 		constructorOptions: {
 			stores,
 			mercury,
@@ -166,6 +174,8 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		after: async instance =>
 			instance.attachCommands && instance.attachCommands(program)
 	})
+
+	autoLoaded.push(...Object.values(commands))
 
 	// Alphabetical sort of help output
 	program.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))

@@ -4,13 +4,14 @@ import {
 	FieldType,
 	ISchemaDefinitionFields,
 	SchemaError,
-	SchemaErrorCode
+	SchemaErrorCode,
+	SchemaField,
+	ISchemaTemplateItem,
+	ISchemaTemplateNames
 } from '@sprucelabs/schema'
 import { toPascal, toCamel } from './NamesUtility'
-import {
-	ISchemaTypesTemplateItem,
-	ISchemaTemplateNames
-} from '@sprucelabs/spruce-templates'
+import Schema from '@sprucelabs/schema'
+import log from '../lib/log'
 
 export default class SchemaUtility extends AbstractUtility {
 	/** Generate interface and type names based off schema name */
@@ -27,72 +28,170 @@ export default class SchemaUtility extends AbstractUtility {
 		namespace: string
 		/** Array of schema definitions */
 		definitions: ISchemaDefinition[]
-		/** The items built recursively returned an the end */
-		items?: ISchemaTypesTemplateItem[]
-		/** For tracking recursively to keep from infinite depth */
+		/** The items built recursively returned an the end. Pass it any items already processed. */
+		items?: ISchemaTemplateItem[]
+		/** For tracking recursively to keep from infinite depth. Feed it an definitions already processed */
 		definitionsById?: { [id: string]: ISchemaDefinition }
-	}): ISchemaTypesTemplateItem[] {
+	}): ISchemaTemplateItem[] {
 		const { definitions, items = [], definitionsById = {}, namespace } = options
 
 		let newItems = [...items]
+		const newDefinitions: ISchemaDefinition[] = []
+		const alreadyImported = function(definition: ISchemaDefinition) {
+			return !!newItems.find(item => item.definition.id === definition.id)
+		}
 
-		// Keep track of all definitions
+		// Keep track of all definitions (and make sure two with the same id weren't passed)
 		definitions.forEach(def => {
-			definitionsById[def.id] = def
+			// Make sure this thing is legit
+			Schema.validateDefinition(def)
+
+			// Make sure we haven't imported this definition before
+			const id = def.id.toLowerCase()
+
+			if (alreadyImported(def)) {
+				log.info(`skipping_processing_schema_id: ${def.id}`)
+			} else if (
+				definitionsById[id] &&
+				!Schema.areDefinitionsTheSame(def, definitionsById[id])
+			) {
+				throw new SchemaError({
+					code: SchemaErrorCode.DuplicateSchema,
+					schemaId: def.id,
+					friendlyMessage: `This can happen if two definitions have the same id. Checkout the 2 schemas (labeled left/right). Try running \`DEBUG=* spruce schema:sync\` to see additional logging. If you still can't figure it out, checkout the docs for more debugging tips: \n\nhttps://developer.spruce.ai/#/schemas/index?id=relationships\n\nLeft: ${JSON.stringify(
+						def,
+						null,
+						2
+					)}\n\nRight: ${JSON.stringify(definitionsById[id], null, 2)}`
+				})
+			} else {
+				// This is a new definition, so we want to load it
+				newDefinitions.push(def)
+				definitionsById[def.id.toLowerCase()] = def
+				log.info(`processing_schema_id: ${def.id}`)
+			}
 		})
 
-		definitions.forEach(definition => {
+		newDefinitions.forEach(definition => {
 			const names = this.generateNames(definition)
+			log.info(`importing_schema_id: ${definition.id}`)
 
 			// We've already mapped this type
-			const matchIdx = items.findIndex(item => item.definition === definition)
+			const matchIdx = items.findIndex(
+				item => item.definition.id.toLowerCase() === definition.id.toLowerCase()
+			)
 
 			if (matchIdx > -1) {
-				if (definition !== items[matchIdx].definition) {
+				log.info(`import_schema_id_stopped_already_complete: ${definition.id}`)
+				if (
+					!Schema.areDefinitionsTheSame(definition, items[matchIdx].definition)
+				) {
 					throw new SchemaError({
 						code: SchemaErrorCode.DuplicateSchema,
 						schemaId: definition.id,
-						friendlyMessage: 'Found while generating template items'
+						friendlyMessage: `This can happen if two definitions have the same id. Checkout the 2 schemas (labeled left/right). Try running \`DEBUG=* spruce schema:sync\` to see additional logging. If you still can't figure it out, checkout the docs for more debugging tips: \n\nhttps://developer.spruce.ai/#/schemas/index?id=relationships\n\nLeft: ${JSON.stringify(
+							definition,
+							null,
+							2
+						)}\n\nRight: ${JSON.stringify(items[matchIdx].definition, null, 2)}`
 					})
 				}
 				return
 			}
 
 			// Check children
-			Object.values(definition.fields ?? {}).forEach(field => {
-				if (field.type === FieldType.Schema) {
-					// Find schema reference based on sub schema or looping through all definitions
-					const schemaDefinition =
-						field.options.schema ||
-						definitionsById[field.options.schemaId || 'missing']
+			Object.keys(definition.fields ?? {}).forEach(fieldName => {
+				const field = definition.fields?.[fieldName]
+				log.info(`importing_field: ${definition.id}:${fieldName}`)
 
-					if (!schemaDefinition) {
+				// This is only for lint
+				if (!field) {
+					return
+				}
+
+				if (field.type === FieldType.Schema) {
+					let schemasOrIds: (string | ISchemaDefinition)[] | undefined
+					try {
+						schemasOrIds = SchemaField.normalizeOptionsToSchemasOrIds(field)
+					} catch (err) {
 						throw new SchemaError({
-							code: SchemaErrorCode.SchemaNotFound,
-							schemaId:
-								field.options.schemaId ||
-								field.options.schema?.id ||
-								'**MISSING ID**',
-							friendlyMessage: 'Error while resolving schema fields'
+							code: SchemaErrorCode.InvalidFieldOptions,
+							schemaId: definition.id,
+							fieldName,
+							originalError: err,
+							options: field.options,
+							friendlyMessage: `${definition.id}.${fieldName} is pointing to a bad schema. This can happen if the schema id's are wrong or you are pointing directly to another definition with a circular dependency.`
 						})
 					}
-					newItems = this.generateTemplateItems({
-						namespace,
-						definitions: [schemaDefinition],
-						items: newItems,
-						definitionsById
-					})
+					log.info(`detected_schema_field: ${definition.id}:${fieldName}`)
+					const schemaDefinitions: ISchemaDefinition[] = schemasOrIds.map(
+						schemaOrId => {
+							const id = (typeof schemaOrId === 'string'
+								? schemaOrId
+								: schemaOrId.id
+							).toLowerCase()
+							let relatedDefinition: any
+
+							if (typeof schemaOrId === 'string') {
+								relatedDefinition = definitionsById[id]
+							} else {
+								relatedDefinition = schemaOrId
+							}
+							try {
+								log.info(
+									`validating_schema_field_schema: ${
+										definition.id
+									}:${fieldName} = ${relatedDefinition?.id ?? '**missing**'}`
+								)
+								Schema.validateDefinition(relatedDefinition)
+							} catch (err) {
+								throw new SchemaError({
+									code: SchemaErrorCode.InvalidSchemaDefinition,
+									schemaId: id ?? '***missing***',
+									errors: [],
+									originalError: err,
+									// FriendlyMessage: `I found a schema that was not valid for the fieldName: "${fieldName}" of schemaId: "${definition.id}". Make sure your options (schema, schemaId, schemas, schemaIds) point to a schema that was built using \`spruce schema:create\`\n\nRead any additional errors below and even more at: https://developer.spruce.ai/#/schemas/index?id=relationships`
+									friendlyMessage: `Error in schemaId: "${
+										definition.id
+									}". The field "${fieldName}" is pointing to a schema that I couldn't find. Make sure the options point to a schema. The options I received are: \n\n${JSON.stringify(
+										field.options,
+										null,
+										2
+									)}`
+								})
+							}
+							return relatedDefinition
+						}
+					)
+
+					// Find schema reference based on sub schema or looping through all definitions
+					for (const schemaDefinition of schemaDefinitions) {
+						log.info(
+							`importing_schema_field_schema: ${definition.id}:${fieldName} = ${schemaDefinition.id}`
+						)
+						newItems = this.generateTemplateItems({
+							namespace,
+							definitions: [schemaDefinition],
+							items: newItems,
+							definitionsById
+						})
+					}
 				}
 			})
 
-			// Was this already added?
-			if (newItems.findIndex(item => item.id === definition.id) === -1) {
+			// Drop in this definition AFTER all fields are imported because we need them first
+			// Only if it has not been added by some deeper relationship
+			if (!alreadyImported(definition)) {
+				log.info(`finished_importing_schema: ${definition.id}`)
+
 				newItems.push({
 					namespace,
 					id: definition.id,
 					definition,
 					...names
 				})
+			} else {
+				log.info(`skipped_finishing_import_schema: ${definition.id}`)
 			}
 		})
 
@@ -105,33 +204,28 @@ export default class SchemaUtility extends AbstractUtility {
 			Object.keys(definition.fields ?? {}).forEach(name => {
 				const field = definition.fields?.[name]
 
-				// If this is a schema field, lets make sure schema id is set correctly
-				if (
-					field &&
-					field.type === FieldType.Schema &&
-					!field.options.schemaId
-				) {
+				// If this is a schema field, lets make sure schemaIds is set correctly
+				if (field && field.type === FieldType.Schema) {
+					const schemaIds = SchemaField.normalizeOptionsToSchemaIds(field)
+
 					if (!newFields) {
 						newFields = {}
 					}
 
-					// Get the one true id
-					const schemaId = field.options.schema
-						? field.options.schema.id
-						: field.options.schemaId
-
 					// Build new options
 					const newOptions = { ...field.options }
 
-					// No schema or schema id options (set again below)
+					// Everything is normalized as schemaIds
 					delete newOptions.schema
+					delete newOptions.schemas
+					delete newOptions.schemaId
 
 					// Setup new field
 					newFields[name] = {
 						...field,
 						options: {
 							...newOptions,
-							schemaId
+							schemaIds
 						}
 					}
 				}

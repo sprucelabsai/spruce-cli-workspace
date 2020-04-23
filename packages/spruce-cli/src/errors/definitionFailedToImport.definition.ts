@@ -10,12 +10,6 @@ const definitionFailedToImportDefinition = buildErrorDefinition({
 			label: 'File',
 			isRequired: true,
 			hint: 'The file definition file I tried to import'
-		},
-		details: {
-			type: FieldType.Text,
-			label: 'Details',
-			isRequired: true,
-			hint: 'Additional context'
 		}
 	}
 })
