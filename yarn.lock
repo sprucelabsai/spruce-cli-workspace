@@ -1942,19 +1942,6 @@
     "@sprucelabs/error" "^1.0.11"
     "@sprucelabs/log" "^10.2.1"
 
-"@sprucelabs/schema@^1.5.1":
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.5.1.tgz#5ee4f319ed3ad15239c9c211c65ba3e74d06c6bf"
-  integrity sha512-4g/8/QyVdcEqoW89jxJKhbKOP71qn5F4Mpe1o3i6MHVJSF68X+K6edYEvf7Lm6PAmgtRDuA9kuDTVfBeisRMHA==
-  dependencies:
-    "@sprucelabs/error" "^1.2.0"
-    "@sprucelabs/log" "^10.2.1"
-    "@sprucelabs/path-resolver" "^1.2.1"
-    google-libphonenumber "^3.2.8"
-    libphonenumber-js "^1.7.48"
-    mime-db "^1.43.0"
-    mime-type "^3.0.7"
-
 "@sprucelabs/schema@^1.5.2":
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.5.2.tgz#a155d2009c655010f5d9fb3c870a6c9c921067a6"
