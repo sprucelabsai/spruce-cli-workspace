@@ -202,7 +202,7 @@ async function run(argv: string[], debugging: boolean): Promise<void> {
 		log.trace('Extra debugger dropped in so future debuggers work... 🤷‍')
 	}
 
-	setup(program)
+	await setup(program)
 
 	const commandResult = await program.parseAsync(argv)
 	if (commandResult.length === 0) {
