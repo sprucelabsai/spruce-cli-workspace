@@ -7,20 +7,20 @@ export enum ErrorCode {
     /** * The definition file failed to import */
     DefinitionFailedToImport = 'DEFINITION_FAILED_TO_IMPORT',
     
-    /** * Autoloader creation failed */
-    CreateAutoloaderFailed = 'CREATE_AUTOLOADER_FAILED',
-    
     /** * Error thrown when building or linting failed. Happens when a yarn command fails inside the package utility. */
     BuildFailed = 'BUILD_FAILED',
     
-    /** * Not sure what happened, but it has something to do with Mercury */
-    GenericMercury = 'GENERIC_MERCURY',
+    /** * Autoloader creation failed */
+    CreateAutoloaderFailed = 'CREATE_AUTOLOADER_FAILED',
     
     /** * Failed to import a file through VM */
     FailedToImport = 'FAILED_TO_IMPORT',
     
     /** * This command has not yet been implemented  */
     NotImplemented = 'NOT_IMPLEMENTED',
+    
+    /** * Not sure what happened, but it has something to do with Mercury */
+    GenericMercury = 'GENERIC_MERCURY',
     
     /** * When you're too lazy to make a new error */
     Generic = 'GENERIC',
