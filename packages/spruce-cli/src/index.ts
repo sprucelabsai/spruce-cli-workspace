@@ -36,18 +36,7 @@ import servicesAutoloader from '#spruce/autoloaders/services'
 /** Addons */
 import './addons/filePrompt.addon'
 
-/**
- * For handling debugger not attaching right away
- */
-async function setup(argv: string[], debugging: boolean): Promise<void> {
-	const program = new Command()
-	// Const commands = []
-	if (debugging) {
-		// eslint-disable-next-line no-debugger
-		debugger // (breakpoints and debugger works after this one is missed)
-		log.trace('Extra debugger dropped in so future debuggers work... 🤷‍')
-	}
-
+export async function setup(program: Command) {
 	program.version(pkg.version).description(pkg.description)
 	program.option('--no-color', 'Disable color output in the console')
 	program.option(
@@ -185,6 +174,36 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		throw new SpruceError({ code: ErrorCode.InvalidCommand, args })
 	})
 
+	return {
+		cwd,
+		utilityOptions,
+		utilities,
+		mercury,
+		serviceOptions,
+		services,
+		storeOptions,
+		stores,
+		connectOptions,
+		generatorOptions,
+		generators,
+		commands
+	}
+}
+
+/**
+ * For handling debugger not attaching right away
+ */
+async function run(argv: string[], debugging: boolean): Promise<void> {
+	const program = new Command()
+	// Const commands = []
+	if (debugging) {
+		// eslint-disable-next-line no-debugger
+		debugger // (breakpoints and debugger works after this one is missed)
+		log.trace('Extra debugger dropped in so future debuggers work... 🤷‍')
+	}
+
+	setup(program)
+
 	const commandResult = await program.parseAsync(argv)
 	if (commandResult.length === 0) {
 		// No commands were found / executed
@@ -192,15 +211,17 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	}
 }
 
-setup(
-	process.argv,
-	typeof global.v8debug === 'object' ||
-		/--debug|--inspect/.test(process.execArgv.join(' '))
-)
-	.then(() => {
-		process.exit(0)
-	})
-	.catch(e => {
-		terminal.handleError(e)
-		process.exit(1)
-	})
+if (process.env.TESTING !== 'true') {
+	run(
+		process.argv,
+		typeof global.v8debug === 'object' ||
+			/--debug|--inspect/.test(process.execArgv.join(' '))
+	)
+		.then(() => {
+			process.exit(0)
+		})
+		.catch(e => {
+			terminal.handleError(e)
+			process.exit(1)
+		})
+}

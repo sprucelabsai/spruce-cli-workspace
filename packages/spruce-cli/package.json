@@ -35,7 +35,9 @@
 		"lint:fix": "eslint --fix '**/*.ts'",
 		"release": "semantic-release",
 		"start": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node . $COMMANDS",
-		"local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node --inspect=5200 . $COMMANDS"
+		"local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node --inspect=5200 . $COMMANDS",
+		"test": "jest",
+		"test:watch": "jest --watch"
 	},
 	"dependencies": {
 		"@sprucelabs/error": "^1.2.0",
@@ -71,7 +73,7 @@
 		"vm2": "^3.9.1"
 	},
 	"devDependencies": {
-		"@sprucelabs/test": "^1.1.0",
+		"@sprucelabs/test": "^2.0.0",
 		"@types/fs-extra": "^8.1.0",
 		"@types/inquirer": "^6.5.0",
 		"@types/jsonwebtoken": "^8.3.8",
@@ -82,19 +84,35 @@
 		"@types/rimraf": "^3.0.0",
 		"@types/slug": "^0.9.1",
 		"@types/superagent": "^4.1.7",
-		"ava": "^3.6.0",
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^5.0.2",
 		"conventional-changelog-sprucelabs": "^1.1.0",
 		"mkdirp": "^1.0.3",
 		"prettier": "^1.13"
 	},
-	"ava": {
-		"extensions": [
-			"ts"
-		],
-		"require": [
-			"ts-node/register"
+	"babel": {
+		"presets": [
+			[
+				"@babel/preset-env",
+				{
+					"targets": {
+						"node": "current"
+					}
+				}
+			],
+			"@babel/preset-typescript"
 		]
+	},
+	"jest": {
+		"preset": "ts-jest",
+		"testEnvironment": "node",
+		"testPathIgnorePatterns": [
+			"<rootDir>/build/",
+			"<rootDir>/node_modules/"
+		],
+		"moduleNameMapper": {
+			"^#spruce:schema/(.*)$": "<rootDir>/.spruce/schemas/$1",
+			"^#spruce/(.*)$": "<rootDir>/.spruce/$1"
+		}
 	}
 }
