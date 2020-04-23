@@ -1,6 +1,9 @@
 import path from 'path'
 import AbstractGenerator from './AbstractGenerator'
-import { ISchemaDefinition } from '@sprucelabs/schema'
+import Schema, {
+	ISchemaDefinition,
+	ISchemaTemplateItem
+} from '@sprucelabs/schema'
 
 export default class SchemaGenerator extends AbstractGenerator {
 	/** Generate a type file from a definition file */
@@ -36,7 +39,10 @@ export default class SchemaGenerator extends AbstractGenerator {
 		)
 
 		// TODO what should the namespace be? slug pulled from somewhere
-		const schemaTemplateItems = await this.stores.schema.schemaTemplateItems()
+		const schemaTemplateItemsOrErrors = await this.stores.schema.schemaTemplateItems()
+		const schemaTemplateItems = schemaTemplateItemsOrErrors.filter(i =>
+			Schema.isDefinitionValid(i)
+		) as ISchemaTemplateItem[]
 
 		// Contents
 		const contents = this.templates[template]({

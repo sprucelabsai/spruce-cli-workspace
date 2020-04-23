@@ -36,8 +36,8 @@
 		"release": "semantic-release",
 		"start": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node . $COMMANDS",
 		"local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node --inspect=5200 . $COMMANDS",
-		"test": "jest",
-		"test:watch": "jest --watch"
+		"test": "TESTING=true jest",
+		"test:watch": "TESTING=true jest --watch"
 	},
 	"dependencies": {
 		"@sprucelabs/error": "^1.2.0",

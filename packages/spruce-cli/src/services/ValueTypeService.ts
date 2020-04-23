@@ -8,7 +8,6 @@ import {
 import path from 'path'
 import fs from 'fs-extra'
 import { templates, importExtractor } from '@sprucelabs/spruce-templates'
-import SpruceError from '../errors/SpruceError'
 import md5 from 'md5'
 
 export interface IValueTypeGetterOptions {
@@ -79,9 +78,7 @@ export default class ValueTypeService extends AbstractService {
 							)
 
 							if (!fieldTemplateItem) {
-								// TODO: Fix type issue
-								// @ts-ignore code is not valid
-								throw new SpruceError({ code: 'comisg soon' })
+								throw new Error('unknown')
 							}
 							valueTypes[key] = true
 
