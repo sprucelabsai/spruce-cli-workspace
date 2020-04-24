@@ -27,6 +27,18 @@ export interface ICommands {
 	watch: Watch
 }
 
+export enum Command {
+	Autoloader = 'autoloader',
+	Error = 'error',
+	Onboarding = 'onboarding',
+	Remote = 'remote',
+	Schema = 'schema',
+	Skill = 'skill',
+	Test = 'test',
+	User = 'user',
+	Watch = 'watch',
+}
+
 export default async function autoloader(options: {
 	constructorOptions: ICommandOptions
 	after?: (instance: AbstractCommand) => Promise<void>
