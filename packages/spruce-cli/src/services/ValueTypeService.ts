@@ -8,7 +8,6 @@ import {
 import path from 'path'
 import fs from 'fs-extra'
 import { templates, importExtractor } from '@sprucelabs/spruce-templates'
-import SpruceError from '../errors/SpruceError'
 import md5 from 'md5'
 
 export interface IValueTypeGetterOptions {
@@ -18,6 +17,7 @@ export interface IValueTypeGetterOptions {
 
 export default class ValueTypeService extends AbstractService {
 	public generateKey(renderAs: TemplateRenderAs, definition: FieldDefinition) {
+		// TODO collision and performance
 		return md5(`${renderAs}.${JSON.stringify(definition)}`)
 	}
 	public async allValueTypes(

@@ -133,7 +133,7 @@ export default class SchemaUtility extends AbstractUtility {
 				if (field.type === FieldType.Schema) {
 					let schemasOrIds: (string | ISchemaDefinition)[] | undefined
 					try {
-						schemasOrIds = SchemaField.normalizeOptionsToSchemasOrIds(field)
+						schemasOrIds = SchemaField.fieldDefinitionToSchemasOrIds(field)
 					} catch (err) {
 						throw new SchemaError({
 							code: SchemaErrorCode.InvalidFieldOptions,
@@ -227,7 +227,7 @@ export default class SchemaUtility extends AbstractUtility {
 
 				// If this is a schema field, lets make sure schemaIds is set correctly
 				if (field && field.type === FieldType.Schema) {
-					const schemaIds = SchemaField.normalizeOptionsToSchemaIds(field)
+					const schemaIds = SchemaField.fieldDefinitionToSchemaIds(field)
 
 					if (!newFields) {
 						newFields = {}
