@@ -122,7 +122,7 @@ export default class WatchCommand extends AbstractCommand {
 				`Executing ${commandsToExecute.length} watcher commands`
 			)
 			const promises = commandsToExecute.map(c =>
-				this.utilities.child.executeCommand(c)
+				this.services.child.executeCommand(c)
 			)
 			const results = await Promise.allSettled(promises)
 			await this.stopLoading()

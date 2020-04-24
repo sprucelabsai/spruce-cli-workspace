@@ -58,7 +58,7 @@ export default class SchemaStore extends AbstractStore {
 				await globby([path.join(this.cwd, '/src/schemas/**/*.definition.ts')])
 			).map(async file => {
 				try {
-					const definition = await this.utilities.child.importDefault(file)
+					const definition = await this.services.child.importDefault(file)
 					Schema.validateDefinition(definition)
 					return definition
 				} catch (err) {

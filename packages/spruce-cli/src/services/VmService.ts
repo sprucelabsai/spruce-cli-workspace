@@ -6,13 +6,13 @@ import AbstractService from './AbstractService'
 export default class VmService extends AbstractService {
 	/** Import an addon from any file (should end in .addon.ts) */
 	public async importAddon<T extends {}>(file: string): Promise<T> {
-		const addon = await this.utilities.child.importDefault<T>(file)
+		const addon = await this.services.child.importDefault<T>(file)
 		return addon
 	}
 
 	/** Import a schema definition from any file */
 	public async importDefinition(file: string) {
-		const definitionProxy = await this.utilities.child.importDefault(file)
+		const definitionProxy = await this.services.child.importDefault(file)
 
 		try {
 			Schema.validateDefinition(definitionProxy)

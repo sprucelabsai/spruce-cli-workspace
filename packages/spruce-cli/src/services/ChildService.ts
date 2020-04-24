@@ -4,9 +4,9 @@ import fs from 'fs-extra'
 import log from '../lib/log'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
-import AbstractUtility from './AbstractUtility'
+import AbstractService from './AbstractService'
 
-export default class ChildUtility extends AbstractUtility {
+export default class ChildUtility extends AbstractService {
 	private divider = '## SPRUCE-CLI DIVIDER ##'
 	private errorDivider = '## SPRUCE-CLI ERROR DIVIDER ##'
 
