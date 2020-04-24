@@ -1,11 +1,11 @@
 import { Command } from 'commander'
-import AbstractCommand from '../AbstractCommand'
+import AbstractCommand from './AbstractCommand'
 import { FieldType, ISelectFieldDefinitionChoice } from '@sprucelabs/schema'
 import { ErrorCode } from '#spruce/errors/codes.types'
-import { StoreAuth } from '../../stores/AbstractStore'
-import SpruceError from '../../errors/SpruceError'
-import { ITerminalEffect } from '../../utilities/TerminalUtility'
-import { SpruceSchemas } from '../../../.spruce/schemas/schemas.types'
+import { StoreAuth } from '../stores/AbstractStore'
+import SpruceError from '../errors/SpruceError'
+import { ITerminalEffect } from '../utilities/TerminalUtility'
+import { SpruceSchemas } from '../../.spruce/schemas/schemas.types'
 
 export default class UserCommand extends AbstractCommand {
 	/** Sets up commands */

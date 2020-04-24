@@ -84,17 +84,17 @@ export default class ValueTypeService extends AbstractService {
 							valueTypes[key] = true
 
 							code += `
-							
+
 							// Value type for ${fieldTemplateItem.pascalName}
 							definition = ${JSON.stringify(fieldDefinition)}
 							renderAs = '${renderAs}'
 							importAs = '${fieldTemplateItem.importAs}'
-							
+
 							valueTypes['${key}'] = ${fieldTemplateItem.importAs}.${
 								fieldTemplateItem.isLocal
 									? 'default'
 									: fieldTemplateItem.className
-							}.templateDetails({ 
+							}.templateDetails({
 								language,
 								templateItems,
 								globalNamespace,
@@ -102,7 +102,7 @@ export default class ValueTypeService extends AbstractService {
 								renderAs,
 								importAs
 							}).valueType
-							
+
 							`
 						}
 					}

@@ -2,14 +2,14 @@
 import AbstractCommand from './AbstractCommand'
 
 // Import each matching class that will be autoloaded
-import Autoloader from './Autoloader/AutoloaderCommand'
-import Error from './Error/ErrorCommand'
-import Onboarding from './Onboarding/OnboardingCommand'
-import Remote from './Remote/RemoteCommand'
-import Schema from './Schema/SchemaCommand'
-import Skill from './Skill/SkillCommand'
-import Test from './Test/TestCommand'
-import User from './User/UserCommand'
+import Autoloader from './AutoloaderCommand'
+import Error from './ErrorCommand'
+import Onboarding from './OnboardingCommand'
+import Remote from './RemoteCommand'
+import Schema from './SchemaCommand'
+import Skill from './SkillCommand'
+import Test from './TestCommand'
+import User from './UserCommand'
 
 // Import necessary interface(s)
 import { ICommandOptions } from './AbstractCommand'

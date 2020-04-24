@@ -15,7 +15,7 @@
 		"src/utilities/**/*.ts": {
 			"isEnabled": true,
 			"commands": [
-				"node -src/index autoloader -s Utility ./src/utilities"
+				"node ./index autoloader -s Utility ./src/utilities"
 			]
 		},
 		"src/generators/**/*.ts": {
@@ -39,7 +39,7 @@
 		"src/errors/**/*.ts": {
 			"isEnabled": true,
 			"commands": [
-				"node ./index error:sync"
+				"node ./index error:sync --clean"
 			]
 		}
 	}

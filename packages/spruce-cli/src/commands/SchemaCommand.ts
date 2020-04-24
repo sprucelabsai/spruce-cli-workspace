@@ -1,7 +1,7 @@
 import { Command } from 'commander'
-import AbstractCommand from '../AbstractCommand'
+import AbstractCommand from './AbstractCommand'
 import { templates } from '@sprucelabs/spruce-templates'
-import { SpruceSchemas } from '../../../.spruce/schemas/schemas.types'
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import { ISchemaTemplateItem } from '@sprucelabs/schema'
 
 export default class SchemaCommand extends AbstractCommand {

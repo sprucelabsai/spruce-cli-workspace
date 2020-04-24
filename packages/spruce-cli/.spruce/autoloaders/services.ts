@@ -34,9 +34,21 @@ export default async function autoloader(options: {
 		await after(vm)
 	}
 
-	return {
+	const siblings: IServices = {
 		pin,
 		valueType,
 		vm
 	}
+
+	if (typeof pin.afterAutoload === 'function') {
+		pin.afterAutoload(siblings)
+	}
+	if (typeof valueType.afterAutoload === 'function') {
+		valueType.afterAutoload(siblings)
+	}
+	if (typeof vm.afterAutoload === 'function') {
+		vm.afterAutoload(siblings)
+	}
+
+	return siblings
 }

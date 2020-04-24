@@ -75,13 +75,16 @@ export default abstract class AbstractStore<
 		// Create save dir
 		const { directory: globalDirectory } = this.getGlobalConfigPath()
 		const { directory: localDirectory } = this.getLocalConfigPath()
+		try {
+			if (!fs.existsSync(globalDirectory)) {
+				fs.mkdirSync(globalDirectory)
+			}
 
-		if (!fs.existsSync(globalDirectory)) {
-			fs.mkdirSync(globalDirectory)
-		}
-
-		if (scope === StoreScope.Local && !fs.existsSync(localDirectory)) {
-			fs.mkdirSync(localDirectory)
+			if (scope === StoreScope.Local && !fs.existsSync(localDirectory)) {
+				fs.mkdirSync(localDirectory)
+			}
+		} catch (e) {
+			console.log(e)
 		}
 	}
 	/** Write a value to disk (should only be used in save()) */

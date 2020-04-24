@@ -1,16 +1,12 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-import { Command } from 'commander'
 import * as ts from 'typescript'
 import _ from 'lodash'
-import path from 'path'
-import globby from 'globby'
 import * as tsutils from 'tsutils'
-import AbstractCommand from '../AbstractCommand'
-import log from '../../lib/log'
-import { isReservedWord } from '../../lib/reservedWords'
-import SpruceError from '../../errors/SpruceError'
-import { ErrorCode } from '../../../.spruce/errors/codes.types'
-// Import { ITerminalEffect } from '../../utilities/TerminalUtility'
+import log from '../lib/log'
+import globby from 'globby'
+import { isReservedWord } from '../lib/reservedWords'
+import SpruceError from '../errors/SpruceError'
+import { ErrorCode } from '../../.spruce/errors/codes.types'
+import AbstractUtility from './AbstractUtility'
 
 interface IDocEntry {
 	name?: string
@@ -30,7 +26,7 @@ interface IClass {
 	relativeFilePath: string
 }
 
-interface IIntermediateAutoloadInfo {
+interface IIntermediateFileGroupInfo {
 	classes: IClass[]
 	mismatchClasses: IClass[]
 	abstractClasses: IClass[]
@@ -40,103 +36,24 @@ interface IIntermediateAutoloadInfo {
 	}[]
 }
 
-interface IAutoloadInfo extends IIntermediateAutoloadInfo {
+interface IFileGroupInfo extends IIntermediateFileGroupInfo {
+	filePaths: string[]
 	abstractClassName: string | null
 	abstractClassRelativePath: string | null
 }
 
-export default class AutoloaderCommand extends AbstractCommand {
-	public attachCommands(program: Command): void {
-		// TODO: add option to override globby
-		// Or .autoloader
-		program
-			.command('autoloader [dir]')
-			.description('Generate an autoloader for files in the directory')
-			.option(
-				'-p, --pattern <pattern>',
-				'Only autoload files in this directory that match the globby pattern. Default: **/*.ts'
-			)
-			.option(
-				'-s, --suffix <suffix>',
-				'Only loads files that end with this suffix and strip it from the returned name. Not set by default.'
-			)
-			.action(this.generateAutoloader.bind(this))
-	}
-
-	private async generateAutoloader(dir: string, cmd: Command) {
-		// Glob all the files in the folder
-		const fullDirectory = this.resolvePath(dir)
-
-		const pattern = cmd.pattern
-			? (cmd.pattern as string).replace("'", '').replace('"', '')
-			: '**/*.ts'
-
-		const suffix = cmd.suffix ? (cmd.suffix as string) : ''
-
-		const globbyPattern = `${fullDirectory}/${pattern}`
-
-		const filePaths = globby.sync(globbyPattern)
-
-		log.trace('Generating autoloader: ', {
-			globbyPattern,
-			filePaths,
-			fullDirectory
-		})
-		// Parse all the files in the directory
-		const info = await this.parseFiles({ filePaths, fullDirectory, suffix })
-		const fileName = `${path.basename(fullDirectory)}`
-
-		// Generate the autoloader file
-		if (!info.abstractClassName || !info.abstractClassRelativePath) {
-			throw new SpruceError({
-				code: ErrorCode.CreateAutoloaderFailed,
-				directory: fullDirectory,
-				globbyPattern,
-				filePaths,
-				suffix,
-				friendlyMessage:
-					'An abstract class that your classes extend could not be found.'
-			})
-		}
-
-		if (info.classes.length === 0) {
-			throw new SpruceError({
-				code: ErrorCode.CreateAutoloaderFailed,
-				directory: fullDirectory,
-				globbyPattern,
-				filePaths,
-				suffix,
-				friendlyMessage:
-					'No classes were found. Check the suffix and/or pattern'
-			})
-		}
-		const autoloaderFileContents = this.templates.autoloader({
-			abstractClassName: info.abstractClassName,
-			abstractClassRelativePath: info.abstractClassRelativePath,
-			classes: info.classes,
-			interfaces: info.interfaces,
-			fileName
-		})
-
-		// Write the file
-		this.writeFile(`.spruce/autoloaders/${fileName}.ts`, autoloaderFileContents)
-
-		this.headline('Autoloader Created 🎉')
-		this.codeSample(
-			`import ${fileName}Autoloader from '#spruce/autoloaders/${fileName}'\nconst ${fileName} = await ${fileName}Autoloader({ constructorOptions: options })`
-		)
-	}
-
-	private async parseFiles(options: {
-		filePaths: string[]
-		fullDirectory: string
+export default class ParserUtility extends AbstractUtility {
+	/** Parses a group of files that follow the typical pattern of extending an abstract class */
+	public async parseFileGroup(options: {
+		globbyPattern: string
 		suffix: string
-	}): Promise<IAutoloadInfo> {
-		const { filePaths, suffix } = options
+	}): Promise<IFileGroupInfo> {
+		const { globbyPattern, suffix } = options
+		const filePaths = globby.sync(globbyPattern)
 		const program = ts.createProgram(filePaths, {})
 		const checker = program.getTypeChecker()
 
-		const info: IIntermediateAutoloadInfo = {
+		const info: IIntermediateFileGroupInfo = {
 			classes: [],
 			mismatchClasses: [],
 			abstractClasses: [],
@@ -266,6 +183,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 		})
 
 		return {
+			filePaths,
 			abstractClassName,
 			abstractClassRelativePath,
 			...info

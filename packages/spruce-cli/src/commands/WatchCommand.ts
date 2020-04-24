@@ -4,11 +4,11 @@ import _ from 'lodash'
 import { Command } from 'commander'
 import chokidar, { FSWatcher } from 'chokidar'
 import minimatch from 'minimatch'
-import AbstractCommand from '../AbstractCommand'
-import log from '../../lib/log'
+import AbstractCommand from './AbstractCommand'
+import log from '../lib/log'
 import { FieldType } from '@sprucelabs/schema'
-import { IWatchers } from '../../stores/WatcherStore'
-import { ITerminalEffect } from '../../utilities/TerminalUtility'
+import { IWatchers } from '../stores/WatcherStore'
+import { ITerminalEffect } from '../utilities/TerminalUtility'
 
 enum WatchAction {
 	Add = 'a',
@@ -17,6 +17,9 @@ enum WatchAction {
 	List = 'l',
 	Quit = 'q'
 }
+
+/** Debounce keypresses triggering add/change/remove events */
+const DEBOUNCE_MS = 100
 
 export default class WatchCommand extends AbstractCommand {
 	private watcher!: FSWatcher
@@ -41,8 +44,14 @@ export default class WatchCommand extends AbstractCommand {
 			ignoreInitial: true
 		})
 
-		this.watcher.on('change', _.debounce(this.handleFileChange.bind(this), 100))
-		this.watcher.on('add', this.handleFileAdd.bind(this))
+		this.watcher.on(
+			'change',
+			_.debounce(this.handleFileChange.bind(this), DEBOUNCE_MS)
+		)
+		this.watcher.on(
+			'add',
+			_.debounce(this.handleFileAdd.bind(this), DEBOUNCE_MS)
+		)
 		this.watcher.on('error', this.handleWatcherError.bind(this))
 		this.watcher.on('ready', this.handleReady.bind(this))
 
@@ -136,7 +145,7 @@ export default class WatchCommand extends AbstractCommand {
 	}
 
 	private handleFileAdd(path: string) {
-		log.trace(`${path} added`)
+		return this.handleFileChange(path)
 	}
 
 	private handleWatcherError(e: Error) {

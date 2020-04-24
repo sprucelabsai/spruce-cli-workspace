@@ -1,10 +1,11 @@
-import AbstractCommand from '../AbstractCommand'
+import AbstractCommand from './AbstractCommand'
 import { Command } from 'commander'
-import namedTemplateItemDefinition from '../../schemas/namedTemplateItem.definition'
+import namedTemplateItemDefinition from '../schemas/namedTemplateItem.definition'
 import path from 'path'
+import fs from 'fs-extra'
 import globby from 'globby'
-import log from '../../lib/log'
-import SpruceError from '../../errors/SpruceError'
+import log from '../lib/log'
+import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
 
 export default class ErrorCommand extends AbstractCommand {
@@ -46,6 +47,10 @@ export default class ErrorCommand extends AbstractCommand {
 				'-dd, --errorDestinationDir <errorDestinationDir>',
 				'Where should I write the Error class file?',
 				'./src/errors'
+			)
+			.option(
+				'-c, --clean',
+				'Clean output directory before generating errors, deleting old files.'
 			)
 
 			.action(this.sync.bind(this))
@@ -191,6 +196,10 @@ export default class ErrorCommand extends AbstractCommand {
 		await this.utilities.pkg.install('@sprucelabs/error')
 		this.utilities.tsConfig.setupForErrors()
 		this.stopLoading()
+
+		if (cmd.clean) {
+			fs.removeSync(`.spruce/errors`)
+		}
 
 		// Lets clear out the current error dir
 		// this.deleteFile()

@@ -1,4 +1,4 @@
-import AbstractCommand from '../AbstractCommand'
+import AbstractCommand from './AbstractCommand'
 import { Command } from 'commander'
 import { FieldType } from '@sprucelabs/schema'
 import path from 'path'
@@ -37,7 +37,7 @@ export default class TestCommand extends AbstractCommand {
 		const name = this.utilities.names.toFileNameWithoutExtension(target)
 
 		const pascalName = this.utilities.names.toPascal(name)
-		const destination = path.join(path.dirname(target), pascalName) + '.test.ts'
+		const destination = path.join(path.dirname(target), name) + '.test.ts'
 		const contents = this.templates.test({ pascalName })
 
 		this.writeFile(destination, contents)
