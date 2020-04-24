@@ -28,13 +28,25 @@ import { ErrorCode } from '../../.spruce/errors/codes.types'
 // 	[fieldType: string]: IFieldTemplateDetails
 // }
 
+export interface ISchemaTemplateItemsOptions {
+	includeErrors?: boolean
+}
+
+type SchemaTemplateItemsReturnType<
+	T extends ISchemaTemplateItemsOptions
+> = (T['includeErrors'] extends false
+	? ISchemaTemplateItem
+	: ISchemaTemplateItem | SpruceError)[]
+
 export default class SchemaStore extends AbstractStore {
 	public name = 'schema'
 
 	/** Get the schema map supplied by core */
-	public async schemaTemplateItems(): Promise<
-		(ISchemaTemplateItem | SpruceError)[]
-	> {
+	public async schemaTemplateItems<T extends ISchemaTemplateItemsOptions>(
+		options?: T
+	): Promise<SchemaTemplateItemsReturnType<T>> {
+		const { includeErrors = true } = options ?? {}
+
 		/** Get all schemas from api  */
 		// TODO load from api
 		const schemas: ISchemaDefinition[] = [
@@ -62,7 +74,7 @@ export default class SchemaStore extends AbstractStore {
 					Schema.validateDefinition(definition)
 					return definition
 				} catch (err) {
-					return new SpruceError({
+					throw new SpruceError({
 						code: ErrorCode.DefinitionFailedToImport,
 						file,
 						originalError: err
@@ -72,9 +84,11 @@ export default class SchemaStore extends AbstractStore {
 		)
 
 		// Break out errors and definitions for
-		const errors = localErrorsOrDefinitions.filter(
-			local => !Schema.isDefinitionValid(local)
-		) as SpruceError[]
+		// const errors = localErrorsOrDefinitions.filter(
+		// 	local => !Schema.isDefinitionValid(local)
+		// ) as SpruceError[]
+		// when we get better at handling failed imports, uncomment above and update generateTemplateItems
+		const errors: SpruceError[] = []
 
 		const localDefinitions = localErrorsOrDefinitions.filter(local =>
 			Schema.isDefinitionValid(local)
@@ -93,7 +107,9 @@ export default class SchemaStore extends AbstractStore {
 			items: coreTemplateItems
 		})
 
-		return [...allTemplateItems, ...errors]
+		return (includeErrors
+			? [...allTemplateItems, ...errors]
+			: [...allTemplateItems]) as SchemaTemplateItemsReturnType<T>
 	}
 
 	/** All field types from all skills we depend on */

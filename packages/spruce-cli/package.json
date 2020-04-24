@@ -42,7 +42,7 @@
 		"@sprucelabs/log": "^10.2.1",
 		"@sprucelabs/mercury": "10.2.0",
 		"@sprucelabs/path-resolver": "^1.2.1",
-		"@sprucelabs/schema": "^1.5.2",
+		"@sprucelabs/schema": "^1.6.0",
 		"@sprucelabs/spruce-templates": "^10.1.0",
 		"@types/promise.allsettled": "^1.0.3",
 		"cfonts": "^2.8.1",
@@ -87,7 +87,8 @@
 		"concurrently": "^5.0.2",
 		"conventional-changelog-sprucelabs": "^1.1.0",
 		"mkdirp": "^1.0.3",
-		"prettier": "^1.13"
+		"prettier": "^1.13",
+		"ts-node": "^8.9.0"
 	},
 	"ava": {
 		"extensions": [
