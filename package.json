@@ -23,7 +23,7 @@
 	"devDependencies": {
 		"conventional-changelog-sprucelabs": "^1.1.0",
 		"eslint": "^5",
-		"eslint-config-spruce": "^10.1.0",
+		"eslint-config-spruce": "^10.2.0",
 		"lerna": "^3.20.2",
 		"typescript": "^3.8"
 	}

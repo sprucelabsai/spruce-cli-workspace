@@ -2,6 +2,7 @@
 import AbstractService from '../../src/services/AbstractService'
 
 // Import each matching class that will be autoloaded
+import Feature from '../../src/services/FeatureService'
 import Pin from '../../src/services/PinService'
 import ValueType from '../../src/services/ValueTypeService'
 import Vm from '../../src/services/VmService'
@@ -10,9 +11,17 @@ import Vm from '../../src/services/VmService'
 import { IServiceOptions } from '../../src/services/AbstractService'
 
 export interface IServices {
+	feature: Feature
 	pin: Pin
 	valueType: ValueType
 	vm: Vm
+}
+
+export enum Service {
+	Feature = 'feature',
+	Pin = 'pin',
+	ValueType = 'valueType',
+	Vm = 'vm',
 }
 
 export default async function autoloader(options: {
@@ -21,6 +30,10 @@ export default async function autoloader(options: {
 }): Promise<IServices> {
 	const { constructorOptions, after } = options
 
+	const feature = new Feature(constructorOptions)
+	if (after) {
+		await after(feature)
+	}
 	const pin = new Pin(constructorOptions)
 	if (after) {
 		await after(pin)
@@ -35,18 +48,30 @@ export default async function autoloader(options: {
 	}
 
 	const siblings: IServices = {
+		feature,
 		pin,
 		valueType,
 		vm
 	}
 
+	// @ts-ignore method is optional
+	if (typeof feature.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		feature.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
 	if (typeof pin.afterAutoload === 'function') {
+		// @ts-ignore method is optional
 		pin.afterAutoload(siblings)
 	}
+	// @ts-ignore method is optional
 	if (typeof valueType.afterAutoload === 'function') {
+		// @ts-ignore method is optional
 		valueType.afterAutoload(siblings)
 	}
+	// @ts-ignore method is optional
 	if (typeof vm.afterAutoload === 'function') {
+		// @ts-ignore method is optional
 		vm.afterAutoload(siblings)
 	}
 

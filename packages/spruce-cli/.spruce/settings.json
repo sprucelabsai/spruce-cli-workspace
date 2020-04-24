@@ -36,6 +36,12 @@
 				"node ./index autoloader -s Store ./src/stores"
 			]
 		},
+		"src/features/**/*.ts": {
+			"isEnabled": true,
+			"commands": [
+				"node ./index autoloader -s Feature ./src/features"
+			]
+		},
 		"src/errors/**/*.ts": {
 			"isEnabled": true,
 			"commands": [

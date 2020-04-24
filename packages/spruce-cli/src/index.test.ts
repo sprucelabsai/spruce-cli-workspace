@@ -19,5 +19,7 @@ export default class IndexTest extends BaseTest {
 	protected static async instantiateSchema() {
 		const schema = new Schema(SpruceSchemas.local.OnboardingStore.definition)
 		assert.isOk(schema)
+
+		assert.expectType<string>('something')
 	}
 }

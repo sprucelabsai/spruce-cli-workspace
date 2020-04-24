@@ -32,6 +32,7 @@ import generatorsLoader from '#spruce/autoloaders/generators'
 import storesAutoLoader from '#spruce/autoloaders/stores'
 import utilitiesAutoloader from '#spruce/autoloaders/utilities'
 import servicesAutoloader from '#spruce/autoloaders/services'
+import featuresAutoloader from '#spruce/autoloaders/features'
 
 /** Addons */
 import './addons/filePrompt.addon'
@@ -75,11 +76,14 @@ export async function setup(program: Command) {
 	// Setup mercury
 	const mercury = new Mercury()
 
+	const features = await featuresAutoloader({ constructorOptions: {} })
+
 	// Setup services
 	const serviceOptions: IServiceOptions = {
 		mercury,
 		cwd,
-		utilities
+		utilities,
+		features
 	}
 
 	// Setup services

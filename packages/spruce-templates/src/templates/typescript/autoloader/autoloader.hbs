@@ -11,16 +11,22 @@ import {{className}} from '{{relativeFilePath}}'
 import { {{interfaceName}} } from '{{relativeFilePath}}'
 {{/each}}
 
-export interface I{{pascalCase fileName}} {
+export interface I{{namePlural}} {
 	{{#each classes}}
 	{{camelCase className}}: {{className}}
+	{{/each}}
+}
+
+export enum {{nameSingular}} {
+	{{#each classes}}
+	{{className}} = '{{camelCase className}}',
 	{{/each}}
 }
 
 export default async function autoloader(options: {
 	constructorOptions: {{#each interfaces}}{{#if @first}}{{interfaceName}}{{else}} | {{interfaceName}}{{/if}}{{/each}}
 	after?: (instance: {{abstractClassName}}) => Promise<void>
-}): Promise<I{{pascalCase fileName}}> {
+}): Promise<I{{namePlural}}> {
 	const { constructorOptions, after } = options
 
 	{{#each classes}}
@@ -30,7 +36,7 @@ export default async function autoloader(options: {
 	}
 	{{/each}}
 
-	const siblings: I{{pascalCase fileName}} = {
+	const siblings: I{{namePlural}} = {
 		{{#each classes}}
 		{{#if @last}}
 		{{camelCase className}}
@@ -41,7 +47,9 @@ export default async function autoloader(options: {
 	}
 
 	{{#each classes}}
+	// @ts-ignore method is optional
 	if (typeof {{camelCase className}}.afterAutoload === 'function') {
+		// @ts-ignore method is optional
 		{{camelCase className}}.afterAutoload(siblings)
 	}
 	{{/each}}

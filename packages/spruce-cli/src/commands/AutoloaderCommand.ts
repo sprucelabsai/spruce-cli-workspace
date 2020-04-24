@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { Command } from 'commander'
 import path from 'path'
+import _ from 'lodash'
+import inflection from 'inflection'
 import AbstractCommand from './AbstractCommand'
 import log from '../lib/log'
 import SpruceError from '../errors/SpruceError'
@@ -69,12 +71,17 @@ export default class AutoloaderCommand extends AbstractCommand {
 					'No classes were found. Check the suffix and/or pattern'
 			})
 		}
+		const pascalName = _.upperFirst(fileName)
+		const namePlural = inflection.pluralize(pascalName)
+		const nameSingular = inflection.singularize(pascalName)
+
 		const autoloaderFileContents = this.templates.autoloader({
 			abstractClassName: info.abstractClassName,
 			abstractClassRelativePath: info.abstractClassRelativePath,
 			classes: info.classes,
 			interfaces: info.interfaces,
-			fileName
+			nameSingular,
+			namePlural
 		})
 
 		// Write the file

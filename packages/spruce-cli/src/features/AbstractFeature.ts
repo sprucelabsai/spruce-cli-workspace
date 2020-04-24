@@ -1,0 +1,25 @@
+import { Feature } from '#spruce/autoloaders/features'
+
+export interface IFeatureOptions {}
+
+export interface IFeaturePackage {
+	/** The full package name */
+	name: string
+	/** The package version. Defaults to "latest" */
+	version?: string
+	/** Whether to install this in "devDependencies" */
+	isDev?: boolean
+}
+
+export default abstract class AbstractFeature {
+	/** Other features that must also be installed for this feature to work */
+	public featureDependencies: Feature[] = []
+
+	/** The required npm packages for this feature */
+	public abstract packages: IFeaturePackage[]
+
+	public constructor(_options: IFeatureOptions) {}
+
+	/** Method that is called after packages have been installed */
+	public abstract install(options?: Record<string, any>): Promise<void>
+}
