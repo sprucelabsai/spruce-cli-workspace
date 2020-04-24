@@ -2,6 +2,7 @@
 import AbstractService from '../../src/services/AbstractService'
 
 // Import each matching class that will be autoloaded
+import Child from '../../src/services/ChildService'
 import Feature from '../../src/services/FeatureService'
 import Pin from '../../src/services/PinService'
 import ValueType from '../../src/services/ValueTypeService'
@@ -11,6 +12,7 @@ import Vm from '../../src/services/VmService'
 import { IServiceOptions } from '../../src/services/AbstractService'
 
 export interface IServices {
+	child: Child
 	feature: Feature
 	pin: Pin
 	valueType: ValueType
@@ -30,6 +32,10 @@ export default async function autoloader(options: {
 }): Promise<IServices> {
 	const { constructorOptions, after } = options
 
+	const child = new Child(constructorOptions)
+	if (after) {
+		await after(child)
+	}
 	const feature = new Feature(constructorOptions)
 	if (after) {
 		await after(feature)
@@ -48,12 +54,18 @@ export default async function autoloader(options: {
 	}
 
 	const siblings: IServices = {
+		child,
 		feature,
 		pin,
 		valueType,
 		vm
 	}
 
+	// @ts-ignore method is optional
+	if (typeof child.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		child.afterAutoload(siblings)
+	}
 	// @ts-ignore method is optional
 	if (typeof feature.afterAutoload === 'function') {
 		// @ts-ignore method is optional
