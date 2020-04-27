@@ -232,4 +232,7 @@ export const templates = {
 export type Templates = typeof templates
 export { default as importExtractor } from './src/utilities/importExtractor'
 
+export { default as TemplateDirectory } from './src/TemplateDirectory'
+export * from './src/TemplateDirectory'
+
 export default handlebars
