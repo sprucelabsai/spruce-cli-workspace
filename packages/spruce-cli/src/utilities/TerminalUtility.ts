@@ -336,6 +336,10 @@ export default class TerminalUtility extends AbstractUtility {
 
 		switch (fieldDefinition.type) {
 			// Map select options to prompt list choices
+			case FieldType.Boolean:
+				promptOptions.type = 'confirm'
+				break
+
 			case FieldType.Select:
 				promptOptions.type = fieldDefinition.isArray ? 'checkbox' : 'list'
 

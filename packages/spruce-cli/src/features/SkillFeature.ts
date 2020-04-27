@@ -12,9 +12,9 @@ export default class SkillFeature extends AbstractFeature {
 		{ name: 'ts-node', isDev: true }
 	]
 
-	public async install(options?: Record<string, any>) {
-		log.debug('Install!', { options })
-	}
+	public async beforePackageInstall() {}
+
+	// public async afterPackageInstall() {}
 
 	public async isInstalled(
 		/** The directory to check if a skill is installed. Default is the cwd. */

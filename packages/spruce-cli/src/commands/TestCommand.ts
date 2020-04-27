@@ -11,7 +11,13 @@ export default class TestCommand extends AbstractCommand {
 			.command('test:create')
 			.description('Create a new test')
 			.option('-t, --targetFile <target>')
-			.action(this.create.bind(this))
+			.action(async (cmd: Command) => {
+				await this.commands.skill.setup({
+					...cmd,
+					silent: true
+				})
+				await this.create(cmd)
+			})
 	}
 
 	public async create(cmd: Command) {

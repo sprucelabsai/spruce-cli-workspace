@@ -14,6 +14,7 @@ import QuizBuilder, {
 	IQuizOptions,
 	IQuizQuestions
 } from '../builders/QuizBuilder'
+import { ICommands } from '../../.spruce/autoloaders/commands'
 
 /** All commanders get this */
 export interface ICommandOptions {
@@ -35,6 +36,7 @@ export default abstract class AbstractCommand extends TerminalUtility {
 	public stores: IStores
 	public mercury: Mercury
 	public services: IServices
+	public commands!: ICommands
 	public cwd: string
 	public generators: IGenerators
 	public utilities: IUtilities
@@ -60,6 +62,10 @@ export default abstract class AbstractCommand extends TerminalUtility {
 		this.generators = generators
 		this.utilities = utilities
 		this.templates = templates
+	}
+
+	public afterAutoload(siblings: ICommands) {
+		this.commands = siblings
 	}
 
 	/** Preps a form builder, you will need to call present() */

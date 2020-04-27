@@ -80,6 +80,14 @@ export default class SkillCommand extends AbstractCommand {
 		}
 
 		log.debug({ createSkill })
+
+		if (createSkill) {
+			await this.services.feature.install([
+				{
+					feature: Feature.Skill
+				}
+			])
+		}
 	}
 
 	public async login(skillId?: string, skillApiKey?: string): Promise<void> {

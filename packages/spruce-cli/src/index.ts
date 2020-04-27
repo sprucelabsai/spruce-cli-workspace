@@ -83,7 +83,8 @@ export async function setup(program: Command) {
 		mercury,
 		cwd,
 		utilities,
-		features
+		features,
+		templates
 	}
 
 	// Setup services

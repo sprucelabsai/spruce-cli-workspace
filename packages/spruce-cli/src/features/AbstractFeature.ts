@@ -27,8 +27,15 @@ export default abstract class AbstractFeature {
 		this.cwd = options.cwd
 	}
 
+	/** Called before packages have been installed */
+	public async beforePackageInstall(
+		_options?: Record<string, any>
+	): Promise<void> {}
+
 	/** Called after packages have been installed */
-	public abstract install(options?: Record<string, any>): Promise<void>
+	public async afterPackageInstall(
+		_options?: Record<string, any>
+	): Promise<void> {}
 
 	/** Should return true if the feature is currently installed */
 	public abstract isInstalled(): Promise<boolean>

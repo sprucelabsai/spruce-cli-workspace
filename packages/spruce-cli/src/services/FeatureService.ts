@@ -17,15 +17,42 @@ export default class FeatureService extends AbstractService {
 			[pkgName: string]: IFeaturePackage
 		} = {}
 
+		const beforePackageInstallPromises: Promise<void>[] = []
+		const afterPackageInstallPromises: Promise<void>[] = []
+
 		features.forEach(f => {
 			const feature = this.features[f.feature]
+			beforePackageInstallPromises.push(feature.beforePackageInstall(f.options))
+			afterPackageInstallPromises.push(feature.afterPackageInstall(f.options))
 			feature.packages.forEach(pkg => {
 				const packageName = `${pkg.name}@${pkg.version ?? 'latest'}`
 				packages[packageName] = pkg
 			})
 		})
 
-		log.debug({ packages })
+		await Promise.all(beforePackageInstallPromises)
+
+		const packagesToInstall: string[] = []
+		const devPackagesToInstall: string[] = []
+
+		Object.values(packages).forEach(p => {
+			if (p.isDev) {
+				devPackagesToInstall.push(p.name)
+			} else {
+				packagesToInstall.push(p.name)
+			}
+		})
+
+		if (packagesToInstall.length > 0) {
+			await this.services.pkg.install(packagesToInstall)
+		}
+		if (devPackagesToInstall.length > 0) {
+			await this.services.pkg.install(devPackagesToInstall, {
+				dev: true
+			})
+		}
+
+		await Promise.all(afterPackageInstallPromises)
 
 		// const promises = features.map(f => {
 		// 	this.features[f.feature].install(f.options)
