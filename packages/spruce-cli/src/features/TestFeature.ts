@@ -13,4 +13,9 @@ export default class TestFeature extends AbstractFeature {
 	public async install(options?: Record<string, any>) {
 		log.debug('Install!', { options })
 	}
+
+	// TODO
+	public async isInstalled() {
+		return false
+	}
 }

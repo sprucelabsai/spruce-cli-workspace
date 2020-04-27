@@ -3,6 +3,7 @@ import { Command } from 'commander'
 import { FieldType } from '@sprucelabs/schema'
 import path from 'path'
 import { Feature } from '#spruce/autoloaders/features'
+import log from '../lib/log'
 
 export default class TestCommand extends AbstractCommand {
 	public attachCommands(program: Command) {
@@ -14,6 +15,7 @@ export default class TestCommand extends AbstractCommand {
 	}
 
 	public async create(cmd: Command) {
+		log.trace('test:create begin')
 		let target = cmd.targetFile as string
 
 		if (!target) {

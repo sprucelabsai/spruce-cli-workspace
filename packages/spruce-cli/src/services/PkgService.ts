@@ -1,4 +1,4 @@
-import AbstractUtility from './AbstractUtility'
+import AbstractService from './AbstractService'
 import fs from 'fs-extra'
 import pathUtil from 'path'
 import { exec } from 'child_process'
@@ -11,7 +11,7 @@ export interface IAddOptions {
 	dev?: boolean
 }
 
-export default class PkgUtility extends AbstractUtility {
+export default class PkgService extends AbstractService {
 	public set(
 		path: string,
 		value: string | Record<string, any>,

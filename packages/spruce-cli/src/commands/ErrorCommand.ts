@@ -98,7 +98,7 @@ export default class ErrorCommand extends AbstractCommand {
 
 		// Make sure error module is installed
 		this.startLoading()
-		await this.utilities.pkg.setupForErrors()
+		await this.services.pkg.setupForErrors()
 		this.utilities.tsConfig.setupForErrors()
 		this.stopLoading()
 
@@ -193,7 +193,7 @@ export default class ErrorCommand extends AbstractCommand {
 
 		// Make sure error module is installed
 		this.startLoading()
-		await this.utilities.pkg.install('@sprucelabs/error')
+		await this.services.pkg.install('@sprucelabs/error')
 		this.utilities.tsConfig.setupForErrors()
 		this.stopLoading()
 

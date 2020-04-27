@@ -1,9 +1,12 @@
 import { Command } from 'commander'
+import path from 'path'
+import log from '../lib/log'
 import AbstractCommand from './AbstractCommand'
 import { ISelectFieldDefinitionChoice, FieldType } from '@sprucelabs/schema'
 import { StoreAuth } from '../stores/AbstractStore'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
+import { Feature } from '../../.spruce/autoloaders/features'
 // Import globby from 'globby'
 // import fs from 'fs-extra'
 // import handlebars from 'handlebars'
@@ -13,6 +16,14 @@ export default class SkillCommand extends AbstractCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
 		program
+			.command('skill:setup')
+			.description('Sets up a skill in the current directory')
+			.option(
+				'-s --silent',
+				'Suppress terminal output if a skill is already set up'
+			)
+			.action(this.setup.bind(this))
+		program
 			.command('skill:login [skillId] [skillApiKey]')
 			.description('Authenticate as a skill')
 			.action(this.login.bind(this))
@@ -20,6 +31,55 @@ export default class SkillCommand extends AbstractCommand {
 			.command('skill:switch')
 			.description('Switch to a different skill')
 			.action(this.switch.bind(this))
+	}
+
+	public async setup(cmd: Command) {
+		const isInstalled = await this.services.feature.isInstalled({
+			features: [Feature.Skill]
+		})
+
+		if (isInstalled && !cmd.silent) {
+			this.utilities.terminal.info(
+				'Nothing to do. A skill is already installed here.'
+			)
+			return
+		}
+
+		// Is it installed in directories further up?
+		let parentInstallDirectory: string | undefined
+		let done = false
+		let dirToCheck = path.resolve(this.cwd, '..')
+		while (!done) {
+			const installedInParent = await this.services.feature.isInstalled({
+				features: [Feature.Skill],
+				cwd: dirToCheck
+			})
+
+			if (installedInParent) {
+				parentInstallDirectory = dirToCheck
+				done = true
+			}
+
+			const nextDirToCheck = path.resolve(dirToCheck, '..')
+
+			if (nextDirToCheck === dirToCheck) {
+				done = true
+			} else {
+				dirToCheck = nextDirToCheck
+			}
+		}
+
+		let createSkill = true
+
+		if (parentInstallDirectory) {
+			createSkill = await this.prompt({
+				type: FieldType.Boolean,
+				label: `A Skill is already installed in ${parentInstallDirectory}. Are you sure you want to create a skill here?`,
+				isRequired: true
+			})
+		}
+
+		log.debug({ createSkill })
 	}
 
 	public async login(skillId?: string, skillApiKey?: string): Promise<void> {

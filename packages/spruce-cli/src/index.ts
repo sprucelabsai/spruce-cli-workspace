@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 import { register } from '@sprucelabs/path-resolver'
 register({
 	cwd: __dirname,
@@ -76,7 +76,7 @@ export async function setup(program: Command) {
 	// Setup mercury
 	const mercury = new Mercury()
 
-	const features = await featuresAutoloader({ constructorOptions: {} })
+	const features = await featuresAutoloader({ constructorOptions: { cwd } })
 
 	// Setup services
 	const serviceOptions: IServiceOptions = {
@@ -177,6 +177,8 @@ export async function setup(program: Command) {
 	program.action((command, args) => {
 		throw new SpruceError({ code: ErrorCode.InvalidCommand, args })
 	})
+
+	// Final checks before we hand off to the command
 
 	return {
 		cwd,

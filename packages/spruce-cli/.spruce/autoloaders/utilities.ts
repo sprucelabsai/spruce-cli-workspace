@@ -5,7 +5,6 @@ import AbstractUtility from '../../src/utilities/AbstractUtility'
 import Bootstrap from '../../src/utilities/BootstrapUtility'
 import Names from '../../src/utilities/NamesUtility'
 import Parser from '../../src/utilities/ParserUtility'
-import Pkg from '../../src/utilities/PkgUtility'
 import Schema from '../../src/utilities/SchemaUtility'
 import Terminal from '../../src/utilities/TerminalUtility'
 import TsConfig from '../../src/utilities/TsConfigUtility'
@@ -17,7 +16,6 @@ export interface IUtilities {
 	bootstrap: Bootstrap
 	names: Names
 	parser: Parser
-	pkg: Pkg
 	schema: Schema
 	terminal: Terminal
 	tsConfig: TsConfig
@@ -27,7 +25,6 @@ export enum Utility {
 	Bootstrap = 'bootstrap',
 	Names = 'names',
 	Parser = 'parser',
-	Pkg = 'pkg',
 	Schema = 'schema',
 	Terminal = 'terminal',
 	TsConfig = 'tsConfig',
@@ -51,10 +48,6 @@ export default async function autoloader(options: {
 	if (after) {
 		await after(parser)
 	}
-	const pkg = new Pkg(constructorOptions)
-	if (after) {
-		await after(pkg)
-	}
 	const schema = new Schema(constructorOptions)
 	if (after) {
 		await after(schema)
@@ -72,7 +65,6 @@ export default async function autoloader(options: {
 		bootstrap,
 		names,
 		parser,
-		pkg,
 		schema,
 		terminal,
 		tsConfig
@@ -92,11 +84,6 @@ export default async function autoloader(options: {
 	if (typeof parser.afterAutoload === 'function') {
 		// @ts-ignore method is optional
 		parser.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof pkg.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		pkg.afterAutoload(siblings)
 	}
 	// @ts-ignore method is optional
 	if (typeof schema.afterAutoload === 'function') {

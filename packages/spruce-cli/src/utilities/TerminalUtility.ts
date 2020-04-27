@@ -390,6 +390,7 @@ export default class TerminalUtility extends AbstractUtility {
 		}
 
 		// TODO update method signature to type this properly
+		log.debug('Prompting...', { promptOptions })
 		const response = (await inquirer.prompt(promptOptions)) as any
 		this.isPromptActive = false
 		return typeof response[name] !== 'undefined'

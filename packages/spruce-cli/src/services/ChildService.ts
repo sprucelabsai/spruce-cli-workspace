@@ -6,7 +6,7 @@ import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
 import AbstractService from './AbstractService'
 
-export default class ChildUtility extends AbstractService {
+export default class ChildService extends AbstractService {
 	private divider = '## SPRUCE-CLI DIVIDER ##'
 	private errorDivider = '## SPRUCE-CLI ERROR DIVIDER ##'
 

@@ -5,6 +5,7 @@ import AbstractService from '../../src/services/AbstractService'
 import Child from '../../src/services/ChildService'
 import Feature from '../../src/services/FeatureService'
 import Pin from '../../src/services/PinService'
+import Pkg from '../../src/services/PkgService'
 import ValueType from '../../src/services/ValueTypeService'
 import Vm from '../../src/services/VmService'
 
@@ -15,13 +16,16 @@ export interface IServices {
 	child: Child
 	feature: Feature
 	pin: Pin
+	pkg: Pkg
 	valueType: ValueType
 	vm: Vm
 }
 
 export enum Service {
+	Child = 'child',
 	Feature = 'feature',
 	Pin = 'pin',
+	Pkg = 'pkg',
 	ValueType = 'valueType',
 	Vm = 'vm',
 }
@@ -44,6 +48,10 @@ export default async function autoloader(options: {
 	if (after) {
 		await after(pin)
 	}
+	const pkg = new Pkg(constructorOptions)
+	if (after) {
+		await after(pkg)
+	}
 	const valueType = new ValueType(constructorOptions)
 	if (after) {
 		await after(valueType)
@@ -57,6 +65,7 @@ export default async function autoloader(options: {
 		child,
 		feature,
 		pin,
+		pkg,
 		valueType,
 		vm
 	}
@@ -75,6 +84,11 @@ export default async function autoloader(options: {
 	if (typeof pin.afterAutoload === 'function') {
 		// @ts-ignore method is optional
 		pin.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof pkg.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		pkg.afterAutoload(siblings)
 	}
 	// @ts-ignore method is optional
 	if (typeof valueType.afterAutoload === 'function') {
