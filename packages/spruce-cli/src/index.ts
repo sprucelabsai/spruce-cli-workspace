@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 import { register } from '@sprucelabs/path-resolver'
-debugger
-debugger
 register({
 	cwd: __dirname,
 	extensions: ['.js', '.ts']
