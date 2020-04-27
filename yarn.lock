@@ -1942,10 +1942,10 @@
     "@sprucelabs/error" "^1.0.11"
     "@sprucelabs/log" "^10.2.1"
 
-"@sprucelabs/schema@^1.5.2":
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.5.2.tgz#a155d2009c655010f5d9fb3c870a6c9c921067a6"
-  integrity sha512-MQaH+hZB5EzyQjNaY+OpBJGHAKpSlbQyGfXa9hPTXAR0Coo4Br2gtZ9a2+6AFA3+A94r2Yx5ASoXq1tIWaZerA==
+"@sprucelabs/schema@^1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.8.0.tgz#8231a3d3ac3c1a8615afda5c8978d2f25087742c"
+  integrity sha512-bg0zZY4+97qjegus6zV35K6k7goRSUD6kVS8ijrpHV+4TVmCAaYqGMCDC3jno8rm0vZfU5VMcEcvLyp6AnCZoA==
   dependencies:
     "@sprucelabs/error" "^1.2.0"
     "@sprucelabs/log" "^10.2.1"
@@ -8374,6 +8374,14 @@ source-map-resolve@^0.5.0:
     source-map-url "^0.4.0"
     urix "^0.1.0"
 
+source-map-support@^0.5.17:
+  version "0.5.18"
+  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.18.tgz#f5f33489e270bd7f7d7e7b8debf283f3a4066960"
+  integrity sha512-9luZr/BZ2QeU6tO2uG8N2aZpVSli4TSAOAqFOyTO51AJcD9P99c0K1h6dD6r6qo5dyT44BR5exweOaLLeldTkQ==
+  dependencies:
+    buffer-from "^1.0.0"
+    source-map "^0.6.0"
+
 source-map-support@^0.5.6:
   version "0.5.16"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.16.tgz#0ae069e7fe3ba7538c64c98515e35339eac5a042"
@@ -8955,15 +8963,15 @@ ts-jest@^25.4.0:
     semver "6.x"
     yargs-parser "18.x"
 
-ts-node@^8.8.2:
-  version "8.8.2"
-  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-8.8.2.tgz#0b39e690bee39ea5111513a9d2bcdc0bc121755f"
-  integrity sha512-duVj6BpSpUpD/oM4MfhO98ozgkp3Gt9qIp3jGxwU2DFvl/3IRaEAvbLa8G60uS7C77457e/m5TMowjedeRxI1Q==
+ts-node@^8.9.0:
+  version "8.9.1"
+  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-8.9.1.tgz#2f857f46c47e91dcd28a14e052482eb14cfd65a5"
+  integrity sha512-yrq6ODsxEFTLz0R3BX2myf0WBCSQh9A+py8PBo1dCzWIOcvisbyH6akNKqDHMgXePF2kir5mm5JXJTH3OUJYOQ==
   dependencies:
     arg "^4.1.0"
     diff "^4.0.1"
     make-error "^1.1.1"
-    source-map-support "^0.5.6"
+    source-map-support "^0.5.17"
     yn "3.1.1"
 
 tslib@^1.8.1, tslib@^1.9.0:

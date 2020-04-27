@@ -6,18 +6,30 @@ import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
 import AbstractService from './AbstractService'
 
+export interface IImportOptions {
+	/** Change the cwd of the import */
+	cwd?: string
+}
+
 export default class ChildService extends AbstractService {
 	private divider = '## SPRUCE-CLI DIVIDER ##'
 	private errorDivider = '## SPRUCE-CLI ERROR DIVIDER ##'
 
-	public async importDefault<T extends {}>(file: string): Promise<T> {
-		const imported: any = await this.importAll(file)
+	public async importDefault<T extends {}>(
+		file: string,
+		options: IImportOptions = {}
+	): Promise<T> {
+		const imported: any = await this.importAll(file, options)
 		return imported.default as T
 	}
 
 	/** Import the default export from any file */
-	public async importAll<T extends {}>(file: string): Promise<T> {
+	public async importAll<T extends {}>(
+		file: string,
+		options: IImportOptions = {}
+	): Promise<T> {
 		let defaultImported: T | undefined
+		const { cwd = this.cwd } = options || {}
 		if (!fs.existsSync(file)) {
 			throw new SpruceError({
 				code: ErrorCode.FailedToImport,
@@ -30,6 +42,7 @@ export default class ChildService extends AbstractService {
 
 		try {
 			const { stdout } = await this.executeCommand('node', {
+				cwd,
 				args: [
 					'-r',
 					'ts-node/register/transpile-only',
@@ -87,12 +100,15 @@ export default class ChildService extends AbstractService {
 			args?: string[]
 			/** When set to true will stream the results from the child process in real time instead of waiting to return */
 			stream?: boolean
+			/** Override the cwd for this command */
+			cwd?: string
 		}
 	): Promise<{
 		stdout: string
 	}> {
 		return new Promise((resolve, reject) => {
 			const args = options?.args || stringArgv(cmd)
+			const { cwd = this.cwd } = options || {}
 			log.trace(`Executing command: ${cmd}`, { cwd: this.cwd, args })
 			const executable = options?.args ? cmd : args.shift()
 			let stdout = ''
@@ -101,7 +117,7 @@ export default class ChildService extends AbstractService {
 				const spawnOptions: SpawnOptions = options?.stream
 					? { stdio: 'inherit' }
 					: {
-							cwd: this.cwd,
+							cwd,
 							env: {
 								...process.env,
 								FORCE_COLOR: '1'

@@ -2,7 +2,8 @@ import { Command } from 'commander'
 import AbstractCommand from './AbstractCommand'
 import { templates } from '@sprucelabs/spruce-templates'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import { ISchemaTemplateItem } from '@sprucelabs/schema'
+import SpruceError from '../errors/SpruceError'
+import { ErrorCode } from '../../.spruce/errors/codes.types'
 
 export default class SchemaCommand extends AbstractCommand {
 	/** Sets up commands */
@@ -50,7 +51,7 @@ export default class SchemaCommand extends AbstractCommand {
 	/** Sync all schemas and fields (also pulls from the cloud) */
 	public async sync(cmd: Command) {
 		const destinationDir = cmd.destinationDir as string
-		const clean = !!cmd.clean
+		// Const clean = !!cmd.clean
 		const force = !!cmd.force
 
 		// Make sure schema module is installed
@@ -59,104 +60,150 @@ export default class SchemaCommand extends AbstractCommand {
 		this.utilities.tsConfig.setupForSchemas()
 		this.startLoading('Fetching schemas and field types')
 
-		// Load types and namespaces
-		const schemaTemplateItemsOrErrors = await this.stores.schema.schemaTemplateItems()
-		const fieldTemplateItems = await this.stores.schema.fieldTemplateItems()
+		// Load schemas
+		const {
+			items: schemaTemplateItems,
+			errors: schemaTemplateErrors
+		} = await this.stores.schema.schemaTemplateItems()
 
-		// Pull out errors and schemaTemplateItems
-		const schemaTemplateItems = schemaTemplateItemsOrErrors.filter(
-			item => !(item instanceof Error)
-		) as ISchemaTemplateItem[]
-
-		const schemaTemplateErrors = schemaTemplateItemsOrErrors.filter(
-			item => item instanceof Error
-		) as Error[]
-
-		if (!schemaTemplateErrors) {
-			throw new Error('work in progress')
+		if (schemaTemplateItems.length === 0) {
+			this.crit(
+				`For some reason I couldn't load any schema definitions, not ever the core ones. Try https://github.com/sprucelabsai/spruce-cli-workspace/issues for some insights`
+			)
+			return
 		}
 
-		// Field Types
-		const fieldTypesContent = templates.fieldsTypes({
-			fieldTemplateItems
-		})
-
-		// Field type enum
-		const fieldTypeContent = templates.fieldType({
-			fieldTemplateItems
-		})
-
-		// Build the FieldClassMap to pass to schemasTypes
-		const valueTypes = await this.services.valueType.allValueTypes({
-			schemaTemplateItems,
-			fieldTemplateItems
-		})
-
-		// Schema types
-		const schemaTypesContents = templates.schemasTypes({
-			schemaTemplateItems,
-			fieldTemplateItems,
-			valueTypeGenerator: (renderAs, definition) => {
-				const key = this.services.valueType.generateKey(renderAs, definition)
-				const valueType = valueTypes[key]
-				if (!valueType) {
-					throw new Error(`failed to find ${renderAs} for ${key}`)
-				}
-				return valueType
-			}
-		})
+		// Load fields
+		const {
+			items: fieldTemplateItems,
+			errors: fieldTemplateErrors
+		} = await this.stores.schema.fieldTemplateItems()
 
 		this.stopLoading()
 
-		if (clean) {
-			const pass =
-				force ||
-				(await this.confirm(
-					`Are you sure you want me delete the contents of ${destinationDir}?`
-				))
-			if (pass) {
-				this.deleteDir(destinationDir)
+		if (schemaTemplateItems.length === 0) {
+			this.crit(
+				`For some reason I couldn't load any schema fields (like text or number), not ever the core ones. Try https://github.com/sprucelabsai/spruce-cli-workspace/issues for some insights`
+			)
+			return
+		}
+
+		if (schemaTemplateErrors.length > 0 && !force) {
+			this.warn(
+				`I had trouble loading all your schema definitions, but I think I can continue.`
+			)
+			let confirm = await this.confirm(
+				'Do you to review the errors with me real quick? (Y to review, N to move on)'
+			)
+
+			if (confirm) {
+				do {
+					this.handleError(schemaTemplateErrors[0])
+					schemaTemplateErrors.pop()
+					await this.confirm(
+						schemaTemplateErrors.length === 0 ? 'Done' : 'Next'
+					)
+				} while (schemaTemplateErrors.length > 0)
+
+				confirm = await this.confirm(
+					`Ok, ready for me to try to generate the types for the ${schemaTemplateItems.length} definitions I was able to load?`
+				)
 			}
 		}
 
-		// Write out field types
-		const fieldTypesDestination = this.resolvePath(
-			destinationDir,
-			'fields',
-			'fields.types.ts'
-		)
+		if (fieldTemplateErrors.length > 0 && !force) {
+			this.warn(
+				`It looks like you are introducing some fields to the system, but I can't seem to load ${fieldTemplateErrors.length} of them. This may make it impossible to import local definitions (but I might still be able to write core files).`
+			)
+			let confirm = await this.confirm(
+				'Do you want to review the errors with me real quick? (Y to review, N to move on)'
+			)
+
+			if (confirm) {
+				do {
+					this.handleError(fieldTemplateErrors[0])
+					fieldTemplateErrors.pop()
+					await this.confirm(fieldTemplateErrors.length === 0 ? 'Done' : 'Next')
+				} while (fieldTemplateErrors.length > 0)
+
+				confirm = await this.confirm(
+					`Ok, you quit to fix the errors above or hit Enter to have me give it my maximum effort!`
+				)
+			}
+		}
 
 		this.startLoading(
-			`Found ${schemaTemplateItems.length} schema definitions and ${fieldTemplateItems.length} field types, writing files`
+			`Found ${schemaTemplateItems.length} schema definitions and ${fieldTemplateItems.length} field types, writing files in 2 stages.`
 		)
 
-		await this.writeFile(fieldTypesDestination, fieldTypesContent)
-
-		// Write out field type enum
-		const fieldTypeDestination = this.resolvePath(
-			destinationDir,
-			'fields',
-			'fieldType.ts'
+		const results = await this.generators.schema.generateSchemaTypes(
+			this.resolvePath(destinationDir),
+			{
+				fieldTemplateItems,
+				schemaTemplateItems
+			}
 		)
 
-		await this.writeFile(fieldTypeDestination, fieldTypeContent)
+		const { resultsByStage } = results
+		const errors: SpruceError[] = []
 
-		//Write out schema types
-		const schemaTypesDestination = this.resolvePath(
-			destinationDir,
-			'schemas.types.ts'
-		)
-		await this.writeFile(schemaTypesDestination, schemaTypesContents)
+		resultsByStage.forEach(results => {
+			errors.push(...results.errors)
+		})
+
+		this.stopLoading()
+		this.writeLn(`Done running ${resultsByStage.length} stages.`)
+
+		// If the first stage error'ed, we're in trouble
+		if (resultsByStage[0].errors.length > 0) {
+			this.crit(
+				`Warning! Core stage failure. Run \`y global update spruce\` and then try again. If the problem persists, visit https://github.com/sprucelabsai/spruce-cli-workspace/issues`
+			)
+		} else if (errors.length > 0) {
+			this.error(`I hit ${errors.length} errors while generating type files.`)
+		}
+
+		if (errors.length > 0) {
+			errors.forEach(err => {
+				const { options } = err
+				if (options.code === ErrorCode.ValueTypeServiceStageError) {
+					this.error(`Error mapping stage ${options.stage}`)
+				} else if (options.code === ErrorCode.ValueTypeServiceError) {
+					this.error(`Error on schemaId ${options.schemaId}`)
+				}
+				this.handleError(err)
+			})
+		}
+
+		this.startLoading('Prettying generated files...')
 		await this.pretty()
+
+		// If (clean) {
+		// 	const pass =
+		// 		force ||
+		// 		(await this.confirm(
+		// 			`Are you sure you want me delete the contents of ${destinationDir}?`
+		// 		))
+		// 	if (pass) {
+		// 		this.deleteDir(destinationDir)
+		// 	}
+		// }
 
 		this.stopLoading()
 
 		this.clear()
-		this.info(`All done 👊. I created 3 files.`)
+		this.info(
+			`All done 👊.${
+				errors.length > 0
+					? ` But, I encountered ${errors.length} errors (see above). Lastly,`
+					: ''
+			} I created ${Object.keys(results.generatedFiles).length} files.`
+		)
 		this.bar()
-		this.info(`1. Schema definitions ${schemaTypesDestination}`)
-		this.info(`2. Field definitions ${fieldTypesDestination}`)
-		this.info(`3. Field type enum ${fieldTypeDestination}`)
+		this.info(`1. Schema definitions ${results.generatedFiles.schemaTypes}`)
+		this.info(`2. Field definitions ${results.generatedFiles.fieldsTypes}`)
+		this.info(`3. Field type enum ${results.generatedFiles.fieldType}`)
+		this.info(`3. Field class map ${results.generatedFiles.fieldClassMap}`)
 	}
 
 	/** Define a new schema */

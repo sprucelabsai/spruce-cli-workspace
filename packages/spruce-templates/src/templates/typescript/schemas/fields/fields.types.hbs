@@ -27,16 +27,3 @@ export type FieldDefinitionMap = {
 	{{/each}}
 }
 
-/** Value for looking up field classes by field type */
-export const FieldClassMap: Record<FieldType, FieldClass> = {
-		{{#each fieldTemplateItems}}
-		[FieldType.{{pascalType}}]: {{className}},
-		{{/each}}
-}
-
-/** Interface for looking up classes by field type */
-export interface IFieldClassMap {
-		{{#each fieldTemplateItems}}
-		[FieldType.{{pascalType}}]: {{className}},
-		{{/each}}
-}

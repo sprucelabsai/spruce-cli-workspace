@@ -265,5 +265,7 @@ export default class ErrorCommand extends AbstractCommand {
 			lookupDir: this.resolvePath(lookupDir),
 			destinationFile: this.resolvePath(typesDestinationDir, 'options.types.ts')
 		})
+
+		this.info('All done! 👊')
 	}
 }

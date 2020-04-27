@@ -44,7 +44,7 @@
 		"@sprucelabs/log": "^10.2.1",
 		"@sprucelabs/mercury": "10.2.0",
 		"@sprucelabs/path-resolver": "^1.2.1",
-		"@sprucelabs/schema": "^1.5.2",
+		"@sprucelabs/schema": "^1.8.0",
 		"@sprucelabs/spruce-templates": "^10.1.0",
 		"@types/promise.allsettled": "^1.0.3",
 		"cfonts": "^2.8.1",
@@ -68,7 +68,7 @@
 		"rimraf": "^3.0.2",
 		"slug": "^2.1.1",
 		"string-argv": "^0.3.1",
-		"ts-node": "^8.8.2",
+		"ts-node": "^8.9.0",
 		"tsutils": "^3.17.1",
 		"typescript": "^3.8.3",
 		"vm2": "^3.9.1"
@@ -113,7 +113,7 @@
 			"<rootDir>/node_modules/"
 		],
 		"moduleNameMapper": {
-			"^#spruce:schema/(.*)$": "<rootDir>/.spruce/schemas/$1",
+			"^#spruce:schema/(.*)$": "<rootDir>/../../node_modules/@sprucelabs/schema/build/$1",
 			"^#spruce/(.*)$": "<rootDir>/.spruce/$1"
 		}
 	}

@@ -6,7 +6,7 @@ import Schema, {
 	SchemaFieldNames,
 	ISelectFieldDefinitionChoice,
 	FieldDefinition,
-	SchemaErrorCode,
+	ErrorCode as SchemaErrorCode,
 	SchemaError
 } from '@sprucelabs/schema'
 import ITerminal, { ITerminalEffect } from '../utilities/TerminalUtility'
@@ -154,7 +154,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 			}
 		} while (!done || !valid)
 
-		const values = this.getValues({ fields })
+		const values = this.getValues({ fields, createSchemaInstances: false })
 
 		return pick(values, fields) as Pick<SchemaDefinitionAllValues<T>, F>
 	}
@@ -206,9 +206,11 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 				// Invalid fields
 				case SchemaErrorCode.InvalidField:
 					// Output all errors under all fields
-					options.errors.forEach(error => {
-						const { fieldName, errors } = error
-						this.term.error(`field: ${fieldName} errors: ${errors.join(', ')}`)
+					options.errors.forEach(err => {
+						const { name, friendlyMessage, error, code } = err
+						this.term.error(
+							friendlyMessage ?? `${name}: ${code} ${error?.message}`
+						)
 					})
 					break
 				default:
@@ -253,7 +255,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 
 				return {
 					value: actionKey,
-					label: `${field.getLabel()}: ${value ? value : '***missing***'}`
+					label: `${field.label}: ${value ? value : '***missing***'}`
 				}
 			})
 

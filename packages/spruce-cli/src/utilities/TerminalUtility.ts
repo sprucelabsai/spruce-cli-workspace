@@ -324,14 +324,14 @@ export default class TerminalUtility extends AbstractUtility {
 			message: `${label}:`
 		}
 
-		const field = FieldFactory.field(fieldDefinition)
+		const field = FieldFactory.field('prompt', fieldDefinition)
 
 		// Setup transform and validate
 		promptOptions.transformer = (value: string) => {
 			return field.toValueType(value)
 		}
 		promptOptions.validate = (value: string) => {
-			return field.validate(value).length === 0
+			return field.validate(value, {}).length === 0
 		}
 
 		switch (fieldDefinition.type) {

@@ -265,7 +265,7 @@ export default class QuizBuilder<
 					correctAnswer = originalQuestion.answer
 			}
 
-			const objectKey = field.getLabel() || '**missing'
+			const objectKey = field.label || '**missing'
 
 			if (isCorrect) {
 				testResults[objectKey] = `${chalk.bgGreenBright.black(

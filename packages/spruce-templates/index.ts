@@ -84,6 +84,10 @@ const fieldsTypes: string = fs
 	.readFileSync(path.join(templatePath, 'schemas/fields/fields.types.hbs'))
 	.toString()
 
+const fieldClassMap: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/fields/fieldClassMap.hbs'))
+	.toString()
+
 const fieldType: string = fs
 	.readFileSync(path.join(templatePath, 'schemas/fields/fieldType.hbs'))
 	.toString()
@@ -209,6 +213,11 @@ export const templates = {
 	/** The types file for all the schema fields being used */
 	fieldsTypes(options: { fieldTemplateItems: IFieldTemplateItem[] }) {
 		const template = handlebars.compile(fieldsTypes)
+		return template(options)
+	},
+	/** Global mapping of all fields for lookup by type */
+	fieldClassMap(options: { fieldTemplateItems: IFieldTemplateItem[] }) {
+		const template = handlebars.compile(fieldClassMap)
 		return template(options)
 	},
 

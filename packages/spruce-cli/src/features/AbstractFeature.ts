@@ -1,6 +1,8 @@
 import { Feature } from '#spruce/autoloaders/features'
 
-export interface IFeatureOptions {}
+export interface IFeatureOptions {
+	cwd: string
+}
 
 export interface IFeaturePackage {
 	/** The full package name */

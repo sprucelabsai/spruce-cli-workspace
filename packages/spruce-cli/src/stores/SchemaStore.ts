@@ -6,7 +6,7 @@ import {
 	IFieldTemplateItem
 } from '@sprucelabs/schema'
 
-import path from 'path'
+import pathUtil from 'path'
 import { uniqBy } from 'lodash'
 
 // TODO move these into mercury api and pull from there
@@ -28,13 +28,43 @@ import { ErrorCode } from '../../.spruce/errors/codes.types'
 // 	[fieldType: string]: IFieldTemplateDetails
 // }
 
+export interface ISchemaTemplateItemsOptions {
+	includeErrors?: boolean
+}
+
+export interface IFieldTemplateItemsOptions
+	extends ISchemaTemplateItemsOptions {}
+
+type SchemaTemplateItemsReturnType<
+	T extends ISchemaTemplateItemsOptions
+> = T['includeErrors'] extends false
+	? ISchemaTemplateItem[]
+	: {
+			items: ISchemaTemplateItem[]
+			errors: SpruceError[]
+	  }
+
+type FieldTemplateItemsReturnType<
+	T extends IFieldTemplateItemsOptions
+> = T['includeErrors'] extends false
+	? IFieldTemplateItem[]
+	: { items: IFieldTemplateItem[]; errors: SpruceError[] }
+
+interface IAddonItem {
+	path: string
+	registration: IFieldRegistration
+	isLocal: boolean
+}
+
 export default class SchemaStore extends AbstractStore {
 	public name = 'schema'
 
 	/** Get the schema map supplied by core */
-	public async schemaTemplateItems(): Promise<
-		(ISchemaTemplateItem | SpruceError)[]
-	> {
+	public async schemaTemplateItems<T extends ISchemaTemplateItemsOptions>(
+		options?: T
+	): Promise<SchemaTemplateItemsReturnType<T>> {
+		const { includeErrors = true } = options ?? {}
+
 		/** Get all schemas from api  */
 		// TODO load from api
 		const schemas: ISchemaDefinition[] = [
@@ -53,32 +83,39 @@ export default class SchemaStore extends AbstractStore {
 		})
 
 		// Local
-		const localErrorsOrDefinitions = await Promise.all(
-			(
-				await globby([path.join(this.cwd, '/src/schemas/**/*.definition.ts')])
-			).map(async file => {
-				try {
-					const definition = await this.services.child.importDefault(file)
-					Schema.validateDefinition(definition)
-					return definition
-				} catch (err) {
-					return new SpruceError({
-						code: ErrorCode.DefinitionFailedToImport,
-						file,
-						originalError: err
-					})
-				}
-			})
-		)
+		const localErrors: SpruceError[] = []
+		const localDefinitions = (
+			await Promise.all(
+				(
+					await globby([
+						pathUtil.join(this.cwd, '/src/schemas/**/*.definition.ts')
+					])
+				).map(async file => {
+					try {
+						const definition = await this.services.child.importDefault(file, {
+							cwd: this.cwd
+						})
+						Schema.validateDefinition(definition)
+						return definition
+					} catch (err) {
+						localErrors.push(
+							new SpruceError({
+								code: ErrorCode.DefinitionFailedToImport,
+								file,
+								originalError: err
+							})
+						)
+						return false
+					}
+				})
+			)
+		).filter(d => !!d) as ISchemaDefinition[]
 
 		// Break out errors and definitions for
-		const errors = localErrorsOrDefinitions.filter(
-			local => !Schema.isDefinitionValid(local)
-		) as SpruceError[]
-
-		const localDefinitions = localErrorsOrDefinitions.filter(local =>
-			Schema.isDefinitionValid(local)
-		) as ISchemaDefinition[]
+		// const errors = localErrorsOrDefinitions.filter(
+		// 	local => !Schema.isDefinitionValid(local)
+		// ) as SpruceError[]
+		// when we get better at handling failed imports, uncomment above and update generateTemplateItems
 
 		// If a local schema points to a core one, it requires the core one to be tracked in "definitionsById"
 		const definitionsById: { [id: string]: ISchemaDefinition } = {}
@@ -93,28 +130,38 @@ export default class SchemaStore extends AbstractStore {
 			items: coreTemplateItems
 		})
 
-		return [...allTemplateItems, ...errors]
+		return (includeErrors
+			? {
+					items: allTemplateItems,
+					errors: localErrors
+			  }
+			: [...allTemplateItems]) as SchemaTemplateItemsReturnType<T>
 	}
 
 	/** All field types from all skills we depend on */
-	public async fieldTemplateItems(): Promise<IFieldTemplateItem[]> {
+	public async fieldTemplateItems<T extends IFieldTemplateItemsOptions>(
+		options?: T
+	): Promise<FieldTemplateItemsReturnType<T>> {
+		const { includeErrors = true } = options || {}
+		const cwd = pathUtil.join(__dirname, '..', '..')
 		// TODO load from core
 		const coreAddons = await Promise.all(
 			(
 				await globby([
-					path.join(
-						this.cwd,
+					pathUtil.join(
+						cwd,
 						'node_modules/@sprucelabs/schema/build/addons/*Field.addon.js'
 					),
-					path.join(
-						this.cwd,
+					pathUtil.join(
+						cwd,
 						'../../node_modules/@sprucelabs/schema/build/addons/*Field.addon.js'
 					)
 				])
 			).map(async path => {
+				// Import from
 				const registration = await this.services.vm.importAddon<
 					IFieldRegistration
-				>(path)
+				>(path, { cwd })
 				return {
 					path,
 					registration,
@@ -123,20 +170,34 @@ export default class SchemaStore extends AbstractStore {
 			})
 		)
 
-		const localAddons = await Promise.all(
-			(await globby([path.join(this.cwd, '/src/addons/*Field.addon.ts')])).map(
-				async path => {
-					const registration = await this.services.vm.importAddon<
-						IFieldRegistration
-					>(path)
-					return {
-						path,
-						registration,
-						isLocal: true
+		const localErrors: SpruceError[] = []
+		const localAddons = (
+			await Promise.all(
+				(
+					await globby([pathUtil.join(this.cwd, '/src/addons/*Field.addon.ts')])
+				).map(async file => {
+					try {
+						const registration = await this.services.vm.importAddon<
+							IFieldRegistration
+						>(file)
+						return {
+							path: file,
+							registration,
+							isLocal: true
+						}
+					} catch (err) {
+						localErrors.push(
+							new SpruceError({
+								code: ErrorCode.FailedToImport,
+								file,
+								originalError: err
+							})
+						)
+						return false
 					}
-				}
+				})
 			)
-		)
+		).filter(addon => !!addon) as IAddonItem[]
 
 		const allAddons = uniqBy(
 			[...coreAddons, ...localAddons],
@@ -158,8 +219,6 @@ export default class SchemaStore extends AbstractStore {
 			// Map registration to template item
 			const name = registration.className
 
-			// TODO: Fix type issue
-			// @ts-ignore "definition" missing
 			types.push({
 				pascalName: this.utilities.names.toPascal(name),
 				camelName: this.utilities.names.toCamel(name),
@@ -174,7 +233,9 @@ export default class SchemaStore extends AbstractStore {
 			})
 		}
 
-		return types
+		return (includeErrors
+			? { items: types, errors: localErrors }
+			: types) as FieldTemplateItemsReturnType<T>
 	}
 
 	// TODO this may need to be brought back to hold an entire class map
