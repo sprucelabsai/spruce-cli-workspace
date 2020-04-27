@@ -1,7 +1,22 @@
-import path from 'path'
 import AbstractGenerator from './AbstractGenerator'
 import { ISchemaDefinition } from '@sprucelabs/schema'
+import { IFieldTemplateItem, ISchemaTemplateItem } from '@sprucelabs/schema'
+import { templates } from '@sprucelabs/spruce-templates'
+import path from 'path'
+import { ErrorCode } from '../../.spruce/errors/codes.types'
+import SpruceError from '../errors/SpruceError'
 
+export interface IGenerateSchemaTypesOptions {
+	fieldTemplateItems: IFieldTemplateItem[]
+	schemaTemplateItems: ISchemaTemplateItem[]
+}
+
+export interface ISchemaTypesGenerationPhase {
+	name: string
+	errors: SpruceError[]
+	successfulSchemas: number
+	successfulFields: number
+}
 export default class SchemaGenerator extends AbstractGenerator {
 	/** Generate a type file from a definition file */
 	public async generateTypesFromDefinitionFile(
@@ -14,6 +29,9 @@ export default class SchemaGenerator extends AbstractGenerator {
 		description: string
 		readableName: string
 		definition: ISchemaDefinition
+		generatedFiles: {
+			schemaTypes: string
+		}
 	}> {
 		const definition = await this.services.vm.importDefinition(sourceFile)
 
@@ -65,7 +83,178 @@ export default class SchemaGenerator extends AbstractGenerator {
 			pascalName,
 			definition,
 			description: description || '*definition missing*',
-			readableName
+			readableName,
+			generatedFiles: {
+				schemaTypes: destination
+			}
+		}
+	}
+
+	/** Generate the field type unions */
+	public async generateSchemaTypes(
+		destinationDir: string,
+		options: IGenerateSchemaTypesOptions
+	): Promise<{
+		resultsByStage: ISchemaTypesGenerationPhase[]
+		generatedFiles: {
+			schemaTypes: string
+			fieldsTypes: string
+			fieldType: string
+			fieldClassMap: string
+		}
+	}> {
+		const { fieldTemplateItems, schemaTemplateItems } = options
+
+		// Destinations
+		const fieldsTypesDestination = path.join(
+			destinationDir,
+			'fields',
+			'fields.types.ts'
+		)
+		const fieldClassMapDestination = path.join(
+			destinationDir,
+			'fields',
+			'fieldClassMap.ts'
+		)
+		const fieldTypeDestination = path.join(
+			destinationDir,
+			'fields',
+			'fieldType.ts'
+		)
+
+		const schemaTypesDestination = path.join(destinationDir, 'schemas.types.ts')
+
+		// Generate in stages, starting with core only
+		const coreSchemaTemplateItems = schemaTemplateItems.filter(
+			i => i.namespace === 'core'
+		)
+
+		const coreFieldTemplateItems = fieldTemplateItems.filter(
+			i => i.package === '@sprucelabs/schema'
+		)
+
+		const stages = [
+			{
+				// Stage 1, core
+				name: 'core',
+				schemaTemplateItems: coreSchemaTemplateItems,
+				fieldTemplateItems: coreFieldTemplateItems
+			},
+			{
+				// Stage 2, everything
+				name: 'everything',
+				schemaTemplateItems,
+				fieldTemplateItems
+			}
+		]
+
+		const resultsByStage = []
+
+		for (const stage of stages) {
+			const {
+				schemaTemplateItems: schemaTemplateItemsStage,
+				fieldTemplateItems,
+				name
+			} = stage
+			try {
+				// We may need to remove template items if they error below
+				let schemaTemplateItems = [...schemaTemplateItemsStage]
+
+				// Field Types
+				const fieldsTypesContent = templates.fieldsTypes({
+					fieldTemplateItems
+				})
+
+				// Field class map
+				const fieldClassMapContent = templates.fieldClassMap({
+					fieldTemplateItems
+				})
+
+				// Field type enum
+				const fieldTypeContent = templates.fieldType({
+					fieldTemplateItems
+				})
+
+				// Write out field types
+				await this.writeFile(fieldsTypesDestination, fieldsTypesContent)
+
+				// Write out class map
+				await this.writeFile(fieldClassMapDestination, fieldClassMapContent)
+
+				// Write out field type enum
+				await this.writeFile(fieldTypeDestination, fieldTypeContent)
+
+				// Build the ValueType hash to pass to schemasTypes
+				const {
+					valueTypes,
+					errors
+				} = await this.services.valueType.allValueTypes({
+					schemaTemplateItems,
+					fieldTemplateItems
+				})
+
+				// If there were errors, remove any definitions that had them
+				if (errors.length > 0) {
+					errors.forEach(err => {
+						const { options } = err
+						if (options.code === ErrorCode.ValueTypeServiceError) {
+							schemaTemplateItems = schemaTemplateItems.filter(
+								item => item.id !== options.schemaId
+							)
+						}
+					})
+				}
+
+				// Schema types
+				const schemaTypesContents = templates.schemasTypes({
+					schemaTemplateItems,
+					fieldTemplateItems,
+					valueTypeGenerator: (renderAs, definition) => {
+						const key = this.services.valueType.generateKey(
+							renderAs,
+							definition
+						)
+						const valueType = valueTypes[key]
+						if (!valueType) {
+							throw new Error(`failed to find ${renderAs} for ${key}`)
+						}
+						return valueType
+					}
+				})
+
+				//Write out schema types
+				await this.writeFile(schemaTypesDestination, schemaTypesContents)
+
+				resultsByStage.push({
+					name,
+					errors,
+					successfulSchemas: schemaTemplateItems.length,
+					successfulFields: fieldTemplateItems.length
+				})
+			} catch (err) {
+				resultsByStage.push({
+					name,
+					errors: [
+						new SpruceError({
+							code: ErrorCode.ValueTypeServiceStageError,
+							stage: name,
+							originalError: err
+						})
+					],
+					successfulFields: 0,
+					successfulSchemas: 0
+				})
+			}
+		}
+
+		return {
+			resultsByStage,
+			generatedFiles: {
+				schemaTypes: schemaTypesDestination,
+				fieldType: fieldTypeDestination,
+				fieldsTypes: fieldsTypesDestination,
+				fieldClassMap: fieldClassMapDestination
+			}
 		}
 	}
 }

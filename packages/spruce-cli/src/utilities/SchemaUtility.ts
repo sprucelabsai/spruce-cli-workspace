@@ -4,7 +4,7 @@ import {
 	FieldType,
 	ISchemaDefinitionFields,
 	SchemaError,
-	SchemaErrorCode,
+	ErrorCode as SchemaErrorCode,
 	ISchemaTemplateItem,
 	ISchemaTemplateNames,
 	default as Schema

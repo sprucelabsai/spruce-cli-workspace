@@ -9,6 +9,8 @@ import path from 'path'
 import fs from 'fs-extra'
 import { templates, importExtractor } from '@sprucelabs/spruce-templates'
 import md5 from 'md5'
+import SpruceError from '../errors/SpruceError'
+import { ErrorCode } from '../../.spruce/errors/codes.types'
 
 export interface IValueTypeGetterOptions {
 	schemaTemplateItems: ISchemaTemplateItem[]
@@ -16,14 +18,19 @@ export interface IValueTypeGetterOptions {
 }
 
 export default class ValueTypeService extends AbstractService {
+	/** For writing tmp files with unique names */
+	private tmpFileCount = 0
 	public generateKey(renderAs: TemplateRenderAs, definition: FieldDefinition) {
 		// TODO collision and performance
 		return md5(`${renderAs}.${JSON.stringify(definition)}`)
 	}
 	public async allValueTypes(
 		options: IValueTypeGetterOptions
-	): Promise<Record<string, string>> {
+	): Promise<{ valueTypes: Record<string, string>; errors: SpruceError[] }> {
 		const { fieldTemplateItems, schemaTemplateItems } = options
+
+		// We'll track errors here
+		const errors: SpruceError[] = []
 
 		// Field type enum
 		let code =
@@ -79,7 +86,14 @@ export default class ValueTypeService extends AbstractService {
 							)
 
 							if (!fieldTemplateItem) {
-								throw new Error('unknown')
+								errors.push(
+									new SpruceError({
+										code: ErrorCode.ValueTypeServiceError,
+										schemaId: definition.id,
+										friendlyMessage: `Field ${fieldName} in schema ${definition.id} is marked as type ${type}, but no field exists to handle that type.`
+									})
+								)
+								return
 							}
 							valueTypes[key] = true
 
@@ -102,7 +116,6 @@ export default class ValueTypeService extends AbstractService {
 								renderAs,
 								importAs
 							}).valueType
-
 							`
 						}
 					}
@@ -114,12 +127,12 @@ export default class ValueTypeService extends AbstractService {
 			this.cwd,
 			'.spruce',
 			'schemas',
-			'.valueType.tmp.ts'
+			`.valueType-${this.tmpFileCount++}.tmp.ts`
 		)
 		fs.writeFileSync(tmpFilePath, code)
 
 		const response = await this.utilities.child.importAll<any>(tmpFilePath)
 		// TODO lots of validation
-		return response.valueTypes as Record<string, string>
+		return { valueTypes: response.valueTypes as Record<string, string>, errors }
 	}
 }

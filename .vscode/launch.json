@@ -15,10 +15,7 @@
 			"name": "cli:debug",
 			"protocol": "inspector",
 			"runtimeExecutable": "yarn",
-			"runtimeArgs": [
-				"run",
-				"local"
-			],
+			"runtimeArgs": ["run", "local"],
 			"console": "integratedTerminal",
 			"port": 5200,
 			"cwd": "${workspaceFolder}/packages/spruce-cli",
@@ -36,7 +33,8 @@
 			"runtimeArgs": [
 				"--inspect-brk",
 				"${workspaceFolder}/node_modules/.bin/jest",
-				"${relativeFile}"
+				"${relativeFile}",
+				"--no-cache"
 			],
 			"port": 9229,
 			"cwd": "${fileDirname}",

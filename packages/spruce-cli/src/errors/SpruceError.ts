@@ -66,6 +66,15 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 
 				break
 
+			case ErrorCode.ValueTypeServiceStageError:
+				message =
+					'When collecting value types for all fields, something went wrong'
+				break
+
+			case ErrorCode.ValueTypeServiceError:
+				message = 'Ar error when generating value types for template insertion '
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}
