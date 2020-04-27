@@ -1934,14 +1934,6 @@
     superagent "^5.1.2"
     uuid "^3.3.3"
 
-"@sprucelabs/path-resolver@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/path-resolver/-/path-resolver-1.2.1.tgz#9407a2b35b88ac6eeb42083d420095e830b76c31"
-  integrity sha512-zM69ggcTi0MSNm35f1HmenMwnIEAz5mz2MKtiWnKUMEgdWeJhoW10Nzr5N6G9FYAifJmmUZwkvNP+nPixisPPg==
-  dependencies:
-    "@sprucelabs/error" "^1.0.11"
-    "@sprucelabs/log" "^10.2.1"
-
 "@sprucelabs/path-resolver@^1.3.0":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@sprucelabs/path-resolver/-/path-resolver-1.3.0.tgz#c4e906bee40fa59cb12f12abd8a15704ce307e3c"
@@ -1950,14 +1942,14 @@
     "@sprucelabs/error" "^1.0.11"
     "@sprucelabs/log" "^10.2.1"
 
-"@sprucelabs/schema@^1.8.0":
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.8.0.tgz#8231a3d3ac3c1a8615afda5c8978d2f25087742c"
-  integrity sha512-bg0zZY4+97qjegus6zV35K6k7goRSUD6kVS8ijrpHV+4TVmCAaYqGMCDC3jno8rm0vZfU5VMcEcvLyp6AnCZoA==
+"@sprucelabs/schema@^1.8.1":
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.8.1.tgz#8d2d2bb21a7f50cff15343f1eeab8174de17f73f"
+  integrity sha512-sKlkTajiFkXCFLklRlt/2Vv/s2uH6X7kt/qSGxRQ+MbKdXHo9Qz1w7IgVO/1DseGdx4HooXX4qEQo1JDIk1khw==
   dependencies:
     "@sprucelabs/error" "^1.2.0"
     "@sprucelabs/log" "^10.2.1"
-    "@sprucelabs/path-resolver" "^1.2.1"
+    "@sprucelabs/path-resolver" "^1.3.0"
     google-libphonenumber "^3.2.8"
     libphonenumber-js "^1.7.48"
     mime-db "^1.43.0"
