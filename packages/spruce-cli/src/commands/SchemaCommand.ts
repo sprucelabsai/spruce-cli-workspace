@@ -151,6 +151,7 @@ export default class SchemaCommand extends AbstractCommand {
 			errors.push(...results.errors)
 		})
 
+		this.stopLoading()
 		this.writeLn(`Done running ${resultsByStage.length} stages.`)
 
 		// If the first stage error'ed, we're in trouble
@@ -174,6 +175,7 @@ export default class SchemaCommand extends AbstractCommand {
 			})
 		}
 
+		this.startLoading('Prettying generated files...')
 		await this.pretty()
 
 		// If (clean) {
