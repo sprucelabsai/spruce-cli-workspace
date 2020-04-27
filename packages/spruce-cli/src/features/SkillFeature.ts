@@ -1,7 +1,7 @@
 import fs from 'fs-extra'
 import path from 'path'
 import os from 'os'
-import { TemplateDirectory, TemplateKind } from '@sprucelabs/spruce-templates'
+import { TemplateKind } from '@sprucelabs/spruce-templates'
 import log from '../lib/log'
 import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
 
@@ -9,23 +9,16 @@ export default class SkillFeature extends AbstractFeature {
 	public featureDependencies = []
 
 	public packages: IFeaturePackage[] = [
+		{ name: 'typescript' },
+		{ name: '@sprucelabs/log' },
 		{ name: '@sprucelabs/test', isDev: true },
 		{ name: 'ts-node', isDev: true }
 	]
 
 	public async beforePackageInstall() {
-		const templateDirectory = await TemplateDirectory.build({
-			type: TemplateKind.Skill,
-			templateData: {}
+		await this.writeDirectoryTemplate({
+			template: TemplateKind.Skill
 		})
-
-		for (let i = 0; i < templateDirectory.files.length; i += 1) {
-			const file = templateDirectory.files[i]
-			const filePathToWrite = path.join(this.cwd, file.relativePath)
-			const dirPathToWrite = path.dirname(filePathToWrite)
-			fs.ensureDirSync(dirPathToWrite)
-			fs.writeFileSync(filePathToWrite, file.contents)
-		}
 	}
 
 	// public async afterPackageInstall() {}

@@ -18,19 +18,41 @@ export enum TemplateKind {
 }
 
 export default class TemplateDirectory {
+	/** Returns the relative file paths for all the expected files in the directory template */
+	public static async filesInTemplate(template: TemplateKind) {
+		const filePaths: string[] = []
+
+		const files = globby.sync(
+			path.join(__dirname, 'templates/directories', template),
+			{
+				dot: true
+			}
+		)
+
+		for (let i = 0; i < files.length; i += 1) {
+			const file = files[i]
+			log.debug({ file })
+			const { relativeBaseDirectory } = this.parseTemplateFilePath(file)
+			filePaths.push(relativeBaseDirectory)
+		}
+
+		return filePaths
+	}
+
+	/** Build all the files in the directory for the template */
 	public static async build(options: {
 		/** The type of directory template to build */
-		type: TemplateKind
+		template: TemplateKind
 		/** The data to pass into the templates */
 		templateData?: Record<string, any>
 	}): Promise<IBuiltTemplateDirectory> {
 		const builtFiles: IBuiltTemplateDirectory = {
 			files: []
 		}
-		const { type, templateData } = options
+		const { template, templateData } = options
 
 		const files = globby.sync(
-			path.join(__dirname, 'templates/directories', type),
+			path.join(__dirname, 'templates/directories', template),
 			{
 				dot: true
 			}
