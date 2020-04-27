@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 import { register } from '@sprucelabs/path-resolver'
+debugger
+debugger
 register({
 	cwd: __dirname,
 	extensions: ['.js', '.ts']
@@ -48,7 +50,7 @@ export async function setup(program: Command) {
 	const autoLoaded: any[] = []
 
 	// Update state for the entire process
-	// TODO move this out and give more control when handling cross skill, e.g. "update something on only utilities"
+	// TODO move this out and give more control when handling cross skill, e.g. "update x on only utilities"
 	const updateState = function(key: string, value: any) {
 		autoLoaded.forEach(loaded => (loaded[key] = value))
 	}

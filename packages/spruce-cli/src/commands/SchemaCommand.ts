@@ -167,7 +167,7 @@ export default class SchemaCommand extends AbstractCommand {
 			errors.forEach(err => {
 				const { options } = err
 				if (options.code === ErrorCode.ValueTypeServiceStageError) {
-					this.error(`Error mapping stage ${options.stage}`)
+					this.error(`Error mapping stage on stage "${options.stage}"`)
 				} else if (options.code === ErrorCode.ValueTypeServiceError) {
 					this.error(`Error on schemaId ${options.schemaId}`)
 				}

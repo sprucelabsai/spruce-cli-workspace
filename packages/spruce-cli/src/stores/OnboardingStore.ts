@@ -17,7 +17,6 @@ export default class OnboardingStore extends AbstractStore<
 
 	public constructor(options: IStoreOptions) {
 		super(options)
-		console.log({ options })
 		this.load()
 	}
 
