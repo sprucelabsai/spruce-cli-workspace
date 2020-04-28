@@ -1,7 +1,6 @@
 import AbstractService from './AbstractService'
 import fs from 'fs-extra'
 import pathUtil from 'path'
-import { exec } from 'child_process'
 import { set } from 'lodash'
 import log from '../lib/log'
 import SpruceError from '../errors/SpruceError'
@@ -59,64 +58,55 @@ export default class PkgService extends AbstractService {
 			}
 		}
 		if (install) {
-			return new Promise((resolve, reject) => {
-				exec(
-					`yarn add ${packages.join(' ')}${options?.dev ? ' --dev' : ''}`,
-					err => {
-						if (err) {
-							reject(err)
-						}
-						resolve()
-					}
-				)
+			const packagesToInstall = packages.join(' ')
+			log.debug('Installing packages', packagesToInstall)
+			const args: string[] = ['add', ...packagesToInstall]
+			if (options?.dev) {
+				args.push('--dev')
+			}
+			await this.services.child.executeCommand('yarn', {
+				args
 			})
 		}
 	}
 
 	/** Lint everything */
 	public async lintFix() {
-		// Await this.install(['eslint', 'eslint-config-spruce'], { dev: true })
-		return new Promise(resolve => {
-			exec(`yarn lint:fix`, err => {
-				if (err) {
-					log.warn('Linting skill failed! Moving on...')
-					log.debug(err)
-				}
-				resolve()
-			})
+		await this.services.child.executeCommand('yarn', {
+			args: ['lint:fix']
 		})
 	}
 
-	public async setupSkill() {
-		await this.install(['@sprucelabs/path-resolver'])
-		await this.install(['ts-node'], { dev: true })
-	}
+	// public async setupSkill() {
+	// 	await this.install(['@sprucelabs/path-resolver'])
+	// 	await this.install(['ts-node'], { dev: true })
+	// }
 
-	public async setupForSchemas() {
-		await this.setupSkill()
-		await this.install(['@sprucelabs/schema'])
-	}
+	// public async setupForSchemas() {
+	// 	await this.setupSkill()
+	// 	await this.install(['@sprucelabs/schema'])
+	// }
 
-	/** Set all the things needed for testing */
-	public async setupForTesting() {
-		await this.setupSkill()
-		await this.setupForSchemas()
+	// /** Set all the things needed for testing */
+	// public async setupForTesting() {
+	// 	await this.setupSkill()
+	// 	await this.setupForSchemas()
 
-		await this.install(['@sprucelabs/test', 'ava', 'ts-node'], {
-			dev: true
-		})
+	// 	await this.install(['@sprucelabs/test', 'ava', 'ts-node'], {
+	// 		dev: true
+	// 	})
 
-		// Update package.json appropriately
-		this.set('scripts.test', 'ava **/*.test.ts')
-		this.set('scripts.test:watch', 'ava  **/*.test.ts --watch')
-		this.set('ava', {
-			extensions: ['ts'],
-			require: ['ts-node/register']
-		})
-	}
+	// 	// Update package.json appropriately
+	// 	this.set('scripts.test', 'ava **/*.test.ts')
+	// 	this.set('scripts.test:watch', 'ava  **/*.test.ts --watch')
+	// 	this.set('ava', {
+	// 		extensions: ['ts'],
+	// 		require: ['ts-node/register']
+	// 	})
+	// }
 
-	/** Everything needed for errors */
-	public async setupForErrors() {
-		await this.install('@sprucelabs/error')
-	}
+	// /** Everything needed for errors */
+	// public async setupForErrors() {
+	// 	await this.install('@sprucelabs/error')
+	// }
 }

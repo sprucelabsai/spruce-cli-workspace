@@ -2,9 +2,13 @@ import fs from 'fs-extra'
 import path from 'path'
 import { TemplateDirectory, TemplateKind } from '@sprucelabs/spruce-templates'
 import { Feature } from '#spruce/autoloaders/features'
+import { IUtilities } from '#spruce/autoloaders/utilities'
+import { IServices } from '#spruce/autoloaders/services'
 
 export interface IFeatureOptions {
 	cwd: string
+	utilities: IUtilities
+	services: IServices
 }
 
 export interface IFeaturePackage {
@@ -23,11 +27,16 @@ export default abstract class AbstractFeature {
 	/** The current working directory */
 	protected cwd: string
 
+	protected utilities: IUtilities
+	protected services: IServices
+
 	/** The required npm packages for this feature */
 	public abstract packages: IFeaturePackage[]
 
 	public constructor(options: IFeatureOptions) {
 		this.cwd = options.cwd
+		this.utilities = options.utilities
+		this.services = options.services
 	}
 
 	/** Called before packages have been installed */

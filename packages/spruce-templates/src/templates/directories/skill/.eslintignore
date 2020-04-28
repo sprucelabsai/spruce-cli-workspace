@@ -1,5 +1,2 @@
 build
-server/static
-coverage
 node_modules
-server/interfaces/gql-generated.ts

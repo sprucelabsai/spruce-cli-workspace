@@ -1,7 +1,3 @@
 {
-	"extends": "spruce",
-	"rules": {
-		"no-unused-vars": ["error", { "argsIgnorePattern": "(^ctx$)" }],
-		"react/react-in-jsx-scope": 0
-	}
+	"extends": "spruce"
 }

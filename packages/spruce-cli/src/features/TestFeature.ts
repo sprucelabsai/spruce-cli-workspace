@@ -10,8 +10,34 @@ export default class TestFeature extends AbstractFeature {
 		{ name: 'ts-node', isDev: true }
 	]
 
-	public async install(options?: Record<string, any>) {
-		log.debug('Install!', { options })
+	public async afterPackageInstall(_options?: Record<string, any>) {
+		log.trace('TestFeature.afterPackageInstall()')
+
+		// package.json updates
+		const babelConfig = {
+			presets: [
+				[
+					'@babel/preset-env',
+					{
+						targets: {
+							node: 'current'
+						}
+					}
+				],
+				'@babel/preset-typescript'
+			]
+		}
+
+		const jestConfig = {
+			preset: 'ts-jest',
+			testEnvironment: 'node',
+			testPathIgnorePatterns: ['<rootDir>/build/', '<rootDir>/node_modules/'],
+			moduleNameMapper: {
+				'^#spruce/(.*)$': '<rootDir>/.spruce/$1'
+			}
+		}
+		this.services.pkg.set('babel', babelConfig)
+		this.services.pkg.set('jest', jestConfig)
 	}
 
 	// TODO

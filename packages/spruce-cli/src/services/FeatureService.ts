@@ -1,12 +1,25 @@
-import { Feature } from '#spruce/autoloaders/features'
+import { Feature, IFeatures } from '#spruce/autoloaders/features'
 import log from '../lib/log'
 import AbstractService from './AbstractService'
 import { IFeaturePackage } from '../features/AbstractFeature'
-// import { SpruceEvents } from '../types/events-generated'
-// import SpruceError from '../errors/SpruceError'
-// import { ErrorCode } from '#spruce/errors/codes.types'
+import { IServices } from '../../.spruce/autoloaders/services'
+import featuresAutoloader from '#spruce/autoloaders/features'
 
 export default class FeatureService extends AbstractService {
+	private features!: IFeatures
+
+	public async afterAutoload(siblings: IServices) {
+		super.afterAutoload(siblings)
+
+		this.features = await featuresAutoloader({
+			constructorOptions: {
+				cwd: this.cwd,
+				utilities: this.utilities,
+				services: siblings
+			}
+		})
+	}
+
 	/** Install some features! */
 	public async install(
 		features: { feature: Feature; options?: Record<string, any> }[]

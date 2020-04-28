@@ -76,7 +76,9 @@ export async function setup(program: Command) {
 	// Setup mercury
 	const mercury = new Mercury()
 
-	const features = await featuresAutoloader({ constructorOptions: { cwd } })
+	const features = await featuresAutoloader({
+		constructorOptions: { cwd, utilities }
+	})
 
 	// Setup services
 	const serviceOptions: IServiceOptions = {

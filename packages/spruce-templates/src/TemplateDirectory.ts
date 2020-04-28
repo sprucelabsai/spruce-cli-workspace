@@ -32,8 +32,10 @@ export default class TemplateDirectory {
 		for (let i = 0; i < files.length; i += 1) {
 			const file = files[i]
 			log.debug({ file })
-			const { relativeBaseDirectory } = this.parseTemplateFilePath(file)
-			filePaths.push(relativeBaseDirectory)
+			const { relativeBaseDirectory, filename } = this.parseTemplateFilePath(
+				file
+			)
+			filePaths.push(path.join(relativeBaseDirectory, filename))
 		}
 
 		return filePaths
@@ -67,13 +69,8 @@ export default class TemplateDirectory {
 				filename
 			} = this.parseTemplateFilePath(file)
 
-			// const dirPathToWrite = `${process.cwd()}/${relativeBaseDirectory}`
-			// const dirPathToWrite = path.join(dir ?? this.cwd, relativeBaseDirectory)
-			// const filePathToWrite = path.join(dirPathToWrite, filename)
 			const filePathToWrite = path.join(relativeBaseDirectory, filename)
 
-			// await fs.ensureDir(dirPathToWrite)
-			console.log('wrote path')
 			const template = fs.readFileSync(file).toString()
 			if (isHandlebarsTemplate) {
 				// Compile the file
@@ -83,12 +80,7 @@ export default class TemplateDirectory {
 					relativePath: filePathToWrite,
 					contents: result
 				})
-				// await fs.writeFile(filePathToWrite, result)
 			} else {
-				// By default just copy the file over as-is
-				console.log('COPY***')
-				console.log(file)
-				console.log(filePathToWrite)
 				builtFiles.files.push({
 					relativePath: filePathToWrite,
 					contents: template
