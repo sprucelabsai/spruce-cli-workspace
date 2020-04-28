@@ -203,7 +203,7 @@ export default class SchemaCommand extends AbstractCommand {
 		this.info(`1. Schema definitions ${results.generatedFiles.schemaTypes}`)
 		this.info(`2. Field definitions ${results.generatedFiles.fieldsTypes}`)
 		this.info(`3. Field type enum ${results.generatedFiles.fieldType}`)
-		this.info(`3. Field class map ${results.generatedFiles.fieldClassMap}`)
+		this.info(`4. Field class map ${results.generatedFiles.fieldClassMap}`)
 	}
 
 	/** Define a new schema */
