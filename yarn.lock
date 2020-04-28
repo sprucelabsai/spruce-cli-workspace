@@ -1942,10 +1942,10 @@
     "@sprucelabs/error" "^1.0.11"
     "@sprucelabs/log" "^10.2.1"
 
-"@sprucelabs/schema@^1.9.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.9.0.tgz#bbcae5caa87426d182e9eec54c29252b6ff4ffdd"
-  integrity sha512-0IATVE9kDN0PpBlEprumtsuxrPGZHuzfFtYkhDgRm1FA4qGGNzqpkhdFWBFnwugtE+qECkRq3UHR8w82GF7MuA==
+"@sprucelabs/schema@^1.10.0":
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.11.0.tgz#1d4899de3596c6c06b6b96b20de9c9e54917b907"
+  integrity sha512-Lf3yMagYnkUxlppQ9eUQ3AV6MGAWG0SUiHTaSWZkiHJ8IKpV264py5TKg74ysTkxXWo4ErhVp2U2yl5L+uesjQ==
   dependencies:
     "@sprucelabs/error" "^1.2.0"
     "@sprucelabs/log" "^10.2.1"
@@ -2108,13 +2108,6 @@
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.149.tgz#1342d63d948c6062838fbf961012f74d4e638440"
   integrity sha512-ijGqzZt/b7BfzcK9vTrS6MFljQRPn5BFWOx8oE0GYxribu6uV+aA9zZuXI1zc/etK9E8nrgdoF2+LgUw7+9tJQ==
 
-"@types/md5@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@types/md5/-/md5-2.2.0.tgz#cd82e16b95973f94bb03dee40c5b6be4a7fb7fb4"
-  integrity sha512-JN8OVL/wiDlCWTPzplsgMPu0uE9Q6blwp68rYsfk2G8aokRUQ8XD9MEhZwihfAiQvoyE+m31m6i3GFXwYWomKQ==
-  dependencies:
-    "@types/node" "*"
-
 "@types/minimatch@*":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
@@ -2158,6 +2151,13 @@
   integrity sha512-7WhJ0MdpFgYQPXlF4Dx+DhgvlPCfz/x5mHaeDQAKhcenvQP1KCpLQ18JklAqeGMYSAT2PxLpzd0g2/HE7fj7hQ==
   dependencies:
     "@types/glob" "*"
+    "@types/node" "*"
+
+"@types/sha1@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@types/sha1/-/sha1-1.1.2.tgz#e4a101952a6a1ea341431b5107894c8b0e0fcaa7"
+  integrity sha512-qL23ImGRNLvDvLXL6EmE41QTAaBfwGgSOfxmytyOwfFSF0xj7BnhhHff8lcv6DpLWt2I5q+LLQ6iIKL+zev9mw==
+  dependencies:
     "@types/node" "*"
 
 "@types/slug@^0.9.1":

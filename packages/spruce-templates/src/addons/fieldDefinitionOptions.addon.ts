@@ -77,7 +77,7 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 		} else if (typeof value !== 'string') {
 			template += `${JSON.stringify(value)},`
 		} else {
-			template += `\`${value.replace(/([`])/g, '\\$1')}',\``
+			template += `\`${value.replace(/([`])/g, '\\$1')}\`,`
 		}
 	})
 
