@@ -216,7 +216,11 @@ export default class SchemaGenerator extends AbstractGenerator {
 						)
 						const valueType = valueTypes[key]
 						if (!valueType) {
-							throw new Error(`failed to find ${renderAs} for ${key}`)
+							throw new Error(
+								`failed to field ${renderAs} for ${key}: field: ${JSON.stringify(
+									definition
+								)}`
+							)
 						}
 						return valueType
 					}

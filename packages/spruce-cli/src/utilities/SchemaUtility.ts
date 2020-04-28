@@ -32,8 +32,14 @@ export default class SchemaUtility extends AbstractUtility {
 		items?: ISchemaTemplateItem[]
 		/** For tracking recursively to keep from infinite depth. Feed it an definitions already processed */
 		definitionsById?: { [id: string]: ISchemaDefinition }
+		/** track how deep we go and limit */
+		depth?: number
 	}): ISchemaTemplateItem[] {
-		const { definitions, items = [], definitionsById = {}, namespace } = options
+		const { definitions, items = [], definitionsById = {}, namespace , depth = 0} = options
+
+		if (depth > 3) {
+			return items
+		}
 
 		let newItems = [...items]
 		const newDefinitions: ISchemaDefinition[] = []
@@ -94,6 +100,7 @@ export default class SchemaUtility extends AbstractUtility {
 		})
 
 		newDefinitions.forEach(definition => {
+
 			const names = this.generateNames(definition)
 			log.info(`importing_schema_id: ${definition.id}`)
 
@@ -187,15 +194,22 @@ export default class SchemaUtility extends AbstractUtility {
 
 					// Find schema reference based on sub schema or looping through all definitions
 					for (const schemaDefinition of schemaDefinitions) {
-						log.info(
-							`importing_schema_field_schema: ${definition.id}:${fieldName} = ${schemaDefinition.id}`
-						)
-						newItems = this.generateTemplateItems({
-							namespace,
-							definitions: [schemaDefinition],
-							items: newItems,
-							definitionsById
-						})
+						if (schemaDefinition.id !== definition.id) {
+							log.info(
+								`importing_schema_field_schema: ${definition.id}:${fieldName} = ${schemaDefinition.id}`
+							)
+							newItems = this.generateTemplateItems({
+								namespace,
+								definitions: [schemaDefinition],
+								items: newItems,
+								definitionsById,
+								depth: depth + 1
+							})
+						} else {
+							log.info(
+								`skipping_importing_schema_field_schema_references_self: ${definition.id}:${fieldName} = ${schemaDefinition.id}`
+							)
+						}
 					}
 				}
 			})
