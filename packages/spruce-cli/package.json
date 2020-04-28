@@ -44,7 +44,7 @@
 		"@sprucelabs/log": "^10.2.1",
 		"@sprucelabs/mercury": "10.2.0",
 		"@sprucelabs/path-resolver": "^1.3.0",
-		"@sprucelabs/schema": "^1.10.0",
+		"@sprucelabs/schema": "^1.11.0",
 		"@sprucelabs/spruce-templates": "^10.1.0",
 		"@types/promise.allsettled": "^1.0.3",
 		"cfonts": "^2.8.1",
