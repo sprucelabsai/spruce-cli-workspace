@@ -4,6 +4,7 @@ import AbstractService from './AbstractService'
 import { IFeaturePackage } from '../features/AbstractFeature'
 import { IServices } from '../../.spruce/autoloaders/services'
 import featuresAutoloader from '#spruce/autoloaders/features'
+import AbstractCommand from '../commands/AbstractCommand'
 
 export default class FeatureService extends AbstractService {
 	private features!: IFeatures
@@ -20,8 +21,9 @@ export default class FeatureService extends AbstractService {
 		})
 	}
 
-	/** Install some features! */
+	/** Install some features, prompting for info as needed */
 	public async install(
+		command: AbstractCommand,
 		features: { feature: Feature; options?: Record<string, any> }[]
 	) {
 		log.debug('FeatureService.install()', { features })

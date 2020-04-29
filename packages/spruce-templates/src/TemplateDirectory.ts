@@ -14,7 +14,11 @@ export interface IBuiltTemplateDirectory {
 }
 
 export enum TemplateKind {
-	Skill = 'skill'
+	Skill = 'skill',
+	// eslint-disable-next-line spruce/prefer-pascal-case-enums
+	VSCode = 'vscode',
+	// eslint-disable-next-line spruce/prefer-pascal-case-enums
+	CircleCI = 'circleci'
 }
 
 export default class TemplateDirectory {

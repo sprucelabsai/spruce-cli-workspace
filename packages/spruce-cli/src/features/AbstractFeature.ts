@@ -4,6 +4,11 @@ import { TemplateDirectory, TemplateKind } from '@sprucelabs/spruce-templates'
 import { Feature } from '#spruce/autoloaders/features'
 import { IUtilities } from '#spruce/autoloaders/utilities'
 import { IServices } from '#spruce/autoloaders/services'
+import {
+	ISchemaDefinition,
+	SchemaFields,
+	SchemaFieldNames
+} from '@sprucelabs/schema'
 
 export interface IFeatureOptions {
 	cwd: string
@@ -29,7 +34,7 @@ export enum WriteDirectoryMode {
 	Skip = 'skip'
 }
 
-export default abstract class AbstractFeature {
+export default abstract class AbstractFeature<S extends ISchemaDefinition> {
 	/** Other features that must also be installed for this feature to work */
 	public featureDependencies: Feature[] = []
 
@@ -42,6 +47,8 @@ export default abstract class AbstractFeature {
 	/** The required npm packages for this feature */
 	public abstract packages: IFeaturePackage[]
 
+	public abstract optionsSchema: S
+
 	public constructor(options: IFeatureOptions) {
 		this.cwd = options.cwd
 		this.utilities = options.utilities
@@ -49,14 +56,14 @@ export default abstract class AbstractFeature {
 	}
 
 	/** Called before packages have been installed */
-	public async beforePackageInstall(
-		_options?: Record<string, any>
-	): Promise<void> {}
+	public async beforePackageInstall(_options: {
+		answers: {
+			[fieldName: SchemaFieldNames<S>]: any
+		}
+	}): Promise<void> {}
 
 	/** Called after packages have been installed */
-	public async afterPackageInstall(
-		_options?: Record<string, any>
-	): Promise<void> {}
+	public async afterPackageInstall(_options: SchemaFields<S>): Promise<void> {}
 
 	/** Writes the template files */
 	protected async writeDirectoryTemplate(options: {
