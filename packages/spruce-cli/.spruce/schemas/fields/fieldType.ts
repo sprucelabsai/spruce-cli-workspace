@@ -5,6 +5,8 @@ export enum FieldType {
 	/** A true/false. Converts false string to false, all other strings to true. */
 	Boolean = 'boolean',
 	/** Date and time support. */
+	Date = 'date',
+	/** Date and time support. */
 	DateTime = 'dateTime',
 	/** A span of time represented in { hours, minutes, seconds, ms } */
 	Duration = 'duration',

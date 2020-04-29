@@ -150,6 +150,18 @@ export async function setup(program: Command) {
 
 	autoLoaded.push(...Object.values(generators))
 
+	// Alias everything that has a : with a . so "option delete" deletes up to the period
+	const originalCommand = program.command.bind(program)
+	program.command = (name: string) => {
+		const response = originalCommand(name)
+		const firstPart = name.split(' ')[0]
+		const alias = firstPart.replace(':', '.')
+		if (alias !== firstPart) {
+			program.alias(alias)
+		}
+		return response
+	}
+
 	const commands = await commandsLoader({
 		constructorOptions: {
 			stores,

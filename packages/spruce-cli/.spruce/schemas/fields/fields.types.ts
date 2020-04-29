@@ -2,6 +2,7 @@ import { FieldType } from '#spruce:schema/fields/fieldType'
 
 import { IAddressFieldDefinition, AddressField } from '@sprucelabs/schema'
 import { IBooleanFieldDefinition, BooleanField } from '@sprucelabs/schema'
+import { IDateFieldDefinition, DateField } from '@sprucelabs/schema'
 import { IDateTimeFieldDefinition, DateTimeField } from '@sprucelabs/schema'
 import { IDurationFieldDefinition, DurationField } from '@sprucelabs/schema'
 import { IFileFieldDefinition, FileField } from '@sprucelabs/schema'
@@ -15,19 +16,20 @@ import { ITextFieldDefinition, TextField } from '@sprucelabs/schema'
 
 
 /** Field definition union */
-export type FieldDefinition = | IAddressFieldDefinition| IBooleanFieldDefinition| IDateTimeFieldDefinition| IDurationFieldDefinition| IFileFieldDefinition| IIdFieldDefinition| INumberFieldDefinition| IPhoneFieldDefinition| IRawFieldDefinition| ISchemaFieldDefinition| ISelectFieldDefinition| ITextFieldDefinition
+export type FieldDefinition = | IAddressFieldDefinition| IBooleanFieldDefinition| IDateFieldDefinition| IDateTimeFieldDefinition| IDurationFieldDefinition| IFileFieldDefinition| IIdFieldDefinition| INumberFieldDefinition| IPhoneFieldDefinition| IRawFieldDefinition| ISchemaFieldDefinition| ISelectFieldDefinition| ITextFieldDefinition
 
 /** Field class union */
-export type FieldClass = | typeof AddressField| typeof BooleanField| typeof DateTimeField| typeof DurationField| typeof FileField| typeof IdField| typeof NumberField| typeof PhoneField| typeof RawField| typeof SchemaField| typeof SelectField| typeof TextField
+export type FieldClass = | typeof AddressField| typeof BooleanField| typeof DateField| typeof DateTimeField| typeof DurationField| typeof FileField| typeof IdField| typeof NumberField| typeof PhoneField| typeof RawField| typeof SchemaField| typeof SelectField| typeof TextField
 
 /** Field instance union **/
-export type Field = | AddressField| BooleanField| DateTimeField| DurationField| FileField| IdField| NumberField| PhoneField| RawField| SchemaField| SelectField| TextField
+export type Field = | AddressField| BooleanField| DateField| DateTimeField| DurationField| FileField| IdField| NumberField| PhoneField| RawField| SchemaField| SelectField| TextField
 
 
 /** Type for looking up field definitions by field type */
 export type FieldDefinitionMap = {
 	[FieldType.Address]: IAddressFieldDefinition
 	[FieldType.Boolean]: IBooleanFieldDefinition
+	[FieldType.Date]: IDateFieldDefinition
 	[FieldType.DateTime]: IDateTimeFieldDefinition
 	[FieldType.Duration]: IDurationFieldDefinition
 	[FieldType.File]: IFileFieldDefinition
