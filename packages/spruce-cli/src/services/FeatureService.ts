@@ -66,12 +66,6 @@ export default class FeatureService extends AbstractService {
 		}
 
 		await Promise.all(afterPackageInstallPromises)
-
-		// const promises = features.map(f => {
-		// 	this.features[f.feature].install(f.options)
-		// })
-
-		// await Promise.allSettled(promises)
 	}
 
 	/** Check if features are installed */
@@ -92,5 +86,21 @@ export default class FeatureService extends AbstractService {
 		}
 
 		return true
+	}
+
+	public getFeatureDependencies(feature: Feature): Feature[] {
+		let features: Feature[] = [feature]
+
+		for (
+			let i = 0;
+			i < this.features[feature].featureDependencies.length;
+			i += 1
+		) {
+			const featureDependency = this.features[feature].featureDependencies[i]
+
+			features = this.getFeatureDependencies(featureDependency).concat(features)
+		}
+
+		return features
 	}
 }

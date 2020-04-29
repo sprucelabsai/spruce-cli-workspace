@@ -3,7 +3,10 @@ import path from 'path'
 import os from 'os'
 import { TemplateDirectory, TemplateKind } from '@sprucelabs/spruce-templates'
 import log from '../lib/log'
-import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
+import AbstractFeature, {
+	IFeaturePackage,
+	WriteDirectoryMode
+} from './AbstractFeature'
 
 export default class SkillFeature extends AbstractFeature {
 	public featureDependencies = []
@@ -19,6 +22,7 @@ export default class SkillFeature extends AbstractFeature {
 
 	public async beforePackageInstall() {
 		await this.writeDirectoryTemplate({
+			mode: WriteDirectoryMode.Overwrite,
 			template: TemplateKind.Skill
 		})
 	}

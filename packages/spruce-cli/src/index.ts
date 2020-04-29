@@ -20,6 +20,7 @@ import {
 import { terminal } from './utilities/TerminalUtility'
 import pkg from '../package.json'
 import log from './lib/log'
+import path from './lib/path'
 import { StoreAuth, IStoreOptions } from './stores/AbstractStore'
 import { IGeneratorOptions } from './generators/AbstractGenerator'
 import SpruceError from './errors/SpruceError'
@@ -32,15 +33,14 @@ import generatorsLoader from '#spruce/autoloaders/generators'
 import storesAutoLoader from '#spruce/autoloaders/stores'
 import utilitiesAutoloader from '#spruce/autoloaders/utilities'
 import servicesAutoloader from '#spruce/autoloaders/services'
-import featuresAutoloader from '#spruce/autoloaders/features'
 
 /** Addons */
 import './addons/filePrompt.addon'
 
-export async function setup(program: Command) {
-	program.version(pkg.version).description(pkg.description)
-	program.option('--no-color', 'Disable color output in the console')
-	program.option(
+export async function setup(program?: Command) {
+	program?.version(pkg.version).description(pkg.description)
+	program?.option('--no-color', 'Disable color output in the console')
+	program?.option(
 		'-d, --directory <path>',
 		'The working directory to execute the command'
 	)
@@ -54,13 +54,15 @@ export async function setup(program: Command) {
 		autoLoaded.forEach(loaded => (loaded[key] = value))
 	}
 
-	program.on('option:directory', function() {
-		if (program.directory) {
-			updateState('cwd', program.directory)
+	const cwd = process.cwd()
+
+	program?.on('option:directory', function() {
+		if (program?.directory) {
+			const newCwd = path.resolvePath(cwd, program.directory)
+			log.debug(`CWD updated: ${newCwd}`)
+			updateState('cwd', newCwd)
 		}
 	})
-
-	const cwd = process.cwd()
 
 	// Setup utilities
 	const utilityOptions: IUtilityOptions = {
@@ -76,16 +78,11 @@ export async function setup(program: Command) {
 	// Setup mercury
 	const mercury = new Mercury()
 
-	const features = await featuresAutoloader({
-		constructorOptions: { cwd, utilities }
-	})
-
 	// Setup services
 	const serviceOptions: IServiceOptions = {
 		mercury,
 		cwd,
 		utilities,
-		features,
 		templates
 	}
 
@@ -135,6 +132,7 @@ export async function setup(program: Command) {
 
 	// Mercury connection options
 	const connectOptions: IMercuryConnectOptions = {
+		useMock: process.env.TESTING === 'true',
 		spruceApiUrl: remoteUrl,
 		credentials: creds
 	}
@@ -168,16 +166,16 @@ export async function setup(program: Command) {
 			templates
 		},
 		after: async instance =>
-			instance.attachCommands && instance.attachCommands(program)
+			instance.attachCommands && program && instance.attachCommands(program)
 	})
 
 	autoLoaded.push(...Object.values(commands))
 
 	// Alphabetical sort of help output
-	program.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
+	program?.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
 
 	// Error on unknown commands
-	program.action((command, args) => {
+	program?.action((command, args) => {
 		throw new SpruceError({ code: ErrorCode.InvalidCommand, args })
 	})
 

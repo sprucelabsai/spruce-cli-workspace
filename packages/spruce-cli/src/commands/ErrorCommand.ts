@@ -98,8 +98,9 @@ export default class ErrorCommand extends AbstractCommand {
 
 		// Make sure error module is installed
 		this.startLoading()
-		await this.services.pkg.setupForErrors()
-		this.utilities.tsConfig.setupForErrors()
+		// TODO
+		// await this.services.pkg.setupForErrors()
+		// this.utilities.tsConfig.setupForErrors()
 		this.stopLoading()
 
 		// Write the definition

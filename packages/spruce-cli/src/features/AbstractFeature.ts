@@ -20,6 +20,15 @@ export interface IFeaturePackage {
 	isDev?: boolean
 }
 
+export enum WriteDirectoryMode {
+	/** Throw an error if the file already exists. This is the default behavior */
+	Throw = 'throw',
+	/** Overwrite any file that already exists */
+	Overwrite = 'overwrite',
+	/** Skips files that exists and only creates files that don't already exist */
+	Skip = 'skip'
+}
+
 export default abstract class AbstractFeature {
 	/** Other features that must also be installed for this feature to work */
 	public featureDependencies: Feature[] = []
@@ -53,11 +62,11 @@ export default abstract class AbstractFeature {
 	protected async writeDirectoryTemplate(options: {
 		template: TemplateKind
 		/** Force overwrite the file even if it exists. The default behavior is to throw an error */
-		forceOverwrite?: boolean
+		mode?: WriteDirectoryMode
 		/** The data to send to the template */
 		templateData?: Record<string, any>
 	}) {
-		const { template, templateData, forceOverwrite } = options
+		const { template, templateData, mode } = options
 		const templateDirectory = await TemplateDirectory.build({
 			template,
 			templateData
@@ -68,10 +77,12 @@ export default abstract class AbstractFeature {
 			const filePathToWrite = path.join(this.cwd, file.relativePath)
 			const dirPathToWrite = path.dirname(filePathToWrite)
 			fs.ensureDirSync(dirPathToWrite)
-			if (!forceOverwrite && fs.existsSync(filePathToWrite)) {
-				throw new Error('Overwriting file')
+			const fileExists = fs.existsSync(filePathToWrite)
+			if (fileExists && mode === WriteDirectoryMode.Throw) {
+				throw new Error('File already exists.')
+			} else if (!fileExists || mode === WriteDirectoryMode.Overwrite) {
+				fs.writeFileSync(filePathToWrite, file.contents)
 			}
-			fs.writeFileSync(filePathToWrite, file.contents)
 		}
 	}
 

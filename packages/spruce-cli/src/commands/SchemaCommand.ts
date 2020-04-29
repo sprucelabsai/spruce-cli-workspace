@@ -4,6 +4,7 @@ import { templates } from '@sprucelabs/spruce-templates'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
+import { Feature } from '../../.spruce/autoloaders/features'
 
 export default class SchemaCommand extends AbstractCommand {
 	/** Sets up commands */
@@ -56,7 +57,13 @@ export default class SchemaCommand extends AbstractCommand {
 
 		// Make sure schema module is installed
 		this.startLoading('Installing dependencies')
-		await this.services.pkg.setupForSchemas()
+		// TODO
+		// await this.services.pkg.setupForSchemas()
+		await this.services.feature.install([
+			{
+				feature: Feature.Schema
+			}
+		])
 		this.utilities.tsConfig.setupForSchemas()
 		this.startLoading('Fetching schemas and field types')
 
@@ -242,7 +249,11 @@ export default class SchemaCommand extends AbstractCommand {
 
 		// Make sure schema module is installed
 		this.startLoading('Installing dependencies')
-		await this.services.pkg.setupForSchemas()
+		await this.services.feature.install([
+			{
+				feature: Feature.Schema
+			}
+		])
 		this.stopLoading()
 
 		// Build paths
