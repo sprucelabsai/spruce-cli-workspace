@@ -32,10 +32,16 @@ export default class SchemaUtility extends AbstractUtility {
 		items?: ISchemaTemplateItem[]
 		/** For tracking recursively to keep from infinite depth. Feed it an definitions already processed */
 		definitionsById?: { [id: string]: ISchemaDefinition }
-		/** track how deep we go and limit */
+		/** Track how deep we go and limit */
 		depth?: number
 	}): ISchemaTemplateItem[] {
-		const { definitions, items = [], definitionsById = {}, namespace , depth = 0} = options
+		const {
+			definitions,
+			items = [],
+			definitionsById = {},
+			namespace,
+			depth = 0
+		} = options
 
 		if (depth > 3) {
 			return items
@@ -100,7 +106,6 @@ export default class SchemaUtility extends AbstractUtility {
 		})
 
 		newDefinitions.forEach(definition => {
-
 			const names = this.generateNames(definition)
 			log.info(`importing_schema_id: ${definition.id}`)
 
