@@ -211,7 +211,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 					fieldTemplateItems,
 					valueTypeGenerator: (renderAs, definition) => {
 						// If there is a value set on the definition, return that instead of the generated type
-						if (definition.value) {
+						if (typeof definition.value !== 'undefined') {
 							if (typeof definition.value === 'string') {
 								return '`' + definition.value + '`'
 							} else {
