@@ -123,12 +123,18 @@ export default class SchemaStore extends AbstractStore {
 		coreTemplateItems.forEach(templateItem => {
 			definitionsById[templateItem.id] = templateItem.definition
 		})
-		const allTemplateItems = this.utilities.schema.generateTemplateItems({
-			namespace: 'local',
-			definitions: localDefinitions,
-			definitionsById,
-			items: coreTemplateItems
-		})
+
+		let allTemplateItems = coreTemplateItems
+		try {
+			allTemplateItems = this.utilities.schema.generateTemplateItems({
+				namespace: 'local',
+				definitions: localDefinitions,
+				definitionsById,
+				items: coreTemplateItems
+			})
+		} catch (err) {
+			localErrors.push(err)
+		}
 
 		return (includeErrors
 			? {

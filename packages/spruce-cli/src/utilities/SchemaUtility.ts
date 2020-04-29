@@ -186,11 +186,15 @@ export default class SchemaUtility extends AbstractUtility {
 									// FriendlyMessage: `I found a schema that was not valid for the fieldName: "${fieldName}" of schemaId: "${definition.id}". Make sure your options (schema, schemaId, schemas, schemaIds) point to a schema that was built using \`spruce schema:create\`\n\nRead any additional errors below and even more at: https://developer.spruce.ai/#/schemas/index?id=relationships`
 									friendlyMessage: `Error in schemaId: "${
 										definition.id
-									}". The field "${fieldName}" is pointing to a schema that I couldn't find. Make sure the options point to a schema. The options I received are: \n\n${JSON.stringify(
+									}". The field "${fieldName}" is pointing to a schema id ('${id}') that I couldn't find. Make sure the options point to a schema . The options I received are: \n\n${JSON.stringify(
 										field.options,
 										null,
 										2
-									)}`
+									)}\n\nThe schema's I have found are: \n\n${Object.keys(
+										definitionsById
+									).join(
+										'\n'
+									)}\nIf the above list is missing a schema definition you expect, make sure `
 								})
 							}
 							return relatedDefinition

@@ -108,6 +108,10 @@ export default class SchemaCommand extends AbstractCommand {
 				confirm = await this.confirm(
 					`Ok, ready for me to try to generate the types for the ${schemaTemplateItems.length} definitions I was able to load?`
 				)
+
+				if (!confirm) {
+					return
+				}
 			}
 		}
 
@@ -129,6 +133,10 @@ export default class SchemaCommand extends AbstractCommand {
 				confirm = await this.confirm(
 					`Ok, you quit to fix the errors above or hit Enter to have me give it my maximum effort!`
 				)
+
+				if (!confirm) {
+					return
+				}
 			}
 		}
 
