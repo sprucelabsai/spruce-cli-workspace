@@ -23,6 +23,7 @@ import './src/addons/pascalCase.addon'
 import './src/addons/fieldDefinitionPartial.addon'
 import './src/addons/schemaDefinitionPartial.addon'
 import './src/addons/schemaValuesPartial.addon'
+import './src/addons/json.addon'
 import importExtractor from './src/utilities/importExtractor'
 
 log.info('Addons imported')

@@ -8,7 +8,7 @@ import {
 import path from 'path'
 import fs from 'fs-extra'
 import { templates, importExtractor } from '@sprucelabs/spruce-templates'
-import md5 from 'md5'
+import sha1 from 'sha1'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
 
@@ -21,8 +21,7 @@ export default class ValueTypeService extends AbstractService {
 	/** For writing tmp files with unique names */
 	private tmpFileCount = 0
 	public generateKey(renderAs: TemplateRenderAs, definition: FieldDefinition) {
-		// TODO collision and performance
-		return md5(`${renderAs}.${JSON.stringify(definition)}`)
+		return sha1(`${renderAs}.${JSON.stringify(definition)}`)
 	}
 	public async allValueTypes(
 		options: IValueTypeGetterOptions
@@ -99,7 +98,9 @@ export default class ValueTypeService extends AbstractService {
 
 							code += `
 
-							// Value type for ${fieldTemplateItem.pascalName}
+							// Rendering ${definition.id}:${fieldName} as ${renderAs} ${
+								fieldTemplateItem.pascalName
+							}
 							definition = ${JSON.stringify(fieldDefinition)}
 							renderAs = '${renderAs}'
 							importAs = '${fieldTemplateItem.importAs}'

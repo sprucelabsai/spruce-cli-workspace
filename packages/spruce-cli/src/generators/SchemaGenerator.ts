@@ -210,13 +210,26 @@ export default class SchemaGenerator extends AbstractGenerator {
 					schemaTemplateItems,
 					fieldTemplateItems,
 					valueTypeGenerator: (renderAs, definition) => {
+						// If there is a value set on the definition, return that instead of the generated type
+						if (typeof definition.value !== 'undefined') {
+							if (typeof definition.value === 'string') {
+								return '`' + definition.value + '`'
+							} else {
+								return JSON.stringify(definition.value)
+							}
+						}
+
 						const key = this.services.valueType.generateKey(
 							renderAs,
 							definition
 						)
 						const valueType = valueTypes[key]
 						if (!valueType) {
-							throw new Error(`failed to find ${renderAs} for ${key}`)
+							throw new Error(
+								`failed to field ${renderAs} for ${key}: field: ${JSON.stringify(
+									definition
+								)}`
+							)
 						}
 						return valueType
 					}

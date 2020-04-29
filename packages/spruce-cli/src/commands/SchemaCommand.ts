@@ -115,6 +115,10 @@ export default class SchemaCommand extends AbstractCommand {
 				confirm = await this.confirm(
 					`Ok, ready for me to try to generate the types for the ${schemaTemplateItems.length} definitions I was able to load?`
 				)
+
+				if (!confirm) {
+					return
+				}
 			}
 		}
 
@@ -136,6 +140,10 @@ export default class SchemaCommand extends AbstractCommand {
 				confirm = await this.confirm(
 					`Ok, you quit to fix the errors above or hit Enter to have me give it my maximum effort!`
 				)
+
+				if (!confirm) {
+					return
+				}
 			}
 		}
 
@@ -174,7 +182,7 @@ export default class SchemaCommand extends AbstractCommand {
 			errors.forEach(err => {
 				const { options } = err
 				if (options.code === ErrorCode.ValueTypeServiceStageError) {
-					this.error(`Error mapping stage ${options.stage}`)
+					this.error(`Error mapping stage on stage "${options.stage}"`)
 				} else if (options.code === ErrorCode.ValueTypeServiceError) {
 					this.error(`Error on schemaId ${options.schemaId}`)
 				}
@@ -210,7 +218,7 @@ export default class SchemaCommand extends AbstractCommand {
 		this.info(`1. Schema definitions ${results.generatedFiles.schemaTypes}`)
 		this.info(`2. Field definitions ${results.generatedFiles.fieldsTypes}`)
 		this.info(`3. Field type enum ${results.generatedFiles.fieldType}`)
-		this.info(`3. Field class map ${results.generatedFiles.fieldClassMap}`)
+		this.info(`4. Field class map ${results.generatedFiles.fieldClassMap}`)
 	}
 
 	/** Define a new schema */

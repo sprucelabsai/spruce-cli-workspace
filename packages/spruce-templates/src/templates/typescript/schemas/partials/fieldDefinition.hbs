@@ -3,8 +3,8 @@ type: {{fieldTypeEnum field}},
 {{#if field.key}}key: '{{{escape field.key}}}',{{/if}}
 {{#if field.isRequired}}isRequired: true,{{/if}}
 {{#if field.hint}}hint: '{{{escape field.hint}}}',{{/if}}
-{{#if field.value}}value: {{{fieldValueType field field.value}}},{{/if}}
-{{#if field.defaultValue}}defaultValue: {{{fieldValueType field field.defaultValue}}},{{/if}}
+{{#if field.value}}value: {{{json field.value}}},{{/if}}
+{{#if field.defaultValue}}defaultValue: {{{json field.defaultValue}}},{{/if}}
 {{#if field.isArray}}isArray: true,{{/if}}
 {{#if field.description}}description: '{{{escape field.description}}}',{{/if}}
 options: {{{fieldDefinitionOptions field renderAs}}}

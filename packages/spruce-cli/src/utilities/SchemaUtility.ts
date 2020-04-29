@@ -32,8 +32,20 @@ export default class SchemaUtility extends AbstractUtility {
 		items?: ISchemaTemplateItem[]
 		/** For tracking recursively to keep from infinite depth. Feed it an definitions already processed */
 		definitionsById?: { [id: string]: ISchemaDefinition }
+		/** Track how deep we go and limit */
+		depth?: number
 	}): ISchemaTemplateItem[] {
-		const { definitions, items = [], definitionsById = {}, namespace } = options
+		const {
+			definitions,
+			items = [],
+			definitionsById = {},
+			namespace,
+			depth = 0
+		} = options
+
+		if (depth > 3) {
+			return items
+		}
 
 		let newItems = [...items]
 		const newDefinitions: ISchemaDefinition[] = []
@@ -174,11 +186,15 @@ export default class SchemaUtility extends AbstractUtility {
 									// FriendlyMessage: `I found a schema that was not valid for the fieldName: "${fieldName}" of schemaId: "${definition.id}". Make sure your options (schema, schemaId, schemas, schemaIds) point to a schema that was built using \`spruce schema:create\`\n\nRead any additional errors below and even more at: https://developer.spruce.ai/#/schemas/index?id=relationships`
 									friendlyMessage: `Error in schemaId: "${
 										definition.id
-									}". The field "${fieldName}" is pointing to a schema that I couldn't find. Make sure the options point to a schema. The options I received are: \n\n${JSON.stringify(
+									}". The field "${fieldName}" is pointing to a schema id ('${id}') that I couldn't find. Make sure the options point to a schema . The options I received are: \n\n${JSON.stringify(
 										field.options,
 										null,
 										2
-									)}`
+									)}\n\nThe schema's I have found are: \n\n${Object.keys(
+										definitionsById
+									).join(
+										'\n'
+									)}\nIf the above list is missing a schema definition you expect, make sure `
 								})
 							}
 							return relatedDefinition
@@ -187,15 +203,22 @@ export default class SchemaUtility extends AbstractUtility {
 
 					// Find schema reference based on sub schema or looping through all definitions
 					for (const schemaDefinition of schemaDefinitions) {
-						log.info(
-							`importing_schema_field_schema: ${definition.id}:${fieldName} = ${schemaDefinition.id}`
-						)
-						newItems = this.generateTemplateItems({
-							namespace,
-							definitions: [schemaDefinition],
-							items: newItems,
-							definitionsById
-						})
+						if (schemaDefinition.id !== definition.id) {
+							log.info(
+								`importing_schema_field_schema: ${definition.id}:${fieldName} = ${schemaDefinition.id}`
+							)
+							newItems = this.generateTemplateItems({
+								namespace,
+								definitions: [schemaDefinition],
+								items: newItems,
+								definitionsById,
+								depth: depth + 1
+							})
+						} else {
+							log.info(
+								`skipping_importing_schema_field_schema_references_self: ${definition.id}:${fieldName} = ${schemaDefinition.id}`
+							)
+						}
 					}
 				}
 			})

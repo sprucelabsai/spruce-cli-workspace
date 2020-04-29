@@ -49,7 +49,7 @@ export async function setup(program?: Command) {
 	const autoLoaded: any[] = []
 
 	// Update state for the entire process
-	// TODO move this out and give more control when handling cross skill, e.g. "update something on only utilities"
+	// TODO move this out and give more control when handling cross skill, e.g. "update x on only utilities"
 	const updateState = function(key: string, value: any) {
 		autoLoaded.forEach(loaded => (loaded[key] = value))
 	}
@@ -154,6 +154,18 @@ export async function setup(program?: Command) {
 	})
 
 	autoLoaded.push(...Object.values(generators))
+
+	// Alias everything that has a : with a . so "option delete" deletes up to the period
+	const originalCommand = program.command.bind(program)
+	program.command = (name: string) => {
+		const response = originalCommand(name)
+		const firstPart = name.split(' ')[0]
+		const alias = firstPart.replace(':', '.')
+		if (alias !== firstPart) {
+			program.alias(alias)
+		}
+		return response
+	}
 
 	const commands = await commandsLoader({
 		constructorOptions: {
