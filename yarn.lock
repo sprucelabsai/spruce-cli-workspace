@@ -1942,10 +1942,10 @@
     "@sprucelabs/error" "^1.0.11"
     "@sprucelabs/log" "^10.2.1"
 
-"@sprucelabs/schema@^1.11.0":
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.11.0.tgz#1d4899de3596c6c06b6b96b20de9c9e54917b907"
-  integrity sha512-Lf3yMagYnkUxlppQ9eUQ3AV6MGAWG0SUiHTaSWZkiHJ8IKpV264py5TKg74ysTkxXWo4ErhVp2U2yl5L+uesjQ==
+"@sprucelabs/schema@^1.13.0":
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.13.0.tgz#6f31355a3acc4e849a4f193edf1bf5ac5b1b8a10"
+  integrity sha512-7o0QqLA4FVkqMNJYiezMrkU7Yb6aLnfoyr5AByPL70mSuYAISLEfoJ/BSdKtsKeMxm58niNpXtZCML2s05pZdA==
   dependencies:
     "@sprucelabs/error" "^1.2.0"
     "@sprucelabs/log" "^10.2.1"
