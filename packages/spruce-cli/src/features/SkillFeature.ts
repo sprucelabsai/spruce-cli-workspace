@@ -8,12 +8,12 @@ import AbstractFeature, {
 	IFeaturePackage,
 	WriteDirectoryMode
 } from './AbstractFeature'
-import { SchemaFields } from '@sprucelabs/schema'
+import { SchemaDefinitionValues, ISchemaDefinition } from '@sprucelabs/schema'
 
-export default class SkillFeature extends AbstractFeature<
-	typeof skillFeatures
-> {
-	public optionsSchema = skillFeatures
+export default class SkillFeature<
+	S extends ISchemaDefinition = typeof skillFeatures
+> extends AbstractFeature<S> {
+	public optionsSchema: S = skillFeatures
 
 	public featureDependencies = []
 
@@ -26,9 +26,11 @@ export default class SkillFeature extends AbstractFeature<
 		{ name: 'ts-node', isDev: true }
 	]
 
-	public async beforePackageInstall(
-		options: SchemaFields<typeof skillFeatures>
-	) {
+	public async beforePackageInstall(options: {
+		answers: SchemaDefinitionValues<S>
+	}) {
+		console.log({ options })
+		options.answers
 		await this.writeDirectoryTemplate({
 			mode: WriteDirectoryMode.Overwrite,
 			template: TemplateKind.Skill

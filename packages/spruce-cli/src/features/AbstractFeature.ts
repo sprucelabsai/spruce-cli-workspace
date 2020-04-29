@@ -7,7 +7,7 @@ import { IServices } from '#spruce/autoloaders/services'
 import {
 	ISchemaDefinition,
 	SchemaFields,
-	SchemaFieldNames
+	SchemaDefinitionValues
 } from '@sprucelabs/schema'
 
 export interface IFeatureOptions {
@@ -34,6 +34,10 @@ export enum WriteDirectoryMode {
 	Skip = 'skip'
 }
 
+// export interface IAbstractFeature<S extends ISchemaDefinition> {
+// 	optionsSchema: S
+// }
+
 export default abstract class AbstractFeature<S extends ISchemaDefinition> {
 	/** Other features that must also be installed for this feature to work */
 	public featureDependencies: Feature[] = []
@@ -47,7 +51,7 @@ export default abstract class AbstractFeature<S extends ISchemaDefinition> {
 	/** The required npm packages for this feature */
 	public abstract packages: IFeaturePackage[]
 
-	public abstract optionsSchema: S
+	public abstract optionsSchema: ISchemaDefinition
 
 	public constructor(options: IFeatureOptions) {
 		this.cwd = options.cwd
@@ -57,9 +61,7 @@ export default abstract class AbstractFeature<S extends ISchemaDefinition> {
 
 	/** Called before packages have been installed */
 	public async beforePackageInstall(_options: {
-		answers: {
-			[fieldName: SchemaFieldNames<S>]: any
-		}
+		answers: SchemaDefinitionValues<S>
 	}): Promise<void> {}
 
 	/** Called after packages have been installed */
