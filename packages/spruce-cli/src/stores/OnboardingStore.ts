@@ -7,13 +7,13 @@ import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
 export interface IOnboardingStoreSettings
 	extends IBaseStoreSettings,
-		SpruceSchemas.local.IOnboardingStore {}
+		SpruceSchemas.Local.IOnboardingStore {}
 
 export default class OnboardingStore extends AbstractStore<
 	IOnboardingStoreSettings
 > {
 	public name = 'onboarding'
-	public schema = new Schema(SpruceSchemas.local.OnboardingStore.definition)
+	public schema = new Schema(SpruceSchemas.Local.OnboardingStore.definition)
 
 	public constructor(options: IStoreOptions) {
 		super(options)

@@ -17,7 +17,7 @@ export default class IndexTest extends BaseTest {
 
 	@test('Schema can be instantiated')
 	protected static async instantiateSchema() {
-		const user = new Schema(SpruceSchemas.local.CliUser.definition, {
+		const user = new Schema(SpruceSchemas.Local.CliUser.definition, {
 			casualName: 'Amigo'
 		})
 		assert.equal(user.get('casualName'), 'Amigo')

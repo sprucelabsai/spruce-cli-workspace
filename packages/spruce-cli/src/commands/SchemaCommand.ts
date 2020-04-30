@@ -252,7 +252,7 @@ export default class SchemaCommand extends AbstractCommand {
 		}
 
 		const form = this.formBuilder({
-			definition: SpruceSchemas.local.NamedTemplateItem.definition,
+			definition: SpruceSchemas.Local.NamedTemplateItem.definition,
 			initialValues: {
 				readableName,
 				camelName,

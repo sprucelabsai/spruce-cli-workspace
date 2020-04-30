@@ -11,8 +11,8 @@ import log from '../lib/log'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
 
-type UserWithToken = SpruceSchemas.local.ICliUserWithToken
-type User = SpruceSchemas.local.ICliUser
+type UserWithToken = SpruceSchemas.Local.ICliUserWithToken
+type User = SpruceSchemas.Local.ICliUser
 
 /** Settings i need to save */
 interface IUserStoreSettings extends IBaseStoreSettings {
