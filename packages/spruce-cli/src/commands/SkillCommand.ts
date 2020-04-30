@@ -34,6 +34,7 @@ export default class SkillCommand extends AbstractCommand {
 	}
 
 	public async setup(cmd: Command) {
+		log.trace('SkillCommand.setup()')
 		const isInstalled = await this.services.feature.isInstalled({
 			features: [Feature.Skill]
 		})

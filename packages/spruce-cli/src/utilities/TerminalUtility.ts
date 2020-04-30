@@ -376,7 +376,7 @@ export default class TerminalUtility extends AbstractUtility {
 				log.trace(`TerminalUtility filePrompt for directory: ${dirPath}`)
 
 				// Check if directory is empty.
-				const files = globby.sync(`${dirPath}**/*`)
+				const files = await globby(`${dirPath}**/*`)
 
 				if (files.length === 0) {
 					throw new Error(`No files in directory: ${dirPath}`)

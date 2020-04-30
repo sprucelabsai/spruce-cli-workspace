@@ -106,6 +106,7 @@ export default class FeatureService extends AbstractService {
 			const feature = this.features[f.feature]
 			beforePackageInstallPromises.push(
 				feature.beforePackageInstall({
+					// TODO: Figure out how to get the right type here
 					// @ts-ignore
 					answers: answers[f.feature]
 				})
@@ -119,7 +120,9 @@ export default class FeatureService extends AbstractService {
 			})
 		})
 
+		options.command?.startLoading('Running before package installation hooks')
 		await Promise.all(beforePackageInstallPromises)
+		options.command?.stopLoading()
 
 		const packagesToInstall: string[] = []
 		const devPackagesToInstall: string[] = []
@@ -133,15 +136,21 @@ export default class FeatureService extends AbstractService {
 		})
 
 		if (packagesToInstall.length > 0) {
+			options.command?.startLoading('Installing package.json dependencies')
 			await this.services.pkg.install(packagesToInstall)
+			options.command?.stopLoading()
 		}
 		if (devPackagesToInstall.length > 0) {
+			options.command?.startLoading('Installing package.json devDependencies')
 			await this.services.pkg.install(devPackagesToInstall, {
 				dev: true
 			})
+			options.command?.stopLoading()
 		}
 
+		options.command?.startLoading('Running after package installation hooks')
 		await Promise.all(afterPackageInstallPromises)
+		options.command?.stopLoading()
 	}
 
 	/** Check if features are installed */

@@ -36,6 +36,8 @@ export default class TestFeature extends AbstractFeature {
 				'^#spruce/(.*)$': '<rootDir>/.spruce/$1'
 			}
 		}
+
+		// TODO: Set the "test" package here
 		this.services.pkg.set('babel', babelConfig)
 		this.services.pkg.set('jest', jestConfig)
 	}

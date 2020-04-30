@@ -26,7 +26,7 @@ export default class TemplateDirectory {
 	public static async filesInTemplate(template: TemplateKind) {
 		const filePaths: string[] = []
 
-		const files = globby.sync(
+		const files = await globby(
 			path.join(__dirname, 'templates/directories', template),
 			{
 				dot: true
@@ -57,7 +57,7 @@ export default class TemplateDirectory {
 		}
 		const { template, templateData } = options
 
-		const files = globby.sync(
+		const files = await globby(
 			path.join(__dirname, 'templates/directories', template),
 			{
 				dot: true
@@ -66,7 +66,6 @@ export default class TemplateDirectory {
 
 		for (let i = 0; i < files.length; i += 1) {
 			const file = files[i]
-			log.debug({ file })
 			const {
 				isHandlebarsTemplate,
 				relativeBaseDirectory,

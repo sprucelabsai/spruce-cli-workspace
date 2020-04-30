@@ -39,12 +39,10 @@ export default class TestCommand extends AbstractCommand {
 		}
 
 		// Make sure test module is installed
-		this.startLoading('Installing dependencies')
 		await this.services.feature.install({
 			features: [{ feature: Feature.Test }],
 			command: this
 		})
-		this.stopLoading()
 
 		const name = this.utilities.names.toFileNameWithoutExtension(target)
 

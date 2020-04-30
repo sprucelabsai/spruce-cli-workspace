@@ -49,7 +49,7 @@ export default class ParserUtility extends AbstractUtility {
 		suffix: string
 	}): Promise<IFileGroupInfo> {
 		const { globbyPattern, suffix } = options
-		const filePaths = globby.sync(globbyPattern)
+		const filePaths = await globby(globbyPattern)
 		const program = ts.createProgram(filePaths, {})
 		const checker = program.getTypeChecker()
 
