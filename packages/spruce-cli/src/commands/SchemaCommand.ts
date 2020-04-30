@@ -147,6 +147,7 @@ export default class SchemaCommand extends AbstractCommand {
 				(await this.confirm(
 					`Are you sure you want me delete the contents of ${destinationDir}?`
 				))
+			console.log('TODO Bring back clear')
 		}
 
 		this.startLoading(

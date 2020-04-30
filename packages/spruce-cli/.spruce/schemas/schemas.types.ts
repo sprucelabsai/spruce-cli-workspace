@@ -158,15 +158,15 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** Id. */
 				'id': string
 				/** First name. */
-				'firstName'?: string| undefined
+				'firstName'?: string| undefined | null
 				/** Last name. */
-				'lastName'?: string| undefined
+				'lastName'?: string| undefined | null
 				/** Casual name. Generated name that defaults to Friend! */
 				'casualName': string
 				/** Phone. The person's phone number! */
-				'phoneNumber'?: string| undefined
+				'phoneNumber'?: string| undefined | null
 				/** Profile photos. */
-				'profileImages'?: SpruceSchemas.Core.IProfileImage| undefined
+				'profileImages'?: SpruceSchemas.Core.IProfileImage| undefined | null
 				/** Default profile photos. */
 				'defaultProfileImages': SpruceSchemas.Core.IProfileImage
 		}
@@ -395,11 +395,11 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** Name. */
 				'name': string
 				/** Description. */
-				'description'?: string| undefined
+				'description'?: string| undefined | null
 				/** Slug. */
-				'slug'?: string| undefined
+				'slug'?: string| undefined | null
 				/** Icon. */
-				'icon'?: string| undefined
+				'icon'?: string| undefined | null
 		}
 	}	 
 
@@ -594,17 +594,17 @@ import * as SpruceSchema from '@sprucelabs/schema'
 		export interface ILocation {
 			
 				/** Id. */
-				'id'?: string| undefined
+				'id'?: string| undefined | null
 				/** Name. */
 				'name': string
 				/** Store number. You can use other symbols, like # or dashes. #123 or 32-US-5 */
-				'num'?: string| undefined
+				'num'?: string| undefined | null
 				/** Public. Is this location viewable by guests? */
-				'isPublic'?: boolean| undefined
+				'isPublic'?: boolean| undefined | null
 				/** Main Phone. */
-				'phone'?: string| undefined
+				'phone'?: string| undefined | null
 				/** Timezone. */
-				'timezone'?: ("etc/gmt+12" | "pacific/midway" | "pacific/honolulu" | "us/alaska" | "america/los_Angeles" | "america/tijuana" | "us/arizona" | "america/chihuahua" | "us/mountain" | "america/managua" | "us/central" | "america/mexico_City" | "Canada/Saskatchewan" | "america/bogota" | "us/eastern" | "us/east-indiana" | "Canada/atlantic" | "america/caracas" | "america/manaus" | "america/Santiago" | "Canada/Newfoundland" | "america/Sao_Paulo" | "america/argentina/buenos_Aires" | "america/godthab" | "america/montevideo" | "america/Noronha" | "atlantic/cape_Verde" | "atlantic/azores" | "africa/casablanca" | "etc/gmt" | "europe/amsterdam" | "europe/belgrade" | "europe/brussels" | "europe/Sarajevo" | "africa/lagos" | "asia/amman" | "europe/athens" | "asia/beirut" | "africa/cairo" | "africa/Harare" | "europe/Helsinki" | "asia/Jerusalem" | "europe/minsk" | "africa/Windhoek" | "asia/Kuwait" | "europe/moscow" | "africa/Nairobi" | "asia/tbilisi" | "asia/tehran" | "asia/muscat" | "asia/baku" | "asia/Yerevan" | "asia/Kabul" | "asia/Yekaterinburg" | "asia/Karachi" | "asia/calcutta" | "asia/calcutta" | "asia/Katmandu" | "asia/almaty" | "asia/Dhaka" | "asia/Rangoon" | "asia/bangkok" | "asia/Krasnoyarsk" | "asia/Hong_Kong" | "asia/Kuala_Lumpur" | "asia/Irkutsk" | "Australia/Perth" | "asia/taipei" | "asia/tokyo" | "asia/Seoul" | "asia/Yakutsk" | "Australia/adelaide" | "Australia/Darwin" | "Australia/brisbane" | "Australia/canberra" | "Australia/Hobart" | "pacific/guam" | "asia/Vladivostok" | "asia/magadan" | "pacific/auckland" | "pacific/Fiji" | "pacific/tongatapu")| undefined
+				'timezone'?: ("etc/gmt+12" | "pacific/midway" | "pacific/honolulu" | "us/alaska" | "america/los_Angeles" | "america/tijuana" | "us/arizona" | "america/chihuahua" | "us/mountain" | "america/managua" | "us/central" | "america/mexico_City" | "Canada/Saskatchewan" | "america/bogota" | "us/eastern" | "us/east-indiana" | "Canada/atlantic" | "america/caracas" | "america/manaus" | "america/Santiago" | "Canada/Newfoundland" | "america/Sao_Paulo" | "america/argentina/buenos_Aires" | "america/godthab" | "america/montevideo" | "america/Noronha" | "atlantic/cape_Verde" | "atlantic/azores" | "africa/casablanca" | "etc/gmt" | "europe/amsterdam" | "europe/belgrade" | "europe/brussels" | "europe/Sarajevo" | "africa/lagos" | "asia/amman" | "europe/athens" | "asia/beirut" | "africa/cairo" | "africa/Harare" | "europe/Helsinki" | "asia/Jerusalem" | "europe/minsk" | "africa/Windhoek" | "asia/Kuwait" | "europe/moscow" | "africa/Nairobi" | "asia/tbilisi" | "asia/tehran" | "asia/muscat" | "asia/baku" | "asia/Yerevan" | "asia/Kabul" | "asia/Yekaterinburg" | "asia/Karachi" | "asia/calcutta" | "asia/calcutta" | "asia/Katmandu" | "asia/almaty" | "asia/Dhaka" | "asia/Rangoon" | "asia/bangkok" | "asia/Krasnoyarsk" | "asia/Hong_Kong" | "asia/Kuala_Lumpur" | "asia/Irkutsk" | "Australia/Perth" | "asia/taipei" | "asia/tokyo" | "asia/Seoul" | "asia/Yakutsk" | "Australia/adelaide" | "Australia/Darwin" | "Australia/brisbane" | "Australia/canberra" | "Australia/Hobart" | "pacific/guam" | "asia/Vladivostok" | "asia/magadan" | "pacific/auckland" | "pacific/Fiji" | "pacific/tongatapu")| undefined | null
 				/** Address. */
 				'address': SpruceSchema.IAddressFieldValue
 		}
@@ -883,7 +883,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 		export interface IJob {
 			
 				/** Id. */
-				'id'?: string| undefined
+				'id'?: string| undefined | null
 				/** Is default. Is this job one that comes with every org? Mapped to roles (owner, groupManager, managar, guest). */
 				'isDefault': string
 				/** Name. */
@@ -891,9 +891,9 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** Role. */
 				'role': ("owner" | "groupManager" | "manager" | "teammate" | "guest")
 				/** On work permissions. */
-				'inStoreAcls'?: SpruceSchemas.Core.IAcl| undefined
+				'inStoreAcls'?: SpruceSchemas.Core.IAcl| undefined | null
 				/** Off work permissions. */
-				'acls'?: SpruceSchemas.Core.IAcl| undefined
+				'acls'?: SpruceSchemas.Core.IAcl| undefined | null
 		}
 	}	 
 
@@ -1088,15 +1088,15 @@ import * as SpruceSchema from '@sprucelabs/schema'
 		export interface IUserLocation {
 			
 				/** Id. */
-				'id'?: string| undefined
+				'id'?: string| undefined | null
 				/** Name. */
 				'role': ("owner" | "groupManager" | "manager" | "teammate" | "guest")
 				/** Status. */
-				'status'?: string| undefined
+				'status'?: string| undefined | null
 				/** Total visits. */
 				'visits': number
 				/** Last visit. */
-				'lastRecordedVisit'?: SpruceSchema.IDateTimeFieldValue| undefined
+				'lastRecordedVisit'?: SpruceSchema.IDateTimeFieldValue| undefined | null
 				/** Job. */
 				'job': SpruceSchemas.Core.IJob
 				/** Location. */
@@ -1355,7 +1355,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				/** Name. */
 				'name': string
 				/** Slug. */
-				'slug'?: string| undefined
+				'slug'?: string| undefined | null
 		}
 	}	 
 
@@ -1597,7 +1597,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 				
 				'token': string
 				/** Logged in. */
-				'isLoggedIn'?: boolean| undefined
+				'isLoggedIn'?: boolean| undefined | null
 		}
 	}	 
 
