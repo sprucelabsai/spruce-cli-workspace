@@ -37,7 +37,8 @@ import servicesAutoloader from '#spruce/autoloaders/services'
 /** Addons */
 import './addons/filePrompt.addon'
 
-export async function setup(program?: Command) {
+export async function setup(options?: { program?: Command; cwd?: string }) {
+	const program = options?.program
 	program?.version(pkg.version).description(pkg.description)
 	program?.option('--no-color', 'Disable color output in the console')
 	program?.option(
@@ -54,7 +55,7 @@ export async function setup(program?: Command) {
 		autoLoaded.forEach(loaded => (loaded[key] = value))
 	}
 
-	const cwd = process.cwd()
+	const cwd = options?.cwd ?? process.cwd()
 
 	program?.on('option:directory', function() {
 		if (program?.directory) {
@@ -156,15 +157,17 @@ export async function setup(program?: Command) {
 	autoLoaded.push(...Object.values(generators))
 
 	// Alias everything that has a : with a . so "option delete" deletes up to the period
-	const originalCommand = program.command.bind(program)
-	program.command = (name: string) => {
-		const response = originalCommand(name)
-		const firstPart = name.split(' ')[0]
-		const alias = firstPart.replace(':', '.')
-		if (alias !== firstPart) {
-			program.alias(alias)
+	if (program) {
+		const originalCommand = program.command.bind(program)
+		program.command = (name: string) => {
+			const response = originalCommand(name)
+			const firstPart = name.split(' ')[0]
+			const alias = firstPart.replace(':', '.')
+			if (alias !== firstPart) {
+				program.alias(alias)
+			}
+			return response
 		}
-		return response
 	}
 
 	const commands = await commandsLoader({
@@ -221,7 +224,7 @@ async function run(argv: string[], debugging: boolean): Promise<void> {
 		log.trace('Extra debugger dropped in so future debuggers work... 🤷‍')
 	}
 
-	await setup(program)
+	await setup({ program })
 
 	const commandResult = await program.parseAsync(argv)
 	if (commandResult.length === 0) {

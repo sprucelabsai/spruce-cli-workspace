@@ -4,17 +4,15 @@ const skillFeatureDefinition = buildSchemaDefinition({
 	id: 'skillFeature',
 	name: 'Skill Feature',
 	fields: {
-		skillName: {
+		name: {
 			type: FieldType.Text,
-			label: 'Name',
 			isRequired: true,
-			hint: "What's the name of your skill?"
+			label: "What's the name of your skill?"
 		},
 		description: {
 			type: FieldType.Text,
-			label: 'Description',
 			isRequired: true,
-			hint: 'How would you describe your skill?'
+			label: 'How would you describe your skill?'
 		}
 	}
 })

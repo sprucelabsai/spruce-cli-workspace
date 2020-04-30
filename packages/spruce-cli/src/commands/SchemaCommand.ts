@@ -59,11 +59,13 @@ export default class SchemaCommand extends AbstractCommand {
 		this.startLoading('Installing dependencies')
 		// TODO
 		// await this.services.pkg.setupForSchemas()
-		await this.services.feature.install([
-			{
-				feature: Feature.Schema
-			}
-		])
+		await this.services.feature.install({
+			features: [
+				{
+					feature: Feature.Schema
+				}
+			]
+		})
 		this.utilities.tsConfig.setupForSchemas()
 		this.startLoading('Fetching schemas and field types')
 
@@ -257,11 +259,13 @@ export default class SchemaCommand extends AbstractCommand {
 
 		// Make sure schema module is installed
 		this.startLoading('Installing dependencies')
-		await this.services.feature.install([
-			{
-				feature: Feature.Schema
-			}
-		])
+		await this.services.feature.install({
+			features: [
+				{
+					feature: Feature.Schema
+				}
+			]
+		})
 		this.stopLoading()
 
 		// Build paths

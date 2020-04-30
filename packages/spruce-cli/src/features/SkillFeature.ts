@@ -8,14 +8,14 @@ import AbstractFeature, {
 	IFeaturePackage,
 	WriteDirectoryMode
 } from './AbstractFeature'
-import { SchemaDefinitionValues, ISchemaDefinition } from '@sprucelabs/schema'
+import { SchemaDefinitionValues } from '@sprucelabs/schema'
+import { Feature } from '../../.spruce/autoloaders/features'
 
-export default class SkillFeature<
-	S extends ISchemaDefinition = typeof skillFeatures
-> extends AbstractFeature<S> {
-	public optionsSchema: S = skillFeatures
+type SkillFeatures = typeof skillFeatures
+export default class SkillFeature extends AbstractFeature<SkillFeatures> {
+	public optionsSchema = skillFeatures
 
-	public featureDependencies = []
+	public featureDependencies = [Feature.Schema]
 
 	public packages: IFeaturePackage[] = [
 		{ name: 'typescript' },
@@ -27,10 +27,10 @@ export default class SkillFeature<
 	]
 
 	public async beforePackageInstall(options: {
-		answers: SchemaDefinitionValues<S>
+		answers: SchemaDefinitionValues<SkillFeatures>
 	}) {
 		console.log({ options })
-		options.answers
+
 		await this.writeDirectoryTemplate({
 			mode: WriteDirectoryMode.Overwrite,
 			template: TemplateKind.Skill

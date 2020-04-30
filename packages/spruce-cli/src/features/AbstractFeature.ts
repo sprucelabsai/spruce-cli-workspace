@@ -4,11 +4,7 @@ import { TemplateDirectory, TemplateKind } from '@sprucelabs/spruce-templates'
 import { Feature } from '#spruce/autoloaders/features'
 import { IUtilities } from '#spruce/autoloaders/utilities'
 import { IServices } from '#spruce/autoloaders/services'
-import {
-	ISchemaDefinition,
-	SchemaFields,
-	SchemaDefinitionValues
-} from '@sprucelabs/schema'
+import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
 
 export interface IFeatureOptions {
 	cwd: string
@@ -38,9 +34,13 @@ export enum WriteDirectoryMode {
 // 	optionsSchema: S
 // }
 
-export default abstract class AbstractFeature<S extends ISchemaDefinition> {
+export default abstract class AbstractFeature<
+	S extends ISchemaDefinition = any
+> {
 	/** Other features that must also be installed for this feature to work */
 	public featureDependencies: Feature[] = []
+
+	public optionsSchema?: ISchemaDefinition
 
 	/** The current working directory */
 	protected cwd: string
@@ -50,8 +50,6 @@ export default abstract class AbstractFeature<S extends ISchemaDefinition> {
 
 	/** The required npm packages for this feature */
 	public abstract packages: IFeaturePackage[]
-
-	public abstract optionsSchema: ISchemaDefinition
 
 	public constructor(options: IFeatureOptions) {
 		this.cwd = options.cwd
@@ -65,7 +63,9 @@ export default abstract class AbstractFeature<S extends ISchemaDefinition> {
 	}): Promise<void> {}
 
 	/** Called after packages have been installed */
-	public async afterPackageInstall(_options: SchemaFields<S>): Promise<void> {}
+	public async afterPackageInstall(
+		_options: SchemaDefinitionValues<S>
+	): Promise<void> {}
 
 	/** Writes the template files */
 	protected async writeDirectoryTemplate(options: {

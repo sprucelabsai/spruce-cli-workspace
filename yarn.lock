@@ -1922,10 +1922,10 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.1.tgz#acd368915e5d763ec4588165e8ccc69db6ed8c42"
   integrity sha512-hJA7RfEudH+jpMCeR/MYjS3/YVK0ZYa6CmkJIxlYalM2DtWl5M//4uuE+JqYDa1q84QE/gwiZlDR1DvSBx12xA==
 
-"@sprucelabs/mercury@10.2.0":
-  version "10.2.0"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury/-/mercury-10.2.0.tgz#66f2e5840f4eabf4f15b1ed500011fee305e74e2"
-  integrity sha512-bxaMS4MujgjBWv0Tkzd5Hqp11aCp5I17Hi8JYnvS43Sk/ejVf8RXo2pArYTm1ZUmSXH/buii/B06HI6BvPg2SQ==
+"@sprucelabs/mercury@10.3.0-prerelease-mock.1":
+  version "10.3.0-prerelease-mock.1"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury/-/mercury-10.3.0-prerelease-mock.1.tgz#65a4365d3f40920f58a1db201858d73e4cd6b21a"
+  integrity sha512-auCVv97+9DKtKWzBBBKgPC7b/ey+Exv85xY9oyIOn04NT8SHclmeiqa8xQGdz5ryyJzhYP+Djqwy1EGLSBx/7Q==
   dependencies:
     debug "^4.1.1"
     randombytes "^2.1.0"
@@ -2189,6 +2189,11 @@
   integrity sha512-FvnCJljyxhPM3gkRgWmxmDZyAQSiBQQWLI0A0VFL0K7W1oRUrPJSqNO0NvTnLkBcotdlp3lKvaT0JrnyRDkzOg==
   dependencies:
     "@types/node" "*"
+
+"@types/uuid@^3.4.0":
+  version "3.4.9"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-3.4.9.tgz#fcf01997bbc9f7c09ae5f91383af076d466594e1"
+  integrity sha512-XDwyIlt/47l2kWLTzw/mtrpLdB+GPSskR2n/PIcPn+VYhVO77rGhRncIR5GPU0KRzXuqkDO+J5qqrG0Y8P6jzQ==
 
 "@types/yargs-parser@*":
   version "15.0.0"
@@ -9197,7 +9202,7 @@ util-promisify@^2.1.0:
   dependencies:
     object.getownpropertydescriptors "^2.0.3"
 
-uuid@^3.0.1, uuid@^3.3.2, uuid@^3.3.3:
+uuid@^3.0.1, uuid@^3.3.2, uuid@^3.3.3, uuid@^3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==

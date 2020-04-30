@@ -1,3 +1,8 @@
+import _ from 'lodash'
+import Schema, {
+	ISchemaDefinition,
+	SchemaDefinitionValues
+} from '@sprucelabs/schema'
 import { Feature, IFeatures } from '#spruce/autoloaders/features'
 import log from '../lib/log'
 import AbstractService from './AbstractService'
@@ -5,6 +10,11 @@ import { IFeaturePackage } from '../features/AbstractFeature'
 import { IServices } from '../../.spruce/autoloaders/services'
 import featuresAutoloader from '#spruce/autoloaders/features'
 import AbstractCommand from '../commands/AbstractCommand'
+
+interface IInstallFeature {
+	feature: Feature
+	options?: Record<string, any>
+}
 
 export default class FeatureService extends AbstractService {
 	private features!: IFeatures
@@ -22,23 +32,82 @@ export default class FeatureService extends AbstractService {
 	}
 
 	/** Install some features, prompting for info as needed */
-	public async install(
-		command: AbstractCommand,
-		features: { feature: Feature; options?: Record<string, any> }[]
-	) {
+	public async install(options: {
+		command?: AbstractCommand
+		features: IInstallFeature[]
+	}) {
+		const { features } = options
 		log.debug('FeatureService.install()', { features })
 		// Get the packages we need to install for each feature
 		const packages: {
 			[pkgName: string]: IFeaturePackage
 		} = {}
 
+		let featuresToInstall: IInstallFeature[] = []
+
+		const promptDefinitions: {
+			installFeature: IInstallFeature
+			def: ISchemaDefinition
+		}[] = []
+		const answers: {
+			[featureName: string]: {
+				[fieldName: string]: string | boolean | number
+			}
+			// [featureName: string]: Record<string, any>
+		} = {}
+
+		features.forEach(f => {
+			answers[f.feature] = {}
+			if (typeof this.features[f.feature].optionsSchema !== 'undefined') {
+				const optionsSchema = _.cloneDeep(
+					this.features[f.feature].optionsSchema
+				) as ISchemaDefinition
+				const schema = new Schema(optionsSchema)
+				const fieldNames = schema.getNamedFields()
+
+				fieldNames.forEach(fieldName => {
+					if (f.options && f.options[fieldName.name]) {
+						// We don't need to prompt for this. Add it to the answers
+						answers[f.feature][fieldName.name] = f.options[fieldName.name]
+						delete optionsSchema.fields?.[fieldName.name]
+					}
+				})
+
+				promptDefinitions.push({ installFeature: f, def: optionsSchema })
+			}
+			featuresToInstall = featuresToInstall.concat(
+				this.getFeatureDependencies(f)
+			)
+		})
+
+		for (let i = 0; i < promptDefinitions.length; i += 1) {
+			const promptDefinition = promptDefinitions[i]
+			const formBuilder = options.command?.formBuilder({
+				definition: promptDefinition.def
+			})
+			const results = await formBuilder?.present()
+			answers[promptDefinition.installFeature.feature] = {
+				...answers[promptDefinition.installFeature.feature],
+				...results
+			}
+
+			log.debug({ results })
+		}
+
 		const beforePackageInstallPromises: Promise<void>[] = []
 		const afterPackageInstallPromises: Promise<void>[] = []
 
 		features.forEach(f => {
 			const feature = this.features[f.feature]
-			beforePackageInstallPromises.push(feature.beforePackageInstall(f.options))
-			afterPackageInstallPromises.push(feature.afterPackageInstall(f.options))
+			beforePackageInstallPromises.push(
+				feature.beforePackageInstall({
+					// @ts-ignore
+					answers: answers[f.feature]
+				})
+			)
+			// afterPackageInstallPromises.push(
+			// 	feature.afterPackageInstall({ answers: answers[f.feature] })
+			// )
 			feature.packages.forEach(pkg => {
 				const packageName = `${pkg.name}@${pkg.version ?? 'latest'}`
 				packages[packageName] = pkg
@@ -90,17 +159,37 @@ export default class FeatureService extends AbstractService {
 		return true
 	}
 
-	public getFeatureDependencies(feature: Feature): Feature[] {
-		let features: Feature[] = [feature]
+	public getFeatureDependencies(
+		installFeature: IInstallFeature,
+		currentFeatures: IInstallFeature[] = []
+	): IInstallFeature[] {
+		let features: IInstallFeature[] = [installFeature]
+
+		currentFeatures.push(installFeature)
 
 		for (
 			let i = 0;
-			i < this.features[feature].featureDependencies.length;
+			i < this.features[installFeature.feature].featureDependencies.length;
 			i += 1
 		) {
-			const featureDependency = this.features[feature].featureDependencies[i]
+			const featureDependency = this.features[installFeature.feature]
+				.featureDependencies[i]
 
-			features = this.getFeatureDependencies(featureDependency).concat(features)
+			const currentFeature = currentFeatures?.find(
+				f => f.feature === featureDependency
+			)
+
+			if (!currentFeature) {
+				features = this.getFeatureDependencies(
+					{
+						feature: featureDependency,
+						options: installFeature.options
+					},
+					currentFeatures
+				).concat(features)
+
+				currentFeatures = currentFeatures.concat(features)
+			}
 		}
 
 		return features
