@@ -84,7 +84,7 @@ export default abstract class AbstractStore<
 				fs.mkdirSync(localDirectory)
 			}
 		} catch (e) {
-			console.log(e)
+			log.crit(e)
 		}
 	}
 	/** Write a value to disk (should only be used in save()) */

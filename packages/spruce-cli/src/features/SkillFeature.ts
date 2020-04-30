@@ -47,6 +47,7 @@ export default class SkillFeature extends AbstractFeature<SkillFeatures> {
 		// Check if the .spruce directory exists
 		const homedir = os.homedir()
 		const homeSpruceDir = path.join(homedir, '.spruce')
+		log.trace({ cwd: this.cwd })
 		const spruceDir = path.join(cwd, '.spruce')
 		if (homeSpruceDir !== spruceDir && fs.existsSync(spruceDir)) {
 			let filesMissing = false

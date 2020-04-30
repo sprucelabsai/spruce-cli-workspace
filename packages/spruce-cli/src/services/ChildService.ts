@@ -38,7 +38,7 @@ export default class ChildService extends AbstractService {
 			})
 		}
 
-		log.debug(`Import default for: ${file}`)
+		log.trace(`Import default for: ${file}`)
 
 		try {
 			const { stdout } = await this.executeCommand('node', {
@@ -52,7 +52,6 @@ export default class ChildService extends AbstractService {
 					`"try { const imported = require('${file}');console.log('${this.divider}');console.log(JSON.stringify(imported)); } catch(err) { console.log('${this.errorDivider}');console.log(err.toString()); }"`
 				]
 			})
-			log.debug({ stdout })
 
 			const successParts = stdout.split(this.divider)
 			const errParts = stdout.split(this.errorDivider)

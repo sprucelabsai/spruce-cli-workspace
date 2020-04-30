@@ -79,8 +79,6 @@ export default class SkillCommand extends AbstractCommand {
 			})
 		}
 
-		log.debug({ createSkill })
-
 		if (createSkill) {
 			await this.services.feature.install({
 				command: this,

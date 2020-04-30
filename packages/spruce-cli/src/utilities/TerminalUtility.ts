@@ -16,6 +16,7 @@ import emphasize from 'emphasize'
 import AbstractUtility from './AbstractUtility'
 import log from '../lib/log'
 import fs from 'fs-extra'
+import globby from 'globby'
 import path from 'path'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
@@ -358,7 +359,7 @@ export default class TerminalUtility extends AbstractUtility {
 				}
 				break
 			// File select
-			case FieldType.File:
+			case FieldType.File: {
 				if (fieldDefinition.isArray) {
 					throw new SpruceError({
 						code: ErrorCode.NotImplemented,
@@ -367,11 +368,22 @@ export default class TerminalUtility extends AbstractUtility {
 							'isArray file field not supported, prompt needs to be rewritten with isArray support'
 					})
 				}
-				promptOptions.type = 'file'
-				promptOptions.root = path.join(
+				const dirPath = path.join(
 					fieldDefinition.defaultValue?.path ?? this.cwd,
 					'/'
 				)
+
+				log.trace(`TerminalUtility filePrompt for directory: ${dirPath}`)
+
+				// Check if directory is empty.
+				const files = globby.sync(`${dirPath}**/*`)
+
+				if (files.length === 0) {
+					throw new Error(`No files in directory: ${dirPath}`)
+				}
+
+				promptOptions.type = 'file'
+				promptOptions.root = dirPath
 
 				// Only let people select an actual file
 				promptOptions.validate = (value: string) => {
@@ -387,6 +399,7 @@ export default class TerminalUtility extends AbstractUtility {
 					return cleanedPath.length === 0 ? promptOptions.root : cleanedPath
 				}
 				break
+			}
 
 			// Defaults to input
 			default:

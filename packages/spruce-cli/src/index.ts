@@ -61,7 +61,7 @@ export async function setup(options?: { program?: Command; cwd?: string }) {
 	program?.on('option:directory', function() {
 		if (program?.directory) {
 			const newCwd = path.resolvePath(cwd, program.directory)
-			log.debug(`CWD updated: ${newCwd}`)
+			log.trace(`CWD updated: ${newCwd}`)
 			updateCWD(newCwd)
 		}
 	})

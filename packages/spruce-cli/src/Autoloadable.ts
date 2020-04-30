@@ -1,3 +1,5 @@
+import log from './lib/log'
+
 export default abstract class Autoloadable {
 	protected _cwd = ''
 
@@ -9,6 +11,10 @@ export default abstract class Autoloadable {
 	}
 	/** Set the current working directory */
 	public set cwd(cwd: string) {
-		this._cwd = cwd
+		if (cwd) {
+			this._cwd = cwd
+		} else {
+			log.debug('Trying to set CWD to undefined!')
+		}
 	}
 }

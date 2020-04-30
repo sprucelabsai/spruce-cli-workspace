@@ -17,16 +17,18 @@ export default class FeatureService extends AbstractService {
 	private features!: IFeatures
 
 	public set cwd(newCwd: string) {
-		if (this.features) {
+		if (this.features && newCwd) {
+			this._cwd = newCwd
 			Object.keys(this.features).forEach(f => {
 				this.features[f].cwd = newCwd
 			})
 		}
-		this._cwd = newCwd
 	}
 
 	public async afterAutoload(siblings: IServices) {
 		super.afterAutoload(siblings)
+
+		log.trace('Loading features', { cwd: this.cwd })
 
 		this.features = await featuresAutoloader({
 			constructorOptions: {
@@ -43,7 +45,6 @@ export default class FeatureService extends AbstractService {
 		features: IInstallFeature[]
 	}) {
 		const { features } = options
-		log.debug('FeatureService.install()', { features })
 		// Get the packages we need to install for each feature
 		const packages: {
 			[pkgName: string]: IFeaturePackage
@@ -96,8 +97,6 @@ export default class FeatureService extends AbstractService {
 				...answers[promptDefinition.installFeature.feature],
 				...results
 			}
-
-			log.debug({ results })
 		}
 
 		const beforePackageInstallPromises: Promise<void>[] = []
@@ -147,13 +146,13 @@ export default class FeatureService extends AbstractService {
 
 	/** Check if features are installed */
 	public async isInstalled(options: { features: Feature[]; cwd?: string }) {
+		const cwd = options.cwd ?? this.cwd
+		log.trace('FeatureService check', { cwd })
 		const results = await Promise.all(
 			options.features.map(f => {
-				return this.features[f].isInstalled(options.cwd)
+				return this.features[f].isInstalled(cwd)
 			})
 		)
-
-		log.debug({ features: this.features, options, results })
 
 		for (let i = 0; i < results.length; i += 1) {
 			const result = results[i]

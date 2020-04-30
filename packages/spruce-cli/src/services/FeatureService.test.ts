@@ -1,6 +1,7 @@
 import { test, assert } from '@sprucelabs/test'
 import fs from 'fs-extra'
 import uuid from 'uuid'
+import log from '../lib/log'
 import BaseTest from '../BaseTest'
 import { setup } from '../index'
 import { IServices } from '#spruce/autoloaders/services'
@@ -17,7 +18,7 @@ export default class FeatureServiceTest extends BaseTest {
 			})
 			services = result.services
 		} catch (e) {
-			console.log(e)
+			log.crit(e)
 		}
 	}
 

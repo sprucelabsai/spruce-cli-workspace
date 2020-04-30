@@ -62,14 +62,10 @@ export default class PkgService extends AbstractService {
 			if (options?.dev) {
 				args.push('--dev')
 			}
-			try {
-				const result = await this.services.child.executeCommand('yarn', {
-					args
-				})
-				console.log(result)
-			} catch (e) {
-				console.log(e)
-			}
+
+			await this.services.child.executeCommand('yarn', {
+				args
+			})
 		}
 	}
 
