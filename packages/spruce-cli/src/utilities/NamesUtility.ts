@@ -3,6 +3,7 @@ import { FieldDefinition } from '@sprucelabs/schema'
 import AbstractUtility from './AbstractUtility'
 import path from 'path'
 import { SpruceSchemas } from '../../.spruce/schemas/schemas.types'
+import { Optional } from '@sprucelabs/schema'
 
 /** First name => FirstName */
 export function toCamel(name: string) {
@@ -43,7 +44,7 @@ export default class NamesUtility extends AbstractUtility {
 	/** Help guess on answers */
 	public onWillAskQuestionHandler<
 		K extends keyof SpruceSchemas.Local.INamedTemplateItem = keyof SpruceSchemas.Local.INamedTemplateItem,
-		V extends Partial<SpruceSchemas.Local.INamedTemplateItem> = Partial<
+		V extends Optional<SpruceSchemas.Local.INamedTemplateItem> = Optional<
 			SpruceSchemas.Local.INamedTemplateItem
 		>
 	>(fieldName: K, fieldDefinition: FieldDefinition, values: V) {
