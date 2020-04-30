@@ -25,7 +25,7 @@ export default class TestCommand extends AbstractCommand {
 		let target = cmd.targetFile as string
 
 		if (!target) {
-			const file = await this.prompt({
+			const file = await this.utilities.terminal.prompt({
 				type: FieldType.File,
 				label: 'Which file would you like to test?',
 				isRequired: true,
@@ -51,8 +51,8 @@ export default class TestCommand extends AbstractCommand {
 		const contents = this.templates.test({ pascalName })
 
 		this.writeFile(destination, contents)
-		this.info(`Test created at ${destination}`)
-		this.info('Updated package.json')
-		this.hint('Try `yarn test` or `yarn test:watch`')
+		this.utilities.terminal.info(`Test created at ${destination}`)
+		this.utilities.terminal.info('Updated package.json')
+		this.utilities.terminal.hint('Try `yarn test` or `yarn test:watch`')
 	}
 }

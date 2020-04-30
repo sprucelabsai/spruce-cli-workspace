@@ -120,9 +120,11 @@ export default class FeatureService extends AbstractService {
 			})
 		})
 
-		options.command?.startLoading('Running before package installation hooks')
+		options.command?.utilities.terminal.startLoading(
+			'Running before package installation hooks'
+		)
 		await Promise.all(beforePackageInstallPromises)
-		options.command?.stopLoading()
+		options.command?.utilities.terminal.stopLoading()
 
 		const packagesToInstall: string[] = []
 		const devPackagesToInstall: string[] = []
@@ -136,21 +138,27 @@ export default class FeatureService extends AbstractService {
 		})
 
 		if (packagesToInstall.length > 0) {
-			options.command?.startLoading('Installing package.json dependencies')
+			options.command?.utilities.terminal.startLoading(
+				'Installing package.json dependencies'
+			)
 			await this.services.pkg.install(packagesToInstall)
-			options.command?.stopLoading()
+			options.command?.utilities.terminal.stopLoading()
 		}
 		if (devPackagesToInstall.length > 0) {
-			options.command?.startLoading('Installing package.json devDependencies')
+			options.command?.utilities.terminal.startLoading(
+				'Installing package.json devDependencies'
+			)
 			await this.services.pkg.install(devPackagesToInstall, {
 				dev: true
 			})
-			options.command?.stopLoading()
+			options.command?.utilities.terminal.stopLoading()
 		}
 
-		options.command?.startLoading('Running after package installation hooks')
+		options.command?.utilities.terminal.startLoading(
+			'Running after package installation hooks'
+		)
 		await Promise.all(afterPackageInstallPromises)
-		options.command?.stopLoading()
+		options.command?.utilities.terminal.stopLoading()
 	}
 
 	/** Check if features are installed */

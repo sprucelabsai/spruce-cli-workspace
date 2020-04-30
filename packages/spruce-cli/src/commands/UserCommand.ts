@@ -37,46 +37,46 @@ export default class UserCommand extends AbstractCommand {
 		let pinLabel = 'Enter the pin I just sent!'
 
 		if (!phone) {
-			phone = await this.prompt({
+			phone = await this.utilities.terminal.prompt({
 				type: FieldType.Phone,
 				isRequired: true,
 				label: "What's your cell?"
 			})
 		}
 
-		this.startLoading('Requesting pin')
+		this.utilities.terminal.startLoading('Requesting pin')
 		await this.services.pin.requestPin(phone)
-		this.stopLoading()
+		this.utilities.terminal.stopLoading()
 
 		let user: SpruceSchemas.local.ICliUserWithToken | undefined
 
 		let valid = false
 
 		do {
-			const pin = await this.prompt({
+			const pin = await this.utilities.terminal.prompt({
 				type: FieldType.Text,
 				isRequired: true,
 				label: pinLabel
 			})
 
-			this.startLoading('Verifying identity...')
+			this.utilities.terminal.startLoading('Verifying identity...')
 
 			try {
 				user = await this.stores.user.userWithTokenFromPhone(phone, pin)
 				valid = true
 
-				this.stopLoading()
+				this.utilities.terminal.stopLoading()
 			} catch (err) {
-				this.stopLoading()
+				this.utilities.terminal.stopLoading()
 
 				if (err instanceof SpruceError) {
-					this.error(err.friendlyMessage())
+					this.utilities.terminal.error(err.friendlyMessage())
 					throw err
 				} else if (err.message === 'PIN_NOT_FOUND') {
-					this.error('That was the wrong pin!')
+					this.utilities.terminal.error('That was the wrong pin!')
 					pinLabel = "Let's give it another try, pin please"
 				} else {
-					this.error(err.message)
+					this.utilities.terminal.error(err.message)
 				}
 			}
 		} while (!valid)
@@ -98,14 +98,16 @@ export default class UserCommand extends AbstractCommand {
 
 	public logout() {
 		this.stores.user.logout()
-		this.info('Logout successful')
+		this.utilities.terminal.info('Logout successful')
 	}
 
 	public async switchUser() {
 		const users = this.stores.user.users()
 
 		if (users.length === 0) {
-			this.warn('You are not logged in as anyone, try `spruce user:login`')
+			this.utilities.terminal.warn(
+				'You are not logged in as anyone, try `spruce user:login`'
+			)
 		}
 
 		const choices: ISelectFieldDefinitionChoice[] = users.map((user, idx) => ({
@@ -114,7 +116,7 @@ export default class UserCommand extends AbstractCommand {
 		}))
 
 		const loggedInUser = this.stores.user.loggedInUser()
-		const userIdx = await this.prompt({
+		const userIdx = await this.utilities.terminal.prompt({
 			type: FieldType.Select,
 			label: 'Select previously logged in user',
 			isRequired: true,
@@ -142,19 +144,19 @@ export default class UserCommand extends AbstractCommand {
 		]
 
 		if (user && authType === StoreAuth.User) {
-			this.section({
+			this.utilities.terminal.section({
 				headline: `Logged in as human: ${user.casualName}`,
 				object: user,
 				headlineEffects: headerEffects
 			})
 		} else if (skill && authType === StoreAuth.Skill) {
-			this.section({
+			this.utilities.terminal.section({
 				headline: `Logged in as skill: ${skill.name}`,
 				object: skill,
 				headlineEffects: headerEffects
 			})
 		} else {
-			this.writeLn('Not currently logged in')
+			this.utilities.terminal.writeLn('Not currently logged in')
 		}
 	}
 }

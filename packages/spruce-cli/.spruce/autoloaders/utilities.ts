@@ -19,6 +19,7 @@ export interface IUtilities {
 	schema: Schema
 	terminal: Terminal
 	tsConfig: TsConfig
+	[utility: string]: Bootstrap | Names | Parser | Schema | Terminal | TsConfig
 }
 
 export enum Utility {

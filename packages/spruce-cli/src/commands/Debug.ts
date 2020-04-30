@@ -17,7 +17,7 @@ export class Debug extends AbstractCommand {
 		// log.crit('Testing crit log')
 		// log.fatal('Testing fatal log')
 
-		this.info(process.cwd())
+		this.utilities.terminal.info(process.cwd())
 	}
 }
 

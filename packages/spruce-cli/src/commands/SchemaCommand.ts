@@ -56,7 +56,7 @@ export default class SchemaCommand extends AbstractCommand {
 		const force = !!cmd.force
 
 		// Make sure schema module is installed
-		this.startLoading('Installing dependencies')
+		this.utilities.terminal.startLoading('Installing dependencies')
 		// TODO
 		// await this.services.pkg.setupForSchemas()
 		await this.services.feature.install({
@@ -67,7 +67,7 @@ export default class SchemaCommand extends AbstractCommand {
 			]
 		})
 		this.utilities.tsConfig.setupForSchemas()
-		this.startLoading('Fetching schemas and field types')
+		this.utilities.terminal.startLoading('Fetching schemas and field types')
 
 		// Load schemas
 		const {
@@ -76,7 +76,7 @@ export default class SchemaCommand extends AbstractCommand {
 		} = await this.stores.schema.schemaTemplateItems()
 
 		if (schemaTemplateItems.length === 0) {
-			this.crit(
+			this.utilities.terminal.crit(
 				`For some reason I couldn't load any schema definitions, not ever the core ones. Try https://github.com/sprucelabsai/spruce-cli-workspace/issues for some insights`
 			)
 			return
@@ -88,33 +88,33 @@ export default class SchemaCommand extends AbstractCommand {
 			errors: fieldTemplateErrors
 		} = await this.stores.schema.fieldTemplateItems()
 
-		this.stopLoading()
+		this.utilities.terminal.stopLoading()
 
 		if (schemaTemplateItems.length === 0) {
-			this.crit(
+			this.utilities.terminal.crit(
 				`For some reason I couldn't load any schema fields (like text or number), not ever the core ones. Try https://github.com/sprucelabsai/spruce-cli-workspace/issues for some insights`
 			)
 			return
 		}
 
 		if (schemaTemplateErrors.length > 0 && !force) {
-			this.warn(
+			this.utilities.terminal.warn(
 				`I had trouble loading all your schema definitions, but I think I can continue.`
 			)
-			let confirm = await this.confirm(
+			let confirm = await this.utilities.terminal.confirm(
 				'Do you to review the errors with me real quick? (Y to review, N to move on)'
 			)
 
 			if (confirm) {
 				do {
-					this.handleError(schemaTemplateErrors[0])
+					this.utilities.terminal.handleError(schemaTemplateErrors[0])
 					schemaTemplateErrors.pop()
-					await this.confirm(
+					await this.utilities.terminal.confirm(
 						schemaTemplateErrors.length === 0 ? 'Done' : 'Next'
 					)
 				} while (schemaTemplateErrors.length > 0)
 
-				confirm = await this.confirm(
+				confirm = await this.utilities.terminal.confirm(
 					`Ok, ready for me to try to generate the types for the ${schemaTemplateItems.length} definitions I was able to load?`
 				)
 
@@ -125,21 +125,23 @@ export default class SchemaCommand extends AbstractCommand {
 		}
 
 		if (fieldTemplateErrors.length > 0 && !force) {
-			this.warn(
+			this.utilities.terminal.warn(
 				`It looks like you are introducing some fields to the system, but I can't seem to load ${fieldTemplateErrors.length} of them. This may make it impossible to import local definitions (but I might still be able to write core files).`
 			)
-			let confirm = await this.confirm(
+			let confirm = await this.utilities.terminal.confirm(
 				'Do you want to review the errors with me real quick? (Y to review, N to move on)'
 			)
 
 			if (confirm) {
 				do {
-					this.handleError(fieldTemplateErrors[0])
+					this.utilities.terminal.handleError(fieldTemplateErrors[0])
 					fieldTemplateErrors.pop()
-					await this.confirm(fieldTemplateErrors.length === 0 ? 'Done' : 'Next')
+					await this.utilities.terminal.confirm(
+						fieldTemplateErrors.length === 0 ? 'Done' : 'Next'
+					)
 				} while (fieldTemplateErrors.length > 0)
 
-				confirm = await this.confirm(
+				confirm = await this.utilities.terminal.confirm(
 					`Ok, you quit to fix the errors above or hit Enter to have me give it my maximum effort!`
 				)
 
@@ -149,7 +151,7 @@ export default class SchemaCommand extends AbstractCommand {
 			}
 		}
 
-		this.startLoading(
+		this.utilities.terminal.startLoading(
 			`Found ${schemaTemplateItems.length} schema definitions and ${fieldTemplateItems.length} field types, writing files in 2 stages.`
 		)
 
@@ -168,37 +170,43 @@ export default class SchemaCommand extends AbstractCommand {
 			errors.push(...results.errors)
 		})
 
-		this.stopLoading()
-		this.writeLn(`Done running ${resultsByStage.length} stages.`)
+		this.utilities.terminal.stopLoading()
+		this.utilities.terminal.writeLn(
+			`Done running ${resultsByStage.length} stages.`
+		)
 
 		// If the first stage error'ed, we're in trouble
 		if (resultsByStage[0].errors.length > 0) {
-			this.crit(
+			this.utilities.terminal.crit(
 				`Warning! Core stage failure. Run \`y global update spruce\` and then try again. If the problem persists, visit https://github.com/sprucelabsai/spruce-cli-workspace/issues`
 			)
 		} else if (errors.length > 0) {
-			this.error(`I hit ${errors.length} errors while generating type files.`)
+			this.utilities.terminal.error(
+				`I hit ${errors.length} errors while generating type files.`
+			)
 		}
 
 		if (errors.length > 0) {
 			errors.forEach(err => {
 				const { options } = err
 				if (options.code === ErrorCode.ValueTypeServiceStageError) {
-					this.error(`Error mapping stage on stage "${options.stage}"`)
+					this.utilities.terminal.error(
+						`Error mapping stage on stage "${options.stage}"`
+					)
 				} else if (options.code === ErrorCode.ValueTypeServiceError) {
-					this.error(`Error on schemaId ${options.schemaId}`)
+					this.utilities.terminal.error(`Error on schemaId ${options.schemaId}`)
 				}
-				this.handleError(err)
+				this.utilities.terminal.handleError(err)
 			})
 		}
 
-		this.startLoading('Prettying generated files...')
+		this.utilities.terminal.startLoading('Prettying generated files...')
 		await this.pretty()
 
 		// If (clean) {
 		// 	const pass =
 		// 		force ||
-		// 		(await this.confirm(
+		// 		(await this.utilities.terminal.confirm(
 		// 			`Are you sure you want me delete the contents of ${destinationDir}?`
 		// 		))
 		// 	if (pass) {
@@ -206,21 +214,29 @@ export default class SchemaCommand extends AbstractCommand {
 		// 	}
 		// }
 
-		this.stopLoading()
+		this.utilities.terminal.stopLoading()
 
-		this.clear()
-		this.info(
+		this.utilities.terminal.clear()
+		this.utilities.terminal.info(
 			`All done 👊.${
 				errors.length > 0
 					? ` But, I encountered ${errors.length} errors (see above). Lastly,`
 					: ''
 			} I created ${Object.keys(results.generatedFiles).length} files.`
 		)
-		this.bar()
-		this.info(`1. Schema definitions ${results.generatedFiles.schemaTypes}`)
-		this.info(`2. Field definitions ${results.generatedFiles.fieldsTypes}`)
-		this.info(`3. Field type enum ${results.generatedFiles.fieldType}`)
-		this.info(`4. Field class map ${results.generatedFiles.fieldClassMap}`)
+		this.utilities.terminal.bar()
+		this.utilities.terminal.info(
+			`1. Schema definitions ${results.generatedFiles.schemaTypes}`
+		)
+		this.utilities.terminal.info(
+			`2. Field definitions ${results.generatedFiles.fieldsTypes}`
+		)
+		this.utilities.terminal.info(
+			`3. Field type enum ${results.generatedFiles.fieldType}`
+		)
+		this.utilities.terminal.info(
+			`4. Field class map ${results.generatedFiles.fieldClassMap}`
+		)
 	}
 
 	/** Define a new schema */
@@ -258,7 +274,7 @@ export default class SchemaCommand extends AbstractCommand {
 		})
 
 		// Make sure schema module is installed
-		this.startLoading('Installing dependencies')
+		this.utilities.terminal.startLoading('Installing dependencies')
 		await this.services.feature.install({
 			features: [
 				{
@@ -266,7 +282,7 @@ export default class SchemaCommand extends AbstractCommand {
 				}
 			]
 		})
-		this.stopLoading()
+		this.utilities.terminal.stopLoading()
 
 		// Build paths
 		const definitionDestination = this.resolvePath(
@@ -278,19 +294,23 @@ export default class SchemaCommand extends AbstractCommand {
 
 		await this.writeFile(definitionDestination, definition)
 
-		this.info(`Definition created at ${definitionDestination}`)
+		this.utilities.terminal.info(
+			`Definition created at ${definitionDestination}`
+		)
 
 		// TODO don't call one command from another
 		try {
 			cmd.destinationDir = typesDestination
 			await this.sync(cmd)
 		} catch (err) {
-			this.stopLoading()
-			this.warn('I was not able to sync it with #spruce/schemas/schemas.types')
-			this.warn(
+			this.utilities.terminal.stopLoading()
+			this.utilities.terminal.warn(
+				'I was not able to sync it with #spruce/schemas/schemas.types'
+			)
+			this.utilities.terminal.warn(
 				"You won't be able to use your new definition until the below error is fixed and you run `spruce schema:sync`"
 			)
-			this.handleError(err)
+			this.utilities.terminal.handleError(err)
 		}
 	}
 }

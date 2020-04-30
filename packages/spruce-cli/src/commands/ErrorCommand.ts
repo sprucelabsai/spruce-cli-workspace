@@ -97,11 +97,11 @@ export default class ErrorCommand extends AbstractCommand {
 		}
 
 		// Make sure error module is installed
-		this.startLoading()
+		this.utilities.terminal.startLoading()
 		// TODO
 		// await this.services.pkg.setupForErrors()
 		// this.utilities.tsConfig.setupForErrors()
-		this.stopLoading()
+		this.utilities.terminal.stopLoading()
 
 		// Write the definition
 		await this.writeFile(
@@ -133,8 +133,13 @@ export default class ErrorCommand extends AbstractCommand {
 				await this.writeFile(errorFileDestination, newErrorContents)
 			} else {
 				// Could not write to file, output snippet suggestion
-				this.warn('Failed to add to Error.ts, here is the block to drop in')
-				this.section({ headline: 'Code block example', lines: [errorBlock] })
+				this.utilities.terminal.warn(
+					'Failed to add to Error.ts, here is the block to drop in'
+				)
+				this.utilities.terminal.section({
+					headline: 'Code block example',
+					lines: [errorBlock]
+				})
 			}
 		}
 
@@ -162,10 +167,10 @@ export default class ErrorCommand extends AbstractCommand {
 		})
 
 		// Give an example
-		this.headline(`${names.pascalName} examples:`)
+		this.utilities.terminal.headline(`${names.pascalName} examples:`)
 
-		this.writeLn('')
-		this.codeSample(
+		this.utilities.terminal.writeLn('')
+		this.utilities.terminal.codeSample(
 			this.templates.errorExample({
 				pascalName,
 				camelName,
@@ -193,10 +198,10 @@ export default class ErrorCommand extends AbstractCommand {
 		}[] = []
 
 		// Make sure error module is installed
-		this.startLoading()
+		this.utilities.terminal.startLoading()
 		await this.services.pkg.install('@sprucelabs/error')
 		this.utilities.tsConfig.setupForErrors()
-		this.stopLoading()
+		this.utilities.terminal.stopLoading()
 
 		if (cmd.clean) {
 			fs.removeSync(`.spruce/errors`)
@@ -229,15 +234,15 @@ export default class ErrorCommand extends AbstractCommand {
 				)
 
 				// Tell them how to use it
-				this.headline(`${pascalName}Error examples:`)
+				this.utilities.terminal.headline(`${pascalName}Error examples:`)
 
-				this.writeLn('')
-				this.codeSample(
+				this.utilities.terminal.writeLn('')
+				this.utilities.terminal.codeSample(
 					this.templates.errorExample({ pascalName, camelName, definition })
 				)
 
-				this.writeLn('')
-				this.writeLn('')
+				this.utilities.terminal.writeLn('')
+				this.utilities.terminal.writeLn('')
 
 				// Track all errors
 				allErrors.push({ pascalName, readableName, description })
@@ -267,6 +272,6 @@ export default class ErrorCommand extends AbstractCommand {
 			destinationFile: this.resolvePath(typesDestinationDir, 'options.types.ts')
 		})
 
-		this.info('All done! 👊')
+		this.utilities.terminal.info('All done! 👊')
 	}
 }

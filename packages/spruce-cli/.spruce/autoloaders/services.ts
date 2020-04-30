@@ -19,6 +19,7 @@ export interface IServices {
 	pkg: Pkg
 	valueType: ValueType
 	vm: Vm
+	[service: string]: Child | Feature | Pin | Pkg | ValueType | Vm
 }
 
 export enum Service {

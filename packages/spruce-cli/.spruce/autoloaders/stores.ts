@@ -19,6 +19,16 @@ export interface IStores {
 	skill: Skill
 	user: User
 	watcher: Watcher
+	[store: string]: Onboarding | Remote | Schema | Skill | User | Watcher
+}
+
+export enum Store {
+	Onboarding = 'onboarding',
+	Remote = 'remote',
+	Schema = 'schema',
+	Skill = 'skill',
+	User = 'user',
+	Watcher = 'watcher',
 }
 
 export default async function autoloader(options: {
@@ -52,7 +62,7 @@ export default async function autoloader(options: {
 		await after(watcher)
 	}
 
-	return {
+	const siblings: IStores = {
 		onboarding,
 		remote,
 		schema,
@@ -60,4 +70,37 @@ export default async function autoloader(options: {
 		user,
 		watcher
 	}
+
+	// @ts-ignore method is optional
+	if (typeof onboarding.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		onboarding.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof remote.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		remote.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof schema.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		schema.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof skill.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		skill.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof user.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		user.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof watcher.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		watcher.afterAutoload(siblings)
+	}
+
+	return siblings
 }

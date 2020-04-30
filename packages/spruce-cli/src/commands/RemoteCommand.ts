@@ -21,7 +21,7 @@ export default class RemoteCommand extends AbstractCommand {
 		let environment = environmentParam
 
 		if (!environment) {
-			environment = await this.prompt({
+			environment = await this.utilities.terminal.prompt({
 				type: FieldType.Select,
 				isRequired: true,
 				label: 'Select a remote',

@@ -1,5 +1,4 @@
 import log from '../lib/log'
-import TerminalUtility from '../utilities/TerminalUtility'
 import path from 'path'
 import { Command } from 'commander'
 import FormBuilder, { IFormOptions } from '../builders/FormBuilder'
@@ -15,6 +14,7 @@ import QuizBuilder, {
 	IQuizQuestions
 } from '../builders/QuizBuilder'
 import { ICommands } from '../../.spruce/autoloaders/commands'
+import Autoloadable from '../Autoloadable'
 
 /** All commanders get this */
 export interface ICommandOptions {
@@ -31,7 +31,8 @@ export interface IWriteOptions {
 	pretty?: boolean
 	build?: boolean
 }
-export default abstract class AbstractCommand extends TerminalUtility {
+
+export default abstract class AbstractCommand extends Autoloadable {
 	/** Spruce logger */
 	public stores: IStores
 	public mercury: Mercury
@@ -72,7 +73,10 @@ export default abstract class AbstractCommand extends TerminalUtility {
 	public formBuilder<T extends ISchemaDefinition>(
 		options: Omit<IFormOptions<T>, 'term'>
 	): FormBuilder<T> {
-		const formBuilder = new FormBuilder({ term: this, ...options })
+		const formBuilder = new FormBuilder({
+			term: this.utilities.terminal,
+			...options
+		})
 		return formBuilder
 	}
 
@@ -80,7 +84,10 @@ export default abstract class AbstractCommand extends TerminalUtility {
 	public quizBuilder<T extends ISchemaDefinition, Q extends IQuizQuestions>(
 		options: Omit<IQuizOptions<T, Q>, 'term' | 'definition'>
 	): QuizBuilder<T, Q> {
-		const quizBuilder = new QuizBuilder({ term: this, ...options })
+		const quizBuilder = new QuizBuilder({
+			term: this.utilities.terminal,
+			...options
+		})
 		return quizBuilder
 	}
 

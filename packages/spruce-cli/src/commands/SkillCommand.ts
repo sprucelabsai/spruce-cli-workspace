@@ -73,7 +73,7 @@ export default class SkillCommand extends AbstractCommand {
 		let createSkill = true
 
 		if (parentInstallDirectory) {
-			createSkill = await this.prompt({
+			createSkill = await this.utilities.terminal.prompt({
 				type: FieldType.Boolean,
 				label: `A Skill is already installed in ${parentInstallDirectory}. Are you sure you want to create a skill here?`,
 				isRequired: true
@@ -114,34 +114,38 @@ export default class SkillCommand extends AbstractCommand {
 				skillFromDir &&
 				(loggedInSkill?.id !== skillFromDir.id || authType !== StoreAuth.Skill)
 			) {
-				const confirm = await this.confirm(
+				const confirm = await this.utilities.terminal.confirm(
 					`You are in the ${skillFromDir.slug} directory, want to login as that?`
 				)
 
 				if (confirm) {
 					this.stores.skill.setLoggedInSkill(skillFromDir)
-					this.writeLn(`You are now authenticated as ${skillFromDir.slug}`)
+					this.utilities.terminal.writeLn(
+						`You are now authenticated as ${skillFromDir.slug}`
+					)
 					return
 				}
 			}
 		}
 
 		if (!loggedInUser && (!skillId || !skillApiKey)) {
-			this.error(
+			this.utilities.terminal.error(
 				'You must first login as a user to get access to skills (unless you know the id and api key)'
 			)
 
-			this.hint('Try user:login or skill:login SKILL_ID API_KEY')
+			this.utilities.terminal.hint(
+				'Try user:login or skill:login SKILL_ID API_KEY'
+			)
 			return
 		}
 
 		// If we are authing as a user, lets confirm we want to login as a user going forward
 		if (loggedInUser && authType === StoreAuth.User) {
-			const pass = await this.confirm(
+			const pass = await this.utilities.terminal.confirm(
 				`You are currently logged as ${loggedInUser.casualName}, are you sure you want to log out as a user and in as a skill?`
 			)
 			if (!pass) {
-				this.info('OK, bailing out...')
+				this.utilities.terminal.info('OK, bailing out...')
 				return
 			}
 		}
@@ -150,8 +154,10 @@ export default class SkillCommand extends AbstractCommand {
 		if (loggedInUser && (!skillId || !skillApiKey)) {
 			const skills = await this.stores.skill.skills(loggedInUser.token)
 			if (skills.length === 0) {
-				this.warn(`You don't have any skills tied to you as a developer.`)
-				this.hint('Try spruce skill:create to get started')
+				this.utilities.terminal.warn(
+					`You don't have any skills tied to you as a developer.`
+				)
+				this.utilities.terminal.hint('Try spruce skill:create to get started')
 				return
 			}
 
@@ -163,7 +169,7 @@ export default class SkillCommand extends AbstractCommand {
 				})
 			)
 
-			const selectedIdx = await this.prompt({
+			const selectedIdx = await this.utilities.terminal.prompt({
 				type: FieldType.Select,
 				label: 'Select a skill',
 				isRequired: true,
@@ -182,16 +188,18 @@ export default class SkillCommand extends AbstractCommand {
 	public async switch() {
 		const loggedInUser = this.stores.user.loggedInUser()
 		if (!loggedInUser) {
-			this.fatal('You are not logged in as a person!')
-			this.hint('Try spruce user:login')
+			this.utilities.terminal.fatal('You are not logged in as a person!')
+			this.utilities.terminal.hint('Try spruce user:login')
 			return
 		}
 
 		const skills = await this.stores.skill.skills(loggedInUser.token)
 
 		if (skills.length === 0) {
-			this.warn(`You don't have any skills tied to you as a developer.`)
-			this.hint('Try spruce skill:create to get started')
+			this.utilities.terminal.warn(
+				`You don't have any skills tied to you as a developer.`
+			)
+			this.utilities.terminal.hint('Try spruce skill:create to get started')
 			return
 		}
 
@@ -203,7 +211,7 @@ export default class SkillCommand extends AbstractCommand {
 			})
 		)
 
-		const selectedIdx = await this.prompt({
+		const selectedIdx = await this.utilities.terminal.prompt({
 			type: FieldType.Select,
 			label: 'Select a skill',
 			isRequired: true,
@@ -355,7 +363,7 @@ export default class SkillCommand extends AbstractCommand {
 	// }
 
 	// private async repair() {
-	// 	this.writeLn('Repairing...')
+	// 	this.utilities.terminal.writeLn('Repairing...')
 	// 	await this.copyBaseFiles()
 	// }
 }

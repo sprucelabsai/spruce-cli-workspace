@@ -15,7 +15,7 @@ export interface I{{namePlural}} {
 	{{#each classes}}
 	{{camelCase className}}: {{className}}
 	{{/each}}
-	[{{nameSingular}}]: {{#each classes}}{{#if @first}}{{className}}{{else}} | {{className}}{{/if}}{{/each}}
+	[{{camelCase nameSingular}}: string]: {{#each classes}}{{#if @first}}{{className}}{{else}} | {{className}}{{/if}}{{/each}}
 }
 
 export enum {{nameSingular}} {

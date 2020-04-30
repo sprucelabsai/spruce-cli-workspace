@@ -97,7 +97,7 @@ function filterEffectsForCFonts(effects: ITerminalEffect[]) {
 }
 
 export default class TerminalUtility extends AbstractUtility {
-	protected isPromptActive = false
+	public isPromptActive = false
 
 	private loader?: ora.Ora | null
 

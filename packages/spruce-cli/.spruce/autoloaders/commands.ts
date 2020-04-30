@@ -25,6 +25,7 @@ export interface ICommands {
 	test: Test
 	user: User
 	watch: Watch
+	[command: string]: Autoloader | Error | Onboarding | Remote | Schema | Skill | Test | User | Watch
 }
 
 export enum Command {

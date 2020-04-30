@@ -70,8 +70,8 @@ export default class WatchCommand extends AbstractCommand {
 
 	private showStatus(lines?: string[], lineEffects?: ITerminalEffect[]) {
 		this.resetReadline()
-		this.clear()
-		this.section({
+		this.utilities.terminal.clear()
+		this.utilities.terminal.section({
 			headline: 'Spruce Watcher',
 			lines: [
 				'Use these commands:',
@@ -84,7 +84,7 @@ export default class WatchCommand extends AbstractCommand {
 		})
 
 		if (lines) {
-			this.writeLns(lines, lineEffects)
+			this.utilities.terminal.writeLns(lines, lineEffects)
 		}
 	}
 
@@ -95,7 +95,7 @@ export default class WatchCommand extends AbstractCommand {
 	}
 
 	private handleReady() {
-		this.clear()
+		this.utilities.terminal.clear()
 		this.showStatus()
 	}
 
@@ -118,14 +118,14 @@ export default class WatchCommand extends AbstractCommand {
 		})
 
 		if (commandsToExecute.length > 0) {
-			await this.startLoading(
+			await this.utilities.terminal.startLoading(
 				`Executing ${commandsToExecute.length} watcher commands`
 			)
 			const promises = commandsToExecute.map(c =>
 				this.services.child.executeCommand(c)
 			)
 			const results = await Promise.allSettled(promises)
-			await this.stopLoading()
+			await this.utilities.terminal.stopLoading()
 			const lines: string[] = []
 			const lineEffects: ITerminalEffect[] = []
 			results.forEach(result => {
@@ -159,7 +159,7 @@ export default class WatchCommand extends AbstractCommand {
 		let isPatternValid = false
 		let isCmdValid = false
 		while (!isPatternValid) {
-			pattern = await this.prompt({
+			pattern = await this.utilities.terminal.prompt({
 				type: FieldType.Text,
 				label: 'What is the globby pattern to watch?',
 				defaultValue: ''
@@ -171,7 +171,7 @@ export default class WatchCommand extends AbstractCommand {
 		}
 
 		while (!isCmdValid) {
-			commandStr = await this.prompt({
+			commandStr = await this.utilities.terminal.prompt({
 				type: FieldType.Text,
 				label: 'And what command should we run?',
 				defaultValue: ''
@@ -194,7 +194,7 @@ export default class WatchCommand extends AbstractCommand {
 				// TODO: Figure out if there's a way to abort inquirer
 				// this.showStatus()
 			} else {
-				if (this.isPromptActive) {
+				if (this.utilities.terminal.isPromptActive) {
 					// The prompt is up so we shouldn't handle this keypress
 					return
 				}
@@ -250,7 +250,7 @@ export default class WatchCommand extends AbstractCommand {
 			lines.push('\n')
 		})
 
-		this.section({
+		this.utilities.terminal.section({
 			headline: 'Current watchers',
 			lines
 		})
@@ -269,7 +269,7 @@ export default class WatchCommand extends AbstractCommand {
 			}
 		})
 
-		const result = await this.prompt({
+		const result = await this.utilities.terminal.prompt({
 			type: FieldType.Select,
 			label: 'Enable or disable watchers',
 			isRequired: true,
@@ -307,7 +307,7 @@ export default class WatchCommand extends AbstractCommand {
 				checked: watcher.isEnabled
 			}
 		})
-		const result = await this.prompt({
+		const result = await this.utilities.terminal.prompt({
 			type: FieldType.Select,
 			label: 'Select the watcher to delete',
 			options: {
