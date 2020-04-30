@@ -2,6 +2,7 @@ import { Mercury } from '@sprucelabs/mercury'
 import { Templates } from '@sprucelabs/spruce-templates'
 import { IUtilities } from '#spruce/autoloaders/utilities'
 import { IServices } from '../../.spruce/autoloaders/services'
+import Autoloadable from '../Autoloadable'
 
 export interface IServiceOptions {
 	cwd: string
@@ -10,14 +11,14 @@ export interface IServiceOptions {
 	templates: Templates
 }
 
-export default abstract class AbstractService {
+export default abstract class AbstractService extends Autoloadable {
 	public mercury: Mercury
-	public cwd: string
 	public utilities: IUtilities
 	public services!: IServices
 	public templates: Templates
 
 	public constructor(options: IServiceOptions) {
+		super(options)
 		const { cwd, mercury, utilities, templates } = options
 		this.mercury = mercury
 		this.cwd = cwd

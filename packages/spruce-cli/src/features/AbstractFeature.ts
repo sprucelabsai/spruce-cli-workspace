@@ -5,6 +5,7 @@ import { Feature } from '#spruce/autoloaders/features'
 import { IUtilities } from '#spruce/autoloaders/utilities'
 import { IServices } from '#spruce/autoloaders/services'
 import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
+import Autoloadable from '../Autoloadable'
 
 export interface IFeatureOptions {
 	cwd: string
@@ -36,14 +37,11 @@ export enum WriteDirectoryMode {
 
 export default abstract class AbstractFeature<
 	S extends ISchemaDefinition = any
-> {
+> extends Autoloadable {
 	/** Other features that must also be installed for this feature to work */
 	public featureDependencies: Feature[] = []
 
 	public optionsSchema?: ISchemaDefinition
-
-	/** The current working directory */
-	protected cwd: string
 
 	protected utilities: IUtilities
 	protected services: IServices
@@ -52,6 +50,7 @@ export default abstract class AbstractFeature<
 	public abstract packages: IFeaturePackage[]
 
 	public constructor(options: IFeatureOptions) {
+		super(options)
 		this.cwd = options.cwd
 		this.utilities = options.utilities
 		this.services = options.services

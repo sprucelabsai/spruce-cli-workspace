@@ -13,6 +13,7 @@ export interface IFeatures {
 	schema: Schema
 	skill: Skill
 	test: Test
+	[feature: string]: Schema | Skill | Test
 }
 
 export enum Feature {

@@ -29,11 +29,10 @@ export default class SkillFeature extends AbstractFeature<SkillFeatures> {
 	public async beforePackageInstall(options: {
 		answers: SchemaDefinitionValues<SkillFeatures>
 	}) {
-		console.log({ options })
-
 		await this.writeDirectoryTemplate({
-			mode: WriteDirectoryMode.Overwrite,
-			template: TemplateKind.Skill
+			mode: WriteDirectoryMode.Skip,
+			template: TemplateKind.Skill,
+			templateData: options.answers
 		})
 	}
 

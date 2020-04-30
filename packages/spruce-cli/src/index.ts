@@ -36,6 +36,7 @@ import servicesAutoloader from '#spruce/autoloaders/services'
 
 /** Addons */
 import './addons/filePrompt.addon'
+import Autoloadable from './Autoloadable'
 
 export async function setup(options?: { program?: Command; cwd?: string }) {
 	const program = options?.program
@@ -47,12 +48,12 @@ export async function setup(options?: { program?: Command; cwd?: string }) {
 	)
 
 	// Track everything autoloaded to handle env changes at runtime
-	const autoLoaded: any[] = []
+	const autoLoaded: Autoloadable[] = []
 
 	// Update state for the entire process
 	// TODO move this out and give more control when handling cross skill, e.g. "update x on only utilities"
-	const updateState = function(key: string, value: any) {
-		autoLoaded.forEach(loaded => (loaded[key] = value))
+	const updateCWD = function(newCwd: string) {
+		autoLoaded.forEach(loaded => (loaded.cwd = newCwd))
 	}
 
 	const cwd = options?.cwd ?? process.cwd()
@@ -61,7 +62,7 @@ export async function setup(options?: { program?: Command; cwd?: string }) {
 		if (program?.directory) {
 			const newCwd = path.resolvePath(cwd, program.directory)
 			log.debug(`CWD updated: ${newCwd}`)
-			updateState('cwd', newCwd)
+			updateCWD(newCwd)
 		}
 	})
 

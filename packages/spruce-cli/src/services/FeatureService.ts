@@ -1,8 +1,5 @@
 import _ from 'lodash'
-import Schema, {
-	ISchemaDefinition,
-	SchemaDefinitionValues
-} from '@sprucelabs/schema'
+import Schema, { ISchemaDefinition } from '@sprucelabs/schema'
 import { Feature, IFeatures } from '#spruce/autoloaders/features'
 import log from '../lib/log'
 import AbstractService from './AbstractService'
@@ -18,6 +15,15 @@ interface IInstallFeature {
 
 export default class FeatureService extends AbstractService {
 	private features!: IFeatures
+
+	public set cwd(newCwd: string) {
+		if (this.features) {
+			Object.keys(this.features).forEach(f => {
+				this.features[f].cwd = newCwd
+			})
+		}
+		this._cwd = newCwd
+	}
 
 	public async afterAutoload(siblings: IServices) {
 		super.afterAutoload(siblings)

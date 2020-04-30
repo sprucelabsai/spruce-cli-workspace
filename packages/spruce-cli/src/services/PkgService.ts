@@ -58,15 +58,18 @@ export default class PkgService extends AbstractService {
 			}
 		}
 		if (install) {
-			const packagesToInstall = packages.join(' ')
-			log.debug('Installing packages', packagesToInstall)
-			const args: string[] = ['add', ...packagesToInstall]
+			const args: string[] = ['add', ...packages]
 			if (options?.dev) {
 				args.push('--dev')
 			}
-			await this.services.child.executeCommand('yarn', {
-				args
-			})
+			try {
+				const result = await this.services.child.executeCommand('yarn', {
+					args
+				})
+				console.log(result)
+			} catch (e) {
+				console.log(e)
+			}
 		}
 	}
 
