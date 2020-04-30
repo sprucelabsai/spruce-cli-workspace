@@ -21,7 +21,7 @@ export default class ValueTypeService extends AbstractService {
 	/** For writing tmp files with unique names */
 	private tmpFileCount = 0
 	public generateKey(renderAs: TemplateRenderAs, definition: FieldDefinition) {
-		return sha1(`${renderAs}.${JSON.stringify(definition)}`)
+		return renderAs + '-' + sha1(`${JSON.stringify(definition)}`)
 	}
 	public async allValueTypes(
 		options: IValueTypeGetterOptions
@@ -135,7 +135,7 @@ export default class ValueTypeService extends AbstractService {
 		const response = await this.utilities.child.importAll<any>(tmpFilePath)
 
 		// Delete the generated file
-		fs.unlinkSync(tmpFilePath)
+		// fs.unlinkSync(tmpFilePath)
 		// TODO lots of validation
 		return { valueTypes: response.valueTypes as Record<string, string>, errors }
 	}
