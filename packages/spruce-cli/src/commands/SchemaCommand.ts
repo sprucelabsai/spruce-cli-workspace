@@ -4,6 +4,7 @@ import { templates } from '@sprucelabs/spruce-templates'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
+import chalk from 'chalk'
 
 export default class SchemaCommand extends AbstractCommand {
 	/** Sets up commands */
@@ -51,7 +52,7 @@ export default class SchemaCommand extends AbstractCommand {
 	/** Sync all schemas and fields (also pulls from the cloud) */
 	public async sync(cmd: Command) {
 		const destinationDir = cmd.destinationDir as string
-		// Const clean = !!cmd.clean
+		let clean = !!cmd.clean
 		const force = !!cmd.force
 
 		// Make sure schema module is installed
@@ -140,15 +141,24 @@ export default class SchemaCommand extends AbstractCommand {
 			}
 		}
 
+		if (clean) {
+			clean =
+				force ||
+				(await this.confirm(
+					`Are you sure you want me delete the contents of ${destinationDir}?`
+				))
+		}
+
 		this.startLoading(
-			`Found ${schemaTemplateItems.length} schema definitions and ${fieldTemplateItems.length} field types, writing files in 2 stages.`
+			`Found ${schemaTemplateItems.length} schema definitions and ${fieldTemplateItems.length} field types, writing files.`
 		)
 
 		const results = await this.generators.schema.generateSchemaTypes(
 			this.resolvePath(destinationDir),
 			{
 				fieldTemplateItems,
-				schemaTemplateItems
+				schemaTemplateItems,
+				clean
 			}
 		)
 
@@ -160,13 +170,21 @@ export default class SchemaCommand extends AbstractCommand {
 		})
 
 		this.stopLoading()
-		this.writeLn(`Done running ${resultsByStage.length} stages.`)
+		if (errors.length > 0) {
+			this.writeLn(`Done generating files but hit some errors. 👇`)
+		} else {
+			this.writeLn(
+				`Done generating files. You can begin using them while they are being prettied.`
+			)
+		}
 
 		// If the first stage error'ed, we're in trouble
 		if (resultsByStage[0].errors.length > 0) {
 			this.crit(
 				`Warning! Core stage failure. Run \`y global update spruce\` and then try again. If the problem persists, visit https://github.com/sprucelabsai/spruce-cli-workspace/issues`
 			)
+			errors.map(err => this.handleError(err))
+			return
 		} else if (errors.length > 0) {
 			this.error(`I hit ${errors.length} errors while generating type files.`)
 		}
@@ -186,17 +204,6 @@ export default class SchemaCommand extends AbstractCommand {
 		this.startLoading('Prettying generated files...')
 		await this.pretty()
 
-		// If (clean) {
-		// 	const pass =
-		// 		force ||
-		// 		(await this.confirm(
-		// 			`Are you sure you want me delete the contents of ${destinationDir}?`
-		// 		))
-		// 	if (pass) {
-		// 		this.deleteDir(destinationDir)
-		// 	}
-		// }
-
 		this.stopLoading()
 
 		this.clear()
@@ -208,10 +215,24 @@ export default class SchemaCommand extends AbstractCommand {
 			} I created ${Object.keys(results.generatedFiles).length} files.`
 		)
 		this.bar()
-		this.info(`1. Schema definitions ${results.generatedFiles.schemaTypes}`)
-		this.info(`2. Field definitions ${results.generatedFiles.fieldsTypes}`)
-		this.info(`3. Field type enum ${results.generatedFiles.fieldType}`)
-		this.info(`4. Field class map ${results.generatedFiles.fieldClassMap}`)
+		this.info(
+			`1. ${chalk.bold('Schema definitions')}: ${
+				results.generatedFiles.schemaTypes
+			}`
+		)
+		this.info(
+			`2. ${chalk.bold('Field definitions')}: ${
+				results.generatedFiles.fieldsTypes
+			}`
+		)
+		this.info(
+			`3. ${chalk.bold('Field type enum')}: ${results.generatedFiles.fieldType}`
+		)
+		this.info(
+			`4. ${chalk.bold('Field class map')}: ${
+				results.generatedFiles.fieldClassMap
+			}`
+		)
 	}
 
 	/** Define a new schema */

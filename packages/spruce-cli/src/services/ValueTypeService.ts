@@ -133,6 +133,9 @@ export default class ValueTypeService extends AbstractService {
 		fs.writeFileSync(tmpFilePath, code)
 
 		const response = await this.utilities.child.importAll<any>(tmpFilePath)
+
+		// Delete the generated file
+		fs.unlinkSync(tmpFilePath)
 		// TODO lots of validation
 		return { valueTypes: response.valueTypes as Record<string, string>, errors }
 	}

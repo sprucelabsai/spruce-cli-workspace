@@ -9,6 +9,7 @@ import SpruceError from '../errors/SpruceError'
 export interface IGenerateSchemaTypesOptions {
 	fieldTemplateItems: IFieldTemplateItem[]
 	schemaTemplateItems: ISchemaTemplateItem[]
+	clean: boolean
 }
 
 export interface ISchemaTypesGenerationPhase {
