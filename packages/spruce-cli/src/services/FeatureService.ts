@@ -33,6 +33,7 @@ export default class FeatureService extends AbstractService {
 		this.features = await featuresAutoloader({
 			constructorOptions: {
 				cwd: this.cwd,
+				templates: this.templates,
 				utilities: this.utilities,
 				services: siblings
 			}
@@ -60,7 +61,6 @@ export default class FeatureService extends AbstractService {
 			[featureName: string]: {
 				[fieldName: string]: string | boolean | number
 			}
-			// [featureName: string]: Record<string, any>
 		} = {}
 
 		features.forEach(f => {
@@ -111,9 +111,13 @@ export default class FeatureService extends AbstractService {
 					answers: answers[f.feature]
 				})
 			)
-			// afterPackageInstallPromises.push(
-			// 	feature.afterPackageInstall({ answers: answers[f.feature] })
-			// )
+			afterPackageInstallPromises.push(
+				feature.afterPackageInstall({
+					// TODO: Figure out how to get the right type here
+					// @ts-ignore
+					answers: answers[f.feature]
+				})
+			)
 			feature.packages.forEach(pkg => {
 				const packageName = `${pkg.name}@${pkg.version ?? 'latest'}`
 				packages[packageName] = pkg

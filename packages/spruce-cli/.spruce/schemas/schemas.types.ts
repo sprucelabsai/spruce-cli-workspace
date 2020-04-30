@@ -2098,5 +2098,70 @@ import * as SpruceSchema from '@sprucelabs/schema'
 	}
 	
 
+	export namespace SpruceSchemas.local {
+		/**  */
+		export interface ITestFeature {
+			
+				/** What file would you like to test?. */
+				'target': IFileFieldValue
+		}
+	}	 
+
+	export namespace SpruceSchemas.local.TestFeature {
+		export const id = 'testFeature'
+
+		/** The interface for the schema definition for a Test Feature */
+		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+			id: 'testFeature',
+			name: 'Test Feature',
+			description: '',
+			
+			
+			    fields: {
+			            /** What file would you like to test?. */
+			            'target': {
+			                label: 'What file would you like to test?',
+			                type: SpruceSchema.FieldType.File,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			    }
+		}
+
+		/** The schema definition for a Test Feature */
+		export const definition: SpruceSchemas.local.TestFeature.IDefinition = {
+			id: 'testFeature',
+			name: 'Test Feature',
+			description: '',
+			
+			
+			    fields: {
+			            /** What file would you like to test?. */
+			            'target': {
+			                label: 'What file would you like to test?',
+			                type: SpruceSchema.FieldType.File,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			    }
+		}
+
+		/** The type of a schema instance built off this definition */
+		export type Instance = Schema<SpruceSchemas.local.TestFeature.IDefinition>
+	}
+	
+
 
 

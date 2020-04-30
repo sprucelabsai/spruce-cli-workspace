@@ -2,18 +2,19 @@ import fs from 'fs-extra'
 import path from 'path'
 import os from 'os'
 import { TemplateDirectory, TemplateKind } from '@sprucelabs/spruce-templates'
-import skillFeatures from '../schemas/skillFeature.definition'
 import log from '../lib/log'
 import AbstractFeature, {
 	IFeaturePackage,
 	WriteDirectoryMode
 } from './AbstractFeature'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
-import { Feature } from '../../.spruce/autoloaders/features'
+import { Feature } from '#spruce/autoloaders/features'
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
-type SkillFeatures = typeof skillFeatures
-export default class SkillFeature extends AbstractFeature<SkillFeatures> {
-	public optionsSchema = skillFeatures
+type SkillFeatureType = typeof SpruceSchemas.local.SkillFeature.definition
+
+export default class SkillFeature extends AbstractFeature<SkillFeatureType> {
+	public optionsSchema = SpruceSchemas.local.SkillFeature.definition
 
 	public featureDependencies = [Feature.Schema]
 
@@ -27,7 +28,7 @@ export default class SkillFeature extends AbstractFeature<SkillFeatures> {
 	]
 
 	public async beforePackageInstall(options: {
-		answers: SchemaDefinitionValues<SkillFeatures>
+		answers: SchemaDefinitionValues<SkillFeatureType>
 	}) {
 		await this.writeDirectoryTemplate({
 			mode: WriteDirectoryMode.Skip,

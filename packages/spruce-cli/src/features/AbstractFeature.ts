@@ -1,6 +1,7 @@
 import fs from 'fs-extra'
 import path from 'path'
 import { TemplateDirectory, TemplateKind } from '@sprucelabs/spruce-templates'
+import { Templates } from '@sprucelabs/spruce-templates'
 import { Feature } from '#spruce/autoloaders/features'
 import { IUtilities } from '#spruce/autoloaders/utilities'
 import { IServices } from '#spruce/autoloaders/services'
@@ -10,6 +11,7 @@ import Autoloadable from '../Autoloadable'
 export interface IFeatureOptions {
 	cwd: string
 	utilities: IUtilities
+	templates: Templates
 	services: IServices
 }
 
@@ -45,6 +47,7 @@ export default abstract class AbstractFeature<
 
 	protected utilities: IUtilities
 	protected services: IServices
+	protected templates: Templates
 
 	/** The required npm packages for this feature */
 	public abstract packages: IFeaturePackage[]
@@ -52,6 +55,7 @@ export default abstract class AbstractFeature<
 	public constructor(options: IFeatureOptions) {
 		super(options)
 		this.cwd = options.cwd
+		this.templates = options.templates
 		this.utilities = options.utilities
 		this.services = options.services
 	}
@@ -62,9 +66,9 @@ export default abstract class AbstractFeature<
 	}): Promise<void> {}
 
 	/** Called after packages have been installed */
-	public async afterPackageInstall(
-		_options: SchemaDefinitionValues<S>
-	): Promise<void> {}
+	public async afterPackageInstall(_options: {
+		answers: SchemaDefinitionValues<S>
+	}): Promise<void> {}
 
 	/** Writes the template files */
 	protected async writeDirectoryTemplate(options: {
