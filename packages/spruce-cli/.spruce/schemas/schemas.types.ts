@@ -2005,5 +2005,98 @@ import * as SpruceSchema from '@sprucelabs/schema'
 	}
 	
 
+	export namespace SpruceSchemas.local {
+		/**  */
+		export interface ISkillFeature {
+			
+				/** What's the name of your skill?. */
+				'name': string
+				/** How would you describe your skill?. */
+				'description': string
+		}
+	}	 
+
+	export namespace SpruceSchemas.local.SkillFeature {
+		export const id = 'skillFeature'
+
+		/** The interface for the schema definition for a Skill Feature */
+		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+			id: 'skillFeature',
+			name: 'Skill Feature',
+			description: '',
+			
+			
+			    fields: {
+			            /** What's the name of your skill?. */
+			            'name': {
+			                label: 'What\'s the name of your skill?',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** How would you describe your skill?. */
+			            'description': {
+			                label: 'How would you describe your skill?',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			    }
+		}
+
+		/** The schema definition for a Skill Feature */
+		export const definition: SpruceSchemas.local.SkillFeature.IDefinition = {
+			id: 'skillFeature',
+			name: 'Skill Feature',
+			description: '',
+			
+			
+			    fields: {
+			            /** What's the name of your skill?. */
+			            'name': {
+			                label: 'What\'s the name of your skill?',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			            /** How would you describe your skill?. */
+			            'description': {
+			                label: 'How would you describe your skill?',
+			                type: SpruceSchema.FieldType.Text,
+			                
+			                isRequired: true,
+			                
+			                
+			                
+			                
+			                
+			                options: undefined
+			            },
+			    }
+		}
+
+		/** The type of a schema instance built off this definition */
+		export type Instance = Schema<SpruceSchemas.local.SkillFeature.IDefinition>
+	}
+	
+
 
 
