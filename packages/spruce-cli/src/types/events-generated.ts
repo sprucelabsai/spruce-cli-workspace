@@ -9,14 +9,14 @@ import { DocumentNode } from 'graphql'
  *
  * 🌲🤖 Core: Get schemas used in the spruce platform 
  */
-export namespace SpruceEvents.core.GetSchemas {
+export namespace SpruceEvents.Core.GetSchemas {
 	/** The event name  */
 	export const name = 'get-schemas'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.GetSchemas.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.GetSchemas.eventName', payload))
 	*/
 	export type IPayload = any
 
@@ -24,7 +24,7 @@ export namespace SpruceEvents.core.GetSchemas {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.GetSchemas.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.GetSchemas.IResponseBody = { ... }
 	 */
 	export type IResponseBody = any
 
@@ -36,14 +36,14 @@ export namespace SpruceEvents.core.GetSchemas {
  *
  * 🌲🤖 Core: Get skills where the user is a developer
  */
-export namespace SpruceEvents.core.GetDeveloperSkills {
+export namespace SpruceEvents.Core.GetDeveloperSkills {
 	/** The event name  */
 	export const name = 'get-developer-skills'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.GetDeveloperSkills.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.GetDeveloperSkills.eventName', payload))
 	*/
 	export interface IPayload {
 
@@ -53,7 +53,7 @@ export namespace SpruceEvents.core.GetDeveloperSkills {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.GetDeveloperSkills.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.GetDeveloperSkills.IResponseBody = { ... }
 	 */
 	export interface IResponseBody {
 		/**
@@ -91,14 +91,14 @@ export namespace SpruceEvents.core.GetDeveloperSkills {
  *
  * 🌲🤖 Core: Register a new skill with the api
  */
-export namespace SpruceEvents.core.RegisterSkill {
+export namespace SpruceEvents.Core.RegisterSkill {
 	/** The event name  */
 	export const name = 'register-skill'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.RegisterSkill.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.RegisterSkill.eventName', payload))
 	*/
 	export interface IPayload {
 		/**
@@ -120,7 +120,7 @@ export namespace SpruceEvents.core.RegisterSkill {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.RegisterSkill.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.RegisterSkill.IResponseBody = { ... }
 	 */
 	export interface IResponseBody {
 		/**
@@ -153,14 +153,14 @@ export namespace SpruceEvents.core.RegisterSkill {
  *
  * 🌲🤖 Core: Un-register a skill
  */
-export namespace SpruceEvents.core.UnregisterSkill {
+export namespace SpruceEvents.Core.UnregisterSkill {
 	/** The event name  */
 	export const name = 'unregister-skill'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.UnregisterSkill.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.UnregisterSkill.eventName', payload))
 	*/
 	export interface IPayload {
 		/**
@@ -178,7 +178,7 @@ export namespace SpruceEvents.core.UnregisterSkill {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.UnregisterSkill.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.UnregisterSkill.IResponseBody = { ... }
 	 */
 	export interface IResponseBody {
 		/**
@@ -195,14 +195,14 @@ export namespace SpruceEvents.core.UnregisterSkill {
  *
  * ** Missing event description **
  */
-export namespace SpruceEvents.core.AddDeveloper {
+export namespace SpruceEvents.Core.AddDeveloper {
 	/** The event name  */
 	export const name = 'add-developer'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.AddDeveloper.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.AddDeveloper.eventName', payload))
 	*/
 	export type IPayload = any
 
@@ -210,7 +210,7 @@ export namespace SpruceEvents.core.AddDeveloper {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.AddDeveloper.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.AddDeveloper.IResponseBody = { ... }
 	 */
 	export type IResponseBody = any
 
@@ -222,14 +222,14 @@ export namespace SpruceEvents.core.AddDeveloper {
  *
  * ** Missing event description **
  */
-export namespace SpruceEvents.core.RemoveDeveloper {
+export namespace SpruceEvents.Core.RemoveDeveloper {
 	/** The event name  */
 	export const name = 'remove-developer'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.RemoveDeveloper.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.RemoveDeveloper.eventName', payload))
 	*/
 	export type IPayload = any
 
@@ -237,7 +237,7 @@ export namespace SpruceEvents.core.RemoveDeveloper {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.RemoveDeveloper.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.RemoveDeveloper.IResponseBody = { ... }
 	 */
 	export type IResponseBody = any
 
@@ -249,14 +249,14 @@ export namespace SpruceEvents.core.RemoveDeveloper {
  *
  * 🌲🤖 Core: Make a gql request to the api
  */
-export namespace SpruceEvents.core.Gql {
+export namespace SpruceEvents.Core.Gql {
 	/** The event name  */
 	export const name = 'gql'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.Gql.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.Gql.eventName', payload))
 	*/
 	export interface IPayload {
 		/**
@@ -274,7 +274,7 @@ export namespace SpruceEvents.core.Gql {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.Gql.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.Gql.IResponseBody = { ... }
 	 */
 	export type IResponseBody = any
 
@@ -286,14 +286,14 @@ export namespace SpruceEvents.core.Gql {
  *
  * 🌲🤖 Core: Login with a phone number and pin
  */
-export namespace SpruceEvents.core.Login {
+export namespace SpruceEvents.Core.Login {
 	/** The event name  */
 	export const name = 'login'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.Login.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.Login.eventName', payload))
 	*/
 	export interface IPayload {
 		/**
@@ -311,7 +311,7 @@ export namespace SpruceEvents.core.Login {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.Login.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.Login.IResponseBody = { ... }
 	 */
 	export interface IResponseBody {
 		/**
@@ -328,14 +328,14 @@ export namespace SpruceEvents.core.Login {
  *
  * 🌲🤖 Core: Request login
  */
-export namespace SpruceEvents.core.RequestLogin {
+export namespace SpruceEvents.Core.RequestLogin {
 	/** The event name  */
 	export const name = 'request-login'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.RequestLogin.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.RequestLogin.eventName', payload))
 	*/
 	export interface IPayload {
 		/**
@@ -361,7 +361,7 @@ export namespace SpruceEvents.core.RequestLogin {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.RequestLogin.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.RequestLogin.IResponseBody = { ... }
 	 */
 	export interface IResponseBody {
 		/**
@@ -382,14 +382,14 @@ export namespace SpruceEvents.core.RequestLogin {
  *
  * 🌲🤖 Core: Get API configuration
  */
-export namespace SpruceEvents.core.GetApiConfig {
+export namespace SpruceEvents.Core.GetApiConfig {
 	/** The event name  */
 	export const name = 'get-api-config'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.GetApiConfig.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.GetApiConfig.eventName', payload))
 	*/
 	export interface IPayload {
 
@@ -399,7 +399,7 @@ export namespace SpruceEvents.core.GetApiConfig {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.GetApiConfig.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.GetApiConfig.IResponseBody = { ... }
 	 */
 	export interface IResponseBody {
 		/**
@@ -424,14 +424,14 @@ export namespace SpruceEvents.core.GetApiConfig {
  *
  * 🌲🤖 Core: Get UI enhancements
  */
-export namespace SpruceEvents.core.GetUiEnhancements {
+export namespace SpruceEvents.Core.GetUiEnhancements {
 	/** The event name  */
 	export const name = 'get-ui-enhancements'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.GetUiEnhancements.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.GetUiEnhancements.eventName', payload))
 	*/
 	export interface IPayload {
 		/**
@@ -445,7 +445,7 @@ export namespace SpruceEvents.core.GetUiEnhancements {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.GetUiEnhancements.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.GetUiEnhancements.IResponseBody = { ... }
 	 */
 	export interface IResponseBody {
 		/**
@@ -475,7 +475,7 @@ export namespace SpruceEvents.core.GetUiEnhancements {
  *
  * Emit this event when a new calendar event was created
  */
-export namespace SpruceEvents.core.DidCreateCalendarEvent {
+export namespace SpruceEvents.Core.DidCreateCalendarEvent {
 	/** The event name  */
 	export const name = 'did-create-calendar-event'
 
@@ -518,14 +518,14 @@ export namespace SpruceEvents.core.DidCreateCalendarEvent {
  *
  * Core asks for settings to display on a page
  */
-export namespace SpruceEvents.core.GetSettings {
+export namespace SpruceEvents.Core.GetSettings {
 	/** The event name  */
 	export const name = 'get-settings'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.GetSettings.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.GetSettings.eventName', payload))
 	*/
 	export interface IPayload {
 		/**
@@ -544,7 +544,7 @@ export namespace SpruceEvents.core.GetSettings {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.GetSettings.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.GetSettings.IResponseBody = { ... }
 	 */
 	export interface IResponseBody {
 		/**
@@ -578,14 +578,14 @@ export namespace SpruceEvents.core.GetSettings {
  *
  * This is an opportunity to enrich user data. Set the user name, profile image, create a note, etc.
  */
-export namespace SpruceEvents.core.EnrichUser {
+export namespace SpruceEvents.Core.EnrichUser {
 	/** The event name  */
 	export const name = 'enrich-user'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.EnrichUser.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.EnrichUser.eventName', payload))
 	*/
 	export interface IPayload {
 		/**
@@ -599,7 +599,7 @@ export namespace SpruceEvents.core.EnrichUser {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.EnrichUser.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.EnrichUser.IResponseBody = { ... }
 	 */
 	export interface IResponseBody {
 		/**
@@ -616,14 +616,14 @@ export namespace SpruceEvents.core.EnrichUser {
  *
  * Core asks for settings validation
  */
-export namespace SpruceEvents.core.ValidateSettings {
+export namespace SpruceEvents.Core.ValidateSettings {
 	/** The event name  */
 	export const name = 'validate-settings'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.ValidateSettings.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.ValidateSettings.eventName', payload))
 	*/
 	export type IPayload = any
 
@@ -631,7 +631,7 @@ export namespace SpruceEvents.core.ValidateSettings {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.ValidateSettings.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.ValidateSettings.IResponseBody = { ... }
 	 */
 	export type IResponseBody = any
 
@@ -643,14 +643,14 @@ export namespace SpruceEvents.core.ValidateSettings {
  *
  * Core asks for views to display on a page
  */
-export namespace SpruceEvents.core.GetViews {
+export namespace SpruceEvents.Core.GetViews {
 	/** The event name  */
 	export const name = 'get-views'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.GetViews.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.GetViews.eventName', payload))
 	*/
 	export type IPayload = any
 
@@ -658,7 +658,7 @@ export namespace SpruceEvents.core.GetViews {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.GetViews.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.GetViews.IResponseBody = { ... }
 	 */
 	export type IResponseBody = any
 
@@ -670,14 +670,14 @@ export namespace SpruceEvents.core.GetViews {
  *
  * Core asks this skill to provide cards
  */
-export namespace SpruceEvents.core.GetCards {
+export namespace SpruceEvents.Core.GetCards {
 	/** The event name  */
 	export const name = 'get-cards'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.GetCards.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.GetCards.eventName', payload))
 	*/
 	export type IPayload = any
 
@@ -685,7 +685,7 @@ export namespace SpruceEvents.core.GetCards {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.GetCards.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.GetCards.IResponseBody = { ... }
 	 */
 	export type IResponseBody = any
 
@@ -697,14 +697,14 @@ export namespace SpruceEvents.core.GetCards {
  *
  * When the skill is installed to a location
  */
-export namespace SpruceEvents.core.WasInstalled {
+export namespace SpruceEvents.Core.WasInstalled {
 	/** The event name  */
 	export const name = 'was-installed'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.WasInstalled.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.WasInstalled.eventName', payload))
 	*/
 	export type IPayload = any
 
@@ -712,7 +712,7 @@ export namespace SpruceEvents.core.WasInstalled {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.WasInstalled.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.WasInstalled.IResponseBody = { ... }
 	 */
 	export type IResponseBody = any
 
@@ -724,14 +724,14 @@ export namespace SpruceEvents.core.WasInstalled {
  *
  * When a guest joins wifi at a location for the first time
  */
-export namespace SpruceEvents.core.DidSignup {
+export namespace SpruceEvents.Core.DidSignup {
 	/** The event name  */
 	export const name = 'did-signup'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.DidSignup.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.DidSignup.eventName', payload))
 	*/
 	export interface IPayload {
 		/**
@@ -745,7 +745,7 @@ export namespace SpruceEvents.core.DidSignup {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.DidSignup.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.DidSignup.IResponseBody = { ... }
 	 */
 	export interface IResponseBody {
 		/**
@@ -762,14 +762,14 @@ export namespace SpruceEvents.core.DidSignup {
  *
  * Will fire before a guest signs up and gives skills the opportunity to block signup.
  */
-export namespace SpruceEvents.core.WillSignup {
+export namespace SpruceEvents.Core.WillSignup {
 	/** The event name  */
 	export const name = 'will-signup'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.WillSignup.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.WillSignup.eventName', payload))
 	*/
 	export interface IPayload {
 		/**
@@ -783,7 +783,7 @@ export namespace SpruceEvents.core.WillSignup {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.WillSignup.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.WillSignup.IResponseBody = { ... }
 	 */
 	export interface IResponseBody {
 		/**
@@ -800,14 +800,14 @@ export namespace SpruceEvents.core.WillSignup {
  *
  * When a guest returns and their phone hits the wifi
  */
-export namespace SpruceEvents.core.DidEnter {
+export namespace SpruceEvents.Core.DidEnter {
 	/** The event name  */
 	export const name = 'did-enter'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.DidEnter.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.DidEnter.eventName', payload))
 	*/
 	export type IPayload = any
 
@@ -815,7 +815,7 @@ export namespace SpruceEvents.core.DidEnter {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.DidEnter.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.DidEnter.IResponseBody = { ... }
 	 */
 	export type IResponseBody = any
 
@@ -827,14 +827,14 @@ export namespace SpruceEvents.core.DidEnter {
  *
  * Triggered an hour after a guest leaves
  */
-export namespace SpruceEvents.core.DidLeave {
+export namespace SpruceEvents.Core.DidLeave {
 	/** The event name  */
 	export const name = 'did-leave'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.DidLeave.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.DidLeave.eventName', payload))
 	*/
 	export type IPayload = any
 
@@ -842,7 +842,7 @@ export namespace SpruceEvents.core.DidLeave {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.DidLeave.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.DidLeave.IResponseBody = { ... }
 	 */
 	export type IResponseBody = any
 
@@ -854,14 +854,14 @@ export namespace SpruceEvents.core.DidLeave {
  *
  * A guest has sent a text to Sprucebot
  */
-export namespace SpruceEvents.core.DidMessage {
+export namespace SpruceEvents.Core.DidMessage {
 	/** The event name  */
 	export const name = 'did-message'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.DidMessage.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.DidMessage.eventName', payload))
 	*/
 	export type IPayload = any
 
@@ -869,7 +869,7 @@ export namespace SpruceEvents.core.DidMessage {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.DidMessage.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.DidMessage.IResponseBody = { ... }
 	 */
 	export type IResponseBody = any
 
@@ -881,14 +881,14 @@ export namespace SpruceEvents.core.DidMessage {
  *
  * When a guest adds a new device to a location. Like adding their laptop
  */
-export namespace SpruceEvents.core.DidAddDevice {
+export namespace SpruceEvents.Core.DidAddDevice {
 	/** The event name  */
 	export const name = 'did-add-device'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.DidAddDevice.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.DidAddDevice.eventName', payload))
 	*/
 	export type IPayload = any
 
@@ -896,7 +896,7 @@ export namespace SpruceEvents.core.DidAddDevice {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.DidAddDevice.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.DidAddDevice.IResponseBody = { ... }
 	 */
 	export type IResponseBody = any
 
@@ -908,14 +908,14 @@ export namespace SpruceEvents.core.DidAddDevice {
  *
  * When any user updates their first or last name
  */
-export namespace SpruceEvents.core.DidUpdateUser {
+export namespace SpruceEvents.Core.DidUpdateUser {
 	/** The event name  */
 	export const name = 'did-update-user'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.DidUpdateUser.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.DidUpdateUser.eventName', payload))
 	*/
 	export type IPayload = any
 
@@ -923,7 +923,7 @@ export namespace SpruceEvents.core.DidUpdateUser {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.DidUpdateUser.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.DidUpdateUser.IResponseBody = { ... }
 	 */
 	export type IResponseBody = any
 
@@ -935,14 +935,14 @@ export namespace SpruceEvents.core.DidUpdateUser {
  *
  * When any guest opts out of a location. By now you have already lost access to their meta data.
  */
-export namespace SpruceEvents.core.DidOptOut {
+export namespace SpruceEvents.Core.DidOptOut {
 	/** The event name  */
 	export const name = 'did-opt-out'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.DidOptOut.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.DidOptOut.eventName', payload))
 	*/
 	export type IPayload = any
 
@@ -950,7 +950,7 @@ export namespace SpruceEvents.core.DidOptOut {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.DidOptOut.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.DidOptOut.IResponseBody = { ... }
 	 */
 	export type IResponseBody = any
 
@@ -962,14 +962,14 @@ export namespace SpruceEvents.core.DidOptOut {
  *
  * They had, at one time, opted out. But, now they have remotely opted back in
  */
-export namespace SpruceEvents.core.DidRemoteRejoin {
+export namespace SpruceEvents.Core.DidRemoteRejoin {
 	/** The event name  */
 	export const name = 'did-remote-rejoin'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.DidRemoteRejoin.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.DidRemoteRejoin.eventName', payload))
 	*/
 	export type IPayload = any
 
@@ -977,7 +977,7 @@ export namespace SpruceEvents.core.DidRemoteRejoin {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.DidRemoteRejoin.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.DidRemoteRejoin.IResponseBody = { ... }
 	 */
 	export type IResponseBody = any
 
@@ -989,14 +989,14 @@ export namespace SpruceEvents.core.DidRemoteRejoin {
  *
  * Sprucebot has made the decision that now is the perfect time to send training material
  */
-export namespace SpruceEvents.core.WillSendTraining {
+export namespace SpruceEvents.Core.WillSendTraining {
 	/** The event name  */
 	export const name = 'will-send-training'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.WillSendTraining.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.WillSendTraining.eventName', payload))
 	*/
 	export type IPayload = any
 
@@ -1004,7 +1004,7 @@ export namespace SpruceEvents.core.WillSendTraining {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.WillSendTraining.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.WillSendTraining.IResponseBody = { ... }
 	 */
 	export type IResponseBody = any
 
@@ -1016,14 +1016,14 @@ export namespace SpruceEvents.core.WillSendTraining {
  *
  * Provide your own search results in the platform
  */
-export namespace SpruceEvents.core.BigSearch {
+export namespace SpruceEvents.Core.BigSearch {
 	/** The event name  */
 	export const name = 'big-search'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.BigSearch.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.BigSearch.eventName', payload))
 	*/
 	export type IPayload = any
 
@@ -1031,7 +1031,7 @@ export namespace SpruceEvents.core.BigSearch {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.BigSearch.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.BigSearch.IResponseBody = { ... }
 	 */
 	export type IResponseBody = any
 
@@ -1043,14 +1043,14 @@ export namespace SpruceEvents.core.BigSearch {
  *
  * Give people the power import your search results into the platform
  */
-export namespace SpruceEvents.core.ImportFromBigSearch {
+export namespace SpruceEvents.Core.ImportFromBigSearch {
 	/** The event name  */
 	export const name = 'import-from-big-search'
 
 	/**
 	 * Event Payload
 	 *
-	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.core.ImportFromBigSearch.eventName', payload))
+	 * The Spruce Core API listens for this event. You'll emit an event with this payload (ctx.sb.emit('SpruceEvents.Core.ImportFromBigSearch.eventName', payload))
 	*/
 	export type IPayload = any
 
@@ -1058,7 +1058,7 @@ export namespace SpruceEvents.core.ImportFromBigSearch {
 	 * Event Response
 	 *
 	 * The Spruce Core API Skill expects your skill to respond with this data in your event handler:
-	 * ctx.body: SpruceEvents.core.ImportFromBigSearch.IResponseBody = { ... }
+	 * ctx.body: SpruceEvents.Core.ImportFromBigSearch.IResponseBody = { ... }
 	 */
 	export type IResponseBody = any
 

@@ -18,16 +18,16 @@ export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
 
 	/** Build a skill with the passed values */
 	public static skill(values?: Partial<ISkill>) {
-		return new Schema(SpruceSchemas.core.Skill.definition, values)
+		return new Schema(SpruceSchemas.Core.Skill.definition, values)
 	}
 
 	/** Get all skills the user has access to */
 	public async skills(userToken: string): Promise<ISkill[]> {
 		const mercury = await this.mercuryForUser(userToken)
 		const result = await mercury.emit<
-			SpruceEvents.core.GetDeveloperSkills.IPayload,
-			SpruceEvents.core.GetDeveloperSkills.IResponseBody
-		>({ eventName: SpruceEvents.core.GetDeveloperSkills.name })
+			SpruceEvents.Core.GetDeveloperSkills.IPayload,
+			SpruceEvents.Core.GetDeveloperSkills.IResponseBody
+		>({ eventName: SpruceEvents.Core.GetDeveloperSkills.name })
 
 		const skills = result.responses[0].payload.skills.map(values => {
 			const instance = SkillStore.skill(values)
