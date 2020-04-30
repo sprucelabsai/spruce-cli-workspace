@@ -49,7 +49,10 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 		this.services.pkg.set('babel', babelConfig)
 		this.services.pkg.set('jest', jestConfig)
 
-		const target = options.answers.target.name
+		const target = path.join(
+			options.answers.target.path ?? this.cwd,
+			options.answers.target.name
+		)
 
 		const name = this.utilities.names.toFileNameWithoutExtension(target)
 
@@ -57,7 +60,13 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 		const destination = path.join(path.dirname(target), name) + '.test.ts'
 		const contents = this.templates.test({ pascalName })
 
-		this.writeFile(destination, contents)
+		// TODO: write file
+		// command.writeFile(destination, contents)
+		log.debug({
+			target,
+			destination,
+			contents
+		})
 	}
 
 	// TODO
