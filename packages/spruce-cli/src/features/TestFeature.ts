@@ -9,7 +9,7 @@ type TestFeatureType = typeof SpruceSchemas.local.TestFeature.definition
 
 export default class TestFeature extends AbstractFeature<TestFeatureType> {
 	public optionsSchema = SpruceSchemas.local.TestFeature.definition
-	public featureDependencies = [Feature.Schema]
+	public featureDependencies = [Feature.Skill, Feature.Schema]
 
 	public packages: IFeaturePackage[] = [
 		{ name: '@sprucelabs/test', isDev: true },

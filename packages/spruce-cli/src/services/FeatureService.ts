@@ -4,6 +4,7 @@ import featuresAutoloader, {
 	Feature,
 	IFeatures
 } from '#spruce/autoloaders/features'
+import FormBuilder, { IFormOptions } from '../builders/FormBuilder'
 import log from '../lib/log'
 import AbstractService from './AbstractService'
 import { IFeaturePackage } from '../features/AbstractFeature'
@@ -49,123 +50,30 @@ export default class FeatureService extends AbstractService {
 		features: IInstallFeature[]
 	}) {
 		const { features } = options
-		// Get the packages we need to install for each feature
-		const packages: {
-			[pkgName: string]: IFeaturePackage
-		} = {}
 
 		let featuresToInstall: IInstallFeature[] = []
 
-		const promptDefinitions: {
-			installFeature: IInstallFeature
-			def: ISchemaDefinition
-		}[] = []
-		const answers: {
-			[featureName: string]: {
-				[fieldName: string]: string | boolean | number
-			}
-		} = {}
-
-		features.forEach(f => {
-			answers[f.feature] = {}
-			if (typeof this.features[f.feature].optionsSchema !== 'undefined') {
-				const optionsSchema = _.cloneDeep(
-					this.features[f.feature].optionsSchema
-				) as ISchemaDefinition
-				const schema = new Schema(optionsSchema)
-				const fieldNames = schema.getNamedFields()
-
-				fieldNames.forEach(fieldName => {
-					if (f.options && f.options[fieldName.name]) {
-						// We don't need to prompt for this. Add it to the answers
-						answers[f.feature][fieldName.name] = f.options[fieldName.name]
-						delete optionsSchema.fields?.[fieldName.name]
-					}
-				})
-
-				promptDefinitions.push({ installFeature: f, def: optionsSchema })
-			}
-			featuresToInstall = featuresToInstall.concat(
-				this.getFeatureDependencies(f)
-			)
-		})
-
-		for (let i = 0; i < promptDefinitions.length; i += 1) {
-			const promptDefinition = promptDefinitions[i]
-			const formBuilder = options.command?.formBuilder({
-				definition: promptDefinition.def
-			})
-			const results = await formBuilder?.present()
-			answers[promptDefinition.installFeature.feature] = {
-				...answers[promptDefinition.installFeature.feature],
-				...results
-			}
-		}
-
-		const beforePackageInstallPromises: Promise<void>[] = []
-		const afterPackageInstallPromises: Promise<void>[] = []
-
-		features.forEach(f => {
-			const feature = this.features[f.feature]
-			beforePackageInstallPromises.push(
-				feature.beforePackageInstall({
-					// TODO: Figure out how to get the right type here
-					// @ts-ignore
-					answers: answers[f.feature]
-				})
-			)
-			afterPackageInstallPromises.push(
-				feature.afterPackageInstall({
-					// TODO: Figure out how to get the right type here
-					// @ts-ignore
-					answers: answers[f.feature]
-				})
-			)
-			feature.packages.forEach(pkg => {
-				const packageName = `${pkg.name}@${pkg.version ?? 'latest'}`
-				packages[packageName] = pkg
-			})
-		})
-
-		options.command?.utilities.terminal.startLoading(
-			'Running before package installation hooks'
-		)
-		await Promise.all(beforePackageInstallPromises)
-		options.command?.utilities.terminal.stopLoading()
-
-		const packagesToInstall: string[] = []
-		const devPackagesToInstall: string[] = []
-
-		Object.values(packages).forEach(p => {
-			if (p.isDev) {
-				devPackagesToInstall.push(p.name)
+		for (let i = 0; i < features.length; i += 1) {
+			const f = features[i]
+			const isInstalled = await this.features[f.feature].isInstalled()
+			if (!isInstalled) {
+				featuresToInstall = featuresToInstall.concat(
+					this.getFeatureDependencies(f)
+				)
 			} else {
-				packagesToInstall.push(p.name)
+				log.debug(
+					`Feature prompts / dependencies skipped because it's already installed: ${f.feature}`
+				)
 			}
-		})
-
-		if (packagesToInstall.length > 0) {
-			options.command?.utilities.terminal.startLoading(
-				'Installing package.json dependencies'
-			)
-			await this.services.pkg.install(packagesToInstall)
-			options.command?.utilities.terminal.stopLoading()
-		}
-		if (devPackagesToInstall.length > 0) {
-			options.command?.utilities.terminal.startLoading(
-				'Installing package.json devDependencies'
-			)
-			await this.services.pkg.install(devPackagesToInstall, {
-				dev: true
-			})
-			options.command?.utilities.terminal.stopLoading()
 		}
 
-		options.command?.utilities.terminal.startLoading(
-			'Running after package installation hooks'
-		)
-		await Promise.all(afterPackageInstallPromises)
-		options.command?.utilities.terminal.stopLoading()
+		featuresToInstall = _.uniq(featuresToInstall)
+		this.sortInstallFeatures(featuresToInstall)
+
+		for (let i = 0; i < featuresToInstall.length; i += 1) {
+			const f = featuresToInstall[i]
+			await this.installFeature(f)
+		}
 	}
 
 	/** Check if features are installed */
@@ -221,6 +129,123 @@ export default class FeatureService extends AbstractService {
 			}
 		}
 
+		this.sortInstallFeatures(features)
 		return features
+	}
+
+	private async installFeature(installFeature: IInstallFeature): Promise<void> {
+		const feature = this.features[installFeature.feature]
+		log.debug(`Beginning feature installation: ${installFeature.feature}`)
+		const optionsSchema = _.cloneDeep(
+			this.features[installFeature.feature].optionsSchema
+		) as ISchemaDefinition
+		const isValid = Schema.isDefinitionValid(optionsSchema)
+		let answers = {}
+		if (isValid) {
+			const schema = new Schema(optionsSchema)
+			const fieldNames = schema.getNamedFields()
+
+			fieldNames.forEach(fieldName => {
+				if (installFeature.options && installFeature.options[fieldName.name]) {
+					// We don't need to prompt for this. Add it to the answers
+					// answers[installFeature.feature][fieldName.name] =
+					// installFeature.options[fieldName.name]
+					delete optionsSchema.fields?.[fieldName.name]
+				}
+			})
+
+			// promptDefinitions.push({ installFeature: f, def: optionsSchema })
+			const formBuilder = this.formBuilder({
+				definition: optionsSchema
+			})
+			answers = await formBuilder?.present()
+		} else {
+			log.debug(
+				`Not prompting. Options schema is missing or invalid for: ${installFeature.feature}`
+			)
+		}
+
+		await feature.beforePackageInstall({
+			// TODO: Figure out how to get the right type here
+			// @ts-ignore
+			answers
+		})
+
+		const packagesToInstall: string[] = []
+		const devPackagesToInstall: string[] = []
+
+		const packages: {
+			[pkgName: string]: IFeaturePackage
+		} = {}
+
+		feature.packages.forEach(pkg => {
+			const packageName = `${pkg.name}@${pkg.version ?? 'latest'}`
+			packages[packageName] = pkg
+		})
+
+		Object.values(packages).forEach(p => {
+			if (p.isDev) {
+				devPackagesToInstall.push(p.name)
+			} else {
+				packagesToInstall.push(p.name)
+			}
+		})
+
+		if (packagesToInstall.length > 0) {
+			this.utilities.terminal.startLoading(
+				'Installing package.json dependencies'
+			)
+			await this.services.pkg.install(packagesToInstall)
+			this.utilities.terminal.stopLoading()
+		}
+		if (devPackagesToInstall.length > 0) {
+			this.utilities.terminal.startLoading(
+				'Installing package.json devDependencies'
+			)
+			await this.services.pkg.install(devPackagesToInstall, {
+				dev: true
+			})
+			this.utilities.terminal.stopLoading()
+		}
+
+		await feature.afterPackageInstall({
+			// TODO: Figure out how to get the right type here
+			// @ts-ignore
+			answers
+		})
+
+		log.debug(`Feature installation complete: ${installFeature.feature}`)
+	}
+
+	/** Sorts installation features for dependency order. Mutates the array. */
+	private sortInstallFeatures(features: IInstallFeature[]): void {
+		features.sort((a, b) => {
+			const aFeature = this.features[a.feature]
+			const bFeature = this.features[b.feature]
+
+			const aDependsOnB = aFeature.featureDependencies.find(
+				d => d === b.feature
+			)
+			const bDependsOnA = bFeature.featureDependencies.find(
+				d => d === a.feature
+			)
+
+			if (aDependsOnB) {
+				return 1
+			} else if (bDependsOnA) {
+				return -1
+			}
+			return 0
+		})
+	}
+
+	private formBuilder<T extends ISchemaDefinition>(
+		options: Omit<IFormOptions<T>, 'term'>
+	): FormBuilder<T> {
+		const formBuilder = new FormBuilder({
+			term: this.utilities.terminal,
+			...options
+		})
+		return formBuilder
 	}
 }

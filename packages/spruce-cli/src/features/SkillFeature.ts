@@ -8,7 +8,6 @@ import AbstractFeature, {
 	WriteDirectoryMode
 } from './AbstractFeature'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
-import { Feature } from '#spruce/autoloaders/features'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
 type SkillFeatureType = typeof SpruceSchemas.local.SkillFeature.definition
@@ -16,7 +15,7 @@ type SkillFeatureType = typeof SpruceSchemas.local.SkillFeature.definition
 export default class SkillFeature extends AbstractFeature<SkillFeatureType> {
 	public optionsSchema = SpruceSchemas.local.SkillFeature.definition
 
-	public featureDependencies = [Feature.Schema]
+	public featureDependencies = []
 
 	public packages: IFeaturePackage[] = [
 		{ name: 'typescript' },
