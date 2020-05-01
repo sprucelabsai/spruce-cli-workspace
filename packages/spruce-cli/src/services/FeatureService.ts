@@ -1,11 +1,13 @@
 import _ from 'lodash'
 import Schema, { ISchemaDefinition } from '@sprucelabs/schema'
-import { Feature, IFeatures } from '#spruce/autoloaders/features'
+import featuresAutoloader, {
+	Feature,
+	IFeatures
+} from '#spruce/autoloaders/features'
 import log from '../lib/log'
 import AbstractService from './AbstractService'
 import { IFeaturePackage } from '../features/AbstractFeature'
-import { IServices } from '../../.spruce/autoloaders/services'
-import featuresAutoloader from '#spruce/autoloaders/features'
+import { IServices } from '#spruce/autoloaders/services'
 import AbstractCommand from '../commands/AbstractCommand'
 
 interface IInstallFeature {
@@ -42,6 +44,7 @@ export default class FeatureService extends AbstractService {
 
 	/** Install some features, prompting for info as needed */
 	public async install(options: {
+		// TODO: Remove and access terminal via utility. Need terminal to check if there is an interactive terminal session
 		command?: AbstractCommand
 		features: IInstallFeature[]
 	}) {
