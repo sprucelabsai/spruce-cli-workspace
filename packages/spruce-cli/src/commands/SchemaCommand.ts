@@ -55,8 +55,6 @@ export default class SchemaCommand extends AbstractCommand {
 		// Const clean = !!cmd.clean
 		const force = !!cmd.force
 
-		// Make sure schema module is installed
-		this.utilities.terminal.startLoading('Installing dependencies')
 		// TODO
 		// await this.services.pkg.setupForSchemas()
 		await this.services.feature.install({

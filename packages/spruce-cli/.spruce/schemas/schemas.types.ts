@@ -2126,7 +2126,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                isRequired: true,
 			                
 			                
-			                
+			                defaultValue: {"path":""},
 			                
 			                
 			                options: undefined
@@ -2150,7 +2150,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 			                isRequired: true,
 			                
 			                
-			                
+			                defaultValue: {"path":""},
 			                
 			                
 			                options: undefined

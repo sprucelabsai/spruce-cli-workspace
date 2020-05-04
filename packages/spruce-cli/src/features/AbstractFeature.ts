@@ -43,7 +43,7 @@ export default abstract class AbstractFeature<
 	/** Other features that must also be installed for this feature to work */
 	public featureDependencies: Feature[] = []
 
-	public optionsSchema?: ISchemaDefinition
+	public optionsSchema?: () => ISchemaDefinition
 
 	protected utilities: IUtilities
 	protected services: IServices

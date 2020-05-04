@@ -410,9 +410,11 @@ export default class TerminalUtility extends AbstractUtility {
 		log.debug('Prompting...', { promptOptions })
 		const response = (await inquirer.prompt(promptOptions)) as any
 		this.isPromptActive = false
-		return typeof response[name] !== 'undefined'
-			? field.toValueType(response[name])
-			: response[name]
+		const result =
+			typeof response[name] !== 'undefined'
+				? field.toValueType(response[name])
+				: response[name]
+		return result
 	}
 
 	/** Generic way to handle error */

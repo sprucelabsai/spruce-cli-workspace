@@ -72,7 +72,14 @@ export default class FeatureService extends AbstractService {
 
 		for (let i = 0; i < featuresToInstall.length; i += 1) {
 			const f = featuresToInstall[i]
-			await this.installFeature(f)
+			const isInstalled = await this.features[f.feature].isInstalled()
+			if (!isInstalled) {
+				await this.installFeature(f)
+			} else {
+				log.debug(
+					`Feature installation skipped because it's already installed: ${f.feature}`
+				)
+			}
 		}
 	}
 
@@ -136,23 +143,27 @@ export default class FeatureService extends AbstractService {
 	private async installFeature(installFeature: IInstallFeature): Promise<void> {
 		const feature = this.features[installFeature.feature]
 		log.debug(`Beginning feature installation: ${installFeature.feature}`)
-		const optionsSchema = _.cloneDeep(
-			this.features[installFeature.feature].optionsSchema
-		) as ISchemaDefinition
-		const isValid = Schema.isDefinitionValid(optionsSchema)
+		let optionsSchema: ISchemaDefinition | undefined
+		let isValid = false
+		if (feature.optionsSchema) {
+			optionsSchema = feature.optionsSchema()
+
+			isValid = Schema.isDefinitionValid(optionsSchema)
+		}
 		let answers = {}
-		if (isValid) {
+		if (isValid && optionsSchema) {
 			const schema = new Schema(optionsSchema)
 			const fieldNames = schema.getNamedFields()
 
-			fieldNames.forEach(fieldName => {
+			for (let i = 0; i < fieldNames.length; i += 1) {
+				const fieldName = fieldNames[i]
 				if (installFeature.options && installFeature.options[fieldName.name]) {
 					// We don't need to prompt for this. Add it to the answers
 					// answers[installFeature.feature][fieldName.name] =
 					// installFeature.options[fieldName.name]
 					delete optionsSchema.fields?.[fieldName.name]
 				}
-			})
+			}
 
 			// promptDefinitions.push({ installFeature: f, def: optionsSchema })
 			const formBuilder = this.formBuilder({

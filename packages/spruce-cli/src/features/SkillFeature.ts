@@ -13,8 +13,6 @@ import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 type SkillFeatureType = typeof SpruceSchemas.local.SkillFeature.definition
 
 export default class SkillFeature extends AbstractFeature<SkillFeatureType> {
-	public optionsSchema = SpruceSchemas.local.SkillFeature.definition
-
 	public featureDependencies = []
 
 	public packages: IFeaturePackage[] = [
@@ -25,6 +23,8 @@ export default class SkillFeature extends AbstractFeature<SkillFeatureType> {
 		{ name: '@sprucelabs/test', isDev: true },
 		{ name: 'ts-node', isDev: true }
 	]
+
+	public optionsSchema = () => SpruceSchemas.local.SkillFeature.definition
 
 	public async beforePackageInstall(options: {
 		answers: SchemaDefinitionValues<SkillFeatureType>

@@ -11,6 +11,7 @@ import Schema, {
 } from '@sprucelabs/schema'
 import ITerminal, { ITerminalEffect } from '../utilities/TerminalUtility'
 import { pick } from 'lodash'
+import path from 'path'
 import AbstractSpruceError from '@sprucelabs/error'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
@@ -137,7 +138,9 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 				for (const namedField of namedFields) {
 					const { name } = namedField
 					const answer = await this.askQuestion(name)
-					this.set(name, answer)
+					const finalAnswer = path.join(answer.path, answer.name)
+					// @ts-ignore
+					this.set(name, finalAnswer)
 				}
 
 				done = true
@@ -155,8 +158,12 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 		} while (!done || !valid)
 
 		const values = this.getValues({ fields, createSchemaInstances: false })
+		const cleanValues = pick(values, fields) as Pick<
+			SchemaDefinitionAllValues<T>,
+			F
+		>
 
-		return pick(values, fields) as Pick<SchemaDefinitionAllValues<T>, F>
+		return cleanValues
 	}
 
 	/** Ask a question based on a field */
@@ -174,7 +181,9 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 		}
 		// TODO need is array support
 		// @ts-ignore
-		definition.defaultValue = value
+		if (value) {
+			definition.defaultValue = value
+		}
 
 		// Do we have a lister?
 		if (this.handlers.onWillAskQuestion) {

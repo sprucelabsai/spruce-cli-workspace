@@ -8,13 +8,22 @@ import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
 type TestFeatureType = typeof SpruceSchemas.local.TestFeature.definition
 
 export default class TestFeature extends AbstractFeature<TestFeatureType> {
-	public optionsSchema = SpruceSchemas.local.TestFeature.definition
 	public featureDependencies = [Feature.Skill, Feature.Schema]
 
 	public packages: IFeaturePackage[] = [
 		{ name: '@sprucelabs/test', isDev: true },
 		{ name: 'ts-node', isDev: true }
 	]
+
+	public optionsSchema = () => {
+		const def = SpruceSchemas.local.TestFeature.definition
+		log.debug('get optionsSchema', def)
+		// TODO
+		// @ts-ignore
+		def.fields.target.defaultValue.path = path.join(this.cwd, 'src/')
+
+		return def
+	}
 
 	public async afterPackageInstall(options: {
 		answers: SchemaDefinitionValues<TestFeatureType>
@@ -63,6 +72,7 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 		// TODO: write file
 		// command.writeFile(destination, contents)
 		log.debug({
+			answers: options.answers,
 			target,
 			destination,
 			contents

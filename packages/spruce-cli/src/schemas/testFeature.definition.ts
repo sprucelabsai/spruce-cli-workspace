@@ -7,7 +7,10 @@ const testFeatureDefinition = buildSchemaDefinition({
 		target: {
 			type: FieldType.File,
 			isRequired: true,
-			label: 'What file would you like to test?'
+			label: 'What file would you like to test?',
+			defaultValue: {
+				path: ''
+			}
 		}
 	}
 })
