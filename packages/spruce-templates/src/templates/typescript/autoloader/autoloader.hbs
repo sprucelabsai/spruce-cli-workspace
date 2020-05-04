@@ -1,3 +1,4 @@
+/* eslint-disable spruce/prefer-pascal-case-enums */
 // Import base class
 import {{abstractClassName}} from '{{abstractClassRelativePath}}'
 
@@ -12,10 +13,10 @@ import { {{interfaceName}} } from '{{relativeFilePath}}'
 {{/each}}
 
 export interface I{{namePlural}} {
+	[{{camelCase nameSingular}}: string]: {{#each classes}}{{#if @first}}{{className}}{{else}} | {{className}}{{/if}}{{/each}}
 	{{#each classes}}
 	{{camelCase className}}: {{className}}
 	{{/each}}
-	[{{camelCase nameSingular}}: string]: {{#each classes}}{{#if @first}}{{className}}{{else}} | {{className}}{{/if}}{{/each}}
 }
 
 export enum {{nameSingular}} {

@@ -15,36 +15,37 @@ import { SchemaField } from '@sprucelabs/schema'
 import { SelectField } from '@sprucelabs/schema'
 import { TextField } from '@sprucelabs/schema'
 
+
 /** Value for looking up field classes by field type */
 export const FieldClassMap: Record<FieldType, FieldClass> = {
-	[FieldType.Address]: AddressField,
-	[FieldType.Boolean]: BooleanField,
-	[FieldType.Date]: DateField,
-	[FieldType.DateTime]: DateTimeField,
-	[FieldType.Duration]: DurationField,
-	[FieldType.File]: FileField,
-	[FieldType.Id]: IdField,
-	[FieldType.Number]: NumberField,
-	[FieldType.Phone]: PhoneField,
-	[FieldType.Raw]: RawField,
-	[FieldType.Schema]: SchemaField,
-	[FieldType.Select]: SelectField,
-	[FieldType.Text]: TextField
+		[FieldType.Address]: AddressField,
+		[FieldType.Boolean]: BooleanField,
+		[FieldType.Date]: DateField,
+		[FieldType.DateTime]: DateTimeField,
+		[FieldType.Duration]: DurationField,
+		[FieldType.File]: FileField,
+		[FieldType.Id]: IdField,
+		[FieldType.Number]: NumberField,
+		[FieldType.Phone]: PhoneField,
+		[FieldType.Raw]: RawField,
+		[FieldType.Schema]: SchemaField,
+		[FieldType.Select]: SelectField,
+		[FieldType.Text]: TextField,
 }
 
 /** Interface for looking up classes by field type */
 export interface IFieldClassMap {
-	[FieldType.Address]: AddressField
-	[FieldType.Boolean]: BooleanField
-	[FieldType.Date]: DateField
-	[FieldType.DateTime]: DateTimeField
-	[FieldType.Duration]: DurationField
-	[FieldType.File]: FileField
-	[FieldType.Id]: IdField
-	[FieldType.Number]: NumberField
-	[FieldType.Phone]: PhoneField
-	[FieldType.Raw]: RawField
-	[FieldType.Schema]: SchemaField
-	[FieldType.Select]: SelectField
-	[FieldType.Text]: TextField
+		[FieldType.Address]: AddressField,
+		[FieldType.Boolean]: BooleanField,
+		[FieldType.Date]: DateField,
+		[FieldType.DateTime]: DateTimeField,
+		[FieldType.Duration]: DurationField,
+		[FieldType.File]: FileField,
+		[FieldType.Id]: IdField,
+		[FieldType.Number]: NumberField,
+		[FieldType.Phone]: PhoneField,
+		[FieldType.Raw]: RawField,
+		[FieldType.Schema]: SchemaField,
+		[FieldType.Select]: SelectField,
+		[FieldType.Text]: TextField,
 }
