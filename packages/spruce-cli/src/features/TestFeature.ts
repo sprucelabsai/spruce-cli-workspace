@@ -70,14 +70,7 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 		const destination = path.join(path.dirname(target), name) + '.test.ts'
 		const contents = this.templates.test({ pascalName })
 
-		// TODO: write file
 		fs.outputFileSync(destination, contents)
-		// log.debug({
-		// 	answers: options.answers,
-		// 	target,
-		// 	destination,
-		// 	contents
-		// })
 	}
 
 	// TODO

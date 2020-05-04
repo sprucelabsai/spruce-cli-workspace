@@ -25,7 +25,7 @@ export enum Feature {
 	Schema = 'schema',
 	Skill = 'skill',
 	Test = 'test',
-	VSCode = 'vsCode',
+	VSCode = 'vsCode'
 }
 
 export default async function autoloader(options: {

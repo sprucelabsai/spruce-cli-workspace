@@ -28,7 +28,7 @@ export enum Utility {
 	Parser = 'parser',
 	Schema = 'schema',
 	Terminal = 'terminal',
-	TsConfig = 'tsConfig',
+	TsConfig = 'tsConfig'
 }
 
 export default async function autoloader(options: {

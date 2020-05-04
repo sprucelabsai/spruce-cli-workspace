@@ -28,7 +28,7 @@ export enum Store {
 	Schema = 'schema',
 	Skill = 'skill',
 	User = 'user',
-	Watcher = 'watcher',
+	Watcher = 'watcher'
 }
 
 export default async function autoloader(options: {

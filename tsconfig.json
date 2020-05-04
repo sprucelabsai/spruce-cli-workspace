@@ -3,7 +3,9 @@
 		"module": "commonjs",
 		"esModuleInterop": true,
 		"target": "ES2017",
-		"lib": ["es2017"],
+		"lib": [
+			"es2017"
+		],
 		"allowJs": true,
 		"declaration": true,
 		"noImplicitAny": true,
@@ -16,10 +18,20 @@
 		"sourceMap": true,
 		"baseUrl": ".",
 		"paths": {
-			"#spruce:schema/*": ["node_modules/@sprucelabs/schema/build/*"],
-			"#spruce/*": [".spruce/*"]
+			"#spruce:schema/*": [
+				"node_modules/@sprucelabs/schema/build/*"
+			],
+			"#spruce/*": [
+				".spruce/*"
+			]
 		}
 	},
-	"include": ["./*.ts", "./**/*.ts"],
-	"exclude": ["**/node_modules/**"]
+	"include": [
+		"./*.ts",
+		"./**/*.ts",
+		"./packages/spruce-cli/.spruce/**/*.ts"
+	],
+	"exclude": [
+		"**/node_modules/**"
+	]
 }
