@@ -2,6 +2,7 @@ import path from 'path'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import { Feature } from '#spruce/autoloaders/features'
+import fs from 'fs-extra'
 import log from '../lib/log'
 import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
 
@@ -70,13 +71,13 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 		const contents = this.templates.test({ pascalName })
 
 		// TODO: write file
-		// command.writeFile(destination, contents)
-		log.debug({
-			answers: options.answers,
-			target,
-			destination,
-			contents
-		})
+		fs.outputFileSync(destination, contents)
+		// log.debug({
+		// 	answers: options.answers,
+		// 	target,
+		// 	destination,
+		// 	contents
+		// })
 	}
 
 	// TODO
