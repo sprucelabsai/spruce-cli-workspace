@@ -1,4 +1,4 @@
-label: '{{{escape field.label}}}',
+{{#if field.label}}label: '{{{escape field.label}}}',{{/if}}
 type: {{fieldTypeEnum field}},
 {{#if field.key}}key: '{{{escape field.key}}}',{{/if}}
 {{#if field.isRequired}}isRequired: true,{{/if}}
