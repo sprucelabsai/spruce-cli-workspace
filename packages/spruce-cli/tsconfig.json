@@ -22,7 +22,9 @@
     "paths": {
       "#spruce:schema/*": [
         "../../node_modules/@sprucelabs/schema/build/*",
-        "node_modules/@sprucelabs/schema/build/*"
+        "../../node_modules/@sprucelabs/schema/build/src/*",
+        "node_modules/@sprucelabs/schema/build/*",
+        "node_modules/@sprucelabs/schema/build/src*"
       ],
       "#spruce/*": [
         ".spruce/*"

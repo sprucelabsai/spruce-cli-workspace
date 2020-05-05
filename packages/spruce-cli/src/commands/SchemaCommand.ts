@@ -1,5 +1,4 @@
 import { Command } from 'commander'
-import path from 'path'
 import AbstractCommand from './AbstractCommand'
 import { templates } from '@sprucelabs/spruce-templates'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
@@ -200,8 +199,8 @@ export default class SchemaCommand extends AbstractCommand {
 		}
 
 		this.utilities.terminal.startLoading('Prettying generated files...')
-		const destinationDirPattern = path.join(destinationDir, '**', '*')
-		await this.services.lint.fix(destinationDirPattern)
+		// const destinationDirPattern = path.join(destinationDir, '**', '*')
+		// await this.services.lint.fix(destinationDirPattern)
 
 		// If (clean) {
 		// 	const pass =

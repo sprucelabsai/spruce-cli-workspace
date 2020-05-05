@@ -2,10 +2,10 @@ import { test, assert } from '@sprucelabs/test'
 import fs from 'fs-extra'
 import uuid from 'uuid'
 import log from '../lib/log'
-import BaseTest from '../BaseTest'
 import { setup } from '../index'
-import { IServices } from '#spruce/autoloaders/services'
+import BaseTest from '../BaseTest'
 import { Feature } from '#spruce/autoloaders/features'
+import { IServices } from '#spruce/autoloaders/services'
 
 let services: IServices | undefined
 
@@ -59,6 +59,7 @@ export default class FeatureServiceTest extends BaseTest {
 				}
 			]
 		})
+		console.log({ services })
 		assert.isTrue(fs.existsSync(services?.feature.cwd as string))
 	}
 }

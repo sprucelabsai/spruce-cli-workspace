@@ -113,13 +113,15 @@
 	},
 	"jest": {
 		"preset": "ts-jest",
+		"testTimeout": 30000,
 		"testEnvironment": "node",
 		"testPathIgnorePatterns": [
 			"<rootDir>/build/",
 			"<rootDir>/node_modules/"
 		],
 		"moduleNameMapper": {
-			"^#spruce/(.*)$": "<rootDir>/.spruce/$1"
+			"^#spruce/(.*)$": "<rootDir>/.spruce/$1",
+			"^#spruce:schema/(.*)": "<rootDir>/../../node_modules/@sprucelabs/schema/build/$1"
 		}
 	}
 }

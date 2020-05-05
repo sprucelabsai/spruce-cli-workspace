@@ -9,36 +9,36 @@ export enum ErrorCode {
 	/** * Autoloader creation failed */
 	CreateAutoloaderFailed = 'CREATE_AUTOLOADER_FAILED',
 
-	/** * The definition file failed to import */
-	DefinitionFailedToImport = 'DEFINITION_FAILED_TO_IMPORT',
+	/** * Failed to import a file through VM */
+	FailedToImport = 'FAILED_TO_IMPORT',
 
 	/** * When you're too lazy to make a new error */
 	Generic = 'GENERIC',
 
-	/** * Failed to import a file through VM */
-	FailedToImport = 'FAILED_TO_IMPORT',
+	/** * The definition file failed to import */
+	DefinitionFailedToImport = 'DEFINITION_FAILED_TO_IMPORT',
 
 	/** * Not sure what happened, but it has something to do with Mercury */
 	GenericMercury = 'GENERIC_MERCURY',
 
-	/** * The command is not valid, try --help */
-	InvalidCommand = 'INVALID_COMMAND',
-
 	/** * This command has not yet been implemented  */
 	NotImplemented = 'NOT_IMPLEMENTED',
 
-	/** * A reserved js keyword was used */
-	ReservedKeyword = 'RESERVED_KEYWORD',
+	/** * The command is not valid, try --help */
+	InvalidCommand = 'INVALID_COMMAND',
 
 	/** * Could not transpile (ts -> js) a script */
 	TranspileFailed = 'TRANSPILE_FAILED',
 
+	/** * A reserved js keyword was used */
+	ReservedKeyword = 'RESERVED_KEYWORD',
+
 	/** * Could not find a user */
 	UserNotFound = 'USER_NOT_FOUND',
 
-	/** * Ar error when generating value types for template insertion  */
-	ValueTypeServiceError = 'VALUE_TYPE_SERVICE_ERROR',
-
 	/** * When collecting value types for all fields, something went wrong */
-	ValueTypeServiceStageError = 'VALUE_TYPE_SERVICE_STAGE_ERROR'
+	ValueTypeServiceStageError = 'VALUE_TYPE_SERVICE_STAGE_ERROR',
+
+	/** * Ar error when generating value types for template insertion  */
+	ValueTypeServiceError = 'VALUE_TYPE_SERVICE_ERROR'
 }

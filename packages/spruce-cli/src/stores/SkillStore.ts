@@ -35,6 +35,7 @@ export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
 			return instance.getValues()
 		})
 
+		// @ts-ignore
 		return skills
 	}
 
@@ -57,6 +58,7 @@ export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
 		if (loggedIn) {
 			const instance = SkillStore.skill(loggedIn)
 			instance.validate()
+			// @ts-ignore
 			return instance.getValues()
 		}
 
@@ -82,6 +84,7 @@ export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
 		})
 		try {
 			instance.validate()
+			// @ts-ignore
 			return instance.getValues()
 		} catch (err) {
 			log.warn('INVALID skill ENV')

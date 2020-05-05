@@ -25,8 +25,7 @@ export default class TestCommand extends AbstractCommand {
 						target
 					}
 				}
-			],
-			command: this
+			]
 		})
 
 		// this.writeFile(destination, contents)

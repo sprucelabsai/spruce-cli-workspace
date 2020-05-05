@@ -96,6 +96,7 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 		}
 
 		const userWithToken = UserStore.userWithToken({ ...user, token })
+		// @ts-ignore
 		return userWithToken.getValues()
 	}
 
@@ -178,6 +179,7 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 			try {
 				const instance = new Schema(userWithTokenDefinition, loggedInUser)
 				instance.validate()
+				// @ts-ignore
 				return instance.getValues()
 			} catch (err) {
 				log.crit(`Loading logged in user failed`)

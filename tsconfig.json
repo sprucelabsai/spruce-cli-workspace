@@ -19,7 +19,8 @@
 		"baseUrl": ".",
 		"paths": {
 			"#spruce:schema/*": [
-				"node_modules/@sprucelabs/schema/build/*"
+				"node_modules/@sprucelabs/schema/build/*",
+				"node_modules/@sprucelabs/schema/build/src/*"
 			],
 			"#spruce/*": [
 				".spruce/*"
@@ -28,8 +29,7 @@
 	},
 	"include": [
 		"./*.ts",
-		"./**/*.ts",
-		"./packages/spruce-cli/.spruce/**/*.ts"
+		"./**/*.ts"
 	],
 	"exclude": [
 		"**/node_modules/**"

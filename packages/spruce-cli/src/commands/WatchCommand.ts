@@ -154,8 +154,8 @@ export default class WatchCommand extends AbstractCommand {
 	}
 
 	private async handleAddPatten() {
-		let pattern: string | undefined
-		let commandStr: string | undefined
+		let pattern: string | undefined | null
+		let commandStr: string | undefined | null
 		let isPatternValid = false
 		let isCmdValid = false
 		while (!isPatternValid) {
