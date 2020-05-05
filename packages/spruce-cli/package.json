@@ -55,6 +55,7 @@
 		"commander": "^4.1.1",
 		"dotenv": "^8.2.0",
 		"emphasize": "^3.0.0",
+		"eslint": "^5",
 		"fs-extra": "^8.1.0",
 		"globby": "^11.0.0",
 		"graphql": "^14.6.0",
@@ -79,6 +80,7 @@
 	},
 	"devDependencies": {
 		"@sprucelabs/test": "^2.0.0",
+		"@types/eslint": "^6.8.0",
 		"@types/fs-extra": "^8.1.0",
 		"@types/inflection": "^1.5.28",
 		"@types/inquirer": "^6.5.0",

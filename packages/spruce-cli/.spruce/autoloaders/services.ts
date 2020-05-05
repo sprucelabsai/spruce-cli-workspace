@@ -1,9 +1,11 @@
+/* eslint-disable spruce/prefer-pascal-case-enums */
 // Import base class
 import AbstractService from '../../src/services/AbstractService'
 
 // Import each matching class that will be autoloaded
 import Child from '../../src/services/ChildService'
 import Feature from '../../src/services/FeatureService'
+import Lint from '../../src/services/LintService'
 import Pin from '../../src/services/PinService'
 import Pkg from '../../src/services/PkgService'
 import ValueType from '../../src/services/ValueTypeService'
@@ -13,22 +15,24 @@ import Vm from '../../src/services/VmService'
 import { IServiceOptions } from '../../src/services/AbstractService'
 
 export interface IServices {
+	[service: string]: Child | Feature | Lint | Pin | Pkg | ValueType | Vm
 	child: Child
 	feature: Feature
+	lint: Lint
 	pin: Pin
 	pkg: Pkg
 	valueType: ValueType
 	vm: Vm
-	[service: string]: Child | Feature | Pin | Pkg | ValueType | Vm
 }
 
 export enum Service {
 	Child = 'child',
 	Feature = 'feature',
+	Lint = 'lint',
 	Pin = 'pin',
 	Pkg = 'pkg',
 	ValueType = 'valueType',
-	Vm = 'vm'
+	Vm = 'vm',
 }
 
 export default async function autoloader(options: {
@@ -44,6 +48,10 @@ export default async function autoloader(options: {
 	const feature = new Feature(constructorOptions)
 	if (after) {
 		await after(feature)
+	}
+	const lint = new Lint(constructorOptions)
+	if (after) {
+		await after(lint)
 	}
 	const pin = new Pin(constructorOptions)
 	if (after) {
@@ -65,6 +73,7 @@ export default async function autoloader(options: {
 	const siblings: IServices = {
 		child,
 		feature,
+		lint,
 		pin,
 		pkg,
 		valueType,
@@ -80,6 +89,11 @@ export default async function autoloader(options: {
 	if (typeof feature.afterAutoload === 'function') {
 		// @ts-ignore method is optional
 		feature.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof lint.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		lint.afterAutoload(siblings)
 	}
 	// @ts-ignore method is optional
 	if (typeof pin.afterAutoload === 'function') {

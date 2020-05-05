@@ -78,11 +78,11 @@ export default class PkgService extends AbstractService {
 	}
 
 	/** Lint everything */
-	public async lintFix() {
-		await this.services.child.executeCommand('yarn', {
-			args: ['lint:fix']
-		})
-	}
+	// public async lintFix() {
+	// 	await this.services.child.executeCommand('yarn', {
+	// 		args: ['lint:fix']
+	// 	})
+	// }
 
 	// public async setupSkill() {
 	// 	await this.install(['@sprucelabs/path-resolver'])

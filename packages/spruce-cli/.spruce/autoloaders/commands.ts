@@ -1,3 +1,4 @@
+/* eslint-disable spruce/prefer-pascal-case-enums */
 // Import base class
 import AbstractCommand from '../../src/commands/AbstractCommand'
 
@@ -16,6 +17,7 @@ import Watch from '../../src/commands/WatchCommand'
 import { ICommandOptions } from '../../src/commands/AbstractCommand'
 
 export interface ICommands {
+	[command: string]: Autoloader | Error | Onboarding | Remote | Schema | Skill | Test | User | Watch
 	autoloader: Autoloader
 	error: Error
 	onboarding: Onboarding
@@ -25,16 +27,6 @@ export interface ICommands {
 	test: Test
 	user: User
 	watch: Watch
-	[command: string]:
-		| Autoloader
-		| Error
-		| Onboarding
-		| Remote
-		| Schema
-		| Skill
-		| Test
-		| User
-		| Watch
 }
 
 export enum Command {
@@ -46,7 +38,7 @@ export enum Command {
 	Skill = 'skill',
 	Test = 'test',
 	User = 'user',
-	Watch = 'watch'
+	Watch = 'watch',
 }
 
 export default async function autoloader(options: {

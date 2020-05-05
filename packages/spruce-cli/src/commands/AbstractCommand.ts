@@ -116,7 +116,7 @@ export default abstract class AbstractCommand extends Autoloadable {
 	) {
 		this.generators.core.writeFile(this.resolvePath(destination), contents)
 		if (destination.substr(-3) === '.ts') {
-			options.pretty && this.pretty(destination)
+			options.pretty && this.services.lint.fix(destination)
 			options.build && (await this.build(destination))
 		}
 	}
@@ -142,10 +142,15 @@ export default abstract class AbstractCommand extends Autoloadable {
 	}
 
 	/** Make a file pass lint */
-	public async pretty(filePath?: string) {
-		filePath && log.info(`lint running on all files, not just ${filePath}`)
-		return this.services.pkg.lintFix()
-	}
+	// public async pretty(filePath?: string) {
+	// 	filePath && log.info(`lint running on all files, not just ${filePath}`)
+	// 	if (filePath) {
+	// 		this.services.lint.fix(filePath)
+	// 	} else {
+	// 		log.debug('TODO? implement lint fixes for directory')
+	// 	}
+	// 	return
+	// }
 
 	/** Kick off a build */
 	public async build(file?: string) {

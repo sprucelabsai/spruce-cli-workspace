@@ -1,4 +1,5 @@
 import { Command } from 'commander'
+import path from 'path'
 import AbstractCommand from './AbstractCommand'
 import { templates } from '@sprucelabs/spruce-templates'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
@@ -199,7 +200,8 @@ export default class SchemaCommand extends AbstractCommand {
 		}
 
 		this.utilities.terminal.startLoading('Prettying generated files...')
-		await this.pretty()
+		const destinationDirPattern = path.join(destinationDir, '**', '*')
+		await this.services.lint.fix(destinationDirPattern)
 
 		// If (clean) {
 		// 	const pass =
@@ -260,6 +262,8 @@ export default class SchemaCommand extends AbstractCommand {
 				camelName,
 				pascalName
 			},
+			// TODO
+			// @ts-ignore
 			onWillAskQuestion: this.utilities.names.onWillAskQuestionHandler.bind(
 				this.utilities.names
 			)
