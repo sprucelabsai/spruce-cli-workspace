@@ -1958,7 +1958,7 @@ export namespace SpruceSchemas.local {
 	/**  */
 	export interface ITestFeature {
 		/** What file would you like to test?. */
-		target: any
+		target: SpruceSchema.IFileFieldValue
 	}
 }
 

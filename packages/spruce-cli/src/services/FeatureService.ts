@@ -153,7 +153,7 @@ export default class FeatureService extends AbstractService {
 
 			isValid = Schema.isDefinitionValid(optionsSchema)
 		}
-		let answers = {}
+		let answers: Record<string, any> = {}
 		if (isValid && optionsSchema) {
 			const schema = new Schema(optionsSchema)
 			const fieldNames = schema.getNamedFields()
@@ -162,17 +162,25 @@ export default class FeatureService extends AbstractService {
 				const fieldName = fieldNames[i]
 				if (installFeature.options && installFeature.options[fieldName.name]) {
 					// We don't need to prompt for this. Add it to the answers
-					// answers[installFeature.feature][fieldName.name] =
-					// installFeature.options[fieldName.name]
+					answers[fieldName.name] = installFeature.options[fieldName.name]
 					delete optionsSchema.fields?.[fieldName.name]
 				}
 			}
 
-			// promptDefinitions.push({ installFeature: f, def: optionsSchema })
-			const formBuilder = this.formBuilder({
-				definition: optionsSchema
-			})
-			answers = await formBuilder?.present()
+			// Only present prompts if we don't already have the data
+			if (
+				optionsSchema.fields &&
+				Object.keys(optionsSchema.fields).length > 0
+			) {
+				const formBuilder = this.formBuilder({
+					definition: optionsSchema
+				})
+				const formAnswers = await formBuilder?.present()
+				answers = {
+					...answers,
+					...formAnswers
+				}
+			}
 		} else {
 			log.debug(
 				`Not prompting. Options schema is missing or invalid for: ${installFeature.feature}`
@@ -226,7 +234,6 @@ export default class FeatureService extends AbstractService {
 			this.utilities.terminal.stopLoading()
 		}
 
-		this.utilities.terminal.startLoading()
 		this.utilities.terminal.startLoading(
 			`[${installFeature.feature}]: Finishing up`
 		)
@@ -235,7 +242,7 @@ export default class FeatureService extends AbstractService {
 			// @ts-ignore
 			answers
 		})
-		this.utilities.terminal.startLoading()
+		this.utilities.terminal.stopLoading()
 
 		this.utilities.terminal.info(
 			`Feature installation complete: ${installFeature.feature}`
