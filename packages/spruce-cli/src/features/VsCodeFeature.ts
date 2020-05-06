@@ -30,7 +30,7 @@ export default class VSCodeFeature extends AbstractFeature {
 	public async beforePackageInstall() {
 		this.utilities.terminal.startLoading('Creating VSCode config files')
 		await this.writeDirectoryTemplate({
-			template: TemplateKind.Skill
+			template: TemplateKind.VSCode
 		})
 		this.utilities.terminal.stopLoading()
 	}
