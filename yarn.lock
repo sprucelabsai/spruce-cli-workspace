@@ -1954,10 +1954,10 @@
     mime-db "^1.43.0"
     mime-type "^3.0.7"
 
-"@sprucelabs/test@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-2.2.0.tgz#1669c4fd00914b45c241b1e357c1321b357e4be6"
-  integrity sha512-LTgMg/3DWYmEhObyRyOmlzme4ER2XFigNITjG1mtsyRynDgsFXMNw/A4AA8y7YTQwcFRIEVUF7ox46M+VJPjIA==
+"@sprucelabs/test@2.2.0-prerelease-test-skip.1":
+  version "2.2.0-prerelease-test-skip.1"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-2.2.0-prerelease-test-skip.1.tgz#806eacbdca7b65b4c8dddacec17e4d0f9053cb1e"
+  integrity sha512-dkYGoxdm8c/Pe3aYic+2fhWST2i0t4ENPYGOFk/7rXFYgk3a2kC13m8h5c8zZkbSRzbUyleB+x3P3uNMaReZuQ==
   dependencies:
     "@babel/core" "^7.9.0"
     "@babel/preset-env" "^7.9.5"
