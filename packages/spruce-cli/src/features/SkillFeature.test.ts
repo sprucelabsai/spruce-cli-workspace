@@ -4,6 +4,15 @@ import BaseTest from '../BaseTest'
 import { Feature } from '#spruce/autoloaders/features'
 
 export default class SkillFeatureTest extends BaseTest {
+	@test('Properly detects when feature is not installed')
+	protected static async notInstalled() {
+		const isInstalled = await this.services.feature.isInstalled({
+			features: [Feature.Skill]
+		})
+
+		assert.isFalse(isInstalled)
+	}
+
 	@test('Can install the skill feature')
 	protected static async installFeature() {
 		await this.services.feature.install({

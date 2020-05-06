@@ -35,8 +35,22 @@ export default class VSCodeFeature extends AbstractFeature {
 		this.utilities.terminal.stopLoading()
 	}
 
-	public async isInstalled() {
-		return false
+	public async isInstalled(
+		/** The directory to check if a skill is installed. Default is the cwd. */
+		dir?: string
+	) {
+		const containsAllTemplateFiles = await this.containsAllTemplateFiles({
+			templateKind: TemplateKind.VSCode,
+			dir
+		})
+
+		if (!containsAllTemplateFiles) {
+			return false
+		}
+
+		const missingExtensions = await this.getMissingExtensions()
+
+		return missingExtensions.length === 0
 	}
 
 	public async afterPackageInstall() {
@@ -46,8 +60,18 @@ export default class VSCodeFeature extends AbstractFeature {
 	}
 
 	private async installMissingExtensions() {
+		const extensionsToInstall = await this.getMissingExtensions()
+
+		if (extensionsToInstall.length > 0) {
+			await this.installExtensions(extensionsToInstall)
+		} else {
+			log.debug('No extensions to install')
+		}
+	}
+
+	private async getMissingExtensions() {
 		const currentExtensions = await this.getVSCodeExtensions()
-		const extensionsToInstall = this.recommendedExtensions.filter(
+		const missingExtensions = this.recommendedExtensions.filter(
 			recommendedExtension => {
 				const currentExtension = currentExtensions.find(
 					e => e === recommendedExtension.id
@@ -58,12 +82,7 @@ export default class VSCodeFeature extends AbstractFeature {
 				return true
 			}
 		)
-
-		if (extensionsToInstall.length > 0) {
-			await this.installExtensions(extensionsToInstall)
-		} else {
-			log.debug('No extensions to install')
-		}
+		return missingExtensions
 	}
 
 	private async getVSCodeExtensions() {

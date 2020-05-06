@@ -116,6 +116,7 @@
 		"testTimeout": 30000,
 		"testEnvironment": "node",
 		"testPathIgnorePatterns": [
+			"<rootDir>/tmp/",
 			"<rootDir>/build/",
 			"<rootDir>/node_modules/"
 		],

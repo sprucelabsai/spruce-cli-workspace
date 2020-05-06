@@ -17,7 +17,7 @@ export default class FeatureServiceTest extends BaseTest {
 		assert.equal(dependencies?.[2].feature, Feature.Test)
 	}
 
-	@test('Can get circular feature dependencies')
+	@test.skip('Can get circular feature dependencies.')
 	protected static async getCircularFeatureDependencies() {
 		const dependencies = this.services.feature.getFeatureDependencies({
 			feature: Feature.Skill

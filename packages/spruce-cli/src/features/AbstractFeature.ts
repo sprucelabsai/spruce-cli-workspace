@@ -6,6 +6,7 @@ import { Feature } from '#spruce/autoloaders/features'
 import { IUtilities } from '#spruce/autoloaders/utilities'
 import { IServices } from '#spruce/autoloaders/services'
 import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
+import log from '../lib/log'
 import Autoloadable from '../Autoloadable'
 
 export interface IFeatureOptions {
@@ -99,6 +100,34 @@ export default abstract class AbstractFeature<
 				await fs.writeFile(filePathToWrite, file.contents)
 			}
 		}
+	}
+
+	protected async containsAllTemplateFiles(options: {
+		templateKind: TemplateKind
+		/** The directory to check if a skill is installed. Default is the cwd. */
+		dir?: string
+	}) {
+		const { templateKind, dir } = options
+		const cwd = dir ?? this.cwd
+		const filesToCheck = await TemplateDirectory.filesInTemplate(templateKind)
+		// Check if the .spruce directory exists
+		let filesMissing = false
+		for (let i = 0; i < filesToCheck.length; i += 1) {
+			const file = path.join(cwd, filesToCheck[i])
+			if (!fs.existsSync(file)) {
+				log.debug(
+					`[${templateKind}] containsAllTemplateFiles failed because ${file} is missing`
+				)
+				filesMissing = true
+				break
+			}
+		}
+
+		if (!filesMissing) {
+			return true
+		}
+
+		return false
 	}
 
 	/** Should return true if the feature is currently installed */
