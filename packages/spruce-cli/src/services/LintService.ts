@@ -1,4 +1,6 @@
-import { CLIEngine } from 'eslint'
+// import { CLIEngine } from 'eslint'
+import fs from 'fs-extra'
+import log from '../lib/log'
 import AbstractService from './AbstractService'
 
 export interface IAddOptions {
@@ -6,20 +8,33 @@ export interface IAddOptions {
 }
 
 export default class LintService extends AbstractService {
-	/** Lint fix */
+	/** Lint fix based on a glob. Returns an array of filepaths that were fixed. */
 	public async fix(
 		/** The file or pattern to run eslint --fix on */
 		pattern: string
-	) {
-		const cli = new CLIEngine({
-			fix: true,
-			cwd: this.cwd
+	): Promise<string[]> {
+		const { stdout } = await this.services.child.executeCommand('node', {
+			args: [
+				'-e',
+				`"try { const ESLint = require('eslint');const cli = new ESLint.CLIEngine({fix: true,cwd: '${this.cwd}'});const result=cli.executeOnFiles(['${pattern}']);console.log(JSON.stringify(result)); } catch(err) { console.log(err.toString()); }"`
+			]
 		})
 
-		// https://eslint.org/docs/developer-guide/nodejs-api#cliengineexecuteonfiles
-		// TODO: Make this async or wait for eslint to support it https://github.com/eslint/rfcs/pull/4
-		const result = cli.executeOnFiles([pattern])
+		const fixedPaths: string[] = []
 
-		return result
+		const fixedFiles = JSON.parse(stdout)
+
+		if (fixedFiles.results) {
+			for (let i = 0; i < fixedFiles.results.length; i += 1) {
+				const fixedFile = fixedFiles.results[i]
+				if (fixedFile && fixedFile.output) {
+					await fs.writeFile(fixedFile.filePath, fixedFile.output)
+					log.trace(`Fixed file: ${fixedFile.filePath}`)
+					fixedPaths.push(fixedFile.filePath)
+				}
+			}
+		}
+
+		return fixedPaths
 	}
 }

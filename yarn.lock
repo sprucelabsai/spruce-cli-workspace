@@ -1941,10 +1941,10 @@
     "@sprucelabs/error" "^1.0.11"
     "@sprucelabs/log" "^10.2.1"
 
-"@sprucelabs/schema@1.18.1-prerelease-filepath-resolve-2.1":
-  version "1.18.1-prerelease-filepath-resolve-2.1"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.18.1-prerelease-filepath-resolve-2.1.tgz#e907255430d2cc50fe70a0570457b7e983832d16"
-  integrity sha512-mxYB93BaqM7finSrodtdAMDxy8HoKKtHqAR/4pf6CSgVzJBVIfnDFRLnP7utsDuKRF0CBEI5kRH6naxGt3jqiw==
+"@sprucelabs/schema@1.18.1-prerelease-filefield.1":
+  version "1.18.1-prerelease-filefield.1"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.18.1-prerelease-filefield.1.tgz#543ad336375f7bb9a0fc9ebb5090a08894fcfa9d"
+  integrity sha512-QPY/gLKEGAdpS2tHZrGJHeeYQ7oOYypeIirkrwbM1Phs/TRohNAnZwGAMr/yu71onB7yZim0TjNX5oG1c8swwQ==
   dependencies:
     "@sprucelabs/error" "^1.2.0"
     "@sprucelabs/log" "^10.2.1"
@@ -1954,23 +1954,10 @@
     mime-db "^1.43.0"
     mime-type "^3.0.7"
 
-"@sprucelabs/schema@1.18.1-prerelease-filepath-resolve.1":
-  version "1.18.1-prerelease-filepath-resolve.1"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.18.1-prerelease-filepath-resolve.1.tgz#483f74d857775d11b92015c3c715f251f9c6eb4a"
-  integrity sha512-qBq7YqZ8nGyP+IvXldfZqX5IG0POJ2nJqhRabkhPkeW9h7OCUK4g0TaZUJ4jItaxY682gCIiGY+T2ITijg/jQQ==
-  dependencies:
-    "@sprucelabs/error" "^1.2.0"
-    "@sprucelabs/log" "^10.2.1"
-    "@sprucelabs/path-resolver" "^1.3.0"
-    google-libphonenumber "^3.2.8"
-    libphonenumber-js "^1.7.48"
-    mime-db "^1.43.0"
-    mime-type "^3.0.7"
-
-"@sprucelabs/test@2.2.0-prerelease-bind-static-2.1":
-  version "2.2.0-prerelease-bind-static-2.1"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-2.2.0-prerelease-bind-static-2.1.tgz#c1e3238c5fbaab3cc52c4780a15e6604e8a167af"
-  integrity sha512-4wS/MKbpvqTLSZK4mFCry3dMl2w/I00SbqDknImF5/udrm5wWWc64ZHw2Ipm/jrKSL/hDLj6eZjg8GtWjsG1KQ==
+"@sprucelabs/test@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-2.2.0.tgz#1669c4fd00914b45c241b1e357c1321b357e4be6"
+  integrity sha512-LTgMg/3DWYmEhObyRyOmlzme4ER2XFigNITjG1mtsyRynDgsFXMNw/A4AA8y7YTQwcFRIEVUF7ox46M+VJPjIA==
   dependencies:
     "@babel/core" "^7.9.0"
     "@babel/preset-env" "^7.9.5"
