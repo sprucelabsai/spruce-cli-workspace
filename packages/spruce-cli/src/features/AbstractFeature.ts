@@ -52,6 +52,9 @@ export default abstract class AbstractFeature<
 	protected services: IServices
 	protected templates: Templates
 
+	/** A description of this feature */
+	public abstract description: string
+
 	public constructor(options: IFeatureOptions) {
 		super(options)
 		this.cwd = options.cwd
@@ -88,12 +91,12 @@ export default abstract class AbstractFeature<
 			const file = templateDirectory.files[i]
 			const filePathToWrite = path.join(this.cwd, file.relativePath)
 			const dirPathToWrite = path.dirname(filePathToWrite)
-			fs.ensureDirSync(dirPathToWrite)
+			await fs.ensureDir(dirPathToWrite)
 			const fileExists = fs.existsSync(filePathToWrite)
 			if (fileExists && mode === WriteMode.Throw) {
 				throw new Error('File already exists.')
 			} else if (!fileExists || mode === WriteMode.Overwrite) {
-				fs.writeFileSync(filePathToWrite, file.contents)
+				await fs.writeFile(filePathToWrite, file.contents)
 			}
 		}
 	}

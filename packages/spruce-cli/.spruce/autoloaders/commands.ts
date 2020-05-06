@@ -5,6 +5,7 @@ import AbstractCommand from '../../src/commands/AbstractCommand'
 // Import each matching class that will be autoloaded
 import Autoloader from '../../src/commands/AutoloaderCommand'
 import Error from '../../src/commands/ErrorCommand'
+import Feature from '../../src/commands/FeatureCommand'
 import Onboarding from '../../src/commands/OnboardingCommand'
 import Remote from '../../src/commands/RemoteCommand'
 import Schema from '../../src/commands/SchemaCommand'
@@ -17,9 +18,10 @@ import Watch from '../../src/commands/WatchCommand'
 import { ICommandOptions } from '../../src/commands/AbstractCommand'
 
 export interface ICommands {
-	[command: string]: Autoloader | Error | Onboarding | Remote | Schema | Skill | Test | User | Watch
+	[command: string]: Autoloader | Error | Feature | Onboarding | Remote | Schema | Skill | Test | User | Watch
 	autoloader: Autoloader
 	error: Error
+	feature: Feature
 	onboarding: Onboarding
 	remote: Remote
 	schema: Schema
@@ -32,6 +34,7 @@ export interface ICommands {
 export enum Command {
 	Autoloader = 'autoloader',
 	Error = 'error',
+	Feature = 'feature',
 	Onboarding = 'onboarding',
 	Remote = 'remote',
 	Schema = 'schema',
@@ -54,6 +57,10 @@ export default async function autoloader(options: {
 	const error = new Error(constructorOptions)
 	if (after) {
 		await after(error)
+	}
+	const feature = new Feature(constructorOptions)
+	if (after) {
+		await after(feature)
 	}
 	const onboarding = new Onboarding(constructorOptions)
 	if (after) {
@@ -87,6 +94,7 @@ export default async function autoloader(options: {
 	const siblings: ICommands = {
 		autoloader,
 		error,
+		feature,
 		onboarding,
 		remote,
 		schema,
@@ -105,6 +113,11 @@ export default async function autoloader(options: {
 	if (typeof error.afterAutoload === 'function') {
 		// @ts-ignore method is optional
 		error.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof feature.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		feature.afterAutoload(siblings)
 	}
 	// @ts-ignore method is optional
 	if (typeof onboarding.afterAutoload === 'function') {

@@ -9,6 +9,8 @@ import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
 type TestFeatureType = typeof SpruceSchemas.local.TestFeature.definition
 
 export default class TestFeature extends AbstractFeature<TestFeatureType> {
+	public description = 'Test File: Create a test for one of your files'
+
 	public featureDependencies = [Feature.Skill, Feature.Schema]
 
 	public packages: IFeaturePackage[] = [

@@ -141,6 +141,22 @@ export default class FeatureService extends AbstractService {
 		return features
 	}
 
+	/** Gets available features */
+	public getAvailableFeatures(): {
+		feature: Feature
+		description: string
+	}[] {
+		const availableFeatures = Object.values(Feature).map(f => {
+			const description = this.features[f].description ?? f
+			return {
+				feature: f,
+				description
+			}
+		})
+
+		return availableFeatures
+	}
+
 	private async installFeature(installFeature: IInstallFeature): Promise<void> {
 		const feature = this.features[installFeature.feature]
 		this.utilities.terminal.info(

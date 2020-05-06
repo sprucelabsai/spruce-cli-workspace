@@ -3,16 +3,16 @@ import path from 'path'
 import os from 'os'
 import { TemplateDirectory, TemplateKind } from '@sprucelabs/spruce-templates'
 import log from '../lib/log'
-import AbstractFeature, {
-	IFeaturePackage,
-	WriteDirectoryMode
-} from './AbstractFeature'
+import AbstractFeature, { IFeaturePackage, WriteMode } from './AbstractFeature'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
 type SkillFeatureType = typeof SpruceSchemas.local.SkillFeature.definition
 
 export default class SkillFeature extends AbstractFeature<SkillFeatureType> {
+	public description =
+		'Skill: The most basic configuration needed to enable a skill'
+
 	public featureDependencies = []
 
 	public packages: IFeaturePackage[] = [
@@ -30,7 +30,7 @@ export default class SkillFeature extends AbstractFeature<SkillFeatureType> {
 		answers: SchemaDefinitionValues<SkillFeatureType>
 	}) {
 		await this.writeDirectoryTemplate({
-			mode: WriteDirectoryMode.Skip,
+			mode: WriteMode.Skip,
 			template: TemplateKind.Skill,
 			templateData: options.answers
 		})

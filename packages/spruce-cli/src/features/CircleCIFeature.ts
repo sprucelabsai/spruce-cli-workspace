@@ -2,12 +2,11 @@ import fs from 'fs-extra'
 import path from 'path'
 import { TemplateDirectory, TemplateKind } from '@sprucelabs/spruce-templates'
 import log from '../lib/log'
-import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
+import AbstractFeature from './AbstractFeature'
 
 export default class CircleCIFeature extends AbstractFeature {
-	public featureDependencies = []
-
-	public packages: IFeaturePackage[] = []
+	public description =
+		'CircleCI: Creates a CircleCI config that can be used to automate CI tests and versioning'
 
 	public async beforePackageInstall() {
 		await this.writeDirectoryTemplate({

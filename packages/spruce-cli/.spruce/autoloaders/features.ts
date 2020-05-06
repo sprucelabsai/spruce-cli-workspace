@@ -1,3 +1,4 @@
+/* eslint-disable spruce/prefer-pascal-case-enums */
 // Import base class
 import AbstractFeature from '../../src/features/AbstractFeature'
 
@@ -12,12 +13,12 @@ import VSCode from '../../src/features/VsCodeFeature'
 import { IFeatureOptions } from '../../src/features/AbstractFeature'
 
 export interface IFeatures {
+	[feature: string]: CircleCI | Schema | Skill | Test | VSCode
 	circleCi: CircleCI
 	schema: Schema
 	skill: Skill
 	test: Test
 	vsCode: VSCode
-	[feature: string]: CircleCI | Schema | Skill | Test | VSCode
 }
 
 export enum Feature {
@@ -25,7 +26,7 @@ export enum Feature {
 	Schema = 'schema',
 	Skill = 'skill',
 	Test = 'test',
-	VSCode = 'vsCode'
+	VSCode = 'vsCode',
 }
 
 export default async function autoloader(options: {
