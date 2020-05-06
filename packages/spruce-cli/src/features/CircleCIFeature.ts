@@ -2,21 +2,16 @@ import fs from 'fs-extra'
 import path from 'path'
 import { TemplateDirectory, TemplateKind } from '@sprucelabs/spruce-templates'
 import log from '../lib/log'
-import AbstractFeature, {
-	IFeaturePackage,
-	WriteDirectoryMode
-} from './AbstractFeature'
-import { Feature } from '../../.spruce/autoloaders/features'
+import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
 
 export default class CircleCIFeature extends AbstractFeature {
-	public featureDependencies = [Feature.Skill]
+	public featureDependencies = []
 
 	public packages: IFeaturePackage[] = []
 
 	public async beforePackageInstall() {
 		await this.writeDirectoryTemplate({
-			mode: WriteDirectoryMode.Overwrite,
-			template: TemplateKind.Skill
+			template: TemplateKind.CircleCI
 		})
 	}
 

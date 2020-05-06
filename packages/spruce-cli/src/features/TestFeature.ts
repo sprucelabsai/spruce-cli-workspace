@@ -51,13 +51,15 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 			testEnvironment: 'node',
 			testPathIgnorePatterns: ['<rootDir>/build/', '<rootDir>/node_modules/'],
 			moduleNameMapper: {
-				'^#spruce/(.*)$': '<rootDir>/.spruce/$1'
+				'^#spruce/(.*)$': '<rootDir>/.spruce/$1',
+				'^#spruce:schema/(.*)':
+					'<rootDir>/node_modules/@sprucelabs/schema/build/$1'
 			}
 		}
 
 		// TODO: Set the "test" package here
-		this.services.pkg.set('babel', babelConfig)
-		this.services.pkg.set('jest', jestConfig)
+		this.services.pkg.set({ path: 'babel', value: babelConfig })
+		this.services.pkg.set({ path: 'jest', value: jestConfig })
 
 		const target = path.join(
 			options.answers.target.path ?? this.cwd,
@@ -71,6 +73,8 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 		const contents = this.templates.test({ pascalName })
 
 		fs.outputFileSync(destination, contents)
+
+		this.utilities.terminal.info(`Test file created at: ${destination}`)
 	}
 
 	// TODO

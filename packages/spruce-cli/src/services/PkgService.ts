@@ -5,6 +5,7 @@ import { set } from 'lodash'
 import log from '../lib/log'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
+import { WriteMode } from '../features/AbstractFeature'
 
 export interface IAddOptions {
 	dev?: boolean
@@ -17,17 +18,27 @@ export default class PkgService extends AbstractService {
 		return contents[path]
 	}
 
-	public set(
-		path: string,
-		value: string | Record<string, any>,
-		dir = this.cwd
-	) {
+	public set(options: {
+		path: string
+		value: string | Record<string, any>
+		mode?: WriteMode
+		dir?: string
+	}) {
+		const { path, value, mode = WriteMode.Skip, dir = this.cwd } = options
 		log.trace('Setting package.json', { path, value, dir })
 		const contents = this.readPackage(dir)
-		const updated = set(contents, path, value)
-		const destination = pathUtil.join(dir, 'package.json')
+		const pathExists = typeof contents[path] !== 'undefined'
 
-		fs.outputFileSync(destination, JSON.stringify(updated, null, 2))
+		if (pathExists && mode === WriteMode.Throw) {
+			throw new Error(`${path} already exists in package.json`)
+		}
+
+		if (!pathExists || mode === WriteMode.Overwrite) {
+			const updated = set(contents, path, value)
+			const destination = pathUtil.join(dir, 'package.json')
+
+			fs.outputFileSync(destination, JSON.stringify(updated, null, 2))
+		}
 	}
 
 	/** Read a package.json */
@@ -51,8 +62,12 @@ export default class PkgService extends AbstractService {
 
 	/** Check if a package is installed */
 	public isInstalled(pkg: string, dir?: string) {
-		const contents = this.readPackage(dir)
-		return !!contents.dependencies?.[pkg] || !!contents.devDependencies?.[pkg]
+		try {
+			const contents = this.readPackage(dir)
+			return !!contents.dependencies?.[pkg] || !!contents.devDependencies?.[pkg]
+		} catch (e) {
+			return false
+		}
 	}
 
 	/** Install a package */

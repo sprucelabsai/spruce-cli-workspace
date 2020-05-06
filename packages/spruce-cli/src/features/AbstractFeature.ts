@@ -24,12 +24,12 @@ export interface IFeaturePackage {
 	isDev?: boolean
 }
 
-export enum WriteDirectoryMode {
-	/** Throw an error if the file already exists. This is the default behavior */
+export enum WriteMode {
+	/** Throw an error if it already exists. This is the default behavior */
 	Throw = 'throw',
-	/** Overwrite any file that already exists */
+	/** Overwrite it */
 	Overwrite = 'overwrite',
-	/** Skips files that exists and only creates files that don't already exist */
+	/** Skip it if it exists */
 	Skip = 'skip'
 }
 
@@ -43,14 +43,14 @@ export default abstract class AbstractFeature<
 	/** Other features that must also be installed for this feature to work */
 	public featureDependencies: Feature[] = []
 
+	/** The required npm packages for this feature */
+	public packages: IFeaturePackage[] = []
+
 	public optionsSchema?: () => ISchemaDefinition
 
 	protected utilities: IUtilities
 	protected services: IServices
 	protected templates: Templates
-
-	/** The required npm packages for this feature */
-	public abstract packages: IFeaturePackage[]
 
 	public constructor(options: IFeatureOptions) {
 		super(options)
@@ -74,7 +74,7 @@ export default abstract class AbstractFeature<
 	protected async writeDirectoryTemplate(options: {
 		template: TemplateKind
 		/** Force overwrite the file even if it exists. The default behavior is to throw an error */
-		mode?: WriteDirectoryMode
+		mode?: WriteMode
 		/** The data to send to the template */
 		templateData?: Record<string, any>
 	}) {
@@ -90,9 +90,9 @@ export default abstract class AbstractFeature<
 			const dirPathToWrite = path.dirname(filePathToWrite)
 			fs.ensureDirSync(dirPathToWrite)
 			const fileExists = fs.existsSync(filePathToWrite)
-			if (fileExists && mode === WriteDirectoryMode.Throw) {
+			if (fileExists && mode === WriteMode.Throw) {
 				throw new Error('File already exists.')
-			} else if (!fileExists || mode === WriteDirectoryMode.Overwrite) {
+			} else if (!fileExists || mode === WriteMode.Overwrite) {
 				fs.writeFileSync(filePathToWrite, file.contents)
 			}
 		}
