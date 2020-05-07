@@ -30,7 +30,11 @@ export default class PkgService extends AbstractService {
 		const pathExists = typeof contents[path] !== 'undefined'
 
 		if (pathExists && mode === WriteMode.Throw) {
-			throw new Error(`${path} already exists in package.json`)
+			throw new SpruceError({
+				code: ErrorCode.KeyExists,
+				friendlyMessage: `${path} already exists in package.json`,
+				key: path
+			})
 		}
 
 		if (!pathExists || mode === WriteMode.Overwrite) {

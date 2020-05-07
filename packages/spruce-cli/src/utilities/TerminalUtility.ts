@@ -379,7 +379,11 @@ export default class TerminalUtility extends AbstractUtility {
 				const files = await globby(`${dirPath}**/*`)
 
 				if (files.length === 0) {
-					throw new Error(`No files in directory: ${dirPath}`)
+					throw new SpruceError({
+						code: ErrorCode.DirectoryEmpty,
+						directory: dirPath,
+						friendlyMessage: `There are no files in the directory: ${dirPath}. Check that you are running this command from the proper location.`
+					})
 				}
 
 				promptOptions.type = 'file'

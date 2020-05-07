@@ -8,6 +8,8 @@ import { IServices } from '#spruce/autoloaders/services'
 import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
 import log from '../lib/log'
 import Autoloadable from '../Autoloadable'
+import SpruceError from '../errors/SpruceError'
+import { ErrorCode } from '../../.spruce/errors/codes.types'
 
 export interface IFeatureOptions {
 	cwd: string
@@ -95,7 +97,11 @@ export default abstract class AbstractFeature<
 			await fs.ensureDir(dirPathToWrite)
 			const fileExists = fs.existsSync(filePathToWrite)
 			if (fileExists && mode === WriteMode.Throw) {
-				throw new Error('File already exists.')
+				throw new SpruceError({
+					code: ErrorCode.FileExists,
+					file: filePathToWrite,
+					friendlyMessage: `The file already exists. Remove this file or set a different WriteMode`
+				})
 			} else if (!fileExists || mode === WriteMode.Overwrite) {
 				await fs.writeFile(filePathToWrite, file.contents)
 			}
