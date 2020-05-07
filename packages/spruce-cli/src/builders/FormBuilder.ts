@@ -11,7 +11,7 @@ import Schema, {
 } from '@sprucelabs/schema'
 import ITerminal, { ITerminalEffect } from '../utilities/TerminalUtility'
 import { pick } from 'lodash'
-import path from 'path'
+// import path from 'path'
 import AbstractSpruceError from '@sprucelabs/error'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
@@ -138,9 +138,9 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 				for (const namedField of namedFields) {
 					const { name } = namedField
 					const answer = await this.askQuestion(name)
-					const finalAnswer = path.join(answer.path, answer.name)
+					// const finalAnswer = path.join(answer.path, answer.name)
 					// @ts-ignore
-					this.set(name, finalAnswer)
+					this.set(name, answer)
 				}
 
 				done = true

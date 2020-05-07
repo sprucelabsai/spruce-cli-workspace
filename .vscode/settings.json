@@ -1,7 +1,6 @@
 {
 	"debug.node.autoAttach": "off",
 	"git.ignoreLimitWarning": true,
-	"typescript.validate.enable": true,
 	"javascript.validate.enable": false,
 	"editor.formatOnSave": true,
 	"files.watcherExclude": {
