@@ -13,7 +13,7 @@ export default class SkillFeatureTest extends BaseTest {
 		assert.isFalse(isInstalled)
 	}
 
-	@test('Can install the skill feature')
+	@test('Can install the feature')
 	protected static async installFeature() {
 		await this.services.feature.install({
 			features: [
