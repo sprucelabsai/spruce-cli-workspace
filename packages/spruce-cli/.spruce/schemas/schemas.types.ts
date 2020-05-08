@@ -123,15 +123,15 @@ export namespace SpruceSchemas.Core {
 		/** Id. */
 		id: string
 		/** First name. */
-		firstName?: string | undefined
+		firstName?: string | undefined | null
 		/** Last name. */
-		lastName?: string | undefined
+		lastName?: string | undefined | null
 		/** Casual name. Generated name that defaults to Friend! */
 		casualName: string
 		/** Phone. The person's phone number! */
-		phoneNumber?: string | undefined
+		phoneNumber?: string | undefined | null
 		/** Profile photos. */
-		profileImages?: SpruceSchemas.Core.IProfileImage | undefined
+		profileImages?: SpruceSchemas.Core.IProfileImage | undefined | null
 		/** Default profile photos. */
 		defaultProfileImages: SpruceSchemas.Core.IProfileImage
 	}
@@ -290,11 +290,11 @@ export namespace SpruceSchemas.Core {
 		/** Name. */
 		name: string
 		/** Description. */
-		description?: string | undefined
+		description?: string | undefined | null
 		/** Slug. */
-		slug?: string | undefined
+		slug?: string | undefined | null
 		/** Icon. */
-		icon?: string | undefined
+		icon?: string | undefined | null
 	}
 }
 
@@ -425,15 +425,15 @@ export namespace SpruceSchemas.Core {
 	/** A physical location where people meet. An organization has at least one of them. */
 	export interface ILocation {
 		/** Id. */
-		id?: string | undefined
+		id?: string | undefined | null
 		/** Name. */
 		name: string
 		/** Store number. You can use other symbols, like # or dashes. #123 or 32-US-5 */
-		num?: string | undefined
+		num?: string | undefined | null
 		/** Public. Is this location viewable by guests? */
-		isPublic?: boolean | undefined
+		isPublic?: boolean | undefined | null
 		/** Main Phone. */
-		phone?: string | undefined
+		phone?: string | undefined | null
 		/** Timezone. */
 		timezone?:
 			| (
@@ -521,6 +521,7 @@ export namespace SpruceSchemas.Core {
 					| 'pacific/tongatapu'
 			  )
 			| undefined
+			| null
 		/** Address. */
 		address: SpruceSchema.IAddressFieldValue
 	}
@@ -567,6 +568,8 @@ export namespace SpruceSchemas.Core.Location {
 				type: SpruceSchema.FieldType.Boolean
 
 				hint: 'Is this location viewable by guests?'
+
+				defaultValue: false
 
 				options: undefined
 			}
@@ -771,6 +774,8 @@ export namespace SpruceSchemas.Core.Location {
 				type: SpruceSchema.FieldType.Boolean,
 
 				hint: 'Is this location viewable by guests?',
+
+				defaultValue: false,
 
 				options: undefined
 			},
@@ -993,7 +998,7 @@ export namespace SpruceSchemas.Core {
 	/** A position at a company. The answer to the question; What is your job? */
 	export interface IJob {
 		/** Id. */
-		id?: string | undefined
+		id?: string | undefined | null
 		/** Is default. Is this job one that comes with every org? Mapped to roles (owner, groupManager, managar, guest). */
 		isDefault: string
 		/** Name. */
@@ -1001,9 +1006,9 @@ export namespace SpruceSchemas.Core {
 		/** Role. */
 		role: 'owner' | 'groupManager' | 'manager' | 'teammate' | 'guest'
 		/** On work permissions. */
-		inStoreAcls?: SpruceSchemas.Core.IAcl | undefined
+		inStoreAcls?: SpruceSchemas.Core.IAcl | undefined | null
 		/** Off work permissions. */
-		acls?: SpruceSchemas.Core.IAcl | undefined
+		acls?: SpruceSchemas.Core.IAcl | undefined | null
 	}
 }
 
@@ -1154,15 +1159,15 @@ export namespace SpruceSchemas.Core {
 	/** A location a person has given access to themselves. */
 	export interface IUserLocation {
 		/** Id. */
-		id?: string | undefined
+		id?: string | undefined | null
 		/** Name. */
 		role: 'owner' | 'groupManager' | 'manager' | 'teammate' | 'guest'
 		/** Status. */
-		status?: string | undefined
+		status?: string | undefined | null
 		/** Total visits. */
 		visits: number
 		/** Last visit. */
-		lastRecordedVisit?: SpruceSchema.IDateTimeFieldValue | undefined
+		lastRecordedVisit?: SpruceSchema.IDateTimeFieldValue | undefined | null
 		/** Job. */
 		job: SpruceSchemas.Core.IJob
 		/** Location. */
@@ -1373,7 +1378,7 @@ export namespace SpruceSchemas.Local {
 		/** Name. */
 		name: string
 		/** Slug. */
-		slug?: string | undefined
+		slug?: string | undefined | null
 	}
 }
 
@@ -1554,10 +1559,10 @@ export namespace SpruceSchemas.Local {
 		id: string
 		/** Casual name. Generated name that defaults to Friend! */
 		casualName: string
-		/** . */
+
 		token: string
 		/** Logged in. */
-		isLoggedIn?: boolean | undefined
+		isLoggedIn?: boolean | undefined | null
 	}
 }
 
@@ -1592,7 +1597,6 @@ export namespace SpruceSchemas.Local.CliUserWithToken {
 			}
 			/** . */
 			token: {
-				label: ''
 				type: SpruceSchema.FieldType.Text
 
 				isRequired: true
@@ -1637,7 +1641,6 @@ export namespace SpruceSchemas.Local.CliUserWithToken {
 			},
 			/** . */
 			token: {
-				label: '',
 				type: SpruceSchema.FieldType.Text,
 
 				isRequired: true,
