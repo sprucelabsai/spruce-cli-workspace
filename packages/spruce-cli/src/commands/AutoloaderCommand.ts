@@ -85,7 +85,10 @@ export default class AutoloaderCommand extends AbstractCommand {
 		})
 
 		// Write the file
-		this.writeFile(`.spruce/autoloaders/${fileName}.ts`, autoloaderFileContents)
+		const filename = `.spruce/autoloaders/${fileName}.ts`
+		await this.writeFile(filename, autoloaderFileContents)
+
+		await this.services.lint.fix(filename)
 
 		this.utilities.terminal.headline('Autoloader Created 🎉')
 		this.utilities.terminal.codeSample(

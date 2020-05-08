@@ -33,7 +33,6 @@ export interface IWriteOptions {
 }
 
 export default abstract class AbstractCommand extends Autoloadable {
-	/** Spruce logger */
 	public stores: IStores
 	public mercury: Mercury
 	public services: IServices

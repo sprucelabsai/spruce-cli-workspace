@@ -18,7 +18,17 @@ import Watch from '../../src/commands/WatchCommand'
 import { ICommandOptions } from '../../src/commands/AbstractCommand'
 
 export interface ICommands {
-	[command: string]: Autoloader | Error | Feature | Onboarding | Remote | Schema | Skill | Test | User | Watch
+	[command: string]:
+		| Autoloader
+		| Error
+		| Feature
+		| Onboarding
+		| Remote
+		| Schema
+		| Skill
+		| Test
+		| User
+		| Watch
 	autoloader: Autoloader
 	error: Error
 	feature: Feature
@@ -41,7 +51,7 @@ export enum Command {
 	Skill = 'skill',
 	Test = 'test',
 	User = 'user',
-	Watch = 'watch',
+	Watch = 'watch'
 }
 
 export default async function autoloader(options: {

@@ -1,3 +1,4 @@
+/* eslint-disable spruce/prefer-pascal-case-enums */
 // Import base class
 import AbstractStore from '../../src/stores/AbstractStore'
 
@@ -13,13 +14,13 @@ import Watcher from '../../src/stores/WatcherStore'
 import { IStoreOptions } from '../../src/stores/AbstractStore'
 
 export interface IStores {
+	[store: string]: Onboarding | Remote | Schema | Skill | User | Watcher
 	onboarding: Onboarding
 	remote: Remote
 	schema: Schema
 	skill: Skill
 	user: User
 	watcher: Watcher
-	[store: string]: Onboarding | Remote | Schema | Skill | User | Watcher
 }
 
 export enum Store {
