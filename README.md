@@ -8,7 +8,7 @@ Together, we're going to build a skill!
 
 ## What is a skill?
 
-A Skill is a "micro-app". That is, a bit of functionality that is hyper-focused facilitating a specific experience. 
+A Skill is a "micro-app". That is, a bit of functionality that is hyper-focused facilitating a specific real world experience. 
 
 ## Skills manifesto
 
