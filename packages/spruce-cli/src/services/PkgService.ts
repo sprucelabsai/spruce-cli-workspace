@@ -95,44 +95,4 @@ export default class PkgService extends AbstractService {
 			})
 		}
 	}
-
-	/** Lint everything */
-	// public async lintFix() {
-	// 	await this.services.child.executeCommand('yarn', {
-	// 		args: ['lint:fix']
-	// 	})
-	// }
-
-	// public async setupSkill() {
-	// 	await this.install(['@sprucelabs/path-resolver'])
-	// 	await this.install(['ts-node'], { dev: true })
-	// }
-
-	// public async setupForSchemas() {
-	// 	await this.setupSkill()
-	// 	await this.install(['@sprucelabs/schema'])
-	// }
-
-	// /** Set all the things needed for testing */
-	// public async setupForTesting() {
-	// 	await this.setupSkill()
-	// 	await this.setupForSchemas()
-
-	// 	await this.install(['@sprucelabs/test', 'ava', 'ts-node'], {
-	// 		dev: true
-	// 	})
-
-	// 	// Update package.json appropriately
-	// 	this.set('scripts.test', 'ava **/*.test.ts')
-	// 	this.set('scripts.test:watch', 'ava  **/*.test.ts --watch')
-	// 	this.set('ava', {
-	// 		extensions: ['ts'],
-	// 		require: ['ts-node/register']
-	// 	})
-	// }
-
-	// /** Everything needed for errors */
-	// public async setupForErrors() {
-	// 	await this.install('@sprucelabs/error')
-	// }
 }

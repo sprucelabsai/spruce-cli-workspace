@@ -7,6 +7,7 @@ import globby from 'globby'
 import log from '../lib/log'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
+import { Feature } from '../../.spruce/autoloaders/features'
 
 export default class ErrorCommand extends AbstractCommand {
 	public attachCommands(program: Command): void {
@@ -99,11 +100,13 @@ export default class ErrorCommand extends AbstractCommand {
 		}
 
 		// Make sure error module is installed
-		this.utilities.terminal.startLoading()
-		// TODO
-		// await this.services.pkg.setupForErrors()
-		// this.utilities.tsConfig.setupForErrors()
-		this.utilities.terminal.stopLoading()
+		await this.services.feature.install({
+			features: [
+				{
+					feature: Feature.Error
+				}
+			]
+		})
 
 		// Write the definition
 		await this.writeFile(

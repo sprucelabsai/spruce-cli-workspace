@@ -28,9 +28,6 @@ export default class TestCommand extends AbstractCommand {
 			]
 		})
 
-		// this.writeFile(destination, contents)
-		// this.utilities.terminal.info(`Test created at ${destination}`)
-		// this.utilities.terminal.info('Updated package.json')
 		this.utilities.terminal.hint('Try `yarn test` or `yarn test:watch`')
 	}
 }

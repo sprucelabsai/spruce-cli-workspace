@@ -32,7 +32,7 @@ export enum Service {
 	Pin = 'pin',
 	Pkg = 'pkg',
 	ValueType = 'valueType',
-	Vm = 'vm',
+	Vm = 'vm'
 }
 
 export default async function autoloader(options: {

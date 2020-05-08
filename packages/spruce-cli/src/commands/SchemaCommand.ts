@@ -57,8 +57,6 @@ export default class SchemaCommand extends AbstractCommand {
 		const clean = !!cmd.clean
 		const force = !!cmd.force
 
-		// TODO
-		// await this.services.pkg.setupForSchemas()
 		await this.services.feature.install({
 			features: [
 				{

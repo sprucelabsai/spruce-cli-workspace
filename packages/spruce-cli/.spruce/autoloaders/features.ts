@@ -4,6 +4,7 @@ import AbstractFeature from '../../src/features/AbstractFeature'
 
 // Import each matching class that will be autoloaded
 import CircleCI from '../../src/features/CircleCIFeature'
+import Error from '../../src/features/ErrorFeature'
 import Schema from '../../src/features/SchemaFeature'
 import Skill from '../../src/features/SkillFeature'
 import Test from '../../src/features/TestFeature'
@@ -13,8 +14,9 @@ import VSCode from '../../src/features/VsCodeFeature'
 import { IFeatureOptions } from '../../src/features/AbstractFeature'
 
 export interface IFeatures {
-	[feature: string]: CircleCI | Schema | Skill | Test | VSCode
+	[feature: string]: CircleCI | Error | Schema | Skill | Test | VSCode
 	circleCi: CircleCI
+	error: Error
 	schema: Schema
 	skill: Skill
 	test: Test
@@ -23,6 +25,7 @@ export interface IFeatures {
 
 export enum Feature {
 	CircleCI = 'circleCi',
+	Error = 'error',
 	Schema = 'schema',
 	Skill = 'skill',
 	Test = 'test',
@@ -38,6 +41,10 @@ export default async function autoloader(options: {
 	const circleCi = new CircleCI(constructorOptions)
 	if (after) {
 		await after(circleCi)
+	}
+	const error = new Error(constructorOptions)
+	if (after) {
+		await after(error)
 	}
 	const schema = new Schema(constructorOptions)
 	if (after) {
@@ -58,6 +65,7 @@ export default async function autoloader(options: {
 
 	const siblings: IFeatures = {
 		circleCi,
+		error,
 		schema,
 		skill,
 		test,
@@ -68,6 +76,11 @@ export default async function autoloader(options: {
 	if (typeof circleCi.afterAutoload === 'function') {
 		// @ts-ignore method is optional
 		circleCi.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof error.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		error.afterAutoload(siblings)
 	}
 	// @ts-ignore method is optional
 	if (typeof schema.afterAutoload === 'function') {
