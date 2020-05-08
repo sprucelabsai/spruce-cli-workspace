@@ -101,10 +101,16 @@ export default class VSCodeFeature extends AbstractFeature {
 		extensionIds.forEach(eId => {
 			args = args.concat('--install-extension', eId)
 		})
-		const { stdout } = await this.services.child.executeCommand('code', {
-			args
-		})
+		try {
+			const { stdout } = await this.services.child.executeCommand('code', {
+				args
+			})
 
-		log.debug('VSCode installed extensions', stdout)
+			log.debug('VSCode installed extensions', stdout)
+		} catch (e) {
+			log.warn(
+				'VSCode extensions not installed. Check that VSCode is installed and the "code" cli tool is available'
+			)
+		}
 	}
 }
