@@ -85,12 +85,20 @@ export default class VSCodeFeature extends AbstractFeature {
 		return missingExtensions
 	}
 
-	private async getVSCodeExtensions() {
-		const { stdout } = await this.services.child.executeCommand('code', {
-			args: ['--list-extensions']
-		})
+	private async getVSCodeExtensions(): Promise<string[]> {
+		let extensions: string[] = []
 
-		const extensions = stdout.split('\n')
+		try {
+			const { stdout } = await this.services.child.executeCommand('code', {
+				args: ['--list-extensions']
+			})
+
+			extensions = stdout.split('\n')
+		} catch (e) {
+			log.warn(
+				'VSCode extensions not installed. Check that VSCode is installed and the "code" cli tool is available'
+			)
+		}
 
 		return extensions
 	}
