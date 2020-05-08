@@ -43,7 +43,6 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 		| undefined = fieldDefinition.options && {
 		...fieldDefinition.options
 	}
-
 	// If this is a schema type, we need to map it to it's proper value type
 	if (fieldDefinition.type === FieldType.Schema && updatedOptions) {
 		const value = handlebars.helpers.fieldDefinitionValueType(

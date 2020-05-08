@@ -6,6 +6,7 @@ import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
 import { Feature } from '../../.spruce/autoloaders/features'
+import chalk from 'chalk'
 
 export default class SchemaCommand extends AbstractCommand {
 	/** Sets up commands */
@@ -53,7 +54,7 @@ export default class SchemaCommand extends AbstractCommand {
 	/** Sync all schemas and fields (also pulls from the cloud) */
 	public async sync(cmd: Command) {
 		const destinationDir = cmd.destinationDir as string
-		// Const clean = !!cmd.clean
+		const clean = !!cmd.clean
 		const force = !!cmd.force
 
 		// TODO
@@ -150,6 +151,16 @@ export default class SchemaCommand extends AbstractCommand {
 			}
 		}
 
+		// TODO: clean
+		// if (clean) {
+		// 	clean =
+		// 		force ||
+		// 		(await this.confirm(
+		// 			`Are you sure you want me delete the contents of ${destinationDir}?`
+		// 		))
+		// 	console.log('TODO Bring back clear')
+		// }
+
 		this.utilities.terminal.startLoading(
 			`Found ${schemaTemplateItems.length} schema definitions and ${fieldTemplateItems.length} field types, writing files in 2 stages.`
 		)
@@ -158,7 +169,8 @@ export default class SchemaCommand extends AbstractCommand {
 			this.resolvePath(destinationDir),
 			{
 				fieldTemplateItems,
-				schemaTemplateItems
+				schemaTemplateItems,
+				clean
 			}
 		)
 
@@ -170,15 +182,23 @@ export default class SchemaCommand extends AbstractCommand {
 		})
 
 		this.utilities.terminal.stopLoading()
-		this.utilities.terminal.writeLn(
-			`Done running ${resultsByStage.length} stages.`
-		)
+		if (errors.length > 0) {
+			this.utilities.terminal.writeLn(
+				`Done generating files but hit some errors. 👇`
+			)
+		} else {
+			this.utilities.terminal.writeLn(
+				`Done generating files. You can begin using them while they are being prettied.`
+			)
+		}
 
 		// If the first stage error'ed, we're in trouble
 		if (resultsByStage[0].errors.length > 0) {
 			this.utilities.terminal.crit(
 				`Warning! Core stage failure. Run \`y global update spruce\` and then try again. If the problem persists, visit https://github.com/sprucelabsai/spruce-cli-workspace/issues`
 			)
+			errors.map(err => this.utilities.terminal.handleError(err))
+			return
 		} else if (errors.length > 0) {
 			this.utilities.terminal.error(
 				`I hit ${errors.length} errors while generating type files.`
@@ -203,17 +223,6 @@ export default class SchemaCommand extends AbstractCommand {
 		const destinationDirPattern = path.join(destinationDir, '**', '*')
 		await this.services.lint.fix(destinationDirPattern)
 
-		// If (clean) {
-		// 	const pass =
-		// 		force ||
-		// 		(await this.utilities.terminal.confirm(
-		// 			`Are you sure you want me delete the contents of ${destinationDir}?`
-		// 		))
-		// 	if (pass) {
-		// 		this.deleteDir(destinationDir)
-		// 	}
-		// }
-
 		this.utilities.terminal.stopLoading()
 
 		this.utilities.terminal.clear()
@@ -226,16 +235,22 @@ export default class SchemaCommand extends AbstractCommand {
 		)
 		this.utilities.terminal.bar()
 		this.utilities.terminal.info(
-			`1. Schema definitions ${results.generatedFiles.schemaTypes}`
+			`1. ${chalk.bold('Schema definitions')}: ${
+				results.generatedFiles.schemaTypes
+			}`
 		)
 		this.utilities.terminal.info(
-			`2. Field definitions ${results.generatedFiles.fieldsTypes}`
+			`2. ${chalk.bold('Field definitions')}: ${
+				results.generatedFiles.fieldsTypes
+			}`
 		)
 		this.utilities.terminal.info(
-			`3. Field type enum ${results.generatedFiles.fieldType}`
+			`3. ${chalk.bold('Field type enum')}: ${results.generatedFiles.fieldType}`
 		)
 		this.utilities.terminal.info(
-			`4. Field class map ${results.generatedFiles.fieldClassMap}`
+			`4. ${chalk.bold('Field class map')}: ${
+				results.generatedFiles.fieldClassMap
+			}`
 		)
 	}
 
@@ -256,7 +271,7 @@ export default class SchemaCommand extends AbstractCommand {
 		}
 
 		const form = this.formBuilder({
-			definition: SpruceSchemas.local.NamedTemplateItem.definition,
+			definition: SpruceSchemas.Local.NamedTemplateItem.definition,
 			initialValues: {
 				readableName,
 				camelName,

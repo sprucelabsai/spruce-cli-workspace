@@ -78,7 +78,7 @@ export default class SchemaStore extends AbstractStore {
 
 		// Each skill's slug will be the namespace
 		const coreTemplateItems = this.utilities.schema.generateTemplateItems({
-			namespace: 'core',
+			namespace: 'Core',
 			definitions: schemas
 		})
 
@@ -127,7 +127,7 @@ export default class SchemaStore extends AbstractStore {
 		let allTemplateItems = coreTemplateItems
 		try {
 			allTemplateItems = this.utilities.schema.generateTemplateItems({
-				namespace: 'local',
+				namespace: 'Local',
 				definitions: localDefinitions,
 				definitionsById,
 				items: coreTemplateItems

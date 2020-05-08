@@ -11,8 +11,8 @@ import log from '../lib/log'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
 
-type UserWithToken = SpruceSchemas.local.ICliUserWithToken
-type User = SpruceSchemas.local.ICliUser
+type UserWithToken = SpruceSchemas.Local.ICliUserWithToken
+type User = SpruceSchemas.Local.ICliUser
 
 /** Settings i need to save */
 interface IUserStoreSettings extends IBaseStoreSettings {
@@ -36,10 +36,10 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 	public async userWithTokenFromPhone(phone: string, pin: string) {
 		//
 		const loginResult = await this.mercury.emit<
-			SpruceEvents.core.Login.IPayload,
-			SpruceEvents.core.Login.IResponseBody
+			SpruceEvents.Core.Login.IPayload,
+			SpruceEvents.Core.Login.IResponseBody
 		>({
-			eventName: SpruceEvents.core.Login.name,
+			eventName: SpruceEvents.Core.Login.name,
 			payload: {
 				phoneNumber: phone,
 				code: pin
@@ -51,7 +51,7 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 		if (!token) {
 			throw new SpruceError({
 				code: ErrorCode.GenericMercury,
-				eventName: SpruceEvents.core.Login.name,
+				eventName: SpruceEvents.Core.Login.name,
 				payloadArgs: [
 					{ name: 'phone', value: phone },
 					{ name: 'pin', value: pin }
@@ -118,12 +118,12 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 			`.loc?.source.body || ''
 
 		const result = await this.mercury.emit<
-			SpruceEvents.core.Gql.IPayload,
+			SpruceEvents.Core.Gql.IPayload,
 			IMercuryGQLBody<{
-				User: SpruceSchemas.core.IUser
+				User: SpruceSchemas.Core.IUser
 			}>
 		>({
-			eventName: SpruceEvents.core.Gql.name,
+			eventName: SpruceEvents.Core.Gql.name,
 			payload: {
 				query,
 				variables: {

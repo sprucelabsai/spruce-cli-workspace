@@ -1,14 +1,14 @@
 import { buildSchemaDefinition } from '@sprucelabs/schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 const cliSkillDefinition = buildSchemaDefinition({
-	...SpruceSchemas.core.Skill.definition,
+	...SpruceSchemas.Core.Skill.definition,
 	id: 'cliSkill',
 	description: 'A stripped down skill for the cli',
 	fields: {
-		id: SpruceSchemas.core.Skill.definition.fields.id,
-		apiKey: SpruceSchemas.core.Skill.definition.fields.apiKey,
-		name: SpruceSchemas.core.Skill.definition.fields.name,
-		slug: SpruceSchemas.core.Skill.definition.fields.slug
+		id: SpruceSchemas.Core.Skill.definition.fields.id,
+		apiKey: SpruceSchemas.Core.Skill.definition.fields.apiKey,
+		name: SpruceSchemas.Core.Skill.definition.fields.name,
+		slug: SpruceSchemas.Core.Skill.definition.fields.slug
 	}
 })
 

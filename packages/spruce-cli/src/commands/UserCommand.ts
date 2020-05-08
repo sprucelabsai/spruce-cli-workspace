@@ -48,7 +48,7 @@ export default class UserCommand extends AbstractCommand {
 		await this.services.pin.requestPin(phone)
 		this.utilities.terminal.stopLoading()
 
-		let user: SpruceSchemas.local.ICliUserWithToken | undefined
+		let user: SpruceSchemas.Local.ICliUserWithToken | undefined
 
 		let valid = false
 

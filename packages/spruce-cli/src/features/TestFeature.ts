@@ -6,7 +6,7 @@ import fs from 'fs-extra'
 import log from '../lib/log'
 import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
 
-type TestFeatureType = typeof SpruceSchemas.local.TestFeature.definition
+type TestFeatureType = typeof SpruceSchemas.Local.TestFeature.definition
 
 export default class TestFeature extends AbstractFeature<TestFeatureType> {
 	public description = 'Test File: Create a test for one of your files'
@@ -19,7 +19,7 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 	]
 
 	public optionsSchema = () => {
-		const def = SpruceSchemas.local.TestFeature.definition
+		const def = SpruceSchemas.Local.TestFeature.definition
 		log.debug('get optionsSchema', def)
 		// TODO
 		// @ts-ignore
