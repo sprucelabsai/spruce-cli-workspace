@@ -1941,10 +1941,10 @@
     "@sprucelabs/error" "^1.0.11"
     "@sprucelabs/log" "^10.2.1"
 
-"@sprucelabs/schema@1.18.1-prerelease-filefield.1":
-  version "1.18.1-prerelease-filefield.1"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.18.1-prerelease-filefield.1.tgz#543ad336375f7bb9a0fc9ebb5090a08894fcfa9d"
-  integrity sha512-QPY/gLKEGAdpS2tHZrGJHeeYQ7oOYypeIirkrwbM1Phs/TRohNAnZwGAMr/yu71onB7yZim0TjNX5oG1c8swwQ==
+"@sprucelabs/schema@^1.28.0":
+  version "1.28.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.28.0.tgz#6f6db020d9e5f405a6397edfffc0c124b55f2f52"
+  integrity sha512-rxVYXXOEiJ8ezp6GJWHIjXWsZB9qqcn/v0WPaX/Le+6sSAiCa/nwkcnboByuTzZ75Wn1elgNVdlmimMGyqFM4A==
   dependencies:
     "@sprucelabs/error" "^1.2.0"
     "@sprucelabs/log" "^10.2.1"
@@ -1954,10 +1954,10 @@
     mime-db "^1.43.0"
     mime-type "^3.0.7"
 
-"@sprucelabs/test@2.2.0-prerelease-test-skip.1":
-  version "2.2.0-prerelease-test-skip.1"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-2.2.0-prerelease-test-skip.1.tgz#806eacbdca7b65b4c8dddacec17e4d0f9053cb1e"
-  integrity sha512-dkYGoxdm8c/Pe3aYic+2fhWST2i0t4ENPYGOFk/7rXFYgk3a2kC13m8h5c8zZkbSRzbUyleB+x3P3uNMaReZuQ==
+"@sprucelabs/test@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-2.2.1.tgz#6d7d2a3742f91f9936f68cfe59a19e33672a9935"
+  integrity sha512-jwmEV74e+L0OAynthKKvMQq0bREG4mwJTg8KuHUN+DwwC61w9vH2SBDGswwx1zsJBqjV/HwiHQ2aVncsmk2bnQ==
   dependencies:
     "@babel/core" "^7.9.0"
     "@babel/preset-env" "^7.9.5"

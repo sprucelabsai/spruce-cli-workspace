@@ -38,7 +38,7 @@
 	},
 	"dependencies": {
 		"@sprucelabs/log": "^10.2.1",
-		"@sprucelabs/schema": "1.18.1-prerelease-filefield.1",
+		"@sprucelabs/schema": "^1.28.0",
 		"globby": "^11.0.0",
 		"handlebars": "^4.7.4",
 		"lodash": "^4.17.15"
