@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.2.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.1.1...v10.2.0) (2020-05-11)
+
+
+### Bug Fixes
+
+* pointed to new name of schemas.types.ts ([e2ac729](https://github.com/sprucelabsai/spruce-cli-workspace/commit/e2ac729))
+* version fixes ([c2ba626](https://github.com/sprucelabsai/spruce-cli-workspace/commit/c2ba626))
+
+
+### Features
+
+* don't render comment above definition property if there is no label nor hint ([8e15d93](https://github.com/sprucelabsai/spruce-cli-workspace/commit/8e15d93))
+* generating types files works with cross module fields ([d6872d4](https://github.com/sprucelabsai/spruce-cli-workspace/commit/d6872d4))
+* handle for null optionals ([32e6ded](https://github.com/sprucelabsai/spruce-cli-workspace/commit/32e6ded))
+* import definitions by spawning child ([9930b58](https://github.com/sprucelabsai/spruce-cli-workspace/commit/9930b58))
+* lint change based on schema updates ([15708b0](https://github.com/sprucelabsai/spruce-cli-workspace/commit/15708b0))
+* multi-stage template generation ([8b0f8b0](https://github.com/sprucelabsai/spruce-cli-workspace/commit/8b0f8b0))
+* namespace camel case on core ([149e70a](https://github.com/sprucelabsai/spruce-cli-workspace/commit/149e70a))
+* null as possible value of optional field ([ee52ab0](https://github.com/sprucelabsai/spruce-cli-workspace/commit/ee52ab0))
+* only render label if one is rendered ([25d36f4](https://github.com/sprucelabsai/spruce-cli-workspace/commit/25d36f4))
+* schema package update ([ab2526b](https://github.com/sprucelabsai/spruce-cli-workspace/commit/ab2526b))
+* schema syncing using shared types ([4f9cec3](https://github.com/sprucelabsai/spruce-cli-workspace/commit/4f9cec3))
+* schema version bump ([3db3d28](https://github.com/sprucelabsai/spruce-cli-workspace/commit/3db3d28))
+* schema version bump ([b961148](https://github.com/sprucelabsai/spruce-cli-workspace/commit/b961148))
+* started handling of errors, but backed out for now ([0e0581a](https://github.com/sprucelabsai/spruce-cli-workspace/commit/0e0581a))
+* template cleanup ([5cb7426](https://github.com/sprucelabsai/spruce-cli-workspace/commit/5cb7426))
+* templates version bump ([7469eea](https://github.com/sprucelabsai/spruce-cli-workspace/commit/7469eea))
+* updated definition types to generate interface literal vs type mapping ([a1c38d1](https://github.com/sprucelabsai/spruce-cli-workspace/commit/a1c38d1))
+* valueType key generation leaves renderAs so it's visible in the key ([a334642](https://github.com/sprucelabsai/spruce-cli-workspace/commit/a334642))
+
+
+### Refactoring
+
+* change how schemas are defined, now part of SpruceSchemas namespace ([5b91f8d](https://github.com/sprucelabsai/spruce-cli-workspace/commit/5b91f8d))
+* move interface up one level ([af51c1c](https://github.com/sprucelabsai/spruce-cli-workspace/commit/af51c1c))
+
+
+
+
+
 ## [10.1.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.1.0...v10.1.1) (2020-04-19)
 
 **Note:** Version bump only for package @sprucelabs/spruce-templates
