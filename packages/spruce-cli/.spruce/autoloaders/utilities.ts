@@ -4,7 +4,7 @@ import AbstractUtility from '../../src/utilities/AbstractUtility'
 // Import each matching class that will be autoloaded
 import Bootstrap from '../../src/utilities/BootstrapUtility'
 import Names from '../../src/utilities/NamesUtility'
-import Pkg from '../../src/utilities/PkgUtility'
+import Parser from '../../src/utilities/ParserUtility'
 import Schema from '../../src/utilities/SchemaUtility'
 import Terminal from '../../src/utilities/TerminalUtility'
 import TsConfig from '../../src/utilities/TsConfigUtility'
@@ -15,10 +15,20 @@ import { IUtilityOptions } from '../../src/utilities/AbstractUtility'
 export interface IUtilities {
 	bootstrap: Bootstrap
 	names: Names
-	pkg: Pkg
+	parser: Parser
 	schema: Schema
 	terminal: Terminal
 	tsConfig: TsConfig
+	[utility: string]: Bootstrap | Names | Parser | Schema | Terminal | TsConfig
+}
+
+export enum Utility {
+	Bootstrap = 'bootstrap',
+	Names = 'names',
+	Parser = 'parser',
+	Schema = 'schema',
+	Terminal = 'terminal',
+	TsConfig = 'tsConfig'
 }
 
 export default async function autoloader(options: {
@@ -35,9 +45,9 @@ export default async function autoloader(options: {
 	if (after) {
 		await after(names)
 	}
-	const pkg = new Pkg(constructorOptions)
+	const parser = new Parser(constructorOptions)
 	if (after) {
-		await after(pkg)
+		await after(parser)
 	}
 	const schema = new Schema(constructorOptions)
 	if (after) {
@@ -52,12 +62,45 @@ export default async function autoloader(options: {
 		await after(tsConfig)
 	}
 
-	return {
+	const siblings: IUtilities = {
 		bootstrap,
 		names,
-		pkg,
+		parser,
 		schema,
 		terminal,
 		tsConfig
 	}
+
+	// @ts-ignore method is optional
+	if (typeof bootstrap.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		bootstrap.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof names.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		names.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof parser.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		parser.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof schema.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		schema.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof terminal.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		terminal.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof tsConfig.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		tsConfig.afterAutoload(siblings)
+	}
+
+	return siblings
 }

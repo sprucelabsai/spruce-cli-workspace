@@ -8,10 +8,10 @@ export default class PinService extends AbstractService {
 	public async requestPin(phone: string) {
 		try {
 			await this.mercury.emit<
-				SpruceEvents.core.RequestLogin.IPayload,
-				SpruceEvents.core.RequestLogin.IResponseBody
+				SpruceEvents.Core.RequestLogin.IPayload,
+				SpruceEvents.Core.RequestLogin.IResponseBody
 			>({
-				eventName: SpruceEvents.core.RequestLogin.name,
+				eventName: SpruceEvents.Core.RequestLogin.name,
 				payload: {
 					phoneNumber: phone,
 					method: 'pin'
@@ -20,7 +20,7 @@ export default class PinService extends AbstractService {
 		} catch (err) {
 			throw new SpruceError({
 				code: ErrorCode.GenericMercury,
-				eventName: SpruceEvents.core.RequestLogin.name,
+				eventName: SpruceEvents.Core.RequestLogin.name,
 				payloadArgs: [
 					{ name: 'phoneNumber', value: phone },
 					{ name: 'method', value: 'pin' }

@@ -51,8 +51,7 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				break
 
 			case ErrorCode.DefinitionFailedToImport:
-				message = `Error importing "${options.file}". ${options.details}.`
-
+				message = `Error importing "${options.file}"`
 				break
 
 			case ErrorCode.BuildFailed:
@@ -63,17 +62,37 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				break
 
 			case ErrorCode.FailedToImport:
-				message = `Failed to import ${options.file} through VM`
-				message + options.friendlyMessage
-					? `\n\n${options.friendlyMessage}`
-					: ''
+				message = `Failed to import ${options.file}`
 
+				break
+
+			case ErrorCode.ValueTypeServiceStageError:
+				message =
+					'When collecting value types for all fields, something went wrong'
+				break
+
+			case ErrorCode.ValueTypeServiceError:
+				message = 'An error when generating value types for template insertion '
 				break
 
 			default:
 				message = super.friendlyMessage()
 		}
 
-		return `${options.code} ${message}`
+		// Drop on code and friendly message
+		message = `${options.code}: ${message}`
+		const fullMessage = `${message}${
+			options.friendlyMessage ? `\n\n${options.friendlyMessage}` : ''
+		}`
+
+		// Handle repeating text from original message by remove it
+		return `${fullMessage}${
+			this.originalError && this.originalError.message !== fullMessage
+				? `\n\nOriginal error: ${this.originalError.message.replace(
+						message,
+						''
+				  )}`
+				: ''
+		}`
 	}
 }

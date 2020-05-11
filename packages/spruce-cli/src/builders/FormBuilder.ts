@@ -6,7 +6,7 @@ import Schema, {
 	SchemaFieldNames,
 	ISelectFieldDefinitionChoice,
 	FieldDefinition,
-	SchemaErrorCode,
+	ErrorCode as SchemaErrorCode,
 	SchemaError
 } from '@sprucelabs/schema'
 import ITerminal, { ITerminalEffect } from '../utilities/TerminalUtility'
@@ -137,6 +137,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 				for (const namedField of namedFields) {
 					const { name } = namedField
 					const answer = await this.askQuestion(name)
+
 					this.set(name, answer)
 				}
 
@@ -154,9 +155,13 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 			}
 		} while (!done || !valid)
 
-		const values = this.getValues({ fields })
+		const values = this.getValues({ fields, createSchemaInstances: false })
+		const cleanValues = pick(values, fields) as Pick<
+			SchemaDefinitionAllValues<T>,
+			F
+		>
 
-		return pick(values, fields) as Pick<SchemaDefinitionAllValues<T>, F>
+		return cleanValues
 	}
 
 	/** Ask a question based on a field */
@@ -173,8 +178,9 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 			})
 		}
 		// TODO need is array support
-		// @ts-ignore
-		definition.defaultValue = value
+		if (value) {
+			definition.defaultValue = value
+		}
 
 		// Do we have a lister?
 		if (this.handlers.onWillAskQuestion) {
@@ -206,9 +212,11 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 				// Invalid fields
 				case SchemaErrorCode.InvalidField:
 					// Output all errors under all fields
-					options.errors.forEach(error => {
-						const { fieldName, errors } = error
-						this.term.error(`field: ${fieldName} errors: ${errors.join(', ')}`)
+					options.errors.forEach(err => {
+						const { name, friendlyMessage, error, code } = err
+						this.term.error(
+							friendlyMessage ?? `${name}: ${code} ${error?.message}`
+						)
 					})
 					break
 				default:
@@ -253,7 +261,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 
 				return {
 					value: actionKey,
-					label: `${field.getLabel()}: ${value ? value : '***missing***'}`
+					label: `${field.label}: ${value ? value : '***missing***'}`
 				}
 			})
 

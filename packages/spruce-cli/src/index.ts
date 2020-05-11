@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+
 import { register } from '@sprucelabs/path-resolver'
 register({
 	cwd: __dirname,
@@ -20,6 +20,7 @@ import {
 import { terminal } from './utilities/TerminalUtility'
 import pkg from '../package.json'
 import log from './lib/log'
+import path from './lib/path'
 import { StoreAuth, IStoreOptions } from './stores/AbstractStore'
 import { IGeneratorOptions } from './generators/AbstractGenerator'
 import SpruceError from './errors/SpruceError'
@@ -29,48 +30,41 @@ import { IServiceOptions } from './services/AbstractService'
 
 import commandsLoader from '#spruce/autoloaders/commands'
 import generatorsLoader from '#spruce/autoloaders/generators'
-import storesLoader from '#spruce/autoloaders/stores'
+import storesAutoLoader from '#spruce/autoloaders/stores'
 import utilitiesAutoloader from '#spruce/autoloaders/utilities'
 import servicesAutoloader from '#spruce/autoloaders/services'
 
 /** Addons */
 import './addons/filePrompt.addon'
-import '#spruce/schemas/fields.types'
+import Autoloadable from './Autoloadable'
 
-/**
- * For handling debugger not attaching right away
- */
-async function setup(argv: string[], debugging: boolean): Promise<void> {
-	const program = new Command()
-	// Const commands = []
-	if (debugging) {
-		// eslint-disable-next-line no-debugger
-		debugger // (breakpoints and debugger works after this one is missed)
-		log.trace('Extra debugger dropped in so future debuggers work... 🤷‍')
-	}
-
-	program.version(pkg.version).description(pkg.description)
-	program.option('--no-color', 'Disable color output in the console')
-	program.option(
+export async function setup(options?: { program?: Command; cwd?: string }) {
+	const program = options?.program
+	program?.version(pkg.version).description(pkg.description)
+	program?.option('--no-color', 'Disable color output in the console')
+	program?.option(
 		'-d, --directory <path>',
 		'The working directory to execute the command'
 	)
 
-	program.on('option:directory', function() {
-		if (program.directory) {
-			// TODO: Implement ability to set cwd
-			throw new SpruceError({
-				code: ErrorCode.NotImplemented,
-				command: 'option:directory',
-				friendlyMessage: 'Setting the cwd is not yet implemented'
-			})
+	// Track everything autoloaded to handle env changes at runtime
+	const autoLoaded: Autoloadable[] = []
+
+	// Update state for the entire process
+	// TODO move this out and give more control when handling cross skill, e.g. "update x on only utilities"
+	const updateCWD = function(newCwd: string) {
+		autoLoaded.forEach(loaded => (loaded.cwd = newCwd))
+	}
+
+	const cwd = options?.cwd ?? process.cwd()
+
+	program?.on('option:directory', function() {
+		if (program?.directory) {
+			const newCwd = path.resolvePath(cwd, program.directory)
+			log.trace(`CWD updated: ${newCwd}`)
+			updateCWD(newCwd)
 		}
 	})
-
-	// Starting cwd
-	const cwd = process.cwd()
-
-	// Setup log
 
 	// Setup utilities
 	const utilityOptions: IUtilityOptions = {
@@ -81,6 +75,8 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		constructorOptions: utilityOptions
 	})
 
+	autoLoaded.push(...Object.values(utilities))
+
 	// Setup mercury
 	const mercury = new Mercury()
 
@@ -88,13 +84,16 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	const serviceOptions: IServiceOptions = {
 		mercury,
 		cwd,
-		utilities
+		utilities,
+		templates
 	}
 
 	// Setup services
 	const services = await servicesAutoloader({
 		constructorOptions: serviceOptions
 	})
+
+	autoLoaded.push(...Object.values(services))
 
 	// Setup services
 	const storeOptions: IStoreOptions = {
@@ -104,9 +103,11 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		utilities
 	}
 
-	const stores = await storesLoader({
+	const stores = await storesAutoLoader({
 		constructorOptions: storeOptions
 	})
+
+	autoLoaded.push(...Object.values(stores))
 
 	// Setup mercury
 	const remoteUrl = stores.remote.getRemoteUrl()
@@ -133,6 +134,7 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 
 	// Mercury connection options
 	const connectOptions: IMercuryConnectOptions = {
+		useMock: process.env.TESTING === 'true',
 		spruceApiUrl: remoteUrl,
 		credentials: creds
 	}
@@ -145,14 +147,31 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 		utilities,
 		templates,
 		log,
-		cwd
+		cwd,
+		stores
 	}
 
 	const generators = await generatorsLoader({
 		constructorOptions: generatorOptions
 	})
 
-	await commandsLoader({
+	autoLoaded.push(...Object.values(generators))
+
+	// Alias everything that has a : with a . so "option delete" deletes up to the period
+	if (program) {
+		const originalCommand = program.command.bind(program)
+		program.command = (name: string) => {
+			const response = originalCommand(name)
+			const firstPart = name.split(' ')[0]
+			const alias = firstPart.replace(':', '.')
+			if (alias !== firstPart) {
+				program.alias(alias)
+			}
+			return response
+		}
+	}
+
+	const commands = await commandsLoader({
 		constructorOptions: {
 			stores,
 			mercury,
@@ -163,16 +182,50 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 			templates
 		},
 		after: async instance =>
-			instance.attachCommands && instance.attachCommands(program)
+			instance.attachCommands && program && instance.attachCommands(program)
 	})
+
+	autoLoaded.push(...Object.values(commands))
 
 	// Alphabetical sort of help output
-	program.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
+	program?.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
 
 	// Error on unknown commands
-	program.action((command, args) => {
+	program?.action((command, args) => {
 		throw new SpruceError({ code: ErrorCode.InvalidCommand, args })
 	})
+
+	// Final checks before we hand off to the command
+
+	return {
+		cwd,
+		utilityOptions,
+		utilities,
+		mercury,
+		serviceOptions,
+		services,
+		storeOptions,
+		stores,
+		connectOptions,
+		generatorOptions,
+		generators,
+		commands
+	}
+}
+
+/**
+ * For handling debugger not attaching right away
+ */
+async function run(argv: string[], debugging: boolean): Promise<void> {
+	const program = new Command()
+	// Const commands = []
+	if (debugging) {
+		// eslint-disable-next-line no-debugger
+		debugger // (breakpoints and debugger works after this one is missed)
+		log.trace('Extra debugger dropped in so future debuggers work... 🤷‍')
+	}
+
+	await setup({ program })
 
 	const commandResult = await program.parseAsync(argv)
 	if (commandResult.length === 0) {
@@ -181,15 +234,17 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 	}
 }
 
-setup(
-	process.argv,
-	typeof global.v8debug === 'object' ||
-		/--debug|--inspect/.test(process.execArgv.join(' '))
-)
-	.then(() => {
-		process.exit(0)
-	})
-	.catch(e => {
-		terminal.handleError(e)
-		process.exit(1)
-	})
+if (process.env.TESTING !== 'true') {
+	run(
+		process.argv,
+		typeof global.v8debug === 'object' ||
+			/--debug|--inspect/.test(process.execArgv.join(' '))
+	)
+		.then(() => {
+			process.exit(0)
+		})
+		.catch(e => {
+			terminal.handleError(e)
+			process.exit(1)
+		})
+}

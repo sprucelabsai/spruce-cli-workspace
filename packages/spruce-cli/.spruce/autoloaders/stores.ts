@@ -1,3 +1,4 @@
+/* eslint-disable spruce/prefer-pascal-case-enums */
 // Import base class
 import AbstractStore from '../../src/stores/AbstractStore'
 
@@ -13,12 +14,22 @@ import Watcher from '../../src/stores/WatcherStore'
 import { IStoreOptions } from '../../src/stores/AbstractStore'
 
 export interface IStores {
+	[store: string]: Onboarding | Remote | Schema | Skill | User | Watcher
 	onboarding: Onboarding
 	remote: Remote
 	schema: Schema
 	skill: Skill
 	user: User
 	watcher: Watcher
+}
+
+export enum Store {
+	Onboarding = 'onboarding',
+	Remote = 'remote',
+	Schema = 'schema',
+	Skill = 'skill',
+	User = 'user',
+	Watcher = 'watcher'
 }
 
 export default async function autoloader(options: {
@@ -52,7 +63,7 @@ export default async function autoloader(options: {
 		await after(watcher)
 	}
 
-	return {
+	const siblings: IStores = {
 		onboarding,
 		remote,
 		schema,
@@ -60,4 +71,37 @@ export default async function autoloader(options: {
 		user,
 		watcher
 	}
+
+	// @ts-ignore method is optional
+	if (typeof onboarding.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		onboarding.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof remote.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		remote.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof schema.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		schema.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof skill.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		skill.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof user.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		user.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof watcher.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		watcher.afterAutoload(siblings)
+	}
+
+	return siblings
 }

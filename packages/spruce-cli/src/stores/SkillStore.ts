@@ -1,15 +1,16 @@
 import AbstractStore, { IBaseStoreSettings, StoreAuth } from './AbstractStore'
-import { SpruceSchemas } from '#spruce/schemas/core.types'
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import { SpruceEvents } from '../types/events-generated'
 import Schema from '@sprucelabs/schema'
 import { parse as parseEnv } from 'dotenv'
 import fs from 'fs-extra'
 import path from 'path'
 import log from '../lib/log'
-import { ISkill } from '#spruce/schemas/skill.types'
+
+type ISkill = SpruceSchemas.Local.ICliSkill
 
 export interface ISkillStoreSettings extends IBaseStoreSettings {
-	loggedInSkill: SpruceSchemas.core.Skill.ISkill
+	loggedInSkill: ISkill
 }
 
 export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
@@ -17,16 +18,16 @@ export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
 
 	/** Build a skill with the passed values */
 	public static skill(values?: Partial<ISkill>) {
-		return new Schema(SpruceSchemas.core.Skill.definition, values)
+		return new Schema(SpruceSchemas.Core.Skill.definition, values)
 	}
 
 	/** Get all skills the user has access to */
 	public async skills(userToken: string): Promise<ISkill[]> {
 		const mercury = await this.mercuryForUser(userToken)
 		const result = await mercury.emit<
-			SpruceEvents.core.GetDeveloperSkills.IPayload,
-			SpruceEvents.core.GetDeveloperSkills.IResponseBody
-		>({ eventName: SpruceEvents.core.GetDeveloperSkills.name })
+			SpruceEvents.Core.GetDeveloperSkills.IPayload,
+			SpruceEvents.Core.GetDeveloperSkills.IResponseBody
+		>({ eventName: SpruceEvents.Core.GetDeveloperSkills.name })
 
 		const skills = result.responses[0].payload.skills.map(values => {
 			const instance = SkillStore.skill(values)
@@ -34,6 +35,7 @@ export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
 			return instance.getValues()
 		})
 
+		// @ts-ignore
 		return skills
 	}
 
@@ -56,6 +58,7 @@ export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
 		if (loggedIn) {
 			const instance = SkillStore.skill(loggedIn)
 			instance.validate()
+			// @ts-ignore
 			return instance.getValues()
 		}
 
@@ -81,6 +84,7 @@ export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
 		})
 		try {
 			instance.validate()
+			// @ts-ignore
 			return instance.getValues()
 		} catch (err) {
 			log.warn('INVALID skill ENV')

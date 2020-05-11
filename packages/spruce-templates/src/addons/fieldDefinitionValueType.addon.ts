@@ -1,57 +1,36 @@
 import handlebars from 'handlebars'
-import { FieldDefinition, FieldClassMap, FieldType } from '@sprucelabs/schema'
-import { ISchemaTypesTemplateItem } from '../..'
+import { FieldDefinition, TemplateRenderAs } from '@sprucelabs/schema'
+import { IValueTypeGenerator } from '../..'
 
 /* The type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */
 handlebars.registerHelper('fieldDefinitionValueType', function(
 	fieldDefinition: FieldDefinition,
+	renderAs: TemplateRenderAs,
 	options
 ) {
 	const {
 		data: { root }
 	} = options
 
-	// Pull vars off context
-	const schemaTemplateItems: ISchemaTypesTemplateItem[] | undefined =
-		root?.schemaTemplateItems
-	const typeMap = root?.typeMap
+	const valueTypeGenerator: IValueTypeGenerator = root?.valueTypeGenerator
 
-	if (!schemaTemplateItems || !typeMap) {
+	if (
+		renderAs !== TemplateRenderAs.Value &&
+		renderAs !== TemplateRenderAs.Type &&
+		renderAs !== TemplateRenderAs.DefinitionType
+	) {
 		throw new Error(
-			'You must pass schemaTemplateItems and a typeMap to render this script'
+			'fieldDefinitionValueType helper needs renderAs to be "TemplateRenderAs.Type" or "TemplateRenderAs.Value" or "TemplateRenderAs.DefinitionType"'
 		)
 	}
 
-	const { type } = fieldDefinition
-	const FieldClass = FieldClassMap[type]
-	const { valueType } = FieldClass.templateDetails()
-
-	let typeLiteral
-	switch (fieldDefinition.type) {
-		case FieldType.Schema: {
-			const matchedTemplateItem = schemaTemplateItems.find(
-				item => item.id === fieldDefinition.options.schemaId
-			)
-
-			if (matchedTemplateItem) {
-				typeLiteral = `SpruceSchemas.${matchedTemplateItem.namespace}.${matchedTemplateItem.pascalName}.I${matchedTemplateItem.pascalName}`
-			} else {
-				throw new Error(
-					`fieldDefinitionValueType help could not find schema ${fieldDefinition.options.schemaId}`
-				)
-			}
-
-			break
-		}
-		default:
-			typeLiteral = valueType
+	if (!valueTypeGenerator) {
+		throw new Error(
+			'fieldDefinitionValueType helper needs a valueTypeGenerator in the root context'
+		)
 	}
 
-	if (fieldDefinition.isArray) {
-		typeLiteral = typeLiteral + '[]'
-	}
+	const valueType = valueTypeGenerator(renderAs, fieldDefinition)
 
-	// If the type points to an interface, pull it off the schema
-	// TODO handle when skill introduce their own field types
-	return typeLiteral[0] === 'I' ? `SpruceSchema.${typeLiteral}` : typeLiteral
+	return valueType
 })

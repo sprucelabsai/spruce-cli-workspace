@@ -33,10 +33,12 @@
 	},
 	"include": [
 		"./*.ts",
-		"./**/*.ts"
+		"./**/*.ts",
+		"./.spruce/**/*.ts"
 	],
 	"exclude": [
 		"**/node_modules/*",
-		"build/*"
+		"build/*",
+		"tmp/*"
 	]
 }

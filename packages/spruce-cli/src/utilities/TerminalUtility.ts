@@ -16,6 +16,7 @@ import emphasize from 'emphasize'
 import AbstractUtility from './AbstractUtility'
 import log from '../lib/log'
 import fs from 'fs-extra'
+import globby from 'globby'
 import path from 'path'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
@@ -96,7 +97,7 @@ function filterEffectsForCFonts(effects: ITerminalEffect[]) {
 }
 
 export default class TerminalUtility extends AbstractUtility {
-	protected isPromptActive = false
+	public isPromptActive = false
 
 	private loader?: ora.Ora | null
 
@@ -324,18 +325,22 @@ export default class TerminalUtility extends AbstractUtility {
 			message: `${label}:`
 		}
 
-		const field = FieldFactory.field(fieldDefinition)
+		const field = FieldFactory.field('prompt', fieldDefinition)
 
 		// Setup transform and validate
 		promptOptions.transformer = (value: string) => {
 			return field.toValueType(value)
 		}
 		promptOptions.validate = (value: string) => {
-			return field.validate(value).length === 0
+			return field.validate(value, {}).length === 0
 		}
 
 		switch (fieldDefinition.type) {
 			// Map select options to prompt list choices
+			case FieldType.Boolean:
+				promptOptions.type = 'confirm'
+				break
+
 			case FieldType.Select:
 				promptOptions.type = fieldDefinition.isArray ? 'checkbox' : 'list'
 
@@ -354,7 +359,7 @@ export default class TerminalUtility extends AbstractUtility {
 				}
 				break
 			// File select
-			case FieldType.File:
+			case FieldType.File: {
 				if (fieldDefinition.isArray) {
 					throw new SpruceError({
 						code: ErrorCode.NotImplemented,
@@ -363,11 +368,26 @@ export default class TerminalUtility extends AbstractUtility {
 							'isArray file field not supported, prompt needs to be rewritten with isArray support'
 					})
 				}
-				promptOptions.type = 'file'
-				promptOptions.root = path.join(
+				const dirPath = path.join(
 					fieldDefinition.defaultValue?.path ?? this.cwd,
 					'/'
 				)
+
+				log.trace(`TerminalUtility filePrompt for directory: ${dirPath}`)
+
+				// Check if directory is empty.
+				const files = await globby(`${dirPath}**/*`)
+
+				if (files.length === 0) {
+					throw new SpruceError({
+						code: ErrorCode.DirectoryEmpty,
+						directory: dirPath,
+						friendlyMessage: `There are no files in the directory: ${dirPath}. Check that you are running this command from the proper location.`
+					})
+				}
+
+				promptOptions.type = 'file'
+				promptOptions.root = dirPath
 
 				// Only let people select an actual file
 				promptOptions.validate = (value: string) => {
@@ -383,6 +403,7 @@ export default class TerminalUtility extends AbstractUtility {
 					return cleanedPath.length === 0 ? promptOptions.root : cleanedPath
 				}
 				break
+			}
 
 			// Defaults to input
 			default:
@@ -390,11 +411,14 @@ export default class TerminalUtility extends AbstractUtility {
 		}
 
 		// TODO update method signature to type this properly
+		log.debug('Prompting...', { promptOptions })
 		const response = (await inquirer.prompt(promptOptions)) as any
 		this.isPromptActive = false
-		return typeof response[name] !== 'undefined'
-			? field.toValueType(response[name])
-			: response[name]
+		const result =
+			typeof response[name] !== 'undefined'
+				? field.toValueType(response[name])
+				: response[name]
+		return result
 	}
 
 	/** Generic way to handle error */
@@ -404,14 +428,18 @@ export default class TerminalUtility extends AbstractUtility {
 		const message = err.message
 		// Remove message from stack so the message is not doubled up
 		const stack = err.stack ? err.stack.replace(message, '') : ''
-
+		const stackLines = stack.split('\n')
 		this.section({
 			headline: message,
-			lines: stack.split('/n'),
+			lines: stackLines.splice(0, 100),
 			headlineEffects: [ITerminalEffect.Bold, ITerminalEffect.Red],
 			barEffects: [ITerminalEffect.Red],
 			bodyEffects: [ITerminalEffect.Red]
 		})
+
+		this.info(
+			'You can always run `DEBUG=@sprucelabs/cli spruce [command]` to get debug information'
+		)
 	}
 }
 

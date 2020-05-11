@@ -1,7 +1,6 @@
 {
 	"debug.node.autoAttach": "off",
 	"git.ignoreLimitWarning": true,
-	"typescript.validate.enable": true,
 	"javascript.validate.enable": false,
 	"editor.formatOnSave": true,
 	"files.watcherExclude": {
@@ -38,8 +37,17 @@
 	"[handlebars]": {
 		"editor.formatOnSave": false
 	},
+	"eslint.workingDirectories": [
+		"./packages/spruce-cli",
+		"./packages/spruce-templates"
+	],
 	"eslint.options": {
-		"extensions": [".js", ".jsx", ".ts", ".tsx"]
+		"extensions": [
+			".js",
+			".jsx",
+			".ts",
+			".tsx"
+		]
 	},
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"typescript.preferences.importModuleSpecifier": "relative",

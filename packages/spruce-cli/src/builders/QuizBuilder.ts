@@ -170,7 +170,7 @@ export default class QuizBuilder<
 
 		questionNames.forEach(questionName => {
 			const fieldName = questionName as SchemaFieldNames<T>
-			const [validity, idx] = results[fieldName].split('-')
+			const [validity, idx] = (results[fieldName] as string).split('-')
 
 			// Get the field to tell type
 			const field = this.formBuilder.fields[fieldName]
@@ -182,7 +182,7 @@ export default class QuizBuilder<
 					// question with confidence
 					answers[questionName] = (this.originalQuestions[
 						questionName
-					] as IQuizMultipleChoiceQuestion).answers[idx]
+					] as IQuizMultipleChoiceQuestion).answers[parseInt(idx)]
 					break
 				default:
 					// @ts-ignore TODO proper questions to schema should fix this because we only support a few fields
@@ -265,7 +265,7 @@ export default class QuizBuilder<
 					correctAnswer = originalQuestion.answer
 			}
 
-			const objectKey = field.getLabel() || '**missing'
+			const objectKey = field.label || '**missing'
 
 			if (isCorrect) {
 				testResults[objectKey] = `${chalk.bgGreenBright.black(

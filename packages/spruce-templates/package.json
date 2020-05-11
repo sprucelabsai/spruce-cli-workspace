@@ -38,8 +38,9 @@
 	},
 	"dependencies": {
 		"@sprucelabs/log": "^10.2.1",
-		"@sprucelabs/schema": "^1.2.0",
-		"handlebars": "^4.7.3",
+		"@sprucelabs/schema": "^1.28.0",
+		"globby": "^11.0.0",
+		"handlebars": "^4.7.4",
 		"lodash": "^4.17.15"
 	},
 	"devDependencies": {

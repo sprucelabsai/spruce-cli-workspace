@@ -5,6 +5,7 @@ import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
 import { IUtilities } from '#spruce/autoloaders/utilities'
 import { IServices } from '#spruce/autoloaders/services'
+import Autoloadable from '../Autoloadable'
 
 /** Are we running globally or locally? */
 export enum StoreScope {
@@ -34,7 +35,7 @@ export interface IBaseStoreSettings {
 
 export default abstract class AbstractStore<
 	Settings extends IBaseStoreSettings = IBaseStoreSettings
-> {
+> extends Autoloadable {
 	/** The current scope */
 	public scope = StoreScope.Global
 
@@ -63,6 +64,7 @@ export default abstract class AbstractStore<
 	abstract name: string
 
 	public constructor(options: IStoreOptions) {
+		super(options)
 		const { mercury, cwd, scope, authType, utilities, services } = options
 
 		this.mercury = mercury
@@ -75,13 +77,16 @@ export default abstract class AbstractStore<
 		// Create save dir
 		const { directory: globalDirectory } = this.getGlobalConfigPath()
 		const { directory: localDirectory } = this.getLocalConfigPath()
+		try {
+			if (!fs.existsSync(globalDirectory)) {
+				fs.mkdirSync(globalDirectory)
+			}
 
-		if (!fs.existsSync(globalDirectory)) {
-			fs.mkdirSync(globalDirectory)
-		}
-
-		if (scope === StoreScope.Local && !fs.existsSync(localDirectory)) {
-			fs.mkdirSync(localDirectory)
+			if (scope === StoreScope.Local && !fs.existsSync(localDirectory)) {
+				fs.mkdirSync(localDirectory)
+			}
+		} catch (e) {
+			log.crit(e)
 		}
 	}
 	/** Write a value to disk (should only be used in save()) */
