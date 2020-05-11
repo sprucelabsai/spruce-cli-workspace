@@ -255,6 +255,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 							originalError: err
 						})
 					],
+					// TODO: Make this work
 					successfulFields: 0,
 					successfulSchemas: 0
 				})

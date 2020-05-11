@@ -61,8 +61,6 @@ export default class ErrorCommand extends AbstractCommand {
 	public async create(cmd: Command) {
 		const form = this.formBuilder({
 			definition: namedTemplateItemDefinition,
-			// TODO
-			// @ts-ignore
 			onWillAskQuestion: this.utilities.names.onWillAskQuestionHandler.bind(
 				this.utilities.names
 			)
@@ -213,7 +211,6 @@ export default class ErrorCommand extends AbstractCommand {
 		}
 
 		// Lets clear out the current error dir
-		// this.deleteFile()
 		await Promise.all(
 			matches.map(async filePath => {
 				// Does this file contain buildErrorDefinition?

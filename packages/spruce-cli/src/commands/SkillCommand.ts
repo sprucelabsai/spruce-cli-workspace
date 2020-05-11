@@ -6,7 +6,7 @@ import { ISelectFieldDefinitionChoice, FieldType } from '@sprucelabs/schema'
 import { StoreAuth } from '../stores/AbstractStore'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
-import { Feature } from '../../.spruce/autoloaders/features'
+import { Feature } from '#spruce/autoloaders/features'
 
 export default class SkillCommand extends AbstractCommand {
 	/** Sets up commands */

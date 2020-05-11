@@ -72,7 +72,7 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				break
 
 			case ErrorCode.ValueTypeServiceError:
-				message = 'Ar error when generating value types for template insertion '
+				message = 'An error when generating value types for template insertion '
 				break
 
 			default:

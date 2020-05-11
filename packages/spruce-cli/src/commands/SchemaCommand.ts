@@ -4,8 +4,8 @@ import AbstractCommand from './AbstractCommand'
 import { templates } from '@sprucelabs/spruce-templates'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '../../.spruce/errors/codes.types'
-import { Feature } from '../../.spruce/autoloaders/features'
+import { ErrorCode } from '#spruce/errors/codes.types'
+import { Feature } from '#spruce/autoloaders/features'
 import chalk from 'chalk'
 
 export default class SchemaCommand extends AbstractCommand {

@@ -6,7 +6,7 @@ import inflection from 'inflection'
 import AbstractCommand from './AbstractCommand'
 import log from '../lib/log'
 import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '../../.spruce/errors/codes.types'
+import { ErrorCode } from '#spruce/errors/codes.types'
 
 export default class AutoloaderCommand extends AbstractCommand {
 	public attachCommands(program: Command): void {

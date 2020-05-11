@@ -84,6 +84,7 @@ export default class SchemaStore extends AbstractStore {
 
 		// Local
 		const localErrors: SpruceError[] = []
+		// TODO: Cleanup / break up statements for easier readability
 		const localDefinitions = (
 			await Promise.all(
 				(

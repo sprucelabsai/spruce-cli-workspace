@@ -137,8 +137,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 				for (const namedField of namedFields) {
 					const { name } = namedField
 					const answer = await this.askQuestion(name)
-					// const finalAnswer = path.join(answer.path, answer.name)
-					// @ts-ignore
+
 					this.set(name, answer)
 				}
 
@@ -179,7 +178,6 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 			})
 		}
 		// TODO need is array support
-		// @ts-ignore
 		if (value) {
 			definition.defaultValue = value
 		}
