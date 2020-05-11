@@ -13,8 +13,8 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions>{
         switch (options?.code) {
 {{/if}}
 {{#each errors}}
-            case ErrorCode.{{pascalName}}:
-                message = '{{#if description}}{{{escape description}}}{{else}}A {{{escape readableName}}} just happened!{{/if}}'
+            case ErrorCode.{{namePascal}}:
+                message = '{{#if description}}{{{escape description}}}{{else}}A {{{escape nameReadable}}} just happened!{{/if}}'
                 break
 {{/each}}
 {{#if renderClassDefinition}}

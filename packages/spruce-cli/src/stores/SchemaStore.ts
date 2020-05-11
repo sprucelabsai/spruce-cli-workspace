@@ -227,12 +227,12 @@ export default class SchemaStore extends AbstractStore {
 			const name = registration.className
 
 			types.push({
-				pascalName: this.utilities.names.toPascal(name),
-				camelName: this.utilities.names.toCamel(name),
+				namePascal: this.utilities.names.toPascal(name),
+				nameCamel: this.utilities.names.toCamel(name),
 				package: pkg,
 				className: registration.className,
 				importAs,
-				readableName: registration.className,
+				nameReadable: registration.className,
 				pascalType: this.utilities.names.toPascal(registration.type),
 				camelType: this.utilities.names.toCamel(registration.type),
 				isLocal: addon.isLocal,

@@ -33,7 +33,7 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 	}) {
 		log.trace('TestFeature.afterPackageInstall()')
 
-		// package.json updates
+		// Package.json updates
 		const babelConfig = {
 			presets: [
 				[
@@ -70,9 +70,9 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 
 		const name = this.utilities.names.toFileNameWithoutExtension(target)
 
-		const pascalName = this.utilities.names.toPascal(name)
+		const namePascal = this.utilities.names.toPascal(name)
 		const destination = path.join(path.dirname(target), name) + '.test.ts'
-		const contents = this.templates.test({ pascalName })
+		const contents = this.templates.test({ namePascal })
 
 		fs.outputFileSync(destination, contents)
 

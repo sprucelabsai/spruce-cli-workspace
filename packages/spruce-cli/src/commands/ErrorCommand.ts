@@ -68,10 +68,10 @@ export default class ErrorCommand extends AbstractCommand {
 
 		const names = await form.present({
 			fields: [
-				'readableName',
-				'pascalName',
-				'camelName',
-				'constName',
+				'nameReadable',
+				'namePascal',
+				'nameCamel',
+				'nameConst',
 				'description'
 			]
 		})
@@ -86,7 +86,7 @@ export default class ErrorCommand extends AbstractCommand {
 
 		const errorDefinitionFileDestination = this.resolvePath(
 			errorDestinationDir,
-			`${names.camelName}.definition.ts`
+			`${names.nameCamel}.definition.ts`
 		)
 
 		// If there is already a definition file, blow up
@@ -148,9 +148,9 @@ export default class ErrorCommand extends AbstractCommand {
 
 		//Generate error option types based on new file
 		const {
-			pascalName,
+			namePascal,
 			definition,
-			camelName
+			nameCamel
 		} = await this.generators.schema.generateTypesFromDefinitionFile(
 			errorDefinitionFileDestination,
 			this.resolvePath(typesDestinationDir),
@@ -170,13 +170,13 @@ export default class ErrorCommand extends AbstractCommand {
 		})
 
 		// Give an example
-		this.utilities.terminal.headline(`${names.pascalName} examples:`)
+		this.utilities.terminal.headline(`${names.namePascal} examples:`)
 
 		this.utilities.terminal.writeLn('')
 		this.utilities.terminal.codeSample(
 			this.templates.errorExample({
-				pascalName,
-				camelName,
+				namePascal,
+				nameCamel,
 				definition
 			})
 		)
@@ -195,9 +195,9 @@ export default class ErrorCommand extends AbstractCommand {
 
 		const matches = await globby(search)
 		const allErrors: {
-			pascalName: string
+			namePascal: string
 			description: string
-			readableName: string
+			nameReadable: string
 		}[] = []
 
 		// Make sure error module is installed
@@ -224,11 +224,11 @@ export default class ErrorCommand extends AbstractCommand {
 
 				//Generate error option types based on new file
 				const {
-					pascalName,
-					camelName,
+					namePascal,
+					nameCamel,
 					definition,
 					description,
-					readableName
+					nameReadable
 				} = await this.generators.schema.generateTypesFromDefinitionFile(
 					filePath,
 					this.resolvePath(typesDestinationDir),
@@ -236,18 +236,18 @@ export default class ErrorCommand extends AbstractCommand {
 				)
 
 				// Tell them how to use it
-				this.utilities.terminal.headline(`${pascalName}Error examples:`)
+				this.utilities.terminal.headline(`${namePascal}Error examples:`)
 
 				this.utilities.terminal.writeLn('')
 				this.utilities.terminal.codeSample(
-					this.templates.errorExample({ pascalName, camelName, definition })
+					this.templates.errorExample({ namePascal, nameCamel, definition })
 				)
 
 				this.utilities.terminal.writeLn('')
 				this.utilities.terminal.writeLn('')
 
 				// Track all errors
-				allErrors.push({ pascalName, readableName, description })
+				allErrors.push({ namePascal, nameReadable, description })
 			})
 		)
 

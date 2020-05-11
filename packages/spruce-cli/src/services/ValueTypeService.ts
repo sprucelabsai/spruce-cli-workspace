@@ -99,7 +99,7 @@ export default class ValueTypeService extends AbstractService {
 							code += `
 
 							// Rendering ${definition.id}:${fieldName} as ${renderAs} ${
-								fieldTemplateItem.pascalName
+								fieldTemplateItem.namePascal
 							}
 							definition = ${JSON.stringify(fieldDefinition)}
 							renderAs = '${renderAs}'

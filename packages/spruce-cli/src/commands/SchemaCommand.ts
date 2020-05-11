@@ -254,26 +254,26 @@ export default class SchemaCommand extends AbstractCommand {
 
 	/** Define a new schema */
 	public async create(name: string | undefined, cmd: Command) {
-		const readableName = name
+		const nameReadable = name
 
-		let camelName = ''
-		let pascalName = ''
+		let nameCamel = ''
+		let namePascal = ''
 
 		let showOverview = false
 
 		// If they passed a name, show overview
-		if (readableName) {
+		if (nameReadable) {
 			showOverview = true
-			camelName = this.utilities.names.toCamel(readableName)
-			pascalName = this.utilities.names.toPascal(camelName)
+			nameCamel = this.utilities.names.toCamel(nameReadable)
+			namePascal = this.utilities.names.toPascal(nameCamel)
 		}
 
 		const form = this.formBuilder({
 			definition: SpruceSchemas.Local.NamedTemplateItem.definition,
 			initialValues: {
-				readableName,
-				camelName,
-				pascalName
+				nameReadable,
+				nameCamel,
+				namePascal
 			},
 			// TODO
 			// @ts-ignore
@@ -285,7 +285,7 @@ export default class SchemaCommand extends AbstractCommand {
 		// All the values
 		const values = await form.present({
 			showOverview,
-			fields: ['readableName', 'camelName', 'pascalName', 'description']
+			fields: ['nameReadable', 'nameCamel', 'namePascal', 'description']
 		})
 
 		// Make sure schema module is installed
@@ -302,7 +302,7 @@ export default class SchemaCommand extends AbstractCommand {
 		// Build paths
 		const definitionDestination = this.resolvePath(
 			cmd.definitionDestinationDir as string,
-			`${values.camelName}.definition.ts`
+			`${values.nameCamel}.definition.ts`
 		)
 		const typesDestination = this.resolvePath(cmd.typesDestinationDir as string)
 		const definition = templates.definition(values)

@@ -25,10 +25,10 @@ export default class SchemaGenerator extends AbstractGenerator {
 		destinationDir: string,
 		template: 'errorTypes' = 'errorTypes'
 	): Promise<{
-		camelName: string
-		pascalName: string
+		nameCamel: string
+		namePascal: string
 		description: string
-		readableName: string
+		nameReadable: string
 		definition: ISchemaDefinition
 		generatedFiles: {
 			schemaTypes: string
@@ -38,14 +38,14 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 		//Get variations on name
 		const {
-			camelName,
-			pascalName,
-			readableName
+			nameCamel,
+			namePascal,
+			nameReadable
 		} = this.utilities.schema.generateNames(definition)
 		const description = definition.description
 
 		// Files
-		const newFileName = `${camelName}.types.ts`
+		const newFileName = `${nameCamel}.types.ts`
 		const destination = path.join(destinationDir, newFileName)
 
 		// Relative paths
@@ -63,8 +63,8 @@ export default class SchemaGenerator extends AbstractGenerator {
 		const contents = this.templates[template]({
 			schemaTemplateItems,
 			definition,
-			camelName,
-			pascalName,
+			nameCamel,
+			namePascal,
 			description:
 				description || `Description missing in schema defined in ${sourceFile}`,
 			relativeToDefinition: relativeToDefinition.replace(
@@ -80,11 +80,11 @@ export default class SchemaGenerator extends AbstractGenerator {
 		this.writeFile(destination, contents)
 
 		return {
-			camelName,
-			pascalName,
+			nameCamel,
+			namePascal,
 			definition,
 			description: description || '*definition missing*',
-			readableName,
+			nameReadable,
 			generatedFiles: {
 				schemaTypes: destination
 			}

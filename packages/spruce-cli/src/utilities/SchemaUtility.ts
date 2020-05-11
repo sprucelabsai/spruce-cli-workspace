@@ -17,9 +17,9 @@ export default class SchemaUtility extends AbstractUtility {
 	/** Generate interface and type names based off schema name */
 	public generateNames(definition: ISchemaDefinition): ISchemaTemplateNames {
 		return {
-			pascalName: toPascal(definition.id),
-			camelName: toCamel(definition.id),
-			readableName: definition.name
+			namePascal: toPascal(definition.id),
+			nameCamel: toCamel(definition.id),
+			nameReadable: definition.name
 		}
 	}
 
