@@ -90,8 +90,8 @@ export default class AutoloaderCommand extends AbstractCommand {
 
 		await this.services.lint.fix(filename)
 
-		this.utilities.terminal.headline('Autoloader Created 🎉')
-		this.utilities.terminal.codeSample(
+		this.term.headline('Autoloader Created 🎉')
+		this.term.codeSample(
 			`import ${fileName}Autoloader from '#spruce/autoloaders/${fileName}'\nconst ${fileName} = await ${fileName}Autoloader({ constructorOptions: options })`
 		)
 	}

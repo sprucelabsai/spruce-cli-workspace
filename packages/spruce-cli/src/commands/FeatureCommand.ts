@@ -18,7 +18,7 @@ export default class FeatureCommand extends AbstractCommand {
 			label: f.description
 		}))
 
-		const choice = await this.utilities.terminal.prompt({
+		const choice = await this.term.prompt({
 			type: FieldType.Select,
 			label: 'Which feature should be installed?',
 			isRequired: true,

@@ -6,9 +6,10 @@ import featuresAutoloader, {
 } from '#spruce/autoloaders/features'
 import FormBuilder, { IFormOptions } from '../builders/FormBuilder'
 import log from '../lib/log'
-import AbstractService from './AbstractService'
+import AbstractService, { IServiceOptions } from './AbstractService'
 import { IFeaturePackage } from '../features/AbstractFeature'
 import { IServices } from '#spruce/autoloaders/services'
+import TerminalUtility from '../utilities/TerminalUtility'
 
 interface IInstallFeature {
 	feature: Feature
@@ -17,6 +18,8 @@ interface IInstallFeature {
 
 export default class FeatureService extends AbstractService {
 	private features!: IFeatures
+	/** Convenience method that references this.utilities.terminal */
+	private term: TerminalUtility
 
 	public get cwd() {
 		return this._cwd
@@ -31,6 +34,11 @@ export default class FeatureService extends AbstractService {
 				})
 			}
 		}
+	}
+
+	public constructor(options: IServiceOptions) {
+		super(options)
+		this.term = this.utilities.terminal
 	}
 
 	public async afterAutoload(siblings: IServices) {
@@ -159,9 +167,7 @@ export default class FeatureService extends AbstractService {
 
 	private async installFeature(installFeature: IInstallFeature): Promise<void> {
 		const feature = this.features[installFeature.feature]
-		this.utilities.terminal.info(
-			`Beginning feature installation: ${installFeature.feature}`
-		)
+		this.term.info(`Beginning feature installation: ${installFeature.feature}`)
 		let optionsSchema: ISchemaDefinition | undefined
 		let isValid = false
 		if (feature.optionsSchema) {
@@ -203,15 +209,13 @@ export default class FeatureService extends AbstractService {
 			)
 		}
 
-		this.utilities.terminal.startLoading(
-			`[${installFeature.feature}]: Starting installation`
-		)
+		this.term.startLoading(`[${installFeature.feature}]: Starting installation`)
 		await feature.beforePackageInstall({
 			// TODO: Figure out how to get the right type here
 			// @ts-ignore
 			answers
 		})
-		this.utilities.terminal.stopLoading()
+		this.term.stopLoading()
 
 		const packagesToInstall: string[] = []
 		const devPackagesToInstall: string[] = []
@@ -234,35 +238,31 @@ export default class FeatureService extends AbstractService {
 		})
 
 		if (packagesToInstall.length > 0) {
-			this.utilities.terminal.startLoading(
+			this.term.startLoading(
 				`[${installFeature.feature}]: Installing package.json dependencies`
 			)
 			await this.services.pkg.install(packagesToInstall)
-			this.utilities.terminal.stopLoading()
+			this.term.stopLoading()
 		}
 		if (devPackagesToInstall.length > 0) {
-			this.utilities.terminal.startLoading(
+			this.term.startLoading(
 				`[${installFeature.feature}]: Installing package.json devDependencies`
 			)
 			await this.services.pkg.install(devPackagesToInstall, {
 				dev: true
 			})
-			this.utilities.terminal.stopLoading()
+			this.term.stopLoading()
 		}
 
-		this.utilities.terminal.startLoading(
-			`[${installFeature.feature}]: Finishing up`
-		)
+		this.term.startLoading(`[${installFeature.feature}]: Finishing up`)
 		await feature.afterPackageInstall({
 			// TODO: Figure out how to get the right type here
 			// @ts-ignore
 			answers
 		})
-		this.utilities.terminal.stopLoading()
+		this.term.stopLoading()
 
-		this.utilities.terminal.info(
-			`Feature installation complete: ${installFeature.feature}`
-		)
+		this.term.info(`Feature installation complete: ${installFeature.feature}`)
 	}
 
 	/** Sorts installation features for dependency order. Mutates the array. */

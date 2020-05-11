@@ -11,6 +11,7 @@ import Autoloadable from '../Autoloadable'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
 import { WriteMode } from '../types/cli'
+import TerminalUtility from '../utilities/TerminalUtility'
 
 export interface IFeatureOptions {
 	cwd: string
@@ -39,6 +40,9 @@ export default abstract class AbstractFeature<
 
 	public optionsSchema?: () => ISchemaDefinition
 
+	/** Convenience method that references this.utilities.terminal */
+	protected term: TerminalUtility
+
 	protected utilities: IUtilities
 	protected services: IServices
 	protected templates: Templates
@@ -52,6 +56,8 @@ export default abstract class AbstractFeature<
 		this.templates = options.templates
 		this.utilities = options.utilities
 		this.services = options.services
+
+		this.term = this.utilities.terminal
 	}
 
 	/** Called before packages have been installed */

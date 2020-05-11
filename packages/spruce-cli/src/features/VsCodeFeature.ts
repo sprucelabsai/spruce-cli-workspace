@@ -22,11 +22,11 @@ export default class VSCodeFeature extends AbstractFeature {
 	]
 
 	public async beforePackageInstall() {
-		this.utilities.terminal.startLoading('Creating VSCode config files')
+		this.term.startLoading('Creating VSCode config files')
 		await this.writeDirectoryTemplate({
 			template: TemplateKind.VSCode
 		})
-		this.utilities.terminal.stopLoading()
+		this.term.stopLoading()
 	}
 
 	public async isInstalled(
@@ -48,9 +48,9 @@ export default class VSCodeFeature extends AbstractFeature {
 	}
 
 	public async afterPackageInstall() {
-		this.utilities.terminal.startLoading('Installing VSCode extensions')
+		this.term.startLoading('Installing VSCode extensions')
 		await this.installMissingExtensions()
-		this.utilities.terminal.stopLoading()
+		this.term.stopLoading()
 	}
 
 	private async installMissingExtensions() {

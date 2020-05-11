@@ -65,7 +65,7 @@ export default class SchemaCommand extends AbstractCommand {
 			]
 		})
 		this.utilities.tsConfig.setupForSchemas()
-		this.utilities.terminal.startLoading('Fetching schemas and field types')
+		this.term.startLoading('Fetching schemas and field types')
 
 		// Load schemas
 		const {
@@ -74,7 +74,7 @@ export default class SchemaCommand extends AbstractCommand {
 		} = await this.stores.schema.schemaTemplateItems()
 
 		if (schemaTemplateItems.length === 0) {
-			this.utilities.terminal.crit(
+			this.term.crit(
 				`For some reason I couldn't load any schema definitions, not ever the core ones. Try https://github.com/sprucelabsai/spruce-cli-workspace/issues for some insights`
 			)
 			return
@@ -86,33 +86,33 @@ export default class SchemaCommand extends AbstractCommand {
 			errors: fieldTemplateErrors
 		} = await this.stores.schema.fieldTemplateItems()
 
-		this.utilities.terminal.stopLoading()
+		this.term.stopLoading()
 
 		if (schemaTemplateItems.length === 0) {
-			this.utilities.terminal.crit(
+			this.term.crit(
 				`For some reason I couldn't load any schema fields (like text or number), not ever the core ones. Try https://github.com/sprucelabsai/spruce-cli-workspace/issues for some insights`
 			)
 			return
 		}
 
 		if (schemaTemplateErrors.length > 0 && !force) {
-			this.utilities.terminal.warn(
+			this.term.warn(
 				`I had trouble loading all your schema definitions, but I think I can continue.`
 			)
-			let confirm = await this.utilities.terminal.confirm(
+			let confirm = await this.term.confirm(
 				'Do you to review the errors with me real quick? (Y to review, N to move on)'
 			)
 
 			if (confirm) {
 				do {
-					this.utilities.terminal.handleError(schemaTemplateErrors[0])
+					this.term.handleError(schemaTemplateErrors[0])
 					schemaTemplateErrors.pop()
-					await this.utilities.terminal.confirm(
+					await this.term.confirm(
 						schemaTemplateErrors.length === 0 ? 'Done' : 'Next'
 					)
 				} while (schemaTemplateErrors.length > 0)
 
-				confirm = await this.utilities.terminal.confirm(
+				confirm = await this.term.confirm(
 					`Ok, ready for me to try to generate the types for the ${schemaTemplateItems.length} definitions I was able to load?`
 				)
 
@@ -123,23 +123,23 @@ export default class SchemaCommand extends AbstractCommand {
 		}
 
 		if (fieldTemplateErrors.length > 0 && !force) {
-			this.utilities.terminal.warn(
+			this.term.warn(
 				`It looks like you are introducing some fields to the system, but I can't seem to load ${fieldTemplateErrors.length} of them. This may make it impossible to import local definitions (but I might still be able to write core files).`
 			)
-			let confirm = await this.utilities.terminal.confirm(
+			let confirm = await this.term.confirm(
 				'Do you want to review the errors with me real quick? (Y to review, N to move on)'
 			)
 
 			if (confirm) {
 				do {
-					this.utilities.terminal.handleError(fieldTemplateErrors[0])
+					this.term.handleError(fieldTemplateErrors[0])
 					fieldTemplateErrors.pop()
-					await this.utilities.terminal.confirm(
+					await this.term.confirm(
 						fieldTemplateErrors.length === 0 ? 'Done' : 'Next'
 					)
 				} while (fieldTemplateErrors.length > 0)
 
-				confirm = await this.utilities.terminal.confirm(
+				confirm = await this.term.confirm(
 					`Ok, you quit to fix the errors above or hit Enter to have me give it my maximum effort!`
 				)
 
@@ -159,7 +159,7 @@ export default class SchemaCommand extends AbstractCommand {
 		// 	console.log('TODO Bring back clear')
 		// }
 
-		this.utilities.terminal.startLoading(
+		this.term.startLoading(
 			`Found ${schemaTemplateItems.length} schema definitions and ${fieldTemplateItems.length} field types, writing files in 2 stages.`
 		)
 
@@ -179,26 +179,24 @@ export default class SchemaCommand extends AbstractCommand {
 			errors.push(...results.errors)
 		})
 
-		this.utilities.terminal.stopLoading()
+		this.term.stopLoading()
 		if (errors.length > 0) {
-			this.utilities.terminal.writeLn(
-				`Done generating files but hit some errors. 👇`
-			)
+			this.term.writeLn(`Done generating files but hit some errors. 👇`)
 		} else {
-			this.utilities.terminal.writeLn(
+			this.term.writeLn(
 				`Done generating files. You can begin using them while they are being prettied.`
 			)
 		}
 
 		// If the first stage error'ed, we're in trouble
 		if (resultsByStage[0].errors.length > 0) {
-			this.utilities.terminal.crit(
+			this.term.crit(
 				`Warning! Core stage failure. Run \`y global update spruce\` and then try again. If the problem persists, visit https://github.com/sprucelabsai/spruce-cli-workspace/issues`
 			)
-			errors.map(err => this.utilities.terminal.handleError(err))
+			errors.map(err => this.term.handleError(err))
 			return
 		} else if (errors.length > 0) {
-			this.utilities.terminal.error(
+			this.term.error(
 				`I hit ${errors.length} errors while generating type files.`
 			)
 		}
@@ -207,45 +205,43 @@ export default class SchemaCommand extends AbstractCommand {
 			errors.forEach(err => {
 				const { options } = err
 				if (options.code === ErrorCode.ValueTypeServiceStageError) {
-					this.utilities.terminal.error(
-						`Error mapping stage on stage "${options.stage}"`
-					)
+					this.term.error(`Error mapping stage on stage "${options.stage}"`)
 				} else if (options.code === ErrorCode.ValueTypeServiceError) {
-					this.utilities.terminal.error(`Error on schemaId ${options.schemaId}`)
+					this.term.error(`Error on schemaId ${options.schemaId}`)
 				}
-				this.utilities.terminal.handleError(err)
+				this.term.handleError(err)
 			})
 		}
 
-		this.utilities.terminal.startLoading('Prettying generated files...')
+		this.term.startLoading('Prettying generated files...')
 		const destinationDirPattern = path.join(destinationDir, '**', '*')
 		await this.services.lint.fix(destinationDirPattern)
 
-		this.utilities.terminal.stopLoading()
+		this.term.stopLoading()
 
-		this.utilities.terminal.clear()
-		this.utilities.terminal.info(
+		this.term.clear()
+		this.term.info(
 			`All done 👊.${
 				errors.length > 0
 					? ` But, I encountered ${errors.length} errors (see above). Lastly,`
 					: ''
 			} I created ${Object.keys(results.generatedFiles).length} files.`
 		)
-		this.utilities.terminal.bar()
-		this.utilities.terminal.info(
+		this.term.bar()
+		this.term.info(
 			`1. ${chalk.bold('Schema definitions')}: ${
 				results.generatedFiles.schemaTypes
 			}`
 		)
-		this.utilities.terminal.info(
+		this.term.info(
 			`2. ${chalk.bold('Field definitions')}: ${
 				results.generatedFiles.fieldsTypes
 			}`
 		)
-		this.utilities.terminal.info(
+		this.term.info(
 			`3. ${chalk.bold('Field type enum')}: ${results.generatedFiles.fieldType}`
 		)
-		this.utilities.terminal.info(
+		this.term.info(
 			`4. ${chalk.bold('Field class map')}: ${
 				results.generatedFiles.fieldClassMap
 			}`
@@ -289,7 +285,7 @@ export default class SchemaCommand extends AbstractCommand {
 		})
 
 		// Make sure schema module is installed
-		this.utilities.terminal.startLoading('Installing dependencies')
+		this.term.startLoading('Installing dependencies')
 		await this.services.feature.install({
 			features: [
 				{
@@ -297,7 +293,7 @@ export default class SchemaCommand extends AbstractCommand {
 				}
 			]
 		})
-		this.utilities.terminal.stopLoading()
+		this.term.stopLoading()
 
 		// Build paths
 		const definitionDestination = this.resolvePath(
@@ -309,23 +305,21 @@ export default class SchemaCommand extends AbstractCommand {
 
 		await this.writeFile(definitionDestination, definition)
 
-		this.utilities.terminal.info(
-			`Definition created at ${definitionDestination}`
-		)
+		this.term.info(`Definition created at ${definitionDestination}`)
 
 		// TODO don't call one command from another
 		try {
 			cmd.destinationDir = typesDestination
 			await this.sync(cmd)
 		} catch (err) {
-			this.utilities.terminal.stopLoading()
-			this.utilities.terminal.warn(
+			this.term.stopLoading()
+			this.term.warn(
 				'I was not able to sync it with #spruce/schemas/schemas.types'
 			)
-			this.utilities.terminal.warn(
+			this.term.warn(
 				"You won't be able to use your new definition until the below error is fixed and you run `spruce schema:sync`"
 			)
-			this.utilities.terminal.handleError(err)
+			this.term.handleError(err)
 		}
 	}
 }

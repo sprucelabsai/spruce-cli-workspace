@@ -79,7 +79,7 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 
 		fs.outputFileSync(destination, contents)
 
-		this.utilities.terminal.info(`Test file created at: ${destination}`)
+		this.term.info(`Test file created at: ${destination}`)
 	}
 
 	// TODO

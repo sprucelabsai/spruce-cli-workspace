@@ -28,6 +28,6 @@ export default class TestCommand extends AbstractCommand {
 			]
 		})
 
-		this.utilities.terminal.hint('Try `yarn test` or `yarn test:watch`')
+		this.term.hint('Try `yarn test` or `yarn test:watch`')
 	}
 }
