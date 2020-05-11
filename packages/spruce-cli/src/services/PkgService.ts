@@ -5,7 +5,7 @@ import { set } from 'lodash'
 import log from '../lib/log'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
-import { WriteMode } from '../features/AbstractFeature'
+import { WriteMode } from '../types/cli'
 
 export interface IAddOptions {
 	dev?: boolean

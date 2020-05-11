@@ -3,9 +3,10 @@ import path from 'path'
 import os from 'os'
 import { TemplateDirectory, TemplateKind } from '@sprucelabs/spruce-templates'
 import log from '../lib/log'
-import AbstractFeature, { IFeaturePackage, WriteMode } from './AbstractFeature'
+import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import { WriteMode } from '../types/cli'
 
 type SkillFeatureType = typeof SpruceSchemas.Local.SkillFeature.definition
 

@@ -10,6 +10,7 @@ import log from '../lib/log'
 import Autoloadable from '../Autoloadable'
 import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
+import { WriteMode } from '../types/cli'
 
 export interface IFeatureOptions {
 	cwd: string
@@ -26,19 +27,6 @@ export interface IFeaturePackage {
 	/** Whether to install this in "devDependencies" */
 	isDev?: boolean
 }
-
-export enum WriteMode {
-	/** Throw an error if it already exists. This is the default behavior */
-	Throw = 'throw',
-	/** Overwrite it */
-	Overwrite = 'overwrite',
-	/** Skip it if it exists */
-	Skip = 'skip'
-}
-
-// export interface IAbstractFeature<S extends ISchemaDefinition> {
-// 	optionsSchema: S
-// }
 
 export default abstract class AbstractFeature<
 	S extends ISchemaDefinition = any
