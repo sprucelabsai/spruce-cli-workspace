@@ -113,6 +113,8 @@
 	},
 	"jest": {
 		"preset": "ts-jest",
+		"cache": false,
+		"maxWorkers": 4,
 		"testTimeout": 30000,
 		"testEnvironment": "node",
 		"testPathIgnorePatterns": [

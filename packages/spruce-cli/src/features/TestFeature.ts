@@ -50,6 +50,9 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 
 		const jestConfig = {
 			preset: 'ts-jest',
+			cache: false,
+			maxWorkers: 4,
+			testTimeout: 30000,
 			testEnvironment: 'node',
 			testPathIgnorePatterns: ['<rootDir>/build/', '<rootDir>/node_modules/'],
 			moduleNameMapper: {
