@@ -1,6 +1,6 @@
-import AbstractUtility from './AbstractUtility'
 import pathUtil from 'path'
 import fs from 'fs-extra'
+import AbstractUtility from './AbstractUtility'
 
 export default class TsConfigUtility extends AbstractUtility {
 	/** Set path aliases for lookup */

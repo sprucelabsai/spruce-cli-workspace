@@ -1,11 +1,11 @@
-import * as ts from 'typescript'
+import globby from 'globby'
 import _ from 'lodash'
 import * as tsutils from 'tsutils'
-import log from '../lib/log'
-import globby from 'globby'
-import { isReservedWord } from '../lib/reservedWords'
-import SpruceError from '../errors/SpruceError'
+import * as ts from 'typescript'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
+import SpruceError from '../errors/SpruceError'
+import log from '../lib/log'
+import { isReservedWord } from '../lib/reservedWords'
 import AbstractUtility from './AbstractUtility'
 
 interface IDocEntry {

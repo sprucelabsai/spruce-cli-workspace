@@ -1,9 +1,9 @@
 import { Mercury } from '@sprucelabs/mercury'
 import { Templates } from '@sprucelabs/spruce-templates'
-import { IUtilities } from '#spruce/autoloaders/utilities'
 import { IServices } from '#spruce/autoloaders/services'
-import log from '../lib/log'
+import { IUtilities } from '#spruce/autoloaders/utilities'
 import Autoloadable from '../Autoloadable'
+import log from '../lib/log'
 
 export interface IServiceOptions {
 	cwd: string

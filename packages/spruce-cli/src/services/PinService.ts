@@ -1,7 +1,7 @@
-import AbstractService from './AbstractService'
-import { SpruceEvents } from '../types/events-generated'
-import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
+import SpruceError from '../errors/SpruceError'
+import { SpruceEvents } from '../types/events-generated'
+import AbstractService from './AbstractService'
 
 export default class PinService extends AbstractService {
 	/** Give me a phone and i'll send you a pin */

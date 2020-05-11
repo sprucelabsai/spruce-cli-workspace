@@ -1,6 +1,6 @@
 import { ISchemaDefinition, FieldType } from '@sprucelabs/schema'
-import { RoleSelectChoices } from './role.definition'
 import aclDefinition from './acl.definition'
+import { RoleSelectChoices } from './role.definition'
 
 /** A permission keyed by skill slug or "core" and values are an array of permission keys starting with "can-" */
 const jobDefinition: ISchemaDefinition = {

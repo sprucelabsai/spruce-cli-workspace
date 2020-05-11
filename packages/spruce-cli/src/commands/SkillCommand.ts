@@ -1,12 +1,12 @@
-import { Command } from 'commander'
 import path from 'path'
-import log from '../lib/log'
-import AbstractCommand from './AbstractCommand'
 import { ISelectFieldDefinitionChoice, FieldType } from '@sprucelabs/schema'
-import { StoreAuth } from '../stores/AbstractStore'
-import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '#spruce/errors/codes.types'
+import { Command } from 'commander'
 import { Feature } from '#spruce/autoloaders/features'
+import { ErrorCode } from '#spruce/errors/codes.types'
+import SpruceError from '../errors/SpruceError'
+import log from '../lib/log'
+import { StoreAuth } from '../stores/AbstractStore'
+import AbstractCommand from './AbstractCommand'
 
 export default class SkillCommand extends AbstractCommand {
 	/** Sets up commands */

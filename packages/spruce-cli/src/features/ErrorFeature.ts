@@ -1,5 +1,5 @@
-import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
 import { Feature } from '../../.spruce/autoloaders/features'
+import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
 
 export default class ErrorFeature extends AbstractFeature {
 	public description =

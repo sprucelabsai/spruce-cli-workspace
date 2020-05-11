@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import readline from 'readline'
-import _ from 'lodash'
-import { Command } from 'commander'
-import chokidar, { FSWatcher } from 'chokidar'
-import minimatch from 'minimatch'
-import AbstractCommand from './AbstractCommand'
-import log from '../lib/log'
 import { FieldType } from '@sprucelabs/schema'
+import chokidar, { FSWatcher } from 'chokidar'
+import { Command } from 'commander'
+import _ from 'lodash'
+import minimatch from 'minimatch'
+import log from '../lib/log'
 import { IWatchers } from '../stores/WatcherStore'
 import { ITerminalEffect } from '../utilities/TerminalUtility'
+import AbstractCommand from './AbstractCommand'
 
 enum WatchAction {
 	Add = 'a',

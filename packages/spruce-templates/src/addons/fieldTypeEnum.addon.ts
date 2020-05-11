@@ -1,6 +1,6 @@
-import handlebars from 'handlebars'
 import { FieldDefinition } from '@sprucelabs/schema'
 import { IFieldTemplateItem } from '@sprucelabs/schema/build/template.types'
+import handlebars from 'handlebars'
 
 /* The enum for schema.fields.fieldName.type as a string */
 handlebars.registerHelper('fieldTypeEnum', function(

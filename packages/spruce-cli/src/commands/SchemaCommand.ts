@@ -1,12 +1,12 @@
-import { Command } from 'commander'
 import path from 'path'
-import AbstractCommand from './AbstractCommand'
 import { templates } from '@sprucelabs/spruce-templates'
+import chalk from 'chalk'
+import { Command } from 'commander'
+import { Feature } from '#spruce/autoloaders/features'
+import { ErrorCode } from '#spruce/errors/codes.types'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '#spruce/errors/codes.types'
-import { Feature } from '#spruce/autoloaders/features'
-import chalk from 'chalk'
+import AbstractCommand from './AbstractCommand'
 
 export default class SchemaCommand extends AbstractCommand {
 	/** Sets up commands */

@@ -1,42 +1,39 @@
 #!/usr/bin/env node
-
+// eslint-disable-next-line import/order
 import { register } from '@sprucelabs/path-resolver'
 register({
 	cwd: __dirname,
 	extensions: ['.js', '.ts']
 })
-
 // Shim
+// eslint-disable-next-line import/order
 import allSettled from 'promise.allsettled'
 allSettled.shim()
-
-import { Command } from 'commander'
-import { templates } from '@sprucelabs/spruce-templates'
 import {
 	Mercury,
 	IMercuryConnectOptions,
 	MercuryAuth
 } from '@sprucelabs/mercury'
-import { terminal } from './utilities/TerminalUtility'
-import pkg from '../package.json'
-import log from './lib/log'
-import path from './lib/path'
-import { StoreAuth, IStoreOptions } from './stores/AbstractStore'
-import { IGeneratorOptions } from './generators/AbstractGenerator'
-import SpruceError from './errors/SpruceError'
-import { ErrorCode } from '#spruce/errors/codes.types'
-import { IUtilityOptions } from './utilities/AbstractUtility'
-import { IServiceOptions } from './services/AbstractService'
-
+import { templates } from '@sprucelabs/spruce-templates'
+import { Command } from 'commander'
 import commandsLoader from '#spruce/autoloaders/commands'
 import generatorsLoader from '#spruce/autoloaders/generators'
+import servicesAutoloader from '#spruce/autoloaders/services'
 import storesAutoLoader from '#spruce/autoloaders/stores'
 import utilitiesAutoloader from '#spruce/autoloaders/utilities'
-import servicesAutoloader from '#spruce/autoloaders/services'
-
+import { ErrorCode } from '#spruce/errors/codes.types'
+import pkg from '../package.json'
 /** Addons */
 import './addons/filePrompt.addon'
 import Autoloadable from './Autoloadable'
+import SpruceError from './errors/SpruceError'
+import { IGeneratorOptions } from './generators/AbstractGenerator'
+import log from './lib/log'
+import path from './lib/path'
+import { IServiceOptions } from './services/AbstractService'
+import { StoreAuth, IStoreOptions } from './stores/AbstractStore'
+import { IUtilityOptions } from './utilities/AbstractUtility'
+import { terminal } from './utilities/TerminalUtility'
 
 export async function setup(options?: { program?: Command; cwd?: string }) {
 	const program = options?.program

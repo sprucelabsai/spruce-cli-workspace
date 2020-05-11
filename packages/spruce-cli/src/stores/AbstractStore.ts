@@ -1,11 +1,11 @@
 import fs from 'fs'
 import { Mercury } from '@sprucelabs/mercury'
-import log from '../lib/log'
-import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '#spruce/errors/codes.types'
-import { IUtilities } from '#spruce/autoloaders/utilities'
 import { IServices } from '#spruce/autoloaders/services'
+import { IUtilities } from '#spruce/autoloaders/utilities'
+import { ErrorCode } from '#spruce/errors/codes.types'
 import Autoloadable from '../Autoloadable'
+import SpruceError from '../errors/SpruceError'
+import log from '../lib/log'
 
 /** Are we running globally or locally? */
 export enum StoreScope {

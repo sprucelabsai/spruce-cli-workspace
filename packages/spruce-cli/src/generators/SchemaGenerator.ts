@@ -1,10 +1,10 @@
-import AbstractGenerator from './AbstractGenerator'
+import path from 'path'
 import { ISchemaDefinition } from '@sprucelabs/schema'
 import { IFieldTemplateItem, ISchemaTemplateItem } from '@sprucelabs/schema'
 import { templates } from '@sprucelabs/spruce-templates'
-import path from 'path'
 import { ErrorCode } from '../../.spruce/errors/codes.types'
 import SpruceError from '../errors/SpruceError'
+import AbstractGenerator from './AbstractGenerator'
 
 export interface IGenerateSchemaTypesOptions {
 	fieldTemplateItems: IFieldTemplateItem[]

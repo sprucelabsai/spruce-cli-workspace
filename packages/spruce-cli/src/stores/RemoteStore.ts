@@ -1,11 +1,11 @@
-import AbstractStore, {
-	IBaseStoreSettings,
-	IStoreOptions
-} from './AbstractStore'
 import Schema, {
 	FieldType,
 	ISelectFieldDefinitionChoice
 } from '@sprucelabs/schema'
+import AbstractStore, {
+	IBaseStoreSettings,
+	IStoreOptions
+} from './AbstractStore'
 
 export enum RemoteStoreRemoteType {
 	Production = 'production',

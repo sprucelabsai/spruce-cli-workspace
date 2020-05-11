@@ -1,7 +1,7 @@
 import { TemplateKind } from '@sprucelabs/spruce-templates'
 import log from '../lib/log'
-import AbstractFeature from './AbstractFeature'
 import { IExtension } from '../services/VsCodeService'
+import AbstractFeature from './AbstractFeature'
 
 export default class VSCodeFeature extends AbstractFeature {
 	public description = 'VSCode: Create settings and install VSCode extensions'

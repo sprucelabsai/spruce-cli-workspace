@@ -1,6 +1,6 @@
-import AbstractCommand from './AbstractCommand'
-import { Command } from 'commander'
 import { FieldType } from '@sprucelabs/schema'
+import { Command } from 'commander'
+import AbstractCommand from './AbstractCommand'
 
 export default class OnboardingCommand extends AbstractCommand {
 	public attachCommands(program: Command) {

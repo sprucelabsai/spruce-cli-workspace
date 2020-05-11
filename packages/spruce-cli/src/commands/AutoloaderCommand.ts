@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { Command } from 'commander'
 import path from 'path'
-import _ from 'lodash'
+import { Command } from 'commander'
 import inflection from 'inflection'
-import AbstractCommand from './AbstractCommand'
-import log from '../lib/log'
-import SpruceError from '../errors/SpruceError'
+import _ from 'lodash'
 import { ErrorCode } from '#spruce/errors/codes.types'
+import SpruceError from '../errors/SpruceError'
+import log from '../lib/log'
+import AbstractCommand from './AbstractCommand'
 
 export default class AutoloaderCommand extends AbstractCommand {
 	public attachCommands(program: Command): void {

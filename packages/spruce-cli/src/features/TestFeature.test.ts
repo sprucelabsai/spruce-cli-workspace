@@ -1,9 +1,9 @@
-import { test, assert } from '@sprucelabs/test'
-import uuid from 'uuid'
 import path from 'path'
+import { test, assert } from '@sprucelabs/test'
 import fs from 'fs-extra'
-import BaseTest from '../BaseTest'
+import uuid from 'uuid'
 import { Feature } from '../../.spruce/autoloaders/features'
+import BaseTest from '../BaseTest'
 
 export default class TestFeatureTest extends BaseTest {
 	@test('Can install the test feature')

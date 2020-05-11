@@ -1,5 +1,5 @@
-import BaseTest, { ISpruce, test, assert } from '@sprucelabs/test'
 import Schema from '@sprucelabs/schema'
+import BaseTest, { ISpruce, test, assert } from '@sprucelabs/test'
 import { SpruceSchemas } from '../.spruce/schemas/schemas.types'
 
 export default class IndexTest extends BaseTest {

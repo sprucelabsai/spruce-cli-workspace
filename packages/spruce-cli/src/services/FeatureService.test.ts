@@ -1,6 +1,6 @@
 import { assert, test } from '@sprucelabs/test'
-import BaseTest from '../BaseTest'
 import { Feature } from '#spruce/autoloaders/features'
+import BaseTest from '../BaseTest'
 
 export default class FeatureServiceTest extends BaseTest {
 	@test('Can get feature dependencies')

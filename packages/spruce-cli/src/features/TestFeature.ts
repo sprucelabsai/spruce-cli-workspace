@@ -1,8 +1,8 @@
 import path from 'path'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
-import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import { Feature } from '#spruce/autoloaders/features'
 import fs from 'fs-extra'
+import { Feature } from '#spruce/autoloaders/features'
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import log from '../lib/log'
 import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
 

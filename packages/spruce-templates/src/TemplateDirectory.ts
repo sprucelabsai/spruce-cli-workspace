@@ -1,7 +1,7 @@
+import fs from 'fs'
 import path from 'path'
 import globby from 'globby'
 import handlebars from 'handlebars'
-import fs from 'fs'
 import log from './lib/log'
 
 export interface IBuiltTemplateDirectory {

@@ -1,15 +1,16 @@
-import AbstractStore from './AbstractStore'
+import pathUtil from 'path'
 import {
 	ISchemaDefinition,
 	IFieldRegistration,
 	ISchemaTemplateItem,
 	IFieldTemplateItem
 } from '@sprucelabs/schema'
-
-import pathUtil from 'path'
+import Schema from '@sprucelabs/schema/build/Schema'
+import globby from 'globby'
 import { uniqBy } from 'lodash'
-
 // TODO move these into mercury api and pull from there
+import { ErrorCode } from '../../.spruce/errors/codes.types'
+import SpruceError from '../errors/SpruceError'
 import {
 	userDefinition,
 	userLocationDefinition,
@@ -18,10 +19,7 @@ import {
 	groupDefinition,
 	aclDefinition
 } from '../temporary/schemas'
-import globby from 'globby'
-import Schema from '@sprucelabs/schema/build/Schema'
-import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '../../.spruce/errors/codes.types'
+import AbstractStore from './AbstractStore'
 
 /** The mapping of type keys (string, phoneNumber) to definitions */
 // export interface IFieldTypeMap {

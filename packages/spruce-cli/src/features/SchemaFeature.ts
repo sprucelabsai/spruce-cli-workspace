@@ -1,5 +1,5 @@
-import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
 import { Feature } from '#spruce/autoloaders/features'
+import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
 
 export default class SchemaFeature extends AbstractFeature {
 	public description = 'Schema: Define data for your skill'

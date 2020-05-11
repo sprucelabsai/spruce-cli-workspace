@@ -1,7 +1,7 @@
 import { assert, test } from '@sprucelabs/test'
 import uuid from 'uuid'
-import BaseTest from '../BaseTest'
 import { Feature } from '#spruce/autoloaders/features'
+import BaseTest from '../BaseTest'
 
 export default class SchemaFeatureTest extends BaseTest {
 	@test('Properly detects when feature is not installed')

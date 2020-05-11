@@ -1,13 +1,13 @@
-import AbstractCommand from './AbstractCommand'
-import { Command } from 'commander'
-import namedTemplateItemDefinition from '../schemas/namedTemplateItem.definition'
 import path from 'path'
+import { Command } from 'commander'
 import fs from 'fs-extra'
 import globby from 'globby'
-import log from '../lib/log'
-import SpruceError from '../errors/SpruceError'
 import { ErrorCode } from '#spruce/errors/codes.types'
 import { Feature } from '../../.spruce/autoloaders/features'
+import SpruceError from '../errors/SpruceError'
+import log from '../lib/log'
+import namedTemplateItemDefinition from '../schemas/namedTemplateItem.definition'
+import AbstractCommand from './AbstractCommand'
 
 export default class ErrorCommand extends AbstractCommand {
 	public attachCommands(program: Command): void {

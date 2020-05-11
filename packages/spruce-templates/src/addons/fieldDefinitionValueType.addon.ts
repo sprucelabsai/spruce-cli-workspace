@@ -1,5 +1,5 @@
-import handlebars from 'handlebars'
 import { FieldDefinition, TemplateRenderAs } from '@sprucelabs/schema'
+import handlebars from 'handlebars'
 import { IValueTypeGenerator } from '../..'
 
 /* The type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */

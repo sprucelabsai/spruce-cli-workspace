@@ -1,11 +1,11 @@
-import AbstractStore, { IBaseStoreSettings, StoreAuth } from './AbstractStore'
-import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import { SpruceEvents } from '../types/events-generated'
+import path from 'path'
 import Schema from '@sprucelabs/schema'
 import { parse as parseEnv } from 'dotenv'
 import fs from 'fs-extra'
-import path from 'path'
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import log from '../lib/log'
+import { SpruceEvents } from '../types/events-generated'
+import AbstractStore, { IBaseStoreSettings, StoreAuth } from './AbstractStore'
 
 type ISkill = SpruceSchemas.Local.ICliSkill
 

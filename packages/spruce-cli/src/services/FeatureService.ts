@@ -1,15 +1,15 @@
-import _ from 'lodash'
 import Schema, { ISchemaDefinition } from '@sprucelabs/schema'
+import _ from 'lodash'
 import featuresAutoloader, {
 	Feature,
 	IFeatures
 } from '#spruce/autoloaders/features'
-import FormBuilder, { IFormOptions } from '../builders/FormBuilder'
-import log from '../lib/log'
-import AbstractService, { IServiceOptions } from './AbstractService'
-import { IFeaturePackage } from '../features/AbstractFeature'
 import { IServices } from '#spruce/autoloaders/services'
+import FormBuilder, { IFormOptions } from '../builders/FormBuilder'
+import { IFeaturePackage } from '../features/AbstractFeature'
+import log from '../lib/log'
 import TerminalUtility from '../utilities/TerminalUtility'
+import AbstractService, { IServiceOptions } from './AbstractService'
 
 interface IInstallFeature {
 	feature: Feature
