@@ -10,12 +10,21 @@ import Pin from '../../src/services/PinService'
 import Pkg from '../../src/services/PkgService'
 import ValueType from '../../src/services/ValueTypeService'
 import Vm from '../../src/services/VmService'
+import VsCode from '../../src/services/VsCodeService'
 
 // Import necessary interface(s)
 import { IServiceOptions } from '../../src/services/AbstractService'
 
 export interface IServices {
-	[service: string]: Child | Feature | Lint | Pin | Pkg | ValueType | Vm
+	[service: string]:
+		| Child
+		| Feature
+		| Lint
+		| Pin
+		| Pkg
+		| ValueType
+		| Vm
+		| VsCode
 	child: Child
 	feature: Feature
 	lint: Lint
@@ -23,6 +32,7 @@ export interface IServices {
 	pkg: Pkg
 	valueType: ValueType
 	vm: Vm
+	vsCode: VsCode
 }
 
 export enum Service {
@@ -32,7 +42,8 @@ export enum Service {
 	Pin = 'pin',
 	Pkg = 'pkg',
 	ValueType = 'valueType',
-	Vm = 'vm'
+	Vm = 'vm',
+	VsCode = 'vsCode'
 }
 
 export default async function autoloader(options: {
@@ -69,6 +80,10 @@ export default async function autoloader(options: {
 	if (after) {
 		await after(vm)
 	}
+	const vsCode = new VsCode(constructorOptions)
+	if (after) {
+		await after(vsCode)
+	}
 
 	const siblings: IServices = {
 		child,
@@ -77,7 +92,8 @@ export default async function autoloader(options: {
 		pin,
 		pkg,
 		valueType,
-		vm
+		vm,
+		vsCode
 	}
 
 	// @ts-ignore method is optional
@@ -114,6 +130,11 @@ export default async function autoloader(options: {
 	if (typeof vm.afterAutoload === 'function') {
 		// @ts-ignore method is optional
 		vm.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof vsCode.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		vsCode.afterAutoload(siblings)
 	}
 
 	return siblings
