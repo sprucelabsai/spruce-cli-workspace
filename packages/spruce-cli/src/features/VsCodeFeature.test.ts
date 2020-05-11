@@ -1,7 +1,6 @@
 import { assert, test } from '@sprucelabs/test'
-import path from 'path'
 import fs from 'fs-extra'
-import BaseTest from '../BaseTest'
+import BaseTest from '../BaseCliTest'
 import { Feature } from '#spruce/autoloaders/features'
 
 export default class VsCodeFeatureTest extends BaseTest {
@@ -37,7 +36,7 @@ export default class VsCodeFeatureTest extends BaseTest {
 
 		// double check exact file we'd expect
 		assert.isTrue(
-			fs.existsSync(path.join(this.cwd, '.vscode', 'settings.json'))
+			fs.existsSync(this.resolvePath(this.cwd, '.vscode', 'settings.json'))
 		)
 	}
 }
