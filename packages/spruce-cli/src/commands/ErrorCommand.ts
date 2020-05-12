@@ -24,6 +24,11 @@ export default class ErrorCommand extends AbstractCommand {
 				'Where should I write the types file that supports the error?',
 				'./.spruce/errors'
 			)
+			.option(
+				'-sl --schemaLookupDir <schemaLookupDir>',
+				'Where should I write the types file that supports the error?',
+				'.src/schemas'
+			)
 			.action(this.create.bind(this))
 
 		program
@@ -50,6 +55,11 @@ export default class ErrorCommand extends AbstractCommand {
 				'./src/errors'
 			)
 			.option(
+				'-sl --schemaLookupDir <schemaLookupDir>',
+				'Where should I write the types file that supports the error?',
+				'.src/schemas'
+			)
+			.option(
 				'-c, --clean',
 				'Clean output directory before generating errors, deleting old files.'
 			)
@@ -59,6 +69,10 @@ export default class ErrorCommand extends AbstractCommand {
 
 	// TODO allow passing of name
 	public async create(name: string | undefined, cmd: Command) {
+		const errorDestinationDir = cmd.errorDestinationDir as string
+		const typesDestinationDir = cmd.typesDestinationDir as string
+		const schemaLookupDir = cmd.schemaLookupDir as string
+
 		const form = this.formBuilder({
 			definition: namedTemplateItemDefinition,
 			initialValues: {
@@ -78,9 +92,6 @@ export default class ErrorCommand extends AbstractCommand {
 				'description'
 			]
 		})
-
-		const errorDestinationDir = cmd.errorDestinationDir as string
-		const typesDestinationDir = cmd.typesDestinationDir as string
 
 		const errorFileDestination = this.resolvePath(
 			errorDestinationDir,
@@ -154,11 +165,12 @@ export default class ErrorCommand extends AbstractCommand {
 			namePascal,
 			definition,
 			nameCamel
-		} = await this.generators.schema.generateTypesFromDefinitionFile(
-			errorDefinitionFileDestination,
-			this.resolvePath(typesDestinationDir),
-			'errorTypes'
-		)
+		} = await this.generators.schema.generateTypesFromDefinitionFile({
+			sourceFile: errorDefinitionFileDestination,
+			destinationDir: this.resolvePath(typesDestinationDir),
+			template: 'errorTypes',
+			schemaLookupDir
+		})
 
 		// Rebuild the errors codes
 		await this.generators.error.rebuildCodesTypesFile({
@@ -189,6 +201,7 @@ export default class ErrorCommand extends AbstractCommand {
 		const lookupDir = lookupDirOption || (cmd.lookupDir as string)
 		const typesDestinationDir = cmd.typesDestinationDir as string
 		const errorDestinationDir = cmd.errorDestinationDir as string
+		const schemaLookupDir = cmd.schemaLookupDir as string
 
 		const search = path.join(
 			this.resolvePath(lookupDir),
@@ -232,11 +245,12 @@ export default class ErrorCommand extends AbstractCommand {
 					definition,
 					description,
 					nameReadable
-				} = await this.generators.schema.generateTypesFromDefinitionFile(
-					filePath,
-					this.resolvePath(typesDestinationDir),
-					'errorTypes'
-				)
+				} = await this.generators.schema.generateTypesFromDefinitionFile({
+					sourceFile: filePath,
+					destinationDir: this.resolvePath(typesDestinationDir),
+					schemaLookupDir,
+					template: 'errorTypes'
+				})
 
 				// Tell them how to use it
 				this.utilities.terminal.headline(`${namePascal}Error examples:`)
