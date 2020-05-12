@@ -324,7 +324,7 @@ export default class SchemaCommand extends AbstractCommand {
 		// TODO don't call one command from another
 		try {
 			cmd.destinationDir = typesDestination
-			await this.sync(cmd)
+			await this.sync(cmd.definitionDestinationDir, cmd)
 		} catch (err) {
 			this.utilities.terminal.stopLoading()
 			this.utilities.terminal.warn(
