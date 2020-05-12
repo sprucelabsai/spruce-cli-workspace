@@ -41,7 +41,10 @@ export default class AutoloaderCommand extends AbstractCommand {
 			fullDirectory
 		})
 		// Parse all the files in the directory
-		const { filePaths, ...info } = await this.utilities.parser.parseFileGroup({
+		const {
+			filePaths,
+			...info
+		} = await this.utilities.introspection.parseFileGroup({
 			globbyPattern,
 			suffix
 		})

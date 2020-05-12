@@ -1,8 +1,8 @@
 /* eslint-disable spruce/prefer-pascal-case-enums */
 // Import base class
 import AbstractService from '../../src/services/AbstractService'
-
 // Import each matching class that will be autoloaded
+import { IServiceOptions } from '../../src/services/AbstractService'
 import Child from '../../src/services/ChildService'
 import Feature from '../../src/services/FeatureService'
 import Lint from '../../src/services/LintService'
@@ -13,7 +13,6 @@ import Vm from '../../src/services/VmService'
 import VsCode from '../../src/services/VsCodeService'
 
 // Import necessary interface(s)
-import { IServiceOptions } from '../../src/services/AbstractService'
 
 export interface IServices {
 	[service: string]:

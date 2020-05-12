@@ -42,7 +42,7 @@ interface IFileGroupInfo extends IIntermediateFileGroupInfo {
 	abstractClassRelativePath: string | null
 }
 
-export default class ParserUtility extends AbstractUtility {
+export default class IntrospectionUtility extends AbstractUtility {
 	/** Parses a group of files that follow the typical pattern of extending an abstract class */
 	public async parseFileGroup(options: {
 		globbyPattern: string

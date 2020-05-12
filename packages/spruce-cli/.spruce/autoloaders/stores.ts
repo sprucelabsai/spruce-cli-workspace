@@ -1,8 +1,8 @@
 /* eslint-disable spruce/prefer-pascal-case-enums */
 // Import base class
 import AbstractStore from '../../src/stores/AbstractStore'
-
 // Import each matching class that will be autoloaded
+import { IStoreOptions } from '../../src/stores/AbstractStore'
 import Onboarding from '../../src/stores/OnboardingStore'
 import Remote from '../../src/stores/RemoteStore'
 import Schema from '../../src/stores/SchemaStore'
@@ -11,7 +11,6 @@ import User from '../../src/stores/UserStore'
 import Watcher from '../../src/stores/WatcherStore'
 
 // Import necessary interface(s)
-import { IStoreOptions } from '../../src/stores/AbstractStore'
 
 export interface IStores {
 	[store: string]: Onboarding | Remote | Schema | Skill | User | Watcher

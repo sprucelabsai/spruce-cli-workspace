@@ -1,18 +1,25 @@
+/* eslint-disable spruce/prefer-pascal-case-enums */
 // Import base class
 import AbstractGenerator from '../../src/generators/AbstractGenerator'
-
 // Import each matching class that will be autoloaded
+import { IGeneratorOptions } from '../../src/generators/AbstractGenerator'
 import Core from '../../src/generators/CoreGenerator'
 import Error from '../../src/generators/ErrorGenerator'
 import Schema from '../../src/generators/SchemaGenerator'
 
 // Import necessary interface(s)
-import { IGeneratorOptions } from '../../src/generators/AbstractGenerator'
 
 export interface IGenerators {
+	[generator: string]: Core | Error | Schema
 	core: Core
 	error: Error
 	schema: Schema
+}
+
+export enum Generator {
+	Core = 'core',
+	Error = 'error',
+	Schema = 'schema'
 }
 
 export default async function autoloader(options: {
@@ -34,9 +41,27 @@ export default async function autoloader(options: {
 		await after(schema)
 	}
 
-	return {
+	const siblings: IGenerators = {
 		core,
 		error,
 		schema
 	}
+
+	// @ts-ignore method is optional
+	if (typeof core.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		core.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof error.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		error.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
+	if (typeof schema.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		schema.afterAutoload(siblings)
+	}
+
+	return siblings
 }

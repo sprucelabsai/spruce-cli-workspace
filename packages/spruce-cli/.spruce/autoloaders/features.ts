@@ -1,8 +1,8 @@
 /* eslint-disable spruce/prefer-pascal-case-enums */
 // Import base class
 import AbstractFeature from '../../src/features/AbstractFeature'
-
 // Import each matching class that will be autoloaded
+import { IFeatureOptions } from '../../src/features/AbstractFeature'
 import CircleCI from '../../src/features/CircleCIFeature'
 import Error from '../../src/features/ErrorFeature'
 import Schema from '../../src/features/SchemaFeature'
@@ -11,7 +11,6 @@ import Test from '../../src/features/TestFeature'
 import VSCode from '../../src/features/VsCodeFeature'
 
 // Import necessary interface(s)
-import { IFeatureOptions } from '../../src/features/AbstractFeature'
 
 export interface IFeatures {
 	[feature: string]: CircleCI | Error | Schema | Skill | Test | VSCode
