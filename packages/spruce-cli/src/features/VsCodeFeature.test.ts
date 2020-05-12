@@ -2,9 +2,9 @@ import path from 'path'
 import { assert, test } from '@sprucelabs/test'
 import fs from 'fs-extra'
 import { Feature } from '#spruce/autoloaders/features'
-import BaseTest from '../BaseTest'
+import BaseCliTest from '../BaseCliTest'
 
-export default class VsCodeFeatureTest extends BaseTest {
+export default class VsCodeFeatureTest extends BaseCliTest {
 	@test('Properly detects when feature is not installed')
 	protected static async notInstalled() {
 		const isInstalled = await this.services.feature.isInstalled({

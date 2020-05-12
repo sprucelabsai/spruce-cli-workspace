@@ -2,7 +2,7 @@ import Schema from '@sprucelabs/schema'
 import BaseTest, { ISpruce, test, assert } from '@sprucelabs/test'
 import { SpruceSchemas } from '../.spruce/schemas/schemas.types'
 
-export default class IndexTest extends BaseTest {
+export default class IndexTest extends BaseCliTest {
 	@test('Can do some trivial asserts', 'hello', 'world')
 	protected static async canAccessVarsFromDecorator(
 		spruce: ISpruce,

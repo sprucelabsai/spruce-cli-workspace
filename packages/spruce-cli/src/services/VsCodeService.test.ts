@@ -1,7 +1,7 @@
 import { assert, test } from '@sprucelabs/test'
-import BaseTest from '../BaseTest'
+import BaseCliTest from '../BaseCliTest'
 
-export default class FeatureServiceTest extends BaseTest {
+export default class FeatureServiceTest extends BaseCliTest {
 	@test('Can check if VSCode is installed')
 	protected static async getFeatureDependencies() {
 		const expectedIsInstalled = process.env.CI !== 'true'

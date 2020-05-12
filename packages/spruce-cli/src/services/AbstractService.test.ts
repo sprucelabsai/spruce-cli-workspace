@@ -1,6 +1,6 @@
 import BaseTest, { ISpruce, test, assert } from '@sprucelabs/test'
 
-export default class AbstractServiceTest extends BaseTest {
+export default class AbstractServiceTest extends BaseCliTest {
 	@test('Can do some trivial asserts', 'hello', 'world')
 	protected static async canAccessVarsFromDecorator(
 		spruce: ISpruce,

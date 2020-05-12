@@ -1,8 +1,8 @@
 import { assert, test } from '@sprucelabs/test'
 import { Feature } from '#spruce/autoloaders/features'
-import BaseTest from '../BaseTest'
+import BaseCliTest from '../BaseCliTest'
 
-export default class FeatureServiceTest extends BaseTest {
+export default class FeatureServiceTest extends BaseCliTest {
 	@test('Can get feature dependencies')
 	protected static async getFeatureDependencies() {
 		const dependencies = this.services.feature.getFeatureDependencies({
