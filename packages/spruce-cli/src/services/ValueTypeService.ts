@@ -8,7 +8,7 @@ import {
 import { templates, importExtractor } from '@sprucelabs/spruce-templates'
 import fs from 'fs-extra'
 import sha1 from 'sha1'
-import { ErrorCode } from '../../.spruce/errors/codes.types'
+import { ErrorCode } from '#spruce/errors/codes.types'
 import SpruceError from '../errors/SpruceError'
 import AbstractService from './AbstractService'
 

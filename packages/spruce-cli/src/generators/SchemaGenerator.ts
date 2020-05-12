@@ -2,7 +2,7 @@ import path from 'path'
 import { ISchemaDefinition } from '@sprucelabs/schema'
 import { IFieldTemplateItem, ISchemaTemplateItem } from '@sprucelabs/schema'
 import { templates } from '@sprucelabs/spruce-templates'
-import { ErrorCode } from '../../.spruce/errors/codes.types'
+import { ErrorCode } from '#spruce/errors/codes.types'
 import SpruceError from '../errors/SpruceError'
 import AbstractGenerator from './AbstractGenerator'
 

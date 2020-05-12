@@ -1,7 +1,7 @@
 import { spawn, SpawnOptions } from 'child_process'
 import fs from 'fs-extra'
 import stringArgv from 'string-argv'
-import { ErrorCode } from '../../.spruce/errors/codes.types'
+import { ErrorCode } from '#spruce/errors/codes.types'
 import SpruceError from '../errors/SpruceError'
 import log from '../lib/log'
 import AbstractService from './AbstractService'

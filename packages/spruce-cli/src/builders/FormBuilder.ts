@@ -11,7 +11,7 @@ import Schema, {
 	SchemaError
 } from '@sprucelabs/schema'
 import { pick } from 'lodash'
-import { ErrorCode } from '../../.spruce/errors/codes.types'
+import { ErrorCode } from '#spruce/errors/codes.types'
 import SpruceError from '../errors/SpruceError'
 import ITerminal, { ITerminalEffect } from '../utilities/TerminalUtility'
 

@@ -4,6 +4,7 @@ import fs from 'fs-extra'
 import { IServices } from '#spruce/autoloaders/services'
 import { IStores } from '#spruce/autoloaders/stores'
 import { IUtilities } from '#spruce/autoloaders/utilities'
+import Autoloadable from '../Autoloadable'
 
 export interface IGeneratorOptions {
 	utilities: IUtilities
@@ -14,7 +15,7 @@ export interface IGeneratorOptions {
 	cwd: string
 }
 
-export default abstract class AbstractGenerator {
+export default abstract class AbstractGenerator extends Autoloadable {
 	public utilities: IUtilities
 	public templates: Templates
 	public services: IServices
@@ -22,6 +23,7 @@ export default abstract class AbstractGenerator {
 	public stores: IStores
 
 	public constructor(options: IGeneratorOptions) {
+		super(options)
 		const { utilities, templates, cwd, services, stores } = options
 		this.utilities = utilities
 		this.templates = templates

@@ -2,7 +2,7 @@ import path from 'path'
 import { test, assert } from '@sprucelabs/test'
 import fs from 'fs-extra'
 import uuid from 'uuid'
-import { Feature } from '../../.spruce/autoloaders/features'
+import { Feature } from '#spruce/autoloaders/features'
 import BaseCliTest from '../BaseCliTest'
 
 export default class TestFeatureTest extends BaseCliTest {

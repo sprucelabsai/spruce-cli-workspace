@@ -1,7 +1,7 @@
 import pathUtil from 'path'
 import fs from 'fs-extra'
 import { set } from 'lodash'
-import { ErrorCode } from '../../.spruce/errors/codes.types'
+import { ErrorCode } from '#spruce/errors/codes.types'
 import SpruceError from '../errors/SpruceError'
 import log from '../lib/log'
 import { WriteMode } from '../types/cli'
