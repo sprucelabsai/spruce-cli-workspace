@@ -30,6 +30,8 @@ import { ErrorCode } from '../../.spruce/errors/codes.types'
 
 export interface ISchemaTemplateItemsOptions {
 	includeErrors?: boolean
+	/* Where should i look for local definitions? */
+	localLookupDir: string
 }
 
 export interface IFieldTemplateItemsOptions
@@ -61,9 +63,9 @@ export default class SchemaStore extends AbstractStore {
 
 	/** Get the schema map supplied by core */
 	public async schemaTemplateItems<T extends ISchemaTemplateItemsOptions>(
-		options?: T
+		options: T
 	): Promise<SchemaTemplateItemsReturnType<T>> {
-		const { includeErrors = true } = options ?? {}
+		const { includeErrors = true, localLookupDir } = options
 
 		/** Get all schemas from api  */
 		// TODO load from api
@@ -88,9 +90,7 @@ export default class SchemaStore extends AbstractStore {
 		const localDefinitions = (
 			await Promise.all(
 				(
-					await globby([
-						pathUtil.join(this.cwd, '/src/schemas/**/*.definition.ts')
-					])
+					await globby([pathUtil.join(localLookupDir, '/**/*.definition.ts')])
 				).map(async file => {
 					try {
 						const definition = await this.services.child.importDefault(file, {

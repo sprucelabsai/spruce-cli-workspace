@@ -12,7 +12,7 @@ import { Feature } from '../../.spruce/autoloaders/features'
 export default class ErrorCommand extends AbstractCommand {
 	public attachCommands(program: Command): void {
 		program
-			.command('error:create')
+			.command('error:create [name]')
 			.description('Define a new type of error')
 			.option(
 				'-dd, --errorDestinationDir <errorDestinationDir>',
@@ -27,7 +27,7 @@ export default class ErrorCommand extends AbstractCommand {
 			.action(this.create.bind(this))
 
 		program
-			.command('error:sync')
+			.command('error:sync [lookupDir]')
 			.description('Generates type files on all error definitions.')
 			.option(
 				'-l, --lookupDir <lookupDir>',
@@ -58,9 +58,12 @@ export default class ErrorCommand extends AbstractCommand {
 	}
 
 	// TODO allow passing of name
-	public async create(cmd: Command) {
+	public async create(name: string | undefined, cmd: Command) {
 		const form = this.formBuilder({
 			definition: namedTemplateItemDefinition,
+			initialValues: {
+				nameReadable: name
+			},
 			onWillAskQuestion: this.utilities.names.onWillAskQuestionHandler.bind(
 				this.utilities.names
 			)
@@ -182,8 +185,8 @@ export default class ErrorCommand extends AbstractCommand {
 		)
 	}
 
-	public async sync(cmd: Command) {
-		const lookupDir = cmd.lookupDir as string
+	public async sync(lookupDirOption: string | undefined, cmd: Command) {
+		const lookupDir = lookupDirOption || (cmd.lookupDir as string)
 		const typesDestinationDir = cmd.typesDestinationDir as string
 		const errorDestinationDir = cmd.errorDestinationDir as string
 

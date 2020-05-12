@@ -11,11 +11,32 @@ import chalk from 'chalk'
 export default class SchemaCommand extends AbstractCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
+		/** Create a new schema definition */
+		program
+			.command('schema:create [name]')
+			.description('Define a new thing!')
+			.option(
+				'-dd, --definitionDestinationDir <definitionDir>',
+				'Where should I write the definition file?',
+				'./src/schemas'
+			)
+			.option(
+				'-td --typesDestinationDir <typesDir>',
+				'Where should I write the types file that supports the definition?',
+				'./.spruce/schemas'
+			)
+			.action(this.create.bind(this))
+
 		/** Sync everything */
 		program
-			.command('schema:sync')
+			.command('schema:sync [lookupDir]')
 			.description(
 				'Sync all schema definitions and fields (also pulls from the cloud)'
+			)
+			.option(
+				'-l, --lookupDir <lookupDir>',
+				'Where should I look for definitions files (*.definition.ts)?',
+				'./src/schemas'
 			)
 			.option(
 				'-d, --destinationDir <dir>',
@@ -33,27 +54,12 @@ export default class SchemaCommand extends AbstractCommand {
 				false
 			)
 			.action(this.sync.bind(this))
-
-		/** Create a new schema definition */
-		program
-			.command('schema:create [named]')
-			.description('Define a new thing!')
-			.option(
-				'-dd, --definitionDestinationDir <definitionDir>',
-				'Where should I write the definition file?',
-				'./src/schemas'
-			)
-			.option(
-				'-td --typesDestinationDir <typesDir>',
-				'Where should I write the types file that supports the definition?',
-				'./.spruce/schemas'
-			)
-			.action(this.create.bind(this))
 	}
 
 	/** Sync all schemas and fields (also pulls from the cloud) */
-	public async sync(cmd: Command) {
+	public async sync(lookupDirOption: string | undefined, cmd: Command) {
 		const destinationDir = cmd.destinationDir as string
+		const lookupDir = lookupDirOption || (cmd.lookupDir as string)
 		const clean = !!cmd.clean
 		const force = !!cmd.force
 
@@ -71,7 +77,9 @@ export default class SchemaCommand extends AbstractCommand {
 		const {
 			items: schemaTemplateItems,
 			errors: schemaTemplateErrors
-		} = await this.stores.schema.schemaTemplateItems()
+		} = await this.stores.schema.schemaTemplateItems({
+			localLookupDir: this.resolvePath(lookupDir)
+		})
 
 		if (schemaTemplateItems.length === 0) {
 			this.utilities.terminal.crit(
