@@ -20,11 +20,12 @@ export interface ISchemaTypesGenerationPhase {
 }
 export default class SchemaGenerator extends AbstractGenerator {
 	/** Generate a type file from a definition file */
-	public async generateTypesFromDefinitionFile(
-		sourceFile: string,
-		destinationDir: string,
-		template: 'errorTypes' = 'errorTypes'
-	): Promise<{
+	public async generateTypesFromDefinitionFile(options: {
+		sourceFile: string
+		destinationDir: string
+		schemaLookupDir: string
+		template: 'errorTypes'
+	}): Promise<{
 		nameCamel: string
 		namePascal: string
 		description: string
@@ -34,6 +35,13 @@ export default class SchemaGenerator extends AbstractGenerator {
 			schemaTypes: string
 		}
 	}> {
+		const {
+			sourceFile,
+			destinationDir,
+			schemaLookupDir,
+			template = 'errorTypes'
+		} = options
+
 		const definition = await this.services.vm.importDefinition(sourceFile)
 
 		//Get variations on name
@@ -56,7 +64,8 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 		// TODO what should the namespace be? slug pulled from somewhere
 		const schemaTemplateItems = await this.stores.schema.schemaTemplateItems({
-			includeErrors: false
+			includeErrors: false,
+			localLookupDir: schemaLookupDir
 		})
 
 		// Contents
