@@ -201,10 +201,9 @@ export default class ErrorCommand extends AbstractCommand {
 		}[] = []
 
 		// Make sure error module is installed
-		this.term.startLoading()
-		await this.services.pkg.install('@sprucelabs/error')
-		this.utilities.tsConfig.setupForErrors()
-		this.term.stopLoading()
+		await this.services.feature.install({
+			features: [{ feature: Feature.Error }]
+		})
 
 		if (cmd.clean) {
 			fs.removeSync(`.spruce/errors`)

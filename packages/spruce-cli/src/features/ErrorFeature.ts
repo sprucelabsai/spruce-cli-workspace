@@ -13,10 +13,6 @@ export default class ErrorFeature extends AbstractFeature {
 		}
 	]
 
-	public async afterPackageInstall() {
-		await this.utilities.tsConfig.setupForErrors()
-	}
-
 	public async isInstalled() {
 		return this.services.pkg.isInstalled('@sprucelabs/error')
 	}

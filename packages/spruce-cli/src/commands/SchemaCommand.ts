@@ -64,7 +64,7 @@ export default class SchemaCommand extends AbstractCommand {
 				}
 			]
 		})
-		this.utilities.tsConfig.setupForSchemas()
+
 		this.term.startLoading('Fetching schemas and field types')
 
 		// Load schemas
