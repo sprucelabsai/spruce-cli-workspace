@@ -78,3 +78,37 @@ export type FieldDefinitionMap = {
 	[FieldType.Select]: ISelectFieldDefinition
 	[FieldType.Text]: ITextFieldDefinition
 }
+
+/** Type for looking up field definitions by field type */
+export interface IFieldDefinitionMap {
+	[FieldType.Address]: IAddressFieldDefinition
+	[FieldType.Boolean]: IBooleanFieldDefinition
+	[FieldType.Date]: IDateFieldDefinition
+	[FieldType.DateTime]: IDateTimeFieldDefinition
+	[FieldType.Duration]: IDurationFieldDefinition
+	[FieldType.File]: IFileFieldDefinition
+	[FieldType.Id]: IIdFieldDefinition
+	[FieldType.Number]: INumberFieldDefinition
+	[FieldType.Phone]: IPhoneFieldDefinition
+	[FieldType.Raw]: IRawFieldDefinition
+	[FieldType.Schema]: ISchemaFieldDefinition
+	[FieldType.Select]: ISelectFieldDefinition
+	[FieldType.Text]: ITextFieldDefinition
+}
+
+/** All field instances */
+export interface IFieldMap {
+	[FieldType.Address]: AddressField
+	[FieldType.Boolean]: BooleanField
+	[FieldType.Date]: DateField
+	[FieldType.DateTime]: DateTimeField
+	[FieldType.Duration]: DurationField
+	[FieldType.File]: FileField
+	[FieldType.Id]: IdField
+	[FieldType.Number]: NumberField
+	[FieldType.Phone]: PhoneField
+	[FieldType.Raw]: RawField
+	[FieldType.Schema]: SchemaField
+	[FieldType.Select]: SelectField
+	[FieldType.Text]: TextField
+}
