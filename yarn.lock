@@ -1904,10 +1904,10 @@
     "@sprucelabs/error" "^1.0.11"
     "@sprucelabs/log" "^10.2.1"
 
-"@sprucelabs/schema@^1.29.0":
-  version "1.29.0"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.29.0.tgz#5b662e813979f9cd5f3089d7f43f5fb21467d3f3"
-  integrity sha512-4k8j95GjYNkST+b65wL/8bb0V2TgkTuzcrOtDWAvIcc7WMV6w8TNwIqnRfd+nrlek9PWIl+Wc9pMFnO8lv/FmA==
+"@sprucelabs/schema@^1.30.0":
+  version "1.30.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-1.30.0.tgz#1a03b533b9fb272f0c5bfe320477bb2abcefe7b3"
+  integrity sha512-l+WlqobRHjh/BpmMldJOj6vfD0s3g3vg0hwZomsTDOpbYRLfBJ8xCIvWBeCWWC92QoqpfySeeINEbjj7Dpvdbg==
   dependencies:
     "@sprucelabs/error" "^1.2.0"
     "@sprucelabs/log" "^10.2.1"

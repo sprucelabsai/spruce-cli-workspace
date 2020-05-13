@@ -27,3 +27,18 @@ export type FieldDefinitionMap = {
 	{{/each}}
 }
 
+
+/** Type for looking up field definitions by field type */
+export interface IFieldDefinitionMap {
+	{{#each fieldTemplateItems}}
+	[FieldType.{{pascalType}}]: I{{namePascal}}Definition
+	{{/each}}
+}
+
+/** All field instances */
+export interface IFieldMap {
+	{{#each fieldTemplateItems}}
+	[FieldType.{{pascalType}}]: {{namePascal}}
+	{{/each}}
+}
+
