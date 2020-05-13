@@ -1,4 +1,3 @@
-import path from 'path'
 import { test, assert } from '@sprucelabs/test'
 import fs from 'fs-extra'
 import uuid from 'uuid'
@@ -28,7 +27,7 @@ export default class TestFeatureTest extends BaseCliTest {
 			]
 		})
 
-		const expectedTestFile = path.join(this.cwd, './src/index.test.ts')
+		const expectedTestFile = this.resolvePath('./src/index.test.ts')
 		assert.isTrue(fs.existsSync(expectedTestFile))
 	}
 }

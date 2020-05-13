@@ -3,9 +3,9 @@ import  {
 	buildErrorDefinition
 } from '@sprucelabs/schema'
 
-const {{camelName}}Definition = buildErrorDefinition({
-	id: '{{camelName}}',
-	name: '{{{escape readableName}}}',
+const {{nameCamel}}Definition = buildErrorDefinition({
+	id: '{{nameCamel}}',
+	name: '{{{escape nameReadable}}}',
     description: '{{{escape description}}}',
 	fields: {
 		fieldName1: {
@@ -23,4 +23,4 @@ const {{camelName}}Definition = buildErrorDefinition({
 	}
 })
 
-export default {{camelName}}Definition
+export default {{nameCamel}}Definition

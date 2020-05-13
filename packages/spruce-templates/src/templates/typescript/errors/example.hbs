@@ -4,7 +4,7 @@ import { ErrorCode } from '#spruce/errors/codes.types'
 
 // throw your error
 throw new SpruceError({
-    code: ErrorCode.{{pascalName}},
+    code: ErrorCode.{{namePascal}},
     {{#each definition.fields}}
     {{@key}}: ...,
     {{/each}}
