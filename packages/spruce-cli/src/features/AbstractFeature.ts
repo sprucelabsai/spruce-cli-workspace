@@ -10,7 +10,7 @@ import { ErrorCode } from '#spruce/errors/codes.types'
 import Autoloadable from '../Autoloadable'
 import SpruceError from '../errors/SpruceError'
 import log from '../lib/log'
-import { WriteMode } from '../types/cli'
+import { WriteMode } from '../types/cli.types'
 import TerminalUtility from '../utilities/TerminalUtility'
 
 export interface IFeatureOptions {

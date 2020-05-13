@@ -46,7 +46,7 @@ export default class VsCodeService extends AbstractService {
 			extensions = stdout.split('\n')
 		} catch (e) {
 			log.warn(
-				'VSCode extensions not installed. Check that VSCode is installed and the "code" cli tool is available'
+				'VSCode extensions not installed. Check that VSCode is installed and the "code" cli tool is available. See https://code.visualstudio.com/docs/setup/setup-overview for more information.'
 			)
 		}
 
@@ -67,7 +67,7 @@ export default class VsCodeService extends AbstractService {
 			log.debug('VSCode installed extensions', stdout)
 		} catch (e) {
 			log.warn(
-				'VSCode extensions not installed. Check that VSCode is installed and the "code" cli tool is available'
+				'VSCode extensions not installed. Check that VSCode is installed and the "code" cli tool is available. See https://code.visualstudio.com/docs/setup/setup-overview for more information.'
 			)
 		}
 	}
