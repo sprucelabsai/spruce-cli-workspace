@@ -49,19 +49,19 @@ export default class NamesUtility extends AbstractUtility {
 		>
 	>(fieldName: K, fieldDefinition: FieldDefinition, values: V) {
 		switch (fieldName) {
-			case 'camelName':
-				if (!values.camelName) {
-					fieldDefinition.defaultValue = toCamel(values.readableName || '')
+			case 'nameCamel':
+				if (!values.nameCamel) {
+					fieldDefinition.defaultValue = toCamel(values.nameReadable || '')
 				}
 				break
-			case 'pascalName':
-				if (!values.pascalName) {
-					fieldDefinition.defaultValue = toPascal(values.readableName || '')
+			case 'namePascal':
+				if (!values.namePascal) {
+					fieldDefinition.defaultValue = toPascal(values.nameReadable || '')
 				}
 				break
-			case 'constName':
-				if (!values.constName) {
-					fieldDefinition.defaultValue = toConst(values.readableName || '')
+			case 'nameConst':
+				if (!values.nameConst) {
+					fieldDefinition.defaultValue = toConst(values.nameReadable || '')
 				}
 				break
 		}

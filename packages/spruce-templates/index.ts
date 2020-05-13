@@ -109,10 +109,10 @@ export const templates = {
 
 	/** When building a definition in a skill */
 	definition(options: {
-		camelName: string
+		nameCamel: string
 		description: string
-		pascalName: string
-		readableName: string
+		namePascal: string
+		nameReadable: string
 	}) {
 		const template = handlebars.compile(definition)
 		return template(options)
@@ -120,7 +120,7 @@ export const templates = {
 
 	/** For creating an error class */
 	error(options: {
-		errors: { pascalName: string; readableName: string }[]
+		errors: { namePascal: string; nameReadable: string }[]
 		renderClassDefinition?: boolean
 	}) {
 		const template = handlebars.compile(error)
@@ -131,9 +131,9 @@ export const templates = {
 	errorTypes(options: {
 		definition: ISchemaDefinition
 		schemaTemplateItems: ISchemaTemplateItem[]
-		camelName: string
+		nameCamel: string
 		relativeToDefinition: string
-		pascalName: string
+		namePascal: string
 		description: string
 	}) {
 		const template = handlebars.compile(errorTypes)
@@ -142,7 +142,7 @@ export const templates = {
 
 	/** For generating types for all the options (the ISpruceErrorOptions sub-interface) */
 	errorOptionsTypes(options: {
-		options: { camelName: string; pascalName: string }[]
+		options: { nameCamel: string; namePascal: string }[]
 	}) {
 		const template = handlebars.compile(errorOptionsTypes)
 		return template(options)
@@ -150,7 +150,7 @@ export const templates = {
 
 	/** For generating types for all the options (the ISpruceErrorOptions sub-interface) */
 	errorCodesTypes(options: {
-		codes: { pascalName: string; constName: string; description: string }[]
+		codes: { namePascal: string; nameConst: string; description: string }[]
 	}) {
 		const template = handlebars.compile(errorCodesTypes)
 		return template(options)
@@ -158,8 +158,8 @@ export const templates = {
 
 	/** An error definition file */
 	errorDefinition(options: {
-		camelName: string
-		readableName: string
+		nameCamel: string
+		nameReadable: string
 		description: string
 	}) {
 		const template = handlebars.compile(errorDefinition)
@@ -168,8 +168,8 @@ export const templates = {
 
 	/** Schema example */
 	schemaExample(options: {
-		camelName: string
-		pascalName: string
+		nameCamel: string
+		namePascal: string
 		definition: ISchemaDefinition
 	}) {
 		const template = handlebars.compile(schemaExample)
@@ -178,8 +178,8 @@ export const templates = {
 
 	/** Error example */
 	errorExample(options: {
-		camelName: string
-		pascalName: string
+		nameCamel: string
+		namePascal: string
 		definition: ISchemaDefinition
 	}) {
 		const template = handlebars.compile(errorExample)
@@ -187,7 +187,7 @@ export const templates = {
 	},
 
 	/** Test file */
-	test(options: { pascalName: string }) {
+	test(options: { namePascal: string }) {
 		const template = handlebars.compile(test)
 		return template(options)
 	},

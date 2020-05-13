@@ -11,11 +11,32 @@ import chalk from 'chalk'
 export default class SchemaCommand extends AbstractCommand {
 	/** Sets up commands */
 	public attachCommands(program: Command) {
+		/** Create a new schema definition */
+		program
+			.command('schema:create [name]')
+			.description('Define a new thing!')
+			.option(
+				'-dd, --definitionDestinationDir <definitionDir>',
+				'Where should I write the definition file?',
+				'./src/schemas'
+			)
+			.option(
+				'-td --typesDestinationDir <typesDir>',
+				'Where should I write the types file that supports the definition?',
+				'./.spruce/schemas'
+			)
+			.action(this.create.bind(this))
+
 		/** Sync everything */
 		program
-			.command('schema:sync')
+			.command('schema:sync [lookupDir]')
 			.description(
 				'Sync all schema definitions and fields (also pulls from the cloud)'
+			)
+			.option(
+				'-l, --lookupDir <lookupDir>',
+				'Where should I look for definitions files (*.definition.ts)?',
+				'./src/schemas'
 			)
 			.option(
 				'-d, --destinationDir <dir>',
@@ -33,27 +54,12 @@ export default class SchemaCommand extends AbstractCommand {
 				false
 			)
 			.action(this.sync.bind(this))
-
-		/** Create a new schema definition */
-		program
-			.command('schema:create [named]')
-			.description('Define a new thing!')
-			.option(
-				'-dd, --definitionDestinationDir <definitionDir>',
-				'Where should I write the definition file?',
-				'./src/schemas'
-			)
-			.option(
-				'-td --typesDestinationDir <typesDir>',
-				'Where should I write the types file that supports the definition?',
-				'./.spruce/schemas'
-			)
-			.action(this.create.bind(this))
 	}
 
 	/** Sync all schemas and fields (also pulls from the cloud) */
-	public async sync(cmd: Command) {
+	public async sync(lookupDirOption: string | undefined, cmd: Command) {
 		const destinationDir = cmd.destinationDir as string
+		const lookupDir = lookupDirOption || (cmd.lookupDir as string)
 		const clean = !!cmd.clean
 		const force = !!cmd.force
 
@@ -71,7 +77,9 @@ export default class SchemaCommand extends AbstractCommand {
 		const {
 			items: schemaTemplateItems,
 			errors: schemaTemplateErrors
-		} = await this.stores.schema.schemaTemplateItems()
+		} = await this.stores.schema.schemaTemplateItems({
+			localLookupDir: this.resolvePath(lookupDir)
+		})
 
 		if (schemaTemplateItems.length === 0) {
 			this.utilities.terminal.crit(
@@ -254,26 +262,26 @@ export default class SchemaCommand extends AbstractCommand {
 
 	/** Define a new schema */
 	public async create(name: string | undefined, cmd: Command) {
-		const readableName = name
+		const nameReadable = name
 
-		let camelName = ''
-		let pascalName = ''
+		let nameCamel = ''
+		let namePascal = ''
 
 		let showOverview = false
 
 		// If they passed a name, show overview
-		if (readableName) {
+		if (nameReadable) {
 			showOverview = true
-			camelName = this.utilities.names.toCamel(readableName)
-			pascalName = this.utilities.names.toPascal(camelName)
+			nameCamel = this.utilities.names.toCamel(nameReadable)
+			namePascal = this.utilities.names.toPascal(nameCamel)
 		}
 
 		const form = this.formBuilder({
 			definition: SpruceSchemas.Local.NamedTemplateItem.definition,
 			initialValues: {
-				readableName,
-				camelName,
-				pascalName
+				nameReadable,
+				nameCamel,
+				namePascal
 			},
 			// TODO
 			// @ts-ignore
@@ -285,7 +293,7 @@ export default class SchemaCommand extends AbstractCommand {
 		// All the values
 		const values = await form.present({
 			showOverview,
-			fields: ['readableName', 'camelName', 'pascalName', 'description']
+			fields: ['nameReadable', 'nameCamel', 'namePascal', 'description']
 		})
 
 		// Make sure schema module is installed
@@ -302,7 +310,7 @@ export default class SchemaCommand extends AbstractCommand {
 		// Build paths
 		const definitionDestination = this.resolvePath(
 			cmd.definitionDestinationDir as string,
-			`${values.camelName}.definition.ts`
+			`${values.nameCamel}.definition.ts`
 		)
 		const typesDestination = this.resolvePath(cmd.typesDestinationDir as string)
 		const definition = templates.definition(values)
@@ -316,7 +324,7 @@ export default class SchemaCommand extends AbstractCommand {
 		// TODO don't call one command from another
 		try {
 			cmd.destinationDir = typesDestination
-			await this.sync(cmd)
+			await this.sync(cmd.definitionDestinationDir, cmd)
 		} catch (err) {
 			this.utilities.terminal.stopLoading()
 			this.utilities.terminal.warn(
