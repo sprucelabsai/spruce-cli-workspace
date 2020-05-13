@@ -43,6 +43,89 @@ interface IFileGroupInfo extends IIntermediateFileGroupInfo {
 }
 
 export default class IntrospectionUtility extends AbstractUtility {
+	public async parseAutoloaders(options: { globbyPattern: string }) {
+		const { globbyPattern } = options
+		let filePaths = await globby(globbyPattern)
+		filePaths = filePaths.filter(p => !/index.ts$/.test(p))
+		const program = ts.createProgram(filePaths, {})
+		const checker = program.getTypeChecker()
+
+		const info: {
+			autoloaders: {
+				[path: string]: {
+					abstractClassName: string
+					optionsInterfaceName: string
+				}
+			}
+		} = {
+			autoloaders: {}
+		}
+
+		for (let i = 0; i < filePaths.length; i += 1) {
+			const filePath = filePaths[i]
+			const sourceFile = program.getSourceFile(filePath)
+			const relativeFilePath = filePath
+				.replace(this.cwd, '../..')
+				.replace(/\.ts$/, '')
+
+			if (sourceFile && _.includes(filePaths, sourceFile.fileName)) {
+				// console.log(sourceFile)
+				ts.forEachChild(sourceFile, node => {
+					// @ts-ignore
+					const nodeFilePath = node.moduleSpecifier && node.moduleSpecifier.text
+					if (ts.isImportSpecifier(node)) {
+						console.log(node)
+					} else if (ts.isImportDeclaration(node)) {
+						// get the declaration
+						const clauses = node.importClause
+						if (!clauses) {
+							throw new Error('no clauses')
+						}
+						const namedImport = clauses.getChildAt(0) // get the named imports
+						if (!ts.isNamedImports(namedImport)) {
+							if (!info.autoloaders[nodeFilePath]) {
+								info.autoloaders[nodeFilePath] = {
+									abstractClassName: '',
+									optionsInterfaceName: ''
+								}
+							}
+							info.autoloaders[
+								nodeFilePath
+							].abstractClassName = namedImport.getText()
+							return
+						}
+						for (let i = 0, n = namedImport.elements.length; i < n; i++) {
+							// Iterate the named imports
+							const imp = namedImport.elements[i]
+							// @ts-ignore
+							console.log(`Path: ${node.moduleSpecifier.text}`)
+							console.log(`Import: ${imp.getText()}`)
+							// @ts-ignore
+							console.log(`Name: ${checker.getFullyQualifiedName(imp.symbol)}`)
+							if (!info.autoloaders[nodeFilePath]) {
+								info.autoloaders[nodeFilePath] = {
+									abstractClassName: '',
+									optionsInterfaceName: ''
+								}
+							}
+							info.autoloaders[
+								nodeFilePath
+							].optionsInterfaceName = imp.getText()
+						}
+					} else if (ts.isInterfaceDeclaration(node)) {
+						// info.interfaces.push({
+						// 	interfaceName: node.name.text,
+						// 	relativeFilePath
+						// })
+						console.log(`INTERFACE: ${node.name.text}`)
+					}
+				})
+			}
+		}
+
+		console.log({ info })
+	}
+
 	/** Parses a group of files that follow the typical pattern of extending an abstract class */
 	public async parseFileGroup(options: {
 		globbyPattern: string
@@ -74,6 +157,7 @@ export default class IntrospectionUtility extends AbstractUtility {
 					if (ts.isClassDeclaration(node) && node.name) {
 						const symbol = checker.getSymbolAtLocation(node.name)
 
+						// TODO: Remove?
 						checker.getSignaturesOfType
 						if (symbol) {
 							const details = this.serializeSymbol({ checker, symbol })

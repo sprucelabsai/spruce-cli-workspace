@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import path from 'path'
 import { Command } from 'commander'
+import globby from 'globby'
 import inflection from 'inflection'
 import _ from 'lodash'
 import { ErrorCode } from '#spruce/errors/codes.types'
@@ -22,6 +23,16 @@ export default class AutoloaderCommand extends AbstractCommand {
 				'Only loads files that end with this suffix and strip it from the returned name. Not set by default.'
 			)
 			.action(this.generateAutoloader.bind(this))
+		program
+			.command('autoloader:bind')
+			.description('Generate an autoloader for files in the directory')
+			.action(this.autoloaderBind.bind(this))
+	}
+
+	private async autoloaderBind(_cmd: Command) {
+		const globbyPattern = path.join(this.cwd, '.spruce/autoloaders/*.ts')
+
+		await this.utilities.introspection.parseAutoloaders({ globbyPattern })
 	}
 
 	private async generateAutoloader(dir: string, cmd: Command) {

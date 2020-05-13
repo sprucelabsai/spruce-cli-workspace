@@ -1,0 +1,14 @@
+{{#each abstractClasses}}
+import {{abstractClassName}}, I{{name}}Options from '{{abstractClassRelativePath}}'
+{{/each}}
+{{#each autoloaders}}
+import {{name}}Autoloader, { I{{upper name}} } from '{{autoloaderPath}}'
+{{/each}}
+
+export interface IAutoloaderOptions {
+	{{#each autoloaders}}
+	{{name}}: {
+		constructorOptions: I{{upper name}}Options
+	}
+	{{/each}}
+}
