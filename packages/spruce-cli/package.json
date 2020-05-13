@@ -3,7 +3,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"version": "10.2.0",
+	"version": "10.2.1",
 	"bin": {
 		"spruce": "./index.js"
 	},
@@ -47,7 +47,7 @@
 		"@sprucelabs/mercury": "10.3.0-prerelease-mock.2",
 		"@sprucelabs/path-resolver": "^1.3.0",
 		"@sprucelabs/schema": "^1.30.0",
-		"@sprucelabs/spruce-templates": "^10.2.0",
+		"@sprucelabs/spruce-templates": "^10.2.1",
 		"@types/promise.allsettled": "^1.0.3",
 		"@types/uuid": "^3",
 		"cfonts": "^2.8.1",
@@ -79,7 +79,7 @@
 		"vm2": "^3.9.1"
 	},
 	"devDependencies": {
-		"@sprucelabs/test": "^2.2.1",
+		"@sprucelabs/test": "^2.3.0",
 		"@types/eslint": "^6.8.0",
 		"@types/fs-extra": "^8.1.0",
 		"@types/inflection": "^1.5.28",

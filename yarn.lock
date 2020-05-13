@@ -1917,10 +1917,10 @@
     mime-db "^1.43.0"
     mime-type "^3.0.7"
 
-"@sprucelabs/test@^2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-2.2.1.tgz#6d7d2a3742f91f9936f68cfe59a19e33672a9935"
-  integrity sha512-jwmEV74e+L0OAynthKKvMQq0bREG4mwJTg8KuHUN+DwwC61w9vH2SBDGswwx1zsJBqjV/HwiHQ2aVncsmk2bnQ==
+"@sprucelabs/test@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-2.3.0.tgz#201b8930296eea53ca950134230b06d014c28164"
+  integrity sha512-x/tdNygYT9nVfZup5Zq6o4iA9OWPevZeMXf2CUHQAT1W3XAYo2W1SUuOWMcEJYJR6BrLt8eHmSD57aRQVridUg==
   dependencies:
     "@babel/core" "^7.9.0"
     "@babel/preset-env" "^7.9.5"
