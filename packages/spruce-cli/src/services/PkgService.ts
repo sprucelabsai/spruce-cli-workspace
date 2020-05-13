@@ -90,6 +90,8 @@ export default class PkgService extends AbstractService {
 				args.push('--dev')
 			}
 
+			args.push('--no-cache')
+
 			await this.services.child.executeCommand('yarn', {
 				args
 			})
