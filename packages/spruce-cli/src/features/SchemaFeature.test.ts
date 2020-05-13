@@ -1,6 +1,6 @@
 import { assert, test } from '@sprucelabs/test'
 import uuid from 'uuid'
-import BaseTest from '../BaseTest'
+import BaseTest from '../BaseCliTest'
 import { Feature } from '#spruce/autoloaders/features'
 
 export default class SchemaFeatureTest extends BaseTest {
