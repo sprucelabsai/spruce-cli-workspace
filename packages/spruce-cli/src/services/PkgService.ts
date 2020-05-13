@@ -1,11 +1,11 @@
-import AbstractService from './AbstractService'
-import fs from 'fs-extra'
 import pathUtil from 'path'
+import fs from 'fs-extra'
 import { set } from 'lodash'
-import log from '../lib/log'
+import { ErrorCode } from '#spruce/errors/codes.types'
 import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '../../.spruce/errors/codes.types'
 import { WriteMode } from '../features/AbstractFeature'
+import log from '../lib/log'
+import AbstractService from './AbstractService'
 
 export interface IAddOptions {
 	dev?: boolean
@@ -89,6 +89,8 @@ export default class PkgService extends AbstractService {
 			if (options?.dev) {
 				args.push('--dev')
 			}
+
+			args.push('--no-cache')
 
 			await this.services.child.executeCommand('yarn', {
 				args
