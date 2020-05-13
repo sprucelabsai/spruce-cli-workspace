@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.2.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.2.0...v10.2.1) (2020-05-13)
+
+
+### Features
+
+* circle cache removed ([8086f59](https://github.com/sprucelabsai/spruce-cli-workspace/commit/8086f59))
+* readme update ([1f6fbd1](https://github.com/sprucelabsai/spruce-cli-workspace/commit/1f6fbd1))
+* readme update ([296b460](https://github.com/sprucelabsai/spruce-cli-workspace/commit/296b460))
+
+
+
+
+
 # [10.2.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.1.1...v10.2.0) (2020-05-11)
 
 
