@@ -1,11 +1,11 @@
-import * as ts from 'typescript'
+import globby from 'globby'
 import _ from 'lodash'
 import * as tsutils from 'tsutils'
-import log from '../lib/log'
-import globby from 'globby'
-import { isReservedWord } from '../lib/reservedWords'
+import * as ts from 'typescript'
+import { ErrorCode } from '#spruce/errors/codes.types'
 import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '../../.spruce/errors/codes.types'
+import log from '../lib/log'
+import { isReservedWord } from '../lib/reservedWords'
 import AbstractUtility from './AbstractUtility'
 
 interface IDocEntry {
@@ -42,7 +42,7 @@ interface IFileGroupInfo extends IIntermediateFileGroupInfo {
 	abstractClassRelativePath: string | null
 }
 
-export default class ParserUtility extends AbstractUtility {
+export default class IntrospectionUtility extends AbstractUtility {
 	/** Parses a group of files that follow the typical pattern of extending an abstract class */
 	public async parseFileGroup(options: {
 		globbyPattern: string

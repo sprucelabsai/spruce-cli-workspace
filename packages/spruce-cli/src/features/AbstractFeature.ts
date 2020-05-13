@@ -1,15 +1,17 @@
-import fs from 'fs-extra'
 import path from 'path'
+import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
 import { TemplateDirectory, TemplateKind } from '@sprucelabs/spruce-templates'
 import { Templates } from '@sprucelabs/spruce-templates'
+import fs from 'fs-extra'
 import { Feature } from '#spruce/autoloaders/features'
-import { IUtilities } from '#spruce/autoloaders/utilities'
 import { IServices } from '#spruce/autoloaders/services'
-import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
-import log from '../lib/log'
+import { IUtilities } from '#spruce/autoloaders/utilities'
+import { ErrorCode } from '#spruce/errors/codes.types'
 import Autoloadable from '../Autoloadable'
 import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '../../.spruce/errors/codes.types'
+import log from '../lib/log'
+import { WriteMode } from '../types/cli.types'
+import TerminalUtility from '../utilities/TerminalUtility'
 
 export interface IFeatureOptions {
 	cwd: string
@@ -27,19 +29,6 @@ export interface IFeaturePackage {
 	isDev?: boolean
 }
 
-export enum WriteMode {
-	/** Throw an error if it already exists. This is the default behavior */
-	Throw = 'throw',
-	/** Overwrite it */
-	Overwrite = 'overwrite',
-	/** Skip it if it exists */
-	Skip = 'skip'
-}
-
-// export interface IAbstractFeature<S extends ISchemaDefinition> {
-// 	optionsSchema: S
-// }
-
 export default abstract class AbstractFeature<
 	S extends ISchemaDefinition = any
 > extends Autoloadable {
@@ -50,6 +39,9 @@ export default abstract class AbstractFeature<
 	public packages: IFeaturePackage[] = []
 
 	public optionsSchema?: () => ISchemaDefinition
+
+	/** Convenience method that references this.utilities.terminal */
+	protected term: TerminalUtility
 
 	protected utilities: IUtilities
 	protected services: IServices
@@ -64,6 +56,8 @@ export default abstract class AbstractFeature<
 		this.templates = options.templates
 		this.utilities = options.utilities
 		this.services = options.services
+
+		this.term = this.utilities.terminal
 	}
 
 	/** Called before packages have been installed */

@@ -1,7 +1,7 @@
-import AbstractCommand from './AbstractCommand'
 import { Command } from 'commander'
 import { Feature } from '#spruce/autoloaders/features'
 import log from '../lib/log'
+import AbstractCommand from './AbstractCommand'
 
 export default class TestCommand extends AbstractCommand {
 	public attachCommands(program: Command) {
@@ -28,6 +28,6 @@ export default class TestCommand extends AbstractCommand {
 			]
 		})
 
-		this.utilities.terminal.hint('Try `yarn test` or `yarn test:watch`')
+		this.term.hint('Try `yarn test` or `yarn test:watch`')
 	}
 }

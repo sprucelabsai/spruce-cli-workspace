@@ -1,8 +1,5 @@
-import handlebars from 'handlebars'
 import fs from 'fs'
 import path from 'path'
-import log from './src/lib/log'
-
 import {
 	ISchemaDefinition,
 	ISchemaTemplateItem,
@@ -10,7 +7,8 @@ import {
 	FieldDefinition,
 	TemplateRenderAs
 } from '@sprucelabs/schema'
-
+import handlebars from 'handlebars'
+import log from './src/lib/log'
 // Import addons
 import './src/addons/escape.addon'
 import './src/addons/fieldDefinitionOptions.addon'

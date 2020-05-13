@@ -1,6 +1,6 @@
-import AbstractUtility from './AbstractUtility'
 import pathUtil from 'path'
 import fs from 'fs-extra'
+import AbstractUtility from './AbstractUtility'
 
 export default class TsConfigUtility extends AbstractUtility {
 	/** Set path aliases for lookup */
@@ -30,27 +30,7 @@ export default class TsConfigUtility extends AbstractUtility {
 		return parsed
 	}
 
-	/** Setup the #spruce alias */
-	public setupHashSpruce(dir = this.cwd) {
-		if (!this.isPathSet('#spruce/')) {
-			this.setPath('#spruce/*', ['.spruce/*'], dir)
-		}
-	}
-
 	public isPathSet(path: string, dir = this.cwd) {
 		return !!this.readConfig(dir).compilerOptions?.paths?.[path]
-	}
-
-	/** Sets up all paths for schemas */
-	public setupForSchemas(dir = this.cwd) {
-		this.setupHashSpruce(dir)
-		if (!this.isPathSet('#spruce:schema/*')) {
-			this.setPath('#spruce:schema/*', ['.spruce/schemas/*'])
-		}
-	}
-
-	/** Setup for testing */
-	public setupForErrors(dir = this.cwd) {
-		this.setupForSchemas(dir)
 	}
 }

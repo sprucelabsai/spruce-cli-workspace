@@ -1,10 +1,10 @@
 import { test, assert } from '@sprucelabs/test'
-import uuid from 'uuid'
 import fs from 'fs-extra'
-import BaseTest from '../BaseCliTest'
-import { Feature } from '../../.spruce/autoloaders/features'
+import uuid from 'uuid'
+import { Feature } from '#spruce/autoloaders/features'
+import BaseCliTest from '../BaseCliTest'
 
-export default class TestFeatureTest extends BaseTest {
+export default class TestFeatureTest extends BaseCliTest {
 	@test('Can install the test feature')
 	protected static async installFeature() {
 		await this.services.feature.install({

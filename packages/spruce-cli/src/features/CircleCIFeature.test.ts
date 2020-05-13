@@ -1,9 +1,9 @@
 import { assert, test } from '@sprucelabs/test'
 import fs from 'fs-extra'
-import BaseTest from '../BaseCliTest'
 import { Feature } from '#spruce/autoloaders/features'
+import BaseCliTest from '../BaseCliTest'
 
-export default class CircleCiFeatureTest extends BaseTest {
+export default class CircleCiFeatureTest extends BaseCliTest {
 	@test('Properly detects when feature is not installed')
 	protected static async notInstalled() {
 		const isInstalled = await this.services.feature.isInstalled({

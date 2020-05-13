@@ -1,9 +1,9 @@
-import { camelCase, snakeCase, upperFirst } from 'lodash'
-import { FieldDefinition } from '@sprucelabs/schema'
-import AbstractUtility from './AbstractUtility'
 import path from 'path'
-import { SpruceSchemas } from '../../.spruce/schemas/schemas.types'
+import { FieldDefinition } from '@sprucelabs/schema'
 import { Optional } from '@sprucelabs/schema'
+import { camelCase, snakeCase, upperFirst } from 'lodash'
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import AbstractUtility from './AbstractUtility'
 
 /** First name => FirstName */
 export function toCamel(name: string) {

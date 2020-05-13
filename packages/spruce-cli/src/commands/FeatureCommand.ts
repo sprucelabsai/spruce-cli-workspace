@@ -1,7 +1,7 @@
-import AbstractCommand from './AbstractCommand'
+import { FieldType } from '@sprucelabs/schema'
 import { Command } from 'commander'
 import log from '../lib/log'
-import { FieldType } from '@sprucelabs/schema'
+import AbstractCommand from './AbstractCommand'
 
 export default class FeatureCommand extends AbstractCommand {
 	public attachCommands(program: Command) {
@@ -18,7 +18,7 @@ export default class FeatureCommand extends AbstractCommand {
 			label: f.description
 		}))
 
-		const choice = await this.utilities.terminal.prompt({
+		const choice = await this.term.prompt({
 			type: FieldType.Select,
 			label: 'Which feature should be installed?',
 			isRequired: true,

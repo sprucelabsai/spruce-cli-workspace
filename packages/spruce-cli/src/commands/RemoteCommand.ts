@@ -1,10 +1,10 @@
-import { Command } from 'commander'
-import AbstractCommand from './AbstractCommand'
 import { FieldType } from '@sprucelabs/schema'
+import { Command } from 'commander'
 import {
 	RemoteStoreRemoteType,
 	RemoteStoreChoices
 } from '../stores/RemoteStore'
+import AbstractCommand from './AbstractCommand'
 
 export default class RemoteCommand extends AbstractCommand {
 	/** Sets up commands */
@@ -21,7 +21,7 @@ export default class RemoteCommand extends AbstractCommand {
 		let environment = environmentParam
 
 		if (!environment) {
-			environment = await this.utilities.terminal.prompt({
+			environment = await this.term.prompt({
 				type: FieldType.Select,
 				isRequired: true,
 				label: 'Select a remote',

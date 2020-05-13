@@ -1,3 +1,4 @@
+import AbstractSpruceError from '@sprucelabs/error'
 import Schema, {
 	ISchemaDefinition,
 	FieldType,
@@ -9,12 +10,11 @@ import Schema, {
 	ErrorCode as SchemaErrorCode,
 	SchemaError
 } from '@sprucelabs/schema'
-import ITerminal, { ITerminalEffect } from '../utilities/TerminalUtility'
-import { pick } from 'lodash'
-import AbstractSpruceError from '@sprucelabs/error'
-import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '../../.spruce/errors/codes.types'
 import { IFieldDefinition } from '@sprucelabs/schema'
+import { pick } from 'lodash'
+import { ErrorCode } from '#spruce/errors/codes.types'
+import SpruceError from '../errors/SpruceError'
+import ITerminal, { ITerminalEffect } from '../utilities/TerminalUtility'
 
 export enum FormBuilderActionType {
 	Done = 'done',

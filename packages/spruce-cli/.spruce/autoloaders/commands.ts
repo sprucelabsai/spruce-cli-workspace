@@ -1,8 +1,8 @@
 /* eslint-disable spruce/prefer-pascal-case-enums */
 // Import base class
 import AbstractCommand from '../../src/commands/AbstractCommand'
-
 // Import each matching class that will be autoloaded
+import { ICommandOptions } from '../../src/commands/AbstractCommand'
 import Autoloader from '../../src/commands/AutoloaderCommand'
 import Error from '../../src/commands/ErrorCommand'
 import Feature from '../../src/commands/FeatureCommand'
@@ -15,7 +15,6 @@ import User from '../../src/commands/UserCommand'
 import Watch from '../../src/commands/WatchCommand'
 
 // Import necessary interface(s)
-import { ICommandOptions } from '../../src/commands/AbstractCommand'
 
 export interface ICommands {
 	[command: string]:

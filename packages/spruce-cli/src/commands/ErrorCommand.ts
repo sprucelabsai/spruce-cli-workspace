@@ -1,13 +1,13 @@
-import AbstractCommand from './AbstractCommand'
-import { Command } from 'commander'
-import namedTemplateItemDefinition from '../schemas/namedTemplateItem.definition'
 import path from 'path'
+import { Command } from 'commander'
 import fs from 'fs-extra'
 import globby from 'globby'
-import log from '../lib/log'
-import SpruceError from '../errors/SpruceError'
+import { Feature } from '#spruce/autoloaders/features'
 import { ErrorCode } from '#spruce/errors/codes.types'
-import { Feature } from '../../.spruce/autoloaders/features'
+import SpruceError from '../errors/SpruceError'
+import log from '../lib/log'
+import namedTemplateItemDefinition from '../schemas/namedTemplateItem.definition'
+import AbstractCommand from './AbstractCommand'
 
 export default class ErrorCommand extends AbstractCommand {
 	public attachCommands(program: Command): void {
@@ -150,10 +150,10 @@ export default class ErrorCommand extends AbstractCommand {
 				await this.writeFile(errorFileDestination, newErrorContents)
 			} else {
 				// Could not write to file, output snippet suggestion
-				this.utilities.terminal.warn(
+				this.term.warn(
 					'Failed to add to Error.ts, here is the block to drop in'
 				)
-				this.utilities.terminal.section({
+				this.term.section({
 					headline: 'Code block example',
 					lines: [errorBlock]
 				})
@@ -185,10 +185,10 @@ export default class ErrorCommand extends AbstractCommand {
 		})
 
 		// Give an example
-		this.utilities.terminal.headline(`${names.namePascal} examples:`)
+		this.term.headline(`${names.namePascal} examples:`)
 
-		this.utilities.terminal.writeLn('')
-		this.utilities.terminal.codeSample(
+		this.term.writeLn('')
+		this.term.codeSample(
 			this.templates.errorExample({
 				namePascal,
 				nameCamel,
@@ -217,10 +217,9 @@ export default class ErrorCommand extends AbstractCommand {
 		}[] = []
 
 		// Make sure error module is installed
-		this.utilities.terminal.startLoading()
-		await this.services.pkg.install('@sprucelabs/error')
-		this.utilities.tsConfig.setupForErrors()
-		this.utilities.terminal.stopLoading()
+		await this.services.feature.install({
+			features: [{ feature: Feature.Error }]
+		})
 
 		if (cmd.clean) {
 			fs.removeSync(`.spruce/errors`)
@@ -253,15 +252,15 @@ export default class ErrorCommand extends AbstractCommand {
 				})
 
 				// Tell them how to use it
-				this.utilities.terminal.headline(`${namePascal}Error examples:`)
+				this.term.headline(`${namePascal}Error examples:`)
 
-				this.utilities.terminal.writeLn('')
-				this.utilities.terminal.codeSample(
+				this.term.writeLn('')
+				this.term.codeSample(
 					this.templates.errorExample({ namePascal, nameCamel, definition })
 				)
 
-				this.utilities.terminal.writeLn('')
-				this.utilities.terminal.writeLn('')
+				this.term.writeLn('')
+				this.term.writeLn('')
 
 				// Track all errors
 				allErrors.push({ namePascal, nameReadable, description })
@@ -291,6 +290,6 @@ export default class ErrorCommand extends AbstractCommand {
 			destinationFile: this.resolvePath(typesDestinationDir, 'options.types.ts')
 		})
 
-		this.utilities.terminal.info('All done! 👊')
+		this.term.info('All done! 👊')
 	}
 }

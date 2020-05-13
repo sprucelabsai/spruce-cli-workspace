@@ -1,10 +1,10 @@
-import uuid from 'uuid'
-import fs from 'fs-extra'
-import BaseTest from '@sprucelabs/test'
-import { IServices } from '#spruce/autoloaders/services'
-import log from './lib/log'
-import { setup } from './index'
 import path from 'path'
+import BaseTest from '@sprucelabs/test'
+import fs from 'fs-extra'
+import uuid from 'uuid'
+import { IServices } from '#spruce/autoloaders/services'
+import { setup } from './index'
+import log from './lib/log'
 
 export default class BaseCliTest extends BaseTest {
 	protected static services: IServices
