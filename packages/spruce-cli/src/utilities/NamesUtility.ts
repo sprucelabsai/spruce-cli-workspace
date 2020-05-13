@@ -1,9 +1,9 @@
-import { camelCase, snakeCase, upperFirst } from 'lodash'
-import { FieldDefinition } from '@sprucelabs/schema'
-import AbstractUtility from './AbstractUtility'
 import path from 'path'
-import { SpruceSchemas } from '../../.spruce/schemas/schemas.types'
+import { FieldDefinition } from '@sprucelabs/schema'
 import { Optional } from '@sprucelabs/schema'
+import { camelCase, snakeCase, upperFirst } from 'lodash'
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import AbstractUtility from './AbstractUtility'
 
 /** First name => FirstName */
 export function toCamel(name: string) {
@@ -49,19 +49,19 @@ export default class NamesUtility extends AbstractUtility {
 		>
 	>(fieldName: K, fieldDefinition: FieldDefinition, values: V) {
 		switch (fieldName) {
-			case 'camelName':
-				if (!values.camelName) {
-					fieldDefinition.defaultValue = toCamel(values.readableName || '')
+			case 'nameCamel':
+				if (!values.nameCamel) {
+					fieldDefinition.defaultValue = toCamel(values.nameReadable || '')
 				}
 				break
-			case 'pascalName':
-				if (!values.pascalName) {
-					fieldDefinition.defaultValue = toPascal(values.readableName || '')
+			case 'namePascal':
+				if (!values.namePascal) {
+					fieldDefinition.defaultValue = toPascal(values.nameReadable || '')
 				}
 				break
-			case 'constName':
-				if (!values.constName) {
-					fieldDefinition.defaultValue = toConst(values.readableName || '')
+			case 'nameConst':
+				if (!values.nameConst) {
+					fieldDefinition.defaultValue = toConst(values.nameReadable || '')
 				}
 				break
 		}

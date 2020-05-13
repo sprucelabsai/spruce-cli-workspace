@@ -1,18 +1,18 @@
-import AbstractCommand from './AbstractCommand'
-import { Command } from 'commander'
-import namedTemplateItemDefinition from '../schemas/namedTemplateItem.definition'
 import path from 'path'
+import { Command } from 'commander'
 import fs from 'fs-extra'
 import globby from 'globby'
-import log from '../lib/log'
-import SpruceError from '../errors/SpruceError'
+import { Feature } from '#spruce/autoloaders/features'
 import { ErrorCode } from '#spruce/errors/codes.types'
-import { Feature } from '../../.spruce/autoloaders/features'
+import SpruceError from '../errors/SpruceError'
+import log from '../lib/log'
+import namedTemplateItemDefinition from '../schemas/namedTemplateItem.definition'
+import AbstractCommand from './AbstractCommand'
 
 export default class ErrorCommand extends AbstractCommand {
 	public attachCommands(program: Command): void {
 		program
-			.command('error:create')
+			.command('error:create [name]')
 			.description('Define a new type of error')
 			.option(
 				'-dd, --errorDestinationDir <errorDestinationDir>',
@@ -24,10 +24,15 @@ export default class ErrorCommand extends AbstractCommand {
 				'Where should I write the types file that supports the error?',
 				'./.spruce/errors'
 			)
+			.option(
+				'-sl --schemaLookupDir <schemaLookupDir>',
+				'Where should I write the types file that supports the error?',
+				'.src/schemas'
+			)
 			.action(this.create.bind(this))
 
 		program
-			.command('error:sync')
+			.command('error:sync [lookupDir]')
 			.description('Generates type files on all error definitions.')
 			.option(
 				'-l, --lookupDir <lookupDir>',
@@ -50,6 +55,11 @@ export default class ErrorCommand extends AbstractCommand {
 				'./src/errors'
 			)
 			.option(
+				'-sl --schemaLookupDir <schemaLookupDir>',
+				'Where should I write the types file that supports the error?',
+				'.src/schemas'
+			)
+			.option(
 				'-c, --clean',
 				'Clean output directory before generating errors, deleting old files.'
 			)
@@ -58,9 +68,16 @@ export default class ErrorCommand extends AbstractCommand {
 	}
 
 	// TODO allow passing of name
-	public async create(cmd: Command) {
+	public async create(name: string | undefined, cmd: Command) {
+		const errorDestinationDir = cmd.errorDestinationDir as string
+		const typesDestinationDir = cmd.typesDestinationDir as string
+		const schemaLookupDir = cmd.schemaLookupDir as string
+
 		const form = this.formBuilder({
 			definition: namedTemplateItemDefinition,
+			initialValues: {
+				nameReadable: name
+			},
 			onWillAskQuestion: this.utilities.names.onWillAskQuestionHandler.bind(
 				this.utilities.names
 			)
@@ -68,16 +85,13 @@ export default class ErrorCommand extends AbstractCommand {
 
 		const names = await form.present({
 			fields: [
-				'readableName',
-				'pascalName',
-				'camelName',
-				'constName',
+				'nameReadable',
+				'namePascal',
+				'nameCamel',
+				'nameConst',
 				'description'
 			]
 		})
-
-		const errorDestinationDir = cmd.errorDestinationDir as string
-		const typesDestinationDir = cmd.typesDestinationDir as string
 
 		const errorFileDestination = this.resolvePath(
 			errorDestinationDir,
@@ -86,7 +100,7 @@ export default class ErrorCommand extends AbstractCommand {
 
 		const errorDefinitionFileDestination = this.resolvePath(
 			errorDestinationDir,
-			`${names.camelName}.definition.ts`
+			`${names.nameCamel}.definition.ts`
 		)
 
 		// If there is already a definition file, blow up
@@ -136,10 +150,10 @@ export default class ErrorCommand extends AbstractCommand {
 				await this.writeFile(errorFileDestination, newErrorContents)
 			} else {
 				// Could not write to file, output snippet suggestion
-				this.utilities.terminal.warn(
+				this.term.warn(
 					'Failed to add to Error.ts, here is the block to drop in'
 				)
-				this.utilities.terminal.section({
+				this.term.section({
 					headline: 'Code block example',
 					lines: [errorBlock]
 				})
@@ -148,14 +162,15 @@ export default class ErrorCommand extends AbstractCommand {
 
 		//Generate error option types based on new file
 		const {
-			pascalName,
+			namePascal,
 			definition,
-			camelName
-		} = await this.generators.schema.generateTypesFromDefinitionFile(
-			errorDefinitionFileDestination,
-			this.resolvePath(typesDestinationDir),
-			'errorTypes'
-		)
+			nameCamel
+		} = await this.generators.schema.generateTypesFromDefinitionFile({
+			sourceFile: errorDefinitionFileDestination,
+			destinationDir: this.resolvePath(typesDestinationDir),
+			template: 'errorTypes',
+			schemaLookupDir
+		})
 
 		// Rebuild the errors codes
 		await this.generators.error.rebuildCodesTypesFile({
@@ -170,22 +185,23 @@ export default class ErrorCommand extends AbstractCommand {
 		})
 
 		// Give an example
-		this.utilities.terminal.headline(`${names.pascalName} examples:`)
+		this.term.headline(`${names.namePascal} examples:`)
 
-		this.utilities.terminal.writeLn('')
-		this.utilities.terminal.codeSample(
+		this.term.writeLn('')
+		this.term.codeSample(
 			this.templates.errorExample({
-				pascalName,
-				camelName,
+				namePascal,
+				nameCamel,
 				definition
 			})
 		)
 	}
 
-	public async sync(cmd: Command) {
-		const lookupDir = cmd.lookupDir as string
+	public async sync(lookupDirOption: string | undefined, cmd: Command) {
+		const lookupDir = lookupDirOption || (cmd.lookupDir as string)
 		const typesDestinationDir = cmd.typesDestinationDir as string
 		const errorDestinationDir = cmd.errorDestinationDir as string
+		const schemaLookupDir = cmd.schemaLookupDir as string
 
 		const search = path.join(
 			this.resolvePath(lookupDir),
@@ -195,16 +211,15 @@ export default class ErrorCommand extends AbstractCommand {
 
 		const matches = await globby(search)
 		const allErrors: {
-			pascalName: string
+			namePascal: string
 			description: string
-			readableName: string
+			nameReadable: string
 		}[] = []
 
 		// Make sure error module is installed
-		this.utilities.terminal.startLoading()
-		await this.services.pkg.install('@sprucelabs/error')
-		this.utilities.tsConfig.setupForErrors()
-		this.utilities.terminal.stopLoading()
+		await this.services.feature.install({
+			features: [{ feature: Feature.Error }]
+		})
 
 		if (cmd.clean) {
 			fs.removeSync(`.spruce/errors`)
@@ -224,30 +239,31 @@ export default class ErrorCommand extends AbstractCommand {
 
 				//Generate error option types based on new file
 				const {
-					pascalName,
-					camelName,
+					namePascal,
+					nameCamel,
 					definition,
 					description,
-					readableName
-				} = await this.generators.schema.generateTypesFromDefinitionFile(
-					filePath,
-					this.resolvePath(typesDestinationDir),
-					'errorTypes'
-				)
+					nameReadable
+				} = await this.generators.schema.generateTypesFromDefinitionFile({
+					sourceFile: filePath,
+					destinationDir: this.resolvePath(typesDestinationDir),
+					schemaLookupDir,
+					template: 'errorTypes'
+				})
 
 				// Tell them how to use it
-				this.utilities.terminal.headline(`${pascalName}Error examples:`)
+				this.term.headline(`${namePascal}Error examples:`)
 
-				this.utilities.terminal.writeLn('')
-				this.utilities.terminal.codeSample(
-					this.templates.errorExample({ pascalName, camelName, definition })
+				this.term.writeLn('')
+				this.term.codeSample(
+					this.templates.errorExample({ namePascal, nameCamel, definition })
 				)
 
-				this.utilities.terminal.writeLn('')
-				this.utilities.terminal.writeLn('')
+				this.term.writeLn('')
+				this.term.writeLn('')
 
 				// Track all errors
-				allErrors.push({ pascalName, readableName, description })
+				allErrors.push({ namePascal, nameReadable, description })
 			})
 		)
 
@@ -274,6 +290,6 @@ export default class ErrorCommand extends AbstractCommand {
 			destinationFile: this.resolvePath(typesDestinationDir, 'options.types.ts')
 		})
 
-		this.utilities.terminal.info('All done! 👊')
+		this.term.info('All done! 👊')
 	}
 }

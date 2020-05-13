@@ -1,10 +1,10 @@
-import AbstractGenerator from './AbstractGenerator'
+import path from 'path'
 import { ISchemaDefinition } from '@sprucelabs/schema'
 import { IFieldTemplateItem, ISchemaTemplateItem } from '@sprucelabs/schema'
 import { templates } from '@sprucelabs/spruce-templates'
-import path from 'path'
-import { ErrorCode } from '../../.spruce/errors/codes.types'
+import { ErrorCode } from '#spruce/errors/codes.types'
 import SpruceError from '../errors/SpruceError'
+import AbstractGenerator from './AbstractGenerator'
 
 export interface IGenerateSchemaTypesOptions {
 	fieldTemplateItems: IFieldTemplateItem[]
@@ -20,32 +20,40 @@ export interface ISchemaTypesGenerationPhase {
 }
 export default class SchemaGenerator extends AbstractGenerator {
 	/** Generate a type file from a definition file */
-	public async generateTypesFromDefinitionFile(
-		sourceFile: string,
-		destinationDir: string,
-		template: 'errorTypes' = 'errorTypes'
-	): Promise<{
-		camelName: string
-		pascalName: string
+	public async generateTypesFromDefinitionFile(options: {
+		sourceFile: string
+		destinationDir: string
+		schemaLookupDir: string
+		template: 'errorTypes'
+	}): Promise<{
+		nameCamel: string
+		namePascal: string
 		description: string
-		readableName: string
+		nameReadable: string
 		definition: ISchemaDefinition
 		generatedFiles: {
 			schemaTypes: string
 		}
 	}> {
+		const {
+			sourceFile,
+			destinationDir,
+			schemaLookupDir,
+			template = 'errorTypes'
+		} = options
+
 		const definition = await this.services.vm.importDefinition(sourceFile)
 
 		//Get variations on name
 		const {
-			camelName,
-			pascalName,
-			readableName
+			nameCamel,
+			namePascal,
+			nameReadable
 		} = this.utilities.schema.generateNames(definition)
 		const description = definition.description
 
 		// Files
-		const newFileName = `${camelName}.types.ts`
+		const newFileName = `${nameCamel}.types.ts`
 		const destination = path.join(destinationDir, newFileName)
 
 		// Relative paths
@@ -56,15 +64,16 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 		// TODO what should the namespace be? slug pulled from somewhere
 		const schemaTemplateItems = await this.stores.schema.schemaTemplateItems({
-			includeErrors: false
+			includeErrors: false,
+			localLookupDir: schemaLookupDir
 		})
 
 		// Contents
 		const contents = this.templates[template]({
 			schemaTemplateItems,
 			definition,
-			camelName,
-			pascalName,
+			nameCamel,
+			namePascal,
 			description:
 				description || `Description missing in schema defined in ${sourceFile}`,
 			relativeToDefinition: relativeToDefinition.replace(
@@ -80,11 +89,11 @@ export default class SchemaGenerator extends AbstractGenerator {
 		this.writeFile(destination, contents)
 
 		return {
-			camelName,
-			pascalName,
+			nameCamel,
+			namePascal,
 			definition,
 			description: description || '*definition missing*',
-			readableName,
+			nameReadable,
 			generatedFiles: {
 				schemaTypes: destination
 			}

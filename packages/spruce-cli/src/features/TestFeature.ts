@@ -1,8 +1,8 @@
 import path from 'path'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
-import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import { Feature } from '#spruce/autoloaders/features'
 import fs from 'fs-extra'
+import { Feature } from '#spruce/autoloaders/features'
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import log from '../lib/log'
 import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
 
@@ -33,7 +33,7 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 	}) {
 		log.trace('TestFeature.afterPackageInstall()')
 
-		// package.json updates
+		// Package.json updates
 		const babelConfig = {
 			presets: [
 				[
@@ -50,6 +50,9 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 
 		const jestConfig = {
 			preset: 'ts-jest',
+			cache: false,
+			maxWorkers: 4,
+			testTimeout: 30000,
 			testEnvironment: 'node',
 			testPathIgnorePatterns: ['<rootDir>/build/', '<rootDir>/node_modules/'],
 			moduleNameMapper: {
@@ -70,13 +73,13 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 
 		const name = this.utilities.names.toFileNameWithoutExtension(target)
 
-		const pascalName = this.utilities.names.toPascal(name)
+		const namePascal = this.utilities.names.toPascal(name)
 		const destination = path.join(path.dirname(target), name) + '.test.ts'
-		const contents = this.templates.test({ pascalName })
+		const contents = this.templates.test({ namePascal })
 
 		fs.outputFileSync(destination, contents)
 
-		this.utilities.terminal.info(`Test file created at: ${destination}`)
+		this.term.info(`Test file created at: ${destination}`)
 	}
 
 	// TODO

@@ -1667,13 +1667,13 @@ export namespace SpruceSchemas.Local {
 	/** Used to collect input on the names of a class or interface */
 	export interface INamedTemplateItem {
 		/** Readable name. The name people will read */
-		readableName: string
+		nameReadable: string
 		/** Camel case name. camelCase version of the name */
-		camelName: string
+		nameCamel: string
 		/** Pascal case name. PascalCase of the name */
-		pascalName: string
+		namePascal: string
 		/** Constant case name. CONST_CASE of the name */
-		constName: string
+		nameConst: string
 		/** Description. */
 		description: string
 	}
@@ -1690,7 +1690,7 @@ export namespace SpruceSchemas.Local.NamedTemplateItem {
 
 		fields: {
 			/** Readable name. The name people will read */
-			readableName: {
+			nameReadable: {
 				label: 'Readable name'
 				type: SpruceSchema.FieldType.Text
 
@@ -1700,7 +1700,7 @@ export namespace SpruceSchemas.Local.NamedTemplateItem {
 				options: undefined
 			}
 			/** Camel case name. camelCase version of the name */
-			camelName: {
+			nameCamel: {
 				label: 'Camel case name'
 				type: SpruceSchema.FieldType.Text
 
@@ -1710,7 +1710,7 @@ export namespace SpruceSchemas.Local.NamedTemplateItem {
 				options: undefined
 			}
 			/** Pascal case name. PascalCase of the name */
-			pascalName: {
+			namePascal: {
 				label: 'Pascal case name'
 				type: SpruceSchema.FieldType.Text
 
@@ -1720,7 +1720,7 @@ export namespace SpruceSchemas.Local.NamedTemplateItem {
 				options: undefined
 			}
 			/** Constant case name. CONST_CASE of the name */
-			constName: {
+			nameConst: {
 				label: 'Constant case name'
 				type: SpruceSchema.FieldType.Text
 
@@ -1750,7 +1750,7 @@ export namespace SpruceSchemas.Local.NamedTemplateItem {
 
 		fields: {
 			/** Readable name. The name people will read */
-			readableName: {
+			nameReadable: {
 				label: 'Readable name',
 				type: SpruceSchema.FieldType.Text,
 
@@ -1760,7 +1760,7 @@ export namespace SpruceSchemas.Local.NamedTemplateItem {
 				options: undefined
 			},
 			/** Camel case name. camelCase version of the name */
-			camelName: {
+			nameCamel: {
 				label: 'Camel case name',
 				type: SpruceSchema.FieldType.Text,
 
@@ -1770,7 +1770,7 @@ export namespace SpruceSchemas.Local.NamedTemplateItem {
 				options: undefined
 			},
 			/** Pascal case name. PascalCase of the name */
-			pascalName: {
+			namePascal: {
 				label: 'Pascal case name',
 				type: SpruceSchema.FieldType.Text,
 
@@ -1780,7 +1780,7 @@ export namespace SpruceSchemas.Local.NamedTemplateItem {
 				options: undefined
 			},
 			/** Constant case name. CONST_CASE of the name */
-			constName: {
+			nameConst: {
 				label: 'Constant case name',
 				type: SpruceSchema.FieldType.Text,
 

@@ -1,25 +1,25 @@
-import chalk from 'chalk'
-import _ from 'lodash'
+import path from 'path'
 import {
 	FieldType,
 	FieldDefinition,
 	FieldFactory,
 	FieldDefinitionValueType
 } from '@sprucelabs/schema'
-import inquirer from 'inquirer'
-// @ts-ignore
+// @ts-ignore No definition available
 import fonts from 'cfonts'
-import ora from 'ora'
-import { filter } from 'lodash'
-// @ts-ignore
+import chalk from 'chalk'
+// @ts-ignore No definition available
 import emphasize from 'emphasize'
-import AbstractUtility from './AbstractUtility'
-import log from '../lib/log'
 import fs from 'fs-extra'
 import globby from 'globby'
-import path from 'path'
+import inquirer from 'inquirer'
+import _ from 'lodash'
+import { filter } from 'lodash'
+import ora from 'ora'
+import { ErrorCode } from '#spruce/errors/codes.types'
 import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '../../.spruce/errors/codes.types'
+import log from '../lib/log'
+import AbstractUtility from './AbstractUtility'
 
 let fieldCount = 0
 function generateInquirerFieldName() {

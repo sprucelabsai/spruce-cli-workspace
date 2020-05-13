@@ -1,6 +1,6 @@
 import path from 'path'
-import AbstractGenerator from './AbstractGenerator'
 import globby from 'globby'
+import AbstractGenerator from './AbstractGenerator'
 
 export default class ErrorGenerator extends AbstractGenerator {
 	/** Rebuilds the codes */
@@ -15,8 +15,8 @@ export default class ErrorGenerator extends AbstractGenerator {
 		const matches = await globby(search)
 
 		const codes: {
-			pascalName: string
-			constName: string
+			namePascal: string
+			nameConst: string
 			description: string
 		}[] = []
 
@@ -25,13 +25,13 @@ export default class ErrorGenerator extends AbstractGenerator {
 				const definition = await this.services.vm.importDefinition(file)
 
 				//Get variations on name
-				const camelName = this.utilities.names.toCamel(definition.id)
-				const pascalName = this.utilities.names.toPascal(camelName)
-				const constName = this.utilities.names.toConst(camelName)
+				const nameCamel = this.utilities.names.toCamel(definition.id)
+				const namePascal = this.utilities.names.toPascal(nameCamel)
+				const nameConst = this.utilities.names.toConst(nameCamel)
 
 				codes.push({
-					pascalName,
-					constName,
+					namePascal,
+					nameConst,
 					description:
 						definition.description ||
 						'*** error definition missing description ***'
@@ -55,8 +55,8 @@ export default class ErrorGenerator extends AbstractGenerator {
 		const matches = await globby(search)
 
 		const errorOptions: {
-			pascalName: string
-			camelName: string
+			namePascal: string
+			nameCamel: string
 		}[] = []
 
 		await Promise.all(
@@ -64,10 +64,10 @@ export default class ErrorGenerator extends AbstractGenerator {
 				const definition = await this.services.vm.importDefinition(file)
 
 				//Get variations on name
-				const camelName = this.utilities.names.toCamel(definition.id)
-				const pascalName = this.utilities.names.toPascal(camelName)
+				const nameCamel = this.utilities.names.toCamel(definition.id)
+				const namePascal = this.utilities.names.toPascal(nameCamel)
 
-				errorOptions.push({ pascalName, camelName })
+				errorOptions.push({ namePascal, nameCamel })
 			})
 		)
 

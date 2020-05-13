@@ -1,15 +1,16 @@
-import AbstractStore from './AbstractStore'
+import pathUtil from 'path'
 import {
 	ISchemaDefinition,
 	IFieldRegistration,
 	ISchemaTemplateItem,
 	IFieldTemplateItem
 } from '@sprucelabs/schema'
-
-import pathUtil from 'path'
+import Schema from '@sprucelabs/schema/build/Schema'
+import globby from 'globby'
 import { uniqBy } from 'lodash'
-
 // TODO move these into mercury api and pull from there
+import { ErrorCode } from '#spruce/errors/codes.types'
+import SpruceError from '../errors/SpruceError'
 import {
 	userDefinition,
 	userLocationDefinition,
@@ -18,10 +19,7 @@ import {
 	groupDefinition,
 	aclDefinition
 } from '../temporary/schemas'
-import globby from 'globby'
-import Schema from '@sprucelabs/schema/build/Schema'
-import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '../../.spruce/errors/codes.types'
+import AbstractStore from './AbstractStore'
 
 /** The mapping of type keys (string, phoneNumber) to definitions */
 // export interface IFieldTypeMap {
@@ -30,6 +28,8 @@ import { ErrorCode } from '../../.spruce/errors/codes.types'
 
 export interface ISchemaTemplateItemsOptions {
 	includeErrors?: boolean
+	/* Where should i look for local definitions? */
+	localLookupDir: string
 }
 
 export interface IFieldTemplateItemsOptions
@@ -61,9 +61,9 @@ export default class SchemaStore extends AbstractStore {
 
 	/** Get the schema map supplied by core */
 	public async schemaTemplateItems<T extends ISchemaTemplateItemsOptions>(
-		options?: T
+		options: T
 	): Promise<SchemaTemplateItemsReturnType<T>> {
-		const { includeErrors = true } = options ?? {}
+		const { includeErrors = true, localLookupDir } = options
 
 		/** Get all schemas from api  */
 		// TODO load from api
@@ -88,9 +88,7 @@ export default class SchemaStore extends AbstractStore {
 		const localDefinitions = (
 			await Promise.all(
 				(
-					await globby([
-						pathUtil.join(this.cwd, '/src/schemas/**/*.definition.ts')
-					])
+					await globby([pathUtil.join(localLookupDir, '/**/*.definition.ts')])
 				).map(async file => {
 					try {
 						const definition = await this.services.child.importDefault(file, {
@@ -227,12 +225,12 @@ export default class SchemaStore extends AbstractStore {
 			const name = registration.className
 
 			types.push({
-				pascalName: this.utilities.names.toPascal(name),
-				camelName: this.utilities.names.toCamel(name),
+				namePascal: this.utilities.names.toPascal(name),
+				nameCamel: this.utilities.names.toCamel(name),
 				package: pkg,
 				className: registration.className,
 				importAs,
-				readableName: registration.className,
+				nameReadable: registration.className,
 				pascalType: this.utilities.names.toPascal(registration.type),
 				camelType: this.utilities.names.toCamel(registration.type),
 				isLocal: addon.isLocal,

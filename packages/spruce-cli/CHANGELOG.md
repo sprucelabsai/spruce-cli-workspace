@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.3.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.2.1...v10.3.0) (2020-05-13)
+
+
+### Bug Fixes
+
+* refactor 1-off logic in TsConfigUtility to features ([fd15b90](https://github.com/sprucelabsai/spruce-cli-workspace/commit/fd15b90))
+
+
+### Features
+
+* error/schema api symmetry ([0b4ad7d](https://github.com/sprucelabsai/spruce-cli-workspace/commit/0b4ad7d))
+* formbuilder fixes ([6fbdec4](https://github.com/sprucelabsai/spruce-cli-workspace/commit/6fbdec4))
+* method name change ([abc5448](https://github.com/sprucelabsai/spruce-cli-workspace/commit/abc5448))
+* schema create calling proper schema sync ([5ed3038](https://github.com/sprucelabsai/spruce-cli-workspace/commit/5ed3038))
+* schema lookup dir ([4297e85](https://github.com/sprucelabsai/spruce-cli-workspace/commit/4297e85))
+* upgrade lint config and fix sort order ([75ca6d8](https://github.com/sprucelabsai/spruce-cli-workspace/commit/75ca6d8))
+* use of internal resolve path ([97bbd3a](https://github.com/sprucelabsai/spruce-cli-workspace/commit/97bbd3a))
+* vscode service for managing extensions ([e2628a7](https://github.com/sprucelabsai/spruce-cli-workspace/commit/e2628a7))
+
+
+### Refactoring
+
+* updated names to match standards (required schema update) ([257f742](https://github.com/sprucelabsai/spruce-cli-workspace/commit/257f742))
+
+
+
+
+
+## [10.2.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.2.0...v10.2.1) (2020-05-13)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
 # [10.2.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.1.1...v10.2.0) (2020-05-11)
 
 

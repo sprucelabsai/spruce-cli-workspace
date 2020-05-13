@@ -8,11 +8,11 @@ export interface ISchemaImport {
 
 /** Take all the field template items map them to imports */
 export default function(fields: IFieldTemplateItem[]): ISchemaImport[] {
-	const imports: (ISchemaImport & { pascalName: string })[] = fields.map(
+	const imports: (ISchemaImport & { namePascal: string })[] = fields.map(
 		item => ({
 			package: item.package,
 			importAs: item.importAs,
-			pascalName: item.pascalName
+			namePascal: item.namePascal
 		})
 	)
 
@@ -27,7 +27,7 @@ export default function(fields: IFieldTemplateItem[]): ISchemaImport[] {
 	)
 	if (schemaName) {
 		throw new Error(
-			`${schemaName.pascalName} has importAs="Schema", which is a reserved word`
+			`${schemaName.namePascal} has importAs="Schema", which is a reserved word`
 		)
 	}
 
@@ -36,7 +36,7 @@ export default function(fields: IFieldTemplateItem[]): ISchemaImport[] {
 	uniqueImports.forEach(item => {
 		if (item.importAs in aliases) {
 			throw new Error(
-				`${item.pascalName} has a public importAs="${item.importAs}"`
+				`${item.namePascal} has a public importAs="${item.importAs}"`
 			)
 		}
 	})

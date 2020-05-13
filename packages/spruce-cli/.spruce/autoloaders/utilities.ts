@@ -1,31 +1,37 @@
+/* eslint-disable spruce/prefer-pascal-case-enums */
 // Import base class
 import AbstractUtility from '../../src/utilities/AbstractUtility'
-
 // Import each matching class that will be autoloaded
+import { IUtilityOptions } from '../../src/utilities/AbstractUtility'
 import Bootstrap from '../../src/utilities/BootstrapUtility'
+import Introspection from '../../src/utilities/IntrospectionUtility'
 import Names from '../../src/utilities/NamesUtility'
-import Parser from '../../src/utilities/ParserUtility'
 import Schema from '../../src/utilities/SchemaUtility'
 import Terminal from '../../src/utilities/TerminalUtility'
 import TsConfig from '../../src/utilities/TsConfigUtility'
 
 // Import necessary interface(s)
-import { IUtilityOptions } from '../../src/utilities/AbstractUtility'
 
 export interface IUtilities {
+	[utility: string]:
+		| Bootstrap
+		| Introspection
+		| Names
+		| Schema
+		| Terminal
+		| TsConfig
 	bootstrap: Bootstrap
+	introspection: Introspection
 	names: Names
-	parser: Parser
 	schema: Schema
 	terminal: Terminal
 	tsConfig: TsConfig
-	[utility: string]: Bootstrap | Names | Parser | Schema | Terminal | TsConfig
 }
 
 export enum Utility {
 	Bootstrap = 'bootstrap',
+	Introspection = 'introspection',
 	Names = 'names',
-	Parser = 'parser',
 	Schema = 'schema',
 	Terminal = 'terminal',
 	TsConfig = 'tsConfig'
@@ -41,13 +47,13 @@ export default async function autoloader(options: {
 	if (after) {
 		await after(bootstrap)
 	}
+	const introspection = new Introspection(constructorOptions)
+	if (after) {
+		await after(introspection)
+	}
 	const names = new Names(constructorOptions)
 	if (after) {
 		await after(names)
-	}
-	const parser = new Parser(constructorOptions)
-	if (after) {
-		await after(parser)
 	}
 	const schema = new Schema(constructorOptions)
 	if (after) {
@@ -64,8 +70,8 @@ export default async function autoloader(options: {
 
 	const siblings: IUtilities = {
 		bootstrap,
+		introspection,
 		names,
-		parser,
 		schema,
 		terminal,
 		tsConfig
@@ -77,14 +83,14 @@ export default async function autoloader(options: {
 		bootstrap.afterAutoload(siblings)
 	}
 	// @ts-ignore method is optional
+	if (typeof introspection.afterAutoload === 'function') {
+		// @ts-ignore method is optional
+		introspection.afterAutoload(siblings)
+	}
+	// @ts-ignore method is optional
 	if (typeof names.afterAutoload === 'function') {
 		// @ts-ignore method is optional
 		names.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof parser.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		parser.afterAutoload(siblings)
 	}
 	// @ts-ignore method is optional
 	if (typeof schema.afterAutoload === 'function') {

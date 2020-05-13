@@ -1,20 +1,21 @@
-import log from '../lib/log'
 import path from 'path'
-import { Command } from 'commander'
-import FormBuilder, { IFormOptions } from '../builders/FormBuilder'
-import { ISchemaDefinition } from '@sprucelabs/schema'
-import { IStores } from '#spruce/autoloaders/stores'
 import { Mercury } from '@sprucelabs/mercury'
-import { IServices } from '#spruce/autoloaders/services'
-import { IGenerators } from '#spruce/autoloaders/generators'
-import { IUtilities } from '#spruce/autoloaders/utilities'
+import { ISchemaDefinition } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
+import { Command } from 'commander'
+import { ICommands } from '#spruce/autoloaders/commands'
+import { IGenerators } from '#spruce/autoloaders/generators'
+import { IServices } from '#spruce/autoloaders/services'
+import { IStores } from '#spruce/autoloaders/stores'
+import { IUtilities } from '#spruce/autoloaders/utilities'
+import Autoloadable from '../Autoloadable'
+import FormBuilder, { IFormOptions } from '../builders/FormBuilder'
 import QuizBuilder, {
 	IQuizOptions,
 	IQuizQuestions
 } from '../builders/QuizBuilder'
-import { ICommands } from '../../.spruce/autoloaders/commands'
-import Autoloadable from '../Autoloadable'
+import log from '../lib/log'
+import TerminalUtility from '../utilities/TerminalUtility'
 
 /** All commanders get this */
 export interface ICommandOptions {
@@ -33,14 +34,15 @@ export interface IWriteOptions {
 }
 
 export default abstract class AbstractCommand extends Autoloadable {
-	public stores: IStores
-	public mercury: Mercury
-	public services: IServices
-	public commands!: ICommands
-	public cwd: string
-	public generators: IGenerators
-	public utilities: IUtilities
-	public templates: Templates
+	protected stores: IStores
+	protected mercury: Mercury
+	protected services: IServices
+	protected commands!: ICommands
+	protected generators: IGenerators
+	protected utilities: IUtilities
+	protected templates: Templates
+	/** Convenience method that references this.utilities.terminal */
+	protected term: TerminalUtility
 
 	public constructor(options: ICommandOptions) {
 		super(options)
@@ -62,6 +64,8 @@ export default abstract class AbstractCommand extends Autoloadable {
 		this.generators = generators
 		this.utilities = utilities
 		this.templates = templates
+
+		this.term = this.utilities.terminal
 	}
 
 	public afterAutoload(siblings: ICommands) {

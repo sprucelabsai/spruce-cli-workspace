@@ -1,3 +1,4 @@
+import AbstractSpruceError from '@sprucelabs/error'
 import Schema, {
 	ISchemaDefinition,
 	FieldType,
@@ -9,11 +10,11 @@ import Schema, {
 	ErrorCode as SchemaErrorCode,
 	SchemaError
 } from '@sprucelabs/schema'
-import ITerminal, { ITerminalEffect } from '../utilities/TerminalUtility'
+import { IFieldDefinition } from '@sprucelabs/schema'
 import { pick } from 'lodash'
-import AbstractSpruceError from '@sprucelabs/error'
+import { ErrorCode } from '#spruce/errors/codes.types'
 import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '../../.spruce/errors/codes.types'
+import ITerminal, { ITerminalEffect } from '../utilities/TerminalUtility'
 
 export enum FormBuilderActionType {
 	Done = 'done',
@@ -177,9 +178,9 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 				friendlyMessage: 'Form builder does not support isArray yet'
 			})
 		}
-		// TODO need is array support
+
 		if (value) {
-			definition.defaultValue = value
+			definition.defaultValue = value as IFieldDefinition['defaultValue']
 		}
 
 		// Do we have a lister?

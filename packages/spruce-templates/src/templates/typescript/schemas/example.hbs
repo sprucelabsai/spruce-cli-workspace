@@ -1,20 +1,20 @@
 // Importing your definition
 import SpruceSchemas from '#spruce/schemas/schemas.types'
-import {{camelName}}Definition from '../schemas/{{camelName}}.definition.ts'
+import {{nameCamel}}Definition from '../schemas/{{nameCamel}}.definition.ts'
 
 // Importing interfaces
-import { I{{pascalName}}, I{{pascalName}}Instance } from '#spruce/schemas/{{camelName}}.types'
+import { I{{namePascal}}, I{{namePascal}}Instance } from '#spruce/schemas/{{nameCamel}}.types'
 
 // Create an instance of a schema based on a definition
-const {{camelName}} = new Schema({{camelName}}Definition, values)
+const {{nameCamel}} = new Schema({{nameCamel}}Definition, values)
 
 // Set a value
-{{camelName}}.set('fieldName', newValue);
+{{nameCamel}}.set('fieldName', newValue);
 
 // Get some values
 {{#each definition.fields}}
-const {{@key}} = {{../camelName}}.get('{{@key}}');
+const {{@key}} = {{../nameCamel}}.get('{{@key}}');
 {{/each}}
 
 // ensure it validates
-{{camelName}}.validate() // throws SchemaFieldValidationError
+{{nameCamel}}.validate() // throws SchemaFieldValidationError

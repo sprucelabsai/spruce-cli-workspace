@@ -1,13 +1,7 @@
 import { TemplateKind } from '@sprucelabs/spruce-templates'
 import log from '../lib/log'
+import { IExtension } from '../services/VsCodeService'
 import AbstractFeature from './AbstractFeature'
-
-interface IExtension {
-	/** The vscode extension id like dbaeumer.vscode-eslint  */
-	id: string
-	/** A friendly name / description that will describe what the extension is or does */
-	label: string
-}
 
 export default class VSCodeFeature extends AbstractFeature {
 	public description = 'VSCode: Create settings and install VSCode extensions'
@@ -28,11 +22,11 @@ export default class VSCodeFeature extends AbstractFeature {
 	]
 
 	public async beforePackageInstall() {
-		this.utilities.terminal.startLoading('Creating VSCode config files')
+		this.term.startLoading('Creating VSCode config files')
 		await this.writeDirectoryTemplate({
 			template: TemplateKind.VSCode
 		})
-		this.utilities.terminal.stopLoading()
+		this.term.stopLoading()
 	}
 
 	public async isInstalled(
@@ -54,23 +48,23 @@ export default class VSCodeFeature extends AbstractFeature {
 	}
 
 	public async afterPackageInstall() {
-		this.utilities.terminal.startLoading('Installing VSCode extensions')
+		this.term.startLoading('Installing VSCode extensions')
 		await this.installMissingExtensions()
-		this.utilities.terminal.stopLoading()
+		this.term.stopLoading()
 	}
 
 	private async installMissingExtensions() {
 		const extensionsToInstall = await this.getMissingExtensions()
 
 		if (extensionsToInstall.length > 0) {
-			await this.installExtensions(extensionsToInstall)
+			await this.services.vsCode.installExtensions(extensionsToInstall)
 		} else {
 			log.debug('No extensions to install')
 		}
 	}
 
 	private async getMissingExtensions() {
-		const currentExtensions = await this.getVSCodeExtensions()
+		const currentExtensions = await this.services.vsCode.getVSCodeExtensions()
 		const missingExtensions = this.recommendedExtensions.filter(
 			recommendedExtension => {
 				const currentExtension = currentExtensions.find(
@@ -83,42 +77,5 @@ export default class VSCodeFeature extends AbstractFeature {
 			}
 		)
 		return missingExtensions
-	}
-
-	private async getVSCodeExtensions(): Promise<string[]> {
-		let extensions: string[] = []
-
-		try {
-			const { stdout } = await this.services.child.executeCommand('code', {
-				args: ['--list-extensions']
-			})
-
-			extensions = stdout.split('\n')
-		} catch (e) {
-			log.warn(
-				'VSCode extensions not installed. Check that VSCode is installed and the "code" cli tool is available'
-			)
-		}
-
-		return extensions
-	}
-
-	private async installExtensions(extensions: IExtension[]) {
-		const extensionIds = extensions.map(e => e.id)
-		let args: string[] = []
-		extensionIds.forEach(eId => {
-			args = args.concat('--install-extension', eId)
-		})
-		try {
-			const { stdout } = await this.services.child.executeCommand('code', {
-				args
-			})
-
-			log.debug('VSCode installed extensions', stdout)
-		} catch (e) {
-			log.warn(
-				'VSCode extensions not installed. Check that VSCode is installed and the "code" cli tool is available'
-			)
-		}
 	}
 }

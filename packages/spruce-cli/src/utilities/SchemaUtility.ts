@@ -1,4 +1,3 @@
-import AbstractUtility from './AbstractUtility'
 import {
 	ISchemaDefinition,
 	FieldType,
@@ -10,16 +9,17 @@ import {
 	default as Schema
 } from '@sprucelabs/schema'
 import SchemaField from '@sprucelabs/schema/build/fields/SchemaField'
-import { toPascal, toCamel } from './NamesUtility'
 import log from '../lib/log'
+import AbstractUtility from './AbstractUtility'
+import { toPascal, toCamel } from './NamesUtility'
 
 export default class SchemaUtility extends AbstractUtility {
 	/** Generate interface and type names based off schema name */
 	public generateNames(definition: ISchemaDefinition): ISchemaTemplateNames {
 		return {
-			pascalName: toPascal(definition.id),
-			camelName: toCamel(definition.id),
-			readableName: definition.name
+			namePascal: toPascal(definition.id),
+			nameCamel: toCamel(definition.id),
+			nameReadable: definition.name
 		}
 	}
 

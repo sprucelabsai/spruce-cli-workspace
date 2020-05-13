@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { Command } from 'commander'
 import path from 'path'
-import _ from 'lodash'
+import { Command } from 'commander'
 import inflection from 'inflection'
-import AbstractCommand from './AbstractCommand'
-import log from '../lib/log'
-import SpruceError from '../errors/SpruceError'
+import _ from 'lodash'
 import { ErrorCode } from '#spruce/errors/codes.types'
+import SpruceError from '../errors/SpruceError'
+import log from '../lib/log'
+import AbstractCommand from './AbstractCommand'
 
 export default class AutoloaderCommand extends AbstractCommand {
 	public attachCommands(program: Command): void {
@@ -41,7 +41,10 @@ export default class AutoloaderCommand extends AbstractCommand {
 			fullDirectory
 		})
 		// Parse all the files in the directory
-		const { filePaths, ...info } = await this.utilities.parser.parseFileGroup({
+		const {
+			filePaths,
+			...info
+		} = await this.utilities.introspection.parseFileGroup({
 			globbyPattern,
 			suffix
 		})
@@ -71,9 +74,9 @@ export default class AutoloaderCommand extends AbstractCommand {
 					'No classes were found. Check the suffix and/or pattern'
 			})
 		}
-		const pascalName = _.upperFirst(fileName)
-		const namePlural = inflection.pluralize(pascalName)
-		const nameSingular = inflection.singularize(pascalName)
+		const namePascal = _.upperFirst(fileName)
+		const namePlural = inflection.pluralize(namePascal)
+		const nameSingular = inflection.singularize(namePascal)
 
 		const autoloaderFileContents = this.templates.autoloader({
 			abstractClassName: info.abstractClassName,
@@ -90,8 +93,8 @@ export default class AutoloaderCommand extends AbstractCommand {
 
 		await this.services.lint.fix(filename)
 
-		this.utilities.terminal.headline('Autoloader Created 🎉')
-		this.utilities.terminal.codeSample(
+		this.term.headline('Autoloader Created 🎉')
+		this.term.codeSample(
 			`import ${fileName}Autoloader from '#spruce/autoloaders/${fileName}'\nconst ${fileName} = await ${fileName}Autoloader({ constructorOptions: options })`
 		)
 	}

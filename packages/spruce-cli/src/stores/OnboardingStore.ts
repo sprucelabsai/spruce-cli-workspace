@@ -1,9 +1,9 @@
+import Schema from '@sprucelabs/schema'
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import AbstractStore, {
 	IBaseStoreSettings,
 	IStoreOptions
 } from './AbstractStore'
-import Schema from '@sprucelabs/schema'
-import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
 export interface IOnboardingStoreSettings
 	extends IBaseStoreSettings,

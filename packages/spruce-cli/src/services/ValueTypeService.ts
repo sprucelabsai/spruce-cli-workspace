@@ -1,16 +1,16 @@
-import AbstractService from './AbstractService'
+import path from 'path'
 import {
 	TemplateRenderAs,
 	IFieldTemplateItem,
 	FieldDefinition,
 	ISchemaTemplateItem
 } from '@sprucelabs/schema'
-import path from 'path'
-import fs from 'fs-extra'
 import { templates, importExtractor } from '@sprucelabs/spruce-templates'
+import fs from 'fs-extra'
 import sha1 from 'sha1'
+import { ErrorCode } from '#spruce/errors/codes.types'
 import SpruceError from '../errors/SpruceError'
-import { ErrorCode } from '../../.spruce/errors/codes.types'
+import AbstractService from './AbstractService'
 
 export interface IValueTypeGetterOptions {
 	schemaTemplateItems: ISchemaTemplateItem[]
@@ -99,7 +99,7 @@ export default class ValueTypeService extends AbstractService {
 							code += `
 
 							// Rendering ${definition.id}:${fieldName} as ${renderAs} ${
-								fieldTemplateItem.pascalName
+								fieldTemplateItem.namePascal
 							}
 							definition = ${JSON.stringify(fieldDefinition)}
 							renderAs = '${renderAs}'

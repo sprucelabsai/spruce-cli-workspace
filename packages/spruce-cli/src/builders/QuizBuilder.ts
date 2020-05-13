@@ -1,18 +1,18 @@
+import { SpruceErrorCode } from '@sprucelabs/error'
 import {
 	FieldType,
 	ISchemaDefinition,
 	ISchemaDefinitionFields,
 	SchemaFieldNames
 } from '@sprucelabs/schema'
+import chalk from 'chalk'
+import { shuffle } from 'lodash'
+import SpruceError from '../errors/SpruceError'
+import TerminalUtility from '../utilities/TerminalUtility'
 import FormBuilder, {
 	IFormOptions,
 	IFormPresentationOptions
 } from './FormBuilder'
-import TerminalUtility from '../utilities/TerminalUtility'
-import { shuffle } from 'lodash'
-import SpruceError from '../errors/SpruceError'
-import chalk from 'chalk'
-import { SpruceErrorCode } from '@sprucelabs/error'
 
 /** Multiple choice question */
 export interface IQuizMultipleChoiceQuestion {

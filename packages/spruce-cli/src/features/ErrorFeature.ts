@@ -1,5 +1,5 @@
+import { Feature } from '#spruce/autoloaders/features'
 import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
-import { Feature } from '../../.spruce/autoloaders/features'
 
 export default class ErrorFeature extends AbstractFeature {
 	public description =
@@ -12,10 +12,6 @@ export default class ErrorFeature extends AbstractFeature {
 			name: '@sprucelabs/error'
 		}
 	]
-
-	public async afterPackageInstall() {
-		await this.utilities.tsConfig.setupForErrors()
-	}
 
 	public async isInstalled() {
 		return this.services.pkg.isInstalled('@sprucelabs/error')

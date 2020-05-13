@@ -1,9 +1,9 @@
 import { assert, test } from '@sprucelabs/test'
 import uuid from 'uuid'
-import BaseTest from '../BaseTest'
 import { Feature } from '#spruce/autoloaders/features'
+import BaseCliTest from '../BaseCliTest'
 
-export default class SkillFeatureTest extends BaseTest {
+export default class SkillFeatureTest extends BaseCliTest {
 	@test('Properly detects when feature is not installed')
 	protected static async notInstalled() {
 		const isInstalled = await this.services.feature.isInstalled({
