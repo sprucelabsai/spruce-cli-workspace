@@ -16,7 +16,7 @@ import {
 } from '@sprucelabs/mercury'
 import { templates } from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
-import autoloader from '#spruce/autoloaders/index'
+import autoloader from '#spruce/autoloaders'
 import { ErrorCode } from '#spruce/errors/codes.types'
 import pkg from '../package.json'
 /** Addons */

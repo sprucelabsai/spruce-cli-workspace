@@ -45,7 +45,7 @@
 		"@sprucelabs/error": "^1.2.0",
 		"@sprucelabs/log": "^10.2.1",
 		"@sprucelabs/mercury": "10.3.0-prerelease-mock.2",
-		"@sprucelabs/path-resolver": "^1.3.0",
+		"@sprucelabs/path-resolver": "1.3.1-prerelease-dir-index.1",
 		"@sprucelabs/schema": "^1.28.0",
 		"@sprucelabs/spruce-templates": "^10.2.0",
 		"@types/promise.allsettled": "^1.0.3",

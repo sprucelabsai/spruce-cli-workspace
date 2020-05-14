@@ -1896,6 +1896,14 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
+"@sprucelabs/path-resolver@1.3.1-prerelease-dir-index.1":
+  version "1.3.1-prerelease-dir-index.1"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/path-resolver/-/path-resolver-1.3.1-prerelease-dir-index.1.tgz#3243e4b5c99db8d79315d101d727bc678b3f5f36"
+  integrity sha512-LrvOJXydIKEFEKuiV25DKN9uikbmduNyTNaM9BIBASdHp/38yVD6xtJmP4LKkIRRGL5Rc+//htm1nlRXyRk7cA==
+  dependencies:
+    "@sprucelabs/error" "^1.0.11"
+    "@sprucelabs/log" "^10.2.1"
+
 "@sprucelabs/path-resolver@^1.3.0":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@sprucelabs/path-resolver/-/path-resolver-1.3.0.tgz#c4e906bee40fa59cb12f12abd8a15704ce307e3c"
