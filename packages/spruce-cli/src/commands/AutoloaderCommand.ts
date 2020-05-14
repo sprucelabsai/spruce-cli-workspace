@@ -39,6 +39,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 
 		const filename = `.spruce/autoloaders/index.ts`
 		await this.writeFile(filename, autoloaderFileContents)
+		await this.services.lint.fix(filename)
 	}
 
 	private async generateAutoloader(dir: string, cmd: Command) {

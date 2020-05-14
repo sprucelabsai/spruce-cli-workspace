@@ -71,36 +71,5 @@ export default async function autoloader(options: {
 		watcher
 	}
 
-	// // @ts-ignore method is optional
-	// if (typeof onboarding.afterAutoload === 'function') {
-	// 	// @ts-ignore method is optional
-	// 	onboarding.afterAutoload(siblings)
-	// }
-	// // @ts-ignore method is optional
-	// if (typeof remote.afterAutoload === 'function') {
-	// 	// @ts-ignore method is optional
-	// 	remote.afterAutoload(siblings)
-	// }
-	// // @ts-ignore method is optional
-	// if (typeof schema.afterAutoload === 'function') {
-	// 	// @ts-ignore method is optional
-	// 	schema.afterAutoload(siblings)
-	// }
-	// // @ts-ignore method is optional
-	// if (typeof skill.afterAutoload === 'function') {
-	// 	// @ts-ignore method is optional
-	// 	skill.afterAutoload(siblings)
-	// }
-	// // @ts-ignore method is optional
-	// if (typeof user.afterAutoload === 'function') {
-	// 	// @ts-ignore method is optional
-	// 	user.afterAutoload(siblings)
-	// }
-	// // @ts-ignore method is optional
-	// if (typeof watcher.afterAutoload === 'function') {
-	// 	// @ts-ignore method is optional
-	// 	watcher.afterAutoload(siblings)
-	// }
-
 	return siblings
 }
