@@ -3,9 +3,7 @@ import path from 'path'
 import {
 	ISchemaDefinition,
 	ISchemaTemplateItem,
-	IFieldTemplateItem,
-	FieldDefinition,
-	TemplateRenderAs
+	IFieldTemplateItem
 } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
 import log from './src/lib/log'
@@ -24,12 +22,13 @@ import './src/addons/schemaValuesPartial.addon'
 import './src/addons/json.addon'
 import './src/addons/isDefined.addon'
 import importExtractor from './src/utilities/importExtractor'
+import {
+	IValueTypeGenerator,
+	IAutoLoaderClassTemplateItem,
+	IAutoLoaderInterfaceTemplateItem
+} from './src/types/template.types'
 
 log.info('Addons imported')
-
-export interface IValueTypeGenerator {
-	(renderAs: TemplateRenderAs, definition: FieldDefinition): string
-}
 
 // Import actual templates
 const templatePath = path.join(__dirname, 'src', 'templates', 'typescript')
@@ -194,15 +193,8 @@ export const templates = {
 	autoloader(options: {
 		abstractClassName: string
 		abstractClassRelativePath: string
-		classes: {
-			constructorOptionsInterfaceName?: string
-			className: string
-			relativeFilePath: string
-		}[]
-		interfaces: {
-			interfaceName: string
-			relativeFilePath: string
-		}[]
+		classes: IAutoLoaderClassTemplateItem[]
+		interfaces: IAutoLoaderInterfaceTemplateItem[]
 		nameSingular: string
 		namePlural: string
 	}) {
@@ -236,3 +228,4 @@ export { default as TemplateDirectory } from './src/TemplateDirectory'
 export * from './src/TemplateDirectory'
 
 export default handlebars
+export * from './src/types/template.types'

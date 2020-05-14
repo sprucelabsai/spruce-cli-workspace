@@ -32,7 +32,7 @@ export default class ErrorCommand extends AbstractCommand {
 			.action(this.create.bind(this))
 
 		program
-			.command('error:sync [lookupDir]')
+			.command('error:sync')
 			.description('Generates type files on all error definitions.')
 			.option(
 				'-l, --lookupDir <lookupDir>',
@@ -197,8 +197,8 @@ export default class ErrorCommand extends AbstractCommand {
 		)
 	}
 
-	public async sync(lookupDirOption: string | undefined, cmd: Command) {
-		const lookupDir = lookupDirOption || (cmd.lookupDir as string)
+	public async sync(cmd: Command) {
+		const lookupDir = cmd.lookupDir as string
 		const typesDestinationDir = cmd.typesDestinationDir as string
 		const errorDestinationDir = cmd.errorDestinationDir as string
 		const schemaLookupDir = cmd.schemaLookupDir as string

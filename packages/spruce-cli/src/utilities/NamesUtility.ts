@@ -4,21 +4,7 @@ import { Optional } from '@sprucelabs/schema'
 import { camelCase, snakeCase, upperFirst } from 'lodash'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import AbstractUtility from './AbstractUtility'
-
-/** First name => FirstName */
-export function toCamel(name: string) {
-	return camelCase(name)
-}
-
-/** First name => FirstName */
-export function toPascal(name: string) {
-	return upperFirst(toCamel(name))
-}
-
-/** First name => FIRST_NAME */
-export function toConst(name: string) {
-	return snakeCase(name).toUpperCase()
-}
+import inflection from 'inflection'
 
 /** Gets you a name good for using in an import statement based off a file path */
 export function toFileNameWithoutExtension(filePath: string) {
@@ -29,17 +15,33 @@ export function toFileNameWithoutExtension(filePath: string) {
 }
 
 export default class NamesUtility extends AbstractUtility {
-	/** First name => FirstName */
-	public toCamel = toCamel
-
-	/** First name => FirstName */
-	public toPascal = toPascal
-
-	/** First name => FIRST_NAME */
-	public toConst = toConst
-
 	/** Gets you a name good for using in an import statement based off a file path */
 	public toFileNameWithoutExtension = toFileNameWithoutExtension
+
+	/** First name => FirstName */
+	public toCamel(name: string) {
+		return camelCase(name)
+	}
+
+	/** First name => FirstName */
+	public toPascal(name: string) {
+		return upperFirst(this.toCamel(name))
+	}
+
+	/** First name => FIRST_NAME */
+	public toConst(name: string) {
+		return snakeCase(name).toUpperCase()
+	}
+
+	/** First name => First names */
+	public toPlural(name: string) {
+		return inflection.pluralize(name)
+	}
+
+	/** First name => First name */
+	public toSingular(name: string) {
+		return inflection.singularize(name)
+	}
 
 	/** Help guess on answers */
 	public onWillAskQuestionHandler<
@@ -51,17 +53,19 @@ export default class NamesUtility extends AbstractUtility {
 		switch (fieldName) {
 			case 'nameCamel':
 				if (!values.nameCamel) {
-					fieldDefinition.defaultValue = toCamel(values.nameReadable || '')
+					fieldDefinition.defaultValue = this.toCamel(values.nameReadable || '')
 				}
 				break
 			case 'namePascal':
 				if (!values.namePascal) {
-					fieldDefinition.defaultValue = toPascal(values.nameReadable || '')
+					fieldDefinition.defaultValue = this.toPascal(
+						values.nameReadable || ''
+					)
 				}
 				break
 			case 'nameConst':
 				if (!values.nameConst) {
-					fieldDefinition.defaultValue = toConst(values.nameReadable || '')
+					fieldDefinition.defaultValue = this.toConst(values.nameReadable || '')
 				}
 				break
 		}

@@ -7,6 +7,10 @@ import SpruceError from '../errors/SpruceError'
 import log from '../lib/log'
 import { isReservedWord } from '../lib/reservedWords'
 import AbstractUtility from './AbstractUtility'
+import {
+	IAutoLoaderInterfaceTemplateItem,
+	IAutoLoaderClassTemplateItem
+} from '@sprucelabs/spruce-templates/src/types/template.types'
 
 interface IDocEntry {
 	name?: string
@@ -18,22 +22,16 @@ interface IDocEntry {
 	returnType?: string
 }
 
-interface IClass {
+interface IClassTemplateItem extends IAutoLoaderClassTemplateItem {
 	parentClassName: string
 	parentClassPath: string
-	constructorOptionsInterfaceName?: string
-	className: string
-	relativeFilePath: string
 }
 
 interface IIntermediateFileGroupInfo {
-	classes: IClass[]
-	mismatchClasses: IClass[]
-	abstractClasses: IClass[]
-	interfaces: {
-		interfaceName: string
-		relativeFilePath: string
-	}[]
+	classes: IClassTemplateItem[]
+	mismatchClasses: IClassTemplateItem[]
+	abstractClasses: IClassTemplateItem[]
+	interfaces: IAutoLoaderInterfaceTemplateItem[]
 }
 
 interface IFileGroupInfo extends IIntermediateFileGroupInfo {
