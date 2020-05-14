@@ -47,21 +47,21 @@ export default async function autoloader(options: {
 		schema
 	}
 
-	// @ts-ignore method is optional
-	if (typeof core.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		core.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof error.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		error.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof schema.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		schema.afterAutoload(siblings)
-	}
+	// // @ts-ignore method is optional
+	// if (typeof core.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	core.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof error.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	error.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof schema.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	schema.afterAutoload(siblings)
+	// }
 
 	return siblings
 }

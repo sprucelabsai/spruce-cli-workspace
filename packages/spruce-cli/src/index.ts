@@ -16,17 +16,15 @@ import {
 } from '@sprucelabs/mercury'
 import { templates } from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
-import commandsLoader from '#spruce/autoloaders/commands'
-import generatorsLoader from '#spruce/autoloaders/generators'
-import servicesAutoloader from '#spruce/autoloaders/services'
-import storesAutoLoader from '#spruce/autoloaders/stores'
-import utilitiesAutoloader from '#spruce/autoloaders/utilities'
+import autoloader from '#spruce/autoloaders/index'
 import { ErrorCode } from '#spruce/errors/codes.types'
 import pkg from '../package.json'
 /** Addons */
 import './addons/filePrompt.addon'
 import Autoloadable from './Autoloadable'
+import { ICommandOptions } from './commands/AbstractCommand'
 import SpruceError from './errors/SpruceError'
+import { IFeatureOptions } from './features/AbstractFeature'
 import { IGeneratorOptions } from './generators/AbstractGenerator'
 import log from './lib/log'
 import path from './lib/path'
@@ -68,12 +66,6 @@ export async function setup(options?: { program?: Command; cwd?: string }) {
 		cwd
 	}
 
-	const utilities = await utilitiesAutoloader({
-		constructorOptions: utilityOptions
-	})
-
-	autoLoaded.push(...Object.values(utilities))
-
 	// Setup mercury
 	const mercury = new Mercury()
 
@@ -81,30 +73,84 @@ export async function setup(options?: { program?: Command; cwd?: string }) {
 	const serviceOptions: IServiceOptions = {
 		mercury,
 		cwd,
-		utilities,
 		templates
 	}
 
 	// Setup services
-	const services = await servicesAutoloader({
-		constructorOptions: serviceOptions
-	})
-
-	autoLoaded.push(...Object.values(services))
-
-	// Setup services
 	const storeOptions: IStoreOptions = {
 		mercury,
-		cwd,
-		services,
-		utilities
+		cwd
 	}
 
-	const stores = await storesAutoLoader({
-		constructorOptions: storeOptions
+	// Setup generators
+	const generatorOptions: IGeneratorOptions = {
+		templates,
+		cwd
+	}
+
+	const featureOptions: IFeatureOptions = {
+		templates,
+		cwd
+	}
+
+	// Alias everything that has a : with a . so "option delete" deletes up to the period
+	if (program) {
+		const originalCommand = program.command.bind(program)
+		program.command = (name: string) => {
+			const response = originalCommand(name)
+			const firstPart = name.split(' ')[0]
+			const alias = firstPart.replace(':', '.')
+			if (alias !== firstPart) {
+				program.alias(alias)
+			}
+			return response
+		}
+	}
+
+	const commandOptions: ICommandOptions = {
+		mercury,
+		cwd,
+		templates
+	}
+
+	const {
+		utilities,
+		services,
+		stores,
+		generators,
+		commands
+	} = await autoloader({
+		commands: {
+			constructorOptions: commandOptions,
+			after: async (instance: any) =>
+				instance.attachCommands && program && instance.attachCommands(program)
+		},
+		utilities: {
+			constructorOptions: utilityOptions
+		},
+		stores: {
+			constructorOptions: storeOptions
+		},
+		services: {
+			constructorOptions: serviceOptions
+		},
+		features: {
+			constructorOptions: featureOptions
+		},
+		generators: {
+			constructorOptions: generatorOptions
+		}
 	})
 
-	autoLoaded.push(...Object.values(stores))
+	// Alphabetical sort of help output
+	program?.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
+
+	// Error on unknown commands
+	program?.action((command, args) => {
+		throw new SpruceError({ code: ErrorCode.InvalidCommand, args })
+	})
+
+	// Final checks before we hand off to the command
 
 	// Setup mercury
 	const remoteUrl = stores.remote.getRemoteUrl()
@@ -137,62 +183,6 @@ export async function setup(options?: { program?: Command; cwd?: string }) {
 	}
 
 	await mercury.connect(connectOptions)
-
-	// Setup generators
-	const generatorOptions: IGeneratorOptions = {
-		services,
-		utilities,
-		templates,
-		log,
-		cwd,
-		stores
-	}
-
-	const generators = await generatorsLoader({
-		constructorOptions: generatorOptions
-	})
-
-	autoLoaded.push(...Object.values(generators))
-
-	// Alias everything that has a : with a . so "option delete" deletes up to the period
-	if (program) {
-		const originalCommand = program.command.bind(program)
-		program.command = (name: string) => {
-			const response = originalCommand(name)
-			const firstPart = name.split(' ')[0]
-			const alias = firstPart.replace(':', '.')
-			if (alias !== firstPart) {
-				program.alias(alias)
-			}
-			return response
-		}
-	}
-
-	const commands = await commandsLoader({
-		constructorOptions: {
-			stores,
-			mercury,
-			services,
-			cwd,
-			generators,
-			utilities,
-			templates
-		},
-		after: async instance =>
-			instance.attachCommands && program && instance.attachCommands(program)
-	})
-
-	autoLoaded.push(...Object.values(commands))
-
-	// Alphabetical sort of help output
-	program?.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
-
-	// Error on unknown commands
-	program?.action((command, args) => {
-		throw new SpruceError({ code: ErrorCode.InvalidCommand, args })
-	})
-
-	// Final checks before we hand off to the command
 
 	return {
 		cwd,

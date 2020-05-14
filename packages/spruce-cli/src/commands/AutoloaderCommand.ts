@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import path from 'path'
 import { Command } from 'commander'
-import globby from 'globby'
 import inflection from 'inflection'
 import _ from 'lodash'
 import { ErrorCode } from '#spruce/errors/codes.types'
@@ -32,7 +31,14 @@ export default class AutoloaderCommand extends AbstractCommand {
 	private async autoloaderBind(_cmd: Command) {
 		const globbyPattern = path.join(this.cwd, '.spruce/autoloaders/*.ts')
 
-		await this.utilities.introspection.parseAutoloaders({ globbyPattern })
+		const info = await this.utilities.introspection.parseAutoloaders({
+			globbyPattern
+		})
+
+		const autoloaderFileContents = this.templates.autoloaderIndex(info)
+
+		const filename = `.spruce/autoloaders/index.ts`
+		await this.writeFile(filename, autoloaderFileContents)
 	}
 
 	private async generateAutoloader(dir: string, cmd: Command) {

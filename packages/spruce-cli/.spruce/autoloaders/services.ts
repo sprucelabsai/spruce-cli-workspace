@@ -95,46 +95,46 @@ export default async function autoloader(options: {
 		vsCode
 	}
 
-	// @ts-ignore method is optional
-	if (typeof child.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		child.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof feature.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		feature.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof lint.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		lint.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof pin.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		pin.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof pkg.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		pkg.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof valueType.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		valueType.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof vm.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		vm.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof vsCode.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		vsCode.afterAutoload(siblings)
-	}
+	// // @ts-ignore method is optional
+	// if (typeof child.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	child.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof feature.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	feature.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof lint.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	lint.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof pin.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	pin.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof pkg.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	pkg.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof valueType.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	valueType.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof vm.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	vm.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof vsCode.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	vsCode.afterAutoload(siblings)
+	// }
 
 	return siblings
 }

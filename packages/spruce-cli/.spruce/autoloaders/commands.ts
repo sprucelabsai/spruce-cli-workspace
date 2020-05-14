@@ -113,56 +113,56 @@ export default async function autoloader(options: {
 		watch
 	}
 
-	// @ts-ignore method is optional
-	if (typeof autoloader.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		autoloader.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof error.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		error.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof feature.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		feature.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof onboarding.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		onboarding.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof remote.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		remote.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof schema.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		schema.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof skill.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		skill.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof test.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		test.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof user.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		user.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof watch.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		watch.afterAutoload(siblings)
-	}
+	// // @ts-ignore method is optional
+	// if (typeof autoloader.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	autoloader.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof error.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	error.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof feature.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	feature.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof onboarding.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	onboarding.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof remote.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	remote.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof schema.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	schema.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof skill.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	skill.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof test.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	test.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof user.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	user.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof watch.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	watch.afterAutoload(siblings)
+	// }
 
 	return siblings
 }

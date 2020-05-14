@@ -31,6 +31,20 @@ export interface IValueTypeGenerator {
 	(renderAs: TemplateRenderAs, definition: FieldDefinition): string
 }
 
+export interface IAutoloadedImport {
+	[path: string]: {
+		defaultImport?: string
+		namedImports?: string[]
+	}
+}
+
+export interface IAutoloader {
+	camelName: string
+	pascalName: string
+	singularPascalName: string
+	imports: IAutoloadedImport
+}
+
 // Import actual templates
 const templatePath = path.join(__dirname, 'src', 'templates', 'typescript')
 
@@ -78,6 +92,10 @@ const test: string = fs
 
 const autoloader: string = fs
 	.readFileSync(path.join(templatePath, 'autoloader/autoloader.hbs'))
+	.toString()
+
+const autoloaderIndex: string = fs
+	.readFileSync(path.join(templatePath, 'autoloader/autoloaderIndex.hbs'))
 	.toString()
 
 const fieldsTypes: string = fs
@@ -207,6 +225,12 @@ export const templates = {
 		namePlural: string
 	}) {
 		const template = handlebars.compile(autoloader)
+		return template(options)
+	},
+
+	/** Autoloader */
+	autoloaderIndex(options: { autoloaders: IAutoloader[] }) {
+		const template = handlebars.compile(autoloaderIndex)
 		return template(options)
 	},
 

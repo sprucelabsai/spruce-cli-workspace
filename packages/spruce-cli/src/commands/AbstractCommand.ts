@@ -3,6 +3,7 @@ import { Mercury } from '@sprucelabs/mercury'
 import { ISchemaDefinition } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
+import { IAutoloaded } from '#spruce/autoloaders'
 import { ICommands } from '#spruce/autoloaders/commands'
 import { IGenerators } from '#spruce/autoloaders/generators'
 import { IServices } from '#spruce/autoloaders/services'
@@ -19,12 +20,8 @@ import TerminalUtility from '../utilities/TerminalUtility'
 
 /** All commanders get this */
 export interface ICommandOptions {
-	stores: IStores
 	mercury: Mercury
-	services: IServices
-	generators: IGenerators
 	cwd: string
-	utilities: IUtilities
 	templates: Templates
 }
 
@@ -34,42 +31,33 @@ export interface IWriteOptions {
 }
 
 export default abstract class AbstractCommand extends Autoloadable {
-	protected stores: IStores
+	protected stores!: IStores
 	protected mercury: Mercury
-	protected services: IServices
+	protected services!: IServices
 	protected commands!: ICommands
-	protected generators: IGenerators
-	protected utilities: IUtilities
+	protected generators!: IGenerators
+	protected utilities!: IUtilities
 	protected templates: Templates
 	/** Convenience method that references this.utilities.terminal */
-	protected term: TerminalUtility
+	protected term!: TerminalUtility
 
 	public constructor(options: ICommandOptions) {
 		super(options)
 
-		const {
-			stores,
-			mercury,
-			services,
-			cwd,
-			generators,
-			utilities,
-			templates
-		} = options
+		const { mercury, cwd, templates } = options
 
 		this.cwd = cwd
-		this.stores = stores
 		this.mercury = mercury
-		this.services = services
-		this.generators = generators
-		this.utilities = utilities
 		this.templates = templates
-
-		this.term = this.utilities.terminal
 	}
 
-	public afterAutoload(siblings: ICommands) {
-		this.commands = siblings
+	public afterAutoload(autoloaded: IAutoloaded) {
+		this.commands = autoloaded.commands
+		this.stores = autoloaded.stores
+		this.services = autoloaded.services
+		this.generators = autoloaded.generators
+		this.utilities = autoloaded.utilities
+		this.term = this.utilities.terminal
 	}
 
 	/** Preps a form builder, you will need to call present() */

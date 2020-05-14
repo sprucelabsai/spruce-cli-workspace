@@ -71,36 +71,36 @@ export default async function autoloader(options: {
 		vsCode
 	}
 
-	// @ts-ignore method is optional
-	if (typeof circleCi.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		circleCi.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof error.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		error.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof schema.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		schema.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof skill.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		skill.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof test.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		test.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof vsCode.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		vsCode.afterAutoload(siblings)
-	}
+	// // @ts-ignore method is optional
+	// if (typeof circleCi.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	circleCi.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof error.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	error.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof schema.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	schema.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof skill.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	skill.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof test.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	test.afterAutoload(siblings)
+	// }
+	// // @ts-ignore method is optional
+	// if (typeof vsCode.afterAutoload === 'function') {
+	// 	// @ts-ignore method is optional
+	// 	vsCode.afterAutoload(siblings)
+	// }
 
 	return siblings
 }

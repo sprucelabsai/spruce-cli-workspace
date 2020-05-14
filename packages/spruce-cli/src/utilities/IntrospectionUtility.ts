@@ -1,4 +1,7 @@
+import path from 'path'
+import { IAutoloader } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
+import inflection from 'inflection'
 import _ from 'lodash'
 import * as tsutils from 'tsutils'
 import * as ts from 'typescript'
@@ -48,28 +51,30 @@ export default class IntrospectionUtility extends AbstractUtility {
 		let filePaths = await globby(globbyPattern)
 		filePaths = filePaths.filter(p => !/index.ts$/.test(p))
 		const program = ts.createProgram(filePaths, {})
-		const checker = program.getTypeChecker()
+		// Need to call this to have details populated in nodes
+		program.getTypeChecker()
 
 		const info: {
-			autoloaders: {
-				[path: string]: {
-					abstractClassName: string
-					optionsInterfaceName: string
-				}
-			}
+			autoloaders: IAutoloader[]
 		} = {
-			autoloaders: {}
+			autoloaders: []
 		}
 
 		for (let i = 0; i < filePaths.length; i += 1) {
 			const filePath = filePaths[i]
 			const sourceFile = program.getSourceFile(filePath)
-			const relativeFilePath = filePath
-				.replace(this.cwd, '../..')
-				.replace(/\.ts$/, '')
 
 			if (sourceFile && _.includes(filePaths, sourceFile.fileName)) {
-				// console.log(sourceFile)
+				const autoloaderName = path.basename(filePath, path.extname(filePath))
+
+				const pascalName = this.utilities.names.toPascal(autoloaderName)
+				const autoloader: IAutoloader = {
+					camelName: autoloaderName,
+					pascalName,
+					singularPascalName: inflection.singularize(pascalName),
+					imports: {}
+				}
+
 				ts.forEachChild(sourceFile, node => {
 					// @ts-ignore
 					const nodeFilePath = node.moduleSpecifier && node.moduleSpecifier.text
@@ -83,47 +88,43 @@ export default class IntrospectionUtility extends AbstractUtility {
 						}
 						const namedImport = clauses.getChildAt(0) // get the named imports
 						if (!ts.isNamedImports(namedImport)) {
-							if (!info.autoloaders[nodeFilePath]) {
-								info.autoloaders[nodeFilePath] = {
-									abstractClassName: '',
-									optionsInterfaceName: ''
-								}
+							if (!autoloader.imports[nodeFilePath]) {
+								autoloader.imports[nodeFilePath] = {}
 							}
-							info.autoloaders[
+							autoloader.imports[
 								nodeFilePath
-							].abstractClassName = namedImport.getText()
+							].defaultImport = namedImport.getText()
 							return
 						}
 						for (let i = 0, n = namedImport.elements.length; i < n; i++) {
 							// Iterate the named imports
 							const imp = namedImport.elements[i]
-							// @ts-ignore
-							console.log(`Path: ${node.moduleSpecifier.text}`)
-							console.log(`Import: ${imp.getText()}`)
-							// @ts-ignore
-							console.log(`Name: ${checker.getFullyQualifiedName(imp.symbol)}`)
-							if (!info.autoloaders[nodeFilePath]) {
-								info.autoloaders[nodeFilePath] = {
-									abstractClassName: '',
-									optionsInterfaceName: ''
-								}
+							if (!autoloader.imports[nodeFilePath]) {
+								autoloader.imports[nodeFilePath] = {}
 							}
-							info.autoloaders[
-								nodeFilePath
-							].optionsInterfaceName = imp.getText()
+							if (!autoloader.imports[nodeFilePath].namedImports) {
+								autoloader.imports[nodeFilePath].namedImports = []
+							}
+							autoloader.imports[nodeFilePath].namedImports?.push(imp.getText())
 						}
-					} else if (ts.isInterfaceDeclaration(node)) {
-						// info.interfaces.push({
-						// 	interfaceName: node.name.text,
-						// 	relativeFilePath
-						// })
-						console.log(`INTERFACE: ${node.name.text}`)
 					}
 				})
+
+				Object.keys(autoloader.imports).forEach(file => {
+					if (
+						!autoloader.imports[file].namedImports ||
+						autoloader.imports[file].namedImports?.length === 0
+					) {
+						// We only care about the Abstracts. This filters them out
+						delete autoloader.imports[file]
+					}
+				})
+
+				info.autoloaders.push(autoloader)
 			}
 		}
 
-		console.log({ info })
+		return info
 	}
 
 	/** Parses a group of files that follow the typical pattern of extending an abstract class */
