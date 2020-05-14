@@ -40,7 +40,7 @@ export default abstract class AbstractFeature<
 
 	public optionsSchema?: () => ISchemaDefinition
 
-	/** Convenience method that references this.utilities.terminal */
+	/** Convenience property that references this.utilities.terminal */
 	protected term: TerminalUtility
 
 	protected utilities: IUtilities
@@ -56,7 +56,6 @@ export default abstract class AbstractFeature<
 		this.templates = options.templates
 		this.utilities = options.utilities
 		this.services = options.services
-
 		this.term = this.utilities.terminal
 	}
 

@@ -1,3 +1,7 @@
+import {
+	IAutoLoaderInterfaceTemplateItem,
+	IAutoLoaderClassTemplateItem
+} from '@sprucelabs/spruce-templates/src/types/template.types'
 import globby from 'globby'
 import _ from 'lodash'
 import * as tsutils from 'tsutils'
@@ -7,10 +11,6 @@ import SpruceError from '../errors/SpruceError'
 import log from '../lib/log'
 import { isReservedWord } from '../lib/reservedWords'
 import AbstractUtility from './AbstractUtility'
-import {
-	IAutoLoaderInterfaceTemplateItem,
-	IAutoLoaderClassTemplateItem
-} from '@sprucelabs/spruce-templates/src/types/template.types'
 
 interface IDocEntry {
 	name?: string

@@ -157,8 +157,10 @@ export default class SchemaCommand extends AbstractCommand {
 			}
 		}
 
-		// TODO: clean
-		// if (clean) {
+		if (clean) {
+			this.term.info('Clean is not available yet for schemas')
+			await this.term.wait()
+		}
 		// 	clean =
 		// 		force ||
 		// 		(await this.confirm(

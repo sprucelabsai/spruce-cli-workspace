@@ -14,19 +14,18 @@ import './src/addons/fieldDefinitionValueType.addon'
 import './src/addons/fieldTypeEnum.addon'
 import './src/addons/operators.addon'
 import './src/addons/startCase.addon'
-import './src/addons/camelCase.addon'
 import './src/addons/pascalCase.addon'
 import './src/addons/fieldDefinitionPartial.addon'
 import './src/addons/schemaDefinitionPartial.addon'
 import './src/addons/schemaValuesPartial.addon'
 import './src/addons/json.addon'
 import './src/addons/isDefined.addon'
-import importExtractor from './src/utilities/importExtractor'
 import {
 	IValueTypeGenerator,
 	IAutoLoaderClassTemplateItem,
 	IAutoLoaderInterfaceTemplateItem
 } from './src/types/template.types'
+import importExtractor from './src/utilities/importExtractor'
 
 log.info('Addons imported')
 

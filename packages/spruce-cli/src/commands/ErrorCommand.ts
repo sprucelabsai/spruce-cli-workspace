@@ -63,6 +63,11 @@ export default class ErrorCommand extends AbstractCommand {
 				'-c, --clean',
 				'Clean output directory before generating errors, deleting old files.'
 			)
+			.option(
+				'-f, --force',
+				'If cleaning, should I suppress confirmations and warnings',
+				false
+			)
 
 			.action(this.sync.bind(this))
 	}
@@ -202,6 +207,8 @@ export default class ErrorCommand extends AbstractCommand {
 		const typesDestinationDir = cmd.typesDestinationDir as string
 		const errorDestinationDir = cmd.errorDestinationDir as string
 		const schemaLookupDir = cmd.schemaLookupDir as string
+		const clean = !!cmd.clean
+		const force = !!cmd.force
 
 		const search = path.join(
 			this.resolvePath(lookupDir),
@@ -221,8 +228,13 @@ export default class ErrorCommand extends AbstractCommand {
 			features: [{ feature: Feature.Error }]
 		})
 
-		if (cmd.clean) {
-			fs.removeSync(`.spruce/errors`)
+		if (clean) {
+			const shouldClean =
+				force ||
+				(await this.term.confirm(
+					`Are you sure you want to delete the contents of ${typesDestinationDir}?`
+				))
+			shouldClean && fs.removeSync(typesDestinationDir)
 		}
 
 		// Lets clear out the current error dir
