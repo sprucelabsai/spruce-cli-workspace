@@ -8,11 +8,10 @@ import log from './lib/log'
 
 export default class BaseCliTest extends BaseTest {
 	protected static services: IServices
-	protected static cwd: string
 
 	protected static async beforeAll() {
 		try {
-			this.cwd = this.getTempDirectory()
+			this.cwd = this.ensureTmpDirectory()
 			const result = await setup({
 				cwd: this.cwd
 			})
@@ -23,7 +22,7 @@ export default class BaseCliTest extends BaseTest {
 	}
 
 	/** Get a clean, temporary directory for testing */
-	protected static getTempDirectory() {
+	protected static ensureTmpDirectory() {
 		const tmpDirectory = path.join(__dirname, '..', 'tmp', uuid.v4())
 		fs.ensureDirSync(tmpDirectory)
 

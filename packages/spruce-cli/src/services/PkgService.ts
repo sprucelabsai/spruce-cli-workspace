@@ -4,7 +4,7 @@ import { set } from 'lodash'
 import { ErrorCode } from '#spruce/errors/codes.types'
 import SpruceError from '../errors/SpruceError'
 import log from '../lib/log'
-import { WriteMode } from '../types/cli'
+import { WriteMode } from '../types/cli.types'
 import AbstractService from './AbstractService'
 
 export interface IAddOptions {

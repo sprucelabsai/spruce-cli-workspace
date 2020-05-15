@@ -92,9 +92,9 @@ export default class AutoloaderCommand extends AbstractCommand {
 					'No classes were found. Check the suffix and/or pattern'
 			})
 		}
-		const pascalName = _.upperFirst(fileName)
-		const namePlural = inflection.pluralize(pascalName)
-		const nameSingular = inflection.singularize(pascalName)
+		const namePascal = _.upperFirst(fileName)
+		const namePlural = inflection.pluralize(namePascal)
+		const nameSingular = inflection.singularize(namePascal)
 
 		const autoloaderFileContents = this.templates.autoloader({
 			abstractClassName: info.abstractClassName,

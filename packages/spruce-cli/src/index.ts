@@ -47,7 +47,7 @@ export async function setup(options?: { program?: Command; cwd?: string }) {
 
 	// Update state for the entire process
 	// TODO move this out and give more control when handling cross skill, e.g. "update x on only utilities"
-	const updateCWD = function(newCwd: string) {
+	const updateCwd = function(newCwd: string) {
 		autoLoaded.forEach(loaded => (loaded.cwd = newCwd))
 	}
 
@@ -57,7 +57,7 @@ export async function setup(options?: { program?: Command; cwd?: string }) {
 		if (program?.directory) {
 			const newCwd = path.resolvePath(cwd, program.directory)
 			log.trace(`CWD updated: ${newCwd}`)
-			updateCWD(newCwd)
+			updateCwd(newCwd)
 		}
 	})
 

@@ -5,7 +5,7 @@ import { TemplateDirectory, TemplateKind } from '@sprucelabs/spruce-templates'
 import fs from 'fs-extra'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import log from '../lib/log'
-import { WriteMode } from '../types/cli'
+import { WriteMode } from '../types/cli.types'
 import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
 
 type SkillFeatureType = typeof SpruceSchemas.Local.SkillFeature.definition

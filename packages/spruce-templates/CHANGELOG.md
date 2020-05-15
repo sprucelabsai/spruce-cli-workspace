@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.3.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.2.1...v10.3.0) (2020-05-13)
+
+
+### Features
+
+* formbuilder fixes ([6fbdec4](https://github.com/sprucelabsai/spruce-cli-workspace/commit/6fbdec4))
+* update schema dependency in templates ([37f241f](https://github.com/sprucelabsai/spruce-cli-workspace/commit/37f241f))
+* upgrade lint config and fix sort order ([75ca6d8](https://github.com/sprucelabsai/spruce-cli-workspace/commit/75ca6d8))
+
+
+### Refactoring
+
+* updated names to match standards (required schema update) ([257f742](https://github.com/sprucelabsai/spruce-cli-workspace/commit/257f742))
+
+
+
+
+
+## [10.2.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.2.0...v10.2.1) (2020-05-13)
+
+**Note:** Version bump only for package @sprucelabs/spruce-templates
+
+
+
+
+
 # [10.2.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.1.1...v10.2.0) (2020-05-11)
 
 

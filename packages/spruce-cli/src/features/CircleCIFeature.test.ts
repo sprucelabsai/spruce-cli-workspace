@@ -1,4 +1,3 @@
-import path from 'path'
 import { assert, test } from '@sprucelabs/test'
 import fs from 'fs-extra'
 import { Feature } from '#spruce/autoloaders/features'
@@ -28,6 +27,8 @@ export default class CircleCiFeatureTest extends BaseCliTest {
 			features: [Feature.CircleCI]
 		})
 		assert.isTrue(isInstalled)
-		assert.isTrue(fs.existsSync(path.join(this.cwd, '.circleci', 'config.yml')))
+		assert.isTrue(
+			fs.existsSync(this.resolvePath(this.cwd, '.circleci', 'config.yml'))
+		)
 	}
 }

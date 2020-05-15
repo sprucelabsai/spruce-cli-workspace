@@ -2,9 +2,9 @@ import  { buildSchemaDefinition,
 	FieldType,
 } from '@sprucelabs/schema'
 
-const {{camelName}}Definition = buildSchemaDefinition({
-	id: '{{camelName}}',
-	name: '{{{escape readableName}}}',
+const {{nameCamel}}Definition = buildSchemaDefinition({
+	id: '{{nameCamel}}',
+	name: '{{{escape nameReadable}}}',
     description: '{{{escape description}}}',
 	fields: {
 		fieldName1: {
@@ -22,4 +22,4 @@ const {{camelName}}Definition = buildSchemaDefinition({
 	}
 })
 
-export default {{camelName}}Definition
+export default {{nameCamel}}Definition
