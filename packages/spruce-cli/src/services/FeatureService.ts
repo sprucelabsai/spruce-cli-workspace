@@ -1,15 +1,10 @@
 import Schema, { ISchemaDefinition } from '@sprucelabs/schema'
 import _ from 'lodash'
-import featuresAutoloader, {
-	Feature,
-	IFeatures
-} from '#spruce/autoloaders/features'
-import { IServices } from '#spruce/autoloaders/services'
+import { Feature } from '#spruce/autoloaders/features'
 import FormBuilder, { IFormOptions } from '../builders/FormBuilder'
 import { IFeaturePackage } from '../features/AbstractFeature'
 import log from '../lib/log'
-import TerminalUtility from '../utilities/TerminalUtility'
-import AbstractService, { IServiceOptions } from './AbstractService'
+import AbstractService from './AbstractService'
 
 interface IInstallFeature {
 	feature: Feature
@@ -17,10 +12,6 @@ interface IInstallFeature {
 }
 
 export default class FeatureService extends AbstractService {
-	private features!: IFeatures
-	/** Convenience method that references this.utilities.terminal */
-	private term: TerminalUtility
-
 	public get cwd() {
 		return this._cwd
 	}
@@ -34,26 +25,6 @@ export default class FeatureService extends AbstractService {
 				})
 			}
 		}
-	}
-
-	public constructor(options: IServiceOptions) {
-		super(options)
-		this.term = this.utilities.terminal
-	}
-
-	public async afterAutoload(siblings: IServices) {
-		super.afterAutoload(siblings)
-
-		log.trace('Loading features', { cwd: this.cwd })
-
-		this.features = await featuresAutoloader({
-			constructorOptions: {
-				cwd: this.cwd,
-				templates: this.templates,
-				utilities: this.utilities,
-				services: siblings
-			}
-		})
 	}
 
 	/** Install some features, prompting for info as needed */
