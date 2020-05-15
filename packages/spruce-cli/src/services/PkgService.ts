@@ -1,6 +1,7 @@
 import pathUtil from 'path'
 import fs from 'fs-extra'
 import { set } from 'lodash'
+import uuid from 'uuid'
 import { ErrorCode } from '#spruce/errors/codes.types'
 import SpruceError from '../errors/SpruceError'
 import log from '../lib/log'
@@ -90,7 +91,7 @@ export default class PkgService extends AbstractService {
 				args.push('--dev')
 			}
 
-			args.push('--no-cache')
+			args.push('--cache-folder', `/tmp/${uuid.v4()}`)
 
 			await this.services.child.executeCommand('yarn', {
 				args
