@@ -22,9 +22,10 @@ export default class AutoloaderCommand extends AbstractCommand {
 				'Only loads files that end with this suffix and strip it from the returned name. Not set by default.'
 			)
 			.action(this.generateAutoloader.bind(this))
+
 		program
 			.command('autoloader:bind')
-			.description('Generate an autoloader for files in the directory')
+			.description('Generates an autoloader that loads all other autoloaders')
 			.action(this.autoloaderBind.bind(this))
 	}
 
