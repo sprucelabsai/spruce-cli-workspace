@@ -1,5 +1,5 @@
 {{#each autoloaders}}
-import {{camelName}}Autoloader, { I{{pascalName}} } from './{{camelName}}'
+import {{nameCamel}}Autoloader, { I{{namePascal}} } from './{{nameCamel}}'
 {{#each imports}}
 import {{defaultImport}}, { {{#each namedImports}}{{this}}{{/each}} } from '{{@key}}'
 {{/each}}
@@ -7,8 +7,8 @@ import {{defaultImport}}, { {{#each namedImports}}{{this}}{{/each}} } from '{{@k
 
 export interface IAutoloaderOptions {
 	{{#each autoloaders}}
-	{{camelName}}: {
-		constructorOptions: I{{singularPascalName}}Options
+	{{nameCamel}}: {
+		constructorOptions: I{{namePascalSingular}}Options
 		{{#each imports}}
 		after?: (instance: {{defaultImport}}) => Promise<void>
 		{{/each}}
@@ -18,7 +18,7 @@ export interface IAutoloaderOptions {
 
 export interface IAutoloaded {
 	{{#each autoloaders}}
-	{{camelName}}: I{{pascalName}}
+	{{nameCamel}}: I{{namePascal}}
 	{{/each}}
 }
 
@@ -26,29 +26,29 @@ export default async function autoloader(
 	options: IAutoloaderOptions
 ): Promise<IAutoloaded> {
 	{{#each autoloaders}}
-	const {{camelName}} = await {{camelName}}Autoloader({
-		constructorOptions: options.{{camelName}}.constructorOptions,
-		after: options.{{camelName}}.after
+	const {{nameCamel}} = await {{nameCamel}}Autoloader({
+		constructorOptions: options.{{nameCamel}}.constructorOptions,
+		after: options.{{nameCamel}}.after
 	})
 	{{/each}}
 
 	const autoloaded = {
 		{{#each autoloaders}}
 		{{#if @last}}
-		{{camelName}}
+		{{nameCamel}}
 		{{else}}
-		{{camelName}},
+		{{nameCamel}},
 		{{/if}}
 		{{/each}}
 	}
 
 	let keys
 	{{#each autoloaders}}
-	keys = Object.keys({{camelName}})
+	keys = Object.keys({{nameCamel}})
 	for (let i = 0; i < keys.length; i += 1) {
 		const f = keys[i]
-		if (typeof {{camelName}}[f].afterAutoload === 'function') {
-			await {{camelName}}[f].afterAutoload(autoloaded)
+		if (typeof {{nameCamel}}[f].afterAutoload === 'function') {
+			await {{nameCamel}}[f].afterAutoload(autoloaded)
 		}
 	}
 	{{/each}}

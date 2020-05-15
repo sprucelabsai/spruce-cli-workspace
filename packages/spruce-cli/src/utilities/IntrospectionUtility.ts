@@ -46,7 +46,11 @@ interface IFileGroupInfo extends IIntermediateFileGroupInfo {
 }
 
 export default class IntrospectionUtility extends AbstractUtility {
-	public async parseAutoloaders(options: { globbyPattern: string }) {
+	public async parseAutoloaders(options: {
+		globbyPattern: string
+	}): Promise<{
+		autoloaders: IAutoloader[]
+	}> {
 		const { globbyPattern } = options
 		let filePaths = await globby(globbyPattern)
 		filePaths = filePaths.filter(p => !/index.ts$/.test(p))
@@ -67,11 +71,11 @@ export default class IntrospectionUtility extends AbstractUtility {
 			if (sourceFile && _.includes(filePaths, sourceFile.fileName)) {
 				const autoloaderName = path.basename(filePath, path.extname(filePath))
 
-				const pascalName = this.utilities.names.toPascal(autoloaderName)
+				const namePascal = this.utilities.names.toPascal(autoloaderName)
 				const autoloader: IAutoloader = {
-					camelName: autoloaderName,
-					pascalName,
-					singularPascalName: inflection.singularize(pascalName),
+					nameCamel: autoloaderName,
+					namePascal,
+					namePascalSingular: inflection.singularize(namePascal),
 					imports: {}
 				}
 
@@ -158,8 +162,6 @@ export default class IntrospectionUtility extends AbstractUtility {
 					if (ts.isClassDeclaration(node) && node.name) {
 						const symbol = checker.getSymbolAtLocation(node.name)
 
-						// TODO: Remove?
-						checker.getSignaturesOfType
 						if (symbol) {
 							const details = this.serializeSymbol({ checker, symbol })
 							// Get the construct signatures

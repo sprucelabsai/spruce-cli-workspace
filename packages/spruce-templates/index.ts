@@ -8,6 +8,7 @@ import {
 	TemplateRenderAs
 } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
+import { IAutoloader } from './src/interfaces'
 import log from './src/lib/log'
 // Import addons
 import './src/addons/escape.addon'
@@ -29,20 +30,6 @@ log.info('Addons imported')
 
 export interface IValueTypeGenerator {
 	(renderAs: TemplateRenderAs, definition: FieldDefinition): string
-}
-
-export interface IAutoloadedImport {
-	[path: string]: {
-		defaultImport?: string
-		namedImports?: string[]
-	}
-}
-
-export interface IAutoloader {
-	camelName: string
-	pascalName: string
-	singularPascalName: string
-	imports: IAutoloadedImport
 }
 
 // Import actual templates
@@ -258,5 +245,6 @@ export { default as importExtractor } from './src/utilities/importExtractor'
 
 export { default as TemplateDirectory } from './src/TemplateDirectory'
 export * from './src/TemplateDirectory'
+export * from './src/interfaces'
 
 export default handlebars

@@ -1,3 +1,4 @@
+import os from 'os'
 import pathUtil from 'path'
 import fs from 'fs-extra'
 import { set } from 'lodash'
@@ -90,8 +91,8 @@ export default class PkgService extends AbstractService {
 			if (options?.dev) {
 				args.push('--dev')
 			}
-
-			args.push('--cache-folder', `/tmp/${uuid.v4()}`)
+			const tmpDir = os.tmpdir()
+			args.push('--cache-folder', pathUtil.join(tmpDir, uuid.v4()))
 
 			await this.services.child.executeCommand('yarn', {
 				args
