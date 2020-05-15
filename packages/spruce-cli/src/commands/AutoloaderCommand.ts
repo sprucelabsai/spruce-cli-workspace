@@ -116,5 +116,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 		this.term.codeSample(
 			`import ${fileName}Autoloader from '#spruce/autoloaders/${fileName}'\nconst ${fileName} = await ${fileName}Autoloader({ constructorOptions: options })`
 		)
+
+		await this.autoloaderBind(cmd)
 	}
 }
