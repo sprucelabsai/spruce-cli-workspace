@@ -49,7 +49,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			nameCamel,
 			namePascal,
 			nameReadable
-		} = this.utilities.schema.generateNames(definition)
+		} = this.utilities.schema.buildNames(definition)
 		const description = definition.description
 
 		// Files

@@ -1,6 +1,7 @@
 import {
 	IAutoLoaderInterfaceTemplateItem,
-	IAutoLoaderClassTemplateItem
+	IAutoLoaderClassTemplateItem,
+	IAutoLoaderTemplateItem
 } from '@sprucelabs/spruce-templates/src/types/template.types'
 import globby from 'globby'
 import _ from 'lodash'
@@ -27,31 +28,27 @@ interface IClassTemplateItem extends IAutoLoaderClassTemplateItem {
 	parentClassPath: string
 }
 
-interface IIntermediateFileGroupInfo {
-	classes: IClassTemplateItem[]
+interface IIntrospectionParseResult extends IAutoLoaderTemplateItem {
 	mismatchClasses: IClassTemplateItem[]
-	abstractClasses: IClassTemplateItem[]
-	interfaces: IAutoLoaderInterfaceTemplateItem[]
-}
-
-interface IFileGroupInfo extends IIntermediateFileGroupInfo {
-	filePaths: string[]
-	abstractClassName: string | null
-	abstractClassRelativePath: string | null
 }
 
 export default class IntrospectionUtility extends AbstractUtility {
 	/** Parses a group of files that follow the typical pattern of extending an abstract class */
-	public async parseFileGroup(options: {
-		globbyPattern: string
+	public async buildTemplateItems(options: {
+		/** The directory i'll look in to pull autoloaded classes */
+		directory: string
+		/** An optional pattern i'll match against when loading files */
+		pattern?: string
+		/** The */
 		suffix: string
-	}): Promise<IFileGroupInfo> {
-		const { globbyPattern, suffix } = options
+	}): Promise<IIntrospectionParseResult> {
+		const { pattern, directory, suffix } = options
+		const globbyPattern = `${directory}/${pattern}`
 		const filePaths = await globby(globbyPattern)
 		const program = ts.createProgram(filePaths, {})
 		const checker = program.getTypeChecker()
 
-		const info: IIntermediateFileGroupInfo = {
+		const result: Partial<IIntrospectionParseResult> = {
 			classes: [],
 			mismatchClasses: [],
 			abstractClasses: [],
@@ -104,11 +101,13 @@ export default class IntrospectionUtility extends AbstractUtility {
 
 							const isIncludedClassRegex = new RegExp(`${suffix}$`)
 							const isIncludedClass = isIncludedClassRegex.test(node.name.text)
+							const className = node.name.text.replace(suffix, '')
 
 							const classInfo = {
 								parentClassName,
 								parentClassPath,
-								className: node.name.text.replace(suffix, ''),
+								className,
+								nameCamel: this.utilities.names.toCamel(className),
 								constructorOptionsInterfaceName:
 									details.constructors &&
 									details.constructors[0].parameters &&
@@ -126,20 +125,20 @@ export default class IntrospectionUtility extends AbstractUtility {
 							}
 
 							if (isAbstractClass) {
-								info.abstractClasses.push(classInfo)
+								result.abstractClasses.push(classInfo)
 								log.trace(`Abstract Class loaded: ${classInfo.className}`)
 							} else if (isIncludedClass) {
-								info.classes.push(classInfo)
+								result.classes.push(classInfo)
 								log.trace(`Class loaded: ${classInfo.className}`)
 							} else {
-								info.mismatchClasses.push(classInfo)
+								result.mismatchClasses.push(classInfo)
 								log.trace(
 									`Class not included because it did not match suffix: ${classInfo.className}`
 								)
 							}
 						}
 					} else if (ts.isInterfaceDeclaration(node)) {
-						info.interfaces.push({
+						result.interfaces.push({
 							interfaceName: node.name.text,
 							relativeFilePath
 						})
@@ -148,18 +147,43 @@ export default class IntrospectionUtility extends AbstractUtility {
 			}
 		}
 
+		if (result.classes.length === 0) {
+			throw new SpruceError({
+				code: ErrorCode.CreateAutoloaderFailed,
+				directory,
+				globbyPattern,
+				filePaths,
+				suffix,
+				friendlyMessage:
+					'No classes were found. Check the suffix and/or pattern'
+			})
+		}
+
 		// Find what interface(s) we need to import
 		const abstractClassName =
-			info.classes &&
-			info.classes[0] &&
-			typeof info.classes[0].parentClassName === 'string'
-				? info.classes[0].parentClassName
+			result.classes &&
+			result.classes[0] &&
+			typeof result.classes[0].parentClassName === 'string'
+				? result.classes[0].parentClassName
 				: null
+
+		if (!abstractClassName) {
+			throw new SpruceError({
+				code: ErrorCode.CreateAutoloaderFailed,
+				directory,
+				globbyPattern,
+				filePaths,
+				suffix,
+				friendlyMessage:
+					'An abstract class that your classes extend could not be found.'
+			})
+		}
+
 		const abstractClassRelativePath =
-			info.classes &&
-			info.classes[0] &&
-			typeof info.classes[0].parentClassPath === 'string'
-				? info.classes[0].parentClassPath
+			result.classes &&
+			result.classes[0] &&
+			typeof result.classes[0].parentClassPath === 'string'
+				? result.classes[0].parentClassPath
 						.replace(/'/g, '')
 						.replace(/"/g, '')
 						.replace(this.cwd, '../..')
@@ -167,7 +191,7 @@ export default class IntrospectionUtility extends AbstractUtility {
 				: null
 
 		const interfacesHash: Record<string, string> = {}
-		info.classes.forEach(c => {
+		result.classes.forEach(c => {
 			if (c.constructorOptionsInterfaceName) {
 				interfacesHash[c.constructorOptionsInterfaceName] =
 					c.constructorOptionsInterfaceName
@@ -176,7 +200,7 @@ export default class IntrospectionUtility extends AbstractUtility {
 
 		const interfaceNamesToImport = Object.values(interfacesHash)
 
-		info.interfaces = info.interfaces.filter(i => {
+		result.interfaces = result.interfaces.filter(i => {
 			return _.includes(interfaceNamesToImport, i.interfaceName)
 		})
 
@@ -184,7 +208,7 @@ export default class IntrospectionUtility extends AbstractUtility {
 			filePaths,
 			abstractClassName,
 			abstractClassRelativePath,
-			...info
+			...result
 		}
 	}
 

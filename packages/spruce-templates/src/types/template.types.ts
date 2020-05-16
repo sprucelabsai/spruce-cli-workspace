@@ -8,7 +8,8 @@ export interface IValueTypeGenerator {
 /** Autoloader needs all the classes to load */
 export interface IAutoLoaderClassTemplateItem {
 	constructorOptionsInterfaceName?: string
-	className: string
+	namePascal: string
+	nameCamel: string
 	relativeFilePath: string
 }
 
@@ -16,4 +17,14 @@ export interface IAutoLoaderClassTemplateItem {
 export interface IAutoLoaderInterfaceTemplateItem {
 	interfaceName: string
 	relativeFilePath: string
+}
+
+export interface IAutoLoaderTemplateItem {
+	abstractClassNamePascal: string
+	abstractClassRelativePath: string
+	classes: IAutoLoaderClassTemplateItem[]
+	interfaces: IAutoLoaderInterfaceTemplateItem[]
+	nameSingular: string
+	namePlural: string
+	nameCamel: string
 }

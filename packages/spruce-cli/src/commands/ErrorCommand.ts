@@ -72,7 +72,6 @@ export default class ErrorCommand extends AbstractCommand {
 			.action(this.sync.bind(this))
 	}
 
-	// TODO allow passing of name
 	public async create(name: string | undefined, cmd: Command) {
 		const errorDestinationDir = cmd.errorDestinationDir as string
 		const typesDestinationDir = cmd.typesDestinationDir as string

@@ -14,7 +14,7 @@ import AbstractUtility from './AbstractUtility'
 
 export default class SchemaUtility extends AbstractUtility {
 	/** Generate interface and type names based off schema name */
-	public generateNames(definition: ISchemaDefinition): ISchemaTemplateNames {
+	public buildNames(definition: ISchemaDefinition): ISchemaTemplateNames {
 		return {
 			namePascal: this.utilities.names.toPascal(definition.id),
 			nameCamel: this.utilities.names.toCamel(definition.id),
@@ -23,7 +23,7 @@ export default class SchemaUtility extends AbstractUtility {
 	}
 
 	/** All the items you need for a template */
-	public generateTemplateItems(options: {
+	public buildTemplateItems(options: {
 		namespace: string
 		/** Array of schema definitions */
 		definitions: ISchemaDefinition[]
@@ -105,7 +105,7 @@ export default class SchemaUtility extends AbstractUtility {
 		})
 
 		newDefinitions.forEach(definition => {
-			const names = this.generateNames(definition)
+			const names = this.buildNames(definition)
 			log.info(`importing_schema_id: ${definition.id}`)
 
 			// We've already mapped this type
@@ -206,7 +206,7 @@ export default class SchemaUtility extends AbstractUtility {
 							log.info(
 								`importing_schema_field_schema: ${definition.id}:${fieldName} = ${schemaDefinition.id}`
 							)
-							newItems = this.generateTemplateItems({
+							newItems = this.buildTemplateItems({
 								namespace,
 								definitions: [schemaDefinition],
 								items: newItems,

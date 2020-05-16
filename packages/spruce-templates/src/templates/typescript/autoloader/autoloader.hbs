@@ -1,9 +1,9 @@
 /* eslint-disable spruce/prefer-pascal-case-enums */
 // Import base class
-import {{abstractClassName}} from '{{abstractClassRelativePath}}'
+import {{abstractClassNamePascal}} from '{{abstractClassRelativePath}}'
 // Import each matching class that will be autoloaded
 {{#each classes}}
-import {{className}} from '{{relativeFilePath}}'
+import {{namePascal}} from '{{relativeFilePath}}'
 {{/each}}
 
 // Import necessary interface(s)
@@ -12,15 +12,15 @@ import { {{interfaceName}} } from '{{relativeFilePath}}'
 {{/each}}
 
 export interface I{{namePlural}} {
-	[{{camelCase nameSingular}}: string]: {{#each classes}}{{#if @first}}{{className}}{{else}} | {{className}}{{/if}}{{/each}}
+	[{{nameCamel}}: string]: {{#each classes}}{{#if @first}}{{namePascal}}{{else}} | {{namePascal}}{{/if}}{{/each}}
 	{{#each classes}}
-	{{camelCase className}}: {{className}}
+	{{nameCamel}}: {{namePascal}}
 	{{/each}}
 }
 
 export enum {{nameSingular}} {
 	{{#each classes}}
-	{{className}} = '{{camelCase className}}',
+	{{namePascal}} = '{{nameCamel}}',
 	{{/each}}
 }
 
@@ -31,27 +31,27 @@ export default async function autoloader(options: {
 	const { constructorOptions, after } = options
 
 	{{#each classes}}
-	const {{camelCase className}} = new {{className}}(constructorOptions)
+	const {{nameCamel}} = new {{namePascal}}(constructorOptions)
 	if (after) {
-		await after({{camelCase className}})
+		await after({{nameCamel}})
 	}
 	{{/each}}
 
 	const siblings: I{{namePlural}} = {
 		{{#each classes}}
 		{{#if @last}}
-		{{camelCase className}}
+		{{nameCamel}}
 		{{else}}
-		{{camelCase className}},
+		{{nameCamel}},
 		{{/if}}
 		{{/each}}
 	}
 
 	{{#each classes}}
 	// @ts-ignore method is optional
-	if (typeof {{camelCase className}}.afterAutoload === 'function') {
+	if (typeof {{nameCamel}}.afterAutoload === 'function') {
 		// @ts-ignore method is optional
-		{{camelCase className}}.afterAutoload(siblings)
+		{{nameCamel}}.afterAutoload(siblings)
 	}
 	{{/each}}
 

@@ -22,8 +22,7 @@ import './src/addons/json.addon'
 import './src/addons/isDefined.addon'
 import {
 	IValueTypeGenerator,
-	IAutoLoaderClassTemplateItem,
-	IAutoLoaderInterfaceTemplateItem
+	IAutoLoaderTemplateItem
 } from './src/types/template.types'
 import importExtractor from './src/utilities/importExtractor'
 
@@ -189,14 +188,7 @@ export const templates = {
 	},
 
 	/** Autoloader */
-	autoloader(options: {
-		abstractClassName: string
-		abstractClassRelativePath: string
-		classes: IAutoLoaderClassTemplateItem[]
-		interfaces: IAutoLoaderInterfaceTemplateItem[]
-		nameSingular: string
-		namePlural: string
-	}) {
+	autoloader(options: IAutoLoaderTemplateItem) {
 		const template = handlebars.compile(autoloader)
 		return template(options)
 	},

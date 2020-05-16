@@ -1,6 +1,3 @@
-import path from 'path'
-import { SchemaDefinitionValues } from '@sprucelabs/schema'
-import fs from 'fs-extra'
 import { Feature } from '#spruce/autoloaders/features'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import log from '../lib/log'
@@ -10,27 +7,15 @@ type TestFeatureType = typeof SpruceSchemas.Local.TestFeature.definition
 
 export default class TestFeature extends AbstractFeature<TestFeatureType> {
 	public description = 'Test File: Create a test for one of your files'
-
 	public featureDependencies = [Feature.Skill, Feature.Schema]
-
 	public packages: IFeaturePackage[] = [
 		{ name: '@sprucelabs/test', isDev: true },
-		{ name: 'ts-node', isDev: true }
+		{ name: 'ts-node', isDev: true },
+		{ name: 'jest', isDev: true },
+		{ name: 'ts-jest', isDev: true }
 	]
 
-	public optionsSchema = () => {
-		const def = SpruceSchemas.Local.TestFeature.definition
-		log.debug('get optionsSchema', def)
-		// TODO
-		// @ts-ignore
-		def.fields.target.defaultValue.path = path.join(this.cwd, 'src/')
-
-		return def
-	}
-
-	public async afterPackageInstall(options: {
-		answers: SchemaDefinitionValues<TestFeatureType>
-	}) {
+	public async afterPackageInstall() {
 		log.trace('TestFeature.afterPackageInstall()')
 
 		// Package.json updates
@@ -65,21 +50,6 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 		// TODO: Set the "test" package here
 		this.services.pkg.set({ path: 'babel', value: babelConfig })
 		this.services.pkg.set({ path: 'jest', value: jestConfig })
-
-		const target = path.join(
-			options.answers.target.path ?? this.cwd,
-			options.answers.target.name
-		)
-
-		const name = this.utilities.names.toFileNameWithoutExtension(target)
-
-		const namePascal = this.utilities.names.toPascal(name)
-		const destination = path.join(path.dirname(target), name) + '.test.ts'
-		const contents = this.templates.test({ namePascal })
-
-		fs.outputFileSync(destination, contents)
-
-		this.term.info(`Test file created at: ${destination}`)
 	}
 
 	// TODO
