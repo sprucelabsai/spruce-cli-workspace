@@ -1,3 +1,4 @@
+import { IAutoloaded } from '#spruce/autoloaders'
 import { IUtilities } from '#spruce/autoloaders/utilities'
 import Autoloadable from '../Autoloadable'
 export interface IUtilityOptions {
@@ -10,7 +11,8 @@ export default abstract class AbstractUtility extends Autoloadable {
 		const { cwd } = options
 		this.cwd = cwd
 	}
-	public async afterAutoload(siblings: IUtilities) {
-		this.utilities = siblings
+
+	public async afterAutoload(autoloaded: IAutoloaded) {
+		this.utilities = autoloaded.utilities
 	}
 }

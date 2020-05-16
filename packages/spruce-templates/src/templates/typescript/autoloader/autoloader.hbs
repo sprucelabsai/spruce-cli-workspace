@@ -47,13 +47,5 @@ export default async function autoloader(options: {
 		{{/each}}
 	}
 
-	{{#each classes}}
-	// @ts-ignore method is optional
-	if (typeof {{nameCamel}}.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		{{nameCamel}}.afterAutoload(siblings)
-	}
-	{{/each}}
-
 	return siblings
 }

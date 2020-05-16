@@ -22,6 +22,25 @@ export default class AutoloaderCommand extends AbstractCommand {
 				'Only loads files that end with this suffix. Not set by default.'
 			)
 			.action(this.generateAutoloader.bind(this))
+
+		program
+			.command('autoloader:bind')
+			.description('Generates an autoloader that loads all other autoloaders')
+			.action(this.autoloaderBind.bind(this))
+	}
+
+	private async autoloaderBind(_cmd: Command) {
+		const globbyPattern = path.join(this.cwd, '.spruce/autoloaders/*.ts')
+
+		const info = await this.utilities.introspection.parseAutoloaders({
+			globbyPattern
+		})
+
+		const autoloaderFileContents = this.templates.autoloaderIndex(info)
+
+		const filename = `.spruce/autoloaders/index.ts`
+		await this.writeFile(filename, autoloaderFileContents)
+		await this.services.lint.fix(filename)
 	}
 
 	private async generateAutoloader(dir: string, cmd: Command) {
@@ -73,5 +92,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 		this.term.codeSample(
 			`import ${fileName}Autoloader from '#spruce/autoloaders/${fileName}'\nconst ${fileName} = await ${fileName}Autoloader({ constructorOptions: options })`
 		)
+
+		await this.autoloaderBind(cmd)
 	}
 }

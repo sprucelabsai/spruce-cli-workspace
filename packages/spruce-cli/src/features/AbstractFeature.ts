@@ -3,6 +3,7 @@ import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
 import { TemplateDirectory, TemplateKind } from '@sprucelabs/spruce-templates'
 import { Templates } from '@sprucelabs/spruce-templates'
 import fs from 'fs-extra'
+import { IAutoloaded } from '#spruce/autoloaders'
 import { Feature } from '#spruce/autoloaders/features'
 import { IServices } from '#spruce/autoloaders/services'
 import { IUtilities } from '#spruce/autoloaders/utilities'
@@ -15,9 +16,7 @@ import TerminalUtility from '../utilities/TerminalUtility'
 
 export interface IFeatureOptions {
 	cwd: string
-	utilities: IUtilities
 	templates: Templates
-	services: IServices
 }
 
 export interface IFeaturePackage {
@@ -40,11 +39,11 @@ export default abstract class AbstractFeature<
 
 	public optionsSchema?: () => ISchemaDefinition
 
-	/** Convenience property that references this.utilities.terminal */
-	protected term: TerminalUtility
+	/** Convenience method that references this.utilities.terminal */
+	protected term!: TerminalUtility
 
-	protected utilities: IUtilities
-	protected services: IServices
+	protected utilities!: IUtilities
+	protected services!: IServices
 	protected templates: Templates
 
 	/** A description of this feature */
@@ -54,8 +53,11 @@ export default abstract class AbstractFeature<
 		super(options)
 		this.cwd = options.cwd
 		this.templates = options.templates
-		this.utilities = options.utilities
-		this.services = options.services
+	}
+
+	public afterAutoload(autoloaded: IAutoloaded) {
+		this.utilities = autoloaded.utilities
+		this.services = autoloaded.services
 		this.term = this.utilities.terminal
 	}
 

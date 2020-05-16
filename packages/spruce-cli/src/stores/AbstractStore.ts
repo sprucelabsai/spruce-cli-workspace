@@ -1,5 +1,6 @@
 import fs from 'fs'
 import { Mercury } from '@sprucelabs/mercury'
+import { IAutoloaded } from '#spruce/autoloaders'
 import { IServices } from '#spruce/autoloaders/services'
 import { IUtilities } from '#spruce/autoloaders/utilities'
 import { ErrorCode } from '#spruce/errors/codes.types'
@@ -21,8 +22,6 @@ export enum StoreAuth {
 
 /** Options needed by the store on instantiation */
 export interface IStoreOptions {
-	utilities: IUtilities
-	services: IServices
 	mercury: Mercury
 	cwd: string
 	scope?: StoreScope
@@ -40,10 +39,10 @@ export default abstract class AbstractStore<
 	public scope = StoreScope.Global
 
 	/** All the utilities */
-	public utilities: IUtilities
+	public utilities!: IUtilities
 
 	/** All the services */
-	public services: IServices
+	public services!: IServices
 
 	/** How we're logged in, user or skill */
 	public get authType() {
@@ -65,14 +64,12 @@ export default abstract class AbstractStore<
 
 	public constructor(options: IStoreOptions) {
 		super(options)
-		const { mercury, cwd, scope, authType, utilities, services } = options
+		const { mercury, cwd, scope, authType } = options
 
 		this.mercury = mercury
 		this.cwd = cwd
 		this.scope = scope ?? this.scope
 		this.authType = authType ?? this.authType
-		this.utilities = utilities
-		this.services = services
 
 		// Create save dir
 		const { directory: globalDirectory } = this.getGlobalConfigPath()
@@ -89,6 +86,12 @@ export default abstract class AbstractStore<
 			log.crit(e)
 		}
 	}
+
+	public async afterAutoload(autoloaded: IAutoloaded) {
+		this.utilities = autoloaded.utilities
+		this.services = autoloaded.services
+	}
+
 	/** Write a value to disk (should only be used in save()) */
 	protected writeValue<F extends keyof Settings>(key: F, value: Settings[F]) {
 		this.writeValues({ [key]: value })

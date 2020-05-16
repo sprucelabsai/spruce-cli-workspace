@@ -77,36 +77,5 @@ export default async function autoloader(options: {
 		tsConfig
 	}
 
-	// @ts-ignore method is optional
-	if (typeof bootstrap.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		bootstrap.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof introspection.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		introspection.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof names.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		names.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof schema.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		schema.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof terminal.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		terminal.afterAutoload(siblings)
-	}
-	// @ts-ignore method is optional
-	if (typeof tsConfig.afterAutoload === 'function') {
-		// @ts-ignore method is optional
-		tsConfig.afterAutoload(siblings)
-	}
-
 	return siblings
 }

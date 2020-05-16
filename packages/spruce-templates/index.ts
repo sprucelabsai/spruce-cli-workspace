@@ -6,6 +6,7 @@ import {
 	IFieldTemplateItem
 } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
+import { IAutoloader } from './src/interfaces'
 import log from './src/lib/log'
 // Import addons
 import './src/addons/escape.addon'
@@ -75,6 +76,10 @@ const test: string = fs
 
 const autoloader: string = fs
 	.readFileSync(path.join(templatePath, 'autoloader/autoloader.hbs'))
+	.toString()
+
+const autoloaderIndex: string = fs
+	.readFileSync(path.join(templatePath, 'autoloader/autoloaderIndex.hbs'))
 	.toString()
 
 const fieldsTypes: string = fs
@@ -193,6 +198,12 @@ export const templates = {
 		return template(options)
 	},
 
+	/** Autoloader */
+	autoloaderIndex(options: { autoloaders: IAutoloader[] }) {
+		const template = handlebars.compile(autoloaderIndex)
+		return template(options)
+	},
+
 	/** The types file for all the schema fields being used */
 	fieldsTypes(options: { fieldTemplateItems: IFieldTemplateItem[] }) {
 		const template = handlebars.compile(fieldsTypes)
@@ -217,6 +228,7 @@ export { default as importExtractor } from './src/utilities/importExtractor'
 
 export { default as TemplateDirectory } from './src/TemplateDirectory'
 export * from './src/TemplateDirectory'
+export * from './src/interfaces'
 
 export default handlebars
 export * from './src/types/template.types'

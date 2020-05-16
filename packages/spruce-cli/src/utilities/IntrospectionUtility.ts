@@ -1,9 +1,12 @@
+import path from 'path'
+import { IAutoloader } from '@sprucelabs/spruce-templates'
 import {
 	IAutoLoaderInterfaceTemplateItem,
 	IAutoLoaderClassTemplateItem,
 	IAutoLoaderTemplateItem
 } from '@sprucelabs/spruce-templates/src/types/template.types'
 import globby from 'globby'
+import inflection from 'inflection'
 import _ from 'lodash'
 import * as tsutils from 'tsutils'
 import * as ts from 'typescript'
@@ -33,6 +36,91 @@ interface IIntrospectionParseResult extends IAutoLoaderTemplateItem {
 }
 
 export default class IntrospectionUtility extends AbstractUtility {
+	public async parseAutoloaders(options: {
+		globbyPattern: string
+	}): Promise<{
+		autoloaders: IAutoloader[]
+	}> {
+		const { globbyPattern } = options
+		let filePaths = await globby(globbyPattern)
+		filePaths = filePaths.filter(p => !/index.ts$/.test(p))
+		const program = ts.createProgram(filePaths, {})
+		// Need to call this to have details populated in nodes
+		program.getTypeChecker()
+
+		const info: {
+			autoloaders: IAutoloader[]
+		} = {
+			autoloaders: []
+		}
+
+		for (let i = 0; i < filePaths.length; i += 1) {
+			const filePath = filePaths[i]
+			const sourceFile = program.getSourceFile(filePath)
+
+			if (sourceFile && _.includes(filePaths, sourceFile.fileName)) {
+				const autoloaderName = path.basename(filePath, path.extname(filePath))
+
+				const namePascal = this.utilities.names.toPascal(autoloaderName)
+				const autoloader: IAutoloader = {
+					nameCamel: autoloaderName,
+					namePascal,
+					namePascalSingular: inflection.singularize(namePascal),
+					imports: {}
+				}
+
+				ts.forEachChild(sourceFile, node => {
+					// @ts-ignore
+					const nodeFilePath = node.moduleSpecifier && node.moduleSpecifier.text
+					if (ts.isImportSpecifier(node)) {
+						console.log(node)
+					} else if (ts.isImportDeclaration(node)) {
+						// get the declaration
+						const clauses = node.importClause
+						if (!clauses) {
+							throw new Error('no clauses')
+						}
+						const namedImport = clauses.getChildAt(0) // get the named imports
+						if (!ts.isNamedImports(namedImport)) {
+							if (!autoloader.imports[nodeFilePath]) {
+								autoloader.imports[nodeFilePath] = {}
+							}
+							autoloader.imports[
+								nodeFilePath
+							].defaultImport = namedImport.getText()
+							return
+						}
+						for (let i = 0, n = namedImport.elements.length; i < n; i++) {
+							// Iterate the named imports
+							const imp = namedImport.elements[i]
+							if (!autoloader.imports[nodeFilePath]) {
+								autoloader.imports[nodeFilePath] = {}
+							}
+							if (!autoloader.imports[nodeFilePath].namedImports) {
+								autoloader.imports[nodeFilePath].namedImports = []
+							}
+							autoloader.imports[nodeFilePath].namedImports?.push(imp.getText())
+						}
+					}
+				})
+
+				Object.keys(autoloader.imports).forEach(file => {
+					if (
+						!autoloader.imports[file].namedImports ||
+						autoloader.imports[file].namedImports?.length === 0
+					) {
+						// We only care about the Abstracts. This filters them out
+						delete autoloader.imports[file]
+					}
+				})
+
+				info.autoloaders.push(autoloader)
+			}
+		}
+
+		return info
+	}
+
 	/** Parses a group of files that follow the typical pattern of extending an abstract class */
 	public async buildTemplateItems(options: {
 		/** The directory i'll look in to pull autoloaded classes */
@@ -69,7 +157,6 @@ export default class IntrospectionUtility extends AbstractUtility {
 					if (ts.isClassDeclaration(node) && node.name) {
 						const symbol = checker.getSymbolAtLocation(node.name)
 
-						checker.getSignaturesOfType
 						if (symbol) {
 							const details = this.serializeSymbol({ checker, symbol })
 							// Get the construct signatures
