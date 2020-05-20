@@ -1,5 +1,5 @@
 {{#each autoloaders}}
-import {{nameCamel}}Autoloader, { I{{namePascalPlural}}, {{namePascalPlural}} } from './{{nameCamelPlural}}'
+import {{nameCamel}}Autoloader, { I{{namePascalPlural}}, {{namePascalPlural}}, {{namePascal}} } from './{{nameCamelPlural}}'
 {{#if abstractClassConstructorOptionsInterfaceName}}import { {{abstractClassConstructorOptionsInterfaceName}} } from '{{abstractClassRelativePath}}'{{/if}}
 {{/each}}
 
@@ -8,6 +8,8 @@ export interface IAutoloaderOptions {
 	{{nameCamelPlural}}: {
 		{{#if abstractClassConstructorOptionsInterfaceName}}constructorOptions: {{abstractClassConstructorOptionsInterfaceName}}{{/if}}
 		after?: (instance: {{namePascalPlural}}) => Promise<void>
+		only?: {{namePascal}}[]
+		
 	}
 	{{/each}}
 }
@@ -28,7 +30,8 @@ export default async function rootAutoloader(
 	{{#each autoloaders}}
 	const {{nameCamelPlural}} = await {{nameCamel}}Autoloader({
 		{{#if abstractClassConstructorOptionsInterfaceName}}constructorOptions: options.{{nameCamelPlural}}.constructorOptions,{{/if}}
-		after: options.{{nameCamelPlural}}.after
+		after: options.{{nameCamelPlural}}.after,
+		only: options.{{nameCamelPlural}}.only
 	})
 	{{/each}}
 

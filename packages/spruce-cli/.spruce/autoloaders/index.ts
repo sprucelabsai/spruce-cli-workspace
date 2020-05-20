@@ -1,9 +1,13 @@
-import commandAutoloader, { ICommands, Commands } from './commands'
-import featureAutoloader, { IFeatures, Features } from './features'
-import generatorAutoloader, { IGenerators, Generators } from './generators'
-import serviceAutoloader, { IServices, Services } from './services'
-import storeAutoloader, { IStores, Stores } from './stores'
-import utilityAutoloader, { IUtilities, Utilities } from './utilities'
+import commandAutoloader, { ICommands, Commands, Command } from './commands'
+import featureAutoloader, { IFeatures, Features, Feature } from './features'
+import generatorAutoloader, {
+	IGenerators,
+	Generators,
+	Generator
+} from './generators'
+import serviceAutoloader, { IServices, Services, Service } from './services'
+import storeAutoloader, { IStores, Stores, Store } from './stores'
+import utilityAutoloader, { IUtilities, Utilities, Utility } from './utilities'
 import { ICommandOptions } from '#spruce/../src/commands/AbstractCommand'
 import { IFeatureOptions } from '#spruce/../src/features/AbstractFeature'
 import { IGeneratorOptions } from '#spruce/../src/generators/AbstractGenerator'
@@ -15,26 +19,32 @@ export interface IAutoloaderOptions {
 	commands: {
 		constructorOptions: ICommandOptions
 		after?: (instance: Commands) => Promise<void>
+		only?: Command[]
 	}
 	stores: {
 		constructorOptions: IStoreOptions
 		after?: (instance: Stores) => Promise<void>
+		only?: Store[]
 	}
 	services: {
 		constructorOptions: IServiceOptions
 		after?: (instance: Services) => Promise<void>
+		only?: Service[]
 	}
 	features: {
 		constructorOptions: IFeatureOptions
 		after?: (instance: Features) => Promise<void>
+		only?: Feature[]
 	}
 	generators: {
 		constructorOptions: IGeneratorOptions
 		after?: (instance: Generators) => Promise<void>
+		only?: Generator[]
 	}
 	utilities: {
 		constructorOptions: IUtilityOptions
 		after?: (instance: Utilities) => Promise<void>
+		only?: Utility[]
 	}
 }
 
@@ -56,27 +66,33 @@ export default async function rootAutoloader(
 ): Promise<IAutoloaded> {
 	const commands = await commandAutoloader({
 		constructorOptions: options.commands.constructorOptions,
-		after: options.commands.after
+		after: options.commands.after,
+		only: options.commands.only
 	})
 	const stores = await storeAutoloader({
 		constructorOptions: options.stores.constructorOptions,
-		after: options.stores.after
+		after: options.stores.after,
+		only: options.stores.only
 	})
 	const services = await serviceAutoloader({
 		constructorOptions: options.services.constructorOptions,
-		after: options.services.after
+		after: options.services.after,
+		only: options.services.only
 	})
 	const features = await featureAutoloader({
 		constructorOptions: options.features.constructorOptions,
-		after: options.features.after
+		after: options.features.after,
+		only: options.features.only
 	})
 	const generators = await generatorAutoloader({
 		constructorOptions: options.generators.constructorOptions,
-		after: options.generators.after
+		after: options.generators.after,
+		only: options.generators.only
 	})
 	const utilities = await utilityAutoloader({
 		constructorOptions: options.utilities.constructorOptions,
-		after: options.utilities.after
+		after: options.utilities.after,
+		only: options.utilities.only
 	})
 
 	const autoloaded = {
