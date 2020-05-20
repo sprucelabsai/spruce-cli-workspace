@@ -11,8 +11,15 @@ import ValueTypeService from '#spruce/../src/services/ValueTypeService'
 import VmService from '#spruce/../src/services/VmService'
 import VsCodeService from '#spruce/../src/services/VsCodeService'
 
-
-export type Services = ChildService | FeatureService | LintService | PinService | PkgService | ValueTypeService | VmService | VsCodeService
+export type Services =
+	| ChildService
+	| FeatureService
+	| LintService
+	| PinService
+	| PkgService
+	| ValueTypeService
+	| VmService
+	| VsCodeService
 
 export interface IServices {
 	child: ChildService
@@ -33,18 +40,16 @@ export enum Service {
 	Pkg = 'pkg',
 	ValueType = 'valueType',
 	Vm = 'vm',
-	VsCode = 'vsCode',
+	VsCode = 'vsCode'
 }
 
-export default async function autoloader<
-	K extends Service[]
->(options: {
-	constructorOptions:   IServiceOptions
+export default async function autoloader<K extends Service[]>(options: {
+	constructorOptions: IServiceOptions
 	after?: (instance: Services) => Promise<void>
 	only?: K
 }): Promise<K extends undefined ? IServices : Pick<IServices, K[number]>> {
 	const { constructorOptions, after, only } = options
-	const siblings:Partial<IServices> = {}
+	const siblings: Partial<IServices> = {}
 
 	if (!only || only.indexOf(Service.Child) === -1) {
 		const childService = new ChildService(constructorOptions)
@@ -103,5 +108,7 @@ export default async function autoloader<
 		siblings.vsCode = vsCodeService
 	}
 
-	return siblings as K extends undefined ? IServices : Pick<IServices, K[number]>
+	return siblings as K extends undefined
+		? IServices
+		: Pick<IServices, K[number]>
 }

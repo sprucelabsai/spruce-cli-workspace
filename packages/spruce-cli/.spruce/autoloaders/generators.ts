@@ -7,8 +7,11 @@ import CoreGenerator from '#spruce/../src/generators/CoreGenerator'
 import ErrorGenerator from '#spruce/../src/generators/ErrorGenerator'
 import SchemaGenerator from '#spruce/../src/generators/SchemaGenerator'
 
-
-export type Generators = AutoloaderGenerator | CoreGenerator | ErrorGenerator | SchemaGenerator
+export type Generators =
+	| AutoloaderGenerator
+	| CoreGenerator
+	| ErrorGenerator
+	| SchemaGenerator
 
 export interface IGenerators {
 	autoloader: AutoloaderGenerator
@@ -21,18 +24,16 @@ export enum Generator {
 	Autoloader = 'autoloader',
 	Core = 'core',
 	Error = 'error',
-	Schema = 'schema',
+	Schema = 'schema'
 }
 
-export default async function autoloader<
-	K extends Generator[]
->(options: {
-	constructorOptions:   IGeneratorOptions
+export default async function autoloader<K extends Generator[]>(options: {
+	constructorOptions: IGeneratorOptions
 	after?: (instance: Generators) => Promise<void>
 	only?: K
 }): Promise<K extends undefined ? IGenerators : Pick<IGenerators, K[number]>> {
 	const { constructorOptions, after, only } = options
-	const siblings:Partial<IGenerators> = {}
+	const siblings: Partial<IGenerators> = {}
 
 	if (!only || only.indexOf(Generator.Autoloader) === -1) {
 		const autoloaderGenerator = new AutoloaderGenerator(constructorOptions)
@@ -63,5 +64,7 @@ export default async function autoloader<
 		siblings.schema = schemaGenerator
 	}
 
-	return siblings as K extends undefined ? IGenerators : Pick<IGenerators, K[number]>
+	return siblings as K extends undefined
+		? IGenerators
+		: Pick<IGenerators, K[number]>
 }

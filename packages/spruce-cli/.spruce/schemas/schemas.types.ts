@@ -1416,7 +1416,7 @@ export namespace SpruceSchemas.Local.Autoloader {
 
 				isRequired: true
 
-				defaultValue: '**/*.ts'
+				defaultValue: '**/!(*.test).ts'
 
 				options: undefined
 			}
@@ -1456,7 +1456,7 @@ export namespace SpruceSchemas.Local.Autoloader {
 
 				isRequired: true,
 
-				defaultValue: '**/*.ts',
+				defaultValue: '**/!(*.test).ts',
 
 				options: undefined
 			}

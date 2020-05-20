@@ -104,7 +104,9 @@ export default class AutoloaderCommand extends AbstractCommand {
 		this.term.startLoading(
 			'Prettying generated files (you can use them now)...'
 		)
-		this.services.lint.fix(rootAutoloaderDestination)
+		await this.services.lint.fix(
+			this.resolvePath(rootAutoloaderDestination) + '**/*.ts'
+		)
 	}
 
 	private async create(name: string | undefined, cmd: Command) {
@@ -297,7 +299,6 @@ const twilio${templateItem.namePascal} = await ${templateItem.nameCamel}Autoload
 		})
 
 		this.term.startLoading('Prettying root autoloader (use can use it now)...')
-		this.services.lint.fix(file)
-		this.term.stopLoading()
+		await this.services.lint.fix(file)
 	}
 }

@@ -9,8 +9,13 @@ import SkillFeature from '#spruce/../src/features/SkillFeature'
 import TestFeature from '#spruce/../src/features/TestFeature'
 import VSCodeFeature from '#spruce/../src/features/VsCodeFeature'
 
-
-export type Features = CircleCIFeature | ErrorFeature | SchemaFeature | SkillFeature | TestFeature | VSCodeFeature
+export type Features =
+	| CircleCIFeature
+	| ErrorFeature
+	| SchemaFeature
+	| SkillFeature
+	| TestFeature
+	| VSCodeFeature
 
 export interface IFeatures {
 	circleCi: CircleCIFeature
@@ -27,18 +32,16 @@ export enum Feature {
 	Schema = 'schema',
 	Skill = 'skill',
 	Test = 'test',
-	VsCode = 'vsCode',
+	VsCode = 'vsCode'
 }
 
-export default async function autoloader<
-	K extends Feature[]
->(options: {
-	constructorOptions:   IFeatureOptions
+export default async function autoloader<K extends Feature[]>(options: {
+	constructorOptions: IFeatureOptions
 	after?: (instance: Features) => Promise<void>
 	only?: K
 }): Promise<K extends undefined ? IFeatures : Pick<IFeatures, K[number]>> {
 	const { constructorOptions, after, only } = options
-	const siblings:Partial<IFeatures> = {}
+	const siblings: Partial<IFeatures> = {}
 
 	if (!only || only.indexOf(Feature.CircleCi) === -1) {
 		const circleCiFeature = new CircleCIFeature(constructorOptions)
@@ -83,5 +86,7 @@ export default async function autoloader<
 		siblings.vsCode = vsCodeFeature
 	}
 
-	return siblings as K extends undefined ? IFeatures : Pick<IFeatures, K[number]>
+	return siblings as K extends undefined
+		? IFeatures
+		: Pick<IFeatures, K[number]>
 }
