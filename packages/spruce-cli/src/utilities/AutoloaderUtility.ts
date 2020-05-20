@@ -13,6 +13,7 @@ import SpruceError from '../errors/SpruceError'
 import AbstractUtility from './AbstractUtility'
 
 export default class AutoloaderUtility extends AbstractUtility {
+	private cache: Record<string, any> = {}
 	/** Build the template item needed to build the root autoloader  */
 	public async buildRootTemplateItem(
 		autoloaders: SpruceSchemas.Local.IAutoloader[],
@@ -42,12 +43,20 @@ export default class AutoloaderUtility extends AbstractUtility {
 		/** The current directory */
 		cwd?: string
 	}): Promise<IAutoLoaderTemplateItem> {
-		const { directory, pattern = '**/*.ts', cwd = this.cwd } = options
+		const {
+			directory,
+			pattern = SpruceSchemas.Local.Autoloader.definition.fields.pattern
+				.defaultValue,
+			cwd = this.cwd
+		} = options
+
+		const cacheKey = `${directory}-${pattern}-${cwd}`
+		if (this.cache[cacheKey]) {
+			return this.cache[cacheKey]
+		}
 		const globbyPattern = `${directory}/${pattern}`
 		const filePaths = await globby(globbyPattern)
-		const results = filePaths.map(path =>
-			this.utilities.introspection.introspect(path)
-		)
+		const results = this.utilities.introspection.introspect(filePaths)
 		const names = this.utilities.names
 		const classes: IAutoLoaderClassTemplateItem[] = []
 		const interfaces: IAutoLoaderInterfaceTemplateItem[] = []
@@ -130,7 +139,7 @@ export default class AutoloaderUtility extends AbstractUtility {
 			}
 		})
 
-		return {
+		const templateItem = {
 			abstractClassName: abstractClass.className,
 			abstractClassRelativePath: abstractClass.relativeFilePath,
 			abstractClassConstructorOptionsInterfaceName:
@@ -143,5 +152,9 @@ export default class AutoloaderUtility extends AbstractUtility {
 			nameCamelPlural,
 			constructorOptionInterfaces
 		}
+
+		this.cache[cacheKey] = templateItem
+
+		return templateItem
 	}
 }

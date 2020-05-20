@@ -32,72 +32,76 @@ interface IDocEntry {
 
 export default class IntrospectionUtility extends AbstractUtility {
 	/** Gather helpful details re: a class definition */
-	public introspect(tsFile: string): IIntrospection {
-		const filePaths = [tsFile]
+	public introspect(tsFiles: string[]): IIntrospection[] {
+		const filePaths = tsFiles
 		const program = ts.createProgram(filePaths, {})
 		const checker = program.getTypeChecker()
 
-		// load the source file
-		const sourceFile = program.getSourceFile(tsFile)
-
 		// for building results
-		const results: IIntrospection = { classes: [], interfaces: [] }
+		const introspects: IIntrospection[] = []
 
-		if (sourceFile && _.includes(filePaths, sourceFile.fileName)) {
-			ts.forEachChild(sourceFile, node => {
-				// if this is a class declaration
-				if (ts.isClassDeclaration(node) && node.name) {
-					const symbol = checker.getSymbolAtLocation(node.name)
+		for (let i = 0; i < filePaths.length; i += 1) {
+			const tsFile = filePaths[i]
+			const sourceFile = program.getSourceFile(tsFile)
+			const results: IIntrospection = { classes: [], interfaces: [] }
+			if (sourceFile && _.includes(filePaths, sourceFile.fileName)) {
+				ts.forEachChild(sourceFile, node => {
+					// if this is a class declaration
+					if (ts.isClassDeclaration(node) && node.name) {
+						const symbol = checker.getSymbolAtLocation(node.name)
 
-					if (symbol) {
-						const details = this.serializeSymbol({ checker, symbol })
-						// Get the construct signatures
-						const constructorType = checker.getTypeOfSymbolAtLocation(
-							symbol,
-							symbol.valueDeclaration
-						)
+						if (symbol) {
+							const details = this.serializeSymbol({ checker, symbol })
+							// Get the construct signatures
+							const constructorType = checker.getTypeOfSymbolAtLocation(
+								symbol,
+								symbol.valueDeclaration
+							)
 
-						let parentClassSymbol: ts.Symbol | undefined
-						if (node.heritageClauses && node.heritageClauses[0]) {
-							parentClassSymbol = checker
-								.getTypeAtLocation(node.heritageClauses[0].types[0])
-								.getSymbol()
-						}
+							let parentClassSymbol: ts.Symbol | undefined
+							if (node.heritageClauses && node.heritageClauses[0]) {
+								parentClassSymbol = checker
+									.getTypeAtLocation(node.heritageClauses[0].types[0])
+									.getSymbol()
+							}
 
-						const parentClassName =
+							const parentClassName =
+								// @ts-ignore
+								parentClassSymbol?.valueDeclaration.name.text
 							// @ts-ignore
-							parentClassSymbol?.valueDeclaration.name.text
-						// @ts-ignore
-						const parentClassPath = parentClassSymbol?.parent
-							.getName()
-							.replace('"', '')
+							const parentClassPath = parentClassSymbol?.parent
+								.getName()
+								.replace('"', '')
 
-						const isAbstractClass = tsutils.isModifierFlagSet(
-							node,
-							ts.ModifierFlags.Abstract
-						)
-						details.constructors = constructorType
-							.getConstructSignatures()
-							.map(s => this.serializeSignature({ signature: s, checker }))
+							const isAbstractClass = tsutils.isModifierFlagSet(
+								node,
+								ts.ModifierFlags.Abstract
+							)
+							details.constructors = constructorType
+								.getConstructSignatures()
+								.map(s => this.serializeSignature({ signature: s, checker }))
 
-						results.classes.push({
-							className: node.name.text,
-							parentClassName,
-							parentClassPath,
-							constructorOptionsInterfaceName:
-								details.constructors?.[0].parameters?.[0]?.type,
-							isAbstract: isAbstractClass
+							results.classes.push({
+								className: node.name.text,
+								parentClassName,
+								parentClassPath,
+								constructorOptionsInterfaceName:
+									details.constructors?.[0].parameters?.[0]?.type,
+								isAbstract: isAbstractClass
+							})
+						}
+					} else if (ts.isInterfaceDeclaration(node)) {
+						results.interfaces.push({
+							interfaceName: node.name.text
 						})
 					}
-				} else if (ts.isInterfaceDeclaration(node)) {
-					results.interfaces.push({
-						interfaceName: node.name.text
-					})
-				}
-			})
+				})
+			}
+
+			introspects.push(results)
 		}
 
-		return results
+		return introspects
 	}
 
 	private serializeSignature(options: {

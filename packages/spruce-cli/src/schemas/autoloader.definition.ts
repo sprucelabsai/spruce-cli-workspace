@@ -18,7 +18,7 @@ const cliSkillDefinition = buildSchemaDefinition({
 		pattern: {
 			type: FieldType.Text,
 			label: 'Pattern',
-			defaultValue: '**/*.ts',
+			defaultValue: '**/!(*.test).ts',
 			isRequired: true
 		}
 	}

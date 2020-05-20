@@ -1,6 +1,4 @@
 /* eslint-disable spruce/prefer-pascal-case-enums */
-// Import base class
-import AbstractUtility from '#spruce/../src/utilities/AbstractUtility'
 // Import necessary interface(s)
 import { IUtilityOptions } from '#spruce/../src/utilities/AbstractUtility'
 // Import each matching class that will be autoloaded
@@ -12,8 +10,14 @@ import SchemaUtility from '#spruce/../src/utilities/SchemaUtility'
 import TerminalUtility from '#spruce/../src/utilities/TerminalUtility'
 import TsConfigUtility from '#spruce/../src/utilities/TsConfigUtility'
 
-
-export type Utilities = AutoloaderUtility | BootstrapUtility | IntrospectionUtility | NamesUtility | SchemaUtility | TerminalUtility | TsConfigUtility
+export type Utilities =
+	| AutoloaderUtility
+	| BootstrapUtility
+	| IntrospectionUtility
+	| NamesUtility
+	| SchemaUtility
+	| TerminalUtility
+	| TsConfigUtility
 
 export interface IUtilities {
 	autoloader: AutoloaderUtility
@@ -32,18 +36,16 @@ export enum Utility {
 	Names = 'names',
 	Schema = 'schema',
 	Terminal = 'terminal',
-	TsConfig = 'tsConfig',
+	TsConfig = 'tsConfig'
 }
 
-export default async function autoloader<
-	K extends Utility[]
->(options: {
-	constructorOptions:   IUtilityOptions
-	after?: (instance: AbstractUtility) => Promise<void>
+export default async function autoloader<K extends Utility[]>(options: {
+	constructorOptions: IUtilityOptions
+	after?: (instance: Utilities) => Promise<void>
 	only?: K
 }): Promise<K extends undefined ? IUtilities : Pick<IUtilities, K[number]>> {
 	const { constructorOptions, after, only } = options
-	const siblings:Partial<IUtilities> = {}
+	const siblings: Partial<IUtilities> = {}
 
 	if (!only || only.indexOf(Utility.Autoloader) === -1) {
 		const autoloaderUtility = new AutoloaderUtility(constructorOptions)
@@ -95,5 +97,7 @@ export default async function autoloader<
 		siblings.tsConfig = tsConfigUtility
 	}
 
-	return siblings as K extends undefined ? IUtilities : Pick<IUtilities, K[number]>
+	return siblings as K extends undefined
+		? IUtilities
+		: Pick<IUtilities, K[number]>
 }

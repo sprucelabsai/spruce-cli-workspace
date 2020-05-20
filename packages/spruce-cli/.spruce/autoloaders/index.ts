@@ -1,52 +1,40 @@
-import commandAutoloader, { ICommands } from './commands'
-import featureAutoloader, { IFeatures } from './features'
-import generatorAutoloader, { IGenerators } from './generators'
-import serviceAutoloader, { IServices } from './services'
-import storeAutoloader, { IStores } from './stores'
-import utilityAutoloader, { IUtilities } from './utilities'
-import AbstractCommand, {
-	ICommandOptions
-} from '#spruce/../src/commands/AbstractCommand'
-import AbstractFeature, {
-	IFeatureOptions
-} from '#spruce/../src/features/AbstractFeature'
-import AbstractGenerator, {
-	IGeneratorOptions
-} from '#spruce/../src/generators/AbstractGenerator'
-import AbstractService, {
-	IServiceOptions
-} from '#spruce/../src/services/AbstractService'
-import AbstractStore, {
-	IStoreOptions
-} from '#spruce/../src/stores/AbstractStore'
-import AbstractUtility, {
-	IUtilityOptions
-} from '#spruce/../src/utilities/AbstractUtility'
+import commandAutoloader, { ICommands, Commands } from './commands'
+import featureAutoloader, { IFeatures, Features } from './features'
+import generatorAutoloader, { IGenerators, Generators } from './generators'
+import serviceAutoloader, { IServices, Services } from './services'
+import storeAutoloader, { IStores, Stores } from './stores'
+import utilityAutoloader, { IUtilities, Utilities } from './utilities'
+import { ICommandOptions } from '#spruce/../src/commands/AbstractCommand'
+import { IFeatureOptions } from '#spruce/../src/features/AbstractFeature'
+import { IGeneratorOptions } from '#spruce/../src/generators/AbstractGenerator'
+import { IServiceOptions } from '#spruce/../src/services/AbstractService'
+import { IStoreOptions } from '#spruce/../src/stores/AbstractStore'
+import { IUtilityOptions } from '#spruce/../src/utilities/AbstractUtility'
 
 export interface IAutoloaderOptions {
 	commands: {
 		constructorOptions: ICommandOptions
-		after?: (instance: AbstractCommand) => Promise<void>
+		after?: (instance: Commands) => Promise<void>
 	}
 	stores: {
 		constructorOptions: IStoreOptions
-		after?: (instance: AbstractStore) => Promise<void>
+		after?: (instance: Stores) => Promise<void>
 	}
 	services: {
 		constructorOptions: IServiceOptions
-		after?: (instance: AbstractService) => Promise<void>
+		after?: (instance: Services) => Promise<void>
 	}
 	features: {
 		constructorOptions: IFeatureOptions
-		after?: (instance: AbstractFeature) => Promise<void>
+		after?: (instance: Features) => Promise<void>
 	}
 	generators: {
 		constructorOptions: IGeneratorOptions
-		after?: (instance: AbstractGenerator) => Promise<void>
+		after?: (instance: Generators) => Promise<void>
 	}
 	utilities: {
 		constructorOptions: IUtilityOptions
-		after?: (instance: AbstractUtility) => Promise<void>
+		after?: (instance: Utilities) => Promise<void>
 	}
 }
 

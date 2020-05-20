@@ -1,6 +1,4 @@
 /* eslint-disable spruce/prefer-pascal-case-enums */
-// Import base class
-import AbstractService from '#spruce/../src/services/AbstractService'
 // Import necessary interface(s)
 import { IServiceOptions } from '#spruce/../src/services/AbstractService'
 // Import each matching class that will be autoloaded
@@ -42,7 +40,7 @@ export default async function autoloader<
 	K extends Service[]
 >(options: {
 	constructorOptions:   IServiceOptions
-	after?: (instance: AbstractService) => Promise<void>
+	after?: (instance: Services) => Promise<void>
 	only?: K
 }): Promise<K extends undefined ? IServices : Pick<IServices, K[number]>> {
 	const { constructorOptions, after, only } = options

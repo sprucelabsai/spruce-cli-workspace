@@ -1,6 +1,4 @@
 /* eslint-disable spruce/prefer-pascal-case-enums */
-// Import base class
-import AbstractStore from '#spruce/../src/stores/AbstractStore'
 // Import necessary interface(s)
 import { IStoreOptions } from '#spruce/../src/stores/AbstractStore'
 // Import each matching class that will be autoloaded
@@ -12,14 +10,8 @@ import SkillStore from '#spruce/../src/stores/SkillStore'
 import UserStore from '#spruce/../src/stores/UserStore'
 import WatcherStore from '#spruce/../src/stores/WatcherStore'
 
-export type Stores =
-	| AutoloaderStore
-	| OnboardingStore
-	| RemoteStore
-	| SchemaStore
-	| SkillStore
-	| UserStore
-	| WatcherStore
+
+export type Stores = AutoloaderStore | OnboardingStore | RemoteStore | SchemaStore | SkillStore | UserStore | WatcherStore
 
 export interface IStores {
 	autoloader: AutoloaderStore
@@ -38,16 +30,18 @@ export enum Store {
 	Schema = 'schema',
 	Skill = 'skill',
 	User = 'user',
-	Watcher = 'watcher'
+	Watcher = 'watcher',
 }
 
-export default async function autoloader<K extends Store[]>(options: {
-	constructorOptions: IStoreOptions
-	after?: (instance: AbstractStore) => Promise<void>
+export default async function autoloader<
+	K extends Store[]
+>(options: {
+	constructorOptions:   IStoreOptions
+	after?: (instance: Stores) => Promise<void>
 	only?: K
 }): Promise<K extends undefined ? IStores : Pick<IStores, K[number]>> {
 	const { constructorOptions, after, only } = options
-	const siblings: Partial<IStores> = {}
+	const siblings:Partial<IStores> = {}
 
 	if (!only || only.indexOf(Store.Autoloader) === -1) {
 		const autoloaderStore = new AutoloaderStore(constructorOptions)

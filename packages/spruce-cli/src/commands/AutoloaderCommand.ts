@@ -285,6 +285,7 @@ const twilio${templateItem.namePascal} = await ${templateItem.nameCamel}Autoload
 	}
 
 	private async root(destination: string | undefined) {
+		this.term.startLoading('Generating root autoloader...')
 		const file = this.resolvePath(destination ?? '.spruce/autoloaders/index.ts')
 		const results = await this.generators.autoloader.generateRoot(file)
 

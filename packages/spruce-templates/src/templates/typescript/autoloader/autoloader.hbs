@@ -1,6 +1,4 @@
 /* eslint-disable spruce/prefer-pascal-case-enums */
-// Import base class
-import {{abstractClassName}} from '{{abstractClassRelativePath}}'
 // Import necessary interface(s)
 {{#each constructorOptionInterfaces}}
 import { {{name}} } from '{{filePath}}'
@@ -29,7 +27,7 @@ export default async function autoloader<
 	K extends {{namePascal}}[]
 >(options: {
 	constructorOptions: {{#each constructorOptionInterfaces}} {{#unless @first}}|{{/unless}} {{name}}{{/each}}
-	after?: (instance: {{abstractClassName}}) => Promise<void>
+	after?: (instance: {{namePascalPlural}}) => Promise<void>
 	only?: K
 }): Promise<K extends undefined ? I{{namePascalPlural}} : Pick<I{{namePascalPlural}}, K[number]>> {
 	const { constructorOptions, after, only } = options

@@ -227,8 +227,6 @@ export default class FeatureService extends AbstractService {
 
 		this.term.startLoading(`[${installFeature.feature}]: Finishing up`)
 		await feature.afterPackageInstall({
-			// TODO: Figure out how to get the right type here
-			// @ts-ignore
 			answers
 		})
 		this.term.stopLoading()

@@ -1,6 +1,4 @@
 /* eslint-disable spruce/prefer-pascal-case-enums */
-// Import base class
-import AbstractCommand from '#spruce/../src/commands/AbstractCommand'
 // Import necessary interface(s)
 import { ICommandOptions } from '#spruce/../src/commands/AbstractCommand'
 // Import each matching class that will be autoloaded
@@ -15,8 +13,17 @@ import TestCommand from '#spruce/../src/commands/TestCommand'
 import UserCommand from '#spruce/../src/commands/UserCommand'
 import WatchCommand from '#spruce/../src/commands/WatchCommand'
 
-
-export type Commands = AutoloaderCommand | ErrorCommand | FeatureCommand | OnboardingCommand | RemoteCommand | SchemaCommand | SkillCommand | TestCommand | UserCommand | WatchCommand
+export type Commands =
+	| AutoloaderCommand
+	| ErrorCommand
+	| FeatureCommand
+	| OnboardingCommand
+	| RemoteCommand
+	| SchemaCommand
+	| SkillCommand
+	| TestCommand
+	| UserCommand
+	| WatchCommand
 
 export interface ICommands {
 	autoloader: AutoloaderCommand
@@ -41,18 +48,16 @@ export enum Command {
 	Skill = 'skill',
 	Test = 'test',
 	User = 'user',
-	Watch = 'watch',
+	Watch = 'watch'
 }
 
-export default async function autoloader<
-	K extends Command[]
->(options: {
-	constructorOptions:   ICommandOptions
-	after?: (instance: AbstractCommand) => Promise<void>
+export default async function autoloader<K extends Command[]>(options: {
+	constructorOptions: ICommandOptions
+	after?: (instance: Commands) => Promise<void>
 	only?: K
 }): Promise<K extends undefined ? ICommands : Pick<ICommands, K[number]>> {
 	const { constructorOptions, after, only } = options
-	const siblings:Partial<ICommands> = {}
+	const siblings: Partial<ICommands> = {}
 
 	if (!only || only.indexOf(Command.Autoloader) === -1) {
 		const autoloaderCommand = new AutoloaderCommand(constructorOptions)
@@ -125,5 +130,7 @@ export default async function autoloader<
 		siblings.watch = watchCommand
 	}
 
-	return siblings as K extends undefined ? ICommands : Pick<ICommands, K[number]>
+	return siblings as K extends undefined
+		? ICommands
+		: Pick<ICommands, K[number]>
 }

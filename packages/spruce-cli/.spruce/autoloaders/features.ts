@@ -1,6 +1,4 @@
 /* eslint-disable spruce/prefer-pascal-case-enums */
-// Import base class
-import AbstractFeature from '#spruce/../src/features/AbstractFeature'
 // Import necessary interface(s)
 import { IFeatureOptions } from '#spruce/../src/features/AbstractFeature'
 // Import each matching class that will be autoloaded
@@ -36,7 +34,7 @@ export default async function autoloader<
 	K extends Feature[]
 >(options: {
 	constructorOptions:   IFeatureOptions
-	after?: (instance: AbstractFeature) => Promise<void>
+	after?: (instance: Features) => Promise<void>
 	only?: K
 }): Promise<K extends undefined ? IFeatures : Pick<IFeatures, K[number]>> {
 	const { constructorOptions, after, only } = options

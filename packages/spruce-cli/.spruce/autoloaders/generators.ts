@@ -1,6 +1,4 @@
 /* eslint-disable spruce/prefer-pascal-case-enums */
-// Import base class
-import AbstractGenerator from '#spruce/../src/generators/AbstractGenerator'
 // Import necessary interface(s)
 import { IGeneratorOptions } from '#spruce/../src/generators/AbstractGenerator'
 // Import each matching class that will be autoloaded
@@ -30,7 +28,7 @@ export default async function autoloader<
 	K extends Generator[]
 >(options: {
 	constructorOptions:   IGeneratorOptions
-	after?: (instance: AbstractGenerator) => Promise<void>
+	after?: (instance: Generators) => Promise<void>
 	only?: K
 }): Promise<K extends undefined ? IGenerators : Pick<IGenerators, K[number]>> {
 	const { constructorOptions, after, only } = options
