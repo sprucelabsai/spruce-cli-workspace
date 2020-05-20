@@ -26,12 +26,16 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 			case ErrorCode.Generic:
 				message = "When you're too lazy to make a new error"
 				break
-
 			case ErrorCode.NotImplemented:
-				message = `${options.command} is not yet been implemented. ${
+				message = ''
+				if (options.friendlyMessage) {
+					message += `\n\n${options.friendlyMessage}`
+				}
+				break
+			case ErrorCode.CommandNotImplemented:
+				message = `${options.command} has not yet been implemented. ${
 					options.args ? `Args: ${options.args.join(', ')}` : ''
 				}`
-
 				if (options.friendlyMessage) {
 					message += `\n\n${options.friendlyMessage}`
 				}
@@ -73,6 +77,11 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 
 			case ErrorCode.ValueTypeServiceError:
 				message = 'An error when generating value types for template insertion '
+				break
+
+			case ErrorCode.LintFailed:
+				message = `Lint failed on pattern ${options.pattern}. Response from lint was:\n\n`
+				message += options.stdout
 				break
 
 			default:

@@ -1,5 +1,7 @@
 // import { CLIEngine } from 'eslint'
 import fs from 'fs-extra'
+import { ErrorCode } from '#spruce/errors/codes.types'
+import SpruceError from '../errors/SpruceError'
 import log from '../lib/log'
 import AbstractService from './AbstractService'
 
@@ -13,6 +15,14 @@ export default class LintService extends AbstractService {
 		/** The file or pattern to run eslint --fix on */
 		pattern: string
 	): Promise<string[]> {
+		if (!pattern) {
+			throw new SpruceError({
+				code: ErrorCode.LintFailed,
+				pattern: '***missing***',
+				stdout: '***never run***'
+			})
+		}
+
 		const { stdout } = await this.services.child.executeCommand('node', {
 			args: [
 				'-e',
@@ -21,8 +31,16 @@ export default class LintService extends AbstractService {
 		})
 
 		const fixedPaths: string[] = []
-
-		const fixedFiles = JSON.parse(stdout)
+		let fixedFiles: any = {}
+		try {
+			fixedFiles = JSON.parse(stdout)
+		} catch (err) {
+			throw new SpruceError({
+				code: ErrorCode.LintFailed,
+				pattern,
+				stdout
+			})
+		}
 
 		if (fixedFiles.results) {
 			for (let i = 0; i < fixedFiles.results.length; i += 1) {

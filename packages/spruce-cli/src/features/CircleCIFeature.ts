@@ -1,4 +1,4 @@
-import { TemplateKind } from '@sprucelabs/spruce-templates'
+import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
 import AbstractFeature from './AbstractFeature'
 
 export default class CircleCIFeature extends AbstractFeature {
@@ -7,7 +7,8 @@ export default class CircleCIFeature extends AbstractFeature {
 
 	public async beforePackageInstall() {
 		await this.writeDirectoryTemplate({
-			template: TemplateKind.CircleCI
+			kind: DirectoryTemplateKind.CircleCi,
+			context: {}
 		})
 	}
 
@@ -15,9 +16,9 @@ export default class CircleCIFeature extends AbstractFeature {
 		/** The directory to check if a skill is installed. Default is the cwd. */
 		dir?: string
 	) {
-		return this.containsAllTemplateFiles({
-			templateKind: TemplateKind.CircleCI,
-			dir
+		return this.templates.isValidTemplatedDirectory({
+			kind: DirectoryTemplateKind.CircleCi,
+			dir: dir || this.cwd
 		})
 	}
 }

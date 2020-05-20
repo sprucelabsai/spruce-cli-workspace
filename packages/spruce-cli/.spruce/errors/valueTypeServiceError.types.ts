@@ -12,7 +12,7 @@ type ValueTypeServiceErrorDefinition = typeof valueTypeServiceErrorDefinition
 export interface IValueTypeServiceErrorDefinition extends ValueTypeServiceErrorDefinition {}
 
 export interface IValueTypeServiceErrorErrorOptions extends SchemaDefinitionValues<IValueTypeServiceErrorDefinition>, ISpruceErrorOptions<ErrorCode> {
-	/** * .ValueTypeServiceError - Ar error when generating value types for template insertion  */
+	/** * .ValueTypeServiceError - An error when generating value types for template insertion  */
 	code: ErrorCode.ValueTypeServiceError
 } 
 

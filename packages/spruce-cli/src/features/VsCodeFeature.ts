@@ -1,4 +1,4 @@
-import { TemplateKind } from '@sprucelabs/spruce-templates'
+import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
 import log from '../lib/log'
 import { IExtension } from '../services/VsCodeService'
 import AbstractFeature from './AbstractFeature'
@@ -24,7 +24,8 @@ export default class VSCodeFeature extends AbstractFeature {
 	public async beforePackageInstall() {
 		this.term.startLoading('Creating VSCode config files')
 		await this.writeDirectoryTemplate({
-			template: TemplateKind.VSCode
+			kind: DirectoryTemplateKind.VsCode,
+			context: {}
 		})
 		this.term.stopLoading()
 	}
@@ -33,10 +34,12 @@ export default class VSCodeFeature extends AbstractFeature {
 		/** The directory to check if a skill is installed. Default is the cwd. */
 		dir?: string
 	) {
-		const containsAllTemplateFiles = await this.containsAllTemplateFiles({
-			templateKind: TemplateKind.VSCode,
-			dir
-		})
+		const containsAllTemplateFiles = await this.templates.isValidTemplatedDirectory(
+			{
+				kind: DirectoryTemplateKind.VsCode,
+				dir: dir || this.cwd
+			}
+		)
 
 		if (!containsAllTemplateFiles) {
 			return false

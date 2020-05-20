@@ -1,6 +1,6 @@
 import Schema, { ISchemaDefinition } from '@sprucelabs/schema'
 import _ from 'lodash'
-import { Feature } from '#spruce/autoloaders/features'
+import { Feature, IFeatures } from '#spruce/autoloaders/features'
 import FormBuilder, { IFormOptions } from '../builders/FormBuilder'
 import { IFeaturePackage } from '../features/AbstractFeature'
 import log from '../lib/log'
@@ -21,7 +21,7 @@ export default class FeatureService extends AbstractService {
 			this._cwd = newCwd
 			if (this.features && newCwd) {
 				Object.keys(this.features).forEach(f => {
-					this.features[f].cwd = newCwd
+					this.features[f as keyof IFeatures].cwd = newCwd
 				})
 			}
 		}

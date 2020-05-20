@@ -1,51 +1,49 @@
 /* eslint-disable spruce/prefer-pascal-case-enums */
 // Import base class
-import {{abstractClassNamePascal}} from '{{abstractClassRelativePath}}'
+import {{abstractClassName}} from '{{abstractClassRelativePath}}'
+// Import necessary interface(s)
+{{#each constructorOptionInterfaces}}
+import { {{name}} } from '{{filePath}}'
+{{/each}}
 // Import each matching class that will be autoloaded
 {{#each classes}}
-import {{namePascal}} from '{{relativeFilePath}}'
+import {{className}} from '{{relativeFilePath}}'
 {{/each}}
 
-// Import necessary interface(s)
-{{#each interfaces}}
-import { {{interfaceName}} } from '{{relativeFilePath}}'
-{{/each}}
 
-export interface I{{namePlural}} {
-	[{{nameCamel}}: string]: {{#each classes}}{{#if @first}}{{namePascal}}{{else}} | {{namePascal}}{{/if}}{{/each}}
+export type {{namePascalPlural}} = {{#each classes}}{{#if @first}}{{className}}{{else}} | {{className}}{{/if}}{{/each}}
+
+export interface I{{namePascalPlural}} {
 	{{#each classes}}
-	{{nameCamel}}: {{namePascal}}
+	{{nameCamel}}: {{className}}
 	{{/each}}
 }
 
-export enum {{nameSingular}} {
+export enum {{namePascal}} {
 	{{#each classes}}
 	{{namePascal}} = '{{nameCamel}}',
 	{{/each}}
 }
 
-export default async function autoloader(options: {
-	constructorOptions: {{#each interfaces}}{{#if @first}}{{interfaceName}}{{else}} | {{interfaceName}}{{/if}}{{/each}}
+export default async function autoloader<
+	K extends {{namePascal}}[]
+>(options: {
+	constructorOptions: {{#each constructorOptionInterfaces}} {{#unless @first}}|{{/unless}} {{name}}{{/each}}
 	after?: (instance: {{abstractClassName}}) => Promise<void>
-}): Promise<I{{namePlural}}> {
-	const { constructorOptions, after } = options
+	only?: K
+}): Promise<K extends undefined ? I{{namePascalPlural}} : Pick<I{{namePascalPlural}}, K[number]>> {
+	const { constructorOptions, after, only } = options
+	const siblings:Partial<I{{namePascalPlural}}> = {}
 
 	{{#each classes}}
-	const {{nameCamel}} = new {{namePascal}}(constructorOptions)
-	if (after) {
-		await after({{nameCamel}})
+	if (!only || only.indexOf({{../namePascal}}.{{namePascal}}) === -1) {
+		const {{nameCamel}}{{../namePascal}} = new {{className}}(constructorOptions)
+		if (after) {
+			await after({{nameCamel}}{{../namePascal}})
+		}
+		siblings.{{nameCamel}} = {{nameCamel}}{{../namePascal}}
 	}
 	{{/each}}
 
-	const siblings: I{{namePlural}} = {
-		{{#each classes}}
-		{{#if @last}}
-		{{nameCamel}}
-		{{else}}
-		{{nameCamel}},
-		{{/if}}
-		{{/each}}
-	}
-
-	return siblings
+	return siblings as K extends undefined ? I{{namePascalPlural}} : Pick<I{{namePascalPlural}}, K[number]>
 }

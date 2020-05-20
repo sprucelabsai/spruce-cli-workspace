@@ -170,7 +170,8 @@ export default class QuizBuilder<
 
 		questionNames.forEach(questionName => {
 			const fieldName = questionName as SchemaFieldNames<T>
-			const [validity, idx] = (results[fieldName] as string).split('-')
+			const answer = (results[fieldName] as string) || ''
+			const [validity, idx] = answer.split('-')
 
 			// Get the field to tell type
 			const field = this.formBuilder.fields[fieldName]

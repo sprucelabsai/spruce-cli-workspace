@@ -1,9 +1,8 @@
-import { FieldType } from '#spruce:schema/fields/fieldType'
-
 import { IAddressFieldDefinition, AddressField } from '@sprucelabs/schema'
 import { IBooleanFieldDefinition, BooleanField } from '@sprucelabs/schema'
 import { IDateFieldDefinition, DateField } from '@sprucelabs/schema'
 import { IDateTimeFieldDefinition, DateTimeField } from '@sprucelabs/schema'
+import { IDirectoryFieldDefinition, DirectoryField } from '@sprucelabs/schema'
 import { IDurationFieldDefinition, DurationField } from '@sprucelabs/schema'
 import { IFileFieldDefinition, FileField } from '@sprucelabs/schema'
 import { IIdFieldDefinition, IdField } from '@sprucelabs/schema'
@@ -13,6 +12,7 @@ import { IRawFieldDefinition, RawField } from '@sprucelabs/schema'
 import { ISchemaFieldDefinition, SchemaField } from '@sprucelabs/schema'
 import { ISelectFieldDefinition, SelectField } from '@sprucelabs/schema'
 import { ITextFieldDefinition, TextField } from '@sprucelabs/schema'
+import { FieldType } from '#spruce:schema/fields/fieldType'
 
 /** Field definition union */
 export type FieldDefinition =
@@ -20,6 +20,7 @@ export type FieldDefinition =
 	| IBooleanFieldDefinition
 	| IDateFieldDefinition
 	| IDateTimeFieldDefinition
+	| IDirectoryFieldDefinition
 	| IDurationFieldDefinition
 	| IFileFieldDefinition
 	| IIdFieldDefinition
@@ -36,6 +37,7 @@ export type FieldClass =
 	| typeof BooleanField
 	| typeof DateField
 	| typeof DateTimeField
+	| typeof DirectoryField
 	| typeof DurationField
 	| typeof FileField
 	| typeof IdField
@@ -52,6 +54,7 @@ export type Field =
 	| BooleanField
 	| DateField
 	| DateTimeField
+	| DirectoryField
 	| DurationField
 	| FileField
 	| IdField
@@ -68,6 +71,7 @@ export type FieldDefinitionMap = {
 	[FieldType.Boolean]: IBooleanFieldDefinition
 	[FieldType.Date]: IDateFieldDefinition
 	[FieldType.DateTime]: IDateTimeFieldDefinition
+	[FieldType.Directory]: IDirectoryFieldDefinition
 	[FieldType.Duration]: IDurationFieldDefinition
 	[FieldType.File]: IFileFieldDefinition
 	[FieldType.Id]: IIdFieldDefinition
@@ -85,6 +89,7 @@ export interface IFieldDefinitionMap {
 	[FieldType.Boolean]: IBooleanFieldDefinition
 	[FieldType.Date]: IDateFieldDefinition
 	[FieldType.DateTime]: IDateTimeFieldDefinition
+	[FieldType.Directory]: IDirectoryFieldDefinition
 	[FieldType.Duration]: IDurationFieldDefinition
 	[FieldType.File]: IFileFieldDefinition
 	[FieldType.Id]: IIdFieldDefinition
@@ -102,6 +107,7 @@ export interface IFieldMap {
 	[FieldType.Boolean]: BooleanField
 	[FieldType.Date]: DateField
 	[FieldType.DateTime]: DateTimeField
+	[FieldType.Directory]: DirectoryField
 	[FieldType.Duration]: DurationField
 	[FieldType.File]: FileField
 	[FieldType.Id]: IdField

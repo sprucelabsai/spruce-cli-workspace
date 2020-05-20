@@ -1,7 +1,10 @@
 import path from 'path'
 import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
-import { TemplateDirectory, TemplateKind } from '@sprucelabs/spruce-templates'
-import { Templates } from '@sprucelabs/spruce-templates'
+import {
+	Templates,
+	DirectoryTemplateKind,
+	IDirectoryTemplateContextMap
+} from '@sprucelabs/spruce-templates'
 import fs from 'fs-extra'
 import { IAutoloaded } from '#spruce/autoloaders'
 import { Feature } from '#spruce/autoloaders/features'
@@ -10,7 +13,6 @@ import { IUtilities } from '#spruce/autoloaders/utilities'
 import { ErrorCode } from '#spruce/errors/codes.types'
 import Autoloadable from '../Autoloadable'
 import SpruceError from '../errors/SpruceError'
-import log from '../lib/log'
 import { WriteMode } from '../types/cli.types'
 import TerminalUtility from '../utilities/TerminalUtility'
 
@@ -72,17 +74,19 @@ export default abstract class AbstractFeature<
 	}): Promise<void> {}
 
 	/** Writes the template files */
-	protected async writeDirectoryTemplate(options: {
-		template: TemplateKind
+	protected async writeDirectoryTemplate<
+		K extends DirectoryTemplateKind
+	>(options: {
+		kind: K
 		/** Force overwrite the file even if it exists. The default behavior is to throw an error */
 		mode?: WriteMode
 		/** The data to send to the template */
-		templateData?: Record<string, any>
+		context: IDirectoryTemplateContextMap[K]
 	}) {
-		const { template, templateData, mode } = options
-		const templateDirectory = await TemplateDirectory.build({
-			template,
-			templateData
+		const { kind, context, mode } = options
+		const templateDirectory = await this.templates.directoryTemplate({
+			kind,
+			context
 		})
 
 		for (let i = 0; i < templateDirectory.files.length; i += 1) {
@@ -101,34 +105,6 @@ export default abstract class AbstractFeature<
 				await fs.writeFile(filePathToWrite, file.contents)
 			}
 		}
-	}
-
-	protected async containsAllTemplateFiles(options: {
-		templateKind: TemplateKind
-		/** The directory to check if a skill is installed. Default is the cwd. */
-		dir?: string
-	}) {
-		const { templateKind, dir } = options
-		const cwd = dir ?? this.cwd
-		const filesToCheck = await TemplateDirectory.filesInTemplate(templateKind)
-		// Check if the .spruce directory exists
-		let filesMissing = false
-		for (let i = 0; i < filesToCheck.length; i += 1) {
-			const file = path.join(cwd, filesToCheck[i])
-			if (!fs.existsSync(file)) {
-				log.debug(
-					`[${templateKind}] containsAllTemplateFiles failed because ${file} is missing`
-				)
-				filesMissing = true
-				break
-			}
-		}
-
-		if (!filesMissing) {
-			return true
-		}
-
-		return false
 	}
 
 	/** Should return true if the feature is currently installed */

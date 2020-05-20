@@ -1,81 +1,99 @@
 /* eslint-disable spruce/prefer-pascal-case-enums */
 // Import base class
-import AbstractUtility from '../../src/utilities/AbstractUtility'
-// Import each matching class that will be autoloaded
-import { IUtilityOptions } from '../../src/utilities/AbstractUtility'
-import Bootstrap from '../../src/utilities/BootstrapUtility'
-import Introspection from '../../src/utilities/IntrospectionUtility'
-import Names from '../../src/utilities/NamesUtility'
-import Schema from '../../src/utilities/SchemaUtility'
-import Terminal from '../../src/utilities/TerminalUtility'
-import TsConfig from '../../src/utilities/TsConfigUtility'
-
+import AbstractUtility from '#spruce/../src/utilities/AbstractUtility'
 // Import necessary interface(s)
+import { IUtilityOptions } from '#spruce/../src/utilities/AbstractUtility'
+// Import each matching class that will be autoloaded
+import AutoloaderUtility from '#spruce/../src/utilities/AutoloaderUtility'
+import BootstrapUtility from '#spruce/../src/utilities/BootstrapUtility'
+import IntrospectionUtility from '#spruce/../src/utilities/IntrospectionUtility'
+import NamesUtility from '#spruce/../src/utilities/NamesUtility'
+import SchemaUtility from '#spruce/../src/utilities/SchemaUtility'
+import TerminalUtility from '#spruce/../src/utilities/TerminalUtility'
+import TsConfigUtility from '#spruce/../src/utilities/TsConfigUtility'
+
+
+export type Utilities = AutoloaderUtility | BootstrapUtility | IntrospectionUtility | NamesUtility | SchemaUtility | TerminalUtility | TsConfigUtility
 
 export interface IUtilities {
-	[utility: string]:
-		| Bootstrap
-		| Introspection
-		| Names
-		| Schema
-		| Terminal
-		| TsConfig
-	bootstrap: Bootstrap
-	introspection: Introspection
-	names: Names
-	schema: Schema
-	terminal: Terminal
-	tsConfig: TsConfig
+	autoloader: AutoloaderUtility
+	bootstrap: BootstrapUtility
+	introspection: IntrospectionUtility
+	names: NamesUtility
+	schema: SchemaUtility
+	terminal: TerminalUtility
+	tsConfig: TsConfigUtility
 }
 
 export enum Utility {
+	Autoloader = 'autoloader',
 	Bootstrap = 'bootstrap',
 	Introspection = 'introspection',
 	Names = 'names',
 	Schema = 'schema',
 	Terminal = 'terminal',
-	TsConfig = 'tsConfig'
+	TsConfig = 'tsConfig',
 }
 
-export default async function autoloader(options: {
-	constructorOptions: IUtilityOptions
+export default async function autoloader<
+	K extends Utility[]
+>(options: {
+	constructorOptions:   IUtilityOptions
 	after?: (instance: AbstractUtility) => Promise<void>
-}): Promise<IUtilities> {
-	const { constructorOptions, after } = options
+	only?: K
+}): Promise<K extends undefined ? IUtilities : Pick<IUtilities, K[number]>> {
+	const { constructorOptions, after, only } = options
+	const siblings:Partial<IUtilities> = {}
 
-	const bootstrap = new Bootstrap(constructorOptions)
-	if (after) {
-		await after(bootstrap)
+	if (!only || only.indexOf(Utility.Autoloader) === -1) {
+		const autoloaderUtility = new AutoloaderUtility(constructorOptions)
+		if (after) {
+			await after(autoloaderUtility)
+		}
+		siblings.autoloader = autoloaderUtility
 	}
-	const introspection = new Introspection(constructorOptions)
-	if (after) {
-		await after(introspection)
+	if (!only || only.indexOf(Utility.Bootstrap) === -1) {
+		const bootstrapUtility = new BootstrapUtility(constructorOptions)
+		if (after) {
+			await after(bootstrapUtility)
+		}
+		siblings.bootstrap = bootstrapUtility
 	}
-	const names = new Names(constructorOptions)
-	if (after) {
-		await after(names)
+	if (!only || only.indexOf(Utility.Introspection) === -1) {
+		const introspectionUtility = new IntrospectionUtility(constructorOptions)
+		if (after) {
+			await after(introspectionUtility)
+		}
+		siblings.introspection = introspectionUtility
 	}
-	const schema = new Schema(constructorOptions)
-	if (after) {
-		await after(schema)
+	if (!only || only.indexOf(Utility.Names) === -1) {
+		const namesUtility = new NamesUtility(constructorOptions)
+		if (after) {
+			await after(namesUtility)
+		}
+		siblings.names = namesUtility
 	}
-	const terminal = new Terminal(constructorOptions)
-	if (after) {
-		await after(terminal)
+	if (!only || only.indexOf(Utility.Schema) === -1) {
+		const schemaUtility = new SchemaUtility(constructorOptions)
+		if (after) {
+			await after(schemaUtility)
+		}
+		siblings.schema = schemaUtility
 	}
-	const tsConfig = new TsConfig(constructorOptions)
-	if (after) {
-		await after(tsConfig)
+	if (!only || only.indexOf(Utility.Terminal) === -1) {
+		const terminalUtility = new TerminalUtility(constructorOptions)
+		if (after) {
+			await after(terminalUtility)
+		}
+		siblings.terminal = terminalUtility
+	}
+	if (!only || only.indexOf(Utility.TsConfig) === -1) {
+		const tsConfigUtility = new TsConfigUtility(constructorOptions)
+		if (after) {
+			await after(tsConfigUtility)
+		}
+		siblings.tsConfig = tsConfigUtility
 	}
 
-	const siblings: IUtilities = {
-		bootstrap,
-		introspection,
-		names,
-		schema,
-		terminal,
-		tsConfig
-	}
-
-	return siblings
+	return siblings as K extends undefined ? IUtilities : Pick<IUtilities, K[number]>
 }

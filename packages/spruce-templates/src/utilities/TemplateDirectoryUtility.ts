@@ -2,32 +2,19 @@ import fs from 'fs'
 import path from 'path'
 import globby from 'globby'
 import handlebars from 'handlebars'
-import log from './lib/log'
+import {
+	DirectoryTemplateKind,
+	IDirectoryTemplateContextMap,
+	IDirectoryTemplate
+} from '../types/templates.types'
 
-export interface IBuiltTemplateDirectory {
-	files: {
-		/** The relative path of the output file, without a leading forward slash */
-		relativePath: string
-		/** The file contents, built with the template data */
-		contents: string
-	}[]
-}
-
-export enum TemplateKind {
-	Skill = 'skill',
-	// eslint-disable-next-line spruce/prefer-pascal-case-enums
-	VSCode = 'vscode',
-	// eslint-disable-next-line spruce/prefer-pascal-case-enums
-	CircleCI = 'circleci'
-}
-
-export default class TemplateDirectory {
+export default class TemplateDirectoryUtility {
 	/** Returns the relative file paths for all the expected files in the directory template */
-	public static async filesInTemplate(template: TemplateKind) {
+	public static async filesInTemplate(template: DirectoryTemplateKind) {
 		const filePaths: string[] = []
 
 		const files = await globby(
-			path.join(__dirname, 'templates/directories', template),
+			path.join(__dirname, '../templates/directories', template),
 			{
 				dot: true
 			}
@@ -35,7 +22,6 @@ export default class TemplateDirectory {
 
 		for (let i = 0; i < files.length; i += 1) {
 			const file = files[i]
-			log.debug({ file })
 			const { relativeBaseDirectory, filename } = this.parseTemplateFilePath(
 				file
 			)
@@ -46,19 +32,19 @@ export default class TemplateDirectory {
 	}
 
 	/** Build all the files in the directory for the template */
-	public static async build(options: {
+	public static async build<K extends DirectoryTemplateKind>(options: {
 		/** The type of directory template to build */
-		template: TemplateKind
+		kind: K
 		/** The data to pass into the templates */
-		templateData?: Record<string, any>
-	}): Promise<IBuiltTemplateDirectory> {
-		const builtFiles: IBuiltTemplateDirectory = {
+		context?: IDirectoryTemplateContextMap[K]
+	}): Promise<IDirectoryTemplate> {
+		const builtFiles: IDirectoryTemplate = {
 			files: []
 		}
-		const { template, templateData } = options
+		const { kind, context } = options
 
 		const files = await globby(
-			path.join(__dirname, 'templates/directories', template),
+			path.join(__dirname, '../templates/directories', kind),
 			{
 				dot: true
 			}
@@ -78,7 +64,7 @@ export default class TemplateDirectory {
 			if (isHandlebarsTemplate) {
 				// Compile the file
 				const compiledTemplate = handlebars.compile(template)
-				const result = compiledTemplate(templateData)
+				const result = compiledTemplate(context)
 				builtFiles.files.push({
 					relativePath: filePathToWrite,
 					contents: result

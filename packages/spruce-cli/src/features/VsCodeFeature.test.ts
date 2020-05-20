@@ -7,7 +7,7 @@ export default class VsCodeFeatureTest extends BaseCliTest {
 	@test('Properly detects when feature is not installed')
 	protected static async notInstalled() {
 		const isInstalled = await this.services.feature.isInstalled({
-			features: [Feature.VSCode]
+			features: [Feature.VsCode]
 		})
 
 		assert.isFalse(isInstalled)
@@ -18,13 +18,13 @@ export default class VsCodeFeatureTest extends BaseCliTest {
 		await this.services.feature.install({
 			features: [
 				{
-					feature: Feature.VSCode
+					feature: Feature.VsCode
 				}
 			]
 		})
 
 		const isInstalled = await this.services.feature.isInstalled({
-			features: [Feature.VSCode]
+			features: [Feature.VsCode]
 		})
 
 		// VSCode isn't installed in CI so we expect it to fail

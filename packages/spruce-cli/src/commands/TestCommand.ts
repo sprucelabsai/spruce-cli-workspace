@@ -42,7 +42,7 @@ export default class TestCommand extends AbstractCommand {
 
 		const name = this.utilities.names.toFileNameWithoutExtension(target)
 		const namePascal = this.utilities.names.toPascal(name)
-		const destination = path.join(path.dirname(target), namePascal	) + '.test.ts'
+		const destination = path.join(path.dirname(target), namePascal) + '.test.ts'
 		const contents = this.templates.test({ namePascal })
 
 		this.writeFile(destination, contents)

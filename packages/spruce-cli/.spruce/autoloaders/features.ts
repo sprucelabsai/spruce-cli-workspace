@@ -1,75 +1,89 @@
 /* eslint-disable spruce/prefer-pascal-case-enums */
 // Import base class
-import AbstractFeature from '../../src/features/AbstractFeature'
-// Import each matching class that will be autoloaded
-import { IFeatureOptions } from '../../src/features/AbstractFeature'
-import CircleCI from '../../src/features/CircleCIFeature'
-import Error from '../../src/features/ErrorFeature'
-import Schema from '../../src/features/SchemaFeature'
-import Skill from '../../src/features/SkillFeature'
-import Test from '../../src/features/TestFeature'
-import VSCode from '../../src/features/VsCodeFeature'
-
+import AbstractFeature from '#spruce/../src/features/AbstractFeature'
 // Import necessary interface(s)
+import { IFeatureOptions } from '#spruce/../src/features/AbstractFeature'
+// Import each matching class that will be autoloaded
+import CircleCIFeature from '#spruce/../src/features/CircleCIFeature'
+import ErrorFeature from '#spruce/../src/features/ErrorFeature'
+import SchemaFeature from '#spruce/../src/features/SchemaFeature'
+import SkillFeature from '#spruce/../src/features/SkillFeature'
+import TestFeature from '#spruce/../src/features/TestFeature'
+import VSCodeFeature from '#spruce/../src/features/VsCodeFeature'
+
+
+export type Features = CircleCIFeature | ErrorFeature | SchemaFeature | SkillFeature | TestFeature | VSCodeFeature
 
 export interface IFeatures {
-	[feature: string]: CircleCI | Error | Schema | Skill | Test | VSCode
-	circleCi: CircleCI
-	error: Error
-	schema: Schema
-	skill: Skill
-	test: Test
-	vsCode: VSCode
+	circleCi: CircleCIFeature
+	error: ErrorFeature
+	schema: SchemaFeature
+	skill: SkillFeature
+	test: TestFeature
+	vsCode: VSCodeFeature
 }
 
 export enum Feature {
-	CircleCI = 'circleCi',
+	CircleCi = 'circleCi',
 	Error = 'error',
 	Schema = 'schema',
 	Skill = 'skill',
 	Test = 'test',
-	VSCode = 'vsCode'
+	VsCode = 'vsCode',
 }
 
-export default async function autoloader(options: {
-	constructorOptions: IFeatureOptions
+export default async function autoloader<
+	K extends Feature[]
+>(options: {
+	constructorOptions:   IFeatureOptions
 	after?: (instance: AbstractFeature) => Promise<void>
-}): Promise<IFeatures> {
-	const { constructorOptions, after } = options
+	only?: K
+}): Promise<K extends undefined ? IFeatures : Pick<IFeatures, K[number]>> {
+	const { constructorOptions, after, only } = options
+	const siblings:Partial<IFeatures> = {}
 
-	const circleCi = new CircleCI(constructorOptions)
-	if (after) {
-		await after(circleCi)
+	if (!only || only.indexOf(Feature.CircleCi) === -1) {
+		const circleCiFeature = new CircleCIFeature(constructorOptions)
+		if (after) {
+			await after(circleCiFeature)
+		}
+		siblings.circleCi = circleCiFeature
 	}
-	const error = new Error(constructorOptions)
-	if (after) {
-		await after(error)
+	if (!only || only.indexOf(Feature.Error) === -1) {
+		const errorFeature = new ErrorFeature(constructorOptions)
+		if (after) {
+			await after(errorFeature)
+		}
+		siblings.error = errorFeature
 	}
-	const schema = new Schema(constructorOptions)
-	if (after) {
-		await after(schema)
+	if (!only || only.indexOf(Feature.Schema) === -1) {
+		const schemaFeature = new SchemaFeature(constructorOptions)
+		if (after) {
+			await after(schemaFeature)
+		}
+		siblings.schema = schemaFeature
 	}
-	const skill = new Skill(constructorOptions)
-	if (after) {
-		await after(skill)
+	if (!only || only.indexOf(Feature.Skill) === -1) {
+		const skillFeature = new SkillFeature(constructorOptions)
+		if (after) {
+			await after(skillFeature)
+		}
+		siblings.skill = skillFeature
 	}
-	const test = new Test(constructorOptions)
-	if (after) {
-		await after(test)
+	if (!only || only.indexOf(Feature.Test) === -1) {
+		const testFeature = new TestFeature(constructorOptions)
+		if (after) {
+			await after(testFeature)
+		}
+		siblings.test = testFeature
 	}
-	const vsCode = new VSCode(constructorOptions)
-	if (after) {
-		await after(vsCode)
+	if (!only || only.indexOf(Feature.VsCode) === -1) {
+		const vsCodeFeature = new VSCodeFeature(constructorOptions)
+		if (after) {
+			await after(vsCodeFeature)
+		}
+		siblings.vsCode = vsCodeFeature
 	}
 
-	const siblings: IFeatures = {
-		circleCi,
-		error,
-		schema,
-		skill,
-		test,
-		vsCode
-	}
-
-	return siblings
+	return siblings as K extends undefined ? IFeatures : Pick<IFeatures, K[number]>
 }

@@ -1,0 +1,59 @@
+{{#each autoloaders}}
+import {{nameCamel}}Autoloader, { I{{namePascalPlural}} } from './{{nameCamelPlural}}'
+{{#if abstractClassName}}import {{abstractClassName}}{{#if abstractClassConstructorOptionsInterfaceName}}, { {{abstractClassConstructorOptionsInterfaceName}} }{{/if}} from '{{abstractClassRelativePath}}'{{/if}}
+{{/each}}
+
+export interface IAutoloaderOptions {
+	{{#each autoloaders}}
+	{{nameCamelPlural}}: {
+		{{#if abstractClassConstructorOptionsInterfaceName}}constructorOptions: {{abstractClassConstructorOptionsInterfaceName}}{{/if}}
+		after?: (instance: {{abstractClassName}}) => Promise<void>
+	}
+	{{/each}}
+}
+
+export interface IAutoloaded {
+	{{#each autoloaders}}
+	{{nameCamelPlural}}: I{{namePascalPlural}}
+	{{/each}}
+}
+
+export interface IAutoLoadable {
+	afterAutoload?(autoloaded: IAutoloaded): Promise<void>
+}
+
+export default async function rootAutoloader(
+	options: IAutoloaderOptions
+): Promise<IAutoloaded> {
+	{{#each autoloaders}}
+	const {{nameCamelPlural}} = await {{nameCamel}}Autoloader({
+		constructorOptions: options.{{nameCamelPlural}}.constructorOptions,
+		after: options.{{nameCamelPlural}}.after
+	})
+	{{/each}}
+
+	const autoloaded = {
+		{{#each autoloaders}}
+		{{#if @last}}
+		{{nameCamelPlural}}
+		{{else}}
+		{{nameCamelPlural}},
+		{{/if}}
+		{{/each}}
+	}
+
+	{{#if (gt autoloaders.length 1)}}
+	let keys
+	{{/if}}
+	{{#each autoloaders}}
+	{{#if (eq ../autoloaders.length 1)}}const {{/if}}keys = Object.keys({{nameCamelPlural}})
+	for (let i = 0; i < keys.length; i += 1) {
+		const f = keys[i] as keyof I{{namePascalPlural}}
+		if (typeof {{nameCamelPlural}}[f].afterAutoload === 'function') {
+			await {{nameCamelPlural}}[f].afterAutoload(autoloaded)
+		}
+	}
+	{{/each}}
+
+	return autoloaded
+}

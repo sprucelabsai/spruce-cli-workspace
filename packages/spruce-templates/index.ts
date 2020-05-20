@@ -6,7 +6,6 @@ import {
 	IFieldTemplateItem
 } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
-import { IAutoloader } from './src/interfaces'
 import log from './src/lib/log'
 // Import addons
 import './src/addons/escape.addon'
@@ -14,7 +13,8 @@ import './src/addons/fieldDefinitionOptions.addon'
 import './src/addons/fieldDefinitionValueType.addon'
 import './src/addons/fieldTypeEnum.addon'
 import './src/addons/operators.addon'
-import './src/addons/startCase.addon'
+import './src/addons/gt.addon'
+import './src/addons/gt.addon'
 import './src/addons/pascalCase.addon'
 import './src/addons/fieldDefinitionPartial.addon'
 import './src/addons/schemaDefinitionPartial.addon'
@@ -23,9 +23,14 @@ import './src/addons/json.addon'
 import './src/addons/isDefined.addon'
 import {
 	IValueTypeGenerator,
-	IAutoLoaderTemplateItem
-} from './src/types/template.types'
+	IAutoLoaderTemplateItem,
+	IRootAutoloaderTemplateItem,
+	IDirectoryTemplate,
+	DirectoryTemplateKind,
+	IDirectoryTemplateContextMap
+} from './src/types/templates.types'
 import importExtractor from './src/utilities/importExtractor'
+import TemplateDirectoryUtility from './src/utilities/TemplateDirectoryUtility'
 
 log.info('Addons imported')
 
@@ -78,8 +83,8 @@ const autoloader: string = fs
 	.readFileSync(path.join(templatePath, 'autoloader/autoloader.hbs'))
 	.toString()
 
-const autoloaderIndex: string = fs
-	.readFileSync(path.join(templatePath, 'autoloader/autoloaderIndex.hbs'))
+const autoloaderRoot: string = fs
+	.readFileSync(path.join(templatePath, 'autoloader/root.hbs'))
 	.toString()
 
 const fieldsTypes: string = fs
@@ -198,9 +203,9 @@ export const templates = {
 		return template(options)
 	},
 
-	/** Autoloader */
-	autoloaderIndex(options: { autoloaders: IAutoloader[] }) {
-		const template = handlebars.compile(autoloaderIndex)
+	/** Root autoloader */
+	rootAutoloader(options: IRootAutoloaderTemplateItem) {
+		const template = handlebars.compile(autoloaderRoot)
 		return template(options)
 	},
 
@@ -219,6 +224,46 @@ export const templates = {
 	fieldType(options: { fieldTemplateItems: IFieldTemplateItem[] }) {
 		const template = handlebars.compile(fieldType)
 		return template(options)
+	},
+
+	/** Copy an entire directory and pass a context for all files */
+	async directoryTemplate<K extends DirectoryTemplateKind>(options: {
+		kind: K
+		context: IDirectoryTemplateContextMap[K]
+	}): Promise<IDirectoryTemplate> {
+		return TemplateDirectoryUtility.build(options)
+	},
+
+	/** Tries our best to see if a specific directory is based on a valid directory template */
+	async isValidTemplatedDirectory(options: {
+		kind: DirectoryTemplateKind
+		dir: string
+	}) {
+		const { kind, dir } = options
+		// on a template, just check for package.json
+		if (kind === DirectoryTemplateKind.Skill) {
+			return fs.existsSync(path.join(dir, 'package.json'))
+		}
+
+		const filesToCheck = await TemplateDirectoryUtility.filesInTemplate(kind)
+		// Check if the .spruce directory exists
+		let filesMissing = false
+		for (let i = 0; i < filesToCheck.length; i += 1) {
+			const file = path.join(dir, filesToCheck[i])
+			if (!fs.existsSync(file)) {
+				log.debug(
+					`[${kind}] containsAllTemplateFiles failed because ${file} is missing`
+				)
+				filesMissing = true
+				break
+			}
+		}
+
+		if (!filesMissing) {
+			return true
+		}
+
+		return false
 	}
 }
 
@@ -226,9 +271,5 @@ export const templates = {
 export type Templates = typeof templates
 export { default as importExtractor } from './src/utilities/importExtractor'
 
-export { default as TemplateDirectory } from './src/TemplateDirectory'
-export * from './src/TemplateDirectory'
-export * from './src/interfaces'
-
 export default handlebars
-export * from './src/types/template.types'
+export * from './src/types/templates.types'

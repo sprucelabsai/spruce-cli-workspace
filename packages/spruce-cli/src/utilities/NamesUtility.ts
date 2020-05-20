@@ -1,10 +1,10 @@
 import path from 'path'
 import { FieldDefinition } from '@sprucelabs/schema'
 import { Optional } from '@sprucelabs/schema'
+import inflection from 'inflection'
 import { camelCase, snakeCase, upperFirst } from 'lodash'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import AbstractUtility from './AbstractUtility'
-import inflection from 'inflection'
 
 /** Gets you a name good for using in an import statement based off a file path */
 export function toFileNameWithoutExtension(filePath: string) {
@@ -53,19 +53,37 @@ export default class NamesUtility extends AbstractUtility {
 		switch (fieldName) {
 			case 'nameCamel':
 				if (!values.nameCamel) {
-					fieldDefinition.defaultValue = this.toCamel(values.nameReadable || '')
+					fieldDefinition.defaultValue = this.toSingular(
+						this.toCamel(values.nameReadable || '')
+					)
+				}
+				break
+			case 'nameCamelPlural':
+				if (!values.nameCamelPlural) {
+					fieldDefinition.defaultValue = this.toPlural(
+						this.toCamel(values.nameReadable || '')
+					)
 				}
 				break
 			case 'namePascal':
 				if (!values.namePascal) {
-					fieldDefinition.defaultValue = this.toPascal(
-						values.nameReadable || ''
+					fieldDefinition.defaultValue = this.toSingular(
+						this.toPascal(values.nameReadable || '')
+					)
+				}
+				break
+			case 'namePascalPlural':
+				if (!values.namePascalPlural) {
+					fieldDefinition.defaultValue = this.toSingular(
+						this.toPascal(values.nameReadable || '')
 					)
 				}
 				break
 			case 'nameConst':
 				if (!values.nameConst) {
-					fieldDefinition.defaultValue = this.toConst(values.nameReadable || '')
+					fieldDefinition.defaultValue = this.toSingular(
+						this.toConst(values.nameReadable || '')
+					)
 				}
 				break
 		}

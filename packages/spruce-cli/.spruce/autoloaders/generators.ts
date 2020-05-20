@@ -1,51 +1,69 @@
 /* eslint-disable spruce/prefer-pascal-case-enums */
 // Import base class
-import AbstractGenerator from '../../src/generators/AbstractGenerator'
-// Import each matching class that will be autoloaded
-import { IGeneratorOptions } from '../../src/generators/AbstractGenerator'
-import Core from '../../src/generators/CoreGenerator'
-import Error from '../../src/generators/ErrorGenerator'
-import Schema from '../../src/generators/SchemaGenerator'
-
+import AbstractGenerator from '#spruce/../src/generators/AbstractGenerator'
 // Import necessary interface(s)
+import { IGeneratorOptions } from '#spruce/../src/generators/AbstractGenerator'
+// Import each matching class that will be autoloaded
+import AutoloaderGenerator from '#spruce/../src/generators/AutoloaderGenerator'
+import CoreGenerator from '#spruce/../src/generators/CoreGenerator'
+import ErrorGenerator from '#spruce/../src/generators/ErrorGenerator'
+import SchemaGenerator from '#spruce/../src/generators/SchemaGenerator'
+
+
+export type Generators = AutoloaderGenerator | CoreGenerator | ErrorGenerator | SchemaGenerator
 
 export interface IGenerators {
-	[generator: string]: Core | Error | Schema
-	core: Core
-	error: Error
-	schema: Schema
+	autoloader: AutoloaderGenerator
+	core: CoreGenerator
+	error: ErrorGenerator
+	schema: SchemaGenerator
 }
 
 export enum Generator {
+	Autoloader = 'autoloader',
 	Core = 'core',
 	Error = 'error',
-	Schema = 'schema'
+	Schema = 'schema',
 }
 
-export default async function autoloader(options: {
-	constructorOptions: IGeneratorOptions
+export default async function autoloader<
+	K extends Generator[]
+>(options: {
+	constructorOptions:   IGeneratorOptions
 	after?: (instance: AbstractGenerator) => Promise<void>
-}): Promise<IGenerators> {
-	const { constructorOptions, after } = options
+	only?: K
+}): Promise<K extends undefined ? IGenerators : Pick<IGenerators, K[number]>> {
+	const { constructorOptions, after, only } = options
+	const siblings:Partial<IGenerators> = {}
 
-	const core = new Core(constructorOptions)
-	if (after) {
-		await after(core)
+	if (!only || only.indexOf(Generator.Autoloader) === -1) {
+		const autoloaderGenerator = new AutoloaderGenerator(constructorOptions)
+		if (after) {
+			await after(autoloaderGenerator)
+		}
+		siblings.autoloader = autoloaderGenerator
 	}
-	const error = new Error(constructorOptions)
-	if (after) {
-		await after(error)
+	if (!only || only.indexOf(Generator.Core) === -1) {
+		const coreGenerator = new CoreGenerator(constructorOptions)
+		if (after) {
+			await after(coreGenerator)
+		}
+		siblings.core = coreGenerator
 	}
-	const schema = new Schema(constructorOptions)
-	if (after) {
-		await after(schema)
+	if (!only || only.indexOf(Generator.Error) === -1) {
+		const errorGenerator = new ErrorGenerator(constructorOptions)
+		if (after) {
+			await after(errorGenerator)
+		}
+		siblings.error = errorGenerator
+	}
+	if (!only || only.indexOf(Generator.Schema) === -1) {
+		const schemaGenerator = new SchemaGenerator(constructorOptions)
+		if (after) {
+			await after(schemaGenerator)
+		}
+		siblings.schema = schemaGenerator
 	}
 
-	const siblings: IGenerators = {
-		core,
-		error,
-		schema
-	}
-
-	return siblings
+	return siblings as K extends undefined ? IGenerators : Pick<IGenerators, K[number]>
 }

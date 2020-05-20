@@ -92,7 +92,7 @@ export default class SkillCommand extends AbstractCommand {
 
 		if (skillId) {
 			throw new SpruceError({
-				code: ErrorCode.NotImplemented,
+				code: ErrorCode.CommandNotImplemented,
 				command: 'skill:login with skill id',
 				args: [skillId, skillApiKey || '**no api key**']
 			})

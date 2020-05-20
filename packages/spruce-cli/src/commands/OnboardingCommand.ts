@@ -87,7 +87,6 @@ export default class OnboardingCommand extends AbstractCommand {
 		this.term.writeLn('All done! Lets see how you did!')
 
 		await this.term.wait()
-
 		await quiz.scorecard()
 
 		if (results.percentCorrect < 1) {

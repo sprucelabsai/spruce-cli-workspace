@@ -1,10 +1,8 @@
-import { FieldType } from '#spruce:schema/fields/fieldType'
-import { FieldClass } from '#spruce:schema/fields/fields.types'
-
 import { AddressField } from '@sprucelabs/schema'
 import { BooleanField } from '@sprucelabs/schema'
 import { DateField } from '@sprucelabs/schema'
 import { DateTimeField } from '@sprucelabs/schema'
+import { DirectoryField } from '@sprucelabs/schema'
 import { DurationField } from '@sprucelabs/schema'
 import { FileField } from '@sprucelabs/schema'
 import { IdField } from '@sprucelabs/schema'
@@ -14,6 +12,8 @@ import { RawField } from '@sprucelabs/schema'
 import { SchemaField } from '@sprucelabs/schema'
 import { SelectField } from '@sprucelabs/schema'
 import { TextField } from '@sprucelabs/schema'
+import { FieldClass } from '#spruce:schema/fields/fields.types'
+import { FieldType } from '#spruce:schema/fields/fieldType'
 
 /** Value for looking up field classes by field type */
 export const FieldClassMap: Record<FieldType, FieldClass> = {
@@ -21,6 +21,7 @@ export const FieldClassMap: Record<FieldType, FieldClass> = {
 	[FieldType.Boolean]: BooleanField,
 	[FieldType.Date]: DateField,
 	[FieldType.DateTime]: DateTimeField,
+	[FieldType.Directory]: DirectoryField,
 	[FieldType.Duration]: DurationField,
 	[FieldType.File]: FileField,
 	[FieldType.Id]: IdField,
@@ -38,6 +39,7 @@ export interface IFieldClassMap {
 	[FieldType.Boolean]: BooleanField
 	[FieldType.Date]: DateField
 	[FieldType.DateTime]: DateTimeField
+	[FieldType.Directory]: DirectoryField
 	[FieldType.Duration]: DurationField
 	[FieldType.File]: FileField
 	[FieldType.Id]: IdField

@@ -2,51 +2,97 @@
 	"watchers": {
 		"src/commands/**/*.ts": {
 			"isEnabled": true,
-			"commands": [
-				"node ./index autoloader -s Command ./src/commands"
-			]
+			"commands": ["node ./index autoloader -s Command ./src/commands"]
 		},
 		"src/services/**/*.ts": {
 			"isEnabled": true,
-			"commands": [
-				"node ./index autoloader -s Service ./src/services"
-			]
+			"commands": ["node ./index autoloader -s Service ./src/services"]
 		},
 		"src/utilities/**/*.ts": {
 			"isEnabled": true,
-			"commands": [
-				"node ./index autoloader -s Utility ./src/utilities"
-			]
+			"commands": ["node ./index autoloader -s Utility ./src/utilities"]
 		},
 		"src/generators/**/*.ts": {
 			"isEnabled": true,
-			"commands": [
-				"node ./index autoloader -s Generator ./src/generators"
-			]
+			"commands": ["node ./index autoloader -s Generator ./src/generators"]
 		},
 		"src/schemas/**/*.ts": {
 			"isEnabled": true,
-			"commands": [
-				"node ./index autoloader -s Schema ./src/schemas"
-			]
+			"commands": ["node ./index autoloader -s Schema ./src/schemas"]
 		},
 		"src/stores/**/*.ts": {
 			"isEnabled": true,
-			"commands": [
-				"node ./index autoloader -s Store ./src/stores"
-			]
+			"commands": ["node ./index autoloader -s Store ./src/stores"]
 		},
 		"src/features/**/*.ts": {
 			"isEnabled": true,
-			"commands": [
-				"node ./index autoloader -s Feature ./src/features"
-			]
+			"commands": ["node ./index autoloader -s Feature ./src/features"]
 		},
 		"src/errors/**/*.ts": {
 			"isEnabled": true,
-			"commands": [
-				"node ./index error:sync --clean"
-			]
+			"commands": ["node ./index error:sync --clean"]
 		}
-	}
+	},
+	"autoloaders": [
+		{
+			"lookupDir": { "path": "src/commands" },
+			"destination": {
+				"name": "commands.ts",
+				"path": ".spruce/autoloaders",
+				"type": "application/typescript",
+				"ext": ".ts"
+			},
+			"pattern": "**/!(*.test).ts"
+		},
+		{
+			"lookupDir": { "path": "src/stores" },
+			"destination": {
+				"name": "stores.ts",
+				"path": ".spruce/autoloaders",
+				"type": "application/typescript",
+				"ext": ".ts"
+			},
+			"pattern": "**/!(*.test).ts"
+		},
+		{
+			"lookupDir": { "path": "src/services" },
+			"destination": {
+				"name": "services.ts",
+				"path": ".spruce/autoloaders",
+				"type": "application/typescript",
+				"ext": ".ts"
+			},
+			"pattern": "**/!(*.test).ts"
+		},
+		{
+			"lookupDir": { "path": "src/features" },
+			"destination": {
+				"name": "features.ts",
+				"path": ".spruce/autoloaders",
+				"type": "application/typescript",
+				"ext": ".ts"
+			},
+			"pattern": "**/!(*.test).ts"
+		},
+		{
+			"lookupDir": { "path": "src/generators" },
+			"destination": {
+				"name": "generators.ts",
+				"path": ".spruce/autoloaders",
+				"type": "application/typescript",
+				"ext": ".ts"
+			},
+			"pattern": "**/!(*.test).ts"
+		},
+		{
+			"lookupDir": { "path": "src/utilities" },
+			"destination": {
+				"name": "utilities.ts",
+				"path": ".spruce/autoloaders",
+				"type": "application/typescript",
+				"ext": ".ts"
+			},
+			"pattern": "**/!(*.test).ts"
+		}
+	]
 }

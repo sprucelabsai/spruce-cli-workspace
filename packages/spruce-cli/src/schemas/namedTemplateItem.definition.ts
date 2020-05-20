@@ -17,9 +17,21 @@ const namedTemplateItemDefinition = buildSchemaDefinition({
 			isRequired: true,
 			hint: 'camelCase version of the name'
 		},
+		nameCamelPlural: {
+			type: FieldType.Text,
+			label: 'Plural camel case name',
+			isRequired: true,
+			hint: 'camelCase version of the name'
+		},
 		namePascal: {
 			type: FieldType.Text,
 			label: 'Pascal case name',
+			isRequired: true,
+			hint: 'PascalCase of the name'
+		},
+		namePascalPlural: {
+			type: FieldType.Text,
+			label: 'Plural Pascal case name',
 			isRequired: true,
 			hint: 'PascalCase of the name'
 		},

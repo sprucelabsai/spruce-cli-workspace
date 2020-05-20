@@ -1,37 +1,30 @@
 /* eslint-disable spruce/prefer-pascal-case-enums */
 // Import base class
-import AbstractService from '../../src/services/AbstractService'
-// Import each matching class that will be autoloaded
-import { IServiceOptions } from '../../src/services/AbstractService'
-import Child from '../../src/services/ChildService'
-import Feature from '../../src/services/FeatureService'
-import Lint from '../../src/services/LintService'
-import Pin from '../../src/services/PinService'
-import Pkg from '../../src/services/PkgService'
-import ValueType from '../../src/services/ValueTypeService'
-import Vm from '../../src/services/VmService'
-import VsCode from '../../src/services/VsCodeService'
-
+import AbstractService from '#spruce/../src/services/AbstractService'
 // Import necessary interface(s)
+import { IServiceOptions } from '#spruce/../src/services/AbstractService'
+// Import each matching class that will be autoloaded
+import ChildService from '#spruce/../src/services/ChildService'
+import FeatureService from '#spruce/../src/services/FeatureService'
+import LintService from '#spruce/../src/services/LintService'
+import PinService from '#spruce/../src/services/PinService'
+import PkgService from '#spruce/../src/services/PkgService'
+import ValueTypeService from '#spruce/../src/services/ValueTypeService'
+import VmService from '#spruce/../src/services/VmService'
+import VsCodeService from '#spruce/../src/services/VsCodeService'
+
+
+export type Services = ChildService | FeatureService | LintService | PinService | PkgService | ValueTypeService | VmService | VsCodeService
 
 export interface IServices {
-	[service: string]:
-		| Child
-		| Feature
-		| Lint
-		| Pin
-		| Pkg
-		| ValueType
-		| Vm
-		| VsCode
-	child: Child
-	feature: Feature
-	lint: Lint
-	pin: Pin
-	pkg: Pkg
-	valueType: ValueType
-	vm: Vm
-	vsCode: VsCode
+	child: ChildService
+	feature: FeatureService
+	lint: LintService
+	pin: PinService
+	pkg: PkgService
+	valueType: ValueTypeService
+	vm: VmService
+	vsCode: VsCodeService
 }
 
 export enum Service {
@@ -42,58 +35,75 @@ export enum Service {
 	Pkg = 'pkg',
 	ValueType = 'valueType',
 	Vm = 'vm',
-	VsCode = 'vsCode'
+	VsCode = 'vsCode',
 }
 
-export default async function autoloader(options: {
-	constructorOptions: IServiceOptions
+export default async function autoloader<
+	K extends Service[]
+>(options: {
+	constructorOptions:   IServiceOptions
 	after?: (instance: AbstractService) => Promise<void>
-}): Promise<IServices> {
-	const { constructorOptions, after } = options
+	only?: K
+}): Promise<K extends undefined ? IServices : Pick<IServices, K[number]>> {
+	const { constructorOptions, after, only } = options
+	const siblings:Partial<IServices> = {}
 
-	const child = new Child(constructorOptions)
-	if (after) {
-		await after(child)
+	if (!only || only.indexOf(Service.Child) === -1) {
+		const childService = new ChildService(constructorOptions)
+		if (after) {
+			await after(childService)
+		}
+		siblings.child = childService
 	}
-	const feature = new Feature(constructorOptions)
-	if (after) {
-		await after(feature)
+	if (!only || only.indexOf(Service.Feature) === -1) {
+		const featureService = new FeatureService(constructorOptions)
+		if (after) {
+			await after(featureService)
+		}
+		siblings.feature = featureService
 	}
-	const lint = new Lint(constructorOptions)
-	if (after) {
-		await after(lint)
+	if (!only || only.indexOf(Service.Lint) === -1) {
+		const lintService = new LintService(constructorOptions)
+		if (after) {
+			await after(lintService)
+		}
+		siblings.lint = lintService
 	}
-	const pin = new Pin(constructorOptions)
-	if (after) {
-		await after(pin)
+	if (!only || only.indexOf(Service.Pin) === -1) {
+		const pinService = new PinService(constructorOptions)
+		if (after) {
+			await after(pinService)
+		}
+		siblings.pin = pinService
 	}
-	const pkg = new Pkg(constructorOptions)
-	if (after) {
-		await after(pkg)
+	if (!only || only.indexOf(Service.Pkg) === -1) {
+		const pkgService = new PkgService(constructorOptions)
+		if (after) {
+			await after(pkgService)
+		}
+		siblings.pkg = pkgService
 	}
-	const valueType = new ValueType(constructorOptions)
-	if (after) {
-		await after(valueType)
+	if (!only || only.indexOf(Service.ValueType) === -1) {
+		const valueTypeService = new ValueTypeService(constructorOptions)
+		if (after) {
+			await after(valueTypeService)
+		}
+		siblings.valueType = valueTypeService
 	}
-	const vm = new Vm(constructorOptions)
-	if (after) {
-		await after(vm)
+	if (!only || only.indexOf(Service.Vm) === -1) {
+		const vmService = new VmService(constructorOptions)
+		if (after) {
+			await after(vmService)
+		}
+		siblings.vm = vmService
 	}
-	const vsCode = new VsCode(constructorOptions)
-	if (after) {
-		await after(vsCode)
+	if (!only || only.indexOf(Service.VsCode) === -1) {
+		const vsCodeService = new VsCodeService(constructorOptions)
+		if (after) {
+			await after(vsCodeService)
+		}
+		siblings.vsCode = vsCodeService
 	}
 
-	const siblings: IServices = {
-		child,
-		feature,
-		lint,
-		pin,
-		pkg,
-		valueType,
-		vm,
-		vsCode
-	}
-
-	return siblings
+	return siblings as K extends undefined ? IServices : Pick<IServices, K[number]>
 }
