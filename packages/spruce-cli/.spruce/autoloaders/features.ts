@@ -43,42 +43,42 @@ export default async function autoloader<K extends Feature[]>(options: {
 	const { constructorOptions, after, only } = options
 	const siblings: Partial<IFeatures> = {}
 
-	if (!only || only.indexOf(Feature.CircleCi) === -1) {
+	if (!only || only.indexOf(Feature.CircleCi) > -1) {
 		const circleCiFeature = new CircleCIFeature(constructorOptions)
 		if (after) {
 			await after(circleCiFeature)
 		}
 		siblings.circleCi = circleCiFeature
 	}
-	if (!only || only.indexOf(Feature.Error) === -1) {
+	if (!only || only.indexOf(Feature.Error) > -1) {
 		const errorFeature = new ErrorFeature(constructorOptions)
 		if (after) {
 			await after(errorFeature)
 		}
 		siblings.error = errorFeature
 	}
-	if (!only || only.indexOf(Feature.Schema) === -1) {
+	if (!only || only.indexOf(Feature.Schema) > -1) {
 		const schemaFeature = new SchemaFeature(constructorOptions)
 		if (after) {
 			await after(schemaFeature)
 		}
 		siblings.schema = schemaFeature
 	}
-	if (!only || only.indexOf(Feature.Skill) === -1) {
+	if (!only || only.indexOf(Feature.Skill) > -1) {
 		const skillFeature = new SkillFeature(constructorOptions)
 		if (after) {
 			await after(skillFeature)
 		}
 		siblings.skill = skillFeature
 	}
-	if (!only || only.indexOf(Feature.Test) === -1) {
+	if (!only || only.indexOf(Feature.Test) > -1) {
 		const testFeature = new TestFeature(constructorOptions)
 		if (after) {
 			await after(testFeature)
 		}
 		siblings.test = testFeature
 	}
-	if (!only || only.indexOf(Feature.VsCode) === -1) {
+	if (!only || only.indexOf(Feature.VsCode) > -1) {
 		const vsCodeFeature = new VSCodeFeature(constructorOptions)
 		if (after) {
 			await after(vsCodeFeature)

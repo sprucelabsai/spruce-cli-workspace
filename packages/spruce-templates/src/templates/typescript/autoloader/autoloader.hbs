@@ -34,7 +34,7 @@ export default async function autoloader<
 	const siblings:Partial<I{{namePascalPlural}}> = {}
 
 	{{#each classes}}
-	if (!only || only.indexOf({{../namePascal}}.{{namePascal}}) === -1) {
+	if (!only || only.indexOf({{../namePascal}}.{{namePascal}}) > -1) {
 		const {{nameCamel}}{{../namePascal}} = new {{className}}(constructorOptions)
 		if (after) {
 			await after({{nameCamel}}{{../namePascal}})

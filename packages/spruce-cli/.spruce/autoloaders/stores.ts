@@ -47,49 +47,49 @@ export default async function autoloader<K extends Store[]>(options: {
 	const { constructorOptions, after, only } = options
 	const siblings: Partial<IStores> = {}
 
-	if (!only || only.indexOf(Store.Autoloader) === -1) {
+	if (!only || only.indexOf(Store.Autoloader) > -1) {
 		const autoloaderStore = new AutoloaderStore(constructorOptions)
 		if (after) {
 			await after(autoloaderStore)
 		}
 		siblings.autoloader = autoloaderStore
 	}
-	if (!only || only.indexOf(Store.Onboarding) === -1) {
+	if (!only || only.indexOf(Store.Onboarding) > -1) {
 		const onboardingStore = new OnboardingStore(constructorOptions)
 		if (after) {
 			await after(onboardingStore)
 		}
 		siblings.onboarding = onboardingStore
 	}
-	if (!only || only.indexOf(Store.Remote) === -1) {
+	if (!only || only.indexOf(Store.Remote) > -1) {
 		const remoteStore = new RemoteStore(constructorOptions)
 		if (after) {
 			await after(remoteStore)
 		}
 		siblings.remote = remoteStore
 	}
-	if (!only || only.indexOf(Store.Schema) === -1) {
+	if (!only || only.indexOf(Store.Schema) > -1) {
 		const schemaStore = new SchemaStore(constructorOptions)
 		if (after) {
 			await after(schemaStore)
 		}
 		siblings.schema = schemaStore
 	}
-	if (!only || only.indexOf(Store.Skill) === -1) {
+	if (!only || only.indexOf(Store.Skill) > -1) {
 		const skillStore = new SkillStore(constructorOptions)
 		if (after) {
 			await after(skillStore)
 		}
 		siblings.skill = skillStore
 	}
-	if (!only || only.indexOf(Store.User) === -1) {
+	if (!only || only.indexOf(Store.User) > -1) {
 		const userStore = new UserStore(constructorOptions)
 		if (after) {
 			await after(userStore)
 		}
 		siblings.user = userStore
 	}
-	if (!only || only.indexOf(Store.Watcher) === -1) {
+	if (!only || only.indexOf(Store.Watcher) > -1) {
 		const watcherStore = new WatcherStore(constructorOptions)
 		if (after) {
 			await after(watcherStore)

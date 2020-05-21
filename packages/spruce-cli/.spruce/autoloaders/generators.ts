@@ -35,28 +35,28 @@ export default async function autoloader<K extends Generator[]>(options: {
 	const { constructorOptions, after, only } = options
 	const siblings: Partial<IGenerators> = {}
 
-	if (!only || only.indexOf(Generator.Autoloader) === -1) {
+	if (!only || only.indexOf(Generator.Autoloader) > -1) {
 		const autoloaderGenerator = new AutoloaderGenerator(constructorOptions)
 		if (after) {
 			await after(autoloaderGenerator)
 		}
 		siblings.autoloader = autoloaderGenerator
 	}
-	if (!only || only.indexOf(Generator.Core) === -1) {
+	if (!only || only.indexOf(Generator.Core) > -1) {
 		const coreGenerator = new CoreGenerator(constructorOptions)
 		if (after) {
 			await after(coreGenerator)
 		}
 		siblings.core = coreGenerator
 	}
-	if (!only || only.indexOf(Generator.Error) === -1) {
+	if (!only || only.indexOf(Generator.Error) > -1) {
 		const errorGenerator = new ErrorGenerator(constructorOptions)
 		if (after) {
 			await after(errorGenerator)
 		}
 		siblings.error = errorGenerator
 	}
-	if (!only || only.indexOf(Generator.Schema) === -1) {
+	if (!only || only.indexOf(Generator.Schema) > -1) {
 		const schemaGenerator = new SchemaGenerator(constructorOptions)
 		if (after) {
 			await after(schemaGenerator)

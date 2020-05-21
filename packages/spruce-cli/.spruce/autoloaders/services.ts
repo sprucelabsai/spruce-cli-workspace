@@ -51,56 +51,56 @@ export default async function autoloader<K extends Service[]>(options: {
 	const { constructorOptions, after, only } = options
 	const siblings: Partial<IServices> = {}
 
-	if (!only || only.indexOf(Service.Child) === -1) {
+	if (!only || only.indexOf(Service.Child) > -1) {
 		const childService = new ChildService(constructorOptions)
 		if (after) {
 			await after(childService)
 		}
 		siblings.child = childService
 	}
-	if (!only || only.indexOf(Service.Feature) === -1) {
+	if (!only || only.indexOf(Service.Feature) > -1) {
 		const featureService = new FeatureService(constructorOptions)
 		if (after) {
 			await after(featureService)
 		}
 		siblings.feature = featureService
 	}
-	if (!only || only.indexOf(Service.Lint) === -1) {
+	if (!only || only.indexOf(Service.Lint) > -1) {
 		const lintService = new LintService(constructorOptions)
 		if (after) {
 			await after(lintService)
 		}
 		siblings.lint = lintService
 	}
-	if (!only || only.indexOf(Service.Pin) === -1) {
+	if (!only || only.indexOf(Service.Pin) > -1) {
 		const pinService = new PinService(constructorOptions)
 		if (after) {
 			await after(pinService)
 		}
 		siblings.pin = pinService
 	}
-	if (!only || only.indexOf(Service.Pkg) === -1) {
+	if (!only || only.indexOf(Service.Pkg) > -1) {
 		const pkgService = new PkgService(constructorOptions)
 		if (after) {
 			await after(pkgService)
 		}
 		siblings.pkg = pkgService
 	}
-	if (!only || only.indexOf(Service.ValueType) === -1) {
+	if (!only || only.indexOf(Service.ValueType) > -1) {
 		const valueTypeService = new ValueTypeService(constructorOptions)
 		if (after) {
 			await after(valueTypeService)
 		}
 		siblings.valueType = valueTypeService
 	}
-	if (!only || only.indexOf(Service.Vm) === -1) {
+	if (!only || only.indexOf(Service.Vm) > -1) {
 		const vmService = new VmService(constructorOptions)
 		if (after) {
 			await after(vmService)
 		}
 		siblings.vm = vmService
 	}
-	if (!only || only.indexOf(Service.VsCode) === -1) {
+	if (!only || only.indexOf(Service.VsCode) > -1) {
 		const vsCodeService = new VsCodeService(constructorOptions)
 		if (after) {
 			await after(vsCodeService)

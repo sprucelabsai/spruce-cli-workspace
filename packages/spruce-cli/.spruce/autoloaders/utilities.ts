@@ -47,49 +47,49 @@ export default async function autoloader<K extends Utility[]>(options: {
 	const { constructorOptions, after, only } = options
 	const siblings: Partial<IUtilities> = {}
 
-	if (!only || only.indexOf(Utility.Autoloader) === -1) {
+	if (!only || only.indexOf(Utility.Autoloader) > -1) {
 		const autoloaderUtility = new AutoloaderUtility(constructorOptions)
 		if (after) {
 			await after(autoloaderUtility)
 		}
 		siblings.autoloader = autoloaderUtility
 	}
-	if (!only || only.indexOf(Utility.Bootstrap) === -1) {
+	if (!only || only.indexOf(Utility.Bootstrap) > -1) {
 		const bootstrapUtility = new BootstrapUtility(constructorOptions)
 		if (after) {
 			await after(bootstrapUtility)
 		}
 		siblings.bootstrap = bootstrapUtility
 	}
-	if (!only || only.indexOf(Utility.Introspection) === -1) {
+	if (!only || only.indexOf(Utility.Introspection) > -1) {
 		const introspectionUtility = new IntrospectionUtility(constructorOptions)
 		if (after) {
 			await after(introspectionUtility)
 		}
 		siblings.introspection = introspectionUtility
 	}
-	if (!only || only.indexOf(Utility.Names) === -1) {
+	if (!only || only.indexOf(Utility.Names) > -1) {
 		const namesUtility = new NamesUtility(constructorOptions)
 		if (after) {
 			await after(namesUtility)
 		}
 		siblings.names = namesUtility
 	}
-	if (!only || only.indexOf(Utility.Schema) === -1) {
+	if (!only || only.indexOf(Utility.Schema) > -1) {
 		const schemaUtility = new SchemaUtility(constructorOptions)
 		if (after) {
 			await after(schemaUtility)
 		}
 		siblings.schema = schemaUtility
 	}
-	if (!only || only.indexOf(Utility.Terminal) === -1) {
+	if (!only || only.indexOf(Utility.Terminal) > -1) {
 		const terminalUtility = new TerminalUtility(constructorOptions)
 		if (after) {
 			await after(terminalUtility)
 		}
 		siblings.terminal = terminalUtility
 	}
-	if (!only || only.indexOf(Utility.TsConfig) === -1) {
+	if (!only || only.indexOf(Utility.TsConfig) > -1) {
 		const tsConfigUtility = new TsConfigUtility(constructorOptions)
 		if (after) {
 			await after(tsConfigUtility)
