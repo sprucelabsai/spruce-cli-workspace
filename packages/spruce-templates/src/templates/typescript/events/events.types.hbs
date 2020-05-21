@@ -1,0 +1,31 @@
+export const SpruceEvents = {
+	core: {
+		DidEnter: 'did-enter',
+		DidLeave: 'did-leave'
+	},
+	booking: {
+		GetAppointments: 'booking:get-appointments'
+	}
+} as const
+
+interface IMyEventContract extends IMercuryEventContract {
+	'did-enter': {
+		payload: {
+			userId: string
+			enteredAt: string
+		}
+		body: {
+			somethingElse: string
+		}
+	}
+	'did-leave': {
+		body: {
+			userId: string
+		}
+	}
+	'booking:get-appointments': {
+		body: {
+			appointmentIds?: string[]
+		}
+	}
+}

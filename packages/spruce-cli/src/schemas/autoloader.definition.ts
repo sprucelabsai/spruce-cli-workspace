@@ -1,5 +1,5 @@
 import { buildSchemaDefinition, FieldType } from '@sprucelabs/schema'
-const cliSkillDefinition = buildSchemaDefinition({
+const autoloaderDefinition = buildSchemaDefinition({
 	id: 'autoloader',
 	name: 'Autoloader',
 	description: 'A directory that is autoloaded',
@@ -24,4 +24,4 @@ const cliSkillDefinition = buildSchemaDefinition({
 	}
 })
 
-export default cliSkillDefinition
+export default autoloaderDefinition

@@ -27,7 +27,6 @@ export default class FeatureCommand extends AbstractCommand {
 			}
 		})
 
-		// Make sure test module is installed
 		await this.services.feature.install({
 			features: [
 				{

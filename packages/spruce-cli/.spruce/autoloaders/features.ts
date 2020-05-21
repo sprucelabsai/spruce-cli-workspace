@@ -4,6 +4,7 @@ import { IFeatureOptions } from '#spruce/../src/features/AbstractFeature'
 // Import each matching class that will be autoloaded
 import CircleCIFeature from '#spruce/../src/features/CircleCIFeature'
 import ErrorFeature from '#spruce/../src/features/ErrorFeature'
+import MercuryFeature from '#spruce/../src/features/MercuryFeature'
 import SchemaFeature from '#spruce/../src/features/SchemaFeature'
 import SkillFeature from '#spruce/../src/features/SkillFeature'
 import TestFeature from '#spruce/../src/features/TestFeature'
@@ -12,6 +13,7 @@ import VSCodeFeature from '#spruce/../src/features/VsCodeFeature'
 export type Features =
 	| CircleCIFeature
 	| ErrorFeature
+	| MercuryFeature
 	| SchemaFeature
 	| SkillFeature
 	| TestFeature
@@ -20,6 +22,7 @@ export type Features =
 export interface IFeatures {
 	circleCi: CircleCIFeature
 	error: ErrorFeature
+	mercury: MercuryFeature
 	schema: SchemaFeature
 	skill: SkillFeature
 	test: TestFeature
@@ -29,6 +32,7 @@ export interface IFeatures {
 export enum Feature {
 	CircleCi = 'circleCi',
 	Error = 'error',
+	Mercury = 'mercury',
 	Schema = 'schema',
 	Skill = 'skill',
 	Test = 'test',
@@ -56,6 +60,13 @@ export default async function autoloader<K extends Feature[]>(options: {
 			await after(errorFeature)
 		}
 		siblings.error = errorFeature
+	}
+	if (!only || only.indexOf(Feature.Mercury) > -1) {
+		const mercuryFeature = new MercuryFeature(constructorOptions)
+		if (after) {
+			await after(mercuryFeature)
+		}
+		siblings.mercury = mercuryFeature
 	}
 	if (!only || only.indexOf(Feature.Schema) > -1) {
 		const schemaFeature = new SchemaFeature(constructorOptions)

@@ -27,7 +27,8 @@ import {
 	IRootAutoloaderTemplateItem,
 	IDirectoryTemplate,
 	DirectoryTemplateKind,
-	IDirectoryTemplateContextMap
+	IDirectoryTemplateContextMap,
+	IEventTemplateItem
 } from './src/types/templates.types'
 import DirectoryTemplateUtility from './src/utilities/DirectoryTemplateUtility'
 import importExtractor from './src/utilities/importExtractor'
@@ -49,6 +50,10 @@ const definition: string = fs
 
 const schemaExample: string = fs
 	.readFileSync(path.join(templatePath, 'schemas/example.hbs'))
+	.toString()
+
+const eventTypes: string = fs
+	.readFileSync(path.join(templatePath, 'events/events.types.hbs'))
 	.toString()
 
 const error: string = fs
@@ -110,6 +115,11 @@ export const templates = {
 		const imports = importExtractor(options.fieldTemplateItems)
 		const template = handlebars.compile(schemasTypes)
 		return template({ ...options, imports })
+	},
+
+	eventTypes(options: IEventTemplateItem) {
+		const template = handlebars.compile(eventTypes)
+		return template(options)
 	},
 
 	/** When building a definition in a skill */

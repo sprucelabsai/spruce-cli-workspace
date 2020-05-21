@@ -1763,6 +1763,215 @@ export namespace SpruceSchemas.Local.CliUserWithToken {
 }
 
 export namespace SpruceSchemas.Local {
+	/** Used to collect input of an event */
+	export interface IEventTemplate {
+		/** Readable name. The name people will read */
+		nameReadable: string
+		/** Camel case name. camelCase version of the name */
+		nameCamel: string
+		/** Plural camel case name. camelCase version of the name */
+		nameCamelPlural: string
+		/** Pascal case name. PascalCase of the name */
+		namePascal: string
+		/** Plural Pascal case name. PascalCase of the name */
+		namePascalPlural: string
+		/** Constant case name. CONST_CASE of the name */
+		nameConst: string
+		/** Description. */
+		description: string
+		/** Slug. */
+		slug: string
+	}
+}
+
+export namespace SpruceSchemas.Local.EventTemplate {
+	export const id = 'eventTemplate'
+
+	/** The interface for the schema definition for a eventTemplate */
+	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+		id: 'eventTemplate'
+		name: 'eventTemplate'
+		description: 'Used to collect input of an event'
+
+		fields: {
+			/** Readable name. The name people will read */
+			nameReadable: {
+				label: 'Readable name'
+				type: SpruceSchema.FieldType.Text
+
+				isRequired: true
+				hint: 'The name people will read'
+
+				options: undefined
+			}
+			/** Camel case name. camelCase version of the name */
+			nameCamel: {
+				label: 'Camel case name'
+				type: SpruceSchema.FieldType.Text
+
+				isRequired: true
+				hint: 'camelCase version of the name'
+
+				options: undefined
+			}
+			/** Plural camel case name. camelCase version of the name */
+			nameCamelPlural: {
+				label: 'Plural camel case name'
+				type: SpruceSchema.FieldType.Text
+
+				isRequired: true
+				hint: 'camelCase version of the name'
+
+				options: undefined
+			}
+			/** Pascal case name. PascalCase of the name */
+			namePascal: {
+				label: 'Pascal case name'
+				type: SpruceSchema.FieldType.Text
+
+				isRequired: true
+				hint: 'PascalCase of the name'
+
+				options: undefined
+			}
+			/** Plural Pascal case name. PascalCase of the name */
+			namePascalPlural: {
+				label: 'Plural Pascal case name'
+				type: SpruceSchema.FieldType.Text
+
+				isRequired: true
+				hint: 'PascalCase of the name'
+
+				options: undefined
+			}
+			/** Constant case name. CONST_CASE of the name */
+			nameConst: {
+				label: 'Constant case name'
+				type: SpruceSchema.FieldType.Text
+
+				isRequired: true
+				hint: 'CONST_CASE of the name'
+
+				options: undefined
+			}
+			/** Description. */
+			description: {
+				label: 'Description'
+				type: SpruceSchema.FieldType.Text
+
+				isRequired: true
+
+				description: 'Describe a bit more here'
+				options: undefined
+			}
+			/** Slug. */
+			slug: {
+				label: 'Slug'
+				type: SpruceSchema.FieldType.Text
+
+				isRequired: true
+
+				description: 'The event name slugified'
+				options: undefined
+			}
+		}
+	}
+
+	/** The schema definition for a eventTemplate */
+	export const definition: SpruceSchemas.Local.EventTemplate.IDefinition = {
+		id: 'eventTemplate',
+		name: 'eventTemplate',
+		description: 'Used to collect input of an event',
+
+		fields: {
+			/** Readable name. The name people will read */
+			nameReadable: {
+				label: 'Readable name',
+				type: SpruceSchema.FieldType.Text,
+
+				isRequired: true,
+				hint: 'The name people will read',
+
+				options: undefined
+			},
+			/** Camel case name. camelCase version of the name */
+			nameCamel: {
+				label: 'Camel case name',
+				type: SpruceSchema.FieldType.Text,
+
+				isRequired: true,
+				hint: 'camelCase version of the name',
+
+				options: undefined
+			},
+			/** Plural camel case name. camelCase version of the name */
+			nameCamelPlural: {
+				label: 'Plural camel case name',
+				type: SpruceSchema.FieldType.Text,
+
+				isRequired: true,
+				hint: 'camelCase version of the name',
+
+				options: undefined
+			},
+			/** Pascal case name. PascalCase of the name */
+			namePascal: {
+				label: 'Pascal case name',
+				type: SpruceSchema.FieldType.Text,
+
+				isRequired: true,
+				hint: 'PascalCase of the name',
+
+				options: undefined
+			},
+			/** Plural Pascal case name. PascalCase of the name */
+			namePascalPlural: {
+				label: 'Plural Pascal case name',
+				type: SpruceSchema.FieldType.Text,
+
+				isRequired: true,
+				hint: 'PascalCase of the name',
+
+				options: undefined
+			},
+			/** Constant case name. CONST_CASE of the name */
+			nameConst: {
+				label: 'Constant case name',
+				type: SpruceSchema.FieldType.Text,
+
+				isRequired: true,
+				hint: 'CONST_CASE of the name',
+
+				options: undefined
+			},
+			/** Description. */
+			description: {
+				label: 'Description',
+				type: SpruceSchema.FieldType.Text,
+
+				isRequired: true,
+
+				description: 'Describe a bit more here',
+				options: undefined
+			},
+			/** Slug. */
+			slug: {
+				label: 'Slug',
+				type: SpruceSchema.FieldType.Text,
+
+				isRequired: true,
+
+				description: 'The event name slugified',
+				options: undefined
+			}
+		}
+	}
+
+	/** The type of a schema instance built off this definition */
+	export type Instance = Schema<SpruceSchemas.Local.EventTemplate.IDefinition>
+}
+
+export namespace SpruceSchemas.Local {
 	/** Used to collect input on the names of a class or interface */
 	export interface INamedTemplateItem {
 		/** Readable name. The name people will read */

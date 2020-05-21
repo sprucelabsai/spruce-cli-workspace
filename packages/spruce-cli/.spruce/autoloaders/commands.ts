@@ -4,7 +4,9 @@ import { ICommandOptions } from '#spruce/../src/commands/AbstractCommand'
 // Import each matching class that will be autoloaded
 import AutoloaderCommand from '#spruce/../src/commands/AutoloaderCommand'
 import ErrorCommand from '#spruce/../src/commands/ErrorCommand'
+import EventCommand from '#spruce/../src/commands/EventCommand'
 import FeatureCommand from '#spruce/../src/commands/FeatureCommand'
+import MercuryCommand from '#spruce/../src/commands/MercuryCommand'
 import OnboardingCommand from '#spruce/../src/commands/OnboardingCommand'
 import RemoteCommand from '#spruce/../src/commands/RemoteCommand'
 import SchemaCommand from '#spruce/../src/commands/SchemaCommand'
@@ -16,7 +18,9 @@ import WatchCommand from '#spruce/../src/commands/WatchCommand'
 export type Commands =
 	| AutoloaderCommand
 	| ErrorCommand
+	| EventCommand
 	| FeatureCommand
+	| MercuryCommand
 	| OnboardingCommand
 	| RemoteCommand
 	| SchemaCommand
@@ -28,7 +32,9 @@ export type Commands =
 export interface ICommands {
 	autoloader: AutoloaderCommand
 	error: ErrorCommand
+	event: EventCommand
 	feature: FeatureCommand
+	mercury: MercuryCommand
 	onboarding: OnboardingCommand
 	remote: RemoteCommand
 	schema: SchemaCommand
@@ -41,7 +47,9 @@ export interface ICommands {
 export enum Command {
 	Autoloader = 'autoloader',
 	Error = 'error',
+	Event = 'event',
 	Feature = 'feature',
+	Mercury = 'mercury',
 	Onboarding = 'onboarding',
 	Remote = 'remote',
 	Schema = 'schema',
@@ -73,12 +81,26 @@ export default async function autoloader<K extends Command[]>(options: {
 		}
 		siblings.error = errorCommand
 	}
+	if (!only || only.indexOf(Command.Event) > -1) {
+		const eventCommand = new EventCommand(constructorOptions)
+		if (after) {
+			await after(eventCommand)
+		}
+		siblings.event = eventCommand
+	}
 	if (!only || only.indexOf(Command.Feature) > -1) {
 		const featureCommand = new FeatureCommand(constructorOptions)
 		if (after) {
 			await after(featureCommand)
 		}
 		siblings.feature = featureCommand
+	}
+	if (!only || only.indexOf(Command.Mercury) > -1) {
+		const mercuryCommand = new MercuryCommand(constructorOptions)
+		if (after) {
+			await after(mercuryCommand)
+		}
+		siblings.mercury = mercuryCommand
 	}
 	if (!only || only.indexOf(Command.Onboarding) > -1) {
 		const onboardingCommand = new OnboardingCommand(constructorOptions)

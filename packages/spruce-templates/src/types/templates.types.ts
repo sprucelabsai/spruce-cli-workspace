@@ -76,3 +76,5 @@ export interface IDirectoryTemplate {
 		contents: string
 	}[]
 }
+
+export interface IEventTemplateItem {}

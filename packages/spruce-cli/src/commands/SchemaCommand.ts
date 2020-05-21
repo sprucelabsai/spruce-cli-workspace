@@ -283,7 +283,6 @@ export default class SchemaCommand extends AbstractCommand {
 		})
 
 		// Make sure schema module is installed
-		this.term.startLoading('Installing dependencies')
 		await this.services.feature.install({
 			features: [
 				{
@@ -291,7 +290,6 @@ export default class SchemaCommand extends AbstractCommand {
 				}
 			]
 		})
-		this.term.stopLoading()
 
 		// Build paths
 		const definitionDestination = this.resolvePath(
