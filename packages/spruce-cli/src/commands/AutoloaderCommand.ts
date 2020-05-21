@@ -71,7 +71,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 			if (!match) {
 				throw new SpruceError({
 					code: ErrorCode.InvalidCommand,
-					args: ['name', name],
+					args: [name],
 					friendlyMessage: `Could not find autoloader matching "${name}".`
 				})
 			}
