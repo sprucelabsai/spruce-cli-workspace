@@ -24,22 +24,22 @@ import { IValueTypeServiceStageErrorErrorOptions } from './valueTypeServiceStage
 export type ErrorOptions =
 	| SchemaErrorOptions
 	| SpruceErrorOptions
-	| IBuildFailedErrorOptions
-	| ICouldNotLoadCommandErrorOptions
+	| IKeyExistsErrorOptions
 	| ICommandNotImplementedErrorOptions
+	| ICouldNotLoadCommandErrorOptions
 	| ICreateAutoloaderFailedErrorOptions
 	| IDefinitionFailedToImportErrorOptions
 	| IDirectoryEmptyErrorOptions
 	| IFailedToImportErrorOptions
-	| IGenericErrorOptions
+	| IBuildFailedErrorOptions
 	| IFileExistsErrorOptions
-	| IGenericMercuryErrorOptions
+	| IGenericErrorOptions
 	| IInvalidCommandErrorOptions
-	| IKeyExistsErrorOptions
+	| IGenericMercuryErrorOptions
 	| ILintFailedErrorOptions
-	| IUserNotFoundErrorOptions
+	| INotImplementedErrorOptions
 	| IReservedKeywordErrorOptions
 	| ITranspileFailedErrorOptions
-	| IValueTypeServiceErrorErrorOptions
-	| INotImplementedErrorOptions
 	| IValueTypeServiceStageErrorErrorOptions
+	| IValueTypeServiceErrorErrorOptions
+	| IUserNotFoundErrorOptions

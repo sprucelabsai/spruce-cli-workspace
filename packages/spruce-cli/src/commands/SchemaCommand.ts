@@ -244,8 +244,7 @@ export default class SchemaCommand extends AbstractCommand {
 		this.term.startLoading(
 			'Prettying generated files (you can use them now)...'
 		)
-		const destinationDirPattern = path.join(destinationDir, '**', '*')
-		await this.services.lint.fix(destinationDirPattern)
+		await this.services.lint.fix(this.resolvePath(destinationDir, '**/*.ts'))
 
 		this.term.stopLoading()
 	}

@@ -347,7 +347,12 @@ export default class ErrorCommand extends AbstractCommand {
 			lookupDir: this.resolvePath(lookupDir),
 			destinationFile: this.resolvePath(typesDestinationDir, 'options.types.ts')
 		})
+		this.term.startLoading(
+			'Prettying generated files... you can start using the now.'
+		)
 
-		this.term.info('All done! 👊')
+		await this.services.lint.fix(
+			this.resolvePath(typesDestinationDir, '**/*.ts')
+		)
 	}
 }
