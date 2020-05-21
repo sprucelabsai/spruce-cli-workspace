@@ -1,6 +1,5 @@
 import path from 'path'
 import { templates } from '@sprucelabs/spruce-templates'
-import chalk from 'chalk'
 import { Command } from 'commander'
 import { Feature } from '#spruce/autoloaders/features'
 import { ErrorCode } from '#spruce/errors/codes.types'
@@ -157,8 +156,10 @@ export default class SchemaCommand extends AbstractCommand {
 			}
 		}
 
-		// TODO: clean
-		// if (clean) {
+		if (clean) {
+			this.term.info('Clean is not available yet for schemas')
+			await this.term.wait()
+		}
 		// 	clean =
 		// 		force ||
 		// 		(await this.confirm(
@@ -221,39 +222,32 @@ export default class SchemaCommand extends AbstractCommand {
 			})
 		}
 
-		this.term.startLoading('Prettying generated files...')
+		this.term.clear()
+		this.term.createdFileSummary({
+			createdFiles: [
+				{
+					name: 'Schema definitions',
+					path: results.generatedFiles.schemaTypes
+				},
+				{ name: 'Field definitions', path: results.generatedFiles.fieldsTypes },
+				{
+					name: 'Field type enum',
+					path: results.generatedFiles.fieldType
+				},
+				{
+					name: 'Field class map',
+					path: results.generatedFiles.fieldClassMap
+				}
+			]
+		})
+
+		this.term.startLoading(
+			'Prettying generated files (you can use them now)...'
+		)
 		const destinationDirPattern = path.join(destinationDir, '**', '*')
 		await this.services.lint.fix(destinationDirPattern)
 
 		this.term.stopLoading()
-
-		this.term.clear()
-		this.term.info(
-			`All done 👊.${
-				errors.length > 0
-					? ` But, I encountered ${errors.length} errors (see above). Lastly,`
-					: ''
-			} I created ${Object.keys(results.generatedFiles).length} files.`
-		)
-		this.term.bar()
-		this.term.info(
-			`1. ${chalk.bold('Schema definitions')}: ${
-				results.generatedFiles.schemaTypes
-			}`
-		)
-		this.term.info(
-			`2. ${chalk.bold('Field definitions')}: ${
-				results.generatedFiles.fieldsTypes
-			}`
-		)
-		this.term.info(
-			`3. ${chalk.bold('Field type enum')}: ${results.generatedFiles.fieldType}`
-		)
-		this.term.info(
-			`4. ${chalk.bold('Field class map')}: ${
-				results.generatedFiles.fieldClassMap
-			}`
-		)
 	}
 
 	/** Define a new schema */
@@ -279,8 +273,6 @@ export default class SchemaCommand extends AbstractCommand {
 				nameCamel,
 				namePascal
 			},
-			// TODO
-			// @ts-ignore
 			onWillAskQuestion: this.utilities.names.onWillAskQuestionHandler.bind(
 				this.utilities.names
 			)

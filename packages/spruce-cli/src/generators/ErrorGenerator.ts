@@ -7,7 +7,11 @@ export default class ErrorGenerator extends AbstractGenerator {
 	public async rebuildCodesTypesFile(options: {
 		lookupDir: string
 		destinationFile: string
-	}) {
+	}): Promise<{
+		generatedFiles: {
+			codesTypes: string
+		}
+	}> {
 		const { lookupDir, destinationFile } = options
 
 		// Find all definition files in the lookup dir
@@ -41,13 +45,21 @@ export default class ErrorGenerator extends AbstractGenerator {
 
 		const contents = this.templates.errorCodesTypes({ codes })
 		this.writeFile(destinationFile, contents)
+
+		return {
+			generatedFiles: { codesTypes: destinationFile }
+		}
 	}
 
 	/** Rebuilds the options  */
 	public async rebuildOptionsTypesFile(options: {
 		lookupDir: string
 		destinationFile: string
-	}) {
+	}): Promise<{
+		generatedFiles: {
+			optionsTypes: string
+		}
+	}> {
 		const { lookupDir, destinationFile } = options
 
 		// Find all definition files in the lookup dir
@@ -73,5 +85,11 @@ export default class ErrorGenerator extends AbstractGenerator {
 
 		const contents = this.templates.errorOptionsTypes({ options: errorOptions })
 		this.writeFile(destinationFile, contents)
+
+		return {
+			generatedFiles: {
+				optionsTypes: destinationFile
+			}
+		}
 	}
 }

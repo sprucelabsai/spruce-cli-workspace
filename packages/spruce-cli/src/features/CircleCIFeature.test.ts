@@ -7,7 +7,7 @@ export default class CircleCiFeatureTest extends BaseCliTest {
 	@test('Properly detects when feature is not installed')
 	protected static async notInstalled() {
 		const isInstalled = await this.services.feature.isInstalled({
-			features: [Feature.CircleCI]
+			features: [Feature.CircleCi]
 		})
 
 		assert.isFalse(isInstalled)
@@ -18,13 +18,13 @@ export default class CircleCiFeatureTest extends BaseCliTest {
 		await this.services.feature.install({
 			features: [
 				{
-					feature: Feature.CircleCI
+					feature: Feature.CircleCi
 				}
 			]
 		})
 
 		const isInstalled = await this.services.feature.isInstalled({
-			features: [Feature.CircleCI]
+			features: [Feature.CircleCi]
 		})
 		assert.isTrue(isInstalled)
 		assert.isTrue(

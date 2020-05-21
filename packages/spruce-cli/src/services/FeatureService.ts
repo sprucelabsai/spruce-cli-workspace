@@ -1,6 +1,6 @@
 import Schema, { ISchemaDefinition } from '@sprucelabs/schema'
 import _ from 'lodash'
-import { Feature } from '#spruce/autoloaders/features'
+import { Feature, IFeatures } from '#spruce/autoloaders/features'
 import FormBuilder, { IFormOptions } from '../builders/FormBuilder'
 import { IFeaturePackage } from '../features/AbstractFeature'
 import log from '../lib/log'
@@ -21,7 +21,7 @@ export default class FeatureService extends AbstractService {
 			this._cwd = newCwd
 			if (this.features && newCwd) {
 				Object.keys(this.features).forEach(f => {
-					this.features[f].cwd = newCwd
+					this.features[f as keyof IFeatures].cwd = newCwd
 				})
 			}
 		}
@@ -227,8 +227,6 @@ export default class FeatureService extends AbstractService {
 
 		this.term.startLoading(`[${installFeature.feature}]: Finishing up`)
 		await feature.afterPackageInstall({
-			// TODO: Figure out how to get the right type here
-			// @ts-ignore
 			answers
 		})
 		this.term.stopLoading()

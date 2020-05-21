@@ -8,6 +8,8 @@ export enum FieldType {
 	Date = 'date',
 	/** Date and time support. */
 	DateTime = 'dateTime',
+	/** A way to select entire directories once! */
+	Directory = 'directory',
 	/** A span of time represented in { hours, minutes, seconds, ms } */
 	Duration = 'duration',
 	/** A way to handle files. Supports mime-type lookups. */

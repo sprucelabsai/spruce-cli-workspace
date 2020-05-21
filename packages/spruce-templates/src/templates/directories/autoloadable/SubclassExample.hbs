@@ -1,0 +1,11 @@
+import Abstract{{namePascal}}, { I{{namePascal}}Options } from './Abstract{{namePascal}}'
+
+export default class Example{{namePascal}} extends Abstract{{namePascal}} {
+	public constructor(options: I{{namePascal}}Options) {
+		super(options)
+		console.log(options)
+	}
+	public hello() {
+		return 'world'
+	}
+}

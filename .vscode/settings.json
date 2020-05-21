@@ -42,12 +42,7 @@
 		"./packages/spruce-templates"
 	],
 	"eslint.options": {
-		"extensions": [
-			".js",
-			".jsx",
-			".ts",
-			".tsx"
-		]
+		"extensions": [".js", ".jsx", ".ts", ".tsx"]
 	},
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"typescript.preferences.importModuleSpecifier": "relative",
@@ -59,6 +54,7 @@
 	"cSpell.ignorePaths": [
 		"**/package-lock.json",
 		"**/node_modules/**",
+		"**/build/**",
 		"**/vscode-extension/**",
 		"**/.git/objects/**",
 		".vscode",

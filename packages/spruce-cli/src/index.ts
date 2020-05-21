@@ -17,6 +17,7 @@ import {
 import { templates } from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
 import autoloader from '#spruce/autoloaders'
+import { Commands } from '#spruce/autoloaders/commands'
 import { ErrorCode } from '#spruce/errors/codes.types'
 import pkg from '../package.json'
 /** Addons */
@@ -122,7 +123,7 @@ export async function setup(options?: { program?: Command; cwd?: string }) {
 	} = await autoloader({
 		commands: {
 			constructorOptions: commandOptions,
-			after: async (instance: any) =>
+			after: async (instance: Commands) =>
 				instance.attachCommands && program && instance.attachCommands(program)
 		},
 		utilities: {

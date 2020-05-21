@@ -3,7 +3,7 @@ import { Mercury } from '@sprucelabs/mercury'
 import { ISchemaDefinition } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
-import { IAutoloaded } from '#spruce/autoloaders'
+import { IAutoloaded, IAutoLoadable } from '#spruce/autoloaders'
 import { ICommands } from '#spruce/autoloaders/commands'
 import { IGenerators } from '#spruce/autoloaders/generators'
 import { IServices } from '#spruce/autoloaders/services'
@@ -30,7 +30,8 @@ export interface IWriteOptions {
 	build?: boolean
 }
 
-export default abstract class AbstractCommand extends Autoloadable {
+export default abstract class AbstractCommand extends Autoloadable
+	implements IAutoLoadable {
 	protected stores!: IStores
 	protected mercury: Mercury
 	protected services!: IServices
@@ -51,7 +52,7 @@ export default abstract class AbstractCommand extends Autoloadable {
 		this.templates = templates
 	}
 
-	public afterAutoload(autoloaded: IAutoloaded) {
+	public async afterAutoload(autoloaded: IAutoloaded) {
 		this.commands = autoloaded.commands
 		this.stores = autoloaded.stores
 		this.services = autoloaded.services

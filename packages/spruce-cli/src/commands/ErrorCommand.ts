@@ -4,9 +4,11 @@ import fs from 'fs-extra'
 import globby from 'globby'
 import { Feature } from '#spruce/autoloaders/features'
 import { ErrorCode } from '#spruce/errors/codes.types'
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
 import log from '../lib/log'
 import namedTemplateItemDefinition from '../schemas/namedTemplateItem.definition'
+import { ICreatedFile } from '../utilities/TerminalUtility'
 import AbstractCommand from './AbstractCommand'
 
 export default class ErrorCommand extends AbstractCommand {
@@ -32,7 +34,7 @@ export default class ErrorCommand extends AbstractCommand {
 			.action(this.create.bind(this))
 
 		program
-			.command('error:sync [lookupDir]')
+			.command('error:sync')
 			.description('Generates type files on all error definitions.')
 			.option(
 				'-l, --lookupDir <lookupDir>',
@@ -63,27 +65,48 @@ export default class ErrorCommand extends AbstractCommand {
 				'-c, --clean',
 				'Clean output directory before generating errors, deleting old files.'
 			)
+			.option(
+				'-f, --force',
+				'If cleaning, should I suppress confirmations and warnings',
+				false
+			)
 
 			.action(this.sync.bind(this))
 	}
 
-	// TODO allow passing of name
 	public async create(name: string | undefined, cmd: Command) {
 		const errorDestinationDir = cmd.errorDestinationDir as string
 		const typesDestinationDir = cmd.typesDestinationDir as string
 		const schemaLookupDir = cmd.schemaLookupDir as string
 
+		const nameReadable = name
+		const initialValues: Partial<SpruceSchemas.Local.INamedTemplateItem> = {
+			nameReadable: name
+		}
+		let showOverview = false
+
+		// If they passed a name, show overview
+		if (nameReadable) {
+			showOverview = true
+			initialValues.nameCamel = this.utilities.names.toCamel(nameReadable)
+			initialValues.namePascal = this.utilities.names.toPascal(
+				initialValues.nameCamel
+			)
+			initialValues.nameConst = this.utilities.names.toConst(
+				initialValues.nameCamel
+			)
+		}
+
 		const form = this.formBuilder({
 			definition: namedTemplateItemDefinition,
-			initialValues: {
-				nameReadable: name
-			},
+			initialValues,
 			onWillAskQuestion: this.utilities.names.onWillAskQuestionHandler.bind(
 				this.utilities.names
 			)
 		})
 
 		const names = await form.present({
+			showOverview,
 			fields: [
 				'nameReadable',
 				'namePascal',
@@ -120,16 +143,28 @@ export default class ErrorCommand extends AbstractCommand {
 			]
 		})
 
+		const createdFiles: ICreatedFile[] = []
+
 		// Write the definition
 		await this.writeFile(
 			errorDefinitionFileDestination,
 			this.templates.errorDefinition(names)
 		)
 
+		createdFiles.push({
+			name: 'Error definition',
+			path: errorDefinitionFileDestination
+		})
+
 		// If there is no error file, lets write one
 		if (!this.doesFileExist(errorFileDestination)) {
 			const errorContents = this.templates.error({ errors: [names] })
 			await this.writeFile(errorFileDestination, errorContents)
+
+			createdFiles.push({
+				name: 'Error subclass',
+				path: errorFileDestination
+			})
 		} else {
 			const errorBlock = this.templates.error({
 				errors: [names],
@@ -164,7 +199,8 @@ export default class ErrorCommand extends AbstractCommand {
 		const {
 			namePascal,
 			definition,
-			nameCamel
+			nameCamel,
+			generatedFiles
 		} = await this.generators.schema.generateTypesFromDefinitionFile({
 			sourceFile: errorDefinitionFileDestination,
 			destinationDir: this.resolvePath(typesDestinationDir),
@@ -172,21 +208,36 @@ export default class ErrorCommand extends AbstractCommand {
 			schemaLookupDir
 		})
 
+		createdFiles.push({ name: 'Error types', path: generatedFiles.schemaTypes })
+
 		// Rebuild the errors codes
-		await this.generators.error.rebuildCodesTypesFile({
+		const {
+			generatedFiles: typesGenerated
+		} = await this.generators.error.rebuildCodesTypesFile({
 			lookupDir: this.resolvePath(errorDestinationDir),
 			destinationFile: this.resolvePath(typesDestinationDir, 'codes.types.ts')
 		})
 
+		createdFiles.push({
+			name: 'Error codes (updated)',
+			path: typesGenerated.codesTypes
+		})
+
 		// Rebuild options union
-		await this.generators.error.rebuildOptionsTypesFile({
+		const {
+			generatedFiles: optionsGenerated
+		} = await this.generators.error.rebuildOptionsTypesFile({
 			lookupDir: this.resolvePath(errorDestinationDir),
 			destinationFile: this.resolvePath(typesDestinationDir, 'options.types.ts')
 		})
 
+		createdFiles.push({ name: 'Options', path: optionsGenerated.optionsTypes })
+
+		this.term.clear()
+		this.term.createdFileSummary({ createdFiles })
+
 		// Give an example
 		this.term.headline(`${names.namePascal} examples:`)
-
 		this.term.writeLn('')
 		this.term.codeSample(
 			this.templates.errorExample({
@@ -197,11 +248,13 @@ export default class ErrorCommand extends AbstractCommand {
 		)
 	}
 
-	public async sync(lookupDirOption: string | undefined, cmd: Command) {
-		const lookupDir = lookupDirOption || (cmd.lookupDir as string)
+	public async sync(cmd: Command) {
+		const lookupDir = cmd.lookupDir as string
 		const typesDestinationDir = cmd.typesDestinationDir as string
 		const errorDestinationDir = cmd.errorDestinationDir as string
 		const schemaLookupDir = cmd.schemaLookupDir as string
+		const clean = !!cmd.clean
+		const force = !!cmd.force
 
 		const search = path.join(
 			this.resolvePath(lookupDir),
@@ -221,8 +274,13 @@ export default class ErrorCommand extends AbstractCommand {
 			features: [{ feature: Feature.Error }]
 		})
 
-		if (cmd.clean) {
-			fs.removeSync(`.spruce/errors`)
+		if (clean) {
+			const shouldClean =
+				force ||
+				(await this.term.confirm(
+					`Are you sure you want to delete the contents of ${typesDestinationDir}?`
+				))
+			shouldClean && fs.removeSync(typesDestinationDir)
 		}
 
 		// Lets clear out the current error dir

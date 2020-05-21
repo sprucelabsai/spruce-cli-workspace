@@ -1,28 +1,36 @@
 /* eslint-disable spruce/prefer-pascal-case-enums */
-// Import base class
-import AbstractStore from '../../src/stores/AbstractStore'
-// Import each matching class that will be autoloaded
-import { IStoreOptions } from '../../src/stores/AbstractStore'
-import Onboarding from '../../src/stores/OnboardingStore'
-import Remote from '../../src/stores/RemoteStore'
-import Schema from '../../src/stores/SchemaStore'
-import Skill from '../../src/stores/SkillStore'
-import User from '../../src/stores/UserStore'
-import Watcher from '../../src/stores/WatcherStore'
-
 // Import necessary interface(s)
+import { IStoreOptions } from '#spruce/../src/stores/AbstractStore'
+// Import each matching class that will be autoloaded
+import AutoloaderStore from '#spruce/../src/stores/AutoloaderStore'
+import OnboardingStore from '#spruce/../src/stores/OnboardingStore'
+import RemoteStore from '#spruce/../src/stores/RemoteStore'
+import SchemaStore from '#spruce/../src/stores/SchemaStore'
+import SkillStore from '#spruce/../src/stores/SkillStore'
+import UserStore from '#spruce/../src/stores/UserStore'
+import WatcherStore from '#spruce/../src/stores/WatcherStore'
+
+export type Stores =
+	| AutoloaderStore
+	| OnboardingStore
+	| RemoteStore
+	| SchemaStore
+	| SkillStore
+	| UserStore
+	| WatcherStore
 
 export interface IStores {
-	[store: string]: Onboarding | Remote | Schema | Skill | User | Watcher
-	onboarding: Onboarding
-	remote: Remote
-	schema: Schema
-	skill: Skill
-	user: User
-	watcher: Watcher
+	autoloader: AutoloaderStore
+	onboarding: OnboardingStore
+	remote: RemoteStore
+	schema: SchemaStore
+	skill: SkillStore
+	user: UserStore
+	watcher: WatcherStore
 }
 
 export enum Store {
+	Autoloader = 'autoloader',
 	Onboarding = 'onboarding',
 	Remote = 'remote',
 	Schema = 'schema',
@@ -31,45 +39,63 @@ export enum Store {
 	Watcher = 'watcher'
 }
 
-export default async function autoloader(options: {
+export default async function autoloader<K extends Store[]>(options: {
 	constructorOptions: IStoreOptions
-	after?: (instance: AbstractStore) => Promise<void>
-}): Promise<IStores> {
-	const { constructorOptions, after } = options
+	after?: (instance: Stores) => Promise<void>
+	only?: K
+}): Promise<K extends undefined ? IStores : Pick<IStores, K[number]>> {
+	const { constructorOptions, after, only } = options
+	const siblings: Partial<IStores> = {}
 
-	const onboarding = new Onboarding(constructorOptions)
-	if (after) {
-		await after(onboarding)
+	if (!only || only.indexOf(Store.Autoloader) > -1) {
+		const autoloaderStore = new AutoloaderStore(constructorOptions)
+		if (after) {
+			await after(autoloaderStore)
+		}
+		siblings.autoloader = autoloaderStore
 	}
-	const remote = new Remote(constructorOptions)
-	if (after) {
-		await after(remote)
+	if (!only || only.indexOf(Store.Onboarding) > -1) {
+		const onboardingStore = new OnboardingStore(constructorOptions)
+		if (after) {
+			await after(onboardingStore)
+		}
+		siblings.onboarding = onboardingStore
 	}
-	const schema = new Schema(constructorOptions)
-	if (after) {
-		await after(schema)
+	if (!only || only.indexOf(Store.Remote) > -1) {
+		const remoteStore = new RemoteStore(constructorOptions)
+		if (after) {
+			await after(remoteStore)
+		}
+		siblings.remote = remoteStore
 	}
-	const skill = new Skill(constructorOptions)
-	if (after) {
-		await after(skill)
+	if (!only || only.indexOf(Store.Schema) > -1) {
+		const schemaStore = new SchemaStore(constructorOptions)
+		if (after) {
+			await after(schemaStore)
+		}
+		siblings.schema = schemaStore
 	}
-	const user = new User(constructorOptions)
-	if (after) {
-		await after(user)
+	if (!only || only.indexOf(Store.Skill) > -1) {
+		const skillStore = new SkillStore(constructorOptions)
+		if (after) {
+			await after(skillStore)
+		}
+		siblings.skill = skillStore
 	}
-	const watcher = new Watcher(constructorOptions)
-	if (after) {
-		await after(watcher)
+	if (!only || only.indexOf(Store.User) > -1) {
+		const userStore = new UserStore(constructorOptions)
+		if (after) {
+			await after(userStore)
+		}
+		siblings.user = userStore
+	}
+	if (!only || only.indexOf(Store.Watcher) > -1) {
+		const watcherStore = new WatcherStore(constructorOptions)
+		if (after) {
+			await after(watcherStore)
+		}
+		siblings.watcher = watcherStore
 	}
 
-	const siblings: IStores = {
-		onboarding,
-		remote,
-		schema,
-		skill,
-		user,
-		watcher
-	}
-
-	return siblings
+	return siblings as K extends undefined ? IStores : Pick<IStores, K[number]>
 }

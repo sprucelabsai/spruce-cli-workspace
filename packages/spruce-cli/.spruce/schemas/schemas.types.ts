@@ -1369,6 +1369,105 @@ export namespace SpruceSchemas.Core.UserLocation {
 }
 
 export namespace SpruceSchemas.Local {
+	/** A directory that is autoloaded */
+	export interface IAutoloader {
+		/** Source directory. */
+		lookupDir: SpruceSchema.IDirectoryFieldValue
+		/** Destination. Where the file that does the autoloading is written */
+		destination: SpruceSchema.IFileFieldValue
+		/** Pattern. */
+		pattern: string
+	}
+}
+
+export namespace SpruceSchemas.Local.Autoloader {
+	export const id = 'autoloader'
+
+	/** The interface for the schema definition for a Autoloader */
+	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+		id: 'autoloader'
+		name: 'Autoloader'
+		description: 'A directory that is autoloaded'
+
+		fields: {
+			/** Source directory. */
+			lookupDir: {
+				label: 'Source directory'
+				type: SpruceSchema.FieldType.Directory
+
+				isRequired: true
+
+				options: undefined
+			}
+			/** Destination. Where the file that does the autoloading is written */
+			destination: {
+				label: 'Destination'
+				type: SpruceSchema.FieldType.File
+
+				isRequired: true
+				hint: 'Where the file that does the autoloading is written'
+
+				options: undefined
+			}
+			/** Pattern. */
+			pattern: {
+				label: 'Pattern'
+				type: SpruceSchema.FieldType.Text
+
+				isRequired: true
+
+				defaultValue: '**/!(*.test).ts'
+
+				options: undefined
+			}
+		}
+	}
+
+	/** The schema definition for a Autoloader */
+	export const definition: SpruceSchemas.Local.Autoloader.IDefinition = {
+		id: 'autoloader',
+		name: 'Autoloader',
+		description: 'A directory that is autoloaded',
+
+		fields: {
+			/** Source directory. */
+			lookupDir: {
+				label: 'Source directory',
+				type: SpruceSchema.FieldType.Directory,
+
+				isRequired: true,
+
+				options: undefined
+			},
+			/** Destination. Where the file that does the autoloading is written */
+			destination: {
+				label: 'Destination',
+				type: SpruceSchema.FieldType.File,
+
+				isRequired: true,
+				hint: 'Where the file that does the autoloading is written',
+
+				options: undefined
+			},
+			/** Pattern. */
+			pattern: {
+				label: 'Pattern',
+				type: SpruceSchema.FieldType.Text,
+
+				isRequired: true,
+
+				defaultValue: '**/!(*.test).ts',
+
+				options: undefined
+			}
+		}
+	}
+
+	/** The type of a schema instance built off this definition */
+	export type Instance = Schema<SpruceSchemas.Local.Autoloader.IDefinition>
+}
+
+export namespace SpruceSchemas.Local {
 	/** A stripped down skill for the cli */
 	export interface ICliSkill {
 		/** Id. */
@@ -1670,8 +1769,12 @@ export namespace SpruceSchemas.Local {
 		nameReadable: string
 		/** Camel case name. camelCase version of the name */
 		nameCamel: string
+		/** Plural camel case name. camelCase version of the name */
+		nameCamelPlural: string
 		/** Pascal case name. PascalCase of the name */
 		namePascal: string
+		/** Plural Pascal case name. PascalCase of the name */
+		namePascalPlural: string
 		/** Constant case name. CONST_CASE of the name */
 		nameConst: string
 		/** Description. */
@@ -1709,9 +1812,29 @@ export namespace SpruceSchemas.Local.NamedTemplateItem {
 
 				options: undefined
 			}
+			/** Plural camel case name. camelCase version of the name */
+			nameCamelPlural: {
+				label: 'Plural camel case name'
+				type: SpruceSchema.FieldType.Text
+
+				isRequired: true
+				hint: 'camelCase version of the name'
+
+				options: undefined
+			}
 			/** Pascal case name. PascalCase of the name */
 			namePascal: {
 				label: 'Pascal case name'
+				type: SpruceSchema.FieldType.Text
+
+				isRequired: true
+				hint: 'PascalCase of the name'
+
+				options: undefined
+			}
+			/** Plural Pascal case name. PascalCase of the name */
+			namePascalPlural: {
+				label: 'Plural Pascal case name'
 				type: SpruceSchema.FieldType.Text
 
 				isRequired: true
@@ -1769,9 +1892,29 @@ export namespace SpruceSchemas.Local.NamedTemplateItem {
 
 				options: undefined
 			},
+			/** Plural camel case name. camelCase version of the name */
+			nameCamelPlural: {
+				label: 'Plural camel case name',
+				type: SpruceSchema.FieldType.Text,
+
+				isRequired: true,
+				hint: 'camelCase version of the name',
+
+				options: undefined
+			},
 			/** Pascal case name. PascalCase of the name */
 			namePascal: {
 				label: 'Pascal case name',
+				type: SpruceSchema.FieldType.Text,
+
+				isRequired: true,
+				hint: 'PascalCase of the name',
+
+				options: undefined
+			},
+			/** Plural Pascal case name. PascalCase of the name */
+			namePascalPlural: {
+				label: 'Plural Pascal case name',
 				type: SpruceSchema.FieldType.Text,
 
 				isRequired: true,

@@ -6,6 +6,8 @@ import {
 	FieldDefinitionValueType
 } from '@sprucelabs/schema'
 // @ts-ignore No definition available
+import { IField } from '@sprucelabs/schema'
+// @ts-ignore
 import fonts from 'cfonts'
 import chalk from 'chalk'
 // @ts-ignore No definition available
@@ -94,6 +96,11 @@ function filterEffectsForCFonts(effects: ITerminalEffect[]) {
 				ITerminalEffect.Visible
 			].indexOf(effect) === -1
 	)
+}
+
+export interface ICreatedFile {
+	name: string
+	path: string
 }
 
 export default class TerminalUtility extends AbstractUtility {
@@ -186,6 +193,23 @@ export default class TerminalUtility extends AbstractUtility {
 		this.writeLn(bar, effects)
 	}
 
+	public createdFileSummary(options: {
+		createdFiles: ICreatedFile[]
+		errors?: (SpruceError | Error)[]
+	}) {
+		const { createdFiles, errors = [] } = options
+		this.info(`All done 👊. I created ${createdFiles.length} files.`)
+		if (errors.length > 0) {
+			this.warn(`But I hit ${errors.length} errors.`)
+		}
+
+		this.bar()
+		createdFiles.forEach((created, idx) => {
+			this.info(`${idx + 1}. ${chalk.bold(created.name)}: ${created.path}`)
+		})
+	}
+
+	/** I big headline */
 	public headline(
 		message: string,
 		effects: ITerminalEffect[] = [ITerminalEffect.Blue, ITerminalEffect.Bold],
@@ -322,14 +346,14 @@ export default class TerminalUtility extends AbstractUtility {
 		const promptOptions: Record<string, any> = {
 			default: defaultValue,
 			name,
-			message: `${label}:`
+			message: label
 		}
 
 		const field = FieldFactory.field('prompt', fieldDefinition)
 
 		// Setup transform and validate
 		promptOptions.transformer = (value: string) => {
-			return field.toValueType(value)
+			return (field as IField<any>).toValueType(value)
 		}
 		promptOptions.validate = (value: string) => {
 			return field.validate(value, {}).length === 0
@@ -358,12 +382,41 @@ export default class TerminalUtility extends AbstractUtility {
 					})
 				}
 				break
+			// Directory select
 			// File select
+			case FieldType.Directory: {
+				if (fieldDefinition.isArray) {
+					throw new SpruceError({
+						code: ErrorCode.NotImplemented,
+						friendlyMessage:
+							'isArray file field not supported, prompt needs to be rewritten with isArray support'
+					})
+				}
+
+				const dirPath = path.join(
+					fieldDefinition.defaultValue?.path ?? this.cwd,
+					'/'
+				)
+
+				promptOptions.type = 'file'
+				promptOptions.root = dirPath
+				promptOptions.onlyShowDir = true
+
+				// Only let people select an actual file
+				promptOptions.validate = (value: string) => {
+					return fs.existsSync(value) && fs.lstatSync(value).isDirectory()
+				}
+				// Strip out cwd from the paths while selecting
+				promptOptions.transformer = (path: string) => {
+					const cleanedPath = path.replace(promptOptions.root, '')
+					return cleanedPath.length === 0 ? promptOptions.root : cleanedPath
+				}
+				break
+			}
 			case FieldType.File: {
 				if (fieldDefinition.isArray) {
 					throw new SpruceError({
 						code: ErrorCode.NotImplemented,
-						command: 'TerminalUtility.prompt',
 						friendlyMessage:
 							'isArray file field not supported, prompt needs to be rewritten with isArray support'
 					})
@@ -382,7 +435,7 @@ export default class TerminalUtility extends AbstractUtility {
 					throw new SpruceError({
 						code: ErrorCode.DirectoryEmpty,
 						directory: dirPath,
-						friendlyMessage: `There are no files in the directory: ${dirPath}. Check that you are running this command from the proper location.`
+						friendlyMessage: `I wanted to help you select a file, but none exist in ${dirPath}`
 					})
 				}
 
@@ -410,14 +463,13 @@ export default class TerminalUtility extends AbstractUtility {
 				promptOptions.type = 'input'
 		}
 
-		// TODO update method signature to type this properly
-		log.debug('Prompting...', { promptOptions })
 		const response = (await inquirer.prompt(promptOptions)) as any
 		this.isPromptActive = false
 		const result =
 			typeof response[name] !== 'undefined'
-				? field.toValueType(response[name])
+				? (field as IField<any>).toValueType(response[name])
 				: response[name]
+
 		return result
 	}
 

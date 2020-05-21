@@ -174,7 +174,6 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 		if (definition.isArray) {
 			throw new SpruceError({
 				code: ErrorCode.NotImplemented,
-				command: 'FormBuilder.askQuestion',
 				friendlyMessage: 'Form builder does not support isArray yet'
 			})
 		}
