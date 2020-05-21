@@ -1,6 +1,8 @@
 import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
+import { ErrorCode } from '#spruce/errors/codes.types'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import SpruceError from '../errors/SpruceError'
 import AbstractCommand from './AbstractCommand'
 import { FieldType } from '#spruce:schema/fields/fieldType'
 
@@ -37,7 +39,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 			.action(this.create.bind(this))
 
 		program
-			.command('autoloader:sync')
+			.command('autoloader:sync [name]')
 			.description(
 				'Syncs all autoloaders you have ever created and cleans out deleted ones.'
 			)
@@ -56,13 +58,25 @@ export default class AutoloaderCommand extends AbstractCommand {
 			.action(this.root.bind(this))
 	}
 
-	private async sync(cmd: Command) {
+	private async sync(name: string | undefined, cmd: Command) {
 		const rootAutoloaderDestination = cmd.rootAutoloaderDestination as string
-		const autoloaders = await this.stores.autoloader.autoloaders()
+		let autoloaders = await this.stores.autoloader.autoloaders()
 
 		this.term.startLoading(
 			`Found ${autoloaders.length} autoloaders, generating now....`
 		)
+
+		if (name) {
+			const match = autoloaders.find(a => a.lookupDir.path === `src/${name}`)
+			if (!match) {
+				throw new SpruceError({
+					code: ErrorCode.InvalidCommand,
+					args: ['name', name],
+					friendlyMessage: `Could not find autoloader matching.`
+				})
+			}
+			autoloaders = [match]
+		}
 
 		// lets check autoloaders exist and if not, clear them out
 		for (let i = 0; i < autoloaders.length; i++) {
