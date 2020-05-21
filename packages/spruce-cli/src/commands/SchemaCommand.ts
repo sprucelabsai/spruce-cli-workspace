@@ -1,4 +1,3 @@
-import path from 'path'
 import { templates } from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
 import { Feature } from '#spruce/autoloaders/features'
