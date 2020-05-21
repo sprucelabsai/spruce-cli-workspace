@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.4.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.3.1...v10.4.0) (2020-05-21)
+
+
+### Features
+
+* autloader standardization and updates ([4bac7b9](https://github.com/sprucelabsai/spruce-cli-workspace/commit/4bac7b9))
+* indexOf fixes in loaders ([47dbbb6](https://github.com/sprucelabsai/spruce-cli-workspace/commit/47dbbb6))
+* standardize name generation and error api ([0c036b0](https://github.com/sprucelabsai/spruce-cli-workspace/commit/0c036b0))
+
+
+
+
+
 ## [10.3.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.3.0...v10.3.1) (2020-05-15)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
