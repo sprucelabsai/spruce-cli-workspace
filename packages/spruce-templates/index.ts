@@ -29,8 +29,8 @@ import {
 	DirectoryTemplateKind,
 	IDirectoryTemplateContextMap
 } from './src/types/templates.types'
+import DirectoryTemplateUtility from './src/utilities/DirectoryTemplateUtility'
 import importExtractor from './src/utilities/importExtractor'
-import TemplateDirectoryUtility from './src/utilities/TemplateDirectoryUtility'
 
 log.info('Addons imported')
 
@@ -231,7 +231,7 @@ export const templates = {
 		kind: K
 		context: IDirectoryTemplateContextMap[K]
 	}): Promise<IDirectoryTemplate> {
-		return TemplateDirectoryUtility.build(options)
+		return DirectoryTemplateUtility.build(options)
 	},
 
 	/** Tries our best to see if a specific directory is based on a valid directory template */
@@ -245,7 +245,7 @@ export const templates = {
 			return fs.existsSync(path.join(dir, 'package.json'))
 		}
 
-		const filesToCheck = await TemplateDirectoryUtility.filesInTemplate(kind)
+		const filesToCheck = await DirectoryTemplateUtility.filesInTemplate(kind)
 		// Check if the .spruce directory exists
 		let filesMissing = false
 		for (let i = 0; i < filesToCheck.length; i += 1) {

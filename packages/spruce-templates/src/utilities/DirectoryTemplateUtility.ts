@@ -8,7 +8,7 @@ import {
 	IDirectoryTemplate
 } from '../types/templates.types'
 
-export default class TemplateDirectoryUtility {
+export default class DirectoryTemplateUtility {
 	/** Returns the relative file paths for all the expected files in the directory template */
 	public static async filesInTemplate(template: DirectoryTemplateKind) {
 		const filePaths: string[] = []
