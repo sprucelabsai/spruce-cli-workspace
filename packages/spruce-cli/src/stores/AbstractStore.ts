@@ -4,6 +4,7 @@ import { IAutoloaded } from '#spruce/autoloaders'
 import { IServices } from '#spruce/autoloaders/services'
 import { IUtilities } from '#spruce/autoloaders/utilities'
 import { ErrorCode } from '#spruce/errors/codes.types'
+import { IMyEventContract } from '#spruce/events/events.types'
 import Autoloadable from '../Autoloadable'
 import SpruceError from '../errors/SpruceError'
 import log from '../lib/log'
@@ -22,7 +23,7 @@ export enum StoreAuth {
 
 /** Options needed by the store on instantiation */
 export interface IStoreOptions {
-	mercury: Mercury
+	mercury: Mercury<IMyEventContract>
 	cwd: string
 	scope?: StoreScope
 	authType?: StoreAuth
@@ -54,7 +55,7 @@ export default abstract class AbstractStore<
 	}
 
 	/** For making calls to the world */
-	public mercury: Mercury
+	public mercury: Mercury<IMyEventContract>
 
 	/** Current directory for all operations */
 	public cwd: string
@@ -151,7 +152,9 @@ export default abstract class AbstractStore<
 	}
 
 	/** A copy of mercury authed against the token you sent */
-	protected async mercuryForUser(token: string): Promise<Mercury> {
+	protected async mercuryForUser(
+		token: string
+	): Promise<Mercury<IMyEventContract>> {
 		const { connectionOptions } = this.mercury
 		if (!connectionOptions) {
 			throw new SpruceError({

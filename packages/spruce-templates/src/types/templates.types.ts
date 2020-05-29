@@ -1,4 +1,8 @@
-import { TemplateRenderAs, FieldDefinition } from '@sprucelabs/schema'
+import {
+	TemplateRenderAs,
+	FieldDefinition,
+	ISchemaTemplateItem
+} from '@sprucelabs/schema'
 
 /** A callback function that returns what is written to a template for the interface of the schema (e.g. string, number, IAddressFieldValue) */
 export interface IValueTypeGenerator {
@@ -77,4 +81,15 @@ export interface IDirectoryTemplate {
 	}[]
 }
 
-export interface IEventTemplateItem {}
+export interface IEventTemplate {
+	[namespace: string]: {
+		eventTemplateItems: IEventTemplateItem[]
+	}
+}
+
+export interface IEventTemplateItem {
+	eventName: string
+	eventNamePascal: string
+	emitPayload: ISchemaTemplateItem
+	responsePayload: ISchemaTemplateItem
+}

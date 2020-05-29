@@ -4,18 +4,19 @@ import { IAutoloaded } from '#spruce/autoloaders'
 import { IFeatures } from '#spruce/autoloaders/features'
 import { IServices } from '#spruce/autoloaders/services'
 import { IUtilities } from '#spruce/autoloaders/utilities'
+import { IMyEventContract } from '#spruce/events/events.types'
 import Autoloadable from '../Autoloadable'
 import log from '../lib/log'
 import TerminalUtility from '../utilities/TerminalUtility'
 
 export interface IServiceOptions {
 	cwd: string
-	mercury: Mercury
+	mercury: Mercury<IMyEventContract>
 	templates: Templates
 }
 
 export default abstract class AbstractService extends Autoloadable {
-	public mercury: Mercury
+	public mercury: Mercury<IMyEventContract>
 	public utilities!: IUtilities
 	public services!: IServices
 	public features!: IFeatures

@@ -28,7 +28,7 @@ import {
 	IDirectoryTemplate,
 	DirectoryTemplateKind,
 	IDirectoryTemplateContextMap,
-	IEventTemplateItem
+	IEventTemplate
 } from './src/types/templates.types'
 import DirectoryTemplateUtility from './src/utilities/DirectoryTemplateUtility'
 import importExtractor from './src/utilities/importExtractor'
@@ -117,7 +117,7 @@ export const templates = {
 		return template({ ...options, imports })
 	},
 
-	eventTypes(options: IEventTemplateItem) {
+	eventTypes(options: { eventTemplate: IEventTemplate }) {
 		const template = handlebars.compile(eventTypes)
 		return template(options)
 	},

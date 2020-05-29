@@ -12,7 +12,8 @@ allSettled.shim()
 import {
 	Mercury,
 	IMercuryConnectOptions,
-	MercuryAuth
+	MercuryAuth,
+	MercuryMock
 } from '@sprucelabs/mercury'
 import { templates } from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
@@ -68,7 +69,8 @@ export async function setup(options?: { program?: Command; cwd?: string }) {
 	}
 
 	// Setup mercury
-	const mercury = new Mercury()
+	const mercury =
+		process.env.TESTING === 'true' ? new MercuryMock() : new Mercury()
 
 	// Setup services
 	const serviceOptions: IServiceOptions = {
@@ -178,7 +180,6 @@ export async function setup(options?: { program?: Command; cwd?: string }) {
 
 	// Mercury connection options
 	const connectOptions: IMercuryConnectOptions = {
-		useMock: process.env.TESTING === 'true',
 		spruceApiUrl: remoteUrl,
 		credentials: creds
 	}

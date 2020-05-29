@@ -9,6 +9,7 @@ import { IGenerators } from '#spruce/autoloaders/generators'
 import { IServices } from '#spruce/autoloaders/services'
 import { IStores } from '#spruce/autoloaders/stores'
 import { IUtilities } from '#spruce/autoloaders/utilities'
+import { IMyEventContract } from '#spruce/events/events.types'
 import Autoloadable from '../Autoloadable'
 import FormBuilder, { IFormOptions } from '../builders/FormBuilder'
 import QuizBuilder, {
@@ -20,7 +21,7 @@ import TerminalUtility from '../utilities/TerminalUtility'
 
 /** All commanders get this */
 export interface ICommandOptions {
-	mercury: Mercury
+	mercury: Mercury<IMyEventContract>
 	cwd: string
 	templates: Templates
 }
@@ -33,7 +34,7 @@ export interface IWriteOptions {
 export default abstract class AbstractCommand extends Autoloadable
 	implements IAutoLoadable {
 	protected stores!: IStores
-	protected mercury: Mercury
+	protected mercury: Mercury<IMyEventContract>
 	protected services!: IServices
 	protected commands!: ICommands
 	protected generators!: IGenerators
@@ -158,6 +159,11 @@ export default abstract class AbstractCommand extends Autoloadable
 		// 	)
 		// })
 		// this.stopLoading()
+	}
+
+	/** Collect multiple values for an option */
+	protected async collect(value: string, previous: string[]) {
+		return previous.concat([value])
 	}
 
 	/** A chance to attach the commands you'll provide through the cli */

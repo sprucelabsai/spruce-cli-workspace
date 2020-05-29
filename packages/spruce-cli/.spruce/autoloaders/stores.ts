@@ -3,6 +3,7 @@
 import { IStoreOptions } from '#spruce/../src/stores/AbstractStore'
 // Import each matching class that will be autoloaded
 import AutoloaderStore from '#spruce/../src/stores/AutoloaderStore'
+import EventStore from '#spruce/../src/stores/EventStore'
 import OnboardingStore from '#spruce/../src/stores/OnboardingStore'
 import RemoteStore from '#spruce/../src/stores/RemoteStore'
 import SchemaStore from '#spruce/../src/stores/SchemaStore'
@@ -12,6 +13,7 @@ import WatcherStore from '#spruce/../src/stores/WatcherStore'
 
 export type Stores =
 	| AutoloaderStore
+	| EventStore
 	| OnboardingStore
 	| RemoteStore
 	| SchemaStore
@@ -21,6 +23,7 @@ export type Stores =
 
 export interface IStores {
 	autoloader: AutoloaderStore
+	event: EventStore
 	onboarding: OnboardingStore
 	remote: RemoteStore
 	schema: SchemaStore
@@ -31,6 +34,7 @@ export interface IStores {
 
 export enum Store {
 	Autoloader = 'autoloader',
+	Event = 'event',
 	Onboarding = 'onboarding',
 	Remote = 'remote',
 	Schema = 'schema',
@@ -53,6 +57,13 @@ export default async function autoloader<K extends Store[]>(options: {
 			await after(autoloaderStore)
 		}
 		siblings.autoloader = autoloaderStore
+	}
+	if (!only || only.indexOf(Store.Event) > -1) {
+		const eventStore = new EventStore(constructorOptions)
+		if (after) {
+			await after(eventStore)
+		}
+		siblings.event = eventStore
 	}
 	if (!only || only.indexOf(Store.Onboarding) > -1) {
 		const onboardingStore = new OnboardingStore(constructorOptions)

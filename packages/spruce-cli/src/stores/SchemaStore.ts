@@ -29,13 +29,13 @@ import AbstractStore from './AbstractStore'
 export interface ISchemaTemplateItemsOptions {
 	includeErrors?: boolean
 	/* Where should i look for local definitions? */
-	localLookupDir: string
+	localLookupDirs: string[]
 }
 
 export interface IFieldTemplateItemsOptions
 	extends ISchemaTemplateItemsOptions {}
 
-type SchemaTemplateItemsReturnType<
+export type SchemaTemplateItemsReturnType<
 	T extends ISchemaTemplateItemsOptions
 > = T['includeErrors'] extends false
 	? ISchemaTemplateItem[]
@@ -44,13 +44,13 @@ type SchemaTemplateItemsReturnType<
 			errors: SpruceError[]
 	  }
 
-type FieldTemplateItemsReturnType<
+export type FieldTemplateItemsReturnType<
 	T extends IFieldTemplateItemsOptions
 > = T['includeErrors'] extends false
 	? IFieldTemplateItem[]
 	: { items: IFieldTemplateItem[]; errors: SpruceError[] }
 
-interface IAddonItem {
+export interface IAddonItem {
 	path: string
 	registration: IFieldRegistration
 	isLocal: boolean
@@ -63,7 +63,7 @@ export default class SchemaStore extends AbstractStore {
 	public async schemaTemplateItems<T extends ISchemaTemplateItemsOptions>(
 		options: T
 	): Promise<SchemaTemplateItemsReturnType<T>> {
-		const { includeErrors = true, localLookupDir } = options
+		const { includeErrors = true, localLookupDirs } = options
 
 		/** Get all schemas from api  */
 		// TODO load from api
@@ -85,11 +85,12 @@ export default class SchemaStore extends AbstractStore {
 		// Local
 		const localErrors: SpruceError[] = []
 		// TODO: Cleanup / break up statements for easier readability
+		const globbyPaths = localLookupDirs.map(d =>
+			pathUtil.join(d, '/**/*.definition.ts')
+		)
 		const localDefinitions = (
 			await Promise.all(
-				(
-					await globby([pathUtil.join(localLookupDir, '/**/*.definition.ts')])
-				).map(async file => {
+				(await globby(globbyPaths)).map(async file => {
 					try {
 						const definition = await this.services.child.importDefault(file, {
 							cwd: this.cwd

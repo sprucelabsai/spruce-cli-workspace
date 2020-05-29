@@ -33,8 +33,9 @@ export default class SchemaCommand extends AbstractCommand {
 			)
 			.option(
 				'-l, --lookupDir <lookupDir>',
-				'Where should I look for definitions files (*.definition.ts)?',
-				'./src/schemas'
+				'Where should I look for definitions files (*.definition.ts)? Multiple paths may be passed',
+				this.collect,
+				['./src/schemas', './src/events']
 			)
 			.option(
 				'-d, --destinationDir <dir>',
@@ -55,9 +56,8 @@ export default class SchemaCommand extends AbstractCommand {
 	}
 
 	/** Sync all schemas and fields (also pulls from the cloud) */
-	public async sync(lookupDirOption: string | undefined, cmd: Command) {
+	public async sync(lookupDir: string | undefined, cmd: Command) {
 		const destinationDir = cmd.destinationDir as string
-		const lookupDir = lookupDirOption || (cmd.lookupDir as string)
 		const clean = !!cmd.clean
 		const force = !!cmd.force
 
@@ -71,12 +71,15 @@ export default class SchemaCommand extends AbstractCommand {
 
 		this.term.startLoading('Fetching schemas and field types')
 
+		const lookupDirs: string[] = lookupDir ? [lookupDir] : cmd.lookupDir
+
+		const fullLookupPaths = lookupDirs.map(d => this.resolvePath(d))
 		// Load schemas
 		const {
 			items: schemaTemplateItems,
 			errors: schemaTemplateErrors
 		} = await this.stores.schema.schemaTemplateItems({
-			localLookupDir: this.resolvePath(lookupDir)
+			localLookupDirs: fullLookupPaths
 		})
 
 		if (schemaTemplateItems.length === 0) {

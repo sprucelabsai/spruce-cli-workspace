@@ -1,31 +1,25 @@
+import { IMercuryEventContract } from '@sprucelabs/mercury'
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+
 export const SpruceEvents = {
-	core: {
-		DidEnter: 'did-enter',
-		DidLeave: 'did-leave'
-	},
-	booking: {
-		GetAppointments: 'booking:get-appointments'
+	{{#each eventTemplate}}
+	{{@key}}: {
+		{{#each eventTemplateItems}}
+		{{eventNamePascal}}: '{{eventName}}',
+		{{/each}}
 	}
+	{{/each}}
 } as const
 
-interface IMyEventContract extends IMercuryEventContract {
-	'did-enter': {
-		payload: {
-			userId: string
-			enteredAt: string
-		}
-		body: {
-			somethingElse: string
-		}
-	}
-	'did-leave': {
-		body: {
-			userId: string
-		}
-	}
-	'booking:get-appointments': {
-		body: {
-			appointmentIds?: string[]
-		}
-	}
+export interface IMyEventContract extends IMercuryEventContract {
+	{{#each eventTemplate}}
+	{{#if (eq @key 'Local')}}
+	{{#each eventTemplateItems}}
+	'{{eventName}}': {
+		emitPayload: SpruceSchemas.Local.I{{eventNamePascal}}EmitPayload
+		responsePayload: SpruceSchemas.Local.I{{eventNamePascal}}ResponsePayload
+	},
+	{{/each}}
+	{{/if}}
+	{{/each}}
 }

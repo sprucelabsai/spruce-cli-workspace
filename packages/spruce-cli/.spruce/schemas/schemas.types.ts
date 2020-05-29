@@ -2365,3 +2365,337 @@ export namespace SpruceSchemas.Local.TestFeature {
 	/** The type of a schema instance built off this definition */
 	export type Instance = Schema<SpruceSchemas.Local.TestFeature.IDefinition>
 }
+
+export namespace SpruceSchemas.Local {
+	/** The payload for ListEvents */
+	export interface IListEventsEmitPayload {
+		/** Limit search to event names. */
+		eventNames?: string[] | undefined | null
+	}
+}
+
+export namespace SpruceSchemas.Local.ListEventsEmitPayload {
+	export const id = 'listEventsEmitPayload'
+
+	/** The interface for the schema definition for a List events payload */
+	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+		id: 'listEventsEmitPayload'
+		name: 'List events payload'
+		description: 'The payload for ListEvents'
+
+		fields: {
+			/** Limit search to event names. */
+			eventNames: {
+				label: 'Limit search to event names'
+				type: SpruceSchema.FieldType.Text
+
+				isArray: true
+
+				options: undefined
+			}
+		}
+	}
+
+	/** The schema definition for a List events payload */
+	export const definition: SpruceSchemas.Local.ListEventsEmitPayload.IDefinition = {
+		id: 'listEventsEmitPayload',
+		name: 'List events payload',
+		description: 'The payload for ListEvents',
+
+		fields: {
+			/** Limit search to event names. */
+			eventNames: {
+				label: 'Limit search to event names',
+				type: SpruceSchema.FieldType.Text,
+
+				isArray: true,
+
+				options: undefined
+			}
+		}
+	}
+
+	/** The type of a schema instance built off this definition */
+	export type Instance = Schema<
+		SpruceSchemas.Local.ListEventsEmitPayload.IDefinition
+	>
+}
+
+export namespace SpruceSchemas.Local {
+	/**  */
+	export interface IListEventsResponsePayloadEvents {
+		/** The full event name including slug. i.e. "booking:get-appointments". */
+		eventName?: string | undefined | null
+		/** The skill slug associated with this event. */
+		slug?: string | undefined | null
+	}
+}
+
+export namespace SpruceSchemas.Local.ListEventsResponsePayloadEvents {
+	export const id = 'listEventsResponsePayloadEvents'
+
+	/** The interface for the schema definition for a Event definition */
+	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+		id: 'listEventsResponsePayloadEvents'
+		name: 'Event definition'
+		description: ''
+
+		fields: {
+			/** The full event name including slug. i.e. "booking:get-appointments". */
+			eventName: {
+				label: 'The full event name including slug. i.e. "booking:get-appointments"'
+				type: SpruceSchema.FieldType.Text
+
+				options: undefined
+			}
+			/** The skill slug associated with this event. */
+			slug: {
+				label: 'The skill slug associated with this event'
+				type: SpruceSchema.FieldType.Text
+
+				options: undefined
+			}
+		}
+	}
+
+	/** The schema definition for a Event definition */
+	export const definition: SpruceSchemas.Local.ListEventsResponsePayloadEvents.IDefinition = {
+		id: 'listEventsResponsePayloadEvents',
+		name: 'Event definition',
+		description: '',
+
+		fields: {
+			/** The full event name including slug. i.e. "booking:get-appointments". */
+			eventName: {
+				label:
+					'The full event name including slug. i.e. "booking:get-appointments"',
+				type: SpruceSchema.FieldType.Text,
+
+				options: undefined
+			},
+			/** The skill slug associated with this event. */
+			slug: {
+				label: 'The skill slug associated with this event',
+				type: SpruceSchema.FieldType.Text,
+
+				options: undefined
+			}
+		}
+	}
+
+	/** The type of a schema instance built off this definition */
+	export type Instance = Schema<
+		SpruceSchemas.Local.ListEventsResponsePayloadEvents.IDefinition
+	>
+}
+
+export namespace SpruceSchemas.Local {
+	/** A list of events */
+	export interface IListEventsResponsePayload {
+		events?:
+			| SpruceSchemas.Local.IListEventsResponsePayloadEvents
+			| undefined
+			| null
+	}
+}
+
+export namespace SpruceSchemas.Local.ListEventsResponsePayload {
+	export const id = 'listEventsResponsePayload'
+
+	/** The interface for the schema definition for a List events response */
+	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+		id: 'listEventsResponsePayload'
+		name: 'List events response'
+		description: 'A list of events'
+
+		fields: {
+			/** . */
+			events: {
+				type: SpruceSchema.FieldType.Schema
+
+				options: {
+					schemas: SpruceSchemas.Local.ListEventsResponsePayloadEvents.IDefinition[]
+				}
+			}
+		}
+	}
+
+	/** The schema definition for a List events response */
+	export const definition: SpruceSchemas.Local.ListEventsResponsePayload.IDefinition = {
+		id: 'listEventsResponsePayload',
+		name: 'List events response',
+		description: 'A list of events',
+
+		fields: {
+			/** . */
+			events: {
+				type: SpruceSchema.FieldType.Schema,
+
+				options: {
+					schemas: [
+						SpruceSchemas.Local.ListEventsResponsePayloadEvents.definition
+					]
+				}
+			}
+		}
+	}
+
+	/** The type of a schema instance built off this definition */
+	export type Instance = Schema<
+		SpruceSchemas.Local.ListEventsResponsePayload.IDefinition
+	>
+}
+
+export namespace SpruceSchemas.Local {
+	/** Emit Payload: asdlkfjalkdfjg */
+	export interface ITestThingsEmitPayload {
+		/** First Field. */
+		fieldName1: boolean
+		/** Second Field. A hint */
+		fieldName2: number
+	}
+}
+
+export namespace SpruceSchemas.Local.TestThingsEmitPayload {
+	export const id = 'testThingsEmitPayload'
+
+	/** The interface for the schema definition for a test things */
+	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+		id: 'testThingsEmitPayload'
+		name: 'test things'
+		description: 'Emit Payload: asdlkfjalkdfjg'
+
+		fields: {
+			/** First Field. */
+			fieldName1: {
+				label: 'First Field'
+				type: SpruceSchema.FieldType.Boolean
+
+				isRequired: true
+
+				options: undefined
+			}
+			/** Second Field. A hint */
+			fieldName2: {
+				label: 'Second Field'
+				type: SpruceSchema.FieldType.Number
+
+				isRequired: true
+				hint: 'A hint'
+
+				options: undefined
+			}
+		}
+	}
+
+	/** The schema definition for a test things */
+	export const definition: SpruceSchemas.Local.TestThingsEmitPayload.IDefinition = {
+		id: 'testThingsEmitPayload',
+		name: 'test things',
+		description: 'Emit Payload: asdlkfjalkdfjg',
+
+		fields: {
+			/** First Field. */
+			fieldName1: {
+				label: 'First Field',
+				type: SpruceSchema.FieldType.Boolean,
+
+				isRequired: true,
+
+				options: undefined
+			},
+			/** Second Field. A hint */
+			fieldName2: {
+				label: 'Second Field',
+				type: SpruceSchema.FieldType.Number,
+
+				isRequired: true,
+				hint: 'A hint',
+
+				options: undefined
+			}
+		}
+	}
+
+	/** The type of a schema instance built off this definition */
+	export type Instance = Schema<
+		SpruceSchemas.Local.TestThingsEmitPayload.IDefinition
+	>
+}
+
+export namespace SpruceSchemas.Local {
+	/** Response Payload: asdlkfjalkdfjg */
+	export interface ITestThingsResponsePayload {
+		/** First Field. */
+		fieldName1: boolean
+		/** Second Field. A hint */
+		fieldName2: number
+	}
+}
+
+export namespace SpruceSchemas.Local.TestThingsResponsePayload {
+	export const id = 'testThingsResponsePayload'
+
+	/** The interface for the schema definition for a test things */
+	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+		id: 'testThingsResponsePayload'
+		name: 'test things'
+		description: 'Response Payload: asdlkfjalkdfjg'
+
+		fields: {
+			/** First Field. */
+			fieldName1: {
+				label: 'First Field'
+				type: SpruceSchema.FieldType.Boolean
+
+				isRequired: true
+
+				options: undefined
+			}
+			/** Second Field. A hint */
+			fieldName2: {
+				label: 'Second Field'
+				type: SpruceSchema.FieldType.Number
+
+				isRequired: true
+				hint: 'A hint'
+
+				options: undefined
+			}
+		}
+	}
+
+	/** The schema definition for a test things */
+	export const definition: SpruceSchemas.Local.TestThingsResponsePayload.IDefinition = {
+		id: 'testThingsResponsePayload',
+		name: 'test things',
+		description: 'Response Payload: asdlkfjalkdfjg',
+
+		fields: {
+			/** First Field. */
+			fieldName1: {
+				label: 'First Field',
+				type: SpruceSchema.FieldType.Boolean,
+
+				isRequired: true,
+
+				options: undefined
+			},
+			/** Second Field. A hint */
+			fieldName2: {
+				label: 'Second Field',
+				type: SpruceSchema.FieldType.Number,
+
+				isRequired: true,
+				hint: 'A hint',
+
+				options: undefined
+			}
+		}
+	}
+
+	/** The type of a schema instance built off this definition */
+	export type Instance = Schema<
+		SpruceSchemas.Local.TestThingsResponsePayload.IDefinition
+	>
+}
