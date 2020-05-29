@@ -2,7 +2,7 @@ import { ISchemaDefinition, FieldType } from '@sprucelabs/schema'
 import { ISchemaTemplateItem } from '@sprucelabs/schema'
 import { SchemaField } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
-import { camelCase } from 'lodash'
+import { camelCase, uniq } from 'lodash'
 
 handlebars.registerHelper('importRelatedDefinitions', function(
 	definition: ISchemaDefinition,
@@ -26,7 +26,7 @@ handlebars.registerHelper('importRelatedDefinitions', function(
 			'importRelatedDefinitions needs schemaTemplateItems passed to parent template'
 		)
 	}
-	debugger
+
 	const fields = Object.values(definition.fields ?? {})
 	const imports: string[] = []
 
@@ -39,16 +39,14 @@ handlebars.registerHelper('importRelatedDefinitions', function(
 					imports.push(
 						`import ${matched.nameCamel}Definition_${
 							matched.namespace
-						} from '#spruce/schemas/${camelCase(
-							matched.namespace.toLowerCase()
-						)}'`
+						} from '#spruce/schemas/${camelCase(matched.namespace)}/${
+							matched.nameCamel
+						}.definition'`
 					)
 				}
 			})
 		}
 	})
 
-	debugger
-
-	return imports.join('\n')
+	return uniq(imports).join('\n')
 })
