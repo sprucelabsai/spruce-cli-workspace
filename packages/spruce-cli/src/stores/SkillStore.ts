@@ -2,6 +2,7 @@ import path from 'path'
 import Schema from '@sprucelabs/schema'
 import { parse as parseEnv } from 'dotenv'
 import fs from 'fs-extra'
+import skillDefinition from '#spruce/schemas/core/skill.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import log from '../lib/log'
 import { SpruceEvents } from '../types/events-generated'
@@ -18,7 +19,7 @@ export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
 
 	/** Build a skill with the passed values */
 	public static skill(values?: Partial<ISkill>) {
-		return new Schema(SpruceSchemas.Core.Skill.definition, values)
+		return new Schema(skillDefinition, values)
 	}
 
 	/** Get all skills the user has access to */

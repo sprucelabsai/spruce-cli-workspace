@@ -8,6 +8,7 @@ import {
 } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import { ErrorCode } from '#spruce/errors/codes.types'
+import autoloaderDefinition from '#spruce/schemas/local/autoloader.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
 import AbstractUtility from './AbstractUtility'
@@ -45,8 +46,7 @@ export default class AutoloaderUtility extends AbstractUtility {
 	}): Promise<IAutoLoaderTemplateItem> {
 		const {
 			directory,
-			pattern = SpruceSchemas.Local.Autoloader.definition.fields.pattern
-				.defaultValue,
+			pattern = autoloaderDefinition.fields.pattern.defaultValue,
 			cwd = this.cwd
 		} = options
 

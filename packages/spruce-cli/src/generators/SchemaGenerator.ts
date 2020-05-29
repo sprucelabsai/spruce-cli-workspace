@@ -2,6 +2,7 @@ import path from 'path'
 import { ISchemaDefinition } from '@sprucelabs/schema'
 import { IFieldTemplateItem, ISchemaTemplateItem } from '@sprucelabs/schema'
 import { templates } from '@sprucelabs/spruce-templates'
+import fs from 'fs-extra'
 import { ErrorCode } from '#spruce/errors/codes.types'
 import SpruceError from '../errors/SpruceError'
 import AbstractGenerator from './AbstractGenerator'
@@ -100,7 +101,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 		}
 	}
 
-	/** Generate the field type unions */
+	/** Generate the type files required for a schema */
 	public async generateSchemaTypes(
 		destinationDir: string,
 		options: IGenerateSchemaTypesOptions
@@ -136,7 +137,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 		// Generate in stages, starting with core only
 		const coreSchemaTemplateItems = schemaTemplateItems.filter(
-			i => i.namespace === 'core'
+			i => i.namespace === 'Core'
 		)
 
 		const coreFieldTemplateItems = fieldTemplateItems.filter(
@@ -214,35 +215,36 @@ export default class SchemaGenerator extends AbstractGenerator {
 						}
 					})
 				}
+				// definitions for each schema
+				const definitions = await Promise.all(
+					schemaTemplateItems.map(async templateItem => {
+						const destination = path.join(
+							destinationDir,
+							this.utilities.names.toCamel(templateItem.namespace),
+							`${templateItem.nameCamel}.definition.ts`
+						)
+
+						const definition = templates.normalizedDefinition({
+							...templateItem,
+							schemaTemplateItems,
+							fieldTemplateItems,
+							valueTypes
+						})
+
+						await fs.ensureFile(destination)
+						await fs.writeFile(destination, definition)
+
+						return destination
+					})
+				)
+
+				console.log(definitions)
 
 				// Schema types
 				const schemaTypesContents = templates.schemasTypes({
 					schemaTemplateItems,
 					fieldTemplateItems,
-					valueTypeGenerator: (renderAs, definition) => {
-						// If there is a value set on the definition, return that instead of the generated type
-						if (typeof definition.value !== 'undefined') {
-							if (typeof definition.value === 'string') {
-								return '`' + definition.value + '`'
-							} else {
-								return JSON.stringify(definition.value)
-							}
-						}
-
-						const key = this.services.valueType.generateKey(
-							renderAs,
-							definition
-						)
-						const valueType = valueTypes[key]
-						if (!valueType) {
-							throw new Error(
-								`failed to field ${renderAs} for ${key}: field: ${JSON.stringify(
-									definition
-								)}`
-							)
-						}
-						return valueType
-					}
+					valueTypes
 				})
 
 				//Write out schema types

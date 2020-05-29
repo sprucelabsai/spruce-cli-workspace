@@ -1,7 +1,8 @@
 import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
 import { ErrorCode } from '#spruce/errors/codes.types'
-import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import autoloaderDefinition from '#spruce/schemas/local/autoloader.definition'
+import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
 import SpruceError from '../errors/SpruceError'
 import AbstractCommand from './AbstractCommand'
 import { FieldType } from '#spruce:schema/fields/fieldType'
@@ -14,7 +15,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 			.option(
 				'-p, --pattern <pattern>',
 				'Only autoload files in this directory that match the globby pattern.',
-				SpruceSchemas.Local.Autoloader.definition.fields.pattern.defaultValue
+				autoloaderDefinition.fields.pattern.defaultValue
 			)
 			.option(
 				'-l, --lookupDir <lookupDir>',
@@ -143,7 +144,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 			const nameCamelPlural = names.toCamel(namePascalPlural)
 
 			const form = this.formBuilder({
-				definition: SpruceSchemas.Local.NamedTemplateItem.definition,
+				definition: namedTemplateItemDefinition,
 				initialValues: {
 					namePascal,
 					namePascalPlural,

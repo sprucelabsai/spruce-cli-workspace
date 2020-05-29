@@ -3,8 +3,10 @@ import path from 'path'
 import {
 	ISchemaDefinition,
 	ISchemaTemplateItem,
-	IFieldTemplateItem
+	IFieldTemplateItem,
+	FieldDefinition
 } from '@sprucelabs/schema'
+import { TemplateRenderAs } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
 import log from './src/lib/log'
 // Import addons
@@ -14,7 +16,7 @@ import './src/addons/fieldDefinitionValueType.addon'
 import './src/addons/fieldTypeEnum.addon'
 import './src/addons/operators.addon'
 import './src/addons/gt.addon'
-import './src/addons/gt.addon'
+import './src/addons/importRelatedDefinitions.addon'
 import './src/addons/pascalCase.addon'
 import './src/addons/fieldDefinitionPartial.addon'
 import './src/addons/schemaDefinitionPartial.addon'
@@ -22,15 +24,16 @@ import './src/addons/schemaValuesPartial.addon'
 import './src/addons/json.addon'
 import './src/addons/isDefined.addon'
 import {
-	IValueTypeGenerator,
 	IAutoLoaderTemplateItem,
 	IRootAutoloaderTemplateItem,
 	IDirectoryTemplate,
 	DirectoryTemplateKind,
-	IDirectoryTemplateContextMap
+	IDirectoryTemplateContextMap,
+	IValueTypes
 } from './src/types/templates.types'
 import DirectoryTemplateUtility from './src/utilities/DirectoryTemplateUtility'
-import importExtractor from './src/utilities/importExtractor'
+import importExtractorUtility from './src/utilities/importExtractorUtility'
+import KeyGeneratorUtility from './src/utilities/KeyGeneratorUtility'
 
 log.info('Addons imported')
 
@@ -45,6 +48,10 @@ const schemasTypes: string = fs
 
 const definition: string = fs
 	.readFileSync(path.join(templatePath, 'schemas/definition.hbs'))
+	.toString()
+
+const normalizedDefinition: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/normalized.definition.hbs'))
 	.toString()
 
 const schemaExample: string = fs
@@ -105,10 +112,22 @@ export const templates = {
 	schemasTypes(options: {
 		schemaTemplateItems: ISchemaTemplateItem[]
 		fieldTemplateItems: IFieldTemplateItem[]
-		valueTypeGenerator: IValueTypeGenerator
+		valueTypes: IValueTypes
 	}) {
-		const imports = importExtractor(options.fieldTemplateItems)
+		const imports = importExtractorUtility(options.fieldTemplateItems)
 		const template = handlebars.compile(schemasTypes)
+		return template({ ...options, imports })
+	},
+	/** Will return the template for a definition that has been normalized */
+	normalizedDefinition(
+		options: ISchemaTemplateItem & {
+			schemaTemplateItems: ISchemaTemplateItem[]
+			fieldTemplateItems: IFieldTemplateItem[]
+			valueTypes: IValueTypes
+		}
+	) {
+		const imports = importExtractorUtility(options.fieldTemplateItems)
+		const template = handlebars.compile(normalizedDefinition)
 		return template({ ...options, imports })
 	},
 
@@ -264,12 +283,16 @@ export const templates = {
 		}
 
 		return false
+	},
+	/** For generating cache keys against a schema field  */
+	generateFieldKey(renderAs: TemplateRenderAs, definition: FieldDefinition) {
+		return KeyGeneratorUtility.generateFieldKey(renderAs, definition)
 	}
 }
 
 /** All the templates */
 export type Templates = typeof templates
-export { default as importExtractor } from './src/utilities/importExtractor'
+export { default as importExtractor } from './src/utilities/importExtractorUtility'
 
 export default handlebars
 export * from './src/types/templates.types'

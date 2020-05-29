@@ -1,4 +1,5 @@
 import Schema from '@sprucelabs/schema'
+import autoloaderDefinition from '#spruce/schemas/local/autoloader.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import AbstractStore, { IBaseStoreSettings, StoreScope } from './AbstractStore'
 
@@ -27,10 +28,7 @@ export default class AutoloaderStore extends AbstractStore<
 	}
 
 	public addAutoloader(autoloader: Autoloader, cwd?: string) {
-		const instance = new Schema(
-			SpruceSchemas.Local.Autoloader.definition,
-			autoloader
-		)
+		const instance = new Schema(autoloaderDefinition, autoloader)
 		const current = cwd || this.cwd
 		const values = instance.getValues({
 			byField: {

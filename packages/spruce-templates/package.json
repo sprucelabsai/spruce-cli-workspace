@@ -41,7 +41,8 @@
 		"@sprucelabs/schema": "^1.35.0",
 		"globby": "^11.0.0",
 		"handlebars": "^4.7.4",
-		"lodash": "^4.17.15"
+		"lodash": "^4.17.15",
+		"sha1": "^1.1.1"
 	},
 	"devDependencies": {
 		"@types/lodash": "^4.14.149",

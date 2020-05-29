@@ -1,0 +1,9 @@
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import * as SpruceSchema from '@sprucelabs/schema'
+{{ importRelatedDefinitions definition }}
+
+const {{nameCamel}}Definition: SpruceSchemas.{{namespace}}.{{namePascal}}.IDefinition  = {
+	{{> schemaDefinition schema=definition renderAs="value" }}
+}
+
+export default {{nameCamel}}definition

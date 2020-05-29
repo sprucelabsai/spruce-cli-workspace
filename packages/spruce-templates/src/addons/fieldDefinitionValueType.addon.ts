@@ -1,18 +1,17 @@
 import { FieldDefinition, TemplateRenderAs } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
-import { IValueTypeGenerator } from '../..'
+import { IValueTypes } from '../..'
+import KeyGeneratorUtility from '../utilities/KeyGeneratorUtility'
 
 /* The type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */
 handlebars.registerHelper('fieldDefinitionValueType', function(
-	fieldDefinition: FieldDefinition,
+	definition: FieldDefinition,
 	renderAs: TemplateRenderAs,
 	options
 ) {
 	const {
 		data: { root }
 	} = options
-
-	const valueTypeGenerator: IValueTypeGenerator = root?.valueTypeGenerator
 
 	if (
 		renderAs !== TemplateRenderAs.Value &&
@@ -24,13 +23,33 @@ handlebars.registerHelper('fieldDefinitionValueType', function(
 		)
 	}
 
-	if (!valueTypeGenerator) {
+	const valueTypes: IValueTypes = root?.valueTypes
+	if (!valueTypes) {
 		throw new Error(
 			'fieldDefinitionValueType helper needs a valueTypeGenerator in the root context'
 		)
 	}
 
-	const valueType = valueTypeGenerator(renderAs, fieldDefinition)
+	// If there is a value set on the definition, return that instead of the generated type
+	if (typeof definition.value !== 'undefined') {
+		if (typeof definition.value === 'string') {
+			return '`' + definition.value + '`'
+		} else {
+			return JSON.stringify(definition.value)
+		}
+	}
+
+	const key = KeyGeneratorUtility.generateFieldKey(renderAs, definition)
+	const valueType = valueTypes[key]
+	if (!valueType) {
+		throw new Error(
+			`Unable to render value type for field ${JSON.stringify(
+				definition,
+				null,
+				2
+			)}`
+		)
+	}
 
 	return valueType
 })
