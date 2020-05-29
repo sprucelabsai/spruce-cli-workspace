@@ -3,6 +3,7 @@ import { ISchemaDefinition } from '@sprucelabs/schema'
 import { IFieldTemplateItem, ISchemaTemplateItem } from '@sprucelabs/schema'
 import { templates } from '@sprucelabs/spruce-templates'
 import fs from 'fs-extra'
+import { uniq } from 'lodash'
 import { ErrorCode } from '#spruce/errors/codes.types'
 import SpruceError from '../errors/SpruceError'
 import AbstractGenerator from './AbstractGenerator'
@@ -112,6 +113,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			fieldsTypes: string
 			fieldType: string
 			fieldClassMap: string
+			normalizedDefinitions: { id: string; path: string }[]
 		}
 	}> {
 		const { fieldTemplateItems, schemaTemplateItems } = options
@@ -160,6 +162,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 		]
 
 		const resultsByStage = []
+		const normalizedDefinitions: { id: string; path: string }[] = []
 
 		for (const stage of stages) {
 			const {
@@ -216,29 +219,33 @@ export default class SchemaGenerator extends AbstractGenerator {
 					})
 				}
 				// definitions for each schema
-				const definitions = await Promise.all(
+				await Promise.all(
 					schemaTemplateItems.map(async templateItem => {
-						const destination = path.join(
-							destinationDir,
-							this.utilities.names.toCamel(templateItem.namespace),
-							`${templateItem.nameCamel}.definition.ts`
-						)
+						// only normalize this schema once for all stages
+						if (!normalizedDefinitions.find(n => n.id === templateItem.id)) {
+							const destination = path.join(
+								destinationDir,
+								this.utilities.names.toCamel(templateItem.namespace),
+								`${templateItem.nameCamel}.definition.ts`
+							)
 
-						const definition = templates.normalizedDefinition({
-							...templateItem,
-							schemaTemplateItems,
-							fieldTemplateItems,
-							valueTypes
-						})
+							const definition = templates.normalizedDefinition({
+								...templateItem,
+								schemaTemplateItems,
+								fieldTemplateItems,
+								valueTypes
+							})
 
-						await fs.ensureFile(destination)
-						await fs.writeFile(destination, definition)
+							await fs.ensureFile(destination)
+							await fs.writeFile(destination, definition)
 
-						return destination
+							normalizedDefinitions.push({
+								id: templateItem.namePascal,
+								path: destination
+							})
+						}
 					})
 				)
-
-				console.log(definitions)
 
 				// Schema types
 				const schemaTypesContents = templates.schemasTypes({

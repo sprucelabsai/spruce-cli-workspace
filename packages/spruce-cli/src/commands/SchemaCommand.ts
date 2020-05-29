@@ -180,7 +180,7 @@ export default class SchemaCommand extends AbstractCommand {
 			}
 		)
 
-		const { resultsByStage } = results
+		const { resultsByStage, generatedFiles } = results
 		const errors: SpruceError[] = []
 
 		resultsByStage.forEach(results => {
@@ -226,17 +226,21 @@ export default class SchemaCommand extends AbstractCommand {
 			createdFiles: [
 				{
 					name: 'Schema definitions',
-					path: results.generatedFiles.schemaTypes
+					path: generatedFiles.schemaTypes
 				},
-				{ name: 'Field definitions', path: results.generatedFiles.fieldsTypes },
+				{ name: 'Field definitions', path: generatedFiles.fieldsTypes },
 				{
 					name: 'Field type enum',
-					path: results.generatedFiles.fieldType
+					path: generatedFiles.fieldType
 				},
 				{
 					name: 'Field class map',
-					path: results.generatedFiles.fieldClassMap
-				}
+					path: generatedFiles.fieldClassMap
+				},
+				...generatedFiles.normalizedDefinitions.map(n => ({
+					name: n.id,
+					path: n.path
+				}))
 			]
 		})
 
