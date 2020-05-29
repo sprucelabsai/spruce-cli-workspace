@@ -65,7 +65,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 		// TODO what should the namespace be? slug pulled from somewhere
 		const schemaTemplateItems = await this.stores.schema.schemaTemplateItems({
 			includeErrors: false,
-			localLookupDir: schemaLookupDir
+			localLookupDirs: [schemaLookupDir]
 		})
 
 		// Contents

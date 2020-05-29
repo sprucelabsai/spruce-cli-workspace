@@ -24,11 +24,12 @@ export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
 	/** Get all skills the user has access to */
 	public async skills(userToken: string): Promise<ISkill[]> {
 		const mercury = await this.mercuryForUser(userToken)
-		const result = await mercury.emit<
-			SpruceEvents.Core.GetDeveloperSkills.IPayload,
-			SpruceEvents.Core.GetDeveloperSkills.IResponseBody
-		>({ eventName: SpruceEvents.Core.GetDeveloperSkills.name })
+		const result = await mercury.emit({
+			eventName: SpruceEvents.Core.GetDeveloperSkills.name
+		})
 
+		// TODO: Remove ts-ignore when we have core event responses defined
+		// @ts-ignore
 		const skills = result.responses[0].payload.skills.map(values => {
 			const instance = SkillStore.skill(values)
 			instance.validate()

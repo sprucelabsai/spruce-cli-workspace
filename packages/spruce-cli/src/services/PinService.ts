@@ -7,10 +7,7 @@ export default class PinService extends AbstractService {
 	/** Give me a phone and i'll send you a pin */
 	public async requestPin(phone: string) {
 		try {
-			await this.mercury.emit<
-				SpruceEvents.Core.RequestLogin.IPayload,
-				SpruceEvents.Core.RequestLogin.IResponseBody
-			>({
+			await this.mercury.emit({
 				eventName: SpruceEvents.Core.RequestLogin.name,
 				payload: {
 					phoneNumber: phone,

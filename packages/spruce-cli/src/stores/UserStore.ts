@@ -1,4 +1,3 @@
-import { IMercuryGQLBody } from '@sprucelabs/mercury'
 import Schema from '@sprucelabs/schema'
 import gql from 'graphql-tag'
 import jwt from 'jsonwebtoken'
@@ -35,10 +34,7 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 	/** Login and get a user instance back */
 	public async userWithTokenFromPhone(phone: string, pin: string) {
 		//
-		const loginResult = await this.mercury.emit<
-			SpruceEvents.Core.Login.IPayload,
-			SpruceEvents.Core.Login.IResponseBody
-		>({
+		const loginResult = await this.mercury.emit({
 			eventName: SpruceEvents.Core.Login.name,
 			payload: {
 				phoneNumber: phone,
@@ -46,6 +42,8 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 			}
 		})
 
+		// TODO: Remove ts-ignore when we have core event responses defined
+		// @ts-ignore
 		const token = loginResult.responses[0]?.payload.jwt
 
 		if (!token) {
@@ -117,12 +115,7 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 				}
 			`.loc?.source.body || ''
 
-		const result = await this.mercury.emit<
-			SpruceEvents.Core.Gql.IPayload,
-			IMercuryGQLBody<{
-				User: SpruceSchemas.Core.IUser
-			}>
-		>({
+		const result = await this.mercury.emit({
 			eventName: SpruceEvents.Core.Gql.name,
 			payload: {
 				query,
@@ -132,6 +125,8 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 			}
 		})
 
+		// TODO: Remove ts-ignore when we have core event responses defined
+		// @ts-ignore
 		const values = result.responses[0].payload.data.User
 		const user = UserStore.user(values)
 
