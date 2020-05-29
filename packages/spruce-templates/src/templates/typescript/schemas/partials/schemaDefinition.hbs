@@ -1,7 +1,6 @@
 id: '{{{escape schema.id}}}',
-name: '{{{escape schema.name}}}',
+name: '{{{escape schema.name}}}'
 {{#if schema.description}},description: '{{{escape schema.description}}}'{{/if}}
-
 {{#if schema.dynamicKeySignature}},dynamicKeySignature: { 
     {{> fieldDefinition field=schema.dynamicKeySignature renderAs=renderAs}} 
 }{{/if}}
