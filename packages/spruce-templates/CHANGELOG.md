@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.5.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.5.0...v10.5.1) (2020-05-21)
+
+**Note:** Version bump only for package @sprucelabs/spruce-templates
+
+
+
+
+
+# [10.5.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.4.0...v10.5.0) (2020-05-21)
+
+
+### Features
+
+* name change ([a5424e4](https://github.com/sprucelabsai/spruce-cli-workspace/commit/a5424e4))
+
+
+
+
+
 # [10.4.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.3.1...v10.4.0) (2020-05-21)
 
 
