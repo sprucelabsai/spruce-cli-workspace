@@ -3,7 +3,6 @@ import { ISchemaDefinition } from '@sprucelabs/schema'
 import { IFieldTemplateItem, ISchemaTemplateItem } from '@sprucelabs/schema'
 import { templates } from '@sprucelabs/spruce-templates'
 import fs from 'fs-extra'
-import { uniq } from 'lodash'
 import { ErrorCode } from '#spruce/errors/codes.types'
 import SpruceError from '../errors/SpruceError'
 import AbstractGenerator from './AbstractGenerator'
@@ -286,7 +285,8 @@ export default class SchemaGenerator extends AbstractGenerator {
 				schemaTypes: schemaTypesDestination,
 				fieldType: fieldTypeDestination,
 				fieldsTypes: fieldsTypesDestination,
-				fieldClassMap: fieldClassMapDestination
+				fieldClassMap: fieldClassMapDestination,
+				normalizedDefinitions
 			}
 		}
 	}

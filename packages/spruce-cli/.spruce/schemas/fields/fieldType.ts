@@ -27,5 +27,5 @@ export enum FieldType {
 	/** Stored as string, lets user select between available options. */
 	Select = 'select',
 	/** A text field. Converts non-strings into strings by calling toString(). Size set by options. */
-	Text = 'text',
+	Text = 'text'
 }

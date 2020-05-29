@@ -37,7 +37,7 @@ handlebars.registerHelper('importRelatedDefinitions', function(
 				const matched = schemaTemplateItems.find(t => t.id === schemaId)
 				if (matched) {
 					imports.push(
-						`import ${matched.nameCamel}Definition_${
+						`import ${matched.nameCamel}Definition${
 							matched.namespace
 						} from '#spruce/schemas/${camelCase(matched.namespace)}/${
 							matched.nameCamel

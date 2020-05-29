@@ -1,29 +1,25 @@
 import * as SpruceSchema from '@sprucelabs/schema'
+import jobDefinitionCore from '#spruce/schemas/core/job.definition'
+import locationDefinitionCore from '#spruce/schemas/core/location.definition'
+import userDefinitionCore from '#spruce/schemas/core/user.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import jobDefinition from './job.definition'
-import locationDefinition from './location.definition'
-import userDefinition from './user.definition'
 
-const userLocationdefinition: SpruceSchemas.Core.UserLocation.IDefinition = {
+const userLocationDefinition: SpruceSchemas.Core.UserLocation.IDefinition = {
 	id: 'userLocation',
 	name: 'User location',
 	description: 'A location a person has given access to themselves.',
-
 	fields: {
 		/** Id. */
 		id: {
 			label: 'Id',
 			type: SpruceSchema.FieldType.Id,
-
 			options: undefined
 		},
 		/** Name. */
 		role: {
 			label: 'Name',
 			type: SpruceSchema.FieldType.Select,
-
 			isRequired: true,
-
 			options: {
 				choices: [
 					{ value: 'owner', label: 'Owner' },
@@ -38,16 +34,13 @@ const userLocationdefinition: SpruceSchemas.Core.UserLocation.IDefinition = {
 		status: {
 			label: 'Status',
 			type: SpruceSchema.FieldType.Text,
-
 			options: undefined
 		},
 		/** Total visits. */
 		visits: {
 			label: 'Total visits',
 			type: SpruceSchema.FieldType.Number,
-
 			isRequired: true,
-
 			options: {
 				choices: [
 					{ value: 'owner', label: 'Owner' },
@@ -62,37 +55,30 @@ const userLocationdefinition: SpruceSchemas.Core.UserLocation.IDefinition = {
 		lastRecordedVisit: {
 			label: 'Last visit',
 			type: SpruceSchema.FieldType.DateTime,
-
 			options: undefined
 		},
 		/** Job. */
 		job: {
 			label: 'Job',
 			type: SpruceSchema.FieldType.Schema,
-
 			isRequired: true,
-
-			options: { schemas: [jobDefinition] }
+			options: { schemas: [jobDefinitionCore] }
 		},
 		/** Location. */
 		location: {
 			label: 'Location',
 			type: SpruceSchema.FieldType.Schema,
-
 			isRequired: true,
-
-			options: { schemas: [locationDefinition] }
+			options: { schemas: [locationDefinitionCore] }
 		},
 		/** User. */
 		user: {
 			label: 'User',
 			type: SpruceSchema.FieldType.Schema,
-
 			isRequired: true,
-
-			options: { schemas: [userDefinition] }
+			options: { schemas: [userDefinitionCore] }
 		}
 	}
 }
 
-export default userLocationdefinition
+export default userLocationDefinition

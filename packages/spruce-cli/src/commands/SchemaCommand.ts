@@ -2,6 +2,7 @@ import { templates } from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
 import { Feature } from '#spruce/autoloaders/features'
 import { ErrorCode } from '#spruce/errors/codes.types'
+import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
 import SpruceError from '../errors/SpruceError'
 import AbstractCommand from './AbstractCommand'
 
@@ -237,7 +238,7 @@ export default class SchemaCommand extends AbstractCommand {
 					path: generatedFiles.fieldClassMap
 				},
 				...generatedFiles.normalizedDefinitions.map(n => ({
-					name: n.id,
+					name: `${n.id} definition`,
 					path: n.path
 				}))
 			]
@@ -268,7 +269,7 @@ export default class SchemaCommand extends AbstractCommand {
 		}
 
 		const form = this.formBuilder({
-			definition: SpruceSchemas.Local.NamedTemplateItem.definition,
+			definition: namedTemplateItemDefinition,
 			initialValues: {
 				nameReadable,
 				nameCamel,

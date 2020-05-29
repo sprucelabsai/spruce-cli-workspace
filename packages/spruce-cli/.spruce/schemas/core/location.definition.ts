@@ -6,56 +6,45 @@ const locationDefinition: SpruceSchemas.Core.Location.IDefinition = {
 	name: 'Location',
 	description:
 		'A physical location where people meet. An organization has at least one of them.',
-
 	fields: {
 		/** Id. */
 		id: {
 			label: 'Id',
 			type: SpruceSchema.FieldType.Id,
-
 			options: undefined
 		},
 		/** Name. */
 		name: {
 			label: 'Name',
 			type: SpruceSchema.FieldType.Text,
-
 			isRequired: true,
-
 			options: undefined
 		},
 		/** Store number. You can use other symbols, like # or dashes. #123 or 32-US-5 */
 		num: {
 			label: 'Store number',
 			type: SpruceSchema.FieldType.Text,
-
 			hint: 'You can use other symbols, like # or dashes. #123 or 32-US-5',
-
 			options: undefined
 		},
 		/** Public. Is this location viewable by guests? */
 		isPublic: {
 			label: 'Public',
 			type: SpruceSchema.FieldType.Boolean,
-
 			hint: 'Is this location viewable by guests?',
-
 			defaultValue: false,
-
 			options: undefined
 		},
 		/** Main Phone. */
 		phone: {
 			label: 'Main Phone',
 			type: SpruceSchema.FieldType.Phone,
-
 			options: undefined
 		},
 		/** Timezone. */
 		timezone: {
 			label: 'Timezone',
 			type: SpruceSchema.FieldType.Select,
-
 			options: {
 				choices: [
 					{ value: 'etc/gmt+12', label: 'International Date Line West' },
@@ -186,9 +175,7 @@ const locationDefinition: SpruceSchemas.Core.Location.IDefinition = {
 		address: {
 			label: 'Address',
 			type: SpruceSchema.FieldType.Address,
-
 			isRequired: true,
-
 			options: undefined
 		}
 	}
