@@ -3,7 +3,7 @@ import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import log from '../lib/log'
 import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
 
-type TestFeatureType = typeof SpruceSchemas.Local.TestFeature.definition
+type TestFeatureType = SpruceSchemas.Local.TestFeature.IDefinition
 
 export default class TestFeature extends AbstractFeature<TestFeatureType> {
 	public description = 'Test File: Create a test for one of your files'

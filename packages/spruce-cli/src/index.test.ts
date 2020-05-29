@@ -1,6 +1,6 @@
 import Schema from '@sprucelabs/schema'
 import BaseTest, { ISpruce, test, assert } from '@sprucelabs/test'
-import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import cliUserDefinition from '#spruce/schemas/local/cliUser.definition'
 
 export default class IndexTest extends BaseTest {
 	@test('Can do some trivial asserts', 'hello', 'world')
@@ -17,7 +17,7 @@ export default class IndexTest extends BaseTest {
 
 	@test('Schema can be instantiated')
 	protected static async instantiateSchema() {
-		const user = new Schema(SpruceSchemas.Local.CliUser.definition, {
+		const user = new Schema(cliUserDefinition, {
 			casualName: 'Amigo'
 		})
 		assert.equal(user.get('casualName'), 'Amigo')

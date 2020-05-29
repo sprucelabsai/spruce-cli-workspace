@@ -8,7 +8,7 @@ import AbstractStore, {
 
 export interface IOnboardingStoreSettings
 	extends IBaseStoreSettings,
-		SpruceSchemas.Local.IOnboardingStore {}
+		SpruceSchemas.Local.IOnboarding {}
 
 export default class OnboardingStore extends AbstractStore<
 	IOnboardingStoreSettings

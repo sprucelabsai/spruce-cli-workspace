@@ -1,10 +1,11 @@
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
 import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
+import skillFeatureDefinition from '#spruce/schemas/local/skillFeature.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import { WriteMode } from '../types/cli.types'
 import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
 
-type SkillFeatureType = typeof SpruceSchemas.Local.SkillFeature.definition
+type SkillFeatureType = SpruceSchemas.Local.SkillFeature.IDefinition
 
 export default class SkillFeature extends AbstractFeature<SkillFeatureType> {
 	public description =
@@ -20,7 +21,7 @@ export default class SkillFeature extends AbstractFeature<SkillFeatureType> {
 		{ name: 'ts-node', isDev: true }
 	]
 
-	public optionsSchema = () => SpruceSchemas.Local.SkillFeature.definition
+	public optionsSchema = () => skillFeatureDefinition
 
 	public async beforePackageInstall(options: {
 		answers: SchemaDefinitionValues<SkillFeatureType>
