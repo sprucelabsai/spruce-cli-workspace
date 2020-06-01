@@ -1,4 +1,4 @@
-import * as SpruceSchema from '@sprucelabs/schema'
+import { FieldType } from '#spruce/schemas/fields/fieldType'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
 const testFeatureDefinition: SpruceSchemas.Local.TestFeature.IDefinition = {
@@ -8,7 +8,7 @@ const testFeatureDefinition: SpruceSchemas.Local.TestFeature.IDefinition = {
 		/** What file would you like to test?. */
 		target: {
 			label: 'What file would you like to test?',
-			type: SpruceSchema.FieldType.File,
+			type: FieldType.File,
 			isRequired: true,
 			defaultValue: { path: '' },
 			options: undefined

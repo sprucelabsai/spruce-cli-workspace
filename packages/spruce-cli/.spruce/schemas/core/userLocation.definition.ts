@@ -1,7 +1,7 @@
-import * as SpruceSchema from '@sprucelabs/schema'
 import jobDefinitionCore from '#spruce/schemas/core/job.definition'
 import locationDefinitionCore from '#spruce/schemas/core/location.definition'
 import userDefinitionCore from '#spruce/schemas/core/user.definition'
+import { FieldType } from '#spruce/schemas/fields/fieldType'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
 const userLocationDefinition: SpruceSchemas.Core.UserLocation.IDefinition = {
@@ -12,13 +12,13 @@ const userLocationDefinition: SpruceSchemas.Core.UserLocation.IDefinition = {
 		/** Id. */
 		id: {
 			label: 'Id',
-			type: SpruceSchema.FieldType.Id,
+			type: FieldType.Id,
 			options: undefined
 		},
 		/** Name. */
 		role: {
 			label: 'Name',
-			type: SpruceSchema.FieldType.Select,
+			type: FieldType.Select,
 			isRequired: true,
 			options: {
 				choices: [
@@ -33,13 +33,13 @@ const userLocationDefinition: SpruceSchemas.Core.UserLocation.IDefinition = {
 		/** Status. */
 		status: {
 			label: 'Status',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			options: undefined
 		},
 		/** Total visits. */
 		visits: {
 			label: 'Total visits',
-			type: SpruceSchema.FieldType.Number,
+			type: FieldType.Number,
 			isRequired: true,
 			options: {
 				choices: [
@@ -54,27 +54,27 @@ const userLocationDefinition: SpruceSchemas.Core.UserLocation.IDefinition = {
 		/** Last visit. */
 		lastRecordedVisit: {
 			label: 'Last visit',
-			type: SpruceSchema.FieldType.DateTime,
+			type: FieldType.DateTime,
 			options: undefined
 		},
 		/** Job. */
 		job: {
 			label: 'Job',
-			type: SpruceSchema.FieldType.Schema,
+			type: FieldType.Schema,
 			isRequired: true,
 			options: { schemas: [jobDefinitionCore] }
 		},
 		/** Location. */
 		location: {
 			label: 'Location',
-			type: SpruceSchema.FieldType.Schema,
+			type: FieldType.Schema,
 			isRequired: true,
 			options: { schemas: [locationDefinitionCore] }
 		},
 		/** User. */
 		user: {
 			label: 'User',
-			type: SpruceSchema.FieldType.Schema,
+			type: FieldType.Schema,
 			isRequired: true,
 			options: { schemas: [userDefinitionCore] }
 		}

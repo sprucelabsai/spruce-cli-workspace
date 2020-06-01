@@ -1,5 +1,5 @@
-import * as SpruceSchema from '@sprucelabs/schema'
 import aclDefinitionCore from '#spruce/schemas/core/acl.definition'
+import { FieldType } from '#spruce/schemas/fields/fieldType'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
 const jobDefinition: SpruceSchemas.Core.Job.IDefinition = {
@@ -11,13 +11,13 @@ const jobDefinition: SpruceSchemas.Core.Job.IDefinition = {
 		/** Id. */
 		id: {
 			label: 'Id',
-			type: SpruceSchema.FieldType.Id,
+			type: FieldType.Id,
 			options: undefined
 		},
 		/** Is default. Is this job one that comes with every org? Mapped to roles (owner, groupManager, managar, guest). */
 		isDefault: {
 			label: 'Is default',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			isRequired: true,
 			hint:
 				'Is this job one that comes with every org? Mapped to roles (owner, groupManager, managar, guest).',
@@ -26,14 +26,14 @@ const jobDefinition: SpruceSchemas.Core.Job.IDefinition = {
 		/** Name. */
 		name: {
 			label: 'Name',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			isRequired: true,
 			options: undefined
 		},
 		/** Role. */
 		role: {
 			label: 'Role',
-			type: SpruceSchema.FieldType.Select,
+			type: FieldType.Select,
 			isRequired: true,
 			options: {
 				choices: [
@@ -48,13 +48,13 @@ const jobDefinition: SpruceSchemas.Core.Job.IDefinition = {
 		/** On work permissions. */
 		inStoreAcls: {
 			label: 'On work permissions',
-			type: SpruceSchema.FieldType.Schema,
+			type: FieldType.Schema,
 			options: { schemas: [aclDefinitionCore] }
 		},
 		/** Off work permissions. */
 		acls: {
 			label: 'Off work permissions',
-			type: SpruceSchema.FieldType.Schema,
+			type: FieldType.Schema,
 			options: { schemas: [aclDefinitionCore] }
 		}
 	}

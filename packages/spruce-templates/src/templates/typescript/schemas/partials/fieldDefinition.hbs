@@ -1,5 +1,5 @@
 {{#if field.label}}label: '{{{escape field.label}}}',
-{{/if}}type: {{fieldTypeEnum field}}{{#if field.key}},
+{{/if}}type: {{fieldTypeEnum field renderAs}}{{#if field.key}},
 key: '{{{escape field.key}}}'{{/if}}{{#if field.isRequired}},
 isRequired: true{{/if}}{{#if field.hint}},
 hint: '{{{escape field.hint}}}'{{/if}}{{#if (isDefined field.value)}},

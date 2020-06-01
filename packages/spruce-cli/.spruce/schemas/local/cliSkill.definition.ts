@@ -1,4 +1,4 @@
-import * as SpruceSchema from '@sprucelabs/schema'
+import { FieldType } from '#spruce/schemas/fields/fieldType'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
 const cliSkillDefinition: SpruceSchemas.Local.CliSkill.IDefinition = {
@@ -9,28 +9,28 @@ const cliSkillDefinition: SpruceSchemas.Local.CliSkill.IDefinition = {
 		/** Id. */
 		id: {
 			label: 'Id',
-			type: SpruceSchema.FieldType.Id,
+			type: FieldType.Id,
 			isRequired: true,
 			options: undefined
 		},
 		/** Id. */
 		apiKey: {
 			label: 'Id',
-			type: SpruceSchema.FieldType.Id,
+			type: FieldType.Id,
 			isRequired: true,
 			options: undefined
 		},
 		/** Name. */
 		name: {
 			label: 'Name',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			isRequired: true,
 			options: undefined
 		},
 		/** Slug. */
 		slug: {
 			label: 'Slug',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			options: undefined
 		}
 	}

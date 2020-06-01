@@ -1,4 +1,4 @@
-import * as SpruceSchema from '@sprucelabs/schema'
+import { FieldType } from '#spruce/schemas/fields/fieldType'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
 const autoloaderDefinition: SpruceSchemas.Local.Autoloader.IDefinition = {
@@ -9,14 +9,14 @@ const autoloaderDefinition: SpruceSchemas.Local.Autoloader.IDefinition = {
 		/** Source directory. */
 		lookupDir: {
 			label: 'Source directory',
-			type: SpruceSchema.FieldType.Directory,
+			type: FieldType.Directory,
 			isRequired: true,
 			options: undefined
 		},
 		/** Destination. Where the file that does the autoloading is written */
 		destination: {
 			label: 'Destination',
-			type: SpruceSchema.FieldType.File,
+			type: FieldType.File,
 			isRequired: true,
 			hint: 'Where the file that does the autoloading is written',
 			options: undefined
@@ -24,7 +24,7 @@ const autoloaderDefinition: SpruceSchemas.Local.Autoloader.IDefinition = {
 		/** Pattern. */
 		pattern: {
 			label: 'Pattern',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			isRequired: true,
 			defaultValue: '**/!(*.test).ts',
 			options: undefined

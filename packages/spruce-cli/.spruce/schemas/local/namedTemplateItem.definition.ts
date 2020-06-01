@@ -1,4 +1,4 @@
-import * as SpruceSchema from '@sprucelabs/schema'
+import { FieldType } from '#spruce/schemas/fields/fieldType'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
 const namedTemplateItemDefinition: SpruceSchemas.Local.NamedTemplateItem.IDefinition = {
@@ -9,7 +9,7 @@ const namedTemplateItemDefinition: SpruceSchemas.Local.NamedTemplateItem.IDefini
 		/** Readable name. The name people will read */
 		nameReadable: {
 			label: 'Readable name',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			isRequired: true,
 			hint: 'The name people will read',
 			options: undefined
@@ -17,7 +17,7 @@ const namedTemplateItemDefinition: SpruceSchemas.Local.NamedTemplateItem.IDefini
 		/** Camel case name. camelCase version of the name */
 		nameCamel: {
 			label: 'Camel case name',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			isRequired: true,
 			hint: 'camelCase version of the name',
 			options: undefined
@@ -25,7 +25,7 @@ const namedTemplateItemDefinition: SpruceSchemas.Local.NamedTemplateItem.IDefini
 		/** Plural camel case name. camelCase version of the name */
 		nameCamelPlural: {
 			label: 'Plural camel case name',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			isRequired: true,
 			hint: 'camelCase version of the name',
 			options: undefined
@@ -33,7 +33,7 @@ const namedTemplateItemDefinition: SpruceSchemas.Local.NamedTemplateItem.IDefini
 		/** Pascal case name. PascalCase of the name */
 		namePascal: {
 			label: 'Pascal case name',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			isRequired: true,
 			hint: 'PascalCase of the name',
 			options: undefined
@@ -41,7 +41,7 @@ const namedTemplateItemDefinition: SpruceSchemas.Local.NamedTemplateItem.IDefini
 		/** Plural Pascal case name. PascalCase of the name */
 		namePascalPlural: {
 			label: 'Plural Pascal case name',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			isRequired: true,
 			hint: 'PascalCase of the name',
 			options: undefined
@@ -49,7 +49,7 @@ const namedTemplateItemDefinition: SpruceSchemas.Local.NamedTemplateItem.IDefini
 		/** Constant case name. CONST_CASE of the name */
 		nameConst: {
 			label: 'Constant case name',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			isRequired: true,
 			hint: 'CONST_CASE of the name',
 			options: undefined
@@ -57,7 +57,7 @@ const namedTemplateItemDefinition: SpruceSchemas.Local.NamedTemplateItem.IDefini
 		/** Description. */
 		description: {
 			label: 'Description',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			isRequired: true,
 			description: 'Describe a bit more here',
 			options: undefined

@@ -1,4 +1,4 @@
-import * as SpruceSchema from '@sprucelabs/schema'
+import { FieldType } from '#spruce/schemas/fields/fieldType'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
 const skillDefinition: SpruceSchemas.Core.Skill.IDefinition = {
@@ -9,40 +9,40 @@ const skillDefinition: SpruceSchemas.Core.Skill.IDefinition = {
 		/** Id. */
 		id: {
 			label: 'Id',
-			type: SpruceSchema.FieldType.Id,
+			type: FieldType.Id,
 			isRequired: true,
 			options: undefined
 		},
 		/** Id. */
 		apiKey: {
 			label: 'Id',
-			type: SpruceSchema.FieldType.Id,
+			type: FieldType.Id,
 			isRequired: true,
 			options: undefined
 		},
 		/** Name. */
 		name: {
 			label: 'Name',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			isRequired: true,
 			options: undefined
 		},
 		/** Description. */
 		description: {
 			label: 'Description',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			options: undefined
 		},
 		/** Slug. */
 		slug: {
 			label: 'Slug',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			options: undefined
 		},
 		/** Icon. */
 		icon: {
 			label: 'Icon',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			options: undefined
 		}
 	}

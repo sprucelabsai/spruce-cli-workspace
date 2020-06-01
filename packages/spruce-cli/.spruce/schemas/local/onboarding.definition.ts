@@ -1,4 +1,4 @@
-import * as SpruceSchema from '@sprucelabs/schema'
+import { FieldType } from '#spruce/schemas/fields/fieldType'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
 const onboardingDefinition: SpruceSchemas.Local.Onboarding.IDefinition = {
@@ -9,14 +9,14 @@ const onboardingDefinition: SpruceSchemas.Local.Onboarding.IDefinition = {
 		/** Remote. */
 		isEnabled: {
 			label: 'Remote',
-			type: SpruceSchema.FieldType.Boolean,
+			type: FieldType.Boolean,
 			isRequired: true,
 			options: undefined
 		},
 		/** Run count. How many times spruce onboarding has been called (the story changes based on count) */
 		runCount: {
 			label: 'Run count',
-			type: SpruceSchema.FieldType.Number,
+			type: FieldType.Number,
 			isRequired: true,
 			hint:
 				'How many times spruce onboarding has been called (the story changes based on count)',

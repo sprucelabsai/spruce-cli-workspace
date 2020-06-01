@@ -1,4 +1,4 @@
-import * as SpruceSchema from '@sprucelabs/schema'
+import { FieldType } from '#spruce/schemas/fields/fieldType'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
 const locationDefinition: SpruceSchemas.Core.Location.IDefinition = {
@@ -10,27 +10,27 @@ const locationDefinition: SpruceSchemas.Core.Location.IDefinition = {
 		/** Id. */
 		id: {
 			label: 'Id',
-			type: SpruceSchema.FieldType.Id,
+			type: FieldType.Id,
 			options: undefined
 		},
 		/** Name. */
 		name: {
 			label: 'Name',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			isRequired: true,
 			options: undefined
 		},
 		/** Store number. You can use other symbols, like # or dashes. #123 or 32-US-5 */
 		num: {
 			label: 'Store number',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			hint: 'You can use other symbols, like # or dashes. #123 or 32-US-5',
 			options: undefined
 		},
 		/** Public. Is this location viewable by guests? */
 		isPublic: {
 			label: 'Public',
-			type: SpruceSchema.FieldType.Boolean,
+			type: FieldType.Boolean,
 			hint: 'Is this location viewable by guests?',
 			defaultValue: false,
 			options: undefined
@@ -38,13 +38,13 @@ const locationDefinition: SpruceSchemas.Core.Location.IDefinition = {
 		/** Main Phone. */
 		phone: {
 			label: 'Main Phone',
-			type: SpruceSchema.FieldType.Phone,
+			type: FieldType.Phone,
 			options: undefined
 		},
 		/** Timezone. */
 		timezone: {
 			label: 'Timezone',
-			type: SpruceSchema.FieldType.Select,
+			type: FieldType.Select,
 			options: {
 				choices: [
 					{ value: 'etc/gmt+12', label: 'International Date Line West' },
@@ -174,7 +174,7 @@ const locationDefinition: SpruceSchemas.Core.Location.IDefinition = {
 		/** Address. */
 		address: {
 			label: 'Address',
-			type: SpruceSchema.FieldType.Address,
+			type: FieldType.Address,
 			isRequired: true,
 			options: undefined
 		}

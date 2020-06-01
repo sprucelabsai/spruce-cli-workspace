@@ -4,7 +4,7 @@
 import { default as Schema } from '@sprucelabs/schema'
 import * as SpruceSchema from '@sprucelabs/schema'
 
-export namespace SpruceSchemas.Core {
+declare namespace SpruceSchemas.Core {
 	/** Profile images at various helpful sizes and resolutions. */
 	export interface IProfileImage {
 		/** 60x60. */
@@ -18,7 +18,7 @@ export namespace SpruceSchemas.Core {
 	}
 }
 
-export namespace SpruceSchemas.Core.ProfileImage {
+declare namespace SpruceSchemas.Core.ProfileImage {
 	/** The interface for the schema definition for a Profile Image Sizes */
 	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 		id: 'profileImage'
@@ -60,7 +60,7 @@ export namespace SpruceSchemas.Core.ProfileImage {
 	export type Instance = Schema<SpruceSchemas.Core.ProfileImage.IDefinition>
 }
 
-export namespace SpruceSchemas.Core {
+declare namespace SpruceSchemas.Core {
 	/** A human being. */
 	export interface IUser {
 		/** Id. */
@@ -80,7 +80,7 @@ export namespace SpruceSchemas.Core {
 	}
 }
 
-export namespace SpruceSchemas.Core.User {
+declare namespace SpruceSchemas.Core.User {
 	/** The interface for the schema definition for a User */
 	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 		id: 'user'
@@ -141,7 +141,7 @@ export namespace SpruceSchemas.Core.User {
 	export type Instance = Schema<SpruceSchemas.Core.User.IDefinition>
 }
 
-export namespace SpruceSchemas.Core {
+declare namespace SpruceSchemas.Core {
 	/** An ability Sprucebot has learned. */
 	export interface ISkill {
 		/** Id. */
@@ -159,7 +159,7 @@ export namespace SpruceSchemas.Core {
 	}
 }
 
-export namespace SpruceSchemas.Core.Skill {
+declare namespace SpruceSchemas.Core.Skill {
 	/** The interface for the schema definition for a Skill */
 	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 		id: 'skill'
@@ -212,7 +212,7 @@ export namespace SpruceSchemas.Core.Skill {
 	export type Instance = Schema<SpruceSchemas.Core.Skill.IDefinition>
 }
 
-export namespace SpruceSchemas.Core {
+declare namespace SpruceSchemas.Core {
 	/** A physical location where people meet. An organization has at least one of them. */
 	export interface ILocation {
 		/** Id. */
@@ -318,7 +318,7 @@ export namespace SpruceSchemas.Core {
 	}
 }
 
-export namespace SpruceSchemas.Core.Location {
+declare namespace SpruceSchemas.Core.Location {
 	/** The interface for the schema definition for a Location */
 	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 		id: 'location'
@@ -515,7 +515,7 @@ export namespace SpruceSchemas.Core.Location {
 	export type Instance = Schema<SpruceSchemas.Core.Location.IDefinition>
 }
 
-export namespace SpruceSchemas.Core {
+declare namespace SpruceSchemas.Core {
 	/**  */
 	export interface IAcl {
 		/** Permissions grouped by slug. */
@@ -523,7 +523,7 @@ export namespace SpruceSchemas.Core {
 	}
 }
 
-export namespace SpruceSchemas.Core.Acl {
+declare namespace SpruceSchemas.Core.Acl {
 	/** The interface for the schema definition for a Access control list lookup table */
 	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 		id: 'acl'
@@ -541,7 +541,7 @@ export namespace SpruceSchemas.Core.Acl {
 	export type Instance = Schema<SpruceSchemas.Core.Acl.IDefinition>
 }
 
-export namespace SpruceSchemas.Core {
+declare namespace SpruceSchemas.Core {
 	/** A position at a company. The answer to the question; What is your job? */
 	export interface IJob {
 		/** Id. */
@@ -559,7 +559,7 @@ export namespace SpruceSchemas.Core {
 	}
 }
 
-export namespace SpruceSchemas.Core.Job {
+declare namespace SpruceSchemas.Core.Job {
 	/** The interface for the schema definition for a Job */
 	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 		id: 'job'
@@ -621,7 +621,7 @@ export namespace SpruceSchemas.Core.Job {
 	export type Instance = Schema<SpruceSchemas.Core.Job.IDefinition>
 }
 
-export namespace SpruceSchemas.Core {
+declare namespace SpruceSchemas.Core {
 	/** A location a person has given access to themselves. */
 	export interface IUserLocation {
 		/** Id. */
@@ -643,7 +643,7 @@ export namespace SpruceSchemas.Core {
 	}
 }
 
-export namespace SpruceSchemas.Core.UserLocation {
+declare namespace SpruceSchemas.Core.UserLocation {
 	/** The interface for the schema definition for a User location */
 	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 		id: 'userLocation'
@@ -726,7 +726,7 @@ export namespace SpruceSchemas.Core.UserLocation {
 	export type Instance = Schema<SpruceSchemas.Core.UserLocation.IDefinition>
 }
 
-export namespace SpruceSchemas.Local {
+declare namespace SpruceSchemas.Local {
 	/** A directory that is autoloaded */
 	export interface IAutoloader {
 		/** Source directory. */
@@ -738,7 +738,7 @@ export namespace SpruceSchemas.Local {
 	}
 }
 
-export namespace SpruceSchemas.Local.Autoloader {
+declare namespace SpruceSchemas.Local.Autoloader {
 	/** The interface for the schema definition for a Autoloader */
 	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 		id: 'autoloader'
@@ -775,7 +775,7 @@ export namespace SpruceSchemas.Local.Autoloader {
 	export type Instance = Schema<SpruceSchemas.Local.Autoloader.IDefinition>
 }
 
-export namespace SpruceSchemas.Local {
+declare namespace SpruceSchemas.Local {
 	/** A stripped down skill for the cli */
 	export interface ICliSkill {
 		/** Id. */
@@ -789,7 +789,7 @@ export namespace SpruceSchemas.Local {
 	}
 }
 
-export namespace SpruceSchemas.Local.CliSkill {
+declare namespace SpruceSchemas.Local.CliSkill {
 	/** The interface for the schema definition for a Skill */
 	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 		id: 'cliSkill'
@@ -830,7 +830,7 @@ export namespace SpruceSchemas.Local.CliSkill {
 	export type Instance = Schema<SpruceSchemas.Local.CliSkill.IDefinition>
 }
 
-export namespace SpruceSchemas.Local {
+declare namespace SpruceSchemas.Local {
 	/** A stripped down user for the cli */
 	export interface ICliUser {
 		/** Id. */
@@ -840,7 +840,7 @@ export namespace SpruceSchemas.Local {
 	}
 }
 
-export namespace SpruceSchemas.Local.CliUser {
+declare namespace SpruceSchemas.Local.CliUser {
 	/** The interface for the schema definition for a User */
 	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 		id: 'cliUser'
@@ -869,7 +869,7 @@ export namespace SpruceSchemas.Local.CliUser {
 	export type Instance = Schema<SpruceSchemas.Local.CliUser.IDefinition>
 }
 
-export namespace SpruceSchemas.Local {
+declare namespace SpruceSchemas.Local {
 	/** A stripped down cli user with token details for login */
 	export interface ICliUserWithToken {
 		/** Id. */
@@ -883,7 +883,7 @@ export namespace SpruceSchemas.Local {
 	}
 }
 
-export namespace SpruceSchemas.Local.CliUserWithToken {
+declare namespace SpruceSchemas.Local.CliUserWithToken {
 	/** The interface for the schema definition for a User */
 	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 		id: 'cliUserWithToken'
@@ -926,7 +926,7 @@ export namespace SpruceSchemas.Local.CliUserWithToken {
 	>
 }
 
-export namespace SpruceSchemas.Local {
+declare namespace SpruceSchemas.Local {
 	/** Used to collect input on the names of a class or interface */
 	export interface INamedTemplateItem {
 		/** Readable name. The name people will read */
@@ -946,7 +946,7 @@ export namespace SpruceSchemas.Local {
 	}
 }
 
-export namespace SpruceSchemas.Local.NamedTemplateItem {
+declare namespace SpruceSchemas.Local.NamedTemplateItem {
 	/** The interface for the schema definition for a NamedTemplateItem */
 	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 		id: 'namedTemplateItem'
@@ -1018,7 +1018,7 @@ export namespace SpruceSchemas.Local.NamedTemplateItem {
 	>
 }
 
-export namespace SpruceSchemas.Local {
+declare namespace SpruceSchemas.Local {
 	/** Track onboarding progress and tutorials &amp; quizzes completed. */
 	export interface IOnboarding {
 		/** Remote. */
@@ -1028,7 +1028,7 @@ export namespace SpruceSchemas.Local {
 	}
 }
 
-export namespace SpruceSchemas.Local.Onboarding {
+declare namespace SpruceSchemas.Local.Onboarding {
 	/** The interface for the schema definition for a Onboarding */
 	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 		id: 'onboarding'
@@ -1057,7 +1057,7 @@ export namespace SpruceSchemas.Local.Onboarding {
 	export type Instance = Schema<SpruceSchemas.Local.Onboarding.IDefinition>
 }
 
-export namespace SpruceSchemas.Local {
+declare namespace SpruceSchemas.Local {
 	/**  */
 	export interface ISkillFeature {
 		/** What's the name of your skill?. */
@@ -1067,7 +1067,7 @@ export namespace SpruceSchemas.Local {
 	}
 }
 
-export namespace SpruceSchemas.Local.SkillFeature {
+declare namespace SpruceSchemas.Local.SkillFeature {
 	/** The interface for the schema definition for a Skill Feature */
 	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 		id: 'skillFeature'
@@ -1094,7 +1094,7 @@ export namespace SpruceSchemas.Local.SkillFeature {
 	export type Instance = Schema<SpruceSchemas.Local.SkillFeature.IDefinition>
 }
 
-export namespace SpruceSchemas.Local {
+declare namespace SpruceSchemas.Local {
 	/**  */
 	export interface ITestFeature {
 		/** What file would you like to test?. */
@@ -1102,7 +1102,7 @@ export namespace SpruceSchemas.Local {
 	}
 }
 
-export namespace SpruceSchemas.Local.TestFeature {
+declare namespace SpruceSchemas.Local.TestFeature {
 	/** The interface for the schema definition for a Test Feature */
 	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 		id: 'testFeature'

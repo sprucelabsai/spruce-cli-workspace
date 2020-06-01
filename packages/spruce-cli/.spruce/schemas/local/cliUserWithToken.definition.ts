@@ -1,4 +1,4 @@
-import * as SpruceSchema from '@sprucelabs/schema'
+import { FieldType } from '#spruce/schemas/fields/fieldType'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
 const cliUserWithTokenDefinition: SpruceSchemas.Local.CliUserWithToken.IDefinition = {
@@ -9,28 +9,28 @@ const cliUserWithTokenDefinition: SpruceSchemas.Local.CliUserWithToken.IDefiniti
 		/** Id. */
 		id: {
 			label: 'Id',
-			type: SpruceSchema.FieldType.Id,
+			type: FieldType.Id,
 			isRequired: true,
 			options: undefined
 		},
 		/** Casual name. Generated name that defaults to Friend! */
 		casualName: {
 			label: 'Casual name',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			isRequired: true,
 			hint: 'Generated name that defaults to Friend!',
 			options: undefined
 		},
 		/** . */
 		token: {
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			isRequired: true,
 			options: undefined
 		},
 		/** Logged in. */
 		isLoggedIn: {
 			label: 'Logged in',
-			type: SpruceSchema.FieldType.Boolean,
+			type: FieldType.Boolean,
 			options: undefined
 		}
 	}

@@ -1,5 +1,5 @@
-import * as SpruceSchema from '@sprucelabs/schema'
 import profileImageDefinitionCore from '#spruce/schemas/core/profileImage.definition'
+import { FieldType } from '#spruce/schemas/fields/fieldType'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
 const userDefinition: SpruceSchemas.Core.User.IDefinition = {
@@ -10,26 +10,26 @@ const userDefinition: SpruceSchemas.Core.User.IDefinition = {
 		/** Id. */
 		id: {
 			label: 'Id',
-			type: SpruceSchema.FieldType.Id,
+			type: FieldType.Id,
 			isRequired: true,
 			options: undefined
 		},
 		/** First name. */
 		firstName: {
 			label: 'First name',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			options: undefined
 		},
 		/** Last name. */
 		lastName: {
 			label: 'Last name',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			options: undefined
 		},
 		/** Casual name. Generated name that defaults to Friend! */
 		casualName: {
 			label: 'Casual name',
-			type: SpruceSchema.FieldType.Text,
+			type: FieldType.Text,
 			isRequired: true,
 			hint: 'Generated name that defaults to Friend!',
 			options: undefined
@@ -37,20 +37,20 @@ const userDefinition: SpruceSchemas.Core.User.IDefinition = {
 		/** Phone. The person's phone number! */
 		phoneNumber: {
 			label: 'Phone',
-			type: SpruceSchema.FieldType.Phone,
+			type: FieldType.Phone,
 			hint: "The person's phone number!",
 			options: undefined
 		},
 		/** Profile photos. */
 		profileImages: {
 			label: 'Profile photos',
-			type: SpruceSchema.FieldType.Schema,
+			type: FieldType.Schema,
 			options: { schemas: [profileImageDefinitionCore] }
 		},
 		/** Default profile photos. */
 		defaultProfileImages: {
 			label: 'Default profile photos',
-			type: SpruceSchema.FieldType.Schema,
+			type: FieldType.Schema,
 			isRequired: true,
 			options: { schemas: [profileImageDefinitionCore] }
 		}
