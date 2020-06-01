@@ -8,7 +8,7 @@ import * as {{importAs}} from '{{package}}'
 
 {{#each schemaTemplateItems}}
 
-	declare namespace SpruceSchemas.{{namespace}} {
+	export namespace SpruceSchemas.{{namespace}} {
 		/** {{definition.description}} */
 		export interface I{{namePascal}} {
 			{{> schemaValues schema=definition renderAs="type" }}
@@ -16,7 +16,7 @@ import * as {{importAs}} from '{{package}}'
 
 	}
 
-	declare namespace SpruceSchemas.{{namespace}}.{{namePascal}} {
+	export namespace SpruceSchemas.{{namespace}}.{{namePascal}} {
 		/** The interface for the schema definition for a {{nameReadable}} */
 		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
 			{{> schemaDefinition schema=definition renderAs="type" }}

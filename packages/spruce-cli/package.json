@@ -26,7 +26,6 @@
 		"url": "https://github.com/sprucelabsai/spruce-cli-workspace/issues"
 	},
 	"scripts": {
-		"types:sync": "node ./build/src/index.js types:sync",
 		"build": "npm run clean && npm run build:node",
 		"build:node": "tsc --emitDeclarationOnly",
 		"watch": "chokidar '.spruce/**' 'src/**/*' 'index.ts' '../spruce-templates/src/templates/**/*' -c 'npm run build'",
