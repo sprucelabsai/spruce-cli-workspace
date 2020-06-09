@@ -143,6 +143,12 @@ export async function setup(options?: { program?: Command; cwd?: string }) {
 		}
 	})
 
+	autoLoaded.push(...Object.values(utilities))
+	autoLoaded.push(...Object.values(services))
+	autoLoaded.push(...Object.values(stores))
+	autoLoaded.push(...Object.values(generators))
+	autoLoaded.push(...Object.values(commands))
+
 	// Alphabetical sort of help output
 	program?.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
 
