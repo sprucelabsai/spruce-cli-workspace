@@ -3,7 +3,7 @@ import  {
 	buildErrorDefinition
 } from '@sprucelabs/schema'
 
-const {{nameCamel}}Definition = buildErrorDefinition({
+export default buildErrorDefinition({
 	id: '{{nameCamel}}',
 	name: '{{{escape nameReadable}}}',
     description: '{{{escape description}}}',
@@ -23,4 +23,3 @@ const {{nameCamel}}Definition = buildErrorDefinition({
 	}
 })
 
-export default {{nameCamel}}Definition

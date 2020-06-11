@@ -55,11 +55,24 @@ export default class SchemaCommand extends AbstractCommand {
 	}
 
 	/** Sync all schemas and fields (also pulls from the cloud) */
-	public async sync(lookupDirOption: string | undefined, cmd: Command) {
-		const destinationDir = cmd.destinationDir as string
-		const lookupDir = lookupDirOption || (cmd.lookupDir as string)
-		const clean = !!cmd.clean
-		const force = !!cmd.force
+	public async sync(
+		lookupDirOption: string | undefined,
+		options: {
+			destinationDir: string
+			lookupDir?: string
+			clean?: boolean
+			force?: boolean
+		}
+	) {
+		const destinationDir = options.destinationDir
+		const lookupDir = lookupDirOption || options.lookupDir
+		const clean = !!options.clean
+		const force = !!options.force
+
+		if (!lookupDir) {
+			// TODO update this to spruce error
+			throw new Error('aoeuaoeuaoeu')
+		}
 
 		await this.services.feature.install({
 			features: [
@@ -110,16 +123,9 @@ export default class SchemaCommand extends AbstractCommand {
 			)
 
 			if (confirm) {
-				do {
-					this.term.handleError(schemaTemplateErrors[0])
-					schemaTemplateErrors.pop()
-					await this.term.confirm(
-						schemaTemplateErrors.length === 0 ? 'Done' : 'Next'
-					)
-				} while (schemaTemplateErrors.length > 0)
-
-				confirm = await this.term.confirm(
-					`Ok, ready for me to try to generate the types for the ${schemaTemplateItems.length} definitions I was able to load?`
+				confirm = await this.takeUserThroughErrors(
+					schemaTemplateErrors,
+					schemaTemplateItems.length
 				)
 
 				if (!confirm) {
@@ -137,16 +143,9 @@ export default class SchemaCommand extends AbstractCommand {
 			)
 
 			if (confirm) {
-				do {
-					this.term.handleError(fieldTemplateErrors[0])
-					fieldTemplateErrors.pop()
-					await this.term.confirm(
-						fieldTemplateErrors.length === 0 ? 'Done' : 'Next'
-					)
-				} while (fieldTemplateErrors.length > 0)
-
-				confirm = await this.term.confirm(
-					`Ok, you quit to fix the errors above or hit Enter to have me give it my maximum effort!`
+				confirm = await this.takeUserThroughErrors(
+					fieldTemplateErrors,
+					fieldTemplateItems.length
 				)
 
 				if (!confirm) {
@@ -261,7 +260,6 @@ export default class SchemaCommand extends AbstractCommand {
 
 		let showOverview = false
 
-		// If they passed a name, show overview
 		if (nameReadable) {
 			showOverview = true
 			nameCamel = this.utilities.names.toCamel(nameReadable)
@@ -303,16 +301,16 @@ export default class SchemaCommand extends AbstractCommand {
 			`${values.nameCamel}.definition.ts`
 		)
 		const typesDestination = this.resolvePath(cmd.typesDestinationDir as string)
-		const definition = templates.definition(values)
+		const definitionBuilder = templates.definitionBuilder(values)
 
-		await this.writeFile(definitionDestination, definition)
+		await this.writeFile(definitionDestination, definitionBuilder)
 
 		this.term.info(`Definition created at ${definitionDestination}`)
 
-		// TODO don't call one command from another
 		try {
-			cmd.destinationDir = typesDestination
-			await this.sync(cmd.definitionDestinationDir, cmd)
+			await this.sync(cmd.definitionDestinationDir, {
+				destinationDir: typesDestination
+			})
 		} catch (err) {
 			this.term.stopLoading()
 			this.term.warn(
@@ -323,5 +321,21 @@ export default class SchemaCommand extends AbstractCommand {
 			)
 			this.term.handleError(err)
 		}
+	}
+
+	private async takeUserThroughErrors(
+		errors: SpruceError[],
+		totalItems: number
+	) {
+		let confirm = false
+		do {
+			this.term.handleError(errors[0])
+			errors.pop()
+			await this.term.confirm(errors.length === 0 ? 'Done' : 'Next')
+		} while (errors.length > 0)
+		confirm = await this.term.confirm(
+			`Ok, ready for me to try to generate the types for the ${totalItems} definitions I was able to load?`
+		)
+		return confirm
 	}
 }

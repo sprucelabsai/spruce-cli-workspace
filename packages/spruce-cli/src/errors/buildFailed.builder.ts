@@ -1,6 +1,6 @@
 import { FieldType, buildErrorDefinition } from '@sprucelabs/schema'
 
-const buildFailedDefinition = buildErrorDefinition({
+export default buildErrorDefinition({
 	id: 'buildFailed',
 	name: 'BuildFailed',
 	description:
@@ -14,5 +14,3 @@ const buildFailedDefinition = buildErrorDefinition({
 		}
 	}
 })
-
-export default buildFailedDefinition

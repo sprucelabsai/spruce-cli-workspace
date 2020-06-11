@@ -2,7 +2,7 @@
 
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
-import directoryEmptyDefinition from '../../src/errors/emptyDirectory.definition'
+import directoryEmptyDefinition from '../../src/errors/emptyDirectory.builder'
 import { ErrorCode } from './codes.types'
 
 type DirectoryEmptyDefinition = typeof directoryEmptyDefinition

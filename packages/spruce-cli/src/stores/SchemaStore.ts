@@ -77,7 +77,7 @@ export default class SchemaStore extends AbstractStore {
 		]
 
 		// Each skill's slug will be the namespace
-		const coreTemplateItems = this.utilities.schema.buildTemplateItems({
+		const coreTemplateItems = this.utilities.schema.accumulateTemplateItems({
 			namespace: 'Core',
 			definitions: schemas
 		})
@@ -87,26 +87,26 @@ export default class SchemaStore extends AbstractStore {
 		// TODO: Cleanup / break up statements for easier readability
 		const localDefinitions = (
 			await Promise.all(
-				(
-					await globby([pathUtil.join(localLookupDir, '/**/*.definition.ts')])
-				).map(async file => {
-					try {
-						const definition = await this.services.child.importDefault(file, {
-							cwd: this.cwd
-						})
-						Schema.validateDefinition(definition)
-						return definition
-					} catch (err) {
-						localErrors.push(
-							new SpruceError({
-								code: ErrorCode.DefinitionFailedToImport,
-								file,
-								originalError: err
+				(await globby([pathUtil.join(localLookupDir, '/**/*.builder.ts')])).map(
+					async file => {
+						try {
+							const definition = await this.services.child.importDefault(file, {
+								cwd: this.cwd
 							})
-						)
-						return false
+							Schema.validateDefinition(definition)
+							return definition
+						} catch (err) {
+							localErrors.push(
+								new SpruceError({
+									code: ErrorCode.DefinitionFailedToImport,
+									file,
+									originalError: err
+								})
+							)
+							return false
+						}
 					}
-				})
+				)
 			)
 		).filter(d => !!d) as ISchemaDefinition[]
 
@@ -125,7 +125,7 @@ export default class SchemaStore extends AbstractStore {
 
 		let allTemplateItems = coreTemplateItems
 		try {
-			allTemplateItems = this.utilities.schema.buildTemplateItems({
+			allTemplateItems = this.utilities.schema.accumulateTemplateItems({
 				namespace: 'Local',
 				definitions: localDefinitions,
 				definitionsById,

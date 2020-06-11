@@ -1,6 +1,6 @@
 import { buildSchemaDefinition, FieldType } from '@sprucelabs/schema'
 
-const namedTemplateItemDefinition = buildSchemaDefinition({
+export default buildSchemaDefinition({
 	id: 'namedTemplateItem',
 	name: 'NamedTemplateItem',
 	description: 'Used to collect input on the names of a class or interface',
@@ -49,5 +49,3 @@ const namedTemplateItemDefinition = buildSchemaDefinition({
 		}
 	}
 })
-
-export default namedTemplateItemDefinition

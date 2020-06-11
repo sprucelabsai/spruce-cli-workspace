@@ -1,25 +1,9 @@
-import  { buildSchemaDefinition,
-	FieldType,
-} from '@sprucelabs/schema'
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import { FieldType } from '#spruce/schemas/fields/fieldType'
+{{{ importRelatedDefinitions definition }}}
 
-const {{nameCamel}}Definition = buildSchemaDefinition({
-	id: '{{nameCamel}}',
-	name: '{{{escape nameReadable}}}',
-    description: '{{{escape description}}}',
-	fields: {
-		fieldName1: {
-			type: FieldType.Boolean,
-			label: 'First Field',
-			isRequired: true
-		},
-		fieldName2: {
-			type: FieldType.Number,
-			label: 'Second Field',
-			isRequired: true,
-			hint:
-				'A hint'
-		}
-	}
-})
+const {{nameCamel}}Definition: SpruceSchemas.{{namespace}}.{{namePascal}}.IDefinition  = {
+	{{> schemaDefinition schema=definition renderAs="value" }}
+}
 
 export default {{nameCamel}}Definition

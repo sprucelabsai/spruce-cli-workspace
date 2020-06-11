@@ -1,6 +1,6 @@
 import { FieldType, buildErrorDefinition } from '@sprucelabs/schema'
 
-const definitionFailedToImportDefinition = buildErrorDefinition({
+export default buildErrorDefinition({
 	id: 'definitionFailedToImport',
 	name: 'Definition failed to import',
 	description: 'The definition file failed to import',
@@ -13,5 +13,3 @@ const definitionFailedToImportDefinition = buildErrorDefinition({
 		}
 	}
 })
-
-export default definitionFailedToImportDefinition

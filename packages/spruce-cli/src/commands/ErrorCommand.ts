@@ -4,10 +4,10 @@ import fs from 'fs-extra'
 import globby from 'globby'
 import { Feature } from '#spruce/autoloaders/features'
 import { ErrorCode } from '#spruce/errors/codes.types'
+import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
 import log from '../lib/log'
-import namedTemplateItemDefinition from '../schemas/namedTemplateItem.definition'
 import { ICreatedFile } from '../utilities/TerminalUtility'
 import AbstractCommand from './AbstractCommand'
 
@@ -134,7 +134,6 @@ export default class ErrorCommand extends AbstractCommand {
 			})
 		}
 
-		// Make sure error module is installed
 		await this.services.feature.install({
 			features: [
 				{
@@ -145,10 +144,9 @@ export default class ErrorCommand extends AbstractCommand {
 
 		const createdFiles: ICreatedFile[] = []
 
-		// Write the definition
 		await this.writeFile(
 			errorDefinitionFileDestination,
-			this.templates.errorDefinition(names)
+			this.templates.definitionBuilder(names)
 		)
 
 		createdFiles.push({
@@ -156,7 +154,6 @@ export default class ErrorCommand extends AbstractCommand {
 			path: errorDefinitionFileDestination
 		})
 
-		// If there is no error file, lets write one
 		if (!this.doesFileExist(errorFileDestination)) {
 			const errorContents = this.templates.error({ errors: [names] })
 			await this.writeFile(errorFileDestination, errorContents)

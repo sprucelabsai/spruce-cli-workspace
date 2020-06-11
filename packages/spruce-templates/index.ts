@@ -46,11 +46,11 @@ const schemasTypes: string = fs
 	.readFileSync(path.join(templatePath, 'schemas/schemas.types.hbs'))
 	.toString()
 
-const definition: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/definition.hbs'))
+const definitionBuilder: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/definition.builder.hbs'))
 	.toString()
 
-const normalizedDefinition: string = fs
+const definition: string = fs
 	.readFileSync(path.join(templatePath, 'schemas/normalized.definition.hbs'))
 	.toString()
 
@@ -74,8 +74,8 @@ const errorCodesTypes: string = fs
 	.readFileSync(path.join(templatePath, 'errors/codes.types.hbs'))
 	.toString()
 
-const errorDefinition: string = fs
-	.readFileSync(path.join(templatePath, 'errors/definition.hbs'))
+const errorDefinitionBuilder: string = fs
+	.readFileSync(path.join(templatePath, 'errors/definition.builder.hbs'))
 	.toString()
 
 const errorExample: string = fs
@@ -119,7 +119,7 @@ export const templates = {
 		return template({ ...options, imports })
 	},
 	/** Will return the template for a definition that has been normalized */
-	normalizedDefinition(
+	definition(
 		options: ISchemaTemplateItem & {
 			schemaTemplateItems: ISchemaTemplateItem[]
 			fieldTemplateItems: IFieldTemplateItem[]
@@ -127,18 +127,18 @@ export const templates = {
 		}
 	) {
 		const imports = importExtractorUtility(options.fieldTemplateItems)
-		const template = handlebars.compile(normalizedDefinition)
+		const template = handlebars.compile(definition)
 		return template({ ...options, imports })
 	},
 
 	/** When building a definition in a skill */
-	definition(options: {
+	definitionBuilder(options: {
 		nameCamel: string
 		description: string
 		namePascal: string
 		nameReadable: string
 	}) {
-		const template = handlebars.compile(definition)
+		const template = handlebars.compile(definitionBuilder)
 		return template(options)
 	},
 
@@ -181,12 +181,12 @@ export const templates = {
 	},
 
 	/** An error definition file */
-	errorDefinition(options: {
+	errorDefinitionBuilder(options: {
 		nameCamel: string
 		nameReadable: string
 		description: string
 	}) {
-		const template = handlebars.compile(errorDefinition)
+		const template = handlebars.compile(errorDefinitionBuilder)
 		return template(options)
 	},
 

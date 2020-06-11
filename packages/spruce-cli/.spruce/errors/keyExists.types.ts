@@ -2,7 +2,7 @@
 
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
-import keyExistsDefinition from '../../src/errors/keyExists.definition'
+import keyExistsDefinition from '../../src/errors/keyExists.builder'
 import { ErrorCode } from './codes.types'
 
 type KeyExistsDefinition = typeof keyExistsDefinition

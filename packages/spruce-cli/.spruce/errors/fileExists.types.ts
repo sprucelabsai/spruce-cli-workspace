@@ -2,7 +2,7 @@
 
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
-import fileExistsDefinition from '../../src/errors/fileExists.definition'
+import fileExistsDefinition from '../../src/errors/fileExists.builder'
 import { ErrorCode } from './codes.types'
 
 type FileExistsDefinition = typeof fileExistsDefinition

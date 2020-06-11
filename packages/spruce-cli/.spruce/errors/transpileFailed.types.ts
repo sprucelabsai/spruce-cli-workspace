@@ -2,7 +2,7 @@
 
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
-import transpileFailedDefinition from '../../src/errors/transpileFailed.definition'
+import transpileFailedDefinition from '../../src/errors/transpileFailed.builder'
 import { ErrorCode } from './codes.types'
 
 type TranspileFailedDefinition = typeof transpileFailedDefinition

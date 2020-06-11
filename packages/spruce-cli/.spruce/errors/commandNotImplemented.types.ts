@@ -2,7 +2,7 @@
 
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
-import commandNotImplementedDefinition from '../../src/errors/commandNotImplemented.definition'
+import commandNotImplementedDefinition from '../../src/errors/commandNotImplemented.builder'
 import { ErrorCode } from './codes.types'
 
 type CommandNotImplementedDefinition = typeof commandNotImplementedDefinition

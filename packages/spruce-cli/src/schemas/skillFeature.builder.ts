@@ -1,6 +1,6 @@
 import { buildSchemaDefinition, FieldType } from '@sprucelabs/schema'
 
-const skillFeatureDefinition = buildSchemaDefinition({
+export default buildSchemaDefinition({
 	id: 'skillFeature',
 	name: 'Skill Feature',
 	fields: {
@@ -16,5 +16,3 @@ const skillFeatureDefinition = buildSchemaDefinition({
 		}
 	}
 })
-
-export default skillFeatureDefinition

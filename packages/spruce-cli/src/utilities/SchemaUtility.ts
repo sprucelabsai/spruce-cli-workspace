@@ -23,7 +23,7 @@ export default class SchemaUtility extends AbstractUtility {
 	}
 
 	/** All the items you need for a template */
-	public buildTemplateItems(options: {
+	public accumulateTemplateItems(options: {
 		namespace: string
 		/** Array of schema definitions */
 		definitions: ISchemaDefinition[]
@@ -206,7 +206,7 @@ export default class SchemaUtility extends AbstractUtility {
 							log.info(
 								`importing_schema_field_schema: ${definition.id}:${fieldName} = ${schemaDefinition.id}`
 							)
-							newItems = this.buildTemplateItems({
+							newItems = this.accumulateTemplateItems({
 								namespace,
 								definitions: [schemaDefinition],
 								items: newItems,

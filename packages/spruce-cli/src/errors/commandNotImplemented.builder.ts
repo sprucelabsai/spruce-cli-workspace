@@ -1,6 +1,6 @@
 import { FieldType, buildErrorDefinition } from '@sprucelabs/schema'
 
-const commandNotImplementedDefinition = buildErrorDefinition({
+export default buildErrorDefinition({
 	id: 'commandNotImplemented',
 	name: 'Command not implemented',
 	description: 'This command has not yet been implemented ',
@@ -20,5 +20,3 @@ const commandNotImplementedDefinition = buildErrorDefinition({
 		}
 	}
 })
-
-export default commandNotImplementedDefinition

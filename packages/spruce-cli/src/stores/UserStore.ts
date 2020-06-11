@@ -3,11 +3,11 @@ import Schema from '@sprucelabs/schema'
 import gql from 'graphql-tag'
 import jwt from 'jsonwebtoken'
 import { ErrorCode } from '#spruce/errors/codes.types'
+import cliUserWithTokenDefinition from '#spruce/schemas/local/cliUserWithToken.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
 import log from '../lib/log'
-import userDefinition from '../schemas/cliUser.definition'
-import userWithTokenDefinition from '../schemas/cliUserWithToken.definition'
+import userDefinition from '../schemas/cliUser.builder'
 import { SpruceEvents } from '../types/events-generated'
 import AbstractStore, { StoreAuth, IBaseStoreSettings } from './AbstractStore'
 
@@ -24,7 +24,7 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 
 	/** Build a new user with an added token */
 	public static userWithToken(values?: Partial<UserWithToken>) {
-		return new Schema(userWithTokenDefinition, values)
+		return new Schema(cliUserWithTokenDefinition, values)
 	}
 
 	/** Build a basic user */
@@ -155,7 +155,7 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 		})
 
 		// Lets validate the user and pull out values
-		const instance = new Schema(userWithTokenDefinition, user)
+		const instance = new Schema(cliUserWithTokenDefinition, user)
 		instance.validate()
 
 		newAuthedUsers.push({
@@ -177,9 +177,8 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 		// Validate the saved user
 		if (loggedInUser) {
 			try {
-				const instance = new Schema(userWithTokenDefinition, loggedInUser)
+				const instance = new Schema(cliUserWithTokenDefinition, loggedInUser)
 				instance.validate()
-				// @ts-ignore
 				return instance.getValues()
 			} catch (err) {
 				log.crit(`Loading logged in user failed`)

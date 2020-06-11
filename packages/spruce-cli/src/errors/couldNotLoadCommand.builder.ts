@@ -1,6 +1,6 @@
 import { FieldType, buildErrorDefinition } from '@sprucelabs/schema'
 
-const couldNotLoadCommandDefinition = buildErrorDefinition({
+export default buildErrorDefinition({
 	id: 'couldNotLoadCommand',
 	name: 'Could not load command',
 	description: 'A command failed to load, probably because of a syntax error',
@@ -13,5 +13,3 @@ const couldNotLoadCommandDefinition = buildErrorDefinition({
 		}
 	}
 })
-
-export default couldNotLoadCommandDefinition

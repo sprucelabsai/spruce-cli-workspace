@@ -228,7 +228,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 								`${templateItem.nameCamel}.definition.ts`
 							)
 
-							const definition = templates.normalizedDefinition({
+							const definition = templates.definition({
 								...templateItem,
 								schemaTemplateItems,
 								fieldTemplateItems,

@@ -1,6 +1,6 @@
 import { buildSchemaDefinition, FieldType } from '@sprucelabs/schema'
 
-const onboardingDefinition = buildSchemaDefinition({
+export default buildSchemaDefinition({
 	id: 'onboarding',
 	name: 'Onboarding',
 	description: 'Track onboarding progress and tutorials & quizzes completed.',
@@ -19,5 +19,3 @@ const onboardingDefinition = buildSchemaDefinition({
 		}
 	}
 })
-
-export default onboardingDefinition

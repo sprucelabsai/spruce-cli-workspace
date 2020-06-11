@@ -1,6 +1,6 @@
 import { FieldType, buildErrorDefinition } from '@sprucelabs/schema'
 
-const createAutoloaderFailed = buildErrorDefinition({
+export default buildErrorDefinition({
 	id: 'createAutoloaderFailed',
 	name: 'Could not create an autoloader',
 	description: 'Autoloader creation failed',
@@ -32,5 +32,3 @@ const createAutoloaderFailed = buildErrorDefinition({
 		}
 	}
 })
-
-export default createAutoloaderFailed

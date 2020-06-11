@@ -1,7 +1,7 @@
 import { buildSchemaDefinition } from '@sprucelabs/schema'
 import skillDefinition from '#spruce/schemas/core/skill.definition'
 
-const cliSkillDefinition = buildSchemaDefinition({
+export default buildSchemaDefinition({
 	...skillDefinition,
 	id: 'cliSkill',
 	description: 'A stripped down skill for the cli',
@@ -12,5 +12,3 @@ const cliSkillDefinition = buildSchemaDefinition({
 		slug: skillDefinition.fields.slug
 	}
 })
-
-export default cliSkillDefinition
