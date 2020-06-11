@@ -1,9 +1,14 @@
 #!/usr/bin/env node
-
+// eslint-disable-next-line import/order
+import { register } from '@sprucelabs/path-resolver'
+register({
+	cwd: __dirname,
+	extensions: ['.js', '.ts']
+})
+// Shim
 // eslint-disable-next-line import/order
 import allSettled from 'promise.allsettled'
 allSettled.shim()
-
 import {
 	Mercury,
 	IMercuryConnectOptions,

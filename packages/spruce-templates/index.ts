@@ -47,11 +47,11 @@ const schemasTypes: string = fs
 	.toString()
 
 const definitionBuilder: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/definition.builder.hbs'))
+	.readFileSync(path.join(templatePath, 'schemas/builder.hbs'))
 	.toString()
 
 const definition: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/normalized.definition.hbs'))
+	.readFileSync(path.join(templatePath, 'schemas/definition.hbs'))
 	.toString()
 
 const schemaExample: string = fs
@@ -75,7 +75,7 @@ const errorCodesTypes: string = fs
 	.toString()
 
 const errorDefinitionBuilder: string = fs
-	.readFileSync(path.join(templatePath, 'errors/definition.builder.hbs'))
+	.readFileSync(path.join(templatePath, 'errors/builder.hbs'))
 	.toString()
 
 const errorExample: string = fs
