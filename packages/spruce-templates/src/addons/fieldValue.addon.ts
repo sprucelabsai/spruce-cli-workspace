@@ -1,4 +1,5 @@
-import { FieldDefinition } from '@sprucelabs/schema'
+import {FieldDefinition} from '#spruce/schemas/fields/fields.types'
+
 import handlebars from 'handlebars'
 import log from '../lib/log'
 

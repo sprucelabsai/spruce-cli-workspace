@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import readline from 'readline'
-import { FieldType } from '@sprucelabs/schema'
 import chokidar, { FSWatcher } from 'chokidar'
 import { Command } from 'commander'
 import _ from 'lodash'
 import minimatch from 'minimatch'
+import FieldType from '#spruce/schemas/fields/fieldType'
 import log from '../lib/log'
 import { IWatchers } from '../stores/WatcherStore'
 import { ITerminalEffect } from '../utilities/TerminalUtility'

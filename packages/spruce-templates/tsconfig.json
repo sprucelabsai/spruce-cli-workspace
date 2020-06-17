@@ -22,7 +22,7 @@
 				"node_modules/@sprucelabs/schema/build/*",
 				"node_modules/@sprucelabs/schema/build/src/*"
 			],
-			"#spruce/*": [".spruce/*"]
+			"#spruce/*": ["../spruce-cli/.spruce/*"]
 		}
 	},
 	"include": ["./*.ts", "./**/*.ts"],

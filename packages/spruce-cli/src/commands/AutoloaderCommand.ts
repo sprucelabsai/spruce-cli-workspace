@@ -5,7 +5,7 @@ import autoloaderDefinition from '#spruce/schemas/local/autoloader.definition'
 import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
 import SpruceError from '../errors/SpruceError'
 import AbstractCommand from './AbstractCommand'
-import { FieldType } from '#spruce:schema/fields/fieldType'
+import FieldType from '#spruce:schema/fields/fieldType'
 
 export default class AutoloaderCommand extends AbstractCommand {
 	public attachCommands(program: Command): void {

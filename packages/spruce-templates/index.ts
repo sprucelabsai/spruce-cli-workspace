@@ -3,11 +3,11 @@ import path from 'path'
 import {
 	ISchemaDefinition,
 	ISchemaTemplateItem,
-	IFieldTemplateItem,
-	FieldDefinition
+	IFieldTemplateItem
 } from '@sprucelabs/schema'
 import { TemplateRenderAs } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
+import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import log from './src/lib/log'
 // Import addons
 import './src/addons/escape.addon'

@@ -1,5 +1,6 @@
-import { buildSchemaDefinition, FieldType } from '@sprucelabs/schema'
+import { buildSchemaDefinition } from '@sprucelabs/schema'
 import userDefinition from '#spruce/schemas/core/user.definition'
+import FieldType from '#spruce/schemas/fields/fieldType'
 
 export default buildSchemaDefinition({
 	...userDefinition,

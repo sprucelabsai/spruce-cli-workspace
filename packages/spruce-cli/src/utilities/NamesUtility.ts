@@ -1,8 +1,8 @@
 import path from 'path'
-import { FieldDefinition } from '@sprucelabs/schema'
 import { Optional } from '@sprucelabs/schema'
 import inflection from 'inflection'
 import { camelCase, snakeCase, upperFirst } from 'lodash'
+import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import AbstractUtility from './AbstractUtility'
 

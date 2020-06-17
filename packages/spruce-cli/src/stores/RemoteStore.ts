@@ -1,7 +1,5 @@
-import Schema, {
-	FieldType,
-	ISelectFieldDefinitionChoice
-} from '@sprucelabs/schema'
+import Schema, { ISelectFieldDefinitionChoice } from '@sprucelabs/schema'
+import FieldType from '#spruce/schemas/fields/fieldType'
 import AbstractStore, {
 	IBaseStoreSettings,
 	IStoreOptions

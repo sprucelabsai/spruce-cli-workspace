@@ -1917,23 +1917,10 @@
     "@sprucelabs/error" "^1.0.11"
     "@sprucelabs/log" "^10.2.1"
 
-"@sprucelabs/schema@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-2.0.1.tgz#9e6176d62faf5487cbc5432defc25d0f80d2428a"
-  integrity sha512-olINmBEdT/JWthEK1+vPFFT9r8eqJM8pEgvmkxEbhT+bOEIixSEqijhzogOVoyewdOsAlbumF8E3CdZF/GZH6g==
-  dependencies:
-    "@sprucelabs/error" "^1.2.0"
-    "@sprucelabs/log" "^10.2.2"
-    "@sprucelabs/path-resolver" "^1.3.0"
-    google-libphonenumber "^3.2.8"
-    libphonenumber-js "^1.7.48"
-    mime-db "^1.43.0"
-    mime-type "^3.0.7"
-
-"@sprucelabs/schema@^2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-2.0.2.tgz#e7be31f12c8348ff3d2e14dc6154e7c91cd93638"
-  integrity sha512-jDczmyp4IgiWo3OAQcGdYibJanq4Yy4MpXuwfphA2aJwxOO2p3+1Pf5JC7zMGi4AZhIoVjR2flchMzSMfNE5sw==
+"@sprucelabs/schema@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-3.0.0.tgz#8880408d357693a20ff5b7480e1f031d702b6e29"
+  integrity sha512-fls2efmL/ea/1qMIJJATgO2FhnujMqqmrqHHOpNaMNUs+ntW//GnkpUMGZToPtJ0F9xt6DX0NRFek5AwIa7BKw==
   dependencies:
     "@sprucelabs/error" "^1.2.0"
     "@sprucelabs/log" "^10.2.2"

@@ -1,4 +1,4 @@
-import { FieldType } from '#spruce:schema/fields/fieldType'
+import FieldType from '#spruce:schema/fields/fieldType'
 
 import { IAddressFieldDefinition, AddressField } from '@sprucelabs/schema'
 import { IBooleanFieldDefinition, BooleanField } from '@sprucelabs/schema'

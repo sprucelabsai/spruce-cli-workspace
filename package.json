@@ -12,7 +12,8 @@
 	},
 	"scripts": {
 		"lint": "lerna run lint",
-		"lint:fix": "lerna run lint:fix",
+		"lint.fix": "lerna run lint.fix",
+		"lint.tsc": "lerna run lint.tsc",
 		"build": "lerna run build",
 		"watch": "lerna run watch --no-sort --stream",
 		"test": "lerna run test --parallel",

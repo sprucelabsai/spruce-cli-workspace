@@ -1,8 +1,8 @@
 import {
 	ISchemaDefinition,
-	FieldType,
 	ISelectFieldDefinitionChoice
 } from '@sprucelabs/schema'
+import FieldType from '#spruce/schemas/fields/fieldType'
 
 const roleDefinition: ISchemaDefinition = {
 	id: 'role',

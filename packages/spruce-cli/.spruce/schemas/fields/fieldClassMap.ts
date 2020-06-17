@@ -1,4 +1,4 @@
-import { FieldType } from '#spruce:schema/fields/fieldType'
+import FieldType from '#spruce:schema/fields/fieldType'
 import { FieldClass } from '#spruce:schema/fields/fields.types'
 
 import { AddressField } from '@sprucelabs/schema'

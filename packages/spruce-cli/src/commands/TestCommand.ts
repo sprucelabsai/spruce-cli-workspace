@@ -1,6 +1,6 @@
-import { FieldType } from '@sprucelabs/schema'
 import { Command } from 'commander'
 import { Feature } from '#spruce/autoloaders/features'
+import FieldType from '#spruce/schemas/fields/fieldType'
 import path from '../lib/path'
 import AbstractCommand from './AbstractCommand'
 

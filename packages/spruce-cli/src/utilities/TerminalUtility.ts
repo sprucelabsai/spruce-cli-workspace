@@ -1,10 +1,5 @@
 import path from 'path'
-import {
-	FieldType,
-	FieldDefinition,
-	FieldFactory,
-	FieldDefinitionValueType
-} from '@sprucelabs/schema'
+import { FieldFactory, FieldDefinitionValueType } from '@sprucelabs/schema'
 // @ts-ignore No definition available
 import { IField } from '@sprucelabs/schema'
 // @ts-ignore
@@ -19,6 +14,8 @@ import _ from 'lodash'
 import { filter } from 'lodash'
 import ora from 'ora'
 import ErrorCode from '#spruce/errors/errorCode'
+import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
+import FieldType from '#spruce/schemas/fields/fieldType'
 import SpruceError from '../errors/SpruceError'
 import log from '../lib/log'
 import AbstractUtility from './AbstractUtility'

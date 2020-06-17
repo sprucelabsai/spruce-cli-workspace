@@ -1,5 +1,5 @@
-import { FieldType } from '@sprucelabs/schema'
 import { Command } from 'commander'
+import FieldType from '#spruce/schemas/fields/fieldType'
 import AbstractCommand from './AbstractCommand'
 
 export default class FeatureCommand extends AbstractCommand {

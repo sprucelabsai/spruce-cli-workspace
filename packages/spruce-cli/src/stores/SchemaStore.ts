@@ -1,11 +1,11 @@
 import pathUtil from 'path'
 import {
 	ISchemaDefinition,
-	IFieldRegistration,
 	ISchemaTemplateItem,
 	IFieldTemplateItem
 } from '@sprucelabs/schema'
 import Schema from '@sprucelabs/schema/build/Schema'
+import { IFieldRegistration } from '@sprucelabs/schema/build/utilities/registerFieldType'
 import globby from 'globby'
 import { uniqBy } from 'lodash'
 // TODO move these into mercury api and pull from there

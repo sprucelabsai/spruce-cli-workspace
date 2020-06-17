@@ -5,7 +5,6 @@ import { Feature } from '#spruce/autoloaders/features'
 import ErrorCode from '#spruce/errors/errorCode'
 import FieldType from '#spruce/schemas/fields/fieldType'
 import SpruceError from '../errors/SpruceError'
-import log from '../lib/log'
 import { StoreAuth } from '../stores/AbstractStore'
 import AbstractCommand from './AbstractCommand'
 
@@ -31,7 +30,6 @@ export default class SkillCommand extends AbstractCommand {
 	}
 
 	public setup = async (cmd: Command) => {
-		log.trace('SkillCommand.setup()')
 		const isInstalled = await this.services.feature.isInstalled({
 			features: [Feature.Skill]
 		})

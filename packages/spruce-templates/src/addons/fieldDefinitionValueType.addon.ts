@@ -1,5 +1,6 @@
-import { FieldDefinition, TemplateRenderAs } from '@sprucelabs/schema'
+import { TemplateRenderAs } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
+import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import { IValueTypes } from '../..'
 import KeyGeneratorUtility from '../utilities/KeyGeneratorUtility'
 
