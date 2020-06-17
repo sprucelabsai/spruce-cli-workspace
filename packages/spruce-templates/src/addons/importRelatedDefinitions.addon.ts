@@ -1,8 +1,9 @@
-import { ISchemaDefinition, FieldType } from '@sprucelabs/schema'
+import { ISchemaDefinition } from '@sprucelabs/schema'
 import { ISchemaTemplateItem } from '@sprucelabs/schema'
 import { SchemaField } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
 import { camelCase, uniq } from 'lodash'
+import FieldType from '#spruce/schemas/fields/fieldType'
 
 handlebars.registerHelper('importRelatedDefinitions', function(
 	definition: ISchemaDefinition,

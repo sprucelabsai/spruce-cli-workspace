@@ -1,4 +1,6 @@
-import { ISchemaDefinition, FieldType } from '@sprucelabs/schema'
+import { ISchemaDefinition } from '@sprucelabs/schema'
+import FieldType from '#spruce/schemas/fields/fieldType'
+
 import { RoleSelectChoices } from './role.definition'
 
 const groupDefinition: ISchemaDefinition = {
