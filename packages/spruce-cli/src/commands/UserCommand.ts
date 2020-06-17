@@ -1,6 +1,6 @@
 import { FieldType, ISelectFieldDefinitionChoice } from '@sprucelabs/schema'
 import { Command } from 'commander'
-import { ErrorCode } from '#spruce/errors/codes.types'
+import ErrorCode from '#spruce/errors/errorCode'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
 import { StoreAuth } from '../stores/AbstractStore'

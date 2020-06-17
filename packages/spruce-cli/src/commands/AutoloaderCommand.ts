@@ -1,6 +1,6 @@
 import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
-import { ErrorCode } from '#spruce/errors/codes.types'
+import ErrorCode from '#spruce/errors/errorCode'
 import autoloaderDefinition from '#spruce/schemas/local/autoloader.definition'
 import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
 import SpruceError from '../errors/SpruceError'

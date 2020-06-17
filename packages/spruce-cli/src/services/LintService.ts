@@ -1,6 +1,6 @@
 // import { CLIEngine } from 'eslint'
 import fs from 'fs-extra'
-import { ErrorCode } from '#spruce/errors/codes.types'
+import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
 import log from '../lib/log'
 import AbstractService from './AbstractService'

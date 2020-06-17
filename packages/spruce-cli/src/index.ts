@@ -18,7 +18,7 @@ import { templates } from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
 import autoloader from '#spruce/autoloaders'
 import { Commands } from '#spruce/autoloaders/commands'
-import { ErrorCode } from '#spruce/errors/codes.types'
+import ErrorCode from '#spruce/errors/errorCode'
 import pkg from '../package.json'
 /** Addons */
 import './addons/filePrompt.addon'

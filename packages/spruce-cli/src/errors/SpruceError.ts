@@ -1,5 +1,5 @@
 import BaseSpruceError from '@sprucelabs/error'
-import ErrorCode from '#spruce/errors/codes.types'
+import ErrorCode from '#spruce/errors/errorCode'
 import ErrorOptions from '#spruce/errors/options.types'
 
 export default class SpruceError extends BaseSpruceError<ErrorOptions> {

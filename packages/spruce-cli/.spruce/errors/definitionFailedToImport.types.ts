@@ -3,7 +3,7 @@
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
 import definitionFailedToImportDefinition from '../../src/errors/definitionFailedToImport.builder'
-import ErrorCode from './codes.types'
+import ErrorCode from './errorCode'
 
 type DefinitionFailedToImportDefinition = typeof definitionFailedToImportDefinition
 export interface IDefinitionFailedToImportDefinition

@@ -1,18 +1,18 @@
 import AbstractSpruceError from '@sprucelabs/error'
 import Schema, {
 	ISchemaDefinition,
-	FieldType,
 	SchemaDefinitionAllValues,
 	SchemaDefinitionPartialValues,
 	SchemaFieldNames,
 	ISelectFieldDefinitionChoice,
-	FieldDefinition,
 	ErrorCode as SchemaErrorCode,
-	SchemaError
+	SchemaError,
+	IFieldDefinition
 } from '@sprucelabs/schema'
-import { IFieldDefinition } from '@sprucelabs/schema'
 import { pick } from 'lodash'
-import { ErrorCode } from '#spruce/errors/codes.types'
+import ErrorCode from '#spruce/errors/errorCode'
+import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
+import FieldType from '#spruce/schemas/fields/fieldType'
 import SpruceError from '../errors/SpruceError'
 import ITerminal, { ITerminalEffect } from '../utilities/TerminalUtility'
 

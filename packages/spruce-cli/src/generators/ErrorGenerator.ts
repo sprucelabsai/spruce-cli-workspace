@@ -4,7 +4,7 @@ import AbstractGenerator from './AbstractGenerator'
 
 export default class ErrorGenerator extends AbstractGenerator {
 	/** Rebuilds the codes */
-	public async rebuildCodesTypesFile(options: {
+	public async rebuildErrorCodeType(options: {
 		lookupDir: string
 		destinationFile: string
 	}): Promise<{
@@ -43,7 +43,7 @@ export default class ErrorGenerator extends AbstractGenerator {
 			})
 		)
 
-		const contents = this.templates.errorCodesTypes({ codes })
+		const contents = this.templates.errorCode({ codes })
 		this.writeFile(destinationFile, contents)
 
 		return {

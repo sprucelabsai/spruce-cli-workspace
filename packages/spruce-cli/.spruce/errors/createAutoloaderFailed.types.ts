@@ -3,7 +3,7 @@
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
 import createAutoloaderFailedDefinition from '../../src/errors/createAutoloaderFailed.builder'
-import ErrorCode from './codes.types'
+import ErrorCode from './errorCode'
 
 type CreateAutoloaderFailedDefinition = typeof createAutoloaderFailedDefinition
 export interface ICreateAutoloaderFailedDefinition

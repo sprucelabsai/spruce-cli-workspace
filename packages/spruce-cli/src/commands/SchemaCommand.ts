@@ -1,7 +1,7 @@
 import { templates } from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
 import { Feature } from '#spruce/autoloaders/features'
-import { ErrorCode } from '#spruce/errors/codes.types'
+import ErrorCode from '#spruce/errors/errorCode'
 import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
 import SpruceError from '../errors/SpruceError'
 import AbstractCommand from './AbstractCommand'

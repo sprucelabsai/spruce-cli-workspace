@@ -7,7 +7,7 @@ import {
 	IAutoLoaderImportTemplateItem
 } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
-import { ErrorCode } from '#spruce/errors/codes.types'
+import ErrorCode from '#spruce/errors/errorCode'
 import autoloaderDefinition from '#spruce/schemas/local/autoloader.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'

@@ -3,7 +3,7 @@ import { Command } from 'commander'
 import fs from 'fs-extra'
 import globby from 'globby'
 import { Feature } from '#spruce/autoloaders/features'
-import { ErrorCode } from '#spruce/errors/codes.types'
+import ErrorCode from '#spruce/errors/errorCode'
 import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
@@ -209,7 +209,7 @@ export default class ErrorCommand extends AbstractCommand {
 		// Rebuild the errors codes
 		const {
 			generatedFiles: typesGenerated
-		} = await this.generators.error.rebuildCodesTypesFile({
+		} = await this.generators.error.rebuildErrorCodeType({
 			lookupDir: this.resolvePath(errorDestinationDir),
 			destinationFile: this.resolvePath(typesDestinationDir, 'codes.types.ts')
 		})
@@ -337,7 +337,7 @@ export default class ErrorCommand extends AbstractCommand {
 		}
 
 		// Rebuild the errors codes
-		await this.generators.error.rebuildCodesTypesFile({
+		await this.generators.error.rebuildErrorCodeType({
 			lookupDir: this.resolvePath(lookupDir),
 			destinationFile: this.resolvePath(typesDestinationDir, 'codes.types.ts')
 		})

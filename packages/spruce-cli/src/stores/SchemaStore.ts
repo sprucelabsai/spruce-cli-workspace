@@ -9,7 +9,7 @@ import Schema from '@sprucelabs/schema/build/Schema'
 import globby from 'globby'
 import { uniqBy } from 'lodash'
 // TODO move these into mercury api and pull from there
-import { ErrorCode } from '#spruce/errors/codes.types'
+import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
 import {
 	userDefinition,

@@ -3,7 +3,7 @@
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
 import invalidCommandDefinition from '../../src/errors/invalidCommand.builder'
-import ErrorCode from './codes.types'
+import ErrorCode from './errorCode'
 
 type InvalidCommandDefinition = typeof invalidCommandDefinition
 export interface IInvalidCommandDefinition extends InvalidCommandDefinition {}

@@ -1,5 +1,5 @@
 import Schema from '@sprucelabs/schema'
-import { ErrorCode } from '#spruce/errors/codes.types'
+import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
 import { IImportOptions } from '../services/ChildService'
 import AbstractService from './AbstractService'

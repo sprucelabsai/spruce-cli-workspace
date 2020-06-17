@@ -3,7 +3,7 @@
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
 import lintFailedDefinition from '../../src/errors/lintFailed.builder'
-import ErrorCode from './codes.types'
+import ErrorCode from './errorCode'
 
 type LintFailedDefinition = typeof lintFailedDefinition
 export interface ILintFailedDefinition extends LintFailedDefinition {}

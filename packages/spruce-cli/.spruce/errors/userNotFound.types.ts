@@ -3,7 +3,7 @@
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
 import userNotFoundDefinition from '../../src/errors/userNotFound.builder'
-import ErrorCode from './codes.types'
+import ErrorCode from './errorCode'
 
 type UserNotFoundDefinition = typeof userNotFoundDefinition
 export interface IUserNotFoundDefinition extends UserNotFoundDefinition {}

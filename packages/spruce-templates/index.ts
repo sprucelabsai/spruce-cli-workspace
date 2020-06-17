@@ -70,8 +70,8 @@ const errorOptionsTypes: string = fs
 	.readFileSync(path.join(templatePath, 'errors/options.types.hbs'))
 	.toString()
 
-const errorCodesTypes: string = fs
-	.readFileSync(path.join(templatePath, 'errors/codes.types.hbs'))
+const errorCode: string = fs
+	.readFileSync(path.join(templatePath, 'errors/errorCode.hbs'))
 	.toString()
 
 const errorDefinitionBuilder: string = fs
@@ -173,10 +173,10 @@ export const templates = {
 	},
 
 	/** For generating types for all the options (the ISpruceErrorOptions sub-interface) */
-	errorCodesTypes(options: {
+	errorCode(options: {
 		codes: { namePascal: string; nameConst: string; description: string }[]
 	}) {
-		const template = handlebars.compile(errorCodesTypes)
+		const template = handlebars.compile(errorCode)
 		return template(options)
 	},
 

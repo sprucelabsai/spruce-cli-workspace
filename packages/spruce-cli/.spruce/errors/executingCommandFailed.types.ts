@@ -6,7 +6,7 @@ import {
 
 import executingCommandFailedDefinition from '../../src/errors/executingCommandFailed.builder'
 import { ISpruceErrorOptions } from '@sprucelabs/error'
-import ErrorCode from './codes.types'
+import ErrorCode from './errorCode'
 
 type ExecutingCommandFailedDefinition = typeof executingCommandFailedDefinition
 export interface IExecutingCommandFailedDefinition extends ExecutingCommandFailedDefinition {}

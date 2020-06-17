@@ -1,6 +1,5 @@
 import {
 	ISchemaDefinition,
-	FieldType,
 	ISchemaDefinitionFields,
 	SchemaError,
 	ErrorCode as SchemaErrorCode,
@@ -9,6 +8,7 @@ import {
 	default as Schema
 } from '@sprucelabs/schema'
 import SchemaField from '@sprucelabs/schema/build/fields/SchemaField'
+import FieldType from '#spruce/schemas/fields/fieldType'
 import log from '../lib/log'
 import AbstractUtility from './AbstractUtility'
 

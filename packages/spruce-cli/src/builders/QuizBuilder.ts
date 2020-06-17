@@ -1,12 +1,12 @@
 import { SpruceErrorCode } from '@sprucelabs/error'
 import {
-	FieldType,
 	ISchemaDefinition,
 	ISchemaDefinitionFields,
 	SchemaFieldNames
 } from '@sprucelabs/schema'
 import chalk from 'chalk'
 import { shuffle } from 'lodash'
+import FieldType from '#spruce/schemas/fields/fieldType'
 import SpruceError from '../errors/SpruceError'
 import TerminalUtility from '../utilities/TerminalUtility'
 import FormBuilder, {
