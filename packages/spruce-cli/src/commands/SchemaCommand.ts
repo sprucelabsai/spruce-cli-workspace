@@ -14,8 +14,8 @@ export default class SchemaCommand extends AbstractCommand {
 			.command('schema:create [name]')
 			.description('Define a new thing!')
 			.option(
-				'-dd, --definitionDestinationDir <definitionDir>',
-				'Where should I write the definition file?',
+				'-dd, --destinationDir <destinationDir>',
+				'Where should I write the builder file?',
 				'./src/schemas'
 			)
 			.option(
@@ -23,7 +23,7 @@ export default class SchemaCommand extends AbstractCommand {
 				'Where should I write the types file that supports the definition?',
 				'./.spruce/schemas'
 			)
-			.action(this.create.bind(this))
+			.action(this.create)
 
 		/** Sync everything */
 		program
@@ -33,7 +33,7 @@ export default class SchemaCommand extends AbstractCommand {
 			)
 			.option(
 				'-l, --lookupDir <lookupDir>',
-				'Where should I look for definitions files (*.definition.ts)?',
+				'Where should I look for schema builder files?',
 				'./src/schemas'
 			)
 			.option(
@@ -51,11 +51,11 @@ export default class SchemaCommand extends AbstractCommand {
 				'If cleaning, should I suppress confirmations and warnings',
 				false
 			)
-			.action(this.sync.bind(this))
+			.action(this.sync)
 	}
 
 	/** Sync all schemas and fields (also pulls from the cloud) */
-	public async sync(
+	public sync = async (
 		lookupDirOption: string | undefined,
 		options: {
 			destinationDir: string
@@ -63,7 +63,7 @@ export default class SchemaCommand extends AbstractCommand {
 			clean?: boolean
 			force?: boolean
 		}
-	) {
+	) => {
 		const destinationDir = options.destinationDir
 		const lookupDir = lookupDirOption || options.lookupDir
 		const clean = !!options.clean
@@ -71,6 +71,7 @@ export default class SchemaCommand extends AbstractCommand {
 
 		if (!lookupDir) {
 			// TODO update this to spruce error
+			debugger
 			throw new Error('aoeuaoeuaoeu')
 		}
 
@@ -252,7 +253,7 @@ export default class SchemaCommand extends AbstractCommand {
 	}
 
 	/** Define a new schema */
-	public async create(name: string | undefined, cmd: Command) {
+	public create = async (name: string | undefined, cmd: Command) => {
 		const nameReadable = name
 
 		let nameCamel = ''
@@ -296,19 +297,19 @@ export default class SchemaCommand extends AbstractCommand {
 		this.term.stopLoading()
 
 		// Build paths
-		const definitionDestination = this.resolvePath(
-			cmd.definitionDestinationDir as string,
-			`${values.nameCamel}.definition.ts`
+		const builderDestination = this.resolvePath(
+			cmd.destinationDir as string,
+			`${values.nameCamel}.builder.ts`
 		)
 		const typesDestination = this.resolvePath(cmd.typesDestinationDir as string)
 		const definitionBuilder = templates.definitionBuilder(values)
 
-		await this.writeFile(definitionDestination, definitionBuilder)
+		await this.writeFile(builderDestination, definitionBuilder)
 
-		this.term.info(`Definition created at ${definitionDestination}`)
+		this.term.info(`Definition created at ${builderDestination}`)
 
 		try {
-			await this.sync(cmd.definitionDestinationDir, {
+			await this.sync(cmd.destinationDir, {
 				destinationDir: typesDestination
 			})
 		} catch (err) {
@@ -323,15 +324,20 @@ export default class SchemaCommand extends AbstractCommand {
 		}
 	}
 
-	private async takeUserThroughErrors(
+	private takeUserThroughErrors = async (
 		errors: SpruceError[],
 		totalItems: number
-	) {
+	) => {
 		let confirm = false
 		do {
 			this.term.handleError(errors[0])
 			errors.pop()
-			await this.term.confirm(errors.length === 0 ? 'Done' : 'Next')
+			confirm = await this.term.confirm(
+				errors.length === 0 ? 'Done' : 'Next error'
+			)
+			if (!confirm) {
+				break
+			}
 		} while (errors.length > 0)
 		confirm = await this.term.confirm(
 			`Ok, ready for me to try to generate the types for the ${totalItems} definitions I was able to load?`

@@ -63,7 +63,6 @@ export default class SchemaGenerator extends AbstractGenerator {
 			sourceFile
 		)
 
-		// TODO what should the namespace be? slug pulled from somewhere
 		const schemaTemplateItems = await this.stores.schema.schemaTemplateItems({
 			includeErrors: false,
 			localLookupDir: schemaLookupDir
@@ -163,6 +162,9 @@ export default class SchemaGenerator extends AbstractGenerator {
 		const resultsByStage = []
 		const normalizedDefinitions: { id: string; path: string }[] = []
 
+		let successfulSchemas = 0
+		let successfulFields = 0
+
 		for (const stage of stages) {
 			const {
 				schemaTemplateItems: schemaTemplateItemsStage,
@@ -187,6 +189,8 @@ export default class SchemaGenerator extends AbstractGenerator {
 				const fieldTypeContent = templates.fieldType({
 					fieldTemplateItems
 				})
+
+				successfulFields += fieldTemplateItems.length
 
 				// Write out field types
 				await this.writeFile(fieldsTypesDestination, fieldsTypesContent)
@@ -242,6 +246,8 @@ export default class SchemaGenerator extends AbstractGenerator {
 								id: templateItem.namePascal,
 								path: destination
 							})
+
+							successfulSchemas++
 						}
 					})
 				)
@@ -272,9 +278,8 @@ export default class SchemaGenerator extends AbstractGenerator {
 							originalError: err
 						})
 					],
-					// TODO: Make this work
-					successfulFields: 0,
-					successfulSchemas: 0
+					successfulFields,
+					successfulSchemas
 				})
 			}
 		}

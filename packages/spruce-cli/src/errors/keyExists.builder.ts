@@ -1,4 +1,5 @@
-import { FieldType, buildErrorDefinition } from '@sprucelabs/schema'
+import { buildErrorDefinition } from '@sprucelabs/schema'
+import FieldType from '#spruce/schemas/fields/fieldType'
 
 const keyExistsDefinition = buildErrorDefinition({
 	id: 'keyExists',

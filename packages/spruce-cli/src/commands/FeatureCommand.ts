@@ -1,6 +1,5 @@
 import { FieldType } from '@sprucelabs/schema'
 import { Command } from 'commander'
-import log from '../lib/log'
 import AbstractCommand from './AbstractCommand'
 
 export default class FeatureCommand extends AbstractCommand {
@@ -8,11 +7,10 @@ export default class FeatureCommand extends AbstractCommand {
 		program
 			.command('feature:install')
 			.description('Install a feature')
-			.action(this.installFeature.bind(this))
+			.action(this.installFeature)
 	}
 
-	public async installFeature() {
-		log.debug('Install feature!')
+	public installFeature = async () => {
 		const choices = this.services.feature.getAvailableFeatures().map(f => ({
 			value: f.feature,
 			label: f.description

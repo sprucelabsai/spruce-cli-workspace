@@ -12,12 +12,12 @@ export default class RemoteCommand extends AbstractCommand {
 		program
 			.command('remote:set [environment]')
 			.description('Set the environment to use')
-			.action(this.setEnvironment.bind(this))
+			.action(this.setEnvironment)
 	}
 
-	public async setEnvironment(
+	public setEnvironment = async (
 		environmentParam?: RemoteStoreRemoteType | string
-	) {
+	) => {
 		let environment = environmentParam
 
 		if (!environment) {

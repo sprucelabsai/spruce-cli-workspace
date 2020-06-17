@@ -1,5 +1,5 @@
 /** All the error codes this skill can throw */
-export enum ErrorCode {
+enum ErrorCode {
    
     {{#each codes}}
     /** * {{{description}}} */
@@ -7,3 +7,5 @@ export enum ErrorCode {
     
     {{/each}}
 }
+
+export default ErrorCode

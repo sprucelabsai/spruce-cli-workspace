@@ -8,10 +8,10 @@ export default class OnboardingCommand extends AbstractCommand {
 			.command('onboarding')
 			.option('-r, --reset', 'Start count over')
 			.description('Start onboarding')
-			.action(this.onboarding.bind(this))
+			.action(this.onboarding)
 	}
 
-	public async onboarding(cmd: Command) {
+	public onboarding = async (cmd: Command) => {
 		if (cmd.reset) {
 			this.stores.onboarding.setRunCount(0)
 		}

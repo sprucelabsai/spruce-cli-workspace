@@ -28,14 +28,14 @@ export default class ErrorCommand extends AbstractCommand {
 			)
 			.option(
 				'-sl --schemaLookupDir <schemaLookupDir>',
-				'Where should I write the types file that supports the error?',
+				"Where should I lookup for schema's?",
 				'.src/schemas'
 			)
-			.action(this.create.bind(this))
+			.action(this.create)
 
 		program
 			.command('error:sync')
-			.description('Generates type files on all error definitions.')
+			.description('Generates type files on all error builder.')
 			.option(
 				'-l, --lookupDir <lookupDir>',
 				'Where should I look for definitions files (*.definition.ts)?',
@@ -71,10 +71,10 @@ export default class ErrorCommand extends AbstractCommand {
 				false
 			)
 
-			.action(this.sync.bind(this))
+			.action(this.sync)
 	}
 
-	public async create(name: string | undefined, cmd: Command) {
+	public create = async (name: string | undefined, cmd: Command) => {
 		const errorDestinationDir = cmd.errorDestinationDir as string
 		const typesDestinationDir = cmd.typesDestinationDir as string
 		const schemaLookupDir = cmd.schemaLookupDir as string
@@ -85,7 +85,6 @@ export default class ErrorCommand extends AbstractCommand {
 		}
 		let showOverview = false
 
-		// If they passed a name, show overview
 		if (nameReadable) {
 			showOverview = true
 			initialValues.nameCamel = this.utilities.names.toCamel(nameReadable)
@@ -121,13 +120,13 @@ export default class ErrorCommand extends AbstractCommand {
 			'SpruceError.ts'
 		)
 
-		const errorDefinitionFileDestination = this.resolvePath(
+		const errorBuilderDestination = this.resolvePath(
 			errorDestinationDir,
-			`${names.nameCamel}.definition.ts`
+			`${names.nameCamel}.builder.ts`
 		)
 
 		// If there is already a definition file, blow up
-		if (this.doesFileExist(errorDefinitionFileDestination)) {
+		if (this.doesFileExist(errorBuilderDestination)) {
 			throw new SpruceError({
 				code: ErrorCode.Generic,
 				friendlyMessage: 'This error already exists!'
@@ -145,13 +144,13 @@ export default class ErrorCommand extends AbstractCommand {
 		const createdFiles: ICreatedFile[] = []
 
 		await this.writeFile(
-			errorDefinitionFileDestination,
+			errorBuilderDestination,
 			this.templates.definitionBuilder(names)
 		)
 
 		createdFiles.push({
-			name: 'Error definition',
-			path: errorDefinitionFileDestination
+			name: 'Error builder',
+			path: errorBuilderDestination
 		})
 
 		if (!this.doesFileExist(errorFileDestination)) {
@@ -199,7 +198,7 @@ export default class ErrorCommand extends AbstractCommand {
 			nameCamel,
 			generatedFiles
 		} = await this.generators.schema.generateTypesFromDefinitionFile({
-			sourceFile: errorDefinitionFileDestination,
+			sourceFile: errorBuilderDestination,
 			destinationDir: this.resolvePath(typesDestinationDir),
 			template: 'errorTypes',
 			schemaLookupDir
@@ -243,9 +242,17 @@ export default class ErrorCommand extends AbstractCommand {
 				definition
 			})
 		)
+
+		this.term.startLoading(
+			'Prettying generated files (you can use them now)...'
+		)
+
+		await this.services.lint.fix(errorBuilderDestination)
+
+		this.term.stopLoading()
 	}
 
-	public async sync(cmd: Command) {
+	public sync = async (cmd: Command) => {
 		const lookupDir = cmd.lookupDir as string
 		const typesDestinationDir = cmd.typesDestinationDir as string
 		const errorDestinationDir = cmd.errorDestinationDir as string
@@ -253,11 +260,7 @@ export default class ErrorCommand extends AbstractCommand {
 		const clean = !!cmd.clean
 		const force = !!cmd.force
 
-		const search = path.join(
-			this.resolvePath(lookupDir),
-			'**',
-			'*.definition.ts'
-		)
+		const search = path.join(this.resolvePath(lookupDir), '**', '*.builder.ts')
 
 		const matches = await globby(search)
 		const allErrors: {

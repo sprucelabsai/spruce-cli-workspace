@@ -36,7 +36,5 @@ handlebars.registerHelper('fieldTypeEnum', function(
 		throw new Error(`fieldTypeEnum`)
 	}
 
-	return renderAs === TemplateRenderAs.Value
-		? `FieldType.${matchingField.pascalType}`
-		: `SpruceSchema.FieldType.${matchingField.pascalType}`
+	return `FieldType.${matchingField.pascalType}`
 })

@@ -32,4 +32,9 @@ export default class SkillFeatureTest extends BaseCliTest {
 		})
 		assert.isTrue(isInstalled)
 	}
+
+	@test('throws clean error when running in bad directory')
+	protected static async failsToInstallSkill() {
+		debugger
+	}
 }

@@ -45,7 +45,7 @@ export default class ChildService extends AbstractService {
 				cwd,
 				args: [
 					'-r',
-					'ts-node/register/transpile-only',
+					'ts-node/register',
 					'-r',
 					'@sprucelabs/path-resolver/register',
 					'-e',
@@ -125,12 +125,15 @@ export default class ChildService extends AbstractService {
 					  }
 
 				const child = spawn(executable, args, spawnOptions)
+
 				child.stdout?.on('data', data => {
 					stdout += data
 				})
+
 				child.stderr?.on('data', data => {
 					stderr += data
 				})
+
 				child.on('close', code => {
 					if (code === 0) {
 						resolve({ stdout })

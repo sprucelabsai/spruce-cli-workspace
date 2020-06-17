@@ -10,7 +10,7 @@ import AbstractCommand from './AbstractCommand'
 
 export default class SkillCommand extends AbstractCommand {
 	/** Sets up commands */
-	public attachCommands(program: Command) {
+	public attachCommands = (program: Command) => {
 		program
 			.command('skill:setup')
 			.description('Sets up a skill in the current directory')
@@ -18,18 +18,18 @@ export default class SkillCommand extends AbstractCommand {
 				'-s --silent',
 				'Suppress terminal output if a skill is already set up'
 			)
-			.action(this.setup.bind(this))
+			.action(this.setup)
 		program
 			.command('skill:login [skillId] [skillApiKey]')
 			.description('Authenticate as a skill')
-			.action(this.login.bind(this))
+			.action(this.login)
 		program
 			.command('skill:switch')
 			.description('Switch to a different skill')
-			.action(this.switch.bind(this))
+			.action(this.switch)
 	}
 
-	public async setup(cmd: Command) {
+	public setup = async (cmd: Command) => {
 		log.trace('SkillCommand.setup()')
 		const isInstalled = await this.services.feature.isInstalled({
 			features: [Feature.Skill]
@@ -85,7 +85,10 @@ export default class SkillCommand extends AbstractCommand {
 		}
 	}
 
-	public async login(skillId?: string, skillApiKey?: string): Promise<void> {
+	public login = async (
+		skillId?: string,
+		skillApiKey?: string
+	): Promise<void> => {
 		const loggedInUser = this.stores.user.loggedInUser()
 		const loggedInSkill = this.stores.skill.loggedInSkill()
 		const authType = this.stores.user.authType
@@ -172,7 +175,7 @@ export default class SkillCommand extends AbstractCommand {
 		}
 	}
 
-	public async switch() {
+	public switch = async () => {
 		const loggedInUser = this.stores.user.loggedInUser()
 		if (!loggedInUser) {
 			this.term.fatal('You are not logged in as a person!')

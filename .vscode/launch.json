@@ -4,7 +4,7 @@
 		{
 			"type": "node",
 			"request": "attach",
-			"name": "cli:attach",
+			"name": "cli.attach",
 			"port": 5200,
 			"restart": true,
 			"timeout": 10000
@@ -12,7 +12,7 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "cli:debug",
+			"name": "cli.debug",
 			"protocol": "inspector",
 			"runtimeExecutable": "yarn",
 			"runtimeArgs": [
@@ -31,7 +31,7 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "test:file",
+			"name": "test.file",
 			"runtimeExecutable": "${env:NVM_BIN}/node",
 			"runtimeArgs": [
 				"--inspect-brk",

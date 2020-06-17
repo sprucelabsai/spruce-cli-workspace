@@ -3,7 +3,7 @@
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
 import valueTypeServiceStageErrorDefinition from '../../src/errors/valueTypeServiceStageError.builder'
-import { ErrorCode } from './codes.types'
+import ErrorCode from './codes.types'
 
 type ValueTypeServiceStageErrorDefinition = typeof valueTypeServiceStageErrorDefinition
 export interface IValueTypeServiceStageErrorDefinition

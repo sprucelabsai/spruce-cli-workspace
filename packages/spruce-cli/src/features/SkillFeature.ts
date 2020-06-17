@@ -21,7 +21,7 @@ export default class SkillFeature extends AbstractFeature<SkillFeatureType> {
 		{ name: 'ts-node', isDev: true }
 	]
 
-	public optionsSchema = () => skillFeatureDefinition
+	public optionsSchema = skillFeatureDefinition
 
 	public async beforePackageInstall(options: {
 		answers: SchemaDefinitionValues<SkillFeatureType>

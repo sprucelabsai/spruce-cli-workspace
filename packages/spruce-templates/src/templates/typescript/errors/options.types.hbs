@@ -5,4 +5,6 @@ import { I{{namePascal}}ErrorOptions } from "./{{nameCamel}}.types";
 import { SpruceErrorOptions } from "@sprucelabs/error";
 import {SchemaErrorOptions} from '@sprucelabs/schema'
 
-export type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions{{#each options}} | I{{namePascal}}ErrorOptions{{/each}}
+type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions{{#each options}} | I{{namePascal}}ErrorOptions{{/each}}
+
+export default ErrorOptions

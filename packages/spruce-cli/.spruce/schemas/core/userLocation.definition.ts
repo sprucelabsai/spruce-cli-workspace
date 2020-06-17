@@ -1,7 +1,7 @@
 import jobDefinitionCore from '#spruce/schemas/core/job.definition'
 import locationDefinitionCore from '#spruce/schemas/core/location.definition'
 import userDefinitionCore from '#spruce/schemas/core/user.definition'
-import { FieldType } from '#spruce/schemas/fields/fieldType'
+import FieldType from '#spruce/schemas/fields/fieldType'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
 const userLocationDefinition: SpruceSchemas.Core.UserLocation.IDefinition = {

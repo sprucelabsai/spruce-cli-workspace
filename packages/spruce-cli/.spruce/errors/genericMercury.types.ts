@@ -3,7 +3,7 @@
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
 import genericMercuryDefinition from '../../src/errors/genericMercury.builder'
-import { ErrorCode } from './codes.types'
+import ErrorCode from './codes.types'
 
 type GenericMercuryDefinition = typeof genericMercuryDefinition
 export interface IGenericMercuryDefinition extends GenericMercuryDefinition {}

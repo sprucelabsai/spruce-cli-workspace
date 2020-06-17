@@ -1,4 +1,4 @@
-import { FieldType } from '#spruce/schemas/fields/fieldType'
+import FieldType from '#spruce/schemas/fields/fieldType'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
 const cliSkillDefinition: SpruceSchemas.Local.CliSkill.IDefinition = {

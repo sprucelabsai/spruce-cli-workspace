@@ -3,7 +3,7 @@
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
 import genericDefinition from '../../src/errors/generic.builder'
-import { ErrorCode } from './codes.types'
+import ErrorCode from './codes.types'
 
 type GenericDefinition = typeof genericDefinition
 export interface IGenericDefinition extends GenericDefinition {}

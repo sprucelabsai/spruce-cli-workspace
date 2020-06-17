@@ -37,7 +37,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 				'.spruce/autoloaders/'
 			)
 			.option('-f, --force', 'Force create directory if doing new?')
-			.action(this.create.bind(this))
+			.action(this.create)
 
 		program
 			.command('autoloader:sync [name]')
@@ -49,17 +49,17 @@ export default class AutoloaderCommand extends AbstractCommand {
 				'Where should I save the root autoloader?',
 				'.spruce/autoloaders/'
 			)
-			.action(this.sync.bind(this))
+			.action(this.sync)
 
 		program
 			.command('autoloader:root [destination]')
 			.description(
 				'Generates the root autoloader that loads all other autoloaders.'
 			)
-			.action(this.root.bind(this))
+			.action(this.root)
 	}
 
-	private async sync(name: string | undefined, cmd: Command) {
+	private sync = async (name: string | undefined, cmd: Command) => {
 		const rootAutoloaderDestination = cmd.rootAutoloaderDestination as string
 		let autoloaders = await this.stores.autoloader.autoloaders()
 
@@ -124,7 +124,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 		)
 	}
 
-	private async create(name: string | undefined, cmd: Command) {
+	private create = async (name: string | undefined, cmd: Command) => {
 		// get all options off command
 		const autoloaderDestination = cmd.autoloaderDestination as string
 		const rootAutoloaderDestination = cmd.rootAutoloaderDestination as string
@@ -301,7 +301,7 @@ const twilio${templateItem.namePascal} = await ${templateItem.nameCamel}Autoload
 		this.term.stopLoading()
 	}
 
-	private async root(destination: string | undefined) {
+	private root = async (destination: string | undefined) => {
 		this.term.startLoading('Generating root autoloader...')
 		const file = this.resolvePath(destination ?? '.spruce/autoloaders/index.ts')
 		const results = await this.generators.autoloader.generateRoot(file)

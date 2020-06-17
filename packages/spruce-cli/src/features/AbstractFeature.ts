@@ -31,7 +31,7 @@ export interface IFeaturePackage {
 }
 
 export default abstract class AbstractFeature<
-	S extends ISchemaDefinition = any
+	S extends ISchemaDefinition | undefined = undefined
 > extends Autoloadable {
 	/** Other features that must also be installed for this feature to work */
 	public featureDependencies: Feature[] = []
@@ -39,7 +39,7 @@ export default abstract class AbstractFeature<
 	/** The required npm packages for this feature */
 	public packages: IFeaturePackage[] = []
 
-	public optionsSchema?: () => ISchemaDefinition
+	public optionsSchema?: S extends ISchemaDefinition ? S : null
 
 	/** Convenience method that references this.utilities.terminal */
 	protected term!: TerminalUtility
@@ -65,12 +65,12 @@ export default abstract class AbstractFeature<
 
 	/** Called before packages have been installed */
 	public async beforePackageInstall(_options: {
-		answers: SchemaDefinitionValues<S>
+		answers: S extends ISchemaDefinition ? SchemaDefinitionValues<S> : undefined
 	}): Promise<void> {}
 
 	/** Called after packages have been installed */
 	public async afterPackageInstall(_options: {
-		answers: SchemaDefinitionValues<S>
+		answers: S extends ISchemaDefinition ? SchemaDefinitionValues<S> : undefined
 	}): Promise<void> {}
 
 	/** Writes the template files */

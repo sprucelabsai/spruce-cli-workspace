@@ -15,7 +15,7 @@ export default class ErrorGenerator extends AbstractGenerator {
 		const { lookupDir, destinationFile } = options
 
 		// Find all definition files in the lookup dir
-		const search = path.join(lookupDir, '*.definition.ts')
+		const search = path.join(lookupDir, '*.builder.ts')
 		const matches = await globby(search)
 
 		const codes: {
@@ -63,7 +63,7 @@ export default class ErrorGenerator extends AbstractGenerator {
 		const { lookupDir, destinationFile } = options
 
 		// Find all definition files in the lookup dir
-		const search = path.join(lookupDir, '*.definition.ts')
+		const search = path.join(lookupDir, '*.builder.ts')
 		const matches = await globby(search)
 
 		const errorOptions: {

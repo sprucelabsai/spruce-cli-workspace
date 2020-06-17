@@ -9,30 +9,29 @@ import AbstractCommand from './AbstractCommand'
 
 export default class UserCommand extends AbstractCommand {
 	/** Sets up commands */
-	public attachCommands(program: Command) {
+	public attachCommands = (program: Command) => {
 		program
 			.command('whoami')
 			.description('Get information about your logged in user(s)')
-			.action(this.whoAmI.bind(this))
+			.action(this.whoAmI)
 
 		program
 			.command('user:login [phoneNumber]')
 			.description('Authenticate with the CLI as a user')
-			.action(this.login.bind(this))
+			.action(this.login)
 
 		program
 			.command('user:logout')
 			.description('Logs the current user out')
-			.action(this.logout.bind(this))
+			.action(this.logout)
 
 		program
 			.command('user:switch')
 			.description('Switches the current user')
-			.action(this.switchUser.bind(this))
+			.action(this.switchUser)
 	}
 
-	/** Log a person in */
-	public async login(phoneNumber?: string): Promise<void> {
+	public login = async (phoneNumber?: string): Promise<void> => {
 		let phone = phoneNumber
 		let pinLabel = 'Enter the pin I just sent!'
 
@@ -96,12 +95,12 @@ export default class UserCommand extends AbstractCommand {
 		this.whoAmI()
 	}
 
-	public logout() {
+	public logout = () => {
 		this.stores.user.logout()
 		this.term.info('Logout successful')
 	}
 
-	public async switchUser() {
+	public switchUser = async () => {
 		const users = this.stores.user.users()
 
 		if (users.length === 0) {
@@ -130,7 +129,7 @@ export default class UserCommand extends AbstractCommand {
 		this.whoAmI()
 	}
 
-	public async whoAmI() {
+	public whoAmI = () => {
 		const user = this.stores.user.loggedInUser()
 		const skill = this.stores.skill.loggedInSkill()
 		const authType = this.stores.remote.authType

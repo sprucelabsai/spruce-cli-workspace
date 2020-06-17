@@ -6,6 +6,8 @@ import { default as Schema } from '@sprucelabs/schema'
 import * as {{importAs}} from '{{package}}'
 {{/each}}
 
+import FieldType from '#spruce/schemas/fields/fieldType'
+
 {{#each schemaTemplateItems}}
 
 	export declare namespace SpruceSchemas.{{namespace}} {

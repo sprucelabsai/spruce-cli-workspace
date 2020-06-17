@@ -28,32 +28,25 @@ export default class WatchCommand extends AbstractCommand {
 	private resolve!: () => void
 	private reject!: (e: Error) => void
 
-	public attachCommands(program: Command): void {
+	public attachCommands = (program: Command): void => {
 		program
 			.command('watch')
 			.description('Watch and regenerate types')
-			.action(this.watch.bind(this))
+			.action(this.watch)
 	}
 
-	private async watch() {
-		process.stdin.on('keypress', this.handleKeypress.bind(this))
+	private watch = async () => {
+		process.stdin.on('keypress', this.handleKeypress)
 		this.loadWatchers()
-		// Watch everything. We'll check individual glob patterns on each file change
-		// TODO: Ignore node_modules
+
 		this.watcher = chokidar.watch('**/*', {
 			ignoreInitial: true
 		})
 
-		this.watcher.on(
-			'change',
-			_.debounce(this.handleFileChange.bind(this), DEBOUNCE_MS)
-		)
-		this.watcher.on(
-			'add',
-			_.debounce(this.handleFileAdd.bind(this), DEBOUNCE_MS)
-		)
-		this.watcher.on('error', this.handleWatcherError.bind(this))
-		this.watcher.on('ready', this.handleReady.bind(this))
+		this.watcher.on('change', _.debounce(this.handleFileChange, DEBOUNCE_MS))
+		this.watcher.on('add', _.debounce(this.handleFileAdd, DEBOUNCE_MS))
+		this.watcher.on('error', this.handleWatcherError)
+		this.watcher.on('ready', this.handleReady)
 
 		const finishedPromise = new Promise((resolve, reject) => {
 			this.resolve = resolve
@@ -62,13 +55,13 @@ export default class WatchCommand extends AbstractCommand {
 		await finishedPromise
 	}
 
-	private resetReadline() {
+	private resetReadline = () => {
 		readline.emitKeypressEvents(process.stdin)
 		process.stdin.setRawMode(true)
 		process.stdin.resume()
 	}
 
-	private showStatus(lines?: string[], lineEffects?: ITerminalEffect[]) {
+	private showStatus = (lines?: string[], lineEffects?: ITerminalEffect[]) => {
 		this.resetReadline()
 		this.term.clear()
 		this.term.section({
@@ -89,17 +82,17 @@ export default class WatchCommand extends AbstractCommand {
 	}
 
 	/** Loads the watchers and starts watching anything new */
-	private async loadWatchers() {
+	private loadWatchers = () => {
 		const watchers = this.stores.watcher.getWatchers()
 		this.watchers = watchers
 	}
 
-	private handleReady() {
+	private handleReady = () => {
 		this.term.clear()
 		this.showStatus()
 	}
 
-	private async handleFileChange(path: string) {
+	private handleFileChange = async (path: string) => {
 		log.trace(`${path} changed`)
 		let commandsToExecute: string[] = []
 		// Check if the path matches any of the glob patterns
@@ -144,16 +137,16 @@ export default class WatchCommand extends AbstractCommand {
 		}
 	}
 
-	private handleFileAdd(path: string) {
+	private handleFileAdd = (path: string) => {
 		return this.handleFileChange(path)
 	}
 
-	private handleWatcherError(e: Error) {
+	private handleWatcherError = (e: Error) => {
 		log.crit(e)
 		this.reject(e)
 	}
 
-	private async handleAddPatten() {
+	private handleAddPatten = async () => {
 		let pattern: string | undefined | null
 		let commandStr: string | undefined | null
 		let isPatternValid = false
@@ -186,7 +179,7 @@ export default class WatchCommand extends AbstractCommand {
 		this.showStatus()
 	}
 
-	private async handleKeypress(str: string, key: readline.Key) {
+	private handleKeypress = async (str: string, key: readline.Key) => {
 		try {
 			if (key.ctrl && key.name === 'c') {
 				this.resolve()
@@ -234,7 +227,7 @@ export default class WatchCommand extends AbstractCommand {
 		}
 	}
 
-	private async listWatchers() {
+	private listWatchers = () => {
 		const lines: string[] = []
 
 		Object.keys(this.watchers).forEach(pattern => {
@@ -256,7 +249,7 @@ export default class WatchCommand extends AbstractCommand {
 		})
 	}
 
-	private async handleEditWatchers() {
+	private handleEditWatchers = async () => {
 		const defaultValue: string[] = []
 		const choices = Object.keys(this.watchers).map(pattern => {
 			const watcher = this.watchers[pattern]
@@ -298,7 +291,7 @@ export default class WatchCommand extends AbstractCommand {
 		this.listWatchers()
 	}
 
-	private async handleDeleteWatcher() {
+	private handleDeleteWatcher = async () => {
 		const choices = Object.keys(this.watchers).map(pattern => {
 			const watcher = this.watchers[pattern]
 			return {

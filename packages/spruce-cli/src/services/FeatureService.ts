@@ -11,6 +11,11 @@ interface IInstallFeature {
 	options?: Record<string, any>
 }
 
+export interface IInstallFeatureOptions {
+	features: IInstallFeature[]
+	installDependencies?: boolean
+}
+
 export default class FeatureService extends AbstractService {
 	public get cwd() {
 		return this._cwd
@@ -27,19 +32,20 @@ export default class FeatureService extends AbstractService {
 		}
 	}
 
-	/** Install some features, prompting for info as needed */
-	public async install(options: { features: IInstallFeature[] }) {
-		const { features } = options
+	public install = async (options: IInstallFeatureOptions) => {
+		const { features, installDependencies = true } = options
 
 		let featuresToInstall: IInstallFeature[] = []
 
 		for (let i = 0; i < features.length; i += 1) {
 			const f = features[i]
 			const isInstalled = await this.features[f.feature].isInstalled()
-			if (!isInstalled) {
+			if (!isInstalled && installDependencies) {
 				featuresToInstall = featuresToInstall.concat(
 					this.getFeatureDependencies(f)
 				)
+			} else if (!isInstalled) {
+				debugger
 			} else {
 				log.debug(
 					`Feature prompts / dependencies skipped because it's already installed: ${f.feature}`
@@ -64,9 +70,11 @@ export default class FeatureService extends AbstractService {
 	}
 
 	/** Check if features are installed */
-	public async isInstalled(options: { features: Feature[]; cwd?: string }) {
+	public isInstalled = async (options: {
+		features: Feature[]
+		cwd?: string
+	}) => {
 		const cwd = options.cwd ?? this.cwd
-		log.trace('FeatureService check', { cwd })
 		const results = await Promise.all(
 			options.features.map(f => {
 				return this.features[f].isInstalled(cwd)
@@ -83,10 +91,10 @@ export default class FeatureService extends AbstractService {
 		return true
 	}
 
-	public getFeatureDependencies(
+	public getFeatureDependencies = (
 		installFeature: IInstallFeature,
 		currentFeatures: IInstallFeature[] = []
-	): IInstallFeature[] {
+	): IInstallFeature[] => {
 		let features: IInstallFeature[] = [installFeature]
 
 		currentFeatures.push(installFeature)
@@ -142,8 +150,7 @@ export default class FeatureService extends AbstractService {
 		let optionsSchema: ISchemaDefinition | undefined
 		let isValid = false
 		if (feature.optionsSchema) {
-			optionsSchema = feature.optionsSchema()
-
+			optionsSchema = feature.optionsSchema
 			isValid = Schema.isDefinitionValid(optionsSchema)
 		}
 		let answers: Record<string, any> = {}
@@ -168,7 +175,7 @@ export default class FeatureService extends AbstractService {
 				const formBuilder = this.formBuilder({
 					definition: optionsSchema
 				})
-				const formAnswers = await formBuilder?.present()
+				const formAnswers = await formBuilder.present()
 				answers = {
 					...answers,
 					...formAnswers
@@ -182,7 +189,6 @@ export default class FeatureService extends AbstractService {
 
 		this.term.startLoading(`[${installFeature.feature}]: Starting installation`)
 		await feature.beforePackageInstall({
-			// TODO: Figure out how to get the right type here
 			// @ts-ignore
 			answers
 		})
@@ -227,6 +233,7 @@ export default class FeatureService extends AbstractService {
 
 		this.term.startLoading(`[${installFeature.feature}]: Finishing up`)
 		await feature.afterPackageInstall({
+			// @ts-ignore
 			answers
 		})
 		this.term.stopLoading()

@@ -1,5 +1,5 @@
 /** Field Types */
-export enum FieldType {
+enum FieldType {
 	/** An address with geocoding ability *coming soon* */
 	Address = 'address',
 	/** A true/false. Converts false string to false, all other strings to true. */
@@ -27,5 +27,7 @@ export enum FieldType {
 	/** Stored as string, lets user select between available options. */
 	Select = 'select',
 	/** A text field. Converts non-strings into strings by calling toString(). Size set by options. */
-	Text = 'text'
+	Text = 'text',
 }
+
+export default FieldType

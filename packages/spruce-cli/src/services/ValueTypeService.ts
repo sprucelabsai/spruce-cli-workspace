@@ -1,29 +1,24 @@
 import path from 'path'
-import {
-	TemplateRenderAs,
-	IFieldTemplateItem,
-	FieldDefinition,
-	ISchemaTemplateItem
-} from '@sprucelabs/schema'
+import { TemplateRenderAs, FieldDefinition } from '@sprucelabs/schema'
 import { templates, importExtractor } from '@sprucelabs/spruce-templates'
 import fs from 'fs-extra'
 import { ErrorCode } from '#spruce/errors/codes.types'
 import SpruceError from '../errors/SpruceError'
+import { IValueTypesOptions } from '../generators/ValueTypeGenerator'
 import AbstractService from './AbstractService'
 
-export interface IValueTypeGetterOptions {
-	schemaTemplateItems: ISchemaTemplateItem[]
-	fieldTemplateItems: IFieldTemplateItem[]
-}
+export interface IAllValueTypeOptions extends IValueTypesOptions {}
 
 export default class ValueTypeService extends AbstractService {
 	/** For writing tmp files with unique names */
 	private tmpFileCount = 0
+
 	public generateKey(renderAs: TemplateRenderAs, definition: FieldDefinition) {
 		return templates.generateFieldKey(renderAs, definition)
 	}
+
 	public async allValueTypes(
-		options: IValueTypeGetterOptions
+		options: IAllValueTypeOptions
 	): Promise<{ valueTypes: Record<string, string>; errors: SpruceError[] }> {
 		const { fieldTemplateItems, schemaTemplateItems } = options
 
@@ -38,9 +33,15 @@ export default class ValueTypeService extends AbstractService {
 
 		// Imports
 		const imports = importExtractor(fieldTemplateItems)
-		code += imports
-			.map(i => `import * as ${i.importAs} from '${i.package}'`)
-			.join('\n')
+		code +=
+			imports
+				.map(i => `import * as ${i.importAs} from '${i.package}'`)
+				.join('\n') + '\n'
+
+		code +=
+			"import { IFieldTemplateDetails, ISchemaTemplateItem, TemplateRenderAs } from '@sprucelabs/schema'\n"
+
+		code += "import FieldType from '#spruce/schemas/fields/fieldType'\n"
 
 		// Universals
 		code += `
@@ -49,7 +50,7 @@ export default class ValueTypeService extends AbstractService {
 			const language = 'ts'
 			const globalNamespace = 'SpruceSchemas'
 
-			export const valueTypes = {}
+			export const valueTypes: Record<string, IFieldTemplateDetails['valueType']> = {}
 
 			let definition
 			let renderAs
@@ -127,12 +128,12 @@ export default class ValueTypeService extends AbstractService {
 			this.cwd,
 			'.spruce',
 			'schemas',
-			`.valueType-${this.tmpFileCount++}.tmp.ts`
+			`valueType-${this.tmpFileCount++}.tmp.ts`
 		)
 		fs.writeFileSync(tmpFilePath, code)
 
 		const response = await this.services.child.importAll<any>(tmpFilePath)
-		// TODO lots of validation
+
 		return { valueTypes: response.valueTypes as Record<string, string>, errors }
 	}
 }

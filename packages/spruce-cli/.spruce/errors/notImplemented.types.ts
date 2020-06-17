@@ -3,7 +3,7 @@
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
 import notImplementedDefinition from '../../src/errors/notImplemented.builder'
-import { ErrorCode } from './codes.types'
+import ErrorCode from './codes.types'
 
 type NotImplementedDefinition = typeof notImplementedDefinition
 export interface INotImplementedDefinition extends NotImplementedDefinition {}

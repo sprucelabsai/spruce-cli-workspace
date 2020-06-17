@@ -157,8 +157,6 @@ export async function setup(options?: { program?: Command; cwd?: string }) {
 		throw new SpruceError({ code: ErrorCode.InvalidCommand, args })
 	})
 
-	// Final checks before we hand off to the command
-
 	// Setup mercury
 	const remoteUrl = stores.remote.getRemoteUrl()
 

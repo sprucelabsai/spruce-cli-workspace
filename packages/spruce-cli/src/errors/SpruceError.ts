@@ -1,6 +1,6 @@
 import BaseSpruceError from '@sprucelabs/error'
-import { ErrorCode } from '#spruce/errors/codes.types'
-import { ErrorOptions } from '#spruce/errors/options.types'
+import ErrorCode from '#spruce/errors/codes.types'
+import ErrorOptions from '#spruce/errors/options.types'
 
 export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 	/** An easy to understand version of the errors */
@@ -82,6 +82,12 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 			case ErrorCode.LintFailed:
 				message = `Lint failed on pattern ${options.pattern}. Response from lint was:\n\n`
 				message += options.stdout
+				break
+
+			case ErrorCode.ExecutingCommandFailed:
+				message = 'The command that was being executed failed'
+				debugger
+				console.log(message)
 				break
 
 			default:

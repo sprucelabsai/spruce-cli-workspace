@@ -47,7 +47,6 @@ export default class PkgService extends AbstractService {
 		}
 	}
 
-	/** Read a package.json */
 	public readPackage(dir?: string): Record<string, any | undefined> {
 		const source = dir ?? this.cwd
 		const packagePath = pathUtil.join(source, 'package.json')
@@ -66,7 +65,6 @@ export default class PkgService extends AbstractService {
 		}
 	}
 
-	/** Check if a package is installed */
 	public isInstalled(pkg: string, dir?: string) {
 		try {
 			const contents = this.readPackage(dir)
@@ -76,7 +74,6 @@ export default class PkgService extends AbstractService {
 		}
 	}
 
-	/** Install a package */
 	public async install(pkg: string[] | string, options?: IAddOptions) {
 		const packages = Array.isArray(pkg) ? pkg : [pkg]
 		let install = false

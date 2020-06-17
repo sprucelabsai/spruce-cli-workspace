@@ -4,6 +4,8 @@
 import { default as Schema } from '@sprucelabs/schema'
 import * as SpruceSchema from '@sprucelabs/schema'
 
+import FieldType from '#spruce/schemas/fields/fieldType'
+
 export declare namespace SpruceSchemas.Core {
 	/** Profile images at various helpful sizes and resolutions. */
 	export interface IProfileImage {
@@ -28,28 +30,28 @@ export declare namespace SpruceSchemas.Core.ProfileImage {
 			/** 60x60. */
 			profile60: {
 				label: '60x60'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				options: undefined
 			}
 			/** 150x150. */
 			profile150: {
 				label: '150x150'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				options: undefined
 			}
 			/** 60x60. */
 			'profile60@2x': {
 				label: '60x60'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				options: undefined
 			}
 			/** 150x150. */
 			'profile150@2x': {
 				label: '150x150'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				options: undefined
 			}
@@ -90,26 +92,26 @@ export declare namespace SpruceSchemas.Core.User {
 			/** Id. */
 			id: {
 				label: 'Id'
-				type: SpruceSchema.FieldType.Id
+				type: FieldType.Id
 				isRequired: true
 				options: undefined
 			}
 			/** First name. */
 			firstName: {
 				label: 'First name'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				options: undefined
 			}
 			/** Last name. */
 			lastName: {
 				label: 'Last name'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				options: undefined
 			}
 			/** Casual name. Generated name that defaults to Friend! */
 			casualName: {
 				label: 'Casual name'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				hint: 'Generated name that defaults to Friend!'
 				options: undefined
@@ -117,20 +119,20 @@ export declare namespace SpruceSchemas.Core.User {
 			/** Phone. The person's phone number! */
 			phoneNumber: {
 				label: 'Phone'
-				type: SpruceSchema.FieldType.Phone
+				type: FieldType.Phone
 				hint: "The person's phone number!"
 				options: undefined
 			}
 			/** Profile photos. */
 			profileImages: {
 				label: 'Profile photos'
-				type: SpruceSchema.FieldType.Schema
+				type: FieldType.Schema
 				options: { schemas: SpruceSchemas.Core.ProfileImage.IDefinition[] }
 			}
 			/** Default profile photos. */
 			defaultProfileImages: {
 				label: 'Default profile photos'
-				type: SpruceSchema.FieldType.Schema
+				type: FieldType.Schema
 				isRequired: true
 				options: { schemas: SpruceSchemas.Core.ProfileImage.IDefinition[] }
 			}
@@ -169,40 +171,40 @@ export declare namespace SpruceSchemas.Core.Skill {
 			/** Id. */
 			id: {
 				label: 'Id'
-				type: SpruceSchema.FieldType.Id
+				type: FieldType.Id
 				isRequired: true
 				options: undefined
 			}
 			/** Id. */
 			apiKey: {
 				label: 'Id'
-				type: SpruceSchema.FieldType.Id
+				type: FieldType.Id
 				isRequired: true
 				options: undefined
 			}
 			/** Name. */
 			name: {
 				label: 'Name'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				options: undefined
 			}
 			/** Description. */
 			description: {
 				label: 'Description'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				options: undefined
 			}
 			/** Slug. */
 			slug: {
 				label: 'Slug'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				options: undefined
 			}
 			/** Icon. */
 			icon: {
 				label: 'Icon'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				options: undefined
 			}
 		}
@@ -328,27 +330,27 @@ export declare namespace SpruceSchemas.Core.Location {
 			/** Id. */
 			id: {
 				label: 'Id'
-				type: SpruceSchema.FieldType.Id
+				type: FieldType.Id
 				options: undefined
 			}
 			/** Name. */
 			name: {
 				label: 'Name'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				options: undefined
 			}
 			/** Store number. You can use other symbols, like # or dashes. #123 or 32-US-5 */
 			num: {
 				label: 'Store number'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				hint: 'You can use other symbols, like # or dashes. #123 or 32-US-5'
 				options: undefined
 			}
 			/** Public. Is this location viewable by guests? */
 			isPublic: {
 				label: 'Public'
-				type: SpruceSchema.FieldType.Boolean
+				type: FieldType.Boolean
 				hint: 'Is this location viewable by guests?'
 				defaultValue: false
 				options: undefined
@@ -356,13 +358,13 @@ export declare namespace SpruceSchemas.Core.Location {
 			/** Main Phone. */
 			phone: {
 				label: 'Main Phone'
-				type: SpruceSchema.FieldType.Phone
+				type: FieldType.Phone
 				options: undefined
 			}
 			/** Timezone. */
 			timezone: {
 				label: 'Timezone'
-				type: SpruceSchema.FieldType.Select
+				type: FieldType.Select
 				options: {
 					choices: [
 						{ value: 'etc/gmt+12'; label: 'International Date Line West' },
@@ -504,7 +506,7 @@ export declare namespace SpruceSchemas.Core.Location {
 			/** Address. */
 			address: {
 				label: 'Address'
-				type: SpruceSchema.FieldType.Address
+				type: FieldType.Address
 				isRequired: true
 				options: undefined
 			}
@@ -530,7 +532,7 @@ export declare namespace SpruceSchemas.Core.Acl {
 		name: 'Access control list lookup table'
 		dynamicKeySignature: {
 			label: 'Permissions grouped by slug'
-			type: SpruceSchema.FieldType.Text
+			type: FieldType.Text
 			key: 'slug'
 			isArray: true
 			options: undefined
@@ -569,13 +571,13 @@ export declare namespace SpruceSchemas.Core.Job {
 			/** Id. */
 			id: {
 				label: 'Id'
-				type: SpruceSchema.FieldType.Id
+				type: FieldType.Id
 				options: undefined
 			}
 			/** Is default. Is this job one that comes with every org? Mapped to roles (owner, groupManager, managar, guest). */
 			isDefault: {
 				label: 'Is default'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				hint: 'Is this job one that comes with every org? Mapped to roles (owner, groupManager, managar, guest).'
 				options: undefined
@@ -583,14 +585,14 @@ export declare namespace SpruceSchemas.Core.Job {
 			/** Name. */
 			name: {
 				label: 'Name'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				options: undefined
 			}
 			/** Role. */
 			role: {
 				label: 'Role'
-				type: SpruceSchema.FieldType.Select
+				type: FieldType.Select
 				isRequired: true
 				options: {
 					choices: [
@@ -605,13 +607,13 @@ export declare namespace SpruceSchemas.Core.Job {
 			/** On work permissions. */
 			inStoreAcls: {
 				label: 'On work permissions'
-				type: SpruceSchema.FieldType.Schema
+				type: FieldType.Schema
 				options: { schemas: SpruceSchemas.Core.Acl.IDefinition[] }
 			}
 			/** Off work permissions. */
 			acls: {
 				label: 'Off work permissions'
-				type: SpruceSchema.FieldType.Schema
+				type: FieldType.Schema
 				options: { schemas: SpruceSchemas.Core.Acl.IDefinition[] }
 			}
 		}
@@ -653,13 +655,13 @@ export declare namespace SpruceSchemas.Core.UserLocation {
 			/** Id. */
 			id: {
 				label: 'Id'
-				type: SpruceSchema.FieldType.Id
+				type: FieldType.Id
 				options: undefined
 			}
 			/** Name. */
 			role: {
 				label: 'Name'
-				type: SpruceSchema.FieldType.Select
+				type: FieldType.Select
 				isRequired: true
 				options: {
 					choices: [
@@ -674,13 +676,13 @@ export declare namespace SpruceSchemas.Core.UserLocation {
 			/** Status. */
 			status: {
 				label: 'Status'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				options: undefined
 			}
 			/** Total visits. */
 			visits: {
 				label: 'Total visits'
-				type: SpruceSchema.FieldType.Number
+				type: FieldType.Number
 				isRequired: true
 				options: {
 					choices: [
@@ -695,27 +697,27 @@ export declare namespace SpruceSchemas.Core.UserLocation {
 			/** Last visit. */
 			lastRecordedVisit: {
 				label: 'Last visit'
-				type: SpruceSchema.FieldType.DateTime
+				type: FieldType.DateTime
 				options: undefined
 			}
 			/** Job. */
 			job: {
 				label: 'Job'
-				type: SpruceSchema.FieldType.Schema
+				type: FieldType.Schema
 				isRequired: true
 				options: { schemas: SpruceSchemas.Core.Job.IDefinition[] }
 			}
 			/** Location. */
 			location: {
 				label: 'Location'
-				type: SpruceSchema.FieldType.Schema
+				type: FieldType.Schema
 				isRequired: true
 				options: { schemas: SpruceSchemas.Core.Location.IDefinition[] }
 			}
 			/** User. */
 			user: {
 				label: 'User'
-				type: SpruceSchema.FieldType.Schema
+				type: FieldType.Schema
 				isRequired: true
 				options: { schemas: SpruceSchemas.Core.User.IDefinition[] }
 			}
@@ -748,14 +750,14 @@ export declare namespace SpruceSchemas.Local.Autoloader {
 			/** Source directory. */
 			lookupDir: {
 				label: 'Source directory'
-				type: SpruceSchema.FieldType.Directory
+				type: FieldType.Directory
 				isRequired: true
 				options: undefined
 			}
 			/** Destination. Where the file that does the autoloading is written */
 			destination: {
 				label: 'Destination'
-				type: SpruceSchema.FieldType.File
+				type: FieldType.File
 				isRequired: true
 				hint: 'Where the file that does the autoloading is written'
 				options: undefined
@@ -763,7 +765,7 @@ export declare namespace SpruceSchemas.Local.Autoloader {
 			/** Pattern. */
 			pattern: {
 				label: 'Pattern'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				defaultValue: '**/!(*.test).ts'
 				options: undefined
@@ -799,28 +801,28 @@ export declare namespace SpruceSchemas.Local.CliSkill {
 			/** Id. */
 			id: {
 				label: 'Id'
-				type: SpruceSchema.FieldType.Id
+				type: FieldType.Id
 				isRequired: true
 				options: undefined
 			}
 			/** Id. */
 			apiKey: {
 				label: 'Id'
-				type: SpruceSchema.FieldType.Id
+				type: FieldType.Id
 				isRequired: true
 				options: undefined
 			}
 			/** Name. */
 			name: {
 				label: 'Name'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				options: undefined
 			}
 			/** Slug. */
 			slug: {
 				label: 'Slug'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				options: undefined
 			}
 		}
@@ -850,14 +852,14 @@ export declare namespace SpruceSchemas.Local.CliUser {
 			/** Id. */
 			id: {
 				label: 'Id'
-				type: SpruceSchema.FieldType.Id
+				type: FieldType.Id
 				isRequired: true
 				options: undefined
 			}
 			/** Casual name. Generated name that defaults to Friend! */
 			casualName: {
 				label: 'Casual name'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				hint: 'Generated name that defaults to Friend!'
 				options: undefined
@@ -893,28 +895,28 @@ export declare namespace SpruceSchemas.Local.CliUserWithToken {
 			/** Id. */
 			id: {
 				label: 'Id'
-				type: SpruceSchema.FieldType.Id
+				type: FieldType.Id
 				isRequired: true
 				options: undefined
 			}
 			/** Casual name. Generated name that defaults to Friend! */
 			casualName: {
 				label: 'Casual name'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				hint: 'Generated name that defaults to Friend!'
 				options: undefined
 			}
 			/** . */
 			token: {
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				options: undefined
 			}
 			/** Logged in. */
 			isLoggedIn: {
 				label: 'Logged in'
-				type: SpruceSchema.FieldType.Boolean
+				type: FieldType.Boolean
 				options: undefined
 			}
 		}
@@ -956,7 +958,7 @@ export declare namespace SpruceSchemas.Local.NamedTemplateItem {
 			/** Readable name. The name people will read */
 			nameReadable: {
 				label: 'Readable name'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				hint: 'The name people will read'
 				options: undefined
@@ -964,7 +966,7 @@ export declare namespace SpruceSchemas.Local.NamedTemplateItem {
 			/** Camel case name. camelCase version of the name */
 			nameCamel: {
 				label: 'Camel case name'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				hint: 'camelCase version of the name'
 				options: undefined
@@ -972,7 +974,7 @@ export declare namespace SpruceSchemas.Local.NamedTemplateItem {
 			/** Plural camel case name. camelCase version of the name */
 			nameCamelPlural: {
 				label: 'Plural camel case name'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				hint: 'camelCase version of the name'
 				options: undefined
@@ -980,7 +982,7 @@ export declare namespace SpruceSchemas.Local.NamedTemplateItem {
 			/** Pascal case name. PascalCase of the name */
 			namePascal: {
 				label: 'Pascal case name'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				hint: 'PascalCase of the name'
 				options: undefined
@@ -988,7 +990,7 @@ export declare namespace SpruceSchemas.Local.NamedTemplateItem {
 			/** Plural Pascal case name. PascalCase of the name */
 			namePascalPlural: {
 				label: 'Plural Pascal case name'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				hint: 'PascalCase of the name'
 				options: undefined
@@ -996,7 +998,7 @@ export declare namespace SpruceSchemas.Local.NamedTemplateItem {
 			/** Constant case name. CONST_CASE of the name */
 			nameConst: {
 				label: 'Constant case name'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				hint: 'CONST_CASE of the name'
 				options: undefined
@@ -1004,7 +1006,7 @@ export declare namespace SpruceSchemas.Local.NamedTemplateItem {
 			/** Description. */
 			description: {
 				label: 'Description'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				description: 'Describe a bit more here'
 				options: undefined
@@ -1038,14 +1040,14 @@ export declare namespace SpruceSchemas.Local.Onboarding {
 			/** Remote. */
 			isEnabled: {
 				label: 'Remote'
-				type: SpruceSchema.FieldType.Boolean
+				type: FieldType.Boolean
 				isRequired: true
 				options: undefined
 			}
 			/** Run count. How many times spruce onboarding has been called (the story changes based on count) */
 			runCount: {
 				label: 'Run count'
-				type: SpruceSchema.FieldType.Number
+				type: FieldType.Number
 				isRequired: true
 				hint: 'How many times spruce onboarding has been called (the story changes based on count)'
 				options: undefined
@@ -1076,14 +1078,14 @@ export declare namespace SpruceSchemas.Local.SkillFeature {
 			/** What's the name of your skill?. */
 			name: {
 				label: "What's the name of your skill?"
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				options: undefined
 			}
 			/** How would you describe your skill?. */
 			description: {
 				label: 'How would you describe your skill?'
-				type: SpruceSchema.FieldType.Text
+				type: FieldType.Text
 				isRequired: true
 				options: undefined
 			}
@@ -1111,7 +1113,7 @@ export declare namespace SpruceSchemas.Local.TestFeature {
 			/** What file would you like to test?. */
 			target: {
 				label: 'What file would you like to test?'
-				type: SpruceSchema.FieldType.File
+				type: FieldType.File
 				isRequired: true
 				defaultValue: { path: '' }
 				options: undefined

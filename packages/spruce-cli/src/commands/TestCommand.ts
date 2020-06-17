@@ -1,23 +1,20 @@
 import { FieldType } from '@sprucelabs/schema'
 import { Command } from 'commander'
 import { Feature } from '#spruce/autoloaders/features'
-import log from '../lib/log'
 import path from '../lib/path'
 import AbstractCommand from './AbstractCommand'
 
 export default class TestCommand extends AbstractCommand {
-	public attachCommands(program: Command) {
+	public attachCommands = (program: Command) => {
 		program
 			.command('test:create [target]')
 			.description('Create a test for a specific file')
-			.action(this.create.bind(this))
+			.action(this.create)
 	}
 
-	public async create(targetOption: string | undefined) {
-		log.trace('test:create begin')
+	public create = async (targetOption: string | undefined) => {
 		let target = targetOption
 
-		// Make sure test module is installed
 		await this.services.feature.install({
 			features: [
 				{
