@@ -11,7 +11,7 @@ export default class SchemaCommand extends AbstractCommand {
 	public attachCommands(program: Command) {
 		/** Create a new schema definition */
 		program
-			.command('schema:create [name]')
+			.command('schema.create [name]')
 			.description('Define a new thing!')
 			.option(
 				'-dd, --destinationDir <destinationDir>',
@@ -27,7 +27,7 @@ export default class SchemaCommand extends AbstractCommand {
 
 		/** Sync everything */
 		program
-			.command('schema:sync [lookupDir]')
+			.command('schema.sync [lookupDir]')
 			.description(
 				'Sync all schema definitions and fields (also pulls from the cloud)'
 			)
@@ -267,7 +267,7 @@ export default class SchemaCommand extends AbstractCommand {
 			namePascal = this.utilities.names.toPascal(nameCamel)
 		}
 
-		const form = this.formBuilder({
+		const form = this.formComponent({
 			definition: namedTemplateItemDefinition,
 			initialValues: {
 				nameReadable,

@@ -1,5 +1,5 @@
 import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
-import log from '../lib/log'
+import log from '../singletons/log'
 import { IExtension } from '../services/VsCodeService'
 import AbstractFeature from './AbstractFeature'
 

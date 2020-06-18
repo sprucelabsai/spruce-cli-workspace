@@ -21,7 +21,7 @@ export interface IFeatureOptions {
 	templates: Templates
 }
 
-export interface IFeaturePackage {
+export interface INpmPackage {
 	/** The full package name */
 	name: string
 	/** The package version. Defaults to "latest" */
@@ -33,22 +33,14 @@ export interface IFeaturePackage {
 export default abstract class AbstractFeature<
 	S extends ISchemaDefinition | undefined = undefined
 > extends Autoloadable {
-	/** Other features that must also be installed for this feature to work */
 	public featureDependencies: Feature[] = []
-
-	/** The required npm packages for this feature */
-	public packages: IFeaturePackage[] = []
-
-	public optionsSchema?: S extends ISchemaDefinition ? S : null
-
-	/** Convenience method that references this.utilities.terminal */
+	public packages: INpmPackage[] = []
+	public optionsDefinition?: S extends ISchemaDefinition ? S : null
 	protected term!: TerminalUtility
-
 	protected utilities!: IUtilities
 	protected services!: IServices
 	protected templates: Templates
 
-	/** A description of this feature */
 	public abstract description: string
 
 	public constructor(options: IFeatureOptions) {
@@ -73,7 +65,6 @@ export default abstract class AbstractFeature<
 		answers: S extends ISchemaDefinition ? SchemaDefinitionValues<S> : undefined
 	}): Promise<void> {}
 
-	/** Writes the template files */
 	protected async writeDirectoryTemplate<
 		K extends DirectoryTemplateKind
 	>(options: {

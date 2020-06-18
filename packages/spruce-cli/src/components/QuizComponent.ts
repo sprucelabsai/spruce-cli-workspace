@@ -9,10 +9,10 @@ import { shuffle } from 'lodash'
 import FieldType from '#spruce/schemas/fields/fieldType'
 import SpruceError from '../errors/SpruceError'
 import TerminalUtility from '../utilities/TerminalUtility'
-import FormBuilder, {
+import FormComponent, {
 	IFormOptions,
 	IFormPresentationOptions
-} from './FormBuilder'
+} from './FormComponent'
 
 /** Multiple choice question */
 export interface IQuizMultipleChoiceQuestion {
@@ -109,11 +109,11 @@ export interface IQuizOptions<
 	questions: Q
 }
 
-export default class QuizBuilder<
+export default class QuizComponent<
 	T extends ISchemaDefinition,
 	Q extends IQuizQuestions
 > {
-	public formBuilder: FormBuilder<T>
+	public formBuilder: FormComponent<T>
 	public term: TerminalUtility
 	public randomizeQuestions = true
 	public originalQuestions: IQuizQuestions
@@ -127,7 +127,7 @@ export default class QuizBuilder<
 		this.originalQuestions = options.questions
 
 		// Construct new form builder
-		this.formBuilder = new FormBuilder<T>({
+		this.formBuilder = new FormComponent<T>({
 			...options,
 			definition
 		})

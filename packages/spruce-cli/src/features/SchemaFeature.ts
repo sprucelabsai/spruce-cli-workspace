@@ -1,12 +1,12 @@
 import { Feature } from '#spruce/autoloaders/features'
-import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
+import AbstractFeature, { INpmPackage } from './AbstractFeature'
 
 export default class SchemaFeature extends AbstractFeature {
-	public description = 'Schema: Define data for your skill'
+	public description = 'Define, validate, and normalize everything.'
 
 	public featureDependencies = [Feature.Skill]
 
-	public packages: IFeaturePackage[] = [
+	public packages: INpmPackage[] = [
 		{
 			name: '@sprucelabs/schema'
 		}

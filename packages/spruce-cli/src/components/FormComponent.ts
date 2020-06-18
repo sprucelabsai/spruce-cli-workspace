@@ -68,13 +68,13 @@ interface IHandlers<T extends ISchemaDefinition> {
 	onWillAskQuestion?: IFormOptions<T>['onWillAskQuestion']
 }
 
-export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
-	T
+export default class FormComponent<S extends ISchemaDefinition> extends Schema<
+	S
 > {
 	public term: ITerminal
-	public handlers: IHandlers<T> = {}
+	public handlers: IHandlers<S> = {}
 
-	public constructor(options: IFormOptions<T>) {
+	public constructor(options: IFormOptions<S>) {
 		// Setup schema
 		super(options.definition, options.initialValues)
 
@@ -89,9 +89,9 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 	}
 
 	/** Pass me a schema and i'll give you back an object that conforms to it based on user input */
-	public async present<F extends SchemaFieldNames<T> = SchemaFieldNames<T>>(
-		options: IFormPresentationOptions<T, F> = {}
-	): Promise<Pick<SchemaDefinitionAllValues<T>, F>> {
+	public async present<F extends SchemaFieldNames<S> = SchemaFieldNames<S>>(
+		options: IFormPresentationOptions<S, F> = {}
+	): Promise<Pick<SchemaDefinitionAllValues<S>, F>> {
 		const { term } = this
 		const {
 			headline,
@@ -158,7 +158,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 
 		const values = this.getValues({ fields, createSchemaInstances: false })
 		const cleanValues = pick(values, fields) as Pick<
-			SchemaDefinitionAllValues<T>,
+			SchemaDefinitionAllValues<S>,
 			F
 		>
 
@@ -166,7 +166,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 	}
 
 	/** Ask a question based on a field */
-	public askQuestion<F extends SchemaFieldNames<T>>(fieldName: F) {
+	public askQuestion<F extends SchemaFieldNames<S>>(fieldName: F) {
 		const field = this.fields[fieldName]
 
 		let definition = { ...field.definition }
@@ -232,14 +232,14 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 	}
 
 	/** Render every field and a select to chose what to edit (or done/cancel) */
-	public async renderOverview<F extends SchemaFieldNames<T>>(
+	public async renderOverview<F extends SchemaFieldNames<S>>(
 		options: { fields?: F[] } = {}
-	): Promise<IFormAction<T>> {
+	): Promise<IFormAction<S>> {
 		const { term } = this
 		const { fields = Object.keys(this.fields) } = options
 
 		// Track actions while building choices
-		const actionMap: Record<string, IFormAction<T>> = {}
+		const actionMap: Record<string, IFormAction<S>> = {}
 
 		// Create all choices
 		const choices: ISelectFieldDefinitionChoice[] = this.getNamedFields()
@@ -248,7 +248,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 				const { field, name } = namedField
 
 				const actionKey = `field:${name}`
-				const action: IFormActionEditField<T> = {
+				const action: IFormActionEditField<S> = {
 					type: FormBuilderActionType.EditField,
 					fieldName: name
 				}

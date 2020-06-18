@@ -1,7 +1,10 @@
 import path from 'path'
 
 /** Helper to resolve paths absolutely and relatively */
-function resolvePath(cwd: string, ...filePath: string[]): string {
+export default function resolvePath(
+	cwd: string,
+	...filePath: string[]
+): string {
 	let builtPath = path.join(...filePath)
 
 	if (builtPath[0] !== '/') {
@@ -14,9 +17,4 @@ function resolvePath(cwd: string, ...filePath: string[]): string {
 	}
 
 	return builtPath
-}
-
-export default {
-	...path,
-	resolvePath
 }

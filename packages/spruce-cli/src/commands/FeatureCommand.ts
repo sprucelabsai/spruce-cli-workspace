@@ -5,7 +5,7 @@ import AbstractCommand from './AbstractCommand'
 export default class FeatureCommand extends AbstractCommand {
 	public attachCommands(program: Command) {
 		program
-			.command('feature:install')
+			.command('feature.install')
 			.description('Install a feature')
 			.action(this.installFeature)
 	}

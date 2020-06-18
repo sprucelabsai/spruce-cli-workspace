@@ -1,4 +1,4 @@
-import log from './lib/log'
+import log from './singletons/log'
 
 export default abstract class Autoloadable {
 	protected _cwd = ''

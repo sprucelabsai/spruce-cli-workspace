@@ -1,13 +1,13 @@
+import path from 'path'
 import { Command } from 'commander'
 import { Feature } from '#spruce/autoloaders/features'
 import FieldType from '#spruce/schemas/fields/fieldType'
-import path from '../lib/path'
 import AbstractCommand from './AbstractCommand'
 
 export default class TestCommand extends AbstractCommand {
 	public attachCommands = (program: Command) => {
 		program
-			.command('test:create [target]')
+			.command('test.create [target]')
 			.description('Create a test for a specific file')
 			.action(this.create)
 	}

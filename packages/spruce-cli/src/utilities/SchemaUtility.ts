@@ -9,7 +9,7 @@ import {
 } from '@sprucelabs/schema'
 import SchemaField from '@sprucelabs/schema/build/fields/SchemaField'
 import FieldType from '#spruce/schemas/fields/fieldType'
-import log from '../lib/log'
+import log from '../singletons/log'
 import AbstractUtility from './AbstractUtility'
 
 export default class SchemaUtility extends AbstractUtility {

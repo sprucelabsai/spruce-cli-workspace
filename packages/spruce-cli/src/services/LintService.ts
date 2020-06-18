@@ -2,7 +2,7 @@
 import fs from 'fs-extra'
 import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
-import log from '../lib/log'
+import log from '../singletons/log'
 import AbstractService from './AbstractService'
 
 export interface IAddOptions {

@@ -10,7 +10,7 @@ import FieldType from '#spruce:schema/fields/fieldType'
 export default class AutoloaderCommand extends AbstractCommand {
 	public attachCommands(program: Command): void {
 		program
-			.command('autoloader:create [name]')
+			.command('autoloader.create [name]')
 			.description('Generate an autoloader for files in the directory')
 			.option(
 				'-p, --pattern <pattern>',
@@ -40,7 +40,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 			.action(this.create)
 
 		program
-			.command('autoloader:sync [name]')
+			.command('autoloader.sync [name]')
 			.description(
 				'Syncs all autoloaders you have ever created and cleans out deleted ones.'
 			)
@@ -52,7 +52,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 			.action(this.sync)
 
 		program
-			.command('autoloader:root [destination]')
+			.command('autoloader.root [destination]')
 			.description(
 				'Generates the root autoloader that loads all other autoloaders.'
 			)
@@ -143,7 +143,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 			const namePascalPlural = names.toPlural(names.toPascal(name))
 			const nameCamelPlural = names.toCamel(namePascalPlural)
 
-			const form = this.formBuilder({
+			const form = this.formComponent({
 				definition: namedTemplateItemDefinition,
 				initialValues: {
 					namePascal,

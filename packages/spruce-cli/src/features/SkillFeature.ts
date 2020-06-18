@@ -3,7 +3,7 @@ import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
 import skillFeatureDefinition from '#spruce/schemas/local/skillFeature.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import { WriteMode } from '../types/cli.types'
-import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
+import AbstractFeature, { INpmPackage } from './AbstractFeature'
 
 type SkillFeatureType = SpruceSchemas.Local.SkillFeature.IDefinition
 
@@ -13,7 +13,7 @@ export default class SkillFeature extends AbstractFeature<SkillFeatureType> {
 
 	public featureDependencies = []
 
-	public packages: IFeaturePackage[] = [
+	public packages: INpmPackage[] = [
 		{ name: 'typescript' },
 		{ name: '@sprucelabs/log' },
 		{ name: '@sprucelabs/path-resolver' },
@@ -21,7 +21,7 @@ export default class SkillFeature extends AbstractFeature<SkillFeatureType> {
 		{ name: 'ts-node', isDev: true }
 	]
 
-	public optionsSchema = skillFeatureDefinition
+	public optionsDefinition = skillFeatureDefinition
 
 	public async beforePackageInstall(options: {
 		answers: SchemaDefinitionValues<SkillFeatureType>

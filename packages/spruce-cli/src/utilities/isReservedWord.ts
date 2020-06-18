@@ -180,7 +180,7 @@ export const reservedWords = [
 	'yield'
 ]
 
-export function isReservedWord(wordToCheck: string) {
+export default function isReservedWord(wordToCheck: string) {
 	if (_.includes(reservedWords, wordToCheck.toLowerCase())) {
 		return true
 	}

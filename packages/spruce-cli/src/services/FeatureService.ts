@@ -1,9 +1,9 @@
 import Schema, { ISchemaDefinition } from '@sprucelabs/schema'
 import _ from 'lodash'
 import { Feature, IFeatures } from '#spruce/autoloaders/features'
-import FormBuilder, { IFormOptions } from '../builders/FormBuilder'
-import { IFeaturePackage } from '../features/AbstractFeature'
-import log from '../lib/log'
+import FormComponent, { IFormOptions } from '../components/FormComponent'
+import { INpmPackage } from '../features/AbstractFeature'
+import log from '../singletons/log'
 import AbstractService from './AbstractService'
 
 interface IInstallFeature {
@@ -13,7 +13,7 @@ interface IInstallFeature {
 
 export interface IInstallFeatureOptions {
 	features: IInstallFeature[]
-	installDependencies?: boolean
+	installFeatureDependencies?: boolean
 }
 
 export default class FeatureService extends AbstractService {
@@ -33,14 +33,14 @@ export default class FeatureService extends AbstractService {
 	}
 
 	public install = async (options: IInstallFeatureOptions) => {
-		const { features, installDependencies = true } = options
+		const { features, installFeatureDependencies = true } = options
 
 		let featuresToInstall: IInstallFeature[] = []
 
 		for (let i = 0; i < features.length; i += 1) {
 			const f = features[i]
 			const isInstalled = await this.features[f.feature].isInstalled()
-			if (!isInstalled && installDependencies) {
+			if (!isInstalled && installFeatureDependencies) {
 				featuresToInstall = featuresToInstall.concat(
 					this.getFeatureDependencies(f)
 				)
@@ -149,8 +149,8 @@ export default class FeatureService extends AbstractService {
 		this.term.info(`Beginning feature installation: ${installFeature.feature}`)
 		let optionsSchema: ISchemaDefinition | undefined
 		let isValid = false
-		if (feature.optionsSchema) {
-			optionsSchema = feature.optionsSchema
+		if (feature.optionsDefinition) {
+			optionsSchema = feature.optionsDefinition
 			isValid = Schema.isDefinitionValid(optionsSchema)
 		}
 		let answers: Record<string, any> = {}
@@ -198,7 +198,7 @@ export default class FeatureService extends AbstractService {
 		const devPackagesToInstall: string[] = []
 
 		const packages: {
-			[pkgName: string]: IFeaturePackage
+			[pkgName: string]: INpmPackage
 		} = {}
 
 		feature.packages.forEach(pkg => {
@@ -265,8 +265,8 @@ export default class FeatureService extends AbstractService {
 
 	private formBuilder<T extends ISchemaDefinition>(
 		options: Omit<IFormOptions<T>, 'term'>
-	): FormBuilder<T> {
-		const formBuilder = new FormBuilder({
+	): FormComponent<T> {
+		const formBuilder = new FormComponent({
 			term: this.utilities.terminal,
 			...options
 		})

@@ -1,5 +1,5 @@
 import { Feature } from '#spruce/autoloaders/features'
-import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
+import AbstractFeature, { INpmPackage } from './AbstractFeature'
 
 export default class ErrorFeature extends AbstractFeature {
 	public description =
@@ -7,7 +7,7 @@ export default class ErrorFeature extends AbstractFeature {
 
 	public featureDependencies = [Feature.Schema]
 
-	public packages: IFeaturePackage[] = [
+	public packages: INpmPackage[] = [
 		{
 			name: '@sprucelabs/error'
 		}

@@ -4,7 +4,7 @@ import { parse as parseEnv } from 'dotenv'
 import fs from 'fs-extra'
 import skillDefinition from '#spruce/schemas/core/skill.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import log from '../lib/log'
+import log from '../singletons/log'
 import { SpruceEvents } from '../types/events-generated'
 import AbstractStore, { IBaseStoreSettings, StoreAuth } from './AbstractStore'
 

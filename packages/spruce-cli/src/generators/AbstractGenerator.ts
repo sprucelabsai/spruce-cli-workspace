@@ -41,7 +41,6 @@ export default abstract class AbstractGenerator extends Autoloadable {
 		if (!fs.existsSync(source)) {
 			return ''
 		}
-
 		return fs.readFileSync(source).toString()
 	}
 

@@ -51,7 +51,7 @@ export default class OnboardingCommand extends AbstractCommand {
 				: '**ERROR INVALID ANSWER** Great, so lets prove it!'
 		)
 
-		const quiz = this.quizBuilder({
+		const quiz = this.quizComponent({
 			questions: {
 				events: {
 					type: FieldType.Select,

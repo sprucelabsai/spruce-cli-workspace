@@ -5,7 +5,7 @@ import { IFeatures } from '#spruce/autoloaders/features'
 import { IServices } from '#spruce/autoloaders/services'
 import { IUtilities } from '#spruce/autoloaders/utilities'
 import Autoloadable from '../Autoloadable'
-import log from '../lib/log'
+import log from '../singletons/log'
 import TerminalUtility from '../utilities/TerminalUtility'
 
 export interface IServiceOptions {

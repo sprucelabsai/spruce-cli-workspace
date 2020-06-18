@@ -1,5 +1,5 @@
 import semver from 'semver'
-import log from '../lib/log'
+import log from '../singletons/log'
 import AbstractService from './AbstractService'
 
 const VSCODE_MINIMUM_VERSION = '1.44.0'

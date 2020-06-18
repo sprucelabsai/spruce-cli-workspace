@@ -1,14 +1,14 @@
 import { Feature } from '#spruce/autoloaders/features'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import log from '../lib/log'
-import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
+import log from '../singletons/log'
+import AbstractFeature, { INpmPackage } from './AbstractFeature'
 
 type TestFeatureType = SpruceSchemas.Local.TestFeature.IDefinition
 
 export default class TestFeature extends AbstractFeature<TestFeatureType> {
 	public description = 'Test File: Create a test for one of your files'
 	public featureDependencies = [Feature.Skill, Feature.Schema]
-	public packages: IFeaturePackage[] = [
+	public packages: INpmPackage[] = [
 		{ name: '@sprucelabs/test', isDev: true },
 		{ name: 'ts-node', isDev: true },
 		{ name: 'jest', isDev: true },

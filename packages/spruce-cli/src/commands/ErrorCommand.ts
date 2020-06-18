@@ -7,7 +7,7 @@ import ErrorCode from '#spruce/errors/errorCode'
 import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
-import log from '../lib/log'
+import log from '../singletons/log'
 import { ICreatedFile } from '../utilities/TerminalUtility'
 import AbstractCommand from './AbstractCommand'
 
@@ -96,7 +96,7 @@ export default class ErrorCommand extends AbstractCommand {
 			)
 		}
 
-		const form = this.formBuilder({
+		const form = this.formComponent({
 			definition: namedTemplateItemDefinition,
 			initialValues,
 			onWillAskQuestion: this.utilities.names.onWillAskQuestionHandler.bind(

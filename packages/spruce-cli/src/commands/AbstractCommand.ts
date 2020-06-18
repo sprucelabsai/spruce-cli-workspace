@@ -10,12 +10,12 @@ import { IServices } from '#spruce/autoloaders/services'
 import { IStores } from '#spruce/autoloaders/stores'
 import { IUtilities } from '#spruce/autoloaders/utilities'
 import Autoloadable from '../Autoloadable'
-import FormBuilder, { IFormOptions } from '../builders/FormBuilder'
-import QuizBuilder, {
+import FormComponent, { IFormOptions } from '../components/FormComponent'
+import QuizComponent, {
 	IQuizOptions,
 	IQuizQuestions
-} from '../builders/QuizBuilder'
-import log from '../lib/log'
+} from '../components/QuizComponent'
+import log from '../singletons/log'
 import TerminalUtility from '../utilities/TerminalUtility'
 
 /** All commanders get this */
@@ -62,10 +62,10 @@ export default abstract class AbstractCommand extends Autoloadable
 	}
 
 	/** Preps a form builder, you will need to call present() */
-	public formBuilder<T extends ISchemaDefinition>(
+	public formComponent<T extends ISchemaDefinition>(
 		options: Omit<IFormOptions<T>, 'term'>
-	): FormBuilder<T> {
-		const formBuilder = new FormBuilder({
+	): FormComponent<T> {
+		const formBuilder = new FormComponent({
 			term: this.utilities.terminal,
 			...options
 		})
@@ -73,15 +73,17 @@ export default abstract class AbstractCommand extends Autoloadable
 	}
 
 	/** Preps a quiz builder, you will need to call present() */
-	public quizBuilder<T extends ISchemaDefinition, Q extends IQuizQuestions>(
+	public quizComponent<T extends ISchemaDefinition, Q extends IQuizQuestions>(
 		options: Omit<IQuizOptions<T, Q>, 'term' | 'definition'>
-	): QuizBuilder<T, Q> {
-		const quizBuilder = new QuizBuilder({
+	): QuizComponent<T, Q> {
+		const quizBuilder = new QuizComponent({
 			term: this.utilities.terminal,
 			...options
 		})
 		return quizBuilder
 	}
+
+	public featureComponent = () => {}
 
 	/** Helper to resolve paths absolutely and relatively */
 	public resolvePath(...filePath: string[]): string {

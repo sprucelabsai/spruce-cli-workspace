@@ -27,11 +27,11 @@ import { ICommandOptions } from './commands/AbstractCommand'
 import SpruceError from './errors/SpruceError'
 import { IFeatureOptions } from './features/AbstractFeature'
 import { IGeneratorOptions } from './generators/AbstractGenerator'
-import log from './lib/log'
-import path from './lib/path'
+import log from './singletons/log'
 import { IServiceOptions } from './services/AbstractService'
 import { StoreAuth, IStoreOptions } from './stores/AbstractStore'
 import { IUtilityOptions } from './utilities/AbstractUtility'
+import resolvePath from './utilities/resolvePath'
 import { terminal } from './utilities/TerminalUtility'
 
 export async function setup(options?: { program?: Command; cwd?: string }) {
@@ -56,7 +56,7 @@ export async function setup(options?: { program?: Command; cwd?: string }) {
 
 	program?.on('option:directory', function() {
 		if (program?.directory) {
-			const newCwd = path.resolvePath(cwd, program.directory)
+			const newCwd = resolvePath(cwd, program.directory)
 			log.trace(`CWD updated: ${newCwd}`)
 			updateCwd(newCwd)
 		}

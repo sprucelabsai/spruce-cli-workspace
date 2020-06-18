@@ -5,7 +5,7 @@ import { set } from 'lodash'
 import uuid from 'uuid'
 import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
-import log from '../lib/log'
+import log from '../singletons/log'
 import { WriteMode } from '../types/cli.types'
 import AbstractService from './AbstractService'
 

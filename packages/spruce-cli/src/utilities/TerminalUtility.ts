@@ -17,7 +17,7 @@ import ErrorCode from '#spruce/errors/errorCode'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import FieldType from '#spruce/schemas/fields/fieldType'
 import SpruceError from '../errors/SpruceError'
-import log from '../lib/log'
+import log from '../singletons/log'
 import AbstractUtility from './AbstractUtility'
 
 let fieldCount = 0

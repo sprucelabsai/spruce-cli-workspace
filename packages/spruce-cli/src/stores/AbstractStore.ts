@@ -6,7 +6,7 @@ import { IUtilities } from '#spruce/autoloaders/utilities'
 import ErrorCode from '#spruce/errors/errorCode'
 import Autoloadable from '../Autoloadable'
 import SpruceError from '../errors/SpruceError'
-import log from '../lib/log'
+import log from '../singletons/log'
 
 /** Are we running globally or locally? */
 export enum StoreScope {

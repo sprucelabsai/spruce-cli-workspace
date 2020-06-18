@@ -4,7 +4,7 @@ import fs from 'fs-extra'
 import uuid from 'uuid'
 import { IServices } from '#spruce/autoloaders/services'
 import { setup } from './index'
-import log from './lib/log'
+import log from './singletons/log'
 
 export default class BaseCliTest extends BaseTest {
 	protected static services: IServices
