@@ -6,7 +6,8 @@ import BaseCliTest from '../BaseCliTest'
 export default class TestFeatureTest extends BaseCliTest {
 	@test('Can install the test feature')
 	protected static async installFeature() {
-		await this.services.feature.install({
+		const cli = await this.cli()
+		await cli.services.feature.install({
 			features: [
 				{
 					feature: Feature.Skill,
@@ -26,7 +27,7 @@ export default class TestFeatureTest extends BaseCliTest {
 			]
 		})
 
-		const devDependencies = this.services.pkg.get('devDependencies')
+		const devDependencies = cli.services.pkg.get('devDependencies')
 		assert.hasAllKeys(devDependencies, [
 			'@sprucelabs/test',
 			'@types/node',

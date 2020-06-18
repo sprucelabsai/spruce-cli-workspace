@@ -5,9 +5,11 @@ import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import { WriteMode } from '../types/cli.types'
 import AbstractFeature, { INpmPackage } from './AbstractFeature'
 
-type SkillFeatureType = SpruceSchemas.Local.SkillFeature.IDefinition
+type SkillFeatureDefinition = SpruceSchemas.Local.SkillFeature.IDefinition
 
-export default class SkillFeature extends AbstractFeature<SkillFeatureType> {
+export default class SkillFeature extends AbstractFeature<
+	SkillFeatureDefinition
+> {
 	public description =
 		'Skill: The most basic configuration needed to enable a skill'
 
@@ -24,7 +26,7 @@ export default class SkillFeature extends AbstractFeature<SkillFeatureType> {
 	public optionsDefinition = skillFeatureDefinition
 
 	public async beforePackageInstall(options: {
-		answers: SchemaDefinitionValues<SkillFeatureType>
+		answers: SchemaDefinitionValues<SkillFeatureDefinition>
 	}) {
 		await this.writeDirectoryTemplate({
 			mode: WriteMode.Skip,

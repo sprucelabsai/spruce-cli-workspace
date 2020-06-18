@@ -33,8 +33,7 @@
 			"runtimeArgs": [
 				"--inspect-brk",
 				"${workspaceFolder}/node_modules/.bin/jest",
-				"${relativeFile}",
-				"--no-cache"
+				"${relativeFile}"
 			],
 			"port": 9229,
 			// "cwd": "${fileDirname}",

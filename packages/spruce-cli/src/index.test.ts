@@ -1,8 +1,8 @@
 import Schema from '@sprucelabs/schema'
-import BaseTest, { ISpruce, test, assert } from '@sprucelabs/test'
+import BaseSpruceTest, { ISpruce, test, assert } from '@sprucelabs/test'
 import cliUserDefinition from '#spruce/schemas/local/cliUser.definition'
 
-export default class IndexTest extends BaseTest {
+export default class IndexTest extends BaseSpruceTest {
 	@test('Can do some trivial asserts', 'hello', 'world')
 	protected static async canAccessVarsFromDecorator(
 		spruce: ISpruce,

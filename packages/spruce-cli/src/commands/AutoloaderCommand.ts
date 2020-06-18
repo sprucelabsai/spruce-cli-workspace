@@ -59,8 +59,11 @@ export default class AutoloaderCommand extends AbstractCommand {
 			.action(this.root)
 	}
 
-	private sync = async (name: string | undefined, cmd: Command) => {
-		const rootAutoloaderDestination = cmd.rootAutoloaderDestination as string
+	private sync = async (
+		name: string | undefined,
+		options: { rootAutoloaderDestination: string }
+	) => {
+		const rootAutoloaderDestination = options.rootAutoloaderDestination as string
 		let autoloaders = await this.stores.autoloader.autoloaders()
 
 		this.term.startLoading(
@@ -124,12 +127,21 @@ export default class AutoloaderCommand extends AbstractCommand {
 		)
 	}
 
-	private create = async (name: string | undefined, cmd: Command) => {
+	private create = async (
+		name: string | undefined,
+		options: {
+			autoloaderDestination: string
+			rootAutoloaderDestination: string
+			lookupDir: string
+			pattern: string
+			destination: string
+		}
+	) => {
 		// get all options off command
-		const autoloaderDestination = cmd.autoloaderDestination as string
-		const rootAutoloaderDestination = cmd.rootAutoloaderDestination as string
-		let lookupDir = cmd.lookupDir as string | undefined
-		const pattern = (cmd.pattern as string).replace("'", '').replace('"', '')
+		const autoloaderDestination = options.autoloaderDestination
+		const rootAutoloaderDestination = options.rootAutoloaderDestination
+		let lookupDir = options.lookupDir
+		const pattern = options.pattern.replace("'", '').replace('"', '')
 
 		const createdFiles: { name: string; path: string }[] = []
 
@@ -166,10 +178,7 @@ export default class AutoloaderCommand extends AbstractCommand {
 			})
 
 			// build the destination directory
-			const destination = this.resolvePath(
-				cmd.destination as string,
-				nameCamelPlural
-			)
+			const destination = this.resolvePath(options.destination, nameCamelPlural)
 
 			if (this.doesFileExist(destination)) {
 				throw new Error(

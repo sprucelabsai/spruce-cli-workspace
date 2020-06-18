@@ -1,31 +1,50 @@
 import path from 'path'
-import BaseTest from '@sprucelabs/test'
+import readline from 'readline'
+import BaseSpruceTest from '@sprucelabs/test'
 import fs from 'fs-extra'
 import uuid from 'uuid'
-import { IServices } from '#spruce/autoloaders/services'
 import { setup } from './index'
-import log from './singletons/log'
+import TerminalUtility from './utilities/TerminalUtility'
 
-export default class BaseCliTest extends BaseTest {
-	protected static services: IServices
+const rl = readline.createInterface({
+	input: process.stdin,
+	output: process.stdout
+})
 
-	protected static async beforeAll() {
-		try {
-			this.cwd = this.ensureTmpDirectory()
-			const result = await setup({
-				cwd: this.cwd
-			})
-			this.services = result.services
-		} catch (e) {
-			log.crit(e)
-		}
+export default class BaseCliTest extends BaseSpruceTest {
+	protected static async beforeEach() {
+		this.cwd = this.ensureTmpDirectory()
 	}
 
-	/** Get a clean, temporary directory for testing */
+	protected static async cli() {
+		const cli = await setup({
+			cwd: this.cwd
+		})
+		return cli
+	}
+
+	protected static term() {
+		return new TerminalUtility({ cwd: this.cwd })
+	}
+
 	protected static ensureTmpDirectory() {
 		const tmpDirectory = path.join(__dirname, '..', 'tmp', uuid.v4())
 		fs.ensureDirSync(tmpDirectory)
 
 		return tmpDirectory
+	}
+
+	protected static async sendInput(input: string) {
+		// because there is a delay between sending output to the terminal and it actually rendering and being ready for input, we delay before sending input
+		await new Promise(resolve => setTimeout(resolve, 50))
+
+		for (let i = 0; i < input.length; i++) {
+			// @ts-ignore
+			rl.input.emit('keypress', input[i])
+		}
+		// @ts-ignore
+		rl.input.emit('keypress', null, { name: 'enter' })
+
+		await new Promise(resolve => setTimeout(resolve, 50))
 	}
 }

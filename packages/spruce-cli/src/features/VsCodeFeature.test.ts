@@ -6,7 +6,8 @@ import BaseCliTest from '../BaseCliTest'
 export default class VsCodeFeatureTest extends BaseCliTest {
 	@test('Properly detects when feature is not installed')
 	protected static async notInstalled() {
-		const isInstalled = await this.services.feature.isInstalled({
+		const cli = await this.cli()
+		const isInstalled = await cli.services.feature.isInstalled({
 			features: [Feature.VsCode]
 		})
 
@@ -15,7 +16,8 @@ export default class VsCodeFeatureTest extends BaseCliTest {
 
 	@test('Can install the feature')
 	protected static async installFeature() {
-		await this.services.feature.install({
+		const cli = await this.cli()
+		await cli.services.feature.install({
 			features: [
 				{
 					feature: Feature.VsCode
@@ -23,7 +25,7 @@ export default class VsCodeFeatureTest extends BaseCliTest {
 			]
 		})
 
-		const isInstalled = await this.services.feature.isInstalled({
+		const isInstalled = await cli.services.feature.isInstalled({
 			features: [Feature.VsCode]
 		})
 

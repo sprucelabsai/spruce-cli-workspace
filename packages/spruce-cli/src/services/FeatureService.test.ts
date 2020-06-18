@@ -5,7 +5,8 @@ import BaseCliTest from '../BaseCliTest'
 export default class FeatureServiceTest extends BaseCliTest {
 	@test('Can get feature dependencies')
 	protected static async getFeatureDependencies() {
-		const dependencies = this.services.feature.getFeatureDependencies({
+		const cli = await this.cli()
+		const dependencies = cli.services.feature.getFeatureDependencies({
 			feature: Feature.Test
 		})
 		assert.isArray(dependencies)
@@ -17,7 +18,8 @@ export default class FeatureServiceTest extends BaseCliTest {
 
 	@test.skip('Can get circular feature dependencies.')
 	protected static async getCircularFeatureDependencies() {
-		const dependencies = this.services.feature.getFeatureDependencies({
+		const cli = await this.cli()
+		const dependencies = cli.services.feature.getFeatureDependencies({
 			feature: Feature.Skill
 		})
 		assert.isArray(dependencies)

@@ -8,7 +8,7 @@ import {
 import { TemplateRenderAs } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
-import log from './src/lib/log'
+import log from './src/singletons/log'
 // Import addons
 import './src/addons/escape.addon'
 import './src/addons/fieldDefinitionOptions.addon'

@@ -16,7 +16,7 @@ import {
 } from '@sprucelabs/mercury'
 import { templates } from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
-import autoloader from '#spruce/autoloaders'
+import autoloader, { IAutoloaded } from '#spruce/autoloaders'
 import { Commands } from '#spruce/autoloaders/commands'
 import ErrorCode from '#spruce/errors/errorCode'
 import pkg from '../package.json'
@@ -27,14 +27,19 @@ import { ICommandOptions } from './commands/AbstractCommand'
 import SpruceError from './errors/SpruceError'
 import { IFeatureOptions } from './features/AbstractFeature'
 import { IGeneratorOptions } from './generators/AbstractGenerator'
-import log from './singletons/log'
 import { IServiceOptions } from './services/AbstractService'
+import log from './singletons/log'
 import { StoreAuth, IStoreOptions } from './stores/AbstractStore'
 import { IUtilityOptions } from './utilities/AbstractUtility'
 import resolvePath from './utilities/resolvePath'
 import { terminal } from './utilities/TerminalUtility'
 
-export async function setup(options?: { program?: Command; cwd?: string }) {
+export interface ICli extends IAutoloaded {}
+
+export async function setup(options?: {
+	program?: Command
+	cwd?: string
+}): Promise<ICli> {
 	const program = options?.program
 	program?.version(pkg.version).description(pkg.description)
 	program?.option('--no-color', 'Disable color output in the console')
@@ -114,13 +119,7 @@ export async function setup(options?: { program?: Command; cwd?: string }) {
 		templates
 	}
 
-	const {
-		utilities,
-		services,
-		stores,
-		generators,
-		commands
-	} = await autoloader({
+	const loaded = await autoloader({
 		commands: {
 			constructorOptions: commandOptions,
 			after: async (instance: Commands) =>
@@ -142,6 +141,8 @@ export async function setup(options?: { program?: Command; cwd?: string }) {
 			constructorOptions: generatorOptions
 		}
 	})
+
+	const { utilities, services, stores, generators, commands } = loaded
 
 	autoLoaded.push(...Object.values(utilities))
 	autoLoaded.push(...Object.values(services))
@@ -182,27 +183,13 @@ export async function setup(options?: { program?: Command; cwd?: string }) {
 
 	// Mercury connection options
 	const connectOptions: IMercuryConnectOptions = {
-		useMock: process.env.TESTING === 'true',
 		spruceApiUrl: remoteUrl,
 		credentials: creds
 	}
 
 	await mercury.connect(connectOptions)
 
-	return {
-		cwd,
-		utilityOptions,
-		utilities,
-		mercury,
-		serviceOptions,
-		services,
-		storeOptions,
-		stores,
-		connectOptions,
-		generatorOptions,
-		generators,
-		commands
-	}
+	return loaded
 }
 
 /**

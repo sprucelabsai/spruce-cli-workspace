@@ -6,7 +6,8 @@ import BaseCliTest from '../BaseCliTest'
 export default class SchemaFeatureTest extends BaseCliTest {
 	@test('Properly detects when feature is not installed')
 	protected static async notInstalled() {
-		const isInstalled = await this.services.feature.isInstalled({
+		const cli = await this.cli()
+		const isInstalled = await cli.services.feature.isInstalled({
 			features: [Feature.Schema]
 		})
 
@@ -15,7 +16,8 @@ export default class SchemaFeatureTest extends BaseCliTest {
 
 	@test('Can install the schema feature')
 	protected static async installFeature() {
-		await this.services.feature.install({
+		const cli = await this.cli()
+		await cli.services.feature.install({
 			features: [
 				{
 					feature: Feature.Skill,
@@ -30,6 +32,6 @@ export default class SchemaFeatureTest extends BaseCliTest {
 			]
 		})
 
-		assert.isTrue(this.services.pkg.isInstalled('@sprucelabs/schema'))
+		assert.isTrue(cli.services.pkg.isInstalled('@sprucelabs/schema'))
 	}
 }
