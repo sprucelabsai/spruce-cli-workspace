@@ -50,9 +50,9 @@ export default class FeatureManager {
 		featureMap: IFeatureMap,
 		pkgService: PkgService
 	) {
-		this.cwd = this._cwd = cwd
 		this.featureMap = featureMap
 		this.pkgService = pkgService
+		this.cwd = this._cwd = cwd
 	}
 	public static WithAllFeatures(
 		cwd: string,

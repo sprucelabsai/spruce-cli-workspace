@@ -59,7 +59,9 @@
     ValueTypeServiceStageError = 'VALUE_TYPE_SERVICE_STAGE_ERROR',
     
     /** * An error when generating value types for template insertion  */
-    ValueTypeServiceError = 'VALUE_TYPE_SERVICE_ERROR',
+	ValueTypeServiceError = 'VALUE_TYPE_SERVICE_ERROR',
+	
+	DirectoryNotFound ='DIRECTORY_NOT_FOUND'
     
 }
 

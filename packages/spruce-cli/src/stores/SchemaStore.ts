@@ -146,9 +146,9 @@ export default class SchemaStore {
 
 	/** All field types from all skills we depend on */
 	public async fetchFieldTemplateItems<T extends IFieldTemplateItemsOptions>(
-		options?: T
+		options: T
 	): Promise<FieldTemplateItemsReturnType<T>> {
-		const { includeErrors = true } = options || {}
+		const { includeErrors = true, localLookupDir } = options
 		const cwd = pathUtil.join(__dirname, '..', '..')
 		// TODO load from core
 		const coreAddons = await Promise.all(
@@ -178,29 +178,29 @@ export default class SchemaStore {
 		const localErrors: SpruceError[] = []
 		const localAddons = (
 			await Promise.all(
-				(
-					await globby([pathUtil.join(this.cwd, '/src/addons/*Field.addon.ts')])
-				).map(async file => {
-					try {
-						const registration = await importsUtil.importDefault<
-							IFieldRegistration
-						>(file, this.cwd)
-						return {
-							path: file,
-							registration,
-							isLocal: true
+				(await globby([pathUtil.join(localLookupDir, '/*Field.addon.ts')])).map(
+					async file => {
+						try {
+							const registration = await importsUtil.importDefault<
+								IFieldRegistration
+							>(file, this.cwd)
+							return {
+								path: file,
+								registration,
+								isLocal: true
+							}
+						} catch (err) {
+							localErrors.push(
+								new SpruceError({
+									code: ErrorCode.FailedToImport,
+									file,
+									originalError: err
+								})
+							)
+							return false
 						}
-					} catch (err) {
-						localErrors.push(
-							new SpruceError({
-								code: ErrorCode.FailedToImport,
-								file,
-								originalError: err
-							})
-						)
-						return false
 					}
-				})
+				)
 			)
 		).filter(addon => !!addon) as IAddonItem[]
 

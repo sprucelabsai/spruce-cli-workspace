@@ -122,7 +122,7 @@ export default class ErrorCommand extends AbstractCommand {
 		const form = this.getFormComponent({
 			definition: namedTemplateItemDefinition,
 			initialValues,
-			onWillAskQuestion: namesUtil.onWillAskQuestionHandler
+			onWillAskQuestion: namesUtil.onWillAskQuestionHandler.bind(namesUtil)
 		})
 
 		const names = await form.present({

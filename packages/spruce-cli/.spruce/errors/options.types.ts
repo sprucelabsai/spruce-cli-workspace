@@ -21,7 +21,8 @@ import { IValueTypeServiceErrorErrorOptions } from "./valueTypeServiceError.type
 import { IUserNotFoundErrorOptions } from "./userNotFound.types";
 import { SpruceErrorOptions } from "@sprucelabs/error";
 import {SchemaErrorOptions} from '@sprucelabs/schema'
+import { IDirectoryNotFoundErrorOptions } from "./directoryNotFound.types";
 
-type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | ICouldNotLoadCommandErrorOptions | IBuildFailedErrorOptions | IDefinitionFailedToImportErrorOptions | ICreateAutoloaderFailedErrorOptions | ICommandNotImplementedErrorOptions | IDirectoryEmptyErrorOptions | IGenericErrorOptions | IFileExistsErrorOptions | IExecutingCommandFailedErrorOptions | IFailedToImportErrorOptions | IReservedKeywordErrorOptions | IInvalidCommandErrorOptions | IKeyExistsErrorOptions | ILintFailedErrorOptions | IGenericMercuryErrorOptions | INotImplementedErrorOptions | ITranspileFailedErrorOptions | IValueTypeServiceStageErrorErrorOptions | IValueTypeServiceErrorErrorOptions | IUserNotFoundErrorOptions
+type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | ICouldNotLoadCommandErrorOptions | IBuildFailedErrorOptions | IDefinitionFailedToImportErrorOptions | ICreateAutoloaderFailedErrorOptions | ICommandNotImplementedErrorOptions | IDirectoryEmptyErrorOptions | IGenericErrorOptions | IFileExistsErrorOptions | IExecutingCommandFailedErrorOptions | IFailedToImportErrorOptions | IReservedKeywordErrorOptions | IInvalidCommandErrorOptions | IKeyExistsErrorOptions | ILintFailedErrorOptions | IGenericMercuryErrorOptions | INotImplementedErrorOptions | ITranspileFailedErrorOptions | IValueTypeServiceStageErrorErrorOptions | IValueTypeServiceErrorErrorOptions | IUserNotFoundErrorOptions | IDirectoryNotFoundErrorOptions
 
 export default ErrorOptions

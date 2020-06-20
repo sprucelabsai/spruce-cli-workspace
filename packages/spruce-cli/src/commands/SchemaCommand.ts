@@ -45,6 +45,11 @@ export default class SchemaCommand extends AbstractCommand {
 				'./src/schemas'
 			)
 			.option(
+				'-a, --addonLookupDir <lookupDir>',
+				'Where should I look for addon files?',
+				'./src/addons'
+			)
+			.option(
 				'-td --typesDestinationDir <typesDir>',
 				'Where should I write the types file that supports the definition?',
 				'./.spruce/schemas'
@@ -61,6 +66,11 @@ export default class SchemaCommand extends AbstractCommand {
 				'-l, --lookupDir <lookupDir>',
 				'Where should I look for schema builder files?',
 				'./src/schemas'
+			)
+			.option(
+				'-a, --addonLookupDir <lookupDir>',
+				'Where should I look for addon files?',
+				'./src/addons'
 			)
 			.option(
 				'-d, --destinationDir <dir>',
@@ -86,12 +96,14 @@ export default class SchemaCommand extends AbstractCommand {
 		options: {
 			destinationDir: string
 			lookupDir?: string
+			addonLookupDir: string
 			clean?: boolean
 			force?: boolean
 		}
 	) => {
 		const destinationDir = options.destinationDir
 		const lookupDir = lookupDirOption || options.lookupDir
+		const addonLookupDir = options.addonLookupDir
 		const clean = !!options.clean
 		const force = !!options.force
 
@@ -130,7 +142,9 @@ export default class SchemaCommand extends AbstractCommand {
 		const {
 			items: fieldTemplateItems,
 			errors: fieldTemplateErrors
-		} = await this.schemaStore.fetchFieldTemplateItems()
+		} = await this.schemaStore.fetchFieldTemplateItems({
+			localLookupDir: diskUtil.resolvePath(addonLookupDir)
+		})
 
 		this.term.stopLoading()
 
@@ -282,7 +296,14 @@ export default class SchemaCommand extends AbstractCommand {
 	}
 
 	/** Define a new schema */
-	public create = async (name: string | undefined, cmd: Command) => {
+	public create = async (
+		name: string | undefined,
+		options: {
+			destinationDir: string
+			addonLookupDir: string
+			typesDestinationDir: string
+		}
+	) => {
 		const nameReadable = name
 
 		let nameCamel = ''
@@ -325,11 +346,11 @@ export default class SchemaCommand extends AbstractCommand {
 
 		// Build paths
 		const resolvedBuilderDestination = diskUtil.resolvePath(
-			cmd.destinationDir as string,
+			options.destinationDir,
 			`${values.nameCamel}.builder.ts`
 		)
 		const resolvedTypesDestination = diskUtil.resolvePath(
-			cmd.typesDestinationDir as string
+			options.typesDestinationDir
 		)
 		const definitionBuilder = templates.definitionBuilder(values)
 
@@ -338,8 +359,9 @@ export default class SchemaCommand extends AbstractCommand {
 		this.term.info(`Definition created at ${resolvedBuilderDestination}`)
 
 		try {
-			await this.sync(cmd.destinationDir, {
-				destinationDir: resolvedTypesDestination
+			await this.sync(options.destinationDir, {
+				destinationDir: resolvedTypesDestination,
+				addonLookupDir: options.addonLookupDir
 			})
 		} catch (err) {
 			this.term.stopLoading()
