@@ -1,9 +1,7 @@
 import Schema, { ISelectFieldDefinitionChoice } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldType'
-import AbstractStore, {
-	IBaseStoreSettings,
-	IStoreOptions
-} from './AbstractStore'
+import { AuthedAs } from '../types/cli.types'
+import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
 
 export enum RemoteStoreRemoteType {
 	Production = 'production',
@@ -23,11 +21,13 @@ export const RemoteStoreChoices = Object.keys(RemoteStoreRemoteType).map(
 ) as ISelectFieldDefinitionChoice[]
 
 /** The structure of the data remote saves */
-export interface IRemoteStoreSettings extends IBaseStoreSettings {
+export interface IRemoteStoreSettings extends ILocalStoreSettings {
 	remote?: RemoteStoreRemoteType
 }
 
-export default class RemoteStore extends AbstractStore<IRemoteStoreSettings> {
+export default class RemoteStore extends AbstractLocalStore<
+	IRemoteStoreSettings
+> {
 	/** Map of remote urls and subscriptions url */
 	public static remotes = {
 		[RemoteStoreRemoteType.Production]: {
@@ -70,11 +70,6 @@ export default class RemoteStore extends AbstractStore<IRemoteStoreSettings> {
 		}
 	})
 
-	public constructor(options: IStoreOptions) {
-		super(options)
-		this.load()
-	}
-
 	/** Set your remote (defaults to prod) */
 	public setRemote(remote: RemoteStoreRemoteType) {
 		this.schema.set('remote', remote)
@@ -109,5 +104,13 @@ export default class RemoteStore extends AbstractStore<IRemoteStoreSettings> {
 		const saved = this.readValues()
 		this.schema.setValues(saved)
 		return this
+	}
+
+	public get authType() {
+		return this.readValue('authType') ?? AuthedAs.User
+	}
+
+	public set authType(type: AuthedAs) {
+		this.writeValue('authType', type)
 	}
 }

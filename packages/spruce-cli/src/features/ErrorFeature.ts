@@ -1,5 +1,7 @@
-import { Feature } from '#spruce/autoloaders/features'
-import AbstractFeature, { INpmPackage } from './AbstractFeature'
+import { Feature } from '../FeatureManager'
+import PkgService from '../services/PkgService'
+import { INpmPackage } from '../types/cli.types'
+import AbstractFeature from './AbstractFeature'
 
 export default class ErrorFeature extends AbstractFeature {
 	public description =
@@ -13,7 +15,14 @@ export default class ErrorFeature extends AbstractFeature {
 		}
 	]
 
+	protected packageService: PkgService
+	public constructor(cwd: string, packageService: PkgService) {
+		super(cwd)
+		this.cwd = cwd
+		this.packageService = packageService
+	}
+
 	public async isInstalled() {
-		return this.services.pkg.isInstalled('@sprucelabs/error')
+		return this.packageService.isInstalled('@sprucelabs/error')
 	}
 }

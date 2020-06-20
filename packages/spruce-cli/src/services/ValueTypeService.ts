@@ -6,13 +6,17 @@ import ErrorCode from '#spruce/errors/errorCode'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import SpruceError from '../errors/SpruceError'
 import { IValueTypesOptions } from '../generators/ValueTypeGenerator'
-import AbstractService from './AbstractService'
+import importsUtil from '../utilities/imports.utility'
 
 export interface IAllValueTypeOptions extends IValueTypesOptions {}
 
-export default class ValueTypeService extends AbstractService {
-	/** For writing tmp files with unique names */
+export default class ValueTypeService {
+	public cwd: string
 	private tmpFileCount = 0
+
+	public constructor(cwd: string) {
+		this.cwd = cwd
+	}
 
 	public generateKey(renderAs: TemplateRenderAs, definition: FieldDefinition) {
 		return templates.generateFieldKey(renderAs, definition)
@@ -133,7 +137,7 @@ export default class ValueTypeService extends AbstractService {
 		)
 		fs.writeFileSync(tmpFilePath, code)
 
-		const response = await this.services.child.importAll<any>(tmpFilePath)
+		const response = await importsUtil.importAll<any>(this.cwd, tmpFilePath)
 
 		return { valueTypes: response.valueTypes as Record<string, string>, errors }
 	}

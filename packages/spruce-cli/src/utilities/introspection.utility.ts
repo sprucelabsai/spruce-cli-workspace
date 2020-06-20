@@ -1,13 +1,12 @@
 import _ from 'lodash'
 import * as tsutils from 'tsutils'
 import * as ts from 'typescript'
-import AbstractUtility from './AbstractUtility'
 
 export interface IIntrospectionClass {
 	className: string
 	parentClassName: string
 	parentClassPath: string
-	constructorOptionsInterfaceName: string | undefined
+	optionsInterfaceName: string | undefined
 	isAbstract: boolean
 }
 
@@ -29,10 +28,41 @@ interface IDocEntry {
 	parameters?: IDocEntry[]
 	returnType?: string
 }
+const serializeSymbol = (options: {
+	checker: ts.TypeChecker
+	symbol: ts.Symbol
+}): IDocEntry => {
+	const { checker, symbol } = options
+	return {
+		name: symbol.getName(),
+		documentation: ts.displayPartsToString(
+			symbol.getDocumentationComment(checker)
+		),
+		type: checker.typeToString(
+			checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration)
+		)
+	}
+}
 
-export default class IntrospectionUtility extends AbstractUtility {
+const serializeSignature = (options: {
+	checker: ts.TypeChecker
+	signature: ts.Signature
+}) => {
+	const { checker, signature } = options
+	return {
+		parameters: signature.parameters.map(p =>
+			serializeSymbol({ symbol: p, checker })
+		),
+		returnType: checker.typeToString(signature.getReturnType()),
+		documentation: ts.displayPartsToString(
+			signature.getDocumentationComment(checker)
+		)
+	}
+}
+
+const introspectionUtil = {
 	/** Gather helpful details re: a class definition */
-	public introspect(tsFiles: string[]): IIntrospection[] {
+	introspect(tsFiles: string[]): IIntrospection[] {
 		const filePaths = tsFiles
 		const program = ts.createProgram(filePaths, {})
 		const checker = program.getTypeChecker()
@@ -51,7 +81,7 @@ export default class IntrospectionUtility extends AbstractUtility {
 						const symbol = checker.getSymbolAtLocation(node.name)
 
 						if (symbol) {
-							const details = this.serializeSymbol({ checker, symbol })
+							const details = serializeSymbol({ checker, symbol })
 							// Get the construct signatures
 							const constructorType = checker.getTypeOfSymbolAtLocation(
 								symbol,
@@ -79,13 +109,13 @@ export default class IntrospectionUtility extends AbstractUtility {
 							)
 							details.constructors = constructorType
 								.getConstructSignatures()
-								.map(s => this.serializeSignature({ signature: s, checker }))
+								.map(s => serializeSignature({ signature: s, checker }))
 
 							results.classes.push({
 								className: node.name.text,
 								parentClassName,
 								parentClassPath,
-								constructorOptionsInterfaceName:
+								optionsInterfaceName:
 									details.constructors?.[0].parameters?.[0]?.type,
 								isAbstract: isAbstractClass
 							})
@@ -103,36 +133,6 @@ export default class IntrospectionUtility extends AbstractUtility {
 
 		return introspects
 	}
-
-	private serializeSignature(options: {
-		checker: ts.TypeChecker
-		signature: ts.Signature
-	}) {
-		const { checker, signature } = options
-		return {
-			parameters: signature.parameters.map(p =>
-				this.serializeSymbol({ symbol: p, checker })
-			),
-			returnType: checker.typeToString(signature.getReturnType()),
-			documentation: ts.displayPartsToString(
-				signature.getDocumentationComment(checker)
-			)
-		}
-	}
-
-	private serializeSymbol(options: {
-		checker: ts.TypeChecker
-		symbol: ts.Symbol
-	}): IDocEntry {
-		const { checker, symbol } = options
-		return {
-			name: symbol.getName(),
-			documentation: ts.displayPartsToString(
-				symbol.getDocumentationComment(checker)
-			),
-			type: checker.typeToString(
-				checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration)
-			)
-		}
-	}
 }
+
+export default introspectionUtil

@@ -3,38 +3,35 @@ import Schema from '@sprucelabs/schema'
 import gql from 'graphql-tag'
 import jwt from 'jsonwebtoken'
 import ErrorCode from '#spruce/errors/errorCode'
+import userDefinition from '#spruce/schemas/core/user.definition'
 import cliUserWithTokenDefinition from '#spruce/schemas/local/cliUserWithToken.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
 import log from '../singletons/log'
-import userDefinition from '../schemas/cliUser.builder'
+import { AuthedAs } from '../types/cli.types'
 import { SpruceEvents } from '../types/events-generated'
-import AbstractStore, { StoreAuth, IBaseStoreSettings } from './AbstractStore'
+import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
 
 type UserWithToken = SpruceSchemas.Local.ICliUserWithToken
 type User = SpruceSchemas.Local.ICliUser
 
 /** Settings i need to save */
-interface IUserStoreSettings extends IBaseStoreSettings {
+interface IUserStoreSettings extends ILocalStoreSettings {
 	authedUsers: UserWithToken[]
 }
 
-export default class UserStore extends AbstractStore<IUserStoreSettings> {
+export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 	public name = 'user'
 
-	/** Build a new user with an added token */
-	public static userWithToken(values?: Partial<UserWithToken>) {
+	public static getUserWithToken(values?: Partial<UserWithToken>) {
 		return new Schema(cliUserWithTokenDefinition, values)
 	}
 
-	/** Build a basic user */
-	public static user(values?: Partial<User>) {
+	public static getUser(values?: Partial<User>) {
 		return new Schema(userDefinition, values)
 	}
 
-	/** Login and get a user instance back */
-	public async userWithTokenFromPhone(phone: string, pin: string) {
-		//
+	public async fetchUserWithTokenFromPhone(phone: string, pin: string) {
 		const loginResult = await this.mercury.emit<
 			SpruceEvents.Core.Login.IPayload,
 			SpruceEvents.Core.Login.IResponseBody
@@ -60,7 +57,7 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 			})
 		}
 
-		const user = await this.userWithTokenFromToken(token)
+		const user = await this.fetchUserWithTokenFromToken(token)
 
 		if (!user) {
 			throw new SpruceError({
@@ -72,8 +69,7 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 		return user
 	}
 
-	/** Load a user from their jwt (WARNING, ALTERS THE AUTH OF MERCURY) */
-	public async userWithTokenFromToken(
+	public async fetchUserWithTokenFromToken(
 		token: string
 	): Promise<UserWithToken | undefined> {
 		const decoded = jwt.decode(token) as Record<string, any> | null
@@ -89,19 +85,18 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 
 		// Now load from id
 		const userId: string = decoded.userId
-		const user = await this.userFromId(userId)
+		const user = await this.fetchUserFromId(userId)
 
 		if (!user) {
 			return undefined
 		}
 
-		const userWithToken = UserStore.userWithToken({ ...user, token })
+		const userWithToken = UserStore.getUserWithToken({ ...user, token })
 		// @ts-ignore
 		return userWithToken.getValues()
 	}
 
-	/** Load a user from id */
-	public async userFromId(id: string): Promise<Omit<User, 'id'>> {
+	public async fetchUserFromId(id: string): Promise<Omit<User, 'id'>> {
 		const query =
 			gql`
 				query User($userId: ID!) {
@@ -133,15 +128,13 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 		})
 
 		const values = result.responses[0].payload.data.User
-		const user = UserStore.user(values)
+		const user = UserStore.getUser(values)
 
-		// Will throw
 		user.validate()
 
 		return user.getValues()
 	}
 
-	/** This person will be logged in going forward */
 	public setLoggedInUser(user: Omit<UserWithToken, 'isLoggedIn'>) {
 		// Pull authed user
 		const authedUsers = this.readValue('authedUsers') || []
@@ -164,13 +157,12 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 		})
 
 		this.writeValues({
-			authType: StoreAuth.User,
+			authType: AuthedAs.User,
 			authedUsers: newAuthedUsers
 		})
 	}
 
-	/** Get the logged in user */
-	public loggedInUser(): UserWithToken | undefined {
+	public getLoggedInUser(): UserWithToken | undefined {
 		const loggedInUsers = this.readValue('authedUsers') || []
 		const loggedInUser = loggedInUsers.find(auth => auth.isLoggedIn)
 
@@ -189,13 +181,11 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 		return undefined
 	}
 
-	/** Log everyone out */
+	/** Log everyone out. Should never have more than one user logged in, but this sets them all to isLoggedIn=false */
 	public logout() {
-		// Pull authed user
 		const authedUsers = this.readValue('authedUsers') || []
 		const newAuthedUsers: UserWithToken[] = []
 
-		// Remove this user if already authed
 		authedUsers.forEach(authed => {
 			newAuthedUsers.push({ ...authed, isLoggedIn: false })
 		})
@@ -203,8 +193,7 @@ export default class UserStore extends AbstractStore<IUserStoreSettings> {
 		this.writeValue('authedUsers', authedUsers)
 	}
 
-	/** Users who have ever been on */
-	public users(): UserWithToken[] {
+	public getUsers(): UserWithToken[] {
 		const users = this.readValue('authedUsers') || []
 		return users
 	}

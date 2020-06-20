@@ -1,21 +1,41 @@
-import path from 'path'
 import { Command } from 'commander'
 import fs from 'fs-extra'
-import globby from 'globby'
-import { Feature } from '#spruce/autoloaders/features'
 import ErrorCode from '#spruce/errors/errorCode'
 import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
-import log from '../singletons/log'
-import { ICreatedFile } from '../utilities/TerminalUtility'
-import AbstractCommand from './AbstractCommand'
+import FeatureManager, { Feature } from '../FeatureManager'
+import ErrorGenerator from '../generators/ErrorGenerator'
+import SchemaGenerator from '../generators/SchemaGenerator'
+import { ICreatedFile } from '../types/cli.types'
+import diskUtil from '../utilities/disk.utility'
+import namesUtil from '../utilities/names.utility'
+import AbstractCommand, { ICommandOptions } from './AbstractCommand'
+
+interface IErrorCommandOptions extends ICommandOptions {
+	featureManager: FeatureManager
+	generators: {
+		error: ErrorGenerator
+		schema: SchemaGenerator
+	}
+}
 
 export default class ErrorCommand extends AbstractCommand {
+	public errorGenerator: ErrorGenerator
+	public schemaGenerator: SchemaGenerator
+	public featureManager: FeatureManager
+
+	public constructor(options: IErrorCommandOptions) {
+		super(options)
+		this.errorGenerator = options.generators.error
+		this.schemaGenerator = options.generators.schema
+		this.featureManager = options.featureManager
+	}
+
 	public attachCommands(program: Command): void {
 		program
-			.command('error:create [name]')
-			.description('Define a new type of error')
+			.command('error.create [name]')
+			.description('Build a new type of error')
 			.option(
 				'-dd, --errorDestinationDir <errorDestinationDir>',
 				'Where should I write the definition and Error class file?',
@@ -34,7 +54,7 @@ export default class ErrorCommand extends AbstractCommand {
 			.action(this.create)
 
 		program
-			.command('error:sync')
+			.command('error.sync')
 			.description('Generates type files on all error builder.')
 			.option(
 				'-l, --lookupDir <lookupDir>',
@@ -74,10 +94,17 @@ export default class ErrorCommand extends AbstractCommand {
 			.action(this.sync)
 	}
 
-	public create = async (name: string | undefined, cmd: Command) => {
-		const errorDestinationDir = cmd.errorDestinationDir as string
-		const typesDestinationDir = cmd.typesDestinationDir as string
-		const schemaLookupDir = cmd.schemaLookupDir as string
+	public create = async (
+		name: string | undefined,
+		options: {
+			errorDestinationDir: string
+			typesDestinationDir: string
+			schemaLookupDir: string
+		}
+	) => {
+		const errorDestinationDir = options.errorDestinationDir
+		// const typesDestinationDir = options.typesDestinationDir
+		// const schemaLookupDir = options.schemaLookupDir
 
 		const nameReadable = name
 		const initialValues: Partial<SpruceSchemas.Local.INamedTemplateItem> = {
@@ -87,21 +114,15 @@ export default class ErrorCommand extends AbstractCommand {
 
 		if (nameReadable) {
 			showOverview = true
-			initialValues.nameCamel = this.utilities.names.toCamel(nameReadable)
-			initialValues.namePascal = this.utilities.names.toPascal(
-				initialValues.nameCamel
-			)
-			initialValues.nameConst = this.utilities.names.toConst(
-				initialValues.nameCamel
-			)
+			initialValues.nameCamel = namesUtil.toCamel(nameReadable)
+			initialValues.namePascal = namesUtil.toPascal(initialValues.nameCamel)
+			initialValues.nameConst = namesUtil.toConst(initialValues.nameCamel)
 		}
 
-		const form = this.formComponent({
+		const form = this.getFormComponent({
 			definition: namedTemplateItemDefinition,
 			initialValues,
-			onWillAskQuestion: this.utilities.names.onWillAskQuestionHandler.bind(
-				this.utilities.names
-			)
+			onWillAskQuestion: namesUtil.onWillAskQuestionHandler
 		})
 
 		const names = await form.present({
@@ -115,25 +136,26 @@ export default class ErrorCommand extends AbstractCommand {
 			]
 		})
 
-		const errorFileDestination = this.resolvePath(
+		const resolvedErrorFileDestination = diskUtil.resolvePath(
+			this.cwd,
 			errorDestinationDir,
 			'SpruceError.ts'
 		)
 
-		const errorBuilderDestination = this.resolvePath(
+		const resolvedErrorBuilderDestination = diskUtil.resolvePath(
+			this.cwd,
 			errorDestinationDir,
 			`${names.nameCamel}.builder.ts`
 		)
 
-		// If there is already a definition file, blow up
-		if (this.doesFileExist(errorBuilderDestination)) {
+		if (diskUtil.doesFileExist(resolvedErrorBuilderDestination)) {
 			throw new SpruceError({
 				code: ErrorCode.Generic,
 				friendlyMessage: 'This error already exists!'
 			})
 		}
 
-		await this.services.feature.install({
+		await this.featureManager.install({
 			features: [
 				{
 					feature: Feature.Error
@@ -142,135 +164,126 @@ export default class ErrorCommand extends AbstractCommand {
 		})
 
 		const createdFiles: ICreatedFile[] = []
+		// const updatedFiles: ICreatedFile[] = []
 
-		await this.writeFile(
-			errorBuilderDestination,
-			this.templates.definitionBuilder(names)
+		const {
+			generatedFiles: builderGeneratedFiles
+		} = await this.errorGenerator.generateBuilder(
+			resolvedErrorBuilderDestination,
+			names
 		)
 
-		createdFiles.push({
-			name: 'Error builder',
-			path: errorBuilderDestination
-		})
+		const {
+			generatedFiles: classGeneratedFiles,
+			updatedFiles: classUpdatedFiles
+		} = await this.errorGenerator.generateOrAppendErrorsToClass(
+			resolvedErrorFileDestination,
+			[names]
+		)
 
-		if (!this.doesFileExist(errorFileDestination)) {
-			const errorContents = this.templates.error({ errors: [names] })
-			await this.writeFile(errorFileDestination, errorContents)
-
-			createdFiles.push({
-				name: 'Error subclass',
-				path: errorFileDestination
-			})
-		} else {
-			const errorBlock = this.templates.error({
-				errors: [names],
-				renderClassDefinition: false
-			})
-
-			// Try and drop in the block right before "default:"
-			const currentErrorContents = this.readFile(errorFileDestination)
-			const blockMatches = currentErrorContents.search(/\t\t\tdefault:/g)
-			if (blockMatches > -1) {
-				const newErrorContents =
-					currentErrorContents.substring(0, blockMatches) +
-					'\n' +
-					errorBlock +
-					'\n' +
-					currentErrorContents.substring(blockMatches)
-
-				await this.writeFile(errorFileDestination, newErrorContents)
-			} else {
-				// Could not write to file, output snippet suggestion
-				this.term.warn(
-					'Failed to add to Error.ts, here is the block to drop in'
-				)
-				this.term.section({
-					headline: 'Code block example',
-					lines: [errorBlock]
-				})
-			}
+		if (classGeneratedFiles.errorClass) {
+			createdFiles.push(classGeneratedFiles.errorClass)
 		}
 
-		//Generate error option types based on new file
-		const {
-			namePascal,
-			definition,
-			nameCamel,
-			generatedFiles
-		} = await this.generators.schema.generateTypesFromDefinitionFile({
-			sourceFile: errorBuilderDestination,
-			destinationDir: this.resolvePath(typesDestinationDir),
-			template: 'errorTypes',
-			schemaLookupDir
-		})
+		if (classUpdatedFiles.errorClass) {
+			createdFiles.push(classUpdatedFiles.errorClass)
+		}
 
-		createdFiles.push({ name: 'Error types', path: generatedFiles.schemaTypes })
+		createdFiles.push(...Object.values(builderGeneratedFiles))
 
-		// Rebuild the errors codes
-		const {
-			generatedFiles: typesGenerated
-		} = await this.generators.error.rebuildErrorCodeType({
-			lookupDir: this.resolvePath(errorDestinationDir),
-			destinationFile: this.resolvePath(typesDestinationDir, 'codes.types.ts')
-		})
+		// //Generate error option types based on new file
+		// const {
+		// 	namePascal,
+		// 	definition,
+		// 	nameCamel,
+		// 	generatedFiles,
+		// 	updatedFiles
+		// } = await this.schemaGenerator.generateTypesFromDefinitionFile({
+		// 	sourceFile: resolvedErrorBuilderDestination,
+		// 	destinationDir: diskUtil.resolvePath(this.cwd, typesDestinationDir),
+		// 	template: 'errorTypes',
+		// 	schemaLookupDir
+		// })
 
-		createdFiles.push({
-			name: 'Error codes (updated)',
-			path: typesGenerated.codesTypes
-		})
+		// createdFiles.push({ name: 'Error types', path: generatedFiles.schemaTypes })
 
-		// Rebuild options union
-		const {
-			generatedFiles: optionsGenerated
-		} = await this.generators.error.rebuildOptionsTypesFile({
-			lookupDir: this.resolvePath(errorDestinationDir),
-			destinationFile: this.resolvePath(typesDestinationDir, 'options.types.ts')
-		})
+		// // Rebuild the errors codes
+		// const {
+		// 	generatedFiles: typesGenerated
+		// } = await this.generators.error.rebuildErrorCodeType({
+		// 	lookupDir: diskUtil.resolvePath(this.cwd, errorDestinationDir),
+		// 	destinationFile: diskUtil.resolvePath(
+		// 		this.cwd,
+		// 		typesDestinationDir,
+		// 		'codes.types.ts'
+		// 	)
+		// })
 
-		createdFiles.push({ name: 'Options', path: optionsGenerated.optionsTypes })
+		// createdFiles.push({
+		// 	name: 'Error codes (updated)',
+		// 	path: typesGenerated.codesTypes
+		// })
 
-		this.term.clear()
-		this.term.createdFileSummary({ createdFiles })
+		// // Rebuild options union
+		// const {
+		// 	generatedFiles: optionsGenerated
+		// } = await this.generators.error.rebuildOptionsTypesFile({
+		// 	lookupDir: diskUtil.resolvePath(this.cwd, errorDestinationDir),
+		// 	destinationFile: diskUtil.resolvePath(
+		// 		this.cwd,
+		// 		typesDestinationDir,
+		// 		'options.types.ts'
+		// 	)
+		// })
 
-		// Give an example
-		this.term.headline(`${names.namePascal} examples:`)
-		this.term.writeLn('')
-		this.term.codeSample(
-			this.templates.errorExample({
-				namePascal,
-				nameCamel,
-				definition
-			})
-		)
+		// createdFiles.push({ name: 'Options', path: optionsGenerated.optionsTypes })
 
-		this.term.startLoading(
-			'Prettying generated files (you can use them now)...'
-		)
+		// this.term.clear()
+		// this.term.createdFileSummary({ createdFiles })
 
-		await this.services.lint.fix(errorBuilderDestination)
+		// // Give an example
+		// this.term.headline(`${names.namePascal} examples:`)
+		// this.term.writeLn('')
+		// this.term.codeSample(
+		// 	this.templates.errorExample({
+		// 		namePascal,
+		// 		nameCamel,
+		// 		definition
+		// 	})
+		// )
 
-		this.term.stopLoading()
+		// this.term.startLoading(
+		// 	'Prettying generated files (you can use them now)...'
+		// )
+
+		// await this.services.lint.fix(resolvedErrorBuilderDestination)
+
+		// this.term.stopLoading()
 	}
 
 	public sync = async (cmd: Command) => {
-		const lookupDir = cmd.lookupDir as string
+		// const lookupDir = cmd.lookupDir as string
 		const typesDestinationDir = cmd.typesDestinationDir as string
-		const errorDestinationDir = cmd.errorDestinationDir as string
-		const schemaLookupDir = cmd.schemaLookupDir as string
+		// const errorDestinationDir = cmd.errorDestinationDir as string
+		// const schemaLookupDir = cmd.schemaLookupDir as string
 		const clean = !!cmd.clean
 		const force = !!cmd.force
 
-		const search = path.join(this.resolvePath(lookupDir), '**', '*.builder.ts')
+		// const search = path.join(
+		// 	diskUtil.resolvePath(this.cwd, lookupDir),
+		// 	'**',
+		// 	'*.builder.ts'
+		// )
 
-		const matches = await globby(search)
-		const allErrors: {
-			namePascal: string
-			description: string
-			nameReadable: string
-		}[] = []
+		// const resolvedMatches = await globby(search)
+		// const allErrors: {
+		// 	namePascal: string
+		// 	description: string
+		// 	nameReadable: string
+		// }[] = []
 
 		// Make sure error module is installed
-		await this.services.feature.install({
+		await this.featureManager.install({
 			features: [{ feature: Feature.Error }]
 		})
 
@@ -283,76 +296,45 @@ export default class ErrorCommand extends AbstractCommand {
 			shouldClean && fs.removeSync(typesDestinationDir)
 		}
 
-		// Lets clear out the current error dir
-		await Promise.all(
-			matches.map(async filePath => {
-				// Does this file contain buildErrorDefinition?
-				const currentContents = this.readFile(filePath)
-
-				// TODO remove this check
-				if (currentContents.search(/buildErrorDefinition\({/) === -1) {
-					log.debug(`Skipping ${filePath}`)
-					return
-				}
-
-				//Generate error option types based on new file
-				const {
-					namePascal,
-					nameCamel,
-					definition,
-					description,
-					nameReadable
-				} = await this.generators.schema.generateTypesFromDefinitionFile({
-					sourceFile: filePath,
-					destinationDir: this.resolvePath(typesDestinationDir),
-					schemaLookupDir,
-					template: 'errorTypes'
-				})
-
-				// Tell them how to use it
-				this.term.headline(`${namePascal}Error examples:`)
-
-				this.term.writeLn('')
-				this.term.codeSample(
-					this.templates.errorExample({ namePascal, nameCamel, definition })
-				)
-
-				this.term.writeLn('')
-				this.term.writeLn('')
-
-				// Track all errors
-				allErrors.push({ namePascal, nameReadable, description })
-			})
-		)
+		// TODO types.generation
 
 		// Write error class if it does not exist
-		const errorFileDestination = this.resolvePath(
-			errorDestinationDir,
-			'SpruceError.ts'
-		)
+		// const errorFileDestination = diskUtil.resolvePath(
+		// 	this.cwd,
+		// 	errorDestinationDir,
+		// 	'SpruceError.ts'
+		// )
 
-		if (!this.doesFileExist(errorFileDestination)) {
-			const errorContents = this.templates.error({ errors: allErrors })
-			await this.writeFile(errorFileDestination, errorContents)
-		}
+		// if (!this.doesFileExist(errorFileDestination)) {
+		// 	const errorContents = this.templates.error({ errors: allErrors })
+		// 	await this.writeFile(errorFileDestination, errorContents)
+		// }
 
-		// Rebuild the errors codes
-		await this.generators.error.rebuildErrorCodeType({
-			lookupDir: this.resolvePath(lookupDir),
-			destinationFile: this.resolvePath(typesDestinationDir, 'codes.types.ts')
-		})
+		// // Rebuild the errors codes
+		// await this.generators.error.rebuildErrorCodeType({
+		// 	lookupDir: diskUtil.resolvePath(this.cwd, lookupDir),
+		// 	destinationFile: diskUtil.resolvePath(
+		// 		this.cwd,
+		// 		typesDestinationDir,
+		// 		'codes.types.ts'
+		// 	)
+		// })
 
-		// Rebuild error options
-		await this.generators.error.rebuildOptionsTypesFile({
-			lookupDir: this.resolvePath(lookupDir),
-			destinationFile: this.resolvePath(typesDestinationDir, 'options.types.ts')
-		})
-		this.term.startLoading(
-			'Prettying generated files... you can start using the now.'
-		)
+		// // Rebuild error options
+		// await this.generators.error.rebuildOptionsTypesFile({
+		// 	lookupDir: diskUtil.resolvePath(this.cwd, lookupDir),
+		// 	destinationFile: diskUtil.resolvePath(
+		// 		this.cwd,
+		// 		typesDestinationDir,
+		// 		'options.types.ts'
+		// 	)
+		// })
+		// this.term.startLoading(
+		// 	'Prettying generated files... you can start using the now.'
+		// )
 
-		await this.services.lint.fix(
-			this.resolvePath(typesDestinationDir, '**/*.ts')
-		)
+		// await this.services.lint.fix(
+		// 	diskUtil.resolvePath(this.cwd, typesDestinationDir, '**/*.ts')
+		// )
 	}
 }

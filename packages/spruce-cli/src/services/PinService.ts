@@ -1,9 +1,14 @@
+import { Mercury } from '@sprucelabs/mercury'
 import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
 import { SpruceEvents } from '../types/events-generated'
-import AbstractService from './AbstractService'
 
-export default class PinService extends AbstractService {
+export default class PinService {
+	private mercury: Mercury
+	public constructor(mercury: Mercury) {
+		this.mercury = mercury
+	}
+
 	/** Give me a phone and i'll send you a pin */
 	public async requestPin(phone: string) {
 		try {

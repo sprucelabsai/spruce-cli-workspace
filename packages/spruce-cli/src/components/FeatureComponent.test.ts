@@ -1,12 +1,26 @@
 import { ISpruce, test, assert } from '@sprucelabs/test'
-import { Feature } from '#spruce/autoloaders/features'
 import BaseCliTest from '../BaseCliTest'
+import FeatureManager from '../FeatureManager'
+import { Feature } from '../FeatureManager'
+import PkgService from '../services/PkgService'
+import VsCodeService from '../services/VsCodeService'
 import FeatureComponent from './FeatureComponent'
 
 export default class FeatureComponentTest extends BaseCliTest {
+	private static FeatureComponent() {
+		const pkgService = new PkgService(this.cwd)
+		const vsCodeService = new VsCodeService(this.cwd)
+		const featureManager = FeatureManager.WithAllFeatures(
+			this.cwd,
+			pkgService,
+			vsCodeService
+		)
+		const featureComponent = new FeatureComponent(this.term(), featureManager)
+		return featureComponent
+	}
 	@test('Can create feature component')
 	protected static async canCreateFeatureComponent() {
-		const featureComponent = new FeatureComponent({ term: this.term() })
+		const featureComponent = FeatureComponentTest.FeatureComponent()
 		assert.isOk(featureComponent)
 	}
 
@@ -44,9 +58,8 @@ export default class FeatureComponentTest extends BaseCliTest {
 		expectedAnswers: Record<string, any> | undefined,
 		values: Record<string, string> | undefined
 	) {
-		const cli = await this.cli()
-		const featureComponent = new FeatureComponent({ term: this.term() })
-		const promise = featureComponent.prompt(cli.features[feature], {
+		const featureComponent = this.FeatureComponent()
+		const promise = featureComponent.prompt(feature, {
 			// @ts-ignore
 			values
 		})

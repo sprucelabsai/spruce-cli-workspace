@@ -1,8 +1,20 @@
 import { Command } from 'commander'
 import FieldType from '#spruce/schemas/fields/fieldType'
-import AbstractCommand from './AbstractCommand'
+import OnboardingStore from '../stores/OnboardingStore'
+import AbstractCommand, { ICommandOptions } from './AbstractCommand'
+
+interface IOnboardingCommandOptions extends ICommandOptions {
+	stores: {
+		onboarding: OnboardingStore
+	}
+}
 
 export default class OnboardingCommand extends AbstractCommand {
+	private onboardingStore: OnboardingStore
+	public constructor(options: IOnboardingCommandOptions) {
+		super(options)
+		this.onboardingStore = options.stores.onboarding
+	}
 	public attachCommands(program: Command) {
 		program
 			.command('onboarding')
@@ -13,14 +25,14 @@ export default class OnboardingCommand extends AbstractCommand {
 
 	public onboarding = async (cmd: Command) => {
 		if (cmd.reset) {
-			this.stores.onboarding.setRunCount(0)
+			this.onboardingStore.resetRunCount()
 		}
 
-		const runCount = this.stores.onboarding.getRunCount()
+		const runCount = this.onboardingStore.getRunCount()
 
 		// Enable onboarding and increment count
-		this.stores.onboarding.setIsEnabled(true)
-		this.stores.onboarding.incrementRunCount()
+		this.onboardingStore.setIsEnabled(true)
+		this.onboardingStore.incrementRunCount()
 
 		this.term.clear()
 		this.term.hero(runCount == 0 ? 'You made it!' : 'Onboarding')
@@ -51,7 +63,7 @@ export default class OnboardingCommand extends AbstractCommand {
 				: '**ERROR INVALID ANSWER** Great, so lets prove it!'
 		)
 
-		const quiz = this.quizComponent({
+		const quiz = this.getQuizComponent({
 			questions: {
 				events: {
 					type: FieldType.Select,

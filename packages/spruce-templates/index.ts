@@ -25,11 +25,13 @@ import './src/addons/json.addon'
 import './src/addons/isDefined.addon'
 import {
 	IAutoLoaderTemplateItem,
-	IRootAutoloaderTemplateItem,
 	IDirectoryTemplate,
 	DirectoryTemplateKind,
 	IDirectoryTemplateContextMap,
-	IValueTypes
+	IValueTypes,
+	IDefinitionBuilderTemplateItem,
+	IErrorOptions,
+	IErrorTemplateItem
 } from './src/types/templates.types'
 import DirectoryTemplateUtility from './src/utilities/DirectoryTemplateUtility'
 import importExtractorUtility from './src/utilities/importExtractorUtility'
@@ -90,9 +92,9 @@ const autoloader: string = fs
 	.readFileSync(path.join(templatePath, 'autoloader/autoloader.hbs'))
 	.toString()
 
-const autoloaderRoot: string = fs
-	.readFileSync(path.join(templatePath, 'autoloader/root.hbs'))
-	.toString()
+// const autoloaderRoot: string = fs
+// 	.readFileSync(path.join(templatePath, 'autoloader/root.hbs'))
+// 	.toString()
 
 const fieldsTypes: string = fs
 	.readFileSync(path.join(templatePath, 'schemas/fields/fields.types.hbs'))
@@ -132,34 +134,24 @@ export const templates = {
 	},
 
 	/** When building a definition in a skill */
-	definitionBuilder(options: {
-		nameCamel: string
-		description: string
-		namePascal: string
-		nameReadable: string
-	}) {
+	definitionBuilder(options: IDefinitionBuilderTemplateItem) {
 		const template = handlebars.compile(definitionBuilder)
 		return template(options)
 	},
 
 	/** For creating an error class */
-	error(options: {
-		errors: { namePascal: string; nameReadable: string }[]
-		renderClassDefinition?: boolean
-	}) {
+	error(options: IErrorOptions) {
 		const template = handlebars.compile(error)
 		return template({ renderClassDefinition: true, ...options })
 	},
 
 	/** For generating types file this error (the ISpruceErrorOptions sub-interface) */
-	errorTypes(options: {
-		definition: ISchemaDefinition
-		schemaTemplateItems: ISchemaTemplateItem[]
-		nameCamel: string
-		relativeToDefinition: string
-		namePascal: string
-		description: string
-	}) {
+	errorTypes(
+		options: {
+			schemaTemplateItems: ISchemaTemplateItem[]
+			relativeToDefinition: string
+		} & IErrorTemplateItem
+	) {
 		const template = handlebars.compile(errorTypes)
 		return template(options)
 	},
@@ -173,9 +165,7 @@ export const templates = {
 	},
 
 	/** For generating types for all the options (the ISpruceErrorOptions sub-interface) */
-	errorCode(options: {
-		codes: { namePascal: string; nameConst: string; description: string }[]
-	}) {
+	errorCode(options: { codes: IErrorTemplateItem[] }) {
 		const template = handlebars.compile(errorCode)
 		return template(options)
 	},
@@ -219,12 +209,6 @@ export const templates = {
 	/** Autoloader */
 	autoloader(options: IAutoLoaderTemplateItem) {
 		const template = handlebars.compile(autoloader)
-		return template(options)
-	},
-
-	/** Root autoloader */
-	rootAutoloader(options: IRootAutoloaderTemplateItem) {
-		const template = handlebars.compile(autoloaderRoot)
 		return template(options)
 	},
 

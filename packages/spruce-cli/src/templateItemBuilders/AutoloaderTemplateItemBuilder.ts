@@ -11,23 +11,23 @@ import ErrorCode from '#spruce/errors/errorCode'
 import autoloaderDefinition from '#spruce/schemas/local/autoloader.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
-import AbstractUtility from './AbstractUtility'
+import IntrospectionUtility from '../utilities/introspection.utility'
+import NamesUtility from '../utilities/names.utility'
+import AbstractTemplateItemBuilder from './AbstractTemplateItemBuilder'
 
-export default class AutoloaderUtility extends AbstractUtility {
+export default class AutoloaderTemplateItemBuilder extends AbstractTemplateItemBuilder {
 	private cache: Record<string, any> = {}
 	/** Build the template item needed to build the root autoloader  */
 	public async buildRootTemplateItem(
-		autoloaders: SpruceSchemas.Local.IAutoloader[],
-		cwd?: string
+		autoloaders: SpruceSchemas.Local.IAutoloader[]
 	): Promise<IRootAutoloaderTemplateItem> {
 		const templateItems: IAutoLoaderTemplateItem[] = await Promise.all(
 			autoloaders.map(autoloader => {
 				const directory = autoloader.lookupDir.path
 				const pattern = autoloader.pattern
 				return this.buildTemplateItem({
-					directory: path.join(cwd || this.cwd, directory),
-					pattern,
-					cwd
+					directory: path.join(this.cwd, directory),
+					pattern
 				})
 			})
 		)
@@ -41,43 +41,39 @@ export default class AutoloaderUtility extends AbstractUtility {
 		directory: string
 		/** An optional pattern i'll match against when loading files */
 		pattern?: string
-		/** The current directory */
-		cwd?: string
 	}): Promise<IAutoLoaderTemplateItem> {
 		const {
 			directory,
-			pattern = autoloaderDefinition.fields.pattern.defaultValue,
-			cwd = this.cwd
+			pattern = autoloaderDefinition.fields.pattern.defaultValue
 		} = options
 
-		const cacheKey = `${directory}-${pattern}-${cwd}`
+		const cacheKey = `${directory}-${pattern}-${this.cwd}`
 		if (this.cache[cacheKey]) {
 			return this.cache[cacheKey]
 		}
 		const globbyPattern = `${directory}/${pattern}`
 		const filePaths = await globby(globbyPattern)
-		const results = this.utilities.introspection.introspect(filePaths)
-		const names = this.utilities.names
+		const results = IntrospectionUtility.introspect(filePaths)
 		const classes: IAutoLoaderClassTemplateItem[] = []
 		const interfaces: IAutoLoaderInterfaceTemplateItem[] = []
 		let abstractClass:
 			| {
 					className: string
 					relativeFilePath: string
-					constructorOptionsInterfaceName?: string
+					optionsInterfaceName?: string
 			  }
 			| undefined
 
 		const namePlural = `${path.basename(directory)}`
-		const nameCamelPlural = names.toCamel(namePlural)
-		const namePascalPlural = names.toPascal(namePlural)
-		const name = names.toSingular(namePlural)
-		const namePascal = names.toPascal(name)
-		const nameCamel = names.toCamel(namePascal)
+		const nameCamelPlural = NamesUtility.toCamel(namePlural)
+		const namePascalPlural = NamesUtility.toPascal(namePlural)
+		const name = NamesUtility.toSingular(namePlural)
+		const namePascal = NamesUtility.toPascal(name)
+		const nameCamel = NamesUtility.toCamel(namePascal)
 
 		results.forEach((introspection, idx) => {
 			const filePath = filePaths[idx]
-				.replace(cwd, '')
+				.replace(this.cwd, '')
 				.replace(path.extname(filePaths[idx]), '')
 
 			// build interface template items
@@ -94,16 +90,19 @@ export default class AutoloaderUtility extends AbstractUtility {
 					abstractClass = {
 						className: i.className,
 						relativeFilePath: `#spruce/..${filePath}`,
-						constructorOptionsInterfaceName: i.constructorOptionsInterfaceName
+						optionsInterfaceName: i.optionsInterfaceName
 					}
 				} else {
 					classes.push({
-						constructorOptionsInterfaceName: i.constructorOptionsInterfaceName,
+						optionsInterfaceName: i.optionsInterfaceName,
 						// AutoloaderUtility -> Autoloader since namePascal wll be Utility
 						className: i.className,
-						nameCamel: names.toCamel(i.className).replace(namePascal, ''),
-						namePascal: names.toPascal(
-							names.toCamel(i.className).replace(namePascal, '')
+						nameCamel: NamesUtility.toCamel(i.className).replace(
+							namePascal,
+							''
+						),
+						namePascal: NamesUtility.toPascal(
+							NamesUtility.toCamel(i.className).replace(namePascal, '')
 						),
 						relativeFilePath: `#spruce/..${filePath}`
 					})
@@ -122,17 +121,17 @@ export default class AutoloaderUtility extends AbstractUtility {
 
 		classes.forEach(item => {
 			if (
-				item.constructorOptionsInterfaceName &&
+				item.optionsInterfaceName &&
 				!constructorOptionInterfaces.find(
-					i => i.name === item.constructorOptionsInterfaceName
+					i => i.name === item.optionsInterfaceName
 				)
 			) {
 				const path = interfaces.find(
-					i => i.interfaceName === item.constructorOptionsInterfaceName
+					i => i.interfaceName === item.optionsInterfaceName
 				)
 				if (path) {
 					constructorOptionInterfaces.push({
-						name: item.constructorOptionsInterfaceName,
+						name: item.optionsInterfaceName,
 						filePath: path.relativeFilePath
 					})
 				}
@@ -142,8 +141,7 @@ export default class AutoloaderUtility extends AbstractUtility {
 		const templateItem = {
 			abstractClassName: abstractClass.className,
 			abstractClassRelativePath: abstractClass.relativeFilePath,
-			abstractClassConstructorOptionsInterfaceName:
-				abstractClass.constructorOptionsInterfaceName,
+			abstractClassOptionsInterfaceName: abstractClass.optionsInterfaceName,
 			interfaces,
 			classes,
 			namePascalPlural,

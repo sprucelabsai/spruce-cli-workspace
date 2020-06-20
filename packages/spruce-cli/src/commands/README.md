@@ -1,5 +1,7 @@
 # Commands
 
-Commands are like controllers. They handle user interactions and pass them to things that do work (Services, Generators, etc.)
+Commands are special. They are loaded off the file system.
 
-Commands and components are the only places you should be asking for input.
+They are meant to handle user interactions and pass them to things that do work (Components, Generators, etc.)
+
+Commands and components are the only places you should be asking for input (using the TerminalService)

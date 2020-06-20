@@ -1,94 +1,147 @@
-import path from 'path'
-import globby from 'globby'
+import {
+	IDefinitionBuilderTemplateItem,
+	IErrorOptions,
+	IErrorTemplateItem
+} from '@sprucelabs/spruce-templates'
+import log from '../singletons/log'
+import { ICreatedFile } from '../types/cli.types'
+import diskUtil from '../utilities/disk.utility'
 import AbstractGenerator from './AbstractGenerator'
 
+interface IErrorClassFiles {
+	errorClass?: ICreatedFile
+}
+
 export default class ErrorGenerator extends AbstractGenerator {
-	/** Rebuilds the codes */
-	public async rebuildErrorCodeType(options: {
-		lookupDir: string
-		destinationFile: string
-	}): Promise<{
-		generatedFiles: {
-			codesTypes: string
-		}
+	public async generateOrAppendErrorsToClass(
+		destinationFile: string,
+		errors: IErrorOptions['errors']
+	): Promise<{
+		generatedFiles: IErrorClassFiles
+		updatedFiles: IErrorClassFiles
 	}> {
-		const { lookupDir, destinationFile } = options
+		const generatedFiles: IErrorClassFiles = {}
+		const updatedFiles: IErrorClassFiles = {}
 
-		// Find all definition files in the lookup dir
-		const search = path.join(lookupDir, '*.builder.ts')
-		const matches = await globby(search)
+		if (!diskUtil.doesFileExist(destinationFile)) {
+			const errorContents = this.templates.error({ errors })
+			await diskUtil.writeFile(destinationFile, errorContents)
 
-		const codes: {
-			namePascal: string
-			nameConst: string
-			description: string
-		}[] = []
-
-		await Promise.all(
-			matches.map(async file => {
-				const definition = await this.services.vm.importDefinition(file)
-
-				//Get variations on name
-				const nameCamel = this.utilities.names.toCamel(definition.id)
-				const namePascal = this.utilities.names.toPascal(nameCamel)
-				const nameConst = this.utilities.names.toConst(nameCamel)
-
-				codes.push({
-					namePascal,
-					nameConst,
-					description:
-						definition.description ||
-						'*** error definition missing description ***'
-				})
+			generatedFiles.errorClass = {
+				name: 'Error subclass',
+				path: destinationFile,
+				description:
+					'A new subclass of SpruceBaseError where you can control your error messaging.'
+			}
+		} else {
+			const errorBlock = this.templates.error({
+				errors,
+				renderClassDefinition: false
 			})
-		)
 
-		const contents = this.templates.errorCode({ codes })
-		this.writeFile(destinationFile, contents)
+			// Try and drop in the block right before "default:"
+			const currentErrorContents = diskUtil.readFile(destinationFile)
+			const blockMatches = currentErrorContents.search(/\t\t\tdefault:/g)
+			if (blockMatches > -1) {
+				const newErrorContents =
+					currentErrorContents.substring(0, blockMatches) +
+					'\n' +
+					errorBlock +
+					'\n' +
+					currentErrorContents.substring(blockMatches)
+
+				await diskUtil.writeFile(destinationFile, newErrorContents)
+
+				updatedFiles.errorClass = {
+					name: 'Error subclass',
+					path: destinationFile,
+					description:
+						errors.length > 1
+							? `${errors.length} blocks of code were in to handle the new types of errors`
+							: 'A new block of code was added to handle the new error type'
+				}
+			} else {
+				// Could not write to file, output snippet suggestion
+				log.warn('Failed to add to Error.ts, here is the block to drop in')
+			}
+		}
 
 		return {
-			generatedFiles: { codesTypes: destinationFile }
+			generatedFiles,
+			updatedFiles
 		}
 	}
 
-	/** Rebuilds the options  */
-	public async rebuildOptionsTypesFile(options: {
-		lookupDir: string
-		destinationFile: string
-	}): Promise<{
+	public async generateBuilder(
+		destinationFile: string,
+		options: IDefinitionBuilderTemplateItem
+	): Promise<{
 		generatedFiles: {
-			optionsTypes: string
+			errorBuilder: ICreatedFile
 		}
 	}> {
-		const { lookupDir, destinationFile } = options
-
-		// Find all definition files in the lookup dir
-		const search = path.join(lookupDir, '*.builder.ts')
-		const matches = await globby(search)
-
-		const errorOptions: {
-			namePascal: string
-			nameCamel: string
-		}[] = []
-
-		await Promise.all(
-			matches.map(async file => {
-				const definition = await this.services.vm.importDefinition(file)
-
-				//Get variations on name
-				const nameCamel = this.utilities.names.toCamel(definition.id)
-				const namePascal = this.utilities.names.toPascal(nameCamel)
-
-				errorOptions.push({ namePascal, nameCamel })
-			})
+		await diskUtil.writeFile(
+			destinationFile,
+			this.templates.definitionBuilder(options)
 		)
-
-		const contents = this.templates.errorOptionsTypes({ options: errorOptions })
-		this.writeFile(destinationFile, contents)
 
 		return {
 			generatedFiles: {
-				optionsTypes: destinationFile
+				errorBuilder: {
+					name: 'Error builder',
+					path: destinationFile,
+					description:
+						'Holds the builder for this error. Used to generate type files.'
+				}
+			}
+		}
+	}
+	public async generateErrorCodeType(
+		destinationFile: string,
+		errorTemplateItems: IErrorTemplateItem[]
+	): Promise<{
+		generatedFiles: {
+			codesEnum: ICreatedFile
+		}
+	}> {
+		// Find all definition files in the lookup dir
+
+		const contents = this.templates.errorCode({ codes: errorTemplateItems })
+		diskUtil.writeFile(destinationFile, contents)
+
+		return {
+			generatedFiles: {
+				codesEnum: {
+					name: 'Error code enum',
+					path: destinationFile,
+					description:
+						'The enum that holds all error types for reference, like ErrorCode.FileNotFound.'
+				}
+			}
+		}
+	}
+
+	public async generateOptionsTypesFile(
+		destinationFile: string,
+		errorTemplateItems: IErrorTemplateItem[]
+	): Promise<{
+		generatedFiles: {
+			optionsTypes: ICreatedFile
+		}
+	}> {
+		const contents = this.templates.errorOptionsTypes({
+			options: errorTemplateItems
+		})
+		diskUtil.writeFile(destinationFile, contents)
+
+		return {
+			generatedFiles: {
+				optionsTypes: {
+					name: 'Error options',
+					path: destinationFile,
+					description:
+						'A union of all error options for your skill. Used as the first parameter to the SpruceError constructor.'
+				}
 			}
 		}
 	}

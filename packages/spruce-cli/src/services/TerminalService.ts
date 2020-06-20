@@ -18,7 +18,7 @@ import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import FieldType from '#spruce/schemas/fields/fieldType'
 import SpruceError from '../errors/SpruceError'
 import log from '../singletons/log'
-import AbstractUtility from './AbstractUtility'
+import { ICreatedFile } from '../types/cli.types'
 
 let fieldCount = 0
 function generateInquirerFieldName() {
@@ -95,15 +95,14 @@ function filterEffectsForCFonts(effects: ITerminalEffect[]) {
 	)
 }
 
-export interface ICreatedFile {
-	name: string
-	path: string
-}
-
-export default class TerminalUtility extends AbstractUtility {
+export default class TerminalService {
 	public isPromptActive = false
-
+	public cwd: string
 	private loader?: ora.Ora | null
+
+	public constructor(cwd: string) {
+		this.cwd = cwd
+	}
 
 	/** Write a line with various effects applied */
 	public writeLn(message: any, effects: ITerminalEffect[] = []) {
@@ -491,5 +490,3 @@ export default class TerminalUtility extends AbstractUtility {
 		)
 	}
 }
-
-export const terminal = new TerminalUtility({ cwd: process.cwd() })

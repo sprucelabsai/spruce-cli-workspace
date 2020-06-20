@@ -1,8 +1,7 @@
 /* eslint-disable spruce/prefer-pascal-case-enums */
 // Import necessary interface(s)
-import { ICommandOptions } from '#spruce/../src/commands/AbstractCommand'
+import AbstractCommand from '#spruce/../src/commands/AbstractCommand'
 // Import each matching class that will be autoloaded
-import AutoloaderCommand from '#spruce/../src/commands/AutoloaderCommand'
 import ErrorCommand from '#spruce/../src/commands/ErrorCommand'
 import FeatureCommand from '#spruce/../src/commands/FeatureCommand'
 import OnboardingCommand from '#spruce/../src/commands/OnboardingCommand'
@@ -14,7 +13,6 @@ import UserCommand from '#spruce/../src/commands/UserCommand'
 import WatchCommand from '#spruce/../src/commands/WatchCommand'
 
 export type Commands =
-	| AutoloaderCommand
 	| ErrorCommand
 	| FeatureCommand
 	| OnboardingCommand
@@ -26,7 +24,6 @@ export type Commands =
 	| WatchCommand
 
 export interface ICommands {
-	autoloader: AutoloaderCommand
 	error: ErrorCommand
 	feature: FeatureCommand
 	onboarding: OnboardingCommand
@@ -39,7 +36,6 @@ export interface ICommands {
 }
 
 export enum Command {
-	Autoloader = 'autoloader',
 	Error = 'error',
 	Feature = 'feature',
 	Onboarding = 'onboarding',
@@ -52,20 +48,13 @@ export enum Command {
 }
 
 export default async function autoloader<K extends Command[]>(options: {
-	constructorOptions: ICommandOptions
-	after?: (instance: Commands) => Promise<void>
+	constructorOptions: any
+	after?: (instance: AbstractCommand) => Promise<void>
 	only?: K
 }): Promise<K extends undefined ? ICommands : Pick<ICommands, K[number]>> {
 	const { constructorOptions, after, only } = options
 	const siblings: Partial<ICommands> = {}
 
-	if (!only || only.indexOf(Command.Autoloader) > -1) {
-		const autoloaderCommand = new AutoloaderCommand(constructorOptions)
-		if (after) {
-			await after(autoloaderCommand)
-		}
-		siblings.autoloader = autoloaderCommand
-	}
 	if (!only || only.indexOf(Command.Error) > -1) {
 		const errorCommand = new ErrorCommand(constructorOptions)
 		if (after) {

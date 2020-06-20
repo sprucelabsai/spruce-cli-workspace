@@ -1,10 +1,12 @@
-import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
+// import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
+import VsCodeService, { IExtension } from '../services/VsCodeService'
 import log from '../singletons/log'
-import { IExtension } from '../services/VsCodeService'
 import AbstractFeature from './AbstractFeature'
 
 export default class VSCodeFeature extends AbstractFeature {
 	public description = 'VSCode: Create settings and install VSCode extensions'
+
+	protected vsCodeService: VsCodeService
 
 	private recommendedExtensions: IExtension[] = [
 		{
@@ -21,53 +23,53 @@ export default class VSCodeFeature extends AbstractFeature {
 		}
 	]
 
-	public async beforePackageInstall() {
-		this.term.startLoading('Creating VSCode config files')
-		await this.writeDirectoryTemplate({
-			kind: DirectoryTemplateKind.VsCode,
-			context: {}
-		})
-		this.term.stopLoading()
+	public constructor(cwd: string, vsCodeService: VsCodeService) {
+		super(cwd)
+		this.cwd = cwd
+		this.vsCodeService = vsCodeService
 	}
 
-	public async isInstalled(
-		/** The directory to check if a skill is installed. Default is the cwd. */
-		dir?: string
-	) {
-		const containsAllTemplateFiles = await this.templates.isValidTemplatedDirectory(
-			{
-				kind: DirectoryTemplateKind.VsCode,
-				dir: dir || this.cwd
-			}
-		)
+	// public async beforePackageInstall() {
+	// 	await this.writeDirectoryTemplate({
+	// 		kind: DirectoryTemplateKind.VsCode,
+	// 		context: {}
+	// 	})
+	// }
 
-		if (!containsAllTemplateFiles) {
-			return false
-		}
+	public async isInstalled() {
+		return true
+		// const containsAllTemplateFiles = await this.templates.isValidTemplatedDirectory(
+		// 	{
+		// 		kind: DirectoryTemplateKind.VsCode,
+		// 		dir: dir || this.cwd
+		// 	}
+		// )
 
-		const missingExtensions = await this.getMissingExtensions()
+		// if (!containsAllTemplateFiles) {
+		// 	return false
+		// }
 
-		return missingExtensions.length === 0
+		// const missingExtensions = await this.getMissingExtensions()
+
+		// return missingExtensions.length === 0
 	}
 
 	public async afterPackageInstall() {
-		this.term.startLoading('Installing VSCode extensions')
 		await this.installMissingExtensions()
-		this.term.stopLoading()
 	}
 
 	private async installMissingExtensions() {
 		const extensionsToInstall = await this.getMissingExtensions()
 
 		if (extensionsToInstall.length > 0) {
-			await this.services.vsCode.installExtensions(extensionsToInstall)
+			await this.vsCodeService.installExtensions(extensionsToInstall)
 		} else {
 			log.debug('No extensions to install')
 		}
 	}
 
 	private async getMissingExtensions() {
-		const currentExtensions = await this.services.vsCode.getVSCodeExtensions()
+		const currentExtensions = await this.vsCodeService.getVSCodeExtensions()
 		const missingExtensions = this.recommendedExtensions.filter(
 			recommendedExtension => {
 				const currentExtension = currentExtensions.find(

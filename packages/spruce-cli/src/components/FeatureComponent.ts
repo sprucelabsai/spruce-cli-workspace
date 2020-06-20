@@ -4,35 +4,39 @@ import {
 	SchemaDefinitionPartialValues,
 	SchemaFieldNames
 } from '@sprucelabs/schema'
-import { Features } from '#spruce/autoloaders/features'
+import FeatureManager, { Feature, IFeatureMap } from '../FeatureManager'
 import AbstractFeature from '../features/AbstractFeature'
-import TerminalUtility from '../utilities/TerminalUtility'
+import TerminalService from '../services/TerminalService'
 import AbstractComponent from './AbstractComponent'
 
-export interface IFeatureComponentOptions {
-	term: TerminalUtility
-}
-
 type PromptResponse<
-	F extends AbstractFeature<any>
+	F extends AbstractFeature
 > = F['optionsDefinition'] extends ISchemaDefinition
 	? SchemaDefinitionValues<F['optionsDefinition']>
 	: undefined
 
-interface IPromptOptions<F extends Features> {
+interface IPromptOptions<F extends AbstractFeature> {
 	values?: F['optionsDefinition'] extends ISchemaDefinition
 		? SchemaDefinitionPartialValues<F['optionsDefinition']>
 		: never
 }
 export default class FeatureComponent extends AbstractComponent {
-	public prompt = async <F extends Features>(
-		feature: F,
-		options: IPromptOptions<F> = {}
-	): Promise<PromptResponse<F>> => {
+	protected featureManager: FeatureManager
+
+	public constructor(term: TerminalService, featureManager: FeatureManager) {
+		super(term)
+		this.featureManager = featureManager
+	}
+
+	public prompt = async <F extends Feature>(
+		featureCode: F,
+		options: IPromptOptions<IFeatureMap[F]> = {}
+	): Promise<PromptResponse<IFeatureMap[F]>> => {
+		const feature = this.featureManager.getFeature(featureCode)
 		const definition = feature.optionsDefinition
 		const { values } = options
 
-		if (!definition) {
+		if (!definition || !definition.fields) {
 			return new Promise(resolve => resolve(undefined))
 		}
 
@@ -62,6 +66,6 @@ export default class FeatureComponent extends AbstractComponent {
 			}
 		}
 
-		return answers as PromptResponse<F>
+		return answers as PromptResponse<IFeatureMap[F]>
 	}
 }

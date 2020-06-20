@@ -1,3 +1,3 @@
 # Stores
 
-Anything stateful goes here. Store on the disk or in Mercury.
+Anything persistent goes here. Store on the disk or through Mercury.

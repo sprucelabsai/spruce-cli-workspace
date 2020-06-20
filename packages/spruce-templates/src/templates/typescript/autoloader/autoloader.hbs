@@ -26,11 +26,11 @@ export enum {{namePascal}} {
 export default async function autoloader<
 	K extends {{namePascal}}[]
 >(options: {
-	constructorOptions: {{#each constructorOptionInterfaces}} {{#unless @first}}|{{/unless}} {{name}}{{/each}}
+	options: {{#each constructorOptionInterfaces}} {{#unless @first}}|{{/unless}} {{name}}{{/each}}
 	after?: (instance: {{namePascalPlural}}) => Promise<void>
 	only?: K
 }): Promise<K extends undefined ? I{{namePascalPlural}} : Pick<I{{namePascalPlural}}, K[number]>> {
-	const { constructorOptions, after, only } = options
+	const { options: constructorOptions, after, only } = options
 	const siblings:Partial<I{{namePascalPlural}}> = {}
 
 	{{#each classes}}

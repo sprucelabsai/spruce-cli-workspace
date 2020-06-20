@@ -1,8 +1,17 @@
 import { Command } from 'commander'
 import FieldType from '#spruce/schemas/fields/fieldType'
-import AbstractCommand from './AbstractCommand'
+import FeatureManager from '../FeatureManager'
+import AbstractCommand, { ICommandOptions } from './AbstractCommand'
+interface IFeatureCommandOptions extends ICommandOptions {
+	featureManager: FeatureManager
+}
 
 export default class FeatureCommand extends AbstractCommand {
+	private featureManager: FeatureManager
+	public constructor(options: IFeatureCommandOptions) {
+		super(options)
+		this.featureManager = options.featureManager
+	}
 	public attachCommands(program: Command) {
 		program
 			.command('feature.install')
@@ -11,7 +20,7 @@ export default class FeatureCommand extends AbstractCommand {
 	}
 
 	public installFeature = async () => {
-		const choices = this.services.feature.getAvailableFeatures().map(f => ({
+		const choices = this.featureManager.getAvailableFeatures().map(f => ({
 			value: f.feature,
 			label: f.description
 		}))
@@ -26,7 +35,7 @@ export default class FeatureCommand extends AbstractCommand {
 		})
 
 		// Make sure test module is installed
-		await this.services.feature.install({
+		await this.featureManager.install({
 			features: [
 				{
 					feature: choice

@@ -4,47 +4,37 @@ import inflection from 'inflection'
 import { camelCase, snakeCase, upperFirst } from 'lodash'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import AbstractUtility from './AbstractUtility'
 
-/** Gets you a name good for using in an import statement based off a file path */
-export function toFileNameWithoutExtension(filePath: string) {
-	return filePath
-		.replace(path.dirname(filePath), '')
-		.replace(path.extname(filePath), '')
-		.replace('/', '')
-}
-
-export default class NamesUtility extends AbstractUtility {
+const namesUtil = {
 	/** Gets you a name good for using in an import statement based off a file path */
-	public toFileNameWithoutExtension = toFileNameWithoutExtension
-
+	toFileNameWithoutExtension(filePath: string) {
+		return filePath
+			.replace(path.dirname(filePath), '')
+			.replace(path.extname(filePath), '')
+			.replace('/', '')
+	},
 	/** First name => FirstName */
-	public toCamel(name: string) {
+	toCamel(name: string) {
 		return camelCase(name)
-	}
-
+	},
 	/** First name => FirstName */
-	public toPascal(name: string) {
+	toPascal(name: string) {
 		return upperFirst(this.toCamel(name))
-	}
-
+	},
 	/** First name => FIRST_NAME */
-	public toConst(name: string) {
+	toConst(name: string) {
 		return snakeCase(name).toUpperCase()
-	}
-
+	},
 	/** First name => First names */
-	public toPlural(name: string) {
+	toPlural(name: string) {
 		return inflection.pluralize(name)
-	}
-
+	},
 	/** First name => First name */
-	public toSingular(name: string) {
+	toSingular(name: string) {
 		return inflection.singularize(name)
-	}
-
+	},
 	/** Help guess on answers */
-	public onWillAskQuestionHandler<
+	onWillAskQuestionHandler<
 		K extends keyof SpruceSchemas.Local.INamedTemplateItem = keyof SpruceSchemas.Local.INamedTemplateItem,
 		V extends Optional<SpruceSchemas.Local.INamedTemplateItem> = Optional<
 			SpruceSchemas.Local.INamedTemplateItem
@@ -90,3 +80,5 @@ export default class NamesUtility extends AbstractUtility {
 		return fieldDefinition
 	}
 }
+
+export default namesUtil

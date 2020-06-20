@@ -1,16 +1,18 @@
 import path from 'path'
-import { ISchemaDefinition } from '@sprucelabs/schema'
 import { IFieldTemplateItem, ISchemaTemplateItem } from '@sprucelabs/schema'
 import { templates } from '@sprucelabs/spruce-templates'
 import fs from 'fs-extra'
 import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
+import ValueTypeService from '../services/ValueTypeService'
+import diskUtil from '../utilities/disk.utility'
+import namesUtil from '../utilities/names.utility'
 import AbstractGenerator from './AbstractGenerator'
 
 export interface IGenerateSchemaTypesOptions {
 	fieldTemplateItems: IFieldTemplateItem[]
 	schemaTemplateItems: ISchemaTemplateItem[]
-	clean: boolean
+	clean?: boolean
 }
 
 export interface ISchemaTypesGenerationPhase {
@@ -20,85 +22,8 @@ export interface ISchemaTypesGenerationPhase {
 	successfulFields: number
 }
 export default class SchemaGenerator extends AbstractGenerator {
-	/** Generate a type file from a definition file */
-	public async generateTypesFromDefinitionFile(options: {
-		sourceFile: string
-		destinationDir: string
-		schemaLookupDir: string
-		template: 'errorTypes'
-	}): Promise<{
-		nameCamel: string
-		namePascal: string
-		description: string
-		nameReadable: string
-		definition: ISchemaDefinition
-		generatedFiles: {
-			schemaTypes: string
-		}
-	}> {
-		const {
-			sourceFile,
-			destinationDir,
-			schemaLookupDir,
-			template = 'errorTypes'
-		} = options
-
-		const definition = await this.services.vm.importDefinition(sourceFile)
-
-		//Get variations on name
-		const {
-			nameCamel,
-			namePascal,
-			nameReadable
-		} = this.utilities.schema.buildNames(definition)
-		const description = definition.description
-
-		// Files
-		const newFileName = `${nameCamel}.types.ts`
-		const destination = path.join(destinationDir, newFileName)
-
-		// Relative paths
-		const relativeToDefinition = path.relative(
-			path.dirname(destination),
-			sourceFile
-		)
-
-		const schemaTemplateItems = await this.stores.schema.schemaTemplateItems({
-			includeErrors: false,
-			localLookupDir: schemaLookupDir
-		})
-
-		// Contents
-		const contents = this.templates[template]({
-			schemaTemplateItems,
-			definition,
-			nameCamel,
-			namePascal,
-			description:
-				description || `Description missing in schema defined in ${sourceFile}`,
-			relativeToDefinition: relativeToDefinition.replace(
-				path.extname(relativeToDefinition),
-				''
-			)
-		})
-
-		// Does a file exist already, erase it
-		this.deleteFile(destination)
-
-		// Write
-		this.writeFile(destination, contents)
-
-		return {
-			nameCamel,
-			namePascal,
-			definition,
-			description: description || '*definition missing*',
-			nameReadable,
-			generatedFiles: {
-				schemaTypes: destination
-			}
-		}
-	}
+	//@ts-ignore
+	private valueTypeService: ValueTypeService
 
 	/** Generate the type files required for a schema */
 	public async generateSchemaTypes(
@@ -193,19 +118,19 @@ export default class SchemaGenerator extends AbstractGenerator {
 				successfulFields += fieldTemplateItems.length
 
 				// Write out field types
-				await this.writeFile(fieldsTypesDestination, fieldsTypesContent)
+				await diskUtil.writeFile(fieldsTypesDestination, fieldsTypesContent)
 
 				// Write out class map
-				await this.writeFile(fieldClassMapDestination, fieldClassMapContent)
+				await diskUtil.writeFile(fieldClassMapDestination, fieldClassMapContent)
 
 				// Write out field type enum
-				await this.writeFile(fieldTypeDestination, fieldTypeContent)
+				await diskUtil.writeFile(fieldTypeDestination, fieldTypeContent)
 
 				// Build the ValueType hash to pass to schemasTypes
 				const {
 					valueTypes,
 					errors
-				} = await this.services.valueType.allValueTypes({
+				} = await this.valueTypeService.allValueTypes({
 					schemaTemplateItems,
 					fieldTemplateItems
 				})
@@ -228,7 +153,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 						if (!normalizedDefinitions.find(n => n.id === templateItem.id)) {
 							const destination = path.join(
 								destinationDir,
-								this.utilities.names.toCamel(templateItem.namespace),
+								namesUtil.toCamel(templateItem.namespace),
 								`${templateItem.nameCamel}.definition.ts`
 							)
 
@@ -260,7 +185,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 				})
 
 				//Write out schema types
-				await this.writeFile(schemaTypesDestination, schemaTypesContents)
+				await diskUtil.writeFile(schemaTypesDestination, schemaTypesContents)
 
 				resultsByStage.push({
 					name,

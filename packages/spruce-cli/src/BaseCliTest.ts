@@ -3,8 +3,8 @@ import readline from 'readline'
 import BaseSpruceTest from '@sprucelabs/test'
 import fs from 'fs-extra'
 import uuid from 'uuid'
-import { setup } from './index'
-import TerminalUtility from './utilities/TerminalUtility'
+import { boot } from './index'
+import TerminalService from './services/TerminalService'
 
 const rl = readline.createInterface({
 	input: process.stdin,
@@ -17,14 +17,14 @@ export default class BaseCliTest extends BaseSpruceTest {
 	}
 
 	protected static async cli() {
-		const cli = await setup({
+		const cli = await boot({
 			cwd: this.cwd
 		})
 		return cli
 	}
 
 	protected static term() {
-		return new TerminalUtility({ cwd: this.cwd })
+		return new TerminalService(this.cwd)
 	}
 
 	protected static ensureTmpDirectory() {

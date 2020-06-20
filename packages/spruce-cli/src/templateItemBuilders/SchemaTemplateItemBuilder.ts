@@ -4,34 +4,21 @@ import {
 	SchemaError,
 	ErrorCode as SchemaErrorCode,
 	ISchemaTemplateItem,
-	ISchemaTemplateNames,
 	default as Schema
 } from '@sprucelabs/schema'
 import SchemaField from '@sprucelabs/schema/build/fields/SchemaField'
 import FieldType from '#spruce/schemas/fields/fieldType'
 import log from '../singletons/log'
-import AbstractUtility from './AbstractUtility'
+import schemaUtil from '../utilities/schema.utility'
 
-export default class SchemaUtility extends AbstractUtility {
-	/** Generate interface and type names based off schema name */
-	public buildNames(definition: ISchemaDefinition): ISchemaTemplateNames {
-		return {
-			namePascal: this.utilities.names.toPascal(definition.id),
-			nameCamel: this.utilities.names.toCamel(definition.id),
-			nameReadable: definition.name
-		}
-	}
-
-	/** All the items you need for a template */
+export default class SchemaTemplateItemBuilder {
 	public accumulateTemplateItems(options: {
 		namespace: string
-		/** Array of schema definitions */
 		definitions: ISchemaDefinition[]
 		/** The items built recursively returned an the end. Pass it any items already processed. */
 		items?: ISchemaTemplateItem[]
-		/** For tracking recursively to keep from infinite depth. Feed it an definitions already processed */
+		/** For tracking recursively to keep from infinite depth. */
 		definitionsById?: { [id: string]: ISchemaDefinition }
-		/** Track how deep we go and limit */
 		depth?: number
 	}): ISchemaTemplateItem[] {
 		const {
@@ -105,7 +92,7 @@ export default class SchemaUtility extends AbstractUtility {
 		})
 
 		newDefinitions.forEach(definition => {
-			const names = this.buildNames(definition)
+			const names = schemaUtil.buildNames(definition)
 			log.info(`importing_schema_id: ${definition.id}`)
 
 			// We've already mapped this type

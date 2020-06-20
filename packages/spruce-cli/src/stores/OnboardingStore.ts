@@ -1,25 +1,17 @@
 import Schema from '@sprucelabs/schema'
 import onboardingDefinition from '#spruce/schemas/local/onboarding.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import AbstractStore, {
-	IBaseStoreSettings,
-	IStoreOptions
-} from './AbstractStore'
+import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
 
 export interface IOnboardingStoreSettings
-	extends IBaseStoreSettings,
+	extends ILocalStoreSettings,
 		SpruceSchemas.Local.IOnboarding {}
 
-export default class OnboardingStore extends AbstractStore<
+export default class OnboardingStore extends AbstractLocalStore<
 	IOnboardingStoreSettings
 > {
 	public name = 'onboarding'
 	public schema = new Schema(onboardingDefinition)
-
-	public constructor(options: IStoreOptions) {
-		super(options)
-		this.load()
-	}
 
 	public isEnabled() {
 		return this.schema.get('isEnabled')
@@ -34,14 +26,13 @@ export default class OnboardingStore extends AbstractStore<
 		return this.schema.get('runCount')
 	}
 
+	public resetRunCount() {
+		this.setRunCount(0)
+	}
+
 	public incrementRunCount() {
 		const count = this.getRunCount()
 		this.setRunCount(count + 1)
-	}
-
-	public setRunCount(count: number) {
-		this.schema.set('runCount', count)
-		this.save()
 	}
 
 	/** Save changes to filesystem */
@@ -59,5 +50,10 @@ export default class OnboardingStore extends AbstractStore<
 			runCount: saved.runCount ?? 0
 		})
 		return this
+	}
+
+	protected setRunCount(count: number) {
+		this.schema.set('runCount', count)
+		this.save()
 	}
 }

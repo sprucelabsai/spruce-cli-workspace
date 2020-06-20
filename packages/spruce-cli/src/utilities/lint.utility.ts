@@ -2,18 +2,18 @@
 import fs from 'fs-extra'
 import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
-import log from '../singletons/log'
-import AbstractService from './AbstractService'
+import commandUtil from './command.utility'
 
 export interface IAddOptions {
 	dev?: boolean
 }
 
-export default class LintService extends AbstractService {
+const lintUtil = {
 	/** Lint fix based on a glob. Returns an array of filepaths that were fixed. */
-	public async fix(
+	async fix(
 		/** The file or pattern to run eslint --fix on */
-		pattern: string
+		pattern: string,
+		cwd: string
 	): Promise<string[]> {
 		if (!pattern) {
 			throw new SpruceError({
@@ -23,10 +23,10 @@ export default class LintService extends AbstractService {
 			})
 		}
 
-		const { stdout } = await this.services.child.executeCommand('node', {
+		const { stdout } = await commandUtil.execute(cwd, 'node', {
 			args: [
 				'-e',
-				`"try { const ESLint = require('eslint');const cli = new ESLint.CLIEngine({fix: true,cwd: '${this.cwd}'});const result=cli.executeOnFiles(['${pattern}']);console.log(JSON.stringify(result)); } catch(err) { console.log(err.toString()); }"`
+				`"try { const ESLint = require('eslint');const cli = new ESLint.CLIEngine({fix: true,cwd: '${cwd}'});const result=cli.executeOnFiles(['${pattern}']);console.log(JSON.stringify(result)); } catch(err) { console.log(err.toString()); }"`
 			]
 		})
 
@@ -47,7 +47,6 @@ export default class LintService extends AbstractService {
 				const fixedFile = fixedFiles.results[i]
 				if (fixedFile && fixedFile.output) {
 					await fs.writeFile(fixedFile.filePath, fixedFile.output)
-					log.trace(`Fixed file: ${fixedFile.filePath}`)
 					fixedPaths.push(fixedFile.filePath)
 				}
 			}
@@ -56,3 +55,5 @@ export default class LintService extends AbstractService {
 		return fixedPaths
 	}
 }
+
+export default lintUtil

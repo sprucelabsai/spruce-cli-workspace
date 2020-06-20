@@ -83,16 +83,6 @@
 				"ext": ".ts"
 			},
 			"pattern": "**/!(*.test).ts"
-		},
-		{
-			"lookupDir": { "path": "src/utilities" },
-			"destination": {
-				"name": "utilities.ts",
-				"path": ".spruce/autoloaders",
-				"type": "application/typescript",
-				"ext": ".ts"
-			},
-			"pattern": "**/!(*.test).ts"
 		}
 	]
 }

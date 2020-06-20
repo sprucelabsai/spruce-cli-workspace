@@ -11,6 +11,7 @@ import { uniqBy } from 'lodash'
 // TODO move these into mercury api and pull from there
 import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
+import SchemaTemplateItemBuilder from '../templateItemBuilders/SchemaTemplateItemBuilder'
 import {
 	userDefinition,
 	userLocationDefinition,
@@ -19,12 +20,8 @@ import {
 	groupDefinition,
 	aclDefinition
 } from '../temporary/schemas'
-import AbstractStore from './AbstractStore'
-
-/** The mapping of type keys (string, phoneNumber) to definitions */
-// export interface IFieldTypeMap {
-// 	[fieldType: string]: IFieldTemplateDetails
-// }
+import importsUtil from '../utilities/imports.utility'
+import namesUtil from '../utilities/names.utility'
 
 export interface ISchemaTemplateItemsOptions {
 	includeErrors?: boolean
@@ -56,11 +53,17 @@ interface IAddonItem {
 	isLocal: boolean
 }
 
-export default class SchemaStore extends AbstractStore {
+export default class SchemaStore {
 	public name = 'schema'
+	public cwd: string
+	protected schemaBuilder: SchemaTemplateItemBuilder
 
-	/** Get the schema map supplied by core */
-	public async schemaTemplateItems<T extends ISchemaTemplateItemsOptions>(
+	public constructor(cwd: string) {
+		this.cwd = cwd
+		this.schemaBuilder = new SchemaTemplateItemBuilder()
+	}
+
+	public async fetchSchemaTemplateItems<T extends ISchemaTemplateItemsOptions>(
 		options: T
 	): Promise<SchemaTemplateItemsReturnType<T>> {
 		const { includeErrors = true, localLookupDir } = options
@@ -77,7 +80,7 @@ export default class SchemaStore extends AbstractStore {
 		]
 
 		// Each skill's slug will be the namespace
-		const coreTemplateItems = this.utilities.schema.accumulateTemplateItems({
+		const coreTemplateItems = this.schemaBuilder.accumulateTemplateItems({
 			namespace: 'Core',
 			definitions: schemas
 		})
@@ -90,9 +93,7 @@ export default class SchemaStore extends AbstractStore {
 				(await globby([pathUtil.join(localLookupDir, '/**/*.builder.ts')])).map(
 					async file => {
 						try {
-							const definition = await this.services.child.importDefault(file, {
-								cwd: this.cwd
-							})
+							const definition = await importsUtil.importDefault(file, this.cwd)
 							Schema.validateDefinition(definition)
 							return definition
 						} catch (err) {
@@ -125,7 +126,7 @@ export default class SchemaStore extends AbstractStore {
 
 		let allTemplateItems = coreTemplateItems
 		try {
-			allTemplateItems = this.utilities.schema.accumulateTemplateItems({
+			allTemplateItems = this.schemaBuilder.accumulateTemplateItems({
 				namespace: 'Local',
 				definitions: localDefinitions,
 				definitionsById,
@@ -144,7 +145,7 @@ export default class SchemaStore extends AbstractStore {
 	}
 
 	/** All field types from all skills we depend on */
-	public async fieldTemplateItems<T extends IFieldTemplateItemsOptions>(
+	public async fetchFieldTemplateItems<T extends IFieldTemplateItemsOptions>(
 		options?: T
 	): Promise<FieldTemplateItemsReturnType<T>> {
 		const { includeErrors = true } = options || {}
@@ -163,10 +164,9 @@ export default class SchemaStore extends AbstractStore {
 					)
 				])
 			).map(async path => {
-				// Import from
-				const registration = await this.services.vm.importAddon<
+				const registration = await importsUtil.importDefault<
 					IFieldRegistration
-				>(path, { cwd })
+				>(path, cwd)
 				return {
 					path,
 					registration,
@@ -182,9 +182,9 @@ export default class SchemaStore extends AbstractStore {
 					await globby([pathUtil.join(this.cwd, '/src/addons/*Field.addon.ts')])
 				).map(async file => {
 					try {
-						const registration = await this.services.vm.importAddon<
+						const registration = await importsUtil.importDefault<
 							IFieldRegistration
-						>(file)
+						>(file, this.cwd)
 						return {
 							path: file,
 							registration,
@@ -225,14 +225,14 @@ export default class SchemaStore extends AbstractStore {
 			const name = registration.className
 
 			types.push({
-				namePascal: this.utilities.names.toPascal(name),
-				nameCamel: this.utilities.names.toCamel(name),
+				namePascal: namesUtil.toPascal(name),
+				nameCamel: namesUtil.toCamel(name),
 				package: pkg,
 				className: registration.className,
 				importAs,
 				nameReadable: registration.className,
-				pascalType: this.utilities.names.toPascal(registration.type),
-				camelType: this.utilities.names.toCamel(registration.type),
+				pascalType: namesUtil.toPascal(registration.type),
+				camelType: namesUtil.toCamel(registration.type),
 				isLocal: addon.isLocal,
 				description: registration.description
 			})

@@ -5,10 +5,7 @@ register({
 	cwd: __dirname,
 	extensions: ['.js', '.ts']
 })
-// Shim
 // eslint-disable-next-line import/order
-import allSettled from 'promise.allsettled'
-allSettled.shim()
 import {
 	Mercury,
 	IMercuryConnectOptions,
@@ -16,27 +13,63 @@ import {
 } from '@sprucelabs/mercury'
 import { templates } from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
-import autoloader, { IAutoloaded } from '#spruce/autoloaders'
-import { Commands } from '#spruce/autoloaders/commands'
+// Shim
+// eslint-disable-next-line import/order
+import allSettled from 'promise.allsettled'
+allSettled.shim()
+
+import commandsAutoloader, { ICommands } from '#spruce/autoloaders/commands'
+import generatorsAutoloader from '#spruce/autoloaders/generators'
+import { IGenerators } from '#spruce/autoloaders/generators'
+import { IServices } from '#spruce/autoloaders/services'
+import { IStores } from '#spruce/autoloaders/stores'
 import ErrorCode from '#spruce/errors/errorCode'
 import pkg from '../package.json'
-/** Addons */
 import './addons/filePrompt.addon'
-import Autoloadable from './Autoloadable'
-import { ICommandOptions } from './commands/AbstractCommand'
 import SpruceError from './errors/SpruceError'
-import { IFeatureOptions } from './features/AbstractFeature'
-import { IGeneratorOptions } from './generators/AbstractGenerator'
-import { IServiceOptions } from './services/AbstractService'
+import FeatureManager from './FeatureManager'
+import PinService from './services/PinService'
+import PkgService from './services/PkgService'
+import TerminalService from './services/TerminalService'
+import VsCodeService from './services/VsCodeService'
 import log from './singletons/log'
-import { StoreAuth, IStoreOptions } from './stores/AbstractStore'
-import { IUtilityOptions } from './utilities/AbstractUtility'
-import resolvePath from './utilities/resolvePath'
-import { terminal } from './utilities/TerminalUtility'
+import OnboardingStore from './stores/OnboardingStore'
+import RemoteStore from './stores/RemoteStore'
+import SchemaStore from './stores/SchemaStore'
+import SkillStore from './stores/SkillStore'
+import UserStore from './stores/UserStore'
+import WatcherStore from './stores/WatcherStore'
+import { AuthedAs } from './types/cli.types'
+import diskUtil from './utilities/disk.utility'
 
-export interface ICli extends IAutoloaded {}
+export interface ICli {
+	term: TerminalService
+	mercury: Mercury
+	stores: IStores
+	services: IServices
+	commands: ICommands
+}
 
-export async function setup(options?: {
+function buildStores(cwd: string, mercury: Mercury): IStores {
+	return {
+		skill: new SkillStore(cwd, mercury),
+		onboarding: new OnboardingStore(cwd, mercury),
+		remote: new RemoteStore(cwd, mercury),
+		schema: new SchemaStore(cwd),
+		user: new UserStore(cwd, mercury),
+		watcher: new WatcherStore(cwd, mercury)
+	}
+}
+
+function buildServices(mercury: Mercury, cwd: string): IServices {
+	return {
+		pin: new PinService(mercury),
+		vsCode: new VsCodeService(cwd),
+		pkg: new PkgService(cwd)
+	}
+}
+
+export async function boot(options?: {
 	program?: Command
 	cwd?: string
 }): Promise<ICli> {
@@ -48,107 +81,45 @@ export async function setup(options?: {
 		'The working directory to execute the command'
 	)
 
-	// Track everything autoloaded to handle env changes at runtime
-	const autoLoaded: Autoloadable[] = []
-
-	// Update state for the entire process
-	// TODO move this out and give more control when handling cross skill, e.g. "update x on only utilities"
-	const updateCwd = function(newCwd: string) {
-		autoLoaded.forEach(loaded => (loaded.cwd = newCwd))
-	}
-
 	const cwd = options?.cwd ?? process.cwd()
 
 	program?.on('option:directory', function() {
 		if (program?.directory) {
-			const newCwd = resolvePath(cwd, program.directory)
+			const newCwd = diskUtil.resolvePath(cwd, program.directory)
 			log.trace(`CWD updated: ${newCwd}`)
-			updateCwd(newCwd)
 		}
 	})
 
-	// Setup utilities
-	const utilityOptions: IUtilityOptions = {
-		cwd
-	}
-
-	// Setup mercury
+	const term = new TerminalService(cwd)
 	const mercury = new Mercury()
 
-	// Setup services
-	const serviceOptions: IServiceOptions = {
-		mercury,
-		cwd,
-		templates
-	}
-
-	// Setup services
-	const storeOptions: IStoreOptions = {
-		mercury,
-		cwd
-	}
-
-	// Setup generators
-	const generatorOptions: IGeneratorOptions = {
-		templates,
-		cwd
-	}
-
-	const featureOptions: IFeatureOptions = {
-		templates,
-		cwd
-	}
-
-	// Alias everything that has a : with a . so "option delete" deletes up to the period
-	if (program) {
-		const originalCommand = program.command.bind(program)
-		program.command = (name: string) => {
-			const response = originalCommand(name)
-			const firstPart = name.split(' ')[0]
-			const alias = firstPart.replace(':', '.')
-			if (alias !== firstPart) {
-				program.alias(alias)
-			}
-			return response
-		}
-	}
-
-	const commandOptions: ICommandOptions = {
-		mercury,
-		cwd,
-		templates
-	}
-
-	const loaded = await autoloader({
-		commands: {
-			constructorOptions: commandOptions,
-			after: async (instance: Commands) =>
-				instance.attachCommands && program && instance.attachCommands(program)
-		},
-		utilities: {
-			constructorOptions: utilityOptions
-		},
-		stores: {
-			constructorOptions: storeOptions
-		},
-		services: {
-			constructorOptions: serviceOptions
-		},
-		features: {
-			constructorOptions: featureOptions
-		},
-		generators: {
-			constructorOptions: generatorOptions
-		}
+	const services: IServices = buildServices(mercury, cwd)
+	const stores: IStores = buildStores(cwd, mercury)
+	const generators: IGenerators = await generatorsAutoloader({
+		constructorOptions: templates
 	})
 
-	const { utilities, services, stores, generators, commands } = loaded
+	const featureManager = FeatureManager.WithAllFeatures(
+		cwd,
+		services.pkg,
+		services.vsCode
+	)
 
-	autoLoaded.push(...Object.values(utilities))
-	autoLoaded.push(...Object.values(services))
-	autoLoaded.push(...Object.values(stores))
-	autoLoaded.push(...Object.values(generators))
-	autoLoaded.push(...Object.values(commands))
+	const commandOptions = {
+		cwd,
+		stores,
+		services,
+		term,
+		featureManager,
+		generators
+	}
+
+	const commands = await commandsAutoloader({
+		constructorOptions: commandOptions,
+		after: async command => {
+			program && command.attachCommands(program)
+		}
+	})
 
 	// Alphabetical sort of help output
 	program?.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
@@ -162,18 +133,18 @@ export async function setup(options?: {
 	const remoteUrl = stores.remote.getRemoteUrl()
 
 	// Who is logged in?
-	const loggedInUser = stores.user.loggedInUser()
-	const loggedInSkill = stores.skill.loggedInSkill()
+	const loggedInUser = stores.user.getLoggedInUser()
+	const loggedInSkill = stores.skill.getLoggedInSkill()
 
 	// Build mercury creds
 	let creds: MercuryAuth | undefined
 	const authType = stores.remote.authType
 
 	switch (authType) {
-		case StoreAuth.User:
+		case AuthedAs.User:
 			creds = loggedInUser && { token: loggedInUser.token }
 			break
-		case StoreAuth.Skill:
+		case AuthedAs.Skill:
 			creds = loggedInSkill && {
 				id: loggedInSkill.id,
 				apiKey: loggedInSkill.apiKey
@@ -189,7 +160,13 @@ export async function setup(options?: {
 
 	await mercury.connect(connectOptions)
 
-	return loaded
+	return {
+		stores,
+		services,
+		term,
+		commands,
+		mercury
+	}
 }
 
 /**
@@ -204,7 +181,7 @@ async function run(argv: string[], debugging: boolean): Promise<void> {
 		log.trace('Extra debugger dropped in so future debuggers work... 🤷‍')
 	}
 
-	await setup({ program })
+	await boot({ program })
 
 	const commandResult = await program.parseAsync(argv)
 	if (commandResult.length === 0) {
@@ -223,7 +200,8 @@ if (process.env.TESTING !== 'true') {
 			process.exit(0)
 		})
 		.catch(e => {
-			terminal.handleError(e)
+			const term = new TerminalService(process.cwd())
+			term.handleError(e)
 			process.exit(1)
 		})
 }

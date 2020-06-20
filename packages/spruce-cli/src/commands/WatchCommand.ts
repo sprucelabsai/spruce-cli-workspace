@@ -5,10 +5,11 @@ import { Command } from 'commander'
 import _ from 'lodash'
 import minimatch from 'minimatch'
 import FieldType from '#spruce/schemas/fields/fieldType'
+import { ITerminalEffect } from '../services/TerminalService'
 import log from '../singletons/log'
-import { IWatchers } from '../stores/WatcherStore'
-import { ITerminalEffect } from '../utilities/TerminalUtility'
-import AbstractCommand from './AbstractCommand'
+import WatcherStore, { IWatchers } from '../stores/WatcherStore'
+import commandUtil from '../utilities/command.utility'
+import AbstractCommand, { ICommandOptions } from './AbstractCommand'
 
 enum WatchAction {
 	Add = 'a',
@@ -21,12 +22,23 @@ enum WatchAction {
 /** Debounce keypresses triggering add/change/remove events */
 const DEBOUNCE_MS = 100
 
+interface IWatchCommandOptions extends ICommandOptions {
+	stores: {
+		watch: WatcherStore
+	}
+}
+
 export default class WatchCommand extends AbstractCommand {
+	private watcherStore: WatcherStore
 	private watcher!: FSWatcher
-	/** Key / value where key is the glob and value is the command to execute */
 	private watchers: IWatchers = {}
 	private resolve!: () => void
 	private reject!: (e: Error) => void
+
+	public constructor(options: IWatchCommandOptions) {
+		super(options)
+		this.watcherStore = options.stores.watch
+	}
 
 	public attachCommands = (program: Command): void => {
 		program
@@ -83,7 +95,7 @@ export default class WatchCommand extends AbstractCommand {
 
 	/** Loads the watchers and starts watching anything new */
 	private loadWatchers = () => {
-		const watchers = this.stores.watcher.getWatchers()
+		const watchers = this.watcherStore.getWatchers()
 		this.watchers = watchers
 	}
 
@@ -115,7 +127,7 @@ export default class WatchCommand extends AbstractCommand {
 				`Executing ${commandsToExecute.length} watcher commands`
 			)
 			const promises = commandsToExecute.map(c =>
-				this.services.child.executeCommand(c)
+				commandUtil.execute(this.cwd, c)
 			)
 			const results = await Promise.allSettled(promises)
 			await this.term.stopLoading()
@@ -174,7 +186,7 @@ export default class WatchCommand extends AbstractCommand {
 			}
 		}
 
-		this.stores.watcher.addWatcher(pattern as string, commandStr as string)
+		this.watcherStore.addWatcher(pattern as string, commandStr as string)
 		this.loadWatchers()
 		this.showStatus()
 	}
@@ -285,7 +297,7 @@ export default class WatchCommand extends AbstractCommand {
 			}
 		})
 
-		this.stores.watcher.setWatchStatus(watchersToUpdate)
+		this.watcherStore.setWatchStatus(watchersToUpdate)
 		await this.loadWatchers()
 		this.showStatus()
 		this.listWatchers()
@@ -309,7 +321,7 @@ export default class WatchCommand extends AbstractCommand {
 		})
 
 		if (result) {
-			this.stores.watcher.deleteWatcher(result)
+			this.watcherStore.deleteWatcher(result)
 			await this.loadWatchers()
 		}
 		this.showStatus()

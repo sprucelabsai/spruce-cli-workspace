@@ -5,25 +5,28 @@ import fs from 'fs-extra'
 import skillDefinition from '#spruce/schemas/core/skill.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import log from '../singletons/log'
+import { AuthedAs } from '../types/cli.types'
 import { SpruceEvents } from '../types/events-generated'
-import AbstractStore, { IBaseStoreSettings, StoreAuth } from './AbstractStore'
+import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
 
 type ISkill = SpruceSchemas.Local.ICliSkill
 
-export interface ISkillStoreSettings extends IBaseStoreSettings {
+export interface ISkillStoreSettings extends ILocalStoreSettings {
 	loggedInSkill: ISkill
 }
 
-export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
+export default class SkillStore extends AbstractLocalStore<
+	ISkillStoreSettings
+> {
 	public name = 'skill'
 
 	/** Build a skill with the passed values */
-	public static skill(values?: Partial<ISkill>) {
+	public static getSkill(values?: Partial<ISkill>) {
 		return new Schema(skillDefinition, values)
 	}
 
 	/** Get all skills the user has access to */
-	public async skills(userToken: string): Promise<ISkill[]> {
+	public async getSkills(userToken: string): Promise<ISkill[]> {
 		const mercury = await this.mercuryForUser(userToken)
 		const result = await mercury.emit<
 			SpruceEvents.Core.GetDeveloperSkills.IPayload,
@@ -31,7 +34,7 @@ export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
 		>({ eventName: SpruceEvents.Core.GetDeveloperSkills.name })
 
 		const skills = result.responses[0].payload.skills.map(values => {
-			const instance = SkillStore.skill(values)
+			const instance = SkillStore.getSkill(values)
 			instance.validate()
 			return instance.getValues()
 		})
@@ -43,21 +46,21 @@ export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
 	/** Set logged in skill */
 	public setLoggedInSkill(skill: ISkill) {
 		// Validate what we were passed
-		const instance = SkillStore.skill(skill)
+		const instance = SkillStore.getSkill(skill)
 		instance.validate()
 
 		this.writeValues({
 			loggedInSkill: instance.getValues(),
-			authType: StoreAuth.Skill
+			authType: AuthedAs.Skill
 		})
 	}
 
 	/** Gets a logged in skill of one is set */
-	public loggedInSkill(): ISkill | undefined {
+	public getLoggedInSkill(): ISkill | undefined {
 		const loggedIn = this.readValue('loggedInSkill')
 
 		if (loggedIn) {
-			const instance = SkillStore.skill(loggedIn)
+			const instance = SkillStore.getSkill(loggedIn)
 			instance.validate()
 			// @ts-ignore
 			return instance.getValues()
@@ -67,7 +70,7 @@ export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
 	}
 
 	// Get a skill from the current directly
-	public skillFromDir(dir: string): ISkill | undefined {
+	public getSkillFromDir(dir: string): ISkill | undefined {
 		const file = path.join(dir, '.env')
 
 		if (!fs.existsSync(file)) {
@@ -77,7 +80,7 @@ export default class SkillStore extends AbstractStore<ISkillStoreSettings> {
 		const fileContents = fs.readFileSync(file)
 
 		const env = parseEnv(fileContents)
-		const instance = SkillStore.skill({
+		const instance = SkillStore.getSkill({
 			id: env.ID,
 			name: env.NAME,
 			slug: env.SLUG,

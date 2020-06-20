@@ -1,12 +1,38 @@
 import { templates } from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
-import { Feature } from '#spruce/autoloaders/features'
 import ErrorCode from '#spruce/errors/errorCode'
 import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
 import SpruceError from '../errors/SpruceError'
-import AbstractCommand from './AbstractCommand'
+import FeatureManager, { Feature } from '../FeatureManager'
+import SchemaGenerator from '../generators/SchemaGenerator'
+import SchemaStore from '../stores/SchemaStore'
+import diskUtil from '../utilities/disk.utility'
+import lintUtil from '../utilities/lint.utility'
+import namesUtil from '../utilities/names.utility'
+import AbstractCommand, { ICommandOptions } from './AbstractCommand'
+
+interface ISchemaCommandOptions extends ICommandOptions {
+	featureManager: FeatureManager
+	stores: {
+		schema: SchemaStore
+	}
+	generators: {
+		schema: SchemaGenerator
+	}
+}
 
 export default class SchemaCommand extends AbstractCommand {
+	private schemaStore: SchemaStore
+	private featureManager: FeatureManager
+	private schemaGenerator: SchemaGenerator
+
+	public constructor(options: ISchemaCommandOptions) {
+		super(options)
+		this.schemaStore = options.stores.schema
+		this.featureManager = options.featureManager
+		this.schemaGenerator = options.generators.schema
+	}
+
 	/** Sets up commands */
 	public attachCommands(program: Command) {
 		/** Create a new schema definition */
@@ -75,7 +101,7 @@ export default class SchemaCommand extends AbstractCommand {
 			throw new Error('aoeuaoeuaoeu')
 		}
 
-		await this.services.feature.install({
+		await this.featureManager.install({
 			features: [
 				{
 					feature: Feature.Schema
@@ -89,8 +115,8 @@ export default class SchemaCommand extends AbstractCommand {
 		const {
 			items: schemaTemplateItems,
 			errors: schemaTemplateErrors
-		} = await this.stores.schema.schemaTemplateItems({
-			localLookupDir: this.resolvePath(lookupDir)
+		} = await this.schemaStore.fetchSchemaTemplateItems({
+			localLookupDir: diskUtil.resolvePath(lookupDir)
 		})
 
 		if (schemaTemplateItems.length === 0) {
@@ -104,7 +130,7 @@ export default class SchemaCommand extends AbstractCommand {
 		const {
 			items: fieldTemplateItems,
 			errors: fieldTemplateErrors
-		} = await this.stores.schema.fieldTemplateItems()
+		} = await this.schemaStore.fetchFieldTemplateItems()
 
 		this.term.stopLoading()
 
@@ -171,8 +197,8 @@ export default class SchemaCommand extends AbstractCommand {
 			`Found ${schemaTemplateItems.length} schema definitions and ${fieldTemplateItems.length} field types, writing files in 2 stages.`
 		)
 
-		const results = await this.generators.schema.generateSchemaTypes(
-			this.resolvePath(destinationDir),
+		const results = await this.schemaGenerator.generateSchemaTypes(
+			diskUtil.resolvePath(destinationDir),
 			{
 				fieldTemplateItems,
 				schemaTemplateItems,
@@ -180,7 +206,7 @@ export default class SchemaCommand extends AbstractCommand {
 			}
 		)
 
-		const { resultsByStage, generatedFiles } = results
+		const { resultsByStage } = results
 		const errors: SpruceError[] = []
 
 		resultsByStage.forEach(results => {
@@ -222,32 +248,35 @@ export default class SchemaCommand extends AbstractCommand {
 		}
 
 		this.term.clear()
-		this.term.createdFileSummary({
-			createdFiles: [
-				{
-					name: 'Schema definitions',
-					path: generatedFiles.schemaTypes
-				},
-				{ name: 'Field definitions', path: generatedFiles.fieldsTypes },
-				{
-					name: 'Field type enum',
-					path: generatedFiles.fieldType
-				},
-				{
-					name: 'Field class map',
-					path: generatedFiles.fieldClassMap
-				},
-				...generatedFiles.normalizedDefinitions.map(n => ({
-					name: `${n.id} definition`,
-					path: n.path
-				}))
-			]
-		})
+		// this.term.createdFileSummary({
+		// 	createdFiles: [
+		// 		{
+		// 			name: 'Schema definitions',
+		// 			path: generatedFiles.schemaTypes
+		// 		},
+		// 		{ name: 'Field definitions', path: generatedFiles.fieldsTypes },
+		// 		{
+		// 			name: 'Field type enum',
+		// 			path: generatedFiles.fieldType
+		// 		},
+		// 		{
+		// 			name: 'Field class map',
+		// 			path: generatedFiles.fieldClassMap
+		// 		},
+		// 		...generatedFiles.normalizedDefinitions.map(n => ({
+		// 			name: `${n.id} definition`,
+		// 			path: n.path
+		// 		}))
+		// 	]
+		// })
 
 		this.term.startLoading(
 			'Prettying generated files (you can use them now)...'
 		)
-		await this.services.lint.fix(this.resolvePath(destinationDir, '**/*.ts'))
+		await lintUtil.fix(
+			diskUtil.resolvePath(destinationDir, '**/*.ts'),
+			this.cwd
+		)
 
 		this.term.stopLoading()
 	}
@@ -263,20 +292,18 @@ export default class SchemaCommand extends AbstractCommand {
 
 		if (nameReadable) {
 			showOverview = true
-			nameCamel = this.utilities.names.toCamel(nameReadable)
-			namePascal = this.utilities.names.toPascal(nameCamel)
+			nameCamel = namesUtil.toCamel(nameReadable)
+			namePascal = namesUtil.toPascal(nameCamel)
 		}
 
-		const form = this.formComponent({
+		const form = this.getFormComponent({
 			definition: namedTemplateItemDefinition,
 			initialValues: {
 				nameReadable,
 				nameCamel,
 				namePascal
 			},
-			onWillAskQuestion: this.utilities.names.onWillAskQuestionHandler.bind(
-				this.utilities.names
-			)
+			onWillAskQuestion: namesUtil.onWillAskQuestionHandler.bind(namesUtil)
 		})
 
 		// All the values
@@ -287,7 +314,7 @@ export default class SchemaCommand extends AbstractCommand {
 
 		// Make sure schema module is installed
 		this.term.startLoading('Installing dependencies')
-		await this.services.feature.install({
+		await this.featureManager.install({
 			features: [
 				{
 					feature: Feature.Schema
@@ -297,20 +324,22 @@ export default class SchemaCommand extends AbstractCommand {
 		this.term.stopLoading()
 
 		// Build paths
-		const builderDestination = this.resolvePath(
+		const resolvedBuilderDestination = diskUtil.resolvePath(
 			cmd.destinationDir as string,
 			`${values.nameCamel}.builder.ts`
 		)
-		const typesDestination = this.resolvePath(cmd.typesDestinationDir as string)
+		const resolvedTypesDestination = diskUtil.resolvePath(
+			cmd.typesDestinationDir as string
+		)
 		const definitionBuilder = templates.definitionBuilder(values)
 
-		await this.writeFile(builderDestination, definitionBuilder)
+		await diskUtil.writeFile(resolvedBuilderDestination, definitionBuilder)
 
-		this.term.info(`Definition created at ${builderDestination}`)
+		this.term.info(`Definition created at ${resolvedBuilderDestination}`)
 
 		try {
 			await this.sync(cmd.destinationDir, {
-				destinationDir: typesDestination
+				destinationDir: resolvedTypesDestination
 			})
 		} catch (err) {
 			this.term.stopLoading()

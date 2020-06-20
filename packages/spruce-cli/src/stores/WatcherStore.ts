@@ -1,4 +1,4 @@
-import AbstractStore, { IBaseStoreSettings, StoreScope } from './AbstractStore'
+import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
 
 type CommandToExecute = string
 export interface IWatchers {
@@ -8,13 +8,14 @@ export interface IWatchers {
 	}
 }
 
-export interface IWatcherStoreSettings extends IBaseStoreSettings {
+export interface IWatcherStoreSettings extends ILocalStoreSettings {
 	watchers: IWatchers
 }
 
-export default class WatcherStore extends AbstractStore<IWatcherStoreSettings> {
+export default class WatcherStore extends AbstractLocalStore<
+	IWatcherStoreSettings
+> {
 	public name = 'watcher'
-	public scope = StoreScope.Local
 
 	/** Get current watch commands */
 	public getWatchers(): IWatchers {
@@ -36,15 +37,13 @@ export default class WatcherStore extends AbstractStore<IWatcherStoreSettings> {
 		this.writeValue('watchers', watchers)
 	}
 
-	/** Deletes a globby pattern / command */
 	public deleteWatcher(globbyPattern: string) {
 		const watchers = this.getWatchers()
 		// @ts-ignore unset this key
-		watchers[globbyPattern] = undefined
+		watchers[globbyPattern] = null
 		this.writeValue('watchers', watchers)
 	}
 
-	/** Enable or disable multiple watchers */
 	public setWatchStatus(
 		watchersToUpdate: { globbyPattern: string; isEnabled: boolean }[]
 	) {
@@ -57,7 +56,6 @@ export default class WatcherStore extends AbstractStore<IWatcherStoreSettings> {
 		this.writeValue('watchers', watchers)
 	}
 
-	/** Enables a watcher as long as it has previously been set */
 	public enableWatcher(globbyPattern: string) {
 		const watchers = this.getWatchers()
 		if (typeof watchers[globbyPattern]?.isEnabled === 'boolean') {
@@ -66,7 +64,6 @@ export default class WatcherStore extends AbstractStore<IWatcherStoreSettings> {
 		this.writeValue('watchers', watchers)
 	}
 
-	/** Disables a watcher if it's been set */
 	public disableWatcher(globbyPattern: string) {
 		const watchers = this.getWatchers()
 		if (typeof watchers[globbyPattern]?.isEnabled === 'boolean') {
