@@ -4,7 +4,7 @@ import { Command } from 'commander'
 // import ErrorCode from '#spruce/errors/errorCode'
 import FieldType from '#spruce/schemas/fields/fieldType'
 // import SpruceError from '../errors/SpruceError'
-import FeatureManager, { Feature } from '../FeatureManager'
+import FeatureManager, { FeatureCode } from '../FeatureManager'
 import SkillStore from '../stores/SkillStore'
 import UserStore from '../stores/UserStore'
 import AbstractCommand, { ICommandOptions } from './AbstractCommand'
@@ -51,7 +51,7 @@ export default class SkillCommand extends AbstractCommand {
 
 	public setup = async (cmd: Command) => {
 		const isInstalled = await this.featureManager.isInstalled({
-			features: [Feature.Skill]
+			features: [FeatureCode.Skill]
 		})
 
 		if (isInstalled && !cmd.silent) {
@@ -66,7 +66,7 @@ export default class SkillCommand extends AbstractCommand {
 		while (!done) {
 			this.featureManager.cwd = dirToCheck
 			const installedInParent = await this.featureManager.isInstalled({
-				features: [Feature.Skill]
+				features: [FeatureCode.Skill]
 			})
 
 			if (installedInParent) {
@@ -97,7 +97,7 @@ export default class SkillCommand extends AbstractCommand {
 			await this.featureManager.install({
 				features: [
 					{
-						feature: Feature.Skill
+						code: FeatureCode.Skill
 					}
 				]
 			})

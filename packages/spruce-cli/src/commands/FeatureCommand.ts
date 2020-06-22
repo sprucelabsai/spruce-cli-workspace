@@ -38,7 +38,7 @@ export default class FeatureCommand extends AbstractCommand {
 		await this.featureManager.install({
 			features: [
 				{
-					feature: choice
+					code: choice
 				}
 			]
 		})

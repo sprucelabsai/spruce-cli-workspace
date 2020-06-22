@@ -2103,10 +2103,10 @@
     mime-db "^1.43.0"
     mime-type "^3.0.7"
 
-"@sprucelabs/test@^2.6.0":
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-2.6.0.tgz#35c12c8ee7cb0e0dcdcfd9b2ecce6e1852284ddc"
-  integrity sha512-BRgWKmHbhmcMUv2coJ7lmn2J+PW6gpFpzI7R6lwgJAyCwmeXusggJwf9XlkJGdlJndoYXg7yE0feWWTBfQSw/Q==
+"@sprucelabs/test@^2.7.1":
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-2.7.1.tgz#42077e8f4ac768337c9aceef36e6d444faf77c6c"
+  integrity sha512-T0zBLoKHzcjZ78BgS+/jfGH1psR4vU7ZCG+I8ksuaa6aO9mPio/29MOP4X99a2TOIu6ADy4PF31Qe1GqbyWA4w==
   dependencies:
     "@babel/core" "^7.9.0"
     "@babel/preset-env" "^7.9.5"
@@ -4230,10 +4230,10 @@ eslint-config-prettier@^6.7.0:
   dependencies:
     get-stdin "^6.0.0"
 
-eslint-config-spruce@10.4.0:
-  version "10.4.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-spruce/-/eslint-config-spruce-10.4.0.tgz#26afa0248cdb8529daa55485c12ee30a7b8ad6de"
-  integrity sha512-BQj7CdN7thVZcJJJTHS9Xww31ZhzMxg9BUpR4rddV1PCdMj2adW5voR+DY2PUyLCVf0JkjRe47KtLIhf6Be83A==
+eslint-config-spruce@10.5.3:
+  version "10.5.3"
+  resolved "https://registry.yarnpkg.com/eslint-config-spruce/-/eslint-config-spruce-10.5.3.tgz#0d45666770a43f8c574b015003b2d4bb63428fd3"
+  integrity sha512-R3QUvPj9d16AL/HL9OQl0oKVLMlh7PDi/tr+8Yvn9vmH9Fejlx56zY/+YIM4ZDChO9CpkbsgDAAt5OEOHa8LeA==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^2.22.0"
     "@typescript-eslint/parser" "^2.22.0"
@@ -4243,6 +4243,7 @@ eslint-config-spruce@10.4.0:
     eslint-plugin-jsx-a11y "6.1.2"
     eslint-plugin-prettier "^3.1.1"
     eslint-plugin-react "^7.16.0"
+    eslint-plugin-sort-class-members "^1.7.0"
     eslint-plugin-spruce "^10.4.0"
 
 eslint-import-resolver-node@^0.3.2:
@@ -4317,6 +4318,11 @@ eslint-plugin-react@^7.16.0:
     semver "^6.3.0"
     string.prototype.matchall "^4.0.2"
     xregexp "^4.3.0"
+
+eslint-plugin-sort-class-members@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-sort-class-members/-/eslint-plugin-sort-class-members-1.7.0.tgz#82b8bfd1bf4bf4a4766b67e816359085a49b1dc3"
+  integrity sha512-p9VeMf4lwJs4VJ9jDJRadXPklNGIdUYxeCLi0tjF3F83KNC6CfX+c3H2h0DQ2yLl3hgKf0j6s3wGpZUuRYToeA==
 
 eslint-plugin-spruce@^10.4.0:
   version "10.4.0"
@@ -9740,7 +9746,7 @@ ts-jest@^26.1.0:
     semver "7.x"
     yargs-parser "18.x"
 
-ts-node@^8.10.2:
+ts-node@^8.9.0:
   version "8.10.2"
   resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-8.10.2.tgz#eee03764633b1234ddd37f8db9ec10b75ec7fb8d"
   integrity sha512-ISJJGgkIpDdBhWVu3jufsWpK3Rzo7bdiIXJjQc0ynKxVOVcg2oIrf2H2cejminGrptVc6q6/uynAHNCuWGbpVA==

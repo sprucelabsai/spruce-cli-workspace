@@ -33,7 +33,8 @@
 			"runtimeArgs": [
 				"--inspect-brk",
 				"${workspaceFolder}/node_modules/.bin/jest",
-				"${relativeFile}"
+				"${relativeFile}",
+				"--detectOpenHandles"
 			],
 			"port": 9229,
 			"cwd": "${workspaceFolder}/packages/spruce-cli",

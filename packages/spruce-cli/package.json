@@ -79,7 +79,7 @@
 		"vm2": "^3.9.1"
 	},
 	"devDependencies": {
-		"@sprucelabs/test": "^2.6.0",
+		"@sprucelabs/test": "^2.7.1",
 		"@types/eslint": "^6.8.0",
 		"@types/fs-extra": "^8.1.0",
 		"@types/inflection": "^1.5.28",
@@ -124,7 +124,8 @@
 		"testPathIgnorePatterns": [
 			"<rootDir>/tmp/",
 			"<rootDir>/build/",
-			"<rootDir>/node_modules/"
+			"<rootDir>/node_modules/",
+			"<rootDir>/__test__/testDirsAndFiles"
 		],
 		"moduleNameMapper": {
 			"^#spruce/(.*)$": "<rootDir>/.spruce/$1",

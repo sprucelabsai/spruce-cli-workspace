@@ -1,21 +1,34 @@
 import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
-import { Feature } from '../FeatureManager'
+import { Templates } from '@sprucelabs/spruce-templates'
+import ServiceFactory from '../factories/ServiceFactory'
+import { FeatureCode } from '../FeatureManager'
 import { INpmPackage } from '../types/cli.types'
 
 export default abstract class AbstractFeature<
 	S extends ISchemaDefinition | undefined = ISchemaDefinition | undefined
 > {
-	public featureDependencies: Feature[] = []
-	public packageDependencies: INpmPackage[] = []
-
-	public optionsDefinition?: S extends ISchemaDefinition ? S : null
+	public readonly dependencies: FeatureCode[] = []
+	public readonly packageDependencies: INpmPackage[] = []
+	public readonly optionsDefinition?: S extends ISchemaDefinition ? S : null
 
 	public cwd: string
-	public abstract description: string
+	public readonly code: FeatureCode
 
-	public constructor(cwd: string) {
-		this.cwd = cwd
+	protected serviceFactory: ServiceFactory
+	protected templates: Templates
+
+	public constructor(options: {
+		cwd: string
+		code: FeatureCode
+		serviceFactory: ServiceFactory
+		templates: Templates
+	}) {
+		this.cwd = options.cwd
+		this.code = options.code
+		this.serviceFactory = options.serviceFactory
+		this.templates = options.templates
 	}
+	public abstract description: string
 
 	public async beforePackageInstall(
 		_options?: S extends ISchemaDefinition

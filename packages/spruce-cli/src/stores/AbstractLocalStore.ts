@@ -75,9 +75,7 @@ export default abstract class AbstractLocalStore<
 			const values = JSON.parse(contents) as T
 			return values
 		} catch (err) {
-			log.warn(
-				`AbstractLocalStore.readValues failed to read settings file at ${file}. This may mean you lose whatever settings where in there. It may be worth checking out that file before continuing.`
-			)
+			log.info(`No skill detected`)
 		}
 		// Falls back to an empty object
 		return {}

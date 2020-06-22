@@ -92,7 +92,7 @@ export default class SchemaTemplateItemBuilder {
 		})
 
 		newDefinitions.forEach(definition => {
-			const names = schemaUtil.buildNames(definition)
+			const names = schemaUtil.generateNamesForDefinition(definition)
 			log.info(`importing_schema_id: ${definition.id}`)
 
 			// We've already mapped this type

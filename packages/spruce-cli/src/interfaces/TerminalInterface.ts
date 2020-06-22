@@ -95,7 +95,7 @@ function filterEffectsForCFonts(effects: ITerminalEffect[]) {
 	)
 }
 
-export default class TerminalService {
+export default class TerminalInterface {
 	public isPromptActive = false
 	public cwd: string
 	private loader?: ora.Ora | null

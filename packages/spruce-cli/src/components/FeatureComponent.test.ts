@@ -1,7 +1,7 @@
 import { ISpruce, test, assert } from '@sprucelabs/test'
 import BaseCliTest from '../BaseCliTest'
 import FeatureManager from '../FeatureManager'
-import { Feature } from '../FeatureManager'
+import { FeatureCode } from '../FeatureManager'
 import PkgService from '../services/PkgService'
 import VsCodeService from '../services/VsCodeService'
 import FeatureComponent from './FeatureComponent'
@@ -15,7 +15,7 @@ export default class FeatureComponentTest extends BaseCliTest {
 			pkgService,
 			vsCodeService
 		)
-		const featureComponent = new FeatureComponent(this.term(), featureManager)
+		const featureComponent = new FeatureComponent(this.Term(), featureManager)
 		return featureComponent
 	}
 	@test('Can create feature component')
@@ -24,13 +24,13 @@ export default class FeatureComponentTest extends BaseCliTest {
 		assert.isOk(featureComponent)
 	}
 
-	@test('Asks questions for installing the Skill Feature', Feature.Skill, {
+	@test('Asks questions for installing the Skill Feature', FeatureCode.Skill, {
 		name: 'test',
 		description: 'test'
 	})
 	@test(
 		'Honors default values for installing the Skill Feature',
-		Feature.Skill,
+		FeatureCode.Skill,
 		{
 			name: 'waka',
 			description: 'test'
@@ -41,7 +41,7 @@ export default class FeatureComponentTest extends BaseCliTest {
 	)
 	@test(
 		'Asks questions for installing the Skill Feature Again',
-		Feature.Skill,
+		FeatureCode.Skill,
 		{
 			name: 'test',
 			description: 'test'
@@ -49,12 +49,12 @@ export default class FeatureComponentTest extends BaseCliTest {
 	)
 	@test(
 		'Skips questions when no options definition set',
-		Feature.Error,
+		FeatureCode.Error,
 		undefined
 	)
 	protected static async asksRightQuestions(
 		spruce: ISpruce,
-		feature: Feature,
+		feature: FeatureCode,
 		expectedAnswers: Record<string, any> | undefined,
 		values: Record<string, string> | undefined
 	) {

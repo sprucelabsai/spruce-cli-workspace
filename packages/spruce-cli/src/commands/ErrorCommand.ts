@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 import { Command } from 'commander'
 import fs from 'fs-extra'
 import ErrorCode from '#spruce/errors/errorCode'
 import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
-import FeatureManager, { Feature } from '../FeatureManager'
+import FeatureManager, { FeatureCode } from '../FeatureManager'
 import ErrorGenerator from '../generators/ErrorGenerator'
 import SchemaGenerator from '../generators/SchemaGenerator'
 import { ICreatedFile } from '../types/cli.types'
@@ -158,7 +159,7 @@ export default class ErrorCommand extends AbstractCommand {
 		await this.featureManager.install({
 			features: [
 				{
-					feature: Feature.Error
+					code: FeatureCode.Error
 				}
 			]
 		})
@@ -173,12 +174,16 @@ export default class ErrorCommand extends AbstractCommand {
 			names
 		)
 
+		const errorDefinition = await this.SchemaService().importDefinition(
+			builderGeneratedFiles.errorBuilder.path
+		)
+
 		const {
 			generatedFiles: classGeneratedFiles,
 			updatedFiles: classUpdatedFiles
 		} = await this.errorGenerator.generateOrAppendErrorsToClass(
 			resolvedErrorFileDestination,
-			[names]
+			[{ ...names, definition: errorDefinition }]
 		)
 
 		if (classGeneratedFiles.errorClass) {
@@ -283,9 +288,9 @@ export default class ErrorCommand extends AbstractCommand {
 		// }[] = []
 
 		// Make sure error module is installed
-		await this.featureManager.install({
-			features: [{ feature: Feature.Error }]
-		})
+		// await this.featureManager.install({
+		// 	features: [{ feature: FeatureCode.Error }]
+		// })
 
 		if (clean) {
 			const shouldClean =

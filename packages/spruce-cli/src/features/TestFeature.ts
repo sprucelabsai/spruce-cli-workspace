@@ -1,5 +1,6 @@
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import { Feature } from '../FeatureManager'
+import { Service } from '../factories/ServiceFactory'
+import { FeatureCode } from '../FeatureManager'
 import PkgService from '../services/PkgService'
 import log from '../singletons/log'
 import { INpmPackage } from '../types/cli.types'
@@ -9,20 +10,13 @@ type TestFeatureType = SpruceSchemas.Local.TestFeature.IDefinition
 
 export default class TestFeature extends AbstractFeature<TestFeatureType> {
 	public description = 'Test File: Create a test for one of your files'
-	public featureDependencies = [Feature.Skill, Feature.Schema]
+	public dependencies = [FeatureCode.Skill]
 	public packageDependencies: INpmPackage[] = [
 		{ name: '@sprucelabs/test', isDev: true },
 		{ name: 'ts-node', isDev: true },
 		{ name: 'jest', isDev: true },
 		{ name: 'ts-jest', isDev: true }
 	]
-
-	private pkgService: PkgService
-
-	public constructor(cwd: string, pkgService: PkgService) {
-		super(cwd)
-		this.pkgService = pkgService
-	}
 
 	public async afterPackageInstall() {
 		log.trace('TestFeature.afterPackageInstall()')
@@ -57,12 +51,18 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 		}
 
 		// TODO: Set the "test" package here
-		this.pkgService.set({ path: 'babel', value: babelConfig })
-		this.pkgService.set({ path: 'jest', value: jestConfig })
+		const service = this.PkgService()
+
+		service.set({ path: 'babel', value: babelConfig })
+		service.set({ path: 'jest', value: jestConfig })
 	}
 
-	// TODO
 	public async isInstalled() {
+		debugger
 		return false
+	}
+
+	private PkgService = (): PkgService => {
+		return this.serviceFactory.Service(this.cwd, Service.Pkg)
 	}
 }

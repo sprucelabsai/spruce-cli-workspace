@@ -11,6 +11,8 @@ import { uniqBy } from 'lodash'
 // TODO move these into mercury api and pull from there
 import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
+import ServiceFactory, { Service } from '../factories/ServiceFactory'
+import ImportService from '../services/ImportService'
 import SchemaTemplateItemBuilder from '../templateItemBuilders/SchemaTemplateItemBuilder'
 import {
 	userDefinition,
@@ -20,7 +22,6 @@ import {
 	groupDefinition,
 	aclDefinition
 } from '../temporary/schemas'
-import importsUtil from '../utilities/imports.utility'
 import namesUtil from '../utilities/names.utility'
 
 export interface ISchemaTemplateItemsOptions {
@@ -56,10 +57,17 @@ interface IAddonItem {
 export default class SchemaStore {
 	public name = 'schema'
 	public cwd: string
-	protected schemaBuilder: SchemaTemplateItemBuilder
 
-	public constructor(cwd: string) {
+	protected schemaBuilder: SchemaTemplateItemBuilder
+	protected serviceFactory: ServiceFactory
+
+	private ImportService = (cwd?: string): ImportService => {
+		return this.serviceFactory.Service(cwd ?? this.cwd, Service.Import)
+	}
+
+	public constructor(cwd: string, serviceFactory: ServiceFactory) {
 		this.cwd = cwd
+		this.serviceFactory = serviceFactory
 		this.schemaBuilder = new SchemaTemplateItemBuilder()
 	}
 
@@ -85,6 +93,8 @@ export default class SchemaStore {
 			definitions: schemas
 		})
 
+		const importService = this.ImportService()
+
 		// Local
 		const localErrors: SpruceError[] = []
 		// TODO: Cleanup / break up statements for easier readability
@@ -93,7 +103,7 @@ export default class SchemaStore {
 				(await globby([pathUtil.join(localLookupDir, '/**/*.builder.ts')])).map(
 					async file => {
 						try {
-							const definition = await importsUtil.importDefault(file, this.cwd)
+							const definition = await importService.importDefault(file)
 							Schema.validateDefinition(definition)
 							return definition
 						} catch (err) {
@@ -150,6 +160,9 @@ export default class SchemaStore {
 	): Promise<FieldTemplateItemsReturnType<T>> {
 		const { includeErrors = true, localLookupDir } = options
 		const cwd = pathUtil.join(__dirname, '..', '..')
+
+		const localImportService = this.ImportService(cwd)
+
 		// TODO load from core
 		const coreAddons = await Promise.all(
 			(
@@ -164,9 +177,10 @@ export default class SchemaStore {
 					)
 				])
 			).map(async path => {
-				const registration = await importsUtil.importDefault<
+				const registration = await localImportService.importDefault<
 					IFieldRegistration
-				>(path, cwd)
+				>(path)
+
 				return {
 					path,
 					registration,
@@ -176,14 +190,17 @@ export default class SchemaStore {
 		)
 
 		const localErrors: SpruceError[] = []
+		const importService = this.ImportService()
+
 		const localAddons = (
 			await Promise.all(
 				(await globby([pathUtil.join(localLookupDir, '/*Field.addon.ts')])).map(
 					async file => {
 						try {
-							const registration = await importsUtil.importDefault<
+							const registration = await importService.importDefault<
 								IFieldRegistration
-							>(file, this.cwd)
+							>(file)
+
 							return {
 								path: file,
 								registration,

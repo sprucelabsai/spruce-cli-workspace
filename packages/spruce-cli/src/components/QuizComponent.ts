@@ -8,7 +8,7 @@ import chalk from 'chalk'
 import { shuffle } from 'lodash'
 import FieldType from '#spruce/schemas/fields/fieldType'
 import SpruceError from '../errors/SpruceError'
-import TerminalService from '../services/TerminalService'
+import TerminalInterface from '../interfaces/TerminalInterface'
 import FormComponent, {
 	IFormOptions,
 	IFormPresentationOptions
@@ -114,7 +114,7 @@ export default class QuizComponent<
 	Q extends IQuizQuestions
 > {
 	public formBuilder: FormComponent<T>
-	public term: TerminalService
+	public term: TerminalInterface
 	public randomizeQuestions = true
 	public originalQuestions: IQuizQuestions
 	public lastResults?: QuizPresentationResults<Q>

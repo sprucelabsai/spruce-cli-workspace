@@ -2,19 +2,18 @@
 import fs from 'fs-extra'
 import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
-import commandUtil from './command.utility'
+import CommandService from './CommandService'
 
 export interface IAddOptions {
 	dev?: boolean
 }
 
-const lintUtil = {
+export default class LintService extends CommandService {
 	/** Lint fix based on a glob. Returns an array of filepaths that were fixed. */
-	async fix(
+	public fix = async (
 		/** The file or pattern to run eslint --fix on */
-		pattern: string,
-		cwd: string
-	): Promise<string[]> {
+		pattern: string
+	): Promise<string[]> => {
 		if (!pattern) {
 			throw new SpruceError({
 				code: ErrorCode.LintFailed,
@@ -23,10 +22,10 @@ const lintUtil = {
 			})
 		}
 
-		const { stdout } = await commandUtil.execute(cwd, 'node', {
+		const { stdout } = await this.execute('node', {
 			args: [
 				'-e',
-				`"try { const ESLint = require('eslint');const cli = new ESLint.CLIEngine({fix: true,cwd: '${cwd}'});const result=cli.executeOnFiles(['${pattern}']);console.log(JSON.stringify(result)); } catch(err) { console.log(err.toString()); }"`
+				`"try { const ESLint = require('eslint');const cli = new ESLint.CLIEngine({fix: true,cwd: '${this.cwd}'});const result=cli.executeOnFiles(['${pattern}']);console.log(JSON.stringify(result)); } catch(err) { console.log(err.toString()); }"`
 			]
 		})
 
@@ -55,5 +54,3 @@ const lintUtil = {
 		return fixedPaths
 	}
 }
-
-export default lintUtil

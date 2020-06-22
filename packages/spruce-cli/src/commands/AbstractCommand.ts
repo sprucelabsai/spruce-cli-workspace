@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 import { ISchemaDefinition } from '@sprucelabs/schema'
 import { Command } from 'commander'
 import FormComponent, { IFormOptions } from '../components/FormComponent'
@@ -5,23 +6,39 @@ import QuizComponent, {
 	IQuizOptions,
 	IQuizQuestions
 } from '../components/QuizComponent'
-import TerminalService from '../services/TerminalService'
+import ServiceFactory, { Service } from '../factories/ServiceFactory'
+import TerminalInterface from '../interfaces/TerminalInterface'
 import log from '../singletons/log'
 
 /** All commanders get this */
 export interface ICommandOptions {
 	cwd: string
-	term: TerminalService
+	term: TerminalInterface
+	serviceFactory: ServiceFactory
 }
 
 export default abstract class AbstractCommand {
-	protected term: TerminalService
+	protected term: TerminalInterface
 	protected cwd: string
+	protected serviceFactory: ServiceFactory
+
+	protected LintService = () => {
+		return this.serviceFactory.Service(this.cwd, Service.Lint)
+	}
+
+	protected SchemaService = () => {
+		return this.serviceFactory.Service(this.cwd, Service.Schema)
+	}
+
+	protected CommandService = () => {
+		return this.serviceFactory.Service(this.cwd, Service.Command)
+	}
 
 	public constructor(options: ICommandOptions) {
-		const { cwd, term } = options
+		const { cwd, term, serviceFactory } = options
 		this.cwd = cwd
 		this.term = term
+		this.serviceFactory = serviceFactory
 	}
 
 	public getFormComponent<T extends ISchemaDefinition>(

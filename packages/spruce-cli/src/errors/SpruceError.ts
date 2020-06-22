@@ -57,7 +57,9 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 			case ErrorCode.DefinitionFailedToImport:
 				message = `Error importing "${options.file}"`
 				break
-
+			case ErrorCode.DirectoryNotFound:
+				message = `Directory not found: "${options.directory}"`
+				break
 			case ErrorCode.BuildFailed:
 				message = `Build${
 					options.file ? `ing ${options.file}` : ''
@@ -85,9 +87,10 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				break
 
 			case ErrorCode.ExecutingCommandFailed:
-				message = 'The command that was being executed failed'
-				debugger
-				console.log(message)
+				message = `The command that was being executed failed ${options.cmd}`
+				if (options.cwd) {
+					message += `\n\nCWD: ${options.cwd}`
+				}
 				break
 
 			default:

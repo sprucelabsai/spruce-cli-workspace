@@ -1,12 +1,11 @@
 // import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
+import { Service } from '../factories/ServiceFactory'
 import VsCodeService, { IExtension } from '../services/VsCodeService'
 import log from '../singletons/log'
 import AbstractFeature from './AbstractFeature'
 
 export default class VSCodeFeature extends AbstractFeature {
 	public description = 'VSCode: Create settings and install VSCode extensions'
-
-	protected vsCodeService: VsCodeService
 
 	private recommendedExtensions: IExtension[] = [
 		{
@@ -22,12 +21,6 @@ export default class VSCodeFeature extends AbstractFeature {
 			label: 'Intellisense autocompletion of installed npm modules'
 		}
 	]
-
-	public constructor(cwd: string, vsCodeService: VsCodeService) {
-		super(cwd)
-		this.cwd = cwd
-		this.vsCodeService = vsCodeService
-	}
 
 	// public async beforePackageInstall() {
 	// 	await this.writeDirectoryTemplate({
@@ -62,14 +55,14 @@ export default class VSCodeFeature extends AbstractFeature {
 		const extensionsToInstall = await this.getMissingExtensions()
 
 		if (extensionsToInstall.length > 0) {
-			await this.vsCodeService.installExtensions(extensionsToInstall)
+			await this.VsCodeService().installExtensions(extensionsToInstall)
 		} else {
 			log.debug('No extensions to install')
 		}
 	}
 
-	private async getMissingExtensions() {
-		const currentExtensions = await this.vsCodeService.getVSCodeExtensions()
+	private getMissingExtensions = async () => {
+		const currentExtensions = await this.VsCodeService().getVSCodeExtensions()
 		const missingExtensions = this.recommendedExtensions.filter(
 			recommendedExtension => {
 				const currentExtension = currentExtensions.find(
@@ -82,5 +75,9 @@ export default class VSCodeFeature extends AbstractFeature {
 			}
 		)
 		return missingExtensions
+	}
+
+	private VsCodeService = (): VsCodeService => {
+		return this.serviceFactory.Service(this.cwd, Service.VsCode)
 	}
 }

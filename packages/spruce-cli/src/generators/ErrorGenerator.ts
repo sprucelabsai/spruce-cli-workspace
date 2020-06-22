@@ -1,6 +1,5 @@
 import {
 	IDefinitionBuilderTemplateItem,
-	IErrorOptions,
 	IErrorTemplateItem
 } from '@sprucelabs/spruce-templates'
 import log from '../singletons/log'
@@ -15,13 +14,18 @@ interface IErrorClassFiles {
 export default class ErrorGenerator extends AbstractGenerator {
 	public async generateOrAppendErrorsToClass(
 		destinationFile: string,
-		errors: IErrorOptions['errors']
+		errors: IErrorTemplateItem[]
 	): Promise<{
 		generatedFiles: IErrorClassFiles
 		updatedFiles: IErrorClassFiles
 	}> {
 		const generatedFiles: IErrorClassFiles = {}
 		const updatedFiles: IErrorClassFiles = {}
+
+		if (errors.length === 0) {
+			// todo move to proper error
+			throw new Error('Need at least one error')
+		}
 
 		if (!diskUtil.doesFileExist(destinationFile)) {
 			const errorContents = this.templates.error({ errors })

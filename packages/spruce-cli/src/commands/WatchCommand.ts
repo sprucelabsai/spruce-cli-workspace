@@ -5,10 +5,9 @@ import { Command } from 'commander'
 import _ from 'lodash'
 import minimatch from 'minimatch'
 import FieldType from '#spruce/schemas/fields/fieldType'
-import { ITerminalEffect } from '../services/TerminalService'
+import { ITerminalEffect } from '../interfaces/TerminalInterface'
 import log from '../singletons/log'
 import WatcherStore, { IWatchers } from '../stores/WatcherStore'
-import commandUtil from '../utilities/command.utility'
 import AbstractCommand, { ICommandOptions } from './AbstractCommand'
 
 enum WatchAction {
@@ -126,9 +125,8 @@ export default class WatchCommand extends AbstractCommand {
 			await this.term.startLoading(
 				`Executing ${commandsToExecute.length} watcher commands`
 			)
-			const promises = commandsToExecute.map(c =>
-				commandUtil.execute(this.cwd, c)
-			)
+			const commandService = this.CommandService()
+			const promises = commandsToExecute.map(c => commandService.execute(c))
 			const results = await Promise.allSettled(promises)
 			await this.term.stopLoading()
 			const lines: string[] = []

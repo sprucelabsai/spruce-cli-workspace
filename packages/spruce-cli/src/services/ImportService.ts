@@ -2,12 +2,13 @@ import fs from 'fs-extra'
 import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
 import log from '../singletons/log'
-import commandUtil from './command.utility'
+import CommandService from './CommandService'
 
-const importsUtil = {
-	divider: '## SPRUCE-CLI DIVIDER ##',
-	errorDivider: '## SPRUCE-CLI ERROR DIVIDER ##',
-	async importAll<T extends {}>(file: string, cwd: string): Promise<T> {
+export default class ImportService extends CommandService {
+	private divider = '## SPRUCE-CLI DIVIDER ##'
+	private errorDivider = '## SPRUCE-CLI ERROR DIVIDER ##'
+
+	public importAll = async <T extends {}>(file: string): Promise<T> => {
 		let defaultImported: T | undefined
 		if (!fs.existsSync(file)) {
 			throw new SpruceError({
@@ -20,7 +21,7 @@ const importsUtil = {
 		log.trace(`Import default for: ${file}`)
 
 		try {
-			const { stdout } = await commandUtil.execute(cwd, 'node', {
+			const { stdout } = await this.execute('node', {
 				args: [
 					'-r',
 					'ts-node/register',
@@ -67,12 +68,10 @@ const importsUtil = {
 		}
 
 		return defaultImported as T
-	},
+	}
 
-	async importDefault<T extends {}>(file: string, cwd: string): Promise<T> {
-		const imported: any = await this.importAll(file, cwd)
+	public importDefault = async <T extends {}>(file: string): Promise<T> => {
+		const imported: any = await this.importAll(file)
 		return imported.default as T
 	}
 }
-
-export default importsUtil

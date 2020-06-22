@@ -2,7 +2,7 @@
 
 import { ISpruceErrorOptions } from '@sprucelabs/error'
 import { SchemaDefinitionValues } from '@sprucelabs/schema'
-import reservedKeywordDefinition from '../../src/errors/reservedKeyword.builder'
+import reservedKeywordDefinition from '../../src/__tests__/reservedKeyword.builder'
 import ErrorCode from './errorCode'
 
 type ReservedKeywordDefinition = typeof reservedKeywordDefinition

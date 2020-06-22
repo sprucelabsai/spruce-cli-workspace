@@ -82,7 +82,7 @@ export interface IDefinitionBuilderTemplateItem {
 }
 
 export interface IErrorOptions {
-	errors: { namePascal: string; nameReadable: string }[]
+	errors: IErrorTemplateItem[]
 	renderClassDefinition?: boolean
 }
 
@@ -90,5 +90,4 @@ export interface IErrorTemplateItem {
 	definition: ISchemaDefinition
 	nameCamel: string
 	namePascal: string
-	description: string
 }

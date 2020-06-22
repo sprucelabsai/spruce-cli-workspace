@@ -4,8 +4,9 @@ import ErrorCode from '#spruce/errors/errorCode'
 import FieldType from '#spruce/schemas/fields/fieldType'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
+import { Service } from '../factories/ServiceFactory'
+import { ITerminalEffect } from '../interfaces/TerminalInterface'
 import PinService from '../services/PinService'
-import { ITerminalEffect } from '../services/TerminalService'
 import RemoteStore from '../stores/RemoteStore'
 import SkillStore from '../stores/SkillStore'
 import UserStore from '../stores/UserStore'
@@ -24,14 +25,12 @@ interface IUserCommandOptions extends ICommandOptions {
 }
 
 export default class UserCommand extends AbstractCommand {
-	protected pinService: PinService
 	protected userStore: UserStore
 	protected skillStore: SkillStore
 	protected remoteStore: RemoteStore
 
 	public constructor(options: IUserCommandOptions) {
 		super(options)
-		this.pinService = options.services.pin
 		this.userStore = options.stores.user
 		this.skillStore = options.stores.skill
 		this.remoteStore = options.stores.remote
@@ -72,7 +71,9 @@ export default class UserCommand extends AbstractCommand {
 		}
 
 		this.term.startLoading('Requesting pin')
-		await this.pinService.requestPin(phone)
+
+		await this.PinService().requestPin(phone)
+
 		this.term.stopLoading()
 
 		let user: SpruceSchemas.Local.ICliUserWithToken | undefined
@@ -183,5 +184,9 @@ export default class UserCommand extends AbstractCommand {
 		} else {
 			this.term.writeLn('Not currently logged in')
 		}
+	}
+
+	private PinService = () => {
+		return this.serviceFactory.Service(this.cwd, Service.Pin)
 	}
 }

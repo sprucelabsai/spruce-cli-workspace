@@ -1,7 +1,7 @@
 import { buildErrorDefinition } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldType'
 
-const directoryNotFoundDefinition = buildErrorDefinition({
+export default buildErrorDefinition({
 	id: 'directoryNotFound',
 	name: 'Directory not found',
 	description: 'The directory you tried to find is not there!',
@@ -14,5 +14,3 @@ const directoryNotFoundDefinition = buildErrorDefinition({
 		}
 	}
 })
-
-export default directoryNotFoundDefinition

@@ -1,10 +1,10 @@
 import { ISchemaDefinition } from '@sprucelabs/schema'
-import TerminalService from '../services/TerminalService'
+import TerminalInterface from '../interfaces/TerminalInterface'
 import FormComponent, { IFormOptions } from './FormComponent'
 
 export default abstract class AbstractComponent {
-	protected term: TerminalService
-	public constructor(term: TerminalService) {
+	protected term: TerminalInterface
+	public constructor(term: TerminalInterface) {
 		this.term = term
 	}
 

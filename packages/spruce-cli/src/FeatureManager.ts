@@ -1,29 +1,33 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
+import { templates } from '@sprucelabs/spruce-templates'
 import _ from 'lodash'
+import ServiceFactory, { Service } from './factories/ServiceFactory'
+import AbstractFeature from './features/AbstractFeature'
 import CircleCIFeature from './features/CircleCIFeature'
 import ErrorFeature from './features/ErrorFeature'
 import SchemaFeature from './features/SchemaFeature'
 import SkillFeature from './features/SkillFeature'
 import TestFeature from './features/TestFeature'
 import VSCodeFeature from './features/VsCodeFeature'
-import PkgService from './services/PkgService'
-import VsCodeService from './services/VsCodeService'
 import log from './singletons/log'
 import { INpmPackage } from './types/cli.types'
 
-export interface IInstallFeature<F extends Feature = Feature> {
-	feature: F
+export interface IInstallFeature<F extends FeatureCode = FeatureCode> {
+	code: F
 	options?: IFeatureMap[F]['optionsDefinition'] extends ISchemaDefinition
 		? SchemaDefinitionValues<IFeatureMap[F]['optionsDefinition']>
 		: undefined
 }
+
+export interface IFeatureInstallResponse {}
 
 interface IInstallFeatureOptions {
 	features: IInstallFeature[]
 	installFeatureDependencies?: boolean
 }
 
-export enum Feature {
+export enum FeatureCode {
 	CircleCi = 'circleCi',
 	Error = 'error',
 	Schema = 'schema',
@@ -42,84 +46,55 @@ export interface IFeatureMap {
 }
 
 export default class FeatureManager {
-	protected featureMap: IFeatureMap
-	protected pkgService: PkgService
-	private _cwd: string
-	public constructor(
-		cwd: string,
-		featureMap: IFeatureMap,
-		pkgService: PkgService
-	) {
-		this.featureMap = featureMap
-		this.pkgService = pkgService
-		this.cwd = this._cwd = cwd
-	}
-	public static WithAllFeatures(
-		cwd: string,
-		pkgService: PkgService,
-		vsCodeService: VsCodeService
-	): FeatureManager {
-		const featureMap: IFeatureMap = {
-			circleCi: new CircleCIFeature(cwd),
-			error: new ErrorFeature(cwd, pkgService),
-			schema: new SchemaFeature(cwd, pkgService),
-			skill: new SkillFeature(cwd),
-			test: new TestFeature(cwd, pkgService),
-			vsCode: new VSCodeFeature(cwd, vsCodeService)
-		}
-		const manager = new FeatureManager(cwd, featureMap, pkgService)
-		return manager
-	}
+	public cwd: string
+	private featureMap: IFeatureMap
+	private serviceFactory: ServiceFactory
 
-	public set cwd(newCwd: string) {
-		this._cwd = newCwd
-		Object.keys(this.featureMap).forEach(
-			key => (this.featureMap[key as keyof IFeatureMap].cwd = newCwd)
-		)
-	}
-
-	public get cwd() {
-		return this._cwd
-	}
-
-	public install = async (options: IInstallFeatureOptions) => {
+	public install = async (
+		options: IInstallFeatureOptions
+	): Promise<IFeatureInstallResponse> => {
 		const { features, installFeatureDependencies = true } = options
 
-		let featuresToInstall: IInstallFeature[] = []
+		let codesToInstall: FeatureCode[] = []
 
 		for (let i = 0; i < features.length; i += 1) {
 			const f = features[i]
-			const isInstalled = await this.featureMap[f.feature].isInstalled()
+			const code = f.code
+			const isInstalled = await this.featureMap[code].isInstalled()
 			if (!isInstalled && installFeatureDependencies) {
-				featuresToInstall = featuresToInstall.concat(
-					this.getFeatureDependencies(f)
+				codesToInstall = codesToInstall.concat(
+					this.getFeatureDependencies(code)
 				)
 			} else if (!isInstalled) {
 				debugger
-			} else {
-				log.debug(
-					`Feature prompts / dependencies skipped because it's already installed: ${f.feature}`
-				)
+				throw new Error('make custom error')
 			}
 		}
 
-		featuresToInstall = _.uniq(featuresToInstall)
-		this.sortInstallFeatures(featuresToInstall)
+		codesToInstall = _.uniq(codesToInstall)
+		codesToInstall = this.sortFeatures(codesToInstall)
 
-		for (let i = 0; i < featuresToInstall.length; i += 1) {
-			const f = featuresToInstall[i]
-			const isInstalled = await this.featureMap[f.feature].isInstalled()
+		for (let i = 0; i < codesToInstall.length; i += 1) {
+			const code = codesToInstall[i]
+			const isInstalled = await this.featureMap[code].isInstalled()
+
 			if (!isInstalled) {
-				await this.installFeature(f)
+				const installOptions = options.features.find(f => f.code === code)
+					?.options
+				await this.installFeature({
+					code: codesToInstall[i],
+					options: installOptions
+				})
 			} else {
 				log.debug(
-					`Feature installation skipped because it's already installed: ${f.feature}`
+					`Feature installation skipped because it's already installed: ${code}`
 				)
 			}
 		}
-	}
 
-	public isInstalled = async (options: { features: Feature[] }) => {
+		return {}
+	}
+	public isInstalled = async (options: { features: FeatureCode[] }) => {
 		const results = await Promise.all(
 			options.features.map(f => {
 				return this.featureMap[f].isInstalled()
@@ -135,54 +110,108 @@ export default class FeatureManager {
 
 		return true
 	}
+	public getFeatureDependencies = (
+		featureCode: FeatureCode,
+		trackedFeatures: FeatureCode[] = []
+	): FeatureCode[] => {
+		trackedFeatures.push(featureCode)
 
-	public getFeature(code: Feature) {
+		const feature = this.featureMap[featureCode]
+		const dependencies = feature.dependencies
+
+		for (let i = 0; i < dependencies.length; i += 1) {
+			trackedFeatures = this.trackFeatureDependencyIfNotTracked(
+				dependencies[i],
+				trackedFeatures
+			)
+		}
+
+		return trackedFeatures
+	}
+	public constructor(
+		cwd: string,
+		featureMap: IFeatureMap,
+		serviceFactory: ServiceFactory
+	) {
+		this.cwd = cwd
+		this.featureMap = featureMap
+		this.serviceFactory = serviceFactory
+	}
+
+	public static WithAllFeatures(options: {
+		cwd: string
+		serviceFactory: ServiceFactory
+	}): FeatureManager {
+		const { cwd, serviceFactory } = options
+		const featureMap: IFeatureMap = {
+			circleCi: new CircleCIFeature({
+				cwd,
+				code: FeatureCode.CircleCi,
+				serviceFactory,
+				templates
+			}),
+			error: new ErrorFeature({
+				cwd,
+				code: FeatureCode.Error,
+				serviceFactory,
+				templates
+			}),
+			schema: new SchemaFeature({
+				cwd,
+				code: FeatureCode.Schema,
+				serviceFactory,
+				templates
+			}),
+			skill: new SkillFeature({
+				cwd,
+				code: FeatureCode.Skill,
+				serviceFactory,
+				templates
+			}),
+			test: new TestFeature({
+				cwd,
+				code: FeatureCode.Test,
+				serviceFactory,
+				templates
+			}),
+			vsCode: new VSCodeFeature({
+				cwd,
+				code: FeatureCode.VsCode,
+				serviceFactory,
+				templates
+			})
+		}
+		const manager = new FeatureManager(cwd, featureMap, serviceFactory)
+		return manager
+	}
+
+	public getFeature<F extends FeatureCode>(code: F): IFeatureMap[F] {
 		return this.featureMap[code]
 	}
 
-	public getFeatureDependencies = (
-		installFeature: IInstallFeature,
-		currentFeatures: IInstallFeature[] = []
-	): IInstallFeature[] => {
-		let features: IInstallFeature[] = [installFeature]
+	private trackFeatureDependencyIfNotTracked(
+		dependencyCode: FeatureCode,
+		trackedFeatures: FeatureCode[]
+	) {
+		const isTracked = !!trackedFeatures.find(f => f === dependencyCode)
+		if (!isTracked) {
+			trackedFeatures.push(dependencyCode)
 
-		currentFeatures.push(installFeature)
-
-		for (
-			let i = 0;
-			i < this.featureMap[installFeature.feature].featureDependencies.length;
-			i += 1
-		) {
-			const featureDependency = this.featureMap[installFeature.feature]
-				.featureDependencies[i]
-
-			const currentFeature = currentFeatures?.find(
-				f => f.feature === featureDependency
+			const features = this.getFeatureDependencies(
+				dependencyCode,
+				trackedFeatures
 			)
-
-			if (!currentFeature) {
-				features = this.getFeatureDependencies(
-					{
-						feature: featureDependency,
-						options: installFeature.options
-					},
-					currentFeatures
-				).concat(features)
-
-				currentFeatures = currentFeatures.concat(features)
-			}
+			trackedFeatures = trackedFeatures.concat(features)
 		}
-
-		this.sortInstallFeatures(features)
-		return features
+		return trackedFeatures
 	}
 
 	/** Gets available features */
 	public getAvailableFeatures(): {
-		feature: Feature
+		feature: FeatureCode
 		description: string
 	}[] {
-		const availableFeatures = Object.values(Feature).map(f => {
+		const availableFeatures = Object.values(FeatureCode).map(f => {
 			const description = this.featureMap[f].description ?? f
 			return {
 				feature: f,
@@ -194,7 +223,8 @@ export default class FeatureManager {
 	}
 
 	private async installFeature(installFeature: IInstallFeature): Promise<void> {
-		const feature = this.featureMap[installFeature.feature]
+		const feature = this.featureMap[installFeature.code] as AbstractFeature
+
 		await feature.beforePackageInstall(installFeature.options)
 
 		const packagesToInstall: string[] = []
@@ -217,12 +247,14 @@ export default class FeatureManager {
 			}
 		})
 
+		const pkgService = this.PkgService()
+
 		if (packagesToInstall.length > 0) {
-			await this.pkgService.install(packagesToInstall)
+			await pkgService.install(packagesToInstall)
 		}
 
 		if (devPackagesToInstall.length > 0) {
-			await this.pkgService.install(devPackagesToInstall, {
+			await pkgService.install(devPackagesToInstall, {
 				dev: true
 			})
 		}
@@ -230,18 +262,13 @@ export default class FeatureManager {
 		await feature.afterPackageInstall(installFeature.options)
 	}
 
-	/** Sorts installation features for dependency order. Mutates the array. */
-	private sortInstallFeatures(features: IInstallFeature[]): void {
-		features.sort((a, b) => {
-			const aFeature = this.featureMap[a.feature]
-			const bFeature = this.featureMap[b.feature]
+	private sortFeatures(codes: FeatureCode[]): FeatureCode[] {
+		return [...codes].sort((a, b) => {
+			const aFeature = this.featureMap[a]
+			const bFeature = this.featureMap[b]
 
-			const aDependsOnB = aFeature.featureDependencies.find(
-				d => d === b.feature
-			)
-			const bDependsOnA = bFeature.featureDependencies.find(
-				d => d === a.feature
-			)
+			const aDependsOnB = aFeature.dependencies.find(d => d === b)
+			const bDependsOnA = bFeature.dependencies.find(d => d === a)
 
 			if (aDependsOnB) {
 				return 1
@@ -250,5 +277,9 @@ export default class FeatureManager {
 			}
 			return 0
 		})
+	}
+
+	private PkgService() {
+		return this.serviceFactory.Service(this.cwd, Service.Pkg)
 	}
 }

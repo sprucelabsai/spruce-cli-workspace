@@ -1,7 +1,7 @@
 import path from 'path'
 import { Command } from 'commander'
 import FieldType from '#spruce/schemas/fields/fieldType'
-import FeatureManager, { Feature } from '../FeatureManager'
+import FeatureManager, { FeatureCode } from '../FeatureManager'
 import namesUtil from '../utilities/names.utility'
 import AbstractCommand, { ICommandOptions } from './AbstractCommand'
 
@@ -30,7 +30,7 @@ export default class TestCommand extends AbstractCommand {
 		await this.featureManager.install({
 			features: [
 				{
-					feature: Feature.Test
+					code: FeatureCode.Test
 				}
 			]
 		})

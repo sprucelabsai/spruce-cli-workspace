@@ -1,7 +1,6 @@
 import { ISchemaDefinition } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldType'
 
-
 const skillDefinition: ISchemaDefinition = {
 	id: 'skill',
 	name: 'Skill',

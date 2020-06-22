@@ -5,19 +5,14 @@ import { set } from 'lodash'
 import uuid from 'uuid'
 import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
-import log from '../singletons/log'
 import { WriteMode } from '../types/cli.types'
-import commandUtil from '../utilities/command.utility'
+import CommandService from './CommandService'
 
 export interface IAddOptions {
 	dev?: boolean
 }
 
-export default class PkgService {
-	public cwd: string
-	public constructor(cwd: string) {
-		this.cwd = cwd
-	}
+export default class PkgService extends CommandService {
 	public get(path: string) {
 		const contents = this.readPackage()
 		return contents[path]
@@ -50,17 +45,17 @@ export default class PkgService {
 
 	public readPackage(): Record<string, any | undefined> {
 		const packagePath = pathUtil.join(this.cwd, 'package.json')
-		log.trace('Reading package.json', { path: packagePath })
-		const contents = fs.readFileSync(packagePath).toString()
+
 		try {
+			const contents = fs.readFileSync(packagePath).toString()
 			const parsed = JSON.parse(contents)
+
 			return parsed
 		} catch (err) {
 			throw new SpruceError({
 				code: ErrorCode.FailedToImport,
 				file: packagePath,
-				originalError: err,
-				friendlyMessage: 'Bad JSON'
+				originalError: err
 			})
 		}
 	}
@@ -68,6 +63,7 @@ export default class PkgService {
 	public isInstalled(pkg: string) {
 		try {
 			const contents = this.readPackage()
+
 			return !!contents.dependencies?.[pkg] || !!contents.devDependencies?.[pkg]
 		} catch (e) {
 			return false
@@ -91,7 +87,7 @@ export default class PkgService {
 			const tmpDir = os.tmpdir()
 			args.push('--cache-folder', pathUtil.join(tmpDir, uuid.v4()))
 
-			await commandUtil.execute('yarn', this.cwd, {
+			await this.execute('yarn', {
 				args
 			})
 		}

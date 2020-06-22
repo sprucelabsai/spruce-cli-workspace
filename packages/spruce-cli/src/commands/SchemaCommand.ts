@@ -1,13 +1,13 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 import { templates } from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
 import ErrorCode from '#spruce/errors/errorCode'
 import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
 import SpruceError from '../errors/SpruceError'
-import FeatureManager, { Feature } from '../FeatureManager'
+import FeatureManager, { FeatureCode } from '../FeatureManager'
 import SchemaGenerator from '../generators/SchemaGenerator'
 import SchemaStore from '../stores/SchemaStore'
 import diskUtil from '../utilities/disk.utility'
-import lintUtil from '../utilities/lint.utility'
 import namesUtil from '../utilities/names.utility'
 import AbstractCommand, { ICommandOptions } from './AbstractCommand'
 
@@ -116,7 +116,7 @@ export default class SchemaCommand extends AbstractCommand {
 		await this.featureManager.install({
 			features: [
 				{
-					feature: Feature.Schema
+					code: FeatureCode.Schema
 				}
 			]
 		})
@@ -287,9 +287,8 @@ export default class SchemaCommand extends AbstractCommand {
 		this.term.startLoading(
 			'Prettying generated files (you can use them now)...'
 		)
-		await lintUtil.fix(
-			diskUtil.resolvePath(destinationDir, '**/*.ts'),
-			this.cwd
+		await this.LintService().fix(
+			diskUtil.resolvePath(destinationDir, '**/*.ts')
 		)
 
 		this.term.stopLoading()
@@ -338,7 +337,7 @@ export default class SchemaCommand extends AbstractCommand {
 		await this.featureManager.install({
 			features: [
 				{
-					feature: Feature.Schema
+					code: FeatureCode.Schema
 				}
 			]
 		})

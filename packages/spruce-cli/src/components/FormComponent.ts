@@ -14,7 +14,7 @@ import ErrorCode from '#spruce/errors/errorCode'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import FieldType from '#spruce/schemas/fields/fieldType'
 import SpruceError from '../errors/SpruceError'
-import ITerminal, { ITerminalEffect } from '../services/TerminalService'
+import ITerminal, { ITerminalEffect } from '../interfaces/TerminalInterface'
 
 export enum FormBuilderActionType {
 	Done = 'done',
