@@ -25,6 +25,7 @@ export default class CommandService {
 			const args = options?.args || stringArgv(cmd)
 			const executable = options?.args ? cmd : args.shift()
 			if (!executable) {
+				debugger
 				throw new Error('coming sooon')
 			}
 			let stdout = ''
@@ -35,7 +36,7 @@ export default class CommandService {
 						cwd,
 						env: {
 							...process.env,
-							FORCE_COLOR: '1'
+							FORCE_COLOR: '0'
 						},
 						shell: true
 				  }

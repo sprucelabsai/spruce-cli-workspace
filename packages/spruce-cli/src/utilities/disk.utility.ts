@@ -8,6 +8,9 @@ const diskUtil = {
 	writeFile(destination: string, contents: string) {
 		fs.outputFileSync(destination, contents)
 	},
+	readDir(destination: string) {
+		return fs.readdirSync(destination)
+	},
 	readFile(source: string) {
 		if (!fs.existsSync(source)) {
 			throw new Error(`No file to read at ${source}`)

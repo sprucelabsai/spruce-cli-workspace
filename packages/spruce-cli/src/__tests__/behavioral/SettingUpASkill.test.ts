@@ -97,7 +97,7 @@ export default class SettingUpASkill extends BaseCliTest {
 		assert.include(health.skill.errors[0].options.code, 'BOOT_ERROR')
 	}
 
-	@test.only()
+	@test()
 	protected static async getsGoodHealthCheck() {
 		const cli = await this.Cli()
 		await cli.installFeatures({

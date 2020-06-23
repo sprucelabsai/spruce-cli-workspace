@@ -218,11 +218,11 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 
 			try {
 				const commandService = serviceFactory.Service(cwd, Service.Command)
-				debugger
 				const results = await commandService.execute('yarn health')
-				console.log(results)
+				const resultParts = results.stdout.split('#####DIVIDER#####')
+
+				return JSON.parse(resultParts[1]) as IHealthCheckResults
 			} catch (originalError) {
-				debugger
 				const error = new SpruceError({
 					// @ts-ignore
 					code: 'BOOT_ERROR',
