@@ -25,7 +25,7 @@ import './src/addons/json.addon'
 import './src/addons/isDefined.addon'
 import {
 	IAutoLoaderTemplateItem,
-	IDirectoryTemplate,
+	IDirectoryTemplateFile,
 	DirectoryTemplateKind,
 	IDirectoryTemplateContextMap,
 	IValueTypes,
@@ -233,7 +233,7 @@ export const templates = {
 	async directoryTemplate<K extends DirectoryTemplateKind>(options: {
 		kind: K
 		context: IDirectoryTemplateContextMap[K]
-	}): Promise<IDirectoryTemplate> {
+	}): Promise<IDirectoryTemplateFile[]> {
 		return DirectoryTemplateUtility.build(options)
 	},
 

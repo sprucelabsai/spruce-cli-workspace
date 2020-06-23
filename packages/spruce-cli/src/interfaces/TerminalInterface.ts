@@ -18,7 +18,7 @@ import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import FieldType from '#spruce/schemas/fields/fieldType'
 import SpruceError from '../errors/SpruceError'
 import log from '../singletons/log'
-import { ICreatedFile } from '../types/cli.types'
+import { IGeneratedFile } from '../types/cli.types'
 
 let fieldCount = 0
 function generateInquirerFieldName() {
@@ -190,7 +190,7 @@ export default class TerminalInterface {
 	}
 
 	public createdFileSummary(options: {
-		createdFiles: ICreatedFile[]
+		createdFiles: IGeneratedFile[]
 		errors?: (SpruceError | Error)[]
 	}) {
 		const { createdFiles, errors = [] } = options

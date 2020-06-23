@@ -22,13 +22,6 @@ export default class SkillCommand extends AbstractCommand {
 	private userStore: UserStore
 	private skillStore: SkillStore
 
-	public constructor(options: ISkillCommandOptions) {
-		super(options)
-		this.featureManager = options.featureManager
-		this.userStore = options.stores.user
-		this.skillStore = options.stores.skill
-	}
-
 	/** Sets up commands */
 	public attachCommands = (program: Command) => {
 		program
@@ -38,7 +31,7 @@ export default class SkillCommand extends AbstractCommand {
 				'-s --silent',
 				'Suppress terminal output if a skill is already set up'
 			)
-			.action(this.setup)
+			.action(this.create)
 		// program
 		// 	.command('skill:login [skillId] [skillApiKey]')
 		// 	.description('Authenticate as a skill')
@@ -49,7 +42,7 @@ export default class SkillCommand extends AbstractCommand {
 			.action(this.switch)
 	}
 
-	public setup = async (cmd: Command) => {
+	public create = async (cmd: Command) => {
 		const isInstalled = await this.featureManager.isInstalled({
 			features: [FeatureCode.Skill]
 		})
@@ -93,15 +86,53 @@ export default class SkillCommand extends AbstractCommand {
 			})
 		}
 
-		if (createSkill) {
-			await this.featureManager.install({
-				features: [
-					{
-						code: FeatureCode.Skill
-					}
-				]
-			})
+		console.log(createSkill)
+		throw new Error('finish')
+	}
+	// }
+	public switch = async () => {
+		const loggedInUser = this.userStore.getLoggedInUser()
+		if (!loggedInUser) {
+			this.term.fatal('You are not logged in as a person!')
+			this.term.hint('Try spruce user:login')
+			return
 		}
+
+		const skills = await this.skillStore.getSkills(loggedInUser.token)
+
+		if (skills.length === 0) {
+			this.term.warn(`You don't have any skills tied to you as a developer.`)
+			this.term.hint('Try spruce skill:create to get started')
+			return
+		}
+
+		//Select a skill
+		const skillChoices: ISelectFieldDefinitionChoice[] = skills.map(
+			(skill, idx) => ({
+				value: String(idx),
+				label: skill.name
+			})
+		)
+
+		const selectedIdx = await this.term.prompt({
+			type: FieldType.Select,
+			label: 'Select a skill',
+			isRequired: true,
+			options: {
+				choices: skillChoices
+			}
+		})
+
+		const selectedSkill = skills[parseInt(selectedIdx, 10)]
+		if (selectedSkill) {
+			this.skillStore.setLoggedInSkill(selectedSkill)
+		}
+	}
+	public constructor(options: ISkillCommandOptions) {
+		super(options)
+		this.featureManager = options.featureManager
+		this.userStore = options.stores.user
+		this.skillStore = options.stores.skill
 	}
 
 	// public login = async (
@@ -192,44 +223,4 @@ export default class SkillCommand extends AbstractCommand {
 	// 			this.skillStore.setLoggedInSkill(selectedSkill)
 	// 		}
 	// 	}
-	// }
-
-	public switch = async () => {
-		const loggedInUser = this.userStore.getLoggedInUser()
-		if (!loggedInUser) {
-			this.term.fatal('You are not logged in as a person!')
-			this.term.hint('Try spruce user:login')
-			return
-		}
-
-		const skills = await this.skillStore.getSkills(loggedInUser.token)
-
-		if (skills.length === 0) {
-			this.term.warn(`You don't have any skills tied to you as a developer.`)
-			this.term.hint('Try spruce skill:create to get started')
-			return
-		}
-
-		//Select a skill
-		const skillChoices: ISelectFieldDefinitionChoice[] = skills.map(
-			(skill, idx) => ({
-				value: String(idx),
-				label: skill.name
-			})
-		)
-
-		const selectedIdx = await this.term.prompt({
-			type: FieldType.Select,
-			label: 'Select a skill',
-			isRequired: true,
-			options: {
-				choices: skillChoices
-			}
-		})
-
-		const selectedSkill = skills[parseInt(selectedIdx, 10)]
-		if (selectedSkill) {
-			this.skillStore.setLoggedInSkill(selectedSkill)
-		}
-	}
 }

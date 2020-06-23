@@ -57,7 +57,7 @@ export default class CommandService {
 					reject(
 						new SpruceError({
 							code: ErrorCode.ExecutingCommandFailed,
-							cmd: JSON.stringify({ executable, args, spawnOptions }),
+							cmd: JSON.stringify({ executable, args }),
 							cwd,
 							originalError: new Error(stderr)
 						})

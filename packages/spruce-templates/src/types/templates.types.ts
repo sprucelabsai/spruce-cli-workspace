@@ -65,13 +65,11 @@ export interface IDirectoryTemplateContextMap {
 	[DirectoryTemplateKind.Autoloadable]: IDirectoryTemplateContextAutoloadable
 }
 
-export interface IDirectoryTemplate {
-	files: {
-		/** The relative path of the output file, without a leading forward slash */
-		relativePath: string
-		/** The file contents, built with the template data */
-		contents: string
-	}[]
+export interface IDirectoryTemplateFile {
+	/** The relative path of the output file, without a leading forward slash */
+	relativePath: string
+	/** The file contents, built with the template data */
+	contents: string
 }
 
 export interface IDefinitionBuilderTemplateItem {

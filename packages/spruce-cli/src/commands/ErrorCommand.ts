@@ -8,7 +8,7 @@ import SpruceError from '../errors/SpruceError'
 import FeatureManager, { FeatureCode } from '../FeatureManager'
 import ErrorGenerator from '../generators/ErrorGenerator'
 import SchemaGenerator from '../generators/SchemaGenerator'
-import { ICreatedFile } from '../types/cli.types'
+import { IGeneratedFile } from '../types/cli.types'
 import diskUtil from '../utilities/disk.utility'
 import namesUtil from '../utilities/names.utility'
 import AbstractCommand, { ICommandOptions } from './AbstractCommand'
@@ -164,7 +164,7 @@ export default class ErrorCommand extends AbstractCommand {
 			]
 		})
 
-		const createdFiles: ICreatedFile[] = []
+		const createdFiles: IGeneratedFile[] = []
 		// const updatedFiles: ICreatedFile[] = []
 
 		const {

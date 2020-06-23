@@ -3,7 +3,6 @@
 import AbstractCommand from '#spruce/../src/commands/AbstractCommand'
 // Import each matching class that will be autoloaded
 import ErrorCommand from '#spruce/../src/commands/ErrorCommand'
-import FeatureCommand from '#spruce/../src/commands/FeatureCommand'
 import OnboardingCommand from '#spruce/../src/commands/OnboardingCommand'
 import RemoteCommand from '#spruce/../src/commands/RemoteCommand'
 import SchemaCommand from '#spruce/../src/commands/SchemaCommand'
@@ -14,7 +13,6 @@ import WatchCommand from '#spruce/../src/commands/WatchCommand'
 
 export type Commands =
 	| ErrorCommand
-	| FeatureCommand
 	| OnboardingCommand
 	| RemoteCommand
 	| SchemaCommand
@@ -25,7 +23,6 @@ export type Commands =
 
 export interface ICommands {
 	error: ErrorCommand
-	feature: FeatureCommand
 	onboarding: OnboardingCommand
 	remote: RemoteCommand
 	schema: SchemaCommand
@@ -37,7 +34,6 @@ export interface ICommands {
 
 export enum Command {
 	Error = 'error',
-	Feature = 'feature',
 	Onboarding = 'onboarding',
 	Remote = 'remote',
 	Schema = 'schema',
@@ -62,13 +58,7 @@ export default async function autoloader<K extends Command[]>(options: {
 		}
 		siblings.error = errorCommand
 	}
-	if (!only || only.indexOf(Command.Feature) > -1) {
-		const featureCommand = new FeatureCommand(constructorOptions)
-		if (after) {
-			await after(featureCommand)
-		}
-		siblings.feature = featureCommand
-	}
+	
 	if (!only || only.indexOf(Command.Onboarding) > -1) {
 		const onboardingCommand = new OnboardingCommand(constructorOptions)
 		if (after) {

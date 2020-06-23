@@ -11,7 +11,10 @@ import {
 	IMercuryConnectOptions,
 	MercuryAuth
 } from '@sprucelabs/mercury'
-import { templates } from '@sprucelabs/spruce-templates'
+import {
+	templates,
+	IDefinitionBuilderTemplateItem
+} from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
 // Shim
 // eslint-disable-next-line import/order
@@ -26,11 +29,13 @@ import ErrorCode from '#spruce/errors/errorCode'
 import pkg from '../package.json'
 import './addons/filePrompt.addon'
 import SpruceError from './errors/SpruceError'
-import ServiceFactory from './factories/ServiceFactory'
+import ServiceFactory, { Service } from './factories/ServiceFactory'
 import FeatureManager, {
+	IInstallFeatureOptions,
 	FeatureCode,
 	IFeatureInstallResponse
 } from './FeatureManager'
+import { ISchemaGeneratorBuildResults } from './generators/SchemaGenerator'
 import TerminalInterface from './interfaces/TerminalInterface'
 import log from './singletons/log'
 import OnboardingStore from './stores/OnboardingStore'
@@ -41,13 +46,6 @@ import UserStore from './stores/UserStore'
 import WatcherStore from './stores/WatcherStore'
 import { AuthedAs } from './types/cli.types'
 import diskUtil from './utilities/disk.utility'
-
-export interface ICli {
-	installFeature: (
-		code: FeatureCode,
-		options: any
-	) => Promise<IFeatureInstallResponse>
-}
 
 export function buildStores(
 	cwd: string,
@@ -64,10 +62,42 @@ export function buildStores(
 	}
 }
 
-export async function boot(options?: {
-	cwd?: string
-	program?: Command
-}): Promise<ICli> {
+/**
+ * {
+			skill: {
+				status: 'failed',
+				errors: [{ code: 'BOOT_ERROR', message: /module not found/ }]
+			}
+		}
+ */
+
+interface IHealthCheckResults {
+	[featureKey: string]: IHealthCheckItem
+}
+
+interface IHealthCheckItem {
+	status: 'failed'
+	errors: SpruceError[]
+}
+
+export interface ICli {
+	installFeatures<F extends FeatureCode>(
+		options: IInstallFeatureOptions<F>
+	): Promise<IFeatureInstallResponse>
+
+	createSchema(
+		destinationDir: string,
+		options: {
+			nameReadable: string
+			nameCamel: string
+			description?: string
+		}
+	): Promise<ISchemaGeneratorBuildResults>
+
+	checkHealth(): Promise<IHealthCheckResults>
+}
+
+export async function boot(options?: { cwd?: string; program?: Command }) {
 	const program = options?.program
 	program?.version(pkg.version).description(pkg.description)
 	program?.option('--no-color', 'Disable color output in the console')
@@ -153,18 +183,76 @@ export async function boot(options?: {
 
 	await mercury.connect(connectOptions)
 
-	return {
-		installFeature: async (code, options) => {
-			return featureManager.install({
-				features: [
-					{
-						code,
-						options
-					}
-				]
+	const response: ICli = {
+		installFeatures: async <F extends FeatureCode>(
+			options: IInstallFeatureOptions<F>
+		) => {
+			return featureManager.install(options)
+		},
+
+		createSchema: async (
+			destinationDir: string,
+			options: IDefinitionBuilderTemplateItem
+		): Promise<ISchemaGeneratorBuildResults> => {
+			return generators.schema.generateBuilder(destinationDir, options)
+		},
+
+		checkHealth: async (): Promise<IHealthCheckResults> => {
+			const isInstalled = await featureManager.isInstalled({
+				features: [FeatureCode.Skill]
 			})
+
+			if (!isInstalled) {
+				return {
+					skill: {
+						status: 'failed',
+						errors: [
+							new SpruceError({
+								// @ts-ignore
+								code: 'SKILL_NOT_INSTALLED'
+							})
+						]
+					}
+				}
+			}
+
+			try {
+				const commandService = serviceFactory.Service(cwd, Service.Command)
+				debugger
+				const results = await commandService.execute('yarn health')
+				console.log(results)
+			} catch (originalError) {
+				debugger
+				const error = new SpruceError({
+					// @ts-ignore
+					code: 'BOOT_ERROR',
+					originalError
+				})
+
+				return {
+					skill: {
+						status: 'failed',
+						errors: [error]
+					}
+				}
+			}
+
+			return {
+				skill: {
+					status: 'failed',
+					errors: [
+						new SpruceError({
+							//@ts-ignore
+							code: 'SKILL_NOT_INSTALLED',
+							friendlyMessage: 'module not found'
+						})
+					]
+				}
+			}
 		}
 	}
+
+	return response
 }
 
 /**

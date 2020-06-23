@@ -1,10 +1,14 @@
 import path from 'path'
 import { IFieldTemplateItem, ISchemaTemplateItem } from '@sprucelabs/schema'
-import { templates } from '@sprucelabs/spruce-templates'
+import {
+	templates,
+	IDefinitionBuilderTemplateItem
+} from '@sprucelabs/spruce-templates'
 import fs from 'fs-extra'
 import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
 import ValueTypeService from '../services/ValueTypeService'
+import { IGeneratedFile } from '../types/cli.types'
 import diskUtil from '../utilities/disk.utility'
 import namesUtil from '../utilities/names.utility'
 import AbstractGenerator from './AbstractGenerator'
@@ -13,6 +17,12 @@ export interface IGenerateSchemaTypesOptions {
 	fieldTemplateItems: IFieldTemplateItem[]
 	schemaTemplateItems: ISchemaTemplateItem[]
 	clean?: boolean
+}
+
+export interface ISchemaGeneratorBuildResults {
+	generatedFiles: {
+		builder: IGeneratedFile
+	}
 }
 
 export interface ISchemaTypesGenerationPhase {
@@ -24,6 +34,30 @@ export interface ISchemaTypesGenerationPhase {
 export default class SchemaGenerator extends AbstractGenerator {
 	//@ts-ignore
 	private valueTypeService: ValueTypeService
+
+	public async generateBuilder(
+		destinationDir: string,
+		options: IDefinitionBuilderTemplateItem
+	): Promise<ISchemaGeneratorBuildResults> {
+		const resolvedBuilderDestination = diskUtil.resolvePath(
+			destinationDir,
+			`${options.nameCamel}.builder.ts`
+		)
+
+		const definitionBuilder = templates.definitionBuilder(options)
+
+		await diskUtil.writeFile(resolvedBuilderDestination, definitionBuilder)
+
+		return {
+			generatedFiles: {
+				builder: {
+					name: 'Builder',
+					path: resolvedBuilderDestination,
+					description: 'The file from which all '
+				}
+			}
+		}
+	}
 
 	/** Generate the type files required for a schema */
 	public async generateSchemaTypes(

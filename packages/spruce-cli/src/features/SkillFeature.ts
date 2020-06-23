@@ -37,10 +37,12 @@ export default class SkillFeature extends AbstractFeature<
 		const schema = new Schema(skillFeatureDefinition, options)
 		schema.validate()
 
-		await this.templates.directoryTemplate({
+		const files = await this.templates.directoryTemplate({
 			kind: DirectoryTemplateKind.Skill,
 			context: options
 		})
+
+		await diskUtil.createManyFiles(this.cwd, files)
 	}
 
 	// public async afterPackageInstall() {

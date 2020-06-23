@@ -17,9 +17,6 @@ export default class SchemaFeature extends AbstractFeature {
 	]
 
 	public async afterPackageInstall() {
-		if (!tsConfigUtil.isPathAliasSet(this.cwd, '#spruce/')) {
-			tsConfigUtil.setPathAlias(this.cwd, '#spruce/*', ['.spruce/*'])
-		}
 		if (!tsConfigUtil.isPathAliasSet(this.cwd, '#spruce:schema/*')) {
 			tsConfigUtil.setPathAlias(this.cwd, '#spruce:schema/*', [
 				'.spruce/schemas/*'
@@ -31,7 +28,7 @@ export default class SchemaFeature extends AbstractFeature {
 		return this.PkgService().isInstalled('@sprucelabs/schema')
 	}
 
-	private PkgService = (): PkgService => {
+	private PkgService(): PkgService {
 		return this.serviceFactory.Service(this.cwd, Service.Pkg)
 	}
 }

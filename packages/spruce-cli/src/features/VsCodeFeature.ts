@@ -4,7 +4,7 @@ import VsCodeService, { IExtension } from '../services/VsCodeService'
 import log from '../singletons/log'
 import AbstractFeature from './AbstractFeature'
 
-export default class VSCodeFeature extends AbstractFeature {
+export default class VsCodeFeature extends AbstractFeature {
 	public description = 'VSCode: Create settings and install VSCode extensions'
 
 	private recommendedExtensions: IExtension[] = [

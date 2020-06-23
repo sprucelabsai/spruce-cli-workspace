@@ -2,6 +2,7 @@
 import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
 import { templates } from '@sprucelabs/spruce-templates'
 import _ from 'lodash'
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import ServiceFactory, { Service } from './factories/ServiceFactory'
 import AbstractFeature from './features/AbstractFeature'
 import CircleCIFeature from './features/CircleCIFeature'
@@ -9,21 +10,20 @@ import ErrorFeature from './features/ErrorFeature'
 import SchemaFeature from './features/SchemaFeature'
 import SkillFeature from './features/SkillFeature'
 import TestFeature from './features/TestFeature'
-import VSCodeFeature from './features/VsCodeFeature'
+import VsCodeFeature from './features/VsCodeFeature'
 import log from './singletons/log'
 import { INpmPackage } from './types/cli.types'
 
-export interface IInstallFeature<F extends FeatureCode = FeatureCode> {
-	code: F
-	options?: IFeatureMap[F]['optionsDefinition'] extends ISchemaDefinition
-		? SchemaDefinitionValues<IFeatureMap[F]['optionsDefinition']>
-		: undefined
-}
+export type FeatureOptions<
+	F extends FeatureCode
+> = IFeatureMap[F]['optionsDefinition'] extends ISchemaDefinition
+	? SchemaDefinitionValues<IFeatureMap[F]['optionsDefinition']>
+	: undefined
 
 export interface IFeatureInstallResponse {}
 
-interface IInstallFeatureOptions {
-	features: IInstallFeature[]
+export interface IInstallFeatureOptions<F extends FeatureCode> {
+	features: InstallFeature[]
 	installFeatureDependencies?: boolean
 }
 
@@ -42,17 +42,71 @@ export interface IFeatureMap {
 	schema: SchemaFeature
 	skill: SkillFeature
 	test: TestFeature
-	vsCode: VSCodeFeature
+	vsCode: VsCodeFeature
 }
+
+type InstallFeature =
+	| { code: FeatureCode.CircleCi; options?: undefined }
+	| { code: FeatureCode.Error; options?: undefined }
+	| { code: FeatureCode.Schema; options?: undefined }
+	| { code: FeatureCode.Skill; options: SpruceSchemas.Local.ISkillFeature }
+	| { code: FeatureCode.Test; options?: undefined }
+	| { code: FeatureCode.VsCode; options?: undefined }
 
 export default class FeatureManager {
 	public cwd: string
 	private featureMap: IFeatureMap
 	private serviceFactory: ServiceFactory
 
-	public install = async (
-		options: IInstallFeatureOptions
-	): Promise<IFeatureInstallResponse> => {
+	public constructor(
+		cwd: string,
+		featureMap: IFeatureMap,
+		serviceFactory: ServiceFactory
+	) {
+		this.cwd = cwd
+		this.featureMap = featureMap
+		this.serviceFactory = serviceFactory
+	}
+
+	public async isInstalled(options: { features: FeatureCode[] }) {
+		const results = await Promise.all(
+			options.features.map(f => {
+				return this.featureMap[f].isInstalled()
+			})
+		)
+
+		for (let i = 0; i < results.length; i += 1) {
+			const result = results[i]
+			if (!result) {
+				return false
+			}
+		}
+
+		return true
+	}
+
+	public getFeatureDependencies(
+		featureCode: FeatureCode,
+		trackedFeatures: FeatureCode[] = []
+	): FeatureCode[] {
+		trackedFeatures.push(featureCode)
+
+		const feature = this.featureMap[featureCode]
+		const dependencies = feature.dependencies
+
+		for (let i = 0; i < dependencies.length; i += 1) {
+			trackedFeatures = this.trackFeatureDependencyIfNotTracked(
+				dependencies[i],
+				trackedFeatures
+			)
+		}
+
+		return trackedFeatures
+	}
+
+	public async install<F extends FeatureCode>(
+		options: IInstallFeatureOptions<F>
+	): Promise<IFeatureInstallResponse> {
 		const { features, installFeatureDependencies = true } = options
 
 		let codesToInstall: FeatureCode[] = []
@@ -81,9 +135,11 @@ export default class FeatureManager {
 			if (!isInstalled) {
 				const installOptions = options.features.find(f => f.code === code)
 					?.options
+
 				await this.installFeature({
 					code: codesToInstall[i],
-					options: installOptions
+					//@ts-ignore WHY!!??
+					options: installOptions as FeatureOptions<F> | undefined
 				})
 			} else {
 				log.debug(
@@ -93,49 +149,6 @@ export default class FeatureManager {
 		}
 
 		return {}
-	}
-	public isInstalled = async (options: { features: FeatureCode[] }) => {
-		const results = await Promise.all(
-			options.features.map(f => {
-				return this.featureMap[f].isInstalled()
-			})
-		)
-
-		for (let i = 0; i < results.length; i += 1) {
-			const result = results[i]
-			if (!result) {
-				return false
-			}
-		}
-
-		return true
-	}
-	public getFeatureDependencies = (
-		featureCode: FeatureCode,
-		trackedFeatures: FeatureCode[] = []
-	): FeatureCode[] => {
-		trackedFeatures.push(featureCode)
-
-		const feature = this.featureMap[featureCode]
-		const dependencies = feature.dependencies
-
-		for (let i = 0; i < dependencies.length; i += 1) {
-			trackedFeatures = this.trackFeatureDependencyIfNotTracked(
-				dependencies[i],
-				trackedFeatures
-			)
-		}
-
-		return trackedFeatures
-	}
-	public constructor(
-		cwd: string,
-		featureMap: IFeatureMap,
-		serviceFactory: ServiceFactory
-	) {
-		this.cwd = cwd
-		this.featureMap = featureMap
-		this.serviceFactory = serviceFactory
 	}
 
 	public static WithAllFeatures(options: {
@@ -174,7 +187,7 @@ export default class FeatureManager {
 				serviceFactory,
 				templates
 			}),
-			vsCode: new VSCodeFeature({
+			vsCode: new VsCodeFeature({
 				cwd,
 				code: FeatureCode.VsCode,
 				serviceFactory,
@@ -183,10 +196,6 @@ export default class FeatureManager {
 		}
 		const manager = new FeatureManager(cwd, featureMap, serviceFactory)
 		return manager
-	}
-
-	public getFeature<F extends FeatureCode>(code: F): IFeatureMap[F] {
-		return this.featureMap[code]
 	}
 
 	private trackFeatureDependencyIfNotTracked(
@@ -206,23 +215,7 @@ export default class FeatureManager {
 		return trackedFeatures
 	}
 
-	/** Gets available features */
-	public getAvailableFeatures(): {
-		feature: FeatureCode
-		description: string
-	}[] {
-		const availableFeatures = Object.values(FeatureCode).map(f => {
-			const description = this.featureMap[f].description ?? f
-			return {
-				feature: f,
-				description
-			}
-		})
-
-		return availableFeatures
-	}
-
-	private async installFeature(installFeature: IInstallFeature): Promise<void> {
+	private async installFeature(installFeature: InstallFeature): Promise<void> {
 		const feature = this.featureMap[installFeature.code] as AbstractFeature
 
 		await feature.beforePackageInstall(installFeature.options)
@@ -281,5 +274,9 @@ export default class FeatureManager {
 
 	private PkgService() {
 		return this.serviceFactory.Service(this.cwd, Service.Pkg)
+	}
+
+	public definitionForFeature(code: FeatureCode) {
+		return this.featureMap[code].optionsDefinition
 	}
 }

@@ -3,12 +3,12 @@ import {
 	IErrorTemplateItem
 } from '@sprucelabs/spruce-templates'
 import log from '../singletons/log'
-import { ICreatedFile } from '../types/cli.types'
+import { IGeneratedFile } from '../types/cli.types'
 import diskUtil from '../utilities/disk.utility'
 import AbstractGenerator from './AbstractGenerator'
 
 interface IErrorClassFiles {
-	errorClass?: ICreatedFile
+	errorClass?: IGeneratedFile
 }
 
 export default class ErrorGenerator extends AbstractGenerator {
@@ -81,7 +81,7 @@ export default class ErrorGenerator extends AbstractGenerator {
 		options: IDefinitionBuilderTemplateItem
 	): Promise<{
 		generatedFiles: {
-			errorBuilder: ICreatedFile
+			errorBuilder: IGeneratedFile
 		}
 	}> {
 		await diskUtil.writeFile(
@@ -105,7 +105,7 @@ export default class ErrorGenerator extends AbstractGenerator {
 		errorTemplateItems: IErrorTemplateItem[]
 	): Promise<{
 		generatedFiles: {
-			codesEnum: ICreatedFile
+			codesEnum: IGeneratedFile
 		}
 	}> {
 		// Find all definition files in the lookup dir
@@ -130,7 +130,7 @@ export default class ErrorGenerator extends AbstractGenerator {
 		errorTemplateItems: IErrorTemplateItem[]
 	): Promise<{
 		generatedFiles: {
-			optionsTypes: ICreatedFile
+			optionsTypes: IGeneratedFile
 		}
 	}> {
 		const contents = this.templates.errorOptionsTypes({

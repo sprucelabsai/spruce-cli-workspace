@@ -1,5 +1,8 @@
 import path from 'path'
+import { IDirectoryTemplateFile } from '@sprucelabs/spruce-templates'
 import fs from 'fs-extra'
+import ErrorCode from '#spruce/errors/errorCode'
+import SpruceError from '../errors/SpruceError'
 
 const diskUtil = {
 	writeFile(destination: string, contents: string) {
@@ -16,8 +19,11 @@ const diskUtil = {
 			fs.removeSync(destination)
 		}
 	},
-	mkDir(destination: string) {
+	createDir(destination: string) {
 		fs.mkdirSync(destination)
+	},
+	moveDir(source: string, destination: string) {
+		fs.moveSync(source, destination)
 	},
 	deleteDir(destination: string) {
 		if (fs.existsSync(destination)) {
@@ -43,6 +49,28 @@ const diskUtil = {
 		}
 
 		return builtPath
+	},
+	async createManyFiles(cwd: string, files: IDirectoryTemplateFile[]) {
+		const writes: Promise<void>[] = []
+		for (let i = 0; i < files.length; i += 1) {
+			const file = files[i]
+			const filePathToWrite = path.join(cwd, file.relativePath)
+			const dirPathToWrite = path.dirname(filePathToWrite)
+
+			await fs.ensureDir(dirPathToWrite)
+
+			if (this.doesFileExist(filePathToWrite)) {
+				throw new SpruceError({
+					code: ErrorCode.FileExists,
+					file: filePathToWrite,
+					friendlyMessage: `The file already exists. Remove this file or set a different WriteMode`
+				})
+			}
+
+			writes.push(fs.writeFile(filePathToWrite, file.contents))
+		}
+
+		await Promise.all(writes)
 	}
 }
 export default diskUtil

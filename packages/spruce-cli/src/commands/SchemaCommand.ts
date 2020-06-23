@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/member-ordering */
-import { templates } from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
 import ErrorCode from '#spruce/errors/errorCode'
 import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
@@ -90,8 +88,88 @@ export default class SchemaCommand extends AbstractCommand {
 			.action(this.sync)
 	}
 
+	/** Define a new schema */
+	public async create(
+		name: string | undefined,
+		options: {
+			destinationDir: string
+			addonLookupDir: string
+			typesDestinationDir: string
+		}
+	) {
+		const nameReadable = name
+
+		let nameCamel = ''
+		let namePascal = ''
+
+		let showOverview = false
+
+		if (nameReadable) {
+			showOverview = true
+			nameCamel = namesUtil.toCamel(nameReadable)
+			namePascal = namesUtil.toPascal(nameCamel)
+		}
+
+		const form = this.getFormComponent({
+			definition: namedTemplateItemDefinition,
+			initialValues: {
+				nameReadable,
+				nameCamel,
+				namePascal
+			},
+			onWillAskQuestion: namesUtil.onWillAskQuestionHandler.bind(namesUtil)
+		})
+
+		// All the values
+		const values = await form.present({
+			showOverview,
+			fields: ['nameReadable', 'nameCamel', 'namePascal', 'description']
+		})
+
+		// Make sure schema module is installed
+		this.term.startLoading('Installing dependencies')
+		await this.featureManager.install({
+			features: [
+				{
+					code: FeatureCode.Schema
+				}
+			]
+		})
+		this.term.stopLoading()
+
+		// Build paths
+		const resolvedTypesDestination = diskUtil.resolvePath(
+			options.typesDestinationDir
+		)
+
+		const builderResults = await this.schemaGenerator.generateBuilder(
+			options.destinationDir,
+			values
+		)
+
+		this.term.info(
+			`Definition created at ${builderResults.generatedFiles.builder.path}`
+		)
+
+		try {
+			await this.sync(options.destinationDir, {
+				destinationDir: resolvedTypesDestination,
+				addonLookupDir: options.addonLookupDir
+			})
+		} catch (err) {
+			this.term.stopLoading()
+			this.term.warn(
+				'I was not able to sync it with #spruce/schemas/schemas.types'
+			)
+			this.term.warn(
+				"You won't be able to use your new definition until the below error is fixed and you run `spruce schema:sync`"
+			)
+			this.term.handleError(err)
+		}
+	}
+
 	/** Sync all schemas and fields (also pulls from the cloud) */
-	public sync = async (
+	public async sync(
 		lookupDirOption: string | undefined,
 		options: {
 			destinationDir: string
@@ -100,7 +178,7 @@ export default class SchemaCommand extends AbstractCommand {
 			clean?: boolean
 			force?: boolean
 		}
-	) => {
+	) {
 		const destinationDir = options.destinationDir
 		const lookupDir = lookupDirOption || options.lookupDir
 		const addonLookupDir = options.addonLookupDir
@@ -294,90 +372,10 @@ export default class SchemaCommand extends AbstractCommand {
 		this.term.stopLoading()
 	}
 
-	/** Define a new schema */
-	public create = async (
-		name: string | undefined,
-		options: {
-			destinationDir: string
-			addonLookupDir: string
-			typesDestinationDir: string
-		}
-	) => {
-		const nameReadable = name
-
-		let nameCamel = ''
-		let namePascal = ''
-
-		let showOverview = false
-
-		if (nameReadable) {
-			showOverview = true
-			nameCamel = namesUtil.toCamel(nameReadable)
-			namePascal = namesUtil.toPascal(nameCamel)
-		}
-
-		const form = this.getFormComponent({
-			definition: namedTemplateItemDefinition,
-			initialValues: {
-				nameReadable,
-				nameCamel,
-				namePascal
-			},
-			onWillAskQuestion: namesUtil.onWillAskQuestionHandler.bind(namesUtil)
-		})
-
-		// All the values
-		const values = await form.present({
-			showOverview,
-			fields: ['nameReadable', 'nameCamel', 'namePascal', 'description']
-		})
-
-		// Make sure schema module is installed
-		this.term.startLoading('Installing dependencies')
-		await this.featureManager.install({
-			features: [
-				{
-					code: FeatureCode.Schema
-				}
-			]
-		})
-		this.term.stopLoading()
-
-		// Build paths
-		const resolvedBuilderDestination = diskUtil.resolvePath(
-			options.destinationDir,
-			`${values.nameCamel}.builder.ts`
-		)
-		const resolvedTypesDestination = diskUtil.resolvePath(
-			options.typesDestinationDir
-		)
-		const definitionBuilder = templates.definitionBuilder(values)
-
-		await diskUtil.writeFile(resolvedBuilderDestination, definitionBuilder)
-
-		this.term.info(`Definition created at ${resolvedBuilderDestination}`)
-
-		try {
-			await this.sync(options.destinationDir, {
-				destinationDir: resolvedTypesDestination,
-				addonLookupDir: options.addonLookupDir
-			})
-		} catch (err) {
-			this.term.stopLoading()
-			this.term.warn(
-				'I was not able to sync it with #spruce/schemas/schemas.types'
-			)
-			this.term.warn(
-				"You won't be able to use your new definition until the below error is fixed and you run `spruce schema:sync`"
-			)
-			this.term.handleError(err)
-		}
-	}
-
-	private takeUserThroughErrors = async (
+	private async takeUserThroughErrors(
 		errors: SpruceError[],
 		totalItems: number
-	) => {
+	) {
 		let confirm = false
 		do {
 			this.term.handleError(errors[0])

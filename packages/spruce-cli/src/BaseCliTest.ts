@@ -12,7 +12,7 @@ import TerminalInterface from './interfaces/TerminalInterface'
 export default class BaseCliTest extends BaseSpruceTest {
 	private static rl: Interface
 
-	protected static ensureTmpDirectory() {
+	protected static freshCwd() {
 		const tmpDirectory = pathUtil.join(os.tmpdir(), '..', 'tmp', uuid.v4())
 		fs.ensureDirSync(tmpDirectory)
 
@@ -36,7 +36,7 @@ export default class BaseCliTest extends BaseSpruceTest {
 	}
 
 	protected static async beforeEach() {
-		this.cwd = this.ensureTmpDirectory()
+		this.cwd = this.freshCwd()
 	}
 
 	protected static async afterAll() {

@@ -9,7 +9,7 @@ export enum AuthedAs {
 	Skill = 'skill'
 }
 
-export interface ICreatedFile {
+export interface IGeneratedFile {
 	name: string
 	path: string
 	description: string

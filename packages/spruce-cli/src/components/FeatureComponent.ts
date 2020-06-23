@@ -23,17 +23,11 @@ interface IPromptOptions<F extends AbstractFeature> {
 export default class FeatureComponent extends AbstractComponent {
 	protected featureManager: FeatureManager
 
-	public constructor(term: TerminalInterface, featureManager: FeatureManager) {
-		super(term)
-		this.featureManager = featureManager
-	}
-
 	public prompt = async <F extends FeatureCode>(
 		featureCode: F,
 		options: IPromptOptions<IFeatureMap[F]> = {}
 	): Promise<PromptResponse<IFeatureMap[F]>> => {
-		const feature = this.featureManager.getFeature(featureCode)
-		const definition = feature.optionsDefinition
+		const definition = this.featureManager.definitionForFeature(featureCode)
 		const { values } = options
 
 		if (!definition || !definition.fields) {
@@ -67,5 +61,9 @@ export default class FeatureComponent extends AbstractComponent {
 		}
 
 		return answers as PromptResponse<IFeatureMap[F]>
+	}
+	public constructor(term: TerminalInterface, featureManager: FeatureManager) {
+		super(term)
+		this.featureManager = featureManager
 	}
 }

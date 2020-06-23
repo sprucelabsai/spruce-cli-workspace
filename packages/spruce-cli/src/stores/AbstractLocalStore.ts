@@ -18,7 +18,7 @@ export default abstract class AbstractLocalStore<
 		const { directory: localDirectory } = this.getConfigPath()
 
 		if (!diskUtil.doesDirExist(localDirectory)) {
-			diskUtil.mkDir(localDirectory)
+			diskUtil.createDir(localDirectory)
 		}
 	}
 
@@ -35,7 +35,7 @@ export default abstract class AbstractLocalStore<
 		const { file, directory } = this.getConfigPath()
 
 		if (!diskUtil.doesDirExist(directory)) {
-			diskUtil.mkDir(directory)
+			diskUtil.createDir(directory)
 		}
 
 		const contents = JSON.stringify(updatedValues)
@@ -68,7 +68,7 @@ export default abstract class AbstractLocalStore<
 		try {
 			// Make sure dir exists
 			if (!diskUtil.doesDirExist(directory)) {
-				diskUtil.mkDir(directory)
+				diskUtil.createDir(directory)
 			}
 
 			const contents = diskUtil.readFile(file)
