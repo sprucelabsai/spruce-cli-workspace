@@ -87,7 +87,12 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				break
 
 			case ErrorCode.ExecutingCommandFailed:
-				message = `The command that was being executed failed ${options.cmd}`
+				if (this.originalError && this.originalError.message) {
+					message = this.originalError.message + '\n\n'
+				} else {
+					message = ''
+				}
+				message += `The command that was being executed failed ${options.cmd}`
 				if (options.cwd) {
 					message += `\n\nCWD: ${options.cwd}`
 				}

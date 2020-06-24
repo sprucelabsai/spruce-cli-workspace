@@ -38,8 +38,8 @@
 		"release": "semantic-release",
 		"start": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node . $COMMANDS",
 		"local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node --inspect=5200 . $COMMANDS",
-		"test": "TESTING=true jest",
-		"test.watch": "TESTING=true jest --watch"
+		"test": "jest",
+		"test.watch": "jest --watch"
 	},
 	"dependencies": {
 		"@sprucelabs/error": "^1.2.0",
@@ -58,8 +58,6 @@
 		"eslint": "^5",
 		"fs-extra": "^8.1.0",
 		"globby": "^11.0.0",
-		"graphql": "^14.6.0",
-		"graphql-tag": "^2.10.3",
 		"inflection": "^1.12.0",
 		"inquirer": "^7.0.6",
 		"inquirer-file-tree-selection-prompt": "^1.0.5",
@@ -125,7 +123,7 @@
 			"<rootDir>/tmp/",
 			"<rootDir>/build/",
 			"<rootDir>/node_modules/",
-			"<rootDir>/__test__/testDirsAndFiles"
+			"<rootDir>/__tests__/testDirsAndFiles"
 		],
 		"moduleNameMapper": {
 			"^#spruce/(.*)$": "<rootDir>/.spruce/$1",

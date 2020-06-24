@@ -11,10 +11,7 @@ import {
 	IMercuryConnectOptions,
 	MercuryAuth
 } from '@sprucelabs/mercury'
-import {
-	templates,
-	IDefinitionBuilderTemplateItem
-} from '@sprucelabs/spruce-templates'
+import { templates } from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
 // Shim
 // eslint-disable-next-line import/order
@@ -28,6 +25,7 @@ import { IStores } from '#spruce/autoloaders/stores'
 import ErrorCode from '#spruce/errors/errorCode'
 import pkg from '../package.json'
 import './addons/filePrompt.addon'
+import { HASH_SPRUCE_DIR } from './constants'
 import SpruceError from './errors/SpruceError'
 import ServiceFactory, { Service } from './factories/ServiceFactory'
 import FeatureManager, {
@@ -35,7 +33,10 @@ import FeatureManager, {
 	FeatureCode,
 	IFeatureInstallResponse
 } from './FeatureManager'
-import { ISchemaGeneratorBuildResults } from './generators/SchemaGenerator'
+import {
+	ISchemaGeneratorBuildResults,
+	ISchemaGeneratorSyncResults
+} from './generators/SchemaGenerator'
 import TerminalInterface from './interfaces/TerminalInterface'
 import log from './singletons/log'
 import OnboardingStore from './stores/OnboardingStore'
@@ -76,8 +77,8 @@ interface IHealthCheckResults {
 }
 
 interface IHealthCheckItem {
-	status: 'failed'
-	errors: SpruceError[]
+	status: 'failed' | 'passed'
+	errors?: SpruceError[]
 }
 
 export interface ICli {
@@ -85,14 +86,20 @@ export interface ICli {
 		options: IInstallFeatureOptions<F>
 	): Promise<IFeatureInstallResponse>
 
-	createSchema(
-		destinationDir: string,
-		options: {
-			nameReadable: string
-			nameCamel: string
-			description?: string
-		}
-	): Promise<ISchemaGeneratorBuildResults>
+	createSchema(options: {
+		destinationDir?: string
+		nameReadable: string
+		namePascal: string
+		nameCamel: string
+		description?: string
+		addonLookupDir?: string
+	}): Promise<ISchemaGeneratorBuildResults>
+
+	syncSchemas(options?: {
+		lookupDir?: string
+		destinationDir?: string
+		addonLookupDir?: string
+	}): Promise<ISchemaGeneratorSyncResults>
 
 	checkHealth(): Promise<IHealthCheckResults>
 }
@@ -190,11 +197,64 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 			return featureManager.install(options)
 		},
 
-		createSchema: async (
-			destinationDir: string,
-			options: IDefinitionBuilderTemplateItem
-		): Promise<ISchemaGeneratorBuildResults> => {
-			return generators.schema.generateBuilder(destinationDir, options)
+		createSchema: async (options): Promise<ISchemaGeneratorBuildResults> => {
+			const isInstalled = await featureManager.isInstalled({
+				features: [FeatureCode.Skill]
+			})
+
+			if (!isInstalled) {
+				throw new SpruceError({
+					// @ts-ignore
+					code: 'SKILL_NOT_INSTALLED'
+				})
+			}
+
+			const { destinationDir = 'services', ...rest } = options
+			const resolvedDestination = diskUtil.resolvePath(cwd, destinationDir)
+
+			return generators.schema.generateBuilder(resolvedDestination, rest)
+		},
+
+		syncSchemas: async options => {
+			const isInstalled = await featureManager.isInstalled({
+				features: [FeatureCode.Skill]
+			})
+
+			if (!isInstalled) {
+				throw new SpruceError({
+					// @ts-ignore
+					code: 'SKILL_NOT_INSTALLED'
+				})
+			}
+
+			const {
+				lookupDir = 'schemas',
+				addonLookupDir = 'addons',
+				destinationDir = `${HASH_SPRUCE_DIR}/schemas`
+			} = options ?? {}
+
+			const schemaRequest = stores.schema.fetchSchemaTemplateItems({
+				localLookupDir: diskUtil.resolvePath(cwd, lookupDir)
+			})
+
+			const fieldRequest = stores.schema.fetchFieldTemplateItems({
+				localLookupDir: diskUtil.resolvePath(cwd, addonLookupDir)
+			})
+
+			const [
+				{ items: schemaTemplateItems },
+				{ items: fieldTemplateItems }
+			] = await Promise.all([schemaRequest, fieldRequest])
+
+			const results = await generators.schema.generateSchemaTypes(
+				diskUtil.resolvePath(cwd, destinationDir),
+				{
+					fieldTemplateItems,
+					schemaTemplateItems
+				}
+			)
+
+			return results
 		},
 
 		checkHealth: async (): Promise<IHealthCheckResults> => {
@@ -234,19 +294,6 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 						status: 'failed',
 						errors: [error]
 					}
-				}
-			}
-
-			return {
-				skill: {
-					status: 'failed',
-					errors: [
-						new SpruceError({
-							//@ts-ignore
-							code: 'SKILL_NOT_INSTALLED',
-							friendlyMessage: 'module not found'
-						})
-					]
 				}
 			}
 		}

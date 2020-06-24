@@ -28,6 +28,9 @@ const diskUtil = {
 	moveDir(source: string, destination: string) {
 		fs.moveSync(source, destination)
 	},
+	copyDir(source: string, destination: string) {
+		fs.copySync(source, destination)
+	},
 	deleteDir(destination: string) {
 		if (fs.existsSync(destination)) {
 			fs.removeSync(destination)

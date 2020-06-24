@@ -68,7 +68,7 @@ export default class SettingUpASkill extends BaseCliTest {
 		const health = await cli.checkHealth()
 
 		assert.equal(health.skill.status, 'failed')
-		assert.include(health.skill.errors[0].options.code, 'SKILL_NOT_INSTALLED')
+		assert.include(health.skill.errors?.[0].options.code, 'SKILL_NOT_INSTALLED')
 	}
 
 	@test()
@@ -94,11 +94,11 @@ export default class SettingUpASkill extends BaseCliTest {
 		const health = await cli.checkHealth()
 
 		assert.equal(health.skill.status, 'failed')
-		assert.include(health.skill.errors[0].options.code, 'BOOT_ERROR')
+		assert.include(health.skill.errors?.[0].options.code, 'BOOT_ERROR')
 	}
 
 	@test()
-	protected static async getsGoodHealthCheck() {
+	protected static async getsGoodHealthCheckWithNothingElse() {
 		const cli = await this.Cli()
 		await cli.installFeatures({
 			features: [
@@ -113,6 +113,6 @@ export default class SettingUpASkill extends BaseCliTest {
 		})
 
 		const health = await cli.checkHealth()
-		assert.equal(health.skill.status, 'passed')
+		assert.deepEqual(health, { skill: { status: 'passed' } })
 	}
 }

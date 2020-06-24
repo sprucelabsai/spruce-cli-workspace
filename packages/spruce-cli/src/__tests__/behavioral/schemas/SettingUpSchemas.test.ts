@@ -1,10 +1,10 @@
 import { test, assert } from '@sprucelabs/test'
-import BaseCliTest from '../../BaseCliTest'
-import { FeatureCode } from '../../FeatureManager'
-import diskUtil from '../../utilities/disk.utility'
-import tsConfigUtil from '../../utilities/tsConfig.utility'
+import { FeatureCode } from '../../../FeatureManager'
+import diskUtil from '../../../utilities/disk.utility'
+import tsConfigUtil from '../../../utilities/tsConfig.utility'
+import BaseSchemaTest from './BaseSchemaTest'
 
-export default class SettingUpSchemasTests extends BaseCliTest {
+export default class SettingUpSchemasTests extends BaseSchemaTest {
 	@test()
 	protected static async failsBecauseMissingSkillInformation() {
 		const cli = await this.Cli()
@@ -24,23 +24,8 @@ export default class SettingUpSchemasTests extends BaseCliTest {
 
 	@test()
 	protected static async installsSchema() {
-		const cli = await this.Cli()
-		await cli.installFeatures({
-			features: [
-				{
-					code: FeatureCode.Skill,
-					options: {
-						name: 'test',
-						description: 'again'
-					}
-				},
-				{
-					code: FeatureCode.Schema
-				}
-			]
-		})
+		await this.bootCliInstallSchemasAndSetCwd()
 
-		// test if package.json has @sprucelabs/schema
 		const pgkPath = this.resolvePath('package.json')
 		const contents = JSON.stringify(diskUtil.readFile(pgkPath))
 
@@ -53,5 +38,13 @@ export default class SettingUpSchemasTests extends BaseCliTest {
 			'#spruce/*': ['.spruce/*'],
 			'#spruce:schema/*': ['.spruce/schemas/*']
 		})
+	}
+
+	@test()
+	protected static async schemaPassesHealthCheck() {
+		const cli = await this.bootCliInstallSchemasAndSetCwd()
+		const status = await cli.checkHealth()
+
+		assert.equal(status.schema.status, 'passed')
 	}
 }

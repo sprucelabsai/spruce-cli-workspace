@@ -6,11 +6,13 @@ import {
 } from '@sprucelabs/spruce-templates'
 import fs from 'fs-extra'
 import ErrorCode from '#spruce/errors/errorCode'
+import { LATEST_HANDLEBARS } from '../constants'
 import SpruceError from '../errors/SpruceError'
 import ValueTypeService from '../services/ValueTypeService'
 import { IGeneratedFile } from '../types/cli.types'
 import diskUtil from '../utilities/disk.utility'
 import namesUtil from '../utilities/names.utility'
+import versionUtil from '../utilities/version.utility'
 import AbstractGenerator from './AbstractGenerator'
 
 export interface IGenerateSchemaTypesOptions {
@@ -20,12 +22,16 @@ export interface IGenerateSchemaTypesOptions {
 }
 
 export interface ISchemaGeneratorBuildResults {
-	generatedFiles: {
-		builder: IGeneratedFile
-	}
+	generatedFiles: IGeneratedFile[]
 }
 
-export interface ISchemaTypesGenerationPhase {
+export interface ISchemaGeneratorSyncResults {
+	resultsByStage: ISchemaTypesGenerationStage[]
+	generatedFiles: IGeneratedFile[]
+	updatedFiles: IGeneratedFile[]
+}
+
+export interface ISchemaTypesGenerationStage {
 	name: string
 	errors: SpruceError[]
 	successfulSchemas: number
@@ -39,8 +45,9 @@ export default class SchemaGenerator extends AbstractGenerator {
 		destinationDir: string,
 		options: IDefinitionBuilderTemplateItem
 	): Promise<ISchemaGeneratorBuildResults> {
-		const resolvedBuilderDestination = diskUtil.resolvePath(
+		const resolvedBuilderDestination = versionUtil.resolveNewLatestPath(
 			destinationDir,
+			LATEST_HANDLEBARS,
 			`${options.nameCamel}.builder.ts`
 		)
 
@@ -49,13 +56,13 @@ export default class SchemaGenerator extends AbstractGenerator {
 		await diskUtil.writeFile(resolvedBuilderDestination, definitionBuilder)
 
 		return {
-			generatedFiles: {
-				builder: {
+			generatedFiles: [
+				{
 					name: 'Builder',
 					path: resolvedBuilderDestination,
 					description: 'The file from which all '
 				}
-			}
+			]
 		}
 	}
 
@@ -63,16 +70,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 	public async generateSchemaTypes(
 		destinationDir: string,
 		options: IGenerateSchemaTypesOptions
-	): Promise<{
-		resultsByStage: ISchemaTypesGenerationPhase[]
-		generatedFiles: {
-			schemaTypes: string
-			fieldsTypes: string
-			fieldType: string
-			fieldClassMap: string
-			normalizedDefinitions: { id: string; path: string }[]
-		}
-	}> {
+	): Promise<ISchemaGeneratorSyncResults> {
 		const { fieldTemplateItems, schemaTemplateItems } = options
 
 		// Destinations
@@ -119,7 +117,12 @@ export default class SchemaGenerator extends AbstractGenerator {
 		]
 
 		const resultsByStage = []
-		const normalizedDefinitions: { id: string; path: string }[] = []
+		const normalizedDefinitions: {
+			id: string
+			name: string
+			path: string
+			description: string
+		}[] = []
 
 		let successfulSchemas = 0
 		let successfulFields = 0
@@ -202,8 +205,12 @@ export default class SchemaGenerator extends AbstractGenerator {
 							await fs.writeFile(destination, definition)
 
 							normalizedDefinitions.push({
+								name: `${templateItem.namePascal} definition`,
 								id: templateItem.namePascal,
-								path: destination
+								path: destination,
+								description:
+									templateItem.definition.description ??
+									`*** no description defined in ${destination} ***`
 							})
 
 							successfulSchemas++
@@ -245,13 +252,32 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 		return {
 			resultsByStage,
-			generatedFiles: {
-				schemaTypes: schemaTypesDestination,
-				fieldType: fieldTypeDestination,
-				fieldsTypes: fieldsTypesDestination,
-				fieldClassMap: fieldClassMapDestination,
-				normalizedDefinitions
-			}
+			updatedFiles: [],
+			generatedFiles: [
+				{
+					name: 'Schema types',
+					path: schemaTypesDestination,
+					description:
+						'Registry of types, e.g. SpruceSchemas.Local.2020_01_10.Ball'
+				},
+				{
+					name: 'Field enum',
+					path: fieldTypeDestination,
+					description: 'The enum to access all field types, e.g. FieldType.Text'
+				},
+				{
+					name: 'Field types',
+					path: fieldsTypesDestination,
+					description: 'All the types needed for fields, including union types'
+				},
+				{
+					name: 'Field class map',
+					path: fieldClassMapDestination,
+					description:
+						'A hash to find any field by type, e.g. FieldClassMap[FieldType.Text]'
+				},
+				...normalizedDefinitions
+			]
 		}
 	}
 }

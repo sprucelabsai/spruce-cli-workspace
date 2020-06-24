@@ -45,67 +45,63 @@ const templatePath = path.join(__dirname, 'src', 'templates', 'typescript')
 // Template files
 // TODO this can be done in a loop perhaps
 const schemasTypes: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/schemas.types.hbs'))
+	.readFileSync(path.join(templatePath, 'schemas/schemas.types.ts.hbs'))
 	.toString()
 
 const definitionBuilder: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/builder.hbs'))
+	.readFileSync(path.join(templatePath, 'schemas/builder.ts.hbs'))
 	.toString()
 
 const definition: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/definition.hbs'))
+	.readFileSync(path.join(templatePath, 'schemas/definition.ts.hbs'))
 	.toString()
 
 const schemaExample: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/example.hbs'))
+	.readFileSync(path.join(templatePath, 'schemas/example.ts.hbs'))
 	.toString()
 
 const error: string = fs
-	.readFileSync(path.join(templatePath, 'errors/SpruceError.hbs'))
+	.readFileSync(path.join(templatePath, 'errors/SpruceError.ts.hbs'))
 	.toString()
 
 const errorTypes: string = fs
-	.readFileSync(path.join(templatePath, 'errors/error.types.hbs'))
+	.readFileSync(path.join(templatePath, 'errors/error.types.ts.hbs'))
 	.toString()
 
 const errorOptionsTypes: string = fs
-	.readFileSync(path.join(templatePath, 'errors/options.types.hbs'))
+	.readFileSync(path.join(templatePath, 'errors/options.types.ts.hbs'))
 	.toString()
 
 const errorCode: string = fs
-	.readFileSync(path.join(templatePath, 'errors/errorCode.hbs'))
+	.readFileSync(path.join(templatePath, 'errors/errorCode.ts.hbs'))
 	.toString()
 
 const errorDefinitionBuilder: string = fs
-	.readFileSync(path.join(templatePath, 'errors/builder.hbs'))
+	.readFileSync(path.join(templatePath, 'errors/builder.ts.hbs'))
 	.toString()
 
 const errorExample: string = fs
-	.readFileSync(path.join(templatePath, 'errors/example.hbs'))
+	.readFileSync(path.join(templatePath, 'errors/example.ts.hbs'))
 	.toString()
 
 const test: string = fs
-	.readFileSync(path.join(templatePath, 'tests/Test.test.hbs'))
+	.readFileSync(path.join(templatePath, 'tests/Test.test.ts.hbs'))
 	.toString()
 
 const autoloader: string = fs
-	.readFileSync(path.join(templatePath, 'autoloader/autoloader.hbs'))
+	.readFileSync(path.join(templatePath, 'autoloader/autoloader.ts.hbs'))
 	.toString()
 
-// const autoloaderRoot: string = fs
-// 	.readFileSync(path.join(templatePath, 'autoloader/root.hbs'))
-// 	.toString()
-
 const fieldsTypes: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/fields/fields.types.hbs'))
+	.readFileSync(path.join(templatePath, 'schemas/fields/fields.types.ts.hbs'))
 	.toString()
 
 const fieldClassMap: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/fields/fieldClassMap.hbs'))
+	.readFileSync(path.join(templatePath, 'schemas/fields/fieldClassMap.ts.hbs'))
 	.toString()
 
 const fieldType: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/fields/fieldType.hbs'))
+	.readFileSync(path.join(templatePath, 'schemas/fields/fieldType.ts.hbs'))
 	.toString()
 
 // Template generators

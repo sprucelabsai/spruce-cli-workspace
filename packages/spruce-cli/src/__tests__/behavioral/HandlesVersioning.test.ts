@@ -44,4 +44,17 @@ export default class HandlesVersioningTest extends BaseCliTest {
 
 		assert.equal(resolved, expected)
 	}
+
+	@test()
+	protected static async canGetLatestVersionBasedOnDir() {
+		const resolved = versionUtil.latestVersion(
+			this.resolveTestPath('utilities')
+		)
+
+		assert.deepEqual(resolved, {
+			intValue: 20200215,
+			stringValue: '2020-02-15',
+			constValue: '2020_02_15'
+		})
+	}
 }

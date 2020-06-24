@@ -148,7 +148,7 @@ export default class SchemaCommand extends AbstractCommand {
 		)
 
 		this.term.info(
-			`Definition created at ${builderResults.generatedFiles.builder.path}`
+			`Definition created at ${builderResults.generatedFiles[0].path}`
 		)
 
 		try {
