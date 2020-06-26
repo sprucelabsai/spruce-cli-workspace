@@ -33,9 +33,15 @@ handlebars.registerHelper('importRelatedDefinitions', function(
 
 	fields.forEach(field => {
 		if (field.type === FieldType.Schema) {
-			const related = SchemaField.fieldDefinitionToSchemaIds(field)
-			related.forEach(schemaId => {
-				const matched = schemaTemplateItems.find(t => t.id === schemaId)
+			const related = SchemaField.mapFieldDefinitionToSchemaIdsWithVersion(
+				field
+			)
+			related.forEach(idWithVersion => {
+				const matched = schemaTemplateItems.find(
+					t =>
+						t.id === idWithVersion.id &&
+						t.definition.version === idWithVersion.version
+				)
 				if (matched) {
 					imports.push(
 						`import ${matched.nameCamel}Definition${

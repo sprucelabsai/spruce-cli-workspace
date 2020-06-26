@@ -2,14 +2,14 @@ import os from 'os'
 import pathUtil from 'path'
 import readline, { Interface } from 'readline'
 import { Mercury } from '@sprucelabs/mercury'
-import BaseSpruceTest from '@sprucelabs/test'
+import AbstractSpruceTest from '@sprucelabs/test'
 import fs from 'fs-extra'
 import uuid from 'uuid'
 import { boot } from './cli'
 import ServiceFactory, { Service, IServices } from './factories/ServiceFactory'
 import TerminalInterface from './interfaces/TerminalInterface'
 
-export default class BaseCliTest extends BaseSpruceTest {
+export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	private static rl: Interface
 
 	protected static freshCwd() {

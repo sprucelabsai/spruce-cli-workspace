@@ -1,12 +1,12 @@
 import { ISpruce, test, assert } from '@sprucelabs/test'
-import BaseCliTest from '../BaseCliTest'
+import AbstractCliTest from '../AbstractCliTest'
 import FeatureManager from '../FeatureManager'
 import { FeatureCode } from '../FeatureManager'
 import PkgService from '../services/PkgService'
 import VsCodeService from '../services/VsCodeService'
 import FeatureComponent from './FeatureComponent'
 
-export default class FeatureComponentTest extends BaseCliTest {
+export default class FeatureComponentTest extends AbstractCliTest {
 	private static FeatureComponent() {
 		const pkgService = new PkgService(this.cwd)
 		const vsCodeService = new VsCodeService(this.cwd)

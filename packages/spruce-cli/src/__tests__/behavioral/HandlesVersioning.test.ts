@@ -1,8 +1,8 @@
 import { assert, test } from '@sprucelabs/test'
-import BaseCliTest from '../../BaseCliTest'
+import AbstractCliTest from '../../AbstractCliTest'
 import versionUtil from '../../utilities/version.utility'
 
-export default class HandlesVersioningTest extends BaseCliTest {
+export default class HandlesVersioningTest extends AbstractCliTest {
 	@test()
 	protected static async hasResolvePathFunction() {
 		assert.isFunction(versionUtil.resolvePath)
@@ -17,7 +17,7 @@ export default class HandlesVersioningTest extends BaseCliTest {
 			'services/{{@latest}}/index.md'
 		)
 
-		assert.equal(resolved, expected)
+		assert.isEqual(resolved, expected)
 	}
 
 	@test()
@@ -29,7 +29,7 @@ export default class HandlesVersioningTest extends BaseCliTest {
 			'utilities/{{@latest}}/index.md'
 		)
 
-		assert.equal(resolved, expected)
+		assert.isEqual(resolved, expected)
 	}
 
 	@test()
@@ -42,7 +42,7 @@ export default class HandlesVersioningTest extends BaseCliTest {
 			'utilities/{{@latest}}/index.md'
 		)
 
-		assert.equal(resolved, expected)
+		assert.isEqual(resolved, expected)
 	}
 
 	@test()

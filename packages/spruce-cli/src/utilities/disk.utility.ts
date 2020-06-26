@@ -23,7 +23,7 @@ const diskUtil = {
 		}
 	},
 	createDir(destination: string) {
-		fs.mkdirSync(destination)
+		fs.ensureDirSync(destination)
 	},
 	moveDir(source: string, destination: string) {
 		fs.moveSync(source, destination)

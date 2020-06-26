@@ -1,10 +1,10 @@
 import { Mercury } from '@sprucelabs/mercury'
 import { test, assert } from '@sprucelabs/test'
-import BaseCliTest from '../../BaseCliTest'
+import AbstractCliTest from '../../AbstractCliTest'
 import ServiceFactory from '../../factories/ServiceFactory'
 import FeatureManager, { FeatureCode } from '../../FeatureManager'
 
-export default class FeatureManagerTest extends BaseCliTest {
+export default class FeatureManagerTest extends AbstractCliTest {
 	protected static fm: FeatureManager
 
 	public static FeatureManager() {
@@ -34,8 +34,8 @@ export default class FeatureManagerTest extends BaseCliTest {
 		// })
 		// assert.isArray(dependencies)
 		// // Verify order
-		// assert.equal(dependencies?.[0].feature, Feature.Skill)
-		// assert.equal(dependencies?.[1].feature, Feature.Schema)
-		// assert.equal(dependencies?.[2].feature, Feature.Test)
+		// assert.isEqual(dependencies?.[0].feature, Feature.Skill)
+		// assert.isEqual(dependencies?.[1].feature, Feature.Schema)
+		// assert.isEqual(dependencies?.[2].feature, Feature.Test)
 	}
 }

@@ -1,6 +1,5 @@
 import { IMercuryGQLBody } from '@sprucelabs/mercury'
 import Schema from '@sprucelabs/schema'
-import gql from 'graphql-tag'
 import jwt from 'jsonwebtoken'
 import ErrorCode from '#spruce/errors/errorCode'
 import userDefinition from '#spruce/schemas/core/user.definition'
@@ -97,20 +96,7 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 	}
 
 	public async fetchUserFromId(id: string): Promise<Omit<User, 'id'>> {
-		const query =
-			gql`
-				query User($userId: ID!) {
-					User(id: $userId) {
-						id
-						name
-						firstName
-						lastName
-						casualName
-						profileImages
-						defaultProfileImages
-					}
-				}
-			`.loc?.source.body || ''
+		const query = ''
 
 		const result = await this.mercury.emit<
 			SpruceEvents.Core.Gql.IPayload,

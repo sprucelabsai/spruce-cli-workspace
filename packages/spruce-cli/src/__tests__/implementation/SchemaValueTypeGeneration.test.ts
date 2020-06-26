@@ -1,13 +1,13 @@
 import { Mercury } from '@sprucelabs/mercury'
 import { templates } from '@sprucelabs/spruce-templates'
 import { assert, test } from '@sprucelabs/test'
-import BaseCliTest from '../../BaseCliTest'
+import AbstractCliTest from '../../AbstractCliTest'
 import ServiceFactory from '../../factories/ServiceFactory'
 import ValueTypeGenerator from '../../generators/ValueTypeGenerator'
 import SchemaStore from '../../stores/SchemaStore'
 import diskUtil from '../../utilities/disk.utility'
 
-export default class SchemaValueTypeGenerationTest extends BaseCliTest {
+export default class SchemaValueTypeGenerationTest extends AbstractCliTest {
 	private static generator: ValueTypeGenerator
 
 	protected static async beforeEach() {

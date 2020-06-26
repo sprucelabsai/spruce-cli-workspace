@@ -1,10 +1,10 @@
 import { test, assert } from '@sprucelabs/test'
-import BaseCliTest from '../../BaseCliTest'
+import AbstractCliTest from '../../AbstractCliTest'
 import { HASH_SPRUCE_DIR } from '../../constants'
 import { FeatureCode } from '../../FeatureManager'
 import diskUtil from '../../utilities/disk.utility'
 
-export default class SettingUpASkill extends BaseCliTest {
+export default class SettingUpASkill extends AbstractCliTest {
 	@test()
 	protected static async setsUpASkillWithoutError() {
 		const cli = await this.Cli()
@@ -67,7 +67,7 @@ export default class SettingUpASkill extends BaseCliTest {
 		const cli = await this.Cli()
 		const health = await cli.checkHealth()
 
-		assert.equal(health.skill.status, 'failed')
+		assert.isEqual(health.skill.status, 'failed')
 		assert.include(health.skill.errors?.[0].options.code, 'SKILL_NOT_INSTALLED')
 	}
 
@@ -93,7 +93,7 @@ export default class SettingUpASkill extends BaseCliTest {
 
 		const health = await cli.checkHealth()
 
-		assert.equal(health.skill.status, 'failed')
+		assert.isEqual(health.skill.status, 'failed')
 		assert.include(health.skill.errors?.[0].options.code, 'BOOT_ERROR')
 	}
 

@@ -333,6 +333,7 @@ export default class TerminalInterface {
 	/** Ask the user for something */
 	public async prompt<T extends FieldDefinition>(
 		definition: T
+		// @ts-ignore
 	): Promise<FieldDefinitionValueType<T>> {
 		this.isPromptActive = true
 		const name = generateInquirerFieldName()
@@ -345,6 +346,7 @@ export default class TerminalInterface {
 			message: label
 		}
 
+		// @ts-ignore
 		const field = FieldFactory.field('prompt', fieldDefinition)
 
 		// Setup transform and validate

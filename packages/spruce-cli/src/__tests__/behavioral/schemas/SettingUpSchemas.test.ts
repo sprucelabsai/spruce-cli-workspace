@@ -2,9 +2,9 @@ import { test, assert } from '@sprucelabs/test'
 import { FeatureCode } from '../../../FeatureManager'
 import diskUtil from '../../../utilities/disk.utility'
 import tsConfigUtil from '../../../utilities/tsConfig.utility'
-import BaseSchemaTest from './BaseSchemaTest'
+import AbstractSchemaTest from '../../../AbstractSchemaTest'
 
-export default class SettingUpSchemasTests extends BaseSchemaTest {
+export default class SettingUpSchemasTests extends AbstractSchemaTest {
 	@test()
 	protected static async failsBecauseMissingSkillInformation() {
 		const cli = await this.Cli()
@@ -45,6 +45,6 @@ export default class SettingUpSchemasTests extends BaseSchemaTest {
 		const cli = await this.bootCliInstallSchemasAndSetCwd()
 		const status = await cli.checkHealth()
 
-		assert.equal(status.schema.status, 'passed')
+		assert.isEqual(status.schema.status, 'passed')
 	}
 }

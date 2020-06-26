@@ -1,10 +1,10 @@
 import pathUtil from 'path'
 import { assert, test } from '@sprucelabs/test'
-import BaseCliTest from '../../BaseCliTest'
+import AbstractCliTest from '../../AbstractCliTest'
 import { Service } from '../../factories/ServiceFactory'
 import diskUtil from '../../utilities/disk.utility'
 
-export default class ServicesTests extends BaseCliTest {
+export default class ServicesTests extends AbstractCliTest {
 	protected static cliRoot = pathUtil.join(__dirname, '..', '..')
 
 	@test('typeChecker passes on a good file')

@@ -7,3 +7,6 @@ export const CORE_SCHEMA_VERSION = {
 	intVal: 20200623,
 	constVal: '2020_05_23'
 }
+
+export const CORE_NAMESPACE = 'Core'
+export const LOCAL_NAMESPACE = 'Local'

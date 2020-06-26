@@ -34,7 +34,8 @@
 				"--inspect-brk",
 				"${workspaceFolder}/node_modules/.bin/jest",
 				"${relativeFile}",
-				"--detectOpenHandles"
+				"--detectOpenHandles",
+				"--no-cache"
 			],
 			"port": 9229,
 			"cwd": "${workspaceFolder}/packages/spruce-cli",

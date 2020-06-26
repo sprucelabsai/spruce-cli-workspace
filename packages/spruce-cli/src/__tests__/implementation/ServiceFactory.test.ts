@@ -1,9 +1,9 @@
 import { Mercury } from '@sprucelabs/mercury'
 import { test, assert, ISpruce } from '@sprucelabs/test'
-import BaseCliTest from '../../BaseCliTest'
+import AbstractCliTest from '../../AbstractCliTest'
 import ServiceFactory, { Service } from '../../factories/ServiceFactory'
 
-export default class ServiceFactoryTest extends BaseCliTest {
+export default class ServiceFactoryTest extends AbstractCliTest {
 	private static factory: ServiceFactory
 
 	protected static async beforeEach() {

@@ -1,9 +1,9 @@
 import { test, assert } from '@sprucelabs/test'
 import { Service } from '../../../factories/ServiceFactory'
 import versionUtil from '../../../utilities/version.utility'
-import BaseSchemaTest from './BaseSchemaTest'
+import AbstractSchemaTest from '../../../AbstractSchemaTest'
 
-export default class CreatingANewSchemaBuilderTest extends BaseSchemaTest {
+export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 	@test()
 	protected static async failsWhenASkillIsNotInstalled() {
 		const cli = await this.Cli()
@@ -21,7 +21,9 @@ export default class CreatingANewSchemaBuilderTest extends BaseSchemaTest {
 
 	@test()
 	protected static async canBuildFileWithoutCrashing() {
-		const cli = await this.bootCliInstallSchemasAndSetCwd()
+		const cli = await this.bootCliInstallSchemasAndSetCwd(
+			'build-without-crashing'
+		)
 		const response = await cli.createSchema({
 			nameReadable: 'Test schema!',
 			namePascal: 'Test',
@@ -33,22 +35,26 @@ export default class CreatingANewSchemaBuilderTest extends BaseSchemaTest {
 
 		const expectedDestination = versionUtil.resolveNewLatestPath(
 			this.cwd,
-			'services',
+			'src',
+			'schemas',
 			'{{@latest}}',
 			'test.builder.ts'
 		)
-		assert.equal(response.generatedFiles[0].path, expectedDestination)
+
+		assert.isEqual(response.generatedFiles[0].path, expectedDestination)
 	}
 
-	@test()
-	protected static async builderFileValidatesInstallingInSchemaDirectory() {
-		const cli = await this.bootCliInstallSchemasAndSetCwd()
+	@test.only()
+	protected static async builderFileValidates() {
+		const cli = await this.bootCliInstallSchemasAndSetCwd('build-valid-file')
 		const response = await cli.createSchema({
 			nameReadable: 'Test schema!',
 			namePascal: 'AnotherTest',
 			nameCamel: 'anotherTest',
 			description: 'this is so great!'
 		})
+
+		debugger
 
 		await this.Service(Service.TypeChecker).check(
 			response.generatedFiles[0].path

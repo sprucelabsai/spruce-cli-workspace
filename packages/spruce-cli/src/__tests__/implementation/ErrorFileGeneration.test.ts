@@ -2,12 +2,12 @@
 import pathUtil from 'path'
 import { templates } from '@sprucelabs/spruce-templates'
 import { assert, test } from '@sprucelabs/test'
-import BaseCliTest from '../../BaseCliTest'
+import AbstractCliTest from '../../AbstractCliTest'
 import ErrorGenerator from '../../generators/ErrorGenerator'
 import ErrorStore from '../../stores/ErrorStore'
 import diskUtil from '../../utilities/disk.utility'
 
-export default class ErrorStoreTest extends BaseCliTest {
+export default class ErrorStoreTest extends AbstractCliTest {
 	protected static store: ErrorStore
 	protected static async beforeEach() {
 		super.beforeEach()
@@ -42,7 +42,7 @@ export default class ErrorStoreTest extends BaseCliTest {
 		const results = await store.fetchErrorTemplateItems(
 			pathUtil.join(__dirname, 'testDirsAndFiles', 'errors_empty')
 		)
-		assert.equal(results.items.length, 0)
+		assert.isEqual(results.items.length, 0)
 	}
 
 	@test('finds items')

@@ -3,9 +3,9 @@ import { IErrorTemplateItem } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
+import schemaUtil from '../services/SchemaService'
 import diskUtil from '../utilities/disk.utility'
 import namesUtil from '../utilities/names.utility'
-import schemaUtil from '../services/SchemaService'
 
 interface IFetchErrorTemplateItemsResponse {
 	items: IErrorTemplateItem[]

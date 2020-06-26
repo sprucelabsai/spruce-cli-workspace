@@ -190,7 +190,7 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 
 	await mercury.connect(connectOptions)
 
-	const response: ICli = {
+	const cli: ICli = {
 		installFeatures: async <F extends FeatureCode>(
 			options: IInstallFeatureOptions<F>
 		) => {
@@ -209,10 +209,20 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 				})
 			}
 
-			const { destinationDir = 'services', ...rest } = options
+			const { destinationDir = 'src/schemas', ...rest } = options
 			const resolvedDestination = diskUtil.resolvePath(cwd, destinationDir)
 
-			return generators.schema.generateBuilder(resolvedDestination, rest)
+			const builderResults = generators.schema.generateBuilder(
+				resolvedDestination,
+				rest
+			)
+
+			await cli.syncSchemas({
+				lookupDir: destinationDir,
+				...rest
+			})
+
+			return builderResults
 		},
 
 		syncSchemas: async options => {
@@ -242,7 +252,7 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 			})
 
 			const [
-				{ items: schemaTemplateItems },
+				schemaTemplateItems,
 				{ items: fieldTemplateItems }
 			] = await Promise.all([schemaRequest, fieldRequest])
 
@@ -299,7 +309,7 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 		}
 	}
 
-	return response
+	return cli
 }
 
 /**

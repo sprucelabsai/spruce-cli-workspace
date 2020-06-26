@@ -1,9 +1,13 @@
 import { assert, test } from '@sprucelabs/test'
 import { HASH_SPRUCE_DIR, CORE_SCHEMA_VERSION } from '../../../constants'
 import diskUtil from '../../../utilities/disk.utility'
-import BaseSchemaTest from './BaseSchemaTest'
+import AbstractSchemaTest from '../../../AbstractSchemaTest'
 
-export default class CanSyncSchemas extends BaseSchemaTest {
+export default class CanSyncSchemas extends AbstractSchemaTest {
+	private static get schemaTypesFile() {
+		return this.resolvePath(HASH_SPRUCE_DIR, 'schemas', 'schemas.types.ts')
+	}
+
 	@test()
 	protected static async hasSyncSchemaFunction() {
 		const cli = await this.Cli()
@@ -17,16 +21,18 @@ export default class CanSyncSchemas extends BaseSchemaTest {
 	}
 
 	@test()
-	protected static async syncsSchemas() {
+	protected static async syncsSchemasGeneratesTypesFile() {
 		const cli = await this.bootCliInstallSchemasAndSetCwd('sync1')
-		const results = await cli.syncSchemas()
+		await cli.syncSchemas()
 
 		const expectedSchemaTypesDestination = this.resolvePath(
 			HASH_SPRUCE_DIR,
 			'schemas',
 			'schemas.types.ts'
 		)
-		assert.equal(results.generatedFiles[0].path, expectedSchemaTypesDestination)
+
+		assert.isEqual(this.schemaTypesFile, expectedSchemaTypesDestination)
+		assert.isTrue(diskUtil.doesFileExist(this.schemaTypesFile))
 	}
 
 	@test()
@@ -34,11 +40,7 @@ export default class CanSyncSchemas extends BaseSchemaTest {
 		const cli = await this.bootCliInstallSchemasAndSetCwd('sync1')
 		await cli.syncSchemas()
 
-		const typesFile = this.resolvePath(
-			HASH_SPRUCE_DIR,
-			'schemas',
-			'schemas.types.ts'
-		)
+		const typesFile = CanSyncSchemas.schemaTypesFile
 
 		const typesContents = diskUtil.readFile(typesFile)
 

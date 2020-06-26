@@ -9,6 +9,6 @@ export default class UsingSchemasInCli extends BaseSpruceTest {
 			casualName: 'Amigo'
 		})
 		console.log(user)
-		assert.equal(user.get('casualName'), 'Amigo')
+		assert.isEqual(user.get('casualName'), 'Amigo')
 	}
 }

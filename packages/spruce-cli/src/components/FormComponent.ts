@@ -96,7 +96,7 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 		const {
 			headline,
 			showOverview,
-			fields = Object.keys(this.fields) as F[]
+			fields = this.getNamedFields().map(nf => nf.name)
 		} = options
 
 		let done = false
@@ -167,7 +167,11 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 
 	/** Ask a question based on a field */
 	public askQuestion<F extends SchemaFieldNames<S>>(fieldName: F) {
-		const field = this.fields[fieldName]
+		const field = this.getNamedFields().find(nf => nf.name === fieldName)?.field
+
+		if (!field) {
+			throw new Error(`No field named ${fieldName} on form ${this.schemaId}`)
+		}
 
 		let definition = { ...field.definition }
 		const value = this.values[fieldName]
@@ -186,11 +190,12 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 		if (this.handlers.onWillAskQuestion) {
 			definition = this.handlers.onWillAskQuestion(
 				fieldName,
+				//@ts-ignore
 				definition,
 				this.values
 			)
 		}
-
+		//@ts-ignore
 		return this.term.prompt(definition)
 	}
 
@@ -236,7 +241,7 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 		options: { fields?: F[] } = {}
 	): Promise<IFormAction<S>> {
 		const { term } = this
-		const { fields = Object.keys(this.fields) } = options
+		const { fields = this.getNamedFields().map(nf => nf.name) } = options
 
 		// Track actions while building choices
 		const actionMap: Record<string, IFormAction<S>> = {}

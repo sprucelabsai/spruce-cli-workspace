@@ -1,6 +1,5 @@
 import { ISchemaDefinition } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldType'
-
 import { RoleSelectChoices } from './role.definition'
 
 const groupDefinition: ISchemaDefinition = {
@@ -37,14 +36,14 @@ const groupDefinition: ISchemaDefinition = {
 			label: 'On work permissions',
 			type: FieldType.Schema,
 			options: {
-				schemaId: 'acl'
+				schemaId: { id: 'acl' }
 			}
 		},
 		acls: {
 			label: 'Off work permissions',
 			type: FieldType.Schema,
 			options: {
-				schemaId: 'acl'
+				schemaId: { id: 'acl' }
 			}
 		}
 	}

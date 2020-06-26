@@ -15,7 +15,7 @@ export default class SchemaFeature extends AbstractFeature {
 			name: '@sprucelabs/schema'
 		},
 		{
-			name: '@sprucelabs/path-resolver',
+			name: 'tsconfig-paths',
 			isDev: true
 		}
 	]

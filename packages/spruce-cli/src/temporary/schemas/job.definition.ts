@@ -1,6 +1,5 @@
 import { ISchemaDefinition } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldType'
-
 import aclDefinition from './acl.definition'
 import { RoleSelectChoices } from './role.definition'
 
@@ -18,7 +17,7 @@ const jobDefinition: ISchemaDefinition = {
 		isDefault: {
 			label: 'Is default',
 			hint:
-				'Is this job one that comes with every org? Mapped to roles (owner, groupManager, managar, guest).',
+				'Is this job one that comes with every org? Mapped to roles (owner, groupManager, manager, guest).',
 			type: FieldType.Text,
 			isRequired: true
 		},

@@ -1,10 +1,10 @@
-import BaseCliTest from '../../../BaseCliTest'
-import { ICli } from '../../../cli'
-import { HASH_SPRUCE_DIR } from '../../../constants'
-import { FeatureCode } from '../../../FeatureManager'
-import diskUtil from '../../../utilities/disk.utility'
+import AbstractCliTest from './AbstractCliTest'
+import { ICli } from './cli'
+import { HASH_SPRUCE_DIR } from './constants'
+import { FeatureCode } from './FeatureManager'
+import diskUtil from './utilities/disk.utility'
 
-export default class BaseSchemaTest extends BaseCliTest {
+export default abstract class AbstractSchemaTest extends AbstractCliTest {
 	private static installedSkills: Record<
 		string,
 		{ cwd: string; cli: ICli }

@@ -1,7 +1,7 @@
 import { test, assert } from '@sprucelabs/test'
-import BaseCliTest from '../../BaseCliTest'
+import AbstractCliTest from '../../AbstractCliTest'
 
-export default class BootTest extends BaseCliTest {
+export default class BootTest extends AbstractCliTest {
 	@test('can boot cli')
 	protected static async testBooting() {
 		const cli = await this.Cli()

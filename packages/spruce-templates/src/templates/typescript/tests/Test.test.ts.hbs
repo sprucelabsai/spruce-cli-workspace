@@ -9,7 +9,7 @@ export default class {{namePascal}}Test extends BaseSpruceTest {
 	) {
 		assert.isOk(spruce, 'Failed to load Spruce')
 		assert.isOk(spruce.mercury, 'Mercury missing from Spruce')
-		assert.equal(hello, 'hello')
-		assert.equal(world, 'world')
+		assert.isEqual(hello, 'hello')
+		assert.isEqual(world, 'world')
 	}
 }

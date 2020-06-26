@@ -142,9 +142,9 @@ export default class QuizComponent<
 		options: IQuizPresentationOptions<T, Q> = {}
 	): Promise<QuizPresentationResults<Q>> {
 		const {
-			questions = Object.keys(this.formBuilder.fields) as QuizAnswerFieldNames<
-				Q
-			>[],
+			questions = this.formBuilder
+				.getNamedFields()
+				.map(nf => nf.name) as QuizAnswerFieldNames<Q>[],
 			randomizeQuestions = this.randomizeQuestions
 		} = options
 
@@ -174,7 +174,7 @@ export default class QuizComponent<
 			const [validity, idx] = answer.split('-')
 
 			// Get the field to tell type
-			const field = this.formBuilder.fields[fieldName]
+			const field = this.formBuilder.getField(fieldName)
 			const fieldDefinition = field.definition
 
 			switch (fieldDefinition.type) {
