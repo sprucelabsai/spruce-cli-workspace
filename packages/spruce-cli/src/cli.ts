@@ -1,10 +1,5 @@
 #!/usr/bin/env node
-// eslint-disable-next-line import/order
-import { register } from '@sprucelabs/path-resolver'
-register({
-	cwd: __dirname,
-	extensions: ['.js', '.ts']
-})
+
 // eslint-disable-next-line import/order
 import {
 	Mercury,
@@ -238,23 +233,25 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 			}
 
 			const {
-				lookupDir = 'schemas',
-				addonLookupDir = 'addons',
+				lookupDir = 'src/schemas',
+				addonLookupDir = 'src/addons',
 				destinationDir = `${HASH_SPRUCE_DIR}/schemas`
 			} = options ?? {}
 
-			const schemaRequest = stores.schema.fetchSchemaTemplateItems({
-				localLookupDir: diskUtil.resolvePath(cwd, lookupDir)
-			})
+			const schemaRequest = stores.schema.fetchSchemaTemplateItems(
+				diskUtil.resolvePath(cwd, lookupDir)
+			)
 
-			const fieldRequest = stores.schema.fetchFieldTemplateItems({
-				localLookupDir: diskUtil.resolvePath(cwd, addonLookupDir)
-			})
+			const fieldRequest = stores.schema.fetchFieldTemplateItems(
+				diskUtil.resolvePath(cwd, addonLookupDir)
+			)
 
 			const [
-				schemaTemplateItems,
+				{ items: schemaTemplateItems },
 				{ items: fieldTemplateItems }
 			] = await Promise.all([schemaRequest, fieldRequest])
+
+			debugger
 
 			const results = await generators.schema.generateSchemaTypes(
 				diskUtil.resolvePath(cwd, destinationDir),

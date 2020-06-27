@@ -104,6 +104,10 @@ const fieldType: string = fs
 	.readFileSync(path.join(templatePath, 'schemas/fields/fieldType.ts.hbs'))
 	.toString()
 
+const valueTypes: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/valueTypes.ts.hbs'))
+	.toString()
+
 // Template generators
 export const templates = {
 	/** All definitions */
@@ -115,6 +119,10 @@ export const templates = {
 		const imports = importExtractorUtility(options.fieldTemplateItems)
 		const template = handlebars.compile(schemasTypes)
 		return template({ ...options, imports })
+	},
+	valueTypes() {
+		const template = handlebars.compile(valueTypes)
+		return template({})
 	},
 	/** Will return the template for a definition that has been normalized */
 	definition(

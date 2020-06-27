@@ -24,20 +24,22 @@ import {
 } from '../temporary/schemas'
 import namesUtil from '../utilities/names.utility'
 
+interface IFetchSchemaTemplateItemsResponse {
+	items: ISchemaTemplateItem[]
+	errors: SpruceError[]
+}
+
+interface IFetchFieldTemplateItemsResponse {
+	items: IFieldTemplateItem[]
+	errors: SpruceError[]
+}
+
 export interface ISchemaTemplateItemsOptions {
-	includeErrors?: boolean
-	/* Where should i look for local definitions? */
 	localLookupDir: string
 }
 
 export interface IFieldTemplateItemsOptions
 	extends ISchemaTemplateItemsOptions {}
-
-type FieldTemplateItemsReturnType<
-	T extends IFieldTemplateItemsOptions
-> = T['includeErrors'] extends false
-	? IFieldTemplateItem[]
-	: { items: IFieldTemplateItem[]; errors: SpruceError[] }
 
 interface IAddonItem {
 	path: string
@@ -63,10 +65,8 @@ export default class SchemaStore {
 	}
 
 	public async fetchSchemaTemplateItems<T extends ISchemaTemplateItemsOptions>(
-		options: T
-	): Promise<ISchemaTemplateItem[]> {
-		const { localLookupDir } = options
-
+		localLookupDir: string
+	): Promise<IFetchSchemaTemplateItemsResponse> {
 		const schemas: ISchemaDefinition[] = [
 			userDefinition,
 			skillDefinition,
@@ -98,7 +98,7 @@ export default class SchemaStore {
 
 		const templateItems = [...coreTemplateItems, ...localTemplateItems]
 
-		return templateItems
+		return { items: templateItems, errors: [] }
 		// const importService = this.ImportService()
 		// // Local
 		// const localErrors: SpruceError[] = []
@@ -164,9 +164,8 @@ export default class SchemaStore {
 
 	/** All field types from all skills we depend on */
 	public async fetchFieldTemplateItems<T extends IFieldTemplateItemsOptions>(
-		options: T
-	): Promise<FieldTemplateItemsReturnType<T>> {
-		const { includeErrors = true, localLookupDir } = options
+		localLookupDir: string
+	): Promise<IFetchFieldTemplateItemsResponse> {
 		const cwd = pathUtil.join(__dirname, '..', '..')
 
 		const localImportService = this.ImportService(cwd)
@@ -263,9 +262,7 @@ export default class SchemaStore {
 			})
 		}
 
-		return (includeErrors
-			? { items: types, errors: localErrors }
-			: types) as FieldTemplateItemsReturnType<T>
+		return { items: types, errors: localErrors }
 	}
 
 	// TODO this may need to be brought back to hold an entire class map

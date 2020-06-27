@@ -1,14 +1,13 @@
 import path from 'path'
+import pathUtil from 'path'
 import { IFieldTemplateItem, ISchemaTemplateItem } from '@sprucelabs/schema'
 import {
 	templates,
 	IDefinitionBuilderTemplateItem
 } from '@sprucelabs/spruce-templates'
-import fs from 'fs-extra'
 import ErrorCode from '#spruce/errors/errorCode'
 import { LATEST_HANDLEBARS } from '../constants'
 import SpruceError from '../errors/SpruceError'
-import ValueTypeService from '../services/ValueTypeService'
 import { IGeneratedFile } from '../types/cli.types'
 import diskUtil from '../utilities/disk.utility'
 import namesUtil from '../utilities/names.utility'
@@ -25,6 +24,10 @@ export interface ISchemaGeneratorBuildResults {
 	generatedFiles: IGeneratedFile[]
 }
 
+export interface ISchemaGeneratorValueTypeResults {
+	generatedFiles: IGeneratedFile[]
+}
+
 export interface ISchemaGeneratorSyncResults {
 	resultsByStage: ISchemaTypesGenerationStage[]
 	generatedFiles: IGeneratedFile[]
@@ -38,9 +41,6 @@ export interface ISchemaTypesGenerationStage {
 	successfulFields: number
 }
 export default class SchemaGenerator extends AbstractGenerator {
-	//@ts-ignore
-	private valueTypeService: ValueTypeService
-
 	public async generateBuilder(
 		destinationDir: string,
 		options: IDefinitionBuilderTemplateItem
@@ -66,7 +66,6 @@ export default class SchemaGenerator extends AbstractGenerator {
 		}
 	}
 
-	/** Generate the type files required for a schema */
 	public async generateSchemaTypes(
 		destinationDir: string,
 		options: IGenerateSchemaTypesOptions
@@ -167,6 +166,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 				const {
 					valueTypes,
 					errors
+					//@ts-ignore
 				} = await this.valueTypeService.allValueTypes({
 					schemaTemplateItems,
 					fieldTemplateItems
@@ -174,6 +174,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 				// If there were errors, remove any definitions that had them
 				if (errors.length > 0) {
+					//@ts-ignore
 					errors.forEach(err => {
 						const { options } = err
 						if (options.code === ErrorCode.ValueTypeServiceError) {
@@ -201,8 +202,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 								valueTypes
 							})
 
-							await fs.ensureFile(destination)
-							await fs.writeFile(destination, definition)
+							await diskUtil.writeFile(destination, definition)
 
 							normalizedDefinitions.push({
 								name: `${templateItem.namePascal} definition`,
@@ -277,6 +277,32 @@ export default class SchemaGenerator extends AbstractGenerator {
 						'A hash to find any field by type, e.g. FieldClassMap[FieldType.Text]'
 				},
 				...normalizedDefinitions
+			]
+		}
+	}
+
+	public async generateValueTypes(
+		destinationDir: string,
+		options: {
+			schemaTemplateItems: ISchemaTemplateItem[]
+			fieldTemplateItems: IFieldTemplateItem[]
+		}
+	): Promise<ISchemaGeneratorValueTypeResults> {
+		const contents = this.templates.valueTypes()
+		const destination = pathUtil.join(destinationDir, 'valueType.tmp.ts')
+
+		console.log(options)
+
+		diskUtil.writeFile(destination, contents)
+
+		return {
+			generatedFiles: [
+				{
+					name: 'Value type builder',
+					path: destination,
+					description:
+						'For constructing what goes to the right of the : after each property in the interface.'
+				}
 			]
 		}
 	}

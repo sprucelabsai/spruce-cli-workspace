@@ -202,10 +202,11 @@ export default class SchemaCommand extends AbstractCommand {
 		this.term.startLoading('Fetching schemas and field types')
 
 		// Load schemas
-		const schemaTemplateItems = await this.schemaStore.fetchSchemaTemplateItems(
-			{
-				localLookupDir: diskUtil.resolvePath(lookupDir)
-			}
+		const {
+			items: schemaTemplateItems,
+			errors: schemaTemplateErrors
+		} = await this.schemaStore.fetchSchemaTemplateItems(
+			diskUtil.resolvePath(lookupDir)
 		)
 
 		if (schemaTemplateItems.length === 0) {
@@ -219,11 +220,9 @@ export default class SchemaCommand extends AbstractCommand {
 		const {
 			items: fieldTemplateItems,
 			errors: fieldTemplateErrors
-		} = await this.schemaStore.fetchFieldTemplateItems({
-			localLookupDir: diskUtil.resolvePath(addonLookupDir)
-		})
-
-		const schemaTemplateErrors: SpruceError[] = []
+		} = await this.schemaStore.fetchFieldTemplateItems(
+			diskUtil.resolvePath(addonLookupDir)
+		)
 
 		this.term.stopLoading()
 
