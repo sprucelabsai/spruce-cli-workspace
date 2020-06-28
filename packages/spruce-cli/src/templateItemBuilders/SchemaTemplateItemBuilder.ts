@@ -110,7 +110,8 @@ export default class SchemaTemplateItemBuilder {
 			if (!definition) {
 				throw new SchemaError({
 					code: SchemaErrorCode.SchemaNotFound,
-					schemaId: JSON.stringify(definitionOrIdWithVersion)
+					schemaId: JSON.stringify(definitionOrIdWithVersion),
+					friendlyMessage: 'Make sure you are pointing to the correct version.'
 				})
 			}
 		} else {

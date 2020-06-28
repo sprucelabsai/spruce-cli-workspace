@@ -22,3 +22,7 @@ export interface INpmPackage {
 	/** Whether to install this in "devDependencies" */
 	isDev?: boolean
 }
+
+export interface IValueTypes {
+	[key: string]: string
+}

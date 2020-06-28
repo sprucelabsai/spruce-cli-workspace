@@ -1,10 +1,11 @@
 import { ISchemaDefinition } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldType'
-
+import { CORE_SCHEMA_VERSION } from '../../constants'
 
 const locationDefinition: ISchemaDefinition = {
 	id: 'location',
 	name: 'Location',
+	version: CORE_SCHEMA_VERSION.constVal,
 	description:
 		'A physical location where people meet. An organization has at least one of them.',
 	fields: {

@@ -1,5 +1,6 @@
 import { ISchemaDefinition } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldType'
+import { CORE_SCHEMA_VERSION } from '../../constants'
 import aclDefinition from './acl.definition'
 import { RoleSelectChoices } from './role.definition'
 
@@ -7,6 +8,7 @@ import { RoleSelectChoices } from './role.definition'
 const jobDefinition: ISchemaDefinition = {
 	id: 'job',
 	name: 'Job',
+	version: CORE_SCHEMA_VERSION.constVal,
 	description:
 		'A position at a company. The answer to the question; What is your job?',
 	fields: {

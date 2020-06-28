@@ -6,6 +6,7 @@ import { HASH_SPRUCE_DIR } from '../../constants'
 import ServiceFactory, { Service } from '../../factories/ServiceFactory'
 import SchemaGenerator from '../../generators/SchemaGenerator'
 import SchemaStore from '../../stores/SchemaStore'
+import { IValueTypes } from '../../types/cli.types'
 import diskUtil from '../../utilities/disk.utility'
 
 export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
@@ -24,7 +25,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async runsWithoutBreakingWithNoArgs() {
-		const results = this.generator.generateValueTypes(
+		const results = await this.generator.generateValueTypes(
 			this.resolvePath(HASH_SPRUCE_DIR),
 			{
 				schemaTemplateItems: [],
@@ -77,10 +78,11 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	@test()
 	protected static async importsTypes() {
 		const results = await this.generateValueTypes()
-		const imports = await this.Service(Service.Import).importDefault(
-			results.generatedFiles[0].path
-		)
+		const valueTypes = await this.Service(Service.Import).importDefault<
+			IValueTypes
+		>(results.generatedFiles[0].path)
 
-		assert.isObject(imports)
+		assert.isObject(valueTypes)
+		assert.isObject(valueTypes.user)
 	}
 }

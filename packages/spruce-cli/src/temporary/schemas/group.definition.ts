@@ -1,10 +1,13 @@
 import { ISchemaDefinition } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldType'
+import { CORE_SCHEMA_VERSION } from '../../constants'
+import aclDefinition from './acl.definition'
 import { RoleSelectChoices } from './role.definition'
 
 const groupDefinition: ISchemaDefinition = {
 	id: 'job',
 	name: 'Job',
+	version: CORE_SCHEMA_VERSION.constVal,
 	description:
 		'A position at a company. The answer to the question; What is your job?',
 	fields: {
@@ -15,7 +18,7 @@ const groupDefinition: ISchemaDefinition = {
 		isDefault: {
 			label: 'Is default',
 			hint:
-				'Is this job one that comes with every org? Mapped to roles (owner, groupManager, managar, guest).',
+				'Is this job one that comes with every org? Mapped to roles (owner, groupManager, manager, guest).',
 			type: FieldType.Text,
 			isRequired: true
 		},
@@ -36,14 +39,14 @@ const groupDefinition: ISchemaDefinition = {
 			label: 'On work permissions',
 			type: FieldType.Schema,
 			options: {
-				schemaId: { id: 'acl' }
+				schema: aclDefinition
 			}
 		},
 		acls: {
 			label: 'Off work permissions',
 			type: FieldType.Schema,
 			options: {
-				schemaId: { id: 'acl' }
+				schema: aclDefinition
 			}
 		}
 	}

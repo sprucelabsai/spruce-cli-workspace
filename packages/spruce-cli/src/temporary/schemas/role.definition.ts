@@ -3,10 +3,12 @@ import {
 	ISelectFieldDefinitionChoice
 } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldType'
+import { CORE_SCHEMA_VERSION } from '../../constants'
 
 const roleDefinition: ISchemaDefinition = {
 	id: 'role',
 	name: 'Role',
+	version: CORE_SCHEMA_VERSION.constVal,
 	description: 'All people in Spruce fall into 5 roles.',
 	fields: {
 		slug: {

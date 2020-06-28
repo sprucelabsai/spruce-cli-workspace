@@ -1,7 +1,7 @@
 import { assert, test } from '@sprucelabs/test'
+import AbstractSchemaTest from '../../../AbstractSchemaTest'
 import { HASH_SPRUCE_DIR, CORE_SCHEMA_VERSION } from '../../../constants'
 import diskUtil from '../../../utilities/disk.utility'
-import AbstractSchemaTest from '../../../AbstractSchemaTest'
 
 export default class CanSyncSchemas extends AbstractSchemaTest {
 	private static get schemaTypesFile() {

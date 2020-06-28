@@ -1,10 +1,11 @@
 import { ISchemaDefinition } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldType'
-
+import { CORE_SCHEMA_VERSION } from '../../constants'
 
 const profileImageDefinition: ISchemaDefinition = {
 	id: 'profileImage',
 	name: 'Profile Image Sizes',
+	version: CORE_SCHEMA_VERSION.constVal,
 	description: 'Profile images at various helpful sizes and resolutions.',
 	fields: {
 		profile60: {
@@ -34,6 +35,7 @@ const userDefinition: ISchemaDefinition = {
 	id: 'user',
 	name: 'User',
 	description: 'A human being.',
+	version: CORE_SCHEMA_VERSION.constVal,
 	fields: {
 		id: {
 			label: 'Id',

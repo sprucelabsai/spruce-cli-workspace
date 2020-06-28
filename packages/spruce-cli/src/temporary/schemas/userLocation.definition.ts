@@ -1,10 +1,15 @@
 import { ISchemaDefinition } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldType'
+import { CORE_SCHEMA_VERSION } from '../../constants'
+import jobDefinition from './job.definition'
+import locationDefinition from './location.definition'
 import { RoleSelectChoices } from './role.definition'
+import userDefinition from './user.definition'
 
 const userLocationDefinition: ISchemaDefinition = {
 	id: 'userLocation',
 	name: 'User location',
+	version: CORE_SCHEMA_VERSION.constVal,
 	description: 'A location a person has given access to themselves.',
 	fields: {
 		id: {
@@ -40,7 +45,7 @@ const userLocationDefinition: ISchemaDefinition = {
 			type: FieldType.Schema,
 			isRequired: true,
 			options: {
-				schemaId: { id: 'job' }
+				schema: jobDefinition
 			}
 		},
 		location: {
@@ -48,7 +53,7 @@ const userLocationDefinition: ISchemaDefinition = {
 			type: FieldType.Schema,
 			isRequired: true,
 			options: {
-				schemaId: { id: 'location' }
+				schema: locationDefinition
 			}
 		},
 		user: {
@@ -56,7 +61,7 @@ const userLocationDefinition: ISchemaDefinition = {
 			type: FieldType.Schema,
 			isRequired: true,
 			options: {
-				schemaId: { id: 'user' }
+				schema: userDefinition
 			}
 		}
 	}
