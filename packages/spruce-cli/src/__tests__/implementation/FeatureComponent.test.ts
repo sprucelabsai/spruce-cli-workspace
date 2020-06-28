@@ -1,26 +1,24 @@
-import { ISpruce, test, assert } from '@sprucelabs/test'
-import AbstractCliTest from '../AbstractCliTest'
-import FeatureManager from '../FeatureManager'
-import { FeatureCode } from '../FeatureManager'
-import PkgService from '../services/PkgService'
-import VsCodeService from '../services/VsCodeService'
-import FeatureComponent from './FeatureComponent'
+import { Mercury } from '@sprucelabs/mercury'
+import { test, assert } from '@sprucelabs/test'
+import AbstractCliTest from '../../AbstractCliTest'
+import FeatureComponent from '../../components/FeatureComponent'
+import ServiceFactory from '../../factories/ServiceFactory'
+import FeatureManager from '../../FeatureManager'
+import { FeatureCode } from '../../FeatureManager'
 
 export default class FeatureComponentTest extends AbstractCliTest {
 	private static FeatureComponent() {
-		const pkgService = new PkgService(this.cwd)
-		const vsCodeService = new VsCodeService(this.cwd)
-		const featureManager = FeatureManager.WithAllFeatures(
-			this.cwd,
-			pkgService,
-			vsCodeService
-		)
+		const serviceFactory = new ServiceFactory(new Mercury())
+		const featureManager = FeatureManager.WithAllFeatures({
+			cwd: this.cwd,
+			serviceFactory
+		})
 		const featureComponent = new FeatureComponent(this.Term(), featureManager)
 		return featureComponent
 	}
 	@test('Can create feature component')
 	protected static async canCreateFeatureComponent() {
-		const featureComponent = FeatureComponentTest.FeatureComponent()
+		const featureComponent = this.FeatureComponent()
 		assert.isOk(featureComponent)
 	}
 
@@ -53,7 +51,6 @@ export default class FeatureComponentTest extends AbstractCliTest {
 		undefined
 	)
 	protected static async asksRightQuestions(
-		spruce: ISpruce,
 		feature: FeatureCode,
 		expectedAnswers: Record<string, any> | undefined,
 		values: Record<string, string> | undefined
