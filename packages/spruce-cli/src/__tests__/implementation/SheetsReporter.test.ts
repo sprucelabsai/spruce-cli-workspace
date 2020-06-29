@@ -38,24 +38,30 @@ export default class SheetsReporterTest extends AbstractSpruceTest {
 	}
 
 	protected static async beforeAll() {
+		sheetUtil.serviceEmail = process.env.GOOGLE_SERVICE_EMAIL_TEST as string
+		sheetUtil.privateKey = process.env.GOOGLE_SERVICE_PRIVATE_KEY_TEST as string
+
 		this.worksheetId = await sheetUtil.generateRandomWorksheet(this.sheetId)
 	}
 
 	protected static async beforeEach() {
 		await super.beforeEach()
 
-		this.reporter = new SheetsReporter({
-			adapterFilepath: pathUtil.join(
-				__dirname,
-				'..',
-				'..',
-				'jest',
-				'GoogleSpreadsheetAdapter'
-			),
-			sheetId: this.sheetId,
-			worksheetId: this.worksheetId,
-			testMap: this.testMap
-		})
+		this.reporter = new SheetsReporter(
+			{},
+			{
+				adapterFilepath: pathUtil.join(
+					__dirname,
+					'..',
+					'..',
+					'jest',
+					'GoogleSpreadsheetAdapter'
+				),
+				sheetId: this.sheetId,
+				worksheetId: this.worksheetId,
+				testMap: this.testMap
+			}
+		)
 	}
 
 	protected static async afterAll() {

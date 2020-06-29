@@ -98,7 +98,7 @@ export default class SettingUpASkill extends AbstractCliTest {
 	}
 
 	@test()
-	protected static async getsGoodHealthCheckWithNothingElse() {
+	protected static async getsGoodHealthCheckAndNothingElse() {
 		const cli = await this.Cli()
 		await cli.installFeatures({
 			features: [

@@ -1,21 +1,28 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 require('dotenv').config()
 
-async function loadSheet(sheetId: string) {
+async function loadSheet(
+	serviceEmail: string,
+	privateKey: string,
+	sheetId: string
+) {
 	const doc = new GoogleSpreadsheet(sheetId)
 	await doc.useServiceAccountAuth({
 		// eslint-disable-next-line @typescript-eslint/camelcase
-		client_email: process.env.GOOGLE_SERVICE_EMAIL as string,
+		client_email: serviceEmail,
 		// eslint-disable-next-line @typescript-eslint/camelcase
-		private_key: process.env.GOOGLE_SERVICE_PRIVATE_KEY as string
+		private_key: privateKey
 	})
 	await doc.loadInfo()
 	return doc
 }
 
 const sheetUtil = {
+	serviceEmail: process.env.GOOGLE_SERVICE_EMAIL as string,
+	privateKey: process.env.GOOGLE_SERVICE_PRIVATE_KEY as string,
+
 	async fetchCellValue(sheetId: string, worksheetId: number, cell: string) {
-		const sheet = await loadSheet(sheetId)
+		const sheet = await loadSheet(this.serviceEmail, this.privateKey, sheetId)
 		const worksheet = sheet.sheetsById[worksheetId]
 
 		await worksheet.loadCells(cell)
@@ -27,7 +34,7 @@ const sheetUtil = {
 
 	async generateRandomWorksheet(sheetId: string): Promise<number> {
 		const name = `TEST.${Date.now()}`
-		const sheet = await loadSheet(sheetId)
+		const sheet = await loadSheet(this.serviceEmail, this.privateKey, sheetId)
 
 		const worksheet = await sheet.addWorksheet({ title: name })
 
@@ -35,7 +42,7 @@ const sheetUtil = {
 	},
 
 	async deleteWorksheet(sheetId: string, worksheetId: number): Promise<void> {
-		const sheet = await loadSheet(sheetId)
+		const sheet = await loadSheet(this.serviceEmail, this.privateKey, sheetId)
 
 		const worksheet = sheet.sheetsById[worksheetId]
 

@@ -2,6 +2,7 @@ import AbstractSpruceTest, { test, assert } from '@sprucelabs/test'
 import GoogleSpreadsheetAdapter from '../../jest/GoogleSpreadsheetAdapter'
 import { IGoogleSheetsAdapter } from '../../types/jest.types'
 import sheetUtil from './sheet.utilities'
+require('dotenv').config()
 
 export default class SheetsAdapterTest extends AbstractSpruceTest {
 	private static adapter: IGoogleSheetsAdapter
@@ -10,7 +11,17 @@ export default class SheetsAdapterTest extends AbstractSpruceTest {
 
 	protected static async beforeEach() {
 		super.beforeEach()
-		this.adapter = new GoogleSpreadsheetAdapter()
+
+		const email = process.env.GOOGLE_SERVICE_EMAIL_TEST as string
+		const key = process.env.GOOGLE_SERVICE_PRIVATE_KEY_TEST as string
+
+		this.adapter = new GoogleSpreadsheetAdapter({
+			serviceEmail: email,
+			privateKey: key
+		})
+
+		sheetUtil.serviceEmail = email
+		sheetUtil.privateKey = key
 	}
 
 	protected static async beforeAll() {

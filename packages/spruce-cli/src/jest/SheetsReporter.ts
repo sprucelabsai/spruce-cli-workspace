@@ -1,3 +1,4 @@
+import pathUtil from 'path'
 import {
 	IJestTest,
 	IJestTestResults,
@@ -30,8 +31,13 @@ export default class SheetsReporter<TestMap extends ITestMap> {
 	private sheetId: string
 	private worksheetId: number
 
-	public constructor(options: ISheetsReporterOptions<TestMap>) {
-		const AdapterClass = require(options.adapterFilepath).default
+	public constructor(_: any, options: ISheetsReporterOptions<TestMap>) {
+		const adapterPath =
+			options.adapterFilepath[0] === pathUtil.sep
+				? options.adapterFilepath
+				: pathUtil.join(process.cwd(), options.adapterFilepath)
+
+		const AdapterClass = require(adapterPath).default
 		this.adapter = new AdapterClass()
 
 		this.testMap = options.testMap

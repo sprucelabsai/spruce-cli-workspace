@@ -138,12 +138,14 @@
 		"reporters": [
 			"default",
 			[
-				"<rootDir>/build/src/jest/sheetsReporter.js",
+				"<rootDir>/build/src/jest/SheetsReporter.js",
 				{
+					"adapterFilepath": "build/src/jest/GoogleSpreadsheetAdapter",
 					"sheetId": "1DoWM7mYgGDa-PJXptLomrZmbIBZiuxS1YiAsRXU2Gm0",
-					"worksheetId": "Yup",
-					"testToCellMap": {
-						"schemaPassesHealthCheck": "2020 Zoom!C:6"
+					"worksheetId": 843037832,
+					"testMap": {
+						"canBootTheCli": "C4",
+						"getsGoodHealthCheckAndNothingElse": "C15"
 					}
 				}
 			]
