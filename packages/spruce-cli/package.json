@@ -95,6 +95,7 @@
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^5.0.2",
 		"conventional-changelog-sprucelabs": "^1.1.0",
+		"dotenv": "^8.2.0",
 		"google-spreadsheet": "^3.0.11",
 		"jest": "^26.0.1",
 		"jest-reporters": "^0.0.2",
@@ -126,6 +127,9 @@
 			"<rootDir>/build/",
 			"<rootDir>/node_modules/",
 			"<rootDir>/src/__tests__/testDirsAndFiles/"
+		],
+		"testMatch": [
+			"**/__tests__/**/*.test.[jt]s?(x)"
 		],
 		"moduleNameMapper": {
 			"^#spruce/(.*)$": "<rootDir>/.spruce/$1",

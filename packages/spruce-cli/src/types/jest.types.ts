@@ -8,7 +8,7 @@ export interface IGoogleSheetsAdapter {
 		sheetId: string
 		worksheetId: number
 		cell: string
-		value: string | number
+		value: string | number | boolean
 	}): Promise<void>
 }
 

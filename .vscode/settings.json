@@ -59,5 +59,8 @@
 		"**/.git/objects/**",
 		".vscode",
 		".spruce"
+	],
+	"cSpell.words": [
+		"spreedsheet"
 	]
 }

@@ -1,15 +1,15 @@
 import {
 	IJestTest,
 	IJestTestResults,
-	IJestTestResult
+	IJestTestResult,
+	IGoogleSheetsAdapter
 } from '../types/jest.types'
 
-export interface ISheetsReporterOptions {
+export interface ISheetsReporterOptions<TestMap extends ITestMap = ITestMap> {
 	sheetId: string
-	worksheetId: string
-	testMap: {
-		[testName: string]: string
-	}
+	worksheetId: number
+	adapterFilepath: string
+	testMap: TestMap
 }
 
 export interface ITestMap {
@@ -24,7 +24,61 @@ export class SheetsReporterUtil {
 	}
 }
 
-export default class SheetsReporter {
-	public constructor(options: ISheetsReporterOptions) {}
-	public onTestResult(_: IJestTest, testResult: IJestTestResults) {}
+export default class SheetsReporter<TestMap extends ITestMap> {
+	private adapter: IGoogleSheetsAdapter
+	private testMap: TestMap
+	private sheetId: string
+	private worksheetId: number
+
+	public constructor(options: ISheetsReporterOptions<TestMap>) {
+		const AdapterClass = require(options.adapterFilepath).default
+		this.adapter = new AdapterClass()
+
+		this.testMap = options.testMap
+		this.sheetId = options.sheetId
+		this.worksheetId = options.worksheetId
+	}
+
+	public onTestResult(_: IJestTest, testResult: IJestTestResults) {
+		const filteredTests = SheetsReporterUtil.getMappedTests(
+			this.testMap,
+			testResult.testResults
+		)
+
+		for (const test of filteredTests) {
+			if (test.status === 'passed') {
+				this.reportTestAsPassed(test.title)
+			} else {
+				this.reportTestAsFailed(test.title)
+			}
+		}
+	}
+
+	public async reportTestAsPassed(testName: keyof TestMap) {
+		await this.reportTest(testName, 'passed')
+	}
+
+	public async reportTestAsFailed(testName: keyof TestMap) {
+		await this.reportTest(testName, 'failed')
+	}
+
+	private async reportTest(
+		testName: keyof TestMap,
+		status: IJestTestResult['status']
+	) {
+		if (!this.testMap[testName]) {
+			throw new Error(
+				`Invalid test name. Got "${testName}" but expected one of the following: ${Object.keys(
+					this.testMap
+				).join(', ')}`
+			)
+		}
+		const cell = this.testMap[testName]
+		await this.adapter.updateCell({
+			sheetId: this.sheetId,
+			worksheetId: this.worksheetId,
+			cell,
+			value: status === 'passed' ? 1 : 0
+		})
+	}
 }
