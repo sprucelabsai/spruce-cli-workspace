@@ -80,6 +80,7 @@
 		"@sprucelabs/test": "^4.0.0",
 		"@types/eslint": "^6.8.0",
 		"@types/fs-extra": "^8.1.0",
+		"@types/google-spreadsheet": "^3.0.0",
 		"@types/inflection": "^1.5.28",
 		"@types/inquirer": "^6.5.0",
 		"@types/jsonwebtoken": "^8.3.8",
@@ -94,7 +95,9 @@
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^5.0.2",
 		"conventional-changelog-sprucelabs": "^1.1.0",
+		"google-spreadsheet": "^3.0.11",
 		"jest": "^26.0.1",
+		"jest-reporters": "^0.0.2",
 		"mkdirp": "^1.0.3",
 		"prettier": "^1.13",
 		"ts-jest": "^26.1.0",
@@ -122,11 +125,24 @@
 			"<rootDir>/tmp/",
 			"<rootDir>/build/",
 			"<rootDir>/node_modules/",
-			"<rootDir>/__tests__/testDirsAndFiles"
+			"<rootDir>/src/__tests__/testDirsAndFiles/"
 		],
 		"moduleNameMapper": {
 			"^#spruce/(.*)$": "<rootDir>/.spruce/$1",
 			"^#spruce:schema/(.*)": "<rootDir>/../../node_modules/@sprucelabs/schema/build/$1"
-		}
+		},
+		"reporters": [
+			"default",
+			[
+				"<rootDir>/build/src/jest/sheetsReporter.js",
+				{
+					"sheetId": "1DoWM7mYgGDa-PJXptLomrZmbIBZiuxS1YiAsRXU2Gm0",
+					"worksheetId": "Yup",
+					"testToCellMap": {
+						"schemaPassesHealthCheck": "2020 Zoom!C:6"
+					}
+				}
+			]
+		]
 	}
 }

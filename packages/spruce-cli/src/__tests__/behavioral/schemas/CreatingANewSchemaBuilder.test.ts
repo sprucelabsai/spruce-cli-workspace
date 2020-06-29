@@ -1,7 +1,7 @@
 import { test, assert } from '@sprucelabs/test'
+import AbstractSchemaTest from '../../../AbstractSchemaTest'
 import { Service } from '../../../factories/ServiceFactory'
 import versionUtil from '../../../utilities/version.utility'
-import AbstractSchemaTest from '../../../AbstractSchemaTest'
 
 export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 	@test()

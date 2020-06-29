@@ -1,8 +1,8 @@
 import { test, assert } from '@sprucelabs/test'
+import AbstractSchemaTest from '../../../AbstractSchemaTest'
 import { FeatureCode } from '../../../FeatureManager'
 import diskUtil from '../../../utilities/disk.utility'
 import tsConfigUtil from '../../../utilities/tsConfig.utility'
-import AbstractSchemaTest from '../../../AbstractSchemaTest'
 
 export default class SettingUpSchemasTests extends AbstractSchemaTest {
 	@test()

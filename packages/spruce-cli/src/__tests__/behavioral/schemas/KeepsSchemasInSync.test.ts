@@ -41,7 +41,6 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 		await cli.syncSchemas()
 
 		const typesFile = CanSyncSchemas.schemaTypesFile
-
 		const typesContents = diskUtil.readFile(typesFile)
 
 		assert.include(

@@ -26,6 +26,6 @@
 			"#spruce/*": [".spruce/*"]
 		}
 	},
-	"include": ["./*.ts", "./**/*.ts", "./.spruce/**/*.ts"],
+	"include": ["./*.ts", "./**/*.ts", "./.spruce/**/*.ts", "src/jest/sheetsReporter.js"],
 	"exclude": ["**/node_modules/*", "build/*", "tmp/*"]
 }

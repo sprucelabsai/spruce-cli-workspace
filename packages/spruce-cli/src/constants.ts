@@ -10,3 +10,5 @@ export const CORE_SCHEMA_VERSION = {
 
 export const CORE_NAMESPACE = 'Core'
 export const LOCAL_NAMESPACE = 'Local'
+export const TEST_JEST_PASSED = 'passed'
+export const TEST_JEST_FAILED = 'failed'
