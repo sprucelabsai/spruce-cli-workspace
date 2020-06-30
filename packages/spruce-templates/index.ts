@@ -21,6 +21,7 @@ import './src/addons/pascalCase.addon'
 import './src/addons/fieldDefinitionPartial.addon'
 import './src/addons/schemaDefinitionPartial.addon'
 import './src/addons/schemaValuesPartial.addon'
+import './src/addons/valueTypeGenerator.addon'
 import './src/addons/json.addon'
 import './src/addons/isDefined.addon'
 import {
@@ -120,9 +121,39 @@ export const templates = {
 		const template = handlebars.compile(schemasTypes)
 		return template({ ...options, imports })
 	},
-	valueTypes() {
+	valueTypes(options: {
+		schemaTemplateItems: ISchemaTemplateItem[]
+		fieldTemplateItems: IFieldTemplateItem[]
+	}) {
+		const imports = importExtractorUtility(options.fieldTemplateItems)
+		const rendersAs = Object.keys(TemplateRenderAs)
+
+		const schemaTemplatesByNamespace: Record<string, ISchemaTemplateItem[]> = {}
+		options.schemaTemplateItems.forEach(item => {
+			if (!schemaTemplatesByNamespace[item.namespace]) {
+				schemaTemplatesByNamespace[item.namespace] = []
+			}
+
+			schemaTemplatesByNamespace[item.namespace].push(item)
+		})
+
+		const fieldTemplatesByType: Record<string, IFieldTemplateItem[]> = {}
+		options.fieldTemplateItems.forEach(item => {
+			if (!fieldTemplatesByType[item.camelType]) {
+				fieldTemplatesByType[item.camelType] = []
+			}
+			fieldTemplatesByType[item.camelType].push(item)
+		})
+
 		const template = handlebars.compile(valueTypes)
-		return template({})
+
+		return template({
+			...options,
+			imports,
+			fieldTemplatesByType,
+			schemaTemplatesByNamespace,
+			rendersAs
+		})
 	},
 	/** Will return the template for a definition that has been normalized */
 	definition(

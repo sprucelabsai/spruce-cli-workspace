@@ -30,7 +30,7 @@ import FeatureManager, {
 } from './FeatureManager'
 import {
 	ISchemaGeneratorBuildResults,
-	ISchemaGeneratorSyncResults
+	ISchemaGeneratorSchemaSyncResults
 } from './generators/SchemaGenerator'
 import TerminalInterface from './interfaces/TerminalInterface'
 import log from './singletons/log'
@@ -94,7 +94,7 @@ export interface ICli {
 		lookupDir?: string
 		destinationDir?: string
 		addonLookupDir?: string
-	}): Promise<ISchemaGeneratorSyncResults>
+	}): Promise<ISchemaGeneratorSchemaSyncResults>
 
 	checkHealth(): Promise<IHealthCheckResults>
 }

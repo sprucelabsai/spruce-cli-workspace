@@ -145,7 +145,8 @@
 					"worksheetId": 843037832,
 					"testMap": {
 						"canBootTheCli": "C4",
-						"getsGoodHealthCheckAndNothingElse": "C15"
+						"getsGoodHealthCheckAndNothingElse": "C5",
+						"canGetLatestVersionBasedOnDir": "C16"
 					}
 				}
 			]

@@ -320,6 +320,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 		})
 	}
 
+	// definitions for reference
 	// 	private static async loadTestDefinitions(): Promise<ISchemaDefinition[]> {
 	// 		const defs = [
 	// 			{

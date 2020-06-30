@@ -24,5 +24,13 @@ export interface INpmPackage {
 }
 
 export interface IValueTypes {
-	[key: string]: string
+	[namespace: string]: {
+		[schemaId: string]: {
+			[fieldName: string]: {
+				Value: string
+				Type: string
+				DefinitionType: string
+			}
+		}
+	}
 }

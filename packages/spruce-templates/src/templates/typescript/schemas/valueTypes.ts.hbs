@@ -1,6 +1,33 @@
-// Temporary
-const values = {
-	user: {}
+import { TemplateRenderAs } from '@sprucelabs/schema'
+
+{{#each imports}}
+// @ts-ignore
+import * as {{importAs}} from '{{package}}'
+{{/each}}
+
+{{!-- import FieldType from '#spruce/schemas/fields/fieldType' --}}
+
+// @ts-ignore
+const generateType = (renderAs: TemplateRenderAs, importAs: string) => {
+	return 'string'
 }
 
-export default values
+const valueTypes = {
+	{{#each schemaTemplatesByNamespace}}
+	{{@key}}: {
+		{{#each this}} 
+		{{id}}: {
+			{{#each definition.fields}}
+			"{{@key}}": {
+				{{#each ../../../rendersAs}}
+				{{this}}: {{{ valueTypeGenerator ../this this }}},
+				{{/each}}
+			},
+			{{/each}}
+		},
+		{{/each}}
+	},
+	{{/each}}
+}
+
+export default valueTypes
