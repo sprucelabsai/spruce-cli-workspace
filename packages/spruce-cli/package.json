@@ -39,7 +39,9 @@
 		"start": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node . $COMMANDS",
 		"local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node --inspect=5200 . $COMMANDS",
 		"test": "TESTING=true jest",
-		"test:watch": "TESTING=true jest --watch"
+		"test:watch": "TESTING=true jest --watch",
+		"arkit": "arkit -f src/index.ts -o docs/images/arkit.svg",
+		"arkit.png": "arkit -f src/index.ts -o docs/images/arkit.png"
 	},
 	"dependencies": {
 		"@sprucelabs/error": "^1.2.0",
@@ -94,6 +96,7 @@
 		"@types/sha1": "^1.1.2",
 		"@types/slug": "^0.9.1",
 		"@types/superagent": "^4.1.7",
+		"arkit": "^1.6.4",
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^5.0.2",
 		"conventional-changelog-sprucelabs": "^1.1.0",

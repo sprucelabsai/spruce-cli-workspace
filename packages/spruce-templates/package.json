@@ -34,7 +34,9 @@
 		"lint": "eslint '**/*.ts' && tsc -p . --noEmit",
 		"lint:fix": "eslint --fix '**/*.ts'",
 		"release": "semantic-release",
-		"local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS"
+		"local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS",
+		"arkit": "arkit -f index.ts -o docs/images/arkit.svg",
+		"arkit.png": "arkit -f index.ts -o docs/images/arkit.png"
 	},
 	"dependencies": {
 		"@sprucelabs/log": "^10.2.1",
@@ -46,6 +48,7 @@
 	"devDependencies": {
 		"@types/lodash": "^4.14.149",
 		"@types/node": "^13.7.7",
+		"arkit": "^1.6.4",
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^5.0.2",
 		"conventional-changelog-sprucelabs": "^1.1.0",
