@@ -13,7 +13,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	private static generator: SchemaGenerator
 	protected static async beforeEach() {
 		super.beforeEach()
-		// this.cwd =
+		this.cwd = '/Users/taylorromero/Desktop/skill-test'
 		// '/var/folders/qw/v2bfr0c94bn37vclwvcltsj40000gn/tmp/7de06e3c-6bf2-4ffc-8be9-138ed9a5bf01'
 		this.generator = new SchemaGenerator(templates)
 		await this.bootCliInstallSchemasAndSetCwd('value-type-generation')
@@ -96,9 +96,6 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	@test.only()
 	protected static async importsTypes() {
 		const results = await this.generateValueTypes()
-		// this.Service(Service.Command).execute(
-		// 	`code ${results.generatedFiles[0].path}`
-		// )
 
 		const valueTypes = await this.Service(Service.Import).importDefault<
 			IValueTypes

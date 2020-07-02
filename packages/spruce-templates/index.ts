@@ -101,8 +101,8 @@ const fieldClassMap: string = fs
 	.readFileSync(path.join(templatePath, 'schemas/fields/fieldClassMap.ts.hbs'))
 	.toString()
 
-const fieldType: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/fields/fieldType.ts.hbs'))
+const fieldTypeEnum: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/fields/fieldTypeEnum.ts.hbs'))
 	.toString()
 
 const valueTypes: string = fs
@@ -259,8 +259,8 @@ export const templates = {
 	},
 
 	/** The field type enum */
-	fieldType(options: { fieldTemplateItems: IFieldTemplateItem[] }) {
-		const template = handlebars.compile(fieldType)
+	fieldTypeEnum(options: { fieldTemplateItems: IFieldTemplateItem[] }) {
+		const template = handlebars.compile(fieldTypeEnum)
 		return template(options)
 	},
 
