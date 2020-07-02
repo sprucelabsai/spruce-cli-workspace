@@ -102,7 +102,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		>(results.generatedFiles[0].path)
 
 		assert.isObject(valueTypes)
-		assert.deepEqual(valueTypes.Core.user.firstName, {
+		assert.isEqualDeep(valueTypes.Core.user.firstName, {
 			Type: 'string',
 			Value: 'string',
 			DefinitionType: 'string'

@@ -21,8 +21,6 @@ handlebars.registerHelper('valueTypeGenerator', function(
 		}
 	} = options
 
-	debugger
-
 	const match = fieldTemplateItems.filter(
 		item => item.camelType === fieldDefinition.type
 	)[0]

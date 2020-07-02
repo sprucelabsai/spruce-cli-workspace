@@ -1,4 +1,4 @@
-export const HASH_SPRUCE_DIR = '.spruce'
+export const HASH_SPRUCE_DIR = 'src/.spruce'
 
 export const LATEST_TOKEN = '@latest'
 export const LATEST_HANDLEBARS = `{{${LATEST_TOKEN}}}`

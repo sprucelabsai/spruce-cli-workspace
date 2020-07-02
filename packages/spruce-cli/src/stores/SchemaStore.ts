@@ -51,8 +51,8 @@ export default class SchemaStore {
 	public name = 'schema'
 	public cwd: string
 
-	protected schemaBuilder: SchemaTemplateItemBuilder
-	protected serviceFactory: ServiceFactory
+	private schemaBuilder: SchemaTemplateItemBuilder
+	private serviceFactory: ServiceFactory
 
 	private ImportService = (cwd?: string): ImportService => {
 		return this.serviceFactory.Service(cwd ?? this.cwd, Service.Import)

@@ -4,7 +4,7 @@
 		"module": "commonjs",
 		"jsx": "preserve",
 		"lib": ["dom", "es2017"],
-		"baseUrl": ".",
+		"baseUrl": "src",
 		"moduleResolution": "node",
 		"strict": true,
 		"allowJs": true,
@@ -21,10 +21,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,
 		"experimentalDecorators": true,
-		"outDir": "build",
-		"paths": {
-			"#spruce/*": [".spruce/*"]
-		}
+		"outDir": "build"
 	},
 	"include": ["./*.ts", "./**/*.ts"],
 	"exclude": ["**/node_modules/*", "build/*"]
