@@ -12,7 +12,7 @@ import Schema, {
 import { pick } from 'lodash'
 import ErrorCode from '#spruce/errors/errorCode'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
-import FieldType from '#spruce/schemas/fields/fieldType'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import SpruceError from '../errors/SpruceError'
 import ITerminal, { ITerminalEffect } from '../interfaces/TerminalInterface'
 

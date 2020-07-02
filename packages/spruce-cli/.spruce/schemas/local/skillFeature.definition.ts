@@ -1,4 +1,4 @@
-import FieldType from '#spruce/schemas/fields/fieldType'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
 const skillFeatureDefinition: SpruceSchemas.Local.SkillFeature.IDefinition = {

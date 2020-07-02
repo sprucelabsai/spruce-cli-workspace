@@ -1,5 +1,5 @@
 import { buildSchemaDefinition } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldType'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export default buildSchemaDefinition({
 	id: 'executingCommandFailed',

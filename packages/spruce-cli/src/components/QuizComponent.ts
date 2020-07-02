@@ -6,7 +6,7 @@ import {
 } from '@sprucelabs/schema'
 import chalk from 'chalk'
 import { shuffle } from 'lodash'
-import FieldType from '#spruce/schemas/fields/fieldType'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import SpruceError from '../errors/SpruceError'
 import TerminalInterface from '../interfaces/TerminalInterface'
 import FormComponent, {

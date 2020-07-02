@@ -1,6 +1,6 @@
 import path from 'path'
 import { Command } from 'commander'
-import FieldType from '#spruce/schemas/fields/fieldType'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import FeatureManager, { FeatureCode } from '../FeatureManager'
 import namesUtil from '../utilities/names.utility'
 import AbstractCommand, { ICommandOptions } from './AbstractCommand'

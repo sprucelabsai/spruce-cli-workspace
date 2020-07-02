@@ -93,7 +93,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		await this.Service(Service.TypeChecker).check(first)
 	}
 
-	@test.only()
+	@test()
 	protected static async importsTypes() {
 		const results = await this.generateValueTypes()
 

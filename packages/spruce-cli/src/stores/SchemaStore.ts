@@ -258,7 +258,8 @@ export default class SchemaStore {
 				pascalType: namesUtil.toPascal(registration.type),
 				camelType: namesUtil.toCamel(registration.type),
 				isLocal: addon.isLocal,
-				description: registration.description
+				description: registration.description,
+				valueTypeGeneratorType: registration.valueTypeGeneratorType
 			})
 		}
 

@@ -1,5 +1,5 @@
 import profileImageDefinitionCore from '#spruce/schemas/core/profileImage.definition'
-import FieldType from '#spruce/schemas/fields/fieldType'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
 const userDefinition: SpruceSchemas.Core.User.IDefinition = {

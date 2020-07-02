@@ -1,7 +1,7 @@
 import { ISchemaTemplateItem, TemplateRenderAs } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
-import FieldType from '#spruce/schemas/fields/fieldType'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 /** Renders field options */
 handlebars.registerHelper('fieldDefinitionOptions', function(

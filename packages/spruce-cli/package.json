@@ -132,8 +132,8 @@
 			"**/__tests__/**/*.test.[jt]s?(x)"
 		],
 		"moduleNameMapper": {
-			"^#spruce/(.*)$": "<rootDir>/.spruce/$1",
-			"^#spruce:schema/(.*)": "<rootDir>/../../node_modules/@sprucelabs/schema/build/$1"
+			"^#spruce/schemas/fields/(.*)": "<rootDir>/../../node_modules/@sprucelabs/schema/build/.spruce/schemas/fields/$1",
+			"^#spruce/(.*)$": "<rootDir>/.spruce/$1"
 		},
 		"reporters": [
 			"default",

@@ -1,5 +1,5 @@
 import { buildErrorDefinition } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldType'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 const transpileFailedDefinition = buildErrorDefinition({
 	id: 'transpileFailed',

@@ -1,5 +1,5 @@
 import aclDefinitionCore from '#spruce/schemas/core/acl.definition'
-import FieldType from '#spruce/schemas/fields/fieldType'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
 const jobDefinition: SpruceSchemas.Core.Job.IDefinition = {

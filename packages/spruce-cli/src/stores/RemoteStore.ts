@@ -1,5 +1,5 @@
 import Schema, { ISelectFieldDefinitionChoice } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldType'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { AuthedAs } from '../types/cli.types'
 import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
 

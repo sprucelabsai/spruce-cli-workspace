@@ -1,7 +1,7 @@
 import { ISelectFieldDefinitionChoice } from '@sprucelabs/schema'
 import { Command } from 'commander'
 import ErrorCode from '#spruce/errors/errorCode'
-import FieldType from '#spruce/schemas/fields/fieldType'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
 import { Service } from '../factories/ServiceFactory'

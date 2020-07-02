@@ -1,5 +1,5 @@
 import { Command } from 'commander'
-import FieldType from '#spruce/schemas/fields/fieldType'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import OnboardingStore from '../stores/OnboardingStore'
 import AbstractCommand, { ICommandOptions } from './AbstractCommand'
 

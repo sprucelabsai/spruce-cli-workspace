@@ -41,7 +41,7 @@ export default class ValueTypeService extends ImportService {
 		code +=
 			"import { IFieldTemplateDetails, ISchemaTemplateItem, TemplateRenderAs } from '@sprucelabs/schema'\n"
 
-		code += "import FieldType from '#spruce/schemas/fields/fieldType'\n"
+		code += "import FieldType from '#spruce/schemas/fields/fieldTypeEnum'\n"
 
 		// Universals
 		code += `

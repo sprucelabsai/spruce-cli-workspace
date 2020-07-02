@@ -15,7 +15,7 @@ import { filter } from 'lodash'
 import ora from 'ora'
 import ErrorCode from '#spruce/errors/errorCode'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
-import FieldType from '#spruce/schemas/fields/fieldType'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import SpruceError from '../errors/SpruceError'
 import log from '../singletons/log'
 import { IGeneratedFile } from '../types/cli.types'
@@ -333,7 +333,6 @@ export default class TerminalInterface {
 	/** Ask the user for something */
 	public async prompt<T extends FieldDefinition>(
 		definition: T
-		// @ts-ignore
 	): Promise<FieldDefinitionValueType<T>> {
 		this.isPromptActive = true
 		const name = generateInquirerFieldName()

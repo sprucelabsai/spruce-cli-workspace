@@ -1,6 +1,6 @@
 import { buildSchemaDefinition } from '@sprucelabs/schema'
 import userDefinition from '#spruce/schemas/core/user.definition'
-import FieldType from '#spruce/schemas/fields/fieldType'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export default buildSchemaDefinition({
 	...userDefinition,

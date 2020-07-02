@@ -1,6 +1,6 @@
 import { ISchemaDefinition, ISchemaTemplateItem } from '@sprucelabs/schema'
 import { test, assert } from '@sprucelabs/test'
-import FieldType from '#spruce/schemas/fields/fieldType'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
 import { CORE_NAMESPACE } from '../../constants'
 import SchemaTemplateItemBuilder from '../../templateItemBuilders/SchemaTemplateItemBuilder'

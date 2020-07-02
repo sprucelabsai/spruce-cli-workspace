@@ -16,13 +16,11 @@
 		"outDir": "build",
 		"baseUrl": "./src",
 		"paths": {
-			"#spruce:schema/*": [
+			"#spruce/*": [
+				"../spruce-cli/.spruce/*",
 				"../../node_modules/@sprucelabs/schema/build/*",
-				"../../node_modules/@sprucelabs/schema/build/src/*",
-				"node_modules/@sprucelabs/schema/build/*",
-				"node_modules/@sprucelabs/schema/build/src/*"
-			],
-			"#spruce/*": ["../spruce-cli/.spruce/*"]
+				"node_modules/@sprucelabs/schema/build/*"
+			]
 		}
 	},
 	"include": ["./*.ts", "./**/*.ts"],

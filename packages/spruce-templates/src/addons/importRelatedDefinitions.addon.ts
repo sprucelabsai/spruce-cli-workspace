@@ -3,7 +3,7 @@ import { ISchemaTemplateItem } from '@sprucelabs/schema'
 import { SchemaField } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
 import { camelCase, uniq } from 'lodash'
-import FieldType from '#spruce/schemas/fields/fieldType'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 handlebars.registerHelper('importRelatedDefinitions', function(
 	definition: ISchemaDefinition,

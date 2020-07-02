@@ -21,10 +21,8 @@ export default class SchemaFeature extends AbstractFeature {
 	]
 
 	public async afterPackageInstall() {
-		if (!tsConfigUtil.isPathAliasSet(this.cwd, '#spruce:schema/*')) {
-			tsConfigUtil.setPathAlias(this.cwd, '#spruce:schema/*', [
-				'.spruce/schemas/*'
-			])
+		if (!tsConfigUtil.isPathAliasSet(this.cwd, '#spruce/*')) {
+			tsConfigUtil.setPathAlias(this.cwd, '#spruce/*', ['.spruce/*'])
 		}
 	}
 

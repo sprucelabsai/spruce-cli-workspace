@@ -4,7 +4,7 @@
 import { default as Schema } from '@sprucelabs/schema'
 import * as SpruceSchema from '@sprucelabs/schema'
 
-import FieldType from '#spruce/schemas/fields/fieldType'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export declare namespace SpruceSchemas.Core {
 	/** Profile images at various helpful sizes and resolutions. */

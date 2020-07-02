@@ -7,10 +7,10 @@ import Schema, {
 	ISchemaIdWithVersion,
 	SchemaError
 } from '@sprucelabs/schema'
-import FieldType from '@sprucelabs/schema/build/fields/fieldType'
 import cloneDeep from 'lodash/cloneDeep'
 import uniqWith from 'lodash/uniqWith'
 import ErrorCode from '#spruce/errors/errorCode'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import SpruceError from '../errors/SpruceError'
 import schemaUtil, { SchemaRelationshipType } from '../utilities/schema.utility'
 

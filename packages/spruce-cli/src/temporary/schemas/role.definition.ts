@@ -2,7 +2,7 @@ import {
 	ISchemaDefinition,
 	ISelectFieldDefinitionChoice
 } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldType'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { CORE_SCHEMA_VERSION } from '../../constants'
 
 const roleDefinition: ISchemaDefinition = {
