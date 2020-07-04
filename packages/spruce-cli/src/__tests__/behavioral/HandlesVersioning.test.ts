@@ -51,7 +51,7 @@ export default class HandlesVersioningTest extends AbstractCliTest {
 			this.resolveTestPath('utilities')
 		)
 
-		assert.deepEqual(resolved, {
+		assert.isEqualDeep(resolved, {
 			intValue: 20200215,
 			stringValue: '2020-02-15',
 			constValue: '2020_02_15'

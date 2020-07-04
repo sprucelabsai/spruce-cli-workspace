@@ -19,12 +19,12 @@ export default class SkillFeature extends AbstractFeature<
 		'Skill: The most basic configuration needed to enable a skill'
 
 	public dependencies: FeatureCode[] = []
-
 	public packageDependencies: INpmPackage[] = [
 		{ name: 'typescript' },
 		{ name: '@sprucelabs/log' },
 		{ name: '@types/node', isDev: true },
-		{ name: 'ts-node', isDev: true }
+		{ name: 'ts-node', isDev: true },
+		{ name: 'tsconfig-paths', isDev: true }
 	]
 
 	public optionsDefinition = skillFeatureDefinition

@@ -8,7 +8,6 @@ export default class UsingSchemasInCli extends BaseSpruceTest {
 		const user = new Schema(cliUserDefinition, {
 			casualName: 'Amigo'
 		})
-		console.log(user)
 		assert.isEqual(user.get('casualName'), 'Amigo')
 	}
 }

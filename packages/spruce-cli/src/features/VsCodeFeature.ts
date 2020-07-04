@@ -26,7 +26,26 @@ export default class VsCodeFeature extends AbstractFeature {
 	// 	await this.writeDirectoryTemplate({
 	// 		kind: DirectoryTemplateKind.VsCode,
 	// 		context: {}
+	private VsCodeService(): VsCodeService {
+		return this.serviceFactory.Service(this.cwd, Service.VsCode)
+	}
 	// 	})
+	private async getMissingExtensions() {
+		const currentExtensions = await this.VsCodeService().getVSCodeExtensions()
+		const missingExtensions = this.recommendedExtensions.filter(
+			recommendedExtension => {
+				const currentExtension = currentExtensions.find(
+					e => e === recommendedExtension.id
+				)
+				if (currentExtension) {
+					return false
+				}
+				return true
+			}
+		)
+		return missingExtensions
+	}
+
 	// }
 
 	public async isInstalled() {
@@ -59,25 +78,5 @@ export default class VsCodeFeature extends AbstractFeature {
 		} else {
 			log.debug('No extensions to install')
 		}
-	}
-
-	private getMissingExtensions = async () => {
-		const currentExtensions = await this.VsCodeService().getVSCodeExtensions()
-		const missingExtensions = this.recommendedExtensions.filter(
-			recommendedExtension => {
-				const currentExtension = currentExtensions.find(
-					e => e === recommendedExtension.id
-				)
-				if (currentExtension) {
-					return false
-				}
-				return true
-			}
-		)
-		return missingExtensions
-	}
-
-	private VsCodeService = (): VsCodeService => {
-		return this.serviceFactory.Service(this.cwd, Service.VsCode)
 	}
 }

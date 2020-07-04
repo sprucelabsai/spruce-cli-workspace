@@ -34,18 +34,12 @@ export default class WatchCommand extends AbstractCommand {
 	private resolve!: () => void
 	private reject!: (e: Error) => void
 
-	public constructor(options: IWatchCommandOptions) {
-		super(options)
-		this.watcherStore = options.stores.watch
-	}
-
 	public attachCommands = (program: Command): void => {
 		program
 			.command('watch')
 			.description('Watch and regenerate types')
 			.action(this.watch)
 	}
-
 	private watch = async () => {
 		process.stdin.on('keypress', this.handleKeypress)
 		this.loadWatchers()
@@ -65,13 +59,11 @@ export default class WatchCommand extends AbstractCommand {
 		})
 		await finishedPromise
 	}
-
 	private resetReadline = () => {
 		readline.emitKeypressEvents(process.stdin)
 		process.stdin.setRawMode(true)
 		process.stdin.resume()
 	}
-
 	private showStatus = (lines?: string[], lineEffects?: ITerminalEffect[]) => {
 		this.resetReadline()
 		this.term.clear()
@@ -91,18 +83,15 @@ export default class WatchCommand extends AbstractCommand {
 			this.term.writeLns(lines, lineEffects)
 		}
 	}
-
 	/** Loads the watchers and starts watching anything new */
 	private loadWatchers = () => {
 		const watchers = this.watcherStore.getWatchers()
 		this.watchers = watchers
 	}
-
 	private handleReady = () => {
 		this.term.clear()
 		this.showStatus()
 	}
-
 	private handleFileChange = async (path: string) => {
 		log.trace(`${path} changed`)
 		let commandsToExecute: string[] = []
@@ -146,16 +135,13 @@ export default class WatchCommand extends AbstractCommand {
 			log.trace('Nothing run. No matching glob patterns.')
 		}
 	}
-
 	private handleFileAdd = (path: string) => {
 		return this.handleFileChange(path)
 	}
-
 	private handleWatcherError = (e: Error) => {
 		log.crit(e)
 		this.reject(e)
 	}
-
 	private handleAddPatten = async () => {
 		let pattern: string | undefined | null
 		let commandStr: string | undefined | null
@@ -236,7 +222,6 @@ export default class WatchCommand extends AbstractCommand {
 			log.debug('Nothing to do')
 		}
 	}
-
 	private listWatchers = () => {
 		const lines: string[] = []
 
@@ -258,7 +243,6 @@ export default class WatchCommand extends AbstractCommand {
 			lines
 		})
 	}
-
 	private handleEditWatchers = async () => {
 		const defaultValue: string[] = []
 		const choices = Object.keys(this.watchers).map(pattern => {
@@ -300,7 +284,6 @@ export default class WatchCommand extends AbstractCommand {
 		this.showStatus()
 		this.listWatchers()
 	}
-
 	private handleDeleteWatcher = async () => {
 		const choices = Object.keys(this.watchers).map(pattern => {
 			const watcher = this.watchers[pattern]
@@ -324,5 +307,9 @@ export default class WatchCommand extends AbstractCommand {
 		}
 		this.showStatus()
 		this.listWatchers()
+	}
+	public constructor(options: IWatchCommandOptions) {
+		super(options)
+		this.watcherStore = options.stores.watch
 	}
 }

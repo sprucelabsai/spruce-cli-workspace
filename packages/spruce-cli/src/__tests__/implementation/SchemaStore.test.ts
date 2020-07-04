@@ -30,9 +30,11 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async fetchesCoreSchemaTemplateItems() {
-		const items = await this.schemaStore.fetchSchemaTemplateItems({
-			localLookupDir: this.resolvePath('nothing_found')
-		})
+		const response = await this.schemaStore.fetchSchemaTemplateItems(
+			this.resolvePath('nothing_found')
+		)
+
+		const { items } = response
 
 		assert.isAbove(items.length, 0)
 
@@ -51,9 +53,11 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 			this.resolvePath('schemas')
 		)
 
-		const items = await this.schemaStore.fetchSchemaTemplateItems({
-			localLookupDir: this.resolvePath('schemas')
-		})
+		const results = await this.schemaStore.fetchSchemaTemplateItems(
+			this.resolvePath('schemas')
+		)
+
+		const { items } = results
 
 		const localItems = items.filter(item => item.namespace === LOCAL_NAMESPACE)
 		assert.isEqual(localItems.length, 2)

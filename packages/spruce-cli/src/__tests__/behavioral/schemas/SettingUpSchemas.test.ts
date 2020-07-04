@@ -9,7 +9,7 @@ export default class SettingUpSchemasTests extends AbstractSchemaTest {
 	protected static async failsBecauseMissingSkillInformation() {
 		const cli = await this.Cli()
 
-		await assert.throws(
+		await assert.doesThrowAsync(
 			() =>
 				cli.installFeatures({
 					features: [
@@ -29,14 +29,13 @@ export default class SettingUpSchemasTests extends AbstractSchemaTest {
 		const pgkPath = this.resolvePath('package.json')
 		const contents = JSON.stringify(diskUtil.readFile(pgkPath))
 
-		assert.include(contents, '@sprucelabs/schema')
+		assert.doesInclude(contents, '@sprucelabs/schema')
 
 		// does the tsconfig have the right values?
 		const tsConfig = tsConfigUtil.readConfig(this.cwd)
 
-		assert.deepEqual(tsConfig['compilerOptions']['paths'], {
-			'#spruce/*': ['.spruce/*'],
-			'#spruce:schema/*': ['.spruce/schemas/*']
+		assert.isEqualDeep(tsConfig['compilerOptions']['paths'], {
+			'#spruce/*': ['.spruce/*']
 		})
 	}
 

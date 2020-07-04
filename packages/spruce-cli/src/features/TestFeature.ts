@@ -18,6 +18,9 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 		{ name: 'ts-jest', isDev: true }
 	]
 
+	private PkgService(): PkgService {
+		return this.serviceFactory.Service(this.cwd, Service.Pkg)
+	}
 	public async afterPackageInstall() {
 		log.trace('TestFeature.afterPackageInstall()')
 
@@ -60,9 +63,5 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 	public async isInstalled() {
 		debugger
 		return false
-	}
-
-	private PkgService = (): PkgService => {
-		return this.serviceFactory.Service(this.cwd, Service.Pkg)
 	}
 }

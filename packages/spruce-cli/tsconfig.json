@@ -14,13 +14,13 @@
 		"moduleResolution": "node",
 		"sourceMap": true,
 		"outDir": "build",
-		"baseUrl": ".",
+		"baseUrl": "src",
 		"experimentalDecorators": true,
 		"paths": {
 			"#spruce/*": [
 				".spruce/*",
-				"../../node_modules/@sprucelabs/schema/build/.spruce/*",
-				"node_modules/@sprucelabs/schema/build/.spruce/*"
+				"../../../node_modules/@sprucelabs/schema/build/.spruce/*",
+				"../node_modules/@sprucelabs/schema/build/.spruce/*"
 			]
 		}
 	},
@@ -30,5 +30,5 @@
 		"./.spruce/**/*.ts",
 		"src/jest/sheetsReporter.js"
 	],
-	"exclude": ["**/node_modules/*", "build/*", "tmp/*"]
+	"exclude": ["**/node_modules/*", "build/*", "tmp/*", "__tests__"]
 }

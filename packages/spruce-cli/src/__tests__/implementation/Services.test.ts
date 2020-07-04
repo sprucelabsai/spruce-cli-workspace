@@ -23,6 +23,6 @@ export default class ServicesTests extends AbstractCliTest {
 		const tc = this.Service(Service.TypeChecker)
 		tc.cwd = this.cliRoot
 
-		await assert.throws(() => tc.check(destination))
+		await assert.doesThrowAsync(() => tc.check(destination))
 	}
 }

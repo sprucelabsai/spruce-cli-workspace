@@ -29,5 +29,7 @@ handlebars.registerHelper('valueTypeGenerator', function(
 		throw new Error(`Could not find field for type ${fieldDefinition.type}`)
 	}
 
-	return `generateType(TemplateRenderAs.${renderAs}, "${match.importAs}")`
+	return `generateTypeLiteral(${JSON.stringify(
+		fieldDefinition
+	)}, TemplateRenderAs.${renderAs}, "${match.importAs}")`
 })

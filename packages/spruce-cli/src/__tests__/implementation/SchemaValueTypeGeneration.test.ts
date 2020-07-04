@@ -2,7 +2,7 @@ import { Mercury } from '@sprucelabs/mercury'
 import { templates } from '@sprucelabs/spruce-templates'
 import { assert, test } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
-import { HASH_SPRUCE_DIR } from '../../constants'
+import { CORE_NAMESPACE } from '../../constants'
 import ServiceFactory, { Service } from '../../factories/ServiceFactory'
 import SchemaGenerator from '../../generators/SchemaGenerator'
 import SchemaStore from '../../stores/SchemaStore'
@@ -13,8 +13,6 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	private static generator: SchemaGenerator
 	protected static async beforeEach() {
 		super.beforeEach()
-		this.cwd = '/Users/taylorromero/Desktop/skill-test'
-		// '/var/folders/qw/v2bfr0c94bn37vclwvcltsj40000gn/tmp/7de06e3c-6bf2-4ffc-8be9-138ed9a5bf01'
 		this.generator = new SchemaGenerator(templates)
 		await this.bootCliInstallSchemasAndSetCwd('value-type-generation')
 	}
@@ -27,7 +25,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	@test()
 	protected static async runsWithoutBreakingWithNoArgs() {
 		const results = await this.generator.generateValueTypes(
-			this.resolvePath(HASH_SPRUCE_DIR),
+			this.resolveHashSprucePath(),
 			{
 				schemaTemplateItems: [],
 				fieldTemplateItems: []
@@ -44,14 +42,14 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		} = await SchemaValueTypeGenerationTest.fetchAllTemplateItems()
 
 		await this.generator.generateFieldTypes(
-			this.resolvePath(HASH_SPRUCE_DIR, 'schemas'),
+			this.resolveHashSprucePath('schemas'),
 			{
 				fieldTemplateItems
 			}
 		)
 
 		return this.generator.generateValueTypes(
-			this.resolvePath(HASH_SPRUCE_DIR),
+			this.resolveHashSprucePath('tmp'),
 			{
 				schemaTemplateItems,
 				fieldTemplateItems
@@ -83,7 +81,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	}
 
 	@test()
-	protected static async itGeneratesAValidTypesFiles() {
+	protected static async generatesValidTypesFile() {
 		const results = await this.generateValueTypes()
 		assert.isAbove(results.generatedFiles.length, 0)
 
@@ -93,8 +91,19 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		await this.Service(Service.TypeChecker).check(first)
 	}
 
-	@test()
-	protected static async importsTypes() {
+	@test(
+		'generates user.firstName value types',
+		`${CORE_NAMESPACE}.person[].fields.firstName`,
+		{
+			Type: 'string',
+			Value: 'string',
+			DefinitionType: 'string'
+		}
+	)
+	protected static async importsTypes(
+		path: string,
+		expected: Record<string, any>
+	) {
 		const results = await this.generateValueTypes()
 
 		const valueTypes = await this.Service(Service.Import).importDefault<
@@ -102,10 +111,13 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		>(results.generatedFiles[0].path)
 
 		assert.isObject(valueTypes)
-		assert.isEqualDeep(valueTypes.Core.user.firstName, {
-			Type: 'string',
-			Value: 'string',
-			DefinitionType: 'string'
+		assert.isAbove(
+			Object.keys(valueTypes).length,
+			0,
+			'Value types came back as empty object'
+		)
+		assert.doesInclude(valueTypes, {
+			[path]: expected
 		})
 	}
 }

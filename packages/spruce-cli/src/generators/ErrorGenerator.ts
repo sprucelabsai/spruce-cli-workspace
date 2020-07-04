@@ -7,20 +7,16 @@ import { IGeneratedFile } from '../types/cli.types'
 import diskUtil from '../utilities/disk.utility'
 import AbstractGenerator from './AbstractGenerator'
 
-interface IErrorClassFiles {
-	errorClass?: IGeneratedFile
-}
-
 export default class ErrorGenerator extends AbstractGenerator {
 	public async generateOrAppendErrorsToClass(
 		destinationFile: string,
 		errors: IErrorTemplateItem[]
 	): Promise<{
-		generatedFiles: IErrorClassFiles
-		updatedFiles: IErrorClassFiles
+		generatedFiles: IGeneratedFile[]
+		updatedFiles: IGeneratedFile[]
 	}> {
-		const generatedFiles: IErrorClassFiles = {}
-		const updatedFiles: IErrorClassFiles = {}
+		const generatedFiles: IGeneratedFile[] = []
+		const updatedFiles: IGeneratedFile[] = []
 
 		if (errors.length === 0) {
 			// todo move to proper error
@@ -31,12 +27,12 @@ export default class ErrorGenerator extends AbstractGenerator {
 			const errorContents = this.templates.error({ errors })
 			await diskUtil.writeFile(destinationFile, errorContents)
 
-			generatedFiles.errorClass = {
+			generatedFiles.push({
 				name: 'Error subclass',
 				path: destinationFile,
 				description:
 					'A new subclass of SpruceBaseError where you can control your error messaging.'
-			}
+			})
 		} else {
 			const errorBlock = this.templates.error({
 				errors,
@@ -56,14 +52,14 @@ export default class ErrorGenerator extends AbstractGenerator {
 
 				await diskUtil.writeFile(destinationFile, newErrorContents)
 
-				updatedFiles.errorClass = {
+				updatedFiles.push({
 					name: 'Error subclass',
 					path: destinationFile,
 					description:
 						errors.length > 1
 							? `${errors.length} blocks of code were in to handle the new types of errors`
 							: 'A new block of code was added to handle the new error type'
-				}
+				})
 			} else {
 				// Could not write to file, output snippet suggestion
 				log.warn('Failed to add to Error.ts, here is the block to drop in')

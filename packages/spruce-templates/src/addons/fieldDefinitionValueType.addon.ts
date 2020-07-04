@@ -1,7 +1,7 @@
 import { TemplateRenderAs } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
-import { IValueTypes } from '../..'
+import { IValueTypes } from '../types/templates.types'
 import KeyGeneratorUtility from '../utilities/KeyGeneratorUtility'
 
 /* The type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */

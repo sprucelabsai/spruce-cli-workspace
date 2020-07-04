@@ -246,7 +246,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 		])
 		const actual = results[0]
 
-		assert.deepEqual(actual, this.personV1TemplateItem)
+		assert.isEqualDeep(actual, this.personV1TemplateItem)
 	}
 
 	@test(
@@ -316,7 +316,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 			const match = results[idx]
 
 			assert.isOk(match, `Did not find a template item for ${expected.id}`)
-			assert.deepEqual(match, expected)
+			assert.isEqualDeep(match, expected)
 		})
 	}
 

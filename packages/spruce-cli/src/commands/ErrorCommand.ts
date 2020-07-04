@@ -186,13 +186,8 @@ export default class ErrorCommand extends AbstractCommand {
 			[{ ...names, definition: errorDefinition }]
 		)
 
-		if (classGeneratedFiles.errorClass) {
-			createdFiles.push(classGeneratedFiles.errorClass)
-		}
-
-		if (classUpdatedFiles.errorClass) {
-			createdFiles.push(classUpdatedFiles.errorClass)
-		}
+		createdFiles.push(...classGeneratedFiles)
+		createdFiles.push(...classUpdatedFiles)
 
 		createdFiles.push(...Object.values(builderGeneratedFiles))
 

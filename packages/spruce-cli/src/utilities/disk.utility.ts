@@ -2,6 +2,7 @@ import path from 'path'
 import { IDirectoryTemplateFile } from '@sprucelabs/spruce-templates'
 import fs from 'fs-extra'
 import ErrorCode from '#spruce/errors/errorCode'
+import { HASH_SPRUCE_DIR } from '../constants'
 import SpruceError from '../errors/SpruceError'
 
 const diskUtil = {
@@ -41,6 +42,9 @@ const diskUtil = {
 	},
 	doesDirExist(destination: string) {
 		return fs.existsSync(destination)
+	},
+	resolveHashSprucePath(cwd: string, ...filePath: string[]): string {
+		return this.resolvePath(cwd, HASH_SPRUCE_DIR, ...filePath)
 	},
 	resolvePath(cwd: string, ...filePath: string[]): string {
 		let builtPath = path.join(...filePath)

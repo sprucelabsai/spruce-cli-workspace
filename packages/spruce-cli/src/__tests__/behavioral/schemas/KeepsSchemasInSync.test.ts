@@ -1,11 +1,11 @@
 import { assert, test } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
-import { HASH_SPRUCE_DIR, CORE_SCHEMA_VERSION } from '../../../constants'
+import { CORE_SCHEMA_VERSION } from '../../../constants'
 import diskUtil from '../../../utilities/disk.utility'
 
 export default class CanSyncSchemas extends AbstractSchemaTest {
 	private static get schemaTypesFile() {
-		return this.resolvePath(HASH_SPRUCE_DIR, 'schemas', 'schemas.types.ts')
+		return this.resolveHashSprucePath('schemas', 'schemas.types.ts')
 	}
 
 	@test()
@@ -17,7 +17,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 	@test()
 	protected static async failsBecauseSchemasIsNotInstalled() {
 		const cli = await this.Cli()
-		assert.throws(() => cli.syncSchemas(), /SKILL_NOT_INSTALLED/gi)
+		assert.doesThrowAsync(() => cli.syncSchemas(), /SKILL_NOT_INSTALLED/gi)
 	}
 
 	@test()
@@ -25,8 +25,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 		const cli = await this.bootCliInstallSchemasAndSetCwd('sync1')
 		await cli.syncSchemas()
 
-		const expectedSchemaTypesDestination = this.resolvePath(
-			HASH_SPRUCE_DIR,
+		const expectedSchemaTypesDestination = this.resolveHashSprucePath(
 			'schemas',
 			'schemas.types.ts'
 		)
@@ -43,7 +42,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 		const typesFile = CanSyncSchemas.schemaTypesFile
 		const typesContents = diskUtil.readFile(typesFile)
 
-		assert.include(
+		assert.doesInclude(
 			typesContents,
 			`SpruceSchemas.Core.${CORE_SCHEMA_VERSION.constVal}.User`
 		)

@@ -1,6 +1,6 @@
+import pathUtil from 'path'
 import AbstractCliTest from './AbstractCliTest'
 import { ICli } from './cli'
-import { HASH_SPRUCE_DIR } from './constants'
 import { FeatureCode } from './FeatureManager'
 import diskUtil from './utilities/disk.utility'
 
@@ -22,13 +22,8 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 
 		if (cacheKey) {
 			// lets see if there is something saved on the disk we can retrieve
-			settingsFile = diskUtil.resolvePath(
-				__dirname,
-				'..',
-				'..',
-				'..',
-				'..',
-				HASH_SPRUCE_DIR,
+			settingsFile = diskUtil.resolveHashSprucePath(
+				pathUtil.join(__dirname, '..'),
 				'settings.json'
 			)
 

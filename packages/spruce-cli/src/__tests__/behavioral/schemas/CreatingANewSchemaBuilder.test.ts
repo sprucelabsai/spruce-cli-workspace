@@ -7,7 +7,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 	@test()
 	protected static async failsWhenASkillIsNotInstalled() {
 		const cli = await this.Cli()
-		assert.throws(
+		await assert.doesThrowAsync(
 			() =>
 				cli.createSchema({
 					nameReadable: 'Test schema!',
@@ -44,7 +44,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		assert.isEqual(response.generatedFiles[0].path, expectedDestination)
 	}
 
-	@test.only()
+	@test()
 	protected static async builderFileValidates() {
 		const cli = await this.bootCliInstallSchemasAndSetCwd('build-valid-file')
 		const response = await cli.createSchema({
@@ -53,8 +53,6 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 			nameCamel: 'anotherTest',
 			description: 'this is so great!'
 		})
-
-		debugger
 
 		await this.Service(Service.TypeChecker).check(
 			response.generatedFiles[0].path

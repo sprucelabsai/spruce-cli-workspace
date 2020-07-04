@@ -13,10 +13,6 @@ export default class SchemaFeature extends AbstractFeature {
 	public packageDependencies: INpmPackage[] = [
 		{
 			name: '@sprucelabs/schema'
-		},
-		{
-			name: 'tsconfig-paths',
-			isDev: true
 		}
 	]
 

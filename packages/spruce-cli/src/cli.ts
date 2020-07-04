@@ -18,9 +18,7 @@ import generatorsAutoloader from '#spruce/autoloaders/generators'
 import { IGenerators } from '#spruce/autoloaders/generators'
 import { IStores } from '#spruce/autoloaders/stores'
 import ErrorCode from '#spruce/errors/errorCode'
-import pkg from '../package.json'
 import './addons/filePrompt.addon'
-import { HASH_SPRUCE_DIR } from './constants'
 import SpruceError from './errors/SpruceError'
 import ServiceFactory, { Service } from './factories/ServiceFactory'
 import FeatureManager, {
@@ -101,7 +99,8 @@ export interface ICli {
 
 export async function boot(options?: { cwd?: string; program?: Command }) {
 	const program = options?.program
-	program?.version(pkg.version).description(pkg.description)
+	// TODO pull in without including package.json
+	// program?.version(pkg.version).description(pkg.description)
 	program?.option('--no-color', 'Disable color output in the console')
 	program?.option(
 		'-d, --directory <path>',
@@ -235,7 +234,7 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 			const {
 				lookupDir = 'src/schemas',
 				addonLookupDir = 'src/addons',
-				destinationDir = `${HASH_SPRUCE_DIR}/schemas`
+				destinationDir = diskUtil.resolveHashSprucePath(cwd, 'schemas')
 			} = options ?? {}
 
 			const schemaRequest = stores.schema.fetchSchemaTemplateItems(

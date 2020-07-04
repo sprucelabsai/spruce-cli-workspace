@@ -7,7 +7,6 @@ import {
 import { IFieldRegistration } from '@sprucelabs/schema/build/utilities/registerFieldType'
 import globby from 'globby'
 import { uniqBy } from 'lodash'
-// TODO move these into mercury api and pull from there
 import ErrorCode from '#spruce/errors/errorCode'
 import { LOCAL_NAMESPACE, CORE_NAMESPACE } from '../constants'
 import SpruceError from '../errors/SpruceError'
@@ -48,7 +47,6 @@ interface IAddonItem {
 }
 
 export default class SchemaStore {
-	public name = 'schema'
 	public cwd: string
 
 	private schemaBuilder: SchemaTemplateItemBuilder
@@ -64,7 +62,7 @@ export default class SchemaStore {
 		this.schemaBuilder = new SchemaTemplateItemBuilder()
 	}
 
-	public async fetchSchemaTemplateItems<T extends ISchemaTemplateItemsOptions>(
+	public async fetchSchemaTemplateItems(
 		localLookupDir: string
 	): Promise<IFetchSchemaTemplateItemsResponse> {
 		const schemas: ISchemaDefinition[] = [
@@ -99,63 +97,6 @@ export default class SchemaStore {
 		const templateItems = [...coreTemplateItems, ...localTemplateItems]
 
 		return { items: templateItems, errors: [] }
-		// const importService = this.ImportService()
-		// // Local
-		// const localErrors: SpruceError[] = []
-		// TODO: Cleanup / break up statements for easier readability
-		// const localDefinitions = (
-		// 	await Promise.all(
-		// 		(await globby([pathUtil.join(localLookupDir, '/**/*.builder.ts')])).map(
-		// 			async file => {
-		// 				try {
-		// 					const definition = await importService.importDefault(file)
-		// 					Schema.validateDefinition(definition)
-		// 					return definition
-		// 				} catch (err) {
-		// 					localErrors.push(
-		// 						new SpruceError({
-		// 							code: ErrorCode.DefinitionFailedToImport,
-		// 							file,
-		// 							originalError: err
-		// 						})
-		// 					)
-		// 					return false
-		// 				}
-		// 			}
-		// 		)
-		// 	)
-		// ).filter(d => !!d) as ISchemaDefinition[]
-		// Break out errors and definitions for
-		// const errors = localErrorsOrDefinitions.filter(
-		// 	local => !Schema.isDefinitionValid(local)
-		// ) as SpruceError[]
-		// when we get better at handling failed imports, uncomment above and update generateTemplateItems
-		// If a local schema points to a core one, it requires the core one to be tracked in "definitionsById"
-		// const definitionsById: { [id: string]: ISchemaDefinition } = {}
-		// coreTemplateItems.forEach(templateItem => {
-		// 	//@ts-ignore
-		// 	definitionsById[templateItem.id] = templateItem.definition
-		// })
-		//@ts-ignore
-		// let allTemplateItems = coreTemplateItems
-		// try {
-		// 	allTemplateItems = this.schemaBuilder.accumulateTemplateItems({
-		// 		// @ts-ignore
-		// 		namespace: 'Local',
-		// 		definitions: localDefinitions,
-		// 		definitionsById,
-		// 		items: coreTemplateItems
-		// 	})
-		// } catch (err) {
-		// 	localErrors.push(err)
-		// }
-		//@ts-ignore
-		// return (includeErrors
-		// 	? {
-		// 			items: allTemplateItems,
-		// 			errors: localErrors
-		// 	  }
-		// 	: [...allTemplateItems]) as SchemaTemplateItemsReturnType<T>
 	}
 
 	private async loadLocalDefinitions(localLookupDir: string) {
@@ -241,7 +182,7 @@ export default class SchemaStore {
 			let importAs = registration.importAs
 
 			if (addon.isLocal) {
-				pkg = `#spruce/../src/fields/${registration.className}`
+				pkg = `#spruce/../fields/${registration.className}`
 				importAs = `generated_import_${generatedImportAsCount++}`
 			}
 

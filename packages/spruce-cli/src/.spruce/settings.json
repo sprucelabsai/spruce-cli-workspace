@@ -1,0 +1,123 @@
+{
+  "watchers": {
+    "src/commands/**/*.ts": {
+      "isEnabled": true,
+      "commands": [
+        "node ./index autoloader -s Command ./src/commands"
+      ]
+    },
+    "src/services/**/*.ts": {
+      "isEnabled": true,
+      "commands": [
+        "node ./index autoloader -s Service ./src/services"
+      ]
+    },
+    "src/utilities/**/*.ts": {
+      "isEnabled": true,
+      "commands": [
+        "node ./index autoloader -s Utility ./src/utilities"
+      ]
+    },
+    "src/generators/**/*.ts": {
+      "isEnabled": true,
+      "commands": [
+        "node ./index autoloader -s Generator ./src/generators"
+      ]
+    },
+    "src/schemas/**/*.ts": {
+      "isEnabled": true,
+      "commands": [
+        "node ./index autoloader -s Schema ./src/schemas"
+      ]
+    },
+    "src/stores/**/*.ts": {
+      "isEnabled": true,
+      "commands": [
+        "node ./index autoloader -s Store ./src/stores"
+      ]
+    },
+    "src/features/**/*.ts": {
+      "isEnabled": true,
+      "commands": [
+        "node ./index autoloader -s Feature ./src/features"
+      ]
+    },
+    "src/errors/**/*.ts": {
+      "isEnabled": true,
+      "commands": [
+        "node ./index error:sync --clean"
+      ]
+    }
+  },
+  "autoloaders": [
+    {
+      "lookupDir": {
+        "path": "src/commands"
+      },
+      "destination": {
+        "name": "commands.ts",
+        "path": ".spruce/autoloaders",
+        "type": "application/typescript",
+        "ext": ".ts"
+      },
+      "pattern": "**/!(*.test).ts"
+    },
+    {
+      "lookupDir": {
+        "path": "src/stores"
+      },
+      "destination": {
+        "name": "stores.ts",
+        "path": ".spruce/autoloaders",
+        "type": "application/typescript",
+        "ext": ".ts"
+      },
+      "pattern": "**/!(*.test).ts"
+    },
+    {
+      "lookupDir": {
+        "path": "src/services"
+      },
+      "destination": {
+        "name": "services.ts",
+        "path": ".spruce/autoloaders",
+        "type": "application/typescript",
+        "ext": ".ts"
+      },
+      "pattern": "**/!(*.test).ts"
+    },
+    {
+      "lookupDir": {
+        "path": "src/features"
+      },
+      "destination": {
+        "name": "features.ts",
+        "path": ".spruce/autoloaders",
+        "type": "application/typescript",
+        "ext": ".ts"
+      },
+      "pattern": "**/!(*.test).ts"
+    },
+    {
+      "lookupDir": {
+        "path": "src/generators"
+      },
+      "destination": {
+        "name": "generators.ts",
+        "path": ".spruce/autoloaders",
+        "type": "application/typescript",
+        "ext": ".ts"
+      },
+      "pattern": "**/!(*.test).ts"
+    }
+  ],
+  "tests": {
+    "tmpDirs": {
+      "build-valid-file": "/var/folders/qw/v2bfr0c94bn37vclwvcltsj40000gn/tmp/6798cc72-284e-494f-a0d2-9baf84f5cd2d",
+      "value-type-generation": "/var/folders/qw/v2bfr0c94bn37vclwvcltsj40000gn/tmp/c2e1bec4-1640-495e-bb55-f45b85811f8c",
+      "sync1": "/var/folders/qw/v2bfr0c94bn37vclwvcltsj40000gn/tmp/930cf08e-9992-41c0-a48e-07e41a1d310a",
+      "build-without-crashing": "/var/folders/qw/v2bfr0c94bn37vclwvcltsj40000gn/tmp/6798cc72-284e-494f-a0d2-9baf84f5cd2d",
+      "local-schema-loading": "/var/folders/qw/v2bfr0c94bn37vclwvcltsj40000gn/tmp/737035f5-d78e-4fa5-9783-cd109cf43b8d"
+    }
+  }
+}

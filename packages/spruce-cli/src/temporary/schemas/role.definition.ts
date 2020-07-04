@@ -9,7 +9,6 @@ const roleDefinition: ISchemaDefinition = {
 	id: 'role',
 	name: 'Role',
 	version: CORE_SCHEMA_VERSION.constVal,
-	description: 'All people in Spruce fall into 5 roles.',
 	fields: {
 		slug: {
 			label: 'Slug',
@@ -28,13 +27,12 @@ export default roleDefinition
 
 export enum RoleSlugs {
 	Owner = 'owner',
-	GroupManager = 'groupManager',
 	Manager = 'manager',
 	Teammate = 'teammate',
 	Guest = 'guest'
 }
 
-export const RoleSelectChoices: ISelectFieldDefinitionChoice[] = [
+export const roleSelectChoices: ISelectFieldDefinitionChoice[] = [
 	{
 		value: 'owner',
 		label: 'Owner'
@@ -45,7 +43,7 @@ export const RoleSelectChoices: ISelectFieldDefinitionChoice[] = [
 	},
 	{
 		value: 'manager',
-		label: 'Store manager'
+		label: 'Manager'
 	},
 	{
 		value: 'teammate',

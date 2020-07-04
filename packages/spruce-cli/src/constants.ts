@@ -1,14 +1,13 @@
-export const HASH_SPRUCE_DIR = 'src/.spruce'
-
-export const LATEST_TOKEN = '@latest'
+export const HASH_SPRUCE_DIR = 'src/.spruce' as const
+export const LATEST_TOKEN = '@latest' as const
 export const LATEST_HANDLEBARS = `{{${LATEST_TOKEN}}}`
 export const CORE_SCHEMA_VERSION = {
-	stringVal: '2020-06-23',
+	stringVal: '2020-07-23',
 	intVal: 20200623,
-	constVal: '2020_05_23'
-}
+	constVal: '2020_07_23'
+} as const
 
-export const CORE_NAMESPACE = 'Core'
-export const LOCAL_NAMESPACE = 'Local'
-export const TEST_JEST_PASSED = 'passed'
-export const TEST_JEST_FAILED = 'failed'
+export const CORE_NAMESPACE = 'Spruce' as const
+export const LOCAL_NAMESPACE = 'Local' as const
+export const TEST_JEST_PASSED = 'passed' as const
+export const TEST_JEST_FAILED = 'failed' as const

@@ -8,6 +8,7 @@ import uuid from 'uuid'
 import { boot } from './cli'
 import ServiceFactory, { Service, IServices } from './factories/ServiceFactory'
 import TerminalInterface from './interfaces/TerminalInterface'
+import diskUtil from './utilities/disk.utility'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	private static rl: Interface
@@ -55,8 +56,16 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static Service<S extends Service>(type: S): IServices[S] {
-		const sf = new ServiceFactory(new Mercury())
+		const sf = this.ServiceFactory()
 		return sf.Service(this.cwd, type)
+	}
+
+	protected static ServiceFactory() {
+		return new ServiceFactory(new Mercury())
+	}
+
+	protected static resolveHashSprucePath(...filePath: string[]) {
+		return diskUtil.resolveHashSprucePath(this.cwd, ...filePath)
 	}
 
 	protected static async sendInput(input: string) {

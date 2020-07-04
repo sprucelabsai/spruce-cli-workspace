@@ -2,7 +2,7 @@ import { ISchemaDefinition } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { CORE_SCHEMA_VERSION } from '../../constants'
 import aclDefinition from './acl.definition'
-import { RoleSelectChoices } from './role.definition'
+import { roleSelectChoices } from './role.definition'
 
 const groupDefinition: ISchemaDefinition = {
 	id: 'job',
@@ -32,7 +32,7 @@ const groupDefinition: ISchemaDefinition = {
 			type: FieldType.Select,
 			isRequired: true,
 			options: {
-				choices: RoleSelectChoices
+				choices: roleSelectChoices
 			}
 		},
 		inStoreAcls: {

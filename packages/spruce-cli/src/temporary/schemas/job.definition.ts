@@ -2,7 +2,7 @@ import { ISchemaDefinition } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { CORE_SCHEMA_VERSION } from '../../constants'
 import aclDefinition from './acl.definition'
-import { RoleSelectChoices } from './role.definition'
+import { roleSelectChoices } from './role.definition'
 
 /** A permission keyed by skill slug or "core" and values are an array of permission keys starting with "can-" */
 const jobDefinition: ISchemaDefinition = {
@@ -33,7 +33,7 @@ const jobDefinition: ISchemaDefinition = {
 			type: FieldType.Select,
 			isRequired: true,
 			options: {
-				choices: RoleSelectChoices
+				choices: roleSelectChoices
 			}
 		},
 		inStoreAcls: {

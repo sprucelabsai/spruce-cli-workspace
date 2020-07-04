@@ -86,7 +86,7 @@ export default class SheetsReporterTest extends AbstractSpruceTest {
 
 	@test()
 	protected static async failsWithBadTestName() {
-		await assert.throws(
+		await assert.doesThrowAsync(
 			// @ts-ignore
 			() => this.reporter.reportTestAsPassed('canBooCli'),
 			/invalid/i

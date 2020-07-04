@@ -9,7 +9,6 @@ import {
 } from '../types/templates.types'
 
 export default class DirectoryTemplateUtility {
-	/** Returns the relative file paths for all the expected files in the directory template */
 	public static async filesInTemplate(template: DirectoryTemplateKind) {
 		const filePaths: string[] = []
 
@@ -31,7 +30,6 @@ export default class DirectoryTemplateUtility {
 		return filePaths
 	}
 
-	/** Build all the files in the directory for the template */
 	public static async build<K extends DirectoryTemplateKind>(options: {
 		/** The type of directory template to build */
 		kind: K

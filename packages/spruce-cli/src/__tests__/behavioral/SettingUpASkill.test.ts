@@ -1,6 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../AbstractCliTest'
-import { HASH_SPRUCE_DIR } from '../../constants'
 import { FeatureCode } from '../../FeatureManager'
 import diskUtil from '../../utilities/disk.utility'
 
@@ -26,7 +25,7 @@ export default class SettingUpASkill extends AbstractCliTest {
 	@test()
 	protected static async failsWithBadParams() {
 		const cli = await this.Cli()
-		await assert.throws(async () => {
+		await assert.doesThrowAsync(async () => {
 			await cli.installFeatures({
 				features: [
 					{
@@ -58,7 +57,7 @@ export default class SettingUpASkill extends AbstractCliTest {
 			]
 		})
 
-		const hashSpruceDir = this.resolvePath(HASH_SPRUCE_DIR)
+		const hashSpruceDir = this.resolveHashSprucePath()
 		assert.isTrue(diskUtil.doesDirExist(hashSpruceDir))
 	}
 
@@ -68,7 +67,9 @@ export default class SettingUpASkill extends AbstractCliTest {
 		const health = await cli.checkHealth()
 
 		assert.isEqual(health.skill.status, 'failed')
-		assert.include(health.skill.errors?.[0].options.code, 'SKILL_NOT_INSTALLED')
+		assert.doesInclude(health, {
+			'skill.errors[].options.code': 'SKILL_NOT_INSTALLED'
+		})
 	}
 
 	@test()
@@ -94,7 +95,9 @@ export default class SettingUpASkill extends AbstractCliTest {
 		const health = await cli.checkHealth()
 
 		assert.isEqual(health.skill.status, 'failed')
-		assert.include(health.skill.errors?.[0].options.code, 'BOOT_ERROR')
+		assert.doesInclude(health, {
+			'skill.errors[].options.code': 'BOOT_ERROR'
+		})
 	}
 
 	@test()
@@ -113,6 +116,11 @@ export default class SettingUpASkill extends AbstractCliTest {
 		})
 
 		const health = await cli.checkHealth()
-		assert.deepEqual(health, { skill: { status: 'passed' } })
+
+		if (health.skill?.errors && health.skill.errors.length > 0) {
+			assert.fail(health.skill.errors?.[0].message)
+		}
+
+		assert.isEqualDeep(health, { skill: { status: 'passed' } })
 	}
 }

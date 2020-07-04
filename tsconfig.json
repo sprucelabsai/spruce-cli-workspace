@@ -17,7 +17,6 @@
 		"baseUrl": ".",
 		"paths": {
 			"#spruce/*": [
-				".spruce/*",
 				"node_modules/@sprucelabs/schema/build/*",
 				"node_modules/@sprucelabs/schema/build/src/*"
 			]

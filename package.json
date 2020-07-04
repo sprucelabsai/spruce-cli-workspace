@@ -22,9 +22,9 @@
 	},
 	"dependencies": {},
 	"devDependencies": {
-		"conventional-changelog-sprucelabs": "^1.1.0",
+		"conventional-changelog-sprucelabs": "^1.1.1",
 		"eslint": "^5",
-		"eslint-config-spruce": "10.5.3",
+		"eslint-config-spruce": "10.5.5",
 		"lerna": "^3.20.2",
 		"typescript": "^3.8"
 	}

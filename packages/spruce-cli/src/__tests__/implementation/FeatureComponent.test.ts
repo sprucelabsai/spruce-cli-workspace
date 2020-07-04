@@ -69,6 +69,6 @@ export default class FeatureComponentTest extends AbstractCliTest {
 		}
 
 		const answers = await promise
-		assert.deepEqual(answers, expectedAnswers)
+		assert.isEqualDeep(answers, expectedAnswers)
 	}
 }

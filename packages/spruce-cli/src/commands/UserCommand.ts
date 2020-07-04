@@ -29,12 +29,6 @@ export default class UserCommand extends AbstractCommand {
 	protected skillStore: SkillStore
 	protected remoteStore: RemoteStore
 
-	public constructor(options: IUserCommandOptions) {
-		super(options)
-		this.userStore = options.stores.user
-		this.skillStore = options.stores.skill
-		this.remoteStore = options.stores.remote
-	}
 	/** Sets up commands */
 	public attachCommands = (program: Command) => {
 		program
@@ -57,7 +51,6 @@ export default class UserCommand extends AbstractCommand {
 			.description('Switches the current user')
 			.action(this.switchUser)
 	}
-
 	public login = async (phoneNumber?: string): Promise<void> => {
 		let phone = phoneNumber
 		let pinLabel = 'Enter the pin I just sent!'
@@ -123,12 +116,10 @@ export default class UserCommand extends AbstractCommand {
 		// Show their deets (plus jwt)
 		this.whoAmI()
 	}
-
 	public logout = () => {
 		this.userStore.logout()
 		this.term.info('Logout successful')
 	}
-
 	public switchUser = async () => {
 		const users = this.userStore.getUsers()
 
@@ -157,7 +148,6 @@ export default class UserCommand extends AbstractCommand {
 		this.userStore.setLoggedInUser(selectedUser)
 		this.whoAmI()
 	}
-
 	public whoAmI = () => {
 		const user = this.userStore.getLoggedInUser()
 		const skill = this.skillStore.getLoggedInSkill()
@@ -185,8 +175,13 @@ export default class UserCommand extends AbstractCommand {
 			this.term.writeLn('Not currently logged in')
 		}
 	}
-
 	private PinService = () => {
 		return this.serviceFactory.Service(this.cwd, Service.Pin)
+	}
+	public constructor(options: IUserCommandOptions) {
+		super(options)
+		this.userStore = options.stores.user
+		this.skillStore = options.stores.skill
+		this.remoteStore = options.stores.remote
 	}
 }

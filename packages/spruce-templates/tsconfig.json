@@ -14,13 +14,9 @@
 		"moduleResolution": "node",
 		"sourceMap": true,
 		"outDir": "build",
-		"baseUrl": "./src",
+		"baseUrl": "src",
 		"paths": {
-			"#spruce/*": [
-				"../spruce-cli/.spruce/*",
-				"../../node_modules/@sprucelabs/schema/build/*",
-				"node_modules/@sprucelabs/schema/build/*"
-			]
+			"#spruce/*": ["../node_modules/@sprucelabs/schema/build/.spruce/*"]
 		}
 	},
 	"include": ["./*.ts", "./**/*.ts"],

@@ -1,30 +1,51 @@
 import { TemplateRenderAs } from '@sprucelabs/schema'
+import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 {{#each imports}}
 // @ts-ignore
 import * as {{importAs}} from '{{package}}'
 {{/each}}
 
-{{!-- import FieldType from '#spruce/schemas/fields/fieldTypeEnum' --}}
+const schemaTemplateItems = {{{json schemaTemplateItems}}}
 
-// @ts-ignore
-const generateType = (renderAs: TemplateRenderAs, importAs: string) => {
+
+const generateTypeLiteral = (definition: SpruceSchema.IFieldDefinition, renderAs: TemplateRenderAs, importAs: string) => {
+	const options:SpruceSchema.IFieldTemplateDetailOptions<FieldDefinition> = {
+		language: 'ts',
+		templateItems: schemaTemplateItems,
+		globalNamespace: 'SpruceSchemas',
+		definition,
+		importAs,
+		renderAs
+	}
+
+	console.log(options)
+
 	return 'string'
 }
 
 const valueTypes = {
-	{{#each schemaTemplatesByNamespace}}
+	{{#each schemaTemplatesByNamespaceAndName}}
 	{{@key}}: {
-		{{#each this}} 
-		{{id}}: {
-			{{#each definition.fields}}
-			"{{@key}}": {
-				{{#each ../../../rendersAs}}
-				{{this}}: {{{ valueTypeGenerator ../this this }}},
-				{{/each}}
+		{{#each this}}
+		{{@key}}: [
+			{{#each this}} 
+			{
+				version: "{{definition.version}}",
+				fields: {
+					{{#each definition.fields}}
+					"{{@key}}": {
+						{{#each ../../../../rendersAs}}
+						{{this}}: {{{ valueTypeGenerator ../this this }}},
+						{{/each}}
+					},
+					{{/each}}
+				}
 			},
 			{{/each}}
-		},
+		],
 		{{/each}}
 	},
 	{{/each}}
