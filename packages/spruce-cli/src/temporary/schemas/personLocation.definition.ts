@@ -7,7 +7,7 @@ import personDefinition from './person.definition'
 import { roleSelectChoices } from './role.definition'
 
 const personLocationDefinition: ISchemaDefinition = {
-	id: 'userLocation',
+	id: 'personLocation',
 	name: 'Person <-> location relationship',
 	version: CORE_SCHEMA_VERSION.constVal,
 	fields: {

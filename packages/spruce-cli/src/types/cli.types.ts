@@ -22,15 +22,3 @@ export interface INpmPackage {
 	/** Whether to install this in "devDependencies" */
 	isDev?: boolean
 }
-
-export interface IValueTypes {
-	[namespace: string]: {
-		[schemaId: string]: {
-			[fieldName: string]: {
-				Value: string
-				Type: string
-				DefinitionType: string
-			}
-		}
-	}
-}

@@ -5,13 +5,29 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 /** Renders field options */
 handlebars.registerHelper('fieldDefinitionOptions', function(
+	namespace: string,
+	schemaId: string,
+	version: string,
+	fieldName: string,
 	fieldDefinition: FieldDefinition,
 	renderAs: TemplateRenderAs,
 	options
 ) {
+	if (typeof namespace !== 'string') {
+		throw new Error('fieldDefinitionOptions helper needs namespace first')
+	}
+
+	if (typeof schemaId !== 'string') {
+		throw new Error('fieldDefinitionOptions helper needs schemaId 2nd')
+	}
+
+	if (typeof fieldName !== 'string') {
+		throw new Error('fieldDefinitionOptions helper needs fieldName 3rd')
+	}
+
 	if (!fieldDefinition) {
 		throw new Error(
-			'fieldDefinitionOptions helper needs a FieldDefinition as the first argument'
+			'fieldDefinitionOptions helper needs a FieldDefinition as the 4th argument'
 		)
 	}
 
@@ -42,8 +58,11 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 	}
 	// If this is a schema type, we need to map it to it's proper value type
 	if (fieldDefinition.type === FieldType.Schema && updatedOptions) {
-		const value = handlebars.helpers.fieldDefinitionValueType(
-			fieldDefinition,
+		const value = handlebars.helpers.valueTypeLiteral(
+			namespace,
+			schemaId,
+			version,
+			fieldName,
 			renderAs === TemplateRenderAs.Type
 				? TemplateRenderAs.DefinitionType
 				: TemplateRenderAs.Value,

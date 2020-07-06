@@ -12,7 +12,7 @@ import log from './singletons/log'
 // Import addons
 import './addons/escape.addon'
 import './addons/fieldDefinitionOptions.addon'
-import './addons/fieldDefinitionValueType.addon'
+import './addons/valueTypeLiteral.addon'
 import './addons/fieldTypeEnum.addon'
 import './addons/operators.addon'
 import './addons/gt.addon'
@@ -128,7 +128,7 @@ export const templates = {
 		fieldTemplateItems: IFieldTemplateItem[]
 	}) {
 		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
-		const rendersAs = Object.keys(TemplateRenderAs)
+		const rendersAs = Object.values(TemplateRenderAs)
 
 		const schemaTemplatesByNamespaceAndName = templateItemUtil.groupSchemaTemplatesByNamespaceAndName(
 			options.schemaTemplateItems

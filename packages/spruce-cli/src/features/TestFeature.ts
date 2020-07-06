@@ -1,7 +1,5 @@
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import { Service } from '../factories/ServiceFactory'
-import { FeatureCode } from '../FeatureManager'
-import PkgService from '../services/PkgService'
+import { FeatureCode } from './FeatureManager'
 import log from '../singletons/log'
 import { INpmPackage } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
@@ -18,9 +16,6 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 		{ name: 'ts-jest', isDev: true }
 	]
 
-	private PkgService(): PkgService {
-		return this.serviceFactory.Service(this.cwd, Service.Pkg)
-	}
 	public async afterPackageInstall() {
 		log.trace('TestFeature.afterPackageInstall()')
 

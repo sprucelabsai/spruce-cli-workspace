@@ -44,7 +44,10 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 
 		assert.doesInclude(
 			typesContents,
-			`SpruceSchemas.Core.${CORE_SCHEMA_VERSION.constVal}.User`
+			new RegExp(
+				`SpruceSchemas.Core.IPerson(.*?)interface ${CORE_SCHEMA_VERSION.constVal}`,
+				'gis'
+			)
 		)
 	}
 }

@@ -1,9 +1,5 @@
 import { ISchemaDefinition } from '@sprucelabs/schema'
 
-export interface IValueTypes {
-	[key: string]: string
-}
-
 export interface IAutoLoaderClassTemplateItem {
 	optionsInterfaceName?: string
 	className: string
@@ -88,4 +84,18 @@ export interface IErrorTemplateItem {
 	definition: ISchemaDefinition
 	nameCamel: string
 	namePascal: string
+}
+
+export interface IValueTypes {
+	[namespace: string]: {
+		[schemaId: string]: {
+			[version: string]: {
+				[fieldName: string]: {
+					Value: string
+					Type: string
+					DefinitionType: string
+				}
+			}
+		}
+	}
 }

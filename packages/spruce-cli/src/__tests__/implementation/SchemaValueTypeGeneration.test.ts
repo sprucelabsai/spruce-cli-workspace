@@ -1,12 +1,11 @@
 import { Mercury } from '@sprucelabs/mercury'
-import { templates } from '@sprucelabs/spruce-templates'
+import { templates, IValueTypes } from '@sprucelabs/spruce-templates'
 import { assert, test } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
-import { CORE_NAMESPACE } from '../../constants'
+import { CORE_NAMESPACE, CORE_SCHEMA_VERSION } from '../../constants'
 import ServiceFactory, { Service } from '../../factories/ServiceFactory'
 import SchemaGenerator from '../../generators/SchemaGenerator'
 import SchemaStore from '../../stores/SchemaStore'
-import { IValueTypes } from '../../types/cli.types'
 import diskUtil from '../../utilities/disk.utility'
 
 export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
@@ -25,7 +24,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	@test()
 	protected static async runsWithoutBreakingWithNoArgs() {
 		const results = await this.generator.generateValueTypes(
-			this.resolveHashSprucePath(),
+			this.resolveHashSprucePath('tmp'),
 			{
 				schemaTemplateItems: [],
 				fieldTemplateItems: []
@@ -63,20 +62,11 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 			new ServiceFactory(new Mercury())
 		)
 
-		const schemasDir = this.resolvePath('src/schemas')
-		const addonsDir = this.resolvePath('src/addons')
-
-		const schemaRequest = schemaStore.fetchSchemaTemplateItems(schemasDir)
-		const fieldRequest = schemaStore.fetchFieldTemplateItems(addonsDir)
-
-		const [schemaResults, fieldResults] = await Promise.all([
-			schemaRequest,
-			fieldRequest
-		])
+		const results = await schemaStore.fetchAllTemplateItems()
 
 		return {
-			schemaTemplateItems: schemaResults.items,
-			fieldTemplateItems: fieldResults.items
+			schemaTemplateItems: results.schemas.items,
+			fieldTemplateItems: results.fields.items
 		}
 	}
 
@@ -92,12 +82,40 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	}
 
 	@test(
-		'generates user.firstName value types',
-		`${CORE_NAMESPACE}.person[].fields.firstName`,
+		'generates person.firstName value type (string)',
+		`${CORE_NAMESPACE}.person.${CORE_SCHEMA_VERSION.constVal}.firstName`,
 		{
-			Type: 'string',
-			Value: 'string',
-			DefinitionType: 'string'
+			type: 'string',
+			value: 'string',
+			definitionType: 'string'
+		}
+	)
+	@test(
+		'generates personLocation.roles value types (select)',
+		`${CORE_NAMESPACE}.personLocation.${CORE_SCHEMA_VERSION.constVal}.roles`,
+		{
+			type: '("owner" | "groupManager" | "manager" | "teammate" | "guest")',
+			value: '("owner" | "groupManager" | "manager" | "teammate" | "guest")',
+			definitionType:
+				'("owner" | "groupManager" | "manager" | "teammate" | "guest")'
+		}
+	)
+	@test(
+		'generates personLocation.person value type (schema)',
+		`${CORE_NAMESPACE}.personLocation.${CORE_SCHEMA_VERSION.constVal}.person`,
+		{
+			type: 'SpruceSchemas.Spruce.2020_07_22.IPerson',
+			value: '[personDefinition]',
+			definitionType: 'SpruceSchemas.Spruce.2020_07_22.Person.IDefinition[]'
+		}
+	)
+	@test(
+		'generates acl dynamic field',
+		`${CORE_NAMESPACE}.acl.${CORE_SCHEMA_VERSION.constVal}.__dynamicKeySignature`,
+		{
+			type: 'string[]',
+			value: 'string[]',
+			definitionType: 'string[]'
 		}
 	)
 	protected static async importsTypes(

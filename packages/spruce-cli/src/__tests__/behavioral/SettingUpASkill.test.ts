@@ -1,6 +1,6 @@
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../AbstractCliTest'
-import { FeatureCode } from '../../FeatureManager'
+import { FeatureCode } from '../../features/FeatureManager'
 import diskUtil from '../../utilities/disk.utility'
 
 export default class SettingUpASkill extends AbstractCliTest {

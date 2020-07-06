@@ -47,7 +47,8 @@ export default class ImportService extends CommandService {
 						options: {
 							code: ErrorCode.FailedToImport,
 							file,
-							friendlyMessage: `Unknown error from import, output was: "${stdout}"`
+							friendlyMessage: `Unknown error from import, output was: \n\n"${errParts[1] ??
+								stdout}"`
 						}
 					}
 				}
@@ -60,11 +61,15 @@ export default class ImportService extends CommandService {
 				defaultImported = JSON.parse(successParts[1])
 			}
 		} catch (err) {
-			throw new SpruceError({
-				code: ErrorCode.FailedToImport,
-				file,
-				originalError: err
-			})
+			if (err instanceof SpruceError) {
+				throw err
+			} else {
+				throw new SpruceError({
+					code: ErrorCode.FailedToImport,
+					file,
+					originalError: err
+				})
+			}
 		}
 
 		return defaultImported as T

@@ -1,7 +1,8 @@
 import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
-import ServiceFactory from '../factories/ServiceFactory'
-import { FeatureCode } from '../FeatureManager'
+import ServiceFactory, { Service } from '../factories/ServiceFactory'
+import { FeatureCode } from './FeatureManager'
+import PkgService from '../services/PkgService'
 import { INpmPackage } from '../types/cli.types'
 
 export default abstract class AbstractFeature<
@@ -43,4 +44,8 @@ export default abstract class AbstractFeature<
 	): Promise<void> {}
 
 	public abstract async isInstalled(): Promise<boolean>
+
+	protected PkgService(): PkgService {
+		return this.serviceFactory.Service(this.cwd, Service.Pkg)
+	}
 }

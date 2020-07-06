@@ -1,7 +1,7 @@
 import pathUtil from 'path'
 import AbstractCliTest from './AbstractCliTest'
 import { ICli } from './cli'
-import { FeatureCode } from './FeatureManager'
+import { FeatureCode } from './features/FeatureManager'
 import diskUtil from './utilities/disk.utility'
 
 export default abstract class AbstractSchemaTest extends AbstractCliTest {

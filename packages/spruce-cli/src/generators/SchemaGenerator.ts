@@ -2,15 +2,13 @@ import path from 'path'
 import pathUtil from 'path'
 import { IFieldTemplateItem, ISchemaTemplateItem } from '@sprucelabs/schema'
 import {
-	templates,
-	IDefinitionBuilderTemplateItem
+	IDefinitionBuilderTemplateItem,
+	IValueTypes
 } from '@sprucelabs/spruce-templates'
-import ErrorCode from '#spruce/errors/errorCode'
 import { LATEST_HANDLEBARS } from '../constants'
 import SpruceError from '../errors/SpruceError'
 import { IGeneratedFile } from '../types/cli.types'
 import diskUtil from '../utilities/disk.utility'
-import namesUtil from '../utilities/names.utility'
 import versionUtil from '../utilities/version.utility'
 import AbstractGenerator from './AbstractGenerator'
 
@@ -22,13 +20,12 @@ export interface IGenerateSchemaTypesOptions {
 
 export interface IGenerateFieldTypesOptions {
 	fieldTemplateItems: IFieldTemplateItem[]
-	clean?: boolean
 }
 
 export interface IGenerateSchemaTypesOptions {
 	fieldTemplateItems: IFieldTemplateItem[]
 	schemaTemplateItems: ISchemaTemplateItem[]
-	clean?: boolean
+	valueTypes: IValueTypes
 }
 
 export interface ISchemaGeneratorBuildResults {
@@ -45,7 +42,6 @@ export interface ISchemaGeneratorFieldResults {
 }
 
 export interface ISchemaGeneratorSchemaSyncResults {
-	resultsByStage: ISchemaTypesGenerationStage[]
 	generatedFiles: IGeneratedFile[]
 	updatedFiles: IGeneratedFile[]
 }
@@ -96,7 +92,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			`${options.nameCamel}.builder.ts`
 		)
 
-		const definitionBuilder = templates.definitionBuilder(options)
+		const definitionBuilder = this.templates.definitionBuilder(options)
 
 		await diskUtil.writeFile(resolvedBuilderDestination, definitionBuilder)
 
@@ -132,7 +128,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 			const resolvedDestination = path.join(destinationDir, 'fields', filename)
 
-			const contents = templates[templateFuncName]({
+			const contents = this.templates[templateFuncName]({
 				fieldTemplateItems
 			})
 
@@ -152,158 +148,23 @@ export default class SchemaGenerator extends AbstractGenerator {
 		destinationDir: string,
 		options: IGenerateSchemaTypesOptions
 	): Promise<ISchemaGeneratorSchemaSyncResults> {
-		const { fieldTemplateItems, schemaTemplateItems } = options
-
+		const { fieldTemplateItems, schemaTemplateItems, valueTypes } = options
 		const schemaTypesDestination = path.join(destinationDir, 'schemas.types.ts')
 
-		// Generate in stages, starting with core only
-		const coreSchemaTemplateItems = schemaTemplateItems.filter(
-			i => i.namespace === 'Core'
-		)
-
-		const coreFieldTemplateItems = fieldTemplateItems.filter(
-			i => i.package === '@sprucelabs/schema'
-		)
-
-		const stages = [
-			{
-				// Stage 1, core
-				name: 'core',
-				schemaTemplateItems: coreSchemaTemplateItems,
-				fieldTemplateItems: coreFieldTemplateItems
-			},
-			{
-				// Stage 2, everything
-				name: 'everything',
-				schemaTemplateItems,
-				fieldTemplateItems
-			}
-		]
-
-		const resultsByStage = []
-		const normalizedDefinitions: {
-			id: string
-			name: string
-			path: string
-			description: string
-		}[] = []
-
-		let successfulSchemas = 0
-		let successfulFields = 0
-
-		for (const stage of stages) {
-			const {
-				schemaTemplateItems: schemaTemplateItemsStage,
-				fieldTemplateItems,
-				name
-			} = stage
-			try {
-				// We may need to remove template items if they error below
-				let schemaTemplateItems = [...schemaTemplateItemsStage]
-
-				successfulFields += fieldTemplateItems.length
-
-				// Build the ValueType hash to pass to schemasTypes
-				const {
-					valueTypes,
-					errors
-					//@ts-ignore
-				} = await this.valueTypeService.allValueTypes({
-					schemaTemplateItems,
-					fieldTemplateItems
-				})
-
-				// If there were errors, remove any definitions that had them
-				if (errors.length > 0) {
-					//@ts-ignore
-					errors.forEach(err => {
-						const { options } = err
-						if (options.code === ErrorCode.ValueTypeServiceError) {
-							schemaTemplateItems = schemaTemplateItems.filter(
-								item => item.id !== options.schemaId
-							)
-						}
-					})
-				}
-				// definitions for each schema
-				await Promise.all(
-					schemaTemplateItems.map(async templateItem => {
-						// only normalize this schema once for all stages
-						if (!normalizedDefinitions.find(n => n.id === templateItem.id)) {
-							const destination = path.join(
-								destinationDir,
-								namesUtil.toCamel(templateItem.namespace),
-								`${templateItem.nameCamel}.definition.ts`
-							)
-
-							const definition = templates.definition({
-								...templateItem,
-								schemaTemplateItems,
-								fieldTemplateItems,
-								valueTypes
-							})
-
-							await diskUtil.writeFile(destination, definition)
-
-							normalizedDefinitions.push({
-								name: `${templateItem.namePascal} definition`,
-								id: templateItem.namePascal,
-								path: destination,
-								description:
-									templateItem.definition.description ??
-									`*** no description defined in ${destination} ***`
-							})
-
-							successfulSchemas++
-						}
-					})
-				)
-
-				// Schema types
-				const schemaTypesContents = templates.schemasTypes({
-					schemaTemplateItems,
-					fieldTemplateItems,
-					valueTypes
-				})
-
-				//Write out schema types
-				await diskUtil.writeFile(schemaTypesDestination, schemaTypesContents)
-
-				resultsByStage.push({
-					name,
-					errors,
-					successfulSchemas: schemaTemplateItems.length,
-					successfulFields: fieldTemplateItems.length
-				})
-			} catch (err) {
-				resultsByStage.push({
-					name,
-					errors: [
-						new SpruceError({
-							code: ErrorCode.ValueTypeServiceStageError,
-							stage: name,
-							originalError: err
-						})
-					],
-					successfulFields,
-					successfulSchemas
-				})
-			}
-		}
-
-		return {
-			resultsByStage,
+		const results: ISchemaGeneratorSchemaSyncResults = {
 			updatedFiles: [],
-			generatedFiles: [
-				{
-					name: 'Schema types',
-					path: schemaTypesDestination,
-					description:
-						'Registry of types, e.g. SpruceSchemas.Local.2020_01_10.Ball'
-				},
-				...normalizedDefinitions
-			]
+			generatedFiles: []
 		}
+
+		const schemaTypesContents = this.templates.schemasTypes({
+			schemaTemplateItems,
+			fieldTemplateItems,
+			valueTypes
+		})
+
+		await diskUtil.writeFile(schemaTypesDestination, schemaTypesContents)
+
+		return results
 	}
 
 	public async generateValueTypes(

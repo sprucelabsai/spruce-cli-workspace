@@ -21,6 +21,7 @@ import {
 	groupDefinition,
 	aclDefinition
 } from '../temporary/schemas'
+import diskUtil from '../utilities/disk.utility'
 import namesUtil from '../utilities/names.utility'
 
 interface IFetchSchemaTemplateItemsResponse {
@@ -60,6 +61,28 @@ export default class SchemaStore {
 		this.cwd = cwd
 		this.serviceFactory = serviceFactory
 		this.schemaBuilder = new SchemaTemplateItemBuilder()
+	}
+
+	public async fetchAllTemplateItems(
+		localSchemaDir?: string,
+		localAddonDir?: string
+	) {
+		const schemaRequest = this.fetchSchemaTemplateItems(
+			diskUtil.resolvePath(this.cwd, localSchemaDir ?? 'src/schemas')
+		)
+		const fieldRequest = this.fetchFieldTemplateItems(
+			diskUtil.resolvePath(this.cwd, localAddonDir ?? 'src/addons')
+		)
+
+		const [schemaResults, fieldResults] = await Promise.all([
+			schemaRequest,
+			fieldRequest
+		])
+
+		return {
+			schemas: schemaResults,
+			fields: fieldResults
+		}
 	}
 
 	public async fetchSchemaTemplateItems(

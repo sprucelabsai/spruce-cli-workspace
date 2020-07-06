@@ -2,7 +2,7 @@ import { Command } from 'commander'
 import ErrorCode from '#spruce/errors/errorCode'
 import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
 import SpruceError from '../errors/SpruceError'
-import FeatureManager, { FeatureCode } from '../FeatureManager'
+import FeatureManager, { FeatureCode } from '../features/FeatureManager'
 import SchemaGenerator from '../generators/SchemaGenerator'
 import SchemaStore from '../stores/SchemaStore'
 import diskUtil from '../utilities/disk.utility'
@@ -291,6 +291,7 @@ export default class SchemaCommand extends AbstractCommand {
 
 		const results = await this.schemaGenerator.generateSchemaTypes(
 			diskUtil.resolvePath(destinationDir),
+			// @ts-ignore
 			{
 				fieldTemplateItems,
 				schemaTemplateItems,
@@ -301,6 +302,7 @@ export default class SchemaCommand extends AbstractCommand {
 		const { resultsByStage } = results
 		const errors: SpruceError[] = []
 
+		// @ts-ignore
 		resultsByStage.forEach(results => {
 			errors.push(...results.errors)
 		})

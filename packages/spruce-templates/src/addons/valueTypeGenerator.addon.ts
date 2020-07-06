@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { TemplateRenderAs, IFieldTemplateItem } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
+import { upperFirst } from 'lodash'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 
 handlebars.registerHelper('valueTypeGenerator', function(
@@ -29,7 +30,11 @@ handlebars.registerHelper('valueTypeGenerator', function(
 		throw new Error(`Could not find field for type ${fieldDefinition.type}`)
 	}
 
-	return `generateTypeLiteral(${JSON.stringify(
-		fieldDefinition
-	)}, TemplateRenderAs.${renderAs}, "${match.importAs}")`
+	const type = handlebars.helpers.fieldTypeEnum(fieldDefinition, options)
+	const def = JSON.stringify({
+		...fieldDefinition,
+		type: '{{TYPE_ENUM}}'
+	}).replace('"{{TYPE_ENUM}}"', type)
+
+	return `generateTypeLiteral(${def}, TemplateRenderAs.${upperFirst(renderAs)}, "${match.importAs}")`
 })

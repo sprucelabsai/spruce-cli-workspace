@@ -44,7 +44,7 @@
 		"@sprucelabs/error": "^1.2.0",
 		"@sprucelabs/log": "^10.2.1",
 		"@sprucelabs/mercury": "10.3.0-prerelease-mock.2",
-		"@sprucelabs/schema": "^4.0.0",
+		"@sprucelabs/schema": "^4.0.2",
 		"@sprucelabs/spruce-templates": "^10.5.1",
 		"@types/promise.allsettled": "^1.0.3",
 		"@types/uuid": "^3",
@@ -76,7 +76,7 @@
 		"vm2": "^3.9.1"
 	},
 	"devDependencies": {
-		"@sprucelabs/test": "^4.0.0",
+		"@sprucelabs/test": "^5.2.2",
 		"@types/eslint": "^6.8.0",
 		"@types/fs-extra": "^8.1.0",
 		"@types/google-spreadsheet": "^3.0.0",

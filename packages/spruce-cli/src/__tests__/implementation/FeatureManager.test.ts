@@ -2,7 +2,7 @@ import { Mercury } from '@sprucelabs/mercury'
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../AbstractCliTest'
 import ServiceFactory from '../../factories/ServiceFactory'
-import FeatureManager, { FeatureCode } from '../../FeatureManager'
+import FeatureManager, { FeatureCode } from '../../features/FeatureManager'
 
 export default class FeatureManagerTest extends AbstractCliTest {
 	protected static fm: FeatureManager

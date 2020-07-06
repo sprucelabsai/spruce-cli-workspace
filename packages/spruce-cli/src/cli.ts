@@ -6,7 +6,7 @@ import {
 	IMercuryConnectOptions,
 	MercuryAuth
 } from '@sprucelabs/mercury'
-import { templates } from '@sprucelabs/spruce-templates'
+import { templates, IValueTypes } from '@sprucelabs/spruce-templates'
 import { Command } from 'commander'
 // Shim
 // eslint-disable-next-line import/order
@@ -25,7 +25,7 @@ import FeatureManager, {
 	IInstallFeatureOptions,
 	FeatureCode,
 	IFeatureInstallResponse
-} from './FeatureManager'
+} from './features/FeatureManager'
 import {
 	ISchemaGeneratorBuildResults,
 	ISchemaGeneratorSchemaSyncResults
@@ -221,7 +221,7 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 
 		syncSchemas: async options => {
 			const isInstalled = await featureManager.isInstalled({
-				features: [FeatureCode.Skill]
+				features: [FeatureCode.Skill, FeatureCode.Schema]
 			})
 
 			if (!isInstalled) {
@@ -232,31 +232,39 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 			}
 
 			const {
-				lookupDir = 'src/schemas',
-				addonLookupDir = 'src/addons',
+				lookupDir,
+				addonLookupDir,
 				destinationDir = diskUtil.resolveHashSprucePath(cwd, 'schemas')
 			} = options ?? {}
 
-			const schemaRequest = stores.schema.fetchSchemaTemplateItems(
-				diskUtil.resolvePath(cwd, lookupDir)
+			const {
+				schemas: { items: schemaTemplateItems },
+				fields: { items: fieldTemplateItems }
+			} = await stores.schema.fetchAllTemplateItems(lookupDir, addonLookupDir)
+
+			await generators.schema.generateFieldTypes(
+				diskUtil.resolvePath(cwd, destinationDir),
+				{ fieldTemplateItems }
 			)
 
-			const fieldRequest = stores.schema.fetchFieldTemplateItems(
-				diskUtil.resolvePath(cwd, addonLookupDir)
+			const valueTypeResults = await generators.schema.generateValueTypes(
+				diskUtil.resolvePath(cwd, destinationDir),
+				{
+					fieldTemplateItems,
+					schemaTemplateItems
+				}
 			)
 
-			const [
-				{ items: schemaTemplateItems },
-				{ items: fieldTemplateItems }
-			] = await Promise.all([schemaRequest, fieldRequest])
-
-			debugger
+			const valueTypes: IValueTypes = await serviceFactory
+				.Service(cwd, Service.Import)
+				.importDefault(valueTypeResults.generatedFiles[0].path)
 
 			const results = await generators.schema.generateSchemaTypes(
 				diskUtil.resolvePath(cwd, destinationDir),
 				{
 					fieldTemplateItems,
-					schemaTemplateItems
+					schemaTemplateItems,
+					valueTypes
 				}
 			)
 

@@ -1,6 +1,7 @@
-import { TemplateRenderAs } from '@sprucelabs/schema'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+import fieldClassMap from '#spruce/schemas/fields/fieldClassMap'
+import { TemplateRenderAs } from '@sprucelabs/schema'
 
 
 {{#each imports}}
@@ -10,8 +11,7 @@ import * as {{importAs}} from '{{package}}'
 
 const schemaTemplateItems = {{{json schemaTemplateItems}}}
 
-
-const generateTypeLiteral = (definition: SpruceSchema.IFieldDefinition, renderAs: TemplateRenderAs, importAs: string) => {
+const generateTypeLiteral = (definition: FieldDefinition, renderAs: TemplateRenderAs, importAs: string) => {
 	const options:SpruceSchema.IFieldTemplateDetailOptions<FieldDefinition> = {
 		language: 'ts',
 		templateItems: schemaTemplateItems,
@@ -21,31 +21,36 @@ const generateTypeLiteral = (definition: SpruceSchema.IFieldDefinition, renderAs
 		renderAs
 	}
 
-	console.log(options)
-
-	return 'string'
+	const FieldClass = fieldClassMap[definition.type as FieldType]
+	const details = FieldClass.generateTemplateDetails(options)
+	
+	return details.valueType
 }
 
 const valueTypes = {
 	{{#each schemaTemplatesByNamespaceAndName}}
 	{{@key}}: {
 		{{#each this}}
-		{{@key}}: [
+		{{@key}}: {
 			{{#each this}} 
-			{
-				version: "{{definition.version}}",
-				fields: {
-					{{#each definition.fields}}
-					"{{@key}}": {
-						{{#each ../../../../rendersAs}}
-						{{this}}: {{{ valueTypeGenerator ../this this }}},
-						{{/each}}
-					},
+			"{{definition.version}}":{
+				{{#if definition.dynamicKeySignature}}
+				__dynamicKeySignature: {
+					{{#each ../../../rendersAs}}
+					{{this}}: {{{ valueTypeGenerator ../definition.dynamicKeySignature this }}},
 					{{/each}}
-				}
+				},	
+				{{/if}}
+				{{#each definition.fields}}
+				"{{@key}}": {
+					{{#each ../../../../rendersAs}}
+					{{this}}: {{{ valueTypeGenerator ../this this }}},
+					{{/each}}
+				},
+				{{/each}}
 			},
 			{{/each}}
-		],
+		},
 		{{/each}}
 	},
 	{{/each}}

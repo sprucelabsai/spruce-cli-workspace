@@ -3,8 +3,8 @@ import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../AbstractCliTest'
 import FeatureComponent from '../../components/FeatureComponent'
 import ServiceFactory from '../../factories/ServiceFactory'
-import FeatureManager from '../../FeatureManager'
-import { FeatureCode } from '../../FeatureManager'
+import FeatureManager from '../../features/FeatureManager'
+import { FeatureCode } from '../../features/FeatureManager'
 
 export default class FeatureComponentTest extends AbstractCliTest {
 	private static FeatureComponent() {

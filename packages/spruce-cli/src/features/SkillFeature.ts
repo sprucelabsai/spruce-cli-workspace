@@ -4,7 +4,7 @@ import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
 import skillFeatureDefinition from '#spruce/schemas/local/skillFeature.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 // import { WriteMode } from '../types/cli.types'
-import { FeatureCode } from '../FeatureManager'
+import { FeatureCode } from './FeatureManager'
 import { INpmPackage } from '../types/cli.types'
 import diskUtil from '../utilities/disk.utility'
 import AbstractFeature from './AbstractFeature'
@@ -45,23 +45,10 @@ export default class SkillFeature extends AbstractFeature<
 		await diskUtil.createManyFiles(this.cwd, files)
 	}
 
-	// public async afterPackageInstall() {
-	// 	// 	this.services.pkg.set({
-	// 	// 		path: 'scripts.build',
-	// 	// 		value: 'npm run build:node'
-	// 	// 	})
-	// 	// 	this.services.pkg.set({
-	// 	// 		path: 'scripts.build:node',
-	// 	// 		value: 'npm run build:node'
-	// 	// 	})
-	// 	// this.services.pkg.set({
-	// 	// 	path: 'scripts.clean',
-	// 	// 	value: 'rm -rf build/ && rm -rf node_modules/'
-	// 	// })
-	// }
-
 	public async isInstalled() {
-		const pathToCheck = diskUtil.resolvePath(this.cwd, 'package.json')
-		return diskUtil.doesFileExist(pathToCheck)
+		return (
+			this.PkgService().isInstalled('ts-node') &&
+			diskUtil.doesDirExist(diskUtil.resolvePath(this.cwd, 'node_modules'))
+		)
 	}
 }
