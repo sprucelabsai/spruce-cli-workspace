@@ -1,6 +1,7 @@
 import { assert, test } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
-import { CORE_SCHEMA_VERSION } from '../../../constants'
+import { CORE_SCHEMA_VERSION, CORE_NAMESPACE } from '../../../constants'
+import { Service } from '../../../factories/ServiceFactory'
 import diskUtil from '../../../utilities/disk.utility'
 
 export default class CanSyncSchemas extends AbstractSchemaTest {
@@ -45,9 +46,18 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 		assert.doesInclude(
 			typesContents,
 			new RegExp(
-				`SpruceSchemas.Core.IPerson(.*?)interface ${CORE_SCHEMA_VERSION.constVal}`,
+				`SpruceSchemas.${CORE_NAMESPACE}.IPerson(.*?)interface ${CORE_SCHEMA_VERSION.constVal}`,
 				'gis'
 			)
 		)
+	}
+
+	@test()
+	protected static async schemaTypesVileIsValid() {
+		const cli = await this.bootCliInstallSchemasAndSetCwd('sync1')
+		await cli.syncSchemas()
+
+		const typesFile = CanSyncSchemas.schemaTypesFile
+		await this.Service(Service.TypeChecker).check(typesFile)
 	}
 }
