@@ -16,7 +16,10 @@
 		"outDir": "build",
 		"baseUrl": "src",
 		"paths": {
-			"#spruce/*": ["../node_modules/@sprucelabs/schema/build/.spruce/*"]
+			"#spruce/*": [
+				"../../../node_modules/@sprucelabs/schema/build/.spruce/*",
+				"../node_modules/@sprucelabs/schema/build/.spruce/*"
+			]
 		}
 	},
 	"include": ["./*.ts", "./**/*.ts"],
