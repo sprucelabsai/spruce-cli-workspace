@@ -298,6 +298,7 @@ export default class SchemaCommand extends AbstractCommand {
 			}
 		)
 
+		// @ts-ignore
 		const { resultsByStage } = results
 		const errors: SpruceError[] = []
 
