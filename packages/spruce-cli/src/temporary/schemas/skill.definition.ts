@@ -1,8 +1,11 @@
-import { ISchemaDefinition, FieldType } from '@sprucelabs/schema'
+import { ISchemaDefinition } from '@sprucelabs/schema'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+import { CORE_SCHEMA_VERSION } from '../../constants'
 
 const skillDefinition: ISchemaDefinition = {
 	id: 'skill',
 	name: 'Skill',
+	version: CORE_SCHEMA_VERSION.constVal,
 	description: 'An ability Sprucebot has learned.',
 	fields: {
 		id: {

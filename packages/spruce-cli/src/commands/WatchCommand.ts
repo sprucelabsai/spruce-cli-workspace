@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import readline from 'readline'
-import { FieldType } from '@sprucelabs/schema'
 import chokidar, { FSWatcher } from 'chokidar'
 import { Command } from 'commander'
 import _ from 'lodash'
 import minimatch from 'minimatch'
-import log from '../lib/log'
-import { IWatchers } from '../stores/WatcherStore'
-import { ITerminalEffect } from '../utilities/TerminalUtility'
-import AbstractCommand from './AbstractCommand'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+import { ITerminalEffect } from '../interfaces/TerminalInterface'
+import log from '../singletons/log'
+import WatcherStore, { IWatchers } from '../stores/WatcherStore'
+import AbstractCommand, { ICommandOptions } from './AbstractCommand'
 
 enum WatchAction {
 	Add = 'a',
@@ -21,39 +21,37 @@ enum WatchAction {
 /** Debounce keypresses triggering add/change/remove events */
 const DEBOUNCE_MS = 100
 
+interface IWatchCommandOptions extends ICommandOptions {
+	stores: {
+		watch: WatcherStore
+	}
+}
+
 export default class WatchCommand extends AbstractCommand {
+	private watcherStore: WatcherStore
 	private watcher!: FSWatcher
-	/** Key / value where key is the glob and value is the command to execute */
 	private watchers: IWatchers = {}
 	private resolve!: () => void
 	private reject!: (e: Error) => void
 
-	public attachCommands(program: Command): void {
+	public attachCommands = (program: Command): void => {
 		program
 			.command('watch')
 			.description('Watch and regenerate types')
-			.action(this.watch.bind(this))
+			.action(this.watch)
 	}
-
-	private async watch() {
-		process.stdin.on('keypress', this.handleKeypress.bind(this))
+	private watch = async () => {
+		process.stdin.on('keypress', this.handleKeypress)
 		this.loadWatchers()
-		// Watch everything. We'll check individual glob patterns on each file change
-		// TODO: Ignore node_modules
+
 		this.watcher = chokidar.watch('**/*', {
 			ignoreInitial: true
 		})
 
-		this.watcher.on(
-			'change',
-			_.debounce(this.handleFileChange.bind(this), DEBOUNCE_MS)
-		)
-		this.watcher.on(
-			'add',
-			_.debounce(this.handleFileAdd.bind(this), DEBOUNCE_MS)
-		)
-		this.watcher.on('error', this.handleWatcherError.bind(this))
-		this.watcher.on('ready', this.handleReady.bind(this))
+		this.watcher.on('change', _.debounce(this.handleFileChange, DEBOUNCE_MS))
+		this.watcher.on('add', _.debounce(this.handleFileAdd, DEBOUNCE_MS))
+		this.watcher.on('error', this.handleWatcherError)
+		this.watcher.on('ready', this.handleReady)
 
 		const finishedPromise = new Promise((resolve, reject) => {
 			this.resolve = resolve
@@ -61,14 +59,12 @@ export default class WatchCommand extends AbstractCommand {
 		})
 		await finishedPromise
 	}
-
-	private resetReadline() {
+	private resetReadline = () => {
 		readline.emitKeypressEvents(process.stdin)
 		process.stdin.setRawMode(true)
 		process.stdin.resume()
 	}
-
-	private showStatus(lines?: string[], lineEffects?: ITerminalEffect[]) {
+	private showStatus = (lines?: string[], lineEffects?: ITerminalEffect[]) => {
 		this.resetReadline()
 		this.term.clear()
 		this.term.section({
@@ -87,19 +83,16 @@ export default class WatchCommand extends AbstractCommand {
 			this.term.writeLns(lines, lineEffects)
 		}
 	}
-
 	/** Loads the watchers and starts watching anything new */
-	private async loadWatchers() {
-		const watchers = this.stores.watcher.getWatchers()
+	private loadWatchers = () => {
+		const watchers = this.watcherStore.getWatchers()
 		this.watchers = watchers
 	}
-
-	private handleReady() {
+	private handleReady = () => {
 		this.term.clear()
 		this.showStatus()
 	}
-
-	private async handleFileChange(path: string) {
+	private handleFileChange = async (path: string) => {
 		log.trace(`${path} changed`)
 		let commandsToExecute: string[] = []
 		// Check if the path matches any of the glob patterns
@@ -121,9 +114,8 @@ export default class WatchCommand extends AbstractCommand {
 			await this.term.startLoading(
 				`Executing ${commandsToExecute.length} watcher commands`
 			)
-			const promises = commandsToExecute.map(c =>
-				this.services.child.executeCommand(c)
-			)
+			const commandService = this.CommandService()
+			const promises = commandsToExecute.map(c => commandService.execute(c))
 			const results = await Promise.allSettled(promises)
 			await this.term.stopLoading()
 			const lines: string[] = []
@@ -143,17 +135,14 @@ export default class WatchCommand extends AbstractCommand {
 			log.trace('Nothing run. No matching glob patterns.')
 		}
 	}
-
-	private handleFileAdd(path: string) {
+	private handleFileAdd = (path: string) => {
 		return this.handleFileChange(path)
 	}
-
-	private handleWatcherError(e: Error) {
+	private handleWatcherError = (e: Error) => {
 		log.crit(e)
 		this.reject(e)
 	}
-
-	private async handleAddPatten() {
+	private handleAddPatten = async () => {
 		let pattern: string | undefined | null
 		let commandStr: string | undefined | null
 		let isPatternValid = false
@@ -181,12 +170,12 @@ export default class WatchCommand extends AbstractCommand {
 			}
 		}
 
-		this.stores.watcher.addWatcher(pattern as string, commandStr as string)
+		this.watcherStore.addWatcher(pattern as string, commandStr as string)
 		this.loadWatchers()
 		this.showStatus()
 	}
 
-	private async handleKeypress(str: string, key: readline.Key) {
+	private handleKeypress = async (str: string, key: readline.Key) => {
 		try {
 			if (key.ctrl && key.name === 'c') {
 				this.resolve()
@@ -233,8 +222,7 @@ export default class WatchCommand extends AbstractCommand {
 			log.debug('Nothing to do')
 		}
 	}
-
-	private async listWatchers() {
+	private listWatchers = () => {
 		const lines: string[] = []
 
 		Object.keys(this.watchers).forEach(pattern => {
@@ -255,8 +243,7 @@ export default class WatchCommand extends AbstractCommand {
 			lines
 		})
 	}
-
-	private async handleEditWatchers() {
+	private handleEditWatchers = async () => {
 		const defaultValue: string[] = []
 		const choices = Object.keys(this.watchers).map(pattern => {
 			const watcher = this.watchers[pattern]
@@ -292,13 +279,12 @@ export default class WatchCommand extends AbstractCommand {
 			}
 		})
 
-		this.stores.watcher.setWatchStatus(watchersToUpdate)
+		this.watcherStore.setWatchStatus(watchersToUpdate)
 		await this.loadWatchers()
 		this.showStatus()
 		this.listWatchers()
 	}
-
-	private async handleDeleteWatcher() {
+	private handleDeleteWatcher = async () => {
 		const choices = Object.keys(this.watchers).map(pattern => {
 			const watcher = this.watchers[pattern]
 			return {
@@ -316,10 +302,14 @@ export default class WatchCommand extends AbstractCommand {
 		})
 
 		if (result) {
-			this.stores.watcher.deleteWatcher(result)
+			this.watcherStore.deleteWatcher(result)
 			await this.loadWatchers()
 		}
 		this.showStatus()
 		this.listWatchers()
+	}
+	public constructor(options: IWatchCommandOptions) {
+		super(options)
+		this.watcherStore = options.stores.watch
 	}
 }

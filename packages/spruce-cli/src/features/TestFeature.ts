@@ -1,14 +1,15 @@
-import { Feature } from '#spruce/autoloaders/features'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import log from '../lib/log'
-import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
+import log from '../singletons/log'
+import { INpmPackage } from '../types/cli.types'
+import AbstractFeature from './AbstractFeature'
+import { FeatureCode } from './FeatureManager'
 
-type TestFeatureType = typeof SpruceSchemas.Local.TestFeature.definition
+type TestFeatureType = SpruceSchemas.Local.TestFeature.IDefinition
 
 export default class TestFeature extends AbstractFeature<TestFeatureType> {
 	public description = 'Test File: Create a test for one of your files'
-	public featureDependencies = [Feature.Skill, Feature.Schema]
-	public packages: IFeaturePackage[] = [
+	public dependencies = [FeatureCode.Skill]
+	public packageDependencies: INpmPackage[] = [
 		{ name: '@sprucelabs/test', isDev: true },
 		{ name: 'ts-node', isDev: true },
 		{ name: 'jest', isDev: true },
@@ -48,12 +49,15 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 		}
 
 		// TODO: Set the "test" package here
-		this.services.pkg.set({ path: 'babel', value: babelConfig })
-		this.services.pkg.set({ path: 'jest', value: jestConfig })
+		const service = this.PkgService()
+
+		service.set({ path: 'babel', value: babelConfig })
+		service.set({ path: 'jest', value: jestConfig })
 	}
 
-	// TODO
 	public async isInstalled() {
+		// eslint-disable-next-line no-debugger
+		debugger
 		return false
 	}
 }

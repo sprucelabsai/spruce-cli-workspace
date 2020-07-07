@@ -5,11 +5,10 @@ import handlebars from 'handlebars'
 import {
 	DirectoryTemplateKind,
 	IDirectoryTemplateContextMap,
-	IDirectoryTemplate
+	IDirectoryTemplateFile
 } from '../types/templates.types'
 
 export default class DirectoryTemplateUtility {
-	/** Returns the relative file paths for all the expected files in the directory template */
 	public static async filesInTemplate(template: DirectoryTemplateKind) {
 		const filePaths: string[] = []
 
@@ -31,16 +30,14 @@ export default class DirectoryTemplateUtility {
 		return filePaths
 	}
 
-	/** Build all the files in the directory for the template */
 	public static async build<K extends DirectoryTemplateKind>(options: {
 		/** The type of directory template to build */
 		kind: K
 		/** The data to pass into the templates */
 		context?: IDirectoryTemplateContextMap[K]
-	}): Promise<IDirectoryTemplate> {
-		const builtFiles: IDirectoryTemplate = {
-			files: []
-		}
+	}): Promise<IDirectoryTemplateFile[]> {
+		const builtFiles: IDirectoryTemplateFile[] = []
+
 		const { kind, context } = options
 
 		const files = await globby(
@@ -65,12 +62,12 @@ export default class DirectoryTemplateUtility {
 				// Compile the file
 				const compiledTemplate = handlebars.compile(template)
 				const result = compiledTemplate(context)
-				builtFiles.files.push({
+				builtFiles.push({
 					relativePath: filePathToWrite,
 					contents: result
 				})
 			} else {
-				builtFiles.files.push({
+				builtFiles.push({
 					relativePath: filePathToWrite,
 					contents: template
 				})
@@ -80,9 +77,7 @@ export default class DirectoryTemplateUtility {
 		return builtFiles
 	}
 
-	/** Parses a file path to parts needed for building the files */
-	public static parseTemplateFilePath(
-		/** The full path to the file */
+	private static parseTemplateFilePath(
 		filePath: string
 	): {
 		/** Whether this is a handlebars template file */

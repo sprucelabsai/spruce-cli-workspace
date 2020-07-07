@@ -1,0 +1,11 @@
+/** All the error codes this skill can throw */
+enum ErrorCode {
+   
+    {{#each codes}}
+    /** * {{{description}}} */
+    {{namePascal}} = '{{nameConst}}',
+    
+    {{/each}}
+}
+
+export default ErrorCode

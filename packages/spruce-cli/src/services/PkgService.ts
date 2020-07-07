@@ -3,20 +3,18 @@ import pathUtil from 'path'
 import fs from 'fs-extra'
 import { set } from 'lodash'
 import uuid from 'uuid'
-import { ErrorCode } from '#spruce/errors/codes.types'
+import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
-import log from '../lib/log'
 import { WriteMode } from '../types/cli.types'
-import AbstractService from './AbstractService'
+import CommandService from './CommandService'
 
 export interface IAddOptions {
 	dev?: boolean
 }
 
-export default class PkgService extends AbstractService {
-	public get(path: string, dir = this.cwd) {
-		const contents = this.readPackage(dir)
-
+export default class PkgService extends CommandService {
+	public get(path: string) {
+		const contents = this.readPackage()
 		return contents[path]
 	}
 
@@ -24,11 +22,9 @@ export default class PkgService extends AbstractService {
 		path: string
 		value: string | Record<string, any>
 		mode?: WriteMode
-		dir?: string
 	}) {
-		const { path, value, mode = WriteMode.Skip, dir = this.cwd } = options
-		log.trace('Setting package.json', { path, value, dir })
-		const contents = this.readPackage(dir)
+		const { path, value, mode = WriteMode.Skip } = options
+		const contents = this.readPackage()
 		const pathExists = typeof contents[path] !== 'undefined'
 
 		if (pathExists && mode === WriteMode.Throw) {
@@ -41,42 +37,39 @@ export default class PkgService extends AbstractService {
 
 		if (!pathExists || mode === WriteMode.Overwrite) {
 			const updated = set(contents, path, value)
-			const destination = pathUtil.join(dir, 'package.json')
+			const destination = pathUtil.join(this.cwd, 'package.json')
 
 			fs.outputFileSync(destination, JSON.stringify(updated, null, 2))
 		}
 	}
 
-	/** Read a package.json */
-	public readPackage(dir?: string): Record<string, any | undefined> {
-		const source = dir ?? this.cwd
-		const packagePath = pathUtil.join(source, 'package.json')
-		log.trace('Reading package.json', { path: packagePath })
-		const contents = fs.readFileSync(packagePath).toString()
+	public readPackage(): Record<string, any | undefined> {
+		const packagePath = pathUtil.join(this.cwd, 'package.json')
+
 		try {
+			const contents = fs.readFileSync(packagePath).toString()
 			const parsed = JSON.parse(contents)
+
 			return parsed
 		} catch (err) {
 			throw new SpruceError({
 				code: ErrorCode.FailedToImport,
 				file: packagePath,
-				originalError: err,
-				friendlyMessage: 'Bad JSON'
+				originalError: err
 			})
 		}
 	}
 
-	/** Check if a package is installed */
-	public isInstalled(pkg: string, dir?: string) {
+	public isInstalled(pkg: string) {
 		try {
-			const contents = this.readPackage(dir)
+			const contents = this.readPackage()
+
 			return !!contents.dependencies?.[pkg] || !!contents.devDependencies?.[pkg]
 		} catch (e) {
 			return false
 		}
 	}
 
-	/** Install a package */
 	public async install(pkg: string[] | string, options?: IAddOptions) {
 		const packages = Array.isArray(pkg) ? pkg : [pkg]
 		let install = false
@@ -94,7 +87,7 @@ export default class PkgService extends AbstractService {
 			const tmpDir = os.tmpdir()
 			args.push('--cache-folder', pathUtil.join(tmpDir, uuid.v4()))
 
-			await this.services.child.executeCommand('yarn', {
+			await this.execute('yarn', {
 				args
 			})
 		}

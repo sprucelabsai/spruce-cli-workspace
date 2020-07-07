@@ -1,38 +1,57 @@
-import { FieldType, ISelectFieldDefinitionChoice } from '@sprucelabs/schema'
+import { ISelectFieldDefinitionChoice } from '@sprucelabs/schema'
 import { Command } from 'commander'
-import { ErrorCode } from '#spruce/errors/codes.types'
+import ErrorCode from '#spruce/errors/errorCode'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
-import { StoreAuth } from '../stores/AbstractStore'
-import { ITerminalEffect } from '../utilities/TerminalUtility'
-import AbstractCommand from './AbstractCommand'
+import { Service } from '../factories/ServiceFactory'
+import { ITerminalEffect } from '../interfaces/TerminalInterface'
+import PinService from '../services/PinService'
+import RemoteStore from '../stores/RemoteStore'
+import SkillStore from '../stores/SkillStore'
+import UserStore from '../stores/UserStore'
+import { AuthedAs } from '../types/cli.types'
+import AbstractCommand, { ICommandOptions } from './AbstractCommand'
+
+interface IUserCommandOptions extends ICommandOptions {
+	services: {
+		pin: PinService
+	}
+	stores: {
+		user: UserStore
+		skill: SkillStore
+		remote: RemoteStore
+	}
+}
 
 export default class UserCommand extends AbstractCommand {
+	protected userStore: UserStore
+	protected skillStore: SkillStore
+	protected remoteStore: RemoteStore
+
 	/** Sets up commands */
-	public attachCommands(program: Command) {
+	public attachCommands = (program: Command) => {
 		program
 			.command('whoami')
 			.description('Get information about your logged in user(s)')
-			.action(this.whoAmI.bind(this))
+			.action(this.whoAmI)
 
 		program
 			.command('user:login [phoneNumber]')
 			.description('Authenticate with the CLI as a user')
-			.action(this.login.bind(this))
+			.action(this.login)
 
 		program
 			.command('user:logout')
 			.description('Logs the current user out')
-			.action(this.logout.bind(this))
+			.action(this.logout)
 
 		program
 			.command('user:switch')
 			.description('Switches the current user')
-			.action(this.switchUser.bind(this))
+			.action(this.switchUser)
 	}
-
-	/** Log a person in */
-	public async login(phoneNumber?: string): Promise<void> {
+	public login = async (phoneNumber?: string): Promise<void> => {
 		let phone = phoneNumber
 		let pinLabel = 'Enter the pin I just sent!'
 
@@ -45,7 +64,9 @@ export default class UserCommand extends AbstractCommand {
 		}
 
 		this.term.startLoading('Requesting pin')
-		await this.services.pin.requestPin(phone)
+
+		await this.PinService().requestPin(phone)
+
 		this.term.stopLoading()
 
 		let user: SpruceSchemas.Local.ICliUserWithToken | undefined
@@ -62,7 +83,7 @@ export default class UserCommand extends AbstractCommand {
 			this.term.startLoading('Verifying identity...')
 
 			try {
-				user = await this.stores.user.userWithTokenFromPhone(phone, pin)
+				user = await this.userStore.fetchUserWithTokenFromPhone(phone, pin)
 				valid = true
 
 				this.term.stopLoading()
@@ -90,19 +111,17 @@ export default class UserCommand extends AbstractCommand {
 		}
 
 		// Log in the user
-		this.stores.user.setLoggedInUser(user)
+		this.userStore.setLoggedInUser(user)
 
 		// Show their deets (plus jwt)
 		this.whoAmI()
 	}
-
-	public logout() {
-		this.stores.user.logout()
+	public logout = () => {
+		this.userStore.logout()
 		this.term.info('Logout successful')
 	}
-
-	public async switchUser() {
-		const users = this.stores.user.users()
+	public switchUser = async () => {
+		const users = this.userStore.getUsers()
 
 		if (users.length === 0) {
 			this.term.warn('You are not logged in as anyone, try `spruce user:login`')
@@ -113,7 +132,7 @@ export default class UserCommand extends AbstractCommand {
 			label: user.casualName
 		}))
 
-		const loggedInUser = this.stores.user.loggedInUser()
+		const loggedInUser = this.userStore.getLoggedInUser()
 		const userIdx = await this.term.prompt({
 			type: FieldType.Select,
 			label: 'Select previously logged in user',
@@ -126,14 +145,13 @@ export default class UserCommand extends AbstractCommand {
 
 		const selectedUser = users[parseInt(userIdx, 10)]
 
-		this.stores.user.setLoggedInUser(selectedUser)
+		this.userStore.setLoggedInUser(selectedUser)
 		this.whoAmI()
 	}
-
-	public async whoAmI() {
-		const user = this.stores.user.loggedInUser()
-		const skill = this.stores.skill.loggedInSkill()
-		const authType = this.stores.remote.authType
+	public whoAmI = () => {
+		const user = this.userStore.getLoggedInUser()
+		const skill = this.skillStore.getLoggedInSkill()
+		const authType = this.remoteStore.authType
 		const headerEffects = [
 			ITerminalEffect.SpruceHeader,
 			ITerminalEffect.Red,
@@ -141,13 +159,13 @@ export default class UserCommand extends AbstractCommand {
 			ITerminalEffect.Green
 		]
 
-		if (user && authType === StoreAuth.User) {
+		if (user && authType === AuthedAs.User) {
 			this.term.section({
 				headline: `Logged in as human: ${user.casualName}`,
 				object: user,
 				headlineEffects: headerEffects
 			})
-		} else if (skill && authType === StoreAuth.Skill) {
+		} else if (skill && authType === AuthedAs.Skill) {
 			this.term.section({
 				headline: `Logged in as skill: ${skill.name}`,
 				object: skill,
@@ -156,5 +174,14 @@ export default class UserCommand extends AbstractCommand {
 		} else {
 			this.term.writeLn('Not currently logged in')
 		}
+	}
+	private PinService = () => {
+		return this.serviceFactory.Service(this.cwd, Service.Pin)
+	}
+	public constructor(options: IUserCommandOptions) {
+		super(options)
+		this.userStore = options.stores.user
+		this.skillStore = options.stores.skill
+		this.remoteStore = options.stores.remote
 	}
 }

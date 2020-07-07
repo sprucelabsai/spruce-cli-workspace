@@ -1,11 +1,14 @@
-import { ISchemaDefinition, FieldType } from '@sprucelabs/schema'
+import { ISchemaDefinition } from '@sprucelabs/schema'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+import { CORE_SCHEMA_VERSION } from '../../constants'
 import aclDefinition from './acl.definition'
-import { RoleSelectChoices } from './role.definition'
+import { roleSelectChoices } from './role.definition'
 
 /** A permission keyed by skill slug or "core" and values are an array of permission keys starting with "can-" */
 const jobDefinition: ISchemaDefinition = {
 	id: 'job',
 	name: 'Job',
+	version: CORE_SCHEMA_VERSION.constVal,
 	description:
 		'A position at a company. The answer to the question; What is your job?',
 	fields: {
@@ -16,7 +19,7 @@ const jobDefinition: ISchemaDefinition = {
 		isDefault: {
 			label: 'Is default',
 			hint:
-				'Is this job one that comes with every org? Mapped to roles (owner, groupManager, managar, guest).',
+				'Is this job one that comes with every org? Mapped to roles (owner, groupManager, manager, guest).',
 			type: FieldType.Text,
 			isRequired: true
 		},
@@ -30,7 +33,7 @@ const jobDefinition: ISchemaDefinition = {
 			type: FieldType.Select,
 			isRequired: true,
 			options: {
-				choices: RoleSelectChoices
+				choices: roleSelectChoices
 			}
 		},
 		inStoreAcls: {

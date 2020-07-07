@@ -1,13 +1,14 @@
 import {
 	ISchemaDefinition,
-	FieldType,
 	ISelectFieldDefinitionChoice
 } from '@sprucelabs/schema'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+import { CORE_SCHEMA_VERSION } from '../../constants'
 
 const roleDefinition: ISchemaDefinition = {
 	id: 'role',
 	name: 'Role',
-	description: 'All people in Spruce fall into 5 roles.',
+	version: CORE_SCHEMA_VERSION.constVal,
 	fields: {
 		slug: {
 			label: 'Slug',
@@ -26,13 +27,12 @@ export default roleDefinition
 
 export enum RoleSlugs {
 	Owner = 'owner',
-	GroupManager = 'groupManager',
 	Manager = 'manager',
 	Teammate = 'teammate',
 	Guest = 'guest'
 }
 
-export const RoleSelectChoices: ISelectFieldDefinitionChoice[] = [
+export const roleSelectChoices: ISelectFieldDefinitionChoice[] = [
 	{
 		value: 'owner',
 		label: 'Owner'
@@ -43,7 +43,7 @@ export const RoleSelectChoices: ISelectFieldDefinitionChoice[] = [
 	},
 	{
 		value: 'manager',
-		label: 'Store manager'
+		label: 'Manager'
 	},
 	{
 		value: 'teammate',

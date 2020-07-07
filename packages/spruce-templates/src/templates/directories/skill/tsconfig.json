@@ -1,10 +1,11 @@
 {
 	"compilerOptions": {
+		"baseUrl": "src",
+		"outDir": "build",
 		"target": "es2017",
 		"module": "commonjs",
 		"jsx": "preserve",
 		"lib": ["dom", "es2017"],
-		"baseUrl": ".",
 		"moduleResolution": "node",
 		"strict": true,
 		"allowJs": true,
@@ -20,12 +21,7 @@
 		"sourceMap": true,
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,
-		"experimentalDecorators": true,
-		"outDir": "build",
-		"paths": {
-			"*": ["node_modules/*"],
-			"#spruce/*": [".spruce/*"]
-		}
+		"experimentalDecorators": true
 	},
 	"include": ["./*.ts", "./**/*.ts"],
 	"exclude": ["**/node_modules/*", "build/*"]
