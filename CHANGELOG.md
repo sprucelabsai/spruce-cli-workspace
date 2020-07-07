@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.6.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.6.0...v10.6.1) (2020-07-07)
+
+
+### Bug Fixes
+
+* lint:fix -> lint.fix in spruce-templates ([01c42b3](https://github.com/sprucelabsai/spruce-cli-workspace/commit/01c42b3))
+
+
+
+
+
 # [10.6.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.5.3...v10.6.0) (2020-07-07)
 
 
