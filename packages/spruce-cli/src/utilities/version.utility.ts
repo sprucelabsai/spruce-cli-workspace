@@ -9,6 +9,23 @@ function parsePath(cwd: string, paths: string[]) {
 	return { dirToRead, resolved }
 }
 
+function formatDate(date: Date) {
+	const d = date,
+		year = d.getFullYear()
+
+	let month = '' + (d.getMonth() + 1),
+		day = '' + d.getDate()
+
+	if (month.length < 2) {
+		month = '0' + month
+	}
+	if (day.length < 2) {
+		day = '0' + day
+	}
+
+	return [year, month, day].join('-')
+}
+
 const versionUtil = {
 	getAllVersions(dirToRead: string) {
 		const contents = diskUtil.readDir(dirToRead)
@@ -20,14 +37,16 @@ const versionUtil = {
 			})
 		return allDateIsh
 	},
-	generateVersion(date: string) {
+	/** Pass a string in YYYY-MM-DD leave to default to today */
+	generateVersion(dateFormattedString?: string) {
+		const date = dateFormattedString ?? formatDate(new Date())
 		return {
 			intValue: parseInt(date.replace(/\D/g, ''), 10),
 			stringValue: date,
 			constValue: `v${namesUtil.toConst(date)}`
 		}
 	},
-	latestVersion(path: string) {
+	latestVersionAtPath(path: string) {
 		const resolved = diskUtil.resolvePath(path, '')
 		const version = this.getAllVersions(resolved)
 		const latest = version.pop()

@@ -145,9 +145,10 @@
 					"testMap": {
 						"canBootTheCli": "C4",
 						"getsGoodHealthCheckAndNothingElse": "C5",
-						"canGetLatestVersionBasedOnDir": "C16",
+						"schemaPassesHealthCheck": "C6",
 						"builderFileValidates": "C7",
-						"schemaPassesHealthCheck": "C6"
+						"schemasStayInSyncAsFilesAreMoved": "C8",
+						"canGetLatestVersionBasedOnDir": "C16"
 					}
 				}
 			]

@@ -4,6 +4,7 @@ import { CORE_SCHEMA_VERSION, CORE_NAMESPACE } from '../../../constants'
 import { Service } from '../../../factories/ServiceFactory'
 import { GeneratedFileAction } from '../../../types/cli.types'
 import diskUtil from '../../../utilities/disk.utility'
+import versionUtil from '../../../utilities/version.utility'
 
 export default class CanSyncSchemas extends AbstractSchemaTest {
 	@test()
@@ -20,7 +21,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 
 	@test()
 	protected static async syncsSchemasGeneratesTypesFile() {
-		const cli = await this.installSchemasAndSetCwd('sync1')
+		const cli = await this.installSchemasAndSetCwd('in-sync')
 		const results = await cli.syncSchemas()
 
 		assert.isAbove(results.length, 0)
@@ -37,7 +38,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 
 	@test()
 	protected static async syncSchemasUpdatesTypesFile() {
-		const cli = await this.syncSchemasAndSetCwd('sync1')
+		const cli = await this.syncSchemasAndSetCwd('in-sync')
 		const results = await cli.syncSchemas()
 
 		assert.isAbove(results.length, 0)
@@ -46,7 +47,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 
 	@test()
 	protected static async makeSureSchemaTypesAreVersioned() {
-		await this.syncSchemasAndSetCwd('sync1')
+		await this.syncSchemasAndSetCwd('in-sync')
 
 		const typesFile = this.schemaTypesFile
 		const typesContents = diskUtil.readFile(typesFile)
@@ -62,9 +63,43 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 
 	@test()
 	protected static async schemaTypesVileIsValid() {
-		await this.syncSchemasAndSetCwd('sync1')
+		await this.syncSchemasAndSetCwd('in-sync')
 
 		const typesFile = CanSyncSchemas.schemaTypesFile
 		await this.Service(Service.TypeChecker).check(typesFile)
+	}
+
+	@test.only()
+	protected static async schemasStayInSyncAsFilesAreMoved() {
+		const cli = await this.syncSchemasAndSetCwd('in-sync')
+		const version = versionUtil.generateVersion()
+		const matcher = new RegExp(
+			`SpruceSchemas.Local.ITestSchema(.*?)interface ${version.constValue}`,
+			'gis'
+		)
+
+		let typesContents = diskUtil.readFile(CanSyncSchemas.schemaTypesFile)
+
+		// should not found our test schema
+		assert.doesNotInclude(typesContents, matcher)
+
+		const createResponse = await cli.createSchema({
+			nameReadable: 'Test schema',
+			nameCamel: 'testSchema',
+			namePascal: 'TestSchema'
+		})
+
+		// should now include our test schema
+		typesContents = diskUtil.readFile(CanSyncSchemas.schemaTypesFile)
+		assert.doesInclude(typesContents, matcher)
+
+		const builderFile = createResponse[0].path
+		diskUtil.deleteFile(builderFile)
+
+		await cli.syncSchemas()
+
+		// should lastly NOT include our test schema
+		typesContents = diskUtil.readFile(CanSyncSchemas.schemaTypesFile)
+		assert.doesNotInclude(typesContents, matcher)
 	}
 }

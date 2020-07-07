@@ -44,6 +44,14 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async builderFileValidates() {
+		const response = await this.buildTestSchema()
+
+		const checker = this.Service(Service.TypeChecker)
+		await checker.check(response[0].path)
+		await checker.check(this.schemaTypesFile)
+	}
+
+	private static async buildTestSchema() {
 		const cli = await this.syncSchemasAndSetCwd('build-valid-file')
 
 		const response = await cli.createSchema({
@@ -52,9 +60,12 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 			nameCamel: 'anotherTest',
 			description: 'this is so great!'
 		})
+		return response
+	}
 
-		const checker = this.Service(Service.TypeChecker)
-		await checker.check(response[0].path)
-		await checker.check(this.schemaTypesFile)
+	@test()
+	protected static async shouldCreateTypeFileForBuilder() {
+		const response = await this.buildTestSchema()
+		assert.doesInclude(response, { name: 'anotherTest.definition.ts' })
 	}
 }

@@ -127,7 +127,7 @@ export default class SchemaStore implements IServiceProvider {
 		const loading = Promise.all(
 			localMatches.map(async local => {
 				const definition = await schemaService.importDefinition(local)
-				const version = versionUtil.latestVersion(
+				const version = versionUtil.latestVersionAtPath(
 					pathUtil.join(pathUtil.dirname(local), '..')
 				)
 				definition.version = version.constValue
