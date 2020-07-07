@@ -44,7 +44,7 @@
 		"@sprucelabs/error": "^1.2.0",
 		"@sprucelabs/log": "^10.2.1",
 		"@sprucelabs/mercury": "10.3.0-prerelease-mock.2",
-		"@sprucelabs/schema": "^4.0.2",
+		"@sprucelabs/schema": "^4.0.5",
 		"@sprucelabs/spruce-templates": "^10.5.1",
 		"@types/promise.allsettled": "^1.0.3",
 		"@types/uuid": "^3",
@@ -119,7 +119,7 @@
 	"jest": {
 		"preset": "ts-jest",
 		"maxWorkers": 4,
-		"testTimeout": 30000,
+		"testTimeout": 60000,
 		"testEnvironment": "node",
 		"testPathIgnorePatterns": [
 			"<rootDir>/tmp/",

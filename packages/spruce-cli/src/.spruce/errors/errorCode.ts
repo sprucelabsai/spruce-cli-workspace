@@ -48,10 +48,7 @@
     
     /** * Could not find a user */
     UserNotFound = 'USER_NOT_FOUND',
-    
-    /** * A reserved js keyword was used */
-    ReservedKeyword = 'RESERVED_KEYWORD',
-    
+     
     /** * Could not transpile (ts -> js) a script */
     TranspileFailed = 'TRANSPILE_FAILED',
     

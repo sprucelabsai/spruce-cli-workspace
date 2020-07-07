@@ -3,6 +3,7 @@ import AbstractCliTest from './AbstractCliTest'
 import { ICli } from './cli'
 import { FeatureCode } from './features/FeatureManager'
 import diskUtil from './utilities/disk.utility'
+import testUtil from './utilities/test.utility'
 
 export default abstract class AbstractSchemaTest extends AbstractCliTest {
 	private static installedSkills: Record<
@@ -21,7 +22,11 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 	}
 
 	protected static async installSchemasAndSetCwd(cacheKey?: string) {
-		if (cacheKey && this.installedSkills[cacheKey]) {
+		if (
+			cacheKey &&
+			this.installedSkills[cacheKey] &&
+			testUtil.isCacheEnabled()
+		) {
 			this.cwd = this.installedSkills[cacheKey].cwd
 			this.cleanCachedSkillDir()
 
@@ -29,21 +34,26 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 		}
 
 		let alreadyInstalled = false
-		let settingsObject
+		let settingsObject: Record<string, any> = {}
 		let settingsFile
 
-		if (cacheKey) {
+		if (cacheKey && testUtil.isCacheEnabled()) {
 			// lets see if there is something saved on the disk we can retrieve
 			settingsFile = diskUtil.resolveHashSprucePath(
-				pathUtil.join(__dirname, '..'),
-				'settings.json'
+				__dirname,
+				'tmp',
+				'cli-workspace-tests.json'
 			)
 
 			if (diskUtil.doesFileExist(settingsFile)) {
 				settingsObject = JSON.parse(diskUtil.readFile(settingsFile))
-				if (settingsObject?.tests?.tmpDirs?.[cacheKey]) {
-					alreadyInstalled = true
-					this.cwd = settingsObject.tests.tmpDirs[cacheKey]
+				if (settingsObject?.tmpDirs?.[cacheKey]) {
+					if (testUtil.shouldClearCache()) {
+						this.resetCachedSkillDir()
+					} else {
+						alreadyInstalled = true
+					}
+					this.cwd = settingsObject.tmpDirs[cacheKey]
 				}
 			}
 		}
@@ -67,22 +77,20 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 			})
 		}
 
-		if (cacheKey) {
+		if (cacheKey && testUtil.isCacheEnabled()) {
 			this.installedSkills[cacheKey] = {
 				cwd: this.cwd,
 				cli
 			}
 
-			if (settingsObject && settingsFile) {
-				if (!settingsObject.tests) {
-					settingsObject.tests = {}
-				}
-				if (!settingsObject.tests.tmpDirs) {
-					settingsObject.tests.tmpDirs = {}
+			if (settingsFile) {
+				if (!settingsObject.tmpDirs) {
+					settingsObject.tmpDirs = {}
 				}
 
-				if (!settingsObject.tests.tmpDirs[cacheKey]) {
-					settingsObject.tests.tmpDirs[cacheKey] = this.cwd
+				if (!settingsObject.tmpDirs[cacheKey]) {
+					settingsObject.tmpDirs[cacheKey] = this.cwd
+					diskUtil.createDir(pathUtil.dirname(settingsFile))
 					diskUtil.writeFile(
 						settingsFile,
 						JSON.stringify(settingsObject, null, 2)
@@ -107,5 +115,11 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 				diskUtil.createDir(dir)
 			}
 		})
+	}
+
+	private static resetCachedSkillDir() {
+		const path = this.resolvePath()
+		diskUtil.deleteDir(path)
+		diskUtil.createDir(path)
 	}
 }

@@ -44,7 +44,18 @@ const diskUtil = {
 		return fs.existsSync(destination)
 	},
 	resolveHashSprucePath(cwd: string, ...filePath: string[]): string {
-		return this.resolvePath(cwd, HASH_SPRUCE_DIR, ...filePath)
+		const parts = cwd.split(pathUtil.sep)
+
+		do {
+			const path = pathUtil.join('/', ...parts, HASH_SPRUCE_DIR)
+			if (this.doesDirExist(path)) {
+				return this.resolvePath(path, ...filePath)
+			}
+			parts.pop()
+		} while (parts.length > 0)
+
+		debugger
+		throw new Error('Hash Spruce directory not found')
 	},
 	isFileDifferent(destination: string, contents: string) {
 		const currentContents = this.readFile(destination)

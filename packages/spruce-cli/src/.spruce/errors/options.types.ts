@@ -9,7 +9,6 @@ import { IGenericErrorOptions } from "./generic.types";
 import { IFileExistsErrorOptions } from "./fileExists.types";
 import { IExecutingCommandFailedErrorOptions } from "./executingCommandFailed.types";
 import { IFailedToImportErrorOptions } from "./failedToImport.types";
-import { IReservedKeywordErrorOptions } from "./reservedKeyword.types";
 import { IInvalidCommandErrorOptions } from "./invalidCommand.types";
 import { IKeyExistsErrorOptions } from "./keyExists.types";
 import { ILintFailedErrorOptions } from "./lintFailed.types";
@@ -23,6 +22,6 @@ import { SpruceErrorOptions } from "@sprucelabs/error";
 import {SchemaErrorOptions} from '@sprucelabs/schema'
 import { IDirectoryNotFoundErrorOptions } from "./directoryNotFound.types";
 
-type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | ICouldNotLoadCommandErrorOptions | IBuildFailedErrorOptions | IDefinitionFailedToImportErrorOptions | ICreateAutoloaderFailedErrorOptions | ICommandNotImplementedErrorOptions | IDirectoryEmptyErrorOptions | IGenericErrorOptions | IFileExistsErrorOptions | IExecutingCommandFailedErrorOptions | IFailedToImportErrorOptions | IReservedKeywordErrorOptions | IInvalidCommandErrorOptions | IKeyExistsErrorOptions | ILintFailedErrorOptions | IGenericMercuryErrorOptions | INotImplementedErrorOptions | ITranspileFailedErrorOptions | IValueTypeServiceStageErrorErrorOptions | IValueTypeServiceErrorErrorOptions | IUserNotFoundErrorOptions | IDirectoryNotFoundErrorOptions
+type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | ICouldNotLoadCommandErrorOptions | IBuildFailedErrorOptions | IDefinitionFailedToImportErrorOptions | ICreateAutoloaderFailedErrorOptions | ICommandNotImplementedErrorOptions | IDirectoryEmptyErrorOptions | IGenericErrorOptions | IFileExistsErrorOptions | IExecutingCommandFailedErrorOptions | IFailedToImportErrorOptions | IInvalidCommandErrorOptions | IKeyExistsErrorOptions | ILintFailedErrorOptions | IGenericMercuryErrorOptions | INotImplementedErrorOptions | ITranspileFailedErrorOptions | IValueTypeServiceStageErrorErrorOptions | IValueTypeServiceErrorErrorOptions | IUserNotFoundErrorOptions | IDirectoryNotFoundErrorOptions
 
 export default ErrorOptions
