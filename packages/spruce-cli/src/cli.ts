@@ -26,10 +26,7 @@ import FeatureManager, {
 	FeatureCode,
 	IFeatureInstallResponse
 } from './features/FeatureManager'
-import {
-	ISchemaGeneratorBuildResults,
-	ISchemaGeneratorSchemaSyncResults
-} from './generators/SchemaGenerator'
+import { GenerationResults } from './generators/AbstractGenerator'
 import TerminalInterface from './interfaces/TerminalInterface'
 import log from './singletons/log'
 import OnboardingStore from './stores/OnboardingStore'
@@ -86,13 +83,13 @@ export interface ICli {
 		nameCamel: string
 		description?: string
 		addonLookupDir?: string
-	}): Promise<ISchemaGeneratorBuildResults>
+	}): Promise<GenerationResults>
 
 	syncSchemas(options?: {
 		lookupDir?: string
 		destinationDir?: string
 		addonLookupDir?: string
-	}): Promise<ISchemaGeneratorSchemaSyncResults>
+	}): Promise<GenerationResults>
 
 	checkHealth(): Promise<IHealthCheckResults>
 }
@@ -191,7 +188,7 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 			return featureManager.install(options)
 		},
 
-		createSchema: async (options): Promise<ISchemaGeneratorBuildResults> => {
+		createSchema: async (options): Promise<GenerationResults> => {
 			const isInstalled = await featureManager.isInstalled({
 				features: [FeatureCode.Skill]
 			})
@@ -206,7 +203,7 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 			const { destinationDir = 'src/schemas', ...rest } = options
 			const resolvedDestination = diskUtil.resolvePath(cwd, destinationDir)
 
-			const builderResults = generators.schema.generateBuilder(
+			const builderResults = await generators.schema.generateBuilder(
 				resolvedDestination,
 				rest
 			)
@@ -257,7 +254,7 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 
 			const valueTypes: IValueTypes = await serviceFactory
 				.Service(cwd, Service.Import)
-				.importDefault(valueTypeResults.generatedFiles[0].path)
+				.importDefault(valueTypeResults[0].path)
 
 			const results = await generators.schema.generateSchemaTypes(
 				diskUtil.resolvePath(cwd, destinationDir),

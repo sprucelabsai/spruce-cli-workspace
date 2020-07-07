@@ -147,9 +147,7 @@ export default class SchemaCommand extends AbstractCommand {
 			values
 		)
 
-		this.term.info(
-			`Definition created at ${builderResults.generatedFiles[0].path}`
-		)
+		this.term.info(`Definition created at ${builderResults[0].path}`)
 
 		try {
 			await this.sync(options.destinationDir, {

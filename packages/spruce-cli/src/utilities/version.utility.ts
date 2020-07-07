@@ -9,29 +9,27 @@ function parsePath(cwd: string, paths: string[]) {
 	return { dirToRead, resolved }
 }
 
-function generateVersion(dateIsh: string) {
-	return {
-		intValue: parseInt(dateIsh.replace(/\D/g, ''), 10),
-		stringValue: dateIsh,
-		constValue: namesUtil.toConst(dateIsh)
-	}
-}
-
-function getAllVersions(dirToRead: string) {
-	const contents = diskUtil.readDir(dirToRead)
-	const allDateIsh = contents
-		.filter(value => value.search(/\d\d\d\d-\d\d-\d\d/) > -1)
-		.map(dateIsh => generateVersion(dateIsh))
-		.sort((a, b) => {
-			return a.intValue > b.intValue ? 1 : -1
-		})
-	return allDateIsh
-}
-
 const versionUtil = {
+	getAllVersions(dirToRead: string) {
+		const contents = diskUtil.readDir(dirToRead)
+		const allDateIsh = contents
+			.filter(value => value.search(/\d\d\d\d-\d\d-\d\d/) > -1)
+			.map(dateIsh => this.generateVersion(dateIsh))
+			.sort((a, b) => {
+				return a.intValue > b.intValue ? 1 : -1
+			})
+		return allDateIsh
+	},
+	generateVersion(date: string) {
+		return {
+			intValue: parseInt(date.replace(/\D/g, ''), 10),
+			stringValue: date,
+			constValue: `v${namesUtil.toConst(date)}`
+		}
+	},
 	latestVersion(path: string) {
 		const resolved = diskUtil.resolvePath(path, '')
-		const version = getAllVersions(resolved)
+		const version = this.getAllVersions(resolved)
 		const latest = version.pop()
 
 		if (!latest) {
@@ -46,7 +44,7 @@ const versionUtil = {
 		const { dirToRead, resolved } = parsePath(cwd, paths)
 
 		// check what dirs this we have
-		const allDateIsh = getAllVersions(dirToRead)
+		const allDateIsh = this.getAllVersions(dirToRead)
 
 		const latest = allDateIsh.pop()
 

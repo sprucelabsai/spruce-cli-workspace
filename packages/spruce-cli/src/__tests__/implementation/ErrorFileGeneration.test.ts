@@ -96,15 +96,13 @@ export default class ErrorStoreTest extends AbstractCliTest {
 	@test()
 	protected static async generatedErrorClassFile() {
 		const response = await this.fetchGoodItemsAndGenerateErrorClass()
-		assert.doesInclude(response, { 'generatedFiles[].name': 'Error subclass' })
+		assert.doesInclude(response, { name: 'ErrorTest.ts' })
 	}
 
 	@test()
 	protected static async generatedClassFileErrorCanBeImported() {
 		const response = await this.fetchGoodItemsAndGenerateErrorClass()
-		const errorClass = response.generatedFiles.find(
-			f => f.name.search('Error') > -1
-		)
+		const errorClass = response.find(f => f.name === 'ErrorTest.ts')
 
 		assert.isOk(errorClass)
 

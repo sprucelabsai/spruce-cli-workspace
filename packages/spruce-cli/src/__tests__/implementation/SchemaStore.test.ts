@@ -39,7 +39,7 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		assert.isAbove(items.length, 0)
 
 		const userTemplateItem = items.find(
-			item => item.namespace === CORE_NAMESPACE && item.id === 'user'
+			item => item.namespace === CORE_NAMESPACE && item.id === 'person'
 		)
 
 		assert.isOk(userTemplateItem)
@@ -47,15 +47,13 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async fetchesLocalSchemasToo() {
-		await this.bootCliInstallSchemasAndSetCwd('local-schema-loading')
-		diskUtil.copyDir(
-			this.resolveTestPath('testSchemas'),
-			this.resolvePath('schemas')
-		)
+		await this.syncSchemasAndSetCwd('local-schema-loading')
+		this.schemaStore.cwd = this.cwd
 
-		const results = await this.schemaStore.fetchSchemaTemplateItems(
-			this.resolvePath('schemas')
-		)
+		const schemasDir = this.resolvePath('src', 'schemas')
+		diskUtil.copyDir(this.resolveTestPath('testSchemas'), schemasDir)
+
+		const results = await this.schemaStore.fetchSchemaTemplateItems(schemasDir)
 
 		const { items } = results
 

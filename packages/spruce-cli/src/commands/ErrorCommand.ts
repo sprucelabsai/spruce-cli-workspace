@@ -167,28 +167,21 @@ export default class ErrorCommand extends AbstractCommand {
 		const createdFiles: IGeneratedFile[] = []
 		// const updatedFiles: ICreatedFile[] = []
 
-		const {
-			generatedFiles: builderGeneratedFiles
-		} = await this.errorGenerator.generateBuilder(
+		const builderGeneratedFiles = await this.errorGenerator.generateBuilder(
 			resolvedErrorBuilderDestination,
 			names
 		)
 
 		const errorDefinition = await this.SchemaService().importDefinition(
-			builderGeneratedFiles.errorBuilder.path
+			builderGeneratedFiles[0].path
 		)
 
-		const {
-			generatedFiles: classGeneratedFiles,
-			updatedFiles: classUpdatedFiles
-		} = await this.errorGenerator.generateOrAppendErrorsToClass(
+		const classGeneratedFiles = await this.errorGenerator.generateOrAppendErrorsToClass(
 			resolvedErrorFileDestination,
 			[{ ...names, definition: errorDefinition }]
 		)
 
-		createdFiles.push(...classGeneratedFiles)
-		createdFiles.push(...classUpdatedFiles)
-
+		console.log(classGeneratedFiles)
 		createdFiles.push(...Object.values(builderGeneratedFiles))
 
 		// //Generate error option types based on new file

@@ -3,20 +3,15 @@ import {
 	IErrorTemplateItem
 } from '@sprucelabs/spruce-templates'
 import log from '../singletons/log'
-import { IGeneratedFile } from '../types/cli.types'
 import diskUtil from '../utilities/disk.utility'
-import AbstractGenerator from './AbstractGenerator'
+import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
 
 export default class ErrorGenerator extends AbstractGenerator {
 	public async generateOrAppendErrorsToClass(
 		destinationFile: string,
 		errors: IErrorTemplateItem[]
-	): Promise<{
-		generatedFiles: IGeneratedFile[]
-		updatedFiles: IGeneratedFile[]
-	}> {
-		const generatedFiles: IGeneratedFile[] = []
-		const updatedFiles: IGeneratedFile[] = []
+	): Promise<GenerationResults> {
+		let results: GenerationResults = []
 
 		if (errors.length === 0) {
 			// todo move to proper error
@@ -25,14 +20,12 @@ export default class ErrorGenerator extends AbstractGenerator {
 
 		if (!diskUtil.doesFileExist(destinationFile)) {
 			const errorContents = this.templates.error({ errors })
-			await diskUtil.writeFile(destinationFile, errorContents)
-
-			generatedFiles.push({
-				name: 'Error subclass',
-				path: destinationFile,
-				description:
-					'A new subclass of SpruceBaseError where you can control your error messaging.'
-			})
+			results = this.writeFileIfChangedMixinResults(
+				destinationFile,
+				errorContents,
+				'A new subclass of SpruceBaseError where you can control your error messaging.',
+				results
+			)
 		} else {
 			const errorBlock = this.templates.error({
 				errors,
@@ -50,99 +43,60 @@ export default class ErrorGenerator extends AbstractGenerator {
 					'\n' +
 					currentErrorContents.substring(blockMatches)
 
-				await diskUtil.writeFile(destinationFile, newErrorContents)
-
-				updatedFiles.push({
-					name: 'Error subclass',
-					path: destinationFile,
-					description:
-						errors.length > 1
-							? `${errors.length} blocks of code were in to handle the new types of errors`
-							: 'A new block of code was added to handle the new error type'
-				})
+				results = this.writeFileIfChangedMixinResults(
+					destinationFile,
+					newErrorContents,
+					errors.length > 1
+						? `${errors.length} blocks of code were in to handle the new types of errors`
+						: 'A new block of code was added to handle the new error type',
+					results
+				)
 			} else {
 				// Could not write to file, output snippet suggestion
 				log.warn('Failed to add to Error.ts, here is the block to drop in')
 			}
 		}
 
-		return {
-			generatedFiles,
-			updatedFiles
-		}
+		return results
 	}
 
 	public async generateBuilder(
 		destinationFile: string,
 		options: IDefinitionBuilderTemplateItem
-	): Promise<{
-		generatedFiles: {
-			errorBuilder: IGeneratedFile
-		}
-	}> {
-		await diskUtil.writeFile(
+	): Promise<GenerationResults> {
+		return this.writeFileIfChangedMixinResults(
 			destinationFile,
-			this.templates.definitionBuilder(options)
+			this.templates.definitionBuilder(options),
+			'Holds the builder for this error. Used to generate type files.'
 		)
-
-		return {
-			generatedFiles: {
-				errorBuilder: {
-					name: 'Error builder',
-					path: destinationFile,
-					description:
-						'Holds the builder for this error. Used to generate type files.'
-				}
-			}
-		}
 	}
 	public async generateErrorCodeType(
 		destinationFile: string,
 		errorTemplateItems: IErrorTemplateItem[]
-	): Promise<{
-		generatedFiles: {
-			codesEnum: IGeneratedFile
-		}
-	}> {
+	): Promise<GenerationResults> {
 		// Find all definition files in the lookup dir
 
 		const contents = this.templates.errorCode({ codes: errorTemplateItems })
-		diskUtil.writeFile(destinationFile, contents)
 
-		return {
-			generatedFiles: {
-				codesEnum: {
-					name: 'Error code enum',
-					path: destinationFile,
-					description:
-						'The enum that holds all error types for reference, like ErrorCode.FileNotFound.'
-				}
-			}
-		}
+		return this.writeFileIfChangedMixinResults(
+			destinationFile,
+			contents,
+			'The enum that holds all error types for reference, like ErrorCode.FileNotFound.'
+		)
 	}
 
 	public async generateOptionsTypesFile(
 		destinationFile: string,
 		errorTemplateItems: IErrorTemplateItem[]
-	): Promise<{
-		generatedFiles: {
-			optionsTypes: IGeneratedFile
-		}
-	}> {
+	): Promise<GenerationResults> {
 		const contents = this.templates.errorOptionsTypes({
 			options: errorTemplateItems
 		})
-		diskUtil.writeFile(destinationFile, contents)
 
-		return {
-			generatedFiles: {
-				optionsTypes: {
-					name: 'Error options',
-					path: destinationFile,
-					description:
-						'A union of all error options for your skill. Used as the first parameter to the SpruceError constructor.'
-				}
-			}
-		}
+		return this.writeFileIfChangedMixinResults(
+			destinationFile,
+			contents,
+			'A union of all error options for your skill. Used as the first parameter to the SpruceError constructor.'
+		)
 	}
 }

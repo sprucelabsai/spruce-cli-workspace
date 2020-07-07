@@ -8,6 +8,7 @@ import {
 import { TemplateRenderAs } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
+import { SCHEMA_VERSION_FALLBACK } from './constants'
 import log from './singletons/log'
 // Import addons
 import './addons/escape.addon'
@@ -145,6 +146,7 @@ export const templates = {
 			imports,
 			fieldTemplatesByType,
 			schemaTemplatesByNamespaceAndName,
+			SCHEMA_VERSION_FALLBACK,
 			rendersAs
 		})
 	},
@@ -308,3 +310,4 @@ export { default as importExtractor } from './utilities/importExtractor.utility'
 
 export default handlebars
 export * from './types/templates.types'
+export * from './constants'

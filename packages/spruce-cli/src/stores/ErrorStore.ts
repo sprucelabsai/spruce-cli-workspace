@@ -1,12 +1,10 @@
 import pathUtil from 'path'
 import Schema from '@sprucelabs/schema'
-import { ISchemaDefinition } from '@sprucelabs/schema/build/schema.types'
 import { IErrorTemplateItem } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
 import ServiceFactory, { Service } from '../factories/ServiceFactory'
-import ImportService from '../services/ImportService'
 import diskUtil from '../utilities/disk.utility'
 import namesUtil from '../utilities/names.utility'
 
@@ -19,10 +17,6 @@ export default class ErrorStore {
 	public cwd: string
 
 	private serviceFactory: ServiceFactory
-
-	private ImportService = (cwd?: string): ImportService => {
-		return this.serviceFactory.Service(cwd ?? this.cwd, Service.Import)
-	}
 
 	public constructor(cwd: string, serviceFactory: ServiceFactory) {
 		this.cwd = cwd
@@ -45,14 +39,12 @@ export default class ErrorStore {
 		}
 
 		const matches = await globby(pathUtil.join(lookupDir, '/**/*.builder.ts'))
-		const importService = this.ImportService()
+		const schemaService = this.serviceFactory.Service(this.cwd, Service.Schema)
 
 		await Promise.all(
 			matches.map(async file => {
 				try {
-					const definition = await importService.importDefault<
-						ISchemaDefinition
-					>(file)
+					const definition = await schemaService.importDefinition(file)
 
 					Schema.validateDefinition(definition)
 

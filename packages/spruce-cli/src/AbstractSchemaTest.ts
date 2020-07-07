@@ -10,9 +10,21 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 		{ cwd: string; cli: ICli }
 	> = {}
 
-	protected static async bootCliInstallSchemasAndSetCwd(cacheKey?: string) {
+	protected static get schemaTypesFile() {
+		return this.resolveHashSprucePath('schemas', 'schemas.types.ts')
+	}
+
+	protected static async syncSchemasAndSetCwd(cacheKey?: string) {
+		const cli = await this.installSchemasAndSetCwd(cacheKey)
+		await cli.syncSchemas()
+		return cli
+	}
+
+	protected static async installSchemasAndSetCwd(cacheKey?: string) {
 		if (cacheKey && this.installedSkills[cacheKey]) {
 			this.cwd = this.installedSkills[cacheKey].cwd
+			this.cleanCachedSkillDir()
+
 			return this.installedSkills[cacheKey].cli
 		}
 
@@ -79,6 +91,21 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 			}
 		}
 
+		this.cleanCachedSkillDir()
 		return cli
+	}
+
+	private static cleanCachedSkillDir() {
+		const dirs = [
+			this.resolveHashSprucePath(),
+			this.resolvePath('src', 'schemas')
+		]
+
+		dirs.forEach(dir => {
+			if (diskUtil.doesFileExist(dir)) {
+				diskUtil.deleteDir(dir)
+				diskUtil.createDir(dir)
+			}
+		})
 	}
 }

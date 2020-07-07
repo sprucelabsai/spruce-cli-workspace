@@ -13,7 +13,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	protected static async beforeEach() {
 		super.beforeEach()
 		this.generator = new SchemaGenerator(templates)
-		await this.bootCliInstallSchemasAndSetCwd('value-type-generation')
+		await this.installSchemasAndSetCwd('value-type-generation')
 	}
 
 	@test()
@@ -38,7 +38,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		const {
 			fieldTemplateItems,
 			schemaTemplateItems
-		} = await SchemaValueTypeGenerationTest.fetchAllTemplateItems()
+		} = await this.fetchAllTemplateItems()
 
 		await this.generator.generateFieldTypes(
 			this.resolveHashSprucePath('schemas'),
@@ -73,9 +73,9 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	@test()
 	protected static async generatesValidTypesFile() {
 		const results = await this.generateValueTypes()
-		assert.isAbove(results.generatedFiles.length, 0)
+		assert.isAbove(results.length, 0)
 
-		const first = results.generatedFiles[0].path
+		const first = results[0].path
 		assert.isTrue(diskUtil.doesFileExist(first))
 
 		await this.Service(Service.TypeChecker).check(first)
@@ -104,9 +104,9 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		'generates personLocation.person value type (schema)',
 		`${CORE_NAMESPACE}.personLocation.${CORE_SCHEMA_VERSION.constVal}.person`,
 		{
-			type: 'SpruceSchemas.Spruce.2020_07_22.IPerson',
+			type: `SpruceSchemas.${CORE_NAMESPACE}.IPerson.${CORE_SCHEMA_VERSION.constVal}`,
 			value: '[personDefinition]',
-			definitionType: 'SpruceSchemas.Spruce.2020_07_22.Person.IDefinition[]'
+			definitionType: `SpruceSchemas.${CORE_NAMESPACE}.Person.${CORE_SCHEMA_VERSION.constVal}.IDefinition[]`
 		}
 	)
 	@test(
@@ -126,7 +126,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 
 		const valueTypes = await this.Service(Service.Import).importDefault<
 			IValueTypes
-		>(results.generatedFiles[0].path)
+		>(results[0].path)
 
 		assert.isObject(valueTypes)
 		assert.isAbove(

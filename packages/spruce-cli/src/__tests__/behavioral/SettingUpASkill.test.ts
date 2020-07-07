@@ -73,7 +73,7 @@ export default class SettingUpASkill extends AbstractCliTest {
 	}
 
 	@test()
-	protected static async getsAFailedHealthCheckWhenNodeModulesAreMoved() {
+	protected static async getsAFailedHealthCheckWhenSrcDirIsMoved() {
 		const cli = await this.Cli()
 		await cli.installFeatures({
 			features: [
@@ -87,10 +87,7 @@ export default class SettingUpASkill extends AbstractCliTest {
 			]
 		})
 
-		diskUtil.moveDir(
-			this.resolvePath('node_modules'),
-			this.resolvePath('node_modules2')
-		)
+		diskUtil.moveDir(this.resolvePath('src'), this.resolvePath('src2'))
 
 		const health = await cli.checkHealth()
 

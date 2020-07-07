@@ -22,11 +22,11 @@ export default class FeatureManagerTest extends AbstractCliTest {
 	@test()
 	protected static async canGetFeatureDependencies() {
 		const dependencies = this.fm.getFeatureDependencies(FeatureCode.Test)
-		const match = dependencies.find(d => d === FeatureCode.Schema)
+		const match = dependencies.find(d => d === FeatureCode.Skill)
 		assert.isOk(match)
 	}
 
-	@test.skip('Can get circular feature dependencies.')
+	@test.skip()
 	protected static async getCircularFeatureDependencies() {
 		// const cli = await this.cli()
 		// const dependencies = cli.services.feature.getFeatureDependencies({

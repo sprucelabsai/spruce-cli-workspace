@@ -9,10 +9,17 @@ export enum AuthedAs {
 	Skill = 'skill'
 }
 
+export enum GeneratedFileAction {
+	Skipped = 'skipped',
+	Generated = 'generated',
+	Updated = 'updated'
+}
+
 export interface IGeneratedFile {
 	name: string
 	path: string
 	description: string
+	action: GeneratedFileAction
 }
 
 export interface INpmPackage {

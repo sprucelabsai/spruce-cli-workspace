@@ -30,6 +30,10 @@ export enum Service {
 	Import = 'import'
 }
 
+export interface IServiceProvider {
+	Service<S extends Service>(type: S, cwd?: string): IServices[S]
+}
+
 export default class ServiceFactory {
 	private mercury: Mercury
 
@@ -56,7 +60,6 @@ export default class ServiceFactory {
 			case Service.Import:
 				return new ImportService(cwd) as IServices[S]
 			default:
-				debugger
 				throw new Error('create new error')
 		}
 	}

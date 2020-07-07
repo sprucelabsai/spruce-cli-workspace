@@ -10,11 +10,14 @@ import { uniqBy } from 'lodash'
 import ErrorCode from '#spruce/errors/errorCode'
 import { LOCAL_NAMESPACE, CORE_NAMESPACE } from '../constants'
 import SpruceError from '../errors/SpruceError'
-import ServiceFactory, { Service } from '../factories/ServiceFactory'
-import ImportService from '../services/ImportService'
+import ServiceFactory, {
+	Service,
+	IServiceProvider,
+	IServices
+} from '../factories/ServiceFactory'
 import SchemaTemplateItemBuilder from '../templateItemBuilders/SchemaTemplateItemBuilder'
 import {
-	userDefinition,
+	personDefinition,
 	userLocationDefinition,
 	skillDefinition,
 	locationDefinition,
@@ -23,6 +26,7 @@ import {
 } from '../temporary/schemas'
 import diskUtil from '../utilities/disk.utility'
 import namesUtil from '../utilities/names.utility'
+import versionUtil from '../utilities/version.utility'
 
 interface IFetchSchemaTemplateItemsResponse {
 	items: ISchemaTemplateItem[]
@@ -47,14 +51,14 @@ interface IAddonItem {
 	isLocal: boolean
 }
 
-export default class SchemaStore {
+export default class SchemaStore implements IServiceProvider {
 	public cwd: string
 
 	private schemaBuilder: SchemaTemplateItemBuilder
 	private serviceFactory: ServiceFactory
 
-	private ImportService = (cwd?: string): ImportService => {
-		return this.serviceFactory.Service(cwd ?? this.cwd, Service.Import)
+	public Service<S extends Service>(type: S, cwd?: string): IServices[S] {
+		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
 	public constructor(cwd: string, serviceFactory: ServiceFactory) {
@@ -89,7 +93,7 @@ export default class SchemaStore {
 		localLookupDir: string
 	): Promise<IFetchSchemaTemplateItemsResponse> {
 		const schemas: ISchemaDefinition[] = [
-			userDefinition,
+			personDefinition,
 			skillDefinition,
 			locationDefinition,
 			userLocationDefinition,
@@ -102,16 +106,7 @@ export default class SchemaStore {
 			schemas
 		)
 
-		const localMatches = await this.loadLocalDefinitions(localLookupDir)
-		const importService = this.ImportService()
-
-		const loading = Promise.all(
-			localMatches.map(async local =>
-				importService.importDefault<ISchemaDefinition>(local)
-			)
-		)
-
-		const localDefinitions = await loading
+		const localDefinitions = await this.loadLocalDefinitions(localLookupDir)
 		const localTemplateItems = this.schemaBuilder.generateTemplateItems(
 			LOCAL_NAMESPACE,
 			localDefinitions
@@ -123,16 +118,32 @@ export default class SchemaStore {
 	}
 
 	private async loadLocalDefinitions(localLookupDir: string) {
-		return await globby(pathUtil.join(localLookupDir, '**/*.builder.ts'))
+		const localMatches = await globby(
+			pathUtil.join(localLookupDir, '**/*.builder.ts')
+		)
+
+		const schemaService = this.Service(Service.Schema)
+
+		const loading = Promise.all(
+			localMatches.map(async local => {
+				const definition = await schemaService.importDefinition(local)
+				const version = versionUtil.latestVersion(
+					pathUtil.join(pathUtil.dirname(local), '..')
+				)
+				definition.version = version.constValue
+
+				return definition
+			})
+		)
+
+		return loading
 	}
 
-	/** All field types from all skills we depend on */
 	public async fetchFieldTemplateItems<T extends IFieldTemplateItemsOptions>(
 		localLookupDir: string
 	): Promise<IFetchFieldTemplateItemsResponse> {
 		const cwd = pathUtil.join(__dirname, '..', '..')
-
-		const localImportService = this.ImportService(cwd)
+		const localImportService = this.Service(Service.Import, cwd)
 
 		// TODO load from core
 		const coreAddons = await Promise.all(
@@ -161,7 +172,7 @@ export default class SchemaStore {
 		)
 
 		const localErrors: SpruceError[] = []
-		const importService = this.ImportService()
+		const importService = this.Service(Service.Import)
 
 		const localAddons = (
 			await Promise.all(
@@ -229,19 +240,4 @@ export default class SchemaStore {
 
 		return { items: types, errors: localErrors }
 	}
-
-	// TODO this may need to be brought back to hold an entire class map
-	// so we don't have to rely on the generated file before doing anything
-	// /** Get all fields */
-	// public async fieldTypeMap(): Promise<IFieldTypeMap> {
-	// 	const map: IFieldTypeMap = {}
-	// 	if (typeof FieldClassMap === 'object') {
-	// 		Object.keys(FieldClassMap).forEach(type => {
-	// 			const FieldClass = FieldClassMap[type as FieldType]
-	// 			const templateDetails = FieldClass.description
-	// 			map[type] = templateDetails
-	// 		})
-	// 	}
-	// 	return map
-	// }
 }

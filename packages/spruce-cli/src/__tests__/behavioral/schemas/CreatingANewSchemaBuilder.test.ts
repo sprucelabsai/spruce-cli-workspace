@@ -21,9 +21,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async canBuildFileWithoutCrashing() {
-		const cli = await this.bootCliInstallSchemasAndSetCwd(
-			'build-without-crashing'
-		)
+		const cli = await this.syncSchemasAndSetCwd('build-without-crashing')
 		const response = await cli.createSchema({
 			nameReadable: 'Test schema!',
 			namePascal: 'Test',
@@ -41,12 +39,13 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 			'test.builder.ts'
 		)
 
-		assert.isEqual(response.generatedFiles[0].path, expectedDestination)
+		assert.isEqual(response[0].path, expectedDestination)
 	}
 
 	@test()
 	protected static async builderFileValidates() {
-		const cli = await this.bootCliInstallSchemasAndSetCwd('build-valid-file')
+		const cli = await this.syncSchemasAndSetCwd('build-valid-file')
+
 		const response = await cli.createSchema({
 			nameReadable: 'Test schema!',
 			namePascal: 'AnotherTest',
@@ -54,8 +53,8 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 			description: 'this is so great!'
 		})
 
-		await this.Service(Service.TypeChecker).check(
-			response.generatedFiles[0].path
-		)
+		const checker = this.Service(Service.TypeChecker)
+		await checker.check(response[0].path)
+		await checker.check(this.schemaTypesFile)
 	}
 }

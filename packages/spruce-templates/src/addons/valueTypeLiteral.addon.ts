@@ -1,12 +1,13 @@
 import { TemplateRenderAs } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
+import { SCHEMA_VERSION_FALLBACK } from '../constants'
 import { IValueTypes } from '../types/templates.types'
 
 /* The type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */
 handlebars.registerHelper('valueTypeLiteral', function(
 	namespace: string,
 	schemaId: string,
-	version: string,
+	version: string | undefined,
 	fieldName: string,
 	renderAs: TemplateRenderAs,
 	options
@@ -44,12 +45,14 @@ handlebars.registerHelper('valueTypeLiteral', function(
 		)
 	}
 
+	const v = version ? version : SCHEMA_VERSION_FALLBACK
+
 	const valueType =
-		valueTypes[namespace]?.[schemaId]?.[version]?.[fieldName]?.[renderAs]
+		valueTypes[namespace]?.[schemaId]?.[v]?.[fieldName]?.[renderAs]
 
 	if (!valueType) {
 		throw new Error(
-			`Unable to render value type for field "${namespace}.${schemaId}.${version}.${renderAs}"`
+			`Unable to render value type for field "${namespace}.${schemaId}.${v}.${renderAs}"`
 		)
 	}
 

@@ -1,4 +1,4 @@
-import path from 'path'
+import pathUtil from 'path'
 import { IDirectoryTemplateFile } from '@sprucelabs/spruce-templates'
 import fs from 'fs-extra'
 import ErrorCode from '#spruce/errors/errorCode'
@@ -46,8 +46,12 @@ const diskUtil = {
 	resolveHashSprucePath(cwd: string, ...filePath: string[]): string {
 		return this.resolvePath(cwd, HASH_SPRUCE_DIR, ...filePath)
 	},
+	isFileDifferent(destination: string, contents: string) {
+		const currentContents = this.readFile(destination)
+		return currentContents.trim() !== contents.trim()
+	},
 	resolvePath(cwd: string, ...filePath: string[]): string {
-		let builtPath = path.join(...filePath)
+		let builtPath = pathUtil.join(...filePath)
 
 		if (builtPath[0] !== '/') {
 			// Relative to the cwd
@@ -55,7 +59,7 @@ const diskUtil = {
 				builtPath = builtPath.substr(1)
 			}
 
-			builtPath = path.join(cwd, builtPath)
+			builtPath = pathUtil.join(cwd, builtPath)
 		}
 
 		return builtPath
@@ -64,8 +68,8 @@ const diskUtil = {
 		const writes: Promise<void>[] = []
 		for (let i = 0; i < files.length; i += 1) {
 			const file = files[i]
-			const filePathToWrite = path.join(cwd, file.relativePath)
-			const dirPathToWrite = path.dirname(filePathToWrite)
+			const filePathToWrite = pathUtil.join(cwd, file.relativePath)
+			const dirPathToWrite = pathUtil.dirname(filePathToWrite)
 
 			await fs.ensureDir(dirPathToWrite)
 

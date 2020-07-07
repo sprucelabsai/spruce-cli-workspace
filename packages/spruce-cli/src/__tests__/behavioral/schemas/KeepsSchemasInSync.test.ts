@@ -2,13 +2,10 @@ import { assert, test } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
 import { CORE_SCHEMA_VERSION, CORE_NAMESPACE } from '../../../constants'
 import { Service } from '../../../factories/ServiceFactory'
+import { GeneratedFileAction } from '../../../types/cli.types'
 import diskUtil from '../../../utilities/disk.utility'
 
 export default class CanSyncSchemas extends AbstractSchemaTest {
-	private static get schemaTypesFile() {
-		return this.resolveHashSprucePath('schemas', 'schemas.types.ts')
-	}
-
 	@test()
 	protected static async hasSyncSchemaFunction() {
 		const cli = await this.Cli()
@@ -23,8 +20,11 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 
 	@test()
 	protected static async syncsSchemasGeneratesTypesFile() {
-		const cli = await this.bootCliInstallSchemasAndSetCwd('sync1')
-		await cli.syncSchemas()
+		const cli = await this.installSchemasAndSetCwd('sync1')
+		const results = await cli.syncSchemas()
+
+		assert.isAbove(results.length, 0)
+		assert.doesInclude(results, { action: GeneratedFileAction.Generated })
 
 		const expectedSchemaTypesDestination = this.resolveHashSprucePath(
 			'schemas',
@@ -36,11 +36,19 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 	}
 
 	@test()
-	protected static async makeSureSchemaTypesAreVersioned() {
-		const cli = await this.bootCliInstallSchemasAndSetCwd('sync1')
-		await cli.syncSchemas()
+	protected static async syncSchemasUpdatesTypesFile() {
+		const cli = await this.syncSchemasAndSetCwd('sync1')
+		const results = await cli.syncSchemas()
 
-		const typesFile = CanSyncSchemas.schemaTypesFile
+		assert.isAbove(results.length, 0)
+		assert.doesInclude(results, { action: GeneratedFileAction.Skipped })
+	}
+
+	@test()
+	protected static async makeSureSchemaTypesAreVersioned() {
+		await this.syncSchemasAndSetCwd('sync1')
+
+		const typesFile = this.schemaTypesFile
 		const typesContents = diskUtil.readFile(typesFile)
 
 		assert.doesInclude(
@@ -54,8 +62,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 
 	@test()
 	protected static async schemaTypesVileIsValid() {
-		const cli = await this.bootCliInstallSchemasAndSetCwd('sync1')
-		await cli.syncSchemas()
+		await this.syncSchemasAndSetCwd('sync1')
 
 		const typesFile = CanSyncSchemas.schemaTypesFile
 		await this.Service(Service.TypeChecker).check(typesFile)

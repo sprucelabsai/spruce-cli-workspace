@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
 import { templates } from '@sprucelabs/spruce-templates'
-import _ from 'lodash'
+import { uniq } from 'lodash'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import ServiceFactory, { Service } from '../factories/ServiceFactory'
+import log from '../singletons/log'
+import { INpmPackage } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
 import CircleCIFeature from './CircleCIFeature'
 import ErrorFeature from './ErrorFeature'
@@ -11,8 +13,6 @@ import SchemaFeature from './SchemaFeature'
 import SkillFeature from './SkillFeature'
 import TestFeature from './TestFeature'
 import VsCodeFeature from './VsCodeFeature'
-import log from '../singletons/log'
-import { INpmPackage } from '../types/cli.types'
 
 export type FeatureOptions<
 	F extends FeatureCode
@@ -101,7 +101,7 @@ export default class FeatureManager {
 			)
 		}
 
-		return trackedFeatures
+		return uniq(trackedFeatures)
 	}
 
 	public async install<F extends FeatureCode>(
@@ -125,7 +125,7 @@ export default class FeatureManager {
 			}
 		}
 
-		codesToInstall = _.uniq(codesToInstall)
+		codesToInstall = uniq(codesToInstall)
 		codesToInstall = this.sortFeatures(codesToInstall)
 
 		for (let i = 0; i < codesToInstall.length; i += 1) {

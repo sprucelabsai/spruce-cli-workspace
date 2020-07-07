@@ -1,13 +1,12 @@
-// import { SchemaDefinitionValues } from '@sprucelabs/schema'
 import Schema from '@sprucelabs/schema'
 import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
 import skillFeatureDefinition from '#spruce/schemas/local/skillFeature.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-// import { WriteMode } from '../types/cli.types'
-import { FeatureCode } from './FeatureManager'
 import { INpmPackage } from '../types/cli.types'
 import diskUtil from '../utilities/disk.utility'
+import tsConfigUtil from '../utilities/tsConfig.utility'
 import AbstractFeature from './AbstractFeature'
+import { FeatureCode } from './FeatureManager'
 
 type SkillFeatureDefinition = SpruceSchemas.Local.SkillFeature.IDefinition
 type Skill = SpruceSchemas.Local.ISkillFeature
@@ -31,6 +30,12 @@ export default class SkillFeature extends AbstractFeature<
 
 	public async beforePackageInstall(options: Skill) {
 		await this.install(options)
+	}
+
+	public async afterPackageInstall() {
+		if (!tsConfigUtil.isPathAliasSet(this.cwd, '#spruce/*')) {
+			tsConfigUtil.setPathAlias(this.cwd, '#spruce/*', ['.spruce/*'])
+		}
 	}
 
 	private async install(options: SpruceSchemas.Local.ISkillFeature) {

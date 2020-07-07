@@ -1,9 +1,9 @@
 import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
 import ServiceFactory, { Service } from '../factories/ServiceFactory'
-import { FeatureCode } from './FeatureManager'
 import PkgService from '../services/PkgService'
 import { INpmPackage } from '../types/cli.types'
+import { FeatureCode } from './FeatureManager'
 
 export default abstract class AbstractFeature<
 	S extends ISchemaDefinition | undefined = ISchemaDefinition | undefined

@@ -33,7 +33,7 @@ const valueTypes = {
 		{{#each this}}
 		{{@key}}: {
 			{{#each this}} 
-			"{{definition.version}}":{
+			"{{definition.version}}{{#unless definition.version}}{{../../../SCHEMA_VERSION_FALLBACK}}{{/unless}}":{
 				{{#if definition.dynamicKeySignature}}
 				__dynamicKeySignature: {
 					{{#each ../../../rendersAs}}
