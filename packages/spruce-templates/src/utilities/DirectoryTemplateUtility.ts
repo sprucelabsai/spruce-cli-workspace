@@ -5,7 +5,7 @@ import handlebars from 'handlebars'
 import {
 	DirectoryTemplateKind,
 	IDirectoryTemplateContextMap,
-	IDirectoryTemplateFile
+	IDirectoryTemplateFile,
 } from '../types/templates.types'
 
 export default class DirectoryTemplateUtility {
@@ -15,7 +15,7 @@ export default class DirectoryTemplateUtility {
 		const files = await globby(
 			path.join(__dirname, '../templates/directories', template),
 			{
-				dot: true
+				dot: true,
 			}
 		)
 
@@ -43,7 +43,7 @@ export default class DirectoryTemplateUtility {
 		const files = await globby(
 			path.join(__dirname, '../templates/directories', kind),
 			{
-				dot: true
+				dot: true,
 			}
 		)
 
@@ -52,7 +52,7 @@ export default class DirectoryTemplateUtility {
 			const {
 				isHandlebarsTemplate,
 				relativeBaseDirectory,
-				filename
+				filename,
 			} = this.parseTemplateFilePath(file)
 
 			const filePathToWrite = path.join(relativeBaseDirectory, filename)
@@ -64,12 +64,12 @@ export default class DirectoryTemplateUtility {
 				const result = compiledTemplate(context)
 				builtFiles.push({
 					relativePath: filePathToWrite,
-					contents: result
+					contents: result,
 				})
 			} else {
 				builtFiles.push({
 					relativePath: filePathToWrite,
-					contents: template
+					contents: template,
 				})
 			}
 		}
@@ -129,7 +129,7 @@ export default class DirectoryTemplateUtility {
 			baseDirectory,
 			relativeBaseDirectory,
 			filename,
-			templateFilename: templateFilename || filename
+			templateFilename: templateFilename || filename,
 		}
 	}
 }

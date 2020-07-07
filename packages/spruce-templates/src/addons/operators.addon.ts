@@ -12,5 +12,5 @@ handlebars.registerHelper({
 	},
 	or(...params) {
 		return Array.prototype.slice.call(params, 0, -1).some(Boolean)
-	}
+	},
 })

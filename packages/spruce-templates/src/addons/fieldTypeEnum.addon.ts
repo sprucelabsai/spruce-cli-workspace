@@ -3,7 +3,7 @@ import handlebars from 'handlebars'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 
 /* The enum for schema.fields.fieldName.type as a string */
-handlebars.registerHelper('fieldTypeEnum', function(
+handlebars.registerHelper('fieldTypeEnum', function (
 	fieldDefinition: FieldDefinition,
 	options
 ) {
@@ -14,7 +14,7 @@ handlebars.registerHelper('fieldTypeEnum', function(
 	}
 
 	const {
-		data: { root }
+		data: { root },
 	} = options
 
 	const fieldTemplateItems: IFieldTemplateItem[] | undefined =
@@ -28,7 +28,7 @@ handlebars.registerHelper('fieldTypeEnum', function(
 
 	const { type } = fieldDefinition
 	const matchingField = fieldTemplateItems.find(
-		item => item.camelType.toLowerCase() === type.toLowerCase()
+		(item) => item.camelType.toLowerCase() === type.toLowerCase()
 	)
 
 	if (!matchingField) {

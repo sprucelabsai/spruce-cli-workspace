@@ -5,7 +5,7 @@ import handlebars from 'handlebars'
 import { upperFirst } from 'lodash'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 
-handlebars.registerHelper('valueTypeGenerator', function(
+handlebars.registerHelper('valueTypeGenerator', function (
 	fieldDefinition: FieldDefinition,
 	renderAs: TemplateRenderAs,
 	options: {
@@ -18,12 +18,12 @@ handlebars.registerHelper('valueTypeGenerator', function(
 ) {
 	const {
 		data: {
-			root: { fieldTemplateItems }
-		}
+			root: { fieldTemplateItems },
+		},
 	} = options
 
 	const match = fieldTemplateItems.filter(
-		item => item.camelType === fieldDefinition.type
+		(item) => item.camelType === fieldDefinition.type
 	)[0]
 
 	if (!match) {
@@ -33,7 +33,7 @@ handlebars.registerHelper('valueTypeGenerator', function(
 	const type = handlebars.helpers.fieldTypeEnum(fieldDefinition, options)
 	const def = JSON.stringify({
 		...fieldDefinition,
-		type: '{{TYPE_ENUM}}'
+		type: '{{TYPE_ENUM}}',
 	}).replace('"{{TYPE_ENUM}}"', type)
 
 	return `generateTypeLiteral(${def}, TemplateRenderAs.${upperFirst(renderAs)}, "${match.importAs}")`

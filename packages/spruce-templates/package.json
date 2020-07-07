@@ -32,7 +32,7 @@
 		"clean": "rm -rf build/",
 		"copy-templates": "mkdirp ./build/templates && cp -r ./src/templates/* ./build/templates",
 		"lint": "eslint '**/*.ts' && tsc -p . --noEmit",
-		"lint:fix": "eslint --fix '**/*.ts'",
+		"lint.fix": "eslint --fix '**/*.ts'",
 		"release": "semantic-release",
 		"local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS",
 		"arkit": "arkit -f index.ts -o docs/images/arkit.svg",

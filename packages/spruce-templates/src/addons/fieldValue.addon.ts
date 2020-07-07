@@ -3,7 +3,7 @@ import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import log from '../singletons/log'
 
 /** Drop in the value of a field which quotes if needed */
-handlebars.registerHelper('fieldValue', function(
+handlebars.registerHelper('fieldValue', function (
 	fieldDefinition: FieldDefinition,
 	value: any
 ) {

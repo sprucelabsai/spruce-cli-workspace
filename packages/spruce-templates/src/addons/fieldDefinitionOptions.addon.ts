@@ -4,7 +4,7 @@ import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 /** Renders field options */
-handlebars.registerHelper('fieldDefinitionOptions', function(
+handlebars.registerHelper('fieldDefinitionOptions', function (
 	namespace: string,
 	schemaId: string,
 	version: string,
@@ -39,7 +39,7 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 	}
 
 	const {
-		data: { root }
+		data: { root },
 	} = options
 
 	const schemaTemplateItems: ISchemaTemplateItem[] | undefined =
@@ -54,7 +54,7 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 	const updatedOptions:
 		| Record<string, any>
 		| undefined = fieldDefinition.options && {
-		...fieldDefinition.options
+		...fieldDefinition.options,
 	}
 	// If this is a schema type, we need to map it to it's proper value type
 	if (fieldDefinition.type === FieldType.Schema && updatedOptions) {
@@ -83,7 +83,7 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 	}
 
 	let template = `{`
-	Object.keys(updatedOptions ?? {}).forEach(key => {
+	Object.keys(updatedOptions ?? {}).forEach((key) => {
 		// @ts-ignore TODO how to type this
 		const value = updatedOptions[key]
 		template += `${key}: `

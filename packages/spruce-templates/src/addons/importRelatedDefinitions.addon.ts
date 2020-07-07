@@ -5,7 +5,7 @@ import handlebars from 'handlebars'
 import { camelCase, uniq } from 'lodash'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-handlebars.registerHelper('importRelatedDefinitions', function(
+handlebars.registerHelper('importRelatedDefinitions', function (
 	definition: ISchemaDefinition,
 	options
 ) {
@@ -16,7 +16,7 @@ handlebars.registerHelper('importRelatedDefinitions', function(
 	}
 
 	const {
-		data: { root }
+		data: { root },
 	} = options
 
 	const schemaTemplateItems: ISchemaTemplateItem[] | undefined =
@@ -31,14 +31,14 @@ handlebars.registerHelper('importRelatedDefinitions', function(
 	const fields = Object.values(definition.fields ?? {})
 	const imports: string[] = []
 
-	fields.forEach(field => {
+	fields.forEach((field) => {
 		if (field.type === FieldType.Schema) {
 			const related = SchemaField.mapFieldDefinitionToSchemaIdsWithVersion(
 				field
 			)
-			related.forEach(idWithVersion => {
+			related.forEach((idWithVersion) => {
 				const matched = schemaTemplateItems.find(
-					t =>
+					(t) =>
 						t.id === idWithVersion.id &&
 						t.definition.version === idWithVersion.version
 				)
