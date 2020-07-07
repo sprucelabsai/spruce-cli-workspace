@@ -13,7 +13,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 					nameReadable: 'Test schema!',
 					namePascal: 'AnotherTest',
 					nameCamel: 'anotherTest',
-					description: 'this is so great!'
+					description: 'this is so great!',
 				}),
 			/SKILL_NOT_INSTALLED/
 		)
@@ -26,7 +26,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 			nameReadable: 'Test schema!',
 			namePascal: 'Test',
 			nameCamel: 'test',
-			description: 'this is so great!'
+			description: 'this is so great!',
 		})
 
 		assert.isOk(response)
@@ -58,7 +58,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 			nameReadable: 'Test schema!',
 			namePascal: 'AnotherTest',
 			nameCamel: 'anotherTest',
-			description: 'this is so great!'
+			description: 'this is so great!',
 		})
 		return response
 	}

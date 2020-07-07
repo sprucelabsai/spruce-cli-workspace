@@ -115,15 +115,15 @@ export default class SchemaCommand extends AbstractCommand {
 			initialValues: {
 				nameReadable,
 				nameCamel,
-				namePascal
+				namePascal,
 			},
-			onWillAskQuestion: namesUtil.onWillAskQuestionHandler.bind(namesUtil)
+			onWillAskQuestion: namesUtil.onWillAskQuestionHandler.bind(namesUtil),
 		})
 
 		// All the values
 		const values = await form.present({
 			showOverview,
-			fields: ['nameReadable', 'nameCamel', 'namePascal', 'description']
+			fields: ['nameReadable', 'nameCamel', 'namePascal', 'description'],
 		})
 
 		// Make sure schema module is installed
@@ -131,9 +131,9 @@ export default class SchemaCommand extends AbstractCommand {
 		await this.featureManager.install({
 			features: [
 				{
-					code: FeatureCode.Schema
-				}
-			]
+					code: FeatureCode.Schema,
+				},
+			],
 		})
 		this.term.stopLoading()
 
@@ -152,7 +152,7 @@ export default class SchemaCommand extends AbstractCommand {
 		try {
 			await this.sync(options.destinationDir, {
 				destinationDir: resolvedTypesDestination,
-				addonLookupDir: options.addonLookupDir
+				addonLookupDir: options.addonLookupDir,
 			})
 		} catch (err) {
 			this.term.stopLoading()
@@ -193,9 +193,9 @@ export default class SchemaCommand extends AbstractCommand {
 		await this.featureManager.install({
 			features: [
 				{
-					code: FeatureCode.Schema
-				}
-			]
+					code: FeatureCode.Schema,
+				},
+			],
 		})
 
 		this.term.startLoading('Fetching schemas and field types')
@@ -203,7 +203,7 @@ export default class SchemaCommand extends AbstractCommand {
 		// Load schemas
 		const {
 			items: schemaTemplateItems,
-			errors: schemaTemplateErrors
+			errors: schemaTemplateErrors,
 		} = await this.schemaStore.fetchSchemaTemplateItems(
 			diskUtil.resolvePath(lookupDir)
 		)
@@ -218,7 +218,7 @@ export default class SchemaCommand extends AbstractCommand {
 		// Load fields
 		const {
 			items: fieldTemplateItems,
-			errors: fieldTemplateErrors
+			errors: fieldTemplateErrors,
 		} = await this.schemaStore.fetchFieldTemplateItems(
 			diskUtil.resolvePath(addonLookupDir)
 		)
@@ -294,7 +294,7 @@ export default class SchemaCommand extends AbstractCommand {
 			{
 				fieldTemplateItems,
 				schemaTemplateItems,
-				clean
+				clean,
 			}
 		)
 
@@ -303,7 +303,7 @@ export default class SchemaCommand extends AbstractCommand {
 		const errors: SpruceError[] = []
 
 		// @ts-ignore
-		resultsByStage.forEach(results => {
+		resultsByStage.forEach((results) => {
 			errors.push(...results.errors)
 		})
 
@@ -321,7 +321,7 @@ export default class SchemaCommand extends AbstractCommand {
 			this.term.crit(
 				`Warning! Core stage failure. Run \`y global update spruce\` and then try again. If the problem persists, visit https://github.com/sprucelabsai/spruce-cli-workspace/issues`
 			)
-			errors.map(err => this.term.handleError(err))
+			errors.map((err) => this.term.handleError(err))
 			return
 		} else if (errors.length > 0) {
 			this.term.error(
@@ -330,7 +330,7 @@ export default class SchemaCommand extends AbstractCommand {
 		}
 
 		if (errors.length > 0) {
-			errors.forEach(err => {
+			errors.forEach((err) => {
 				const { options } = err
 				if (options.code === ErrorCode.ValueTypeServiceStageError) {
 					this.term.error(`Error mapping stage on stage "${options.stage}"`)

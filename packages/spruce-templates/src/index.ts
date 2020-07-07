@@ -3,7 +3,7 @@ import path from 'path'
 import {
 	ISchemaDefinition,
 	ISchemaTemplateItem,
-	IFieldTemplateItem
+	IFieldTemplateItem,
 } from '@sprucelabs/schema'
 import { TemplateRenderAs } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
@@ -33,7 +33,7 @@ import {
 	IValueTypes,
 	IDefinitionBuilderTemplateItem,
 	IErrorOptions,
-	IErrorTemplateItem
+	IErrorTemplateItem,
 } from './types/templates.types'
 import DirectoryTemplateUtility from './utilities/DirectoryTemplateUtility'
 import importExtractorUtil from './utilities/importExtractor.utility'
@@ -147,7 +147,7 @@ export const templates = {
 			fieldTemplatesByType,
 			schemaTemplatesByNamespaceAndName,
 			SCHEMA_VERSION_FALLBACK,
-			rendersAs
+			rendersAs,
 		})
 	},
 	/** Will return the template for a definition that has been normalized */
@@ -301,7 +301,7 @@ export const templates = {
 	/** For generating cache keys against a schema field  */
 	generateFieldKey(renderAs: TemplateRenderAs, definition: FieldDefinition) {
 		return KeyGeneratorUtility.generateFieldKey(renderAs, definition)
-	}
+	},
 }
 
 /** All the templates */

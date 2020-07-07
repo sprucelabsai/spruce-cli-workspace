@@ -2,7 +2,7 @@ import os from 'os'
 import pathUtil from 'path'
 import fs from 'fs-extra'
 import { set } from 'lodash'
-import uuid from 'uuid'
+import * as uuid from 'uuid'
 import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
 import { WriteMode } from '../types/cli.types'
@@ -31,7 +31,7 @@ export default class PkgService extends CommandService {
 			throw new SpruceError({
 				code: ErrorCode.KeyExists,
 				friendlyMessage: `${path} already exists in package.json`,
-				key: path
+				key: path,
 			})
 		}
 
@@ -55,7 +55,7 @@ export default class PkgService extends CommandService {
 			throw new SpruceError({
 				code: ErrorCode.FailedToImport,
 				file: packagePath,
-				originalError: err
+				originalError: err,
 			})
 		}
 	}
@@ -88,7 +88,7 @@ export default class PkgService extends CommandService {
 			args.push('--cache-folder', pathUtil.join(tmpDir, uuid.v4()))
 
 			await this.execute('yarn', {
-				args
+				args,
 			})
 		}
 	}

@@ -67,20 +67,20 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 						code: FeatureCode.Skill,
 						options: {
 							name: 'testing',
-							description: 'this is a great test!'
-						}
+							description: 'this is a great test!',
+						},
 					},
 					{
-						code: FeatureCode.Schema
-					}
-				]
+						code: FeatureCode.Schema,
+					},
+				],
 			})
 		}
 
 		if (cacheKey && testUtil.isCacheEnabled()) {
 			this.installedSkills[cacheKey] = {
 				cwd: this.cwd,
-				cli
+				cli,
 			}
 
 			if (settingsFile) {
@@ -106,10 +106,10 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 	private static cleanCachedSkillDir() {
 		const dirs = [
 			this.resolveHashSprucePath(),
-			this.resolvePath('src', 'schemas')
+			this.resolvePath('src', 'schemas'),
 		]
 
-		dirs.forEach(dir => {
+		dirs.forEach((dir) => {
 			if (diskUtil.doesFileExist(dir)) {
 				diskUtil.deleteDir(dir)
 				diskUtil.createDir(dir)

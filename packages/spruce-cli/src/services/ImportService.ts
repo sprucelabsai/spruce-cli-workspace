@@ -14,7 +14,7 @@ export default class ImportService extends CommandService {
 			throw new SpruceError({
 				code: ErrorCode.FailedToImport,
 				file,
-				friendlyMessage: `I couldn't find the definition file`
+				friendlyMessage: `I couldn't find the definition file`,
 			})
 		}
 
@@ -28,8 +28,8 @@ export default class ImportService extends CommandService {
 					'-r',
 					'tsconfig-paths/register',
 					'-e',
-					`"try { const imported = require('${file}');console.log('${this.divider}');console.log(JSON.stringify(imported)); } catch(err) { console.log('${this.errorDivider}');console.log(err.toString()); }"`
-				]
+					`"try { const imported = require('${file}');console.log('${this.divider}');console.log(JSON.stringify(imported)); } catch(err) { console.log('${this.errorDivider}');console.log(err.toString()); }"`,
+				],
 			})
 
 			const successParts = stdout.split(this.divider)
@@ -47,9 +47,10 @@ export default class ImportService extends CommandService {
 						options: {
 							code: ErrorCode.FailedToImport,
 							file,
-							friendlyMessage: `Unknown error from import, output was: \n\n"${errParts[1] ??
-								stdout}"`
-						}
+							friendlyMessage: `Unknown error from import, output was: \n\n"${
+								errParts[1] ?? stdout
+							}"`,
+						},
 					}
 				}
 				const proxyError = new SpruceError(err.options)
@@ -67,7 +68,7 @@ export default class ImportService extends CommandService {
 				throw new SpruceError({
 					code: ErrorCode.FailedToImport,
 					file,
-					originalError: err
+					originalError: err,
 				})
 			}
 		}

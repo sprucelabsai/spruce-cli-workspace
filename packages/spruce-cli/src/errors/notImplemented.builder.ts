@@ -4,7 +4,7 @@ const notImplementedDefinition = buildErrorDefinition({
 	id: 'notImplemented',
 	name: 'Not implemented',
 	description: 'This feature has not been implemented',
-	fields: {}
+	fields: {},
 })
 
 export default notImplementedDefinition

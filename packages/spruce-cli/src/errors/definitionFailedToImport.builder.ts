@@ -10,7 +10,7 @@ export default buildErrorDefinition({
 			type: FieldType.Text,
 			label: 'File',
 			isRequired: true,
-			hint: 'The file definition file I tried to import'
-		}
-	}
+			hint: 'The file definition file I tried to import',
+		},
+	},
 })

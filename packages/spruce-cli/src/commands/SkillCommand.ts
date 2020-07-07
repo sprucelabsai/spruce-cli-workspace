@@ -44,7 +44,7 @@ export default class SkillCommand extends AbstractCommand {
 
 	public create = async (cmd: Command) => {
 		const isInstalled = await this.featureManager.isInstalled({
-			features: [FeatureCode.Skill]
+			features: [FeatureCode.Skill],
 		})
 
 		if (isInstalled && !cmd.silent) {
@@ -59,7 +59,7 @@ export default class SkillCommand extends AbstractCommand {
 		while (!done) {
 			this.featureManager.cwd = dirToCheck
 			const installedInParent = await this.featureManager.isInstalled({
-				features: [FeatureCode.Skill]
+				features: [FeatureCode.Skill],
 			})
 
 			if (installedInParent) {
@@ -82,7 +82,7 @@ export default class SkillCommand extends AbstractCommand {
 			createSkill = await this.term.prompt({
 				type: FieldType.Boolean,
 				label: `A Skill is already installed in ${parentInstallDirectory}. Are you sure you want to create a skill here?`,
-				isRequired: true
+				isRequired: true,
 			})
 		}
 
@@ -110,7 +110,7 @@ export default class SkillCommand extends AbstractCommand {
 		const skillChoices: ISelectFieldDefinitionChoice[] = skills.map(
 			(skill, idx) => ({
 				value: String(idx),
-				label: skill.name
+				label: skill.name,
 			})
 		)
 
@@ -119,8 +119,8 @@ export default class SkillCommand extends AbstractCommand {
 			label: 'Select a skill',
 			isRequired: true,
 			options: {
-				choices: skillChoices
-			}
+				choices: skillChoices,
+			},
 		})
 
 		const selectedSkill = skills[parseInt(selectedIdx, 10)]

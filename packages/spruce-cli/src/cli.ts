@@ -4,10 +4,10 @@
 import {
 	Mercury,
 	IMercuryConnectOptions,
-	MercuryAuth
+	MercuryAuth,
 } from '@sprucelabs/mercury'
 import { templates, IValueTypes } from '@sprucelabs/spruce-templates'
-import { Command } from 'commander'
+import { Command, CommanderStatic } from 'commander'
 // Shim
 // eslint-disable-next-line import/order
 import allSettled from 'promise.allsettled'
@@ -24,7 +24,7 @@ import ServiceFactory, { Service } from './factories/ServiceFactory'
 import FeatureManager, {
 	IInstallFeatureOptions,
 	FeatureCode,
-	IFeatureInstallResponse
+	IFeatureInstallResponse,
 } from './features/FeatureManager'
 import { GenerationResults } from './generators/AbstractGenerator'
 import TerminalInterface from './interfaces/TerminalInterface'
@@ -49,7 +49,7 @@ export function buildStores(
 		remote: new RemoteStore(cwd, mercury),
 		schema: new SchemaStore(cwd, serviceFactory),
 		user: new UserStore(cwd, mercury),
-		watcher: new WatcherStore(cwd, mercury)
+		watcher: new WatcherStore(cwd, mercury),
 	}
 }
 
@@ -94,7 +94,10 @@ export interface ICli {
 	checkHealth(): Promise<IHealthCheckResults>
 }
 
-export async function boot(options?: { cwd?: string; program?: Command }) {
+export async function boot(options?: {
+	cwd?: string
+	program?: CommanderStatic['program']
+}) {
 	const program = options?.program
 	// TODO pull in without including package.json
 	// program?.version(pkg.version).description(pkg.description)
@@ -106,7 +109,7 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 
 	const cwd = options?.cwd ?? process.cwd()
 
-	program?.on('option:directory', function() {
+	program?.on('option:directory', function () {
 		if (program?.directory) {
 			const newCwd = diskUtil.resolvePath(cwd, program.directory)
 			log.trace(`CWD updated: ${newCwd}`)
@@ -118,12 +121,12 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 	const serviceFactory = new ServiceFactory(mercury)
 	const stores: IStores = buildStores(cwd, mercury, serviceFactory)
 	const generators: IGenerators = await generatorsAutoloader({
-		constructorOptions: templates
+		constructorOptions: templates,
 	})
 
 	const featureManager = FeatureManager.WithAllFeatures({
 		cwd,
-		serviceFactory
+		serviceFactory,
 	})
 
 	const commandOptions = {
@@ -132,14 +135,14 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 		serviceFactory,
 		term,
 		featureManager,
-		generators
+		generators,
 	}
 
 	await commandsAutoloader({
 		constructorOptions: commandOptions,
-		after: async command => {
+		after: async (command) => {
 			program && command.attachCommands(program)
-		}
+		},
 	})
 
 	// Alphabetical sort of help output
@@ -168,7 +171,7 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 		case AuthedAs.Skill:
 			creds = loggedInSkill && {
 				id: loggedInSkill.id,
-				apiKey: loggedInSkill.apiKey
+				apiKey: loggedInSkill.apiKey,
 			}
 			break
 	}
@@ -176,7 +179,7 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 	// Mercury connection options
 	const connectOptions: IMercuryConnectOptions = {
 		spruceApiUrl: remoteUrl,
-		credentials: creds
+		credentials: creds,
 	}
 
 	await mercury.connect(connectOptions)
@@ -190,13 +193,13 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 
 		createSchema: async (options): Promise<GenerationResults> => {
 			const isInstalled = await featureManager.isInstalled({
-				features: [FeatureCode.Skill]
+				features: [FeatureCode.Skill],
 			})
 
 			if (!isInstalled) {
 				throw new SpruceError({
 					// @ts-ignore
-					code: 'SKILL_NOT_INSTALLED'
+					code: 'SKILL_NOT_INSTALLED',
 				})
 			}
 
@@ -210,33 +213,33 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 
 			const syncResults = await cli.syncSchemas({
 				lookupDir: destinationDir,
-				...rest
+				...rest,
 			})
 
 			return [...results, ...syncResults]
 		},
 
-		syncSchemas: async options => {
+		syncSchemas: async (options) => {
 			const isInstalled = await featureManager.isInstalled({
-				features: [FeatureCode.Skill, FeatureCode.Schema]
+				features: [FeatureCode.Skill, FeatureCode.Schema],
 			})
 
 			if (!isInstalled) {
 				throw new SpruceError({
 					// @ts-ignore
-					code: 'SKILL_NOT_INSTALLED'
+					code: 'SKILL_NOT_INSTALLED',
 				})
 			}
 
 			const {
 				lookupDir,
 				addonLookupDir,
-				destinationDir = diskUtil.resolveHashSprucePath(cwd, 'schemas')
+				destinationDir = diskUtil.resolveHashSprucePath(cwd, 'schemas'),
 			} = options ?? {}
 
 			const {
 				schemas: { items: schemaTemplateItems },
-				fields: { items: fieldTemplateItems }
+				fields: { items: fieldTemplateItems },
 			} = await stores.schema.fetchAllTemplateItems(lookupDir, addonLookupDir)
 
 			await generators.schema.generateFieldTypes(
@@ -248,7 +251,7 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 				diskUtil.resolvePath(cwd, destinationDir),
 				{
 					fieldTemplateItems,
-					schemaTemplateItems
+					schemaTemplateItems,
 				}
 			)
 
@@ -261,7 +264,7 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 				{
 					fieldTemplateItems,
 					schemaTemplateItems,
-					valueTypes
+					valueTypes,
 				}
 			)
 
@@ -270,7 +273,7 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 
 		checkHealth: async (): Promise<IHealthCheckResults> => {
 			const isInstalled = await featureManager.isInstalled({
-				features: [FeatureCode.Skill]
+				features: [FeatureCode.Skill],
 			})
 
 			if (!isInstalled) {
@@ -280,10 +283,10 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 						errors: [
 							new SpruceError({
 								// @ts-ignore
-								code: 'SKILL_NOT_INSTALLED'
-							})
-						]
-					}
+								code: 'SKILL_NOT_INSTALLED',
+							}),
+						],
+					},
 				}
 			}
 
@@ -297,17 +300,17 @@ export async function boot(options?: { cwd?: string; program?: Command }) {
 				const error = new SpruceError({
 					// @ts-ignore
 					code: 'BOOT_ERROR',
-					originalError
+					originalError,
 				})
 
 				return {
 					skill: {
 						status: 'failed',
-						errors: [error]
-					}
+						errors: [error],
+					},
 				}
 			}
-		}
+		},
 	}
 
 	return cli

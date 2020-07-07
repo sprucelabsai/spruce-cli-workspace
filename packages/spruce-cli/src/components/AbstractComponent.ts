@@ -13,7 +13,7 @@ export default abstract class AbstractComponent {
 	): FormComponent<T> {
 		const formBuilder = new FormComponent({
 			term: this.term,
-			...options
+			...options,
 		})
 		return formBuilder
 	}

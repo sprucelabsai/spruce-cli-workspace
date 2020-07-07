@@ -51,7 +51,7 @@ export default abstract class AbstractLocalStore<
 
 		return {
 			directory: configDirectory,
-			file: filePath
+			file: filePath,
 		}
 	}
 

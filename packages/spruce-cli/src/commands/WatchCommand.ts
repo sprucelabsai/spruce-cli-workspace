@@ -15,7 +15,7 @@ enum WatchAction {
 	Delete = 'd',
 	Edit = 'e',
 	List = 'l',
-	Quit = 'q'
+	Quit = 'q',
 }
 
 /** Debounce keypresses triggering add/change/remove events */
@@ -45,7 +45,7 @@ export default class WatchCommand extends AbstractCommand {
 		this.loadWatchers()
 
 		this.watcher = chokidar.watch('**/*', {
-			ignoreInitial: true
+			ignoreInitial: true,
 		})
 
 		this.watcher.on('change', _.debounce(this.handleFileChange, DEBOUNCE_MS))
@@ -75,8 +75,8 @@ export default class WatchCommand extends AbstractCommand {
 				'  a - create a new watcher',
 				'  d - delete a watcher',
 				'  e - edit a watcher',
-				'  q - quit'
-			]
+				'  q - quit',
+			],
 		})
 
 		if (lines) {
@@ -96,7 +96,7 @@ export default class WatchCommand extends AbstractCommand {
 		log.trace(`${path} changed`)
 		let commandsToExecute: string[] = []
 		// Check if the path matches any of the glob patterns
-		Object.keys(this.watchers).forEach(pattern => {
+		Object.keys(this.watchers).forEach((pattern) => {
 			const isMatch = minimatch(path, pattern)
 
 			if (isMatch) {
@@ -115,12 +115,12 @@ export default class WatchCommand extends AbstractCommand {
 				`Executing ${commandsToExecute.length} watcher commands`
 			)
 			const commandService = this.CommandService()
-			const promises = commandsToExecute.map(c => commandService.execute(c))
+			const promises = commandsToExecute.map((c) => commandService.execute(c))
 			const results = await Promise.allSettled(promises)
 			await this.term.stopLoading()
 			const lines: string[] = []
 			const lineEffects: ITerminalEffect[] = []
-			results.forEach(result => {
+			results.forEach((result) => {
 				if (result.status === 'fulfilled') {
 					lines.push(result.value.stdout)
 				} else if (result.status === 'rejected') {
@@ -151,7 +151,7 @@ export default class WatchCommand extends AbstractCommand {
 			pattern = await this.term.prompt({
 				type: FieldType.Text,
 				label: 'What is the globby pattern to watch?',
-				defaultValue: ''
+				defaultValue: '',
 			})
 
 			if (pattern && pattern.length > 0) {
@@ -163,7 +163,7 @@ export default class WatchCommand extends AbstractCommand {
 			commandStr = await this.term.prompt({
 				type: FieldType.Text,
 				label: 'And what command should we run?',
-				defaultValue: ''
+				defaultValue: '',
 			})
 			if (commandStr && commandStr.length > 0) {
 				isCmdValid = true
@@ -225,14 +225,14 @@ export default class WatchCommand extends AbstractCommand {
 	private listWatchers = () => {
 		const lines: string[] = []
 
-		Object.keys(this.watchers).forEach(pattern => {
+		Object.keys(this.watchers).forEach((pattern) => {
 			const watcher = this.watchers[pattern]
 			const commands = watcher.commands
 			lines.push(
 				`Pattern: ${pattern} (${watcher.isEnabled ? 'ENABLED' : 'DISABLED'})`
 			)
 			lines.push(`Commands:`)
-			commands.forEach(command => {
+			commands.forEach((command) => {
 				lines.push(`  ${command}`)
 			})
 			lines.push('\n')
@@ -240,19 +240,19 @@ export default class WatchCommand extends AbstractCommand {
 
 		this.term.section({
 			headline: 'Current watchers',
-			lines
+			lines,
 		})
 	}
 	private handleEditWatchers = async () => {
 		const defaultValue: string[] = []
-		const choices = Object.keys(this.watchers).map(pattern => {
+		const choices = Object.keys(this.watchers).map((pattern) => {
 			const watcher = this.watchers[pattern]
 			if (watcher.isEnabled) {
 				defaultValue.push(pattern)
 			}
 			return {
 				label: `${pattern} (${watcher.commands.length})`,
-				value: pattern
+				value: pattern,
 			}
 		})
 
@@ -263,19 +263,19 @@ export default class WatchCommand extends AbstractCommand {
 			isArray: true,
 			defaultValue,
 			options: {
-				choices
-			}
+				choices,
+			},
 		})
 
 		const watchersToUpdate: {
 			globbyPattern: string
 			isEnabled: boolean
-		}[] = Object.keys(this.watchers).map(pattern => {
+		}[] = Object.keys(this.watchers).map((pattern) => {
 			const isEnabled = _.includes(result, pattern)
 
 			return {
 				globbyPattern: pattern,
-				isEnabled
+				isEnabled,
 			}
 		})
 
@@ -285,20 +285,20 @@ export default class WatchCommand extends AbstractCommand {
 		this.listWatchers()
 	}
 	private handleDeleteWatcher = async () => {
-		const choices = Object.keys(this.watchers).map(pattern => {
+		const choices = Object.keys(this.watchers).map((pattern) => {
 			const watcher = this.watchers[pattern]
 			return {
 				label: `${pattern} (${watcher.commands.length})`,
 				value: pattern,
-				checked: watcher.isEnabled
+				checked: watcher.isEnabled,
 			}
 		})
 		const result = await this.term.prompt({
 			type: FieldType.Select,
 			label: 'Select the watcher to delete',
 			options: {
-				choices
-			}
+				choices,
+			},
 		})
 
 		if (result) {

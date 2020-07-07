@@ -47,7 +47,7 @@ export default class OnboardingStore extends AbstractLocalStore<
 		const saved = this.readValues()
 		this.schema.setValues({
 			isEnabled: saved.isEnabled ?? false,
-			runCount: saved.runCount ?? 0
+			runCount: saved.runCount ?? 0,
 		})
 		return this
 	}

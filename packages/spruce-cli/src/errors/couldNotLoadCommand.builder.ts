@@ -10,7 +10,7 @@ export default buildErrorDefinition({
 			type: FieldType.Text,
 			label: 'Command file path',
 			isRequired: true,
-			hint: 'Path to the file defining the Command class'
-		}
-	}
+			hint: 'Path to the file defining the Command class',
+		},
+	},
 })

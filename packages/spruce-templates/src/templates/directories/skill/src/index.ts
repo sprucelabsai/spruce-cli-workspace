@@ -3,8 +3,8 @@ import pathUtil from 'path'
 
 const health: Record<string, any> = {
 	skill: {
-		status: 'passed'
-	}
+		status: 'passed',
+	},
 }
 
 const schemaPath = pathUtil.join(
@@ -17,7 +17,7 @@ const isSchemaInstalled = fs.existsSync(schemaPath)
 
 if (isSchemaInstalled) {
 	health.schema = {
-		status: 'passed'
+		status: 'passed',
 	}
 }
 

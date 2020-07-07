@@ -7,6 +7,6 @@ export default buildSchemaDefinition({
 	description: 'A stripped down user for the cli',
 	fields: {
 		id: userDefinition.fields.id,
-		casualName: userDefinition.fields.casualName
-	}
+		casualName: userDefinition.fields.casualName,
+	},
 })

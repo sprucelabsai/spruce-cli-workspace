@@ -1,6 +1,6 @@
 import {
 	IDefinitionBuilderTemplateItem,
-	IErrorTemplateItem
+	IErrorTemplateItem,
 } from '@sprucelabs/spruce-templates'
 import log from '../singletons/log'
 import diskUtil from '../utilities/disk.utility'
@@ -29,7 +29,7 @@ export default class ErrorGenerator extends AbstractGenerator {
 		} else {
 			const errorBlock = this.templates.error({
 				errors,
-				renderClassDefinition: false
+				renderClassDefinition: false,
 			})
 
 			// Try and drop in the block right before "default:"
@@ -90,7 +90,7 @@ export default class ErrorGenerator extends AbstractGenerator {
 		errorTemplateItems: IErrorTemplateItem[]
 	): Promise<GenerationResults> {
 		const contents = this.templates.errorOptionsTypes({
-			options: errorTemplateItems
+			options: errorTemplateItems,
 		})
 
 		return this.writeFileIfChangedMixinResults(

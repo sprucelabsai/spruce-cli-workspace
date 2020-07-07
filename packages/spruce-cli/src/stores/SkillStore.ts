@@ -33,7 +33,7 @@ export default class SkillStore extends AbstractLocalStore<
 			SpruceEvents.Core.GetDeveloperSkills.IResponseBody
 		>({ eventName: SpruceEvents.Core.GetDeveloperSkills.name })
 
-		const skills = result.responses[0].payload.skills.map(values => {
+		const skills = result.responses[0].payload.skills.map((values) => {
 			const instance = SkillStore.getSkill(values)
 			instance.validate()
 			return instance.getValues()
@@ -51,7 +51,7 @@ export default class SkillStore extends AbstractLocalStore<
 
 		this.writeValues({
 			loggedInSkill: instance.getValues(),
-			authType: AuthedAs.Skill
+			authType: AuthedAs.Skill,
 		})
 	}
 
@@ -84,7 +84,7 @@ export default class SkillStore extends AbstractLocalStore<
 			id: env.ID,
 			name: env.NAME,
 			slug: env.SLUG,
-			apiKey: env.API_KEY
+			apiKey: env.API_KEY,
 		})
 		try {
 			instance.validate()

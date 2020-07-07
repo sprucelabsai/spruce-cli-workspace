@@ -28,7 +28,7 @@ const tsConfigUtil = {
 
 	isPathAliasSet(dir: string, path: string) {
 		return !!this.readConfig(dir).compilerOptions?.paths?.[path]
-	}
+	},
 }
 
 export default tsConfigUtil

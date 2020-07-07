@@ -8,7 +8,7 @@ export default buildSchemaDefinition({
 	fields: {
 		phone: {
 			type: FieldType.Phone,
-			isRequired: true
-		}
-	}
+			isRequired: true,
+		},
+	},
 })

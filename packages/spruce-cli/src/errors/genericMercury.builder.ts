@@ -9,7 +9,7 @@ const genericMercuryDefinition = buildErrorDefinition({
 	fields: {
 		eventName: {
 			type: FieldType.Text,
-			label: 'Event name'
+			label: 'Event name',
 		},
 		payloadArgs: {
 			type: FieldType.Schema,
@@ -23,17 +23,17 @@ const genericMercuryDefinition = buildErrorDefinition({
 					fields: {
 						name: {
 							type: FieldType.Text,
-							label: 'name'
+							label: 'name',
 						},
 						value: {
 							type: FieldType.Text,
-							label: 'value'
-						}
-					}
-				}
-			}
-		}
-	}
+							label: 'value',
+						},
+					},
+				},
+			},
+		},
+	},
 })
 
 export default genericMercuryDefinition

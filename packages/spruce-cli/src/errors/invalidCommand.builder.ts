@@ -10,9 +10,9 @@ const invalidParamsDefinition = buildErrorDefinition({
 			type: FieldType.Text,
 			label: 'args',
 			isArray: true,
-			isRequired: true
-		}
-	}
+			isRequired: true,
+		},
+	},
 })
 
 export default invalidParamsDefinition

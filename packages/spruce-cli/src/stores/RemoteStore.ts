@@ -8,15 +8,15 @@ export enum RemoteStoreRemoteType {
 	Alpha = 'alpha',
 	Stage = 'stage',
 	Dev = 'dev',
-	Local = 'local'
+	Local = 'local',
 }
 
 export const RemoteStoreChoices = Object.keys(RemoteStoreRemoteType).map(
-	remote => ({
+	(remote) => ({
 		// @ts-ignore https://github.com/microsoft/TypeScript/issues/33123
 		value: RemoteStoreRemoteType[remote],
 		// @ts-ignore https://github.com/microsoft/TypeScript/issues/33123
-		label: RemoteStoreRemoteType[remote]
+		label: RemoteStoreRemoteType[remote],
 	})
 ) as ISelectFieldDefinitionChoice[]
 
@@ -32,24 +32,24 @@ export default class RemoteStore extends AbstractLocalStore<
 	public static remotes = {
 		[RemoteStoreRemoteType.Production]: {
 			url: 'https://api.spruce.ai',
-			graphqlSubscriptionsUrl: 'wss://api.spruce.ai/graphql'
+			graphqlSubscriptionsUrl: 'wss://api.spruce.ai/graphql',
 		},
 		[RemoteStoreRemoteType.Alpha]: {
 			url: 'https://alpha-api.spruce.ai',
-			graphqlSubscriptionsUrl: 'wss://alpha-api.spruce.ai/graphql'
+			graphqlSubscriptionsUrl: 'wss://alpha-api.spruce.ai/graphql',
 		},
 		[RemoteStoreRemoteType.Stage]: {
 			url: 'https://stage-api.spruce.ai',
-			graphqlSubscriptionsUrl: 'wss://stage-api.spruce.ai/graphql'
+			graphqlSubscriptionsUrl: 'wss://stage-api.spruce.ai/graphql',
 		},
 		[RemoteStoreRemoteType.Dev]: {
 			url: 'https://dev-api.spruce.ai',
-			graphqlSubscriptionsUrl: 'wss://dev-api.spruce.ai/graphql'
+			graphqlSubscriptionsUrl: 'wss://dev-api.spruce.ai/graphql',
 		},
 		[RemoteStoreRemoteType.Local]: {
 			url: 'https://local-api.sprucebot.com',
-			graphqlSubscriptionsUrl: 'wss://local-api.sprucebot.com/graphql'
-		}
+			graphqlSubscriptionsUrl: 'wss://local-api.sprucebot.com/graphql',
+		},
 	}
 
 	/** Store name */
@@ -64,10 +64,10 @@ export default class RemoteStore extends AbstractLocalStore<
 				type: FieldType.Select,
 				label: 'Remote',
 				options: {
-					choices: RemoteStoreChoices
-				}
-			}
-		}
+					choices: RemoteStoreChoices,
+				},
+			},
+		},
 	})
 
 	/** Set your remote (defaults to prod) */

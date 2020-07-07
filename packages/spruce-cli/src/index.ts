@@ -9,7 +9,7 @@ run(
 	.then(() => {
 		process.exit(0)
 	})
-	.catch(e => {
+	.catch((e) => {
 		const term = new TerminalInterface(process.cwd())
 		term.handleError(e)
 		process.exit(1)

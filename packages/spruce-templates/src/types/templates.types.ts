@@ -39,7 +39,7 @@ export enum DirectoryTemplateKind {
 	Skill = 'skill',
 	VsCode = 'vscode',
 	CircleCi = 'circleci',
-	Autoloadable = 'autoloadable'
+	Autoloadable = 'autoloadable',
 }
 
 export interface IDirectoryTemplateContextSkill {

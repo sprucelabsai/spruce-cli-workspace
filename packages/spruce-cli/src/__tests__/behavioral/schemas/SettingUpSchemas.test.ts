@@ -14,9 +14,9 @@ export default class SettingUpSchemasTests extends AbstractSchemaTest {
 				cli.installFeatures({
 					features: [
 						{
-							code: FeatureCode.Schema
-						}
-					]
+							code: FeatureCode.Schema,
+						},
+					],
 				}),
 			'INVALID_FIELD'
 		)
@@ -35,7 +35,7 @@ export default class SettingUpSchemasTests extends AbstractSchemaTest {
 		const tsConfig = tsConfigUtil.readConfig(this.cwd)
 
 		assert.isEqualDeep(tsConfig['compilerOptions']['paths'], {
-			'#spruce/*': ['.spruce/*']
+			'#spruce/*': ['.spruce/*'],
 		})
 	}
 

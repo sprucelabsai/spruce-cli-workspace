@@ -10,9 +10,9 @@ const keyExistsDefinition = buildErrorDefinition({
 			type: FieldType.Text,
 			label: 'Key',
 			isRequired: true,
-			hint: 'The key that already exists'
-		}
-	}
+			hint: 'The key that already exists',
+		},
+	},
 })
 
 export default keyExistsDefinition

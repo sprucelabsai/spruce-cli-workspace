@@ -3,7 +3,7 @@ import AbstractSpruceTest, { test, assert } from '@sprucelabs/test'
 import { TEST_JEST_PASSED, TEST_JEST_FAILED } from '../../constants'
 import SheetsReporter, {
 	SheetsReporterUtil,
-	ITestMap
+	ITestMap,
 } from '../../jest/SheetsReporter'
 import { IJestTestResult } from '../../types/jest.types'
 import sheetUtil from './sheet.utilities'
@@ -16,25 +16,25 @@ export default class SheetsReporterTest extends AbstractSpruceTest {
 	private static readonly testResults: IJestTestResult[] = [
 		{
 			title: 'willPass',
-			status: TEST_JEST_PASSED
+			status: TEST_JEST_PASSED,
 		},
 		{
 			title: 'canBootCli',
-			status: TEST_JEST_PASSED
+			status: TEST_JEST_PASSED,
 		},
 		{
 			title: 'canSetupSchemas',
-			status: TEST_JEST_FAILED
+			status: TEST_JEST_FAILED,
 		},
 		{
 			title: 'canSyncSchemas',
-			status: TEST_JEST_FAILED
-		}
+			status: TEST_JEST_FAILED,
+		},
 	]
 
 	private static readonly testMap = {
 		canBootCli: 'B1',
-		canSyncSchemas: 'B2'
+		canSyncSchemas: 'B2',
 	}
 
 	protected static async beforeAll() {
@@ -59,7 +59,7 @@ export default class SheetsReporterTest extends AbstractSpruceTest {
 				),
 				sheetId: this.sheetId,
 				worksheetId: this.worksheetId,
-				testMap: this.testMap
+				testMap: this.testMap,
 			}
 		)
 	}
@@ -77,8 +77,8 @@ export default class SheetsReporterTest extends AbstractSpruceTest {
 
 		const results = SheetsReporterUtil.getMappedTests(testMap, testResults)
 
-		const cliTest = results.map(r => r.title === 'canBootCli')
-		const canSyncTest = results.map(r => r.title === 'canSyncSchemas')
+		const cliTest = results.map((r) => r.title === 'canBootCli')
+		const canSyncTest = results.map((r) => r.title === 'canSyncSchemas')
 
 		assert.isOk(cliTest)
 		assert.isOk(canSyncTest)

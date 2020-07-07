@@ -78,7 +78,7 @@ const namesUtil = {
 				break
 		}
 		return fieldDefinition
-	}
+	},
 }
 
 export default namesUtil

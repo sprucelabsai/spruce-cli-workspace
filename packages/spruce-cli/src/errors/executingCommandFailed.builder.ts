@@ -9,16 +9,16 @@ export default buildSchemaDefinition({
 		cmd: {
 			type: FieldType.Text,
 			label: 'The command being run',
-			isRequired: true
+			isRequired: true,
 		},
 		args: {
 			type: FieldType.Text,
 			label: 'Args',
-			isArray: true
+			isArray: true,
 		},
 		cwd: {
 			type: FieldType.Text,
-			label: 'Cwd'
-		}
-	}
+			label: 'Cwd',
+		},
+	},
 })

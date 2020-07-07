@@ -1,18 +1,18 @@
 export enum WriteMode {
 	Throw = 'throw',
 	Overwrite = 'overwrite',
-	Skip = 'skip'
+	Skip = 'skip',
 }
 
 export enum AuthedAs {
 	User = 'user',
-	Skill = 'skill'
+	Skill = 'skill',
 }
 
 export enum GeneratedFileAction {
 	Skipped = 'skipped',
 	Generated = 'generated',
-	Updated = 'updated'
+	Updated = 'updated',
 }
 
 export interface IGeneratedFile {

@@ -22,12 +22,12 @@ export function generateTestMock() {
 				moduleNameMapper: [
 					[
 						'^#spruce/(.*)$',
-						'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli/.spruce/$1'
+						'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli/.spruce/$1',
 					],
 					[
 						'^#spruce:schema/(.*)',
-						'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/node_modules/@sprucelabs/schema/build/$1'
-					]
+						'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/node_modules/@sprucelabs/schema/build/$1',
+					],
 				],
 				modulePathIgnorePatterns: [],
 				name: '44406c6bd09f4805a9dd2ad1a17b150c',
@@ -38,7 +38,7 @@ export function generateTestMock() {
 				rootDir:
 					'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli',
 				roots: [
-					'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli'
+					'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli',
 				],
 				runner: 'jest-runner',
 				setupFiles: [],
@@ -51,13 +51,13 @@ export function generateTestMock() {
 				testLocationInResults: false,
 				testMatch: [
 					'**/__tests__/**/*.[jt]s?(x)',
-					'**/?(*.)+(spec|test).[tj]s?(x)'
+					'**/?(*.)+(spec|test).[tj]s?(x)',
 				],
 				testPathIgnorePatterns: [
 					'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli/tmp/',
 					'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli/build/',
 					'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli/node_modules/',
-					'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli/__tests__/testDirsAndFiles'
+					'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli/__tests__/testDirsAndFiles',
 				],
 				testRegex: [],
 				testRunner:
@@ -68,23 +68,23 @@ export function generateTestMock() {
 					[
 						'^.+\\.tsx?$',
 						'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli/node_modules/ts-jest/dist/index.js',
-						{}
-					]
+						{},
+					],
 				],
 				transformIgnorePatterns: ['/node_modules/'],
-				watchPathIgnorePatterns: []
+				watchPathIgnorePatterns: [],
 			},
 			hasteFS: {
 				_rootDir:
 					'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli',
-				_files: {}
+				_files: {},
 			},
 			moduleMap: {
 				duplicates: [],
 				map: [['@sprucelabs/spruce-cli', { g: ['package.json', 1] }]],
 				mocks: [],
 				rootDir:
-					'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli'
+					'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli',
 			},
 			resolver: {
 				_options: {
@@ -95,32 +95,32 @@ export function generateTestMock() {
 						{
 							moduleName:
 								'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli/.spruce/$1',
-							regex: {}
+							regex: {},
 						},
 						{
 							moduleName:
 								'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/node_modules/@sprucelabs/schema/build/$1',
-							regex: {}
-						}
+							regex: {},
+						},
 					],
 					rootDir:
-						'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli'
+						'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli',
 				},
 				_moduleMap: {
 					duplicates: [],
 					map: [['@sprucelabs/spruce-cli', { g: ['package.json', 1] }]],
 					mocks: [],
 					rootDir:
-						'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli'
+						'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli',
 				},
 				_moduleIDCache: {},
 				_moduleNameCache: {},
 				_modulePathCache: {},
-				_supportsNativePlatform: false
-			}
+				_supportsNativePlatform: false,
+			},
 		},
 		path:
-			'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli/src/__tests__/behavioral/HandlesVersioning.test.ts'
+			'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli/src/__tests__/behavioral/HandlesVersioning.test.ts',
 	}
 }
 
@@ -141,7 +141,7 @@ export function generateTestResultsMock() {
 			unchecked: 0,
 			unmatched: 0,
 			updated: 0,
-			uncheckedKeys: []
+			uncheckedKeys: [],
 		},
 		testFilePath:
 			'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli/src/__tests__/behavioral/HandlesVersioning.test.ts',
@@ -154,7 +154,7 @@ export function generateTestResultsMock() {
 				location: null,
 				numPassingAsserts: 0,
 				status: 'passed',
-				title: 'hasResolvePathFunction'
+				title: 'hasResolvePathFunction',
 			},
 			{
 				ancestorTitles: [],
@@ -164,7 +164,7 @@ export function generateTestResultsMock() {
 				location: null,
 				numPassingAsserts: 0,
 				status: 'passed',
-				title: 'canResolveLatest'
+				title: 'canResolveLatest',
 			},
 			{
 				ancestorTitles: [],
@@ -174,7 +174,7 @@ export function generateTestResultsMock() {
 				location: null,
 				numPassingAsserts: 0,
 				status: 'passed',
-				title: 'canResolveLatestOnDifferentDirectory'
+				title: 'canResolveLatestOnDifferentDirectory',
 			},
 			{
 				ancestorTitles: [],
@@ -184,7 +184,7 @@ export function generateTestResultsMock() {
 				location: null,
 				numPassingAsserts: 0,
 				status: 'passed',
-				title: 'canGenerateLatestPath'
+				title: 'canGenerateLatestPath',
 			},
 			{
 				ancestorTitles: [],
@@ -194,9 +194,9 @@ export function generateTestResultsMock() {
 				location: null,
 				numPassingAsserts: 0,
 				status: 'passed',
-				title: 'canGetLatestVersionBasedOnDir'
-			}
+				title: 'canGetLatestVersionBasedOnDir',
+			},
 		],
-		failureMessage: null
+		failureMessage: null,
 	}
 }

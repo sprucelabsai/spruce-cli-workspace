@@ -54,7 +54,7 @@ export default class HandlesVersioningTest extends AbstractCliTest {
 		assert.isEqualDeep(resolved, {
 			intValue: 20200215,
 			stringValue: '2020-02-15',
-			constValue: 'v2020_02_15'
+			constValue: 'v2020_02_15',
 		})
 	}
 }
