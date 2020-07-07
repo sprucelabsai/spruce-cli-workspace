@@ -8,6 +8,10 @@ jobs:
           fingerprints:
             - "ec:9f:2e:aa:1f:c9:ab:49:57:8f:c0:cd:2e:5b:f3:b0"
       - checkout
+      - run:
+          name: "ENV file creation"
+          command: |
+            echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
       - run: node -v && npm -v && yarn -v
       - restore_cache:
           keys:
@@ -16,10 +20,6 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn build
       - run: yarn lint
-      - run:
-          name: "Testing env file creation"
-          command: |
-            echo $GOOGLE_SERVICE_PRIVATE_KEY > packages/spruce-cli/.env
       - run: yarn test
       - save_cache:
           key: yarn-packages-{{ checksum "yarn.lock" }}
