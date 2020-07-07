@@ -3,7 +3,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"version": "10.6.2",
+	"version": "10.6.3",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
 	"files": [
@@ -56,5 +56,5 @@
 		"prettier": "^2.0.5",
 		"typescript": "^3.9.6"
 	},
-	"gitHead": "8359956d671f8c402aff47b1c63b0bbcc8e6f34c"
+	"gitHead": "94ce410c05180cdfa9b6ca4b9e47061d52ac4e71"
 }

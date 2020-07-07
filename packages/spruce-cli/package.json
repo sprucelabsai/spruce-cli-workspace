@@ -3,7 +3,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"version": "10.6.2",
+	"version": "10.6.3",
 	"bin": {
 		"spruce": "./index.js"
 	},
@@ -45,7 +45,7 @@
 		"@sprucelabs/log": "^10.2.8",
 		"@sprucelabs/mercury": "10.3.0-prerelease-mock.2",
 		"@sprucelabs/schema": "^4.0.6",
-		"@sprucelabs/spruce-templates": "^10.6.2",
+		"@sprucelabs/spruce-templates": "^10.6.3",
 		"@types/promise.allsettled": "^1.0.3",
 		"@types/uuid": "^8.0.0",
 		"cfonts": "^2.8.1",
@@ -154,5 +154,5 @@
 			]
 		]
 	},
-	"gitHead": "8359956d671f8c402aff47b1c63b0bbcc8e6f34c"
+	"gitHead": "94ce410c05180cdfa9b6ca4b9e47061d52ac4e71"
 }
