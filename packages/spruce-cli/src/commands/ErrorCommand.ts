@@ -109,7 +109,7 @@ export default class ErrorCommand extends AbstractCommand {
 
 		const nameReadable = name
 		const initialValues: Partial<SpruceSchemas.Local.INamedTemplateItem> = {
-			nameReadable: name
+			nameReadable: name,
 		}
 		let showOverview = false
 
@@ -123,7 +123,7 @@ export default class ErrorCommand extends AbstractCommand {
 		const form = this.getFormComponent({
 			definition: namedTemplateItemDefinition,
 			initialValues,
-			onWillAskQuestion: namesUtil.onWillAskQuestionHandler.bind(namesUtil)
+			onWillAskQuestion: namesUtil.onWillAskQuestionHandler.bind(namesUtil),
 		})
 
 		const names = await form.present({
@@ -133,8 +133,8 @@ export default class ErrorCommand extends AbstractCommand {
 				'namePascal',
 				'nameCamel',
 				'nameConst',
-				'description'
-			]
+				'description',
+			],
 		})
 
 		const resolvedErrorFileDestination = diskUtil.resolvePath(
@@ -152,16 +152,16 @@ export default class ErrorCommand extends AbstractCommand {
 		if (diskUtil.doesFileExist(resolvedErrorBuilderDestination)) {
 			throw new SpruceError({
 				code: ErrorCode.Generic,
-				friendlyMessage: 'This error already exists!'
+				friendlyMessage: 'This error already exists!',
 			})
 		}
 
 		await this.featureManager.install({
 			features: [
 				{
-					code: FeatureCode.Error
-				}
-			]
+					code: FeatureCode.Error,
+				},
+			],
 		})
 
 		const createdFiles: IGeneratedFile[] = []

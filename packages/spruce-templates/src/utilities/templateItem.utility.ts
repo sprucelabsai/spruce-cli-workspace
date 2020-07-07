@@ -10,7 +10,7 @@ const templateItemUtil = {
 			}
 		} = {}
 
-		schemaTemplateItems.forEach(item => {
+		schemaTemplateItems.forEach((item) => {
 			if (!hash[item.namespace]) {
 				hash[item.namespace] = {}
 			}
@@ -30,13 +30,13 @@ const templateItemUtil = {
 			[namespace: string]: IFieldTemplateItem[]
 		} = {}
 
-		fieldTemplateItems.forEach(item => {
+		fieldTemplateItems.forEach((item) => {
 			if (!fieldTemplatesByType[item.camelType]) {
 				fieldTemplatesByType[item.camelType] = []
 			}
 			fieldTemplatesByType[item.camelType].push(item)
 		})
-	}
+	},
 } as const
 
 export default templateItemUtil

@@ -10,9 +10,9 @@ const directoryEmptyDefinition = buildErrorDefinition({
 			type: FieldType.Text,
 			label: 'Directory',
 			isRequired: true,
-			hint: 'The directory'
-		}
-	}
+			hint: 'The directory',
+		},
+	},
 })
 
 export default directoryEmptyDefinition

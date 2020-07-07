@@ -10,16 +10,16 @@ export default class VsCodeFeature extends AbstractFeature {
 	private recommendedExtensions: IExtension[] = [
 		{
 			id: 'dbaeumer.vscode-eslint',
-			label: 'ESLint syntax validation and fixing'
+			label: 'ESLint syntax validation and fixing',
 		},
 		{
 			id: 'eg2.vscode-npm-script',
-			label: 'NPM package.json validation and warnings'
+			label: 'NPM package.json validation and warnings',
 		},
 		{
 			id: 'christian-kohler.npm-intellisense',
-			label: 'Intellisense autocompletion of installed npm modules'
-		}
+			label: 'Intellisense autocompletion of installed npm modules',
+		},
 	]
 
 	// public async beforePackageInstall() {
@@ -33,9 +33,9 @@ export default class VsCodeFeature extends AbstractFeature {
 	private async getMissingExtensions() {
 		const currentExtensions = await this.VsCodeService().getVSCodeExtensions()
 		const missingExtensions = this.recommendedExtensions.filter(
-			recommendedExtension => {
+			(recommendedExtension) => {
 				const currentExtension = currentExtensions.find(
-					e => e === recommendedExtension.id
+					(e) => e === recommendedExtension.id
 				)
 				if (currentExtension) {
 					return false

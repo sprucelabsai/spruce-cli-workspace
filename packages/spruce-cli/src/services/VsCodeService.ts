@@ -17,7 +17,7 @@ export default class VsCodeService extends CommandService {
 		const isInstalled = false
 		try {
 			const { stdout } = await this.execute('code', {
-				args: ['--version']
+				args: ['--version'],
 			})
 
 			const lines = stdout.split('\n')
@@ -40,7 +40,7 @@ export default class VsCodeService extends CommandService {
 
 		try {
 			const { stdout } = await this.execute('code', {
-				args: ['--list-extensions']
+				args: ['--list-extensions'],
 			})
 
 			extensions = stdout.split('\n')
@@ -54,14 +54,14 @@ export default class VsCodeService extends CommandService {
 	}
 
 	public async installExtensions(extensions: IExtension[]) {
-		const extensionIds = extensions.map(e => e.id)
+		const extensionIds = extensions.map((e) => e.id)
 		let args: string[] = []
-		extensionIds.forEach(eId => {
+		extensionIds.forEach((eId) => {
 			args = args.concat('--install-extension', eId)
 		})
 		try {
 			const { stdout } = await this.execute('code', {
-				args
+				args,
 			})
 
 			log.debug('VSCode installed extensions', stdout)

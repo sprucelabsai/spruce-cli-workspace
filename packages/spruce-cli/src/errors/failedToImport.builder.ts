@@ -10,9 +10,9 @@ const failedToImportDefinition = buildErrorDefinition({
 			type: FieldType.Text,
 			label: 'File',
 			isRequired: true,
-			hint: 'The file I tried to import'
-		}
-	}
+			hint: 'The file I tried to import',
+		},
+	},
 })
 
 export default failedToImportDefinition

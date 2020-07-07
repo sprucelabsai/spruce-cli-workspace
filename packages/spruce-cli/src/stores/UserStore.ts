@@ -38,8 +38,8 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 			eventName: SpruceEvents.Core.Login.name,
 			payload: {
 				phoneNumber: phone,
-				code: pin
-			}
+				code: pin,
+			},
 		})
 
 		const token = loginResult.responses[0]?.payload.jwt
@@ -50,9 +50,9 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 				eventName: SpruceEvents.Core.Login.name,
 				payloadArgs: [
 					{ name: 'phone', value: phone },
-					{ name: 'pin', value: pin }
+					{ name: 'pin', value: pin },
 				],
-				friendlyMessage: "Login event didn't return a jwt?"
+				friendlyMessage: "Login event didn't return a jwt?",
 			})
 		}
 
@@ -61,7 +61,7 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 		if (!user) {
 			throw new SpruceError({
 				code: ErrorCode.UserNotFound,
-				token
+				token,
 			})
 		}
 
@@ -75,7 +75,7 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 		if (!decoded) {
 			throw new SpruceError({
 				code: ErrorCode.Generic,
-				friendlyMessage: 'Invalid token!'
+				friendlyMessage: 'Invalid token!',
 			})
 		}
 
@@ -108,9 +108,9 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 			payload: {
 				query,
 				variables: {
-					userId: id
-				}
-			}
+					userId: id,
+				},
+			},
 		})
 
 		const values = result.responses[0].payload.data.User
@@ -127,7 +127,7 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 		const newAuthedUsers: UserWithToken[] = []
 
 		// Remove this user if already authed
-		authedUsers.forEach(authed => {
+		authedUsers.forEach((authed) => {
 			if (authed.id !== user.id) {
 				newAuthedUsers.push({ ...authed, isLoggedIn: false })
 			}
@@ -139,18 +139,18 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 
 		newAuthedUsers.push({
 			...instance.getValues(),
-			isLoggedIn: true
+			isLoggedIn: true,
 		})
 
 		this.writeValues({
 			authType: AuthedAs.User,
-			authedUsers: newAuthedUsers
+			authedUsers: newAuthedUsers,
 		})
 	}
 
 	public getLoggedInUser(): UserWithToken | undefined {
 		const loggedInUsers = this.readValue('authedUsers') || []
-		const loggedInUser = loggedInUsers.find(auth => auth.isLoggedIn)
+		const loggedInUser = loggedInUsers.find((auth) => auth.isLoggedIn)
 
 		// Validate the saved user
 		if (loggedInUser) {
@@ -172,7 +172,7 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 		const authedUsers = this.readValue('authedUsers') || []
 		const newAuthedUsers: UserWithToken[] = []
 
-		authedUsers.forEach(authed => {
+		authedUsers.forEach((authed) => {
 			newAuthedUsers.push({ ...authed, isLoggedIn: false })
 		})
 

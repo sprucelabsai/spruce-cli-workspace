@@ -12,7 +12,7 @@ export default buildSchemaDefinition({
 		token: { type: FieldType.Text, isRequired: true },
 		isLoggedIn: {
 			type: FieldType.Boolean,
-			label: 'Logged in'
-		}
-	}
+			label: 'Logged in',
+		},
+	},
 })

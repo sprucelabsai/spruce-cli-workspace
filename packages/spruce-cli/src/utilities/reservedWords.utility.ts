@@ -178,7 +178,7 @@ const reservedWordsUtil = {
 		'while',
 		'window',
 		'with',
-		'yield'
+		'yield',
 	],
 
 	isReservedWord(wordToCheck: string) {
@@ -186,7 +186,7 @@ const reservedWordsUtil = {
 			return true
 		}
 		return false
-	}
+	},
 }
 
 export default reservedWordsUtil

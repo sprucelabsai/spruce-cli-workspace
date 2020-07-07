@@ -9,10 +9,10 @@ export interface ISchemaImport {
 const importExtractorUtil = {
 	extract(fields: IFieldTemplateItem[]): ISchemaImport[] {
 		const imports: (ISchemaImport & { namePascal: string })[] = fields.map(
-			item => ({
+			(item) => ({
 				package: item.package,
 				importAs: item.importAs,
-				namePascal: item.namePascal
+				namePascal: item.namePascal,
 			})
 		)
 
@@ -23,7 +23,7 @@ const importExtractorUtil = {
 
 		// Lets do some tests catch some error
 		const schemaName = uniqueImports.find(
-			i => i.importAs.toLowerCase() === 'schema'
+			(i) => i.importAs.toLowerCase() === 'schema'
 		)
 		if (schemaName) {
 			throw new Error(
@@ -33,7 +33,7 @@ const importExtractorUtil = {
 
 		// See if there are any duplicate exportAs
 		const aliases: Record<string, string> = {}
-		uniqueImports.forEach(item => {
+		uniqueImports.forEach((item) => {
 			if (item.importAs in aliases) {
 				throw new Error(
 					`${item.namePascal} has a public importAs="${item.importAs}"`
@@ -42,7 +42,7 @@ const importExtractorUtil = {
 		})
 
 		return uniqueImports
-	}
+	},
 } as const
 
 export default importExtractorUtil

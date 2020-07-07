@@ -10,9 +10,9 @@ const valueTypeServiceStageErrorDefinition = buildErrorDefinition({
 		stage: {
 			type: FieldType.Text,
 			label: 'Stage',
-			isRequired: true
-		}
-	}
+			isRequired: true,
+		},
+	},
 })
 
 export default valueTypeServiceStageErrorDefinition

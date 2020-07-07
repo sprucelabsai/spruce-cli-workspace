@@ -4,7 +4,7 @@ import { SCHEMA_VERSION_FALLBACK } from '../constants'
 import { IValueTypes } from '../types/templates.types'
 
 /* The type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */
-handlebars.registerHelper('valueTypeLiteral', function(
+handlebars.registerHelper('valueTypeLiteral', function (
 	namespace: string,
 	schemaId: string,
 	version: string | undefined,
@@ -35,7 +35,7 @@ handlebars.registerHelper('valueTypeLiteral', function(
 	}
 
 	const {
-		data: { root }
+		data: { root },
 	} = options
 
 	const valueTypes: IValueTypes = root?.valueTypes

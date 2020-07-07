@@ -8,7 +8,7 @@ export default buildSchemaDefinition({
 	fields: {
 		name: {
 			type: FieldType.Text,
-			isRequired: true
-		}
-	}
+			isRequired: true,
+		},
+	},
 })

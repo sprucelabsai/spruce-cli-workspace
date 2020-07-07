@@ -4,7 +4,7 @@ import readline, { Interface } from 'readline'
 import { Mercury } from '@sprucelabs/mercury'
 import AbstractSpruceTest from '@sprucelabs/test'
 import fs from 'fs-extra'
-import uuid from 'uuid'
+import * as uuid from 'uuid'
 import { boot } from './cli'
 import ServiceFactory, { Service, IServices } from './factories/ServiceFactory'
 import TerminalInterface from './interfaces/TerminalInterface'
@@ -32,7 +32,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static async beforeAll() {
 		this.rl = readline.createInterface({
 			input: process.stdin,
-			output: process.stdout
+			output: process.stdout,
 		})
 	}
 
@@ -46,7 +46,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static async Cli() {
 		const cli = await boot({
-			cwd: this.cwd
+			cwd: this.cwd,
 		})
 		return cli
 	}
@@ -70,7 +70,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static async sendInput(input: string) {
 		// because there is a delay between sending output to the terminal and it actually rendering and being ready for input, we delay before sending input
-		await new Promise(resolve => setTimeout(resolve, 50))
+		await new Promise((resolve) => setTimeout(resolve, 50))
 
 		for (let i = 0; i < input.length; i++) {
 			// @ts-ignore
@@ -79,6 +79,6 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		// @ts-ignore
 		this.rl.input.emit('keypress', null, { name: 'enter' })
 
-		await new Promise(resolve => setTimeout(resolve, 50))
+		await new Promise((resolve) => setTimeout(resolve, 50))
 	}
 }

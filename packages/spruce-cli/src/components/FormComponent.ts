@@ -7,7 +7,7 @@ import Schema, {
 	ISelectFieldDefinitionChoice,
 	ErrorCode as SchemaErrorCode,
 	SchemaError,
-	IFieldDefinition
+	IFieldDefinition,
 } from '@sprucelabs/schema'
 import { pick } from 'lodash'
 import ErrorCode from '#spruce/errors/errorCode'
@@ -19,7 +19,7 @@ import ITerminal, { ITerminalEffect } from '../interfaces/TerminalInterface'
 export enum FormBuilderActionType {
 	Done = 'done',
 	Cancel = 'cancel',
-	EditField = 'edit_field'
+	EditField = 'edit_field',
 }
 
 /** In overview mode, this is when the user selects "done" */
@@ -96,7 +96,7 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 		const {
 			headline,
 			showOverview,
-			fields = this.getNamedFields().map(nf => nf.name)
+			fields = this.getNamedFields().map((nf) => nf.name),
 		} = options
 
 		let done = false
@@ -167,7 +167,8 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 
 	/** Ask a question based on a field */
 	public askQuestion<F extends SchemaFieldNames<S>>(fieldName: F) {
-		const field = this.getNamedFields().find(nf => nf.name === fieldName)?.field
+		const field = this.getNamedFields().find((nf) => nf.name === fieldName)
+			?.field
 
 		if (!field) {
 			throw new Error(`No field named ${fieldName} on form ${this.schemaId}`)
@@ -178,7 +179,7 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 		if (definition.isArray) {
 			throw new SpruceError({
 				code: ErrorCode.NotImplemented,
-				friendlyMessage: 'Form builder does not support isArray yet'
+				friendlyMessage: 'Form builder does not support isArray yet',
 			})
 		}
 
@@ -204,7 +205,7 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 		this.term.bar()
 		this.term.headline('Please fix the following...', [
 			ITerminalEffect.Red,
-			ITerminalEffect.Bold
+			ITerminalEffect.Bold,
 		])
 
 		this.term.writeLn('')
@@ -217,7 +218,7 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 				// Invalid fields
 				case SchemaErrorCode.InvalidField:
 					// Output all errors under all fields
-					options.errors.forEach(err => {
+					options.errors.forEach((err) => {
 						const { name, friendlyMessage, error, code } = err
 						this.term.error(
 							friendlyMessage ?? `${name}: ${code} ${error?.message}`
@@ -241,21 +242,21 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 		options: { fields?: F[] } = {}
 	): Promise<IFormAction<S>> {
 		const { term } = this
-		const { fields = this.getNamedFields().map(nf => nf.name) } = options
+		const { fields = this.getNamedFields().map((nf) => nf.name) } = options
 
 		// Track actions while building choices
 		const actionMap: Record<string, IFormAction<S>> = {}
 
 		// Create all choices
 		const choices: ISelectFieldDefinitionChoice[] = this.getNamedFields()
-			.filter(namedField => fields.indexOf(namedField.name) > -1)
-			.map(namedField => {
+			.filter((namedField) => fields.indexOf(namedField.name) > -1)
+			.map((namedField) => {
 				const { field, name } = namedField
 
 				const actionKey = `field:${name}`
 				const action: IFormActionEditField<S> = {
 					type: FormBuilderActionType.EditField,
-					fieldName: name
+					fieldName: name,
 				}
 
 				// Track the action for checking after selection
@@ -266,18 +267,18 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 
 				return {
 					value: actionKey,
-					label: `${field.label}: ${value ? value : '***missing***'}`
+					label: `${field.label}: ${value ? value : '***missing***'}`,
 				}
 			})
 
 		// Done choice
 		actionMap['done'] = {
-			type: FormBuilderActionType.Done
+			type: FormBuilderActionType.Done,
 		}
 
 		choices.push({
 			value: 'done',
-			label: 'Done'
+			label: 'Done',
 		})
 
 		const response = await term.prompt({
@@ -285,8 +286,8 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 			isRequired: true,
 			label: 'Select any field to edit',
 			options: {
-				choices
-			}
+				choices,
+			},
 		})
 
 		const action = actionMap[response]

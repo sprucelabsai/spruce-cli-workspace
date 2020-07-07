@@ -13,8 +13,8 @@ const versionUtil = {
 	getAllVersions(dirToRead: string) {
 		const contents = diskUtil.readDir(dirToRead)
 		const allDateIsh = contents
-			.filter(value => value.search(/\d\d\d\d-\d\d-\d\d/) > -1)
-			.map(dateIsh => this.generateVersion(dateIsh))
+			.filter((value) => value.search(/\d\d\d\d-\d\d-\d\d/) > -1)
+			.map((dateIsh) => this.generateVersion(dateIsh))
 			.sort((a, b) => {
 				return a.intValue > b.intValue ? 1 : -1
 			})
@@ -24,7 +24,7 @@ const versionUtil = {
 		return {
 			intValue: parseInt(date.replace(/\D/g, ''), 10),
 			stringValue: date,
-			constValue: `v${namesUtil.toConst(date)}`
+			constValue: `v${namesUtil.toConst(date)}`,
 		}
 	},
 	latestVersion(path: string) {
@@ -64,7 +64,7 @@ const versionUtil = {
 			'{{@latest}}',
 			new Date().toISOString().split('T')[0]
 		)
-	}
+	},
 }
 
 export default versionUtil

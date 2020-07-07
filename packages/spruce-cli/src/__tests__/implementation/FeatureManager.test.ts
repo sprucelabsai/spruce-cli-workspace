@@ -11,7 +11,7 @@ export default class FeatureManagerTest extends AbstractCliTest {
 		const serviceFactory = new ServiceFactory(new Mercury())
 		return FeatureManager.WithAllFeatures({
 			cwd: this.cwd,
-			serviceFactory
+			serviceFactory,
 		})
 	}
 
@@ -22,7 +22,7 @@ export default class FeatureManagerTest extends AbstractCliTest {
 	@test()
 	protected static async canGetFeatureDependencies() {
 		const dependencies = this.fm.getFeatureDependencies(FeatureCode.Test)
-		const match = dependencies.find(d => d === FeatureCode.Skill)
+		const match = dependencies.find((d) => d === FeatureCode.Skill)
 		assert.isOk(match)
 	}
 

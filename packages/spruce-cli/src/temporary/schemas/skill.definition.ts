@@ -11,35 +11,35 @@ const skillDefinition: ISchemaDefinition = {
 		id: {
 			label: 'Id',
 			type: FieldType.Id,
-			isRequired: true
+			isRequired: true,
 		},
 		apiKey: {
 			label: 'Id',
 			isPrivate: true,
 			type: FieldType.Id,
-			isRequired: true
+			isRequired: true,
 		},
 		name: {
 			label: 'Name',
 			type: FieldType.Text,
-			isRequired: true
+			isRequired: true,
 		},
 		description: {
 			label: 'Description',
 			type: FieldType.Text,
-			isRequired: false
+			isRequired: false,
 		},
 		slug: {
 			label: 'Slug',
 			type: FieldType.Text,
-			isRequired: false
+			isRequired: false,
 		},
 		icon: {
 			label: 'Icon',
 			type: FieldType.Text,
-			isRequired: false
-		}
-	}
+			isRequired: false,
+		},
+	},
 }
 
 export default skillDefinition

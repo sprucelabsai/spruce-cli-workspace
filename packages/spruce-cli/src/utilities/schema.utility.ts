@@ -3,7 +3,7 @@ import namesUtil from './names.utility'
 
 export enum SchemaRelationshipType {
 	IdWithVersion,
-	Definition
+	Definition,
 }
 
 const schemaUtil = {
@@ -11,7 +11,7 @@ const schemaUtil = {
 		return {
 			nameReadable: definition.name,
 			nameCamel: definition.id,
-			namePascal: namesUtil.toPascal(definition.id)
+			namePascal: namesUtil.toPascal(definition.id),
 		}
 	},
 
@@ -27,7 +27,7 @@ const schemaUtil = {
 
 	generateCacheKey(options: { id: string; version?: string }) {
 		return `${options.id}-${options.version}`
-	}
+	},
 }
 
 export default schemaUtil

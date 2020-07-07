@@ -72,14 +72,14 @@ export enum ITerminalEffect {
 	BgWhiteBright = 'bgWhiteBright',
 
 	/** Spruce header style */
-	SpruceHeader = 'shade'
+	SpruceHeader = 'shade',
 }
 
 /** Remove effects cfonts does not support */
 function filterEffectsForCFonts(effects: ITerminalEffect[]) {
 	return filter(
 		effects,
-		effect =>
+		(effect) =>
 			[
 				ITerminalEffect.SpruceHeader,
 				ITerminalEffect.Reset,
@@ -90,7 +90,7 @@ function filterEffectsForCFonts(effects: ITerminalEffect[]) {
 				ITerminalEffect.Inverse,
 				ITerminalEffect.Hidden,
 				ITerminalEffect.Strikethrough,
-				ITerminalEffect.Visible
+				ITerminalEffect.Visible,
 			].indexOf(effect) === -1
 	)
 }
@@ -107,7 +107,7 @@ export default class TerminalInterface {
 	/** Write a line with various effects applied */
 	public writeLn(message: any, effects: ITerminalEffect[] = []) {
 		let write: any = chalk
-		effects.forEach(effect => {
+		effects.forEach((effect) => {
 			write = write[effect]
 		})
 		console.log(effects.length > 0 ? write(message) : message)
@@ -115,7 +115,7 @@ export default class TerminalInterface {
 
 	/** Write an array of lines quickly */
 	public writeLns(lines: any[], effects?: ITerminalEffect[]) {
-		lines.forEach(line => {
+		lines.forEach((line) => {
 			this.writeLn(line, effects)
 		})
 	}
@@ -127,7 +127,7 @@ export default class TerminalInterface {
 	) {
 		this.bar()
 		this.writeLn('')
-		Object.keys(object).forEach(key => {
+		Object.keys(object).forEach((key) => {
 			this.writeLn(
 				`${chalk.bold(key)}: ${
 					typeof object[key] === 'string'
@@ -156,7 +156,7 @@ export default class TerminalInterface {
 			object,
 			barEffects = [],
 			headlineEffects = [ITerminalEffect.Blue, ITerminalEffect.Bold],
-			bodyEffects = [ITerminalEffect.Green]
+			bodyEffects = [ITerminalEffect.Green],
 		} = options
 
 		if (headline) {
@@ -218,7 +218,7 @@ export default class TerminalInterface {
 				font: ITerminalEffect.SpruceHeader,
 				align: 'left',
 				space: false,
-				colors: filterEffectsForCFonts(effects)
+				colors: filterEffectsForCFonts(effects),
 			})
 		} else {
 			this.bar(barEffects)
@@ -236,7 +236,7 @@ export default class TerminalInterface {
 		fonts.say(message, {
 			// Font: 'tiny',
 			align: 'center',
-			colors: filterEffectsForCFonts(effects)
+			colors: filterEffectsForCFonts(effects),
 		})
 	}
 
@@ -260,7 +260,7 @@ export default class TerminalInterface {
 	public warn(message: string) {
 		this.writeLn(`⚠️ ${message}`, [
 			ITerminalEffect.Bold,
-			ITerminalEffect.Yellow
+			ITerminalEffect.Yellow,
 		])
 	}
 
@@ -282,7 +282,7 @@ export default class TerminalInterface {
 	public async startLoading(message?: string) {
 		this.stopLoading()
 		this.loader = ora({
-			text: message
+			text: message,
 		}).start()
 	}
 
@@ -297,7 +297,7 @@ export default class TerminalInterface {
 		const confirmResult = await inquirer.prompt({
 			type: 'confirm',
 			name: 'answer',
-			message: question
+			message: question,
 		})
 
 		return !!confirmResult.answer
@@ -309,7 +309,7 @@ export default class TerminalInterface {
 			type: FieldType.Text,
 			label: `${message ? message + ' ' : ''}${chalk.bgGreenBright.black(
 				'hit enter'
-			)}`
+			)}`,
 		})
 		this.writeLn('')
 		return
@@ -342,7 +342,7 @@ export default class TerminalInterface {
 		const promptOptions: Record<string, any> = {
 			default: defaultValue,
 			name,
-			message: label
+			message: label,
 		}
 
 		// @ts-ignore
@@ -365,17 +365,19 @@ export default class TerminalInterface {
 			case FieldType.Select:
 				promptOptions.type = fieldDefinition.isArray ? 'checkbox' : 'list'
 
-				promptOptions.choices = fieldDefinition.options.choices.map(choice => ({
-					name: choice.label,
-					value: choice.value,
-					checked: _.includes(fieldDefinition.defaultValue, choice.value)
-				}))
+				promptOptions.choices = fieldDefinition.options.choices.map(
+					(choice) => ({
+						name: choice.label,
+						value: choice.value,
+						checked: _.includes(fieldDefinition.defaultValue, choice.value),
+					})
+				)
 
 				if (!isRequired) {
 					promptOptions.choices.push(new inquirer.Separator())
 					promptOptions.choices.push({
 						name: 'Cancel',
-						value: -1
+						value: -1,
 					})
 				}
 				break
@@ -386,7 +388,7 @@ export default class TerminalInterface {
 					throw new SpruceError({
 						code: ErrorCode.NotImplemented,
 						friendlyMessage:
-							'isArray file field not supported, prompt needs to be rewritten with isArray support'
+							'isArray file field not supported, prompt needs to be rewritten with isArray support',
 					})
 				}
 
@@ -415,7 +417,7 @@ export default class TerminalInterface {
 					throw new SpruceError({
 						code: ErrorCode.NotImplemented,
 						friendlyMessage:
-							'isArray file field not supported, prompt needs to be rewritten with isArray support'
+							'isArray file field not supported, prompt needs to be rewritten with isArray support',
 					})
 				}
 				const dirPath = path.join(
@@ -432,7 +434,7 @@ export default class TerminalInterface {
 					throw new SpruceError({
 						code: ErrorCode.DirectoryEmpty,
 						directory: dirPath,
-						friendlyMessage: `I wanted to help you select a file, but none exist in ${dirPath}`
+						friendlyMessage: `I wanted to help you select a file, but none exist in ${dirPath}`,
 					})
 				}
 
@@ -483,7 +485,7 @@ export default class TerminalInterface {
 			lines: stackLines.splice(0, 100),
 			headlineEffects: [ITerminalEffect.Bold, ITerminalEffect.Red],
 			barEffects: [ITerminalEffect.Red],
-			bodyEffects: [ITerminalEffect.Red]
+			bodyEffects: [ITerminalEffect.Red],
 		})
 
 		this.info(

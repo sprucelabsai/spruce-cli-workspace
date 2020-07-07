@@ -69,8 +69,8 @@ export default class ErrorStoreTest extends AbstractCliTest {
 
 		assert.isObject(first)
 
-		const match = results.items.find(item => item.namePascal === 'TestOne')
-		const match2 = results.items.find(item => item.namePascal === 'TestTwo')
+		const match = results.items.find((item) => item.namePascal === 'TestOne')
+		const match2 = results.items.find((item) => item.namePascal === 'TestTwo')
 
 		assert.isObject(match)
 		assert.isObject(match2)
@@ -102,7 +102,7 @@ export default class ErrorStoreTest extends AbstractCliTest {
 	@test()
 	protected static async generatedClassFileErrorCanBeImported() {
 		const response = await this.fetchGoodItemsAndGenerateErrorClass()
-		const errorClass = response.find(f => f.name === 'ErrorTest.ts')
+		const errorClass = response.find((f) => f.name === 'ErrorTest.ts')
 
 		assert.isOk(errorClass)
 

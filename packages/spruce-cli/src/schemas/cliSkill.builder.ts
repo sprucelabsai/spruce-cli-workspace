@@ -9,6 +9,6 @@ export default buildSchemaDefinition({
 		id: skillDefinition.fields.id,
 		apiKey: skillDefinition.fields.apiKey,
 		name: skillDefinition.fields.name,
-		slug: skillDefinition.fields.slug
-	}
+		slug: skillDefinition.fields.slug,
+	},
 })

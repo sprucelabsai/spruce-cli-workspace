@@ -2,7 +2,7 @@ import { SpruceErrorCode } from '@sprucelabs/error'
 import {
 	ISchemaDefinition,
 	ISchemaDefinitionFields,
-	SchemaFieldNames
+	SchemaFieldNames,
 } from '@sprucelabs/schema'
 import chalk from 'chalk'
 import { shuffle } from 'lodash'
@@ -11,7 +11,7 @@ import SpruceError from '../errors/SpruceError'
 import TerminalInterface from '../interfaces/TerminalInterface'
 import FormComponent, {
 	IFormOptions,
-	IFormPresentationOptions
+	IFormPresentationOptions,
 } from './FormComponent'
 
 /** Multiple choice question */
@@ -39,7 +39,7 @@ export interface IQuizQuestions {
 /** Answer status */
 export enum AnswerValidity {
 	Correct = 'correct',
-	Incorrect = 'incorrect'
+	Incorrect = 'incorrect',
 }
 
 /** Options to present */
@@ -129,7 +129,7 @@ export default class QuizComponent<
 		// Construct new form builder
 		this.formBuilder = new FormComponent<T>({
 			...options,
-			definition
+			definition,
 		})
 
 		// Set state locally
@@ -144,8 +144,8 @@ export default class QuizComponent<
 		const {
 			questions = this.formBuilder
 				.getNamedFields()
-				.map(nf => nf.name) as QuizAnswerFieldNames<Q>[],
-			randomizeQuestions = this.randomizeQuestions
+				.map((nf) => nf.name) as QuizAnswerFieldNames<Q>[],
+			randomizeQuestions = this.randomizeQuestions,
 		} = options
 
 		const startTime = new Date().getTime()
@@ -156,7 +156,7 @@ export default class QuizComponent<
 		// Ask for the answers
 		const results = await this.formBuilder.present({
 			...options,
-			fields: fields as SchemaFieldNames<T>[]
+			fields: fields as SchemaFieldNames<T>[],
 		})
 
 		// Generate stats
@@ -168,7 +168,7 @@ export default class QuizComponent<
 
 		const questionNames = Object.keys(results) as QuizAnswerFieldNames<Q>[]
 
-		questionNames.forEach(questionName => {
+		questionNames.forEach((questionName) => {
 			const fieldName = questionName as SchemaFieldNames<T>
 			const answer = (results[fieldName] as string) || ''
 			const [validity, idx] = answer.split('-')
@@ -214,8 +214,8 @@ export default class QuizComponent<
 			time: {
 				startTimeMs: startTime,
 				endTimeMs: endTime,
-				totalTimeSec: +((endTime - startTime) / 1000).toFixed(1)
-			}
+				totalTimeSec: +((endTime - startTime) / 1000).toFixed(1),
+			},
 		}
 
 		return this.lastResults
@@ -234,7 +234,7 @@ export default class QuizComponent<
 		if (!results) {
 			throw new SpruceError({
 				code: SpruceErrorCode.InvalidParameters,
-				parameters: []
+				parameters: [],
 			})
 		}
 
@@ -243,7 +243,7 @@ export default class QuizComponent<
 
 		const testResults: Record<string, string> = {}
 
-		this.formBuilder.getNamedFields().forEach(namedField => {
+		this.formBuilder.getNamedFields().forEach((namedField) => {
 			const { name, field } = namedField
 			const questionFieldName = name as QuizAnswerFieldNames<Q>
 
@@ -294,7 +294,7 @@ export default class QuizComponent<
 		// TODO change ISchemaDefinitionFields to something based on schema generated from questions
 		const fields: ISchemaDefinitionFields = {}
 
-		Object.keys(questions).forEach(fieldName => {
+		Object.keys(questions).forEach((fieldName) => {
 			const question = questions[fieldName]
 
 			switch (question.type) {
@@ -309,16 +309,16 @@ export default class QuizComponent<
 										idx === 0
 											? `${AnswerValidity.Correct}-${idx}`
 											: `${AnswerValidity.Incorrect}-${idx}`,
-									label: question
+									label: question,
 								}))
-							)
-						}
+							),
+						},
 					}
 					break
 				default:
 					fields[fieldName] = {
 						type: question.type,
-						label: question.question
+						label: question.question,
 					}
 			}
 		})
@@ -327,7 +327,7 @@ export default class QuizComponent<
 		const definition: T = {
 			id: 'quizGenerated',
 			name: 'Generated quiz',
-			fields
+			fields,
 		}
 
 		return definition

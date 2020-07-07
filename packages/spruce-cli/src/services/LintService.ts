@@ -18,15 +18,15 @@ export default class LintService extends CommandService {
 			throw new SpruceError({
 				code: ErrorCode.LintFailed,
 				pattern: '***missing***',
-				stdout: '***never run***'
+				stdout: '***never run***',
 			})
 		}
 
 		const { stdout } = await this.execute('node', {
 			args: [
 				'-e',
-				`"try { const ESLint = require('eslint');const cli = new ESLint.CLIEngine({fix: true,cwd: '${this.cwd}'});const result=cli.executeOnFiles(['${pattern}']);console.log(JSON.stringify(result)); } catch(err) { console.log(err.toString()); }"`
-			]
+				`"try { const ESLint = require('eslint');const cli = new ESLint.CLIEngine({fix: true,cwd: '${this.cwd}'});const result=cli.executeOnFiles(['${pattern}']);console.log(JSON.stringify(result)); } catch(err) { console.log(err.toString()); }"`,
+			],
 		})
 
 		const fixedPaths: string[] = []
@@ -37,7 +37,7 @@ export default class LintService extends CommandService {
 			throw new SpruceError({
 				code: ErrorCode.LintFailed,
 				pattern,
-				stdout
+				stdout,
 			})
 		}
 

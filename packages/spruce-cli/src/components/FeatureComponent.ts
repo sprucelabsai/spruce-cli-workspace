@@ -2,12 +2,12 @@ import {
 	SchemaDefinitionValues,
 	ISchemaDefinition,
 	SchemaDefinitionPartialValues,
-	SchemaFieldNames
+	SchemaFieldNames,
 } from '@sprucelabs/schema'
 import AbstractFeature from '../features/AbstractFeature'
 import FeatureManager, {
 	FeatureCode,
-	IFeatureMap
+	IFeatureMap,
 } from '../features/FeatureManager'
 import TerminalInterface from '../interfaces/TerminalInterface'
 import AbstractComponent from './AbstractComponent'
@@ -34,11 +34,11 @@ export default class FeatureComponent extends AbstractComponent {
 		const { values } = options
 
 		if (!definition || !definition.fields) {
-			return new Promise(resolve => resolve(undefined))
+			return new Promise((resolve) => resolve(undefined))
 		}
 
 		const form = this.formComponent({
-			definition
+			definition,
 		})
 
 		// if they passed values, don't show those fields
@@ -53,13 +53,13 @@ export default class FeatureComponent extends AbstractComponent {
 		}
 
 		let answers = await form.present({
-			fields: fieldNames as SchemaFieldNames<typeof definition>
+			fields: fieldNames as SchemaFieldNames<typeof definition>,
 		})
 
 		if (values) {
 			answers = {
 				...answers,
-				...values
+				...values,
 			}
 		}
 

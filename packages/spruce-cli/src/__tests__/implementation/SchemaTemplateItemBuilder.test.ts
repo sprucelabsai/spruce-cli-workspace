@@ -14,9 +14,9 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 		name: 'Cowbell test',
 		fields: {
 			radius: {
-				type: FieldType.Number
-			}
-		}
+				type: FieldType.Number,
+			},
+		},
 	}
 
 	private static cowbellV1TemplateItem: ISchemaTemplateItem = {
@@ -25,7 +25,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 		nameCamel: 'cowbell',
 		namePascal: 'Cowbell',
 		nameReadable: 'Cowbell test',
-		definition: SchemaTemplateItemBuilderTest.cowbellV1
+		definition: SchemaTemplateItemBuilderTest.cowbellV1,
 	}
 
 	private static cowbellV2: ISchemaDefinition = {
@@ -34,15 +34,15 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 		name: 'Cowbell test two!',
 		fields: {
 			radius: {
-				type: FieldType.Number
+				type: FieldType.Number,
 			},
 			owner: {
 				type: FieldType.Schema,
 				options: {
-					schemaId: { id: 'person', version: '2020_06_03' }
-				}
-			}
-		}
+					schemaId: { id: 'person', version: '2020_06_03' },
+				},
+			},
+		},
 	}
 
 	private static cowbellV2TemplateItem: ISchemaTemplateItem = {
@@ -57,16 +57,16 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 			name: 'Cowbell test two!',
 			fields: {
 				radius: {
-					type: FieldType.Number
+					type: FieldType.Number,
 				},
 				owner: {
 					type: FieldType.Schema,
 					options: {
-						schemaIds: [{ id: 'person', version: '2020_06_03' }]
-					}
-				}
-			}
-		}
+						schemaIds: [{ id: 'person', version: '2020_06_03' }],
+					},
+				},
+			},
+		},
 	}
 
 	private static personV1: ISchemaDefinition = {
@@ -75,9 +75,9 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 		name: 'Person test',
 		fields: {
 			name: {
-				type: FieldType.Text
-			}
-		}
+				type: FieldType.Text,
+			},
+		},
 	}
 
 	private static personV1TemplateItem: ISchemaTemplateItem = {
@@ -86,7 +86,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 		nameCamel: 'person',
 		namePascal: 'Person',
 		nameReadable: 'Person test',
-		definition: SchemaTemplateItemBuilderTest.personV1
+		definition: SchemaTemplateItemBuilderTest.personV1,
 	}
 
 	private static personV2: ISchemaDefinition = {
@@ -95,7 +95,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 		name: 'Person version 2',
 		fields: {
 			name: {
-				type: FieldType.Text
+				type: FieldType.Text,
 			},
 			favoriteVehicle: {
 				type: FieldType.Schema,
@@ -106,13 +106,13 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 						version: '2020_06_01',
 						fields: {
 							make: {
-								type: FieldType.Text
-							}
-						}
-					}
-				}
-			}
-		}
+								type: FieldType.Text,
+							},
+						},
+					},
+				},
+			},
+		},
 	}
 
 	private static personV2TemplateItem: ISchemaTemplateItem = {
@@ -127,16 +127,16 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 			name: 'Person version 2',
 			fields: {
 				name: {
-					type: FieldType.Text
+					type: FieldType.Text,
 				},
 				favoriteVehicle: {
 					type: FieldType.Schema,
 					options: {
-						schemaIds: [{ id: 'vehicle', version: '2020_06_01' }]
-					}
-				}
-			}
-		}
+						schemaIds: [{ id: 'vehicle', version: '2020_06_01' }],
+					},
+				},
+			},
+		},
 	}
 
 	private static personV3: ISchemaDefinition = {
@@ -149,11 +149,11 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 				options: {
 					schemas: [
 						SchemaTemplateItemBuilderTest.cowbellV1,
-						SchemaTemplateItemBuilderTest.cowbellV2
-					]
-				}
-			}
-		}
+						SchemaTemplateItemBuilderTest.cowbellV2,
+					],
+				},
+			},
+		},
 	}
 
 	private static personV3TemplateItem: ISchemaTemplateItem = {
@@ -172,12 +172,12 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 					options: {
 						schemaIds: [
 							{ id: 'cowbell', version: '2020_06_01' },
-							{ id: 'cowbell', version: '2020_06_02' }
-						]
-					}
-				}
-			}
-		}
+							{ id: 'cowbell', version: '2020_06_02' },
+						],
+					},
+				},
+			},
+		},
 	}
 
 	private static vehicleV1TemplateItem: ISchemaTemplateItem = {
@@ -192,10 +192,10 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 			version: '2020_06_01',
 			fields: {
 				make: {
-					type: FieldType.Text
-				}
-			}
-		}
+					type: FieldType.Text,
+				},
+			},
+		},
 	}
 
 	private static personV4: ISchemaDefinition = {
@@ -208,11 +208,11 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 				options: {
 					schemaIds: [
 						{ id: 'cowbell', version: '2020_06_01' },
-						{ id: 'cowbell', version: '2020_06_02' }
-					]
-				}
-			}
-		}
+						{ id: 'cowbell', version: '2020_06_02' },
+					],
+				},
+			},
+		},
 	}
 
 	private static personV4TemplateItem: ISchemaTemplateItem = {
@@ -221,7 +221,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 		nameCamel: 'person',
 		namePascal: 'Person',
 		nameReadable: 'Person test the last',
-		definition: SchemaTemplateItemBuilderTest.personV4
+		definition: SchemaTemplateItemBuilderTest.personV4,
 	}
 
 	protected static async beforeEach() {
@@ -242,7 +242,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 	@test()
 	protected static async turnsSingleDefinitionIntoTemplateItem() {
 		const results = this.itemBuilder.generateTemplateItems(CORE_NAMESPACE, [
-			this.personV1
+			this.personV1,
 		])
 		const actual = results[0]
 
@@ -253,11 +253,11 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 		'turns 2 definitions into 2 template items',
 		[
 			SchemaTemplateItemBuilderTest.cowbellV1,
-			SchemaTemplateItemBuilderTest.personV1
+			SchemaTemplateItemBuilderTest.personV1,
 		],
 		[
 			SchemaTemplateItemBuilderTest.cowbellV1TemplateItem,
-			SchemaTemplateItemBuilderTest.personV1TemplateItem
+			SchemaTemplateItemBuilderTest.personV1TemplateItem,
 		]
 	)
 	@test(
@@ -265,7 +265,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 		[SchemaTemplateItemBuilderTest.personV2],
 		[
 			SchemaTemplateItemBuilderTest.vehicleV1TemplateItem,
-			SchemaTemplateItemBuilderTest.personV2TemplateItem
+			SchemaTemplateItemBuilderTest.personV2TemplateItem,
 		]
 	)
 	@test(
@@ -274,7 +274,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 		[
 			SchemaTemplateItemBuilderTest.cowbellV1TemplateItem,
 			SchemaTemplateItemBuilderTest.cowbellV2TemplateItem,
-			SchemaTemplateItemBuilderTest.personV3TemplateItem
+			SchemaTemplateItemBuilderTest.personV3TemplateItem,
 		]
 	)
 	@test(
@@ -282,7 +282,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 		[
 			SchemaTemplateItemBuilderTest.cowbellV1,
 			SchemaTemplateItemBuilderTest.cowbellV1,
-			SchemaTemplateItemBuilderTest.cowbellV1
+			SchemaTemplateItemBuilderTest.cowbellV1,
 		],
 		[SchemaTemplateItemBuilderTest.cowbellV1TemplateItem]
 	)
@@ -292,13 +292,13 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 			SchemaTemplateItemBuilderTest.personV4,
 			SchemaTemplateItemBuilderTest.personV3,
 			SchemaTemplateItemBuilderTest.cowbellV1,
-			SchemaTemplateItemBuilderTest.cowbellV2
+			SchemaTemplateItemBuilderTest.cowbellV2,
 		],
 		[
 			SchemaTemplateItemBuilderTest.cowbellV1TemplateItem,
 			SchemaTemplateItemBuilderTest.cowbellV2TemplateItem,
 			SchemaTemplateItemBuilderTest.personV4TemplateItem,
-			SchemaTemplateItemBuilderTest.personV3TemplateItem
+			SchemaTemplateItemBuilderTest.personV3TemplateItem,
 		]
 	)
 	protected static async generationTests(

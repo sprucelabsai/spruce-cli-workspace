@@ -59,7 +59,7 @@ export default class UserCommand extends AbstractCommand {
 			phone = await this.term.prompt({
 				type: FieldType.Phone,
 				isRequired: true,
-				label: "What's your cell?"
+				label: "What's your cell?",
 			})
 		}
 
@@ -77,7 +77,7 @@ export default class UserCommand extends AbstractCommand {
 			const pin = await this.term.prompt({
 				type: FieldType.Text,
 				isRequired: true,
-				label: pinLabel
+				label: pinLabel,
 			})
 
 			this.term.startLoading('Verifying identity...')
@@ -106,7 +106,7 @@ export default class UserCommand extends AbstractCommand {
 			throw new SpruceError({
 				code: ErrorCode.UserNotFound,
 				friendlyMessage:
-					'This should never have happened, but the user is missing.'
+					'This should never have happened, but the user is missing.',
 			})
 		}
 
@@ -129,7 +129,7 @@ export default class UserCommand extends AbstractCommand {
 
 		const choices: ISelectFieldDefinitionChoice[] = users.map((user, idx) => ({
 			value: String(idx),
-			label: user.casualName
+			label: user.casualName,
 		}))
 
 		const loggedInUser = this.userStore.getLoggedInUser()
@@ -139,8 +139,8 @@ export default class UserCommand extends AbstractCommand {
 			isRequired: true,
 			defaultValue: loggedInUser && loggedInUser.id,
 			options: {
-				choices
-			}
+				choices,
+			},
 		})
 
 		const selectedUser = users[parseInt(userIdx, 10)]
@@ -156,20 +156,20 @@ export default class UserCommand extends AbstractCommand {
 			ITerminalEffect.SpruceHeader,
 			ITerminalEffect.Red,
 			ITerminalEffect.Blue,
-			ITerminalEffect.Green
+			ITerminalEffect.Green,
 		]
 
 		if (user && authType === AuthedAs.User) {
 			this.term.section({
 				headline: `Logged in as human: ${user.casualName}`,
 				object: user,
-				headlineEffects: headerEffects
+				headlineEffects: headerEffects,
 			})
 		} else if (skill && authType === AuthedAs.Skill) {
 			this.term.section({
 				headline: `Logged in as skill: ${skill.name}`,
 				object: skill,
-				headlineEffects: headerEffects
+				headlineEffects: headerEffects,
 			})
 		} else {
 			this.term.writeLn('Not currently logged in')
