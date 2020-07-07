@@ -11,7 +11,7 @@ jobs:
       - run:
           name: "ENV file creation"
           command: |
-            echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
+            [ -n "$BASE64_ENV" ] && echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
       - run: node -v && npm -v && yarn -v
       - restore_cache:
           keys:
