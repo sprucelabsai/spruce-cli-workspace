@@ -86,7 +86,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 		const createResponse = await cli.createSchema({
 			nameReadable: 'Test schema',
 			nameCamel: 'testSchema',
-			namePascal: 'TestSchema'
+			namePascal: 'TestSchema',
 		})
 
 		// should now include our test schema

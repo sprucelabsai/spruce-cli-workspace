@@ -139,7 +139,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 	): GenerationResults {
 		const results: GenerationResults = []
 
-		options.schemaTemplateItems.map(item => {
+		options.schemaTemplateItems.map((item) => {
 			results.push(
 				...this.generateDefinition(destinationDir, { ...options, ...item })
 			)
@@ -167,7 +167,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			...item,
 			schemaTemplateItems,
 			fieldTemplateItems,
-			valueTypes
+			valueTypes,
 		})
 
 		const definitionDestination = path.join(
