@@ -1,3 +1,4 @@
+import AbstractSpruceError from '@sprucelabs/error'
 import Schema, {
 	ISchemaDefinition,
 	FieldType,
@@ -5,13 +6,15 @@ import Schema, {
 	SchemaDefinitionPartialValues,
 	SchemaFieldNames,
 	ISelectFieldDefinitionChoice,
-	IFieldDefinition,
-	SchemaErrorCode,
+	FieldDefinition,
+	ErrorCode as SchemaErrorCode,
 	SchemaError
 } from '@sprucelabs/schema'
-import ITerminal, { ITerminalEffect } from '../utilities/TerminalUtility'
+import { IFieldDefinition } from '@sprucelabs/schema'
 import { pick } from 'lodash'
-import AbstractSpruceError from '@sprucelabs/error'
+import { ErrorCode } from '#spruce/errors/codes.types'
+import SpruceError from '../errors/SpruceError'
+import ITerminal, { ITerminalEffect } from '../utilities/TerminalUtility'
 
 export enum FormBuilderActionType {
 	Done = 'done',
@@ -19,28 +22,28 @@ export enum FormBuilderActionType {
 	EditField = 'edit_field'
 }
 
-/** in overview mode, this is when the user selects "done" */
+/** In overview mode, this is when the user selects "done" */
 export interface IFormActionDone {
 	type: FormBuilderActionType.Done
 }
 
-/** in overview mode, this is when the user select "cancel". TODO: in normal mode, this is if they escape out of the questions. */
+/** In overview mode, this is when the user select "cancel". TODO: in normal mode, this is if they escape out of the questions. */
 export interface IFormActionCancel {
 	type: FormBuilderActionType.Cancel
 }
 
-/** in overview mode, this is when the user selects to edit a field */
+/** In overview mode, this is when the user selects to edit a field */
 export type IFormActionEditField<T extends ISchemaDefinition> = {
 	type: FormBuilderActionType.EditField
 	fieldName: SchemaFieldNames<T>
 }
-/** actions that can be taken in overview mode */
+/** Actions that can be taken in overview mode */
 export type IFormAction<T extends ISchemaDefinition> =
 	| IFormActionDone
 	| IFormActionCancel
 	| IFormActionEditField<T>
 
-/** controls for when presenting the form */
+/** Controls for when presenting the form */
 export interface IFormPresentationOptions<
 	T extends ISchemaDefinition,
 	F extends SchemaFieldNames<T> = SchemaFieldNames<T>
@@ -56,9 +59,9 @@ export interface IFormOptions<T extends ISchemaDefinition> {
 	initialValues?: SchemaDefinitionPartialValues<T>
 	onWillAskQuestion?: <K extends SchemaFieldNames<T>>(
 		name: K,
-		fieldDefinition: IFieldDefinition,
+		fieldDefinition: FieldDefinition,
 		values: SchemaDefinitionPartialValues<T>
-	) => IFieldDefinition
+	) => FieldDefinition
 }
 
 interface IHandlers<T extends ISchemaDefinition> {
@@ -72,20 +75,20 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 	public handlers: IHandlers<T> = {}
 
 	public constructor(options: IFormOptions<T>) {
-		// setup schema
+		// Setup schema
 		super(options.definition, options.initialValues)
 
 		const { term } = options
 
-		// save term for writing, saving
+		// Save term for writing, saving
 		this.term = term
 
-		// handlers
+		// Handlers
 		const { onWillAskQuestion } = options
 		this.handlers.onWillAskQuestion = onWillAskQuestion
 	}
 
-	/** pass me a schema and i'll give you back an object that conforms to it based on user input */
+	/** Pass me a schema and i'll give you back an object that conforms to it based on user input */
 	public async present<F extends SchemaFieldNames<T> = SchemaFieldNames<T>>(
 		options: IFormPresentationOptions<T, F> = {}
 	): Promise<Pick<SchemaDefinitionAllValues<T>, F>> {
@@ -100,26 +103,26 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 		let valid = false
 
 		do {
-			// hard to read as menus build on menus
+			// Hard to read as menus build on menus
 			term.clear()
 
-			// start with headline
+			// Start with headline
 			if (headline) {
 				term.headline(headline, [ITerminalEffect.SpruceHeader])
 				term.writeLn('')
 			}
 
 			if (showOverview) {
-				// overview mode
+				// Overview mode
 				const action = await this.renderOverview({ fields })
 
 				switch (action.type) {
 					case FormBuilderActionType.EditField: {
-						// editing a field
+						// Editing a field
 						const fieldName = action.fieldName
 						const answer = await this.askQuestion(fieldName)
 
-						// set the new value
+						// Set the new value
 						this.set(fieldName, answer)
 
 						break
@@ -129,12 +132,13 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 					}
 				}
 			} else {
-				// asking one question at a time
+				// Asking one question at a time
 				const namedFields = this.getNamedFields({ fields })
 
 				for (const namedField of namedFields) {
 					const { name } = namedField
 					const answer = await this.askQuestion(name)
+
 					this.set(name, answer)
 				}
 
@@ -152,19 +156,33 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 			}
 		} while (!done || !valid)
 
-		const values = this.getValues({ fields })
+		const values = this.getValues({ fields, createSchemaInstances: false })
+		const cleanValues = pick(values, fields) as Pick<
+			SchemaDefinitionAllValues<T>,
+			F
+		>
 
-		return pick(values, fields) as Pick<SchemaDefinitionAllValues<T>, F>
+		return cleanValues
 	}
 
-	/** ask a question based on a field */
+	/** Ask a question based on a field */
 	public askQuestion<F extends SchemaFieldNames<T>>(fieldName: F) {
 		const field = this.fields[fieldName]
 
 		let definition = { ...field.definition }
-		definition.defaultValue = this.values[fieldName]
+		const value = this.values[fieldName]
+		if (definition.isArray) {
+			throw new SpruceError({
+				code: ErrorCode.NotImplemented,
+				friendlyMessage: 'Form builder does not support isArray yet'
+			})
+		}
 
-		// do we have a lister?
+		if (value) {
+			definition.defaultValue = value as IFieldDefinition['defaultValue']
+		}
+
+		// Do we have a lister?
 		if (this.handlers.onWillAskQuestion) {
 			definition = this.handlers.onWillAskQuestion(
 				fieldName,
@@ -176,7 +194,7 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 		return this.term.prompt(definition)
 	}
 
-	/** pass it schema errors */
+	/** Pass it schema errors */
 	public renderError(error: Error) {
 		this.term.bar()
 		this.term.headline('Please fix the following...', [
@@ -186,17 +204,19 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 
 		this.term.writeLn('')
 
-		// special handling for spruce errors
+		// Special handling for spruce errors
 		if (error instanceof SchemaError) {
 			const options = error.options
 
 			switch (options.code) {
-				// invalid fields
+				// Invalid fields
 				case SchemaErrorCode.InvalidField:
-					// output all errors under all fields
-					options.errors.forEach(error => {
-						const { fieldName, errors } = error
-						this.term.error(`field: ${fieldName} errors: ${errors.join(', ')}`)
+					// Output all errors under all fields
+					options.errors.forEach(err => {
+						const { name, friendlyMessage, error, code } = err
+						this.term.error(
+							friendlyMessage ?? `${name}: ${code} ${error?.message}`
+						)
 					})
 					break
 				default:
@@ -211,17 +231,17 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 		this.term.writeLn('')
 	}
 
-	/** render every field and a select to chose what to edit (or done/cancel) */
+	/** Render every field and a select to chose what to edit (or done/cancel) */
 	public async renderOverview<F extends SchemaFieldNames<T>>(
 		options: { fields?: F[] } = {}
 	): Promise<IFormAction<T>> {
 		const { term } = this
 		const { fields = Object.keys(this.fields) } = options
 
-		// track actions while building choices
+		// Track actions while building choices
 		const actionMap: Record<string, IFormAction<T>> = {}
 
-		// create all choices
+		// Create all choices
 		const choices: ISelectFieldDefinitionChoice[] = this.getNamedFields()
 			.filter(namedField => fields.indexOf(namedField.name) > -1)
 			.map(namedField => {
@@ -233,19 +253,19 @@ export default class FormBuilder<T extends ISchemaDefinition> extends Schema<
 					fieldName: name
 				}
 
-				// track the action for checking after selection
+				// Track the action for checking after selection
 				actionMap[actionKey] = action
 
-				// get the current value, don't validate
+				// Get the current value, don't validate
 				const value = this.get(name, { validate: false })
 
 				return {
 					value: actionKey,
-					label: `${field.getLabel()}: ${value ? value : '***missing***'}`
+					label: `${field.label}: ${value ? value : '***missing***'}`
 				}
 			})
 
-		// done choice
+		// Done choice
 		actionMap['done'] = {
 			type: FormBuilderActionType.Done
 		}

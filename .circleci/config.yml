@@ -89,7 +89,7 @@ jobs:
       - run:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-      - run: 'npm run publish -- --yes --force-publish --dist-tag beta --message "chore(release): %v [skip-ci-version]" --conventional-graduate'
+      - run: 'npm run publish -- --yes --force-publish --dist-tag beta --message "chore(release): %v [skip-ci-version]"'
   prod_release:
     docker:
       - image: circleci/node:12

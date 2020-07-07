@@ -1,0 +1,38 @@
+/* eslint-disable @typescript-eslint/no-namespace */
+/* eslint-disable no-redeclare */
+
+import { default as Schema } from '@sprucelabs/schema'
+{{#each imports}}
+import * as {{importAs}} from '{{package}}'
+{{/each}}
+
+{{#each schemaTemplateItems}}
+
+	export namespace SpruceSchemas.{{namespace}} {
+		/** {{definition.description}} */
+		export interface I{{namePascal}} {
+			{{> schemaValues schema=definition renderAs="type" }}
+		}
+	}
+
+	export namespace SpruceSchemas.{{namespace}}.{{namePascal}} {
+		export const id = '{{{escape id}}}'
+
+		/** The interface for the schema definition for a {{nameReadable}} */
+		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+			{{> schemaDefinition schema=definition renderAs="type" }}
+		}
+
+		/** The schema definition for a {{nameReadable}} */
+		export const definition: SpruceSchemas.{{namespace}}.{{namePascal}}.IDefinition = {
+			{{> schemaDefinition schema=definition renderAs="value" }}
+		}
+
+		/** The type of a schema instance built off this definition */
+		export type Instance = Schema<SpruceSchemas.{{namespace}}.{{namePascal}}.IDefinition>
+	}
+
+{{/each}}
+
+
+

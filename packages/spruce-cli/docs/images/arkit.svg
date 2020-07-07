@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="523px" preserveAspectRatio="none" style="width:976px;height:523px;" version="1.1" viewBox="0 0 976 523" width="976px" zoomAndPan="magnify"><defs/><g><!--MD5=[a6f11bb19cee6b13000111f5ad685e8b]
+cluster Dependencies--><path d="M700.011,428 L794.011,428 A4.5,4.5 0 0 1 797.011,431 L804.011,448.4844 L804.011,448.4844 A3,3 0 0 1 807.011,451.4844 L807.011,508 A3,3 0 0 1 804.011,511 L700.011,511 A3,3 0 0 1 697.011,508 L697.011,431 A3,3 0 0 1 700.011,428 " fill="#FFFFFF" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="697.011" x2="804.011" y1="448.4844" y2="448.4844"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="94" x="701.011" y="442.0059">Dependencies</text><!--MD5=[5f583d77159ad5314e7da3e52cc205ef]
+entity inquirer--><rect fill="#F8F8F8" height="34.4844" rx="3" ry="3" style="stroke: #383838; stroke-width: 1.0;" width="62" x="721.011" y="461"/><rect fill="#F8F8F8" height="5" style="stroke: #383838; stroke-width: 1.0;" width="10" x="716.011" y="466"/><rect fill="#F8F8F8" height="5" style="stroke: #383838; stroke-width: 1.0;" width="10" x="716.011" y="485.4844"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="42" x="731.011" y="483.0059">inquirer</text><ellipse cx="546.7763" cy="21.2122" fill="#F8F8F8" rx="15.7653" ry="13.2122" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="18" x="537.7763" y="24.9544">src</text><!--MD5=[672e4f4a5de8c492b2a8f186771822c5]
+entity _AbstractCommand--><rect fill="#F8F8F8" height="34.4844" rx="3" ry="3" style="stroke: #000000; stroke-width: 0.5;" width="126" x="384.011" y="63"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="106" x="394.011" y="85.0059">AbstractCommand</text><!--MD5=[f1eec69c9726bde9a67b2985fcad87c7]
+entity _AbstractFeature--><rect fill="#F8F8F8" height="34.4844" rx="3" ry="3" style="stroke: #000000; stroke-width: 0.5;" width="109" x="184.511" y="189"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="89" x="194.511" y="211.0059">AbstractFeature</text><!--MD5=[074de42c020ba020e6d54f36114992d1]
+entity _AbstractGenerator--><rect fill="#F8F8F8" height="34.4844" rx="3" ry="3" style="stroke: #000000; stroke-width: 0.5;" width="124" x="584.011" y="63"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="104" x="594.011" y="85.0059">AbstractGenerator</text><!--MD5=[1d0bf47b6298de0e320ae90bd89bb0de]
+entity _AbstractService--><rect fill="#F8F8F8" height="34.4844" rx="3" ry="3" style="stroke: #000000; stroke-width: 0.5;" width="109" x="627.511" y="189"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="89" x="637.511" y="211.0059">AbstractService</text><!--MD5=[1bb87a4911a06180a3c61b9f00e1cf47]
+entity _AbstractStore--><rect fill="#F8F8F8" height="34.4844" rx="3" ry="3" style="stroke: #000000; stroke-width: 0.5;" width="98" x="30.0113" y="252"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="78" x="40.0113" y="274.0059">AbstractStore</text><!--MD5=[69362799bf56ad158821e63429608f9d]
+entity _AbstractUtility--><rect fill="#F8F8F8" height="34.4844" rx="3" ry="3" style="stroke: #000000; stroke-width: 0.5;" width="98" x="478.011" y="315"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="78" x="488.011" y="337.0059">AbstractUtility</text><!--MD5=[b0597e86c3a7741d7573300c08a22daf]
+entity _Autoloadable--><rect fill="#F8F8F8" height="34.4844" rx="3" ry="3" style="stroke: #000000; stroke-width: 0.5;" width="95" x="338.511" y="378"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="75" x="348.511" y="400.0059">Autoloadable</text><!--MD5=[6e00cfc05e344357edaf6655cd0c84ff]
+entity _cli_types--><rect fill="#F8F8F8" height="34.4844" rx="3" ry="3" style="stroke: #000000; stroke-width: 0.5;" width="67" x="202.511" y="252"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="47" x="212.511" y="274.0059">cli.types</text><ellipse cx="902.0377" cy="269.1053" fill="#F8F8F8" rx="63.5267" ry="15.1053" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="97" x="853.5377" y="272.8475">filePrompt.addon</text><!--MD5=[46dddf1ce7ceddda22f70073a61c0e06]
+entity _FormBuilder--><rect fill="#F8F8F8" height="34.4844" rx="3" ry="3" style="stroke: #000000; stroke-width: 0.5;" width="88" x="338.011" y="189"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="68" x="348.011" y="211.0059">FormBuilder</text><ellipse cx="420.7763" cy="478.2122" fill="#F8F8F8" rx="15.7653" ry="13.2122" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="18" x="411.7763" y="481.9544">log</text><ellipse cx="773.1887" cy="80.242" fill="#F8F8F8" rx="20.6777" ry="13.242" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="25" x="760.6887" y="83.9842">path</text><!--MD5=[5d97ba6c9401221394d25e4ed34ec4e6]
+entity _QuizBuilder--><rect fill="#F8F8F8" height="34.4844" rx="3" ry="3" style="stroke: #000000; stroke-width: 0.5;" width="86" x="339.011" y="126"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="66" x="349.011" y="148.0059">QuizBuilder</text><!--MD5=[b193370281563f99c6776349b0620c58]
+entity _SpruceError--><rect fill="#F8F8F8" height="34.4844" rx="3" ry="3" style="stroke: #000000; stroke-width: 0.5;" width="87" x="314.511" y="315"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="67" x="324.511" y="337.0059">SpruceError</text><!--MD5=[d72c701fdff60d89e717c98a9c12bc0b]
+entity _TerminalUtility--><rect fill="#F8F8F8" height="34.4844" rx="3" ry="3" style="stroke: #000000; stroke-width: 0.5;" width="100" x="446.011" y="252"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="80" x="456.011" y="274.0059">TerminalUtility</text><!--MD5=[b854060948fde61912c9dc4abb91d7cb]
+link _AbstractCommand to _Autoloadable--><path d="M448.657,97.089 C450.002,113.088 451.337,138.31 449.011,160 C439.848,245.464 436.203,267.801 408.011,349 C405.177,357.164 401.228,365.77 397.457,373.246 " fill="none" id="_AbstractCommand-&gt;_Autoloadable" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="395.143,377.74,402.8171,371.5669,397.4304,373.2939,395.7033,367.9071,395.143,377.74" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[9edc78c268249cf5e56835dcd9588000]
+link _AbstractCommand to _FormBuilder--><path d="M446.917,97.161 C446.167,113.892 443.107,140.293 432.011,160 C426.546,169.707 418.211,178.428 409.904,185.55 " fill="none" id="_AbstractCommand-&gt;_FormBuilder" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="405.841,188.915,415.3243,186.2567,409.6924,185.7265,410.2227,180.0945,405.841,188.915" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[8e6a6222e60e1ddef4160630c9816ebc]
+link _AbstractCommand to log--><path d="M383.897,86.416 C319.558,95.69 222.887,120.834 177.011,189 C96.6167,308.458 333.981,435.0197 402.861,468.4872 " fill="none" id="_AbstractCommand-&gt;log" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="407.523,470.7346,401.1531,463.223,403.0191,468.5632,397.6789,470.4292,407.523,470.7346" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[54e8a1ee0d7572c4588f6b2c74d9e06f]
+link _AbstractCommand to _QuizBuilder--><path d="M429.933,97.027 C421.639,104.811 411.601,114.231 402.859,122.435 " fill="none" id="_AbstractCommand-&gt;_QuizBuilder" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="399.201,125.868,408.5009,122.6258,402.8469,122.4464,403.0263,116.7924,399.201,125.868" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[4e34adfcbfb04a15d2e20bb0d327a792]
+link _AbstractCommand to _TerminalUtility--><path d="M467.503,97.233 C475.728,104.985 484.349,114.976 489.011,126 C505.936,166.021 502.894,218.149 499.342,246.808 " fill="none" id="_AbstractCommand-&gt;_TerminalUtility" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="498.678,251.878,503.8141,243.4744,499.3281,246.9204,495.882,242.4343,498.678,251.878" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[9049754bf7d2f3ab48cfbd1feeed1e65]
+link _AbstractFeature to _Autoloadable--><path d="M255.07,223.41 C262.276,231.491 270.399,241.697 276.011,252 C297.66,291.746 278.511,313.841 307.011,349 C315.864,359.921 328.118,368.689 340.336,375.481 " fill="none" id="_AbstractFeature-&gt;_Autoloadable" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="344.83,377.895,338.7931,370.1132,340.4249,375.5296,335.0085,377.1614,344.83,377.895" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[92686dc2878b15f29133883d45f38970]
+link _AbstractFeature to _cli_types--><path d="M238.223,223.027 C237.868,230.255 237.443,238.894 237.061,246.659 " fill="none" id="_AbstractFeature-&gt;_cli_types" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="236.805,251.868,241.2425,243.0755,237.0508,246.874,233.2522,242.6823,236.805,251.868" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[e2220594d9e4972fbfd35af4505e406b]
+link _AbstractFeature to _SpruceError--><path d="M266.158,223.047 C278.202,230.902 292.088,241.025 303.011,252 C320.577,269.647 336.326,293.512 346.423,310.38 " fill="none" id="_AbstractFeature-&gt;_SpruceError" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="349.118,314.941,347.9817,305.1579,346.5737,310.6367,341.0949,309.2287,349.118,314.941" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[0fc4dc845e63a0d4c512aecff7407d3b]
+link _AbstractFeature to _TerminalUtility--><path d="M293.514,219.937 C336.928,230.241 397.437,244.603 440.987,254.94 " fill="none" id="_AbstractFeature-&gt;_TerminalUtility" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="445.945,256.116,438.1117,250.1461,441.0801,254.9616,436.2646,257.9299,445.945,256.116" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[aa4be976953ab93147edc2a8e78d3292]
+link _AbstractGenerator to _Autoloadable--><path d="M635.359,97.076 C621.217,120.012 598.011,163.91 598.011,205 C598.011,205 598.011,205 598.011,270 C598.011,305.738 607.811,323.267 583.011,349 C563.359,369.392 490.136,381.962 438.732,388.465 " fill="none" id="_AbstractGenerator-&gt;_Autoloadable" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="433.516,389.113,442.9408,391.9718,438.4778,388.496,441.9536,384.033,433.516,389.113" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[1fc90217f2750cb729300b7075923f3f]
+link _AbstractService to _Autoloadable--><path d="M678.564,223.168 C671.298,253.073 651.46,316.896 609.011,349 C582.714,368.889 495.865,381.976 438.632,388.674 " fill="none" id="_AbstractService-&gt;_Autoloadable" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="433.533,389.263,442.932,392.2055,438.5001,388.6902,442.0155,384.2582,433.533,389.263" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[11db19eed988adecbad5c423cd8e2360]
+link _AbstractService to log--><path d="M682.732,223.178 C682.964,239.464 681.969,265.097 675.011,286 C664.61,317.245 659.498,325.917 636.011,349 C574.931,409.032 480.418,452.5144 440.191,469.3341 " fill="none" id="_AbstractService-&gt;log" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="435.108,471.4375,444.9536,471.6903,439.7277,469.5248,441.8932,464.2988,435.108,471.4375" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[decbaa2b2c585bfa515ca828b242ee35]
+link _AbstractService to _TerminalUtility--><path d="M633.142,223.027 C607.506,231.434 576.046,241.752 549.729,250.383 " fill="none" id="_AbstractService-&gt;_TerminalUtility" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="544.877,251.974,554.6751,252.9723,549.6284,250.4169,552.1837,245.3701,544.877,251.974" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[4bad97523d3b70cfe7d12dd6c2aad5ae]
+link _AbstractStore to _Autoloadable--><path d="M118.936,286.009 C140.32,294.591 167.109,305.356 191.011,315 C242.767,335.881 302.204,359.978 341.718,376.013 " fill="none" id="_AbstractStore-&gt;_Autoloadable" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="346.437,377.928,339.6027,370.8363,341.8042,376.0472,336.5934,378.2488,346.437,377.928" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[ecb7356dc1520d47fefc482b1c214030]
+link _AbstractStore to log--><path d="M81.0821,286.455 C85.7377,316.256 99.8742,379.117 139.011,412 C179.245,445.8043 342.02,467.7644 400.206,474.6654 " fill="none" id="_AbstractStore-&gt;log" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="405.183,475.249,396.7107,470.2271,400.2171,474.6661,395.7781,478.1726,405.183,475.249" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[b04ae4d0d62cdccbe2dcd86fd01b197b]
+link _AbstractStore to _SpruceError--><path d="M128.249,280.765 C179.217,291.909 258.358,309.212 309.178,320.323 " fill="none" id="_AbstractStore-&gt;_SpruceError" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="314.311,321.445,306.3722,315.6161,309.4262,320.3778,304.6646,323.4318,314.311,321.445" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[5e3cbe948b5dde16064cf9a6297fdb06]
+link _AbstractUtility to _Autoloadable--><path d="M489.965,349.027 C471.01,357.228 447.855,367.245 428.213,375.743 " fill="none" id="_AbstractUtility-&gt;_Autoloadable" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="423.3,377.868,433.1484,377.9672,427.8893,375.8834,429.973,370.6243,423.3,377.868" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[ce17238bd527f29815ff4620378a3b19]
+link _Autoloadable to log--><path d="M392.926,412.003 C398.959,425.964 407.68,446.1466 413.799,460.3078 " fill="none" id="_Autoloadable-&gt;log" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="415.926,465.23,416.0281,455.3817,413.9428,460.6401,408.6843,458.5548,415.926,465.23" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[efea581bba877ab673f7cfd4c451dca8]
+link filePrompt.addon to inquirer--><path d="M896.536,284.329 C885.847,311.168 860.308,370.086 827.011,412 C813.198,429.3882 794.284,445.7432 778.906,457.6981 " fill="none" id="filePrompt.addon-&gt;inquirer" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="774.669,460.9505,784.2438,458.6434,778.6353,457.906,779.3727,452.2974,774.669,460.9505" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[2ded3483a161c8f4b075d38d8fd24529]
+link _FormBuilder to _SpruceError--><path d="M378.874,223.211 C374.58,245.397 366.865,285.258 362.116,309.794 " fill="none" id="_FormBuilder-&gt;_SpruceError" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="361.15,314.785,366.7872,306.709,362.1001,309.8761,358.933,305.1889,361.15,314.785" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[3620c5ce6db8e53f90ad8a5d2adb731c]
+link _FormBuilder to _TerminalUtility--><path d="M411.963,223.027 C427.029,231.089 445.377,240.906 461.081,249.309 " fill="none" id="_FormBuilder-&gt;_TerminalUtility" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="465.863,251.868,459.8162,244.0939,461.4549,249.5082,456.0406,251.1469,465.863,251.868" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[dd9727ab58146c483fd2f66b9bf7a199]
+link _QuizBuilder to _FormBuilder--><path d="M382.011,160.027 C382.011,167.255 382.011,175.894 382.011,183.659 " fill="none" id="_QuizBuilder-&gt;_FormBuilder" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="382.011,188.868,386.011,179.868,382.011,183.868,378.011,179.868,382.011,188.868" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[63013decefd8710cce46bf631f8bf2d0]
+link _QuizBuilder to _SpruceError--><path d="M355.843,160.075 C346.153,167.551 336.257,177.376 331.011,189 C321.37,210.365 340.178,276.166 351.048,310.172 " fill="none" id="_QuizBuilder-&gt;_SpruceError" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="352.59,314.95,353.6325,305.1565,351.0544,310.1917,346.0192,307.6135,352.59,314.95" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[85c7423ae4c23a7baa4295690729e5e4]
+link _QuizBuilder to _TerminalUtility--><path d="M402.121,160.331 C411.821,168.556 423.407,178.905 433.011,189 C450.958,207.863 469.271,231.409 481.494,247.866 " fill="none" id="_QuizBuilder-&gt;_TerminalUtility" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="484.466,251.89,482.3368,242.274,481.4956,247.868,475.9016,247.0267,484.466,251.89" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[52269ade67b63d5647bdd874550cf002]
+link src to _AbstractCommand--><path d="M534.346,29.219 C520.78,36.952 498.695,49.54 480.129,60.123 " fill="none" id="src-&gt;_AbstractCommand" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="475.492,62.766,485.2918,61.7838,479.8358,60.2898,481.3298,54.8338,475.492,62.766" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[9c10dfc3907ebf5fc4d33e26f41b0f01]
+link src to _AbstractFeature--><path d="M530.931,22.916 C499.423,25.324 428.178,33.828 377.011,63 C322.36,94.159 275.325,153.332 252.944,184.546 " fill="none" id="src-&gt;_AbstractFeature" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="249.823,188.942,258.2953,183.92,252.718,184.8653,251.7726,179.288,249.823,188.942" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[96de3c6e3137ce073f83181eb04fc237]
+link src to _AbstractGenerator--><path d="M559.55,29.219 C572.98,36.952 594.844,49.54 613.225,60.123 " fill="none" id="src-&gt;_AbstractGenerator" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="617.816,62.766,612.0137,54.8078,613.4833,60.2704,608.0207,61.74,617.816,62.766" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[6d6cc69f155f198eb13d77b22544ee71]
+link src to _AbstractService--><path d="M562.93,23.434 C601.114,27.238 696.144,38.975 715.011,63 C743.171,98.858 715.36,154.564 696.405,184.429 " fill="none" id="src-&gt;_AbstractService" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="693.68,188.642,701.9253,183.2555,696.3945,184.443,695.207,178.9122,693.68,188.642" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[de94b702d76b1e2e496085edabff085b]
+link src to _AbstractStore--><path d="M530.658,22.443 C456.257,24.608 152.021,35.119 121.011,63 C68.2901,110.403 71.5421,204.665 76.0664,246.796 " fill="none" id="src-&gt;_AbstractStore" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="76.6496,251.908,79.6056,242.5132,76.0839,246.9401,71.657,243.4184,76.6496,251.908" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[67c29c9c3fe574dd6c9090d7e9441159]
+link src to _AbstractUtility--><path d="M549.603,33.86 C557.353,71.554 578.3,191.681 553.011,286 C550.728,294.516 546.399,303.088 541.92,310.431 " fill="none" id="src-&gt;_AbstractUtility" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="539.128,314.834,547.3252,309.3745,541.8052,310.6111,540.5686,305.0911,539.128,314.834" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[808bf46db7cba2f22072b5f015c7c3b9]
+link src to _Autoloadable--><path d="M530.864,22.088 C459.782,22.682 174.709,27.288 94.0113,63 C46.5499,84.003 8.0113,90.099 8.0113,142 C8.0113,142 8.0113,142 8.0113,207 C8.0113,242.738 -0.034,258.684 23.0113,286 C63.1667,333.596 242.633,369.886 333.269,385.542 " fill="none" id="src-&gt;_Autoloadable" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="338.313,386.408,330.1191,380.9435,333.385,385.5624,328.7662,388.8283,338.313,386.408" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[cc4b313cc7584fd918d172ee050c1b1c]
+link src to filePrompt.addon--><path d="M563.104,22.254 C616.392,23.408 786.035,29.679 827.011,63 C885.26,110.367 898.27,207.187 901.176,248.556 " fill="none" id="src-&gt;filePrompt.addon" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="901.509,253.784,904.9275,244.5474,901.1904,248.7942,896.9437,245.0571,901.509,253.784" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[8c44d4280528b4585910af02471ac13e]
+link src to log--><path d="M563.136,22.302 C613.39,23.582 765.853,30.154 800.011,63 C825.834,87.83 816.011,106.176 816.011,142 C816.011,142 816.011,142 816.011,333 C816.011,413.351 523.853,462.0027 442.063,474.0486 " fill="none" id="src-&gt;log" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="436.985,474.789,446.468,477.4486,441.9327,474.0676,445.3137,469.5323,436.985,474.789" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[8574310b9557b8512d1b8d66fb8632ff]
+link src to path--><path d="M562.718,23.933 C596.209,28.353 676.824,40.586 741.011,63 C745.226,64.472 749.597,66.378 753.703,68.36 " fill="none" id="src-&gt;path" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="758.378,70.698,752.119,63.0938,753.9064,68.4608,748.5394,70.2483,758.378,70.698" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[a299f2029401120bb32727b0a8cb31c7]
+link src to _SpruceError--><path d="M531.012,22.371 C494.042,23.783 400.534,30.554 331.011,63 C250.875,100.4 214.882,109.085 177.011,189 C158.235,228.623 163.869,255.134 195.011,286 C211.141,301.986 267.307,315.085 309.227,322.948 " fill="none" id="src-&gt;_SpruceError" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="314.265,323.881,306.1432,318.31,309.3485,322.9711,304.6874,326.1764,314.265,323.881" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[1d8e43b90e8ef3d974468fa3f42beb8b]
+link src to _TerminalUtility--><path d="M545.758,34.415 C542.368,66.205 531.971,152.968 513.011,223 C510.884,230.86 507.911,239.26 505.045,246.649 " fill="none" id="src-&gt;_TerminalUtility" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="503.09,251.584,510.1234,244.6897,504.9314,246.9354,502.6857,241.7434,503.09,251.584" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[40aaa57428d3dccaad2426921423372f]
+link _TerminalUtility to _AbstractUtility--><path d="M504.156,286.027 C507.9,293.394 512.389,302.226 516.393,310.107 " fill="none" id="_TerminalUtility-&gt;_AbstractUtility" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="518.813,314.868,518.3004,305.0325,516.5473,310.4108,511.1689,308.6577,518.813,314.868" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[82b271ceaeb691825158c47c4f5887eb]
+link _TerminalUtility to inquirer--><path d="M532.92,286.181 C548.931,293.923 567.519,303.921 583.011,315 C644.324,358.846 705.498,424.187 734.554,456.866 " fill="none" id="_TerminalUtility-&gt;inquirer" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="737.936,460.6857,734.9638,451.296,734.6211,456.9425,728.9747,456.5998,737.936,460.6857" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[2b0dba00a2dd1605a3be5c0eb5658126]
+link _TerminalUtility to log--><path d="M485.904,286.255 C480.976,294.631 475.22,305.136 471.011,315 C465.181,328.668 437.438,421.571 425.98,460.2034 " fill="none" id="_TerminalUtility-&gt;log" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="424.538,465.0667,430.9305,457.5743,425.9587,460.2728,423.2602,455.3011,424.538,465.0667" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[2674fd5de5d401e6c322d31ce08603b5]
+link _TerminalUtility to _SpruceError--><path d="M459.753,286.027 C441.202,294.228 418.539,304.245 399.315,312.743 " fill="none" id="_TerminalUtility-&gt;_SpruceError" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="394.506,314.868,404.3548,314.8877,399.0791,312.8465,401.1204,307.5707,394.506,314.868" style="stroke: #000000; stroke-width: 0.5;"/><script type="text/plantuml"><![CDATA[MD5=[c9b192048fbb5f7c0c7e2e0dc96416bb]
+@startuml
+
+scale max 1920 width
+top to bottom direction
+
+skinparam nodesep 14
+skinparam ranksep 29
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Tahoma
+skinparam defaultFontSize 12
+skinparam roundCorner 6
+skinparam dpi 150
+skinparam arrowColor black
+skinparam arrowThickness 0.5
+skinparam packageTitleAlignment left
+
+skinparam usecase {
+  borderThickness 0.5
+}
+
+skinparam rectangle {
+  borderThickness 0.5
+}
+
+skinparam component {
+  borderThickness 1
+}
+
+
+(src)
+rectangle "AbstractCommand" as _AbstractCommand
+rectangle "AbstractFeature" as _AbstractFeature
+rectangle "AbstractGenerator" as _AbstractGenerator
+rectangle "AbstractService" as _AbstractService
+rectangle "AbstractStore" as _AbstractStore
+rectangle "AbstractUtility" as _AbstractUtility
+rectangle "Autoloadable" as _Autoloadable
+rectangle "cli.types" as _cli_types
+(filePrompt.addon)
+rectangle "FormBuilder" as _FormBuilder
+(log)
+(path)
+rectangle "QuizBuilder" as _QuizBuilder
+rectangle "SpruceError" as _SpruceError
+rectangle "TerminalUtility" as _TerminalUtility
+
+package "Dependencies" {
+  [inquirer]
+}
+
+_AbstractCommand --> _Autoloadable
+_AbstractCommand --> _FormBuilder
+_AbstractCommand --> (log)
+_AbstractCommand --> _QuizBuilder
+_AbstractCommand --> _TerminalUtility
+_AbstractFeature --> _Autoloadable
+_AbstractFeature --> _cli_types
+_AbstractFeature --> _SpruceError
+_AbstractFeature --> _TerminalUtility
+_AbstractGenerator --> _Autoloadable
+_AbstractService --> _Autoloadable
+_AbstractService --> (log)
+_AbstractService --> _TerminalUtility
+_AbstractStore --> _Autoloadable
+_AbstractStore --> (log)
+_AbstractStore --> _SpruceError
+_AbstractUtility --> _Autoloadable
+_Autoloadable --> (log)
+(filePrompt.addon) ----> [inquirer]
+_FormBuilder --> _SpruceError
+_FormBuilder --> _TerminalUtility
+_QuizBuilder --> _FormBuilder
+_QuizBuilder --> _SpruceError
+_QuizBuilder --> _TerminalUtility
+(src) --> _AbstractCommand
+(src) --> _AbstractFeature
+(src) --> _AbstractGenerator
+(src) --> _AbstractService
+(src) --> _AbstractStore
+(src) --> _AbstractUtility
+(src) --> _Autoloadable
+(src) --> (filePrompt.addon)
+(src) --> (log)
+(src) --> (path)
+(src) --> _SpruceError
+(src) --> _TerminalUtility
+_TerminalUtility --> _AbstractUtility
+_TerminalUtility ----> [inquirer]
+_TerminalUtility --> (log)
+_TerminalUtility --> _SpruceError
+
+@enduml
+
+
+' View and edit on https://arkit.pro
+]]></script></g></svg>

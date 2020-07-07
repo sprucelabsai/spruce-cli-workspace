@@ -1,6 +1,6 @@
 import handlebars from 'handlebars'
 
-/* escape quotes */
+/* Escape quotes */
 handlebars.registerHelper('escape', function(variable) {
 	return variable && variable.replace(/(['])/g, '\\$1')
 })

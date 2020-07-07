@@ -1,21 +1,27 @@
-import handlebars from 'handlebars'
 import {
-	IFieldDefinition,
+	FieldDefinition,
+	FieldType,
 	ISchemaTemplateItem,
-	FieldType
+	TemplateRenderAs
 } from '@sprucelabs/schema'
+import handlebars from 'handlebars'
 
-/** renders field options */
+/** Renders field options */
 handlebars.registerHelper('fieldDefinitionOptions', function(
-	fieldDefinition: IFieldDefinition,
-	renderAs,
+	fieldDefinition: FieldDefinition,
+	renderAs: TemplateRenderAs,
 	options
 ) {
 	if (!fieldDefinition) {
-		return '"**fieldDefinitionOptions error: MISSING FIELD DEFINITION"'
+		throw new Error(
+			'fieldDefinitionOptions helper needs a FieldDefinition as the first argument'
+		)
 	}
 
-	if (!options || (renderAs !== 'type' && renderAs !== 'value')) {
+	if (
+		!options ||
+		(renderAs !== TemplateRenderAs.Type && renderAs !== TemplateRenderAs.Value)
+	) {
 		throw new Error("fieldDefinitionOptions helper's second arg as type|value")
 	}
 
@@ -23,13 +29,12 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 		data: { root }
 	} = options
 
-	const schemaTemplateItems:
-		| (ISchemaTemplateItem & { namespace: string })[]
-		| undefined = root && root.schemaTemplateItems
+	const schemaTemplateItems: ISchemaTemplateItem[] | undefined =
+		root && root.schemaTemplateItems
 
 	if (!schemaTemplateItems) {
 		throw new Error(
-			'fiendDefinitionOptions needs schemaTemplateItems passed to parent template'
+			'fieldDefinitionOptions needs schemaTemplateItems passed to parent template'
 		)
 	}
 
@@ -38,25 +43,25 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 		| undefined = fieldDefinition.options && {
 		...fieldDefinition.options
 	}
-
-	// if this is a schema type, we need to map it to the related definition
+	// If this is a schema type, we need to map it to it's proper value type
 	if (fieldDefinition.type === FieldType.Schema && updatedOptions) {
-		const matchedTemplateItem = schemaTemplateItems.find(
-			item => item.id === updatedOptions.schemaId
+		const value = handlebars.helpers.fieldDefinitionValueType(
+			fieldDefinition,
+			renderAs === TemplateRenderAs.Type
+				? TemplateRenderAs.DefinitionType
+				: TemplateRenderAs.Value,
+			options
 		)
 
-		// swap out id for reference
-		if (matchedTemplateItem) {
-			delete updatedOptions.schemaId
-			updatedOptions.schema = `SpruceSchemas.${matchedTemplateItem.namespace}.${
-				matchedTemplateItem.typeName
-			}.${renderAs === 'type' ? 'IDefinition' : 'definition'}`
-		} else {
-			throw new Error('fieldDefinitionOptions could not find schema ${}')
-		}
+		// Swap out id for reference
+		delete updatedOptions.schemaId
+		delete updatedOptions.schema
+		delete updatedOptions.schemaIds
+
+		updatedOptions.schemas = value
 	}
 
-	// no options, undefined is acceptable
+	// No options, undefined is acceptable
 	if (Object.keys(updatedOptions ?? {}).length === 0) {
 		return 'undefined'
 	}
@@ -66,12 +71,12 @@ handlebars.registerHelper('fieldDefinitionOptions', function(
 		// @ts-ignore TODO how to type this
 		const value = updatedOptions[key]
 		template += `${key}: `
-		if (key === 'schemaId' || key === 'schema') {
+		if (key === 'schemas') {
 			template += `${value},`
 		} else if (typeof value !== 'string') {
 			template += `${JSON.stringify(value)},`
 		} else {
-			template += `'${value.replace(/(['])/g, '\\$1')}',`
+			template += `\`${value.replace(/([`])/g, '\\$1')}\`,`
 		}
 	})
 

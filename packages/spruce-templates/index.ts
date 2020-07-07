@@ -1,45 +1,50 @@
-import handlebars from 'handlebars'
 import fs from 'fs'
 import path from 'path'
-import log from '@sprucelabs/log'
-
 import {
+	ISchemaDefinition,
 	ISchemaTemplateItem,
-	IFieldTemplateDetails,
-	ISchemaDefinition
+	IFieldTemplateItem
 } from '@sprucelabs/schema'
+import handlebars from 'handlebars'
+import log from './src/lib/log'
+// Import addons
+import './src/addons/escape.addon'
+import './src/addons/fieldDefinitionOptions.addon'
+import './src/addons/fieldDefinitionValueType.addon'
+import './src/addons/fieldTypeEnum.addon'
+import './src/addons/operators.addon'
+import './src/addons/gt.addon'
+import './src/addons/gt.addon'
+import './src/addons/pascalCase.addon'
+import './src/addons/fieldDefinitionPartial.addon'
+import './src/addons/schemaDefinitionPartial.addon'
+import './src/addons/schemaValuesPartial.addon'
+import './src/addons/json.addon'
+import './src/addons/isDefined.addon'
+import {
+	IValueTypeGenerator,
+	IAutoLoaderTemplateItem,
+	IRootAutoloaderTemplateItem,
+	IDirectoryTemplate,
+	DirectoryTemplateKind,
+	IDirectoryTemplateContextMap
+} from './src/types/templates.types'
+import DirectoryTemplateUtility from './src/utilities/DirectoryTemplateUtility'
+import importExtractor from './src/utilities/importExtractor'
 
-// import addons
-import * as escape from './src/addons/escape.addon'
-import * as fieldDefinitionOptions from './src/addons/fieldDefinitionOptions.addon'
-import * as fieldDefinitionValueType from './src/addons/fieldDefinitionValueType.addon'
-import * as fieldTypeEnum from './src/addons/fieldTypeEnum.addon'
-import * as fieldValue from './src/addons/fieldValue.addon'
-import * as isEqual from './src/addons/isEqual.addon'
-import * as startCase from './src/addons/startCase.addon'
+log.info('Addons imported')
 
-log.info('addon escape', escape)
-log.info('addon fieldDefinitionOptions', fieldDefinitionOptions)
-log.info('addon fieldDefinitionValueType', fieldDefinitionValueType)
-log.info('addon fieldTypeEnum', fieldTypeEnum)
-log.info('addon fieldValue', fieldValue)
-log.info('addon isEqual', isEqual)
-log.info('addon startCase', startCase)
-
-// import actual templates
+// Import actual templates
 const templatePath = path.join(__dirname, 'src', 'templates', 'typescript')
 
-// template files
-const schemaTypes: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/schema.types.hbs'))
+// Template files
+// TODO this can be done in a loop perhaps
+const schemasTypes: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/schemas.types.hbs'))
 	.toString()
 
 const definition: string = fs
 	.readFileSync(path.join(templatePath, 'schemas/definition.hbs'))
-	.toString()
-
-const definitionTypes: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/definition.types.hbs'))
 	.toString()
 
 const schemaExample: string = fs
@@ -70,122 +75,201 @@ const errorExample: string = fs
 	.readFileSync(path.join(templatePath, 'errors/example.hbs'))
 	.toString()
 
-// template generators
+const test: string = fs
+	.readFileSync(path.join(templatePath, 'tests/Test.test.hbs'))
+	.toString()
+
+const autoloader: string = fs
+	.readFileSync(path.join(templatePath, 'autoloader/autoloader.hbs'))
+	.toString()
+
+const autoloaderRoot: string = fs
+	.readFileSync(path.join(templatePath, 'autoloader/root.hbs'))
+	.toString()
+
+const fieldsTypes: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/fields/fields.types.hbs'))
+	.toString()
+
+const fieldClassMap: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/fields/fieldClassMap.hbs'))
+	.toString()
+
+const fieldType: string = fs
+	.readFileSync(path.join(templatePath, 'schemas/fields/fieldType.hbs'))
+	.toString()
+
+// Template generators
 export const templates = {
-	/** all definitions */
-	schemaTypes(options: {
+	/** All definitions */
+	schemasTypes(options: {
 		schemaTemplateItems: ISchemaTemplateItem[]
-		typeMap: { [fieldType: string]: IFieldTemplateDetails }
+		fieldTemplateItems: IFieldTemplateItem[]
+		valueTypeGenerator: IValueTypeGenerator
 	}) {
-		const template = handlebars.compile(schemaTypes)
-		return template(options)
+		const imports = importExtractor(options.fieldTemplateItems)
+		const template = handlebars.compile(schemasTypes)
+		return template({ ...options, imports })
 	},
 
-	/** when building a definition in a skill */
+	/** When building a definition in a skill */
 	definition(options: {
-		camelName: string
+		nameCamel: string
 		description: string
-		pascalName: string
-		readableName: string
+		namePascal: string
+		nameReadable: string
 	}) {
 		const template = handlebars.compile(definition)
 		return template(options)
 	},
 
-	/** the types file to support a definition */
-	definitionTypes(options: {
-		camelName: string
-		pascalName: string
-		relativeToDefinition: string
-		description: string
-	}) {
-		const template = handlebars.compile(definitionTypes)
-		return template(options)
-	},
-
-	/** for creating an error class */
+	/** For creating an error class */
 	error(options: {
-		errors: { pascalName: string; readableName: string }[]
+		errors: { namePascal: string; nameReadable: string }[]
 		renderClassDefinition?: boolean
 	}) {
 		const template = handlebars.compile(error)
 		return template({ renderClassDefinition: true, ...options })
 	},
 
-	/** for generating types file this error (the ISpruceErrorOptions sub-interface) */
+	/** For generating types file this error (the ISpruceErrorOptions sub-interface) */
 	errorTypes(options: {
-		camelName: string
+		definition: ISchemaDefinition
+		schemaTemplateItems: ISchemaTemplateItem[]
+		nameCamel: string
 		relativeToDefinition: string
-		pascalName: string
+		namePascal: string
 		description: string
 	}) {
 		const template = handlebars.compile(errorTypes)
 		return template(options)
 	},
 
-	/** for generating types for all the options (the ISpruceErrorOptions sub-interface) */
+	/** For generating types for all the options (the ISpruceErrorOptions sub-interface) */
 	errorOptionsTypes(options: {
-		options: { camelName: string; pascalName: string }[]
+		options: { nameCamel: string; namePascal: string }[]
 	}) {
 		const template = handlebars.compile(errorOptionsTypes)
 		return template(options)
 	},
 
-	/** for generating types for all the options (the ISpruceErrorOptions sub-interface) */
+	/** For generating types for all the options (the ISpruceErrorOptions sub-interface) */
 	errorCodesTypes(options: {
-		codes: { pascalName: string; constName: string; description: string }[]
+		codes: { namePascal: string; nameConst: string; description: string }[]
 	}) {
 		const template = handlebars.compile(errorCodesTypes)
 		return template(options)
 	},
 
-	/** an error definition file */
+	/** An error definition file */
 	errorDefinition(options: {
-		camelName: string
-		readableName: string
+		nameCamel: string
+		nameReadable: string
 		description: string
 	}) {
 		const template = handlebars.compile(errorDefinition)
 		return template(options)
 	},
 
-	/** schema example */
+	/** Schema example */
 	schemaExample(options: {
-		camelName: string
-		pascalName: string
+		nameCamel: string
+		namePascal: string
 		definition: ISchemaDefinition
 	}) {
 		const template = handlebars.compile(schemaExample)
 		return template(options)
 	},
 
-	/** error example */
+	/** Error example */
 	errorExample(options: {
-		camelName: string
-		pascalName: string
+		nameCamel: string
+		namePascal: string
 		definition: ISchemaDefinition
 	}) {
 		const template = handlebars.compile(errorExample)
 		return template(options)
+	},
+
+	/** Test file */
+	test(options: { namePascal: string }) {
+		const template = handlebars.compile(test)
+		return template(options)
+	},
+
+	/** Autoloader */
+	autoloader(options: IAutoLoaderTemplateItem) {
+		const template = handlebars.compile(autoloader)
+		return template(options)
+	},
+
+	/** Root autoloader */
+	rootAutoloader(options: IRootAutoloaderTemplateItem) {
+		const template = handlebars.compile(autoloaderRoot)
+		return template(options)
+	},
+
+	/** The types file for all the schema fields being used */
+	fieldsTypes(options: { fieldTemplateItems: IFieldTemplateItem[] }) {
+		const template = handlebars.compile(fieldsTypes)
+		return template(options)
+	},
+	/** Global mapping of all fields for lookup by type */
+	fieldClassMap(options: { fieldTemplateItems: IFieldTemplateItem[] }) {
+		const template = handlebars.compile(fieldClassMap)
+		return template(options)
+	},
+
+	/** The field type enum */
+	fieldType(options: { fieldTemplateItems: IFieldTemplateItem[] }) {
+		const template = handlebars.compile(fieldType)
+		return template(options)
+	},
+
+	/** Copy an entire directory and pass a context for all files */
+	async directoryTemplate<K extends DirectoryTemplateKind>(options: {
+		kind: K
+		context: IDirectoryTemplateContextMap[K]
+	}): Promise<IDirectoryTemplate> {
+		return DirectoryTemplateUtility.build(options)
+	},
+
+	/** Tries our best to see if a specific directory is based on a valid directory template */
+	async isValidTemplatedDirectory(options: {
+		kind: DirectoryTemplateKind
+		dir: string
+	}) {
+		const { kind, dir } = options
+		// on a template, just check for package.json
+		if (kind === DirectoryTemplateKind.Skill) {
+			return fs.existsSync(path.join(dir, 'package.json'))
+		}
+
+		const filesToCheck = await DirectoryTemplateUtility.filesInTemplate(kind)
+		// Check if the .spruce directory exists
+		let filesMissing = false
+		for (let i = 0; i < filesToCheck.length; i += 1) {
+			const file = path.join(dir, filesToCheck[i])
+			if (!fs.existsSync(file)) {
+				log.debug(
+					`[${kind}] containsAllTemplateFiles failed because ${file} is missing`
+				)
+				filesMissing = true
+				break
+			}
+		}
+
+		if (!filesMissing) {
+			return true
+		}
+
+		return false
 	}
 }
 
-/** all the templates */
+/** All the templates */
 export type Templates = typeof templates
-
-// partials
-const schemaPartial: string = fs
-	.readFileSync(
-		path.join(templatePath, 'schemas/partials/schemaDefinition.hbs')
-	)
-	.toString()
-
-handlebars.registerPartial('schemaDefinition', schemaPartial)
-
-const fieldPartial: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/partials/fieldDefinition.hbs'))
-	.toString()
-
-handlebars.registerPartial('fieldDefinition', fieldPartial)
+export { default as importExtractor } from './src/utilities/importExtractor'
 
 export default handlebars
+export * from './src/types/templates.types'

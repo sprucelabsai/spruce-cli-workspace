@@ -5,25 +5,37 @@ const namedTemplateItemDefinition = buildSchemaDefinition({
 	name: 'NamedTemplateItem',
 	description: 'Used to collect input on the names of a class or interface',
 	fields: {
-		readableName: {
+		nameReadable: {
 			type: FieldType.Text,
 			label: 'Readable name',
 			isRequired: true,
 			hint: 'The name people will read'
 		},
-		camelName: {
+		nameCamel: {
 			type: FieldType.Text,
 			label: 'Camel case name',
 			isRequired: true,
 			hint: 'camelCase version of the name'
 		},
-		pascalName: {
+		nameCamelPlural: {
+			type: FieldType.Text,
+			label: 'Plural camel case name',
+			isRequired: true,
+			hint: 'camelCase version of the name'
+		},
+		namePascal: {
 			type: FieldType.Text,
 			label: 'Pascal case name',
 			isRequired: true,
 			hint: 'PascalCase of the name'
 		},
-		constName: {
+		namePascalPlural: {
+			type: FieldType.Text,
+			label: 'Plural Pascal case name',
+			isRequired: true,
+			hint: 'PascalCase of the name'
+		},
+		nameConst: {
 			type: FieldType.Text,
 			label: 'Constant case name',
 			isRequired: true,

@@ -4,12 +4,13 @@ const buildFailedDefinition = buildErrorDefinition({
 	id: 'buildFailed',
 	name: 'BuildFailed',
 	description:
-		"It looks like you're not running `y watch`. Run it and then run `spruce all:sync`.",
+		'Error thrown when building or linting failed. Happens when a yarn command fails inside the package utility.',
 	fields: {
 		file: {
 			type: FieldType.Text,
 			label: 'File',
-			hint: 'File we wanted to build, if not set we wanted to build everything.'
+			hint:
+				'File we wanted to build, if not set we wanted to build everything..'
 		}
 	}
 })

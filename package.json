@@ -17,13 +17,15 @@
 		"watch": "lerna run watch --no-sort --stream",
 		"test": "lerna run test --parallel",
 		"publish": "lerna publish",
-		"clean": "lerna run clean && rm -rf node_modules; for d in packages/*/node_modules; do echo $d; rm -rf $d; done"
+		"clean": "lerna run clean && rm -rf node_modules; for d in packages/*/node_modules; do echo $d; rm -rf $d; done",
+		"arkit": "lerna run arkit",
+		"arkit.png": "lerna run arkit.png"
 	},
 	"dependencies": {},
 	"devDependencies": {
 		"conventional-changelog-sprucelabs": "^1.1.0",
 		"eslint": "^5",
-		"eslint-config-spruce": "^10.1.0",
+		"eslint-config-spruce": "10.4.0",
 		"lerna": "^3.20.2",
 		"typescript": "^3.8"
 	}

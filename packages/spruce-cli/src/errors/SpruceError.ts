@@ -1,14 +1,14 @@
 import BaseSpruceError from '@sprucelabs/error'
-import { ErrorCode } from '../.spruce/errors/codes.types'
-import { ErrorOptions } from '../.spruce/errors/options.types'
+import { ErrorCode } from '#spruce/errors/codes.types'
+import { ErrorOptions } from '#spruce/errors/options.types'
 
 export default class SpruceError extends BaseSpruceError<ErrorOptions> {
-	/** an easy to understand version of the errors */
+	/** An easy to understand version of the errors */
 	public friendlyMessage(): string {
 		const { options } = this
 		let message
 		switch (options?.code) {
-			// invalid command
+			// Invalid command
 			case ErrorCode.InvalidCommand:
 				message = `Invalid command: ${options.args.join(' ')}\n`
 				message += `Try running spruce --help`
@@ -20,19 +20,34 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 
 			case ErrorCode.UserNotFound:
 				message = 'Could not find a user.'
-				message += `token: "${options.token}", userId: "${options.userId}"`
+				message += ` token: "${options.token}", userId: "${options.userId}"`
 				break
 
 			case ErrorCode.Generic:
 				message = "When you're too lazy to make a new error"
 				break
-
 			case ErrorCode.NotImplemented:
-				message = 'This command has not yet been implemented '
+				message = ''
+				if (options.friendlyMessage) {
+					message += `\n\n${options.friendlyMessage}`
+				}
+				break
+			case ErrorCode.CommandNotImplemented:
+				message = `${options.command} has not yet been implemented. ${
+					options.args ? `Args: ${options.args.join(', ')}` : ''
+				}`
+				if (options.friendlyMessage) {
+					message += `\n\n${options.friendlyMessage}`
+				}
+
 				break
 
 			case ErrorCode.GenericMercury:
-				message = `Not sure what happened: Event ${options.eventName}`
+				message = `Error: Event "${options.eventName ?? 'n/a'}"${
+					options.friendlyMessage
+						? `: ${options.friendlyMessage}`
+						: `: ${this.originalError?.message}`
+				}`
 				break
 			case ErrorCode.TranspileFailed:
 				message = 'Could not transpile (ts -> js) a script'
@@ -40,21 +55,53 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				break
 
 			case ErrorCode.DefinitionFailedToImport:
-				message = `Error in "${options.file}". ${options.details}.`
-
+				message = `Error importing "${options.file}"`
 				break
 
 			case ErrorCode.BuildFailed:
 				message = `Build${
 					options.file ? `ing ${options.file}` : ''
-				} failed. It looks like you're not running 'y watch'. Run it and then run 'spruce all:sync'.`
+				} failed. It looks like you're not running 'yarn watch'. Run it and then run 'spruce all:sync'.`
 
+				break
+
+			case ErrorCode.FailedToImport:
+				message = `Failed to import ${options.file}`
+
+				break
+
+			case ErrorCode.ValueTypeServiceStageError:
+				message =
+					'When collecting value types for all fields, something went wrong'
+				break
+
+			case ErrorCode.ValueTypeServiceError:
+				message = 'An error when generating value types for template insertion '
+				break
+
+			case ErrorCode.LintFailed:
+				message = `Lint failed on pattern ${options.pattern}. Response from lint was:\n\n`
+				message += options.stdout
 				break
 
 			default:
 				message = super.friendlyMessage()
 		}
 
-		return message
+		// Drop on code and friendly message
+		message = `${options.code}: ${message}`
+		const fullMessage = `${message}${
+			options.friendlyMessage ? `\n\n${options.friendlyMessage}` : ''
+		}`
+
+		// Handle repeating text from original message by remove it
+		return `${fullMessage}${
+			this.originalError && this.originalError.message !== fullMessage
+				? `\n\nOriginal error: ${this.originalError.message.replace(
+						message,
+						''
+				  )}`
+				: ''
+		}`
 	}
 }

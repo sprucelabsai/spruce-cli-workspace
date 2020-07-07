@@ -1,14 +1,15 @@
+import { FieldDefinition } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
-import { IFieldDefinition } from '@sprucelabs/schema'
+import log from '../lib/log'
 
-/** drop in the value of a field which quotes if needed */
+/** Drop in the value of a field which quotes if needed */
 handlebars.registerHelper('fieldValue', function(
-	fieldDefinition: IFieldDefinition,
+	fieldDefinition: FieldDefinition,
 	value: any
 ) {
 	if (value) {
 		// TODO finish this
-		console.log(fieldDefinition, value)
+		log.debug(fieldDefinition, value)
 		throw new Error('field value not yet implemented')
 	}
 

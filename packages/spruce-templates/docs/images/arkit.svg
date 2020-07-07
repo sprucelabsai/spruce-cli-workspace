@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="158.5321px" preserveAspectRatio="none" style="width:1917px;height:158px;" version="1.1" viewBox="0 0 1917 158" width="1917.4836px" zoomAndPan="magnify"><defs/><g><!--MD5=[39d76035084820968c52f2080fff6652]
+entity _index--><rect fill="#F8F8F8" height="28.9253" rx="2.5164" ry="2.5164" style="stroke: #000000; stroke-width: 0.41939711664482304;" width="41.9397" x="995.6488" y="6.7104"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="10.0655" lengthAdjust="spacingAndGlyphs" textLength="25.1638" x="1004.0367" y="25.1687">index</text><!--MD5=[fa9b2d6945bbad4aa0119b0c09897758]
+entity _DirectoryTemplateUtility--><rect fill="#F8F8F8" height="28.9253" rx="2.5164" ry="2.5164" style="stroke: #000000; stroke-width: 0.41939711664482304;" width="130.8519" x="5.0328" y="63.7484"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="10.0655" lengthAdjust="spacingAndGlyphs" textLength="114.076" x="13.4207" y="82.2067">DirectoryTemplateUtility</text><ellipse cx="196.1332" cy="77.8951" fill="#F8F8F8" rx="48.086" ry="11.6303" style="stroke: #383838; stroke-width: 0.41939711664482304;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="10.0655" lengthAdjust="spacingAndGlyphs" textLength="67.9423" x="162.162" y="81.034">escape.addon</text><ellipse cx="333.9571" cy="77.9474" fill="#F8F8F8" rx="77.7054" ry="17.5542" style="stroke: #383838; stroke-width: 0.41939711664482304;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="10.0655" lengthAdjust="spacingAndGlyphs" textLength="137.5623" x="265.176" y="81.0863">fieldDefinitionOptions.addon</text><ellipse cx="496.6814" cy="77.947" fill="#F8F8F8" rx="73.5097" ry="16.715" style="stroke: #383838; stroke-width: 0.41939711664482304;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="10.0655" lengthAdjust="spacingAndGlyphs" textLength="128.3355" x="432.5136" y="81.086">fieldDefinitionPartial.addon</text><ellipse cx="664.4584" cy="78.0345" fill="#F8F8F8" rx="82.3352" ry="18.4801" style="stroke: #383838; stroke-width: 0.41939711664482304;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="10.0655" lengthAdjust="spacingAndGlyphs" textLength="147.6278" x="590.6445" y="81.1735">fieldDefinitionValueType.addon</text><ellipse cx="820.2889" cy="78.1653" fill="#F8F8F8" rx="62.019" ry="14.4169" style="stroke: #383838; stroke-width: 0.41939711664482304;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="10.0655" lengthAdjust="spacingAndGlyphs" textLength="102.3329" x="769.1225" y="81.3042">fieldTypeEnum.addon</text><ellipse cx="926.7463" cy="78.2109" fill="#F8F8F8" rx="32.1722" ry="11.1073" style="stroke: #383838; stroke-width: 0.41939711664482304;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="10.0655" lengthAdjust="spacingAndGlyphs" textLength="41.9397" x="905.7764" y="81.3498">gt.addon</text><!--MD5=[1c620f7cd8a6a78e5fac845c9226feb4]
+entity _importExtractor--><rect fill="#F8F8F8" height="28.9253" rx="2.5164" ry="2.5164" style="stroke: #000000; stroke-width: 0.41939711664482304;" width="90.5898" x="971.3237" y="63.7484"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="10.0655" lengthAdjust="spacingAndGlyphs" textLength="73.8139" x="979.7117" y="82.2067">importExtractor</text><ellipse cx="1125.6084" cy="77.8294" fill="#F8F8F8" rx="51.9518" ry="12.4035" style="stroke: #383838; stroke-width: 0.41939711664482304;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="10.0655" lengthAdjust="spacingAndGlyphs" textLength="78.0079" x="1086.6045" y="80.9683">isDefined.addon</text><ellipse cx="1230.4792" cy="78.2109" fill="#F8F8F8" rx="41.069" ry="11.1073" style="stroke: #383838; stroke-width: 0.41939711664482304;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="10.0655" lengthAdjust="spacingAndGlyphs" textLength="54.5216" x="1203.2184" y="81.3498">json.addon</text><ellipse cx="1296.579" cy="78.1859" fill="#F8F8F8" rx="13.2238" ry="11.0823" style="stroke: #383838; stroke-width: 0.41939711664482304;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="10.0655" lengthAdjust="spacingAndGlyphs" textLength="15.0983" x="1289.0298" y="81.3248">log</text><ellipse cx="1374.9753" cy="77.9623" fill="#F8F8F8" rx="52.6162" ry="12.5364" style="stroke: #383838; stroke-width: 0.41939711664482304;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="10.0655" lengthAdjust="spacingAndGlyphs" textLength="79.6855" x="1335.1326" y="81.1012">operators.addon</text><ellipse cx="1495.7287" cy="77.8718" fill="#F8F8F8" rx="56.3578" ry="13.2847" style="stroke: #383838; stroke-width: 0.41939711664482304;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="10.0655" lengthAdjust="spacingAndGlyphs" textLength="88.9122" x="1451.2726" y="81.0107">pascalCase.addon</text><ellipse cx="1645.8794" cy="77.957" fill="#F8F8F8" rx="81.9475" ry="18.4026" style="stroke: #383838; stroke-width: 0.41939711664482304;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="10.0655" lengthAdjust="spacingAndGlyphs" textLength="146.789" x="1572.4849" y="81.0959">schemaDefinitionPartial.addon</text><ellipse cx="1815.0698" cy="77.9078" fill="#F8F8F8" rx="75.4106" ry="17.0952" style="stroke: #383838; stroke-width: 0.41939711664482304;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="10.0655" lengthAdjust="spacingAndGlyphs" textLength="132.5295" x="1748.8051" y="81.0467">schemaValuesPartial.addon</text><!--MD5=[9eb52d64287dc55285d67f9e55dfff72]
+entity _templates_types--><rect fill="#F8F8F8" height="28.9253" rx="2.5164" ry="2.5164" style="stroke: #000000; stroke-width: 0.41939711664482304;" width="93.1062" x="943.2241" y="120.7864"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="10.0655" lengthAdjust="spacingAndGlyphs" textLength="76.3303" x="951.6121" y="139.2448">templates.types</text><!--MD5=[39a16a74b7a6123734723e88c7dde5be]
+link _DirectoryTemplateUtility to _templates_types--><path d="M119.6867,92.3484 C127.0387,93.974 134.5627,95.4232 141.7562,96.4613 C296.9206,118.857 779.905,130.0983 938.6443,133.257 " fill="none" id="_DirectoryTemplateUtility-&gt;_templates_types" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><polygon fill="#000000" points="943.0144,133.3436,935.5339,129.8381,938.8213,133.2597,935.3997,136.5471,943.0144,133.3436" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><!--MD5=[a4f7bc8e89d0c151f01e173344914bcc]
+link fieldDefinitionValueType.addon to _index--><path d="M725.4337,65.6114 C736.3783,63.4875 747.6651,61.3712 758.27,59.5544 C843.4412,44.9652 944.7339,31.6016 991.1948,25.4197 " fill="none" id="fieldDefinitionValueType.addon-&gt;_index" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><polygon fill="#000000" points="995.5145,24.8442,987.5899,22.5105,991.357,25.3956,988.472,29.1627,995.5145,24.8442" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><!--MD5=[7abd75210e2e243507be93997b502ebd]
+link _index to fieldDefinitionValueType.addon--><path d="M995.6404,24.0289 C949.9596,29.3863 838.7842,43.7515 746.5269,59.5544 C739.2646,60.7983 731.6827,62.1832 724.1839,63.6142 " fill="none" id="_index-&gt;fieldDefinitionValueType.addon" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><polygon fill="#000000" points="720.0294,64.4135,728.0763,66.2826,724.1479,63.6215,726.809,59.693,720.0294,64.4135" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><!--MD5=[542473777a593dbc01c33c7dca94dfed]
+link _index to _DirectoryTemplateUtility--><path d="M995.6068,22.1475 C879.3835,24.1069 314.2467,34.7781 141.7562,59.5544 C135.8083,60.4083 129.6348,61.5457 123.5192,62.8316 " fill="none" id="_index-&gt;_DirectoryTemplateUtility" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><polygon fill="#000000" points="119.2983,63.7442,127.3857,65.4297,123.3978,62.8586,125.9689,58.8706,119.2983,63.7442" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><!--MD5=[9b95898fe668a32d28487294cda0e8bc]
+link _index to escape.addon--><path d="M995.4139,22.0863 C887.5282,23.6171 398.8475,31.9807 249.9607,59.5544 C241.5014,61.1213 232.5364,63.6821 224.406,66.3719 " fill="none" id="_index-&gt;escape.addon" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><polygon fill="#000000" points="220.238,67.7857,228.4648,68.5388,224.2098,66.4389,226.3098,62.1839,220.238,67.7857" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><!--MD5=[6b6589f23b78c16386d3fd68818d764f]
+link _index to fieldDefinitionOptions.addon--><path d="M995.5313,22.0225 C918.0519,23.0459 641.9577,28.7681 416.8807,59.5544 C408.2227,60.7388 399.1201,62.3191 390.2431,64.0495 " fill="none" id="_index-&gt;fieldDefinitionOptions.addon" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><polygon fill="#000000" points="385.9066,64.9093,393.9643,66.7314,390.0204,64.0932,392.6586,60.1493,385.9066,64.9093" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><!--MD5=[910853888c7ad3241a4918371b61d025]
+link _index to fieldDefinitionPartial.addon--><path d="M995.6404,22.6223 C932.1436,25.2972 736.4924,35.0859 576.2516,59.5544 C567.446,60.899 558.1597,62.6453 549.1586,64.5159 " fill="none" id="_index-&gt;fieldDefinitionPartial.addon" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><polygon fill="#000000" points="545.0468,65.3823,553.1257,67.1083,549.1506,64.5173,551.7416,60.5422,545.0468,65.3823" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><!--MD5=[d673cb2701eaf067826d7b73a2952d0e]
+link _index to fieldTypeEnum.addon--><path d="M995.6152,27.7331 C963.8668,36.6863 903.0459,53.843 862.0708,65.3983 " fill="none" id="_index-&gt;fieldTypeEnum.addon" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><polygon fill="#000000" points="857.9271,66.5687,866.1036,67.7487,861.9636,65.4303,864.2821,61.2903,857.9271,66.5687" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><!--MD5=[d60aa5d743feb19e5684de9fa319c03d]
+link _index to gt.addon--><path d="M995.5733,34.7882 C980.1982,44.2749 959.5554,57.007 944.9185,66.0327 " fill="none" id="_index-&gt;gt.addon" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><polygon fill="#000000" points="941.3368,68.2432,949.5228,67.1309,944.9051,66.0394,945.9967,61.4217,941.3368,68.2432" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><!--MD5=[dbfaa8e33a127ed7b5d115e4fedd8145]
+link _index to _importExtractor--><path d="M1016.6186,35.4936 C1016.6186,42.6669 1016.6186,51.5414 1016.6186,59.2558 " fill="none" id="_index-&gt;_importExtractor" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><polygon fill="#000000" points="1016.6186,63.6418,1019.9738,56.0927,1016.6186,59.4479,1013.2634,56.0927,1016.6186,63.6418" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><!--MD5=[8854db53d062dfdbaef29837190849b0]
+link _index to isDefined.addon--><path d="M1037.6472,32.4823 C1055.5554,41.5765 1081.34,54.6676 1100.3722,64.3313 " fill="none" id="_index-&gt;isDefined.addon" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><polygon fill="#000000" points="1104.3313,66.3389,1099.1113,59.9359,1100.5894,64.4448,1096.0806,65.923,1104.3313,66.3389" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><!--MD5=[5cad3edd42a71d76e27d9b72308d8c73]
+link _index to json.addon--><path d="M1037.6723,25.6126 C1069.5633,31.589 1131.8773,44.1046 1183.5387,59.5544 C1190.66,61.6833 1198.2427,64.3481 1205.2047,66.9569 " fill="none" id="_index-&gt;json.addon" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><polygon fill="#000000" points="1209.4406,68.5684,1203.5706,62.7555,1205.5189,67.082,1201.1924,69.0303,1209.4406,68.5684" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><!--MD5=[26f6b2066aa5727fd04570fcd4cc0d2c]
+link _index to log--><path d="M1037.7059,23.2598 C1091.9256,27.2407 1234.8729,39.3998 1277.4836,59.5544 C1280.5284,60.9946 1283.4307,63.0807 1286.0142,65.3177 " fill="none" id="_index-&gt;log" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><polygon fill="#000000" points="1289.3274,68.4144,1286.1035,60.8083,1286.2635,65.5505,1281.5213,65.7105,1289.3274,68.4144" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><!--MD5=[2326b84de4454ffd1d7e5ef1f489ac4b]
+link _index to operators.addon--><path d="M1037.8737,23.269 C1087.1864,26.9211 1213.0223,37.7617 1316.0682,59.5544 C1324.4813,61.3335 1333.4312,63.7433 1341.7353,66.2094 " fill="none" id="_index-&gt;operators.addon" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><polygon fill="#000000" points="1345.7615,67.4219,1339.5016,62.031,1341.7459,66.2116,1337.5653,68.4559,1345.7615,67.4219" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><!--MD5=[1d54bd6bccd90d5e7194e58348fad7b5]
+link _index to pascalCase.addon--><path d="M1037.6304,22.3312 C1099.0469,24.1522 1283.4474,31.7215 1433.4993,59.5544 C1442.0215,61.1347 1451.0553,63.3675 1459.5187,65.7151 " fill="none" id="_index-&gt;pascalCase.addon" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><polygon fill="#000000" points="1463.6204,66.8742,1457.2657,61.5955,1459.584,65.7356,1455.4439,68.0539,1463.6204,66.8742" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><!--MD5=[810960136182b5008fbab8c8957e7c3a]
+link _index to schemaDefinitionPartial.addon--><path d="M1037.6052,22.3086 C1110.0603,24.2412 1356.3051,32.5108 1557.6409,59.5544 C1566.4231,60.7337 1575.6414,62.257 1584.6668,63.9128 " fill="none" id="_index-&gt;schemaDefinitionPartial.addon" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><polygon fill="#000000" points="1588.8021,64.6828,1581.9937,60.0038,1584.6788,63.9159,1580.7667,66.601,1588.8021,64.6828" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><!--MD5=[ab37bb39d7f7db4a002b3118fa9ac42f]
+link _index to schemaValuesPartial.addon--><path d="M1037.8569,21.6853 C1124.6301,21.4413 1460.6763,23.0442 1733.7877,59.5544 C1742.6705,60.7421 1752.0231,62.387 1761.0988,64.1996 " fill="none" id="_index-&gt;schemaValuesPartial.addon" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><polygon fill="#000000" points="1765.2425,65.0426,1758.5168,60.2455,1761.1332,64.2039,1757.1748,66.8203,1765.2425,65.0426" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><!--MD5=[1bb0123316834d8740cd55db570c5d13]
+link _index to _templates_types--><path d="M1037.773,21.8984 C1168.8682,22.556 1865.8558,27.5527 1896.5138,59.5544 C1907.8626,71.3991 1907.871,84.6239 1896.5138,96.4613 C1866.7366,127.5028 1227.7934,133.052 1040.7759,134.0124 " fill="none" id="_index-&gt;_templates_types" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><polygon fill="#000000" points="1036.4393,134.0343,1044.0075,137.3463,1040.6332,134.0103,1043.9692,130.636,1036.4393,134.0343" style="stroke: #000000; stroke-width: 0.41939711664482304;"/><script type="text/plantuml"><![CDATA[MD5=[ce71df1260f6b90fd2a20973aa2d7d60]
+@startuml
+
+scale max 1920 width
+top to bottom direction
+
+skinparam nodesep 14
+skinparam ranksep 29
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Tahoma
+skinparam defaultFontSize 12
+skinparam roundCorner 6
+skinparam dpi 150
+skinparam arrowColor black
+skinparam arrowThickness 0.5
+skinparam packageTitleAlignment left
+
+skinparam usecase {
+  borderThickness 0.5
+}
+
+skinparam rectangle {
+  borderThickness 0.5
+}
+
+skinparam component {
+  borderThickness 1
+}
+
+
+rectangle "index" as _index
+rectangle "DirectoryTemplateUtility" as _DirectoryTemplateUtility
+(escape.addon)
+(fieldDefinitionOptions.addon)
+(fieldDefinitionPartial.addon)
+(fieldDefinitionValueType.addon)
+(fieldTypeEnum.addon)
+(gt.addon)
+rectangle "importExtractor" as _importExtractor
+(isDefined.addon)
+(json.addon)
+(log)
+(operators.addon)
+(pascalCase.addon)
+(schemaDefinitionPartial.addon)
+(schemaValuesPartial.addon)
+rectangle "templates.types" as _templates_types
+
+
+_DirectoryTemplateUtility --> _templates_types
+(fieldDefinitionValueType.addon) --> _index
+_index --> _DirectoryTemplateUtility
+_index --> (escape.addon)
+_index --> (fieldDefinitionOptions.addon)
+_index --> (fieldDefinitionPartial.addon)
+_index --> (fieldDefinitionValueType.addon)
+_index --> (fieldTypeEnum.addon)
+_index --> (gt.addon)
+_index --> _importExtractor
+_index --> (isDefined.addon)
+_index --> (json.addon)
+_index --> (log)
+_index --> (operators.addon)
+_index --> (pascalCase.addon)
+_index --> (schemaDefinitionPartial.addon)
+_index --> (schemaValuesPartial.addon)
+_index --> _templates_types
+
+@enduml
+
+
+' View and edit on https://arkit.pro
+]]></script></g></svg>

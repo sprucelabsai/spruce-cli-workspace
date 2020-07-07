@@ -1,10 +1,10 @@
 {{#if renderClassDefinition}}
-import AbstractSpruceError from '@sprucelabs/error'
-import { ErrorCode } from '../.spruce/errors/codes.types'
-import { ErrorOptions } from '../.spruce/errors/options.types'
+import BaseSpruceError from '@sprucelabs/error'
+import { ErrorCode } from '#spruce/errors/codes.types'
+import { ErrorOptions } from '#spruce/errors/options.types'
 
-export default class SpruceError extends AbstractSpruceError<ErrorOptions>{
-	
+export default class SpruceError extends BaseSpruceError<ErrorOptions>{
+
     /** an easy to understand version of the errors */
     public friendlyMessage():string {
 
@@ -13,11 +13,8 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions>{
         switch (options?.code) {
 {{/if}}
 {{#each errors}}
-            case ErrorCode.{{pascalName}}:
-
-                message = '{{#if description}}{{{escape description}}}{{else}}A {{{escape readableName}}} just happened!{{/if}}'
-                message + '\n\nThe rest of this error message needs to be customized with options'
-                
+            case ErrorCode.{{namePascal}}:
+                message = '{{#if description}}{{{escape description}}}{{else}}A {{{escape nameReadable}}} just happened!{{/if}}'
                 break
 {{/each}}
 {{#if renderClassDefinition}}
@@ -25,7 +22,21 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions>{
                 message = super.friendlyMessage()
         }
 
-        return message
+		// Drop on code and friendly message
+		message = `${options.code}: ${message}`
+		const fullMessage = `${message}${
+			options.friendlyMessage ? `\n\n${options.friendlyMessage}` : ''
+		}`
+
+		// Handle repeating text from original message by remove it
+		return `${fullMessage}${
+			this.originalError && this.originalError.message !== fullMessage
+				? `\n\nOriginal error: ${this.originalError.message.replace(
+						message,
+						''
+				  )}`
+				: ''
+		}`
     }
 }
 {{/if}}

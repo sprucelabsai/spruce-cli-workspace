@@ -3,7 +3,7 @@
 		"module": "commonjs",
 		"esModuleInterop": true,
 		"target": "ES2017",
-		"lib": ["es2017"],
+		"lib": ["es2017", "ES2020"],
 		"declaration": true,
 		"noImplicitAny": true,
 		"forceConsistentCasingInFileNames": true,
@@ -15,10 +15,17 @@
 		"sourceMap": true,
 		"outDir": "build",
 		"baseUrl": ".",
+		"experimentalDecorators": true,
 		"paths": {
-			"*": ["node_modules/*"]
+			"#spruce:schema/*": [
+				"../../node_modules/@sprucelabs/schema/build/*",
+				"../../node_modules/@sprucelabs/schema/build/src/*",
+				"node_modules/@sprucelabs/schema/build/*",
+				"node_modules/@sprucelabs/schema/build/src*"
+			],
+			"#spruce/*": [".spruce/*"]
 		}
 	},
-	"include": ["./*.ts", "./**/*.ts"],
-	"exclude": ["**/node_modules/*", "build/*"]
+	"include": ["./*.ts", "./**/*.ts", "./.spruce/**/*.ts"],
+	"exclude": ["**/node_modules/*", "build/*", "tmp/*"]
 }

@@ -1,20 +1,19 @@
+import Schema from '@sprucelabs/schema'
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import AbstractStore, {
 	IBaseStoreSettings,
 	IStoreOptions
 } from './AbstractStore'
-import Schema from '@sprucelabs/schema'
-import onboardingDefinition from '../schemas/onboarding.definition'
-import { IOnboarding } from '../.spruce/schemas/onboarding.types'
 
 export interface IOnboardingStoreSettings
 	extends IBaseStoreSettings,
-		IOnboarding {}
+		SpruceSchemas.Local.IOnboardingStore {}
 
 export default class OnboardingStore extends AbstractStore<
 	IOnboardingStoreSettings
 > {
 	public name = 'onboarding'
-	public schema = new Schema(onboardingDefinition)
+	public schema = new Schema(SpruceSchemas.Local.OnboardingStore.definition)
 
 	public constructor(options: IStoreOptions) {
 		super(options)
@@ -44,14 +43,14 @@ export default class OnboardingStore extends AbstractStore<
 		this.save()
 	}
 
-	/** save changes to filesystem */
+	/** Save changes to filesystem */
 	public async save() {
 		const values = this.schema.getValues()
 		this.writeValues(values)
 		return this
 	}
 
-	/** load everything into the store (called in constructor) */
+	/** Load everything into the store (called in constructor) */
 	public async load() {
 		const saved = this.readValues()
 		this.schema.setValues({

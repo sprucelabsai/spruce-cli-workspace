@@ -1,99 +1,166 @@
 #!/usr/bin/env node
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
-import { terminal } from './utilities/TerminalUtility'
-import { Command } from 'commander'
-import globby from 'globby'
-import pkg from '../package.json'
-import { IServices } from './services'
-import log, { LogLevel } from '@sprucelabs/log'
+// eslint-disable-next-line import/order
+import { register } from '@sprucelabs/path-resolver'
+register({
+	cwd: __dirname,
+	extensions: ['.js', '.ts']
+})
+// Shim
+// eslint-disable-next-line import/order
+import allSettled from 'promise.allsettled'
+allSettled.shim()
 import {
 	Mercury,
 	IMercuryConnectOptions,
 	MercuryAuth
 } from '@sprucelabs/mercury'
-import { IStores } from './stores'
-import RemoteStore from './stores/RemoteStore'
-import SkillStore from './stores/SkillStore'
-import UserStore from './stores/UserStore'
-import SchemaStore from './stores/SchemaStore'
-import PinService from './services/PinService'
-import AbstractCommand, { ICommandOptions } from './commands/Abstract'
-import OnboardingStore from './stores/OnboardingStore'
-import { IGenerators } from './generators'
-import SchemaGenerator from './generators/Schema'
-import { IUtilities } from './utilities'
-import NamesUtility from './utilities/NamesUtility'
-import { StoreAuth } from './stores/AbstractStore'
-import CoreGenerator from './generators/Core'
-import { IGeneratorOptions } from './generators/Abstract'
 import { templates } from '@sprucelabs/spruce-templates'
-import ErrorGenerator from './generators/Error'
+import { Command } from 'commander'
+import autoloader from '#spruce/autoloaders'
+import { Commands } from '#spruce/autoloaders/commands'
+import { ErrorCode } from '#spruce/errors/codes.types'
+import pkg from '../package.json'
+/** Addons */
+import './addons/filePrompt.addon'
+import Autoloadable from './Autoloadable'
+import { ICommandOptions } from './commands/AbstractCommand'
 import SpruceError from './errors/SpruceError'
-import { ErrorCode } from './.spruce/errors/codes.types'
-import VmService from './services/VmService'
+import { IFeatureOptions } from './features/AbstractFeature'
+import { IGeneratorOptions } from './generators/AbstractGenerator'
+import log from './lib/log'
+import path from './lib/path'
+import { IServiceOptions } from './services/AbstractService'
+import { StoreAuth, IStoreOptions } from './stores/AbstractStore'
 import { IUtilityOptions } from './utilities/AbstractUtility'
+import { terminal } from './utilities/TerminalUtility'
 
-/**
- * For handling debugger not attaching right away
- */
-async function setup(argv: string[], debugging: boolean): Promise<void> {
-	const program = new Command()
-	const commands = []
-	if (debugging) {
-		// eslint-disable-next-line no-debugger
-		debugger // (breakpoints and debugger works after this one is missed)
-		terminal.info('Extra debugger dropped in so future debuggers work... 🤷‍')
-	}
-
-	program.version(pkg.version).description(pkg.description)
-	program.option('--no-color', 'Disable color output in the console')
-	program.option(
+export async function setup(options?: { program?: Command; cwd?: string }) {
+	const program = options?.program
+	program?.version(pkg.version).description(pkg.description)
+	program?.option('--no-color', 'Disable color output in the console')
+	program?.option(
 		'-d, --directory <path>',
 		'The working directory to execute the command'
 	)
 
-	program.on('option:directory', function() {
-		if (program.directory) {
-			throw new Error('another path forward')
-			// process.chdir(path.resolve(program.directory))
-			// config.init()
+	// Track everything autoloaded to handle env changes at runtime
+	const autoLoaded: Autoloadable[] = []
+
+	// Update state for the entire process
+	// TODO move this out and give more control when handling cross skill, e.g. "update x on only utilities"
+	const updateCwd = function(newCwd: string) {
+		autoLoaded.forEach(loaded => (loaded.cwd = newCwd))
+	}
+
+	const cwd = options?.cwd ?? process.cwd()
+
+	program?.on('option:directory', function() {
+		if (program?.directory) {
+			const newCwd = path.resolvePath(cwd, program.directory)
+			log.trace(`CWD updated: ${newCwd}`)
+			updateCwd(newCwd)
 		}
 	})
 
-	// starting cwd
-	// const cwd = process.cwd()
-	// Force run in schema for now
-	const cwd = '/Users/taylorromero/Development/SpruceLabs/spruce-schema/'
+	// Setup utilities
+	const utilityOptions: IUtilityOptions = {
+		cwd
+	}
 
-	// setup log
-	log.setOptions({ level: LogLevel.Info })
-
-	// setup mercury
+	// Setup mercury
 	const mercury = new Mercury()
 
-	// setup stores
-	const storeOptions = {
+	// Setup services
+	const serviceOptions: IServiceOptions = {
 		mercury,
 		cwd,
-		log
+		templates
 	}
 
-	const stores: IStores = {
-		remote: new RemoteStore(storeOptions),
-		skill: new SkillStore(storeOptions),
-		user: new UserStore(storeOptions),
-		schema: new SchemaStore(storeOptions),
-		onboarding: new OnboardingStore(storeOptions)
+	// Setup services
+	const storeOptions: IStoreOptions = {
+		mercury,
+		cwd
 	}
 
-	// setup mercury
+	// Setup generators
+	const generatorOptions: IGeneratorOptions = {
+		templates,
+		cwd
+	}
+
+	const featureOptions: IFeatureOptions = {
+		templates,
+		cwd
+	}
+
+	// Alias everything that has a : with a . so "option delete" deletes up to the period
+	if (program) {
+		const originalCommand = program.command.bind(program)
+		program.command = (name: string) => {
+			const response = originalCommand(name)
+			const firstPart = name.split(' ')[0]
+			const alias = firstPart.replace(':', '.')
+			if (alias !== firstPart) {
+				program.alias(alias)
+			}
+			return response
+		}
+	}
+
+	const commandOptions: ICommandOptions = {
+		mercury,
+		cwd,
+		templates
+	}
+
+	const {
+		utilities,
+		services,
+		stores,
+		generators,
+		commands
+	} = await autoloader({
+		commands: {
+			constructorOptions: commandOptions,
+			after: async (instance: Commands) =>
+				instance.attachCommands && program && instance.attachCommands(program)
+		},
+		utilities: {
+			constructorOptions: utilityOptions
+		},
+		stores: {
+			constructorOptions: storeOptions
+		},
+		services: {
+			constructorOptions: serviceOptions
+		},
+		features: {
+			constructorOptions: featureOptions
+		},
+		generators: {
+			constructorOptions: generatorOptions
+		}
+	})
+
+	// Alphabetical sort of help output
+	program?.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
+
+	// Error on unknown commands
+	program?.action((command, args) => {
+		throw new SpruceError({ code: ErrorCode.InvalidCommand, args })
+	})
+
+	// Final checks before we hand off to the command
+
+	// Setup mercury
 	const remoteUrl = stores.remote.getRemoteUrl()
 
-	// who is logged in?
+	// Who is logged in?
 	const loggedInUser = stores.user.loggedInUser()
 	const loggedInSkill = stores.skill.loggedInSkill()
 
-	// build mercury creds
+	// Build mercury creds
 	let creds: MercuryAuth | undefined
 	const authType = stores.remote.authType
 
@@ -109,104 +176,63 @@ async function setup(argv: string[], debugging: boolean): Promise<void> {
 			break
 	}
 
-	// mercury connection options
+	// Mercury connection options
 	const connectOptions: IMercuryConnectOptions = {
+		useMock: process.env.TESTING === 'true',
 		spruceApiUrl: remoteUrl,
 		credentials: creds
 	}
 
 	await mercury.connect(connectOptions)
 
-	const serviceOptions = {
-		mercury,
-		cwd
-	}
-
-	// setup services
-	const services: IServices = {
-		pin: new PinService(serviceOptions),
-		vm: new VmService(serviceOptions)
-	}
-
-	// setup utilities
-	const utilityOptions: IUtilityOptions = {
-		cwd
-	}
-
-	const utilities: IUtilities = {
-		names: new NamesUtility(utilityOptions)
-	}
-
-	// setup generators
-	const generatorOptions: IGeneratorOptions = {
-		services,
+	return {
+		cwd,
+		utilityOptions,
 		utilities,
-		templates,
-		log,
-		cwd
+		mercury,
+		serviceOptions,
+		services,
+		storeOptions,
+		stores,
+		connectOptions,
+		generatorOptions,
+		generators,
+		commands
+	}
+}
+
+/**
+ * For handling debugger not attaching right away
+ */
+async function run(argv: string[], debugging: boolean): Promise<void> {
+	const program = new Command()
+	// Const commands = []
+	if (debugging) {
+		// eslint-disable-next-line no-debugger
+		debugger // (breakpoints and debugger works after this one is missed)
+		log.trace('Extra debugger dropped in so future debuggers work... 🤷‍')
 	}
 
-	const generators: IGenerators = {
-		schema: new SchemaGenerator(generatorOptions),
-		core: new CoreGenerator(generatorOptions),
-		error: new ErrorGenerator(generatorOptions)
-	}
-
-	// Load commands and actions
-	globby.sync(`${__dirname}/commands/**/*.js`).forEach(file => {
-		try {
-			// import and type the command
-			const cmdClass: new (
-				options: ICommandOptions
-			) => AbstractCommand = require(file).default
-
-			// instantiate the command
-			const command = new cmdClass({
-				stores,
-				mercury,
-				services,
-				cwd,
-				log,
-				generators,
-				utilities,
-				templates
-			})
-
-			// attach commands to the program
-			command.attachCommands && command.attachCommands(program)
-
-			// track all commands
-			commands.push(command)
-		} catch (err) {
-			throw new SpruceError({
-				code: ErrorCode.CouldNotLoadCommand,
-				originalError: err,
-				file
-			})
-		}
-	})
-
-	// Alphabetical sort of help output
-	program.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
-
-	// error on unknown commands
-	program.action((command, args) => {
-		throw new SpruceError({ code: ErrorCode.InvalidCommand, args })
-	})
+	await setup({ program })
 
 	const commandResult = await program.parseAsync(argv)
-
 	if (commandResult.length === 0) {
 		// No commands were found / executed
 		program.outputHelp()
 	}
 }
 
-setup(process.argv, process.debugPort > 0)
-	.then(() => {
-		process.exit(0)
-	})
-	.catch(e => {
-		terminal.handleError(e)
-		process.exit(1)
-	})
+if (process.env.TESTING !== 'true') {
+	run(
+		process.argv,
+		typeof global.v8debug === 'object' ||
+			/--debug|--inspect/.test(process.execArgv.join(' '))
+	)
+		.then(() => {
+			process.exit(0)
+		})
+		.catch(e => {
+			terminal.handleError(e)
+			process.exit(1)
+		})
+}
