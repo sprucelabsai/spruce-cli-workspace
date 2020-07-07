@@ -1,27 +1,36 @@
-import { FieldType } from '@sprucelabs/schema'
+import path from 'path'
 import { Command } from 'commander'
-import { Feature } from '#spruce/autoloaders/features'
-import log from '../lib/log'
-import path from '../lib/path'
-import AbstractCommand from './AbstractCommand'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+import FeatureManager, { FeatureCode } from '../features/FeatureManager'
+import namesUtil from '../utilities/names.utility'
+import AbstractCommand, { ICommandOptions } from './AbstractCommand'
+
+interface ITestCommandOptions extends ICommandOptions {
+	featureManager: FeatureManager
+}
 
 export default class TestCommand extends AbstractCommand {
-	public attachCommands(program: Command) {
-		program
-			.command('test:create [target]')
-			.description('Create a test for a specific file')
-			.action(this.create.bind(this))
+	private featureManager: FeatureManager
+
+	public constructor(options: ITestCommandOptions) {
+		super(options)
+		this.featureManager = options.featureManager
 	}
 
-	public async create(targetOption: string | undefined) {
-		log.trace('test:create begin')
+	public attachCommands = (program: Command) => {
+		program
+			.command('test.create [target]')
+			.description('Create a test for a specific file')
+			.action(this.create)
+	}
+
+	public create = async (targetOption: string | undefined) => {
 		let target = targetOption
 
-		// Make sure test module is installed
-		await this.services.feature.install({
+		await this.featureManager.install({
 			features: [
 				{
-					feature: Feature.Test
+					code: FeatureCode.Test
 				}
 			]
 		})
@@ -40,14 +49,15 @@ export default class TestCommand extends AbstractCommand {
 			target = path.join(file.path ?? this.cwd, file.name)
 		}
 
-		const name = this.utilities.names.toFileNameWithoutExtension(target)
-		const namePascal = this.utilities.names.toPascal(name)
+		const name = namesUtil.toFileNameWithoutExtension(target)
+		const namePascal = namesUtil.toPascal(name)
 		const destination = path.join(path.dirname(target), namePascal) + '.test.ts'
-		const contents = this.templates.test({ namePascal })
+		throw new Error(destination)
+		// const contents = this.templates.test({ namePascal })
 
-		this.writeFile(destination, contents)
+		// diskUtil.writeFile(destination, contents)
 
-		this.term.info(`Test file created at: ${destination}`)
-		this.term.hint('Try `yarn test` or `yarn test:watch`')
+		// this.term.info(`Test file created at: ${destination}`)
+		// this.term.hint('Try `yarn test` or `yarn test:watch`')
 	}
 }

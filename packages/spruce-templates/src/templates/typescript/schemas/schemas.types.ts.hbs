@@ -1,0 +1,35 @@
+/* eslint-disable @typescript-eslint/no-namespace */
+/* eslint-disable no-redeclare */
+
+import { default as Schema } from '@sprucelabs/schema'
+{{#each imports}}
+import * as {{importAs}} from '{{package}}'
+{{/each}}
+
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
+{{#each schemaTemplateItems}}
+
+	export declare namespace SpruceSchemas.{{namespace}}.I{{namePascal}} {
+		/** {{definition.description}} */
+		export interface {{definition.version}} {
+			{{> schemaValues schema=definition renderAs="type" }}
+		}
+
+	}
+
+	export declare namespace SpruceSchemas.{{namespace}}.{{namePascal}}.{{definition.version}} {
+		/** The interface for the schema definition for a {{nameReadable}} */
+		export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+			{{> schemaDefinition namespace=namespace schema=definition renderAs="type" }}
+		}
+
+		/** The type of a schema instance built off this definition */
+		export type Instance = Schema<SpruceSchemas.{{namespace}}.{{namePascal}}.{{definition.version}}.IDefinition>
+
+	}
+
+{{/each}}
+
+
+

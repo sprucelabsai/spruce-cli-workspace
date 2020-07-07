@@ -1,54 +1,49 @@
 import pathUtil from 'path'
 import {
-	ISchemaDefinition,
-	IFieldRegistration,
 	ISchemaTemplateItem,
-	IFieldTemplateItem
+	IFieldTemplateItem,
+	ISchemaDefinition
 } from '@sprucelabs/schema'
-import Schema from '@sprucelabs/schema/build/Schema'
+import { IFieldRegistration } from '@sprucelabs/schema/build/utilities/registerFieldType'
 import globby from 'globby'
 import { uniqBy } from 'lodash'
-// TODO move these into mercury api and pull from there
-import { ErrorCode } from '#spruce/errors/codes.types'
+import ErrorCode from '#spruce/errors/errorCode'
+import { LOCAL_NAMESPACE, CORE_NAMESPACE } from '../constants'
 import SpruceError from '../errors/SpruceError'
+import ServiceFactory, {
+	Service,
+	IServiceProvider,
+	IServices
+} from '../factories/ServiceFactory'
+import SchemaTemplateItemBuilder from '../templateItemBuilders/SchemaTemplateItemBuilder'
 import {
-	userDefinition,
+	personDefinition,
 	userLocationDefinition,
 	skillDefinition,
 	locationDefinition,
 	groupDefinition,
 	aclDefinition
 } from '../temporary/schemas'
-import AbstractStore from './AbstractStore'
+import diskUtil from '../utilities/disk.utility'
+import namesUtil from '../utilities/names.utility'
+import versionUtil from '../utilities/version.utility'
 
-/** The mapping of type keys (string, phoneNumber) to definitions */
-// export interface IFieldTypeMap {
-// 	[fieldType: string]: IFieldTemplateDetails
-// }
+interface IFetchSchemaTemplateItemsResponse {
+	items: ISchemaTemplateItem[]
+	errors: SpruceError[]
+}
+
+interface IFetchFieldTemplateItemsResponse {
+	items: IFieldTemplateItem[]
+	errors: SpruceError[]
+}
 
 export interface ISchemaTemplateItemsOptions {
-	includeErrors?: boolean
-	/* Where should i look for local definitions? */
 	localLookupDir: string
 }
 
 export interface IFieldTemplateItemsOptions
 	extends ISchemaTemplateItemsOptions {}
-
-type SchemaTemplateItemsReturnType<
-	T extends ISchemaTemplateItemsOptions
-> = T['includeErrors'] extends false
-	? ISchemaTemplateItem[]
-	: {
-			items: ISchemaTemplateItem[]
-			errors: SpruceError[]
-	  }
-
-type FieldTemplateItemsReturnType<
-	T extends IFieldTemplateItemsOptions
-> = T['includeErrors'] extends false
-	? IFieldTemplateItem[]
-	: { items: IFieldTemplateItem[]; errors: SpruceError[] }
 
 interface IAddonItem {
 	path: string
@@ -56,19 +51,49 @@ interface IAddonItem {
 	isLocal: boolean
 }
 
-export default class SchemaStore extends AbstractStore {
-	public name = 'schema'
+export default class SchemaStore implements IServiceProvider {
+	public cwd: string
 
-	/** Get the schema map supplied by core */
-	public async schemaTemplateItems<T extends ISchemaTemplateItemsOptions>(
-		options: T
-	): Promise<SchemaTemplateItemsReturnType<T>> {
-		const { includeErrors = true, localLookupDir } = options
+	private schemaBuilder: SchemaTemplateItemBuilder
+	private serviceFactory: ServiceFactory
 
-		/** Get all schemas from api  */
-		// TODO load from api
+	public Service<S extends Service>(type: S, cwd?: string): IServices[S] {
+		return this.serviceFactory.Service(cwd ?? this.cwd, type)
+	}
+
+	public constructor(cwd: string, serviceFactory: ServiceFactory) {
+		this.cwd = cwd
+		this.serviceFactory = serviceFactory
+		this.schemaBuilder = new SchemaTemplateItemBuilder()
+	}
+
+	public async fetchAllTemplateItems(
+		localSchemaDir?: string,
+		localAddonDir?: string
+	) {
+		const schemaRequest = this.fetchSchemaTemplateItems(
+			diskUtil.resolvePath(this.cwd, localSchemaDir ?? 'src/schemas')
+		)
+		const fieldRequest = this.fetchFieldTemplateItems(
+			diskUtil.resolvePath(this.cwd, localAddonDir ?? 'src/addons')
+		)
+
+		const [schemaResults, fieldResults] = await Promise.all([
+			schemaRequest,
+			fieldRequest
+		])
+
+		return {
+			schemas: schemaResults,
+			fields: fieldResults
+		}
+	}
+
+	public async fetchSchemaTemplateItems(
+		localLookupDir: string
+	): Promise<IFetchSchemaTemplateItemsResponse> {
 		const schemas: ISchemaDefinition[] = [
-			userDefinition,
+			personDefinition,
 			skillDefinition,
 			locationDefinition,
 			userLocationDefinition,
@@ -76,79 +101,50 @@ export default class SchemaStore extends AbstractStore {
 			aclDefinition
 		]
 
-		// Each skill's slug will be the namespace
-		const coreTemplateItems = this.utilities.schema.buildTemplateItems({
-			namespace: 'Core',
-			definitions: schemas
-		})
+		const coreTemplateItems = this.schemaBuilder.generateTemplateItems(
+			CORE_NAMESPACE,
+			schemas
+		)
 
-		// Local
-		const localErrors: SpruceError[] = []
-		// TODO: Cleanup / break up statements for easier readability
-		const localDefinitions = (
-			await Promise.all(
-				(
-					await globby([pathUtil.join(localLookupDir, '/**/*.definition.ts')])
-				).map(async file => {
-					try {
-						const definition = await this.services.child.importDefault(file, {
-							cwd: this.cwd
-						})
-						Schema.validateDefinition(definition)
-						return definition
-					} catch (err) {
-						localErrors.push(
-							new SpruceError({
-								code: ErrorCode.DefinitionFailedToImport,
-								file,
-								originalError: err
-							})
-						)
-						return false
-					}
-				})
-			)
-		).filter(d => !!d) as ISchemaDefinition[]
+		const localDefinitions = await this.loadLocalDefinitions(localLookupDir)
+		const localTemplateItems = this.schemaBuilder.generateTemplateItems(
+			LOCAL_NAMESPACE,
+			localDefinitions
+		)
 
-		// Break out errors and definitions for
-		// const errors = localErrorsOrDefinitions.filter(
-		// 	local => !Schema.isDefinitionValid(local)
-		// ) as SpruceError[]
-		// when we get better at handling failed imports, uncomment above and update generateTemplateItems
+		const templateItems = [...coreTemplateItems, ...localTemplateItems]
 
-		// If a local schema points to a core one, it requires the core one to be tracked in "definitionsById"
-		const definitionsById: { [id: string]: ISchemaDefinition } = {}
-
-		coreTemplateItems.forEach(templateItem => {
-			definitionsById[templateItem.id] = templateItem.definition
-		})
-
-		let allTemplateItems = coreTemplateItems
-		try {
-			allTemplateItems = this.utilities.schema.buildTemplateItems({
-				namespace: 'Local',
-				definitions: localDefinitions,
-				definitionsById,
-				items: coreTemplateItems
-			})
-		} catch (err) {
-			localErrors.push(err)
-		}
-
-		return (includeErrors
-			? {
-					items: allTemplateItems,
-					errors: localErrors
-			  }
-			: [...allTemplateItems]) as SchemaTemplateItemsReturnType<T>
+		return { items: templateItems, errors: [] }
 	}
 
-	/** All field types from all skills we depend on */
-	public async fieldTemplateItems<T extends IFieldTemplateItemsOptions>(
-		options?: T
-	): Promise<FieldTemplateItemsReturnType<T>> {
-		const { includeErrors = true } = options || {}
+	private async loadLocalDefinitions(localLookupDir: string) {
+		const localMatches = await globby(
+			pathUtil.join(localLookupDir, '**/*.builder.ts')
+		)
+
+		const schemaService = this.Service(Service.Schema)
+
+		const loading = Promise.all(
+			localMatches.map(async local => {
+				const definition = await schemaService.importDefinition(local)
+				const version = versionUtil.latestVersion(
+					pathUtil.join(pathUtil.dirname(local), '..')
+				)
+				definition.version = version.constValue
+
+				return definition
+			})
+		)
+
+		return loading
+	}
+
+	public async fetchFieldTemplateItems<T extends IFieldTemplateItemsOptions>(
+		localLookupDir: string
+	): Promise<IFetchFieldTemplateItemsResponse> {
 		const cwd = pathUtil.join(__dirname, '..', '..')
+		const localImportService = this.Service(Service.Import, cwd)
+
 		// TODO load from core
 		const coreAddons = await Promise.all(
 			(
@@ -163,10 +159,10 @@ export default class SchemaStore extends AbstractStore {
 					)
 				])
 			).map(async path => {
-				// Import from
-				const registration = await this.services.vm.importAddon<
+				const registration = await localImportService.importDefault<
 					IFieldRegistration
-				>(path, { cwd })
+				>(path)
+
 				return {
 					path,
 					registration,
@@ -176,31 +172,34 @@ export default class SchemaStore extends AbstractStore {
 		)
 
 		const localErrors: SpruceError[] = []
+		const importService = this.Service(Service.Import)
+
 		const localAddons = (
 			await Promise.all(
-				(
-					await globby([pathUtil.join(this.cwd, '/src/addons/*Field.addon.ts')])
-				).map(async file => {
-					try {
-						const registration = await this.services.vm.importAddon<
-							IFieldRegistration
-						>(file)
-						return {
-							path: file,
-							registration,
-							isLocal: true
+				(await globby([pathUtil.join(localLookupDir, '/*Field.addon.ts')])).map(
+					async file => {
+						try {
+							const registration = await importService.importDefault<
+								IFieldRegistration
+							>(file)
+
+							return {
+								path: file,
+								registration,
+								isLocal: true
+							}
+						} catch (err) {
+							localErrors.push(
+								new SpruceError({
+									code: ErrorCode.FailedToImport,
+									file,
+									originalError: err
+								})
+							)
+							return false
 						}
-					} catch (err) {
-						localErrors.push(
-							new SpruceError({
-								code: ErrorCode.FailedToImport,
-								file,
-								originalError: err
-							})
-						)
-						return false
 					}
-				})
+				)
 			)
 		).filter(addon => !!addon) as IAddonItem[]
 
@@ -217,7 +216,7 @@ export default class SchemaStore extends AbstractStore {
 			let importAs = registration.importAs
 
 			if (addon.isLocal) {
-				pkg = `#spruce/../src/fields/${registration.className}`
+				pkg = `#spruce/../fields/${registration.className}`
 				importAs = `generated_import_${generatedImportAsCount++}`
 			}
 
@@ -225,36 +224,20 @@ export default class SchemaStore extends AbstractStore {
 			const name = registration.className
 
 			types.push({
-				namePascal: this.utilities.names.toPascal(name),
-				nameCamel: this.utilities.names.toCamel(name),
+				namePascal: namesUtil.toPascal(name),
+				nameCamel: namesUtil.toCamel(name),
 				package: pkg,
 				className: registration.className,
 				importAs,
 				nameReadable: registration.className,
-				pascalType: this.utilities.names.toPascal(registration.type),
-				camelType: this.utilities.names.toCamel(registration.type),
+				pascalType: namesUtil.toPascal(registration.type),
+				camelType: namesUtil.toCamel(registration.type),
 				isLocal: addon.isLocal,
-				description: registration.description
+				description: registration.description,
+				valueTypeGeneratorType: registration.valueTypeGeneratorType
 			})
 		}
 
-		return (includeErrors
-			? { items: types, errors: localErrors }
-			: types) as FieldTemplateItemsReturnType<T>
+		return { items: types, errors: localErrors }
 	}
-
-	// TODO this may need to be brought back to hold an entire class map
-	// so we don't have to rely on the generated file before doing anything
-	// /** Get all fields */
-	// public async fieldTypeMap(): Promise<IFieldTypeMap> {
-	// 	const map: IFieldTypeMap = {}
-	// 	if (typeof FieldClassMap === 'object') {
-	// 		Object.keys(FieldClassMap).forEach(type => {
-	// 			const FieldClass = FieldClassMap[type as FieldType]
-	// 			const templateDetails = FieldClass.description
-	// 			map[type] = templateDetails
-	// 		})
-	// 	}
-	// 	return map
-	// }
 }

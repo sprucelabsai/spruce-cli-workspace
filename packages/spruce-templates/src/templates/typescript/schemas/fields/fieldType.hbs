@@ -1,7 +1,0 @@
-/** Field Types */
-export enum FieldType {
-	{{#each fieldTemplateItems}}
-	/** {{{escape description }}} */
-	{{pascalType}} = '{{camelType}}',
-	{{/each}}
-}

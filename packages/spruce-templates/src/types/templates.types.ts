@@ -1,20 +1,13 @@
-import { TemplateRenderAs, FieldDefinition } from '@sprucelabs/schema'
+import { ISchemaDefinition } from '@sprucelabs/schema'
 
-/** A callback function that returns what is written to a template for the interface of the schema (e.g. string, number, IAddressFieldValue) */
-export interface IValueTypeGenerator {
-	(renderAs: TemplateRenderAs, definition: FieldDefinition): string
-}
-
-/** Autoloader needs all the classes to load */
 export interface IAutoLoaderClassTemplateItem {
-	constructorOptionsInterfaceName?: string
+	optionsInterfaceName?: string
 	className: string
 	nameCamel: string
 	namePascal: string
 	relativeFilePath: string
 }
 
-/** Auto loader needs all the interface */
 export interface IAutoLoaderInterfaceTemplateItem {
 	interfaceName: string
 	relativeFilePath: string
@@ -28,7 +21,7 @@ export interface IAutoLoaderImportTemplateItem {
 export interface IAutoLoaderTemplateItem {
 	abstractClassName: string
 	abstractClassRelativePath: string
-	abstractClassConstructorOptionsInterfaceName?: string
+	abstractClassOptionsInterfaceName?: string
 	classes: IAutoLoaderClassTemplateItem[]
 	interfaces: IAutoLoaderInterfaceTemplateItem[]
 	constructorOptionInterfaces: IAutoLoaderImportTemplateItem[]
@@ -68,11 +61,41 @@ export interface IDirectoryTemplateContextMap {
 	[DirectoryTemplateKind.Autoloadable]: IDirectoryTemplateContextAutoloadable
 }
 
-export interface IDirectoryTemplate {
-	files: {
-		/** The relative path of the output file, without a leading forward slash */
-		relativePath: string
-		/** The file contents, built with the template data */
-		contents: string
-	}[]
+export interface IDirectoryTemplateFile {
+	/** The relative path of the output file, without a leading forward slash */
+	relativePath: string
+	/** The file contents, built with the template data */
+	contents: string
+}
+
+export interface IDefinitionBuilderTemplateItem {
+	nameCamel: string
+	description?: string
+	namePascal: string
+	nameReadable: string
+}
+
+export interface IErrorOptions {
+	errors: IErrorTemplateItem[]
+	renderClassDefinition?: boolean
+}
+
+export interface IErrorTemplateItem {
+	definition: ISchemaDefinition
+	nameCamel: string
+	namePascal: string
+}
+
+export interface IValueTypes {
+	[namespace: string]: {
+		[schemaId: string]: {
+			[version: string]: {
+				[fieldName: string]: {
+					value: string
+					type: string
+					definitionType: string
+				}
+			}
+		}
+	}
 }

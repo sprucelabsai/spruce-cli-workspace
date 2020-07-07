@@ -1,0 +1,59 @@
+import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+import fieldClassMap from '#spruce/schemas/fields/fieldClassMap'
+import { TemplateRenderAs } from '@sprucelabs/schema'
+
+
+{{#each imports}}
+// @ts-ignore
+import * as {{importAs}} from '{{package}}'
+{{/each}}
+
+const schemaTemplateItems = {{{json schemaTemplateItems}}}
+
+const generateTypeLiteral = (definition: FieldDefinition, renderAs: TemplateRenderAs, importAs: string) => {
+	const options:SpruceSchema.IFieldTemplateDetailOptions<FieldDefinition> = {
+		language: 'ts',
+		templateItems: schemaTemplateItems,
+		globalNamespace: 'SpruceSchemas',
+		definition,
+		importAs,
+		renderAs
+	}
+
+	const FieldClass = fieldClassMap[definition.type as FieldType]
+	const details = FieldClass.generateTemplateDetails(options)
+	
+	return details.valueType
+}
+
+const valueTypes = {
+	{{#each schemaTemplatesByNamespaceAndName}}
+	{{@key}}: {
+		{{#each this}}
+		{{@key}}: {
+			{{#each this}} 
+			"{{definition.version}}{{#unless definition.version}}{{../../../SCHEMA_VERSION_FALLBACK}}{{/unless}}":{
+				{{#if definition.dynamicKeySignature}}
+				__dynamicKeySignature: {
+					{{#each ../../../rendersAs}}
+					{{this}}: {{{ valueTypeGenerator ../definition.dynamicKeySignature this }}},
+					{{/each}}
+				},	
+				{{/if}}
+				{{#each definition.fields}}
+				"{{@key}}": {
+					{{#each ../../../../rendersAs}}
+					{{this}}: {{{ valueTypeGenerator ../this this }}},
+					{{/each}}
+				},
+				{{/each}}
+			},
+			{{/each}}
+		},
+		{{/each}}
+	},
+	{{/each}}
+}
+
+export default valueTypes

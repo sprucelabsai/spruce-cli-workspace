@@ -1,6 +1,6 @@
 import BaseSpruceError from '@sprucelabs/error'
-import { ErrorCode } from '#spruce/errors/codes.types'
-import { ErrorOptions } from '#spruce/errors/options.types'
+import ErrorCode from '#spruce/errors/errorCode'
+import ErrorOptions from '#spruce/errors/options.types'
 
 export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 	/** An easy to understand version of the errors */
@@ -57,7 +57,9 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 			case ErrorCode.DefinitionFailedToImport:
 				message = `Error importing "${options.file}"`
 				break
-
+			case ErrorCode.DirectoryNotFound:
+				message = `Directory not found: "${options.directory}"`
+				break
 			case ErrorCode.BuildFailed:
 				message = `Build${
 					options.file ? `ing ${options.file}` : ''
@@ -84,6 +86,18 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				message += options.stdout
 				break
 
+			case ErrorCode.ExecutingCommandFailed:
+				if (this.originalError && this.originalError.message) {
+					message = this.originalError.message + '\n\n'
+				} else {
+					message = ''
+				}
+				message += `The command that was being executed failed ${options.cmd}`
+				if (options.cwd) {
+					message += `\n\nCWD: ${options.cwd}`
+				}
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}
@@ -96,7 +110,9 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 
 		// Handle repeating text from original message by remove it
 		return `${fullMessage}${
-			this.originalError && this.originalError.message !== fullMessage
+			this.originalError &&
+			this.originalError.message &&
+			this.originalError.message !== fullMessage
 				? `\n\nOriginal error: ${this.originalError.message.replace(
 						message,
 						''

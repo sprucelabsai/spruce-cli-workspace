@@ -1,6 +1,6 @@
-import { FieldDefinition } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
-import log from '../lib/log'
+import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
+import log from '../singletons/log'
 
 /** Drop in the value of a field which quotes if needed */
 handlebars.registerHelper('fieldValue', function(

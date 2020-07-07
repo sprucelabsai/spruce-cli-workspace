@@ -1,7 +1,6 @@
 /* eslint-disable */
 // DO NOT EDIT. THIS FILE IS GENERATED FROM https://local-api.spruce.ai//api/2.0/types/events
 // import { IHWCalendarEvent, IHWCalendarEventDetailsItem, IHWAction, ISpruceSettingsSection } from '@sprucelabs/spruce-types'
-import { DocumentNode } from 'graphql'
 
 
 /**
@@ -262,7 +261,7 @@ export namespace SpruceEvents.Core.Gql {
 		/**
 		 * The gql query
 		 */
-		query: string | DocumentNode
+		query: string
 		/**
 		 * GQL variables
 		 */
