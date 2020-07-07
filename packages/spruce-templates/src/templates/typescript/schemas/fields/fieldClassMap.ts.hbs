@@ -1,0 +1,20 @@
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
+{{#each fieldTemplateItems}}
+{{#if isLocal}}
+import {{className}} from '{{package}}'
+{{/if}}
+{{#unless isLocal}}
+import { {{className}} } from '{{package}}'
+{{/unless}}
+{{/each}}
+
+
+/** Value for looking up field classes by field type */
+const fieldClassMap = {
+		{{#each fieldTemplateItems}}
+		[FieldType.{{pascalType}}]: {{className}},
+		{{/each}}
+} as const
+
+export default fieldClassMap

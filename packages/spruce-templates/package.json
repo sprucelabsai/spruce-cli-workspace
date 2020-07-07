@@ -3,7 +3,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"version": "10.5.3",
+	"version": "10.6.0",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
 	"files": [
@@ -26,11 +26,11 @@
 		"url": "https://github.com/sprucelabsai/spruce-cli/issues"
 	},
 	"scripts": {
-		"build": "npm run clean && npm run copy-templates && npm run build:node",
-		"build:node": "tsc",
-		"watch": "chokidar 'src/**/*' 'index.ts' -c 'npm run build'",
+		"build": "npm run clean && npm run copy-templates && npm run build.node",
+		"build.node": "tsc",
+		"watch": "chokidar 'src/**/*' -c 'npm run build'",
 		"clean": "rm -rf build/",
-		"copy-templates": "mkdirp ./build/src/templates && cp -r ./src/templates/* ./build/src/templates",
+		"copy-templates": "mkdirp ./build/templates && cp -r ./src/templates/* ./build/templates",
 		"lint": "eslint '**/*.ts' && tsc -p . --noEmit",
 		"lint:fix": "eslint --fix '**/*.ts'",
 		"release": "semantic-release",
@@ -40,10 +40,11 @@
 	},
 	"dependencies": {
 		"@sprucelabs/log": "^10.2.1",
-		"@sprucelabs/schema": "^1.35.0",
+		"@sprucelabs/schema": "^4.0.6",
 		"globby": "^11.0.0",
 		"handlebars": "^4.7.4",
-		"lodash": "^4.17.15"
+		"lodash": "^4.17.15",
+		"sha1": "^1.1.1"
 	},
 	"devDependencies": {
 		"@types/lodash": "^4.14.149",

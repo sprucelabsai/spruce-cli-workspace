@@ -1,19 +1,20 @@
-import { Feature } from '#spruce/autoloaders/features'
-import AbstractFeature, { IFeaturePackage } from './AbstractFeature'
+import { INpmPackage } from '../types/cli.types'
+import AbstractFeature from './AbstractFeature'
+import { FeatureCode } from './FeatureManager'
 
 export default class ErrorFeature extends AbstractFeature {
 	public description =
 		'Errors: Use schemas to define your errors and get great type checking!'
 
-	public featureDependencies = [Feature.Schema]
+	public dependencies = [FeatureCode.Schema]
 
-	public packages: IFeaturePackage[] = [
+	public packages: INpmPackage[] = [
 		{
 			name: '@sprucelabs/error'
 		}
 	]
 
 	public async isInstalled() {
-		return this.services.pkg.isInstalled('@sprucelabs/error')
+		return this.PkgService().isInstalled('@sprucelabs/error')
 	}
 }

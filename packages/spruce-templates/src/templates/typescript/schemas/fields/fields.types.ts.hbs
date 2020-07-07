@@ -1,0 +1,39 @@
+import FieldType from './fieldTypeEnum'
+import { IField } from '@sprucelabs/schema'
+
+{{#each fieldTemplateItems}}
+{{#if isLocal}}
+import { I{{namePascal}}Definition } from '{{package}}'
+{{/if}}
+{{#unless isLocal}}
+import { I{{namePascal}}Definition } from '{{package}}'
+{{/unless}}
+{{/each}}
+
+
+export type FieldDefinition = {{#each fieldTemplateItems}}| I{{namePascal}}Definition{{/each}}
+export type Field = {{#each fieldTemplateItems}}| IField<I{{namePascal}}Definition>{{/each}}
+
+
+/** Type for looking up field definitions by field type */
+export type FieldDefinitionMap = {
+	{{#each fieldTemplateItems}}
+	[FieldType.{{pascalType}}]: I{{namePascal}}Definition
+	{{/each}}
+}
+
+
+/** Lookups used for dynamic type mapping based on a definition's field type */
+export interface IFieldValueTypeGeneratorMap<F extends FieldDefinition, CreateSchemaInstances extends boolean> {
+	{{#each fieldTemplateItems}}
+	[FieldType.{{pascalType}}]: I{{namePascal}}Definition
+	{{/each}}
+}
+
+/** All field instances */
+export interface IFieldMap {
+	{{#each fieldTemplateItems}}
+	[FieldType.{{pascalType}}]: IField<I{{namePascal}}Definition>
+	{{/each}}
+}
+

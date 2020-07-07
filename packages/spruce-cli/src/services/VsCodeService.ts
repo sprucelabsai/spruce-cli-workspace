@@ -1,6 +1,6 @@
 import semver from 'semver'
-import log from '../lib/log'
-import AbstractService from './AbstractService'
+import log from '../singletons/log'
+import CommandService from './CommandService'
 
 const VSCODE_MINIMUM_VERSION = '1.44.0'
 
@@ -11,12 +11,12 @@ export interface IExtension {
 	label: string
 }
 
-export default class VsCodeService extends AbstractService {
+export default class VsCodeService extends CommandService {
 	/** Returns whether or not vscode is installed */
 	public async isInstalled(): Promise<boolean> {
 		const isInstalled = false
 		try {
-			const { stdout } = await this.services.child.executeCommand('code', {
+			const { stdout } = await this.execute('code', {
 				args: ['--version']
 			})
 
@@ -39,7 +39,7 @@ export default class VsCodeService extends AbstractService {
 		let extensions: string[] = []
 
 		try {
-			const { stdout } = await this.services.child.executeCommand('code', {
+			const { stdout } = await this.execute('code', {
 				args: ['--list-extensions']
 			})
 
@@ -60,7 +60,7 @@ export default class VsCodeService extends AbstractService {
 			args = args.concat('--install-extension', eId)
 		})
 		try {
-			const { stdout } = await this.services.child.executeCommand('code', {
+			const { stdout } = await this.execute('code', {
 				args
 			})
 

@@ -1,0 +1,7 @@
+{{#if schema.dynamicKeySignature }}
+	/** {{schema.dynamicKeySignature.label}}.{{#if schema.dynamicKeySignature.hint}} {{schema.dynamicKeySignature.hint}}{{/if}} */
+	[{{schema.dynamicKeySignature.key}}:string]: string{{/if}}{{#if schema.dynamicKeySignature.isArray}}[]{{/if}}
+{{#each schema.fields}}
+	{{#if (or label hint) }}/** {{{label}}}.{{#if hint}} {{{hint}}}{{/if}} */{{/if}}
+	'{{@key}}'{{#unless isRequired}}?{{/unless}}: {{{valueTypeLiteral ../namespace ../id ../definition.version @key ../renderAs }}}{{#unless isRequired}}| undefined | null{{/unless}}
+{{/each}}

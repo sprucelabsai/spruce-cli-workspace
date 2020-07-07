@@ -12,7 +12,8 @@
 	},
 	"scripts": {
 		"lint": "lerna run lint",
-		"lint:fix": "lerna run lint:fix",
+		"lint.fix": "lerna run lint.fix",
+		"lint.tsc": "lerna run lint.tsc",
 		"build": "lerna run build",
 		"watch": "lerna run watch --no-sort --stream",
 		"test": "lerna run test --parallel",
@@ -23,9 +24,9 @@
 	},
 	"dependencies": {},
 	"devDependencies": {
-		"conventional-changelog-sprucelabs": "^1.1.0",
+		"conventional-changelog-sprucelabs": "^1.1.1",
 		"eslint": "^5",
-		"eslint-config-spruce": "10.4.0",
+		"eslint-config-spruce": "10.5.5",
 		"lerna": "^3.20.2",
 		"typescript": "^3.8"
 	}

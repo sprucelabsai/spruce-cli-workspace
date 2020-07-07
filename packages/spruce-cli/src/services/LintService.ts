@@ -1,20 +1,19 @@
 // import { CLIEngine } from 'eslint'
 import fs from 'fs-extra'
-import { ErrorCode } from '#spruce/errors/codes.types'
+import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
-import log from '../lib/log'
-import AbstractService from './AbstractService'
+import CommandService from './CommandService'
 
 export interface IAddOptions {
 	dev?: boolean
 }
 
-export default class LintService extends AbstractService {
+export default class LintService extends CommandService {
 	/** Lint fix based on a glob. Returns an array of filepaths that were fixed. */
-	public async fix(
+	public fix = async (
 		/** The file or pattern to run eslint --fix on */
 		pattern: string
-	): Promise<string[]> {
+	): Promise<string[]> => {
 		if (!pattern) {
 			throw new SpruceError({
 				code: ErrorCode.LintFailed,
@@ -23,7 +22,7 @@ export default class LintService extends AbstractService {
 			})
 		}
 
-		const { stdout } = await this.services.child.executeCommand('node', {
+		const { stdout } = await this.execute('node', {
 			args: [
 				'-e',
 				`"try { const ESLint = require('eslint');const cli = new ESLint.CLIEngine({fix: true,cwd: '${this.cwd}'});const result=cli.executeOnFiles(['${pattern}']);console.log(JSON.stringify(result)); } catch(err) { console.log(err.toString()); }"`
@@ -47,7 +46,6 @@ export default class LintService extends AbstractService {
 				const fixedFile = fixedFiles.results[i]
 				if (fixedFile && fixedFile.output) {
 					await fs.writeFile(fixedFile.filePath, fixedFile.output)
-					log.trace(`Fixed file: ${fixedFile.filePath}`)
 					fixedPaths.push(fixedFile.filePath)
 				}
 			}
