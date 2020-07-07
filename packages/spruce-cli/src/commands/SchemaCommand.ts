@@ -185,6 +185,7 @@ export default class SchemaCommand extends AbstractCommand {
 
 		if (!lookupDir) {
 			// TODO update this to spruce error
+			// eslint-disable-next-line no-debugger
 			debugger
 			throw new Error('aoeuaoeuaoeu')
 		}

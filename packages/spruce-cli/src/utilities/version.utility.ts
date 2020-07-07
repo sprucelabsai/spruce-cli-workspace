@@ -33,6 +33,7 @@ const versionUtil = {
 		const latest = version.pop()
 
 		if (!latest) {
+			// eslint-disable-next-line no-debugger
 			debugger
 			throw new Error('no versioning found!')
 		}
@@ -49,6 +50,7 @@ const versionUtil = {
 		const latest = allDateIsh.pop()
 
 		if (!latest) {
+			// eslint-disable-next-line no-debugger
 			debugger
 			throw new Error('no versioning found!')
 		}

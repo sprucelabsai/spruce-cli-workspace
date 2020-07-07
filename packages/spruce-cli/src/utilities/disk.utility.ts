@@ -53,7 +53,7 @@ const diskUtil = {
 			}
 			parts.pop()
 		} while (parts.length > 0)
-
+		// eslint-disable-next-line no-debugger
 		debugger
 		throw new Error('Hash Spruce directory not found')
 	},

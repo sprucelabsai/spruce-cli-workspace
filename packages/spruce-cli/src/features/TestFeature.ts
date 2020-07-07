@@ -1,8 +1,8 @@
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import { FeatureCode } from './FeatureManager'
 import log from '../singletons/log'
 import { INpmPackage } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
+import { FeatureCode } from './FeatureManager'
 
 type TestFeatureType = SpruceSchemas.Local.TestFeature.IDefinition
 
@@ -56,6 +56,7 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 	}
 
 	public async isInstalled() {
+		// eslint-disable-next-line no-debugger
 		debugger
 		return false
 	}

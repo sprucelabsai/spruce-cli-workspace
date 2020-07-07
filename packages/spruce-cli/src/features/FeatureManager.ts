@@ -120,6 +120,7 @@ export default class FeatureManager {
 					this.getFeatureDependencies(code)
 				)
 			} else if (!isInstalled) {
+				// eslint-disable-next-line no-debugger
 				debugger
 				throw new Error('make custom error')
 			}

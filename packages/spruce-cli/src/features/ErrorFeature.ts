@@ -1,6 +1,6 @@
-import { FeatureCode } from './FeatureManager'
 import { INpmPackage } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
+import { FeatureCode } from './FeatureManager'
 
 export default class ErrorFeature extends AbstractFeature {
 	public description =

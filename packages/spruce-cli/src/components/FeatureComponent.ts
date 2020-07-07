@@ -4,8 +4,11 @@ import {
 	SchemaDefinitionPartialValues,
 	SchemaFieldNames
 } from '@sprucelabs/schema'
-import FeatureManager, { FeatureCode, IFeatureMap } from '../features/FeatureManager'
 import AbstractFeature from '../features/AbstractFeature'
+import FeatureManager, {
+	FeatureCode,
+	IFeatureMap
+} from '../features/FeatureManager'
 import TerminalInterface from '../interfaces/TerminalInterface'
 import AbstractComponent from './AbstractComponent'
 
