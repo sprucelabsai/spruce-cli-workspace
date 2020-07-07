@@ -10,8 +10,8 @@ export default buildSchemaDefinition({
 			isRequired: true,
 			label: 'What file would you like to test?',
 			defaultValue: {
-				path: ''
-			}
-		}
-	}
+				path: '',
+			},
+		},
+	},
 })

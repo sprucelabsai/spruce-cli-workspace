@@ -6,7 +6,7 @@ export default class UsingSchemasInCli extends BaseSpruceTest {
 	@test()
 	protected static async instantiateSchema() {
 		const user = new Schema(cliUserDefinition, {
-			casualName: 'Amigo'
+			casualName: 'Amigo',
 		})
 		assert.isEqual(user.get('casualName'), 'Amigo')
 	}

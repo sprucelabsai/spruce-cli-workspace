@@ -23,7 +23,7 @@ export default class SkillFeature extends AbstractFeature<
 		{ name: '@sprucelabs/log' },
 		{ name: '@types/node', isDev: true },
 		{ name: 'ts-node', isDev: true },
-		{ name: 'tsconfig-paths', isDev: true }
+		{ name: 'tsconfig-paths', isDev: true },
 	]
 
 	public optionsDefinition = skillFeatureDefinition
@@ -44,7 +44,7 @@ export default class SkillFeature extends AbstractFeature<
 
 		const files = await this.templates.directoryTemplate({
 			kind: DirectoryTemplateKind.Skill,
-			context: options
+			context: options,
 		})
 
 		await diskUtil.createManyFiles(this.cwd, files)

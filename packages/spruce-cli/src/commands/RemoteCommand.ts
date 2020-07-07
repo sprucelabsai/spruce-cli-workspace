@@ -2,7 +2,7 @@ import { Command } from 'commander'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import RemoteStore, {
 	RemoteStoreRemoteType,
-	RemoteStoreChoices
+	RemoteStoreChoices,
 } from '../stores/RemoteStore'
 import AbstractCommand, { ICommandOptions } from './AbstractCommand'
 
@@ -37,8 +37,8 @@ export default class RemoteCommand extends AbstractCommand {
 				isRequired: true,
 				label: 'Select a remote',
 				options: {
-					choices: RemoteStoreChoices
-				}
+					choices: RemoteStoreChoices,
+				},
 			})
 		}
 

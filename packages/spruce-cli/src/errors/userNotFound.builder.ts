@@ -8,13 +8,13 @@ const userNotFoundDefinition = buildErrorDefinition({
 	fields: {
 		token: {
 			type: FieldType.Text,
-			label: 'Token'
+			label: 'Token',
 		},
 		userId: {
 			type: FieldType.Number,
-			label: 'User id'
-		}
-	}
+			label: 'User id',
+		},
+	},
 })
 
 export default userNotFoundDefinition

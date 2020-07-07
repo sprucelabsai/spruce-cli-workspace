@@ -3,7 +3,7 @@ import {
 	IJestTest,
 	IJestTestResults,
 	IJestTestResult,
-	IGoogleSheetsAdapter
+	IGoogleSheetsAdapter,
 } from '../types/jest.types'
 
 export interface ISheetsReporterOptions<TestMap extends ITestMap = ITestMap> {
@@ -19,7 +19,7 @@ export interface ITestMap {
 
 export class SheetsReporterUtil {
 	public static getMappedTests(map: ITestMap, results: IJestTestResult[]) {
-		return results.filter(testResult => {
+		return results.filter((testResult) => {
 			return !!map[testResult.title]
 		})
 	}
@@ -84,7 +84,7 @@ export default class SheetsReporter<TestMap extends ITestMap> {
 			sheetId: this.sheetId,
 			worksheetId: this.worksheetId,
 			cell,
-			value: status === 'passed' ? 1 : 0
+			value: status === 'passed' ? 1 : 0,
 		})
 	}
 }

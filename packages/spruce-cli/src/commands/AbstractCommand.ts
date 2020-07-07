@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { ISchemaDefinition } from '@sprucelabs/schema'
-import { Command } from 'commander'
+import { CommanderStatic } from 'commander'
 import FormComponent, { IFormOptions } from '../components/FormComponent'
 import QuizComponent, {
 	IQuizOptions,
-	IQuizQuestions
+	IQuizQuestions,
 } from '../components/QuizComponent'
 import ServiceFactory, { Service } from '../factories/ServiceFactory'
 import TerminalInterface from '../interfaces/TerminalInterface'
@@ -46,7 +46,7 @@ export default abstract class AbstractCommand {
 	): FormComponent<T> {
 		const formBuilder = new FormComponent({
 			term: this.term,
-			...options
+			...options,
 		})
 		return formBuilder
 	}
@@ -59,7 +59,7 @@ export default abstract class AbstractCommand {
 	): QuizComponent<T, Q> {
 		const quizBuilder = new QuizComponent({
 			term: this.term,
-			...options
+			...options,
 		})
 		return quizBuilder
 	}
@@ -87,5 +87,5 @@ export default abstract class AbstractCommand {
 	}
 
 	/** A chance to attach the commands you'll provide through the cli */
-	abstract attachCommands(program: Command): void
+	abstract attachCommands(program: CommanderStatic['program']): void
 }

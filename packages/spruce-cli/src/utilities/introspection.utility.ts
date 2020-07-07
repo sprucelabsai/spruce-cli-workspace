@@ -40,7 +40,7 @@ const serializeSymbol = (options: {
 		),
 		type: checker.typeToString(
 			checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration)
-		)
+		),
 	}
 }
 
@@ -50,13 +50,13 @@ const serializeSignature = (options: {
 }) => {
 	const { checker, signature } = options
 	return {
-		parameters: signature.parameters.map(p =>
+		parameters: signature.parameters.map((p) =>
 			serializeSymbol({ symbol: p, checker })
 		),
 		returnType: checker.typeToString(signature.getReturnType()),
 		documentation: ts.displayPartsToString(
 			signature.getDocumentationComment(checker)
-		)
+		),
 	}
 }
 
@@ -75,7 +75,7 @@ const introspectionUtil = {
 			const sourceFile = program.getSourceFile(tsFile)
 			const results: IIntrospection = { classes: [], interfaces: [] }
 			if (sourceFile && _.includes(filePaths, sourceFile.fileName)) {
-				ts.forEachChild(sourceFile, node => {
+				ts.forEachChild(sourceFile, (node) => {
 					// if this is a class declaration
 					if (ts.isClassDeclaration(node) && node.name) {
 						const symbol = checker.getSymbolAtLocation(node.name)
@@ -109,7 +109,7 @@ const introspectionUtil = {
 							)
 							details.constructors = constructorType
 								.getConstructSignatures()
-								.map(s => serializeSignature({ signature: s, checker }))
+								.map((s) => serializeSignature({ signature: s, checker }))
 
 							results.classes.push({
 								className: node.name.text,
@@ -117,12 +117,12 @@ const introspectionUtil = {
 								parentClassPath,
 								optionsInterfaceName:
 									details.constructors?.[0].parameters?.[0]?.type,
-								isAbstract: isAbstractClass
+								isAbstract: isAbstractClass,
 							})
 						}
 					} else if (ts.isInterfaceDeclaration(node)) {
 						results.interfaces.push({
-							interfaceName: node.name.text
+							interfaceName: node.name.text,
 						})
 					}
 				})
@@ -132,7 +132,7 @@ const introspectionUtil = {
 		}
 
 		return introspects
-	}
+	},
 }
 
 export default introspectionUtil

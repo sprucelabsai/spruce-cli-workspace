@@ -10,8 +10,8 @@ export default class ErrorFeature extends AbstractFeature {
 
 	public packages: INpmPackage[] = [
 		{
-			name: '@sprucelabs/error'
-		}
+			name: '@sprucelabs/error',
+		},
 	]
 
 	public async isInstalled() {

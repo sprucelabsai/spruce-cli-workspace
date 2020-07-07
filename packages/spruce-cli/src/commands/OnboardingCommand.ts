@@ -68,7 +68,7 @@ export default class OnboardingCommand extends AbstractCommand {
 				events: {
 					type: FieldType.Select,
 					question: 'The event engine is driven by',
-					answers: ['Mercury', 'Jupiter', 'EventEmitter', 'Apollo']
+					answers: ['Mercury', 'Jupiter', 'EventEmitter', 'Apollo'],
 				},
 				definitions: {
 					type: FieldType.Select,
@@ -77,8 +77,8 @@ export default class OnboardingCommand extends AbstractCommand {
 						'Using schemas definitions {{name}}.definitions.ts',
 						'Using data models {{name}}.dataModel.ts',
 						'Using the ORM',
-						'Using json file {{name}}.json'
-					]
+						'Using json file {{name}}.json',
+					],
 				},
 				builders: {
 					type: FieldType.Select,
@@ -87,10 +87,10 @@ export default class OnboardingCommand extends AbstractCommand {
 						'builders',
 						'React',
 						'Nextjs',
-						'Front ends are not possible'
-					]
-				}
-			}
+						'Front ends are not possible',
+					],
+				},
+			},
 		})
 
 		const results = await quiz.present({ headline: 'Spruce POP QUIZ!' })

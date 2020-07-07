@@ -27,7 +27,7 @@ export enum Service {
 	Lint = 'lint',
 	Command = 'command',
 	TypeChecker = 'typeChecker',
-	Import = 'import'
+	Import = 'import',
 }
 
 export interface IServiceProvider {

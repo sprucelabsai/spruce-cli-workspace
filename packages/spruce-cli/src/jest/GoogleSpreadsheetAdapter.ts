@@ -89,7 +89,7 @@ export default class GoogleSpreadsheetAdapter implements IGoogleSheetsAdapter {
 			// eslint-disable-next-line @typescript-eslint/camelcase
 			client_email: this.serviceEmail,
 			// eslint-disable-next-line @typescript-eslint/camelcase
-			private_key: this.privateKey
+			private_key: this.privateKey,
 		})
 
 		await doc.loadInfo()

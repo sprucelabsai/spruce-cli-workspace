@@ -19,8 +19,8 @@ export default class PinService {
 				eventName: SpruceEvents.Core.RequestLogin.name,
 				payload: {
 					phoneNumber: phone,
-					method: 'pin'
-				}
+					method: 'pin',
+				},
 			})
 		} catch (err) {
 			throw new SpruceError({
@@ -28,9 +28,9 @@ export default class PinService {
 				eventName: SpruceEvents.Core.RequestLogin.name,
 				payloadArgs: [
 					{ name: 'phoneNumber', value: phone },
-					{ name: 'method', value: 'pin' }
+					{ name: 'method', value: 'pin' },
 				],
-				originalError: err
+				originalError: err,
 			})
 		}
 	}

@@ -17,7 +17,7 @@ export default class SheetsAdapterTest extends AbstractSpruceTest {
 
 		this.adapter = new GoogleSpreadsheetAdapter({
 			serviceEmail: email,
-			privateKey: key
+			privateKey: key,
 		})
 
 		sheetUtil.serviceEmail = email
@@ -44,7 +44,7 @@ export default class SheetsAdapterTest extends AbstractSpruceTest {
 			sheetId,
 			worksheetId,
 			cell: 'A1',
-			value: expected
+			value: expected,
 		})
 
 		// make sure it actually worked

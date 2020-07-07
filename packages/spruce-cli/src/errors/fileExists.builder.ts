@@ -10,9 +10,9 @@ const fileExistsDefinition = buildErrorDefinition({
 			type: FieldType.Text,
 			label: 'File',
 			isRequired: true,
-			hint: 'The file being created'
-		}
-	}
+			hint: 'The file being created',
+		},
+	},
 })
 
 export default fileExistsDefinition

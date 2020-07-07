@@ -10,9 +10,9 @@ const transpileFailedDefinition = buildErrorDefinition({
 			type: FieldType.Text,
 			label: 'Source',
 			isRequired: true,
-			hint: 'Source contents, should be typescript format'
-		}
-	}
+			hint: 'Source contents, should be typescript format',
+		},
+	},
 })
 
 export default transpileFailedDefinition

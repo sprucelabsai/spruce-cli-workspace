@@ -13,7 +13,7 @@ const personLocationDefinition: ISchemaDefinition = {
 	fields: {
 		id: {
 			label: 'Id',
-			type: FieldType.Id
+			type: FieldType.Id,
 		},
 		roles: {
 			label: 'Name',
@@ -21,50 +21,50 @@ const personLocationDefinition: ISchemaDefinition = {
 			isRequired: true,
 			isArray: true,
 			options: {
-				choices: roleSelectChoices
-			}
+				choices: roleSelectChoices,
+			},
 		},
 		status: {
 			label: 'Status',
-			type: FieldType.Text
+			type: FieldType.Text,
 		},
 		visits: {
 			label: 'Total visits',
 			type: FieldType.Number,
 			isRequired: true,
 			options: {
-				choices: roleSelectChoices
-			}
+				choices: roleSelectChoices,
+			},
 		},
 		lastRecordedVisit: {
 			label: 'Last visit',
-			type: FieldType.DateTime
+			type: FieldType.DateTime,
 		},
 		job: {
 			label: 'Job',
 			type: FieldType.Schema,
 			isRequired: true,
 			options: {
-				schema: jobDefinition
-			}
+				schema: jobDefinition,
+			},
 		},
 		location: {
 			label: 'Location',
 			type: FieldType.Schema,
 			isRequired: true,
 			options: {
-				schema: locationDefinition
-			}
+				schema: locationDefinition,
+			},
 		},
 		person: {
 			label: 'Person',
 			type: FieldType.Schema,
 			isRequired: true,
 			options: {
-				schema: personDefinition
-			}
-		}
-	}
+				schema: personDefinition,
+			},
+		},
+	},
 }
 
 export default personLocationDefinition

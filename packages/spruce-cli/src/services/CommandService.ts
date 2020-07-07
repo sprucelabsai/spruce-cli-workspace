@@ -37,22 +37,22 @@ export default class CommandService {
 						cwd,
 						env: {
 							...process.env,
-							FORCE_COLOR: '0'
+							FORCE_COLOR: '0',
 						},
-						shell: true
+						shell: true,
 				  }
 
 			const child = spawn(executable, args, spawnOptions)
 
-			child.stdout?.on('data', data => {
+			child.stdout?.on('data', (data) => {
 				stdout += data
 			})
 
-			child.stderr?.on('data', data => {
+			child.stderr?.on('data', (data) => {
 				stderr += data
 			})
 
-			child.on('close', code => {
+			child.on('close', (code) => {
 				if (code === 0) {
 					resolve({ stdout })
 				} else {
@@ -61,7 +61,7 @@ export default class CommandService {
 							code: ErrorCode.ExecutingCommandFailed,
 							cmd: JSON.stringify({ executable, args }),
 							cwd,
-							originalError: new Error(stderr)
+							originalError: new Error(stderr),
 						})
 					)
 				}

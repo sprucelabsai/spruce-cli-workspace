@@ -30,9 +30,9 @@ export default class TestCommand extends AbstractCommand {
 		await this.featureManager.install({
 			features: [
 				{
-					code: FeatureCode.Test
-				}
-			]
+					code: FeatureCode.Test,
+				},
+			],
 		})
 
 		if (!target) {
@@ -42,8 +42,8 @@ export default class TestCommand extends AbstractCommand {
 				isRequired: true,
 				defaultValue: {
 					path: path.join(this.cwd, 'src'),
-					acceptableTypes: ['']
-				}
+					acceptableTypes: [''],
+				},
 			})
 			// Get the path to the file off the file
 			target = path.join(file.path ?? this.cwd, file.name)

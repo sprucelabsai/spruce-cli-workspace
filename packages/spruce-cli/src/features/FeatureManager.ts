@@ -33,7 +33,7 @@ export enum FeatureCode {
 	Schema = 'schema',
 	Skill = 'skill',
 	Test = 'test',
-	VsCode = 'vsCode'
+	VsCode = 'vsCode',
 }
 
 export interface IFeatureMap {
@@ -70,7 +70,7 @@ export default class FeatureManager {
 
 	public async isInstalled(options: { features: FeatureCode[] }) {
 		const results = await Promise.all(
-			options.features.map(f => {
+			options.features.map((f) => {
 				return this.featureMap[f].isInstalled()
 			})
 		)
@@ -134,13 +134,13 @@ export default class FeatureManager {
 			const isInstalled = await this.featureMap[code].isInstalled()
 
 			if (!isInstalled) {
-				const installOptions = options.features.find(f => f.code === code)
+				const installOptions = options.features.find((f) => f.code === code)
 					?.options
 
 				await this.installFeature({
 					code: codesToInstall[i],
 					//@ts-ignore WHY!!??
-					options: installOptions as FeatureOptions<F> | undefined
+					options: installOptions as FeatureOptions<F> | undefined,
 				})
 			} else {
 				log.debug(
@@ -162,38 +162,38 @@ export default class FeatureManager {
 				cwd,
 				code: FeatureCode.CircleCi,
 				serviceFactory,
-				templates
+				templates,
 			}),
 			error: new ErrorFeature({
 				cwd,
 				code: FeatureCode.Error,
 				serviceFactory,
-				templates
+				templates,
 			}),
 			schema: new SchemaFeature({
 				cwd,
 				code: FeatureCode.Schema,
 				serviceFactory,
-				templates
+				templates,
 			}),
 			skill: new SkillFeature({
 				cwd,
 				code: FeatureCode.Skill,
 				serviceFactory,
-				templates
+				templates,
 			}),
 			test: new TestFeature({
 				cwd,
 				code: FeatureCode.Test,
 				serviceFactory,
-				templates
+				templates,
 			}),
 			vsCode: new VsCodeFeature({
 				cwd,
 				code: FeatureCode.VsCode,
 				serviceFactory,
-				templates
-			})
+				templates,
+			}),
 		}
 		const manager = new FeatureManager(cwd, featureMap, serviceFactory)
 		return manager
@@ -203,7 +203,7 @@ export default class FeatureManager {
 		dependencyCode: FeatureCode,
 		trackedFeatures: FeatureCode[]
 	) {
-		const isTracked = !!trackedFeatures.find(f => f === dependencyCode)
+		const isTracked = !!trackedFeatures.find((f) => f === dependencyCode)
 		if (!isTracked) {
 			trackedFeatures.push(dependencyCode)
 
@@ -228,12 +228,12 @@ export default class FeatureManager {
 			[pkgName: string]: INpmPackage
 		} = {}
 
-		feature.packageDependencies.forEach(pkg => {
+		feature.packageDependencies.forEach((pkg) => {
 			const packageName = `${pkg.name}@${pkg.version ?? 'latest'}`
 			packages[packageName] = pkg
 		})
 
-		Object.values(packages).forEach(p => {
+		Object.values(packages).forEach((p) => {
 			if (p.isDev) {
 				devPackagesToInstall.push(p.name)
 			} else {
@@ -249,7 +249,7 @@ export default class FeatureManager {
 
 		if (devPackagesToInstall.length > 0) {
 			await pkgService.install(devPackagesToInstall, {
-				dev: true
+				dev: true,
 			})
 		}
 
@@ -261,8 +261,8 @@ export default class FeatureManager {
 			const aFeature = this.featureMap[a]
 			const bFeature = this.featureMap[b]
 
-			const aDependsOnB = aFeature.dependencies.find(d => d === b)
-			const bDependsOnA = bFeature.dependencies.find(d => d === a)
+			const aDependsOnB = aFeature.dependencies.find((d) => d === b)
+			const bDependsOnA = bFeature.dependencies.find((d) => d === a)
 
 			if (aDependsOnB) {
 				return 1

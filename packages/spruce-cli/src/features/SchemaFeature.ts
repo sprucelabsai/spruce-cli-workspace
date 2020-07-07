@@ -9,8 +9,8 @@ export default class SchemaFeature extends AbstractFeature {
 
 	public packageDependencies: INpmPackage[] = [
 		{
-			name: '@sprucelabs/schema'
-		}
+			name: '@sprucelabs/schema',
+		},
 	]
 
 	public async isInstalled() {

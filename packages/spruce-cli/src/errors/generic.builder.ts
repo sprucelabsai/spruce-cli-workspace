@@ -8,9 +8,9 @@ const genericDefinition = buildErrorDefinition({
 	fields: {
 		friendlyMessageSet: {
 			type: FieldType.Text,
-			label: 'Friendly message'
-		}
-	}
+			label: 'Friendly message',
+		},
+	},
 })
 
 export default genericDefinition

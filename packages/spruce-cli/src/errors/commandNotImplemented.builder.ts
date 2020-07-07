@@ -10,14 +10,14 @@ export default buildErrorDefinition({
 			type: FieldType.Text,
 			label: 'Command',
 			isRequired: true,
-			hint: 'the command being run!'
+			hint: 'the command being run!',
 		},
 		args: {
 			type: FieldType.Text,
 			label: 'Args',
 			isRequired: false,
 			isArray: true,
-			hint: 'Arguments passed to the command'
-		}
-	}
+			hint: 'Arguments passed to the command',
+		},
+	},
 })

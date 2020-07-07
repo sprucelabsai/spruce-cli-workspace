@@ -15,13 +15,13 @@ export default abstract class AbstractStore {
 			throw new SpruceError({
 				code: ErrorCode.GenericMercury,
 				friendlyMessage:
-					'user store was trying to auth on mercury but had no options (meaning it was never connected)'
+					'user store was trying to auth on mercury but had no options (meaning it was never connected)',
 			})
 		}
 		// Connect with new creds
 		await this.mercury.connect({
 			...(connectionOptions || {}),
-			credentials: { token }
+			credentials: { token },
 		})
 
 		return this.mercury

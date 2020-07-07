@@ -30,7 +30,7 @@ export default class WatcherStore extends AbstractLocalStore<
 		if (!watchers[globbyPattern]) {
 			watchers[globbyPattern] = {
 				isEnabled: true,
-				commands: []
+				commands: [],
 			}
 		}
 		watchers[globbyPattern].commands.push(cmd)
@@ -48,7 +48,7 @@ export default class WatcherStore extends AbstractLocalStore<
 		watchersToUpdate: { globbyPattern: string; isEnabled: boolean }[]
 	) {
 		const watchers = this.getWatchers()
-		watchersToUpdate.forEach(wtu => {
+		watchersToUpdate.forEach((wtu) => {
 			if (typeof watchers[wtu.globbyPattern]?.isEnabled === 'boolean') {
 				watchers[wtu.globbyPattern].isEnabled = wtu.isEnabled
 			}

@@ -29,20 +29,20 @@ export default class ErrorStore {
 		if (!diskUtil.doesDirExist(lookupDir)) {
 			throw new SpruceError({
 				code: ErrorCode.DirectoryNotFound,
-				directory: lookupDir
+				directory: lookupDir,
 			})
 		}
 
 		const results: IFetchErrorTemplateItemsResponse = {
 			items: [],
-			errors: []
+			errors: [],
 		}
 
 		const matches = await globby(pathUtil.join(lookupDir, '/**/*.builder.ts'))
 		const schemaService = this.serviceFactory.Service(this.cwd, Service.Schema)
 
 		await Promise.all(
-			matches.map(async file => {
+			matches.map(async (file) => {
 				try {
 					const definition = await schemaService.importDefinition(file)
 
@@ -51,7 +51,7 @@ export default class ErrorStore {
 					const templateItem: IErrorTemplateItem = {
 						definition,
 						nameCamel: namesUtil.toCamel(definition.id),
-						namePascal: namesUtil.toPascal(definition.id)
+						namePascal: namesUtil.toPascal(definition.id),
 					}
 					results.items.push(templateItem)
 				} catch (err) {

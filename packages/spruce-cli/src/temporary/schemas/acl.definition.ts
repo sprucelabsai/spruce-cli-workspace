@@ -10,8 +10,8 @@ const aclDefinition: ISchemaDefinition = {
 		type: FieldType.Text,
 		isArray: true,
 		label: 'Permissions grouped by slug',
-		key: 'slug'
-	}
+		key: 'slug',
+	},
 }
 
 export default aclDefinition

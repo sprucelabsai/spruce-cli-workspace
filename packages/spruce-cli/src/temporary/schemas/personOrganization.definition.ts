@@ -13,40 +13,40 @@ const personOrganization: ISchemaDefinition = {
 	fields: {
 		id: {
 			label: 'Id',
-			type: FieldType.Id
+			type: FieldType.Id,
 		},
 		role: {
 			label: 'Name',
 			type: FieldType.Select,
 			isRequired: true,
 			options: {
-				choices: roleSelectChoices
-			}
+				choices: roleSelectChoices,
+			},
 		},
 		jobs: {
 			label: 'Jobs',
 			type: FieldType.Schema,
 			options: {
-				schema: jobDefinition
-			}
+				schema: jobDefinition,
+			},
 		},
 		organization: {
 			label: 'Organization',
 			type: FieldType.Schema,
 			isRequired: true,
 			options: {
-				schema: organizationDefinition
-			}
+				schema: organizationDefinition,
+			},
 		},
 		person: {
 			label: 'Person',
 			type: FieldType.Schema,
 			isRequired: true,
 			options: {
-				schema: personDefinition
-			}
-		}
-	}
+				schema: personDefinition,
+			},
+		},
+	},
 }
 
 export default personOrganization

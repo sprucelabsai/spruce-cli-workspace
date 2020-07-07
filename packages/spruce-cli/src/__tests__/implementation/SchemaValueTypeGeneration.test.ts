@@ -27,7 +27,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 			this.resolveHashSprucePath('tmp'),
 			{
 				schemaTemplateItems: [],
-				fieldTemplateItems: []
+				fieldTemplateItems: [],
 			}
 		)
 
@@ -37,13 +37,13 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	private static async generateValueTypes() {
 		const {
 			fieldTemplateItems,
-			schemaTemplateItems
+			schemaTemplateItems,
 		} = await this.fetchAllTemplateItems()
 
 		await this.generator.generateFieldTypes(
 			this.resolveHashSprucePath('schemas'),
 			{
-				fieldTemplateItems
+				fieldTemplateItems,
 			}
 		)
 
@@ -51,7 +51,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 			this.resolveHashSprucePath('tmp'),
 			{
 				schemaTemplateItems,
-				fieldTemplateItems
+				fieldTemplateItems,
 			}
 		)
 	}
@@ -66,7 +66,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 
 		return {
 			schemaTemplateItems: results.schemas.items,
-			fieldTemplateItems: results.fields.items
+			fieldTemplateItems: results.fields.items,
 		}
 	}
 
@@ -87,7 +87,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		{
 			type: 'string',
 			value: 'string',
-			definitionType: 'string'
+			definitionType: 'string',
 		}
 	)
 	@test(
@@ -97,7 +97,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 			type: '("owner" | "groupManager" | "manager" | "teammate" | "guest")',
 			value: '("owner" | "groupManager" | "manager" | "teammate" | "guest")',
 			definitionType:
-				'("owner" | "groupManager" | "manager" | "teammate" | "guest")'
+				'("owner" | "groupManager" | "manager" | "teammate" | "guest")',
 		}
 	)
 	@test(
@@ -106,7 +106,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		{
 			type: `SpruceSchemas.${CORE_NAMESPACE}.IPerson.${CORE_SCHEMA_VERSION.constVal}`,
 			value: '[personDefinition]',
-			definitionType: `SpruceSchemas.${CORE_NAMESPACE}.Person.${CORE_SCHEMA_VERSION.constVal}.IDefinition[]`
+			definitionType: `SpruceSchemas.${CORE_NAMESPACE}.Person.${CORE_SCHEMA_VERSION.constVal}.IDefinition[]`,
 		}
 	)
 	@test(
@@ -115,7 +115,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		{
 			type: 'string[]',
 			value: 'string[]',
-			definitionType: 'string[]'
+			definitionType: 'string[]',
 		}
 	)
 	protected static async importsTypes(
@@ -135,7 +135,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 			'Value types came back as empty object'
 		)
 		assert.doesInclude(valueTypes, {
-			[path]: expected
+			[path]: expected,
 		})
 	}
 }

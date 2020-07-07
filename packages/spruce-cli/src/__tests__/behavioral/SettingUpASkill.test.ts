@@ -13,10 +13,10 @@ export default class SettingUpASkill extends AbstractCliTest {
 					code: FeatureCode.Skill,
 					options: {
 						name: 'test',
-						description: 'This is such a good skill!'
-					}
-				}
-			]
+						description: 'This is such a good skill!',
+					},
+				},
+			],
 		})
 
 		assert.isOk(response)
@@ -34,10 +34,10 @@ export default class SettingUpASkill extends AbstractCliTest {
 						options: {
 							name: 'test',
 							// @ts-ignore
-							description2: 'This is such a good skill!'
-						}
-					}
-				]
+							description2: 'This is such a good skill!',
+						},
+					},
+				],
 			})
 		}, 'description')
 	}
@@ -51,10 +51,10 @@ export default class SettingUpASkill extends AbstractCliTest {
 					code: FeatureCode.Skill,
 					options: {
 						name: 'test',
-						description: 'This is such a good skill!'
-					}
-				}
-			]
+						description: 'This is such a good skill!',
+					},
+				},
+			],
 		})
 
 		const hashSpruceDir = this.resolveHashSprucePath()
@@ -68,7 +68,7 @@ export default class SettingUpASkill extends AbstractCliTest {
 
 		assert.isEqual(health.skill.status, 'failed')
 		assert.doesInclude(health, {
-			'skill.errors[].options.code': 'SKILL_NOT_INSTALLED'
+			'skill.errors[].options.code': 'SKILL_NOT_INSTALLED',
 		})
 	}
 
@@ -81,10 +81,10 @@ export default class SettingUpASkill extends AbstractCliTest {
 					code: FeatureCode.Skill,
 					options: {
 						name: 'test',
-						description: 'This is such a good skill!'
-					}
-				}
-			]
+						description: 'This is such a good skill!',
+					},
+				},
+			],
 		})
 
 		diskUtil.moveDir(this.resolvePath('src'), this.resolvePath('src2'))
@@ -93,7 +93,7 @@ export default class SettingUpASkill extends AbstractCliTest {
 
 		assert.isEqual(health.skill.status, 'failed')
 		assert.doesInclude(health, {
-			'skill.errors[].options.code': 'BOOT_ERROR'
+			'skill.errors[].options.code': 'BOOT_ERROR',
 		})
 	}
 
@@ -106,10 +106,10 @@ export default class SettingUpASkill extends AbstractCliTest {
 					code: FeatureCode.Skill,
 					options: {
 						name: 'test',
-						description: 'This is such a good skill!'
-					}
-				}
-			]
+						description: 'This is such a good skill!',
+					},
+				},
+			],
 		})
 
 		const health = await cli.checkHealth()

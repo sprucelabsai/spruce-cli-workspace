@@ -10,19 +10,19 @@ const organizationDefinition: ISchemaDefinition = {
 	fields: {
 		id: {
 			label: 'Id',
-			type: FieldType.Id
+			type: FieldType.Id,
 		},
 		name: {
 			label: 'Name',
 			type: FieldType.Text,
-			isRequired: true
+			isRequired: true,
 		},
 		slug: {
 			label: 'Slug',
 			type: FieldType.Text,
-			isRequired: true
-		}
-	}
+			isRequired: true,
+		},
+	},
 }
 
 export default organizationDefinition

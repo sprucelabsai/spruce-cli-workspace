@@ -8,7 +8,7 @@ export default buildErrorDefinition({
 	fields: {
 		textField: {
 			type: FieldType.Text,
-			label: 'Example'
-		}
-	}
+			label: 'Example',
+		},
+	},
 })

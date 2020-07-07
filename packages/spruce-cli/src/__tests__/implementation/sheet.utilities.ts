@@ -11,7 +11,7 @@ async function loadSheet(
 		// eslint-disable-next-line @typescript-eslint/camelcase
 		client_email: serviceEmail,
 		// eslint-disable-next-line @typescript-eslint/camelcase
-		private_key: privateKey
+		private_key: privateKey,
 	})
 	await doc.loadInfo()
 	return doc
@@ -47,7 +47,7 @@ const sheetUtil = {
 		const worksheet = sheet.sheetsById[worksheetId]
 
 		await worksheet.delete()
-	}
+	},
 }
 
 export default sheetUtil

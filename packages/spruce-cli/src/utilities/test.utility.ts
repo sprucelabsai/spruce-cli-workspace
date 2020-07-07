@@ -1,5 +1,5 @@
 function hasArg(regex: RegExp) {
-	return !!process.argv?.find(arg => arg.search(regex) > -1)
+	return !!process.argv?.find((arg) => arg.search(regex) > -1)
 }
 
 const testUtil = {
@@ -8,7 +8,7 @@ const testUtil = {
 	},
 	isCacheEnabled() {
 		return !hasArg(/no.*?skill.*?cache/gi)
-	}
+	},
 }
 
 export default testUtil

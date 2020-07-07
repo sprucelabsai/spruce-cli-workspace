@@ -13,7 +13,7 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 		{ name: '@sprucelabs/test', isDev: true },
 		{ name: 'ts-node', isDev: true },
 		{ name: 'jest', isDev: true },
-		{ name: 'ts-jest', isDev: true }
+		{ name: 'ts-jest', isDev: true },
 	]
 
 	public async afterPackageInstall() {
@@ -26,12 +26,12 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 					'@babel/preset-env',
 					{
 						targets: {
-							node: 'current'
-						}
-					}
+							node: 'current',
+						},
+					},
 				],
-				'@babel/preset-typescript'
-			]
+				'@babel/preset-typescript',
+			],
 		}
 
 		const jestConfig = {
@@ -44,8 +44,8 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 			moduleNameMapper: {
 				'^#spruce/(.*)$': '<rootDir>/.spruce/$1',
 				'^#spruce:schema/(.*)':
-					'<rootDir>/node_modules/@sprucelabs/schema/build/$1'
-			}
+					'<rootDir>/node_modules/@sprucelabs/schema/build/$1',
+			},
 		}
 
 		// TODO: Set the "test" package here

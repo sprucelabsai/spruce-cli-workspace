@@ -10,7 +10,7 @@ export default buildErrorDefinition({
 			type: FieldType.Text,
 			label: 'directory',
 			isRequired: true,
-			hint: 'The directory we tried to access'
-		}
-	}
+			hint: 'The directory we tried to access',
+		},
+	},
 })

@@ -88,7 +88,7 @@ const diskUtil = {
 				throw new SpruceError({
 					code: ErrorCode.FileExists,
 					file: filePathToWrite,
-					friendlyMessage: `The file already exists. Remove this file or set a different WriteMode`
+					friendlyMessage: `The file already exists. Remove this file or set a different WriteMode`,
 				})
 			}
 
@@ -96,6 +96,6 @@ const diskUtil = {
 		}
 
 		await Promise.all(writes)
-	}
+	},
 }
 export default diskUtil

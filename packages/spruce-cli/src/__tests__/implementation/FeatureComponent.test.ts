@@ -11,7 +11,7 @@ export default class FeatureComponentTest extends AbstractCliTest {
 		const serviceFactory = new ServiceFactory(new Mercury())
 		const featureManager = FeatureManager.WithAllFeatures({
 			cwd: this.cwd,
-			serviceFactory
+			serviceFactory,
 		})
 		const featureComponent = new FeatureComponent(this.Term(), featureManager)
 		return featureComponent
@@ -24,17 +24,17 @@ export default class FeatureComponentTest extends AbstractCliTest {
 
 	@test('Asks questions for installing the Skill Feature', FeatureCode.Skill, {
 		name: 'test',
-		description: 'test'
+		description: 'test',
 	})
 	@test(
 		'Honors default values for installing the Skill Feature',
 		FeatureCode.Skill,
 		{
 			name: 'waka',
-			description: 'test'
+			description: 'test',
 		},
 		{
-			name: 'waka'
+			name: 'waka',
 		}
 	)
 	@test(
@@ -42,7 +42,7 @@ export default class FeatureComponentTest extends AbstractCliTest {
 		FeatureCode.Skill,
 		{
 			name: 'test',
-			description: 'test'
+			description: 'test',
 		}
 	)
 	@test(
@@ -58,7 +58,7 @@ export default class FeatureComponentTest extends AbstractCliTest {
 		const featureComponent = this.FeatureComponent()
 		const promise = featureComponent.prompt(feature, {
 			// @ts-ignore
-			values
+			values,
 		})
 		const expectedTotalQuestions =
 			Object.keys(expectedAnswers ?? {}).length -

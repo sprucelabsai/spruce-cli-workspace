@@ -9,9 +9,9 @@ const valueTypeServiceErrorDefinition = buildErrorDefinition({
 		schemaId: {
 			type: FieldType.Text,
 			label: 'Schema id',
-			isRequired: true
-		}
-	}
+			isRequired: true,
+		},
+	},
 })
 
 export default valueTypeServiceErrorDefinition

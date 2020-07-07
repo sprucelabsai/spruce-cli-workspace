@@ -4,7 +4,7 @@ import {
 	IRootAutoloaderTemplateItem,
 	IAutoLoaderClassTemplateItem,
 	IAutoLoaderInterfaceTemplateItem,
-	IAutoLoaderImportTemplateItem
+	IAutoLoaderImportTemplateItem,
 } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import ErrorCode from '#spruce/errors/errorCode'
@@ -22,12 +22,12 @@ export default class AutoloaderTemplateItemBuilder extends AbstractTemplateItemB
 		autoloaders: SpruceSchemas.Local.IAutoloader[]
 	): Promise<IRootAutoloaderTemplateItem> {
 		const templateItems: IAutoLoaderTemplateItem[] = await Promise.all(
-			autoloaders.map(autoloader => {
+			autoloaders.map((autoloader) => {
 				const directory = autoloader.lookupDir.path
 				const pattern = autoloader.pattern
 				return this.buildTemplateItem({
 					directory: path.join(this.cwd, directory),
-					pattern
+					pattern,
 				})
 			})
 		)
@@ -44,7 +44,7 @@ export default class AutoloaderTemplateItemBuilder extends AbstractTemplateItemB
 	}): Promise<IAutoLoaderTemplateItem> {
 		const {
 			directory,
-			pattern = autoloaderDefinition.fields.pattern.defaultValue
+			pattern = autoloaderDefinition.fields.pattern.defaultValue,
 		} = options
 
 		const cacheKey = `${directory}-${pattern}-${this.cwd}`
@@ -77,20 +77,20 @@ export default class AutoloaderTemplateItemBuilder extends AbstractTemplateItemB
 				.replace(path.extname(filePaths[idx]), '')
 
 			// build interface template items
-			introspection.interfaces.forEach(i => {
+			introspection.interfaces.forEach((i) => {
 				interfaces.push({
 					interfaceName: i.interfaceName,
-					relativeFilePath: `#spruce/..${filePath}`
+					relativeFilePath: `#spruce/..${filePath}`,
 				})
 			})
 
 			// build class template items
-			introspection.classes.forEach(i => {
+			introspection.classes.forEach((i) => {
 				if (i.isAbstract) {
 					abstractClass = {
 						className: i.className,
 						relativeFilePath: `#spruce/..${filePath}`,
-						optionsInterfaceName: i.optionsInterfaceName
+						optionsInterfaceName: i.optionsInterfaceName,
 					}
 				} else {
 					classes.push({
@@ -104,7 +104,7 @@ export default class AutoloaderTemplateItemBuilder extends AbstractTemplateItemB
 						namePascal: NamesUtility.toPascal(
 							NamesUtility.toCamel(i.className).replace(namePascal, '')
 						),
-						relativeFilePath: `#spruce/..${filePath}`
+						relativeFilePath: `#spruce/..${filePath}`,
 					})
 				}
 			})
@@ -113,26 +113,26 @@ export default class AutoloaderTemplateItemBuilder extends AbstractTemplateItemB
 		if (!abstractClass) {
 			throw new SpruceError({
 				code: ErrorCode.NotImplemented,
-				friendlyMessage: `Autoloader classes in ${directory} need to inherit and abstract class that lives in the same directory. If you deleted a directory, try running \`spruce autoloader:sync\``
+				friendlyMessage: `Autoloader classes in ${directory} need to inherit and abstract class that lives in the same directory. If you deleted a directory, try running \`spruce autoloader:sync\``,
 			})
 		}
 
 		const constructorOptionInterfaces: IAutoLoaderImportTemplateItem[] = []
 
-		classes.forEach(item => {
+		classes.forEach((item) => {
 			if (
 				item.optionsInterfaceName &&
 				!constructorOptionInterfaces.find(
-					i => i.name === item.optionsInterfaceName
+					(i) => i.name === item.optionsInterfaceName
 				)
 			) {
 				const path = interfaces.find(
-					i => i.interfaceName === item.optionsInterfaceName
+					(i) => i.interfaceName === item.optionsInterfaceName
 				)
 				if (path) {
 					constructorOptionInterfaces.push({
 						name: item.optionsInterfaceName,
-						filePath: path.relativeFilePath
+						filePath: path.relativeFilePath,
 					})
 				}
 			}
@@ -148,7 +148,7 @@ export default class AutoloaderTemplateItemBuilder extends AbstractTemplateItemB
 			namePascal,
 			nameCamel,
 			nameCamelPlural,
-			constructorOptionInterfaces
+			constructorOptionInterfaces,
 		}
 
 		this.cache[cacheKey] = templateItem

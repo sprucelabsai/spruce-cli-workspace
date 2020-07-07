@@ -5,7 +5,7 @@ import Schema, {
 	ErrorCode as SchemaErrorCode,
 	ISchemaFieldDefinition,
 	ISchemaIdWithVersion,
-	SchemaError
+	SchemaError,
 } from '@sprucelabs/schema'
 import cloneDeep from 'lodash/cloneDeep'
 import uniqWith from 'lodash/uniqWith'
@@ -26,14 +26,14 @@ export default class SchemaTemplateItemBuilder {
 
 		const flattened = this.flattenDefinitions(definitions)
 
-		const templateTimes = flattened.map(def =>
+		const templateTimes = flattened.map((def) =>
 			this.buildTemplateItem(namespace, def)
 		)
 		return templateTimes
 	}
 
 	private cacheDefinitions(definitions: ISchemaDefinition[]) {
-		definitions.forEach(def => {
+		definitions.forEach((def) => {
 			this.cacheDefinition(def)
 		})
 	}
@@ -49,7 +49,7 @@ export default class SchemaTemplateItemBuilder {
 	private flattenDefinitions(definitions: ISchemaDefinition[]) {
 		const flattened: ISchemaDefinition[] = []
 
-		definitions.forEach(d => {
+		definitions.forEach((d) => {
 			const related = this.pullRelatedDefinitions(d)
 			flattened.push(...related)
 			flattened.push(d)
@@ -65,7 +65,7 @@ export default class SchemaTemplateItemBuilder {
 	private pullRelatedDefinitions(definition: ISchemaDefinition) {
 		const related: ISchemaDefinition[] = []
 
-		Object.keys(definition.fields ?? {}).forEach(fieldName => {
+		Object.keys(definition.fields ?? {}).forEach((fieldName) => {
 			const field = definition.fields?.[fieldName]
 
 			if (field?.type === FieldType.Schema) {
@@ -75,7 +75,7 @@ export default class SchemaTemplateItemBuilder {
 					throw new SpruceError({
 						code: ErrorCode.Generic,
 						friendlyMessage: `Failed to load related schema for ${definition.id}${definition.version}.${fieldName}`,
-						originalError: err
+						originalError: err,
 					})
 				}
 			}
@@ -89,7 +89,7 @@ export default class SchemaTemplateItemBuilder {
 		const schemasOrIdsWithVersion = SchemaField.mapFieldDefinitionToSchemasOrIdsWithVersion(
 			field
 		)
-		schemasOrIdsWithVersion.forEach(item => {
+		schemasOrIdsWithVersion.forEach((item) => {
 			const definition = this.definitionOrIdsWithVersionToDefinition(item)
 
 			related.push(definition)
@@ -111,7 +111,7 @@ export default class SchemaTemplateItemBuilder {
 				throw new SchemaError({
 					code: SchemaErrorCode.SchemaNotFound,
 					schemaId: JSON.stringify(definitionOrIdWithVersion),
-					friendlyMessage: 'Make sure you are pointing to the correct version.'
+					friendlyMessage: 'Make sure you are pointing to the correct version.',
 				})
 			}
 		} else {
@@ -132,7 +132,7 @@ export default class SchemaTemplateItemBuilder {
 			id: definition.id,
 			namespace,
 			definition: this.normalizeSchemaFieldsToIdsWithVersion(definition),
-			...schemaUtil.generateNamesForDefinition(definition)
+			...schemaUtil.generateNamesForDefinition(definition),
 		}
 	}
 
@@ -141,7 +141,7 @@ export default class SchemaTemplateItemBuilder {
 	): ISchemaDefinition {
 		const normalized: ISchemaDefinition = cloneDeep(definition)
 
-		Object.keys(normalized.fields ?? {}).forEach(name => {
+		Object.keys(normalized.fields ?? {}).forEach((name) => {
 			const field = normalized.fields?.[name]
 			if (field && field.type === FieldType.Schema) {
 				const idsWithVersion = SchemaField.mapFieldDefinitionToSchemaIdsWithVersion(

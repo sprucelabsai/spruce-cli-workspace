@@ -8,19 +8,19 @@ export default buildSchemaDefinition({
 		lookupDir: {
 			type: FieldType.Directory,
 			label: 'Source directory',
-			isRequired: true
+			isRequired: true,
 		},
 		destination: {
 			type: FieldType.File,
 			label: 'Destination',
 			hint: 'Where the file that does the autoloading is written',
-			isRequired: true
+			isRequired: true,
 		},
 		pattern: {
 			type: FieldType.Text,
 			label: 'Pattern',
 			defaultValue: '**/!(*.test).ts',
-			isRequired: true
-		}
-	}
+			isRequired: true,
+		},
+	},
 })

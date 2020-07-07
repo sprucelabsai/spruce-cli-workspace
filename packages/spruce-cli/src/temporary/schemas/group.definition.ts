@@ -13,43 +13,43 @@ const groupDefinition: ISchemaDefinition = {
 	fields: {
 		id: {
 			label: 'Id',
-			type: FieldType.Id
+			type: FieldType.Id,
 		},
 		isDefault: {
 			label: 'Is default',
 			hint:
 				'Is this job one that comes with every org? Mapped to roles (owner, groupManager, manager, guest).',
 			type: FieldType.Text,
-			isRequired: true
+			isRequired: true,
 		},
 		name: {
 			label: 'Name',
 			type: FieldType.Text,
-			isRequired: true
+			isRequired: true,
 		},
 		role: {
 			label: 'Role',
 			type: FieldType.Select,
 			isRequired: true,
 			options: {
-				choices: roleSelectChoices
-			}
+				choices: roleSelectChoices,
+			},
 		},
 		inStoreAcls: {
 			label: 'On work permissions',
 			type: FieldType.Schema,
 			options: {
-				schema: aclDefinition
-			}
+				schema: aclDefinition,
+			},
 		},
 		acls: {
 			label: 'Off work permissions',
 			type: FieldType.Schema,
 			options: {
-				schema: aclDefinition
-			}
-		}
-	}
+				schema: aclDefinition,
+			},
+		},
+	},
 }
 
 export default groupDefinition
