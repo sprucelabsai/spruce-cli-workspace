@@ -4,11 +4,7 @@
 	"version": "10.6.6",
 	"command": {
 		"publish": {
-			"allowBranch": [
-				"dev",
-				"canary",
-				"prerelease-*"
-			],
+			"allowBranch": ["master", "testing"],
 			"conventionalCommits": true,
 			"changelogPreset": "sprucelabs"
 		}
