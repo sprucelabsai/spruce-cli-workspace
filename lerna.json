@@ -1,10 +1,13 @@
 {
 	"npmClient": "yarn",
 	"useWorkspaces": true,
-	"version": "10.6.6",
+	"version": "10.6.7",
 	"command": {
 		"publish": {
-			"allowBranch": ["master", "testing"],
+			"allowBranch": [
+				"master",
+				"testing"
+			],
 			"conventionalCommits": true,
 			"changelogPreset": "sprucelabs"
 		}
