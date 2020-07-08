@@ -47,7 +47,7 @@ export default class HandlesVersioningTest extends AbstractCliTest {
 
 	@test()
 	protected static async canGetLatestVersionBasedOnDir() {
-		const resolved = versionUtil.latestVersion(
+		const resolved = versionUtil.latestVersionAtPath(
 			this.resolveTestPath('utilities')
 		)
 

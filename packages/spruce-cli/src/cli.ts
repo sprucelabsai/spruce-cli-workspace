@@ -206,17 +206,17 @@ export async function boot(options?: {
 			const { destinationDir = 'src/schemas', ...rest } = options
 			const resolvedDestination = diskUtil.resolvePath(cwd, destinationDir)
 
-			const builderResults = await generators.schema.generateBuilder(
+			const results = await generators.schema.generateBuilder(
 				resolvedDestination,
 				rest
 			)
 
-			await cli.syncSchemas({
+			const syncResults = await cli.syncSchemas({
 				lookupDir: destinationDir,
 				...rest,
 			})
 
-			return builderResults
+			return [...results, ...syncResults]
 		},
 
 		syncSchemas: async (options) => {
