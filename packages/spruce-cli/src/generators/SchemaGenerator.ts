@@ -68,13 +68,15 @@ export default class SchemaGenerator extends AbstractGenerator {
 			`${options.nameCamel}.builder.ts`
 		)
 
-		const definitionBuilder = this.templates.definitionBuilder(options)
+		const builderContent = this.templates.definitionBuilder(options)
 
-		return this.writeFileIfChangedMixinResults(
+		const results = this.writeFileIfChangedMixinResults(
 			resolvedBuilderDestination,
-			definitionBuilder,
+			builderContent,
 			'The file from which all types, interfaces, and protocols will be generated'
 		)
+
+		return results
 	}
 
 	public async generateFieldTypes(
@@ -126,7 +128,58 @@ export default class SchemaGenerator extends AbstractGenerator {
 			'The interfaces for every schema'
 		)
 
+		results = this.generateAllDefinitions(destinationDir, options)
+
 		return results
+	}
+
+	private generateAllDefinitions(
+		destinationDir: string,
+		options: IGenerateSchemaTypesOptions
+	): GenerationResults {
+		const results: GenerationResults = []
+
+		options.schemaTemplateItems.map((item) => {
+			results.push(
+				...this.generateDefinition(destinationDir, { ...options, ...item })
+			)
+		})
+
+		return results
+	}
+
+	public generateDefinition(
+		destinationDir: string,
+		options: {
+			schemaTemplateItems: ISchemaTemplateItem[]
+			fieldTemplateItems: IFieldTemplateItem[]
+			valueTypes: IValueTypes
+		} & ISchemaTemplateItem
+	) {
+		const {
+			schemaTemplateItems,
+			fieldTemplateItems,
+			valueTypes,
+			...item
+		} = options
+
+		const definitionContents = this.templates.definition({
+			...item,
+			schemaTemplateItems,
+			fieldTemplateItems,
+			valueTypes,
+		})
+
+		const definitionDestination = path.join(
+			destinationDir,
+			`${item.id}.definition.ts`
+		)
+
+		return this.writeFileIfChangedMixinResults(
+			definitionDestination,
+			definitionContents,
+			`The definition of ${item.nameReadable}`
+		)
 	}
 
 	public async generateValueTypes(
