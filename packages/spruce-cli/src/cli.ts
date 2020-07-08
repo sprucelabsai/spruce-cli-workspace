@@ -38,6 +38,7 @@ import WatcherStore from './stores/WatcherStore'
 import { AuthedAs } from './types/cli.types'
 import diskUtil from './utilities/disk.utility'
 import namesUtil from './utilities/names.utility'
+import schemaGeneratorUtil from './utilities/schemaGenerator.utility'
 
 export function buildStores(
 	cwd: string,
@@ -248,18 +249,26 @@ export async function boot(options?: {
 				destinationDir = diskUtil.resolveHashSprucePath(cwd, 'schemas'),
 			} = options ?? {}
 
+			const resolvedDestination = diskUtil.resolvePath(cwd, destinationDir)
+
 			const {
 				schemas: { items: schemaTemplateItems },
 				fields: { items: fieldTemplateItems },
 			} = await stores.schema.fetchAllTemplateItems(lookupDir, addonLookupDir)
 
-			await generators.schema.generateFieldTypes(
-				diskUtil.resolvePath(cwd, destinationDir),
-				{ fieldTemplateItems }
+			const definitionsToDelete = await schemaGeneratorUtil.filterDefinitionFilesBySchemaIds(
+				resolvedDestination,
+				schemaTemplateItems.map((i) => i.id)
 			)
 
+			definitionsToDelete.forEach((def) => diskUtil.deleteFile(def))
+
+			await generators.schema.generateFieldTypes(resolvedDestination, {
+				fieldTemplateItems,
+			})
+
 			const valueTypeResults = await generators.schema.generateValueTypes(
-				diskUtil.resolvePath(cwd, destinationDir),
+				resolvedDestination,
 				{
 					fieldTemplateItems,
 					schemaTemplateItems,
