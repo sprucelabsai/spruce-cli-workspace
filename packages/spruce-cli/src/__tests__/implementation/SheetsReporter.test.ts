@@ -1,14 +1,14 @@
-import pathUtil from 'path'
-import AbstractSpruceTest, { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test'
 import { TEST_JEST_PASSED, TEST_JEST_FAILED } from '../../constants'
-import SheetsReporter, {
-	SheetsReporterUtil,
+import AbstractSheetsReporterTest from '../../sheetsReporter/AbstractSheetsReporterTest'
+import SheetsReporter from '../../sheetsReporter/SheetsReporter'
+import {
+	IJestTestResult,
 	ITestMap,
-} from '../../jest/SheetsReporter'
-import { IJestTestResult } from '../../types/jest.types'
-import sheetUtil from './sheet.utilities'
+} from '../../sheetsReporter/sheetsReporter.types'
+import { SheetsReporterUtility } from '../../sheetsReporter/SheetsReporterUtility'
 
-export default class SheetsReporterTest extends AbstractSpruceTest {
+export default class SheetsReporterTest extends AbstractSheetsReporterTest {
 	private static reporter: SheetsReporter<typeof SheetsReporterTest.testMap>
 	private static sheetId = '1MFb9AkB8sm7rurYew8hgzrXTz3JDxOFhl4kN9sNQVxw'
 	private static worksheetId: number
@@ -38,10 +38,9 @@ export default class SheetsReporterTest extends AbstractSpruceTest {
 	}
 
 	protected static async beforeAll() {
-		sheetUtil.serviceEmail = process.env.GOOGLE_SERVICE_EMAIL_TEST as string
-		sheetUtil.privateKey = process.env.GOOGLE_SERVICE_PRIVATE_KEY_TEST as string
-
-		this.worksheetId = await sheetUtil.generateRandomWorksheet(this.sheetId)
+		this.worksheetId = await this.sheetsAdapter.generateRandomWorksheet(
+			this.sheetId
+		)
 	}
 
 	protected static async beforeEach() {
@@ -50,13 +49,6 @@ export default class SheetsReporterTest extends AbstractSpruceTest {
 		this.reporter = new SheetsReporter(
 			{},
 			{
-				adapterFilepath: pathUtil.join(
-					__dirname,
-					'..',
-					'..',
-					'jest',
-					'GoogleSpreadsheetAdapter'
-				),
 				sheetId: this.sheetId,
 				worksheetId: this.worksheetId,
 				testMap: this.testMap,
@@ -66,7 +58,7 @@ export default class SheetsReporterTest extends AbstractSpruceTest {
 
 	protected static async afterAll() {
 		await super.afterAll()
-		await sheetUtil.deleteWorksheet(this.sheetId, this.worksheetId)
+		await this.sheetsAdapter.deleteWorksheet(this.sheetId, this.worksheetId)
 	}
 
 	@test()
@@ -75,7 +67,7 @@ export default class SheetsReporterTest extends AbstractSpruceTest {
 
 		const testMap: ITestMap = SheetsReporterTest.testMap
 
-		const results = SheetsReporterUtil.getMappedTests(testMap, testResults)
+		const results = SheetsReporterUtility.getMappedTests(testMap, testResults)
 
 		const cliTest = results.map((r) => r.title === 'canBootCli')
 		const canSyncTest = results.map((r) => r.title === 'canSyncSchemas')
@@ -97,7 +89,7 @@ export default class SheetsReporterTest extends AbstractSpruceTest {
 	protected static async canUpdateTestCell() {
 		await this.reporter.reportTestAsPassed('canBootCli')
 
-		const value = await sheetUtil.fetchCellValue(
+		const value = await this.sheetsAdapter.fetchCellValue(
 			this.sheetId,
 			this.worksheetId,
 			'B1'
@@ -110,7 +102,7 @@ export default class SheetsReporterTest extends AbstractSpruceTest {
 	protected static async canUpdateAllTestsAfterCompletion() {
 		await this.reporter.onTestResult({}, { testResults: this.testResults })
 
-		const value = await sheetUtil.fetchCellValue(
+		const value = await this.sheetsAdapter.fetchCellValue(
 			this.sheetId,
 			this.worksheetId,
 			'B1'
@@ -118,7 +110,7 @@ export default class SheetsReporterTest extends AbstractSpruceTest {
 
 		assert.isEqual(value, 1)
 
-		const value2 = await sheetUtil.fetchCellValue(
+		const value2 = await this.sheetsAdapter.fetchCellValue(
 			this.sheetId,
 			this.worksheetId,
 			'B2'

@@ -28,7 +28,7 @@
 		"./*.ts",
 		"./**/*.ts",
 		"./.spruce/**/*.ts",
-		"src/jest/sheetsReporter.js"
+		"src/sheetsReporter/sheetsReporter.js"
 	],
 	"exclude": ["**/node_modules/*", "build/*", "tmp/*", "__tests__"]
 }

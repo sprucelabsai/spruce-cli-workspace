@@ -1,10 +1,16 @@
-import AbstractSpruceTest, { test, assert } from '@sprucelabs/test'
-import GoogleSpreadsheetAdapter from '../../jest/GoogleSpreadsheetAdapter'
-import { IGoogleSheetsAdapter } from '../../types/jest.types'
-import sheetUtil from './sheet.utilities'
+import { test, assert } from '@sprucelabs/test'
+import AbstractSheetsReporterTest from '../../sheetsReporter/AbstractSheetsReporterTest'
+import { IGoogleSheetsAdapter } from '../../sheetsReporter/sheetsReporter.types'
+import { SheetsReporterUtility } from '../../sheetsReporter/SheetsReporterUtility'
 require('dotenv').config()
 
-export default class SheetsAdapterTest extends AbstractSpruceTest {
+const sheetsAdapterPath = SheetsReporterUtility.resolveAdapterPath(
+	process.env.SHEETS_REPORTER_ADAPTER_TEST ?? 'GoogleAdapter'
+)
+
+const AdapterClass = require(sheetsAdapterPath).default
+
+export default class SheetsAdapterTest extends AbstractSheetsReporterTest {
 	private static adapter: IGoogleSheetsAdapter
 	private static sheetId = '1MFb9AkB8sm7rurYew8hgzrXTz3JDxOFhl4kN9sNQVxw'
 	private static worksheetId: number
@@ -15,22 +21,21 @@ export default class SheetsAdapterTest extends AbstractSpruceTest {
 		const email = process.env.GOOGLE_SERVICE_EMAIL_TEST as string
 		const key = process.env.GOOGLE_SERVICE_PRIVATE_KEY_TEST as string
 
-		this.adapter = new GoogleSpreadsheetAdapter({
+		this.adapter = new AdapterClass({
 			serviceEmail: email,
 			privateKey: key,
 		})
-
-		sheetUtil.serviceEmail = email
-		sheetUtil.privateKey = key
 	}
 
 	protected static async beforeAll() {
-		this.worksheetId = await sheetUtil.generateRandomWorksheet(this.sheetId)
+		this.worksheetId = await this.sheetsAdapter.generateRandomWorksheet(
+			this.sheetId
+		)
 	}
 
 	protected static async afterAll() {
 		await super.afterAll()
-		await sheetUtil.deleteWorksheet(this.sheetId, this.worksheetId)
+		await this.sheetsAdapter.deleteWorksheet(this.sheetId, this.worksheetId)
 	}
 
 	@test('can set number value', 100)
@@ -48,7 +53,7 @@ export default class SheetsAdapterTest extends AbstractSpruceTest {
 		})
 
 		// make sure it actually worked
-		const actualValue = await sheetUtil.fetchCellValue(
+		const actualValue = await this.sheetsAdapter.fetchCellValue(
 			sheetId,
 			worksheetId,
 			'A1'

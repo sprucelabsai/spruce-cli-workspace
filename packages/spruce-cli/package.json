@@ -138,9 +138,8 @@
 		"reporters": [
 			"default",
 			[
-				"<rootDir>/build/jest/SheetsReporter.js",
+				"<rootDir>/build/sheetsReporter/SheetsReporter.js",
 				{
-					"adapterFilepath": "build/jest/GoogleSpreadsheetAdapter",
 					"sheetId": "1DoWM7mYgGDa-PJXptLomrZmbIBZiuxS1YiAsRXU2Gm0",
 					"worksheetId": 843037832,
 					"testMap": {
