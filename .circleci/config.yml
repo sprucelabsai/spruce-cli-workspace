@@ -25,130 +25,44 @@ jobs:
           key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
-  pre_release:
+  npm_publish:
     docker:
       - image: circleci/node:12
     steps:
       - add_ssh_keys:
           fingerprints:
             - "ec:9f:2e:aa:1f:c9:ab:49:57:8f:c0:cd:2e:5b:f3:b0"
-      - run: node -v && npm -v
       - checkout
       - restore_cache:
           keys:
             - yarn-packages-{{ checksum "yarn.lock" }}
-      - run: yarn install --frozen-lockfile
-      - run: yarn build
-      - run: git config --global user.email "$GIT_AUTHOR_EMAIL"
-      - run: git config --global user.name "$GIT_AUTHOR_NAME"
-      - run: git status
-      - run:
-          name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-      - run: export SHA=$(git rev-parse --short HEAD) && npm run publish -- prerelease --exact --yes --preid pre-$SHA --no-push --npm-tag prerelease
-  canary:
-    docker:
-      - image: circleci/node:12
-    steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "ec:9f:2e:aa:1f:c9:ab:49:57:8f:c0:cd:2e:5b:f3:b0"
-      - run: node -v && npm -v
-      - checkout
-      - restore_cache:
-          keys:
-            - yarn-packages-{{ checksum "yarn.lock" }}
-      - run: yarn install --frozen-lockfile
-      - run: yarn build
-      - run: git config --global user.email "$GIT_AUTHOR_EMAIL"
-      - run: git config --global user.name "$GIT_AUTHOR_NAME"
-      - run: git pull origin canary --tags
-      - run:
-          name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-      - run: npm run publish -- --exact --yes --canary --preid canary --force-publish --npm-tag canary --no-push --no-git-reset --includeMergedTags
-  dev_release:
-    docker:
-      - image: circleci/node:12
-    steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "ec:9f:2e:aa:1f:c9:ab:49:57:8f:c0:cd:2e:5b:f3:b0"
-      - run: node -v && npm -v
-      - checkout
       - run:
           command: |
             COMMIT_MSG=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
-            if [[ $COMMIT_MSG == *"[skip-ci-version]"* ]]; then
-              echo "[skip-ci-version] detected. Stopping."
+            if [[ $COMMIT_MSG == *"[npm-release]"* ]]; then
+              echo "[npm-release] detected. No publish necessary 👊"
               circleci step halt
             fi
-      - restore_cache:
-          keys:
-            - yarn-packages-{{ checksum "yarn.lock" }}
       - run: yarn install --frozen-lockfile
-      - run: yarn build
+      - run: yarn run build
       - run: git config --global user.email "$GIT_AUTHOR_EMAIL"
       - run: git config --global user.name "$GIT_AUTHOR_NAME"
       - run:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-      - run: 'npm run publish -- --yes --force-publish --dist-tag beta --message "chore(release): %v [skip-ci-version]"'
-  prod_release:
-    docker:
-      - image: circleci/node:12
-    steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "ec:9f:2e:aa:1f:c9:ab:49:57:8f:c0:cd:2e:5b:f3:b0"
-      - run: node -v && npm -v
-      - checkout
-      - restore_cache:
-          keys:
-            - yarn-packages-{{ checksum "yarn.lock" }}
-      - run: yarn install --frozen-lockfile
-      - run: yarn build
-      - run: git config --global user.email "$GIT_AUTHOR_EMAIL"
-      - run: git config --global user.name "$GIT_AUTHOR_NAME"
-      - run:
-          name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-      - run: npx lerna exec --no-bail --no-private --no-sort --stream -- '[ -n "$(npm v . dist-tags.beta)" ] && npm dist-tag add ${LERNA_PACKAGE_NAME}@$(npm v . dist-tags.beta) latest'
+      - run: 'npm run publish -- --yes --force-publish --dist-tag latest --message "chore(release): %v [npm-release]"'
 workflows:
   version: 2
   do_build:
     jobs:
       - test:
           context: public_package_publish
-          filters:
-            branches:
-              ignore:
-                - master
-      - pre_release:
-          context: public_package_publish
+      - npm_publish:
           requires:
             - test
-          filters:
-            branches:
-              only:
-                - /prerelease-.*/
-      - canary:
-          context: public_package_publish
-          filters:
-            branches:
-              only:
-                - canary
-      - dev_release:
-          context: public_package_publish
-          requires:
-            - test
-          filters:
-            branches:
-              only:
-                - dev
-      - prod_release:
           context: public_package_publish
           filters:
             branches:
               only:
                 - master
+                - testing
