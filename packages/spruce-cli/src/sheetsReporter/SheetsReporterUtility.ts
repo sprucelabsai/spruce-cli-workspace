@@ -28,7 +28,7 @@ export class SheetsReporterUtility {
 	public static resolveAdapterPath(adapterFilepath?: string) {
 		const filePath =
 			adapterFilepath ?? process.env.SHEETS_REPORTER_ADAPTER ?? 'GoogleAdapter'
-		
+
 		const basePath =
 			filePath.search(new RegExp(pathUtil.sep)) > -1
 				? process.cwd()
