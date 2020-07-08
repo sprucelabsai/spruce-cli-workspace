@@ -11,7 +11,7 @@ import TerminalInterface from './interfaces/TerminalInterface'
 import diskUtil from './utilities/disk.utility'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
-	private static rl: Interface
+	private static rl: Interface | undefined
 
 	protected static freshCwd() {
 		const tmpDirectory = pathUtil.join(os.tmpdir(), '..', 'tmp', uuid.v4())
@@ -41,7 +41,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static async afterAll() {
-		this.rl.close()
+		this.rl && this.rl.close()
 	}
 
 	protected static async Cli() {

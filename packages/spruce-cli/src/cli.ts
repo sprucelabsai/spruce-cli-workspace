@@ -37,6 +37,7 @@ import UserStore from './stores/UserStore'
 import WatcherStore from './stores/WatcherStore'
 import { AuthedAs } from './types/cli.types'
 import diskUtil from './utilities/disk.utility'
+import namesUtil from './utilities/names.utility'
 
 export function buildStores(
 	cwd: string,
@@ -79,7 +80,7 @@ export interface ICli {
 	createSchema(options: {
 		destinationDir?: string
 		nameReadable: string
-		namePascal: string
+		namePascal?: string
 		nameCamel: string
 		description?: string
 		addonLookupDir?: string
@@ -203,12 +204,22 @@ export async function boot(options?: {
 				})
 			}
 
-			const { destinationDir = 'src/schemas', ...rest } = options
+			const {
+				destinationDir = 'src/schemas',
+				nameCamel,
+				namePascal: namePascalOptions,
+				...rest
+			} = options
+
 			const resolvedDestination = diskUtil.resolvePath(cwd, destinationDir)
 
 			const results = await generators.schema.generateBuilder(
 				resolvedDestination,
-				rest
+				{
+					...rest,
+					nameCamel,
+					namePascal: namePascalOptions ?? namesUtil.toPascal(nameCamel),
+				}
 			)
 
 			const syncResults = await cli.syncSchemas({

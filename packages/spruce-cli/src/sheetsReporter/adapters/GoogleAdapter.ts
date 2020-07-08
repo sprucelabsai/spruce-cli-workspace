@@ -1,8 +1,11 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet'
-import { IGoogleSheetsAdapter, IGoogleSheetsOptions } from '../types/jest.types'
-require('dotenv').config()
+import {
+	IGoogleSheetsAdapter,
+	IGoogleSheetsOptions,
+} from '../sheetsReporter.types'
 
-export default class GoogleSpreadsheetAdapter implements IGoogleSheetsAdapter {
+export default class SheetsReporterGoogleAdapter
+	implements IGoogleSheetsAdapter {
 	private serviceEmail: string
 	private privateKey: string
 	private spreedsheetInstancesById: Record<
@@ -55,7 +58,7 @@ export default class GoogleSpreadsheetAdapter implements IGoogleSheetsAdapter {
 		await sheet.saveUpdatedCells()
 	}
 
-	private async fetchSheetAndCell(
+	protected async fetchSheetAndCell(
 		sheetId: string,
 		worksheetId: number,
 		cellLookup: string
@@ -63,6 +66,9 @@ export default class GoogleSpreadsheetAdapter implements IGoogleSheetsAdapter {
 		const spreadsheet = await this.fetchSpreadsheet(sheetId)
 		const sheet = spreadsheet.sheetsById[worksheetId]
 
+		if (!sheet) {
+			throw new Error(`Could not find worksheet with id: ${worksheetId}`)
+		}
 		await sheet.loadCells(cellLookup)
 
 		const cell = sheet.getCellByA1(cellLookup)
@@ -70,7 +76,7 @@ export default class GoogleSpreadsheetAdapter implements IGoogleSheetsAdapter {
 		return { cell, sheet }
 	}
 
-	private async fetchSpreadsheet(sheetId: string) {
+	protected async fetchSpreadsheet(sheetId: string) {
 		if (this.spreedsheetInstancesById[sheetId]) {
 			return this.spreedsheetInstancesById[sheetId]
 		}
@@ -82,7 +88,7 @@ export default class GoogleSpreadsheetAdapter implements IGoogleSheetsAdapter {
 		return spreadsheet
 	}
 
-	private async uncachedFetchSpreadsheet(sheetId: string) {
+	protected async uncachedFetchSpreadsheet(sheetId: string) {
 		const doc = new GoogleSpreadsheet(sheetId)
 
 		await doc.useServiceAccountAuth({

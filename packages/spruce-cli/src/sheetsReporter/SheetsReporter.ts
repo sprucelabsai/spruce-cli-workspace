@@ -1,29 +1,14 @@
-import pathUtil from 'path'
 import {
 	IJestTest,
 	IJestTestResults,
 	IJestTestResult,
 	IGoogleSheetsAdapter,
-} from '../types/jest.types'
+	ISheetsReporterOptions,
+	ITestMap,
+} from './sheetsReporter.types'
+import { SheetsReporterUtility } from './SheetsReporterUtility'
 
-export interface ISheetsReporterOptions<TestMap extends ITestMap = ITestMap> {
-	sheetId: string
-	worksheetId: number
-	adapterFilepath: string
-	testMap: TestMap
-}
-
-export interface ITestMap {
-	[testName: string]: string
-}
-
-export class SheetsReporterUtil {
-	public static getMappedTests(map: ITestMap, results: IJestTestResult[]) {
-		return results.filter((testResult) => {
-			return !!map[testResult.title]
-		})
-	}
-}
+require('dotenv').config()
 
 export default class SheetsReporter<TestMap extends ITestMap> {
 	private adapter: IGoogleSheetsAdapter
@@ -32,13 +17,19 @@ export default class SheetsReporter<TestMap extends ITestMap> {
 	private worksheetId: number
 
 	public constructor(_: any, options: ISheetsReporterOptions<TestMap>) {
-		const adapterPath =
-			options.adapterFilepath[0] === pathUtil.sep
-				? options.adapterFilepath
-				: pathUtil.join(process.cwd(), options.adapterFilepath)
+		const adapterPath = SheetsReporterUtility.resolveAdapterPath(
+			options.adapterFilepath
+		)
 
 		const AdapterClass = require(adapterPath).default
-		this.adapter = new AdapterClass()
+
+		try {
+			this.adapter = new AdapterClass()
+		} catch (err) {
+			throw new Error(
+				`Failed to load the SheetsAdapter at ${adapterPath}. Make sure the path is relative process.cwd() or absolute and it's being exported as default.`
+			)
+		}
 
 		this.testMap = options.testMap
 		this.sheetId = options.sheetId
@@ -46,7 +37,7 @@ export default class SheetsReporter<TestMap extends ITestMap> {
 	}
 
 	public onTestResult(_: IJestTest, testResult: IJestTestResults) {
-		const filteredTests = SheetsReporterUtil.getMappedTests(
+		const filteredTests = SheetsReporterUtility.getMappedTests(
 			this.testMap,
 			testResult.testResults
 		)

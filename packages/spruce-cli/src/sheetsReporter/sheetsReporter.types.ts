@@ -1,3 +1,14 @@
+export interface ISheetsReporterOptions<TestMap extends ITestMap = ITestMap> {
+	sheetId: string
+	worksheetId: number
+	adapterFilepath?: string
+	testMap: TestMap
+}
+
+export interface ITestMap {
+	[testName: string]: string
+}
+
 export interface IGoogleSheetsOptions {
 	serviceEmail: string
 	privateKey: string

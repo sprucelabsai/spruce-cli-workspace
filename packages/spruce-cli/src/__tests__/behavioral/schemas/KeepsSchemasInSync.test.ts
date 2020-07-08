@@ -4,6 +4,7 @@ import { CORE_SCHEMA_VERSION, CORE_NAMESPACE } from '../../../constants'
 import { Service } from '../../../factories/ServiceFactory'
 import { GeneratedFileAction } from '../../../types/cli.types'
 import diskUtil from '../../../utilities/disk.utility'
+import testUtil from '../../../utilities/test.utility'
 import versionUtil from '../../../utilities/version.utility'
 
 export default class CanSyncSchemas extends AbstractSchemaTest {
@@ -65,7 +66,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 	protected static async schemaTypesVileIsValid() {
 		await this.syncSchemasAndSetCwd('in-sync')
 
-		const typesFile = CanSyncSchemas.schemaTypesFile
+		const typesFile = this.schemaTypesFile
 		await this.Service(Service.TypeChecker).check(typesFile)
 	}
 
@@ -73,12 +74,13 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 	protected static async schemasStayInSyncAsFilesAreMoved() {
 		const cli = await this.syncSchemasAndSetCwd('in-sync')
 		const version = versionUtil.generateVersion()
+		const typeChecker = this.Service(Service.TypeChecker)
 		const matcher = new RegExp(
 			`SpruceSchemas.Local.ITestSchema(.*?)interface ${version.constValue}`,
 			'gis'
 		)
 
-		let typesContents = diskUtil.readFile(CanSyncSchemas.schemaTypesFile)
+		let typesContents = diskUtil.readFile(this.schemaTypesFile)
 
 		// should not found our test schema
 		assert.doesNotInclude(typesContents, matcher)
@@ -86,20 +88,42 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 		const createResponse = await cli.createSchema({
 			nameReadable: 'Test schema',
 			nameCamel: 'testSchema',
-			namePascal: 'TestSchema',
 		})
 
-		// should now include our test schema
-		typesContents = diskUtil.readFile(CanSyncSchemas.schemaTypesFile)
+		const builderFile = testUtil.findPathByNameInGeneratedFiles(
+			/testSchema\.builder/,
+			createResponse
+		)
+
+		const definitionFile = testUtil.findPathByNameInGeneratedFiles(
+			/testSchema\.definition/,
+			createResponse
+		)
+
+		// schema types should be good
+		await typeChecker.check(this.schemaTypesFile)
+
+		// the types should include our test schema
+		typesContents = diskUtil.readFile(this.schemaTypesFile)
 		assert.doesInclude(typesContents, matcher)
 
-		const builderFile = createResponse[0].path
+		// the definition file should exist
+		assert.isTrue(diskUtil.doesFileExist(definitionFile))
+
+		// DELETE builder and make sure we are cleaned up
 		diskUtil.deleteFile(builderFile)
 
+		// this should cleanup types and definition files
 		await cli.syncSchemas()
 
 		// should lastly NOT include our test schema
-		typesContents = diskUtil.readFile(CanSyncSchemas.schemaTypesFile)
+		await typeChecker.check(this.schemaTypesFile)
+
+		// our schema should be missing from the types file
+		typesContents = diskUtil.readFile(this.schemaTypesFile)
 		assert.doesNotInclude(typesContents, matcher)
+
+		// and the definition should have been deleted
+		assert.isFalse(diskUtil.doesFileExist(definitionFile))
 	}
 }
