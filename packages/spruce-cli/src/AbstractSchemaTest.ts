@@ -17,7 +17,8 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 
 	protected static async syncSchemasAndSetCwd(cacheKey?: string) {
 		const cli = await this.installSchemasAndSetCwd(cacheKey)
-		await cli.syncSchemas()
+		await cli.getFeature('schema').syncSchemas()
+
 		return cli
 	}
 

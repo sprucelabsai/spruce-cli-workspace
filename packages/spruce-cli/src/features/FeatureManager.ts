@@ -2,6 +2,8 @@
 import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
 import { templates } from '@sprucelabs/spruce-templates'
 import { uniq } from 'lodash'
+import { IGenerators } from '#spruce/autoloaders/generators'
+import { IStores } from '#spruce/autoloaders/stores'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import ServiceFactory, { Service } from '../factories/ServiceFactory'
 import log from '../singletons/log'
@@ -55,7 +57,7 @@ type InstallFeature =
 
 export default class FeatureManager {
 	public cwd: string
-	private featureMap: IFeatureMap
+	public featureMap: IFeatureMap
 	private serviceFactory: ServiceFactory
 
 	public constructor(
@@ -155,44 +157,58 @@ export default class FeatureManager {
 	public static WithAllFeatures(options: {
 		cwd: string
 		serviceFactory: ServiceFactory
+		generators: IGenerators
+		stores: IStores
 	}): FeatureManager {
-		const { cwd, serviceFactory } = options
+		const { cwd, serviceFactory, generators, stores } = options
 		const featureMap: IFeatureMap = {
 			circleCi: new CircleCIFeature({
 				cwd,
 				code: FeatureCode.CircleCi,
 				serviceFactory,
 				templates,
+				generators,
+				stores,
 			}),
 			error: new ErrorFeature({
 				cwd,
 				code: FeatureCode.Error,
 				serviceFactory,
 				templates,
+				generators,
+				stores,
 			}),
 			schema: new SchemaFeature({
 				cwd,
 				code: FeatureCode.Schema,
 				serviceFactory,
 				templates,
+				generators,
+				stores,
 			}),
 			skill: new SkillFeature({
 				cwd,
 				code: FeatureCode.Skill,
 				serviceFactory,
 				templates,
+				generators,
+				stores,
 			}),
 			test: new TestFeature({
 				cwd,
 				code: FeatureCode.Test,
 				serviceFactory,
 				templates,
+				generators,
+				stores,
 			}),
 			vsCode: new VsCodeFeature({
 				cwd,
 				code: FeatureCode.VsCode,
 				serviceFactory,
 				templates,
+				generators,
+				stores,
 			}),
 		}
 		const manager = new FeatureManager(cwd, featureMap, serviceFactory)
@@ -204,6 +220,7 @@ export default class FeatureManager {
 		trackedFeatures: FeatureCode[]
 	) {
 		const isTracked = !!trackedFeatures.find((f) => f === dependencyCode)
+
 		if (!isTracked) {
 			trackedFeatures.push(dependencyCode)
 
@@ -213,6 +230,7 @@ export default class FeatureManager {
 			)
 			trackedFeatures = trackedFeatures.concat(features)
 		}
+
 		return trackedFeatures
 	}
 

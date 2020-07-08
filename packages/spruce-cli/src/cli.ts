@@ -6,7 +6,7 @@ import {
 	IMercuryConnectOptions,
 	MercuryAuth,
 } from '@sprucelabs/mercury'
-import { templates, IValueTypes } from '@sprucelabs/spruce-templates'
+import { templates } from '@sprucelabs/spruce-templates'
 import { Command, CommanderStatic } from 'commander'
 // Shim
 // eslint-disable-next-line import/order
@@ -25,8 +25,8 @@ import FeatureManager, {
 	IInstallFeatureOptions,
 	FeatureCode,
 	IFeatureInstallResponse,
+	IFeatureMap,
 } from './features/FeatureManager'
-import { GenerationResults } from './generators/AbstractGenerator'
 import TerminalInterface from './interfaces/TerminalInterface'
 import log from './singletons/log'
 import OnboardingStore from './stores/OnboardingStore'
@@ -37,8 +37,6 @@ import UserStore from './stores/UserStore'
 import WatcherStore from './stores/WatcherStore'
 import { AuthedAs } from './types/cli.types'
 import diskUtil from './utilities/disk.utility'
-import namesUtil from './utilities/names.utility'
-import schemaGeneratorUtil from './utilities/schemaGenerator.utility'
 
 export function buildStores(
 	cwd: string,
@@ -78,20 +76,7 @@ export interface ICli {
 		options: IInstallFeatureOptions<F>
 	): Promise<IFeatureInstallResponse>
 
-	createSchema(options: {
-		destinationDir?: string
-		nameReadable: string
-		namePascal?: string
-		nameCamel: string
-		description?: string
-		addonLookupDir?: string
-	}): Promise<GenerationResults>
-
-	syncSchemas(options?: {
-		lookupDir?: string
-		destinationDir?: string
-		addonLookupDir?: string
-	}): Promise<GenerationResults>
+	getFeature<F extends keyof IFeatureMap>(code: F): IFeatureMap[F]
 
 	checkHealth(): Promise<IHealthCheckResults>
 }
@@ -129,6 +114,8 @@ export async function boot(options?: {
 	const featureManager = FeatureManager.WithAllFeatures({
 		cwd,
 		serviceFactory,
+		generators,
+		stores,
 	})
 
 	const commandOptions = {
@@ -193,102 +180,8 @@ export async function boot(options?: {
 			return featureManager.install(options)
 		},
 
-		createSchema: async (options): Promise<GenerationResults> => {
-			const isInstalled = await featureManager.isInstalled({
-				features: [FeatureCode.Skill],
-			})
-
-			if (!isInstalled) {
-				throw new SpruceError({
-					// @ts-ignore
-					code: 'SKILL_NOT_INSTALLED',
-				})
-			}
-
-			const {
-				destinationDir = 'src/schemas',
-				nameCamel,
-				namePascal: namePascalOptions,
-				...rest
-			} = options
-
-			const resolvedDestination = diskUtil.resolvePath(cwd, destinationDir)
-
-			const results = await generators.schema.generateBuilder(
-				resolvedDestination,
-				{
-					...rest,
-					nameCamel,
-					namePascal: namePascalOptions ?? namesUtil.toPascal(nameCamel),
-				}
-			)
-
-			const syncResults = await cli.syncSchemas({
-				lookupDir: destinationDir,
-				...rest,
-			})
-
-			return [...results, ...syncResults]
-		},
-
-		syncSchemas: async (options) => {
-			const isInstalled = await featureManager.isInstalled({
-				features: [FeatureCode.Skill, FeatureCode.Schema],
-			})
-
-			if (!isInstalled) {
-				throw new SpruceError({
-					// @ts-ignore
-					code: 'SKILL_NOT_INSTALLED',
-				})
-			}
-
-			const {
-				lookupDir,
-				addonLookupDir,
-				destinationDir = diskUtil.resolveHashSprucePath(cwd, 'schemas'),
-			} = options ?? {}
-
-			const resolvedDestination = diskUtil.resolvePath(cwd, destinationDir)
-
-			const {
-				schemas: { items: schemaTemplateItems },
-				fields: { items: fieldTemplateItems },
-			} = await stores.schema.fetchAllTemplateItems(lookupDir, addonLookupDir)
-
-			const definitionsToDelete = await schemaGeneratorUtil.filterDefinitionFilesBySchemaIds(
-				resolvedDestination,
-				schemaTemplateItems.map((i) => i.id)
-			)
-
-			definitionsToDelete.forEach((def) => diskUtil.deleteFile(def))
-
-			await generators.schema.generateFieldTypes(resolvedDestination, {
-				fieldTemplateItems,
-			})
-
-			const valueTypeResults = await generators.schema.generateValueTypes(
-				resolvedDestination,
-				{
-					fieldTemplateItems,
-					schemaTemplateItems,
-				}
-			)
-
-			const valueTypes: IValueTypes = await serviceFactory
-				.Service(cwd, Service.Import)
-				.importDefault(valueTypeResults[0].path)
-
-			const results = await generators.schema.generateSchemaTypes(
-				diskUtil.resolvePath(cwd, destinationDir),
-				{
-					fieldTemplateItems,
-					schemaTemplateItems,
-					valueTypes,
-				}
-			)
-
-			return results
+		getFeature: (code) => {
+			return featureManager.featureMap[code]
 		},
 
 		checkHealth: async (): Promise<IHealthCheckResults> => {
