@@ -10,7 +10,6 @@ const namedTemplateItemDefinition: SpruceSchemas.Local.NamedTemplateItem.IDefini
 		nameReadable: {
 			label: 'Readable name',
 			type: FieldType.Text,
-			isRequired: true,
 			hint: 'The name people will read',
 			options: undefined
 		},
@@ -26,7 +25,6 @@ const namedTemplateItemDefinition: SpruceSchemas.Local.NamedTemplateItem.IDefini
 		nameCamelPlural: {
 			label: 'Plural camel case name',
 			type: FieldType.Text,
-			isRequired: true,
 			hint: 'camelCase version of the name',
 			options: undefined
 		},
@@ -34,7 +32,6 @@ const namedTemplateItemDefinition: SpruceSchemas.Local.NamedTemplateItem.IDefini
 		namePascal: {
 			label: 'Pascal case name',
 			type: FieldType.Text,
-			isRequired: true,
 			hint: 'PascalCase of the name',
 			options: undefined
 		},
@@ -42,7 +39,6 @@ const namedTemplateItemDefinition: SpruceSchemas.Local.NamedTemplateItem.IDefini
 		namePascalPlural: {
 			label: 'Plural Pascal case name',
 			type: FieldType.Text,
-			isRequired: true,
 			hint: 'PascalCase of the name',
 			options: undefined
 		},
@@ -50,7 +46,6 @@ const namedTemplateItemDefinition: SpruceSchemas.Local.NamedTemplateItem.IDefini
 		nameConst: {
 			label: 'Constant case name',
 			type: FieldType.Text,
-			isRequired: true,
 			hint: 'CONST_CASE of the name',
 			options: undefined
 		},
@@ -58,7 +53,6 @@ const namedTemplateItemDefinition: SpruceSchemas.Local.NamedTemplateItem.IDefini
 		description: {
 			label: 'Description',
 			type: FieldType.Text,
-			isRequired: true,
 			description: 'Describe a bit more here',
 			options: undefined
 		}

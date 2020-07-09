@@ -70,6 +70,10 @@ export default class VsCodeFeature extends AbstractFeature {
 		await this.installMissingExtensions()
 	}
 
+	public getActions() {
+		return []
+	}
+
 	private async installMissingExtensions() {
 		const extensionsToInstall = await this.getMissingExtensions()
 

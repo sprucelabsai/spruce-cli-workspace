@@ -1,4 +1,5 @@
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import { Service } from '../factories/ServiceFactory'
 import log from '../singletons/log'
 import { INpmPackage } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
@@ -49,10 +50,14 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 		}
 
 		// TODO: Set the "test" package here
-		const service = this.PkgService()
+		const service = this.Service(Service.Pkg)
 
 		service.set({ path: 'babel', value: babelConfig })
 		service.set({ path: 'jest', value: jestConfig })
+	}
+
+	public getActions() {
+		return []
 	}
 
 	public async isInstalled() {

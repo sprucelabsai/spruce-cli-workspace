@@ -12,6 +12,10 @@ export default class CircleCIFeature extends AbstractFeature {
 	// 	// })
 	// }
 
+	public getActions() {
+		return []
+	}
+
 	public async isInstalled() {
 		return true
 		// return this.templates.isValidTemplatedDirectory({

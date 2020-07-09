@@ -2,6 +2,7 @@ import Schema from '@sprucelabs/schema'
 import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
 import skillFeatureDefinition from '#spruce/schemas/local/skillFeature.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import { Service } from '../factories/ServiceFactory'
 import { INpmPackage } from '../types/cli.types'
 import diskUtil from '../utilities/disk.utility'
 import tsConfigUtil from '../utilities/tsConfig.utility'
@@ -38,6 +39,10 @@ export default class SkillFeature extends AbstractFeature<
 		}
 	}
 
+	public getActions() {
+		return []
+	}
+
 	private async install(options: SpruceSchemas.Local.ISkillFeature) {
 		const schema = new Schema(skillFeatureDefinition, options)
 		schema.validate()
@@ -52,7 +57,7 @@ export default class SkillFeature extends AbstractFeature<
 
 	public async isInstalled() {
 		return (
-			this.PkgService().isInstalled('ts-node') &&
+			this.Service(Service.Pkg).isInstalled('ts-node') &&
 			diskUtil.doesDirExist(diskUtil.resolvePath(this.cwd, 'node_modules'))
 		)
 	}

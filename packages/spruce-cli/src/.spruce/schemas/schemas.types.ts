@@ -959,7 +959,6 @@ export declare namespace SpruceSchemas.Local.NamedTemplateItem {
 			nameReadable: {
 				label: 'Readable name'
 				type: FieldType.Text
-				isRequired: true
 				hint: 'The name people will read'
 				options: undefined
 			}
@@ -975,7 +974,6 @@ export declare namespace SpruceSchemas.Local.NamedTemplateItem {
 			nameCamelPlural: {
 				label: 'Plural camel case name'
 				type: FieldType.Text
-				isRequired: true
 				hint: 'camelCase version of the name'
 				options: undefined
 			}
@@ -983,7 +981,6 @@ export declare namespace SpruceSchemas.Local.NamedTemplateItem {
 			namePascal: {
 				label: 'Pascal case name'
 				type: FieldType.Text
-				isRequired: true
 				hint: 'PascalCase of the name'
 				options: undefined
 			}
@@ -991,7 +988,6 @@ export declare namespace SpruceSchemas.Local.NamedTemplateItem {
 			namePascalPlural: {
 				label: 'Plural Pascal case name'
 				type: FieldType.Text
-				isRequired: true
 				hint: 'PascalCase of the name'
 				options: undefined
 			}
@@ -999,7 +995,6 @@ export declare namespace SpruceSchemas.Local.NamedTemplateItem {
 			nameConst: {
 				label: 'Constant case name'
 				type: FieldType.Text
-				isRequired: true
 				hint: 'CONST_CASE of the name'
 				options: undefined
 			}
@@ -1007,7 +1002,6 @@ export declare namespace SpruceSchemas.Local.NamedTemplateItem {
 			description: {
 				label: 'Description'
 				type: FieldType.Text
-				isRequired: true
 				description: 'Describe a bit more here'
 				options: undefined
 			}

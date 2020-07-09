@@ -1,13 +1,13 @@
 import SpruceError from '@sprucelabs/schema/build/errors/SpruceError'
 import { IValueTypes } from '@sprucelabs/spruce-templates'
-import { Service } from '../factories/ServiceFactory'
-import { GenerationResults } from '../generators/AbstractGenerator'
-import { INpmPackage } from '../types/cli.types'
-import diskUtil from '../utilities/disk.utility'
-import namesUtil from '../utilities/names.utility'
-import schemaGeneratorUtil from '../utilities/schemaGenerator.utility'
-import AbstractFeature from './AbstractFeature'
-import { FeatureCode } from './FeatureManager'
+import { Service } from '../../factories/ServiceFactory'
+import { GenerationResults } from '../../generators/AbstractGenerator'
+import { INpmPackage } from '../../types/cli.types'
+import diskUtil from '../../utilities/disk.utility'
+import namesUtil from '../../utilities/names.utility'
+import schemaGeneratorUtil from '../../utilities/schemaGenerator.utility'
+import AbstractFeature from '../AbstractFeature'
+import { FeatureCode } from '../FeatureManager'
 
 interface ICreateSchemaOptions {
 	destinationDir?: string
@@ -15,7 +15,7 @@ interface ICreateSchemaOptions {
 	namePascal?: string
 	nameCamel: string
 	description?: string
-	addonLookupDir?: string
+	addonsLookupDir?: string
 }
 
 interface ISyncSchemasOptions {
@@ -33,15 +33,20 @@ export default class SchemaFeature extends AbstractFeature
 	implements ISchemaFeature {
 	public description = 'Define, validate, and normalize everything.'
 	public dependencies = [FeatureCode.Skill]
-
 	public packageDependencies: INpmPackage[] = [
 		{
 			name: '@sprucelabs/schema',
 		},
 	]
 
+	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+
 	public async isInstalled() {
-		return this.PkgService().isInstalled('@sprucelabs/schema')
+		return this.Service(Service.Pkg).isInstalled('@sprucelabs/schema')
+	}
+
+	public getActions() {
+		return []
 	}
 
 	public async createSchema(
@@ -63,6 +68,9 @@ export default class SchemaFeature extends AbstractFeature
 			nameReadable: nameReadableOptions,
 			...rest
 		} = options
+
+		const action = this.actionFactory?.Action('createSchema')
+		action?.execute
 
 		const resolvedDestination = diskUtil.resolvePath(this.cwd, destinationDir)
 

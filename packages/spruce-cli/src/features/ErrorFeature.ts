@@ -1,3 +1,4 @@
+import { Service } from '../factories/ServiceFactory'
 import { INpmPackage } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
 import { FeatureCode } from './FeatureManager'
@@ -14,7 +15,11 @@ export default class ErrorFeature extends AbstractFeature {
 		},
 	]
 
+	public getActions() {
+		return []
+	}
+
 	public async isInstalled() {
-		return this.PkgService().isInstalled('@sprucelabs/error')
+		return this.Service(Service.Pkg).isInstalled('@sprucelabs/error')
 	}
 }

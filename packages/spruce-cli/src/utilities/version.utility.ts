@@ -79,10 +79,7 @@ const versionUtil = {
 
 	resolveNewLatestPath(cwd: string, ...paths: string[]) {
 		const { resolved } = parsePath(cwd, paths)
-		return resolved.replace(
-			'{{@latest}}',
-			new Date().toISOString().split('T')[0]
-		)
+		return resolved.replace('{{@latest}}', formatDate(new Date()))
 	},
 }
 
