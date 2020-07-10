@@ -11,14 +11,14 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 	@test()
 	protected static async hasSyncSchemaFunction() {
 		const cli = await this.Cli()
-		assert.isFunction(cli.getFeature('schema').syncSchemas)
+		assert.isFunction(cli.getFeature('schema').Action('sync').execute)
 	}
 
 	@test()
 	protected static async failsBecauseSchemasIsNotInstalled() {
 		const cli = await this.Cli()
 		assert.doesThrowAsync(
-			() => cli.getFeature('schema').syncSchemas(),
+			() => cli.getFeature('schema').Action('sync').execute({}),
 			/SKILL_NOT_INSTALLED/gi
 		)
 	}
@@ -26,10 +26,10 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 	@test()
 	protected static async syncsSchemasGeneratesTypesFile() {
 		const cli = await this.installSchemasAndSetCwd('in-sync')
-		const results = await cli.getFeature('schema').syncSchemas()
+		const results = await cli.getFeature('schema').Action('sync').execute({})
 
-		assert.isAbove(results.length, 0)
-		assert.doesInclude(results, { action: GeneratedFileAction.Generated })
+		assert.isAbove(results.files?.length, 0)
+		assert.doesInclude(results.files, { action: GeneratedFileAction.Generated })
 
 		const expectedSchemaTypesDestination = this.resolveHashSprucePath(
 			'schemas',
@@ -43,10 +43,10 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 	@test()
 	protected static async syncSchemasUpdatesTypesFile() {
 		const cli = await this.syncSchemasAndSetCwd('in-sync')
-		const results = await cli.getFeature('schema').syncSchemas()
+		const results = await cli.getFeature('schema').Action('sync').execute({})
 
-		assert.isAbove(results.length, 0)
-		assert.doesInclude(results, { action: GeneratedFileAction.Skipped })
+		assert.isAbove(results.files?.length, 0)
+		assert.doesInclude(results.files, { action: GeneratedFileAction.Skipped })
 	}
 
 	@test()
@@ -78,6 +78,8 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 		const cli = await this.syncSchemasAndSetCwd('in-sync')
 		const version = versionUtil.generateVersion()
 		const typeChecker = this.Service(Service.TypeChecker)
+		const createAction = cli.getFeature('schema').Action('create')
+
 		const matcher = new RegExp(
 			`SpruceSchemas.Local.ITestSchema(.*?)interface ${version.constValue}`,
 			'gis'
@@ -88,19 +90,19 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 		// should not found our test schema
 		assert.doesNotInclude(typesContents, matcher)
 
-		const createResponse = await cli.getFeature('schema').createSchema({
+		const createResponse = await createAction.execute({
 			nameReadable: 'Test schema',
 			nameCamel: 'testSchema',
 		})
 
 		const builderFile = testUtil.findPathByNameInGeneratedFiles(
 			/testSchema\.builder/,
-			createResponse
+			createResponse.files ?? []
 		)
 
 		const definitionFile = testUtil.findPathByNameInGeneratedFiles(
 			/testSchema\.definition/,
-			createResponse
+			createResponse.files ?? []
 		)
 
 		// schema types should be good
@@ -117,7 +119,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 		diskUtil.deleteFile(builderFile)
 
 		// this should cleanup types and definition files
-		await cli.getFeature('schema').syncSchemas()
+		await cli.getFeature('schema').Action('sync').execute({})
 
 		// should lastly NOT include our test schema
 		await typeChecker.check(this.schemaTypesFile)

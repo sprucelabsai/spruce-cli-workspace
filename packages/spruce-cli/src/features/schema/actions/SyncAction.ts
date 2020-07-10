@@ -1,4 +1,9 @@
-import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
+import {
+	ISchemaDefinition,
+	SchemaDefinitionValues,
+	ISchemaTemplateItem,
+	IFieldTemplateItem,
+} from '@sprucelabs/schema'
 import { IValueTypes } from '@sprucelabs/spruce-templates'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { Service } from '../../../factories/ServiceFactory'
@@ -62,6 +67,8 @@ export default class SyncAction extends AbstractFeatureAction<
 	public name = 'sync'
 	public optionsDefinition = syncSchemasActionOptionsDefinition
 
+	private readonly schemaGenerator = new SchemaGenerator(this.templates)
+
 	public async execute(
 		options: SchemaDefinitionValues<ISyncSchemaOptionsDefinition>
 	): Promise<IFeatureActionExecuteResponse> {
@@ -80,14 +87,35 @@ export default class SyncAction extends AbstractFeatureAction<
 			normalizedOptions.addonsLookupDir
 		)
 
-		const definitionsToDelete = await schemaGeneratorUtil.filterDefinitionFilesBySchemaIds(
+		await this.deleteOrphanedDefinitions(
 			resolvedDestination,
-			schemaTemplateItems.map((i) => i.id)
+			schemaTemplateItems
 		)
 
-		definitionsToDelete.forEach((def) => diskUtil.deleteFile(def))
+		const valueTypes = await this.generateTypes(
+			resolvedDestination,
+			fieldTemplateItems,
+			schemaTemplateItems
+		)
 
-		const generator = new SchemaGenerator(this.templates)
+		const results = this.schemaGenerator.generateSchemaTypes(
+			resolvedDestination,
+			{
+				fieldTemplateItems,
+				schemaTemplateItems,
+				valueTypes,
+			}
+		)
+
+		return { files: results }
+	}
+
+	private async generateTypes(
+		resolvedDestination: string,
+		fieldTemplateItems: IFieldTemplateItem[],
+		schemaTemplateItems: ISchemaTemplateItem[]
+	) {
+		const generator = this.schemaGenerator
 		await generator.generateFieldTypes(resolvedDestination, {
 			fieldTemplateItems,
 		})
@@ -104,12 +132,18 @@ export default class SyncAction extends AbstractFeatureAction<
 			Service.Import
 		).importDefault(valueTypeResults[0].path)
 
-		const results = generator.generateSchemaTypes(resolvedDestination, {
-			fieldTemplateItems,
-			schemaTemplateItems,
-			valueTypes,
-		})
+		return valueTypes
+	}
 
-		return { files: results }
+	private async deleteOrphanedDefinitions(
+		resolvedDestination: string,
+		schemaTemplateItems: ISchemaTemplateItem[]
+	) {
+		const definitionsToDelete = await schemaGeneratorUtil.filterDefinitionFilesBySchemaIds(
+			resolvedDestination,
+			schemaTemplateItems.map((i) => i.id)
+		)
+
+		definitionsToDelete.forEach((def) => diskUtil.deleteFile(def))
 	}
 }
