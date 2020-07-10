@@ -1,12 +1,13 @@
 // import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
 import { Service } from '../factories/ServiceFactory'
-import VsCodeService, { IExtension } from '../services/VsCodeService'
+import { IExtension } from '../services/VsCodeService'
 import log from '../singletons/log'
 import AbstractFeature from './AbstractFeature'
+import { FeatureCode } from './features.types'
 
 export default class VsCodeFeature extends AbstractFeature {
 	public description = 'VSCode: Create settings and install VSCode extensions'
-
+	public code: FeatureCode = 'vsCode'
 	private recommendedExtensions: IExtension[] = [
 		{
 			id: 'dbaeumer.vscode-eslint',
@@ -22,16 +23,12 @@ export default class VsCodeFeature extends AbstractFeature {
 		},
 	]
 
-	// public async beforePackageInstall() {
-	// 	await this.writeDirectoryTemplate({
-	// 		kind: DirectoryTemplateKind.VsCode,
-	// 		context: {}
-	private VsCodeService(): VsCodeService {
-		return this.serviceFactory.Service(this.cwd, Service.VsCode)
-	}
 	// 	})
 	private async getMissingExtensions() {
-		const currentExtensions = await this.VsCodeService().getVSCodeExtensions()
+		const currentExtensions = await this.Service(
+			Service.VsCode
+		).getVSCodeExtensions()
+
 		const missingExtensions = this.recommendedExtensions.filter(
 			(recommendedExtension) => {
 				const currentExtension = currentExtensions.find(
@@ -70,11 +67,15 @@ export default class VsCodeFeature extends AbstractFeature {
 		await this.installMissingExtensions()
 	}
 
+	public getActions() {
+		return []
+	}
+
 	private async installMissingExtensions() {
 		const extensionsToInstall = await this.getMissingExtensions()
 
 		if (extensionsToInstall.length > 0) {
-			await this.VsCodeService().installExtensions(extensionsToInstall)
+			await this.Service(Service.VsCode).installExtensions(extensionsToInstall)
 		} else {
 			log.debug('No extensions to install')
 		}

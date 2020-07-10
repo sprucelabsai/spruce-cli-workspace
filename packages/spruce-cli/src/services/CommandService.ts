@@ -30,7 +30,7 @@ export default class CommandService {
 				throw new Error('coming sooon')
 			}
 			let stdout = ''
-			let stderr: string | undefined
+			let stderr = ''
 			const spawnOptions: SpawnOptions = options?.stream
 				? { stdio: 'inherit' }
 				: {

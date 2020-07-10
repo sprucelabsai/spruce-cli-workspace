@@ -2,7 +2,7 @@ import { Command } from 'commander'
 import ErrorCode from '#spruce/errors/errorCode'
 import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
 import SpruceError from '../errors/SpruceError'
-import FeatureManager, { FeatureCode } from '../features/FeatureManager'
+import FeatureInstaller from '../features/FeatureInstaller'
 import SchemaGenerator from '../generators/SchemaGenerator'
 import SchemaStore from '../stores/SchemaStore'
 import diskUtil from '../utilities/disk.utility'
@@ -10,7 +10,7 @@ import namesUtil from '../utilities/names.utility'
 import AbstractCommand, { ICommandOptions } from './AbstractCommand'
 
 interface ISchemaCommandOptions extends ICommandOptions {
-	featureManager: FeatureManager
+	featureManager: FeatureInstaller
 	stores: {
 		schema: SchemaStore
 	}
@@ -21,7 +21,7 @@ interface ISchemaCommandOptions extends ICommandOptions {
 
 export default class SchemaCommand extends AbstractCommand {
 	private schemaStore: SchemaStore
-	private featureManager: FeatureManager
+	private featureManager: FeatureInstaller
 	private schemaGenerator: SchemaGenerator
 
 	public constructor(options: ISchemaCommandOptions) {
@@ -43,7 +43,7 @@ export default class SchemaCommand extends AbstractCommand {
 				'./src/schemas'
 			)
 			.option(
-				'-a, --addonLookupDir <lookupDir>',
+				'-a, --addonsLookupDir <lookupDir>',
 				'Where should I look for addon files?',
 				'./src/addons'
 			)
@@ -66,7 +66,7 @@ export default class SchemaCommand extends AbstractCommand {
 				'./src/schemas'
 			)
 			.option(
-				'-a, --addonLookupDir <lookupDir>',
+				'-a, --addonsLookupDir <lookupDir>',
 				'Where should I look for addon files?',
 				'./src/addons'
 			)
@@ -93,7 +93,7 @@ export default class SchemaCommand extends AbstractCommand {
 		name: string | undefined,
 		options: {
 			destinationDir: string
-			addonLookupDir: string
+			addonsLookupDir: string
 			typesDestinationDir: string
 		}
 	) {
@@ -131,7 +131,7 @@ export default class SchemaCommand extends AbstractCommand {
 		await this.featureManager.install({
 			features: [
 				{
-					code: FeatureCode.Schema,
+					code: 'schema',
 				},
 			],
 		})
@@ -144,6 +144,7 @@ export default class SchemaCommand extends AbstractCommand {
 
 		const builderResults = await this.schemaGenerator.generateBuilder(
 			options.destinationDir,
+			// @ts-ignore
 			values
 		)
 
@@ -152,7 +153,7 @@ export default class SchemaCommand extends AbstractCommand {
 		try {
 			await this.sync(options.destinationDir, {
 				destinationDir: resolvedTypesDestination,
-				addonLookupDir: options.addonLookupDir,
+				addonsLookupDir: options.addonsLookupDir,
 			})
 		} catch (err) {
 			this.term.stopLoading()
@@ -172,14 +173,14 @@ export default class SchemaCommand extends AbstractCommand {
 		options: {
 			destinationDir: string
 			lookupDir?: string
-			addonLookupDir: string
+			addonsLookupDir: string
 			clean?: boolean
 			force?: boolean
 		}
 	) {
 		const destinationDir = options.destinationDir
 		const lookupDir = lookupDirOption || options.lookupDir
-		const addonLookupDir = options.addonLookupDir
+		const addonsLookupDir = options.addonsLookupDir
 		const clean = !!options.clean
 		const force = !!options.force
 
@@ -193,7 +194,7 @@ export default class SchemaCommand extends AbstractCommand {
 		await this.featureManager.install({
 			features: [
 				{
-					code: FeatureCode.Schema,
+					code: 'schema',
 				},
 			],
 		})
@@ -220,7 +221,7 @@ export default class SchemaCommand extends AbstractCommand {
 			items: fieldTemplateItems,
 			errors: fieldTemplateErrors,
 		} = await this.schemaStore.fetchFieldTemplateItems(
-			diskUtil.resolvePath(addonLookupDir)
+			diskUtil.resolvePath(addonsLookupDir)
 		)
 
 		this.term.stopLoading()

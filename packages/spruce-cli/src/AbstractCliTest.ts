@@ -6,8 +6,13 @@ import AbstractSpruceTest from '@sprucelabs/test'
 import fs from 'fs-extra'
 import * as uuid from 'uuid'
 import { boot } from './cli'
-import ServiceFactory, { Service, IServices } from './factories/ServiceFactory'
+import ServiceFactory, {
+	Service,
+	IServiceMap,
+} from './factories/ServiceFactory'
+import FeatureInstallerFactory from './features/FeatureInstallerFactory'
 import TerminalInterface from './interfaces/TerminalInterface'
+import StoreFactory, { StoreCode, IStoreMap } from './stores/StoreFactory'
 import diskUtil from './utilities/disk.utility'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
@@ -42,6 +47,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static async afterAll() {
 		this.rl && this.rl.close()
+		delete this.rl
 	}
 
 	protected static async Cli() {
@@ -51,17 +57,20 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return cli
 	}
 
-	protected static Term() {
-		return new TerminalInterface(this.cwd)
-	}
-
-	protected static Service<S extends Service>(type: S): IServices[S] {
+	protected static Service<S extends Service>(
+		type: S,
+		cwd?: string
+	): IServiceMap[S] {
 		const sf = this.ServiceFactory()
-		return sf.Service(this.cwd, type)
+		return sf.Service(cwd ?? this.cwd, type)
 	}
 
 	protected static ServiceFactory() {
 		return new ServiceFactory(new Mercury())
+	}
+
+	protected static Term() {
+		return new TerminalInterface(this.cwd)
 	}
 
 	protected static resolveHashSprucePath(...filePath: string[]) {
@@ -80,5 +89,29 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		this.rl.input.emit('keypress', null, { name: 'enter' })
 
 		await new Promise((resolve) => setTimeout(resolve, 50))
+	}
+
+	protected static FeatureInstaller() {
+		const serviceFactory = this.ServiceFactory()
+		const storeFactory = this.StoreFactory()
+
+		return FeatureInstallerFactory.WithAllFeatures({
+			cwd: this.cwd,
+			serviceFactory,
+			storeFactory,
+		})
+	}
+
+	protected static StoreFactory() {
+		const mercury = new Mercury()
+		const serviceFactory = new ServiceFactory(mercury)
+		return new StoreFactory(this.cwd, mercury, serviceFactory)
+	}
+
+	protected static Store<C extends StoreCode>(
+		code: C,
+		cwd?: string
+	): IStoreMap[C] {
+		return this.StoreFactory().Store(code, this.cwd ?? cwd)
 	}
 }

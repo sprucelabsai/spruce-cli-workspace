@@ -29,6 +29,9 @@ const diskUtil = {
 	moveDir(source: string, destination: string) {
 		fs.moveSync(source, destination)
 	},
+	moveFile(source: string, destination: string) {
+		fs.moveSync(source, destination)
+	},
 	copyDir(source: string, destination: string) {
 		fs.copySync(source, destination)
 	},
@@ -53,9 +56,8 @@ const diskUtil = {
 			}
 			parts.pop()
 		} while (parts.length > 0)
-		// eslint-disable-next-line no-debugger
-		debugger
-		throw new Error('Hash Spruce directory not found')
+
+		throw new Error(`Hash Spruce directory not found at ${cwd}`)
 	},
 	isFileDifferent(destination: string, contents: string) {
 		const currentContents = this.readFile(destination)
@@ -71,6 +73,10 @@ const diskUtil = {
 			}
 
 			builtPath = pathUtil.join(cwd, builtPath)
+		}
+
+		if (builtPath.search('#') > -1) {
+			builtPath = builtPath.replace('#spruce', HASH_SPRUCE_DIR)
 		}
 
 		return builtPath

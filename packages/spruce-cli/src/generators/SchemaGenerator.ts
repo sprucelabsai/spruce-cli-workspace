@@ -107,10 +107,10 @@ export default class SchemaGenerator extends AbstractGenerator {
 		return results
 	}
 
-	public async generateSchemaTypes(
+	public generateSchemaTypes(
 		destinationDir: string,
 		options: IGenerateSchemaTypesOptions
-	): Promise<GenerationResults> {
+	): GenerationResults {
 		const { fieldTemplateItems, schemaTemplateItems, valueTypes } = options
 		const schemaTypesDestination = path.join(destinationDir, 'schemas.types.ts')
 
@@ -190,7 +190,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 		}
 	): Promise<GenerationResults> {
 		const contents = this.templates.valueTypes(options)
-		const destination = pathUtil.join(destinationDir, 'valueType.tmp.ts')
+		const destination = pathUtil.join(destinationDir, 'tmp', 'valueType.tmp.ts')
 
 		return this.writeFileIfChangedMixinResults(
 			destination,

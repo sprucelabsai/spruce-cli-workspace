@@ -1,11 +1,9 @@
-import { Mercury } from '@sprucelabs/mercury'
 import { templates, IValueTypes } from '@sprucelabs/spruce-templates'
 import { assert, test } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
 import { CORE_NAMESPACE, CORE_SCHEMA_VERSION } from '../../constants'
-import ServiceFactory, { Service } from '../../factories/ServiceFactory'
+import { Service } from '../../factories/ServiceFactory'
 import SchemaGenerator from '../../generators/SchemaGenerator'
-import SchemaStore from '../../stores/SchemaStore'
 import diskUtil from '../../utilities/disk.utility'
 
 export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
@@ -57,10 +55,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	}
 
 	private static async fetchAllTemplateItems() {
-		const schemaStore = new SchemaStore(
-			this.cwd,
-			new ServiceFactory(new Mercury())
-		)
+		const schemaStore = this.StoreFactory().Store('schema')
 
 		const results = await schemaStore.fetchAllTemplateItems()
 

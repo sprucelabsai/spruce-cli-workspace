@@ -1,6 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../AbstractCliTest'
-import { FeatureCode } from '../../features/FeatureManager'
 import diskUtil from '../../utilities/disk.utility'
 
 export default class SettingUpASkill extends AbstractCliTest {
@@ -10,7 +9,7 @@ export default class SettingUpASkill extends AbstractCliTest {
 		const response = await cli.installFeatures({
 			features: [
 				{
-					code: FeatureCode.Skill,
+					code: 'skill',
 					options: {
 						name: 'test',
 						description: 'This is such a good skill!',
@@ -30,16 +29,16 @@ export default class SettingUpASkill extends AbstractCliTest {
 				features: [
 					{
 						// @ts-ignore
-						code: FeatureCode.Skill,
+						code: 'skill',
 						options: {
-							name: 'test',
 							// @ts-ignore
-							description2: 'This is such a good skill!',
+							name2: 'test',
+							description: 'This is such a good skill!',
 						},
 					},
 				],
 			})
-		}, 'description')
+		}, 'name')
 	}
 
 	@test()
@@ -48,7 +47,7 @@ export default class SettingUpASkill extends AbstractCliTest {
 		await cli.installFeatures({
 			features: [
 				{
-					code: FeatureCode.Skill,
+					code: 'skill',
 					options: {
 						name: 'test',
 						description: 'This is such a good skill!',
@@ -73,12 +72,12 @@ export default class SettingUpASkill extends AbstractCliTest {
 	}
 
 	@test()
-	protected static async getsAFailedHealthCheckWhenSrcDirIsMoved() {
+	protected static async getsAFailedHealthCheckWhenIndexFileIsMoved() {
 		const cli = await this.Cli()
 		await cli.installFeatures({
 			features: [
 				{
-					code: FeatureCode.Skill,
+					code: 'skill',
 					options: {
 						name: 'test',
 						description: 'This is such a good skill!',
@@ -87,7 +86,10 @@ export default class SettingUpASkill extends AbstractCliTest {
 			],
 		})
 
-		diskUtil.moveDir(this.resolvePath('src'), this.resolvePath('src2'))
+		diskUtil.moveFile(
+			this.resolvePath('src', 'index.ts'),
+			this.resolvePath('src', 'index2.ts')
+		)
 
 		const health = await cli.checkHealth()
 
@@ -103,7 +105,7 @@ export default class SettingUpASkill extends AbstractCliTest {
 		await cli.installFeatures({
 			features: [
 				{
-					code: FeatureCode.Skill,
+					code: 'skill',
 					options: {
 						name: 'test',
 						description: 'This is such a good skill!',

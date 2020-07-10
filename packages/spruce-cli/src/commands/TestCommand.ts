@@ -1,16 +1,16 @@
 import path from 'path'
 import { Command } from 'commander'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
-import FeatureManager, { FeatureCode } from '../features/FeatureManager'
+import FeatureInstaller from '../features/FeatureInstaller'
 import namesUtil from '../utilities/names.utility'
 import AbstractCommand, { ICommandOptions } from './AbstractCommand'
 
 interface ITestCommandOptions extends ICommandOptions {
-	featureManager: FeatureManager
+	featureManager: FeatureInstaller
 }
 
 export default class TestCommand extends AbstractCommand {
-	private featureManager: FeatureManager
+	private featureManager: FeatureInstaller
 
 	public constructor(options: ITestCommandOptions) {
 		super(options)
@@ -30,7 +30,9 @@ export default class TestCommand extends AbstractCommand {
 		await this.featureManager.install({
 			features: [
 				{
-					code: FeatureCode.Test,
+					//@ts-ignore
+					code: 'test',
+					options: undefined,
 				},
 			],
 		})

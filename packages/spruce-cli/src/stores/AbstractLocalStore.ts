@@ -1,20 +1,19 @@
-import { Mercury } from '@sprucelabs/mercury'
 import log from '../singletons/log'
 import { AuthedAs } from '../types/cli.types'
 import diskUtil from '../utilities/disk.utility'
 import AbstractStore from './AbstractStore'
+import { IStoreOptions } from './AbstractStore'
 
 export interface ILocalStoreSettings {
 	authType: AuthedAs
 }
 
 export default abstract class AbstractLocalStore<
-	Settings extends ILocalStoreSettings = ILocalStoreSettings
+	Settings extends ILocalStoreSettings
 > extends AbstractStore {
-	public cwd: string
-	public constructor(cwd: string, mercury: Mercury) {
-		super(mercury)
-		this.cwd = cwd
+	public constructor(options: IStoreOptions) {
+		super(options)
+
 		const { directory: localDirectory } = this.getConfigPath()
 
 		if (!diskUtil.doesDirExist(localDirectory)) {
@@ -45,9 +44,8 @@ export default abstract class AbstractLocalStore<
 	}
 
 	protected getConfigPath() {
-		const homedir = this.cwd
-		const configDirectory = `${homedir}/.spruce`
-		const filePath = `${homedir}/.spruce/settings.json`
+		const configDirectory = diskUtil.resolveHashSprucePath(this.cwd)
+		const filePath = diskUtil.resolveHashSprucePath(this.cwd, 'settings.json')
 
 		return {
 			directory: configDirectory,

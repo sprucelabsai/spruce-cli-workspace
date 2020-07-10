@@ -9,7 +9,7 @@ function parsePath(cwd: string, paths: string[]) {
 	return { dirToRead, resolved }
 }
 
-function formatDate(date: Date) {
+export function formatDate(date: Date) {
 	const d = date,
 		year = d.getFullYear()
 
@@ -79,10 +79,7 @@ const versionUtil = {
 
 	resolveNewLatestPath(cwd: string, ...paths: string[]) {
 		const { resolved } = parsePath(cwd, paths)
-		return resolved.replace(
-			'{{@latest}}',
-			new Date().toISOString().split('T')[0]
-		)
+		return resolved.replace('{{@latest}}', formatDate(new Date()))
 	},
 }
 

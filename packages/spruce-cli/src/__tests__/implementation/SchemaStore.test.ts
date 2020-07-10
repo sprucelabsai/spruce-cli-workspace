@@ -1,36 +1,22 @@
-import { Mercury } from '@sprucelabs/mercury'
 import { test, assert } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
 import { CORE_NAMESPACE, LOCAL_NAMESPACE } from '../../constants'
-import ServiceFactory from '../../factories/ServiceFactory'
-import SchemaStore from '../../stores/SchemaStore'
 import diskUtil from '../../utilities/disk.utility'
 
 export default class SchemaStoreTest extends AbstractSchemaTest {
-	protected static schemaStore: SchemaStore
-
-	protected static async beforeEach() {
-		super.beforeEach()
-
-		const serviceFactory = new ServiceFactory(new Mercury())
-		const store = new SchemaStore(this.cwd, serviceFactory)
-
-		this.schemaStore = store
-	}
-
 	@test()
 	protected static async canInstantiateSchemaStore() {
-		assert.isOk(this.schemaStore)
+		assert.isOk(this.Store('schema'))
 	}
 
 	@test()
 	protected static async hasFetchSchemaTemplateItemsMethod() {
-		assert.isFunction(this.schemaStore.fetchSchemaTemplateItems)
+		assert.isFunction(this.Store('schema').fetchSchemaTemplateItems)
 	}
 
 	@test()
 	protected static async fetchesCoreSchemaTemplateItems() {
-		const response = await this.schemaStore.fetchSchemaTemplateItems(
+		const response = await this.Store('schema').fetchSchemaTemplateItems(
 			this.resolvePath('nothing_found')
 		)
 
@@ -48,18 +34,20 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 	@test()
 	protected static async fetchesLocalSchemasToo() {
 		await this.syncSchemasAndSetCwd('local-schema-loading')
-		this.schemaStore.cwd = this.cwd
 
 		const schemasDir = this.resolvePath('src', 'schemas')
 		diskUtil.copyDir(this.resolveTestPath('testSchemas'), schemasDir)
 
-		const results = await this.schemaStore.fetchSchemaTemplateItems(schemasDir)
+		const results = await this.Store('schema').fetchSchemaTemplateItems(
+			schemasDir
+		)
 
 		const { items } = results
 
 		const localItems = items.filter(
 			(item) => item.namespace === LOCAL_NAMESPACE
 		)
+
 		assert.isEqual(localItems.length, 2)
 	}
 }

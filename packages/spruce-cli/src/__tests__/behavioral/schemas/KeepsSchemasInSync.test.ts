@@ -11,19 +11,22 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 	@test()
 	protected static async hasSyncSchemaFunction() {
 		const cli = await this.Cli()
-		assert.isFunction(cli.syncSchemas)
+		assert.isFunction(cli.getFeature('schema').syncSchemas)
 	}
 
 	@test()
 	protected static async failsBecauseSchemasIsNotInstalled() {
 		const cli = await this.Cli()
-		assert.doesThrowAsync(() => cli.syncSchemas(), /SKILL_NOT_INSTALLED/gi)
+		assert.doesThrowAsync(
+			() => cli.getFeature('schema').syncSchemas(),
+			/SKILL_NOT_INSTALLED/gi
+		)
 	}
 
 	@test()
 	protected static async syncsSchemasGeneratesTypesFile() {
 		const cli = await this.installSchemasAndSetCwd('in-sync')
-		const results = await cli.syncSchemas()
+		const results = await cli.getFeature('schema').syncSchemas()
 
 		assert.isAbove(results.length, 0)
 		assert.doesInclude(results, { action: GeneratedFileAction.Generated })
@@ -40,7 +43,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 	@test()
 	protected static async syncSchemasUpdatesTypesFile() {
 		const cli = await this.syncSchemasAndSetCwd('in-sync')
-		const results = await cli.syncSchemas()
+		const results = await cli.getFeature('schema').syncSchemas()
 
 		assert.isAbove(results.length, 0)
 		assert.doesInclude(results, { action: GeneratedFileAction.Skipped })
@@ -85,7 +88,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 		// should not found our test schema
 		assert.doesNotInclude(typesContents, matcher)
 
-		const createResponse = await cli.createSchema({
+		const createResponse = await cli.getFeature('schema').createSchema({
 			nameReadable: 'Test schema',
 			nameCamel: 'testSchema',
 		})
@@ -114,7 +117,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 		diskUtil.deleteFile(builderFile)
 
 		// this should cleanup types and definition files
-		await cli.syncSchemas()
+		await cli.getFeature('schema').syncSchemas()
 
 		// should lastly NOT include our test schema
 		await typeChecker.check(this.schemaTypesFile)

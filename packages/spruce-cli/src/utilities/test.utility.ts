@@ -18,7 +18,7 @@ const testUtil = {
 		const file = files.find((f) => f.name.search(name) > -1)?.path
 		if (!file) {
 			throw new Error(
-				`file named ${name} no found in generated files. ${JSON.stringify(
+				`file named ${name} not found in generated files. ${JSON.stringify(
 					files,
 					null,
 					2
