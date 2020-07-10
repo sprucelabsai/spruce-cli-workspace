@@ -70,7 +70,7 @@ export interface IDirectoryTemplateFile {
 
 export interface IDefinitionBuilderTemplateItem {
 	nameCamel: string
-	description?: string
+	description?: string | null
 	namePascal: string
 	nameReadable: string
 }

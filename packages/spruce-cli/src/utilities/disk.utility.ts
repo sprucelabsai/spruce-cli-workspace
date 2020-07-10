@@ -29,6 +29,9 @@ const diskUtil = {
 	moveDir(source: string, destination: string) {
 		fs.moveSync(source, destination)
 	},
+	moveFile(source: string, destination: string) {
+		fs.moveSync(source, destination)
+	},
 	copyDir(source: string, destination: string) {
 		fs.copySync(source, destination)
 	},

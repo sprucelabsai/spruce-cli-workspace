@@ -26,7 +26,7 @@
 		"url": "https://github.com/sprucelabsai/spruce-cli/issues"
 	},
 	"scripts": {
-		"build": "npm run clean && npm run copy-templates && npm run build.node",
+		"build": "npm run copy-templates && npm run build.node",
 		"build.node": "tsc",
 		"watch": "chokidar 'src/**/*' -c 'npm run build'",
 		"clean": "rm -rf build/",

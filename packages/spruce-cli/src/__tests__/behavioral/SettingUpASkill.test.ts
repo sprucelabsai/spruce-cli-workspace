@@ -86,7 +86,7 @@ export default class SettingUpASkill extends AbstractCliTest {
 			],
 		})
 
-		diskUtil.moveDir(
+		diskUtil.moveFile(
 			this.resolvePath('src', 'index.ts'),
 			this.resolvePath('src', 'index2.ts')
 		)
