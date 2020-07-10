@@ -120,7 +120,7 @@
 	"jest": {
 		"preset": "ts-jest",
 		"maxWorkers": 4,
-		"testTimeout": 600000,
+		"testTimeout": 120000,
 		"testEnvironment": "node",
 		"testPathIgnorePatterns": [
 			"<rootDir>/tmp/",
