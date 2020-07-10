@@ -1,5 +1,7 @@
+import pathUtil from 'path'
 import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
+import globby from 'globby'
 import { IGenerators } from '#spruce/autoloaders/generators'
 import ServiceFactory, {
 	Service,
@@ -11,6 +13,7 @@ import FeatureActionFactory, {
 } from '../featureActions/FeatureActionFactory'
 import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
 import { INpmPackage } from '../types/cli.types'
+import featuresUtil from './feature.utilities'
 import FeatureInstaller from './FeatureInstaller'
 import { IFeatureAction } from './features.types'
 import { FeatureCode } from './features.types'
@@ -80,7 +83,7 @@ export default abstract class AbstractFeature<
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
-	public Action(name: string): IFeatureAction {
+	public Action(code: string): IFeatureAction {
 		if (!this.actionFactory) {
 			if (this.actionsDir) {
 				this.actionFactory = new FeatureActionFactory({
@@ -94,7 +97,18 @@ export default abstract class AbstractFeature<
 			}
 		}
 
-		return this.actionFactory.Action(name)
+		return this.actionFactory.Action(code)
+	}
+
+	public async getAvailableActionCodes(): Promise<string[]> {
+		if (!this.actionsDir) {
+			return []
+		}
+		const matches: string[] = await globby(
+			pathUtil.join(this.actionsDir, '**/*Action.ts')
+		)
+
+		return matches.map((path) => featuresUtil.filePathToActionCode(path))
 	}
 
 	public Store<C extends StoreCode>(code: C, cwd?: string): IStoreMap[C] {

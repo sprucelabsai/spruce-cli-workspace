@@ -79,7 +79,7 @@ export async function boot(options?: {
 		throw new SpruceError({ code: ErrorCode.InvalidCommand, args })
 	})
 
-	// Setup mercury
+	// Setup mercury if logged in
 	const isInstalled = await featureInstaller.isInstalled('skill')
 
 	if (isInstalled) {

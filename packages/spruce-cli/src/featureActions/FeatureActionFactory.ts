@@ -26,11 +26,23 @@ export default class FeatureActionFactory {
 			`${namesUtil.toPascal(name)}Action`
 		)
 
-		const Class: new (
-			options: IFeatureActionOptions
-		) => AbstractFeatureAction = require(classPath).default
+		const Class: new (options: IFeatureActionOptions) =>
+			| AbstractFeatureAction
+			| undefined = require(classPath).default
+
+		if (!Class) {
+			throw new Error(
+				`action code: ${name} no found on feature ${this.actionOptions.parent.code}`
+			)
+		}
 
 		const action = new Class(this.actionOptions)
+		if (!action) {
+			throw new Error(
+				`action code: ${name} no found on feature ${this.actionOptions.parent.code}`
+			)
+		}
+
 		const installCheckingFacade = new InstallCheckingActionDecorator(
 			action,
 			this.actionOptions.parent,

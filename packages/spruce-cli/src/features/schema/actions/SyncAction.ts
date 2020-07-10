@@ -13,9 +13,10 @@ import diskUtil from '../../../utilities/disk.utility'
 import schemaGeneratorUtil from '../../../utilities/schemaGenerator.utility'
 import { IFeatureActionExecuteResponse } from '../../features.types'
 
-export interface ISyncSchemaOptionsDefinition extends ISchemaDefinition {
-	id: 'createSchemaOption'
-	name: 'Create schema options'
+export interface ISyncSchemaActionDefinition extends ISchemaDefinition {
+	id: 'syncSchemaAction'
+	name: 'Sync schemas'
+	description: 'Keep all your schemas and types in sync with your builders and contracts.'
 	fields: {
 		typesDestinationDir: {
 			type: FieldType.Text
@@ -37,9 +38,11 @@ export interface ISyncSchemaOptionsDefinition extends ISchemaDefinition {
 	}
 }
 
-export const syncSchemasActionOptionsDefinition: ISyncSchemaOptionsDefinition = {
-	id: 'createSchemaOption',
-	name: 'Create schema options',
+export const syncSchemasActionOptionsDefinition: ISyncSchemaActionDefinition = {
+	id: 'syncSchemaAction',
+	name: 'Sync schemas',
+	description:
+		'Keep all your schemas and types in sync with your builders and contracts.',
 	fields: {
 		typesDestinationDir: {
 			type: FieldType.Text,
@@ -62,7 +65,7 @@ export const syncSchemasActionOptionsDefinition: ISyncSchemaOptionsDefinition = 
 }
 
 export default class SyncAction extends AbstractFeatureAction<
-	ISyncSchemaOptionsDefinition
+	ISyncSchemaActionDefinition
 > {
 	public name = 'sync'
 	public optionsDefinition = syncSchemasActionOptionsDefinition
@@ -70,7 +73,7 @@ export default class SyncAction extends AbstractFeatureAction<
 	private readonly schemaGenerator = new SchemaGenerator(this.templates)
 
 	public async execute(
-		options: SchemaDefinitionValues<ISyncSchemaOptionsDefinition>
+		options: SchemaDefinitionValues<ISyncSchemaActionDefinition>
 	): Promise<IFeatureActionExecuteResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
