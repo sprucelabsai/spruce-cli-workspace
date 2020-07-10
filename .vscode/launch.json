@@ -40,10 +40,7 @@
 			"port": 9229,
 			"cwd": "${workspaceFolder}/packages/spruce-cli",
 			"console": "integratedTerminal",
-			"internalConsoleOptions": "neverOpen",
-			"env": {
-				"TESTING": "true"
-			}
+			"internalConsoleOptions": "neverOpen"
 		},
 		{
 			"type": "node",
@@ -57,10 +54,7 @@
 			"port": 9229,
 			"cwd": "${workspaceFolder}/packages/spruce-cli",
 			"console": "integratedTerminal",
-			"internalConsoleOptions": "neverOpen",
-			"env": {
-				"TESTING": "true"
-			}
+			"internalConsoleOptions": "neverOpen"
 		}
 	],
 	"inputs": [
