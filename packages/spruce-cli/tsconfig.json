@@ -24,11 +24,6 @@
 			]
 		}
 	},
-	"include": [
-		"./*.ts",
-		"./**/*.ts",
-		"./.spruce/**/*.ts",
-		"src/sheetsReporter/sheetsReporter.js"
-	],
-	"exclude": ["**/node_modules/*", "build/*", "tmp/*", "__tests__"]
+	"include": ["./*.ts", "./**/*.ts", "node_modules/@sprucelabs/schema/**/*"],
+	"exclude": ["build/*", "tmp/*", "__tests__"]
 }

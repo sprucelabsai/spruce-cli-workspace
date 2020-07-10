@@ -5,9 +5,9 @@
 	},
 	"version": "10.6.10",
 	"bin": {
-		"spruce": "./index.js"
+		"spruce": "./build/index.js"
 	},
-	"main": "./index.js",
+	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
 	"files": [
 		"**/*"
@@ -26,8 +26,10 @@
 		"url": "https://github.com/sprucelabsai/spruce-cli-workspace/issues"
 	},
 	"scripts": {
-		"build": "npm run build.node",
+		"build": "npm run build.babel && npm run build.types",
 		"build.node": "tsc",
+		"build.types": "tsc --emitDeclarationOnly",
+		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps inline",
 		"watch": "chokidar '.spruce/**' 'src/**/*' 'index.ts' '../spruce-templates/src/templates/**/*' -c 'npm run build'",
 		"clean": "rm -rf build/",
 		"lint": "eslint '**/*.ts' && npm run lint.tsc",
@@ -74,6 +76,12 @@
 		"vm2": "^3.9.1"
 	},
 	"devDependencies": {
+		"@babel/cli": "^7.10.4",
+		"@babel/core": "^7.10.4",
+		"@babel/plugin-proposal-class-properties": "^7.10.4",
+		"@babel/plugin-proposal-decorators": "^7.10.4",
+		"@babel/preset-env": "^7.10.4",
+		"@babel/preset-typescript": "^7.10.4",
 		"@sprucelabs/test": "^5.2.4",
 		"@types/eslint": "^7.2.0",
 		"@types/fs-extra": "^9.0.1",
@@ -90,6 +98,7 @@
 		"@types/slug": "^0.9.1",
 		"@types/superagent": "^4.1.7",
 		"arkit": "^1.6.4",
+		"babel-plugin-module-resolver": "^4.0.0",
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^5.0.2",
 		"conventional-changelog-sprucelabs": "^1.1.0",
@@ -100,6 +109,7 @@
 		"jest-reporters": "^0.0.2",
 		"mkdirp": "^1.0.3",
 		"prettier": "^2.0.5",
+		"rimraf": "^3.0.2",
 		"ts-jest": "^26.1.1",
 		"ts-node": "^8.10.2",
 		"tsconfig-paths": "^3.9.0"
