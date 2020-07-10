@@ -87,10 +87,6 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 		let results: GenerationResults = []
 
-		if (destinationDir.search('#') > -1) {
-			debugger
-		}
-
 		this.fieldTemplates.forEach((fileAndFunc) => {
 			const { filename, templateFuncName, description } = fileAndFunc
 

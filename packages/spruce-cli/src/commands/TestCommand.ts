@@ -30,6 +30,7 @@ export default class TestCommand extends AbstractCommand {
 		await this.featureManager.install({
 			features: [
 				{
+					//@ts-ignore
 					code: 'test',
 					options: undefined,
 				},
