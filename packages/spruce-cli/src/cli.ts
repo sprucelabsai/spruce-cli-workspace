@@ -6,61 +6,22 @@ import {
 	IMercuryConnectOptions,
 	MercuryAuth,
 } from '@sprucelabs/mercury'
-import { templates } from '@sprucelabs/spruce-templates'
 import { Command, CommanderStatic } from 'commander'
 // Shim
 // eslint-disable-next-line import/order
 import allSettled from 'promise.allsettled'
 allSettled.shim()
 
-import commandsAutoloader from '#spruce/autoloaders/commands'
-import generatorsAutoloader from '#spruce/autoloaders/generators'
-import { IGenerators } from '#spruce/autoloaders/generators'
-import { IStores } from '#spruce/autoloaders/stores'
 import ErrorCode from '#spruce/errors/errorCode'
 import './addons/filePrompt.addon'
 import SpruceError from './errors/SpruceError'
 import ServiceFactory, { Service } from './factories/ServiceFactory'
-import FeatureManager, {
-	IInstallFeatureOptions,
-	FeatureCode,
-	IFeatureInstallResponse,
-	IFeatureMap,
-} from './features/FeatureManager'
-import TerminalInterface from './interfaces/TerminalInterface'
+import FeatureInstaller from './features/FeatureInstaller'
+import FeatureInstallerFactory from './features/FeatureInstallerFactory'
 import log from './singletons/log'
-import OnboardingStore from './stores/OnboardingStore'
-import RemoteStore from './stores/RemoteStore'
-import SchemaStore from './stores/SchemaStore'
-import SkillStore from './stores/SkillStore'
-import UserStore from './stores/UserStore'
-import WatcherStore from './stores/WatcherStore'
+import StoreFactory from './stores/StoreFactory'
 import { AuthedAs } from './types/cli.types'
 import diskUtil from './utilities/disk.utility'
-
-export function buildStores(
-	cwd: string,
-	mercury: Mercury,
-	serviceFactory: ServiceFactory
-): IStores {
-	return {
-		skill: new SkillStore(cwd, mercury),
-		onboarding: new OnboardingStore(cwd, mercury),
-		remote: new RemoteStore(cwd, mercury),
-		schema: new SchemaStore(cwd, serviceFactory),
-		user: new UserStore(cwd, mercury),
-		watcher: new WatcherStore(cwd, mercury),
-	}
-}
-
-/**
- * {
-			skill: {
-				status: 'failed',
-				errors: [{ code: 'BOOT_ERROR', message: /module not found/ }]
-			}
-		}
- */
 
 interface IHealthCheckResults {
 	[featureKey: string]: IHealthCheckItem
@@ -72,12 +33,8 @@ interface IHealthCheckItem {
 }
 
 export interface ICli {
-	installFeatures<F extends FeatureCode>(
-		options: IInstallFeatureOptions<F>
-	): Promise<IFeatureInstallResponse>
-
-	getFeature<F extends keyof IFeatureMap>(code: F): IFeatureMap[F]
-
+	installFeatures: FeatureInstaller['install']
+	getFeature: FeatureInstaller['getFeature']
 	checkHealth(): Promise<IHealthCheckResults>
 }
 
@@ -103,35 +60,15 @@ export async function boot(options?: {
 		}
 	})
 
-	const term = new TerminalInterface(cwd)
+	// const term = new TerminalInterface(cwd)
 	const mercury = new Mercury()
 	const serviceFactory = new ServiceFactory(mercury)
-	const stores: IStores = buildStores(cwd, mercury, serviceFactory)
-	const generators: IGenerators = await generatorsAutoloader({
-		constructorOptions: templates,
-	})
+	const storeFactory = new StoreFactory(cwd, mercury, serviceFactory)
 
-	const featureManager = FeatureManager.WithAllFeatures({
+	const featureInstaller = FeatureInstallerFactory.WithAllFeatures({
 		cwd,
 		serviceFactory,
-		generators,
-		stores,
-	})
-
-	const commandOptions = {
-		cwd,
-		stores,
-		serviceFactory,
-		term,
-		featureManager,
-		generators,
-	}
-
-	await commandsAutoloader({
-		constructorOptions: commandOptions,
-		after: async (command) => {
-			program && command.attachCommands(program)
-		},
+		storeFactory,
 	})
 
 	// Alphabetical sort of help output
@@ -143,51 +80,54 @@ export async function boot(options?: {
 	})
 
 	// Setup mercury
-	const remoteUrl = stores.remote.getRemoteUrl()
+	const isInstalled = await featureInstaller.isInstalled('skill')
 
-	// Who is logged in?
-	const loggedInUser = stores.user.getLoggedInUser()
-	const loggedInSkill = stores.skill.getLoggedInSkill()
+	if (isInstalled) {
+		const remoteStore = storeFactory.Store('remote')
+		const remoteUrl = remoteStore.getRemoteUrl()
 
-	// Build mercury creds
-	let creds: MercuryAuth | undefined
-	const authType = stores.remote.authType
+		// Who is logged in?
+		const userStore = storeFactory.Store('user')
+		const loggedInUser = userStore.getLoggedInUser()
+		const skillStore = storeFactory.Store('skill')
+		const loggedInSkill = skillStore.getLoggedInSkill()
 
-	switch (authType) {
-		case AuthedAs.User:
-			creds = loggedInUser && { token: loggedInUser.token }
-			break
-		case AuthedAs.Skill:
-			creds = loggedInSkill && {
-				id: loggedInSkill.id,
-				apiKey: loggedInSkill.apiKey,
-			}
-			break
+		// Build mercury creds
+		let creds: MercuryAuth | undefined
+		const authType = remoteStore.authType
+
+		switch (authType) {
+			case AuthedAs.User:
+				creds = loggedInUser && { token: loggedInUser.token }
+				break
+			case AuthedAs.Skill:
+				creds = loggedInSkill && {
+					id: loggedInSkill.id,
+					apiKey: loggedInSkill.apiKey,
+				}
+				break
+		}
+
+		// Mercury connection options
+		const connectOptions: IMercuryConnectOptions = {
+			spruceApiUrl: remoteUrl,
+			credentials: creds,
+		}
+
+		await mercury.connect(connectOptions)
 	}
-
-	// Mercury connection options
-	const connectOptions: IMercuryConnectOptions = {
-		spruceApiUrl: remoteUrl,
-		credentials: creds,
-	}
-
-	await mercury.connect(connectOptions)
 
 	const cli: ICli = {
-		installFeatures: async <F extends FeatureCode>(
-			options: IInstallFeatureOptions<F>
-		) => {
-			return featureManager.install(options)
+		installFeatures: async (options) => {
+			return featureInstaller.install(options)
 		},
 
 		getFeature: (code) => {
-			return featureManager.featureMap[code]
+			return featureInstaller.getFeature(code)
 		},
 
 		checkHealth: async (): Promise<IHealthCheckResults> => {
-			const isInstalled = await featureManager.isInstalled({
-				features: [FeatureCode.Skill],
-			})
+			const isInstalled = await featureInstaller.isInstalled('skill')
 
 			if (!isInstalled) {
 				return {

@@ -1,6 +1,6 @@
 import { assert, test } from '@sprucelabs/test'
 import AbstractCliTest from '../../AbstractCliTest'
-import versionUtil from '../../utilities/version.utility'
+import versionUtil, { formatDate } from '../../utilities/version.utility'
 
 export default class HandlesVersioningTest extends AbstractCliTest {
 	@test()
@@ -34,7 +34,7 @@ export default class HandlesVersioningTest extends AbstractCliTest {
 
 	@test()
 	protected static async canGenerateLatestPath() {
-		const date = new Date().toISOString().split('T')[0]
+		const date = formatDate(new Date())
 		const expected = this.resolveTestPath(`utilities/${date}/index.md`)
 
 		const resolved = versionUtil.resolveNewLatestPath(

@@ -1,12 +1,32 @@
 import { Mercury } from '@sprucelabs/mercury'
 import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
+import ServiceFactory, {
+	IServiceProvider,
+	Service,
+	IServiceMap,
+} from '../factories/ServiceFactory'
 
-export default abstract class AbstractStore {
+export interface IStoreOptions {
+	mercury: Mercury
+	serviceFactory: ServiceFactory
+	cwd: string
+}
+
+export default abstract class AbstractStore implements IServiceProvider {
 	protected mercury: Mercury
+	protected cwd: string
 
-	public constructor(mercury: Mercury) {
-		this.mercury = mercury
+	private serviceFactory: ServiceFactory
+
+	public constructor(options: IStoreOptions) {
+		this.mercury = options.mercury
+		this.cwd = options.cwd
+		this.serviceFactory = options.serviceFactory
+	}
+
+	public Service<S extends Service>(type: S, cwd?: string): IServiceMap[S] {
+		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
 	protected async mercuryForUser(token: string): Promise<Mercury> {

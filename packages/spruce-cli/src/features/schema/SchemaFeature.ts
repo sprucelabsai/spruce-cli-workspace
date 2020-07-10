@@ -1,13 +1,13 @@
 import SpruceError from '@sprucelabs/schema/build/errors/SpruceError'
-import { IValueTypes } from '@sprucelabs/spruce-templates'
 import { Service } from '../../factories/ServiceFactory'
 import { GenerationResults } from '../../generators/AbstractGenerator'
 import { INpmPackage } from '../../types/cli.types'
 import diskUtil from '../../utilities/disk.utility'
 import namesUtil from '../../utilities/names.utility'
-import schemaGeneratorUtil from '../../utilities/schemaGenerator.utility'
 import AbstractFeature from '../AbstractFeature'
-import { FeatureCode } from '../FeatureManager'
+import { IFeatureAction, FeatureCode } from '../features.types'
+import { ICreateSchemaActionDefinition } from './actions/CreateAction'
+import { ISyncSchemaOptionsDefinition } from './actions/SyncAction'
 
 interface ICreateSchemaOptions {
 	destinationDir?: string
@@ -16,12 +16,14 @@ interface ICreateSchemaOptions {
 	nameCamel: string
 	description?: string
 	addonsLookupDir?: string
+	typesDestination?: string
 }
 
 interface ISyncSchemasOptions {
 	lookupDir?: string
 	destinationDir?: string
-	addonLookupDir?: string
+	addonsLookupDir?: string
+	typesDestinationDir?: string
 }
 
 export interface ISchemaFeature {
@@ -32,64 +34,42 @@ export interface ISchemaFeature {
 export default class SchemaFeature extends AbstractFeature
 	implements ISchemaFeature {
 	public description = 'Define, validate, and normalize everything.'
-	public dependencies = [FeatureCode.Skill]
+	public dependencies: FeatureCode[] = ['skill']
 	public packageDependencies: INpmPackage[] = [
 		{
 			name: '@sprucelabs/schema',
 		},
 	]
 
+	public code: FeatureCode = 'schema'
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public async isInstalled() {
-		return this.Service(Service.Pkg).isInstalled('@sprucelabs/schema')
-	}
-
-	public getActions() {
-		return []
+		try {
+			return this.Service(Service.Pkg).isInstalled('@sprucelabs/schema')
+		} catch {
+			return false
+		}
 	}
 
 	public async createSchema(
 		options: ICreateSchemaOptions
 	): Promise<GenerationResults> {
-		const isInstalled = await this.isInstalled()
+		const action = this.Action('create') as IFeatureAction<
+			ICreateSchemaActionDefinition
+		>
 
-		if (!isInstalled) {
-			throw new SpruceError({
-				// @ts-ignore
-				code: 'SKILL_NOT_INSTALLED',
-			})
-		}
-
-		const {
-			destinationDir = 'src/schemas',
-			nameCamel,
-			namePascal: namePascalOptions,
-			nameReadable: nameReadableOptions,
-			...rest
-		} = options
-
-		const action = this.actionFactory?.Action('createSchema')
-		action?.execute
-
-		const resolvedDestination = diskUtil.resolvePath(this.cwd, destinationDir)
-
-		const results = await this.generators.schema.generateBuilder(
-			resolvedDestination,
-			{
-				...rest,
-				nameCamel,
-				nameReadable: nameReadableOptions ?? nameCamel,
-				namePascal: namePascalOptions ?? namesUtil.toPascal(nameCamel),
-			}
-		)
-
-		const syncResults = await this.syncSchemas({
-			lookupDir: destinationDir,
-			...rest,
+		const results = await action?.execute({
+			...options,
+			destinationDir: options.destinationDir ?? 'src/schemas',
+			lookupDir: 'src/schemas',
+			typesDestinationDir: options.typesDestination ?? '#spruce/schemas',
+			addonsLookupDir: options.addonsLookupDir ?? 'src/addons',
+			nameReadable: options.nameReadable ?? options.nameCamel,
+			namePascal: options.namePascal ?? namesUtil.toPascal(options.nameCamel),
 		})
 
-		return [...results, ...syncResults]
+		return results.files ?? []
 	}
 
 	public async syncSchemas(options?: ISyncSchemasOptions) {
@@ -102,54 +82,19 @@ export default class SchemaFeature extends AbstractFeature
 			})
 		}
 
-		const {
-			lookupDir,
-			addonLookupDir,
-			destinationDir = diskUtil.resolveHashSprucePath(this.cwd, 'schemas'),
-		} = options ?? {}
+		const myOptions = options ?? {}
 
-		const resolvedDestination = diskUtil.resolvePath(this.cwd, destinationDir)
+		const action = this.Action('sync') as IFeatureAction<
+			ISyncSchemaOptionsDefinition
+		>
 
-		const {
-			schemas: { items: schemaTemplateItems },
-			fields: { items: fieldTemplateItems },
-		} = await this.stores.schema.fetchAllTemplateItems(
-			lookupDir,
-			addonLookupDir
-		)
-
-		const definitionsToDelete = await schemaGeneratorUtil.filterDefinitionFilesBySchemaIds(
-			resolvedDestination,
-			schemaTemplateItems.map((i) => i.id)
-		)
-
-		definitionsToDelete.forEach((def) => diskUtil.deleteFile(def))
-
-		await this.generators.schema.generateFieldTypes(resolvedDestination, {
-			fieldTemplateItems,
+		const results = await action?.execute({
+			...options,
+			typesDestinationDir: myOptions.typesDestinationDir ?? '#spruce/schemas',
+			lookupDir: myOptions.lookupDir ?? 'src/schemas',
+			addonsLookupDir: myOptions.addonsLookupDir ?? 'src/addons',
 		})
 
-		const valueTypeResults = await this.generators.schema.generateValueTypes(
-			resolvedDestination,
-			{
-				fieldTemplateItems,
-				schemaTemplateItems,
-			}
-		)
-
-		const valueTypes: IValueTypes = await this.serviceFactory
-			.Service(this.cwd, Service.Import)
-			.importDefault(valueTypeResults[0].path)
-
-		const results = await this.generators.schema.generateSchemaTypes(
-			diskUtil.resolvePath(this.cwd, destinationDir),
-			{
-				fieldTemplateItems,
-				schemaTemplateItems,
-				valueTypes,
-			}
-		)
-
-		return results
+		return results.files ?? []
 	}
 }

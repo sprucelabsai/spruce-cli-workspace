@@ -54,7 +54,7 @@ const namedTemplateItemDefinition: SpruceSchemas.Local.NamedTemplateItem.IDefini
 			label: 'Description',
 			type: FieldType.Text,
 			description: 'Describe a bit more here',
-			options: undefined
+			options: undefined,
 		}
 	}
 }

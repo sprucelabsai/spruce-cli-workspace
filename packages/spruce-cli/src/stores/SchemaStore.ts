@@ -10,11 +10,7 @@ import { uniqBy } from 'lodash'
 import ErrorCode from '#spruce/errors/errorCode'
 import { LOCAL_NAMESPACE, CORE_NAMESPACE } from '../constants'
 import SpruceError from '../errors/SpruceError'
-import ServiceFactory, {
-	Service,
-	IServiceProvider,
-	IServices,
-} from '../factories/ServiceFactory'
+import { Service } from '../factories/ServiceFactory'
 import SchemaTemplateItemBuilder from '../templateItemBuilders/SchemaTemplateItemBuilder'
 import {
 	personDefinition,
@@ -27,6 +23,7 @@ import {
 import diskUtil from '../utilities/disk.utility'
 import namesUtil from '../utilities/names.utility'
 import versionUtil from '../utilities/version.utility'
+import AbstractStore, { IStoreOptions } from './AbstractStore'
 
 interface IFetchSchemaTemplateItemsResponse {
 	items: ISchemaTemplateItem[]
@@ -51,20 +48,15 @@ interface IAddonItem {
 	isLocal: boolean
 }
 
-export default class SchemaStore implements IServiceProvider {
-	public cwd: string
-
+export default class SchemaStore extends AbstractStore {
 	private schemaBuilder: SchemaTemplateItemBuilder
-	private serviceFactory: ServiceFactory
 
-	public Service<S extends Service>(type: S, cwd?: string): IServices[S] {
-		return this.serviceFactory.Service(cwd ?? this.cwd, type)
-	}
-
-	public constructor(cwd: string, serviceFactory: ServiceFactory) {
-		this.cwd = cwd
-		this.serviceFactory = serviceFactory
-		this.schemaBuilder = new SchemaTemplateItemBuilder()
+	public constructor(
+		options: IStoreOptions & { schemaBuilder?: SchemaTemplateItemBuilder }
+	) {
+		super(options)
+		this.schemaBuilder =
+			options.schemaBuilder ?? new SchemaTemplateItemBuilder()
 	}
 
 	public async fetchAllTemplateItems(

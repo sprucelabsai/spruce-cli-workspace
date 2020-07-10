@@ -4,13 +4,13 @@ import { Command } from 'commander'
 // import ErrorCode from '#spruce/errors/errorCode'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 // import SpruceError from '../errors/SpruceError'
-import FeatureManager, { FeatureCode } from '../features/FeatureManager'
+import FeatureInstaller from '../features/FeatureInstaller'
 import SkillStore from '../stores/SkillStore'
 import UserStore from '../stores/UserStore'
 import AbstractCommand, { ICommandOptions } from './AbstractCommand'
 
 export interface ISkillCommandOptions extends ICommandOptions {
-	featureManager: FeatureManager
+	featureManager: FeatureInstaller
 	stores: {
 		user: UserStore
 		skill: SkillStore
@@ -18,7 +18,7 @@ export interface ISkillCommandOptions extends ICommandOptions {
 }
 
 export default class SkillCommand extends AbstractCommand {
-	private featureManager: FeatureManager
+	private featureManager: FeatureInstaller
 	private userStore: UserStore
 	private skillStore: SkillStore
 
@@ -43,9 +43,7 @@ export default class SkillCommand extends AbstractCommand {
 	}
 
 	public create = async (cmd: Command) => {
-		const isInstalled = await this.featureManager.isInstalled({
-			features: [FeatureCode.Skill],
-		})
+		const isInstalled = await this.featureManager.isInstalled('skill')
 
 		if (isInstalled && !cmd.silent) {
 			this.term.info('Nothing to do. A skill is already installed here.')
@@ -58,9 +56,7 @@ export default class SkillCommand extends AbstractCommand {
 		let dirToCheck = path.resolve(this.cwd, '..')
 		while (!done) {
 			this.featureManager.cwd = dirToCheck
-			const installedInParent = await this.featureManager.isInstalled({
-				features: [FeatureCode.Skill],
-			})
+			const installedInParent = await this.featureManager.isInstalled('skill')
 
 			if (installedInParent) {
 				parentInstallDirectory = dirToCheck

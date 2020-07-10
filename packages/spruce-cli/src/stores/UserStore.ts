@@ -156,7 +156,9 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 		if (loggedInUser) {
 			try {
 				const instance = new Schema(cliUserWithTokenDefinition, loggedInUser)
+
 				instance.validate()
+
 				return instance.getValues()
 			} catch (err) {
 				log.crit(`Loading logged in user failed`)

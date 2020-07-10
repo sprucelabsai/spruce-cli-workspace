@@ -1,16 +1,19 @@
 import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
 import { IGenerators } from '#spruce/autoloaders/generators'
-import { IStores } from '#spruce/autoloaders/stores'
 import ServiceFactory, {
 	Service,
 	IServiceProvider,
-	IServices,
+	IServiceMap,
 } from '../factories/ServiceFactory'
-import FeatureActionFactory from '../featureActions/FeatureActionFactory'
+import FeatureActionFactory, {
+	IFeatureActionFactoryOptions,
+} from '../featureActions/FeatureActionFactory'
+import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
 import { INpmPackage } from '../types/cli.types'
-import { IFeatureAction } from './feature.types'
-import { FeatureCode } from './FeatureManager'
+import FeatureInstaller from './FeatureInstaller'
+import { IFeatureAction } from './features.types'
+import { FeatureCode } from './features.types'
 
 export default abstract class AbstractFeature<
 	S extends ISchemaDefinition | undefined = ISchemaDefinition | undefined
@@ -18,68 +21,83 @@ export default abstract class AbstractFeature<
 	public abstract description: string
 	public readonly dependencies: FeatureCode[] = []
 	public readonly packageDependencies: INpmPackage[] = []
-	public readonly optionsDefinition?: S extends ISchemaDefinition ? S : null
+	public readonly optionsDefinition?: S
 
 	protected cwd: string
-	public readonly code: FeatureCode
+	public abstract readonly code: FeatureCode
 
 	protected actionsDir: string | undefined
-	protected serviceFactory: ServiceFactory
 	protected actionFactory?: FeatureActionFactory
 	protected templates: Templates
 	protected generators: IGenerators
-	protected stores: IStores
+
+	private serviceFactory: ServiceFactory
+	private storeFactory: StoreFactory
+
+	protected actionFactoryOptions: Omit<
+		IFeatureActionFactoryOptions,
+		'actionsDir'
+	>
 
 	public constructor(options: {
 		cwd: string
-		code: FeatureCode
 		serviceFactory: ServiceFactory
 		templates: Templates
 		generators: IGenerators
-		stores: IStores
+		storeFactory: StoreFactory
 		actionFactory?: FeatureActionFactory
+		featureManager: FeatureInstaller
 	}) {
 		this.cwd = options.cwd
-		this.code = options.code
 		this.serviceFactory = options.serviceFactory
 		this.templates = options.templates
 		this.generators = options.generators
-		this.stores = options.stores
-
 		this.actionFactory = options.actionFactory
+		this.storeFactory = options.storeFactory
 
-		if (!this.actionFactory && this.actionsDir) {
-			this.actionFactory = new FeatureActionFactory(
-				this.cwd,
-				this.actionsDir,
-				this.templates
-			)
+		this.actionFactoryOptions = {
+			...options,
+			parent: this,
+			storeFactory: options.storeFactory,
 		}
 	}
 
 	public async beforePackageInstall(
-		_options?: S extends ISchemaDefinition
+		_options: S extends ISchemaDefinition
 			? SchemaDefinitionValues<S>
 			: undefined
 	): Promise<void> {}
 
 	public async afterPackageInstall(
-		_options?: S extends ISchemaDefinition
+		_options: S extends ISchemaDefinition
 			? SchemaDefinitionValues<S>
 			: undefined
 	): Promise<void> {}
 
 	public abstract async isInstalled(): Promise<boolean>
 
-	public Service<S extends Service>(type: S, cwd?: string): IServices[S] {
+	public Service<S extends Service>(type: S, cwd?: string): IServiceMap[S] {
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
 	public Action(name: string): IFeatureAction {
 		if (!this.actionFactory) {
-			throw new Error(`Feature does not have action named ${name}`)
+			if (this.actionsDir) {
+				this.actionFactory = new FeatureActionFactory({
+					...this.actionFactoryOptions,
+					actionsDir: this.actionsDir,
+				})
+			}
+
+			if (!this.actionFactory) {
+				throw new Error(`Feature does not have factory`)
+			}
 		}
 
 		return this.actionFactory.Action(name)
+	}
+
+	public Store<C extends StoreCode>(code: C, cwd?: string): IStoreMap[C] {
+		return this.storeFactory.Store(code, this.cwd ?? cwd)
 	}
 }

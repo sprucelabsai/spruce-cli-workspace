@@ -1,4 +1,5 @@
 import AbstractFeature from './AbstractFeature'
+import { FeatureCode } from './features.types'
 
 export default class CircleCIFeature extends AbstractFeature {
 	public description =
@@ -11,6 +12,8 @@ export default class CircleCIFeature extends AbstractFeature {
 	// 	// 	context: {}
 	// 	// })
 	// }
+
+	public code: FeatureCode = 'circleCi'
 
 	public getActions() {
 		return []

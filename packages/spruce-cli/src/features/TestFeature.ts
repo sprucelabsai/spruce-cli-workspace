@@ -3,13 +3,14 @@ import { Service } from '../factories/ServiceFactory'
 import log from '../singletons/log'
 import { INpmPackage } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
-import { FeatureCode } from './FeatureManager'
+import { FeatureCode } from './features.types'
 
 type TestFeatureType = SpruceSchemas.Local.TestFeature.IDefinition
 
 export default class TestFeature extends AbstractFeature<TestFeatureType> {
 	public description = 'Test File: Create a test for one of your files'
-	public dependencies = [FeatureCode.Skill]
+	public dependencies: FeatureCode[] = ['skill']
+	public code: FeatureCode = 'test'
 	public packageDependencies: INpmPackage[] = [
 		{ name: '@sprucelabs/test', isDev: true },
 		{ name: 'ts-node', isDev: true },

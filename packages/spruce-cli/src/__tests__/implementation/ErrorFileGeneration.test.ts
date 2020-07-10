@@ -11,9 +11,9 @@ export default class ErrorStoreTest extends AbstractCliTest {
 	protected static store: ErrorStore
 	protected static async beforeEach() {
 		super.beforeEach()
-		this.store = new ErrorStore(
-			pathUtil.join(__dirname, '..', '..'),
-			this.ServiceFactory()
+		this.store = this.StoreFactory().Store(
+			'error',
+			pathUtil.join(__dirname, '..', '..')
 		)
 	}
 

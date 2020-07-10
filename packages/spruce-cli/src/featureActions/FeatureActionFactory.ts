@@ -1,29 +1,42 @@
-import { Templates } from '@sprucelabs/spruce-templates'
-import { IFeatureAction } from '../features/feature.types'
+import {
+	IFeatureAction,
+	IFeatureActionOptions,
+} from '../features/features.types'
 import diskUtil from '../utilities/disk.utility'
+import namesUtil from '../utilities/names.utility'
 import AbstractFeatureAction from './AbstractFeatureAction'
+import InstallCheckingActionDecorator from './InstallCheckingActionDecorator'
+
+export interface IFeatureActionFactoryOptions extends IFeatureActionOptions {
+	actionsDir: string
+}
 
 export default class FeatureActionFactory {
 	private actionsDir: string
-	private templates: Templates
-	private cwd: string
+	private actionOptions: IFeatureActionOptions
 
-	public constructor(cwd: string, actionsDir: string, templates: Templates) {
-		this.cwd = cwd
-		this.actionsDir = actionsDir
-		this.templates = templates
+	public constructor(options: IFeatureActionFactoryOptions) {
+		this.actionsDir = options.actionsDir
+		this.actionOptions = options
 	}
 
 	public Action(name: string): IFeatureAction {
-		const classPath = diskUtil.resolvePath(this.actionsDir, name)
+		const classPath = diskUtil.resolvePath(
+			this.actionsDir,
+			`${namesUtil.toPascal(name)}Action`
+		)
 
 		const Class: new (
-			cwd: string,
-			templates: Templates
+			options: IFeatureActionOptions
 		) => AbstractFeatureAction = require(classPath).default
 
-		const action = new Class(this.cwd, this.templates)
+		const action = new Class(this.actionOptions)
+		const installCheckingFacade = new InstallCheckingActionDecorator(
+			action,
+			this.actionOptions.parent,
+			this.actionOptions.featureManager
+		)
 
-		return action
+		return installCheckingFacade
 	}
 }

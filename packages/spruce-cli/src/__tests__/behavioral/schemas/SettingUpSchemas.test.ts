@@ -1,6 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
-import { FeatureCode } from '../../../features/FeatureManager'
 import diskUtil from '../../../utilities/disk.utility'
 import tsConfigUtil from '../../../utilities/tsConfig.utility'
 
@@ -14,7 +13,7 @@ export default class SettingUpSchemasTests extends AbstractSchemaTest {
 				cli.installFeatures({
 					features: [
 						{
-							code: FeatureCode.Schema,
+							code: 'schema',
 						},
 					],
 				}),

@@ -87,6 +87,10 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 		let results: GenerationResults = []
 
+		if (destinationDir.search('#') > -1) {
+			debugger
+		}
+
 		this.fieldTemplates.forEach((fileAndFunc) => {
 			const { filename, templateFuncName, description } = fileAndFunc
 
@@ -190,7 +194,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 		}
 	): Promise<GenerationResults> {
 		const contents = this.templates.valueTypes(options)
-		const destination = pathUtil.join(destinationDir, 'valueType.tmp.ts')
+		const destination = pathUtil.join(destinationDir, 'tmp', 'valueType.tmp.ts')
 
 		return this.writeFileIfChangedMixinResults(
 			destination,

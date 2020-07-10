@@ -1,19 +1,12 @@
-import { Mercury } from '@sprucelabs/mercury'
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../AbstractCliTest'
 import FeatureComponent from '../../components/FeatureComponent'
-import ServiceFactory from '../../factories/ServiceFactory'
-import FeatureManager from '../../features/FeatureManager'
-import { FeatureCode } from '../../features/FeatureManager'
+import { FeatureCode } from '../../features/features.types'
 
 export default class FeatureComponentTest extends AbstractCliTest {
 	private static FeatureComponent() {
-		const serviceFactory = new ServiceFactory(new Mercury())
-		const featureManager = FeatureManager.WithAllFeatures({
-			cwd: this.cwd,
-			serviceFactory,
-		})
-		const featureComponent = new FeatureComponent(this.Term(), featureManager)
+		const installer = this.FeatureInstaller()
+		const featureComponent = new FeatureComponent(this.Term(), installer)
 		return featureComponent
 	}
 	@test('Can create feature component')
@@ -22,13 +15,13 @@ export default class FeatureComponentTest extends AbstractCliTest {
 		assert.isOk(featureComponent)
 	}
 
-	@test('Asks questions for installing the Skill Feature', FeatureCode.Skill, {
+	@test('Asks questions for installing the Skill Feature', 'skill', {
 		name: 'test',
 		description: 'test',
 	})
 	@test(
 		'Honors default values for installing the Skill Feature',
-		FeatureCode.Skill,
+		'skill',
 		{
 			name: 'waka',
 			description: 'test',
@@ -37,19 +30,11 @@ export default class FeatureComponentTest extends AbstractCliTest {
 			name: 'waka',
 		}
 	)
-	@test(
-		'Asks questions for installing the Skill Feature Again',
-		FeatureCode.Skill,
-		{
-			name: 'test',
-			description: 'test',
-		}
-	)
-	@test(
-		'Skips questions when no options definition set',
-		FeatureCode.Error,
-		undefined
-	)
+	@test('Asks questions for installing the Skill Feature Again', 'skill', {
+		name: 'test',
+		description: 'test',
+	})
+	@test('Skips questions when no options definition set', 'error', undefined)
 	protected static async asksRightQuestions(
 		feature: FeatureCode,
 		expectedAnswers: Record<string, any> | undefined,

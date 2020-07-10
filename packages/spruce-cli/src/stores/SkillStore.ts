@@ -35,7 +35,9 @@ export default class SkillStore extends AbstractLocalStore<
 
 		const skills = result.responses[0].payload.skills.map((values) => {
 			const instance = SkillStore.getSkill(values)
+
 			instance.validate()
+
 			return instance.getValues()
 		})
 
@@ -43,10 +45,9 @@ export default class SkillStore extends AbstractLocalStore<
 		return skills
 	}
 
-	/** Set logged in skill */
 	public setLoggedInSkill(skill: ISkill) {
-		// Validate what we were passed
 		const instance = SkillStore.getSkill(skill)
+
 		instance.validate()
 
 		this.writeValues({
@@ -61,8 +62,9 @@ export default class SkillStore extends AbstractLocalStore<
 
 		if (loggedIn) {
 			const instance = SkillStore.getSkill(loggedIn)
+
 			instance.validate()
-			// @ts-ignore
+
 			return instance.getValues()
 		}
 
@@ -88,7 +90,7 @@ export default class SkillStore extends AbstractLocalStore<
 		})
 		try {
 			instance.validate()
-			// @ts-ignore
+
 			return instance.getValues()
 		} catch (err) {
 			log.warn('INVALID skill ENV')

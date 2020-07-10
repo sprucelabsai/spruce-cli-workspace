@@ -1,7 +1,6 @@
 import pathUtil from 'path'
 import AbstractCliTest from './AbstractCliTest'
 import { ICli } from './cli'
-import { FeatureCode } from './features/FeatureManager'
 import diskUtil from './utilities/disk.utility'
 import testUtil from './utilities/test.utility'
 
@@ -17,7 +16,7 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 
 	protected static async syncSchemasAndSetCwd(cacheKey?: string) {
 		const cli = await this.installSchemasAndSetCwd(cacheKey)
-		await cli.getFeature('schema').syncSchemas()
+		await cli.getFeature('schema').Action('sync').execute({})
 
 		return cli
 	}
@@ -65,14 +64,14 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 			await cli.installFeatures({
 				features: [
 					{
-						code: FeatureCode.Skill,
+						code: 'skill',
 						options: {
 							name: 'testing',
 							description: 'this is a great test!',
 						},
 					},
 					{
-						code: FeatureCode.Schema,
+						code: 'schema',
 					},
 				],
 			})

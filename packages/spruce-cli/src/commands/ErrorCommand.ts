@@ -5,7 +5,7 @@ import ErrorCode from '#spruce/errors/errorCode'
 import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
-import FeatureManager, { FeatureCode } from '../features/FeatureManager'
+import FeatureInstaller, { FeatureCode } from '../features/FeatureInstaller'
 import ErrorGenerator from '../generators/ErrorGenerator'
 import SchemaGenerator from '../generators/SchemaGenerator'
 import { IGeneratedFile } from '../types/cli.types'
@@ -14,7 +14,7 @@ import namesUtil from '../utilities/names.utility'
 import AbstractCommand, { ICommandOptions } from './AbstractCommand'
 
 interface IErrorCommandOptions extends ICommandOptions {
-	featureManager: FeatureManager
+	featureManager: FeatureInstaller
 	generators: {
 		error: ErrorGenerator
 		schema: SchemaGenerator
@@ -24,7 +24,7 @@ interface IErrorCommandOptions extends ICommandOptions {
 export default class ErrorCommand extends AbstractCommand {
 	public errorGenerator: ErrorGenerator
 	public schemaGenerator: SchemaGenerator
-	public featureManager: FeatureManager
+	public featureManager: FeatureInstaller
 
 	public constructor(options: IErrorCommandOptions) {
 		super(options)
@@ -169,6 +169,7 @@ export default class ErrorCommand extends AbstractCommand {
 
 		const builderGeneratedFiles = await this.errorGenerator.generateBuilder(
 			resolvedErrorBuilderDestination,
+			// @ts-ignore
 			names
 		)
 
@@ -178,6 +179,7 @@ export default class ErrorCommand extends AbstractCommand {
 
 		const classGeneratedFiles = await this.errorGenerator.generateOrAppendErrorsToClass(
 			resolvedErrorFileDestination,
+			//@ts-ignore
 			[{ ...names, definition: errorDefinition }]
 		)
 

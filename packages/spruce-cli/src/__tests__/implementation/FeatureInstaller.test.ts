@@ -1,28 +1,18 @@
-import { Mercury } from '@sprucelabs/mercury'
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../AbstractCliTest'
-import ServiceFactory from '../../factories/ServiceFactory'
-import FeatureManager, { FeatureCode } from '../../features/FeatureManager'
+import FeatureInstaller from '../../features/FeatureInstaller'
 
 export default class FeatureManagerTest extends AbstractCliTest {
-	protected static fm: FeatureManager
-
-	public static FeatureManager() {
-		const serviceFactory = new ServiceFactory(new Mercury())
-		return FeatureManager.WithAllFeatures({
-			cwd: this.cwd,
-			serviceFactory,
-		})
-	}
+	protected static installer: FeatureInstaller
 
 	protected static async beforeEach() {
-		this.fm = this.FeatureManager()
+		this.installer = this.FeatureInstaller()
 	}
 
 	@test()
 	protected static async canGetFeatureDependencies() {
-		const dependencies = this.fm.getFeatureDependencies(FeatureCode.Test)
-		const match = dependencies.find((d) => d === FeatureCode.Skill)
+		const dependencies = this.installer.getFeatureDependencies('test')
+		const match = dependencies.find((d) => d === 'skill')
 		assert.isOk(match)
 	}
 

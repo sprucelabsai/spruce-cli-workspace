@@ -8,7 +8,7 @@ import SchemaService from '../services/SchemaService'
 import TypeCheckerService from '../services/TypeCheckerService'
 import VsCodeService from '../services/VsCodeService'
 
-export interface IServices {
+export interface IServiceMap {
 	pin: PinService
 	pkg: PkgService
 	vsCode: VsCodeService
@@ -31,7 +31,7 @@ export enum Service {
 }
 
 export interface IServiceProvider {
-	Service<S extends Service>(type: S, cwd?: string): IServices[S]
+	Service<S extends Service>(type: S, cwd?: string): IServiceMap[S]
 }
 
 export default class ServiceFactory {
@@ -41,24 +41,24 @@ export default class ServiceFactory {
 		this.mercury = mercury
 	}
 
-	public Service<S extends Service>(cwd: string, type: S): IServices[S] {
+	public Service<S extends Service>(cwd: string, type: S): IServiceMap[S] {
 		switch (type) {
 			case Service.Pin:
-				return new PinService(this.mercury) as IServices[S]
+				return new PinService(this.mercury) as IServiceMap[S]
 			case Service.Pkg:
-				return new PkgService(cwd) as IServices[S]
+				return new PkgService(cwd) as IServiceMap[S]
 			case Service.VsCode:
-				return new VsCodeService(cwd) as IServices[S]
+				return new VsCodeService(cwd) as IServiceMap[S]
 			case Service.Schema:
-				return new SchemaService(cwd) as IServices[S]
+				return new SchemaService(cwd) as IServiceMap[S]
 			case Service.Lint:
-				return new LintService(cwd) as IServices[S]
+				return new LintService(cwd) as IServiceMap[S]
 			case Service.Command:
-				return new CommandService(cwd) as IServices[S]
+				return new CommandService(cwd) as IServiceMap[S]
 			case Service.TypeChecker:
-				return new TypeCheckerService(cwd) as IServices[S]
+				return new TypeCheckerService(cwd) as IServiceMap[S]
 			case Service.Import:
-				return new ImportService(cwd) as IServices[S]
+				return new ImportService(cwd) as IServiceMap[S]
 			default:
 				throw new Error('create new error')
 		}

@@ -5,10 +5,8 @@ import {
 	SchemaFieldNames,
 } from '@sprucelabs/schema'
 import AbstractFeature from '../features/AbstractFeature'
-import FeatureManager, {
-	FeatureCode,
-	IFeatureMap,
-} from '../features/FeatureManager'
+import FeatureInstaller from '../features/FeatureInstaller'
+import { FeatureCode, IFeatureMap } from '../features/features.types'
 import TerminalInterface from '../interfaces/TerminalInterface'
 import AbstractComponent from './AbstractComponent'
 
@@ -24,13 +22,13 @@ interface IPromptOptions<F extends AbstractFeature> {
 		: never
 }
 export default class FeatureComponent extends AbstractComponent {
-	protected featureManager: FeatureManager
+	protected featureInstaller: FeatureInstaller
 
 	public prompt = async <F extends FeatureCode>(
-		featureCode: F,
+		code: F,
 		options: IPromptOptions<IFeatureMap[F]> = {}
 	): Promise<PromptResponse<IFeatureMap[F]>> => {
-		const definition = this.featureManager.definitionForFeature(featureCode)
+		const definition = this.featureInstaller.definitionForFeature(code)
 		const { values } = options
 
 		if (!definition || !definition.fields) {
@@ -65,8 +63,11 @@ export default class FeatureComponent extends AbstractComponent {
 
 		return answers as PromptResponse<IFeatureMap[F]>
 	}
-	public constructor(term: TerminalInterface, featureManager: FeatureManager) {
+	public constructor(
+		term: TerminalInterface,
+		featureInstaller: FeatureInstaller
+	) {
 		super(term)
-		this.featureManager = featureManager
+		this.featureInstaller = featureInstaller
 	}
 }

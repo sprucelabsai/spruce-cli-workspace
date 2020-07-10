@@ -9,7 +9,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		const cli = await this.Cli()
 		await assert.doesThrowAsync(
 			() =>
-				cli.createSchema({
+				cli.getFeature('schema').Action('create').execute({
 					nameReadable: 'Test schema!',
 					namePascal: 'AnotherTest',
 					nameCamel: 'anotherTest',
@@ -21,8 +21,9 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async canBuildFileWithoutCrashing() {
-		const cli = await this.syncSchemasAndSetCwd('build-without-crashing')
-		const response = await cli.createSchema({
+		const createSchema = await this.getCreateSchemaActionAndSetCwd()
+
+		const response = await createSchema.execute({
 			nameReadable: 'Test schema!',
 			namePascal: 'Test',
 			nameCamel: 'test',
@@ -39,7 +40,14 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 			'test.builder.ts'
 		)
 
-		assert.isEqual(response[0].path, expectedDestination)
+		assert.isEqual(response.files?.[0].path, expectedDestination)
+	}
+
+	private static async getCreateSchemaActionAndSetCwd(cacheKey?: string) {
+		const cli = await this.syncSchemasAndSetCwd(cacheKey)
+		const createSchema = cli.getFeature('schema').Action('create')
+
+		return createSchema
 	}
 
 	@test()
@@ -47,25 +55,22 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		const response = await this.buildTestSchema()
 
 		const checker = this.Service(Service.TypeChecker)
-		await checker.check(response[0].path)
+
+		await checker.check(response.files?.[0].path ?? '')
 		await checker.check(this.schemaTypesFile)
+
+		assert.doesInclude(response.files, { name: 'anotherTest.definition.ts' })
 	}
 
 	private static async buildTestSchema() {
-		const cli = await this.syncSchemasAndSetCwd('build-valid-file')
+		const action = await this.getCreateSchemaActionAndSetCwd('build-valid-file')
 
-		const response = await cli.createSchema({
+		const response = await action.execute({
 			nameReadable: 'Test schema!',
 			namePascal: 'AnotherTest',
 			nameCamel: 'anotherTest',
 			description: 'this is so great!',
 		})
 		return response
-	}
-
-	@test()
-	protected static async shouldCreateTypeFileForBuilder() {
-		const response = await this.buildTestSchema()
-		assert.doesInclude(response, { name: 'anotherTest.definition.ts' })
 	}
 }

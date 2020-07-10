@@ -9,7 +9,7 @@ function parsePath(cwd: string, paths: string[]) {
 	return { dirToRead, resolved }
 }
 
-function formatDate(date: Date) {
+export function formatDate(date: Date) {
 	const d = date,
 		year = d.getFullYear()
 
