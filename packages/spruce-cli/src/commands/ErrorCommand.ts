@@ -5,7 +5,7 @@ import ErrorCode from '#spruce/errors/errorCode'
 import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
-import FeatureInstaller, { FeatureCode } from '../features/FeatureInstaller'
+import FeatureInstaller from '../features/FeatureInstaller'
 import ErrorGenerator from '../generators/ErrorGenerator'
 import SchemaGenerator from '../generators/SchemaGenerator'
 import { IGeneratedFile } from '../types/cli.types'
@@ -159,7 +159,8 @@ export default class ErrorCommand extends AbstractCommand {
 		await this.featureManager.install({
 			features: [
 				{
-					code: FeatureCode.Error,
+					// @ts-ignore
+					code: 'error',
 				},
 			],
 		})

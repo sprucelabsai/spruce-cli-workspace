@@ -47,6 +47,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static async afterAll() {
 		this.rl && this.rl.close()
+		delete this.rl
 	}
 
 	protected static async Cli() {
