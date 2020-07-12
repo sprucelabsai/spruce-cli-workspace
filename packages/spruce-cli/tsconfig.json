@@ -6,6 +6,7 @@
 		"lib": ["es2017", "ES2020"],
 		"declaration": true,
 		"noImplicitAny": true,
+		"allowJs": true,
 		"forceConsistentCasingInFileNames": true,
 		"noImplicitReturns": true,
 		"strict": true,
@@ -19,11 +20,11 @@
 		"paths": {
 			"#spruce/*": [
 				".spruce/*",
-				"../../../node_modules/@sprucelabs/schema/build/.spruce/*",
-				"../node_modules/@sprucelabs/schema/build/.spruce/*"
+				"../node_modules/@sprucelabs/schema/build/.spruce/*",
+				"../../../node_modules/@sprucelabs/schema/build/.spruce/*"
 			]
 		}
 	},
-	"include": ["./*.ts", "./**/*.ts", "node_modules/@sprucelabs/schema/**/*"],
-	"exclude": ["build/*", "tmp/*", "__tests__"]
+	"include": ["./*.ts", "./**/*.ts"],
+	"exclude": ["build/*", "__tests__"]
 }
