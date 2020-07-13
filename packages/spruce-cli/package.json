@@ -34,7 +34,7 @@
 		"watch": "chokidar '.spruce/**' 'src/**/*' 'index.ts' '../spruce-templates/src/templates/**/*' -c 'npm run build'",
 		"clean": "rm -rf build/",
 		"lint": "eslint '**/*.ts' && npm run lint.tsc",
-		"lint.tsc": "tsc -p .",
+		"lint.tsc": "tsc --noEmit",
 		"lint.all": "eslint '**/*.ts' '.spruce/**/*.ts' && npm run lint.tsc",
 		"lint.fix": "eslint --fix '**/*.ts'",
 		"release": "semantic-release",
