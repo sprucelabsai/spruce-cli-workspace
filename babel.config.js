@@ -6,9 +6,9 @@ copySchema({
 
 module.exports = (api) => {
 	api.cache(false)
-	
+
 	return {
-		ignore: [],
+		ignore: ["**/testDirsAndFiles/**"],
 		sourceMaps: true,
 		presets: ['@babel/preset-env', '@babel/preset-typescript'],
 		plugins: [
@@ -16,10 +16,10 @@ module.exports = (api) => {
 			[
 				'@babel/plugin-proposal-decorators',
 				{
-					decoratorsBeforeExport: true,
+					legacy: true,
 				},
 			],
-			'@babel/plugin-proposal-class-properties',
+			['@babel/plugin-proposal-class-properties', {loose: true}],
 			[
 				'module-resolver',
 				{

@@ -15,11 +15,12 @@
 		"lint.fix": "lerna run lint.fix",
 		"lint.tsc": "lerna run lint.tsc",
 		"build": "lerna run build",
+		"build.types": "lerna run build.types",
 		"watch": "lerna run watch --no-sort --stream",
 		"test": "lerna run test --parallel",
 		"publish": "lerna publish",
 		"clean": "lerna clean --parallel",
-		"clean.node_modules": "lerna run clean && rm -rf node_modules; for d in packages/*/node_modules; do echo $d; rm -rf $d; done",
+		"clean.modules": "lerna run clean && rm -rf node_modules; for d in packages/*/node_modules; do echo $d; rm -rf $d; done",
 		"arkit": "lerna run arkit",
 		"arkit.png": "lerna run arkit.png"
 	},

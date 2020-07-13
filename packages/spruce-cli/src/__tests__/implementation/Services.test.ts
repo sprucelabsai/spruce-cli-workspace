@@ -5,9 +5,7 @@ import { Service } from '../../factories/ServiceFactory'
 import diskUtil from '../../utilities/disk.utility'
 
 export default class ServicesTests extends AbstractCliTest {
-	protected static cliRoot = pathUtil.join(__dirname, '..', '..')
-
-	@test('typeChecker passes on a good file')
+	@test()
 	protected static async typeCheckerValidatesGoodFile() {
 		const tc = this.Service(Service.TypeChecker)
 		tc.cwd = this.cliRoot
@@ -15,7 +13,7 @@ export default class ServicesTests extends AbstractCliTest {
 		await tc.check(this.resolveTestPath('validFile.ts'))
 	}
 
-	@test('tsc fails on bad file')
+	@test()
 	protected static async tscFailsOnBadFile() {
 		const destination = pathUtil.join(this.cwd, 'temp.ts')
 		diskUtil.writeFile(destination, 'const test = what')
@@ -23,6 +21,6 @@ export default class ServicesTests extends AbstractCliTest {
 		const tc = this.Service(Service.TypeChecker)
 		tc.cwd = this.cliRoot
 
-		await assert.doesThrowAsync(() => tc.check(destination))
+		await assert.doesThrowAsync(() => tc.check(destination), /what/gi)
 	}
 }

@@ -26,10 +26,11 @@
 		"url": "https://github.com/sprucelabsai/spruce-cli-workspace/issues"
 	},
 	"scripts": {
-		"build": "npm run build.babel",
-		"build.node": "tsc",
+		"build": "npm run build.babel && npm run build.types",
+		"build.tsc": "tsc",
 		"build.types": "tsc --emitDeclarationOnly",
-		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward",
+		"build.watch": "babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files --watch",
+		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
 		"watch": "chokidar '.spruce/**' 'src/**/*' 'index.ts' '../spruce-templates/src/templates/**/*' -c 'npm run build'",
 		"clean": "rm -rf build/",
 		"lint": "eslint '**/*.ts' && npm run lint.tsc",
@@ -111,7 +112,6 @@
 		"tsconfig-paths": "^3.9.0"
 	},
 	"jest": {
-		"preset": "ts-jest",
 		"maxWorkers": 4,
 		"testTimeout": 120000,
 		"testEnvironment": "node",
@@ -122,10 +122,10 @@
 			"<rootDir>/build/__tests__/testDirsAndFiles/"
 		],
 		"testMatch": [
-			"**/__tests__/**/*.test.[jt]s?(x)"
+			"**/__tests__/**/*.test.js?(x)"
 		],
 		"moduleNameMapper": {
-			"^#spruce/schemas/fields/(.*)": "<rootDir>/../../node_modules/@sprucelabs/schema/build/.spruce/schemas/fields/$1",
+			"^#spruce/schemas/fields/(.*)": "<rootDir>/node_modules/@sprucelabs/schema/build/.spruce/schemas/fields/$1",
 			"^#spruce/(.*)$": "<rootDir>/build/.spruce/$1"
 		},
 		"reporters": [

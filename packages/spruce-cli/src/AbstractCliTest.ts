@@ -17,9 +17,10 @@ import diskUtil from './utilities/disk.utility'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	private static rl: Interface | undefined
+	protected static cliRoot = pathUtil.join(__dirname)
 
 	protected static freshCwd() {
-		const tmpDirectory = pathUtil.join(os.tmpdir(), '..', 'tmp', uuid.v4())
+		const tmpDirectory = pathUtil.join(os.tmpdir(), 'tmp', uuid.v4())
 		fs.ensureDirSync(tmpDirectory)
 
 		return tmpDirectory
@@ -27,7 +28,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static resolveTestPath(...pathAfterTestDirsAndFiles: string[]) {
 		return pathUtil.join(
-			__dirname,
+			this.cliRoot,
 			'__tests__',
 			'testDirsAndFiles',
 			...pathAfterTestDirsAndFiles

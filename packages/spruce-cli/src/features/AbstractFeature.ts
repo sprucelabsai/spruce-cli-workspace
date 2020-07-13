@@ -105,7 +105,7 @@ export default abstract class AbstractFeature<
 			return []
 		}
 		const matches: string[] = await globby(
-			pathUtil.join(this.actionsDir, '**/*Action.ts')
+			pathUtil.join(this.actionsDir, '**/*Action.js')
 		)
 
 		return matches.map((path) => featuresUtil.filePathToActionCode(path))

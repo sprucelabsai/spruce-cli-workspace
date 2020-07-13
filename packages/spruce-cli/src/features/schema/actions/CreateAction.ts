@@ -25,18 +25,8 @@ export interface ICreateSchemaActionDefinition extends ISchemaDefinition {
 			defaultValue: 'src/schemas'
 			isRequired: true
 		}
-		addonsLookupDir: {
-			type: FieldType.Text
-			label: 'Id'
-			isRequired: true
-			defaultValue: 'src/addons'
-		}
-		lookupDir: {
-			type: FieldType.Text
-			label: 'Id'
-			isRequired: true
-			defaultValue: 'src/schemas'
-		}
+		lookupDir: ISyncSchemaActionDefinition['fields']['lookupDir']
+		addonsLookupDir: ISyncSchemaActionDefinition['fields']['addonsLookupDir']
 		typesDestinationDir: ISyncSchemaActionDefinition['fields']['typesDestinationDir']
 		nameReadable: NamedTemplateItem['fields']['nameReadable']
 		namePascal: NamedTemplateItem['fields']['namePascal']
@@ -60,18 +50,9 @@ export default class CreateAction extends AbstractFeatureAction<
 				defaultValue: 'src/schemas',
 				isRequired: true,
 			},
-			addonsLookupDir: {
-				type: FieldType.Text,
-				label: 'Id',
-				isRequired: true,
-				defaultValue: 'src/addons',
-			},
-			lookupDir: {
-				type: FieldType.Text,
-				label: 'Id',
-				isRequired: true,
-				defaultValue: 'src/schemas',
-			},
+			addonsLookupDir:
+				syncSchemasActionOptionsDefinition.fields.addonsLookupDir,
+			lookupDir: syncSchemasActionOptionsDefinition.fields.lookupDir,
 			typesDestinationDir:
 				syncSchemasActionOptionsDefinition.fields.typesDestinationDir,
 			nameReadable: namedTemplateItemDefinition.fields.nameReadable,

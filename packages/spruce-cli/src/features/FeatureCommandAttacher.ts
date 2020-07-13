@@ -1,3 +1,4 @@
+import Schema, { ISchemaDefinition } from '@sprucelabs/schema'
 import { CommanderStatic } from 'commander'
 import namesUtil from '../utilities/names.utility'
 import AbstractFeature from './AbstractFeature'
@@ -19,14 +20,38 @@ export default class FeatureCommandAttacher {
 
 	private attachCode(code: string, feature: AbstractFeature) {
 		const prefix = namesUtil.toCamel(feature.code)
-		const command = `${prefix}.${code}`
+		const commandStr = `${prefix}.${code}`
 		const action = feature.Action(code)
 
-		this.program.command(command).action(() => {})
+		let command = this.program.command(commandStr).action(() => {})
 
 		const description = action.optionsDefinition?.description
 		if (description) {
-			this.program.description(description)
+			command = command.description(description)
 		}
+
+		const definition = action.optionsDefinition
+
+		if (definition) {
+			this.attachOptions(command, definition)
+		}
+	}
+
+	private attachOptions(
+		command: CommanderStatic['program'],
+		definition: ISchemaDefinition
+	) {
+		const schema = new Schema(definition)
+		let theProgram = command
+
+		const fields = schema.getNamedFields()
+
+		fields.forEach(({ field, name }) => {
+			theProgram = theProgram.option(
+				`--${name} <${name}>`,
+				field.hint,
+				`${field.definition.defaultValue}`
+			)
+		})
 	}
 }

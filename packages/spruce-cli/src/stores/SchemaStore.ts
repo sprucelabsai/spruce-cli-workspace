@@ -111,7 +111,7 @@ export default class SchemaStore extends AbstractStore {
 
 	private async loadLocalDefinitions(localLookupDir: string) {
 		const localMatches = await globby(
-			pathUtil.join(localLookupDir, '**/*.builder.ts')
+			pathUtil.join(localLookupDir, '**/*.builder.[t|j]s')
 		)
 
 		const schemaService = this.Service(Service.Schema)
@@ -168,30 +168,30 @@ export default class SchemaStore extends AbstractStore {
 
 		const localAddons = (
 			await Promise.all(
-				(await globby([pathUtil.join(localLookupDir, '/*Field.addon.ts')])).map(
-					async (file) => {
-						try {
-							const registration = await importService.importDefault<
-								IFieldRegistration
-							>(file)
+				(
+					await globby([pathUtil.join(localLookupDir, '/*Field.addon.[t|j]s')])
+				).map(async (file) => {
+					try {
+						const registration = await importService.importDefault<
+							IFieldRegistration
+						>(file)
 
-							return {
-								path: file,
-								registration,
-								isLocal: true,
-							}
-						} catch (err) {
-							localErrors.push(
-								new SpruceError({
-									code: ErrorCode.FailedToImport,
-									file,
-									originalError: err,
-								})
-							)
-							return false
+						return {
+							path: file,
+							registration,
+							isLocal: true,
 						}
+					} catch (err) {
+						localErrors.push(
+							new SpruceError({
+								code: ErrorCode.FailedToImport,
+								file,
+								originalError: err,
+							})
+						)
+						return false
 					}
-				)
+				})
 			)
 		).filter((addon) => !!addon) as IAddonItem[]
 

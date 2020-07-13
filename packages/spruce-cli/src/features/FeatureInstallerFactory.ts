@@ -6,6 +6,7 @@ import StoreFactory from '../stores/StoreFactory'
 import CircleCIFeature from './CircleCIFeature'
 import ErrorFeature from './ErrorFeature'
 import FeatureInstaller from './FeatureInstaller'
+import { FeatureCode } from './features.types'
 import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './SkillFeature'
 import TestFeature from './TestFeature'
@@ -19,6 +20,15 @@ export default class FeatureInstallerFactory {
 		SkillFeature,
 		TestFeature,
 		VsCodeFeature,
+	]
+
+	public static readonly featureCodes: FeatureCode[] = [
+		'circleCi',
+		'error',
+		'schema',
+		'skill',
+		'test',
+		'vsCode',
 	]
 
 	public static WithAllFeatures(options: {

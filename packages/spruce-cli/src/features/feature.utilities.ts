@@ -11,6 +11,10 @@ const featuresUtil = {
 
 		return namesUtil.toCamel(code)
 	},
+
+	generateCommandAliases() {
+		return 'poop'
+	},
 }
 
 export default featuresUtil
