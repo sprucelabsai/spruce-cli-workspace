@@ -5,30 +5,50 @@ import AbstractSchemaTest from '../../AbstractSchemaTest'
 import { CORE_NAMESPACE } from '../../constants'
 import SchemaTemplateItemBuilder from '../../templateItemBuilders/SchemaTemplateItemBuilder'
 
-export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
-	private static itemBuilder: SchemaTemplateItemBuilder
+const cowbellV1: ISchemaDefinition = {
+	id: 'cowbell',
+	version: '2020_06_01',
+	name: 'Cowbell test',
+	fields: {
+		radius: {
+			type: FieldType.Number,
+		},
+	},
+}
 
-	private static cowbellV1: ISchemaDefinition = {
-		id: 'cowbell',
-		version: '2020_06_01',
-		name: 'Cowbell test',
-		fields: {
-			radius: {
-				type: FieldType.Number,
+const cowbellV1TemplateItem: ISchemaTemplateItem = {
+	namespace: CORE_NAMESPACE,
+	id: cowbellV1.id,
+	nameCamel: 'cowbell',
+	namePascal: 'Cowbell',
+	nameReadable: 'Cowbell test',
+	definition: cowbellV1,
+}
+
+const cowbellV2: ISchemaDefinition = {
+	id: 'cowbell',
+	version: '2020_06_02',
+	name: 'Cowbell test two!',
+	fields: {
+		radius: {
+			type: FieldType.Number,
+		},
+		owner: {
+			type: FieldType.Schema,
+			options: {
+				schemaId: { id: 'person', version: '2020_06_03' },
 			},
 		},
-	}
+	},
+}
 
-	private static cowbellV1TemplateItem: ISchemaTemplateItem = {
-		namespace: CORE_NAMESPACE,
-		id: SchemaTemplateItemBuilderTest.cowbellV1.id,
-		nameCamel: 'cowbell',
-		namePascal: 'Cowbell',
-		nameReadable: 'Cowbell test',
-		definition: SchemaTemplateItemBuilderTest.cowbellV1,
-	}
-
-	private static cowbellV2: ISchemaDefinition = {
+const cowbellV2TemplateItem: ISchemaTemplateItem = {
+	namespace: CORE_NAMESPACE,
+	id: cowbellV2.id,
+	nameCamel: 'cowbell',
+	namePascal: 'Cowbell',
+	nameReadable: 'Cowbell test two!',
+	definition: {
 		id: 'cowbell',
 		version: '2020_06_02',
 		name: 'Cowbell test two!',
@@ -39,57 +59,66 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 			owner: {
 				type: FieldType.Schema,
 				options: {
-					schemaId: { id: 'person', version: '2020_06_03' },
+					schemaIds: [{ id: 'person', version: '2020_06_03' }],
 				},
 			},
 		},
-	}
+	},
+}
 
-	private static cowbellV2TemplateItem: ISchemaTemplateItem = {
-		namespace: CORE_NAMESPACE,
-		id: SchemaTemplateItemBuilderTest.cowbellV2.id,
-		nameCamel: 'cowbell',
-		namePascal: 'Cowbell',
-		nameReadable: 'Cowbell test two!',
-		definition: {
-			id: 'cowbell',
-			version: '2020_06_02',
-			name: 'Cowbell test two!',
-			fields: {
-				radius: {
-					type: FieldType.Number,
-				},
-				owner: {
-					type: FieldType.Schema,
-					options: {
-						schemaIds: [{ id: 'person', version: '2020_06_03' }],
+const personV1: ISchemaDefinition = {
+	id: 'person',
+	version: '2020_06_01',
+	name: 'Person test',
+	fields: {
+		name: {
+			type: FieldType.Text,
+		},
+	},
+}
+
+const personV1TemplateItem: ISchemaTemplateItem = {
+	namespace: CORE_NAMESPACE,
+	id: personV1.id,
+	nameCamel: 'person',
+	namePascal: 'Person',
+	nameReadable: 'Person test',
+	definition: personV1,
+}
+
+const personV2: ISchemaDefinition = {
+	id: 'person',
+	version: '2020_06_01',
+	name: 'Person version 2',
+	fields: {
+		name: {
+			type: FieldType.Text,
+		},
+		favoriteVehicle: {
+			type: FieldType.Schema,
+			options: {
+				schema: {
+					id: 'vehicle',
+					name: 'Vehicle v1',
+					version: '2020_06_01',
+					fields: {
+						make: {
+							type: FieldType.Text,
+						},
 					},
 				},
 			},
 		},
-	}
+	},
+}
 
-	private static personV1: ISchemaDefinition = {
-		id: 'person',
-		version: '2020_06_01',
-		name: 'Person test',
-		fields: {
-			name: {
-				type: FieldType.Text,
-			},
-		},
-	}
-
-	private static personV1TemplateItem: ISchemaTemplateItem = {
-		namespace: CORE_NAMESPACE,
-		id: SchemaTemplateItemBuilderTest.personV1.id,
-		nameCamel: 'person',
-		namePascal: 'Person',
-		nameReadable: 'Person test',
-		definition: SchemaTemplateItemBuilderTest.personV1,
-	}
-
-	private static personV2: ISchemaDefinition = {
+const personV2TemplateItem: ISchemaTemplateItem = {
+	namespace: CORE_NAMESPACE,
+	id: personV1.id,
+	nameCamel: 'person',
+	namePascal: 'Person',
+	nameReadable: 'Person version 2',
+	definition: {
 		id: 'person',
 		version: '2020_06_01',
 		name: 'Person version 2',
@@ -100,110 +129,39 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 			favoriteVehicle: {
 				type: FieldType.Schema,
 				options: {
-					schema: {
-						id: 'vehicle',
-						name: 'Vehicle v1',
-						version: '2020_06_01',
-						fields: {
-							make: {
-								type: FieldType.Text,
-							},
-						},
-					},
+					schemaIds: [{ id: 'vehicle', version: '2020_06_01' }],
 				},
 			},
 		},
-	}
+	},
+}
 
-	private static personV2TemplateItem: ISchemaTemplateItem = {
-		namespace: CORE_NAMESPACE,
-		id: SchemaTemplateItemBuilderTest.personV1.id,
-		nameCamel: 'person',
-		namePascal: 'Person',
-		nameReadable: 'Person version 2',
-		definition: {
-			id: 'person',
-			version: '2020_06_01',
-			name: 'Person version 2',
-			fields: {
-				name: {
-					type: FieldType.Text,
-				},
-				favoriteVehicle: {
-					type: FieldType.Schema,
-					options: {
-						schemaIds: [{ id: 'vehicle', version: '2020_06_01' }],
-					},
-				},
+const personV3: ISchemaDefinition = {
+	id: 'person',
+	version: '2020_06_03',
+	name: 'Person test the 3rd',
+	fields: {
+		relatedField: {
+			type: FieldType.Schema,
+			options: {
+				schemas: [cowbellV1, cowbellV2],
 			},
 		},
-	}
+	},
+}
 
-	private static personV3: ISchemaDefinition = {
+const personV3TemplateItem: ISchemaTemplateItem = {
+	namespace: CORE_NAMESPACE,
+	id: personV3.id,
+	nameCamel: 'person',
+	namePascal: 'Person',
+	nameReadable: 'Person test the 3rd',
+	definition: {
 		id: 'person',
 		version: '2020_06_03',
 		name: 'Person test the 3rd',
 		fields: {
 			relatedField: {
-				type: FieldType.Schema,
-				options: {
-					schemas: [
-						SchemaTemplateItemBuilderTest.cowbellV1,
-						SchemaTemplateItemBuilderTest.cowbellV2,
-					],
-				},
-			},
-		},
-	}
-
-	private static personV3TemplateItem: ISchemaTemplateItem = {
-		namespace: CORE_NAMESPACE,
-		id: SchemaTemplateItemBuilderTest.personV3.id,
-		nameCamel: 'person',
-		namePascal: 'Person',
-		nameReadable: 'Person test the 3rd',
-		definition: {
-			id: 'person',
-			version: '2020_06_03',
-			name: 'Person test the 3rd',
-			fields: {
-				relatedField: {
-					type: FieldType.Schema,
-					options: {
-						schemaIds: [
-							{ id: 'cowbell', version: '2020_06_01' },
-							{ id: 'cowbell', version: '2020_06_02' },
-						],
-					},
-				},
-			},
-		},
-	}
-
-	private static vehicleV1TemplateItem: ISchemaTemplateItem = {
-		namespace: CORE_NAMESPACE,
-		id: 'vehicle',
-		nameCamel: 'vehicle',
-		namePascal: 'Vehicle',
-		nameReadable: 'Vehicle v1',
-		definition: {
-			id: 'vehicle',
-			name: 'Vehicle v1',
-			version: '2020_06_01',
-			fields: {
-				make: {
-					type: FieldType.Text,
-				},
-			},
-		},
-	}
-
-	private static personV4: ISchemaDefinition = {
-		id: 'person',
-		version: '2020_06_04',
-		name: 'Person test the last',
-		fields: {
-			cowbells: {
 				type: FieldType.Schema,
 				options: {
 					schemaIds: [
@@ -213,16 +171,55 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 				},
 			},
 		},
-	}
+	},
+}
 
-	private static personV4TemplateItem: ISchemaTemplateItem = {
-		namespace: CORE_NAMESPACE,
-		id: SchemaTemplateItemBuilderTest.personV4.id,
-		nameCamel: 'person',
-		namePascal: 'Person',
-		nameReadable: 'Person test the last',
-		definition: SchemaTemplateItemBuilderTest.personV4,
-	}
+const vehicleV1TemplateItem: ISchemaTemplateItem = {
+	namespace: CORE_NAMESPACE,
+	id: 'vehicle',
+	nameCamel: 'vehicle',
+	namePascal: 'Vehicle',
+	nameReadable: 'Vehicle v1',
+	definition: {
+		id: 'vehicle',
+		name: 'Vehicle v1',
+		version: '2020_06_01',
+		fields: {
+			make: {
+				type: FieldType.Text,
+			},
+		},
+	},
+}
+
+const personV4: ISchemaDefinition = {
+	id: 'person',
+	version: '2020_06_04',
+	name: 'Person test the last',
+	fields: {
+		cowbells: {
+			type: FieldType.Schema,
+			options: {
+				schemaIds: [
+					{ id: 'cowbell', version: '2020_06_01' },
+					{ id: 'cowbell', version: '2020_06_02' },
+				],
+			},
+		},
+	},
+}
+
+const personV4TemplateItem: ISchemaTemplateItem = {
+	namespace: CORE_NAMESPACE,
+	id: personV4.id,
+	nameCamel: 'person',
+	namePascal: 'Person',
+	nameReadable: 'Person test the last',
+	definition: personV4,
+}
+
+export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
+	private static itemBuilder: SchemaTemplateItemBuilder
 
 	protected static async beforeEach() {
 		super.beforeEach()
@@ -242,63 +239,41 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 	@test()
 	protected static async turnsSingleDefinitionIntoTemplateItem() {
 		const results = this.itemBuilder.generateTemplateItems(CORE_NAMESPACE, [
-			this.personV1,
+			personV1,
 		])
 		const actual = results[0]
 
-		assert.isEqualDeep(actual, this.personV1TemplateItem)
+		assert.isEqualDeep(actual, personV1TemplateItem)
 	}
 
 	@test(
 		'turns 2 definitions into 2 template items',
-		[
-			SchemaTemplateItemBuilderTest.cowbellV1,
-			SchemaTemplateItemBuilderTest.personV1,
-		],
-		[
-			SchemaTemplateItemBuilderTest.cowbellV1TemplateItem,
-			SchemaTemplateItemBuilderTest.personV1TemplateItem,
-		]
+		[cowbellV1, personV1],
+		[cowbellV1TemplateItem, personV1TemplateItem]
 	)
 	@test(
 		'turns one nested definition into 2 items',
-		[SchemaTemplateItemBuilderTest.personV2],
-		[
-			SchemaTemplateItemBuilderTest.vehicleV1TemplateItem,
-			SchemaTemplateItemBuilderTest.personV2TemplateItem,
-		]
+		[personV2],
+		[vehicleV1TemplateItem, personV2TemplateItem]
 	)
 	@test(
 		'handles recursion',
-		[SchemaTemplateItemBuilderTest.personV3],
-		[
-			SchemaTemplateItemBuilderTest.cowbellV1TemplateItem,
-			SchemaTemplateItemBuilderTest.cowbellV2TemplateItem,
-			SchemaTemplateItemBuilderTest.personV3TemplateItem,
-		]
+		[personV3],
+		[cowbellV1TemplateItem, cowbellV2TemplateItem, personV3TemplateItem]
 	)
 	@test(
 		'handles duplication',
-		[
-			SchemaTemplateItemBuilderTest.cowbellV1,
-			SchemaTemplateItemBuilderTest.cowbellV1,
-			SchemaTemplateItemBuilderTest.cowbellV1,
-		],
-		[SchemaTemplateItemBuilderTest.cowbellV1TemplateItem]
+		[cowbellV1, cowbellV1, cowbellV1],
+		[cowbellV1TemplateItem]
 	)
 	@test(
 		'handles resolving by id and version',
+		[personV4, personV3, cowbellV1, cowbellV2],
 		[
-			SchemaTemplateItemBuilderTest.personV4,
-			SchemaTemplateItemBuilderTest.personV3,
-			SchemaTemplateItemBuilderTest.cowbellV1,
-			SchemaTemplateItemBuilderTest.cowbellV2,
-		],
-		[
-			SchemaTemplateItemBuilderTest.cowbellV1TemplateItem,
-			SchemaTemplateItemBuilderTest.cowbellV2TemplateItem,
-			SchemaTemplateItemBuilderTest.personV4TemplateItem,
-			SchemaTemplateItemBuilderTest.personV3TemplateItem,
+			cowbellV1TemplateItem,
+			cowbellV2TemplateItem,
+			personV4TemplateItem,
+			personV3TemplateItem,
 		]
 	)
 	protected static async generationTests(

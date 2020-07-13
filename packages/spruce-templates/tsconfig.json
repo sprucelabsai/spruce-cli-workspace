@@ -17,11 +17,11 @@
 		"baseUrl": "src",
 		"paths": {
 			"#spruce/*": [
-				"../../../node_modules/@sprucelabs/schema/build/.spruce/*",
-				"../node_modules/@sprucelabs/schema/build/.spruce/*"
+				"../node_modules/@sprucelabs/schema/build/.spruce/*",
+				"../../../node_modules/@sprucelabs/schema/build/.spruce/*"
 			]
 		}
 	},
 	"include": ["./*.ts", "./**/*.ts"],
-	"exclude": ["**/node_modules/*", "build/*", "src/templates/*"]
+	"exclude": []
 }

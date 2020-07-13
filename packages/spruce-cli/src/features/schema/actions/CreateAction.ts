@@ -8,15 +8,16 @@ import diskUtil from '../../../utilities/disk.utility'
 import namesUtil from '../../../utilities/names.utility'
 import { IFeatureAction } from '../../features.types'
 import {
-	ISyncSchemaOptionsDefinition,
+	ISyncSchemaActionDefinition,
 	syncSchemasActionOptionsDefinition,
 } from './SyncAction'
 
 type NamedTemplateItem = SpruceSchemas.Local.NamedTemplateItem.IDefinition
 
 export interface ICreateSchemaActionDefinition extends ISchemaDefinition {
-	id: 'createSchemaOption'
-	name: 'Create schema options'
+	id: 'createSchemaAction'
+	name: 'Create schema'
+	description: 'Create the builder to a fresh new schema!'
 	fields: {
 		destinationDir: {
 			type: FieldType.Text
@@ -24,19 +25,9 @@ export interface ICreateSchemaActionDefinition extends ISchemaDefinition {
 			defaultValue: 'src/schemas'
 			isRequired: true
 		}
-		addonsLookupDir: {
-			type: FieldType.Text
-			label: 'Id'
-			isRequired: true
-			defaultValue: 'src/addons'
-		}
-		lookupDir: {
-			type: FieldType.Text
-			label: 'Id'
-			isRequired: true
-			defaultValue: 'src/schemas'
-		}
-		typesDestinationDir: ISyncSchemaOptionsDefinition['fields']['typesDestinationDir']
+		lookupDir: ISyncSchemaActionDefinition['fields']['lookupDir']
+		addonsLookupDir: ISyncSchemaActionDefinition['fields']['addonsLookupDir']
+		typesDestinationDir: ISyncSchemaActionDefinition['fields']['typesDestinationDir']
 		nameReadable: NamedTemplateItem['fields']['nameReadable']
 		namePascal: NamedTemplateItem['fields']['namePascal']
 		nameCamel: NamedTemplateItem['fields']['nameCamel']
@@ -49,8 +40,9 @@ export default class CreateAction extends AbstractFeatureAction<
 > {
 	public name = 'create'
 	public optionsDefinition: ICreateSchemaActionDefinition = {
-		id: 'createSchemaOption',
-		name: 'Create schema options',
+		id: 'createSchemaAction',
+		name: 'Create schema',
+		description: 'Create the builder to a fresh new schema!',
 		fields: {
 			destinationDir: {
 				type: FieldType.Text,
@@ -58,18 +50,9 @@ export default class CreateAction extends AbstractFeatureAction<
 				defaultValue: 'src/schemas',
 				isRequired: true,
 			},
-			addonsLookupDir: {
-				type: FieldType.Text,
-				label: 'Id',
-				isRequired: true,
-				defaultValue: 'src/addons',
-			},
-			lookupDir: {
-				type: FieldType.Text,
-				label: 'Id',
-				isRequired: true,
-				defaultValue: 'src/schemas',
-			},
+			addonsLookupDir:
+				syncSchemasActionOptionsDefinition.fields.addonsLookupDir,
+			lookupDir: syncSchemasActionOptionsDefinition.fields.lookupDir,
 			typesDestinationDir:
 				syncSchemasActionOptionsDefinition.fields.typesDestinationDir,
 			nameReadable: namedTemplateItemDefinition.fields.nameReadable,
@@ -103,7 +86,7 @@ export default class CreateAction extends AbstractFeatureAction<
 		})
 
 		const syncAction = this.Action('sync') as IFeatureAction<
-			ISyncSchemaOptionsDefinition
+			ISyncSchemaActionDefinition
 		>
 		const syncResults = await syncAction.execute({
 			...rest,

@@ -63,6 +63,7 @@ export default class FeatureComponent extends AbstractComponent {
 
 		return answers as PromptResponse<IFeatureMap[F]>
 	}
+
 	public constructor(
 		term: TerminalInterface,
 		featureInstaller: FeatureInstaller

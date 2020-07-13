@@ -16,6 +16,7 @@ import ErrorCode from '#spruce/errors/errorCode'
 import './addons/filePrompt.addon'
 import SpruceError from './errors/SpruceError'
 import ServiceFactory, { Service } from './factories/ServiceFactory'
+import FeatureCommandAttacher from './features/FeatureCommandAttacher'
 import FeatureInstaller from './features/FeatureInstaller'
 import FeatureInstallerFactory from './features/FeatureInstallerFactory'
 import log from './singletons/log'
@@ -43,6 +44,7 @@ export async function boot(options?: {
 	program?: CommanderStatic['program']
 }) {
 	const program = options?.program
+
 	// TODO pull in without including package.json
 	// program?.version(pkg.version).description(pkg.description)
 	program?.option('--no-color', 'Disable color output in the console')
@@ -71,15 +73,26 @@ export async function boot(options?: {
 		storeFactory,
 	})
 
-	// Alphabetical sort of help output
-	program?.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
+	// attach features
+	if (program) {
+		const attacher = new FeatureCommandAttacher(program)
+		const codes = FeatureInstallerFactory.featureCodes
 
-	// Error on unknown commands
-	program?.action((command, args) => {
-		throw new SpruceError({ code: ErrorCode.InvalidCommand, args })
-	})
+		for (const code of codes) {
+			const feature = featureInstaller.getFeature(code)
+			await attacher.attachFeature(feature)
+		}
 
-	// Setup mercury
+		// Alphabetical sort of help output
+		program.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
+
+		// Error on unknown commands
+		program.action((command, args) => {
+			throw new SpruceError({ code: ErrorCode.InvalidCommand, args })
+		})
+	}
+
+	// Setup mercury if logged in
 	const isInstalled = await featureInstaller.isInstalled('skill')
 
 	if (isInstalled) {

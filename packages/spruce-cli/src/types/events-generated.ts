@@ -8,7 +8,7 @@
  *
  * 🌲🤖 Core: Get schemas used in the spruce platform 
  */
-export namespace SpruceEvents.Core.GetSchemas {
+export declare namespace SpruceEvents.Core.GetSchemas {
 	/** The event name  */
 	export const name = 'get-schemas'
 
@@ -35,7 +35,7 @@ export namespace SpruceEvents.Core.GetSchemas {
  *
  * 🌲🤖 Core: Get skills where the user is a developer
  */
-export namespace SpruceEvents.Core.GetDeveloperSkills {
+export declare namespace SpruceEvents.Core.GetDeveloperSkills {
 	/** The event name  */
 	export const name = 'get-developer-skills'
 
@@ -90,7 +90,7 @@ export namespace SpruceEvents.Core.GetDeveloperSkills {
  *
  * 🌲🤖 Core: Register a new skill with the api
  */
-export namespace SpruceEvents.Core.RegisterSkill {
+export declare namespace SpruceEvents.Core.RegisterSkill {
 	/** The event name  */
 	export const name = 'register-skill'
 
@@ -152,7 +152,7 @@ export namespace SpruceEvents.Core.RegisterSkill {
  *
  * 🌲🤖 Core: Un-register a skill
  */
-export namespace SpruceEvents.Core.UnregisterSkill {
+export declare namespace SpruceEvents.Core.UnregisterSkill {
 	/** The event name  */
 	export const name = 'unregister-skill'
 
@@ -194,7 +194,7 @@ export namespace SpruceEvents.Core.UnregisterSkill {
  *
  * ** Missing event description **
  */
-export namespace SpruceEvents.Core.AddDeveloper {
+export declare namespace SpruceEvents.Core.AddDeveloper {
 	/** The event name  */
 	export const name = 'add-developer'
 
@@ -221,7 +221,7 @@ export namespace SpruceEvents.Core.AddDeveloper {
  *
  * ** Missing event description **
  */
-export namespace SpruceEvents.Core.RemoveDeveloper {
+export declare namespace SpruceEvents.Core.RemoveDeveloper {
 	/** The event name  */
 	export const name = 'remove-developer'
 
@@ -248,7 +248,7 @@ export namespace SpruceEvents.Core.RemoveDeveloper {
  *
  * 🌲🤖 Core: Make a gql request to the api
  */
-export namespace SpruceEvents.Core.Gql {
+export declare namespace SpruceEvents.Core.Gql {
 	/** The event name  */
 	export const name = 'gql'
 
@@ -285,7 +285,7 @@ export namespace SpruceEvents.Core.Gql {
  *
  * 🌲🤖 Core: Login with a phone number and pin
  */
-export namespace SpruceEvents.Core.Login {
+export declare namespace SpruceEvents.Core.Login {
 	/** The event name  */
 	export const name = 'login'
 
@@ -327,7 +327,7 @@ export namespace SpruceEvents.Core.Login {
  *
  * 🌲🤖 Core: Request login
  */
-export namespace SpruceEvents.Core.RequestLogin {
+export declare namespace SpruceEvents.Core.RequestLogin {
 	/** The event name  */
 	export const name = 'request-login'
 
@@ -381,7 +381,7 @@ export namespace SpruceEvents.Core.RequestLogin {
  *
  * 🌲🤖 Core: Get API configuration
  */
-export namespace SpruceEvents.Core.GetApiConfig {
+export declare namespace SpruceEvents.Core.GetApiConfig {
 	/** The event name  */
 	export const name = 'get-api-config'
 
@@ -423,7 +423,7 @@ export namespace SpruceEvents.Core.GetApiConfig {
  *
  * 🌲🤖 Core: Get UI enhancements
  */
-export namespace SpruceEvents.Core.GetUiEnhancements {
+export declare namespace SpruceEvents.Core.GetUiEnhancements {
 	/** The event name  */
 	export const name = 'get-ui-enhancements'
 
@@ -474,7 +474,7 @@ export namespace SpruceEvents.Core.GetUiEnhancements {
  *
  * Emit this event when a new calendar event was created
  */
-export namespace SpruceEvents.Core.DidCreateCalendarEvent {
+export declare namespace SpruceEvents.Core.DidCreateCalendarEvent {
 	/** The event name  */
 	export const name = 'did-create-calendar-event'
 
@@ -517,7 +517,7 @@ export namespace SpruceEvents.Core.DidCreateCalendarEvent {
  *
  * Core asks for settings to display on a page
  */
-export namespace SpruceEvents.Core.GetSettings {
+export declare namespace SpruceEvents.Core.GetSettings {
 	/** The event name  */
 	export const name = 'get-settings'
 
@@ -577,7 +577,7 @@ export namespace SpruceEvents.Core.GetSettings {
  *
  * This is an opportunity to enrich user data. Set the user name, profile image, create a note, etc.
  */
-export namespace SpruceEvents.Core.EnrichUser {
+export declare namespace SpruceEvents.Core.EnrichUser {
 	/** The event name  */
 	export const name = 'enrich-user'
 
@@ -615,7 +615,7 @@ export namespace SpruceEvents.Core.EnrichUser {
  *
  * Core asks for settings validation
  */
-export namespace SpruceEvents.Core.ValidateSettings {
+export declare namespace SpruceEvents.Core.ValidateSettings {
 	/** The event name  */
 	export const name = 'validate-settings'
 
@@ -642,7 +642,7 @@ export namespace SpruceEvents.Core.ValidateSettings {
  *
  * Core asks for views to display on a page
  */
-export namespace SpruceEvents.Core.GetViews {
+export declare namespace SpruceEvents.Core.GetViews {
 	/** The event name  */
 	export const name = 'get-views'
 
@@ -669,7 +669,7 @@ export namespace SpruceEvents.Core.GetViews {
  *
  * Core asks this skill to provide cards
  */
-export namespace SpruceEvents.Core.GetCards {
+export declare namespace SpruceEvents.Core.GetCards {
 	/** The event name  */
 	export const name = 'get-cards'
 
@@ -696,7 +696,7 @@ export namespace SpruceEvents.Core.GetCards {
  *
  * When the skill is installed to a location
  */
-export namespace SpruceEvents.Core.WasInstalled {
+export declare namespace SpruceEvents.Core.WasInstalled {
 	/** The event name  */
 	export const name = 'was-installed'
 
@@ -723,7 +723,7 @@ export namespace SpruceEvents.Core.WasInstalled {
  *
  * When a guest joins wifi at a location for the first time
  */
-export namespace SpruceEvents.Core.DidSignup {
+export declare namespace SpruceEvents.Core.DidSignup {
 	/** The event name  */
 	export const name = 'did-signup'
 
@@ -761,7 +761,7 @@ export namespace SpruceEvents.Core.DidSignup {
  *
  * Will fire before a guest signs up and gives skills the opportunity to block signup.
  */
-export namespace SpruceEvents.Core.WillSignup {
+export declare namespace SpruceEvents.Core.WillSignup {
 	/** The event name  */
 	export const name = 'will-signup'
 
@@ -799,7 +799,7 @@ export namespace SpruceEvents.Core.WillSignup {
  *
  * When a guest returns and their phone hits the wifi
  */
-export namespace SpruceEvents.Core.DidEnter {
+export declare namespace SpruceEvents.Core.DidEnter {
 	/** The event name  */
 	export const name = 'did-enter'
 
@@ -826,7 +826,7 @@ export namespace SpruceEvents.Core.DidEnter {
  *
  * Triggered an hour after a guest leaves
  */
-export namespace SpruceEvents.Core.DidLeave {
+export declare namespace SpruceEvents.Core.DidLeave {
 	/** The event name  */
 	export const name = 'did-leave'
 
@@ -853,7 +853,7 @@ export namespace SpruceEvents.Core.DidLeave {
  *
  * A guest has sent a text to Sprucebot
  */
-export namespace SpruceEvents.Core.DidMessage {
+export declare namespace SpruceEvents.Core.DidMessage {
 	/** The event name  */
 	export const name = 'did-message'
 
@@ -880,7 +880,7 @@ export namespace SpruceEvents.Core.DidMessage {
  *
  * When a guest adds a new device to a location. Like adding their laptop
  */
-export namespace SpruceEvents.Core.DidAddDevice {
+export declare namespace SpruceEvents.Core.DidAddDevice {
 	/** The event name  */
 	export const name = 'did-add-device'
 
@@ -907,7 +907,7 @@ export namespace SpruceEvents.Core.DidAddDevice {
  *
  * When any user updates their first or last name
  */
-export namespace SpruceEvents.Core.DidUpdateUser {
+export declare namespace SpruceEvents.Core.DidUpdateUser {
 	/** The event name  */
 	export const name = 'did-update-user'
 
@@ -934,7 +934,7 @@ export namespace SpruceEvents.Core.DidUpdateUser {
  *
  * When any guest opts out of a location. By now you have already lost access to their meta data.
  */
-export namespace SpruceEvents.Core.DidOptOut {
+export declare namespace SpruceEvents.Core.DidOptOut {
 	/** The event name  */
 	export const name = 'did-opt-out'
 
@@ -961,7 +961,7 @@ export namespace SpruceEvents.Core.DidOptOut {
  *
  * They had, at one time, opted out. But, now they have remotely opted back in
  */
-export namespace SpruceEvents.Core.DidRemoteRejoin {
+export declare namespace SpruceEvents.Core.DidRemoteRejoin {
 	/** The event name  */
 	export const name = 'did-remote-rejoin'
 
@@ -988,7 +988,7 @@ export namespace SpruceEvents.Core.DidRemoteRejoin {
  *
  * Sprucebot has made the decision that now is the perfect time to send training material
  */
-export namespace SpruceEvents.Core.WillSendTraining {
+export declare namespace SpruceEvents.Core.WillSendTraining {
 	/** The event name  */
 	export const name = 'will-send-training'
 
@@ -1015,7 +1015,7 @@ export namespace SpruceEvents.Core.WillSendTraining {
  *
  * Provide your own search results in the platform
  */
-export namespace SpruceEvents.Core.BigSearch {
+export declare namespace SpruceEvents.Core.BigSearch {
 	/** The event name  */
 	export const name = 'big-search'
 
@@ -1042,7 +1042,7 @@ export namespace SpruceEvents.Core.BigSearch {
  *
  * Give people the power import your search results into the platform
  */
-export namespace SpruceEvents.Core.ImportFromBigSearch {
+export declare namespace SpruceEvents.Core.ImportFromBigSearch {
 	/** The event name  */
 	export const name = 'import-from-big-search'
 

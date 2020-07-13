@@ -17,7 +17,8 @@ import {
 
 export default class FeatureInstaller implements IServiceProvider {
 	public cwd: string
-	public featureMap: Partial<IFeatureMap> = {}
+
+	private featureMap: Partial<IFeatureMap> = {}
 	private serviceFactory: ServiceFactory
 
 	public constructor(cwd: string, serviceFactory: ServiceFactory) {

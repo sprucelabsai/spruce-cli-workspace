@@ -33,7 +33,7 @@ export default class ErrorStore extends AbstractStore {
 		}
 
 		const matches = await globby(
-			pathUtil.join(resolvedLookupDir, '/**/*.builder.ts')
+			pathUtil.join(resolvedLookupDir, '/**/*.builder.[t|j]s')
 		)
 		const schemaService = this.Service(Service.Schema)
 

@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { run } from './cli'
 import TerminalInterface from './interfaces/TerminalInterface'
 

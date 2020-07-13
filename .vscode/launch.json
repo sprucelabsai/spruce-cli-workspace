@@ -33,7 +33,7 @@
 			"runtimeArgs": [
 				"--inspect-brk",
 				"${workspaceFolder}/node_modules/.bin/jest",
-				"${relativeFile}",
+				"${fileBasenameNoExtension}",
 				"--detectOpenHandles",
 				"--no-cache"
 			],

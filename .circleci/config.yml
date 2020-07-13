@@ -23,11 +23,7 @@ jobs:
       - restore_cache:
           keys:
             - yarn-packages-{{ checksum "yarn.lock" }}
-      - run: yarn clean
-      - run: yarn install --frozen-lockfile
-      - run: yarn build
-      - run: yarn lint
-      - run: yarn test
+      - run: yarn release
       - save_cache:
           key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
@@ -49,7 +45,7 @@ jobs:
             fi
       - restore_cache:
           keys:
-            - yarn-packages-{{ checksum "yarn.lock" }}      
+            - yarn-packages-{{ checksum "yarn.lock" }}
       - run: yarn install --frozen-lockfile
       - run: yarn run build
       - run: git config --global user.email "$GIT_AUTHOR_EMAIL"

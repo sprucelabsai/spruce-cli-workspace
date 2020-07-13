@@ -38,78 +38,10 @@ import {
 import DirectoryTemplateUtility from './utilities/DirectoryTemplateUtility'
 import importExtractorUtil from './utilities/importExtractor.utility'
 import KeyGeneratorUtility from './utilities/KeyGeneratorUtility'
+import templateImportUtil from './utilities/templateImporter.utility'
 import templateItemUtil from './utilities/templateItem.utility'
 
 log.info('Addons imported')
-
-// Import actual templates
-const templatePath = path.join(__dirname, 'templates', 'typescript')
-
-// Template files
-// TODO this can be done in a loop perhaps
-const schemasTypes: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/schemas.types.ts.hbs'))
-	.toString()
-
-const definitionBuilder: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/builder.ts.hbs'))
-	.toString()
-
-const definition: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/definition.ts.hbs'))
-	.toString()
-
-const schemaExample: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/example.ts.hbs'))
-	.toString()
-
-const error: string = fs
-	.readFileSync(path.join(templatePath, 'errors/SpruceError.ts.hbs'))
-	.toString()
-
-const errorTypes: string = fs
-	.readFileSync(path.join(templatePath, 'errors/error.types.ts.hbs'))
-	.toString()
-
-const errorOptionsTypes: string = fs
-	.readFileSync(path.join(templatePath, 'errors/options.types.ts.hbs'))
-	.toString()
-
-const errorCode: string = fs
-	.readFileSync(path.join(templatePath, 'errors/errorCode.ts.hbs'))
-	.toString()
-
-const errorDefinitionBuilder: string = fs
-	.readFileSync(path.join(templatePath, 'errors/builder.ts.hbs'))
-	.toString()
-
-const errorExample: string = fs
-	.readFileSync(path.join(templatePath, 'errors/example.ts.hbs'))
-	.toString()
-
-const test: string = fs
-	.readFileSync(path.join(templatePath, 'tests/Test.test.ts.hbs'))
-	.toString()
-
-const autoloader: string = fs
-	.readFileSync(path.join(templatePath, 'autoloader/autoloader.ts.hbs'))
-	.toString()
-
-const fieldsTypes: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/fields/fields.types.ts.hbs'))
-	.toString()
-
-const fieldClassMap: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/fields/fieldClassMap.ts.hbs'))
-	.toString()
-
-const fieldTypeEnum: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/fields/fieldTypeEnum.ts.hbs'))
-	.toString()
-
-const valueTypes: string = fs
-	.readFileSync(path.join(templatePath, 'schemas/valueTypes.ts.hbs'))
-	.toString()
 
 // Template generators
 export const templates = {
@@ -120,7 +52,9 @@ export const templates = {
 		valueTypes: IValueTypes
 	}) {
 		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
-		const template = handlebars.compile(schemasTypes)
+		const template = templateImportUtil.getTemplate(
+			'schemas/schemas.types.ts.hbs'
+		)
 		return template({ ...options, imports })
 	},
 
@@ -139,7 +73,7 @@ export const templates = {
 			options.fieldTemplateItems
 		)
 
-		const template = handlebars.compile(valueTypes)
+		const template = templateImportUtil.getTemplate('schemas/valueTypes.ts.hbs')
 
 		return template({
 			...options,
@@ -159,19 +93,19 @@ export const templates = {
 		}
 	) {
 		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
-		const template = handlebars.compile(definition)
+		const template = templateImportUtil.getTemplate('schemas/definition.ts.hbs')
 		return template({ ...options, imports })
 	},
 
 	/** When building a definition in a skill */
 	definitionBuilder(options: IDefinitionBuilderTemplateItem) {
-		const template = handlebars.compile(definitionBuilder)
+		const template = templateImportUtil.getTemplate('schemas/builder.ts.hbs')
 		return template(options)
 	},
 
 	/** For creating an error class */
 	error(options: IErrorOptions) {
-		const template = handlebars.compile(error)
+		const template = templateImportUtil.getTemplate('errors/SpruceError.ts.hbs')
 		return template({ renderClassDefinition: true, ...options })
 	},
 
@@ -182,7 +116,7 @@ export const templates = {
 			relativeToDefinition: string
 		} & IErrorTemplateItem
 	) {
-		const template = handlebars.compile(errorTypes)
+		const template = templateImportUtil.getTemplate('errors/error.types.ts.hbs')
 		return template(options)
 	},
 
@@ -190,13 +124,15 @@ export const templates = {
 	errorOptionsTypes(options: {
 		options: { nameCamel: string; namePascal: string }[]
 	}) {
-		const template = handlebars.compile(errorOptionsTypes)
+		const template = templateImportUtil.getTemplate(
+			'errors/options.types.ts.hbs'
+		)
 		return template(options)
 	},
 
 	/** For generating types for all the options (the ISpruceErrorOptions sub-interface) */
 	errorCode(options: { codes: IErrorTemplateItem[] }) {
-		const template = handlebars.compile(errorCode)
+		const template = templateImportUtil.getTemplate('errors/errorCode.ts.hbs')
 		return template(options)
 	},
 
@@ -206,7 +142,7 @@ export const templates = {
 		nameReadable: string
 		description: string
 	}) {
-		const template = handlebars.compile(errorDefinitionBuilder)
+		const template = templateImportUtil.getTemplate('errors/builder.ts.hbs')
 		return template(options)
 	},
 
@@ -216,7 +152,7 @@ export const templates = {
 		namePascal: string
 		definition: ISchemaDefinition
 	}) {
-		const template = handlebars.compile(schemaExample)
+		const template = templateImportUtil.getTemplate('schemas/example.ts.hbs')
 		return template(options)
 	},
 
@@ -226,36 +162,44 @@ export const templates = {
 		namePascal: string
 		definition: ISchemaDefinition
 	}) {
-		const template = handlebars.compile(errorExample)
+		const template = templateImportUtil.getTemplate('errors/example.ts.hbs')
 		return template(options)
 	},
 
 	/** Test file */
 	test(options: { namePascal: string }) {
-		const template = handlebars.compile(test)
+		const template = templateImportUtil.getTemplate('tests/Test.test.ts.hbs')
 		return template(options)
 	},
 
 	/** Autoloader */
 	autoloader(options: IAutoLoaderTemplateItem) {
-		const template = handlebars.compile(autoloader)
+		const template = templateImportUtil.getTemplate(
+			'autoloader/autoloader.ts.hbs'
+		)
 		return template(options)
 	},
 
 	/** The types file for all the schema fields being used */
 	fieldsTypes(options: { fieldTemplateItems: IFieldTemplateItem[] }) {
-		const template = handlebars.compile(fieldsTypes)
+		const template = templateImportUtil.getTemplate(
+			'schemas/fields/fields.types.ts.hbs'
+		)
 		return template(options)
 	},
 	/** Global mapping of all fields for lookup by type */
 	fieldClassMap(options: { fieldTemplateItems: IFieldTemplateItem[] }) {
-		const template = handlebars.compile(fieldClassMap)
+		const template = templateImportUtil.getTemplate(
+			'schemas/fields/fieldClassMap.ts.hbs'
+		)
 		return template(options)
 	},
 
 	/** The field type enum */
 	fieldTypeEnum(options: { fieldTemplateItems: IFieldTemplateItem[] }) {
-		const template = handlebars.compile(fieldTypeEnum)
+		const template = templateImportUtil.getTemplate(
+			'schemas/fields/fieldTypeEnum.ts.hbs'
+		)
 		return template(options)
 	},
 
