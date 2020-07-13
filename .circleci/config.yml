@@ -31,11 +31,11 @@ jobs:
             yarn
             yarn build
             cd ../..
-            yarn lint
             cd packages/spruce-cli
             yarn
             yarn build
             yarn test
+            yarn lint
       - save_cache:
           key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
