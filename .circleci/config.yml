@@ -21,6 +21,8 @@ jobs:
             [ -n "$BASE64_ENV" ] && echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
       - run: node -v && npm -v && yarn -v
       - run: yarn
+      - run: yarn clean.all
+      - run: yarn
       - run: yarn build
       - run: yarn lint
       - run: yarn test
