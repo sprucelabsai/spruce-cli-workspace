@@ -20,12 +20,18 @@ jobs:
           command: |
             [ -n "$BASE64_ENV" ] && echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
       - run: node -v && npm -v && yarn -v
-      - run: yarn
+      - restore_cache:
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
       - run: yarn clean.all
-      - run: yarn
+      - run: yarn install --frozen-lockfile
       - run: yarn build
       - run: yarn lint
       - run: yarn test
+      - save_cache:
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
   npm_publish:
     docker:
       - image: circleci/node:12
