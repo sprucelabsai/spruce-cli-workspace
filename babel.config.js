@@ -5,8 +5,7 @@ copySchema({
 })
 
 module.exports = (api) => {
-	api.cache(false)
-
+	api.cache(true)
 	return {
 		ignore: ["**/testDirsAndFiles/**"],
 		sourceMaps: true,
