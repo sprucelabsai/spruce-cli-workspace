@@ -23,7 +23,7 @@ jobs:
       - restore_cache:
           keys:
             - yarn-packages-{{ checksum "yarn.lock" }}
-      - run: yarn release
+      - run: yarn install && yarn lint && cd packages/spruce-templates && yarn && yarn build && cd ../spruce-cli && yarn && yarn build && yarn test
       - save_cache:
           key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
