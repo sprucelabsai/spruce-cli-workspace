@@ -50,7 +50,9 @@ export default class FeatureCommandAttacher {
 			theProgram = theProgram.option(
 				`--${name} <${name}>`,
 				field.hint,
-				`${field.definition.defaultValue}`
+				field.definition.defaultValue
+					? `${field.definition.defaultValue}`
+					: undefined
 			)
 		})
 	}
