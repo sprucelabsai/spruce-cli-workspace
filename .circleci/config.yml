@@ -25,8 +25,6 @@ jobs:
             - yarn-packages-{{ checksum "yarn.lock" }}
       - run: yarn install --frozen-lockfile
       - run: yarn build
-      - run: yarn clean
-      - run: yarn build
       - run: yarn lint
       - run: yarn test
       - save_cache:
