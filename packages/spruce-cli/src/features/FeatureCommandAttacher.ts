@@ -1,13 +1,25 @@
 import Schema, { ISchemaDefinition } from '@sprucelabs/schema'
 import { CommanderStatic } from 'commander'
+import TerminalInterface from '../interfaces/TerminalInterface'
 import namesUtil from '../utilities/names.utility'
 import AbstractFeature from './AbstractFeature'
+import featuresUtil from './feature.utilities'
+import FeatureCommandExecuter from './FeatureCommandExecuter'
+import FeatureInstaller from './FeatureInstaller'
 
 export default class FeatureCommandAttacher {
 	private program: CommanderStatic['program']
+	private featureInstaller: FeatureInstaller
+	private term: TerminalInterface
 
-	public constructor(program: CommanderStatic['program']) {
+	public constructor(
+		program: CommanderStatic['program'],
+		featureInstaller: FeatureInstaller,
+		term: TerminalInterface
+	) {
 		this.program = program
+		this.featureInstaller = featureInstaller
+		this.term = term
 	}
 
 	public async attachFeature(feature: AbstractFeature) {
@@ -23,7 +35,17 @@ export default class FeatureCommandAttacher {
 		const commandStr = `${prefix}.${code}`
 		const action = feature.Action(code)
 
-		let command = this.program.command(commandStr).action(() => {})
+		const executer = new FeatureCommandExecuter({
+			featureCode: feature.code,
+			actionCode: code,
+			featureInstaller: this.featureInstaller,
+			term: this.term,
+		})
+
+		let command = this.program.command(commandStr).action((options) => {
+			console.log(options)
+			debugger
+		})
 
 		const description = action.optionsDefinition?.description
 		if (description) {
@@ -45,10 +67,11 @@ export default class FeatureCommandAttacher {
 		let theProgram = command
 
 		const fields = schema.getNamedFields()
+		const aliases = featuresUtil.generateCommandAliases(definition)
 
 		fields.forEach(({ field, name }) => {
 			theProgram = theProgram.option(
-				`--${name} <${name}>`,
+				aliases[name],
 				field.hint,
 				field.definition.defaultValue
 					? `${field.definition.defaultValue}`

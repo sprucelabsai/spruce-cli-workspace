@@ -1,4 +1,5 @@
 import pathUtil from 'path'
+import { ISchemaDefinition } from '@sprucelabs/schema'
 import namesUtil from '../utilities/names.utility'
 
 const featuresUtil = {
@@ -12,8 +13,20 @@ const featuresUtil = {
 		return namesUtil.toCamel(code)
 	},
 
-	generateCommandAliases() {
-		return 'poop'
+	generateCommandAliases(schema: ISchemaDefinition): Record<string, string> {
+		const fields = schema.fields || {}
+		const aliases: Record<string, string> = {}
+
+		Object.keys(fields).forEach((fieldName: string) => {
+			const fullName = `${fieldName}`
+			const capitals = namesUtil.toPascal(fieldName).replace(/[a-z]/g, '')
+			const abbreviation = `${capitals.toLowerCase()}`
+			aliases[fieldName] = `${
+				abbreviation.length === 1 ? '-' : '--'
+			}${abbreviation}, --${fullName} <${fullName}>`
+		})
+
+		return aliases
 	},
 }
 

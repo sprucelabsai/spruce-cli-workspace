@@ -158,7 +158,10 @@ export default class FeatureInstaller implements IServiceProvider {
 		const feature = this.getFeature(installFeature.code) as AbstractFeature
 
 		if (feature.optionsDefinition) {
-			validateSchemaValues(feature.optionsDefinition, installFeature.options)
+			validateSchemaValues(
+				feature.optionsDefinition,
+				installFeature.options ?? {}
+			)
 		}
 
 		await feature.beforePackageInstall(installFeature.options)

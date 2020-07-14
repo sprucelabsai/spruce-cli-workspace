@@ -40,6 +40,22 @@ export type InstallFeature =
 			code: 'schema'
 			options?: undefined
 	  }
+	| {
+			code: 'circleCi'
+			options?: undefined
+	  }
+	| {
+			code: 'error'
+			options?: undefined
+	  }
+	| {
+			code: 'test'
+			options?: undefined
+	  }
+	| {
+			code: 'vsCode'
+			options?: undefined
+	  }
 
 export interface IInstallFeatureOptions {
 	features: InstallFeature[]

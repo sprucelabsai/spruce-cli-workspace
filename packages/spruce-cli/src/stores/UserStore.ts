@@ -1,5 +1,5 @@
 import { IMercuryGQLBody } from '@sprucelabs/mercury'
-import Schema from '@sprucelabs/schema'
+import Schema, { validateSchemaValues } from '@sprucelabs/schema'
 import jwt from 'jsonwebtoken'
 import ErrorCode from '#spruce/errors/errorCode'
 import userDefinition from '#spruce/schemas/core/user.definition'
@@ -134,8 +134,7 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 		})
 
 		// Lets validate the user and pull out values
-		const instance = new Schema(cliUserWithTokenDefinition, user)
-		instance.validate()
+		validateSchemaValues(cliUserWithTokenDefinition, user)
 
 		newAuthedUsers.push({
 			...instance.getValues(),

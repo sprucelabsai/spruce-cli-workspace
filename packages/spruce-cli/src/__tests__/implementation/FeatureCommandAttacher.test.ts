@@ -23,7 +23,10 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		super.beforeEach()
 
 		this.program = this.MockCommanderProgram()
-		this.attacher = new FeatureCommandAttacher(this.program)
+		const installer = this.FeatureInstaller()
+		const term = this.Term()
+
+		this.attacher = new FeatureCommandAttacher(this.program, installer, term)
 	}
 
 	@test()
@@ -67,8 +70,13 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'schema.create',
-			option: '--destinationDir <destinationDir>',
+			option: '--dd, --destinationDir <destinationDir>',
 			defaultValue: 'src/schemas',
+		})
+
+		assert.doesInclude(this.program.optionInvocations, {
+			command: 'schema.create',
+			option: '-d, --description <description>',
 		})
 	}
 

@@ -5,6 +5,7 @@ import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import { Service } from '../factories/ServiceFactory'
 import { INpmPackage } from '../types/cli.types'
 import diskUtil from '../utilities/disk.utility'
+import namesUtil from '../utilities/names.utility'
 import tsConfigUtil from '../utilities/tsConfig.utility'
 import AbstractFeature from './AbstractFeature'
 import { FeatureCode } from './features.types'
@@ -49,7 +50,10 @@ export default class SkillFeature<
 
 		const files = await this.templates.directoryTemplate({
 			kind: DirectoryTemplateKind.Skill,
-			context: options,
+			context: {
+				...options,
+				name: namesUtil.toCamel(options.name),
+			},
 		})
 
 		await diskUtil.createManyFiles(this.cwd, files)

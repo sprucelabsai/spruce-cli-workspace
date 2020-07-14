@@ -27,6 +27,7 @@ export interface ISyncSchemaActionDefinition extends ISchemaDefinition {
 		addonsLookupDir: {
 			type: FieldType.Text
 			label: 'Id'
+			hint: "The place I'll look for new schema fields."
 			isRequired: true
 			defaultValue: 'src/addons'
 		}
@@ -47,6 +48,7 @@ export const syncSchemasActionOptionsDefinition: ISyncSchemaActionDefinition = {
 		typesDestinationDir: {
 			type: FieldType.Text,
 			label: 'Destination directory',
+			hint: 'Where types and interfaces will be saved.',
 			defaultValue: '#spruce/schemas',
 			isRequired: true,
 		},

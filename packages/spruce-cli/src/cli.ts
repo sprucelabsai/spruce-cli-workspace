@@ -19,6 +19,7 @@ import ServiceFactory, { Service } from './factories/ServiceFactory'
 import FeatureCommandAttacher from './features/FeatureCommandAttacher'
 import FeatureInstaller from './features/FeatureInstaller'
 import FeatureInstallerFactory from './features/FeatureInstallerFactory'
+import TerminalInterface from './interfaces/TerminalInterface'
 import log from './singletons/log'
 import StoreFactory from './stores/StoreFactory'
 import { AuthedAs } from './types/cli.types'
@@ -53,16 +54,16 @@ export async function boot(options?: {
 		'The working directory to execute the command'
 	)
 
-	const cwd = options?.cwd ?? process.cwd()
+	let cwd = options?.cwd ?? process.cwd()
 
 	program?.on('option:directory', function () {
 		if (program?.directory) {
 			const newCwd = diskUtil.resolvePath(cwd, program.directory)
 			log.trace(`CWD updated: ${newCwd}`)
+			cwd = newCwd
 		}
 	})
 
-	// const term = new TerminalInterface(cwd)
 	const mercury = new Mercury()
 	const serviceFactory = new ServiceFactory(mercury)
 	const storeFactory = new StoreFactory(cwd, mercury, serviceFactory)
@@ -75,7 +76,12 @@ export async function boot(options?: {
 
 	// attach features
 	if (program) {
-		const attacher = new FeatureCommandAttacher(program)
+		const terminal = new TerminalInterface(cwd)
+		const attacher = new FeatureCommandAttacher(
+			program,
+			featureInstaller,
+			terminal
+		)
 		const codes = FeatureInstallerFactory.featureCodes
 
 		for (const code of codes) {
@@ -193,7 +199,7 @@ export async function run(
 	// Const commands = []
 	if (debugging) {
 		// eslint-disable-next-line no-debugger
-		debugger // (breakpoints and debugger works after this one is missed)
+		// debugger // (breakpoints and debugger works after this one is missed)
 		log.trace('Extra debugger dropped in so future debuggers work... 🤷‍')
 	}
 

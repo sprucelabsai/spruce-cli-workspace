@@ -47,6 +47,7 @@ export default class CreateAction extends AbstractFeatureAction<
 			destinationDir: {
 				type: FieldType.Text,
 				label: 'Destination directory',
+				hint: "Where I'll save the new schema builder.",
 				defaultValue: 'src/schemas',
 				isRequired: true,
 			},
