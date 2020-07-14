@@ -40,6 +40,96 @@ export interface ICli {
 	checkHealth(): Promise<IHealthCheckResults>
 }
 
+async function login(storeFactory: StoreFactory, mercury: Mercury) {
+	const remoteStore = storeFactory.Store('remote')
+	const remoteUrl = remoteStore.getRemoteUrl()
+
+	// Who is logged in?
+	const userStore = storeFactory.Store('user')
+	const loggedInUser = userStore.getLoggedInUser()
+	const skillStore = storeFactory.Store('skill')
+	const loggedInSkill = skillStore.getLoggedInSkill()
+
+	// Build mercury creds
+	let creds: MercuryAuth | undefined
+	const authType = remoteStore.authType
+
+	switch (authType) {
+		case AuthedAs.User:
+			creds = loggedInUser && { token: loggedInUser.token }
+			break
+		case AuthedAs.Skill:
+			creds = loggedInSkill && {
+				id: loggedInSkill.id,
+				apiKey: loggedInSkill.apiKey,
+			}
+			break
+	}
+
+	// Mercury connection options
+	const connectOptions: IMercuryConnectOptions = {
+		spruceApiUrl: remoteUrl,
+		credentials: creds,
+	}
+
+	await mercury.connect(connectOptions)
+}
+
+function CLI(
+	featureInstaller: FeatureInstaller,
+	serviceFactory: ServiceFactory,
+	cwd: string
+): ICli {
+	return {
+		installFeatures: async (options) => {
+			return featureInstaller.install(options)
+		},
+
+		getFeature: (code) => {
+			return featureInstaller.getFeature(code)
+		},
+
+		checkHealth: async (): Promise<IHealthCheckResults> => {
+			const isInstalled = await featureInstaller.isInstalled('skill')
+
+			if (!isInstalled) {
+				return {
+					skill: {
+						status: 'failed',
+						errors: [
+							new SpruceError({
+								// @ts-ignore
+								code: 'SKILL_NOT_INSTALLED',
+							}),
+						],
+					},
+				}
+			}
+
+			try {
+				const commandService = serviceFactory.Service(cwd, Service.Command)
+				const results = await commandService.execute('yarn health')
+				const resultParts = results.stdout.split('#####DIVIDER#####')
+
+				return JSON.parse(resultParts[1]) as IHealthCheckResults
+			} catch (originalError) {
+				const error = new SpruceError({
+					// @ts-ignore
+					code: 'BOOT_ERROR',
+					originalError,
+				})
+
+				return {
+					skill: {
+						status: 'failed',
+						errors: [error],
+					},
+				}
+			}
+		},
+	}
+}
+
 export async function boot(options?: {
 	cwd?: string
 	program?: CommanderStatic['program']
@@ -102,88 +192,10 @@ export async function boot(options?: {
 	const isInstalled = await featureInstaller.isInstalled('skill')
 
 	if (isInstalled) {
-		const remoteStore = storeFactory.Store('remote')
-		const remoteUrl = remoteStore.getRemoteUrl()
-
-		// Who is logged in?
-		const userStore = storeFactory.Store('user')
-		const loggedInUser = userStore.getLoggedInUser()
-		const skillStore = storeFactory.Store('skill')
-		const loggedInSkill = skillStore.getLoggedInSkill()
-
-		// Build mercury creds
-		let creds: MercuryAuth | undefined
-		const authType = remoteStore.authType
-
-		switch (authType) {
-			case AuthedAs.User:
-				creds = loggedInUser && { token: loggedInUser.token }
-				break
-			case AuthedAs.Skill:
-				creds = loggedInSkill && {
-					id: loggedInSkill.id,
-					apiKey: loggedInSkill.apiKey,
-				}
-				break
-		}
-
-		// Mercury connection options
-		const connectOptions: IMercuryConnectOptions = {
-			spruceApiUrl: remoteUrl,
-			credentials: creds,
-		}
-
-		await mercury.connect(connectOptions)
+		await login(storeFactory, mercury)
 	}
 
-	const cli: ICli = {
-		installFeatures: async (options) => {
-			return featureInstaller.install(options)
-		},
-
-		getFeature: (code) => {
-			return featureInstaller.getFeature(code)
-		},
-
-		checkHealth: async (): Promise<IHealthCheckResults> => {
-			const isInstalled = await featureInstaller.isInstalled('skill')
-
-			if (!isInstalled) {
-				return {
-					skill: {
-						status: 'failed',
-						errors: [
-							new SpruceError({
-								// @ts-ignore
-								code: 'SKILL_NOT_INSTALLED',
-							}),
-						],
-					},
-				}
-			}
-
-			try {
-				const commandService = serviceFactory.Service(cwd, Service.Command)
-				const results = await commandService.execute('yarn health')
-				const resultParts = results.stdout.split('#####DIVIDER#####')
-
-				return JSON.parse(resultParts[1]) as IHealthCheckResults
-			} catch (originalError) {
-				const error = new SpruceError({
-					// @ts-ignore
-					code: 'BOOT_ERROR',
-					originalError,
-				})
-
-				return {
-					skill: {
-						status: 'failed',
-						errors: [error],
-					},
-				}
-			}
-		},
-	}
+	const cli: ICli = CLI(featureInstaller, serviceFactory, cwd)
 
 	return cli
 }
