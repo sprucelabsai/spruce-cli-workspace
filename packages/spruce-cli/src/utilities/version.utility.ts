@@ -54,7 +54,7 @@ const versionUtil = {
 		if (!latest) {
 			// eslint-disable-next-line no-debugger
 			debugger
-			throw new Error('no versioning found!')
+			throw new Error(`no versioning found at ${path}`)
 		}
 
 		return latest

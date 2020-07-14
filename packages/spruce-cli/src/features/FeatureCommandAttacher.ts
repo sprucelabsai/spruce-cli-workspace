@@ -1,5 +1,5 @@
 import Schema, { ISchemaDefinition } from '@sprucelabs/schema'
-import { CommanderStatic, option } from 'commander'
+import { CommanderStatic } from 'commander'
 import TerminalInterface from '../interfaces/TerminalInterface'
 import namesUtil from '../utilities/names.utility'
 import AbstractFeature from './AbstractFeature'

@@ -8,7 +8,7 @@ import ErrorFeature from './ErrorFeature'
 import FeatureInstaller from './FeatureInstaller'
 import { FeatureCode } from './features.types'
 import SchemaFeature from './schema/SchemaFeature'
-import SkillFeature from './SkillFeature'
+import SkillFeature from './skill/SkillFeature'
 import TestFeature from './TestFeature'
 import VsCodeFeature from './VsCodeFeature'
 

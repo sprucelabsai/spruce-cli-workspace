@@ -1,8 +1,8 @@
 import {
-	ISchemaDefinition,
 	SchemaDefinitionValues,
 	ISchemaTemplateItem,
 	IFieldTemplateItem,
+	buildSchemaDefinition,
 } from '@sprucelabs/schema'
 import { IValueTypes } from '@sprucelabs/spruce-templates'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
@@ -13,33 +13,7 @@ import diskUtil from '../../../utilities/disk.utility'
 import schemaGeneratorUtil from '../../../utilities/schemaGenerator.utility'
 import { IFeatureActionExecuteResponse } from '../../features.types'
 
-export interface ISyncSchemaActionDefinition extends ISchemaDefinition {
-	id: 'syncSchemaAction'
-	name: 'Sync schemas'
-	description: 'Keep all your schemas and types in sync with your builders and contracts.'
-	fields: {
-		typesDestinationDir: {
-			type: FieldType.Text
-			label: 'Destination directory'
-			defaultValue: '#spruce/schemas'
-			isRequired: true
-		}
-		addonsLookupDir: {
-			type: FieldType.Text
-			label: 'Id'
-			hint: "The place I'll look for new schema fields."
-			isRequired: true
-			defaultValue: 'src/addons'
-		}
-		lookupDir: {
-			type: FieldType.Text
-			isRequired: true
-			defaultValue: 'src/schemas'
-		}
-	}
-}
-
-export const syncSchemasActionOptionsDefinition: ISyncSchemaActionDefinition = {
+export const syncSchemasActionOptionsDefinition = buildSchemaDefinition({
 	id: 'syncSchemaAction',
 	name: 'Sync schemas',
 	description:
@@ -64,7 +38,9 @@ export const syncSchemasActionOptionsDefinition: ISyncSchemaActionDefinition = {
 			defaultValue: 'src/schemas',
 		},
 	},
-}
+})
+
+export type ISyncSchemaActionDefinition = typeof syncSchemasActionOptionsDefinition
 
 export default class SyncAction extends AbstractFeatureAction<
 	ISyncSchemaActionDefinition
@@ -77,7 +53,9 @@ export default class SyncAction extends AbstractFeatureAction<
 	public async execute(
 		options: SchemaDefinitionValues<ISyncSchemaActionDefinition>
 	): Promise<IFeatureActionExecuteResponse> {
-		const normalizedOptions = this.validateAndNormalizeOptions(options)
+		const normalizedOptions = this.validateAndNormalizeOptions(
+			options
+		) as SchemaDefinitionValues<ISyncSchemaActionDefinition>
 
 		const resolvedDestination = diskUtil.resolvePath(
 			this.cwd,

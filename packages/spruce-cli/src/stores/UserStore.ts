@@ -1,5 +1,8 @@
 import { IMercuryGQLBody } from '@sprucelabs/mercury'
-import Schema, { validateSchemaValues } from '@sprucelabs/schema'
+import Schema, {
+	validateSchemaValues,
+	normalizeSchemaValues,
+} from '@sprucelabs/schema'
 import jwt from 'jsonwebtoken'
 import ErrorCode from '#spruce/errors/errorCode'
 import userDefinition from '#spruce/schemas/core/user.definition'
@@ -122,7 +125,6 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 	}
 
 	public setLoggedInUser(user: Omit<UserWithToken, 'isLoggedIn'>) {
-		// Pull authed user
 		const authedUsers = this.readValue('authedUsers') || []
 		const newAuthedUsers: UserWithToken[] = []
 
@@ -136,8 +138,10 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 		// Lets validate the user and pull out values
 		validateSchemaValues(cliUserWithTokenDefinition, user)
 
+		const values = normalizeSchemaValues(cliUserWithTokenDefinition, user)
+
 		newAuthedUsers.push({
-			...instance.getValues(),
+			...values,
 			isLoggedIn: true,
 		})
 

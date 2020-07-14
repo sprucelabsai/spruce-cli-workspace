@@ -20,7 +20,7 @@ import {
 import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
 
 export default abstract class AbstractFeatureAction<
-	S extends ISchemaDefinition = ISchemaDefinition
+	S extends ISchemaDefinition | undefined = ISchemaDefinition | undefined
 > implements IFeatureAction<S>, IServiceProvider {
 	public abstract name: string
 	public abstract optionsDefinition: S
@@ -41,7 +41,7 @@ export default abstract class AbstractFeatureAction<
 	}
 
 	public abstract execute(
-		options: SchemaDefinitionValues<S>
+		options: S extends ISchemaDefinition ? SchemaDefinitionValues<S> : undefined
 	): Promise<IFeatureActionExecuteResponse>
 
 	protected Action(name: string) {
@@ -57,15 +57,26 @@ export default abstract class AbstractFeatureAction<
 	}
 
 	protected validateAndNormalizeOptions(
-		options: SchemaDefinitionPartialValues<S>
+		options: S extends ISchemaDefinition
+			? SchemaDefinitionPartialValues<S>
+			: undefined
 	) {
-		const allOptions = {
-			...options,
-			...defaultSchemaValues(this.optionsDefinition),
+		const definition = this.optionsDefinition as ISchemaDefinition | undefined
+
+		if (!definition) {
+			return undefined
 		}
 
-		validateSchemaValues(this.optionsDefinition, allOptions)
+		const allOptions = {
+			...defaultSchemaValues(definition),
+			...options,
+		}
 
-		return allOptions as SchemaDefinitionValues<S>
+		validateSchemaValues(
+			definition,
+			allOptions as SchemaDefinitionValues<ISchemaDefinition>
+		)
+
+		return allOptions
 	}
 }

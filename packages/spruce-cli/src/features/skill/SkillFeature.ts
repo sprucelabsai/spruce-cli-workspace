@@ -2,13 +2,13 @@ import { validateSchemaValues } from '@sprucelabs/schema'
 import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
 import skillFeatureDefinition from '#spruce/schemas/local/skillFeature.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import { Service } from '../factories/ServiceFactory'
-import { INpmPackage } from '../types/cli.types'
-import diskUtil from '../utilities/disk.utility'
-import namesUtil from '../utilities/names.utility'
-import tsConfigUtil from '../utilities/tsConfig.utility'
-import AbstractFeature from './AbstractFeature'
-import { FeatureCode } from './features.types'
+import { Service } from '../../factories/ServiceFactory'
+import { INpmPackage } from '../../types/cli.types'
+import diskUtil from '../../utilities/disk.utility'
+import namesUtil from '../../utilities/names.utility'
+import tsConfigUtil from '../../utilities/tsConfig.utility'
+import AbstractFeature from '../AbstractFeature'
+import { FeatureCode } from '../features.types'
 
 type SkillFeatureDefinition = SpruceSchemas.Local.SkillFeature.IDefinition
 type Skill = SpruceSchemas.Local.ISkillFeature
@@ -30,6 +30,7 @@ export default class SkillFeature<
 	]
 
 	public optionsDefinition = skillFeatureDefinition as T
+	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public async beforePackageInstall(options: Skill) {
 		await this.install(options)

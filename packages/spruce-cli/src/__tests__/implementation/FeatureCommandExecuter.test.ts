@@ -12,7 +12,7 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 	}
 
 	@test()
-	protected static async shouldAsAllQuestionsOfFeature() {
+	protected static async shouldAskAllQuestionsOfFeature() {
 		const executer = this.Executer('skill', 'create')
 		const promise = executer.execute()
 

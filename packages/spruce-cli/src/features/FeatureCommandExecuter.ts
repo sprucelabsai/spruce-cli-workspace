@@ -1,6 +1,7 @@
 import {
 	ISchemaDefinition,
 	SchemaDefinitionPartialValues,
+	SchemaDefinitionValues,
 } from '@sprucelabs/schema'
 import FormComponent from '../components/FormComponent'
 import TerminalInterface from '../interfaces/TerminalInterface'
@@ -59,11 +60,14 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			}
 		}
 
-		let answers = {}
-		if (action.optionsDefinition) {
-			answers = await this.collectAnswers(action.optionsDefinition, options)
+		const definition = action.optionsDefinition
+		let answers
+
+		if (definition) {
+			answers = await this.collectAnswers(definition, options)
 		}
 
+		// @ts-ignore
 		await action.execute(answers)
 	}
 
@@ -90,6 +94,6 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 				fields: fieldsToPresent,
 			})
 		}
-		return { ...(options ?? {}), ...answers }
+		return { ...(options ?? {}), ...answers } as SchemaDefinitionValues<S>
 	}
 }

@@ -82,6 +82,12 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		// because there is a delay between sending output to the terminal and it actually rendering and being ready for input, we delay before sending input
 		await new Promise((resolve) => setTimeout(resolve, 50))
 
+		if (!this.rl) {
+			throw new Error(
+				'this.sendInput being called after test is destroyed. This is probably because you forgot an await somewhere.'
+			)
+		}
+
 		for (let i = 0; i < input.length; i++) {
 			// @ts-ignore
 			this.rl.input.emit('keypress', input[i])
