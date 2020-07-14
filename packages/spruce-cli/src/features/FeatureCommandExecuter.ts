@@ -59,14 +59,12 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			}
 		}
 
+		let answers = {}
 		if (action.optionsDefinition) {
-			const answers = await this.collectAnswers(
-				action.optionsDefinition,
-				options
-			)
-
-			await action.execute(answers)
+			answers = await this.collectAnswers(action.optionsDefinition, options)
 		}
+
+		await action.execute(answers)
 	}
 
 	private async collectAnswers<S extends ISchemaDefinition>(
