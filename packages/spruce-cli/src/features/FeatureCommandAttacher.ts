@@ -1,5 +1,5 @@
 import Schema, { ISchemaDefinition } from '@sprucelabs/schema'
-import { CommanderStatic } from 'commander'
+import { CommanderStatic, option } from 'commander'
 import TerminalInterface from '../interfaces/TerminalInterface'
 import namesUtil from '../utilities/names.utility'
 import AbstractFeature from './AbstractFeature'
@@ -42,9 +42,8 @@ export default class FeatureCommandAttacher {
 			term: this.term,
 		})
 
-		let command = this.program.command(commandStr).action((options) => {
-			console.log(options)
-			debugger
+		let command = this.program.command(commandStr).action(async (options) => {
+			await executer.execute(options)
 		})
 
 		const description = action.optionsDefinition?.description
