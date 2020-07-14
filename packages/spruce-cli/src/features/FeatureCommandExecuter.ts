@@ -1,8 +1,6 @@
-import { features } from 'process'
 import {
 	ISchemaDefinition,
 	SchemaDefinitionPartialValues,
-	ISchema,
 } from '@sprucelabs/schema'
 import FormComponent from '../components/FormComponent'
 import TerminalInterface from '../interfaces/TerminalInterface'
@@ -71,8 +69,8 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		}
 	}
 
-	private async collectAnswers(
-		definition: ISchemaDefinition,
+	private async collectAnswers<S extends ISchemaDefinition>(
+		definition: S,
 		options: FeatureCommandExecuteOptions<F> | undefined
 	) {
 		const featureForm = new FormComponent({
@@ -86,11 +84,14 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		const fieldsToPresent = fieldNames.filter(
 			(name) => providedFieldNames.indexOf(name) === -1
 		)
-		const answers = await featureForm.present({
-			showOverview: false,
-			// @ts-ignore
-			fields: fieldsToPresent,
-		})
+		let answers = {}
+		if (fieldsToPresent.length > 0) {
+			answers = await featureForm.present({
+				showOverview: false,
+				// @ts-ignore
+				fields: fieldsToPresent,
+			})
+		}
 		return { ...(options ?? {}), ...answers }
 	}
 }
