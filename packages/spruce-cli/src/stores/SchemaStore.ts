@@ -118,13 +118,19 @@ export default class SchemaStore extends AbstractStore {
 
 		const loading = Promise.all(
 			localMatches.map(async (local) => {
-				const definition = await schemaService.importDefinition(local)
-				const version = versionUtil.latestVersionAtPath(
-					pathUtil.join(pathUtil.dirname(local), '..')
-				)
-				definition.version = version.constValue
-
-				return definition
+				try {
+					const version = versionUtil.latestVersionAtPath(
+						pathUtil.join(pathUtil.dirname(local), '..')
+					)
+					const definition = await schemaService.importDefinition(local)
+					definition.version = version.constValue
+					return definition
+				} catch (err) {
+					debugger
+					throw new Error(
+						`It looks like your schema's are not versioned. Make sure schemas are in a directory like src/schemas/2020_07_22/*.ts`
+					)
+				}
 			})
 		)
 
