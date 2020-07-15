@@ -35,14 +35,14 @@ export default class OnboardingCommand extends AbstractCommand {
 		this.onboardingStore.incrementRunCount()
 
 		this.term.clear()
-		this.term.hero(runCount == 0 ? 'You made it!' : 'Onboarding')
+		this.term.presentHero(runCount == 0 ? 'You made it!' : 'Onboarding')
 
 		if (runCount === 0) {
-			await this.term.wait(
+			await this.term.waitForEnter(
 				`It's Sprucebot again. It's a lot more cozy in here than online, but that won't slow us down!`
 			)
 		} else {
-			await this.term.wait('You ready to get this party started?')
+			await this.term.waitForEnter('You ready to get this party started?')
 		}
 
 		this.term.writeLn(
@@ -51,13 +51,13 @@ export default class OnboardingCommand extends AbstractCommand {
 			}the information here: http://developer.spruce.ai/#/getting-started?id=pillars-of-a-skill`
 		)
 
-		await this.term.wait()
+		await this.term.waitForEnter()
 
 		const confirm = await this.term.confirm(
 			`Wow, you read that fast! You read everything?`
 		)
 
-		await this.term.wait(
+		await this.term.waitForEnter(
 			confirm
 				? 'Great, so lets prove it!'
 				: '**ERROR INVALID ANSWER** Great, so lets prove it!'
@@ -98,17 +98,17 @@ export default class OnboardingCommand extends AbstractCommand {
 		this.term.clear()
 		this.term.writeLn('All done! Lets see how you did!')
 
-		await this.term.wait()
+		await this.term.waitForEnter()
 		await quiz.scorecard()
 
 		if (results.percentCorrect < 1) {
-			this.term.wait('Hmmmmm...')
+			this.term.waitForEnter('Hmmmmm...')
 		}
 
 		this.term.writeLn(
 			"Ok, that's all for now. When you're ready to start your skill, run `spruce skill:create`."
 		)
 
-		this.term.wait(`I'll see you there!`)
+		this.term.waitForEnter(`I'll see you there!`)
 	}
 }

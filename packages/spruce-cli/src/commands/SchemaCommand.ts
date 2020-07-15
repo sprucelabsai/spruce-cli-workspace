@@ -163,7 +163,7 @@ export default class SchemaCommand extends AbstractCommand {
 			this.term.warn(
 				"You won't be able to use your new definition until the below error is fixed and you run `spruce schema:sync`"
 			)
-			this.term.handleError(err)
+			this.term.presentError(err)
 		}
 	}
 
@@ -275,7 +275,7 @@ export default class SchemaCommand extends AbstractCommand {
 
 		if (clean) {
 			this.term.info('Clean is not available yet for schemas')
-			await this.term.wait()
+			await this.term.waitForEnter()
 		}
 		// 	clean =
 		// 		force ||
@@ -322,7 +322,7 @@ export default class SchemaCommand extends AbstractCommand {
 			this.term.crit(
 				`Warning! Core stage failure. Run \`y global update spruce\` and then try again. If the problem persists, visit https://github.com/sprucelabsai/spruce-cli-workspace/issues`
 			)
-			errors.map((err) => this.term.handleError(err))
+			errors.map((err) => this.term.presentError(err))
 			return
 		} else if (errors.length > 0) {
 			this.term.error(
@@ -338,7 +338,7 @@ export default class SchemaCommand extends AbstractCommand {
 				} else if (options.code === ErrorCode.ValueTypeServiceError) {
 					this.term.error(`Error on schemaId ${options.schemaId}`)
 				}
-				this.term.handleError(err)
+				this.term.presentError(err)
 			})
 		}
 
@@ -381,7 +381,7 @@ export default class SchemaCommand extends AbstractCommand {
 	) {
 		let confirm = false
 		do {
-			this.term.handleError(errors[0])
+			this.term.presentError(errors[0])
 			errors.pop()
 			confirm = await this.term.confirm(
 				errors.length === 0 ? 'Done' : 'Next error'

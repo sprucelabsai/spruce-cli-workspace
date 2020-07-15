@@ -4,7 +4,7 @@ import {
 	SchemaDefinitionValues,
 } from '@sprucelabs/schema'
 import FormComponent from '../components/FormComponent'
-import TerminalInterface from '../interfaces/TerminalInterface'
+import { IGraphicsInterface } from '../types/cli.types'
 import FeatureInstaller from './FeatureInstaller'
 import { FeatureCode, IFeatureMap } from './features.types'
 
@@ -18,11 +18,11 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 	private featureCode: F
 	// @ts-ignore
 	private actionCode: string
-	private term: TerminalInterface
+	private term: IGraphicsInterface
 	private featureInstaller: FeatureInstaller
 
 	public constructor(options: {
-		term: TerminalInterface
+		term: IGraphicsInterface
 		featureCode: F
 		actionCode: string
 		featureInstaller: FeatureInstaller
@@ -83,7 +83,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 
 		this.term.stopLoading()
 
-		this.term.printExecutionSummary({
+		this.term.presentExecutionSummary({
 			featureCode: this.featureCode,
 			actionCode: this.actionCode,
 			...results,

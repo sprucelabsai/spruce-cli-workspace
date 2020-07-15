@@ -17,9 +17,13 @@ import ErrorCode from '#spruce/errors/errorCode'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import SpruceError from '../errors/SpruceError'
-import { IFeatureActionExecuteResponse } from '../features/features.types'
 import log from '../singletons/log'
-import { IGeneratedFile, IExecutionResults } from '../types/cli.types'
+import {
+	IGeneratedFile,
+	IExecutionResults,
+	IGraphicsInterface,
+	IGraphicsTextEffect,
+} from '../types/cli.types'
 import namesUtil from '../utilities/names.utility'
 
 let fieldCount = 0
@@ -28,76 +32,27 @@ function generateInquirerFieldName() {
 	return `field-${fieldCount}`
 }
 
-export enum ITerminalEffect {
-	Reset = 'reset',
-	Bold = 'bold',
-	Dim = 'dim',
-	Italic = 'italic',
-	Underline = 'underline',
-	Inverse = 'inverse',
-	Hidden = 'hidden',
-	Strikethrough = 'strikethrough',
-	Visible = 'visible',
-	Black = 'black',
-	Red = 'red',
-	Green = 'green',
-	Yellow = 'yellow',
-	Blue = 'blue',
-	Magenta = 'magenta',
-	Cyan = 'cyan',
-	White = 'white',
-	Gray = 'gray',
-	Grey = 'grey',
-	BlackBright = 'blackBright',
-	RedBright = 'redBright',
-	GreenBright = 'greenBright',
-	YellowBright = 'yellowBright',
-	BlueBright = 'blueBright',
-	MagentaBright = 'magentaBright',
-	CyanBright = 'cyanBright',
-	WhiteBright = 'whiteBright',
-	BgBlack = 'bgBlack',
-	BgRed = 'bgRed',
-	BgGreen = 'bgGreen',
-	BgYellow = 'bgYellow',
-	BgBlue = 'bgBlue',
-	BgMagenta = 'bgMagenta',
-	BgCyan = 'bgCyan',
-	BgWhite = 'bgWhite',
-	BgBlackBright = 'bgBlackBright',
-	BgRedBright = 'bgRedBright',
-	BgGreenBright = 'bgGreenBright',
-	BgYellowBright = 'bgYellowBright',
-	BgBlueBright = 'bgBlueBright',
-	BgMagentaBright = 'bgMagentaBright',
-	BgCyanBright = 'bgCyanBright',
-	BgWhiteBright = 'bgWhiteBright',
-
-	/** Spruce header style */
-	SpruceHeader = 'shade',
-}
-
 /** Remove effects cfonts does not support */
-function filterEffectsForCFonts(effects: ITerminalEffect[]) {
+function filterEffectsForCFonts(effects: IGraphicsTextEffect[]) {
 	return filter(
 		effects,
 		(effect) =>
 			[
-				ITerminalEffect.SpruceHeader,
-				ITerminalEffect.Reset,
-				ITerminalEffect.Bold,
-				ITerminalEffect.Dim,
-				ITerminalEffect.Italic,
-				ITerminalEffect.Underline,
-				ITerminalEffect.Inverse,
-				ITerminalEffect.Hidden,
-				ITerminalEffect.Strikethrough,
-				ITerminalEffect.Visible,
+				IGraphicsTextEffect.SpruceHeader,
+				IGraphicsTextEffect.Reset,
+				IGraphicsTextEffect.Bold,
+				IGraphicsTextEffect.Dim,
+				IGraphicsTextEffect.Italic,
+				IGraphicsTextEffect.Underline,
+				IGraphicsTextEffect.Inverse,
+				IGraphicsTextEffect.Hidden,
+				IGraphicsTextEffect.Strikethrough,
+				IGraphicsTextEffect.Visible,
 			].indexOf(effect) === -1
 	)
 }
 
-export default class TerminalInterface {
+export default class TerminalInterface implements IGraphicsInterface {
 	public isPromptActive = false
 	public cwd: string
 	private loader?: ora.Ora | null
@@ -106,7 +61,7 @@ export default class TerminalInterface {
 		this.cwd = cwd
 	}
 
-	public writeLn(message: any, effects: ITerminalEffect[] = []) {
+	public writeLn(message: any, effects: IGraphicsTextEffect[] = []) {
 		let write: any = chalk
 		effects.forEach((effect) => {
 			write = write[effect]
@@ -114,18 +69,18 @@ export default class TerminalInterface {
 		console.log(effects.length > 0 ? write(message) : message)
 	}
 
-	public writeLns(lines: any[], effects?: ITerminalEffect[]) {
+	public writeLns(lines: any[], effects?: IGraphicsTextEffect[]) {
 		lines.forEach((line) => {
 			this.writeLn(line, effects)
 		})
 	}
 
 	/** Output an object, one key per line */
-	public object(
+	public presentObject(
 		object: Record<string, any>,
-		effects: ITerminalEffect[] = [ITerminalEffect.Green]
+		effects: IGraphicsTextEffect[] = [IGraphicsTextEffect.Green]
 	) {
-		this.bar()
+		this.presentDivider()
 		this.writeLn('')
 		Object.keys(object).forEach((key) => {
 			this.writeLn(
@@ -138,28 +93,28 @@ export default class TerminalInterface {
 			)
 		})
 		this.writeLn('')
-		this.bar()
+		this.presentDivider()
 	}
 
-	public section(options: {
+	public presentSection(options: {
 		headline?: string
 		lines?: string[]
 		object?: Record<string, any>
-		headlineEffects?: ITerminalEffect[]
-		bodyEffects?: ITerminalEffect[]
-		barEffects?: ITerminalEffect[]
+		headlineEffects?: IGraphicsTextEffect[]
+		bodyEffects?: IGraphicsTextEffect[]
+		dividerEffects?: IGraphicsTextEffect[]
 	}) {
 		const {
 			headline,
 			lines,
 			object,
-			barEffects = [],
-			headlineEffects = [ITerminalEffect.Blue, ITerminalEffect.Bold],
-			bodyEffects = [ITerminalEffect.Green],
+			dividerEffects = [],
+			headlineEffects = [IGraphicsTextEffect.Blue, IGraphicsTextEffect.Bold],
+			bodyEffects = [IGraphicsTextEffect.Green],
 		} = options
 
 		if (headline) {
-			this.headline(`${headline} 🌲🤖`, headlineEffects, barEffects)
+			this.presentHeadline(`${headline} 🌲🤖`, headlineEffects, dividerEffects)
 		}
 
 		if (lines) {
@@ -168,22 +123,22 @@ export default class TerminalInterface {
 			this.writeLns(lines, bodyEffects)
 
 			this.writeLn('')
-			this.bar(barEffects)
+			this.presentDivider(dividerEffects)
 		}
 
 		if (object) {
-			this.object(object, bodyEffects)
+			this.presentObject(object, bodyEffects)
 		}
 
 		this.writeLn('')
 	}
 
-	public bar(effects?: ITerminalEffect[]) {
+	public presentDivider(effects?: IGraphicsTextEffect[]) {
 		const bar = '=================================================='
 		this.writeLn(bar, effects)
 	}
 
-	public printExecutionSummary(results: IExecutionResults) {
+	public presentExecutionSummary(results: IExecutionResults) {
 		const generatedFiles =
 			results.files?.filter((f) => f.action === 'generated') ?? []
 		const updatedFiles =
@@ -191,9 +146,9 @@ export default class TerminalInterface {
 		const skippedFiles =
 			results.files?.filter((f) => f.action === 'skipped') ?? []
 
-		this.hero(`${results.actionCode} Finished!`)
+		this.presentHero(`${results.actionCode} Finished!`)
 
-		this.section({
+		this.presentSection({
 			headline: `${results.featureCode}.${results.actionCode} summary`,
 			lines: [
 				`Generated files: ${generatedFiles.length}`,
@@ -204,7 +159,7 @@ export default class TerminalInterface {
 
 		for (const files of [generatedFiles, updatedFiles, skippedFiles]) {
 			if (files.length > 0) {
-				this.section({
+				this.presentSection({
 					headline: `${namesUtil.toPascal(files[0].action)} file summary`,
 					lines: files.map((f) => `${f.name}`),
 				})
@@ -227,31 +182,37 @@ export default class TerminalInterface {
 		})
 	}
 
-	public headline(
+	public presentHeadline(
 		message: string,
-		effects: ITerminalEffect[] = [ITerminalEffect.Blue, ITerminalEffect.Bold],
-		barEffects: ITerminalEffect[] = []
+		effects: IGraphicsTextEffect[] = [
+			IGraphicsTextEffect.Blue,
+			IGraphicsTextEffect.Bold,
+		],
+		dividerEffects: IGraphicsTextEffect[] = []
 	) {
-		const isSpruce = effects.indexOf(ITerminalEffect.SpruceHeader) > -1
+		const isSpruce = effects.indexOf(IGraphicsTextEffect.SpruceHeader) > -1
 
 		if (isSpruce) {
 			fonts.say(message, {
-				font: ITerminalEffect.SpruceHeader,
+				font: IGraphicsTextEffect.SpruceHeader,
 				align: 'left',
 				space: false,
 				colors: filterEffectsForCFonts(effects),
 			})
 		} else {
-			this.bar(barEffects)
+			this.presentDivider(dividerEffects)
 			this.writeLn(message, effects)
-			this.bar(barEffects)
+			this.presentDivider(dividerEffects)
 		}
 	}
 
 	/** A BIG headline */
-	public hero(
+	public presentHero(
 		message: string,
-		effects: ITerminalEffect[] = [ITerminalEffect.Blue, ITerminalEffect.Bold]
+		effects: IGraphicsTextEffect[] = [
+			IGraphicsTextEffect.Blue,
+			IGraphicsTextEffect.Bold,
+		]
 	) {
 		fonts.say(message, {
 			// Font: 'tiny',
@@ -271,30 +232,39 @@ export default class TerminalInterface {
 			return
 		}
 
-		this.writeLn(`🌲🤖 ${message}`, [ITerminalEffect.Cyan])
+		this.writeLn(`🌲🤖 ${message}`, [IGraphicsTextEffect.Cyan])
 	}
 
 	/** The user did something wrong, like entered a bad value */
 	public warn(message: string) {
 		this.writeLn(`⚠️ ${message}`, [
-			ITerminalEffect.Bold,
-			ITerminalEffect.Yellow,
+			IGraphicsTextEffect.Bold,
+			IGraphicsTextEffect.Yellow,
 		])
 	}
 
 	/** The user did something wrong, like entered a bad value */
 	public error(message: string) {
-		this.writeLn(`🛑 ${message}`, [ITerminalEffect.Bold, ITerminalEffect.Red])
+		this.writeLn(`🛑 ${message}`, [
+			IGraphicsTextEffect.Bold,
+			IGraphicsTextEffect.Red,
+		])
 	}
 
 	/** Something major or a critical information but program will not die */
 	public crit(message: string) {
-		this.writeLn(`🛑 ${message}`, [ITerminalEffect.Red, ITerminalEffect.Bold])
+		this.writeLn(`🛑 ${message}`, [
+			IGraphicsTextEffect.Red,
+			IGraphicsTextEffect.Bold,
+		])
 	}
 
 	/** Everything is crashing! */
 	public fatal(message: string) {
-		this.writeLn(`💥 ${message}`, [ITerminalEffect.Red, ITerminalEffect.Bold])
+		this.writeLn(`💥 ${message}`, [
+			IGraphicsTextEffect.Red,
+			IGraphicsTextEffect.Bold,
+		])
 	}
 
 	/** Show a simple loader */
@@ -322,7 +292,7 @@ export default class TerminalInterface {
 		return !!confirmResult.answer
 	}
 
-	public async wait(message?: string) {
+	public async waitForEnter(message?: string) {
 		this.writeLn('')
 		await this.prompt({
 			type: FieldType.Text,
@@ -340,7 +310,7 @@ export default class TerminalInterface {
 	}
 
 	/** Print some code beautifully */
-	public codeSample(code: string) {
+	public presentCodeSample(code: string) {
 		try {
 			const colored = emphasize.highlight('js', code).value
 			console.log(colored)
@@ -385,6 +355,7 @@ export default class TerminalInterface {
 				promptOptions.type = fieldDefinition.isArray ? 'checkbox' : 'list'
 
 				promptOptions.choices = fieldDefinition.options.choices.map(
+					// @ts-ignore
 					(choice) => ({
 						name: choice.label,
 						value: choice.value,
@@ -492,19 +463,19 @@ export default class TerminalInterface {
 	}
 
 	/** Generic way to handle error */
-	public handleError(err: Error) {
+	public presentError(err: Error) {
 		this.stopLoading()
 
 		const message = err.message
 		// Remove message from stack so the message is not doubled up
 		const stack = err.stack ? err.stack.replace(message, '') : ''
 		const stackLines = stack.split('\n')
-		this.section({
+		this.presentSection({
 			headline: message,
 			lines: stackLines.splice(0, 100),
-			headlineEffects: [ITerminalEffect.Bold, ITerminalEffect.Red],
-			barEffects: [ITerminalEffect.Red],
-			bodyEffects: [ITerminalEffect.Red],
+			headlineEffects: [IGraphicsTextEffect.Bold, IGraphicsTextEffect.Red],
+			dividerEffects: [IGraphicsTextEffect.Red],
+			bodyEffects: [IGraphicsTextEffect.Red],
 		})
 
 		this.info(

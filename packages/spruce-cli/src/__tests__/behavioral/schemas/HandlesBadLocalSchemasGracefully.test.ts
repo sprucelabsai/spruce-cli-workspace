@@ -1,5 +1,4 @@
 import AbstractSpruceError from '@sprucelabs/error'
-import SpruceError from '@sprucelabs/schema/build/errors/SpruceError'
 import { test, assert } from '@sprucelabs/test'
 import { IFailedToImportErrorOptions } from '#spruce/errors/failedToImport.types'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'

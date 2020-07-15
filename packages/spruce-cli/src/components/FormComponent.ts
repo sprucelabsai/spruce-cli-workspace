@@ -14,7 +14,8 @@ import ErrorCode from '#spruce/errors/errorCode'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import SpruceError from '../errors/SpruceError'
-import ITerminal, { ITerminalEffect } from '../interfaces/TerminalInterface'
+import { IGraphicsTextEffect } from '../interfaces/TerminalInterface'
+import { IGraphicsInterface } from '../types/cli.types'
 
 export enum FormBuilderActionType {
 	Done = 'done',
@@ -54,7 +55,7 @@ export interface IFormPresentationOptions<
 }
 
 export interface IFormOptions<T extends ISchemaDefinition> {
-	term: ITerminal
+	term: IGraphicsInterface
 	definition: T
 	initialValues?: SchemaDefinitionPartialValues<T>
 	onWillAskQuestion?: <K extends SchemaFieldNames<T>>(
@@ -71,7 +72,7 @@ interface IHandlers<T extends ISchemaDefinition> {
 export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 	S
 > {
-	public term: ITerminal
+	public term: IGraphicsInterface
 	public handlers: IHandlers<S> = {}
 
 	public constructor(options: IFormOptions<S>) {
@@ -108,7 +109,7 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 
 			// Start with headline
 			if (headline) {
-				term.headline(headline, [ITerminalEffect.SpruceHeader])
+				term.headline(headline, [IGraphicsTextEffect.SpruceHeader])
 				term.writeLn('')
 			}
 
@@ -151,6 +152,7 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 					valid = true
 				} catch (err) {
 					this.renderError(err)
+
 					await this.term.wait()
 				}
 			}
@@ -204,8 +206,8 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 	public renderError(error: Error) {
 		this.term.bar()
 		this.term.headline('Please fix the following...', [
-			ITerminalEffect.Red,
-			ITerminalEffect.Bold,
+			IGraphicsTextEffect.Red,
+			IGraphicsTextEffect.Bold,
 		])
 
 		this.term.writeLn('')

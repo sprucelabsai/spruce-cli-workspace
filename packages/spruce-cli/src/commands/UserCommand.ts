@@ -5,7 +5,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
 import { Service } from '../factories/ServiceFactory'
-import { ITerminalEffect } from '../interfaces/TerminalInterface'
+import { IGraphicsTextEffect } from '../interfaces/TerminalInterface'
 import PinService from '../services/PinService'
 import RemoteStore from '../stores/RemoteStore'
 import SkillStore from '../stores/SkillStore'
@@ -153,20 +153,20 @@ export default class UserCommand extends AbstractCommand {
 		const skill = this.skillStore.getLoggedInSkill()
 		const authType = this.remoteStore.authType
 		const headerEffects = [
-			ITerminalEffect.SpruceHeader,
-			ITerminalEffect.Red,
-			ITerminalEffect.Blue,
-			ITerminalEffect.Green,
+			IGraphicsTextEffect.SpruceHeader,
+			IGraphicsTextEffect.Red,
+			IGraphicsTextEffect.Blue,
+			IGraphicsTextEffect.Green,
 		]
 
 		if (user && authType === AuthedAs.User) {
-			this.term.section({
+			this.term.presentSection({
 				headline: `Logged in as human: ${user.casualName}`,
 				object: user,
 				headlineEffects: headerEffects,
 			})
 		} else if (skill && authType === AuthedAs.Skill) {
-			this.term.section({
+			this.term.presentSection({
 				headline: `Logged in as skill: ${skill.name}`,
 				object: skill,
 				headlineEffects: headerEffects,
