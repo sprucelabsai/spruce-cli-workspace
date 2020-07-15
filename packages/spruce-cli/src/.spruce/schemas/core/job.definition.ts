@@ -2,7 +2,7 @@ import aclDefinitionCore from '#spruce/schemas/core/acl.definition'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
-const jobDefinition: SpruceSchemas.Core.Job.IDefinition = {
+const jobDefinition: SpruceSchemas.Spruce.Job.IDefinition = {
 	id: 'job',
 	name: 'Job',
 	description:

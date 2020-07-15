@@ -7,6 +7,7 @@ import {
 } from '@sprucelabs/spruce-templates'
 import { LATEST_HANDLEBARS } from '../constants'
 import SpruceError from '../errors/SpruceError'
+import namesUtil from '../utilities/names.utility'
 import versionUtil from '../utilities/version.utility'
 import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
 
@@ -172,6 +173,8 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 		const definitionDestination = path.join(
 			destinationDir,
+			namesUtil.toCamel(options.namespace),
+			options.definition.version ?? '',
 			`${item.id}.definition.ts`
 		)
 

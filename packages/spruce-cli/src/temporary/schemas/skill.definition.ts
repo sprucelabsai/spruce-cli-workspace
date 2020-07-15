@@ -5,7 +5,7 @@ import { CORE_SCHEMA_VERSION } from '../../constants'
 const skillDefinition: ISchemaDefinition = {
 	id: 'skill',
 	name: 'Skill',
-	version: CORE_SCHEMA_VERSION.constVal,
+	version: CORE_SCHEMA_VERSION.dirValue,
 	description: 'An ability Sprucebot has learned.',
 	fields: {
 		id: {

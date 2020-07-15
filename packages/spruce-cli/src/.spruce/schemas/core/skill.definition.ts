@@ -1,7 +1,7 @@
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
-const skillDefinition: SpruceSchemas.Core.Skill.IDefinition = {
+const skillDefinition: SpruceSchemas.Spruce.Skill.IDefinition = {
 	id: 'skill',
 	name: 'Skill',
 	description: 'An ability Sprucebot has learned.',

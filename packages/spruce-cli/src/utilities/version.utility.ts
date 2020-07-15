@@ -23,14 +23,14 @@ export function formatDate(date: Date) {
 		day = '0' + day
 	}
 
-	return [year, month, day].join('-')
+	return [year, month, day].join('_')
 }
 
 const versionUtil = {
 	getAllVersions(dirToRead: string) {
 		const contents = diskUtil.readDir(dirToRead)
 		const allDateIsh = contents
-			.filter((value) => value.search(/\d\d\d\d-\d\d-\d\d/) > -1)
+			.filter((value) => value.search(/v?\d\d\d\d_\d\d_\d\d/) > -1)
 			.map((dateIsh) => this.generateVersion(dateIsh))
 			.sort((a, b) => {
 				return a.intValue > b.intValue ? 1 : -1
@@ -40,10 +40,12 @@ const versionUtil = {
 	/** Pass a string in YYYY-MM-DD leave to default to today */
 	generateVersion(dateFormattedString?: string) {
 		const date = dateFormattedString ?? formatDate(new Date())
+		const cleaned = date.replace(/[^\d_-]/gi, '')
+
 		return {
 			intValue: parseInt(date.replace(/\D/g, ''), 10),
-			stringValue: date,
-			constValue: `v${namesUtil.toConst(date)}`,
+			constValue: `v${namesUtil.toConst(cleaned)}`,
+			dirValue: `v${namesUtil.toConst(cleaned)}`,
 		}
 	},
 	latestVersionAtPath(path: string) {
@@ -74,12 +76,12 @@ const versionUtil = {
 			throw new Error('no versioning found!')
 		}
 
-		return resolved.replace('{{@latest}}', latest.stringValue)
+		return resolved.replace('{{@latest}}', latest.dirValue)
 	},
 
 	resolveNewLatestPath(cwd: string, ...paths: string[]) {
 		const { resolved } = parsePath(cwd, paths)
-		return resolved.replace('{{@latest}}', formatDate(new Date()))
+		return resolved.replace('{{@latest}}', this.generateVersion().dirValue)
 	},
 }
 

@@ -10,7 +10,7 @@ export default class HandlesVersioningTest extends AbstractCliTest {
 
 	@test()
 	protected static async canResolveLatest() {
-		const expected = this.resolveTestPath('services/2020-01-10/index.md')
+		const expected = this.resolveTestPath('services/v2020_01_10/index.md')
 
 		const resolved = versionUtil.resolvePath(
 			this.resolveTestPath(),
@@ -22,7 +22,7 @@ export default class HandlesVersioningTest extends AbstractCliTest {
 
 	@test()
 	protected static async canResolveLatestOnDifferentDirectory() {
-		const expected = this.resolveTestPath('utilities/2020-02-15/index.md')
+		const expected = this.resolveTestPath('utilities/v2020_02_15/index.md')
 
 		const resolved = versionUtil.resolvePath(
 			this.resolveTestPath(),
@@ -35,7 +35,7 @@ export default class HandlesVersioningTest extends AbstractCliTest {
 	@test()
 	protected static async canGenerateLatestPath() {
 		const date = formatDate(new Date())
-		const expected = this.resolveTestPath(`utilities/${date}/index.md`)
+		const expected = this.resolveTestPath(`utilities/v${date}/index.md`)
 
 		const resolved = versionUtil.resolveNewLatestPath(
 			this.resolveTestPath(),
@@ -53,7 +53,7 @@ export default class HandlesVersioningTest extends AbstractCliTest {
 
 		assert.isEqualDeep(resolved, {
 			intValue: 20200215,
-			stringValue: '2020-02-15',
+			dirValue: 'v2020_02_15',
 			constValue: 'v2020_02_15',
 		})
 	}

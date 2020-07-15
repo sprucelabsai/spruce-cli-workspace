@@ -17,8 +17,10 @@ import ErrorCode from '#spruce/errors/errorCode'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import SpruceError from '../errors/SpruceError'
+import { IFeatureActionExecuteResponse } from '../features/features.types'
 import log from '../singletons/log'
-import { IGeneratedFile } from '../types/cli.types'
+import { IGeneratedFile, IExecutionResults } from '../types/cli.types'
+import namesUtil from '../utilities/names.utility'
 
 let fieldCount = 0
 function generateInquirerFieldName() {
@@ -104,7 +106,6 @@ export default class TerminalInterface {
 		this.cwd = cwd
 	}
 
-	/** Write a line with various effects applied */
 	public writeLn(message: any, effects: ITerminalEffect[] = []) {
 		let write: any = chalk
 		effects.forEach((effect) => {
@@ -113,7 +114,6 @@ export default class TerminalInterface {
 		console.log(effects.length > 0 ? write(message) : message)
 	}
 
-	/** Write an array of lines quickly */
 	public writeLns(lines: any[], effects?: ITerminalEffect[]) {
 		lines.forEach((line) => {
 			this.writeLn(line, effects)
@@ -141,7 +141,6 @@ export default class TerminalInterface {
 		this.bar()
 	}
 
-	/** A section draws a box around what you are writing */
 	public section(options: {
 		headline?: string
 		lines?: string[]
@@ -160,11 +159,7 @@ export default class TerminalInterface {
 		} = options
 
 		if (headline) {
-			this.writeLn('')
-			this.writeLn('')
-
 			this.headline(`${headline} 🌲🤖`, headlineEffects, barEffects)
-			this.writeLn('')
 		}
 
 		if (lines) {
@@ -183,29 +178,55 @@ export default class TerminalInterface {
 		this.writeLn('')
 	}
 
-	/** Draw a bar (horizontal ruler) */
 	public bar(effects?: ITerminalEffect[]) {
 		const bar = '=================================================='
 		this.writeLn(bar, effects)
 	}
 
+	public printExecutionSummary(results: IExecutionResults) {
+		const generatedFiles =
+			results.files?.filter((f) => f.action === 'generated') ?? []
+		const updatedFiles =
+			results.files?.filter((f) => f.action === 'updated') ?? []
+		const skippedFiles =
+			results.files?.filter((f) => f.action === 'skipped') ?? []
+
+		this.hero(`${results.actionCode} Finished!`)
+
+		this.section({
+			headline: `${results.featureCode}.${results.actionCode} summary`,
+			lines: [
+				`Generated files: ${generatedFiles.length}`,
+				`Updated files: ${updatedFiles.length}`,
+				`Skipped files: ${skippedFiles.length}`,
+			],
+		})
+
+		for (const files of [generatedFiles, updatedFiles, skippedFiles]) {
+			if (files.length > 0) {
+				this.section({
+					headline: `${namesUtil.toPascal(files[0].action)} file summary`,
+					lines: files.map((f) => `${f.name}`),
+				})
+			}
+		}
+	}
+
 	public createdFileSummary(options: {
-		createdFiles: IGeneratedFile[]
+		generatedFiles: IGeneratedFile[]
 		errors?: (SpruceError | Error)[]
 	}) {
-		const { createdFiles, errors = [] } = options
-		this.info(`All done 👊. I created ${createdFiles.length} files.`)
+		const { generatedFiles, errors = [] } = options
+
 		if (errors.length > 0) {
 			this.warn(`But I hit ${errors.length} errors.`)
 		}
 
-		this.bar()
-		createdFiles.forEach((created, idx) => {
+		generatedFiles.forEach((created, idx) => {
 			this.info(`${idx + 1}. ${chalk.bold(created.name)}: ${created.path}`)
 		})
 	}
 
-	/** I big headline */
 	public headline(
 		message: string,
 		effects: ITerminalEffect[] = [ITerminalEffect.Blue, ITerminalEffect.Bold],
@@ -227,12 +248,11 @@ export default class TerminalInterface {
 		}
 	}
 
-	/** A headline */
+	/** A BIG headline */
 	public hero(
 		message: string,
 		effects: ITerminalEffect[] = [ITerminalEffect.Blue, ITerminalEffect.Bold]
 	) {
-		// TODO map effects to cfonts
 		fonts.say(message, {
 			// Font: 'tiny',
 			align: 'center',
@@ -240,12 +260,10 @@ export default class TerminalInterface {
 		})
 	}
 
-	/** Some helpful info or suggestion */
 	public hint(message: string) {
 		return this.writeLn(`👨‍🏫 ${message}`)
 	}
 
-	/** When outputting something information */
 	public info(message: string) {
 		if (typeof message !== 'string') {
 			log.debug('Invalid info log')
@@ -273,6 +291,7 @@ export default class TerminalInterface {
 	public crit(message: string) {
 		this.writeLn(`🛑 ${message}`, [ITerminalEffect.Red, ITerminalEffect.Bold])
 	}
+
 	/** Everything is crashing! */
 	public fatal(message: string) {
 		this.writeLn(`💥 ${message}`, [ITerminalEffect.Red, ITerminalEffect.Bold])

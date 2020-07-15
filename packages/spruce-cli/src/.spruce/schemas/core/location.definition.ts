@@ -1,7 +1,7 @@
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
-const locationDefinition: SpruceSchemas.Core.Location.IDefinition = {
+const locationDefinition: SpruceSchemas.Spruce.Location.IDefinition = {
 	id: 'location',
 	name: 'Location',
 	description:

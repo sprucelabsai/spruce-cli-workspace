@@ -1,3 +1,5 @@
+import { IFeatureActionExecuteResponse } from '../features/features.types'
+
 export enum WriteMode {
 	Throw = 'throw',
 	Overwrite = 'overwrite',
@@ -9,17 +11,11 @@ export enum AuthedAs {
 	Skill = 'skill',
 }
 
-export enum GeneratedFileAction {
-	Skipped = 'skipped',
-	Generated = 'generated',
-	Updated = 'updated',
-}
-
 export interface IGeneratedFile {
 	name: string
 	path: string
 	description: string
-	action: GeneratedFileAction
+	action: 'skipped' | 'generated' | 'updated'
 }
 
 export interface INpmPackage {
@@ -28,4 +24,9 @@ export interface INpmPackage {
 	version?: string
 	/** Whether to install this in "devDependencies" */
 	isDev?: boolean
+}
+
+export interface IExecutionResults extends IFeatureActionExecuteResponse {
+	featureCode: string
+	actionCode: string
 }

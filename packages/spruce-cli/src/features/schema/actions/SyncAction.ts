@@ -22,7 +22,7 @@ export const syncSchemasActionOptionsDefinition = buildSchemaDefinition({
 		typesDestinationDir: {
 			type: FieldType.Text,
 			label: 'Destination directory',
-			hint: 'Where types and interfaces will be saved.',
+			hint: 'Where types and interfaces will be generated.',
 			defaultValue: '#spruce/schemas',
 			isRequired: true,
 		},
@@ -30,11 +30,13 @@ export const syncSchemasActionOptionsDefinition = buildSchemaDefinition({
 			type: FieldType.Text,
 			label: 'Id',
 			isRequired: true,
+			hint: "Where I'll look for new schema fields to be registered.",
 			defaultValue: 'src/addons',
 		},
 		lookupDir: {
 			type: FieldType.Text,
 			isRequired: true,
+			hint: 'Where I should look for your schema builders?',
 			defaultValue: 'src/schemas',
 		},
 	},

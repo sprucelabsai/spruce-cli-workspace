@@ -50,7 +50,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		return createSchema
 	}
 
-	@test()
+	@test.only()
 	protected static async builderFileValidates() {
 		const response = await this.buildTestSchema()
 

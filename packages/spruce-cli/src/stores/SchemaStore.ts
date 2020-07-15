@@ -35,13 +35,6 @@ interface IFetchFieldTemplateItemsResponse {
 	errors: SpruceError[]
 }
 
-export interface ISchemaTemplateItemsOptions {
-	localLookupDir: string
-}
-
-export interface IFieldTemplateItemsOptions
-	extends ISchemaTemplateItemsOptions {}
-
 interface IAddonItem {
 	path: string
 	registration: IFieldRegistration
@@ -84,6 +77,7 @@ export default class SchemaStore extends AbstractStore {
 	public async fetchSchemaTemplateItems(
 		localLookupDir: string
 	): Promise<IFetchSchemaTemplateItemsResponse> {
+		// this will move to a mercury call when ready
 		const schemas: ISchemaDefinition[] = [
 			personDefinition,
 			skillDefinition,
@@ -93,20 +87,25 @@ export default class SchemaStore extends AbstractStore {
 			aclDefinition,
 		]
 
+		const errors: SpruceError[] = []
+
 		const coreTemplateItems = this.schemaBuilder.generateTemplateItems(
 			CORE_NAMESPACE,
 			schemas
 		)
 
 		const localDefinitions = await this.loadLocalDefinitions(localLookupDir)
+
+		errors.push(...localDefinitions.errors)
+
 		const localTemplateItems = this.schemaBuilder.generateTemplateItems(
 			LOCAL_NAMESPACE,
-			localDefinitions
+			localDefinitions.definitions
 		)
 
 		const templateItems = [...coreTemplateItems, ...localTemplateItems]
 
-		return { items: templateItems, errors: [] }
+		return { items: templateItems, errors }
 	}
 
 	private async loadLocalDefinitions(localLookupDir: string) {
@@ -115,31 +114,55 @@ export default class SchemaStore extends AbstractStore {
 		)
 
 		const schemaService = this.Service(Service.Schema)
+		const errors: SpruceError[] = []
+		const definitions: ISchemaDefinition[] = []
 
-		const loading = Promise.all(
+		await Promise.all(
 			localMatches.map(async (local) => {
 				let version: undefined | string
+
 				try {
 					version = versionUtil.latestVersionAtPath(
 						pathUtil.join(pathUtil.dirname(local), '..')
-					).constValue
+					).dirValue
 				} catch (err) {
-					debugger
-					throw new Error(
-						`It looks like your schema's are not versioned. Make sure schemas are in a directory like src/schemas/2020-07-22/*.ts`
+					errors.push(
+						new SpruceError({
+							// @ts-ignore
+							code: 'VERSION_MISSING_ERROR',
+							friendlyMessage: `It looks like your schema's are not versioned. Make sure schemas are in a directory like src/schemas/${
+								versionUtil.generateVersion().dirValue
+							}/*.ts`,
+						})
 					)
 				}
 
-				const definition = await schemaService.importDefinition(local)
-				definition.version = version
-				return definition
+				if (version) {
+					try {
+						const definition = await schemaService.importDefinition(local)
+						definition.version = version
+
+						definitions.push(definition)
+					} catch (err) {
+						errors.push(
+							new SpruceError({
+								code: ErrorCode.DefinitionFailedToImport,
+								file: local,
+								originalError: err,
+							})
+						)
+					}
+				}
 			})
 		)
 
-		return loading
+		return {
+			definitions,
+			errors,
+		}
 	}
 
-	public async fetchFieldTemplateItems<T extends IFieldTemplateItemsOptions>(
+	public async fetchFieldTemplateItems(
 		localLookupDir: string
 	): Promise<IFetchFieldTemplateItemsResponse> {
 		const cwd = pathUtil.join(__dirname, '..', '..')

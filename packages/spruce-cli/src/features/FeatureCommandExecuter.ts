@@ -34,10 +34,14 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 	}
 
 	public async execute(options?: FeatureCommandExecuteOptions<F>) {
+		this.term.startLoading(`Loading ${this.featureCode}...`)
+
 		const feature = this.featureInstaller.getFeature(this.featureCode)
 		const action = feature.Action(this.actionCode)
 
 		if (feature.optionsDefinition) {
+			this.term.stopLoading()
+
 			const answers = await this.collectAnswers(
 				feature.optionsDefinition,
 				options
@@ -48,8 +52,11 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			)
 
 			if (!isInstalled) {
+				this.term.startLoading(`Installing ${this.featureCode}...`)
+
 				await this.featureInstaller.install({
 					features: [
+						// @ts-ignore
 						{
 							code: this.featureCode,
 							//@ts-ignore
@@ -67,8 +74,20 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			answers = await this.collectAnswers(definition, options)
 		}
 
+		this.term.startLoading(
+			`Executing ${this.featureCode}.${this.actionCode}...`
+		)
+
 		// @ts-ignore
-		await action.execute(answers)
+		const results = await action.execute(answers)
+
+		this.term.stopLoading()
+
+		this.term.printExecutionSummary({
+			featureCode: this.featureCode,
+			actionCode: this.actionCode,
+			...results,
+		})
 	}
 
 	private async collectAnswers<S extends ISchemaDefinition>(

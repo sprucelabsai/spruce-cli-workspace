@@ -2,7 +2,6 @@ import { assert, test } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
 import { CORE_SCHEMA_VERSION, CORE_NAMESPACE } from '../../../constants'
 import { Service } from '../../../factories/ServiceFactory'
-import { GeneratedFileAction } from '../../../types/cli.types'
 import diskUtil from '../../../utilities/disk.utility'
 import testUtil from '../../../utilities/test.utility'
 import versionUtil from '../../../utilities/version.utility'
@@ -29,7 +28,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 		const results = await cli.getFeature('schema').Action('sync').execute({})
 
 		assert.isAbove(results.files?.length, 0)
-		assert.doesInclude(results.files, { action: GeneratedFileAction.Generated })
+		assert.doesInclude(results.files, { action: 'generated' })
 
 		const expectedSchemaTypesDestination = this.resolveHashSprucePath(
 			'schemas',
@@ -46,7 +45,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 		const results = await cli.getFeature('schema').Action('sync').execute({})
 
 		assert.isAbove(results.files?.length, 0)
-		assert.doesInclude(results.files, { action: GeneratedFileAction.Skipped })
+		assert.doesInclude(results.files, { action: 'skipped' })
 	}
 
 	@test()
@@ -59,7 +58,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 		assert.doesInclude(
 			typesContents,
 			new RegExp(
-				`SpruceSchemas.${CORE_NAMESPACE}.IPerson(.*?)interface ${CORE_SCHEMA_VERSION.constVal}`,
+				`SpruceSchemas.${CORE_NAMESPACE}.IPerson(.*?)interface ${CORE_SCHEMA_VERSION.constValue}`,
 				'gis'
 			)
 		)
@@ -73,7 +72,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 		await this.Service(Service.TypeChecker).check(typesFile)
 	}
 
-	@test()
+	@test.only()
 	protected static async schemasStayInSyncAsFilesAreMoved() {
 		const cli = await this.syncSchemasAndSetCwd('in-sync')
 		const version = versionUtil.generateVersion()
@@ -100,10 +99,17 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 			createResponse.files ?? []
 		)
 
+		// make sure builder is versioned
+		assert.doesInclude(builderFile, version.dirValue)
+
 		const definitionFile = testUtil.findPathByNameInGeneratedFiles(
 			/testSchema\.definition/,
 			createResponse.files ?? []
 		)
+
+		// make sure this path is versioned
+		assert.doesInclude(definitionFile, version.dirValue)
+		assert.doesInclude(definitionFile, '/local/')
 
 		// schema types should be good
 		await typeChecker.check(this.schemaTypesFile)
