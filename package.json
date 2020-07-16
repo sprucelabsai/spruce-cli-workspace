@@ -25,7 +25,7 @@
 		"arkit.png": "lerna run arkit.png",
 		"upgrade.all": "yarn upgrade.workspaces && yarn upgrade.base",
 		"upgrade.base": "yarn upgrade --latest && rm -f yarn.lock && yarn | true && yarn lint.fix || true",
-		"upgrade.workspaces": "for d in packages/*; do cd $d; yarn-upgrade-all; cd ../..; done",
+		"upgrade.workspaces": "yarn && for d in packages/*; do cd $d; yarn-upgrade-all; cd ../..; done",
 		"upgrade": "yarn upgrade.all && yarn lint && yarn build && yarn test"
 	},
 	"dependencies": {},
