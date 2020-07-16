@@ -4,7 +4,7 @@ import { Mercury } from '@sprucelabs/mercury'
 import AbstractSpruceTest from '@sprucelabs/test'
 import fs from 'fs-extra'
 import * as uuid from 'uuid'
-import { boot } from './cli'
+import { boot, ICliBootOptions } from './cli'
 import ServiceFactory, {
 	Service,
 	IServiceMap,
@@ -34,20 +34,18 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		)
 	}
 
-	protected static async beforeAll() {
-		super.beforeAll()
-	}
-
 	protected static async beforeEach() {
 		super.beforeEach()
 
 		this.cwd = this.freshCwd()
 	}
 
-	protected static async Cli() {
+	protected static async Cli(options?: ICliBootOptions) {
 		const cli = await boot({
 			cwd: this.cwd,
+			...(options ?? {}),
 		})
+
 		return cli
 	}
 

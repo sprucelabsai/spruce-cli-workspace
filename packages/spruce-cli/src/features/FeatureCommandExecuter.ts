@@ -16,7 +16,6 @@ type FeatureCommandExecuteOptions<
 
 export default class FeatureCommandExecuter<F extends FeatureCode> {
 	private featureCode: F
-	// @ts-ignore
 	private actionCode: string
 	private term: IGraphicsInterface
 	private featureInstaller: FeatureInstaller

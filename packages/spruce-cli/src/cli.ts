@@ -40,6 +40,12 @@ export interface ICli {
 	checkHealth(): Promise<IHealthCheckResults>
 }
 
+export interface ICliBootOptions {
+	cwd?: string
+	program?: CommanderStatic['program']
+	graphicsInterface?: IGraphicsInterface
+}
+
 async function login(storeFactory: StoreFactory, mercury: Mercury) {
 	const remoteStore = storeFactory.Store('remote')
 	const remoteUrl = remoteStore.getRemoteUrl()
@@ -75,7 +81,7 @@ async function login(storeFactory: StoreFactory, mercury: Mercury) {
 	await mercury.connect(connectOptions)
 }
 
-function CLI(
+function Cli(
 	featureInstaller: FeatureInstaller,
 	serviceFactory: ServiceFactory,
 	cwd: string
@@ -130,11 +136,7 @@ function CLI(
 	}
 }
 
-export async function boot(options?: {
-	cwd?: string
-	program?: CommanderStatic['program']
-	graphicsInterface?: IGraphicsInterface
-}) {
+export async function boot(options?: ICliBootOptions) {
 	const program = options?.program
 
 	// TODO pull in without including package.json
@@ -196,7 +198,7 @@ export async function boot(options?: {
 		await login(storeFactory, mercury)
 	}
 
-	const cli: ICli = CLI(featureInstaller, serviceFactory, cwd)
+	const cli: ICli = Cli(featureInstaller, serviceFactory, cwd)
 
 	return cli
 }

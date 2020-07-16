@@ -1,6 +1,6 @@
 import pathUtil from 'path'
 import AbstractCliTest from './AbstractCliTest'
-import { ICli } from './cli'
+import { ICli, ICliBootOptions } from './cli'
 import diskUtil from './utilities/disk.utility'
 import testUtil from './utilities/test.utility'
 
@@ -21,7 +21,10 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 		return cli
 	}
 
-	protected static async installSchemasAndSetCwd(cacheKey?: string) {
+	protected static async installSchemasAndSetCwd(
+		cacheKey?: string,
+		bootOptions?: ICliBootOptions
+	) {
 		if (
 			cacheKey &&
 			this.installedSkills[cacheKey] &&
@@ -58,7 +61,7 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 			}
 		}
 
-		const cli = await this.Cli()
+		const cli = await this.Cli(bootOptions)
 
 		if (!alreadyInstalled) {
 			await cli.installFeatures({
@@ -78,30 +81,39 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 		}
 
 		if (cacheKey && testUtil.isCacheEnabled()) {
-			this.installedSkills[cacheKey] = {
-				cwd: this.cwd,
-				cli,
-			}
-
-			if (settingsFile) {
-				if (!settingsObject.tmpDirs) {
-					settingsObject.tmpDirs = {}
-				}
-
-				if (!settingsObject.tmpDirs[cacheKey]) {
-					settingsObject.tmpDirs[cacheKey] = this.cwd
-					diskUtil.createDir(pathUtil.dirname(settingsFile))
-					diskUtil.writeFile(
-						settingsFile,
-						JSON.stringify(settingsObject, null, 2)
-					)
-				}
-			}
+			this.cacheCli(cacheKey, cli, settingsFile, settingsObject)
 		}
 
 		this.cleanCachedSkillDir()
 
 		return cli
+	}
+
+	private static cacheCli(
+		cacheKey: string,
+		cli: ICli,
+		settingsFile: string | undefined,
+		settingsObject: Record<string, any>
+	) {
+		this.installedSkills[cacheKey] = {
+			cwd: this.cwd,
+			cli,
+		}
+
+		if (settingsFile) {
+			if (!settingsObject.tmpDirs) {
+				settingsObject.tmpDirs = {}
+			}
+
+			if (!settingsObject.tmpDirs[cacheKey]) {
+				settingsObject.tmpDirs[cacheKey] = this.cwd
+				diskUtil.createDir(pathUtil.dirname(settingsFile))
+				diskUtil.writeFile(
+					settingsFile,
+					JSON.stringify(settingsObject, null, 2)
+				)
+			}
+		}
 	}
 
 	private static cleanCachedSkillDir() {
