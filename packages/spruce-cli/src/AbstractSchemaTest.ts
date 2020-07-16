@@ -100,6 +100,7 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 		}
 
 		this.cleanCachedSkillDir()
+
 		return cli
 	}
 

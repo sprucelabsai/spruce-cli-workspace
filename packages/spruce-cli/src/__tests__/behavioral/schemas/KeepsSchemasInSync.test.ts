@@ -72,7 +72,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 		await this.Service(Service.TypeChecker).check(typesFile)
 	}
 
-	@test.only()
+	@test()
 	protected static async schemasStayInSyncAsFilesAreMoved() {
 		const cli = await this.syncSchemasAndSetCwd('in-sync')
 		const version = versionUtil.generateVersion()

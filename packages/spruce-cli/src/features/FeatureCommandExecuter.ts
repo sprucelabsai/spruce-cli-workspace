@@ -83,7 +83,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 
 		this.term.stopLoading()
 
-		this.term.presentExecutionSummary({
+		this.term.renderCommandSummary({
 			featureCode: this.featureCode,
 			actionCode: this.actionCode,
 			...results,

@@ -5,12 +5,11 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
 import { Service } from '../factories/ServiceFactory'
-import { IGraphicsTextEffect } from '../interfaces/TerminalInterface'
 import PinService from '../services/PinService'
 import RemoteStore from '../stores/RemoteStore'
 import SkillStore from '../stores/SkillStore'
 import UserStore from '../stores/UserStore'
-import { AuthedAs } from '../types/cli.types'
+import { AuthedAs, IGraphicsTextEffect } from '../types/cli.types'
 import AbstractCommand, { ICommandOptions } from './AbstractCommand'
 
 interface IUserCommandOptions extends ICommandOptions {
@@ -91,13 +90,13 @@ export default class UserCommand extends AbstractCommand {
 				this.term.stopLoading()
 
 				if (err instanceof SpruceError) {
-					this.term.error(err.friendlyMessage())
+					this.term.renderWarning(err.friendlyMessage())
 					throw err
 				} else if (err.message === 'PIN_NOT_FOUND') {
-					this.term.error('That was the wrong pin!')
+					this.term.renderWarning('That was the wrong pin!')
 					pinLabel = "Let's give it another try, pin please"
 				} else {
-					this.term.error(err.message)
+					this.term.renderWarning(err.message)
 				}
 			}
 		} while (!valid)
@@ -118,13 +117,15 @@ export default class UserCommand extends AbstractCommand {
 	}
 	public logout = () => {
 		this.userStore.logout()
-		this.term.info('Logout successful')
+		this.term.renderLine('Logout successful')
 	}
 	public switchUser = async () => {
 		const users = this.userStore.getUsers()
 
 		if (users.length === 0) {
-			this.term.warn('You are not logged in as anyone, try `spruce user:login`')
+			this.term.renderWarning(
+				'You are not logged in as anyone, try `spruce user:login`'
+			)
 		}
 
 		const choices: ISelectFieldDefinitionChoice[] = users.map((user, idx) => ({
@@ -160,19 +161,19 @@ export default class UserCommand extends AbstractCommand {
 		]
 
 		if (user && authType === AuthedAs.User) {
-			this.term.presentSection({
+			this.term.renderSection({
 				headline: `Logged in as human: ${user.casualName}`,
 				object: user,
 				headlineEffects: headerEffects,
 			})
 		} else if (skill && authType === AuthedAs.Skill) {
-			this.term.presentSection({
+			this.term.renderSection({
 				headline: `Logged in as skill: ${skill.name}`,
 				object: skill,
 				headlineEffects: headerEffects,
 			})
 		} else {
-			this.term.writeLn('Not currently logged in')
+			this.term.renderLine('Not currently logged in')
 		}
 	}
 	private PinService = () => {

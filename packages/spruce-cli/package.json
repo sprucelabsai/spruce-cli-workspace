@@ -37,7 +37,7 @@
 		"lint.tsc": "tsc --noEmit",
 		"lint.all": "eslint '**/*.ts' && npm run lint.tsc",
 		"lint.fix": "eslint --fix '**/*.ts'",
-		"lint.watch": "chokidar 'src/**/*' '../spruce-templates/src/**' -c 'npm run lint.all'",
+		"lint.watch": "chokidar 'src/**/*' '../spruce-templates/src/**' -c 'npm run lint.tsc'",
 		"release": "semantic-release",
 		"start": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node . $COMMANDS",
 		"local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node --inspect=5200 . $COMMANDS",

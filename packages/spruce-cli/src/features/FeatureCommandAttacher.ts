@@ -1,6 +1,6 @@
 import Schema, { ISchemaDefinition } from '@sprucelabs/schema'
 import { CommanderStatic } from 'commander'
-import TerminalInterface from '../interfaces/TerminalInterface'
+import { IGraphicsInterface } from '../types/cli.types'
 import namesUtil from '../utilities/names.utility'
 import AbstractFeature from './AbstractFeature'
 import featuresUtil from './feature.utilities'
@@ -10,12 +10,12 @@ import FeatureInstaller from './FeatureInstaller'
 export default class FeatureCommandAttacher {
 	private program: CommanderStatic['program']
 	private featureInstaller: FeatureInstaller
-	private term: TerminalInterface
+	private term: IGraphicsInterface
 
 	public constructor(
 		program: CommanderStatic['program'],
 		featureInstaller: FeatureInstaller,
-		term: TerminalInterface
+		term: IGraphicsInterface
 	) {
 		this.program = program
 		this.featureInstaller = featureInstaller

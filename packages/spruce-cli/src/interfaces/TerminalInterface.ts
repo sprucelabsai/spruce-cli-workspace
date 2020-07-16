@@ -61,29 +61,24 @@ export default class TerminalInterface implements IGraphicsInterface {
 		this.cwd = cwd
 	}
 
-	public writeLn(message: any, effects: IGraphicsTextEffect[] = []) {
-		let write: any = chalk
-		effects.forEach((effect) => {
-			write = write[effect]
-		})
-		console.log(effects.length > 0 ? write(message) : message)
+	public async sendInput(): Promise<void> {
+		throw new Error('sendInput not supported on the TerminalInterface!')
 	}
 
-	public writeLns(lines: any[], effects?: IGraphicsTextEffect[]) {
+	public renderLines(lines: any[], effects?: IGraphicsTextEffect[]) {
 		lines.forEach((line) => {
-			this.writeLn(line, effects)
+			this.renderLine(line, effects)
 		})
 	}
 
-	/** Output an object, one key per line */
-	public presentObject(
+	public renderObject(
 		object: Record<string, any>,
 		effects: IGraphicsTextEffect[] = [IGraphicsTextEffect.Green]
 	) {
-		this.presentDivider()
-		this.writeLn('')
+		this.renderDivider()
+		this.renderLine('')
 		Object.keys(object).forEach((key) => {
-			this.writeLn(
+			this.renderLine(
 				`${chalk.bold(key)}: ${
 					typeof object[key] === 'string'
 						? object[key]
@@ -92,11 +87,11 @@ export default class TerminalInterface implements IGraphicsInterface {
 				effects
 			)
 		})
-		this.writeLn('')
-		this.presentDivider()
+		this.renderLine('')
+		this.renderDivider()
 	}
 
-	public presentSection(options: {
+	public renderSection(options: {
 		headline?: string
 		lines?: string[]
 		object?: Record<string, any>
@@ -114,31 +109,31 @@ export default class TerminalInterface implements IGraphicsInterface {
 		} = options
 
 		if (headline) {
-			this.presentHeadline(`${headline} 🌲🤖`, headlineEffects, dividerEffects)
+			this.renderHeadline(`${headline} 🌲🤖`, headlineEffects, dividerEffects)
 		}
 
 		if (lines) {
-			this.writeLn('')
+			this.renderLine('')
 
-			this.writeLns(lines, bodyEffects)
+			this.renderLines(lines, bodyEffects)
 
-			this.writeLn('')
-			this.presentDivider(dividerEffects)
+			this.renderLine('')
+			this.renderDivider(dividerEffects)
 		}
 
 		if (object) {
-			this.presentObject(object, bodyEffects)
+			this.renderObject(object, bodyEffects)
 		}
 
-		this.writeLn('')
+		this.renderLine('')
 	}
 
-	public presentDivider(effects?: IGraphicsTextEffect[]) {
+	public renderDivider(effects?: IGraphicsTextEffect[]) {
 		const bar = '=================================================='
-		this.writeLn(bar, effects)
+		this.renderLine(bar, effects)
 	}
 
-	public presentExecutionSummary(results: IExecutionResults) {
+	public renderCommandSummary(results: IExecutionResults) {
 		const generatedFiles =
 			results.files?.filter((f) => f.action === 'generated') ?? []
 		const updatedFiles =
@@ -146,9 +141,9 @@ export default class TerminalInterface implements IGraphicsInterface {
 		const skippedFiles =
 			results.files?.filter((f) => f.action === 'skipped') ?? []
 
-		this.presentHero(`${results.actionCode} Finished!`)
+		this.renderHero(`${results.actionCode} Finished!`)
 
-		this.presentSection({
+		this.renderSection({
 			headline: `${results.featureCode}.${results.actionCode} summary`,
 			lines: [
 				`Generated files: ${generatedFiles.length}`,
@@ -159,7 +154,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 
 		for (const files of [generatedFiles, updatedFiles, skippedFiles]) {
 			if (files.length > 0) {
-				this.presentSection({
+				this.renderSection({
 					headline: `${namesUtil.toPascal(files[0].action)} file summary`,
 					lines: files.map((f) => `${f.name}`),
 				})
@@ -174,15 +169,17 @@ export default class TerminalInterface implements IGraphicsInterface {
 		const { generatedFiles, errors = [] } = options
 
 		if (errors.length > 0) {
-			this.warn(`But I hit ${errors.length} errors.`)
+			this.renderWarning(`But I hit ${errors.length} errors.`)
 		}
 
 		generatedFiles.forEach((created, idx) => {
-			this.info(`${idx + 1}. ${chalk.bold(created.name)}: ${created.path}`)
+			this.renderLine(
+				`${idx + 1}. ${chalk.bold(created.name)}: ${created.path}`
+			)
 		})
 	}
 
-	public presentHeadline(
+	public renderHeadline(
 		message: string,
 		effects: IGraphicsTextEffect[] = [
 			IGraphicsTextEffect.Blue,
@@ -200,14 +197,14 @@ export default class TerminalInterface implements IGraphicsInterface {
 				colors: filterEffectsForCFonts(effects),
 			})
 		} else {
-			this.presentDivider(dividerEffects)
-			this.writeLn(message, effects)
-			this.presentDivider(dividerEffects)
+			this.renderDivider(dividerEffects)
+			this.renderLine(message, effects)
+			this.renderDivider(dividerEffects)
 		}
 	}
 
 	/** A BIG headline */
-	public presentHero(
+	public renderHero(
 		message: string,
 		effects: IGraphicsTextEffect[] = [
 			IGraphicsTextEffect.Blue,
@@ -221,49 +218,22 @@ export default class TerminalInterface implements IGraphicsInterface {
 		})
 	}
 
-	public hint(message: string) {
-		return this.writeLn(`👨‍🏫 ${message}`)
+	public renderHint(message: string) {
+		return this.renderLine(`👨‍🏫 ${message}`)
 	}
 
-	public info(message: string) {
-		if (typeof message !== 'string') {
-			log.debug('Invalid info log')
-			log.debug(message)
-			return
-		}
-
-		this.writeLn(`🌲🤖 ${message}`, [IGraphicsTextEffect.Cyan])
+	public renderLine(message: any, effects: IGraphicsTextEffect[] = []) {
+		let write: any = chalk
+		effects.forEach((effect) => {
+			write = write[effect]
+		})
+		console.log(effects.length > 0 ? write(message) : message)
 	}
 
-	/** The user did something wrong, like entered a bad value */
-	public warn(message: string) {
-		this.writeLn(`⚠️ ${message}`, [
+	public renderWarning(message: string) {
+		this.renderLine(`⚠️ ${message}`, [
 			IGraphicsTextEffect.Bold,
 			IGraphicsTextEffect.Yellow,
-		])
-	}
-
-	/** The user did something wrong, like entered a bad value */
-	public error(message: string) {
-		this.writeLn(`🛑 ${message}`, [
-			IGraphicsTextEffect.Bold,
-			IGraphicsTextEffect.Red,
-		])
-	}
-
-	/** Something major or a critical information but program will not die */
-	public crit(message: string) {
-		this.writeLn(`🛑 ${message}`, [
-			IGraphicsTextEffect.Red,
-			IGraphicsTextEffect.Bold,
-		])
-	}
-
-	/** Everything is crashing! */
-	public fatal(message: string) {
-		this.writeLn(`💥 ${message}`, [
-			IGraphicsTextEffect.Red,
-			IGraphicsTextEffect.Bold,
 		])
 	}
 
@@ -293,14 +263,14 @@ export default class TerminalInterface implements IGraphicsInterface {
 	}
 
 	public async waitForEnter(message?: string) {
-		this.writeLn('')
+		this.renderLine('')
 		await this.prompt({
 			type: FieldType.Text,
 			label: `${message ? message + ' ' : ''}${chalk.bgGreenBright.black(
 				'hit enter'
 			)}`,
 		})
-		this.writeLn('')
+		this.renderLine('')
 		return
 	}
 
@@ -310,12 +280,12 @@ export default class TerminalInterface implements IGraphicsInterface {
 	}
 
 	/** Print some code beautifully */
-	public presentCodeSample(code: string) {
+	public renderCodeSample(code: string) {
 		try {
 			const colored = emphasize.highlight('js', code).value
 			console.log(colored)
 		} catch (err) {
-			this.error(err)
+			this.renderWarning(err)
 		}
 	}
 
@@ -463,14 +433,14 @@ export default class TerminalInterface implements IGraphicsInterface {
 	}
 
 	/** Generic way to handle error */
-	public presentError(err: Error) {
+	public renderError(err: Error) {
 		this.stopLoading()
 
 		const message = err.message
 		// Remove message from stack so the message is not doubled up
 		const stack = err.stack ? err.stack.replace(message, '') : ''
 		const stackLines = stack.split('\n')
-		this.presentSection({
+		this.renderSection({
 			headline: message,
 			lines: stackLines.splice(0, 100),
 			headlineEffects: [IGraphicsTextEffect.Bold, IGraphicsTextEffect.Red],
@@ -478,7 +448,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 			bodyEffects: [IGraphicsTextEffect.Red],
 		})
 
-		this.info(
+		this.renderLine(
 			'You can always run `DEBUG=@sprucelabs/cli spruce [command]` to get debug information'
 		)
 	}

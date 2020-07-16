@@ -35,7 +35,7 @@ export default class OnboardingCommand extends AbstractCommand {
 		this.onboardingStore.incrementRunCount()
 
 		this.term.clear()
-		this.term.presentHero(runCount == 0 ? 'You made it!' : 'Onboarding')
+		this.term.renderHero(runCount == 0 ? 'You made it!' : 'Onboarding')
 
 		if (runCount === 0) {
 			await this.term.waitForEnter(
@@ -45,7 +45,7 @@ export default class OnboardingCommand extends AbstractCommand {
 			await this.term.waitForEnter('You ready to get this party started?')
 		}
 
-		this.term.writeLn(
+		this.term.renderLine(
 			`Ok, before we get started you should understand the Pillars of a Skill. Since humans hate writing documentation, take a sec and review ${
 				runCount === 0 ? 'the rest of ' : ''
 			}the information here: http://developer.spruce.ai/#/getting-started?id=pillars-of-a-skill`
@@ -96,7 +96,7 @@ export default class OnboardingCommand extends AbstractCommand {
 		const results = await quiz.present({ headline: 'Spruce POP QUIZ!' })
 
 		this.term.clear()
-		this.term.writeLn('All done! Lets see how you did!')
+		this.term.renderLine('All done! Lets see how you did!')
 
 		await this.term.waitForEnter()
 		await quiz.scorecard()
@@ -105,7 +105,7 @@ export default class OnboardingCommand extends AbstractCommand {
 			this.term.waitForEnter('Hmmmmm...')
 		}
 
-		this.term.writeLn(
+		this.term.renderLine(
 			"Ok, that's all for now. When you're ready to start your skill, run `spruce skill:create`."
 		)
 

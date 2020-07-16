@@ -239,7 +239,7 @@ export default class QuizComponent<
 		}
 
 		term.clear()
-		term.presentHero(headline ?? 'Quiz results!')
+		term.renderHero(headline ?? 'Quiz results!')
 
 		const testResults: Record<string, string> = {}
 
@@ -279,12 +279,12 @@ export default class QuizComponent<
 			}
 		})
 
-		term.presentObject(testResults)
+		term.renderObject(testResults)
 
-		term.writeLn(`# questions: ${results.totalQuestions}`)
-		term.writeLn(`# correct: ${results.totalCorrect}`)
+		term.renderLine(`# questions: ${results.totalQuestions}`)
+		term.renderLine(`# correct: ${results.totalCorrect}`)
 
-		term.presentHeadline(
+		term.renderHeadline(
 			`Your score: ${(results.percentCorrect * 100).toFixed(1)}%`
 		)
 

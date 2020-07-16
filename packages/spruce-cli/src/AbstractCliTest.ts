@@ -1,6 +1,5 @@
 import os from 'os'
 import pathUtil from 'path'
-import readline, { Interface } from 'readline'
 import { Mercury } from '@sprucelabs/mercury'
 import AbstractSpruceTest from '@sprucelabs/test'
 import fs from 'fs-extra'
@@ -11,12 +10,12 @@ import ServiceFactory, {
 	IServiceMap,
 } from './factories/ServiceFactory'
 import FeatureInstallerFactory from './features/FeatureInstallerFactory'
-import TerminalInterface from './interfaces/TerminalInterface'
+import TestInterface from './interfaces/TestInterface'
 import StoreFactory, { StoreCode, IStoreMap } from './stores/StoreFactory'
+import { IGraphicsInterface } from './types/cli.types'
 import diskUtil from './utilities/disk.utility'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
-	private static rl: Interface | undefined
 	protected static cliRoot = pathUtil.join(__dirname)
 
 	protected static freshCwd() {
@@ -36,19 +35,13 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static async beforeAll() {
-		this.rl = readline.createInterface({
-			input: process.stdin,
-			output: process.stdout,
-		})
+		super.beforeAll()
 	}
 
 	protected static async beforeEach() {
-		this.cwd = this.freshCwd()
-	}
+		super.beforeEach()
 
-	protected static async afterAll() {
-		this.rl && this.rl.close()
-		delete this.rl
+		this.cwd = this.freshCwd()
 	}
 
 	protected static async Cli() {
@@ -70,32 +63,12 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return new ServiceFactory(new Mercury())
 	}
 
-	protected static Term() {
-		return new TerminalInterface(this.cwd)
+	protected static Term(): IGraphicsInterface {
+		return new TestInterface()
 	}
 
 	protected static resolveHashSprucePath(...filePath: string[]) {
 		return diskUtil.resolveHashSprucePath(this.cwd, ...filePath)
-	}
-
-	protected static async sendInput(input: string) {
-		// because there is a delay between sending output to the terminal and it actually rendering and being ready for input, we delay before sending input
-		await new Promise((resolve) => setTimeout(resolve, 50))
-
-		if (!this.rl) {
-			throw new Error(
-				'this.sendInput being called after test is destroyed. This is probably because you forgot an await somewhere.'
-			)
-		}
-
-		for (let i = 0; i < input.length; i++) {
-			// @ts-ignore
-			this.rl.input.emit('keypress', input[i])
-		}
-		// @ts-ignore
-		this.rl.input.emit('keypress', null, { name: 'enter' })
-
-		await new Promise((resolve) => setTimeout(resolve, 50))
 	}
 
 	protected static FeatureInstaller() {

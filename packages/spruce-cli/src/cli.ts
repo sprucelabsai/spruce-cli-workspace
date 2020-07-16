@@ -22,7 +22,7 @@ import FeatureInstallerFactory from './features/FeatureInstallerFactory'
 import TerminalInterface from './interfaces/TerminalInterface'
 import log from './singletons/log'
 import StoreFactory from './stores/StoreFactory'
-import { AuthedAs } from './types/cli.types'
+import { AuthedAs, IGraphicsInterface } from './types/cli.types'
 import diskUtil from './utilities/disk.utility'
 
 interface IHealthCheckResults {
@@ -133,6 +133,7 @@ function CLI(
 export async function boot(options?: {
 	cwd?: string
 	program?: CommanderStatic['program']
+	graphicsInterface?: IGraphicsInterface
 }) {
 	const program = options?.program
 
@@ -166,7 +167,7 @@ export async function boot(options?: {
 
 	// attach features
 	if (program) {
-		const terminal = new TerminalInterface(cwd)
+		const terminal = options?.graphicsInterface ?? new TerminalInterface(cwd)
 		const attacher = new FeatureCommandAttacher(
 			program,
 			featureInstaller,

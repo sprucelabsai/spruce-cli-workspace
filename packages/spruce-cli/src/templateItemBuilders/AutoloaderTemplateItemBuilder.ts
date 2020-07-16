@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import path from 'path'
 import {
 	IAutoLoaderTemplateItem,
@@ -17,7 +18,7 @@ import AbstractTemplateItemBuilder from './AbstractTemplateItemBuilder'
 
 export default class AutoloaderTemplateItemBuilder extends AbstractTemplateItemBuilder {
 	private cache: Record<string, any> = {}
-	/** Build the template item needed to build the root autoloader  */
+
 	public async buildRootTemplateItem(
 		autoloaders: SpruceSchemas.Local.IAutoloader[]
 	): Promise<IRootAutoloaderTemplateItem> {

@@ -1,7 +1,7 @@
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
-const profileImageDefinition: SpruceSchemas.Spruce.ProfileImage.IDefinition = {
+const profileImageDefinition: SpruceSchemas.Core.ProfileImage.IDefinition = {
 	id: 'profileImage',
 	name: 'Profile Image Sizes',
 	description: 'Profile images at various helpful sizes and resolutions.',

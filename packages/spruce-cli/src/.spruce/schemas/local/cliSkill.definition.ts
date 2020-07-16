@@ -1,10 +1,10 @@
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 
-const skillDefinition: SpruceSchemas.Core.Skill.IDefinition = {
-	id: 'skill',
+const cliSkillDefinition: SpruceSchemas.Local.CliSkill.IDefinition = {
+	id: 'cliSkill',
 	name: 'Skill',
-	description: 'An ability Sprucebot has learned.',
+	description: 'A stripped down skill for the cli',
 	fields: {
 		/** Id. */
 		id: {
@@ -27,25 +27,13 @@ const skillDefinition: SpruceSchemas.Core.Skill.IDefinition = {
 			isRequired: true,
 			options: undefined
 		},
-		/** Description. */
-		description: {
-			label: 'Description',
-			type: FieldType.Text,
-			options: undefined
-		},
 		/** Slug. */
 		slug: {
 			label: 'Slug',
-			type: FieldType.Text,
-			options: undefined
-		},
-		/** Icon. */
-		icon: {
-			label: 'Icon',
 			type: FieldType.Text,
 			options: undefined
 		}
 	}
 }
 
-export default skillDefinition
+export default cliSkillDefinition

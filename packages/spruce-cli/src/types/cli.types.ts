@@ -52,7 +52,7 @@ export enum IGraphicsTextEffect {
 }
 
 export interface IGraphicsInterface {
-	presentSection(options: {
+	renderSection(options: {
 		headline?: string
 		lines?: string[]
 		object?: Record<string, any>
@@ -60,23 +60,27 @@ export interface IGraphicsInterface {
 		bodyEffects?: IGraphicsTextEffect[]
 		dividerEffects?: IGraphicsTextEffect[]
 	}): void
-
-	presentObject(obj: any): void
-	presentError(err: Error): void
-	presentCodeSample(code: string): void
-	presentExecutionSummary(results: IExecutionResults): void
-	presentHero(message: string, effects?: IGraphicsTextEffect[]): void
-	presentHeadline(
+	renderObject(obj: any): void
+	renderError(err: Error): void
+	renderCodeSample(code: string): void
+	renderCommandSummary(results: IExecutionResults): void
+	renderHero(message: string, effects?: IGraphicsTextEffect[]): void
+	renderHeadline(
 		message: string,
-		effects: IGraphicsTextEffect[],
-		dividerEffects: IGraphicsTextEffect[]
+		effects?: IGraphicsTextEffect[],
+		dividerEffects?: IGraphicsTextEffect[]
 	): void
-
-	presentDivider(effects?: IGraphicsTextEffect[]): void
+	renderDivider(effects?: IGraphicsTextEffect[]): void
+	renderLine(message: string, effects?: IGraphicsTextEffect[]): void
+	renderLines(messages: string[], effects?: IGraphicsTextEffect[]): void
+	renderWarning(message: string, effects?: IGraphicsTextEffect[]): void
+	renderHint(message: string, effects?: IGraphicsTextEffect[]): void
 
 	prompt<T extends FieldDefinition>(
 		definition: T
 	): Promise<FieldDefinitionValueType<T>>
+
+	sendInput(message: string): Promise<void>
 
 	startLoading(message?: string): void
 	stopLoading(): void

@@ -1,13 +1,12 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import readline from 'readline'
 import chokidar, { FSWatcher } from 'chokidar'
 import { Command } from 'commander'
 import _ from 'lodash'
 import minimatch from 'minimatch'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
-import { IGraphicsTextEffect } from '../interfaces/TerminalInterface'
 import log from '../singletons/log'
 import WatcherStore, { IWatchers } from '../stores/WatcherStore'
+import { IGraphicsTextEffect } from '../types/cli.types'
 import AbstractCommand, { ICommandOptions } from './AbstractCommand'
 
 enum WatchAction {
@@ -70,7 +69,7 @@ export default class WatchCommand extends AbstractCommand {
 	) => {
 		this.resetReadline()
 		this.term.clear()
-		this.term.presentSection({
+		this.term.renderSection({
 			headline: 'Spruce Watcher',
 			lines: [
 				'Use these commands:',
@@ -83,7 +82,7 @@ export default class WatchCommand extends AbstractCommand {
 		})
 
 		if (lines) {
-			this.term.writeLns(lines, lineEffects)
+			this.term.renderLines(lines, lineEffects)
 		}
 	}
 	/** Loads the watchers and starts watching anything new */
@@ -241,7 +240,7 @@ export default class WatchCommand extends AbstractCommand {
 			lines.push('\n')
 		})
 
-		this.term.presentSection({
+		this.term.renderSection({
 			headline: 'Current watchers',
 			lines,
 		})

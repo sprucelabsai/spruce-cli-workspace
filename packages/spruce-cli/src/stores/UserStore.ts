@@ -14,8 +14,8 @@ import { AuthedAs } from '../types/cli.types'
 import { SpruceEvents } from '../types/events-generated'
 import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
 
-type UserWithToken = SpruceSchemas.Local.ICliUserWithToken.v2020_07_22
-type User = SpruceSchemas.Local.ICliUser.v2020_07_22
+type UserWithToken = SpruceSchemas.Local.ICliUserWithToken
+type User = SpruceSchemas.Local.ICliUser
 
 /** Settings i need to save */
 interface IUserStoreSettings extends ILocalStoreSettings {
@@ -104,7 +104,7 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 		const result = await this.mercury.emit<
 			SpruceEvents.Core.Gql.IPayload,
 			IMercuryGQLBody<{
-				User: SpruceSchemas.Spruce.IPerson.v2020_07_22
+				User: SpruceSchemas.Core.IUser
 			}>
 		>({
 			eventName: SpruceEvents.Core.Gql.name,
