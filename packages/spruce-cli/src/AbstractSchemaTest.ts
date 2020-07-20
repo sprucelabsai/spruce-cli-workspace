@@ -1,15 +1,8 @@
-import pathUtil from 'path'
 import AbstractCliTest from './AbstractCliTest'
-import { ICli, ICliBootOptions } from './cli'
-import diskUtil from './utilities/disk.utility'
-import testUtil from './utilities/test.utility'
+import { ICliBootOptions } from './cli'
+import FeatureFixture from './fixtures/FeatureFixture'
 
 export default abstract class AbstractSchemaTest extends AbstractCliTest {
-	private static installedSkills: Record<
-		string,
-		{ cwd: string; cli: ICli }
-	> = {}
-
 	protected static get schemaTypesFile() {
 		return this.resolveHashSprucePath('schemas', 'schemas.types.ts')
 	}
@@ -25,114 +18,25 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 		cacheKey?: string,
 		bootOptions?: ICliBootOptions
 	) {
-		if (
-			cacheKey &&
-			this.installedSkills[cacheKey] &&
-			testUtil.isCacheEnabled()
-		) {
-			this.cwd = this.installedSkills[cacheKey].cwd
-			this.cleanCachedSkillDir()
-
-			return this.installedSkills[cacheKey].cli
-		}
-
-		let alreadyInstalled = false
-		let settingsObject: Record<string, any> = {}
-		let settingsFile
-
-		if (cacheKey && testUtil.isCacheEnabled()) {
-			// lets see if there is something saved on the disk we can retrieve
-			settingsFile = diskUtil.resolveHashSprucePath(
-				__dirname,
-				'tmp',
-				'cli-workspace-tests.json'
-			)
-
-			if (diskUtil.doesFileExist(settingsFile)) {
-				settingsObject = JSON.parse(diskUtil.readFile(settingsFile))
-				if (settingsObject?.tmpDirs?.[cacheKey]) {
-					if (testUtil.shouldClearCache()) {
-						this.resetCachedSkillDir()
-					} else {
-						alreadyInstalled = true
-					}
-					this.cwd = settingsObject.tmpDirs[cacheKey]
-				}
-			}
-		}
-
-		const cli = await this.Cli(bootOptions)
-
-		if (!alreadyInstalled) {
-			await cli.installFeatures({
-				features: [
-					{
-						code: 'skill',
-						options: {
-							name: 'testing',
-							description: 'this is a great test!',
-						},
+		const fixture = new FeatureFixture(this.cwd)
+		const { cli, cwd } = await fixture.installFeatures(
+			[
+				{
+					code: 'skill',
+					options: {
+						name: 'testing',
+						description: 'this is a great test!',
 					},
-					{
-						code: 'schema',
-					},
-				],
-			})
-		}
+				},
+				{
+					code: 'schema',
+				},
+			],
+			cacheKey,
+			bootOptions
+		)
 
-		if (cacheKey && testUtil.isCacheEnabled()) {
-			this.cacheCli(cacheKey, cli, settingsFile, settingsObject)
-		}
-
-		this.cleanCachedSkillDir()
-
+		this.cwd = cwd
 		return cli
-	}
-
-	private static cacheCli(
-		cacheKey: string,
-		cli: ICli,
-		settingsFile: string | undefined,
-		settingsObject: Record<string, any>
-	) {
-		this.installedSkills[cacheKey] = {
-			cwd: this.cwd,
-			cli,
-		}
-
-		if (settingsFile) {
-			if (!settingsObject.tmpDirs) {
-				settingsObject.tmpDirs = {}
-			}
-
-			if (!settingsObject.tmpDirs[cacheKey]) {
-				settingsObject.tmpDirs[cacheKey] = this.cwd
-				diskUtil.createDir(pathUtil.dirname(settingsFile))
-				diskUtil.writeFile(
-					settingsFile,
-					JSON.stringify(settingsObject, null, 2)
-				)
-			}
-		}
-	}
-
-	private static cleanCachedSkillDir() {
-		const dirs = [
-			this.resolveHashSprucePath(),
-			this.resolvePath('src', 'schemas'),
-		]
-
-		dirs.forEach((dir) => {
-			if (diskUtil.doesFileExist(dir)) {
-				diskUtil.deleteDir(dir)
-				diskUtil.createDir(dir)
-			}
-		})
-	}
-
-	private static resetCachedSkillDir() {
-		const path = this.resolvePath()
-		diskUtil.deleteDir(path)
-		diskUtil.createDir(path)
 	}
 }

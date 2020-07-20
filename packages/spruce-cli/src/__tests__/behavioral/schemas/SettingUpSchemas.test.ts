@@ -30,7 +30,6 @@ export default class SettingUpSchemasTests extends AbstractSchemaTest {
 
 		assert.doesInclude(contents, '@sprucelabs/schema')
 
-		// does the tsconfig have the right values?
 		const tsConfig = tsConfigUtil.readConfig(this.cwd)
 
 		assert.isEqualDeep(tsConfig['compilerOptions']['paths'], {
