@@ -35,7 +35,6 @@
 		"clean.all": "rm -rf build/ && rm -rf node_modules/",
 		"lint": "eslint '**/*.ts' && npm run lint.tsc",
 		"lint.tsc": "tsc --noEmit",
-		"lint.all": "eslint '**/*.ts' && npm run lint.tsc",
 		"lint.fix": "eslint --fix '**/*.ts'",
 		"lint.watch": "chokidar 'src/**/*' '../spruce-templates/src/**' -c 'npm run lint.tsc'",
 		"release": "semantic-release",
