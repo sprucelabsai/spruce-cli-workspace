@@ -1,7 +1,9 @@
-import { SchemaDefinitionValues, ISchemaDefinition } from '@sprucelabs/schema'
+import {
+	SchemaDefinitionValues,
+	buildSchemaDefinition,
+} from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
-import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
 import SchemaGenerator from '../../../generators/SchemaGenerator'
 import diskUtil from '../../../utilities/disk.utility'
@@ -12,60 +14,43 @@ import {
 	syncSchemasActionOptionsDefinition,
 } from './SyncAction'
 
-type NamedTemplateItem = SpruceSchemas.Local.NamedTemplateItem.IDefinition
-
-export interface ICreateSchemaActionDefinition extends ISchemaDefinition {
-	id: 'createSchemaAction'
-	name: 'Create schema'
-	description: 'Create the builder to a fresh new schema!'
+const createSchemaActionDefinition = buildSchemaDefinition({
+	id: 'createSchemaAction',
+	name: 'Create schema',
+	description: 'Create the builder to a fresh new schema!',
 	fields: {
 		destinationDir: {
-			type: FieldType.Text
-			label: 'Destination directory'
-			defaultValue: 'src/schemas'
-			isRequired: true
-		}
-		lookupDir: ISyncSchemaActionDefinition['fields']['lookupDir']
-		addonsLookupDir: ISyncSchemaActionDefinition['fields']['addonsLookupDir']
-		typesDestinationDir: ISyncSchemaActionDefinition['fields']['typesDestinationDir']
-		nameReadable: NamedTemplateItem['fields']['nameReadable']
-		namePascal: NamedTemplateItem['fields']['namePascal']
-		nameCamel: NamedTemplateItem['fields']['nameCamel']
-		description: NamedTemplateItem['fields']['description']
-	}
-}
+			type: FieldType.Text,
+			label: 'Destination directory',
+			hint: "Where I'll save the new schema builder.",
+			defaultValue: 'src/schemas',
+			isRequired: true,
+		},
+		addonsLookupDir: syncSchemasActionOptionsDefinition.fields.addonsLookupDir,
+		lookupDir: syncSchemasActionOptionsDefinition.fields.lookupDir,
+		typesDestinationDir:
+			syncSchemasActionOptionsDefinition.fields.typesDestinationDir,
+		nameReadable: namedTemplateItemDefinition.fields.nameReadable,
+		namePascal: namedTemplateItemDefinition.fields.namePascal,
+		nameCamel: namedTemplateItemDefinition.fields.nameCamel,
+		description: namedTemplateItemDefinition.fields.description,
+	},
+})
+
+type ICreateSchemaActionDefinition = typeof createSchemaActionDefinition
 
 export default class CreateAction extends AbstractFeatureAction<
 	ICreateSchemaActionDefinition
 > {
 	public name = 'create'
-	public optionsDefinition: ICreateSchemaActionDefinition = {
-		id: 'createSchemaAction',
-		name: 'Create schema',
-		description: 'Create the builder to a fresh new schema!',
-		fields: {
-			destinationDir: {
-				type: FieldType.Text,
-				label: 'Destination directory',
-				defaultValue: 'src/schemas',
-				isRequired: true,
-			},
-			addonsLookupDir:
-				syncSchemasActionOptionsDefinition.fields.addonsLookupDir,
-			lookupDir: syncSchemasActionOptionsDefinition.fields.lookupDir,
-			typesDestinationDir:
-				syncSchemasActionOptionsDefinition.fields.typesDestinationDir,
-			nameReadable: namedTemplateItemDefinition.fields.nameReadable,
-			namePascal: namedTemplateItemDefinition.fields.namePascal,
-			nameCamel: namedTemplateItemDefinition.fields.nameCamel,
-			description: namedTemplateItemDefinition.fields.description,
-		},
-	}
+	public optionsDefinition = createSchemaActionDefinition
 
 	public async execute(
 		options: SchemaDefinitionValues<ICreateSchemaActionDefinition>
 	) {
-		const normalizedOptions = this.validateAndNormalizeOptions(options)
+		const normalizedOptions = this.validateAndNormalizeOptions(
+			options
+		) as SchemaDefinitionValues<ICreateSchemaActionDefinition>
 
 		const {
 			destinationDir,

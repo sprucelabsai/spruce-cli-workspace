@@ -5,7 +5,7 @@ import { CORE_SCHEMA_VERSION } from '../../constants'
 const profileImageDefinition: ISchemaDefinition = {
 	id: 'profileImage',
 	name: 'Profile Image Sizes',
-	version: CORE_SCHEMA_VERSION.constVal,
+	version: CORE_SCHEMA_VERSION.dirValue,
 	fields: {
 		profile60: {
 			label: '60x60',
@@ -34,7 +34,7 @@ const personDefinition: ISchemaDefinition = {
 	id: 'person',
 	name: 'Person',
 	description: 'A human being.',
-	version: CORE_SCHEMA_VERSION.constVal,
+	version: CORE_SCHEMA_VERSION.dirValue,
 	fields: {
 		id: {
 			label: 'Id',

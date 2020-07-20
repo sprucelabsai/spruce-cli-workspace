@@ -13,6 +13,6 @@ run(
 	})
 	.catch((e) => {
 		const term = new TerminalInterface(process.cwd())
-		term.handleError(e)
+		term.renderError(e)
 		process.exit(1)
 	})

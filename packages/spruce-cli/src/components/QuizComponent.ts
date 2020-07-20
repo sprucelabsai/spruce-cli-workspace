@@ -8,7 +8,7 @@ import chalk from 'chalk'
 import { shuffle } from 'lodash'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import SpruceError from '../errors/SpruceError'
-import TerminalInterface from '../interfaces/TerminalInterface'
+import { IGraphicsInterface } from '../types/cli.types'
 import FormComponent, {
 	IFormOptions,
 	IFormPresentationOptions,
@@ -114,7 +114,7 @@ export default class QuizComponent<
 	Q extends IQuizQuestions
 > {
 	public formBuilder: FormComponent<T>
-	public term: TerminalInterface
+	public term: IGraphicsInterface
 	public randomizeQuestions = true
 	public originalQuestions: IQuizQuestions
 	public lastResults?: QuizPresentationResults<Q>
@@ -239,7 +239,7 @@ export default class QuizComponent<
 		}
 
 		term.clear()
-		term.hero(headline ?? 'Quiz results!')
+		term.renderHero(headline ?? 'Quiz results!')
 
 		const testResults: Record<string, string> = {}
 
@@ -279,14 +279,16 @@ export default class QuizComponent<
 			}
 		})
 
-		term.object(testResults)
+		term.renderObject(testResults)
 
-		term.writeLn(`# questions: ${results.totalQuestions}`)
-		term.writeLn(`# correct: ${results.totalCorrect}`)
+		term.renderLine(`# questions: ${results.totalQuestions}`)
+		term.renderLine(`# correct: ${results.totalCorrect}`)
 
-		term.headline(`Your score: ${(results.percentCorrect * 100).toFixed(1)}%`)
+		term.renderHeadline(
+			`Your score: ${(results.percentCorrect * 100).toFixed(1)}%`
+		)
 
-		await term.wait()
+		await term.waitForEnter()
 	}
 
 	/** Takes questions and builds a schema */

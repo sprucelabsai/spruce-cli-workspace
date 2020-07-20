@@ -1,13 +1,12 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import readline from 'readline'
 import chokidar, { FSWatcher } from 'chokidar'
 import { Command } from 'commander'
 import _ from 'lodash'
 import minimatch from 'minimatch'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
-import { ITerminalEffect } from '../interfaces/TerminalInterface'
 import log from '../singletons/log'
 import WatcherStore, { IWatchers } from '../stores/WatcherStore'
+import { IGraphicsTextEffect } from '../types/cli.types'
 import AbstractCommand, { ICommandOptions } from './AbstractCommand'
 
 enum WatchAction {
@@ -64,10 +63,13 @@ export default class WatchCommand extends AbstractCommand {
 		process.stdin.setRawMode(true)
 		process.stdin.resume()
 	}
-	private showStatus = (lines?: string[], lineEffects?: ITerminalEffect[]) => {
+	private showStatus = (
+		lines?: string[],
+		lineEffects?: IGraphicsTextEffect[]
+	) => {
 		this.resetReadline()
 		this.term.clear()
-		this.term.section({
+		this.term.renderSection({
 			headline: 'Spruce Watcher',
 			lines: [
 				'Use these commands:',
@@ -80,7 +82,7 @@ export default class WatchCommand extends AbstractCommand {
 		})
 
 		if (lines) {
-			this.term.writeLns(lines, lineEffects)
+			this.term.renderLines(lines, lineEffects)
 		}
 	}
 	/** Loads the watchers and starts watching anything new */
@@ -119,15 +121,15 @@ export default class WatchCommand extends AbstractCommand {
 			const results = await Promise.allSettled(promises)
 			await this.term.stopLoading()
 			const lines: string[] = []
-			const lineEffects: ITerminalEffect[] = []
+			const lineEffects: IGraphicsTextEffect[] = []
 			results.forEach((result) => {
 				if (result.status === 'fulfilled') {
 					lines.push(result.value.stdout)
 				} else if (result.status === 'rejected') {
 					lines.push('Error generating autoloader')
 					lines.push(result.reason)
-					lineEffects.push(ITerminalEffect.Bold)
-					lineEffects.push(ITerminalEffect.Red)
+					lineEffects.push(IGraphicsTextEffect.Bold)
+					lineEffects.push(IGraphicsTextEffect.Red)
 				}
 			})
 			this.showStatus(lines, lineEffects)
@@ -238,7 +240,7 @@ export default class WatchCommand extends AbstractCommand {
 			lines.push('\n')
 		})
 
-		this.term.section({
+		this.term.renderSection({
 			headline: 'Current watchers',
 			lines,
 		})

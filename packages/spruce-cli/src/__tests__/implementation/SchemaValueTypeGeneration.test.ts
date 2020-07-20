@@ -78,7 +78,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 
 	@test(
 		'generates person.firstName value type (string)',
-		`${CORE_NAMESPACE}.person.${CORE_SCHEMA_VERSION.constVal}.firstName`,
+		`${CORE_NAMESPACE}.person.${CORE_SCHEMA_VERSION.constValue}.firstName`,
 		{
 			type: 'string',
 			value: 'string',
@@ -87,7 +87,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	)
 	@test(
 		'generates personLocation.roles value types (select)',
-		`${CORE_NAMESPACE}.personLocation.${CORE_SCHEMA_VERSION.constVal}.roles`,
+		`${CORE_NAMESPACE}.personLocation.${CORE_SCHEMA_VERSION.constValue}.roles`,
 		{
 			type: '("owner" | "groupManager" | "manager" | "teammate" | "guest")',
 			value: '("owner" | "groupManager" | "manager" | "teammate" | "guest")',
@@ -97,16 +97,16 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	)
 	@test(
 		'generates personLocation.person value type (schema)',
-		`${CORE_NAMESPACE}.personLocation.${CORE_SCHEMA_VERSION.constVal}.person`,
+		`${CORE_NAMESPACE}.personLocation.${CORE_SCHEMA_VERSION.constValue}.person`,
 		{
-			type: `SpruceSchemas.${CORE_NAMESPACE}.IPerson.${CORE_SCHEMA_VERSION.constVal}`,
+			type: `SpruceSchemas.${CORE_NAMESPACE}.IPerson.${CORE_SCHEMA_VERSION.constValue}`,
 			value: '[personDefinition]',
-			definitionType: `SpruceSchemas.${CORE_NAMESPACE}.Person.${CORE_SCHEMA_VERSION.constVal}.IDefinition[]`,
+			definitionType: `SpruceSchemas.${CORE_NAMESPACE}.Person.${CORE_SCHEMA_VERSION.constValue}.IDefinition[]`,
 		}
 	)
 	@test(
 		'generates acl dynamic field',
-		`${CORE_NAMESPACE}.acl.${CORE_SCHEMA_VERSION.constVal}.__dynamicKeySignature`,
+		`${CORE_NAMESPACE}.acl.${CORE_SCHEMA_VERSION.constValue}.__dynamicKeySignature`,
 		{
 			type: 'string[]',
 			value: 'string[]',

@@ -7,7 +7,7 @@ import { roleSelectChoices } from './role.definition'
 const groupDefinition: ISchemaDefinition = {
 	id: 'job',
 	name: 'Job',
-	version: CORE_SCHEMA_VERSION.constVal,
+	version: CORE_SCHEMA_VERSION.dirValue,
 	description:
 		'A position at a company. The answer to the question; What is your job?',
 	fields: {

@@ -85,15 +85,18 @@ export default abstract class AbstractFeature<
 
 	public Action(code: string): IFeatureAction {
 		if (!this.actionFactory) {
-			if (this.actionsDir) {
-				this.actionFactory = new FeatureActionFactory({
-					...this.actionFactoryOptions,
-					actionsDir: this.actionsDir,
-				})
+			if (!this.actionsDir) {
+				throw new Error(
+					`${this.code} Feature does not have an actions dir configured, make sure your Feature class has an actionsDir field.`
+				)
 			}
+			this.actionFactory = new FeatureActionFactory({
+				...this.actionFactoryOptions,
+				actionsDir: this.actionsDir,
+			})
 
 			if (!this.actionFactory) {
-				throw new Error(`Feature does not have factory`)
+				throw new Error(`Feature does not have an action factory!`)
 			}
 		}
 

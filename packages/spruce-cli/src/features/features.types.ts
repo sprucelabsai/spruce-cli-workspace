@@ -8,7 +8,7 @@ import CircleCIFeature from './CircleCIFeature'
 import ErrorFeature from './ErrorFeature'
 import FeatureInstaller from './FeatureInstaller'
 import SchemaFeature from './schema/SchemaFeature'
-import SkillFeature from './SkillFeature'
+import SkillFeature from './skill/SkillFeature'
 import TestFeature from './TestFeature'
 import VsCodeFeature from './VsCodeFeature'
 
@@ -40,6 +40,22 @@ export type InstallFeature =
 			code: 'schema'
 			options?: undefined
 	  }
+	| {
+			code: 'circleCi'
+			options?: undefined
+	  }
+	| {
+			code: 'error'
+			options?: undefined
+	  }
+	| {
+			code: 'test'
+			options?: undefined
+	  }
+	| {
+			code: 'vsCode'
+			options?: undefined
+	  }
 
 export interface IInstallFeatureOptions {
 	features: InstallFeature[]
@@ -60,11 +76,11 @@ export interface IFeatureActionExecuteResponse {
 }
 
 export interface IFeatureAction<
-	S extends ISchemaDefinition = ISchemaDefinition
+	S extends ISchemaDefinition | undefined = ISchemaDefinition
 > {
 	name: string
 	optionsDefinition?: S
 	execute: (
-		options: SchemaDefinitionValues<S>
+		options: S extends ISchemaDefinition ? SchemaDefinitionValues<S> : undefined
 	) => Promise<IFeatureActionExecuteResponse>
 }

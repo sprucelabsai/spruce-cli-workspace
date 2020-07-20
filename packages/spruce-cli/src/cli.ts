@@ -19,9 +19,10 @@ import ServiceFactory, { Service } from './factories/ServiceFactory'
 import FeatureCommandAttacher from './features/FeatureCommandAttacher'
 import FeatureInstaller from './features/FeatureInstaller'
 import FeatureInstallerFactory from './features/FeatureInstallerFactory'
+import TerminalInterface from './interfaces/TerminalInterface'
 import log from './singletons/log'
 import StoreFactory from './stores/StoreFactory'
-import { AuthedAs } from './types/cli.types'
+import { AuthedAs, IGraphicsInterface } from './types/cli.types'
 import diskUtil from './utilities/disk.utility'
 
 interface IHealthCheckResults {
@@ -39,98 +40,53 @@ export interface ICli {
 	checkHealth(): Promise<IHealthCheckResults>
 }
 
-export async function boot(options?: {
+export interface ICliBootOptions {
 	cwd?: string
 	program?: CommanderStatic['program']
-}) {
-	const program = options?.program
+	graphicsInterface?: IGraphicsInterface
+}
 
-	// TODO pull in without including package.json
-	// program?.version(pkg.version).description(pkg.description)
-	program?.option('--no-color', 'Disable color output in the console')
-	program?.option(
-		'-d, --directory <path>',
-		'The working directory to execute the command'
-	)
+async function login(storeFactory: StoreFactory, mercury: Mercury) {
+	const remoteStore = storeFactory.Store('remote')
+	const remoteUrl = remoteStore.getRemoteUrl()
 
-	const cwd = options?.cwd ?? process.cwd()
+	// Who is logged in?
+	const userStore = storeFactory.Store('user')
+	const loggedInUser = userStore.getLoggedInUser()
+	const skillStore = storeFactory.Store('skill')
+	const loggedInSkill = skillStore.getLoggedInSkill()
 
-	program?.on('option:directory', function () {
-		if (program?.directory) {
-			const newCwd = diskUtil.resolvePath(cwd, program.directory)
-			log.trace(`CWD updated: ${newCwd}`)
-		}
-	})
+	// Build mercury creds
+	let creds: MercuryAuth | undefined
+	const authType = remoteStore.authType
 
-	// const term = new TerminalInterface(cwd)
-	const mercury = new Mercury()
-	const serviceFactory = new ServiceFactory(mercury)
-	const storeFactory = new StoreFactory(cwd, mercury, serviceFactory)
-
-	const featureInstaller = FeatureInstallerFactory.WithAllFeatures({
-		cwd,
-		serviceFactory,
-		storeFactory,
-	})
-
-	// attach features
-	if (program) {
-		const attacher = new FeatureCommandAttacher(program)
-		const codes = FeatureInstallerFactory.featureCodes
-
-		for (const code of codes) {
-			const feature = featureInstaller.getFeature(code)
-			await attacher.attachFeature(feature)
-		}
-
-		// Alphabetical sort of help output
-		program.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
-
-		// Error on unknown commands
-		program.action((command, args) => {
-			throw new SpruceError({ code: ErrorCode.InvalidCommand, args })
-		})
+	switch (authType) {
+		case AuthedAs.User:
+			creds = loggedInUser && { token: loggedInUser.token }
+			break
+		case AuthedAs.Skill:
+			creds = loggedInSkill && {
+				id: loggedInSkill.id,
+				apiKey: loggedInSkill.apiKey,
+			}
+			break
 	}
 
-	// Setup mercury if logged in
-	const isInstalled = await featureInstaller.isInstalled('skill')
-
-	if (isInstalled) {
-		const remoteStore = storeFactory.Store('remote')
-		const remoteUrl = remoteStore.getRemoteUrl()
-
-		// Who is logged in?
-		const userStore = storeFactory.Store('user')
-		const loggedInUser = userStore.getLoggedInUser()
-		const skillStore = storeFactory.Store('skill')
-		const loggedInSkill = skillStore.getLoggedInSkill()
-
-		// Build mercury creds
-		let creds: MercuryAuth | undefined
-		const authType = remoteStore.authType
-
-		switch (authType) {
-			case AuthedAs.User:
-				creds = loggedInUser && { token: loggedInUser.token }
-				break
-			case AuthedAs.Skill:
-				creds = loggedInSkill && {
-					id: loggedInSkill.id,
-					apiKey: loggedInSkill.apiKey,
-				}
-				break
-		}
-
-		// Mercury connection options
-		const connectOptions: IMercuryConnectOptions = {
-			spruceApiUrl: remoteUrl,
-			credentials: creds,
-		}
-
-		await mercury.connect(connectOptions)
+	// Mercury connection options
+	const connectOptions: IMercuryConnectOptions = {
+		spruceApiUrl: remoteUrl,
+		credentials: creds,
 	}
 
-	const cli: ICli = {
+	await mercury.connect(connectOptions)
+}
+
+function Cli(
+	featureInstaller: FeatureInstaller,
+	serviceFactory: ServiceFactory,
+	cwd: string
+): ICli {
+	return {
 		installFeatures: async (options) => {
 			return featureInstaller.install(options)
 		},
@@ -178,6 +134,71 @@ export async function boot(options?: {
 			}
 		},
 	}
+}
+
+export async function boot(options?: ICliBootOptions) {
+	const program = options?.program
+
+	// TODO pull in without including package.json
+	// program?.version(pkg.version).description(pkg.description)
+	program?.option('--no-color', 'Disable color output in the console')
+	program?.option(
+		'-d, --directory <path>',
+		'The working directory to execute the command'
+	)
+
+	let cwd = options?.cwd ?? process.cwd()
+
+	program?.on('option:directory', function () {
+		if (program?.directory) {
+			const newCwd = diskUtil.resolvePath(cwd, program.directory)
+			log.trace(`CWD updated: ${newCwd}`)
+			cwd = newCwd
+		}
+	})
+
+	const mercury = new Mercury()
+	const serviceFactory = new ServiceFactory(mercury)
+	const storeFactory = new StoreFactory(cwd, mercury, serviceFactory)
+
+	const featureInstaller = FeatureInstallerFactory.WithAllFeatures({
+		cwd,
+		serviceFactory,
+		storeFactory,
+	})
+
+	// attach features
+	if (program) {
+		const terminal = options?.graphicsInterface ?? new TerminalInterface(cwd)
+		const attacher = new FeatureCommandAttacher(
+			program,
+			featureInstaller,
+			terminal
+		)
+		const codes = FeatureInstallerFactory.featureCodes
+
+		for (const code of codes) {
+			const feature = featureInstaller.getFeature(code)
+			await attacher.attachFeature(feature)
+		}
+
+		// Alphabetical sort of help output
+		program.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
+
+		// Error on unknown commands
+		program.action((command, args) => {
+			throw new SpruceError({ code: ErrorCode.InvalidCommand, args })
+		})
+	}
+
+	// Setup mercury if logged in
+	const isInstalled = await featureInstaller.isInstalled('skill')
+
+	if (isInstalled) {
+		await login(storeFactory, mercury)
+	}
+
+	const cli: ICli = Cli(featureInstaller, serviceFactory, cwd)
 
 	return cli
 }
@@ -193,7 +214,7 @@ export async function run(
 	// Const commands = []
 	if (debugging) {
 		// eslint-disable-next-line no-debugger
-		debugger // (breakpoints and debugger works after this one is missed)
+		// debugger // (breakpoints and debugger works after this one is missed)
 		log.trace('Extra debugger dropped in so future debuggers work... 🤷‍')
 	}
 

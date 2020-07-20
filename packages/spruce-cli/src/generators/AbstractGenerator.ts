@@ -1,6 +1,6 @@
 import pathUtil from 'path'
 import { Templates } from '@sprucelabs/spruce-templates'
-import { IGeneratedFile, GeneratedFileAction } from '../types/cli.types'
+import { IGeneratedFile } from '../types/cli.types'
 import diskUtil from '../utilities/disk.utility'
 
 export interface IGeneratorOptions {
@@ -25,14 +25,14 @@ export default abstract class AbstractGenerator {
 		const myResults: GenerationResults = results ?? []
 
 		const name = pathUtil.basename(destination)
-		let action = GeneratedFileAction.Skipped
+		let action: IGeneratedFile['action'] = 'skipped'
 
 		if (!diskUtil.doesFileExist(destination)) {
 			diskUtil.writeFile(destination, contents)
-			action = GeneratedFileAction.Generated
+			action = 'generated'
 		} else if (diskUtil.isFileDifferent(destination, contents)) {
 			diskUtil.writeFile(destination, contents)
-			action = GeneratedFileAction.Updated
+			action = 'updated'
 		}
 
 		myResults.push({ name, description, path: destination, action })

@@ -8,7 +8,7 @@ import { CORE_SCHEMA_VERSION } from '../../constants'
 const roleDefinition: ISchemaDefinition = {
 	id: 'role',
 	name: 'Role',
-	version: CORE_SCHEMA_VERSION.constVal,
+	version: CORE_SCHEMA_VERSION.dirValue,
 	fields: {
 		slug: {
 			label: 'Slug',

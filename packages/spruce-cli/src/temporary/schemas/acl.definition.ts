@@ -5,7 +5,7 @@ import { CORE_SCHEMA_VERSION } from '../../constants'
 const aclDefinition: ISchemaDefinition = {
 	id: 'acl',
 	name: 'Access control list lookup table',
-	version: CORE_SCHEMA_VERSION.constVal,
+	version: CORE_SCHEMA_VERSION.dirValue,
 	dynamicKeySignature: {
 		type: FieldType.Text,
 		isArray: true,

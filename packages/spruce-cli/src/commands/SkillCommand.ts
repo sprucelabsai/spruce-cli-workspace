@@ -46,7 +46,7 @@ export default class SkillCommand extends AbstractCommand {
 		const isInstalled = await this.featureManager.isInstalled('skill')
 
 		if (isInstalled && !cmd.silent) {
-			this.term.info('Nothing to do. A skill is already installed here.')
+			this.term.renderLine('Nothing to do. A skill is already installed here.')
 			return
 		}
 
@@ -89,16 +89,18 @@ export default class SkillCommand extends AbstractCommand {
 	public switch = async () => {
 		const loggedInUser = this.userStore.getLoggedInUser()
 		if (!loggedInUser) {
-			this.term.fatal('You are not logged in as a person!')
-			this.term.hint('Try spruce user:login')
+			this.term.renderWarning('You are not logged in as a person!')
+			this.term.renderHint('Try spruce user:login')
 			return
 		}
 
 		const skills = await this.skillStore.getSkills(loggedInUser.token)
 
 		if (skills.length === 0) {
-			this.term.warn(`You don't have any skills tied to you as a developer.`)
-			this.term.hint('Try spruce skill:create to get started')
+			this.term.renderWarning(
+				`You don't have any skills tied to you as a developer.`
+			)
+			this.term.renderHint('Try spruce skill:create to get started')
 			return
 		}
 
