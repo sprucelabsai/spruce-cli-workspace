@@ -21,7 +21,9 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async canBuildFileWithoutCrashing() {
-		const createSchema = await this.getCreateSchemaActionAndSetCwd()
+		const createSchema = await this.getCreateSchemaActionAndSetCwd(
+			'creating-a-new-schema-builder'
+		)
 
 		const response = await createSchema.execute({
 			nameReadable: 'Test schema!',
@@ -63,7 +65,9 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 	}
 
 	private static async buildTestSchema() {
-		const action = await this.getCreateSchemaActionAndSetCwd('build-valid-file')
+		const action = await this.getCreateSchemaActionAndSetCwd(
+			'creating-a-new-schema-builder'
+		)
 
 		const response = await action.execute({
 			nameReadable: 'Test schema!',

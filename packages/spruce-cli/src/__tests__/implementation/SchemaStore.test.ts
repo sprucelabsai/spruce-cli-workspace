@@ -33,7 +33,7 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async fetchesLocalSchemasToo() {
-		await this.syncSchemasAndSetCwd('local-schema-loading')
+		await this.syncSchemasAndSetCwd('schema-store')
 
 		const schemasDir = this.resolvePath('src', 'schemas')
 		diskUtil.copyDir(this.resolveTestPath('testSchemas'), schemasDir)
