@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.6.23](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.6.22...v10.6.23) (2020-07-21)
+
+
+### Bug Fixes
+
+* try runInBand instead of -w 1 ([8d60b77](https://github.com/sprucelabsai/spruce-cli-workspace/commit/8d60b77))
+
+
+
+
+
 ## [10.6.22](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.6.21...v10.6.22) (2020-07-21)
 
 

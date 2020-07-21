@@ -3,7 +3,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"version": "10.6.22",
+	"version": "10.6.23",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -49,7 +49,7 @@
 		"@sprucelabs/log": "^10.2.27",
 		"@sprucelabs/mercury": "^10.5.22",
 		"@sprucelabs/schema": "^4.0.28",
-		"@sprucelabs/spruce-templates": "^10.6.22",
+		"@sprucelabs/spruce-templates": "^10.6.23",
 		"@types/promise.allsettled": "^1.0.3",
 		"@types/uuid": "^8.0.0",
 		"cfonts": "^2.8.6",
