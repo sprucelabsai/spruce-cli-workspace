@@ -24,7 +24,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 
 	@test()
 	protected static async syncsSchemasGeneratesTypesFile() {
-		const cli = await this.installSchemasAndSetCwd('in-sync')
+		const cli = await this.installSchemasAndSetCwd('keeps-schemas-in-sync')
 		const results = await cli.getFeature('schema').Action('sync').execute({})
 
 		assert.isAbove(results.files?.length, 0)
@@ -41,7 +41,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 
 	@test()
 	protected static async syncSchemasUpdatesTypesFile() {
-		const cli = await this.syncSchemasAndSetCwd('in-sync')
+		const cli = await this.syncSchemasAndSetCwd('keeps-schemas-in-sync')
 		const results = await cli.getFeature('schema').Action('sync').execute({})
 
 		assert.isAbove(results.files?.length, 0)
@@ -50,7 +50,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 
 	@test()
 	protected static async makeSureSchemaTypesAreVersioned() {
-		await this.syncSchemasAndSetCwd('in-sync')
+		await this.syncSchemasAndSetCwd('keeps-schemas-in-sync')
 
 		const typesFile = this.schemaTypesFile
 		const typesContents = diskUtil.readFile(typesFile)
@@ -66,7 +66,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 
 	@test()
 	protected static async schemaTypesVileIsValid() {
-		await this.syncSchemasAndSetCwd('in-sync')
+		await this.syncSchemasAndSetCwd('keeps-schemas-in-sync')
 
 		const typesFile = this.schemaTypesFile
 		await this.Service(Service.TypeChecker).check(typesFile)
@@ -74,7 +74,7 @@ export default class CanSyncSchemas extends AbstractSchemaTest {
 
 	@test()
 	protected static async schemasStayInSyncAsFilesAreMoved() {
-		const cli = await this.syncSchemasAndSetCwd('in-sync')
+		const cli = await this.syncSchemasAndSetCwd('keeps-schemas-in-sync')
 		const version = versionUtil.generateVersion()
 		const typeChecker = this.Service(Service.TypeChecker)
 		const createAction = cli.getFeature('schema').Action('create')

@@ -19,7 +19,7 @@ export default class HandlesBadLocalSchemasGracefullyTest extends AbstractSchema
 
 	@test()
 	protected static async storeSkipsBadLocalSchemas() {
-		await this.syncSchemasAndSetCwd('bad-local-tests')
+		await this.syncSchemasAndSetCwd('handles-bad-local-schemas-gracefully')
 		this.moveSchemasIntoPlace()
 
 		const store = this.Store('schema')

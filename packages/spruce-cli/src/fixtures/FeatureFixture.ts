@@ -4,17 +4,17 @@ import { InstallFeature } from '../features/features.types'
 import diskUtil from '../utilities/disk.utility'
 import testUtil from '../utilities/test.utility'
 
-export interface IInstallFeatureResults {
+export interface ICachedCli {
 	cli: ICli
 	cwd: string
 }
 
 export default class FeatureFixture {
 	private cwd: string
-	private installedSkills: Record<string, IInstallFeatureResults> = {}
+	private installedSkills: Record<string, ICachedCli> = {}
 
-	public constructor(defaultCwd: string) {
-		this.cwd = defaultCwd
+	public constructor(cwd: string) {
+		this.cwd = cwd
 	}
 
 	private async Cli(options?: ICliBootOptions) {
@@ -30,7 +30,7 @@ export default class FeatureFixture {
 		features: InstallFeature[],
 		cacheKey?: string,
 		bootOptions?: ICliBootOptions
-	): Promise<IInstallFeatureResults> {
+	): Promise<ICli> {
 		if (
 			cacheKey &&
 			this.installedSkills[cacheKey] &&
@@ -38,31 +38,16 @@ export default class FeatureFixture {
 		) {
 			this.cleanCachedSkillDir()
 
-			return this.installedSkills[cacheKey]
+			return this.installedSkills[cacheKey].cli
 		}
 
 		let alreadyInstalled = false
 		let settingsObject: Record<string, any> = {}
-		let settingsFile
 
 		if (cacheKey && testUtil.isCacheEnabled()) {
-			settingsFile = diskUtil.resolveHashSprucePath(
-				__dirname,
-				'tmp',
-				'cli-workspace-tests.json'
-			)
-
-			if (diskUtil.doesFileExist(settingsFile)) {
-				settingsObject = JSON.parse(diskUtil.readFile(settingsFile))
-				if (settingsObject?.tmpDirs?.[cacheKey]) {
-					if (testUtil.shouldClearCache()) {
-						this.resetCachedSkillDir()
-					} else {
-						alreadyInstalled = true
-					}
-					this.cwd = settingsObject.tmpDirs[cacheKey]
-				}
-			}
+			const cachedResults = this.loadCachedSkill(cacheKey)
+			alreadyInstalled = cachedResults.alreadyInstalled
+			settingsObject = cachedResults.settingsObject
 		}
 
 		const cli = await this.Cli(bootOptions)
@@ -74,12 +59,41 @@ export default class FeatureFixture {
 		}
 
 		if (cacheKey && testUtil.isCacheEnabled()) {
-			this.cacheCli(cacheKey, cli, settingsFile, settingsObject)
+			this.cacheCli(cacheKey, cli, settingsObject)
 		}
 
 		this.cleanCachedSkillDir()
 
-		return { cli, cwd: this.cwd }
+		return cli
+	}
+
+	private loadCachedSkill(cacheKey: string) {
+		const settingsFile = this.getSettingsFilePath()
+
+		if (!diskUtil.doesFileExist(settingsFile)) {
+			return { settingsObject: {}, alreadyInstalled: false }
+		}
+		let alreadyInstalled = false
+		const settingsObject = JSON.parse(diskUtil.readFile(settingsFile))
+
+		if (settingsObject?.tmpDirs?.[cacheKey]) {
+			if (testUtil.shouldClearCache()) {
+				this.resetCachedSkillDir()
+			} else {
+				alreadyInstalled = true
+			}
+
+			diskUtil.copyDir(settingsObject.tmpDirs[cacheKey], this.cwd)
+		}
+		return { settingsObject, alreadyInstalled }
+	}
+
+	private getSettingsFilePath() {
+		return diskUtil.resolveHashSprucePath(
+			__dirname,
+			'tmp',
+			'cli-workspace-tests.json'
+		)
 	}
 
 	private resolveHashSprucePath(...filePath: string[]) {
@@ -108,9 +122,10 @@ export default class FeatureFixture {
 	private cacheCli(
 		cacheKey: string,
 		cli: ICli,
-		settingsFile: string | undefined,
 		settingsObject: Record<string, any>
 	) {
+		const settingsFile = this.getSettingsFilePath()
+
 		this.installedSkills[cacheKey] = {
 			cwd: this.cwd,
 			cli,
