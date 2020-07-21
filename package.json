@@ -22,7 +22,12 @@
 		"clean": "lerna run clean --parallel",
 		"clean.all": "lerna run clean && rm -rf node_modules; for d in packages/*/node_modules; do echo $d; rm -rf $d; done",
 		"arkit": "lerna run arkit",
-		"arkit.png": "lerna run arkit.png"
+		"arkit.png": "lerna run arkit.png",
+		"upgrade.all": "yarn upgrade.workspaces && yarn upgrade.base",
+		"upgrade.base": "yarn upgrade --latest && rm -f yarn.lock && yarn | true && yarn lint.fix || true",
+		"upgrade.workspaces": "yarn && for d in packages/*; do cd $d; yarn-upgrade-all; cd ../..; done",
+		"up": "yarn upgrade.all && yarn lint && yarn build && yarn test"
+
 	},
 	"dependencies": {},
 	"devDependencies": {
