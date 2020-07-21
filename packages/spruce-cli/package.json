@@ -138,6 +138,7 @@
 						"schemaPassesHealthCheck": "C6",
 						"builderFileValidates": "C7",
 						"schemasStayInSyncAsFilesAreMoved": "C8",
+						"installsSchemasIfNotInstalled": "C9",
 						"canGetLatestVersionBasedOnDir": "C16"
 					}
 				}
