@@ -8,7 +8,7 @@ export default class ErrorFeature extends AbstractFeature {
 		'Errors: Use schemas to define your errors and get great type checking!'
 
 	public dependencies: FeatureCode[] = ['schema']
-	public packages: INpmPackage[] = [
+	public packageDependencies: INpmPackage[] = [
 		{
 			name: '@sprucelabs/error',
 		},
