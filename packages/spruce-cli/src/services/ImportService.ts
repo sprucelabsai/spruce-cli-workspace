@@ -8,6 +8,7 @@ export default class ImportService extends CommandService {
 	private divider = '## SPRUCE-CLI DIVIDER ##'
 	private errorDivider = '## SPRUCE-CLI ERROR DIVIDER ##'
 
+	// eslint-disable-next-line @typescript-eslint/ban-types
 	public importAll = async <T extends {}>(file: string): Promise<T> => {
 		let defaultImported: T | undefined
 		if (!fs.existsSync(file)) {
@@ -76,6 +77,7 @@ export default class ImportService extends CommandService {
 		return defaultImported as T
 	}
 
+	// eslint-disable-next-line @typescript-eslint/ban-types
 	public importDefault = async <T extends {}>(file: string): Promise<T> => {
 		const imported: any = await this.importAll(file)
 		return imported.default as T
