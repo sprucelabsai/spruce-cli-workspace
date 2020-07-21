@@ -2181,10 +2181,10 @@
   resolved "https://registry.yarnpkg.com/@types/inflection/-/inflection-1.5.28.tgz#43d55e0d72cf333a2dffd9c4ec0407455a1b0931"
   integrity sha1-Q9VeDXLPMzot/9nE7AQHRVobCTE=
 
-"@types/inquirer@^6.5.0":
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/@types/inquirer/-/inquirer-6.5.0.tgz#b83b0bf30b88b8be7246d40e51d32fe9d10e09be"
-  integrity sha512-rjaYQ9b9y/VFGOpqBEXRavc3jh0a+e6evAbI31tMda8VlPaSy0AZJfXsvmIe3wklc7W6C3zCSfleuMXR7NOyXw==
+"@types/inquirer@^7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@types/inquirer/-/inquirer-7.3.0.tgz#a1233632ea6249f14eb481dae91138e747b85664"
+  integrity sha512-wcPs5jTrZYQBzzPlvUEzBcptzO4We2sijSvkBq8oAKRMJoH8PvrmP6QQnxLB5RScNUmRfujxA+ngxD4gk4xe7Q==
   dependencies:
     "@types/through" "*"
     rxjs "^6.4.0"
@@ -4193,9 +4193,9 @@ env-paths@^2.2.0:
   integrity sha512-6u0VYSCo/OW6IoD5WCLLy9JUGARbamfSavcNXry/eu8aHVFei6CD3Sw+VGX5alea1i9pgPHW0mbu6Xj0uBh7gA==
 
 envinfo@^7.3.1:
-  version "7.6.0"
-  resolved "https://registry.yarnpkg.com/envinfo/-/envinfo-7.6.0.tgz#8201bf6162b3afc372278992d0851d47d0567d33"
-  integrity sha512-Q28imaho8jwBach1iGj7qqQeStDV9z7ApPAg7WQKLEyvqHa0HcES++QOL7by+efgAnkXzK51MQPYgj/3I7s/dw==
+  version "7.7.0"
+  resolved "https://registry.yarnpkg.com/envinfo/-/envinfo-7.7.0.tgz#fbfa46d739dec0554ef40220cd91fb20f64c9698"
+  integrity sha512-XX0+kACx7HcIFhar/JjsDtDIVcC8hnzQO1Asehq+abs+v9MtzpUuujFb6eBTT4lF9j2Bh6d2XFngbFRryjUAeQ==
 
 err-code@^1.0.0:
   version "1.1.2"
@@ -5966,7 +5966,7 @@ is-windows@^1.0.0, is-windows@^1.0.1, is-windows@^1.0.2:
   resolved "https://registry.yarnpkg.com/is-windows/-/is-windows-1.0.2.tgz#d1850eb9791ecd18e6182ce12a30f396634bb19d"
   integrity sha512-eXK1UInq2bPmjyX6e3VHIzMLobc4J94i4AWn+Hpq3OU5KkrRC96OAcR3PRJ/pGu6m8TRnBHP9dkXQVsT/COVIA==
 
-is-wsl@^2.1.1:
+is-wsl@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/is-wsl/-/is-wsl-2.2.0.tgz#74a4c76e77ca9fd3f932f290c17ea326cd157271"
   integrity sha512-fKzAra0rGJUUBwGBgNkHZuToZcn+TtXHpeCgmkMJMMYx1sQDYaCSyjJBSCa2nH1DGm7s3n1oBnohoVTBaN7Lww==
@@ -7448,15 +7448,15 @@ node-modules-regexp@^1.0.0:
   integrity sha1-jZ2+KJZKSsVxLpExZCEHxx6Q7EA=
 
 node-notifier@^7.0.0:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/node-notifier/-/node-notifier-7.0.1.tgz#a355e33e6bebacef9bf8562689aed0f4230ca6f9"
-  integrity sha512-VkzhierE7DBmQEElhTGJIoiZa1oqRijOtgOlsXg32KrJRXsPy0NXFBqWGW/wTswnJlDCs5viRYaqWguqzsKcmg==
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/node-notifier/-/node-notifier-7.0.2.tgz#3a70b1b70aca5e919d0b1b022530697466d9c675"
+  integrity sha512-ux+n4hPVETuTL8+daJXTOC6uKLgMsl1RYfFv7DKRzyvzBapqco0rZZ9g72ZN8VS6V+gvNYHYa/ofcCY8fkJWsA==
   dependencies:
     growly "^1.3.0"
-    is-wsl "^2.1.1"
-    semver "^7.2.1"
+    is-wsl "^2.2.0"
+    semver "^7.3.2"
     shellwords "^0.1.1"
-    uuid "^7.0.3"
+    uuid "^8.2.0"
     which "^2.0.2"
 
 node-releases@^1.1.58:
@@ -9960,11 +9960,6 @@ uuid@^3.0.1, uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
-
-uuid@^7.0.3:
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-7.0.3.tgz#c5c9f2c8cf25dc0a372c4df1441c41f5bd0c680b"
-  integrity sha512-DPSke0pXhTZgoF/d+WSt2QaKMCFSfx7QegxEWT+JOuHF5aWrKEn0G+ztjuJg/gG8/ItK+rbPCD/yNv8yyih6Cg==
 
 uuid@^8.2.0:
   version "8.2.0"
