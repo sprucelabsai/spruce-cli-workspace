@@ -92,9 +92,9 @@ export default class SheetsReporterGoogleAdapter
 		const doc = new GoogleSpreadsheet(sheetId)
 
 		await doc.useServiceAccountAuth({
-			// eslint-disable-next-line @typescript-eslint/camelcase
+			// eslint-disable-next-line @typescript-eslint/naming-convention
 			client_email: this.serviceEmail,
-			// eslint-disable-next-line @typescript-eslint/camelcase
+			// eslint-disable-next-line @typescript-eslint/naming-convention
 			private_key: this.privateKey,
 		})
 

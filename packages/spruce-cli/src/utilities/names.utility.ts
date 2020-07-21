@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import path from 'path'
 import { Optional } from '@sprucelabs/schema'
 import inflection from 'inflection'
