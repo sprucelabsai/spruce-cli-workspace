@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.6.18](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.6.17...v10.6.18) (2020-07-21)
+
+
+### Bug Fixes
+
+* add yarn-upgrade-all dependency ([eb70ac9](https://github.com/sprucelabsai/spruce-cli-workspace/commit/eb70ac9))
+
+
+
+
+
 ## [10.6.17](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.6.16...v10.6.17) (2020-07-21)
 
 **Note:** Version bump only for package spruce-cli-workspace
