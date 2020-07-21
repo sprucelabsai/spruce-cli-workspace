@@ -57,7 +57,7 @@ jobs:
             git fetch --all
             git checkout master
             git reset --hard origin/master
-            git merge --no-ff ${CIRCLE_BRANCH} -m "[auto-merge] Upgrade Tests Passed"
+            git merge --no-ff ${CIRCLE_BRANCH} -m "chore(auto-upgrade): Upgrade Tests Passed [auto-merge]"
             git push origin
   npm_publish:
     docker:
@@ -115,7 +115,7 @@ jobs:
       - run:
           name: "Create PR"
           command: |
-            git commit -a -m "[chore] upgrade all [automated]"
+            git commit -a -m "chore(auto-upgrade): upgraded packages [upgrade-all]"
             git push --force origin $TARGETBRANCH
             git push --set-upstream origin $TARGETBRANCH
             echo "$(hub pull-request --base master --head $TARGETBRANCH -m 'Automated Package Upgrade' 2>&1)" |egrep "/pull/|already exists"
