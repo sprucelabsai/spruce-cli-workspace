@@ -19,7 +19,7 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 		bootOptions?: ICliBootOptions
 	) {
 		const fixture = new FeatureFixture(this.cwd)
-		const { cli, cwd } = await fixture.installFeatures(
+		const cli = await fixture.installFeatures(
 			[
 				{
 					code: 'skill',
@@ -36,7 +36,6 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 			bootOptions
 		)
 
-		this.cwd = cwd
 		return cli
 	}
 }
