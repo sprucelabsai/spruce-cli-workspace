@@ -42,6 +42,21 @@ jobs:
           key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
+      - run:
+          name: Check branch for auto-upgrade
+          command: |
+           if [[ ${CIRCLE_BRANCH} != "upgrade-"* ]]; then
+            circleci step halt
+           fi
+      - run:
+          name: Merge auto-upgrade into master
+          command: |
+            TARGETBRANCH=upgrade-$(date '+%Y-%m-%d')
+            git config --global user.email "$GIT_AUTHOR_EMAIL"
+            git config --global user.name "$GIT_AUTHOR_NAME"
+            git checkout master
+            git merge --no-ff $(TARGETBRANCH)
+            git push
   npm_publish:
     docker:
       - image: circleci/node:12
@@ -80,7 +95,7 @@ jobs:
       - run:
           name: "Set TARGETBRANCH env variable"
           command: |
-            TARGETBRANCH=upgrade_$(date '+%Y-%m-%d')
+            TARGETBRANCH=upgrade-$(date '+%Y-%m-%d')
             echo "export TARGETBRANCH=$TARGETBRANCH" >> $BASH_ENV
       - run:
           name: "Try to upgrade"
@@ -97,7 +112,6 @@ jobs:
       - run:
           name: "Create PR"
           command: |
-            TARGETBRANCH=upgrade_$(date '+%Y-%m-%d')
             git commit -a -m "[chore] upgrade all [automated]"
             git push --force origin $TARGETBRANCH
             git push --set-upstream origin $TARGETBRANCH
