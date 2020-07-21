@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.6.22](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.6.21...v10.6.22) (2020-07-21)
+
+
+### Bug Fixes
+
+* circleci pull before merge ([328462a](https://github.com/sprucelabsai/spruce-cli-workspace/commit/328462a))
+* forceExit ([2bc779a](https://github.com/sprucelabsai/spruce-cli-workspace/commit/2bc779a))
+* one worker, race on sheets adapter ([0089aab](https://github.com/sprucelabsai/spruce-cli-workspace/commit/0089aab))
+* use proper ENV variable ([cdc8ca6](https://github.com/sprucelabsai/spruce-cli-workspace/commit/cdc8ca6))
+
+
+
+
+
 ## [10.6.21](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.6.20...v10.6.21) (2020-07-21)
 
 
