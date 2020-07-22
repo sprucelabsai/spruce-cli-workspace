@@ -15,17 +15,4 @@ export default class FeatureManagerTest extends AbstractCliTest {
 		const match = dependencies.find((d) => d === 'skill')
 		assert.isOk(match)
 	}
-
-	@test.skip()
-	protected static async getCircularFeatureDependencies() {
-		// const cli = await this.cli()
-		// const dependencies = cli.services.feature.getFeatureDependencies({
-		// 	feature: Feature.Skill
-		// })
-		// assert.isArray(dependencies)
-		// // Verify order
-		// assert.isEqual(dependencies?.[0].feature, Feature.Skill)
-		// assert.isEqual(dependencies?.[1].feature, Feature.Schema)
-		// assert.isEqual(dependencies?.[2].feature, Feature.Test)
-	}
 }

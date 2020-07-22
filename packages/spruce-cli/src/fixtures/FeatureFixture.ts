@@ -42,12 +42,9 @@ export default class FeatureFixture {
 		}
 
 		let alreadyInstalled = false
-		let settingsObject: Record<string, any> = {}
 
 		if (cacheKey && testUtil.isCacheEnabled()) {
-			const cachedResults = this.loadCachedSkill(cacheKey)
-			alreadyInstalled = cachedResults.alreadyInstalled
-			settingsObject = cachedResults.settingsObject
+			alreadyInstalled = this.loadCachedSkill(cacheKey)
 		}
 
 		const cli = await this.Cli(bootOptions)
@@ -59,7 +56,7 @@ export default class FeatureFixture {
 		}
 
 		if (cacheKey && testUtil.isCacheEnabled()) {
-			this.cacheCli(cacheKey, cli, settingsObject)
+			this.cacheCli(cacheKey, cli)
 		}
 
 		this.cleanCachedSkillDir()
@@ -71,7 +68,7 @@ export default class FeatureFixture {
 		const settingsFile = this.getSettingsFilePath()
 
 		if (!diskUtil.doesFileExist(settingsFile)) {
-			return { settingsObject: {}, alreadyInstalled: false }
+			return false
 		}
 		let alreadyInstalled = false
 		const settingsObject = JSON.parse(diskUtil.readFile(settingsFile))
@@ -85,7 +82,23 @@ export default class FeatureFixture {
 
 			diskUtil.copyDir(settingsObject.tmpDirs[cacheKey], this.cwd)
 		}
-		return { settingsObject, alreadyInstalled }
+
+		if (settingsFile) {
+			if (!settingsObject.tmpDirs) {
+				settingsObject.tmpDirs = {}
+			}
+
+			if (!settingsObject.tmpDirs[cacheKey]) {
+				settingsObject.tmpDirs[cacheKey] = this.cwd
+				diskUtil.createDir(pathUtil.dirname(settingsFile))
+				diskUtil.writeFile(
+					settingsFile,
+					JSON.stringify(settingsObject, null, 2)
+				)
+			}
+		}
+
+		return alreadyInstalled
 	}
 
 	private getSettingsFilePath() {
@@ -119,31 +132,10 @@ export default class FeatureFixture {
 		diskUtil.createDir(this.cwd)
 	}
 
-	private cacheCli(
-		cacheKey: string,
-		cli: ICli,
-		settingsObject: Record<string, any>
-	) {
-		const settingsFile = this.getSettingsFilePath()
-
+	private cacheCli(cacheKey: string, cli: ICli) {
 		this.installedSkills[cacheKey] = {
 			cwd: this.cwd,
 			cli,
-		}
-
-		if (settingsFile) {
-			if (!settingsObject.tmpDirs) {
-				settingsObject.tmpDirs = {}
-			}
-
-			if (!settingsObject.tmpDirs[cacheKey]) {
-				settingsObject.tmpDirs[cacheKey] = this.cwd
-				diskUtil.createDir(pathUtil.dirname(settingsFile))
-				diskUtil.writeFile(
-					settingsFile,
-					JSON.stringify(settingsObject, null, 2)
-				)
-			}
 		}
 	}
 }

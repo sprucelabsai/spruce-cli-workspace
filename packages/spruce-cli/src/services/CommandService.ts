@@ -21,6 +21,7 @@ export default class CommandService {
 		stdout: string
 	}> {
 		const cwd = this.cwd
+
 		return new Promise((resolve, reject) => {
 			const args = options?.args || stringArgv(cmd)
 			const executable = options?.args ? cmd : args.shift()
@@ -44,15 +45,19 @@ export default class CommandService {
 
 			const child = spawn(executable, args, spawnOptions)
 
-			child.stdout?.on('data', (data) => {
+			child.stdout?.addListener('data', (data) => {
 				stdout += data
 			})
 
-			child.stderr?.on('data', (data) => {
+			child.stderr?.addListener('data', (data) => {
 				stderr += data
 			})
 
-			child.on('close', (code) => {
+			child.addListener('close', (code) => {
+				child.stdout?.removeAllListeners()
+				child.stderr?.removeAllListeners()
+				child.removeAllListeners()
+
 				if (code === 0) {
 					resolve({ stdout })
 				} else {
