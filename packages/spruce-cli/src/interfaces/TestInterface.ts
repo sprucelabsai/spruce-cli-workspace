@@ -33,6 +33,7 @@ export default class TestInterface implements IGraphicsInterface {
 
 	public async sendInput(input: string): Promise<void> {
 		this.trackInvocation('sendInput', input)
+
 		if (this.promptResolver) {
 			const resolver = this.promptResolver
 			this.promptResolver = undefined
@@ -43,6 +44,8 @@ export default class TestInterface implements IGraphicsInterface {
 			this.confirmResolver = undefined
 
 			resolver(input.length === 0 || input.toLowerCase() === 'y')
+		} else {
+			throw new Error('Sent input before prompted for input')
 		}
 
 		return new Promise((resolve) => {
@@ -107,7 +110,7 @@ export default class TestInterface implements IGraphicsInterface {
 		messages: string[],
 		effects?: IGraphicsTextEffect[] | undefined
 	): void {
-		this.trackInvocation('renderLines', { messages: effects })
+		this.trackInvocation('renderLines', { messages, effects })
 	}
 
 	public async prompt<T extends FieldDefinition>(definition: T) {

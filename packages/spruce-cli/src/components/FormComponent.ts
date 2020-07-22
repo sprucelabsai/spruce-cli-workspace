@@ -197,6 +197,7 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 				this.values
 			)
 		}
+
 		//@ts-ignore
 		return this.term.prompt(definition)
 	}

@@ -2,7 +2,6 @@ import { validateSchemaValues } from '@sprucelabs/schema'
 import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
 import skillFeatureDefinition from '#spruce/schemas/local/skillFeature.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import { Service } from '../../factories/ServiceFactory'
 import { INpmPackage } from '../../types/cli.types'
 import diskUtil from '../../utilities/disk.utility'
 import namesUtil from '../../utilities/names.utility'
@@ -63,7 +62,6 @@ export default class SkillFeature<
 	public async isInstalled() {
 		try {
 			return (
-				this.Service(Service.Pkg).isInstalled('ts-node') &&
 				diskUtil.doesDirExist(diskUtil.resolvePath(this.cwd, 'node_modules')) &&
 				diskUtil.doesDirExist(diskUtil.resolveHashSprucePath(this.cwd))
 			)

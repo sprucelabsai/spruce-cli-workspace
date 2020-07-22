@@ -1,5 +1,6 @@
 import Schema, { ISchemaDefinition } from '@sprucelabs/schema'
 import { CommanderStatic } from 'commander'
+import SpruceError from '../errors/SpruceError'
 import { IGraphicsInterface } from '../types/cli.types'
 import namesUtil from '../utilities/names.utility'
 import AbstractFeature from './AbstractFeature'
@@ -42,8 +43,8 @@ export default class FeatureCommandAttacher {
 			term: this.term,
 		})
 
-		let command = this.program.command(commandStr).action(async (options) => {
-			await executer.execute(options)
+		let command = this.program.command(commandStr).action(async (command) => {
+			await executer.execute(command.opts())
 		})
 
 		const description = action.optionsDefinition?.description
@@ -69,13 +70,24 @@ export default class FeatureCommandAttacher {
 		const aliases = featuresUtil.generateCommandAliases(definition)
 
 		fields.forEach(({ field, name }) => {
-			theProgram = theProgram.option(
-				aliases[name],
-				field.hint,
-				field.definition.defaultValue
-					? `${field.definition.defaultValue}`
-					: undefined
-			)
+			try {
+				theProgram = theProgram.option(
+					aliases[name],
+					field.hint,
+					field.definition.defaultValue
+						? `${field.definition.defaultValue}`
+						: undefined
+				)
+			} catch (err) {
+				throw new SpruceError({
+					//@ts-ignore
+					code: 'FAILED_TO_ATTACH_COMMAND',
+					fieldName: name,
+					id: schema.schemaId,
+					originalError: err,
+					friendlyMessage: `Could not attach option ${aliases[name]} from ${schema.schemaId}.${name} to the command`,
+				})
+			}
 		})
 	}
 }

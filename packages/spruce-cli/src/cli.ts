@@ -141,6 +141,7 @@ export async function boot(options?: ICliBootOptions) {
 
 	// TODO pull in without including package.json
 	// program?.version(pkg.version).description(pkg.description)
+	program?.storeOptionsAsProperties(false)
 	program?.option('--no-color', 'Disable color output in the console')
 	program?.option(
 		'-d, --directory <path>',

@@ -2,7 +2,7 @@ import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../AbstractCliTest'
 import FeatureInstaller from '../../features/FeatureInstaller'
 
-export default class FeatureManagerTest extends AbstractCliTest {
+export default class FeatureInstallerTest extends AbstractCliTest {
 	protected static installer: FeatureInstaller
 
 	protected static async beforeEach() {

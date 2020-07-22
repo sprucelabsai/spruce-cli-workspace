@@ -5,7 +5,7 @@ import StoreFactory from '../stores/StoreFactory'
 import { IGeneratedFile } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
 import CircleCIFeature from './CircleCIFeature'
-import ErrorFeature from './ErrorFeature'
+import ErrorFeature from './error/ErrorFeature'
 import FeatureInstaller from './FeatureInstaller'
 import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
@@ -18,7 +18,7 @@ export interface IFeatureActionOptions {
 	cwd: string
 	parent: AbstractFeature
 	storeFactory: StoreFactory
-	featureManager: FeatureInstaller
+	featureInstaller: FeatureInstaller
 }
 
 export type FeatureCode = keyof IFeatureMap

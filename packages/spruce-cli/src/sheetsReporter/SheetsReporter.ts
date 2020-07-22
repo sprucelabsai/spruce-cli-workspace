@@ -36,6 +36,7 @@ export default class SheetsReporter<TestMap extends ITestMap> {
 		this.worksheetId = options.worksheetId
 	}
 
+	// jest reporter hook
 	public onTestResult(_: IJestTest, testResult: IJestTestResults) {
 		const filteredTests = SheetsReporterUtility.getMappedTests(
 			this.testMap,

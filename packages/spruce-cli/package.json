@@ -139,6 +139,7 @@
 						"builderFileValidates": "C7",
 						"schemasStayInSyncAsFilesAreMoved": "C8",
 						"installsSchemasIfNotInstalled": "C9",
+						"createsValidBuilder": "C11",
 						"canGetLatestVersionBasedOnDir": "C16"
 					}
 				}

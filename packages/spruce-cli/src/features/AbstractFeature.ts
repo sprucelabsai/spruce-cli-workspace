@@ -49,7 +49,7 @@ export default abstract class AbstractFeature<
 		generators: IGenerators
 		storeFactory: StoreFactory
 		actionFactory?: FeatureActionFactory
-		featureManager: FeatureInstaller
+		featureInstaller: FeatureInstaller
 	}) {
 		this.cwd = options.cwd
 		this.serviceFactory = options.serviceFactory

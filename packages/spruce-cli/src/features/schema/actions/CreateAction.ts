@@ -55,8 +55,8 @@ export default class CreateAction extends AbstractFeatureAction<
 		const {
 			destinationDir,
 			nameCamel,
-			namePascal: namePascalOptions,
-			nameReadable: nameReadableOptions,
+			namePascal,
+			nameReadable,
 			...rest
 		} = normalizedOptions
 
@@ -66,8 +66,8 @@ export default class CreateAction extends AbstractFeatureAction<
 		const results = await generator.generateBuilder(resolvedDestination, {
 			...rest,
 			nameCamel,
-			nameReadable: nameReadableOptions ?? nameCamel,
-			namePascal: namePascalOptions ?? namesUtil.toPascal(nameCamel),
+			nameReadable: nameReadable ?? nameCamel,
+			namePascal: namePascal ?? namesUtil.toPascal(nameCamel),
 		})
 
 		const syncAction = this.Action('sync') as IFeatureAction<

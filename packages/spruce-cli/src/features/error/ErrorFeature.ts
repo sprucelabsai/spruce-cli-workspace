@@ -1,7 +1,8 @@
-import { Service } from '../factories/ServiceFactory'
-import { INpmPackage } from '../types/cli.types'
-import AbstractFeature from './AbstractFeature'
-import { FeatureCode } from './features.types'
+import { Service } from '../../factories/ServiceFactory'
+import { INpmPackage } from '../../types/cli.types'
+import diskUtil from '../../utilities/disk.utility'
+import AbstractFeature from '../AbstractFeature'
+import { FeatureCode } from '../features.types'
 
 export default class ErrorFeature extends AbstractFeature {
 	public description =
@@ -14,10 +15,7 @@ export default class ErrorFeature extends AbstractFeature {
 		},
 	]
 	public code: FeatureCode = 'error'
-
-	public getActions() {
-		return []
-	}
+	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public async isInstalled() {
 		return this.Service(Service.Pkg).isInstalled('@sprucelabs/error')

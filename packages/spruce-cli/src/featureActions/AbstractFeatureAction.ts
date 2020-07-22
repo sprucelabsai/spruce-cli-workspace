@@ -12,10 +12,12 @@ import ServiceFactory, {
 	IServiceMap,
 } from '../factories/ServiceFactory'
 import AbstractFeature from '../features/AbstractFeature'
+import FeatureInstaller from '../features/FeatureInstaller'
 import {
 	IFeatureAction,
 	IFeatureActionExecuteResponse,
 	IFeatureActionOptions,
+	FeatureCode,
 } from '../features/features.types'
 import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
 
@@ -28,6 +30,7 @@ export default abstract class AbstractFeatureAction<
 	private parent: AbstractFeature
 	private serviceFactory: ServiceFactory
 	private storeFactory: StoreFactory
+	private featureInstaller: FeatureInstaller
 
 	protected cwd: string
 	protected templates: Templates
@@ -38,6 +41,7 @@ export default abstract class AbstractFeatureAction<
 		this.parent = options.parent
 		this.storeFactory = options.storeFactory
 		this.serviceFactory = options.serviceFactory
+		this.featureInstaller = options.featureInstaller
 	}
 
 	public abstract execute(
@@ -54,6 +58,10 @@ export default abstract class AbstractFeatureAction<
 
 	public Store<C extends StoreCode>(code: C, cwd?: string): IStoreMap[C] {
 		return this.storeFactory.Store(code, cwd ?? this.cwd)
+	}
+
+	public getFeature(code: FeatureCode) {
+		return this.featureInstaller.getFeature(code)
 	}
 
 	protected validateAndNormalizeOptions(
