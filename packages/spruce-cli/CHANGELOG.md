@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.7.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.6.38...v10.7.0) (2020-07-22)
+
+
+### Features
+
+* error builder, removed references to featuremanager ([4598fb7](https://github.com/sprucelabsai/spruce-cli-workspace/commit/4598fb7))
+
+
+
+
+
 ## [10.6.38](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.6.37...v10.6.38) (2020-07-22)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
