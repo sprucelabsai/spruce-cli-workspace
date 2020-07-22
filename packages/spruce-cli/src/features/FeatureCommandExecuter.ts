@@ -41,16 +41,16 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		if (feature.optionsDefinition) {
 			this.term.stopLoading()
 
-			const answers = await this.collectAnswers(
-				feature.optionsDefinition,
-				options
-			)
-
 			const isInstalled = await this.featureInstaller.isInstalled(
 				this.featureCode
 			)
 
 			if (!isInstalled) {
+				const answers = await this.collectAnswers(
+					feature.optionsDefinition,
+					options
+				)
+
 				this.term.startLoading(`Installing ${this.featureCode}...`)
 
 				await this.featureInstaller.install({
