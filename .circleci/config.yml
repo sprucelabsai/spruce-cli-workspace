@@ -23,9 +23,6 @@ jobs:
           command: |
             [ -n "$BASE64_ENV" ] && echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
       - run: node -v && npm -v && yarn -v
-      - restore_cache:
-          keys:
-            - yarn-packages-{{ checksum "yarn.lock" }}
       - run:
           name: "Test Build and Lint"
           command: |
