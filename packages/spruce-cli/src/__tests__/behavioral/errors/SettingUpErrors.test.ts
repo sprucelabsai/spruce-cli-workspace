@@ -1,8 +1,8 @@
 import { test, assert } from '@sprucelabs/test'
-import AbstractCliTest from '../../../AbstractCliTest'
+import AbstractErrorTest from '../../../AbstractErrorTest'
 import FeatureFixture from '../../../fixtures/FeatureFixture'
 
-export default class SettingUpErrorTests extends AbstractCliTest {
+export default class SettingUpErrorTests extends AbstractErrorTest {
 	@test()
 	protected static async failsIfSkillIsNotInstalled() {
 		const fixture = new FeatureFixture(this.cwd)
@@ -19,19 +19,7 @@ export default class SettingUpErrorTests extends AbstractCliTest {
 
 	@test()
 	protected static async installsSchemasIfNotInstalled() {
-		const fixture = new FeatureFixture(this.cwd)
-		await fixture.installFeatures([
-			{
-				code: 'skill',
-				options: {
-					name: 'testing',
-					description: 'this is also a great test!',
-				},
-			},
-			{
-				code: 'error',
-			},
-		])
+		await this.installErrors()
 
 		const installer = this.FeatureInstaller()
 

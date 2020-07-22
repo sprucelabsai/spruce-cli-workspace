@@ -7,14 +7,14 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 		return this.resolveHashSprucePath('schemas', 'schemas.types.ts')
 	}
 
-	protected static async syncSchemasAndSetCwd(cacheKey?: string) {
-		const cli = await this.installSchemasAndSetCwd(cacheKey)
+	protected static async syncSchemas(cacheKey?: string) {
+		const cli = await this.installSchemas(cacheKey)
 		await cli.getFeature('schema').Action('sync').execute({})
 
 		return cli
 	}
 
-	protected static async installSchemasAndSetCwd(
+	protected static async installSchemas(
 		cacheKey?: string,
 		bootOptions?: ICliBootOptions
 	) {

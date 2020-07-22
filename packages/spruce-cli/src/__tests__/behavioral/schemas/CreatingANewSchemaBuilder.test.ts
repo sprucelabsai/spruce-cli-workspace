@@ -46,7 +46,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 	}
 
 	private static async getCreateSchemaActionAndSetCwd(cacheKey?: string) {
-		const cli = await this.syncSchemasAndSetCwd(cacheKey)
+		const cli = await this.syncSchemas(cacheKey)
 		const createSchema = cli.getFeature('schema').Action('create')
 
 		return createSchema

@@ -4,7 +4,7 @@ import { IGenerators } from '#spruce/autoloaders/generators'
 import ServiceFactory from '../factories/ServiceFactory'
 import StoreFactory from '../stores/StoreFactory'
 import CircleCIFeature from './CircleCIFeature'
-import ErrorFeature from './ErrorFeature'
+import ErrorFeature from './error/ErrorFeature'
 import FeatureInstaller from './FeatureInstaller'
 import { FeatureCode } from './features.types'
 import SchemaFeature from './schema/SchemaFeature'
@@ -58,7 +58,7 @@ export default class FeatureInstallerFactory {
 				templates,
 				generators,
 				storeFactory,
-				featureManager: featureInstaller,
+				featureInstaller,
 			})
 
 			featureInstaller.mapFeature(feature.code, feature)
