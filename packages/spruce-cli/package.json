@@ -67,7 +67,7 @@
 		"minimatch": "^3.0.4",
 		"ora": "^4.0.5",
 		"promise.allsettled": "^1.0.2",
-		"regenerator-runtime": "^0.13.5",
+		"regenerator-runtime": "^0.13.6",
 		"semver": "^7.3.2",
 		"slug": "^3.3.2",
 		"string-argv": "^0.3.1",
