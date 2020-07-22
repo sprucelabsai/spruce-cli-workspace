@@ -24,6 +24,8 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 		const executer = this.Executer('skill', 'create')
 		const promise = executer.execute()
 
+		await this.wait(1000)
+
 		await this.term.sendInput('My new skill')
 		await this.term.sendInput('So great!')
 
@@ -36,6 +38,8 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 	protected static async shouldNotAskAlreadyAnsweredQuestions() {
 		const executer = this.Executer('skill', 'create')
 		const promise = executer.execute({ description: 'go team!' })
+
+		await this.wait(1000)
 
 		this.term.sendInput('My great skill')
 
