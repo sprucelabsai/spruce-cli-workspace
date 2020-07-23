@@ -1,4 +1,5 @@
 import blessed from 'blessed'
+// @ts-ignore
 import fonts from 'cfonts'
 import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
 import { IFeatureActionExecuteResponse } from '../../features.types'

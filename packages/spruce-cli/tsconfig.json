@@ -26,5 +26,5 @@
 		}
 	},
 	"include": ["./*.ts", "./**/*.ts"],
-	"exclude": ["build"]
+	"exclude": ["build"],
 }

@@ -79,8 +79,8 @@
 		"vm2": "^3.9.2"
 	},
 	"devDependencies": {
-		"@types/blessed": "^0.1.17",
 		"@sprucelabs/test": "^5.3.42",
+		"@types/blessed": "^0.1.17",
 		"@types/eslint": "^7.2.0",
 		"@types/fs-extra": "^9.0.1",
 		"@types/google-spreadsheet": "^3.0.0",
