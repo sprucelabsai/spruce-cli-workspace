@@ -2036,10 +2036,10 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^4.0.37":
-  version "4.0.37"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-4.0.37.tgz#773dbd8b4f68f7f87028d6abcd54ef9aa614f9cc"
-  integrity sha512-z8MVyD6p+RZT8TDmAF3UP+wPei3eIiDKwG+B9/ZjQxgCjEaFRTWO37/n97kxv6kMg6Q9CTg6RYB+QIyU5qdfXw==
+"@sprucelabs/schema@^4.0.38":
+  version "4.0.38"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-4.0.38.tgz#261b951f15a5b789287b875322b5bd7598909462"
+  integrity sha512-IK+umSrKr9ZmBOZoAG93Nt2zS0Tz/KGVUiE0YUhOFOAxA7MZPdxqfVUwa/ru1zqLzVM0Z81jMVYbSOGwcio62A==
   dependencies:
     "@sprucelabs/error" "^1.3.34"
     "@sprucelabs/log" "^10.2.37"
@@ -7460,9 +7460,9 @@ node-notifier@^7.0.0:
     which "^2.0.2"
 
 node-releases@^1.1.58:
-  version "1.1.59"
-  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-1.1.59.tgz#4d648330641cec704bff10f8e4fe28e453ab8e8e"
-  integrity sha512-H3JrdUczbdiwxN5FuJPyCHnGHIFqQ0wWxo+9j1kAXAzqNMAHlo+4I/sYYxpyK0irQ73HgdiyzD32oqQDcU2Osw==
+  version "1.1.60"
+  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-1.1.60.tgz#6948bdfce8286f0b5d0e5a88e8384e954dfe7084"
+  integrity sha512-gsO4vjEdQaTusZAEebUWp2a5d7dF5DYoIpDG7WySnk7BuZDW+GPpHXoXXuYawRBr/9t5q54tirPz79kFIWg4dA==
 
 nopt@^4.0.1:
   version "4.0.3"
