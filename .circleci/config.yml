@@ -28,11 +28,9 @@ jobs:
           command: |
             yarn install --frozen-lockfile
             cd packages/spruce-templates
-            yarn
             yarn build
             cd ../..
             cd packages/spruce-cli
-            yarn
             yarn build
             yarn test
             yarn lint
