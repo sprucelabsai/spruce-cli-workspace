@@ -19,7 +19,7 @@ export const syncSchemasActionOptionsDefinition = buildSchemaDefinition({
 	description:
 		'Keep all your schemas and types in sync with your builders and contracts.',
 	fields: {
-		typesDestinationDir: {
+		schemaTypesDestinationDir: {
 			type: FieldType.Text,
 			label: 'Destination directory',
 			hint: 'Where types and interfaces will be generated.',
@@ -33,7 +33,7 @@ export const syncSchemasActionOptionsDefinition = buildSchemaDefinition({
 			hint: "Where I'll look for new schema fields to be registered.",
 			defaultValue: 'src/addons',
 		},
-		lookupDir: {
+		schemaLookupDir: {
 			type: FieldType.Text,
 			isRequired: true,
 			hint: 'Where I should look for your schema builders?',
@@ -42,10 +42,10 @@ export const syncSchemasActionOptionsDefinition = buildSchemaDefinition({
 	},
 })
 
-export type ISyncSchemaActionDefinition = typeof syncSchemasActionOptionsDefinition
+export type ISyncSchemasActionDefinition = typeof syncSchemasActionOptionsDefinition
 
 export default class SyncAction extends AbstractFeatureAction<
-	ISyncSchemaActionDefinition
+	ISyncSchemasActionDefinition
 > {
 	public name = 'sync'
 	public optionsDefinition = syncSchemasActionOptionsDefinition
@@ -53,22 +53,22 @@ export default class SyncAction extends AbstractFeatureAction<
 	private readonly schemaGenerator = new SchemaGenerator(this.templates)
 
 	public async execute(
-		options: SchemaDefinitionValues<ISyncSchemaActionDefinition>
+		options: SchemaDefinitionValues<ISyncSchemasActionDefinition>
 	): Promise<IFeatureActionExecuteResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(
 			options
-		) as SchemaDefinitionValues<ISyncSchemaActionDefinition>
+		) as SchemaDefinitionValues<ISyncSchemasActionDefinition>
 
 		const resolvedDestination = diskUtil.resolvePath(
 			this.cwd,
-			normalizedOptions.typesDestinationDir
+			normalizedOptions.schemaTypesDestinationDir
 		)
 
 		const {
 			schemas: { items: schemaTemplateItems },
 			fields: { items: fieldTemplateItems },
 		} = await this.Store('schema').fetchAllTemplateItems(
-			normalizedOptions.lookupDir,
+			normalizedOptions.schemaLookupDir,
 			normalizedOptions.addonsLookupDir
 		)
 

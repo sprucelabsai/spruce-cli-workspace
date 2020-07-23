@@ -1,3 +1,4 @@
+import SpruceError from '@sprucelabs/schema/build/errors/SpruceError'
 import {
 	IDefinitionBuilderTemplateItem,
 	IErrorTemplateItem,
@@ -61,9 +62,24 @@ export default class ErrorGenerator extends AbstractGenerator {
 	}
 
 	public async generateBuilder(
-		destinationFile: string,
+		destinationDir: string,
 		options: IDefinitionBuilderTemplateItem
 	): Promise<GenerationResults> {
+		const destinationFile = diskUtil.resolvePath(
+			destinationDir,
+			`${options.nameCamel}.builder.ts`
+		)
+
+		if (diskUtil.doesFileExist(destinationFile)) {
+			throw new SpruceError({
+				// @ts-ignore
+				code: 'ERROR_EXISTS',
+				name: options.nameCamel,
+				errorBuilderDestinationDir: destinationDir,
+				friendlyMessage: 'This error already exists!',
+			})
+		}
+
 		return this.writeFileIfChangedMixinResults(
 			destinationFile,
 			this.templates.definitionBuilder(options),
@@ -71,10 +87,13 @@ export default class ErrorGenerator extends AbstractGenerator {
 		)
 	}
 	public async generateErrorCodeType(
-		destinationFile: string,
+		destinationDir: string,
 		errorTemplateItems: IErrorTemplateItem[]
 	): Promise<GenerationResults> {
-		// Find all definition files in the lookup dir
+		const destinationFile = diskUtil.resolvePath(
+			destinationDir,
+			`options.types.ts`
+		)
 
 		const contents = this.templates.errorCode({ codes: errorTemplateItems })
 
@@ -86,15 +105,17 @@ export default class ErrorGenerator extends AbstractGenerator {
 	}
 
 	public async generateOptionsTypesFile(
-		destinationFile: string,
+		destinationDir: string,
 		errorTemplateItems: IErrorTemplateItem[]
 	): Promise<GenerationResults> {
 		const contents = this.templates.errorOptionsTypes({
 			options: errorTemplateItems,
 		})
 
+		const destination = diskUtil.resolvePath(destinationDir, 'options.types.ts')
+
 		return this.writeFileIfChangedMixinResults(
-			destinationFile,
+			destination,
 			contents,
 			'A union of all error options for your skill. Used as the first parameter to the SpruceError constructor.'
 		)

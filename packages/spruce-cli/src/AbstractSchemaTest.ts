@@ -8,13 +8,13 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 	}
 
 	protected static async syncSchemas(cacheKey?: string) {
-		const cli = await this.installSchemas(cacheKey)
+		const cli = await this.installSchemaFeature(cacheKey)
 		await cli.getFeature('schema').Action('sync').execute({})
 
 		return cli
 	}
 
-	protected static async installSchemas(
+	protected static async installSchemaFeature(
 		cacheKey?: string,
 		bootOptions?: ICliBootOptions
 	) {

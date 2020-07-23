@@ -11,7 +11,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	protected static async beforeEach() {
 		super.beforeEach()
 		this.generator = new SchemaGenerator(templates)
-		await this.installSchemas('schema-value-type-generation')
+		await this.installSchemaFeature('schema-value-type-generation')
 	}
 
 	@test()

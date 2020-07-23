@@ -10,7 +10,7 @@ import diskUtil from '../../../utilities/disk.utility'
 import namesUtil from '../../../utilities/names.utility'
 import { IFeatureAction } from '../../features.types'
 import {
-	ISyncSchemaActionDefinition,
+	ISyncSchemasActionDefinition,
 	syncSchemasActionOptionsDefinition,
 } from './SyncAction'
 
@@ -19,6 +19,7 @@ const createSchemaActionDefinition = buildSchemaDefinition({
 	name: 'Create schema',
 	description: 'Create the builder to a fresh new schema!',
 	fields: {
+		...syncSchemasActionOptionsDefinition.fields,
 		destinationDir: {
 			type: FieldType.Text,
 			label: 'Destination directory',
@@ -26,10 +27,6 @@ const createSchemaActionDefinition = buildSchemaDefinition({
 			defaultValue: 'src/schemas',
 			isRequired: true,
 		},
-		addonsLookupDir: syncSchemasActionOptionsDefinition.fields.addonsLookupDir,
-		lookupDir: syncSchemasActionOptionsDefinition.fields.lookupDir,
-		typesDestinationDir:
-			syncSchemasActionOptionsDefinition.fields.typesDestinationDir,
 		nameReadable: namedTemplateItemDefinition.fields.nameReadable,
 		namePascal: namedTemplateItemDefinition.fields.namePascal,
 		nameCamel: namedTemplateItemDefinition.fields.nameCamel,
@@ -71,7 +68,7 @@ export default class CreateAction extends AbstractFeatureAction<
 		})
 
 		const syncAction = this.Action('sync') as IFeatureAction<
-			ISyncSchemaActionDefinition
+			ISyncSchemasActionDefinition
 		>
 		const syncResults = await syncAction.execute({
 			...rest,

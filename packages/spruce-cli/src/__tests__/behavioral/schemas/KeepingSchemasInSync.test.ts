@@ -24,7 +24,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async syncsSchemasGeneratesTypesFile() {
-		const cli = await this.installSchemas('keeps-schemas-in-sync')
+		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
 		const results = await cli.getFeature('schema').Action('sync').execute({})
 
 		assert.isAbove(results.files?.length, 0)
@@ -94,7 +94,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 			nameCamel: 'testSchema',
 		})
 
-		const builderFile = testUtil.findPathByNameInGeneratedFiles(
+		const builderFile = testUtil.assertsFileByNameInGeneratedFiles(
 			/testSchema\.builder/,
 			createResponse.files ?? []
 		)
@@ -102,7 +102,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		// make sure builder is versioned
 		assert.doesInclude(builderFile, version.dirValue)
 
-		const definitionFile = testUtil.findPathByNameInGeneratedFiles(
+		const definitionFile = testUtil.assertsFileByNameInGeneratedFiles(
 			/testSchema\.definition/,
 			createResponse.files ?? []
 		)

@@ -23,7 +23,7 @@ export default class SettingUpSchemasTests extends AbstractSchemaTest {
 
 	@test()
 	protected static async installsSchema() {
-		await this.installSchemas()
+		await this.installSchemaFeature()
 
 		const pgkPath = this.resolvePath('package.json')
 		const contents = JSON.stringify(diskUtil.readFile(pgkPath))
@@ -39,7 +39,7 @@ export default class SettingUpSchemasTests extends AbstractSchemaTest {
 
 	@test()
 	protected static async schemaPassesHealthCheck() {
-		const cli = await this.installSchemas()
+		const cli = await this.installSchemaFeature()
 		const status = await cli.checkHealth()
 
 		assert.isEqual(status.schema.status, 'passed')
