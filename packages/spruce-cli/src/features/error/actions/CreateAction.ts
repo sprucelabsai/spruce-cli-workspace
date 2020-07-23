@@ -4,7 +4,6 @@ import {
 } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
-import SpruceError from '../../../errors/SpruceError'
 import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
 import ErrorGenerator from '../../../generators/ErrorGenerator'
 import diskUtil from '../../../utilities/disk.utility'

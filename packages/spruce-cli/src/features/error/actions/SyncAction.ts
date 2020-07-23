@@ -5,7 +5,6 @@ import {
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
 import ErrorGenerator from '../../../generators/ErrorGenerator'
-import SchemaGenerator from '../../../generators/SchemaGenerator'
 import diskUtil from '../../../utilities/disk.utility'
 import { IFeatureActionExecuteResponse } from '../../features.types'
 import { syncSchemasActionOptionsDefinition } from '../../schema/actions/SyncAction'
