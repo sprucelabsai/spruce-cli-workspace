@@ -52,6 +52,8 @@
 		"@sprucelabs/spruce-templates": "^10.7.14",
 		"@types/promise.allsettled": "^1.0.3",
 		"@types/uuid": "^8.0.0",
+		"blessed": "^0.1.81",
+		"blessed-contrib": "^4.8.20",
 		"cfonts": "^2.8.6",
 		"chokidar": "^3.4.1",
 		"commander": "^6.0.0",
@@ -78,6 +80,7 @@
 	},
 	"devDependencies": {
 		"@sprucelabs/test": "^5.3.42",
+		"@types/blessed": "^0.1.17",
 		"@types/eslint": "^7.2.0",
 		"@types/fs-extra": "^9.0.1",
 		"@types/google-spreadsheet": "^3.0.0",

@@ -77,6 +77,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			cwd: this.cwd,
 			serviceFactory,
 			storeFactory,
+			term: this.Term(),
 		})
 	}
 

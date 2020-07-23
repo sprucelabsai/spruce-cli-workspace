@@ -3,6 +3,7 @@ import generatorsAutoloader from '#spruce/autoloaders/generators'
 import { IGenerators } from '#spruce/autoloaders/generators'
 import ServiceFactory from '../factories/ServiceFactory'
 import StoreFactory from '../stores/StoreFactory'
+import { IGraphicsInterface } from '../types/cli.types'
 import CircleCIFeature from './CircleCIFeature'
 import ErrorFeature from './error/ErrorFeature'
 import FeatureInstaller from './FeatureInstaller'
@@ -37,8 +38,9 @@ export default class FeatureInstallerFactory {
 		generators?: IGenerators
 		storeFactory: StoreFactory
 		featureInstaller?: FeatureInstaller
+		term: IGraphicsInterface
 	}): FeatureInstaller {
-		const { cwd, serviceFactory, storeFactory } = options
+		const { cwd, serviceFactory, storeFactory, term } = options
 
 		// lazy load installer
 		const featureInstaller =
@@ -59,6 +61,7 @@ export default class FeatureInstallerFactory {
 				generators,
 				storeFactory,
 				featureInstaller,
+				term,
 			})
 
 			featureInstaller.mapFeature(feature.code, feature)
