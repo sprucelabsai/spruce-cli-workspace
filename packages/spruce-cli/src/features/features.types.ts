@@ -2,7 +2,7 @@ import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
 import ServiceFactory from '../factories/ServiceFactory'
 import StoreFactory from '../stores/StoreFactory'
-import { IGeneratedFile } from '../types/cli.types'
+import { IGeneratedFile, IGraphicsInterface } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
 import CircleCIFeature from './CircleCIFeature'
 import ErrorFeature from './error/ErrorFeature'
@@ -19,6 +19,7 @@ export interface IFeatureActionOptions {
 	parent: AbstractFeature
 	storeFactory: StoreFactory
 	featureInstaller: FeatureInstaller
+	term: IGraphicsInterface
 }
 
 export type FeatureCode = keyof IFeatureMap

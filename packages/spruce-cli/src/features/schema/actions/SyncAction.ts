@@ -55,6 +55,8 @@ export default class SyncAction extends AbstractFeatureAction<
 	public async execute(
 		options: SchemaDefinitionValues<ISyncSchemaActionDefinition>
 	): Promise<IFeatureActionExecuteResponse> {
+		this.term.startLoading(`Syncing schemas...`)
+
 		const normalizedOptions = this.validateAndNormalizeOptions(
 			options
 		) as SchemaDefinitionValues<ISyncSchemaActionDefinition>
@@ -91,6 +93,8 @@ export default class SyncAction extends AbstractFeatureAction<
 				valueTypes,
 			}
 		)
+
+		this.term.stopLoading()
 
 		return { files: results }
 	}
