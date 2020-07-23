@@ -3,7 +3,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"version": "10.7.9",
+	"version": "10.7.13",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -45,11 +45,11 @@
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.10.5",
-		"@sprucelabs/error": "^1.3.35",
-		"@sprucelabs/log": "^10.2.38",
-		"@sprucelabs/mercury": "^10.5.34",
-		"@sprucelabs/schema": "^4.0.41",
-		"@sprucelabs/spruce-templates": "^10.7.9",
+		"@sprucelabs/error": "^1.3.38",
+		"@sprucelabs/log": "^10.2.41",
+		"@sprucelabs/mercury": "^10.5.37",
+		"@sprucelabs/schema": "^4.0.45",
+		"@sprucelabs/spruce-templates": "^10.7.13",
 		"@types/promise.allsettled": "^1.0.3",
 		"@types/uuid": "^8.0.0",
 		"blessed": "^0.1.81",
@@ -80,7 +80,7 @@
 	},
 	"devDependencies": {
 		"@types/blessed": "^0.1.17",
-		"@sprucelabs/test": "^5.3.38",
+		"@sprucelabs/test": "^5.3.42",
 		"@types/eslint": "^7.2.0",
 		"@types/fs-extra": "^9.0.1",
 		"@types/google-spreadsheet": "^3.0.0",
