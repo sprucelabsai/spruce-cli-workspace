@@ -12,6 +12,7 @@ export default class DashboardAction extends AbstractFeatureAction {
 		const screen = blessed.screen({
 			smartCSR: true,
 		})
+
 		screen.title = 'SKX'
 		screen.key(['escape', 'q', 'C-c'], function () {
 			return process.exit(0)
