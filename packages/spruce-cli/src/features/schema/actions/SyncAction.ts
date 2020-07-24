@@ -167,7 +167,13 @@ export default class SyncAction extends AbstractFeatureAction<
 
 		this.term.stopLoading()
 
-		return { files: [...results, ...fieldResults] }
+		return {
+			files: [...results, ...fieldResults],
+			meta: {
+				schemaTemplateItems,
+				fieldTemplateItems,
+			},
+		}
 	}
 
 	private async generateValueTypes(

@@ -60,11 +60,11 @@ export default abstract class AbstractFeatureAction<
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
-	public Store<C extends StoreCode>(code: C, cwd?: string): IStoreMap[C] {
+	protected Store<C extends StoreCode>(code: C, cwd?: string): IStoreMap[C] {
 		return this.storeFactory.Store(code, cwd ?? this.cwd)
 	}
 
-	public getFeature(code: FeatureCode) {
+	protected getFeature(code: FeatureCode) {
 		return this.featureInstaller.getFeature(code)
 	}
 

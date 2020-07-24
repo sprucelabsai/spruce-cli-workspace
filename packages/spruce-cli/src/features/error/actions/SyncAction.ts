@@ -1,7 +1,9 @@
 import {
 	buildSchemaDefinition,
 	SchemaDefinitionValues,
+	ISchemaTemplateItem,
 } from '@sprucelabs/schema'
+import { IErrorTemplateItem } from '@sprucelabs/spruce-templates'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
 import ErrorGenerator from '../../../generators/ErrorGenerator'
@@ -75,8 +77,16 @@ export default class SyncAction extends AbstractFeatureAction<
 			generateFieldTypes: false,
 		})
 
+		if (this.areSyncResultsEmpty(errorSyncResults)) {
+			return {}
+		}
+
+		const { schemaTemplateItems } = errorSyncResults.meta as {
+			schemaTemplateItems: ISchemaTemplateItem[]
+		}
+
 		const optionsResults = await this.generateOptionTypes(
-			errorLookupDir,
+			schemaTemplateItems,
 			errorTypesDestinationDir
 		)
 
@@ -89,18 +99,19 @@ export default class SyncAction extends AbstractFeatureAction<
 		}
 	}
 
+	private areSyncResultsEmpty(errorSyncResults: IFeatureActionExecuteResponse) {
+		return (
+			!errorSyncResults.meta ||
+			!errorSyncResults.files ||
+			errorSyncResults.files.length === 0
+		)
+	}
+
 	private async generateOptionTypes(
-		errorLookupDir: string,
+		errorTemplateItems: IErrorTemplateItem[],
 		errorTypesDestinationDir: string
 	) {
 		const errorGenerator = new ErrorGenerator(this.templates)
-		const errorStore = this.Store('error')
-
-		const storeResults = await errorStore.fetchErrorTemplateItems(
-			errorLookupDir
-		)
-
-		const errorTemplateItems = storeResults.items
 
 		if (errorTemplateItems.length === 0) {
 			return []
