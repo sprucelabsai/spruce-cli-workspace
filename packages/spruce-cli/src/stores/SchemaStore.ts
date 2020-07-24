@@ -136,14 +136,6 @@ export default class SchemaStore extends AbstractStore {
 		localLookupDir: string,
 		enableVersioning?: boolean
 	) {
-		if (!diskUtil.doesDirExist(localLookupDir)) {
-			throw new SpruceError({
-				// @ts-ignore
-				code: 'DIRECTORY_NOT_FOUND',
-				directory: localLookupDir,
-			})
-		}
-
 		const localMatches = await globby(
 			pathUtil.join(localLookupDir, '**/*.builder.[t|j]s')
 		)

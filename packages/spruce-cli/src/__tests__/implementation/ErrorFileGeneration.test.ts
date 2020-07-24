@@ -18,20 +18,6 @@ export default class ErrorStoreTest extends AbstractCliTest {
 	}
 
 	@test()
-	protected static async badDirThrows() {
-		const store = this.store
-		await assert.doesThrowAsync(
-			async () =>
-				store.fetchAllTemplateItems({
-					localSchemaDir: '/should-no-match-anything-ever',
-					fetchRemoteSchemas: false,
-					enableVersioning: false,
-				}),
-			/DIRECTORY_NOT_FOUND:/i
-		)
-	}
-
-	@test()
 	protected static async findsNoItemsInDirWithoutBuilders() {
 		const results = await this.fetchTemplateItems('errors_empty')
 		assert.isEqual(results.items.length, 0)
