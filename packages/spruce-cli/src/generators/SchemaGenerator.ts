@@ -80,10 +80,10 @@ export default class SchemaGenerator extends AbstractGenerator {
 		if (diskUtil.doesFileExist(resolvedBuilderDestination)) {
 			throw new SpruceError({
 				// @ts-ignore
-				code: 'ERROR_EXISTS',
+				code: 'SCHEMA_EXISTS',
 				name: options.nameCamel,
 				errorBuilderDestinationDir: destinationDir,
-				friendlyMessage: 'This error already exists!',
+				friendlyMessage: 'This schema already exists!',
 			})
 		}
 

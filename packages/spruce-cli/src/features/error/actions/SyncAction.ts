@@ -112,6 +112,7 @@ export default class SyncAction extends AbstractFeatureAction {
 				fieldTemplateItems: fieldTemplateItemsResults.items,
 				schemaTemplateItems: storeResults.items,
 				valueTypes,
+				typesFile: '#spruce/errors/errors.types',
 				namespacePrefix: 'SpruceErrors',
 			}
 		)
