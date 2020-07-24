@@ -1,6 +1,7 @@
 import pathUtil from 'path'
 import { ICliBootOptions, ICli, boot } from '../cli'
 import { InstallFeature } from '../features/features.types'
+import TestInterface from '../interfaces/TestInterface'
 import diskUtil from '../utilities/disk.utility'
 import testUtil from '../utilities/test.utility'
 
@@ -20,6 +21,7 @@ export default class FeatureFixture {
 	private async Cli(options?: ICliBootOptions) {
 		const cli = await boot({
 			cwd: this.cwd,
+			graphicsInterface: new TestInterface(),
 			...(options ?? {}),
 		})
 

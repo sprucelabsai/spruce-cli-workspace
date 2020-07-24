@@ -20,6 +20,7 @@ import {
 	FeatureCode,
 } from '../features/features.types'
 import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
+import { IGraphicsInterface } from '../types/cli.types'
 
 export default abstract class AbstractFeatureAction<
 	S extends ISchemaDefinition | undefined = ISchemaDefinition | undefined
@@ -34,6 +35,7 @@ export default abstract class AbstractFeatureAction<
 
 	protected cwd: string
 	protected templates: Templates
+	protected term: IGraphicsInterface
 
 	public constructor(options: IFeatureActionOptions) {
 		this.cwd = options.cwd
@@ -42,6 +44,7 @@ export default abstract class AbstractFeatureAction<
 		this.storeFactory = options.storeFactory
 		this.serviceFactory = options.serviceFactory
 		this.featureInstaller = options.featureInstaller
+		this.term = options.term
 	}
 
 	public abstract execute(

@@ -12,7 +12,7 @@ import FeatureActionFactory, {
 	IFeatureActionFactoryOptions,
 } from '../featureActions/FeatureActionFactory'
 import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
-import { INpmPackage } from '../types/cli.types'
+import { INpmPackage, IGraphicsInterface } from '../types/cli.types'
 import featuresUtil from './feature.utilities'
 import FeatureInstaller from './FeatureInstaller'
 import { IFeatureAction } from './features.types'
@@ -50,6 +50,7 @@ export default abstract class AbstractFeature<
 		storeFactory: StoreFactory
 		actionFactory?: FeatureActionFactory
 		featureInstaller: FeatureInstaller
+		term: IGraphicsInterface
 	}) {
 		this.cwd = options.cwd
 		this.serviceFactory = options.serviceFactory

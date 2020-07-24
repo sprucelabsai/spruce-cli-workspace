@@ -73,10 +73,6 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			answers = await this.collectAnswers(definition, options)
 		}
 
-		this.term.startLoading(
-			`Executing ${this.featureCode}.${this.actionCode}...`
-		)
-
 		// @ts-ignore
 		const results = await action.execute(answers)
 
