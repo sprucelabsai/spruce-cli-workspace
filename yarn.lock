@@ -2036,10 +2036,10 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^4.0.47":
-  version "4.0.47"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-4.0.47.tgz#8a4d90ea891bfc8ebf4119bd0d852051cae3504d"
-  integrity sha512-4q0qByEqL7xDULJELBCCej4IJpCJLOBj62DHtmUsapKo/weY9kuFFQYz3d0mG9avkXX/vULocAudhJOJTEgGLQ==
+"@sprucelabs/schema@^4.0.48":
+  version "4.0.48"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-4.0.48.tgz#d176d376da3f2edfc8c83b85f2fd410087a1a61a"
+  integrity sha512-j8uMDV9Cp2fddV4/NbGzUOy1sQ57FhsUjvO338qYHq46aA0SMfRlVa3Jj3ydCQ4EE3Gm9nQG5jIUif+zd6FiUQ==
   dependencies:
     "@sprucelabs/error" "^1.3.39"
     "@sprucelabs/log" "^10.2.42"
@@ -2048,10 +2048,10 @@
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^5.3.44":
-  version "5.3.44"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.44.tgz#ff51a00c2e5d8e59981e5893e581010b0bbc470b"
-  integrity sha512-jVTyds6znfwwkKb+a3ga+8ODoquGk5zNEOxUeTk31FiO5Z7GtvYSQboIixMkp6vRTEielofngl/VuuWgzTNp5A==
+"@sprucelabs/test@^5.3.45":
+  version "5.3.45"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.45.tgz#76805f22ba082aea8cedd6e01899bc3039c8ccf2"
+  integrity sha512-MewDDZsyuLtX/yXnko5LE3kACGxzJaet9t3QNqI/YOiPIg3QjmtTHu/3yljyy8CdG+Byonvs3PWElbB8mRCOcQ==
   dependencies:
     "@babel/core" "^7.10.5"
     "@babel/preset-env" "^7.9.5"
@@ -8118,9 +8118,9 @@ parse-json@^4.0.0:
     json-parse-better-errors "^1.0.1"
 
 parse-json@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/parse-json/-/parse-json-5.0.0.tgz#73e5114c986d143efa3712d4ea24db9a4266f60f"
-  integrity sha512-OOY5b7PAEFV0E2Fir1KOkxchnZNCdowAJgQ5NuxjpBKTRP3pQhwkrkxqQjeoKJ+fO7bCpmIZaogI4eZGDMEGOw==
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/parse-json/-/parse-json-5.0.1.tgz#7cfe35c1ccd641bce3981467e6c2ece61b3b3878"
+  integrity sha512-ztoZ4/DYeXQq4E21v169sC8qWINGpcosGv9XhTDvg9/hWvx/zrFkc9BiWxR58OJLHGk28j5BL0SDLeV2WmFZlQ==
   dependencies:
     "@babel/code-frame" "^7.0.0"
     error-ex "^1.3.1"
