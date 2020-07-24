@@ -168,6 +168,7 @@ export default class ErrorCommand extends AbstractCommand {
 		const createdFiles: IGeneratedFile[] = []
 		// const updatedFiles: ICreatedFile[] = []
 
+		//@ts-ignore
 		const builderGeneratedFiles = await this.errorGenerator.generateBuilder(
 			resolvedErrorBuilderDestination,
 			// @ts-ignore
@@ -185,6 +186,7 @@ export default class ErrorCommand extends AbstractCommand {
 		)
 
 		console.log(classGeneratedFiles)
+		// @ts-ignore
 		createdFiles.push(...Object.values(builderGeneratedFiles))
 
 		// //Generate error option types based on new file

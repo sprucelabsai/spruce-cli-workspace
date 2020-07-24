@@ -1,7 +1,4 @@
-import {
-	IDefinitionBuilderTemplateItem,
-	IErrorTemplateItem,
-} from '@sprucelabs/spruce-templates'
+import { IErrorTemplateItem } from '@sprucelabs/spruce-templates'
 import log from '../singletons/log'
 import diskUtil from '../utilities/disk.utility'
 import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
@@ -60,21 +57,14 @@ export default class ErrorGenerator extends AbstractGenerator {
 		return results
 	}
 
-	public async generateBuilder(
-		destinationFile: string,
-		options: IDefinitionBuilderTemplateItem
-	): Promise<GenerationResults> {
-		return this.writeFileIfChangedMixinResults(
-			destinationFile,
-			this.templates.definitionBuilder(options),
-			'Holds the builder for this error. Used to generate type files.'
-		)
-	}
 	public async generateErrorCodeType(
-		destinationFile: string,
+		destinationDir: string,
 		errorTemplateItems: IErrorTemplateItem[]
 	): Promise<GenerationResults> {
-		// Find all definition files in the lookup dir
+		const destinationFile = diskUtil.resolvePath(
+			destinationDir,
+			`options.types.ts`
+		)
 
 		const contents = this.templates.errorCode({ codes: errorTemplateItems })
 
@@ -86,15 +76,17 @@ export default class ErrorGenerator extends AbstractGenerator {
 	}
 
 	public async generateOptionsTypesFile(
-		destinationFile: string,
+		destinationDir: string,
 		errorTemplateItems: IErrorTemplateItem[]
 	): Promise<GenerationResults> {
 		const contents = this.templates.errorOptionsTypes({
 			options: errorTemplateItems,
 		})
 
+		const destination = diskUtil.resolvePath(destinationDir, 'options.types.ts')
+
 		return this.writeFileIfChangedMixinResults(
-			destinationFile,
+			destination,
 			contents,
 			'A union of all error options for your skill. Used as the first parameter to the SpruceError constructor.'
 		)

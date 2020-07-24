@@ -11,7 +11,7 @@ const testUtil = {
 	isCacheEnabled() {
 		return !hasArg(/no.*?skill.*?cache/gi)
 	},
-	findPathByNameInGeneratedFiles(
+	assertsFileByNameInGeneratedFiles(
 		name: string | RegExp,
 		files: IGeneratedFile[]
 	): string {

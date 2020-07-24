@@ -19,7 +19,7 @@ export const syncSchemasActionOptionsDefinition = buildSchemaDefinition({
 	description:
 		'Keep all your schemas and types in sync with your builders and contracts.',
 	fields: {
-		typesDestinationDir: {
+		schemaTypesDestinationDir: {
 			type: FieldType.Text,
 			label: 'Destination directory',
 			hint: 'Where types and interfaces will be generated.',
@@ -33,19 +33,25 @@ export const syncSchemasActionOptionsDefinition = buildSchemaDefinition({
 			hint: "Where I'll look for new schema fields to be registered.",
 			defaultValue: 'src/addons',
 		},
-		lookupDir: {
+		schemaLookupDir: {
 			type: FieldType.Text,
 			isRequired: true,
 			hint: 'Where I should look for your schema builders?',
 			defaultValue: 'src/schemas',
 		},
+		enableVersioning: {
+			type: FieldType.Boolean,
+			isRequired: true,
+			defaultValue: true,
+			label: 'Enable versioning',
+		},
 	},
 })
 
-export type ISyncSchemaActionDefinition = typeof syncSchemasActionOptionsDefinition
+export type ISyncSchemasActionDefinition = typeof syncSchemasActionOptionsDefinition
 
 export default class SyncAction extends AbstractFeatureAction<
-	ISyncSchemaActionDefinition
+	ISyncSchemasActionDefinition
 > {
 	public name = 'sync'
 	public optionsDefinition = syncSchemasActionOptionsDefinition
@@ -53,25 +59,26 @@ export default class SyncAction extends AbstractFeatureAction<
 	private readonly schemaGenerator = new SchemaGenerator(this.templates)
 
 	public async execute(
-		options: SchemaDefinitionValues<ISyncSchemaActionDefinition>
+		options: SchemaDefinitionValues<ISyncSchemasActionDefinition>
 	): Promise<IFeatureActionExecuteResponse> {
 		this.term.startLoading(`Syncing schemas...`)
 
 		const normalizedOptions = this.validateAndNormalizeOptions(
 			options
-		) as SchemaDefinitionValues<ISyncSchemaActionDefinition>
+		) as SchemaDefinitionValues<ISyncSchemasActionDefinition>
 
 		const resolvedDestination = diskUtil.resolvePath(
 			this.cwd,
-			normalizedOptions.typesDestinationDir
+			normalizedOptions.schemaTypesDestinationDir
 		)
 
 		const {
 			schemas: { items: schemaTemplateItems },
 			fields: { items: fieldTemplateItems },
 		} = await this.Store('schema').fetchAllTemplateItems(
-			normalizedOptions.lookupDir,
-			normalizedOptions.addonsLookupDir
+			normalizedOptions.schemaLookupDir,
+			normalizedOptions.addonsLookupDir,
+			normalizedOptions.enableVersioning
 		)
 
 		await this.deleteOrphanedDefinitions(
@@ -79,7 +86,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			schemaTemplateItems
 		)
 
-		const valueTypes = await this.generateTypes(
+		const valueTypes = await this.generateValueTypes(
 			resolvedDestination,
 			fieldTemplateItems,
 			schemaTemplateItems
@@ -99,7 +106,7 @@ export default class SyncAction extends AbstractFeatureAction<
 		return { files: results }
 	}
 
-	private async generateTypes(
+	private async generateValueTypes(
 		resolvedDestination: string,
 		fieldTemplateItems: IFieldTemplateItem[],
 		schemaTemplateItems: ISchemaTemplateItem[]

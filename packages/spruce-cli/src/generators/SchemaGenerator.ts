@@ -7,6 +7,7 @@ import {
 } from '@sprucelabs/spruce-templates'
 import { LATEST_HANDLEBARS } from '../constants'
 import SpruceError from '../errors/SpruceError'
+import diskUtil from '../utilities/disk.utility'
 import namesUtil from '../utilities/names.utility'
 import versionUtil from '../utilities/version.utility'
 import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
@@ -25,6 +26,8 @@ export interface IGenerateSchemaTypesOptions {
 	fieldTemplateItems: IFieldTemplateItem[]
 	schemaTemplateItems: ISchemaTemplateItem[]
 	valueTypes: IValueTypes
+	namespacePrefix?: string
+	typesFile?: string
 }
 
 export interface ISchemaTypesGenerationStage {
@@ -61,13 +64,28 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 	public async generateBuilder(
 		destinationDir: string,
-		options: IDefinitionBuilderTemplateItem
+		options: IDefinitionBuilderTemplateItem & { enableVersioning?: boolean }
 	): Promise<GenerationResults> {
-		const resolvedBuilderDestination = versionUtil.resolveNewLatestPath(
-			destinationDir,
-			LATEST_HANDLEBARS,
-			`${options.nameCamel}.builder.ts`
-		)
+		const filename = `${options.nameCamel}.builder.ts`
+
+		const resolvedBuilderDestination =
+			options.enableVersioning === false
+				? pathUtil.resolve(destinationDir, filename)
+				: versionUtil.resolveNewLatestPath(
+						destinationDir,
+						LATEST_HANDLEBARS,
+						filename
+				  )
+
+		if (diskUtil.doesFileExist(resolvedBuilderDestination)) {
+			throw new SpruceError({
+				// @ts-ignore
+				code: 'SCHEMA_EXISTS',
+				name: options.nameCamel,
+				errorBuilderDestinationDir: destinationDir,
+				friendlyMessage: 'This schema already exists!',
+			})
+		}
 
 		const builderContent = this.templates.definitionBuilder(options)
 
@@ -109,11 +127,14 @@ export default class SchemaGenerator extends AbstractGenerator {
 	}
 
 	public generateSchemaTypes(
-		destinationDir: string,
+		destinationDirOrFilename: string,
 		options: IGenerateSchemaTypesOptions
 	): GenerationResults {
 		const { fieldTemplateItems, schemaTemplateItems, valueTypes } = options
-		const schemaTypesDestination = path.join(destinationDir, 'schemas.types.ts')
+		const schemaTypesDestination = this.resolveFilename(
+			destinationDirOrFilename,
+			'schemas.types.ts'
+		)
 
 		let results: GenerationResults = []
 
@@ -121,6 +142,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			schemaTemplateItems,
 			fieldTemplateItems,
 			valueTypes,
+			namespacePrefix: options.namespacePrefix,
 		})
 
 		results = this.writeFileIfChangedMixinResults(
@@ -129,7 +151,12 @@ export default class SchemaGenerator extends AbstractGenerator {
 			'The interfaces for every schema'
 		)
 
-		results = this.generateAllDefinitions(destinationDir, options)
+		results.push(
+			...this.generateAllDefinitions(
+				pathUtil.dirname(schemaTypesDestination),
+				options
+			)
+		)
 
 		return results
 	}
@@ -155,6 +182,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			schemaTemplateItems: ISchemaTemplateItem[]
 			fieldTemplateItems: IFieldTemplateItem[]
 			valueTypes: IValueTypes
+			typesFile?: string
 		} & ISchemaTemplateItem
 	) {
 		const {
@@ -169,6 +197,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			schemaTemplateItems,
 			fieldTemplateItems,
 			valueTypes,
+			typesFile: options.typesFile,
 		})
 
 		const definitionDestination = path.join(

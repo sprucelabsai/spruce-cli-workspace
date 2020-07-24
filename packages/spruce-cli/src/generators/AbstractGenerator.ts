@@ -1,3 +1,4 @@
+import fs from 'fs'
 import pathUtil from 'path'
 import { Templates } from '@sprucelabs/spruce-templates'
 import { IGeneratedFile } from '../types/cli.types'
@@ -38,5 +39,13 @@ export default abstract class AbstractGenerator {
 		myResults.push({ name, description, path: destination, action })
 
 		return myResults
+	}
+
+	protected resolveFilename(dirOrFile: string, fallbackFileName: string) {
+		const isDir =
+			diskUtil.doesDirExist(dirOrFile) &&
+			fs.lstatSync(dirOrFile).isDirectory() &&
+			pathUtil.extname(dirOrFile).length === 0
+		return isDir ? diskUtil.resolvePath(dirOrFile, fallbackFileName) : dirOrFile
 	}
 }

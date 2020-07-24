@@ -54,10 +54,12 @@ export default class SchemaStore extends AbstractStore {
 
 	public async fetchAllTemplateItems(
 		localSchemaDir?: string,
-		localAddonDir?: string
+		localAddonDir?: string,
+		enableVersioning?: boolean
 	) {
 		const schemaRequest = this.fetchSchemaTemplateItems(
-			diskUtil.resolvePath(this.cwd, localSchemaDir ?? 'src/schemas')
+			diskUtil.resolvePath(this.cwd, localSchemaDir ?? 'src/schemas'),
+			enableVersioning
 		)
 		const fieldRequest = this.fetchFieldTemplateItems(
 			diskUtil.resolvePath(this.cwd, localAddonDir ?? 'src/addons')
@@ -75,7 +77,8 @@ export default class SchemaStore extends AbstractStore {
 	}
 
 	public async fetchSchemaTemplateItems(
-		localLookupDir: string
+		localLookupDir: string,
+		enableVersioning?: boolean
 	): Promise<IFetchSchemaTemplateItemsResponse> {
 		// this will move to a mercury call when ready
 		const schemas: ISchemaDefinition[] = [
@@ -94,7 +97,10 @@ export default class SchemaStore extends AbstractStore {
 			schemas
 		)
 
-		const localDefinitions = await this.loadLocalDefinitions(localLookupDir)
+		const localDefinitions = await this.loadLocalDefinitions(
+			localLookupDir,
+			enableVersioning
+		)
 
 		errors.push(...localDefinitions.errors)
 
@@ -108,7 +114,10 @@ export default class SchemaStore extends AbstractStore {
 		return { items: templateItems, errors }
 	}
 
-	private async loadLocalDefinitions(localLookupDir: string) {
+	private async loadLocalDefinitions(
+		localLookupDir: string,
+		enableVersioning?: boolean
+	) {
 		const localMatches = await globby(
 			pathUtil.join(localLookupDir, '**/*.builder.[t|j]s')
 		)
@@ -122,9 +131,12 @@ export default class SchemaStore extends AbstractStore {
 				let version: undefined | string
 
 				try {
-					version = versionUtil.latestVersionAtPath(
-						pathUtil.join(pathUtil.dirname(local), '..')
-					).dirValue
+					version =
+						enableVersioning === false
+							? undefined
+							: versionUtil.latestVersionAtPath(
+									pathUtil.join(pathUtil.dirname(local), '..')
+							  ).dirValue
 				} catch (err) {
 					errors.push(
 						new SpruceError({

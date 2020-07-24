@@ -1,4 +1,4 @@
-import { ISchemaDefinition } from '@sprucelabs/schema'
+import { ISchemaTemplateItem } from '@sprucelabs/schema'
 
 export interface IAutoLoaderClassTemplateItem {
 	optionsInterfaceName?: string
@@ -73,6 +73,7 @@ export interface IDefinitionBuilderTemplateItem {
 	description?: string | null
 	namePascal: string
 	nameReadable: string
+	builderFunction?: string
 }
 
 export interface IErrorOptions {
@@ -80,11 +81,7 @@ export interface IErrorOptions {
 	renderClassDefinition?: boolean
 }
 
-export interface IErrorTemplateItem {
-	definition: ISchemaDefinition
-	nameCamel: string
-	namePascal: string
-}
+export interface IErrorTemplateItem extends ISchemaTemplateItem {}
 
 export interface IValueTypes {
 	[namespace: string]: {

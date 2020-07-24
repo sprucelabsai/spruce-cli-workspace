@@ -2,7 +2,11 @@ import AbstractCliTest from './AbstractCliTest'
 import FeatureFixture from './fixtures/FeatureFixture'
 
 export default abstract class AbstractErrorTest extends AbstractCliTest {
-	protected static async installErrors(cacheKey?: string) {
+	protected static get errorTypesFile() {
+		return this.resolveHashSprucePath('errors', 'errors.types.ts')
+	}
+
+	protected static async installErrorFeature(cacheKey?: string) {
 		const fixture = new FeatureFixture(this.cwd)
 		const cli = await fixture.installFeatures(
 			[
