@@ -139,7 +139,7 @@
 						"canBootTheCli": "C4",
 						"getsGoodHealthCheckAndNothingElse": "C5",
 						"schemaPassesHealthCheck": "C6",
-						"builderFileValidates": "C7",
+						"builderAndDefinitionFileValidates": "C7",
 						"schemasStayInSyncWhenDefinitionsAreDeleted": "C8",
 						"installsSchemasIfNotInstalled": "C9",
 						"buildCreatesValidDefinitionAndOptionsFile": "C11",

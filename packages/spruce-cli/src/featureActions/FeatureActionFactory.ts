@@ -32,14 +32,14 @@ export default class FeatureActionFactory {
 
 		if (!Class) {
 			throw new Error(
-				`action code: ${name} no found on feature ${this.actionOptions.parent.code}`
+				`action code: ${name} class not found on feature ${this.actionOptions.parent.code}. make sure it's the default export.`
 			)
 		}
 
 		const action = new Class(this.actionOptions)
 		if (!action) {
 			throw new Error(
-				`action code: ${name} no found on feature ${this.actionOptions.parent.code}`
+				`failed to instantiate ${name} action on ${this.actionOptions.parent.code} feature.`
 			)
 		}
 

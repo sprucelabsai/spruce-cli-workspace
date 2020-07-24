@@ -1,6 +1,7 @@
 import { test, assert } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
 import { Service } from '../../../factories/ServiceFactory'
+import testUtil from '../../../utilities/test.utility'
 import versionUtil from '../../../utilities/version.utility'
 
 export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
@@ -53,7 +54,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 	}
 
 	@test()
-	protected static async builderFileValidates() {
+	protected static async builderAndDefinitionFileValidates() {
 		const response = await this.buildTestSchema()
 
 		const checker = this.Service(Service.TypeChecker)
@@ -62,6 +63,13 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		await checker.check(this.schemaTypesFile)
 
 		assert.doesInclude(response.files, { name: 'anotherTest.definition.ts' })
+
+		const definitionMatch = testUtil.assertsFileByNameInGeneratedFiles(
+			'anotherTest.definition.ts',
+			response.files ?? []
+		)
+
+		await checker.check(definitionMatch)
 	}
 
 	private static async buildTestSchema() {

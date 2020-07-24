@@ -3,8 +3,9 @@ import {
 	SchemaDefinitionValues,
 	defaultSchemaValues,
 	validateSchemaValues,
+	SchemaDefinitionPartialValues,
+	SchemaDefinitionDefaultValues,
 } from '@sprucelabs/schema'
-import { SchemaDefinitionPartialValues } from '@sprucelabs/schema/build/schemas.static.types'
 import { Templates } from '@sprucelabs/spruce-templates'
 import ServiceFactory, {
 	IServiceProvider,
@@ -23,7 +24,7 @@ import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
 import { IGraphicsInterface } from '../types/cli.types'
 
 export default abstract class AbstractFeatureAction<
-	S extends ISchemaDefinition | undefined = ISchemaDefinition | undefined
+	S extends ISchemaDefinition = ISchemaDefinition
 > implements IFeatureAction<S>, IServiceProvider {
 	public abstract name: string
 	public abstract optionsDefinition: S
@@ -48,7 +49,7 @@ export default abstract class AbstractFeatureAction<
 	}
 
 	public abstract execute(
-		options: S extends ISchemaDefinition ? SchemaDefinitionValues<S> : undefined
+		options: SchemaDefinitionValues<S>
 	): Promise<IFeatureActionExecuteResponse>
 
 	protected Action(name: string) {
@@ -68,15 +69,9 @@ export default abstract class AbstractFeatureAction<
 	}
 
 	protected validateAndNormalizeOptions(
-		options: S extends ISchemaDefinition
-			? SchemaDefinitionPartialValues<S>
-			: undefined
+		options: SchemaDefinitionPartialValues<S>
 	) {
-		const definition = this.optionsDefinition as ISchemaDefinition | undefined
-
-		if (!definition) {
-			return undefined
-		}
+		const definition = this.optionsDefinition
 
 		const allOptions = {
 			...defaultSchemaValues(definition),
@@ -88,6 +83,7 @@ export default abstract class AbstractFeatureAction<
 			allOptions as SchemaDefinitionValues<ISchemaDefinition>
 		)
 
-		return allOptions
+		return allOptions as SchemaDefinitionValues<S> &
+			SchemaDefinitionDefaultValues<S>
 	}
 }

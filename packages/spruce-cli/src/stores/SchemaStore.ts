@@ -52,14 +52,23 @@ export default class SchemaStore extends AbstractStore {
 			options.schemaBuilder ?? new SchemaTemplateItemBuilder()
 	}
 
-	public async fetchAllTemplateItems(
-		localSchemaDir?: string,
-		localAddonDir?: string,
+	public async fetchAllTemplateItems(options?: {
+		localSchemaDir?: string
+		localAddonDir?: string
 		enableVersioning?: boolean
-	) {
+		fetchRemoteSchemas?: boolean
+	}) {
+		const {
+			localSchemaDir,
+			localAddonDir,
+			enableVersioning,
+			fetchRemoteSchemas,
+		} = options || {}
+
 		const schemaRequest = this.fetchSchemaTemplateItems(
 			diskUtil.resolvePath(this.cwd, localSchemaDir ?? 'src/schemas'),
-			enableVersioning
+			enableVersioning,
+			fetchRemoteSchemas
 		)
 		const fieldRequest = this.fetchFieldTemplateItems(
 			diskUtil.resolvePath(this.cwd, localAddonDir ?? 'src/addons')
@@ -78,24 +87,28 @@ export default class SchemaStore extends AbstractStore {
 
 	public async fetchSchemaTemplateItems(
 		localLookupDir: string,
-		enableVersioning?: boolean
+		enableVersioning?: boolean,
+		fetchRemoteSchemas?: boolean
 	): Promise<IFetchSchemaTemplateItemsResponse> {
-		// this will move to a mercury call when ready
-		const schemas: ISchemaDefinition[] = [
-			personDefinition,
-			skillDefinition,
-			locationDefinition,
-			userLocationDefinition,
-			groupDefinition,
-			aclDefinition,
-		]
-
 		const errors: SpruceError[] = []
+		let coreTemplateItems: ISchemaTemplateItem[] = []
 
-		const coreTemplateItems = this.schemaBuilder.generateTemplateItems(
-			CORE_NAMESPACE,
-			schemas
-		)
+		if (fetchRemoteSchemas !== false) {
+			// this will move to a mercury call when ready
+			const schemas: ISchemaDefinition[] = [
+				personDefinition,
+				skillDefinition,
+				locationDefinition,
+				userLocationDefinition,
+				groupDefinition,
+				aclDefinition,
+			]
+
+			coreTemplateItems = this.schemaBuilder.generateTemplateItems(
+				CORE_NAMESPACE,
+				schemas
+			)
+		}
 
 		const localDefinitions = await this.loadLocalDefinitions(
 			localLookupDir,
@@ -149,7 +162,7 @@ export default class SchemaStore extends AbstractStore {
 					)
 				}
 
-				if (version) {
+				if (version || enableVersioning === false) {
 					try {
 						const definition = await schemaService.importDefinition(local)
 						definition.version = version
