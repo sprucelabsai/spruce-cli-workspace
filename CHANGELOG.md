@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.7.24](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.7.23...v10.7.24) (2020-07-24)
+
+
+### Bug Fixes
+
+* lint - removed unnecessary imports ([e3e3e72](https://github.com/sprucelabsai/spruce-cli-workspace/commit/e3e3e72))
+* sync uses correct types ([4bf53c3](https://github.com/sprucelabsai/spruce-cli-workspace/commit/4bf53c3))
+
+
+
+
+
 ## [10.7.23](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.7.22...v10.7.23) (2020-07-24)
 
 **Note:** Version bump only for package spruce-cli-workspace
