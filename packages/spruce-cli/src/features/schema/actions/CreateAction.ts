@@ -20,12 +20,29 @@ const createSchemaActionDefinition = buildSchemaDefinition({
 	description: 'Create the builder to a fresh new schema!',
 	fields: {
 		...syncSchemasActionOptionsDefinition.fields,
-		destinationDir: {
+		schemaBuilderDestinationDir: {
 			type: FieldType.Text,
-			label: 'Destination directory',
+			label: 'Schema builder destination directory',
 			hint: "Where I'll save the new schema builder.",
 			defaultValue: 'src/schemas',
 			isRequired: true,
+		},
+		builderFunction: {
+			type: FieldType.Text,
+			label: 'Builder function',
+			hint: 'The function that builds this schema',
+			isRequired: true,
+			defaultValue: 'buildSchemaDefinition',
+			isPrivate: true,
+		},
+		syncAfterCreate: {
+			type: FieldType.Boolean,
+			label: 'Sync after creation',
+			hint:
+				'This will ensure types and schemas are in sync after you create your builder.',
+			isRequired: true,
+			isPrivate: true,
+			defaultValue: true,
 		},
 		nameReadable: namedTemplateItemDefinition.fields.nameReadable,
 		namePascal: namedTemplateItemDefinition.fields.namePascal,
@@ -34,7 +51,7 @@ const createSchemaActionDefinition = buildSchemaDefinition({
 	},
 })
 
-type ICreateSchemaActionDefinition = typeof createSchemaActionDefinition
+export type ICreateSchemaActionDefinition = typeof createSchemaActionDefinition
 
 export default class CreateAction extends AbstractFeatureAction<
 	ICreateSchemaActionDefinition
@@ -50,14 +67,18 @@ export default class CreateAction extends AbstractFeatureAction<
 		) as SchemaDefinitionValues<ICreateSchemaActionDefinition>
 
 		const {
-			destinationDir,
+			schemaBuilderDestinationDir,
 			nameCamel,
 			namePascal,
 			nameReadable,
+			syncAfterCreate,
 			...rest
 		} = normalizedOptions
 
-		const resolvedDestination = diskUtil.resolvePath(this.cwd, destinationDir)
+		const resolvedDestination = diskUtil.resolvePath(
+			this.cwd,
+			schemaBuilderDestinationDir
+		)
 
 		const generator = new SchemaGenerator(this.templates)
 		const results = await generator.generateBuilder(resolvedDestination, {
@@ -70,10 +91,15 @@ export default class CreateAction extends AbstractFeatureAction<
 		const syncAction = this.Action('sync') as IFeatureAction<
 			ISyncSchemasActionDefinition
 		>
-		const syncResults = await syncAction.execute({
-			...rest,
-		})
 
-		return { files: [...results, ...(syncResults.files ?? [])] }
+		if (syncAfterCreate) {
+			const syncResults = await syncAction.execute({
+				...rest,
+			})
+
+			results.push(...(syncResults.files ?? []))
+		}
+
+		return { files: results }
 	}
 }

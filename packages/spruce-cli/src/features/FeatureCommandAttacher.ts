@@ -70,6 +70,10 @@ export default class FeatureCommandAttacher {
 		const aliases = featuresUtil.generateCommandAliases(definition)
 
 		fields.forEach(({ field, name }) => {
+			if (field.definition.isPrivate) {
+				return
+			}
+
 			try {
 				theProgram = theProgram.option(
 					aliases[name],

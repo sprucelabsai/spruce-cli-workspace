@@ -70,13 +70,24 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'schema.create',
-			option: '--dd, --destinationDir <destinationDir>',
+			option:
+				'--sbdd, --schemaBuilderDestinationDir <schemaBuilderDestinationDir>',
 			defaultValue: 'src/schemas',
 		})
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'schema.create',
 			option: '-d, --description <description>',
+		})
+	}
+
+	@test()
+	protected static async ignoresPrivateFields() {
+		await this.attachSchemaFeature()
+
+		assert.doesNotInclude(this.program.optionInvocations, {
+			command: 'schema.create',
+			option: '--ev, --enableVersioning <enableVersioning>',
 		})
 	}
 

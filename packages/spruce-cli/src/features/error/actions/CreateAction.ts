@@ -5,10 +5,11 @@ import {
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
 import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
-import SchemaGenerator from '../../../generators/SchemaGenerator'
-import diskUtil from '../../../utilities/disk.utility'
-import namesUtil from '../../../utilities/names.utility'
-import { IFeatureActionExecuteResponse } from '../../features.types'
+import {
+	IFeatureAction,
+	IFeatureActionExecuteResponse,
+} from '../../features.types'
+import { ICreateSchemaActionDefinition } from '../../schema/actions/CreateAction'
 import { syncErrorsActionOptionsDefinition } from './SyncAction'
 
 const createErrorActionDefinition = buildSchemaDefinition({
@@ -19,10 +20,9 @@ const createErrorActionDefinition = buildSchemaDefinition({
 		...syncErrorsActionOptionsDefinition.fields,
 		errorBuilderDestinationDir: {
 			type: FieldType.Text,
-			label: 'Error destination directory',
+			label: 'Error builder destination directory',
 			isRequired: true,
-			hint:
-				'Where should I write your new definition and the Error class file?',
+			hint: "Where I'll save your new builder and Error class file?",
 			defaultValue: './src/errors',
 		},
 		nameReadable: namedTemplateItemDefinition.fields.nameReadable,
@@ -39,6 +39,7 @@ export default class CreateAction extends AbstractFeatureAction<
 > {
 	public name = 'create'
 	public optionsDefinition = createErrorActionDefinition
+
 	public async execute(
 		options: SchemaDefinitionValues<CreateErrorActionDefinition>
 	): Promise<IFeatureActionExecuteResponse> {
@@ -46,34 +47,22 @@ export default class CreateAction extends AbstractFeatureAction<
 			options
 		) as SchemaDefinitionValues<CreateErrorActionDefinition>
 
-		const {
-			errorBuilderDestinationDir,
-			nameCamel,
-			namePascal,
-			nameReadable,
-			description,
-		} = normalizedOptions
+		const schemaCreateAction = this.getFeature('schema').Action(
+			'create'
+		) as IFeatureAction<ICreateSchemaActionDefinition>
 
-		const resolvedErrorBuilderDestinationDir = diskUtil.resolvePath(
-			this.cwd,
-			errorBuilderDestinationDir
-		)
-
-		const schemaGenerator = new SchemaGenerator(this.templates)
-		const builderGeneratedFiles = await schemaGenerator.generateBuilder(
-			resolvedErrorBuilderDestinationDir,
-			{
-				nameCamel,
-				namePascal: namePascal ?? namesUtil.toPascal(nameCamel),
-				nameReadable: nameReadable ?? nameCamel,
-				description,
-				builderFunction: 'buildErrorDefinition',
-				enableVersioning: false,
-			}
-		)
+		const createResults = await schemaCreateAction.execute({
+			...normalizedOptions,
+			builderFunction: 'buildErrorDefinition',
+			enableVersioning: false,
+			syncAfterCreate: false,
+			schemaBuilderDestinationDir: normalizedOptions.errorBuilderDestinationDir,
+		})
 
 		const syncResults = await this.Action('sync').execute(normalizedOptions)
 
-		return { files: [...builderGeneratedFiles, ...(syncResults.files ?? [])] }
+		return {
+			files: [...(createResults.files ?? []), ...(syncResults.files ?? [])],
+		}
 	}
 }
