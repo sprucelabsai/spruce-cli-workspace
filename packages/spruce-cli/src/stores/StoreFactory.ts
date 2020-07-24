@@ -1,7 +1,6 @@
 import { Mercury } from '@sprucelabs/mercury'
 import ServiceFactory from '../factories/ServiceFactory'
 import { IStoreOptions } from './AbstractStore'
-import ErrorStore from './ErrorStore'
 import OnboardingStore from './OnboardingStore'
 import RemoteStore from './RemoteStore'
 import SchemaStore from './SchemaStore'
@@ -16,7 +15,6 @@ export interface IStoreMap {
 	skill: SkillStore
 	user: UserStore
 	watcher: WatcherStore
-	error: ErrorStore
 }
 
 export type StoreCode = keyof IStoreMap
@@ -32,7 +30,6 @@ export default class StoreFactory {
 		skill: SkillStore,
 		user: UserStore,
 		watcher: WatcherStore,
-		error: ErrorStore,
 	}
 
 	public constructor(

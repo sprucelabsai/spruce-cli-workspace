@@ -4,7 +4,7 @@ import {
 	defaultSchemaValues,
 	validateSchemaValues,
 	SchemaDefinitionPartialValues,
-	SchemaDefinitionDefaultValues,
+	SchemaDefinitionValuesWithDefaults,
 } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
 import ServiceFactory, {
@@ -83,7 +83,6 @@ export default abstract class AbstractFeatureAction<
 			allOptions as SchemaDefinitionValues<ISchemaDefinition>
 		)
 
-		return allOptions as SchemaDefinitionValues<S> &
-			SchemaDefinitionDefaultValues<S>
+		return allOptions as SchemaDefinitionValuesWithDefaults<S>
 	}
 }
