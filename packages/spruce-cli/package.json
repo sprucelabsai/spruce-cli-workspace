@@ -137,9 +137,10 @@
 						"getsGoodHealthCheckAndNothingElse": "C5",
 						"schemaPassesHealthCheck": "C6",
 						"builderFileValidates": "C7",
-						"schemasStayInSyncAsFilesAreMoved": "C8",
+						"schemasStayInSyncWhenDefinitionsAreDeleted": "C8",
 						"installsSchemasIfNotInstalled": "C9",
-						"createsValidBuilder": "C11",
+						"buildCreatesValidDefinitionAndOptionsFile": "C11",
+						"errorsStayInSyncWhenDefinitionsAreDeleted": "C12",
 						"canGetLatestVersionBasedOnDir": "C16"
 					}
 				}

@@ -1,8 +1,4 @@
-import SpruceError from '@sprucelabs/schema/build/errors/SpruceError'
-import {
-	IDefinitionBuilderTemplateItem,
-	IErrorTemplateItem,
-} from '@sprucelabs/spruce-templates'
+import { IErrorTemplateItem } from '@sprucelabs/spruce-templates'
 import log from '../singletons/log'
 import diskUtil from '../utilities/disk.utility'
 import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
@@ -61,31 +57,6 @@ export default class ErrorGenerator extends AbstractGenerator {
 		return results
 	}
 
-	public async generateBuilder(
-		destinationDir: string,
-		options: IDefinitionBuilderTemplateItem
-	): Promise<GenerationResults> {
-		const destinationFile = diskUtil.resolvePath(
-			destinationDir,
-			`${options.nameCamel}.builder.ts`
-		)
-
-		if (diskUtil.doesFileExist(destinationFile)) {
-			throw new SpruceError({
-				// @ts-ignore
-				code: 'ERROR_EXISTS',
-				name: options.nameCamel,
-				errorBuilderDestinationDir: destinationDir,
-				friendlyMessage: 'This error already exists!',
-			})
-		}
-
-		return this.writeFileIfChangedMixinResults(
-			destinationFile,
-			this.templates.definitionBuilder(options),
-			'Holds the builder for this error. Used to generate type files.'
-		)
-	}
 	public async generateErrorCodeType(
 		destinationDir: string,
 		errorTemplateItems: IErrorTemplateItem[]

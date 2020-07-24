@@ -1,7 +1,7 @@
-import  { buildSchemaDefinition } from '@sprucelabs/schema'
+import  { {{builderFunction}} } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-export default buildSchemaDefinition({
+export default {{builderFunction}}({
 	id: '{{nameCamel}}',
 	name: '{{{escape nameReadable}}}',
     description: '{{{escape description}}}',

@@ -49,18 +49,25 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 		await this.Service(Service.TypeChecker).check(match)
 	}
 
-	@test.skip()
-	protected static async createsValidTypesFile() {
+	@test()
+	protected static async buildCreatesValidDefinitionAndOptionsFile() {
 		const action = await this.installErrorsAndGetCreateAction()
 		const results = await action.execute({
 			nameCamel: 'testPass',
 		})
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
-			/testPass.types/,
+		const definitionMatch = testUtil.assertsFileByNameInGeneratedFiles(
+			/testPass\.definition/,
 			results.files ?? []
 		)
 
-		await this.Service(Service.TypeChecker).check(match)
+		await this.Service(Service.TypeChecker).check(definitionMatch)
+
+		const optionsMatch = testUtil.assertsFileByNameInGeneratedFiles(
+			/options\.types/,
+			results.files ?? []
+		)
+
+		await this.Service(Service.TypeChecker).check(optionsMatch)
 	}
 }

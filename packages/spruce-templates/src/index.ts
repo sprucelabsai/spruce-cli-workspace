@@ -8,7 +8,12 @@ import {
 import { TemplateRenderAs } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
-import { SCHEMA_VERSION_FALLBACK } from './constants'
+import {
+	SCHEMA_VERSION_FALLBACK,
+	DEFAULT_NAMESPACE_PREFIX,
+	DEFAULT_BUILDER_FUNCTION,
+	DEFAULT_TYPES_FILE,
+} from './constants'
 import log from './singletons/log'
 // Import addons
 import './addons/escape.addon'
@@ -43,19 +48,22 @@ import templateItemUtil from './utilities/templateItem.utility'
 
 log.info('Addons imported')
 
-// Template generators
 export const templates = {
-	/** All definitions */
 	schemasTypes(options: {
 		schemaTemplateItems: ISchemaTemplateItem[]
 		fieldTemplateItems: IFieldTemplateItem[]
 		valueTypes: IValueTypes
+		namespacePrefix?: string
 	}) {
 		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
 		const template = templateImportUtil.getTemplate(
 			'schemas/schemas.types.ts.hbs'
 		)
-		return template({ ...options, imports })
+		return template({
+			...options,
+			imports,
+			namespacePrefix: options.namespacePrefix ?? DEFAULT_NAMESPACE_PREFIX,
+		})
 	},
 
 	valueTypes(options: {
@@ -84,23 +92,32 @@ export const templates = {
 			rendersAs,
 		})
 	},
-	/** Will return the template for a definition that has been normalized */
+
 	definition(
 		options: ISchemaTemplateItem & {
 			schemaTemplateItems: ISchemaTemplateItem[]
 			fieldTemplateItems: IFieldTemplateItem[]
 			valueTypes: IValueTypes
+			namespacePrefix?: string
+			typesFile?: string
 		}
 	) {
 		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
 		const template = templateImportUtil.getTemplate('schemas/definition.ts.hbs')
-		return template({ ...options, imports })
+		return template({
+			...options,
+			imports,
+			prefix: options.namespacePrefix ?? DEFAULT_NAMESPACE_PREFIX,
+			typesFile: options.typesFile ?? DEFAULT_TYPES_FILE,
+		})
 	},
 
-	/** When building a definition in a skill */
 	definitionBuilder(options: IDefinitionBuilderTemplateItem) {
 		const template = templateImportUtil.getTemplate('schemas/builder.ts.hbs')
-		return template(options)
+		return template({
+			...options,
+			builderFunction: options.builderFunction ?? DEFAULT_BUILDER_FUNCTION,
+		})
 	},
 
 	/** For creating an error class */
@@ -133,16 +150,6 @@ export const templates = {
 	/** For generating types for all the options (the ISpruceErrorOptions sub-interface) */
 	errorCode(options: { codes: IErrorTemplateItem[] }) {
 		const template = templateImportUtil.getTemplate('errors/errorCode.ts.hbs')
-		return template(options)
-	},
-
-	/** An error definition file */
-	errorDefinitionBuilder(options: {
-		nameCamel: string
-		nameReadable: string
-		description: string
-	}) {
-		const template = templateImportUtil.getTemplate('errors/builder.ts.hbs')
 		return template(options)
 	},
 

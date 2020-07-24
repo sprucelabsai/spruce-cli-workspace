@@ -3,6 +3,7 @@ import Schema from '@sprucelabs/schema'
 import { IErrorTemplateItem } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import ErrorCode from '#spruce/errors/errorCode'
+import { LOCAL_NAMESPACE } from '../constants'
 import SpruceError from '../errors/SpruceError'
 import { Service } from '../factories/ServiceFactory'
 import diskUtil from '../utilities/disk.utility'
@@ -46,7 +47,10 @@ export default class ErrorStore extends AbstractStore {
 
 					const templateItem: IErrorTemplateItem = {
 						definition,
+						id: definition.id,
+						namespace: LOCAL_NAMESPACE,
 						nameCamel: namesUtil.toCamel(definition.id),
+						nameReadable: definition.name,
 						namePascal: namesUtil.toPascal(definition.id),
 					}
 					results.items.push(templateItem)

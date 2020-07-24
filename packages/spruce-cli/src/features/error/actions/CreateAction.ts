@@ -5,7 +5,7 @@ import {
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
 import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
-import ErrorGenerator from '../../../generators/ErrorGenerator'
+import SchemaGenerator from '../../../generators/SchemaGenerator'
 import diskUtil from '../../../utilities/disk.utility'
 import namesUtil from '../../../utilities/names.utility'
 import { IFeatureActionExecuteResponse } from '../../features.types'
@@ -54,25 +54,21 @@ export default class CreateAction extends AbstractFeatureAction<
 			description,
 		} = normalizedOptions
 
-		// const resolvedErrorFileDestination = diskUtil.resolvePath(
-		// 	this.cwd,
-		// 	errorBuilderDestinationDir,
-		// 	'SpruceError.ts'
-		// )
-
 		const resolvedErrorBuilderDestinationDir = diskUtil.resolvePath(
 			this.cwd,
 			errorBuilderDestinationDir
 		)
 
-		const errorGenerator = new ErrorGenerator(this.templates)
-		const builderGeneratedFiles = await errorGenerator.generateBuilder(
+		const schemaGenerator = new SchemaGenerator(this.templates)
+		const builderGeneratedFiles = await schemaGenerator.generateBuilder(
 			resolvedErrorBuilderDestinationDir,
 			{
 				nameCamel,
 				namePascal: namePascal ?? namesUtil.toPascal(nameCamel),
 				nameReadable: nameReadable ?? nameCamel,
 				description,
+				builderFunction: 'buildErrorDefinition',
+				enableVersioning: false,
 			}
 		)
 

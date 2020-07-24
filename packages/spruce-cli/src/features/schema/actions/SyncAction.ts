@@ -39,6 +39,12 @@ export const syncSchemasActionOptionsDefinition = buildSchemaDefinition({
 			hint: 'Where I should look for your schema builders?',
 			defaultValue: 'src/schemas',
 		},
+		enableVersioning: {
+			type: FieldType.Boolean,
+			isRequired: true,
+			defaultValue: true,
+			label: 'Enable versioning',
+		},
 	},
 })
 
@@ -69,7 +75,8 @@ export default class SyncAction extends AbstractFeatureAction<
 			fields: { items: fieldTemplateItems },
 		} = await this.Store('schema').fetchAllTemplateItems(
 			normalizedOptions.schemaLookupDir,
-			normalizedOptions.addonsLookupDir
+			normalizedOptions.addonsLookupDir,
+			normalizedOptions.enableVersioning
 		)
 
 		await this.deleteOrphanedDefinitions(
@@ -77,7 +84,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			schemaTemplateItems
 		)
 
-		const valueTypes = await this.generateTypes(
+		const valueTypes = await this.generateValueTypes(
 			resolvedDestination,
 			fieldTemplateItems,
 			schemaTemplateItems
@@ -95,7 +102,7 @@ export default class SyncAction extends AbstractFeatureAction<
 		return { files: results }
 	}
 
-	private async generateTypes(
+	private async generateValueTypes(
 		resolvedDestination: string,
 		fieldTemplateItems: IFieldTemplateItem[],
 		schemaTemplateItems: ISchemaTemplateItem[]
