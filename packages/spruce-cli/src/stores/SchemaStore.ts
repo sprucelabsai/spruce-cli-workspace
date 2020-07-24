@@ -65,11 +65,14 @@ export default class SchemaStore extends AbstractStore {
 			fetchRemoteSchemas,
 		} = options || {}
 
-		const schemaRequest = this.fetchSchemaTemplateItems(
-			diskUtil.resolvePath(this.cwd, localSchemaDir ?? 'src/schemas'),
+		const schemaRequest = this.fetchSchemaTemplateItems({
+			localLookupDir: diskUtil.resolvePath(
+				this.cwd,
+				localSchemaDir ?? 'src/schemas'
+			),
 			enableVersioning,
-			fetchRemoteSchemas
-		)
+			fetchRemoteSchemas,
+		})
 		const fieldRequest = this.fetchFieldTemplateItems(
 			diskUtil.resolvePath(this.cwd, localAddonDir ?? 'src/addons')
 		)
@@ -85,12 +88,14 @@ export default class SchemaStore extends AbstractStore {
 		}
 	}
 
-	public async fetchSchemaTemplateItems(
-		localLookupDir: string,
-		enableVersioning?: boolean,
+	public async fetchSchemaTemplateItems(options: {
+		localLookupDir: string
+		enableVersioning?: boolean
 		fetchRemoteSchemas?: boolean
-	): Promise<IFetchSchemaTemplateItemsResponse> {
+	}): Promise<IFetchSchemaTemplateItemsResponse> {
+		const { localLookupDir, enableVersioning, fetchRemoteSchemas } = options
 		const errors: SpruceError[] = []
+
 		let coreTemplateItems: ISchemaTemplateItem[] = []
 
 		if (fetchRemoteSchemas !== false) {

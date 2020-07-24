@@ -4,7 +4,7 @@ import {
 	defaultSchemaValues,
 	validateSchemaValues,
 	SchemaDefinitionPartialValues,
-	SchemaDefinitionDefaultValues,
+	SchemaDefinitionValuesWithDefaults,
 } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
 import ServiceFactory, {
@@ -60,11 +60,11 @@ export default abstract class AbstractFeatureAction<
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
-	public Store<C extends StoreCode>(code: C, cwd?: string): IStoreMap[C] {
+	protected Store<C extends StoreCode>(code: C, cwd?: string): IStoreMap[C] {
 		return this.storeFactory.Store(code, cwd ?? this.cwd)
 	}
 
-	public getFeature(code: FeatureCode) {
+	protected getFeature(code: FeatureCode) {
 		return this.featureInstaller.getFeature(code)
 	}
 
@@ -83,7 +83,6 @@ export default abstract class AbstractFeatureAction<
 			allOptions as SchemaDefinitionValues<ISchemaDefinition>
 		)
 
-		return allOptions as SchemaDefinitionValues<S> &
-			SchemaDefinitionDefaultValues<S>
+		return allOptions as SchemaDefinitionValuesWithDefaults<S>
 	}
 }

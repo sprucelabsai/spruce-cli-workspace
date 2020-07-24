@@ -4,32 +4,16 @@ import { templates } from '@sprucelabs/spruce-templates'
 import { assert, test } from '@sprucelabs/test'
 import AbstractCliTest from '../../AbstractCliTest'
 import ErrorGenerator from '../../generators/ErrorGenerator'
-import ErrorStore from '../../stores/ErrorStore'
+import SchemaStore from '../../stores/SchemaStore'
 import diskUtil from '../../utilities/disk.utility'
 
 export default class ErrorStoreTest extends AbstractCliTest {
-	protected static store: ErrorStore
+	protected static store: SchemaStore
 	protected static async beforeEach() {
 		super.beforeEach()
 		this.store = this.StoreFactory().Store(
-			'error',
+			'schema',
 			pathUtil.join(__dirname, '..', '..')
-		)
-	}
-
-	@test()
-	protected static hasFetchErrorTemplateTimesMethod() {
-		const store = this.store
-		assert.isFunction(store.fetchErrorTemplateItems)
-	}
-
-	@test()
-	protected static async badDirThrows() {
-		const store = this.store
-		await assert.doesThrowAsync(
-			async () =>
-				store.fetchErrorTemplateItems('/should-no-match-anything-ever'),
-			/DIRECTORY_NOT_FOUND:/i
 		)
 	}
 
@@ -49,9 +33,11 @@ export default class ErrorStoreTest extends AbstractCliTest {
 		dir: 'errors_good' | 'errors_one_bad' | 'errors_bad' | 'errors_empty'
 	) {
 		const store = this.store
-		const results = await store.fetchErrorTemplateItems(
-			pathUtil.join(__dirname, '..', 'testDirsAndFiles', dir)
-		)
+		const results = await store.fetchSchemaTemplateItems({
+			localLookupDir: pathUtil.join(__dirname, '..', 'testDirsAndFiles', dir),
+			enableVersioning: false,
+			fetchRemoteSchemas: false,
+		})
 		return results
 	}
 

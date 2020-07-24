@@ -74,6 +74,7 @@ export interface IFeatureMap {
 
 export interface IFeatureActionExecuteResponse {
 	files?: IGeneratedFile[]
+	meta?: Record<string, any>
 }
 
 export interface IFeatureAction<

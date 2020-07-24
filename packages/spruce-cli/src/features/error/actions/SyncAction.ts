@@ -1,7 +1,10 @@
 import {
 	buildSchemaDefinition,
 	SchemaDefinitionValues,
+	ISchemaTemplateItem,
+	SchemaDefinitionValuesWithDefaults,
 } from '@sprucelabs/schema'
+import { IErrorTemplateItem } from '@sprucelabs/spruce-templates'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
 import ErrorGenerator from '../../../generators/ErrorGenerator'
@@ -46,37 +49,28 @@ export default class SyncAction extends AbstractFeatureAction<
 		options: SchemaDefinitionValues<ISyncErrorsActionDefinition>
 	): Promise<IFeatureActionExecuteResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
-		const {
-			errorTypesDestinationDir,
-			errorLookupDir,
-			addonsLookupDir,
-		} = normalizedOptions
+		const { errorTypesDestinationDir } = normalizedOptions
 
 		const schemaSyncAction = this.getFeature('schema').Action(
 			'sync'
 		) as IFeatureAction<ISyncSchemasActionDefinition>
 
 		const schemaSyncResults = await schemaSyncAction.execute({})
-
-		const resolvedErrorTypesDestinationDir = diskUtil.resolvePath(
-			this.cwd,
-			errorTypesDestinationDir,
-			'errors.types.ts'
+		const errorSyncResults = await this.syncErrors(
+			schemaSyncAction,
+			normalizedOptions
 		)
 
-		const errorSyncResults = await schemaSyncAction.execute({
-			...normalizedOptions,
-			schemaTypesDestinationDir: resolvedErrorTypesDestinationDir,
-			schemaLookupDir: errorLookupDir,
-			enableVersioning: false,
-			namespacePrefix: 'SpruceErrors',
-			addonsLookupDir,
-			fetchRemoteSchemas: false,
-			generateFieldTypes: false,
-		})
+		if (this.areSyncResultsEmpty(errorSyncResults)) {
+			return {}
+		}
+
+		const { schemaTemplateItems } = errorSyncResults.meta as {
+			schemaTemplateItems: ISchemaTemplateItem[]
+		}
 
 		const optionsResults = await this.generateOptionTypes(
-			errorLookupDir,
+			schemaTemplateItems,
 			errorTypesDestinationDir
 		)
 
@@ -89,18 +83,43 @@ export default class SyncAction extends AbstractFeatureAction<
 		}
 	}
 
+	private async syncErrors(
+		schemaSyncAction: IFeatureAction<ISyncSchemasActionDefinition>,
+		normalizedOptions: SchemaDefinitionValuesWithDefaults<
+			ISyncErrorsActionDefinition
+		>
+	) {
+		const resolvedErrorTypesDestinationDir = diskUtil.resolvePath(
+			this.cwd,
+			normalizedOptions.errorTypesDestinationDir,
+			'errors.types.ts'
+		)
+
+		const errorSyncResults = await schemaSyncAction.execute({
+			...normalizedOptions,
+			schemaTypesDestinationDir: resolvedErrorTypesDestinationDir,
+			schemaLookupDir: normalizedOptions.errorLookupDir,
+			enableVersioning: false,
+			namespacePrefix: 'SpruceErrors',
+			fetchRemoteSchemas: false,
+			generateFieldTypes: false,
+		})
+		return errorSyncResults
+	}
+
+	private areSyncResultsEmpty(errorSyncResults: IFeatureActionExecuteResponse) {
+		return (
+			!errorSyncResults.meta ||
+			!errorSyncResults.files ||
+			errorSyncResults.files.length === 0
+		)
+	}
+
 	private async generateOptionTypes(
-		errorLookupDir: string,
+		errorTemplateItems: IErrorTemplateItem[],
 		errorTypesDestinationDir: string
 	) {
 		const errorGenerator = new ErrorGenerator(this.templates)
-		const errorStore = this.Store('error')
-
-		const storeResults = await errorStore.fetchErrorTemplateItems(
-			errorLookupDir
-		)
-
-		const errorTemplateItems = storeResults.items
 
 		if (errorTemplateItems.length === 0) {
 			return []
