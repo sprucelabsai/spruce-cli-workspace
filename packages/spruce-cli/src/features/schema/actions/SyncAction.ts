@@ -44,6 +44,7 @@ export const syncSchemasActionOptionsDefinition = buildSchemaDefinition({
 			isRequired: true,
 			defaultValue: true,
 			label: 'Enable versioning',
+			isPrivate: true,
 		},
 	},
 })
