@@ -1,3 +1,4 @@
+import { buildSchemaDefinition } from '@sprucelabs/schema'
 import blessed from 'blessed'
 // @ts-ignore
 import fonts from 'cfonts'
@@ -5,9 +6,19 @@ import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction
 import { IFeatureActionExecuteResponse } from '../../features.types'
 import Theme from '../Theme'
 
-export default class DashboardAction extends AbstractFeatureAction {
+export const dashboardActionOptionsDefinition = buildSchemaDefinition({
+	id: 'dashboard',
+	name: 'Skill dashboard',
+	fields: {},
+})
+
+export type IDashboardActionDefinition = typeof dashboardActionOptionsDefinition
+
+export default class DashboardAction extends AbstractFeatureAction<
+	IDashboardActionDefinition
+> {
 	public name = 'dashboard'
-	public optionsDefinition = undefined
+	public optionsDefinition = dashboardActionOptionsDefinition
 
 	public execute(): Promise<IFeatureActionExecuteResponse> {
 		const screen = blessed.screen({

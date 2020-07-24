@@ -77,11 +77,11 @@ export interface IFeatureActionExecuteResponse {
 }
 
 export interface IFeatureAction<
-	S extends ISchemaDefinition | undefined = ISchemaDefinition
+	S extends ISchemaDefinition = ISchemaDefinition
 > {
 	name: string
 	optionsDefinition?: S
 	execute: (
-		options: S extends ISchemaDefinition ? SchemaDefinitionValues<S> : undefined
+		options: SchemaDefinitionValues<S>
 	) => Promise<IFeatureActionExecuteResponse>
 }

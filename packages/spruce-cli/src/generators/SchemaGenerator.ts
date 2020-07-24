@@ -15,7 +15,6 @@ import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
 export interface IGenerateSchemaTypesOptions {
 	fieldTemplateItems: IFieldTemplateItem[]
 	schemaTemplateItems: ISchemaTemplateItem[]
-	clean?: boolean
 }
 
 export interface IGenerateFieldTypesOptions {
@@ -27,7 +26,6 @@ export interface IGenerateSchemaTypesOptions {
 	schemaTemplateItems: ISchemaTemplateItem[]
 	valueTypes: IValueTypes
 	namespacePrefix?: string
-	typesFile?: string
 }
 
 export interface ISchemaTypesGenerationStage {
@@ -131,7 +129,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 		options: IGenerateSchemaTypesOptions
 	): GenerationResults {
 		const { fieldTemplateItems, schemaTemplateItems, valueTypes } = options
-		const schemaTypesDestination = this.resolveFilename(
+		const resolvedTypesDestination = this.resolveFilename(
 			destinationDirOrFilename,
 			'schemas.types.ts'
 		)
@@ -146,15 +144,15 @@ export default class SchemaGenerator extends AbstractGenerator {
 		})
 
 		results = this.writeFileIfChangedMixinResults(
-			schemaTypesDestination,
+			resolvedTypesDestination,
 			schemaTypesContents,
 			'The interfaces for every schema'
 		)
 
 		results.push(
 			...this.generateAllDefinitions(
-				pathUtil.dirname(schemaTypesDestination),
-				options
+				pathUtil.dirname(resolvedTypesDestination),
+				{ ...options, typesFile: resolvedTypesDestination }
 			)
 		)
 
@@ -163,7 +161,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 	private generateAllDefinitions(
 		destinationDir: string,
-		options: IGenerateSchemaTypesOptions
+		options: IGenerateSchemaTypesOptions & { typesFile?: string }
 	): GenerationResults {
 		const results: GenerationResults = []
 
@@ -192,23 +190,34 @@ export default class SchemaGenerator extends AbstractGenerator {
 			...item
 		} = options
 
-		const definitionContents = this.templates.definition({
-			...item,
-			schemaTemplateItems,
-			fieldTemplateItems,
-			valueTypes,
-			typesFile: options.typesFile,
-		})
-
-		const definitionDestination = path.join(
+		const resolvedDestination = path.join(
 			destinationDir,
 			namesUtil.toCamel(options.namespace),
 			options.definition.version ?? '',
 			`${item.id}.definition.ts`
 		)
 
+		let typesFile = options.typesFile
+			? pathUtil.relative(
+					pathUtil.dirname(resolvedDestination),
+					options.typesFile
+			  )
+			: undefined
+
+		if (typesFile) {
+			typesFile = typesFile.replace(pathUtil.extname(typesFile), '')
+		}
+
+		const definitionContents = this.templates.definition({
+			...item,
+			schemaTemplateItems,
+			fieldTemplateItems,
+			valueTypes,
+			typesFile,
+		})
+
 		return this.writeFileIfChangedMixinResults(
-			definitionDestination,
+			resolvedDestination,
 			definitionContents,
 			`The definition of ${item.nameReadable}`
 		)

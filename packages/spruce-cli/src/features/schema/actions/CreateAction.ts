@@ -25,13 +25,11 @@ const createSchemaActionDefinition = buildSchemaDefinition({
 			label: 'Schema builder destination directory',
 			hint: "Where I'll save the new schema builder.",
 			defaultValue: 'src/schemas',
-			isRequired: true,
 		},
 		builderFunction: {
 			type: FieldType.Text,
 			label: 'Builder function',
 			hint: 'The function that builds this schema',
-			isRequired: true,
 			defaultValue: 'buildSchemaDefinition',
 			isPrivate: true,
 		},
@@ -40,7 +38,6 @@ const createSchemaActionDefinition = buildSchemaDefinition({
 			label: 'Sync after creation',
 			hint:
 				'This will ensure types and schemas are in sync after you create your builder.',
-			isRequired: true,
 			isPrivate: true,
 			defaultValue: true,
 		},
@@ -62,9 +59,7 @@ export default class CreateAction extends AbstractFeatureAction<
 	public async execute(
 		options: SchemaDefinitionValues<ICreateSchemaActionDefinition>
 	) {
-		const normalizedOptions = this.validateAndNormalizeOptions(
-			options
-		) as SchemaDefinitionValues<ICreateSchemaActionDefinition>
+		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
 		const {
 			schemaBuilderDestinationDir,

@@ -107,7 +107,7 @@ export const templates = {
 		return template({
 			...options,
 			imports,
-			prefix: options.namespacePrefix ?? DEFAULT_NAMESPACE_PREFIX,
+			namespacePrefix: options.namespacePrefix ?? DEFAULT_NAMESPACE_PREFIX,
 			typesFile: options.typesFile ?? DEFAULT_TYPES_FILE,
 		})
 	},

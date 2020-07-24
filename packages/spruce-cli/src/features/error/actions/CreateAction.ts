@@ -43,9 +43,7 @@ export default class CreateAction extends AbstractFeatureAction<
 	public async execute(
 		options: SchemaDefinitionValues<CreateErrorActionDefinition>
 	): Promise<IFeatureActionExecuteResponse> {
-		const normalizedOptions = this.validateAndNormalizeOptions(
-			options
-		) as SchemaDefinitionValues<CreateErrorActionDefinition>
+		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
 		const schemaCreateAction = this.getFeature('schema').Action(
 			'create'
