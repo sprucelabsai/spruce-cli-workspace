@@ -15,10 +15,11 @@ type Skill = SpruceSchemas.Local.ISkillFeature
 export default class SkillFeature<
 	T extends SkillFeatureDefinition = SkillFeatureDefinition
 > extends AbstractFeature<T> {
+	public nameReadable = 'Skill'
+	public code: FeatureCode = 'skill'
 	public description =
 		'Skill: The most basic configuration needed to enable a skill'
 
-	public code: FeatureCode = 'skill'
 	public dependencies: FeatureCode[] = []
 	public packageDependencies: INpmPackage[] = [
 		{ name: 'typescript' },

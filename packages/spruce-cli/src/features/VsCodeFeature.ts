@@ -6,8 +6,10 @@ import AbstractFeature from './AbstractFeature'
 import { FeatureCode } from './features.types'
 
 export default class VsCodeFeature extends AbstractFeature {
-	public description = 'VSCode: Create settings and install VSCode extensions'
+	public nameReadable = 'VSCode'
+	public description = 'Create settings and install VSCode extensions'
 	public code: FeatureCode = 'vsCode'
+	public dependencies: FeatureCode[] = ['skill']
 	private recommendedExtensions: IExtension[] = [
 		{
 			id: 'dbaeumer.vscode-eslint',
@@ -46,7 +48,7 @@ export default class VsCodeFeature extends AbstractFeature {
 	// }
 
 	public async isInstalled() {
-		return true
+		return false
 		// const containsAllTemplateFiles = await this.templates.isValidTemplatedDirectory(
 		// 	{
 		// 		kind: DirectoryTemplateKind.VsCode,

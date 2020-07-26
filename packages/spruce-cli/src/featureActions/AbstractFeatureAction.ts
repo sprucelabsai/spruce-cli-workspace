@@ -68,6 +68,10 @@ export default abstract class AbstractFeatureAction<
 		return this.featureInstaller.getFeature(code)
 	}
 
+	protected getFeatureCodes(): FeatureCode[] {
+		return this.featureInstaller.getAllCodes()
+	}
+
 	protected validateAndNormalizeOptions(
 		options: SchemaDefinitionPartialValues<S>
 	) {
