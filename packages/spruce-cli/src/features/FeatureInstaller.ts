@@ -222,7 +222,12 @@ export default class FeatureInstaller implements IServiceProvider {
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
-	public definitionForFeature(code: FeatureCode) {
+	public getDefinitionForFeature(code: FeatureCode) {
 		return this.getFeature(code).optionsDefinition
+	}
+
+	public getAllCodes(): FeatureCode[] {
+		const codes = Object.keys(this.featureMap) as FeatureCode[]
+		return this.sortFeatures(codes)
 	}
 }

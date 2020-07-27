@@ -28,6 +28,7 @@ export default abstract class AbstractFeature<
 
 	protected cwd: string
 	public abstract readonly code: FeatureCode
+	public abstract readonly nameReadable: string
 
 	protected actionsDir: string | undefined
 	protected actionFactory?: FeatureActionFactory

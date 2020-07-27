@@ -5,6 +5,7 @@ import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
 export default class ErrorFeature extends AbstractFeature {
+	public nameReadable = 'Error'
 	public description =
 		'Errors: Use schemas to define your errors and get great type checking!'
 

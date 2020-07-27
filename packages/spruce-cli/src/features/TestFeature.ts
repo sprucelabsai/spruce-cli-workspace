@@ -8,7 +8,8 @@ import { FeatureCode } from './features.types'
 type TestFeatureType = SpruceSchemas.Local.TestFeature.IDefinition
 
 export default class TestFeature extends AbstractFeature<TestFeatureType> {
-	public description = 'Test File: Create a test for one of your files'
+	public nameReadable = 'Test'
+	public description = 'Test first.'
 	public dependencies: FeatureCode[] = ['skill']
 	public code: FeatureCode = 'test'
 	public packageDependencies: INpmPackage[] = [
