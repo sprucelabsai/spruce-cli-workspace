@@ -3,7 +3,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"version": "10.7.36",
+	"version": "10.7.40",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -47,9 +47,9 @@
 		"@babel/runtime": "^7.10.5",
 		"@sprucelabs/error": "^2.0.0",
 		"@sprucelabs/log": "^10.2.48",
-		"@sprucelabs/mercury": "^10.5.44",
-		"@sprucelabs/schema": "^5.0.0",
-		"@sprucelabs/spruce-templates": "^10.7.36",
+		"@sprucelabs/mercury": "^10.5.45",
+		"@sprucelabs/schema": "^5.0.1",
+		"@sprucelabs/spruce-templates": "^10.7.40",
 		"@types/promise.allsettled": "^1.0.3",
 		"@types/uuid": "^8.0.0",
 		"blessed": "^0.1.81",
@@ -79,7 +79,7 @@
 		"vm2": "^3.9.2"
 	},
 	"devDependencies": {
-		"@sprucelabs/test": "^5.3.55",
+		"@sprucelabs/test": "^5.3.57",
 		"@types/blessed": "^0.1.17",
 		"@types/eslint": "^7.2.0",
 		"@types/fs-extra": "^9.0.1",
