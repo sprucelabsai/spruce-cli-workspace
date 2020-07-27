@@ -68,7 +68,6 @@ export default class DashboardAction extends AbstractFeatureAction<
 
 		screen.title = 'SKX'
 		screen.key(['escape', 'q', 'C-c'], function () {
-			debugger
 			return process.exit(0)
 		})
 
