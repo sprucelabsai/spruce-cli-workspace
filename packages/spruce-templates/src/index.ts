@@ -147,12 +147,6 @@ export const templates = {
 		return template(options)
 	},
 
-	/** For generating types for all the options (the ISpruceErrorOptions sub-interface) */
-	errorCode(options: { codes: IErrorTemplateItem[] }) {
-		const template = templateImportUtil.getTemplate('errors/errorCode.ts.hbs')
-		return template(options)
-	},
-
 	/** Schema example */
 	schemaExample(options: {
 		nameCamel: string

@@ -2016,15 +2016,20 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sprucelabs/error@^1.3.45":
-  version "1.3.45"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-1.3.45.tgz#6d0125ad6f80e74aa761af6363703d8404810f03"
-  integrity sha512-weOlm9VKUc2ipflu5rMux0Py10dNdgXoREJpo5xno2fq2ZVFTeLrFK8mNDtx8uNZPCInp15wCaso0qN1J3q2DA==
+"@sprucelabs/error@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.0.0.tgz#2b76c8d8009e4678ed939b8ca19df351495ff75a"
+  integrity sha512-y3sTS0VhjAFoIBN37mDlk9VIStrq32TM0/8YtQSflqEGURTCShIfPJqQPBGdihrpmyDXQlPmQ0ber9racEv6mQ==
 
 "@sprucelabs/log@^10.2.48":
   version "10.2.48"
   resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.48.tgz#f53216ab252ac9de4180e11ec9fc3086a6af6a81"
   integrity sha512-2VS4yXe3bB7GRt6Qhod54p9ktNxauVeTAUTKbnvyGl2G9WddlcUH26hIiwig0MvNw42XWSLrpaAkucduJDCdvg==
+
+"@sprucelabs/log@^10.2.49":
+  version "10.2.49"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.49.tgz#13426d28f47027a3855a5e5681939ddfcd61dfa6"
+  integrity sha512-AlcUF89WbUSqxjSpAp0z3YiAXzT8ypfv2aZiH8WwblJsvNZKIrYWMny/PV6KqyrORLSV7dw1Zti3VqBi5YhR3w==
 
 "@sprucelabs/mercury@^10.5.44":
   version "10.5.44"
@@ -2036,13 +2041,13 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^4.0.59":
-  version "4.0.59"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-4.0.59.tgz#d3dd8d4b3bc1c80a0d6e56b16823da86e477f783"
-  integrity sha512-0lwkmqnmEEaqVI1e3RBk3FuW8DaojPygo9ffZ8lU6LhZNm10LkYQshmlloPXZSrYFU7jJJEc7sQKpY+Pjk+KfA==
+"@sprucelabs/schema@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-5.0.0.tgz#7dddd479be444caa0ac99fa33edc8908e9393173"
+  integrity sha512-c15IA59wQWCzQQZ18Ty3USfV3p1E88mNKpuFTjeAr0VgiEj3UsxW6dLn5vTP14RA6o2guiWRxGtWQykIDnB0uQ==
   dependencies:
-    "@sprucelabs/error" "^1.3.45"
-    "@sprucelabs/log" "^10.2.48"
+    "@sprucelabs/error" "^2.0.0"
+    "@sprucelabs/log" "^10.2.49"
     google-libphonenumber "^3.2.10"
     libphonenumber-js "^1.7.55"
     mime-db "^1.44.0"

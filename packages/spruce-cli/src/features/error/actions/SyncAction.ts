@@ -9,6 +9,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
 import ErrorGenerator from '../../../generators/ErrorGenerator'
 import diskUtil from '../../../utilities/disk.utility'
+import namesUtil from '../../../utilities/names.utility'
 import {
 	IFeatureActionExecuteResponse,
 	IFeatureAction,
@@ -23,6 +24,13 @@ export const syncErrorsActionOptionsDefinition = buildSchemaDefinition({
 	name: 'Sync error',
 	fields: {
 		addonsLookupDir: syncSchemasActionOptionsDefinition.fields.addonsLookupDir,
+		errorClassDestinationDir: {
+			type: FieldType.Text,
+			label: 'Error class destination',
+			isRequired: true,
+			hint: "Where I'll save your new Error class file?",
+			defaultValue: 'src/errors',
+		},
 		errorLookupDir: {
 			type: FieldType.Text,
 			hint: 'Where I should look for your error builders?',
@@ -49,7 +57,10 @@ export default class SyncAction extends AbstractFeatureAction<
 		options: SchemaDefinitionValues<ISyncErrorsActionDefinition>
 	): Promise<IFeatureActionExecuteResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
-		const { errorTypesDestinationDir } = normalizedOptions
+		const {
+			errorTypesDestinationDir,
+			errorClassDestinationDir,
+		} = normalizedOptions
 
 		const schemaSyncAction = this.getFeature('schema').Action(
 			'sync'
@@ -69,15 +80,28 @@ export default class SyncAction extends AbstractFeatureAction<
 			schemaTemplateItems: ISchemaTemplateItem[]
 		}
 
+		const errorTemplateItems = schemaTemplateItems.map((item) => ({
+			...item,
+			code: namesUtil.toConst(item.namePascal),
+		}))
+		const errorGenerator = new ErrorGenerator(this.templates)
+
 		const optionsResults = await this.generateOptionTypes(
-			schemaTemplateItems,
+			errorGenerator,
+			errorTemplateItems,
 			errorTypesDestinationDir
+		)
+
+		const errorClassGeneratedFiles = await errorGenerator.generateOrAppendErrorsToClass(
+			diskUtil.resolvePath(this.cwd, errorClassDestinationDir),
+			errorTemplateItems
 		)
 
 		return {
 			files: [
 				...(errorSyncResults.files ?? []),
 				...(schemaSyncResults.files ?? []),
+				...errorClassGeneratedFiles,
 				...optionsResults,
 			],
 		}
@@ -116,11 +140,10 @@ export default class SyncAction extends AbstractFeatureAction<
 	}
 
 	private async generateOptionTypes(
+		errorGenerator: ErrorGenerator,
 		errorTemplateItems: IErrorTemplateItem[],
 		errorTypesDestinationDir: string
 	) {
-		const errorGenerator = new ErrorGenerator(this.templates)
-
 		if (errorTemplateItems.length === 0) {
 			return []
 		}

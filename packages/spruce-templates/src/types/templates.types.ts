@@ -81,7 +81,9 @@ export interface IErrorOptions {
 	renderClassDefinition?: boolean
 }
 
-export interface IErrorTemplateItem extends ISchemaTemplateItem {}
+export interface IErrorTemplateItem extends ISchemaTemplateItem {
+	code: string
+}
 
 export interface IValueTypes {
 	[namespace: string]: {

@@ -22,7 +22,7 @@ const createErrorActionDefinition = buildSchemaDefinition({
 			type: FieldType.Text,
 			label: 'Error builder destination directory',
 			isRequired: true,
-			hint: "Where I'll save your new builder and Error class file?",
+			hint: "Where I'll save your new builder file?",
 			defaultValue: './src/errors',
 		},
 		nameReadable: namedTemplateItemDefinition.fields.nameReadable,

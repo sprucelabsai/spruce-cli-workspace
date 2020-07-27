@@ -1,6 +1,5 @@
 {{#if renderClassDefinition}}
 import BaseSpruceError from '@sprucelabs/error'
-import ErrorCode from '#spruce/errors/errorCode'
 import ErrorOptions from '#spruce/errors/options.types'
 
 export default class SpruceError extends BaseSpruceError<ErrorOptions>{
@@ -13,7 +12,7 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions>{
         switch (options?.code) {
 {{/if}}
 {{#each errors}}
-            case ErrorCode.{{namePascal}}:
+            case '{{code}}':
                 message = '{{#if description}}{{{escape description}}}{{else}}A {{{escape nameReadable}}} just happened!{{/if}}'
                 break
 {{/each}}
