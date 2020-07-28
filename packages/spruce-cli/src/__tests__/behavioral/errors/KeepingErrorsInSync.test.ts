@@ -98,7 +98,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		assert.isFalse(diskUtil.doesFileExist(testError1DefinitionMatch))
 	}
 
-	@test.only()
+	@test()
 	protected static async canHandleNestedSchemas() {
 		const cli = await this.installErrorFeature('options-in-sync')
 		const source = this.resolveTestPath('error_nested_schemas')

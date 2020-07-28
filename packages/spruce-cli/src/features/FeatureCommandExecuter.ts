@@ -103,7 +103,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		let answers = {}
 		if (fieldsToPresent.length > 0) {
 			answers = await featureForm.present({
-				showOverview: true,
+				showOverview: false,
 				// @ts-ignore
 				fields: fieldsToPresent,
 			})

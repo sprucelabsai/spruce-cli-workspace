@@ -1,7 +1,7 @@
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import fieldClassMap from '#spruce/schemas/fields/fieldClassMap'
-import { TemplateRenderAs } from '@sprucelabs/schema'
+import { TemplateRenderAs, IFieldTemplateDetailOptions } from '@sprucelabs/schema'
 
 
 {{#each imports}}
@@ -14,6 +14,7 @@ const schemaTemplateItems = {{{json schemaTemplateItems}}}
 const generateTypeLiteral = (definition: FieldDefinition, renderAs: TemplateRenderAs, importAs: string) => {
 	const options:SpruceSchema.IFieldTemplateDetailOptions<FieldDefinition> = {
 		language: 'ts',
+		// @ts-ignore
 		templateItems: schemaTemplateItems,
 		globalNamespace: '{{globalNamespace}}',
 		definition,
@@ -22,9 +23,30 @@ const generateTypeLiteral = (definition: FieldDefinition, renderAs: TemplateRend
 	}
 
 	const FieldClass = fieldClassMap[definition.type as FieldType]
-	const details = FieldClass.generateTemplateDetails(options)
+	const details = FieldClass.generateTemplateDetails(
+		options as IFieldTemplateDetailOptions<any>
+	)
 	
 	return details.valueType
+}
+
+const generateValueTypeGeneratorType = (definition: FieldDefinition, renderAs: TemplateRenderAs, importAs: string) => {
+	const options:SpruceSchema.IFieldTemplateDetailOptions<FieldDefinition> = {
+		language: 'ts',
+		// @ts-ignore
+		templateItems: schemaTemplateItems,
+		globalNamespace: '{{globalNamespace}}',
+		definition,
+		importAs,
+		renderAs
+	}
+
+	const FieldClass = fieldClassMap[definition.type as FieldType]
+	const details = FieldClass.generateTemplateDetails(
+		options as IFieldTemplateDetailOptions<any>
+	)
+	
+	return details.valueTypeGeneratorType
 }
 
 const valueTypes = {
@@ -36,16 +58,22 @@ const valueTypes = {
 			"{{definition.version}}{{#unless definition.version}}{{../../../SCHEMA_VERSION_FALLBACK}}{{/unless}}":{
 				{{#if definition.dynamicKeySignature}}
 				__dynamicKeySignature: {
-					{{#each ../../../rendersAs}}
-					{{this}}: {{{ valueTypeGenerator ../definition.dynamicKeySignature this }}},
-					{{/each}}
+					valueTypeGeneratorType: {{{ valueTypeGenerator definition.dynamicKeySignature 'value' 'generateValueTypeGeneratorType'}}},
+					valueTypes: {
+						{{#each ../../../rendersAs}}
+						{{this}}: {{{ valueTypeGenerator ../definition.dynamicKeySignature this 'generateTypeLiteral'}}},
+						{{/each}}
+					}
 				},	
 				{{/if}}
 				{{#each definition.fields}}
 				"{{@key}}": {
-					{{#each ../../../../rendersAs}}
-					{{this}}: {{{ valueTypeGenerator ../this this }}},
-					{{/each}}
+					valueTypeGeneratorType: {{{ valueTypeGenerator this 'value' 'generateValueTypeGeneratorType'}}},
+					valueTypes: {
+						{{#each ../../../../rendersAs}}
+						{{this}}: {{{ valueTypeGenerator ../this this 'generateTypeLiteral'}}},
+						{{/each}}
+					}
 				},
 				{{/each}}
 			},

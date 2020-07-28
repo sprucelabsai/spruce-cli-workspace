@@ -23,7 +23,11 @@ export default class SchemaTemplateItemBuilder {
 		this.definitionCache = {}
 		this.cacheDefinitions(definitions)
 
-		const flattened = this.flattenDefinitions(definitions)
+		const flattened = this.flattenDefinitions(
+			definitions.sort((a, b) => {
+				return `${a.id}${a.version}`.localeCompare(`${b.id}${b.version}`)
+			})
+		)
 
 		const templateTimes = flattened.map((def) =>
 			this.buildTemplateItem(namespace, def)

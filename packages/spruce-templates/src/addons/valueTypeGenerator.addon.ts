@@ -1,13 +1,20 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { TemplateRenderAs, IFieldTemplateItem } from '@sprucelabs/schema'
+import {
+	TemplateRenderAs,
+	IFieldTemplateItem,
+	ISchemaDefinition,
+} from '@sprucelabs/schema'
 import handlebars from 'handlebars'
 import { upperFirst } from 'lodash'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 
 handlebars.registerHelper('valueTypeGenerator', function (
-	fieldDefinition: FieldDefinition,
+	fieldDefinition:
+		| FieldDefinition
+		| NonNullable<ISchemaDefinition['dynamicKeySignature']>,
 	renderAs: TemplateRenderAs,
+	func: 'generateValueTypeGeneratorType' | 'generateTypeLiteral',
 	options: {
 		data: {
 			root: {
@@ -31,10 +38,13 @@ handlebars.registerHelper('valueTypeGenerator', function (
 	}
 
 	const type = handlebars.helpers.fieldTypeEnum(fieldDefinition, options)
+	const fieldDefinitionCopy = { ...fieldDefinition }
+	delete (fieldDefinitionCopy as ISchemaDefinition['dynamicKeySignature'])?.key
+
 	const def = JSON.stringify({
-		...fieldDefinition,
+		...fieldDefinitionCopy,
 		type: '{{TYPE_ENUM}}',
 	}).replace('"{{TYPE_ENUM}}"', type)
 
-	return `generateTypeLiteral(${def}, TemplateRenderAs.${upperFirst(renderAs)}, "${match.importAs}")`
+	return `${func}(${def}, TemplateRenderAs.${upperFirst(renderAs)}, "${match.importAs}")`
 })

@@ -42,20 +42,20 @@ export interface IFieldDefinitionMap {
 
 /** Lookups used for dynamic type mapping based on a definition's field type */
 export interface IFieldValueTypeGeneratorMap<F extends FieldDefinition, CreateSchemaInstances extends boolean> {
-	[FieldType.Address]: IAddressFieldDefinition
-	[FieldType.Boolean]: IBooleanFieldDefinition
-	[FieldType.Date]: IDateFieldDefinition
-	[FieldType.DateTime]: IDateTimeFieldDefinition
-	[FieldType.Directory]: IDirectoryFieldDefinition
-	[FieldType.Duration]: IDurationFieldDefinition
-	[FieldType.File]: IFileFieldDefinition
-	[FieldType.Id]: IIdFieldDefinition
-	[FieldType.Number]: INumberFieldDefinition
-	[FieldType.Phone]: IPhoneFieldDefinition
-	[FieldType.Raw]: IRawFieldDefinition
-	[FieldType.Schema]: ISchemaFieldDefinition
-	[FieldType.Select]: ISelectFieldDefinition
-	[FieldType.Text]: ITextFieldDefinition
+	[FieldType.Address]: IAddressFieldDefinition['value']
+	[FieldType.Boolean]: IBooleanFieldDefinition['value']
+	[FieldType.Date]: IDateFieldDefinition['value']
+	[FieldType.DateTime]: IDateTimeFieldDefinition['value']
+	[FieldType.Directory]: IDirectoryFieldDefinition['value']
+	[FieldType.Duration]: IDurationFieldDefinition['value']
+	[FieldType.File]: IFileFieldDefinition['value']
+	[FieldType.Id]: IIdFieldDefinition['value']
+	[FieldType.Number]: INumberFieldDefinition['value']
+	[FieldType.Phone]: IPhoneFieldDefinition['value']
+	[FieldType.Raw]: IRawFieldDefinition['value']
+	[FieldType.Schema]: ISchemaFieldDefinition['value']
+	[FieldType.Select]: ISelectFieldDefinition['value']
+	[FieldType.Text]: ITextFieldDefinition['value']
 }
 
 /** All field instances */

@@ -61,7 +61,7 @@ const diskUtil = {
 	},
 	isFileDifferent(destination: string, contents: string) {
 		const currentContents = this.readFile(destination)
-		return currentContents.trim() !== contents.trim()
+		return currentContents != contents
 	},
 	resolvePath(cwd: string, ...filePath: string[]): string {
 		let builtPath = pathUtil.join(...filePath)

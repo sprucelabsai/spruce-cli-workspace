@@ -51,12 +51,11 @@ const namedTemplateItemDefinition: SpruceSchemas.Local.NamedTemplateItem.v2020_0
 	                hint: 'CONST_CASE of the name',
 	                options: undefined
 	            },
-	            /** Description. */
+	            /** Description. Describe a bit more here */
 	            'description': {
 	                label: 'Description',
 	                type: FieldType.Text,
-	                isRequired: true,
-	                description: 'Describe a bit more here',
+	                hint: 'Describe a bit more here',
 	                options: undefined
 	            },
 	    }

@@ -158,7 +158,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			resolvedFieldTypesDestination,
 			fieldTemplateItems,
 			schemaTemplateItems,
-			globalNamespace
+			globalNamespace ?? undefined
 		)
 
 		const typeResults = this.schemaGenerator.generateSchemaTypes(

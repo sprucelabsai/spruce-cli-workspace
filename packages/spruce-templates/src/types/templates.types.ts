@@ -90,9 +90,12 @@ export interface IValueTypes {
 		[schemaId: string]: {
 			[version: string]: {
 				[fieldName: string]: {
-					value: string
-					type: string
-					definitionType: string
+					valueTypes: {
+						value: string
+						type: string
+						definitionType: string
+					}
+					valueTypeGeneratorType?: string
 				}
 			}
 		}

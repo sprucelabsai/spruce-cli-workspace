@@ -28,6 +28,7 @@ import './addons/fieldDefinitionPartial.addon'
 import './addons/schemaDefinitionPartial.addon'
 import './addons/schemaValuesPartial.addon'
 import './addons/valueTypeGenerator.addon'
+import './addons/valueTypeGeneratorType.addon'
 import './addons/json.addon'
 import './addons/isDefined.addon'
 import {

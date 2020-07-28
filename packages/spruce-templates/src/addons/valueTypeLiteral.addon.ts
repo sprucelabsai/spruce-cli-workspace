@@ -48,7 +48,7 @@ handlebars.registerHelper('valueTypeLiteral', function (
 	const v = version ? version : SCHEMA_VERSION_FALLBACK
 
 	const valueType =
-		valueTypes[namespace]?.[schemaId]?.[v]?.[fieldName]?.[renderAs]
+		valueTypes[namespace]?.[schemaId]?.[v]?.[fieldName]?.valueTypes[renderAs]
 
 	if (!valueType) {
 		throw new Error(

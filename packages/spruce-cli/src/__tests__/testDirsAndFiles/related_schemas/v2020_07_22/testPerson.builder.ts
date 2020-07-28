@@ -13,7 +13,7 @@ export default buildSchemaDefinition({
 		pet: {
 			type: FieldType.Schema,
 			options: {
-				schema: { id: 'pet', version: 'v2020_07_22' },
+				schemaId: { id: 'pet', version: 'v2020_07_22' },
 			},
 		},
 	},
