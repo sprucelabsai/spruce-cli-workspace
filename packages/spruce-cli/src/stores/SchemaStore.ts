@@ -200,7 +200,7 @@ export default class SchemaStore extends AbstractStore {
 		const localImportService = this.Service(Service.Import, cwd)
 
 		// TODO load from core
-		const coreAddons = await Promise.all(
+		const coreAddonsPromise = Promise.all(
 			(
 				await globby([
 					pathUtil.join(
@@ -228,37 +228,43 @@ export default class SchemaStore extends AbstractStore {
 		const localErrors: SpruceError[] = []
 		const importService = this.Service(Service.Import)
 
-		const localAddons = (
-			await Promise.all(
-				(
-					await globby([pathUtil.join(localLookupDir, '/*Field.addon.[t|j]s')])
-				).map(async (file) => {
-					try {
-						const registration = await importService.importDefault<
-							IFieldRegistration
-						>(file)
+		const localAddonsPromise = Promise.all(
+			(
+				await globby([pathUtil.join(localLookupDir, '/*Field.addon.[t|j]s')])
+			).map(async (file) => {
+				try {
+					const registration = await importService.importDefault<
+						IFieldRegistration
+					>(file)
 
-						return {
-							path: file,
-							registration,
-							isLocal: true,
-						}
-					} catch (err) {
-						localErrors.push(
-							new SpruceError({
-								code: ErrorCode.FailedToImport,
-								file,
-								originalError: err,
-							})
-						)
-						return false
+					return {
+						path: file,
+						registration,
+						isLocal: true,
 					}
-				})
-			)
-		).filter((addon) => !!addon) as IAddonItem[]
+				} catch (err) {
+					localErrors.push(
+						new SpruceError({
+							code: ErrorCode.FailedToImport,
+							file,
+							originalError: err,
+						})
+					)
+					return false
+				}
+			})
+		)
+
+		const [coreAddons, localAddons] = await Promise.all([
+			coreAddonsPromise,
+			localAddonsPromise,
+		])
 
 		const allAddons = uniqBy(
-			[...coreAddons, ...localAddons],
+			[
+				...coreAddons,
+				...(localAddons.filter((addon) => !!addon) as IAddonItem[]),
+			],
 			'registration.type'
 		)
 		const types: IFieldTemplateItem[] = []
