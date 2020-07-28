@@ -66,13 +66,11 @@ export default class SchemaStore extends AbstractStore {
 		} = options || {}
 
 		const schemaRequest = this.fetchSchemaTemplateItems({
-			localLookupDir: diskUtil.resolvePath(
-				this.cwd,
-				localSchemaDir ?? 'src/schemas'
-			),
+			localSchemaDir,
 			enableVersioning,
 			fetchRemoteSchemas,
 		})
+
 		const fieldRequest = this.fetchFieldTemplateItems(
 			diskUtil.resolvePath(this.cwd, localAddonDir ?? 'src/addons')
 		)
@@ -89,11 +87,11 @@ export default class SchemaStore extends AbstractStore {
 	}
 
 	public async fetchSchemaTemplateItems(options: {
-		localLookupDir: string
+		localSchemaDir?: string
 		enableVersioning?: boolean
 		fetchRemoteSchemas?: boolean
 	}): Promise<IFetchSchemaTemplateItemsResponse> {
-		const { localLookupDir, enableVersioning, fetchRemoteSchemas } = options
+		const { localSchemaDir, enableVersioning, fetchRemoteSchemas } = options
 		const errors: SpruceError[] = []
 
 		let coreTemplateItems: ISchemaTemplateItem[] = []
@@ -116,7 +114,7 @@ export default class SchemaStore extends AbstractStore {
 		}
 
 		const localDefinitions = await this.loadLocalDefinitions(
-			localLookupDir,
+			localSchemaDir,
 			enableVersioning
 		)
 
@@ -133,11 +131,14 @@ export default class SchemaStore extends AbstractStore {
 	}
 
 	private async loadLocalDefinitions(
-		localLookupDir: string,
+		localLookupDir?: string,
 		enableVersioning?: boolean
 	) {
 		const localMatches = await globby(
-			pathUtil.join(localLookupDir, '**/*.builder.[t|j]s')
+			pathUtil.join(
+				diskUtil.resolvePath(this.cwd, localLookupDir ?? 'src/schemas'),
+				'**/*.builder.[t|j]s'
+			)
 		)
 
 		const schemaService = this.Service(Service.Schema)

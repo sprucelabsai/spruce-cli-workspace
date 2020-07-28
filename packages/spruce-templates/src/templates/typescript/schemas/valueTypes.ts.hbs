@@ -15,7 +15,7 @@ const generateTypeLiteral = (definition: FieldDefinition, renderAs: TemplateRend
 	const options:SpruceSchema.IFieldTemplateDetailOptions<FieldDefinition> = {
 		language: 'ts',
 		templateItems: schemaTemplateItems,
-		globalNamespace: 'SpruceSchemas',
+		globalNamespace: '{{globalNamespace}}',
 		definition,
 		importAs,
 		renderAs

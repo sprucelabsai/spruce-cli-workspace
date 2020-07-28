@@ -97,4 +97,21 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		// the definition file should be gone now
 		assert.isFalse(diskUtil.doesFileExist(testError1DefinitionMatch))
 	}
+
+	@test.only()
+	protected static async canHandleNestedSchemas() {
+		const cli = await this.installErrorFeature('options-in-sync')
+		const source = this.resolveTestPath('error_nested_schemas')
+		const destination = this.resolvePath('src/errors')
+
+		diskUtil.copyDir(source, destination)
+
+		const results = await cli.getFeature('error').Action('sync').execute({})
+		const match = testUtil.assertsFileByNameInGeneratedFiles(
+			/errors\.types/,
+			results.files ?? []
+		)
+
+		await this.Service(Service.TypeChecker).check(match)
+	}
 }

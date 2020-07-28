@@ -124,7 +124,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			schemaTypesDestinationDir: resolvedErrorTypesDestinationDir,
 			schemaLookupDir: normalizedOptions.errorLookupDir,
 			enableVersioning: false,
-			namespacePrefix: 'SpruceErrors',
+			globalNamespace: 'SpruceErrors',
 			fetchRemoteSchemas: false,
 			generateFieldTypes: false,
 		})

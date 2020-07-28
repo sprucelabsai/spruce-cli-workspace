@@ -1,4 +1,3 @@
-import { SpruceErrorCode } from '@sprucelabs/error'
 import {
 	ISchemaDefinition,
 	ISchemaDefinitionFields,
@@ -233,7 +232,7 @@ export default class QuizComponent<
 
 		if (!results) {
 			throw new SpruceError({
-				code: SpruceErrorCode.InvalidParameters,
+				code: 'INVALID_PARAMETERS',
 				parameters: [],
 			})
 		}

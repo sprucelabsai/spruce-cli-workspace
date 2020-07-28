@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import path from 'path'
 import {
 	IAutoLoaderTemplateItem,
@@ -9,7 +8,7 @@ import {
 } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import ErrorCode from '#spruce/errors/errorCode'
-import autoloaderDefinition from '#spruce/schemas/local/autoloader.definition'
+import autoloaderDefinition from '#spruce/schemas/local/v2020_07_22/autoloader.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
 import IntrospectionUtility from '../utilities/introspection.utility'
@@ -20,7 +19,7 @@ export default class AutoloaderTemplateItemBuilder extends AbstractTemplateItemB
 	private cache: Record<string, any> = {}
 
 	public async buildRootTemplateItem(
-		autoloaders: SpruceSchemas.Local.IAutoloader[]
+		autoloaders: SpruceSchemas.Local.IAutoloader.v2020_07_22[]
 	): Promise<IRootAutoloaderTemplateItem> {
 		const templateItems: IAutoLoaderTemplateItem[] = await Promise.all(
 			autoloaders.map((autoloader) => {

@@ -1,11 +1,11 @@
 import Schema from '@sprucelabs/schema'
-import onboardingDefinition from '#spruce/schemas/local/onboarding.definition'
+import onboardingDefinition from '#spruce/schemas/local/v2020_07_22/onboarding.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
 
 export interface IOnboardingStoreSettings
 	extends ILocalStoreSettings,
-		SpruceSchemas.Local.IOnboarding {}
+		SpruceSchemas.Local.IOnboarding.v2020_07_22 {}
 
 export default class OnboardingStore extends AbstractLocalStore<
 	IOnboardingStoreSettings

@@ -25,7 +25,7 @@ export interface IGenerateSchemaTypesOptions {
 	fieldTemplateItems: IFieldTemplateItem[]
 	schemaTemplateItems: ISchemaTemplateItem[]
 	valueTypes: IValueTypes
-	namespacePrefix?: string
+	globalNamespace?: string
 }
 
 export interface ISchemaTypesGenerationStage {
@@ -96,10 +96,10 @@ export default class SchemaGenerator extends AbstractGenerator {
 		return results
 	}
 
-	public async generateFieldTypes(
+	public generateFieldTypes(
 		destinationDir: string,
 		options: IGenerateFieldTypesOptions
-	): Promise<GenerationResults> {
+	): GenerationResults {
 		const { fieldTemplateItems } = options
 
 		let results: GenerationResults = []
@@ -140,7 +140,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			schemaTemplateItems,
 			fieldTemplateItems,
 			valueTypes,
-			namespacePrefix: options.namespacePrefix,
+			globalNamespace: options.globalNamespace,
 		})
 
 		results = this.writeFileIfChangedMixinResults(
@@ -228,6 +228,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 		options: {
 			schemaTemplateItems: ISchemaTemplateItem[]
 			fieldTemplateItems: IFieldTemplateItem[]
+			globalNamespace?: string
 		}
 	): Promise<GenerationResults> {
 		const contents = this.templates.valueTypes(options)

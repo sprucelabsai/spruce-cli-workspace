@@ -16,7 +16,7 @@ export type Field = {{#each fieldTemplateItems}}| IField<I{{namePascal}}Definiti
 
 
 /** Type for looking up field definitions by field type */
-export type FieldDefinitionMap = {
+export interface IFieldDefinitionMap {
 	{{#each fieldTemplateItems}}
 	[FieldType.{{pascalType}}]: I{{namePascal}}Definition
 	{{/each}}
@@ -26,7 +26,7 @@ export type FieldDefinitionMap = {
 /** Lookups used for dynamic type mapping based on a definition's field type */
 export interface IFieldValueTypeGeneratorMap<F extends FieldDefinition, CreateSchemaInstances extends boolean> {
 	{{#each fieldTemplateItems}}
-	[FieldType.{{pascalType}}]: I{{namePascal}}Definition
+	[FieldType.{{pascalType}}]: I{{namePascal}}Definition['value']
 	{{/each}}
 }
 

@@ -20,7 +20,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		)
 	}
 
-	@test()
+	@test.only()
 	protected static async canBuildFileWithoutCrashing() {
 		const createSchema = await this.getCreateSchemaActionAndSetCwd(
 			'creating-a-new-schema-builder'
@@ -32,6 +32,8 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 			nameCamel: 'test',
 			description: 'this is so great!',
 		})
+
+		throw this.cwd
 
 		assert.isOk(response)
 

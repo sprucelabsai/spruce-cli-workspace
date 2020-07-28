@@ -1,4 +1,4 @@
-import { buildErrorDefinition } from '@sprucelabs/schema'
+import { buildErrorDefinition } from '__tests__/testDirsAndFiles/builders_one_bad/v2020_07_22/node_modules/@sprucelabs/schema'
 
 export default buildErrorDefinition({
 	id: 'good',

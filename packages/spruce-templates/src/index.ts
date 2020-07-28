@@ -53,7 +53,7 @@ export const templates = {
 		schemaTemplateItems: ISchemaTemplateItem[]
 		fieldTemplateItems: IFieldTemplateItem[]
 		valueTypes: IValueTypes
-		namespacePrefix?: string
+		globalNamespace?: string
 	}) {
 		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
 		const template = templateImportUtil.getTemplate(
@@ -62,13 +62,14 @@ export const templates = {
 		return template({
 			...options,
 			imports,
-			namespacePrefix: options.namespacePrefix ?? DEFAULT_NAMESPACE_PREFIX,
+			globalNamespace: options.globalNamespace ?? DEFAULT_NAMESPACE_PREFIX,
 		})
 	},
 
 	valueTypes(options: {
 		schemaTemplateItems: ISchemaTemplateItem[]
 		fieldTemplateItems: IFieldTemplateItem[]
+		globalNamespace?: string
 	}) {
 		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
 		const rendersAs = Object.values(TemplateRenderAs)
@@ -90,6 +91,7 @@ export const templates = {
 			schemaTemplatesByNamespaceAndName,
 			SCHEMA_VERSION_FALLBACK,
 			rendersAs,
+			globalNamespace: options.globalNamespace ?? DEFAULT_NAMESPACE_PREFIX,
 		})
 	},
 
@@ -98,7 +100,7 @@ export const templates = {
 			schemaTemplateItems: ISchemaTemplateItem[]
 			fieldTemplateItems: IFieldTemplateItem[]
 			valueTypes: IValueTypes
-			namespacePrefix?: string
+			globalNamespace?: string
 			typesFile?: string
 		}
 	) {
@@ -107,7 +109,7 @@ export const templates = {
 		return template({
 			...options,
 			imports,
-			namespacePrefix: options.namespacePrefix ?? DEFAULT_NAMESPACE_PREFIX,
+			globalNamespace: options.globalNamespace ?? DEFAULT_NAMESPACE_PREFIX,
 			typesFile: options.typesFile ?? DEFAULT_TYPES_FILE,
 		})
 	},

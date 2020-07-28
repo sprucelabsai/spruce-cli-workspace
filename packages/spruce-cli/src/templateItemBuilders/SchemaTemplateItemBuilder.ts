@@ -2,7 +2,6 @@ import Schema, {
 	ISchemaDefinition,
 	ISchemaTemplateItem,
 	SchemaField,
-	ErrorCode as SchemaErrorCode,
 	ISchemaFieldDefinition,
 	ISchemaIdWithVersion,
 	SchemaError,
@@ -109,7 +108,7 @@ export default class SchemaTemplateItemBuilder {
 			definition = this.cacheLookup(definitionOrIdWithVersion)
 			if (!definition) {
 				throw new SchemaError({
-					code: SchemaErrorCode.SchemaNotFound,
+					code: 'SCHEMA_NOT_FOUND',
 					schemaId: JSON.stringify(definitionOrIdWithVersion),
 					friendlyMessage: 'Make sure you are pointing to the correct version.',
 				})

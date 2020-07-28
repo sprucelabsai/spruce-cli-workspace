@@ -3,7 +3,7 @@ import {
 	buildSchemaDefinition,
 } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
-import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
+import namedTemplateItemDefinition from '#spruce/schemas/local/v2020_07_22/namedTemplateItem.definition'
 import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
 import SchemaGenerator from '../../../generators/SchemaGenerator'
 import diskUtil from '../../../utilities/disk.utility'

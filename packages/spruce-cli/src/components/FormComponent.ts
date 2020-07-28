@@ -5,7 +5,6 @@ import Schema, {
 	SchemaDefinitionPartialValues,
 	SchemaFieldNames,
 	ISelectFieldDefinitionChoice,
-	ErrorCode as SchemaErrorCode,
 	SchemaError,
 	IFieldDefinition,
 } from '@sprucelabs/schema'
@@ -198,7 +197,6 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 			)
 		}
 
-		//@ts-ignore
 		return this.term.prompt(definition)
 	}
 
@@ -218,7 +216,7 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 
 			switch (options.code) {
 				// Invalid fields
-				case SchemaErrorCode.InvalidField:
+				case 'INVALID_FIELD':
 					// Output all errors under all fields
 					options.errors.forEach((err) => {
 						const { name, friendlyMessage, error, code } = err

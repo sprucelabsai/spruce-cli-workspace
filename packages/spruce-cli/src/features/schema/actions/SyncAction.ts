@@ -51,7 +51,7 @@ export const syncSchemasActionOptionsDefinition = buildSchemaDefinition({
 			label: 'Enable versioning',
 			isPrivate: true,
 		},
-		namespacePrefix: {
+		globalNamespace: {
 			type: FieldType.Text,
 			label: 'Namespace prefix',
 			isPrivate: true,
@@ -87,6 +87,7 @@ export default class SyncAction extends AbstractFeatureAction<
 	public async execute(
 		options: SchemaDefinitionValues<ISyncSchemasActionDefinition>
 	): Promise<IFeatureActionExecuteResponse> {
+		this.term.clear()
 		this.term.startLoading(`Syncing schemas...`)
 
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
@@ -97,7 +98,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			schemaLookupDir,
 			addonsLookupDir,
 			enableVersioning,
-			namespacePrefix,
+			globalNamespace,
 			fetchRemoteSchemas,
 			generateFieldTypes,
 		} = normalizedOptions
@@ -113,15 +114,32 @@ export default class SyncAction extends AbstractFeatureAction<
 		)
 
 		const resolvedFieldTypesDestinationDir = pathUtil.dirname(
-			resolvedSchemaTypesDestination
+			resolvedFieldTypesDestination
 		)
 
+		const schemaStore = this.Store('schema')
+		const fieldResults: IGeneratedFile[] = []
+
 		const {
-			schemas: { items: schemaTemplateItems },
-			fields: { items: fieldTemplateItems },
-		} = await this.Store('schema').fetchAllTemplateItems({
+			items: fieldTemplateItems,
+			errors: fieldErrors,
+		} = await schemaStore.fetchFieldTemplateItems(addonsLookupDir)
+
+		if (generateFieldTypes) {
+			const results = this.schemaGenerator.generateFieldTypes(
+				resolvedFieldTypesDestination,
+				{
+					fieldTemplateItems,
+				}
+			)
+			fieldResults.push(...results)
+		}
+
+		const {
+			items: schemaTemplateItems,
+			errors: schemaErrors,
+		} = await schemaStore.fetchSchemaTemplateItems({
 			localSchemaDir: schemaLookupDir,
-			localAddonDir: addonsLookupDir,
 			enableVersioning,
 			fetchRemoteSchemas,
 		})
@@ -136,39 +154,28 @@ export default class SyncAction extends AbstractFeatureAction<
 			schemaTemplateItems
 		)
 
-		const fieldResults: IGeneratedFile[] = []
-
-		if (generateFieldTypes) {
-			const results = await this.schemaGenerator.generateFieldTypes(
-				resolvedFieldTypesDestination,
-				{
-					fieldTemplateItems,
-				}
-			)
-
-			fieldResults.push(...results)
-		}
-
 		const valueTypes = await this.generateValueTypes(
 			resolvedFieldTypesDestination,
 			fieldTemplateItems,
-			schemaTemplateItems
+			schemaTemplateItems,
+			globalNamespace
 		)
 
-		const results = this.schemaGenerator.generateSchemaTypes(
+		const typeResults = this.schemaGenerator.generateSchemaTypes(
 			resolvedSchemaTypesDestination,
 			{
 				fieldTemplateItems,
 				schemaTemplateItems,
 				valueTypes,
-				namespacePrefix: namespacePrefix ?? undefined,
+				globalNamespace: globalNamespace ?? undefined,
 			}
 		)
 
 		this.term.stopLoading()
 
 		return {
-			files: [...results, ...fieldResults],
+			files: [...typeResults, ...fieldResults],
+			errors: [...schemaErrors, ...fieldErrors],
 			meta: {
 				schemaTemplateItems,
 				fieldTemplateItems,
@@ -179,13 +186,15 @@ export default class SyncAction extends AbstractFeatureAction<
 	private async generateValueTypes(
 		resolvedDestination: string,
 		fieldTemplateItems: IFieldTemplateItem[],
-		schemaTemplateItems: ISchemaTemplateItem[]
+		schemaTemplateItems: ISchemaTemplateItem[],
+		globalNamespace?: string
 	) {
 		const valueTypeResults = await this.schemaGenerator.generateValueTypes(
 			resolvedDestination,
 			{
 				fieldTemplateItems,
 				schemaTemplateItems,
+				globalNamespace,
 			}
 		)
 

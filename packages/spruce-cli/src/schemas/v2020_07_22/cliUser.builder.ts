@@ -1,12 +1,12 @@
 import { buildSchemaDefinition } from '@sprucelabs/schema'
-import userDefinition from '#spruce/schemas/core/user.definition'
+import personDefinition from '#spruce/schemas/spruce/v2020_07_22/person.definition'
 
 export default buildSchemaDefinition({
-	...userDefinition,
+	...personDefinition,
 	id: 'cliUser',
 	description: 'A stripped down user for the cli',
 	fields: {
-		id: userDefinition.fields.id,
-		casualName: userDefinition.fields.casualName,
+		id: personDefinition.fields.id,
+		casualName: personDefinition.fields.casualName,
 	},
 })

@@ -68,7 +68,7 @@ export default class UserCommand extends AbstractCommand {
 
 		this.term.stopLoading()
 
-		let user: SpruceSchemas.Local.ICliUserWithToken | undefined
+		let user: SpruceSchemas.Local.ICliUserWithToken.v2020_07_22 | undefined
 
 		let valid = false
 

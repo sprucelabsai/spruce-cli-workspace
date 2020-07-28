@@ -62,24 +62,6 @@ export default class ErrorGenerator extends AbstractGenerator {
 		return results
 	}
 
-	public async generateErrorCodeType(
-		destinationDir: string,
-		errorTemplateItems: IErrorTemplateItem[]
-	): Promise<GenerationResults> {
-		const destinationFile = diskUtil.resolvePath(
-			destinationDir,
-			`options.types.ts`
-		)
-
-		const contents = this.templates.errorCode({ codes: errorTemplateItems })
-
-		return this.writeFileIfChangedMixinResults(
-			destinationFile,
-			contents,
-			'The enum that holds all error types for reference, like ErrorCode.FileNotFound.'
-		)
-	}
-
 	public async generateOptionsTypesFile(
 		destinationDir: string,
 		errorTemplateItems: IErrorTemplateItem[]
