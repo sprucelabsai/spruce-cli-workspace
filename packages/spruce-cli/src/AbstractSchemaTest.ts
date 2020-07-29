@@ -33,7 +33,7 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 				},
 			],
 			cacheKey,
-			bootOptions
+			{ ...(bootOptions || {}), graphicsInterface: this.term }
 		)
 
 		return cli

@@ -1,9 +1,9 @@
 import { SpruceSchemas } from '../../schemas.types'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-import JobSchema from '#spruce/schemas/spruce/v2020_07_22/job.definition'
-import LocationSchema from '#spruce/schemas/spruce/v2020_07_22/location.definition'
-import personSchema from '#spruce/schemas/spruce/v2020_07_22/person.definition'
+import jobSchema from '#spruce/schemas/spruce/v2020_07_22/job.schema'
+import locationSchema from '#spruce/schemas/spruce/v2020_07_22/location.schema'
+import personSchema from '#spruce/schemas/spruce/v2020_07_22/person.schema'
 
 const personLocationSchema: SpruceSchemas.Spruce.v2020_07_22.IPersonLocationSchema  = {
 	id: 'personLocation',
@@ -47,14 +47,14 @@ const personLocationSchema: SpruceSchemas.Spruce.v2020_07_22.IPersonLocationSche
 	                label: 'Job',
 	                type: FieldType.Schema,
 	                isRequired: true,
-	                options: {schemas: [JobSchema],}
+	                options: {schemas: [jobSchema],}
 	            },
 	            /** Location. */
 	            'location': {
 	                label: 'Location',
 	                type: FieldType.Schema,
 	                isRequired: true,
-	                options: {schemas: [LocationSchema],}
+	                options: {schemas: [locationSchema],}
 	            },
 	            /** Person. */
 	            'person': {

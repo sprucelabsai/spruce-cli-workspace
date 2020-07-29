@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 /* eslint-disable no-redeclare */
 
-import { default as SchemEntity } from '@sprucelabs/schema'
+import { default as SchemaEntity } from '@sprucelabs/schema'
 import * as SpruceSchema from '@sprucelabs/schema'
 
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
@@ -9,13 +9,12 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 
-	/**  */
+	
 	export interface IAcl {
 			/** Permissions grouped by slug. */
 			[slug:string]: string[]
 	}
 
-	/** The interface for the schema definition for a Access control list lookup table */
 	export interface IAclSchema extends SpruceSchema.ISchema {
 		id: 'acl',
 		name: 'Access control list lookup table',
@@ -27,7 +26,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		    options: undefined
 		}	}
 
-	export type AclEntity = SchemEntity<SpruceSchemas.Spruce.v2020_07_22.IAclSchema>
+	export type AclEntity = SchemaEntity<SpruceSchemas.Spruce.v2020_07_22.IAclSchema>
 
 }
 
@@ -51,7 +50,6 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 			'acls'?: SpruceSchemas.Spruce.v2020_07_22.IAcl| undefined | null
 	}
 
-	/** The interface for the schema definition for a Job */
 	export interface IJobSchema extends SpruceSchema.ISchema {
 		id: 'job',
 		name: 'Job',
@@ -100,7 +98,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		    }
 	}
 
-	export type JobEntity = SchemEntity<SpruceSchemas.Spruce.v2020_07_22.IJobSchema>
+	export type JobEntity = SchemaEntity<SpruceSchemas.Spruce.v2020_07_22.IJobSchema>
 
 }
 
@@ -126,7 +124,6 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 			'address': SpruceSchema.IAddressFieldValue
 	}
 
-	/** The interface for the schema definition for a Location */
 	export interface ILocationSchema extends SpruceSchema.ISchema {
 		id: 'location',
 		name: 'Location',
@@ -182,7 +179,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		    }
 	}
 
-	export type LocationEntity = SchemEntity<SpruceSchemas.Spruce.v2020_07_22.ILocationSchema>
+	export type LocationEntity = SchemaEntity<SpruceSchemas.Spruce.v2020_07_22.ILocationSchema>
 
 }
 
@@ -210,8 +207,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 			'defaultProfileImages': SpruceSchemas.Spruce.v2020_07_22.IProfileImage
 	}
 
-	/** The interface for the schema definition for a Person */
-	export interface PersonSchema extends SpruceSchema.ISchema {
+	export interface IPersonSchema extends SpruceSchema.ISchema {
 		id: 'person',
 		name: 'Person',
 		description: 'A human being.',
@@ -227,12 +223,14 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            'firstName': {
 		                label: 'First name',
 		                type: FieldType.Text,
+		                isPrivate: true,
 		                options: undefined
 		            },
 		            /** Last name. */
 		            'lastName': {
 		                label: 'Last name',
 		                type: FieldType.Text,
+		                isPrivate: true,
 		                options: undefined
 		            },
 		            /** Casual name. The name you can use when talking to this person. */
@@ -255,6 +253,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            'phoneNumber': {
 		                label: 'Phone',
 		                type: FieldType.Phone,
+		                isPrivate: true,
 		                hint: 'A number that can be texted',
 		                options: undefined
 		            },
@@ -262,26 +261,26 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            'profileImages': {
 		                label: 'Profile photos',
 		                type: FieldType.Schema,
-		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.ProfileImageSchema[],}
+		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IProfileImageSchema[],}
 		            },
 		            /** Default profile photos. */
 		            'defaultProfileImages': {
 		                label: 'Default profile photos',
 		                type: FieldType.Schema,
 		                isRequired: true,
-		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.ProfileImageSchema[],}
+		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IProfileImageSchema[],}
 		            },
 		    }
 	}
 
-	export type PersonEntity = SchemEntity<SpruceSchemas.Spruce.v2020_07_22.PersonSchema>
+	export type PersonEntity = SchemaEntity<SpruceSchemas.Spruce.v2020_07_22.IPersonSchema>
 
 }
 
 
 export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 
-	/**  */
+	
 	export interface IPersonLocation {
 		
 			/** Id. */
@@ -302,7 +301,6 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 			'person': SpruceSchemas.Spruce.v2020_07_22.IPerson
 	}
 
-	/** The interface for the schema definition for a Person &lt;-&gt; location relationship */
 	export interface IPersonLocationSchema extends SpruceSchema.ISchema {
 		id: 'personLocation',
 		name: 'Person <-> location relationship',
@@ -359,19 +357,19 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		                label: 'Person',
 		                type: FieldType.Schema,
 		                isRequired: true,
-		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.PersonSchema[],}
+		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IPersonSchema[],}
 		            },
 		    }
 	}
 
-	export type PersonLocationEntity = SchemEntity<SpruceSchemas.Spruce.v2020_07_22.IPersonLocationSchema>
+	export type PersonLocationEntity = SchemaEntity<SpruceSchemas.Spruce.v2020_07_22.IPersonLocationSchema>
 
 }
 
 
 export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 
-	/**  */
+	
 	export interface IProfileImage {
 		
 			/** 60x60. */
@@ -384,8 +382,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 			'profile150@2x': string
 	}
 
-	/** The interface for the schema definition for a Profile Image Sizes */
-	export interface ProfileImageSchema extends SpruceSchema.ISchema {
+	export interface IProfileImageSchema extends SpruceSchema.ISchema {
 		id: 'profileImage',
 		name: 'Profile Image Sizes',
 		    fields: {
@@ -420,7 +417,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		    }
 	}
 
-	export type ProfileImageEntity = SchemEntity<SpruceSchemas.Spruce.v2020_07_22.ProfileImageSchema>
+	export type ProfileImageEntity = SchemaEntity<SpruceSchemas.Spruce.v2020_07_22.IProfileImageSchema>
 
 }
 
@@ -444,8 +441,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 			'icon'?: string| undefined | null
 	}
 
-	/** The interface for the schema definition for a Skill */
-	export interface SkillSchema extends SpruceSchema.ISchema {
+	export interface ISkillSchema extends SpruceSchema.ISchema {
 		id: 'skill',
 		name: 'Skill',
 		description: 'An ability Sprucebot has learned.',
@@ -461,6 +457,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            'apiKey': {
 		                label: 'Id',
 		                type: FieldType.Id,
+		                isPrivate: true,
 		                isRequired: true,
 		                options: undefined
 		            },
@@ -492,7 +489,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		    }
 	}
 
-	export type SkillEntity = SchemEntity<SpruceSchemas.Spruce.v2020_07_22.SkillSchema>
+	export type SkillEntity = SchemaEntity<SpruceSchemas.Spruce.v2020_07_22.ISkillSchema>
 
 }
 
@@ -510,7 +507,6 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 			'pattern': string
 	}
 
-	/** The interface for the schema definition for a Autoloader */
 	export interface IAutoloaderSchema extends SpruceSchema.ISchema {
 		id: 'autoloader',
 		name: 'Autoloader',
@@ -542,7 +538,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type AutoloaderEntity = SchemEntity<SpruceSchemas.Local.v2020_07_22.IAutoloaderSchema>
+	export type AutoloaderEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.IAutoloaderSchema>
 
 }
 
@@ -562,8 +558,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 			'slug'?: string| undefined | null
 	}
 
-	/** The interface for the schema definition for a Skill */
-	export interface IClSkillSchema extends SpruceSchema.ISchema {
+	export interface ICliSkillSchema extends SpruceSchema.ISchema {
 		id: 'cliSkill',
 		name: 'Skill',
 		description: 'A stripped down skill for the cli',
@@ -579,6 +574,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		            'apiKey': {
 		                label: 'Id',
 		                type: FieldType.Id,
+		                isPrivate: true,
 		                isRequired: true,
 		                options: undefined
 		            },
@@ -598,7 +594,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type CliSkillEntity = SchemEntity<SpruceSchemas.Local.v2020_07_22.IClSkillSchema>
+	export type CliSkillEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ICliSkillSchema>
 
 }
 
@@ -614,7 +610,6 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 			'casualName': string
 	}
 
-	/** The interface for the schema definition for a Person */
 	export interface ICliUserSchema extends SpruceSchema.ISchema {
 		id: 'cliUser',
 		name: 'Person',
@@ -638,7 +633,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type CliUserEntity = SchemEntity<SpruceSchemas.Local.v2020_07_22.ICliUserSchema>
+	export type CliUserEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ICliUserSchema>
 
 }
 
@@ -658,7 +653,6 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 			'isLoggedIn'?: boolean| undefined | null
 	}
 
-	/** The interface for the schema definition for a Person */
 	export interface ICliUserWithTokenSchema extends SpruceSchema.ISchema {
 		id: 'cliUserWithToken',
 		name: 'Person',
@@ -694,7 +688,355 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type CliUserWithTokenEntity = SchemEntity<SpruceSchemas.Local.v2020_07_22.ICliUserWithTokenSchema>
+	export type CliUserWithTokenEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ICliUserWithTokenSchema>
+
+}
+
+
+export declare namespace SpruceSchemas.Local.v2020_07_22 {
+
+	/** Create a builder for your brand new error!  */
+	export interface ICreateErrorAction {
+		
+			/** Id. Where I'll look for new schema fields to be registered. */
+			'addonsLookupDir'?: string| undefined | null
+			/** Error class destination. Where I'll save your new Error class file? */
+			'errorClassDestinationDir': string
+			/** . Where I should look for your error builders? */
+			'errorLookupDir'?: string| undefined | null
+			/** Types destination dir. This is where error options and type information will be written */
+			'errorTypesDestinationDir'?: string| undefined | null
+			/** Error builder destination directory. Where I'll save your new builder file? */
+			'errorBuilderDestinationDir': string
+			/** Readable name. The name people will read */
+			'nameReadable'?: string| undefined | null
+			/** Pascal case name. PascalCase of the name */
+			'namePascal'?: string| undefined | null
+			/** Camel case name. camelCase version of the name */
+			'nameCamel': string
+			/** Description. Describe a bit more here */
+			'description'?: string| undefined | null
+	}
+
+	export interface ICreateErrorActionSchema extends SpruceSchema.ISchema {
+		id: 'createErrorAction',
+		name: 'Create error action',
+		description: 'Create a builder for your brand new error! ',
+		    fields: {
+		            /** Id. Where I'll look for new schema fields to be registered. */
+		            'addonsLookupDir': {
+		                label: 'Id',
+		                type: FieldType.Text,
+		                hint: 'Where I\'ll look for new schema fields to be registered.',
+		                defaultValue: "src/addons",
+		                options: undefined
+		            },
+		            /** Error class destination. Where I'll save your new Error class file? */
+		            'errorClassDestinationDir': {
+		                label: 'Error class destination',
+		                type: FieldType.Text,
+		                isRequired: true,
+		                hint: 'Where I\'ll save your new Error class file?',
+		                defaultValue: "src/errors",
+		                options: undefined
+		            },
+		            /** . Where I should look for your error builders? */
+		            'errorLookupDir': {
+		                type: FieldType.Text,
+		                hint: 'Where I should look for your error builders?',
+		                defaultValue: "src/errors",
+		                options: undefined
+		            },
+		            /** Types destination dir. This is where error options and type information will be written */
+		            'errorTypesDestinationDir': {
+		                label: 'Types destination dir',
+		                type: FieldType.Text,
+		                hint: 'This is where error options and type information will be written',
+		                defaultValue: "#spruce/errors",
+		                options: undefined
+		            },
+		            /** Error builder destination directory. Where I'll save your new builder file? */
+		            'errorBuilderDestinationDir': {
+		                label: 'Error builder destination directory',
+		                type: FieldType.Text,
+		                isRequired: true,
+		                hint: 'Where I\'ll save your new builder file?',
+		                defaultValue: "./src/errors",
+		                options: undefined
+		            },
+		            /** Readable name. The name people will read */
+		            'nameReadable': {
+		                label: 'Readable name',
+		                type: FieldType.Text,
+		                hint: 'The name people will read',
+		                options: undefined
+		            },
+		            /** Pascal case name. PascalCase of the name */
+		            'namePascal': {
+		                label: 'Pascal case name',
+		                type: FieldType.Text,
+		                hint: 'PascalCase of the name',
+		                options: undefined
+		            },
+		            /** Camel case name. camelCase version of the name */
+		            'nameCamel': {
+		                label: 'Camel case name',
+		                type: FieldType.Text,
+		                isRequired: true,
+		                hint: 'camelCase version of the name',
+		                options: undefined
+		            },
+		            /** Description. Describe a bit more here */
+		            'description': {
+		                label: 'Description',
+		                type: FieldType.Text,
+		                hint: 'Describe a bit more here',
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type CreateErrorActionEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ICreateErrorActionSchema>
+
+}
+
+
+export declare namespace SpruceSchemas.Local.v2020_07_22 {
+
+	/** Create the builder to a fresh new schema! */
+	export interface ICreateSchemaAction {
+		
+			/** Schema types destination directory. Where schema types and interfaces will be generated. */
+			'schemaTypesDestinationDir'?: string| undefined | null
+			/** Field types directory. Where field types and interfaces will be generated. */
+			'fieldTypesDestinationDir'?: string| undefined | null
+			/** Id. Where I'll look for new schema fields to be registered. */
+			'addonsLookupDir'?: string| undefined | null
+			/** . Where I should look for your schema builders? */
+			'schemaLookupDir'?: string| undefined | null
+			/** Enable versioning. */
+			'enableVersioning'?: boolean| undefined | null
+			/** Global namespace. */
+			'globalNamespace'?: string| undefined | null
+			/** Fetch remote schemas. I will check the server and your contracts to pull down schemas you need. */
+			'fetchRemoteSchemas'?: boolean| undefined | null
+			/** Generate field types. Should I generate field types too? */
+			'generateFieldTypes'?: boolean| undefined | null
+			/** Schema builder destination directory. Where I'll save the new schema builder. */
+			'schemaBuilderDestinationDir'?: string| undefined | null
+			/** Builder function. The function that builds this schema */
+			'builderFunction'?: string| undefined | null
+			/** Sync after creation. This will ensure types and schemas are in sync after you create your builder. */
+			'syncAfterCreate'?: boolean| undefined | null
+			/** Version. Set a version yourself instead of letting me generate one for you */
+			'version'?: string| undefined | null
+			/** Readable name. The name people will read */
+			'nameReadable'?: string| undefined | null
+			/** Pascal case name. PascalCase of the name */
+			'namePascal'?: string| undefined | null
+			/** Camel case name. camelCase version of the name */
+			'nameCamel': string
+			/** Description. Describe a bit more here */
+			'description'?: string| undefined | null
+	}
+
+	export interface ICreateSchemaActionSchema extends SpruceSchema.ISchema {
+		id: 'createSchemaAction',
+		name: 'Create schema action',
+		description: 'Create the builder to a fresh new schema!',
+		    fields: {
+		            /** Schema types destination directory. Where schema types and interfaces will be generated. */
+		            'schemaTypesDestinationDir': {
+		                label: 'Schema types destination directory',
+		                type: FieldType.Text,
+		                hint: 'Where schema types and interfaces will be generated.',
+		                defaultValue: "#spruce/schemas",
+		                options: undefined
+		            },
+		            /** Field types directory. Where field types and interfaces will be generated. */
+		            'fieldTypesDestinationDir': {
+		                label: 'Field types directory',
+		                type: FieldType.Text,
+		                isPrivate: true,
+		                hint: 'Where field types and interfaces will be generated.',
+		                defaultValue: "#spruce/schemas",
+		                options: undefined
+		            },
+		            /** Id. Where I'll look for new schema fields to be registered. */
+		            'addonsLookupDir': {
+		                label: 'Id',
+		                type: FieldType.Text,
+		                hint: 'Where I\'ll look for new schema fields to be registered.',
+		                defaultValue: "src/addons",
+		                options: undefined
+		            },
+		            /** . Where I should look for your schema builders? */
+		            'schemaLookupDir': {
+		                type: FieldType.Text,
+		                hint: 'Where I should look for your schema builders?',
+		                defaultValue: "src/schemas",
+		                options: undefined
+		            },
+		            /** Enable versioning. */
+		            'enableVersioning': {
+		                label: 'Enable versioning',
+		                type: FieldType.Boolean,
+		                isPrivate: true,
+		                defaultValue: true,
+		                options: undefined
+		            },
+		            /** Global namespace. */
+		            'globalNamespace': {
+		                label: 'Global namespace',
+		                type: FieldType.Text,
+		                isPrivate: true,
+		                options: undefined
+		            },
+		            /** Fetch remote schemas. I will check the server and your contracts to pull down schemas you need. */
+		            'fetchRemoteSchemas': {
+		                label: 'Fetch remote schemas',
+		                type: FieldType.Boolean,
+		                isPrivate: true,
+		                hint: 'I will check the server and your contracts to pull down schemas you need.',
+		                defaultValue: true,
+		                options: undefined
+		            },
+		            /** Generate field types. Should I generate field types too? */
+		            'generateFieldTypes': {
+		                label: 'Generate field types',
+		                type: FieldType.Boolean,
+		                isPrivate: true,
+		                hint: 'Should I generate field types too?',
+		                defaultValue: true,
+		                options: undefined
+		            },
+		            /** Schema builder destination directory. Where I'll save the new schema builder. */
+		            'schemaBuilderDestinationDir': {
+		                label: 'Schema builder destination directory',
+		                type: FieldType.Text,
+		                hint: 'Where I\'ll save the new schema builder.',
+		                defaultValue: "src/schemas",
+		                options: undefined
+		            },
+		            /** Builder function. The function that builds this schema */
+		            'builderFunction': {
+		                label: 'Builder function',
+		                type: FieldType.Text,
+		                isPrivate: true,
+		                hint: 'The function that builds this schema',
+		                defaultValue: "buildSchema",
+		                options: undefined
+		            },
+		            /** Sync after creation. This will ensure types and schemas are in sync after you create your builder. */
+		            'syncAfterCreate': {
+		                label: 'Sync after creation',
+		                type: FieldType.Boolean,
+		                isPrivate: true,
+		                hint: 'This will ensure types and schemas are in sync after you create your builder.',
+		                defaultValue: true,
+		                options: undefined
+		            },
+		            /** Version. Set a version yourself instead of letting me generate one for you */
+		            'version': {
+		                label: 'Version',
+		                type: FieldType.Text,
+		                isPrivate: true,
+		                hint: 'Set a version yourself instead of letting me generate one for you',
+		                options: undefined
+		            },
+		            /** Readable name. The name people will read */
+		            'nameReadable': {
+		                label: 'Readable name',
+		                type: FieldType.Text,
+		                hint: 'The name people will read',
+		                options: undefined
+		            },
+		            /** Pascal case name. PascalCase of the name */
+		            'namePascal': {
+		                label: 'Pascal case name',
+		                type: FieldType.Text,
+		                hint: 'PascalCase of the name',
+		                options: undefined
+		            },
+		            /** Camel case name. camelCase version of the name */
+		            'nameCamel': {
+		                label: 'Camel case name',
+		                type: FieldType.Text,
+		                isRequired: true,
+		                hint: 'camelCase version of the name',
+		                options: undefined
+		            },
+		            /** Description. Describe a bit more here */
+		            'description': {
+		                label: 'Description',
+		                type: FieldType.Text,
+		                hint: 'Describe a bit more here',
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type CreateSchemaActionEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ICreateSchemaActionSchema>
+
+}
+
+
+export declare namespace SpruceSchemas.Local.v2020_07_22 {
+
+	/** Keep your errors types in sync with your builders */
+	export interface IErrorSyncAction {
+		
+			/** Id. Where I'll look for new schema fields to be registered. */
+			'addonsLookupDir'?: string| undefined | null
+			/** Error class destination. Where I'll save your new Error class file? */
+			'errorClassDestinationDir': string
+			/** . Where I should look for your error builders? */
+			'errorLookupDir'?: string| undefined | null
+			/** Types destination dir. This is where error options and type information will be written */
+			'errorTypesDestinationDir'?: string| undefined | null
+	}
+
+	export interface IErrorSyncActionSchema extends SpruceSchema.ISchema {
+		id: 'errorSyncAction',
+		name: 'Error sync action',
+		description: 'Keep your errors types in sync with your builders',
+		    fields: {
+		            /** Id. Where I'll look for new schema fields to be registered. */
+		            'addonsLookupDir': {
+		                label: 'Id',
+		                type: FieldType.Text,
+		                hint: 'Where I\'ll look for new schema fields to be registered.',
+		                defaultValue: "src/addons",
+		                options: undefined
+		            },
+		            /** Error class destination. Where I'll save your new Error class file? */
+		            'errorClassDestinationDir': {
+		                label: 'Error class destination',
+		                type: FieldType.Text,
+		                isRequired: true,
+		                hint: 'Where I\'ll save your new Error class file?',
+		                defaultValue: "src/errors",
+		                options: undefined
+		            },
+		            /** . Where I should look for your error builders? */
+		            'errorLookupDir': {
+		                type: FieldType.Text,
+		                hint: 'Where I should look for your error builders?',
+		                defaultValue: "src/errors",
+		                options: undefined
+		            },
+		            /** Types destination dir. This is where error options and type information will be written */
+		            'errorTypesDestinationDir': {
+		                label: 'Types destination dir',
+		                type: FieldType.Text,
+		                hint: 'This is where error options and type information will be written',
+		                defaultValue: "#spruce/errors",
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type ErrorSyncActionEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.IErrorSyncActionSchema>
 
 }
 
@@ -720,7 +1062,6 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 			'description'?: string| undefined | null
 	}
 
-	/** The interface for the schema definition for a NamedTemplateItem */
 	export interface INamedTemplateItemSchema extends SpruceSchema.ISchema {
 		id: 'namedTemplateItem',
 		name: 'NamedTemplateItem',
@@ -779,7 +1120,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type NamedTemplateItemEntity = SchemEntity<SpruceSchemas.Local.v2020_07_22.INamedTemplateItemSchema>
+	export type NamedTemplateItemEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.INamedTemplateItemSchema>
 
 }
 
@@ -795,7 +1136,6 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 			'runCount': number
 	}
 
-	/** The interface for the schema definition for a Onboarding */
 	export interface IOnboardingSchema extends SpruceSchema.ISchema {
 		id: 'onboarding',
 		name: 'Onboarding',
@@ -819,14 +1159,14 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type OnboardingEntity = SchemEntity<SpruceSchemas.Local.v2020_07_22.IOnboardingSchema>
+	export type OnboardingEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.IOnboardingSchema>
 
 }
 
 
 export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
-	/**  */
+	
 	export interface ISkillFeature {
 		
 			/** What's the name of your skill?. */
@@ -835,7 +1175,6 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 			'description': string
 	}
 
-	/** The interface for the schema definition for a Skill Feature */
 	export interface ISkillFeatureSchema extends SpruceSchema.ISchema {
 		id: 'skillFeature',
 		name: 'Skill Feature',
@@ -857,21 +1196,121 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type SkillFeatureEntity = SchemEntity<SpruceSchemas.Local.v2020_07_22.ISkillFeatureSchema>
+	export type SkillFeatureEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ISkillFeatureSchema>
 
 }
 
 
 export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
-	/**  */
+	/** Keep all your schemas and types in sync with your builders and contracts. */
+	export interface ISyncSchemasAction {
+		
+			/** Schema types destination directory. Where schema types and interfaces will be generated. */
+			'schemaTypesDestinationDir'?: string| undefined | null
+			/** Field types directory. Where field types and interfaces will be generated. */
+			'fieldTypesDestinationDir'?: string| undefined | null
+			/** Id. Where I'll look for new schema fields to be registered. */
+			'addonsLookupDir'?: string| undefined | null
+			/** . Where I should look for your schema builders? */
+			'schemaLookupDir'?: string| undefined | null
+			/** Enable versioning. */
+			'enableVersioning'?: boolean| undefined | null
+			/** Global namespace. */
+			'globalNamespace'?: string| undefined | null
+			/** Fetch remote schemas. I will check the server and your contracts to pull down schemas you need. */
+			'fetchRemoteSchemas'?: boolean| undefined | null
+			/** Generate field types. Should I generate field types too? */
+			'generateFieldTypes'?: boolean| undefined | null
+	}
+
+	export interface ISyncSchemasActionSchema extends SpruceSchema.ISchema {
+		id: 'syncSchemasAction',
+		name: 'Sync schemas action',
+		description: 'Keep all your schemas and types in sync with your builders and contracts.',
+		    fields: {
+		            /** Schema types destination directory. Where schema types and interfaces will be generated. */
+		            'schemaTypesDestinationDir': {
+		                label: 'Schema types destination directory',
+		                type: FieldType.Text,
+		                hint: 'Where schema types and interfaces will be generated.',
+		                defaultValue: "#spruce/schemas",
+		                options: undefined
+		            },
+		            /** Field types directory. Where field types and interfaces will be generated. */
+		            'fieldTypesDestinationDir': {
+		                label: 'Field types directory',
+		                type: FieldType.Text,
+		                isPrivate: true,
+		                hint: 'Where field types and interfaces will be generated.',
+		                defaultValue: "#spruce/schemas",
+		                options: undefined
+		            },
+		            /** Id. Where I'll look for new schema fields to be registered. */
+		            'addonsLookupDir': {
+		                label: 'Id',
+		                type: FieldType.Text,
+		                hint: 'Where I\'ll look for new schema fields to be registered.',
+		                defaultValue: "src/addons",
+		                options: undefined
+		            },
+		            /** . Where I should look for your schema builders? */
+		            'schemaLookupDir': {
+		                type: FieldType.Text,
+		                hint: 'Where I should look for your schema builders?',
+		                defaultValue: "src/schemas",
+		                options: undefined
+		            },
+		            /** Enable versioning. */
+		            'enableVersioning': {
+		                label: 'Enable versioning',
+		                type: FieldType.Boolean,
+		                isPrivate: true,
+		                defaultValue: true,
+		                options: undefined
+		            },
+		            /** Global namespace. */
+		            'globalNamespace': {
+		                label: 'Global namespace',
+		                type: FieldType.Text,
+		                isPrivate: true,
+		                options: undefined
+		            },
+		            /** Fetch remote schemas. I will check the server and your contracts to pull down schemas you need. */
+		            'fetchRemoteSchemas': {
+		                label: 'Fetch remote schemas',
+		                type: FieldType.Boolean,
+		                isPrivate: true,
+		                hint: 'I will check the server and your contracts to pull down schemas you need.',
+		                defaultValue: true,
+		                options: undefined
+		            },
+		            /** Generate field types. Should I generate field types too? */
+		            'generateFieldTypes': {
+		                label: 'Generate field types',
+		                type: FieldType.Boolean,
+		                isPrivate: true,
+		                hint: 'Should I generate field types too?',
+		                defaultValue: true,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type SyncSchemasActionEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ISyncSchemasActionSchema>
+
+}
+
+
+export declare namespace SpruceSchemas.Local.v2020_07_22 {
+
+	
 	export interface ITestFeature {
 		
 			/** What file would you like to test?. */
 			'target': SpruceSchema.IFileFieldValue
 	}
 
-	/** The interface for the schema definition for a Test Feature */
 	export interface ITestFeatureSchema extends SpruceSchema.ISchema {
 		id: 'testFeature',
 		name: 'Test Feature',
@@ -887,7 +1326,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type TestFeatureEntity = SchemEntity<SpruceSchemas.Local.v2020_07_22.ITestFeatureSchema>
+	export type TestFeatureEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ITestFeatureSchema>
 
 }
 

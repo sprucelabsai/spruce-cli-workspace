@@ -1,5 +1,5 @@
 import pathUtil from 'path'
-import { LATEST_HANDLEBARS } from '../constants'
+import { LATEST_HANDLEBARS, LATEST_TOKEN } from '../constants'
 import SpruceError from '../errors/SpruceError'
 import diskUtil from './disk.utility'
 import namesUtil from './names.utility'
@@ -41,7 +41,10 @@ const versionUtil = {
 	},
 	/** Pass a string in YYYY-MM-DD leave to default to today */
 	generateVersion(dateFormattedString?: string) {
-		const date = dateFormattedString ?? formatDate(new Date())
+		const date =
+			dateFormattedString && dateFormattedString.search(LATEST_TOKEN) === -1
+				? dateFormattedString
+				: formatDate(new Date())
 		const cleaned = date.replace(/[^\d_-]/gi, '')
 
 		return {
@@ -126,7 +129,10 @@ const versionUtil = {
 	},
 
 	assertValidVersion(version: string) {
-		if (version.search(/v?\d\d\d\d_\d\d_\d\d/) === -1) {
+		if (
+			version.search(LATEST_TOKEN) === -1 &&
+			version.search(/v?\d\d\d\d_\d\d_\d\d/) === -1
+		) {
 			throw new SpruceError({
 				//@ts-ignore
 				code: 'INVALID_VERSION',

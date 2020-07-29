@@ -1,11 +1,10 @@
 import {
-	buildSchema,
-	SchemaValues,
 	ISchemaTemplateItem,
 	SchemaValuesWithDefaults,
 } from '@sprucelabs/schema'
 import { IErrorTemplateItem } from '@sprucelabs/spruce-templates'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+import errorSyncActionSchema from '#spruce/schemas/local/v2020_07_22/errorSyncAction.schema'
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
 import ErrorGenerator from '../../../generators/ErrorGenerator'
 import diskUtil from '../../../utilities/disk.utility'
@@ -14,47 +13,15 @@ import {
 	IFeatureActionExecuteResponse,
 	IFeatureAction,
 } from '../../features.types'
-import {
-	syncSchemasActionOptionsDefinition,
-	ISyncSchemasActionDefinition,
-} from '../../schema/actions/SyncAction'
-
-export const syncErrorsActionOptionsDefinition = buildSchema({
-	id: 'errorSync',
-	name: 'Sync error',
-	fields: {
-		addonsLookupDir: syncSchemasActionOptionsDefinition.fields.addonsLookupDir,
-		errorClassDestinationDir: {
-			type: FieldType.Text,
-			label: 'Error class destination',
-			isRequired: true,
-			hint: "Where I'll save your new Error class file?",
-			defaultValue: 'src/errors',
-		},
-		errorLookupDir: {
-			type: FieldType.Text,
-			hint: 'Where I should look for your error builders?',
-			defaultValue: 'src/errors',
-		},
-		errorTypesDestinationDir: {
-			type: FieldType.Text,
-			label: 'Types destination dir',
-			hint: 'This is where error options and type information will be written',
-			defaultValue: '#spruce/errors',
-		},
-	},
-})
-
-export type ISyncErrorsActionDefinition = typeof syncErrorsActionOptionsDefinition
 
 export default class SyncAction extends AbstractFeatureAction<
-	ISyncErrorsActionDefinition
+	SpruceSchemas.Local.v2020_07_22.IErrorSyncActionSchema
 > {
 	public name = 'sync'
-	public optionsSchema = syncErrorsActionOptionsDefinition
+	public optionsSchema = errorSyncActionSchema
 
 	public async execute(
-		options: SchemaValues<ISyncErrorsActionDefinition>
+		options: SpruceSchemas.Local.v2020_07_22.IErrorSyncAction
 	): Promise<IFeatureActionExecuteResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 		const {
@@ -64,7 +31,9 @@ export default class SyncAction extends AbstractFeatureAction<
 
 		const schemaSyncAction = this.getFeature('schema').Action(
 			'sync'
-		) as IFeatureAction<ISyncSchemasActionDefinition>
+		) as IFeatureAction<
+			SpruceSchemas.Local.v2020_07_22.ISyncSchemasActionSchema
+		>
 
 		const schemaSyncResults = await schemaSyncAction.execute({})
 		const errorSyncResults = await this.syncErrors(
@@ -113,8 +82,12 @@ export default class SyncAction extends AbstractFeatureAction<
 	}
 
 	private async syncErrors(
-		schemaSyncAction: IFeatureAction<ISyncSchemasActionDefinition>,
-		normalizedOptions: SchemaValuesWithDefaults<ISyncErrorsActionDefinition>
+		schemaSyncAction: IFeatureAction<
+			SpruceSchemas.Local.v2020_07_22.ISyncSchemasActionSchema
+		>,
+		normalizedOptions: SchemaValuesWithDefaults<
+			SpruceSchemas.Local.v2020_07_22.IErrorSyncActionSchema
+		>
 	) {
 		const resolvedErrorTypesDestinationDir = diskUtil.resolvePath(
 			this.cwd,

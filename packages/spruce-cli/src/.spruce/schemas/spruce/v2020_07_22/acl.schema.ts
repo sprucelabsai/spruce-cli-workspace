@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const AclSchema: SpruceSchemas.Spruce.v2020_07_22.IAclSchema  = {
+const aclSchema: SpruceSchemas.Spruce.v2020_07_22.IAclSchema  = {
 	id: 'acl',
 	name: 'Access control list lookup table',
 	dynamicKeySignature: { 
@@ -14,4 +14,4 @@ const AclSchema: SpruceSchemas.Spruce.v2020_07_22.IAclSchema  = {
 	    options: undefined
 	}}
 
-export default AclSchema
+export default aclSchema

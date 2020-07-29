@@ -2,15 +2,11 @@ import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../AbstractCliTest'
 import FeatureCommandExecuter from '../../features/FeatureCommandExecuter'
 import { FeatureCode } from '../../features/features.types'
-import { IGraphicsInterface } from '../../types/cli.types'
 import diskUtil from '../../utilities/disk.utility'
 
 export default class FeatureCommandExecuterTest extends AbstractCliTest {
-	private static term: IGraphicsInterface
-
 	protected static async beforeEach() {
 		super.beforeEach()
-		this.term = this.Term()
 	}
 
 	@test()

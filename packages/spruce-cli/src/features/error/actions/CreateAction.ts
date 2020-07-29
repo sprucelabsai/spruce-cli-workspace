@@ -1,50 +1,27 @@
-import { buildSchema, SchemaValues } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
-import NamedTemplateItemSchema from '#spruce/schemas/local/v2020_07_22/namedTemplateItem.schema'
+import createErrorActionSchema from '#spruce/schemas/local/v2020_07_22/createErrorAction.schema'
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
 import {
 	IFeatureAction,
 	IFeatureActionExecuteResponse,
 } from '../../features.types'
-import { ICreateSchemaActionDefinition } from '../../schema/actions/CreateAction'
-import { syncErrorsActionOptionsDefinition } from './SyncAction'
-
-const createErrorActionDefinition = buildSchema({
-	id: 'createErrorActionDefinition',
-	name: 'Create error',
-	description: 'Create a builder for a new error!',
-	fields: {
-		...syncErrorsActionOptionsDefinition.fields,
-		errorBuilderDestinationDir: {
-			type: FieldType.Text,
-			label: 'Error builder destination directory',
-			isRequired: true,
-			hint: "Where I'll save your new builder file?",
-			defaultValue: './src/errors',
-		},
-		nameReadable: NamedTemplateItemSchema.fields.nameReadable,
-		namePascal: NamedTemplateItemSchema.fields.namePascal,
-		nameCamel: NamedTemplateItemSchema.fields.nameCamel,
-		description: NamedTemplateItemSchema.fields.description,
-	},
-})
-
-type CreateErrorActionDefinition = typeof createErrorActionDefinition
 
 export default class CreateAction extends AbstractFeatureAction<
-	CreateErrorActionDefinition
+	SpruceSchemas.Local.v2020_07_22.ICreateErrorActionSchema
 > {
 	public name = 'create'
-	public optionsSchema = createErrorActionDefinition
+	public optionsSchema = createErrorActionSchema
 
 	public async execute(
-		options: SchemaValues<CreateErrorActionDefinition>
+		options: SpruceSchemas.Local.v2020_07_22.ICreateErrorAction
 	): Promise<IFeatureActionExecuteResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
 		const schemaCreateAction = this.getFeature('schema').Action(
 			'create'
-		) as IFeatureAction<ICreateSchemaActionDefinition>
+		) as IFeatureAction<
+			SpruceSchemas.Local.v2020_07_22.ICreateSchemaActionSchema
+		>
 
 		const createResults = await schemaCreateAction.execute({
 			...normalizedOptions,
