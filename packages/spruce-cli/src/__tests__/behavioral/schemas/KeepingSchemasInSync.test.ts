@@ -72,7 +72,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		await this.Service(Service.TypeChecker).check(typesFile)
 	}
 
-	@test.only()
+	@test()
 	protected static async schemasStayInSyncWhenDefinitionsAreDeleted() {
 		const cli = await this.syncSchemas('keeps-schemas-in-sync')
 		const version = versionUtil.generateVersion()
