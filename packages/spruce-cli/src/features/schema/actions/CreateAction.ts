@@ -5,6 +5,7 @@ import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction
 import SchemaGenerator from '../../../generators/SchemaGenerator'
 import diskUtil from '../../../utilities/disk.utility'
 import namesUtil from '../../../utilities/names.utility'
+import versionUtil from '../../../utilities/version.utility'
 import { IFeatureAction } from '../../features.types'
 import {
 	ISyncSchemasActionDefinition,
@@ -38,6 +39,11 @@ const createSchemaActionDefinition = buildSchema({
 			isPrivate: true,
 			defaultValue: true,
 		},
+		version: {
+			type: FieldType.Text,
+			label: 'Version',
+			hint: 'Set a version yourself instead of letting me generate one for you',
+		},
 		nameReadable: NamedTemplateItemSchema.fields.nameReadable,
 		namePascal: NamedTemplateItemSchema.fields.namePascal,
 		nameCamel: NamedTemplateItemSchema.fields.nameCamel,
@@ -62,6 +68,8 @@ export default class CreateAction extends AbstractFeatureAction<
 			namePascal,
 			nameReadable,
 			syncAfterCreate,
+			enableVersioning,
+			version,
 			...rest
 		} = normalizedOptions
 
@@ -70,10 +78,14 @@ export default class CreateAction extends AbstractFeatureAction<
 			schemaBuilderDestinationDir
 		)
 
+		const resolvedVersion = versionUtil.normalizeVersion(version ?? undefined)
+
 		const generator = new SchemaGenerator(this.templates)
 		const results = await generator.generateBuilder(resolvedDestination, {
 			...rest,
 			nameCamel,
+			enableVersioning: enableVersioning ?? undefined,
+			version: resolvedVersion,
 			nameReadable: nameReadable ?? nameCamel,
 			namePascal: namePascal ?? namesUtil.toPascal(nameCamel),
 		})

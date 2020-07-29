@@ -62,7 +62,10 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 	public async generateBuilder(
 		destinationDir: string,
-		options: ISchemaBuilderTemplateItem & { enableVersioning?: boolean }
+		options: ISchemaBuilderTemplateItem & {
+			enableVersioning?: boolean
+			version?: string
+		}
 	): Promise<GenerationResults> {
 		const filename = `${options.nameCamel}.builder.ts`
 
@@ -71,7 +74,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 				? pathUtil.resolve(destinationDir, filename)
 				: versionUtil.resolveNewLatestPath(
 						destinationDir,
-						LATEST_HANDLEBARS,
+						options.version ?? LATEST_HANDLEBARS,
 						filename
 				  )
 
