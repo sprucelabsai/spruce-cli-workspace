@@ -1,5 +1,5 @@
 import pathUtil from 'path'
-import { LATEST_HANDLEBARS, LATEST_TOKEN } from '../constants'
+import { LATEST_HANDLEBARS } from '../constants'
 import SpruceError from '../errors/SpruceError'
 import diskUtil from './disk.utility'
 import namesUtil from './names.utility'
@@ -100,7 +100,7 @@ const versionUtil = {
 			throw new Error('no versioning found!')
 		}
 
-		return resolved.replace('{{' + LATEST_TOKEN + '}}', latest.dirValue)
+		return resolved.replace(LATEST_HANDLEBARS, latest.dirValue)
 	},
 
 	resolveNewLatestPath(cwd: string, ...paths: string[]) {
