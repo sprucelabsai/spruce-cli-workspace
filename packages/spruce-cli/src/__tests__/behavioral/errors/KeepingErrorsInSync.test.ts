@@ -68,11 +68,10 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 			'testError1.builder',
 			testError1.files ?? []
 		)
-
 		await createAction.execute({ nameCamel: 'testError2' })
 
 		// #spruce/errors should exist
-		assert.doesThrow(() => this.resolveHashSprucePath('errors'))
+		assert.isTrue(diskUtil.doesFileExist(this.resolveHashSprucePath('errors')))
 
 		typesContent = diskUtil.readFile(this.errorTypesFile)
 

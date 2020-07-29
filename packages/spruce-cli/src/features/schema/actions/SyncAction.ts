@@ -108,13 +108,14 @@ export default class SyncAction extends AbstractFeatureAction<
 			schemaTypesDestinationDir
 		)
 
+		const resolvedSchemaTypesDestinationDir =
+			pathUtil.extname(resolvedSchemaTypesDestination).length === 0
+				? resolvedSchemaTypesDestination
+				: pathUtil.dirname(resolvedSchemaTypesDestination)
+
 		const resolvedFieldTypesDestination = diskUtil.resolvePath(
 			this.cwd,
 			fieldTypesDestinationDir ?? schemaTypesDestinationDir
-		)
-
-		const resolvedFieldTypesDestinationDir = pathUtil.dirname(
-			resolvedFieldTypesDestination
 		)
 
 		const schemaStore = this.Store('schema')
@@ -145,12 +146,12 @@ export default class SyncAction extends AbstractFeatureAction<
 		})
 
 		if (schemaTemplateItems.length === 0) {
-			diskUtil.deleteDir(resolvedFieldTypesDestinationDir)
+			diskUtil.deleteDir(resolvedSchemaTypesDestinationDir)
 			return {}
 		}
 
 		await this.deleteOrphanedDefinitions(
-			resolvedFieldTypesDestinationDir,
+			resolvedSchemaTypesDestinationDir,
 			schemaTemplateItems
 		)
 

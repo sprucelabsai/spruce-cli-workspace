@@ -10,7 +10,46 @@ export default class CommandService {
 		this.cwd = cwd
 	}
 
-	public execute(
+	private static runningPromises: Promise<any>[] = []
+	private static maxRunning = 6
+
+	public async execute(
+		cmd: string,
+		options?: {
+			args?: string[]
+			/** When set to true will stream the results from the child process in real time instead of waiting to return */
+			stream?: boolean
+		}
+	): Promise<{
+		stdout: string
+	}> {
+		const lastInLine =
+			CommandService.runningPromises[
+				CommandService.runningPromises.length - CommandService.maxRunning
+			]
+
+		let resolve
+		const us = new Promise((r) => {
+			resolve = r
+		})
+
+		CommandService.runningPromises.push(us)
+
+		if (lastInLine) {
+			await lastInLine
+		}
+		const results = await this.executeUnlimited(cmd, options)
+		CommandService.runningPromises = CommandService.runningPromises.filter(
+			(p) => p !== us
+		)
+
+		// @ts-ignore
+		resolve()
+
+		return results
+	}
+
+	private executeUnlimited(
 		cmd: string,
 		options?: {
 			args?: string[]
@@ -23,6 +62,7 @@ export default class CommandService {
 		const cwd = this.cwd
 
 		return new Promise((resolve, reject) => {
+			// const start = new Date()
 			const args = options?.args || stringArgv(cmd)
 			const executable = options?.args ? cmd : args.shift()
 			if (!executable) {
@@ -57,7 +97,11 @@ export default class CommandService {
 				child.stdout?.removeAllListeners()
 				child.stderr?.removeAllListeners()
 				child.removeAllListeners()
+				// const end = new Date()
 
+				// console.log(
+				// 	`running ${cmd} ${JSON.stringify(options?.args)} took ${end - start}`
+				// )
 				if (code === 0) {
 					resolve({ stdout })
 				} else {

@@ -207,10 +207,6 @@ export default class SchemaStore extends AbstractStore {
 						cwd,
 						'node_modules/@sprucelabs/schema/build/addons/*Field.addon.js'
 					),
-					pathUtil.join(
-						cwd,
-						'../../node_modules/@sprucelabs/schema/build/addons/*Field.addon.js'
-					),
 				])
 			).map(async (path) => {
 				const registration = await localImportService.importDefault<

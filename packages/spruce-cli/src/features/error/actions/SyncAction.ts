@@ -73,6 +73,7 @@ export default class SyncAction extends AbstractFeatureAction<
 		)
 
 		if (this.areSyncResultsEmpty(errorSyncResults)) {
+			this.deleteOrphanedDirs(errorTypesDestinationDir)
 			return {}
 		}
 
@@ -105,6 +106,10 @@ export default class SyncAction extends AbstractFeatureAction<
 				...optionsResults,
 			],
 		}
+	}
+
+	private deleteOrphanedDirs(errorTypesDestinationDir: string) {
+		diskUtil.deleteDir(diskUtil.resolvePath(this.cwd, errorTypesDestinationDir))
 	}
 
 	private async syncErrors(
