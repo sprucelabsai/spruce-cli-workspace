@@ -108,7 +108,7 @@ export default class ErrorCommand extends AbstractCommand {
 		// const schemaLookupDir = options.schemaLookupDir
 
 		const nameReadable = name
-		const initialValues: Partial<SpruceSchemas.Local.INamedTemplateItem.v2020_07_22> = {
+		const initialValues: Partial<SpruceSchemas.Local.v2020_07_22.INamedTemplateItem> = {
 			nameReadable: name,
 		}
 		let showOverview = false

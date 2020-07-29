@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const skillFeatureDefinition: SpruceSchemas.Local.SkillFeature.v2020_07_22.IDefinition  = {
+const skillFeatureDefinition: SpruceSchemas.Local.v2020_07_22.ISkillFeatureDefinition  = {
 	id: 'skillFeature',
 	name: 'Skill Feature',
 	    fields: {

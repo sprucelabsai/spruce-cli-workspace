@@ -23,7 +23,7 @@ export declare namespace {{../globalNamespace}}.{{namespace}}{{#if (isDefined de
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type {{namePascal}}Instance = Schema<{{../globalNamespace}}.{{namespace}}.{{#if (isDefined definition.version)}}.{{definition.version}}{{/if}}.I{{namePascal}}Definition>
+	export type {{namePascal}}Instance = Schema<{{../globalNamespace}}.{{namespace}}{{#if (isDefined definition.version)}}.{{definition.version}}{{/if}}.I{{namePascal}}Definition>
 
 }
 

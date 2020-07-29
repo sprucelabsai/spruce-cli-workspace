@@ -9,8 +9,8 @@ import tsConfigUtil from '../../utilities/tsConfig.utility'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
-type SkillFeatureDefinition = SpruceSchemas.Local.SkillFeature.v2020_07_22.IDefinition
-type Skill = SpruceSchemas.Local.ISkillFeature.v2020_07_22
+type SkillFeatureDefinition = SpruceSchemas.Local.v2020_07_22.ISkillFeatureDefinition
+type Skill = SpruceSchemas.Local.v2020_07_22.ISkillFeature
 
 export default class SkillFeature<
 	T extends SkillFeatureDefinition = SkillFeatureDefinition
@@ -47,7 +47,7 @@ export default class SkillFeature<
 	}
 
 	private async install(
-		options: SpruceSchemas.Local.ISkillFeature.v2020_07_22
+		options: SpruceSchemas.Local.v2020_07_22.ISkillFeature
 	) {
 		validateSchemaValues(skillFeatureDefinition, options)
 

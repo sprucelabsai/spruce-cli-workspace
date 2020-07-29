@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 import profileImageDefinition from '#spruce/schemas/spruce/v2020_07_22/profileImage.definition'
 
-const personDefinition: SpruceSchemas.Spruce.Person.v2020_07_22.IDefinition  = {
+const personDefinition: SpruceSchemas.Spruce.v2020_07_22.IPersonDefinition  = {
 	id: 'person',
 	name: 'Person',
 	description: 'A human being.',

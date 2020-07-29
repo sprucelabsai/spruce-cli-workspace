@@ -58,7 +58,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		assert.doesInclude(
 			typesContents,
 			new RegExp(
-				`SpruceSchemas.${CORE_NAMESPACE}.IPerson(.*?)interface ${CORE_SCHEMA_VERSION.constValue}`,
+				`SpruceSchemas.${CORE_NAMESPACE}.${CORE_SCHEMA_VERSION.constValue}(.*?)interface IPerson`,
 				'gis'
 			)
 		)
@@ -72,7 +72,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		await this.Service(Service.TypeChecker).check(typesFile)
 	}
 
-	@test()
+	@test.only()
 	protected static async schemasStayInSyncWhenDefinitionsAreDeleted() {
 		const cli = await this.syncSchemas('keeps-schemas-in-sync')
 		const version = versionUtil.generateVersion()
@@ -80,7 +80,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		const createAction = cli.getFeature('schema').Action('create')
 
 		const matcher = new RegExp(
-			`SpruceSchemas.Local.ITestSchema(.*?)interface ${version.constValue}`,
+			`SpruceSchemas.Local.${version.constValue}(.*?)interface ITestSchema`,
 			'gis'
 		)
 

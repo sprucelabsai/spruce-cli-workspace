@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const cliUserWithTokenDefinition: SpruceSchemas.Local.CliUserWithToken.v2020_07_22.IDefinition  = {
+const cliUserWithTokenDefinition: SpruceSchemas.Local.v2020_07_22.ICliUserWithTokenDefinition  = {
 	id: 'cliUserWithToken',
 	name: 'Person',
 	description: 'A stripped down cli user with token details for login',
