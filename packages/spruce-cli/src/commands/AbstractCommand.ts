@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { ISchemaDefinition } from '@sprucelabs/schema'
+import { ISchema } from '@sprucelabs/schema'
 import { CommanderStatic } from 'commander'
 import FormComponent, { IFormOptions } from '../components/FormComponent'
 import QuizComponent, {
@@ -41,7 +41,7 @@ export default abstract class AbstractCommand {
 		this.serviceFactory = serviceFactory
 	}
 
-	public getFormComponent<T extends ISchemaDefinition>(
+	public getFormComponent<T extends ISchema>(
 		options: Omit<IFormOptions<T>, 'term'>
 	): FormComponent<T> {
 		const formBuilder = new FormComponent({
@@ -51,10 +51,7 @@ export default abstract class AbstractCommand {
 		return formBuilder
 	}
 
-	public getQuizComponent<
-		T extends ISchemaDefinition,
-		Q extends IQuizQuestions
-	>(
+	public getQuizComponent<T extends ISchema, Q extends IQuizQuestions>(
 		options: Omit<IQuizOptions<T, Q>, 'term' | 'definition'>
 	): QuizComponent<T, Q> {
 		const quizBuilder = new QuizComponent({

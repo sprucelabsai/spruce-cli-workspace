@@ -20,8 +20,8 @@ export interface ICreateAutoloaderFailedErrorOptions extends SpruceErrors.Local.
 export interface IDirectoryNotFoundErrorOptions extends SpruceErrors.Local.IDirectoryNotFound, ISpruceErrorOptions {
 	code: 'DIRECTORY_NOT_FOUND'
 }
-export interface IDefinitionFailedToImportErrorOptions extends SpruceErrors.Local.IDefinitionFailedToImport, ISpruceErrorOptions {
-	code: 'DEFINITION_FAILED_TO_IMPORT'
+export interface ISchemaFailedToImportErrorOptions extends SpruceErrors.Local.ISchemaFailedToImport, ISpruceErrorOptions {
+	code: 'SCHEMA_FAILED_TO_IMPORT'
 }
 export interface IFailedToImportErrorOptions extends SpruceErrors.Local.IFailedToImport, ISpruceErrorOptions {
 	code: 'FAILED_TO_IMPORT'
@@ -66,6 +66,6 @@ export interface IKeyExistsErrorOptions extends SpruceErrors.Local.IKeyExists, I
 	code: 'KEY_EXISTS'
 }
 
-type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | ICommandNotImplementedErrorOptions  | ICouldNotLoadCommandErrorOptions  | IBuildFailedErrorOptions  | IDirectoryEmptyErrorOptions  | ICreateAutoloaderFailedErrorOptions  | IDirectoryNotFoundErrorOptions  | IDefinitionFailedToImportErrorOptions  | IFailedToImportErrorOptions  | IExecutingCommandFailedErrorOptions  | IGenericErrorOptions  | IInvalidCommandErrorOptions  | IFileExistsErrorOptions  | IValueTypeServiceStageErrorErrorOptions  | IPayloadArgsErrorOptions  | IGenericMercuryErrorOptions  | INotImplementedErrorOptions  | IValueTypeServiceErrorErrorOptions  | ILintFailedErrorOptions  | ITranspileFailedErrorOptions  | IUserNotFoundErrorOptions  | IKeyExistsErrorOptions 
+type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | ICommandNotImplementedErrorOptions  | ICouldNotLoadCommandErrorOptions  | IBuildFailedErrorOptions  | IDirectoryEmptyErrorOptions  | ICreateAutoloaderFailedErrorOptions  | IDirectoryNotFoundErrorOptions  | ISchemaFailedToImportErrorOptions  | IFailedToImportErrorOptions  | IExecutingCommandFailedErrorOptions  | IGenericErrorOptions  | IInvalidCommandErrorOptions  | IFileExistsErrorOptions  | IValueTypeServiceStageErrorErrorOptions  | IPayloadArgsErrorOptions  | IGenericMercuryErrorOptions  | INotImplementedErrorOptions  | IValueTypeServiceErrorErrorOptions  | ILintFailedErrorOptions  | ITranspileFailedErrorOptions  | IUserNotFoundErrorOptions  | IKeyExistsErrorOptions 
 
 export default ErrorOptions

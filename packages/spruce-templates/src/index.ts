@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import {
-	ISchemaDefinition,
+	ISchema,
 	ISchemaTemplateItem,
 	IFieldTemplateItem,
 } from '@sprucelabs/schema'
@@ -22,10 +22,10 @@ import './addons/valueTypeLiteral.addon'
 import './addons/fieldTypeEnum.addon'
 import './addons/operators.addon'
 import './addons/gt.addon'
-import './addons/importRelatedDefinitions.addon'
+import './addons/importRelatedSchemas.addon'
 import './addons/pascalCase.addon'
-import './addons/fieldDefinitionPartial.addon'
-import './addons/schemaDefinitionPartial.addon'
+import './addons/fieldDefinitionBodyPartial.addon'
+import './addons/schemaBodyPartial.addon'
 import './addons/schemaValuesPartial.addon'
 import './addons/valueTypeGenerator.addon'
 import './addons/valueTypeGeneratorType.addon'
@@ -37,7 +37,7 @@ import {
 	DirectoryTemplateKind,
 	IDirectoryTemplateContextMap,
 	IValueTypes,
-	IDefinitionBuilderTemplateItem,
+	ISchemaBuilderTemplateItem,
 	IErrorOptions,
 	IErrorTemplateItem,
 } from './types/templates.types'
@@ -96,7 +96,7 @@ export const templates = {
 		})
 	},
 
-	definition(
+	schema(
 		options: ISchemaTemplateItem & {
 			schemaTemplateItems: ISchemaTemplateItem[]
 			fieldTemplateItems: IFieldTemplateItem[]
@@ -106,7 +106,7 @@ export const templates = {
 		}
 	) {
 		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
-		const template = templateImportUtil.getTemplate('schemas/definition.ts.hbs')
+		const template = templateImportUtil.getTemplate('schemas/schema.ts.hbs')
 		return template({
 			...options,
 			imports,
@@ -115,7 +115,7 @@ export const templates = {
 		})
 	},
 
-	definitionBuilder(options: IDefinitionBuilderTemplateItem) {
+	schemaBuilder(options: ISchemaBuilderTemplateItem) {
 		const template = templateImportUtil.getTemplate('schemas/builder.ts.hbs')
 		return template({
 			...options,
@@ -133,7 +133,7 @@ export const templates = {
 	errorTypes(
 		options: {
 			schemaTemplateItems: ISchemaTemplateItem[]
-			relativeToDefinition: string
+			relativeToSchema: string
 		} & IErrorTemplateItem
 	) {
 		const template = templateImportUtil.getTemplate('errors/error.types.ts.hbs')
@@ -154,7 +154,7 @@ export const templates = {
 	schemaExample(options: {
 		nameCamel: string
 		namePascal: string
-		definition: ISchemaDefinition
+		definition: ISchema
 	}) {
 		const template = templateImportUtil.getTemplate('schemas/example.ts.hbs')
 		return template(options)
@@ -164,7 +164,7 @@ export const templates = {
 	errorExample(options: {
 		nameCamel: string
 		namePascal: string
-		definition: ISchemaDefinition
+		definition: ISchema
 	}) {
 		const template = templateImportUtil.getTemplate('errors/example.ts.hbs')
 		return template(options)

@@ -55,18 +55,18 @@ const valueTypes = {
 		{{#each this}}
 		{{@key}}: {
 			{{#each this}} 
-			"{{definition.version}}{{#unless definition.version}}{{../../../SCHEMA_VERSION_FALLBACK}}{{/unless}}":{
-				{{#if definition.dynamicKeySignature}}
+			"{{schema.version}}{{#unless schema.version}}{{../../../SCHEMA_VERSION_FALLBACK}}{{/unless}}":{
+				{{#if schema.dynamicKeySignature}}
 				__dynamicKeySignature: {
-					valueTypeGeneratorType: {{{ valueTypeGenerator definition.dynamicKeySignature 'value' 'generateValueTypeGeneratorType'}}},
+					valueTypeGeneratorType: {{{ valueTypeGenerator schema.dynamicKeySignature 'value' 'generateValueTypeGeneratorType'}}},
 					valueTypes: {
 						{{#each ../../../rendersAs}}
-						{{this}}: {{{ valueTypeGenerator ../definition.dynamicKeySignature this 'generateTypeLiteral'}}},
+						{{this}}: {{{ valueTypeGenerator ../schema.dynamicKeySignature this 'generateTypeLiteral'}}},
 						{{/each}}
 					}
 				},	
 				{{/if}}
-				{{#each definition.fields}}
+				{{#each schema.fields}}
 				"{{@key}}": {
 					valueTypeGeneratorType: {{{ valueTypeGenerator this 'value' 'generateValueTypeGeneratorType'}}},
 					valueTypes: {

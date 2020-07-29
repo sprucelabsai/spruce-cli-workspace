@@ -1,0 +1,10 @@
+import { {{globalNamespace}} } from '{{typesFile}}'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
+{{{ importRelatedSchemas schema }}}
+
+const {{nameCamel}}Schema: {{globalNamespace}}.{{namespace}}{{#if schema.version}}.{{schema.version}}{{/if}}.I{{namePascal}}Schema  = {
+	{{> schemaBody namespace=namespace schema=schema renderAs="value" }}
+}
+
+export default {{nameCamel}}Schema

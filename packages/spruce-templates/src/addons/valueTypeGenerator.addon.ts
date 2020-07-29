@@ -3,7 +3,7 @@
 import {
 	TemplateRenderAs,
 	IFieldTemplateItem,
-	ISchemaDefinition,
+	ISchema,
 } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
 import { upperFirst } from 'lodash'
@@ -12,7 +12,7 @@ import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 handlebars.registerHelper('valueTypeGenerator', function (
 	fieldDefinition:
 		| FieldDefinition
-		| NonNullable<ISchemaDefinition['dynamicKeySignature']>,
+		| NonNullable<ISchema['dynamicKeySignature']>,
 	renderAs: TemplateRenderAs,
 	func: 'generateValueTypeGeneratorType' | 'generateTypeLiteral',
 	options: {
@@ -39,7 +39,7 @@ handlebars.registerHelper('valueTypeGenerator', function (
 
 	const type = handlebars.helpers.fieldTypeEnum(fieldDefinition, options)
 	const fieldDefinitionCopy = { ...fieldDefinition }
-	delete (fieldDefinitionCopy as ISchemaDefinition['dynamicKeySignature'])?.key
+	delete (fieldDefinitionCopy as ISchema['dynamicKeySignature'])?.key
 
 	const def = JSON.stringify({
 		...fieldDefinitionCopy,

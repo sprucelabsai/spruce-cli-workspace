@@ -1,5 +1,4 @@
 import fs from 'fs-extra'
-import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
 import log from '../singletons/log'
 import CommandService from './CommandService'
@@ -14,7 +13,7 @@ export default class ImportService extends CommandService {
 		let defaultImported: T | undefined
 		if (!fs.existsSync(file)) {
 			throw new SpruceError({
-				code: ErrorCode.FailedToImport,
+				code: 'FAILED_TO_IMPORT',
 				file,
 				friendlyMessage: `I couldn't find the definition file`,
 			})
@@ -47,7 +46,7 @@ export default class ImportService extends CommandService {
 				} catch {
 					err = {
 						options: {
-							code: ErrorCode.FailedToImport,
+							code: 'FAILED_TO_IMPORT',
 							file,
 							friendlyMessage: `Unknown error from import, output was: \n\n"${
 								errParts[1] ?? stdout
@@ -68,7 +67,7 @@ export default class ImportService extends CommandService {
 				throw err
 			} else {
 				throw new SpruceError({
-					code: ErrorCode.FailedToImport,
+					code: 'FAILED_TO_IMPORT',
 					file,
 					originalError: err,
 				})

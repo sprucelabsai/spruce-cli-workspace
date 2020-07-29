@@ -1,11 +1,11 @@
 import { SpruceSchemas } from '../../schemas.types'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-import jobDefinition from '#spruce/schemas/spruce/v2020_07_22/job.definition'
-import locationDefinition from '#spruce/schemas/spruce/v2020_07_22/location.definition'
-import personDefinition from '#spruce/schemas/spruce/v2020_07_22/person.definition'
+import JobSchema from '#spruce/schemas/spruce/v2020_07_22/job.definition'
+import LocationSchema from '#spruce/schemas/spruce/v2020_07_22/location.definition'
+import personSchema from '#spruce/schemas/spruce/v2020_07_22/person.definition'
 
-const personLocationDefinition: SpruceSchemas.Spruce.v2020_07_22.IPersonLocationDefinition  = {
+const personLocationSchema: SpruceSchemas.Spruce.v2020_07_22.IPersonLocationSchema  = {
 	id: 'personLocation',
 	name: 'Person <-> location relationship',
 	    fields: {
@@ -47,23 +47,23 @@ const personLocationDefinition: SpruceSchemas.Spruce.v2020_07_22.IPersonLocation
 	                label: 'Job',
 	                type: FieldType.Schema,
 	                isRequired: true,
-	                options: {schemas: [jobDefinition],}
+	                options: {schemas: [JobSchema],}
 	            },
 	            /** Location. */
 	            'location': {
 	                label: 'Location',
 	                type: FieldType.Schema,
 	                isRequired: true,
-	                options: {schemas: [locationDefinition],}
+	                options: {schemas: [LocationSchema],}
 	            },
 	            /** Person. */
 	            'person': {
 	                label: 'Person',
 	                type: FieldType.Schema,
 	                isRequired: true,
-	                options: {schemas: [personDefinition],}
+	                options: {schemas: [personSchema],}
 	            },
 	    }
 }
 
-export default personLocationDefinition
+export default personLocationSchema

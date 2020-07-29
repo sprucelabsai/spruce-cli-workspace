@@ -1,8 +1,8 @@
-import { ISchemaDefinition } from '@sprucelabs/schema'
+import { ISchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { CORE_SCHEMA_VERSION } from '../../constants'
 
-const profileImageDefinition: ISchemaDefinition = {
+const profileImageSchema: ISchema = {
 	id: 'profileImage',
 	name: 'Profile Image Sizes',
 	version: CORE_SCHEMA_VERSION.dirValue,
@@ -30,7 +30,7 @@ const profileImageDefinition: ISchemaDefinition = {
 	},
 }
 
-const personDefinition: ISchemaDefinition = {
+const personSchema: ISchema = {
 	id: 'person',
 	name: 'Person',
 	description: 'A human being.',
@@ -73,7 +73,7 @@ const personDefinition: ISchemaDefinition = {
 			label: 'Profile photos',
 			type: FieldType.Schema,
 			options: {
-				schema: profileImageDefinition,
+				schema: profileImageSchema,
 			},
 		},
 		defaultProfileImages: {
@@ -81,10 +81,10 @@ const personDefinition: ISchemaDefinition = {
 			type: FieldType.Schema,
 			isRequired: true,
 			options: {
-				schema: profileImageDefinition,
+				schema: profileImageSchema,
 			},
 		},
 	},
 }
 
-export default personDefinition
+export default personSchema

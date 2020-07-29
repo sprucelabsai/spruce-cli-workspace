@@ -1,8 +1,4 @@
-import {
-	ISchemaDefinition,
-	SchemaDefinitionPartialValues,
-	SchemaDefinitionValues,
-} from '@sprucelabs/schema'
+import { ISchema, SchemaPartialValues, SchemaValues } from '@sprucelabs/schema'
 import FormComponent from '../components/FormComponent'
 import { IGraphicsInterface } from '../types/cli.types'
 import FeatureInstaller from './FeatureInstaller'
@@ -10,8 +6,8 @@ import { FeatureCode, IFeatureMap } from './features.types'
 
 type FeatureCommandExecuteOptions<
 	F extends FeatureCode
-> = IFeatureMap[F]['optionsDefinition'] extends ISchemaDefinition
-	? SchemaDefinitionPartialValues<IFeatureMap[F]['optionsDefinition']>
+> = IFeatureMap[F]['optionsDefinition'] extends ISchema
+	? SchemaPartialValues<IFeatureMap[F]['optionsDefinition']>
 	: undefined
 
 export default class FeatureCommandExecuter<F extends FeatureCode> {
@@ -64,7 +60,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			}
 		}
 
-		const definition = action.optionsDefinition
+		const definition = action.optionsSchema
 		let answers
 
 		if (definition) {
@@ -83,7 +79,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		})
 	}
 
-	private async collectAnswers<S extends ISchemaDefinition>(
+	private async collectAnswers<S extends ISchema>(
 		definition: S,
 		options: FeatureCommandExecuteOptions<F> | undefined
 	) {
@@ -108,6 +104,6 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 				fields: fieldsToPresent,
 			})
 		}
-		return { ...(options ?? {}), ...answers } as SchemaDefinitionValues<S>
+		return { ...(options ?? {}), ...answers } as SchemaValues<S>
 	}
 }

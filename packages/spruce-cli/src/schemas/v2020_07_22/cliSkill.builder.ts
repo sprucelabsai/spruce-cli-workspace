@@ -1,14 +1,14 @@
-import { buildSchemaDefinition } from '@sprucelabs/schema'
-import skillDefinition from '#spruce/schemas/spruce/v2020_07_22/skill.definition'
+import { buildSchema } from '@sprucelabs/schema'
+import skillSchema from '#spruce/schemas/spruce/v2020_07_22/skill.schema'
 
-export default buildSchemaDefinition({
-	...skillDefinition,
+export default buildSchema({
+	...skillSchema,
 	id: 'cliSkill',
 	description: 'A stripped down skill for the cli',
 	fields: {
-		id: skillDefinition.fields.id,
-		apiKey: skillDefinition.fields.apiKey,
-		name: skillDefinition.fields.name,
-		slug: skillDefinition.fields.slug,
+		id: skillSchema.fields.id,
+		apiKey: skillSchema.fields.apiKey,
+		name: skillSchema.fields.name,
+		slug: skillSchema.fields.slug,
 	},
 })

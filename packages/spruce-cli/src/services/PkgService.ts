@@ -1,7 +1,6 @@
 import pathUtil from 'path'
 import fs from 'fs-extra'
 import { set } from 'lodash'
-import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
 import { WriteMode } from '../types/cli.types'
 import CommandService from './CommandService'
@@ -27,7 +26,7 @@ export default class PkgService extends CommandService {
 
 		if (pathExists && mode === WriteMode.Throw) {
 			throw new SpruceError({
-				code: ErrorCode.KeyExists,
+				code: 'KEY_EXISTS',
 				friendlyMessage: `${path} already exists in package.json`,
 				key: path,
 			})
@@ -51,7 +50,7 @@ export default class PkgService extends CommandService {
 			return parsed
 		} catch (err) {
 			throw new SpruceError({
-				code: ErrorCode.FailedToImport,
+				code: 'FAILED_TO_IMPORT',
 				file: packagePath,
 				originalError: err,
 			})

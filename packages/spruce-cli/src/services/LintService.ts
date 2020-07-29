@@ -1,6 +1,5 @@
 // import { CLIEngine } from 'eslint'
 import fs from 'fs-extra'
-import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
 import CommandService from './CommandService'
 
@@ -16,7 +15,7 @@ export default class LintService extends CommandService {
 	): Promise<string[]> => {
 		if (!pattern) {
 			throw new SpruceError({
-				code: ErrorCode.LintFailed,
+				code: 'LINT_FAILED',
 				pattern: '***missing***',
 				stdout: '***never run***',
 			})
@@ -35,7 +34,7 @@ export default class LintService extends CommandService {
 			fixedFiles = JSON.parse(stdout)
 		} catch (err) {
 			throw new SpruceError({
-				code: ErrorCode.LintFailed,
+				code: 'LINT_FAILED',
 				pattern,
 				stdout,
 			})

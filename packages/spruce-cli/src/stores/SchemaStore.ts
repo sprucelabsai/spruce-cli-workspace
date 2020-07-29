@@ -2,23 +2,22 @@ import pathUtil from 'path'
 import {
 	ISchemaTemplateItem,
 	IFieldTemplateItem,
-	ISchemaDefinition,
+	ISchema,
 } from '@sprucelabs/schema'
 import { IFieldRegistration } from '@sprucelabs/schema/build/utilities/registerFieldType'
 import globby from 'globby'
 import { uniqBy } from 'lodash'
-import ErrorCode from '#spruce/errors/errorCode'
 import { LOCAL_NAMESPACE, CORE_NAMESPACE } from '../constants'
 import SpruceError from '../errors/SpruceError'
 import { Service } from '../factories/ServiceFactory'
 import SchemaTemplateItemBuilder from '../templateItemBuilders/SchemaTemplateItemBuilder'
 import {
-	personDefinition,
-	userLocationDefinition,
-	skillDefinition,
-	locationDefinition,
-	groupDefinition,
-	aclDefinition,
+	personSchema,
+	personLocationSchema,
+	skillSchema,
+	locationSchema,
+	groupSchema,
+	aclSchema,
 } from '../temporary/schemas'
 import diskUtil from '../utilities/disk.utility'
 import namesUtil from '../utilities/names.utility'
@@ -98,13 +97,13 @@ export default class SchemaStore extends AbstractStore {
 
 		if (fetchRemoteSchemas !== false) {
 			// this will move to a mercury call when ready
-			const schemas: ISchemaDefinition[] = [
-				personDefinition,
-				skillDefinition,
-				locationDefinition,
-				userLocationDefinition,
-				groupDefinition,
-				aclDefinition,
+			const schemas: ISchema[] = [
+				personSchema,
+				skillSchema,
+				locationSchema,
+				personLocationSchema,
+				groupSchema,
+				aclSchema,
 			]
 
 			coreTemplateItems = this.schemaBuilder.generateTemplateItems(
@@ -143,7 +142,7 @@ export default class SchemaStore extends AbstractStore {
 
 		const schemaService = this.Service(Service.Schema)
 		const errors: SpruceError[] = []
-		const definitions: ISchemaDefinition[] = []
+		const definitions: ISchema[] = []
 
 		await Promise.all(
 			localMatches.map(async (local) => {
@@ -170,14 +169,14 @@ export default class SchemaStore extends AbstractStore {
 
 				if (version || enableVersioning === false) {
 					try {
-						const definition = await schemaService.importDefinition(local)
-						definition.version = version
+						const schema = await schemaService.importSchema(local)
+						schema.version = version
 
-						definitions.push(definition)
+						definitions.push(schema)
 					} catch (err) {
 						errors.push(
 							new SpruceError({
-								code: ErrorCode.DefinitionFailedToImport,
+								code: 'SCHEMA_FAILED_TO_IMPORT',
 								file: local,
 								originalError: err,
 							})
@@ -241,7 +240,7 @@ export default class SchemaStore extends AbstractStore {
 				} catch (err) {
 					localErrors.push(
 						new SpruceError({
-							code: ErrorCode.FailedToImport,
+							code: 'FAILED_TO_IMPORT',
 							file,
 							originalError: err,
 						})

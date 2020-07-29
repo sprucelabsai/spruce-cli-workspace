@@ -1,4 +1,4 @@
-import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
+import { ISchema, SchemaValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
 import SpruceError from '../errors/SpruceError'
 import ServiceFactory from '../factories/ServiceFactory'
@@ -27,8 +27,8 @@ export type FeatureCode = keyof IFeatureMap
 
 export type FeatureOptions<
 	F extends FeatureCode
-> = IFeatureMap[F]['optionsDefinition'] extends ISchemaDefinition
-	? SchemaDefinitionValues<IFeatureMap[F]['optionsDefinition']>
+> = IFeatureMap[F]['optionsDefinition'] extends ISchema
+	? SchemaValues<IFeatureMap[F]['optionsDefinition']>
 	: undefined
 
 export interface IFeatureInstallResponse {}
@@ -36,7 +36,7 @@ export interface IFeatureInstallResponse {}
 export type InstallFeature =
 	| {
 			code: 'skill'
-			options: SchemaDefinitionValues<SkillFeature['optionsDefinition']>
+			options: SchemaValues<SkillFeature['optionsDefinition']>
 	  }
 	| {
 			code: 'schema'
@@ -79,12 +79,8 @@ export interface IFeatureActionExecuteResponse {
 	errors?: SpruceError[]
 }
 
-export interface IFeatureAction<
-	S extends ISchemaDefinition = ISchemaDefinition
-> {
+export interface IFeatureAction<S extends ISchema = ISchema> {
 	name: string
-	optionsDefinition?: S
-	execute: (
-		options: SchemaDefinitionValues<S>
-	) => Promise<IFeatureActionExecuteResponse>
+	optionsSchema?: S
+	execute: (options: SchemaValues<S>) => Promise<IFeatureActionExecuteResponse>
 }

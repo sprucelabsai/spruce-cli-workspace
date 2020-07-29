@@ -1,7 +1,7 @@
-import { buildErrorDefinition } from '@sprucelabs/schema'
+import { buildErrorSchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-export default buildErrorDefinition({
+export default buildErrorSchema({
 	id: 'commandNotImplemented',
 	name: 'Command not implemented',
 	description: 'This command has not yet been implemented ',

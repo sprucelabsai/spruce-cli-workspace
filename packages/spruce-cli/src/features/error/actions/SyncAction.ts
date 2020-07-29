@@ -1,8 +1,8 @@
 import {
-	buildSchemaDefinition,
-	SchemaDefinitionValues,
+	buildSchema,
+	SchemaValues,
 	ISchemaTemplateItem,
-	SchemaDefinitionValuesWithDefaults,
+	SchemaValuesWithDefaults,
 } from '@sprucelabs/schema'
 import { IErrorTemplateItem } from '@sprucelabs/spruce-templates'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
@@ -19,7 +19,7 @@ import {
 	ISyncSchemasActionDefinition,
 } from '../../schema/actions/SyncAction'
 
-export const syncErrorsActionOptionsDefinition = buildSchemaDefinition({
+export const syncErrorsActionOptionsDefinition = buildSchema({
 	id: 'errorSync',
 	name: 'Sync error',
 	fields: {
@@ -51,10 +51,10 @@ export default class SyncAction extends AbstractFeatureAction<
 	ISyncErrorsActionDefinition
 > {
 	public name = 'sync'
-	public optionsDefinition = syncErrorsActionOptionsDefinition
+	public optionsSchema = syncErrorsActionOptionsDefinition
 
 	public async execute(
-		options: SchemaDefinitionValues<ISyncErrorsActionDefinition>
+		options: SchemaValues<ISyncErrorsActionDefinition>
 	): Promise<IFeatureActionExecuteResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 		const {
@@ -114,9 +114,7 @@ export default class SyncAction extends AbstractFeatureAction<
 
 	private async syncErrors(
 		schemaSyncAction: IFeatureAction<ISyncSchemasActionDefinition>,
-		normalizedOptions: SchemaDefinitionValuesWithDefaults<
-			ISyncErrorsActionDefinition
-		>
+		normalizedOptions: SchemaValuesWithDefaults<ISyncErrorsActionDefinition>
 	) {
 		const resolvedErrorTypesDestinationDir = diskUtil.resolvePath(
 			this.cwd,

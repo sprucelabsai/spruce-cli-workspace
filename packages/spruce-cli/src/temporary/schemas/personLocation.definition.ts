@@ -1,12 +1,12 @@
-import { ISchemaDefinition } from '@sprucelabs/schema'
+import { ISchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { CORE_SCHEMA_VERSION } from '../../constants'
-import jobDefinition from './job.definition'
-import locationDefinition from './location.definition'
-import personDefinition from './person.definition'
+import JobSchema from './job.definition'
+import LocationSchema from './location.definition'
+import personSchema from './person.definition'
 import { roleSelectChoices } from './role.definition'
 
-const personLocationDefinition: ISchemaDefinition = {
+const personLocationSchema: ISchema = {
 	id: 'personLocation',
 	name: 'Person <-> location relationship',
 	version: CORE_SCHEMA_VERSION.dirValue,
@@ -45,7 +45,7 @@ const personLocationDefinition: ISchemaDefinition = {
 			type: FieldType.Schema,
 			isRequired: true,
 			options: {
-				schema: jobDefinition,
+				schema: JobSchema,
 			},
 		},
 		location: {
@@ -53,7 +53,7 @@ const personLocationDefinition: ISchemaDefinition = {
 			type: FieldType.Schema,
 			isRequired: true,
 			options: {
-				schema: locationDefinition,
+				schema: LocationSchema,
 			},
 		},
 		person: {
@@ -61,10 +61,10 @@ const personLocationDefinition: ISchemaDefinition = {
 			type: FieldType.Schema,
 			isRequired: true,
 			options: {
-				schema: personDefinition,
+				schema: personSchema,
 			},
 		},
 	},
 }
 
-export default personLocationDefinition
+export default personLocationSchema

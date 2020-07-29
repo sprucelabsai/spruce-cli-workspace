@@ -1,5 +1,4 @@
 import { Mercury } from '@sprucelabs/mercury'
-import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
 import { SpruceEvents } from '../types/events-generated'
 
@@ -24,7 +23,7 @@ export default class PinService {
 			})
 		} catch (err) {
 			throw new SpruceError({
-				code: ErrorCode.GenericMercury,
+				code: 'GENERIC_MERCURY',
 				eventName: SpruceEvents.Core.RequestLogin.name,
 				payloadArgs: [
 					{ name: 'phoneNumber', value: phone },

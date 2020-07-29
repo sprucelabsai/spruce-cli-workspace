@@ -1,10 +1,10 @@
-import { ISchemaDefinition } from '@sprucelabs/schema'
+import { ISchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { CORE_SCHEMA_VERSION } from '../../constants'
-import aclDefinition from './acl.definition'
+import AclSchema from './acl.definition'
 import { roleSelectChoices } from './role.definition'
 
-const groupDefinition: ISchemaDefinition = {
+const groupSchema: ISchema = {
 	id: 'job',
 	name: 'Job',
 	version: CORE_SCHEMA_VERSION.dirValue,
@@ -39,17 +39,17 @@ const groupDefinition: ISchemaDefinition = {
 			label: 'On work permissions',
 			type: FieldType.Schema,
 			options: {
-				schema: aclDefinition,
+				schema: AclSchema,
 			},
 		},
 		acls: {
 			label: 'Off work permissions',
 			type: FieldType.Schema,
 			options: {
-				schema: aclDefinition,
+				schema: AclSchema,
 			},
 		},
 	},
 }
 
-export default groupDefinition
+export default groupSchema

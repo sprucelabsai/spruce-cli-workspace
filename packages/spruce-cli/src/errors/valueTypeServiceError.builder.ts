@@ -1,7 +1,7 @@
-import { buildErrorDefinition } from '@sprucelabs/schema'
+import { buildErrorSchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-const valueTypeServiceErrorDefinition = buildErrorDefinition({
+const valueTypeServiceErrorDefinition = buildErrorSchema({
 	id: 'valueTypeServiceError',
 	name: 'Value type service error',
 	description: 'An error when generating value types for template insertion ',

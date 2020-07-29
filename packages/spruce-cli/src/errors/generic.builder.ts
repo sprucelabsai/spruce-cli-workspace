@@ -1,7 +1,7 @@
-import { buildErrorDefinition } from '@sprucelabs/schema'
+import { buildErrorSchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-const genericDefinition = buildErrorDefinition({
+const genericDefinition = buildErrorSchema({
 	id: 'generic',
 	name: 'generic',
 	description: "When you're too lazy to make a new error",

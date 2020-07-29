@@ -2,7 +2,7 @@ import path from 'path'
 import pathUtil from 'path'
 import { IFieldTemplateItem, ISchemaTemplateItem } from '@sprucelabs/schema'
 import {
-	IDefinitionBuilderTemplateItem,
+	ISchemaBuilderTemplateItem,
 	IValueTypes,
 } from '@sprucelabs/spruce-templates'
 import { LATEST_HANDLEBARS } from '../constants'
@@ -62,7 +62,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 	public async generateBuilder(
 		destinationDir: string,
-		options: IDefinitionBuilderTemplateItem & { enableVersioning?: boolean }
+		options: ISchemaBuilderTemplateItem & { enableVersioning?: boolean }
 	): Promise<GenerationResults> {
 		const filename = `${options.nameCamel}.builder.ts`
 
@@ -85,7 +85,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			})
 		}
 
-		const builderContent = this.templates.definitionBuilder(options)
+		const builderContent = this.templates.schemaBuilder(options)
 
 		const results = this.writeFileIfChangedMixinResults(
 			resolvedBuilderDestination,
@@ -150,16 +150,16 @@ export default class SchemaGenerator extends AbstractGenerator {
 		)
 
 		results.push(
-			...this.generateAllDefinitions(
-				pathUtil.dirname(resolvedTypesDestination),
-				{ ...options, typesFile: resolvedTypesDestination }
-			)
+			...this.generateAllSchemas(pathUtil.dirname(resolvedTypesDestination), {
+				...options,
+				typesFile: resolvedTypesDestination,
+			})
 		)
 
 		return results
 	}
 
-	private generateAllDefinitions(
+	private generateAllSchemas(
 		destinationDir: string,
 		options: IGenerateSchemaTypesOptions & { typesFile?: string }
 	): GenerationResults {
@@ -167,14 +167,14 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 		options.schemaTemplateItems.map((item) => {
 			results.push(
-				...this.generateDefinition(destinationDir, { ...options, ...item })
+				...this.generateSchema(destinationDir, { ...options, ...item })
 			)
 		})
 
 		return results
 	}
 
-	public generateDefinition(
+	public generateSchema(
 		destinationDir: string,
 		options: {
 			schemaTemplateItems: ISchemaTemplateItem[]
@@ -193,8 +193,8 @@ export default class SchemaGenerator extends AbstractGenerator {
 		const resolvedDestination = path.join(
 			destinationDir,
 			namesUtil.toCamel(options.namespace),
-			options.definition.version ?? '',
-			`${item.id}.definition.ts`
+			options.schema.version ?? '',
+			`${item.id}.schema.ts`
 		)
 
 		let typesFile = options.typesFile
@@ -208,7 +208,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			typesFile = typesFile.replace(pathUtil.extname(typesFile), '')
 		}
 
-		const definitionContents = this.templates.definition({
+		const schemaContents = this.templates.schema({
 			...item,
 			schemaTemplateItems,
 			fieldTemplateItems,
@@ -218,7 +218,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 		return this.writeFileIfChangedMixinResults(
 			resolvedDestination,
-			definitionContents,
+			schemaContents,
 			`The definition of ${item.nameReadable}`
 		)
 	}

@@ -1,6 +1,5 @@
 import { spawn, SpawnOptions } from 'child_process'
 import stringArgv from 'string-argv'
-import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
 
 export default class CommandService {
@@ -68,7 +67,7 @@ export default class CommandService {
 				} else {
 					reject(
 						new SpruceError({
-							code: ErrorCode.ExecutingCommandFailed,
+							code: 'EXECUTING_COMMAND_FAILED',
 							cmd: JSON.stringify({ executable, args }),
 							cwd,
 							originalError: new Error(stderr),

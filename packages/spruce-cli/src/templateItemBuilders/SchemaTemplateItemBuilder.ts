@@ -1,5 +1,5 @@
-import Schema, {
-	ISchemaDefinition,
+import SchemaEntity, {
+	ISchema,
 	ISchemaTemplateItem,
 	SchemaField,
 	ISchemaFieldDefinition,
@@ -8,17 +8,16 @@ import Schema, {
 } from '@sprucelabs/schema'
 import cloneDeep from 'lodash/cloneDeep'
 import uniqWith from 'lodash/uniqWith'
-import ErrorCode from '#spruce/errors/errorCode'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import SpruceError from '../errors/SpruceError'
 import schemaUtil, { SchemaRelationshipType } from '../utilities/schema.utility'
 
 export default class SchemaTemplateItemBuilder {
-	private definitionCache: Record<string, ISchemaDefinition> = {}
+	private definitionCache: Record<string, ISchema> = {}
 
 	public generateTemplateItems(
 		namespace: string,
-		definitions: ISchemaDefinition[]
+		definitions: ISchema[]
 	): ISchemaTemplateItem[] {
 		this.definitionCache = {}
 		this.cacheDefinitions(definitions)
@@ -35,13 +34,13 @@ export default class SchemaTemplateItemBuilder {
 		return templateTimes
 	}
 
-	private cacheDefinitions(definitions: ISchemaDefinition[]) {
+	private cacheDefinitions(definitions: ISchema[]) {
 		definitions.forEach((def) => {
 			this.cacheDefinition(def)
 		})
 	}
 
-	private cacheDefinition(def: ISchemaDefinition) {
+	private cacheDefinition(def: ISchema) {
 		this.definitionCache[schemaUtil.generateCacheKey(def)] = def
 	}
 
@@ -49,8 +48,8 @@ export default class SchemaTemplateItemBuilder {
 		return this.definitionCache[schemaUtil.generateCacheKey(def)]
 	}
 
-	private flattenDefinitions(definitions: ISchemaDefinition[]) {
-		const flattened: ISchemaDefinition[] = []
+	private flattenDefinitions(definitions: ISchema[]) {
+		const flattened: ISchema[] = []
 
 		definitions.forEach((d) => {
 			const related = this.pullRelatedDefinitions(d)
@@ -65,8 +64,8 @@ export default class SchemaTemplateItemBuilder {
 		)
 	}
 
-	private pullRelatedDefinitions(definition: ISchemaDefinition) {
-		const related: ISchemaDefinition[] = []
+	private pullRelatedDefinitions(definition: ISchema) {
+		const related: ISchema[] = []
 
 		Object.keys(definition.fields ?? {}).forEach((fieldName) => {
 			const field = definition.fields?.[fieldName]
@@ -76,7 +75,7 @@ export default class SchemaTemplateItemBuilder {
 					related.push(...this.pullRelatedFromSchemaField(field))
 				} catch (err) {
 					throw new SpruceError({
-						code: ErrorCode.Generic,
+						code: 'GENERIC',
 						friendlyMessage: `Failed to load related schema for ${definition.id}${definition.version}.${fieldName}`,
 						originalError: err,
 					})
@@ -88,61 +87,59 @@ export default class SchemaTemplateItemBuilder {
 	}
 
 	private pullRelatedFromSchemaField(field: ISchemaFieldDefinition) {
-		const related: ISchemaDefinition[] = []
+		const related: ISchema[] = []
 		const schemasOrIdsWithVersion = SchemaField.mapFieldDefinitionToSchemasOrIdsWithVersion(
 			field
 		)
 		schemasOrIdsWithVersion.forEach((item) => {
-			const definition = this.definitionOrIdsWithVersionToDefinition(item)
+			const schema = this.definitionOrIdsWithVersionToSchema(item)
 
-			related.push(definition)
+			related.push(schema)
 		})
 
 		return related
 	}
 
-	private definitionOrIdsWithVersionToDefinition(
-		definitionOrIdWithVersion: ISchemaDefinition | ISchemaIdWithVersion
+	private definitionOrIdsWithVersionToSchema(
+		schemaOrIdWithVersion: ISchema | ISchemaIdWithVersion
 	) {
-		let definition: ISchemaDefinition | undefined
+		let schema: ISchema | undefined
 		if (
-			schemaUtil.relationshipType(definitionOrIdWithVersion) ===
+			schemaUtil.relationshipType(schemaOrIdWithVersion) ===
 			SchemaRelationshipType.IdWithVersion
 		) {
-			definition = this.cacheLookup(definitionOrIdWithVersion)
-			if (!definition) {
+			schema = this.cacheLookup(schemaOrIdWithVersion)
+			if (!schema) {
 				throw new SchemaError({
 					code: 'SCHEMA_NOT_FOUND',
-					schemaId: JSON.stringify(definitionOrIdWithVersion),
+					schemaId: JSON.stringify(schemaOrIdWithVersion),
 					friendlyMessage: 'Make sure you are pointing to the correct version.',
 				})
 			}
 		} else {
-			Schema.validateDefinition(definitionOrIdWithVersion)
+			SchemaEntity.validateSchema(schemaOrIdWithVersion)
 
-			this.cacheDefinition(definitionOrIdWithVersion)
+			this.cacheDefinition(schemaOrIdWithVersion)
 
-			definition = definitionOrIdWithVersion
+			schema = schemaOrIdWithVersion
 		}
-		return definition
+		return schema
 	}
 
 	public buildTemplateItem(
 		namespace: string,
-		definition: ISchemaDefinition
+		schema: ISchema
 	): ISchemaTemplateItem {
 		return {
-			id: definition.id,
+			id: schema.id,
 			namespace,
-			definition: this.normalizeSchemaFieldsToIdsWithVersion(definition),
-			...schemaUtil.generateNamesForDefinition(definition),
+			schema: this.normalizeSchemaFieldsToIdsWithVersion(schema),
+			...schemaUtil.generateNamesForDefinition(schema),
 		}
 	}
 
-	private normalizeSchemaFieldsToIdsWithVersion(
-		definition: ISchemaDefinition
-	): ISchemaDefinition {
-		const normalized: ISchemaDefinition = cloneDeep(definition)
+	private normalizeSchemaFieldsToIdsWithVersion(schema: ISchema): ISchema {
+		const normalized: ISchema = cloneDeep(schema)
 
 		Object.keys(normalized.fields ?? {}).forEach((name) => {
 			const field = normalized.fields?.[name]

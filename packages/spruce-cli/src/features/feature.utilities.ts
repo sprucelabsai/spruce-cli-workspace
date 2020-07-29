@@ -1,5 +1,5 @@
 import pathUtil from 'path'
-import { ISchemaDefinition } from '@sprucelabs/schema'
+import { ISchema } from '@sprucelabs/schema'
 import namesUtil from '../utilities/names.utility'
 
 const featuresUtil = {
@@ -13,7 +13,7 @@ const featuresUtil = {
 		return namesUtil.toCamel(code)
 	},
 
-	generateCommandAliases(schema: ISchemaDefinition): Record<string, string> {
+	generateCommandAliases(schema: ISchema): Record<string, string> {
 		const fields = schema.fields || {}
 		const aliases: Record<string, string> = {}
 

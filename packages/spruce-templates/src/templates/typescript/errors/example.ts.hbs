@@ -1,11 +1,10 @@
 // import your error
 import SpruceError from '../errors/Error'
-import ErrorCode from '#spruce/errors/codes.types'
 
 // throw your error
 throw new SpruceError({
-    code: ErrorCode.{{namePascal}},
-    {{#each definition.fields}}
+    code: '{{nameConst}}'',
+    {{#each schema.fields}}
     {{@key}}: ...,
     {{/each}}
 })

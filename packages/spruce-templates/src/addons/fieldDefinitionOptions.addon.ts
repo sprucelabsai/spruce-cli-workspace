@@ -64,7 +64,7 @@ handlebars.registerHelper('fieldDefinitionOptions', function (
 			version,
 			fieldName,
 			renderAs === TemplateRenderAs.Type
-				? TemplateRenderAs.DefinitionType
+				? TemplateRenderAs.SchemaType
 				: TemplateRenderAs.Value,
 			options
 		)

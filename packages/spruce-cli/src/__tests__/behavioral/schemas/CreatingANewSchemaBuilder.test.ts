@@ -62,14 +62,14 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		await checker.check(response.files?.[0].path ?? '')
 		await checker.check(this.schemaTypesFile)
 
-		assert.doesInclude(response.files, { name: 'anotherTest.definition.ts' })
+		assert.doesInclude(response.files, { name: 'anotherTest.schema.ts' })
 
-		const definitionMatch = testUtil.assertsFileByNameInGeneratedFiles(
-			'anotherTest.definition.ts',
+		const schemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
+			'anotherTest.schema.ts',
 			response.files ?? []
 		)
 
-		await checker.check(definitionMatch)
+		await checker.check(schemaMatch)
 	}
 
 	private static async buildTestSchema() {

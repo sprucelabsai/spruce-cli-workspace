@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const skillDefinition: SpruceSchemas.Spruce.v2020_07_22.ISkillDefinition  = {
+const skillSchema: SpruceSchemas.Spruce.v2020_07_22.SkillSchema  = {
 	id: 'skill',
 	name: 'Skill',
 	description: 'An ability Sprucebot has learned.',
@@ -50,4 +50,4 @@ const skillDefinition: SpruceSchemas.Spruce.v2020_07_22.ISkillDefinition  = {
 	    }
 }
 
-export default skillDefinition
+export default skillSchema

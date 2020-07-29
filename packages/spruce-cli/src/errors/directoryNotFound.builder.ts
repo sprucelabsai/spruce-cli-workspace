@@ -1,7 +1,7 @@
-import { buildErrorDefinition } from '@sprucelabs/schema'
+import { buildErrorSchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-export default buildErrorDefinition({
+export default buildErrorSchema({
 	id: 'directoryNotFound',
 	name: 'Directory not found',
 	description: 'The directory you tried to find is not there!',

@@ -5,6 +5,7 @@ handlebars.registerHelper('valueTypeGeneratorType', function (
 	valueTypeGeneratorType: string,
 	renderAs: 'typeOnly' | 'asGeneric'
 ) {
+	// eslint-disable-next-line no-debugger
 	debugger
 	const [generic, typeVariables] = valueTypeGeneratorType.split('<')
 

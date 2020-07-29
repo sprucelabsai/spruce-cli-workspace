@@ -1,9 +1,6 @@
-import {
-	SchemaDefinitionValues,
-	buildSchemaDefinition,
-} from '@sprucelabs/schema'
+import { SchemaValues, buildSchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
-import namedTemplateItemDefinition from '#spruce/schemas/local/v2020_07_22/namedTemplateItem.definition'
+import NamedTemplateItemSchema from '#spruce/schemas/local/v2020_07_22/namedTemplateItem.schema'
 import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
 import SchemaGenerator from '../../../generators/SchemaGenerator'
 import diskUtil from '../../../utilities/disk.utility'
@@ -14,7 +11,7 @@ import {
 	syncSchemasActionOptionsDefinition,
 } from './SyncAction'
 
-const createSchemaActionDefinition = buildSchemaDefinition({
+const createSchemaActionDefinition = buildSchema({
 	id: 'createSchemaAction',
 	name: 'Create schema',
 	description: 'Create the builder to a fresh new schema!',
@@ -30,7 +27,7 @@ const createSchemaActionDefinition = buildSchemaDefinition({
 			type: FieldType.Text,
 			label: 'Builder function',
 			hint: 'The function that builds this schema',
-			defaultValue: 'buildSchemaDefinition',
+			defaultValue: 'buildSchema',
 			isPrivate: true,
 		},
 		syncAfterCreate: {
@@ -41,10 +38,10 @@ const createSchemaActionDefinition = buildSchemaDefinition({
 			isPrivate: true,
 			defaultValue: true,
 		},
-		nameReadable: namedTemplateItemDefinition.fields.nameReadable,
-		namePascal: namedTemplateItemDefinition.fields.namePascal,
-		nameCamel: namedTemplateItemDefinition.fields.nameCamel,
-		description: namedTemplateItemDefinition.fields.description,
+		nameReadable: NamedTemplateItemSchema.fields.nameReadable,
+		namePascal: NamedTemplateItemSchema.fields.namePascal,
+		nameCamel: NamedTemplateItemSchema.fields.nameCamel,
+		description: NamedTemplateItemSchema.fields.description,
 	},
 })
 
@@ -54,11 +51,9 @@ export default class CreateAction extends AbstractFeatureAction<
 	ICreateSchemaActionDefinition
 > {
 	public name = 'create'
-	public optionsDefinition = createSchemaActionDefinition
+	public optionsSchema = createSchemaActionDefinition
 
-	public async execute(
-		options: SchemaDefinitionValues<ICreateSchemaActionDefinition>
-	) {
+	public async execute(options: SchemaValues<ICreateSchemaActionDefinition>) {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
 		const {

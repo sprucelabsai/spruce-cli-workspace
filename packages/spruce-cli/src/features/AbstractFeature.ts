@@ -1,5 +1,5 @@
 import pathUtil from 'path'
-import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
+import { ISchema, SchemaValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import { IGenerators } from '#spruce/autoloaders/generators'
@@ -19,7 +19,7 @@ import { IFeatureAction } from './features.types'
 import { FeatureCode } from './features.types'
 
 export default abstract class AbstractFeature<
-	S extends ISchemaDefinition | undefined = ISchemaDefinition | undefined
+	S extends ISchema | undefined = ISchema | undefined
 > implements IServiceProvider {
 	public abstract description: string
 	public readonly dependencies: FeatureCode[] = []
@@ -68,15 +68,11 @@ export default abstract class AbstractFeature<
 	}
 
 	public async beforePackageInstall(
-		_options: S extends ISchemaDefinition
-			? SchemaDefinitionValues<S>
-			: undefined
+		_options: S extends ISchema ? SchemaValues<S> : undefined
 	): Promise<void> {}
 
 	public async afterPackageInstall(
-		_options: S extends ISchemaDefinition
-			? SchemaDefinitionValues<S>
-			: undefined
+		_options: S extends ISchema ? SchemaValues<S> : undefined
 	): Promise<void> {}
 
 	public abstract async isInstalled(): Promise<boolean>

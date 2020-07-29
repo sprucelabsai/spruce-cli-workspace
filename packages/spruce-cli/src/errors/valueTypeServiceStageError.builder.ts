@@ -1,7 +1,7 @@
-import { buildErrorDefinition } from '@sprucelabs/schema'
+import { buildErrorSchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-const valueTypeServiceStageErrorDefinition = buildErrorDefinition({
+const valueTypeServiceStageErrorDefinition = buildErrorSchema({
 	id: 'valueTypeServiceStageError',
 	name: 'Value type service stage error',
 	description:

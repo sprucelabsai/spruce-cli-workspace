@@ -1,5 +1,4 @@
 import BaseSpruceError from '@sprucelabs/error'
-import ErrorCode from '#spruce/errors/errorCode'
 import ErrorOptions from '#spruce/errors/options.types'
 
 export default class SpruceError extends BaseSpruceError<ErrorOptions> {
@@ -9,30 +8,30 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 		let message
 		switch (options?.code) {
 			// Invalid command
-			case ErrorCode.InvalidCommand:
+			case 'INVALID_COMMAND':
 				message = `Invalid command: ${options.args.join(' ')}\n`
 				message += `Try running spruce --help`
 				break
-			case ErrorCode.CouldNotLoadCommand:
+			case 'COULD_NOT_LOAD_COMMAND':
 				message = `Failed to load command at ${options.file}!\n`
 				message += 'This is likely a syntax or lint error.'
 				break
 
-			case ErrorCode.UserNotFound:
+			case 'USER_NOT_FOUND':
 				message = 'Could not find a user.'
 				message += ` token: "${options.token}", userId: "${options.userId}"`
 				break
 
-			case ErrorCode.Generic:
+			case 'GENERIC':
 				message = "When you're too lazy to make a new error"
 				break
-			case ErrorCode.NotImplemented:
+			case 'NOT_IMPLEMENTED':
 				message = ''
 				if (options.friendlyMessage) {
 					message += `\n\n${options.friendlyMessage}`
 				}
 				break
-			case ErrorCode.CommandNotImplemented:
+			case 'COMMAND_NOT_IMPLEMENTED':
 				message = `${options.command} has not yet been implemented. ${
 					options.args ? `Args: ${options.args.join(', ')}` : ''
 				}`
@@ -42,51 +41,51 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 
 				break
 
-			case ErrorCode.GenericMercury:
+			case 'GENERIC_MERCURY':
 				message = `Error: Event "${options.eventName ?? 'n/a'}"${
 					options.friendlyMessage
 						? `: ${options.friendlyMessage}`
 						: `: ${this.originalError?.message}`
 				}`
 				break
-			case ErrorCode.TranspileFailed:
+			case 'TRANSPILE_FAILED':
 				message = 'Could not transpile (ts -> js) a script'
 
 				break
 
-			case ErrorCode.DefinitionFailedToImport:
+			case 'SCHEMA_FAILED_TO_IMPORT':
 				message = `Error importing "${options.file}"`
 				break
-			case ErrorCode.DirectoryNotFound:
+			case 'DIRECTORY_NOT_FOUND':
 				message = `Directory not found: "${options.directory}"`
 				break
-			case ErrorCode.BuildFailed:
+			case 'BUILD_FAILED':
 				message = `Build${
 					options.file ? `ing ${options.file}` : ''
 				} failed. It looks like you're not running 'yarn watch'. Run it and then run 'spruce all:sync'.`
 
 				break
 
-			case ErrorCode.FailedToImport:
+			case 'FAILED_TO_IMPORT':
 				message = `Failed to import ${options.file}`
 
 				break
 
-			case ErrorCode.ValueTypeServiceStageError:
+			case 'VALUE_TYPE_SERVICE_STAGE_ERROR':
 				message =
 					'When collecting value types for all fields, something went wrong'
 				break
 
-			case ErrorCode.ValueTypeServiceError:
+			case 'VALUE_TYPE_SERVICE_ERROR':
 				message = 'An error when generating value types for template insertion '
 				break
 
-			case ErrorCode.LintFailed:
+			case 'LINT_FAILED':
 				message = `Lint failed on pattern ${options.pattern}. Response from lint was:\n\n`
 				message += options.stdout
 				break
 
-			case ErrorCode.ExecutingCommandFailed:
+			case 'EXECUTING_COMMAND_FAILED':
 				if (this.originalError && this.originalError.message) {
 					message = this.originalError.message + '\n\n'
 				} else {
@@ -96,70 +95,6 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				if (options.cwd) {
 					message += `\n\nCWD: ${options.cwd}`
 				}
-				break
-
-			case 'COMMAND_NOT_IMPLEMENTED':
-				message = 'A Command not implemented just happened!'
-				break
-			case 'COULD_NOT_LOAD_COMMAND':
-				message = 'A Could not load command just happened!'
-				break
-			case 'BUILD_FAILED':
-				message = 'A BuildFailed just happened!'
-				break
-			case 'DIRECTORY_EMPTY':
-				message = 'A directoryEmpty just happened!'
-				break
-			case 'CREATE_AUTOLOADER_FAILED':
-				message = 'A Could not create an autoloader just happened!'
-				break
-			case 'DIRECTORY_NOT_FOUND':
-				message = 'A Directory not found just happened!'
-				break
-			case 'DEFINITION_FAILED_TO_IMPORT':
-				message = 'A Definition failed to import just happened!'
-				break
-			case 'FAILED_TO_IMPORT':
-				message = 'A FailedToImport just happened!'
-				break
-			case 'EXECUTING_COMMAND_FAILED':
-				message = 'A Executing command failed just happened!'
-				break
-			case 'GENERIC':
-				message = 'A generic just happened!'
-				break
-			case 'INVALID_COMMAND':
-				message = 'A Invalid command just happened!'
-				break
-			case 'FILE_EXISTS':
-				message = 'A fileExists just happened!'
-				break
-			case 'VALUE_TYPE_SERVICE_STAGE_ERROR':
-				message = 'A Value type service stage error just happened!'
-				break
-			case 'PAYLOAD_ARGS':
-				message = 'A Payload args just happened!'
-				break
-			case 'GENERIC_MERCURY':
-				message = 'A Generic mercury just happened!'
-				break
-			case 'NOT_IMPLEMENTED':
-				message = 'A Not implemented just happened!'
-				break
-			case 'VALUE_TYPE_SERVICE_ERROR':
-				message = 'A Value type service error just happened!'
-				break
-			case 'LINT_FAILED':
-				message = 'A Lint failed! just happened!'
-				break
-			case 'TRANSPILE_FAILED':
-				message = 'A Transpile failed just happened!'
-				break
-			case 'USER_NOT_FOUND':
-				message = 'A User not found just happened!'
-				break
-			case 'KEY_EXISTS':
-				message = 'A keyExists just happened!'
 				break
 
 			default:

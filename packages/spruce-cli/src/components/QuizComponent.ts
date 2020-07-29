@@ -1,8 +1,4 @@
-import {
-	ISchemaDefinition,
-	ISchemaDefinitionFields,
-	SchemaFieldNames,
-} from '@sprucelabs/schema'
+import { ISchema, ISchemaFields, SchemaFieldNames } from '@sprucelabs/schema'
 import chalk from 'chalk'
 import { shuffle } from 'lodash'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
@@ -43,7 +39,7 @@ export enum AnswerValidity {
 
 /** Options to present */
 export interface IQuizPresentationOptions<
-	T extends ISchemaDefinition,
+	T extends ISchema,
 	Q extends IQuizQuestions
 > extends Omit<IFormPresentationOptions<T>, 'fields'> {
 	/** Select which questions you want to output? random still applies */
@@ -98,10 +94,8 @@ export type QuizPresentationResults<Q extends IQuizQuestions> = {
 }
 
 /** Options for instantiating a new quiz */
-export interface IQuizOptions<
-	T extends ISchemaDefinition,
-	Q extends IQuizQuestions
-> extends Omit<IFormOptions<T>, 'definition'> {
+export interface IQuizOptions<T extends ISchema, Q extends IQuizQuestions>
+	extends Omit<IFormOptions<T>, 'definition'> {
 	/** Should we randomize the questions */
 	randomizeQuestions?: boolean
 	/** The questions we are asking */
@@ -109,7 +103,7 @@ export interface IQuizOptions<
 }
 
 export default class QuizComponent<
-	T extends ISchemaDefinition,
+	T extends ISchema,
 	Q extends IQuizQuestions
 > {
 	public formBuilder: FormComponent<T>
@@ -292,8 +286,8 @@ export default class QuizComponent<
 
 	/** Takes questions and builds a schema */
 	private buildSchemaFromQuestions(questions: IQuizQuestions): T {
-		// TODO change ISchemaDefinitionFields to something based on schema generated from questions
-		const fields: ISchemaDefinitionFields = {}
+		// TODO change ISchemaFields to something based on schema generated from questions
+		const fields: ISchemaFields = {}
 
 		Object.keys(questions).forEach((fieldName) => {
 			const question = questions[fieldName]

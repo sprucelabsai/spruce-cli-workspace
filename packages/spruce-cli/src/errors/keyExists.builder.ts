@@ -1,7 +1,7 @@
-import { buildErrorDefinition } from '@sprucelabs/schema'
+import { buildErrorSchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-const keyExistsDefinition = buildErrorDefinition({
+const keyExistsDefinition = buildErrorSchema({
 	id: 'keyExists',
 	name: 'keyExists',
 	description: 'The key in the object already exists',

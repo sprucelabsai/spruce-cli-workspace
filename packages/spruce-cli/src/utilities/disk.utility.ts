@@ -1,7 +1,6 @@
 import pathUtil from 'path'
 import { IDirectoryTemplateFile } from '@sprucelabs/spruce-templates'
 import fs from 'fs-extra'
-import ErrorCode from '#spruce/errors/errorCode'
 import { HASH_SPRUCE_DIR } from '../constants'
 import SpruceError from '../errors/SpruceError'
 
@@ -92,7 +91,7 @@ const diskUtil = {
 
 			if (this.doesFileExist(filePathToWrite)) {
 				throw new SpruceError({
-					code: ErrorCode.FileExists,
+					code: 'FILE_EXISTS',
 					file: filePathToWrite,
 					friendlyMessage: `The file already exists. Remove this file or set a different WriteMode`,
 				})

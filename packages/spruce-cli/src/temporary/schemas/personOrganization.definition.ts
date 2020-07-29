@@ -1,12 +1,12 @@
-import { ISchemaDefinition } from '@sprucelabs/schema'
+import { ISchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { CORE_SCHEMA_VERSION } from '../../constants'
-import jobDefinition from './job.definition'
-import organizationDefinition from './organization.definition'
-import personDefinition from './person.definition'
+import JobSchema from './job.definition'
+import organizationSchema from './organization.definition'
+import personSchema from './person.definition'
 import { roleSelectChoices } from './role.definition'
 
-const personOrganization: ISchemaDefinition = {
+const personOrganization: ISchema = {
 	id: 'personOrganization',
 	name: 'Person <-> organization relationship',
 	version: CORE_SCHEMA_VERSION.dirValue,
@@ -27,7 +27,7 @@ const personOrganization: ISchemaDefinition = {
 			label: 'Jobs',
 			type: FieldType.Schema,
 			options: {
-				schema: jobDefinition,
+				schema: JobSchema,
 			},
 		},
 		organization: {
@@ -35,7 +35,7 @@ const personOrganization: ISchemaDefinition = {
 			type: FieldType.Schema,
 			isRequired: true,
 			options: {
-				schema: organizationDefinition,
+				schema: organizationSchema,
 			},
 		},
 		person: {
@@ -43,7 +43,7 @@ const personOrganization: ISchemaDefinition = {
 			type: FieldType.Schema,
 			isRequired: true,
 			options: {
-				schema: personDefinition,
+				schema: personSchema,
 			},
 		},
 	},

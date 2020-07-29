@@ -1,4 +1,4 @@
-import { ISchemaDefinition, ISchemaIdWithVersion } from '@sprucelabs/schema'
+import { ISchema, ISchemaIdWithVersion } from '@sprucelabs/schema'
 import namesUtil from './names.utility'
 
 export enum SchemaRelationshipType {
@@ -7,7 +7,7 @@ export enum SchemaRelationshipType {
 }
 
 const schemaUtil = {
-	generateNamesForDefinition(definition: ISchemaDefinition) {
+	generateNamesForDefinition(definition: ISchema) {
 		return {
 			nameReadable: definition.name,
 			nameCamel: definition.id,
@@ -16,9 +16,9 @@ const schemaUtil = {
 	},
 
 	relationshipType(
-		item: ISchemaIdWithVersion | ISchemaDefinition
+		item: ISchemaIdWithVersion | ISchema
 	): SchemaRelationshipType {
-		if ((item as ISchemaDefinition).name) {
+		if ((item as ISchema).name) {
 			return SchemaRelationshipType.Definition
 		} else {
 			return SchemaRelationshipType.IdWithVersion

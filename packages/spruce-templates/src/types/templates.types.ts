@@ -68,7 +68,7 @@ export interface IDirectoryTemplateFile {
 	contents: string
 }
 
-export interface IDefinitionBuilderTemplateItem {
+export interface ISchemaBuilderTemplateItem {
 	nameCamel: string
 	description?: string | null
 	namePascal: string
@@ -93,7 +93,7 @@ export interface IValueTypes {
 					valueTypes: {
 						value: string
 						type: string
-						definitionType: string
+						schemaType: string
 					}
 					valueTypeGeneratorType?: string
 				}

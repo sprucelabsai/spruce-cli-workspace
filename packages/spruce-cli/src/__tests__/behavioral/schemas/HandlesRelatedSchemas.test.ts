@@ -17,18 +17,18 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 
 		assert.isEqual(results.errors?.length, 0)
 
-		const personDefinitionMatch = testUtil.assertsFileByNameInGeneratedFiles(
-			/testPerson\.definition/,
+		const personSchemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
+			/testPerson\.schema/,
 			results.files ?? []
 		)
-		const petDefinitionMatch = testUtil.assertsFileByNameInGeneratedFiles(
-			/pet\.definition/,
+		const petSchemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
+			/pet\.schema/,
 			results.files ?? []
 		)
 
 		const checker = this.Service(Service.TypeChecker)
 
-		await checker.check(personDefinitionMatch)
-		await checker.check(petDefinitionMatch)
+		await checker.check(personSchemaMatch)
+		await checker.check(petSchemaMatch)
 	}
 }

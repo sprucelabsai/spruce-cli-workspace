@@ -1,7 +1,7 @@
-import { buildErrorDefinition } from '@sprucelabs/schema'
+import { buildErrorSchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-const userNotFoundDefinition = buildErrorDefinition({
+const userNotFoundDefinition = buildErrorSchema({
 	id: 'userNotFound',
 	name: 'User not found',
 	description: 'Could not find a user',

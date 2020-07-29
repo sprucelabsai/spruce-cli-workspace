@@ -1,9 +1,9 @@
 import { SpruceSchemas } from '../../schemas.types'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-import profileImageDefinition from '#spruce/schemas/spruce/v2020_07_22/profileImage.definition'
+import profileImageSchema from '#spruce/schemas/spruce/v2020_07_22/profileImage.schema'
 
-const personDefinition: SpruceSchemas.Spruce.v2020_07_22.IPersonDefinition  = {
+const personSchema: SpruceSchemas.Spruce.v2020_07_22.PersonSchema  = {
 	id: 'person',
 	name: 'Person',
 	description: 'A human being.',
@@ -54,16 +54,16 @@ const personDefinition: SpruceSchemas.Spruce.v2020_07_22.IPersonDefinition  = {
 	            'profileImages': {
 	                label: 'Profile photos',
 	                type: FieldType.Schema,
-	                options: {schemas: [profileImageDefinition],}
+	                options: {schemas: [profileImageSchema],}
 	            },
 	            /** Default profile photos. */
 	            'defaultProfileImages': {
 	                label: 'Default profile photos',
 	                type: FieldType.Schema,
 	                isRequired: true,
-	                options: {schemas: [profileImageDefinition],}
+	                options: {schemas: [profileImageSchema],}
 	            },
 	    }
 }
 
-export default personDefinition
+export default personSchema

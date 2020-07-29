@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const autoloaderDefinition: SpruceSchemas.Local.v2020_07_22.IAutoloaderDefinition  = {
+const AutoloaderSchema: SpruceSchemas.Local.v2020_07_22.IAutoloaderSchema  = {
 	id: 'autoloader',
 	name: 'Autoloader',
 	description: 'A directory that is autoloaded',
@@ -34,4 +34,4 @@ const autoloaderDefinition: SpruceSchemas.Local.v2020_07_22.IAutoloaderDefinitio
 	    }
 }
 
-export default autoloaderDefinition
+export default AutoloaderSchema
