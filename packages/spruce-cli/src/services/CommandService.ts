@@ -10,45 +10,6 @@ export default class CommandService {
 		this.cwd = cwd
 	}
 
-	private static runningPromises: Promise<any>[] = []
-	private static maxRunning = 5
-
-	// public async execute(
-	// 	cmd: string,
-	// 	options?: {
-	// 		args?: string[]
-	// 		/** When set to true will stream the results from the child process in real time instead of waiting to return */
-	// 		stream?: boolean
-	// 	}
-	// ): Promise<{
-	// 	stdout: string
-	// }> {
-	// 	const lastInLine =
-	// 		CommandService.runningPromises[
-	// 			CommandService.runningPromises.length - CommandService.maxRunning
-	// 		]
-
-	// 	let resolve
-	// 	const us = new Promise((r) => {
-	// 		resolve = r
-	// 	})
-
-	// 	CommandService.runningPromises.push(us)
-
-	// 	if (lastInLine) {
-	// 		await lastInLine
-	// 	}
-	// 	const results = await this.executeUnlimited(cmd, options)
-	// 	CommandService.runningPromises = CommandService.runningPromises.filter(
-	// 		(p) => p !== us
-	// 	)
-
-	// 	// @ts-ignore
-	// 	resolve()
-
-	// 	return results
-	// }
-
 	public execute(
 		cmd: string,
 		options?: {
