@@ -1,6 +1,5 @@
 import { ISelectFieldDefinitionChoice } from '@sprucelabs/schema'
 import { Command } from 'commander'
-import ErrorCode from '#spruce/errors/errorCode'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
@@ -103,7 +102,7 @@ export default class UserCommand extends AbstractCommand {
 
 		if (!user || !user.id) {
 			throw new SpruceError({
-				code: ErrorCode.UserNotFound,
+				code: 'USER_NOT_FOUND',
 				friendlyMessage:
 					'This should never have happened, but the user is missing.',
 			})

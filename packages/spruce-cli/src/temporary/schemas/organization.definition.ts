@@ -1,8 +1,8 @@
-import { ISchemaDefinition } from '@sprucelabs/schema'
+import { ISchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { CORE_SCHEMA_VERSION } from '../../constants'
 
-const organizationDefinition: ISchemaDefinition = {
+const organizationSchema: ISchema = {
 	id: 'organization',
 	name: 'Organization',
 	version: CORE_SCHEMA_VERSION.dirValue,
@@ -25,4 +25,4 @@ const organizationDefinition: ISchemaDefinition = {
 	},
 }
 
-export default organizationDefinition
+export default organizationSchema

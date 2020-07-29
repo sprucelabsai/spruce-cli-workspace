@@ -1,7 +1,7 @@
-import { buildErrorDefinition } from '@sprucelabs/schema'
+import { buildErrorSchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-const failedToImportDefinition = buildErrorDefinition({
+const failedToImportDefinition = buildErrorSchema({
 	id: 'failedToImport',
 	name: 'FailedToImport',
 	description: 'Failed to import a file through VM',

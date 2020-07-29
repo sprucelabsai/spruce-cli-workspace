@@ -1,14 +1,14 @@
-import { buildSchemaDefinition } from '@sprucelabs/schema'
+import { buildSchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
-import userDefinition from '#spruce/schemas/spruce/v2020_07_22/person.definition'
+import UserSchema from '#spruce/schemas/spruce/v2020_07_22/person.builder'
 
-export default buildSchemaDefinition({
-	...userDefinition,
+export default buildSchema({
+	...UserSchema,
 	id: 'cliUserWithToken',
 	description: 'A stripped down cli user with token details for login',
 	fields: {
-		id: userDefinition.fields.id,
-		casualName: userDefinition.fields.casualName,
+		id: UserSchema.fields.id,
+		casualName: UserSchema.fields.casualName,
 		token: { type: FieldType.Text, isRequired: true },
 		isLoggedIn: {
 			type: FieldType.Boolean,

@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const cliUserDefinition: SpruceSchemas.Local.v2020_07_22.ICliUserDefinition  = {
+const cliUserSchema: SpruceSchemas.Local.v2020_07_22.ICliUserSchema  = {
 	id: 'cliUser',
 	name: 'Person',
 	description: 'A stripped down user for the cli',
@@ -26,4 +26,4 @@ const cliUserDefinition: SpruceSchemas.Local.v2020_07_22.ICliUserDefinition  = {
 	    }
 }
 
-export default cliUserDefinition
+export default cliUserSchema

@@ -1,11 +1,11 @@
 import {
-	ISchemaDefinition,
+	ISchema,
 	ISelectFieldDefinitionChoice,
 } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { CORE_SCHEMA_VERSION } from '../../constants'
 
-const roleDefinition: ISchemaDefinition = {
+const roleDefinition: ISchema = {
 	id: 'role',
 	name: 'Role',
 	version: CORE_SCHEMA_VERSION.dirValue,

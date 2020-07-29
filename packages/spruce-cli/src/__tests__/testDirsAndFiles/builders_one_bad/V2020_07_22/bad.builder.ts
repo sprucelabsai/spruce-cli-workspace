@@ -1,6 +1,6 @@
-import { buildErrorDefinition } from '@sprucelabs/schema'
+import { buildErrorSchema } from '@sprucelabs/schema'
 
-export default buildErrorDefinition({
+export default buildErrorSchema({
 	id: 'good',
 	name: 'Good one',
 	description: 'Another for testing',

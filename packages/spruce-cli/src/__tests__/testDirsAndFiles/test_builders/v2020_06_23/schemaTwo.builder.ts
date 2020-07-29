@@ -1,7 +1,7 @@
-import { buildSchemaDefinition } from '@sprucelabs/schema'
+import { buildSchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-export default buildSchemaDefinition({
+export default buildSchema({
 	id: 'schemaTwo',
 	name: 'Second schema',
 	description: 'It is going to be greater, I thin!',

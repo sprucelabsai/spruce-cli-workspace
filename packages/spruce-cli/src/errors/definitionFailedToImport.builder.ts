@@ -1,8 +1,8 @@
-import { buildErrorDefinition } from '@sprucelabs/schema'
+import { buildErrorSchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-export default buildErrorDefinition({
-	id: 'definitionFailedToImport',
+export default buildErrorSchema({
+	id: 'SchemaFailedToImport',
 	name: 'Definition failed to import',
 	description: 'The definition file failed to import',
 	fields: {

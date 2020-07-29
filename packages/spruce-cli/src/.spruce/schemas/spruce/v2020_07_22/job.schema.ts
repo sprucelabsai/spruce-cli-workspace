@@ -1,9 +1,9 @@
 import { SpruceSchemas } from '../../schemas.types'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-import aclDefinition from '#spruce/schemas/spruce/v2020_07_22/acl.definition'
+import AclSchema from '#spruce/schemas/spruce/v2020_07_22/acl.definition'
 
-const jobDefinition: SpruceSchemas.Spruce.v2020_07_22.IJobDefinition  = {
+const JobSchema: SpruceSchemas.Spruce.v2020_07_22.IJobSchema  = {
 	id: 'job',
 	name: 'Job',
 	description: 'A position at a company. The answer to the question; What is your job?',
@@ -40,15 +40,15 @@ const jobDefinition: SpruceSchemas.Spruce.v2020_07_22.IJobDefinition  = {
 	            'inStoreAcls': {
 	                label: 'On work permissions',
 	                type: FieldType.Schema,
-	                options: {schemas: [aclDefinition],}
+	                options: {schemas: [AclSchema],}
 	            },
 	            /** Off work permissions. */
 	            'acls': {
 	                label: 'Off work permissions',
 	                type: FieldType.Schema,
-	                options: {schemas: [aclDefinition],}
+	                options: {schemas: [AclSchema],}
 	            },
 	    }
 }
 
-export default jobDefinition
+export default JobSchema

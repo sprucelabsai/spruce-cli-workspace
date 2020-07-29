@@ -11,8 +11,8 @@ export default class InstallCheckingActionDecorator implements IFeatureAction {
 	private parent: AbstractFeature
 	private featureInstaller: FeatureInstaller
 
-	public get optionsDefinition() {
-		return this.childAction.optionsDefinition
+	public get optionsSchema() {
+		return this.childAction.optionsSchema
 	}
 
 	public constructor(

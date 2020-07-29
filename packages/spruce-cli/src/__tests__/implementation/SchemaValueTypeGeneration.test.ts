@@ -82,7 +82,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		{
 			type: 'string',
 			value: 'string',
-			definitionType: 'string',
+			schemaType: 'string',
 		}
 	)
 	@test(
@@ -91,7 +91,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		{
 			type: '("owner" | "groupManager" | "manager" | "teammate" | "guest")',
 			value: '("owner" | "groupManager" | "manager" | "teammate" | "guest")',
-			definitionType:
+			schemaType:
 				'("owner" | "groupManager" | "manager" | "teammate" | "guest")',
 		}
 	)
@@ -100,8 +100,8 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		`${CORE_NAMESPACE}.personLocation.${CORE_SCHEMA_VERSION.constValue}.person.valueTypes`,
 		{
 			type: `SpruceSchemas.${CORE_NAMESPACE}.${CORE_SCHEMA_VERSION.constValue}.IPerson`,
-			value: '[personDefinition]',
-			definitionType: `SpruceSchemas.${CORE_NAMESPACE}.${CORE_SCHEMA_VERSION.constValue}.IPersonDefinition[]`,
+			value: '[personSchema]',
+			schemaType: `SpruceSchemas.${CORE_NAMESPACE}.${CORE_SCHEMA_VERSION.constValue}.IPersonSchema[]`,
 		}
 	)
 	@test(
@@ -110,7 +110,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		{
 			type: 'string[]',
 			value: 'string[]',
-			definitionType: 'string[]',
+			schemaType: 'string[]',
 		}
 	)
 	protected static async importsTypes(

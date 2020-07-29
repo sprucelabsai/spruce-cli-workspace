@@ -1,18 +1,18 @@
-// Importing your definition
-import { SpruceSchemas }  from '#spruce/schemas/schemas.types'
-import {{nameCamel}}Definition from '#spruce/schemas/{{nameCamel}}.definition'
+// Importing your schema
+import {{nameCamel}}Schema from '#spruce/schemas/v2020_07_22/{{nameCamel}}.schema'
 
 // Importing interfaces
-import { I{{namePascal}}, I{{namePascal}}Instance } from '#spruce/schemas/{{nameCamel}}.types'
+import { I{{namePascal}}, I{{namePascal}}Entity } from '#spruce/schemas/v2020_07_22/{{nameCamel}}.types'
 
-// Create an instance of a schema based on a definition
-const {{nameCamel}} = new Schema({{nameCamel}}Definition, values)
+// Create an entity instance based on a schema
+import Entity from '@sprucelabs/schema'
+const {{nameCamel}} = new Entity({{nameCamel}}Schema, values)
 
 // Set a value
 {{nameCamel}}.set('fieldName', newValue);
 
 // Get some values
-{{#each definition.fields}}
+{{#each schema.fields}}
 const {{@key}} = {{../nameCamel}}.get('{{@key}}');
 {{/each}}
 

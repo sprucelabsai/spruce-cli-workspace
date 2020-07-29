@@ -4,10 +4,9 @@ import Schema, {
 	normalizeSchemaValues,
 } from '@sprucelabs/schema'
 import jwt from 'jsonwebtoken'
-import ErrorCode from '#spruce/errors/errorCode'
-import cliUserWithTokenDefinition from '#spruce/schemas/local/v2020_07_22/cliUserWithToken.definition'
+import CliUserWithTokenSchema from '#spruce/schemas/local/v2020_07_22/cliUserWithToken.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import userDefinition from '#spruce/schemas/spruce/v2020_07_22/person.definition'
+import UserSchema from '#spruce/schemas/spruce/v2020_07_22/person.builder'
 import SpruceError from '../errors/SpruceError'
 import log from '../singletons/log'
 import { AuthedAs } from '../types/cli.types'
@@ -26,11 +25,11 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 	public name = 'user'
 
 	public static getUserWithToken(values?: Partial<UserWithToken>) {
-		return new Schema(cliUserWithTokenDefinition, values)
+		return new Schema(CliUserWithTokenSchema, values)
 	}
 
 	public static getUser(values?: Partial<User>) {
-		return new Schema(userDefinition, values)
+		return new Schema(UserSchema, values)
 	}
 
 	public async fetchUserWithTokenFromPhone(phone: string, pin: string) {
@@ -49,7 +48,7 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 
 		if (!token) {
 			throw new SpruceError({
-				code: ErrorCode.GenericMercury,
+				code: 'GENERIC_MERCURY',
 				eventName: SpruceEvents.Core.Login.name,
 				payloadArgs: [
 					{ name: 'phone', value: phone },
@@ -63,7 +62,7 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 
 		if (!user) {
 			throw new SpruceError({
-				code: ErrorCode.UserNotFound,
+				code: 'USER_NOT_FOUND',
 				token,
 			})
 		}
@@ -77,7 +76,7 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 		const decoded = jwt.decode(token) as Record<string, any> | null
 		if (!decoded) {
 			throw new SpruceError({
-				code: ErrorCode.Generic,
+				code: 'GENERIC',
 				friendlyMessage: 'Invalid token!',
 			})
 		}
@@ -136,9 +135,9 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 		})
 
 		// Lets validate the user and pull out values
-		validateSchemaValues(cliUserWithTokenDefinition, user)
+		validateSchemaValues(CliUserWithTokenSchema, user)
 
-		const values = normalizeSchemaValues(cliUserWithTokenDefinition, user)
+		const values = normalizeSchemaValues(CliUserWithTokenSchema, user)
 
 		newAuthedUsers.push({
 			...values,
@@ -158,11 +157,7 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 		// Validate the saved user
 		if (loggedInUser) {
 			try {
-				const instance = new Schema(cliUserWithTokenDefinition, loggedInUser)
-
-				instance.validate()
-
-				return instance.getValues()
+				return normalizeSchemaValues(CliUserWithTokenSchema, loggedInUser)
 			} catch (err) {
 				log.crit(`Loading logged in user failed`)
 				log.crit(err)

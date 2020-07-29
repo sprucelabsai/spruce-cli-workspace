@@ -1,8 +1,8 @@
-import { ISchemaDefinition } from '@sprucelabs/schema'
+import { ISchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { CORE_SCHEMA_VERSION } from '../../constants'
 
-const aclDefinition: ISchemaDefinition = {
+const aclSchema: ISchema = {
 	id: 'acl',
 	name: 'Access control list lookup table',
 	version: CORE_SCHEMA_VERSION.dirValue,
@@ -14,4 +14,4 @@ const aclDefinition: ISchemaDefinition = {
 	},
 }
 
-export default aclDefinition
+export default aclSchema

@@ -12,7 +12,6 @@ import { Command, CommanderStatic } from 'commander'
 import allSettled from 'promise.allsettled'
 allSettled.shim()
 
-import ErrorCode from '#spruce/errors/errorCode'
 import './addons/filePrompt.addon'
 import SpruceError from './errors/SpruceError'
 import ServiceFactory, { Service } from './factories/ServiceFactory'
@@ -189,7 +188,7 @@ export async function boot(options?: ICliBootOptions) {
 
 		// Error on unknown commands
 		program.action((command, args) => {
-			throw new SpruceError({ code: ErrorCode.InvalidCommand, args })
+			throw new SpruceError({ code: 'INVALID_COMMAND', args })
 		})
 	}
 

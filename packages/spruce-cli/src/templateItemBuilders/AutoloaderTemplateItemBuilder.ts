@@ -7,8 +7,7 @@ import {
 	IAutoLoaderImportTemplateItem,
 } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
-import ErrorCode from '#spruce/errors/errorCode'
-import autoloaderDefinition from '#spruce/schemas/local/v2020_07_22/autoloader.definition'
+import AutoloaderSchema from '#spruce/schemas/local/v2020_07_22/autoloader.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
 import IntrospectionUtility from '../utilities/introspection.utility'
@@ -44,7 +43,7 @@ export default class AutoloaderTemplateItemBuilder extends AbstractTemplateItemB
 	}): Promise<IAutoLoaderTemplateItem> {
 		const {
 			directory,
-			pattern = autoloaderDefinition.fields.pattern.defaultValue,
+			pattern = AutoloaderSchema.fields.pattern.defaultValue,
 		} = options
 
 		const cacheKey = `${directory}-${pattern}-${this.cwd}`
@@ -112,7 +111,7 @@ export default class AutoloaderTemplateItemBuilder extends AbstractTemplateItemB
 
 		if (!abstractClass) {
 			throw new SpruceError({
-				code: ErrorCode.NotImplemented,
+				code: 'NOT_IMPLEMENTED',
 				friendlyMessage: `Autoloader classes in ${directory} need to inherit and abstract class that lives in the same directory. If you deleted a directory, try running \`spruce autoloader:sync\``,
 			})
 		}

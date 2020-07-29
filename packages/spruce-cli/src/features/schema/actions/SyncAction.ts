@@ -1,9 +1,9 @@
 import pathUtil from 'path'
 import {
-	SchemaDefinitionValues,
+	SchemaValues,
 	ISchemaTemplateItem,
 	IFieldTemplateItem,
-	buildSchemaDefinition,
+	buildSchema,
 } from '@sprucelabs/schema'
 import { IValueTypes } from '@sprucelabs/spruce-templates'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
@@ -15,7 +15,7 @@ import diskUtil from '../../../utilities/disk.utility'
 import schemaGeneratorUtil from '../../../utilities/schemaGenerator.utility'
 import { IFeatureActionExecuteResponse } from '../../features.types'
 
-export const syncSchemasActionOptionsDefinition = buildSchemaDefinition({
+export const syncSchemasActionOptionsDefinition = buildSchema({
 	id: 'syncSchemaAction',
 	name: 'Sync schemas',
 	description:
@@ -80,12 +80,12 @@ export default class SyncAction extends AbstractFeatureAction<
 	ISyncSchemasActionDefinition
 > {
 	public name = 'sync'
-	public optionsDefinition = syncSchemasActionOptionsDefinition
+	public optionsSchema = syncSchemasActionOptionsDefinition
 
 	private readonly schemaGenerator = new SchemaGenerator(this.templates)
 
 	public async execute(
-		options: SchemaDefinitionValues<ISyncSchemasActionDefinition>
+		options: SchemaValues<ISyncSchemasActionDefinition>
 	): Promise<IFeatureActionExecuteResponse> {
 		this.term.clear()
 		this.term.startLoading(`Syncing schemas...`)
@@ -210,7 +210,7 @@ export default class SyncAction extends AbstractFeatureAction<
 		resolvedDestination: string,
 		schemaTemplateItems: ISchemaTemplateItem[]
 	) {
-		const definitionsToDelete = await schemaGeneratorUtil.filterDefinitionFilesBySchemaIds(
+		const definitionsToDelete = await schemaGeneratorUtil.filterSchemaFilesBySchemaIds(
 			resolvedDestination,
 			schemaTemplateItems.map((i) => i.id)
 		)

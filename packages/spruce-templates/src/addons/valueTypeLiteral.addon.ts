@@ -27,10 +27,10 @@ handlebars.registerHelper('valueTypeLiteral', function (
 	if (
 		renderAs !== TemplateRenderAs.Value &&
 		renderAs !== TemplateRenderAs.Type &&
-		renderAs !== TemplateRenderAs.DefinitionType
+		renderAs !== TemplateRenderAs.SchemaType
 	) {
 		throw new Error(
-			'valueTypeLiteral helper needs renderAs to be "TemplateRenderAs.Type" or "TemplateRenderAs.Value" or "TemplateRenderAs.DefinitionType"'
+			'valueTypeLiteral helper needs renderAs to be "TemplateRenderAs.Type" or "TemplateRenderAs.Value" or "TemplateRenderAs.schemaType"'
 		)
 	}
 

@@ -1,11 +1,11 @@
-import { ISchemaDefinition, ISchemaTemplateItem } from '@sprucelabs/schema'
+import { ISchema, ISchemaTemplateItem } from '@sprucelabs/schema'
 import { test, assert } from '@sprucelabs/test'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
 import { CORE_NAMESPACE } from '../../constants'
 import SchemaTemplateItemBuilder from '../../templateItemBuilders/SchemaTemplateItemBuilder'
 
-const cowbellV1: ISchemaDefinition = {
+const cowbellV1: ISchema = {
 	id: 'cowbell',
 	version: '2020_06_01',
 	name: 'Cowbell test',
@@ -22,10 +22,10 @@ const cowbellV1TemplateItem: ISchemaTemplateItem = {
 	nameCamel: 'cowbell',
 	namePascal: 'Cowbell',
 	nameReadable: 'Cowbell test',
-	definition: cowbellV1,
+	schema: cowbellV1,
 }
 
-const cowbellV2: ISchemaDefinition = {
+const cowbellV2: ISchema = {
 	id: 'cowbell',
 	version: '2020_06_02',
 	name: 'Cowbell test two!',
@@ -48,7 +48,7 @@ const cowbellV2TemplateItem: ISchemaTemplateItem = {
 	nameCamel: 'cowbell',
 	namePascal: 'Cowbell',
 	nameReadable: 'Cowbell test two!',
-	definition: {
+	schema: {
 		id: 'cowbell',
 		version: '2020_06_02',
 		name: 'Cowbell test two!',
@@ -66,7 +66,7 @@ const cowbellV2TemplateItem: ISchemaTemplateItem = {
 	},
 }
 
-const personV1: ISchemaDefinition = {
+const personV1: ISchema = {
 	id: 'person',
 	version: '2020_06_01',
 	name: 'Person test',
@@ -83,10 +83,10 @@ const personV1TemplateItem: ISchemaTemplateItem = {
 	nameCamel: 'person',
 	namePascal: 'Person',
 	nameReadable: 'Person test',
-	definition: personV1,
+	schema: personV1,
 }
 
-const personV2: ISchemaDefinition = {
+const personV2: ISchema = {
 	id: 'person',
 	version: '2020_06_01',
 	name: 'Person version 2',
@@ -118,7 +118,7 @@ const personV2TemplateItem: ISchemaTemplateItem = {
 	nameCamel: 'person',
 	namePascal: 'Person',
 	nameReadable: 'Person version 2',
-	definition: {
+	schema: {
 		id: 'person',
 		version: '2020_06_01',
 		name: 'Person version 2',
@@ -136,7 +136,7 @@ const personV2TemplateItem: ISchemaTemplateItem = {
 	},
 }
 
-const personV3: ISchemaDefinition = {
+const personV3: ISchema = {
 	id: 'person',
 	version: '2020_06_03',
 	name: 'Person test the 3rd',
@@ -156,7 +156,7 @@ const personV3TemplateItem: ISchemaTemplateItem = {
 	nameCamel: 'person',
 	namePascal: 'Person',
 	nameReadable: 'Person test the 3rd',
-	definition: {
+	schema: {
 		id: 'person',
 		version: '2020_06_03',
 		name: 'Person test the 3rd',
@@ -180,7 +180,7 @@ const vehicleV1TemplateItem: ISchemaTemplateItem = {
 	nameCamel: 'vehicle',
 	namePascal: 'Vehicle',
 	nameReadable: 'Vehicle v1',
-	definition: {
+	schema: {
 		id: 'vehicle',
 		name: 'Vehicle v1',
 		version: '2020_06_01',
@@ -192,7 +192,7 @@ const vehicleV1TemplateItem: ISchemaTemplateItem = {
 	},
 }
 
-const personV4: ISchemaDefinition = {
+const personV4: ISchema = {
 	id: 'person',
 	version: '2020_06_04',
 	name: 'Person test the last',
@@ -215,7 +215,7 @@ const personV4TemplateItem: ISchemaTemplateItem = {
 	nameCamel: 'person',
 	namePascal: 'Person',
 	nameReadable: 'Person test the last',
-	definition: personV4,
+	schema: personV4,
 }
 
 export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
@@ -287,7 +287,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 		]
 	)
 	protected static async generationTests(
-		definitions: ISchemaDefinition[],
+		definitions: ISchema[],
 		expected: ISchemaTemplateItem[]
 	) {
 		const results = this.itemBuilder.generateTemplateItems(

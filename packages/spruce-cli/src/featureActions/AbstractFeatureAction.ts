@@ -1,10 +1,10 @@
 import {
-	ISchemaDefinition,
-	SchemaDefinitionValues,
+	ISchema,
+	SchemaValues,
 	defaultSchemaValues,
 	validateSchemaValues,
-	SchemaDefinitionPartialValues,
-	SchemaDefinitionValuesWithDefaults,
+	SchemaPartialValues,
+	SchemaValuesWithDefaults,
 } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
 import ServiceFactory, {
@@ -23,11 +23,10 @@ import {
 import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
 import { IGraphicsInterface } from '../types/cli.types'
 
-export default abstract class AbstractFeatureAction<
-	S extends ISchemaDefinition = ISchemaDefinition
-> implements IFeatureAction<S>, IServiceProvider {
+export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
+	implements IFeatureAction<S>, IServiceProvider {
 	public abstract name: string
-	public abstract optionsDefinition: S
+	public abstract optionsSchema: S
 
 	private parent: AbstractFeature
 	private serviceFactory: ServiceFactory
@@ -49,7 +48,7 @@ export default abstract class AbstractFeatureAction<
 	}
 
 	public abstract execute(
-		options: SchemaDefinitionValues<S>
+		options: SchemaValues<S>
 	): Promise<IFeatureActionExecuteResponse>
 
 	protected Action(name: string) {
@@ -72,21 +71,16 @@ export default abstract class AbstractFeatureAction<
 		return this.featureInstaller.getAllCodes()
 	}
 
-	protected validateAndNormalizeOptions(
-		options: SchemaDefinitionPartialValues<S>
-	) {
-		const definition = this.optionsDefinition
+	protected validateAndNormalizeOptions(options: SchemaPartialValues<S>) {
+		const schema = this.optionsSchema
 
 		const allOptions = {
-			...defaultSchemaValues(definition),
+			...defaultSchemaValues(schema),
 			...options,
 		}
 
-		validateSchemaValues(
-			definition,
-			allOptions as SchemaDefinitionValues<ISchemaDefinition>
-		)
+		validateSchemaValues(schema, allOptions as SchemaValues<ISchema>)
 
-		return allOptions as SchemaDefinitionValuesWithDefaults<S>
+		return allOptions as SchemaValuesWithDefaults<S>
 	}
 }

@@ -5,13 +5,13 @@ import schemaGeneratorUtil from '../../utilities/schemaGenerator.utility'
 export default class DeletingOrphanedSchemaDefinitionsTest extends AbstractSchemaTest {
 	@test()
 	protected static async hasFunction() {
-		assert.isFunction(schemaGeneratorUtil.filterDefinitionFilesBySchemaIds)
+		assert.isFunction(schemaGeneratorUtil.filterSchemaFilesBySchemaIds)
 	}
 
 	@test()
 	protected static async findsAllSchemas() {
-		const results = await schemaGeneratorUtil.filterDefinitionFilesBySchemaIds(
-			this.resolveTestPath('definitions'),
+		const results = await schemaGeneratorUtil.filterSchemaFilesBySchemaIds(
+			this.resolveTestPath('schemas'),
 			['one', 'two']
 		)
 
@@ -20,8 +20,8 @@ export default class DeletingOrphanedSchemaDefinitionsTest extends AbstractSchem
 
 	@test()
 	protected static async findsOneMissing() {
-		const results = await schemaGeneratorUtil.filterDefinitionFilesBySchemaIds(
-			this.resolveTestPath('definitions'),
+		const results = await schemaGeneratorUtil.filterSchemaFilesBySchemaIds(
+			this.resolveTestPath('schemas'),
 			['one']
 		)
 

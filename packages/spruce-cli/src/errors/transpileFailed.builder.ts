@@ -1,7 +1,7 @@
-import { buildErrorDefinition } from '@sprucelabs/schema'
+import { buildErrorSchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-const transpileFailedDefinition = buildErrorDefinition({
+const transpileFailedDefinition = buildErrorSchema({
 	id: 'transpileFailed',
 	name: 'Transpile failed',
 	description: 'Could not transpile (ts -> js) a script',

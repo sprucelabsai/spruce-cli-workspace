@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const cliSkillDefinition: SpruceSchemas.Local.v2020_07_22.ICliSkillDefinition  = {
+const clSkillSchema: SpruceSchemas.Local.v2020_07_22.IClSkillSchema  = {
 	id: 'cliSkill',
 	name: 'Skill',
 	description: 'A stripped down skill for the cli',
@@ -38,4 +38,4 @@ const cliSkillDefinition: SpruceSchemas.Local.v2020_07_22.ICliSkillDefinition  =
 	    }
 }
 
-export default cliSkillDefinition
+export default clSkillSchema

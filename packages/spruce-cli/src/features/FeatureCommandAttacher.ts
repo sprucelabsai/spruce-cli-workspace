@@ -1,4 +1,4 @@
-import Schema, { ISchemaDefinition } from '@sprucelabs/schema'
+import Schema, { ISchema } from '@sprucelabs/schema'
 import { CommanderStatic } from 'commander'
 import SpruceError from '../errors/SpruceError'
 import { IGraphicsInterface } from '../types/cli.types'
@@ -47,12 +47,12 @@ export default class FeatureCommandAttacher {
 			await executer.execute(command.opts())
 		})
 
-		const description = action.optionsDefinition?.description
+		const description = action.optionsSchema?.description
 		if (description) {
 			command = command.description(description)
 		}
 
-		const definition = action.optionsDefinition
+		const definition = action.optionsSchema
 
 		if (definition) {
 			this.attachOptions(command, definition)
@@ -61,7 +61,7 @@ export default class FeatureCommandAttacher {
 
 	private attachOptions(
 		command: CommanderStatic['program'],
-		definition: ISchemaDefinition
+		definition: ISchema
 	) {
 		const schema = new Schema(definition)
 		let theProgram = command

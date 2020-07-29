@@ -1,15 +1,14 @@
 import AbstractSpruceError from '@sprucelabs/error'
-import Schema, {
-	ISchemaDefinition,
-	SchemaDefinitionAllValues,
-	SchemaDefinitionPartialValues,
+import SchemaEntity, {
+	ISchema,
+	SchemaAllValues,
+	SchemaPartialValues,
 	SchemaFieldNames,
 	ISelectFieldDefinitionChoice,
 	SchemaError,
 	IFieldDefinition,
 } from '@sprucelabs/schema'
 import { pick } from 'lodash'
-import ErrorCode from '#spruce/errors/errorCode'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import SpruceError from '../errors/SpruceError'
@@ -32,19 +31,19 @@ export interface IFormActionCancel {
 }
 
 /** In overview mode, this is when the user selects to edit a field */
-export type IFormActionEditField<T extends ISchemaDefinition> = {
+export type IFormActionEditField<T extends ISchema> = {
 	type: FormBuilderActionType.EditField
 	fieldName: SchemaFieldNames<T>
 }
 /** Actions that can be taken in overview mode */
-export type IFormAction<T extends ISchemaDefinition> =
+export type IFormAction<T extends ISchema> =
 	| IFormActionDone
 	| IFormActionCancel
 	| IFormActionEditField<T>
 
 /** Controls for when presenting the form */
 export interface IFormPresentationOptions<
-	T extends ISchemaDefinition,
+	T extends ISchema,
 	F extends SchemaFieldNames<T> = SchemaFieldNames<T>
 > {
 	headline?: string
@@ -52,24 +51,22 @@ export interface IFormPresentationOptions<
 	fields?: F[]
 }
 
-export interface IFormOptions<T extends ISchemaDefinition> {
+export interface IFormOptions<T extends ISchema> {
 	term: IGraphicsInterface
 	definition: T
-	initialValues?: SchemaDefinitionPartialValues<T>
+	initialValues?: SchemaPartialValues<T>
 	onWillAskQuestion?: <K extends SchemaFieldNames<T>>(
 		name: K,
 		fieldDefinition: FieldDefinition,
-		values: SchemaDefinitionPartialValues<T>
+		values: SchemaPartialValues<T>
 	) => FieldDefinition
 }
 
-interface IHandlers<T extends ISchemaDefinition> {
+interface IHandlers<T extends ISchema> {
 	onWillAskQuestion?: IFormOptions<T>['onWillAskQuestion']
 }
 
-export default class FormComponent<S extends ISchemaDefinition> extends Schema<
-	S
-> {
+export default class FormComponent<S extends ISchema> extends SchemaEntity<S> {
 	public term: IGraphicsInterface
 	public handlers: IHandlers<S> = {}
 
@@ -90,7 +87,7 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 	/** Pass me a schema and i'll give you back an object that conforms to it based on user input */
 	public async present<F extends SchemaFieldNames<S> = SchemaFieldNames<S>>(
 		options: IFormPresentationOptions<S, F> = {}
-	): Promise<Pick<SchemaDefinitionAllValues<S>, F>> {
+	): Promise<Pick<SchemaAllValues<S>, F>> {
 		const { term } = this
 		const {
 			headline,
@@ -156,11 +153,8 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 			}
 		} while (!done || !valid)
 
-		const values = this.getValues({ fields, createSchemaInstances: false })
-		const cleanValues = pick(values, fields) as Pick<
-			SchemaDefinitionAllValues<S>,
-			F
-		>
+		const values = this.getValues({ fields, createEntityInstances: false })
+		const cleanValues = pick(values, fields) as Pick<SchemaAllValues<S>, F>
 
 		return cleanValues
 	}
@@ -178,7 +172,7 @@ export default class FormComponent<S extends ISchemaDefinition> extends Schema<
 		const value = this.values[fieldName]
 		if (definition.isArray) {
 			throw new SpruceError({
-				code: ErrorCode.NotImplemented,
+				code: 'NOT_IMPLEMENTED',
 				friendlyMessage: 'Form builder does not support isArray yet',
 			})
 		}

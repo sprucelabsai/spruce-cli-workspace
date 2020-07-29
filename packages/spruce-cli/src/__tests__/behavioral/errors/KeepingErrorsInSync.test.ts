@@ -12,7 +12,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 	}
 
 	@test()
-	protected static async errorsStayInSyncWhenDefinitionsAreDeleted() {
+	protected static async errorsStayInSyncWhenSchemasAreDeleted() {
 		const cli = await this.installErrorFeature('options-in-sync')
 
 		const createAction = cli.getFeature('error').Action('create')
@@ -59,8 +59,8 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 			nameCamel: 'testError1',
 		})
 
-		const testError1DefinitionMatch = testUtil.assertsFileByNameInGeneratedFiles(
-			'testError1.definition',
+		const testError1SchemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
+			'testError1.schema',
 			testError1.files ?? []
 		)
 
@@ -80,7 +80,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		assert.doesInclude(typesContent, /SpruceErrors\.Local.*?TestError2/gis)
 
 		// definition file for testError1
-		assert.isTrue(diskUtil.doesFileExist(testError1DefinitionMatch))
+		assert.isTrue(diskUtil.doesFileExist(testError1SchemaMatch))
 
 		// delete builder 1
 		diskUtil.deleteFile(testError1BuilderMatch)
@@ -94,7 +94,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		assert.doesNotInclude(typesContent, /SpruceErrors\.Local.*?TestError1/)
 
 		// the definition file should be gone now
-		assert.isFalse(diskUtil.doesFileExist(testError1DefinitionMatch))
+		assert.isFalse(diskUtil.doesFileExist(testError1SchemaMatch))
 	}
 
 	@test()

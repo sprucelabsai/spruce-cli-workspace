@@ -1,7 +1,7 @@
-import { buildErrorDefinition } from '@sprucelabs/schema'
+import { buildErrorSchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-const genericMercuryDefinition = buildErrorDefinition({
+const genericMercuryDefinition = buildErrorSchema({
 	id: 'genericMercury',
 	name: 'Generic mercury',
 	description:

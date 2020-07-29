@@ -13,7 +13,6 @@ import inquirer from 'inquirer'
 import _ from 'lodash'
 import { filter } from 'lodash'
 import ora from 'ora'
-import ErrorCode from '#spruce/errors/errorCode'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import SpruceError from '../errors/SpruceError'
@@ -354,7 +353,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 			case FieldType.Directory: {
 				if (fieldDefinition.isArray) {
 					throw new SpruceError({
-						code: ErrorCode.NotImplemented,
+						code: 'NOT_IMPLEMENTED',
 						friendlyMessage:
 							'isArray file field not supported, prompt needs to be rewritten with isArray support',
 					})
@@ -383,7 +382,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 			case FieldType.File: {
 				if (fieldDefinition.isArray) {
 					throw new SpruceError({
-						code: ErrorCode.NotImplemented,
+						code: 'NOT_IMPLEMENTED',
 						friendlyMessage:
 							'isArray file field not supported, prompt needs to be rewritten with isArray support',
 					})
@@ -400,7 +399,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 
 				if (files.length === 0) {
 					throw new SpruceError({
-						code: ErrorCode.DirectoryEmpty,
+						code: 'DIRECTORY_EMPTY',
 						directory: dirPath,
 						friendlyMessage: `I wanted to help you select a file, but none exist in ${dirPath}`,
 					})

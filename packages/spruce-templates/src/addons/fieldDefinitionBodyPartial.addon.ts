@@ -4,10 +4,10 @@ import handlebars from 'handlebars'
 
 const templatePath = path.join(__dirname, '..', 'templates', 'typescript')
 
-const schemaDefinitionPartial: string = fs
+const fieldPartial: string = fs
 	.readFileSync(
-		path.join(templatePath, 'schemas/partials/schemaDefinition.ts.hbs')
+		path.join(templatePath, 'schemas/partials/fieldDefinitionBody.ts.hbs')
 	)
 	.toString()
 
-handlebars.registerPartial('schemaDefinition', schemaDefinitionPartial)
+handlebars.registerPartial('fieldDefinitionBody', fieldPartial)

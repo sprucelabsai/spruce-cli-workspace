@@ -3,7 +3,7 @@ import Schema from '@sprucelabs/schema'
 import { parse as parseEnv } from 'dotenv'
 import fs from 'fs-extra'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import skillDefinition from '#spruce/schemas/spruce/v2020_07_22/skill.definition'
+import skillSchema from '#spruce/schemas/spruce/v2020_07_22/skill.schema'
 import log from '../singletons/log'
 import { AuthedAs } from '../types/cli.types'
 import { SpruceEvents } from '../types/events-generated'
@@ -22,7 +22,7 @@ export default class SkillStore extends AbstractLocalStore<
 
 	/** Build a skill with the passed values */
 	public static getSkill(values?: Partial<ISkill>) {
-		return new Schema(skillDefinition, values)
+		return new Schema(skillSchema, values)
 	}
 
 	/** Get all skills the user has access to */
@@ -35,9 +35,7 @@ export default class SkillStore extends AbstractLocalStore<
 
 		const skills = result.responses[0].payload.skills.map((values) => {
 			const instance = SkillStore.getSkill(values)
-
 			instance.validate()
-
 			return instance.getValues()
 		})
 

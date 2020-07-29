@@ -1,9 +1,6 @@
-import {
-	buildSchemaDefinition,
-	SchemaDefinitionValues,
-} from '@sprucelabs/schema'
+import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
-import namedTemplateItemDefinition from '#spruce/schemas/local/v2020_07_22/namedTemplateItem.definition'
+import NamedTemplateItemSchema from '#spruce/schemas/local/v2020_07_22/namedTemplateItem.schema'
 import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
 import {
 	IFeatureAction,
@@ -12,7 +9,7 @@ import {
 import { ICreateSchemaActionDefinition } from '../../schema/actions/CreateAction'
 import { syncErrorsActionOptionsDefinition } from './SyncAction'
 
-const createErrorActionDefinition = buildSchemaDefinition({
+const createErrorActionDefinition = buildSchema({
 	id: 'createErrorActionDefinition',
 	name: 'Create error',
 	description: 'Create a builder for a new error!',
@@ -25,10 +22,10 @@ const createErrorActionDefinition = buildSchemaDefinition({
 			hint: "Where I'll save your new builder file?",
 			defaultValue: './src/errors',
 		},
-		nameReadable: namedTemplateItemDefinition.fields.nameReadable,
-		namePascal: namedTemplateItemDefinition.fields.namePascal,
-		nameCamel: namedTemplateItemDefinition.fields.nameCamel,
-		description: namedTemplateItemDefinition.fields.description,
+		nameReadable: NamedTemplateItemSchema.fields.nameReadable,
+		namePascal: NamedTemplateItemSchema.fields.namePascal,
+		nameCamel: NamedTemplateItemSchema.fields.nameCamel,
+		description: NamedTemplateItemSchema.fields.description,
 	},
 })
 
@@ -38,10 +35,10 @@ export default class CreateAction extends AbstractFeatureAction<
 	CreateErrorActionDefinition
 > {
 	public name = 'create'
-	public optionsDefinition = createErrorActionDefinition
+	public optionsSchema = createErrorActionDefinition
 
 	public async execute(
-		options: SchemaDefinitionValues<CreateErrorActionDefinition>
+		options: SchemaValues<CreateErrorActionDefinition>
 	): Promise<IFeatureActionExecuteResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
@@ -51,7 +48,7 @@ export default class CreateAction extends AbstractFeatureAction<
 
 		const createResults = await schemaCreateAction.execute({
 			...normalizedOptions,
-			builderFunction: 'buildErrorDefinition',
+			builderFunction: 'buildErrorSchema',
 			enableVersioning: false,
 			syncAfterCreate: false,
 			schemaBuilderDestinationDir: normalizedOptions.errorBuilderDestinationDir,

@@ -1,18 +1,16 @@
-import { ISchemaDefinition } from '@sprucelabs/schema'
+import { ISchema } from '@sprucelabs/schema'
 import { ISchemaTemplateItem } from '@sprucelabs/schema'
 import { SchemaField } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
 import { camelCase, uniq } from 'lodash'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-handlebars.registerHelper('importRelatedDefinitions', function (
-	definition: ISchemaDefinition,
+handlebars.registerHelper('importRelatedSchemas', function (
+	definition: ISchema,
 	options
 ) {
 	if (!definition) {
-		throw new Error(
-			'importRelatedDefinitions needs a ISchemaDefinition as the first arg'
-		)
+		throw new Error('importRelatedSchemas needs a ISchema as the first arg')
 	}
 
 	const {
@@ -24,7 +22,7 @@ handlebars.registerHelper('importRelatedDefinitions', function (
 
 	if (!schemaTemplateItems) {
 		throw new Error(
-			'importRelatedDefinitions needs schemaTemplateItems passed to parent template'
+			'importRelatedSchemas needs schemaTemplateItems passed to parent template'
 		)
 	}
 
@@ -40,15 +38,15 @@ handlebars.registerHelper('importRelatedDefinitions', function (
 				const matched = schemaTemplateItems.find(
 					(t) =>
 						t.id === idWithVersion.id &&
-						t.definition.version === idWithVersion.version
+						t.schema.version === idWithVersion.version
 				)
 				if (matched) {
 					imports.push(
 						`import ${
 							matched.nameCamel
-						}Definition from '#spruce/schemas/${camelCase(matched.namespace)}${
-							matched.definition.version ? `/${matched.definition.version}` : ''
-						}/${matched.nameCamel}.definition'`
+						}Schema from '#spruce/schemas/${camelCase(matched.namespace)}${
+							matched.schema.version ? `/${matched.schema.version}` : ''
+						}/${matched.nameCamel}.schema'`
 					)
 				}
 			})

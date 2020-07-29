@@ -1,7 +1,7 @@
-import { buildErrorDefinition } from '@sprucelabs/schema'
+import { buildErrorSchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-const directoryEmptyDefinition = buildErrorDefinition({
+const directoryEmptyDefinition = buildErrorSchema({
 	id: 'directoryEmpty',
 	name: 'directoryEmpty',
 	description: 'The directory is empty',

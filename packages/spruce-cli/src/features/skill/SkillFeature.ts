@@ -1,6 +1,6 @@
 import { validateSchemaValues } from '@sprucelabs/schema'
 import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
-import skillFeatureDefinition from '#spruce/schemas/local/v2020_07_22/skillFeature.definition'
+import skillFeatureSchema from '#spruce/schemas/local/v2020_07_22/skillFeature.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import { INpmPackage } from '../../types/cli.types'
 import diskUtil from '../../utilities/disk.utility'
@@ -9,11 +9,11 @@ import tsConfigUtil from '../../utilities/tsConfig.utility'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
-type SkillFeatureDefinition = SpruceSchemas.Local.v2020_07_22.ISkillFeatureDefinition
+type SkillFeatureSchema = SpruceSchemas.Local.v2020_07_22.ISkillFeatureSchema
 type Skill = SpruceSchemas.Local.v2020_07_22.ISkillFeature
 
 export default class SkillFeature<
-	T extends SkillFeatureDefinition = SkillFeatureDefinition
+	T extends SkillFeatureSchema = SkillFeatureSchema
 > extends AbstractFeature<T> {
 	public nameReadable = 'Skill'
 	public code: FeatureCode = 'skill'
@@ -29,7 +29,7 @@ export default class SkillFeature<
 		{ name: 'tsconfig-paths', isDev: true },
 	]
 
-	public optionsDefinition = skillFeatureDefinition as T
+	public optionsDefinition = skillFeatureSchema as T
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public async beforePackageInstall(options: Skill) {
@@ -49,7 +49,7 @@ export default class SkillFeature<
 	private async install(
 		options: SpruceSchemas.Local.v2020_07_22.ISkillFeature
 	) {
-		validateSchemaValues(skillFeatureDefinition, options)
+		validateSchemaValues(skillFeatureSchema, options)
 
 		const files = await this.templates.directoryTemplate({
 			kind: DirectoryTemplateKind.Skill,

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 /* eslint-disable no-redeclare */
 
-import { default as Schema } from '@sprucelabs/schema'
+import { default as SchemEntity } from '@sprucelabs/schema'
 import * as SpruceSchema from '@sprucelabs/schema'
 
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
@@ -16,7 +16,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 	}
 
 	/** The interface for the schema definition for a Access control list lookup table */
-	export interface IAclDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface IAclSchema extends SpruceSchema.ISchema {
 		id: 'acl',
 		name: 'Access control list lookup table',
 		dynamicKeySignature: { 
@@ -27,8 +27,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		    options: undefined
 		}	}
 
-	/** The type of a schema instance built off this definition */
-	export type AclInstance = Schema<SpruceSchemas.Spruce.v2020_07_22.IAclDefinition>
+	export type AclEntity = SchemEntity<SpruceSchemas.Spruce.v2020_07_22.IAclSchema>
 
 }
 
@@ -53,7 +52,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 	}
 
 	/** The interface for the schema definition for a Job */
-	export interface IJobDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface IJobSchema extends SpruceSchema.ISchema {
 		id: 'job',
 		name: 'Job',
 		description: 'A position at a company. The answer to the question; What is your job?',
@@ -90,19 +89,18 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            'inStoreAcls': {
 		                label: 'On work permissions',
 		                type: FieldType.Schema,
-		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IAclDefinition[],}
+		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IAclSchema[],}
 		            },
 		            /** Off work permissions. */
 		            'acls': {
 		                label: 'Off work permissions',
 		                type: FieldType.Schema,
-		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IAclDefinition[],}
+		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IAclSchema[],}
 		            },
 		    }
 	}
 
-	/** The type of a schema instance built off this definition */
-	export type JobInstance = Schema<SpruceSchemas.Spruce.v2020_07_22.IJobDefinition>
+	export type JobEntity = SchemEntity<SpruceSchemas.Spruce.v2020_07_22.IJobSchema>
 
 }
 
@@ -129,7 +127,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 	}
 
 	/** The interface for the schema definition for a Location */
-	export interface ILocationDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ILocationSchema extends SpruceSchema.ISchema {
 		id: 'location',
 		name: 'Location',
 		description: 'A physical location where people meet. An organization has at least one of them.',
@@ -184,8 +182,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		    }
 	}
 
-	/** The type of a schema instance built off this definition */
-	export type LocationInstance = Schema<SpruceSchemas.Spruce.v2020_07_22.ILocationDefinition>
+	export type LocationEntity = SchemEntity<SpruceSchemas.Spruce.v2020_07_22.ILocationSchema>
 
 }
 
@@ -214,7 +211,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 	}
 
 	/** The interface for the schema definition for a Person */
-	export interface IPersonDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface PersonSchema extends SpruceSchema.ISchema {
 		id: 'person',
 		name: 'Person',
 		description: 'A human being.',
@@ -265,20 +262,19 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            'profileImages': {
 		                label: 'Profile photos',
 		                type: FieldType.Schema,
-		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IProfileImageDefinition[],}
+		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.ProfileImageSchema[],}
 		            },
 		            /** Default profile photos. */
 		            'defaultProfileImages': {
 		                label: 'Default profile photos',
 		                type: FieldType.Schema,
 		                isRequired: true,
-		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IProfileImageDefinition[],}
+		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.ProfileImageSchema[],}
 		            },
 		    }
 	}
 
-	/** The type of a schema instance built off this definition */
-	export type PersonInstance = Schema<SpruceSchemas.Spruce.v2020_07_22.IPersonDefinition>
+	export type PersonEntity = SchemEntity<SpruceSchemas.Spruce.v2020_07_22.PersonSchema>
 
 }
 
@@ -307,7 +303,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 	}
 
 	/** The interface for the schema definition for a Person &lt;-&gt; location relationship */
-	export interface IPersonLocationDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface IPersonLocationSchema extends SpruceSchema.ISchema {
 		id: 'personLocation',
 		name: 'Person <-> location relationship',
 		    fields: {
@@ -349,27 +345,26 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		                label: 'Job',
 		                type: FieldType.Schema,
 		                isRequired: true,
-		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IJobDefinition[],}
+		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IJobSchema[],}
 		            },
 		            /** Location. */
 		            'location': {
 		                label: 'Location',
 		                type: FieldType.Schema,
 		                isRequired: true,
-		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.ILocationDefinition[],}
+		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.ILocationSchema[],}
 		            },
 		            /** Person. */
 		            'person': {
 		                label: 'Person',
 		                type: FieldType.Schema,
 		                isRequired: true,
-		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IPersonDefinition[],}
+		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.PersonSchema[],}
 		            },
 		    }
 	}
 
-	/** The type of a schema instance built off this definition */
-	export type PersonLocationInstance = Schema<SpruceSchemas.Spruce.v2020_07_22.IPersonLocationDefinition>
+	export type PersonLocationEntity = SchemEntity<SpruceSchemas.Spruce.v2020_07_22.IPersonLocationSchema>
 
 }
 
@@ -390,7 +385,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 	}
 
 	/** The interface for the schema definition for a Profile Image Sizes */
-	export interface IProfileImageDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ProfileImageSchema extends SpruceSchema.ISchema {
 		id: 'profileImage',
 		name: 'Profile Image Sizes',
 		    fields: {
@@ -425,8 +420,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		    }
 	}
 
-	/** The type of a schema instance built off this definition */
-	export type ProfileImageInstance = Schema<SpruceSchemas.Spruce.v2020_07_22.IProfileImageDefinition>
+	export type ProfileImageEntity = SchemEntity<SpruceSchemas.Spruce.v2020_07_22.ProfileImageSchema>
 
 }
 
@@ -451,7 +445,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 	}
 
 	/** The interface for the schema definition for a Skill */
-	export interface ISkillDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface SkillSchema extends SpruceSchema.ISchema {
 		id: 'skill',
 		name: 'Skill',
 		description: 'An ability Sprucebot has learned.',
@@ -498,8 +492,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		    }
 	}
 
-	/** The type of a schema instance built off this definition */
-	export type SkillInstance = Schema<SpruceSchemas.Spruce.v2020_07_22.ISkillDefinition>
+	export type SkillEntity = SchemEntity<SpruceSchemas.Spruce.v2020_07_22.SkillSchema>
 
 }
 
@@ -518,7 +511,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 	}
 
 	/** The interface for the schema definition for a Autoloader */
-	export interface IAutoloaderDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface IAutoloaderSchema extends SpruceSchema.ISchema {
 		id: 'autoloader',
 		name: 'Autoloader',
 		description: 'A directory that is autoloaded',
@@ -549,8 +542,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	/** The type of a schema instance built off this definition */
-	export type AutoloaderInstance = Schema<SpruceSchemas.Local.v2020_07_22.IAutoloaderDefinition>
+	export type AutoloaderEntity = SchemEntity<SpruceSchemas.Local.v2020_07_22.IAutoloaderSchema>
 
 }
 
@@ -571,7 +563,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 	}
 
 	/** The interface for the schema definition for a Skill */
-	export interface ICliSkillDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface IClSkillSchema extends SpruceSchema.ISchema {
 		id: 'cliSkill',
 		name: 'Skill',
 		description: 'A stripped down skill for the cli',
@@ -606,8 +598,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	/** The type of a schema instance built off this definition */
-	export type CliSkillInstance = Schema<SpruceSchemas.Local.v2020_07_22.ICliSkillDefinition>
+	export type CliSkillEntity = SchemEntity<SpruceSchemas.Local.v2020_07_22.IClSkillSchema>
 
 }
 
@@ -624,7 +615,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 	}
 
 	/** The interface for the schema definition for a Person */
-	export interface ICliUserDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ICliUserSchema extends SpruceSchema.ISchema {
 		id: 'cliUser',
 		name: 'Person',
 		description: 'A stripped down user for the cli',
@@ -647,8 +638,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	/** The type of a schema instance built off this definition */
-	export type CliUserInstance = Schema<SpruceSchemas.Local.v2020_07_22.ICliUserDefinition>
+	export type CliUserEntity = SchemEntity<SpruceSchemas.Local.v2020_07_22.ICliUserSchema>
 
 }
 
@@ -669,7 +659,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 	}
 
 	/** The interface for the schema definition for a Person */
-	export interface ICliUserWithTokenDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ICliUserWithTokenSchema extends SpruceSchema.ISchema {
 		id: 'cliUserWithToken',
 		name: 'Person',
 		description: 'A stripped down cli user with token details for login',
@@ -704,8 +694,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	/** The type of a schema instance built off this definition */
-	export type CliUserWithTokenInstance = Schema<SpruceSchemas.Local.v2020_07_22.ICliUserWithTokenDefinition>
+	export type CliUserWithTokenEntity = SchemEntity<SpruceSchemas.Local.v2020_07_22.ICliUserWithTokenSchema>
 
 }
 
@@ -732,7 +721,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 	}
 
 	/** The interface for the schema definition for a NamedTemplateItem */
-	export interface INamedTemplateItemDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface INamedTemplateItemSchema extends SpruceSchema.ISchema {
 		id: 'namedTemplateItem',
 		name: 'NamedTemplateItem',
 		description: 'Used to collect input on the names of a class or interface',
@@ -790,8 +779,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	/** The type of a schema instance built off this definition */
-	export type NamedTemplateItemInstance = Schema<SpruceSchemas.Local.v2020_07_22.INamedTemplateItemDefinition>
+	export type NamedTemplateItemEntity = SchemEntity<SpruceSchemas.Local.v2020_07_22.INamedTemplateItemSchema>
 
 }
 
@@ -808,7 +796,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 	}
 
 	/** The interface for the schema definition for a Onboarding */
-	export interface IOnboardingDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface IOnboardingSchema extends SpruceSchema.ISchema {
 		id: 'onboarding',
 		name: 'Onboarding',
 		description: 'Track onboarding progress and tutorials & quizzes completed.',
@@ -831,8 +819,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	/** The type of a schema instance built off this definition */
-	export type OnboardingInstance = Schema<SpruceSchemas.Local.v2020_07_22.IOnboardingDefinition>
+	export type OnboardingEntity = SchemEntity<SpruceSchemas.Local.v2020_07_22.IOnboardingSchema>
 
 }
 
@@ -849,7 +836,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 	}
 
 	/** The interface for the schema definition for a Skill Feature */
-	export interface ISkillFeatureDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISkillFeatureSchema extends SpruceSchema.ISchema {
 		id: 'skillFeature',
 		name: 'Skill Feature',
 		    fields: {
@@ -870,8 +857,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	/** The type of a schema instance built off this definition */
-	export type SkillFeatureInstance = Schema<SpruceSchemas.Local.v2020_07_22.ISkillFeatureDefinition>
+	export type SkillFeatureEntity = SchemEntity<SpruceSchemas.Local.v2020_07_22.ISkillFeatureSchema>
 
 }
 
@@ -886,7 +872,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 	}
 
 	/** The interface for the schema definition for a Test Feature */
-	export interface ITestFeatureDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ITestFeatureSchema extends SpruceSchema.ISchema {
 		id: 'testFeature',
 		name: 'Test Feature',
 		    fields: {
@@ -901,8 +887,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	/** The type of a schema instance built off this definition */
-	export type TestFeatureInstance = Schema<SpruceSchemas.Local.v2020_07_22.ITestFeatureDefinition>
+	export type TestFeatureEntity = SchemEntity<SpruceSchemas.Local.v2020_07_22.ITestFeatureSchema>
 
 }
 

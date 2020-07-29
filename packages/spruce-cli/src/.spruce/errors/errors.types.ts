@@ -21,7 +21,7 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local.CommandNotImplemented {
 	/** The interface for the schema definition for a Command not implemented */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISchema extends SpruceSchema.ISchema {
 		id: 'commandNotImplemented',
 		name: 'Command not implemented',
 		description: 'This command has not yet been implemented ',
@@ -46,7 +46,7 @@ export declare namespace SpruceErrors.Local.CommandNotImplemented {
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.CommandNotImplemented.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.CommandNotImplemented.ISchema>
 
 }
 
@@ -63,7 +63,7 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local.CouldNotLoadCommand {
 	/** The interface for the schema definition for a Could not load command */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISchema extends SpruceSchema.ISchema {
 		id: 'couldNotLoadCommand',
 		name: 'Could not load command',
 		description: 'A command failed to load, probably because of a syntax error',
@@ -80,7 +80,7 @@ export declare namespace SpruceErrors.Local.CouldNotLoadCommand {
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.CouldNotLoadCommand.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.CouldNotLoadCommand.ISchema>
 
 }
 
@@ -97,7 +97,7 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local.BuildFailed {
 	/** The interface for the schema definition for a BuildFailed */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISchema extends SpruceSchema.ISchema {
 		id: 'buildFailed',
 		name: 'BuildFailed',
 		description: 'Error thrown when building or linting failed. Happens when a yarn command fails inside the package utility.',
@@ -113,7 +113,7 @@ export declare namespace SpruceErrors.Local.BuildFailed {
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.BuildFailed.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.BuildFailed.ISchema>
 
 }
 
@@ -130,7 +130,7 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local.DirectoryEmpty {
 	/** The interface for the schema definition for a directoryEmpty */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISchema extends SpruceSchema.ISchema {
 		id: 'directoryEmpty',
 		name: 'directoryEmpty',
 		description: 'The directory is empty',
@@ -147,7 +147,7 @@ export declare namespace SpruceErrors.Local.DirectoryEmpty {
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.DirectoryEmpty.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.DirectoryEmpty.ISchema>
 
 }
 
@@ -170,7 +170,7 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local.CreateAutoloaderFailed {
 	/** The interface for the schema definition for a Could not create an autoloader */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISchema extends SpruceSchema.ISchema {
 		id: 'createAutoloaderFailed',
 		name: 'Could not create an autoloader',
 		description: 'Autoloader creation failed',
@@ -212,7 +212,7 @@ export declare namespace SpruceErrors.Local.CreateAutoloaderFailed {
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.CreateAutoloaderFailed.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.CreateAutoloaderFailed.ISchema>
 
 }
 
@@ -229,7 +229,7 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local.DirectoryNotFound {
 	/** The interface for the schema definition for a Directory not found */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISchema extends SpruceSchema.ISchema {
 		id: 'directoryNotFound',
 		name: 'Directory not found',
 		description: 'The directory you tried to find is not there!',
@@ -246,14 +246,14 @@ export declare namespace SpruceErrors.Local.DirectoryNotFound {
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.DirectoryNotFound.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.DirectoryNotFound.ISchema>
 
 }
 
 
 export declare namespace SpruceErrors.Local {
 	/** The definition file failed to import */
-	export interface IDefinitionFailedToImport {
+	export interface ISchemaFailedToImport {
 
 		/** File. The file definition file I tried to import */
 		'file': string
@@ -261,10 +261,10 @@ export declare namespace SpruceErrors.Local {
 
 }
 
-export declare namespace SpruceErrors.Local.DefinitionFailedToImport {
+export declare namespace SpruceErrors.Local.SchemaFailedToImport {
 	/** The interface for the schema definition for a Definition failed to import */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
-		id: 'definitionFailedToImport',
+	export interface ISchema extends SpruceSchema.ISchema {
+		id: 'SchemaFailedToImport',
 		name: 'Definition failed to import',
 		description: 'The definition file failed to import',
 		fields: {
@@ -280,7 +280,7 @@ export declare namespace SpruceErrors.Local.DefinitionFailedToImport {
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.DefinitionFailedToImport.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.SchemaFailedToImport.ISchema>
 
 }
 
@@ -297,7 +297,7 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local.FailedToImport {
 	/** The interface for the schema definition for a FailedToImport */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISchema extends SpruceSchema.ISchema {
 		id: 'failedToImport',
 		name: 'FailedToImport',
 		description: 'Failed to import a file through VM',
@@ -314,7 +314,7 @@ export declare namespace SpruceErrors.Local.FailedToImport {
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.FailedToImport.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.FailedToImport.ISchema>
 
 }
 
@@ -335,7 +335,7 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local.ExecutingCommandFailed {
 	/** The interface for the schema definition for a Executing command failed */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISchema extends SpruceSchema.ISchema {
 		id: 'executingCommandFailed',
 		name: 'Executing command failed',
 		description: 'The command that was being executed failed',
@@ -364,7 +364,7 @@ export declare namespace SpruceErrors.Local.ExecutingCommandFailed {
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.ExecutingCommandFailed.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.ExecutingCommandFailed.ISchema>
 
 }
 
@@ -381,7 +381,7 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local.Generic {
 	/** The interface for the schema definition for a generic */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISchema extends SpruceSchema.ISchema {
 		id: 'generic',
 		name: 'generic',
 		description: 'When you\'re too lazy to make a new error',
@@ -396,7 +396,7 @@ export declare namespace SpruceErrors.Local.Generic {
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.Generic.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.Generic.ISchema>
 
 }
 
@@ -413,7 +413,7 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local.InvalidCommand {
 	/** The interface for the schema definition for a Invalid command */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISchema extends SpruceSchema.ISchema {
 		id: 'invalidCommand',
 		name: 'Invalid command',
 		description: 'The command is not valid, try --help',
@@ -430,7 +430,7 @@ export declare namespace SpruceErrors.Local.InvalidCommand {
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.InvalidCommand.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.InvalidCommand.ISchema>
 
 }
 
@@ -447,7 +447,7 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local.FileExists {
 	/** The interface for the schema definition for a fileExists */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISchema extends SpruceSchema.ISchema {
 		id: 'fileExists',
 		name: 'fileExists',
 		description: 'The file already exists',
@@ -464,7 +464,7 @@ export declare namespace SpruceErrors.Local.FileExists {
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.FileExists.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.FileExists.ISchema>
 
 }
 
@@ -481,7 +481,7 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local.ValueTypeServiceStageError {
 	/** The interface for the schema definition for a Value type service stage error */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISchema extends SpruceSchema.ISchema {
 		id: 'valueTypeServiceStageError',
 		name: 'Value type service stage error',
 		description: 'When collecting value types for all fields, something went wrong',
@@ -497,7 +497,7 @@ export declare namespace SpruceErrors.Local.ValueTypeServiceStageError {
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.ValueTypeServiceStageError.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.ValueTypeServiceStageError.ISchema>
 
 }
 
@@ -516,7 +516,7 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local.PayloadArgs {
 	/** The interface for the schema definition for a Payload args */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISchema extends SpruceSchema.ISchema {
 		id: 'payloadArgs',
 		name: 'Payload args',
 		fields: {
@@ -536,7 +536,7 @@ export declare namespace SpruceErrors.Local.PayloadArgs {
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.PayloadArgs.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.PayloadArgs.ISchema>
 
 }
 
@@ -555,7 +555,7 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local.GenericMercury {
 	/** The interface for the schema definition for a Generic mercury */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISchema extends SpruceSchema.ISchema {
 		id: 'genericMercury',
 		name: 'Generic mercury',
 		description: 'Not sure what happened, but it has something to do with Mercury',
@@ -572,13 +572,13 @@ export declare namespace SpruceErrors.Local.GenericMercury {
 				type: FieldType.Schema,
 				hint: 'A hint',
 				isArray: true,
-				options: { schemas: SpruceErrors.Local.PayloadArgs.IDefinition[], }
+				options: { schemas: SpruceErrors.Local.PayloadArgs.ISchema[], }
 			},
 		}
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.GenericMercury.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.GenericMercury.ISchema>
 
 }
 
@@ -593,7 +593,7 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local.NotImplemented {
 	/** The interface for the schema definition for a Not implemented */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISchema extends SpruceSchema.ISchema {
 		id: 'notImplemented',
 		name: 'Not implemented',
 		description: 'This feature has not been implemented',
@@ -602,7 +602,7 @@ export declare namespace SpruceErrors.Local.NotImplemented {
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.NotImplemented.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.NotImplemented.ISchema>
 
 }
 
@@ -619,7 +619,7 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local.ValueTypeServiceError {
 	/** The interface for the schema definition for a Value type service error */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISchema extends SpruceSchema.ISchema {
 		id: 'valueTypeServiceError',
 		name: 'Value type service error',
 		description: 'An error when generating value types for template insertion ',
@@ -635,7 +635,7 @@ export declare namespace SpruceErrors.Local.ValueTypeServiceError {
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.ValueTypeServiceError.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.ValueTypeServiceError.ISchema>
 
 }
 
@@ -654,7 +654,7 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local.LintFailed {
 	/** The interface for the schema definition for a Lint failed! */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISchema extends SpruceSchema.ISchema {
 		id: 'lintFailed',
 		name: 'Lint failed!',
 		description: 'When linting a file fails',
@@ -678,7 +678,7 @@ export declare namespace SpruceErrors.Local.LintFailed {
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.LintFailed.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.LintFailed.ISchema>
 
 }
 
@@ -695,7 +695,7 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local.TranspileFailed {
 	/** The interface for the schema definition for a Transpile failed */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISchema extends SpruceSchema.ISchema {
 		id: 'transpileFailed',
 		name: 'Transpile failed',
 		description: 'Could not transpile (ts -> js) a script',
@@ -712,7 +712,7 @@ export declare namespace SpruceErrors.Local.TranspileFailed {
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.TranspileFailed.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.TranspileFailed.ISchema>
 
 }
 
@@ -731,7 +731,7 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local.UserNotFound {
 	/** The interface for the schema definition for a User not found */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISchema extends SpruceSchema.ISchema {
 		id: 'userNotFound',
 		name: 'User not found',
 		description: 'Could not find a user',
@@ -752,7 +752,7 @@ export declare namespace SpruceErrors.Local.UserNotFound {
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.UserNotFound.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.UserNotFound.ISchema>
 
 }
 
@@ -769,7 +769,7 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local.KeyExists {
 	/** The interface for the schema definition for a keyExists */
-	export interface IDefinition extends SpruceSchema.ISchemaDefinition {
+	export interface ISchema extends SpruceSchema.ISchema {
 		id: 'keyExists',
 		name: 'keyExists',
 		description: 'The key in the object already exists',
@@ -786,7 +786,7 @@ export declare namespace SpruceErrors.Local.KeyExists {
 	}
 
 	/** The type of a schema instance built off this definition */
-	export type Instance = Schema<SpruceErrors.Local.KeyExists.IDefinition>
+	export type Entity = Schema<SpruceErrors.Local.KeyExists.ISchema>
 
 }
 

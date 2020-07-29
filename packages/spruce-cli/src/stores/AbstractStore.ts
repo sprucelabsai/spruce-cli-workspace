@@ -1,5 +1,4 @@
 import { Mercury } from '@sprucelabs/mercury'
-import ErrorCode from '#spruce/errors/errorCode'
 import SpruceError from '../errors/SpruceError'
 import ServiceFactory, {
 	IServiceProvider,
@@ -33,7 +32,7 @@ export default abstract class AbstractStore implements IServiceProvider {
 		const { connectionOptions } = this.mercury
 		if (!connectionOptions) {
 			throw new SpruceError({
-				code: ErrorCode.GenericMercury,
+				code: 'GENERIC_MERCURY',
 				friendlyMessage:
 					'user store was trying to auth on mercury but had no options (meaning it was never connected)',
 			})

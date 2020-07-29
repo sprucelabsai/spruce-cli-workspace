@@ -1,4 +1,4 @@
-import { ISchemaDefinition } from '@sprucelabs/schema'
+import { ISchema } from '@sprucelabs/schema'
 import { test, assert } from '@sprucelabs/test'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import AbstractCliTest from '../../AbstractCliTest'
@@ -12,7 +12,7 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 
 	@test()
 	protected static async canAliasOneField() {
-		const person: ISchemaDefinition = {
+		const person: ISchema = {
 			id: 'alias-person',
 			name: 'person alias',
 			fields: {
@@ -30,7 +30,7 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 
 	@test()
 	protected static async canAliasTwoFields() {
-		const person: ISchemaDefinition = {
+		const person: ISchema = {
 			id: 'alias-person',
 			name: 'person alias',
 			fields: {

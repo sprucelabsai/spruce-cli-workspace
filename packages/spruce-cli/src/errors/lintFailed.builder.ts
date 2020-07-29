@@ -1,7 +1,7 @@
-import { buildErrorDefinition } from '@sprucelabs/schema'
+import { buildErrorSchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-const lintFailedDefinition = buildErrorDefinition({
+const lintFailedDefinition = buildErrorSchema({
 	id: 'lintFailed',
 	name: 'Lint failed!',
 	description: 'When linting a file fails',

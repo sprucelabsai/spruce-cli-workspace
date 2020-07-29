@@ -102,14 +102,14 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		// make sure builder is versioned
 		assert.doesInclude(builderFile, version.dirValue)
 
-		const definitionFile = testUtil.assertsFileByNameInGeneratedFiles(
-			/testSchema\.definition/,
+		const schemaFile = testUtil.assertsFileByNameInGeneratedFiles(
+			/testSchema\.schema/,
 			createResponse.files ?? []
 		)
 
 		// make sure this path is versioned
-		assert.doesInclude(definitionFile, version.dirValue)
-		assert.doesInclude(definitionFile, '/local/')
+		assert.doesInclude(schemaFile, version.dirValue)
+		assert.doesInclude(schemaFile, '/local/')
 
 		// schema types should be good
 		await typeChecker.check(this.schemaTypesFile)
@@ -119,7 +119,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		assert.doesInclude(typesContents, matcher)
 
 		// the definition file should exist
-		assert.isTrue(diskUtil.doesFileExist(definitionFile))
+		assert.isTrue(diskUtil.doesFileExist(schemaFile))
 
 		// DELETE builder and make sure we are cleaned up
 		diskUtil.deleteFile(builderFile)
@@ -135,6 +135,6 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		assert.doesNotInclude(typesContents, matcher)
 
 		// and the definition should have been deleted
-		assert.isFalse(diskUtil.doesFileExist(definitionFile))
+		assert.isFalse(diskUtil.doesFileExist(schemaFile))
 	}
 }

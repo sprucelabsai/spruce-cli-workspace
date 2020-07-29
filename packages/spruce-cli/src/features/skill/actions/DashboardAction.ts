@@ -1,4 +1,4 @@
-import { buildSchemaDefinition } from '@sprucelabs/schema'
+import { buildSchema } from '@sprucelabs/schema'
 import blessed from 'blessed'
 import contrib from 'blessed-contrib'
 // @ts-ignore
@@ -8,7 +8,7 @@ import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction
 import { IFeatureActionExecuteResponse } from '../../features.types'
 import Theme from '../Theme'
 
-export const dashboardActionOptionsDefinition = buildSchemaDefinition({
+export const dashboardActionOptionsDefinition = buildSchema({
 	id: 'dashboard',
 	name: 'Skill dashboard',
 	fields: {},
@@ -20,7 +20,7 @@ export default class DashboardAction extends AbstractFeatureAction<
 	IDashboardActionDefinition
 > {
 	public name = 'dashboard'
-	public optionsDefinition = dashboardActionOptionsDefinition
+	public optionsSchema = dashboardActionOptionsDefinition
 
 	private interactiveElementOptions = {
 		keys: true,

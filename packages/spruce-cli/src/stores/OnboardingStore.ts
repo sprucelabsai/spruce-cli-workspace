@@ -1,5 +1,5 @@
 import Schema from '@sprucelabs/schema'
-import onboardingDefinition from '#spruce/schemas/local/v2020_07_22/onboarding.definition'
+import onboardingSchema from '#spruce/schemas/local/v2020_07_22/onboarding.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
 
@@ -11,7 +11,7 @@ export default class OnboardingStore extends AbstractLocalStore<
 	IOnboardingStoreSettings
 > {
 	public name = 'onboarding'
-	public schema = new Schema(onboardingDefinition)
+	public schema = new Schema(onboardingSchema)
 
 	public isEnabled() {
 		return this.schema.get('isEnabled')
