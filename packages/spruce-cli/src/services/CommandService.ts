@@ -13,43 +13,43 @@ export default class CommandService {
 	private static runningPromises: Promise<any>[] = []
 	private static maxRunning = 5
 
-	public async execute(
-		cmd: string,
-		options?: {
-			args?: string[]
-			/** When set to true will stream the results from the child process in real time instead of waiting to return */
-			stream?: boolean
-		}
-	): Promise<{
-		stdout: string
-	}> {
-		const lastInLine =
-			CommandService.runningPromises[
-				CommandService.runningPromises.length - CommandService.maxRunning
-			]
+	// public async execute(
+	// 	cmd: string,
+	// 	options?: {
+	// 		args?: string[]
+	// 		/** When set to true will stream the results from the child process in real time instead of waiting to return */
+	// 		stream?: boolean
+	// 	}
+	// ): Promise<{
+	// 	stdout: string
+	// }> {
+	// 	const lastInLine =
+	// 		CommandService.runningPromises[
+	// 			CommandService.runningPromises.length - CommandService.maxRunning
+	// 		]
 
-		let resolve
-		const us = new Promise((r) => {
-			resolve = r
-		})
+	// 	let resolve
+	// 	const us = new Promise((r) => {
+	// 		resolve = r
+	// 	})
 
-		CommandService.runningPromises.push(us)
+	// 	CommandService.runningPromises.push(us)
 
-		if (lastInLine) {
-			await lastInLine
-		}
-		const results = await this.executeUnlimited(cmd, options)
-		CommandService.runningPromises = CommandService.runningPromises.filter(
-			(p) => p !== us
-		)
+	// 	if (lastInLine) {
+	// 		await lastInLine
+	// 	}
+	// 	const results = await this.executeUnlimited(cmd, options)
+	// 	CommandService.runningPromises = CommandService.runningPromises.filter(
+	// 		(p) => p !== us
+	// 	)
 
-		// @ts-ignore
-		resolve()
+	// 	// @ts-ignore
+	// 	resolve()
 
-		return results
-	}
+	// 	return results
+	// }
 
-	private executeUnlimited(
+	public execute(
 		cmd: string,
 		options?: {
 			args?: string[]
