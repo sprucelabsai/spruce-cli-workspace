@@ -37,9 +37,9 @@ const namesUtil = {
 	/** Help guess on answers */
 	onWillAskQuestionHandler<
 		K extends keyof SpruceSchemas.Local.INamedTemplateItem.v2020_07_22 = keyof SpruceSchemas.Local.INamedTemplateItem.v2020_07_22,
-		V extends Optional<SpruceSchemas.Local.INamedTemplateItem.v2020_07_22> = Optional<
+		V extends Optional<
 			SpruceSchemas.Local.INamedTemplateItem.v2020_07_22
-		>
+		> = Optional<SpruceSchemas.Local.INamedTemplateItem.v2020_07_22>
 	>(fieldName: K, fieldDefinition: FieldDefinition, values: V) {
 		switch (fieldName) {
 			case 'nameCamel':

@@ -98,72 +98,71 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				}
 				break
 
-			
-            case 'COMMAND_NOT_IMPLEMENTED':
-                message = 'A Command not implemented just happened!'
-                break
-            case 'COULD_NOT_LOAD_COMMAND':
-                message = 'A Could not load command just happened!'
-                break
-            case 'BUILD_FAILED':
-                message = 'A BuildFailed just happened!'
-                break
-            case 'DIRECTORY_EMPTY':
-                message = 'A directoryEmpty just happened!'
-                break
-            case 'CREATE_AUTOLOADER_FAILED':
-                message = 'A Could not create an autoloader just happened!'
-                break
-            case 'DIRECTORY_NOT_FOUND':
-                message = 'A Directory not found just happened!'
-                break
-            case 'DEFINITION_FAILED_TO_IMPORT':
-                message = 'A Definition failed to import just happened!'
-                break
-            case 'FAILED_TO_IMPORT':
-                message = 'A FailedToImport just happened!'
-                break
-            case 'EXECUTING_COMMAND_FAILED':
-                message = 'A Executing command failed just happened!'
-                break
-            case 'GENERIC':
-                message = 'A generic just happened!'
-                break
-            case 'INVALID_COMMAND':
-                message = 'A Invalid command just happened!'
-                break
-            case 'FILE_EXISTS':
-                message = 'A fileExists just happened!'
-                break
-            case 'VALUE_TYPE_SERVICE_STAGE_ERROR':
-                message = 'A Value type service stage error just happened!'
-                break
-            case 'PAYLOAD_ARGS':
-                message = 'A Payload args just happened!'
-                break
-            case 'GENERIC_MERCURY':
-                message = 'A Generic mercury just happened!'
-                break
-            case 'NOT_IMPLEMENTED':
-                message = 'A Not implemented just happened!'
-                break
-            case 'VALUE_TYPE_SERVICE_ERROR':
-                message = 'A Value type service error just happened!'
-                break
-            case 'LINT_FAILED':
-                message = 'A Lint failed! just happened!'
-                break
-            case 'TRANSPILE_FAILED':
-                message = 'A Transpile failed just happened!'
-                break
-            case 'USER_NOT_FOUND':
-                message = 'A User not found just happened!'
-                break
-            case 'KEY_EXISTS':
-                message = 'A keyExists just happened!'
-                break
+			case 'COMMAND_NOT_IMPLEMENTED':
+				message = 'A Command not implemented just happened!'
+				break
+			case 'COULD_NOT_LOAD_COMMAND':
+				message = 'A Could not load command just happened!'
+				break
+			case 'BUILD_FAILED':
+				message = 'A BuildFailed just happened!'
+				break
+			case 'DIRECTORY_EMPTY':
+				message = 'A directoryEmpty just happened!'
+				break
+			case 'CREATE_AUTOLOADER_FAILED':
+				message = 'A Could not create an autoloader just happened!'
+				break
+			case 'DIRECTORY_NOT_FOUND':
+				message = 'A Directory not found just happened!'
+				break
+			case 'DEFINITION_FAILED_TO_IMPORT':
+				message = 'A Definition failed to import just happened!'
+				break
+			case 'FAILED_TO_IMPORT':
+				message = 'A FailedToImport just happened!'
+				break
+			case 'EXECUTING_COMMAND_FAILED':
+				message = 'A Executing command failed just happened!'
+				break
+			case 'GENERIC':
+				message = 'A generic just happened!'
+				break
+			case 'INVALID_COMMAND':
+				message = 'A Invalid command just happened!'
+				break
+			case 'FILE_EXISTS':
+				message = 'A fileExists just happened!'
+				break
+			case 'VALUE_TYPE_SERVICE_STAGE_ERROR':
+				message = 'A Value type service stage error just happened!'
+				break
+			case 'PAYLOAD_ARGS':
+				message = 'A Payload args just happened!'
+				break
+			case 'GENERIC_MERCURY':
+				message = 'A Generic mercury just happened!'
+				break
+			case 'NOT_IMPLEMENTED':
+				message = 'A Not implemented just happened!'
+				break
+			case 'VALUE_TYPE_SERVICE_ERROR':
+				message = 'A Value type service error just happened!'
+				break
+			case 'LINT_FAILED':
+				message = 'A Lint failed! just happened!'
+				break
+			case 'TRANSPILE_FAILED':
+				message = 'A Transpile failed just happened!'
+				break
+			case 'USER_NOT_FOUND':
+				message = 'A User not found just happened!'
+				break
+			case 'KEY_EXISTS':
+				message = 'A keyExists just happened!'
+				break
 
-default:
+			default:
 				message = super.friendlyMessage()
 		}
 
