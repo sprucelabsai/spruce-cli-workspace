@@ -1,8 +1,4 @@
-import {
-	ISchema,
-	ISchemaFields,
-	SchemaFieldNames,
-} from '@sprucelabs/schema'
+import { ISchema, ISchemaFields, SchemaFieldNames } from '@sprucelabs/schema'
 import chalk from 'chalk'
 import { shuffle } from 'lodash'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
@@ -98,10 +94,8 @@ export type QuizPresentationResults<Q extends IQuizQuestions> = {
 }
 
 /** Options for instantiating a new quiz */
-export interface IQuizOptions<
-	T extends ISchema,
-	Q extends IQuizQuestions
-> extends Omit<IFormOptions<T>, 'definition'> {
+export interface IQuizOptions<T extends ISchema, Q extends IQuizQuestions>
+	extends Omit<IFormOptions<T>, 'definition'> {
 	/** Should we randomize the questions */
 	randomizeQuestions?: boolean
 	/** The questions we are asking */

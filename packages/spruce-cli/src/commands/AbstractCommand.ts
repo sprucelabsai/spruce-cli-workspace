@@ -51,10 +51,7 @@ export default abstract class AbstractCommand {
 		return formBuilder
 	}
 
-	public getQuizComponent<
-		T extends ISchema,
-		Q extends IQuizQuestions
-	>(
+	public getQuizComponent<T extends ISchema, Q extends IQuizQuestions>(
 		options: Omit<IQuizOptions<T, Q>, 'term' | 'definition'>
 	): QuizComponent<T, Q> {
 		const quizBuilder = new QuizComponent({

@@ -1,7 +1,4 @@
-import {
-	ISchema,
-	ISelectFieldDefinitionChoice,
-} from '@sprucelabs/schema'
+import { ISchema, ISelectFieldDefinitionChoice } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { CORE_SCHEMA_VERSION } from '../../constants'
 
