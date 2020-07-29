@@ -11,7 +11,7 @@ export default class CommandService {
 	}
 
 	private static runningPromises: Promise<any>[] = []
-	private static maxRunning = 6
+	private static maxRunning = 5
 
 	public async execute(
 		cmd: string,
