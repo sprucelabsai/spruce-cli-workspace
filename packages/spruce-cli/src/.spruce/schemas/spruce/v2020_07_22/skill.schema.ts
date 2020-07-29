@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const skillSchema: SpruceSchemas.Spruce.v2020_07_22.SkillSchema  = {
+const skillSchema: SpruceSchemas.Spruce.v2020_07_22.ISkillSchema  = {
 	id: 'skill',
 	name: 'Skill',
 	description: 'An ability Sprucebot has learned.',
@@ -19,6 +19,7 @@ const skillSchema: SpruceSchemas.Spruce.v2020_07_22.SkillSchema  = {
 	            'apiKey': {
 	                label: 'Id',
 	                type: FieldType.Id,
+	                isPrivate: true,
 	                isRequired: true,
 	                options: undefined
 	            },

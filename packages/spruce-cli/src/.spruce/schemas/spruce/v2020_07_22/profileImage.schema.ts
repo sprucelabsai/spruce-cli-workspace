@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const profileImageSchema: SpruceSchemas.Spruce.v2020_07_22.ProfileImageSchema  = {
+const profileImageSchema: SpruceSchemas.Spruce.v2020_07_22.IProfileImageSchema  = {
 	id: 'profileImage',
 	name: 'Profile Image Sizes',
 	    fields: {

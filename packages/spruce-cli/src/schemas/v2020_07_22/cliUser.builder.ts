@@ -1,5 +1,5 @@
 import { buildSchema } from '@sprucelabs/schema'
-import personSchema from '#spruce/schemas/spruce/v2020_07_22/person.builder'
+import personSchema from '#spruce/schemas/spruce/v2020_07_22/person.schema'
 
 export default buildSchema({
 	...personSchema,

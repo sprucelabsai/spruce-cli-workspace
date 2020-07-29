@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 import profileImageSchema from '#spruce/schemas/spruce/v2020_07_22/profileImage.schema'
 
-const personSchema: SpruceSchemas.Spruce.v2020_07_22.PersonSchema  = {
+const personSchema: SpruceSchemas.Spruce.v2020_07_22.IPersonSchema  = {
 	id: 'person',
 	name: 'Person',
 	description: 'A human being.',
@@ -19,12 +19,14 @@ const personSchema: SpruceSchemas.Spruce.v2020_07_22.PersonSchema  = {
 	            'firstName': {
 	                label: 'First name',
 	                type: FieldType.Text,
+	                isPrivate: true,
 	                options: undefined
 	            },
 	            /** Last name. */
 	            'lastName': {
 	                label: 'Last name',
 	                type: FieldType.Text,
+	                isPrivate: true,
 	                options: undefined
 	            },
 	            /** Casual name. The name you can use when talking to this person. */
@@ -47,6 +49,7 @@ const personSchema: SpruceSchemas.Spruce.v2020_07_22.PersonSchema  = {
 	            'phoneNumber': {
 	                label: 'Phone',
 	                type: FieldType.Phone,
+	                isPrivate: true,
 	                hint: 'A number that can be texted',
 	                options: undefined
 	            },

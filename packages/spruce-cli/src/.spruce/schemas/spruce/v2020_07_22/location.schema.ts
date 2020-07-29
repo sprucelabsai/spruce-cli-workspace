@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const LocationSchema: SpruceSchemas.Spruce.v2020_07_22.ILocationSchema  = {
+const locationSchema: SpruceSchemas.Spruce.v2020_07_22.ILocationSchema  = {
 	id: 'location',
 	name: 'Location',
 	description: 'A physical location where people meet. An organization has at least one of them.',
@@ -58,4 +58,4 @@ const LocationSchema: SpruceSchemas.Spruce.v2020_07_22.ILocationSchema  = {
 	    }
 }
 
-export default LocationSchema
+export default locationSchema

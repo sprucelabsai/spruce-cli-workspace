@@ -6,7 +6,7 @@ import Schema, {
 import jwt from 'jsonwebtoken'
 import CliUserWithTokenSchema from '#spruce/schemas/local/v2020_07_22/cliUserWithToken.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import UserSchema from '#spruce/schemas/spruce/v2020_07_22/person.builder'
+import userSchema from '#spruce/schemas/spruce/v2020_07_22/person.schema'
 import SpruceError from '../errors/SpruceError'
 import log from '../singletons/log'
 import { AuthedAs } from '../types/cli.types'
@@ -29,7 +29,7 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 	}
 
 	public static getUser(values?: Partial<User>) {
-		return new Schema(UserSchema, values)
+		return new Schema(userSchema, values)
 	}
 
 	public async fetchUserWithTokenFromPhone(phone: string, pin: string) {
