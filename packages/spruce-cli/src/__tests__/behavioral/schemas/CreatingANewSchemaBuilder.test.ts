@@ -22,7 +22,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async canBuildFileWithoutCrashing() {
-		const createSchema = await this.getCreateSchemaActionAndSetCwd(
+		const createSchema = await this.syncSchemasAndGetCreateAction(
 			'creating-a-new-schema-builder'
 		)
 
@@ -46,7 +46,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		assert.isEqual(response.files?.[0].path, expectedDestination)
 	}
 
-	private static async getCreateSchemaActionAndSetCwd(cacheKey?: string) {
+	private static async syncSchemasAndGetCreateAction(cacheKey?: string) {
 		const cli = await this.syncSchemas(cacheKey)
 		const createSchema = cli.getFeature('schema').Action('create')
 
@@ -73,7 +73,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 	}
 
 	private static async buildTestSchema() {
-		const action = await this.getCreateSchemaActionAndSetCwd(
+		const action = await this.syncSchemasAndGetCreateAction(
 			'creating-a-new-schema-builder'
 		)
 

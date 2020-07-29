@@ -141,6 +141,8 @@ export default class TerminalInterface implements IGraphicsInterface {
 		const skippedFiles =
 			results.files?.filter((f) => f.action === 'skipped') ?? []
 
+		const errors = results.errors ?? []
+
 		this.renderHero(`${results.actionCode} Finished!`)
 
 		this.renderSection({
@@ -149,6 +151,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 				`Generated files: ${generatedFiles.length}`,
 				`Updated files: ${updatedFiles.length}`,
 				`Skipped files: ${skippedFiles.length}`,
+				`Errors: ${errors.length}`,
 			],
 		})
 
@@ -156,9 +159,14 @@ export default class TerminalInterface implements IGraphicsInterface {
 			if (files.length > 0) {
 				this.renderSection({
 					headline: `${namesUtil.toPascal(files[0].action)} file summary`,
-					lines: files.map((f) => `${f.name}`),
+					lines: files.map((f) => `${f.name}`).sort(),
 				})
 			}
+		}
+
+		if (errors.length > 0) {
+			this.renderHeadline('Errors')
+			errors.forEach((err) => this.renderError(err))
 		}
 	}
 

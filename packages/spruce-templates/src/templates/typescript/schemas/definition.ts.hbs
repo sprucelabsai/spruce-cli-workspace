@@ -1,9 +1,9 @@
-import { {{namespacePrefix}} } from '{{typesFile}}'
+import { {{globalNamespace}} } from '{{typesFile}}'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 {{{ importRelatedDefinitions definition }}}
 
-const {{nameCamel}}Definition: {{namespacePrefix}}.{{namespace}}.{{namePascal}}{{#if definition.version}}.{{definition.version}}{{/if}}.IDefinition  = {
+const {{nameCamel}}Definition: {{globalNamespace}}.{{namespace}}.{{namePascal}}{{#if definition.version}}.{{definition.version}}{{/if}}.IDefinition  = {
 	{{> schemaDefinition namespace=namespace schema=definition renderAs="value" }}
 }
 

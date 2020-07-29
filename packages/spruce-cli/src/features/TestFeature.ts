@@ -5,7 +5,7 @@ import { INpmPackage } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
 import { FeatureCode } from './features.types'
 
-type TestFeatureType = SpruceSchemas.Local.TestFeature.IDefinition
+type TestFeatureType = SpruceSchemas.Local.TestFeature.v2020_07_22.IDefinition
 
 export default class TestFeature extends AbstractFeature<TestFeatureType> {
 	public nameReadable = 'Test'

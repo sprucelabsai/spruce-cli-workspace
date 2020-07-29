@@ -5,7 +5,7 @@ import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
 
 export default class ErrorGenerator extends AbstractGenerator {
 	public async generateOrAppendErrorsToClass(
-		destinationFile: string,
+		destinationDir: string,
 		errors: IErrorTemplateItem[]
 	): Promise<GenerationResults> {
 		let results: GenerationResults = []
@@ -14,6 +14,11 @@ export default class ErrorGenerator extends AbstractGenerator {
 			// todo move to proper error
 			throw new Error('Need at least one error')
 		}
+
+		const destinationFile = diskUtil.resolvePath(
+			destinationDir,
+			`SpruceError.ts`
+		)
 
 		if (!diskUtil.doesFileExist(destinationFile)) {
 			const errorContents = this.templates.error({ errors })
@@ -31,7 +36,7 @@ export default class ErrorGenerator extends AbstractGenerator {
 
 			// Try and drop in the block right before "default:"
 			const currentErrorContents = diskUtil.readFile(destinationFile)
-			const blockMatches = currentErrorContents.search(/\t\t\tdefault:/g)
+			const blockMatches = currentErrorContents.search(/default:/g)
 			if (blockMatches > -1) {
 				const newErrorContents =
 					currentErrorContents.substring(0, blockMatches) +
@@ -55,24 +60,6 @@ export default class ErrorGenerator extends AbstractGenerator {
 		}
 
 		return results
-	}
-
-	public async generateErrorCodeType(
-		destinationDir: string,
-		errorTemplateItems: IErrorTemplateItem[]
-	): Promise<GenerationResults> {
-		const destinationFile = diskUtil.resolvePath(
-			destinationDir,
-			`options.types.ts`
-		)
-
-		const contents = this.templates.errorCode({ codes: errorTemplateItems })
-
-		return this.writeFileIfChangedMixinResults(
-			destinationFile,
-			contents,
-			'The enum that holds all error types for reference, like ErrorCode.FileNotFound.'
-		)
 	}
 
 	public async generateOptionsTypesFile(

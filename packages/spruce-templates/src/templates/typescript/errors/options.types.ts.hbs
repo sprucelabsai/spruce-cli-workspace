@@ -1,7 +1,13 @@
 import { SpruceErrors } from "#spruce/errors/errors.types"
-import { SpruceErrorOptions } from "@sprucelabs/error"
-import {SchemaErrorOptions} from '@sprucelabs/schema'
+import { SpruceErrorOptions, ISpruceErrorOptions} from "@sprucelabs/error"
+import { SchemaErrorOptions } from '@sprucelabs/schema'
 
-type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions{{#each options}} | SpruceErrors.{{namespace}}.I{{namePascal}}{{/each}}
+{{#each options}}
+export interface I{{namePascal}}ErrorOptions extends SpruceErrors.{{namespace}}.I{{namePascal}}, ISpruceErrorOptions {
+	code: '{{code}}'
+}
+{{/each}}
+
+type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions{{#each options}} | I{{namePascal}}ErrorOptions {{/each}}
 
 export default ErrorOptions

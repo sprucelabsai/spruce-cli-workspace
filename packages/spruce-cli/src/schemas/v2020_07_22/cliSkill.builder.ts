@@ -1,5 +1,5 @@
 import { buildSchemaDefinition } from '@sprucelabs/schema'
-import skillDefinition from '#spruce/schemas/core/skill.definition'
+import skillDefinition from '#spruce/schemas/spruce/v2020_07_22/skill.definition'
 
 export default buildSchemaDefinition({
 	...skillDefinition,

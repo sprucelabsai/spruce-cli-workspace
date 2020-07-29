@@ -28,6 +28,7 @@ import './addons/fieldDefinitionPartial.addon'
 import './addons/schemaDefinitionPartial.addon'
 import './addons/schemaValuesPartial.addon'
 import './addons/valueTypeGenerator.addon'
+import './addons/valueTypeGeneratorType.addon'
 import './addons/json.addon'
 import './addons/isDefined.addon'
 import {
@@ -53,7 +54,7 @@ export const templates = {
 		schemaTemplateItems: ISchemaTemplateItem[]
 		fieldTemplateItems: IFieldTemplateItem[]
 		valueTypes: IValueTypes
-		namespacePrefix?: string
+		globalNamespace?: string
 	}) {
 		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
 		const template = templateImportUtil.getTemplate(
@@ -62,13 +63,14 @@ export const templates = {
 		return template({
 			...options,
 			imports,
-			namespacePrefix: options.namespacePrefix ?? DEFAULT_NAMESPACE_PREFIX,
+			globalNamespace: options.globalNamespace ?? DEFAULT_NAMESPACE_PREFIX,
 		})
 	},
 
 	valueTypes(options: {
 		schemaTemplateItems: ISchemaTemplateItem[]
 		fieldTemplateItems: IFieldTemplateItem[]
+		globalNamespace?: string
 	}) {
 		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
 		const rendersAs = Object.values(TemplateRenderAs)
@@ -90,6 +92,7 @@ export const templates = {
 			schemaTemplatesByNamespaceAndName,
 			SCHEMA_VERSION_FALLBACK,
 			rendersAs,
+			globalNamespace: options.globalNamespace ?? DEFAULT_NAMESPACE_PREFIX,
 		})
 	},
 
@@ -98,7 +101,7 @@ export const templates = {
 			schemaTemplateItems: ISchemaTemplateItem[]
 			fieldTemplateItems: IFieldTemplateItem[]
 			valueTypes: IValueTypes
-			namespacePrefix?: string
+			globalNamespace?: string
 			typesFile?: string
 		}
 	) {
@@ -107,7 +110,7 @@ export const templates = {
 		return template({
 			...options,
 			imports,
-			namespacePrefix: options.namespacePrefix ?? DEFAULT_NAMESPACE_PREFIX,
+			globalNamespace: options.globalNamespace ?? DEFAULT_NAMESPACE_PREFIX,
 			typesFile: options.typesFile ?? DEFAULT_TYPES_FILE,
 		})
 	},
@@ -144,12 +147,6 @@ export const templates = {
 		const template = templateImportUtil.getTemplate(
 			'errors/options.types.ts.hbs'
 		)
-		return template(options)
-	},
-
-	/** For generating types for all the options (the ISpruceErrorOptions sub-interface) */
-	errorCode(options: { codes: IErrorTemplateItem[] }) {
-		const template = templateImportUtil.getTemplate('errors/errorCode.ts.hbs')
 		return template(options)
 	},
 

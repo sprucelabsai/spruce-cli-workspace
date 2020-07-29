@@ -66,13 +66,11 @@ export default class SchemaStore extends AbstractStore {
 		} = options || {}
 
 		const schemaRequest = this.fetchSchemaTemplateItems({
-			localLookupDir: diskUtil.resolvePath(
-				this.cwd,
-				localSchemaDir ?? 'src/schemas'
-			),
+			localSchemaDir,
 			enableVersioning,
 			fetchRemoteSchemas,
 		})
+
 		const fieldRequest = this.fetchFieldTemplateItems(
 			diskUtil.resolvePath(this.cwd, localAddonDir ?? 'src/addons')
 		)
@@ -89,11 +87,11 @@ export default class SchemaStore extends AbstractStore {
 	}
 
 	public async fetchSchemaTemplateItems(options: {
-		localLookupDir: string
+		localSchemaDir?: string
 		enableVersioning?: boolean
 		fetchRemoteSchemas?: boolean
 	}): Promise<IFetchSchemaTemplateItemsResponse> {
-		const { localLookupDir, enableVersioning, fetchRemoteSchemas } = options
+		const { localSchemaDir, enableVersioning, fetchRemoteSchemas } = options
 		const errors: SpruceError[] = []
 
 		let coreTemplateItems: ISchemaTemplateItem[] = []
@@ -116,7 +114,7 @@ export default class SchemaStore extends AbstractStore {
 		}
 
 		const localDefinitions = await this.loadLocalDefinitions(
-			localLookupDir,
+			localSchemaDir,
 			enableVersioning
 		)
 
@@ -133,11 +131,14 @@ export default class SchemaStore extends AbstractStore {
 	}
 
 	private async loadLocalDefinitions(
-		localLookupDir: string,
+		localLookupDir?: string,
 		enableVersioning?: boolean
 	) {
 		const localMatches = await globby(
-			pathUtil.join(localLookupDir, '**/*.builder.[t|j]s')
+			pathUtil.join(
+				diskUtil.resolvePath(this.cwd, localLookupDir ?? 'src/schemas'),
+				'**/*.builder.[t|j]s'
+			)
 		)
 
 		const schemaService = this.Service(Service.Schema)
@@ -199,16 +200,12 @@ export default class SchemaStore extends AbstractStore {
 		const localImportService = this.Service(Service.Import, cwd)
 
 		// TODO load from core
-		const coreAddons = await Promise.all(
+		const coreAddonsPromise = Promise.all(
 			(
 				await globby([
 					pathUtil.join(
 						cwd,
 						'node_modules/@sprucelabs/schema/build/addons/*Field.addon.js'
-					),
-					pathUtil.join(
-						cwd,
-						'../../node_modules/@sprucelabs/schema/build/addons/*Field.addon.js'
 					),
 				])
 			).map(async (path) => {
@@ -227,37 +224,43 @@ export default class SchemaStore extends AbstractStore {
 		const localErrors: SpruceError[] = []
 		const importService = this.Service(Service.Import)
 
-		const localAddons = (
-			await Promise.all(
-				(
-					await globby([pathUtil.join(localLookupDir, '/*Field.addon.[t|j]s')])
-				).map(async (file) => {
-					try {
-						const registration = await importService.importDefault<
-							IFieldRegistration
-						>(file)
+		const localAddonsPromise = Promise.all(
+			(
+				await globby([pathUtil.join(localLookupDir, '/*Field.addon.[t|j]s')])
+			).map(async (file) => {
+				try {
+					const registration = await importService.importDefault<
+						IFieldRegistration
+					>(file)
 
-						return {
-							path: file,
-							registration,
-							isLocal: true,
-						}
-					} catch (err) {
-						localErrors.push(
-							new SpruceError({
-								code: ErrorCode.FailedToImport,
-								file,
-								originalError: err,
-							})
-						)
-						return false
+					return {
+						path: file,
+						registration,
+						isLocal: true,
 					}
-				})
-			)
-		).filter((addon) => !!addon) as IAddonItem[]
+				} catch (err) {
+					localErrors.push(
+						new SpruceError({
+							code: ErrorCode.FailedToImport,
+							file,
+							originalError: err,
+						})
+					)
+					return false
+				}
+			})
+		)
+
+		const [coreAddons, localAddons] = await Promise.all([
+			coreAddonsPromise,
+			localAddonsPromise,
+		])
 
 		const allAddons = uniqBy(
-			[...coreAddons, ...localAddons],
+			[
+				...coreAddons,
+				...(localAddons.filter((addon) => !!addon) as IAddonItem[]),
+			],
 			'registration.type'
 		)
 		const types: IFieldTemplateItem[] = []
@@ -287,7 +290,6 @@ export default class SchemaStore extends AbstractStore {
 				camelType: namesUtil.toCamel(registration.type),
 				isLocal: addon.isLocal,
 				description: registration.description,
-				valueTypeGeneratorType: registration.valueTypeGeneratorType,
 			})
 		}
 

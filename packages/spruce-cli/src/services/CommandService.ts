@@ -23,6 +23,7 @@ export default class CommandService {
 		const cwd = this.cwd
 
 		return new Promise((resolve, reject) => {
+			// const start = new Date()
 			const args = options?.args || stringArgv(cmd)
 			const executable = options?.args ? cmd : args.shift()
 			if (!executable) {
@@ -57,7 +58,11 @@ export default class CommandService {
 				child.stdout?.removeAllListeners()
 				child.stderr?.removeAllListeners()
 				child.removeAllListeners()
+				// const end = new Date()
 
+				// console.log(
+				// 	`running ${cmd} ${JSON.stringify(options?.args)} took ${end - start}`
+				// )
 				if (code === 0) {
 					resolve({ stdout })
 				} else {

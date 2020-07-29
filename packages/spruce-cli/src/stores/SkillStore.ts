@@ -2,14 +2,14 @@ import path from 'path'
 import Schema from '@sprucelabs/schema'
 import { parse as parseEnv } from 'dotenv'
 import fs from 'fs-extra'
-import skillDefinition from '#spruce/schemas/core/skill.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import skillDefinition from '#spruce/schemas/spruce/v2020_07_22/skill.definition'
 import log from '../singletons/log'
 import { AuthedAs } from '../types/cli.types'
 import { SpruceEvents } from '../types/events-generated'
 import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
 
-type ISkill = SpruceSchemas.Local.ICliSkill
+type ISkill = SpruceSchemas.Local.ICliSkill.v2020_07_22
 
 export interface ISkillStoreSettings extends ILocalStoreSettings {
 	loggedInSkill: ISkill

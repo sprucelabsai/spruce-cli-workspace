@@ -1,5 +1,6 @@
 import { ISchemaDefinition, SchemaDefinitionValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
+import SpruceError from '../errors/SpruceError'
 import ServiceFactory from '../factories/ServiceFactory'
 import StoreFactory from '../stores/StoreFactory'
 import { IGeneratedFile, IGraphicsInterface } from '../types/cli.types'
@@ -75,6 +76,7 @@ export interface IFeatureMap {
 export interface IFeatureActionExecuteResponse {
 	files?: IGeneratedFile[]
 	meta?: Record<string, any>
+	errors?: SpruceError[]
 }
 
 export interface IFeatureAction<

@@ -1,6 +1,6 @@
 import AbstractSpruceError from '@sprucelabs/error'
 import { test, assert } from '@sprucelabs/test'
-import { IFailedToImportErrorOptions } from '#spruce/errors/failedToImport.types'
+import { IFailedToImportErrorOptions } from '#spruce/errors/options.types'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
 import diskUtil from '../../../utilities/disk.utility'
 

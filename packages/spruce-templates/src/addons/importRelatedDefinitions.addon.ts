@@ -44,11 +44,11 @@ handlebars.registerHelper('importRelatedDefinitions', function (
 				)
 				if (matched) {
 					imports.push(
-						`import ${matched.nameCamel}Definition${
-							matched.namespace
-						} from '#spruce/schemas/${camelCase(matched.namespace)}/${
+						`import ${
 							matched.nameCamel
-						}.definition'`
+						}Definition from '#spruce/schemas/${camelCase(matched.namespace)}${
+							matched.definition.version ? `/${matched.definition.version}` : ''
+						}/${matched.nameCamel}.definition'`
 					)
 				}
 			})

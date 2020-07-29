@@ -2,7 +2,6 @@ import Schema, {
 	ISchemaDefinition,
 	ISchemaTemplateItem,
 	SchemaField,
-	ErrorCode as SchemaErrorCode,
 	ISchemaFieldDefinition,
 	ISchemaIdWithVersion,
 	SchemaError,
@@ -24,7 +23,11 @@ export default class SchemaTemplateItemBuilder {
 		this.definitionCache = {}
 		this.cacheDefinitions(definitions)
 
-		const flattened = this.flattenDefinitions(definitions)
+		const flattened = this.flattenDefinitions(
+			definitions.sort((a, b) => {
+				return `${a.id}${a.version}`.localeCompare(`${b.id}${b.version}`)
+			})
+		)
 
 		const templateTimes = flattened.map((def) =>
 			this.buildTemplateItem(namespace, def)
@@ -109,7 +112,7 @@ export default class SchemaTemplateItemBuilder {
 			definition = this.cacheLookup(definitionOrIdWithVersion)
 			if (!definition) {
 				throw new SchemaError({
-					code: SchemaErrorCode.SchemaNotFound,
+					code: 'SCHEMA_NOT_FOUND',
 					schemaId: JSON.stringify(definitionOrIdWithVersion),
 					friendlyMessage: 'Make sure you are pointing to the correct version.',
 				})

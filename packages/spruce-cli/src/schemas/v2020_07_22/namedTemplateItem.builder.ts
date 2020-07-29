@@ -39,9 +39,8 @@ export default buildSchemaDefinition({
 		},
 		description: {
 			type: FieldType.Text,
-			isRequired: true,
 			label: 'Description',
-			description: 'Describe a bit more here',
+			hint: 'Describe a bit more here',
 		},
 	},
 })

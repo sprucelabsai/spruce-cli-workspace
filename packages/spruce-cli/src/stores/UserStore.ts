@@ -5,17 +5,17 @@ import Schema, {
 } from '@sprucelabs/schema'
 import jwt from 'jsonwebtoken'
 import ErrorCode from '#spruce/errors/errorCode'
-import userDefinition from '#spruce/schemas/core/user.definition'
-import cliUserWithTokenDefinition from '#spruce/schemas/local/cliUserWithToken.definition'
+import cliUserWithTokenDefinition from '#spruce/schemas/local/v2020_07_22/cliUserWithToken.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import userDefinition from '#spruce/schemas/spruce/v2020_07_22/person.definition'
 import SpruceError from '../errors/SpruceError'
 import log from '../singletons/log'
 import { AuthedAs } from '../types/cli.types'
 import { SpruceEvents } from '../types/events-generated'
 import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
 
-type UserWithToken = SpruceSchemas.Local.ICliUserWithToken
-type User = SpruceSchemas.Local.ICliUser
+type UserWithToken = SpruceSchemas.Local.ICliUserWithToken.v2020_07_22
+type User = SpruceSchemas.Local.ICliUser.v2020_07_22
 
 /** Settings i need to save */
 interface IUserStoreSettings extends ILocalStoreSettings {
@@ -104,7 +104,7 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 		const result = await this.mercury.emit<
 			SpruceEvents.Core.Gql.IPayload,
 			IMercuryGQLBody<{
-				User: SpruceSchemas.Core.IUser
+				User: SpruceSchemas.Spruce.IPerson.v2020_07_22
 			}>
 		>({
 			eventName: SpruceEvents.Core.Gql.name,

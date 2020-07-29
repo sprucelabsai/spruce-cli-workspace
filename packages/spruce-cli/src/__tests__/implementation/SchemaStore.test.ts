@@ -17,7 +17,7 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 	@test()
 	protected static async fetchesCoreSchemaTemplateItems() {
 		const response = await this.Store('schema').fetchSchemaTemplateItems({
-			localLookupDir: this.resolvePath('nothing_found'),
+			localSchemaDir: this.resolvePath('nothing_found'),
 		})
 
 		const { items } = response
@@ -36,10 +36,10 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		await this.syncSchemas('schema-store')
 
 		const schemasDir = this.resolvePath('src', 'schemas')
-		diskUtil.copyDir(this.resolveTestPath('testSchemas'), schemasDir)
+		diskUtil.copyDir(this.resolveTestPath('test_builders'), schemasDir)
 
 		const results = await this.Store('schema').fetchSchemaTemplateItems({
-			localLookupDir: schemasDir,
+			localSchemaDir: schemasDir,
 		})
 
 		const { items } = results

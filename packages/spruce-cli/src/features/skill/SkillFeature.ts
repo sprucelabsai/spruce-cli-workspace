@@ -1,6 +1,6 @@
 import { validateSchemaValues } from '@sprucelabs/schema'
 import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
-import skillFeatureDefinition from '#spruce/schemas/local/skillFeature.definition'
+import skillFeatureDefinition from '#spruce/schemas/local/v2020_07_22/skillFeature.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import { INpmPackage } from '../../types/cli.types'
 import diskUtil from '../../utilities/disk.utility'
@@ -9,8 +9,8 @@ import tsConfigUtil from '../../utilities/tsConfig.utility'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
-type SkillFeatureDefinition = SpruceSchemas.Local.SkillFeature.IDefinition
-type Skill = SpruceSchemas.Local.ISkillFeature
+type SkillFeatureDefinition = SpruceSchemas.Local.SkillFeature.v2020_07_22.IDefinition
+type Skill = SpruceSchemas.Local.ISkillFeature.v2020_07_22
 
 export default class SkillFeature<
 	T extends SkillFeatureDefinition = SkillFeatureDefinition
@@ -46,7 +46,9 @@ export default class SkillFeature<
 		return []
 	}
 
-	private async install(options: SpruceSchemas.Local.ISkillFeature) {
+	private async install(
+		options: SpruceSchemas.Local.ISkillFeature.v2020_07_22
+	) {
 		validateSchemaValues(skillFeatureDefinition, options)
 
 		const files = await this.templates.directoryTemplate({

@@ -5,6 +5,7 @@ jobs:
   test:
     docker:
       - image: circleci/node:12
+    resource_class: xlarge
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -32,7 +33,7 @@ jobs:
             cd ../..
             cd packages/spruce-cli
             yarn build
-            yarn test
+            yarn test -w 2
             yarn lint
       - save_cache:
           key: yarn-packages-{{ checksum "yarn.lock" }}

@@ -33,8 +33,6 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 	}
 
 	public async execute(options?: FeatureCommandExecuteOptions<F>) {
-		this.term.startLoading(`Loading ${this.featureCode}...`)
-
 		const feature = this.featureInstaller.getFeature(this.featureCode)
 		const action = feature.Action(this.actionCode)
 
@@ -98,7 +96,9 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		const fieldNames = Object.keys(definition.fields ?? {})
 		const providedFieldNames = options ? Object.keys(options ?? {}) : []
 		const fieldsToPresent = fieldNames.filter(
-			(name) => providedFieldNames.indexOf(name) === -1
+			(name) =>
+				providedFieldNames.indexOf(name) === -1 &&
+				definition.fields?.[name].isPrivate !== true
 		)
 		let answers = {}
 		if (fieldsToPresent.length > 0) {

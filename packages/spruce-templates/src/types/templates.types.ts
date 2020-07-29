@@ -81,16 +81,21 @@ export interface IErrorOptions {
 	renderClassDefinition?: boolean
 }
 
-export interface IErrorTemplateItem extends ISchemaTemplateItem {}
+export interface IErrorTemplateItem extends ISchemaTemplateItem {
+	code: string
+}
 
 export interface IValueTypes {
 	[namespace: string]: {
 		[schemaId: string]: {
 			[version: string]: {
 				[fieldName: string]: {
-					value: string
-					type: string
-					definitionType: string
+					valueTypes: {
+						value: string
+						type: string
+						definitionType: string
+					}
+					valueTypeGeneratorType?: string
 				}
 			}
 		}

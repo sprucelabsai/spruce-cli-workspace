@@ -2,7 +2,7 @@
 import { Command } from 'commander'
 import fs from 'fs-extra'
 import ErrorCode from '#spruce/errors/errorCode'
-import namedTemplateItemDefinition from '#spruce/schemas/local/namedTemplateItem.definition'
+import namedTemplateItemDefinition from '#spruce/schemas/local/v2020_07_22/namedTemplateItem.definition'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
 import FeatureInstaller from '../features/FeatureInstaller'
@@ -108,7 +108,7 @@ export default class ErrorCommand extends AbstractCommand {
 		// const schemaLookupDir = options.schemaLookupDir
 
 		const nameReadable = name
-		const initialValues: Partial<SpruceSchemas.Local.INamedTemplateItem> = {
+		const initialValues: Partial<SpruceSchemas.Local.INamedTemplateItem.v2020_07_22> = {
 			nameReadable: name,
 		}
 		let showOverview = false
