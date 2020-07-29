@@ -152,9 +152,7 @@ export default class SchemaStore extends AbstractStore {
 					version =
 						enableVersioning === false
 							? undefined
-							: versionUtil.latestVersionAtPath(
-									pathUtil.join(pathUtil.dirname(local), '..')
-							  ).dirValue
+							: versionUtil.extractVersion(this.cwd, local).dirValue
 				} catch (err) {
 					errors.push(
 						new SpruceError({

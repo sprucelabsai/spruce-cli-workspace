@@ -1,4 +1,6 @@
+import pathUtil from 'path'
 import { LATEST_HANDLEBARS } from '../constants'
+import SpruceError from '../errors/SpruceError'
 import diskUtil from './disk.utility'
 import namesUtil from './names.utility'
 
@@ -30,7 +32,7 @@ const versionUtil = {
 	getAllVersions(dirToRead: string) {
 		const contents = diskUtil.readDir(dirToRead)
 		const allDateIsh = contents
-			.filter((value) => value.search(/v?\d\d\d\d_\d\d_\d\d/) > -1)
+			.filter((value) => this.isValidVersion(value))
 			.map((dateIsh) => this.generateVersion(dateIsh))
 			.sort((a, b) => {
 				return a.intValue > b.intValue ? 1 : -1
@@ -56,10 +58,32 @@ const versionUtil = {
 		if (!latest) {
 			// eslint-disable-next-line no-debugger
 			debugger
-			throw new Error(`no versioning found at ${path}`)
+			throw new SpruceError({
+				//@ts-ignore
+				code: 'NO_VERSIONING_FOUND',
+				friendlyMessage: `Expected versioning (e.g. v2020_07_22) at ${path}`,
+			})
 		}
 
 		return latest
+	},
+
+	extractVersion(cwd: string, path: string) {
+		const remainingPath = path.replace(cwd, '')
+		const pathParts = remainingPath.split(pathUtil.sep)
+
+		while (pathParts.length > 0) {
+			const part = pathParts.pop() as string
+			if (this.isValidVersion(part)) {
+				return this.generateVersion(part)
+			}
+		}
+
+		throw new SpruceError({
+			//@ts-ignore
+			code: 'NO_VERSIONING_FOUND',
+			friendlyMessage: `Expected versioning (e.g. v2020_07_22) at ${path}`,
+		})
 	},
 
 	resolvePath(cwd: string, ...paths: string[]) {
@@ -76,12 +100,39 @@ const versionUtil = {
 			throw new Error('no versioning found!')
 		}
 
-		return resolved.replace('{{@latest}}', latest.dirValue)
+		return resolved.replace(LATEST_HANDLEBARS, latest.dirValue)
 	},
 
 	resolveNewLatestPath(cwd: string, ...paths: string[]) {
 		const { resolved } = parsePath(cwd, paths)
 		return resolved.replace('{{@latest}}', this.generateVersion().dirValue)
+	},
+
+	normalizeVersion(version?: string): string {
+		if (version) {
+			this.assertValidVersion(version)
+		}
+
+		return version ?? LATEST_HANDLEBARS
+	},
+
+	isValidVersion(version: string): boolean {
+		try {
+			this.assertValidVersion(version)
+			return true
+		} catch {
+			return false
+		}
+	},
+
+	assertValidVersion(version: string) {
+		if (version.search(/v?\d\d\d\d_\d\d_\d\d/) === -1) {
+			throw new SpruceError({
+				//@ts-ignore
+				code: 'INVALID_VERSION',
+				friendlyMessage: `Versions must be in the form 'vYYYY_MM_DD' and ${version} doesn't match.`,
+			})
+		}
 	},
 }
 
