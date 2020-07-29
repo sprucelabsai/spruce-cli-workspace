@@ -36,10 +36,10 @@ const namesUtil = {
 	},
 	/** Help guess on answers */
 	onWillAskQuestionHandler<
-		K extends keyof SpruceSchemas.Local.INamedTemplateItem.v2020_07_22 = keyof SpruceSchemas.Local.INamedTemplateItem.v2020_07_22,
+		K extends keyof SpruceSchemas.Local.v2020_07_22.INamedTemplateItem = keyof SpruceSchemas.Local.v2020_07_22.INamedTemplateItem,
 		V extends Optional<
-			SpruceSchemas.Local.INamedTemplateItem.v2020_07_22
-		> = Optional<SpruceSchemas.Local.INamedTemplateItem.v2020_07_22>
+			SpruceSchemas.Local.v2020_07_22.INamedTemplateItem
+		> = Optional<SpruceSchemas.Local.v2020_07_22.INamedTemplateItem>
 	>(fieldName: K, fieldDefinition: FieldDefinition, values: V) {
 		switch (fieldName) {
 			case 'nameCamel':

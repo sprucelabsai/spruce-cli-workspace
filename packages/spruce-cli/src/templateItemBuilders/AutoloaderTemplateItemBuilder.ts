@@ -19,7 +19,7 @@ export default class AutoloaderTemplateItemBuilder extends AbstractTemplateItemB
 	private cache: Record<string, any> = {}
 
 	public async buildRootTemplateItem(
-		autoloaders: SpruceSchemas.Local.IAutoloader.v2020_07_22[]
+		autoloaders: SpruceSchemas.Local.v2020_07_22.IAutoloader[]
 	): Promise<IRootAutoloaderTemplateItem> {
 		const templateItems: IAutoLoaderTemplateItem[] = await Promise.all(
 			autoloaders.map((autoloader) => {

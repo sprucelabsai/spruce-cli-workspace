@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 {{{ importRelatedDefinitions definition }}}
 
-const {{nameCamel}}Definition: {{globalNamespace}}.{{namespace}}.{{namePascal}}{{#if definition.version}}.{{definition.version}}{{/if}}.IDefinition  = {
+const {{nameCamel}}Definition: {{globalNamespace}}.{{namespace}}{{#if definition.version}}.{{definition.version}}{{/if}}.I{{namePascal}}Definition  = {
 	{{> schemaDefinition namespace=namespace schema=definition renderAs="value" }}
 }
 

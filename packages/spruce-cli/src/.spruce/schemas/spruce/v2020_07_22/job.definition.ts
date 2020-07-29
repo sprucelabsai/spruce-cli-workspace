@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 import aclDefinition from '#spruce/schemas/spruce/v2020_07_22/acl.definition'
 
-const jobDefinition: SpruceSchemas.Spruce.Job.v2020_07_22.IDefinition  = {
+const jobDefinition: SpruceSchemas.Spruce.v2020_07_22.IJobDefinition  = {
 	id: 'job',
 	name: 'Job',
 	description: 'A position at a company. The answer to the question; What is your job?',

@@ -5,7 +5,7 @@ import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
 
 export interface IOnboardingStoreSettings
 	extends ILocalStoreSettings,
-		SpruceSchemas.Local.IOnboarding.v2020_07_22 {}
+		SpruceSchemas.Local.v2020_07_22.IOnboarding {}
 
 export default class OnboardingStore extends AbstractLocalStore<
 	IOnboardingStoreSettings

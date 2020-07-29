@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const onboardingDefinition: SpruceSchemas.Local.Onboarding.v2020_07_22.IDefinition  = {
+const onboardingDefinition: SpruceSchemas.Local.v2020_07_22.IOnboardingDefinition  = {
 	id: 'onboarding',
 	name: 'Onboarding',
 	description: 'Track onboarding progress and tutorials & quizzes completed.',

@@ -5,7 +5,7 @@ import jobDefinition from '#spruce/schemas/spruce/v2020_07_22/job.definition'
 import locationDefinition from '#spruce/schemas/spruce/v2020_07_22/location.definition'
 import personDefinition from '#spruce/schemas/spruce/v2020_07_22/person.definition'
 
-const personLocationDefinition: SpruceSchemas.Spruce.PersonLocation.v2020_07_22.IDefinition  = {
+const personLocationDefinition: SpruceSchemas.Spruce.v2020_07_22.IPersonLocationDefinition  = {
 	id: 'personLocation',
 	name: 'Person <-> location relationship',
 	    fields: {
