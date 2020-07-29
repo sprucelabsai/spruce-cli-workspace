@@ -116,6 +116,12 @@ export default class TestInterface implements IGraphicsInterface {
 	public async prompt<T extends FieldDefinition>(definition: T) {
 		this.trackInvocation('prompt', definition)
 
+		if (this.promptResolver) {
+			throw new Error(
+				'Tried to double prompt. Try this.term.sendInput() before calling prompt next.'
+			)
+		}
+
 		return new Promise<FieldDefinitionValueType<FieldDefinition>>((resolve) => {
 			this.promptResolver = resolve
 		})

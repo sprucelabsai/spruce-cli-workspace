@@ -84,7 +84,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 				code: 'SCHEMA_EXISTS',
 				name: options.nameCamel,
 				errorBuilderDestinationDir: destinationDir,
-				friendlyMessage: 'This schema already exists!',
+				friendlyMessage: `This schema already exists at ${resolvedBuilderDestination}`,
 			})
 		}
 

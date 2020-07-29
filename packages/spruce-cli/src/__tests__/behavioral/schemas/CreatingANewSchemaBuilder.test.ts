@@ -1,7 +1,11 @@
 import { test, assert } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
 import { Service } from '../../../factories/ServiceFactory'
-import { IFeatureActionExecuteResponse } from '../../../features/features.types'
+import {
+	IFeatureActionExecuteResponse,
+	IFeatureAction,
+} from '../../../features/features.types'
+import TestInterface from '../../../interfaces/TestInterface'
 import diskUtil from '../../../utilities/disk.utility'
 import testUtil from '../../../utilities/test.utility'
 import versionUtil from '../../../utilities/version.utility'
@@ -132,6 +136,96 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 			'v2020_01_10',
 			'IFirstSchema'
 		)
+	}
+
+	@test()
+	protected static async asksForVersionOnSecondSchema() {
+		const action = await this.syncSchemasAndGetCreateAction(
+			'creating-a-new-schema-builder'
+		)
+
+		const newVersion = versionUtil.generateVersion()
+
+		// create old version first
+		await action.execute({
+			nameReadable: 'First schema!',
+			namePascal: 'FirstSchema',
+			nameCamel: 'firstSchema',
+			version: 'v2020_01_01',
+		})
+
+		await this.assertAnswersFirstTime(action, newVersion)
+		await this.assertAnswersSecondTime(action, newVersion)
+	}
+
+	// should ask if we want to use the old version we created above or a New Version
+	private static async assertAnswersFirstTime(
+		action: IFeatureAction,
+		newVersion: { intValue: number; constValue: string; dirValue: string }
+	) {
+		const createPromise = action.execute({
+			nameReadable: 'Second schema!',
+			namePascal: 'SecondSchema',
+			nameCamel: 'secondSchema',
+		})
+
+		await this.wait(1000)
+		const term = this.term as TestInterface
+		const last = term.invocations[term.invocations.length - 1]
+
+		assert.isEqual(last?.command, 'prompt')
+		assert.isLength(last?.options?.options?.choices, 2)
+		assert.isEqualDeep(last?.options?.options?.choices, [
+			{
+				value: newVersion.dirValue,
+				label: 'New Version',
+			},
+			{
+				value: 'v2020_01_01',
+				label: 'v2020_01_01',
+			},
+		])
+
+		await this.term.sendInput(newVersion.dirValue)
+		await createPromise
+	}
+
+	// should only have 2 options, none of which one "new version" since that was created in secondAnswers
+	private static async assertAnswersSecondTime(
+		action: IFeatureAction,
+		newVersion: { intValue: number; constValue: string; dirValue: string }
+	) {
+		const createPromise = action.execute({
+			nameReadable: 'Third schema',
+			namePascal: 'ThirdSchema',
+			nameCamel: 'thirdSchema',
+		})
+
+		await this.wait(1000)
+		const term = this.term as TestInterface
+		const last = term.invocations[term.invocations.length - 1]
+
+		assert.isEqualDeep(last?.options?.options?.choices, [
+			{
+				value: newVersion.dirValue,
+				label: newVersion.dirValue,
+			},
+			{
+				value: 'v2020_01_01',
+				label: 'v2020_01_01',
+			},
+		])
+
+		this.term.sendInput(newVersion.dirValue)
+
+		const createResults = await createPromise
+
+		const schemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
+			'secondSchema.schema.ts',
+			createResults.files ?? []
+		)
+
+		assert.doesInclude(schemaMatch, newVersion.dirValue)
 	}
 
 	private static validateSchemaFiles(

@@ -17,12 +17,21 @@ import diskUtil from './utilities/disk.utility'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static cliRoot = pathUtil.join(__dirname)
+	private static _term: IGraphicsInterface
 
 	protected static freshCwd() {
 		const tmpDirectory = pathUtil.join(os.tmpdir(), 'tmp', uuid.v4())
 		fs.ensureDirSync(tmpDirectory)
 
 		return tmpDirectory
+	}
+
+	protected static get term(): IGraphicsInterface {
+		if (!this._term) {
+			this._term = new TestInterface()
+		}
+
+		return this._term
 	}
 
 	protected static resolveTestPath(...pathAfterTestDirsAndFiles: string[]) {
@@ -61,10 +70,6 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return new ServiceFactory(new Mercury())
 	}
 
-	protected static Term(): IGraphicsInterface {
-		return new TestInterface()
-	}
-
 	protected static resolveHashSprucePath(...filePath: string[]) {
 		return diskUtil.resolveHashSprucePath(this.cwd, ...filePath)
 	}
@@ -77,7 +82,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			cwd: this.cwd,
 			serviceFactory,
 			storeFactory,
-			term: this.Term(),
+			term: this.term,
 		})
 	}
 
