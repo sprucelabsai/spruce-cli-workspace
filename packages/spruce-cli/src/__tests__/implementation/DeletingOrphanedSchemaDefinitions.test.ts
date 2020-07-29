@@ -26,6 +26,6 @@ export default class DeletingOrphanedSchemaDefinitionsTest extends AbstractSchem
 		)
 
 		assert.isEqual(results.length, 1)
-		assert.doesInclude(results[0], /two\.definition\.[t|j]s/gi)
+		assert.doesInclude(results[0], /two\.schema\.[t|j]s/gi)
 	}
 }
