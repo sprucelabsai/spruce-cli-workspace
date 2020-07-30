@@ -33,10 +33,15 @@ const diskUtil = {
 		fs.moveSync(source, destination)
 	},
 	async copyDir(source: string, destination: string) {
+		this.createDir(destination)
 		return new Promise((resolve) => {
 			exec(
-				`cd ${source} && tar cf - . | (cd ${destination}; tar xvf -)`,
+				`cd ${source} && tar cf - . | (cd ${destination}; tar xf -)`,
+				{ maxBuffer: 1024 * 1024 * 5 },
 				(err, stdout) => {
+					if (err) {
+						throw err
+					}
 					resolve(stdout)
 				}
 			)
