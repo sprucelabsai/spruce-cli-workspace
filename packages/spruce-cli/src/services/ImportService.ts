@@ -1,12 +1,37 @@
 import fs from 'fs-extra'
 import SpruceError from '../errors/SpruceError'
+import diskUtil from '../utilities/disk.utility'
 import CommandService from './CommandService'
 
 export default class ImportService extends CommandService {
 	private divider = '## SPRUCE-CLI DIVIDER ##'
 	private errorDivider = '## SPRUCE-CLI ERROR DIVIDER ##'
 
+	private static cachedImports: Record<
+		string,
+		{ hash: string; response: Record<string, any> }
+	> = {}
+
 	public importAll = async <T extends Record<string, any>>(
+		file: string
+	): Promise<T> => {
+		const fileContents = diskUtil.readFile(file)
+
+		if (ImportService.cachedImports[file]) {
+			if (ImportService.cachedImports[file].hash === fileContents) {
+				return ImportService.cachedImports[file].response as T
+			}
+		}
+
+		ImportService.cachedImports[file] = {
+			hash: fileContents,
+			response: this.importAllUncached(file),
+		}
+
+		return ImportService.cachedImports[file].response as T
+	}
+
+	private importAllUncached = async <T extends Record<string, any>>(
 		file: string
 	): Promise<T> => {
 		let defaultImported: T | undefined

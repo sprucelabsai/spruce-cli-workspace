@@ -19,7 +19,7 @@ export default class SettingUpErrorTest extends AbstractErrorTest {
 
 	@test()
 	protected static async installsSchemasIfNotInstalled() {
-		await this.installErrorFeature()
+		await this.installErrorFeature('setting-up-errors')
 
 		const installer = this.FeatureInstaller()
 

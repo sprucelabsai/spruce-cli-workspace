@@ -36,7 +36,7 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		await this.syncSchemas('schema-store')
 
 		const schemasDir = this.resolvePath('src', 'schemas')
-		diskUtil.copyDir(this.resolveTestPath('test_builders'), schemasDir)
+		await diskUtil.copyDir(this.resolveTestPath('test_builders'), schemasDir)
 
 		const results = await this.Store('schema').fetchSchemaTemplateItems({
 			localSchemaDir: schemasDir,

@@ -8,7 +8,6 @@ module.exports = (api) => {
 	api.cache(true)
 	return {
 		ignore: ["**/testDirsAndFiles/**"],
-		sourceMaps: true,
 		presets: ['@babel/preset-env', '@babel/preset-typescript'],
 		plugins: [
 			'@babel/plugin-transform-runtime',
