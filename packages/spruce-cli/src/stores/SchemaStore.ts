@@ -111,7 +111,7 @@ export default class SchemaStore extends AbstractStore {
 			)
 		}
 
-		const localDefinitions = await this.loadLocalDefinitions(
+		const localDefinitions = await this.loadLocalBuilders(
 			localSchemaDir,
 			enableVersioning
 		)
@@ -128,7 +128,7 @@ export default class SchemaStore extends AbstractStore {
 		return { items: templateItems, errors }
 	}
 
-	private async loadLocalDefinitions(
+	private async loadLocalBuilders(
 		localLookupDir?: string,
 		enableVersioning?: boolean
 	) {

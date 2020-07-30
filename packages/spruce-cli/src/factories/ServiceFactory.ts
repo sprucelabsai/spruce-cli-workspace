@@ -1,4 +1,5 @@
 import { Mercury } from '@sprucelabs/mercury'
+import BuildService from '../services/BuildService'
 import CommandService from '../services/CommandService'
 import ImportService from '../services/ImportService'
 import LintService from '../services/LintService'
@@ -17,6 +18,7 @@ export interface IServiceMap {
 	command: CommandService
 	typeChecker: TypeCheckerService
 	import: ImportService
+	build: BuildService
 }
 
 export type Service = keyof IServiceMap
@@ -44,14 +46,20 @@ export default class ServiceFactory {
 				return new SchemaService(cwd) as IServiceMap[S]
 			case 'lint':
 				return new LintService(cwd) as IServiceMap[S]
-			case 'command':
-				return new CommandService(cwd) as IServiceMap[S]
+			case 'command': {
+				const commandService = new CommandService(cwd)
+				return commandService as IServiceMap[S]
+			}
 			case 'typeChecker':
 				return new TypeCheckerService(cwd) as IServiceMap[S]
 			case 'import':
 				return new ImportService(cwd) as IServiceMap[S]
+			case 'build': {
+				const commandService = new CommandService(cwd)
+				return new BuildService(commandService) as IServiceMap[S]
+			}
 			default:
-				throw new Error('create new error')
+				throw new Error(`Service "${type}" not found`)
 		}
 	}
 }

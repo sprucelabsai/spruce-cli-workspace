@@ -27,6 +27,16 @@ export default class SkillFeature<
 		{ name: '@types/node', isDev: true },
 		{ name: 'ts-node', isDev: true },
 		{ name: 'tsconfig-paths', isDev: true },
+		{ name: '@babel/cli', isDev: true },
+		{ name: '@babel/core', isDev: true },
+		{ name: '@babel/plugin-proposal-class-properties', isDev: true },
+		{ name: '@babel/plugin-proposal-decorators', isDev: true },
+		{ name: '@babel/plugin-transform-runtime', isDev: true },
+		{ name: '@babel/preset-env', isDev: true },
+		{ name: '@babel/preset-typescript', isDev: true },
+		{ name: 'babel-plugin-module-resolver', isDev: true },
+		{ name: 'eslint', isDev: true },
+		{ name: 'eslint-config-spruce', isDev: true },
 	]
 
 	public optionsDefinition = skillFeatureSchema as T
@@ -40,10 +50,23 @@ export default class SkillFeature<
 		if (!tsConfigUtil.isPathAliasSet(this.cwd, '#spruce/*')) {
 			tsConfigUtil.setPathAlias(this.cwd, '#spruce/*', ['.spruce/*'])
 		}
-	}
 
-	public getActions() {
-		return []
+		const pkg = this.Service('pkg')
+		let scripts = pkg.get('scripts') as Record<string, any>
+		scripts = {
+			...scripts,
+			build: 'npm run build.babel',
+			'build.types': 'tsc --emitDeclarationOnly',
+			'build.babel':
+				"babel src --out-dir build --extensions '.ts, .tsx' --source-maps --copy-files",
+			'build.watch':
+				"babel src --out-dir build --extensions '.ts, .tsx' --source-maps --copy-files --watch",
+		}
+
+		pkg.set({
+			path: 'scripts',
+			value: scripts,
+		})
 	}
 
 	private async install(
