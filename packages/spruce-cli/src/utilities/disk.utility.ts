@@ -1,3 +1,4 @@
+import { exec } from 'child_process'
 import pathUtil from 'path'
 import { IDirectoryTemplateFile } from '@sprucelabs/spruce-templates'
 import fs from 'fs-extra'
@@ -31,8 +32,15 @@ const diskUtil = {
 	moveFile(source: string, destination: string) {
 		fs.moveSync(source, destination)
 	},
-	copyDir(source: string, destination: string) {
-		fs.copySync(source, destination)
+	async copyDir(source: string, destination: string) {
+		return new Promise((resolve) => {
+			exec(
+				`cd ${source} && tar cf - . | (cd ${destination}; tar xvf -)`,
+				(err, stdout) => {
+					resolve(stdout)
+				}
+			)
+		})
 	},
 	deleteDir(destination: string) {
 		if (fs.existsSync(destination)) {

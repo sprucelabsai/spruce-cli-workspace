@@ -102,7 +102,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		const source = this.resolveTestPath('error_nested_schemas')
 		const destination = this.resolvePath('src/errors')
 
-		diskUtil.copyDir(source, destination)
+		await diskUtil.copyDir(source, destination)
 
 		const results = await cli.getFeature('error').Action('sync').execute({})
 		const match = testUtil.assertsFileByNameInGeneratedFiles(

@@ -9,18 +9,18 @@ export default class HandlesBadLocalSchemasGracefullyTest extends AbstractSchema
 		super.beforeEach()
 	}
 
-	private static moveSchemasIntoPlace() {
+	private static async moveSchemasIntoPlace() {
 		const source = this.resolveTestPath('builders_one_bad')
 		const destination = this.resolvePath('src/schemas')
 
 		diskUtil.createDir(destination)
-		diskUtil.copyDir(source, destination)
+		await diskUtil.copyDir(source, destination)
 	}
 
 	@test()
 	protected static async storeSkipsBadLocalSchemas() {
 		await this.syncSchemas('handles-bad-local-schemas-gracefully')
-		this.moveSchemasIntoPlace()
+		await this.moveSchemasIntoPlace()
 
 		const store = this.Store('schema')
 		const results = await store.fetchAllTemplateItems()

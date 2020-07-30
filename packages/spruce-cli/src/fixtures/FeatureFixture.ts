@@ -46,7 +46,7 @@ export default class FeatureFixture {
 		let alreadyInstalled = false
 
 		if (cacheKey && testUtil.isCacheEnabled()) {
-			alreadyInstalled = this.loadCachedSkill(cacheKey)
+			alreadyInstalled = await this.loadCachedSkill(cacheKey)
 		}
 
 		const cli = await this.Cli(bootOptions)
@@ -66,7 +66,7 @@ export default class FeatureFixture {
 		return cli
 	}
 
-	private loadCachedSkill(cacheKey: string) {
+	private async loadCachedSkill(cacheKey: string) {
 		const settingsFile = this.getSettingsFilePath()
 
 		if (!diskUtil.doesFileExist(settingsFile)) {
@@ -82,7 +82,7 @@ export default class FeatureFixture {
 				alreadyInstalled = true
 			}
 
-			diskUtil.copyDir(settingsObject.tmpDirs[cacheKey], this.cwd)
+			await diskUtil.copyDir(settingsObject.tmpDirs[cacheKey], this.cwd)
 		}
 
 		if (settingsFile) {
@@ -130,6 +130,8 @@ export default class FeatureFixture {
 				diskUtil.createDir(dir)
 			}
 		})
+
+		diskUtil.createDir(this.resolveHashSprucePath())
 	}
 
 	private resetCachedSkillDir() {

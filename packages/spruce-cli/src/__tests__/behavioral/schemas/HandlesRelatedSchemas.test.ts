@@ -10,7 +10,7 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 		const source = this.resolveTestPath('related_schemas')
 		const destination = this.resolvePath('src/schemas')
 
-		diskUtil.copyDir(source, destination)
+		await diskUtil.copyDir(source, destination)
 
 		const results = await cli.getFeature('schema').Action('sync').execute({})
 
