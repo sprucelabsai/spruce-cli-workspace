@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.12.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.11.6...v10.12.0) (2020-07-30)
+
+
+### Features
+
+* can build skills ([845906a](https://github.com/sprucelabsai/spruce-cli-workspace/commit/845906a))
+
+
+
+
+
 ## [10.11.6](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.11.5...v10.11.6) (2020-07-30)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
