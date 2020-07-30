@@ -25,7 +25,7 @@ jobs:
             [ -n "$BASE64_ENV" ] && echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
       - run: node -v && npm -v && yarn -v
       - run:
-          name: "Test Build and Lint"
+          name: "Test, build, and lint"
           command: |
             yarn install --frozen-lockfile
             cd packages/spruce-templates
