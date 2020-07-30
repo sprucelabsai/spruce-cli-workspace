@@ -14,7 +14,7 @@ allSettled.shim()
 
 import './addons/filePrompt.addon'
 import SpruceError from './errors/SpruceError'
-import ServiceFactory, { Service } from './factories/ServiceFactory'
+import ServiceFactory from './factories/ServiceFactory'
 import FeatureCommandAttacher from './features/FeatureCommandAttacher'
 import FeatureInstaller from './features/FeatureInstaller'
 import FeatureInstallerFactory from './features/FeatureInstallerFactory'
@@ -112,7 +112,7 @@ function Cli(
 			}
 
 			try {
-				const commandService = serviceFactory.Service(cwd, Service.Command)
+				const commandService = serviceFactory.Service(cwd, 'command')
 				const results = await commandService.execute('yarn health')
 				const resultParts = results.stdout.split('#####DIVIDER#####')
 

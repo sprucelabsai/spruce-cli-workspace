@@ -3,7 +3,6 @@ import { ISchemaTemplateItem, IFieldTemplateItem } from '@sprucelabs/schema'
 import { IValueTypes } from '@sprucelabs/spruce-templates'
 import syncSchemasActionSchema from '#spruce/schemas/local/v2020_07_22/syncSchemasAction.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import { Service } from '../../../factories/ServiceFactory'
 import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
 import SchemaGenerator from '../../../generators/SchemaGenerator'
 import { IGeneratedFile } from '../../../types/cli.types'
@@ -134,9 +133,9 @@ export default class SyncAction extends AbstractFeatureAction<
 			}
 		)
 
-		const valueTypes: IValueTypes = await this.Service(
-			Service.Import
-		).importDefault(valueTypeResults[0].path)
+		const valueTypes: IValueTypes = await this.Service('import').importDefault(
+			valueTypeResults[0].path
+		)
 
 		return valueTypes
 	}

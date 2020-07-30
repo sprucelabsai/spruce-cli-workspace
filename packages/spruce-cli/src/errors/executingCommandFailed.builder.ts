@@ -20,5 +20,13 @@ export default buildSchema({
 			type: FieldType.Text,
 			label: 'Cwd',
 		},
+		stdout: {
+			type: FieldType.Text,
+			label: 'Stdout',
+		},
+		stderr: {
+			type: FieldType.Text,
+			label: 'stderr',
+		},
 	},
 })

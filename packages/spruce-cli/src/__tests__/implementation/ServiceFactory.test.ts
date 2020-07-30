@@ -11,9 +11,9 @@ export default class ServiceFactoryTest extends AbstractCliTest {
 		super.beforeEach()
 	}
 
-	@test('can build pin service', Service.Pin, 'requestPin')
-	@test('can build pin service', Service.Pkg, 'readPackage')
-	@test('can build pin service', Service.VsCode, 'installExtensions')
+	@test('can build pin service', 'pin', 'requestPin')
+	@test('can build pin service', 'pkg', 'readPackage')
+	@test('can build pin service', 'vsCode', 'installExtensions')
 	protected static canBuild(type: Service, functionName: string) {
 		const service = this.factory.Service(this.cwd, type)
 		assert.hasAllFunctions(service, [functionName])

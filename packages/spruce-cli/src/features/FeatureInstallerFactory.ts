@@ -10,7 +10,7 @@ import FeatureInstaller from './FeatureInstaller'
 import { FeatureCode } from './features.types'
 import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
-import TestFeature from './TestFeature'
+import TestFeature from './test/TestFeature'
 import VsCodeFeature from './VsCodeFeature'
 
 export default class FeatureInstallerFactory {

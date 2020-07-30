@@ -90,12 +90,6 @@ export interface IGraphicsInterface {
 	clear(): void
 }
 
-export enum WriteMode {
-	Throw = 'throw',
-	Overwrite = 'overwrite',
-	Skip = 'skip',
-}
-
 export enum AuthedAs {
 	User = 'user',
 	Skill = 'skill',

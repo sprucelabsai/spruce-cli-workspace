@@ -1,5 +1,4 @@
 // import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
-import { Service } from '../factories/ServiceFactory'
 import { IExtension } from '../services/VsCodeService'
 import log from '../singletons/log'
 import AbstractFeature from './AbstractFeature'
@@ -27,9 +26,7 @@ export default class VsCodeFeature extends AbstractFeature {
 
 	// 	})
 	private async getMissingExtensions() {
-		const currentExtensions = await this.Service(
-			Service.VsCode
-		).getVSCodeExtensions()
+		const currentExtensions = await this.Service('vsCode').getVSCodeExtensions()
 
 		const missingExtensions = this.recommendedExtensions.filter(
 			(recommendedExtension) => {
@@ -77,7 +74,7 @@ export default class VsCodeFeature extends AbstractFeature {
 		const extensionsToInstall = await this.getMissingExtensions()
 
 		if (extensionsToInstall.length > 0) {
-			await this.Service(Service.VsCode).installExtensions(extensionsToInstall)
+			await this.Service('vsCode').installExtensions(extensionsToInstall)
 		} else {
 			log.debug('No extensions to install')
 		}

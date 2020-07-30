@@ -401,7 +401,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 					throw new SpruceError({
 						code: 'DIRECTORY_EMPTY',
 						directory: dirPath,
-						friendlyMessage: `I wanted to help you select a file, but none exist in ${dirPath}`,
+						friendlyMessage: `I wanted to help you select a file, but none exist in ${dirPath}.`,
 					})
 				}
 
