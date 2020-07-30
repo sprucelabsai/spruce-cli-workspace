@@ -7,14 +7,9 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 		const { options } = this
 		let message
 		switch (options?.code) {
-			// Invalid command
 			case 'INVALID_COMMAND':
 				message = `Invalid command: ${options.args.join(' ')}\n`
 				message += `Try running spruce --help`
-				break
-			case 'COULD_NOT_LOAD_COMMAND':
-				message = `Failed to load command at ${options.file}!\n`
-				message += 'This is likely a syntax or lint error.'
 				break
 
 			case 'USER_NOT_FOUND':
@@ -48,17 +43,11 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 						: `: ${this.originalError?.message}`
 				}`
 				break
-			case 'TRANSPILE_FAILED':
-				message = 'Could not transpile (ts -> js) a script'
-
-				break
 
 			case 'SCHEMA_FAILED_TO_IMPORT':
 				message = `Error importing "${options.file}"`
 				break
-			case 'DIRECTORY_NOT_FOUND':
-				message = `Directory not found: "${options.directory}"`
-				break
+
 			case 'BUILD_FAILED':
 				message = `Build${
 					options.file ? `ing ${options.file}` : ''
@@ -68,16 +57,6 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 
 			case 'FAILED_TO_IMPORT':
 				message = `Failed to import ${options.file}`
-
-				break
-
-			case 'VALUE_TYPE_SERVICE_STAGE_ERROR':
-				message =
-					'When collecting value types for all fields, something went wrong'
-				break
-
-			case 'VALUE_TYPE_SERVICE_ERROR':
-				message = 'An error when generating value types for template insertion '
 				break
 
 			case 'LINT_FAILED':
@@ -91,10 +70,15 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				} else {
 					message = ''
 				}
-				message += `The command that was being executed failed ${options.cmd}`
+				message += `The command that was being executed failed ${options.cmd}.`
 				if (options.cwd) {
 					message += `\n\nCWD: ${options.cwd}`
 				}
+
+				if (options.stdout) {
+					message += '\n\nstdout:' + options.stdout
+				}
+
 				break
 
 			default:

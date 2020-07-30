@@ -1,6 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
 import AbstractErrorTest from '../../../AbstractErrorTest'
-import { Service } from '../../../factories/ServiceFactory'
 import diskUtil from '../../../utilities/disk.utility'
 import testUtil from '../../../utilities/test.utility'
 
@@ -24,7 +23,7 @@ export default class KeepsErrorClassInSyncTest extends AbstractErrorTest {
 			action: 'generated',
 		})
 
-		await this.Service(Service.TypeChecker).check(match)
+		await this.Service('typeChecker').check(match)
 	}
 
 	@test()
@@ -43,6 +42,6 @@ export default class KeepsErrorClassInSyncTest extends AbstractErrorTest {
 		assert.doesInclude(contents, "'TEST_ERROR_1'")
 		assert.doesInclude(contents, "'TEST_ERROR_2'")
 
-		await this.Service(Service.TypeChecker).check(match)
+		await this.Service('typeChecker').check(match)
 	}
 }

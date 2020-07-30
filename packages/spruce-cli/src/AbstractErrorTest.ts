@@ -13,7 +13,7 @@ export default abstract class AbstractErrorTest extends AbstractCliTest {
 				{
 					code: 'skill',
 					options: {
-						name: 'testing',
+						name: 'testing errors',
 						description: 'this is also a great test!',
 					},
 				},

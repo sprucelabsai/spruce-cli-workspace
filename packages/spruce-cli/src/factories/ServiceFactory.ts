@@ -19,16 +19,7 @@ export interface IServiceMap {
 	import: ImportService
 }
 
-export enum Service {
-	Pin = 'pin',
-	Pkg = 'pkg',
-	VsCode = 'vsCode',
-	Schema = 'schema',
-	Lint = 'lint',
-	Command = 'command',
-	TypeChecker = 'typeChecker',
-	Import = 'import',
-}
+export type Service = keyof IServiceMap
 
 export interface IServiceProvider {
 	Service<S extends Service>(type: S, cwd?: string): IServiceMap[S]
@@ -43,21 +34,21 @@ export default class ServiceFactory {
 
 	public Service<S extends Service>(cwd: string, type: S): IServiceMap[S] {
 		switch (type) {
-			case Service.Pin:
+			case 'pin':
 				return new PinService(this.mercury) as IServiceMap[S]
-			case Service.Pkg:
+			case 'pkg':
 				return new PkgService(cwd) as IServiceMap[S]
-			case Service.VsCode:
+			case 'vsCode':
 				return new VsCodeService(cwd) as IServiceMap[S]
-			case Service.Schema:
+			case 'schema':
 				return new SchemaService(cwd) as IServiceMap[S]
-			case Service.Lint:
+			case 'lint':
 				return new LintService(cwd) as IServiceMap[S]
-			case Service.Command:
+			case 'command':
 				return new CommandService(cwd) as IServiceMap[S]
-			case Service.TypeChecker:
+			case 'typeChecker':
 				return new TypeCheckerService(cwd) as IServiceMap[S]
-			case Service.Import:
+			case 'import':
 				return new ImportService(cwd) as IServiceMap[S]
 			default:
 				throw new Error('create new error')

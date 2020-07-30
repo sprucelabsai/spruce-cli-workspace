@@ -2,7 +2,7 @@ import { test, assert } from '@sprucelabs/test'
 import AbstractErrorTest from '../../../AbstractErrorTest'
 import FeatureFixture from '../../../fixtures/FeatureFixture'
 
-export default class SettingUpErrorTests extends AbstractErrorTest {
+export default class SettingUpErrorTest extends AbstractErrorTest {
 	@test()
 	protected static async failsIfSkillIsNotInstalled() {
 		const fixture = new FeatureFixture(this.cwd)

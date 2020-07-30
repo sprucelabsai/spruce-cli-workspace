@@ -93,7 +93,7 @@ const diskUtil = {
 				throw new SpruceError({
 					code: 'FILE_EXISTS',
 					file: filePathToWrite,
-					friendlyMessage: `The file already exists. Remove this file or set a different WriteMode`,
+					friendlyMessage: `The file already exists.`,
 				})
 			}
 

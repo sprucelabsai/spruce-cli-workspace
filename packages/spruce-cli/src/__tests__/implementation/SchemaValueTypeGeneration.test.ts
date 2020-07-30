@@ -2,7 +2,6 @@ import { templates, IValueTypes } from '@sprucelabs/spruce-templates'
 import { assert, test } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
 import { CORE_NAMESPACE, CORE_SCHEMA_VERSION } from '../../constants'
-import { Service } from '../../factories/ServiceFactory'
 import SchemaGenerator from '../../generators/SchemaGenerator'
 import diskUtil from '../../utilities/disk.utility'
 
@@ -73,7 +72,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		const first = results[0].path
 		assert.isTrue(diskUtil.doesFileExist(first))
 
-		await this.Service(Service.TypeChecker).check(first)
+		await this.Service('typeChecker').check(first)
 	}
 
 	@test(
@@ -119,9 +118,9 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	) {
 		const results = await this.generateValueTypes()
 
-		const valueTypes = await this.Service(Service.Import).importDefault<
-			IValueTypes
-		>(results[0].path)
+		const valueTypes = await this.Service('import').importDefault<IValueTypes>(
+			results[0].path
+		)
 
 		assert.isObject(valueTypes)
 		assert.isAbove(

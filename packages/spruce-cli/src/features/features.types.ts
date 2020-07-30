@@ -10,7 +10,7 @@ import ErrorFeature from './error/ErrorFeature'
 import FeatureInstaller from './FeatureInstaller'
 import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
-import TestFeature from './TestFeature'
+import TestFeature from './test/TestFeature'
 import VsCodeFeature from './VsCodeFeature'
 
 export interface IFeatureActionOptions {

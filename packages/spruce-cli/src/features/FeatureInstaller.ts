@@ -186,7 +186,7 @@ export default class FeatureInstaller implements IServiceProvider {
 			}
 		})
 
-		const pkgService = this.Service(Service.Pkg)
+		const pkgService = this.Service('pkg')
 
 		if (packagesToInstall.length > 0) {
 			await pkgService.install(packagesToInstall)

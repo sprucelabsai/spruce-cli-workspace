@@ -70,6 +70,8 @@ export default class CommandService {
 							code: 'EXECUTING_COMMAND_FAILED',
 							cmd: JSON.stringify({ executable, args }),
 							cwd,
+							stdout,
+							stderr,
 							originalError: new Error(stderr),
 						})
 					)

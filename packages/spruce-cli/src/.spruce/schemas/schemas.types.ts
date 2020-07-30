@@ -983,6 +983,45 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
 export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
+	/** Important: Start here! */
+	export interface ICreateTestAction {
+		
+			/** Type. */
+			'type': ("behavioral" | "implementation")
+			/** What are you testing?. E.g. Booking an appointment or Turning on a light */
+			'name': string
+	}
+
+	export interface ICreateTestActionSchema extends SpruceSchema.ISchema {
+		id: 'createTestAction',
+		name: 'Create test action',
+		description: 'Important: Start here!',
+		    fields: {
+		            /** Type. */
+		            'type': {
+		                label: 'Type',
+		                type: FieldType.Select,
+		                isRequired: true,
+		                options: {choices: [{"value":"behavioral","label":"Behavioral"},{"value":"implementation","label":"Implementation"}],}
+		            },
+		            /** What are you testing?. E.g. Booking an appointment or Turning on a light */
+		            'name': {
+		                label: 'What are you testing?',
+		                type: FieldType.Text,
+		                isRequired: true,
+		                hint: 'E.g. Booking an appointment or Turning on a light',
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type CreateTestActionEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ICreateTestActionSchema>
+
+}
+
+
+export declare namespace SpruceSchemas.Local.v2020_07_22 {
+
 	/** Keep your errors types in sync with your builders */
 	export interface IErrorSyncAction {
 		

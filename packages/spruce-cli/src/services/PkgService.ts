@@ -2,7 +2,6 @@ import pathUtil from 'path'
 import fs from 'fs-extra'
 import { set } from 'lodash'
 import SpruceError from '../errors/SpruceError'
-import { WriteMode } from '../types/cli.types'
 import CommandService from './CommandService'
 
 export interface IAddOptions {
@@ -15,29 +14,13 @@ export default class PkgService extends CommandService {
 		return contents[path]
 	}
 
-	public set(options: {
-		path: string
-		value: string | Record<string, any>
-		mode?: WriteMode
-	}) {
-		const { path, value, mode = WriteMode.Skip } = options
+	public set(options: { path: string; value: string | Record<string, any> }) {
+		const { path, value } = options
 		const contents = this.readPackage()
-		const pathExists = typeof contents[path] !== 'undefined'
+		const updated = set(contents, path, value)
+		const destination = pathUtil.join(this.cwd, 'package.json')
 
-		if (pathExists && mode === WriteMode.Throw) {
-			throw new SpruceError({
-				code: 'KEY_EXISTS',
-				friendlyMessage: `${path} already exists in package.json`,
-				key: path,
-			})
-		}
-
-		if (!pathExists || mode === WriteMode.Overwrite) {
-			const updated = set(contents, path, value)
-			const destination = pathUtil.join(this.cwd, 'package.json')
-
-			fs.outputFileSync(destination, JSON.stringify(updated, null, 2))
-		}
+		fs.outputFileSync(destination, JSON.stringify(updated, null, 2))
 	}
 
 	public readPackage(): Record<string, any | undefined> {

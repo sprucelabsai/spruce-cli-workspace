@@ -3,7 +3,6 @@ import { Command } from 'commander'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
-import { Service } from '../factories/ServiceFactory'
 import PinService from '../services/PinService'
 import RemoteStore from '../stores/RemoteStore'
 import SkillStore from '../stores/SkillStore'
@@ -176,7 +175,7 @@ export default class UserCommand extends AbstractCommand {
 		}
 	}
 	private PinService = () => {
-		return this.serviceFactory.Service(this.cwd, Service.Pin)
+		return this.serviceFactory.Service(this.cwd, 'pin')
 	}
 	public constructor(options: IUserCommandOptions) {
 		super(options)

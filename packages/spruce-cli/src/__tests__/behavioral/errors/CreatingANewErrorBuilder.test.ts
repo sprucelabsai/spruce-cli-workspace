@@ -1,6 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
 import AbstractErrorTest from '../../../AbstractErrorTest'
-import { Service } from '../../../factories/ServiceFactory'
 import testUtil from '../../../utilities/test.utility'
 
 export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
@@ -46,7 +45,7 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 			results.files ?? []
 		)
 
-		await this.Service(Service.TypeChecker).check(match)
+		await this.Service('typeChecker').check(match)
 	}
 
 	@test()
@@ -61,13 +60,13 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 			results.files ?? []
 		)
 
-		await this.Service(Service.TypeChecker).check(schemaMatch)
+		await this.Service('typeChecker').check(schemaMatch)
 
 		const optionsMatch = testUtil.assertsFileByNameInGeneratedFiles(
 			/options\.types/,
 			results.files ?? []
 		)
 
-		await this.Service(Service.TypeChecker).check(optionsMatch)
+		await this.Service('typeChecker').check(optionsMatch)
 	}
 }

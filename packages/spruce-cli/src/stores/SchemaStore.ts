@@ -9,7 +9,6 @@ import globby from 'globby'
 import { uniqBy } from 'lodash'
 import { LOCAL_NAMESPACE, CORE_NAMESPACE } from '../constants'
 import SpruceError from '../errors/SpruceError'
-import { Service } from '../factories/ServiceFactory'
 import SchemaTemplateItemBuilder from '../templateItemBuilders/SchemaTemplateItemBuilder'
 import {
 	personSchema,
@@ -140,7 +139,7 @@ export default class SchemaStore extends AbstractStore {
 			)
 		)
 
-		const schemaService = this.Service(Service.Schema)
+		const schemaService = this.Service('schema')
 		const errors: SpruceError[] = []
 		const definitions: ISchema[] = []
 
@@ -194,7 +193,7 @@ export default class SchemaStore extends AbstractStore {
 		localLookupDir: string
 	): Promise<IFetchFieldTemplateItemsResponse> {
 		const cwd = pathUtil.join(__dirname, '..', '..')
-		const localImportService = this.Service(Service.Import, cwd)
+		const localImportService = this.Service('import', cwd)
 
 		// TODO load from core
 		const coreAddonsPromise = Promise.all(
@@ -219,7 +218,7 @@ export default class SchemaStore extends AbstractStore {
 		)
 
 		const localErrors: SpruceError[] = []
-		const importService = this.Service(Service.Import)
+		const importService = this.Service('import')
 
 		const localAddonsPromise = Promise.all(
 			(

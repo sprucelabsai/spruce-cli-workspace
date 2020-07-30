@@ -1,6 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
-import { Service } from '../../../factories/ServiceFactory'
 import diskUtil from '../../../utilities/disk.utility'
 import testUtil from '../../../utilities/test.utility'
 
@@ -26,7 +25,7 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 			results.files ?? []
 		)
 
-		const checker = this.Service(Service.TypeChecker)
+		const checker = this.Service('typeChecker')
 
 		await checker.check(personSchemaMatch)
 		await checker.check(petSchemaMatch)

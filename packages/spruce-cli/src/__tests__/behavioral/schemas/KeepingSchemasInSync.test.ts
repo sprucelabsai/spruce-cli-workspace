@@ -1,7 +1,6 @@
 import { assert, test } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
 import { CORE_SCHEMA_VERSION, CORE_NAMESPACE } from '../../../constants'
-import { Service } from '../../../factories/ServiceFactory'
 import diskUtil from '../../../utilities/disk.utility'
 import testUtil from '../../../utilities/test.utility'
 import versionUtil from '../../../utilities/version.utility'
@@ -69,14 +68,14 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		await this.syncSchemas('keeps-schemas-in-sync')
 
 		const typesFile = this.schemaTypesFile
-		await this.Service(Service.TypeChecker).check(typesFile)
+		await this.Service('typeChecker').check(typesFile)
 	}
 
 	@test()
 	protected static async schemasStayInSyncWhenDefinitionsAreDeleted() {
 		const cli = await this.syncSchemas('keeps-schemas-in-sync')
 		const version = versionUtil.generateVersion()
-		const typeChecker = this.Service(Service.TypeChecker)
+		const typeChecker = this.Service('typeChecker')
 		const createAction = cli.getFeature('schema').Action('create')
 
 		const matcher = new RegExp(

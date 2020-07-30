@@ -6,7 +6,7 @@ import QuizComponent, {
 	IQuizOptions,
 	IQuizQuestions,
 } from '../components/QuizComponent'
-import ServiceFactory, { Service } from '../factories/ServiceFactory'
+import ServiceFactory from '../factories/ServiceFactory'
 import TerminalInterface from '../interfaces/TerminalInterface'
 import log from '../singletons/log'
 
@@ -23,15 +23,15 @@ export default abstract class AbstractCommand {
 	protected serviceFactory: ServiceFactory
 
 	protected LintService = () => {
-		return this.serviceFactory.Service(this.cwd, Service.Lint)
+		return this.serviceFactory.Service(this.cwd, 'lint')
 	}
 
 	protected SchemaService = () => {
-		return this.serviceFactory.Service(this.cwd, Service.Schema)
+		return this.serviceFactory.Service(this.cwd, 'schema')
 	}
 
 	protected CommandService = () => {
-		return this.serviceFactory.Service(this.cwd, Service.Command)
+		return this.serviceFactory.Service(this.cwd, 'command')
 	}
 
 	public constructor(options: ICommandOptions) {

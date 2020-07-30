@@ -1,6 +1,5 @@
 import { assert, test } from '@sprucelabs/test'
 import AbstractErrorTest from '../../../AbstractErrorTest'
-import { Service } from '../../../factories/ServiceFactory'
 import diskUtil from '../../../utilities/disk.utility'
 import testUtil from '../../../utilities/test.utility'
 
@@ -26,7 +25,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 			results.files ?? []
 		)
 
-		await this.Service(Service.TypeChecker).check(optionsMatch)
+		await this.Service('typeChecker').check(optionsMatch)
 
 		const typesMatch = testUtil.assertsFileByNameInGeneratedFiles(
 			/^errors\.types/,
@@ -111,6 +110,6 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 			results.files ?? []
 		)
 
-		await this.Service(Service.TypeChecker).check(match)
+		await this.Service('typeChecker').check(match)
 	}
 }

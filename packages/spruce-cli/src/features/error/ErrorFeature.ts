@@ -1,4 +1,3 @@
-import { Service } from '../../factories/ServiceFactory'
 import { INpmPackage } from '../../types/cli.types'
 import diskUtil from '../../utilities/disk.utility'
 import AbstractFeature from '../AbstractFeature'
@@ -19,6 +18,6 @@ export default class ErrorFeature extends AbstractFeature {
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public async isInstalled() {
-		return this.Service(Service.Pkg).isInstalled('@sprucelabs/error')
+		return this.Service('pkg').isInstalled('@sprucelabs/error')
 	}
 }

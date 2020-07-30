@@ -1,6 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
-import { Service } from '../../../factories/ServiceFactory'
 import {
 	IFeatureActionExecuteResponse,
 	IFeatureAction,
@@ -63,7 +62,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 	protected static async builderAndDefinitionFileValidates() {
 		const response = await this.buildTestSchema()
 
-		const checker = this.Service(Service.TypeChecker)
+		const checker = this.Service('typeChecker')
 
 		await checker.check(response.files?.[0].path ?? '')
 		await checker.check(this.schemaTypesFile)
