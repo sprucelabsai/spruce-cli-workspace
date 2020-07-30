@@ -119,6 +119,7 @@ export default class FeatureFixture {
 		const dirs = [
 			// TODO make this so it does not need to be updated for each feature
 			this.resolveHashSprucePath(),
+			diskUtil.resolvePath(this.cwd, 'build'),
 			diskUtil.resolvePath(this.cwd, 'src', 'schemas'),
 			diskUtil.resolvePath(this.cwd, 'src', 'errors'),
 		]

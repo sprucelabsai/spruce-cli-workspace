@@ -32,6 +32,7 @@
 			"runtimeExecutable": "${env:NVM_BIN}/node",
 			"runtimeArgs": [
 				"--inspect-brk",
+				"--trace-warnings",
 				"${workspaceFolder}/node_modules/.bin/jest",
 				"${fileBasenameNoExtension}",
 				"--detectOpenHandles",

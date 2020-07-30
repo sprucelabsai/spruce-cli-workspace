@@ -20,7 +20,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	private static _term: IGraphicsInterface
 
 	protected static freshCwd() {
-		const tmpDirectory = pathUtil.join(os.tmpdir(), 'tmp', uuid.v4())
+		const tmpDirectory = pathUtil.join(os.tmpdir(), 'spruce-cli', uuid.v4())
 		fs.ensureDirSync(tmpDirectory)
 
 		return tmpDirectory
@@ -45,7 +45,6 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static async beforeEach() {
 		super.beforeEach()
-
 		this.cwd = this.freshCwd()
 	}
 

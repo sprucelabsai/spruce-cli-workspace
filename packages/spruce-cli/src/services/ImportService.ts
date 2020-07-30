@@ -1,6 +1,5 @@
 import fs from 'fs-extra'
 import SpruceError from '../errors/SpruceError'
-import log from '../singletons/log'
 import CommandService from './CommandService'
 
 export default class ImportService extends CommandService {
@@ -11,6 +10,7 @@ export default class ImportService extends CommandService {
 		file: string
 	): Promise<T> => {
 		let defaultImported: T | undefined
+
 		if (!fs.existsSync(file)) {
 			throw new SpruceError({
 				code: 'FAILED_TO_IMPORT',
@@ -18,8 +18,6 @@ export default class ImportService extends CommandService {
 				friendlyMessage: `I couldn't find the definition file`,
 			})
 		}
-
-		log.trace(`Import default for: ${file}`)
 
 		try {
 			const { stdout } = await this.execute('node', {

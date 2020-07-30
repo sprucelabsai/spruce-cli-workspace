@@ -1,9 +1,11 @@
-import { spawn, SpawnOptions } from 'child_process'
+import { spawn, SpawnOptions, ChildProcess } from 'child_process'
 import stringArgv from 'string-argv'
 import SpruceError from '../errors/SpruceError'
 
 export default class CommandService {
 	public cwd: string
+	private activeChildProcess: ChildProcess | undefined
+	private ignoreCloseErrors = false
 
 	public constructor(cwd: string) {
 		this.cwd = cwd
@@ -44,6 +46,7 @@ export default class CommandService {
 				  }
 
 			const child = spawn(executable, args, spawnOptions)
+			this.activeChildProcess = child
 
 			child.stdout?.addListener('data', (data) => {
 				stdout += data
@@ -57,13 +60,12 @@ export default class CommandService {
 				child.stdout?.removeAllListeners()
 				child.stderr?.removeAllListeners()
 				child.removeAllListeners()
-				// const end = new Date()
 
-				// console.log(
-				// 	`running ${cmd} ${JSON.stringify(options?.args)} took ${end - start}`
-				// )
-				if (code === 0) {
+				this.activeChildProcess = undefined
+
+				if (code === 0 || this.ignoreCloseErrors) {
 					resolve({ stdout })
+					this.ignoreCloseErrors = false
 				} else {
 					reject(
 						new SpruceError({
@@ -78,5 +80,13 @@ export default class CommandService {
 				}
 			})
 		})
+	}
+
+	public kill() {
+		if (this.activeChildProcess) {
+			this.ignoreCloseErrors = true
+			this.activeChildProcess.kill()
+			this.activeChildProcess = undefined
+		}
 	}
 }
