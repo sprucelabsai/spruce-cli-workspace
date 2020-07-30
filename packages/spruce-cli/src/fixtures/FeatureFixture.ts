@@ -69,11 +69,11 @@ export default class FeatureFixture {
 	private async loadCachedSkill(cacheKey: string) {
 		const settingsFile = this.getSettingsFilePath()
 
-		if (!diskUtil.doesFileExist(settingsFile)) {
-			return false
-		}
+		const exists = diskUtil.doesFileExist(settingsFile)
 		let alreadyInstalled = false
-		const settingsObject = JSON.parse(diskUtil.readFile(settingsFile))
+		const settingsObject = exists
+			? JSON.parse(diskUtil.readFile(settingsFile))
+			: {}
 
 		if (settingsObject?.tmpDirs?.[cacheKey]) {
 			if (testUtil.shouldClearCache()) {
