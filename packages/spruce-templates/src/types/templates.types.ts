@@ -110,4 +110,5 @@ export interface ITestOptions {
 export interface IEventListenerOptions {
 	eventName: string
 	eventNamespace: string
+	nameConst: string
 }

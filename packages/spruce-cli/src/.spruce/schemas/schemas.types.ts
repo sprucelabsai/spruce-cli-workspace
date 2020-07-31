@@ -545,6 +545,26 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
 export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
+	/** Boot your skill, change the world. 🌎 */
+	export interface IBootSkillAction {
+		
+	}
+
+	export interface IBootSkillActionSchema extends SpruceSchema.ISchema {
+		id: 'bootSkillAction',
+		name: 'Boot skill action',
+		description: 'Boot your skill, change the world. 🌎',
+		    fields: {
+		    }
+	}
+
+	export type BootSkillActionEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.IBootSkillActionSchema>
+
+}
+
+
+export declare namespace SpruceSchemas.Local.v2020_07_22 {
+
 	/** A stripped down skill for the cli */
 	export interface ICliSkill {
 		

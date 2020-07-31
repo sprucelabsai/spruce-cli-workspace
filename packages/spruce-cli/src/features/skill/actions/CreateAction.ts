@@ -1,5 +1,5 @@
 import { buildSchema } from '@sprucelabs/schema'
-import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
+import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { IFeatureActionExecuteResponse } from '../../features.types'
 
 export const skillCreateActionOptionsDefinition = buildSchema({
