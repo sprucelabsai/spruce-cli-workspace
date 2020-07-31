@@ -24,7 +24,6 @@ jobs:
           command: |
             [ -n "$BASE64_ENV" ] && echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
       - run: node -v && npm -v && yarn -v
-      - run: yarn cache clean
       - run:
           name: "Test, build, and lint"
           command: |
@@ -32,6 +31,7 @@ jobs:
             cd packages/spruce-templates
             yarn build
             cd ../..
+						yarn cache clean
             cd packages/spruce-cli
             yarn build
             yarn test -w 2
