@@ -27,13 +27,13 @@ jobs:
       - run:
           name: "Test, build, and lint"
           command: |
-            yarn install
+            yarn install --frozen-lockfile
             cd packages/spruce-templates
             yarn build
             cd ../..
             cd packages/spruce-cli
             yarn build
-            yarn test -w 1
+            yarn test --runInBand --detectOpenHandles
             yarn lint
       - save_cache:
           key: yarn-packages-{{ checksum "yarn.lock" }}
