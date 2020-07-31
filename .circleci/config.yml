@@ -31,10 +31,9 @@ jobs:
             cd packages/spruce-templates
             yarn build
             cd ../..
-            yarn cache clean
             cd packages/spruce-cli
             yarn build
-            yarn test -w 2
+            yarn test -w 1
             yarn lint
       - save_cache:
           key: yarn-packages-{{ checksum "yarn.lock" }}
