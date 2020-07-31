@@ -33,7 +33,7 @@ jobs:
             cd ../..
             cd packages/spruce-cli
             yarn build
-            yarn test
+            yarn test -w 4
             yarn lint
       - save_cache:
           key: yarn-packages-{{ checksum "yarn.lock" }}
