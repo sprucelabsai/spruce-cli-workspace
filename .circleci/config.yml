@@ -28,7 +28,7 @@ jobs:
       - run:
           name: "Test, build, and lint"
           command: |
-            yarn install --frozen-lockfile
+            yarn install
             cd packages/spruce-templates
             yarn build
             cd ../..
