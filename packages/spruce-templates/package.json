@@ -3,7 +3,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"version": "10.13.0",
+	"version": "10.13.1",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
 	"files": [

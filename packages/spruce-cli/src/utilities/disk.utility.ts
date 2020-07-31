@@ -1,7 +1,9 @@
 import { exec } from 'child_process'
+import os from 'os'
 import pathUtil from 'path'
 import { IDirectoryTemplateFile } from '@sprucelabs/spruce-templates'
 import fs from 'fs-extra'
+import * as uuid from 'uuid'
 import { HASH_SPRUCE_DIR } from '../constants'
 import SpruceError from '../errors/SpruceError'
 
@@ -114,6 +116,16 @@ const diskUtil = {
 		}
 
 		await Promise.all(writes)
+	},
+	createTempDir(...files: string[]) {
+		const tmpDir = os.tmpdir()
+		const targetDir = pathUtil.join(tmpDir, ...files)
+		this.createDir(targetDir)
+
+		return targetDir
+	},
+	createRandomTempDir() {
+		return this.createTempDir(uuid.v4())
 	},
 }
 export default diskUtil
