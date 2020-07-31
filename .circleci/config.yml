@@ -31,7 +31,7 @@ jobs:
             cd packages/spruce-templates
             yarn build
             cd ../..
-						yarn cache clean
+            yarn cache clean
             cd packages/spruce-cli
             yarn build
             yarn test -w 2
