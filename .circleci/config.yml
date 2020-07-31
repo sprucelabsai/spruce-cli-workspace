@@ -24,6 +24,8 @@ jobs:
           command: |
             [ -n "$BASE64_ENV" ] && echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
       - run: node -v && npm -v && yarn -v
+      - restore_cache:
+          key: cli-import-service
       - run:
           name: "Test, build, and lint"
           command: |
@@ -36,9 +38,9 @@ jobs:
             yarn test -w 4
             yarn lint
       - save_cache:
-          key: yarn-packages-{{ checksum "yarn.lock" }}
+          key: cli-import-service
           paths:
-            - ~/.cache/yarn
+            - /tmp/import-service
       - run:
           name: Check branch for auto-upgrade
           command: |
