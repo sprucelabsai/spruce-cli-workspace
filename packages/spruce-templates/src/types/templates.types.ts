@@ -101,3 +101,8 @@ export interface IValueTypes {
 		}
 	}
 }
+
+export interface ITestOptions {
+	namePascal: string
+	nameCamel: string
+}

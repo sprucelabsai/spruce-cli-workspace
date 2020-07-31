@@ -1,5 +1,6 @@
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import { INpmPackage } from '../../types/cli.types'
+import diskUtil from '../../utilities/disk.utility'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
@@ -14,6 +15,7 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 		{ name: '@sprucelabs/test', isDev: true },
 		{ name: 'jest', isDev: true },
 	]
+	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public async afterPackageInstall() {
 		const jestConfig = {

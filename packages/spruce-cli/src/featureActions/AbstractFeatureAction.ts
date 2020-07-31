@@ -23,6 +23,9 @@ import {
 import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
 import { IGraphicsInterface } from '../types/cli.types'
 
+type StripNulls<T extends Record<string, any>> = {
+	[K in keyof T]: Exclude<T[K], null>
+}
 export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 	implements IFeatureAction<S>, IServiceProvider {
 	public abstract name: string
@@ -81,6 +84,6 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 
 		validateSchemaValues(schema, allOptions as SchemaValues<ISchema>)
 
-		return allOptions as SchemaValuesWithDefaults<S>
+		return allOptions as StripNulls<SchemaValuesWithDefaults<S>>
 	}
 }

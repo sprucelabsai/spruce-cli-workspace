@@ -52,7 +52,7 @@ export default class ImportService extends CommandService {
 					'-r',
 					'tsconfig-paths/register',
 					'-e',
-					`"try { const imported = require('${file}');console.log('${this.divider}');console.log(JSON.stringify(imported)); } catch(err) { console.log('${this.errorDivider}');console.log(err.toString()); }"`,
+					`"try { const imported = require('${file}');console.log('${this.divider}');console.log(JSON.stringify(imported)); } catch(err) { console.log('${this.errorDivider}');console.log(err.options ? err.toString() : err.stack); }"`,
 				],
 			})
 
