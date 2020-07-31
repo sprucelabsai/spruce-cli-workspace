@@ -40,6 +40,7 @@ import {
 	ISchemaBuilderTemplateItem,
 	IErrorOptions,
 	IErrorTemplateItem,
+	ITestOptions,
 } from './types/templates.types'
 import DirectoryTemplateUtility from './utilities/DirectoryTemplateUtility'
 import importExtractorUtil from './utilities/importExtractor.utility'
@@ -171,7 +172,7 @@ export const templates = {
 	},
 
 	/** Test file */
-	test(options: { namePascal: string }) {
+	test(options: ITestOptions) {
 		const template = templateImportUtil.getTemplate('tests/Test.test.ts.hbs')
 		return template(options)
 	},

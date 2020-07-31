@@ -1,6 +1,8 @@
+import os from 'os'
 import pathUtil from 'path'
 import fs from 'fs-extra'
 import { set } from 'lodash'
+import * as uuid from 'uuid'
 import SpruceError from '../errors/SpruceError'
 import CommandService from './CommandService'
 
@@ -64,6 +66,8 @@ export default class PkgService extends CommandService {
 			if (options?.dev) {
 				args.push('--dev')
 			}
+			const tmpDir = os.tmpdir()
+			args.push('--cache-folder', pathUtil.join(tmpDir, uuid.v4()))
 
 			await this.execute('yarn', {
 				args,

@@ -1,15 +1,16 @@
-import BaseSpruceTest, { ISpruce, test, assert } from '@sprucelabs/test'
+import AbstractSpruceTest, { test, assert } from '@sprucelabs/test'
 
-export default class {{namePascal}}Test extends BaseSpruceTest {
-	@test('Can do some trivial asserts', 'hello', 'world')
-	protected static async canAccessVarsFromDecorator(
-		spruce: ISpruce,
-		hello: string,
-		world: string
-	) {
-		assert.isOk(spruce, 'Failed to load Spruce')
-		assert.isOk(spruce.mercury, 'Mercury missing from Spruce')
-		assert.isEqual(hello, 'hello')
-		assert.isEqual(world, 'world')
+export default class {{namePascal}}Test extends AbstractSpruceTest {
+
+	@test('Tests can accept vars', 'hello', 'world')
+	protected static async exampleWithVars(str1: string, str2: string) {
+		assert.isEqual(str1, 'hello')
+		assert.isEqual(str2, 'world')
+	}
+
+
+	@test()
+	protected static async {{nameCamel}}() {
+		assert.isTrue(false)	
 	}
 }
