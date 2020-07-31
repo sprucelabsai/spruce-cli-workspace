@@ -7,6 +7,7 @@ import { IGeneratedFile, IGraphicsInterface } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
 import CircleCIFeature from './CircleCIFeature'
 import ErrorFeature from './error/ErrorFeature'
+import EventFeature from './event/EventFeature'
 import FeatureInstaller from './FeatureInstaller'
 import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
@@ -58,6 +59,10 @@ export type InstallFeature =
 			code: 'vsCode'
 			options?: undefined
 	  }
+	| {
+			code: 'event'
+			options?: undefined
+	  }
 
 export interface IInstallFeatureOptions {
 	features: InstallFeature[]
@@ -71,6 +76,7 @@ export interface IFeatureMap {
 	skill: SkillFeature
 	test: TestFeature
 	vsCode: VsCodeFeature
+	event: EventFeature
 }
 
 export interface IFeatureActionExecuteResponse {

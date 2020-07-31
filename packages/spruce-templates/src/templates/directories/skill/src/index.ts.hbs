@@ -21,6 +21,18 @@ if (isSchemaInstalled) {
 	}
 }
 
+const eventsPath = pathUtil.join(
+	__dirname,
+	'events'
+)
+const doEventsExist = fs.existsSync(eventsPath)
+
+if (doEventsExist) {
+	health.event = {
+		status: 'passed',
+	}
+}
+
 console.log('#####DIVIDER#####')
 console.log(JSON.stringify(health))
 console.log('#####DIVIDER#####')

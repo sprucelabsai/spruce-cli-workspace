@@ -106,3 +106,8 @@ export interface ITestOptions {
 	namePascal: string
 	nameCamel: string
 }
+
+export interface IEventListenerOptions {
+	eventName: string
+	eventNamespace: string
+}

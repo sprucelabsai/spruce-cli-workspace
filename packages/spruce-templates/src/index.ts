@@ -41,6 +41,7 @@ import {
 	IErrorOptions,
 	IErrorTemplateItem,
 	ITestOptions,
+	IEventListenerOptions,
 } from './types/templates.types'
 import DirectoryTemplateUtility from './utilities/DirectoryTemplateUtility'
 import importExtractorUtil from './utilities/importExtractor.utility'
@@ -205,6 +206,11 @@ export const templates = {
 		const template = templateImportUtil.getTemplate(
 			'schemas/fields/fieldTypeEnum.ts.hbs'
 		)
+		return template(options)
+	},
+
+	listener(options: IEventListenerOptions) {
+		const template = templateImportUtil.getTemplate('events/listener.ts.hbs')
 		return template(options)
 	},
 

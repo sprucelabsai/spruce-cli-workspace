@@ -44,9 +44,7 @@ const namesUtil = {
 		switch (fieldName) {
 			case 'nameCamel':
 				if (!values.nameCamel) {
-					fieldDefinition.defaultValue = this.toSingular(
-						this.toCamel(values.nameReadable || '')
-					)
+					fieldDefinition.defaultValue = this.toCamel(values.nameReadable || '')
 				}
 				break
 			case 'nameCamelPlural':
@@ -58,23 +56,22 @@ const namesUtil = {
 				break
 			case 'namePascal':
 				if (!values.namePascal) {
-					fieldDefinition.defaultValue = this.toSingular(
-						this.toPascal(values.nameReadable || '')
+					fieldDefinition.defaultValue = this.toPascal(
+						values.nameReadable || ''
 					)
 				}
+
 				break
 			case 'namePascalPlural':
 				if (!values.namePascalPlural) {
-					fieldDefinition.defaultValue = this.toSingular(
+					fieldDefinition.defaultValue = this.toPlural(
 						this.toPascal(values.nameReadable || '')
 					)
 				}
 				break
 			case 'nameConst':
 				if (!values.nameConst) {
-					fieldDefinition.defaultValue = this.toSingular(
-						this.toConst(values.nameReadable || '')
-					)
+					fieldDefinition.defaultValue = this.toConst(values.nameReadable || '')
 				}
 				break
 		}
