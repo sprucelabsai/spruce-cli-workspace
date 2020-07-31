@@ -145,6 +145,7 @@
 						"errorFileShouldBeUpdated": "C10",
 						"buildCreatesValidDefinitionAndOptionsFile": "C11",
 						"errorsStayInSyncWhenSchemasAreDeleted": "C12",
+						"createsValidListener": "C13",
 						"canGetLatestVersionBasedOnDir": "C16",
 						"canBuildSkill": "C24",
 						"canWatchAndBuild": "C25"

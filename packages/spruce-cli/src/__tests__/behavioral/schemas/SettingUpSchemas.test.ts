@@ -40,8 +40,8 @@ export default class SettingUpSchemasTests extends AbstractSchemaTest {
 	@test()
 	protected static async schemaPassesHealthCheck() {
 		const cli = await this.installSchemaFeature('setting-up-schemas')
-		const status = await cli.checkHealth()
+		const health = await cli.checkHealth()
 
-		assert.isEqual(status.schema.status, 'passed')
+		assert.isEqual(health.schema.status, 'passed')
 	}
 }

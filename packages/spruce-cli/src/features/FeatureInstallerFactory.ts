@@ -6,6 +6,7 @@ import StoreFactory from '../stores/StoreFactory'
 import { IGraphicsInterface } from '../types/cli.types'
 import CircleCIFeature from './CircleCIFeature'
 import ErrorFeature from './error/ErrorFeature'
+import EventFeature from './event/EventFeature'
 import FeatureInstaller from './FeatureInstaller'
 import { FeatureCode } from './features.types'
 import SchemaFeature from './schema/SchemaFeature'
@@ -21,6 +22,7 @@ export default class FeatureInstallerFactory {
 		SkillFeature,
 		TestFeature,
 		VsCodeFeature,
+		EventFeature,
 	]
 
 	public static readonly featureCodes: FeatureCode[] = [
@@ -30,6 +32,7 @@ export default class FeatureInstallerFactory {
 		'skill',
 		'test',
 		'vsCode',
+		'event',
 	]
 
 	public static WithAllFeatures(options: {

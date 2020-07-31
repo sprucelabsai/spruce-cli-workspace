@@ -7,6 +7,7 @@ import {
 	SchemaValuesWithDefaults,
 } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import ServiceFactory, {
 	IServiceProvider,
 	Service,
@@ -22,6 +23,8 @@ import {
 } from '../features/features.types'
 import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
 import { IGraphicsInterface } from '../types/cli.types'
+import diskUtil from '../utilities/disk.utility'
+import versionUtil from '../utilities/version.utility'
 
 type StripNulls<T extends Record<string, any>> = {
 	[K in keyof T]: Exclude<T[K], null>
@@ -85,5 +88,71 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 		validateSchemaValues(schema, allOptions as SchemaValues<ISchema>)
 
 		return allOptions as StripNulls<SchemaValuesWithDefaults<S>>
+	}
+
+	protected async resolveVersion(
+		userSuppliedVersion: string | null | undefined,
+		resolvedDestination: string
+	) {
+		let resolvedVersion = versionUtil.normalizeVersion(
+			userSuppliedVersion ?? undefined
+		)
+
+		if (!userSuppliedVersion) {
+			resolvedVersion = await this.askForVersion(
+				resolvedDestination,
+				resolvedVersion
+			)
+		}
+		versionUtil.assertValidVersion(resolvedVersion)
+
+		return versionUtil.generateVersion(resolvedVersion).dirValue
+	}
+
+	private async askForVersion(
+		resolvedDestination: string,
+		fallbackVersion: string
+	) {
+		const versions = diskUtil.doesDirExist(resolvedDestination)
+			? versionUtil.getAllVersions(resolvedDestination)
+			: []
+		const todaysVersion = versionUtil.generateVersion()
+
+		let version = fallbackVersion
+		const alreadyHasToday = !!versions.find(
+			(version) => version.dirValue === todaysVersion.dirValue
+		)
+		const choices = []
+
+		if (!alreadyHasToday) {
+			choices.push({
+				label: 'New Version',
+				value: todaysVersion.dirValue,
+			})
+		}
+
+		choices.push(
+			...versions
+				.sort((a, b) => {
+					return a.intValue > b.intValue ? -1 : 1
+				})
+				.map((version) => ({
+					value: version.dirValue,
+					label: version.dirValue,
+				}))
+		)
+
+		if (versions.length > 0) {
+			version = await this.term.prompt({
+				type: FieldType.Select,
+				label: 'Version',
+				hint: 'Confirm which version you want to use?',
+				isRequired: true,
+				options: {
+					choices,
+				},
+			})
+		}
+		return version
 	}
 }
