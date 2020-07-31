@@ -48,7 +48,7 @@
 		"@sprucelabs/error": "^2.0.12",
 		"@sprucelabs/log": "^10.2.60",
 		"@sprucelabs/mercury": "^10.5.56",
-		"@sprucelabs/schema": "^7.0.13",
+		"@sprucelabs/schema": "^7.0.14",
 		"@sprucelabs/spruce-templates": "^10.12.2",
 		"@types/promise.allsettled": "^1.0.3",
 		"@types/uuid": "^8.0.0",
