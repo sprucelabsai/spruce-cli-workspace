@@ -101,7 +101,7 @@
 		"concurrently": "^5.2.0",
 		"conventional-changelog-sprucelabs": "^1.1.1",
 		"dotenv": "^8.2.0",
-		"eslint": "^7.5.0",
+		"eslint": "^7.6.0",
 		"google-spreadsheet": "^3.0.11",
 		"jest": "^26.2.2",
 		"jest-reporters": "^0.0.2",
