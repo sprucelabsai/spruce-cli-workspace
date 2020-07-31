@@ -1,4 +1,5 @@
 import fs from 'fs-extra'
+import md5 from 'md5'
 import SpruceError from '../errors/SpruceError'
 import diskUtil from '../utilities/disk.utility'
 import CommandService from './CommandService'
@@ -7,28 +8,35 @@ export default class ImportService extends CommandService {
 	private divider = '## SPRUCE-CLI DIVIDER ##'
 	private errorDivider = '## SPRUCE-CLI ERROR DIVIDER ##'
 
-	private static cachedImports: Record<
-		string,
-		{ hash: string; response: Record<string, any> }
-	> = {}
+	private static cachedImports: Record<string, Record<string, any>> = {}
 
 	public importAll = async <T extends Record<string, any>>(
 		file: string
 	): Promise<T> => {
 		const fileContents = diskUtil.readFile(file)
+		const hash = md5(fileContents)
 
-		if (ImportService.cachedImports[file]) {
-			if (ImportService.cachedImports[file].hash === fileContents) {
-				return ImportService.cachedImports[file].response as T
-			}
+		if (ImportService.cachedImports[hash]) {
+			return ImportService.cachedImports[hash] as T
 		}
 
-		ImportService.cachedImports[file] = {
-			hash: fileContents,
-			response: this.importAllUncached(file),
+		const resolvedFilePath = diskUtil.resolvePath(
+			diskUtil.createTempDir('import-service'),
+			hash + '.json'
+		)
+
+		if (diskUtil.doesFileExist(resolvedFilePath)) {
+			const cachedFileContents = diskUtil.readFile(resolvedFilePath)
+
+			ImportService.cachedImports[hash] = JSON.parse(cachedFileContents)
+			return ImportService.cachedImports[hash] as T
 		}
 
-		return ImportService.cachedImports[file].response as T
+		ImportService.cachedImports[hash] = this.importAllUncached(file)
+		return ImportService.cachedImports[hash].then((response: T) => {
+			diskUtil.writeFile(resolvedFilePath, JSON.stringify(response))
+			return response
+		})
 	}
 
 	private importAllUncached = async <T extends Record<string, any>>(
@@ -100,8 +108,9 @@ export default class ImportService extends CommandService {
 		return defaultImported as T
 	}
 
-	// eslint-disable-next-line @typescript-eslint/ban-types
-	public importDefault = async <T extends {}>(file: string): Promise<T> => {
+	public importDefault = async <T extends Record<string, any>>(
+		file: string
+	): Promise<T> => {
 		const imported: any = await this.importAll(file)
 		return imported.default as T
 	}
