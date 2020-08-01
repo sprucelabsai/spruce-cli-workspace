@@ -4,7 +4,8 @@
 	"name": "spruce-cli-workspace",
 	"workspaces": [
 		"packages/spruce-cli",
-		"packages/spruce-templates"
+		"packages/spruce-templates",
+		"packages/spruce-skill-utils"
 	],
 	"engines": {
 		"node": ">=10",
