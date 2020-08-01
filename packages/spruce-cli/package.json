@@ -3,7 +3,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"version": "10.13.1",
+	"version": "10.14.4",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -45,11 +45,11 @@
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.11.0",
-		"@sprucelabs/error": "^2.0.13",
-		"@sprucelabs/log": "^10.2.61",
-		"@sprucelabs/mercury": "^10.5.57",
-		"@sprucelabs/schema": "^7.0.19",
-		"@sprucelabs/spruce-templates": "^10.13.1",
+		"@sprucelabs/error": "^2.0.16",
+		"@sprucelabs/log": "^10.2.64",
+		"@sprucelabs/mercury": "^10.5.60",
+		"@sprucelabs/schema": "^7.0.24",
+		"@sprucelabs/spruce-templates": "^10.14.4",
 		"@types/promise.allsettled": "^1.0.3",
 		"@types/uuid": "^8.0.0",
 		"blessed": "^0.1.81",
@@ -71,7 +71,7 @@
 		"promise.allsettled": "^1.0.2",
 		"regenerator-runtime": "^0.13.7",
 		"semver": "^7.3.2",
-		"slug": "^3.3.2",
+		"slug": "^3.3.4",
 		"string-argv": "^0.3.1",
 		"tsutils": "^3.17.1",
 		"typescript": "^3.9.7",
@@ -79,7 +79,7 @@
 		"vm2": "^3.9.2"
 	},
 	"devDependencies": {
-		"@sprucelabs/test": "^5.3.79",
+		"@sprucelabs/test": "^5.3.83",
 		"@types/blessed": "^0.1.17",
 		"@types/eslint": "^7.2.0",
 		"@types/fs-extra": "^9.0.1",
@@ -101,7 +101,7 @@
 		"concurrently": "^5.2.0",
 		"conventional-changelog-sprucelabs": "^1.1.1",
 		"dotenv": "^8.2.0",
-		"eslint": "^7.5.0",
+		"eslint": "^7.6.0",
 		"google-spreadsheet": "^3.0.11",
 		"jest": "^26.2.2",
 		"jest-reporters": "^0.0.2",
