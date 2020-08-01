@@ -94,9 +94,9 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 		userSuppliedVersion: string | null | undefined,
 		resolvedDestination: string
 	) {
-		let resolvedVersion = versionUtil.normalizeVersion(
+		let resolvedVersion = versionUtil.generateVersion(
 			userSuppliedVersion ?? undefined
-		)
+		).dirValue
 
 		if (!userSuppliedVersion) {
 			resolvedVersion = await this.askForVersion(

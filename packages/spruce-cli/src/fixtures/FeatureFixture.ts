@@ -46,7 +46,7 @@ export default class FeatureFixture {
 		let alreadyInstalled = false
 
 		if (cacheKey && testUtil.isCacheEnabled()) {
-			alreadyInstalled = await this.loadCachedSkill(cacheKey)
+			alreadyInstalled = await this.loadCachedSkillAndTrackItsDir(cacheKey)
 		}
 
 		const cli = await this.Cli(bootOptions)
@@ -66,32 +66,32 @@ export default class FeatureFixture {
 		return cli
 	}
 
-	private async loadCachedSkill(cacheKey: string) {
+	private async loadCachedSkillAndTrackItsDir(cacheKey: string) {
 		const settingsFile = this.getSettingsFilePath()
 
 		const exists = diskUtil.doesFileExist(settingsFile)
 		let alreadyInstalled = false
-		const settingsObject = exists
+		let settingsObject = exists
 			? JSON.parse(diskUtil.readFile(settingsFile))
 			: {}
 
-		if (settingsObject?.tmpDirs?.[cacheKey]) {
+		if (settingsObject?.[cacheKey]) {
 			if (testUtil.shouldClearCache()) {
 				this.resetCachedSkillDir()
 			} else {
 				alreadyInstalled = true
 			}
 
-			await diskUtil.copyDir(settingsObject.tmpDirs[cacheKey], this.cwd)
+			await diskUtil.copyDir(settingsObject[cacheKey], this.cwd)
 		}
 
 		if (settingsFile) {
-			if (!settingsObject.tmpDirs) {
-				settingsObject.tmpDirs = {}
+			if (!settingsObject) {
+				settingsObject = {}
 			}
 
-			if (!settingsObject.tmpDirs[cacheKey]) {
-				settingsObject.tmpDirs[cacheKey] = this.cwd
+			if (!settingsObject[cacheKey]) {
+				settingsObject[cacheKey] = this.cwd
 				diskUtil.createDir(pathUtil.dirname(settingsFile))
 				diskUtil.writeFile(
 					settingsFile,
@@ -107,7 +107,7 @@ export default class FeatureFixture {
 		return diskUtil.resolveHashSprucePath(
 			__dirname,
 			'tmp',
-			'cli-workspace-tests.json'
+			'test-skill-dirs.json'
 		)
 	}
 

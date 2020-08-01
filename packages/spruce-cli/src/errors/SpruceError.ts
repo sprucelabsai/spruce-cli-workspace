@@ -82,7 +82,7 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 				break
 
 			case 'BOOT_FAILED':
-				message = 'A Boot failed just happened!'
+				message = `I couldn't boot your skill!`
 				break
 
 			case 'CREATE_AUTOLOADER_FAILED':
