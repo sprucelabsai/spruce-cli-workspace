@@ -26,12 +26,12 @@
 		"url": "https://github.com/sprucelabsai/spruce-cli-workspace/issues"
 	},
 	"scripts": {
-		"lint": "eslint '**/*.ts' && npm run lint.tsc",
+		"lint": "eslint '**/*.ts' && yarn lint.tsc",
 		"lint.tsc": "tsc --noEmit && echo 'PASS'",
 		"lint.fix": "eslint --fix '**/*.ts'",
-		"lint.watch": "chokidar 'src/**/*' '../spruce-templates/src/**' -c 'npm run lint.tsc'",
-		"rebuild": "cd ../ && npm run rebuild",
-		"build": "npm run build.babel",
+		"lint.watch": "chokidar 'src/**/*' '../spruce-templates/src/**' -c 'yarn lint.tsc'",
+		"rebuild": "cd ../ && yarn rebuild",
+		"build": "yarn build.babel",
 		"build.types": "tsc --emitDeclarationOnly",
 		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
 		"build.watch": "babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files --watch",

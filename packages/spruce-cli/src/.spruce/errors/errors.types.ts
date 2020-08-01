@@ -9,6 +9,26 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export declare namespace SpruceErrors.Local {
 
+	/** Booting your skill failed! */
+	export interface IBootFailed {
+		
+	}
+
+	export interface IBootFailedSchema extends SpruceSchema.ISchema {
+		id: 'bootFailed',
+		name: 'Boot failed',
+		description: 'Booting your skill failed!',
+		    fields: {
+		    }
+	}
+
+	export type BootFailedEntity = SchemaEntity<SpruceErrors.Local.IBootFailedSchema>
+
+}
+
+
+export declare namespace SpruceErrors.Local {
+
 	/** Error thrown when building or linting failed. Happens when a yarn command fails inside the package utility. */
 	export interface IBuildFailed {
 		

@@ -13,18 +13,18 @@ import ServiceFactory, {
 	Service,
 	IServiceMap,
 } from '../factories/ServiceFactory'
-import AbstractFeature from '../features/AbstractFeature'
-import FeatureInstaller from '../features/FeatureInstaller'
+import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
+import { IGraphicsInterface } from '../types/cli.types'
+import diskUtil from '../utilities/disk.utility'
+import versionUtil from '../utilities/version.utility'
+import AbstractFeature from './AbstractFeature'
+import FeatureInstaller from './FeatureInstaller'
 import {
 	IFeatureAction,
 	IFeatureActionExecuteResponse,
 	IFeatureActionOptions,
 	FeatureCode,
-} from '../features/features.types'
-import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
-import { IGraphicsInterface } from '../types/cli.types'
-import diskUtil from '../utilities/disk.utility'
-import versionUtil from '../utilities/version.utility'
+} from './features.types'
 
 type StripNulls<T extends Record<string, any>> = {
 	[K in keyof T]: Exclude<T[K], null>
@@ -94,9 +94,9 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 		userSuppliedVersion: string | null | undefined,
 		resolvedDestination: string
 	) {
-		let resolvedVersion = versionUtil.normalizeVersion(
+		let resolvedVersion = versionUtil.generateVersion(
 			userSuppliedVersion ?? undefined
-		)
+		).dirValue
 
 		if (!userSuppliedVersion) {
 			resolvedVersion = await this.askForVersion(

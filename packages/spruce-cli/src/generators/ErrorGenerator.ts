@@ -1,5 +1,5 @@
 import { IErrorTemplateItem } from '@sprucelabs/spruce-templates'
-import log from '../singletons/log'
+import { IGeneratedFile } from '../types/cli.types'
 import diskUtil from '../utilities/disk.utility'
 import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
 
@@ -29,37 +29,68 @@ export default class ErrorGenerator extends AbstractGenerator {
 				results
 			)
 		} else {
-			const errorBlock = this.templates.error({
-				errors,
-				renderClassDefinition: false,
-			})
-
-			// Try and drop in the block right before "default:"
-			const currentErrorContents = diskUtil.readFile(destinationFile)
-			const blockMatches = currentErrorContents.search(/default:/g)
-			if (blockMatches > -1) {
-				const newErrorContents =
-					currentErrorContents.substring(0, blockMatches) +
-					'\n' +
-					errorBlock +
-					'\n' +
-					currentErrorContents.substring(blockMatches)
-
-				results = this.writeFileIfChangedMixinResults(
-					destinationFile,
-					newErrorContents,
-					errors.length > 1
-						? `${errors.length} blocks of code were in to handle the new types of errors`
-						: 'A new block of code was added to handle the new error type',
-					results
-				)
-			} else {
-				// Could not write to file, output snippet suggestion
-				log.warn('Failed to add to Error.ts, here is the block to drop in')
+			const updates = this.dropInNewErrorCases(errors, destinationFile)
+			if (updates.length > 0) {
+				results.push({
+					...updates[0],
+					description: `${updates.length} new error cases were dropped in.`,
+				})
 			}
 		}
 
 		return results
+	}
+
+	private dropInNewErrorCases(
+		errors: IErrorTemplateItem[],
+		destinationFile: string
+	) {
+		let results: IGeneratedFile[] = []
+		errors.forEach((error) => {
+			results.push(...this.dropInErrorCaseIfMissing(error, destinationFile))
+		})
+		return results
+	}
+
+	private dropInErrorCaseIfMissing(
+		error: IErrorTemplateItem,
+		destinationFile: string
+	) {
+		let results: IGeneratedFile[] = []
+		const errorBlock = this.templates.error({
+			errors: [error],
+			renderClassDefinition: false,
+		})
+
+		// Try and drop in the block right before "default:"
+		const currentErrorContents = diskUtil.readFile(destinationFile)
+		const blockMatches = currentErrorContents.search(/default:/g)
+		if (
+			blockMatches > -1 &&
+			!this.doesErrorCaseExist(currentErrorContents, error)
+		) {
+			const newErrorContents =
+				currentErrorContents.substring(0, blockMatches) +
+				'\n' +
+				errorBlock +
+				'\n' +
+				currentErrorContents.substring(blockMatches)
+
+			results = this.writeFileIfChangedMixinResults(
+				destinationFile,
+				newErrorContents,
+				`A new block was added to handle ${error.code}.`,
+				results
+			)
+		}
+		return results
+	}
+
+	private doesErrorCaseExist(
+		currentContents: string,
+		error: IErrorTemplateItem
+	) {
+		return currentContents.search(new RegExp(`case '${error.code}':`)) > -1
 	}
 
 	public async generateOptionsTypesFile(

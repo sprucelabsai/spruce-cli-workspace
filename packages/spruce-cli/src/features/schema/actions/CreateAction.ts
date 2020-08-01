@@ -1,9 +1,9 @@
 import createSchemaActionSchema from '#spruce/schemas/local/v2020_07_22/createSchemaAction.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
 import SchemaGenerator from '../../../generators/SchemaGenerator'
 import diskUtil from '../../../utilities/disk.utility'
 import namesUtil from '../../../utilities/names.utility'
+import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { IFeatureAction } from '../../features.types'
 
 export default class CreateAction extends AbstractFeatureAction<

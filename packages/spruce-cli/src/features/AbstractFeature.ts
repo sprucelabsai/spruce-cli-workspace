@@ -8,12 +8,12 @@ import ServiceFactory, {
 	IServiceProvider,
 	IServiceMap,
 } from '../factories/ServiceFactory'
-import FeatureActionFactory, {
-	IFeatureActionFactoryOptions,
-} from '../featureActions/FeatureActionFactory'
 import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
 import { INpmPackage, IGraphicsInterface } from '../types/cli.types'
 import featuresUtil from './feature.utilities'
+import FeatureActionFactory, {
+	IFeatureActionFactoryOptions,
+} from './FeatureActionFactory'
 import FeatureInstaller from './FeatureInstaller'
 import { IFeatureAction } from './features.types'
 import { FeatureCode } from './features.types'

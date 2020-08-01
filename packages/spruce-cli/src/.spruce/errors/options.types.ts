@@ -2,6 +2,9 @@ import { SpruceErrors } from "#spruce/errors/errors.types"
 import { SpruceErrorOptions, ISpruceErrorOptions} from "@sprucelabs/error"
 import { SchemaErrorOptions } from '@sprucelabs/schema'
 
+export interface IBootFailedErrorOptions extends SpruceErrors.Local.IBootFailed, ISpruceErrorOptions {
+	code: 'BOOT_FAILED'
+}
 export interface IBuildFailedErrorOptions extends SpruceErrors.Local.IBuildFailed, ISpruceErrorOptions {
 	code: 'BUILD_FAILED'
 }
@@ -48,6 +51,6 @@ export interface IUserNotFoundErrorOptions extends SpruceErrors.Local.IUserNotFo
 	code: 'USER_NOT_FOUND'
 }
 
-type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | IBuildFailedErrorOptions  | ICommandNotImplementedErrorOptions  | ICreateAutoloaderFailedErrorOptions  | IDirectoryEmptyErrorOptions  | IExecutingCommandFailedErrorOptions  | IFailedToImportErrorOptions  | IFileExistsErrorOptions  | IPayloadArgsErrorOptions  | IGenericMercuryErrorOptions  | IGenericErrorOptions  | IInvalidCommandErrorOptions  | ILintFailedErrorOptions  | INotImplementedErrorOptions  | ISchemaFailedToImportErrorOptions  | IUserNotFoundErrorOptions 
+type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | IBootFailedErrorOptions  | IBuildFailedErrorOptions  | ICommandNotImplementedErrorOptions  | ICreateAutoloaderFailedErrorOptions  | IDirectoryEmptyErrorOptions  | IExecutingCommandFailedErrorOptions  | IFailedToImportErrorOptions  | IFileExistsErrorOptions  | IPayloadArgsErrorOptions  | IGenericMercuryErrorOptions  | IGenericErrorOptions  | IInvalidCommandErrorOptions  | ILintFailedErrorOptions  | INotImplementedErrorOptions  | ISchemaFailedToImportErrorOptions  | IUserNotFoundErrorOptions 
 
 export default ErrorOptions

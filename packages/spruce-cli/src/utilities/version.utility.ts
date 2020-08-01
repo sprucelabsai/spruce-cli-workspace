@@ -39,12 +39,12 @@ const versionUtil = {
 			})
 		return allDateIsh
 	},
-	/** Pass a string in YYYY-MM-DD leave to default to today */
 	generateVersion(dateFormattedString?: string) {
 		const date =
 			dateFormattedString && dateFormattedString.search(LATEST_TOKEN) === -1
 				? dateFormattedString
 				: formatDate(new Date())
+
 		const cleaned = date.replace(/[^\d_-]/gi, '')
 
 		return {
@@ -92,7 +92,6 @@ const versionUtil = {
 	resolvePath(cwd: string, ...paths: string[]) {
 		const { dirToRead, resolved } = parsePath(cwd, paths)
 
-		// check what dirs this we have
 		const allDateIsh = this.getAllVersions(dirToRead)
 
 		const latest = allDateIsh.pop()
@@ -109,14 +108,6 @@ const versionUtil = {
 	resolveNewLatestPath(cwd: string, ...paths: string[]) {
 		const { resolved } = parsePath(cwd, paths)
 		return resolved.replace('{{@latest}}', this.generateVersion().dirValue)
-	},
-
-	normalizeVersion(version?: string): string {
-		if (version) {
-			this.assertValidVersion(version)
-		}
-
-		return version ?? LATEST_HANDLEBARS
 	},
 
 	isValidVersion(version: string): boolean {

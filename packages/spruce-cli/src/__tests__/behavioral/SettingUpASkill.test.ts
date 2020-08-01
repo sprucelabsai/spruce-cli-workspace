@@ -42,25 +42,6 @@ export default class SettingUpASkill extends AbstractCliTest {
 	}
 
 	@test()
-	protected static async createsHashSpruceDir() {
-		const cli = await this.Cli()
-		await cli.installFeatures({
-			features: [
-				{
-					code: 'skill',
-					options: {
-						name: 'test',
-						description: 'This is such a good skill!',
-					},
-				},
-			],
-		})
-
-		const hashSpruceDir = this.resolveHashSprucePath()
-		assert.isTrue(diskUtil.doesDirExist(hashSpruceDir))
-	}
-
-	@test()
 	protected static async failsHealthCheckWithNothingInstalled() {
 		const cli = await this.Cli()
 		const health = await cli.checkHealth()
@@ -113,6 +94,9 @@ export default class SettingUpASkill extends AbstractCliTest {
 				},
 			],
 		})
+
+		const hashSpruceDir = this.resolveHashSprucePath()
+		assert.isTrue(diskUtil.doesDirExist(hashSpruceDir))
 
 		const health = await cli.checkHealth()
 

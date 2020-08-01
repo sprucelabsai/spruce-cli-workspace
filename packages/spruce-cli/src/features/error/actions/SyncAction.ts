@@ -5,10 +5,10 @@ import {
 import { IErrorTemplateItem } from '@sprucelabs/spruce-templates'
 import errorSyncActionSchema from '#spruce/schemas/local/v2020_07_22/errorSyncAction.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
 import ErrorGenerator from '../../../generators/ErrorGenerator'
 import diskUtil from '../../../utilities/disk.utility'
 import namesUtil from '../../../utilities/names.utility'
+import AbstractFeatureAction from '../../AbstractFeatureAction'
 import {
 	IFeatureActionExecuteResponse,
 	IFeatureAction,

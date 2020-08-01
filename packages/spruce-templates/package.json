@@ -26,12 +26,12 @@
 		"url": "https://github.com/sprucelabsai/spruce-cli/issues"
 	},
 	"scripts": {
-		"build": "npm run copy-templates && npm run build.babel && npm run build.types",
+		"build": "yarn copy-templates && yarn build.babel && yarn build.types",
 		"build.node": "tsc",
 		"build.types": "tsc --emitDeclarationOnly",
 		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps --root-mode upward",
 		"build.watch": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps --root-mode upward --watch",
-		"watch": "chokidar 'src/**/*' -c 'npm run build'",
+		"watch": "chokidar 'src/**/*' -c 'yarn build'",
 		"clean": "rm -rf build/",
 		"copy-templates": "mkdirp ./build/templates && cp -r ./src/templates/* ./build/templates",
 		"lint": "eslint '**/*.ts' && tsc -p . --noEmit",

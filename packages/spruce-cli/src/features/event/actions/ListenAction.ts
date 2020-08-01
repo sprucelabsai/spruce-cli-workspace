@@ -1,8 +1,8 @@
 import eventListenActionSchema from '#spruce/schemas/local/v2020_07_22/listenEventAction.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
 import EventGenerator from '../../../generators/EventGenerator'
 import diskUtil from '../../../utilities/disk.utility'
+import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { IFeatureActionExecuteResponse } from '../../features.types'
 
 export default class ListenAction extends AbstractFeatureAction<

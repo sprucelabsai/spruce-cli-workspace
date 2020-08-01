@@ -4,7 +4,7 @@ import contrib from 'blessed-contrib'
 // @ts-ignore
 import fonts from 'cfonts'
 import chalk from 'chalk'
-import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
+import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { IFeatureActionExecuteResponse } from '../../features.types'
 import Theme from '../Theme'
 

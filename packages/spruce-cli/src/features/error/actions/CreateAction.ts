@@ -1,6 +1,6 @@
 import createErrorActionSchema from '#spruce/schemas/local/v2020_07_22/createErrorAction.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import AbstractFeatureAction from '../../../featureActions/AbstractFeatureAction'
+import AbstractFeatureAction from '../../AbstractFeatureAction'
 import {
 	IFeatureAction,
 	IFeatureActionExecuteResponse,

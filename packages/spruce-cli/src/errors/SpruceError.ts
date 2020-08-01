@@ -81,6 +81,26 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
 
 				break
 
+			case 'BOOT_FAILED':
+				message = `I couldn't boot your skill!`
+				break
+
+			case 'CREATE_AUTOLOADER_FAILED':
+				message = 'A Could not create an autoloader just happened!'
+				break
+
+			case 'DIRECTORY_EMPTY':
+				message = 'A directory empty just happened!'
+				break
+
+			case 'FILE_EXISTS':
+				message = 'A fileExists just happened!'
+				break
+
+			case 'PAYLOAD_ARGS':
+				message = 'A Payload args just happened!'
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}
