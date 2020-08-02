@@ -2077,10 +2077,10 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.0.28":
-  version "7.0.28"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.28.tgz#9314bfc9594a203762b6934d08a5e56e83bd77a5"
-  integrity sha512-MesloDQs/5GgEM3JjbmpBIQUZzDJKz3paf51k3dhvIbFxb/KKAc85QxmWtAD90BMdB5bf9+tDgbJ3O8EVo6+1g==
+"@sprucelabs/schema@^7.0.29":
+  version "7.0.29"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.29.tgz#5f2fac49ec67d7c083a1854245e62dc8c5230566"
+  integrity sha512-7lz+hYSBU7SpNmPS+g/8+B6WxxQ17ZQrF1akWdvRW1GTnfLqvD6QTb/rKaeBzpmwk+jTL7gjZzRJloy81MEtNA==
   dependencies:
     "@sprucelabs/error" "^2.0.19"
     "@sprucelabs/log" "^10.2.67"
@@ -2089,10 +2089,10 @@
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^5.3.86":
-  version "5.3.86"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.86.tgz#decb6219686158a553b864a2c5f960b32d77b932"
-  integrity sha512-Yj+L68WVkdAnC6CN+kQmldlVq1inwrIhZWRqhctSVS1RxOgluruzykUSczwS2AdrZ15jZ/if0LyCn2Lh6kPJVA==
+"@sprucelabs/test@^5.3.87":
+  version "5.3.87"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.87.tgz#97d7586f1a19985ba28b796b5ac7fcecf9b4012a"
+  integrity sha512-ehTKOqfytyfVmw9SvHYjEbkRG+6QABYcsOJZnu0/yPPVyJNJ7tSjKcmcHNR7BPxoMAutc53Wn6UH7cTSstLebg==
   dependencies:
     "@babel/core" "^7.11.0"
     "@babel/preset-env" "^7.11.0"
@@ -5936,9 +5936,9 @@ is-directory@^0.3.1:
   integrity sha1-YTObbyR1/Hcv2cnYP1yFddwVSuE=
 
 is-docker@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/is-docker/-/is-docker-2.0.0.tgz#2cb0df0e75e2d064fe1864c37cdeacb7b2dcf25b"
-  integrity sha512-pJEdRugimx4fBMra5z2/5iRdZ63OhYV0vr0Dwm5+xtW4D1FvRkB8hamMIhnWfyJeDdyr/aa7BDyNbtG38VxgoQ==
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/is-docker/-/is-docker-2.1.0.tgz#25dc043e4fdc3cf969d622735e05a86ba9952e2b"
+  integrity sha512-mB2WygGsSeoXtLKpSYzP6sa0Z9DyU9ZyKlnvuZWxCociaI0qsF8u12sR72DFTX236g1u6oWSWYFuUk09nGQEjg==
 
 is-extendable@^0.1.0, is-extendable@^0.1.1:
   version "0.1.1"
