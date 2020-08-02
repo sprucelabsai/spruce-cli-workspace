@@ -1,6 +1,6 @@
 import pathUtil from 'path'
 import { ISchema } from '@sprucelabs/schema'
-import namesUtil from '../utilities/names.utility'
+import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 
 const featuresUtil = {
 	filePathToActionCode(path: string): string {

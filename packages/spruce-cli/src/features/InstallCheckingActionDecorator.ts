@@ -1,8 +1,8 @@
+import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../errors/SpruceError'
 import AbstractFeature from '../features/AbstractFeature'
 import FeatureInstaller from '../features/FeatureInstaller'
 import { IFeatureAction } from '../features/features.types'
-import namesUtil from '../utilities/names.utility'
 
 export default class InstallCheckingActionDecorator implements IFeatureAction {
 	public name = 'install-checking-action-facade'

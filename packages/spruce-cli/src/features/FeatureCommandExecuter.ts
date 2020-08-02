@@ -1,7 +1,7 @@
 import { ISchema, SchemaPartialValues, SchemaValues } from '@sprucelabs/schema'
+import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import FormComponent from '../components/FormComponent'
 import { IGraphicsInterface } from '../types/cli.types'
-import namesUtil from '../utilities/names.utility'
 import FeatureInstaller from './FeatureInstaller'
 import { FeatureCode, IFeatureMap } from './features.types'
 

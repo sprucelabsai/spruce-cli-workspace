@@ -1,9 +1,9 @@
+import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import {
 	IFeatureAction,
 	IFeatureActionOptions,
 } from '../features/features.types'
 import diskUtil from '../utilities/disk.utility'
-import namesUtil from '../utilities/names.utility'
 import AbstractFeatureAction from './AbstractFeatureAction'
 import InstallCheckingActionDecorator from './InstallCheckingActionDecorator'
 

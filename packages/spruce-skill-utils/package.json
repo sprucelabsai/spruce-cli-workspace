@@ -1,5 +1,5 @@
 {
-	"name": "@sprucelabs/skill-utils",
+	"name": "@sprucelabs/spruce-skill-utils",
 	"publishConfig": {
 		"access": "public"
 	},
@@ -24,12 +24,13 @@
 		"build.node": "tsc",
 		"build.types": "tsc --emitDeclarationOnly",
 		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps --copy-files --root-mode upward",
-		"build.watch": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps --copy-files --root-mode upward --watch",
+		"build.watch": "babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files --watch & chokidar 'src/**/*' -c 'yarn build.types'",
 		"rebuild": "cd ../ && yarn rebuild",
 		"watch": "chokidar 'src/**/*' -c 'yarn build'",
 		"clean": "rm -rf build/",
 		"lint": "eslint '**/*.ts' && tsc -p . --noEmit",
 		"lint.fix": "eslint --fix '**/*.ts'",
+		"lint.watch": "chokidar 'src/**/*' '../spruce-templates/src/**' -c 'yarn lint.tsc'",
 		"release": "semantic-release",
 		"arkit": "arkit -f index.ts -o docs/images/arkit.svg",
 		"arkit.png": "arkit -f index.ts -o docs/images/arkit.png",

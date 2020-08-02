@@ -6,6 +6,7 @@ import {
 	SchemaPartialValues,
 	SchemaValuesWithDefaults,
 } from '@sprucelabs/schema'
+import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { Templates } from '@sprucelabs/spruce-templates'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import ServiceFactory, {
@@ -16,7 +17,6 @@ import ServiceFactory, {
 import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
 import { IGraphicsInterface } from '../types/cli.types'
 import diskUtil from '../utilities/disk.utility'
-import versionUtil from '../utilities/version.utility'
 import AbstractFeature from './AbstractFeature'
 import FeatureInstaller from './FeatureInstaller'
 import {

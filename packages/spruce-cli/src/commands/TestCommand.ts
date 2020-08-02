@@ -1,8 +1,8 @@
 import path from 'path'
+import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { Command } from 'commander'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import FeatureInstaller from '../features/FeatureInstaller'
-import namesUtil from '../utilities/names.utility'
 import AbstractCommand, { ICommandOptions } from './AbstractCommand'
 
 interface ITestCommandOptions extends ICommandOptions {

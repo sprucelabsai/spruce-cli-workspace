@@ -2,6 +2,7 @@ import path from 'path'
 import { FieldFactory, FieldDefinitionValueType } from '@sprucelabs/schema'
 // @ts-ignore No definition available
 import { IField } from '@sprucelabs/schema'
+import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 // @ts-ignore
 import fonts from 'cfonts'
 import chalk from 'chalk'
@@ -23,7 +24,6 @@ import {
 	IGraphicsInterface,
 	IGraphicsTextEffect,
 } from '../types/cli.types'
-import namesUtil from '../utilities/names.utility'
 
 let fieldCount = 0
 function generateInquirerFieldName() {
