@@ -3,7 +3,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"version": "10.14.4",
+	"version": "10.16.3",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
 	"files": [
@@ -41,8 +41,8 @@
 		"arkit.png": "arkit -f index.ts -o docs/images/arkit.png"
 	},
 	"dependencies": {
-		"@sprucelabs/log": "^10.2.64",
-		"@sprucelabs/schema": "^7.0.24",
+		"@sprucelabs/log": "^10.2.66",
+		"@sprucelabs/schema": "^7.0.26",
 		"globby": "^11.0.1",
 		"handlebars": "^4.7.6",
 		"lodash": "^4.17.19",
