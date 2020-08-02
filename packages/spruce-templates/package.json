@@ -30,6 +30,7 @@
 		"build.types": "tsc --emitDeclarationOnly",
 		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps --root-mode upward",
 		"build.watch": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps --root-mode upward --watch",
+		"rebuild": "cd ../ && yarn rebuild",
 		"watch": "chokidar 'src/**/*' -c 'yarn build'",
 		"clean": "rm -rf build/",
 		"copy-templates": "mkdirp ./build/templates && cp -r ./src/templates/* ./build/templates",
