@@ -1,5 +1,5 @@
 {
-	"name": "@sprucelabs/spruce-templates",
+	"name": "@sprucelabs/skill-utils",
 	"publishConfig": {
 		"access": "public"
 	},
@@ -8,21 +8,16 @@
 	"types": "./build/index.d.ts",
 	"files": [
 		"build/**/*",
-		"tsconfig.json",
-		"package.json"
+		"tsconfig.json"
 	],
-	"description": "Templates used for code generation in skills!",
+	"description": "Loosely coupled classes and functions to make skill development faster!",
 	"keywords": [
 		"node",
-		"components",
-		"sprucebot",
-		"spruce",
-		"skills",
 		"sprucelabs"
 	],
-	"homepage": "https://github.com/sprucelabsai/spruce-cli-workspace",
+	"homepage": "https://github.com/sprucelabsai/spruce-cli",
 	"bugs": {
-		"url": "https://github.com/sprucelabsai/spruce-cli-workspace/issues"
+		"url": "https://github.com/sprucelabsai/spruce-cli/issues"
 	},
 	"scripts": {
 		"build": "yarn copy-templates && yarn build.babel && yarn build.types",

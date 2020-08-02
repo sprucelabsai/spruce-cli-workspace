@@ -31,7 +31,7 @@
 		"lint.fix": "eslint --fix '**/*.ts'",
 		"lint.watch": "chokidar 'src/**/*' '../spruce-templates/src/**' -c 'yarn lint.tsc'",
 		"rebuild": "cd ../ && yarn rebuild",
-		"build": "yarn build.babel",
+		"build": "yarn build.babel && yarn build.types",
 		"build.types": "tsc --emitDeclarationOnly",
 		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
 		"build.watch": "babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files --watch",
