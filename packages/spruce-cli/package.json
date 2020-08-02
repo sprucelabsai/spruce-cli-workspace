@@ -48,7 +48,7 @@
 		"@sprucelabs/error": "^2.0.19",
 		"@sprucelabs/log": "^10.2.67",
 		"@sprucelabs/mercury": "^10.5.63",
-		"@sprucelabs/schema": "^7.0.28",
+		"@sprucelabs/schema": "^7.0.29",
 		"@sprucelabs/spruce-templates": "^10.16.5",
 		"@types/promise.allsettled": "^1.0.3",
 		"@types/uuid": "^8.0.0",
@@ -79,7 +79,7 @@
 		"vm2": "^3.9.2"
 	},
 	"devDependencies": {
-		"@sprucelabs/test": "^5.3.86",
+		"@sprucelabs/test": "^5.3.87",
 		"@types/blessed": "^0.1.17",
 		"@types/eslint": "^7.2.0",
 		"@types/fs-extra": "^9.0.1",
