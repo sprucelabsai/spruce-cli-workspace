@@ -2062,10 +2062,10 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.0.21.tgz#b434d305b97975164356857a1321137be1ddeb16"
   integrity sha512-KshWXhWe9S9kt0jgaH1SQJgdekRCVjmJgcKezlLVgtiP1wNSwRMz4DX2hzsUM66SFfeLSe3q4t/Zfzz8bGcrBg==
 
-"@sprucelabs/jest-sheets-reporter@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/jest-sheets-reporter/-/jest-sheets-reporter-1.0.0.tgz#704388e6b3043f2f8e632dc69b204f0a46367bbd"
-  integrity sha512-LKV9sdWfvHoEOc2mCoPcuROqq3olIRHy6aS4OKpCXcLxrvGrhXv5/uAFNkFgD1JwdXsiRUJy/Zbgls/89LHBbw==
+"@sprucelabs/jest-sheets-reporter@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/jest-sheets-reporter/-/jest-sheets-reporter-1.1.0.tgz#9505ee52ec7f216f1a2bbb152a9bd87361bc8c27"
+  integrity sha512-/KfNHAesqUpNem4npervS/+K7lsnHPvq8s1ir2pIDWoRDX2OHfCPn51jBzgzuaoqWQKtiUpXddLk7TBRt+tjJg==
   dependencies:
     google-spreadsheet "^3.0.11"
 
@@ -2097,9 +2097,9 @@
     mime-type "^4.0.0"
 
 "@sprucelabs/test@^5.3.89":
-  version "5.3.89"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.89.tgz#4688538dd42cc7f8aa8cc7d2592be1fc04f59955"
-  integrity sha512-RsVgwnMUShB2+kUqD8k3q2+Rv8POxuEHw0F9g4Mh3mQSks5jm1wUdqUm/PkrnM/vqIPBmcV8MZdKwxHsFjc6mg==
+  version "5.3.90"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.90.tgz#0b02848fc691412da618d74b67b0f8c4f7d2692b"
+  integrity sha512-8tb0pUNwFeUa+xKHxb0yAglKhiS4Ad+8Pio2o/alstPMzXTAilsDhVnFVZYzx5wJCjx11q5fSUphi2hZrO20Bw==
   dependencies:
     "@babel/core" "^7.11.0"
     "@babel/preset-env" "^7.11.0"
@@ -2218,11 +2218,6 @@
   dependencies:
     "@types/minimatch" "*"
     "@types/node" "*"
-
-"@types/google-spreadsheet@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@types/google-spreadsheet/-/google-spreadsheet-3.0.0.tgz#b3243e2733847fd03651c95726c211a6ac6f3860"
-  integrity sha512-BMsoo/J2yshaLBsMxW/o6Py8rBdDeFHUWQ18Z/WoD8VDBGzsdcNVXMObBxL4szj0FbnSiaqUJ9paJYXMr+GhhQ==
 
 "@types/graceful-fs@^4.1.2":
   version "4.1.3"
