@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.17.5](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.17.4...v10.17.5) (2020-08-03)
+
+
+### Bug Fixes
+
+* latest sheets reporter ([4f85603](https://github.com/sprucelabsai/spruce-cli-workspace/commit/4f85603))
+* switched local sheet reporter to [@sprucelabs](https://github.com/sprucelabs)/jest-sheets-reporter ([292ede7](https://github.com/sprucelabsai/spruce-cli-workspace/commit/292ede7))
+
+
+
+
+
 ## [10.17.4](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.17.3...v10.17.4) (2020-08-03)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
