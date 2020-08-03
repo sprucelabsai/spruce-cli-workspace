@@ -80,6 +80,7 @@
 		"vm2": "^3.9.2"
 	},
 	"devDependencies": {
+		"@sprucelabs/jest-sheets-reporter": "^1.1.0",
 		"@sprucelabs/test": "^5.3.89",
 		"@types/blessed": "^0.1.17",
 		"@types/eslint": "^7.2.0",
@@ -134,7 +135,7 @@
 		"reporters": [
 			"default",
 			[
-				"<rootDir>/build/sheetsReporter/SheetsReporter.js",
+				"@sprucelabs/jest-sheets-reporter",
 				{
 					"sheetId": "1DoWM7mYgGDa-PJXptLomrZmbIBZiuxS1YiAsRXU2Gm0",
 					"worksheetId": 843037832,

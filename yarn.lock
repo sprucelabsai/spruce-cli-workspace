@@ -2062,6 +2062,13 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.0.21.tgz#b434d305b97975164356857a1321137be1ddeb16"
   integrity sha512-KshWXhWe9S9kt0jgaH1SQJgdekRCVjmJgcKezlLVgtiP1wNSwRMz4DX2hzsUM66SFfeLSe3q4t/Zfzz8bGcrBg==
 
+"@sprucelabs/jest-sheets-reporter@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/jest-sheets-reporter/-/jest-sheets-reporter-1.0.0.tgz#704388e6b3043f2f8e632dc69b204f0a46367bbd"
+  integrity sha512-LKV9sdWfvHoEOc2mCoPcuROqq3olIRHy6aS4OKpCXcLxrvGrhXv5/uAFNkFgD1JwdXsiRUJy/Zbgls/89LHBbw==
+  dependencies:
+    google-spreadsheet "^3.0.11"
+
 "@sprucelabs/log@^10.2.69":
   version "10.2.69"
   resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.69.tgz#2447333bc5198a08224170caefc48314d58688d3"
@@ -6958,9 +6965,9 @@ levn@~0.3.0:
     type-check "~0.3.2"
 
 libphonenumber-js@^1.7.55:
-  version "1.7.55"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.7.55.tgz#c42e1e70daccf7e7a329891964de79c80b1a7799"
-  integrity sha512-vYT83akP6uJq5QiMgzzVsWrGWJpQ4KgX2SmW0RBgLFD1UzICjVgp+7ajEep3oRcv2838kMTu1gj7KHPi0Y6Y6w==
+  version "1.7.56"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.7.56.tgz#1f206c69acb112a43134141e2331a737cdfcb8a0"
+  integrity sha512-7ArN9sSVs9bzX72+HeryCrmI68w1ry3Sd67+BmbPxbaCU+ZpuB2R9YT/YTsTUFYbxkp933vpQUP5E/1TJ9WvTQ==
   dependencies:
     minimist "^1.2.5"
     xml2js "^0.4.17"
