@@ -32,7 +32,7 @@ jobs:
             yarn install --frozen-lockfile
             yarn rebuild
             yarn lint
-            yarn test -w 4
+            yarn test -- -w 4
       - save_cache:
           key: cli-import-service
           paths:
