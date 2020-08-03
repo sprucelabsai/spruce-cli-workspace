@@ -78,7 +78,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 	}
 
 	@test()
-	protected static async errorsWithBad() {
+	protected static async errorsWithBadVersion() {
 		const action = await this.syncSchemasAndGetCreateAction(
 			'creating-a-new-schema-builder'
 		)
@@ -91,7 +91,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 					nameCamel: 'badSchemaVersion',
 					version: 'v1',
 				}),
-			/invalid/i
+			/must be in the form/i
 		)
 	}
 
