@@ -1,9 +1,9 @@
+import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { assert, test } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
 import { CORE_SCHEMA_VERSION, CORE_NAMESPACE } from '../../../constants'
 import diskUtil from '../../../utilities/disk.utility'
 import testUtil from '../../../utilities/test.utility'
-import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 
 export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	@test()

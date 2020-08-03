@@ -30,13 +30,9 @@ jobs:
           name: "Test, build, and lint"
           command: |
             yarn install --frozen-lockfile
-            cd packages/spruce-templates
-            yarn build
-            cd ../..
-            cd packages/spruce-cli
-            yarn build
-            yarn test -w 4
+            yarn rebuild
             yarn lint
+            yarn test -w 4
       - save_cache:
           key: cli-import-service
           paths:

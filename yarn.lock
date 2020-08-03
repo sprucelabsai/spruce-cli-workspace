@@ -2089,25 +2089,7 @@
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^5.3.85":
-  version "5.3.85"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.85.tgz#ea5cbb1e7177d026f55ca97bb75bd58a7e7032dc"
-  integrity sha512-fUDAZXsducvBOPvAEVHA4yUKtfPnsUmMaKp3um2Lg+7r6B8PplKqqsskEUtkaXbO5Q7+Tyqvaxk/9RQRuMXuMg==
-  dependencies:
-    "@babel/core" "^7.11.0"
-    "@babel/preset-env" "^7.11.0"
-    "@types/chai" "^4.2.12"
-    "@types/faker" "^4.1.11"
-    "@types/jest" "^26.0.8"
-    babel-jest "^26.2.2"
-    deep-equal "^2.0.3"
-    faker "^4.1.0"
-    jest "^26.2.2"
-    lodash "^4.17.19"
-    ts-expect "^1.1.0"
-    ts-jest "^26.1.4"
-
-"@sprucelabs/test@^5.3.88":
+"@sprucelabs/test@^5.3.85", "@sprucelabs/test@^5.3.88":
   version "5.3.88"
   resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.88.tgz#ed938b1c8531e14a6fd40ba33d528736526d6f91"
   integrity sha512-kAk7gkflIe/CWkxGMNMf6lBi3gM108g4ySQbkIYJWoar4C0ioy4m0HuX3i+vqn8xAODLcDvceEIAHvNqO+KjHQ==
