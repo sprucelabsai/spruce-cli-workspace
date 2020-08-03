@@ -1,11 +1,15 @@
 const copySchema = require('./babel-plugins/copySchema')
+const pathUtil = require('path')
 
-copySchema({
-	cwd: __dirname,
-})
 
 module.exports = (api) => {
 	api.cache(true)
+	
+	copySchema({
+		cwd: __dirname,
+		destination: process.env.PWD
+	})
+
 	return {
 		ignore: ["**/testDirsAndFiles/**"],
 		presets: ['@babel/preset-env', '@babel/preset-typescript'],

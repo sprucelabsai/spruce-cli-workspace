@@ -1,0 +1,28 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"esModuleInterop": true,
+		"target": "ES2017",
+		"lib": ["es2017"],
+		"declaration": true,
+		"noImplicitAny": true,
+		"forceConsistentCasingInFileNames": true,
+		"noImplicitReturns": true,
+		"strict": true,
+		"noUnusedLocals": true,
+		"resolveJsonModule": true,
+		"moduleResolution": "node",
+		"experimentalDecorators": true,
+		"sourceMap": true,
+		"outDir": "build",
+		"baseUrl": "src",
+		"paths": {
+			"#spruce/*": [
+				"../node_modules/@sprucelabs/schema/build/.spruce/*",
+				"../../../node_modules/@sprucelabs/schema/build/.spruce/*"
+			]
+		}
+	},
+	"include": ["./*.ts", "./**/*.ts"],
+	"exclude": ["build"]
+}

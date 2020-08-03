@@ -1,7 +1,7 @@
-import BaseSpruceError from '@sprucelabs/error'
+import AbstractSpruceError from '@sprucelabs/error'
 import ErrorOptions from '#spruce/errors/options.types'
 
-export default class SpruceError extends BaseSpruceError<ErrorOptions> {
+export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 	/** An easy to understand version of the errors */
 	public friendlyMessage(): string {
 		const { options } = this

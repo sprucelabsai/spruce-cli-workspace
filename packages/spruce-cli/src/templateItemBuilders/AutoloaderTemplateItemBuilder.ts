@@ -1,4 +1,5 @@
 import path from 'path'
+import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import {
 	IAutoLoaderTemplateItem,
 	IRootAutoloaderTemplateItem,
@@ -11,7 +12,6 @@ import AutoloaderSchema from '#spruce/schemas/local/v2020_07_22/autoloader.schem
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
 import IntrospectionUtility from '../utilities/introspection.utility'
-import NamesUtility from '../utilities/names.utility'
 import AbstractTemplateItemBuilder from './AbstractTemplateItemBuilder'
 
 export default class AutoloaderTemplateItemBuilder extends AbstractTemplateItemBuilder {
@@ -64,11 +64,11 @@ export default class AutoloaderTemplateItemBuilder extends AbstractTemplateItemB
 			| undefined
 
 		const namePlural = `${path.basename(directory)}`
-		const nameCamelPlural = NamesUtility.toCamel(namePlural)
-		const namePascalPlural = NamesUtility.toPascal(namePlural)
-		const name = NamesUtility.toSingular(namePlural)
-		const namePascal = NamesUtility.toPascal(name)
-		const nameCamel = NamesUtility.toCamel(namePascal)
+		const nameCamelPlural = namesUtil.toCamel(namePlural)
+		const namePascalPlural = namesUtil.toPascal(namePlural)
+		const name = namesUtil.toSingular(namePlural)
+		const namePascal = namesUtil.toPascal(name)
+		const nameCamel = namesUtil.toCamel(namePascal)
 
 		results.forEach((introspection, idx) => {
 			const filePath = filePaths[idx]
@@ -96,12 +96,9 @@ export default class AutoloaderTemplateItemBuilder extends AbstractTemplateItemB
 						optionsInterfaceName: i.optionsInterfaceName,
 						// AutoloaderUtility -> Autoloader since namePascal wll be Utility
 						className: i.className,
-						nameCamel: NamesUtility.toCamel(i.className).replace(
-							namePascal,
-							''
-						),
-						namePascal: NamesUtility.toPascal(
-							NamesUtility.toCamel(i.className).replace(namePascal, '')
+						nameCamel: namesUtil.toCamel(i.className).replace(namePascal, ''),
+						namePascal: namesUtil.toPascal(
+							namesUtil.toCamel(i.className).replace(namePascal, '')
 						),
 						relativeFilePath: `#spruce/..${filePath}`,
 					})

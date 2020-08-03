@@ -1,6 +1,6 @@
 import pathUtil from 'path'
+import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { IEventListenerOptions } from '@sprucelabs/spruce-templates'
-import namesUtil from '../utilities/names.utility'
 import AbstractGenerator from './AbstractGenerator'
 
 export default class EventGenerator extends AbstractGenerator {

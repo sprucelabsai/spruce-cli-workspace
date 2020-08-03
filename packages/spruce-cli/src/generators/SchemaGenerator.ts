@@ -1,6 +1,8 @@
 import path from 'path'
 import pathUtil from 'path'
 import { IFieldTemplateItem, ISchemaTemplateItem } from '@sprucelabs/schema'
+import { namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import {
 	ISchemaBuilderTemplateItem,
 	IValueTypes,
@@ -8,8 +10,6 @@ import {
 import { LATEST_HANDLEBARS } from '../constants'
 import SpruceError from '../errors/SpruceError'
 import diskUtil from '../utilities/disk.utility'
-import namesUtil from '../utilities/names.utility'
-import versionUtil from '../utilities/version.utility'
 import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
 
 export interface IGenerateSchemaTypesOptions {

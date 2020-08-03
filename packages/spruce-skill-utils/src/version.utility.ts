@@ -1,8 +1,8 @@
 import pathUtil from 'path'
-import { LATEST_HANDLEBARS, LATEST_TOKEN } from '../constants'
-import SpruceError from '../errors/SpruceError'
+import { LATEST_HANDLEBARS, LATEST_TOKEN } from './constants'
 import diskUtil from './disk.utility'
 import namesUtil from './names.utility'
+import SpruceError from './SpruceError'
 
 function parsePath(cwd: string, paths: string[]) {
 	const resolved = diskUtil.resolvePath(cwd, ...paths)

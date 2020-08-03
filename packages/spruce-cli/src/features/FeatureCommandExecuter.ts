@@ -1,7 +1,7 @@
 import { ISchema, SchemaPartialValues, SchemaValues } from '@sprucelabs/schema'
 import FormComponent from '../components/FormComponent'
 import { IGraphicsInterface } from '../types/cli.types'
-import namesUtil from '../utilities/names.utility'
+import formUtil from '../utilities/form.utility'
 import FeatureInstaller from './FeatureInstaller'
 import { FeatureCode, IFeatureMap } from './features.types'
 
@@ -88,8 +88,9 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			term: this.term,
 			definition,
 			initialValues: options,
-			//@ts-ignore
-			onWillAskQuestion: namesUtil.onWillAskQuestionHandler.bind(namesUtil),
+			onWillAskQuestion: formUtil.onWillAskQuestionHandler.bind(
+				formUtil
+			) as any,
 		})
 
 		const fieldNames = Object.keys(definition.fields ?? {})

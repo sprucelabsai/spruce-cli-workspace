@@ -1,5 +1,5 @@
 import { ISchema, ISchemaIdWithVersion } from '@sprucelabs/schema'
-import namesUtil from './names.utility'
+import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 
 export enum SchemaRelationshipType {
 	IdWithVersion,

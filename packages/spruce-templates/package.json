@@ -8,11 +8,10 @@
 	"types": "./build/index.d.ts",
 	"files": [
 		"build/**/*",
-		".spruce/**/*",
 		"tsconfig.json",
 		"package.json"
 	],
-	"description": "Command line interface for building Spruce skills",
+	"description": "Templates used for code generation in skills!",
 	"keywords": [
 		"node",
 		"components",
@@ -21,17 +20,16 @@
 		"skills",
 		"sprucelabs"
 	],
-	"homepage": "https://github.com/sprucelabsai/spruce-cli",
+	"homepage": "https://github.com/sprucelabsai/spruce-cli-workspace",
 	"bugs": {
-		"url": "https://github.com/sprucelabsai/spruce-cli/issues"
+		"url": "https://github.com/sprucelabsai/spruce-cli-workspace/issues"
 	},
 	"scripts": {
 		"build": "yarn copy-templates && yarn build.babel && yarn build.types",
-		"build.node": "tsc",
-		"build.types": "tsc --emitDeclarationOnly",
+		"build.types": "tsc --emitDeclarationOnly && echo PASS",
 		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps --root-mode upward",
-		"build.watch": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps --root-mode upward --watch",
-		"watch": "chokidar 'src/**/*' -c 'yarn build'",
+		"build.watch": "yarn run build.babel --watch & chokidar 'src/**/*' -c 'yarn build.types'",
+		"rebuild": "cd ../ && yarn rebuild",
 		"clean": "rm -rf build/",
 		"copy-templates": "mkdirp ./build/templates && cp -r ./src/templates/* ./build/templates",
 		"lint": "eslint '**/*.ts' && tsc -p . --noEmit",

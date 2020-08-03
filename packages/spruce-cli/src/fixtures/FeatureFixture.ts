@@ -2,6 +2,7 @@ import pathUtil from 'path'
 import { ICliBootOptions, ICli, boot } from '../cli'
 import { InstallFeature } from '../features/features.types'
 import TestInterface from '../interfaces/TestInterface'
+import log from '../singletons/log'
 import diskUtil from '../utilities/disk.utility'
 import testUtil from '../utilities/test.utility'
 
@@ -71,9 +72,13 @@ export default class FeatureFixture {
 
 		const exists = diskUtil.doesFileExist(settingsFile)
 		let alreadyInstalled = false
-		let settingsObject = exists
-			? JSON.parse(diskUtil.readFile(settingsFile))
-			: {}
+		let settingsObject: Record<string, any> = {}
+
+		try {
+			settingsObject = exists ? JSON.parse(diskUtil.readFile(settingsFile)) : {}
+		} catch (err) {
+			log.warn('Test cache settings file is broken, ignoring...')
+		}
 
 		if (settingsObject?.[cacheKey]) {
 			if (testUtil.shouldClearCache()) {

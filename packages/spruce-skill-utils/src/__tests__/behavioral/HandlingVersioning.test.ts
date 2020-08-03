@@ -1,8 +1,8 @@
-import { assert, test } from '@sprucelabs/test'
-import AbstractCliTest from '../../AbstractCliTest'
-import versionUtil, { formatDate } from '../../utilities/version.utility'
+import pathUtil from 'path'
+import AbstractSpruceTest, { assert, test } from '@sprucelabs/test'
+import versionUtil, { formatDate } from '../../version.utility'
 
-export default class HandlesVersioningTest extends AbstractCliTest {
+export default class HandlesVersioningTest extends AbstractSpruceTest {
 	@test()
 	protected static async hasResolvePathFunction() {
 		assert.isFunction(versionUtil.resolvePath)
@@ -56,5 +56,14 @@ export default class HandlesVersioningTest extends AbstractCliTest {
 			dirValue: 'v2020_02_15',
 			constValue: 'v2020_02_15',
 		})
+	}
+
+	protected static resolveTestPath(...pathAfterTestDirsAndFiles: string[]) {
+		return pathUtil.join(
+			__dirname,
+			'..',
+			'testDirsAndFiles',
+			...pathAfterTestDirsAndFiles
+		)
 	}
 }
