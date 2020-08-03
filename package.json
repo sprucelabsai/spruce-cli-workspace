@@ -3,9 +3,9 @@
 	"private": true,
 	"name": "spruce-cli-workspace",
 	"workspaces": [
-		"packages/spruce-cli",
 		"packages/spruce-templates",
-		"packages/spruce-skill-utils"
+		"packages/spruce-skill-utils",
+		"packages/spruce-cli"
 	],
 	"engines": {
 		"node": ">=10",
