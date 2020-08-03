@@ -1,6 +1,6 @@
 import pathUtil from 'path'
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { LATEST_HANDLEBARS, LATEST_TOKEN } from './constants'
+import diskUtil from './disk.utility'
 import namesUtil from './names.utility'
 import SpruceError from './SpruceError'
 
