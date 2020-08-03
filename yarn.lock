@@ -2062,10 +2062,10 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.0.21.tgz#b434d305b97975164356857a1321137be1ddeb16"
   integrity sha512-KshWXhWe9S9kt0jgaH1SQJgdekRCVjmJgcKezlLVgtiP1wNSwRMz4DX2hzsUM66SFfeLSe3q4t/Zfzz8bGcrBg==
 
-"@sprucelabs/jest-sheets-reporter@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/jest-sheets-reporter/-/jest-sheets-reporter-1.1.0.tgz#9505ee52ec7f216f1a2bbb152a9bd87361bc8c27"
-  integrity sha512-/KfNHAesqUpNem4npervS/+K7lsnHPvq8s1ir2pIDWoRDX2OHfCPn51jBzgzuaoqWQKtiUpXddLk7TBRt+tjJg==
+"@sprucelabs/jest-sheets-reporter@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/jest-sheets-reporter/-/jest-sheets-reporter-1.1.1.tgz#afd087562333c72c9d9aa91789133f6eeb788afd"
+  integrity sha512-xZuFkfg6amI3FTHs3d9oqC8m0V5n+uvUBqmCZaIfqRgZoVXNB2ddxgbw3H0NIaUxmhNVhK37ar8OGaakk4W1zg==
   dependencies:
     google-spreadsheet "^3.0.11"
 
@@ -2084,19 +2084,19 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.0.31":
-  version "7.0.31"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.31.tgz#83cb34c4b910781ac9e7e4491c2b5a164f6bac16"
-  integrity sha512-/IJH+7HiydHYizrdvwBE+vlDyLvDhy7zNyXrhA3B4l/YGhnvDCewtxkkiWKr7r9mxhXs3vJFtKSriFDucOh96w==
+"@sprucelabs/schema@^7.0.32":
+  version "7.0.32"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.32.tgz#a48dc8ba244e7075bef48e8bc557a223e844c2b0"
+  integrity sha512-P7Q8fTZXmBN196RscWCw7eMF3ZmXAavOXGW8Z26wQval5CBGl6jMHlaCt2QSa8/LD0htIgFGOsAnbWvHdlGvKg==
   dependencies:
     "@sprucelabs/error" "^2.0.21"
     "@sprucelabs/log" "^10.2.69"
     google-libphonenumber "^3.2.10"
-    libphonenumber-js "^1.7.55"
+    libphonenumber-js "^1.7.56"
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^5.3.89":
+"@sprucelabs/test@^5.3.90":
   version "5.3.90"
   resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.90.tgz#0b02848fc691412da618d74b67b0f8c4f7d2692b"
   integrity sha512-8tb0pUNwFeUa+xKHxb0yAglKhiS4Ad+8Pio2o/alstPMzXTAilsDhVnFVZYzx5wJCjx11q5fSUphi2hZrO20Bw==
@@ -6959,7 +6959,7 @@ levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-libphonenumber-js@^1.7.55:
+libphonenumber-js@^1.7.56:
   version "1.7.56"
   resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.7.56.tgz#1f206c69acb112a43134141e2331a737cdfcb8a0"
   integrity sha512-7ArN9sSVs9bzX72+HeryCrmI68w1ry3Sd67+BmbPxbaCU+ZpuB2R9YT/YTsTUFYbxkp933vpQUP5E/1TJ9WvTQ==
