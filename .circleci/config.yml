@@ -30,8 +30,8 @@ jobs:
           name: "Test, build, and lint"
           command: |
             yarn install --frozen-lockfile
-            yarn lint
             yarn rebuild
+            yarn lint
             yarn test -w 4
       - save_cache:
           key: cli-import-service
