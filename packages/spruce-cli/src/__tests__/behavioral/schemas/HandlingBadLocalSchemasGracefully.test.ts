@@ -1,8 +1,8 @@
 import AbstractSpruceError from '@sprucelabs/error'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { IFailedToImportErrorOptions } from '#spruce/errors/options.types'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
-import diskUtil from '../../../utilities/disk.utility'
 
 export default class HandlesBadLocalSchemasGracefullyTest extends AbstractSchemaTest {
 	protected static async beforeEach() {

@@ -1,4 +1,5 @@
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
 import {
@@ -6,7 +7,6 @@ import {
 	IFeatureAction,
 } from '../../../features/features.types'
 import TestInterface from '../../../interfaces/TestInterface'
-import diskUtil from '../../../utilities/disk.utility'
 import testUtil from '../../../utilities/test.utility'
 
 export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {

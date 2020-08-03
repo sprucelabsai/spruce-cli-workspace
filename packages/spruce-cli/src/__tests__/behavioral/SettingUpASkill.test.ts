@@ -1,6 +1,6 @@
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../AbstractCliTest'
-import diskUtil from '../../utilities/disk.utility'
 
 export default class SettingUpASkill extends AbstractCliTest {
 	@test()

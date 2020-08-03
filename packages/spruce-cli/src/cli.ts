@@ -6,6 +6,7 @@ import {
 	IMercuryConnectOptions,
 	MercuryAuth,
 } from '@sprucelabs/mercury'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { Command, CommanderStatic } from 'commander'
 // Shim
 // eslint-disable-next-line import/order
@@ -22,7 +23,6 @@ import TerminalInterface from './interfaces/TerminalInterface'
 import log from './singletons/log'
 import StoreFactory from './stores/StoreFactory'
 import { AuthedAs, IGraphicsInterface } from './types/cli.types'
-import diskUtil from './utilities/disk.utility'
 
 interface IHealthCheckResults {
 	[featureKey: string]: IHealthCheckItem

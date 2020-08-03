@@ -3,13 +3,13 @@ import pathUtil from 'path'
 import { IFieldTemplateItem, ISchemaTemplateItem } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import {
 	ISchemaBuilderTemplateItem,
 	IValueTypes,
 } from '@sprucelabs/spruce-templates'
 import { LATEST_HANDLEBARS } from '../constants'
 import SpruceError from '../errors/SpruceError'
-import diskUtil from '../utilities/disk.utility'
 import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
 
 export interface IGenerateSchemaTypesOptions {

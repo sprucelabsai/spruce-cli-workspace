@@ -1,5 +1,5 @@
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { INpmPackage } from '../../types/cli.types'
-import diskUtil from '../../utilities/disk.utility'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 

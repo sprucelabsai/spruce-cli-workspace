@@ -1,8 +1,8 @@
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../AbstractCliTest'
 import FeatureCommandExecuter from '../../features/FeatureCommandExecuter'
 import { FeatureCode } from '../../features/features.types'
-import diskUtil from '../../utilities/disk.utility'
 
 export default class FeatureCommandExecuterTest extends AbstractCliTest {
 	protected static async beforeEach() {

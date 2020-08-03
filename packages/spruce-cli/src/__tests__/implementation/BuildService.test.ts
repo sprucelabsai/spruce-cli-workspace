@@ -1,7 +1,7 @@
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../AbstractCliTest'
 import FeatureFixture from '../../fixtures/FeatureFixture'
-import diskUtil from '../../utilities/disk.utility'
 
 export default class BuildServiceTest extends AbstractCliTest {
 	@test()

@@ -1,7 +1,7 @@
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import fs from 'fs-extra'
 import md5 from 'md5'
 import SpruceError from '../errors/SpruceError'
-import diskUtil from '../utilities/disk.utility'
 import CommandService from './CommandService'
 
 export default class ImportService extends CommandService {

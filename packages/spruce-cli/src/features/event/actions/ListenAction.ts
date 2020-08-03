@@ -1,7 +1,7 @@
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import eventListenActionSchema from '#spruce/schemas/local/v2020_07_22/listenEventAction.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import EventGenerator from '../../../generators/EventGenerator'
-import diskUtil from '../../../utilities/disk.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { IFeatureActionExecuteResponse } from '../../features.types'
 

@@ -1,8 +1,8 @@
 import pathUtil from 'path'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import fs from 'fs-extra'
 import { set } from 'lodash'
 import SpruceError from '../errors/SpruceError'
-import diskUtil from '../utilities/disk.utility'
 import CommandService from './CommandService'
 
 export interface IAddOptions {
