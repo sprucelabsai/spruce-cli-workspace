@@ -44,7 +44,7 @@
 		"babel-plugin-module-resolver": "^4.0.0",
 		"conventional-changelog-sprucelabs": "^1.1.1",
 		"eslint": "^7.6.0",
-		"eslint-config-spruce": "10.7.8",
+		"eslint-config-spruce": "10.7.10",
 		"lerna": "^3.20.2",
 		"typescript": "^3.9.7",
 		"yarn-upgrade-all": "^0.5.4"
