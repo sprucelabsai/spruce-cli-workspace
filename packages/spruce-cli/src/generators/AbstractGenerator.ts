@@ -1,8 +1,8 @@
 import fs from 'fs'
 import pathUtil from 'path'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { Templates } from '@sprucelabs/spruce-templates'
 import { IGeneratedFile } from '../types/cli.types'
-import diskUtil from '../utilities/disk.utility'
 
 export interface IGeneratorOptions {
 	templates: Templates

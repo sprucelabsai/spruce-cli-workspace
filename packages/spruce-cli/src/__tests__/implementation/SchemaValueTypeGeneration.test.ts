@@ -1,9 +1,9 @@
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { templates, IValueTypes } from '@sprucelabs/spruce-templates'
 import { assert, test } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
 import { CORE_NAMESPACE, CORE_SCHEMA_VERSION } from '../../constants'
 import SchemaGenerator from '../../generators/SchemaGenerator'
-import diskUtil from '../../utilities/disk.utility'
 
 export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	private static generator: SchemaGenerator

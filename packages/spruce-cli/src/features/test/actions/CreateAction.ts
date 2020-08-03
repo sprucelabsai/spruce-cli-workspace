@@ -1,8 +1,8 @@
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import createTestActionSchema from '#spruce/schemas/local/v2020_07_22/createTestAction.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import TestGenerator from '../../../generators/TestGenerator'
-import diskUtil from '../../../utilities/disk.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { IFeatureActionExecuteResponse } from '../../features.types'
 

@@ -1,4 +1,4 @@
-import diskUtil from '../../utilities/disk.utility'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 

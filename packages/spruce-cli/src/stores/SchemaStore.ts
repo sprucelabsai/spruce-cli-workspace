@@ -7,6 +7,7 @@ import {
 import { IFieldRegistration } from '@sprucelabs/schema/build/utilities/registerFieldType'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
 import { uniqBy } from 'lodash'
 import { LOCAL_NAMESPACE, CORE_NAMESPACE } from '../constants'
@@ -20,7 +21,6 @@ import {
 	groupSchema,
 	aclSchema,
 } from '../temporary/schemas'
-import diskUtil from '../utilities/disk.utility'
 import AbstractStore, { IStoreOptions } from './AbstractStore'
 
 interface IFetchSchemaTemplateItemsResponse {

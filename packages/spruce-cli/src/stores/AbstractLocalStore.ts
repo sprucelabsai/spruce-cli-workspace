@@ -1,6 +1,6 @@
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import log from '../singletons/log'
 import { AuthedAs } from '../types/cli.types'
-import diskUtil from '../utilities/disk.utility'
 import AbstractStore from './AbstractStore'
 import { IStoreOptions } from './AbstractStore'
 

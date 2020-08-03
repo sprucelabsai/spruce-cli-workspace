@@ -1,6 +1,7 @@
 import os from 'os'
 import pathUtil from 'path'
 import { Mercury } from '@sprucelabs/mercury'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractSpruceTest from '@sprucelabs/test'
 import fs from 'fs-extra'
 import * as uuid from 'uuid'
@@ -13,7 +14,6 @@ import FeatureInstallerFactory from './features/FeatureInstallerFactory'
 import TestInterface from './interfaces/TestInterface'
 import StoreFactory, { StoreCode, IStoreMap } from './stores/StoreFactory'
 import { IGraphicsInterface } from './types/cli.types'
-import diskUtil from './utilities/disk.utility'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static cliRoot = pathUtil.join(__dirname)

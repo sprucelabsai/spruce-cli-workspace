@@ -1,9 +1,9 @@
 import pathUtil from 'path'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { ICliBootOptions, ICli, boot } from '../cli'
 import { InstallFeature } from '../features/features.types'
 import TestInterface from '../interfaces/TestInterface'
 import log from '../singletons/log'
-import diskUtil from '../utilities/disk.utility'
 import testUtil from '../utilities/test.utility'
 
 export interface ICachedCli {

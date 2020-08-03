@@ -22,7 +22,7 @@ import TerminalInterface from './interfaces/TerminalInterface'
 import log from './singletons/log'
 import StoreFactory from './stores/StoreFactory'
 import { AuthedAs, IGraphicsInterface } from './types/cli.types'
-import diskUtil from './utilities/disk.utility'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 
 interface IHealthCheckResults {
 	[featureKey: string]: IHealthCheckItem

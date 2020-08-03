@@ -3,11 +3,11 @@ import {
 	SchemaValuesWithDefaults,
 } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { IErrorTemplateItem } from '@sprucelabs/spruce-templates'
 import errorSyncActionSchema from '#spruce/schemas/local/v2020_07_22/errorSyncAction.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import ErrorGenerator from '../../../generators/ErrorGenerator'
-import diskUtil from '../../../utilities/disk.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import {
 	IFeatureActionExecuteResponse,
