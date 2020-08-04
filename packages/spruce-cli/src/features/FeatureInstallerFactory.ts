@@ -31,7 +31,7 @@ export default class FeatureInstallerFactory {
 		'schema',
 		'skill',
 		'test',
-		'vsCode',
+		'vscode',
 		'event',
 	]
 

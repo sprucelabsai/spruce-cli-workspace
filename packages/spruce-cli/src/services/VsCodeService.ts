@@ -53,8 +53,7 @@ export default class VsCodeService extends CommandService {
 		return extensions
 	}
 
-	public async installExtensions(extensions: IExtension[]) {
-		const extensionIds = extensions.map((e) => e.id)
+	public async installExtensions(extensionIds: string[]) {
 		let args: string[] = []
 		extensionIds.forEach((eId) => {
 			args = args.concat('--install-extension', eId)

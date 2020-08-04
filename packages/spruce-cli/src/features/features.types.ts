@@ -56,7 +56,7 @@ export type InstallFeature =
 			options?: undefined
 	  }
 	| {
-			code: 'vsCode'
+			code: 'vscode'
 			options?: undefined
 	  }
 	| {
@@ -75,7 +75,7 @@ export interface IFeatureMap {
 	schema: SchemaFeature
 	skill: SkillFeature
 	test: TestFeature
-	vsCode: VsCodeFeature
+	vscode: VsCodeFeature
 	event: EventFeature
 }
 
@@ -83,6 +83,7 @@ export interface IFeatureActionExecuteResponse {
 	files?: IGeneratedFile[]
 	meta?: Record<string, any>
 	errors?: SpruceError[]
+	hints?: string[]
 }
 
 export interface IFeatureAction<S extends ISchema = ISchema> {

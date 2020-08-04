@@ -50,7 +50,10 @@ export interface ISchemaFailedToImportErrorOptions extends SpruceErrors.Local.IS
 export interface IUserNotFoundErrorOptions extends SpruceErrors.Local.IUserNotFound, ISpruceErrorOptions {
 	code: 'USER_NOT_FOUND'
 }
+export interface IVscodeNotInstalledErrorOptions extends SpruceErrors.Local.IVscodeNotInstalled, ISpruceErrorOptions {
+	code: 'VSCODE_NOT_INSTALLED'
+}
 
-type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | IBootFailedErrorOptions  | IBuildFailedErrorOptions  | ICommandNotImplementedErrorOptions  | ICreateAutoloaderFailedErrorOptions  | IDirectoryEmptyErrorOptions  | IExecutingCommandFailedErrorOptions  | IFailedToImportErrorOptions  | IFileExistsErrorOptions  | IPayloadArgsErrorOptions  | IGenericMercuryErrorOptions  | IGenericErrorOptions  | IInvalidCommandErrorOptions  | ILintFailedErrorOptions  | INotImplementedErrorOptions  | ISchemaFailedToImportErrorOptions  | IUserNotFoundErrorOptions 
+type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | IBootFailedErrorOptions  | IBuildFailedErrorOptions  | ICommandNotImplementedErrorOptions  | ICreateAutoloaderFailedErrorOptions  | IDirectoryEmptyErrorOptions  | IExecutingCommandFailedErrorOptions  | IFailedToImportErrorOptions  | IFileExistsErrorOptions  | IPayloadArgsErrorOptions  | IGenericMercuryErrorOptions  | IGenericErrorOptions  | IInvalidCommandErrorOptions  | ILintFailedErrorOptions  | INotImplementedErrorOptions  | ISchemaFailedToImportErrorOptions  | IUserNotFoundErrorOptions  | IVscodeNotInstalledErrorOptions 
 
 export default ErrorOptions

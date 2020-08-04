@@ -562,5 +562,24 @@ export declare namespace SpruceErrors.Local {
 }
 
 
+export declare namespace SpruceErrors.Local {
+
+	
+	export interface IVscodeNotInstalled {
+		
+	}
+
+	export interface IVscodeNotInstalledSchema extends SpruceSchema.ISchema {
+		id: 'vscodeNotInstalled',
+		name: 'vscode not installed',
+		    fields: {
+		    }
+	}
+
+	export type VscodeNotInstalledEntity = SchemaEntity<SpruceErrors.Local.IVscodeNotInstalledSchema>
+
+}
+
+
 
 
