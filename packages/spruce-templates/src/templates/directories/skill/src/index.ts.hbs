@@ -1,7 +1,8 @@
 import fs from 'fs'
 import pathUtil from 'path'
+import globby from 'globby'
 
-debugger
+
 
 const health: Record<string, any> = {
 	skill: {
@@ -29,22 +30,61 @@ const eventsPath = pathUtil.join(
 	'events'
 )
 
-throw new Error('bacon!')
-
 const doEventsExist = fs.existsSync(eventsPath)
 
+
+
 if (doEventsExist) {
+
+	let willBoot: (() => void) | undefined
+	let didBoot: (() => void) | undefined
+
 	health.event = {
 		status: 'passed',
 		listeners: []
 	}
 
+	
+	const listenerMatches = globby.sync(`${eventsPath}/**/*.listener.[j|t]s`)
+	const listeners: { eventName: string, eventNamespace: string, version: string }[] = []
 
-	// find listeners
-	// const listenerMatches = globby.sync(`${eventsPath}/**/*.listener.[j|t]s`)
-	// const listeners: {eventName: string, eventNamespace: string, version: string}[] = []
+	listenerMatches.forEach((match) => {
+		const matchParts = match.split(pathUtil.sep)
+		const fileName = matchParts.pop() as string
 
-	// debugger
+		const eventName = fileName.split('.')[0]
+		const eventNamespace = matchParts.pop()
+		const version = matchParts.pop()
+
+		if (eventName && eventNamespace && version) {
+
+			if (eventNamespace === 'skill' ) {
+				if (eventName === 'will-boot') {
+					willBoot = require(match).default
+				} else if (eventName === 'did-boot') {
+					didBoot = require(match).default
+				}
+			}
+
+			listeners.push({
+				eventName,
+				eventNamespace,
+				version
+			})
+		}
+
+	})
+
+	health.event.listeners = listeners
+
+	if (willBoot) {
+		willBoot()
+	}
+
+	if (didBoot) {
+		didBoot()
+	}
+
 }
 
 

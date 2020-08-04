@@ -1,10 +1,12 @@
 import { test, assert } from '@sprucelabs/test'
 import AbstractEventTest from '../../../AbstractEventTest'
 
+const CACHE_KEY = undefined //'boot-events'
+
 export default class SkillEmitsBootEventsTest extends AbstractEventTest {
-	@test.skip()
+	@test()
 	protected static async skillEmitsWillBootEvents() {
-		const cli = await this.installEventFeature('boot-events')
+		const cli = await this.installEventFeature(CACHE_KEY)
 		const version = 'v2020_01_01'
 
 		await cli.getFeature('event').Action('listen').execute({
