@@ -37,7 +37,7 @@
 		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
 		"build.watch": "concurrently 'yarn run build.babel --watch' \"chokidar 'src/**/*' -c 'yarn build.types && yarn lint.fix'\" \"chokidar '../spruce-templates/src/**/*' -c 'yarn clean.cache'\"",
 		"clean": "rm -rf build/",
-		"clean.all": "rm -rf build/ && rm -rf node_modules/",
+		"clean.all": "rm -rf build/ && rm -rf node_modules/ && yarn run clena.cache",
 		"clean.cache": "rm -rf src/.spruce/tmp",
 		"release": "semantic-release",
 		"start": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node . $COMMANDS",
