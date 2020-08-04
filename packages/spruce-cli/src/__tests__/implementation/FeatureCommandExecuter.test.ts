@@ -48,7 +48,8 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 		const cli = await this.Cli()
 		const health = await cli.checkHealth()
 
-		assert.isEqualDeep(health, { skill: { status: 'passed' } })
+		// assert.isEqualDeep(health, { skill: { status: 'passed' } })
+		assert.doesInclude(health, { skill: { status: 'passed' } })
 
 		const packageContents = diskUtil.readFile(this.resolvePath('package.json'))
 		assert.doesInclude(packageContents, name)
