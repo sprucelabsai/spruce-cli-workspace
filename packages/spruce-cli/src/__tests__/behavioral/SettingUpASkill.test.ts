@@ -83,7 +83,7 @@ export default class SettingUpASkill extends AbstractCliTest {
 		return cli
 	}
 
-	@test.only()
+	@test()
 	protected static async getsAGoodHealthCheckAndNothingElse() {
 		const cli = await this.installSkill()
 
