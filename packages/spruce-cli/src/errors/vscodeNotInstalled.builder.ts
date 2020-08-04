@@ -4,6 +4,5 @@ export default buildErrorSchema({
 	id: 'vscodeNotInstalled',
 	name: 'vscode not installed',
 	description: '',
-	fields: {
-	},
+	fields: {},
 })

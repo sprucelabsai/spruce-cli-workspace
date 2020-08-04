@@ -1,5 +1,5 @@
 import { buildSchema } from '@sprucelabs/schema'
-import FieldType from '../../.spruce/schemas/fields/fieldTypeEnum'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export default buildSchema({
 	id: 'setupVscodeAction',
@@ -8,7 +8,7 @@ export default buildSchema({
 	fields: {
 		all: {
 			type: FieldType.Boolean,
-			label: 'Install everything'
-		}
+			label: 'Install everything',
+		},
 	},
 })

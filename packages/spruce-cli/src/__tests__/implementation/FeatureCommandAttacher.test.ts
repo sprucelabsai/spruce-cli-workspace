@@ -91,7 +91,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		})
 	}
 
-	@test() 
+	@test()
 	protected static async testBooleanArg() {
 		const cli = await this.Cli()
 		const vscodeFeature = cli.getFeature('vscode')
@@ -100,8 +100,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'vscode.setup',
-			option:
-				'-a, --all',
+			option: '-a, --all',
 		})
 	}
 
