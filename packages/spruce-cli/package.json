@@ -46,11 +46,11 @@
 		"test.watch": "jest --watch"
 	},
 	"dependencies": {
-		"@babel/runtime": "^7.11.0",
-		"@sprucelabs/error": "^2.0.26",
-		"@sprucelabs/log": "^10.2.74",
-		"@sprucelabs/mercury": "^10.5.70",
-		"@sprucelabs/schema": "^7.0.39",
+		"@babel/runtime": "^7.11.1",
+		"@sprucelabs/error": "^2.0.27",
+		"@sprucelabs/log": "^10.2.75",
+		"@sprucelabs/mercury": "^10.5.71",
+		"@sprucelabs/schema": "^7.0.40",
 		"@sprucelabs/spruce-skill-utils": "^10.17.17",
 		"@sprucelabs/spruce-templates": "^10.17.17",
 		"@types/promise.allsettled": "^1.0.3",
@@ -83,7 +83,7 @@
 	},
 	"devDependencies": {
 		"@sprucelabs/jest-sheets-reporter": "^1.1.2",
-		"@sprucelabs/test": "^5.3.96",
+		"@sprucelabs/test": "^5.3.98",
 		"@types/blessed": "^0.1.17",
 		"@types/eslint": "^7.2.0",
 		"@types/fs-extra": "^9.0.1",
