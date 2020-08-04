@@ -2084,10 +2084,10 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.0.38":
-  version "7.0.38"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.38.tgz#de63b3338d2cf44d2248e86908ea8541a982a33b"
-  integrity sha512-Wd0LSUpGfjakkUTg1LB6volapp5Nd9jK9dDNB/5rBRithVpm40dURSgh2FRCj0TSwoOtzQSKNbExj0F9hmL5kQ==
+"@sprucelabs/schema@^7.0.39":
+  version "7.0.39"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.39.tgz#15a04bc18fcc4e713b469238632374f947d4ce2d"
+  integrity sha512-5+5aETo4GOYHvu9NWOCzBwX0hrHEND+tTkUIP9Y4M+HLIH19eB6a8j/yOae8cOZpgoFU8J+467YmQDB7ctE7JA==
   dependencies:
     "@sprucelabs/error" "^2.0.26"
     "@sprucelabs/log" "^10.2.74"
@@ -2096,10 +2096,10 @@
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^5.3.95":
-  version "5.3.95"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.95.tgz#3ffafbb509f0c40394a646c71e04f07f84457c96"
-  integrity sha512-oYqiSm71LBs2bxcvvN15FtgCOaZ709pTb9LbRtDdHxl/fWY1mXTYfSckFM7QrKK0dSKvL5KBh9UMQOp3Xy7gkQ==
+"@sprucelabs/test@^5.3.96":
+  version "5.3.96"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.96.tgz#272dfe4d691ade7dc3e9ec547cfd371865a22881"
+  integrity sha512-nTJcd00evlZzrUGWDcQM9e+zU+SQBPX+cscGY8jBa3ynVYu5wtaaTMHiJv0VK0ze2ApHfubfO69AZHccl2rKtw==
   dependencies:
     "@babel/core" "^7.11.0"
     "@babel/preset-env" "^7.11.0"
