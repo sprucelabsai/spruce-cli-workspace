@@ -1,11 +1,15 @@
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { ICliBootOptions, ICli, boot } from '../cli'
+import ServiceFactory, {
+	IServiceProvider,
+	Service,
+	IServiceMap,
+} from '../factories/ServiceFactory'
 import { InstallFeature } from '../features/features.types'
 import TestInterface from '../interfaces/TestInterface'
 import log from '../singletons/log'
 import testUtil from '../utilities/test.utility'
-import  ServiceFactory, { IServiceProvider, Service, IServiceMap } from '../factories/ServiceFactory'
 
 export interface ICachedCli {
 	cli: ICli
@@ -22,14 +26,15 @@ export default class FeatureFixture implements IServiceProvider {
 		this.serviceFactory = serviceFactory
 	}
 
-	Service<S extends Service>(type: S, cwd?: string | undefined): IServiceMap[S] {
+	public Service<S extends Service>(
+		type: S,
+		cwd?: string | undefined
+	): IServiceMap[S] {
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
 	private async Cli(options?: ICliBootOptions) {
-
 		await this.linkSpruceUtils()
-
 
 		const cli = await boot({
 			cwd: this.cwd,
@@ -42,7 +47,15 @@ export default class FeatureFixture implements IServiceProvider {
 
 	private async linkSpruceUtils() {
 		const command = this.Service('command')
-		await command.execute(`cd ${pathUtil.join(__dirname, '..', '..', '..', 'spruce-skill-utils')} && yarn link`)
+		await command.execute(
+			`cd ${pathUtil.join(
+				__dirname,
+				'..',
+				'..',
+				'..',
+				'spruce-skill-utils'
+			)} && yarn link`
+		)
 	}
 
 	public async installFeatures(
@@ -141,7 +154,6 @@ export default class FeatureFixture implements IServiceProvider {
 
 	private resolveHashSprucePath(...filePath: string[]) {
 		return diskUtil.resolveHashSprucePath(this.cwd, ...filePath)
-
 	}
 
 	private cleanCachedSkillDir() {

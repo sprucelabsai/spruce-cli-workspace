@@ -11,10 +11,10 @@ import ServiceFactory, {
 	IServiceMap,
 } from './factories/ServiceFactory'
 import FeatureInstallerFactory from './features/FeatureInstallerFactory'
+import FeatureFixture from './fixtures/FeatureFixture'
 import TestInterface from './interfaces/TestInterface'
 import StoreFactory, { StoreCode, IStoreMap } from './stores/StoreFactory'
 import { IGraphicsInterface } from './types/cli.types'
-import FeatureFixture from './fixtures/FeatureFixture'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static cliRoot = pathUtil.join(__dirname)
@@ -43,7 +43,6 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			...pathAfterTestDirsAndFiles
 		)
 	}
-	
 
 	protected static async beforeEach() {
 		super.beforeEach()

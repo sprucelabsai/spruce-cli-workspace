@@ -55,7 +55,6 @@ export default class SettingUpASkill extends AbstractCliTest {
 	@test()
 	protected static async getsAFailedHealthCheckWhenIndexFileIsMoved() {
 		const cli = await this.installSkill()
-	
 
 		diskUtil.moveFile(
 			this.resolvePath('src', 'index.ts'),
