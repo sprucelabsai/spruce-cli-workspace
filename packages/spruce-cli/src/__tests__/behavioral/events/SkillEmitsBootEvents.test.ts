@@ -1,7 +1,7 @@
 import { test, assert } from '@sprucelabs/test'
 import AbstractEventTest from '../../../AbstractEventTest'
 
-const CACHE_KEY = undefined //'boot-events'
+const CACHE_KEY = 'boot-events'
 
 export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 	@test()
