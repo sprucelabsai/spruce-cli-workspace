@@ -80,7 +80,7 @@
 		"vm2": "^3.9.2"
 	},
 	"devDependencies": {
-		"@sprucelabs/jest-sheets-reporter": "^1.1.1",
+		"@sprucelabs/jest-sheets-reporter": "^1.1.2",
 		"@sprucelabs/test": "^5.3.93",
 		"@types/blessed": "^0.1.17",
 		"@types/eslint": "^7.2.0",

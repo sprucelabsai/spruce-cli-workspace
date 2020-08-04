@@ -2062,10 +2062,10 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.0.23.tgz#41a1317486dc80bfb671dca8346558c892644b1e"
   integrity sha512-UsMan9SFyjv+DZPBLsnMaqJKIwbID+RNSZg7k5Nk4BU2t55+e0g+ApHIHh4+dcc4NneslUZCMWIEpSURQmsXeA==
 
-"@sprucelabs/jest-sheets-reporter@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/jest-sheets-reporter/-/jest-sheets-reporter-1.1.1.tgz#afd087562333c72c9d9aa91789133f6eeb788afd"
-  integrity sha512-xZuFkfg6amI3FTHs3d9oqC8m0V5n+uvUBqmCZaIfqRgZoVXNB2ddxgbw3H0NIaUxmhNVhK37ar8OGaakk4W1zg==
+"@sprucelabs/jest-sheets-reporter@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/jest-sheets-reporter/-/jest-sheets-reporter-1.1.2.tgz#5921e1e331d0d264223dfacd4a7fc8aeadef4e04"
+  integrity sha512-zEDlNXuU9o5MvKpie1/zn9SA3gGcc7oy9OoBBMHEKqnl4R5nsBM2kR6A7KCdhuZ0CTqlEzYjYtsyFyw6Gz/XvA==
   dependencies:
     google-spreadsheet "^3.0.11"
 
