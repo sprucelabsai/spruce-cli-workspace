@@ -22,7 +22,7 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 			'SKILL_BOOT_NOT_IMPLEMENTED'
 		)
 	}
-	
+
 	@test()
 	protected static async skillEmitsDidBootEvents() {
 		const cli = await this.installEventFeature(CACHE_KEY)

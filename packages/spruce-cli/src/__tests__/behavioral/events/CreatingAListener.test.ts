@@ -25,7 +25,7 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 		assert.doesInclude(match, version)
 
-		// make sure the listener doen't through, which it does by default based on the template
+		// make sure the listener doesn't throw exception (all new listeners will throw NOT_IMPLEMENTED) error
 		diskUtil.writeFile(match, 'export default () => {}')
 
 		await this.Service('typeChecker').check(match)

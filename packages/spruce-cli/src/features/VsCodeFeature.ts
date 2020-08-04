@@ -22,6 +22,10 @@ export default class VsCodeFeature extends AbstractFeature {
 			id: 'christian-kohler.npm-intellisense',
 			label: 'Intellisense autocompletion of installed npm modules',
 		},
+		{
+			id: 'esbenp.prettier-vscode',
+			label: 'Code formatter using prettier',
+		}
 	]
 
 	// 	})
