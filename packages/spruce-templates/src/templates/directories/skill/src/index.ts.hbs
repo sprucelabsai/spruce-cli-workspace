@@ -28,6 +28,9 @@ const eventsPath = pathUtil.join(
 	__dirname,
 	'events'
 )
+
+throw new Error('bacon!')
+
 const doEventsExist = fs.existsSync(eventsPath)
 
 if (doEventsExist) {
@@ -35,6 +38,7 @@ if (doEventsExist) {
 		status: 'passed',
 		listeners: []
 	}
+
 
 	// find listeners
 	// const listenerMatches = globby.sync(`${eventsPath}/**/*.listener.[j|t]s`)

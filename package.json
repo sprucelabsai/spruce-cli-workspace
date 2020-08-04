@@ -2,6 +2,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"name": "spruce-cli-workspace",
+	"license": "MIT",
 	"workspaces": [
 		"packages/spruce-templates",
 		"packages/spruce-skill-utils",
