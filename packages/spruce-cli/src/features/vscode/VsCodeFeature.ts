@@ -1,14 +1,17 @@
 // import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
-import { IExtension } from '../services/VsCodeService'
-import log from '../singletons/log'
-import AbstractFeature from './AbstractFeature'
-import { FeatureCode } from './features.types'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { IExtension } from '../../services/VsCodeService'
+import log from '../../singletons/log'
+import AbstractFeature from '../AbstractFeature'
+import { FeatureCode } from '../features.types'
 
 export default class VsCodeFeature extends AbstractFeature {
 	public nameReadable = 'VSCode'
 	public description = 'Create settings and install VSCode extensions'
 	public code: FeatureCode = 'vsCode'
 	public dependencies: FeatureCode[] = ['skill']
+	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+
 	private recommendedExtensions: IExtension[] = [
 		{
 			id: 'dbaeumer.vscode-eslint',
@@ -25,7 +28,7 @@ export default class VsCodeFeature extends AbstractFeature {
 		{
 			id: 'esbenp.prettier-vscode',
 			label: 'Code formatter using prettier',
-		}
+		},
 	]
 
 	// 	})

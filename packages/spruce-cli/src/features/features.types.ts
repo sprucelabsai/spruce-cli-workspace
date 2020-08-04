@@ -12,7 +12,7 @@ import FeatureInstaller from './FeatureInstaller'
 import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
 import TestFeature from './test/TestFeature'
-import VsCodeFeature from './VsCodeFeature'
+import VsCodeFeature from './vscode/VsCodeFeature'
 
 export interface IFeatureActionOptions {
 	templates: Templates

@@ -1,9 +1,8 @@
 import AbstractCliTest from './AbstractCliTest'
-import FeatureFixture from './fixtures/FeatureFixture'
 
 export default abstract class AbstractEventTest extends AbstractCliTest {
 	protected static async installEventFeature(cacheKey?: string) {
-		const fixture = new FeatureFixture(this.cwd)
+		const fixture = this.FeatureFixture()
 		const cli = await fixture.installFeatures(
 			[
 				{
