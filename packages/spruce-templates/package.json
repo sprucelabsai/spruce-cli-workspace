@@ -4,7 +4,7 @@
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "10.17.12",
+	"version": "10.17.14",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
 	"files": [
@@ -41,8 +41,8 @@
 		"arkit.png": "arkit -f index.ts -o docs/images/arkit.png"
 	},
 	"dependencies": {
-		"@sprucelabs/log": "^10.2.71",
-		"@sprucelabs/schema": "^7.0.35",
+		"@sprucelabs/log": "^10.2.73",
+		"@sprucelabs/schema": "^7.0.37",
 		"globby": "^11.0.1",
 		"handlebars": "^4.7.6",
 		"lodash": "^4.17.19",
