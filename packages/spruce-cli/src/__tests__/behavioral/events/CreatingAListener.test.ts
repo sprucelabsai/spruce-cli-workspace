@@ -1,3 +1,4 @@
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractEventTest from '../../../AbstractEventTest'
 import testUtil from '../../../utilities/test.utility'
@@ -24,10 +25,14 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 		assert.doesInclude(match, version)
 
+		// make sure the listener doen't through, which it does by default based on the template
+		diskUtil.writeFile(match, 'export default () => {}')
+
 		await this.Service('typeChecker').check(match)
 
 		const health = await cli.checkHealth()
 
+		console.log(health.skill.errors)
 		assert.isUndefined(health.skill.errors)
 
 		assert.doesInclude(health.event.listeners, {
