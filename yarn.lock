@@ -2057,10 +2057,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sprucelabs/error@^2.0.25":
-  version "2.0.25"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.0.25.tgz#d1206903dd346078433f29600274f26bf7013005"
-  integrity sha512-B4ZNsaMUJKu4R9Rw43C2LWWIEa57pxxIK3UH+lWBFQvSHQ/0vwq8jcUVLtQAYVfhP6RFd5UaXj+uhgiqOV751w==
+"@sprucelabs/error@^2.0.26":
+  version "2.0.26"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.0.26.tgz#3d04c6e30bb8be666e00340d8a75025d844b45fe"
+  integrity sha512-62LRMnlQkZdi49fbVpLkKBbnK3XzTJAQ9FGu4277ot/tqtudo4YlIv7GmrL5r7ixcfsDXKLdgFn4tJmMN91hgA==
 
 "@sprucelabs/jest-sheets-reporter@^1.1.2":
   version "1.1.2"
@@ -2069,28 +2069,28 @@
   dependencies:
     google-spreadsheet "^3.0.11"
 
-"@sprucelabs/log@^10.2.73":
-  version "10.2.73"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.73.tgz#1547411a619e88cfa49a9a29a19df17c79d23b45"
-  integrity sha512-Sw920CYka5rs+rMv5RmgcsyoHBs2ZfyHKiUn0/KWo8rPlx0Y8rbhdz1kP4U3PU8YQanVO2qhijYK+baPCdezUw==
+"@sprucelabs/log@^10.2.74":
+  version "10.2.74"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.74.tgz#ed3971e15647db82f7e5332408952aa877a6f98f"
+  integrity sha512-ZvbwwrldEjniT3byF8LkenMSYJV+/JIaULL3XfbdiYN5LUUu5sy1km7wzZ8J/UPrpvnKgiWdZTtvsmTlEIji4g==
 
-"@sprucelabs/mercury@^10.5.69":
-  version "10.5.69"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury/-/mercury-10.5.69.tgz#a97c9ae0400e3a60007ba5ccb9286c6df1f2e600"
-  integrity sha512-hpL0wG7vDTBYpkA4d8MgJjkO7eQeku8qsjTUqd8uFDv8Zqthcq9fMNJKOiJLelPKpYx+vI2K6hSh9OsXiXHjlQ==
+"@sprucelabs/mercury@^10.5.70":
+  version "10.5.70"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury/-/mercury-10.5.70.tgz#8f530dce16342c244a123e0ed68f0c740dbb1321"
+  integrity sha512-sSLwkTomOYZ94YVkROWjBQgspdJdxk43YkM38LTtwN1STFh7yEDxA/ljlIZ09pD5OlGyhFEio/LJw/wbgzhvjw==
   dependencies:
     debug "^4.1.1"
     randombytes "^2.1.0"
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.0.37":
-  version "7.0.37"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.37.tgz#bed39e48bf915fda3d68779108dc7b276c0d14e3"
-  integrity sha512-wcbzeHJ0h5JdmzpRAO+XffwBOCyHCTEfwhEv1UJsEfvwiwhQ+IrdsN1/7uBxOgpbrB5OvOU+utgt3247OKdFpw==
+"@sprucelabs/schema@^7.0.38":
+  version "7.0.38"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.38.tgz#de63b3338d2cf44d2248e86908ea8541a982a33b"
+  integrity sha512-Wd0LSUpGfjakkUTg1LB6volapp5Nd9jK9dDNB/5rBRithVpm40dURSgh2FRCj0TSwoOtzQSKNbExj0F9hmL5kQ==
   dependencies:
-    "@sprucelabs/error" "^2.0.25"
-    "@sprucelabs/log" "^10.2.73"
+    "@sprucelabs/error" "^2.0.26"
+    "@sprucelabs/log" "^10.2.74"
     google-libphonenumber "^3.2.10"
     libphonenumber-js "^1.7.56"
     mime-db "^1.44.0"
@@ -4271,9 +4271,9 @@ ecdsa-sig-formatter@1.0.11, ecdsa-sig-formatter@^1.0.11:
     safe-buffer "^5.0.1"
 
 electron-to-chromium@^1.3.488:
-  version "1.3.518"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.518.tgz#c54ee9cf1a7bafd6e482a1a6cceac86448d941e8"
-  integrity sha512-IspiwXYDKZMxo+qc3Vof4WtwbG9BMDbJfati8PYj7uS4DJmJ67pwjCKZxlTBSAuCZSMcbRnj2Xz2H14uiKT7bQ==
+  version "1.3.519"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.519.tgz#d1da9c8a8a96ee7f60c32b2ca2593533a970c210"
+  integrity sha512-2r/p/9YOjIpX10KxcH1HcAGz1oadSD9Cwwotoek8wNJx/SRpklea14qdAMzCTTZlIezvsJ8sNsBQN05bJ/ZjhA==
 
 emittery@^0.7.1:
   version "0.7.1"
