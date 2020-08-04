@@ -1,6 +1,7 @@
 import pathUtil from 'path'
 import { ISchema } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
+import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 const featuresUtil = {
 	filePathToActionCode(path: string): string {
@@ -21,9 +22,15 @@ const featuresUtil = {
 			const fullName = `${fieldName}`
 			const capitals = namesUtil.toPascal(fieldName).replace(/[a-z]/g, '')
 			const abbreviation = `${capitals.toLowerCase()}`
+
+			let placeholder = ''
+			if (fields[fieldName].type !== FieldType.Boolean) {
+				placeholder = ` <${fullName}>`
+			}
+
 			aliases[fieldName] = `${
 				abbreviation.length === 1 ? '-' : '--'
-			}${abbreviation}, --${fullName} <${fullName}>`
+			}${abbreviation}, --${fullName}${placeholder}`
 		})
 
 		return aliases

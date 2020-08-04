@@ -1,11 +1,17 @@
 import { exec } from 'child_process'
 import os from 'os'
 import pathUtil from 'path'
-import { IDirectoryTemplateFile } from '@sprucelabs/spruce-templates'
 import fs from 'fs-extra'
 import * as uuid from 'uuid'
 import { HASH_SPRUCE_DIR } from './constants'
 import SpruceError from './SpruceError'
+
+export interface ICreateFile {
+	/** The relative path from the cwd, without a leading forward slash */
+	relativePath: string
+	/** The file contents, built with the template data */
+	contents: string
+}
 
 const diskUtil = {
 	writeFile(destination: string, contents: string) {
@@ -95,7 +101,7 @@ const diskUtil = {
 
 		return builtPath
 	},
-	async createManyFiles(cwd: string, files: IDirectoryTemplateFile[]) {
+	async createManyFiles(cwd: string, files: ICreateFile[]) {
 		const writes: Promise<void>[] = []
 		for (let i = 0; i < files.length; i += 1) {
 			const file = files[i]

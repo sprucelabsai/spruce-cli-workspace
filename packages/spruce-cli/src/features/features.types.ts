@@ -12,7 +12,7 @@ import FeatureInstaller from './FeatureInstaller'
 import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
 import TestFeature from './test/TestFeature'
-import VsCodeFeature from './VsCodeFeature'
+import VsCodeFeature from './vscode/VsCodeFeature'
 
 export interface IFeatureActionOptions {
 	templates: Templates
@@ -56,7 +56,7 @@ export type InstallFeature =
 			options?: undefined
 	  }
 	| {
-			code: 'vsCode'
+			code: 'vscode'
 			options?: undefined
 	  }
 	| {
@@ -75,7 +75,7 @@ export interface IFeatureMap {
 	schema: SchemaFeature
 	skill: SkillFeature
 	test: TestFeature
-	vsCode: VsCodeFeature
+	vscode: VsCodeFeature
 	event: EventFeature
 }
 
@@ -83,6 +83,7 @@ export interface IFeatureActionExecuteResponse {
 	files?: IGeneratedFile[]
 	meta?: Record<string, any>
 	errors?: SpruceError[]
+	hints?: string[]
 }
 
 export interface IFeatureAction<S extends ISchema = ISchema> {

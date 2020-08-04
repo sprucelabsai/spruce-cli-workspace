@@ -1,11 +1,10 @@
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../../AbstractCliTest'
-import FeatureFixture from '../../../fixtures/FeatureFixture'
 
 export default class BootingASkillTest extends AbstractCliTest {
 	@test()
 	protected static async bootingWithoutBuildingThrowsGoodError() {
-		const fixture = new FeatureFixture(this.cwd)
+		const fixture = this.FeatureFixture()
 		const cli = await fixture.installFeatures([
 			{
 				code: 'skill',

@@ -31,6 +31,7 @@ interface IHealthCheckResults {
 interface IHealthCheckItem {
 	status: 'failed' | 'passed'
 	errors?: SpruceError[]
+	listeners?: { eventName: string; eventNamespace: string; version: string }[]
 }
 
 export interface ICli {

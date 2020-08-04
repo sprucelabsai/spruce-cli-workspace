@@ -24,6 +24,7 @@ export default class SkillFeature<
 	public packageDependencies: INpmPackage[] = [
 		{ name: 'typescript' },
 		{ name: '@sprucelabs/log' },
+		{ name: '@sprucelabs/spruce-skill-utils' },
 		{ name: '@types/node', isDev: true },
 		{ name: 'ts-node', isDev: true },
 		{ name: 'tsconfig-paths', isDev: true },

@@ -3,6 +3,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
+	"license": "MIT",
 	"version": "10.17.16",
 	"bin": {
 		"spruce": "./build/index.js"
@@ -34,9 +35,10 @@
 		"build": "yarn build.babel && yarn build.types",
 		"build.types": "tsc --emitDeclarationOnly && echo PASS",
 		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
-		"build.watch": "yarn run build.babel --watch & chokidar 'src/**/*' -c 'yarn build.types && yarn lint.fix'",
+		"build.watch": "concurrently 'yarn run build.babel --watch' \"chokidar 'src/**/*' -c 'yarn build.types'\" \"chokidar '../spruce-templates/src/**/*' -c 'yarn clean.cache'\"",
 		"clean": "rm -rf build/",
-		"clean.all": "rm -rf build/ && rm -rf node_modules/",
+		"clean.all": "rm -rf build/ && rm -rf node_modules/ && yarn run clena.cache",
+		"clean.cache": "rm -rf src/.spruce/tmp",
 		"release": "semantic-release",
 		"start": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node . $COMMANDS",
 		"local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node --inspect=5200 . $COMMANDS",
@@ -139,7 +141,7 @@
 					"worksheetId": 843037832,
 					"testMap": {
 						"canBootTheCli": "C4",
-						"getsGoodHealthCheckAndNothingElse": "C5",
+						"getsAGoodHealthCheckAndNothingElse": "C5",
 						"schemaPassesHealthCheck": "C6",
 						"builderAndDefinitionFileValidates": "C7",
 						"schemasStayInSyncWhenDefinitionsAreDeleted": "C8",

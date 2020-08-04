@@ -11,6 +11,7 @@ import ServiceFactory, {
 	IServiceMap,
 } from './factories/ServiceFactory'
 import FeatureInstallerFactory from './features/FeatureInstallerFactory'
+import FeatureFixture from './fixtures/FeatureFixture'
 import TestInterface from './interfaces/TestInterface'
 import StoreFactory, { StoreCode, IStoreMap } from './stores/StoreFactory'
 import { IGraphicsInterface } from './types/cli.types'
@@ -67,6 +68,10 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static ServiceFactory() {
 		return new ServiceFactory(new Mercury())
+	}
+
+	protected static FeatureFixture() {
+		return new FeatureFixture(this.cwd, this.ServiceFactory())
 	}
 
 	protected static resolveHashSprucePath(...filePath: string[]) {

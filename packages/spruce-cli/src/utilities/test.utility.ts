@@ -6,10 +6,10 @@ function hasArg(regex: RegExp) {
 
 const testUtil = {
 	shouldClearCache() {
-		return hasArg(/clear.*?skill.*?cache/gi)
+		return hasArg(/clear.*?cache/gi)
 	},
 	isCacheEnabled() {
-		return !hasArg(/no.*?skill.*?cache/gi)
+		return !hasArg(/no.*?cache/gi)
 	},
 	assertsFileByNameInGeneratedFiles(
 		name: string | RegExp,

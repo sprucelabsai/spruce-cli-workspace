@@ -101,6 +101,11 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				message = 'A Payload args just happened!'
 				break
 
+			case 'VSCODE_NOT_INSTALLED':
+				message =
+					"vscode's 'code' is not installed.\n\nMac instructions: https://code.visualstudio.com/docs/setup/mac\n\nLinux instructions: https://code.visualstudio.com/docs/setup/linux\n\nWindows instructions: https://code.visualstudio.com/docs/setup/windows"
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}

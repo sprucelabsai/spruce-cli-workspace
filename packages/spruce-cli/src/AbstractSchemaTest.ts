@@ -1,6 +1,5 @@
 import AbstractCliTest from './AbstractCliTest'
 import { ICliBootOptions } from './cli'
-import FeatureFixture from './fixtures/FeatureFixture'
 
 export default abstract class AbstractSchemaTest extends AbstractCliTest {
 	protected static get schemaTypesFile() {
@@ -18,7 +17,7 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 		cacheKey?: string,
 		bootOptions?: ICliBootOptions
 	) {
-		const fixture = new FeatureFixture(this.cwd)
+		const fixture = this.FeatureFixture()
 		const cli = await fixture.installFeatures(
 			[
 				{

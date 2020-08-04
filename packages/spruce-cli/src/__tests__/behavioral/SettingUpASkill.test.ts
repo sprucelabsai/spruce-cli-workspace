@@ -54,18 +54,7 @@ export default class SettingUpASkill extends AbstractCliTest {
 
 	@test()
 	protected static async getsAFailedHealthCheckWhenIndexFileIsMoved() {
-		const cli = await this.Cli()
-		await cli.installFeatures({
-			features: [
-				{
-					code: 'skill',
-					options: {
-						name: 'test',
-						description: 'This is such a good skill!',
-					},
-				},
-			],
-		})
+		const cli = await this.installSkill()
 
 		diskUtil.moveFile(
 			this.resolvePath('src', 'index.ts'),
@@ -80,20 +69,23 @@ export default class SettingUpASkill extends AbstractCliTest {
 		})
 	}
 
-	@test()
-	protected static async getsGoodHealthCheckAndNothingElse() {
-		const cli = await this.Cli()
-		await cli.installFeatures({
-			features: [
-				{
-					code: 'skill',
-					options: {
-						name: 'test',
-						description: 'This is such a good skill!',
-					},
+	private static async installSkill() {
+		const fixture = this.FeatureFixture()
+		const cli = await fixture.installFeatures([
+			{
+				code: 'skill',
+				options: {
+					name: 'test',
+					description: 'This is such a good skill!',
 				},
-			],
-		})
+			},
+		])
+		return cli
+	}
+
+	@test()
+	protected static async getsAGoodHealthCheckAndNothingElse() {
+		const cli = await this.installSkill()
 
 		const hashSpruceDir = this.resolveHashSprucePath()
 		assert.isTrue(diskUtil.doesDirExist(hashSpruceDir))
@@ -104,6 +96,7 @@ export default class SettingUpASkill extends AbstractCliTest {
 			assert.fail(health.skill.errors?.[0].message)
 		}
 
-		assert.isEqualDeep(health, { skill: { status: 'passed' } })
+		// assert.isEqualDeep(health, { skill: { status: 'passed' } })
+		assert.doesInclude(health, { skill: { status: 'passed' } })
 	}
 }

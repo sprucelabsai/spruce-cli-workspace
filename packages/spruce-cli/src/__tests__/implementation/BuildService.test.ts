@@ -1,7 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../AbstractCliTest'
-import FeatureFixture from '../../fixtures/FeatureFixture'
 
 export default class BuildServiceTest extends AbstractCliTest {
 	@test()
@@ -50,7 +49,7 @@ export default class BuildServiceTest extends AbstractCliTest {
 	}
 
 	private static async installSkill(cacheKey?: string) {
-		const fixture = new FeatureFixture(this.cwd)
+		const fixture = this.FeatureFixture()
 		await fixture.installFeatures(
 			[
 				{

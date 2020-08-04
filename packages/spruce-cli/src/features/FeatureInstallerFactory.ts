@@ -12,7 +12,7 @@ import { FeatureCode } from './features.types'
 import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
 import TestFeature from './test/TestFeature'
-import VsCodeFeature from './VsCodeFeature'
+import VsCodeFeature from './vscode/VsCodeFeature'
 
 export default class FeatureInstallerFactory {
 	private static readonly features: any[] = [
@@ -31,7 +31,7 @@ export default class FeatureInstallerFactory {
 		'schema',
 		'skill',
 		'test',
-		'vsCode',
+		'vscode',
 		'event',
 	]
 

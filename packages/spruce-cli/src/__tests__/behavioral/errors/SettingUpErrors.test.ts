@@ -1,11 +1,10 @@
 import { test, assert } from '@sprucelabs/test'
 import AbstractErrorTest from '../../../AbstractErrorTest'
-import FeatureFixture from '../../../fixtures/FeatureFixture'
 
 export default class SettingUpErrorTest extends AbstractErrorTest {
 	@test()
 	protected static async failsIfSkillIsNotInstalled() {
-		const fixture = new FeatureFixture(this.cwd)
+		const fixture = this.FeatureFixture()
 		await assert.doesThrowAsync(
 			() =>
 				fixture.installFeatures([

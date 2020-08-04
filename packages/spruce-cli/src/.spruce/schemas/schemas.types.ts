@@ -1312,6 +1312,34 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
 export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
+	/** Install vscode extensions the Spruce team recommends! */
+	export interface ISetupVscodeAction {
+		
+			/** Install everything. */
+			'all'?: boolean| undefined | null
+	}
+
+	export interface ISetupVscodeActionSchema extends SpruceSchema.ISchema {
+		id: 'setupVscodeAction',
+		name: 'Setup vscode action',
+		description: 'Install vscode extensions the Spruce team recommends!',
+		    fields: {
+		            /** Install everything. */
+		            'all': {
+		                label: 'Install everything',
+		                type: FieldType.Boolean,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type SetupVscodeActionEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ISetupVscodeActionSchema>
+
+}
+
+
+export declare namespace SpruceSchemas.Local.v2020_07_22 {
+
 	
 	export interface ISkillFeature {
 		
