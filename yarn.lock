@@ -2075,9 +2075,9 @@
   integrity sha512-7DD55oQZLEhG0Pi+qt7JZInDj5zY/vb4CysDsvEmm1SrnvFXk3yLSBdL/cXmIfUwoi5K+7S3FT5HIRu6kyHU5A==
 
 "@sprucelabs/mercury@^10.5.71":
-  version "10.5.71"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury/-/mercury-10.5.71.tgz#3378354c29c7c047a99ffc2491b0f3be50a2b57a"
-  integrity sha512-uScd3WLqXp5RfRJa8tmOJCTltzsyPS9sUPEAdHCejN0paaRpigPLdkOyrUa4G7smHFMV9OfvChDWS094wjTSFw==
+  version "10.5.72"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury/-/mercury-10.5.72.tgz#dc65ca30adf79388bf85fad0a434ab9a91f1fbb1"
+  integrity sha512-pEfrKMMyGjat+Askm8piZCUZ6eXQYGx5alRQMiv/r6eambxc/z9KskCjPK2YTp6GA238T8Mc0ItXZLFpKVYwWA==
   dependencies:
     debug "^4.1.1"
     randombytes "^2.1.0"
