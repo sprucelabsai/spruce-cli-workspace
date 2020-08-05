@@ -2084,10 +2084,10 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.0.41":
-  version "7.0.41"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.41.tgz#d8e5287b727a2c950a42ca33cda0a1852f9a7ca3"
-  integrity sha512-PfBMIBqObhSw8pSGy/KdM5sHy6zhAvcgJHxdeTXj8TOTz6vgbmNA40q50pgUu2qybOEATs7c5oOTeCMFo7Aw9g==
+"@sprucelabs/schema@^7.0.42":
+  version "7.0.42"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.42.tgz#1e5a843bf301be939fae7e5be5211b2d0e2fe216"
+  integrity sha512-qe6aHPv+LkYD6TOc0XdGqu7LegIjLRJ+u3pYZl9Txfp5MDQNGkDoLTG0nDQax9kHUtSrmz9oqkkXyLdrhBpk9g==
   dependencies:
     "@sprucelabs/error" "^2.0.27"
     "@sprucelabs/log" "^10.2.75"
@@ -2096,10 +2096,10 @@
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^5.3.100":
-  version "5.3.100"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.100.tgz#96ef6d5c2f534e4e214fb8d5206c512a32223835"
-  integrity sha512-vZwQJkVC6iCwVxwp/CaYMV6sPXj0CX5YGR17s7bSAiEB4yHF9lwAydyB5ggbQ6kvEW5NQGxmTvQIH3ca0UxyhQ==
+"@sprucelabs/test@^5.3.101":
+  version "5.3.101"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.101.tgz#d9ebaa28e2b847cab2b6c9b1aa9a890126ccdab5"
+  integrity sha512-M1dC9i6jdw/13ESGBNMjXoP+gMGYHAxNJF6f8t16wlWy2CMRcEMzDaSsDQpu7rkLTZZTULiYJ6Qg3i15fi6fww==
   dependencies:
     "@babel/core" "^7.11.1"
     "@babel/preset-env" "^7.11.0"
@@ -2380,10 +2380,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/uuid@^8.0.0":
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.0.0.tgz#165aae4819ad2174a17476dbe66feebd549556c0"
-  integrity sha512-xSQfNcvOiE5f9dyd4Kzxbof1aTrLobL278pGLKOZI6esGfZ7ts9Ka16CzIN6Y8hFHE1C7jIBZokULhK1bOgjRw==
+"@types/uuid@^8.0.1":
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.0.1.tgz#42958a1a880640b139eea97a1640e1a3f61016d2"
+  integrity sha512-2kE8rEFgJpbBAPw5JghccEevQb0XVU0tewF/8h7wPQTeCtoJ6h8qmBIwuzUVm2MutmzC/cpCkwxudixoNYDp1A==
 
 "@types/yargs-parser@*":
   version "15.0.0"
@@ -4271,9 +4271,9 @@ ecdsa-sig-formatter@1.0.11, ecdsa-sig-formatter@^1.0.11:
     safe-buffer "^5.0.1"
 
 electron-to-chromium@^1.3.488:
-  version "1.3.519"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.519.tgz#d1da9c8a8a96ee7f60c32b2ca2593533a970c210"
-  integrity sha512-2r/p/9YOjIpX10KxcH1HcAGz1oadSD9Cwwotoek8wNJx/SRpklea14qdAMzCTTZlIezvsJ8sNsBQN05bJ/ZjhA==
+  version "1.3.520"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.520.tgz#dfda0a14a4aed785cbddfdb505ea122f75978392"
+  integrity sha512-q6H9E1sXDCjRHP+X06vcP+N0ki8ZvYoRPZfKnDuiRX10WWXxEHzKFVf4O9rBFMpuPtR3M+2KAdJnugJoBBp3Rw==
 
 emittery@^0.7.1:
   version "0.7.1"

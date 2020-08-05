@@ -42,7 +42,7 @@
 	},
 	"dependencies": {
 		"@sprucelabs/log": "^10.2.75",
-		"@sprucelabs/schema": "^7.0.41",
+		"@sprucelabs/schema": "^7.0.42",
 		"globby": "^11.0.1",
 		"handlebars": "^4.7.6",
 		"lodash": "^4.17.19",
