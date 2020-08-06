@@ -2084,10 +2084,10 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.0.50":
-  version "7.0.50"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.50.tgz#0d89644befee544abe092fd58ef62a8bca920579"
-  integrity sha512-GdJzkzh/YpE8TL2mQNP6U02PAKkL7CBrScwcA0itslphIgLs4PNnQ4CElZjOziADQEFlH77xZLE/rkWopyz9lw==
+"@sprucelabs/schema@^7.0.51":
+  version "7.0.51"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.51.tgz#5ac8430e3e96151de87be99a5f4edc2f2c72e886"
+  integrity sha512-a+FbhNf1XKiRQBP5dmYZfZKdWV7YjqNhlA10ZxGiRcWn3LNc+8J0b8EUfbHUjRuJ8x6K+Jq4PsTQUNbZXU/NWA==
   dependencies:
     "@sprucelabs/error" "^2.0.30"
     "@sprucelabs/log" "^10.2.78"
@@ -3461,10 +3461,10 @@ chokidar@^2.1.8:
   optionalDependencies:
     fsevents "^1.2.7"
 
-chokidar@^3.2.3, chokidar@^3.4.1:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.4.1.tgz#e905bdecf10eaa0a0b1db0c664481cc4cbc22ba1"
-  integrity sha512-TQTJyr2stihpC4Sya9hs2Xh+O2wf+igjL36Y75xx2WdHuiICcn/XJza46Jwt0eT5hVpQOzo3FpY3cj3RVYLX0g==
+chokidar@^3.2.3, chokidar@^3.4.2:
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.4.2.tgz#38dc8e658dec3809741eb3ef7bb0a47fe424232d"
+  integrity sha512-IZHaDeBeI+sZJRX7lGcXsdzgvZqKv6sECqsbErJA4mHWfpRrD8B97kSFN4cQz6nGBGiuFia1MKR4d6c1o8Cv7A==
   dependencies:
     anymatch "~3.1.1"
     braces "~3.0.2"
