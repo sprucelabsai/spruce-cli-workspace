@@ -36,7 +36,7 @@
 	"dependencies": {},
 	"devDependencies": {
 		"@babel/cli": "^7.10.5",
-		"@babel/core": "^7.11.0",
+		"@babel/core": "^7.11.1",
 		"@babel/plugin-proposal-class-properties": "^7.10.4",
 		"@babel/plugin-proposal-decorators": "^7.10.5",
 		"@babel/plugin-transform-runtime": "^7.11.0",
@@ -45,7 +45,7 @@
 		"babel-plugin-module-resolver": "^4.0.0",
 		"conventional-changelog-sprucelabs": "^1.1.1",
 		"eslint": "^7.6.0",
-		"eslint-config-spruce": "10.7.13",
+		"eslint-config-spruce": "10.7.16",
 		"lerna": "^3.20.2",
 		"typescript": "^3.9.7",
 		"yarn-upgrade-all": "^0.5.4"
