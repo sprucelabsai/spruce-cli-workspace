@@ -1,12 +1,21 @@
 import pathUtil from 'path'
 import fs from 'fs-extra'
+import SpruceError from '../errors/SpruceError'
 const tsConfigUtil = {
 	readConfig(dir: string): Record<string, any | undefined> {
 		const source = dir
 		const packagePath = pathUtil.join(source, 'tsconfig.json')
 		const contents = fs.readFileSync(packagePath).toString()
-		const parsed = JSON.parse(contents)
-		return parsed
+		try {
+			const parsed = JSON.parse(contents)
+			return parsed
+		} catch (err) {
+			throw new SpruceError({
+				code: 'FAILED_TO_IMPORT',
+				file: packagePath,
+				originalError: err,
+			})
+		}
 	},
 
 	setPathAlias(dir: string, alias: string, patterns: string[]) {

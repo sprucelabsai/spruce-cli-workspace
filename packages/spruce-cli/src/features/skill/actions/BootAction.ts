@@ -9,26 +9,43 @@ export default class BootAction extends AbstractFeatureAction<
 > {
 	public name = 'boot'
 	public optionsSchema: SpruceSchemas.Local.v2020_07_22.IBootSkillActionSchema = bootSkillActionSchema
-	public async execute(): Promise<IFeatureActionExecuteResponse> {
+	public async execute(
+		options: SpruceSchemas.Local.v2020_07_22.IBootSkillAction
+	): Promise<IFeatureActionExecuteResponse> {
 		const command = this.Service('command')
 
-		try {
-			const results = await command.execute('yarn boot')
+		let script = 'boot'
 
-			return {
-				meta: {
-					skill: results,
-				},
-			}
-		} catch (err) {
-			if (err.message.search(/cannot find module/gis) > -1) {
-				throw new SpruceError({
-					code: 'BOOT_FAILED',
-					friendlyMessage: 'You must build your skill before you can boot it!',
+		if (options.local) {
+			script += '.local'
+		}
+
+		const promise = new Promise((resolve, reject) => {
+			const promise = command.execute(`yarn ${script}`)
+
+			promise
+				.then((results) => resolve(results))
+				.catch((err) => {
+					if (err.message.search(/cannot find module/gis) > -1) {
+						reject(
+							new SpruceError({
+								code: 'BOOT_FAILED',
+								friendlyMessage:
+									'You must build your skill before you can boot it!',
+							})
+						)
+					} else {
+						reject(err)
+					}
 				})
-			}
+		})
 
-			throw err
+		return {
+			meta: {
+				kill: command.kill,
+				pid: command.pid() as number,
+				promise,
+			},
 		}
 	}
 }

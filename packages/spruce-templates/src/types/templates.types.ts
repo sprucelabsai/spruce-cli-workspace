@@ -35,7 +35,7 @@ export interface IRootAutoloaderTemplateItem {
 	autoloaders: IAutoLoaderTemplateItem[]
 }
 
-export enum DirectoryTemplateKind {
+export enum DirectoryTemplateCode {
 	Skill = 'skill',
 	VsCode = 'vscode',
 	CircleCi = 'circleci',
@@ -55,17 +55,25 @@ export interface IDirectoryTemplateContextAutoloadable {
 }
 
 export interface IDirectoryTemplateContextMap {
-	[DirectoryTemplateKind.Skill]: IDirectoryTemplateContextSkill
-	[DirectoryTemplateKind.VsCode]: IDirectoryTemplateContextVsCode
-	[DirectoryTemplateKind.CircleCi]: IDirectoryTemplateContextCircleCi
-	[DirectoryTemplateKind.Autoloadable]: IDirectoryTemplateContextAutoloadable
+	[DirectoryTemplateCode.Skill]: IDirectoryTemplateContextSkill
+	[DirectoryTemplateCode.VsCode]: IDirectoryTemplateContextVsCode
+	[DirectoryTemplateCode.CircleCi]: IDirectoryTemplateContextCircleCi
+	[DirectoryTemplateCode.Autoloadable]: IDirectoryTemplateContextAutoloadable
 }
 
 export interface IDirectoryTemplateFile {
+	/** Whether this is a handlebars template file */
+	isHandlebarsTemplate: boolean
+	/** The full directory path before the filename */
+	directory: string
+	/** The relative directory path after "/templates/directories/<templateName>" */
+	relativeDirectory: string
+	/** The actual file name that would be output from this template */
+	filename: string
+	/** Path to file with leading slash */
+	path: string
 	/** The relative path of the output file, without a leading forward slash */
 	relativePath: string
-	/** The file contents, built with the template data */
-	contents: string
 }
 
 export interface ISchemaBuilderTemplateItem {

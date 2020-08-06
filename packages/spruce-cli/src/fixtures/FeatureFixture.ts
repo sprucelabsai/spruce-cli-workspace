@@ -20,6 +20,7 @@ export default class FeatureFixture implements IServiceProvider {
 	private cwd: string
 	private installedSkills: Record<string, ICachedCli> = {}
 	private serviceFactory: ServiceFactory
+	private static linkedUtils = false
 
 	public constructor(cwd: string, serviceFactory: ServiceFactory) {
 		this.cwd = cwd
@@ -33,7 +34,7 @@ export default class FeatureFixture implements IServiceProvider {
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
-	private async Cli(options?: ICliBootOptions) {
+	public async Cli(options?: ICliBootOptions) {
 		await this.linkSpruceUtils()
 
 		const cli = await boot({
@@ -46,16 +47,20 @@ export default class FeatureFixture implements IServiceProvider {
 	}
 
 	private async linkSpruceUtils() {
-		const command = this.Service('command')
-		await command.execute(
-			`cd ${pathUtil.join(
-				__dirname,
-				'..',
-				'..',
-				'..',
-				'spruce-skill-utils'
-			)} && yarn link`
-		)
+		if (!FeatureFixture.linkedUtils) {
+			const command = this.Service('command')
+			await command.execute(
+				`cd ${pathUtil.join(
+					__dirname,
+					'..',
+					'..',
+					'..',
+					'spruce-skill-utils'
+				)} && yarn link`
+			)
+
+			FeatureFixture.linkedUtils = true
+		}
 	}
 
 	public async installFeatures(
@@ -93,12 +98,12 @@ export default class FeatureFixture implements IServiceProvider {
 
 		this.cleanCachedSkillDir()
 
-		await this.linkToSpruceUtils()
+		await this.linkLocalPackages()
 
 		return cli
 	}
 
-	private async linkToSpruceUtils() {
+	public async linkLocalPackages() {
 		const command = this.Service('command')
 		await command.execute(`yarn link @sprucelabs/spruce-skill-utils`)
 	}
@@ -159,7 +164,10 @@ export default class FeatureFixture implements IServiceProvider {
 	private cleanCachedSkillDir() {
 		const dirs = [
 			// TODO make this so it does not need to be updated for each feature
-			this.resolveHashSprucePath(),
+			diskUtil.resolvePath(this.resolveHashSprucePath(), 'tmp'),
+			diskUtil.resolvePath(this.resolveHashSprucePath(), 'schemas'),
+			diskUtil.resolvePath(this.resolveHashSprucePath(), 'errors'),
+			diskUtil.resolvePath(this.resolveHashSprucePath(), 'events'),
 			diskUtil.resolvePath(this.cwd, 'build'),
 			diskUtil.resolvePath(this.cwd, 'src', 'events'),
 			diskUtil.resolvePath(this.cwd, 'src', 'schemas'),
@@ -172,8 +180,6 @@ export default class FeatureFixture implements IServiceProvider {
 				diskUtil.createDir(dir)
 			}
 		})
-
-		diskUtil.createDir(this.resolveHashSprucePath())
 	}
 
 	private resetCachedSkillDir() {

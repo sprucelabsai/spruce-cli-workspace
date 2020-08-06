@@ -11,8 +11,8 @@ run(
 	.then(() => {
 		process.exit(0)
 	})
-	.catch((e) => {
+	.catch((err) => {
 		const term = new TerminalInterface(process.cwd())
-		term.renderError(e)
+		term.renderError(err)
 		process.exit(1)
 	})

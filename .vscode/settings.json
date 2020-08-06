@@ -1,5 +1,5 @@
 {
-	"debug.node.autoAttach": "off",
+	"debug.node.autoAttach": "on",
 	"git.ignoreLimitWarning": true,
 	"javascript.validate.enable": false,
 	"editor.formatOnSave": true,
@@ -39,15 +39,19 @@
 	},
 	"eslint.workingDirectories": [
 		"./packages/spruce-cli",
-		"./packages/spruce-templates"
+		"./packages/spruce-templates",
+		"./packages/spruce-skill-utils"
 	],
 	"eslint.options": {
-		"extensions": [".js", ".jsx", ".ts", ".tsx"]
+		"extensions": [
+			".js",
+			".jsx",
+			".ts",
+			".tsx"
+		]
 	},
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"typescript.preferences.importModuleSpecifier": "relative",
-	"editor.formatOnSaveTimeout": 5000,
-	"editor.codeActionsOnSaveTimeout": 5000,
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": true
 	},
@@ -67,5 +71,5 @@
 	],
 	"files.exclude": {
 		"packages/*/build": true
-	}
+	},
 }

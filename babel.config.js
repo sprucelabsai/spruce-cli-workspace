@@ -11,7 +11,7 @@ module.exports = (api) => {
 	})
 
 	return {
-		ignore: ["**/testDirsAndFiles/**"],
+		ignore: ["**/testDirsAndFiles/**", "**/spruce-templates/src/templates/**"],
 		presets: ['@babel/preset-env', '@babel/preset-typescript'],
 		plugins: [
 			'@babel/plugin-transform-runtime',

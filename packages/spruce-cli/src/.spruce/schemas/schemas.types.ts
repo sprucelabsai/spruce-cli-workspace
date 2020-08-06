@@ -548,6 +548,8 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 	/** Boot your skill, change the world. 🌎 */
 	export interface IBootSkillAction {
 		
+			/** Run local. Will run using ts-node and typescript directly. Longer boot times */
+			'local'?: boolean| undefined | null
 	}
 
 	export interface IBootSkillActionSchema extends SpruceSchema.ISchema {
@@ -555,6 +557,13 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		name: 'Boot skill action',
 		description: 'Boot your skill, change the world. 🌎',
 		    fields: {
+		            /** Run local. Will run using ts-node and typescript directly. Longer boot times */
+		            'local': {
+		                label: 'Run local',
+		                type: FieldType.Boolean,
+		                hint: 'Will run using ts-node and typescript directly. Longer boot times',
+		                options: undefined
+		            },
 		    }
 	}
 
@@ -1501,6 +1510,26 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 	}
 
 	export type TestFeatureEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ITestFeatureSchema>
+
+}
+
+
+export declare namespace SpruceSchemas.Local.v2020_07_22 {
+
+	/** Upgrade your skill and all it&#x27;s dependencies! */
+	export interface IUpgradeSkillAction {
+		
+	}
+
+	export interface IUpgradeSkillActionSchema extends SpruceSchema.ISchema {
+		id: 'upgradeSkillAction',
+		name: 'Upgrade skill action',
+		description: 'Upgrade your skill and all it\'s dependencies!',
+		    fields: {
+		    }
+	}
+
+	export type UpgradeSkillActionEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.IUpgradeSkillActionSchema>
 
 }
 

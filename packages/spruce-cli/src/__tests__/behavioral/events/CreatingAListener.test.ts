@@ -32,7 +32,6 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 		const health = await cli.checkHealth()
 
-		console.log(health.skill.errors)
 		assert.isUndefined(health.skill.errors)
 
 		assert.doesInclude(health.event.listeners, {

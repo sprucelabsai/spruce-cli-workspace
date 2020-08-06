@@ -1,28 +1,36 @@
 {
 	"compilerOptions": {
-		"baseUrl": "src",
-		"outDir": "build",
-		"target": "es2017",
 		"module": "commonjs",
-		"jsx": "preserve",
-		"lib": ["dom", "es2017"],
-		"moduleResolution": "node",
-		"strict": true,
-		"allowJs": true,
-		"noEmit": false,
-		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"isolatedModules": false,
-		"removeComments": false,
-		"preserveConstEnums": true,
-		"sourceMap": true,
+		"target": "ES2017",
+		"lib": [
+			"es2017",
+			"ES2020"
+		],
+		"declaration": true,
+		"noImplicitAny": true,
+		"allowJs": true,
 		"forceConsistentCasingInFileNames": true,
+		"noImplicitReturns": true,
+		"strict": true,
+		"noUnusedLocals": true,
 		"resolveJsonModule": true,
-		"experimentalDecorators": true
+		"moduleResolution": "node",
+		"sourceMap": true,
+		"outDir": "build",
+		"baseUrl": "src",
+		"experimentalDecorators": true,
+		"paths": {
+			"#spruce/*": [
+				".spruce/*"
+			]
+		}
 	},
-	"include": ["./*.ts", "./**/*.ts"],
-	"exclude": ["**/node_modules/*", "build/*"]
+	"include": [
+		"./*.ts",
+		"./**/*.ts"
+	],
+	"exclude": [
+		"build"
+	]
 }

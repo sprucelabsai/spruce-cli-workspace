@@ -1,11 +1,10 @@
 import { validateSchemaValues } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { DirectoryTemplateKind } from '@sprucelabs/spruce-templates'
+import { DirectoryTemplateCode } from '@sprucelabs/spruce-templates'
 import skillFeatureSchema from '#spruce/schemas/local/v2020_07_22/skillFeature.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import { INpmPackage } from '../../types/cli.types'
-import tsConfigUtil from '../../utilities/tsConfig.utility'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
@@ -24,6 +23,7 @@ export default class SkillFeature<
 	public packageDependencies: INpmPackage[] = [
 		{ name: 'typescript' },
 		{ name: '@sprucelabs/log' },
+		{ name: '@sprucelabs/error' },
 		{ name: '@sprucelabs/spruce-skill-utils' },
 		{ name: '@types/node', isDev: true },
 		{ name: 'ts-node', isDev: true },
@@ -49,19 +49,13 @@ export default class SkillFeature<
 		await this.install(options)
 	}
 
-	public async afterPackageInstall() {
-		if (!tsConfigUtil.isPathAliasSet(this.cwd, '#spruce/*')) {
-			tsConfigUtil.setPathAlias(this.cwd, '#spruce/*', ['.spruce/*'])
-		}
-	}
-
 	private async install(
 		options: SpruceSchemas.Local.v2020_07_22.ISkillFeature
 	) {
 		validateSchemaValues(skillFeatureSchema, options)
 
 		const files = await this.templates.directoryTemplate({
-			kind: DirectoryTemplateKind.Skill,
+			kind: DirectoryTemplateCode.Skill,
 			context: {
 				...options,
 				name: namesUtil.toCamel(options.name),
