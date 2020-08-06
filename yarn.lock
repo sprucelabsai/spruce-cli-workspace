@@ -2084,10 +2084,10 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.0.47":
-  version "7.0.47"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.47.tgz#5cdb0ff04ed2efcc46676f181c7ce148664cc531"
-  integrity sha512-iVCwLlS+BmGKbORlwGgqLk44UoHIPSn4KhObIdBovSNG8cZfcCx4CfDp7eCki17am/iVhO6GiBbLEJ8V+jWHFQ==
+"@sprucelabs/schema@^7.0.48":
+  version "7.0.48"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.48.tgz#69b71af33bcfc2b4507a17b9e30fc6f6b35e551a"
+  integrity sha512-OBIpmSmLkjuaMjHLj24qf/NlHFVpcoT6n83G8phArgtb91ADG4KICS2fhWhc2IAcOA7QbSclDSVtvfCfHEWuFA==
   dependencies:
     "@sprucelabs/error" "^2.0.30"
     "@sprucelabs/log" "^10.2.78"
@@ -2096,16 +2096,16 @@
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^5.3.106":
-  version "5.3.106"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.106.tgz#446de0b54c5b2e024d004c55a9918611112e76a1"
-  integrity sha512-zYS43l4uVdhUIGlfY9e41Lz3gkdvXiAWPBiZJJN067mcPQLi6ANEawydOLXUF7YiF3SnoDd2VsECJ7RbaLqFjQ==
+"@sprucelabs/test@^5.3.107":
+  version "5.3.107"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.107.tgz#f32dcda0dbe069df8ea5a81ec373348602f7061b"
+  integrity sha512-bwx4z/BFitr5ToYkFbl+Iakjx5Fc5QrTbGr8OCDaAGlmW2vSHn6s8USXfdKI4XJ99+IMnlx54zFECgzVURFXSQ==
   dependencies:
     "@babel/core" "^7.11.1"
     "@babel/preset-env" "^7.11.0"
     "@types/chai" "^4.2.12"
     "@types/faker" "^4.1.11"
-    "@types/jest" "^26.0.8"
+    "@types/jest" "^26.0.9"
     babel-jest "^26.2.2"
     deep-equal "^2.0.3"
     faker "^4.1.0"
@@ -2259,7 +2259,7 @@
     "@types/istanbul-lib-coverage" "*"
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@^26.0.8":
+"@types/jest@^26.0.9":
   version "26.0.9"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.9.tgz#0543b57da5f0cd949c5f423a00c56c492289c989"
   integrity sha512-k4qFfJ5AUKrWok5KYXp2EPm89b0P/KZpl7Vg4XuOTVVQEhLDBDBU3iBFrjjdgd8fLw96aAtmnwhXHl63bWeBQQ==
@@ -2284,10 +2284,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/lodash@^4.14.158":
-  version "4.14.158"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.158.tgz#b38ea8b6fe799acd076d7a8d7ab71c26ef77f785"
-  integrity sha512-InCEXJNTv/59yO4VSfuvNrZHt7eeNtWQEgnieIA+mIC+MOWM9arOWG2eQ8Vhk6NbOre6/BidiXhkZYeDY9U35w==
+"@types/lodash@^4.14.159":
+  version "4.14.159"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.159.tgz#61089719dc6fdd9c5cb46efc827f2571d1517065"
+  integrity sha512-gF7A72f7WQN33DpqOWw9geApQPh4M3PxluMtaHxWHXEGSN12/WbcEk/eNSqWNQcQhF66VSZ06vCF94CrHwXJDg==
 
 "@types/md5@^2.2.0":
   version "2.2.0"
