@@ -6,7 +6,6 @@ import skill from '#spruce/skill'
 const isHealthCheck = !!process.argv.find((arg) => arg === '--health')
 
 async function run() {
-	debugger
 	pluginUtil.import([skill], skill.hashSpruceDir)
 
 	if (isHealthCheck) {

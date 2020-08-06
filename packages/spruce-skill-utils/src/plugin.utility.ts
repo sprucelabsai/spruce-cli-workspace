@@ -5,7 +5,6 @@ import SpruceError from './SpruceError'
 const pluginUtil = {
 	import(args: any[], ...path: string[]) {
 		const lookup = pathUtil.join(...path, '**', '*.plugin.[t|j]s')
-		debugger
 		const results = globby.sync(lookup)
 
 		results.forEach((path) => {
