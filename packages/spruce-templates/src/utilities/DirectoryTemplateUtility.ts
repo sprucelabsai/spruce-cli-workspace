@@ -3,17 +3,23 @@ import path from 'path'
 import globby from 'globby'
 import handlebars from 'handlebars'
 import {
-	DirectoryTemplateKind,
+	DirectoryTemplateCode,
 	IDirectoryTemplateContextMap,
 	IDirectoryTemplateFile,
 } from '../types/templates.types'
 
+type DirectoryTemplateWithContent = IDirectoryTemplateFile & {
+	contents: string
+}
+
 export default class DirectoryTemplateUtility {
-	public static async filesInTemplate(template: DirectoryTemplateKind) {
-		const filePaths: string[] = []
+	public static async filesInTemplate(
+		code: DirectoryTemplateCode
+	): Promise<IDirectoryTemplateFile[]> {
+		const filePaths: IDirectoryTemplateFile[] = []
 
 		const files = await globby(
-			path.join(__dirname, '../templates/directories', template),
+			path.join(__dirname, '../templates/directories', code),
 			{
 				dot: true,
 			}
@@ -21,86 +27,64 @@ export default class DirectoryTemplateUtility {
 
 		for (let i = 0; i < files.length; i += 1) {
 			const file = files[i]
-			const { relativeBaseDirectory, filename } = this.parseTemplateFilePath(
-				file
-			)
-			filePaths.push(path.join(relativeBaseDirectory, filename))
+			const isDefinitionFile = file.search('.d.ts') > -1
+
+			if (!isDefinitionFile) {
+				const templateFile = this.loadFileDetails(code, file)
+				filePaths.push(templateFile)
+			}
 		}
 
 		return filePaths
 	}
 
-	public static async build<K extends DirectoryTemplateKind>(options: {
+	public static async build<K extends DirectoryTemplateCode>(options: {
 		/** The type of directory template to build */
 		kind: K
 		/** The data to pass into the templates */
 		context?: IDirectoryTemplateContextMap[K]
-	}): Promise<IDirectoryTemplateFile[]> {
-		const builtFiles: IDirectoryTemplateFile[] = []
+	}): Promise<DirectoryTemplateWithContent[]> {
+		const builtFiles: DirectoryTemplateWithContent[] = []
 
 		const { kind, context } = options
 
-		const files = await globby(
-			path.join(__dirname, '../templates/directories', kind),
-			{
-				dot: true,
-			}
-		)
+		const files = await this.filesInTemplate(kind)
 
 		for (let i = 0; i < files.length; i += 1) {
 			const file = files[i]
-			const {
-				isHandlebarsTemplate,
-				relativeBaseDirectory,
-				filename,
-			} = this.parseTemplateFilePath(file)
+			const { isHandlebarsTemplate, path } = file
 
-			const filePathToWrite = path.join(relativeBaseDirectory, filename)
+			let contents = fs.readFileSync(path).toString()
 
-			const template = fs.readFileSync(file).toString()
 			if (isHandlebarsTemplate) {
-				// Compile the file
-				const compiledTemplate = handlebars.compile(template)
-				const result = compiledTemplate(context)
-				builtFiles.push({
-					relativePath: filePathToWrite,
-					contents: result,
-				})
-			} else {
-				builtFiles.push({
-					relativePath: filePathToWrite,
-					contents: template,
-				})
+				const compiledTemplate = handlebars.compile(contents)
+				contents = compiledTemplate(context)
 			}
+
+			builtFiles.push({
+				...file,
+				contents,
+			})
 		}
 
 		return builtFiles
 	}
 
-	private static parseTemplateFilePath(
+	private static loadFileDetails(
+		code: DirectoryTemplateCode,
 		filePath: string
-	): {
-		/** Whether this is a handlebars template file */
-		isHandlebarsTemplate: boolean
-		/** The full directory path before the filename */
-		baseDirectory: string
-		/** The relative directory path after "/templates/directories/<templateName>" */
-		relativeBaseDirectory: string
-		/** The actual file name that would be output from this template */
-		filename: string
-		/** The template filename, ending in .hbs IF this is a handlebars template. Otherwise it's the same as the filename */
-		templateFilename: string
-	} {
+	): IDirectoryTemplateFile {
 		const fullPath = path.resolve(filePath)
 
 		const matches = fullPath.match(/(.*)\/([^/]+)$/)
 
-		const baseDirectory = matches && matches[1]
+		const directory = (matches && matches[1]) || ''
 		const templateFilename = matches && matches[2]
 
 		const fileMatches = templateFilename?.match(/(.*)\.hbs$/)
 		let isHandlebarsTemplate = false
 		let filename
+
 		if (fileMatches && fileMatches[1]) {
 			filename = fileMatches[1]
 			isHandlebarsTemplate = true
@@ -108,17 +92,12 @@ export default class DirectoryTemplateUtility {
 			filename = templateFilename
 		}
 
-		const baseDirectoryMatches = baseDirectory?.match(
-			/.*\/templates\/directories\/[^/]+\/(.*)$/
-		)
-
-		const relativeBaseDirectory =
-			(baseDirectoryMatches && baseDirectoryMatches[1]) || ''
+		const root = path.join(__dirname, '..', 'templates', 'directories', code)
+		const relativeBaseDirectory = path.relative(root, directory)
 
 		if (
-			!baseDirectory ||
+			!directory ||
 			!filename ||
-			!templateFilename ||
 			typeof relativeBaseDirectory === 'undefined'
 		) {
 			throw new Error('INVALID_TEMPLATE_FILES')
@@ -126,10 +105,11 @@ export default class DirectoryTemplateUtility {
 
 		return {
 			isHandlebarsTemplate,
-			baseDirectory,
-			relativeBaseDirectory,
+			directory,
+			relativeDirectory: relativeBaseDirectory,
 			filename,
-			templateFilename: templateFilename || filename,
+			path: filePath,
+			relativePath: path.join(relativeBaseDirectory, filename),
 		}
 	}
 }

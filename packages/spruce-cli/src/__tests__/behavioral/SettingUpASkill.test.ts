@@ -96,7 +96,6 @@ export default class SettingUpASkill extends AbstractCliTest {
 			assert.fail(health.skill.errors?.[0].message)
 		}
 
-		// assert.isEqualDeep(health, { skill: { status: 'passed' } })
-		assert.doesInclude(health, { skill: { status: 'passed' } })
+		assert.isEqualDeep(health, { skill: { status: 'passed' } })
 	}
 }

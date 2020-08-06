@@ -6,7 +6,11 @@ import {
 	IMercuryConnectOptions,
 	MercuryAuth,
 } from '@sprucelabs/mercury'
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import {
+	diskUtil,
+	IHealthCheckResults,
+	HEALTH_DIVIDER,
+} from '@sprucelabs/spruce-skill-utils'
 import { Command, CommanderStatic } from 'commander'
 // Shim
 // eslint-disable-next-line import/order
@@ -23,16 +27,6 @@ import TerminalInterface from './interfaces/TerminalInterface'
 import log from './singletons/log'
 import StoreFactory from './stores/StoreFactory'
 import { AuthedAs, IGraphicsInterface } from './types/cli.types'
-
-interface IHealthCheckResults {
-	[featureKey: string]: IHealthCheckItem
-}
-
-interface IHealthCheckItem {
-	status: 'failed' | 'passed'
-	errors?: SpruceError[]
-	listeners?: { eventName: string; eventNamespace: string; version: string }[]
-}
 
 export interface ICli {
 	installFeatures: FeatureInstaller['install']
@@ -114,8 +108,8 @@ function Cli(
 
 			try {
 				const commandService = serviceFactory.Service(cwd, 'command')
-				const results = await commandService.execute('yarn health')
-				const resultParts = results.stdout.split('#####DIVIDER#####')
+				const results = await commandService.execute('yarn health.local')
+				const resultParts = results.stdout.split(HEALTH_DIVIDER)
 
 				return JSON.parse(resultParts[1]) as IHealthCheckResults
 			} catch (originalError) {

@@ -17,10 +17,10 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 
 		await this.Service('build').build()
 
-		await assert.doesThrowAsync(
-			() => cli.getFeature('skill').Action('boot').execute({}),
-			'SKILL_WILL_BOOT_NOT_IMPLEMENTED'
-		)
+		await assert.doesThrowAsync(async () => {
+			const response = await cli.getFeature('skill').Action('boot').execute({})
+			await response.meta?.promise
+		}, 'SKILL_WILL_BOOT_NOT_IMPLEMENTED')
 	}
 
 	@test()
@@ -36,9 +36,9 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 
 		await this.Service('build').build()
 
-		await assert.doesThrowAsync(
-			() => cli.getFeature('skill').Action('boot').execute({}),
-			'SKILL_DID_BOOT_NOT_IMPLEMENTED'
-		)
+		await assert.doesThrowAsync(async () => {
+			const response = await cli.getFeature('skill').Action('boot').execute({})
+			await response.meta?.promise
+		}, 'SKILL_DID_BOOT_NOT_IMPLEMENTED')
 	}
 }

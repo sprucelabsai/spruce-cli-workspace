@@ -39,7 +39,7 @@ export default class CommandService {
 				: {
 						cwd,
 						env: {
-							...process.env,
+							PATH: process.env.PATH,
 							FORCE_COLOR: '0',
 						},
 						shell: true,
@@ -82,11 +82,15 @@ export default class CommandService {
 		})
 	}
 
-	public kill() {
+	public kill = () => {
 		if (this.activeChildProcess) {
 			this.ignoreCloseErrors = true
 			this.activeChildProcess.kill()
 			this.activeChildProcess = undefined
 		}
+	}
+
+	public pid = () => {
+		return this.activeChildProcess?.pid
 	}
 }

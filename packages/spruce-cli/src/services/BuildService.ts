@@ -29,6 +29,7 @@ export default class BuildService {
 	public async watchStop() {
 		if (this.activeWatch) {
 			this.commandService.kill()
+			this.activeWatch = undefined
 		}
 	}
 }

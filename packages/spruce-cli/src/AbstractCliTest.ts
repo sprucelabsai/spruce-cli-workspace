@@ -5,7 +5,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractSpruceTest from '@sprucelabs/test'
 import fs from 'fs-extra'
 import * as uuid from 'uuid'
-import { boot, ICliBootOptions } from './cli'
+import { ICliBootOptions } from './cli'
 import ServiceFactory, {
 	Service,
 	IServiceMap,
@@ -50,12 +50,15 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static async Cli(options?: ICliBootOptions) {
-		const cli = await boot({
+		return this.FeatureFixture().Cli({
 			cwd: this.cwd,
 			...(options ?? {}),
 		})
+	}
 
-		return cli
+	protected static async linkLocalPackages() {
+		const fixture = this.FeatureFixture()
+		await fixture.linkLocalPackages()
 	}
 
 	protected static Service<S extends Service>(

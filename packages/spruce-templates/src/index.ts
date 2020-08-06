@@ -6,6 +6,7 @@ import {
 	IFieldTemplateItem,
 } from '@sprucelabs/schema'
 import { TemplateRenderAs } from '@sprucelabs/schema'
+import { addonUtil } from '@sprucelabs/spruce-skill-utils'
 import handlebars from 'handlebars'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import {
@@ -15,27 +16,9 @@ import {
 	DEFAULT_TYPES_FILE,
 } from './constants'
 import log from './singletons/log'
-// Import addons
-import './addons/escape.addon'
-import './addons/fieldDefinitionOptions.addon'
-import './addons/valueTypeLiteral.addon'
-import './addons/fieldTypeEnum.addon'
-import './addons/operators.addon'
-import './addons/gt.addon'
-import './addons/hasKeys.addon'
-import './addons/importRelatedSchemas.addon'
-import './addons/pascalCase.addon'
-import './addons/fieldDefinitionBodyPartial.addon'
-import './addons/schemaBodyPartial.addon'
-import './addons/schemaValuesPartial.addon'
-import './addons/valueTypeGenerator.addon'
-import './addons/valueTypeGeneratorType.addon'
-import './addons/json.addon'
-import './addons/isDefined.addon'
 import {
 	IAutoLoaderTemplateItem,
-	IDirectoryTemplateFile,
-	DirectoryTemplateKind,
+	DirectoryTemplateCode,
 	IDirectoryTemplateContextMap,
 	IValueTypes,
 	ISchemaBuilderTemplateItem,
@@ -50,7 +33,7 @@ import KeyGeneratorUtility from './utilities/KeyGeneratorUtility'
 import templateImportUtil from './utilities/templateImporter.utility'
 import templateItemUtil from './utilities/templateItem.utility'
 
-log.info('Addons imported')
+addonUtil.import(__dirname, 'addons')
 
 export const templates = {
 	schemasTypes(options: {
@@ -216,21 +199,21 @@ export const templates = {
 	},
 
 	/** Copy an entire directory and pass a context for all files */
-	async directoryTemplate<K extends DirectoryTemplateKind>(options: {
+	async directoryTemplate<K extends DirectoryTemplateCode>(options: {
 		kind: K
 		context: IDirectoryTemplateContextMap[K]
-	}): Promise<IDirectoryTemplateFile[]> {
+	}) {
 		return DirectoryTemplateUtility.build(options)
 	},
 
 	/** Tries our best to see if a specific directory is based on a valid directory template */
 	async isValidTemplatedDirectory(options: {
-		kind: DirectoryTemplateKind
+		kind: DirectoryTemplateCode
 		dir: string
 	}) {
 		const { kind, dir } = options
 		// on a template, just check for package.json
-		if (kind === DirectoryTemplateKind.Skill) {
+		if (kind === DirectoryTemplateCode.Skill) {
 			return fs.existsSync(path.join(dir, 'package.json'))
 		}
 
@@ -238,7 +221,8 @@ export const templates = {
 		// Check if the .spruce directory exists
 		let filesMissing = false
 		for (let i = 0; i < filesToCheck.length; i += 1) {
-			const file = path.join(dir, filesToCheck[i])
+			const file = filesToCheck[i].path
+
 			if (!fs.existsSync(file)) {
 				log.debug(
 					`[${kind}] containsAllTemplateFiles failed because ${file} is missing`

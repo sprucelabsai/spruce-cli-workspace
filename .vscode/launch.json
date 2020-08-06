@@ -38,8 +38,7 @@
 				"--trace-warnings",
 				"${workspaceFolder}/node_modules/.bin/jest",
 				"${fileBasenameNoExtension}",
-				"--detectOpenHandles",
-				"--no-cache"
+				"--detectOpenHandles"
 			],
 			"port": 9229,
 			"cwd": "${workspaceFolder}/packages/spruce-cli",

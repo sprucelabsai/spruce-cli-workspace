@@ -38,7 +38,7 @@ export default class BuildServiceTest extends AbstractCliTest {
 		diskUtil.writeFile(destination, testFile)
 
 		// give a second for build to complete
-		await this.wait(5000)
+		await this.wait(10000)
 
 		const builtFilePath = this.resolvePath('build/test-watch.js')
 		const contents = diskUtil.readFile(builtFilePath)
