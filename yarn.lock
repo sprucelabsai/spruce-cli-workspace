@@ -2057,10 +2057,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sprucelabs/error@^2.0.31":
-  version "2.0.31"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.0.31.tgz#685677708fa4d88c708e2ea4f8bfccc8c92db96e"
-  integrity sha512-F9lqLrZZFGeSkHwjLnC4wtrZ2TvGweMxbSdqm8cjYyRsUT7SiVfhKrJCkbPAmJdxlYCwqdEAVr+tN6oHURtLmw==
+"@sprucelabs/error@^2.0.32":
+  version "2.0.32"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.0.32.tgz#4602d5e203319318ae4ab6f90285d05c10319111"
+  integrity sha512-ltWRwlFtp/1qBSjjbaVg34DR4tjWw6yv5Y0JYBzX6idc3H7OLYivxFe2lpohGq8U059fCqpdFySe4yTpveBaEQ==
 
 "@sprucelabs/jest-sheets-reporter@^1.1.2":
   version "1.1.2"
@@ -2069,10 +2069,10 @@
   dependencies:
     google-spreadsheet "^3.0.11"
 
-"@sprucelabs/log@^10.2.79":
-  version "10.2.79"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.79.tgz#9807a92cbe57a4edfe4a634bf49dd4c9be3d692f"
-  integrity sha512-aiHPuHCyRiilUVqPBXej9zWhZx4Z9bxvr07ZQ3UrIU/Cj0Ff3HQGu+GFJrLjznXCrP+kjkkNwggFW5jNRKJ1Bw==
+"@sprucelabs/log@^10.2.80":
+  version "10.2.80"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.80.tgz#83209a4335cad98dbeace6b2f86eaabf9746d65d"
+  integrity sha512-iz99iUgh+yUsW+mNX3RH4bTCELJs4XgylCRIzmGB/bMo55BtwExcY/mE9POTHbNAzjZAeQmUKTJg0Me66fZh9w==
 
 "@sprucelabs/mercury@^10.5.72":
   version "10.5.72"
@@ -2084,22 +2084,22 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.0.55":
-  version "7.0.55"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.55.tgz#513c1a769b599280340a14bb499a14b4ca724b3c"
-  integrity sha512-15uYACJIoK/PwlrfifllphRpPjdUnNYBgKCO6SDfDz2l2necH0Jkl/c7sKrzZBSMBDoHeT6dPzNjN2KAXRgAkg==
+"@sprucelabs/schema@^7.0.56":
+  version "7.0.56"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.56.tgz#5468572d611c4d69b59238ae0e7c124e7bb57615"
+  integrity sha512-DhLwoC3Oj29SF8+oXte6iIC/BJh7eu48DPBogBmR8QIyoJ6WWTtV35SybSXVub07LY7h87ksHNXWnZW0xnc/Uw==
   dependencies:
-    "@sprucelabs/error" "^2.0.31"
-    "@sprucelabs/log" "^10.2.79"
+    "@sprucelabs/error" "^2.0.32"
+    "@sprucelabs/log" "^10.2.80"
     google-libphonenumber "^3.2.10"
     libphonenumber-js "^1.7.56"
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^5.3.112":
-  version "5.3.112"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.112.tgz#14dee406b94685fd1f8872c1b61f72d632824848"
-  integrity sha512-BnC2+DMHkfDjBVu3/u4Ap2KWzhyC3UFm7yfhPmY1DeijmBhHOOmDNc4n9v2zNexPbKQoCMffVWEdxdSu3xozEw==
+"@sprucelabs/test@^5.3.113":
+  version "5.3.113"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.113.tgz#c1d4d7dc4668839b1ebaf983d19f99a769e35df9"
+  integrity sha512-SzFfZ8ZH9T1avgY3BmtmWvM/fh9TrMMrdgZ0tf1vwYCinfJ1/ZggfPUwFkRglO1C3Jbgwy++cH+5k6XG12zYVw==
   dependencies:
     "@babel/core" "^7.11.1"
     "@babel/preset-env" "^7.11.0"
@@ -3510,7 +3510,7 @@ cli-cursor@^3.1.0:
   dependencies:
     restore-cursor "^3.1.0"
 
-cli-spinners@^2.4.0:
+cli-spinners@^2.2.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/cli-spinners/-/cli-spinners-2.4.0.tgz#c6256db216b878cfba4720e719cec7cf72685d7f"
   integrity sha512-sJAofoarcm76ZGpuooaO0eDy8saEy+YoZBLjC4h8srt4jeBnkYeOgqxgsJQTpyt2LjI5PTfLJHSL+41Yu4fEJA==
@@ -7161,12 +7161,12 @@ lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
   integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
 
-log-symbols@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/log-symbols/-/log-symbols-4.0.0.tgz#69b3cc46d20f448eccdb75ea1fa733d9e821c920"
-  integrity sha512-FN8JBzLx6CzeMrB0tg6pqlGU1wCrXW+ZXGH481kfsBqer0hToTIiHdjH4Mq8xJUbvATujKCvaREGWpGUionraA==
+log-symbols@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/log-symbols/-/log-symbols-3.0.0.tgz#f3a08516a5dea893336a7dee14d18a1cfdab77c4"
+  integrity sha512-dSkNGuI7iG3mfvDzUuYZyvk5dD9ocYCYzNU6CYDE6+Xqd+gwme6Z00NS3dUh8mq/73HaEtT7m6W+yUPtU6BZnQ==
   dependencies:
-    chalk "^4.0.0"
+    chalk "^2.4.2"
 
 loose-envify@^1.0.0, loose-envify@^1.4.0:
   version "1.4.0"
@@ -8038,16 +8038,16 @@ optionator@^0.9.1:
     type-check "^0.4.0"
     word-wrap "^1.2.3"
 
-ora@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/ora/-/ora-4.1.0.tgz#1fa5b17d2952ec9651be79ba32a328684870fc5d"
-  integrity sha512-PhDvXi7I+dLVyFekgqXt0iBDdo5ARzOxJNoj72TysoXkW4/oi1lRaeakr4skciyWgPpk6JPPGwO1V4zPr6YRZA==
+ora@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/ora/-/ora-4.1.1.tgz#566cc0348a15c36f5f0e979612842e02ba9dddbc"
+  integrity sha512-sjYP8QyVWBpBZWD6Vr1M/KwknSw6kJOz41tvGMlwWeClHBtYKTbHMki1PsLZnxKpXMPbTKv9b3pjQu3REib96A==
   dependencies:
-    chalk "^4.1.0"
+    chalk "^3.0.0"
     cli-cursor "^3.1.0"
-    cli-spinners "^2.4.0"
+    cli-spinners "^2.2.0"
     is-interactive "^1.0.0"
-    log-symbols "^4.0.0"
+    log-symbols "^3.0.0"
     mute-stream "0.0.8"
     strip-ansi "^6.0.0"
     wcwidth "^1.0.1"
