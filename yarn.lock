@@ -275,9 +275,9 @@
     js-tokens "^4.0.0"
 
 "@babel/parser@^7.1.0", "@babel/parser@^7.10.4", "@babel/parser@^7.11.0", "@babel/parser@^7.11.1", "@babel/parser@^7.7.0":
-  version "7.11.2"
-  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.11.2.tgz#0882ab8a455df3065ea2dcb4c753b2460a24bead"
-  integrity sha512-Vuj/+7vLo6l1Vi7uuO+1ngCDNeVmNbTngcJFKCR/oEtz8tKz0CJxZEGmPt9KcIloZhOZ3Zit6xbpXT2MDlS9Vw==
+  version "7.11.3"
+  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.11.3.tgz#9e1eae46738bcd08e23e867bab43e7b95299a8f9"
+  integrity sha512-REo8xv7+sDxkKvoxEywIdsNFiZLybwdI7hcT5uEPyQrSMB4YQ973BfC9OOrD/81MaIjh6UxdulIQXkjmiH3PcA==
 
 "@babel/plugin-proposal-async-generator-functions@^7.10.4":
   version "7.10.5"
@@ -2084,10 +2084,10 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.0.62":
-  version "7.0.62"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.62.tgz#105c5b985e1926b67f32c71353ab921ea64d5982"
-  integrity sha512-gvguZgNRI4M0JnJF6NjBUmdq3FfUowM+b4AqbFUWeoIMyhBrmkT9EX9MPDQiwzWTmcJOGmpPTI55+dm2WOYebA==
+"@sprucelabs/schema@^7.0.63":
+  version "7.0.63"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.63.tgz#01f19fdd94553c62eb55f6bbd5fdd537278828eb"
+  integrity sha512-WaGVtmbN7bToVwtgrAH3CVrQIuyX+T2jxlkMJpmBRHXawVvuS01+V/9BZaKhgiUgBcRgwXp6DBDtD5hxBmzhFA==
   dependencies:
     "@sprucelabs/error" "^2.0.36"
     "@sprucelabs/log" "^10.2.84"
@@ -2096,10 +2096,10 @@
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^5.3.118":
-  version "5.3.118"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.118.tgz#39a655b98c7ac9ad7777e9199007ff2726000f4f"
-  integrity sha512-qtfYMU4NdKWDlm5BnJQE0sQb12C5RqkrLSHjx2KMmWPeSI19ij7H4EmeEHae5XK9evDL3VluSWETEr/0/qsRug==
+"@sprucelabs/test@^5.3.119":
+  version "5.3.119"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.119.tgz#feec75cd47e925194bc2df23e01ea530b08b7e32"
+  integrity sha512-s18ByOVRLEfkbcu+hgeCk3vjfSS1/ODR2I32/eIzCMtxW4CkLkOe84f2SF+qBT/PlDdIoq9zCWErJA91Ed20ug==
   dependencies:
     "@babel/core" "^7.11.1"
     "@babel/preset-env" "^7.11.0"
@@ -4485,10 +4485,10 @@ eslint-config-prettier@^6.11.0:
   dependencies:
     get-stdin "^6.0.0"
 
-eslint-config-spruce@10.7.19:
-  version "10.7.19"
-  resolved "https://registry.yarnpkg.com/eslint-config-spruce/-/eslint-config-spruce-10.7.19.tgz#58f909e211fce5990e34cce3811fed1dc7c7adef"
-  integrity sha512-gliGlnQArzvdSus7EXhQJRkxBBz+2dkqlzGeftsZltZOPGEhTHGAUMOYrzrhlF+dazvZ6kKgfpJ9298q0NmPhQ==
+eslint-config-spruce@10.7.20:
+  version "10.7.20"
+  resolved "https://registry.yarnpkg.com/eslint-config-spruce/-/eslint-config-spruce-10.7.20.tgz#1d08bf18380dd27d5fda28092ee3674045f1fb5d"
+  integrity sha512-eDKb/4rupxzDSdv3ecF4UxE6SndMbs0agr0dg9uUbCnOv/vnlQoq2EaFhs4LwMZaYMLJ3w9yTbkqZgD3Wd/XPg==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^3.8.0"
     "@typescript-eslint/parser" "^3.8.0"
@@ -4498,7 +4498,7 @@ eslint-config-spruce@10.7.19:
     eslint-plugin-jsx-a11y "^6.3.1"
     eslint-plugin-prettier "^3.1.4"
     eslint-plugin-react "^7.20.5"
-    eslint-plugin-spruce "^10.7.19"
+    eslint-plugin-spruce "^10.7.20"
 
 eslint-import-resolver-node@^0.3.3:
   version "0.3.4"
@@ -4576,10 +4576,10 @@ eslint-plugin-react@^7.20.5:
     resolve "^1.17.0"
     string.prototype.matchall "^4.0.2"
 
-eslint-plugin-spruce@^10.7.19:
-  version "10.7.19"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-spruce/-/eslint-plugin-spruce-10.7.19.tgz#8082f13f16a25aa927d3f7aaf5a431d210cfcafd"
-  integrity sha512-zj+Me4uzSjligse0DV3p+QP0Uz2ijcyyWEawX4NUPnp+E41PmyDcHdShBMkZ08DUU1/ycuTpYX6iME/nwB5WOA==
+eslint-plugin-spruce@^10.7.20:
+  version "10.7.20"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-spruce/-/eslint-plugin-spruce-10.7.20.tgz#bcf0bfd77a9c77ac61f1bb3703609a81bb143f40"
+  integrity sha512-Z3MZpVTEgUTajGIwJu/C89FA8Fg6QAsEWW80MwV/DZlePxiYvLlyZoBx2MwxIueSl8YYO1N3uoxwfJSfEQf+aA==
   dependencies:
     pascal-case "^3.1.1"
 
@@ -6714,9 +6714,9 @@ jsbn@~0.1.0:
   integrity sha1-peZUwuWi3rXyAdls77yoDA7y9RM=
 
 jsdom@^16.2.2:
-  version "16.3.0"
-  resolved "https://registry.yarnpkg.com/jsdom/-/jsdom-16.3.0.tgz#75690b7dac36c67be49c336dcd7219bbbed0810c"
-  integrity sha512-zggeX5UuEknpdZzv15+MS1dPYG0J/TftiiNunOeNxSl3qr8Z6cIlQpN0IdJa44z9aFxZRIVqRncvEhQ7X5DtZg==
+  version "16.4.0"
+  resolved "https://registry.yarnpkg.com/jsdom/-/jsdom-16.4.0.tgz#36005bde2d136f73eee1a830c6d45e55408edddb"
+  integrity sha512-lYMm3wYdgPhrl7pDcRmvzPhhrGVBeVhPIqeHjzeiHN3DFmD1RBpbExbi8vU7BJdH8VAZYovR8DMt0PNNDM7k8w==
   dependencies:
     abab "^2.0.3"
     acorn "^7.1.1"
