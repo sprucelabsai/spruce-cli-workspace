@@ -98,7 +98,7 @@
 		"@types/semver": "^7.3.1",
 		"@types/sha1": "^1.1.2",
 		"@types/slug": "^0.9.1",
-		"@types/superagent": "^4.1.8",
+		"@types/superagent": "^4.1.9",
 		"arkit": "^1.6.4",
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^5.3.0",
