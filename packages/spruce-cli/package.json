@@ -4,7 +4,7 @@
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "10.17.48",
+	"version": "10.17.49",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -51,8 +51,8 @@
 		"@sprucelabs/log": "^10.2.86",
 		"@sprucelabs/mercury": "^10.5.72",
 		"@sprucelabs/schema": "^7.0.65",
-		"@sprucelabs/spruce-skill-utils": "^10.17.48",
-		"@sprucelabs/spruce-templates": "^10.17.48",
+		"@sprucelabs/spruce-skill-utils": "^10.17.49",
+		"@sprucelabs/spruce-templates": "^10.17.49",
 		"@types/promise.allsettled": "^1.0.3",
 		"@types/uuid": "^8.0.1",
 		"blessed": "^0.1.81",
