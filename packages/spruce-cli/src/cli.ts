@@ -183,7 +183,7 @@ export async function boot(options?: ICliBootOptions) {
 
 		// Error on unknown commands
 		program.action((command, args) => {
-			throw new SpruceError({ code: 'INVALID_COMMAND', args })
+			throw new SpruceError({ code: 'INVALID_COMMAND', args: args || [] })
 		})
 	}
 

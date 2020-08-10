@@ -9,7 +9,7 @@ type FeatureCommandExecuteOptions<
 	F extends FeatureCode
 > = IFeatureMap[F]['optionsDefinition'] extends ISchema
 	? SchemaPartialValues<IFeatureMap[F]['optionsDefinition']>
-	: undefined
+	: undefined | Record<string, any>
 
 export default class FeatureCommandExecuter<F extends FeatureCode> {
 	private featureCode: F
@@ -29,36 +29,43 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		this.featureInstaller = options.featureInstaller
 	}
 
-	public async execute(options?: FeatureCommandExecuteOptions<F>) {
+	public async execute(
+		options?: Record<string, any> & FeatureCommandExecuteOptions<F>
+	) {
 		const feature = this.featureInstaller.getFeature(this.featureCode)
 		const action = feature.Action(this.actionCode)
 
-		if (feature.optionsDefinition) {
-			this.term.stopLoading()
+		this.term.stopLoading()
 
-			const isInstalled = await this.featureInstaller.isInstalled(
-				this.featureCode
-			)
+		const isInstalled = await this.featureInstaller.isInstalled(
+			this.featureCode
+		)
 
-			if (!isInstalled) {
+		if (!isInstalled) {
+			let installOptions = { ...options }
+
+			if (feature.optionsDefinition) {
 				const answers = await this.collectAnswers(
 					feature.optionsDefinition,
 					options
 				)
 
-				this.term.startLoading(`Installing ${this.featureCode}...`)
-
-				await this.featureInstaller.install({
-					features: [
-						// @ts-ignore
-						{
-							code: this.featureCode,
-							//@ts-ignore
-							options: { ...options, ...answers },
-						},
-					],
-				})
+				installOptions = { ...installOptions, ...answers }
 			}
+
+			this.term.startLoading(`Installing ${this.featureCode}...`)
+
+			await this.featureInstaller.install({
+				features: [
+					{
+						code: this.featureCode,
+						//@ts-ignore
+						options: installOptions,
+					},
+				],
+			})
+
+			this.term.stopLoading()
 		}
 
 		const definition = action.optionsSchema
@@ -81,33 +88,35 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 	}
 
 	private async collectAnswers<S extends ISchema>(
-		definition: S,
+		schema: S,
 		options: FeatureCommandExecuteOptions<F> | undefined
 	) {
-		const featureForm = new FormComponent({
-			term: this.term,
-			definition,
-			initialValues: options,
-			onWillAskQuestion: formUtil.onWillAskQuestionHandler.bind(
-				formUtil
-			) as any,
-		})
-
-		const fieldNames = Object.keys(definition.fields ?? {})
+		const fieldNames = Object.keys(schema.fields ?? {})
 		const providedFieldNames = options ? Object.keys(options ?? {}) : []
 		const fieldsToPresent = fieldNames.filter(
 			(name) =>
 				providedFieldNames.indexOf(name) === -1 &&
-				definition.fields?.[name].isPrivate !== true
+				schema.fields?.[name].isRequired === true &&
+				schema.fields?.[name].isPrivate !== true
 		)
 		let answers = {}
 		if (fieldsToPresent.length > 0) {
+			const featureForm = new FormComponent({
+				term: this.term,
+				schema,
+				initialValues: options,
+				onWillAskQuestion: formUtil.onWillAskQuestionHandler.bind(
+					formUtil
+				) as any,
+			})
+
 			answers = await featureForm.present({
 				showOverview: false,
 				// @ts-ignore
 				fields: fieldsToPresent,
 			})
 		}
+
 		return { ...(options ?? {}), ...answers } as SchemaValues<S>
 	}
 }

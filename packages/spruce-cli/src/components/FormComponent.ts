@@ -53,7 +53,7 @@ export interface IFormPresentationOptions<
 
 export interface IFormOptions<T extends ISchema> {
 	term: IGraphicsInterface
-	definition: T
+	schema: T
 	initialValues?: SchemaPartialValues<T>
 	onWillAskQuestion?: <K extends SchemaFieldNames<T>>(
 		name: K,
@@ -72,7 +72,7 @@ export default class FormComponent<S extends ISchema> extends SchemaEntity<S> {
 
 	public constructor(options: IFormOptions<S>) {
 		// Setup schema
-		super(options.definition, options.initialValues)
+		super(options.schema, options.initialValues)
 
 		const { term } = options
 

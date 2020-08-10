@@ -56,6 +56,22 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 		assert.doesInclude(packageContents, name)
 	}
 
+	@test()
+	protected static async shouldInstallEvenIfFeatureHasNoOptionsSchema() {
+		const executer = this.Executer('test', 'create')
+		await executer.execute({
+			type: 'behavioral',
+			nameReadable: 'Testing Test Creation',
+			nameCamel: 'testTestCreation',
+		})
+
+		const installer = this.FeatureInstaller()
+		const feature = installer.getFeature('test')
+
+		const isInstalled = await feature.isInstalled()
+		assert.isTrue(isInstalled)
+	}
+
 	private static Executer<F extends FeatureCode>(
 		featureCode: F,
 		actionCode: string

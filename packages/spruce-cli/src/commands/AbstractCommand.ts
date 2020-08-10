@@ -52,7 +52,7 @@ export default abstract class AbstractCommand {
 	}
 
 	public getQuizComponent<T extends ISchema, Q extends IQuizQuestions>(
-		options: Omit<IQuizOptions<T, Q>, 'term' | 'definition'>
+		options: Omit<IQuizOptions<T, Q>, 'term' | 'schema'>
 	): QuizComponent<T, Q> {
 		const quizBuilder = new QuizComponent({
 			term: this.term,

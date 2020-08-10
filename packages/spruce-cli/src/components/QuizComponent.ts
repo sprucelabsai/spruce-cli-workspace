@@ -122,7 +122,7 @@ export default class QuizComponent<
 		// Construct new form builder
 		this.formBuilder = new FormComponent<T>({
 			...options,
-			definition,
+			schema: definition,
 		})
 
 		// Set state locally
