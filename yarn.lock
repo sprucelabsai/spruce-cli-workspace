@@ -2084,10 +2084,10 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.0.70":
-  version "7.0.70"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.70.tgz#8c49dd0576c853099e1e7f63cd5972ed788c64e8"
-  integrity sha512-7iW7xdXOOzGGLmtzV2JBtXRLpo117nEE8qRUb6YcHUYtN3h44SzCifjI+SDV4Ot8FPTtkTcBlr2nmyvqrCFflw==
+"@sprucelabs/schema@^7.0.71":
+  version "7.0.71"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.71.tgz#9763019dbd0d032524f42a4fd18c77a85b314a02"
+  integrity sha512-mpBDHUoEKmUgXJcl6sFza2VNS2aONG7kyMIdll3hhLPErEIaURhM6Hy3EM1S6TEdUT56a36dkdKblv3A1sGxgg==
   dependencies:
     "@sprucelabs/error" "^2.0.43"
     "@sprucelabs/log" "^10.2.91"
@@ -2096,20 +2096,20 @@
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^5.3.126":
-  version "5.3.126"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.126.tgz#444d3166ccacdb3b5e8237c6b3a38ccb43cea8b8"
-  integrity sha512-JU2JLcMUOoQsgwaG5i3zvgktxfnQZDghyg+G1erElgXkKkx16nL+GYAs+++0zMKs2PaRW4F52ldRwjv4U2Tikg==
+"@sprucelabs/test@^5.3.127":
+  version "5.3.127"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.127.tgz#9b8b70d20022593aa0d790c6a963fb16a147dc37"
+  integrity sha512-3aB6YxK/ohMsbCtyJAe3idky0Hy67wtS0CVMC6lqC4uQXeyRfvXxaIknpOiy89apCYbzf5V5tIpJgQWxrGJajQ==
   dependencies:
     "@babel/core" "^7.11.1"
     "@babel/preset-env" "^7.11.0"
     "@types/chai" "^4.2.12"
     "@types/faker" "^4.1.11"
     "@types/jest" "^26.0.9"
-    babel-jest "^26.2.2"
+    babel-jest "^26.3.0"
     deep-equal "^2.0.3"
     faker "^4.1.0"
-    jest "^26.2.2"
+    jest "^26.3.0"
     lodash "^4.17.19"
     ts-expect "^1.1.0"
     ts-jest "^26.1.4"
@@ -2942,7 +2942,7 @@ babel-eslint@^10.1.0:
     eslint-visitor-keys "^1.0.0"
     resolve "^1.12.0"
 
-babel-jest@^26.2.2, babel-jest@^26.3.0:
+babel-jest@^26.3.0:
   version "26.3.0"
   resolved "https://registry.yarnpkg.com/babel-jest/-/babel-jest-26.3.0.tgz#10d0ca4b529ca3e7d1417855ef7d7bd6fc0c3463"
   integrity sha512-sxPnQGEyHAOPF8NcUsD0g7hDCnvLL2XyblRBcgrzTWBB/mAIpWow3n1bEL+VghnnZfreLhFSBsFluRoK2tRK4g==
@@ -6683,7 +6683,7 @@ jest-worker@^26.3.0:
     merge-stream "^2.0.0"
     supports-color "^7.0.0"
 
-jest@^26.2.2:
+jest@^26.3.0:
   version "26.3.0"
   resolved "https://registry.yarnpkg.com/jest/-/jest-26.3.0.tgz#366e25827831e65743a324bc476de54f41f2e07b"
   integrity sha512-LFCry7NS6bTa4BUGUHC+NvZ3B9WG7Jv8F+Lb96dAJFM23LMwSsL5RiJcw9S+nejsh8lS1VxHq+RSH4Xa9tujpA==
