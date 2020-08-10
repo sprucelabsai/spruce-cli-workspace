@@ -95,7 +95,7 @@ export type QuizPresentationResults<Q extends IQuizQuestions> = {
 
 /** Options for instantiating a new quiz */
 export interface IQuizOptions<T extends ISchema, Q extends IQuizQuestions>
-	extends Omit<IFormOptions<T>, 'definition'> {
+	extends Omit<IFormOptions<T>, 'schema'> {
 	/** Should we randomize the questions */
 	randomizeQuestions?: boolean
 	/** The questions we are asking */
@@ -122,7 +122,7 @@ export default class QuizComponent<
 		// Construct new form builder
 		this.formBuilder = new FormComponent<T>({
 			...options,
-			definition,
+			schema: definition,
 		})
 
 		// Set state locally

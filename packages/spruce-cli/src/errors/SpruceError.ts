@@ -8,8 +8,12 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 		let message
 		switch (options?.code) {
 			case 'INVALID_COMMAND':
-				message = `Invalid command: ${options.args.join(' ')}\n`
-				message += `Try running spruce --help`
+				if (options.args.length === 0) {
+					message = `Hey friend 👋.`
+				} else {
+					message = `Invalid command: ${options.args.join(' ')}.`
+				}
+				message += ' Try running `spruce --help`'
 				break
 
 			case 'USER_NOT_FOUND':
@@ -111,7 +115,7 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 		}
 
 		// Drop on code and friendly message
-		message = `${options.code}: ${message}`
+		message = `${message}`
 		const fullMessage = `${message}${
 			options.friendlyMessage ? `\n\n${options.friendlyMessage}` : ''
 		}`

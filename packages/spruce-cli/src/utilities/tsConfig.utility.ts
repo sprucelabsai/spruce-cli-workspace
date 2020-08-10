@@ -29,10 +29,30 @@ const tsConfigUtil = {
 		if (!contents.compilerOptions) {
 			contents.compilerOptions = {}
 		}
+
 		contents.compilerOptions.paths = paths
 
+		this.writeConfig(dir, contents)
+	},
+
+	writeConfig(dir: string, contents: Record<string, any>) {
 		const destination = pathUtil.join(dir, 'tsconfig.json')
 		fs.outputFileSync(destination, JSON.stringify(contents, null, 2))
+	},
+
+	setCompilerOption(
+		dir: string,
+		key: string,
+		value: boolean | string | number
+	) {
+		const contents = this.readConfig(dir)
+		if (!contents.compilerOptions) {
+			contents.compilerOptions = {}
+		}
+
+		contents.compilerOptions[key] = value
+
+		this.writeConfig(dir, contents)
 	},
 
 	isPathAliasSet(dir: string, path: string) {

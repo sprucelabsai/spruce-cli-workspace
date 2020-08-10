@@ -54,10 +54,12 @@ function filterEffectsForCFonts(effects: IGraphicsTextEffect[]) {
 export default class TerminalInterface implements IGraphicsInterface {
 	public isPromptActive = false
 	public cwd: string
+	private renderStackTraces = false
 	private loader?: ora.Ora | null
 
-	public constructor(cwd: string) {
+	public constructor(cwd: string, renderStackTraces = false) {
 		this.cwd = cwd
+		this.renderStackTraces = renderStackTraces
 	}
 
 	public async sendInput(): Promise<void> {
@@ -449,14 +451,10 @@ export default class TerminalInterface implements IGraphicsInterface {
 		const stackLines = stack.split('\n')
 		this.renderSection({
 			headline: message,
-			lines: stackLines.splice(0, 100),
+			lines: this.renderStackTraces ? stackLines.splice(0, 100) : undefined,
 			headlineEffects: [IGraphicsTextEffect.Bold, IGraphicsTextEffect.Red],
 			dividerEffects: [IGraphicsTextEffect.Red],
 			bodyEffects: [IGraphicsTextEffect.Red],
 		})
-
-		this.renderLine(
-			'You can always run `DEBUG=@sprucelabs/cli spruce [command]` to get debug information'
-		)
 	}
 }

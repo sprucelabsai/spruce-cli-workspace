@@ -1,6 +1,8 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import PkgService from '../../services/PkgService'
 import { INpmPackage } from '../../types/cli.types'
+import tsConfigUtil from '../../utilities/tsConfig.utility'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
@@ -9,7 +11,7 @@ type TestFeatureType = SpruceSchemas.Local.v2020_07_22.ITestFeatureSchema
 export default class TestFeature extends AbstractFeature<TestFeatureType> {
 	public nameReadable = 'Test'
 	public description = 'Test first. Test everything! 💪'
-	public dependencies: FeatureCode[] = ['skill']
+	public dependencies: FeatureCode[] = []
 	public code: FeatureCode = 'test'
 	public packageDependencies: INpmPackage[] = [
 		{ name: '@sprucelabs/test', isDev: true },
@@ -18,6 +20,40 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public async afterPackageInstall() {
+		const service = this.Service('pkg')
+
+		this.configureJest(service)
+		this.configureScripts(service)
+		this.configureTsConfig()
+	}
+
+	private configureTsConfig() {
+		try {
+			const tsConfig = tsConfigUtil.readConfig(this.cwd)
+			if (!tsConfig.compilerOptions.experimentalDecorators) {
+				tsConfig.compilerOptions.experimentalDecorators = true
+				tsConfigUtil.setCompilerOption(this.cwd, 'experimentalDecorators', true)
+			}
+		} catch (err) {
+			//@ts-ignore
+		}
+	}
+
+	private configureScripts(service: PkgService) {
+		let scripts = service.get('scripts') as Record<string, any> | undefined
+
+		if (!scripts) {
+			scripts = {}
+		}
+
+		if (!scripts.test) {
+			scripts.test = 'jest'
+			scripts['test.watch'] = 'jest --watch'
+			service.set({ path: 'scripts', value: scripts })
+		}
+	}
+
+	private configureJest(service: PkgService) {
 		const jestConfig = {
 			maxWorkers: 4,
 			testTimeout: 120000,
@@ -33,15 +69,10 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 				'^#spruce/(.*)$': '<rootDir>/build/.spruce/$1',
 			},
 		}
-
-		const service = this.Service('pkg')
-
-		service.set({ path: 'jest', value: jestConfig })
-
-		const scripts = service.get('scripts') as Record<string, any>
-		scripts.test = 'jest'
-		scripts['test.watch'] = 'jest --watch'
-		service.set({ path: 'scripts', value: scripts })
+		const existingJest = service.get('jest') as Record<string, any>
+		if (!existingJest) {
+			service.set({ path: 'jest', value: jestConfig })
+		}
 	}
 
 	public async isInstalled() {
