@@ -2057,6 +2057,16 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@sprucelabs/babel-plugin-schema@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-1.0.4.tgz#bca12ee74e96279f062b93525e44b4ce4f7783d5"
+  integrity sha512-nm5JxTchFuUTiROpNaO2yAv3ETz071uW3iAPjAR7nmHsvZjiStdR9KQUaY1WYIBh3xbgn6Tq79dxw78SHcBzVw==
+  dependencies:
+    fs-extra "^9.0.1"
+    globby "^11.0.1"
+    rimraf "^3.0.2"
+    tsconfig-paths "^3.9.0"
+
 "@sprucelabs/error@^2.0.46":
   version "2.0.46"
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.0.46.tgz#4b8fe963655581aaa8eb7784eef69b5e22375688"
