@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.17.57](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.17.56...v10.17.57) (2020-08-10)
+
+
+### Bug Fixes
+
+* correct schema store import to not include build ([ea9a0cc](https://github.com/sprucelabsai/spruce-cli-workspace/commit/ea9a0cc))
+
+
+
+
+
 ## [10.17.56](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.17.55...v10.17.56) (2020-08-10)
 
 **Note:** Version bump only for package @sprucelabs/spruce-templates
