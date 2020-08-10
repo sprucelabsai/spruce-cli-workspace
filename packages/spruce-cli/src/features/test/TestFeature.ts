@@ -24,12 +24,15 @@ export default class TestFeature extends AbstractFeature<TestFeatureType> {
 
 		this.configureJest(service)
 		this.configureScripts(service)
+		this.configureTsConfig()
+	}
 
+	private configureTsConfig() {
 		try {
 			const tsConfig = tsConfigUtil.readConfig(this.cwd)
 			if (!tsConfig.compilerOptions.experimentalDecorators) {
 				tsConfig.compilerOptions.experimentalDecorators = true
-				tsConfigUtil.setPathAlias
+				tsConfigUtil.setCompilerOption(this.cwd, 'experimentalDecorators', true)
 			}
 		} catch (err) {
 			//@ts-ignore

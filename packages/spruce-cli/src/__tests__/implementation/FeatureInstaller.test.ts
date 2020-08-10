@@ -11,7 +11,7 @@ export default class FeatureInstallerTest extends AbstractCliTest {
 
 	@test()
 	protected static async canGetFeatureDependencies() {
-		const dependencies = this.installer.getFeatureDependencies('test')
+		const dependencies = this.installer.getFeatureDependencies('schema')
 		const match = dependencies.find((d) => d === 'skill')
 		assert.isOk(match)
 	}
