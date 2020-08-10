@@ -4,7 +4,7 @@ import {
 	IFieldTemplateItem,
 	ISchema,
 } from '@sprucelabs/schema'
-import { IFieldRegistration } from '@sprucelabs/schema/build/utilities/registerFieldType'
+import { IFieldRegistration } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
