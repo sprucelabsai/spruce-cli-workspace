@@ -43,6 +43,26 @@ export default class SkillFeature<
 
 	public optionsDefinition = skillFeatureSchema as T
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+	private scripts = {
+		boot: 'node build/index',
+		'boot.local':
+			'node -r ts-node/register -r tsconfig-paths/register ./src/index',
+		lint: "eslint '**/*.ts' && yarn lint.tsc",
+		'lint.tsc': "tsc --noEmit && echo 'PASS'",
+		'lint.fix': "eslint --fix '**/*.ts'",
+		'lint.watch':
+			"chokidar 'src/**/*' '../spruce-templates/src/**' -c 'yarn lint.tsc'",
+		health: 'yarn run boot --health',
+		'health.local': 'yarn run boot.local --health',
+		build: 'yarn build.babel',
+		'build.types': 'tsc --emitDeclarationOnly',
+		'build.babel':
+			"babel src --out-dir build --extensions '.ts, .tsx' --source-maps --copy-files",
+		'build.watch':
+			"babel src --out-dir build --extensions '.ts, .tsx' --source-maps --copy-files --watch",
+		clean: 'rm -rf build/',
+		'clean.all': 'rm -rf build/ && rm -rf node_modules/',
+	} as const
 
 	public async beforePackageInstall(options: Skill) {
 		await this.install(options)
@@ -54,7 +74,20 @@ export default class SkillFeature<
 		validateSchemaValues(skillFeatureSchema, options)
 
 		const skillGenerator = this.Generator('skill')
+
 		await skillGenerator.generateSkill(this.cwd, options)
+		this.installScripts()
+	}
+
+	public installScripts() {
+		const pkg = this.Service('pkg')
+		const scripts = pkg.get('scripts') as Record<string, string>
+		for (const name in this.scripts) {
+			const all = this.scripts
+			scripts[name] = this.scripts[name as keyof typeof all]
+		}
+
+		pkg.set({ path: 'scripts', value: scripts })
 	}
 
 	public async isInstalled() {

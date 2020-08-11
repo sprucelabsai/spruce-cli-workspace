@@ -47,7 +47,37 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		await promise
 	}
 
+	@test()
+	protected static async upgradesUpdatesPackageScripts() {
+		const cli = await this.installSkill('package-update')
+
+		const pkgService = this.Service('pkg')
+		pkgService.set({ path: 'scripts', value: {} })
+
+		const failedHealth = await cli.checkHealth()
+
+		assert.doesInclude(failedHealth, {
+			'skill.errors[].message': '"health.local" not found',
+		})
+
+		await cli.getFeature('skill').Action('upgrade').execute({ force: true })
+
+		const passedHealth = await cli.checkHealth()
+		assert.isEqual(passedHealth.skill.status, 'passed')
+	}
+
 	private static async installAndBreakSkill(cacheKey: string) {
+		const cli = await this.installSkill(cacheKey)
+
+		const indexFile = this.resolvePath('src/index.ts')
+		diskUtil.writeFile(indexFile, 'throw new Error("cheese!")')
+
+		await this.assertFailedHealthCheck(cli)
+
+		return cli
+	}
+
+	private static async installSkill(cacheKey: string) {
 		const fixture = this.FeatureFixture()
 		const cli = await fixture.installFeatures(
 			[
@@ -61,12 +91,6 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 			],
 			cacheKey
 		)
-
-		const indexFile = this.resolvePath('src/index.ts')
-		diskUtil.writeFile(indexFile, 'throw new Error("cheese!")')
-
-		await this.assertFailedHealthCheck(cli)
-
 		return cli
 	}
 

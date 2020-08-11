@@ -55,7 +55,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 	public isPromptActive = false
 	public cwd: string
 	private renderStackTraces = false
-	private loader?: ora.Ora | null
+	private static loader?: ora.Ora | null
 
 	public constructor(cwd: string, renderStackTraces = false) {
 		this.cwd = cwd
@@ -222,7 +222,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 	) {
 		fonts.say(message, {
 			// Font: 'tiny',
-			align: 'center',
+			align: 'left',
 			colors: filterEffectsForCFonts(effects),
 		})
 	}
@@ -249,15 +249,15 @@ export default class TerminalInterface implements IGraphicsInterface {
 	/** Show a simple loader */
 	public async startLoading(message?: string) {
 		this.stopLoading()
-		this.loader = ora({
+		TerminalInterface.loader = ora({
 			text: message,
 		}).start()
 	}
 
 	/** Hide loader */
 	public async stopLoading() {
-		this.loader?.stop()
-		this.loader = null
+		TerminalInterface.loader?.stop()
+		TerminalInterface.loader = null
 	}
 
 	/** Ask the user to confirm something */

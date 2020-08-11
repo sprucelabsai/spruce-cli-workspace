@@ -140,15 +140,21 @@ export default class FeatureInstaller implements IServiceProvider {
 		for (let i = 0; i < codesToInstall.length; i += 1) {
 			const code = codesToInstall[i]
 
-			const installOptions = options.features.find((f) => f.code === code)
-				?.options
+			const feature = this.getFeature(code)
 
-			const installFeature = {
-				code: codesToInstall[i],
-				options: installOptions,
-			} as InstallFeature
+			const isInstalled = await feature.isInstalled()
 
-			await this.installFeature(installFeature)
+			if (!isInstalled) {
+				const installOptions = options.features.find((f) => f.code === code)
+					?.options
+
+				const installFeature = {
+					code: codesToInstall[i],
+					options: installOptions,
+				} as InstallFeature
+
+				await this.installFeature(installFeature)
+			}
 		}
 
 		return {}

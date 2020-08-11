@@ -77,9 +77,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			this.term.stopLoading()
 		}
 
-		// @ts-ignore
-		const results = await action.execute(answers)
-
+		const results = await action.execute(answers || {})
 		this.term.stopLoading()
 
 		this.term.renderCommandSummary({
@@ -87,6 +85,8 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			actionCode: this.actionCode,
 			...results,
 		})
+
+		return results
 	}
 
 	private async collectAnswers<S extends ISchema>(
