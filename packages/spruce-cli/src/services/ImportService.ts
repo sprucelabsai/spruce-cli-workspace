@@ -1,3 +1,4 @@
+import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import fs from 'fs-extra'
 import md5 from 'md5'
@@ -13,30 +14,60 @@ export default class ImportService extends CommandService {
 	public importAll = async <T extends Record<string, any>>(
 		file: string
 	): Promise<T> => {
-		const fileContents = diskUtil.readFile(file)
-		const hash = md5(fileContents)
+		const { hash, fileContents } = this.pullHashAndContents(file)
 
-		if (ImportService.cachedImports[hash]) {
-			return ImportService.cachedImports[hash] as T
-		}
-
-		const resolvedFilePath = diskUtil.resolvePath(
-			diskUtil.createTempDir('import-service'),
-			hash + '.json'
-		)
-
-		if (diskUtil.doesFileExist(resolvedFilePath)) {
-			const cachedFileContents = diskUtil.readFile(resolvedFilePath)
-
-			ImportService.cachedImports[hash] = JSON.parse(cachedFileContents)
-			return ImportService.cachedImports[hash] as T
+		if (!this.hasFileChanged(hash)) {
+			const isDirty = this.extractChangedImports(file, fileContents).length > 0
+			if (!isDirty && ImportService.cachedImports[hash]) {
+				return ImportService.cachedImports[hash] as T
+			} else if (!isDirty) {
+				ImportService.cachedImports[hash] = this.importAllCached(file)
+				return ImportService.cachedImports[hash] as T
+			}
 		}
 
 		ImportService.cachedImports[hash] = this.importAllUncached(file)
 		return ImportService.cachedImports[hash].then((response: T) => {
-			diskUtil.writeFile(resolvedFilePath, JSON.stringify(response))
+			this.writeCacheFile(hash, response)
 			return response
 		})
+	}
+
+	private extractChangedImports(
+		originalFilepath: string,
+		contents: string
+	): { hash: string; fileContents: string }[] {
+		const changed: { hash: string; fileContents: string }[] = []
+		let importMatches
+		const regex =
+			originalFilepath.search(/\.js$/i) > -1
+				? /require\(['"](.*?)['"]\)/gis
+				: /import.*["'](.*?)["']/gis
+		while ((importMatches = regex.exec(contents)) !== null) {
+			const match = importMatches[1]
+			const dir = pathUtil.dirname(originalFilepath)
+			const ext = pathUtil.extname(originalFilepath)
+			const resolved = pathUtil.join(dir, `${match}${ext}`)
+			const { hash, fileContents } = this.pullHashAndContents(resolved)
+
+			if (this.hasFileChanged(hash)) {
+				changed.push({ hash, fileContents })
+			}
+		}
+
+		return changed
+	}
+
+	private writeCacheFile(hash: string, contents: Record<string, any>) {
+		const destination = this.resolveCacheFile(hash)
+		diskUtil.writeFile(destination, JSON.stringify(contents))
+	}
+
+	private importAllCached(file: string) {
+		const { hash } = this.pullHashAndContents(file)
+		const cacheFile = this.resolveCacheFile(hash)
+		const contents = diskUtil.readFile(cacheFile)
+		return JSON.parse(contents)
 	}
 
 	private importAllUncached = async <T extends Record<string, any>>(
@@ -52,16 +83,24 @@ export default class ImportService extends CommandService {
 			})
 		}
 
+		let args = [
+			'-e',
+			`"try { const imported = require('${file}');console.log('${this.divider}');console.log(JSON.stringify(imported)); } catch(err) { console.log('${this.errorDivider}');console.log(err.options ? err.toString() : err.stack); }"`,
+		]
+
+		if (file.search(/\.ts$/i) > -1) {
+			args = [
+				'-r',
+				'ts-node/register',
+				'-r',
+				'tsconfig-paths/register',
+				...args,
+			]
+		}
+
 		try {
 			const { stdout } = await this.execute('node', {
-				args: [
-					'-r',
-					'ts-node/register',
-					'-r',
-					'tsconfig-paths/register',
-					'-e',
-					`"try { const imported = require('${file}');console.log('${this.divider}');console.log(JSON.stringify(imported)); } catch(err) { console.log('${this.errorDivider}');console.log(err.options ? err.toString() : err.stack); }"`,
-				],
+				args,
 			})
 
 			const successParts = stdout.split(this.divider)
@@ -113,5 +152,28 @@ export default class ImportService extends CommandService {
 	): Promise<T> => {
 		const imported: any = await this.importAll(file)
 		return imported.default as T
+	}
+
+	public clearCache() {
+		diskUtil.deleteDir(this.cacheDir())
+	}
+
+	private hasFileChanged(hash: string) {
+		const resolvedFilePath = this.resolveCacheFile(hash)
+		return !diskUtil.doesFileExist(resolvedFilePath)
+	}
+
+	private resolveCacheFile(hash: string) {
+		return diskUtil.resolvePath(this.cacheDir(), hash + '.json')
+	}
+
+	private cacheDir(): string {
+		return diskUtil.createTempDir('import-service')
+	}
+
+	private pullHashAndContents(file: string) {
+		const fileContents = diskUtil.readFile(file)
+		const hash = md5(fileContents)
+		return { hash, fileContents }
 	}
 }
