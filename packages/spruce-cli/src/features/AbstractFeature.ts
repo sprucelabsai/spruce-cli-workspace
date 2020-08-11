@@ -2,12 +2,15 @@ import pathUtil from 'path'
 import { ISchema, SchemaValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
-import { IGenerators } from '#spruce/autoloaders/generators'
+import GeneratorFactory, {
+	GeneratorCode,
+	GeneratorMap,
+} from '../generators/GeneratorFactory'
 import ServiceFactory, {
 	Service,
 	IServiceProvider,
 	IServiceMap,
-} from '../factories/ServiceFactory'
+} from '../services/ServiceFactory'
 import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
 import { INpmPackage, IGraphicsInterface } from '../types/cli.types'
 import featuresUtil from './feature.utilities'
@@ -33,10 +36,10 @@ export default abstract class AbstractFeature<
 	protected actionsDir: string | undefined
 	protected actionFactory?: FeatureActionFactory
 	protected templates: Templates
-	protected generators: IGenerators
 
 	private serviceFactory: ServiceFactory
 	private storeFactory: StoreFactory
+	private generatorFactory: GeneratorFactory
 
 	protected actionFactoryOptions: Omit<
 		IFeatureActionFactoryOptions,
@@ -47,7 +50,6 @@ export default abstract class AbstractFeature<
 		cwd: string
 		serviceFactory: ServiceFactory
 		templates: Templates
-		generators: IGenerators
 		storeFactory: StoreFactory
 		actionFactory?: FeatureActionFactory
 		featureInstaller: FeatureInstaller
@@ -56,14 +58,14 @@ export default abstract class AbstractFeature<
 		this.cwd = options.cwd
 		this.serviceFactory = options.serviceFactory
 		this.templates = options.templates
-		this.generators = options.generators
 		this.actionFactory = options.actionFactory
 		this.storeFactory = options.storeFactory
+		this.generatorFactory = new GeneratorFactory(this.templates, options.term)
 
 		this.actionFactoryOptions = {
 			...options,
 			parent: this,
-			storeFactory: options.storeFactory,
+			generatorFactory: this.generatorFactory,
 		}
 	}
 
@@ -79,6 +81,10 @@ export default abstract class AbstractFeature<
 
 	public Service<S extends Service>(type: S, cwd?: string): IServiceMap[S] {
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
+	}
+
+	protected Generator<C extends GeneratorCode>(code: C): GeneratorMap[C] {
+		return this.generatorFactory.Generator(code)
 	}
 
 	public Action(code: string): IFeatureAction {

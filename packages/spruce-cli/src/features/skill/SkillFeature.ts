@@ -1,7 +1,5 @@
 import { validateSchemaValues } from '@sprucelabs/schema'
-import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { DirectoryTemplateCode } from '@sprucelabs/spruce-templates'
 import skillFeatureSchema from '#spruce/schemas/local/v2020_07_22/skillFeature.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import { INpmPackage } from '../../types/cli.types'
@@ -25,6 +23,7 @@ export default class SkillFeature<
 		{ name: '@sprucelabs/log' },
 		{ name: '@sprucelabs/error' },
 		{ name: '@sprucelabs/spruce-skill-utils' },
+		{ name: '@sprucelabs/babel-plugin-schema', isDev: true },
 		{ name: '@types/node', isDev: true },
 		{ name: 'ts-node', isDev: true },
 		{ name: 'tsconfig-paths', isDev: true },
@@ -54,15 +53,8 @@ export default class SkillFeature<
 	) {
 		validateSchemaValues(skillFeatureSchema, options)
 
-		const files = await this.templates.directoryTemplate({
-			kind: DirectoryTemplateCode.Skill,
-			context: {
-				...options,
-				name: namesUtil.toCamel(options.name),
-			},
-		})
-
-		await diskUtil.createManyFiles(this.cwd, files)
+		const skillGenerator = this.Generator('skill')
+		await skillGenerator.generateSkill(this.cwd, options)
 	}
 
 	public async isInstalled() {

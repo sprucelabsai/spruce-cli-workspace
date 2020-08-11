@@ -20,6 +20,13 @@ export default class InstallCheckingActionDecorator implements IFeatureAction {
 		parent: AbstractFeature,
 		featureInstaller: FeatureInstaller
 	) {
+		if (!childAction || !childAction.execute) {
+			throw new SpruceError({
+				code: 'GENERIC',
+				friendlyMessage: `${parent.nameReadable} failed to load action.`,
+			})
+		}
+
 		this.childAction = childAction
 		this.name = childAction.name
 		this.parent = parent
@@ -40,7 +47,7 @@ export default class InstallCheckingActionDecorator implements IFeatureAction {
 				throw new SpruceError({
 					// @ts-ignore
 					code: `${namesUtil.toConst(featureCode)}_NOT_INSTALLED`,
-					friendlyReason: 'Looks like',
+					friendlyReason: `Looks like`,
 				})
 			}
 		}

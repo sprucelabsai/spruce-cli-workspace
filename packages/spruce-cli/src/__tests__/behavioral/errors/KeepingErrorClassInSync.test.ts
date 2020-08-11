@@ -10,6 +10,7 @@ export default class KeepsErrorClassInSyncTest extends AbstractErrorTest {
 		const createAction = cli.getFeature('error').Action('create')
 
 		const results = await createAction.execute({
+			nameReadable: 'Test error',
 			nameCamel: 'testError',
 		})
 
@@ -30,8 +31,14 @@ export default class KeepsErrorClassInSyncTest extends AbstractErrorTest {
 	protected static async errorFileShouldBeUpdated() {
 		const cli = await this.installErrorFeature('error-file-in-sync')
 		const createAction = cli.getFeature('error').Action('create')
-		await createAction.execute({ nameCamel: 'testError1' })
-		const results = await createAction.execute({ nameCamel: 'testError2' })
+		await createAction.execute({
+			nameCamel: 'testError1',
+			nameReadable: 'Test error 1',
+		})
+		const results = await createAction.execute({
+			nameCamel: 'testError2',
+			nameReadable: 'Test Error 2',
+		})
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
 			/SpruceError/,

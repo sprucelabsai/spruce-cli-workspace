@@ -6,8 +6,8 @@ import QuizComponent, {
 	IQuizOptions,
 	IQuizQuestions,
 } from '../components/QuizComponent'
-import ServiceFactory from '../factories/ServiceFactory'
 import TerminalInterface from '../interfaces/TerminalInterface'
+import ServiceFactory from '../services/ServiceFactory'
 import log from '../singletons/log'
 
 /** All commanders get this */

@@ -1,13 +1,13 @@
 import { Mercury } from '@sprucelabs/mercury'
-import BuildService from '../services/BuildService'
-import CommandService from '../services/CommandService'
-import ImportService from '../services/ImportService'
-import LintService from '../services/LintService'
-import PinService from '../services/PinService'
-import PkgService from '../services/PkgService'
-import SchemaService from '../services/SchemaService'
-import TypeCheckerService from '../services/TypeCheckerService'
-import VsCodeService from '../services/VsCodeService'
+import BuildService from './BuildService'
+import CommandService from './CommandService'
+import ImportService from './ImportService'
+import LintService from './LintService'
+import PinService from './PinService'
+import PkgService from './PkgService'
+import SchemaService from './SchemaService'
+import TypeCheckerService from './TypeCheckerService'
+import VsCodeService from './VsCodeService'
 
 export interface IServiceMap {
 	pin: PinService

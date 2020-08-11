@@ -4,7 +4,7 @@ import { IEventListenerOptions } from '@sprucelabs/spruce-templates'
 import AbstractGenerator from './AbstractGenerator'
 
 export default class EventGenerator extends AbstractGenerator {
-	public generateListener(
+	public async generateListener(
 		destinationDir: string,
 		options: Omit<IEventListenerOptions, 'nameConst'> & { version: string }
 	) {
@@ -22,7 +22,7 @@ export default class EventGenerator extends AbstractGenerator {
 			nameConst: namesUtil.toConst(`${eventNamespace}_${eventName}`),
 		})
 
-		const results = this.writeFileIfChangedMixinResults(
+		const results = await this.writeFileIfChangedMixinResults(
 			resolvedDestination,
 			listenerContents,
 			`Listener for  ${eventNamespace}.${eventName}.`

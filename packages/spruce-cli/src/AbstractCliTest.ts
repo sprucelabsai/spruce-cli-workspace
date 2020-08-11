@@ -6,13 +6,10 @@ import AbstractSpruceTest from '@sprucelabs/test'
 import fs from 'fs-extra'
 import * as uuid from 'uuid'
 import { ICliBootOptions } from './cli'
-import ServiceFactory, {
-	Service,
-	IServiceMap,
-} from './factories/ServiceFactory'
 import FeatureInstallerFactory from './features/FeatureInstallerFactory'
 import FeatureFixture from './fixtures/FeatureFixture'
 import TestInterface from './interfaces/TestInterface'
+import ServiceFactory, { Service, IServiceMap } from './services/ServiceFactory'
 import StoreFactory, { StoreCode, IStoreMap } from './stores/StoreFactory'
 import { IGraphicsInterface } from './types/cli.types'
 
@@ -49,6 +46,17 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		this.cwd = this.freshCwd()
 	}
 
+	protected static async afterEach() {
+		if (this._term) {
+			const term = this._term as TestInterface
+			if (term.isWaitingForInput()) {
+				throw new Error(
+					`Terminal interface is waiting for input. Make sure you are invoking this.term.sendInput() as many times as needed.`
+				)
+			}
+		}
+	}
+
 	protected static async Cli(options?: ICliBootOptions) {
 		return this.FeatureFixture().Cli({
 			cwd: this.cwd,
@@ -74,7 +82,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static FeatureFixture() {
-		return new FeatureFixture(this.cwd, this.ServiceFactory())
+		return new FeatureFixture(this.cwd, this.ServiceFactory(), this.term)
 	}
 
 	protected static resolveHashSprucePath(...filePath: string[]) {

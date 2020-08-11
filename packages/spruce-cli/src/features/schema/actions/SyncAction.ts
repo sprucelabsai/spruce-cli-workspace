@@ -4,7 +4,6 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { IValueTypes } from '@sprucelabs/spruce-templates'
 import syncSchemasActionSchema from '#spruce/schemas/local/v2020_07_22/syncSchemasAction.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import SchemaGenerator from '../../../generators/SchemaGenerator'
 import { IGeneratedFile } from '../../../types/cli.types'
 import schemaGeneratorUtil from '../../../utilities/schemaGenerator.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
@@ -16,7 +15,7 @@ export default class SyncAction extends AbstractFeatureAction<
 	public name = 'sync'
 	public optionsSchema = syncSchemasActionSchema
 
-	private readonly schemaGenerator = new SchemaGenerator(this.templates)
+	private readonly schemaGenerator = this.Generator('schema')
 
 	public async execute(
 		options: SpruceSchemas.Local.v2020_07_22.ISyncSchemasAction
@@ -61,7 +60,7 @@ export default class SyncAction extends AbstractFeatureAction<
 		} = await schemaStore.fetchFieldTemplateItems(addonsLookupDir)
 
 		if (generateFieldTypes) {
-			const results = this.schemaGenerator.generateFieldTypes(
+			const results = await this.schemaGenerator.generateFieldTypes(
 				resolvedFieldTypesDestination,
 				{
 					fieldTemplateItems,
@@ -96,7 +95,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			globalNamespace ?? undefined
 		)
 
-		const typeResults = this.schemaGenerator.generateSchemaTypes(
+		const typeResults = await this.schemaGenerator.generateSchemaTypes(
 			resolvedSchemaTypesDestination,
 			{
 				fieldTemplateItems,

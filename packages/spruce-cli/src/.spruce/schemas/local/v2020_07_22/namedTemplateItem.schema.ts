@@ -12,6 +12,7 @@ const namedTemplateItemSchema: SpruceSchemas.Local.v2020_07_22.INamedTemplateIte
 	            'nameReadable': {
 	                label: 'Readable name',
 	                type: FieldType.Text,
+	                isRequired: true,
 	                hint: 'The name people will read',
 	                options: undefined
 	            },

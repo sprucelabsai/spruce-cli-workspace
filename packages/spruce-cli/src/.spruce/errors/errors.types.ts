@@ -498,6 +498,42 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local {
 
+	
+	export interface ISchemaExists {
+		
+			/** Schema id. */
+			'schemaId': string
+			/** Destination. */
+			'destination'?: string| undefined | null
+	}
+
+	export interface ISchemaExistsSchema extends SpruceSchema.ISchema {
+		id: 'schemaExists',
+		name: 'Schema exists',
+		    fields: {
+		            /** Schema id. */
+		            'schemaId': {
+		                label: 'Schema id',
+		                type: FieldType.Text,
+		                isRequired: true,
+		                options: undefined
+		            },
+		            /** Destination. */
+		            'destination': {
+		                label: 'Destination',
+		                type: FieldType.Text,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type SchemaExistsEntity = SchemaEntity<SpruceErrors.Local.ISchemaExistsSchema>
+
+}
+
+
+export declare namespace SpruceErrors.Local {
+
 	/** The definition file failed to import */
 	export interface ISchemaFailedToImport {
 		

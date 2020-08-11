@@ -7,6 +7,8 @@ import {
 } from '../types/cli.types'
 
 export default class TestInterface implements IGraphicsInterface {
+	public invocations: { command: string; options?: any }[] = []
+
 	public renderWarning(
 		message: string,
 		effects?: IGraphicsTextEffect[] | undefined
@@ -25,10 +27,12 @@ export default class TestInterface implements IGraphicsInterface {
 
 	private confirmResolver?: (pass: boolean) => void | undefined
 
-	public invocations: { command: string; options?: any }[] = []
-
 	private trackInvocation(command: string, options?: any) {
 		this.invocations.push({ command, options })
+	}
+
+	public isWaitingForInput() {
+		return !!(this.promptResolver || this.confirmResolver)
 	}
 
 	public async sendInput(input: string): Promise<void> {

@@ -80,17 +80,15 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 		if (diskUtil.doesFileExist(resolvedBuilderDestination)) {
 			throw new SpruceError({
-				// @ts-ignore
 				code: 'SCHEMA_EXISTS',
-				name: options.nameCamel,
-				errorBuilderDestinationDir: destinationDir,
-				friendlyMessage: `This schema already exists at ${resolvedBuilderDestination}`,
+				schemaId: options.nameCamel,
+				destination: destinationDir,
 			})
 		}
 
 		const builderContent = this.templates.schemaBuilder(options)
 
-		const results = this.writeFileIfChangedMixinResults(
+		const results = await this.writeFileIfChangedMixinResults(
 			resolvedBuilderDestination,
 			builderContent,
 			'The file from which all types, interfaces, and protocols will be generated'
@@ -99,15 +97,15 @@ export default class SchemaGenerator extends AbstractGenerator {
 		return results
 	}
 
-	public generateFieldTypes(
+	public async generateFieldTypes(
 		destinationDir: string,
 		options: IGenerateFieldTypesOptions
-	): GenerationResults {
+	): Promise<GenerationResults> {
 		const { fieldTemplateItems } = options
 
 		let results: GenerationResults = []
 
-		this.fieldTemplates.forEach((fileAndFunc) => {
+		for (const fileAndFunc of this.fieldTemplates) {
 			const { filename, templateFuncName, description } = fileAndFunc
 
 			const resolvedDestination = path.join(destinationDir, 'fields', filename)
@@ -116,21 +114,21 @@ export default class SchemaGenerator extends AbstractGenerator {
 				fieldTemplateItems,
 			})
 
-			results = this.writeFileIfChangedMixinResults(
+			results = await this.writeFileIfChangedMixinResults(
 				resolvedDestination,
 				contents,
 				description,
 				results
 			)
-		})
+		}
 
 		return results
 	}
 
-	public generateSchemaTypes(
+	public async generateSchemaTypes(
 		destinationDirOrFilename: string,
 		options: IGenerateSchemaTypesOptions
-	): GenerationResults {
+	): Promise<GenerationResults> {
 		const { fieldTemplateItems, schemaTemplateItems, valueTypes } = options
 		const resolvedTypesDestination = this.resolveFilename(
 			destinationDirOrFilename,
@@ -146,38 +144,43 @@ export default class SchemaGenerator extends AbstractGenerator {
 			globalNamespace: options.globalNamespace,
 		})
 
-		results = this.writeFileIfChangedMixinResults(
+		results = await this.writeFileIfChangedMixinResults(
 			resolvedTypesDestination,
 			schemaTypesContents,
 			'The interfaces for every schema'
 		)
 
-		results.push(
-			...this.generateAllSchemas(pathUtil.dirname(resolvedTypesDestination), {
+		const allSchemaResults = await this.generateAllSchemas(
+			pathUtil.dirname(resolvedTypesDestination),
+			{
 				...options,
 				typesFile: resolvedTypesDestination,
-			})
+			}
 		)
 
+		results.push(...allSchemaResults)
+
 		return results
 	}
 
-	private generateAllSchemas(
+	private async generateAllSchemas(
 		destinationDir: string,
 		options: IGenerateSchemaTypesOptions & { typesFile?: string }
-	): GenerationResults {
+	): Promise<GenerationResults> {
 		const results: GenerationResults = []
 
-		options.schemaTemplateItems.map((item) => {
-			results.push(
-				...this.generateSchema(destinationDir, { ...options, ...item })
-			)
-		})
+		for (const item of options.schemaTemplateItems) {
+			const schemaResults = await this.generateSchema(destinationDir, {
+				...options,
+				...item,
+			})
+			results.push(...schemaResults)
+		}
 
 		return results
 	}
 
-	public generateSchema(
+	public async generateSchema(
 		destinationDir: string,
 		options: {
 			schemaTemplateItems: ISchemaTemplateItem[]

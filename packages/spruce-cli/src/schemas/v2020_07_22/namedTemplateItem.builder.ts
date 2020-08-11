@@ -10,6 +10,7 @@ export default buildSchema({
 			type: FieldType.Text,
 			label: 'Readable name',
 			hint: 'The name people will read',
+			isRequired: true,
 		},
 		nameCamel: {
 			type: FieldType.Text,

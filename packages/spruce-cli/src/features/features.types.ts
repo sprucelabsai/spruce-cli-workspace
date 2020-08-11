@@ -1,7 +1,8 @@
 import { ISchema, SchemaValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
 import SpruceError from '../errors/SpruceError'
-import ServiceFactory from '../factories/ServiceFactory'
+import GeneratorFactory from '../generators/GeneratorFactory'
+import ServiceFactory from '../services/ServiceFactory'
 import StoreFactory from '../stores/StoreFactory'
 import { IGeneratedFile, IGraphicsInterface } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
@@ -22,6 +23,7 @@ export interface IFeatureActionOptions {
 	storeFactory: StoreFactory
 	featureInstaller: FeatureInstaller
 	term: IGraphicsInterface
+	generatorFactory: GeneratorFactory
 }
 
 export type FeatureCode = keyof IFeatureMap

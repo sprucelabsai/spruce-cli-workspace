@@ -41,9 +41,9 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			this.featureCode
 		)
 
-		if (!isInstalled) {
-			let installOptions = { ...options }
+		let installOptions = { ...options }
 
+		if (!isInstalled) {
 			if (feature.optionsDefinition) {
 				const answers = await this.collectAnswers(
 					feature.optionsDefinition,
@@ -52,7 +52,16 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 
 				installOptions = { ...installOptions, ...answers }
 			}
+		}
 
+		const definition = action.optionsSchema
+		let answers
+
+		if (definition) {
+			answers = await this.collectAnswers(definition, options)
+		}
+
+		if (!isInstalled) {
 			this.term.startLoading(`Installing ${this.featureCode}...`)
 
 			await this.featureInstaller.install({
@@ -66,13 +75,6 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			})
 
 			this.term.stopLoading()
-		}
-
-		const definition = action.optionsSchema
-		let answers
-
-		if (definition) {
-			answers = await this.collectAnswers(definition, options)
 		}
 
 		// @ts-ignore

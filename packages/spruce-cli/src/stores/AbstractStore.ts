@@ -4,7 +4,7 @@ import ServiceFactory, {
 	IServiceProvider,
 	Service,
 	IServiceMap,
-} from '../factories/ServiceFactory'
+} from '../services/ServiceFactory'
 
 export interface IStoreOptions {
 	mercury: Mercury

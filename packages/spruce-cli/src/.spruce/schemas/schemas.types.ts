@@ -738,7 +738,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 			/** Error builder destination directory. Where I'll save your new builder file? */
 			'errorBuilderDestinationDir': string
 			/** Readable name. The name people will read */
-			'nameReadable'?: string| undefined | null
+			'nameReadable': string
 			/** Pascal case name. PascalCase of the name */
 			'namePascal'?: string| undefined | null
 			/** Camel case name. camelCase version of the name */
@@ -797,6 +797,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		            'nameReadable': {
 		                label: 'Readable name',
 		                type: FieldType.Text,
+		                isRequired: true,
 		                hint: 'The name people will read',
 		                options: undefined
 		            },
@@ -860,7 +861,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 			/** Version. Set a version yourself instead of letting me generate one for you */
 			'version'?: string| undefined | null
 			/** Readable name. The name people will read */
-			'nameReadable'?: string| undefined | null
+			'nameReadable': string
 			/** Pascal case name. PascalCase of the name */
 			'namePascal'?: string| undefined | null
 			/** Camel case name. camelCase version of the name */
@@ -977,6 +978,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		            'nameReadable': {
 		                label: 'Readable name',
 		                type: FieldType.Text,
+		                isRequired: true,
 		                hint: 'The name people will read',
 		                options: undefined
 		            },
@@ -1202,7 +1204,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 	export interface INamedTemplateItem {
 		
 			/** Readable name. The name people will read */
-			'nameReadable'?: string| undefined | null
+			'nameReadable': string
 			/** Camel case name. camelCase version of the name */
 			'nameCamel': string
 			/** Plural camel case name. camelCase version of the name */
@@ -1226,6 +1228,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		            'nameReadable': {
 		                label: 'Readable name',
 		                type: FieldType.Text,
+		                isRequired: true,
 		                hint: 'The name people will read',
 		                options: undefined
 		            },
@@ -1519,6 +1522,8 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 	/** Upgrade your skill and all it&#x27;s dependencies! */
 	export interface IUpgradeSkillAction {
 		
+			/** Force. This will force overwrite each file */
+			'force'?: boolean| undefined | null
 	}
 
 	export interface IUpgradeSkillActionSchema extends SpruceSchema.ISchema {
@@ -1526,6 +1531,13 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		name: 'Upgrade skill action',
 		description: 'Upgrade your skill and all it\'s dependencies!',
 		    fields: {
+		            /** Force. This will force overwrite each file */
+		            'force': {
+		                label: 'Force',
+		                type: FieldType.Boolean,
+		                hint: 'This will force overwrite each file',
+		                options: undefined
+		            },
 		    }
 	}
 
