@@ -2094,14 +2094,14 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.0.89":
-  version "7.0.89"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.89.tgz#512db48d298322f5ad02be00b6e4a7f6d2ac649b"
-  integrity sha512-4D/W9Y60/d/EJLXF0t9bEwIo8Y89PhZG/pxIBBp8V5J5mzAfANrVOu/uwU7N2MgJnYFNrpkexLamNUgnYA5IkA==
+"@sprucelabs/schema@^7.0.90":
+  version "7.0.90"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.90.tgz#1a17bf22a8f67870b35152186fcd0dd06c0645f9"
+  integrity sha512-M0wcZHcDdS2tvYRzHMLM2Gg9/NxwIsmcc9OUyeLP9QV5lBcHaePZFHuTivgRnJmMS3krrbWeTjIcBeWTmbYSuA==
   dependencies:
     "@sprucelabs/error" "^2.0.54"
     "@sprucelabs/log" "^10.2.101"
-    google-libphonenumber "^3.2.10"
+    google-libphonenumber "^3.2.11"
     libphonenumber-js "^1.7.56"
     mime-db "^1.44.0"
     mime-type "^4.0.0"
@@ -5408,7 +5408,7 @@ google-auth-library@^5.9.1:
     jws "^4.0.0"
     lru-cache "^5.0.0"
 
-google-libphonenumber@^3.2.10:
+google-libphonenumber@^3.2.11:
   version "3.2.11"
   resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.11.tgz#c5704513366b18f468a9505ea13e53f6fbcc9eec"
   integrity sha512-LmndkcaQGxYC1j5XEugxCcYKs5Foxc2sILzAKVfTJjFxonnLlYZLptbqu4a2z036kw9OBSQFdnyQCcMacHBIXQ==
