@@ -3,7 +3,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"version": "10.17.75",
+	"version": "10.17.76",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
 	"license": "MIT",
