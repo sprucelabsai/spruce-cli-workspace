@@ -17,7 +17,7 @@ export default class ImportService extends CommandService {
 		const { hash, fileContents } = this.pullHashAndContents(file)
 
 		if (!this.hasFileChanged(hash)) {
-			const isDirty = this.extractChangedImports(file, fileContents).length > 0
+			const isDirty = this.haveImportsChanged(file, fileContents)
 			if (!isDirty && ImportService.cachedImports[hash]) {
 				return ImportService.cachedImports[hash] as T
 			} else if (!isDirty) {
@@ -33,25 +33,31 @@ export default class ImportService extends CommandService {
 		})
 	}
 
-	private extractChangedImports(
+	private haveImportsChanged(
 		originalFilepath: string,
 		contents: string
-	): { hash: string; fileContents: string }[] {
-		const changed: { hash: string; fileContents: string }[] = []
+	): boolean {
+		let changed = false
 		let importMatches
+
+		// only check files that start with dot because they are local and we can actually only check local files
 		const regex =
 			originalFilepath.search(/\.js$/i) > -1
-				? /require\(['"](.*?)['"]\)/gis
-				: /import.*["'](.*?)["']/gis
-		while ((importMatches = regex.exec(contents)) !== null) {
-			const match = importMatches[1]
-			const dir = pathUtil.dirname(originalFilepath)
-			const ext = pathUtil.extname(originalFilepath)
-			const resolved = pathUtil.join(dir, `${match}${ext}`)
-			const { hash, fileContents } = this.pullHashAndContents(resolved)
+				? /require\(['"](\..*?)['"]\)/gis
+				: /import.*["'](\..*?)["']/gis
 
-			if (this.hasFileChanged(hash)) {
-				changed.push({ hash, fileContents })
+		while ((importMatches = regex.exec(contents)) !== null) {
+			try {
+				const match = importMatches[1]
+				const dir = pathUtil.dirname(originalFilepath)
+				const nodeResolved = require.resolve(pathUtil.join(dir, match))
+				const { hash } = this.pullHashAndContents(nodeResolved)
+
+				if (this.hasFileChanged(hash)) {
+					changed = true
+				}
+			} catch {
+				changed = true
 			}
 		}
 

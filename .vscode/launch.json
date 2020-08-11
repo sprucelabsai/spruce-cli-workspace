@@ -15,10 +15,7 @@
 			"name": "cli.debug",
 			"protocol": "inspector",
 			"runtimeExecutable": "yarn",
-			"runtimeArgs": [
-				"run",
-				"local"
-			],
+			"runtimeArgs": ["run", "local"],
 			"console": "integratedTerminal",
 			"port": 5200,
 			"cwd": "${workspaceFolder}/packages/spruce-cli",
@@ -52,6 +49,7 @@
 			"runtimeExecutable": "/Users/taylorromero/.nvm/versions/node/v12.16.1/bin/node",
 			"runtimeArgs": [
 				"--inspect-brk",
+				"--trace-warnings",
 				"${workspaceFolder}/node_modules/.bin/jest"
 			],
 			"port": 9229,
