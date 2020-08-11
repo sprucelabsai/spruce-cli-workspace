@@ -18,6 +18,7 @@ export default class ImportService extends CommandService {
 
 		if (!this.hasFileChanged(hash)) {
 			const isDirty = this.haveImportsChanged(file, fileContents)
+
 			if (!isDirty && ImportService.cachedImports[hash]) {
 				return ImportService.cachedImports[hash] as T
 			} else if (!isDirty) {
@@ -66,13 +67,16 @@ export default class ImportService extends CommandService {
 
 	private writeCacheFile(hash: string, contents: Record<string, any>) {
 		const destination = this.resolveCacheFile(hash)
+
 		diskUtil.writeFile(destination, JSON.stringify(contents))
 	}
 
 	private importAllCached(file: string) {
 		const { hash } = this.pullHashAndContents(file)
+
 		const cacheFile = this.resolveCacheFile(hash)
 		const contents = diskUtil.readFile(cacheFile)
+
 		return JSON.parse(contents)
 	}
 
@@ -113,27 +117,12 @@ export default class ImportService extends CommandService {
 			const errParts = stdout.split(this.errorDivider)
 
 			if (errParts.length > 1) {
-				let err: Record<string, any> = {}
-				try {
-					err = JSON.parse(errParts[1])
-					if (!err.options) {
-						throw Error('Capture and reported below')
-					}
-				} catch {
-					err = {
-						options: {
-							code: 'FAILED_TO_IMPORT',
-							file,
-							friendlyMessage: `Unknown error from import, output was: \n\n"${
-								errParts[1] ?? stdout
-							}"`,
-						},
-					}
-				}
-				const proxyError = new SpruceError(err.options)
-				if (err.stack) {
-					proxyError.stack = err.stack
-				}
+				const proxyError = this.buildErrorFromExecuteResponse(
+					errParts,
+					file,
+					stdout
+				)
+
 				throw proxyError
 			} else {
 				defaultImported = JSON.parse(successParts[1])
@@ -158,6 +147,37 @@ export default class ImportService extends CommandService {
 	): Promise<T> => {
 		const imported: any = await this.importAll(file)
 		return imported.default as T
+	}
+
+	private buildErrorFromExecuteResponse(
+		errParts: string[],
+		file: string,
+		stdout: string
+	) {
+		let err: Record<string, any> = {}
+		try {
+			err = JSON.parse(errParts[1])
+			if (!err.options) {
+				throw Error('Capture and reported below')
+			}
+		} catch {
+			err = {
+				options: {
+					code: 'FAILED_TO_IMPORT',
+					file,
+					friendlyMessage: `Unknown error from import, output was: \n\n"${
+						errParts[1] ?? stdout
+					}"`,
+				},
+			}
+		}
+
+		const proxyError = new SpruceError(err.options)
+
+		if (err.stack) {
+			proxyError.stack = err.stack
+		}
+		return proxyError
 	}
 
 	public clearCache() {
