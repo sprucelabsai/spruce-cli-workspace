@@ -4,7 +4,7 @@
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "10.17.64",
+	"version": "10.17.65",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -52,8 +52,8 @@
 		"@sprucelabs/log": "^10.2.96",
 		"@sprucelabs/mercury": "^10.5.72",
 		"@sprucelabs/schema": "^7.0.80",
-		"@sprucelabs/spruce-skill-utils": "^10.17.64",
-		"@sprucelabs/spruce-templates": "^10.17.64",
+		"@sprucelabs/spruce-skill-utils": "^10.17.65",
+		"@sprucelabs/spruce-templates": "^10.17.65",
 		"blessed": "^0.1.81",
 		"blessed-contrib": "^4.8.20",
 		"cfonts": "^2.8.6",
@@ -92,11 +92,13 @@
 		"@types/md5": "^2.2.0",
 		"@types/mkdirp": "^1.0.1",
 		"@types/node": "^14.0.27",
+		"@types/promise.allsettled": "^1.0.3",
 		"@types/rimraf": "^3.0.0",
 		"@types/semver": "^7.3.1",
 		"@types/sha1": "^1.1.2",
 		"@types/slug": "^0.9.1",
 		"@types/superagent": "^4.1.9",
+		"@types/uuid": "^8.0.1",
 		"arkit": "^1.6.4",
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^5.3.0",
@@ -112,9 +114,7 @@
 		"rimraf": "^3.0.2",
 		"ts-jest": "^26.1.4",
 		"ts-node": "^8.10.2",
-		"tsconfig-paths": "^3.9.0",
-		"@types/promise.allsettled": "^1.0.3",
-		"@types/uuid": "^8.0.1"
+		"tsconfig-paths": "^3.9.0"
 	},
 	"jest": {
 		"maxWorkers": 4,
