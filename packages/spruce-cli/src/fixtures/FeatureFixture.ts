@@ -1,5 +1,7 @@
+import os from 'os'
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import fsUtil from 'fs-extra'
 import { ICliBootOptions, ICli, boot } from '../cli'
 import { InstallFeature } from '../features/features.types'
 import ServiceFactory, {
@@ -41,7 +43,7 @@ export default class FeatureFixture implements IServiceProvider {
 	}
 
 	public async Cli(options?: ICliBootOptions) {
-		await this.linkSpruceUtils()
+		await this.linkWorkspacePackages()
 
 		const cli = await boot({
 			cwd: this.cwd,
@@ -52,18 +54,27 @@ export default class FeatureFixture implements IServiceProvider {
 		return cli
 	}
 
-	private async linkSpruceUtils() {
+	private async linkWorkspacePackages() {
 		if (!FeatureFixture.linkedUtils) {
-			const command = this.Service('command')
-			await command.execute(
-				`cd ${pathUtil.join(
-					__dirname,
-					'..',
-					'..',
-					'..',
-					'spruce-skill-utils'
-				)} && yarn link`
+			const expectedLinkedDir = pathUtil.join(
+				os.homedir(),
+				'.yarn',
+				'link',
+				'@sprucelabs',
+				'spruce-skill-utils'
 			)
+			if (!fsUtil.existsSync(expectedLinkedDir)) {
+				const command = this.Service('command')
+				await command.execute(
+					`cd ${pathUtil.join(
+						__dirname,
+						'..',
+						'..',
+						'..',
+						'spruce-skill-utils'
+					)} && yarn link`
+				)
+			}
 
 			FeatureFixture.linkedUtils = true
 		}

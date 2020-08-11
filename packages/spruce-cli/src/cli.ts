@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-
-// eslint-disable-next-line import/order
 import {
 	Mercury,
 	IMercuryConnectOptions,
@@ -12,11 +10,6 @@ import {
 	HEALTH_DIVIDER,
 } from '@sprucelabs/spruce-skill-utils'
 import { Command, CommanderStatic } from 'commander'
-// Shim
-// eslint-disable-next-line import/order
-import allSettled from 'promise.allsettled'
-allSettled.shim()
-
 import './addons/filePrompt.addon'
 import SpruceError from './errors/SpruceError'
 import FeatureCommandAttacher from './features/FeatureCommandAttacher'
