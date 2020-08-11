@@ -26,7 +26,6 @@ export type Service = keyof IServiceMap
 export interface IServiceProvider {
 	Service<S extends Service>(type: S, cwd?: string): IServiceMap[S]
 }
-
 export default class ServiceFactory {
 	private mercury: Mercury
 
