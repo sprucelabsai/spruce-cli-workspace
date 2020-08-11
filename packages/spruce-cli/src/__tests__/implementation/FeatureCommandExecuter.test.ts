@@ -3,6 +3,7 @@ import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../AbstractCliTest'
 import FeatureCommandExecuter from '../../features/FeatureCommandExecuter'
 import { FeatureCode } from '../../features/features.types'
+import testUtil from '../../utilities/test.utility'
 
 export default class FeatureCommandExecuterTest extends AbstractCliTest {
 	protected static async beforeEach() {
@@ -70,6 +71,37 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 
 		const isInstalled = await feature.isInstalled()
 		assert.isTrue(isInstalled)
+	}
+
+	@test()
+	protected static async shouldAddListenerWithoutBreakingOnSkill() {
+		await this.FeatureFixture().installFeatures(
+			[
+				{
+					code: 'skill',
+					options: {
+						name: 'listener-skill',
+						description: 'Testing if listeners can be set.',
+					},
+				},
+			],
+			'feature-command-executer'
+		)
+
+		const executer = this.Executer('event', 'listen')
+		const promise = executer.execute()
+
+		await this.wait(1000)
+
+		await this.term.sendInput('skill')
+		await this.term.sendInput('will-boot')
+
+		const results = await promise
+
+		testUtil.assertsFileByNameInGeneratedFiles(
+			'will-boot.listener.ts',
+			results.files ?? []
+		)
 	}
 
 	private static Executer<F extends FeatureCode>(

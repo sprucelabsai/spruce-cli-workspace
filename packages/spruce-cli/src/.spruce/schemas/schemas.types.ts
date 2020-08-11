@@ -1145,10 +1145,10 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 	/** Listen and respond to things happening in the physical and digital world. */
 	export interface IListenEventAction {
 		
-			/** Event name. */
-			'eventName': string
 			/** Namespace. */
 			'eventNamespace': string
+			/** Event name. */
+			'eventName': string
 			/** Events destination directory. Where should I add your listeners? */
 			'eventsDestinationDir'?: string| undefined | null
 			/** Version. Set a version yourself instead of letting me generate one for you */
@@ -1160,16 +1160,16 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		name: 'Listen to event action',
 		description: 'Listen and respond to things happening in the physical and digital world.',
 		    fields: {
-		            /** Event name. */
-		            'eventName': {
-		                label: 'Event name',
+		            /** Namespace. */
+		            'eventNamespace': {
+		                label: 'Namespace',
 		                type: FieldType.Text,
 		                isRequired: true,
 		                options: undefined
 		            },
-		            /** Namespace. */
-		            'eventNamespace': {
-		                label: 'Namespace',
+		            /** Event name. */
+		            'eventName': {
+		                label: 'Event name',
 		                type: FieldType.Text,
 		                isRequired: true,
 		                options: undefined

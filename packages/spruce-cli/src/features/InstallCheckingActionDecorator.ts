@@ -47,7 +47,6 @@ export default class InstallCheckingActionDecorator implements IFeatureAction {
 				throw new SpruceError({
 					// @ts-ignore
 					code: `${namesUtil.toConst(featureCode)}_NOT_INSTALLED`,
-					friendlyReason: `Looks like`,
 				})
 			}
 		}

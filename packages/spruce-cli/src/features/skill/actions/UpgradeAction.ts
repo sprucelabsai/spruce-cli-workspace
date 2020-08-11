@@ -3,6 +3,7 @@ import upgradeSkillActionSchema from '#spruce/schemas/local/v2020_07_22/upgradeS
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { IFeatureActionExecuteResponse } from '../../features.types'
+import SkillFeature from '../SkillFeature'
 
 export default class UpgradeAction extends AbstractFeatureAction<
 	SpruceSchemas.Local.v2020_07_22.IUpgradeSkillActionSchema
@@ -19,6 +20,8 @@ export default class UpgradeAction extends AbstractFeatureAction<
 		const generatedFiles = await this.copyFiles(normalizedOptions)
 
 		await this.reInstallPackageDependencies()
+		const skillFeature = (await this.getFeature('skill')) as SkillFeature
+		skillFeature.installScripts()
 
 		return { files: generatedFiles }
 	}

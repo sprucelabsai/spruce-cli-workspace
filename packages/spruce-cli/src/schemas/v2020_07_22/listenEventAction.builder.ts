@@ -7,14 +7,14 @@ export default buildSchema({
 	description:
 		'Listen and respond to things happening in the physical and digital world.',
 	fields: {
-		eventName: {
-			type: FieldType.Text,
-			label: 'Event name',
-			isRequired: true,
-		},
 		eventNamespace: {
 			type: FieldType.Text,
 			label: 'Namespace',
+			isRequired: true,
+		},
+		eventName: {
+			type: FieldType.Text,
+			label: 'Event name',
 			isRequired: true,
 		},
 		eventsDestinationDir: {
