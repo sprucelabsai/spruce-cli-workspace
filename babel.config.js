@@ -1,19 +1,17 @@
-const copySchema = require('./babel-plugins/copySchema')
 const pathUtil = require('path')
 
 
 module.exports = (api) => {
 	api.cache(true)
-	
-	copySchema({
-		cwd: __dirname,
-		destination: process.env.PWD
-	})
 
 	return {
 		ignore: ["**/testDirsAndFiles/**", "**/spruce-templates/src/templates/**"],
 		presets: ['@babel/preset-env', '@babel/preset-typescript'],
 		plugins: [
+			['@sprucelabs/babel-plugin-schema', {
+				cwd: __dirname,
+				destination: process.env.PWD
+			}],
 			'@babel/plugin-transform-runtime',
 			[
 				'@babel/plugin-proposal-decorators',
