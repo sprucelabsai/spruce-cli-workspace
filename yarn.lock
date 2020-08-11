@@ -2057,10 +2057,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sprucelabs/babel-plugin-schema@^1.0.8":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-1.0.8.tgz#bfb79f41d2a87bdce4c20f58bd40091fb942a10e"
-  integrity sha512-E3Sfld/eiNc9jWnS249I3LpbvM3EAr5ur1UWbxev+1Q1pE7qQ2dRinq5Nw1O4XAllXkDK0f6Ksi1vNk9/dF2zQ==
+"@sprucelabs/babel-plugin-schema@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-1.0.9.tgz#c3671112ddb7c398a3f0d25bbdb94a5c4a8862b8"
+  integrity sha512-GaO4CJf3eKFkjurNyRZoCl8fXccP9OkYDfxb8uXo1jNS15kQzekS67rk00XOTKLXrG76xGCnCmkTfLoyMILgwA==
   dependencies:
     fs-extra "^9.0.1"
     globby "^11.0.1"
@@ -2094,10 +2094,10 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.0.82":
-  version "7.0.82"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.82.tgz#939a58989dd69537bb0c294a7857cb627c8a23b3"
-  integrity sha512-1mNUQ0mW/o7vHrSnZNpuN9Ys7SsSoJGPEeI3LEYeGKJU7r6ha4pzaa6m1NOKyuYVYyePbDXKOfr4Mhtpcl+WFA==
+"@sprucelabs/schema@^7.0.83":
+  version "7.0.83"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.83.tgz#d7bfa7d37075bb5ddd10e996a544db57957b7ca7"
+  integrity sha512-araN7hcH9D031yPiuFQUYF2sBi4gBIbKYywLAAwpC//nY7NAsfMj/Kecal7egGOuIxoW150y48rfQBOOPddWMg==
   dependencies:
     "@sprucelabs/error" "^2.0.49"
     "@sprucelabs/log" "^10.2.96"
@@ -2106,10 +2106,10 @@
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^5.3.134":
-  version "5.3.134"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.134.tgz#a5cfb28d782ea457ab00f448689725fb6ad60c0f"
-  integrity sha512-g68zeaINaCUikNdKb1tJfWvMt2FCiLDmkAJafLu79n6a+9/iBFBklLyzbuhaaE73zkAm/94bGO5n/tY257zXpw==
+"@sprucelabs/test@^5.3.135":
+  version "5.3.135"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.135.tgz#4e96b66ca7747002d31184f889d61b5d95d51ccb"
+  integrity sha512-n2nKpWPC3ipctgTHqh3ZFAnAnOS2cMdhcIRyrp1IhyP4Exm9I+8Za3clqson8A+2LFqypEyeCbuPK9du2y2tBA==
   dependencies:
     "@babel/core" "^7.11.1"
     "@babel/preset-env" "^7.11.0"
@@ -4308,9 +4308,9 @@ ecdsa-sig-formatter@1.0.11, ecdsa-sig-formatter@^1.0.11:
     safe-buffer "^5.0.1"
 
 electron-to-chromium@^1.3.523:
-  version "1.3.528"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.528.tgz#9d815a1ab50d2e90755116fd6e02c3c5bdddf7db"
-  integrity sha512-PEwLXeD679xF6+hYL32QBMzpyEr/H2v/K2v8N0ANkVvSrw2kblSgM7xmLYvzQTUy9d6V5SeV89lbwFqpatNqmw==
+  version "1.3.529"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.529.tgz#a7eed559bc848a7c8d95026be7d8929e3f9af169"
+  integrity sha512-n3sriLldqNyjBlosbnPftjCY+m1dVOY307I1Y0HaHAqDGe3hRvK7ksJwWd+qs599ybR4jobCo1+7zXM9GyNMSA==
 
 emittery@^0.7.1:
   version "0.7.1"
