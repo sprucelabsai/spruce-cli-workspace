@@ -7,7 +7,7 @@ import TestInterface from '../../../interfaces/TestInterface'
 export default class UpgradingASkillTest extends AbstractCliTest {
 	@test()
 	protected static async forceUpgradeOverwritesOldIndexFileWithoutAsking() {
-		const cli = await this.installAndBreakSill('skill-upgrade-force')
+		const cli = await this.installAndBreakSkill('skill-upgrade-force')
 
 		const results = await cli.getFeature('skill').Action('upgrade').execute({
 			force: true,
@@ -25,7 +25,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async upgradeWillAskIfYouWantToOverwriteFiles() {
-		const cli = await this.installAndBreakSill('skill-upgrade-ask')
+		const cli = await this.installAndBreakSkill('skill-upgrade-ask')
 
 		const promise = cli.getFeature('skill').Action('upgrade').execute({})
 
@@ -36,7 +36,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		// should be asking for some files
 		const term = this.term as TestInterface
-		assert.isLength(term.invocations, 1)
+
 		assert.doesInclude(term.invocations, {
 			command: 'confirm',
 			options: `Overwrite ${this.resolvePath('src/index.ts')}?`,
@@ -47,7 +47,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		await promise
 	}
 
-	private static async installAndBreakSill(cacheKey: string) {
+	private static async installAndBreakSkill(cacheKey: string) {
 		const fixture = this.FeatureFixture()
 		const cli = await fixture.installFeatures(
 			[

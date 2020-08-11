@@ -24,8 +24,10 @@ export default class UpgradeAction extends AbstractFeatureAction<
 	}
 
 	private async reInstallPackageDependencies() {
+		this.term.startLoading('Updating dependencies...')
 		const feature = this.getFeature('skill')
 		await this.featureInstaller.installPackageDependencies(feature)
+		this.term.stopLoading()
 	}
 
 	private async copyFiles(normalizedOptions: { force?: boolean | undefined }) {
