@@ -54,7 +54,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			...item,
 			code: namesUtil.toConst(item.namePascal),
 		}))
-		const errorGenerator = new ErrorGenerator(this.templates)
+		const errorGenerator = this.Generator('error')
 
 		const optionsResults = await this.generateOptionTypes(
 			errorGenerator,

@@ -53,8 +53,6 @@
 		"@sprucelabs/schema": "^7.0.77",
 		"@sprucelabs/spruce-skill-utils": "^10.17.60",
 		"@sprucelabs/spruce-templates": "^10.17.60",
-		"@types/promise.allsettled": "^1.0.3",
-		"@types/uuid": "^8.0.1",
 		"blessed": "^0.1.81",
 		"blessed-contrib": "^4.8.20",
 		"cfonts": "^2.8.6",
@@ -78,8 +76,7 @@
 		"string-argv": "^0.3.1",
 		"tsutils": "^3.17.1",
 		"typescript": "^3.9.7",
-		"uuid": "^8.3.0",
-		"vm2": "^3.9.2"
+		"uuid": "^8.3.0"
 	},
 	"devDependencies": {
 		"@sprucelabs/jest-sheets-reporter": "^1.1.2",
@@ -114,7 +111,9 @@
 		"rimraf": "^3.0.2",
 		"ts-jest": "^26.1.4",
 		"ts-node": "^8.10.2",
-		"tsconfig-paths": "^3.9.0"
+		"tsconfig-paths": "^3.9.0",
+		"@types/promise.allsettled": "^1.0.3",
+		"@types/uuid": "^8.0.1"
 	},
 	"jest": {
 		"maxWorkers": 4,

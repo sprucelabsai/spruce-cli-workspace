@@ -4,7 +4,7 @@ import ServiceFactory, {
 	Service,
 	IServiceProvider,
 	IServiceMap,
-} from '../factories/ServiceFactory'
+} from '../services/ServiceFactory'
 import { INpmPackage } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
 import {
@@ -166,6 +166,12 @@ export default class FeatureInstaller implements IServiceProvider {
 
 		await feature.beforePackageInstall(installFeature.options)
 
+		await this.installPackageDependencies(feature)
+
+		await feature.afterPackageInstall(installFeature.options)
+	}
+
+	public async installPackageDependencies(feature: AbstractFeature) {
 		const packagesToInstall: string[] = []
 		const devPackagesToInstall: string[] = []
 
@@ -198,7 +204,10 @@ export default class FeatureInstaller implements IServiceProvider {
 			})
 		}
 
-		await feature.afterPackageInstall(installFeature.options)
+		return {
+			packages: packagesToInstall,
+			devPackages: devPackagesToInstall,
+		}
 	}
 
 	private sortFeatures<F extends FeatureCode[]>(codes: F): F {

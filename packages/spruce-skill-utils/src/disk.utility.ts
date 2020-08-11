@@ -4,7 +4,6 @@ import pathUtil from 'path'
 import fs from 'fs-extra'
 import * as uuid from 'uuid'
 import { HASH_SPRUCE_DIR } from './constants'
-import SpruceError from './SpruceError'
 
 export interface ICreateFile {
 	/** The relative path from the cwd, without a leading forward slash */
@@ -101,28 +100,7 @@ const diskUtil = {
 
 		return builtPath
 	},
-	async createManyFiles(cwd: string, files: ICreateFile[]) {
-		const writes: Promise<void>[] = []
-		for (let i = 0; i < files.length; i += 1) {
-			const file = files[i]
-			const filePathToWrite = pathUtil.join(cwd, file.relativePath)
-			const dirPathToWrite = pathUtil.dirname(filePathToWrite)
 
-			await fs.ensureDir(dirPathToWrite)
-
-			if (this.doesFileExist(filePathToWrite)) {
-				throw new SpruceError({
-					code: 'FILE_EXISTS',
-					file: filePathToWrite,
-					friendlyMessage: `The file already exists.`,
-				})
-			}
-
-			writes.push(fs.writeFile(filePathToWrite, file.contents))
-		}
-
-		await Promise.all(writes)
-	},
 	createTempDir(...files: string[]) {
 		const tmpDir = os.tmpdir()
 		const targetDir = pathUtil.join(tmpDir, ...files)

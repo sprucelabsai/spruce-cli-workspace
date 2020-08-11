@@ -1,7 +1,5 @@
 import { templates } from '@sprucelabs/spruce-templates'
-import generatorsAutoloader from '#spruce/autoloaders/generators'
-import { IGenerators } from '#spruce/autoloaders/generators'
-import ServiceFactory from '../factories/ServiceFactory'
+import ServiceFactory from '../services/ServiceFactory'
 import StoreFactory from '../stores/StoreFactory'
 import { IGraphicsInterface } from '../types/cli.types'
 import CircleCIFeature from './CircleCIFeature'
@@ -38,7 +36,6 @@ export default class FeatureInstallerFactory {
 	public static WithAllFeatures(options: {
 		cwd: string
 		serviceFactory: ServiceFactory
-		generators?: IGenerators
 		storeFactory: StoreFactory
 		featureInstaller?: FeatureInstaller
 		term: IGraphicsInterface
@@ -49,19 +46,11 @@ export default class FeatureInstallerFactory {
 		const featureInstaller =
 			options.featureInstaller ?? new FeatureInstaller(cwd, serviceFactory)
 
-		// lazy load generators
-		const generators =
-			options.generators ??
-			generatorsAutoloader({
-				constructorOptions: templates,
-			})
-
 		this.features.forEach((item) => {
 			const feature = new item({
 				cwd,
 				serviceFactory,
 				templates,
-				generators,
 				storeFactory,
 				featureInstaller,
 				term,

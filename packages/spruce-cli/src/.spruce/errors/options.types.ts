@@ -44,6 +44,9 @@ export interface ILintFailedErrorOptions extends SpruceErrors.Local.ILintFailed,
 export interface INotImplementedErrorOptions extends SpruceErrors.Local.INotImplemented, ISpruceErrorOptions {
 	code: 'NOT_IMPLEMENTED'
 }
+export interface ISchemaExistsErrorOptions extends SpruceErrors.Local.ISchemaExists, ISpruceErrorOptions {
+	code: 'SCHEMA_EXISTS'
+}
 export interface ISchemaFailedToImportErrorOptions extends SpruceErrors.Local.ISchemaFailedToImport, ISpruceErrorOptions {
 	code: 'SCHEMA_FAILED_TO_IMPORT'
 }
@@ -54,6 +57,6 @@ export interface IVscodeNotInstalledErrorOptions extends SpruceErrors.Local.IVsc
 	code: 'VSCODE_NOT_INSTALLED'
 }
 
-type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | IBootFailedErrorOptions  | IBuildFailedErrorOptions  | ICommandNotImplementedErrorOptions  | ICreateAutoloaderFailedErrorOptions  | IDirectoryEmptyErrorOptions  | IExecutingCommandFailedErrorOptions  | IFailedToImportErrorOptions  | IFileExistsErrorOptions  | IPayloadArgsErrorOptions  | IGenericMercuryErrorOptions  | IGenericErrorOptions  | IInvalidCommandErrorOptions  | ILintFailedErrorOptions  | INotImplementedErrorOptions  | ISchemaFailedToImportErrorOptions  | IUserNotFoundErrorOptions  | IVscodeNotInstalledErrorOptions 
+type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | IBootFailedErrorOptions  | IBuildFailedErrorOptions  | ICommandNotImplementedErrorOptions  | ICreateAutoloaderFailedErrorOptions  | IDirectoryEmptyErrorOptions  | IExecutingCommandFailedErrorOptions  | IFailedToImportErrorOptions  | IFileExistsErrorOptions  | IPayloadArgsErrorOptions  | IGenericMercuryErrorOptions  | IGenericErrorOptions  | IInvalidCommandErrorOptions  | ILintFailedErrorOptions  | INotImplementedErrorOptions  | ISchemaExistsErrorOptions  | ISchemaFailedToImportErrorOptions  | IUserNotFoundErrorOptions  | IVscodeNotInstalledErrorOptions 
 
 export default ErrorOptions

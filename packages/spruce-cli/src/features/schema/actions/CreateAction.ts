@@ -2,7 +2,6 @@ import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import createSchemaActionSchema from '#spruce/schemas/local/v2020_07_22/createSchemaAction.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import SchemaGenerator from '../../../generators/SchemaGenerator'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { IFeatureAction } from '../../features.types'
 
@@ -39,7 +38,7 @@ export default class CreateAction extends AbstractFeatureAction<
 			resolvedVersion = await this.resolveVersion(version, resolvedDestination)
 		}
 
-		const generator = new SchemaGenerator(this.templates)
+		const generator = this.Generator('schema')
 		const results = await generator.generateBuilder(resolvedDestination, {
 			...rest,
 			nameCamel,

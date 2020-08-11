@@ -22,7 +22,7 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				break
 
 			case 'GENERIC':
-				message = "When you're too lazy to make a new error"
+				message = 'Oh shoot! 🤔'
 				break
 			case 'NOT_IMPLEMENTED':
 				message = ''
@@ -110,6 +110,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 					"vscode's 'code' is not installed.\n\nMac instructions: https://code.visualstudio.com/docs/setup/mac\n\nLinux instructions: https://code.visualstudio.com/docs/setup/linux\n\nWindows instructions: https://code.visualstudio.com/docs/setup/windows"
 				break
 
+			case 'SCHEMA_EXISTS':
+				message = `A schema called ${options.schemaId} already exists at ${options.destination}`
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}
@@ -124,6 +128,7 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 		return `${fullMessage}${
 			this.originalError &&
 			this.originalError.message &&
+			this.originalError.message !== message &&
 			this.originalError.message !== fullMessage
 				? `\n\nOriginal error: ${this.originalError.message.replace(
 						message,

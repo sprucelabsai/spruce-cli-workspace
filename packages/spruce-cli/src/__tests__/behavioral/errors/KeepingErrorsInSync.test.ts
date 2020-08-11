@@ -17,6 +17,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		const createAction = cli.getFeature('error').Action('create')
 
 		const results = await createAction.execute({
+			nameReadable: 'Test error',
 			nameCamel: 'testError',
 		})
 
@@ -56,6 +57,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		// build 2 errors
 		const testError1 = await createAction.execute({
 			nameCamel: 'testError1',
+			nameReadable: 'Test error 1',
 		})
 
 		const testError1SchemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
@@ -67,7 +69,11 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 			'testError1.builder',
 			testError1.files ?? []
 		)
-		await createAction.execute({ nameCamel: 'testError2' })
+
+		await createAction.execute({
+			nameCamel: 'testError2',
+			nameReadable: 'Test error 2',
+		})
 
 		// #spruce/errors should exist
 		assert.isTrue(diskUtil.doesFileExist(this.resolveHashSprucePath('errors')))

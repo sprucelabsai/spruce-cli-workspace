@@ -1,5 +1,5 @@
 {
-	"debug.node.autoAttach": "on",
+	"debug.node.autoAttach": "off",
 	"git.ignoreLimitWarning": true,
 	"javascript.validate.enable": false,
 	"editor.formatOnSave": true,

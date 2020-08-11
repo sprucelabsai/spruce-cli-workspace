@@ -22,14 +22,14 @@ export default class ErrorGenerator extends AbstractGenerator {
 
 		if (!diskUtil.doesFileExist(destinationFile)) {
 			const errorContents = this.templates.error({ errors })
-			results = this.writeFileIfChangedMixinResults(
+			results = await this.writeFileIfChangedMixinResults(
 				destinationFile,
 				errorContents,
 				'A new subclass of SpruceBaseError where you can control your error messaging.',
 				results
 			)
 		} else {
-			const updates = this.dropInNewErrorCases(errors, destinationFile)
+			const updates = await this.dropInNewErrorCases(errors, destinationFile)
 			if (updates.length > 0) {
 				results.push({
 					...updates[0],
@@ -41,18 +41,23 @@ export default class ErrorGenerator extends AbstractGenerator {
 		return results
 	}
 
-	private dropInNewErrorCases(
+	private async dropInNewErrorCases(
 		errors: IErrorTemplateItem[],
 		destinationFile: string
 	) {
 		let results: IGeneratedFile[] = []
-		errors.forEach((error) => {
-			results.push(...this.dropInErrorCaseIfMissing(error, destinationFile))
-		})
+		for (const error of errors) {
+			const dropInResults = await this.dropInErrorCaseIfMissing(
+				error,
+				destinationFile
+			)
+			results.push(...dropInResults)
+		}
+
 		return results
 	}
 
-	private dropInErrorCaseIfMissing(
+	private async dropInErrorCaseIfMissing(
 		error: IErrorTemplateItem,
 		destinationFile: string
 	) {
@@ -76,7 +81,7 @@ export default class ErrorGenerator extends AbstractGenerator {
 				'\n' +
 				currentErrorContents.substring(blockMatches)
 
-			results = this.writeFileIfChangedMixinResults(
+			results = await this.writeFileIfChangedMixinResults(
 				destinationFile,
 				newErrorContents,
 				`A new block was added to handle ${error.code}.`,

@@ -19,11 +19,11 @@ allSettled.shim()
 
 import './addons/filePrompt.addon'
 import SpruceError from './errors/SpruceError'
-import ServiceFactory from './factories/ServiceFactory'
 import FeatureCommandAttacher from './features/FeatureCommandAttacher'
 import FeatureInstaller from './features/FeatureInstaller'
 import FeatureInstallerFactory from './features/FeatureInstallerFactory'
 import TerminalInterface from './interfaces/TerminalInterface'
+import ServiceFactory from './services/ServiceFactory'
 import log from './singletons/log'
 import StoreFactory from './stores/StoreFactory'
 import { AuthedAs, IGraphicsInterface } from './types/cli.types'

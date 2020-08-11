@@ -52,6 +52,7 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 	protected static async buildCreatesValidDefinitionAndOptionsFile() {
 		const action = await this.installErrorsAndGetCreateAction()
 		const results = await action.execute({
+			nameReadable: 'Test pass',
 			nameCamel: 'testPass',
 		})
 

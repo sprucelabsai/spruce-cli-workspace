@@ -1,14 +1,14 @@
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { ICliBootOptions, ICli, boot } from '../cli'
+import { InstallFeature } from '../features/features.types'
 import ServiceFactory, {
 	IServiceProvider,
 	Service,
 	IServiceMap,
-} from '../factories/ServiceFactory'
-import { InstallFeature } from '../features/features.types'
-import TestInterface from '../interfaces/TestInterface'
+} from '../services/ServiceFactory'
 import log from '../singletons/log'
+import { IGraphicsInterface } from '../types/cli.types'
 import testUtil from '../utilities/test.utility'
 
 export interface ICachedCli {
@@ -21,10 +21,16 @@ export default class FeatureFixture implements IServiceProvider {
 	private installedSkills: Record<string, ICachedCli> = {}
 	private serviceFactory: ServiceFactory
 	private static linkedUtils = false
+	private term: IGraphicsInterface
 
-	public constructor(cwd: string, serviceFactory: ServiceFactory) {
+	public constructor(
+		cwd: string,
+		serviceFactory: ServiceFactory,
+		term: IGraphicsInterface
+	) {
 		this.cwd = cwd
 		this.serviceFactory = serviceFactory
+		this.term = term
 	}
 
 	public Service<S extends Service>(
@@ -39,7 +45,7 @@ export default class FeatureFixture implements IServiceProvider {
 
 		const cli = await boot({
 			cwd: this.cwd,
-			graphicsInterface: new TestInterface(),
+			graphicsInterface: this.term,
 			...(options ?? {}),
 		})
 

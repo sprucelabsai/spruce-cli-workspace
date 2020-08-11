@@ -27,7 +27,7 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 
 		await promise
 
-		await this.assertHealthySkillNamed('myNewSkill')
+		await this.assertHealthySkillNamed('my-new-skill')
 	}
 
 	@test()
@@ -41,7 +41,7 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 
 		await promise
 
-		await this.assertHealthySkillNamed('myGreatSkill')
+		await this.assertHealthySkillNamed('my-great-skill')
 	}
 
 	private static async assertHealthySkillNamed(name: string) {

@@ -1,5 +1,6 @@
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import SpruceError from '../errors/SpruceError'
 import {
 	IFeatureAction,
 	IFeatureActionOptions,
@@ -31,16 +32,25 @@ export default class FeatureActionFactory {
 			| undefined = require(classPath).default
 
 		if (!Class) {
-			throw new Error(
-				`action code: ${name} class not found on feature ${this.actionOptions.parent.code}. make sure it's the default export.`
-			)
+			throw new SpruceError({
+				code: 'GENERIC',
+				friendlyMessage: `I could not find any action named '${name}' for the ${this.actionOptions.parent.code} feature. Make sure it's the default export and extends AbstractFeatureAction.`,
+			})
 		}
 
 		const action = new Class(this.actionOptions)
 		if (!action) {
-			throw new Error(
-				`failed to instantiate ${name} action on ${this.actionOptions.parent.code} feature.`
-			)
+			throw new SpruceError({
+				code: 'GENERIC',
+				friendlyMessage: `I could not instantiate ${name} action on ${this.actionOptions.parent.code} feature.`,
+			})
+		}
+
+		if (!action.execute) {
+			throw new SpruceError({
+				code: 'GENERIC',
+				friendlyMessage: `It looks like the ${this.actionOptions.parent.code} feature's ${name} action does not properly extend AbstractAction.`,
+			})
 		}
 
 		const installCheckingFacade = new InstallCheckingActionDecorator(

@@ -10,11 +10,16 @@ import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { Templates } from '@sprucelabs/spruce-templates'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+import { IGeneratorOptions } from '../generators/AbstractGenerator'
+import GeneratorFactory, {
+	GeneratorCode,
+	GeneratorMap,
+} from '../generators/GeneratorFactory'
 import ServiceFactory, {
 	IServiceProvider,
 	Service,
 	IServiceMap,
-} from '../factories/ServiceFactory'
+} from '../services/ServiceFactory'
 import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
 import { IGraphicsInterface } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
@@ -37,8 +42,9 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 	private parent: AbstractFeature
 	private serviceFactory: ServiceFactory
 	private storeFactory: StoreFactory
-	private featureInstaller: FeatureInstaller
+	private generatorFactory: GeneratorFactory
 
+	protected featureInstaller: FeatureInstaller
 	protected cwd: string
 	protected templates: Templates
 	protected term: IGraphicsInterface
@@ -51,6 +57,7 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 		this.serviceFactory = options.serviceFactory
 		this.featureInstaller = options.featureInstaller
 		this.term = options.term
+		this.generatorFactory = options.generatorFactory
 	}
 
 	public abstract execute(
@@ -67,6 +74,13 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 
 	protected Store<C extends StoreCode>(code: C, cwd?: string): IStoreMap[C] {
 		return this.storeFactory.Store(code, cwd ?? this.cwd)
+	}
+
+	protected Generator<C extends GeneratorCode>(
+		code: C,
+		options?: Partial<IGeneratorOptions>
+	): GeneratorMap[C] {
+		return this.generatorFactory.Generator(code, options)
 	}
 
 	protected getFeature(code: FeatureCode) {

@@ -1,5 +1,5 @@
 import { Mercury } from '@sprucelabs/mercury'
-import ServiceFactory from '../factories/ServiceFactory'
+import ServiceFactory from '../services/ServiceFactory'
 import { IStoreOptions } from './AbstractStore'
 import OnboardingStore from './OnboardingStore'
 import RemoteStore from './RemoteStore'
