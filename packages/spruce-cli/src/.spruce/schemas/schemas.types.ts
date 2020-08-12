@@ -9,7 +9,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 
-	
+	/** Permissions and access controls. */
 	export interface IAcl {
 			/** Permissions grouped by slug. */
 			[slug:string]: string[]
@@ -18,6 +18,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 	export interface IAclSchema extends SpruceSchema.ISchema {
 		id: 'acl',
 		name: 'Access control list lookup table',
+		description: 'Permissions and access controls.',
 		dynamicKeySignature: { 
 		    label: 'Permissions grouped by slug',
 		    type: FieldType.Text,
@@ -280,7 +281,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 
 export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 
-	
+	/** A person&#x27;s visit to a location (business or home). */
 	export interface IPersonLocation {
 		
 			/** Id. */
@@ -303,7 +304,8 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 
 	export interface IPersonLocationSchema extends SpruceSchema.ISchema {
 		id: 'personLocation',
-		name: 'Person <-> location relationship',
+		name: 'Person location',
+		description: 'A person\'s visit to a location (business or home).',
 		    fields: {
 		            /** Id. */
 		            'id': {
@@ -496,7 +498,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 
 export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
-	/** A directory that is autoloaded */
+	/** A directory that is autoloaded. */
 	export interface IAutoloader {
 		
 			/** Source directory. */
@@ -510,7 +512,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 	export interface IAutoloaderSchema extends SpruceSchema.ISchema {
 		id: 'autoloader',
 		name: 'Autoloader',
-		description: 'A directory that is autoloaded',
+		description: 'A directory that is autoloaded.',
 		    fields: {
 		            /** Source directory. */
 		            'lookupDir': {
@@ -545,7 +547,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
 export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
-	/** Boot your skill, change the world. 🌎 */
+	/** The options for skill.boot. */
 	export interface IBootSkillAction {
 		
 			/** Run local. Will run using ts-node and typescript directly. Longer boot times */
@@ -555,7 +557,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 	export interface IBootSkillActionSchema extends SpruceSchema.ISchema {
 		id: 'bootSkillAction',
 		name: 'Boot skill action',
-		description: 'Boot your skill, change the world. 🌎',
+		description: 'The options for skill.boot.',
 		    fields: {
 		            /** Run local. Will run using ts-node and typescript directly. Longer boot times */
 		            'local': {
@@ -1014,7 +1016,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
 export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
-	/** Important: Start here! */
+	/** Options for creating a new test. */
 	export interface ICreateTestAction {
 		
 			/** Type. */
@@ -1032,7 +1034,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 	export interface ICreateTestActionSchema extends SpruceSchema.ISchema {
 		id: 'createTestAction',
 		name: 'Create test action',
-		description: 'Important: Start here!',
+		description: 'Options for creating a new test.',
 		    fields: {
 		            /** Type. */
 		            'type': {
@@ -1142,7 +1144,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
 export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
-	/** Listen and respond to things happening in the physical and digital world. */
+	/** Options for event.listen. */
 	export interface IListenEventAction {
 		
 			/** Namespace. */
@@ -1158,7 +1160,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 	export interface IListenEventActionSchema extends SpruceSchema.ISchema {
 		id: 'listenEventAction',
 		name: 'Listen to event action',
-		description: 'Listen and respond to things happening in the physical and digital world.',
+		description: 'Options for event.listen.',
 		    fields: {
 		            /** Namespace. */
 		            'eventNamespace': {
@@ -1389,7 +1391,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
 export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
-	/** Keep all your schemas and types in sync with your builders and contracts. */
+	/** Options for schema.sync. */
 	export interface ISyncSchemasAction {
 		
 			/** Schema types destination directory. Where schema types and interfaces will be generated. */
@@ -1413,7 +1415,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 	export interface ISyncSchemasActionSchema extends SpruceSchema.ISchema {
 		id: 'syncSchemasAction',
 		name: 'Sync schemas action',
-		description: 'Keep all your schemas and types in sync with your builders and contracts.',
+		description: 'Options for schema.sync.',
 		    fields: {
 		            /** Schema types destination directory. Where schema types and interfaces will be generated. */
 		            'schemaTypesDestinationDir': {
@@ -1490,36 +1492,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
 export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
-	
-	export interface ITestFeature {
-		
-			/** What file would you like to test?. */
-			'target': SpruceSchema.IFileFieldValue
-	}
-
-	export interface ITestFeatureSchema extends SpruceSchema.ISchema {
-		id: 'testFeature',
-		name: 'Test Feature',
-		    fields: {
-		            /** What file would you like to test?. */
-		            'target': {
-		                label: 'What file would you like to test?',
-		                type: FieldType.File,
-		                isRequired: true,
-		                defaultValue: {"path":""},
-		                options: undefined
-		            },
-		    }
-	}
-
-	export type TestFeatureEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ITestFeatureSchema>
-
-}
-
-
-export declare namespace SpruceSchemas.Local.v2020_07_22 {
-
-	/** Upgrade your skill and all it&#x27;s dependencies! */
+	/** Options skill.upgrade. */
 	export interface IUpgradeSkillAction {
 		
 			/** Force. This will force overwrite each file */
@@ -1529,7 +1502,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 	export interface IUpgradeSkillActionSchema extends SpruceSchema.ISchema {
 		id: 'upgradeSkillAction',
 		name: 'Upgrade skill action',
-		description: 'Upgrade your skill and all it\'s dependencies!',
+		description: 'Options skill.upgrade.',
 		    fields: {
 		            /** Force. This will force overwrite each file */
 		            'force': {

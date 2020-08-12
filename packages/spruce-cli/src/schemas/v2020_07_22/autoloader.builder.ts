@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 export default buildSchema({
 	id: 'autoloader',
 	name: 'Autoloader',
-	description: 'A directory that is autoloaded',
+	description: 'A directory that is autoloaded.',
 	fields: {
 		lookupDir: {
 			type: FieldType.Directory,

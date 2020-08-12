@@ -12,7 +12,7 @@ import { IFeatureActionExecuteResponse } from '../../features.types'
 export default class SyncAction extends AbstractFeatureAction<
 	SpruceSchemas.Local.v2020_07_22.ISyncSchemasActionSchema
 > {
-	public name = 'sync'
+	public name = 'Schema sync'
 	public optionsSchema = syncSchemasActionSchema
 
 	private readonly schemaGenerator = this.Generator('schema')

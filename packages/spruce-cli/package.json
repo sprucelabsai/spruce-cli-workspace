@@ -58,6 +58,7 @@
 		"blessed-contrib": "^4.8.20",
 		"cfonts": "^2.8.6",
 		"chokidar": "^3.4.2",
+		"cli-table3": "^0.6.0",
 		"commander": "^6.0.0",
 		"core-js": "^3.6.5",
 		"emphasize": "^4.0.0",

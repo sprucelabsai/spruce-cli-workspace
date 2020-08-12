@@ -4,8 +4,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 export default buildSchema({
 	id: 'listenEventAction',
 	name: 'Listen to event action',
-	description:
-		'Listen and respond to things happening in the physical and digital world.',
+	description: 'Options for event.listen.',
 	fields: {
 		eventNamespace: {
 			type: FieldType.Text,

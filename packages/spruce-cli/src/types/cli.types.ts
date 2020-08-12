@@ -113,4 +113,5 @@ export interface INpmPackage {
 export interface IExecutionResults extends IFeatureActionExecuteResponse {
 	featureCode: string
 	actionCode: string
+	headline: string
 }

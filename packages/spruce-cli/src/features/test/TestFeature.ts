@@ -1,14 +1,11 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import PkgService from '../../services/PkgService'
 import { INpmPackage } from '../../types/cli.types'
 import tsConfigUtil from '../../utilities/tsConfig.utility'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
-type TestFeatureType = SpruceSchemas.Local.v2020_07_22.ITestFeatureSchema
-
-export default class TestFeature extends AbstractFeature<TestFeatureType> {
+export default class TestFeature extends AbstractFeature {
 	public nameReadable = 'Test'
 	public description = 'Test first. Test everything! 💪'
 	public dependencies: FeatureCode[] = []

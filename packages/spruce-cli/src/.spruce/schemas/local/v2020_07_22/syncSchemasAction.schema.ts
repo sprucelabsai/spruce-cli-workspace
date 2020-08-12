@@ -6,7 +6,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 const syncSchemasActionSchema: SpruceSchemas.Local.v2020_07_22.ISyncSchemasActionSchema  = {
 	id: 'syncSchemasAction',
 	name: 'Sync schemas action',
-	description: 'Keep all your schemas and types in sync with your builders and contracts.',
+	description: 'Options for schema.sync.',
 	    fields: {
 	            /** Schema types destination directory. Where schema types and interfaces will be generated. */
 	            'schemaTypesDestinationDir': {

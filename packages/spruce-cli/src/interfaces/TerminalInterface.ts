@@ -7,6 +7,8 @@ import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import fonts from 'cfonts'
 import chalk from 'chalk'
 // @ts-ignore No definition available
+import Table from 'cli-table3'
+// @ts-ignore No definition available
 import emphasize from 'emphasize'
 import fs from 'fs-extra'
 import globby from 'globby'
@@ -19,7 +21,6 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import SpruceError from '../errors/SpruceError'
 import log from '../singletons/log'
 import {
-	IGeneratedFile,
 	IExecutionResults,
 	IGraphicsInterface,
 	IGraphicsTextEffect,
@@ -144,7 +145,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 
 		const errors = results.errors ?? []
 
-		this.renderHero(`${results.actionCode} Finished!`)
+		this.renderHero(`${results.headline} Finished!`)
 
 		this.renderSection({
 			headline: `${results.featureCode}.${results.actionCode} summary`,
@@ -156,11 +157,23 @@ export default class TerminalInterface implements IGraphicsInterface {
 			],
 		})
 
-		for (const files of [generatedFiles, updatedFiles, skippedFiles]) {
+		for (let files of [generatedFiles, updatedFiles, skippedFiles]) {
 			if (files.length > 0) {
+				const table = new Table({
+					head: ['File', 'Description'],
+					colWidths: [30, 50],
+					wordWrap: true,
+				})
+
+				files = files.sort()
+
+				for (const file of files) {
+					table.push([file.name, file.description ?? ''])
+				}
+
 				this.renderSection({
 					headline: `${namesUtil.toPascal(files[0].action)} file summary`,
-					lines: files.map((f) => `${f.name}`).sort(),
+					lines: [table.toString()],
 				})
 			}
 		}
@@ -169,23 +182,6 @@ export default class TerminalInterface implements IGraphicsInterface {
 			this.renderHeadline('Errors')
 			errors.forEach((err) => this.renderError(err))
 		}
-	}
-
-	public createdFileSummary(options: {
-		generatedFiles: IGeneratedFile[]
-		errors?: (SpruceError | Error)[]
-	}) {
-		const { generatedFiles, errors = [] } = options
-
-		if (errors.length > 0) {
-			this.renderWarning(`But I hit ${errors.length} errors.`)
-		}
-
-		generatedFiles.forEach((created, idx) => {
-			this.renderLine(
-				`${idx + 1}. ${chalk.bold(created.name)}: ${created.path}`
-			)
-		})
 	}
 
 	public renderHeadline(
@@ -254,13 +250,11 @@ export default class TerminalInterface implements IGraphicsInterface {
 		}).start()
 	}
 
-	/** Hide loader */
 	public async stopLoading() {
 		TerminalInterface.loader?.stop()
 		TerminalInterface.loader = null
 	}
 
-	/** Ask the user to confirm something */
 	public async confirm(question: string): Promise<boolean> {
 		const confirmResult = await inquirer.prompt({
 			type: 'confirm',

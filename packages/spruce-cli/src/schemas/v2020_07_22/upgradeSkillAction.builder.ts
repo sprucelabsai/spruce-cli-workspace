@@ -4,7 +4,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 export default buildSchema({
 	id: 'upgradeSkillAction',
 	name: 'Upgrade skill action',
-	description: "Upgrade your skill and all it's dependencies!",
+	description: 'Options skill.upgrade.',
 	fields: {
 		force: {
 			type: FieldType.Boolean,

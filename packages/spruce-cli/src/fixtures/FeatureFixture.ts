@@ -23,6 +23,7 @@ export default class FeatureFixture implements IServiceProvider {
 	private installedSkills: Record<string, ICachedCli> = {}
 	private serviceFactory: ServiceFactory
 	private static linkedUtils = false
+	private static dirsToDelete: string[] = []
 	private term: IGraphicsInterface
 
 	public constructor(
@@ -33,6 +34,12 @@ export default class FeatureFixture implements IServiceProvider {
 		this.cwd = cwd
 		this.serviceFactory = serviceFactory
 		this.term = term
+	}
+
+	public static deleteOldSkillDirs() {
+		for (const dir of this.dirsToDelete) {
+			diskUtil.deleteDir(dir)
+		}
 	}
 
 	public Service<S extends Service>(
@@ -56,6 +63,8 @@ export default class FeatureFixture implements IServiceProvider {
 
 	private async linkWorkspacePackages() {
 		if (!FeatureFixture.linkedUtils) {
+			FeatureFixture.linkedUtils = true
+
 			const expectedLinkedDir = pathUtil.join(
 				os.homedir(),
 				'.yarn',
@@ -75,8 +84,6 @@ export default class FeatureFixture implements IServiceProvider {
 					)} && yarn link`
 				)
 			}
-
-			FeatureFixture.linkedUtils = true
 		}
 	}
 
@@ -98,7 +105,7 @@ export default class FeatureFixture implements IServiceProvider {
 		let alreadyInstalled = false
 
 		if (cacheKey && testUtil.isCacheEnabled()) {
-			alreadyInstalled = await this.loadCachedSkillAndTrackItsDir(cacheKey)
+			alreadyInstalled = await this.copyCachedSkillAndTrackItsDir(cacheKey)
 		}
 
 		const cli = await this.Cli(bootOptions)
@@ -125,7 +132,7 @@ export default class FeatureFixture implements IServiceProvider {
 		await command.execute(`yarn link @sprucelabs/spruce-skill-utils`)
 	}
 
-	private async loadCachedSkillAndTrackItsDir(cacheKey: string) {
+	private async copyCachedSkillAndTrackItsDir(cacheKey: string) {
 		const settingsFile = this.getSettingsFilePath()
 
 		const exists = diskUtil.doesFileExist(settingsFile)
@@ -146,6 +153,8 @@ export default class FeatureFixture implements IServiceProvider {
 			}
 
 			await diskUtil.copyDir(settingsObject[cacheKey], this.cwd)
+
+			FeatureFixture.dirsToDelete.push(this.cwd)
 		}
 
 		if (settingsFile) {

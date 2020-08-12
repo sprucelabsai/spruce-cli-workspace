@@ -6,7 +6,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 const listenEventActionSchema: SpruceSchemas.Local.v2020_07_22.IListenEventActionSchema  = {
 	id: 'listenEventAction',
 	name: 'Listen to event action',
-	description: 'Listen and respond to things happening in the physical and digital world.',
+	description: 'Options for event.listen.',
 	    fields: {
 	            /** Namespace. */
 	            'eventNamespace': {

@@ -47,6 +47,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static async afterEach() {
+		super.afterEach()
+
 		if (this._term) {
 			const term = this._term as TestInterface
 			if (term.isWaitingForInput()) {
@@ -55,6 +57,11 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 				)
 			}
 		}
+	}
+
+	protected static async afterAll() {
+		super.afterAll()
+		FeatureFixture.deleteOldSkillDirs()
 	}
 
 	protected static async Cli(options?: ICliBootOptions) {

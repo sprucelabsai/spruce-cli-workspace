@@ -4,8 +4,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 export default buildSchema({
 	id: 'syncSchemasAction',
 	name: 'Sync schemas action',
-	description:
-		'Keep all your schemas and types in sync with your builders and contracts.',
+	description: 'Options for schema.sync.',
 	fields: {
 		schemaTypesDestinationDir: {
 			type: FieldType.Text,

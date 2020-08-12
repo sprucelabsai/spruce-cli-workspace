@@ -8,7 +8,8 @@ import { roleSelectChoices } from './role.definition'
 
 const personLocationSchema: ISchema = {
 	id: 'personLocation',
-	name: 'Person <-> location relationship',
+	name: 'Person location',
+	description: "A person's visit to a location (business or home).",
 	version: CORE_SCHEMA_VERSION.dirValue,
 	fields: {
 		id: {
