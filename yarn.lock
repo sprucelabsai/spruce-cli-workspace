@@ -2106,17 +2106,6 @@
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/spruce-skill-utils@^10.17.78":
-  version "10.17.78"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-skill-utils/-/spruce-skill-utils-10.17.78.tgz#865bf193c1cd2fca8a631f739b1607027f33967d"
-  integrity sha512-hfPH4CVbvS78PLH4VYKJRFZVyXuSzCB25BcnlqTInRL/3O0weWHffjMa3hLsLSyL9ypEj/F3gXa5M6Zw8vPSFg==
-  dependencies:
-    "@sprucelabs/error" "^2.0.55"
-    fs-extra "^9.0.1"
-    inflection "^1.12.0"
-    lodash "^4.17.19"
-    uuid "^8.3.0"
-
 "@sprucelabs/test@^5.3.140":
   version "5.3.140"
   resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.140.tgz#c9cd01e41182d325b2c1643a131f96c87aabafa7"
