@@ -95,7 +95,7 @@
 		"@types/sha1": "^1.1.2",
 		"@types/slug": "^0.9.1",
 		"@types/superagent": "^4.1.9",
-		"@types/uuid": "^8.0.1",
+		"@types/uuid": "^8.3.0",
 		"arkit": "^1.6.4",
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^5.3.0",
