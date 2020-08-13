@@ -2057,10 +2057,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sprucelabs/babel-plugin-schema@^1.0.22":
-  version "1.0.22"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-1.0.22.tgz#239341bba39ac59a9ffa49c4e28691bb48bd3dd8"
-  integrity sha512-Bd95lHGD86i8znFE0hd8lUfiXEqwFFMTrAuEyH9zZApf+IT7X2tDiNpcRhzIAGoKqYdS1QDd7F682VoKjgKjgA==
+"@sprucelabs/babel-plugin-schema@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-1.1.1.tgz#7f897abeed8b9c889ab138d9edfc3c4016f3decc"
+  integrity sha512-/PCLpzWxbBfPObEbLK25wSnx2ZsJ+644T4km5PaPBuVxPKN4I6D4h7GiQ2fVyr8ivlOqXV1XroEY0eKcNPUrjw==
   dependencies:
     fs-extra "^9.0.1"
     globby "^11.0.1"
@@ -2094,10 +2094,10 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.0.99":
-  version "7.0.99"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.99.tgz#0cd02de94b652e8da8149c81767b8e1bee9d5890"
-  integrity sha512-EGsl1v7bMSowP3/E2xIY0m7E6ZxRqww+pyeraWbOlhJEJvxh9SU0zzxlB5BPyc3r3s4FLESu/F5J9uYqY09teg==
+"@sprucelabs/schema@^7.0.100":
+  version "7.0.100"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.100.tgz#13d14403cfd96e7f74eafbc5aaf456027f8b2da7"
+  integrity sha512-d7J47Pudbo5iUqkzSce4wJmZGgVxcWCP0WvxZgjxZ52r80zEGWYOP5i7LxPAbsCa3apD4ydT2H69ryvrkPESCQ==
   dependencies:
     "@sprucelabs/error" "^2.0.59"
     "@sprucelabs/log" "^10.2.106"
@@ -2106,10 +2106,10 @@
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^5.3.147":
-  version "5.3.147"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.147.tgz#957f89db7330cb4aa5f79aad3ba457ea4cc0e0b6"
-  integrity sha512-ucE9VmGX8eFgBM8RCdF/JzqNx+RFOonI02EkV0Lm2RUf4YUDWs36efrsiUJT6eLY8hvQwPJqqcORMlYk8lz1XQ==
+"@sprucelabs/test@^5.3.148":
+  version "5.3.148"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.148.tgz#f1e8a3fba087c561a768b23eb95a321f30e7e5bf"
+  integrity sha512-yag8onBvxZ8Wb+4ntGG/6qhDR5mjr4fTvHUx0f6b2NbRc2aymgVV7C1riRqz/NfpSkKSOZsntOuWvrCjmLRq3Q==
   dependencies:
     "@babel/core" "^7.11.1"
     "@babel/preset-env" "^7.11.0"
