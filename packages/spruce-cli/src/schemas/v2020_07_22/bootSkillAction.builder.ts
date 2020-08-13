@@ -4,7 +4,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 export default buildSchema({
 	id: 'bootSkillAction',
 	name: 'Boot skill action',
-	description: 'Boot your skill, change the world. 🌎',
+	description: 'The options for skill.boot.',
 	fields: {
 		local: {
 			type: FieldType.Boolean,

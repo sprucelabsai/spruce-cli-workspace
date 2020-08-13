@@ -7,7 +7,8 @@ import personSchema from '#spruce/schemas/spruce/v2020_07_22/person.schema'
 
 const personLocationSchema: SpruceSchemas.Spruce.v2020_07_22.IPersonLocationSchema  = {
 	id: 'personLocation',
-	name: 'Person <-> location relationship',
+	name: 'Person location',
+	description: 'A person\'s visit to a location (business or home).',
 	    fields: {
 	            /** Id. */
 	            'id': {

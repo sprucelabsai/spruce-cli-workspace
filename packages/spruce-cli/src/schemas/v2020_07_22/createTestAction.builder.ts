@@ -5,7 +5,7 @@ import namedTemplateItemSchema from '#spruce/schemas/local/v2020_07_22/namedTemp
 export default buildSchema({
 	id: 'createTestAction',
 	name: 'Create test action',
-	description: 'Important: Start here!',
+	description: 'Options for creating a new test.',
 	fields: {
 		type: {
 			type: FieldType.Select,

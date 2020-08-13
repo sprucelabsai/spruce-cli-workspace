@@ -6,7 +6,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 const autoloaderSchema: SpruceSchemas.Local.v2020_07_22.IAutoloaderSchema  = {
 	id: 'autoloader',
 	name: 'Autoloader',
-	description: 'A directory that is autoloaded',
+	description: 'A directory that is autoloaded.',
 	    fields: {
 	            /** Source directory. */
 	            'lookupDir': {

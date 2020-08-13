@@ -6,7 +6,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 const bootSkillActionSchema: SpruceSchemas.Local.v2020_07_22.IBootSkillActionSchema  = {
 	id: 'bootSkillAction',
 	name: 'Boot skill action',
-	description: 'Boot your skill, change the world. 🌎',
+	description: 'The options for skill.boot.',
 	    fields: {
 	            /** Run local. Will run using ts-node and typescript directly. Longer boot times */
 	            'local': {
