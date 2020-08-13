@@ -228,7 +228,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async canInstantiate() {
-		assert.isOk(this.itemBuilder)
+		assert.isTruthy(this.itemBuilder)
 	}
 
 	@test()
@@ -300,7 +300,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 		expected.forEach((expected, idx) => {
 			const match = results[idx]
 
-			assert.isOk(match, `Did not find a template item for ${expected.id}`)
+			assert.isTruthy(match, `Did not find a template item for ${expected.id}`)
 			assert.isEqualDeep(match, expected)
 		})
 	}

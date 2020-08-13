@@ -18,7 +18,7 @@ export default class SettingUpASkill extends AbstractCliTest {
 			],
 		})
 
-		assert.isOk(response)
+		assert.isTruthy(response)
 	}
 
 	@test()

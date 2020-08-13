@@ -13,6 +13,6 @@ export default class FeatureInstallerTest extends AbstractCliTest {
 	protected static async canGetFeatureDependencies() {
 		const dependencies = this.installer.getFeatureDependencies('schema')
 		const match = dependencies.find((d) => d === 'skill')
-		assert.isOk(match)
+		assert.isTruthy(match)
 	}
 }

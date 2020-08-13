@@ -91,7 +91,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 		const results = await this.writeFileIfChangedMixinResults(
 			resolvedBuilderDestination,
 			builderContent,
-			'The file from which all types, interfaces, and protocols will be generated'
+			'The source of truth for generating your schema and associated types.'
 		)
 
 		return results

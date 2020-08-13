@@ -13,7 +13,7 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 	@test()
 	protected static async canInstantiateExecuter() {
 		const executer = this.Executer('schema', 'create')
-		assert.isOk(executer)
+		assert.isTruthy(executer)
 	}
 
 	@test()

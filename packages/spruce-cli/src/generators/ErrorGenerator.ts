@@ -111,7 +111,7 @@ export default class ErrorGenerator extends AbstractGenerator {
 		return this.writeFileIfChangedMixinResults(
 			destination,
 			contents,
-			'A union of all error options for your skill. Used as the first parameter to the SpruceError constructor.'
+			'A union of all possible error options for your skill. Used as the type for first parameter to the SpruceError constructor.'
 		)
 	}
 }
