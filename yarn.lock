@@ -2067,10 +2067,10 @@
     rimraf "^3.0.2"
     tsconfig-paths "^3.9.0"
 
-"@sprucelabs/error@^2.0.62":
-  version "2.0.62"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.0.62.tgz#6e95dde6921cad590658c871c220f0caf9c1eeff"
-  integrity sha512-uFrVZfxhtEwaHyLVgeW3wfNgkpUAlsSVK+oYY8XQ0J0C5sfL/y5/CUBvst/e0hGtNYGr4pLXe5zH6Eb6qn3U8Q==
+"@sprucelabs/error@^2.0.62", "@sprucelabs/error@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.1.2.tgz#05a5f51a17b74c4c7d91d7cc9197e81dac996a06"
+  integrity sha512-G+QZSxn8ReLgiTQKiHBfP2KAwwfBJwxIFZwpShqUR2mvkCkrZced+nEWVpYxsjuiDyZ3iw+pLOpvGKVJHyFTvw==
 
 "@sprucelabs/jest-sheets-reporter@^1.1.2":
   version "1.1.2"
@@ -2106,7 +2106,7 @@
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^5.3.149", "@sprucelabs/test@^5.3.150":
+"@sprucelabs/test@^5.3.150":
   version "5.3.150"
   resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-5.3.150.tgz#3458a1c0592acc47c379f13a3d98aab7317a2af9"
   integrity sha512-93iT0kqy5GYaphLO/WabKp6gbXLeWXcwuW3tiiBlnK2hoB4DKruUiQo9TKJo/+hv1ipKDokficr16zZ5p67KHQ==
