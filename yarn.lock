@@ -2067,7 +2067,7 @@
     rimraf "^3.0.2"
     tsconfig-paths "^3.9.0"
 
-"@sprucelabs/error@^2.1.2", "@sprucelabs/error@^2.2.1":
+"@sprucelabs/error@^2.0.62", "@sprucelabs/error@^2.1.2", "@sprucelabs/error@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.1.tgz#e9ff55c284992480d9f651f626b1af6e89cdb0f6"
   integrity sha512-LP9AgPknLRaXNNzHF8EGIF65LFQF/SeDLc9OM1o/gtvu5x2ocSCXZbJzd583yzwKW0459IVjxXCRgVl/WzTlgA==
@@ -2094,7 +2094,19 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.0.107", "@sprucelabs/schema@^7.0.110":
+"@sprucelabs/schema@7.0.107":
+  version "7.0.107"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.107.tgz#35294e8de267eebb2e89f3b4593f417726d6453e"
+  integrity sha512-KRzLTh/COPGTurQvMLJr1GnG1K7yKd9r98EkN//8DhkklkBficUACMKCu4Hztc0JAphlKKOAHibHJBvVYtv9eg==
+  dependencies:
+    "@sprucelabs/error" "^2.0.62"
+    "@sprucelabs/log" "^10.2.109"
+    google-libphonenumber "^3.2.11"
+    libphonenumber-js "^1.7.56"
+    mime-db "^1.44.0"
+    mime-type "^4.0.0"
+
+"@sprucelabs/schema@^7.0.107":
   version "7.0.110"
   resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.110.tgz#d3a1765e9b681ef4d139b22d04aa36b39c67d06a"
   integrity sha512-25gFaxYI44NPl275WBWSIlShJBSh0T/dg/GJnj8dPTHOEtC0sneMy6g7LYoOZamlTjsf+h150ZLIWmIlIVzQ+A==
