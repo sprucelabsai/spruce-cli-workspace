@@ -28,7 +28,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 			}
 		)
 
-		assert.isOk(results)
+		assert.isTruthy(results)
 	}
 
 	private static async generateValueTypes() {

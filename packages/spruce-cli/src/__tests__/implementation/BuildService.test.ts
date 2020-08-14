@@ -6,7 +6,7 @@ export default class BuildServiceTest extends AbstractCliTest {
 	@test()
 	protected static buildServiceExists() {
 		const service = this.Service('build')
-		assert.isOk(service)
+		assert.isTruthy(service)
 	}
 
 	@test()

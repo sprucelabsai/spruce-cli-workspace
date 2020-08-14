@@ -31,7 +31,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 
 	@test()
 	protected static canInstantiateAttacher() {
-		assert.isOk(this.attacher)
+		assert.isTruthy(this.attacher)
 	}
 
 	@test()

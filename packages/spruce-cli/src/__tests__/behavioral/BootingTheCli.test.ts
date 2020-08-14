@@ -5,6 +5,6 @@ export default class BootTest extends AbstractCliTest {
 	@test()
 	protected static async canBootTheCli() {
 		const cli = await this.Cli()
-		assert.isOk(cli)
+		assert.isTruthy(cli)
 	}
 }

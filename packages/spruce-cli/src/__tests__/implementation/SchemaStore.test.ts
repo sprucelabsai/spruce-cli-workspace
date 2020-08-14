@@ -6,7 +6,7 @@ import { CORE_NAMESPACE, LOCAL_NAMESPACE } from '../../constants'
 export default class SchemaStoreTest extends AbstractSchemaTest {
 	@test()
 	protected static async canInstantiateSchemaStore() {
-		assert.isOk(this.Store('schema'))
+		assert.isTruthy(this.Store('schema'))
 	}
 
 	@test()
@@ -28,7 +28,7 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 			(item) => item.namespace === CORE_NAMESPACE && item.id === 'person'
 		)
 
-		assert.isOk(userTemplateItem)
+		assert.isTruthy(userTemplateItem)
 	}
 
 	@test()
