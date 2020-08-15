@@ -2067,10 +2067,10 @@
     rimraf "^3.0.2"
     tsconfig-paths "^3.9.0"
 
-"@sprucelabs/error@^2.2.16":
-  version "2.2.16"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.16.tgz#2d4a95fc91a7c0f63111318a78a3cc0d0b50a91d"
-  integrity sha512-NNRAsCMlKQ2buIW6KYfNMzSsezBoS6bBnm0wNXQ6rxH4dkBdZ/LJ5JaGS4isIcnYbwdW377/KkO4kQm8TfMrnQ==
+"@sprucelabs/error@^2.2.17":
+  version "2.2.17"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.17.tgz#bbf71a83465a4da8b6df64309308d7ce337a5099"
+  integrity sha512-Hp65WivIToegJ6RZrAOAciNE2/31EoPlGKN3vR/r+KBnymXxgZ97guE5cWKOtpWADG76YmFEBwTrJ9XCMNZctA==
 
 "@sprucelabs/jest-sheets-reporter@^1.1.2":
   version "1.1.2"
@@ -2094,12 +2094,12 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.0.124":
-  version "7.0.124"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.124.tgz#ea5aa4e3ffe308cc94249eeddca54360f8dc246a"
-  integrity sha512-e+FNb3HSayGjtIDc6rwkJPRTLvK0UsYX+4f7qOZDlfSnxSOK5xifBuxAqyOvOi9cCBI8vlrkw5xSlp3AGtq3RQ==
+"@sprucelabs/schema@^7.0.125":
+  version "7.0.125"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.125.tgz#95ba198efbe3ee630123ea2d18420dc2e1bedd3d"
+  integrity sha512-NmFD3nb7IDngPC5djpCGBhhIwGZ6814bansSdSDOQr7QkHJ17dGMGCUSp2nOBTAGHA6yEleIzuVB0dsFyl+KgQ==
   dependencies:
-    "@sprucelabs/error" "^2.2.16"
+    "@sprucelabs/error" "^2.2.17"
     "@sprucelabs/log" "^10.2.118"
     google-libphonenumber "^3.2.11"
     libphonenumber-js "^1.7.56"
