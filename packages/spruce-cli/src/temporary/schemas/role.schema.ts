@@ -5,6 +5,8 @@ import { CORE_SCHEMA_VERSION } from '../../constants'
 const roleDefinition: ISchema = {
 	id: 'role',
 	name: 'Role',
+	description:
+		'Everyone in Spruce breaks into 5 roles. Owner, District/Regional Manager, Manager, Teammate, and Guest.',
 	version: CORE_SCHEMA_VERSION.dirValue,
 	fields: {
 		slug: {

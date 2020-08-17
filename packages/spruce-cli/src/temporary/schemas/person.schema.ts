@@ -5,6 +5,7 @@ import { CORE_SCHEMA_VERSION } from '../../constants'
 const profileImageSchema: ISchema = {
 	id: 'profileImage',
 	name: 'Profile Image Sizes',
+	description: 'Various sizes that a profile image comes in.',
 	version: CORE_SCHEMA_VERSION.dirValue,
 	fields: {
 		profile60: {
