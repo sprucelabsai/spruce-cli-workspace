@@ -18,7 +18,6 @@ import {
 	personLocationSchema,
 	skillSchema,
 	locationSchema,
-	groupSchema,
 	aclSchema,
 } from '../temporary/schemas'
 import AbstractStore, { IStoreOptions } from './AbstractStore'
@@ -101,7 +100,6 @@ export default class SchemaStore extends AbstractStore {
 				skillSchema,
 				locationSchema,
 				personLocationSchema,
-				groupSchema,
 				aclSchema,
 			]
 
