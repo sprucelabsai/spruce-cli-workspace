@@ -41,8 +41,8 @@
 		"arkit.png": "arkit -f index.ts -o docs/images/arkit.png"
 	},
 	"dependencies": {
-		"@sprucelabs/log": "^10.2.123",
-		"@sprucelabs/schema": "^7.0.134",
+		"@sprucelabs/log": "^10.2.124",
+		"@sprucelabs/schema": "^7.0.137",
 		"@sprucelabs/spruce-skill-utils": "^10.18.25",
 		"globby": "^11.0.1",
 		"handlebars": "^4.7.6",
