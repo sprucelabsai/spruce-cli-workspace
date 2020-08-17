@@ -1,5 +1,4 @@
 export { default as aclSchema } from './acl.schema'
-export { default as groupSchema } from './group.schema'
 export { default as jobSchema } from './job.schema'
 export { default as locationSchema } from './location.schema'
 export { default as organizationSchema } from './organization.schema'

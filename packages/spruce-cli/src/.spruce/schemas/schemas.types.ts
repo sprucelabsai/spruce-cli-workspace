@@ -9,7 +9,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 
-	/** Permissions and access controls. */
+	
 	export interface IAcl {
 			/** Permissions grouped by slug. */
 			[slug:string]: string[]
@@ -17,8 +17,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 
 	export interface IAclSchema extends SpruceSchema.ISchema {
 		id: 'acl',
-		name: 'Access control list lookup table',
-		description: 'Permissions and access controls.',
+		name: 'Access control list',
 		dynamicKeySignature: { 
 		    label: 'Permissions grouped by slug',
 		    type: FieldType.Text,
@@ -371,7 +370,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 
 export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 
-	
+	/** Various sizes that a profile image comes in. */
 	export interface IProfileImage {
 		
 			/** 60x60. */
@@ -387,6 +386,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 	export interface IProfileImageSchema extends SpruceSchema.ISchema {
 		id: 'profileImage',
 		name: 'Profile Image Sizes',
+		description: 'Various sizes that a profile image comes in.',
 		    fields: {
 		            /** 60x60. */
 		            'profile60': {

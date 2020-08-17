@@ -6,6 +6,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 const profileImageSchema: SpruceSchemas.Spruce.v2020_07_22.IProfileImageSchema  = {
 	id: 'profileImage',
 	name: 'Profile Image Sizes',
+	description: 'Various sizes that a profile image comes in.',
 	    fields: {
 	            /** 60x60. */
 	            'profile60': {
