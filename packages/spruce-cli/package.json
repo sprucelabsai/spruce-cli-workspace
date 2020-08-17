@@ -49,10 +49,10 @@
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.11.2",
-		"@sprucelabs/error": "^2.2.28",
-		"@sprucelabs/log": "^10.2.125",
+		"@sprucelabs/error": "^2.2.30",
+		"@sprucelabs/log": "^10.2.126",
 		"@sprucelabs/mercury": "^10.5.72",
-		"@sprucelabs/schema": "^7.0.138",
+		"@sprucelabs/schema": "^7.0.140",
 		"@sprucelabs/spruce-skill-utils": "^10.18.27",
 		"@sprucelabs/spruce-templates": "^10.18.27",
 		"blessed": "^0.1.81",
@@ -80,7 +80,7 @@
 	},
 	"devDependencies": {
 		"@sprucelabs/jest-sheets-reporter": "^1.1.2",
-		"@sprucelabs/test": "^6.0.15",
+		"@sprucelabs/test": "^6.0.16",
 		"@types/blessed": "^0.1.17",
 		"@types/eslint": "^7.2.0",
 		"@types/fs-extra": "^9.0.1",
