@@ -1,10 +1,10 @@
 import { ISchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { CORE_SCHEMA_VERSION } from '../../constants'
-import JobSchema from './job.definition'
-import LocationSchema from './location.definition'
-import personSchema from './person.definition'
-import { roleSelectChoices } from './role.definition'
+import JobSchema from './job.schema'
+import LocationSchema from './location.schema'
+import personSchema from './person.schema'
+import { roleSelectChoices } from './role.schema'
 
 const personLocationSchema: ISchema = {
 	id: 'personLocation',
