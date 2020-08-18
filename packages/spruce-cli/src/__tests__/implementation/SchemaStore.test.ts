@@ -48,6 +48,7 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 			(item) => item.namespace === LOCAL_NAMESPACE
 		)
 
-		assert.isEqual(localItems.length, 2)
+		// three because one is defined inline
+		assert.isEqual(localItems.length, 3)
 	}
 }
