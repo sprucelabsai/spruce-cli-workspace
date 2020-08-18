@@ -37,14 +37,14 @@
 		"test.watch": "jest --watch"
 	},
 	"dependencies": {
-		"@sprucelabs/error": "^2.2.34",
+		"@sprucelabs/error": "^2.2.35",
 		"fs-extra": "^9.0.1",
 		"inflection": "^1.12.0",
 		"lodash": "^4.17.20",
 		"uuid": "^8.3.0"
 	},
 	"devDependencies": {
-		"@sprucelabs/test": "^6.0.18",
+		"@sprucelabs/test": "^6.0.19",
 		"@types/lodash": "^4.14.159",
 		"@types/node": "^14.6.0",
 		"arkit": "^1.6.4",
