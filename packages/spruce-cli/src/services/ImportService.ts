@@ -58,6 +58,7 @@ export default class ImportService extends CommandService {
 					changed = true
 				}
 			} catch {
+				debugger
 				changed = true
 			}
 		}
