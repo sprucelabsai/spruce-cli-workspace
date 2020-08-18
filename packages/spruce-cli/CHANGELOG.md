@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.19.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.18.36...v10.19.0) (2020-08-18)
+
+
+### Features
+
+* fixed issues with id's breaking type generation if they weren't safe as keys to an object ([2a1bd63](https://github.com/sprucelabsai/spruce-cli-workspace/commit/2a1bd63))
+
+
+
+
+
 ## [10.18.36](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.18.35...v10.18.36) (2020-08-18)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
