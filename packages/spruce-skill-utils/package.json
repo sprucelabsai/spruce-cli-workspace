@@ -37,7 +37,7 @@
 		"test.watch": "jest --watch"
 	},
 	"dependencies": {
-		"@sprucelabs/error": "^2.2.35",
+		"@sprucelabs/error": "^2.2.36",
 		"fs-extra": "^9.0.1",
 		"inflection": "^1.12.0",
 		"lodash": "^4.17.20",
