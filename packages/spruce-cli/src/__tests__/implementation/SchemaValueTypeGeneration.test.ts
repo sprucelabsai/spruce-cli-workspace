@@ -10,7 +10,13 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	protected static async beforeEach() {
 		super.beforeEach()
 		this.generator = new SchemaGenerator({ templates, term: this.term })
-		await this.installSchemaFeature('schema-value-type-generation')
+
+		const cli = await this.installSchemaFeature('schema-value-type-generation')
+
+		const schemasDir = this.resolvePath('src', 'schemas')
+		await diskUtil.copyDir(this.resolveTestPath('test_builders'), schemasDir)
+
+		await cli.getFeature('schema').Action('sync').execute({})
 	}
 
 	@test()
@@ -57,6 +63,8 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		const schemaStore = this.StoreFactory().Store('schema')
 
 		const results = await schemaStore.fetchAllTemplateItems()
+
+		assert.isLength(results.schemas.errors, 0)
 
 		return {
 			schemaTemplateItems: results.schemas.items,

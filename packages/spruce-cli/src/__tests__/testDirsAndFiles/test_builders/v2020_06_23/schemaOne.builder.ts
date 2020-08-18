@@ -10,5 +10,18 @@ export default buildSchema({
 			type: FieldType.Text,
 			isRequired: true,
 		},
+		nestedSchema: {
+			type: FieldType.Schema,
+			options: {
+				schema: buildSchema({
+					id: 'nested-inline-schema',
+					name: 'nested with dynamic fields',
+					dynamicKeySignature: {
+						key: 'prop',
+						type: FieldType.Text,
+					},
+				}),
+			},
+		},
 	},
 })

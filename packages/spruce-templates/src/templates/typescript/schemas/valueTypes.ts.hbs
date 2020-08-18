@@ -51,9 +51,9 @@ const generateValueTypeGeneratorType = (definition: FieldDefinition, renderAs: T
 
 const valueTypes = {
 	{{#each schemaTemplatesByNamespaceAndName}}
-	{{@key}}: {
+	"{{@key}}": {
 		{{#each this}}
-		{{@key}}: {
+		"{{@key}}": {
 			{{#each this}} 
 			"{{schema.version}}{{#unless schema.version}}{{../../../SCHEMA_VERSION_FALLBACK}}{{/unless}}":{
 				{{#if schema.dynamicKeySignature}}

@@ -58,13 +58,7 @@ const personSchema: ISchema = {
 			hint: 'The name you can use when talking to this person.',
 			isRequired: true,
 		},
-		formalName: {
-			label: 'Casual name',
-			type: FieldType.Text,
-			hint: 'The name you can use when talking to this person.',
-			isRequired: true,
-		},
-		phoneNumber: {
+		phone: {
 			label: 'Phone',
 			type: FieldType.Phone,
 			hint: 'A number that can be texted',

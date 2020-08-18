@@ -33,78 +33,6 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 
 export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 
-	/** A position at a company. The answer to the question; What is your job? */
-	export interface IJob {
-		
-			/** Id. */
-			'id'?: string| undefined | null
-			/** Is default. Is this job one that comes with every org? Mapped to roles (owner, groupManager, manager, guest). */
-			'isDefault': string
-			/** Name. */
-			'name': string
-			/** Role. */
-			'role': ("owner" | "groupManager" | "manager" | "teammate" | "guest")
-			/** On work permissions. */
-			'inStoreAcls'?: SpruceSchemas.Spruce.v2020_07_22.IAcl| undefined | null
-			/** Off work permissions. */
-			'acls'?: SpruceSchemas.Spruce.v2020_07_22.IAcl| undefined | null
-	}
-
-	export interface IJobSchema extends SpruceSchema.ISchema {
-		id: 'job',
-		name: 'Job',
-		description: 'A position at a company. The answer to the question; What is your job?',
-		    fields: {
-		            /** Id. */
-		            'id': {
-		                label: 'Id',
-		                type: FieldType.Id,
-		                options: undefined
-		            },
-		            /** Is default. Is this job one that comes with every org? Mapped to roles (owner, groupManager, manager, guest). */
-		            'isDefault': {
-		                label: 'Is default',
-		                type: FieldType.Text,
-		                isRequired: true,
-		                hint: 'Is this job one that comes with every org? Mapped to roles (owner, groupManager, manager, guest).',
-		                options: undefined
-		            },
-		            /** Name. */
-		            'name': {
-		                label: 'Name',
-		                type: FieldType.Text,
-		                isRequired: true,
-		                options: undefined
-		            },
-		            /** Role. */
-		            'role': {
-		                label: 'Role',
-		                type: FieldType.Select,
-		                isRequired: true,
-		                options: {choices: [{"value":"owner","label":"Owner"},{"value":"groupManager","label":"District/region manager"},{"value":"manager","label":"Manager"},{"value":"teammate","label":"Teammate"},{"value":"guest","label":"Guest"}],}
-		            },
-		            /** On work permissions. */
-		            'inStoreAcls': {
-		                label: 'On work permissions',
-		                type: FieldType.Schema,
-		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IAclSchema[],}
-		            },
-		            /** Off work permissions. */
-		            'acls': {
-		                label: 'Off work permissions',
-		                type: FieldType.Schema,
-		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IAclSchema[],}
-		            },
-		    }
-	}
-
-	export type JobEntity = SchemaEntity<SpruceSchemas.Spruce.v2020_07_22.IJobSchema>
-
-}
-
-
-export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
-
 	/** A physical location where people meet. An organization has at least one of them. */
 	export interface ILocation {
 		
@@ -180,6 +108,78 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 	}
 
 	export type LocationEntity = SchemaEntity<SpruceSchemas.Spruce.v2020_07_22.ILocationSchema>
+
+}
+
+
+export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
+
+	/** A position at a company. The answer to the question; What is your job? */
+	export interface IJob {
+		
+			/** Id. */
+			'id'?: string| undefined | null
+			/** Is default. Is this job one that comes with every org? Mapped to roles (owner, groupManager, manager, guest). */
+			'isDefault': string
+			/** Name. */
+			'name': string
+			/** Role. */
+			'role': ("owner" | "groupManager" | "manager" | "teammate" | "guest")
+			/** On work permissions. */
+			'inStoreAcls'?: SpruceSchemas.Spruce.v2020_07_22.IAcl| undefined | null
+			/** Off work permissions. */
+			'acls'?: SpruceSchemas.Spruce.v2020_07_22.IAcl| undefined | null
+	}
+
+	export interface IJobSchema extends SpruceSchema.ISchema {
+		id: 'job',
+		name: 'Job',
+		description: 'A position at a company. The answer to the question; What is your job?',
+		    fields: {
+		            /** Id. */
+		            'id': {
+		                label: 'Id',
+		                type: FieldType.Id,
+		                options: undefined
+		            },
+		            /** Is default. Is this job one that comes with every org? Mapped to roles (owner, groupManager, manager, guest). */
+		            'isDefault': {
+		                label: 'Is default',
+		                type: FieldType.Text,
+		                isRequired: true,
+		                hint: 'Is this job one that comes with every org? Mapped to roles (owner, groupManager, manager, guest).',
+		                options: undefined
+		            },
+		            /** Name. */
+		            'name': {
+		                label: 'Name',
+		                type: FieldType.Text,
+		                isRequired: true,
+		                options: undefined
+		            },
+		            /** Role. */
+		            'role': {
+		                label: 'Role',
+		                type: FieldType.Select,
+		                isRequired: true,
+		                options: {choices: [{"value":"owner","label":"Owner"},{"value":"groupManager","label":"District/region manager"},{"value":"manager","label":"Manager"},{"value":"teammate","label":"Teammate"},{"value":"guest","label":"Guest"}],}
+		            },
+		            /** On work permissions. */
+		            'inStoreAcls': {
+		                label: 'On work permissions',
+		                type: FieldType.Schema,
+		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IAclSchema[],}
+		            },
+		            /** Off work permissions. */
+		            'acls': {
+		                label: 'Off work permissions',
+		                type: FieldType.Schema,
+		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IAclSchema[],}
+		            },
+		    }
+	}
+
+	export type JobEntity = SchemaEntity<SpruceSchemas.Spruce.v2020_07_22.IJobSchema>
 
 }
 
