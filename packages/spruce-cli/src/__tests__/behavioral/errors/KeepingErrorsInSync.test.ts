@@ -103,7 +103,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 	}
 
 	@test()
-	protected static async canHandleNestedSchemas() {
+	protected static async canHandleNestedSchemasWithoutAddingThemToOptions() {
 		const cli = await this.installErrorFeature('options-in-sync')
 		const source = this.resolveTestPath('error_nested_schemas')
 		const destination = this.resolvePath('src/errors')
@@ -111,11 +111,20 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		await diskUtil.copyDir(source, destination)
 
 		const results = await cli.getFeature('error').Action('sync').execute({})
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const errorTypesFile = testUtil.assertsFileByNameInGeneratedFiles(
 			/errors\.types/,
 			results.files ?? []
 		)
 
-		await this.Service('typeChecker').check(match)
+		await this.Service('typeChecker').check(errorTypesFile)
+
+		const errorOptionsFile = testUtil.assertsFileByNameInGeneratedFiles(
+			/options\.types/,
+			results.files ?? []
+		)
+
+		const contents = diskUtil.readFile(errorOptionsFile)
+
+		assert.doesNotInclude(contents, 'INestedSchema')
 	}
 }

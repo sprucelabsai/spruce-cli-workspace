@@ -129,9 +129,11 @@ export default class SyncAction extends AbstractFeatureAction<
 			errorTypesDestinationDir
 		)
 
+		const topLevelItems = errorTemplateItems.filter((i) => !i.isNested)
+
 		const optionsResults = await errorGenerator.generateOptionsTypesFile(
 			resolvedTypesDestination,
-			errorTemplateItems
+			topLevelItems
 		)
 
 		return optionsResults
