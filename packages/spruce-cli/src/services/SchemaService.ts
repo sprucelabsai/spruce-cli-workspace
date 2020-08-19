@@ -9,7 +9,6 @@ export default class SchemaService extends ImportService {
 		try {
 			SchemaEntity.validateSchema(definitionProxy)
 		} catch (err) {
-			debugger
 			throw new SpruceError({
 				code: 'SCHEMA_FAILED_TO_IMPORT',
 				file,
