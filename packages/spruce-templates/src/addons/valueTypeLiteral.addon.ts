@@ -6,7 +6,7 @@ import { IValueTypes } from '../types/templates.types'
 /* The type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */
 handlebars.registerHelper('valueTypeLiteral', function (
 	namespace: string,
-	schemaId: string,
+	nameCamel: string,
 	version: string | undefined,
 	fieldName: string,
 	renderAs: TemplateRenderAs,
@@ -16,8 +16,8 @@ handlebars.registerHelper('valueTypeLiteral', function (
 		throw new Error('valueTypeLiteral needs namespace as 1st argument')
 	}
 
-	if (!schemaId) {
-		throw new Error('valueTypeLiteral needs schemaId as 2st argument')
+	if (!nameCamel) {
+		throw new Error('valueTypeLiteral needs nameCamel as 2st argument')
 	}
 
 	if (!fieldName) {
@@ -48,11 +48,11 @@ handlebars.registerHelper('valueTypeLiteral', function (
 	const v = version ? version : SCHEMA_VERSION_FALLBACK
 
 	const valueType =
-		valueTypes[namespace]?.[schemaId]?.[v]?.[fieldName]?.valueTypes[renderAs]
+		valueTypes[namespace]?.[nameCamel]?.[v]?.[fieldName]?.valueTypes[renderAs]
 
 	if (!valueType) {
 		throw new Error(
-			`Unable to render value type for field "${namespace}.${schemaId}.${v}.${renderAs}"`
+			`Unable to render value type for field "${namespace}.${nameCamel}.${v}.${renderAs}"`
 		)
 	}
 

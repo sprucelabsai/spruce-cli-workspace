@@ -10,7 +10,7 @@ const schemaUtil = {
 	generateNamesForDefinition(definition: ISchema) {
 		return {
 			nameReadable: definition.name,
-			nameCamel: definition.id,
+			nameCamel: namesUtil.toCamel(definition.id),
 			namePascal: namesUtil.toPascal(definition.id),
 		}
 	},
