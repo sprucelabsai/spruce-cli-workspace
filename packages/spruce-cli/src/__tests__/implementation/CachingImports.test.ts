@@ -1,11 +1,21 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../AbstractCliTest'
+import ImportService from '../../services/ImportService'
 
 export default class CachingImportsTest extends AbstractCliTest {
+	private static importService: ImportService
+
+	protected static async beforeAll() {
+		super.beforeAll()
+		this.importService = this.ServiceFactory({
+			importCacheDir: diskUtil.createRandomTempDir(),
+		}).Service(this.cwd, 'import')
+	}
+
 	protected static async beforeEach() {
 		super.beforeEach()
-		this.Service('import').clearCache()
+		this.importService.clearCache()
 	}
 
 	@test()
@@ -24,7 +34,7 @@ export default class CachingImportsTest extends AbstractCliTest {
 		test1Path: string,
 		expected: Record<string, any>
 	) {
-		const contents = await this.Service('import').importAll(test1Path)
+		const contents = await this.importService.importAll(test1Path)
 		assert.isEqualDeep(contents, expected)
 	}
 

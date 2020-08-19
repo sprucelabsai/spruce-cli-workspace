@@ -146,7 +146,7 @@ export async function boot(options?: ICliBootOptions) {
 	})
 
 	const mercury = new Mercury()
-	const serviceFactory = new ServiceFactory(mercury)
+	const serviceFactory = new ServiceFactory({ mercury })
 	const storeFactory = new StoreFactory(cwd, mercury, serviceFactory)
 	const terminal = options?.graphicsInterface ?? new TerminalInterface(cwd)
 

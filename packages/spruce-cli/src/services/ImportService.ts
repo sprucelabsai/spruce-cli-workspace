@@ -10,6 +10,15 @@ export default class ImportService extends CommandService {
 	private errorDivider = '## SPRUCE-CLI ERROR DIVIDER ##'
 
 	private static cachedImports: Record<string, Record<string, any>> = {}
+	private importCacheDir: string
+
+	public constructor(
+		cwd: string,
+		importCacheDir = diskUtil.createTempDir('import-service')
+	) {
+		super(cwd)
+		this.importCacheDir = importCacheDir
+	}
 
 	public importAll = async <T extends Record<string, any>>(
 		file: string
@@ -194,7 +203,7 @@ export default class ImportService extends CommandService {
 	}
 
 	private cacheDir(): string {
-		return diskUtil.createTempDir('import-service')
+		return this.importCacheDir
 	}
 
 	private pullHashAndContents(file: string) {
