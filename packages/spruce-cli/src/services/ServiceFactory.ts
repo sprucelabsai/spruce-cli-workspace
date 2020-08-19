@@ -28,9 +28,11 @@ export interface IServiceProvider {
 }
 export default class ServiceFactory {
 	private mercury: Mercury
+	private importCacheDir?: string
 
-	public constructor(mercury: Mercury) {
-		this.mercury = mercury
+	public constructor(options: { mercury: Mercury; importCacheDir?: string }) {
+		this.mercury = options.mercury
+		this.importCacheDir = options.importCacheDir
 	}
 
 	public Service<S extends Service>(cwd: string, type: S): IServiceMap[S] {
@@ -52,7 +54,7 @@ export default class ServiceFactory {
 			case 'typeChecker':
 				return new TypeCheckerService(cwd) as IServiceMap[S]
 			case 'import':
-				return new ImportService(cwd) as IServiceMap[S]
+				return new ImportService(cwd, this.importCacheDir) as IServiceMap[S]
 			case 'build': {
 				const commandService = new CommandService(cwd)
 				return new BuildService(commandService) as IServiceMap[S]

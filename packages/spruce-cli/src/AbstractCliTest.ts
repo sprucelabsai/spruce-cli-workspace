@@ -84,8 +84,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return sf.Service(cwd ?? this.cwd, type)
 	}
 
-	protected static ServiceFactory() {
-		return new ServiceFactory(new Mercury())
+	protected static ServiceFactory(options?: { importCacheDir?: string }) {
+		return new ServiceFactory({ mercury: new Mercury(), ...(options || {}) })
 	}
 
 	protected static FeatureFixture() {
@@ -110,7 +110,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static StoreFactory() {
 		const mercury = new Mercury()
-		const serviceFactory = new ServiceFactory(mercury)
+		const serviceFactory = this.ServiceFactory()
 		return new StoreFactory(this.cwd, mercury, serviceFactory)
 	}
 

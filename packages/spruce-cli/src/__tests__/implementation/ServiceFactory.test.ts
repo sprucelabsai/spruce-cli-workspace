@@ -7,7 +7,7 @@ export default class ServiceFactoryTest extends AbstractCliTest {
 	private static factory: ServiceFactory
 
 	protected static async beforeEach() {
-		this.factory = new ServiceFactory(new Mercury())
+		this.factory = new ServiceFactory({ mercury: new Mercury() })
 		super.beforeEach()
 	}
 
