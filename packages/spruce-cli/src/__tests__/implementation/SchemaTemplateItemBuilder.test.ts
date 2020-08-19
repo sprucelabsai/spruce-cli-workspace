@@ -23,6 +23,17 @@ const cowbellV1TemplateItem: ISchemaTemplateItem = {
 	namePascal: 'Cowbell',
 	nameReadable: 'Cowbell test',
 	schema: cowbellV1,
+	isNested: false,
+}
+
+const cowbellV1NestedTemplateItem: ISchemaTemplateItem = {
+	namespace: CORE_NAMESPACE,
+	id: cowbellV1.id,
+	nameCamel: 'cowbell',
+	namePascal: 'Cowbell',
+	nameReadable: 'Cowbell test',
+	schema: cowbellV1,
+	isNested: true,
 }
 
 const cowbellV2: ISchema = {
@@ -48,6 +59,32 @@ const cowbellV2TemplateItem: ISchemaTemplateItem = {
 	nameCamel: 'cowbell',
 	namePascal: 'Cowbell',
 	nameReadable: 'Cowbell test two!',
+	isNested: false,
+	schema: {
+		id: 'cowbell',
+		version: '2020_06_02',
+		name: 'Cowbell test two!',
+		fields: {
+			radius: {
+				type: FieldType.Number,
+			},
+			owner: {
+				type: FieldType.Schema,
+				options: {
+					schemaIds: [{ id: 'person', version: '2020_06_03' }],
+				},
+			},
+		},
+	},
+}
+
+const cowbellV2NestedTemplateItem: ISchemaTemplateItem = {
+	namespace: CORE_NAMESPACE,
+	id: cowbellV2.id,
+	nameCamel: 'cowbell',
+	namePascal: 'Cowbell',
+	nameReadable: 'Cowbell test two!',
+	isNested: true,
 	schema: {
 		id: 'cowbell',
 		version: '2020_06_02',
@@ -84,6 +121,7 @@ const personV1TemplateItem: ISchemaTemplateItem = {
 	namePascal: 'Person',
 	nameReadable: 'Person test',
 	schema: personV1,
+	isNested: false,
 }
 
 const personV2: ISchema = {
@@ -118,6 +156,7 @@ const personV2TemplateItem: ISchemaTemplateItem = {
 	nameCamel: 'person',
 	namePascal: 'Person',
 	nameReadable: 'Person version 2',
+	isNested: false,
 	schema: {
 		id: 'person',
 		version: '2020_06_01',
@@ -156,6 +195,7 @@ const personV3TemplateItem: ISchemaTemplateItem = {
 	nameCamel: 'person',
 	namePascal: 'Person',
 	nameReadable: 'Person test the 3rd',
+	isNested: false,
 	schema: {
 		id: 'person',
 		version: '2020_06_03',
@@ -180,6 +220,7 @@ const vehicleV1TemplateItem: ISchemaTemplateItem = {
 	nameCamel: 'vehicle',
 	namePascal: 'Vehicle',
 	nameReadable: 'Vehicle v1',
+	isNested: true,
 	schema: {
 		id: 'vehicle',
 		name: 'Vehicle v1',
@@ -216,6 +257,7 @@ const personV4TemplateItem: ISchemaTemplateItem = {
 	namePascal: 'Person',
 	nameReadable: 'Person test the last',
 	schema: personV4,
+	isNested: false,
 }
 
 export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
@@ -259,7 +301,11 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 	@test(
 		'handles recursion',
 		[personV3],
-		[cowbellV1TemplateItem, cowbellV2TemplateItem, personV3TemplateItem]
+		[
+			cowbellV1NestedTemplateItem,
+			cowbellV2NestedTemplateItem,
+			personV3TemplateItem,
+		]
 	)
 	@test(
 		'handles duplication',

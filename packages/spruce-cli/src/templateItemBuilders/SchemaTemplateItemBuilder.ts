@@ -13,48 +13,52 @@ import SpruceError from '../errors/SpruceError'
 import schemaUtil, { SchemaRelationshipType } from '../utilities/schema.utility'
 
 export default class SchemaTemplateItemBuilder {
-	private definitionCache: Record<string, ISchema> = {}
+	private schemaCache: Record<string, ISchema> = {}
 
 	public generateTemplateItems(
 		namespace: string,
-		definitions: ISchema[]
+		schemas: ISchema[]
 	): ISchemaTemplateItem[] {
-		this.definitionCache = {}
-		this.cacheDefinitions(definitions)
+		this.schemaCache = {}
+		this.cacheSchemas(schemas)
 
-		const flattened = this.flattenDefinitions(
-			definitions.sort((a, b) => {
+		const flattened = this.flattenSchemas(
+			schemas.sort((a, b) => {
 				return `${a.id}${a.version}`.localeCompare(`${b.id}${b.version}`)
 			})
 		)
 
-		const templateTimes = flattened.map((def) =>
-			this.buildTemplateItem(namespace, def)
+		const templateTimes = flattened.map((schema) =>
+			this.buildTemplateItem(
+				namespace,
+				schema,
+				!schemas.find((s) => s.id === schema.id)
+			)
 		)
 		return templateTimes
 	}
 
-	private cacheDefinitions(definitions: ISchema[]) {
-		definitions.forEach((def) => {
-			this.cacheDefinition(def)
+	private cacheSchemas(schemas: ISchema[]) {
+		schemas.forEach((def) => {
+			this.cacheSchema(def)
 		})
 	}
 
-	private cacheDefinition(def: ISchema) {
-		this.definitionCache[schemaUtil.generateCacheKey(def)] = def
+	private cacheSchema(schema: ISchema) {
+		this.schemaCache[schemaUtil.generateCacheKey(schema)] = schema
 	}
 
-	private cacheLookup(def: { id: string; version?: string }) {
-		return this.definitionCache[schemaUtil.generateCacheKey(def)]
+	private cacheLookup(schema: { id: string; version?: string }) {
+		return this.schemaCache[schemaUtil.generateCacheKey(schema)]
 	}
 
-	private flattenDefinitions(definitions: ISchema[]) {
+	private flattenSchemas(schemas: ISchema[]) {
 		const flattened: ISchema[] = []
 
-		definitions.forEach((d) => {
-			const related = this.pullRelatedDefinitions(d)
+		schemas.forEach((schema) => {
+			const related = this.pullRelatedDefinitions(schema)
 			flattened.push(...related)
-			flattened.push(d)
+			flattened.push(schema)
 		})
 
 		return uniqWith(
@@ -92,7 +96,7 @@ export default class SchemaTemplateItemBuilder {
 			field
 		)
 		schemasOrIdsWithVersion.forEach((item) => {
-			const schema = this.definitionOrIdsWithVersionToSchema(item)
+			const schema = this.schemaOrIdsWithVersionToSchema(item)
 
 			related.push(schema)
 		})
@@ -100,7 +104,7 @@ export default class SchemaTemplateItemBuilder {
 		return related
 	}
 
-	private definitionOrIdsWithVersionToSchema(
+	private schemaOrIdsWithVersionToSchema(
 		schemaOrIdWithVersion: ISchema | ISchemaIdWithVersion
 	) {
 		let schema: ISchema | undefined
@@ -119,22 +123,24 @@ export default class SchemaTemplateItemBuilder {
 		} else {
 			SchemaEntity.validateSchema(schemaOrIdWithVersion)
 
-			this.cacheDefinition(schemaOrIdWithVersion)
+			this.cacheSchema(schemaOrIdWithVersion)
 
 			schema = schemaOrIdWithVersion
 		}
 		return schema
 	}
 
-	public buildTemplateItem(
+	private buildTemplateItem(
 		namespace: string,
-		schema: ISchema
+		schema: ISchema,
+		isNested: boolean
 	): ISchemaTemplateItem {
 		return {
 			id: schema.id,
 			namespace,
 			schema: this.normalizeSchemaFieldsToIdsWithVersion(schema),
-			...schemaUtil.generateNamesForDefinition(schema),
+			...schemaUtil.generateNamesForSchema(schema),
+			isNested,
 		}
 	}
 
