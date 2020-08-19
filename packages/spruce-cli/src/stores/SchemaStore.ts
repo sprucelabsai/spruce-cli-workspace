@@ -154,7 +154,7 @@ export default class SchemaStore extends AbstractStore {
 					errors.push(
 						new SpruceError({
 							// @ts-ignore
-							code: 'VERSION_MISSING_ERROR',
+							code: 'VERSION_MISSING',
 							friendlyMessage: `It looks like your schema's are not versioned. Make sure schemas are in a directory like src/schemas/${
 								versionUtil.generateVersion().dirValue
 							}/*.ts`,

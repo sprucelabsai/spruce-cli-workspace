@@ -42,6 +42,8 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 			localSchemaDir: schemasDir,
 		})
 
+		assert.isLength(results.errors, 0, 'errors loading schemas')
+
 		const { items } = results
 
 		const localItems = items.filter(
@@ -49,6 +51,6 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		)
 
 		// three because one is defined inline
-		assert.isEqual(localItems.length, 3)
+		assert.isEqual(localItems.length, 4)
 	}
 }

@@ -72,6 +72,41 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	}
 
 	@test()
+	protected static async canHandleHyphenSchemaIds() {
+		const cli = await this.syncSchemas('keeps-schemas-in-sync')
+		const createResponse = await cli
+			.getFeature('schema')
+			.Action('create')
+			.execute({
+				nameReadable: 'Test schema',
+				nameCamel: 'testSchema',
+			})
+
+		const builderPath = testUtil.assertsFileByNameInGeneratedFiles(
+			'testSchema.builder.ts',
+			createResponse.files ?? []
+		)
+
+		const contents = diskUtil
+			.readFile(builderPath)
+			.replace("id: 'testSchema'", "id: 'test-schema'")
+
+		diskUtil.writeFile(builderPath, contents)
+
+		const syncResults = await cli
+			.getFeature('schema')
+			.Action('sync')
+			.execute({})
+
+		const schemaPath = testUtil.assertsFileByNameInGeneratedFiles(
+			'test-schema.schema.ts',
+			syncResults.files ?? []
+		)
+
+		await this.Service('typeChecker').check(schemaPath)
+	}
+
+	@test()
 	protected static async schemasStayInSyncWhenDefinitionsAreDeleted() {
 		const cli = await this.syncSchemas('keeps-schemas-in-sync')
 		const version = versionUtil.generateVersion()

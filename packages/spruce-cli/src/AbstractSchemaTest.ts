@@ -8,6 +8,7 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 
 	protected static async syncSchemas(cacheKey?: string) {
 		const cli = await this.installSchemaFeature(cacheKey)
+
 		await cli.getFeature('schema').Action('sync').execute({})
 
 		return cli
@@ -18,6 +19,7 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 		bootOptions?: ICliBootOptions
 	) {
 		const fixture = this.FeatureFixture()
+
 		const cli = await fixture.installFeatures(
 			[
 				{

@@ -6,7 +6,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 /** Renders field options */
 handlebars.registerHelper('fieldDefinitionOptions', function (
 	namespace: string,
-	schemaId: string,
+	nameCamel: string,
 	version: string,
 	fieldName: string,
 	fieldDefinition: FieldDefinition,
@@ -17,8 +17,8 @@ handlebars.registerHelper('fieldDefinitionOptions', function (
 		throw new Error('fieldDefinitionOptions helper needs namespace first')
 	}
 
-	if (typeof schemaId !== 'string') {
-		throw new Error('fieldDefinitionOptions helper needs schemaId 2nd')
+	if (typeof nameCamel !== 'string') {
+		throw new Error('fieldDefinitionOptions helper needs nameCamel 2nd')
 	}
 
 	if (typeof fieldName !== 'string') {
@@ -60,7 +60,7 @@ handlebars.registerHelper('fieldDefinitionOptions', function (
 	if (fieldDefinition.type === FieldType.Schema && updatedOptions) {
 		const value = handlebars.helpers.valueTypeLiteral(
 			namespace,
-			schemaId,
+			nameCamel,
 			version,
 			fieldName,
 			renderAs === TemplateRenderAs.Type
