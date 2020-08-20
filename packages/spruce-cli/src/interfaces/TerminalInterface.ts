@@ -307,8 +307,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 			message: label,
 		}
 
-		// @ts-ignore
-		const field = FieldFactory.field('prompt', fieldDefinition)
+		const field = FieldFactory.Field('prompt', fieldDefinition)
 
 		// Setup transform and validate
 		promptOptions.transformer = (value: string) => {
