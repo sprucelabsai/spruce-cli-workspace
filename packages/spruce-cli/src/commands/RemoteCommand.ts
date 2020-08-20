@@ -42,6 +42,7 @@ export default class RemoteCommand extends AbstractCommand {
 			})
 		}
 
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.remoteStore.setRemote(environment as RemoteStoreRemoteType).save()
 	}
 }

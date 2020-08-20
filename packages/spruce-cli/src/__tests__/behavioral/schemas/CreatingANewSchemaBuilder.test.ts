@@ -215,6 +215,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 			},
 		])
 
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.term.sendInput(newVersion.dirValue)
 
 		const createResults = await createPromise

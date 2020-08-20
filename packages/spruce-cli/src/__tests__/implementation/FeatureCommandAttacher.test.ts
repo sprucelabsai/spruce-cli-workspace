@@ -20,7 +20,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 	private static program: MockProgram
 
 	protected static async beforeEach() {
-		super.beforeEach()
+		await super.beforeEach()
 
 		this.program = this.MockCommanderProgram()
 		const installer = this.FeatureInstaller()

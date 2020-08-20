@@ -15,6 +15,8 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	@test()
 	protected static async failsBecauseSchemasIsNotInstalled() {
 		const cli = await this.Cli()
+
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		assert.doesThrowAsync(
 			() => cli.getFeature('schema').Action('sync').execute({}),
 			/SKILL_NOT_INSTALLED/gi

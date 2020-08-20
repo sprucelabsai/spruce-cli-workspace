@@ -7,14 +7,14 @@ export default class CachingImportsTest extends AbstractCliTest {
 	private static importService: ImportService
 
 	protected static async beforeAll() {
-		super.beforeAll()
+		await super.beforeAll()
 		this.importService = this.ServiceFactory({
 			importCacheDir: diskUtil.createRandomTempDir(),
 		}).Service(this.cwd, 'import')
 	}
 
 	protected static async beforeEach() {
-		super.beforeEach()
+		await super.beforeEach()
 		this.importService.clearCache()
 	}
 

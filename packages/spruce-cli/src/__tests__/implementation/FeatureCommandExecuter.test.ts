@@ -7,7 +7,7 @@ import testUtil from '../../utilities/test.utility'
 
 export default class FeatureCommandExecuterTest extends AbstractCliTest {
 	protected static async beforeEach() {
-		super.beforeEach()
+		await super.beforeEach()
 	}
 
 	@test()
@@ -38,6 +38,7 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 
 		await this.wait(1000)
 
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.term.sendInput('My great skill')
 
 		await promise

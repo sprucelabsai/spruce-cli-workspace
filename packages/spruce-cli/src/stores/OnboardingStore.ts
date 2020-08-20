@@ -19,6 +19,7 @@ export default class OnboardingStore extends AbstractLocalStore<
 
 	public setIsEnabled(isEnabled: boolean) {
 		this.schema.set('isEnabled', isEnabled)
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.save()
 	}
 
@@ -54,6 +55,7 @@ export default class OnboardingStore extends AbstractLocalStore<
 
 	protected setRunCount(count: number) {
 		this.schema.set('runCount', count)
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.save()
 	}
 }

@@ -244,6 +244,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 
 	/** Show a simple loader */
 	public async startLoading(message?: string) {
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.stopLoading()
 		TerminalInterface.loader = ora({
 			text: message,
@@ -436,6 +437,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 
 	/** Generic way to handle error */
 	public renderError(err: Error) {
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.stopLoading()
 
 		const message = err.message

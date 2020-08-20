@@ -42,12 +42,12 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static async beforeEach() {
-		super.beforeEach()
+		await super.beforeEach()
 		this.cwd = this.freshCwd()
 	}
 
 	protected static async afterEach() {
-		super.afterEach()
+		await super.afterEach()
 
 		if (this._term) {
 			const term = this._term as TestInterface
@@ -60,7 +60,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static async afterAll() {
-		super.afterAll()
+		await super.afterAll()
 		FeatureFixture.deleteOldSkillDirs()
 	}
 

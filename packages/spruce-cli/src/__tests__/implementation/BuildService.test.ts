@@ -31,6 +31,7 @@ export default class BuildServiceTest extends AbstractCliTest {
 		await this.installSkill('can-build')
 
 		const service = this.Service('build')
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		service.watchStart()
 
 		const testFile = "const test: string = 'hello world'"

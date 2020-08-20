@@ -6,7 +6,7 @@ import AbstractSchemaTest from '../../../AbstractSchemaTest'
 
 export default class HandlesBadLocalSchemasGracefullyTest extends AbstractSchemaTest {
 	protected static async beforeEach() {
-		super.beforeEach()
+		await super.beforeEach()
 	}
 
 	private static async moveSchemasIntoPlace() {
