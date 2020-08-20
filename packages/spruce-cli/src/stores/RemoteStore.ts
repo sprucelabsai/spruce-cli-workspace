@@ -73,6 +73,7 @@ export default class RemoteStore extends AbstractLocalStore<
 	/** Set your remote (defaults to prod) */
 	public setRemote(remote: RemoteStoreRemoteType) {
 		this.schema.set('remote', remote)
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.save()
 		return this
 	}

@@ -102,6 +102,7 @@ export default class OnboardingCommand extends AbstractCommand {
 		await quiz.scorecard()
 
 		if (results.percentCorrect < 1) {
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
 			this.term.waitForEnter('Hmmmmm...')
 		}
 
@@ -109,6 +110,7 @@ export default class OnboardingCommand extends AbstractCommand {
 			"Ok, that's all for now. When you're ready to start your skill, run `spruce skill:create`."
 		)
 
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.term.waitForEnter(`I'll see you there!`)
 	}
 }

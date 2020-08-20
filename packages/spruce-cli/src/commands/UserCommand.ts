@@ -60,10 +60,12 @@ export default class UserCommand extends AbstractCommand {
 			})
 		}
 
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.term.startLoading('Requesting pin')
 
 		await this.PinService().requestPin(phone)
 
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.term.stopLoading()
 
 		let user: SpruceSchemas.Local.v2020_07_22.ICliUserWithToken | undefined
@@ -77,14 +79,17 @@ export default class UserCommand extends AbstractCommand {
 				label: pinLabel,
 			})
 
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
 			this.term.startLoading('Verifying identity...')
 
 			try {
 				user = await this.userStore.fetchUserWithTokenFromPhone(phone, pin)
 				valid = true
 
+				// eslint-disable-next-line @typescript-eslint/no-floating-promises
 				this.term.stopLoading()
 			} catch (err) {
+				// eslint-disable-next-line @typescript-eslint/no-floating-promises
 				this.term.stopLoading()
 
 				if (err instanceof SpruceError) {

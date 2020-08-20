@@ -42,6 +42,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 			options: `Overwrite ${this.resolvePath('src/index.ts')}?`,
 		})
 
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.term.sendInput('')
 
 		await promise

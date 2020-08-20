@@ -8,7 +8,7 @@ export default class ServiceFactoryTest extends AbstractCliTest {
 
 	protected static async beforeEach() {
 		this.factory = new ServiceFactory({ mercury: new Mercury() })
-		super.beforeEach()
+		await super.beforeEach()
 	}
 
 	@test('can build pin service', 'pin', 'requestPin')

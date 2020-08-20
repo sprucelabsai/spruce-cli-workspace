@@ -264,7 +264,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 	private static itemBuilder: SchemaTemplateItemBuilder
 
 	protected static async beforeEach() {
-		super.beforeEach()
+		await super.beforeEach()
 		this.itemBuilder = new SchemaTemplateItemBuilder()
 	}
 

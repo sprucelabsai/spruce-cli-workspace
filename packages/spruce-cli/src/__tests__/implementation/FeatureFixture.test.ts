@@ -19,7 +19,7 @@ export default class FeatureFixtureTest extends AbstractCliTest {
 	}
 
 	public static async afterAll() {
-		super.afterAll()
+		await super.afterAll()
 
 		// first dir should stay because it's the cached source
 		assert.isTrue(diskUtil.doesDirExist(this.cacheDirs[0]))
