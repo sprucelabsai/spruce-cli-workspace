@@ -2055,20 +2055,20 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sprucelabs/babel-plugin-schema@^1.1.33":
-  version "1.1.33"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-1.1.33.tgz#fc5921ddedc3df1eb5131d8fe37e32fef2501ab8"
-  integrity sha512-Get/y35SR7naLo5ZX7KFmopBwtV6wtEpUzvwMHHROQkN0h04jPs+9rrzPVDJxpRXIdUlnaP8WyJ648H75FlBQA==
+"@sprucelabs/babel-plugin-schema@^1.1.34":
+  version "1.1.34"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-1.1.34.tgz#180222d2e19d2e74e97c978a44f777d536778ab6"
+  integrity sha512-ctnN/C9VMQxxsprhxfL6unTc90VGtLfJktWb4Ej7Ny+NFSUOo19I9+e113FK3DYhxAHg8WIZ8sXQvb20FFcpgw==
   dependencies:
     fs-extra "^9.0.1"
     globby "^11.0.1"
     rimraf "^3.0.2"
     tsconfig-paths "^3.9.0"
 
-"@sprucelabs/error@^2.2.56":
-  version "2.2.56"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.56.tgz#a5d37517de1a1071156fbfcabc3813e47d9cef8d"
-  integrity sha512-4ZSkFejTtazUC+jRQ0EB2X40RLJlNdUR4Wk96FfPSlFUYqenxoPPe4jdCyn4Iog5C17Zd1i8k0th+t4pnm9FWA==
+"@sprucelabs/error@^2.2.57":
+  version "2.2.57"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.57.tgz#3e0a870f26f6201c28a94c7abc2487f2abf499b4"
+  integrity sha512-7ki8kM8zek3lCHyQ6amnGroTjLBPCNFOAwlFSt0E16zELV2qU41EOvNAOioT+dea2Ft+M3TIOUYHkyjDG0lScw==
 
 "@sprucelabs/jest-sheets-reporter@^1.1.2":
   version "1.1.2"
@@ -2077,10 +2077,10 @@
   dependencies:
     google-spreadsheet "^3.0.11"
 
-"@sprucelabs/log@^10.2.132":
-  version "10.2.132"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.132.tgz#ed8830b9b77b00c95304b2e797f2cb5cc1f0cf0d"
-  integrity sha512-xX+44rMi3I2AImn/O9Gmasm+2/lbeILSBuusaIDa8Ts0yY5KE1xkz2lfU5EmRwhvRYR8I2fbB+UH6ERW+a9i0A==
+"@sprucelabs/log@^10.2.133":
+  version "10.2.133"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.133.tgz#8829bbc02a47a0465cd9c4df0ff77ff95d14f966"
+  integrity sha512-hjPh8rGGx6RxDFKamkqnpIae1YkeptctyI5BjDKbLVbzTvONPfdnrNN+CI9rvPS5EvM8Tbhm9b0pNan83sJkLA==
 
 "@sprucelabs/mercury@^10.5.72":
   version "10.5.72"
@@ -2092,22 +2092,22 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.0.170":
-  version "7.0.170"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.170.tgz#2cc40f53e35f25a2ae992b955543cb5caa317217"
-  integrity sha512-J/UFWlrPgpgg3wpDVWpyx3imt6U6R+eI8XdkGMtYU91CRhoD/As5ENInvAWtKoN/GKjkujkx+lpMrn3Tz6nzsQ==
+"@sprucelabs/schema@^7.0.171":
+  version "7.0.171"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.171.tgz#35e02b4353816db281f2e16cadde3183bd522f7d"
+  integrity sha512-1eY8XpOFngX96EiKiWBJ6pGYxNQfJTmjyDdbjvfC8agnqIiAQILo6uQbRUhMnx5Gfm8+gIWv7T6sDsqe2u3rRA==
   dependencies:
-    "@sprucelabs/error" "^2.2.56"
-    "@sprucelabs/log" "^10.2.132"
+    "@sprucelabs/error" "^2.2.57"
+    "@sprucelabs/log" "^10.2.133"
     google-libphonenumber "^3.2.12"
     libphonenumber-js "^1.7.57"
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^6.0.29":
-  version "6.0.29"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-6.0.29.tgz#14db3e167da5b50c2c0330fa4829dff2e7284341"
-  integrity sha512-PGZ1CUtdsjuxPawq1Rw69N73d35ow84fuIst6ErNIxtmyEgItdDwxBkmMnItu75rOo/BO8PRdj3466ImWDvhsg==
+"@sprucelabs/test@^6.0.30":
+  version "6.0.30"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-6.0.30.tgz#2b9ccd31139bef9a813169ca62f8de0191a1cefc"
+  integrity sha512-Zn7KqegDUVKorhZ3nv5vgr3Rl5l+29HmMFw4mlEHoCHkS2N4fkAF17Cr2RC9VKpkgvfK39mX0aKKcER9BcDaZA==
   dependencies:
     "@babel/core" "^7.11.4"
     "@babel/preset-env" "^7.11.0"
@@ -10061,10 +10061,10 @@ ts-morph@^7.0.0:
     "@ts-morph/common" "~0.5.2"
     code-block-writer "^10.1.0"
 
-ts-node@^8.10.2:
-  version "8.10.2"
-  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-8.10.2.tgz#eee03764633b1234ddd37f8db9ec10b75ec7fb8d"
-  integrity sha512-ISJJGgkIpDdBhWVu3jufsWpK3Rzo7bdiIXJjQc0ynKxVOVcg2oIrf2H2cejminGrptVc6q6/uynAHNCuWGbpVA==
+ts-node@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-9.0.0.tgz#e7699d2a110cc8c0d3b831715e417688683460b3"
+  integrity sha512-/TqB4SnererCDR/vb4S/QvSZvzQMJN8daAslg7MeaiHvD8rDZsSfXmNeNumyZZzMned72Xoq/isQljYSt8Ynfg==
   dependencies:
     arg "^4.1.0"
     diff "^4.0.1"
