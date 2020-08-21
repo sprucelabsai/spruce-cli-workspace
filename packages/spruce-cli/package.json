@@ -82,7 +82,7 @@
 		"@sprucelabs/jest-sheets-reporter": "^1.1.2",
 		"@sprucelabs/test": "^6.0.29",
 		"@types/blessed": "^0.1.17",
-		"@types/eslint": "^7.2.0",
+		"@types/eslint": "^7.2.1",
 		"@types/fs-extra": "^9.0.1",
 		"@types/inflection": "^1.5.28",
 		"@types/inquirer": "^7.3.1",
