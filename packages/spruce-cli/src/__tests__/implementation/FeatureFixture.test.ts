@@ -4,7 +4,7 @@ import AbstractCliTest from '../../AbstractCliTest'
 
 export default class FeatureFixtureTest extends AbstractCliTest {
 	private static cacheDirs: string[] = []
-	private static cacheKey = `${new Date().getTime()}`
+	private static cacheKey = `feature-fixture-${new Date().getTime()}`
 
 	@test()
 	protected static async setsUpCachedDir() {
