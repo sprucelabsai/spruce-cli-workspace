@@ -1,6 +1,5 @@
 import path from 'path'
 import { FieldFactory, FieldDefinitionValueType } from '@sprucelabs/schema'
-// @ts-ignore No definition available
 import { IField } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 // @ts-ignore
