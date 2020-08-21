@@ -67,7 +67,8 @@ export default class FeatureFixture implements IServiceProvider {
 
 			const expectedLinkedDir = pathUtil.join(
 				os.homedir(),
-				'.yarn',
+				'.config',
+				'yarn',
 				'link',
 				'@sprucelabs',
 				'spruce-skill-utils'
