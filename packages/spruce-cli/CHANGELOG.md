@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.19.27](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.19.26...v10.19.27) (2020-08-21)
+
+
+### Bug Fixes
+
+*  spruce-skill-utils yarn link dir check ([8204bdf](https://github.com/sprucelabsai/spruce-cli-workspace/commit/8204bdf))
+
+
+
+
+
 ## [10.19.26](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.19.25...v10.19.26) (2020-08-21)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
