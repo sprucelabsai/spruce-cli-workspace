@@ -73,6 +73,7 @@ export default class FeatureFixture implements IServiceProvider {
 				'@sprucelabs',
 				'spruce-skill-utils'
 			)
+			console.log('Expected Link:', expectedLinkedDir)
 			if (!fsUtil.existsSync(expectedLinkedDir)) {
 				const command = this.Service('command')
 				await command.execute(
