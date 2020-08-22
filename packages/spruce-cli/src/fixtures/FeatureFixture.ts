@@ -73,17 +73,28 @@ export default class FeatureFixture implements IServiceProvider {
 				'@sprucelabs',
 				'spruce-skill-utils'
 			)
+
 			if (!fsUtil.existsSync(expectedLinkedDir)) {
 				const command = this.Service('command')
-				await command.execute(
-					`cd ${pathUtil.join(
-						__dirname,
-						'..',
-						'..',
-						'..',
-						'spruce-skill-utils'
-					)} && yarn link`
-				)
+				try {
+					await command.execute(
+						`cd ${pathUtil.join(
+							__dirname,
+							'..',
+							'..',
+							'..',
+							'spruce-skill-utils'
+						)} && yarn link`
+					)
+				} catch (err) {
+					if (fsUtil.existsSync(expectedLinkedDir)) {
+						log.warn(`Symlink ${expectedLinkedDir} already exists`)
+					} else {
+						log.warn(
+							`Symlink ${expectedLinkedDir} failed, but the check thinks it is missing`
+						)
+					}
+				}
 			}
 		}
 	}
