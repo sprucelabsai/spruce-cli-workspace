@@ -2055,20 +2055,20 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sprucelabs/babel-plugin-schema@^1.1.37":
-  version "1.1.37"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-1.1.37.tgz#15a713c11e0e658f02618b162d32409550fbef7d"
-  integrity sha512-EnRnu15ux3qx3YerrIUFPFX/3fzNijdl+HD+JOGzJEsyMRRASeMC+heEiX3rtCU7c5L4zQ6CgEAIRgaMK18+zQ==
+"@sprucelabs/babel-plugin-schema@^1.1.38":
+  version "1.1.38"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-1.1.38.tgz#08a7a58236392618cbb618745ff58f0925bea2d5"
+  integrity sha512-NVOC94Gj4xyqlztryuH3IEK9yqiuPjEEDE2/uRlwCZFU+/uFCD0LKPRySoAh6XdjKZcdy+Ksx/EDK5xstJtHGQ==
   dependencies:
     fs-extra "^9.0.1"
     globby "^11.0.1"
     rimraf "^3.0.2"
     tsconfig-paths "^3.9.0"
 
-"@sprucelabs/error@^2.2.64":
-  version "2.2.64"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.64.tgz#96c68bd1fd3a9131713d371749ef3d7baa0c25c3"
-  integrity sha512-CR5GPITbvMuOOCTCpg+ttaoWyQo8N4pSa1ZxwCq3Bd4qBk1pacH95+PpPvwSIy83EHl5o9e6LswaO+Fpv0qOSQ==
+"@sprucelabs/error@^2.2.65":
+  version "2.2.65"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.65.tgz#7cffcd96683ba1be976f84fd9bed7b13611bf72a"
+  integrity sha512-gJ9Jwq9nmeZ/vb5jXgBrb3cCT7qC+CuV+mbronYd8heF+2CzXLqydIBNrYXm/G/zkHB5gBB0wcssQmDS5e8UJQ==
 
 "@sprucelabs/jest-sheets-reporter@^1.1.2":
   version "1.1.2"
@@ -2092,29 +2092,29 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.0.179":
-  version "7.0.179"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.179.tgz#4cd410c923801a1487e864871f29403cf5bc234a"
-  integrity sha512-zdWHh0lh96E2z3sLVSK3y5vN/C2HR3YfdR+eVUtb2yu8UAcVICBp9smELJzx+WGRU39FSpKeBC1lIpq7f8rFKw==
+"@sprucelabs/schema@^7.0.180":
+  version "7.0.180"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.180.tgz#08b0061a36ca0095b563582c95e0949961d3d71c"
+  integrity sha512-wLsh7clIt8zTroppVzhnvvI2j833DeCjEXh4s9TTaRK0PPaYHua/cu1IMTgYUiOcit1QdxPJdsI3aubn+QQkqQ==
   dependencies:
-    "@sprucelabs/error" "^2.2.64"
+    "@sprucelabs/error" "^2.2.65"
     "@sprucelabs/log" "^10.2.137"
     google-libphonenumber "^3.2.12"
     libphonenumber-js "^1.7.57"
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^6.0.33":
-  version "6.0.33"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-6.0.33.tgz#cdbb8b5332b83d208e18562dbff35c4c09e1842d"
-  integrity sha512-NJwvgvrMFWCjl+siS1WIg+he0Y7QMZ49Mk3Csmn9p5Q08m1vShG+oDGB79XXQmcVTfwNxWkDSk4jdfOVqWwMQQ==
+"@sprucelabs/test@^6.0.34":
+  version "6.0.34"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-6.0.34.tgz#d55e040a1bff8ce2cb16e3785b25fa63f700ad91"
+  integrity sha512-ZWFgx0isX+E6oWexkDUwRn8jAGJGb0ZIWIceNTnWWe5tOAZS8paBcBVteVGQpY6ldVX7W6AOxBkrn2K+6InuRg==
   dependencies:
     "@babel/core" "^7.11.4"
     "@babel/preset-env" "^7.11.0"
     "@types/jest" "^26.0.10"
     babel-jest "^26.3.0"
     deep-equal "^2.0.3"
-    jest "^26.4.1"
+    jest "^26.4.2"
     lodash "^4.17.20"
     ts-expect "^1.1.0"
     ts-jest "^26.2.0"
@@ -6658,7 +6658,7 @@ jest-worker@^26.3.0:
     merge-stream "^2.0.0"
     supports-color "^7.0.0"
 
-jest@^26.4.1, jest@^26.4.2:
+jest@^26.4.2:
   version "26.4.2"
   resolved "https://registry.yarnpkg.com/jest/-/jest-26.4.2.tgz#7e8bfb348ec33f5459adeaffc1a25d5752d9d312"
   integrity sha512-LLCjPrUh98Ik8CzW8LLVnSCfLaiY+wbK53U7VxnFSX7Q+kWC4noVeDvGWIFw0Amfq1lq2VfGm7YHWSLBV62MJw==
