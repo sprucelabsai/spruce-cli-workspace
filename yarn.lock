@@ -2055,20 +2055,20 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sprucelabs/babel-plugin-schema@^1.1.50":
-  version "1.1.50"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-1.1.50.tgz#09ca7c4d1acd07bf9547bf2bdf8ddaec8fdb3c67"
-  integrity sha512-fxYSkb6LqF9fFhY+SJf8k+/4ZcaD5aKbAv7wMmN1i9pPUNgE/LVxyAQhN0+QXCnyN3EnfT20SUZtXfvq0hc1FA==
+"@sprucelabs/babel-plugin-schema@^1.1.51":
+  version "1.1.51"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-1.1.51.tgz#e7a6edc69ee6c4ba712b6f3738345f5b0fe4f995"
+  integrity sha512-eLpabswDCKlMyF2g/f511ze97w1kt/e+Oyte4Dgj9Uz8XUnyZ3f2yAh50C0GmPT78VRn5K+QrSk8nCt2QzJc3A==
   dependencies:
     fs-extra "^9.0.1"
     globby "^11.0.1"
     rimraf "^3.0.2"
     tsconfig-paths "^3.9.0"
 
-"@sprucelabs/error@^2.2.82":
-  version "2.2.82"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.82.tgz#bf0a0d012c95bd76203317df39f6cb5c3e0d908c"
-  integrity sha512-BHARMRSkWLuVVPIAHhybODNw0Td+Yzs2fJ6hmlyxa4IZiDSyANsi1okuUBKmEhxRaA1NVoDoKcDLChIeEdSSZQ==
+"@sprucelabs/error@^2.2.83":
+  version "2.2.83"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.83.tgz#6e0de21de3c602a267b74f050b66694ba36c36c8"
+  integrity sha512-xKT9mq4x+F66qyFwSLw1bRkBBHTOIfP2Pt12t6Ujz68yUID4rAiOKCLee8FFFdUozTGuGUpP+VLeJO0hnZflAA==
 
 "@sprucelabs/jest-sheets-reporter@^1.1.2":
   version "1.1.2"
@@ -2077,10 +2077,10 @@
   dependencies:
     google-spreadsheet "^3.0.11"
 
-"@sprucelabs/log@^10.2.144":
-  version "10.2.144"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.144.tgz#4a609373b5afad7b59a6287f4ec3a2fb7616abb4"
-  integrity sha512-WaPOT6Rmge+2KORO3R0TFrjvo5epOz3s9PCX6Far2R9Bc+Nnb2bCbA5HqwtRMkEzsDg9zsF8cBigM8L1QDVaiA==
+"@sprucelabs/log@^10.2.145":
+  version "10.2.145"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.145.tgz#51ac901e26f096662ab0fa2ba3f7bc666f7e4911"
+  integrity sha512-T69+L3uzrlm3XR0bcP085pMPVVjjpA8fY/eVHnHEeRBMg/QR8c8oIb+tNug5MjaLoXuBVh9dyJY27dIEcLhMpA==
 
 "@sprucelabs/mercury@^10.5.72":
   version "10.5.72"
@@ -2092,22 +2092,22 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.0.199":
-  version "7.0.199"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.199.tgz#5632a0f9c4a0178807dcb67e0860387f38ed002b"
-  integrity sha512-euaZuxF4vVrIv1h3KGPL7RaPf2MTlucWX6jrkDxZ2L9nc3EgA3uZKLfZODT3uIPT4raW65fpTBLWyK08TrOYeg==
+"@sprucelabs/schema@^7.0.200":
+  version "7.0.200"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.200.tgz#2d7a24f38a7d64a68ca9e069be1b4756b853990c"
+  integrity sha512-T2/mLezx3AM0WGsWzzFfU77hvvNCU3hgBhRXfw0CtUjRUYcTq1S6RBL6r6cYiW2b1cdAwPhDBKgxaOmFrkVUGQ==
   dependencies:
-    "@sprucelabs/error" "^2.2.82"
-    "@sprucelabs/log" "^10.2.144"
+    "@sprucelabs/error" "^2.2.83"
+    "@sprucelabs/log" "^10.2.145"
     google-libphonenumber "^3.2.12"
     libphonenumber-js "^1.7.57"
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^6.0.46":
-  version "6.0.46"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-6.0.46.tgz#86db7ccb7eb47db99290dcbc6e4f57e699ab6b78"
-  integrity sha512-9HnzhUMFOTEOAUeDIBHEiivwofnh/pb2H4QN/jhuLbtKgJdCr/jCldeK7Ct0OEwwhNPkzgCoxTnfzse39LG5aw==
+"@sprucelabs/test@^6.0.47":
+  version "6.0.47"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-6.0.47.tgz#64733a01589c14ad8c143fe232663e42ff5e175e"
+  integrity sha512-h1/9GGZaEGjxuXSBRqG2uQ39utChxkiJ2gnLoavI9fKk97nr1fSwEh+5ndt/RmLDADNh15Fq+PICmltwruo7Uw==
   dependencies:
     "@babel/core" "^7.11.4"
     "@babel/preset-env" "^7.11.0"
@@ -2286,7 +2286,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/lodash@^4.14.159", "@types/lodash@^4.14.160":
+"@types/lodash@^4.14.160":
   version "4.14.160"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.160.tgz#2f1bba6500bc3cb9a732c6d66a083378fb0b0b29"
   integrity sha512-aP03BShJoO+WVndoVj/WNcB/YBPt+CIU1mvaao2GRAHy2yg4pT/XS4XnVHEQBjPJGycWf/9seKEO9vopTJGkvA==
