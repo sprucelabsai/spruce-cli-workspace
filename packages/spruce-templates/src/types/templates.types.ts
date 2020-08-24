@@ -113,6 +113,7 @@ export interface IValueTypes {
 export interface ITestOptions {
 	namePascal: string
 	nameCamel: string
+	parentTestClass?: { name: string; importPath: string }
 }
 
 export interface IEventListenerOptions {

@@ -1,6 +1,7 @@
-import AbstractSpruceTest, { test, assert } from '@sprucelabs/test'
+import {{#unless (isDefined parentTestClass)}}AbstractSpruceTest, {{/unless}}{ test, assert } from '@sprucelabs/test'
+{{#if (isDefined parentTestClass)}}import {{parentTestClass.name}} from '{{parentTestClass.importPath}}'{{/if}}
 
-export default class {{namePascal}}Test extends AbstractSpruceTest {
+export default class {{namePascal}}Test extends {{#if (isDefined parentTestClass)}}{{parentTestClass.name}}{{else}}AbstractSpruceTest{{/if}} {
 
 	@test()
 	protected static async {{nameCamel}}() {
