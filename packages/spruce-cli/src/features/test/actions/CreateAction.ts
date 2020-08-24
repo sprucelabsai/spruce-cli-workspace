@@ -39,6 +39,7 @@ export default class CreateAction extends AbstractFeatureAction<
 			const parentPath = await this.ui.prompt({
 				type: FieldType.Select,
 				isRequired: true,
+				label: 'Which abstract test class do you want to extend?',
 				options: {
 					choices: [
 						{ value: '', label: 'Default (AbstractSpruceTest)' },
