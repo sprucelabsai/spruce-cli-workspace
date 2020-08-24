@@ -44,7 +44,7 @@
 		"uuid": "^8.3.0"
 	},
 	"devDependencies": {
-		"@sprucelabs/test": "^6.0.42",
+		"@sprucelabs/test": "^6.0.43",
 		"@types/lodash": "^4.14.159",
 		"@types/node": "^14.6.0",
 		"arkit": "^1.6.4",
