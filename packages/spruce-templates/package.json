@@ -42,7 +42,7 @@
 	},
 	"dependencies": {
 		"@sprucelabs/log": "^10.2.144",
-		"@sprucelabs/schema": "^7.0.198",
+		"@sprucelabs/schema": "^7.0.199",
 		"@sprucelabs/spruce-skill-utils": "^10.20.0",
 		"globby": "^11.0.1",
 		"handlebars": "^4.7.6",
@@ -50,7 +50,7 @@
 		"sha1": "^1.1.1"
 	},
 	"devDependencies": {
-		"@types/lodash": "^4.14.159",
+		"@types/lodash": "^4.14.160",
 		"@types/node": "^14.6.0",
 		"arkit": "^1.6.4",
 		"chokidar-cli": "^2.1.0",
