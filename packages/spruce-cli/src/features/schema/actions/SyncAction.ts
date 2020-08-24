@@ -20,8 +20,8 @@ export default class SyncAction extends AbstractFeatureAction<
 	public async execute(
 		options: SpruceSchemas.Local.v2020_07_22.ISyncSchemasAction
 	): Promise<IFeatureActionExecuteResponse> {
-		this.term.clear()
-		this.term.startLoading(`Syncing schemas...`)
+		this.ui.clear()
+		this.ui.startLoading(`Syncing schemas...`)
 
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
@@ -105,7 +105,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			}
 		)
 
-		this.term.stopLoading()
+		this.ui.stopLoading()
 
 		return {
 			files: [...typeResults, ...fieldResults],

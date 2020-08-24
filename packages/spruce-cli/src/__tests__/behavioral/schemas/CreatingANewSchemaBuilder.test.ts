@@ -169,8 +169,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		})
 
 		await this.wait(1000)
-		const term = this.term as TestInterface
-		const last = term.invocations[term.invocations.length - 1]
+		const last = this.term.invocations[this.term.invocations.length - 1]
 
 		assert.isEqual(last?.command, 'prompt')
 		assert.isLength(last?.options?.options?.choices, 2)

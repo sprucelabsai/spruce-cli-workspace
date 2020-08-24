@@ -47,7 +47,7 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 	protected featureInstaller: FeatureInstaller
 	protected cwd: string
 	protected templates: Templates
-	protected term: IGraphicsInterface
+	protected ui: IGraphicsInterface
 
 	public constructor(options: IFeatureActionOptions) {
 		this.cwd = options.cwd
@@ -56,7 +56,7 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 		this.storeFactory = options.storeFactory
 		this.serviceFactory = options.serviceFactory
 		this.featureInstaller = options.featureInstaller
-		this.term = options.term
+		this.ui = options.term
 		this.generatorFactory = options.generatorFactory
 	}
 
@@ -157,7 +157,7 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 		)
 
 		if (versions.length > 0) {
-			version = await this.term.prompt({
+			version = await this.ui.prompt({
 				type: FieldType.Select,
 				label: 'Version',
 				hint: 'Confirm which version you want to use?',

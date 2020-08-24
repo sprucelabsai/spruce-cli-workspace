@@ -2,7 +2,6 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../../AbstractCliTest'
 import { ICli } from '../../../cli'
-import TestInterface from '../../../interfaces/TestInterface'
 
 export default class UpgradingASkillTest extends AbstractCliTest {
 	@test()
@@ -35,9 +34,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		await this.assertFailedHealthCheck(cli)
 
 		// should be asking for some files
-		const term = this.term as TestInterface
-
-		assert.doesInclude(term.invocations, {
+		assert.doesInclude(this.term.invocations, {
 			command: 'confirm',
 			options: `Overwrite ${this.resolvePath('src/index.ts')}?`,
 		})

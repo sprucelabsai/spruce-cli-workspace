@@ -40,7 +40,7 @@ export default class SetupAction extends AbstractFeatureAction<
 
 		const answers = normalizedOptions.all
 			? missing.map((m) => m.id)
-			: await this.term.prompt({
+			: await this.ui.prompt({
 					type: FieldType.Select,
 					label: 'What should I install?',
 					isArray: true,
@@ -50,11 +50,11 @@ export default class SetupAction extends AbstractFeatureAction<
 			  })
 
 		if (answers && answers?.length > 0) {
-			this.term.startLoading(`Installing ${answers.length} extensions...`)
+			this.ui.startLoading(`Installing ${answers.length} extensions...`)
 
 			await this.Service('vsCode').installExtensions(answers)
 
-			this.term.stopLoading()
+			this.ui.stopLoading()
 
 			return {
 				hints: [

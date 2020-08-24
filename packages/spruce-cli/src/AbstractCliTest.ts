@@ -11,11 +11,10 @@ import FeatureFixture from './fixtures/FeatureFixture'
 import TestInterface from './interfaces/TestInterface'
 import ServiceFactory, { Service, IServiceMap } from './services/ServiceFactory'
 import StoreFactory, { StoreCode, IStoreMap } from './stores/StoreFactory'
-import { IGraphicsInterface } from './types/cli.types'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static cliRoot = pathUtil.join(__dirname)
-	private static _term: IGraphicsInterface
+	private static _term: TestInterface
 
 	protected static freshCwd() {
 		const tmpDirectory = pathUtil.join(os.tmpdir(), 'spruce-cli', uuid.v4())
@@ -24,7 +23,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return tmpDirectory
 	}
 
-	protected static get term(): IGraphicsInterface {
+	protected static get term() {
 		if (!this._term) {
 			this._term = new TestInterface()
 		}
@@ -50,8 +49,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		await super.afterEach()
 
 		if (this._term) {
-			const term = this._term as TestInterface
-			if (term.isWaitingForInput()) {
+			if (this._term.isWaitingForInput()) {
 				throw new Error(
 					`Terminal interface is waiting for input. Make sure you are invoking this.term.sendInput() as many times as needed.`
 				)
