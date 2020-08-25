@@ -3,7 +3,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"version": "10.20.3",
+	"version": "10.20.5",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
 	"license": "MIT",
@@ -37,14 +37,14 @@
 		"test.watch": "jest --watch"
 	},
 	"dependencies": {
-		"@sprucelabs/error": "^2.2.84",
+		"@sprucelabs/error": "^2.2.85",
 		"fs-extra": "^9.0.1",
 		"inflection": "^1.12.0",
 		"lodash": "^4.17.20",
 		"uuid": "^8.3.0"
 	},
 	"devDependencies": {
-		"@sprucelabs/test": "^6.0.47",
+		"@sprucelabs/test": "^6.0.48",
 		"@types/lodash": "^4.14.160",
 		"@types/node": "^14.6.0",
 		"arkit": "^1.6.4",
