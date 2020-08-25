@@ -21,7 +21,9 @@ export default class ErrorGenerator extends AbstractGenerator {
 		)
 
 		if (!diskUtil.doesFileExist(destinationFile)) {
-			const errorContents = this.templates.error({ errors })
+			const errorContents = this.templates.error({
+				errors: errors.filter((error) => !error.isNested),
+			})
 			results = await this.writeFileIfChangedMixinResults(
 				destinationFile,
 				errorContents,
@@ -46,12 +48,15 @@ export default class ErrorGenerator extends AbstractGenerator {
 		destinationFile: string
 	) {
 		let results: IGeneratedFile[] = []
+
 		for (const error of errors) {
-			const dropInResults = await this.dropInErrorCaseIfMissing(
-				error,
-				destinationFile
-			)
-			results.push(...dropInResults)
+			if (!error.isNested) {
+				const dropInResults = await this.dropInErrorCaseIfMissing(
+					error,
+					destinationFile
+				)
+				results.push(...dropInResults)
+			}
 		}
 
 		return results

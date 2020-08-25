@@ -124,7 +124,24 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		)
 
 		const contents = diskUtil.readFile(errorOptionsFile)
-
 		assert.doesNotInclude(contents, 'INestedSchema')
+
+		const errorClassFile = testUtil.assertsFileByNameInGeneratedFiles(
+			'SpruceError.ts',
+			results.files ?? []
+		)
+		let classContents = diskUtil.readFile(errorClassFile)
+		assert.doesNotInclude(classContents, /NESTED_SCHEMA/)
+
+		const createAction = cli.getFeature('error').Action('create')
+		await createAction.execute({
+			nameCamel: 'testError2',
+			nameReadable: 'Test error 2',
+		})
+
+		await cli.getFeature('error').Action('sync').execute({})
+
+		classContents = diskUtil.readFile(errorClassFile)
+		assert.doesNotInclude(classContents, /NESTED_SCHEMA/)
 	}
 }
