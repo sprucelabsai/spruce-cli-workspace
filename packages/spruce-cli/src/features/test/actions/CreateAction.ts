@@ -31,8 +31,13 @@ export default class CreateAction extends AbstractFeatureAction<
 			type
 		)
 
+		this.ui.startLoading('Checking potential parent test classes')
+
 		const parentFinder = new ParentTestFinder(this.cwd)
 		const candidates = await parentFinder.findAbstractTests()
+
+		this.ui.stopLoading()
+
 		let parentTestClass: undefined | { name: string; importPath: string }
 
 		if (candidates.length > 0) {
