@@ -6,6 +6,7 @@ const pluginUtil = {
 	import(args: any[], ...path: string[]) {
 		const lookup = pathUtil.join(...path, '**', '*.plugin.[t|j]s')
 		const results = globby.sync(lookup)
+		const plugins: any[] = []
 
 		results.forEach((path) => {
 			const plugin = require(path)
@@ -18,8 +19,11 @@ const pluginUtil = {
 				})
 			}
 
-			plugin.default(...args)
+			const result = plugin.default(...args)
+			plugins.push(result)
 		})
+
+		return plugins
 	},
 }
 
