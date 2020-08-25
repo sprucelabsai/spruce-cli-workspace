@@ -2055,10 +2055,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sprucelabs/babel-plugin-schema@^1.1.56":
-  version "1.1.56"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-1.1.56.tgz#b6f1b677244df23a0d2cc7425481c13b565f3617"
-  integrity sha512-VxI7cgmZllFaFxRSdZHZ77R/wRiPj7ZyDfUq8cuH8BqgeXbZs80RI4uJtrX6Ai7qCQ6w8zbTgc8OpwJMwl3e2Q==
+"@sprucelabs/babel-plugin-schema@^1.1.57":
+  version "1.1.57"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-1.1.57.tgz#7ce231ca3f37c97f1419e2eacb44a1f86f1d7847"
+  integrity sha512-7y0HbhZq1xToaR2wVIFpMQQehSOyRbT7U1zzUyE5oEjiOK1nIVXRYjHAJ0PHPD2jVZOZvbc9g8+w7ihW7xDdvA==
   dependencies:
     fs-extra "^9.0.1"
     globby "^11.0.1"
@@ -2092,10 +2092,10 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.0.210":
-  version "7.0.210"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.210.tgz#425ff82a74af5d60f4852a1b35c8c4389cc66692"
-  integrity sha512-NrG+h51gBBIxV5aBvDyrtzyXM+qiNMORqjfwcgkl4NxRdxygYnSJb8a/RirAg677x1A05+cdZifB9o7DXOwVDA==
+"@sprucelabs/schema@^7.0.211":
+  version "7.0.211"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.211.tgz#6e0c96ccf6318f68e681d9b1a280653eb7930b5f"
+  integrity sha512-UzHSII/ZnE7GhNkAf7KKtUJvRjnI4wP3WAIBxAJoC/r7j+GXgFFK0ursaLdMzhu5RMUBPYpZ45YiCC1EXZVHsg==
   dependencies:
     "@sprucelabs/error" "^2.2.92"
     "@sprucelabs/log" "^10.2.148"
@@ -2103,17 +2103,6 @@
     libphonenumber-js "^1.7.57"
     mime-db "^1.44.0"
     mime-type "^4.0.0"
-
-"@sprucelabs/spruce-skill-utils@^10.20.17":
-  version "10.20.17"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-skill-utils/-/spruce-skill-utils-10.20.17.tgz#f396a653ad9ec489753a7ec7a561ebee3b9f3b54"
-  integrity sha512-pyoeQtrJr65SMiiU0TvNwybPk19FVH3pB8+jqPTzEhDC4LQCf08jyTc4982vHMQGZQcmoas4uY8rPk5l2VCaOg==
-  dependencies:
-    "@sprucelabs/error" "^2.2.92"
-    fs-extra "^9.0.1"
-    inflection "^1.12.0"
-    lodash "^4.17.20"
-    uuid "^8.3.0"
 
 "@sprucelabs/test@^6.0.52":
   version "6.0.52"
@@ -10458,9 +10447,9 @@ whatwg-url@^7.0.0:
     webidl-conversions "^4.0.2"
 
 whatwg-url@^8.0.0:
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/whatwg-url/-/whatwg-url-8.2.0.tgz#89383f80ea3888734d1cf29526c135d52e60166d"
-  integrity sha512-Sl4svq71j4kzaFD13uxkVl2AIsbj/xwp8NTM1VMhFRyNT1ZMTWaV6+Pva0fQs7y8+cAEPrDGfCAFLvJejhT79g==
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/whatwg-url/-/whatwg-url-8.2.1.tgz#ed73417230784b281fb2a32c3c501738b46167c3"
+  integrity sha512-ZmVCr6nfBeaMxEHALLEGy0LszYjpJqf6PVNQUQ1qd9Et+q7Jpygd4rGGDXgHjD8e99yLFseD69msHDM4YwPZ4A==
   dependencies:
     lodash.sortby "^4.7.0"
     tr46 "^2.0.2"
