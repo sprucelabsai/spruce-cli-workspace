@@ -49,7 +49,7 @@
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.11.2",
-		"@sprucelabs/error": "^2.2.104",
+		"@sprucelabs/error": "^2.2.105",
 		"@sprucelabs/log": "^10.2.151",
 		"@sprucelabs/mercury": "^10.5.72",
 		"@sprucelabs/schema": "^7.0.225",
