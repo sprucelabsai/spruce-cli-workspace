@@ -2065,10 +2065,10 @@
     rimraf "^3.0.2"
     tsconfig-paths "^3.9.0"
 
-"@sprucelabs/error@^2.2.106":
-  version "2.2.106"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.106.tgz#053ec59e518b7c11347d05468d22b162e66ef8d3"
-  integrity sha512-7lYK1Kptf/267cbMYdriOah8V90wTbRmYek2Qw/M6aD9UjpTZBNXzR+h+IVW9LGWcZkgW9M+5uS22ALThYUIXg==
+"@sprucelabs/error@^2.2.107":
+  version "2.2.107"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.107.tgz#f7ea658670be330b6158e1fe3cf2278455c03d86"
+  integrity sha512-GqrU+1F5OnV5FvrwVJYf9oETohMVJItZc6H3K93bTMm89rRuMJWyqxA+ZTfDSEK/C6s80qn5W0sHKKIbXKKIog==
 
 "@sprucelabs/jest-sheets-reporter@^1.1.2":
   version "1.1.2"
@@ -2092,12 +2092,12 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.0.226":
-  version "7.0.226"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.226.tgz#6737ea4666a43ab8e45276fa6c4abe3a4a083a4f"
-  integrity sha512-Vglai7tGYFLhrvAEdcAY5MZjSMTao0HWGUVzjX/XjEsoxmB4u60X+AbxULpY/CDVVSzAJhScBqC5cP/m+sKzDA==
+"@sprucelabs/schema@^7.0.227":
+  version "7.0.227"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.0.227.tgz#71f6c760450c967656feff9cc907b10ef7fab3b3"
+  integrity sha512-saEoyb2mgb+oI68Kiy+NICZaC3Kj6dRt/15w+M19pI+1z/ruPNMWvuSqtNzSaEOqagSAtzLXajR7oGXnJeSACg==
   dependencies:
-    "@sprucelabs/error" "^2.2.106"
+    "@sprucelabs/error" "^2.2.107"
     "@sprucelabs/log" "^10.2.152"
     google-libphonenumber "^3.2.12"
     libphonenumber-js "^1.7.57"
@@ -2105,9 +2105,9 @@
     mime-type "^4.0.0"
 
 "@sprucelabs/test@^6.0.60":
-  version "6.0.60"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-6.0.60.tgz#a52b336d95e76235cfc29e94b2e3a0ceae2345d9"
-  integrity sha512-VbYC94WFXQY90lheDKvh5yl6uO+cXei1CFlG/Ck5gxwct/Du9GT8JW5tQI/R/PADm2YO6EpxXzKkZkAzjez09w==
+  version "6.0.61"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-6.0.61.tgz#50b406472c2e0fe6330fc0f41eca03f7e6431e44"
+  integrity sha512-A0A37e901dnJqgczhAA/6+QkcqYSZ6UFdz0aGy5H2o7Ch0K5hINMjd6+xcSgryoKW6YNsKjSyhwRDIpagZGtgw==
   dependencies:
     "@babel/core" "^7.11.4"
     "@babel/preset-env" "^7.11.0"
