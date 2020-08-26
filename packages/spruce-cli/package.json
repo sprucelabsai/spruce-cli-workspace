@@ -49,10 +49,10 @@
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.11.2",
-		"@sprucelabs/error": "^2.2.100",
+		"@sprucelabs/error": "^2.2.101",
 		"@sprucelabs/log": "^10.2.151",
 		"@sprucelabs/mercury": "^10.5.72",
-		"@sprucelabs/schema": "^7.0.221",
+		"@sprucelabs/schema": "^7.0.222",
 		"@sprucelabs/spruce-skill-utils": "^10.20.30",
 		"@sprucelabs/spruce-templates": "^10.20.30",
 		"blessed": "^0.1.81",
@@ -110,7 +110,7 @@
 		"md5": "^2.3.0",
 		"prettier": "^2.1.1",
 		"rimraf": "^3.0.2",
-		"ts-jest": "^26.2.0",
+		"ts-jest": "^26.3.0",
 		"ts-node": "^9.0.0",
 		"tsconfig-paths": "^3.9.0"
 	},
