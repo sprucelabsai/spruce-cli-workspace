@@ -49,10 +49,10 @@
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.11.2",
-		"@sprucelabs/error": "^2.2.121",
+		"@sprucelabs/error": "^2.2.122",
 		"@sprucelabs/log": "^10.2.158",
 		"@sprucelabs/mercury": "^10.5.72",
-		"@sprucelabs/schema": "^7.2.3",
+		"@sprucelabs/schema": "^7.2.4",
 		"@sprucelabs/spruce-skill-utils": "^10.20.54",
 		"@sprucelabs/spruce-templates": "^10.20.54",
 		"blessed": "^0.1.81",
