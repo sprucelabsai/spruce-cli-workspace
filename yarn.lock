@@ -850,9 +850,9 @@
     semver "^5.5.0"
 
 "@babel/preset-modules@^0.1.3":
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/@babel/preset-modules/-/preset-modules-0.1.3.tgz#13242b53b5ef8c883c3cf7dddd55b36ce80fbc72"
-  integrity sha512-Ra3JXOHBq2xd56xSF7lMKXdjBn3T772Y1Wet3yWnkDly9zHvJki029tAFzvAAK5cf4YV3yoxuP61crYRol6SVg==
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@babel/preset-modules/-/preset-modules-0.1.4.tgz#362f2b68c662842970fdb5e254ffc8fc1c2e415e"
+  integrity sha512-J36NhwnfdzpmH41M1DrnkkgAqhZaqr/NBdPfQ677mLzlaXo+oDiv1deyCDtgAhz8p328otdob0Du7+xgHGZbKg==
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
     "@babel/plugin-proposal-unicode-property-regex" "^7.4.4"
@@ -2055,20 +2055,20 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sprucelabs/babel-plugin-schema@^1.1.73":
-  version "1.1.73"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-1.1.73.tgz#59f896f30bd9fde7ef7533e8a37682d8c5af7bf6"
-  integrity sha512-BcuD4ie64WWe6WGC5mv4sjJQToj42L511dkNwlNbCrTXI8wkORL5spDjRlQP4+8VXO7d9tsBJU7rOc5Msh1pYQ==
+"@sprucelabs/babel-plugin-schema@^1.1.74":
+  version "1.1.74"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-1.1.74.tgz#14650a19bce51eb477a2943be6464fb2d1394456"
+  integrity sha512-3sqA5GYfNs0OVkAjwONMdzkB/tngcKVjASWOb5P7OzIM5Jn6d14/UoVN9njoqlbOfLSQ023TQXvL/5UOLTpilg==
   dependencies:
     fs-extra "^9.0.1"
     globby "^11.0.1"
     rimraf "^3.0.2"
     tsconfig-paths "^3.9.0"
 
-"@sprucelabs/error@^2.2.117":
-  version "2.2.117"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.117.tgz#d5cbf8b30edb839810b4721eca00fc69464af981"
-  integrity sha512-sfcteA2E0KXI3mo2fWYwdDReoh8LVzPHuZWdt+/cznqhGbOBpUBwWSsDpnbHGsCA6z/Gn4xsmZb5Iyrr5TF9VA==
+"@sprucelabs/error@^2.2.118":
+  version "2.2.118"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.118.tgz#2cc2b25b600d23344abf77edae7e67f16dd1dfd4"
+  integrity sha512-XR1e/zgV7ppHWXyUbqLJcKct4Ug1wK59cEE8Yc8x7rp0Vv2ohW6dq903R1AoiyYsx2SWSeGFWpUxz5iMi4yQBQ==
 
 "@sprucelabs/jest-sheets-reporter@^1.1.2":
   version "1.1.2"
@@ -2092,22 +2092,22 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.1.10":
-  version "7.1.10"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.1.10.tgz#b8545c7f7d2dba33753bd8d8389b84f3c0963edd"
-  integrity sha512-ByhBm+x/XsOWGJ/RoZ2+7f2sqy6srs3FXZCNY7UjaJzgzDkU48XuGC98M/IIE0Ue+maHNcdvqSHjnshNTC19TQ==
+"@sprucelabs/schema@^7.1.11":
+  version "7.1.11"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.1.11.tgz#9348f3099890cbe0033799ba6610a75d58c7a0e6"
+  integrity sha512-+TWfmOVSSHiCXXA4ogSklWGadXyA9QoFU7Ur/s/8kBFJHQEsfP3d/nO7VcV/ySGjAaPOFePFlRXnYLbkewHLFQ==
   dependencies:
-    "@sprucelabs/error" "^2.2.117"
+    "@sprucelabs/error" "^2.2.118"
     "@sprucelabs/log" "^10.2.157"
     google-libphonenumber "^3.2.12"
     libphonenumber-js "^1.7.57"
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^6.0.68":
-  version "6.0.68"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-6.0.68.tgz#bf7e54dc6ea3c67267e6899554a02a54f6de7a76"
-  integrity sha512-FY+FKXpJuvtkI/CvrcIUmnFMpNU5lQICT5F7osSZROViqYKKd7DtJK6AVXCaUH2CWEvUK7KpNEuftBoS7gEXEw==
+"@sprucelabs/test@^6.0.69":
+  version "6.0.69"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-6.0.69.tgz#b3aded99372e9b09011e400a0a7edd4be9cd62ef"
+  integrity sha512-LkTn2hXf4jwL9mMLxKk7k00oPJjcIjw/n5LT3Xpe+61IfSl2V0m78ydwcdjzzHsKV/R1v+WSXmyRD1W82mtPvQ==
   dependencies:
     "@babel/core" "^7.11.4"
     "@babel/preset-env" "^7.11.0"
@@ -2186,10 +2186,10 @@
   resolved "https://registry.yarnpkg.com/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"
   integrity sha512-OCutwjDZ4aFS6PB1UZ988C4YgwlBHJd6wCeQqaLdmadZ/7e+w79+hbMUFC1QXDNCmdyoRfAFdm0RypzwR+Qpag==
 
-"@types/eslint@^7.2.1":
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/@types/eslint/-/eslint-7.2.1.tgz#fcfbcccaecfb487b0fc5d44686807cc625f358b6"
-  integrity sha512-WjKivjZyeL65Qt8HLLGwyhC3NkhoPVgCvxPcCMb02k8fCSJH1vvDRefXmSHA4U9TcjOj024yCOxFgCPKC0gMXQ==
+"@types/eslint@^7.2.2":
+  version "7.2.2"
+  resolved "https://registry.yarnpkg.com/@types/eslint/-/eslint-7.2.2.tgz#c88426b896efeb0b2732a92431ce8aa7ec0dee61"
+  integrity sha512-psWuwNXuKR2e6vMU5d2qH0Kqzrb2Zxwk+uBCF2LsyEph+Nex3lFIPMJXwxfGesdtJM2qtjKoCYsyh76K3x9wLg==
   dependencies:
     "@types/estree" "*"
     "@types/json-schema" "*"
