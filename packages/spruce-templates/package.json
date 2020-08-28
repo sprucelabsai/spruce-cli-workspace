@@ -4,7 +4,7 @@
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "10.20.61",
+	"version": "10.20.62",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
 	"files": [
