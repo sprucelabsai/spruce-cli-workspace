@@ -35,11 +35,6 @@ const skillSchema: ISchema = {
 			type: FieldType.Text,
 			isRequired: true,
 		},
-		icon: {
-			label: 'Icon',
-			type: FieldType.Text,
-			isRequired: false,
-		},
 		creators: {
 			label: 'Creators',
 			type: FieldType.Schema,
