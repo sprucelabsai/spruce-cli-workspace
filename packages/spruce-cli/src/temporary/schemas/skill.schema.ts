@@ -1,6 +1,7 @@
 import { ISchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { CORE_SCHEMA_VERSION } from '../../constants'
+import personSchema from './person.schema'
 
 const skillSchema: ISchema = {
 	id: 'skill',
@@ -32,12 +33,18 @@ const skillSchema: ISchema = {
 		slug: {
 			label: 'Slug',
 			type: FieldType.Text,
-			isRequired: false,
+			isRequired: true,
 		},
-		icon: {
-			label: 'Icon',
-			type: FieldType.Text,
-			isRequired: false,
+		creators: {
+			label: 'Creators',
+			type: FieldType.Schema,
+			hint: 'The people who created and own this skill.',
+			isRequired: true,
+			isArray: true,
+			isPrivate: true,
+			options: {
+				schema: personSchema,
+			},
 		},
 	},
 }
