@@ -71,14 +71,6 @@ const personSchema: ISchema = {
 				schema: profileImageSchema,
 			},
 		},
-		defaultProfileImages: {
-			label: 'Default profile photos',
-			type: FieldType.Schema,
-			isRequired: true,
-			options: {
-				schema: profileImageSchema,
-			},
-		},
 	},
 }
 
