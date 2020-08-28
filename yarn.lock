@@ -2092,7 +2092,7 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.2.4", "@sprucelabs/schema@^7.2.5":
+"@sprucelabs/schema@^7.2.5":
   version "7.2.5"
   resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.2.5.tgz#23dfb81993663a6eddb4389082c4ffaf88fbe290"
   integrity sha512-p0K0xDlQYnCDM+JWLpENHeIeGg1ENS/Zl9h7wM5tOhl7dkRfDHGT7POqlgbP4ed7Md5/k15l4RmQHPwWap8d1A==
