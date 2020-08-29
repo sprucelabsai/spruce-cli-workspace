@@ -7,7 +7,7 @@ const roleDefinition: ISchema = {
 	name: 'Role',
 	description:
 		'Everyone in Spruce breaks into 5 roles. Owner, District/Regional Manager, Manager, Teammate, and Guest.',
-	version: CORE_SCHEMA_VERSION.dirValue,
+	version: CORE_SCHEMA_VERSION.constValue,
 	fields: {
 		slug: {
 			label: 'Slug',

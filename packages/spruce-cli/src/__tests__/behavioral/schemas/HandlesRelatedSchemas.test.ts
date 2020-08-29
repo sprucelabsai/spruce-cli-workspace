@@ -20,8 +20,14 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 			/testPerson\.schema/,
 			results.files ?? []
 		)
+
 		const petSchemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
 			/pet\.schema/,
+			results.files ?? []
+		)
+
+		const nestedSchemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
+			/nested-schema\.schema/,
 			results.files ?? []
 		)
 
@@ -29,5 +35,6 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 
 		await checker.check(personSchemaMatch)
 		await checker.check(petSchemaMatch)
+		await checker.check(nestedSchemaMatch)
 	}
 }

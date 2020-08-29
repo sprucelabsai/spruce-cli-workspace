@@ -8,7 +8,7 @@ import { roleSelectChoices } from './role.schema'
 const JobSchema: ISchema = {
 	id: 'job',
 	name: 'Job',
-	version: CORE_SCHEMA_VERSION.dirValue,
+	version: CORE_SCHEMA_VERSION.constValue,
 	description:
 		'A position at a company. The answer to the question; What is your job?',
 	fields: {

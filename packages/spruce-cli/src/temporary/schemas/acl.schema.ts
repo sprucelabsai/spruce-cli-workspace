@@ -6,7 +6,7 @@ const aclSchema: ISchema = {
 	id: 'acl',
 	name: 'Access control list',
 	description: '',
-	version: CORE_SCHEMA_VERSION.dirValue,
+	version: CORE_SCHEMA_VERSION.constValue,
 	dynamicKeySignature: {
 		type: FieldType.Text,
 		isArray: true,

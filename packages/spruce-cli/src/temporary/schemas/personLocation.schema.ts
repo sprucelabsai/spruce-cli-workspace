@@ -10,7 +10,7 @@ const personLocationSchema: ISchema = {
 	id: 'personLocation',
 	name: 'Person location',
 	description: "A person's visit to a location (business or home).",
-	version: CORE_SCHEMA_VERSION.dirValue,
+	version: CORE_SCHEMA_VERSION.constValue,
 	fields: {
 		id: {
 			label: 'Id',
