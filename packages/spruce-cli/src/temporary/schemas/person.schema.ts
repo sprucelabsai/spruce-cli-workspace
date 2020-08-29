@@ -6,7 +6,7 @@ const profileImageSchema: ISchema = {
 	id: 'profileImage',
 	name: 'Profile Image Sizes',
 	description: 'Various sizes that a profile image comes in.',
-	version: CORE_SCHEMA_VERSION.dirValue,
+	version: CORE_SCHEMA_VERSION.constValue,
 	fields: {
 		profile60: {
 			label: '60x60',
@@ -35,7 +35,7 @@ const personSchema: ISchema = {
 	id: 'person',
 	name: 'Person',
 	description: 'A human being.',
-	version: CORE_SCHEMA_VERSION.dirValue,
+	version: CORE_SCHEMA_VERSION.constValue,
 	fields: {
 		id: {
 			label: 'Id',

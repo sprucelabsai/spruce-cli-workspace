@@ -16,5 +16,22 @@ export default buildSchema({
 				schemaId: { id: 'pet', version: 'v2020_07_22' },
 			},
 		},
+		nestedSchema: {
+			type: FieldType.Schema,
+			options: {
+				schema: {
+					id: 'nested-schema',
+					name: 'nested schema',
+					fields: {
+						field1: {
+							type: FieldType.Text,
+						},
+						field2: {
+							type: FieldType.Text,
+						},
+					},
+				},
+			},
+		},
 	},
 })

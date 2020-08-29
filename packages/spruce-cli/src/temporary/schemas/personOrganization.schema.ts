@@ -9,7 +9,7 @@ import { roleSelectChoices } from './role.schema'
 const personOrganization: ISchema = {
 	id: 'personOrganization',
 	name: 'Person <-> organization relationship',
-	version: CORE_SCHEMA_VERSION.dirValue,
+	version: CORE_SCHEMA_VERSION.constValue,
 	fields: {
 		id: {
 			label: 'Id',

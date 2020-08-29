@@ -5,7 +5,7 @@ import { CORE_SCHEMA_VERSION } from '../../constants'
 const locationSchema: ISchema = {
 	id: 'location',
 	name: 'Location',
-	version: CORE_SCHEMA_VERSION.dirValue,
+	version: CORE_SCHEMA_VERSION.constValue,
 	description:
 		'A physical location where people meet. An organization has at least one of them.',
 	fields: {
