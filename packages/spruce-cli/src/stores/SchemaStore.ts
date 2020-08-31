@@ -226,7 +226,7 @@ export default class SchemaStore extends AbstractStore {
 					const registration = await importService.importDefault<
 						IFieldRegistration
 					>(file)
-					debugger
+
 					return {
 						path: file,
 						registration,
