@@ -73,8 +73,13 @@ handlebars.registerHelper('fieldDefinitionOptions', function (
 		delete updatedOptions.schemaId
 		delete updatedOptions.schema
 		delete updatedOptions.schemaIds
+		delete updatedOptions.schemas
 
-		updatedOptions.schemas = value
+		if (value.substr(-1) === ']') {
+			updatedOptions.schemas = value
+		} else {
+			updatedOptions.schema = value
+		}
 	}
 
 	// No options, undefined is acceptable
@@ -87,7 +92,7 @@ handlebars.registerHelper('fieldDefinitionOptions', function (
 		// @ts-ignore TODO how to type this
 		const value = updatedOptions[key]
 		template += `${key}: `
-		if (key === 'schemas') {
+		if (key === 'schemas' || key === 'schema') {
 			template += `${value},`
 		} else if (typeof value !== 'string') {
 			template += `${JSON.stringify(value)},`

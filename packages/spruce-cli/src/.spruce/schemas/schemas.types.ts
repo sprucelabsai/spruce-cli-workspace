@@ -168,13 +168,13 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            'inStoreAcls': {
 		                label: 'On work permissions',
 		                type: FieldType.Schema,
-		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IAclSchema[],}
+		                options: {schema: SpruceSchemas.Spruce.v2020_07_22.IAclSchema,}
 		            },
 		            /** Off work permissions. */
 		            'acls': {
 		                label: 'Off work permissions',
 		                type: FieldType.Schema,
-		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IAclSchema[],}
+		                options: {schema: SpruceSchemas.Spruce.v2020_07_22.IAclSchema,}
 		            },
 		    }
 	}
@@ -197,14 +197,10 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 			'lastName'?: string| undefined | null
 			/** Casual name. The name you can use when talking to this person. */
 			'casualName': string
-			/** Casual name. The name you can use when talking to this person. */
-			'formalName': string
 			/** Phone. A number that can be texted */
-			'phoneNumber'?: string| undefined | null
+			'phone'?: string| undefined | null
 			/** Profile photos. */
 			'profileImages'?: SpruceSchemas.Spruce.v2020_07_22.IProfileImage| undefined | null
-			/** Default profile photos. */
-			'defaultProfileImages': SpruceSchemas.Spruce.v2020_07_22.IProfileImage
 	}
 
 	export interface IPersonSchema extends SpruceSchema.ISchema {
@@ -241,16 +237,8 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		                hint: 'The name you can use when talking to this person.',
 		                options: undefined
 		            },
-		            /** Casual name. The name you can use when talking to this person. */
-		            'formalName': {
-		                label: 'Casual name',
-		                type: FieldType.Text,
-		                isRequired: true,
-		                hint: 'The name you can use when talking to this person.',
-		                options: undefined
-		            },
 		            /** Phone. A number that can be texted */
-		            'phoneNumber': {
+		            'phone': {
 		                label: 'Phone',
 		                type: FieldType.Phone,
 		                isPrivate: true,
@@ -261,14 +249,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            'profileImages': {
 		                label: 'Profile photos',
 		                type: FieldType.Schema,
-		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IProfileImageSchema[],}
-		            },
-		            /** Default profile photos. */
-		            'defaultProfileImages': {
-		                label: 'Default profile photos',
-		                type: FieldType.Schema,
-		                isRequired: true,
-		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IProfileImageSchema[],}
+		                options: {schema: SpruceSchemas.Spruce.v2020_07_22.IProfileImageSchema,}
 		            },
 		    }
 	}
@@ -344,21 +325,21 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		                label: 'Job',
 		                type: FieldType.Schema,
 		                isRequired: true,
-		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IJobSchema[],}
+		                options: {schema: SpruceSchemas.Spruce.v2020_07_22.IJobSchema,}
 		            },
 		            /** Location. */
 		            'location': {
 		                label: 'Location',
 		                type: FieldType.Schema,
 		                isRequired: true,
-		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.ILocationSchema[],}
+		                options: {schema: SpruceSchemas.Spruce.v2020_07_22.ILocationSchema,}
 		            },
 		            /** Person. */
 		            'person': {
 		                label: 'Person',
 		                type: FieldType.Schema,
 		                isRequired: true,
-		                options: {schemas: SpruceSchemas.Spruce.v2020_07_22.IPersonSchema[],}
+		                options: {schema: SpruceSchemas.Spruce.v2020_07_22.IPersonSchema,}
 		            },
 		    }
 	}
@@ -426,6 +407,39 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 
 export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 
+	
+	export interface ISkillCreator {
+		
+			
+			'skillId'?: string| undefined | null
+			
+			'personId'?: string| undefined | null
+	}
+
+	export interface ISkillCreatorSchema extends SpruceSchema.ISchema {
+		id: 'skillCreator',
+		name: 'Skill creator',
+		    fields: {
+		            /** . */
+		            'skillId': {
+		                type: FieldType.Text,
+		                options: undefined
+		            },
+		            /** . */
+		            'personId': {
+		                type: FieldType.Text,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type SkillCreatorEntity = SchemaEntity<SpruceSchemas.Spruce.v2020_07_22.ISkillCreatorSchema>
+
+}
+
+
+export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
+
 	/** An ability Sprucebot has learned. */
 	export interface ISkill {
 		
@@ -438,9 +452,9 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 			/** Description. */
 			'description'?: string| undefined | null
 			/** Slug. */
-			'slug'?: string| undefined | null
-			/** Icon. */
-			'icon'?: string| undefined | null
+			'slug': string
+			/** Creators. The people or skills who created and own this skill. */
+			'creators': SpruceSchemas.Spruce.v2020_07_22.ISkillCreator[]
 	}
 
 	export interface ISkillSchema extends SpruceSchema.ISchema {
@@ -480,13 +494,17 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            'slug': {
 		                label: 'Slug',
 		                type: FieldType.Text,
+		                isRequired: true,
 		                options: undefined
 		            },
-		            /** Icon. */
-		            'icon': {
-		                label: 'Icon',
-		                type: FieldType.Text,
-		                options: undefined
+		            /** Creators. The people or skills who created and own this skill. */
+		            'creators': {
+		                label: 'Creators',
+		                type: FieldType.Schema,
+		                isRequired: true,
+		                hint: 'The people or skills who created and own this skill.',
+		                isArray: true,
+		                options: {schema: SpruceSchemas.Spruce.v2020_07_22.ISkillCreatorSchema,}
 		            },
 		    }
 	}
@@ -1084,66 +1102,6 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
 export declare namespace SpruceSchemas.Local.v2020_07_22 {
 
-	/** Keep your errors types in sync with your builders */
-	export interface IErrorSyncAction {
-		
-			/** Id. Where I'll look for new schema fields to be registered. */
-			'addonsLookupDir'?: string| undefined | null
-			/** Error class destination. Where I'll save your new Error class file? */
-			'errorClassDestinationDir': string
-			/** . Where I should look for your error builders? */
-			'errorLookupDir'?: string| undefined | null
-			/** Types destination dir. This is where error options and type information will be written */
-			'errorTypesDestinationDir'?: string| undefined | null
-	}
-
-	export interface IErrorSyncActionSchema extends SpruceSchema.ISchema {
-		id: 'errorSyncAction',
-		name: 'Error sync action',
-		description: 'Keep your errors types in sync with your builders',
-		    fields: {
-		            /** Id. Where I'll look for new schema fields to be registered. */
-		            'addonsLookupDir': {
-		                label: 'Id',
-		                type: FieldType.Text,
-		                hint: 'Where I\'ll look for new schema fields to be registered.',
-		                defaultValue: "src/addons",
-		                options: undefined
-		            },
-		            /** Error class destination. Where I'll save your new Error class file? */
-		            'errorClassDestinationDir': {
-		                label: 'Error class destination',
-		                type: FieldType.Text,
-		                isRequired: true,
-		                hint: 'Where I\'ll save your new Error class file?',
-		                defaultValue: "src/errors",
-		                options: undefined
-		            },
-		            /** . Where I should look for your error builders? */
-		            'errorLookupDir': {
-		                type: FieldType.Text,
-		                hint: 'Where I should look for your error builders?',
-		                defaultValue: "src/errors",
-		                options: undefined
-		            },
-		            /** Types destination dir. This is where error options and type information will be written */
-		            'errorTypesDestinationDir': {
-		                label: 'Types destination dir',
-		                type: FieldType.Text,
-		                hint: 'This is where error options and type information will be written',
-		                defaultValue: "#spruce/errors",
-		                options: undefined
-		            },
-		    }
-	}
-
-	export type ErrorSyncActionEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.IErrorSyncActionSchema>
-
-}
-
-
-export declare namespace SpruceSchemas.Local.v2020_07_22 {
-
 	/** Options for event.listen. */
 	export interface IListenEventAction {
 		
@@ -1385,6 +1343,66 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 	}
 
 	export type SkillFeatureEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ISkillFeatureSchema>
+
+}
+
+
+export declare namespace SpruceSchemas.Local.v2020_07_22 {
+
+	/** Keep your errors types in sync with your builders */
+	export interface ISyncErrorAction {
+		
+			/** Id. Where I'll look for new schema fields to be registered. */
+			'addonsLookupDir'?: string| undefined | null
+			/** Error class destination. Where I'll save your new Error class file? */
+			'errorClassDestinationDir': string
+			/** . Where I should look for your error builders? */
+			'errorLookupDir'?: string| undefined | null
+			/** Types destination dir. This is where error options and type information will be written */
+			'errorTypesDestinationDir'?: string| undefined | null
+	}
+
+	export interface ISyncErrorActionSchema extends SpruceSchema.ISchema {
+		id: 'syncErrorAction',
+		name: 'Sync error action',
+		description: 'Keep your errors types in sync with your builders',
+		    fields: {
+		            /** Id. Where I'll look for new schema fields to be registered. */
+		            'addonsLookupDir': {
+		                label: 'Id',
+		                type: FieldType.Text,
+		                hint: 'Where I\'ll look for new schema fields to be registered.',
+		                defaultValue: "src/addons",
+		                options: undefined
+		            },
+		            /** Error class destination. Where I'll save your new Error class file? */
+		            'errorClassDestinationDir': {
+		                label: 'Error class destination',
+		                type: FieldType.Text,
+		                isRequired: true,
+		                hint: 'Where I\'ll save your new Error class file?',
+		                defaultValue: "src/errors",
+		                options: undefined
+		            },
+		            /** . Where I should look for your error builders? */
+		            'errorLookupDir': {
+		                type: FieldType.Text,
+		                hint: 'Where I should look for your error builders?',
+		                defaultValue: "src/errors",
+		                options: undefined
+		            },
+		            /** Types destination dir. This is where error options and type information will be written */
+		            'errorTypesDestinationDir': {
+		                label: 'Types destination dir',
+		                type: FieldType.Text,
+		                hint: 'This is where error options and type information will be written',
+		                defaultValue: "#spruce/errors",
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type SyncErrorActionEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ISyncErrorActionSchema>
 
 }
 

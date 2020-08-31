@@ -15,26 +15,28 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 		const results = await cli.getFeature('schema').Action('sync').execute({})
 
 		assert.isEqual(results.errors?.length, 0)
-
-		const personSchemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
+		testUtil.assertsFileByNameInGeneratedFiles(
 			/testPerson\.schema/,
 			results.files ?? []
 		)
 
-		const petSchemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
+		testUtil.assertsFileByNameInGeneratedFiles(
 			/pet\.schema/,
 			results.files ?? []
 		)
 
-		const nestedSchemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
+		testUtil.assertsFileByNameInGeneratedFiles(
 			/nested-schema\.schema/,
 			results.files ?? []
 		)
 
 		const checker = this.Service('typeChecker')
 
-		await checker.check(personSchemaMatch)
-		await checker.check(petSchemaMatch)
-		await checker.check(nestedSchemaMatch)
+		const all =
+			results.files?.map((file) => {
+				return checker.check(file.path)
+			}) ?? []
+
+		await Promise.all(all)
 	}
 }

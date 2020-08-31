@@ -1,7 +1,7 @@
 import { SpruceSchemas } from '../../schemas.types'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
-
+import skillCreatorSchema from '#spruce/schemas/spruce/v2020_07_22/skillCreator.schema'
 
 const skillSchema: SpruceSchemas.Spruce.v2020_07_22.ISkillSchema  = {
 	id: 'skill',
@@ -40,13 +40,17 @@ const skillSchema: SpruceSchemas.Spruce.v2020_07_22.ISkillSchema  = {
 	            'slug': {
 	                label: 'Slug',
 	                type: FieldType.Text,
+	                isRequired: true,
 	                options: undefined
 	            },
-	            /** Icon. */
-	            'icon': {
-	                label: 'Icon',
-	                type: FieldType.Text,
-	                options: undefined
+	            /** Creators. The people or skills who created and own this skill. */
+	            'creators': {
+	                label: 'Creators',
+	                type: FieldType.Schema,
+	                isRequired: true,
+	                hint: 'The people or skills who created and own this skill.',
+	                isArray: true,
+	                options: {schema: skillCreatorSchema,}
 	            },
 	    }
 }

@@ -1,11 +1,13 @@
 import {
 	ISchemaTemplateItem,
+	normalizeSchemaValues,
 	SchemaValuesWithDefaults,
 } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { IErrorTemplateItem } from '@sprucelabs/spruce-templates'
-import errorSyncActionSchema from '#spruce/schemas/local/v2020_07_22/errorSyncAction.schema'
+import syncErrorActionSchema from '#spruce/schemas/local/v2020_07_22/syncErrorAction.schema'
+import syncSchemasActionSchema from '#spruce/schemas/local/v2020_07_22/syncSchemasAction.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import ErrorGenerator from '../../../generators/ErrorGenerator'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
@@ -15,13 +17,13 @@ import {
 } from '../../features.types'
 
 export default class SyncAction extends AbstractFeatureAction<
-	SpruceSchemas.Local.v2020_07_22.IErrorSyncActionSchema
+	SpruceSchemas.Local.v2020_07_22.ISyncErrorActionSchema
 > {
 	public name = 'sync'
-	public optionsSchema = errorSyncActionSchema
+	public optionsSchema = syncErrorActionSchema
 
 	public async execute(
-		options: SpruceSchemas.Local.v2020_07_22.IErrorSyncAction
+		options: SpruceSchemas.Local.v2020_07_22.ISyncErrorAction
 	): Promise<IFeatureActionExecuteResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 		const {
@@ -86,7 +88,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			SpruceSchemas.Local.v2020_07_22.ISyncSchemasActionSchema
 		>,
 		normalizedOptions: SchemaValuesWithDefaults<
-			SpruceSchemas.Local.v2020_07_22.IErrorSyncActionSchema
+			SpruceSchemas.Local.v2020_07_22.ISyncErrorActionSchema
 		>
 	) {
 		const resolvedErrorTypesDestinationDir = diskUtil.resolvePath(
@@ -95,7 +97,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			'errors.types.ts'
 		)
 
-		const errorSyncResults = await schemaSyncAction.execute({
+		const syncOptions = normalizeSchemaValues(syncSchemasActionSchema, {
 			...normalizedOptions,
 			schemaTypesDestinationDir: resolvedErrorTypesDestinationDir,
 			schemaLookupDir: normalizedOptions.errorLookupDir,
@@ -104,6 +106,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			fetchRemoteSchemas: false,
 			generateFieldTypes: false,
 		})
+		const errorSyncResults = await schemaSyncAction.execute(syncOptions)
 		return errorSyncResults
 	}
 

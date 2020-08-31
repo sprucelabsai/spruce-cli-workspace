@@ -1,4 +1,6 @@
+import { normalizeSchemaValues } from '@sprucelabs/schema'
 import createErrorActionSchema from '#spruce/schemas/local/v2020_07_22/createErrorAction.schema'
+import syncErrorActionSchema from '#spruce/schemas/local/v2020_07_22/syncErrorAction.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import {
@@ -31,7 +33,11 @@ export default class CreateAction extends AbstractFeatureAction<
 			schemaBuilderDestinationDir: normalizedOptions.errorBuilderDestinationDir,
 		})
 
-		const syncResults = await this.Action('sync').execute(normalizedOptions)
+		const syncOptions = normalizeSchemaValues(
+			syncErrorActionSchema,
+			normalizedOptions
+		)
+		const syncResults = await this.Action('sync').execute(syncOptions)
 
 		return {
 			files: [...(createResults.files ?? []), ...(syncResults.files ?? [])],

@@ -2070,6 +2070,11 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.132.tgz#abe843ee547350f49c0152de3745a1743e583887"
   integrity sha512-kwzinPf3mpyYGyL6MvAOHY97SNbgcK3/wgv83cdctfGRtNXPMfXCDIhH+22Lcpzlo9ZpjdH8U1YhfwWBDm9Fug==
 
+"@sprucelabs/error@^2.2.155":
+  version "2.2.157"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.157.tgz#13fd9277cde9511603405895e0aaee81abfce4bd"
+  integrity sha512-1jrO05aGXsUMDYbZe8Uh7Kb1ppWXU2Y6G5VJYv3x+LCgx1W9Hhs8nWHO0VBX+ZjBoUpDEBSgnx9Cq8o4MLPrfw==
+
 "@sprucelabs/jest-sheets-reporter@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@sprucelabs/jest-sheets-reporter/-/jest-sheets-reporter-1.1.2.tgz#5921e1e331d0d264223dfacd4a7fc8aeadef4e04"
@@ -2082,6 +2087,11 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.161.tgz#dca8aa97c0ded24d4f891cb858d9505fd0dbdf9c"
   integrity sha512-5H4SxYkzM4oMDCe0sPgHJnHfNedl4TNjUdQzSxHZlrSJpeWzBoxTIgndZ6DQr1dMM2fk0Om4ppr/SJc4WKpp8A==
 
+"@sprucelabs/log@^10.2.173":
+  version "10.2.173"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.173.tgz#0f129977a1a3f4ffe08d48862678f9839e39f919"
+  integrity sha512-1Gf2jfWVQgbUCGlRDL5uP1yUlaWAHGw43YkNsOruQWhw1Xm3Q77I9uJVeVd9PclMK2wCTuinIdm3K1RPCASsIQ==
+
 "@sprucelabs/mercury@^10.5.72":
   version "10.5.72"
   resolved "https://registry.yarnpkg.com/@sprucelabs/mercury/-/mercury-10.5.72.tgz#dc65ca30adf79388bf85fad0a434ab9a91f1fbb1"
@@ -2092,13 +2102,13 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^7.2.16":
-  version "7.2.16"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-7.2.16.tgz#991f02362a7d1768e0d6c0d8faac2ce11385ba0f"
-  integrity sha512-xl7ccSBcOk4K5yLnTRqb4niyU3OQuSt+SohXjVTRpP0HsUI0vDLQmQhcgNBGdVZNVFnTuP9aZTVA/wG/ZWX0vg==
+"@sprucelabs/schema@^8.1.5":
+  version "8.1.5"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-8.1.5.tgz#995d17b0393b95c301aa93c0c779d5f042d380c5"
+  integrity sha512-nWndYxmwjF1Xhd2s3TIqGUneXeDZbJKrpmkFsz8gbUT+ltK+9gBBxqczZxuCtYGzxVyqQ8oPE3n1FJvtyiKHtA==
   dependencies:
-    "@sprucelabs/error" "^2.2.132"
-    "@sprucelabs/log" "^10.2.161"
+    "@sprucelabs/error" "^2.2.155"
+    "@sprucelabs/log" "^10.2.173"
     google-libphonenumber "^3.2.12"
     libphonenumber-js "^1.7.57"
     mime-db "^1.44.0"

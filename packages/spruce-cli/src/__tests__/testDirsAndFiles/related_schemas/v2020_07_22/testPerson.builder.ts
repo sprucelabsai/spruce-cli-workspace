@@ -16,6 +16,32 @@ export default buildSchema({
 				schemaId: { id: 'pet', version: 'v2020_07_22' },
 			},
 		},
+		pets: {
+			type: FieldType.Schema,
+			isArray: true,
+			options: {
+				schemaId: { id: 'pet', version: 'v2020_07_22' },
+			},
+		},
+		petsOrFoods: {
+			type: FieldType.Schema,
+			isArray: true,
+			options: {
+				schemaIds: [
+					{ id: 'pet', version: 'v2020_07_22' },
+					{ id: 'food', version: 'v2020_07_22' },
+				],
+			},
+		},
+		petOrFood: {
+			type: FieldType.Schema,
+			options: {
+				schemaIds: [
+					{ id: 'pet', version: 'v2020_07_22' },
+					{ id: 'food', version: 'v2020_07_22' },
+				],
+			},
+		},
 		nestedSchema: {
 			type: FieldType.Schema,
 			options: {

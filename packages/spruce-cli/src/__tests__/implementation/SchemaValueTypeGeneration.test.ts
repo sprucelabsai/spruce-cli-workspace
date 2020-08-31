@@ -108,7 +108,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		{
 			type: `SpruceSchemas.${CORE_NAMESPACE}.${CORE_SCHEMA_VERSION.constValue}.IPerson`,
 			value: '[personSchema]',
-			schemaType: `SpruceSchemas.${CORE_NAMESPACE}.${CORE_SCHEMA_VERSION.constValue}.IPersonSchema[]`,
+			schemaType: `SpruceSchemas.${CORE_NAMESPACE}.${CORE_SCHEMA_VERSION.constValue}.IPersonSchema`,
 		}
 	)
 	@test(

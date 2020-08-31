@@ -48,21 +48,21 @@ const personLocationSchema: SpruceSchemas.Spruce.v2020_07_22.IPersonLocationSche
 	                label: 'Job',
 	                type: FieldType.Schema,
 	                isRequired: true,
-	                options: {schemas: [jobSchema],}
+	                options: {schema: jobSchema,}
 	            },
 	            /** Location. */
 	            'location': {
 	                label: 'Location',
 	                type: FieldType.Schema,
 	                isRequired: true,
-	                options: {schemas: [locationSchema],}
+	                options: {schema: locationSchema,}
 	            },
 	            /** Person. */
 	            'person': {
 	                label: 'Person',
 	                type: FieldType.Schema,
 	                isRequired: true,
-	                options: {schemas: [personSchema],}
+	                options: {schema: personSchema,}
 	            },
 	    }
 }

@@ -2,7 +2,7 @@ import FieldType from './fieldTypeEnum'
 import { IField } from '@sprucelabs/schema'
 
 {{#each fieldTemplateItems}}
-import { I{{namePascal}}Definition{{#if valueTypeGeneratorType}}, {{{valueTypeGeneratorType namePascal valueTypeGeneratorType 'typeOnly'}}}{{/if}} } from '{{package}}'
+import { I{{namePascal}}Definition{{#if valueTypeMapper}}, {{{valueTypeMapper valueTypeMapper 'typeOnly'}}}{{/if}} } from '{{package}}'
 {{/each}}
 
 
@@ -19,9 +19,9 @@ export interface IFieldDefinitionMap {
 
 
 /** Lookups used for dynamic type mapping based on a definition's field type */
-export interface IFieldValueTypeGeneratorMap<F extends FieldDefinition, CreateSchemaInstances extends boolean> {
+export interface IFieldValueTypeGeneratorMap<F extends FieldDefinition, CreateEntityInstances extends boolean> {
 	{{#each fieldTemplateItems}}
-	[FieldType.{{pascalType}}]: {{#if valueTypeGeneratorType}}{{{valueTypeGeneratorType namePascal valueTypeGeneratorType 'asGeneric'}}}{{else}}I{{namePascal}}Definition['value']{{/if}}
+	[FieldType.{{pascalType}}]: {{#if valueTypeMapper}}{{{valueTypeMapper valueTypeMapper 'asGeneric'}}}{{else}}I{{namePascal}}Definition['value']{{/if}}
 	{{/each}}
 }
 

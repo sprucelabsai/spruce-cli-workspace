@@ -30,24 +30,6 @@ const generateTypeLiteral = (definition: FieldDefinition, renderAs: TemplateRend
 	return details.valueType
 }
 
-const generateValueTypeGeneratorType = (definition: FieldDefinition, renderAs: TemplateRenderAs, importAs: string) => {
-	const options:SpruceSchema.IFieldTemplateDetailOptions<FieldDefinition> = {
-		language: 'ts',
-		// @ts-ignore
-		templateItems: schemaTemplateItems,
-		globalNamespace: '{{globalNamespace}}',
-		definition,
-		importAs,
-		renderAs
-	}
-
-	const FieldClass = fieldClassMap[definition.type as FieldType]
-	const details = FieldClass.generateTemplateDetails(
-		options as IFieldTemplateDetailOptions<any>
-	)
-	
-	return details.valueTypeGeneratorType
-}
 
 const valueTypes = {
 	{{#each schemaTemplatesByNamespaceAndName}}
@@ -58,7 +40,6 @@ const valueTypes = {
 			"{{schema.version}}{{#unless schema.version}}{{../../../SCHEMA_VERSION_FALLBACK}}{{/unless}}":{
 				{{#if schema.dynamicKeySignature}}
 				__dynamicKeySignature: {
-					valueTypeGeneratorType: {{{ valueTypeGenerator schema.dynamicKeySignature 'value' 'generateValueTypeGeneratorType'}}},
 					valueTypes: {
 						{{#each ../../../rendersAs}}
 						{{this}}: {{{ valueTypeGenerator ../schema.dynamicKeySignature this 'generateTypeLiteral'}}},
@@ -68,7 +49,6 @@ const valueTypes = {
 				{{/if}}
 				{{#each schema.fields}}
 				"{{@key}}": {
-					valueTypeGeneratorType: {{{ valueTypeGenerator this 'value' 'generateValueTypeGeneratorType'}}},
 					valueTypes: {
 						{{#each ../../../../rendersAs}}
 						{{this}}: {{{ valueTypeGenerator ../this this 'generateTypeLiteral'}}},
