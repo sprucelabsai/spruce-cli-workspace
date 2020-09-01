@@ -20,7 +20,7 @@ const genericMercurySchema: SpruceErrors.Local.IGenericMercurySchema  = {
 	                type: FieldType.Schema,
 	                hint: 'A hint',
 	                isArray: true,
-	                options: {schemas: [payloadArgsSchema],}
+	                options: {schema: payloadArgsSchema,}
 	            },
 	    }
 }

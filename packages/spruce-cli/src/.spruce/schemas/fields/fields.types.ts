@@ -12,8 +12,8 @@ import { IIdFieldDefinition } from '@sprucelabs/schema'
 import { INumberFieldDefinition } from '@sprucelabs/schema'
 import { IPhoneFieldDefinition } from '@sprucelabs/schema'
 import { IRawFieldDefinition } from '@sprucelabs/schema'
-import { ISchemaFieldDefinition } from '@sprucelabs/schema'
-import { ISelectFieldDefinition } from '@sprucelabs/schema'
+import { ISchemaFieldDefinition, SchemaFieldValueTypeMapper } from '@sprucelabs/schema'
+import { ISelectFieldDefinition, SelectFieldValueTypeMapper } from '@sprucelabs/schema'
 import { ITextFieldDefinition } from '@sprucelabs/schema'
 
 
@@ -41,7 +41,7 @@ export interface IFieldDefinitionMap {
 
 
 /** Lookups used for dynamic type mapping based on a definition's field type */
-export interface IFieldValueTypeGeneratorMap<F extends FieldDefinition, CreateSchemaInstances extends boolean> {
+export interface IFieldValueTypeGeneratorMap<F extends FieldDefinition, CreateEntityInstances extends boolean> {
 	[FieldType.Address]: IAddressFieldDefinition['value']
 	[FieldType.Boolean]: IBooleanFieldDefinition['value']
 	[FieldType.Date]: IDateFieldDefinition['value']
@@ -53,8 +53,8 @@ export interface IFieldValueTypeGeneratorMap<F extends FieldDefinition, CreateSc
 	[FieldType.Number]: INumberFieldDefinition['value']
 	[FieldType.Phone]: IPhoneFieldDefinition['value']
 	[FieldType.Raw]: IRawFieldDefinition['value']
-	[FieldType.Schema]: ISchemaFieldDefinition['value']
-	[FieldType.Select]: ISelectFieldDefinition['value']
+	[FieldType.Schema]: SchemaFieldValueTypeMapper<F extends ISchemaFieldDefinition? F : ISchemaFieldDefinition, CreateEntityInstances>
+	[FieldType.Select]: SelectFieldValueTypeMapper<F extends ISelectFieldDefinition ? F: ISelectFieldDefinition>
 	[FieldType.Text]: ITextFieldDefinition['value']
 }
 

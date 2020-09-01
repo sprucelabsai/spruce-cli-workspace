@@ -9,7 +9,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	private static generator: SchemaGenerator
 	protected static async beforeEach() {
 		await super.beforeEach()
-		this.generator = new SchemaGenerator({ templates, term: this.term })
+		this.generator = new SchemaGenerator({ templates, term: this.ui })
 
 		const cli = await this.installSchemaFeature('schema-value-type-generation')
 

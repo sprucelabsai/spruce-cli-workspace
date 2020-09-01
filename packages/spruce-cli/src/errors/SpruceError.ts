@@ -101,10 +101,6 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				message = 'A fileExists just happened!'
 				break
 
-			case 'PAYLOAD_ARGS':
-				message = 'A Payload args just happened!'
-				break
-
 			case 'VSCODE_NOT_INSTALLED':
 				message =
 					"vscode's 'code' is not installed.\n\nMac instructions: https://code.visualstudio.com/docs/setup/mac\n\nLinux instructions: https://code.visualstudio.com/docs/setup/linux\n\nWindows instructions: https://code.visualstudio.com/docs/setup/windows"
@@ -112,6 +108,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 
 			case 'SCHEMA_EXISTS':
 				message = `A schema called ${options.schemaId} already exists at ${options.destination}`
+				break
+
+			case 'COMMAND_ABORTED':
+				message = 'Aborted! See ya later! ✌️'
 				break
 
 			default:

@@ -18,11 +18,11 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 		// wait for prompt
 		await this.wait(1000)
 
-		await this.term.sendInput(this.cwd + '/src/deeper/AbstractBananaTest.ts')
+		await this.ui.sendInput(this.cwd + '/src/deeper/AbstractBananaTest.ts')
 
 		const results = await response
 
-		assert.doesInclude(this.term.invocations, {
+		assert.doesInclude(this.ui.invocations, {
 			command: 'prompt',
 			options: {
 				type: 'select',

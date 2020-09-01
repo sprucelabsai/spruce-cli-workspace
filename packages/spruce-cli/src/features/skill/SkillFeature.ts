@@ -19,7 +19,7 @@ export default class SkillFeature<
 
 	public dependencies: FeatureCode[] = []
 	public packageDependencies: INpmPackage[] = [
-		{ name: 'typescript' },
+		{ name: 'typescript', isDev: true },
 		{ name: '@sprucelabs/log' },
 		{ name: '@sprucelabs/error' },
 		{ name: '@sprucelabs/spruce-skill-utils' },

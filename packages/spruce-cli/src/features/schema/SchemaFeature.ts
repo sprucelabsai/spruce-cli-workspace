@@ -11,6 +11,7 @@ export default class SchemaFeature extends AbstractFeature {
 		{
 			name: '@sprucelabs/schema',
 		},
+		{ name: '@sprucelabs/babel-plugin-schema', isDev: true },
 	]
 
 	public code: FeatureCode = 'schema'
