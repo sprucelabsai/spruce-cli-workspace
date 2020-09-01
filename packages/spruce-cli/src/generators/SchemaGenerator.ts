@@ -21,6 +21,7 @@ export interface IGenerateFieldTypesOptions {
 	fieldTemplateItems: IFieldTemplateItem[]
 }
 
+// eslint-disable-next-line no-redeclare
 export interface IGenerateSchemaTypesOptions {
 	fieldTemplateItems: IFieldTemplateItem[]
 	schemaTemplateItems: ISchemaTemplateItem[]

@@ -37,6 +37,7 @@ const templateItemUtil = {
 			fieldTemplatesByType[item.camelType].push(item)
 		})
 	},
+	// eslint-disable-next-line no-undef
 } as const
 
 export default templateItemUtil
