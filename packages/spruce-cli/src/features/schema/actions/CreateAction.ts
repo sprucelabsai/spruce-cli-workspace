@@ -1,6 +1,8 @@
+import { normalizeSchemaValues } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import createSchemaActionSchema from '#spruce/schemas/local/v2020_07_22/createSchemaAction.schema'
+import syncSchemasActionSchema from '#spruce/schemas/local/v2020_07_22/syncSchemasAction.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { IFeatureAction } from '../../features.types'
@@ -53,9 +55,10 @@ export default class CreateAction extends AbstractFeatureAction<
 		>
 
 		if (syncAfterCreate) {
-			const syncResults = await syncAction.execute({
-				...rest,
+			const syncOptions = normalizeSchemaValues(syncSchemasActionSchema, rest, {
+				includePrivateFields: true,
 			})
+			const syncResults = await syncAction.execute(syncOptions)
 
 			results.push(...(syncResults.files ?? []))
 		}

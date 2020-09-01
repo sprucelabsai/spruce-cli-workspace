@@ -3,8 +3,8 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import syncSchemasActionSchema from '#spruce/schemas/local/v2020_07_22/syncSchemasAction.schema'
 
 export default buildSchema({
-	id: 'errorSyncAction',
-	name: 'Error sync action',
+	id: 'syncErrorAction',
+	name: 'Sync error action',
 	description: 'Keep your errors types in sync with your builders',
 	fields: {
 		addonsLookupDir: syncSchemasActionSchema.fields.addonsLookupDir,

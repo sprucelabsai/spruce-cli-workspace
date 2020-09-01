@@ -40,13 +40,13 @@ const jobSchema: SpruceSchemas.Spruce.v2020_07_22.IJobSchema  = {
 	            'inStoreAcls': {
 	                label: 'On work permissions',
 	                type: FieldType.Schema,
-	                options: {schemas: [aclSchema],}
+	                options: {schema: aclSchema,}
 	            },
 	            /** Off work permissions. */
 	            'acls': {
 	                label: 'Off work permissions',
 	                type: FieldType.Schema,
-	                options: {schemas: [aclSchema],}
+	                options: {schema: aclSchema,}
 	            },
 	    }
 }

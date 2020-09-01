@@ -62,6 +62,13 @@ const diskUtil = {
 	doesFileExist(destination: string) {
 		return fs.existsSync(destination)
 	},
+	isDir(destination: string) {
+		if (this.doesDirExist(destination)) {
+			return fs.lstatSync(destination).isDirectory()
+		}
+
+		return false
+	},
 	doesDirExist(destination: string) {
 		return fs.existsSync(destination)
 	},

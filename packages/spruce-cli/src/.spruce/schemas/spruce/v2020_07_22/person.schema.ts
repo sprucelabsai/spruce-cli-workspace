@@ -37,16 +37,8 @@ const personSchema: SpruceSchemas.Spruce.v2020_07_22.IPersonSchema  = {
 	                hint: 'The name you can use when talking to this person.',
 	                options: undefined
 	            },
-	            /** Casual name. The name you can use when talking to this person. */
-	            'formalName': {
-	                label: 'Casual name',
-	                type: FieldType.Text,
-	                isRequired: true,
-	                hint: 'The name you can use when talking to this person.',
-	                options: undefined
-	            },
 	            /** Phone. A number that can be texted */
-	            'phoneNumber': {
+	            'phone': {
 	                label: 'Phone',
 	                type: FieldType.Phone,
 	                isPrivate: true,
@@ -57,14 +49,7 @@ const personSchema: SpruceSchemas.Spruce.v2020_07_22.IPersonSchema  = {
 	            'profileImages': {
 	                label: 'Profile photos',
 	                type: FieldType.Schema,
-	                options: {schemas: [profileImageSchema],}
-	            },
-	            /** Default profile photos. */
-	            'defaultProfileImages': {
-	                label: 'Default profile photos',
-	                type: FieldType.Schema,
-	                isRequired: true,
-	                options: {schemas: [profileImageSchema],}
+	                options: {schema: profileImageSchema,}
 	            },
 	    }
 }

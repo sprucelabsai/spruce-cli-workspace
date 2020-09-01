@@ -3,9 +3,9 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const errorSyncActionSchema: SpruceSchemas.Local.v2020_07_22.IErrorSyncActionSchema  = {
-	id: 'errorSyncAction',
-	name: 'Error sync action',
+const syncErrorActionSchema: SpruceSchemas.Local.v2020_07_22.ISyncErrorActionSchema  = {
+	id: 'syncErrorAction',
+	name: 'Sync error action',
 	description: 'Keep your errors types in sync with your builders',
 	    fields: {
 	            /** Id. Where I'll look for new schema fields to be registered. */
@@ -43,4 +43,4 @@ const errorSyncActionSchema: SpruceSchemas.Local.v2020_07_22.IErrorSyncActionSch
 	    }
 }
 
-export default errorSyncActionSchema
+export default syncErrorActionSchema

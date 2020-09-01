@@ -284,6 +284,7 @@ export default class SchemaStore extends AbstractStore {
 				camelType: namesUtil.toCamel(registration.type),
 				isLocal: addon.isLocal,
 				description: registration.description,
+				valueTypeMapper: registration.valueTypeMapper,
 			})
 		}
 

@@ -99,7 +99,7 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 			...options,
 		}
 
-		validateSchemaValues(schema, allOptions as SchemaValues<ISchema>)
+		validateSchemaValues(schema, allOptions as SchemaValues<ISchema>, {})
 
 		return allOptions as StripNulls<SchemaValuesWithDefaults<S>>
 	}

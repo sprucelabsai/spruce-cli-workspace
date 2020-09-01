@@ -34,6 +34,9 @@ export default abstract class AbstractGenerator {
 		const name = pathUtil.basename(destination)
 		let action: IGeneratedFile['action'] = 'skipped'
 
+		if (diskUtil.isDir(destination)) {
+			throw new Error(`Can't write to a directory ${destination}.`)
+		}
 		if (!diskUtil.doesFileExist(destination)) {
 			diskUtil.writeFile(destination, contents)
 			action = 'generated'
