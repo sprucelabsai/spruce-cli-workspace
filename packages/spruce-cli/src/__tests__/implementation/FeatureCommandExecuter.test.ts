@@ -1,4 +1,4 @@
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, IHealthCheckResults } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../AbstractCliTest'
 import FeatureCommandExecuter from '../../features/FeatureCommandExecuter'
@@ -23,8 +23,8 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 
 		await this.wait(1000)
 
-		await this.term.sendInput('My new skill')
-		await this.term.sendInput('So great!')
+		await this.ui.sendInput('My new skill')
+		await this.ui.sendInput('So great!')
 
 		await promise
 
@@ -38,21 +38,24 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 
 		await this.wait(1000)
 
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		this.term.sendInput('My great skill')
+		void this.ui.sendInput('My great skill')
 
 		await promise
 
 		await this.assertHealthySkillNamed('my-great-skill')
 	}
 
-	private static async assertHealthySkillNamed(name: string) {
+	private static async assertHealthySkillNamed(
+		name: string,
+		expectedHealth: IHealthCheckResults = { skill: { status: 'passed' } }
+	) {
 		const cli = await this.Cli()
 		await this.linkLocalPackages()
 
 		const health = await cli.checkHealth()
 
-		assert.isEqualDeep(health, { skill: { status: 'passed' } })
+		// @ts-ignore
+		assert.isEqualDeep(health, expectedHealth)
 
 		const packageContents = diskUtil.readFile(this.resolvePath('package.json'))
 		assert.doesInclude(packageContents, name)
@@ -94,8 +97,8 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 
 		await this.wait(1000)
 
-		await this.term.sendInput('skill')
-		await this.term.sendInput('will-boot')
+		await this.ui.sendInput('skill')
+		await this.ui.sendInput('will-boot')
 
 		const results = await promise
 
@@ -103,6 +106,53 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 			'will-boot.listener.ts',
 			results.files ?? []
 		)
+	}
+
+	@test()
+	protected static async shouldAskInstallDependentFeatures() {
+		const executer = this.Executer('schema', 'create')
+		void executer.execute()
+
+		await this.wait(1000)
+
+		this.ui.reset()
+		const lastQuestion = this.ui.lastInvocation()
+
+		assert.isEqual(lastQuestion.command, 'confirm')
+		assert.doesInclude(lastQuestion.options, /install the skill feature/gi)
+	}
+
+	@test()
+	protected static async shouldInstallDependentFeatures() {
+		const executer = this.Executer('schema', 'create')
+		const promise = executer.execute()
+
+		await this.wait(1000)
+
+		await this.ui.sendInput('y')
+		await this.ui.sendInput('My great skill')
+		await this.ui.sendInput('A skill that is so good')
+
+		//install is running and can take awhile, so we'll wait for the next time we're asked for input
+		while (!this.ui.isWaitingForInput()) {
+			await this.wait(5000)
+		}
+
+		await this.ui.sendInput('Restaurant')
+		await this.ui.sendInput('')
+
+		await promise
+
+		await this.assertHealthySkillNamed('my-great-skill', {
+			skill: { status: 'passed' },
+			schema: { status: 'passed' },
+		})
+
+		const installer = this.FeatureInstaller()
+		const feature = installer.getFeature('schema')
+
+		const isInstalled = await feature.isInstalled()
+		assert.isTrue(isInstalled)
 	}
 
 	private static Executer<F extends FeatureCode>(
@@ -115,7 +165,7 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 			featureCode,
 			actionCode,
 			featureInstaller,
-			term: this.term,
+			term: this.ui,
 		})
 
 		return executer

@@ -58,6 +58,34 @@ export declare namespace SpruceErrors.Local {
 
 export declare namespace SpruceErrors.Local {
 
+	
+	export interface ICommandAborted {
+		
+			/** Command. */
+			'command': string
+	}
+
+	export interface ICommandAbortedSchema extends SpruceSchema.ISchema {
+		id: 'commandAborted',
+		name: 'Command aborted',
+		    fields: {
+		            /** Command. */
+		            'command': {
+		                label: 'Command',
+		                type: FieldType.Text,
+		                isRequired: true,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type CommandAbortedEntity = SchemaEntity<SpruceErrors.Local.ICommandAbortedSchema>
+
+}
+
+
+export declare namespace SpruceErrors.Local {
+
 	/** This command has not yet been implemented  */
 	export interface ICommandNotImplemented {
 		
@@ -369,7 +397,7 @@ export declare namespace SpruceErrors.Local {
 		                type: FieldType.Schema,
 		                hint: 'A hint',
 		                isArray: true,
-		                options: {schemas: SpruceErrors.Local.IPayloadArgsSchema[],}
+		                options: {schema: SpruceErrors.Local.IPayloadArgsSchema,}
 		            },
 		    }
 	}

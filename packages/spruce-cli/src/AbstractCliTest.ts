@@ -14,7 +14,7 @@ import StoreFactory, { StoreCode, IStoreMap } from './stores/StoreFactory'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static cliRoot = pathUtil.join(__dirname)
-	private static _term: TestInterface
+	private static _ui: TestInterface
 
 	protected static freshCwd() {
 		const tmpDirectory = pathUtil.join(os.tmpdir(), 'spruce-cli', uuid.v4())
@@ -23,12 +23,12 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return tmpDirectory
 	}
 
-	protected static get term() {
-		if (!this._term) {
-			this._term = new TestInterface()
+	protected static get ui() {
+		if (!this._ui) {
+			this._ui = new TestInterface()
 		}
 
-		return this._term
+		return this._ui
 	}
 
 	protected static resolveTestPath(...pathAfterTestDirsAndFiles: string[]) {
@@ -48,8 +48,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static async afterEach() {
 		await super.afterEach()
 
-		if (this._term) {
-			if (this._term.isWaitingForInput()) {
+		if (this._ui) {
+			if (this._ui.isWaitingForInput()) {
 				throw new Error(
 					`Terminal interface is waiting for input. Make sure you are invoking this.term.sendInput() as many times as needed.`
 				)
@@ -87,7 +87,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static FeatureFixture() {
-		return new FeatureFixture(this.cwd, this.ServiceFactory(), this.term)
+		return new FeatureFixture(this.cwd, this.ServiceFactory(), this.ui)
 	}
 
 	protected static resolveHashSprucePath(...filePath: string[]) {
@@ -102,7 +102,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			cwd: this.cwd,
 			serviceFactory,
 			storeFactory,
-			term: this.term,
+			term: this.ui,
 		})
 	}
 

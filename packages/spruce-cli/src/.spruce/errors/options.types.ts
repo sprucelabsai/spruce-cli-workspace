@@ -8,6 +8,9 @@ export interface IBootFailedErrorOptions extends SpruceErrors.Local.IBootFailed,
 export interface IBuildFailedErrorOptions extends SpruceErrors.Local.IBuildFailed, ISpruceErrorOptions {
 	code: 'BUILD_FAILED'
 }
+export interface ICommandAbortedErrorOptions extends SpruceErrors.Local.ICommandAborted, ISpruceErrorOptions {
+	code: 'COMMAND_ABORTED'
+}
 export interface ICommandNotImplementedErrorOptions extends SpruceErrors.Local.ICommandNotImplemented, ISpruceErrorOptions {
 	code: 'COMMAND_NOT_IMPLEMENTED'
 }
@@ -25,9 +28,6 @@ export interface IFailedToImportErrorOptions extends SpruceErrors.Local.IFailedT
 }
 export interface IFileExistsErrorOptions extends SpruceErrors.Local.IFileExists, ISpruceErrorOptions {
 	code: 'FILE_EXISTS'
-}
-export interface IPayloadArgsErrorOptions extends SpruceErrors.Local.IPayloadArgs, ISpruceErrorOptions {
-	code: 'PAYLOAD_ARGS'
 }
 export interface IGenericMercuryErrorOptions extends SpruceErrors.Local.IGenericMercury, ISpruceErrorOptions {
 	code: 'GENERIC_MERCURY'
@@ -57,6 +57,6 @@ export interface IVscodeNotInstalledErrorOptions extends SpruceErrors.Local.IVsc
 	code: 'VSCODE_NOT_INSTALLED'
 }
 
-type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | IBootFailedErrorOptions  | IBuildFailedErrorOptions  | ICommandNotImplementedErrorOptions  | ICreateAutoloaderFailedErrorOptions  | IDirectoryEmptyErrorOptions  | IExecutingCommandFailedErrorOptions  | IFailedToImportErrorOptions  | IFileExistsErrorOptions  | IPayloadArgsErrorOptions  | IGenericMercuryErrorOptions  | IGenericErrorOptions  | IInvalidCommandErrorOptions  | ILintFailedErrorOptions  | INotImplementedErrorOptions  | ISchemaExistsErrorOptions  | ISchemaFailedToImportErrorOptions  | IUserNotFoundErrorOptions  | IVscodeNotInstalledErrorOptions 
+type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | IBootFailedErrorOptions  | IBuildFailedErrorOptions  | ICommandAbortedErrorOptions  | ICommandNotImplementedErrorOptions  | ICreateAutoloaderFailedErrorOptions  | IDirectoryEmptyErrorOptions  | IExecutingCommandFailedErrorOptions  | IFailedToImportErrorOptions  | IFileExistsErrorOptions  | IGenericMercuryErrorOptions  | IGenericErrorOptions  | IInvalidCommandErrorOptions  | ILintFailedErrorOptions  | INotImplementedErrorOptions  | ISchemaExistsErrorOptions  | ISchemaFailedToImportErrorOptions  | IUserNotFoundErrorOptions  | IVscodeNotInstalledErrorOptions 
 
 export default ErrorOptions

@@ -17,7 +17,7 @@ export default class AbstractTestTest extends AbstractCliTest {
 				},
 			],
 			cacheKey,
-			{ graphicsInterface: this.term }
+			{ graphicsInterface: this.ui }
 		)
 		return cli
 	}

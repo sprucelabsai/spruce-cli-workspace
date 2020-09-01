@@ -169,7 +169,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		})
 
 		await this.wait(1000)
-		const last = this.term.invocations[this.term.invocations.length - 1]
+		const last = this.ui.invocations[this.ui.invocations.length - 1]
 
 		assert.isEqual(last?.command, 'prompt')
 		assert.isLength(last?.options?.options?.choices, 2)
@@ -184,7 +184,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 			},
 		])
 
-		await this.term.sendInput(newVersion.dirValue)
+		await this.ui.sendInput(newVersion.dirValue)
 		await createPromise
 	}
 
@@ -200,7 +200,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		})
 
 		await this.wait(1000)
-		const term = this.term as TestInterface
+		const term = this.ui as TestInterface
 		const last = term.invocations[term.invocations.length - 1]
 
 		assert.isEqualDeep(last?.options?.options?.choices, [
@@ -215,7 +215,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		])
 
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		this.term.sendInput(newVersion.dirValue)
+		this.ui.sendInput(newVersion.dirValue)
 
 		const createResults = await createPromise
 

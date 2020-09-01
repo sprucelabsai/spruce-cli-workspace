@@ -34,13 +34,13 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		await this.assertFailedHealthCheck(cli)
 
 		// should be asking for some files
-		assert.doesInclude(this.term.invocations, {
+		assert.doesInclude(this.ui.invocations, {
 			command: 'confirm',
 			options: `Overwrite ${this.resolvePath('src/index.ts')}?`,
 		})
 
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		this.term.sendInput('')
+		this.ui.sendInput('')
 
 		await promise
 	}

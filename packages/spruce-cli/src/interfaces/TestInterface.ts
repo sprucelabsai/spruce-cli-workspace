@@ -35,6 +35,15 @@ export default class TestInterface implements IGraphicsInterface {
 		return !!(this.promptResolver || this.confirmResolver)
 	}
 
+	public reset() {
+		this.promptResolver = undefined
+		this.confirmResolver = undefined
+	}
+
+	public lastInvocation() {
+		return this.invocations[this.invocations.length - 1]
+	}
+
 	public async sendInput(input: string): Promise<void> {
 		this.trackInvocation('sendInput', input)
 

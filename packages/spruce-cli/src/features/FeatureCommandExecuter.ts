@@ -1,9 +1,11 @@
 import { ISchema, SchemaPartialValues, SchemaValues } from '@sprucelabs/schema'
 import FormComponent from '../components/FormComponent'
+import SpruceError from '../errors/SpruceError'
 import { IGraphicsInterface } from '../types/cli.types'
 import formUtil from '../utilities/form.utility'
+import AbstractFeature from './AbstractFeature'
 import FeatureInstaller from './FeatureInstaller'
-import { FeatureCode, IFeatureMap } from './features.types'
+import { FeatureCode, IFeatureAction, IFeatureMap } from './features.types'
 
 type FeatureCommandExecuteOptions<
 	F extends FeatureCode
@@ -14,7 +16,7 @@ type FeatureCommandExecuteOptions<
 export default class FeatureCommandExecuter<F extends FeatureCode> {
 	private featureCode: F
 	private actionCode: string
-	private term: IGraphicsInterface
+	private ui: IGraphicsInterface
 	private featureInstaller: FeatureInstaller
 
 	public constructor(options: {
@@ -25,24 +27,84 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 	}) {
 		this.featureCode = options.featureCode
 		this.actionCode = options.actionCode
-		this.term = options.term
+		this.ui = options.term
 		this.featureInstaller = options.featureInstaller
 	}
 
 	public async execute(
 		options?: Record<string, any> & FeatureCommandExecuteOptions<F>
 	) {
+		await this.installMissingDependencies()
+
 		const feature = this.featureInstaller.getFeature(this.featureCode)
 		const action = feature.Action(this.actionCode)
-
-		this.term.stopLoading()
 
 		const isInstalled = await this.featureInstaller.isInstalled(
 			this.featureCode
 		)
 
-		let installOptions = { ...options }
+		const installOptions = await this.askAboutMissingFeatureOptionsIfFeatureIsNotInstalled(
+			isInstalled,
+			feature,
+			options
+		)
 
+		let answers = await this.askAboutMissingActionOptions(action, options)
+
+		if (!isInstalled) {
+			await this.installOurFeature(installOptions)
+		}
+
+		const results = await action.execute(answers || {})
+
+		this.ui.stopLoading()
+
+		this.ui.renderCommandSummary({
+			featureCode: this.featureCode,
+			actionCode: this.actionCode,
+			headline: action.name,
+			...results,
+		})
+
+		return results
+	}
+
+	private async askAboutMissingActionOptions(
+		action: IFeatureAction<ISchema>,
+		options: (Record<string, any> & FeatureCommandExecuteOptions<F>) | undefined
+	) {
+		let answers
+
+		const schema = action.optionsSchema
+		if (schema) {
+			answers = await this.collectAnswers(schema, options)
+		}
+		return answers
+	}
+
+	private async installOurFeature(installOptions: Record<string, any>) {
+		this.ui.clear()
+		this.ui.startLoading(`Installing ${this.featureCode}...`)
+
+		await this.featureInstaller.install({
+			features: [
+				{
+					code: this.featureCode,
+					//@ts-ignore
+					options: installOptions,
+				},
+			],
+		})
+
+		this.ui.stopLoading()
+	}
+
+	private async askAboutMissingFeatureOptionsIfFeatureIsNotInstalled(
+		isInstalled: boolean,
+		feature: IFeatureMap[F],
+		options: (Record<string, any> & FeatureCommandExecuteOptions<F>) | undefined
+	) {
+		let installOptions = { ...options }
 		if (!isInstalled) {
 			if (feature.optionsDefinition) {
 				const answers = await this.collectAnswers(
@@ -53,41 +115,101 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 				installOptions = { ...installOptions, ...answers }
 			}
 		}
+		return installOptions
+	}
 
-		const definition = action.optionsSchema
-		let answers
+	private getCommandName() {
+		return `${this.featureCode}.${this.actionCode}`
+	}
 
-		if (definition) {
-			answers = await this.collectAnswers(definition, options)
+	private async installMissingDependencies() {
+		const notInstalled = await this.getDependenciesNotInstalled()
+
+		if (notInstalled.length > 0) {
+			this.ui.clear()
+
+			this.ui.renderLine(
+				`Before you can run ${this.getCommandName()} I'll need to install ${
+					notInstalled.length
+				} feature${
+					notInstalled.length === 1 ? '' : 's'
+				}. Don't worry, I'll walk you through it!`
+			)
+
+			while (notInstalled.length > 0) {
+				await this.installMissingDependency(notInstalled)
+			}
+
+			this.ui.clear()
+			await this.ui.waitForEnter(
+				`Phew, now that that's done, lets get back to ${this.getCommandName()}!`
+			)
+		}
+	}
+
+	private async installMissingDependency(
+		feature: AbstractFeature<ISchema | undefined>[]
+	) {
+		const toInstall = feature.pop()
+
+		if (!toInstall) {
+			// for typescript
+			throw new Error('Dependent feature error')
 		}
 
-		if (!isInstalled) {
-			this.term.startLoading(`Installing ${this.featureCode}...`)
+		const confirm = await this.ui.confirm(
+			`Install the ${toInstall?.nameReadable} feature?`
+		)
 
-			await this.featureInstaller.install({
-				features: [
-					{
-						code: this.featureCode,
-						//@ts-ignore
-						options: installOptions,
-					},
-				],
+		if (!confirm) {
+			throw new SpruceError({
+				code: 'COMMAND_ABORTED',
+				command: this.getCommandName(),
 			})
-
-			this.term.stopLoading()
 		}
 
-		const results = await action.execute(answers || {})
-		this.term.stopLoading()
+		let installOptions = {}
+		if (toInstall.optionsDefinition) {
+			installOptions = await this.collectAnswers(
+				toInstall.optionsDefinition,
+				undefined
+			)
+		}
 
-		this.term.renderCommandSummary({
-			featureCode: this.featureCode,
-			actionCode: this.actionCode,
-			headline: action.name,
-			...results,
+		this.ui.clear()
+		this.ui.startLoading(`Installing ${toInstall.nameReadable}...`)
+
+		await this.featureInstaller.install({
+			features: [
+				{
+					code: toInstall.code,
+					//@ts-ignore
+					options: installOptions,
+				},
+			],
 		})
 
-		return results
+		this.ui.stopLoading()
+	}
+
+	private async getDependenciesNotInstalled() {
+		const dependencies = this.featureInstaller.getFeatureDependencies(
+			this.featureCode
+		)
+
+		const installedStatuses = await Promise.all(
+			dependencies.map(async (code) => {
+				const feature = this.featureInstaller.getFeature(code)
+				const isInstalled = await feature.isInstalled()
+
+				return !isInstalled ? feature : null
+			})
+		)
+
+		const notInstalled = installedStatuses.filter(
+			(feature) => !!feature
+		) as AbstractFeature[]
+		return notInstalled
 	}
 
 	private async collectAnswers<S extends ISchema>(
@@ -105,7 +227,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		let answers = {}
 		if (fieldsToPresent.length > 0) {
 			const featureForm = new FormComponent({
-				term: this.term,
+				term: this.ui,
 				schema,
 				initialValues: options,
 				onWillAskQuestion: formUtil.onWillAskQuestionHandler.bind(
