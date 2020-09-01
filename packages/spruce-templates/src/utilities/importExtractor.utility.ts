@@ -43,6 +43,7 @@ const importExtractorUtil = {
 
 		return uniqueImports
 	},
+	// eslint-disable-next-line no-undef
 } as const
 
 export default importExtractorUtil
