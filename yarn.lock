@@ -2120,6 +2120,17 @@
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
+"@sprucelabs/spruce-skill-utils@^10.23.0":
+  version "10.23.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-skill-utils/-/spruce-skill-utils-10.23.0.tgz#11063c81df047dd671fb4e4b1126bd2ebb7b81bb"
+  integrity sha512-pa7zdLYCL9jwN2FS2WzAVHAi8fcNOkcsLfCS9hJ5AQwDAMOSNKB1hkAFB+6W3uTt3xBZGThXwx+TllqYbtJMTw==
+  dependencies:
+    "@sprucelabs/error" "^2.2.172"
+    fs-extra "^9.0.1"
+    inflection "^1.12.0"
+    lodash "^4.17.20"
+    uuid "^8.3.0"
+
 "@sprucelabs/test@^6.0.99":
   version "6.0.99"
   resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-6.0.99.tgz#235aafe2da8bdb60acf31de7f8483cff0c0cf28c"
@@ -5447,9 +5458,9 @@ google-auth-library@^6.0.6:
     lru-cache "^6.0.0"
 
 google-libphonenumber@^3.2.12:
-  version "3.2.12"
-  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.12.tgz#6190bbf15482fd75ca06ac887ad0333fa3361751"
-  integrity sha512-vuDYnYNlCDQpIo5j7QDJTz2FNVAAuJZtbQ/khZgT6UBuRJV5GVQIQbOAdjTgu2uH4OFVChKAHQl8a2rgMnezOQ==
+  version "3.2.13"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.13.tgz#8f41f2ce1739d40e2b9ebccc75dca95474cdf0b5"
+  integrity sha512-USnpjJkD8St+wyshy154lF74JeauNCd8vrcusSlWjSFWitXzl7ZSuCunA/XxeVLqBv6DShrSfFMYdwGZ7x4hOw==
 
 google-p12-pem@^3.0.0:
   version "3.0.2"
