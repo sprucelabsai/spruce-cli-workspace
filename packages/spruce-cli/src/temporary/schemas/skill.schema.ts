@@ -40,6 +40,7 @@ const skillSchema: ISchema = {
 			hint: 'The people or skills who created and own this skill.',
 			isRequired: true,
 			isArray: true,
+			isPrivate: true,
 			options: {
 				schema: {
 					id: 'skillCreator',
