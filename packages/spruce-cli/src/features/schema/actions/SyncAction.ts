@@ -48,7 +48,7 @@ export default class SyncAction extends AbstractFeatureAction<
 
 		const resolvedFieldTypesDestination = diskUtil.resolvePath(
 			this.cwd,
-			fieldTypesDestinationDir ?? schemaTypesDestinationDir
+			fieldTypesDestinationDir ?? resolvedSchemaTypesDestinationDir
 		)
 
 		const schemaStore = this.Store('schema')
