@@ -2,6 +2,7 @@ import fsUtil from 'fs'
 import pathUtil from 'path'
 import handlebars from 'handlebars'
 
+// eslint-disable-next-line no-undef
 const templateCache: Record<string, HandlebarsTemplateDelegate<any>> = {}
 const templatePath = pathUtil.join(__dirname, '..', 'templates', 'typescript')
 

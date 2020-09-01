@@ -1,3 +1,4 @@
+/*global const*/
 export const HASH_SPRUCE_DIR = 'src/.spruce' as const
 export const LATEST_TOKEN = '@latest' as const
 export const LATEST_HANDLEBARS = `{{${LATEST_TOKEN}}}`

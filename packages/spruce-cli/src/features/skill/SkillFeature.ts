@@ -62,6 +62,7 @@ export default class SkillFeature<
 			"babel src --out-dir build --extensions '.ts, .tsx' --source-maps --copy-files --watch",
 		clean: 'rm -rf build/',
 		'clean.all': 'rm -rf build/ && rm -rf node_modules/',
+		// eslint-disable-next-line no-undef
 	} as const
 
 	public async beforePackageInstall(options: Skill) {
