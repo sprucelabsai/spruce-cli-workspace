@@ -260,14 +260,14 @@ const personV4TemplateItem: ISchemaTemplateItem = {
 	isNested: false,
 }
 
-const nestedMecuryContract: ISchema = {
+const nestedMercuryContract: ISchema = {
 	id: 'mercuryContract',
 	name: 'Mercury Contract',
 	description: '',
 	version: '2020_09_01',
-	dynamicKeySignature: {
+	dynamicFieldSignature: {
 		type: FieldType.Schema,
-		key: 'eventNameWithOptionalNamespace',
+		keyName: 'eventNameWithOptionalNamespace',
 		options: {
 			schema: {
 				id: 'eventSignature',
@@ -294,14 +294,14 @@ const nestedMecuryContract: ISchema = {
 	},
 }
 
-const nestedMecuryContractArray: ISchema = {
+const nestedMercuryContractArray: ISchema = {
 	id: 'mercuryContract',
 	name: 'Mercury Contract',
 	description: '',
 	version: '2020_09_01',
-	dynamicKeySignature: {
+	dynamicFieldSignature: {
 		type: FieldType.Schema,
-		key: 'eventNameWithOptionalNamespace',
+		keyName: 'eventNameWithOptionalNamespace',
 		options: {
 			schemas: [
 				{
@@ -353,19 +353,19 @@ const nestedMecuryContractArray: ISchema = {
 
 const mercuryTemplateItem: ISchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
-	id: nestedMecuryContract.id,
+	id: nestedMercuryContract.id,
 	nameCamel: 'mercuryContract',
 	namePascal: 'MercuryContract',
-	nameReadable: nestedMecuryContract.name,
+	nameReadable: nestedMercuryContract.name,
 	isNested: false,
 	schema: {
 		id: 'mercuryContract',
 		name: 'Mercury Contract',
 		description: '',
 		version: '2020_09_01',
-		dynamicKeySignature: {
+		dynamicFieldSignature: {
 			type: FieldType.Schema,
-			key: 'eventNameWithOptionalNamespace',
+			keyName: 'eventNameWithOptionalNamespace',
 			options: {
 				schemaIds: [
 					{
@@ -410,19 +410,19 @@ const eventSignatureTemplateItem: ISchemaTemplateItem = {
 }
 const mercuryTemplateItemArray: ISchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
-	id: nestedMecuryContractArray.id,
+	id: nestedMercuryContractArray.id,
 	nameCamel: 'mercuryContract',
 	namePascal: 'MercuryContract',
-	nameReadable: nestedMecuryContractArray.name,
+	nameReadable: nestedMercuryContractArray.name,
 	isNested: false,
 	schema: {
 		id: 'mercuryContract',
 		name: 'Mercury Contract',
 		description: '',
 		version: '2020_09_01',
-		dynamicKeySignature: {
+		dynamicFieldSignature: {
 			type: FieldType.Schema,
-			key: 'eventNameWithOptionalNamespace',
+			keyName: 'eventNameWithOptionalNamespace',
 			options: {
 				schemaIds: [
 					{
@@ -543,12 +543,12 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 	)
 	@test(
 		'handles nested schema in dynamic key signature',
-		[nestedMecuryContract],
+		[nestedMercuryContract],
 		[eventSignatureTemplateItem, mercuryTemplateItem]
 	)
 	@test(
 		'handles nested schemas in dynamic key signature',
-		[nestedMecuryContractArray],
+		[nestedMercuryContractArray],
 		[
 			eventSignatureTemplateItem,
 			eventSignatureTemplateItem2,

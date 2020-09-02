@@ -18,10 +18,10 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 	export interface IAclSchema extends SpruceSchema.ISchema {
 		id: 'acl',
 		name: 'Access control list',
-		dynamicKeySignature: { 
+		dynamicFieldSignature: { 
 		    label: 'Permissions grouped by slug',
 		    type: FieldType.Text,
-		    key: 'slug',
+		    keyName: 'slug',
 		    isArray: true,
 		    options: undefined
 		}	}

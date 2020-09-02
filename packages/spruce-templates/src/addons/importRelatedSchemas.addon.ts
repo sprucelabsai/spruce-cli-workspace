@@ -26,8 +26,8 @@ handlebars.registerHelper('importRelatedSchemas', function (
 		)
 	}
 
-	const fields = schema.dynamicKeySignature
-		? [schema.dynamicKeySignature]
+	const fields = schema.dynamicFieldSignature
+		? [schema.dynamicFieldSignature]
 		: Object.values(schema.fields ?? {})
 	const imports: string[] = []
 

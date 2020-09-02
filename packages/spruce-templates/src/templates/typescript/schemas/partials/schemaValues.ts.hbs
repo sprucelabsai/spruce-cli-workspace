@@ -1,6 +1,6 @@
-{{#if schema.dynamicKeySignature }}
-	/** {{schema.dynamicKeySignature.label}}.{{#if schema.dynamicKeySignature.hint}} {{schema.dynamicKeySignature.hint}}{{/if}} */
-	[{{schema.dynamicKeySignature.key}}:string]: {{{valueTypeLiteral namespace nameCamel schema.version "__dynamicKeySignature" renderAs }}}{{#unless schema.dynamicKeySignature.isRequired}}| undefined | null{{/unless}}{{/if}}
+{{#if schema.dynamicFieldSignature }}
+	/** {{schema.dynamicFieldSignature.label}}.{{#if schema.dynamicFieldSignature.hint}} {{schema.dynamicFieldSignature.hint}}{{/if}} */
+	[{{schema.dynamicFieldSignature.key}}:string]: {{{valueTypeLiteral namespace nameCamel schema.version "__dynamicFieldSignature" renderAs }}}{{#unless schema.dynamicFieldSignature.isRequired}}| undefined | null{{/unless}}{{/if}}
 {{#each schema.fields}}
 	{{#if (or label hint) }}/** {{{label}}}.{{#if hint}} {{{hint}}}{{/if}} */{{/if}}
 	'{{@key}}'{{#unless isRequired}}?{{/unless}}: {{{valueTypeLiteral ../namespace ../nameCamel ../schema.version @key ../renderAs }}}{{#unless isRequired}}| undefined | null{{/unless}}
