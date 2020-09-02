@@ -52,7 +52,7 @@ handlebars.registerHelper('valueTypeLiteral', function (
 
 	if (!valueType) {
 		throw new Error(
-			`Unable to render value type for field "${namespace}.${nameCamel}.${v}.${renderAs}"`
+			`Unable to render value type for field "${namespace}.${nameCamel}.${v}.${fieldName}"`
 		)
 	}
 
