@@ -260,6 +260,215 @@ const personV4TemplateItem: ISchemaTemplateItem = {
 	isNested: false,
 }
 
+const nestedMecuryContract: ISchema = {
+	id: 'mercuryContract',
+	name: 'Mercury Contract',
+	description: '',
+	version: '2020_09_01',
+	dynamicKeySignature: {
+		type: FieldType.Schema,
+		key: 'eventNameWithOptionalNamespace',
+		options: {
+			schema: {
+				id: 'eventSignature',
+				name: 'Event Signature',
+				description: '',
+				fields: {
+					responsePayload: {
+						type: FieldType.Raw,
+						options: { valueType: 'ISchema' },
+					},
+					emitPayload: {
+						type: FieldType.Raw,
+						options: { valueType: 'ISchema' },
+					},
+					listenPermissionsAny: {
+						type: FieldType.Text,
+					},
+					emitPermissionsAny: {
+						type: FieldType.Text,
+					},
+				},
+			},
+		},
+	},
+}
+
+const nestedMecuryContractArray: ISchema = {
+	id: 'mercuryContract',
+	name: 'Mercury Contract',
+	description: '',
+	version: '2020_09_01',
+	dynamicKeySignature: {
+		type: FieldType.Schema,
+		key: 'eventNameWithOptionalNamespace',
+		options: {
+			schemas: [
+				{
+					id: 'eventSignature',
+					name: 'Event Signature',
+					description: '',
+					fields: {
+						responsePayload: {
+							type: FieldType.Raw,
+							options: { valueType: 'ISchema' },
+						},
+						emitPayload: {
+							type: FieldType.Raw,
+							options: { valueType: 'ISchema' },
+						},
+						listenPermissionsAny: {
+							type: FieldType.Text,
+						},
+						emitPermissionsAny: {
+							type: FieldType.Text,
+						},
+					},
+				},
+				{
+					id: 'eventSignature2',
+					name: 'Event Signature2',
+					description: '',
+					fields: {
+						responsePayload: {
+							type: FieldType.Raw,
+							options: { valueType: 'ISchema' },
+						},
+						emitPayload: {
+							type: FieldType.Raw,
+							options: { valueType: 'ISchema' },
+						},
+						listenPermissionsAny: {
+							type: FieldType.Text,
+						},
+						emitPermissionsAny: {
+							type: FieldType.Text,
+						},
+					},
+				},
+			],
+		},
+	},
+}
+
+const mercuryTemplateItem: ISchemaTemplateItem = {
+	namespace: CORE_NAMESPACE,
+	id: nestedMecuryContract.id,
+	nameCamel: 'mercuryContract',
+	namePascal: 'MercuryContract',
+	nameReadable: nestedMecuryContract.name,
+	isNested: false,
+	schema: {
+		id: 'mercuryContract',
+		name: 'Mercury Contract',
+		description: '',
+		version: '2020_09_01',
+		dynamicKeySignature: {
+			type: FieldType.Schema,
+			key: 'eventNameWithOptionalNamespace',
+			options: {
+				schemaIds: [
+					{
+						id: 'eventSignature',
+						version: '2020_09_01',
+					},
+				],
+			},
+		},
+	},
+}
+
+const eventSignatureTemplateItem: ISchemaTemplateItem = {
+	namespace: CORE_NAMESPACE,
+	id: 'eventSignature',
+	nameCamel: 'eventSignature',
+	namePascal: 'EventSignature',
+	nameReadable: 'Event Signature',
+	isNested: true,
+	schema: {
+		id: 'eventSignature',
+		name: 'Event Signature',
+		description: '',
+		version: '2020_09_01',
+		fields: {
+			responsePayload: {
+				type: FieldType.Raw,
+				options: { valueType: 'ISchema' },
+			},
+			emitPayload: {
+				type: FieldType.Raw,
+				options: { valueType: 'ISchema' },
+			},
+			listenPermissionsAny: {
+				type: FieldType.Text,
+			},
+			emitPermissionsAny: {
+				type: FieldType.Text,
+			},
+		},
+	},
+}
+const mercuryTemplateItemArray: ISchemaTemplateItem = {
+	namespace: CORE_NAMESPACE,
+	id: nestedMecuryContractArray.id,
+	nameCamel: 'mercuryContract',
+	namePascal: 'MercuryContract',
+	nameReadable: nestedMecuryContractArray.name,
+	isNested: false,
+	schema: {
+		id: 'mercuryContract',
+		name: 'Mercury Contract',
+		description: '',
+		version: '2020_09_01',
+		dynamicKeySignature: {
+			type: FieldType.Schema,
+			key: 'eventNameWithOptionalNamespace',
+			options: {
+				schemaIds: [
+					{
+						id: 'eventSignature',
+						version: '2020_09_01',
+					},
+					{
+						id: 'eventSignature2',
+						version: '2020_09_01',
+					},
+				],
+			},
+		},
+	},
+}
+
+const eventSignatureTemplateItem2: ISchemaTemplateItem = {
+	namespace: CORE_NAMESPACE,
+	id: 'eventSignature2',
+	nameCamel: 'eventSignature2',
+	namePascal: 'EventSignature2',
+	nameReadable: 'Event Signature2',
+	isNested: true,
+	schema: {
+		id: 'eventSignature2',
+		name: 'Event Signature2',
+		description: '',
+		version: '2020_09_01',
+		fields: {
+			responsePayload: {
+				type: FieldType.Raw,
+				options: { valueType: 'ISchema' },
+			},
+			emitPayload: {
+				type: FieldType.Raw,
+				options: { valueType: 'ISchema' },
+			},
+			listenPermissionsAny: {
+				type: FieldType.Text,
+			},
+			emitPermissionsAny: {
+				type: FieldType.Text,
+			},
+		},
+	},
+}
 export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 	private static itemBuilder: SchemaTemplateItemBuilder
 
@@ -332,6 +541,20 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 			personV4TemplateItem,
 		]
 	)
+	@test(
+		'handles nested schema in dynamic key signature',
+		[nestedMecuryContract],
+		[eventSignatureTemplateItem, mercuryTemplateItem]
+	)
+	@test(
+		'handles nested schemas in dynamic key signature',
+		[nestedMecuryContractArray],
+		[
+			eventSignatureTemplateItem,
+			eventSignatureTemplateItem2,
+			mercuryTemplateItemArray,
+		]
+	)
 	protected static async generationTests(
 		definitions: ISchema[],
 		expected: ISchemaTemplateItem[]
@@ -341,7 +564,11 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 			definitions
 		)
 
-		assert.isEqual(results.length, expected.length)
+		assert.isEqual(
+			results.length,
+			expected.length,
+			"Didn't generate the number of template items expected"
+		)
 
 		expected.forEach((expected, idx) => {
 			const match = results[idx]

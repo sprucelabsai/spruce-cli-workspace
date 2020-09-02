@@ -22,8 +22,9 @@ export default class SchemaTemplateItemBuilder {
 		this.schemaCache = {}
 		this.cacheSchemas(schemas)
 
+		const versionedSchemas = this.versionNestedSchemasForSchemas(schemas)
 		const flattened = this.flattenSchemas(
-			schemas.sort((a, b) => {
+			versionedSchemas.sort((a, b) => {
 				return `${a.id}${a.version}`.localeCompare(`${b.id}${b.version}`)
 			})
 		)
@@ -36,6 +37,68 @@ export default class SchemaTemplateItemBuilder {
 			)
 		)
 		return templateTimes
+	}
+
+	private versionNestedSchemasForSchemas(schemas: ISchema[]) {
+		let versions: ISchema[] = []
+		for (const schema of schemas) {
+			versions.push(this.versionNestedSchemas(schema))
+		}
+
+		return versions
+	}
+
+	private versionNestedSchemas(schema: ISchema) {
+		if (!schema.version) {
+			return schema
+		}
+
+		const normalized: ISchema = cloneDeep(schema)
+
+		let fields: Record<string, any> | undefined
+		if (normalized.dynamicKeySignature) {
+			fields = { dynamicField: normalized.dynamicKeySignature }
+		} else {
+			fields = normalized.fields
+		}
+
+		Object.keys(fields ?? {}).forEach((name) => {
+			//@ts-ignore
+			const field = fields[name]
+			if (field.type === FieldType.Schema) {
+				this.dropInVersionIfMissing(field, normalized)
+			}
+		})
+
+		if (normalized.dynamicKeySignature) {
+			normalized.dynamicKeySignature = fields?.dynamicField
+		} else {
+			normalized.fields = fields
+		}
+
+		return normalized
+	}
+
+	private dropInVersionIfMissing(
+		field: ISchemaFieldDefinition,
+		normalized: ISchema
+	) {
+		let schemas: (ISchema | ISchemaIdWithVersion)[] = []
+		if (field.options.schema) {
+			schemas.push(field.options.schema)
+		}
+		if (field.options.schemas) {
+			schemas.push(...field.options.schemas)
+		}
+		for (const schema of schemas) {
+			if (
+				schemaUtil.relationshipType(schema) ===
+					SchemaRelationshipType.Definition &&
+				!schema.version
+			) {
+				schema.version = normalized.version
+			}
+		}
 	}
 
 	private cacheSchemas(schemas: ISchema[]) {
@@ -71,8 +134,16 @@ export default class SchemaTemplateItemBuilder {
 	private pullRelatedDefinitions(definition: ISchema) {
 		const related: ISchema[] = []
 
-		Object.keys(definition.fields ?? {}).forEach((fieldName) => {
-			const field = definition.fields?.[fieldName]
+		let fields: Record<string, any> | undefined
+		if (definition.dynamicKeySignature) {
+			fields = { dynamicField: definition.dynamicKeySignature }
+		} else {
+			fields = definition.fields
+		}
+
+		Object.keys(fields ?? {}).forEach((fieldName: string) => {
+			//@ts-ignore
+			const field = fields[fieldName]
 
 			if (field?.type === FieldType.Schema) {
 				try {
@@ -147,8 +218,16 @@ export default class SchemaTemplateItemBuilder {
 	private normalizeSchemaFieldsToIdsWithVersion(schema: ISchema): ISchema {
 		const normalized: ISchema = cloneDeep(schema)
 
-		Object.keys(normalized.fields ?? {}).forEach((name) => {
-			const field = normalized.fields?.[name]
+		let fields: Record<string, any> | undefined
+		if (normalized.dynamicKeySignature) {
+			fields = { dynamicField: normalized.dynamicKeySignature }
+		} else {
+			fields = normalized.fields
+		}
+
+		Object.keys(fields ?? {}).forEach((name) => {
+			//@ts-ignore
+			const field = fields[name]
 			if (field && field.type === FieldType.Schema) {
 				const idsWithVersion = SchemaField.mapFieldDefinitionToSchemaIdsWithVersion(
 					field
@@ -162,6 +241,12 @@ export default class SchemaTemplateItemBuilder {
 				field.options.schemaIds = idsWithVersion
 			}
 		})
+
+		if (normalized.dynamicKeySignature) {
+			normalized.dynamicKeySignature = fields?.dynamicField
+		} else {
+			normalized.fields = fields
+		}
 
 		return normalized
 	}
