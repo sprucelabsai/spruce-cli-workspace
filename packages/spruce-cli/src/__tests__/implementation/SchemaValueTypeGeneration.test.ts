@@ -1,4 +1,4 @@
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, LOCAL_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import { templates, IValueTypes } from '@sprucelabs/spruce-templates'
 import { assert, test } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
@@ -15,6 +15,10 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 
 		const schemasDir = this.resolvePath('src', 'schemas')
 		await diskUtil.copyDir(this.resolveTestPath('test_builders'), schemasDir)
+		await diskUtil.copyDir(
+			this.resolveTestPath('dynamic_key_schemas'),
+			schemasDir
+		)
 
 		await cli.getFeature('schema').Action('sync').execute({})
 	}
@@ -118,6 +122,17 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 			type: 'string[]',
 			value: 'string[]',
 			schemaType: 'string[]',
+		}
+	)
+	@test(
+		'generates dynamic field with nested schemas',
+		`${LOCAL_NAMESPACE}.mercuryContract.${CORE_SCHEMA_VERSION.constValue}.__dynamicKeySignature.valueTypes`,
+		{
+			type:
+				"{ schemaId: 'eventSignature', version: 'v2020_07_22', values: SpruceSchemas.Local.v2020_07_22.IEventSignature } | { schemaId: 'eventSignature2', version: 'v2020_07_22', values: SpruceSchemas.Local.v2020_07_22.IEventSignature2 }",
+			value: '[eventSignatureSchema, eventSignature2Schema]',
+			schemaType:
+				'(SpruceSchemas.Local.v2020_07_22.IEventSignatureSchema | SpruceSchemas.Local.v2020_07_22.IEventSignature2Schema)[]',
 		}
 	)
 	protected static async importsTypes(

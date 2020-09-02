@@ -2,7 +2,7 @@ id: '{{{escape schema.id}}}',
 name: '{{{escape schema.name}}}'{{#if schema.description}},
 description: '{{{escape schema.description}}}'{{/if}}{{#if schema.dynamicKeySignature}},
 dynamicKeySignature: { 
-    {{> fieldDefinitionBody namespace=namespace nameCamel=nameCamel schema=schema fieldName="__dynamic" field=schema.dynamicKeySignature renderAs=renderAs}} 
+    {{> fieldDefinitionBody namespace=namespace nameCamel=nameCamel schema=schema fieldName="__dynamicKeySignature" field=schema.dynamicKeySignature renderAs=renderAs}} 
 }{{/if}}{{#if schema.fields}},
     fields: {
         {{#each schema.fields}}
