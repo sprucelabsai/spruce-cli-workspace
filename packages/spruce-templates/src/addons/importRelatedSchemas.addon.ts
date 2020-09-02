@@ -6,10 +6,10 @@ import { camelCase, uniq } from 'lodash'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 handlebars.registerHelper('importRelatedSchemas', function (
-	definition: ISchema,
+	schema: ISchema,
 	options
 ) {
-	if (!definition) {
+	if (!schema) {
 		throw new Error('importRelatedSchemas needs a ISchema as the first arg')
 	}
 
@@ -26,7 +26,9 @@ handlebars.registerHelper('importRelatedSchemas', function (
 		)
 	}
 
-	const fields = Object.values(definition.fields ?? {})
+	const fields = schema.dynamicKeySignature
+		? [schema.dynamicKeySignature]
+		: Object.values(schema.fields ?? {})
 	const imports: string[] = []
 
 	fields.forEach((field) => {

@@ -184,7 +184,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 			schemasDir
 		)
 
-		await cli.getFeature('schema').Action('sync').execute({})
+		const results = await cli.getFeature('schema').Action('sync').execute({})
 
 		const typesPath = this.resolveHashSprucePath('schemas', 'schemas.types.ts')
 		const typesContent = diskUtil.readFile(typesPath)
@@ -194,5 +194,11 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		)
 
 		await this.Service('typeChecker').check(typesPath)
+
+		const schemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
+			'mercuryContract.schema.ts',
+			results.files ?? []
+		)
+		await this.Service('typeChecker').check(schemaMatch)
 	}
 }
