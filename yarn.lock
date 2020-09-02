@@ -2108,28 +2108,17 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^8.1.17":
-  version "8.1.17"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-8.1.17.tgz#ebc5cf05796a3f2f22b5ab872edf30cdb3f61241"
-  integrity sha512-0+zt3Yn+u8byzAMc4UId4Q2eb66LxbUzpVQW43MPNK3DkduhY8KB3flN46upsr5jiBE8atFpTYk6etidG5P0ew==
+"@sprucelabs/schema@^8.1.18":
+  version "8.1.18"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-8.1.18.tgz#d202370fb5f1d7205aaa07562007812d3ec115d7"
+  integrity sha512-Ga4WqiaHOzztlzIqYsCAXQpVZvjrBb7a2EgDnO9idip27Go+Y0Guial45GXwsA4tQ4J468rVFJK/YM3pO1Gr7w==
   dependencies:
     "@sprucelabs/error" "^2.2.172"
     "@sprucelabs/log" "^10.2.181"
-    google-libphonenumber "^3.2.12"
+    google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.7.57"
     mime-db "^1.44.0"
     mime-type "^4.0.0"
-
-"@sprucelabs/spruce-skill-utils@^10.23.0":
-  version "10.23.0"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-skill-utils/-/spruce-skill-utils-10.23.0.tgz#11063c81df047dd671fb4e4b1126bd2ebb7b81bb"
-  integrity sha512-pa7zdLYCL9jwN2FS2WzAVHAi8fcNOkcsLfCS9hJ5AQwDAMOSNKB1hkAFB+6W3uTt3xBZGThXwx+TllqYbtJMTw==
-  dependencies:
-    "@sprucelabs/error" "^2.2.172"
-    fs-extra "^9.0.1"
-    inflection "^1.12.0"
-    lodash "^4.17.20"
-    uuid "^8.3.0"
 
 "@sprucelabs/test@^6.0.99":
   version "6.0.99"
@@ -5457,7 +5446,7 @@ google-auth-library@^6.0.6:
     jws "^4.0.0"
     lru-cache "^6.0.0"
 
-google-libphonenumber@^3.2.12:
+google-libphonenumber@^3.2.13:
   version "3.2.13"
   resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.13.tgz#8f41f2ce1739d40e2b9ebccc75dca95474cdf0b5"
   integrity sha512-USnpjJkD8St+wyshy154lF74JeauNCd8vrcusSlWjSFWitXzl7ZSuCunA/XxeVLqBv6DShrSfFMYdwGZ7x4hOw==
