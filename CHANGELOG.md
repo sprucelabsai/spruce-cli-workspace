@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.24.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.23.8...v10.24.0) (2020-09-02)
+
+
+### Bug Fixes
+
+* dynamic fields in nested schemas test and generated types files ([94eaa00](https://github.com/sprucelabsai/spruce-cli-workspace/commit/94eaa00))
+
+
+### Features
+
+* flatten schemas in dynamic keys and version nested schemas ([0c25ee4](https://github.com/sprucelabsai/spruce-cli-workspace/commit/0c25ee4))
+
+
+
+
+
 ## [10.23.8](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.23.7...v10.23.8) (2020-09-02)
 
 **Note:** Version bump only for package spruce-cli-workspace
