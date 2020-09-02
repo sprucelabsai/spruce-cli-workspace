@@ -18,11 +18,11 @@ export default buildSchema({
 					fields: {
 						responsePayload: {
 							type: FieldType.Raw,
-							options: { valueType: 'ISchema' },
+							options: { valueType: 'SpruceSchema.ISchema' },
 						},
 						emitPayload: {
 							type: FieldType.Raw,
-							options: { valueType: 'ISchema' },
+							options: { valueType: 'SpruceSchema.ISchema' },
 						},
 						listenPermissionsAny: {
 							type: FieldType.Text,
@@ -39,11 +39,11 @@ export default buildSchema({
 					fields: {
 						responsePayload: {
 							type: FieldType.Raw,
-							options: { valueType: 'ISchema' },
+							options: { valueType: 'SpruceSchema.ISchema' },
 						},
 						emitPayload: {
 							type: FieldType.Raw,
-							options: { valueType: 'ISchema' },
+							options: { valueType: 'SpruceSchema.ISchema' },
 						},
 						listenPermissionsAny: {
 							type: FieldType.Text,
