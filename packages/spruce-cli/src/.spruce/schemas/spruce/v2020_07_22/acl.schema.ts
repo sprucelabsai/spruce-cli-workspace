@@ -9,7 +9,6 @@ const aclSchema: SpruceSchemas.Spruce.v2020_07_22.IAclSchema  = {
 	dynamicFieldSignature: { 
 	    label: 'Permissions grouped by slug',
 	    type: FieldType.Text,
-	    key: 'slug',
 	    isArray: true,
 	    options: undefined
 	}}
