@@ -12,7 +12,7 @@ import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 handlebars.registerHelper('valueTypeGenerator', function (
 	fieldDefinition:
 		| FieldDefinition
-		| NonNullable<ISchema['dynamicKeySignature']>,
+		| NonNullable<ISchema['dynamicFieldSignature']>,
 	renderAs: TemplateRenderAs,
 	func: 'generateValueTypeGeneratorType' | 'generateTypeLiteral',
 	options: {
@@ -40,7 +40,7 @@ handlebars.registerHelper('valueTypeGenerator', function (
 	const type = handlebars.helpers.fieldTypeEnum(fieldDefinition, options)
 	const fieldDefinitionCopy = { ...fieldDefinition }
 	// @ts-ignore
-	delete (fieldDefinitionCopy as ISchema['dynamicKeySignature'])?.key
+	delete (fieldDefinitionCopy as ISchema['dynamicFieldSignature'])?.keyName
 
 	const def = JSON.stringify({
 		...fieldDefinitionCopy,

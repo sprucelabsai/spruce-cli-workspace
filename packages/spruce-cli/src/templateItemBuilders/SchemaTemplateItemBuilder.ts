@@ -56,8 +56,8 @@ export default class SchemaTemplateItemBuilder {
 		const normalized: ISchema = cloneDeep(schema)
 
 		let fields: Record<string, any> | undefined
-		if (normalized.dynamicKeySignature) {
-			fields = { dynamicField: normalized.dynamicKeySignature }
+		if (normalized.dynamicFieldSignature) {
+			fields = { dynamicField: normalized.dynamicFieldSignature }
 		} else {
 			fields = normalized.fields
 		}
@@ -70,8 +70,8 @@ export default class SchemaTemplateItemBuilder {
 			}
 		})
 
-		if (normalized.dynamicKeySignature) {
-			normalized.dynamicKeySignature = fields?.dynamicField
+		if (normalized.dynamicFieldSignature) {
+			normalized.dynamicFieldSignature = fields?.dynamicField
 		} else {
 			normalized.fields = fields
 		}
@@ -135,8 +135,8 @@ export default class SchemaTemplateItemBuilder {
 		const related: ISchema[] = []
 
 		let fields: Record<string, any> | undefined
-		if (definition.dynamicKeySignature) {
-			fields = { dynamicField: definition.dynamicKeySignature }
+		if (definition.dynamicFieldSignature) {
+			fields = { dynamicField: definition.dynamicFieldSignature }
 		} else {
 			fields = definition.fields
 		}
@@ -219,8 +219,8 @@ export default class SchemaTemplateItemBuilder {
 		const normalized: ISchema = cloneDeep(schema)
 
 		let fields: Record<string, any> | undefined
-		if (normalized.dynamicKeySignature) {
-			fields = { dynamicField: normalized.dynamicKeySignature }
+		if (normalized.dynamicFieldSignature) {
+			fields = { dynamicField: normalized.dynamicFieldSignature }
 		} else {
 			fields = normalized.fields
 		}
@@ -242,8 +242,8 @@ export default class SchemaTemplateItemBuilder {
 			}
 		})
 
-		if (normalized.dynamicKeySignature) {
-			normalized.dynamicKeySignature = fields?.dynamicField
+		if (normalized.dynamicFieldSignature) {
+			normalized.dynamicFieldSignature = fields?.dynamicField
 		} else {
 			normalized.fields = fields
 		}

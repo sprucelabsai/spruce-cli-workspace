@@ -47,6 +47,7 @@ const skillSchema: SpruceSchemas.Spruce.v2020_07_22.ISkillSchema  = {
 	            'creators': {
 	                label: 'Creators',
 	                type: FieldType.Schema,
+	                isPrivate: true,
 	                isRequired: true,
 	                hint: 'The people or skills who created and own this skill.',
 	                isArray: true,

@@ -16,8 +16,8 @@ export default buildSchema({
 				schema: buildSchema({
 					id: 'nested-inline-schema',
 					name: 'nested with dynamic fields',
-					dynamicKeySignature: {
-						key: 'prop',
+					dynamicFieldSignature: {
+						keyName: 'prop',
 						type: FieldType.Text,
 					},
 				}),

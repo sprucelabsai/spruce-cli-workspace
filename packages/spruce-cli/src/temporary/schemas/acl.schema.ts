@@ -7,11 +7,11 @@ const aclSchema: ISchema = {
 	name: 'Access control list',
 	description: '',
 	version: CORE_SCHEMA_VERSION.constValue,
-	dynamicKeySignature: {
+	dynamicFieldSignature: {
 		type: FieldType.Text,
 		isArray: true,
 		label: 'Permissions grouped by slug',
-		key: 'slug',
+		keyName: 'slug',
 	},
 }
 

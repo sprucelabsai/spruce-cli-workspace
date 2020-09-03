@@ -12,16 +12,16 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 	
 	export interface IAcl {
 			/** Permissions grouped by slug. */
-			[slug:string]: string[]
+			[slug:string]: string[]| undefined | null
 	}
 
 	export interface IAclSchema extends SpruceSchema.ISchema {
 		id: 'acl',
 		name: 'Access control list',
-		dynamicKeySignature: { 
+		dynamicFieldSignature: { 
 		    label: 'Permissions grouped by slug',
 		    type: FieldType.Text,
-		    key: 'slug',
+		    keyName: 'slug',
 		    isArray: true,
 		    options: undefined
 		}	}
@@ -501,6 +501,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            'creators': {
 		                label: 'Creators',
 		                type: FieldType.Schema,
+		                isPrivate: true,
 		                isRequired: true,
 		                hint: 'The people or skills who created and own this skill.',
 		                isArray: true,

@@ -38,11 +38,11 @@ const valueTypes = {
 		"{{@key}}": {
 			{{#each this}} 
 			"{{schema.version}}{{#unless schema.version}}{{../../../SCHEMA_VERSION_FALLBACK}}{{/unless}}":{
-				{{#if schema.dynamicKeySignature}}
-				__dynamicKeySignature: {
+				{{#if schema.dynamicFieldSignature}}
+				__dynamicFieldSignature: {
 					valueTypes: {
 						{{#each ../../../rendersAs}}
-						{{this}}: {{{ valueTypeGenerator ../schema.dynamicKeySignature this 'generateTypeLiteral'}}},
+						{{this}}: {{{ valueTypeGenerator ../schema.dynamicFieldSignature this 'generateTypeLiteral'}}},
 						{{/each}}
 					}
 				},	
