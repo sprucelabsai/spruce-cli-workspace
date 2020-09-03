@@ -12,7 +12,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 	
 	export interface IAcl {
 			/** Permissions grouped by slug. */
-			[:string]: string[]| undefined | null
+			[slug:string]: string[]| undefined | null
 	}
 
 	export interface IAclSchema extends SpruceSchema.ISchema {
@@ -21,6 +21,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		dynamicFieldSignature: { 
 		    label: 'Permissions grouped by slug',
 		    type: FieldType.Text,
+		    keyName: 'slug',
 		    isArray: true,
 		    options: undefined
 		}	}
