@@ -40,7 +40,7 @@ handlebars.registerHelper('valueTypeGenerator', function (
 	const type = handlebars.helpers.fieldTypeEnum(fieldDefinition, options)
 	const fieldDefinitionCopy = { ...fieldDefinition }
 	// @ts-ignore
-	delete (fieldDefinitionCopy as ISchema['dynamicFieldSignature'])?.key
+	delete (fieldDefinitionCopy as ISchema['dynamicFieldSignature'])?.keyName
 
 	const def = JSON.stringify({
 		...fieldDefinitionCopy,
