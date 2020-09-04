@@ -2091,6 +2091,11 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.183.tgz#72c333a78ae8a50257f352fcb1e6cc51b5e7538d"
   integrity sha512-i7gjzWs6chzrTi2r8m6HA/ZgmPRUaYGiifUP4ABg43TK9pQmWa1JmFqCR+nGYUvwflLNuzeiP5626f413y4CZA==
 
+"@sprucelabs/error@^2.2.197":
+  version "2.2.197"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.197.tgz#0396651eb0df7c07c095de098d3f914bf8a5f156"
+  integrity sha512-ZR2f/Hpo5sFfsHPrgOuxr+xQhQ0TeqJdBgzc1m2Su/2pHh9xbRXlVIUter2wQZC3H9xg2qlzeb/N0AbsDVrx6A==
+
 "@sprucelabs/jest-sheets-reporter@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@sprucelabs/jest-sheets-reporter/-/jest-sheets-reporter-1.2.0.tgz#64d19f6454df2ca8f15a704f6fdb86bd9b0d7ede"
@@ -2103,6 +2108,11 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.184.tgz#64d456130547b3158e6103a7dd0c2e8e16512144"
   integrity sha512-AHvBv1JdCUgJzi6WFf4UrSYjcemTRj0GUrkMtSeWZt/cOfN1awtLxPT1Tm0xJpcDP3zfn0qttrALPFB2YH0CXg==
 
+"@sprucelabs/log@^10.2.190":
+  version "10.2.190"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.190.tgz#0542453cc3940732671d7b73e6b17266cab8a9a6"
+  integrity sha512-ueH3mSt2q0AmEXKtr0doB8T6qVfU58Sa3j0lqZENCbvSOoHcsM/bkSeI51uURDGhKLhmcMBhN86scGNLQcIxUQ==
+
 "@sprucelabs/mercury@^10.5.72":
   version "10.5.72"
   resolved "https://registry.yarnpkg.com/@sprucelabs/mercury/-/mercury-10.5.72.tgz#dc65ca30adf79388bf85fad0a434ab9a91f1fbb1"
@@ -2112,6 +2122,18 @@
     randombytes "^2.1.0"
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
+
+"@sprucelabs/schema@^9.0.22":
+  version "9.0.22"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-9.0.22.tgz#5112184b49f695629e07b214b4bb7f59dbf135a5"
+  integrity sha512-UKNbrC8jO+RXVSCX8hFBdqzXRUkpBUpk73ojtnboBegQ78AOses9N42gZiIHpeEdMdA+hBWZToZmrPw2NOIKXg==
+  dependencies:
+    "@sprucelabs/error" "^2.2.197"
+    "@sprucelabs/log" "^10.2.190"
+    google-libphonenumber "^3.2.13"
+    libphonenumber-js "^1.7.57"
+    mime-db "^1.44.0"
+    mime-type "^4.0.0"
 
 "@sprucelabs/schema@^9.0.7":
   version "9.0.7"
