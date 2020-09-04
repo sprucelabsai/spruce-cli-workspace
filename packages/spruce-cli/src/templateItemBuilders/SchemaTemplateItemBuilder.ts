@@ -212,6 +212,7 @@ export default class SchemaTemplateItemBuilder {
 			schema: this.normalizeSchemaFieldsToIdsWithVersion(schema),
 			...schemaUtil.generateNamesForSchema(schema),
 			isNested,
+			destinationDir: '#spruce/schemas',
 		}
 	}
 

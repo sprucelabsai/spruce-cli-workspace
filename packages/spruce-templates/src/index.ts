@@ -91,6 +91,7 @@ export const templates = {
 			typesFile?: string
 		}
 	) {
+		debugger
 		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
 		const template = templateImportUtil.getTemplate('schemas/schema.ts.hbs')
 		return template({

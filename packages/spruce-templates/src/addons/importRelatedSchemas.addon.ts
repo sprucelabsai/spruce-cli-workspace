@@ -44,9 +44,9 @@ handlebars.registerHelper('importRelatedSchemas', function (
 				)
 				if (matched) {
 					imports.push(
-						`import ${
-							matched.nameCamel
-						}Schema from '#spruce/schemas/${camelCase(matched.namespace)}${
+						`import ${matched.nameCamel}Schema from '${
+							matched.destinationDir
+						}/${camelCase(matched.namespace)}${
 							matched.schema.version ? `/${matched.schema.version}` : ''
 						}/${matched.id}.schema'`
 					)

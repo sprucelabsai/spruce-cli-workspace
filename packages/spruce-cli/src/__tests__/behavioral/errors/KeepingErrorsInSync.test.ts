@@ -102,7 +102,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		assert.isFalse(diskUtil.doesFileExist(testError1SchemaMatch))
 	}
 
-	@test()
+	@test.only()
 	protected static async canHandleNestedSchemasWithoutAddingThemToOptions() {
 		const cli = await this.installErrorFeature('options-in-sync')
 		const source = this.resolveTestPath('error_nested_schemas')
@@ -116,7 +116,8 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 			results.files ?? []
 		)
 
-		await this.Service('typeChecker').check(errorTypesFile)
+		const typeChecker = this.Service('typeChecker')
+		await typeChecker.check(errorTypesFile)
 
 		const errorOptionsFile = testUtil.assertsFileByNameInGeneratedFiles(
 			/options\.types/,
@@ -139,9 +140,13 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 			nameReadable: 'Test error 2',
 		})
 
-		await cli.getFeature('error').Action('sync').execute({})
+		const syncResults = await cli.getFeature('error').Action('sync').execute({})
 
 		classContents = diskUtil.readFile(errorClassFile)
 		assert.doesNotInclude(classContents, /NESTED_SCHEMA/)
+
+		for (const generated of syncResults.files ?? []) {
+			await typeChecker.check(generated.path)
+		}
 	}
 }
