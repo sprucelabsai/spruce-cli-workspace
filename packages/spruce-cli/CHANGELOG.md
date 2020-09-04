@@ -3,6 +3,49 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.25.4](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.25.3...v10.25.4) (2020-09-03)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [10.25.3](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.25.2...v10.25.3) (2020-09-03)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [10.25.2](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.25.1...v10.25.2) (2020-09-03)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [10.25.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.25.0...v10.25.1) (2020-09-03)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+# [10.25.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.24.4...v10.25.0) (2020-09-03)
+
+
+### Breaking Changes
+
+* dynamic field rename ([6028527](https://github.com/sprucelabsai/spruce-cli-workspace/commit/6028527))
+
+
+
+
+
 ## [10.24.4](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.24.3...v10.24.4) (2020-09-02)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
