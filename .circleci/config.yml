@@ -27,11 +27,20 @@ jobs:
       - restore_cache:
           key: cli-import-service
       - run:
-          name: "Build, lint, and test 💪"
+          name: "Install"
           command: |
             yarn install --frozen-lockfile
-            yarn rebuild
+      -run:
+          name: "Build"
+          command: |
+            yarn build || yarn build
+      - run:
+          name: "Lint"
+          command: |
             yarn lint
+      - run:
+          name: "Test 💪"
+          command: |
             yarn test -- -w 4
       - save_cache:
           key: cli-import-service
