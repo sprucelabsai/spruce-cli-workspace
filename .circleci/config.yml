@@ -30,7 +30,7 @@ jobs:
           name: "Install"
           command: |
             yarn install --frozen-lockfile
-      -run:
+      - run:
           name: "Build"
           command: |
             yarn build || yarn build
