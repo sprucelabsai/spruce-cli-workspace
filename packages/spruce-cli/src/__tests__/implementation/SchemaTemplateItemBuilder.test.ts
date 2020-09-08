@@ -1,8 +1,8 @@
 import { ISchema, ISchemaTemplateItem } from '@sprucelabs/schema'
+import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
-import { CORE_NAMESPACE } from '../../constants'
 import SchemaTemplateItemBuilder from '../../templateItemBuilders/SchemaTemplateItemBuilder'
 
 const cowbellV1: ISchema = {
@@ -24,6 +24,7 @@ const cowbellV1TemplateItem: ISchemaTemplateItem = {
 	nameReadable: 'Cowbell test',
 	schema: cowbellV1,
 	isNested: false,
+	destinationDir: '#spruce/schemas',
 }
 
 const cowbellV1NestedTemplateItem: ISchemaTemplateItem = {
@@ -34,6 +35,7 @@ const cowbellV1NestedTemplateItem: ISchemaTemplateItem = {
 	nameReadable: 'Cowbell test',
 	schema: cowbellV1,
 	isNested: true,
+	destinationDir: '#spruce/schemas',
 }
 
 const cowbellV2: ISchema = {
@@ -60,6 +62,7 @@ const cowbellV2TemplateItem: ISchemaTemplateItem = {
 	namePascal: 'Cowbell',
 	nameReadable: 'Cowbell test two!',
 	isNested: false,
+	destinationDir: '#spruce/schemas',
 	schema: {
 		id: 'cowbell',
 		version: '2020_06_02',
@@ -85,6 +88,7 @@ const cowbellV2NestedTemplateItem: ISchemaTemplateItem = {
 	namePascal: 'Cowbell',
 	nameReadable: 'Cowbell test two!',
 	isNested: true,
+	destinationDir: '#spruce/schemas',
 	schema: {
 		id: 'cowbell',
 		version: '2020_06_02',
@@ -122,6 +126,7 @@ const personV1TemplateItem: ISchemaTemplateItem = {
 	nameReadable: 'Person test',
 	schema: personV1,
 	isNested: false,
+	destinationDir: '#spruce/schemas',
 }
 
 const personV2: ISchema = {
@@ -157,6 +162,7 @@ const personV2TemplateItem: ISchemaTemplateItem = {
 	namePascal: 'Person',
 	nameReadable: 'Person version 2',
 	isNested: false,
+	destinationDir: '#spruce/schemas',
 	schema: {
 		id: 'person',
 		version: '2020_06_01',
@@ -196,6 +202,7 @@ const personV3TemplateItem: ISchemaTemplateItem = {
 	namePascal: 'Person',
 	nameReadable: 'Person test the 3rd',
 	isNested: false,
+	destinationDir: '#spruce/schemas',
 	schema: {
 		id: 'person',
 		version: '2020_06_03',
@@ -221,6 +228,7 @@ const vehicleV1TemplateItem: ISchemaTemplateItem = {
 	namePascal: 'Vehicle',
 	nameReadable: 'Vehicle v1',
 	isNested: true,
+	destinationDir: '#spruce/schemas',
 	schema: {
 		id: 'vehicle',
 		name: 'Vehicle v1',
@@ -237,6 +245,7 @@ const personV4: ISchema = {
 	id: 'person',
 	version: '2020_06_04',
 	name: 'Person test the last',
+
 	fields: {
 		cowbells: {
 			type: FieldType.Schema,
@@ -258,6 +267,7 @@ const personV4TemplateItem: ISchemaTemplateItem = {
 	nameReadable: 'Person test the last',
 	schema: personV4,
 	isNested: false,
+	destinationDir: '#spruce/schemas',
 }
 
 const nestedMercuryContract: ISchema = {
@@ -358,6 +368,7 @@ const mercuryTemplateItem: ISchemaTemplateItem = {
 	namePascal: 'MercuryContract',
 	nameReadable: nestedMercuryContract.name,
 	isNested: false,
+	destinationDir: '#spruce/schemas',
 	schema: {
 		id: 'mercuryContract',
 		name: 'Mercury Contract',
@@ -385,6 +396,7 @@ const eventSignatureTemplateItem: ISchemaTemplateItem = {
 	namePascal: 'EventSignature',
 	nameReadable: 'Event Signature',
 	isNested: true,
+	destinationDir: '#spruce/schemas',
 	schema: {
 		id: 'eventSignature',
 		name: 'Event Signature',
@@ -415,6 +427,7 @@ const mercuryTemplateItemArray: ISchemaTemplateItem = {
 	namePascal: 'MercuryContract',
 	nameReadable: nestedMercuryContractArray.name,
 	isNested: false,
+	destinationDir: '#spruce/schemas',
 	schema: {
 		id: 'mercuryContract',
 		name: 'Mercury Contract',
@@ -446,6 +459,7 @@ const eventSignatureTemplateItem2: ISchemaTemplateItem = {
 	namePascal: 'EventSignature2',
 	nameReadable: 'Event Signature2',
 	isNested: true,
+	destinationDir: '#spruce/schemas',
 	schema: {
 		id: 'eventSignature2',
 		name: 'Event Signature2',
@@ -489,9 +503,11 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async turnsSingleDefinitionIntoTemplateItem() {
-		const results = this.itemBuilder.generateTemplateItems(CORE_NAMESPACE, [
-			personV1,
-		])
+		const results = this.itemBuilder.generateTemplateItems(
+			CORE_NAMESPACE,
+			[personV1],
+			'#spruce/schemas'
+		)
 		const actual = results[0]
 
 		assert.isEqualDeep(actual, personV1TemplateItem)
@@ -561,7 +577,8 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 	) {
 		const results = this.itemBuilder.generateTemplateItems(
 			CORE_NAMESPACE,
-			definitions
+			definitions,
+			'#spruce/schemas'
 		)
 
 		assert.isEqual(

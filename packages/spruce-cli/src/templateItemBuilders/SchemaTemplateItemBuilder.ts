@@ -17,7 +17,8 @@ export default class SchemaTemplateItemBuilder {
 
 	public generateTemplateItems(
 		namespace: string,
-		schemas: ISchema[]
+		schemas: ISchema[],
+		destinationDir: string
 	): ISchemaTemplateItem[] {
 		this.schemaCache = {}
 		this.cacheSchemas(schemas)
@@ -30,11 +31,12 @@ export default class SchemaTemplateItemBuilder {
 		)
 
 		const templateTimes = flattened.map((schema) =>
-			this.buildTemplateItem(
+			this.buildTemplateItem({
 				namespace,
 				schema,
-				!schemas.find((s) => s.id === schema.id)
-			)
+				isNested: !schemas.find((s) => s.id === schema.id),
+				destinationDir,
+			})
 		)
 		return templateTimes
 	}
@@ -201,18 +203,20 @@ export default class SchemaTemplateItemBuilder {
 		return schema
 	}
 
-	private buildTemplateItem(
-		namespace: string,
-		schema: ISchema,
+	private buildTemplateItem(options: {
+		namespace: string
+		schema: ISchema
 		isNested: boolean
-	): ISchemaTemplateItem {
+		destinationDir: string
+	}): ISchemaTemplateItem {
+		const { schema, namespace, isNested, destinationDir } = options
 		return {
 			id: schema.id,
 			namespace,
 			schema: this.normalizeSchemaFieldsToIdsWithVersion(schema),
 			...schemaUtil.generateNamesForSchema(schema),
 			isNested,
-			destinationDir: '#spruce/schemas',
+			destinationDir,
 		}
 	}
 

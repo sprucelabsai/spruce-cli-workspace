@@ -38,7 +38,7 @@
 		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
 		"build.babel.debug": "node --inspect-brk=5200 ../../node_modules/.bin/babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
 		"build.watch": "concurrently 'yarn run build.babel --watch' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn build.types'\" \"chokidar '../spruce-templates/src/**/*' -c 'yarn clean.cache && yarn build.types'\"",
-		"build.resolve-paths": "resolve-path-aliases build && resolve-path-aliases node_modules/@sprucelabs/schema/build",
+		"build.resolve-paths": "resolve-path-aliases --target build  --patterns **/*.js,**/*.d.ts && resolve-path-aliases --target node_modules/@sprucelabs/schema/build",
 		"clean": "rm -rf build/",
 		"clean.all": "rm -rf build/ && rm -rf node_modules/ && yarn run clean.cache",
 		"clean.cache": "rm -rf src/.spruce/tmp",

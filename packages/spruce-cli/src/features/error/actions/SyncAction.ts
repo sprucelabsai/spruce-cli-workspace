@@ -106,7 +106,9 @@ export default class SyncAction extends AbstractFeatureAction<
 			fetchRemoteSchemas: false,
 			generateFieldTypes: false,
 		})
+
 		const errorSyncResults = await schemaSyncAction.execute(syncOptions)
+
 		return errorSyncResults
 	}
 

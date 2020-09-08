@@ -1,7 +1,7 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { CORE_NAMESPACE, LOCAL_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
-import { CORE_NAMESPACE, LOCAL_NAMESPACE } from '../../constants'
 
 export default class SchemaStoreTest extends AbstractSchemaTest {
 	@test()
