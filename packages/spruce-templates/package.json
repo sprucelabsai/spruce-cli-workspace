@@ -4,7 +4,7 @@
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "10.25.8",
+	"version": "10.25.9",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
 	"files": [
@@ -44,7 +44,7 @@
 	"dependencies": {
 		"@sprucelabs/log": "^10.2.199",
 		"@sprucelabs/schema": "^9.1.0",
-		"@sprucelabs/spruce-skill-utils": "^10.25.8",
+		"@sprucelabs/spruce-skill-utils": "^10.25.9",
 		"globby": "^11.0.1",
 		"handlebars": "^4.7.6",
 		"lodash": "^4.17.20",
