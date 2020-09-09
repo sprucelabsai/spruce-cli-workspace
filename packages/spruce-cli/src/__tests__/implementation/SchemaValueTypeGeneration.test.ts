@@ -69,7 +69,9 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	private static async fetchAllTemplateItems() {
 		const schemaStore = this.StoreFactory().Store('schema')
 
-		const results = await schemaStore.fetchAllTemplateItems()
+		const results = await schemaStore.fetchAllTemplateItems({
+			destinationDir: '#spruce/schemas',
+		})
 
 		assert.isLength(results.schemas.errors, 0)
 
