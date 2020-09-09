@@ -49,23 +49,26 @@ export default class SchemaStore extends AbstractStore {
 			options.schemaBuilder ?? new SchemaTemplateItemBuilder()
 	}
 
-	public async fetchAllTemplateItems(options?: {
+	public async fetchAllTemplateItems(options: {
 		localSchemaDir?: string
 		localAddonDir?: string
 		enableVersioning?: boolean
 		fetchRemoteSchemas?: boolean
+		destinationDir: string
 	}) {
 		const {
 			localSchemaDir,
 			localAddonDir,
 			enableVersioning,
 			fetchRemoteSchemas,
-		} = options || {}
+			destinationDir,
+		} = options
 
 		const schemaRequest = this.fetchSchemaTemplateItems({
 			localSchemaDir,
 			enableVersioning,
 			fetchRemoteSchemas,
+			destinationDir,
 		})
 
 		const fieldRequest = this.fetchFieldTemplateItems(
@@ -87,8 +90,14 @@ export default class SchemaStore extends AbstractStore {
 		localSchemaDir?: string
 		enableVersioning?: boolean
 		fetchRemoteSchemas?: boolean
+		destinationDir: string
 	}): Promise<IFetchSchemaTemplateItemsResponse> {
-		const { localSchemaDir, enableVersioning, fetchRemoteSchemas } = options
+		const {
+			localSchemaDir,
+			enableVersioning,
+			fetchRemoteSchemas,
+			destinationDir,
+		} = options
 		const errors: SpruceError[] = []
 
 		let coreTemplateItems: ISchemaTemplateItem[] = []
@@ -106,7 +115,7 @@ export default class SchemaStore extends AbstractStore {
 			coreTemplateItems = this.schemaBuilder.generateTemplateItems(
 				CORE_NAMESPACE,
 				schemas,
-				'#spruce/schemas'
+				destinationDir
 			)
 		}
 
@@ -120,7 +129,7 @@ export default class SchemaStore extends AbstractStore {
 		const localTemplateItems = this.schemaBuilder.generateTemplateItems(
 			LOCAL_NAMESPACE,
 			localDefinitions.definitions,
-			'#spruce/schemas'
+			destinationDir
 		)
 
 		const templateItems = [...coreTemplateItems, ...localTemplateItems]

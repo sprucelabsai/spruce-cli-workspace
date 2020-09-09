@@ -76,6 +76,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			localSchemaDir: schemaLookupDir,
 			enableVersioning,
 			fetchRemoteSchemas,
+			destinationDir: resolvedSchemaTypesDestinationDir,
 		})
 
 		if (schemaTemplateItems.length === 0) {
