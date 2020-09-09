@@ -250,4 +250,3 @@ export { default as importExtractor } from './utilities/importExtractor.utility'
 
 export default handlebars
 export * from './types/templates.types'
-export * from './constants'
