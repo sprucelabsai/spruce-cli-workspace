@@ -69,9 +69,6 @@ export default class SyncAction extends AbstractFeatureAction<
 			fieldResults.push(...results)
 		}
 
-		console.log(resolvedSchemaTypesDestinationDir)
-		debugger
-
 		const {
 			items: schemaTemplateItems,
 			errors: schemaErrors,

@@ -105,7 +105,8 @@ export default class SchemaStore extends AbstractStore {
 
 			coreTemplateItems = this.schemaBuilder.generateTemplateItems(
 				CORE_NAMESPACE,
-				schemas
+				schemas,
+				'#spruce/schemas'
 			)
 		}
 
@@ -118,7 +119,8 @@ export default class SchemaStore extends AbstractStore {
 
 		const localTemplateItems = this.schemaBuilder.generateTemplateItems(
 			LOCAL_NAMESPACE,
-			localDefinitions.definitions
+			localDefinitions.definitions,
+			'#spruce/schemas'
 		)
 
 		const templateItems = [...coreTemplateItems, ...localTemplateItems]
