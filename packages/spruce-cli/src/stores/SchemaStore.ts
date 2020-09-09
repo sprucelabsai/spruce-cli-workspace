@@ -38,6 +38,16 @@ interface IAddonItem {
 	isLocal: boolean
 }
 
+interface IFetchSchemasResults {
+	schemasByNamespace: { [namespace: string]: ISchema[] }
+	errors: SpruceError[]
+}
+
+interface IFetchFieldsResults {
+	errors: SpruceError[]
+	fields: { path: string; registration: IFieldRegistration; isLocal: boolean }[]
+}
+
 export default class SchemaStore extends AbstractStore {
 	private schemaBuilder: SchemaTemplateItemBuilder
 
@@ -49,6 +59,35 @@ export default class SchemaStore extends AbstractStore {
 			options.schemaBuilder ?? new SchemaTemplateItemBuilder()
 	}
 
+	public async fetchSchemas(options?: {
+		localSchemaDir?: string
+	}): Promise<IFetchSchemasResults> {
+		const { localSchemaDir } = options || {}
+
+		const results: IFetchSchemasResults = {
+			errors: [],
+			schemasByNamespace: {
+				// TODO - move to mercury request when mercury-api is running
+				[CORE_NAMESPACE]: [
+					personSchema,
+					skillSchema,
+					locationSchema,
+					personLocationSchema,
+					aclSchema,
+				],
+			},
+		}
+
+		if (localSchemaDir) {
+			const locals = await this.loadLocalSchemas(localSchemaDir)
+			results.schemasByNamespace[LOCAL_NAMESPACE] = locals.schemas
+			results.errors.push(...locals.errors)
+		}
+
+		return results
+	}
+
+	/** @deprecated */
 	public async fetchAllTemplateItems(options: {
 		localSchemaDir?: string
 		localAddonDir?: string
@@ -86,6 +125,7 @@ export default class SchemaStore extends AbstractStore {
 		}
 	}
 
+	/** @deprecated */
 	public async fetchSchemaTemplateItems(options: {
 		localSchemaDir?: string
 		enableVersioning?: boolean
@@ -137,6 +177,68 @@ export default class SchemaStore extends AbstractStore {
 		return { items: templateItems, errors }
 	}
 
+	private async loadLocalSchemas(
+		localLookupDir: string,
+		enableVersioning?: boolean
+	) {
+		const localMatches = await globby(
+			pathUtil.join(
+				diskUtil.resolvePath(this.cwd, localLookupDir),
+				'**/*.builder.[t|j]s'
+			)
+		)
+
+		const schemaService = this.Service('schema')
+		const errors: SpruceError[] = []
+		const schemas: ISchema[] = []
+
+		await Promise.all(
+			localMatches.map(async (local) => {
+				let version: undefined | string
+
+				try {
+					version =
+						enableVersioning === false
+							? undefined
+							: versionUtil.extractVersion(this.cwd, local).dirValue
+				} catch (err) {
+					errors.push(
+						new SpruceError({
+							// @ts-ignore
+							code: 'VERSION_MISSING',
+							friendlyMessage: `It looks like your schema's are not versioned. Make sure schemas are in a directory like src/schemas/${
+								versionUtil.generateVersion().dirValue
+							}/*.ts`,
+						})
+					)
+				}
+
+				if (version || enableVersioning === false) {
+					try {
+						const schema = await schemaService.importSchema(local)
+						schema.version = version
+
+						schemas.push(schema)
+					} catch (err) {
+						errors.push(
+							new SpruceError({
+								code: 'SCHEMA_FAILED_TO_IMPORT',
+								file: local,
+								originalError: err,
+							})
+						)
+					}
+				}
+			})
+		)
+
+		return {
+			schemas,
+			errors,
+		}
+	}
+
+	/** @deprecated */
 	private async loadLocalBuilders(
 		localLookupDir?: string,
 		enableVersioning?: boolean
@@ -198,6 +300,88 @@ export default class SchemaStore extends AbstractStore {
 		}
 	}
 
+	public async fetchFields(options?: {
+		localAddonsDir?: string
+	}): Promise<IFetchFieldsResults> {
+		const { localAddonsDir } = options || {}
+
+		const cwd = pathUtil.join(__dirname, '..', '..')
+		const localImportService = this.Service('import', cwd)
+
+		// TODO load from mercury-api when live
+		const coreAddonsPromise = Promise.all(
+			(
+				await globby([
+					pathUtil.join(
+						cwd,
+						'node_modules/@sprucelabs/schema/build/addons/*Field.addon.js'
+					),
+				])
+			).map(async (path) => {
+				const registration = await localImportService.importDefault<
+					IFieldRegistration
+				>(path)
+
+				return {
+					path,
+					registration,
+					isLocal: false,
+				}
+			})
+		)
+
+		const localErrors: SpruceError[] = []
+		const importService = this.Service('import')
+
+		const localAddonsPromise =
+			localAddonsDir &&
+			Promise.all(
+				(
+					await globby([pathUtil.join(localAddonsDir, '/*Field.addon.[t|j]s')])
+				).map(async (file) => {
+					try {
+						const registration = await importService.importDefault<
+							IFieldRegistration
+						>(file)
+
+						return {
+							path: file,
+							registration,
+							isLocal: true,
+						}
+					} catch (err) {
+						localErrors.push(
+							new SpruceError({
+								code: 'FAILED_TO_IMPORT',
+								file,
+								originalError: err,
+							})
+						)
+						return false
+					}
+				})
+			)
+
+		const [coreAddons, localAddons] = await Promise.all([
+			coreAddonsPromise,
+			localAddonsPromise || Promise.resolve([]),
+		])
+
+		const allFields = uniqBy(
+			[
+				...coreAddons,
+				...(localAddons.filter((addon) => !!addon) as IAddonItem[]),
+			],
+			'registration.type'
+		)
+
+		return {
+			fields: allFields,
+			errors: localErrors,
+		}
+	}
+
+	/** @deprecated */
 	public async fetchFieldTemplateItems(
 		localLookupDir: string
 	): Promise<IFetchFieldTemplateItemsResponse> {
