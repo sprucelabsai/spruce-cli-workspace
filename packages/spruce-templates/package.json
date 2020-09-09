@@ -30,7 +30,7 @@
 		"build.types": "tsc --emitDeclarationOnly && echo PASS",
 		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps --root-mode upward --copy-files",
 		"build.watch": "concurrently 'yarn build.babel --watch' \"chokidar 'src/**/*' -c 'yarn build.types'\"",
-		"build.resolve-paths": "resolve-path-aliases build && resolve-path-aliases node_modules/@sprucelabs/schema/build",
+		"build.resolve-paths": "resolve-path-aliases --target build && resolve-path-aliases --target node_modules/@sprucelabs/schema/build",
 		"rebuild": "cd ../ && yarn rebuild",
 		"clean": "rm -rf build/",
 		"copy-templates": "mkdirp ./build/templates && cp -r ./src/templates/* ./build/templates",
