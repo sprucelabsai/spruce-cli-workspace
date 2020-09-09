@@ -23,7 +23,9 @@ export default class HandlesBadLocalSchemasGracefullyTest extends AbstractSchema
 		await this.moveSchemasIntoPlace()
 
 		const store = this.Store('schema')
-		const results = await store.fetchAllTemplateItems()
+		const results = await store.fetchAllTemplateItems({
+			destinationDir: '#spruce/schemas',
+		})
 
 		assert.isAbove(results.schemas.items.length, 1)
 		assert.isLength(results.schemas.errors, 1)

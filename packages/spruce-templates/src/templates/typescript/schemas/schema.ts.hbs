@@ -1,5 +1,5 @@
 import { {{globalNamespace}} } from '{{typesFile}}'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+{{#if (hasKeys schema.fields)}}import FieldType from '#spruce/schemas/fields/fieldTypeEnum'{{/if}}{{#if (isDefined schema.dynamicFieldSignature)}}import FieldType from '#spruce/schemas/fields/fieldTypeEnum'{{/if}}
 
 {{{ importRelatedSchemas schema }}}
 

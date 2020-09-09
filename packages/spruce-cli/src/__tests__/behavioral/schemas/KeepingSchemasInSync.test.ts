@@ -1,8 +1,11 @@
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import {
+	CORE_SCHEMA_VERSION,
+	CORE_NAMESPACE,
+} from '@sprucelabs/spruce-skill-utils'
 import { assert, test } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
-import { CORE_SCHEMA_VERSION, CORE_NAMESPACE } from '../../../constants'
 import testUtil from '../../../utilities/test.utility'
 
 export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {

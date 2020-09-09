@@ -8,9 +8,9 @@ import { IFieldRegistration } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { LOCAL_NAMESPACE, CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
 import { uniqBy } from 'lodash'
-import { LOCAL_NAMESPACE, CORE_NAMESPACE } from '../constants'
 import SpruceError from '../errors/SpruceError'
 import SchemaTemplateItemBuilder from '../templateItemBuilders/SchemaTemplateItemBuilder'
 import {
@@ -49,23 +49,26 @@ export default class SchemaStore extends AbstractStore {
 			options.schemaBuilder ?? new SchemaTemplateItemBuilder()
 	}
 
-	public async fetchAllTemplateItems(options?: {
+	public async fetchAllTemplateItems(options: {
 		localSchemaDir?: string
 		localAddonDir?: string
 		enableVersioning?: boolean
 		fetchRemoteSchemas?: boolean
+		destinationDir: string
 	}) {
 		const {
 			localSchemaDir,
 			localAddonDir,
 			enableVersioning,
 			fetchRemoteSchemas,
-		} = options || {}
+			destinationDir,
+		} = options
 
 		const schemaRequest = this.fetchSchemaTemplateItems({
 			localSchemaDir,
 			enableVersioning,
 			fetchRemoteSchemas,
+			destinationDir,
 		})
 
 		const fieldRequest = this.fetchFieldTemplateItems(
@@ -87,8 +90,14 @@ export default class SchemaStore extends AbstractStore {
 		localSchemaDir?: string
 		enableVersioning?: boolean
 		fetchRemoteSchemas?: boolean
+		destinationDir: string
 	}): Promise<IFetchSchemaTemplateItemsResponse> {
-		const { localSchemaDir, enableVersioning, fetchRemoteSchemas } = options
+		const {
+			localSchemaDir,
+			enableVersioning,
+			fetchRemoteSchemas,
+			destinationDir,
+		} = options
 		const errors: SpruceError[] = []
 
 		let coreTemplateItems: ISchemaTemplateItem[] = []
@@ -105,7 +114,8 @@ export default class SchemaStore extends AbstractStore {
 
 			coreTemplateItems = this.schemaBuilder.generateTemplateItems(
 				CORE_NAMESPACE,
-				schemas
+				schemas,
+				destinationDir
 			)
 		}
 
@@ -118,7 +128,8 @@ export default class SchemaStore extends AbstractStore {
 
 		const localTemplateItems = this.schemaBuilder.generateTemplateItems(
 			LOCAL_NAMESPACE,
-			localDefinitions.definitions
+			localDefinitions.definitions,
+			destinationDir
 		)
 
 		const templateItems = [...coreTemplateItems, ...localTemplateItems]

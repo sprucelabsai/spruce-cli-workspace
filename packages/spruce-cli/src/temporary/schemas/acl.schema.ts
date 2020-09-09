@@ -1,6 +1,6 @@
 import { ISchema } from '@sprucelabs/schema'
+import { CORE_SCHEMA_VERSION } from '@sprucelabs/spruce-skill-utils'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
-import { CORE_SCHEMA_VERSION } from '../../constants'
 
 const aclSchema: ISchema = {
 	id: 'acl',

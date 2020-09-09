@@ -26,10 +26,11 @@
 		"url": "https://github.com/sprucelabsai/spruce-cli-workspace/issues"
 	},
 	"scripts": {
-		"build": "yarn build.babel && yarn build.types",
+		"build": "yarn build.babel && yarn build.types && yarn build.resolve-paths",
 		"build.types": "tsc --emitDeclarationOnly && echo PASS",
 		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps --root-mode upward --copy-files",
 		"build.watch": "concurrently 'yarn build.babel --watch' \"chokidar 'src/**/*' -c 'yarn build.types'\"",
+		"build.resolve-paths": "resolve-path-aliases build && resolve-path-aliases node_modules/@sprucelabs/schema/build",
 		"rebuild": "cd ../ && yarn rebuild",
 		"clean": "rm -rf build/",
 		"copy-templates": "mkdirp ./build/templates && cp -r ./src/templates/* ./build/templates",
@@ -42,7 +43,7 @@
 	},
 	"dependencies": {
 		"@sprucelabs/log": "^10.2.186",
-		"@sprucelabs/schema": "^9.0.12",
+		"@sprucelabs/schema": "^9.0.46",
 		"@sprucelabs/spruce-skill-utils": "^10.25.5",
 		"globby": "^11.0.1",
 		"handlebars": "^4.7.6",

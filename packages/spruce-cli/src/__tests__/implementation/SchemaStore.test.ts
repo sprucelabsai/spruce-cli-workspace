@@ -1,7 +1,7 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { CORE_NAMESPACE, LOCAL_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
-import { CORE_NAMESPACE, LOCAL_NAMESPACE } from '../../constants'
 
 export default class SchemaStoreTest extends AbstractSchemaTest {
 	@test()
@@ -18,6 +18,7 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 	protected static async fetchesCoreSchemaTemplateItems() {
 		const response = await this.Store('schema').fetchSchemaTemplateItems({
 			localSchemaDir: this.resolvePath('nothing_found'),
+			destinationDir: '#spruce/schemas',
 		})
 
 		const { items } = response
@@ -40,6 +41,7 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 
 		const results = await this.Store('schema').fetchSchemaTemplateItems({
 			localSchemaDir: schemasDir,
+			destinationDir: '#spruce/schemas',
 		})
 
 		assert.isLength(results.errors, 0, 'errors loading schemas')

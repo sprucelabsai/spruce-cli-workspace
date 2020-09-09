@@ -13,3 +13,8 @@ export const LOCAL_NAMESPACE = 'Local' as const
 export const TEST_JEST_PASSED = 'passed' as const
 export const TEST_JEST_FAILED = 'failed' as const
 export const HEALTH_DIVIDER = '###### HEALTH REPORT ######' as const
+
+export const SCHEMA_VERSION_FALLBACK = '__latest'
+export const DEFAULT_NAMESPACE_PREFIX = 'SpruceSchemas'
+export const DEFAULT_BUILDER_FUNCTION = 'buildSchema'
+export const DEFAULT_TYPES_FILE = '#spruce/schemas/schemas.types'
