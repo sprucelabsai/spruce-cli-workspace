@@ -42,10 +42,15 @@ interface IFetchSchemasResults {
 	schemasByNamespace: { [namespace: string]: ISchema[] }
 	errors: SpruceError[]
 }
+export interface IFetchedField {
+	path: string
+	registration: IFieldRegistration
+	isLocal: boolean
+}
 
 interface IFetchFieldsResults {
 	errors: SpruceError[]
-	fields: { path: string; registration: IFieldRegistration; isLocal: boolean }[]
+	fields: IFetchedField[]
 }
 
 export default class SchemaStore extends AbstractStore {
