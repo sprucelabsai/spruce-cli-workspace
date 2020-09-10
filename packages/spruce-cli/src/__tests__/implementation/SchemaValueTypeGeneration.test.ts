@@ -7,6 +7,8 @@ import { templates, IValueTypes } from '@sprucelabs/spruce-templates'
 import { assert, test } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
 import SchemaGenerator from '../../generators/SchemaGenerator'
+import FieldTemplateItemBuilder from '../../templateItemBuilders/FieldTemplateItemBuilder'
+import SchemaTemplateItemBuilder from '../../templateItemBuilders/SchemaTemplateItemBuilder'
 
 export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	private static generator: SchemaGenerator
@@ -69,15 +71,29 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	private static async fetchAllTemplateItems() {
 		const schemaStore = this.StoreFactory().Store('schema')
 
-		const results = await schemaStore.fetchAllTemplateItems({
-			destinationDir: '#spruce/schemas',
-		})
+		const [
+			{ schemasByNamespace, errors: schemaErrors },
+			{ fields, errors: fieldErrors },
+		] = await Promise.all([
+			schemaStore.fetchSchemas(),
+			schemaStore.fetchFields(),
+		])
 
-		assert.isLength(results.schemas.errors, 0)
+		assert.isLength(schemaErrors, 0)
+		assert.isLength(fieldErrors, 0)
+
+		const schemaBuilder = new SchemaTemplateItemBuilder()
+		const schemaTemplateItems = schemaBuilder.generateTemplateItems(
+			schemasByNamespace,
+			'#spruce/schemas'
+		)
+
+		const fieldBuilder = new FieldTemplateItemBuilder()
+		const fieldTemplateItems = fieldBuilder.generateTemplateItems(fields)
 
 		return {
-			schemaTemplateItems: results.schemas.items,
-			fieldTemplateItems: results.fields.items,
+			schemaTemplateItems,
+			fieldTemplateItems,
 		}
 	}
 

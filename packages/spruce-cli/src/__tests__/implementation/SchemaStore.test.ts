@@ -27,7 +27,6 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 
 		assert.isEqual(errors.length, 0)
 		assert.isTruthy(schemasByNamespace[CORE_NAMESPACE])
-		assert.isLength(Object.keys(schemasByNamespace), 1)
 
 		const coreSchemas = schemasByNamespace[CORE_NAMESPACE]
 		assert.isAbove(coreSchemas.length, 0)

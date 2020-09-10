@@ -126,7 +126,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 		return results
 	}
 
-	public async generateSchemaTypes(
+	public async generateSchemasAndTypes(
 		destinationDirOrFilename: string,
 		options: IGenerateSchemaTypesOptions
 	): Promise<GenerationResults> {
