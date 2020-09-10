@@ -249,7 +249,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		assert.doesInclude(
 			firstContents,
 			new RegExp(
-				'SpruceSchemas.Local.' +
+				'SpruceSchemas.Testing.' +
 					expectedVersion +
 					'.*?' +
 					expectedSchemaInterfaceName,
