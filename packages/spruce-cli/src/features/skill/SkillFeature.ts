@@ -1,5 +1,5 @@
 import { validateSchemaValues } from '@sprucelabs/schema'
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import skillFeatureSchema from '#spruce/schemas/local/v2020_07_22/skillFeature.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import { INpmPackage } from '../../types/cli.types'
@@ -78,6 +78,16 @@ export default class SkillFeature<
 
 		await skillGenerator.generateSkill(this.cwd, options)
 		this.installScripts()
+	}
+
+	public getSkillName() {
+		const pkg = this.Service('pkg')
+		const nameFromPackage = pkg.get('name')
+		return nameFromPackage
+	}
+
+	public getSkillNamespace() {
+		return namesUtil.toPascal(this.getSkillName().split('/'))
 	}
 
 	public installScripts() {

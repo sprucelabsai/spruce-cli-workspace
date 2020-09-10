@@ -10,6 +10,7 @@ import { IGeneratedFile } from '../../../types/cli.types'
 import schemaGeneratorUtil from '../../../utilities/schemaGenerator.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { IFeatureActionExecuteResponse } from '../../features.types'
+import SkillFeature from '../../skill/SkillFeature'
 
 export default class SyncAction extends AbstractFeatureAction<
 	SpruceSchemas.Local.v2020_07_22.ISyncSchemasActionSchema
@@ -103,6 +104,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			},
 		}
 	}
+
 	public async generateSchemaTemplateItems(options: {
 		schemaLookupDir: string
 		resolvedSchemaTypesDestinationDir: string
@@ -116,6 +118,9 @@ export default class SyncAction extends AbstractFeatureAction<
 			fetchRemoteSchemas,
 		} = options
 
+		const feature = this.getFeature('skill') as SkillFeature
+		const namespace = feature.getSkillNamespace()
+
 		const {
 			schemasByNamespace,
 			errors: schemaErrors,
@@ -123,6 +128,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			localSchemaDir: schemaLookupDir,
 			fetchRemoteSchemas,
 			enableVersioning,
+			localNamespace: namespace,
 		})
 
 		const hashSpruceDestination = resolvedSchemaTypesDestinationDir.replace(

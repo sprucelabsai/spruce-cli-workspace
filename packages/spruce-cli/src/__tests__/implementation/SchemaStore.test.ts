@@ -1,12 +1,10 @@
 import SchemaEntity, { ISchema } from '@sprucelabs/schema'
-import {
-	CORE_NAMESPACE,
-	diskUtil,
-	LOCAL_NAMESPACE,
-} from '@sprucelabs/spruce-skill-utils'
+import { CORE_NAMESPACE, diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
+
+const LOCAL_NAMESPACE = 'TestSkill'
 
 export default class SchemaStoreTest extends AbstractSchemaTest {
 	@test()
@@ -22,7 +20,9 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async fetchesCoreSchemas() {
-		const results = await this.Store('schema').fetchSchemas()
+		const results = await this.Store('schema').fetchSchemas({
+			localNamespace: LOCAL_NAMESPACE,
+		})
 		const { schemasByNamespace, errors } = results
 
 		assert.isEqual(errors.length, 0)
@@ -126,7 +126,10 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		const schemasDir = this.resolvePath('src', 'schemas')
 		await diskUtil.copyDir(this.resolveTestPath(testBuilderDir), schemasDir)
 
-		const schemasByNamespace = await this.Store('schema').fetchSchemas(options)
+		const schemasByNamespace = await this.Store('schema').fetchSchemas({
+			localNamespace: LOCAL_NAMESPACE,
+			...(options || {}),
+		})
 		return schemasByNamespace
 	}
 
