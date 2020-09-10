@@ -504,8 +504,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 	@test()
 	protected static async turnsSingleDefinitionIntoTemplateItem() {
 		const results = this.itemBuilder.generateTemplateItems(
-			CORE_NAMESPACE,
-			[personV1],
+			{ [CORE_NAMESPACE]: [personV1] },
 			'#spruce/schemas'
 		)
 		const actual = results[0]
@@ -572,12 +571,11 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 		]
 	)
 	protected static async generationTests(
-		definitions: ISchema[],
+		schemas: ISchema[],
 		expected: ISchemaTemplateItem[]
 	) {
 		const results = this.itemBuilder.generateTemplateItems(
-			CORE_NAMESPACE,
-			definitions,
+			{ [CORE_NAMESPACE]: schemas },
 			'#spruce/schemas'
 		)
 

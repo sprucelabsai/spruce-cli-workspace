@@ -10,12 +10,33 @@ import cloneDeep from 'lodash/cloneDeep'
 import uniqWith from 'lodash/uniqWith'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import SpruceError from '../errors/SpruceError'
+import { ISchemasByNamespace } from '../stores/SchemaStore'
 import schemaUtil, { SchemaRelationshipType } from '../utilities/schema.utility'
 
 export default class SchemaTemplateItemBuilder {
 	private schemaCache: Record<string, ISchema> = {}
 
 	public generateTemplateItems(
+		schemasByNamespace: ISchemasByNamespace,
+		destinationDir: string
+	) {
+		const schemaTemplateItems: ISchemaTemplateItem[] = []
+		const namespaces = Object.keys(schemasByNamespace)
+
+		for (const namespace of namespaces) {
+			const schemas = schemasByNamespace[namespace]
+			const items = this.generateTemplateItemsForNamespace(
+				namespace,
+				schemas,
+				destinationDir
+			)
+
+			schemaTemplateItems.push(...items)
+		}
+		return schemaTemplateItems
+	}
+
+	private generateTemplateItemsForNamespace(
 		namespace: string,
 		schemas: ISchema[],
 		destinationDir: string

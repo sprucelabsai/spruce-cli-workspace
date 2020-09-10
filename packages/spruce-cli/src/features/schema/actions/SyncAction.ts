@@ -4,6 +4,8 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { IValueTypes } from '@sprucelabs/spruce-templates'
 import syncSchemasActionSchema from '#spruce/schemas/local/v2020_07_22/syncSchemasAction.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import FieldTemplateItemBuilder from '../../../templateItemBuilders/FieldTemplateItemBuilder'
+import SchemaTemplateItemBuilder from '../../../templateItemBuilders/SchemaTemplateItemBuilder'
 import { IGeneratedFile } from '../../../types/cli.types'
 import schemaGeneratorUtil from '../../../utilities/schemaGenerator.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
@@ -16,6 +18,7 @@ export default class SyncAction extends AbstractFeatureAction<
 	public optionsSchema = syncSchemasActionSchema
 
 	private readonly schemaGenerator = this.Generator('schema')
+	private readonly schemaStore = this.Store('schema')
 
 	public async execute(
 		options: SpruceSchemas.Local.v2020_07_22.ISyncSchemasAction
@@ -36,47 +39,30 @@ export default class SyncAction extends AbstractFeatureAction<
 			generateFieldTypes,
 		} = normalizedOptions
 
-		const resolvedSchemaTypesDestination = diskUtil.resolvePath(
-			this.cwd,
-			schemaTypesDestinationDir
-		)
-
-		const resolvedSchemaTypesDestinationDir =
-			pathUtil.extname(resolvedSchemaTypesDestination).length === 0
-				? resolvedSchemaTypesDestination
-				: pathUtil.dirname(resolvedSchemaTypesDestination)
-
-		const resolvedFieldTypesDestination = diskUtil.resolvePath(
-			this.cwd,
-			fieldTypesDestinationDir ?? resolvedSchemaTypesDestinationDir
-		)
-
-		const schemaStore = this.Store('schema')
-		const fieldResults: IGeneratedFile[] = []
+		const {
+			resolvedFieldTypesDestination,
+			resolvedSchemaTypesDestinationDir,
+			resolvedSchemaTypesDestination,
+		} = this.resolvePaths(schemaTypesDestinationDir, fieldTypesDestinationDir)
 
 		const {
-			items: fieldTemplateItems,
-			errors: fieldErrors,
-		} = await schemaStore.fetchFieldTemplateItems(addonsLookupDir)
-
-		if (generateFieldTypes) {
-			const results = await this.schemaGenerator.generateFieldTypes(
-				resolvedFieldTypesDestination,
-				{
-					fieldTemplateItems,
-				}
-			)
-			fieldResults.push(...results)
-		}
+			fieldTemplateItems,
+			fieldErrors,
+			generateFieldFiles,
+		} = await this.generateFieldTemplateItems({
+			addonsLookupDir,
+			generateFieldTypes,
+			resolvedFieldTypesDestination,
+		})
 
 		const {
-			items: schemaTemplateItems,
-			errors: schemaErrors,
-		} = await schemaStore.fetchSchemaTemplateItems({
-			localSchemaDir: schemaLookupDir,
+			schemaTemplateItems,
+			schemaErrors,
+		} = await this.generateSchemaTemplateItems({
+			schemaLookupDir,
+			resolvedSchemaTypesDestinationDir,
 			enableVersioning,
 			fetchRemoteSchemas,
-			destinationDir: resolvedSchemaTypesDestinationDir,
 		})
 
 		if (schemaTemplateItems.length === 0) {
@@ -96,7 +82,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			globalNamespace ?? undefined
 		)
 
-		const typeResults = await this.schemaGenerator.generateSchemaTypes(
+		const typeResults = await this.schemaGenerator.generateSchemasAndTypes(
 			resolvedSchemaTypesDestination,
 			{
 				fieldTemplateItems,
@@ -109,12 +95,107 @@ export default class SyncAction extends AbstractFeatureAction<
 		this.ui.stopLoading()
 
 		return {
-			files: [...typeResults, ...fieldResults],
+			files: [...typeResults, ...generateFieldFiles],
 			errors: [...schemaErrors, ...fieldErrors],
 			meta: {
 				schemaTemplateItems,
 				fieldTemplateItems,
 			},
+		}
+	}
+	public async generateSchemaTemplateItems(options: {
+		schemaLookupDir: string
+		resolvedSchemaTypesDestinationDir: string
+		enableVersioning: boolean
+		fetchRemoteSchemas: boolean
+	}) {
+		const {
+			schemaLookupDir,
+			resolvedSchemaTypesDestinationDir,
+			enableVersioning,
+			fetchRemoteSchemas,
+		} = options
+
+		const {
+			schemasByNamespace,
+			errors: schemaErrors,
+		} = await this.schemaStore.fetchSchemas({
+			localSchemaDir: schemaLookupDir,
+			fetchRemoteSchemas,
+			enableVersioning,
+		})
+
+		const hashSpruceDestination = resolvedSchemaTypesDestinationDir.replace(
+			diskUtil.resolveHashSprucePath(this.cwd),
+			'#spruce'
+		)
+
+		const schemaTemplateItemBuilder = new SchemaTemplateItemBuilder()
+		const schemaTemplateItems: ISchemaTemplateItem[] = schemaTemplateItemBuilder.generateTemplateItems(
+			schemasByNamespace,
+			hashSpruceDestination
+		)
+
+		return { schemaTemplateItems, schemaErrors }
+	}
+
+	private async generateFieldTemplateItems(options: {
+		addonsLookupDir: string
+		generateFieldTypes: boolean
+		resolvedFieldTypesDestination: string
+	}) {
+		const {
+			addonsLookupDir,
+			generateFieldTypes,
+			resolvedFieldTypesDestination,
+		} = options
+
+		const generateFieldFiles: IGeneratedFile[] = []
+
+		const { fields, errors: fieldErrors } = await this.schemaStore.fetchFields({
+			localAddonsDir: addonsLookupDir,
+		})
+
+		const fieldTemplateItemBuilder = new FieldTemplateItemBuilder()
+		const fieldTemplateItems = fieldTemplateItemBuilder.generateTemplateItems(
+			fields
+		)
+
+		if (generateFieldTypes) {
+			const results = await this.schemaGenerator.generateFieldTypes(
+				resolvedFieldTypesDestination,
+				{
+					fieldTemplateItems,
+				}
+			)
+			generateFieldFiles.push(...results)
+		}
+
+		return { generateFieldFiles, fieldTemplateItems, fieldErrors }
+	}
+
+	private resolvePaths(
+		schemaTypesDestinationDir: string,
+		fieldTypesDestinationDir: string
+	) {
+		const resolvedSchemaTypesDestination = diskUtil.resolvePath(
+			this.cwd,
+			schemaTypesDestinationDir
+		)
+
+		const resolvedSchemaTypesDestinationDir =
+			pathUtil.extname(resolvedSchemaTypesDestination).length === 0
+				? resolvedSchemaTypesDestination
+				: pathUtil.dirname(resolvedSchemaTypesDestination)
+
+		const resolvedFieldTypesDestination = diskUtil.resolvePath(
+			this.cwd,
+			fieldTypesDestinationDir ?? resolvedSchemaTypesDestinationDir
+		)
+		return {
+			resolvedFieldTypesDestination,
+			resolvedSchemaTypesDestinationDir,
+			resolvedSchemaTypesDestination,
 		}
 	}
 
