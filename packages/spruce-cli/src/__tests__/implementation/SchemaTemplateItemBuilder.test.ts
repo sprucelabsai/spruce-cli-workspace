@@ -2,7 +2,7 @@ import { ISchema, ISchemaTemplateItem } from '@sprucelabs/schema'
 import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
-import AbstractSchemaTest from '../../AbstractSchemaTest'
+import AbstractCliTest from '../../AbstractCliTest'
 import SchemaTemplateItemBuilder from '../../templateItemBuilders/SchemaTemplateItemBuilder'
 
 const cowbellV1: ISchema = {
@@ -483,7 +483,7 @@ const eventSignatureTemplateItem2: ISchemaTemplateItem = {
 		},
 	},
 }
-export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
+export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 	private static itemBuilder: SchemaTemplateItemBuilder
 
 	protected static async beforeEach() {
@@ -497,7 +497,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractSchemaTest {
 	}
 
 	@test()
-	protected static async hasAccumulateMethod() {
+	protected static async hasGenerateFunction() {
 		assert.isFunction(this.itemBuilder.generateTemplateItems)
 	}
 
