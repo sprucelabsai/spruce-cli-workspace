@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const namedTemplateItemSchema: SpruceSchemas.Local.v2020_07_22.INamedTemplateItemSchema  = {
+const namedTemplateItemSchema: SpruceSchemas.SpruceCli.v2020_07_22.INamedTemplateItemSchema  = {
 	id: 'namedTemplateItem',
 	name: 'NamedTemplateItem',
 	description: 'Used to collect input on the names of a class or interface',

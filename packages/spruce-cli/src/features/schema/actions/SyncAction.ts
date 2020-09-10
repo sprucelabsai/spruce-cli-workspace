@@ -2,8 +2,8 @@ import pathUtil from 'path'
 import { ISchemaTemplateItem, IFieldTemplateItem } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { IValueTypes } from '@sprucelabs/spruce-templates'
-import syncSchemasActionSchema from '#spruce/schemas/local/v2020_07_22/syncSchemasAction.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
 import FieldTemplateItemBuilder from '../../../templateItemBuilders/FieldTemplateItemBuilder'
 import SchemaTemplateItemBuilder from '../../../templateItemBuilders/SchemaTemplateItemBuilder'
 import { IGeneratedFile } from '../../../types/cli.types'
@@ -13,7 +13,7 @@ import { IFeatureActionExecuteResponse } from '../../features.types'
 import SkillFeature from '../../skill/SkillFeature'
 
 export default class SyncAction extends AbstractFeatureAction<
-	SpruceSchemas.Local.v2020_07_22.ISyncSchemasActionSchema
+	SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasActionSchema
 > {
 	public name = 'Schema sync'
 	public optionsSchema = syncSchemasActionSchema
@@ -22,7 +22,7 @@ export default class SyncAction extends AbstractFeatureAction<
 	private readonly schemaStore = this.Store('schema')
 
 	public async execute(
-		options: SpruceSchemas.Local.v2020_07_22.ISyncSchemasAction
+		options: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasAction
 	): Promise<IFeatureActionExecuteResponse> {
 		this.ui.clear()
 		this.ui.startLoading(`Syncing schemas...`)

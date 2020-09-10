@@ -1,19 +1,19 @@
 import { SchemaValues } from '@sprucelabs/schema'
-import upgradeSkillActionSchema from '#spruce/schemas/local/v2020_07_22/upgradeSkillAction.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import upgradeSkillActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/upgradeSkillAction.schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { IFeatureActionExecuteResponse } from '../../features.types'
 import SkillFeature from '../SkillFeature'
 
 export default class UpgradeAction extends AbstractFeatureAction<
-	SpruceSchemas.Local.v2020_07_22.IUpgradeSkillActionSchema
+	SpruceSchemas.SpruceCli.v2020_07_22.IUpgradeSkillActionSchema
 > {
 	public name = 'Upgrade'
 	public optionsSchema = upgradeSkillActionSchema
 
 	public async execute(
 		options: SchemaValues<
-			SpruceSchemas.Local.v2020_07_22.IUpgradeSkillActionSchema
+			SpruceSchemas.SpruceCli.v2020_07_22.IUpgradeSkillActionSchema
 		>
 	): Promise<IFeatureActionExecuteResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)

@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const createTestActionSchema: SpruceSchemas.Local.v2020_07_22.ICreateTestActionSchema  = {
+const createTestActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICreateTestActionSchema  = {
 	id: 'createTestAction',
 	name: 'Create test action',
 	description: 'Options for creating a new test.',

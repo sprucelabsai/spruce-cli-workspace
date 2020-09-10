@@ -9,7 +9,7 @@ import { AuthedAs } from '../types/cli.types'
 import { SpruceEvents } from '../types/events-generated'
 import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
 
-type ISkill = SpruceSchemas.Local.v2020_07_22.ICliSkill
+type ISkill = SpruceSchemas.SpruceCli.v2020_07_22.ICliSkill
 
 export interface ISkillStoreSettings extends ILocalStoreSettings {
 	loggedInSkill: ISkill

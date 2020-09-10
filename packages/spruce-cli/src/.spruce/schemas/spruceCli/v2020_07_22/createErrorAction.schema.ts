@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const createErrorActionSchema: SpruceSchemas.Local.v2020_07_22.ICreateErrorActionSchema  = {
+const createErrorActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICreateErrorActionSchema  = {
 	id: 'createErrorAction',
 	name: 'Create error action',
 	description: 'Create a builder for your brand new error! ',

@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const listenEventActionSchema: SpruceSchemas.Local.v2020_07_22.IListenEventActionSchema  = {
+const listenEventActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.IListenEventActionSchema  = {
 	id: 'listenEventAction',
 	name: 'Listen to event action',
 	description: 'Options for event.listen.',

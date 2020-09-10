@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const setupVscodeActionSchema: SpruceSchemas.Local.v2020_07_22.ISetupVscodeActionSchema  = {
+const setupVscodeActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISetupVscodeActionSchema  = {
 	id: 'setupVscodeAction',
 	name: 'Setup vscode action',
 	description: 'Install vscode extensions the Spruce team recommends!',

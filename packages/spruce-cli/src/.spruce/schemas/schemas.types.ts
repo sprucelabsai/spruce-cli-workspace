@@ -515,7 +515,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 }
 
 
-export declare namespace SpruceSchemas.Local.v2020_07_22 {
+export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 	/** A directory that is autoloaded. */
 	export interface IAutoloader {
@@ -559,12 +559,12 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type AutoloaderEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.IAutoloaderSchema>
+	export type AutoloaderEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.IAutoloaderSchema>
 
 }
 
 
-export declare namespace SpruceSchemas.Local.v2020_07_22 {
+export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 	/** The options for skill.boot. */
 	export interface IBootSkillAction {
@@ -588,12 +588,12 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type BootSkillActionEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.IBootSkillActionSchema>
+	export type BootSkillActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.IBootSkillActionSchema>
 
 }
 
 
-export declare namespace SpruceSchemas.Local.v2020_07_22 {
+export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 	/** A stripped down skill for the cli */
 	export interface ICliSkill {
@@ -644,12 +644,12 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type CliSkillEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ICliSkillSchema>
+	export type CliSkillEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ICliSkillSchema>
 
 }
 
 
-export declare namespace SpruceSchemas.Local.v2020_07_22 {
+export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 	/** A stripped down user for the cli */
 	export interface ICliUser {
@@ -683,12 +683,12 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type CliUserEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ICliUserSchema>
+	export type CliUserEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ICliUserSchema>
 
 }
 
 
-export declare namespace SpruceSchemas.Local.v2020_07_22 {
+export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 	/** A stripped down cli user with token details for login */
 	export interface ICliUserWithToken {
@@ -738,12 +738,12 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type CliUserWithTokenEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ICliUserWithTokenSchema>
+	export type CliUserWithTokenEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ICliUserWithTokenSchema>
 
 }
 
 
-export declare namespace SpruceSchemas.Local.v2020_07_22 {
+export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 	/** Create a builder for your brand new error!  */
 	export interface ICreateErrorAction {
@@ -847,12 +847,12 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type CreateErrorActionEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ICreateErrorActionSchema>
+	export type CreateErrorActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ICreateErrorActionSchema>
 
 }
 
 
-export declare namespace SpruceSchemas.Local.v2020_07_22 {
+export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 	/** Create the builder to a fresh new schema! */
 	export interface ICreateSchemaAction {
@@ -1028,12 +1028,12 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type CreateSchemaActionEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ICreateSchemaActionSchema>
+	export type CreateSchemaActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ICreateSchemaActionSchema>
 
 }
 
 
-export declare namespace SpruceSchemas.Local.v2020_07_22 {
+export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 	/** Options for creating a new test. */
 	export interface ICreateTestAction {
@@ -1096,12 +1096,12 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type CreateTestActionEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ICreateTestActionSchema>
+	export type CreateTestActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ICreateTestActionSchema>
 
 }
 
 
-export declare namespace SpruceSchemas.Local.v2020_07_22 {
+export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 	/** Options for event.listen. */
 	export interface IListenEventAction {
@@ -1154,12 +1154,12 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type ListenEventActionEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.IListenEventActionSchema>
+	export type ListenEventActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.IListenEventActionSchema>
 
 }
 
 
-export declare namespace SpruceSchemas.Local.v2020_07_22 {
+export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 	/** Used to collect input on the names of a class or interface */
 	export interface INamedTemplateItem {
@@ -1239,12 +1239,12 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type NamedTemplateItemEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.INamedTemplateItemSchema>
+	export type NamedTemplateItemEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.INamedTemplateItemSchema>
 
 }
 
 
-export declare namespace SpruceSchemas.Local.v2020_07_22 {
+export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 	/** Track onboarding progress and tutorials &amp; quizzes completed. */
 	export interface IOnboarding {
@@ -1278,12 +1278,12 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type OnboardingEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.IOnboardingSchema>
+	export type OnboardingEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.IOnboardingSchema>
 
 }
 
 
-export declare namespace SpruceSchemas.Local.v2020_07_22 {
+export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 	/** Install vscode extensions the Spruce team recommends! */
 	export interface ISetupVscodeAction {
@@ -1306,12 +1306,12 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type SetupVscodeActionEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ISetupVscodeActionSchema>
+	export type SetupVscodeActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ISetupVscodeActionSchema>
 
 }
 
 
-export declare namespace SpruceSchemas.Local.v2020_07_22 {
+export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 	
 	export interface ISkillFeature {
@@ -1343,12 +1343,12 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type SkillFeatureEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ISkillFeatureSchema>
+	export type SkillFeatureEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ISkillFeatureSchema>
 
 }
 
 
-export declare namespace SpruceSchemas.Local.v2020_07_22 {
+export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 	/** Keep your errors types in sync with your builders */
 	export interface ISyncErrorAction {
@@ -1403,12 +1403,12 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type SyncErrorActionEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ISyncErrorActionSchema>
+	export type SyncErrorActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ISyncErrorActionSchema>
 
 }
 
 
-export declare namespace SpruceSchemas.Local.v2020_07_22 {
+export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 	/** Options for schema.sync. */
 	export interface ISyncSchemasAction {
@@ -1504,12 +1504,12 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type SyncSchemasActionEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.ISyncSchemasActionSchema>
+	export type SyncSchemasActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasActionSchema>
 
 }
 
 
-export declare namespace SpruceSchemas.Local.v2020_07_22 {
+export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 	/** Options skill.upgrade. */
 	export interface IUpgradeSkillAction {
@@ -1533,7 +1533,7 @@ export declare namespace SpruceSchemas.Local.v2020_07_22 {
 		    }
 	}
 
-	export type UpgradeSkillActionEntity = SchemaEntity<SpruceSchemas.Local.v2020_07_22.IUpgradeSkillActionSchema>
+	export type UpgradeSkillActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.IUpgradeSkillActionSchema>
 
 }
 

@@ -1,20 +1,20 @@
 import { normalizeSchemaValues } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import createSchemaActionSchema from '#spruce/schemas/local/v2020_07_22/createSchemaAction.schema'
-import syncSchemasActionSchema from '#spruce/schemas/local/v2020_07_22/syncSchemasAction.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import createSchemaActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/createSchemaAction.schema'
+import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { IFeatureAction } from '../../features.types'
 
 export default class CreateAction extends AbstractFeatureAction<
-	SpruceSchemas.Local.v2020_07_22.ICreateSchemaActionSchema
+	SpruceSchemas.SpruceCli.v2020_07_22.ICreateSchemaActionSchema
 > {
 	public name = 'create'
 	public optionsSchema = createSchemaActionSchema
 
 	public async execute(
-		options: SpruceSchemas.Local.v2020_07_22.ICreateSchemaAction
+		options: SpruceSchemas.SpruceCli.v2020_07_22.ICreateSchemaAction
 	) {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
@@ -51,7 +51,7 @@ export default class CreateAction extends AbstractFeatureAction<
 		})
 
 		const syncAction = this.Action('sync') as IFeatureAction<
-			SpruceSchemas.Local.v2020_07_22.ISyncSchemasActionSchema
+			SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasActionSchema
 		>
 
 		if (syncAfterCreate) {

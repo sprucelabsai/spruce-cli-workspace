@@ -4,17 +4,17 @@ import Schema, {
 	normalizeSchemaValues,
 } from '@sprucelabs/schema'
 import jwt from 'jsonwebtoken'
-import CliUserWithTokenSchema from '#spruce/schemas/local/v2020_07_22/cliUserWithToken.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import userSchema from '#spruce/schemas/spruce/v2020_07_22/person.schema'
+import CliUserWithTokenSchema from '#spruce/schemas/spruceCli/v2020_07_22/cliUserWithToken.schema'
 import SpruceError from '../errors/SpruceError'
 import log from '../singletons/log'
 import { AuthedAs } from '../types/cli.types'
 import { SpruceEvents } from '../types/events-generated'
 import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
 
-type UserWithToken = SpruceSchemas.Local.v2020_07_22.ICliUserWithToken
-type User = SpruceSchemas.Local.v2020_07_22.ICliUser
+type UserWithToken = SpruceSchemas.SpruceCli.v2020_07_22.ICliUserWithToken
+type User = SpruceSchemas.SpruceCli.v2020_07_22.ICliUser
 
 /** Settings i need to save */
 interface IUserStoreSettings extends ILocalStoreSettings {

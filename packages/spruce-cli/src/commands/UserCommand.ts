@@ -68,7 +68,7 @@ export default class UserCommand extends AbstractCommand {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.term.stopLoading()
 
-		let user: SpruceSchemas.Local.v2020_07_22.ICliUserWithToken | undefined
+		let user: SpruceSchemas.SpruceCli.v2020_07_22.ICliUserWithToken | undefined
 
 		let valid = false
 

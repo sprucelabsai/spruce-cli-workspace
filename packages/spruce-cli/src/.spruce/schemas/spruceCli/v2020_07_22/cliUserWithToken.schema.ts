@@ -3,10 +3,10 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const cliUserSchema: SpruceSchemas.Local.v2020_07_22.ICliUserSchema  = {
-	id: 'cliUser',
+const cliUserWithTokenSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICliUserWithTokenSchema  = {
+	id: 'cliUserWithToken',
 	name: 'Person',
-	description: 'A stripped down user for the cli',
+	description: 'A stripped down cli user with token details for login',
 	    fields: {
 	            /** Id. */
 	            'id': {
@@ -23,7 +23,19 @@ const cliUserSchema: SpruceSchemas.Local.v2020_07_22.ICliUserSchema  = {
 	                hint: 'The name you can use when talking to this person.',
 	                options: undefined
 	            },
+	            /** . */
+	            'token': {
+	                type: FieldType.Text,
+	                isRequired: true,
+	                options: undefined
+	            },
+	            /** Logged in. */
+	            'isLoggedIn': {
+	                label: 'Logged in',
+	                type: FieldType.Boolean,
+	                options: undefined
+	            },
 	    }
 }
 
-export default cliUserSchema
+export default cliUserWithTokenSchema
