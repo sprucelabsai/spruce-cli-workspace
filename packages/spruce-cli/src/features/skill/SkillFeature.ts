@@ -83,11 +83,11 @@ export default class SkillFeature<
 	public getSkillName() {
 		const pkg = this.Service('pkg')
 		const nameFromPackage = pkg.get('name')
-		return nameFromPackage
+		return nameFromPackage.split('/').pop()
 	}
 
 	public getSkillNamespace() {
-		return namesUtil.toPascal(this.getSkillName().split('/'))
+		return namesUtil.toPascal(this.getSkillName())
 	}
 
 	public installScripts() {
