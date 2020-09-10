@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.26.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.25.21...v10.26.0) (2020-09-10)
+
+
+### Features
+
+* local namespace replaced by skill's local name ([537ffdb](https://github.com/sprucelabsai/spruce-cli-workspace/commit/537ffdb))
+
+
+
+
+
 ## [10.25.21](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.25.20...v10.25.21) (2020-09-10)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
