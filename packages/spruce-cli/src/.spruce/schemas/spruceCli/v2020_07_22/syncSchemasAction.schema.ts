@@ -3,10 +3,10 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const createSchemaActionSchema: SpruceSchemas.Local.v2020_07_22.ICreateSchemaActionSchema  = {
-	id: 'createSchemaAction',
-	name: 'Create schema action',
-	description: 'Create the builder to a fresh new schema!',
+const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasActionSchema  = {
+	id: 'syncSchemasAction',
+	name: 'Sync schemas action',
+	description: 'Options for schema.sync.',
 	    fields: {
 	            /** Schema types destination directory. Where schema types and interfaces will be generated. */
 	            'schemaTypesDestinationDir': {
@@ -73,71 +73,7 @@ const createSchemaActionSchema: SpruceSchemas.Local.v2020_07_22.ICreateSchemaAct
 	                defaultValue: true,
 	                options: undefined
 	            },
-	            /** Schema builder destination directory. Where I'll save the new schema builder. */
-	            'schemaBuilderDestinationDir': {
-	                label: 'Schema builder destination directory',
-	                type: FieldType.Text,
-	                hint: 'Where I\'ll save the new schema builder.',
-	                defaultValue: "src/schemas",
-	                options: undefined
-	            },
-	            /** Builder function. The function that builds this schema */
-	            'builderFunction': {
-	                label: 'Builder function',
-	                type: FieldType.Text,
-	                isPrivate: true,
-	                hint: 'The function that builds this schema',
-	                defaultValue: "buildSchema",
-	                options: undefined
-	            },
-	            /** Sync after creation. This will ensure types and schemas are in sync after you create your builder. */
-	            'syncAfterCreate': {
-	                label: 'Sync after creation',
-	                type: FieldType.Boolean,
-	                isPrivate: true,
-	                hint: 'This will ensure types and schemas are in sync after you create your builder.',
-	                defaultValue: true,
-	                options: undefined
-	            },
-	            /** Version. Set a version yourself instead of letting me generate one for you */
-	            'version': {
-	                label: 'Version',
-	                type: FieldType.Text,
-	                isPrivate: true,
-	                hint: 'Set a version yourself instead of letting me generate one for you',
-	                options: undefined
-	            },
-	            /** Readable name. The name people will read */
-	            'nameReadable': {
-	                label: 'Readable name',
-	                type: FieldType.Text,
-	                isRequired: true,
-	                hint: 'The name people will read',
-	                options: undefined
-	            },
-	            /** Pascal case name. PascalCase of the name */
-	            'namePascal': {
-	                label: 'Pascal case name',
-	                type: FieldType.Text,
-	                hint: 'PascalCase of the name',
-	                options: undefined
-	            },
-	            /** Camel case name. camelCase version of the name */
-	            'nameCamel': {
-	                label: 'Camel case name',
-	                type: FieldType.Text,
-	                isRequired: true,
-	                hint: 'camelCase version of the name',
-	                options: undefined
-	            },
-	            /** Description. Describe a bit more here */
-	            'description': {
-	                label: 'Description',
-	                type: FieldType.Text,
-	                hint: 'Describe a bit more here',
-	                options: undefined
-	            },
 	    }
 }
 
-export default createSchemaActionSchema
+export default syncSchemasActionSchema

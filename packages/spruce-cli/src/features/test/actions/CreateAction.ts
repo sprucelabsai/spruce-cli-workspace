@@ -2,20 +2,20 @@ import pathUtil from 'path'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
-import createTestActionSchema from '#spruce/schemas/local/v2020_07_22/createTestAction.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import createTestActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/createTestAction.schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import ParentTestFinder from '../../error/ParentTestFinder'
 import { IFeatureActionExecuteResponse } from '../../features.types'
 
 export default class CreateAction extends AbstractFeatureAction<
-	SpruceSchemas.Local.v2020_07_22.ICreateTestActionSchema
+	SpruceSchemas.SpruceCli.v2020_07_22.ICreateTestActionSchema
 > {
 	public name = 'Test'
 	public optionsSchema = createTestActionSchema
 
 	public async execute(
-		options: SpruceSchemas.Local.v2020_07_22.ICreateTestAction
+		options: SpruceSchemas.SpruceCli.v2020_07_22.ICreateTestAction
 	): Promise<IFeatureActionExecuteResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 		const {

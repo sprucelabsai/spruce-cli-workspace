@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const syncErrorActionSchema: SpruceSchemas.Local.v2020_07_22.ISyncErrorActionSchema  = {
+const syncErrorActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncErrorActionSchema  = {
 	id: 'syncErrorAction',
 	name: 'Sync error action',
 	description: 'Keep your errors types in sync with your builders',

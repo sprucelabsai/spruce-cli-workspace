@@ -1,8 +1,8 @@
 import { normalizeSchemaValues } from '@sprucelabs/schema'
-import createErrorActionSchema from '#spruce/schemas/local/v2020_07_22/createErrorAction.schema'
-import createSchemaActionSchema from '#spruce/schemas/local/v2020_07_22/createSchemaAction.schema'
-import syncErrorActionSchema from '#spruce/schemas/local/v2020_07_22/syncErrorAction.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import createErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/createErrorAction.schema'
+import createSchemaActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/createSchemaAction.schema'
+import syncErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncErrorAction.schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import {
 	IFeatureAction,
@@ -10,20 +10,20 @@ import {
 } from '../../features.types'
 
 export default class CreateAction extends AbstractFeatureAction<
-	SpruceSchemas.Local.v2020_07_22.ICreateErrorActionSchema
+	SpruceSchemas.SpruceCli.v2020_07_22.ICreateErrorActionSchema
 > {
 	public name = 'create'
 	public optionsSchema = createErrorActionSchema
 
 	public async execute(
-		options: SpruceSchemas.Local.v2020_07_22.ICreateErrorAction
+		options: SpruceSchemas.SpruceCli.v2020_07_22.ICreateErrorAction
 	): Promise<IFeatureActionExecuteResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
 		const schemaCreateAction = this.getFeature('schema').Action(
 			'create'
 		) as IFeatureAction<
-			SpruceSchemas.Local.v2020_07_22.ICreateSchemaActionSchema
+			SpruceSchemas.SpruceCli.v2020_07_22.ICreateSchemaActionSchema
 		>
 
 		const createSchemaOptions = normalizeSchemaValues(

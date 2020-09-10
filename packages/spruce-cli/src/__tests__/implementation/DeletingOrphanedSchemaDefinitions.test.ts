@@ -11,8 +11,13 @@ export default class DeletingOrphanedSchemaDefinitionsTest extends AbstractSchem
 	@test()
 	protected static async findsAllSchemas() {
 		const results = await schemaGeneratorUtil.filterSchemaFilesBySchemaIds(
-			this.resolveTestPath('schemas'),
-			['one', 'two']
+			this.resolveTestPath('orphaned_schemas'),
+			[
+				{ id: 'one', namespace: 'namespace', version: 'v2020_07_22' },
+				{ id: 'two' },
+				{ id: 'three', namespace: 'namespacetwo' },
+				{ id: 'four', namespace: 'namespacetwo', version: 'v2020_07_22' },
+			]
 		)
 
 		assert.isEqual(results.length, 0)
@@ -21,11 +26,11 @@ export default class DeletingOrphanedSchemaDefinitionsTest extends AbstractSchem
 	@test()
 	protected static async findsOneMissing() {
 		const results = await schemaGeneratorUtil.filterSchemaFilesBySchemaIds(
-			this.resolveTestPath('schemas'),
-			['one']
+			this.resolveTestPath('orphaned_schemas'),
+			[{ id: 'one', namespace: 'namespace', version: 'v2020_07_22' }]
 		)
 
-		assert.isEqual(results.length, 1)
+		assert.isEqual(results.length, 3)
 		assert.doesInclude(results[0], /two\.schema\.[t|j]s/gi)
 	}
 }

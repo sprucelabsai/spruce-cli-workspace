@@ -6,9 +6,9 @@ import {
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { IErrorTemplateItem } from '@sprucelabs/spruce-templates'
-import syncErrorActionSchema from '#spruce/schemas/local/v2020_07_22/syncErrorAction.schema'
-import syncSchemasActionSchema from '#spruce/schemas/local/v2020_07_22/syncSchemasAction.schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import syncErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncErrorAction.schema'
+import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
 import ErrorGenerator from '../../../generators/ErrorGenerator'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import {
@@ -17,13 +17,13 @@ import {
 } from '../../features.types'
 
 export default class SyncAction extends AbstractFeatureAction<
-	SpruceSchemas.Local.v2020_07_22.ISyncErrorActionSchema
+	SpruceSchemas.SpruceCli.v2020_07_22.ISyncErrorActionSchema
 > {
 	public name = 'sync'
 	public optionsSchema = syncErrorActionSchema
 
 	public async execute(
-		options: SpruceSchemas.Local.v2020_07_22.ISyncErrorAction
+		options: SpruceSchemas.SpruceCli.v2020_07_22.ISyncErrorAction
 	): Promise<IFeatureActionExecuteResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 		const {
@@ -34,7 +34,7 @@ export default class SyncAction extends AbstractFeatureAction<
 		const schemaSyncAction = this.getFeature('schema').Action(
 			'sync'
 		) as IFeatureAction<
-			SpruceSchemas.Local.v2020_07_22.ISyncSchemasActionSchema
+			SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasActionSchema
 		>
 
 		const schemaSyncResults = await schemaSyncAction.execute({})
@@ -85,10 +85,10 @@ export default class SyncAction extends AbstractFeatureAction<
 
 	private async syncErrors(
 		schemaSyncAction: IFeatureAction<
-			SpruceSchemas.Local.v2020_07_22.ISyncSchemasActionSchema
+			SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasActionSchema
 		>,
 		normalizedOptions: SchemaValuesWithDefaults<
-			SpruceSchemas.Local.v2020_07_22.ISyncErrorActionSchema
+			SpruceSchemas.SpruceCli.v2020_07_22.ISyncErrorActionSchema
 		>
 	) {
 		const resolvedErrorTypesDestinationDir = diskUtil.resolvePath(

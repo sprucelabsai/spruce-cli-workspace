@@ -1,6 +1,6 @@
 import Schema from '@sprucelabs/schema'
 import BaseSpruceTest, { test, assert } from '@sprucelabs/test'
-import cliUserSchema from '#spruce/schemas/local/v2020_07_22/cliUser.schema'
+import cliUserSchema from '#spruce/schemas/spruceCli/v2020_07_22/cliUser.schema'
 
 export default class UsingSchemasInCli extends BaseSpruceTest {
 	@test()

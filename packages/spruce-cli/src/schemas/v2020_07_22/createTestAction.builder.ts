@@ -1,6 +1,6 @@
 import { buildSchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
-import namedTemplateItemSchema from '#spruce/schemas/local/v2020_07_22/namedTemplateItem.schema'
+import namedTemplateItemSchema from '#spruce/schemas/spruceCli/v2020_07_22/namedTemplateItem.schema'
 
 export default buildSchema({
 	id: 'createTestAction',

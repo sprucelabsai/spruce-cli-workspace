@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const bootSkillActionSchema: SpruceSchemas.Local.v2020_07_22.IBootSkillActionSchema  = {
+const bootSkillActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.IBootSkillActionSchema  = {
 	id: 'bootSkillAction',
 	name: 'Boot skill action',
 	description: 'The options for skill.boot.',

@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const upgradeSkillActionSchema: SpruceSchemas.Local.v2020_07_22.IUpgradeSkillActionSchema  = {
+const upgradeSkillActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.IUpgradeSkillActionSchema  = {
 	id: 'upgradeSkillAction',
 	name: 'Upgrade skill action',
 	description: 'Options skill.upgrade.',
