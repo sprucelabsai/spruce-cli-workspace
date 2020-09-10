@@ -1,4 +1,4 @@
-import { diskUtil, LOCAL_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import {
 	CORE_NAMESPACE,
 	CORE_SCHEMA_VERSION,
@@ -9,6 +9,8 @@ import AbstractSchemaTest from '../../AbstractSchemaTest'
 import SchemaGenerator from '../../generators/SchemaGenerator'
 import FieldTemplateItemBuilder from '../../templateItemBuilders/FieldTemplateItemBuilder'
 import SchemaTemplateItemBuilder from '../../templateItemBuilders/SchemaTemplateItemBuilder'
+
+const LOCAL_NAMESPACE = 'TacoBell'
 
 export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	private static generator: SchemaGenerator
@@ -75,7 +77,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 			{ schemasByNamespace, errors: schemaErrors },
 			{ fields, errors: fieldErrors },
 		] = await Promise.all([
-			schemaStore.fetchSchemas(),
+			schemaStore.fetchSchemas({ localNamespace: LOCAL_NAMESPACE }),
 			schemaStore.fetchFields(),
 		])
 
@@ -149,11 +151,9 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		'generates dynamic field with nested schemas',
 		`${LOCAL_NAMESPACE}.mercuryContract.${CORE_SCHEMA_VERSION.constValue}.__dynamicFieldSignature.valueTypes`,
 		{
-			type:
-				"{ schemaId: 'eventSignature', version: 'v2020_07_22', values: SpruceSchemas.Local.v2020_07_22.IEventSignature } | { schemaId: 'eventSignature2', version: 'v2020_07_22', values: SpruceSchemas.Local.v2020_07_22.IEventSignature2 }",
+			type: `{ schemaId: 'eventSignature', version: 'v2020_07_22', values: SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.IEventSignature } | { schemaId: 'eventSignature2', version: 'v2020_07_22', values: SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.IEventSignature2 }`,
 			value: '[eventSignatureSchema, eventSignature2Schema]',
-			schemaType:
-				'(SpruceSchemas.Local.v2020_07_22.IEventSignatureSchema | SpruceSchemas.Local.v2020_07_22.IEventSignature2Schema)[]',
+			schemaType: `(SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.IEventSignatureSchema | SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.IEventSignature2Schema)[]`,
 		}
 	)
 	protected static async importsTypes(

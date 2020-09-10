@@ -119,7 +119,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		const createAction = cli.getFeature('schema').Action('create')
 
 		const matcher = new RegExp(
-			`SpruceSchemas.Local.${version.constValue}(.*?)interface ITestSchema`,
+			`SpruceSchemas.Testing.${version.constValue}(.*?)interface ITestSchema`,
 			'gis'
 		)
 
@@ -148,7 +148,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		// make sure this path is versioned
 		assert.doesInclude(schemaFile, version.dirValue)
-		assert.doesInclude(schemaFile, '/local/')
+		assert.doesInclude(schemaFile, '/testing/')
 
 		// schema types should be good
 		await typeChecker.check(this.schemaTypesFile)
@@ -193,7 +193,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		const typesContent = diskUtil.readFile(typesPath)
 		assert.doesInclude(
 			typesContent,
-			"[eventNameWithOptionalNamespace:string]: { schemaId: 'eventSignature', version: 'v2020_07_22', values: SpruceSchemas.Local.v2020_07_22.IEventSignature } | { schemaId: 'eventSignature2', version: 'v2020_07_22', values: SpruceSchemas.Local.v2020_07_22.IEventSignature2 }"
+			"[eventNameWithOptionalNamespace:string]: { schemaId: 'eventSignature', version: 'v2020_07_22', values: SpruceSchemas.Testing.v2020_07_22.IEventSignature } | { schemaId: 'eventSignature2', version: 'v2020_07_22', values: SpruceSchemas.Testing.v2020_07_22.IEventSignature2 }"
 		)
 
 		await this.Service('typeChecker').check(typesPath)

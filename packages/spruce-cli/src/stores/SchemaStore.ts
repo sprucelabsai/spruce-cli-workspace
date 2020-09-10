@@ -3,7 +3,7 @@ import { ISchema } from '@sprucelabs/schema'
 import { IFieldRegistration } from '@sprucelabs/schema'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { LOCAL_NAMESPACE, CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
+import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
 import { uniqBy } from 'lodash'
 import SpruceError from '../errors/SpruceError'
@@ -42,15 +42,17 @@ interface IFetchFieldsResults {
 }
 
 export default class SchemaStore extends AbstractStore {
-	public async fetchSchemas(options?: {
+	public async fetchSchemas(options: {
 		localSchemaDir?: string
 		fetchRemoteSchemas?: boolean
 		enableVersioning?: boolean
+		localNamespace: string
 	}): Promise<IFetchSchemasResults> {
 		const {
 			localSchemaDir = 'src/schemas',
 			fetchRemoteSchemas = true,
 			enableVersioning = true,
+			localNamespace,
 		} = options || {}
 
 		const results: IFetchSchemasResults = {
@@ -70,7 +72,7 @@ export default class SchemaStore extends AbstractStore {
 		}
 
 		const locals = await this.loadLocalSchemas(localSchemaDir, enableVersioning)
-		results.schemasByNamespace[LOCAL_NAMESPACE] = locals.schemas
+		results.schemasByNamespace[localNamespace] = locals.schemas
 		results.errors.push(...locals.errors)
 
 		return results

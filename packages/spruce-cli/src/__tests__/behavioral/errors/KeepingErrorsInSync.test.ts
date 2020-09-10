@@ -35,10 +35,16 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 
 		// should contain our test error
 		let optionsContent = diskUtil.readFile(optionsMatch)
-		assert.doesInclude(optionsContent, /SpruceErrors\.Local\.ITestError/)
+		assert.doesInclude(
+			optionsContent,
+			/SpruceErrors\.TestingErrors\.ITestError/
+		)
 
 		let typesContent = diskUtil.readFile(typesMatch)
-		assert.doesInclude(typesContent, /SpruceErrors\.Local.*?ITestError/gis)
+		assert.doesInclude(
+			typesContent,
+			/SpruceErrors\.TestingErrors.*?ITestError/gis
+		)
 
 		// delete our testError
 		const builderMatch = testUtil.assertsFileByNameInGeneratedFiles(
@@ -81,8 +87,14 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		typesContent = diskUtil.readFile(this.errorTypesFile)
 
 		// types should include both
-		assert.doesInclude(typesContent, /SpruceErrors\.Local.*?TestError1/gis)
-		assert.doesInclude(typesContent, /SpruceErrors\.Local.*?TestError2/gis)
+		assert.doesInclude(
+			typesContent,
+			/SpruceErrors\.TestingErrors.*?TestError1/gis
+		)
+		assert.doesInclude(
+			typesContent,
+			/SpruceErrors\.TestingErrors.*?TestError2/gis
+		)
 
 		// definition file for testError1
 		assert.isTrue(diskUtil.doesFileExist(testError1SchemaMatch))
@@ -96,7 +108,10 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 
 		// types should no longer include test error 1
 		typesContent = diskUtil.readFile(this.errorTypesFile)
-		assert.doesNotInclude(typesContent, /SpruceErrors\.Local.*?TestError1/)
+		assert.doesNotInclude(
+			typesContent,
+			/SpruceErrors\.TestingErrors.*?TestError1/
+		)
 
 		// the definition file should be gone now
 		assert.isFalse(diskUtil.doesFileExist(testError1SchemaMatch))
