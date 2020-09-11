@@ -4,9 +4,9 @@ import contrib from 'blessed-contrib'
 // @ts-ignore
 import fonts from 'cfonts'
 import chalk from 'chalk'
+import Theme from '../../../widgets/Theme'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { IFeatureActionExecuteResponse } from '../../features.types'
-import Theme from '../Theme'
 
 export const dashboardActionOptionsDefinition = buildSchema({
 	id: 'dashboard',
@@ -118,7 +118,7 @@ export default class DashboardAction extends AbstractFeatureAction<
 			'PASS  build/__tests__/implementation/SchemaTemplateItemBuilder.test.js',
 			'PASS  build/__tests__/implementation/FeatureCommandAttacher.test.js',
 			'PASS  build/__tests__/implementation/FeatureInstaller.test.js',
-			'PASS  build/__tests__/implementation/CommmandOptionBuilder.test.js',
+			'PASS  build/__tests__/implementation/CommandOptionBuilder.test.js',
 			'PASS  build/__tests__/implementation/ServiceFactory.test.js',
 			'PASS  build/__tests__/implementation/DeletingOrphanedSchemaDefinitions.test.js',
 			'PASS  build/__tests__/behavioral/BootingTheCli.test.js',
