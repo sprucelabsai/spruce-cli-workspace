@@ -29,7 +29,7 @@
 			"type": "node",
 			"request": "launch",
 			"name": "test.file",
-			"runtimeExecutable": "${NVM_BIN}/node",
+			"runtimeExecutable": "${env:NVM_BIN}/node",
 			"runtimeArgs": [
 				"--inspect-brk",
 				"--trace-warnings",
@@ -46,7 +46,7 @@
 			"type": "node",
 			"request": "launch",
 			"name": "test.all",
-			"runtimeExecutable": "${NVM_BIN}/node",
+			"runtimeExecutable": "${env:NVM_BIN}/node",
 			"runtimeArgs": [
 				"--inspect-brk",
 				"--trace-warnings",
