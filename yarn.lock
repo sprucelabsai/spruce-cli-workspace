@@ -2071,10 +2071,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sprucelabs/babel-plugin-schema@^2.1.38":
-  version "2.1.38"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-2.1.38.tgz#f9ace9941258b7594cfd024c71c0c1177a74777b"
-  integrity sha512-fnfVWxd3KXMKJnMoCuSRuCb6h8OmAOEnWxNTYX6ac6TdmJ4AviLG0Nmu3jkI+8E9x6SEAjD6csbro6+TDOTSOQ==
+"@sprucelabs/babel-plugin-schema@^2.1.39":
+  version "2.1.39"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-2.1.39.tgz#d57ca3bc24cbdc34ec0103de1ecceb8372a3f1cd"
+  integrity sha512-snnyX40yYJkhcA3Az7n5RU5cGr+wfgD+dNcdIfQBF+CakBI2biQWNaZrIMYCDyj/7PFgCrqG+QpXkNaGBldl2A==
   dependencies:
     fs-extra "^9.0.1"
     globby "^11.0.1"
@@ -2082,10 +2082,10 @@
     tsconfig-paths "^3.9.0"
     yargs "^16.0.3"
 
-"@sprucelabs/error@^2.2.244":
-  version "2.2.244"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.244.tgz#f79823ee2e8c1d63079161ddc337b3882a90e855"
-  integrity sha512-G6UdZugHHFFYkHBHQbkwgdS78A5BvFarZ6M24IwMMk/QRF+BBQkrDFJGKOhNe9/MMLNHhFgVImbqZleJ0k0jLg==
+"@sprucelabs/error@^2.2.245":
+  version "2.2.245"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.245.tgz#3bf42e8a8b6c516bffd1a26bd64ff20b35bbc763"
+  integrity sha512-tWZ6FTLHoSHcLouCMkWjFA2GadQjmWQ+a+Dvm2Y+eWyY7dtVCSGi2qeUPH6FLdtIueMqKF0gvxy+UmBwCcFtgw==
 
 "@sprucelabs/jest-sheets-reporter@^1.2.0":
   version "1.2.0"
@@ -2109,12 +2109,12 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^9.3.3":
-  version "9.3.3"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-9.3.3.tgz#beae464ef9752f382abeedf6c02e47c86fec4c97"
-  integrity sha512-cLeXCseMlu40UEF94cs7gM0GifNi4uQDD/FnSfxjBGsZQlvJwG1/JkRd5Oc5zT9l9NGJjxQQ6LrfY7S9eaiFxQ==
+"@sprucelabs/schema@^9.3.4":
+  version "9.3.4"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-9.3.4.tgz#ea5b164daab9fb46f06cd93e6db016fa0d59adfc"
+  integrity sha512-1sBa6TpT3iBFzvCC5FEZzYIX96HIwXxlOPg/FkpQIIHxt8fNlukn61uy12V3wRlGs9s/2UvpObchHgjBgYwG7Q==
   dependencies:
-    "@sprucelabs/error" "^2.2.244"
+    "@sprucelabs/error" "^2.2.245"
     "@sprucelabs/log" "^10.2.210"
     google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.7.57"
