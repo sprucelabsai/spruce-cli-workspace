@@ -93,7 +93,7 @@
 		"@types/node": "^14.10.1",
 		"@types/promise.allsettled": "^1.0.3",
 		"@types/rimraf": "^3.0.0",
-		"@types/semver": "^7.3.3",
+		"@types/semver": "^7.3.4",
 		"@types/sha1": "^1.1.2",
 		"@types/slug": "^0.9.1",
 		"@types/superagent": "^4.1.10",
