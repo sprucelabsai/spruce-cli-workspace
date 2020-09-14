@@ -10,5 +10,11 @@ export default buildSchema({
 			type: FieldType.Phone,
 			isRequired: true,
 		},
+		relatedToBad: {
+			type: FieldType.Schema,
+			options: {
+				schemaId: { id: 'badSchema', version: 'v2020_06_23' },
+			},
+		},
 	},
 })

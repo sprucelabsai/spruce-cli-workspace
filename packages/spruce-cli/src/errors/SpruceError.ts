@@ -6,6 +6,7 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 	public friendlyMessage(): string {
 		const { options } = this
 		let message
+
 		switch (options?.code) {
 			case 'INVALID_COMMAND':
 				if (options.args.length === 0) {
@@ -121,7 +122,9 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 		// Drop on code and friendly message
 		message = `${message}`
 		const fullMessage = `${message}${
-			options.friendlyMessage ? `\n\n${options.friendlyMessage}` : ''
+			options.friendlyMessage && options.friendlyMessage !== message
+				? `\n\n${options.friendlyMessage}`
+				: ''
 		}`
 
 		// Handle repeating text from original message by remove it

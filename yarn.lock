@@ -2131,22 +2131,10 @@
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/schema@^9.3.9":
-  version "9.3.9"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-9.3.9.tgz#104837bb5b7f2c4ec0b1314e41d62f0d851858af"
-  integrity sha512-88EblPfa57vEzfAUMqP+Hdv3M9pAQoGAa6OOy184Z67PnKGGjO4/Av+Z6oLDfn1uX9yUtLVGERcgdoGAdk+f3g==
-  dependencies:
-    "@sprucelabs/error" "^2.2.250"
-    "@sprucelabs/log" "^10.2.210"
-    google-libphonenumber "^3.2.13"
-    libphonenumber-js "^1.7.57"
-    mime-db "^1.44.0"
-    mime-type "^4.0.0"
-
-"@sprucelabs/test@^7.0.3":
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.3.tgz#ca71c134ee09b544dd9e04b290d3d1ed56bab6f7"
-  integrity sha512-8OwkU/5NN24f0jXoy+q952GVP8rUOnhQHUX70wxQhrU0oaUlsvoWs5u+ZjElRN2heaL9bnwUGpP58sf+3wZeSA==
+"@sprucelabs/test@^7.0.10":
+  version "7.0.10"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.10.tgz#d49432c56627934a580ba16b4ea35421651cd5b3"
+  integrity sha512-V9VHxYxQJcXU2v26QgD4/EejQkTFiC4TYu1J2LxD/+ALnW08oA6XRByUI/e8ftSiV8Kt0heFMdf3kXGdMvmj5g==
   dependencies:
     "@babel/core" "^7.11.6"
     "@babel/preset-env" "^7.11.5"

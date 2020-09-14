@@ -1,4 +1,5 @@
 import path from 'path'
+import AbstractSpruceError from '@sprucelabs/error'
 import { FieldFactory, FieldDefinitionValueType } from '@sprucelabs/schema'
 import { IField } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
@@ -441,8 +442,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 
 		const message = err.message
 		// Remove message from stack so the message is not doubled up
-		const stack = err.stack ? err.stack.replace(message, '') : ''
-		const stackLines = stack.split('\n')
+		const stackLines = this.cleanStack(err)
 		this.renderSection({
 			headline: message,
 			lines: this.renderStackTraces ? stackLines.splice(0, 100) : undefined,
@@ -450,5 +450,22 @@ export default class TerminalInterface implements IGraphicsInterface {
 			dividerEffects: [IGraphicsTextEffect.Red],
 			bodyEffects: [IGraphicsTextEffect.Red],
 		})
+	}
+
+	private cleanStack(err: Error) {
+		const message = err.message
+		let stack = err.stack ? err.stack.replace(message, '') : ''
+
+		if (err instanceof AbstractSpruceError) {
+			let original = err.originalError
+			while (original) {
+				stack = stack.replace('Error: ' + original.message, '')
+				original = (original as AbstractSpruceError).originalError
+			}
+		}
+
+		const stackLines = stack.split('\n')
+
+		return stackLines
 	}
 }
