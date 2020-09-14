@@ -169,7 +169,10 @@ export default class FormComponent<S extends ISchema> extends SchemaEntity<S> {
 		}
 
 		let definition = { ...field.definition }
-		const value = this.values[fieldName]
+		const value = this.get(fieldName, {
+			validate: false,
+			createEntityInstances: false,
+		})
 		if (definition.isArray) {
 			throw new SpruceError({
 				code: 'NOT_IMPLEMENTED',
@@ -187,7 +190,7 @@ export default class FormComponent<S extends ISchema> extends SchemaEntity<S> {
 				fieldName,
 				//@ts-ignore
 				definition,
-				this.values
+				this.getValues({ validate: false, createEntityInstances: false })
 			)
 		}
 

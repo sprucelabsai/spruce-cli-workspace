@@ -1,4 +1,4 @@
-import SchemaEntity from '@sprucelabs/schema'
+import { validateSchema } from '@sprucelabs/schema'
 import SpruceError from '../errors/SpruceError'
 import ImportService from './ImportService'
 
@@ -7,7 +7,7 @@ export default class SchemaService extends ImportService {
 		const definitionProxy = await this.importDefault(file)
 
 		try {
-			SchemaEntity.validateSchema(definitionProxy)
+			validateSchema(definitionProxy)
 		} catch (err) {
 			throw new SpruceError({
 				code: 'SCHEMA_FAILED_TO_IMPORT',
