@@ -2082,10 +2082,10 @@
     tsconfig-paths "^3.9.0"
     yargs "^16.0.3"
 
-"@sprucelabs/error@^2.2.258", "@sprucelabs/error@^2.2.259":
-  version "2.2.259"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.259.tgz#bfaded56acf6a9e9fac0b1abc2403ece412c045b"
-  integrity sha512-wxl8e6+zYdiXqYw/Kzn5bDViN834Yha2VC6H3oMTUMz07WDDqjZsgQRGAtNLM2xKbLgfuh1cwRNVa6c8b4RC2g==
+"@sprucelabs/error@^2.2.258", "@sprucelabs/error@^2.2.260":
+  version "2.2.260"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.260.tgz#e639a10317ed96261f1209701eca1cb72951e64f"
+  integrity sha512-KwV0/n+dohBbCkKaInXhr4UBFVNJaBTfiiyUW68cDJXpj4HrGX/bWX1PcSgG/TVfDf+iZ1N8FZFi1QWdLNC4ow==
 
 "@sprucelabs/jest-sheets-reporter@^1.2.0":
   version "1.2.0"
