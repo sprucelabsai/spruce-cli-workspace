@@ -1,4 +1,4 @@
-import SchemaEntity, { ISchema } from '@sprucelabs/schema'
+import { ISchema, validateSchema } from '@sprucelabs/schema'
 import { CORE_NAMESPACE, diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
@@ -113,7 +113,7 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 
 	private static validateSchemas(schemas: ISchema[]) {
 		for (const schema of schemas) {
-			SchemaEntity.validateSchema(schema)
+			validateSchema(schema)
 		}
 	}
 

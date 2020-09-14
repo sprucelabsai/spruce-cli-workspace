@@ -167,7 +167,15 @@ export default class QuizComponent<
 			const [validity, idx] = answer.split('-')
 
 			// Get the field to tell type
-			const field = this.formBuilder.getField(fieldName)
+			const { field } =
+				this.formBuilder
+					.getNamedFields()
+					.find((namedField) => namedField.name === fieldName) || {}
+
+			if (!field) {
+				throw new Error('Field issue in QuizComponent')
+			}
+
 			const fieldDefinition = field.definition
 
 			switch (fieldDefinition.type) {

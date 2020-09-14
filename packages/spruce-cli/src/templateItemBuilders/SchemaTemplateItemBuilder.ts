@@ -1,10 +1,11 @@
-import SchemaEntity, {
+import {
 	ISchema,
 	ISchemaTemplateItem,
 	SchemaField,
 	ISchemaFieldDefinition,
 	ISchemaIdWithVersion,
 	SchemaError,
+	validateSchema,
 } from '@sprucelabs/schema'
 import cloneDeep from 'lodash/cloneDeep'
 import uniqWith from 'lodash/uniqWith'
@@ -215,7 +216,7 @@ export default class SchemaTemplateItemBuilder {
 				})
 			}
 		} else {
-			SchemaEntity.validateSchema(schemaOrIdWithVersion)
+			validateSchema(schemaOrIdWithVersion)
 
 			this.cacheSchema(schemaOrIdWithVersion)
 
