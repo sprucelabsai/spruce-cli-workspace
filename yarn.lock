@@ -2071,10 +2071,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sprucelabs/babel-plugin-schema@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-3.0.0.tgz#9d5b568ce1ac9eb1854a178af94fc010b1ae800d"
-  integrity sha512-jzd8POVQ8fGcsN8d1Vv1LBB4UUMEpPcx/bSk4Ms8Ga/Py502gewEW5f5bwT2f01x5kus4uyR1Lk4Hu5fKzRBig==
+"@sprucelabs/babel-plugin-schema@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-3.0.1.tgz#41089165ddd2917b53be94980729f4e35ee26487"
+  integrity sha512-T2il2fRGNaVsRH5R1GxsUpY6uaZTyzPPVcZGOqB0sr1FmS2Hb5sAsps0HR4/KMHQU1vNwqb0ln5U3MdUHGXJ3g==
   dependencies:
     fs-extra "^9.0.1"
     globby "^11.0.1"
@@ -5238,9 +5238,9 @@ gaxios@^3.0.0:
     node-fetch "^2.3.0"
 
 gcp-metadata@^4.1.0:
-  version "4.1.4"
-  resolved "https://registry.yarnpkg.com/gcp-metadata/-/gcp-metadata-4.1.4.tgz#3adadb9158c716c325849ee893741721a3c09e7e"
-  integrity sha512-5J/GIH0yWt/56R3dNaNWPGQ/zXsZOddYECfJaqxFWgrZ9HC2Kvc5vl9upOgUUHKzURjAVf2N+f6tEJiojqXUuA==
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/gcp-metadata/-/gcp-metadata-4.2.0.tgz#3b424355ccdc240ee07c5791e2fd6a60a283d89a"
+  integrity sha512-vQZD57cQkqIA6YPGXM/zc+PIZfNRFdukWGsGZ5+LcJzesi5xp6Gn7a02wRJi4eXPyArNMIYpPET4QMxGqtlk6Q==
   dependencies:
     gaxios "^3.0.0"
     json-bigint "^1.0.0"
