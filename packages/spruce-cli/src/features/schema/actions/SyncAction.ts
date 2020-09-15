@@ -4,6 +4,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { IValueTypes } from '@sprucelabs/spruce-templates'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
+import SpruceError from '../../../errors/SpruceError'
 import FieldTemplateItemBuilder from '../../../templateItemBuilders/FieldTemplateItemBuilder'
 import SchemaTemplateItemBuilder from '../../../templateItemBuilders/SchemaTemplateItemBuilder'
 import { IGeneratedFile } from '../../../types/cli.types'
@@ -56,42 +57,64 @@ export default class SyncAction extends AbstractFeatureAction<
 			resolvedFieldTypesDestination,
 		})
 
-		const {
-			schemaTemplateItems,
-			schemaErrors,
-		} = await this.generateSchemaTemplateItems({
-			schemaLookupDir,
-			resolvedSchemaTypesDestinationDir,
-			enableVersioning,
-			fetchRemoteSchemas,
-		})
+		const schemaErrors: SpruceError[] = []
+		let schemaTemplateItems: ISchemaTemplateItem[] | undefined
+		let typeResults: IGeneratedFile[] = []
 
-		if (schemaTemplateItems.length === 0) {
-			diskUtil.deleteDir(resolvedSchemaTypesDestinationDir)
-			return {}
+		try {
+			const templateResults = await this.generateSchemaTemplateItems({
+				schemaLookupDir,
+				resolvedSchemaTypesDestinationDir,
+				enableVersioning,
+				fetchRemoteSchemas,
+			})
+
+			schemaErrors.push(...templateResults.schemaErrors)
+			schemaTemplateItems = templateResults.schemaTemplateItems
+		} catch (err) {
+			schemaErrors.push(err)
 		}
 
-		await this.deleteOrphanedDefinitions(
-			resolvedSchemaTypesDestinationDir,
-			schemaTemplateItems
-		)
-
-		const valueTypes = await this.generateValueTypes(
-			resolvedFieldTypesDestination,
-			fieldTemplateItems,
-			schemaTemplateItems,
-			globalNamespace ?? undefined
-		)
-
-		const typeResults = await this.schemaGenerator.generateSchemasAndTypes(
-			resolvedSchemaTypesDestination,
-			{
-				fieldTemplateItems,
-				schemaTemplateItems,
-				valueTypes,
-				globalNamespace: globalNamespace ?? undefined,
+		if (schemaTemplateItems) {
+			if (schemaTemplateItems.length === 0) {
+				diskUtil.deleteDir(resolvedSchemaTypesDestinationDir)
+				return {}
 			}
-		)
+
+			await this.deleteOrphanedDefinitions(
+				resolvedSchemaTypesDestinationDir,
+				schemaTemplateItems
+			)
+
+			let valueTypes: IValueTypes | undefined
+
+			try {
+				valueTypes = await this.generateValueTypes(
+					resolvedFieldTypesDestination,
+					fieldTemplateItems,
+					schemaTemplateItems,
+					globalNamespace ?? undefined
+				)
+			} catch (err) {
+				schemaErrors.push(err)
+			}
+
+			if (valueTypes) {
+				try {
+					typeResults = await this.schemaGenerator.generateSchemasAndTypes(
+						resolvedSchemaTypesDestination,
+						{
+							fieldTemplateItems,
+							schemaTemplateItems,
+							valueTypes,
+							globalNamespace: globalNamespace ?? undefined,
+						}
+					)
+				} catch (err) {
+					schemaErrors.push(err)
+				}
+			}
+		}
 
 		this.ui.stopLoading()
 

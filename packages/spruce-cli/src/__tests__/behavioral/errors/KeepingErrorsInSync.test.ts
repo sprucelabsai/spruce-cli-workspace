@@ -120,7 +120,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 	@test()
 	protected static async canHandleNestedSchemasWithoutAddingThemToOptions() {
 		const cli = await this.installErrorFeature('options-in-sync')
-		const source = this.resolveTestPath('error_nested_schemas')
+		const source = this.resolveTestPath('nested_error_schemas')
 		const destination = this.resolvePath('src/errors')
 
 		await diskUtil.copyDir(source, destination)
