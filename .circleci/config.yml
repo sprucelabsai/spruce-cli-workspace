@@ -41,7 +41,7 @@ jobs:
       - run:
           name: "Test 💪"
           command: |
-            yarn test -- -w 4
+            yarn test -w 8
       - save_cache:
           key: cli-import-service
           paths:
