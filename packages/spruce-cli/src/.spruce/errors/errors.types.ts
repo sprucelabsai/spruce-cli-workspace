@@ -7,7 +7,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
-export declare namespace SpruceErrors.Local {
+export declare namespace SpruceErrors.SpruceCli {
 
 	/** Booting your skill failed! */
 	export interface IBootFailed {
@@ -22,12 +22,12 @@ export declare namespace SpruceErrors.Local {
 		    }
 	}
 
-	export type BootFailedEntity = SchemaEntity<SpruceErrors.Local.IBootFailedSchema>
+	export type BootFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.IBootFailedSchema>
 
 }
 
 
-export declare namespace SpruceErrors.Local {
+export declare namespace SpruceErrors.SpruceCli {
 
 	/** Error thrown when building or linting failed. Happens when a yarn command fails inside the package utility. */
 	export interface IBuildFailed {
@@ -51,12 +51,12 @@ export declare namespace SpruceErrors.Local {
 		    }
 	}
 
-	export type BuildFailedEntity = SchemaEntity<SpruceErrors.Local.IBuildFailedSchema>
+	export type BuildFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.IBuildFailedSchema>
 
 }
 
 
-export declare namespace SpruceErrors.Local {
+export declare namespace SpruceErrors.SpruceCli {
 
 	
 	export interface ICommandAborted {
@@ -79,12 +79,12 @@ export declare namespace SpruceErrors.Local {
 		    }
 	}
 
-	export type CommandAbortedEntity = SchemaEntity<SpruceErrors.Local.ICommandAbortedSchema>
+	export type CommandAbortedEntity = SchemaEntity<SpruceErrors.SpruceCli.ICommandAbortedSchema>
 
 }
 
 
-export declare namespace SpruceErrors.Local {
+export declare namespace SpruceErrors.SpruceCli {
 
 	/** This command has not yet been implemented  */
 	export interface ICommandNotImplemented {
@@ -119,12 +119,12 @@ export declare namespace SpruceErrors.Local {
 		    }
 	}
 
-	export type CommandNotImplementedEntity = SchemaEntity<SpruceErrors.Local.ICommandNotImplementedSchema>
+	export type CommandNotImplementedEntity = SchemaEntity<SpruceErrors.SpruceCli.ICommandNotImplementedSchema>
 
 }
 
 
-export declare namespace SpruceErrors.Local {
+export declare namespace SpruceErrors.SpruceCli {
 
 	/** Autoloader creation failed */
 	export interface ICreateAutoloaderFailed {
@@ -180,12 +180,12 @@ export declare namespace SpruceErrors.Local {
 		    }
 	}
 
-	export type CreateAutoloaderFailedEntity = SchemaEntity<SpruceErrors.Local.ICreateAutoloaderFailedSchema>
+	export type CreateAutoloaderFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.ICreateAutoloaderFailedSchema>
 
 }
 
 
-export declare namespace SpruceErrors.Local {
+export declare namespace SpruceErrors.SpruceCli {
 
 	
 	export interface IDirectoryEmpty {
@@ -207,12 +207,12 @@ export declare namespace SpruceErrors.Local {
 		    }
 	}
 
-	export type DirectoryEmptyEntity = SchemaEntity<SpruceErrors.Local.IDirectoryEmptySchema>
+	export type DirectoryEmptyEntity = SchemaEntity<SpruceErrors.SpruceCli.IDirectoryEmptySchema>
 
 }
 
 
-export declare namespace SpruceErrors.Local {
+export declare namespace SpruceErrors.SpruceCli {
 
 	/** The command that was being executed failed */
 	export interface IExecutingCommandFailed {
@@ -269,12 +269,12 @@ export declare namespace SpruceErrors.Local {
 		    }
 	}
 
-	export type ExecutingCommandFailedEntity = SchemaEntity<SpruceErrors.Local.IExecutingCommandFailedSchema>
+	export type ExecutingCommandFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.IExecutingCommandFailedSchema>
 
 }
 
 
-export declare namespace SpruceErrors.Local {
+export declare namespace SpruceErrors.SpruceCli {
 
 	/** Failed to import a file through VM */
 	export interface IFailedToImport {
@@ -299,12 +299,12 @@ export declare namespace SpruceErrors.Local {
 		    }
 	}
 
-	export type FailedToImportEntity = SchemaEntity<SpruceErrors.Local.IFailedToImportSchema>
+	export type FailedToImportEntity = SchemaEntity<SpruceErrors.SpruceCli.IFailedToImportSchema>
 
 }
 
 
-export declare namespace SpruceErrors.Local {
+export declare namespace SpruceErrors.SpruceCli {
 
 	/** The file already exists */
 	export interface IFileExists {
@@ -329,12 +329,12 @@ export declare namespace SpruceErrors.Local {
 		    }
 	}
 
-	export type FileExistsEntity = SchemaEntity<SpruceErrors.Local.IFileExistsSchema>
+	export type FileExistsEntity = SchemaEntity<SpruceErrors.SpruceCli.IFileExistsSchema>
 
 }
 
 
-export declare namespace SpruceErrors.Local {
+export declare namespace SpruceErrors.SpruceCli {
 
 	
 	export interface IPayloadArgs {
@@ -364,12 +364,12 @@ export declare namespace SpruceErrors.Local {
 		    }
 	}
 
-	export type PayloadArgsEntity = SchemaEntity<SpruceErrors.Local.IPayloadArgsSchema>
+	export type PayloadArgsEntity = SchemaEntity<SpruceErrors.SpruceCli.IPayloadArgsSchema>
 
 }
 
 
-export declare namespace SpruceErrors.Local {
+export declare namespace SpruceErrors.SpruceCli {
 
 	/** Not sure what happened, but it has something to do with Mercury */
 	export interface IGenericMercury {
@@ -377,7 +377,7 @@ export declare namespace SpruceErrors.Local {
 			/** Event name. */
 			'eventName'?: string| undefined | null
 			/** Payload. A hint */
-			'payloadArgs'?: SpruceErrors.Local.IPayloadArgs[]| undefined | null
+			'payloadArgs'?: SpruceErrors.SpruceCli.IPayloadArgs[]| undefined | null
 	}
 
 	export interface IGenericMercurySchema extends SpruceSchema.ISchema {
@@ -397,17 +397,17 @@ export declare namespace SpruceErrors.Local {
 		                type: FieldType.Schema,
 		                hint: 'A hint',
 		                isArray: true,
-		                options: {schema: SpruceErrors.Local.IPayloadArgsSchema,}
+		                options: {schema: SpruceErrors.SpruceCli.IPayloadArgsSchema,}
 		            },
 		    }
 	}
 
-	export type GenericMercuryEntity = SchemaEntity<SpruceErrors.Local.IGenericMercurySchema>
+	export type GenericMercuryEntity = SchemaEntity<SpruceErrors.SpruceCli.IGenericMercurySchema>
 
 }
 
 
-export declare namespace SpruceErrors.Local {
+export declare namespace SpruceErrors.SpruceCli {
 
 	/** When you&#x27;re too lazy to make a new error */
 	export interface IGeneric {
@@ -430,12 +430,12 @@ export declare namespace SpruceErrors.Local {
 		    }
 	}
 
-	export type GenericEntity = SchemaEntity<SpruceErrors.Local.IGenericSchema>
+	export type GenericEntity = SchemaEntity<SpruceErrors.SpruceCli.IGenericSchema>
 
 }
 
 
-export declare namespace SpruceErrors.Local {
+export declare namespace SpruceErrors.SpruceCli {
 
 	/** The command is not valid, try --help */
 	export interface IInvalidCommand {
@@ -460,12 +460,39 @@ export declare namespace SpruceErrors.Local {
 		    }
 	}
 
-	export type InvalidCommandEntity = SchemaEntity<SpruceErrors.Local.IInvalidCommandSchema>
+	export type InvalidCommandEntity = SchemaEntity<SpruceErrors.SpruceCli.IInvalidCommandSchema>
 
 }
 
 
-export declare namespace SpruceErrors.Local {
+export declare namespace SpruceErrors.SpruceCli {
+
+	
+	export interface IInvalidFeatureCode {
+		
+			
+			'featureCode': string
+	}
+
+	export interface IInvalidFeatureCodeSchema extends SpruceSchema.ISchema {
+		id: 'invalidFeatureCode',
+		name: 'Invalid feature code',
+		    fields: {
+		            /** . */
+		            'featureCode': {
+		                type: FieldType.Text,
+		                isRequired: true,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type InvalidFeatureCodeEntity = SchemaEntity<SpruceErrors.SpruceCli.IInvalidFeatureCodeSchema>
+
+}
+
+
+export declare namespace SpruceErrors.SpruceCli {
 
 	/** When linting a file fails */
 	export interface ILintFailed {
@@ -499,12 +526,12 @@ export declare namespace SpruceErrors.Local {
 		    }
 	}
 
-	export type LintFailedEntity = SchemaEntity<SpruceErrors.Local.ILintFailedSchema>
+	export type LintFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.ILintFailedSchema>
 
 }
 
 
-export declare namespace SpruceErrors.Local {
+export declare namespace SpruceErrors.SpruceCli {
 
 	/** This feature has not been implemented */
 	export interface INotImplemented {
@@ -519,12 +546,12 @@ export declare namespace SpruceErrors.Local {
 		    }
 	}
 
-	export type NotImplementedEntity = SchemaEntity<SpruceErrors.Local.INotImplementedSchema>
+	export type NotImplementedEntity = SchemaEntity<SpruceErrors.SpruceCli.INotImplementedSchema>
 
 }
 
 
-export declare namespace SpruceErrors.Local {
+export declare namespace SpruceErrors.SpruceCli {
 
 	
 	export interface ISchemaExists {
@@ -555,12 +582,12 @@ export declare namespace SpruceErrors.Local {
 		    }
 	}
 
-	export type SchemaExistsEntity = SchemaEntity<SpruceErrors.Local.ISchemaExistsSchema>
+	export type SchemaExistsEntity = SchemaEntity<SpruceErrors.SpruceCli.ISchemaExistsSchema>
 
 }
 
 
-export declare namespace SpruceErrors.Local {
+export declare namespace SpruceErrors.SpruceCli {
 
 	/** The definition file failed to import */
 	export interface ISchemaFailedToImport {
@@ -585,12 +612,12 @@ export declare namespace SpruceErrors.Local {
 		    }
 	}
 
-	export type SchemaFailedToImportEntity = SchemaEntity<SpruceErrors.Local.ISchemaFailedToImportSchema>
+	export type SchemaFailedToImportEntity = SchemaEntity<SpruceErrors.SpruceCli.ISchemaFailedToImportSchema>
 
 }
 
 
-export declare namespace SpruceErrors.Local {
+export declare namespace SpruceErrors.SpruceCli {
 
 	/** Could not find a user */
 	export interface IUserNotFound {
@@ -621,12 +648,12 @@ export declare namespace SpruceErrors.Local {
 		    }
 	}
 
-	export type UserNotFoundEntity = SchemaEntity<SpruceErrors.Local.IUserNotFoundSchema>
+	export type UserNotFoundEntity = SchemaEntity<SpruceErrors.SpruceCli.IUserNotFoundSchema>
 
 }
 
 
-export declare namespace SpruceErrors.Local {
+export declare namespace SpruceErrors.SpruceCli {
 
 	
 	export interface IVscodeNotInstalled {
@@ -640,7 +667,7 @@ export declare namespace SpruceErrors.Local {
 		    }
 	}
 
-	export type VscodeNotInstalledEntity = SchemaEntity<SpruceErrors.Local.IVscodeNotInstalledSchema>
+	export type VscodeNotInstalledEntity = SchemaEntity<SpruceErrors.SpruceCli.IVscodeNotInstalledSchema>
 
 }
 

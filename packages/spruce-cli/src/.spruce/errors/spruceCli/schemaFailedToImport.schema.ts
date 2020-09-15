@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const schemaFailedToImportSchema: SpruceErrors.Local.ISchemaFailedToImportSchema  = {
+const schemaFailedToImportSchema: SpruceErrors.SpruceCli.ISchemaFailedToImportSchema  = {
 	id: 'schemaFailedToImport',
 	name: 'Definition failed to import',
 	description: 'The definition file failed to import',

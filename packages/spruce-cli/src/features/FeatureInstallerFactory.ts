@@ -11,6 +11,7 @@ import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
 import TestFeature from './test/TestFeature'
 import VsCodeFeature from './vscode/VsCodeFeature'
+import WatchFeature from './watch/WatchFeature'
 
 export default class FeatureInstallerFactory {
 	private static readonly features: any[] = [
@@ -21,6 +22,7 @@ export default class FeatureInstallerFactory {
 		TestFeature,
 		VsCodeFeature,
 		EventFeature,
+		WatchFeature,
 	]
 
 	public static readonly featureCodes: FeatureCode[] = [
@@ -31,6 +33,7 @@ export default class FeatureInstallerFactory {
 		'test',
 		'vscode',
 		'event',
+		'watch',
 	]
 
 	public static WithAllFeatures(options: {

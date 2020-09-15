@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const lintFailedSchema: SpruceErrors.Local.ILintFailedSchema  = {
+const lintFailedSchema: SpruceErrors.SpruceCli.ILintFailedSchema  = {
 	id: 'lintFailed',
 	name: 'Lint failed!',
 	description: 'When linting a file fails',

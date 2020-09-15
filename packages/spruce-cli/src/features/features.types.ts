@@ -14,6 +14,7 @@ import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
 import TestFeature from './test/TestFeature'
 import VsCodeFeature from './vscode/VsCodeFeature'
+import WatchFeature from './watch/WatchFeature'
 
 export interface IFeatureActionOptions {
 	templates: Templates
@@ -65,6 +66,10 @@ export type InstallFeature =
 			code: 'event'
 			options?: undefined
 	  }
+	| {
+			code: 'watch'
+			options?: undefined
+	  }
 
 export interface IInstallFeatureOptions {
 	features: InstallFeature[]
@@ -79,6 +84,7 @@ export interface IFeatureMap {
 	test: TestFeature
 	vscode: VsCodeFeature
 	event: EventFeature
+	watch: WatchFeature
 }
 
 export interface IFeatureActionExecuteResponse {
