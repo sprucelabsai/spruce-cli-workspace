@@ -3,12 +3,13 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const directoryEmptySchema: SpruceErrors.Local.IDirectoryEmptySchema  = {
-	id: 'directoryEmpty',
-	name: 'directory empty',
+const commandAbortedSchema: SpruceErrors.SpruceCli.ICommandAbortedSchema  = {
+	id: 'commandAborted',
+	name: 'Command aborted',
 	    fields: {
-	            /** . */
-	            'directory': {
+	            /** Command. */
+	            'command': {
+	                label: 'Command',
 	                type: FieldType.Text,
 	                isRequired: true,
 	                options: undefined
@@ -16,4 +17,4 @@ const directoryEmptySchema: SpruceErrors.Local.IDirectoryEmptySchema  = {
 	    }
 }
 
-export default directoryEmptySchema
+export default commandAbortedSchema

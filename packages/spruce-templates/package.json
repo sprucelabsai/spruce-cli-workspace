@@ -4,7 +4,7 @@
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "10.26.21",
+	"version": "10.26.33",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
 	"files": [
@@ -30,9 +30,7 @@
 		"build.types": "tsc --emitDeclarationOnly && echo PASS",
 		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps --root-mode upward --copy-files",
 		"build.watch": "concurrently 'yarn build.babel --watch' \"chokidar 'src/**/*' -c 'yarn build.types && yarn build.resolve-paths'\"",
-		"build.resolve-schema-paths": "resolve-path-aliases --target node_modules/@sprucelabs/schema/build",
-		"build.resolve-build-paths": "resolve-path-aliases --target build --patterns **/*.js,**/*.d.ts",
-		"build.resolve-paths": "yarn build.resolve-schema-paths && yarn build.resolve-build-paths",
+		"build.resolve-paths": "resolve-path-aliases --target build",
 		"rebuild": "cd ../ && yarn rebuild",
 		"clean": "rm -rf build/",
 		"copy-templates": "mkdirp ./build/templates && cp -r ./src/templates/* ./build/templates",
@@ -45,8 +43,8 @@
 	},
 	"dependencies": {
 		"@sprucelabs/log": "^10.2.215",
-		"@sprucelabs/schema": "^10.0.1",
-		"@sprucelabs/spruce-skill-utils": "^10.26.21",
+		"@sprucelabs/schema": "^10.0.2",
+		"@sprucelabs/spruce-skill-utils": "^10.26.33",
 		"globby": "^11.0.1",
 		"handlebars": "^4.7.6",
 		"lodash": "^4.17.20",

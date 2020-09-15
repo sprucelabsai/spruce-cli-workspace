@@ -85,6 +85,15 @@ const diskUtil = {
 
 		throw new Error(`Hash Spruce directory not found at ${cwd}`)
 	},
+
+	doesHashSprucePathExist(cwd: string, ...filePath: string[]): boolean {
+		try {
+			this.resolveHashSprucePath(cwd, ...filePath)
+			return true
+		} catch {
+			return false
+		}
+	},
 	isFileDifferent(destination: string, contents: string) {
 		const currentContents = this.readFile(destination)
 		return currentContents != contents

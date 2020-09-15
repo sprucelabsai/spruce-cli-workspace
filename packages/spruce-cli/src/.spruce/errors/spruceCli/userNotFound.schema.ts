@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const userNotFoundSchema: SpruceErrors.Local.IUserNotFoundSchema  = {
+const userNotFoundSchema: SpruceErrors.SpruceCli.IUserNotFoundSchema  = {
 	id: 'userNotFound',
 	name: 'User not found',
 	description: 'Could not find a user',

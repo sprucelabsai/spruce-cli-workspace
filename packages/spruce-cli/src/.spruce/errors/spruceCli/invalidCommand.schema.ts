@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const invalidCommandSchema: SpruceErrors.Local.IInvalidCommandSchema  = {
+const invalidCommandSchema: SpruceErrors.SpruceCli.IInvalidCommandSchema  = {
 	id: 'invalidCommand',
 	name: 'Invalid command',
 	description: 'The command is not valid, try --help',

@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const schemaExistsSchema: SpruceErrors.Local.ISchemaExistsSchema  = {
+const schemaExistsSchema: SpruceErrors.SpruceCli.ISchemaExistsSchema  = {
 	id: 'schemaExists',
 	name: 'Schema exists',
 	    fields: {

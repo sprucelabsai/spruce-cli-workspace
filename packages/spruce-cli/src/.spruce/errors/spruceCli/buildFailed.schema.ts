@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const buildFailedSchema: SpruceErrors.Local.IBuildFailedSchema  = {
+const buildFailedSchema: SpruceErrors.SpruceCli.IBuildFailedSchema  = {
 	id: 'buildFailed',
 	name: 'BuildFailed',
 	description: 'Error thrown when building or linting failed. Happens when a yarn command fails inside the package utility.',
