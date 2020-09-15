@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const createAutoloaderFailedSchema: SpruceErrors.Local.ICreateAutoloaderFailedSchema  = {
+const createAutoloaderFailedSchema: SpruceErrors.SpruceCli.ICreateAutoloaderFailedSchema  = {
 	id: 'createAutoloaderFailed',
 	name: 'Could not create an autoloader',
 	description: 'Autoloader creation failed',

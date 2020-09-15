@@ -114,6 +114,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				message = 'Aborted! See ya later! ✌️'
 				break
 
+			case 'INVALID_FEATURE_CODE':
+				message = `Oh no! I couldn't find a feature with the code '${options.featureCode}'.`
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}

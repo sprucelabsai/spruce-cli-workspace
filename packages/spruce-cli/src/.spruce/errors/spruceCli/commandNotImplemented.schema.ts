@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const commandNotImplementedSchema: SpruceErrors.Local.ICommandNotImplementedSchema  = {
+const commandNotImplementedSchema: SpruceErrors.SpruceCli.ICommandNotImplementedSchema  = {
 	id: 'commandNotImplemented',
 	name: 'Command not implemented',
 	description: 'This command has not yet been implemented ',

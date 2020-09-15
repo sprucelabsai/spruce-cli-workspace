@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const executingCommandFailedSchema: SpruceErrors.Local.IExecutingCommandFailedSchema  = {
+const executingCommandFailedSchema: SpruceErrors.SpruceCli.IExecutingCommandFailedSchema  = {
 	id: 'executingCommandFailed',
 	name: 'Executing command failed',
 	description: 'The command that was being executed failed',

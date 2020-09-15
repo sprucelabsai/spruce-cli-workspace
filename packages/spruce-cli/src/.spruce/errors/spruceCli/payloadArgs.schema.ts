@@ -3,7 +3,7 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const payloadArgsSchema: SpruceErrors.Local.IPayloadArgsSchema  = {
+const payloadArgsSchema: SpruceErrors.SpruceCli.IPayloadArgsSchema  = {
 	id: 'payloadArgs',
 	name: 'Payload args',
 	    fields: {

@@ -3,20 +3,20 @@ import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 
 
-const failedToImportSchema: SpruceErrors.Local.IFailedToImportSchema  = {
-	id: 'failedToImport',
-	name: 'FailedToImport',
-	description: 'Failed to import a file through VM',
+const fileExistsSchema: SpruceErrors.SpruceCli.IFileExistsSchema  = {
+	id: 'fileExists',
+	name: 'fileExists',
+	description: 'The file already exists',
 	    fields: {
-	            /** File. The file I tried to import */
+	            /** File. The file being created */
 	            'file': {
 	                label: 'File',
 	                type: FieldType.Text,
 	                isRequired: true,
-	                hint: 'The file I tried to import',
+	                hint: 'The file being created',
 	                options: undefined
 	            },
 	    }
 }
 
-export default failedToImportSchema
+export default fileExistsSchema

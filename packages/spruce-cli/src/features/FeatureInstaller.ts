@@ -1,5 +1,6 @@
 import { validateSchemaValues } from '@sprucelabs/schema'
 import { uniq } from 'lodash'
+import SpruceError from '../errors/SpruceError'
 import ServiceFactory, {
 	Service,
 	IServiceProvider,
@@ -37,7 +38,7 @@ export default class FeatureInstaller implements IServiceProvider {
 	public getFeature<C extends FeatureCode>(code: C): IFeatureMap[C] {
 		const feature = this.featureMap[code]
 		if (!feature) {
-			throw new Error(`Invalid feature code ${code}`)
+			throw new SpruceError({ code: 'INVALID_FEATURE_CODE', featureCode: code })
 		}
 
 		return feature as IFeatureMap[C]

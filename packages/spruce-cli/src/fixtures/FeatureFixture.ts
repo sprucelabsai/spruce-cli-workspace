@@ -207,12 +207,18 @@ export default class FeatureFixture implements IServiceProvider {
 	}
 
 	private cleanCachedSkillDir() {
+		const doesHashSpruceExist = diskUtil.doesHashSprucePathExist(this.cwd)
+
 		const dirs = [
 			// TODO make this so it does not need to be updated for each feature
-			diskUtil.resolvePath(this.resolveHashSprucePath(), 'tmp'),
-			diskUtil.resolvePath(this.resolveHashSprucePath(), 'schemas'),
-			diskUtil.resolvePath(this.resolveHashSprucePath(), 'errors'),
-			diskUtil.resolvePath(this.resolveHashSprucePath(), 'events'),
+			doesHashSpruceExist &&
+				diskUtil.resolvePath(this.resolveHashSprucePath(), 'tmp'),
+			doesHashSpruceExist &&
+				diskUtil.resolvePath(this.resolveHashSprucePath(), 'schemas'),
+			doesHashSpruceExist &&
+				diskUtil.resolvePath(this.resolveHashSprucePath(), 'errors'),
+			doesHashSpruceExist &&
+				diskUtil.resolvePath(this.resolveHashSprucePath(), 'events'),
 			diskUtil.resolvePath(this.cwd, 'build'),
 			diskUtil.resolvePath(this.cwd, 'src', 'events'),
 			diskUtil.resolvePath(this.cwd, 'src', 'schemas'),
@@ -220,7 +226,7 @@ export default class FeatureFixture implements IServiceProvider {
 		]
 
 		dirs.forEach((dir) => {
-			if (diskUtil.doesFileExist(dir)) {
+			if (dir && diskUtil.doesFileExist(dir)) {
 				diskUtil.deleteDir(dir)
 				diskUtil.createDir(dir)
 			}
