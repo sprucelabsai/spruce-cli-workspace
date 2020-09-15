@@ -2071,10 +2071,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sprucelabs/babel-plugin-schema@^2.1.50":
-  version "2.1.50"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-2.1.50.tgz#ee5f76965910e2ef712165c3b65b48c5e58fb86e"
-  integrity sha512-22D/PTYem3bJrAhumYh+dIykTsMSfj+hZJqSHiBIg6yUlavKqSXWFzh5yGoQcY5pewaGRZye8u/rCxmcn1I8HA==
+"@sprucelabs/babel-plugin-schema@^2.1.51":
+  version "2.1.51"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-2.1.51.tgz#d3e515fdc31bcb399ff5d443e9b664c91944ee6e"
+  integrity sha512-3UqEF4TO6tzl4+rgn/iw0aFVXAEFAsydJHiS7SL3U2FYGKPlkU7sQN+AkKT06IWnlUdV6QiyS57Y9sBGZBeqHQ==
   dependencies:
     fs-extra "^9.0.1"
     globby "^11.0.1"
@@ -2082,10 +2082,10 @@
     tsconfig-paths "^3.9.0"
     yargs "^16.0.3"
 
-"@sprucelabs/error@^2.2.258", "@sprucelabs/error@^2.2.262":
-  version "2.2.262"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.262.tgz#36f2da96ef35072cfb039d1609877c7ba91e7294"
-  integrity sha512-1hXaIGAbN8ssm2MnZwIZVAf7Nt5tc/kB8CYPtr9dLXTcwdNcUOxoWg6bxOReT5Vsa7i0TdYACyJivceIQZvtOA==
+"@sprucelabs/error@^2.2.258", "@sprucelabs/error@^2.2.263":
+  version "2.2.263"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.263.tgz#1bb59a677015e5aa75e682686ca8802db34bdc01"
+  integrity sha512-bgce2E1XS5GsinBszm0PLw9PXHzzV/lmN8kggjSIy4qCp+bkZDInVT7ePnWZc7MTwXjgtRXGjmwAkPSL7s5Y9w==
 
 "@sprucelabs/jest-sheets-reporter@^1.2.0":
   version "1.2.0"
@@ -2121,10 +2121,10 @@
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^7.0.12":
-  version "7.0.12"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.12.tgz#29db8aa2588068f858f5d042ca8420390b64c553"
-  integrity sha512-3uLcsMdrhvosvcm3/EMTWwLuZVmzTVsEKQBaVmak1do9dbCSQU0oDnxDEKue21k/r+rr7y3AftsBxYdSTQwEJw==
+"@sprucelabs/test@^7.0.13":
+  version "7.0.13"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.13.tgz#a8b5d591ab3e54c3518fcf7300d2c1cd60b9792c"
+  integrity sha512-CAWm7tN/PuBlBOHsacScYP/ElSA7x7CFvM2mP0PV9PmWhW52LP93RbetxsHgTlgUPD8G/cOkRUOWShzb4QSDbw==
   dependencies:
     "@babel/core" "^7.11.6"
     "@babel/preset-env" "^7.11.5"
