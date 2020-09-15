@@ -7,7 +7,21 @@ export default class WatchFeature extends AbstractFeature {
 	public code: FeatureCode = 'watch'
 	public nameReadable = 'Watch'
 
+	protected _isWatching = false
+
 	public async isInstalled(): Promise<boolean> {
 		return true
+	}
+
+	public async isWatching() {
+		return this._isWatching
+	}
+
+	public async startWatching() {
+		this._isWatching = true
+	}
+
+	public async stopWatching() {
+		this._isWatching = false
 	}
 }
