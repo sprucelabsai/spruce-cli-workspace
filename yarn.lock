@@ -2071,10 +2071,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sprucelabs/babel-plugin-schema@^3.0.4":
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-3.0.4.tgz#224aca287966c97c744005c6bdc6d3fb8e7f38da"
-  integrity sha512-BR7IwtHx/QNDHBJbhSjjPNNEcYLAwvSPcYAEKeCpb6bLpSj04rA/0ytRzmXlv88yTPz1AXqBgj7snQr2Tjs1xA==
+"@sprucelabs/babel-plugin-schema@^3.0.5":
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-3.0.5.tgz#c8e0d9f4a70401576739d92b08711d351073d23f"
+  integrity sha512-xpLEs9PQGS84zBfgsYXFIGdzinMvN9FKnDMKlxWad1A9pS3dh09wWTa7DDcX9TM12GOD6TAlsmxh+ZLC30c0fg==
   dependencies:
     fs-extra "^9.0.1"
     globby "^11.0.1"
@@ -2082,10 +2082,10 @@
     tsconfig-paths "^3.9.0"
     yargs "^16.0.3"
 
-"@sprucelabs/error@^2.2.269":
-  version "2.2.269"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.269.tgz#c008650ed1da54bcddd563d7d94bff9e6eae3699"
-  integrity sha512-kdlJLyr7h2DWGvr0rdIBdmeJzxuiAaX1DLCDlVWzybHXql+Jf8oH1CWrP/zeuen05+fhr4z4EelKRZa6xVZPNQ==
+"@sprucelabs/error@^2.2.270":
+  version "2.2.270"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.270.tgz#dbc3f4d1cbf9f7c1886b280785effb67bbe9c352"
+  integrity sha512-B4a0HUvTTt2SqurI5vVYk0mTu39zPpr3MtSJK34hmhjk3AnUHWIC9vHaLTJI+NyDUbdybLUswQWP/rWu1XX7zA==
 
 "@sprucelabs/jest-sheets-reporter@^1.2.0":
   version "1.2.0"
@@ -2094,10 +2094,10 @@
   dependencies:
     google-spreadsheet "^3.0.13"
 
-"@sprucelabs/log@^10.2.217":
-  version "10.2.217"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.217.tgz#aaaebf704a618d0b5c0ae8fafcc3ace5273f5343"
-  integrity sha512-0gkIN5pm+S7keYym9V9cW3b9j6+N/CfjtC7YnKZxpyVLiFPPXHutPejNLK1upBFRPuTFVIS4tpp2+dmRHsBV9w==
+"@sprucelabs/log@^10.2.218":
+  version "10.2.218"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.218.tgz#958d63960f39c432786c151398e37608d821c924"
+  integrity sha512-duwWvAlZTm1FfU9KoEe/4D/OmIhW6lHAdwE+oytplkS04iDhUhzuQ7hvjDh4WSIJBipYF5nYe2qtYRraB9EGtw==
 
 "@sprucelabs/mercury@^10.5.72":
   version "10.5.72"
@@ -2109,22 +2109,22 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^10.0.9":
-  version "10.0.9"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-10.0.9.tgz#f95783f2ab64716ce9cfdb9b9f2ce65155b62eb4"
-  integrity sha512-u7Yi0EnqVNZmU4nNI1dG8yQg+5GM1Y8rflCM4C3hsNbCLmoSAmgdQ9UbuGunDXjniwRK2dr/Vi0aiRCaG7h+Ug==
+"@sprucelabs/schema@^10.0.10":
+  version "10.0.10"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-10.0.10.tgz#2974689bb9798a7505dc8e8b5d6b6ac31c6f3d7e"
+  integrity sha512-bYivmOSt91h6+pkmcM66HIyXTktz3vl/Xag3pTAaFEuv+MB4ET3vg/CLkw2J/QOFianKI8yp5ux5er/YGvMB+Q==
   dependencies:
-    "@sprucelabs/error" "^2.2.269"
-    "@sprucelabs/log" "^10.2.217"
+    "@sprucelabs/error" "^2.2.270"
+    "@sprucelabs/log" "^10.2.218"
     google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.7.57"
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^7.0.16":
-  version "7.0.16"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.16.tgz#d23f5667ea08f8ca95f587840d6c851e4ceb87eb"
-  integrity sha512-7d7clSB6m86aUtLOSEWDOd3PWisYtgYJkmuNiCRMYQ0FmjndeL3+MydsKkkMAap1Nb+Gk4c9DZ8ilTJmJRTysA==
+"@sprucelabs/test@^7.0.17":
+  version "7.0.17"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.17.tgz#40eac59ead1e8fdf0502886beac6f35d6e288976"
+  integrity sha512-lXQJZXP4kYVNCr+ZI+Bn36FHbkO6ncUd5tCSwMfqRlR5O4Jy2yfCC02bGN+1PPHO8Pr7HO9bb6BAP+i/WWegTA==
   dependencies:
     "@babel/core" "^7.11.6"
     "@babel/preset-env" "^7.11.5"
