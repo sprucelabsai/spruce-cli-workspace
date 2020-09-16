@@ -187,7 +187,7 @@ export default class SyncAction extends AbstractFeatureAction<
 
 		return {
 			generateFieldFiles: results.files ?? [],
-			fieldTemplateItems: results.meta.fieldTemplateItems,
+			fieldTemplateItems: results.meta?.fieldTemplateItems ?? [],
 			fieldErrors: results.errors ?? [],
 		}
 	}
