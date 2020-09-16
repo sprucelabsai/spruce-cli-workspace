@@ -8,14 +8,6 @@ const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasA
 	name: 'Sync schemas action',
 	description: 'Options for schema.sync.',
 	    fields: {
-	            /** Schema types destination directory. Where schema types and interfaces will be generated. */
-	            'schemaTypesDestinationDir': {
-	                label: 'Schema types destination directory',
-	                type: FieldType.Text,
-	                hint: 'Where schema types and interfaces will be generated.',
-	                defaultValue: "#spruce/schemas",
-	                options: undefined
-	            },
 	            /** Field types directory. Where field types and interfaces will be generated. */
 	            'fieldTypesDestinationDir': {
 	                label: 'Field types directory',
@@ -31,6 +23,23 @@ const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasA
 	                type: FieldType.Text,
 	                hint: 'Where I\'ll look for new schema fields to be registered.',
 	                defaultValue: "src/addons",
+	                options: undefined
+	            },
+	            /** Generate field types. Should I generate field types too? */
+	            'generateFieldTypes': {
+	                label: 'Generate field types',
+	                type: FieldType.Boolean,
+	                isPrivate: true,
+	                hint: 'Should I generate field types too?',
+	                defaultValue: true,
+	                options: undefined
+	            },
+	            /** Schema types destination directory. Where schema types and interfaces will be generated. */
+	            'schemaTypesDestinationDir': {
+	                label: 'Schema types destination directory',
+	                type: FieldType.Text,
+	                hint: 'Where schema types and interfaces will be generated.',
+	                defaultValue: "#spruce/schemas",
 	                options: undefined
 	            },
 	            /** . Where I should look for your schema builders? */
@@ -61,15 +70,6 @@ const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasA
 	                type: FieldType.Boolean,
 	                isPrivate: true,
 	                hint: 'I will check the server and your contracts to pull down schemas you need.',
-	                defaultValue: true,
-	                options: undefined
-	            },
-	            /** Generate field types. Should I generate field types too? */
-	            'generateFieldTypes': {
-	                label: 'Generate field types',
-	                type: FieldType.Boolean,
-	                isPrivate: true,
-	                hint: 'Should I generate field types too?',
 	                defaultValue: true,
 	                options: undefined
 	            },

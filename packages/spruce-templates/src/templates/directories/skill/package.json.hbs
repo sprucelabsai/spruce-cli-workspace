@@ -13,7 +13,7 @@
 		"lint": "eslint '**/*.ts' && yarn lint.tsc",
 		"lint.tsc": "tsc --noEmit && echo 'PASS'",
 		"lint.fix": "eslint --fix '**/*.ts'",
-		"lint.watch": "chokidar 'src/**/*' '../spruce-templates/src/**' -c 'yarn lint.tsc'",
+		"lint.watch": "chokidar 'src/**/*' -c 'yarn lint.tsc'",
 		"health": "yarn run boot --health",
 		"health.local": "yarn run boot.local --health",
 		"build": "yarn build.babel",

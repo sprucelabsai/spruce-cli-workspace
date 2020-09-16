@@ -5,7 +5,6 @@ import { IValueTypes } from '@sprucelabs/spruce-templates'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
 import SpruceError from '../../../errors/SpruceError'
-import FieldTemplateItemBuilder from '../../../templateItemBuilders/FieldTemplateItemBuilder'
 import SchemaTemplateItemBuilder from '../../../templateItemBuilders/SchemaTemplateItemBuilder'
 import { IGeneratedFile } from '../../../types/cli.types'
 import schemaGeneratorUtil from '../../../utilities/schemaGenerator.utility'
@@ -25,9 +24,6 @@ export default class SyncAction extends AbstractFeatureAction<
 	public async execute(
 		options: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasAction
 	): Promise<IFeatureActionExecuteResponse> {
-		this.ui.clear()
-		this.ui.startLoading(`Syncing schemas...`)
-
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
 		const {
@@ -56,6 +52,9 @@ export default class SyncAction extends AbstractFeatureAction<
 			generateFieldTypes,
 			resolvedFieldTypesDestination,
 		})
+
+		this.ui.clear()
+		this.ui.startLoading(`Syncing schemas...`)
 
 		const schemaErrors: SpruceError[] = []
 		let schemaTemplateItems: ISchemaTemplateItem[] | undefined
@@ -179,28 +178,18 @@ export default class SyncAction extends AbstractFeatureAction<
 			resolvedFieldTypesDestination,
 		} = options
 
-		const generateFieldFiles: IGeneratedFile[] = []
-
-		const { fields, errors: fieldErrors } = await this.schemaStore.fetchFields({
-			localAddonsDir: addonsLookupDir,
+		const action = this.getFeature('schema').Action('fields.sync')
+		const results = await action.execute({
+			fieldTypesDestinationDir: resolvedFieldTypesDestination,
+			addonsLookupDir,
+			generateFieldTypes,
 		})
 
-		const fieldTemplateItemBuilder = new FieldTemplateItemBuilder()
-		const fieldTemplateItems = fieldTemplateItemBuilder.generateTemplateItems(
-			fields
-		)
-
-		if (generateFieldTypes) {
-			const results = await this.schemaGenerator.generateFieldTypes(
-				resolvedFieldTypesDestination,
-				{
-					fieldTemplateItems,
-				}
-			)
-			generateFieldFiles.push(...results)
+		return {
+			generateFieldFiles: results.files ?? [],
+			fieldTemplateItems: results.meta.fieldTemplateItems,
+			fieldErrors: results.errors ?? [],
 		}
-
-		return { generateFieldFiles, fieldTemplateItems, fieldErrors }
 	}
 
 	private resolvePaths(

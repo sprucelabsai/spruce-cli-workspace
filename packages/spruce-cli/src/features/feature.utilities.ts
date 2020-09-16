@@ -11,7 +11,9 @@ const featuresUtil = {
 		const nameNoExt = name.substr(0, name.length - ext.length)
 		const code = nameNoExt.replace('Action', '')
 
-		return namesUtil.toCamel(code)
+		const hyphened = namesUtil.toKebab(code)
+
+		return hyphened.replace(/-/g, '.').toLowerCase()
 	},
 
 	generateCommandAliases(schema: ISchema): Record<string, string> {

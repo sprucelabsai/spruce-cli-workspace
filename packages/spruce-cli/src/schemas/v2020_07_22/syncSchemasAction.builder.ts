@@ -1,29 +1,18 @@
 import { buildSchema } from '@sprucelabs/schema'
 import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+import syncSchemaFieldsSchema from './syncSchemaFieldsAction.builder'
 
 export default buildSchema({
 	id: 'syncSchemasAction',
 	name: 'Sync schemas action',
 	description: 'Options for schema.sync.',
 	fields: {
+		...syncSchemaFieldsSchema.fields,
 		schemaTypesDestinationDir: {
 			type: FieldType.Text,
 			label: 'Schema types destination directory',
 			hint: 'Where schema types and interfaces will be generated.',
 			defaultValue: '#spruce/schemas',
-		},
-		fieldTypesDestinationDir: {
-			type: FieldType.Text,
-			label: 'Field types directory',
-			hint: 'Where field types and interfaces will be generated.',
-			defaultValue: '#spruce/schemas',
-			isPrivate: true,
-		},
-		addonsLookupDir: {
-			type: FieldType.Text,
-			label: 'Id',
-			hint: "Where I'll look for new schema fields to be registered.",
-			defaultValue: 'src/addons',
 		},
 		schemaLookupDir: {
 			type: FieldType.Text,
@@ -47,13 +36,6 @@ export default buildSchema({
 			isPrivate: true,
 			hint:
 				'I will check the server and your contracts to pull down schemas you need.',
-			defaultValue: true,
-		},
-		generateFieldTypes: {
-			type: FieldType.Boolean,
-			label: 'Generate field types',
-			isPrivate: true,
-			hint: 'Should I generate field types too?',
 			defaultValue: true,
 		},
 	},
