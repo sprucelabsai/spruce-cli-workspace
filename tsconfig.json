@@ -14,13 +14,7 @@
 		"resolveJsonModule": true,
 		"moduleResolution": "node",
 		"sourceMap": true,
-		"baseUrl": ".",
-		"paths": {
-			"#spruce/*": [
-				"node_modules/@sprucelabs/schema/build/*",
-				"node_modules/@sprucelabs/schema/build/src/*"
-			]
-		}
+		"baseUrl": "."
 	},
 	"include": ["./*.ts", "./**/*.ts"],
 	"exclude": ["**/node_modules/**", "./packages/**/build"]
