@@ -15,7 +15,7 @@ export default buildSchema({
 		},
 		addonsLookupDir: {
 			type: FieldType.Text,
-			label: 'Id',
+			label: 'Addons lookup directory',
 			hint: "Where I'll look for new schema fields to be registered.",
 			defaultValue: 'src/addons',
 		},
