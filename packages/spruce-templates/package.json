@@ -42,8 +42,8 @@
 		"arkit.png": "arkit -f index.ts -o docs/images/arkit.png"
 	},
 	"dependencies": {
-		"@sprucelabs/log": "^10.2.219",
-		"@sprucelabs/schema": "^10.0.18",
+		"@sprucelabs/log": "^10.2.220",
+		"@sprucelabs/schema": "^10.0.19",
 		"@sprucelabs/spruce-skill-utils": "^10.27.2",
 		"globby": "^11.0.1",
 		"handlebars": "^4.7.6",
@@ -52,7 +52,7 @@
 	},
 	"devDependencies": {
 		"@types/lodash": "^4.14.161",
-		"@types/node": "^14.10.2",
+		"@types/node": "^14.10.3",
 		"arkit": "^1.6.4",
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^5.3.0",

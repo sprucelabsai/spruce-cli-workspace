@@ -2071,10 +2071,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sprucelabs/babel-plugin-schema@^3.0.9":
-  version "3.0.9"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-3.0.9.tgz#8003341d734134ff762cb412b2964f631f8bb4fb"
-  integrity sha512-3IQ/zv2KrpLRZniN3qpmOP3WS1osxg/x/ZPBs9wkNdM1uVtw7hNUQ9G3KjcjHgihXR2NlbpKAqJFWzhbSj4+Xg==
+"@sprucelabs/babel-plugin-schema@^3.0.10":
+  version "3.0.10"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-3.0.10.tgz#a0dd43230cda8c7ba1de16bac0e4170a8e14bb47"
+  integrity sha512-diVj4nNUMS5m0Pcpk9Mg1APZf0Q0oqAZMZ7RHOe+Ty83kN932qj8MuMGyUv/VtGkTrEnvNgb+s+lpXslVn+Zxg==
   dependencies:
     fs-extra "^9.0.1"
     globby "^11.0.1"
@@ -2082,10 +2082,10 @@
     tsconfig-paths "^3.9.0"
     yargs "^16.0.3"
 
-"@sprucelabs/error@^2.2.278":
-  version "2.2.278"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.278.tgz#8bfdd0ce67f35e709293628a8e04162f81d491ca"
-  integrity sha512-n/8Dwfn1si9kSQsRfrFsnhWl3PpL1KbCpX2/py90p/d9AzU7Lppikr4bBCYlXFwVGiBwJlhtk9Xv3H5DLjq+1w==
+"@sprucelabs/error@^2.2.279":
+  version "2.2.279"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.279.tgz#e142cb37a6328434b83edc314defce878672ae6f"
+  integrity sha512-Tm+oslmkPFnDeOS7zO8P8Ex0CLSbgyGN5YWGb7oIzU5lrxwebURFnpDX3vZqyeGnU66RCT0LoENtyb9nPG2k3Q==
 
 "@sprucelabs/jest-sheets-reporter@^1.2.0":
   version "1.2.0"
@@ -2094,10 +2094,10 @@
   dependencies:
     google-spreadsheet "^3.0.13"
 
-"@sprucelabs/log@^10.2.219":
-  version "10.2.219"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.219.tgz#99592bf3ca505aa09efe0808e228ce2254669e37"
-  integrity sha512-DSzE9ZlJciPdIsmWH23PA4l7IKvCgfV4wlu8ePx36w/9sXltC4gmV8g5ysYa1at/+oqOzB5vDfwB2rDCLzIoeQ==
+"@sprucelabs/log@^10.2.220":
+  version "10.2.220"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.220.tgz#01f5a4bcff76b5f774def3c174a6ff86991650ce"
+  integrity sha512-RkTsDabDjP9I9DtP6JWH18lLHe99ZPXy1mpjDYYZNN4kaF/f9H9V/loqFWtV9zIox1cI40NYAc/HRzd/JFP31Q==
 
 "@sprucelabs/mercury@^10.5.72":
   version "10.5.72"
@@ -2109,22 +2109,22 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^10.0.18":
-  version "10.0.18"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-10.0.18.tgz#5194c75d5fdc4eea36c5c20c637a8e205c27c046"
-  integrity sha512-LXBBtauN/7KoFUBe9Av36uqP8cNAPFaAI5oEQB7s76ueCj2ZHoecGnxMQVLXQOlrudG36Q1lI+9a4HbzCl2/xw==
+"@sprucelabs/schema@^10.0.19":
+  version "10.0.19"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-10.0.19.tgz#8193f5828956ce411595f898820eb27f743954fc"
+  integrity sha512-GqoRT7EghP/tCqmlXXi6t7JDoX0f4uvIjKmnRMKhytpkWo9DmxPtYcCsDGEsoc5vZVwi1Gp+Ywb7TVjT79LnTw==
   dependencies:
-    "@sprucelabs/error" "^2.2.278"
-    "@sprucelabs/log" "^10.2.219"
+    "@sprucelabs/error" "^2.2.279"
+    "@sprucelabs/log" "^10.2.220"
     google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.7.57"
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^7.0.20":
-  version "7.0.20"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.20.tgz#d83d71fbe19a1fa7e378d17113986deeaaa93f68"
-  integrity sha512-rGi9fh8LvBE8ygVTBoiZTKkBhfc80ifGis7SyS8I4y/sa0O5Ul09oQQ35FV+laIUmq/av5sTXZL7pbwgIu9U3Q==
+"@sprucelabs/test@^7.0.21":
+  version "7.0.21"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.21.tgz#0c2741a02a55a1619684ecfadd6fc472dbfe900d"
+  integrity sha512-tMjNHY4I0bShA2cMrEYHAmiswWxDC+IrVKoVDKIsFi99dlulxDbEmSTDHRi8z0prVV1LgxXyzUeKy1KWWIfkvA==
   dependencies:
     "@babel/core" "^7.11.6"
     "@babel/preset-env" "^7.11.5"
@@ -2327,10 +2327,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/node@*", "@types/node@>= 8", "@types/node@^14.10.2":
-  version "14.10.2"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.10.2.tgz#9b47a2c8e4dabd4db73b57e750b24af689600514"
-  integrity sha512-IzMhbDYCpv26pC2wboJ4MMOa9GKtjplXfcAqrMeNJpUUwpM/2ATt2w1JPUXwS6spu856TvKZL2AOmeU2rAxskw==
+"@types/node@*", "@types/node@>= 8", "@types/node@^14.10.3":
+  version "14.10.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.10.3.tgz#5ae1f119c96643fc9b19b2d1a83bfa2ec3dbb7ea"
+  integrity sha512-zdN0hor7TLkjAdKTnYW+Y22oIhUUpil5ZD1V1OFq0CR0CLKw+NdR6dkziTfkWRLo6sKzisayoj/GNpNbe4LY9Q==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
