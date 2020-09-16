@@ -2071,10 +2071,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sprucelabs/babel-plugin-schema@^3.0.7":
-  version "3.0.7"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-3.0.7.tgz#a700f9f9544f92c16ddd384640167234e12cd717"
-  integrity sha512-MYcy1na3J9wxJSxNtTtrK3I6KQGuefSbaMmpgn7FmOHL2o730DU4R3SwiGRyNXuNbjdBOvLaDasB9Yusj0w6NQ==
+"@sprucelabs/babel-plugin-schema@^3.0.8":
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-3.0.8.tgz#c6fc6d292dc3d2853f6c22477470e8d58e11382d"
+  integrity sha512-RTi6seG3rFnzJdRivlehkX0XiUcb60uQDFmtTVKKmoN1C0WSKihdiJjiFI0bkrDbyycaDp6PyqRgyiQDqBbCRg==
   dependencies:
     fs-extra "^9.0.1"
     globby "^11.0.1"
@@ -2109,10 +2109,10 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^10.0.16":
-  version "10.0.16"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-10.0.16.tgz#050efc836c138e102d80ee2a379f7bbd5d727ec0"
-  integrity sha512-yRLLfCYzIX+3/BUT7DWVnkMXbFE3CaMwWxcPJEWozmn6w3t9HwTDRt8aTUZvbzsZTZBpEVQ70gJDNeV4EgoYHA==
+"@sprucelabs/schema@^10.0.17":
+  version "10.0.17"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-10.0.17.tgz#eec15130075e68296269928f9aa536998111ce5f"
+  integrity sha512-08H8LT3KzRWfYCJ9UqlvvgtThtWprAE6PpZetPOEUDQqe0WSpXsJj6/C4txh1g8QTkzSbQE1jVHgEnzWHZBM/A==
   dependencies:
     "@sprucelabs/error" "^2.2.276"
     "@sprucelabs/log" "^10.2.219"
@@ -2274,9 +2274,9 @@
     "@types/istanbul-lib-report" "*"
 
 "@types/jest@26.x", "@types/jest@^26.0.13":
-  version "26.0.13"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.13.tgz#5a7b9d5312f5dd521a38329c38ee9d3802a0b85e"
-  integrity sha512-sCzjKow4z9LILc6DhBvn5AkIfmQzDZkgtVVKmGwVrs5tuid38ws281D4l+7x1kP487+FlKDh5kfMZ8WSPAdmdA==
+  version "26.0.14"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.14.tgz#078695f8f65cb55c5a98450d65083b2b73e5a3f3"
+  integrity sha512-Hz5q8Vu0D288x3iWXePSn53W7hAjP0H7EQ6QvDO9c7t46mR0lNOLlfuwQ+JkVxuhygHzlzPX+0jKdA3ZgSh+Vg==
   dependencies:
     jest-diff "^25.2.1"
     pretty-format "^25.2.1"
