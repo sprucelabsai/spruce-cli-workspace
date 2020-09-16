@@ -49,7 +49,7 @@ export default class FeatureActionFactory {
 		if (!action.execute) {
 			throw new SpruceError({
 				code: 'GENERIC',
-				friendlyMessage: `It looks like the ${this.actionOptions.parent.code} feature's ${name} action does not properly extend AbstractAction.`,
+				friendlyMessage: `It looks like the ${this.actionOptions.parent.code} feature's '${name}' action does not properly extend AbstractAction.`,
 			})
 		}
 

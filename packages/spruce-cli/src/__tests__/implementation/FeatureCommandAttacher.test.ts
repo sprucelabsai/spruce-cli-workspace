@@ -45,6 +45,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 
 		assert.doesInclude(this.program.commandInvocations, 'schema.create')
 		assert.doesInclude(this.program.commandInvocations, 'schema.sync')
+		assert.doesInclude(this.program.commandInvocations, 'schema.fields.sync')
 
 		assert.doesInclude(this.program.descriptionInvocations, {
 			command: 'schema.create',
@@ -52,9 +53,13 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		assert.doesInclude(this.program.descriptionInvocations, {
 			command: 'schema.sync',
 		})
+		assert.doesInclude(this.program.descriptionInvocations, {
+			command: 'schema.fields.sync',
+		})
 
 		assert.doesInclude(this.program.actionInvocations, 'schema.create')
 		assert.doesInclude(this.program.actionInvocations, 'schema.sync')
+		assert.doesInclude(this.program.actionInvocations, 'schema.fields.sync')
 	}
 
 	private static async attachSchemaFeature() {
@@ -78,6 +83,11 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'schema.create',
 			option: '-d, --description <description>',
+		})
+
+		assert.doesInclude(this.program.optionInvocations, {
+			command: 'schema.fields.sync',
+			option: '--ald, --addonsLookupDir <addonsLookupDir>',
 		})
 	}
 
