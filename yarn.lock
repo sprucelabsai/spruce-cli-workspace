@@ -2082,7 +2082,7 @@
     tsconfig-paths "^3.9.0"
     yargs "^16.0.3"
 
-"@sprucelabs/error@^2.2.287", "@sprucelabs/error@^2.2.289":
+"@sprucelabs/error@^2.2.289":
   version "2.2.289"
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.289.tgz#822d75cab372ce2b4ff447f56238ed8c6146472f"
   integrity sha512-PThGSw8Js2oJ9Xnxj2gmFgB+Jx4qbrQUnUGlusYIaop/9XTkDFtRUuO1Ze1tpHY0wVyJwdIIy1jCis+CvxDJWA==
@@ -2120,17 +2120,6 @@
     libphonenumber-js "^1.7.58"
     mime-db "^1.44.0"
     mime-type "^4.0.0"
-
-"@sprucelabs/spruce-skill-utils@^10.28.0":
-  version "10.28.0"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-skill-utils/-/spruce-skill-utils-10.28.0.tgz#3e87d5c8fe09255e5499f896a97ca86b9b0bd923"
-  integrity sha512-aYUF9hwbJiERmqJlVoXoeBN4hsaCLzQqPXvwW5eWdTkVf9XdlrI4LX4iz2Tjh9PGnLYP0M94fhD67v9W3Y4U5A==
-  dependencies:
-    "@sprucelabs/error" "^2.2.287"
-    fs-extra "^9.0.1"
-    inflection "^1.12.0"
-    lodash "^4.17.20"
-    uuid "^8.3.0"
 
 "@sprucelabs/test@^7.0.27":
   version "7.0.27"
