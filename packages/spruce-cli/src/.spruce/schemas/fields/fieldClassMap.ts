@@ -1,4 +1,3 @@
-import FieldType from './fieldTypeEnum'
 
 import { AddressField } from '@sprucelabs/schema'
 import { BooleanField } from '@sprucelabs/schema'
@@ -20,10 +19,10 @@ import { TextField } from '@sprucelabs/schema'
 const fieldClassMap = {
 		['address']: AddressField,
 		['boolean']: BooleanField,
-		[FieldType.Date]: DateField,
+		['date']: DateField,
 		['dateTime']: DateTimeField,
 		['directory']: DirectoryField,
-		[FieldType.Duration]: DurationField,
+		['duration']: DurationField,
 		['file']: FileField,
 		['id']: IdField,
 		['number']: NumberField,

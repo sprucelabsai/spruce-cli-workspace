@@ -1,4 +1,3 @@
-import '#spruce/schemas/fields/fieldTypeEnum'
 import { registerFieldType } from '@sprucelabs/schema'
 
 class TestField {

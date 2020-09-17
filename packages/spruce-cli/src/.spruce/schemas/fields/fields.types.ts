@@ -1,4 +1,3 @@
-import FieldType from './fieldTypeEnum'
 import { IField } from '@sprucelabs/schema'
 
 import { IAddressFieldDefinition } from '@sprucelabs/schema'
@@ -25,10 +24,10 @@ export type Field = | IField<IAddressFieldDefinition>| IField<IBooleanFieldDefin
 export interface IFieldDefinitionMap {
 	['address']: IAddressFieldDefinition
 	['boolean']: IBooleanFieldDefinition
-	[FieldType.Date]: IDateFieldDefinition
+	['date']: IDateFieldDefinition
 	['dateTime']: IDateTimeFieldDefinition
 	['directory']: IDirectoryFieldDefinition
-	[FieldType.Duration]: IDurationFieldDefinition
+	['duration']: IDurationFieldDefinition
 	['file']: IFileFieldDefinition
 	['id']: IIdFieldDefinition
 	['number']: INumberFieldDefinition
@@ -44,10 +43,10 @@ export interface IFieldDefinitionMap {
 export interface IFieldValueTypeGeneratorMap<F extends FieldDefinition, CreateEntityInstances extends boolean> {
 	['address']: IAddressFieldDefinition['value']
 	['boolean']: IBooleanFieldDefinition['value']
-	[FieldType.Date]: IDateFieldDefinition['value']
+	['date']: IDateFieldDefinition['value']
 	['dateTime']: IDateTimeFieldDefinition['value']
 	['directory']: IDirectoryFieldDefinition['value']
-	[FieldType.Duration]: IDurationFieldDefinition['value']
+	['duration']: IDurationFieldDefinition['value']
 	['file']: IFileFieldDefinition['value']
 	['id']: IIdFieldDefinition['value']
 	['number']: INumberFieldDefinition['value']
@@ -62,10 +61,10 @@ export interface IFieldValueTypeGeneratorMap<F extends FieldDefinition, CreateEn
 export interface IFieldMap {
 	['address']: IField<IAddressFieldDefinition>
 	['boolean']: IField<IBooleanFieldDefinition>
-	[FieldType.Date]: IField<IDateFieldDefinition>
+	['date']: IField<IDateFieldDefinition>
 	['dateTime']: IField<IDateTimeFieldDefinition>
 	['directory']: IField<IDirectoryFieldDefinition>
-	[FieldType.Duration]: IField<IDurationFieldDefinition>
+	['duration']: IField<IDurationFieldDefinition>
 	['file']: IField<IFileFieldDefinition>
 	['id']: IField<IIdFieldDefinition>
 	['number']: IField<INumberFieldDefinition>

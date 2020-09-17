@@ -24,11 +24,7 @@ export default class GeneratingFieldTypesOnlyTest extends AbstractSchemaTest {
 		const matches = globby.sync(this.resolveHashSprucePath('schemas'))
 		assert.isLength(matches, 3)
 
-		const expectedFields = [
-			'fields.types.ts',
-			'fieldClassMap.ts',
-			'fieldTypeEnum.ts',
-		]
+		const expectedFields = ['fields.types.ts', 'fieldClassMap.ts']
 
 		const typeChecker = this.Service('typeChecker')
 		for (const file of expectedFields) {
