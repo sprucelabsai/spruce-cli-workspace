@@ -1,5 +1,9 @@
 import { ISchema, validateSchema } from '@sprucelabs/schema'
-import { CORE_NAMESPACE, diskUtil } from '@sprucelabs/spruce-skill-utils'
+import {
+	CORE_NAMESPACE,
+	diskUtil,
+	namesUtil,
+} from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import fieldClassMap from '#spruce/schemas/fields/fieldClassMap'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
@@ -80,7 +84,9 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		const fieldTypes = Object.keys(fieldClassMap)
 
 		for (const type of fieldTypes) {
-			assert.doesInclude(results, { 'fields[].registration.type': type })
+			assert.doesInclude(results, {
+				'fields[].registration.type': namesUtil.toPascal(type),
+			})
 		}
 	}
 

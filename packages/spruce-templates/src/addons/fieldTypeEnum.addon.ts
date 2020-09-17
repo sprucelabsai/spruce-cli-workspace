@@ -13,5 +13,5 @@ handlebars.registerHelper('fieldTypeEnum', function (
 
 	const { type } = fieldDefinition
 
-	return type
+	return `'${type}'`
 })

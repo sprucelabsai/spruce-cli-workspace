@@ -2087,10 +2087,10 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.287.tgz#7d5853ed612acbcccb66496f5b67b64fc4f30ebc"
   integrity sha512-+XlzHc3+4vLGcyYFxksB9WJeDr5AjHGG+mipi0TYnsoI+m91aKBYxyV1QC57H6xsLLujRpXJNUFzo22WAhngQA==
 
-"@sprucelabs/error@^2.2.288":
-  version "2.2.288"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.288.tgz#08e70d44f30d91bc83726ccb1e4d7a025394ce36"
-  integrity sha512-CcBS4aO/U1Mce3RiAN4MIeLvvxYzaAspqJ8DprbMmaxqVU6L8cHfHpZ40tuPkXo+tlK/LiY5aN0aRbDUnprJUg==
+"@sprucelabs/error@^2.2.289":
+  version "2.2.289"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.289.tgz#822d75cab372ce2b4ff447f56238ed8c6146472f"
+  integrity sha512-PThGSw8Js2oJ9Xnxj2gmFgB+Jx4qbrQUnUGlusYIaop/9XTkDFtRUuO1Ze1tpHY0wVyJwdIIy1jCis+CvxDJWA==
 
 "@sprucelabs/jest-sheets-reporter@^1.2.0":
   version "1.2.0"
@@ -2119,12 +2119,12 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^11.0.2":
-  version "11.0.2"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-11.0.2.tgz#ad5d13a4d3a7258fbaf5a5b86bed6ecf0fb66d6a"
-  integrity sha512-zRHrrS5mjPPFsYPa63moPMBa6mPHBx/AaPecNBByyuc0U8E3SzTDWuEPPZY7tejjT1qH7Sb6bsQ/37fPB/v1hQ==
+"@sprucelabs/schema@^11.0.4":
+  version "11.0.4"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-11.0.4.tgz#219697019de843145442027eab06de7057e89132"
+  integrity sha512-1cv+u/gA2mCCDMnvpL4KIKbii11PmV/aJbHMe9iAwB7RwjQYM42mp2stLS1/BZF6V2fqpC61Sp4INJKvLlqShA==
   dependencies:
-    "@sprucelabs/error" "^2.2.288"
+    "@sprucelabs/error" "^2.2.289"
     "@sprucelabs/log" "^10.2.226"
     google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.7.58"
