@@ -1,5 +1,4 @@
 import { buildErrorSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 const genericMercuryDefinition = buildErrorSchema({
 	id: 'genericMercury',
@@ -8,11 +7,11 @@ const genericMercuryDefinition = buildErrorSchema({
 		'Not sure what happened, but it has something to do with Mercury',
 	fields: {
 		eventName: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Event name',
 		},
 		payloadArgs: {
-			type: FieldType.Schema,
+			type: 'schema',
 			label: 'Payload',
 			hint: 'A hint',
 			isArray: true,
@@ -22,11 +21,11 @@ const genericMercuryDefinition = buildErrorSchema({
 					name: 'Payload args',
 					fields: {
 						name: {
-							type: FieldType.Text,
+							type: 'text',
 							label: 'name',
 						},
 						value: {
-							type: FieldType.Text,
+							type: 'text',
 							label: 'value',
 						},
 					},

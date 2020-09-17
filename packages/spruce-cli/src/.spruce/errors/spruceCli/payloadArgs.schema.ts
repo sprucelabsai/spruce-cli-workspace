@@ -1,5 +1,5 @@
 import { SpruceErrors } from '../errors.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -10,13 +10,13 @@ const payloadArgsSchema: SpruceErrors.SpruceCli.IPayloadArgsSchema  = {
 	            /** name. */
 	            'name': {
 	                label: 'name',
-	                type: FieldType.Text,
+	                type: 'text',
 	                options: undefined
 	            },
 	            /** value. */
 	            'value': {
 	                label: 'value',
-	                type: FieldType.Text,
+	                type: 'text',
 	                options: undefined
 	            },
 	    }

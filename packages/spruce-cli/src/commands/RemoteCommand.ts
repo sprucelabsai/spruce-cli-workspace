@@ -1,5 +1,4 @@
 import { Command } from 'commander'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import RemoteStore, {
 	RemoteStoreRemoteType,
 	RemoteStoreChoices,
@@ -33,7 +32,7 @@ export default class RemoteCommand extends AbstractCommand {
 
 		if (!environment) {
 			environment = await this.term.prompt({
-				type: FieldType.Select,
+				type: 'select',
 				isRequired: true,
 				label: 'Select a remote',
 				options: {

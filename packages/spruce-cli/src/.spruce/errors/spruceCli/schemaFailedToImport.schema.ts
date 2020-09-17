@@ -1,5 +1,5 @@
 import { SpruceErrors } from '../errors.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -11,7 +11,7 @@ const schemaFailedToImportSchema: SpruceErrors.SpruceCli.ISchemaFailedToImportSc
 	            /** File. The file definition file I tried to import */
 	            'file': {
 	                label: 'File',
-	                type: FieldType.Text,
+	                type: 'text',
 	                isRequired: true,
 	                hint: 'The file definition file I tried to import',
 	                options: undefined

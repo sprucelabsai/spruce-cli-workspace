@@ -1,5 +1,4 @@
 import { buildErrorSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 const userNotFoundDefinition = buildErrorSchema({
 	id: 'userNotFound',
@@ -7,11 +6,11 @@ const userNotFoundDefinition = buildErrorSchema({
 	description: 'Could not find a user',
 	fields: {
 		token: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Token',
 		},
 		userId: {
-			type: FieldType.Number,
+			type: 'number',
 			label: 'User id',
 		},
 	},

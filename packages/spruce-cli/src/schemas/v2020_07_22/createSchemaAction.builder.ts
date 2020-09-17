@@ -1,5 +1,4 @@
 import { buildSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import namedTemplateItemSchema from '#spruce/schemas/spruceCli/v2020_07_22/namedTemplateItem.schema'
 import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
 
@@ -10,20 +9,20 @@ export default buildSchema({
 	fields: {
 		...syncSchemasActionSchema.fields,
 		schemaBuilderDestinationDir: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Schema builder destination directory',
 			hint: "Where I'll save the new schema builder.",
 			defaultValue: 'src/schemas',
 		},
 		builderFunction: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Builder function',
 			hint: 'The function that builds this schema',
 			defaultValue: 'buildSchema',
 			isPrivate: true,
 		},
 		syncAfterCreate: {
-			type: FieldType.Boolean,
+			type: 'boolean',
 			label: 'Sync after creation',
 			hint:
 				'This will ensure types and schemas are in sync after you create your builder.',
@@ -31,7 +30,7 @@ export default buildSchema({
 			defaultValue: true,
 		},
 		version: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Version',
 			hint: 'Set a version yourself instead of letting me generate one for you',
 			isPrivate: true,

@@ -1,6 +1,5 @@
 import { ISchema } from '@sprucelabs/schema'
 import { CORE_SCHEMA_VERSION } from '@sprucelabs/spruce-skill-utils'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import JobSchema from './job.schema'
 import organizationSchema from './organization.schema'
 import personSchema from './person.schema'
@@ -13,11 +12,11 @@ const personOrganization: ISchema = {
 	fields: {
 		id: {
 			label: 'Id',
-			type: FieldType.Id,
+			type: 'id',
 		},
 		role: {
 			label: 'Name',
-			type: FieldType.Select,
+			type: 'select',
 			isRequired: true,
 			options: {
 				choices: roleSelectChoices,
@@ -25,14 +24,14 @@ const personOrganization: ISchema = {
 		},
 		jobs: {
 			label: 'Jobs',
-			type: FieldType.Schema,
+			type: 'schema',
 			options: {
 				schema: JobSchema,
 			},
 		},
 		organization: {
 			label: 'Organization',
-			type: FieldType.Schema,
+			type: 'schema',
 			isRequired: true,
 			options: {
 				schema: organizationSchema,
@@ -40,7 +39,7 @@ const personOrganization: ISchema = {
 		},
 		person: {
 			label: 'Person',
-			type: FieldType.Schema,
+			type: 'schema',
 			isRequired: true,
 			options: {
 				schema: personSchema,

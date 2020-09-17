@@ -1,6 +1,5 @@
 import { ISelectFieldDefinitionChoice } from '@sprucelabs/schema'
 import { Command } from 'commander'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../errors/SpruceError'
 import PinService from '../services/PinService'
@@ -54,7 +53,7 @@ export default class UserCommand extends AbstractCommand {
 
 		if (!phone) {
 			phone = await this.term.prompt({
-				type: FieldType.Phone,
+				type: 'phone',
 				isRequired: true,
 				label: "What's your cell?",
 			})
@@ -74,7 +73,7 @@ export default class UserCommand extends AbstractCommand {
 
 		do {
 			const pin = await this.term.prompt({
-				type: FieldType.Text,
+				type: 'text',
 				isRequired: true,
 				label: pinLabel,
 			})
@@ -138,7 +137,7 @@ export default class UserCommand extends AbstractCommand {
 
 		const loggedInUser = this.userStore.getLoggedInUser()
 		const userIdx = await this.term.prompt({
-			type: FieldType.Select,
+			type: 'select',
 			label: 'Select previously logged in user',
 			isRequired: true,
 			defaultValue: loggedInUser && loggedInUser.id,

@@ -1,5 +1,5 @@
 import { SpruceSchemas } from '../../schemas.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -11,14 +11,14 @@ const autoloaderSchema: SpruceSchemas.SpruceCli.v2020_07_22.IAutoloaderSchema  =
 	            /** Source directory. */
 	            'lookupDir': {
 	                label: 'Source directory',
-	                type: FieldType.Directory,
+	                type: 'directory',
 	                isRequired: true,
 	                options: undefined
 	            },
 	            /** Destination. Where the file that does the autoloading is written */
 	            'destination': {
 	                label: 'Destination',
-	                type: FieldType.File,
+	                type: 'file',
 	                isRequired: true,
 	                hint: 'Where the file that does the autoloading is written',
 	                options: undefined
@@ -26,7 +26,7 @@ const autoloaderSchema: SpruceSchemas.SpruceCli.v2020_07_22.IAutoloaderSchema  =
 	            /** Pattern. */
 	            'pattern': {
 	                label: 'Pattern',
-	                type: FieldType.Text,
+	                type: 'text',
 	                isRequired: true,
 	                defaultValue: "**/!(*.test).ts",
 	                options: undefined

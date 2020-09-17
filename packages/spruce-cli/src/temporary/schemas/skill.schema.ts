@@ -1,6 +1,5 @@
 import { ISchema } from '@sprucelabs/schema'
 import { CORE_SCHEMA_VERSION } from '@sprucelabs/spruce-skill-utils'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 const skillSchema: ISchema = {
 	id: 'skill',
@@ -10,33 +9,33 @@ const skillSchema: ISchema = {
 	fields: {
 		id: {
 			label: 'Id',
-			type: FieldType.Id,
+			type: 'id',
 			isRequired: true,
 		},
 		apiKey: {
 			label: 'Id',
 			isPrivate: true,
-			type: FieldType.Id,
+			type: 'id',
 			isRequired: true,
 		},
 		name: {
 			label: 'Name',
-			type: FieldType.Text,
+			type: 'text',
 			isRequired: true,
 		},
 		description: {
 			label: 'Description',
-			type: FieldType.Text,
+			type: 'text',
 			isRequired: false,
 		},
 		slug: {
 			label: 'Slug',
-			type: FieldType.Text,
+			type: 'text',
 			isRequired: true,
 		},
 		creators: {
 			label: 'Creators',
-			type: FieldType.Schema,
+			type: 'schema',
 			hint: 'The people or skills who created and own this skill.',
 			isRequired: true,
 			isArray: true,
@@ -48,10 +47,10 @@ const skillSchema: ISchema = {
 					version: CORE_SCHEMA_VERSION.constValue,
 					fields: {
 						skillId: {
-							type: FieldType.Text,
+							type: 'text',
 						},
 						personId: {
-							type: FieldType.Text,
+							type: 'text',
 						},
 					},
 				},

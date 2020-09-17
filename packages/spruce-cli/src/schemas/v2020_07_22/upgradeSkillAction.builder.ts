@@ -1,5 +1,4 @@
 import { buildSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export default buildSchema({
 	id: 'upgradeSkillAction',
@@ -7,7 +6,7 @@ export default buildSchema({
 	description: 'Options skill.upgrade.',
 	fields: {
 		force: {
-			type: FieldType.Boolean,
+			type: 'boolean',
 			label: 'Force',
 			hint: 'This will force overwrite each file',
 		},

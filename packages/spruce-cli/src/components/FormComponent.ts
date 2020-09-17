@@ -10,7 +10,6 @@ import SchemaEntity, {
 } from '@sprucelabs/schema'
 import { pick } from 'lodash'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import SpruceError from '../errors/SpruceError'
 import { IGraphicsInterface, IGraphicsTextEffect } from '../types/cli.types'
 
@@ -279,7 +278,7 @@ export default class FormComponent<S extends ISchema> extends SchemaEntity<S> {
 		})
 
 		const response = await term.prompt({
-			type: FieldType.Select,
+			type: 'select',
 			isRequired: true,
 			label: 'Select any field to edit',
 			options: {

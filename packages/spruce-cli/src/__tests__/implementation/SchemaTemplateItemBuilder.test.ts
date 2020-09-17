@@ -1,7 +1,6 @@
 import { ISchema, ISchemaTemplateItem } from '@sprucelabs/schema'
 import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import AbstractCliTest from '../../AbstractCliTest'
 import SchemaTemplateItemBuilder from '../../templateItemBuilders/SchemaTemplateItemBuilder'
 
@@ -11,7 +10,7 @@ const cowbellV1: ISchema = {
 	name: 'Cowbell test',
 	fields: {
 		radius: {
-			type: FieldType.Number,
+			type: 'number',
 		},
 	},
 }
@@ -44,10 +43,10 @@ const cowbellV2: ISchema = {
 	name: 'Cowbell test two!',
 	fields: {
 		radius: {
-			type: FieldType.Number,
+			type: 'number',
 		},
 		owner: {
-			type: FieldType.Schema,
+			type: 'schema',
 			options: {
 				schemaId: { id: 'person', version: '2020_06_03' },
 			},
@@ -69,10 +68,10 @@ const cowbellV2TemplateItem: ISchemaTemplateItem = {
 		name: 'Cowbell test two!',
 		fields: {
 			radius: {
-				type: FieldType.Number,
+				type: 'number',
 			},
 			owner: {
-				type: FieldType.Schema,
+				type: 'schema',
 				options: {
 					schemaIds: [{ id: 'person', version: '2020_06_03' }],
 				},
@@ -95,10 +94,10 @@ const cowbellV2NestedTemplateItem: ISchemaTemplateItem = {
 		name: 'Cowbell test two!',
 		fields: {
 			radius: {
-				type: FieldType.Number,
+				type: 'number',
 			},
 			owner: {
-				type: FieldType.Schema,
+				type: 'schema',
 				options: {
 					schemaIds: [{ id: 'person', version: '2020_06_03' }],
 				},
@@ -113,7 +112,7 @@ const personV1: ISchema = {
 	name: 'Person test',
 	fields: {
 		name: {
-			type: FieldType.Text,
+			type: 'text',
 		},
 	},
 }
@@ -135,10 +134,10 @@ const personV2: ISchema = {
 	name: 'Person version 2',
 	fields: {
 		name: {
-			type: FieldType.Text,
+			type: 'text',
 		},
 		favoriteVehicle: {
-			type: FieldType.Schema,
+			type: 'schema',
 			options: {
 				schema: {
 					id: 'vehicle',
@@ -146,7 +145,7 @@ const personV2: ISchema = {
 					version: '2020_06_01',
 					fields: {
 						make: {
-							type: FieldType.Text,
+							type: 'text',
 						},
 					},
 				},
@@ -169,10 +168,10 @@ const personV2TemplateItem: ISchemaTemplateItem = {
 		name: 'Person version 2',
 		fields: {
 			name: {
-				type: FieldType.Text,
+				type: 'text',
 			},
 			favoriteVehicle: {
-				type: FieldType.Schema,
+				type: 'schema',
 				options: {
 					schemaIds: [{ id: 'vehicle', version: '2020_06_01' }],
 				},
@@ -187,7 +186,7 @@ const personV3: ISchema = {
 	name: 'Person test the 3rd',
 	fields: {
 		relatedField: {
-			type: FieldType.Schema,
+			type: 'schema',
 			options: {
 				schemas: [cowbellV1, cowbellV2],
 			},
@@ -209,7 +208,7 @@ const personV3TemplateItem: ISchemaTemplateItem = {
 		name: 'Person test the 3rd',
 		fields: {
 			relatedField: {
-				type: FieldType.Schema,
+				type: 'schema',
 				options: {
 					schemaIds: [
 						{ id: 'cowbell', version: '2020_06_01' },
@@ -235,7 +234,7 @@ const vehicleV1TemplateItem: ISchemaTemplateItem = {
 		version: '2020_06_01',
 		fields: {
 			make: {
-				type: FieldType.Text,
+				type: 'text',
 			},
 		},
 	},
@@ -248,7 +247,7 @@ const personV4: ISchema = {
 
 	fields: {
 		cowbells: {
-			type: FieldType.Schema,
+			type: 'schema',
 			options: {
 				schemaIds: [
 					{ id: 'cowbell', version: '2020_06_01' },
@@ -276,7 +275,7 @@ const nestedMercuryContract: ISchema = {
 	description: '',
 	version: '2020_09_01',
 	dynamicFieldSignature: {
-		type: FieldType.Schema,
+		type: 'schema',
 		keyName: 'eventNameWithOptionalNamespace',
 		options: {
 			schema: {
@@ -285,18 +284,18 @@ const nestedMercuryContract: ISchema = {
 				description: '',
 				fields: {
 					responsePayload: {
-						type: FieldType.Raw,
+						type: 'raw',
 						options: { valueType: 'ISchema' },
 					},
 					emitPayload: {
-						type: FieldType.Raw,
+						type: 'raw',
 						options: { valueType: 'ISchema' },
 					},
 					listenPermissionsAny: {
-						type: FieldType.Text,
+						type: 'text',
 					},
 					emitPermissionsAny: {
-						type: FieldType.Text,
+						type: 'text',
 					},
 				},
 			},
@@ -310,7 +309,7 @@ const nestedMercuryContractArray: ISchema = {
 	description: '',
 	version: '2020_09_01',
 	dynamicFieldSignature: {
-		type: FieldType.Schema,
+		type: 'schema',
 		keyName: 'eventNameWithOptionalNamespace',
 		options: {
 			schemas: [
@@ -320,18 +319,18 @@ const nestedMercuryContractArray: ISchema = {
 					description: '',
 					fields: {
 						responsePayload: {
-							type: FieldType.Raw,
+							type: 'raw',
 							options: { valueType: 'ISchema' },
 						},
 						emitPayload: {
-							type: FieldType.Raw,
+							type: 'raw',
 							options: { valueType: 'ISchema' },
 						},
 						listenPermissionsAny: {
-							type: FieldType.Text,
+							type: 'text',
 						},
 						emitPermissionsAny: {
-							type: FieldType.Text,
+							type: 'text',
 						},
 					},
 				},
@@ -341,18 +340,18 @@ const nestedMercuryContractArray: ISchema = {
 					description: '',
 					fields: {
 						responsePayload: {
-							type: FieldType.Raw,
+							type: 'raw',
 							options: { valueType: 'ISchema' },
 						},
 						emitPayload: {
-							type: FieldType.Raw,
+							type: 'raw',
 							options: { valueType: 'ISchema' },
 						},
 						listenPermissionsAny: {
-							type: FieldType.Text,
+							type: 'text',
 						},
 						emitPermissionsAny: {
-							type: FieldType.Text,
+							type: 'text',
 						},
 					},
 				},
@@ -375,7 +374,7 @@ const mercuryTemplateItem: ISchemaTemplateItem = {
 		description: '',
 		version: '2020_09_01',
 		dynamicFieldSignature: {
-			type: FieldType.Schema,
+			type: 'schema',
 			keyName: 'eventNameWithOptionalNamespace',
 			options: {
 				schemaIds: [
@@ -404,18 +403,18 @@ const eventSignatureTemplateItem: ISchemaTemplateItem = {
 		version: '2020_09_01',
 		fields: {
 			responsePayload: {
-				type: FieldType.Raw,
+				type: 'raw',
 				options: { valueType: 'ISchema' },
 			},
 			emitPayload: {
-				type: FieldType.Raw,
+				type: 'raw',
 				options: { valueType: 'ISchema' },
 			},
 			listenPermissionsAny: {
-				type: FieldType.Text,
+				type: 'text',
 			},
 			emitPermissionsAny: {
-				type: FieldType.Text,
+				type: 'text',
 			},
 		},
 	},
@@ -434,7 +433,7 @@ const mercuryTemplateItemArray: ISchemaTemplateItem = {
 		description: '',
 		version: '2020_09_01',
 		dynamicFieldSignature: {
-			type: FieldType.Schema,
+			type: 'schema',
 			keyName: 'eventNameWithOptionalNamespace',
 			options: {
 				schemaIds: [
@@ -467,18 +466,18 @@ const eventSignatureTemplateItem2: ISchemaTemplateItem = {
 		version: '2020_09_01',
 		fields: {
 			responsePayload: {
-				type: FieldType.Raw,
+				type: 'raw',
 				options: { valueType: 'ISchema' },
 			},
 			emitPayload: {
-				type: FieldType.Raw,
+				type: 'raw',
 				options: { valueType: 'ISchema' },
 			},
 			listenPermissionsAny: {
-				type: FieldType.Text,
+				type: 'text',
 			},
 			emitPermissionsAny: {
-				type: FieldType.Text,
+				type: 'text',
 			},
 		},
 	},

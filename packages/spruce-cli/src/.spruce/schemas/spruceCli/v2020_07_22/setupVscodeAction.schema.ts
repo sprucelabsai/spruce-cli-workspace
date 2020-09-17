@@ -1,5 +1,5 @@
 import { SpruceSchemas } from '../../schemas.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -11,7 +11,7 @@ const setupVscodeActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISetupVscodeA
 	            /** Install everything. */
 	            'all': {
 	                label: 'Install everything',
-	                type: FieldType.Boolean,
+	                type: 'boolean',
 	                options: undefined
 	            },
 	    }

@@ -1,5 +1,4 @@
 import { buildSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import namedTemplateItemSchema from '#spruce/schemas/spruceCli/v2020_07_22/namedTemplateItem.schema'
 import syncErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncErrorAction.schema'
 
@@ -10,7 +9,7 @@ export default buildSchema({
 	fields: {
 		...syncErrorActionSchema.fields,
 		errorBuilderDestinationDir: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Error builder destination directory',
 			isRequired: true,
 			hint: "Where I'll save your new builder file?",

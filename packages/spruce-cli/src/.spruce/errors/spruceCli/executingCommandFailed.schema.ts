@@ -1,5 +1,5 @@
 import { SpruceErrors } from '../errors.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -11,33 +11,33 @@ const executingCommandFailedSchema: SpruceErrors.SpruceCli.IExecutingCommandFail
 	            /** The command being run. */
 	            'cmd': {
 	                label: 'The command being run',
-	                type: FieldType.Text,
+	                type: 'text',
 	                isRequired: true,
 	                options: undefined
 	            },
 	            /** Args. */
 	            'args': {
 	                label: 'Args',
-	                type: FieldType.Text,
+	                type: 'text',
 	                isArray: true,
 	                options: undefined
 	            },
 	            /** Cwd. */
 	            'cwd': {
 	                label: 'Cwd',
-	                type: FieldType.Text,
+	                type: 'text',
 	                options: undefined
 	            },
 	            /** Stdout. */
 	            'stdout': {
 	                label: 'Stdout',
-	                type: FieldType.Text,
+	                type: 'text',
 	                options: undefined
 	            },
 	            /** stderr. */
 	            'stderr': {
 	                label: 'stderr',
-	                type: FieldType.Text,
+	                type: 'text',
 	                options: undefined
 	            },
 	    }

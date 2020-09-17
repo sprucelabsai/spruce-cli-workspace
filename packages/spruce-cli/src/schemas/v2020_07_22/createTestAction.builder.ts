@@ -1,5 +1,4 @@
 import { buildSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import namedTemplateItemSchema from '#spruce/schemas/spruceCli/v2020_07_22/namedTemplateItem.schema'
 
 export default buildSchema({
@@ -8,7 +7,7 @@ export default buildSchema({
 	description: 'Options for creating a new test.',
 	fields: {
 		type: {
-			type: FieldType.Select,
+			type: 'select',
 			label: 'Type',
 			isRequired: true,
 			options: {
@@ -19,13 +18,13 @@ export default buildSchema({
 			},
 		},
 		nameReadable: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'What are you testing?',
 			isRequired: true,
 			hint: 'E.g. Booking an appointment or turning on a light',
 		},
 		testDestinationDir: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Test destination directory',
 			hint: "Where I'll save your new test.",
 			defaultValue: 'src/__tests__',

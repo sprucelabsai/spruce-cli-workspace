@@ -1,5 +1,5 @@
 import { SpruceErrors } from '../errors.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -11,7 +11,7 @@ const lintFailedSchema: SpruceErrors.SpruceCli.ILintFailedSchema  = {
 	            /** Pattern. The pattern used to match files relative to the root of the skill */
 	            'pattern': {
 	                label: 'Pattern',
-	                type: FieldType.Text,
+	                type: 'text',
 	                isRequired: true,
 	                hint: 'The pattern used to match files relative to the root of the skill',
 	                options: undefined
@@ -19,7 +19,7 @@ const lintFailedSchema: SpruceErrors.SpruceCli.ILintFailedSchema  = {
 	            /** Output from lint. */
 	            'stdout': {
 	                label: 'Output from lint',
-	                type: FieldType.Text,
+	                type: 'text',
 	                isRequired: true,
 	                options: undefined
 	            },

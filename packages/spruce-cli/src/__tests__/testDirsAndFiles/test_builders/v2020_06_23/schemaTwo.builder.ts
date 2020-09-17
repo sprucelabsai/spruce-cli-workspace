@@ -1,5 +1,4 @@
 import { buildSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export default buildSchema({
 	id: 'schemaTwo',
@@ -7,7 +6,7 @@ export default buildSchema({
 	description: 'It is going to be greater, I thin!',
 	fields: {
 		phone: {
-			type: FieldType.Phone,
+			type: 'phone',
 			isRequired: true,
 		},
 	},

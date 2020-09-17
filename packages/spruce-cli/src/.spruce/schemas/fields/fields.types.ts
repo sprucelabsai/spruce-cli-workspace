@@ -23,56 +23,56 @@ export type Field = | IField<IAddressFieldDefinition>| IField<IBooleanFieldDefin
 
 /** Type for looking up field definitions by field type */
 export interface IFieldDefinitionMap {
-	[FieldType.Address]: IAddressFieldDefinition
-	[FieldType.Boolean]: IBooleanFieldDefinition
+	['address']: IAddressFieldDefinition
+	['boolean']: IBooleanFieldDefinition
 	[FieldType.Date]: IDateFieldDefinition
-	[FieldType.DateTime]: IDateTimeFieldDefinition
-	[FieldType.Directory]: IDirectoryFieldDefinition
+	['dateTime']: IDateTimeFieldDefinition
+	['directory']: IDirectoryFieldDefinition
 	[FieldType.Duration]: IDurationFieldDefinition
-	[FieldType.File]: IFileFieldDefinition
-	[FieldType.Id]: IIdFieldDefinition
-	[FieldType.Number]: INumberFieldDefinition
-	[FieldType.Phone]: IPhoneFieldDefinition
-	[FieldType.Raw]: IRawFieldDefinition
-	[FieldType.Schema]: ISchemaFieldDefinition
-	[FieldType.Select]: ISelectFieldDefinition
-	[FieldType.Text]: ITextFieldDefinition
+	['file']: IFileFieldDefinition
+	['id']: IIdFieldDefinition
+	['number']: INumberFieldDefinition
+	['phone']: IPhoneFieldDefinition
+	['raw']: IRawFieldDefinition
+	['schema']: ISchemaFieldDefinition
+	['select']: ISelectFieldDefinition
+	['text']: ITextFieldDefinition
 }
 
 
 /** Lookups used for dynamic type mapping based on a definition's field type */
 export interface IFieldValueTypeGeneratorMap<F extends FieldDefinition, CreateEntityInstances extends boolean> {
-	[FieldType.Address]: IAddressFieldDefinition['value']
-	[FieldType.Boolean]: IBooleanFieldDefinition['value']
+	['address']: IAddressFieldDefinition['value']
+	['boolean']: IBooleanFieldDefinition['value']
 	[FieldType.Date]: IDateFieldDefinition['value']
-	[FieldType.DateTime]: IDateTimeFieldDefinition['value']
-	[FieldType.Directory]: IDirectoryFieldDefinition['value']
+	['dateTime']: IDateTimeFieldDefinition['value']
+	['directory']: IDirectoryFieldDefinition['value']
 	[FieldType.Duration]: IDurationFieldDefinition['value']
-	[FieldType.File]: IFileFieldDefinition['value']
-	[FieldType.Id]: IIdFieldDefinition['value']
-	[FieldType.Number]: INumberFieldDefinition['value']
-	[FieldType.Phone]: IPhoneFieldDefinition['value']
-	[FieldType.Raw]: IRawFieldDefinition['value']
-	[FieldType.Schema]: SchemaFieldValueTypeMapper<F extends ISchemaFieldDefinition? F : ISchemaFieldDefinition, CreateEntityInstances>
-	[FieldType.Select]: SelectFieldValueTypeMapper<F extends ISelectFieldDefinition ? F: ISelectFieldDefinition>
-	[FieldType.Text]: ITextFieldDefinition['value']
+	['file']: IFileFieldDefinition['value']
+	['id']: IIdFieldDefinition['value']
+	['number']: INumberFieldDefinition['value']
+	['phone']: IPhoneFieldDefinition['value']
+	['raw']: IRawFieldDefinition['value']
+	['schema']: SchemaFieldValueTypeMapper<F extends ISchemaFieldDefinition? F : ISchemaFieldDefinition, CreateEntityInstances>
+	['select']: SelectFieldValueTypeMapper<F extends ISelectFieldDefinition ? F: ISelectFieldDefinition>
+	['text']: ITextFieldDefinition['value']
 }
 
 /** All field instances */
 export interface IFieldMap {
-	[FieldType.Address]: IField<IAddressFieldDefinition>
-	[FieldType.Boolean]: IField<IBooleanFieldDefinition>
+	['address']: IField<IAddressFieldDefinition>
+	['boolean']: IField<IBooleanFieldDefinition>
 	[FieldType.Date]: IField<IDateFieldDefinition>
-	[FieldType.DateTime]: IField<IDateTimeFieldDefinition>
-	[FieldType.Directory]: IField<IDirectoryFieldDefinition>
+	['dateTime']: IField<IDateTimeFieldDefinition>
+	['directory']: IField<IDirectoryFieldDefinition>
 	[FieldType.Duration]: IField<IDurationFieldDefinition>
-	[FieldType.File]: IField<IFileFieldDefinition>
-	[FieldType.Id]: IField<IIdFieldDefinition>
-	[FieldType.Number]: IField<INumberFieldDefinition>
-	[FieldType.Phone]: IField<IPhoneFieldDefinition>
-	[FieldType.Raw]: IField<IRawFieldDefinition>
-	[FieldType.Schema]: IField<ISchemaFieldDefinition>
-	[FieldType.Select]: IField<ISelectFieldDefinition>
-	[FieldType.Text]: IField<ITextFieldDefinition>
+	['file']: IField<IFileFieldDefinition>
+	['id']: IField<IIdFieldDefinition>
+	['number']: IField<INumberFieldDefinition>
+	['phone']: IField<IPhoneFieldDefinition>
+	['raw']: IField<IRawFieldDefinition>
+	['schema']: IField<ISchemaFieldDefinition>
+	['select']: IField<ISelectFieldDefinition>
+	['text']: IField<ITextFieldDefinition>
 }
 

@@ -1,5 +1,4 @@
 import { buildSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import syncSchemaFieldsSchema from './syncSchemaFieldsAction.builder'
 
 export default buildSchema({
@@ -9,29 +8,29 @@ export default buildSchema({
 	fields: {
 		...syncSchemaFieldsSchema.fields,
 		schemaTypesDestinationDir: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Schema types destination directory',
 			hint: 'Where schema types and interfaces will be generated.',
 			defaultValue: '#spruce/schemas',
 		},
 		schemaLookupDir: {
-			type: FieldType.Text,
+			type: 'text',
 			hint: 'Where I should look for your schema builders?',
 			defaultValue: 'src/schemas',
 		},
 		enableVersioning: {
-			type: FieldType.Boolean,
+			type: 'boolean',
 			defaultValue: true,
 			label: 'Enable versioning',
 			isPrivate: true,
 		},
 		globalNamespace: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Global namespace',
 			isPrivate: true,
 		},
 		fetchRemoteSchemas: {
-			type: FieldType.Boolean,
+			type: 'boolean',
 			label: 'Fetch remote schemas',
 			isPrivate: true,
 			hint:

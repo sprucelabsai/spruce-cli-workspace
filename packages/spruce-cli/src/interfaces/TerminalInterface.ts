@@ -17,7 +17,6 @@ import _ from 'lodash'
 import { filter } from 'lodash'
 import ora from 'ora'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import SpruceError from '../errors/SpruceError'
 import log from '../singletons/log'
 import {
@@ -269,7 +268,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 	public async waitForEnter(message?: string) {
 		this.renderLine('')
 		await this.prompt({
-			type: FieldType.Text,
+			type: 'text',
 			label: `${message ? message + ' ' : ''}${chalk.bgGreenBright.black(
 				'hit enter'
 			)}`,
@@ -320,11 +319,11 @@ export default class TerminalInterface implements IGraphicsInterface {
 
 		switch (fieldDefinition.type) {
 			// Map select options to prompt list choices
-			case FieldType.Boolean:
+			case 'boolean':
 				promptOptions.type = 'confirm'
 				break
 
-			case FieldType.Select:
+			case 'select':
 				promptOptions.type = fieldDefinition.isArray ? 'checkbox' : 'list'
 
 				promptOptions.choices = fieldDefinition.options.choices.map(
@@ -346,7 +345,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 				break
 			// Directory select
 			// File select
-			case FieldType.Directory: {
+			case 'directory': {
 				if (fieldDefinition.isArray) {
 					throw new SpruceError({
 						code: 'NOT_IMPLEMENTED',
@@ -375,7 +374,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 				}
 				break
 			}
-			case FieldType.File: {
+			case 'file': {
 				if (fieldDefinition.isArray) {
 					throw new SpruceError({
 						code: 'NOT_IMPLEMENTED',

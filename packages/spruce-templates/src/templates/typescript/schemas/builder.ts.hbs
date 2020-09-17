@@ -1,5 +1,5 @@
 import  { {{builderFunction}} } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 export default {{builderFunction}}({
 	id: '{{nameCamel}}',
@@ -7,12 +7,12 @@ export default {{builderFunction}}({
     description: '{{{escape description}}}',
 	fields: {
 		fieldName1: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'First Field',
 			isRequired: true
 		},
 		fieldName2: {
-			type: FieldType.Number,
+			type: 'number',
 			label: 'Second Field',
 			isRequired: true,
 			hint:

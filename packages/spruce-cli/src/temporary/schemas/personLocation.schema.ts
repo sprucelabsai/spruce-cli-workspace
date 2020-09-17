@@ -1,6 +1,5 @@
 import { ISchema } from '@sprucelabs/schema'
 import { CORE_SCHEMA_VERSION } from '@sprucelabs/spruce-skill-utils'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import JobSchema from './job.schema'
 import LocationSchema from './location.schema'
 import personSchema from './person.schema'
@@ -14,11 +13,11 @@ const personLocationSchema: ISchema = {
 	fields: {
 		id: {
 			label: 'Id',
-			type: FieldType.Id,
+			type: 'id',
 		},
 		roles: {
 			label: 'Name',
-			type: FieldType.Select,
+			type: 'select',
 			isRequired: true,
 			isArray: true,
 			options: {
@@ -27,11 +26,11 @@ const personLocationSchema: ISchema = {
 		},
 		status: {
 			label: 'Status',
-			type: FieldType.Text,
+			type: 'text',
 		},
 		visits: {
 			label: 'Total visits',
-			type: FieldType.Number,
+			type: 'number',
 			isRequired: true,
 			options: {
 				choices: roleSelectChoices,
@@ -39,11 +38,11 @@ const personLocationSchema: ISchema = {
 		},
 		lastRecordedVisit: {
 			label: 'Last visit',
-			type: FieldType.DateTime,
+			type: 'dateTime',
 		},
 		job: {
 			label: 'Job',
-			type: FieldType.Schema,
+			type: 'schema',
 			isRequired: true,
 			options: {
 				schema: JobSchema,
@@ -51,7 +50,7 @@ const personLocationSchema: ISchema = {
 		},
 		location: {
 			label: 'Location',
-			type: FieldType.Schema,
+			type: 'schema',
 			isRequired: true,
 			options: {
 				schema: LocationSchema,
@@ -59,7 +58,7 @@ const personLocationSchema: ISchema = {
 		},
 		person: {
 			label: 'Person',
-			type: FieldType.Schema,
+			type: 'schema',
 			isRequired: true,
 			options: {
 				schema: personSchema,

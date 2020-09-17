@@ -1,5 +1,5 @@
 import { SpruceErrors } from '../errors.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 import payloadArgsSchema from '#spruce/errors/spruceCli/payloadArgs.schema'
 
@@ -11,13 +11,13 @@ const genericMercurySchema: SpruceErrors.SpruceCli.IGenericMercurySchema  = {
 	            /** Event name. */
 	            'eventName': {
 	                label: 'Event name',
-	                type: FieldType.Text,
+	                type: 'text',
 	                options: undefined
 	            },
 	            /** Payload. A hint */
 	            'payloadArgs': {
 	                label: 'Payload',
-	                type: FieldType.Schema,
+	                type: 'schema',
 	                hint: 'A hint',
 	                isArray: true,
 	                options: {schema: payloadArgsSchema,}

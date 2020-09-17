@@ -3,7 +3,6 @@ import { ISchemaTemplateItem } from '@sprucelabs/schema'
 import { SchemaField } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
 import { camelCase, uniq } from 'lodash'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 handlebars.registerHelper('importRelatedSchemas', function (
 	schema: ISchema,
@@ -32,7 +31,7 @@ handlebars.registerHelper('importRelatedSchemas', function (
 	const imports: string[] = []
 
 	fields.forEach((field) => {
-		if (field.type === FieldType.Schema) {
+		if (field.type === 'schema') {
 			const related = SchemaField.mapFieldDefinitionToSchemaIdsWithVersion(
 				field
 			)

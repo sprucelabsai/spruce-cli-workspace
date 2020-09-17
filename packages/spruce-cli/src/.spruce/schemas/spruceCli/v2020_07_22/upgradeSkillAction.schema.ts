@@ -1,5 +1,5 @@
 import { SpruceSchemas } from '../../schemas.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -11,7 +11,7 @@ const upgradeSkillActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.IUpgradeSkil
 	            /** Force. This will force overwrite each file */
 	            'force': {
 	                label: 'Force',
-	                type: FieldType.Boolean,
+	                type: 'boolean',
 	                hint: 'This will force overwrite each file',
 	                options: undefined
 	            },

@@ -1,5 +1,5 @@
 import { SpruceErrors } from '../errors.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -11,7 +11,7 @@ const buildFailedSchema: SpruceErrors.SpruceCli.IBuildFailedSchema  = {
 	            /** File. File we wanted to build, if not set we wanted to build everything.. */
 	            'file': {
 	                label: 'File',
-	                type: FieldType.Text,
+	                type: 'text',
 	                hint: 'File we wanted to build, if not set we wanted to build everything..',
 	                options: undefined
 	            },

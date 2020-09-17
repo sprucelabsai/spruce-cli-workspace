@@ -1,5 +1,4 @@
 import { buildErrorSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 const fileExistsDefinition = buildErrorSchema({
 	id: 'fileExists',
@@ -7,7 +6,7 @@ const fileExistsDefinition = buildErrorSchema({
 	description: 'The file already exists',
 	fields: {
 		file: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'File',
 			isRequired: true,
 			hint: 'The file being created',

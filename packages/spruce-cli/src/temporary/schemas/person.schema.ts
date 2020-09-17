@@ -1,6 +1,5 @@
 import { ISchema } from '@sprucelabs/schema'
 import { CORE_SCHEMA_VERSION } from '@sprucelabs/spruce-skill-utils'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 const profileImageSchema: ISchema = {
 	id: 'profileImage',
@@ -10,22 +9,22 @@ const profileImageSchema: ISchema = {
 	fields: {
 		profile60: {
 			label: '60x60',
-			type: FieldType.Text,
+			type: 'text',
 			isRequired: true,
 		},
 		profile150: {
 			label: '150x150',
-			type: FieldType.Text,
+			type: 'text',
 			isRequired: true,
 		},
 		'profile60@2x': {
 			label: '60x60',
-			type: FieldType.Text,
+			type: 'text',
 			isRequired: true,
 		},
 		'profile150@2x': {
 			label: '150x150',
-			type: FieldType.Text,
+			type: 'text',
 			isRequired: true,
 		},
 	},
@@ -39,34 +38,34 @@ const personSchema: ISchema = {
 	fields: {
 		id: {
 			label: 'Id',
-			type: FieldType.Id,
+			type: 'id',
 			isRequired: true,
 		},
 		firstName: {
 			label: 'First name',
-			type: FieldType.Text,
+			type: 'text',
 			isPrivate: true,
 		},
 		lastName: {
 			label: 'Last name',
-			type: FieldType.Text,
+			type: 'text',
 			isPrivate: true,
 		},
 		casualName: {
 			label: 'Casual name',
-			type: FieldType.Text,
+			type: 'text',
 			hint: 'The name you can use when talking to this person.',
 			isRequired: true,
 		},
 		phone: {
 			label: 'Phone',
-			type: FieldType.Phone,
+			type: 'phone',
 			hint: 'A number that can be texted',
 			isPrivate: true,
 		},
 		profileImages: {
 			label: 'Profile photos',
-			type: FieldType.Schema,
+			type: 'schema',
 			options: {
 				schema: profileImageSchema,
 			},

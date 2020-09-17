@@ -1,5 +1,5 @@
 import { SpruceErrors } from '../errors.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -11,13 +11,13 @@ const userNotFoundSchema: SpruceErrors.SpruceCli.IUserNotFoundSchema  = {
 	            /** Token. */
 	            'token': {
 	                label: 'Token',
-	                type: FieldType.Text,
+	                type: 'text',
 	                options: undefined
 	            },
 	            /** User id. */
 	            'userId': {
 	                label: 'User id',
-	                type: FieldType.Number,
+	                type: 'number',
 	                options: undefined
 	            },
 	    }

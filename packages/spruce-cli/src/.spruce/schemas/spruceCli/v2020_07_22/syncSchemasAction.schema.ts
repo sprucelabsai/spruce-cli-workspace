@@ -1,5 +1,5 @@
 import { SpruceSchemas } from '../../schemas.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -11,7 +11,7 @@ const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasA
 	            /** Field types directory. Where field types and interfaces will be generated. */
 	            'fieldTypesDestinationDir': {
 	                label: 'Field types directory',
-	                type: FieldType.Text,
+	                type: 'text',
 	                isPrivate: true,
 	                hint: 'Where field types and interfaces will be generated.',
 	                defaultValue: "#spruce/schemas",
@@ -20,7 +20,7 @@ const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasA
 	            /** Id. Where I'll look for new schema fields to be registered. */
 	            'addonsLookupDir': {
 	                label: 'Id',
-	                type: FieldType.Text,
+	                type: 'text',
 	                hint: 'Where I\'ll look for new schema fields to be registered.',
 	                defaultValue: "src/addons",
 	                options: undefined
@@ -28,7 +28,7 @@ const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasA
 	            /** Generate field types. Should I generate field types too? */
 	            'generateFieldTypes': {
 	                label: 'Generate field types',
-	                type: FieldType.Boolean,
+	                type: 'boolean',
 	                isPrivate: true,
 	                hint: 'Should I generate field types too?',
 	                defaultValue: true,
@@ -37,14 +37,14 @@ const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasA
 	            /** Schema types destination directory. Where schema types and interfaces will be generated. */
 	            'schemaTypesDestinationDir': {
 	                label: 'Schema types destination directory',
-	                type: FieldType.Text,
+	                type: 'text',
 	                hint: 'Where schema types and interfaces will be generated.',
 	                defaultValue: "#spruce/schemas",
 	                options: undefined
 	            },
 	            /** . Where I should look for your schema builders? */
 	            'schemaLookupDir': {
-	                type: FieldType.Text,
+	                type: 'text',
 	                hint: 'Where I should look for your schema builders?',
 	                defaultValue: "src/schemas",
 	                options: undefined
@@ -52,7 +52,7 @@ const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasA
 	            /** Enable versioning. */
 	            'enableVersioning': {
 	                label: 'Enable versioning',
-	                type: FieldType.Boolean,
+	                type: 'boolean',
 	                isPrivate: true,
 	                defaultValue: true,
 	                options: undefined
@@ -60,14 +60,14 @@ const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasA
 	            /** Global namespace. */
 	            'globalNamespace': {
 	                label: 'Global namespace',
-	                type: FieldType.Text,
+	                type: 'text',
 	                isPrivate: true,
 	                options: undefined
 	            },
 	            /** Fetch remote schemas. I will check the server and your contracts to pull down schemas you need. */
 	            'fetchRemoteSchemas': {
 	                label: 'Fetch remote schemas',
-	                type: FieldType.Boolean,
+	                type: 'boolean',
 	                isPrivate: true,
 	                hint: 'I will check the server and your contracts to pull down schemas you need.',
 	                defaultValue: true,

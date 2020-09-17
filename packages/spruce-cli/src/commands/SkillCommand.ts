@@ -2,7 +2,7 @@ import path from 'path'
 import { ISelectFieldDefinitionChoice } from '@sprucelabs/schema'
 import { Command } from 'commander'
 // import ErrorCode from '#spruce/errors/errorCode'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 // import SpruceError from '../errors/SpruceError'
 import FeatureInstaller from '../features/FeatureInstaller'
 import SkillStore from '../stores/SkillStore'
@@ -76,7 +76,7 @@ export default class SkillCommand extends AbstractCommand {
 
 		if (parentInstallDirectory) {
 			createSkill = await this.term.prompt({
-				type: FieldType.Boolean,
+				type: 'boolean',
 				label: `A Skill is already installed in ${parentInstallDirectory}. Are you sure you want to create a skill here?`,
 				isRequired: true,
 			})
@@ -113,7 +113,7 @@ export default class SkillCommand extends AbstractCommand {
 		)
 
 		const selectedIdx = await this.term.prompt({
-			type: FieldType.Select,
+			type: 'select',
 			label: 'Select a skill',
 			isRequired: true,
 			options: {
@@ -208,7 +208,7 @@ export default class SkillCommand extends AbstractCommand {
 	// 		)
 
 	// 		const selectedIdx = await this.term.prompt({
-	// 			type: FieldType.Select,
+	// 			type: 'select',
 	// 			label: 'Select a skill',
 	// 			isRequired: true,
 	// 			options: {

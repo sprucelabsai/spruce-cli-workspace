@@ -1,5 +1,4 @@
 import { buildSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export default buildSchema({
 	id: 'namedTemplateItem',
@@ -7,39 +6,39 @@ export default buildSchema({
 	description: 'Used to collect input on the names of a class or interface',
 	fields: {
 		nameReadable: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Readable name',
 			hint: 'The name people will read',
 			isRequired: true,
 		},
 		nameCamel: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Camel case name',
 			isRequired: true,
 			hint: 'camelCase version of the name',
 		},
 		nameCamelPlural: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Plural camel case name',
 			hint: 'camelCase version of the name',
 		},
 		namePascal: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Pascal case name',
 			hint: 'PascalCase of the name',
 		},
 		namePascalPlural: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Plural Pascal case name',
 			hint: 'PascalCase of the name',
 		},
 		nameConst: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Constant case name',
 			hint: 'CONST_CASE of the name',
 		},
 		description: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Description',
 			hint: 'Describe a bit more here',
 		},

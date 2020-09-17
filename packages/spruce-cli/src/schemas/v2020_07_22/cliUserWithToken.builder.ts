@@ -1,5 +1,4 @@
 import { buildSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import userSchema from '#spruce/schemas/spruce/v2020_07_22/person.schema'
 
 export default buildSchema({
@@ -9,9 +8,9 @@ export default buildSchema({
 	fields: {
 		id: userSchema.fields.id,
 		casualName: userSchema.fields.casualName,
-		token: { type: FieldType.Text, isRequired: true },
+		token: { type: 'text', isRequired: true },
 		isLoggedIn: {
-			type: FieldType.Boolean,
+			type: 'boolean',
 			label: 'Logged in',
 		},
 	},

@@ -4,7 +4,7 @@
 import { default as SchemaEntity } from '@sprucelabs/schema'
 import * as SpruceSchema from '@sprucelabs/schema'
 
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
@@ -20,7 +20,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		name: 'Access control list',
 		dynamicFieldSignature: { 
 		    label: 'Permissions grouped by slug',
-		    type: FieldType.Text,
+		    type: 'text',
 		    keyName: 'slug',
 		    isArray: true,
 		    options: undefined
@@ -60,27 +60,27 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            /** Id. */
 		            'id': {
 		                label: 'Id',
-		                type: FieldType.Id,
+		                type: 'id',
 		                options: undefined
 		            },
 		            /** Name. */
 		            'name': {
 		                label: 'Name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** Store number. You can use other symbols, like # or dashes. #123 or 32-US-5 */
 		            'num': {
 		                label: 'Store number',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'You can use other symbols, like # or dashes. #123 or 32-US-5',
 		                options: undefined
 		            },
 		            /** Public. Is this location viewable by guests? */
 		            'isPublic': {
 		                label: 'Public',
-		                type: FieldType.Boolean,
+		                type: 'boolean',
 		                hint: 'Is this location viewable by guests?',
 		                defaultValue: false,
 		                options: undefined
@@ -88,19 +88,19 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            /** Main Phone. */
 		            'phone': {
 		                label: 'Main Phone',
-		                type: FieldType.Phone,
+		                type: 'phone',
 		                options: undefined
 		            },
 		            /** Timezone. */
 		            'timezone': {
 		                label: 'Timezone',
-		                type: FieldType.Select,
+		                type: 'select',
 		                options: {choices: [{"value":"etc/gmt+12","label":"International Date Line West"},{"value":"pacific/midway","label":"Midway Island, Samoa"},{"value":"pacific/honolulu","label":"Hawaii"},{"value":"us/alaska","label":"Alaska"},{"value":"america/los_Angeles","label":"Pacific Time (US & Canada)"},{"value":"america/tijuana","label":"Tijuana, Baja California"},{"value":"us/arizona","label":"Arizona"},{"value":"america/chihuahua","label":"Chihuahua, La Paz, Mazatlan"},{"value":"us/mountain","label":"Mountain Time (US & Canada)"},{"value":"america/managua","label":"Central America"},{"value":"us/central","label":"Central Time (US & Canada)"},{"value":"america/mexico_City","label":"Guadalajara, Mexico City, Monterrey"},{"value":"Canada/Saskatchewan","label":"Saskatchewan"},{"value":"america/bogota","label":"Bogota, Lima, Quito, Rio Branco"},{"value":"us/eastern","label":"Eastern Time (US & Canada)"},{"value":"us/east-indiana","label":"Indiana (East)"},{"value":"Canada/atlantic","label":"Atlantic Time (Canada)"},{"value":"america/caracas","label":"Caracas, La Paz"},{"value":"america/manaus","label":"Manaus"},{"value":"america/Santiago","label":"Santiago"},{"value":"Canada/Newfoundland","label":"Newfoundland"},{"value":"america/Sao_Paulo","label":"Brasilia"},{"value":"america/argentina/buenos_Aires","label":"Buenos Aires, Georgetown"},{"value":"america/godthab","label":"Greenland"},{"value":"america/montevideo","label":"Montevideo"},{"value":"america/Noronha","label":"Mid-Atlantic"},{"value":"atlantic/cape_Verde","label":"Cape Verde Is."},{"value":"atlantic/azores","label":"Azores"},{"value":"africa/casablanca","label":"Casablanca, Monrovia, Reykjavik"},{"value":"etc/gmt","label":"Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London"},{"value":"europe/amsterdam","label":"Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna"},{"value":"europe/belgrade","label":"Belgrade, Bratislava, Budapest, Ljubljana, Prague"},{"value":"europe/brussels","label":"Brussels, Copenhagen, Madrid, Paris"},{"value":"europe/Sarajevo","label":"Sarajevo, Skopje, Warsaw, Zagreb"},{"value":"africa/lagos","label":"West Central Africa"},{"value":"asia/amman","label":"Amman"},{"value":"europe/athens","label":"Athens, Bucharest, Istanbul"},{"value":"asia/beirut","label":"Beirut"},{"value":"africa/cairo","label":"Cairo"},{"value":"africa/Harare","label":"Harare, Pretoria"},{"value":"europe/Helsinki","label":"Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius"},{"value":"asia/Jerusalem","label":"Jerusalem"},{"value":"europe/minsk","label":"Minsk"},{"value":"africa/Windhoek","label":"Windhoek"},{"value":"asia/Kuwait","label":"Kuwait, Riyadh, Baghdad"},{"value":"europe/moscow","label":"Moscow, St. Petersburg, Volgograd"},{"value":"africa/Nairobi","label":"Nairobi"},{"value":"asia/tbilisi","label":"Tbilisi"},{"value":"asia/tehran","label":"Tehran"},{"value":"asia/muscat","label":"Abu Dhabi, Muscat"},{"value":"asia/baku","label":"Baku"},{"value":"asia/Yerevan","label":"Yerevan"},{"value":"asia/Kabul","label":"Kabul"},{"value":"asia/Yekaterinburg","label":"Yekaterinburg"},{"value":"asia/Karachi","label":"Islamabad, Karachi, Tashkent"},{"value":"asia/calcutta","label":"Chennai, Kolkata, Mumbai, New Delhi"},{"value":"asia/calcutta","label":"Sri Jayawardenapura"},{"value":"asia/Katmandu","label":"Kathmandu"},{"value":"asia/almaty","label":"Almaty, Novosibirsk"},{"value":"asia/Dhaka","label":"Astana, Dhaka"},{"value":"asia/Rangoon","label":"Yangon (Rangoon)"},{"value":"asia/bangkok","label":"Bangkok, Hanoi, Jakarta"},{"value":"asia/Krasnoyarsk","label":"Krasnoyarsk"},{"value":"asia/Hong_Kong","label":"Beijing, Chongqing, Hong Kong, Urumqi"},{"value":"asia/Kuala_Lumpur","label":"Kuala Lumpur, Singapore"},{"value":"asia/Irkutsk","label":"Irkutsk, Ulaan Bataar"},{"value":"Australia/Perth","label":"Perth"},{"value":"asia/taipei","label":"Taipei"},{"value":"asia/tokyo","label":"Osaka, Sapporo, Tokyo"},{"value":"asia/Seoul","label":"Seoul"},{"value":"asia/Yakutsk","label":"Yakutsk"},{"value":"Australia/adelaide","label":"Adelaide"},{"value":"Australia/Darwin","label":"Darwin"},{"value":"Australia/brisbane","label":"Brisbane"},{"value":"Australia/canberra","label":"Canberra, Melbourne, Sydney"},{"value":"Australia/Hobart","label":"Hobart"},{"value":"pacific/guam","label":"Guam, Port Moresby"},{"value":"asia/Vladivostok","label":"Vladivostok"},{"value":"asia/magadan","label":"Magadan, Solomon Is., New Caledonia"},{"value":"pacific/auckland","label":"Auckland, Wellington"},{"value":"pacific/Fiji","label":"Fiji, Kamchatka, Marshall Is."},{"value":"pacific/tongatapu","label":"Nuku'alofa"}],}
 		            },
 		            /** Address. */
 		            'address': {
 		                label: 'Address',
-		                type: FieldType.Address,
+		                type: 'address',
 		                isRequired: true,
 		                options: undefined
 		            },
@@ -139,13 +139,13 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            /** Id. */
 		            'id': {
 		                label: 'Id',
-		                type: FieldType.Id,
+		                type: 'id',
 		                options: undefined
 		            },
 		            /** Is default. Is this job one that comes with every org? Mapped to roles (owner, groupManager, manager, guest). */
 		            'isDefault': {
 		                label: 'Is default',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'Is this job one that comes with every org? Mapped to roles (owner, groupManager, manager, guest).',
 		                options: undefined
@@ -153,27 +153,27 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            /** Name. */
 		            'name': {
 		                label: 'Name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** Role. */
 		            'role': {
 		                label: 'Role',
-		                type: FieldType.Select,
+		                type: 'select',
 		                isRequired: true,
 		                options: {choices: [{"value":"owner","label":"Owner"},{"value":"groupManager","label":"District/region manager"},{"value":"manager","label":"Manager"},{"value":"teammate","label":"Teammate"},{"value":"guest","label":"Guest"}],}
 		            },
 		            /** On work permissions. */
 		            'inStoreAcls': {
 		                label: 'On work permissions',
-		                type: FieldType.Schema,
+		                type: 'schema',
 		                options: {schema: SpruceSchemas.Spruce.v2020_07_22.IAclSchema,}
 		            },
 		            /** Off work permissions. */
 		            'acls': {
 		                label: 'Off work permissions',
-		                type: FieldType.Schema,
+		                type: 'schema',
 		                options: {schema: SpruceSchemas.Spruce.v2020_07_22.IAclSchema,}
 		            },
 		    }
@@ -211,28 +211,28 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            /** Id. */
 		            'id': {
 		                label: 'Id',
-		                type: FieldType.Id,
+		                type: 'id',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** First name. */
 		            'firstName': {
 		                label: 'First name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isPrivate: true,
 		                options: undefined
 		            },
 		            /** Last name. */
 		            'lastName': {
 		                label: 'Last name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isPrivate: true,
 		                options: undefined
 		            },
 		            /** Casual name. The name you can use when talking to this person. */
 		            'casualName': {
 		                label: 'Casual name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'The name you can use when talking to this person.',
 		                options: undefined
@@ -240,7 +240,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            /** Phone. A number that can be texted */
 		            'phone': {
 		                label: 'Phone',
-		                type: FieldType.Phone,
+		                type: 'phone',
 		                isPrivate: true,
 		                hint: 'A number that can be texted',
 		                options: undefined
@@ -248,7 +248,7 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            /** Profile photos. */
 		            'profileImages': {
 		                label: 'Profile photos',
-		                type: FieldType.Schema,
+		                type: 'schema',
 		                options: {schema: SpruceSchemas.Spruce.v2020_07_22.IProfileImageSchema,}
 		            },
 		    }
@@ -290,13 +290,13 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            /** Id. */
 		            'id': {
 		                label: 'Id',
-		                type: FieldType.Id,
+		                type: 'id',
 		                options: undefined
 		            },
 		            /** Name. */
 		            'roles': {
 		                label: 'Name',
-		                type: FieldType.Select,
+		                type: 'select',
 		                isRequired: true,
 		                isArray: true,
 		                options: {choices: [{"value":"owner","label":"Owner"},{"value":"groupManager","label":"District/region manager"},{"value":"manager","label":"Manager"},{"value":"teammate","label":"Teammate"},{"value":"guest","label":"Guest"}],}
@@ -304,40 +304,40 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            /** Status. */
 		            'status': {
 		                label: 'Status',
-		                type: FieldType.Text,
+		                type: 'text',
 		                options: undefined
 		            },
 		            /** Total visits. */
 		            'visits': {
 		                label: 'Total visits',
-		                type: FieldType.Number,
+		                type: 'number',
 		                isRequired: true,
 		                options: {choices: [{"value":"owner","label":"Owner"},{"value":"groupManager","label":"District/region manager"},{"value":"manager","label":"Manager"},{"value":"teammate","label":"Teammate"},{"value":"guest","label":"Guest"}],}
 		            },
 		            /** Last visit. */
 		            'lastRecordedVisit': {
 		                label: 'Last visit',
-		                type: FieldType.DateTime,
+		                type: 'dateTime',
 		                options: undefined
 		            },
 		            /** Job. */
 		            'job': {
 		                label: 'Job',
-		                type: FieldType.Schema,
+		                type: 'schema',
 		                isRequired: true,
 		                options: {schema: SpruceSchemas.Spruce.v2020_07_22.IJobSchema,}
 		            },
 		            /** Location. */
 		            'location': {
 		                label: 'Location',
-		                type: FieldType.Schema,
+		                type: 'schema',
 		                isRequired: true,
 		                options: {schema: SpruceSchemas.Spruce.v2020_07_22.ILocationSchema,}
 		            },
 		            /** Person. */
 		            'person': {
 		                label: 'Person',
-		                type: FieldType.Schema,
+		                type: 'schema',
 		                isRequired: true,
 		                options: {schema: SpruceSchemas.Spruce.v2020_07_22.IPersonSchema,}
 		            },
@@ -372,28 +372,28 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            /** 60x60. */
 		            'profile60': {
 		                label: '60x60',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** 150x150. */
 		            'profile150': {
 		                label: '150x150',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** 60x60. */
 		            'profile60@2x': {
 		                label: '60x60',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** 150x150. */
 		            'profile150@2x': {
 		                label: '150x150',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                options: undefined
 		            },
@@ -422,12 +422,12 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		    fields: {
 		            /** . */
 		            'skillId': {
-		                type: FieldType.Text,
+		                type: 'text',
 		                options: undefined
 		            },
 		            /** . */
 		            'personId': {
-		                type: FieldType.Text,
+		                type: 'text',
 		                options: undefined
 		            },
 		    }
@@ -465,14 +465,14 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            /** Id. */
 		            'id': {
 		                label: 'Id',
-		                type: FieldType.Id,
+		                type: 'id',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** Id. */
 		            'apiKey': {
 		                label: 'Id',
-		                type: FieldType.Id,
+		                type: 'id',
 		                isPrivate: true,
 		                isRequired: true,
 		                options: undefined
@@ -480,27 +480,27 @@ export declare namespace SpruceSchemas.Spruce.v2020_07_22 {
 		            /** Name. */
 		            'name': {
 		                label: 'Name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** Description. */
 		            'description': {
 		                label: 'Description',
-		                type: FieldType.Text,
+		                type: 'text',
 		                options: undefined
 		            },
 		            /** Slug. */
 		            'slug': {
 		                label: 'Slug',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** Creators. The people or skills who created and own this skill. */
 		            'creators': {
 		                label: 'Creators',
-		                type: FieldType.Schema,
+		                type: 'schema',
 		                isPrivate: true,
 		                isRequired: true,
 		                hint: 'The people or skills who created and own this skill.',
@@ -536,14 +536,14 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Source directory. */
 		            'lookupDir': {
 		                label: 'Source directory',
-		                type: FieldType.Directory,
+		                type: 'directory',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** Destination. Where the file that does the autoloading is written */
 		            'destination': {
 		                label: 'Destination',
-		                type: FieldType.File,
+		                type: 'file',
 		                isRequired: true,
 		                hint: 'Where the file that does the autoloading is written',
 		                options: undefined
@@ -551,7 +551,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Pattern. */
 		            'pattern': {
 		                label: 'Pattern',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                defaultValue: "**/!(*.test).ts",
 		                options: undefined
@@ -581,7 +581,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Run local. Will run using ts-node and typescript directly. Longer boot times */
 		            'local': {
 		                label: 'Run local',
-		                type: FieldType.Boolean,
+		                type: 'boolean',
 		                hint: 'Will run using ts-node and typescript directly. Longer boot times',
 		                options: undefined
 		            },
@@ -616,14 +616,14 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Id. */
 		            'id': {
 		                label: 'Id',
-		                type: FieldType.Id,
+		                type: 'id',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** Id. */
 		            'apiKey': {
 		                label: 'Id',
-		                type: FieldType.Id,
+		                type: 'id',
 		                isPrivate: true,
 		                isRequired: true,
 		                options: undefined
@@ -631,14 +631,14 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Name. */
 		            'name': {
 		                label: 'Name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** Slug. */
 		            'slug': {
 		                label: 'Slug',
-		                type: FieldType.Text,
+		                type: 'text',
 		                options: undefined
 		            },
 		    }
@@ -668,14 +668,14 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Id. */
 		            'id': {
 		                label: 'Id',
-		                type: FieldType.Id,
+		                type: 'id',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** Casual name. The name you can use when talking to this person. */
 		            'casualName': {
 		                label: 'Casual name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'The name you can use when talking to this person.',
 		                options: undefined
@@ -711,28 +711,28 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Id. */
 		            'id': {
 		                label: 'Id',
-		                type: FieldType.Id,
+		                type: 'id',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** Casual name. The name you can use when talking to this person. */
 		            'casualName': {
 		                label: 'Casual name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'The name you can use when talking to this person.',
 		                options: undefined
 		            },
 		            /** . */
 		            'token': {
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** Logged in. */
 		            'isLoggedIn': {
 		                label: 'Logged in',
-		                type: FieldType.Boolean,
+		                type: 'boolean',
 		                options: undefined
 		            },
 		    }
@@ -776,7 +776,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Id. Where I'll look for new schema fields to be registered. */
 		            'addonsLookupDir': {
 		                label: 'Id',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'Where I\'ll look for new schema fields to be registered.',
 		                defaultValue: "src/addons",
 		                options: undefined
@@ -784,7 +784,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Error class destination. Where I'll save your new Error class file? */
 		            'errorClassDestinationDir': {
 		                label: 'Error class destination',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'Where I\'ll save your new Error class file?',
 		                defaultValue: "src/errors",
@@ -792,7 +792,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            },
 		            /** . Where I should look for your error builders? */
 		            'errorLookupDir': {
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'Where I should look for your error builders?',
 		                defaultValue: "src/errors",
 		                options: undefined
@@ -800,7 +800,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Types destination dir. This is where error options and type information will be written */
 		            'errorTypesDestinationDir': {
 		                label: 'Types destination dir',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'This is where error options and type information will be written',
 		                defaultValue: "#spruce/errors",
 		                options: undefined
@@ -808,7 +808,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Error builder destination directory. Where I'll save your new builder file? */
 		            'errorBuilderDestinationDir': {
 		                label: 'Error builder destination directory',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'Where I\'ll save your new builder file?',
 		                defaultValue: "./src/errors",
@@ -817,7 +817,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Readable name. The name people will read */
 		            'nameReadable': {
 		                label: 'Readable name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'The name people will read',
 		                options: undefined
@@ -825,14 +825,14 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Pascal case name. PascalCase of the name */
 		            'namePascal': {
 		                label: 'Pascal case name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'PascalCase of the name',
 		                options: undefined
 		            },
 		            /** Camel case name. camelCase version of the name */
 		            'nameCamel': {
 		                label: 'Camel case name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'camelCase version of the name',
 		                options: undefined
@@ -840,7 +840,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Description. Describe a bit more here */
 		            'description': {
 		                label: 'Description',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'Describe a bit more here',
 		                options: undefined
 		            },
@@ -899,7 +899,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Schema types destination directory. Where schema types and interfaces will be generated. */
 		            'schemaTypesDestinationDir': {
 		                label: 'Schema types destination directory',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'Where schema types and interfaces will be generated.',
 		                defaultValue: "#spruce/schemas",
 		                options: undefined
@@ -907,7 +907,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Field types directory. Where field types and interfaces will be generated. */
 		            'fieldTypesDestinationDir': {
 		                label: 'Field types directory',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isPrivate: true,
 		                hint: 'Where field types and interfaces will be generated.',
 		                defaultValue: "#spruce/schemas",
@@ -916,14 +916,14 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Id. Where I'll look for new schema fields to be registered. */
 		            'addonsLookupDir': {
 		                label: 'Id',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'Where I\'ll look for new schema fields to be registered.',
 		                defaultValue: "src/addons",
 		                options: undefined
 		            },
 		            /** . Where I should look for your schema builders? */
 		            'schemaLookupDir': {
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'Where I should look for your schema builders?',
 		                defaultValue: "src/schemas",
 		                options: undefined
@@ -931,7 +931,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Enable versioning. */
 		            'enableVersioning': {
 		                label: 'Enable versioning',
-		                type: FieldType.Boolean,
+		                type: 'boolean',
 		                isPrivate: true,
 		                defaultValue: true,
 		                options: undefined
@@ -939,14 +939,14 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Global namespace. */
 		            'globalNamespace': {
 		                label: 'Global namespace',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isPrivate: true,
 		                options: undefined
 		            },
 		            /** Fetch remote schemas. I will check the server and your contracts to pull down schemas you need. */
 		            'fetchRemoteSchemas': {
 		                label: 'Fetch remote schemas',
-		                type: FieldType.Boolean,
+		                type: 'boolean',
 		                isPrivate: true,
 		                hint: 'I will check the server and your contracts to pull down schemas you need.',
 		                defaultValue: true,
@@ -955,7 +955,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Generate field types. Should I generate field types too? */
 		            'generateFieldTypes': {
 		                label: 'Generate field types',
-		                type: FieldType.Boolean,
+		                type: 'boolean',
 		                isPrivate: true,
 		                hint: 'Should I generate field types too?',
 		                defaultValue: true,
@@ -964,7 +964,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Schema builder destination directory. Where I'll save the new schema builder. */
 		            'schemaBuilderDestinationDir': {
 		                label: 'Schema builder destination directory',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'Where I\'ll save the new schema builder.',
 		                defaultValue: "src/schemas",
 		                options: undefined
@@ -972,7 +972,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Builder function. The function that builds this schema */
 		            'builderFunction': {
 		                label: 'Builder function',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isPrivate: true,
 		                hint: 'The function that builds this schema',
 		                defaultValue: "buildSchema",
@@ -981,7 +981,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Sync after creation. This will ensure types and schemas are in sync after you create your builder. */
 		            'syncAfterCreate': {
 		                label: 'Sync after creation',
-		                type: FieldType.Boolean,
+		                type: 'boolean',
 		                isPrivate: true,
 		                hint: 'This will ensure types and schemas are in sync after you create your builder.',
 		                defaultValue: true,
@@ -990,7 +990,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Version. Set a version yourself instead of letting me generate one for you */
 		            'version': {
 		                label: 'Version',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isPrivate: true,
 		                hint: 'Set a version yourself instead of letting me generate one for you',
 		                options: undefined
@@ -998,7 +998,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Readable name. The name people will read */
 		            'nameReadable': {
 		                label: 'Readable name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'The name people will read',
 		                options: undefined
@@ -1006,14 +1006,14 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Pascal case name. PascalCase of the name */
 		            'namePascal': {
 		                label: 'Pascal case name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'PascalCase of the name',
 		                options: undefined
 		            },
 		            /** Camel case name. camelCase version of the name */
 		            'nameCamel': {
 		                label: 'Camel case name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'camelCase version of the name',
 		                options: undefined
@@ -1021,7 +1021,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Description. Describe a bit more here */
 		            'description': {
 		                label: 'Description',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'Describe a bit more here',
 		                options: undefined
 		            },
@@ -1058,14 +1058,14 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Type. */
 		            'type': {
 		                label: 'Type',
-		                type: FieldType.Select,
+		                type: 'select',
 		                isRequired: true,
 		                options: {choices: [{"value":"behavioral","label":"Behavioral"},{"value":"implementation","label":"Implementation"}],}
 		            },
 		            /** What are you testing?. E.g. Booking an appointment or turning on a light */
 		            'nameReadable': {
 		                label: 'What are you testing?',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'E.g. Booking an appointment or turning on a light',
 		                options: undefined
@@ -1073,7 +1073,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Test destination directory. Where I'll save your new test. */
 		            'testDestinationDir': {
 		                label: 'Test destination directory',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'Where I\'ll save your new test.',
 		                defaultValue: "src/__tests__",
 		                options: undefined
@@ -1081,7 +1081,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Camel case name. camelCase version of the name */
 		            'nameCamel': {
 		                label: 'Camel case name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'camelCase version of the name',
 		                options: undefined
@@ -1089,7 +1089,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Pascal case name. PascalCase of the name */
 		            'namePascal': {
 		                label: 'Pascal case name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'PascalCase of the name',
 		                options: undefined
 		            },
@@ -1124,21 +1124,21 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Namespace. */
 		            'eventNamespace': {
 		                label: 'Namespace',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** Event name. */
 		            'eventName': {
 		                label: 'Event name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** Events destination directory. Where should I add your listeners? */
 		            'eventsDestinationDir': {
 		                label: 'Events destination directory',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'Where should I add your listeners?',
 		                defaultValue: "src/events",
 		                options: undefined
@@ -1146,7 +1146,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Version. Set a version yourself instead of letting me generate one for you */
 		            'version': {
 		                label: 'Version',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isPrivate: true,
 		                hint: 'Set a version yourself instead of letting me generate one for you',
 		                options: undefined
@@ -1188,7 +1188,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Readable name. The name people will read */
 		            'nameReadable': {
 		                label: 'Readable name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'The name people will read',
 		                options: undefined
@@ -1196,7 +1196,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Camel case name. camelCase version of the name */
 		            'nameCamel': {
 		                label: 'Camel case name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'camelCase version of the name',
 		                options: undefined
@@ -1204,35 +1204,35 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Plural camel case name. camelCase version of the name */
 		            'nameCamelPlural': {
 		                label: 'Plural camel case name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'camelCase version of the name',
 		                options: undefined
 		            },
 		            /** Pascal case name. PascalCase of the name */
 		            'namePascal': {
 		                label: 'Pascal case name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'PascalCase of the name',
 		                options: undefined
 		            },
 		            /** Plural Pascal case name. PascalCase of the name */
 		            'namePascalPlural': {
 		                label: 'Plural Pascal case name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'PascalCase of the name',
 		                options: undefined
 		            },
 		            /** Constant case name. CONST_CASE of the name */
 		            'nameConst': {
 		                label: 'Constant case name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'CONST_CASE of the name',
 		                options: undefined
 		            },
 		            /** Description. Describe a bit more here */
 		            'description': {
 		                label: 'Description',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'Describe a bit more here',
 		                options: undefined
 		            },
@@ -1263,14 +1263,14 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Remote. */
 		            'isEnabled': {
 		                label: 'Remote',
-		                type: FieldType.Boolean,
+		                type: 'boolean',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** Run count. How many times spruce onboarding has been called (the story changes based on count) */
 		            'runCount': {
 		                label: 'Run count',
-		                type: FieldType.Number,
+		                type: 'number',
 		                isRequired: true,
 		                hint: 'How many times spruce onboarding has been called (the story changes based on count)',
 		                options: undefined
@@ -1300,7 +1300,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Install everything. */
 		            'all': {
 		                label: 'Install everything',
-		                type: FieldType.Boolean,
+		                type: 'boolean',
 		                options: undefined
 		            },
 		    }
@@ -1329,14 +1329,14 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** What's the name of your skill?. */
 		            'name': {
 		                label: 'What\'s the name of your skill?',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** How would you describe your skill?. */
 		            'description': {
 		                label: 'How would you describe your skill?',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                options: undefined
 		            },
@@ -1371,7 +1371,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Id. Where I'll look for new schema fields to be registered. */
 		            'addonsLookupDir': {
 		                label: 'Id',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'Where I\'ll look for new schema fields to be registered.',
 		                defaultValue: "src/addons",
 		                options: undefined
@@ -1379,7 +1379,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Error class destination. Where I'll save your new Error class file? */
 		            'errorClassDestinationDir': {
 		                label: 'Error class destination',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'Where I\'ll save your new Error class file?',
 		                defaultValue: "src/errors",
@@ -1387,7 +1387,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            },
 		            /** . Where I should look for your error builders? */
 		            'errorLookupDir': {
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'Where I should look for your error builders?',
 		                defaultValue: "src/errors",
 		                options: undefined
@@ -1395,7 +1395,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Types destination dir. This is where error options and type information will be written */
 		            'errorTypesDestinationDir': {
 		                label: 'Types destination dir',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'This is where error options and type information will be written',
 		                defaultValue: "#spruce/errors",
 		                options: undefined
@@ -1429,7 +1429,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Field types directory. Where field types and interfaces will be generated. */
 		            'fieldTypesDestinationDir': {
 		                label: 'Field types directory',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isPrivate: true,
 		                hint: 'Where field types and interfaces will be generated.',
 		                defaultValue: "#spruce/schemas",
@@ -1438,7 +1438,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Id. Where I'll look for new schema fields to be registered. */
 		            'addonsLookupDir': {
 		                label: 'Id',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'Where I\'ll look for new schema fields to be registered.',
 		                defaultValue: "src/addons",
 		                options: undefined
@@ -1446,7 +1446,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Generate field types. Should I generate field types too? */
 		            'generateFieldTypes': {
 		                label: 'Generate field types',
-		                type: FieldType.Boolean,
+		                type: 'boolean',
 		                isPrivate: true,
 		                hint: 'Should I generate field types too?',
 		                defaultValue: true,
@@ -1491,7 +1491,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Field types directory. Where field types and interfaces will be generated. */
 		            'fieldTypesDestinationDir': {
 		                label: 'Field types directory',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isPrivate: true,
 		                hint: 'Where field types and interfaces will be generated.',
 		                defaultValue: "#spruce/schemas",
@@ -1500,7 +1500,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Id. Where I'll look for new schema fields to be registered. */
 		            'addonsLookupDir': {
 		                label: 'Id',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'Where I\'ll look for new schema fields to be registered.',
 		                defaultValue: "src/addons",
 		                options: undefined
@@ -1508,7 +1508,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Generate field types. Should I generate field types too? */
 		            'generateFieldTypes': {
 		                label: 'Generate field types',
-		                type: FieldType.Boolean,
+		                type: 'boolean',
 		                isPrivate: true,
 		                hint: 'Should I generate field types too?',
 		                defaultValue: true,
@@ -1517,14 +1517,14 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Schema types destination directory. Where schema types and interfaces will be generated. */
 		            'schemaTypesDestinationDir': {
 		                label: 'Schema types destination directory',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'Where schema types and interfaces will be generated.',
 		                defaultValue: "#spruce/schemas",
 		                options: undefined
 		            },
 		            /** . Where I should look for your schema builders? */
 		            'schemaLookupDir': {
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'Where I should look for your schema builders?',
 		                defaultValue: "src/schemas",
 		                options: undefined
@@ -1532,7 +1532,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Enable versioning. */
 		            'enableVersioning': {
 		                label: 'Enable versioning',
-		                type: FieldType.Boolean,
+		                type: 'boolean',
 		                isPrivate: true,
 		                defaultValue: true,
 		                options: undefined
@@ -1540,14 +1540,14 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Global namespace. */
 		            'globalNamespace': {
 		                label: 'Global namespace',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isPrivate: true,
 		                options: undefined
 		            },
 		            /** Fetch remote schemas. I will check the server and your contracts to pull down schemas you need. */
 		            'fetchRemoteSchemas': {
 		                label: 'Fetch remote schemas',
-		                type: FieldType.Boolean,
+		                type: 'boolean',
 		                isPrivate: true,
 		                hint: 'I will check the server and your contracts to pull down schemas you need.',
 		                defaultValue: true,
@@ -1578,7 +1578,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		            /** Force. This will force overwrite each file */
 		            'force': {
 		                label: 'Force',
-		                type: FieldType.Boolean,
+		                type: 'boolean',
 		                hint: 'This will force overwrite each file',
 		                options: undefined
 		            },

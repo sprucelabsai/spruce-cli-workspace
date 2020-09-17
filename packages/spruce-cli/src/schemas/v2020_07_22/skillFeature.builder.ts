@@ -1,17 +1,16 @@
 import { buildSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export default buildSchema({
 	id: 'skillFeature',
 	name: 'Skill Feature',
 	fields: {
 		name: {
-			type: FieldType.Text,
+			type: 'text',
 			isRequired: true,
 			label: "What's the name of your skill?",
 		},
 		description: {
-			type: FieldType.Text,
+			type: 'text',
 			isRequired: true,
 			label: 'How would you describe your skill?',
 		},

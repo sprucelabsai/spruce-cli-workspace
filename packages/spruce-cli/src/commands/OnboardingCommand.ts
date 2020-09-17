@@ -1,5 +1,4 @@
 import { Command } from 'commander'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import OnboardingStore from '../stores/OnboardingStore'
 import AbstractCommand, { ICommandOptions } from './AbstractCommand'
 
@@ -66,12 +65,12 @@ export default class OnboardingCommand extends AbstractCommand {
 		const quiz = this.getQuizComponent({
 			questions: {
 				events: {
-					type: FieldType.Select,
+					type: 'select',
 					question: 'The event engine is driven by',
 					answers: ['Mercury', 'Jupiter', 'EventEmitter', 'Apollo'],
 				},
 				definitions: {
-					type: FieldType.Select,
+					type: 'select',
 					question: 'How do you model data to work over the wire in Spruce?',
 					answers: [
 						'Using schemas definitions {{name}}.definitions.ts',
@@ -81,7 +80,7 @@ export default class OnboardingCommand extends AbstractCommand {
 					],
 				},
 				builders: {
-					type: FieldType.Select,
+					type: 'select',
 					question: 'How do you render front end components?',
 					answers: [
 						'builders',

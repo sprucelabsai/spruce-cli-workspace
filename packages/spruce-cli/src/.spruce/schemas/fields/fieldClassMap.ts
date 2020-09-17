@@ -18,20 +18,20 @@ import { TextField } from '@sprucelabs/schema'
 
 /** Value for looking up field classes by field type */
 const fieldClassMap = {
-		[FieldType.Address]: AddressField,
-		[FieldType.Boolean]: BooleanField,
+		['address']: AddressField,
+		['boolean']: BooleanField,
 		[FieldType.Date]: DateField,
-		[FieldType.DateTime]: DateTimeField,
-		[FieldType.Directory]: DirectoryField,
+		['dateTime']: DateTimeField,
+		['directory']: DirectoryField,
 		[FieldType.Duration]: DurationField,
-		[FieldType.File]: FileField,
-		[FieldType.Id]: IdField,
-		[FieldType.Number]: NumberField,
-		[FieldType.Phone]: PhoneField,
-		[FieldType.Raw]: RawField,
-		[FieldType.Schema]: SchemaField,
-		[FieldType.Select]: SelectField,
-		[FieldType.Text]: TextField,
+		['file']: FileField,
+		['id']: IdField,
+		['number']: NumberField,
+		['phone']: PhoneField,
+		['raw']: RawField,
+		['schema']: SchemaField,
+		['select']: SelectField,
+		['text']: TextField,
 } as const
 
 export default fieldClassMap

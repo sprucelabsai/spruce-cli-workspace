@@ -1,5 +1,4 @@
 import { buildSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export default buildSchema({
 	id: 'testPerson',
@@ -7,24 +6,24 @@ export default buildSchema({
 	description: 'It is going to be great!',
 	fields: {
 		name: {
-			type: FieldType.Text,
+			type: 'text',
 			isRequired: true,
 		},
 		pet: {
-			type: FieldType.Schema,
+			type: 'schema',
 			options: {
 				schemaId: { id: 'pet', version: 'v2020_07_22' },
 			},
 		},
 		pets: {
-			type: FieldType.Schema,
+			type: 'schema',
 			isArray: true,
 			options: {
 				schemaId: { id: 'pet', version: 'v2020_07_22' },
 			},
 		},
 		petsOrFoods: {
-			type: FieldType.Schema,
+			type: 'schema',
 			isArray: true,
 			options: {
 				schemaIds: [
@@ -34,7 +33,7 @@ export default buildSchema({
 			},
 		},
 		petOrFood: {
-			type: FieldType.Schema,
+			type: 'schema',
 			options: {
 				schemaIds: [
 					{ id: 'pet', version: 'v2020_07_22' },
@@ -43,17 +42,17 @@ export default buildSchema({
 			},
 		},
 		nestedSchema: {
-			type: FieldType.Schema,
+			type: 'schema',
 			options: {
 				schema: {
 					id: 'nested-schema',
 					name: 'nested schema',
 					fields: {
 						field1: {
-							type: FieldType.Text,
+							type: 'text',
 						},
 						field2: {
-							type: FieldType.Text,
+							type: 'text',
 						},
 					},
 				},

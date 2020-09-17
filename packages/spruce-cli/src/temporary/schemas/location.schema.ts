@@ -1,6 +1,5 @@
 import { ISchema } from '@sprucelabs/schema'
 import { CORE_SCHEMA_VERSION } from '@sprucelabs/spruce-skill-utils'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 const locationSchema: ISchema = {
 	id: 'location',
@@ -11,31 +10,31 @@ const locationSchema: ISchema = {
 	fields: {
 		id: {
 			label: 'Id',
-			type: FieldType.Id,
+			type: 'id',
 		},
 		name: {
 			label: 'Name',
-			type: FieldType.Text,
+			type: 'text',
 			isRequired: true,
 		},
 		num: {
 			label: 'Store number',
-			type: FieldType.Text,
+			type: 'text',
 			hint: 'You can use other symbols, like # or dashes. #123 or 32-US-5',
 		},
 		isPublic: {
 			label: 'Public',
-			type: FieldType.Boolean,
+			type: 'boolean',
 			hint: 'Is this location viewable by guests?',
 			defaultValue: false,
 		},
 		phone: {
 			label: 'Main Phone',
-			type: FieldType.Phone,
+			type: 'phone',
 		},
 		timezone: {
 			label: 'Timezone',
-			type: FieldType.Select,
+			type: 'select',
 			options: {
 				choices: [
 					{
@@ -254,7 +253,7 @@ const locationSchema: ISchema = {
 		},
 		address: {
 			label: 'Address',
-			type: FieldType.Address,
+			type: 'address',
 			isRequired: true,
 		},
 	},

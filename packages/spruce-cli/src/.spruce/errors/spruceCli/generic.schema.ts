@@ -1,5 +1,5 @@
 import { SpruceErrors } from '../errors.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -11,7 +11,7 @@ const genericSchema: SpruceErrors.SpruceCli.IGenericSchema  = {
 	            /** Friendly message. */
 	            'friendlyMessageSet': {
 	                label: 'Friendly message',
-	                type: FieldType.Text,
+	                type: 'text',
 	                options: undefined
 	            },
 	    }

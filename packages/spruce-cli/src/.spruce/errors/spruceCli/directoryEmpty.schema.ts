@@ -1,5 +1,5 @@
 import { SpruceErrors } from '../errors.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -9,7 +9,7 @@ const directoryEmptySchema: SpruceErrors.SpruceCli.IDirectoryEmptySchema  = {
 	    fields: {
 	            /** . */
 	            'directory': {
-	                type: FieldType.Text,
+	                type: 'text',
 	                isRequired: true,
 	                options: undefined
 	            },

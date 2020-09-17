@@ -1,4 +1,3 @@
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import setupVscodeSchema from '#spruce/schemas/spruceCli/v2020_07_22/setupVscodeAction.schema'
 import { IExtension } from '../../../services/VsCodeService'
@@ -41,7 +40,7 @@ export default class SetupAction extends AbstractFeatureAction<
 		const answers = normalizedOptions.all
 			? missing.map((m) => m.id)
 			: await this.ui.prompt({
-					type: FieldType.Select,
+					type: 'select',
 					label: 'What should I install?',
 					isArray: true,
 					options: {

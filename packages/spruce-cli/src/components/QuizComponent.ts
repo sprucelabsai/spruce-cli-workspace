@@ -1,7 +1,6 @@
 import { ISchema, ISchemaFields, SchemaFieldNames } from '@sprucelabs/schema'
 import chalk from 'chalk'
 import { shuffle } from 'lodash'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import SpruceError from '../errors/SpruceError'
 import { IGraphicsInterface } from '../types/cli.types'
 import FormComponent, {
@@ -11,7 +10,7 @@ import FormComponent, {
 
 /** Multiple choice question */
 export interface IQuizMultipleChoiceQuestion {
-	type: FieldType.Select
+	type: 'select'
 	/** The question to ask */
 	question: string
 	/** All answers, first one is correct  */
@@ -19,7 +18,7 @@ export interface IQuizMultipleChoiceQuestion {
 }
 
 export interface IQuizTextQuestion {
-	type: FieldType.Text
+	type: 'text'
 	/** The question to ask */
 	question: string
 	/** All answers, first one is correct  */
@@ -179,7 +178,7 @@ export default class QuizComponent<
 			const fieldDefinition = field.definition
 
 			switch (fieldDefinition.type) {
-				case FieldType.Select:
+				case 'select':
 					// Pull the original multiple choice, we can cast it as multiple choice
 					// question with confidence
 					answers[questionName] = (this.originalQuestions[
@@ -259,7 +258,7 @@ export default class QuizComponent<
 			const originalQuestion = this.originalQuestions[questionFieldName]
 
 			switch (originalQuestion.type) {
-				case FieldType.Select:
+				case 'select':
 					correctAnswer = originalQuestion.answers[0]
 					break
 				default:
@@ -301,7 +300,7 @@ export default class QuizComponent<
 			const question = questions[fieldName]
 
 			switch (question.type) {
-				case FieldType.Select:
+				case 'select':
 					fields[fieldName] = {
 						type: question.type,
 						label: question.question,

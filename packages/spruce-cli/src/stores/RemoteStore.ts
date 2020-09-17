@@ -1,5 +1,4 @@
 import Schema, { ISelectFieldDefinitionChoice } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { AuthedAs } from '../types/cli.types'
 import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
 
@@ -61,7 +60,7 @@ export default class RemoteStore extends AbstractLocalStore<
 		name: 'Config store',
 		fields: {
 			remote: {
-				type: FieldType.Select,
+				type: 'select',
 				label: 'Remote',
 				options: {
 					choices: RemoteStoreChoices,
