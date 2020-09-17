@@ -2109,15 +2109,15 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^10.0.23":
-  version "10.0.23"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-10.0.23.tgz#d80477f8386dbf397860cf66ac983706a9c3f47f"
-  integrity sha512-ZSpW5LV8AZlqajQMkB03NMKX6DEIpWqdX40uOei38PB2tzLEPVaJhM2qoshg2j4ZRBaQAgmtkJT9ynA2frGjeA==
+"@sprucelabs/schema@^10.0.24":
+  version "10.0.24"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-10.0.24.tgz#54531cff8f8f0f0a83a6964a9dddd3e06b8c3727"
+  integrity sha512-7sA8jh2zBcz8f4OAkftBeXMmsfsS9j4SHbsl3/RH8u47/ByPnmcTNyOBJ5OCFP1j4cIfrLymMHoSac0X1+b+iA==
   dependencies:
     "@sprucelabs/error" "^2.2.283"
     "@sprucelabs/log" "^10.2.223"
     google-libphonenumber "^3.2.13"
-    libphonenumber-js "^1.7.57"
+    libphonenumber-js "^1.7.58"
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
@@ -7040,7 +7040,7 @@ levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-libphonenumber-js@^1.7.57:
+libphonenumber-js@^1.7.58:
   version "1.7.58"
   resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.7.58.tgz#301c024a8ba7c08e977d0405f63b08eccada45f2"
   integrity sha512-PTowDXzEHtp6+z93lQZltIYRCbmguUGq59G2CYnDS2RyIB+ZnZFvh8WizTuve5GY7l/mHtkA+59Q4hre7iLUPA==
