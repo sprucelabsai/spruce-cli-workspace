@@ -2071,10 +2071,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sprucelabs/babel-plugin-schema@^3.0.12":
-  version "3.0.12"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-3.0.12.tgz#ad2762a53580dccbc6cb1b360c2fe853d90e583b"
-  integrity sha512-xPpaLgUYey36XgRR0QTkrrctEND/brpSpRa3Svk9zSoRpjmQj5IMyXL8RFbyVk14ikE60DE+axdGBpiOCX4IzA==
+"@sprucelabs/babel-plugin-schema@^3.0.13":
+  version "3.0.13"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/babel-plugin-schema/-/babel-plugin-schema-3.0.13.tgz#b9e78df0b920adfaf55983eeea68b92fc42987d4"
+  integrity sha512-ejMU4mJiiPuQ9DTZiGL5ANslTVfUkRM1o4Ad/6LYsNGCzSJGD/C368rE7qEaJ8ioBsYo+Zxu60G6anynObHWJA==
   dependencies:
     fs-extra "^9.0.1"
     globby "^11.0.1"
@@ -2082,10 +2082,10 @@
     tsconfig-paths "^3.9.0"
     yargs "^16.0.3"
 
-"@sprucelabs/error@^2.2.283":
-  version "2.2.283"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.283.tgz#99dcd6fe7120ddeb366b808b6c0105a70bd0ed75"
-  integrity sha512-4YTCDHHqhdvfOkmP9JdL7lhbKY+n/V1b6UA2cGWcZOc/zMpdZVwe9KD+Jhqt3LoEeYoUEaYOt38HFSx3tWBl/g==
+"@sprucelabs/error@^2.2.284":
+  version "2.2.284"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.284.tgz#ef89e7f510e0e9dff09972dba106cfe07eb5ec4c"
+  integrity sha512-zoU02MK7NVeVF6zIrK9kyuWDlGNzUbxVRTGHVKZkUicGoa16+bMgBSNsiC9Ex34cruXM8LS+AD2agFm39fu9qg==
 
 "@sprucelabs/jest-sheets-reporter@^1.2.0":
   version "1.2.0"
@@ -2109,22 +2109,22 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^10.0.24":
-  version "10.0.24"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-10.0.24.tgz#54531cff8f8f0f0a83a6964a9dddd3e06b8c3727"
-  integrity sha512-7sA8jh2zBcz8f4OAkftBeXMmsfsS9j4SHbsl3/RH8u47/ByPnmcTNyOBJ5OCFP1j4cIfrLymMHoSac0X1+b+iA==
+"@sprucelabs/schema@^10.0.25":
+  version "10.0.25"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-10.0.25.tgz#182596244ad3de0aea62fc69b59ce07a99edc1cb"
+  integrity sha512-EljgCIzXxamkUL8RuTaM5pMkcBCjGdjeKeApTr5ldKBWcUH2dDi0/YFdalhL37RoWcVOVbAmqK3WHF/zUigtZw==
   dependencies:
-    "@sprucelabs/error" "^2.2.283"
+    "@sprucelabs/error" "^2.2.284"
     "@sprucelabs/log" "^10.2.223"
     google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.7.58"
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^7.0.23":
-  version "7.0.23"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.23.tgz#cc44fb5a34f14cf0d664c18bf92a8d246507817a"
-  integrity sha512-xUB7VXxqpLmiPFmcwkyd2FVWf7dKmSdOH4N71030PMUxODU1mrm7T/ho/zJ9ZDgA51UZNeMZTHgI5j99+6KzSA==
+"@sprucelabs/test@^7.0.24":
+  version "7.0.24"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.24.tgz#2623bc1eef2cff26be0e40c4a48af6f0ee00069e"
+  integrity sha512-fRXzffW6AxBLlnThD54Jnf1ErLv8jIQ4cf1gRHvA2DN8OKhdZ+fGBcI9S1R1fKMTSYafw90BF06uCzXWY6fqbw==
   dependencies:
     "@babel/core" "^7.11.6"
     "@babel/preset-env" "^7.11.5"
@@ -3176,13 +3176,13 @@ browser-process-hrtime@^1.0.0:
   integrity sha512-9o5UecI3GhkpM6DrXr69PblIuWxPKk9Y0jHBRhdocZ2y7YECBFCsHm79Pr3OyR2AvjhDkabFJaDJMYRazHgsow==
 
 browserslist@^4.12.0, browserslist@^4.8.5:
-  version "4.14.2"
-  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.14.2.tgz#1b3cec458a1ba87588cc5e9be62f19b6d48813ce"
-  integrity sha512-HI4lPveGKUR0x2StIz+2FXfDk9SfVMrxn6PLh1JeGUwcuoDkdKZebWiyLRJ68iIPDpMI4JLVDf7S7XzslgWOhw==
+  version "4.14.3"
+  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.14.3.tgz#381f9e7f13794b2eb17e1761b4f118e8ae665a53"
+  integrity sha512-GcZPC5+YqyPO4SFnz48/B0YaCwS47Q9iPChRGi6t7HhflKBcINzFrJvRfC+jp30sRMKxF+d4EHGs27Z0XP1NaQ==
   dependencies:
-    caniuse-lite "^1.0.30001125"
-    electron-to-chromium "^1.3.564"
-    escalade "^3.0.2"
+    caniuse-lite "^1.0.30001131"
+    electron-to-chromium "^1.3.570"
+    escalade "^3.1.0"
     node-releases "^1.1.61"
 
 bs-logger@0.x:
@@ -3355,7 +3355,7 @@ camelcase@^6.0.0:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-6.0.0.tgz#5259f7c30e35e278f1bdc2a4d91230b37cad981e"
   integrity sha512-8KMDF1Vz2gzOq54ONPJS65IvTUaB1cHJ2DMM7MbPmLZljDH1qpzzLsWdiN9pHh6qvkRVDTi/07+eNGch/oLU4w==
 
-caniuse-lite@^1.0.30001125:
+caniuse-lite@^1.0.30001131:
   version "1.0.30001131"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001131.tgz#afad8a28fc2b7a0d3ae9407e71085a0ead905d54"
   integrity sha512-4QYi6Mal4MMfQMSqGIRPGbKIbZygeN83QsWq1ixpUwvtfgAZot5BrCKzGygvZaV+CnELdTwD0S4cqUNozq7/Cw==
@@ -4326,7 +4326,7 @@ ecdsa-sig-formatter@1.0.11, ecdsa-sig-formatter@^1.0.11:
   dependencies:
     safe-buffer "^5.0.1"
 
-electron-to-chromium@^1.3.564:
+electron-to-chromium@^1.3.570:
   version "1.3.570"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.570.tgz#3f5141cc39b4e3892a276b4889980dabf1d29c7f"
   integrity sha512-Y6OCoVQgFQBP5py6A/06+yWxUZHDlNr/gNDGatjH8AZqXl8X0tE4LfjLJsXGz/JmWJz8a6K7bR1k+QzZ+k//fg==
@@ -4500,7 +4500,7 @@ es6-promisify@^5.0.0:
   dependencies:
     es6-promise "^4.0.3"
 
-escalade@^3.0.2:
+escalade@^3.0.2, escalade@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/escalade/-/escalade-3.1.0.tgz#e8e2d7c7a8b76f6ee64c2181d6b8151441602d4e"
   integrity sha512-mAk+hPSO8fLDkhV7V0dXazH5pDc6MrjBTPyD3VeKzxnVFjH1MIxbCdqGZB9O8+EwWakZs3ZCbDS4IpRt79V1ig==

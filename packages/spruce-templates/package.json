@@ -43,7 +43,7 @@
 	},
 	"dependencies": {
 		"@sprucelabs/log": "^10.2.223",
-		"@sprucelabs/schema": "^10.0.24",
+		"@sprucelabs/schema": "^10.0.25",
 		"@sprucelabs/spruce-skill-utils": "^10.27.9",
 		"globby": "^11.0.1",
 		"handlebars": "^4.7.6",
