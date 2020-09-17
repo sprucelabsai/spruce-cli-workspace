@@ -1,5 +1,5 @@
 import { SpruceSchemas } from '../../schemas.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -11,14 +11,14 @@ const cliUserSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICliUserSchema  = {
 	            /** Id. */
 	            'id': {
 	                label: 'Id',
-	                type: FieldType.Id,
+	                type: 'id',
 	                isRequired: true,
 	                options: undefined
 	            },
 	            /** Casual name. The name you can use when talking to this person. */
 	            'casualName': {
 	                label: 'Casual name',
-	                type: FieldType.Text,
+	                type: 'text',
 	                isRequired: true,
 	                hint: 'The name you can use when talking to this person.',
 	                options: undefined

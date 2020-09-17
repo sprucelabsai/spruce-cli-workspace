@@ -1,5 +1,4 @@
 import { buildErrorSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 const invalidParamsDefinition = buildErrorSchema({
 	id: 'invalidCommand',
@@ -7,7 +6,7 @@ const invalidParamsDefinition = buildErrorSchema({
 	description: 'The command is not valid, try --help',
 	fields: {
 		args: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'args',
 			isArray: true,
 			isRequired: true,

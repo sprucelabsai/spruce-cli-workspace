@@ -1,5 +1,4 @@
 import { buildErrorSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 const lintFailedDefinition = buildErrorSchema({
 	id: 'lintFailed',
@@ -7,13 +6,13 @@ const lintFailedDefinition = buildErrorSchema({
 	description: 'When linting a file fails',
 	fields: {
 		pattern: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Pattern',
 			hint: 'The pattern used to match files relative to the root of the skill',
 			isRequired: true,
 		},
 		stdout: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Output from lint',
 			isRequired: true,
 		},

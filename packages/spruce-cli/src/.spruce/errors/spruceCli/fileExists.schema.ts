@@ -1,5 +1,5 @@
 import { SpruceErrors } from '../errors.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -11,7 +11,7 @@ const fileExistsSchema: SpruceErrors.SpruceCli.IFileExistsSchema  = {
 	            /** File. The file being created */
 	            'file': {
 	                label: 'File',
-	                type: FieldType.Text,
+	                type: 'text',
 	                isRequired: true,
 	                hint: 'The file being created',
 	                options: undefined

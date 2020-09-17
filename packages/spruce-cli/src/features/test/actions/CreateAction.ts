@@ -1,7 +1,6 @@
 import pathUtil from 'path'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import createTestActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/createTestAction.schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
@@ -42,7 +41,7 @@ export default class CreateAction extends AbstractFeatureAction<
 
 		if (candidates.length > 0) {
 			const parentPath = await this.ui.prompt({
-				type: FieldType.Select,
+				type: 'select',
 				isRequired: true,
 				label: 'Which abstract test class do you want to extend?',
 				options: {

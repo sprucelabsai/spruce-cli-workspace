@@ -1,5 +1,5 @@
 import { SpruceSchemas } from '../../schemas.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -11,14 +11,14 @@ const cliSkillSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICliSkillSchema  = {
 	            /** Id. */
 	            'id': {
 	                label: 'Id',
-	                type: FieldType.Id,
+	                type: 'id',
 	                isRequired: true,
 	                options: undefined
 	            },
 	            /** Id. */
 	            'apiKey': {
 	                label: 'Id',
-	                type: FieldType.Id,
+	                type: 'id',
 	                isPrivate: true,
 	                isRequired: true,
 	                options: undefined
@@ -26,14 +26,14 @@ const cliSkillSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICliSkillSchema  = {
 	            /** Name. */
 	            'name': {
 	                label: 'Name',
-	                type: FieldType.Text,
+	                type: 'text',
 	                isRequired: true,
 	                options: undefined
 	            },
 	            /** Slug. */
 	            'slug': {
 	                label: 'Slug',
-	                type: FieldType.Text,
+	                type: 'text',
 	                options: undefined
 	            },
 	    }

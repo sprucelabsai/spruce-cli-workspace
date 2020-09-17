@@ -2087,6 +2087,11 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.287.tgz#7d5853ed612acbcccb66496f5b67b64fc4f30ebc"
   integrity sha512-+XlzHc3+4vLGcyYFxksB9WJeDr5AjHGG+mipi0TYnsoI+m91aKBYxyV1QC57H6xsLLujRpXJNUFzo22WAhngQA==
 
+"@sprucelabs/error@^2.2.289":
+  version "2.2.289"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.289.tgz#822d75cab372ce2b4ff447f56238ed8c6146472f"
+  integrity sha512-PThGSw8Js2oJ9Xnxj2gmFgB+Jx4qbrQUnUGlusYIaop/9XTkDFtRUuO1Ze1tpHY0wVyJwdIIy1jCis+CvxDJWA==
+
 "@sprucelabs/jest-sheets-reporter@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@sprucelabs/jest-sheets-reporter/-/jest-sheets-reporter-1.2.0.tgz#64d19f6454df2ca8f15a704f6fdb86bd9b0d7ede"
@@ -2099,6 +2104,11 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.225.tgz#6d843ec9094658480070e88f46d5c8f22ceab8ab"
   integrity sha512-PX3lQx8oMxqTX0mNsVMVfPLvExnXDold9tjD2pxPWXZmG0skmF8/ELey3vzkv8nJxZjYk4ZLbLozrWILH3WAgA==
 
+"@sprucelabs/log@^10.2.226":
+  version "10.2.226"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.226.tgz#33d6ec911b7916e9ab530ee7a4ff3cedfb0ba546"
+  integrity sha512-J9AlKdNFkW6sZ5AMdEO7TaZc4CI5rmOEk5Kn2nf+qL7iVZIGZe0kD83iGyNqPWj9B0v4fwpGxz2exV987HEArg==
+
 "@sprucelabs/mercury@^10.5.72":
   version "10.5.72"
   resolved "https://registry.yarnpkg.com/@sprucelabs/mercury/-/mercury-10.5.72.tgz#dc65ca30adf79388bf85fad0a434ab9a91f1fbb1"
@@ -2109,13 +2119,13 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^10.0.28", "@sprucelabs/schema@^10.0.29":
-  version "10.0.29"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-10.0.29.tgz#9249809245ec164aecc2953b8546e247e32a4f12"
-  integrity sha512-1RkJgD8F3jKjpho8enmPI8RKyRFpgIHxMW3dQGKvpz9A8MjmF/bKcAKbMHsoITmYLB/VGIZBuje4ukML9Z0QtQ==
+"@sprucelabs/schema@^11.0.4":
+  version "11.0.4"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-11.0.4.tgz#219697019de843145442027eab06de7057e89132"
+  integrity sha512-1cv+u/gA2mCCDMnvpL4KIKbii11PmV/aJbHMe9iAwB7RwjQYM42mp2stLS1/BZF6V2fqpC61Sp4INJKvLlqShA==
   dependencies:
-    "@sprucelabs/error" "^2.2.287"
-    "@sprucelabs/log" "^10.2.225"
+    "@sprucelabs/error" "^2.2.289"
+    "@sprucelabs/log" "^10.2.226"
     google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.7.58"
     mime-db "^1.44.0"

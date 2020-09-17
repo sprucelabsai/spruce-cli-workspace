@@ -9,7 +9,6 @@ import {
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { Templates } from '@sprucelabs/spruce-templates'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import { IGeneratorOptions } from '../generators/AbstractGenerator'
 import GeneratorFactory, {
 	GeneratorCode,
@@ -158,7 +157,7 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 
 		if (versions.length > 0) {
 			version = await this.ui.prompt({
-				type: FieldType.Select,
+				type: 'select',
 				label: 'Version',
 				hint: 'Confirm which version you want to use?',
 				isRequired: true,

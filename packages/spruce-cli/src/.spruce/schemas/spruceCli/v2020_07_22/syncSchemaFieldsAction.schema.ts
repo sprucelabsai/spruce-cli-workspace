@@ -1,5 +1,5 @@
 import { SpruceSchemas } from '../../schemas.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -11,7 +11,7 @@ const syncSchemaFieldsActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSch
 	            /** Field types directory. Where field types and interfaces will be generated. */
 	            'fieldTypesDestinationDir': {
 	                label: 'Field types directory',
-	                type: FieldType.Text,
+	                type: 'text',
 	                isPrivate: true,
 	                hint: 'Where field types and interfaces will be generated.',
 	                defaultValue: "#spruce/schemas",
@@ -20,7 +20,7 @@ const syncSchemaFieldsActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSch
 	            /** Id. Where I'll look for new schema fields to be registered. */
 	            'addonsLookupDir': {
 	                label: 'Id',
-	                type: FieldType.Text,
+	                type: 'text',
 	                hint: 'Where I\'ll look for new schema fields to be registered.',
 	                defaultValue: "src/addons",
 	                options: undefined
@@ -28,7 +28,7 @@ const syncSchemaFieldsActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSch
 	            /** Generate field types. Should I generate field types too? */
 	            'generateFieldTypes': {
 	                label: 'Generate field types',
-	                type: FieldType.Boolean,
+	                type: 'boolean',
 	                isPrivate: true,
 	                hint: 'Should I generate field types too?',
 	                defaultValue: true,

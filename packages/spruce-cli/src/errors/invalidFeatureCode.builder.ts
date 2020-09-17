@@ -1,5 +1,4 @@
 import { buildErrorSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export default buildErrorSchema({
 	id: 'invalidFeatureCode',
@@ -7,7 +6,7 @@ export default buildErrorSchema({
 	description: '',
 	fields: {
 		featureCode: {
-			type: FieldType.Text,
+			type: 'text',
 			isRequired: true,
 		},
 	},

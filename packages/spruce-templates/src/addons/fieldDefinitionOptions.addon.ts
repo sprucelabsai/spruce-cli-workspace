@@ -1,7 +1,6 @@
 import { ISchemaTemplateItem, TemplateRenderAs } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 /** Renders field options */
 handlebars.registerHelper('fieldDefinitionOptions', function (
@@ -57,7 +56,7 @@ handlebars.registerHelper('fieldDefinitionOptions', function (
 		...fieldDefinition.options,
 	}
 	// If this is a schema type, we need to map it to it's proper value type
-	if (fieldDefinition.type === FieldType.Schema && updatedOptions) {
+	if (fieldDefinition.type === 'schema' && updatedOptions) {
 		const value = handlebars.helpers.valueTypeLiteral(
 			namespace,
 			nameCamel,

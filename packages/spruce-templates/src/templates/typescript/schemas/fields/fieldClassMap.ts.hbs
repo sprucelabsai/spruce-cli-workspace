@@ -1,5 +1,3 @@
-import FieldType from './fieldTypeEnum'
-
 {{#each fieldTemplateItems}}
 {{#if isLocal}}
 import {{className}} from '{{package}}'
@@ -13,7 +11,7 @@ import { {{className}} } from '{{package}}'
 /** Value for looking up field classes by field type */
 const fieldClassMap = {
 		{{#each fieldTemplateItems}}
-		[FieldType.{{pascalType}}]: {{className}},
+		{{camelType}}: {{className}},
 		{{/each}}
 } as const
 

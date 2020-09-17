@@ -1,5 +1,4 @@
 import { buildSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export default buildSchema({
 	id: 'listenEventAction',
@@ -7,23 +6,23 @@ export default buildSchema({
 	description: 'Options for event.listen.',
 	fields: {
 		eventNamespace: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Namespace',
 			isRequired: true,
 		},
 		eventName: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Event name',
 			isRequired: true,
 		},
 		eventsDestinationDir: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Events destination directory',
 			hint: 'Where should I add your listeners?',
 			defaultValue: 'src/events',
 		},
 		version: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Version',
 			hint: 'Set a version yourself instead of letting me generate one for you',
 			isPrivate: true,

@@ -1,5 +1,5 @@
 import { SpruceSchemas } from '../../schemas.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -11,7 +11,7 @@ const bootSkillActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.IBootSkillActio
 	            /** Run local. Will run using ts-node and typescript directly. Longer boot times */
 	            'local': {
 	                label: 'Run local',
-	                type: FieldType.Boolean,
+	                type: 'boolean',
 	                hint: 'Will run using ts-node and typescript directly. Longer boot times',
 	                options: undefined
 	            },

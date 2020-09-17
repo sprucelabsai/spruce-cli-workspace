@@ -269,6 +269,10 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 			nameCamel: 'anotherTest',
 			description: 'this is so great!',
 		})
+
+		// await this.Service('command').execute(`code ${this.cwd}`)
+
+		// debugger
 		return response
 	}
 }

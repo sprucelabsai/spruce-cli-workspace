@@ -1,5 +1,4 @@
 import { buildSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export default buildSchema({
 	id: 'executingCommandFailed',
@@ -7,25 +6,25 @@ export default buildSchema({
 	description: 'The command that was being executed failed',
 	fields: {
 		cmd: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'The command being run',
 			isRequired: true,
 		},
 		args: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Args',
 			isArray: true,
 		},
 		cwd: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Cwd',
 		},
 		stdout: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Stdout',
 		},
 		stderr: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'stderr',
 		},
 	},

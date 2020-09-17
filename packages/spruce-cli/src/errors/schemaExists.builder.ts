@@ -1,5 +1,4 @@
 import { buildErrorSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export default buildErrorSchema({
 	id: 'schemaExists',
@@ -7,12 +6,12 @@ export default buildErrorSchema({
 	description: '',
 	fields: {
 		schemaId: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Schema id',
 			isRequired: true,
 		},
 		destination: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Destination',
 		},
 	},

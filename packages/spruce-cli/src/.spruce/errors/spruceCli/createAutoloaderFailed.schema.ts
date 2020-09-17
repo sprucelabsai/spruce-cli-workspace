@@ -1,5 +1,5 @@
 import { SpruceErrors } from '../errors.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -11,7 +11,7 @@ const createAutoloaderFailedSchema: SpruceErrors.SpruceCli.ICreateAutoloaderFail
 	            /** The globby pattern used to find files. Globby pattern */
 	            'globbyPattern': {
 	                label: 'The globby pattern used to find files',
-	                type: FieldType.Text,
+	                type: 'text',
 	                isRequired: true,
 	                hint: 'Globby pattern',
 	                options: undefined
@@ -19,7 +19,7 @@ const createAutoloaderFailedSchema: SpruceErrors.SpruceCli.ICreateAutoloaderFail
 	            /** The files that were loaded. The files that were loaded */
 	            'filePaths': {
 	                label: 'The files that were loaded',
-	                type: FieldType.Text,
+	                type: 'text',
 	                isRequired: true,
 	                hint: 'The files that were loaded',
 	                isArray: true,
@@ -28,7 +28,7 @@ const createAutoloaderFailedSchema: SpruceErrors.SpruceCli.ICreateAutoloaderFail
 	            /** The suffix for classes to autoload. Class suffix */
 	            'suffix': {
 	                label: 'The suffix for classes to autoload',
-	                type: FieldType.Text,
+	                type: 'text',
 	                isRequired: true,
 	                hint: 'Class suffix',
 	                options: undefined
@@ -36,7 +36,7 @@ const createAutoloaderFailedSchema: SpruceErrors.SpruceCli.ICreateAutoloaderFail
 	            /** The directory we're trying to create the autoloader for. Directory to autoload */
 	            'directory': {
 	                label: 'The directory we\'re trying to create the autoloader for',
-	                type: FieldType.Text,
+	                type: 'text',
 	                isRequired: true,
 	                hint: 'Directory to autoload',
 	                options: undefined

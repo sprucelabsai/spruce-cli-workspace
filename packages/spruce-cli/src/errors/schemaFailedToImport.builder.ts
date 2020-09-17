@@ -1,5 +1,4 @@
 import { buildErrorSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export default buildErrorSchema({
 	id: 'schemaFailedToImport',
@@ -7,7 +6,7 @@ export default buildErrorSchema({
 	description: 'The definition file failed to import',
 	fields: {
 		file: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'File',
 			isRequired: true,
 			hint: 'The file definition file I tried to import',

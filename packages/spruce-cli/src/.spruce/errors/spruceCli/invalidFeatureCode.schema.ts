@@ -1,5 +1,5 @@
 import { SpruceErrors } from '../errors.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -9,7 +9,7 @@ const invalidFeatureCodeSchema: SpruceErrors.SpruceCli.IInvalidFeatureCodeSchema
 	    fields: {
 	            /** . */
 	            'featureCode': {
-	                type: FieldType.Text,
+	                type: 'text',
 	                isRequired: true,
 	                options: undefined
 	            },

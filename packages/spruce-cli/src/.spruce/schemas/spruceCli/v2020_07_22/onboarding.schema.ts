@@ -1,5 +1,5 @@
 import { SpruceSchemas } from '../../schemas.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -11,14 +11,14 @@ const onboardingSchema: SpruceSchemas.SpruceCli.v2020_07_22.IOnboardingSchema  =
 	            /** Remote. */
 	            'isEnabled': {
 	                label: 'Remote',
-	                type: FieldType.Boolean,
+	                type: 'boolean',
 	                isRequired: true,
 	                options: undefined
 	            },
 	            /** Run count. How many times spruce onboarding has been called (the story changes based on count) */
 	            'runCount': {
 	                label: 'Run count',
-	                type: FieldType.Number,
+	                type: 'number',
 	                isRequired: true,
 	                hint: 'How many times spruce onboarding has been called (the story changes based on count)',
 	                options: undefined

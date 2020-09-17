@@ -1,5 +1,4 @@
 import { buildErrorSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export default buildErrorSchema({
 	id: 'good',
@@ -7,7 +6,7 @@ export default buildErrorSchema({
 	description: 'Another for testing',
 	fields: {
 		relatedSchema: {
-			type: FieldType.Schema,
+			type: 'schema',
 			label: 'Related schema',
 			options: {
 				schema: {
@@ -15,10 +14,10 @@ export default buildErrorSchema({
 					name: 'Nested Schema',
 					fields: {
 						field1: {
-							type: FieldType.Text,
+							type: 'text',
 						},
 						field2: {
-							type: FieldType.Text,
+							type: 'text',
 						},
 					},
 				},

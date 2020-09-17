@@ -1,7 +1,11 @@
 import { ISchema, validateSchema } from '@sprucelabs/schema'
-import { CORE_NAMESPACE, diskUtil } from '@sprucelabs/spruce-skill-utils'
+import {
+	CORE_NAMESPACE,
+	diskUtil,
+	namesUtil,
+} from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+import fieldClassMap from '#spruce/schemas/fields/fieldClassMap'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
 
 const LOCAL_NAMESPACE = 'TestSkill'
@@ -77,10 +81,12 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 	protected static async canFetchCoreFields() {
 		const results = await SchemaStoreTest.copySchemasAndFieldsThenFetchFields()
 
-		const fieldTypes = Object.keys(FieldType)
+		const fieldTypes = Object.keys(fieldClassMap)
 
 		for (const type of fieldTypes) {
-			assert.doesInclude(results, { 'fields[].registration.type': type })
+			assert.doesInclude(results, {
+				'fields[].registration.type': namesUtil.toPascal(type),
+			})
 		}
 	}
 
@@ -91,7 +97,7 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		})
 
 		assert.isLength(results.errors, 0)
-		assert.isLength(results.fields, Object.keys(FieldType).length + 1)
+		assert.isLength(results.fields, Object.keys(fieldClassMap).length + 1)
 		assert.doesInclude(results, { 'fields[].registration.type': 'Test' })
 		assert.doesInclude(results, {
 			'fields[].registration.description': 'A test for us all',

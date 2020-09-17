@@ -22,8 +22,6 @@ module.exports = (api) => {
 				{
 					root: ['./'],
 					alias: {
-						'#spruce/schemas/fields/fieldTypeEnum':
-							'./node_modules/@sprucelabs/schema/build/.spruce/schemas/fields/fieldTypeEnum',
 						'#spruce/schemas/fields/fieldClassMap':
 							'./node_modules/@sprucelabs/schema/build/.spruce/schemas/fields/fieldClassMap',
 						'#spruce/schemas/fields/field.types':

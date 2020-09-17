@@ -1,6 +1,5 @@
 import { ISchema } from '@sprucelabs/schema'
 import { CORE_SCHEMA_VERSION } from '@sprucelabs/spruce-skill-utils'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 const organizationSchema: ISchema = {
 	id: 'organization',
@@ -10,16 +9,16 @@ const organizationSchema: ISchema = {
 	fields: {
 		id: {
 			label: 'Id',
-			type: FieldType.Id,
+			type: 'id',
 		},
 		name: {
 			label: 'Name',
-			type: FieldType.Text,
+			type: 'text',
 			isRequired: true,
 		},
 		slug: {
 			label: 'Slug',
-			type: FieldType.Text,
+			type: 'text',
 			isRequired: true,
 		},
 	},

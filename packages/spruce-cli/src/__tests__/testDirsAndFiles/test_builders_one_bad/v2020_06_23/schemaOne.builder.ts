@@ -1,5 +1,4 @@
 import { buildSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export default buildSchema({
 	id: 'schemaOne',
@@ -7,18 +6,18 @@ export default buildSchema({
 	description: 'It is going to be great!',
 	fields: {
 		name: {
-			type: FieldType.Text,
+			type: 'text',
 			isRequired: true,
 		},
 		nestedSchema: {
-			type: FieldType.Schema,
+			type: 'schema',
 			options: {
 				schema: buildSchema({
 					id: 'nested-inline-schema',
 					name: 'nested with dynamic fields',
 					dynamicFieldSignature: {
 						keyName: 'prop',
-						type: FieldType.Text,
+						type: 'text',
 					},
 				}),
 			},

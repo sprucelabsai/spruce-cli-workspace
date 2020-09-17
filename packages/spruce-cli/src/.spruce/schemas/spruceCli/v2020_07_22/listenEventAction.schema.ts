@@ -1,5 +1,5 @@
 import { SpruceSchemas } from '../../schemas.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -11,21 +11,21 @@ const listenEventActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.IListenEventA
 	            /** Namespace. */
 	            'eventNamespace': {
 	                label: 'Namespace',
-	                type: FieldType.Text,
+	                type: 'text',
 	                isRequired: true,
 	                options: undefined
 	            },
 	            /** Event name. */
 	            'eventName': {
 	                label: 'Event name',
-	                type: FieldType.Text,
+	                type: 'text',
 	                isRequired: true,
 	                options: undefined
 	            },
 	            /** Events destination directory. Where should I add your listeners? */
 	            'eventsDestinationDir': {
 	                label: 'Events destination directory',
-	                type: FieldType.Text,
+	                type: 'text',
 	                hint: 'Where should I add your listeners?',
 	                defaultValue: "src/events",
 	                options: undefined
@@ -33,7 +33,7 @@ const listenEventActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.IListenEventA
 	            /** Version. Set a version yourself instead of letting me generate one for you */
 	            'version': {
 	                label: 'Version',
-	                type: FieldType.Text,
+	                type: 'text',
 	                isPrivate: true,
 	                hint: 'Set a version yourself instead of letting me generate one for you',
 	                options: undefined

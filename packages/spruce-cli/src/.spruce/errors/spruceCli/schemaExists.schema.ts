@@ -1,5 +1,5 @@
 import { SpruceErrors } from '../errors.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 
@@ -10,14 +10,14 @@ const schemaExistsSchema: SpruceErrors.SpruceCli.ISchemaExistsSchema  = {
 	            /** Schema id. */
 	            'schemaId': {
 	                label: 'Schema id',
-	                type: FieldType.Text,
+	                type: 'text',
 	                isRequired: true,
 	                options: undefined
 	            },
 	            /** Destination. */
 	            'destination': {
 	                label: 'Destination',
-	                type: FieldType.Text,
+	                type: 'text',
 	                options: undefined
 	            },
 	    }

@@ -4,7 +4,7 @@
 import { default as SchemaEntity } from '@sprucelabs/schema'
 import * as SpruceSchema from '@sprucelabs/schema'
 
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 
 
 export declare namespace SpruceErrors.SpruceCli {
@@ -44,7 +44,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		            /** File. File we wanted to build, if not set we wanted to build everything.. */
 		            'file': {
 		                label: 'File',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'File we wanted to build, if not set we wanted to build everything..',
 		                options: undefined
 		            },
@@ -72,7 +72,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		            /** Command. */
 		            'command': {
 		                label: 'Command',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                options: undefined
 		            },
@@ -103,7 +103,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		            /** Command. the command being run! */
 		            'command': {
 		                label: 'Command',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'the command being run!',
 		                options: undefined
@@ -111,7 +111,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		            /** Args. Arguments passed to the command */
 		            'args': {
 		                label: 'Args',
-		                type: FieldType.Text,
+		                type: 'text',
 		                hint: 'Arguments passed to the command',
 		                isArray: true,
 		                options: undefined
@@ -147,7 +147,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		            /** The globby pattern used to find files. Globby pattern */
 		            'globbyPattern': {
 		                label: 'The globby pattern used to find files',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'Globby pattern',
 		                options: undefined
@@ -155,7 +155,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		            /** The files that were loaded. The files that were loaded */
 		            'filePaths': {
 		                label: 'The files that were loaded',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'The files that were loaded',
 		                isArray: true,
@@ -164,7 +164,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		            /** The suffix for classes to autoload. Class suffix */
 		            'suffix': {
 		                label: 'The suffix for classes to autoload',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'Class suffix',
 		                options: undefined
@@ -172,7 +172,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		            /** The directory we're trying to create the autoloader for. Directory to autoload */
 		            'directory': {
 		                label: 'The directory we\'re trying to create the autoloader for',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'Directory to autoload',
 		                options: undefined
@@ -200,7 +200,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    fields: {
 		            /** . */
 		            'directory': {
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                options: undefined
 		            },
@@ -237,33 +237,33 @@ export declare namespace SpruceErrors.SpruceCli {
 		            /** The command being run. */
 		            'cmd': {
 		                label: 'The command being run',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** Args. */
 		            'args': {
 		                label: 'Args',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isArray: true,
 		                options: undefined
 		            },
 		            /** Cwd. */
 		            'cwd': {
 		                label: 'Cwd',
-		                type: FieldType.Text,
+		                type: 'text',
 		                options: undefined
 		            },
 		            /** Stdout. */
 		            'stdout': {
 		                label: 'Stdout',
-		                type: FieldType.Text,
+		                type: 'text',
 		                options: undefined
 		            },
 		            /** stderr. */
 		            'stderr': {
 		                label: 'stderr',
-		                type: FieldType.Text,
+		                type: 'text',
 		                options: undefined
 		            },
 		    }
@@ -291,7 +291,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		            /** File. The file I tried to import */
 		            'file': {
 		                label: 'File',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'The file I tried to import',
 		                options: undefined
@@ -321,7 +321,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		            /** File. The file being created */
 		            'file': {
 		                label: 'File',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'The file being created',
 		                options: undefined
@@ -352,13 +352,13 @@ export declare namespace SpruceErrors.SpruceCli {
 		            /** name. */
 		            'name': {
 		                label: 'name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                options: undefined
 		            },
 		            /** value. */
 		            'value': {
 		                label: 'value',
-		                type: FieldType.Text,
+		                type: 'text',
 		                options: undefined
 		            },
 		    }
@@ -388,13 +388,13 @@ export declare namespace SpruceErrors.SpruceCli {
 		            /** Event name. */
 		            'eventName': {
 		                label: 'Event name',
-		                type: FieldType.Text,
+		                type: 'text',
 		                options: undefined
 		            },
 		            /** Payload. A hint */
 		            'payloadArgs': {
 		                label: 'Payload',
-		                type: FieldType.Schema,
+		                type: 'schema',
 		                hint: 'A hint',
 		                isArray: true,
 		                options: {schema: SpruceErrors.SpruceCli.IPayloadArgsSchema,}
@@ -424,7 +424,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		            /** Friendly message. */
 		            'friendlyMessageSet': {
 		                label: 'Friendly message',
-		                type: FieldType.Text,
+		                type: 'text',
 		                options: undefined
 		            },
 		    }
@@ -452,7 +452,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		            /** args. */
 		            'args': {
 		                label: 'args',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                isArray: true,
 		                options: undefined
@@ -480,7 +480,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    fields: {
 		            /** . */
 		            'featureCode': {
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                options: undefined
 		            },
@@ -511,7 +511,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		            /** Pattern. The pattern used to match files relative to the root of the skill */
 		            'pattern': {
 		                label: 'Pattern',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'The pattern used to match files relative to the root of the skill',
 		                options: undefined
@@ -519,7 +519,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		            /** Output from lint. */
 		            'stdout': {
 		                label: 'Output from lint',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                options: undefined
 		            },
@@ -569,14 +569,14 @@ export declare namespace SpruceErrors.SpruceCli {
 		            /** Schema id. */
 		            'schemaId': {
 		                label: 'Schema id',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                options: undefined
 		            },
 		            /** Destination. */
 		            'destination': {
 		                label: 'Destination',
-		                type: FieldType.Text,
+		                type: 'text',
 		                options: undefined
 		            },
 		    }
@@ -604,7 +604,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		            /** File. The file definition file I tried to import */
 		            'file': {
 		                label: 'File',
-		                type: FieldType.Text,
+		                type: 'text',
 		                isRequired: true,
 		                hint: 'The file definition file I tried to import',
 		                options: undefined
@@ -636,13 +636,13 @@ export declare namespace SpruceErrors.SpruceCli {
 		            /** Token. */
 		            'token': {
 		                label: 'Token',
-		                type: FieldType.Text,
+		                type: 'text',
 		                options: undefined
 		            },
 		            /** User id. */
 		            'userId': {
 		                label: 'User id',
-		                type: FieldType.Number,
+		                type: 'number',
 		                options: undefined
 		            },
 		    }

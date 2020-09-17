@@ -1,5 +1,4 @@
 import { buildErrorSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 const genericDefinition = buildErrorSchema({
 	id: 'generic',
@@ -7,7 +6,7 @@ const genericDefinition = buildErrorSchema({
 	description: "When you're too lazy to make a new error",
 	fields: {
 		friendlyMessageSet: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Friendly message',
 		},
 	},

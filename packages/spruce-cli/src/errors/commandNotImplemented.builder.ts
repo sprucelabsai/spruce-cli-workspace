@@ -1,5 +1,4 @@
 import { buildErrorSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export default buildErrorSchema({
 	id: 'commandNotImplemented',
@@ -7,13 +6,13 @@ export default buildErrorSchema({
 	description: 'This command has not yet been implemented ',
 	fields: {
 		command: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Command',
 			isRequired: true,
 			hint: 'the command being run!',
 		},
 		args: {
-			type: FieldType.Text,
+			type: 'text',
 			label: 'Args',
 			isRequired: false,
 			isArray: true,

@@ -1,6 +1,5 @@
 import { ISchema, ISelectFieldDefinitionChoice } from '@sprucelabs/schema'
 import { CORE_SCHEMA_VERSION } from '@sprucelabs/spruce-skill-utils'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 const roleDefinition: ISchema = {
 	id: 'role',
@@ -11,12 +10,12 @@ const roleDefinition: ISchema = {
 	fields: {
 		slug: {
 			label: 'Slug',
-			type: FieldType.Text,
+			type: 'text',
 			isRequired: true,
 		},
 		name: {
 			label: 'Name',
-			type: FieldType.Text,
+			type: 'text',
 			isRequired: true,
 		},
 	},

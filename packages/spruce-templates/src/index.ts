@@ -109,13 +109,11 @@ export const templates = {
 		})
 	},
 
-	/** For creating an error class */
 	error(options: IErrorOptions) {
 		const template = templateImportUtil.getTemplate('errors/SpruceError.ts.hbs')
 		return template({ renderClassDefinition: true, ...options })
 	},
 
-	/** For generating types file this error (the ISpruceErrorOptions sub-interface) */
 	errorTypes(
 		options: {
 			schemaTemplateItems: ISchemaTemplateItem[]
@@ -126,7 +124,6 @@ export const templates = {
 		return template(options)
 	},
 
-	/** For generating types for all the options (the ISpruceErrorOptions sub-interface) */
 	errorOptionsTypes(options: {
 		options: { nameCamel: string; namePascal: string }[]
 	}) {
@@ -136,7 +133,6 @@ export const templates = {
 		return template(options)
 	},
 
-	/** Schema example */
 	schemaExample(options: {
 		nameCamel: string
 		namePascal: string
@@ -146,7 +142,6 @@ export const templates = {
 		return template(options)
 	},
 
-	/** Error example */
 	errorExample(options: {
 		nameCamel: string
 		namePascal: string
@@ -156,13 +151,11 @@ export const templates = {
 		return template(options)
 	},
 
-	/** Test file */
 	test(options: ITestOptions) {
 		const template = templateImportUtil.getTemplate('tests/Test.test.ts.hbs')
 		return template(options)
 	},
 
-	/** Autoloader */
 	autoloader(options: IAutoLoaderTemplateItem) {
 		const template = templateImportUtil.getTemplate(
 			'autoloader/autoloader.ts.hbs'
@@ -170,25 +163,15 @@ export const templates = {
 		return template(options)
 	},
 
-	/** The types file for all the schema fields being used */
 	fieldsTypes(options: { fieldTemplateItems: IFieldTemplateItem[] }) {
 		const template = templateImportUtil.getTemplate(
 			'schemas/fields/fields.types.ts.hbs'
 		)
 		return template(options)
 	},
-	/** Global mapping of all fields for lookup by type */
 	fieldClassMap(options: { fieldTemplateItems: IFieldTemplateItem[] }) {
 		const template = templateImportUtil.getTemplate(
 			'schemas/fields/fieldClassMap.ts.hbs'
-		)
-		return template(options)
-	},
-
-	/** The field type enum */
-	fieldTypeEnum(options: { fieldTemplateItems: IFieldTemplateItem[] }) {
-		const template = templateImportUtil.getTemplate(
-			'schemas/fields/fieldTypeEnum.ts.hbs'
 		)
 		return template(options)
 	},
@@ -212,13 +195,13 @@ export const templates = {
 		dir: string
 	}) {
 		const { kind, dir } = options
-		// on a template, just check for package.json
+
 		if (kind === DirectoryTemplateCode.Skill) {
 			return fs.existsSync(path.join(dir, 'package.json'))
 		}
 
 		const filesToCheck = await DirectoryTemplateUtility.filesInTemplate(kind)
-		// Check if the .spruce directory exists
+
 		let filesMissing = false
 		for (let i = 0; i < filesToCheck.length; i += 1) {
 			const file = filesToCheck[i].path
@@ -238,7 +221,7 @@ export const templates = {
 
 		return false
 	},
-	/** For generating cache keys against a schema field  */
+
 	generateFieldKey(renderAs: TemplateRenderAs, definition: FieldDefinition) {
 		return KeyGeneratorUtility.generateFieldKey(renderAs, definition)
 	},

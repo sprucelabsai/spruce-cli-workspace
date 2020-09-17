@@ -1,6 +1,5 @@
 import { ISchema } from '@sprucelabs/schema'
 import { CORE_SCHEMA_VERSION } from '@sprucelabs/spruce-skill-utils'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import AclSchema from './acl.schema'
 import { roleSelectChoices } from './role.schema'
 
@@ -14,23 +13,23 @@ const JobSchema: ISchema = {
 	fields: {
 		id: {
 			label: 'Id',
-			type: FieldType.Id,
+			type: 'id',
 		},
 		isDefault: {
 			label: 'Is default',
 			hint:
 				'Is this job one that comes with every org? Mapped to roles (owner, groupManager, manager, guest).',
-			type: FieldType.Text,
+			type: 'text',
 			isRequired: true,
 		},
 		name: {
 			label: 'Name',
-			type: FieldType.Text,
+			type: 'text',
 			isRequired: true,
 		},
 		role: {
 			label: 'Role',
-			type: FieldType.Select,
+			type: 'select',
 			isRequired: true,
 			options: {
 				choices: roleSelectChoices,
@@ -38,14 +37,14 @@ const JobSchema: ISchema = {
 		},
 		inStoreAcls: {
 			label: 'On work permissions',
-			type: FieldType.Schema,
+			type: 'schema',
 			options: {
 				schema: AclSchema,
 			},
 		},
 		acls: {
 			label: 'Off work permissions',
-			type: FieldType.Schema,
+			type: 'schema',
 			options: {
 				schema: AclSchema,
 			},

@@ -1,5 +1,4 @@
 import { buildSchema } from '@sprucelabs/schema'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 
 export default buildSchema({
 	id: 'bootSkillAction',
@@ -7,7 +6,7 @@ export default buildSchema({
 	description: 'The options for skill.boot.',
 	fields: {
 		local: {
-			type: FieldType.Boolean,
+			type: 'boolean',
 			label: 'Run local',
 			hint: 'Will run using ts-node and typescript directly. Longer boot times',
 		},

@@ -1,4 +1,3 @@
-import FieldType from './fieldTypeEnum'
 import { IField } from '@sprucelabs/schema'
 
 {{#each fieldTemplateItems}}
@@ -13,7 +12,7 @@ export type Field = {{#each fieldTemplateItems}}| IField<I{{namePascal}}Definiti
 /** Type for looking up field definitions by field type */
 export interface IFieldDefinitionMap {
 	{{#each fieldTemplateItems}}
-	[FieldType.{{pascalType}}]: I{{namePascal}}Definition
+	{{camelType}}: I{{namePascal}}Definition
 	{{/each}}
 }
 
@@ -21,14 +20,14 @@ export interface IFieldDefinitionMap {
 /** Lookups used for dynamic type mapping based on a definition's field type */
 export interface IFieldValueTypeGeneratorMap<F extends FieldDefinition, CreateEntityInstances extends boolean> {
 	{{#each fieldTemplateItems}}
-	[FieldType.{{pascalType}}]: {{#if valueTypeMapper}}{{{valueTypeMapper valueTypeMapper 'asGeneric'}}}{{else}}I{{namePascal}}Definition['value']{{/if}}
+	{{camelType}}: {{#if valueTypeMapper}}{{{valueTypeMapper valueTypeMapper 'asGeneric'}}}{{else}}I{{namePascal}}Definition['value']{{/if}}
 	{{/each}}
 }
 
 /** All field instances */
 export interface IFieldMap {
 	{{#each fieldTemplateItems}}
-	[FieldType.{{pascalType}}]: IField<I{{namePascal}}Definition>
+	{{camelType}}: IField<I{{namePascal}}Definition>
 	{{/each}}
 }
 

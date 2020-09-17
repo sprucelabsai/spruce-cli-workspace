@@ -1,6 +1,5 @@
 import { ISchema } from '@sprucelabs/schema'
 import { test, assert } from '@sprucelabs/test'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import AbstractCliTest from '../../AbstractCliTest'
 import featuresUtil from '../../features/feature.utilities'
 
@@ -17,7 +16,7 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 			name: 'person alias',
 			fields: {
 				firstName: {
-					type: FieldType.Text,
+					type: 'text',
 				},
 			},
 		}
@@ -35,10 +34,10 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 			name: 'person alias',
 			fields: {
 				firstName: {
-					type: FieldType.Text,
+					type: 'text',
 				},
 				lastName: {
-					type: FieldType.Text,
+					type: 'text',
 				},
 			},
 		}

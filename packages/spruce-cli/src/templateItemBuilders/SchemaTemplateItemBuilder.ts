@@ -9,7 +9,6 @@ import {
 } from '@sprucelabs/schema'
 import cloneDeep from 'lodash/cloneDeep'
 import uniqWith from 'lodash/uniqWith'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
 import SpruceError from '../errors/SpruceError'
 import { ISchemasByNamespace } from '../stores/SchemaStore'
 import schemaUtil, { SchemaRelationshipType } from '../utilities/schema.utility'
@@ -89,7 +88,7 @@ export default class SchemaTemplateItemBuilder {
 		Object.keys(fields ?? {}).forEach((name) => {
 			//@ts-ignore
 			const field = fields[name]
-			if (field.type === FieldType.Schema) {
+			if (field.type === 'schema') {
 				this.dropInVersionIfMissing(field, normalized)
 			}
 		})
@@ -169,7 +168,7 @@ export default class SchemaTemplateItemBuilder {
 			//@ts-ignore
 			const field = fields[fieldName]
 
-			if (field?.type === FieldType.Schema) {
+			if (field?.type === 'schema') {
 				try {
 					related.push(...this.pullRelatedFromSchemaField(field))
 				} catch (err) {
@@ -255,7 +254,7 @@ export default class SchemaTemplateItemBuilder {
 		Object.keys(fields ?? {}).forEach((name) => {
 			//@ts-ignore
 			const field = fields[name]
-			if (field && field.type === FieldType.Schema) {
+			if (field && field.type === 'schema') {
 				const idsWithVersion = SchemaField.mapFieldDefinitionToSchemaIdsWithVersion(
 					field
 				)

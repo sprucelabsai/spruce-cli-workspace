@@ -1,5 +1,5 @@
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
-import FieldType from '#spruce/schemas/fields/fieldTypeEnum'
+
 import fieldClassMap from '#spruce/schemas/fields/fieldClassMap'
 import { TemplateRenderAs, IFieldTemplateDetailOptions } from '@sprucelabs/schema'
 
@@ -22,7 +22,7 @@ const generateTypeLiteral = (definition: FieldDefinition, renderAs: TemplateRend
 		renderAs
 	}
 
-	const FieldClass = fieldClassMap[definition.type as FieldType]
+	const FieldClass = fieldClassMap[definition.type]
 	const details = FieldClass.generateTemplateDetails(
 		options as IFieldTemplateDetailOptions<any>
 	)
