@@ -1,5 +1,4 @@
 import { ISchema, SchemaPartialValues, SchemaValues } from '@sprucelabs/schema'
-import { result } from 'lodash'
 import merge from 'lodash/merge'
 import FormComponent from '../components/FormComponent'
 import SpruceError from '../errors/SpruceError'

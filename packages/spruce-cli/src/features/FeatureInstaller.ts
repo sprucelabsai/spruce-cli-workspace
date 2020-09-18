@@ -7,7 +7,7 @@ import ServiceFactory, {
 	IServiceProvider,
 	IServiceMap,
 } from '../services/ServiceFactory'
-import { GeneratedFile, NpmPackage } from '../types/cli.types'
+import { NpmPackage } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
 import {
 	IInstallFeatureOptions,
