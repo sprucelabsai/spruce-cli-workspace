@@ -2,7 +2,7 @@ import { validateSchemaValues } from '@sprucelabs/schema'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import skillFeatureSchema from '#spruce/schemas/spruceCli/v2020_07_22/skillFeature.schema'
-import { INpmPackage } from '../../types/cli.types'
+import { NpmPackage } from '../../types/cli.types'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
@@ -18,7 +18,7 @@ export default class SkillFeature<
 		'Skill: The most basic configuration needed to enable a skill'
 
 	public dependencies: FeatureCode[] = []
-	public packageDependencies: INpmPackage[] = [
+	public packageDependencies: NpmPackage[] = [
 		{ name: 'typescript', isDev: true },
 		{ name: '@sprucelabs/log' },
 		{ name: '@sprucelabs/error' },
@@ -66,7 +66,9 @@ export default class SkillFeature<
 	} as const
 
 	public async beforePackageInstall(options: Skill) {
-		await this.install(options)
+		const { files } = await this.install(options)
+
+		return { files }
 	}
 
 	private async install(
@@ -76,8 +78,10 @@ export default class SkillFeature<
 
 		const skillGenerator = this.Generator('skill')
 
-		await skillGenerator.generateSkill(this.cwd, options)
+		const files = await skillGenerator.generateSkill(this.cwd, options)
 		this.installScripts()
+
+		return { files }
 	}
 
 	public getSkillName() {

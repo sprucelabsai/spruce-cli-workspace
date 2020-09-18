@@ -20,7 +20,7 @@ import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import SpruceError from '../errors/SpruceError'
 import log from '../singletons/log'
 import {
-	IExecutionResults,
+	ExecutionResults,
 	IGraphicsInterface,
 	IGraphicsTextEffect,
 } from '../types/cli.types'
@@ -134,7 +134,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 		this.renderLine(bar, effects)
 	}
 
-	public renderCommandSummary(results: IExecutionResults) {
+	public renderCommandSummary(results: ExecutionResults) {
 		const generatedFiles =
 			results.files?.filter((f) => f.action === 'generated') ?? []
 		const updatedFiles =
@@ -143,24 +143,50 @@ export default class TerminalInterface implements IGraphicsInterface {
 			results.files?.filter((f) => f.action === 'skipped') ?? []
 
 		const errors = results.errors ?? []
+		const packagesInstalled = results.packagesInstalled ?? []
 
 		this.renderHero(`${results.headline} Finished!`)
 
 		this.renderSection({
 			headline: `${results.featureCode}.${results.actionCode} summary`,
 			lines: [
+				`Errors: ${errors.length}`,
 				`Generated files: ${generatedFiles.length}`,
 				`Updated files: ${updatedFiles.length}`,
 				`Skipped files: ${skippedFiles.length}`,
-				`Errors: ${errors.length}`,
+				`NPM packages installed: ${packagesInstalled.length}`,
 			],
 		})
+
+		if (errors.length > 0) {
+			this.renderHeadline('Errors')
+			errors.forEach((err) => this.renderError(err))
+		}
+
+		if (packagesInstalled.length > 0) {
+			const table = new Table({
+				head: ['Name', 'Dev'],
+				colWidths: [40, 5],
+				wordWrap: true,
+				colAligns: ['left', 'center'],
+			})
+			packagesInstalled
+				.sort((one, two) => (one.name > two.name ? 1 : -1))
+				.forEach((pkg) => {
+					table.push([pkg.name, pkg.isDev ? '√' : ''])
+				})
+
+			this.renderSection({
+				headline: `NPM packages summary`,
+				lines: [table.toString()],
+			})
+		}
 
 		for (let files of [generatedFiles, updatedFiles, skippedFiles]) {
 			if (files.length > 0) {
 				const table = new Table({
 					head: ['File', 'Description'],
-					colWidths: [30, 50],
+					colWidths: [40, 50],
 					wordWrap: true,
 				})
 
@@ -175,11 +201,6 @@ export default class TerminalInterface implements IGraphicsInterface {
 					lines: [table.toString()],
 				})
 			}
-		}
-
-		if (errors.length > 0) {
-			this.renderHeadline('Errors')
-			errors.forEach((err) => this.renderError(err))
 		}
 	}
 

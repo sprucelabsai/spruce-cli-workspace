@@ -1,4 +1,4 @@
-import { IGeneratedFile } from '../types/cli.types'
+import { GeneratedFile } from '../types/cli.types'
 
 function hasArg(regex: RegExp) {
 	return !!process.argv?.find((arg) => arg.search(regex) > -1)
@@ -13,7 +13,7 @@ const testUtil = {
 	},
 	assertsFileByNameInGeneratedFiles(
 		name: string | RegExp,
-		files: IGeneratedFile[]
+		files: GeneratedFile[]
 	): string {
 		const file = files.find((f) => f.name.search(name) > -1)?.path
 		if (!file) {

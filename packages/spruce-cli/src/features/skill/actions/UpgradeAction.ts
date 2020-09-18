@@ -20,7 +20,7 @@ export default class UpgradeAction extends AbstractFeatureAction<
 		const generatedFiles = await this.copyFiles(normalizedOptions)
 
 		await this.reInstallPackageDependencies()
-		const skillFeature = (await this.getFeature('skill')) as SkillFeature
+		const skillFeature = this.getFeature('skill') as SkillFeature
 		skillFeature.installScripts()
 
 		return { files: generatedFiles }

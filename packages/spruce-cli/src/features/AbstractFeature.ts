@@ -12,7 +12,11 @@ import ServiceFactory, {
 	IServiceMap,
 } from '../services/ServiceFactory'
 import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
-import { INpmPackage, IGraphicsInterface } from '../types/cli.types'
+import {
+	NpmPackage,
+	IGraphicsInterface,
+	GeneratedFile,
+} from '../types/cli.types'
 import featuresUtil from './feature.utilities'
 import FeatureActionFactory, {
 	IFeatureActionFactoryOptions,
@@ -21,12 +25,16 @@ import FeatureInstaller from './FeatureInstaller'
 import { IFeatureAction } from './features.types'
 import { FeatureCode } from './features.types'
 
+export interface InstallResults {
+	files?: GeneratedFile[]
+}
+
 export default abstract class AbstractFeature<
 	S extends ISchema | undefined = ISchema | undefined
 > implements IServiceProvider {
 	public abstract description: string
 	public readonly dependencies: FeatureCode[] = []
-	public readonly packageDependencies: INpmPackage[] = []
+	public readonly packageDependencies: NpmPackage[] = []
 	public readonly optionsDefinition?: S
 
 	protected cwd: string
@@ -71,11 +79,15 @@ export default abstract class AbstractFeature<
 
 	public async beforePackageInstall(
 		_options: S extends ISchema ? SchemaValues<S> : undefined
-	): Promise<void> {}
+	): Promise<InstallResults> {
+		return {}
+	}
 
 	public async afterPackageInstall(
 		_options: S extends ISchema ? SchemaValues<S> : undefined
-	): Promise<void> {}
+	): Promise<InstallResults> {
+		return {}
+	}
 
 	public abstract async isInstalled(): Promise<boolean>
 

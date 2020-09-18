@@ -1,5 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import { result } from 'lodash'
 import AbstractCliTest from '../../AbstractCliTest'
 
 export default class SettingUpASkill extends AbstractCliTest {
@@ -97,5 +98,33 @@ export default class SettingUpASkill extends AbstractCliTest {
 		}
 
 		assert.isEqualDeep(health, { skill: { status: 'passed' } })
+	}
+
+	@test()
+	protected static async reportsProperInstallResults() {
+		const cli = await this.Cli()
+		const results = await cli.installFeatures({
+			features: [
+				{
+					code: 'skill',
+					options: {
+						name: 'Transfer file check skill',
+						description: 'For tracking files copied count',
+					},
+				},
+			],
+		})
+
+		assert.isTruthy(results.files)
+		assert.isAbove(results.files.length, 0)
+
+		const generateFiles = results.files.filter(
+			(file) => file.action === 'generated'
+		)
+
+		assert.isEqual(generateFiles.length, results.files.length)
+
+		assert.isTruthy(results.packagesInstalled)
+		assert.isAbove(results.packagesInstalled.length, 0)
 	}
 }

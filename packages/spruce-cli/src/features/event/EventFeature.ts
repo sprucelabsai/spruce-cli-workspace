@@ -18,5 +18,6 @@ export default class EventFeature extends AbstractFeature {
 
 	public async afterPackageInstall() {
 		diskUtil.createDir(diskUtil.resolvePath(this.cwd, 'src', 'events'))
+		return {}
 	}
 }

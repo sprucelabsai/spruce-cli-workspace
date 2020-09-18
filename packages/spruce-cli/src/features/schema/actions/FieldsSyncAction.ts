@@ -3,7 +3,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import syncSchemaFieldsActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemaFieldsAction.schema'
 import FieldTemplateItemBuilder from '../../../templateItemBuilders/FieldTemplateItemBuilder'
-import { IGeneratedFile } from '../../../types/cli.types'
+import { GeneratedFile } from '../../../types/cli.types'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { IFeatureActionExecuteResponse } from '../../features.types'
 
@@ -34,7 +34,7 @@ export default class FieldsSyncAction extends AbstractFeatureAction<
 			fieldTypesDestinationDir
 		)
 
-		const generatedFiles: IGeneratedFile[] = []
+		const generatedFiles: GeneratedFile[] = []
 		const schemaStore = this.Store('schema')
 
 		const { fields, errors } = await schemaStore.fetchFields({

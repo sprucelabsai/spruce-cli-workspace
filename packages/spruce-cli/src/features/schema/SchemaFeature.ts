@@ -1,5 +1,5 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { INpmPackage } from '../../types/cli.types'
+import { NpmPackage } from '../../types/cli.types'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
@@ -7,7 +7,7 @@ export default class SchemaFeature extends AbstractFeature {
 	public nameReadable = 'Schema'
 	public description = 'Define, validate, and normalize everything.'
 	public dependencies: FeatureCode[] = ['skill']
-	public packageDependencies: INpmPackage[] = [
+	public packageDependencies: NpmPackage[] = [
 		{
 			name: '@sprucelabs/schema',
 		},

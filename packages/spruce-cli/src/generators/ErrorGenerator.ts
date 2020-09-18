@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { IErrorTemplateItem } from '@sprucelabs/spruce-templates'
-import { IGeneratedFile } from '../types/cli.types'
+import { GeneratedFile } from '../types/cli.types'
 import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
 
 export default class ErrorGenerator extends AbstractGenerator {
@@ -47,7 +47,7 @@ export default class ErrorGenerator extends AbstractGenerator {
 		errors: IErrorTemplateItem[],
 		destinationFile: string
 	) {
-		let results: IGeneratedFile[] = []
+		let results: GeneratedFile[] = []
 
 		for (const error of errors) {
 			if (!error.isNested) {
@@ -66,7 +66,7 @@ export default class ErrorGenerator extends AbstractGenerator {
 		error: IErrorTemplateItem,
 		destinationFile: string
 	) {
-		let results: IGeneratedFile[] = []
+		let results: GeneratedFile[] = []
 		const errorBlock = this.templates.error({
 			errors: [error],
 			renderClassDefinition: false,

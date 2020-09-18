@@ -2,7 +2,7 @@ import { FieldDefinitionValueType } from '@sprucelabs/schema'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import {
 	IGraphicsInterface,
-	IExecutionResults,
+	ExecutionResults,
 	IGraphicsTextEffect,
 } from '../types/cli.types'
 
@@ -89,7 +89,7 @@ export default class TestInterface implements IGraphicsInterface {
 		this.trackInvocation('renderCodeSample', code)
 	}
 
-	public renderCommandSummary(results: IExecutionResults): void {
+	public renderCommandSummary(results: ExecutionResults): void {
 		this.trackInvocation('renderCommandSummary', results)
 	}
 
