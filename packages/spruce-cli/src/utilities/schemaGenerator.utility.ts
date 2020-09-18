@@ -1,4 +1,5 @@
 import pathUtil from 'path'
+import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
 
 const schemaGeneratorUtil = {
@@ -21,7 +22,7 @@ const schemaGeneratorUtil = {
 				}
 
 				if (namespace) {
-					regexString = namespace + regexString
+					regexString = namesUtil.toCamel(namespace) + regexString
 				}
 
 				const idx = match.search(new RegExp(regexString))
