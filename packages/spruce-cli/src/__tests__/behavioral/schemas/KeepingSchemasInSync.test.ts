@@ -206,7 +206,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		await this.Service('typeChecker').check(schemaMatch)
 	}
 
-	@test.only()
+	@test()
 	protected static async runningSyncTwiceReportsNoGeneratedFiles() {
 		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
 
@@ -251,6 +251,8 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 			(file) => file.action === 'skipped'
 		).length
 
+		// if these fail, update the numbers in the test above
+		// it's important the counts are accurate
 		assert.isEqual(totalUpdatedFiles, updated)
 		assert.isEqual(totalGeneratedFiles, generated)
 		assert.isEqual(totalSkippedFiles, skipped)
