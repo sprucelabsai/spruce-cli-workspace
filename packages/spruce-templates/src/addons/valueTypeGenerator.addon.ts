@@ -34,7 +34,9 @@ handlebars.registerHelper('valueTypeGenerator', function (
 	)[0]
 
 	if (!match) {
-		throw new Error(`Could not find field for type ${fieldDefinition.type}`)
+		throw new Error(
+			`valueTypeGenerator.addon could not find a fieldTemplateItem with type ${fieldDefinition.type}`
+		)
 	}
 
 	const type = handlebars.helpers.fieldTypeEnum(fieldDefinition, options)

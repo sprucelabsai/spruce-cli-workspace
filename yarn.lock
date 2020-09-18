@@ -2087,6 +2087,11 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.291.tgz#4489bb92a5e52acbbb32c66e7449c84f74e76ac7"
   integrity sha512-T6PjWZ4svQ2xQfhVR6q3XdBFo4vV+N7cEvIBOb5BcW0OEQGJ2qkPJ3QWpp2Wegy7mIr6xJF60FVblpT9KPK1ow==
 
+"@sprucelabs/error@^2.2.292":
+  version "2.2.292"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.292.tgz#57d0c95f673e8720db4cc48b20ecafe17903bfc0"
+  integrity sha512-abrag/FdJIsj06RyfEXEmetAidoFttvscOAqE4sBSyBCWK64aXsXROrBhPwj7P6/xHyWG6pxuU3VnJKr4Rm+UQ==
+
 "@sprucelabs/jest-sheets-reporter@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@sprucelabs/jest-sheets-reporter/-/jest-sheets-reporter-1.2.0.tgz#64d19f6454df2ca8f15a704f6fdb86bd9b0d7ede"
@@ -2098,6 +2103,11 @@
   version "10.2.226"
   resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.226.tgz#33d6ec911b7916e9ab530ee7a4ff3cedfb0ba546"
   integrity sha512-J9AlKdNFkW6sZ5AMdEO7TaZc4CI5rmOEk5Kn2nf+qL7iVZIGZe0kD83iGyNqPWj9B0v4fwpGxz2exV987HEArg==
+
+"@sprucelabs/log@^10.2.227":
+  version "10.2.227"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.227.tgz#58bbcb6979b395e6b57f681aa96f50609741bd72"
+  integrity sha512-pp8cgLlm5BhblQul22Slo73fI5IlFtUHGVR1FMYr2C/YH+QftMNkzR2R9b2dMsm+lG40BQgMMk1mwq2cO0B1cg==
 
 "@sprucelabs/mercury@^10.5.72":
   version "10.5.72"
@@ -2116,6 +2126,18 @@
   dependencies:
     "@sprucelabs/error" "^2.2.291"
     "@sprucelabs/log" "^10.2.226"
+    google-libphonenumber "^3.2.13"
+    libphonenumber-js "^1.7.58"
+    mime-db "^1.44.0"
+    mime-type "^4.0.0"
+
+"@sprucelabs/schema@^12.0.3":
+  version "12.0.3"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.0.3.tgz#798ad0ac538e28e64ad101574c1daf33ba3a4571"
+  integrity sha512-7I0U7xYg3rIpQJkDEQLChesrLwZRqgQ3+3vYcnZnonqMSZ/Z40pzfSjtB/FT2swQgnAze8sJISiKuzH3LXFtJQ==
+  dependencies:
+    "@sprucelabs/error" "^2.2.292"
+    "@sprucelabs/log" "^10.2.227"
     google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.7.58"
     mime-db "^1.44.0"
