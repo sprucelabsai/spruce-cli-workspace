@@ -33,7 +33,7 @@
 		"release": "semantic-release"
 	},
 	"dependencies": {
-		"@sprucelabs/error": "^2.2.292"
+		"@sprucelabs/error": "^2.2.293"
 	},
 	"devDependencies": {
 		"@types/node": "^14.11.1",
