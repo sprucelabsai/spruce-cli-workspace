@@ -62,8 +62,6 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 	protected static async builderAndSchemaFilesValidate() {
 		const response = await this.buildTestSchema()
 
-		await this.Service('command').execute(`code ${this.cwd}`)
-
 		const checker = this.Service('typeChecker')
 
 		await checker.check(response.files?.[0].path ?? '')
