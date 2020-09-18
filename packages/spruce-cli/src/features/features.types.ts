@@ -4,7 +4,11 @@ import SpruceError from '../errors/SpruceError'
 import GeneratorFactory from '../generators/GeneratorFactory'
 import ServiceFactory from '../services/ServiceFactory'
 import StoreFactory from '../stores/StoreFactory'
-import { IGeneratedFile, IGraphicsInterface } from '../types/cli.types'
+import {
+	GeneratedFile,
+	IGraphicsInterface,
+	NpmPackage,
+} from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
 import CircleCIFeature from './CircleCIFeature'
 import ErrorFeature from './error/ErrorFeature'
@@ -34,8 +38,6 @@ export type FeatureOptions<
 > = IFeatureMap[F]['optionsDefinition'] extends ISchema
 	? SchemaValues<IFeatureMap[F]['optionsDefinition']>
 	: undefined
-
-export interface IFeatureInstallResponse {}
 
 export type InstallFeature =
 	| {
@@ -87,8 +89,12 @@ export interface IFeatureMap {
 	watch: WatchFeature
 }
 
-export interface IFeatureActionExecuteResponse {
-	files?: IGeneratedFile[]
+export interface FeatureInstallResponse {
+	files?: GeneratedFile[]
+	packagesInstalled?: NpmPackage[]
+}
+
+export interface IFeatureActionExecuteResponse extends FeatureInstallResponse {
 	meta?: Record<string, any>
 	errors?: SpruceError[]
 	hints?: string[]

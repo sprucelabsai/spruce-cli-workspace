@@ -63,7 +63,7 @@ export interface IGraphicsInterface {
 	renderObject(obj: any): void
 	renderError(err: Error): void
 	renderCodeSample(code: string): void
-	renderCommandSummary(results: IExecutionResults): void
+	renderCommandSummary(results: ExecutionResults): void
 	renderHero(message: string, effects?: IGraphicsTextEffect[]): void
 	renderHeadline(
 		message: string,
@@ -95,14 +95,14 @@ export enum AuthedAs {
 	Skill = 'skill',
 }
 
-export interface IGeneratedFile {
+export interface GeneratedFile {
 	name: string
 	path: string
 	description: string
 	action: 'skipped' | 'generated' | 'updated'
 }
 
-export interface INpmPackage {
+export interface NpmPackage {
 	name: string
 	/** Defaults to "latest" */
 	version?: string
@@ -110,7 +110,7 @@ export interface INpmPackage {
 	isDev?: boolean
 }
 
-export interface IExecutionResults extends IFeatureActionExecuteResponse {
+export interface ExecutionResults extends IFeatureActionExecuteResponse {
 	featureCode: string
 	actionCode: string
 	headline: string

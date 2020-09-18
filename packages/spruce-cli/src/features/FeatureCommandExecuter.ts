@@ -1,11 +1,17 @@
 import { ISchema, SchemaPartialValues, SchemaValues } from '@sprucelabs/schema'
+import merge from 'lodash/merge'
 import FormComponent from '../components/FormComponent'
 import SpruceError from '../errors/SpruceError'
 import { IGraphicsInterface } from '../types/cli.types'
 import formUtil from '../utilities/form.utility'
 import AbstractFeature from './AbstractFeature'
 import FeatureInstaller from './FeatureInstaller'
-import { FeatureCode, IFeatureAction, IFeatureMap } from './features.types'
+import {
+	FeatureCode,
+	FeatureInstallResponse,
+	IFeatureAction,
+	IFeatureMap,
+} from './features.types'
 
 type FeatureCommandExecuteOptions<
 	F extends FeatureCode
@@ -34,7 +40,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 	public async execute(
 		options?: Record<string, any> & FeatureCommandExecuteOptions<F>
 	) {
-		await this.installMissingDependencies()
+		let results = await this.installMissingDependencies()
 
 		const feature = this.featureInstaller.getFeature(this.featureCode)
 		const action = feature.Action(this.actionCode)
@@ -52,10 +58,12 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		let answers = await this.askAboutMissingActionOptions(action, options)
 
 		if (!isInstalled) {
-			await this.installOurFeature(installOptions)
+			const ourFeatureResults = await this.installOurFeature(installOptions)
+			results = merge(results, ourFeatureResults)
 		}
 
-		const results = await action.execute(answers || {})
+		const executeResults = await action.execute(answers || {})
+		results = merge(results, executeResults)
 
 		this.ui.stopLoading()
 
@@ -86,7 +94,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		this.ui.clear()
 		this.ui.startLoading(`Installing ${this.featureCode}...`)
 
-		await this.featureInstaller.install({
+		const installResults = await this.featureInstaller.install({
 			features: [
 				{
 					code: this.featureCode,
@@ -97,6 +105,8 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		})
 
 		this.ui.stopLoading()
+
+		return installResults
 	}
 
 	private async askAboutMissingFeatureOptionsIfFeatureIsNotInstalled(
@@ -122,8 +132,10 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		return `${this.featureCode}.${this.actionCode}`
 	}
 
-	private async installMissingDependencies() {
+	private async installMissingDependencies(): Promise<FeatureInstallResponse> {
 		const notInstalled = await this.getDependenciesNotInstalled()
+
+		let results: FeatureInstallResponse = {}
 
 		if (notInstalled.length > 0) {
 			this.ui.clear()
@@ -137,7 +149,13 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			)
 
 			while (notInstalled.length > 0) {
-				await this.installMissingDependency(notInstalled)
+				const toInstall = notInstalled.pop()
+				if (!toInstall) {
+					// for typescript
+					throw new Error('Dependent feature error')
+				}
+				const installResults = await this.installMissingDependency(toInstall)
+				results = merge(results, installResults)
 			}
 
 			this.ui.clear()
@@ -145,18 +163,13 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 				`Phew, now that that's done, lets get back to ${this.getCommandName()}!`
 			)
 		}
+
+		return results
 	}
 
 	private async installMissingDependency(
-		feature: AbstractFeature<ISchema | undefined>[]
-	) {
-		const toInstall = feature.pop()
-
-		if (!toInstall) {
-			// for typescript
-			throw new Error('Dependent feature error')
-		}
-
+		toInstall: AbstractFeature<ISchema | undefined>
+	): Promise<FeatureInstallResponse> {
 		const confirm = await this.ui.confirm(
 			`Install the ${toInstall?.nameReadable} feature?`
 		)
@@ -179,7 +192,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		this.ui.clear()
 		this.ui.startLoading(`Installing ${toInstall.nameReadable}...`)
 
-		await this.featureInstaller.install({
+		const installResults = await this.featureInstaller.install({
 			features: [
 				{
 					code: toInstall.code,
@@ -190,6 +203,8 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		})
 
 		this.ui.stopLoading()
+
+		return installResults
 	}
 
 	private async getDependenciesNotInstalled() {

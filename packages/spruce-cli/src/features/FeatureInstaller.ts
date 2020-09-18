@@ -1,16 +1,17 @@
 import { validateSchemaValues } from '@sprucelabs/schema'
 import { uniq } from 'lodash'
+import merge from 'lodash/merge'
 import SpruceError from '../errors/SpruceError'
 import ServiceFactory, {
 	Service,
 	IServiceProvider,
 	IServiceMap,
 } from '../services/ServiceFactory'
-import { INpmPackage } from '../types/cli.types'
+import { NpmPackage } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
 import {
 	IInstallFeatureOptions,
-	IFeatureInstallResponse,
+	FeatureInstallResponse,
 	FeatureCode,
 	InstallFeature,
 	IFeatureMap,
@@ -115,8 +116,10 @@ export default class FeatureInstaller implements IServiceProvider {
 
 	public async install(
 		options: IInstallFeatureOptions
-	): Promise<IFeatureInstallResponse> {
+	): Promise<FeatureInstallResponse> {
 		const { features, installFeatureDependencies = true } = options
+
+		let results: FeatureInstallResponse = {}
 
 		let codesToInstall: FeatureCode[] = []
 
@@ -154,14 +157,17 @@ export default class FeatureInstaller implements IServiceProvider {
 					options: installOptions,
 				} as InstallFeature
 
-				await this.installFeature(installFeature)
+				const installResults = await this.installFeature(installFeature)
+				results = merge(results, installResults)
 			}
 		}
 
-		return {}
+		return results
 	}
 
-	private async installFeature(installFeature: InstallFeature): Promise<void> {
+	private async installFeature(
+		installFeature: InstallFeature
+	): Promise<FeatureInstallResponse> {
 		const feature = this.getFeature(installFeature.code) as AbstractFeature
 
 		if (feature.optionsDefinition) {
@@ -171,31 +177,41 @@ export default class FeatureInstaller implements IServiceProvider {
 			)
 		}
 
-		await feature.beforePackageInstall(installFeature.options)
+		const beforeInstallResults = await feature.beforePackageInstall(
+			installFeature.options
+		)
 
-		await this.installPackageDependencies(feature)
+		const packagesInstalled = await this.installPackageDependencies(feature)
 
-		await feature.afterPackageInstall(installFeature.options)
+		const afterInstallResults = await feature.afterPackageInstall(
+			installFeature.options
+		)
+
+		const files = [
+			...(beforeInstallResults.files ?? []),
+			...(afterInstallResults.files ?? []),
+		]
+
+		return {
+			files: files ?? undefined,
+			packagesInstalled,
+		}
 	}
 
 	public async installPackageDependencies(feature: AbstractFeature) {
 		const packagesToInstall: string[] = []
 		const devPackagesToInstall: string[] = []
-
-		const packages: {
-			[pkgName: string]: INpmPackage
-		} = {}
+		const packagesInstalled: NpmPackage[] = []
 
 		feature.packageDependencies.forEach((pkg) => {
 			const packageName = `${pkg.name}@${pkg.version ?? 'latest'}`
-			packages[packageName] = pkg
-		})
 
-		Object.values(packages).forEach((p) => {
-			if (p.isDev) {
-				devPackagesToInstall.push(p.name)
+			packagesInstalled.push(pkg)
+
+			if (pkg.isDev) {
+				devPackagesToInstall.push(packageName)
 			} else {
-				packagesToInstall.push(p.name)
+				packagesToInstall.push(packageName)
 			}
 		})
 
@@ -211,10 +227,7 @@ export default class FeatureInstaller implements IServiceProvider {
 			})
 		}
 
-		return {
-			packages: packagesToInstall,
-			devPackages: devPackagesToInstall,
-		}
+		return packagesInstalled
 	}
 
 	private sortFeatures<F extends FeatureCode[]>(codes: F): F {

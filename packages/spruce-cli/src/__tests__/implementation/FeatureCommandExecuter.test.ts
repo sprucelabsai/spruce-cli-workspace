@@ -155,6 +155,21 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 		assert.isTrue(isInstalled)
 	}
 
+	@test()
+	protected static async shouldReturnProperSummary() {
+		const executer = this.Executer('skill', 'create')
+		const results = await executer.execute({
+			name: 'install summary test skill',
+			description: 'go team!',
+		})
+
+		assert.isTruthy(results.files)
+		assert.isTruthy(results.packagesInstalled)
+
+		assert.isAbove(results.files.length, 0)
+		assert.isAbove(results.packagesInstalled.length, 0)
+	}
+
 	private static Executer<F extends FeatureCode>(
 		featureCode: F,
 		actionCode: string

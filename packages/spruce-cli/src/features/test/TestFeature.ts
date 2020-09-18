@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import PkgService from '../../services/PkgService'
-import { INpmPackage } from '../../types/cli.types'
+import { NpmPackage } from '../../types/cli.types'
 import tsConfigUtil from '../../utilities/tsConfig.utility'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
@@ -10,7 +10,7 @@ export default class TestFeature extends AbstractFeature {
 	public description = 'Test first. Test everything! 💪'
 	public dependencies: FeatureCode[] = []
 	public code: FeatureCode = 'test'
-	public packageDependencies: INpmPackage[] = [
+	public packageDependencies: NpmPackage[] = [
 		{ name: '@sprucelabs/test', isDev: true },
 		{ name: 'jest', isDev: true },
 	]
@@ -22,6 +22,8 @@ export default class TestFeature extends AbstractFeature {
 		this.configureJest(service)
 		this.configureScripts(service)
 		this.configureTsConfig()
+
+		return {}
 	}
 
 	private configureTsConfig() {

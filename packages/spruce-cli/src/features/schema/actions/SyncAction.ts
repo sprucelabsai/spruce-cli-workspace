@@ -6,7 +6,7 @@ import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
 import SpruceError from '../../../errors/SpruceError'
 import SchemaTemplateItemBuilder from '../../../templateItemBuilders/SchemaTemplateItemBuilder'
-import { IGeneratedFile } from '../../../types/cli.types'
+import { GeneratedFile } from '../../../types/cli.types'
 import schemaGeneratorUtil from '../../../utilities/schemaGenerator.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { IFeatureActionExecuteResponse } from '../../features.types'
@@ -58,7 +58,7 @@ export default class SyncAction extends AbstractFeatureAction<
 
 		const schemaErrors: SpruceError[] = []
 		let schemaTemplateItems: ISchemaTemplateItem[] | undefined
-		let typeResults: IGeneratedFile[] = []
+		let typeResults: GeneratedFile[] = []
 
 		try {
 			const templateResults = await this.generateSchemaTemplateItems({

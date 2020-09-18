@@ -2,9 +2,9 @@ import fs from 'fs'
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { Templates } from '@sprucelabs/spruce-templates'
-import { IGeneratedFile, IGraphicsInterface } from '../types/cli.types'
+import { GeneratedFile, IGraphicsInterface } from '../types/cli.types'
 
-export type GenerationResults = IGeneratedFile[]
+export type GenerationResults = GeneratedFile[]
 
 export interface IGeneratorOptions {
 	templates: Templates
@@ -32,7 +32,7 @@ export default abstract class AbstractGenerator {
 		const myResults: GenerationResults = results ?? []
 
 		const name = pathUtil.basename(destination)
-		let action: IGeneratedFile['action'] = 'skipped'
+		let action: GeneratedFile['action'] = 'skipped'
 
 		if (diskUtil.isDir(destination)) {
 			throw new Error(`Can't write to a directory ${destination}.`)

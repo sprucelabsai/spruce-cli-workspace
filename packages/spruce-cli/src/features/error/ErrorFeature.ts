@@ -1,5 +1,5 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { INpmPackage } from '../../types/cli.types'
+import { NpmPackage } from '../../types/cli.types'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
@@ -9,7 +9,7 @@ export default class ErrorFeature extends AbstractFeature {
 		'Errors: Use schemas to define your errors and get great type checking!'
 
 	public dependencies: FeatureCode[] = ['schema']
-	public packageDependencies: INpmPackage[] = [
+	public packageDependencies: NpmPackage[] = [
 		{
 			name: '@sprucelabs/error',
 		},
