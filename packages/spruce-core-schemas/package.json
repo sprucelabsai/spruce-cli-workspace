@@ -30,11 +30,7 @@
 		"lint": "eslint '**/*.ts' && tsc -p . --noEmit",
 		"lint.fix": "eslint --fix '**/*.ts'",
 		"lint.watch": "chokidar 'src/**/*' '../spruce-templates/src/**' -c 'yarn lint.tsc'",
-		"release": "semantic-release",
-		"arkit": "arkit -f index.ts -o docs/images/arkit.svg",
-		"arkit.png": "arkit -f index.ts -o docs/images/arkit.png",
-		"test": "jest",
-		"test.watch": "jest --watch"
+		"release": "semantic-release"
 	},
 	"dependencies": {
 		"@sprucelabs/error": "^2.2.291"
@@ -46,23 +42,6 @@
 		"conventional-changelog-sprucelabs": "^1.1.1",
 		"prettier": "^2.1.2",
 		"typescript": "^4.0.2"
-	},
-	"jest": {
-		"maxWorkers": 4,
-		"testTimeout": 300000,
-		"testEnvironment": "node",
-		"testPathIgnorePatterns": [
-			"<rootDir>/tmp/",
-			"<rootDir>/src/",
-			"<rootDir>/node_modules/",
-			"<rootDir>/build/__tests__/testDirsAndFiles/"
-		],
-		"testMatch": [
-			"**/__tests__/**/*.test.js?(x)"
-		],
-		"moduleNameMapper": {
-			"^#spruce/(.*)$": "<rootDir>/build/.spruce/$1"
-		}
 	},
 	"gitHead": "94ce410c05180cdfa9b6ca4b9e47061d52ac4e71"
 }
