@@ -53,7 +53,7 @@
 		"@sprucelabs/error": "^2.2.291",
 		"@sprucelabs/log": "^10.2.226",
 		"@sprucelabs/mercury": "^10.5.72",
-		"@sprucelabs/schema": "^11.0.7",
+		"@sprucelabs/schema": "^12.0.2",
 		"@sprucelabs/spruce-skill-utils": "^10.28.6",
 		"@sprucelabs/spruce-templates": "^10.28.6",
 		"blessed": "^0.1.81",

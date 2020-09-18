@@ -117,9 +117,11 @@ export default class SyncAction extends AbstractFeatureAction<
 
 		this.ui.stopLoading()
 
+		const errors = [...schemaErrors, ...fieldErrors]
+
 		return {
 			files: [...typeResults, ...generateFieldFiles],
-			errors: [...schemaErrors, ...fieldErrors],
+			errors: errors.length > 0 ? errors : undefined,
 			meta: {
 				schemaTemplateItems,
 				fieldTemplateItems,

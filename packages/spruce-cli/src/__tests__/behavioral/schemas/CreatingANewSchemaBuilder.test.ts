@@ -59,16 +59,22 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 	}
 
 	@test()
-	protected static async builderAndDefinitionFileValidates() {
+	protected static async builderAndSchemaFilesValidate() {
 		const response = await this.buildTestSchema()
+
+		await this.Service('command').execute(`code ${this.cwd}`)
 
 		const checker = this.Service('typeChecker')
 
 		await checker.check(response.files?.[0].path ?? '')
 		await checker.check(this.schemaTypesFile)
 
-		assert.doesInclude(response.files, { name: 'anotherTest.schema.ts' })
+		const builderMatch = testUtil.assertsFileByNameInGeneratedFiles(
+			'anotherTest.builder.ts',
+			response.files ?? []
+		)
 
+		await checker.check(builderMatch)
 		const schemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
 			'anotherTest.schema.ts',
 			response.files ?? []
@@ -270,9 +276,6 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 			description: 'this is so great!',
 		})
 
-		// await this.Service('command').execute(`code ${this.cwd}`)
-
-		// debugger
 		return response
 	}
 }

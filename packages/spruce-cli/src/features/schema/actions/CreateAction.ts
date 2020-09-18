@@ -4,6 +4,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import createSchemaActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/createSchemaAction.schema'
 import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
+import SpruceError from '../../../errors/SpruceError'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { IFeatureAction } from '../../features.types'
 
@@ -53,7 +54,7 @@ export default class CreateAction extends AbstractFeatureAction<
 		const syncAction = this.Action('sync') as IFeatureAction<
 			SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasActionSchema
 		>
-
+		let errors: SpruceError[] | undefined
 		if (syncAfterCreate) {
 			const syncOptions = normalizeSchemaValues(syncSchemasActionSchema, rest, {
 				includePrivateFields: true,
@@ -61,8 +62,11 @@ export default class CreateAction extends AbstractFeatureAction<
 			const syncResults = await syncAction.execute(syncOptions)
 
 			results.push(...(syncResults.files ?? []))
+			if (syncResults.errors) {
+				errors = syncResults.errors
+			}
 		}
 
-		return { files: results }
+		return { files: results, errors }
 	}
 }
