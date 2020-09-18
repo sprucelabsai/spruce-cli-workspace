@@ -2082,10 +2082,10 @@
     tsconfig-paths "^3.9.0"
     yargs "^16.0.3"
 
-"@sprucelabs/error@^2.2.289":
-  version "2.2.289"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.289.tgz#822d75cab372ce2b4ff447f56238ed8c6146472f"
-  integrity sha512-PThGSw8Js2oJ9Xnxj2gmFgB+Jx4qbrQUnUGlusYIaop/9XTkDFtRUuO1Ze1tpHY0wVyJwdIIy1jCis+CvxDJWA==
+"@sprucelabs/error@^2.2.290":
+  version "2.2.290"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.290.tgz#c5bc52689d5e2db0269325f26b7f26b33ef8e4fe"
+  integrity sha512-Jk5PXjfBy1J34NKZ+GV3VMLSnWmpNJXIqwO1D4rTvL4R0uRVYBHKIlFPg7NdEkipIFncXpQ9qPoqjwuaFafYDw==
 
 "@sprucelabs/jest-sheets-reporter@^1.2.0":
   version "1.2.0"
@@ -2109,22 +2109,22 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^11.0.5":
-  version "11.0.5"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-11.0.5.tgz#cb24f4432ff377f7df221ce855ba3dff1712ef79"
-  integrity sha512-QeLWdhEwYGmTyHNcozopZiaL/j6Ygwl2enAyOsWNHzxOlNTiBBNd6w9LEEyNGxNwioB76OfH+LUs4AluMMzikw==
+"@sprucelabs/schema@^11.0.6":
+  version "11.0.6"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-11.0.6.tgz#6bc7b4c1f388691cedc8f9e195e4baf40fbc5d7f"
+  integrity sha512-cAs63OaF/HUmA1hrZ8omE06ntN3HuX1C9fYAIZeTnHCj8VWSyCbkNhqg/agL6ERvaYKPcK0uS/xhv5OQMV0I4w==
   dependencies:
-    "@sprucelabs/error" "^2.2.289"
+    "@sprucelabs/error" "^2.2.290"
     "@sprucelabs/log" "^10.2.226"
     google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.7.58"
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^7.0.27":
-  version "7.0.27"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.27.tgz#f8c3c6fd6498082ba3f5af012ada5dfe0384c660"
-  integrity sha512-DvQVivw0pZ4lDT+z9TIANbfckCrOUcvdV7cZlFAo4pe9SDoMSyhex9jo5jicZOLbk4AmeGFlF+Rm5ZZDhlLdIA==
+"@sprucelabs/test@^7.0.28":
+  version "7.0.28"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.28.tgz#68d3e7a998078a2a8c55532fe6cabf971f86d0e0"
+  integrity sha512-RDjjf7h4RC8e/4zqH/WkeFMW3ilbcWBYqMBfjwpw++JEiiS4El0+UEuuqwvLrMLZ3/2X8w+xhSOxeqwhcOFH5A==
   dependencies:
     "@babel/core" "^7.11.6"
     "@babel/preset-env" "^7.11.5"
