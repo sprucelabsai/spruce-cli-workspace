@@ -6,6 +6,7 @@ import {
 } from '@sprucelabs/spruce-skill-utils'
 import { assert, test } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
+import { IFeatureActionExecuteResponse } from '../../../features/features.types'
 import testUtil from '../../../utilities/test.utility'
 
 export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
@@ -203,5 +204,55 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 			results.files ?? []
 		)
 		await this.Service('typeChecker').check(schemaMatch)
+	}
+
+	@test.only()
+	protected static async runningSyncTwiceReportsNoGeneratedFiles() {
+		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
+
+		const firstResults = await cli
+			.getFeature('schema')
+			.Action('sync')
+			.execute({})
+
+		this.assertCorrectFileResults({
+			results: firstResults,
+			updated: 0,
+			generated: 11,
+			skipped: 0,
+		})
+
+		const results = await cli.getFeature('schema').Action('sync').execute({})
+
+		this.assertCorrectFileResults({
+			results,
+			updated: 0,
+			generated: 0,
+			skipped: 11,
+		})
+	}
+
+	private static assertCorrectFileResults(options: {
+		results: IFeatureActionExecuteResponse
+		updated: number
+		generated: number
+		skipped: number
+	}) {
+		const { results, updated, generated, skipped } = options
+
+		assert.isTruthy(results.files)
+		const totalUpdatedFiles = results.files.filter(
+			(file) => file.action === 'updated'
+		).length
+		const totalGeneratedFiles = results.files.filter(
+			(file) => file.action === 'generated'
+		).length
+		const totalSkippedFiles = results.files.filter(
+			(file) => file.action === 'skipped'
+		).length
+
+		assert.isEqual(totalUpdatedFiles, updated)
+		assert.isEqual(totalGeneratedFiles, generated)
+		assert.isEqual(totalSkippedFiles, skipped)
 	}
 }

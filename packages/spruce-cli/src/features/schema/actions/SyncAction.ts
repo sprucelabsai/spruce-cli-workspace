@@ -245,7 +245,10 @@ export default class SyncAction extends AbstractFeatureAction<
 	) {
 		const definitionsToDelete = await schemaGeneratorUtil.filterSchemaFilesBySchemaIds(
 			resolvedDestination,
-			schemaTemplateItems
+			schemaTemplateItems.map((item) => ({
+				...item,
+				version: item.schema.version,
+			}))
 		)
 
 		definitionsToDelete.forEach((def) => diskUtil.deleteFile(def))

@@ -15,7 +15,8 @@ export default class DeletingOrphanedSchemaDefinitionsTest extends AbstractSchem
 			[
 				{ id: 'one', namespace: 'namespace', version: 'v2020_07_22' },
 				{ id: 'two' },
-				{ id: 'three', namespace: 'namespacetwo' },
+				// it should camel case the namespace
+				{ id: 'three', namespace: 'Namespacetwo' },
 				{ id: 'four', namespace: 'namespacetwo', version: 'v2020_07_22' },
 			]
 		)
