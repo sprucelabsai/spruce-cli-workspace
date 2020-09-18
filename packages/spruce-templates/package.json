@@ -42,8 +42,8 @@
 		"arkit.png": "arkit -f index.ts -o docs/images/arkit.png"
 	},
 	"dependencies": {
-		"@sprucelabs/log": "^10.2.226",
-		"@sprucelabs/schema": "^12.0.2",
+		"@sprucelabs/log": "^10.2.227",
+		"@sprucelabs/schema": "^12.0.3",
 		"@sprucelabs/spruce-skill-utils": "^10.28.8",
 		"globby": "^11.0.1",
 		"handlebars": "^4.7.6",
@@ -58,7 +58,7 @@
 		"concurrently": "^5.3.0",
 		"conventional-changelog-sprucelabs": "^1.1.1",
 		"prettier": "^2.1.2",
-		"typescript": "^4.0.2"
+		"typescript": "^4.0.3"
 	},
 	"gitHead": "94ce410c05180cdfa9b6ca4b9e47061d52ac4e71"
 }
