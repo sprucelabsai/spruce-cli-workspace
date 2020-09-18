@@ -163,7 +163,6 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 			description: 'go team!',
 		})
 
-		console.log(results)
 		assert.isTruthy(results.files)
 		assert.isTruthy(results.packagesInstalled)
 
