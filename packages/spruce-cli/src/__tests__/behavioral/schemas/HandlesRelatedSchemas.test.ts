@@ -14,7 +14,7 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 
 		const results = await cli.getFeature('schema').Action('sync').execute({})
 
-		assert.isEqual(results.errors?.length, 0)
+		assert.isUndefined(results.errors)
 		testUtil.assertsFileByNameInGeneratedFiles(
 			/testPerson\.schema/,
 			results.files ?? []

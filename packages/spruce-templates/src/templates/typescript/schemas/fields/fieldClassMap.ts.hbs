@@ -1,18 +1,16 @@
+import { fieldClassMap } from '@sprucelabs/schema'
+
 {{#each fieldTemplateItems}}
 {{#if isLocal}}
 import {{className}} from '{{package}}'
 {{/if}}
-{{#unless isLocal}}
-import { {{className}} } from '{{package}}'
-{{/unless}}
 {{/each}}
 
 
-/** Value for looking up field classes by field type */
-const fieldClassMap = {
-		{{#each fieldTemplateItems}}
-		{{camelType}}: {{className}},
-		{{/each}}
-} as const
+{{#each fieldTemplateItems}}
+{{#if isLocal}}
+fieldClassMap.{{camelType}} = {{className}}
+{{/if}}
+{{/each}}
 
 export default fieldClassMap

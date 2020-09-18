@@ -8,7 +8,8 @@ export default class ValueTypeMappingTest extends AbstractSchemaTest {
 		await this.installSchemaFeature('schema-value-type-mapping')
 	}
 
-	@test()
+	// WE NEED THIS TEST BACK WHEN WE TEST INTRODUCING NEW SCHEMA FIELDS
+	@test.skip()
 	protected static async dropsMappersIntoFieldTypes() {
 		const cli = await this.Cli()
 		await cli.getFeature('schema').Action('sync').execute({})
