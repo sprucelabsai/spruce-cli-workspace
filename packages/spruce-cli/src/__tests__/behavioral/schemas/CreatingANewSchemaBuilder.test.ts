@@ -237,6 +237,8 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		expectedVersion: string,
 		expectedSchemaInterfaceName: string
 	) {
+		assert.isUndefined(response.errors)
+
 		let firstSchemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
 			expectedFileName,
 			response.files ?? []
@@ -273,6 +275,8 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 			nameCamel: 'anotherTest',
 			description: 'this is so great!',
 		})
+
+		assert.isUndefined(response.errors)
 
 		return response
 	}

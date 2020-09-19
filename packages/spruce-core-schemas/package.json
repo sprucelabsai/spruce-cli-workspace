@@ -21,10 +21,11 @@
 		"url": "https://github.com/sprucelabsai/spruce-cli/issues"
 	},
 	"scripts": {
-		"build": "yarn build.babel && yarn build.types",
+		"build": "yarn build.babel && yarn build.types && yarn build.resolve-paths",
 		"build.types": "tsc --emitDeclarationOnly && echo PASS",
 		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps --copy-files --root-mode upward",
 		"build.watch": "concurrently 'yarn run build.babel --watch' \"chokidar 'src/**/*' -c 'yarn build.types'\"",
+		"build.resolve-paths": "resolve-path-aliases --target build --patterns **/*.js,**/*.d.ts",
 		"rebuild": "cd ../ && yarn rebuild",
 		"clean": "rm -rf build/",
 		"lint": "eslint '**/*.ts' && tsc -p . --noEmit",
@@ -33,9 +34,11 @@
 		"release": "semantic-release"
 	},
 	"dependencies": {
+		"@sprucelabs/schema": "^12.0.3",
 		"@sprucelabs/error": "^2.2.298"
 	},
 	"devDependencies": {
+		"@sprucelabs/babel-plugin-schema": "^3.0.15",
 		"@types/node": "^14.11.1",
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^5.3.0",

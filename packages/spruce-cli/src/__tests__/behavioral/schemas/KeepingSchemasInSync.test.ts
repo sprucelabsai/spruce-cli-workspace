@@ -32,6 +32,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
 		const results = await cli.getFeature('schema').Action('sync').execute({})
 
+		assert.isUndefined(results.errors)
 		assert.isAbove(results.files?.length, 0)
 		assert.doesInclude(results.files, { action: 'generated' })
 
