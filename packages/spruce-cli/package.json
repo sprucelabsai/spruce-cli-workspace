@@ -4,7 +4,7 @@
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "10.28.10",
+	"version": "10.28.15",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -50,12 +50,12 @@
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.11.2",
-		"@sprucelabs/error": "^2.2.293",
-		"@sprucelabs/log": "^10.2.227",
+		"@sprucelabs/error": "^2.2.298",
+		"@sprucelabs/log": "^10.2.229",
 		"@sprucelabs/mercury": "^10.5.72",
-		"@sprucelabs/schema": "^12.0.4",
-		"@sprucelabs/spruce-skill-utils": "^10.28.10",
-		"@sprucelabs/spruce-templates": "^10.28.10",
+		"@sprucelabs/schema": "^12.0.9",
+		"@sprucelabs/spruce-skill-utils": "^10.28.15",
+		"@sprucelabs/spruce-templates": "^10.28.15",
 		"blessed": "^0.1.81",
 		"blessed-contrib": "^4.8.20",
 		"cfonts": "^2.8.6",
@@ -80,7 +80,7 @@
 	},
 	"devDependencies": {
 		"@sprucelabs/jest-sheets-reporter": "^1.2.0",
-		"@sprucelabs/test": "^7.0.29",
+		"@sprucelabs/test": "^7.0.32",
 		"@types/blessed": "^0.1.17",
 		"@types/eslint": "^7.2.2",
 		"@types/fs-extra": "^9.0.1",
