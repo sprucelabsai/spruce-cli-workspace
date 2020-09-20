@@ -2082,10 +2082,10 @@
     tsconfig-paths "^3.9.0"
     yargs "^16.0.3"
 
-"@sprucelabs/error@^2.2.300":
-  version "2.2.300"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.300.tgz#e402a6a37b4977ca58ea8968e3511fa17768b80d"
-  integrity sha512-C/ENEsLJ6KFZvbUXWLRH8P0tEi6flFyDSfsaZDG7IFW50Q86SCIOfwkxI7WaSoC4r69d+9unOKYOzuvIh7SY3A==
+"@sprucelabs/error@^2.2.301":
+  version "2.2.301"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.301.tgz#bd929670549bc6a63a35a3d6a541c99920883caa"
+  integrity sha512-TfwMS6qcGf7rFbLZkM87OnF04aWIM5vSuYCAD6oNFoEMCngUeJZIPY2Un8Fd3H7FVP+UJcNCKS7GsS76DVSCYQ==
 
 "@sprucelabs/jest-sheets-reporter@^1.2.0":
   version "1.2.0"
@@ -2109,22 +2109,22 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^12.0.12":
-  version "12.0.12"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.0.12.tgz#a9c8b8034d80f07ff20e95093b4c9efc93618a08"
-  integrity sha512-piwsap9sdJsVqubcUYk1hc/tsNLldy0unuhrGMjS3OOzKsdAeqZr0RECKE7VFl7VLaswWC68oVd00zkwd67AtA==
+"@sprucelabs/schema@^12.0.13":
+  version "12.0.13"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.0.13.tgz#458d79965243f3765f2630cb4106186832ca469c"
+  integrity sha512-wF0YVIMASumGHn78oYk+Zd93NZtw+XOp85rBj9jl5FybGj+O2B4k52IRuSLfd2d1hEvEnQiwcCKQYWboxS7odw==
   dependencies:
-    "@sprucelabs/error" "^2.2.300"
+    "@sprucelabs/error" "^2.2.301"
     "@sprucelabs/log" "^10.2.229"
     google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.7.58"
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^7.0.33":
-  version "7.0.33"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.33.tgz#ffceb69544f26ca5130811a00519c29295da4f1b"
-  integrity sha512-9aSGAyoFUV8wG0KjkwMa3U8f539JD91s5ZRghxkZZUTOnESi9T+6I9M2v23ceERpgTHu1i4aQEYNfmPiqF/77w==
+"@sprucelabs/test@^7.0.34":
+  version "7.0.34"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.34.tgz#aae692238d77bc3d38b5241dd01f0460bcdef5fd"
+  integrity sha512-5kUmPlRrKN99Zth6dMgS87VQXJCyj40MRLp8f6NJYzffRY6rzhnPXbcUjpRdzwHAy1OQbG+X7e358l9+C1snOQ==
   dependencies:
     "@babel/core" "^7.11.6"
     "@babel/preset-env" "^7.11.5"
@@ -2134,7 +2134,7 @@
     jest "^26.4.2"
     lodash "^4.17.20"
     ts-expect "^1.1.0"
-    ts-jest "^26.3.0"
+    ts-jest "^26.4.0"
 
 "@ts-morph/common@~0.5.2":
   version "0.5.2"
@@ -10102,7 +10102,7 @@ ts-expect@^1.1.0:
   resolved "https://registry.yarnpkg.com/ts-expect/-/ts-expect-1.1.0.tgz#52a280a149e1943ff7473d3dcb2fe17f85f63853"
   integrity sha512-cKoBZ47X85x/Qh7taf30m3BhOJOhtNbb7KFHz9CCuWeRSAh0wzprnmiN9TSOQ0FWp3+qDWS5f2FDnxkY93Kdfw==
 
-ts-jest@^26.3.0:
+ts-jest@^26.4.0:
   version "26.4.0"
   resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-26.4.0.tgz#903c7827f3d3bc33efc2f91be294b164400c32e3"
   integrity sha512-ofBzoCqf6Nv/PoWb/ByV3VNKy2KJSikamOBxvR3E6eVdIw10GwAXoyvMWXXjZJK2s6S27ZE8fI+JBTnGaovl6Q==
