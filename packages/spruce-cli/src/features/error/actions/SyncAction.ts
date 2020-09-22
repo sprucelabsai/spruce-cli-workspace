@@ -105,6 +105,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			globalNamespace: 'SpruceErrors',
 			fetchRemoteSchemas: false,
 			generateFieldTypes: false,
+			generateStandaloneTypesFile: true,
 		})
 
 		const errorSyncResults = await schemaSyncAction.execute(syncOptions)

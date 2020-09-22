@@ -92,15 +92,23 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 
 	protected validateAndNormalizeOptions(options: SchemaPartialValues<S>) {
 		const schema = this.optionsSchema
+		const o: Record<string, any> = {}
+		Object.keys(options).forEach((key: string) => {
+			// @ts-ignore
+			if (options[key] !== undefined) {
+				//@ts-ignore
+				o[key] = options[key]
+			}
+		})
 
-		const allOptions = {
+		const values = {
 			...defaultSchemaValues(schema),
-			...options,
+			...o,
 		}
 
-		validateSchemaValues(schema, allOptions as SchemaValues<ISchema>, {})
+		validateSchemaValues(schema, values as SchemaValues<ISchema>, {})
 
-		return allOptions as StripNulls<SchemaValuesWithDefaults<S>>
+		return values as StripNulls<SchemaValuesWithDefaults<S>>
 	}
 
 	protected async resolveVersion(

@@ -38,7 +38,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 			description: 'this is so great!',
 		})
 
-		assert.isTruthy(response)
+		assert.isFalsy(response.errors)
 
 		const expectedDestination = versionUtil.resolveNewLatestPath(
 			this.cwd,

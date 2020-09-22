@@ -73,6 +73,28 @@ const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasA
 	                defaultValue: true,
 	                options: undefined
 	            },
+	            'fetchLocalSchemas': {
+	                label: 'Fetch local schemas',
+	                type: 'boolean',
+	                isPrivate: true,
+	                hint: 'I will check the server and your contracts to pull down schemas you need.',
+	                defaultValue: true,
+	                options: undefined
+	            },
+	            'fetchCoreSchemas': {
+	                label: 'Fetch remote schemas',
+	                type: 'boolean',
+	                hint: 'I will check the server and your contracts to pull down schemas you need.',
+	                defaultValue: false,
+	                options: undefined
+				},
+				generateStandaloneTypesFile: {
+					type: 'boolean',
+					label: 'Generate standalone types file',
+					isPrivate: true,
+					hint: `By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas`,
+					defaultValue: false,
+				}
 	    }
 }
 

@@ -2,30 +2,31 @@
 /* eslint-disable no-redeclare */
 
 import { default as SchemaEntity } from '@sprucelabs/schema'
+export { SpruceSchemas } from '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.types'
+
 {{#each imports}}
 import * as {{importAs}} from '{{package}}'
 {{/each}}
 
 
+declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.types' {
 
-{{#each schemaTemplateItems}}
+	{{#each schemaTemplateItems}}
 
-export declare namespace {{../globalNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}} {
+	namespace {{../globalNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}} {
 
-	{{#if schema.description}}/** {{schema.description}} */{{/if}}
-	export interface I{{namePascal}} {
-		{{> schemaValues schema=schema renderAs="type" }}
+		{{#if schema.description}}/** {{schema.description}} */{{/if}}
+		interface I{{namePascal}} {
+			{{> schemaValues schema=schema renderAs="type" }}
+		}
+
+		interface I{{namePascal}}Schema extends SpruceSchema.ISchema {
+			{{> schemaBody namespace=namespace schema=schema renderAs="type" }}
+		}
+
+		type {{namePascal}}Entity = SchemaEntity<{{../globalNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}}.I{{namePascal}}Schema>
+
 	}
 
-	export interface I{{namePascal}}Schema extends SpruceSchema.ISchema {
-		{{> schemaBody namespace=namespace schema=schema renderAs="type" }}
-	}
-
-	export type {{namePascal}}Entity = SchemaEntity<{{../globalNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}}.I{{namePascal}}Schema>
-
+	{{/each}}
 }
-
-{{/each}}
-
-
-

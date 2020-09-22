@@ -2121,10 +2121,10 @@
     mime-db "^1.44.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^7.0.34":
-  version "7.0.34"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.34.tgz#aae692238d77bc3d38b5241dd01f0460bcdef5fd"
-  integrity sha512-5kUmPlRrKN99Zth6dMgS87VQXJCyj40MRLp8f6NJYzffRY6rzhnPXbcUjpRdzwHAy1OQbG+X7e358l9+C1snOQ==
+"@sprucelabs/test@^7.0.36":
+  version "7.0.37"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.37.tgz#1ba05af7e1535294c48ffcfe351758b868e70f2f"
+  integrity sha512-AuxYQnNEG/REV/5xqkV5Az1yuhaFvGjSZFG+ACSg/ZnlarghtwGeNsB6ye8RtB2m0Tfj3qTlcwZDcLSoi3OG9w==
   dependencies:
     "@babel/core" "^7.11.6"
     "@babel/preset-env" "^7.11.5"

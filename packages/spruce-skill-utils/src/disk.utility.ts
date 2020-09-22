@@ -16,29 +16,36 @@ const diskUtil = {
 	writeFile(destination: string, contents: string) {
 		fs.outputFileSync(destination, contents)
 	},
+
 	readDir(destination: string) {
 		return fs.readdirSync(destination)
 	},
+
 	readFile(source: string) {
 		if (!fs.existsSync(source)) {
 			throw new Error(`No file to read at ${source}`)
 		}
 		return fs.readFileSync(source).toString()
 	},
+
 	deleteFile(destination: string) {
 		if (fs.existsSync(destination)) {
 			fs.removeSync(destination)
 		}
 	},
+
 	createDir(destination: string) {
 		fs.ensureDirSync(destination)
 	},
+
 	moveDir(source: string, destination: string) {
 		fs.moveSync(source, destination)
 	},
+
 	moveFile(source: string, destination: string) {
 		fs.moveSync(source, destination)
 	},
+
 	async copyDir(source: string, destination: string) {
 		this.createDir(destination)
 		return new Promise((resolve) => {
@@ -54,24 +61,51 @@ const diskUtil = {
 			)
 		})
 	},
-	deleteDir(destination: string) {
-		if (fs.existsSync(destination)) {
-			fs.removeSync(destination)
+
+	deleteDir(target: string) {
+		const resolved = this.resolvePath(target)
+		if (fs.existsSync(resolved)) {
+			fs.removeSync(resolved)
 		}
 	},
-	doesFileExist(destination: string) {
-		return fs.existsSync(destination)
+
+	doesFileExist(target: string) {
+		const resolved = this.resolvePath(target)
+		return fs.existsSync(resolved)
 	},
-	isDir(destination: string) {
-		if (this.doesDirExist(destination)) {
-			return fs.lstatSync(destination).isDirectory()
+
+	isDir(target: string) {
+		const resolved = this.resolvePath(target)
+		if (this.doesDirExist(resolved)) {
+			return fs.lstatSync(resolved).isDirectory()
 		}
 
 		return false
 	},
-	doesDirExist(destination: string) {
-		return fs.existsSync(destination)
+
+	isDirPath(path: string) {
+		const resolved = this.resolvePath(path)
+		if (this.isDir(resolved)) {
+			return true
+		}
+
+		return pathUtil.extname(resolved).length === 0
 	},
+
+	isFile(target: string) {
+		const resolved = this.resolvePath(target)
+		if (this.doesFileExist(resolved)) {
+			return fs.lstatSync(resolved).isFile()
+		}
+
+		return false
+	},
+
+	doesDirExist(target: string) {
+		const resolved = this.resolvePath(target)
+		return fs.existsSync(resolved)
+	},
+
 	resolveHashSprucePath(cwd: string, ...filePath: string[]): string {
 		const parts = cwd.split(pathUtil.sep)
 
@@ -94,10 +128,12 @@ const diskUtil = {
 			return false
 		}
 	},
+
 	isFileDifferent(destination: string, contents: string) {
 		const currentContents = this.readFile(destination)
 		return currentContents != contents
 	},
+
 	resolvePath(cwd: string, ...filePath: string[]): string {
 		let builtPath = pathUtil.join(...filePath)
 
@@ -124,6 +160,7 @@ const diskUtil = {
 
 		return targetDir
 	},
+
 	createRandomTempDir() {
 		return this.createTempDir(uuid.v4())
 	},

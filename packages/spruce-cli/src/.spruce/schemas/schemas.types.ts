@@ -1481,6 +1481,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 			'globalNamespace'?: string| undefined | null
 			/** Fetch remote schemas. I will check the server and your contracts to pull down schemas you need. */
 			'fetchRemoteSchemas'?: boolean| undefined | null
+			'fetchCoreSchemas'?: boolean| undefined | null
 	}
 
 	export interface ISyncSchemasActionSchema extends SpruceSchema.ISchema {
@@ -1552,7 +1553,29 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		                hint: 'I will check the server and your contracts to pull down schemas you need.',
 		                defaultValue: true,
 		                options: undefined
-		            },
+					},
+					'fetchLocalSchemas': {
+						label: 'Fetch local schemas',
+						type: 'boolean',
+						isPrivate: true,
+						hint: 'I will check the server and your contracts to pull down schemas you need.',
+						defaultValue: true,
+						options: undefined
+					},
+					'fetchCoreSchemas': {
+						label: 'Fetch remote schemas',
+						type: 'boolean',
+						hint: 'I will check the server and your contracts to pull down schemas you need.',
+						defaultValue: false,
+						options: undefined
+					},
+					'generateStandaloneTypesFile': {
+						type: 'boolean',
+						label: 'Generate standalone types file',
+						isPrivate: true,
+						hint: `By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas`,
+						defaultValue: false,
+					}
 		    }
 	}
 

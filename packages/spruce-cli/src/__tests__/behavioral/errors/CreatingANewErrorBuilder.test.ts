@@ -56,18 +56,19 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 			nameCamel: 'testPass',
 		})
 
-		const schemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
+		testUtil.assertsFileByNameInGeneratedFiles(
 			/testPass\.schema/,
 			results.files ?? []
 		)
 
-		await this.Service('typeChecker').check(schemaMatch)
-
-		const optionsMatch = testUtil.assertsFileByNameInGeneratedFiles(
+		testUtil.assertsFileByNameInGeneratedFiles(
 			/options\.types/,
 			results.files ?? []
 		)
 
-		await this.Service('typeChecker').check(optionsMatch)
+		const typeChecker = this.Service('typeChecker')
+		for (const file of results.files ?? []) {
+			await typeChecker.check(file.path)
+		}
 	}
 }
