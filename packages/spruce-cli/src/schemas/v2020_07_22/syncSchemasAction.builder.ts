@@ -52,5 +52,11 @@ export default buildSchema({
 				'Should I pull core schemas. It is recommended you use @sprucelabs/spruce-core-schemas to load core schemas.',
 			defaultValue: false,
 		},
+		deleteDestinationDirIfNoSchemas: {
+			type: 'boolean',
+			label: 'Delete directory if no schemas',
+			isPrivate: true,
+			defaultValue: false,
+		},
 	},
 })

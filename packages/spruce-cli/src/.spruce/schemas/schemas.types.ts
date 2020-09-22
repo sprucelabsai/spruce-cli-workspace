@@ -1575,6 +1575,12 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 						isPrivate: true,
 						hint: `By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas`,
 						defaultValue: false,
+					},
+					deleteDestinationDirIfNoSchemas: {
+						type: 'boolean',
+						label: 'Delete directory if no schemas',
+						isPrivate: true,
+						defaultValue: false,
 					}
 		    }
 	}

@@ -40,6 +40,8 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 			nameCamel: 'testFailed',
 		})
 
+		assert.isFalsy(results.errors)
+
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
 			/testFailed.builder/,
 			results.files ?? []
@@ -55,6 +57,8 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 			nameReadable: 'Test pass',
 			nameCamel: 'testPass',
 		})
+
+		assert.isFalsy(results.errors)
 
 		testUtil.assertsFileByNameInGeneratedFiles(
 			/testPass\.schema/,

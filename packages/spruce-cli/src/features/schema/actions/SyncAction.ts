@@ -38,6 +38,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			fetchLocalSchemas,
 			generateFieldTypes,
 			generateStandaloneTypesFile,
+			deleteDestinationDirIfNoSchemas,
 		} = normalizedOptions
 
 		if ((fetchRemoteSchemas || fetchLocalSchemas) && fetchCoreSchemas) {
@@ -96,7 +97,7 @@ export default class SyncAction extends AbstractFeatureAction<
 		}
 
 		if (schemaTemplateItems) {
-			if (schemaTemplateItems.length === 0) {
+			if (deleteDestinationDirIfNoSchemas && schemaTemplateItems.length === 0) {
 				diskUtil.deleteDir(resolvedSchemaTypesDestinationDir)
 				return {}
 			}
