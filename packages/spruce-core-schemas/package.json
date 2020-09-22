@@ -39,7 +39,7 @@
 	},
 	"devDependencies": {
 		"@sprucelabs/babel-plugin-schema": "^3.0.15",
-		"@types/node": "^14.11.1",
+		"@types/node": "^14.11.2",
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^5.3.0",
 		"conventional-changelog-sprucelabs": "^1.1.1",
