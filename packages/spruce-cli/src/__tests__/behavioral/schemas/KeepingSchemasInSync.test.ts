@@ -55,6 +55,21 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		)
 	}
 
+	@test()
+	protected static async syncingWithNoSchemasSucceeds() {
+		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
+
+		const results = await cli.getFeature('schema').Action('sync').execute({})
+
+		assert.isFalsy(results.errors)
+
+		testUtil.assertCountsByAction(results.files ?? [], {
+			updated: 0,
+			generated: 3,
+			skipped: 0,
+		})
+	}
+
 	private static readonly coreSyncOptions = {
 		fetchCoreSchemas: true,
 		fetchLocalSchemas: false,

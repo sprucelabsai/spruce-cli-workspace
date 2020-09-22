@@ -263,6 +263,9 @@ export default class SyncAction extends AbstractFeatureAction<
 		schemaTemplateItems: ISchemaTemplateItem[],
 		globalNamespace?: string
 	) {
+		if (schemaTemplateItems.length === 0) {
+			return {}
+		}
 		const valueTypeResults = await this.schemaGenerator.generateValueTypes(
 			resolvedDestination,
 			{
