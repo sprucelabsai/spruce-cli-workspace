@@ -14,7 +14,7 @@ export default class KeepsErrorClassInSyncTest extends AbstractErrorTest {
 			nameCamel: 'testError',
 		})
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		testUtil.assertsFileByNameInGeneratedFiles(
 			/SpruceError/,
 			results.files ?? []
 		)
@@ -24,7 +24,9 @@ export default class KeepsErrorClassInSyncTest extends AbstractErrorTest {
 			action: 'generated',
 		})
 
-		await this.Service('typeChecker').check(match)
+		for (const file of results.files ?? []) {
+			await this.Service('typeChecker').check(file.path)
+		}
 	}
 
 	@test()
