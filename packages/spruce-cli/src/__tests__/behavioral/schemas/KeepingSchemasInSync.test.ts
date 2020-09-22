@@ -237,8 +237,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		// this should cleanup types and schema files
 		await cli.getFeature('schema').Action('sync').execute({})
 
-		// schemas.types should not exist
-		assert.isFalse(diskUtil.doesFileExist(this.schemaTypesFile))
+		assert.isTrue(diskUtil.doesFileExist(this.schemaTypesFile))
 
 		// and the schema should have been deleted
 		assert.isFalse(diskUtil.doesFileExist(schemaFile))
