@@ -1,15 +1,18 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 /* eslint-disable no-redeclare */
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { default as SchemaEntity } from '@sprucelabs/schema'
 export { SpruceSchemas } from '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.types'
+
+{{#if (gt schemaTemplateItems.length 0)}}
+import { default as SchemaEntity } from '@sprucelabs/schema'
+{{/if}}
+
+
+{{#if (gt schemaTemplateItems.length 0)}}
 
 {{#each imports}}
 import * as {{importAs}} from '{{package}}'
 {{/each}}
-
 
 declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.types' {
 
@@ -32,3 +35,4 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 	{{/each}}
 }
+{{/if}}

@@ -212,7 +212,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 			'gis'
 		)
 
-		assert.isFalse(diskUtil.doesFileExist(this.schemaTypesFile))
+		assert.isTrue(diskUtil.doesFileExist(this.schemaTypesFile))
 
 		const createResponse = await createAction.execute({
 			nameReadable: 'Test schema',
