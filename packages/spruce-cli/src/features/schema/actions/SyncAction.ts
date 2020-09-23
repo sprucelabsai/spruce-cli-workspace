@@ -34,14 +34,35 @@ export default class SyncAction extends AbstractFeatureAction<
 			enableVersioning,
 			globalNamespace,
 			fetchRemoteSchemas,
+			fetchCoreSchemas,
+			fetchLocalSchemas,
 			generateFieldTypes,
+			generateStandaloneTypesFile,
+			deleteDestinationDirIfNoSchemas,
 		} = normalizedOptions
+
+		if ((fetchRemoteSchemas || fetchLocalSchemas) && fetchCoreSchemas) {
+			throw new SpruceError({
+				code: 'INVALID_PARAMETERS',
+				parameters: [
+					'fetchLocalSchemas',
+					'fetchCoreSchemas',
+					'fetchRemoteSchemas',
+				],
+				friendlyMessage:
+					'When `--fetchCoreSchemas true`, you must set `--fetchLocalSchemas false` and `--fetchRemoteSchemas false`',
+			})
+		}
 
 		const {
 			resolvedFieldTypesDestination,
 			resolvedSchemaTypesDestinationDir,
 			resolvedSchemaTypesDestination,
-		} = this.resolvePaths(schemaTypesDestinationDir, fieldTypesDestinationDir)
+		} = this.resolvePaths(
+			fetchCoreSchemas,
+			schemaTypesDestinationDir,
+			fieldTypesDestinationDir
+		)
 
 		const {
 			fieldTemplateItems,
@@ -66,6 +87,7 @@ export default class SyncAction extends AbstractFeatureAction<
 				resolvedSchemaTypesDestinationDir,
 				enableVersioning,
 				fetchRemoteSchemas,
+				fetchCoreSchemas,
 			})
 
 			schemaErrors.push(...templateResults.schemaErrors)
@@ -75,12 +97,12 @@ export default class SyncAction extends AbstractFeatureAction<
 		}
 
 		if (schemaTemplateItems) {
-			if (schemaTemplateItems.length === 0) {
+			if (deleteDestinationDirIfNoSchemas && schemaTemplateItems.length === 0) {
 				diskUtil.deleteDir(resolvedSchemaTypesDestinationDir)
 				return {}
 			}
 
-			await this.deleteOrphanedDefinitions(
+			await this.deleteOrphanedSchemas(
 				resolvedSchemaTypesDestinationDir,
 				schemaTemplateItems
 			)
@@ -107,6 +129,10 @@ export default class SyncAction extends AbstractFeatureAction<
 							schemaTemplateItems,
 							valueTypes,
 							globalNamespace: globalNamespace ?? undefined,
+							typesTemplate:
+								fetchCoreSchemas || generateStandaloneTypesFile
+									? 'schemas/core.schemas.types.ts.hbs'
+									: undefined,
 						}
 					)
 				} catch (err) {
@@ -134,12 +160,14 @@ export default class SyncAction extends AbstractFeatureAction<
 		resolvedSchemaTypesDestinationDir: string
 		enableVersioning: boolean
 		fetchRemoteSchemas: boolean
+		fetchCoreSchemas: boolean
 	}) {
 		const {
 			schemaLookupDir,
 			resolvedSchemaTypesDestinationDir,
 			enableVersioning,
 			fetchRemoteSchemas,
+			fetchCoreSchemas,
 		} = options
 
 		const feature = this.getFeature('skill') as SkillFeature
@@ -151,6 +179,7 @@ export default class SyncAction extends AbstractFeatureAction<
 		} = await this.schemaStore.fetchSchemas({
 			localSchemaDir: schemaLookupDir,
 			fetchRemoteSchemas,
+			fetchCoreSchemas,
 			enableVersioning,
 			localNamespace: namespace,
 		})
@@ -195,23 +224,32 @@ export default class SyncAction extends AbstractFeatureAction<
 	}
 
 	private resolvePaths(
+		fetchCoreSchemas: boolean,
 		schemaTypesDestinationDir: string,
 		fieldTypesDestinationDir: string
 	) {
 		const resolvedSchemaTypesDestination = diskUtil.resolvePath(
 			this.cwd,
-			schemaTypesDestinationDir
+			fetchCoreSchemas && diskUtil.isDirPath(schemaTypesDestinationDir)
+				? diskUtil.resolvePath(
+						this.cwd,
+						schemaTypesDestinationDir,
+						'core.schemas.types.ts'
+				  )
+				: schemaTypesDestinationDir
 		)
 
-		const resolvedSchemaTypesDestinationDir =
-			pathUtil.extname(resolvedSchemaTypesDestination).length === 0
-				? resolvedSchemaTypesDestination
-				: pathUtil.dirname(resolvedSchemaTypesDestination)
+		const resolvedSchemaTypesDestinationDir = diskUtil.isDirPath(
+			resolvedSchemaTypesDestination
+		)
+			? resolvedSchemaTypesDestination
+			: pathUtil.dirname(resolvedSchemaTypesDestination)
 
 		const resolvedFieldTypesDestination = diskUtil.resolvePath(
 			this.cwd,
 			fieldTypesDestinationDir ?? resolvedSchemaTypesDestinationDir
 		)
+
 		return {
 			resolvedFieldTypesDestination,
 			resolvedSchemaTypesDestinationDir,
@@ -225,6 +263,9 @@ export default class SyncAction extends AbstractFeatureAction<
 		schemaTemplateItems: ISchemaTemplateItem[],
 		globalNamespace?: string
 	) {
+		if (schemaTemplateItems.length === 0) {
+			return {}
+		}
 		const valueTypeResults = await this.schemaGenerator.generateValueTypes(
 			resolvedDestination,
 			{
@@ -241,7 +282,7 @@ export default class SyncAction extends AbstractFeatureAction<
 		return valueTypes
 	}
 
-	private async deleteOrphanedDefinitions(
+	private async deleteOrphanedSchemas(
 		resolvedDestination: string,
 		schemaTemplateItems: ISchemaTemplateItem[]
 	) {

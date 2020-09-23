@@ -37,5 +37,26 @@ export default buildSchema({
 				'I will check the server and your contracts to pull down schemas you need.',
 			defaultValue: true,
 		},
+		fetchLocalSchemas: {
+			type: 'boolean',
+			label: 'Fetch local schemas',
+			isPrivate: true,
+			hint: 'I will look in schemaLookupDir to load local schemas.',
+			defaultValue: true,
+		},
+		fetchCoreSchemas: {
+			type: 'boolean',
+			label: 'Fetch core schemas',
+			isPrivate: true,
+			hint:
+				'Should I pull core schemas. It is recommended you use @sprucelabs/spruce-core-schemas to load core schemas.',
+			defaultValue: false,
+		},
+		deleteDestinationDirIfNoSchemas: {
+			type: 'boolean',
+			label: 'Delete directory if no schemas',
+			isPrivate: true,
+			defaultValue: false,
+		},
 	},
 })

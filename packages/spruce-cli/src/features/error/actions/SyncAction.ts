@@ -43,6 +43,10 @@ export default class SyncAction extends AbstractFeatureAction<
 			normalizedOptions
 		)
 
+		if (errorSyncResults.errors) {
+			return errorSyncResults
+		}
+
 		if (this.areSyncResultsEmpty(errorSyncResults)) {
 			this.deleteOrphanedDirs(errorTypesDestinationDir)
 			return {}
@@ -105,6 +109,8 @@ export default class SyncAction extends AbstractFeatureAction<
 			globalNamespace: 'SpruceErrors',
 			fetchRemoteSchemas: false,
 			generateFieldTypes: false,
+			generateStandaloneTypesFile: true,
+			deleteDestinationDirIfNoSchemas: true,
 		})
 
 		const errorSyncResults = await schemaSyncAction.execute(syncOptions)

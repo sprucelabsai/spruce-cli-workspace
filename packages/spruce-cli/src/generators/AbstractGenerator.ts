@@ -57,7 +57,10 @@ export default abstract class AbstractGenerator {
 		return myResults
 	}
 
-	protected resolveFilename(dirOrFile: string, fallbackFileName: string) {
+	protected resolveFilenameWithFallback(
+		dirOrFile: string,
+		fallbackFileName: string
+	) {
 		const isDir =
 			diskUtil.doesDirExist(dirOrFile) &&
 			fs.lstatSync(dirOrFile).isDirectory() &&

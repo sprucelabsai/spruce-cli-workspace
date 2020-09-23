@@ -27,6 +27,7 @@ export interface IGenerateSchemaTypesOptions {
 	schemaTemplateItems: ISchemaTemplateItem[]
 	valueTypes: IValueTypes
 	globalNamespace?: string
+	typesTemplate?: string
 }
 
 export interface ISchemaTypesGenerationStage {
@@ -124,8 +125,14 @@ export default class SchemaGenerator extends AbstractGenerator {
 		destinationDirOrFilename: string,
 		options: IGenerateSchemaTypesOptions
 	): Promise<GenerationResults> {
-		const { fieldTemplateItems, schemaTemplateItems, valueTypes } = options
-		const resolvedTypesDestination = this.resolveFilename(
+		const {
+			fieldTemplateItems,
+			schemaTemplateItems,
+			valueTypes,
+			typesTemplate,
+		} = options
+
+		const resolvedTypesDestination = this.resolveFilenameWithFallback(
 			destinationDirOrFilename,
 			'schemas.types.ts'
 		)
@@ -137,6 +144,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			fieldTemplateItems,
 			valueTypes,
 			globalNamespace: options.globalNamespace,
+			typesTemplate,
 		})
 
 		results = await this.writeFileIfChangedMixinResults(

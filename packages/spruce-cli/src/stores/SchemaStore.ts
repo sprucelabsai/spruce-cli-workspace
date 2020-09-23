@@ -47,11 +47,13 @@ export default class SchemaStore extends AbstractStore {
 		fetchRemoteSchemas?: boolean
 		enableVersioning?: boolean
 		localNamespace: string
+		fetchCoreSchemas?: boolean
 	}): Promise<IFetchSchemasResults> {
 		const {
 			localSchemaDir = 'src/schemas',
 			fetchRemoteSchemas = true,
 			enableVersioning = true,
+			fetchCoreSchemas = true,
 			localNamespace,
 		} = options || {}
 
@@ -61,7 +63,10 @@ export default class SchemaStore extends AbstractStore {
 		}
 
 		if (fetchRemoteSchemas) {
-			// TODO - move to mercury request when mercury-api is running
+			// TODO - make mercury request when mercury-api is running
+		}
+
+		if (fetchCoreSchemas) {
 			results.schemasByNamespace[CORE_NAMESPACE] = [
 				personSchema,
 				skillSchema,

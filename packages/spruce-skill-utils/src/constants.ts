@@ -16,4 +16,4 @@ export const HEALTH_DIVIDER = '###### HEALTH REPORT ######' as const
 export const SCHEMA_VERSION_FALLBACK = '__latest'
 export const DEFAULT_NAMESPACE_PREFIX = 'SpruceSchemas'
 export const DEFAULT_BUILDER_FUNCTION = 'buildSchema'
-export const DEFAULT_TYPES_FILE = '#spruce/schemas/schemas.types'
+export const DEFAULT_TYPES_FILE = '@sprucelabs/spruce-core-schemas'

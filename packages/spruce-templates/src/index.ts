@@ -41,10 +41,11 @@ export const templates = {
 		fieldTemplateItems: IFieldTemplateItem[]
 		valueTypes: IValueTypes
 		globalNamespace?: string
+		typesTemplate?: string
 	}) {
 		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
 		const template = templateImportUtil.getTemplate(
-			'schemas/schemas.types.ts.hbs'
+			options.typesTemplate ?? 'schemas/schemas.types.ts.hbs'
 		)
 		return template({
 			...options,
@@ -140,6 +141,13 @@ export const templates = {
 	}) {
 		const template = templateImportUtil.getTemplate('schemas/example.ts.hbs')
 		return template(options)
+	},
+
+	schemaPlugin() {
+		const template = templateImportUtil.getTemplate(
+			'schemas/schema.plugin.ts.hbs'
+		)
+		return template({})
 	},
 
 	errorExample(options: {

@@ -3,10 +3,10 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import {
 	CORE_SCHEMA_VERSION,
 	CORE_NAMESPACE,
+	DEFAULT_NAMESPACE_PREFIX,
 } from '@sprucelabs/spruce-skill-utils'
 import { assert, test } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
-import { IFeatureActionExecuteResponse } from '../../../features/features.types'
 import testUtil from '../../../utilities/test.utility'
 
 export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
@@ -28,38 +28,102 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	}
 
 	@test()
-	protected static async syncsSchemasGeneratesTypesFile() {
+	protected static async cantSyncCoreAndLocalSchemas() {
 		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
-		const results = await cli.getFeature('schema').Action('sync').execute({})
-
-		assert.isUndefined(results.errors)
-		assert.isAbove(results.files?.length, 0)
-		assert.doesInclude(results.files, { action: 'generated' })
-
-		const expectedSchemaTypesDestination = this.resolveHashSprucePath(
-			'schemas',
-			'schemas.types.ts'
+		await assert.doesThrowAsync(
+			() =>
+				cli.getFeature('schema').Action('sync').execute({
+					fetchCoreSchemas: true,
+					fetchLocalSchemas: true,
+					fetchRemoteSchemas: false,
+				}),
+			/When `--fetchCoreSchemas true`, you must set `--fetchLocalSchemas false` and `--fetchRemoteSchemas false`/
 		)
-
-		assert.isEqual(this.schemaTypesFile, expectedSchemaTypesDestination)
-		assert.isTrue(diskUtil.doesFileExist(this.schemaTypesFile))
 	}
 
 	@test()
-	protected static async syncSchemasUpdatesTypesFile() {
-		const cli = await this.syncSchemas('keeps-schemas-in-sync')
+	protected static async cantSyncCoreAndRemoteSchemas() {
+		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
+		await assert.doesThrowAsync(
+			() =>
+				cli.getFeature('schema').Action('sync').execute({
+					fetchCoreSchemas: true,
+					fetchLocalSchemas: false,
+					fetchRemoteSchemas: true,
+				}),
+			/When `--fetchCoreSchemas true`, you must set `--fetchLocalSchemas false` and `--fetchRemoteSchemas false`/
+		)
+	}
+
+	@test()
+	protected static async syncingWithNoSchemasSucceeds() {
+		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
+
 		const results = await cli.getFeature('schema').Action('sync').execute({})
 
+		assert.isFalsy(results.errors)
+
+		testUtil.assertCountsByAction(results.files ?? [], {
+			updated: 0,
+			generated: 3,
+			skipped: 0,
+		})
+	}
+
+	private static readonly coreSyncOptions = {
+		fetchCoreSchemas: true,
+		fetchLocalSchemas: false,
+		fetchRemoteSchemas: false,
+	}
+
+	@test()
+	protected static async syncingCoreSchemasGeneratesTypesFile() {
+		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
+
+		const results = await cli
+			.getFeature('schema')
+			.Action('sync')
+			.execute(this.coreSyncOptions)
+
+		assert.isUndefined(results.errors)
+		assert.isTruthy(results.files)
+		assert.isLength(results.files, 11)
+
+		testUtil.assertCountsByAction(results.files ?? [], {
+			generated: 11,
+			skipped: 0,
+			updated: 0,
+		})
+
+		assert.isTrue(diskUtil.doesFileExist(this.coreSchemaTypesFile))
+	}
+
+	@test()
+	protected static async syncSchemasTwiceSkipsFiles() {
+		const cli = await this.syncSchemas(
+			'keeps-schemas-in-sync',
+			this.coreSyncOptions
+		)
+		const results = await cli
+			.getFeature('schema')
+			.Action('sync')
+			.execute(this.coreSyncOptions)
+
+		assert.isFalsy(results.errors)
 		assert.isAbove(results.files?.length, 0)
-		assert.doesInclude(results.files, { action: 'skipped' })
+
+		testUtil.assertCountsByAction(results.files ?? [], {
+			generated: 0,
+			skipped: results.files?.length ?? 0,
+			updated: 0,
+		})
 	}
 
 	@test()
 	protected static async makeSureSchemaTypesAreVersioned() {
-		await this.syncSchemas('keeps-schemas-in-sync')
+		await this.syncSchemas('keeps-schemas-in-sync', this.coreSyncOptions)
 
-		const typesFile = this.schemaTypesFile
-		const typesContents = diskUtil.readFile(typesFile)
+		const typesContents = diskUtil.readFile(this.coreSchemaTypesFile)
 
 		assert.doesInclude(
 			typesContents,
@@ -71,16 +135,36 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	}
 
 	@test()
-	protected static async schemaTypesVileIsValid() {
-		await this.syncSchemas('keeps-schemas-in-sync')
+	protected static async schemaGeneratesValidFiles() {
+		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
+		const results = await cli
+			.getFeature('schema')
+			.Action('sync')
+			.execute(this.coreSyncOptions)
 
-		const typesFile = this.schemaTypesFile
-		await this.Service('typeChecker').check(typesFile)
+		assert.isFalsy(results.errors)
+		assert.isTruthy(results.files)
+
+		for (const file of results.files) {
+			await this.Service('typeChecker').check(file.path)
+		}
+
+		const typesContents = diskUtil.readFile(this.coreSchemaTypesFile)
+
+		assert.doesNotInclude(typesContents, /@sprucelabs\/spruce-core-schemas/gi)
+		assert.doesInclude(
+			typesContents,
+			new RegExp(
+				`export declare namespace ${DEFAULT_NAMESPACE_PREFIX}.${CORE_NAMESPACE}.${CORE_SCHEMA_VERSION.constValue}`,
+				'gis'
+			)
+		)
 	}
 
 	@test()
 	protected static async canHandleHyphenSchemaIds() {
 		const cli = await this.syncSchemas('keeps-schemas-in-sync')
+
 		const createResponse = await cli
 			.getFeature('schema')
 			.Action('create')
@@ -105,16 +189,19 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 			.Action('sync')
 			.execute({})
 
-		const schemaPath = testUtil.assertsFileByNameInGeneratedFiles(
+		testUtil.assertsFileByNameInGeneratedFiles(
 			'test-schema.schema.ts',
 			syncResults.files ?? []
 		)
 
-		await this.Service('typeChecker').check(schemaPath)
+		const typeChecker = this.Service('typeChecker')
+		for (const file of syncResults.files ?? []) {
+			await typeChecker.check(file.path)
+		}
 	}
 
 	@test()
-	protected static async schemasStayInSyncWhenDefinitionsAreDeleted() {
+	protected static async schemasStayInSyncWhenBuildersAreDeleted() {
 		const cli = await this.syncSchemas('keeps-schemas-in-sync')
 		const version = versionUtil.generateVersion()
 		const typeChecker = this.Service('typeChecker')
@@ -125,10 +212,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 			'gis'
 		)
 
-		let typesContents = diskUtil.readFile(this.schemaTypesFile)
-
-		// should not found our test schema
-		assert.doesNotInclude(typesContents, matcher)
+		assert.isTrue(diskUtil.doesFileExist(this.schemaTypesFile))
 
 		const createResponse = await createAction.execute({
 			nameReadable: 'Test schema',
@@ -156,26 +240,21 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		await typeChecker.check(this.schemaTypesFile)
 
 		// the types should include our test schema
-		typesContents = diskUtil.readFile(this.schemaTypesFile)
+		let typesContents = diskUtil.readFile(this.schemaTypesFile)
 		assert.doesInclude(typesContents, matcher)
 
-		// the definition file should exist
+		// the schema file should exist
 		assert.isTrue(diskUtil.doesFileExist(schemaFile))
 
 		// DELETE builder and make sure we are cleaned up
 		diskUtil.deleteFile(builderFile)
 
-		// this should cleanup types and definition files
+		// this should cleanup types and schema files
 		await cli.getFeature('schema').Action('sync').execute({})
 
-		// should lastly NOT include our test schema
-		await typeChecker.check(this.schemaTypesFile)
+		assert.isTrue(diskUtil.doesFileExist(this.schemaTypesFile))
 
-		// our schema should be missing from the types file
-		typesContents = diskUtil.readFile(this.schemaTypesFile)
-		assert.doesNotInclude(typesContents, matcher)
-
-		// and the definition should have been deleted
+		// and the schema should have been deleted
 		assert.isFalse(diskUtil.doesFileExist(schemaFile))
 	}
 
@@ -205,57 +284,5 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 			results.files ?? []
 		)
 		await this.Service('typeChecker').check(schemaMatch)
-	}
-
-	@test()
-	protected static async runningSyncTwiceReportsNoGeneratedFiles() {
-		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
-
-		const firstResults = await cli
-			.getFeature('schema')
-			.Action('sync')
-			.execute({})
-
-		this.assertCorrectFileResults({
-			results: firstResults,
-			updated: 0,
-			generated: 11,
-			skipped: 0,
-		})
-
-		const results = await cli.getFeature('schema').Action('sync').execute({})
-
-		this.assertCorrectFileResults({
-			results,
-			updated: 0,
-			generated: 0,
-			skipped: 11,
-		})
-	}
-
-	private static assertCorrectFileResults(options: {
-		results: IFeatureActionExecuteResponse
-		updated: number
-		generated: number
-		skipped: number
-	}) {
-		const { results, updated, generated, skipped } = options
-
-		assert.isTruthy(results.files)
-		const totalUpdatedFiles = results.files.filter(
-			(file) => file.action === 'updated'
-		).length
-		const totalGeneratedFiles = results.files.filter(
-			(file) => file.action === 'generated'
-		).length
-		const totalSkippedFiles = results.files.filter(
-			(file) => file.action === 'skipped'
-		).length
-
-		// if these fail, update the numbers in the test above
-		// it's important the counts are accurate
-		assert.isEqual(totalUpdatedFiles, updated)
-		assert.isEqual(totalGeneratedFiles, generated)
-		assert.isEqual(totalSkippedFiles, skipped)
 	}
 }
