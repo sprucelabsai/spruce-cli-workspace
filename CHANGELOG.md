@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.29.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.28.24...v10.29.0) (2020-09-23)
+
+
+### Bug Fixes
+
+* handle syncing with no schema better ([36f2c13](https://github.com/sprucelabsai/spruce-cli-workspace/commit/36f2c13))
+* pass tests, added merge utility ([1d89d24](https://github.com/sprucelabsai/spruce-cli-workspace/commit/1d89d24))
+
+
+### Features
+
+* schema namespace merging ([340fcea](https://github.com/sprucelabsai/spruce-cli-workspace/commit/340fcea))
+
+
+
+
+
 ## [10.28.24](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.28.23...v10.28.24) (2020-09-22)
 
 **Note:** Version bump only for package spruce-cli-workspace
