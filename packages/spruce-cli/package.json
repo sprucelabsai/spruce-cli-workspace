@@ -59,6 +59,7 @@
 		"blessed": "^0.1.81",
 		"blessed-contrib": "^4.8.20",
 		"cfonts": "^2.8.6",
+		"chalk": "^4.1.0",
 		"chokidar": "^3.4.2",
 		"cli-table3": "^0.6.0",
 		"commander": "^6.1.0",
@@ -79,8 +80,8 @@
 		"uuid": "^8.3.0"
 	},
 	"devDependencies": {
-		"@sprucelabs/jest-sheets-reporter": "^1.2.0",
-		"@sprucelabs/test": "^7.0.46",
+		"@sprucelabs/jest-sheets-reporter": "^1.2.1",
+		"@sprucelabs/test": "^7.0.47",
 		"@types/blessed": "^0.1.17",
 		"@types/eslint": "^7.2.2",
 		"@types/fs-extra": "^9.0.1",

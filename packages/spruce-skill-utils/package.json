@@ -37,8 +37,11 @@
 		"test.watch": "jest --watch"
 	},
 	"dependencies": {
+		"@babel/runtime": "^7.11.2",
 		"@sprucelabs/error": "^2.2.324",
+		"@sprucelabs/test": "^7.0.47",
 		"fs-extra": "^9.0.1",
+		"globby": "^11.0.1",
 		"inflection": "^1.12.0",
 		"lodash": "^4.17.20",
 		"uuid": "^8.3.0"
