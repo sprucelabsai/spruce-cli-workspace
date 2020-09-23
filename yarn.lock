@@ -2087,11 +2087,12 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.324.tgz#6eed0a713b30103c36c6f109fc6b2160346f24ed"
   integrity sha512-RrNmT+OUM1E/BSFAcU6BQcAntFHg0mJ6E+aeYJubQygI3M4Oz9EDit8qjetjwWDuDZUJUfsJjNtTL8lUy+uQNA==
 
-"@sprucelabs/jest-sheets-reporter@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/jest-sheets-reporter/-/jest-sheets-reporter-1.2.0.tgz#64d19f6454df2ca8f15a704f6fdb86bd9b0d7ede"
-  integrity sha512-luQiXzcgBKFnjET94C0i3MoK+hsSZXnTmBNyOz8DaMHf39KGMCAtZ6VVQ2jK9xf5Ihju5DWRKj+dgLcDcyOoZg==
+"@sprucelabs/jest-sheets-reporter@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/jest-sheets-reporter/-/jest-sheets-reporter-1.2.1.tgz#d742269f6b2243231ce000232e367a3839d3b83a"
+  integrity sha512-o4Sr6uilE5C7u+u+qAGsmd86x3UdN6PdM9CROT0h8T87IWP0/1JLMNYuaJQ6wqgOYVXmFJeRXlIOPqu0gHP3yw==
   dependencies:
+    dotenv "^8.2.0"
     google-spreadsheet "^3.0.13"
 
 "@sprucelabs/log@^10.2.237":
@@ -2122,14 +2123,15 @@
     mime-type "^4.0.0"
 
 "@sprucelabs/test@^7.0.46":
-  version "7.0.46"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.46.tgz#f5a596b22db24d2bc1f5bddf6db12e8d8d44b8b7"
-  integrity sha512-oF7RyzGok/NTdbpr79IG5TuDx318YLpB6LXRUHkcMuXF5CtXasKQAQvwdZOVNAwOhu9l39RfaWG+bV/slfxlig==
+  version "7.0.47"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.47.tgz#80bcd5fa6f0257f56b3c22ad562f9e576d228f57"
+  integrity sha512-TOECYY8UFCv4/8J76KtOZ0uwZgB2M5Oj++ruuGj7bYXL4zh7ffUo8r/5P8iZgnpEr3ScTxQNFNCXRvMNwbeCfg==
   dependencies:
     "@babel/core" "^7.11.6"
     "@babel/preset-env" "^7.11.5"
     "@types/jest" "^26.0.14"
     babel-jest "^26.3.0"
+    chalk "^4.1.0"
     deep-equal "^2.0.3"
     jest "^26.4.2"
     lodash "^4.17.20"

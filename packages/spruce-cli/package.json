@@ -79,7 +79,7 @@
 		"uuid": "^8.3.0"
 	},
 	"devDependencies": {
-		"@sprucelabs/jest-sheets-reporter": "^1.2.0",
+		"@sprucelabs/jest-sheets-reporter": "^1.2.1",
 		"@sprucelabs/test": "^7.0.46",
 		"@types/blessed": "^0.1.17",
 		"@types/eslint": "^7.2.2",
