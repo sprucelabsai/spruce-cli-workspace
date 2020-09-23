@@ -2082,10 +2082,10 @@
     tsconfig-paths "^3.9.0"
     yargs "^16.0.3"
 
-"@sprucelabs/error@^2.2.328":
-  version "2.2.328"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.328.tgz#608d45636c72e95f16b8a1c04478f0a748562e2a"
-  integrity sha512-4F98SN/KtFwV661k9UwlXArvxTU3y12UjJuFltzW7+bLL71Dq/AttJyF5GTq6hQK/Rp+wQQ0Zffgc5EkZ4OzeA==
+"@sprucelabs/error@^2.2.329":
+  version "2.2.329"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.329.tgz#d3f29d0bb6fdd3e98402286d73ac35252b1ab3f0"
+  integrity sha512-MxHjAZvfqRoLwKOrrsp2yAhtRaiwRnNL1Cha+ke+uEH2Mq1kPklqfADjb2w9vSLNdv477q8h1/gF2ey2LDw2Pw==
 
 "@sprucelabs/jest-sheets-reporter@^1.2.2":
   version "1.2.2"
@@ -2110,12 +2110,12 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^12.0.42":
-  version "12.0.42"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.0.42.tgz#294a5d4f8287edaa5cec02d55bb05be408b493b7"
-  integrity sha512-Fdqn3/0BJ4XOPSlJviqy7ixAbptEvGu/YSN85LN6KfyhxZ7ifNjHnolh0JY7Kz9vE/YZF+t5CSoc+rWoRe5zyw==
+"@sprucelabs/schema@^12.0.43":
+  version "12.0.43"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.0.43.tgz#9c8b4d52d7b3a369b7a30fd2dee04c0466576a4a"
+  integrity sha512-4W22mKtX++8pMCUJsRNRL+POSGuUFlc0seFdMlu+p/8fK8OP8Lnx2TyZHtrqThMerFek6aYg3lY99ll6alw5xQ==
   dependencies:
-    "@sprucelabs/error" "^2.2.328"
+    "@sprucelabs/error" "^2.2.329"
     "@sprucelabs/log" "^10.2.238"
     google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.8.1"
@@ -4618,9 +4618,9 @@ eslint-plugin-prettier@^3.1.4:
     prettier-linter-helpers "^1.0.0"
 
 eslint-plugin-react@^7.21.0:
-  version "7.21.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.21.0.tgz#aa0699086f586d54a5005c99a703175bc5d21161"
-  integrity sha512-WaieZZ4cayAfPBmy5KkEqFfLQf/VkzoUsvM5DfD9G1lrz+3LtZ8X6nToEUQiFe1X5ApNIzkMd+7NUy+2OmSTQQ==
+  version "7.21.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.21.1.tgz#3d9fe506eab78756f67c671bb2a9aa9c20990a39"
+  integrity sha512-TGtWzWrFjZtrD1giMz0O6a9ul++YR9vZSzIL/a7qlb5I/ra/O5RkMGMJK+KKYnJrzz884kyAkEyWiU4Hg2HTrg==
   dependencies:
     array-includes "^3.1.1"
     array.prototype.flatmap "^1.2.3"
