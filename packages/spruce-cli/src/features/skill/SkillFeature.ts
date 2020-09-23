@@ -62,7 +62,7 @@ export default class SkillFeature<
 		'build.watch':
 			"babel src --out-dir build --extensions '.ts, .tsx' --source-maps --copy-files --watch",
 		clean: 'rm -rf build/',
-		'clean.all': 'rm -rf build/ && rm -rf node_modules/',
+		'clean.all': 'rm -rf build/',
 		// eslint-disable-next-line no-undef
 	} as const
 

@@ -5,7 +5,7 @@ import {
 	ISchemaTemplateItem,
 	IFieldTemplateItem,
 } from '@sprucelabs/schema'
-import { TemplateRenderAs } from '@sprucelabs/schema'
+import { TemplateRenderAs, FieldDefinition } from '@sprucelabs/schema'
 import {
 	addonUtil,
 	SCHEMA_VERSION_FALLBACK,
@@ -14,7 +14,6 @@ import {
 	DEFAULT_TYPES_FILE,
 } from '@sprucelabs/spruce-skill-utils'
 import handlebars from 'handlebars'
-import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import log from './singletons/log'
 import {
 	IAutoLoaderTemplateItem,

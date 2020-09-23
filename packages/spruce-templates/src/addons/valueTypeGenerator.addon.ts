@@ -7,7 +7,7 @@ import {
 } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
 import { upperFirst } from 'lodash'
-import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
+import { FieldDefinition } from '@sprucelabs/schema'
 
 handlebars.registerHelper('valueTypeGenerator', function (
 	fieldDefinition:

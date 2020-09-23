@@ -15,7 +15,10 @@
 			"name": "cli.debug",
 			"protocol": "inspector",
 			"runtimeExecutable": "yarn",
-			"runtimeArgs": ["run", "local"],
+			"runtimeArgs": [
+				"run",
+				"local"
+			],
 			"console": "integratedTerminal",
 			"port": 5200,
 			"cwd": "${workspaceFolder}/packages/spruce-cli",
@@ -33,7 +36,7 @@
 			"runtimeArgs": [
 				"--inspect-brk",
 				"--trace-warnings",
-				"${workspaceFolder}/node_modules/.bin/jest",
+				"yarn run jest",
 				"${fileBasenameNoExtension}",
 				"--detectOpenHandles"
 			],
@@ -50,7 +53,7 @@
 			"runtimeArgs": [
 				"--inspect-brk",
 				"--trace-warnings",
-				"${workspaceFolder}/node_modules/.bin/jest"
+				"yarn run jest"
 			],
 			"port": 9229,
 			"cwd": "${workspaceFolder}/packages/spruce-cli",

@@ -28,7 +28,7 @@
 		"publish": "lerna publish",
 		"clean": "lerna run clean --parallel",
 		"clean.cache": "lerna run clean.cache --parallel",
-		"clean.all": "lerna run clean && rm -rf node_modules; for d in packages/*/node_modules; do echo $d; rm -rf $d; done",
+		"clean.all": "lerna run clean",
 		"arkit": "lerna run arkit",
 		"arkit.png": "lerna run arkit.png",
 		"upgrade.packages": "yarn upgrade --latest && rm -f yarn.lock && yarn | true && yarn lint.fix || true",
@@ -55,5 +55,16 @@
 	},
 	"dependencies": {
 		"jest": "^26.4.2"
+	},
+	"dependenciesMeta": {
+		"blessed@0.1.81": {
+			"unplugged": true
+		},
+		"blessed-contrib@4.8.20": {
+			"unplugged": true
+		}
+	},
+	"resolutions": {
+		"@sprucelabs/spruce-cli": "portal:/Users/ryan/development/sprucebot_push/sprucebot/maintain/spruce-cli-workspace/packages/spruce-cli"
 	}
 }
