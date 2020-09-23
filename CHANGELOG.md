@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.29.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.29.0...v10.29.1) (2020-09-23)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
 # [10.29.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.28.24...v10.29.0) (2020-09-23)
 
 
