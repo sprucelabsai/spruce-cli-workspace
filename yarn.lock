@@ -2082,10 +2082,10 @@
     tsconfig-paths "^3.9.0"
     yargs "^16.0.3"
 
-"@sprucelabs/error@^2.2.330":
-  version "2.2.330"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.330.tgz#dbfa5dd98b0022d071cc0705f5c1aae12e2b9377"
-  integrity sha512-PMq/0UgZDQVEQnz49ijTAIBzwPJsJZXIHbHj2/ofg6hBftKijP7y5JmueFxs4VsLsVE1ssDbmiz5UXhzwvYJIw==
+"@sprucelabs/error@^2.2.331":
+  version "2.2.331"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.331.tgz#f018e3af7031aee9a3a0ed81c66ddbdf18e72e5e"
+  integrity sha512-V+lploqaFfg5VWPNmnB8U/IJXuRfCaOKV2FXwqpob1NxqZXZvNczZmOvVZ2TqBzKUtvsdvDMGiGfslhNRq4fdg==
 
 "@sprucelabs/jest-sheets-reporter@^1.2.2":
   version "1.2.2"
@@ -2095,10 +2095,10 @@
     dotenv "^8.2.0"
     google-spreadsheet "^3.0.13"
 
-"@sprucelabs/log@^10.2.239":
-  version "10.2.239"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.239.tgz#a599c2b76e26ba43a3ac426a624d13fbd7b59a12"
-  integrity sha512-p4z78tfPaMMQ9fyfzIXGpg7gXWVR2AJ7fwQo4l4wu5zm5Jhg4zLiCzncIiM7Wh/TojXdUZSGMU4KUW2pEAFYXA==
+"@sprucelabs/log@^10.2.240":
+  version "10.2.240"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.240.tgz#8ce981bca164fc6ad974dac90cb409ca7278bc1a"
+  integrity sha512-PzW837ikG08xbw8KHt40VJX53SAFQckvtyloWkOg718SAxDaRNi45tdtpn9AafPm2F9UdzTKjJi4K3/MIS3Ong==
 
 "@sprucelabs/mercury@^10.5.72":
   version "10.5.72"
@@ -2110,22 +2110,22 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^12.0.44":
-  version "12.0.44"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.0.44.tgz#f655095239d5bbda55a0d9d4044f4de93b989787"
-  integrity sha512-IsqfJ72IV3ulZXIwP3fLLDqUP2Tq3kgi1paYOdip7aR2xCbemag64Yua1N9XiKyI0yBraMCxvSBCFzS6tfb77A==
+"@sprucelabs/schema@^12.0.45":
+  version "12.0.45"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.0.45.tgz#1f48264a71e09555981247a491c1c8eab20ab5fa"
+  integrity sha512-k6wt5qQQWCizb8G/+tQAhD+M3olMOIQkfeORxcU2Odt+NFMrFzr5R3bwfNLaL2JvGTlQYU1l4Py7zKmddourSw==
   dependencies:
-    "@sprucelabs/error" "^2.2.330"
-    "@sprucelabs/log" "^10.2.239"
+    "@sprucelabs/error" "^2.2.331"
+    "@sprucelabs/log" "^10.2.240"
     google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.8.1"
     mime-db "^1.45.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^7.0.51":
-  version "7.0.51"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.51.tgz#f6afae1360e70b8d01a0f13b6752767d04d558a9"
-  integrity sha512-UEZHPb38H8zPqouBEq0FEqlZWYT7tRBgTkBei5E0AsmtQ3Nl7PAOOVjLjX9ScD5Bt/CVXw9d3wHOqY1PwpGszw==
+"@sprucelabs/test@^7.0.52":
+  version "7.0.52"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.52.tgz#d921d03fe69be8483e5c8a7724fb93c6caa418ee"
+  integrity sha512-FoVWJ213poaZAic4Hr/bFO2V9NGiQJIKz3UuTvFhWfTfmHOqBHuePmLLAYtdeq3KCByZNbZYZYBi+cKPIHpUww==
   dependencies:
     "@babel/core" "^7.11.6"
     "@babel/preset-env" "^7.11.5"
