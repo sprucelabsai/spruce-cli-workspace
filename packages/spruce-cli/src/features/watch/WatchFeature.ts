@@ -1,3 +1,4 @@
+import chokidar from 'chokidar'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
@@ -7,7 +8,8 @@ export default class WatchFeature extends AbstractFeature {
 	public code: FeatureCode = 'watch'
 	public nameReadable = 'Watch'
 
-	protected _isWatching = false
+	private _isWatching = false
+	private watcher?: chokidar.FSWatcher
 
 	public async isInstalled(): Promise<boolean> {
 		return true
@@ -19,9 +21,16 @@ export default class WatchFeature extends AbstractFeature {
 
 	public async startWatching() {
 		this._isWatching = true
+
+		this.watcher = chokidar.watch(this.cwd + '/**/*')
+
+		this.watcher.on('all', async () => {
+			await this.emitter.emit('watcher.did-detect-change')
+		})
 	}
 
 	public async stopWatching() {
 		this._isWatching = false
+		await this.watcher?.close()
 	}
 }

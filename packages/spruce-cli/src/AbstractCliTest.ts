@@ -6,6 +6,7 @@ import AbstractSpruceTest from '@sprucelabs/test'
 import fs from 'fs-extra'
 import * as uuid from 'uuid'
 import { ICliBootOptions } from './cli'
+import CliGlobalEmitter from './CliGlobalEmitter'
 import FeatureInstallerFactory from './features/FeatureInstallerFactory'
 import FeatureFixture from './fixtures/FeatureFixture'
 import TestInterface from './interfaces/TestInterface'
@@ -97,12 +98,14 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static FeatureInstaller() {
 		const serviceFactory = this.ServiceFactory()
 		const storeFactory = this.StoreFactory()
+		const emitter = CliGlobalEmitter.Emitter()
 
 		return FeatureInstallerFactory.WithAllFeatures({
 			cwd: this.cwd,
 			serviceFactory,
 			storeFactory,
 			term: this.ui,
+			emitter,
 		})
 	}
 

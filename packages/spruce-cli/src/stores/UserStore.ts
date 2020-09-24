@@ -1,4 +1,3 @@
-import { IMercuryGQLBody } from '@sprucelabs/mercury'
 import Schema, {
 	validateSchemaValues,
 	normalizeSchemaValues,
@@ -10,7 +9,6 @@ import CliUserWithTokenSchema from '#spruce/schemas/spruceCli/v2020_07_22/cliUse
 import SpruceError from '../errors/SpruceError'
 import log from '../singletons/log'
 import { AuthedAs } from '../types/cli.types'
-import { SpruceEvents } from '../types/events-generated'
 import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
 
 type UserWithToken = SpruceSchemas.SpruceCli.v2020_07_22.ICliUserWithToken
@@ -33,23 +31,11 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 	}
 
 	public async fetchUserWithTokenFromPhone(phone: string, pin: string) {
-		const loginResult = await this.mercury.emit<
-			SpruceEvents.Core.Login.IPayload,
-			SpruceEvents.Core.Login.IResponseBody
-		>({
-			eventName: SpruceEvents.Core.Login.name,
-			payload: {
-				phoneNumber: phone,
-				code: pin,
-			},
-		})
-
-		const token = loginResult.responses[0]?.payload.jwt
-
+		const token = false
 		if (!token) {
 			throw new SpruceError({
 				code: 'GENERIC_MERCURY',
-				eventName: SpruceEvents.Core.Login.name,
+				eventName: 'login',
 				payloadArgs: [
 					{ name: 'phone', value: phone },
 					{ name: 'pin', value: pin },
@@ -98,25 +84,7 @@ export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
 	}
 
 	public async fetchUserFromId(id: string): Promise<Omit<User, 'id'>> {
-		const query = ''
-
-		const result = await this.mercury.emit<
-			SpruceEvents.Core.Gql.IPayload,
-			IMercuryGQLBody<{
-				User: SpruceSchemas.Spruce.v2020_07_22.IPerson
-			}>
-		>({
-			eventName: SpruceEvents.Core.Gql.name,
-			payload: {
-				query,
-				variables: {
-					userId: id,
-				},
-			},
-		})
-
-		const values = result.responses[0].payload.data.User
-		const user = UserStore.getUser(values)
+		const user = UserStore.getUser({ id })
 
 		user.validate()
 

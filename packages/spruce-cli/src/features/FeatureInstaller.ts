@@ -214,7 +214,7 @@ export default class FeatureInstaller implements IServiceProvider {
 				packagesToInstall.push(packageName)
 			}
 		})
-
+		debugger
 		const pkgService = this.Service('pkg')
 
 		if (packagesToInstall.length > 0) {

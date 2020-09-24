@@ -39,16 +39,18 @@ export default class SettingUpWatchersTest extends AbstractCliTest {
 		const feature = cli.getFeature('watch')
 
 		let fireCount = 0
-		cli.on('watcher.did-detect-change', () => {
+
+		cli.emitter.on('watcher.did-detect-change', () => {
 			fireCount++
 		})
 
 		void feature.startWatching()
 
 		diskUtil.writeFile(
-			this.resolvePath('src', 'index.ts'),
+			this.resolvePath('index.js'),
 			'console.log("hello world")'
 		)
+		await this.wait(2000)
 
 		await feature.stopWatching()
 
@@ -57,7 +59,7 @@ export default class SettingUpWatchersTest extends AbstractCliTest {
 
 	private static async installWatch() {
 		const fixture = this.FeatureFixture()
-		const cli = await fixture.installFeatures([{ code: 'watch' }], 'watcher')
+		const cli = await fixture.installFeatures([{ code: 'watch' }])
 		return cli
 	}
 }

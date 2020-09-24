@@ -1,4 +1,5 @@
 import { templates } from '@sprucelabs/spruce-templates'
+import { GlobalEmitter } from '../CliGlobalEmitter'
 import ServiceFactory from '../services/ServiceFactory'
 import StoreFactory from '../stores/StoreFactory'
 import { IGraphicsInterface } from '../types/cli.types'
@@ -42,21 +43,23 @@ export default class FeatureInstallerFactory {
 		storeFactory: StoreFactory
 		featureInstaller?: FeatureInstaller
 		term: IGraphicsInterface
+		emitter: GlobalEmitter
 	}): FeatureInstaller {
-		const { cwd, serviceFactory, storeFactory, term } = options
+		const { cwd, serviceFactory, storeFactory, term, emitter } = options
 
 		// lazy load installer
 		const featureInstaller =
 			options.featureInstaller ?? new FeatureInstaller(cwd, serviceFactory)
 
-		this.features.forEach((item) => {
-			const feature = new item({
+		this.features.forEach((Feature) => {
+			const feature = new Feature({
 				cwd,
 				serviceFactory,
 				templates,
 				storeFactory,
 				featureInstaller,
 				term,
+				emitter,
 			})
 
 			featureInstaller.mapFeature(feature.code, feature)

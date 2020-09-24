@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import {
 	Mercury,
 	IMercuryConnectOptions,
@@ -11,6 +10,7 @@ import {
 } from '@sprucelabs/spruce-skill-utils'
 import { Command, CommanderStatic } from 'commander'
 import './addons/filePrompt.addon'
+import CliGlobalEmitter, { GlobalEmitter } from './CliGlobalEmitter'
 import SpruceError from './errors/SpruceError'
 import FeatureCommandAttacher from './features/FeatureCommandAttacher'
 import FeatureInstaller from './features/FeatureInstaller'
@@ -26,6 +26,7 @@ export interface ICli {
 	installFeatures: FeatureInstaller['install']
 	getFeature: FeatureInstaller['getFeature']
 	checkHealth(): Promise<IHealthCheckResults>
+	emitter: GlobalEmitter
 }
 
 export interface ICliBootOptions {
@@ -38,13 +39,11 @@ async function login(storeFactory: StoreFactory, mercury: Mercury) {
 	const remoteStore = storeFactory.Store('remote')
 	const remoteUrl = remoteStore.getRemoteUrl()
 
-	// Who is logged in?
 	const userStore = storeFactory.Store('user')
 	const loggedInUser = userStore.getLoggedInUser()
 	const skillStore = storeFactory.Store('skill')
 	const loggedInSkill = skillStore.getLoggedInSkill()
 
-	// Build mercury creds
 	let creds: MercuryAuth | undefined
 	const authType = remoteStore.authType
 
@@ -60,7 +59,6 @@ async function login(storeFactory: StoreFactory, mercury: Mercury) {
 			break
 	}
 
-	// Mercury connection options
 	const connectOptions: IMercuryConnectOptions = {
 		spruceApiUrl: remoteUrl,
 		credentials: creds,
@@ -73,15 +71,18 @@ export default class Cli implements ICli {
 	private cwd: string
 	private featureInstaller: FeatureInstaller
 	private serviceFactory: ServiceFactory
+	public readonly emitter: GlobalEmitter
 
-	public constructor(
+	private constructor(
 		cwd: string,
 		featureInstaller: FeatureInstaller,
-		serviceFactory: ServiceFactory
+		serviceFactory: ServiceFactory,
+		emitter: GlobalEmitter
 	) {
 		this.cwd = cwd
 		this.featureInstaller = featureInstaller
 		this.serviceFactory = serviceFactory
+		this.emitter = emitter
 	}
 
 	public async installFeatures(options: IInstallFeatureOptions) {
@@ -131,7 +132,7 @@ export default class Cli implements ICli {
 		}
 	}
 
-	public static async Boot(options?: ICliBootOptions) {
+	public static async Boot(options?: ICliBootOptions): Promise<ICli> {
 		const program = options?.program
 
 		// TODO pull in without including package.json
@@ -157,15 +158,16 @@ export default class Cli implements ICli {
 		const serviceFactory = new ServiceFactory({ mercury })
 		const storeFactory = new StoreFactory(cwd, mercury, serviceFactory)
 		const terminal = options?.graphicsInterface ?? new TerminalInterface(cwd)
+		const emitter = CliGlobalEmitter.Emitter()
 
 		const featureInstaller = FeatureInstallerFactory.WithAllFeatures({
 			cwd,
 			serviceFactory,
 			storeFactory,
 			term: terminal,
+			emitter,
 		})
 
-		// attach features
 		if (program) {
 			const attacher = new FeatureCommandAttacher(
 				program,
@@ -186,16 +188,15 @@ export default class Cli implements ICli {
 			})
 		}
 
-		// Setup mercury if logged in
 		const isInstalled = await featureInstaller.isInstalled('skill')
 
 		if (isInstalled) {
 			await login(storeFactory, mercury)
 		}
 
-		const cli: ICli = new Cli(cwd, featureInstaller, serviceFactory)
+		const cli = new Cli(cwd, featureInstaller, serviceFactory, emitter)
 
-		return cli
+		return cli as ICli
 	}
 }
 
