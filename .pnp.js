@@ -3432,7 +3432,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/parser", "virtual:c39258e415edb71f47801e54701af745028c111609e35277e40b19f665be6d2b2fe0ffd3cc45fffc1d3b91ba179108acc6c0ba81efa175fff2ffead3b2dfc9f6#npm:4.2.0"],
             ["arkit", "npm:1.6.4"],
             ["blessed", "npm:0.1.81"],
-            ["blessed-contrib", "npm:4.8.20"],
+            ["blessed-contrib", "https://github.com/sprucelabsai/blessed-contrib.git#commit=2bc0f1bc26e5c8ba81db88b4667b384047d9792f"],
             ["cfonts", "npm:2.8.6"],
             ["chalk", "npm:4.1.0"],
             ["chokidar", "npm:3.4.2"],
@@ -5231,10 +5231,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["blessed-contrib", [
-        ["npm:4.8.20", {
-          "packageLocation": "./.yarn/unplugged/blessed-contrib-npm-4.8.20-931648910c/node_modules/blessed-contrib/",
+        ["https://github.com/sprucelabsai/blessed-contrib.git#commit=2bc0f1bc26e5c8ba81db88b4667b384047d9792f", {
+          "packageLocation": "./.yarn/unplugged/blessed-contrib-https-f9c243b7e7/node_modules/blessed-contrib/",
           "packageDependencies": [
-            ["blessed-contrib", "npm:4.8.20"],
+            ["blessed-contrib", "https://github.com/sprucelabsai/blessed-contrib.git#commit=2bc0f1bc26e5c8ba81db88b4667b384047d9792f"],
             ["ansi-term", "npm:0.0.2"],
             ["blessed", "npm:0.1.81"],
             ["chalk", "npm:1.1.3"],
@@ -5242,7 +5242,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["lodash", "npm:4.17.20"],
             ["map-canvas", "npm:0.1.5"],
             ["marked", "npm:0.7.0"],
-            ["marked-terminal", "virtual:931648910cf5f0d3762e1f6e083a6cc150e6939f3b27cce406f845d31686de2f24ed0c63c161ff9e429c9d402791c712e0012e93cecb92f3d1f54652d970182a#npm:4.1.0"],
+            ["marked-terminal", "virtual:f9c243b7e73f19315ef8a5a240700b5054cc6bd4bae90b9ffb486deb978ae03c5caa7eb14f494f68fb4e4d438947309592a3efdc8ad9c7b001c7015aaf7d0342#npm:4.1.0"],
             ["memory-streams", "npm:0.1.3"],
             ["memorystream", "npm:0.3.1"],
             ["picture-tuber", "npm:1.0.2"],
@@ -11463,10 +11463,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["marked-terminal", [
-        ["virtual:931648910cf5f0d3762e1f6e083a6cc150e6939f3b27cce406f845d31686de2f24ed0c63c161ff9e429c9d402791c712e0012e93cecb92f3d1f54652d970182a#npm:4.1.0", {
-          "packageLocation": "./.yarn/$$virtual/marked-terminal-virtual-dfc9d37046/0/cache/marked-terminal-npm-4.1.0-0c47abd90b-bb7483eadd.zip/node_modules/marked-terminal/",
+        ["virtual:f9c243b7e73f19315ef8a5a240700b5054cc6bd4bae90b9ffb486deb978ae03c5caa7eb14f494f68fb4e4d438947309592a3efdc8ad9c7b001c7015aaf7d0342#npm:4.1.0", {
+          "packageLocation": "./.yarn/$$virtual/marked-terminal-virtual-4cae60c95a/0/cache/marked-terminal-npm-4.1.0-0c47abd90b-bb7483eadd.zip/node_modules/marked-terminal/",
           "packageDependencies": [
-            ["marked-terminal", "virtual:931648910cf5f0d3762e1f6e083a6cc150e6939f3b27cce406f845d31686de2f24ed0c63c161ff9e429c9d402791c712e0012e93cecb92f3d1f54652d970182a#npm:4.1.0"],
+            ["marked-terminal", "virtual:f9c243b7e73f19315ef8a5a240700b5054cc6bd4bae90b9ffb486deb978ae03c5caa7eb14f494f68fb4e4d438947309592a3efdc8ad9c7b001c7015aaf7d0342#npm:4.1.0"],
             ["@types/marked", null],
             ["ansi-escapes", "npm:4.3.1"],
             ["cardinal", "npm:2.1.1"],

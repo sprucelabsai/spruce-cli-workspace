@@ -32,7 +32,7 @@
 		"arkit": "lerna run arkit",
 		"arkit.png": "lerna run arkit.png",
 		"upgrade.packages": "yarn run upgrade.packages.all",
-		"upgrade.packages.yarn2": "jq -r '(.dependencies, .devDependencies) | keys | .[]' package.json packages/*/package.json | sort |uniq |egrep -v 'spruce-skill-utils|spruce-templates' | xargs yarn up",
+		"upgrade.packages.yarn2": "jq -r '(.dependencies, .devDependencies) | keys | .[]' package.json packages/*/package.json | sort |uniq |egrep -v 'spruce-skill-utils|spruce-templates|blessed-contrib' | xargs yarn up",
 		"upgrade.packages.all": "(yarn run upgrade.packages.yarn2 || true) && rm -f yarn.lock && (yarn || true) && (yarn lint.fix || true)",
 		"upgrade.packages.test": "yarn run upgrade.packages.all && yarn lint && yarn build && yarn test"
 	},

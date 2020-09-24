@@ -2741,7 +2741,7 @@ __metadata:
     "@typescript-eslint/parser": ^4.2.0
     arkit: ^1.6.4
     blessed: ^0.1.81
-    blessed-contrib: ^4.8.20
+    blessed-contrib: "https://github.com/sprucelabsai/blessed-contrib.git#master"
     cfonts: ^2.8.6
     chalk: ^4.1.0
     chokidar: ^3.4.2
@@ -4208,9 +4208,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"blessed-contrib@npm:^4.8.20":
+"blessed-contrib@https://github.com/sprucelabsai/blessed-contrib.git#master":
   version: 4.8.20
-  resolution: "blessed-contrib@npm:4.8.20"
+  resolution: "blessed-contrib@https://github.com/sprucelabsai/blessed-contrib.git#commit=2bc0f1bc26e5c8ba81db88b4667b384047d9792f"
   dependencies:
     ansi-term: ">=0.0.2"
     chalk: ^1.1.0
@@ -4226,7 +4226,7 @@ __metadata:
     strip-ansi: ^3.0.0
     term-canvas: 0.0.5
     x256: ">=0.0.1"
-  checksum: b4fadcc8a1c7c807e17a5fa370c0e8da76345aea827c92fbdd2ec8861c963589c733f065780a03f3344334fb533765a63f44a102d9772392b0b802bddb32a08a
+  checksum: 53402065150f95f0dce22ad38bb2e3893d9e8c549025ccfb630724d52074290addefe432a70a283e6e112b2678b0590e773797f9e4433f913ff0010024f5f356
   languageName: node
   linkType: hard
 
