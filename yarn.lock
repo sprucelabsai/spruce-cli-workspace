@@ -2650,27 +2650,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sprucelabs/error@npm:^2.2.324":
-  version: 2.2.324
-  resolution: "@sprucelabs/error@npm:2.2.324"
-  checksum: 276524e9eb94cd2f0cdcc16678694c5a80429618c538be8567b827301d73687afb9891872a8f45d19514020b17aa24e95663efb943533298034be48b0518c72f
+"@sprucelabs/error@npm:^2.2.332, @sprucelabs/error@npm:^2.2.333":
+  version: 2.2.333
+  resolution: "@sprucelabs/error@npm:2.2.333"
+  checksum: 882fa00e3f8104121fc1402a9d70e702d5a0a9d4b2de6bb0e2c51e2e657740bd09672fb36aa11a78629df0d25e56c0cdda78489afddbd33acf9102a8edb3de0c
   languageName: node
   linkType: hard
 
-"@sprucelabs/jest-sheets-reporter@npm:^1.2.1":
-  version: 1.2.1
-  resolution: "@sprucelabs/jest-sheets-reporter@npm:1.2.1"
+"@sprucelabs/jest-sheets-reporter@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "@sprucelabs/jest-sheets-reporter@npm:1.2.2"
   dependencies:
     dotenv: ^8.2.0
     google-spreadsheet: ^3.0.13
-  checksum: 599b0875adfde095bafab9e34ea3ca77134ccaa962a7531ece4d995440da00f93db6bb0bf2c19ebdabb7e84a027d93a5f8256607cc1a127173d0efb5bc1fd5a1
+  checksum: e442ebcfa834e987078e95e6bf3f05079dfc69353f5e87ffd53592f6b3a5926234eabd44c0eb55790c88b1be4caf0145d0323e080d465b1689737e58fccdd309
   languageName: node
   linkType: hard
 
-"@sprucelabs/log@npm:^10.2.237":
-  version: 10.2.237
-  resolution: "@sprucelabs/log@npm:10.2.237"
-  checksum: 242c535c50423996bf2a0fd68549a3c0c63f5e2766d5a1ef262a9e58cf06a0925c199487be33acdc69ec53fcf063991a9a79f6816cc9b77bace377753e7fe697
+"@sprucelabs/log@npm:^10.2.240":
+  version: 10.2.240
+  resolution: "@sprucelabs/log@npm:10.2.240"
+  checksum: 4df4935e0eeb7c31f183bc2750bd8891b80810123532fe4a2c2405f5233643731f6ea91ba45029b7a8de6a1dcf293d8834a2d97c7e92199daa3ef6b3088e43d9
   languageName: node
   linkType: hard
 
@@ -2686,17 +2686,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sprucelabs/schema@npm:^12.0.38":
-  version: 12.0.38
-  resolution: "@sprucelabs/schema@npm:12.0.38"
+"@sprucelabs/schema@npm:^12.0.46":
+  version: 12.0.46
+  resolution: "@sprucelabs/schema@npm:12.0.46"
   dependencies:
-    "@sprucelabs/error": ^2.2.324
-    "@sprucelabs/log": ^10.2.237
+    "@sprucelabs/error": ^2.2.332
+    "@sprucelabs/log": ^10.2.240
     google-libphonenumber: ^3.2.13
     libphonenumber-js: ^1.8.1
     mime-db: ^1.45.0
     mime-type: ^4.0.0
-  checksum: 490c16414794fe4b4b1aa00f64949f879da8ff929acf799e9aa2afc2a7418bb3edfb92601a75cc406df7c8714cbf7b7a0a3f5bbb3d681334370c4f5c521a8d85
+  checksum: bed182669cb3c2734ebeff8240494a6d5087eba35578bed3d95376a24c6c51a8b12401c361be99d3f51d55d8b059d689f1f797e2b2d0356b92005c6de857a0e1
   languageName: node
   linkType: hard
 
@@ -2712,16 +2712,16 @@ __metadata:
     "@babel/preset-env": ^7.11.5
     "@babel/preset-typescript": ^7.10.4
     "@babel/runtime": ^7.11.2
-    "@sprucelabs/error": ^2.2.324
-    "@sprucelabs/jest-sheets-reporter": ^1.2.1
-    "@sprucelabs/log": ^10.2.237
+    "@sprucelabs/error": ^2.2.333
+    "@sprucelabs/jest-sheets-reporter": ^1.2.2
+    "@sprucelabs/log": ^10.2.240
     "@sprucelabs/mercury": ^10.5.72
-    "@sprucelabs/schema": ^12.0.38
+    "@sprucelabs/schema": ^12.0.46
     "@sprucelabs/spruce-skill-utils": ^10.29.9
     "@sprucelabs/spruce-templates": ^10.29.9
-    "@sprucelabs/test": ^7.0.47
+    "@sprucelabs/test": ^7.0.53
     "@types/blessed": ^0.1.17
-    "@types/eslint": ^7.2.2
+    "@types/eslint": ^7.2.3
     "@types/fs-extra": ^9.0.1
     "@types/inflection": ^1.5.28
     "@types/inquirer": ^7.3.1
@@ -2738,9 +2738,10 @@ __metadata:
     "@types/superagent": ^4.1.10
     "@types/uuid": ^8.3.0
     "@typescript-eslint/eslint-plugin": ^4.2.0
+    "@typescript-eslint/parser": ^4.2.0
     arkit: ^1.6.4
-    blessed: ^0.1.16
-    blessed-contrib: "https://github.com/sprucelabsai/blessed-contrib.git#master"
+    blessed: ^0.1.81
+    blessed-contrib: ^4.8.20
     cfonts: ^2.8.6
     chalk: ^4.1.0
     chokidar: ^3.4.2
@@ -2753,7 +2754,7 @@ __metadata:
     dotenv: ^8.2.0
     emphasize: ^4.0.0
     eslint: ^7.9.0
-    eslint-config-spruce: ^10.9.59
+    eslint-config-spruce: ^10.9.60
     eslint-import-resolver-node: ^0.3.4
     eslint-plugin-import: ^2.22.0
     eslint-plugin-prettier: ^3.1.4
@@ -2799,15 +2800,16 @@ __metadata:
     "@babel/preset-typescript": ^7.10.4
     "@babel/runtime": ^7.11.2
     "@sprucelabs/babel-plugin-schema": ^3.0.15
-    "@sprucelabs/error": ^2.2.324
-    "@sprucelabs/schema": ^12.0.38
+    "@sprucelabs/error": ^2.2.333
+    "@sprucelabs/schema": ^12.0.46
     "@types/node": ^14.11.2
     "@typescript-eslint/eslint-plugin": ^4.2.0
+    "@typescript-eslint/parser": ^4.2.0
     chokidar-cli: ^2.1.0
     concurrently: ^5.3.0
     conventional-changelog-sprucelabs: ^1.1.1
     eslint: ^7.9.0
-    eslint-config-spruce: ^10.9.59
+    eslint-config-spruce: ^10.9.60
     eslint-import-resolver-node: ^0.3.4
     eslint-plugin-import: ^2.22.0
     eslint-plugin-prettier: ^3.1.4
@@ -2830,20 +2832,21 @@ __metadata:
     "@babel/preset-env": ^7.11.5
     "@babel/preset-typescript": ^7.10.4
     "@babel/runtime": ^7.11.2
-    "@sprucelabs/error": ^2.2.324
-    "@sprucelabs/test": ^7.0.47
+    "@sprucelabs/error": ^2.2.333
+    "@sprucelabs/test": ^7.0.53
     "@types/fs-extra": ^9.0.1
     "@types/inflection": ^1.5.28
     "@types/lodash": ^4.14.161
     "@types/node": ^14.11.2
     "@types/uuid": ^8.3.0
     "@typescript-eslint/eslint-plugin": ^4.2.0
+    "@typescript-eslint/parser": ^4.2.0
     arkit: ^1.6.4
     chokidar-cli: ^2.1.0
     concurrently: ^5.3.0
     conventional-changelog-sprucelabs: ^1.1.1
     eslint: ^7.9.0
-    eslint-config-spruce: ^10.9.59
+    eslint-config-spruce: ^10.9.60
     eslint-import-resolver-node: ^0.3.4
     eslint-plugin-import: ^2.22.0
     eslint-plugin-prettier: ^3.1.4
@@ -2871,20 +2874,21 @@ __metadata:
     "@babel/preset-env": ^7.11.5
     "@babel/preset-typescript": ^7.10.4
     "@babel/runtime": ^7.11.2
-    "@sprucelabs/log": ^10.2.237
-    "@sprucelabs/schema": ^12.0.38
+    "@sprucelabs/log": ^10.2.240
+    "@sprucelabs/schema": ^12.0.46
     "@sprucelabs/spruce-skill-utils": ^10.29.9
     "@types/fs-extra": ^9.0.1
     "@types/lodash": ^4.14.161
     "@types/node": ^14.11.2
     "@types/sha1": ^1.1.2
     "@typescript-eslint/eslint-plugin": ^4.2.0
+    "@typescript-eslint/parser": ^4.2.0
     arkit: ^1.6.4
     chokidar-cli: ^2.1.0
     concurrently: ^5.3.0
     conventional-changelog-sprucelabs: ^1.1.1
     eslint: ^7.9.0
-    eslint-config-spruce: ^10.9.59
+    eslint-config-spruce: ^10.9.60
     eslint-import-resolver-node: ^0.3.4
     eslint-plugin-import: ^2.22.0
     eslint-plugin-prettier: ^3.1.4
@@ -2900,9 +2904,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@sprucelabs/test@npm:^7.0.47":
-  version: 7.0.47
-  resolution: "@sprucelabs/test@npm:7.0.47"
+"@sprucelabs/test@npm:^7.0.53":
+  version: 7.0.54
+  resolution: "@sprucelabs/test@npm:7.0.54"
   dependencies:
     "@babel/core": ^7.11.6
     "@babel/preset-env": ^7.11.5
@@ -2914,7 +2918,8 @@ __metadata:
     lodash: ^4.17.20
     ts-expect: ^1.1.0
     ts-jest: ^26.4.0
-  checksum: 46d21f7578a66d29e2fd4f05d3a7d4f8e39d75cfcbd11b444ee7f9966154ceb25bca401b3f69a1273322528cb86223fead524146fcabf6a0b2e0ca1b56fe6a6a
+    typescript: ^4.0.3
+  checksum: 1825162b1d535ffb46bb5f3a8d47ef93566aea789be93eb13f76e61353ac3d706bad53c6e06ca51ae1010d620def8bf33d14073c78db00bcc78ee8b7e36a9cd1
   languageName: node
   linkType: hard
 
@@ -2996,13 +3001,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eslint@npm:^7.2.2":
-  version: 7.2.2
-  resolution: "@types/eslint@npm:7.2.2"
+"@types/eslint@npm:^7.2.3":
+  version: 7.2.3
+  resolution: "@types/eslint@npm:7.2.3"
   dependencies:
     "@types/estree": "*"
     "@types/json-schema": "*"
-  checksum: b51f46c0eb9593505024c98d1d6c594b64a4b19f848e2caff08155f14a1552a4700d5857cf38ac3bdaff055548d665f26b205764d74e601cd69796f5d31bfbeb
+  checksum: 2ddb3378eb3f8aa043d30e1685b4aa6d346c239bd82f96f62c532f418bf935d67d198ac405bedfaee1f4a22b03fb9df33611f28b85038fa1a7e4641ce0d16d1b
   languageName: node
   linkType: hard
 
@@ -3267,11 +3272,11 @@ __metadata:
   linkType: hard
 
 "@types/yargs@npm:^15.0.0":
-  version: 15.0.6
-  resolution: "@types/yargs@npm:15.0.6"
+  version: 15.0.7
+  resolution: "@types/yargs@npm:15.0.7"
   dependencies:
     "@types/yargs-parser": "*"
-  checksum: 072a7aafdfb2a659104b9bc2adc90c419a8ec93a7b3552bceb5155c6fd1d989f15550087cf221c8967b3d8fa11ffd399f7da13b395ec6381018e1ce5ef081c35
+  checksum: df076111e3564fb2e92dc11fe0b32b096bb3ed8e241dd70205159c83d32a0ba281ea73108a995679cb29c6a2fa434c5a90237e33ba9cdcba2e98165e35a74440
   languageName: node
   linkType: hard
 
@@ -4203,9 +4208,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"blessed-contrib@https://github.com/sprucelabsai/blessed-contrib.git#master":
+"blessed-contrib@npm:^4.8.20":
   version: 4.8.20
-  resolution: "blessed-contrib@https://github.com/sprucelabsai/blessed-contrib.git#commit=2bc0f1bc26e5c8ba81db88b4667b384047d9792f"
+  resolution: "blessed-contrib@npm:4.8.20"
   dependencies:
     ansi-term: ">=0.0.2"
     chalk: ^1.1.0
@@ -4221,11 +4226,11 @@ __metadata:
     strip-ansi: ^3.0.0
     term-canvas: 0.0.5
     x256: ">=0.0.1"
-  checksum: 53402065150f95f0dce22ad38bb2e3893d9e8c549025ccfb630724d52074290addefe432a70a283e6e112b2678b0590e773797f9e4433f913ff0010024f5f356
+  checksum: b4fadcc8a1c7c807e17a5fa370c0e8da76345aea827c92fbdd2ec8861c963589c733f065780a03f3344334fb533765a63f44a102d9772392b0b802bddb32a08a
   languageName: node
   linkType: hard
 
-"blessed@npm:*, blessed@npm:^0.1.16":
+"blessed@npm:*, blessed@npm:^0.1.81":
   version: 0.1.81
   resolution: "blessed@npm:0.1.81"
   bin:
@@ -4968,13 +4973,6 @@ __metadata:
   version: 4.1.1
   resolution: "commander@npm:4.1.1"
   checksum: 448585071bf8fb4c0bf9dd52abaee43dea086f801334caec2c8e8c9f456f8abc224c1614ccbbdbf7da5ac2524d230f13cf1fc86c233cf8a041ebecea7df106e9
-  languageName: node
-  linkType: hard
-
-"commander@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "commander@npm:5.1.0"
-  checksum: d16141ea7f580945156fb8a06de2834c4647c7d9d3732ebd4534ab8e0b7c64747db301e18f2b840f28ea8fef51f7a8d6178e674b45a21931f0b65ff1c7f476b3
   languageName: node
   linkType: hard
 
@@ -6077,9 +6075,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-spruce@npm:^10.9.59":
-  version: 10.9.59
-  resolution: "eslint-config-spruce@npm:10.9.59"
+"eslint-config-spruce@npm:^10.9.60":
+  version: 10.9.60
+  resolution: "eslint-config-spruce@npm:10.9.60"
   dependencies:
     "@typescript-eslint/eslint-plugin": ^4.2.0
     "@typescript-eslint/parser": ^4.2.0
@@ -6088,13 +6086,13 @@ __metadata:
     eslint-plugin-import: ^2.22.0
     eslint-plugin-jsx-a11y: ^6.3.1
     eslint-plugin-prettier: ^3.1.4
-    eslint-plugin-react: ^7.21.0
-    eslint-plugin-spruce: ^10.9.59
+    eslint-plugin-react: ^7.21.1
+    eslint-plugin-spruce: ^10.9.60
   peerDependencies:
     eslint: ^7.9.0
     prettier: ^2.1.2
     typescript: ^4.0.3
-  checksum: b79796bc12302e9ec670be76d7a233067ba0f4f000c12c375c2cd7b3346a25c4b2f48b2f97d1b0e9d08752bcb48b185b1831cfa5087cba31283ce9b6d9492044
+  checksum: b9b6b646e2e651cb1b1f79f9d1b5998cfa79ce48fedc08ac3d5232569371bf035c7bf0172a91bbd5ece67d147c9199113168bea24d3914ae56656c74ebe40faa
   languageName: node
   linkType: hard
 
@@ -6174,27 +6172,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react@npm:^7.21.0":
-  version: 7.21.0
-  resolution: "eslint-plugin-react@npm:7.21.0"
-  dependencies:
-    array-includes: ^3.1.1
-    array.prototype.flatmap: ^1.2.3
-    doctrine: ^2.1.0
-    has: ^1.0.3
-    jsx-ast-utils: ^2.4.1
-    object.entries: ^1.1.2
-    object.fromentries: ^2.0.2
-    object.values: ^1.1.1
-    prop-types: ^15.7.2
-    resolve: ^1.17.0
-    string.prototype.matchall: ^4.0.2
-  peerDependencies:
-    eslint: ^3 || ^4 || ^5 || ^6 || ^7
-  checksum: 306359a8c03df80f4de2346c39fab832657645ad03b6fed642de08fae8f2fe26ebb195fe48326c53791f6afcf0b73084040f24e256d13d9b9fdb0ea823b4a7e8
-  languageName: node
-  linkType: hard
-
 "eslint-plugin-react@npm:^7.21.1":
   version: 7.21.1
   resolution: "eslint-plugin-react@npm:7.21.1"
@@ -6213,15 +6190,6 @@ __metadata:
   peerDependencies:
     eslint: ^3 || ^4 || ^5 || ^6 || ^7
   checksum: b35355d47767e240553cbd217fa7423159b308cea54967ea356f222469fe5e7d57d589bfbea65757688ac9e1760732ccb8d383379b640b37695037b265dd2b18
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-spruce@npm:^10.9.59":
-  version: 10.9.59
-  resolution: "eslint-plugin-spruce@npm:10.9.59"
-  dependencies:
-    pascal-case: ^3.1.1
-  checksum: 27ae9b8e8de9fb573b61b1a6eb18ff3ec5843ad038a029e203c3f96db6e3f30612d62145b5c2d1892a7fea4f971a6e8d7296a79bc37d52ff0467adac8ad6421b
   languageName: node
   linkType: hard
 
@@ -9288,7 +9256,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lerna@npm:^3.20.2":
+"lerna@npm:^3.22.1":
   version: 3.22.1
   resolution: "lerna@npm:3.22.1"
   dependencies:
@@ -12725,19 +12693,20 @@ fsevents@^1.2.7:
     "@babel/preset-typescript": ^7.10.4
     "@sprucelabs/babel-plugin-schema": ^3.0.15
     "@typescript-eslint/eslint-plugin": ^4.2.0
+    "@typescript-eslint/parser": ^4.2.0
     babel-plugin-module-resolver: ^4.0.0
     conventional-changelog-sprucelabs: ^1.1.1
     eslint: ^7.9.0
-    eslint-config-spruce: ^10.9.59
+    eslint-config-spruce: ^10.9.60
     eslint-import-resolver-node: ^0.3.4
     eslint-plugin-import: ^2.22.0
     eslint-plugin-prettier: ^3.1.4
     eslint-plugin-react: ^7.21.1
     eslint-plugin-spruce: ^10.9.60
     jest: ^26.4.2
-    lerna: ^3.20.2
+    lerna: ^3.22.1
+    prettier: ^2.1.2
     typescript: ^4.0.3
-    yarn-upgrade-all: ^0.5.4
   dependenciesMeta:
     blessed-contrib@4.8.20:
       unplugged: true
@@ -14440,18 +14409,6 @@ typescript@~3.9.7:
     y18n: ^5.0.1
     yargs-parser: ^20.0.0
   checksum: 39490963e02bceb73ffff285cd9b241e5b019acbedef456586c97027cc18d0cadb743ad1340ccdc9340d0a21e18176c63b9f8bd90eee64c7e1f512c147aab1c2
-  languageName: node
-  linkType: hard
-
-"yarn-upgrade-all@npm:^0.5.4":
-  version: 0.5.4
-  resolution: "yarn-upgrade-all@npm:0.5.4"
-  dependencies:
-    chalk: ^4.1.0
-    commander: ^5.1.0
-  bin:
-    yarn-upgrade-all: index.js
-  checksum: 670984d05da0270d2754e9370aa51148863a8337da45c713826144e92668cc664867073882856101b4276b5768b32d7d6d062a6e7052f909daae8df4df92bcc6
   languageName: node
   linkType: hard
 

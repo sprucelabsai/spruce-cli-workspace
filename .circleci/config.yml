@@ -1,11 +1,12 @@
 version: 2.1
 orbs:
   hub: yasuhiroki/hub@0.0.2
+  jq: circleci/jq@2.2.0
 jobs:
   test:
     docker:
       - image: circleci/node:12
-    resource_class: xlarge
+    resource_class: medium
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -24,16 +25,14 @@ jobs:
           command: |
             [ -n "$BASE64_ENV" ] && echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
       - run: node -v && npm -v && yarn -v
-      - restore_cache:
-          key: cli-import-service
       - run:
           name: "Install"
           command: |
-            yarn install --frozen-lockfile
+            yarn install
       - run:
           name: "Build"
           command: |
-            yarn build || yarn build
+            yarn build
       - run:
           name: "Lint"
           command: |
@@ -42,10 +41,6 @@ jobs:
           name: "Test 💪"
           command: |
             yarn test -w 4
-      - save_cache:
-          key: cli-import-service
-          paths:
-            - /tmp/import-service
       - run:
           name: Check branch for auto-upgrade
           command: |
@@ -81,7 +76,7 @@ jobs:
       - restore_cache:
           keys:
             - yarn-packages-{{ checksum "yarn.lock" }}
-      - run: yarn install --frozen-lockfile
+      - run: yarn install
       - run: yarn run build
       - run: git config --global user.email "$GIT_AUTHOR_EMAIL"
       - run: git config --global user.name "$GIT_AUTHOR_NAME"
@@ -98,6 +93,7 @@ jobs:
             - "ec:9f:2e:aa:1f:c9:ab:49:57:8f:c0:cd:2e:5b:f3:b0"
       - checkout
       - hub/install
+      - jq/install
       - run:
           name: "Set TARGETBRANCH env variable"
           command: |
