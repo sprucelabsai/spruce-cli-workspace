@@ -2,7 +2,7 @@ import os from 'os'
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import fsUtil from 'fs-extra'
-import { ICliBootOptions, ICli, boot } from '../cli'
+import Cli, { ICliBootOptions, ICli } from '../cli'
 import { InstallFeature } from '../features/features.types'
 import ServiceFactory, {
 	IServiceProvider,
@@ -52,7 +52,7 @@ export default class FeatureFixture implements IServiceProvider {
 	public async Cli(options?: ICliBootOptions) {
 		await this.linkWorkspacePackages()
 
-		const cli = await boot({
+		const cli = await Cli.Boot({
 			cwd: this.cwd,
 			graphicsInterface: this.term,
 			...(options ?? {}),

@@ -1,3 +1,4 @@
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../../AbstractCliTest'
 
@@ -37,7 +38,21 @@ export default class SettingUpWatchersTest extends AbstractCliTest {
 		const cli = await this.installWatch()
 		const feature = cli.getFeature('watch')
 
+		let fireCount = 0
+		cli.on('watcher.did-detect-change', () => {
+			fireCount++
+		})
+
 		void feature.startWatching()
+
+		diskUtil.writeFile(
+			this.resolvePath('src', 'index.ts'),
+			'console.log("hello world")'
+		)
+
+		await feature.stopWatching()
+
+		assert.isEqual(fireCount, 1)
 	}
 
 	private static async installWatch() {
