@@ -4,10 +4,10 @@ import {
 	TemplateRenderAs,
 	IFieldTemplateItem,
 	ISchema,
+	FieldDefinition,
 } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
 import { upperFirst } from 'lodash'
-import { FieldDefinition } from '@sprucelabs/schema'
 
 handlebars.registerHelper('valueTypeGenerator', function (
 	fieldDefinition:

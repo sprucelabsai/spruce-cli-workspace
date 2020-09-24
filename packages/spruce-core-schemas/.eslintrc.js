@@ -3,5 +3,5 @@ module.exports = {
 	globals: {
 		log: true,
 		config: true,
-	},
+	}
 }

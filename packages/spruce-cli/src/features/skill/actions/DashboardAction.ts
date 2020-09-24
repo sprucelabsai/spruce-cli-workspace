@@ -1,5 +1,7 @@
 import { buildSchema } from '@sprucelabs/schema'
+// @ts-ignore
 import blessed from 'blessed'
+// @ts-ignore
 import contrib from 'blessed-contrib'
 // @ts-ignore
 import fonts from 'cfonts'
@@ -195,7 +197,7 @@ export default class DashboardAction extends AbstractFeatureAction<
 
 			label: this.styleButtonLabel('New'),
 		})
-
+		//@ts-ignore
 		table.append(button)
 	}
 
@@ -226,7 +228,7 @@ export default class DashboardAction extends AbstractFeatureAction<
 			bottom: 0,
 			label: this.styleButtonLabel('New'),
 		})
-
+		//@ts-ignore
 		table.append(button)
 	}
 
@@ -313,6 +315,7 @@ export default class DashboardAction extends AbstractFeatureAction<
 		// })
 
 		// table.append(headerBox)
+		//@ts-ignore
 		table.focus()
 	}
 }

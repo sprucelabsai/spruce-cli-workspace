@@ -1,6 +1,9 @@
-import { ISchemaTemplateItem, TemplateRenderAs } from '@sprucelabs/schema'
+import {
+	ISchemaTemplateItem,
+	TemplateRenderAs,
+	FieldDefinition,
+} from '@sprucelabs/schema'
 import handlebars from 'handlebars'
-import { FieldDefinition } from '@sprucelabs/schema'
 
 /** Renders field options */
 handlebars.registerHelper('fieldDefinitionOptions', function (

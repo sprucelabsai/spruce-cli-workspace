@@ -3,7 +3,7 @@ module.exports = (api) => {
 
 	return {
 		ignore: ["**/testDirsAndFiles/**", "**/spruce-templates/src/templates/**"],
-		presets: ['@babepl/preset-env', '@babel/preset-typescript'],
+		presets: ['@babel/preset-env', '@babel/preset-typescript'],
 		plugins: [
 			//['@sprucelabs/babel-plugin-schema', {
 			//	cwd: process.env.PWD,
