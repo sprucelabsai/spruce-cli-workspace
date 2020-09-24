@@ -2,6 +2,7 @@ import pathUtil from 'path'
 import { ISchema, SchemaValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
+import { GlobalEmitter } from '../CliGlobalEmitter'
 import GeneratorFactory, {
 	GeneratorCode,
 	GeneratorMap,
@@ -44,6 +45,7 @@ export default abstract class AbstractFeature<
 	protected actionsDir: string | undefined
 	protected actionFactory?: FeatureActionFactory
 	protected templates: Templates
+	protected emitter: GlobalEmitter
 
 	private serviceFactory: ServiceFactory
 	private storeFactory: StoreFactory
@@ -62,6 +64,7 @@ export default abstract class AbstractFeature<
 		actionFactory?: FeatureActionFactory
 		featureInstaller: FeatureInstaller
 		term: IGraphicsInterface
+		emitter: GlobalEmitter
 	}) {
 		this.cwd = options.cwd
 		this.serviceFactory = options.serviceFactory
@@ -69,6 +72,7 @@ export default abstract class AbstractFeature<
 		this.actionFactory = options.actionFactory
 		this.storeFactory = options.storeFactory
 		this.generatorFactory = new GeneratorFactory(this.templates, options.term)
+		this.emitter = options.emitter
 
 		this.actionFactoryOptions = {
 			...options,

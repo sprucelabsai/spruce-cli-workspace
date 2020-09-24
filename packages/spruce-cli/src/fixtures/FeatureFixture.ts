@@ -2,7 +2,7 @@ import os from 'os'
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import fsUtil from 'fs-extra'
-import { ICliBootOptions, ICli, boot } from '../cli'
+import Cli, { ICliBootOptions, ICli } from '../cli'
 import { InstallFeature } from '../features/features.types'
 import ServiceFactory, {
 	IServiceProvider,
@@ -52,7 +52,7 @@ export default class FeatureFixture implements IServiceProvider {
 	public async Cli(options?: ICliBootOptions) {
 		await this.linkWorkspacePackages()
 
-		const cli = await boot({
+		const cli = await Cli.Boot({
 			cwd: this.cwd,
 			graphicsInterface: this.term,
 			...(options ?? {}),
@@ -103,7 +103,7 @@ export default class FeatureFixture implements IServiceProvider {
 		features: InstallFeature[],
 		cacheKey?: string,
 		bootOptions?: ICliBootOptions
-	): Promise<ICli> {
+	) {
 		if (
 			cacheKey &&
 			this.installedSkills[cacheKey] &&
@@ -139,10 +139,7 @@ export default class FeatureFixture implements IServiceProvider {
 		return cli
 	}
 
-	public async linkLocalPackages() {
-		const command = this.Service('command')
-		await command.execute(`yarn link @sprucelabs/spruce-skill-utils`)
-	}
+	public async linkLocalPackages() {}
 
 	private async copyCachedSkillAndTrackItsDir(cacheKey: string) {
 		const settingsFile = this.getSettingsFilePath()

@@ -6,7 +6,6 @@ import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import skillSchema from '#spruce/schemas/spruce/v2020_07_22/skill.schema'
 import log from '../singletons/log'
 import { AuthedAs } from '../types/cli.types'
-import { SpruceEvents } from '../types/events-generated'
 import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
 
 type ISkill = SpruceSchemas.SpruceCli.v2020_07_22.ICliSkill
@@ -23,24 +22,6 @@ export default class SkillStore extends AbstractLocalStore<
 	/** Build a skill with the passed values */
 	public static getSkill(values?: Partial<ISkill>) {
 		return new Schema(skillSchema, values)
-	}
-
-	/** Get all skills the user has access to */
-	public async getSkills(userToken: string): Promise<ISkill[]> {
-		const mercury = await this.mercuryForUser(userToken)
-		const result = await mercury.emit<
-			SpruceEvents.Core.GetDeveloperSkills.IPayload,
-			SpruceEvents.Core.GetDeveloperSkills.IResponseBody
-		>({ eventName: SpruceEvents.Core.GetDeveloperSkills.name })
-
-		const skills = result.responses[0].payload.skills.map((values) => {
-			const instance = SkillStore.getSkill(values)
-			instance.validate()
-			return instance.getValues()
-		})
-
-		// @ts-ignore
-		return skills
 	}
 
 	public setLoggedInSkill(skill: ISkill) {

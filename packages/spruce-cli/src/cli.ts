@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import {
 	Mercury,
 	IMercuryConnectOptions,
@@ -11,10 +10,12 @@ import {
 } from '@sprucelabs/spruce-skill-utils'
 import { Command, CommanderStatic } from 'commander'
 import './addons/filePrompt.addon'
+import CliGlobalEmitter, { GlobalEmitter } from './CliGlobalEmitter'
 import SpruceError from './errors/SpruceError'
 import FeatureCommandAttacher from './features/FeatureCommandAttacher'
 import FeatureInstaller from './features/FeatureInstaller'
 import FeatureInstallerFactory from './features/FeatureInstallerFactory'
+import { FeatureCode, IInstallFeatureOptions } from './features/features.types'
 import TerminalInterface from './interfaces/TerminalInterface'
 import ServiceFactory from './services/ServiceFactory'
 import log from './singletons/log'
@@ -25,6 +26,7 @@ export interface ICli {
 	installFeatures: FeatureInstaller['install']
 	getFeature: FeatureInstaller['getFeature']
 	checkHealth(): Promise<IHealthCheckResults>
+	emitter: GlobalEmitter
 }
 
 export interface ICliBootOptions {
@@ -37,13 +39,11 @@ async function login(storeFactory: StoreFactory, mercury: Mercury) {
 	const remoteStore = storeFactory.Store('remote')
 	const remoteUrl = remoteStore.getRemoteUrl()
 
-	// Who is logged in?
 	const userStore = storeFactory.Store('user')
 	const loggedInUser = userStore.getLoggedInUser()
 	const skillStore = storeFactory.Store('skill')
 	const loggedInSkill = skillStore.getLoggedInSkill()
 
-	// Build mercury creds
 	let creds: MercuryAuth | undefined
 	const authType = remoteStore.authType
 
@@ -59,7 +59,6 @@ async function login(storeFactory: StoreFactory, mercury: Mercury) {
 			break
 	}
 
-	// Mercury connection options
 	const connectOptions: IMercuryConnectOptions = {
 		spruceApiUrl: remoteUrl,
 		credentials: creds,
@@ -68,150 +67,147 @@ async function login(storeFactory: StoreFactory, mercury: Mercury) {
 	await mercury.connect(connectOptions)
 }
 
-function Cli(
-	featureInstaller: FeatureInstaller,
-	serviceFactory: ServiceFactory,
-	cwd: string
-): ICli {
-	return {
-		installFeatures: async (options) => {
-			return featureInstaller.install(options)
-		},
+export default class Cli implements ICli {
+	private cwd: string
+	private featureInstaller: FeatureInstaller
+	private serviceFactory: ServiceFactory
+	public readonly emitter: GlobalEmitter
 
-		getFeature: (code) => {
-			return featureInstaller.getFeature(code)
-		},
-
-		checkHealth: async (): Promise<IHealthCheckResults> => {
-			const isInstalled = await featureInstaller.isInstalled('skill')
-
-			if (!isInstalled) {
-				return {
-					skill: {
-						status: 'failed',
-						errors: [
-							new SpruceError({
-								// @ts-ignore
-								code: 'SKILL_NOT_INSTALLED',
-							}),
-						],
-					},
-				}
-			}
-
-			try {
-				const commandService = serviceFactory.Service(cwd, 'command')
-				const results = await commandService.execute('yarn health.local')
-				const resultParts = results.stdout.split(HEALTH_DIVIDER)
-
-				return JSON.parse(resultParts[1]) as IHealthCheckResults
-			} catch (originalError) {
-				const error = new SpruceError({
-					// @ts-ignore
-					code: 'BOOT_ERROR',
-					originalError,
-				})
-
-				return {
-					skill: {
-						status: 'failed',
-						errors: [error],
-					},
-				}
-			}
-		},
+	private constructor(
+		cwd: string,
+		featureInstaller: FeatureInstaller,
+		serviceFactory: ServiceFactory,
+		emitter: GlobalEmitter
+	) {
+		this.cwd = cwd
+		this.featureInstaller = featureInstaller
+		this.serviceFactory = serviceFactory
+		this.emitter = emitter
 	}
-}
 
-export async function boot(options?: ICliBootOptions) {
-	const program = options?.program
+	public async installFeatures(options: IInstallFeatureOptions) {
+		return this.featureInstaller.install(options)
+	}
 
-	// TODO pull in without including package.json
-	// program?.version(pkg.version).description(pkg.description)
-	program?.storeOptionsAsProperties(false)
-	program?.option('--no-color', 'Disable color output in the console')
-	program?.option(
-		'-d, --directory <path>',
-		'The working directory to execute the command'
-	)
+	public getFeature<C extends FeatureCode>(code: C) {
+		return this.featureInstaller.getFeature(code)
+	}
 
-	let cwd = options?.cwd ?? process.cwd()
+	public async checkHealth(): Promise<IHealthCheckResults> {
+		const isInstalled = await this.featureInstaller.isInstalled('skill')
 
-	program?.on('option:directory', function () {
-		if (program?.directory) {
-			const newCwd = diskUtil.resolvePath(cwd, program.directory)
-			log.trace(`CWD updated: ${newCwd}`)
-			cwd = newCwd
+		if (!isInstalled) {
+			return {
+				skill: {
+					status: 'failed',
+					errors: [
+						new SpruceError({
+							// @ts-ignore
+							code: 'SKILL_NOT_INSTALLED',
+						}),
+					],
+				},
+			}
 		}
-	})
 
-	const mercury = new Mercury()
-	const serviceFactory = new ServiceFactory({ mercury })
-	const storeFactory = new StoreFactory(cwd, mercury, serviceFactory)
-	const terminal = options?.graphicsInterface ?? new TerminalInterface(cwd)
+		try {
+			const commandService = this.serviceFactory.Service(this.cwd, 'command')
+			const results = await commandService.execute('yarn health.local')
+			const resultParts = results.stdout.split(HEALTH_DIVIDER)
 
-	const featureInstaller = FeatureInstallerFactory.WithAllFeatures({
-		cwd,
-		serviceFactory,
-		storeFactory,
-		term: terminal,
-	})
+			return JSON.parse(resultParts[1]) as IHealthCheckResults
+		} catch (originalError) {
+			const error = new SpruceError({
+				// @ts-ignore
+				code: 'BOOT_ERROR',
+				originalError,
+			})
 
-	// attach features
-	if (program) {
-		const attacher = new FeatureCommandAttacher(
-			program,
-			featureInstaller,
-			terminal
+			return {
+				skill: {
+					status: 'failed',
+					errors: [error],
+				},
+			}
+		}
+	}
+
+	public static async Boot(options?: ICliBootOptions): Promise<ICli> {
+		const program = options?.program
+
+		// TODO pull in without including package.json
+		// program?.version(pkg.version).description(pkg.description)
+		program?.storeOptionsAsProperties(false)
+		program?.option('--no-color', 'Disable color output in the console')
+		program?.option(
+			'-d, --directory <path>',
+			'The working directory to execute the command'
 		)
-		const codes = FeatureInstallerFactory.featureCodes
 
-		for (const code of codes) {
-			const feature = featureInstaller.getFeature(code)
-			await attacher.attachFeature(feature)
+		let cwd = options?.cwd ?? process.cwd()
+
+		program?.on('option:directory', function () {
+			if (program?.directory) {
+				const newCwd = diskUtil.resolvePath(cwd, program.directory)
+				log.trace(`CWD updated: ${newCwd}`)
+				cwd = newCwd
+			}
+		})
+
+		const mercury = new Mercury()
+		const serviceFactory = new ServiceFactory({ mercury })
+		const storeFactory = new StoreFactory(cwd, mercury, serviceFactory)
+		const terminal = options?.graphicsInterface ?? new TerminalInterface(cwd)
+		const emitter = CliGlobalEmitter.Emitter()
+
+		const featureInstaller = FeatureInstallerFactory.WithAllFeatures({
+			cwd,
+			serviceFactory,
+			storeFactory,
+			term: terminal,
+			emitter,
+		})
+
+		if (program) {
+			const attacher = new FeatureCommandAttacher(
+				program,
+				featureInstaller,
+				terminal
+			)
+			const codes = FeatureInstallerFactory.featureCodes
+
+			for (const code of codes) {
+				const feature = featureInstaller.getFeature(code)
+				await attacher.attachFeature(feature)
+			}
+
+			program.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
+
+			program.action((command, args) => {
+				throw new SpruceError({ code: 'INVALID_COMMAND', args: args || [] })
+			})
 		}
 
-		// Alphabetical sort of help output
-		program.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
+		const isInstalled = await featureInstaller.isInstalled('skill')
 
-		// Error on unknown commands
-		program.action((command, args) => {
-			throw new SpruceError({ code: 'INVALID_COMMAND', args: args || [] })
-		})
+		if (isInstalled) {
+			await login(storeFactory, mercury)
+		}
+
+		const cli = new Cli(cwd, featureInstaller, serviceFactory, emitter)
+
+		return cli as ICli
 	}
-
-	// Setup mercury if logged in
-	const isInstalled = await featureInstaller.isInstalled('skill')
-
-	if (isInstalled) {
-		await login(storeFactory, mercury)
-	}
-
-	const cli: ICli = Cli(featureInstaller, serviceFactory, cwd)
-
-	return cli
 }
 
-/**
- * For handling debugger not attaching right away
- */
-export async function run(
-	argv: string[] = [],
-	debugging: boolean
-): Promise<void> {
+export async function run(argv: string[] = []): Promise<void> {
 	const program = new Command()
-	// Const commands = []
-	if (debugging) {
-		// eslint-disable-next-line no-debugger
-		// debugger // (breakpoints and debugger works after this one is missed)
-		log.trace('Extra debugger dropped in so future debuggers work... 🤷‍')
-	}
 
-	await boot({ program })
+	await Cli.Boot({ program })
 
 	const commandResult = await program.parseAsync(argv)
+
 	if (commandResult.length === 0) {
-		// No commands were found / executed
 		program.outputHelp()
 	}
 }
