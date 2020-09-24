@@ -2082,10 +2082,10 @@
     tsconfig-paths "^3.9.0"
     yargs "^16.0.3"
 
-"@sprucelabs/error@^2.2.334":
-  version "2.2.334"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.334.tgz#dc44ff4f66aad8bb663b200b89a31dc733cf6079"
-  integrity sha512-ENyme8sWIIHQAfYkGY7QvUe8N8B9GGs1DP54qyEM4XgzkhFQO4OyOC8hrd0g9cLb15fNT9mBvA6/nbIwvE2l1w==
+"@sprucelabs/error@^2.2.335":
+  version "2.2.335"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.335.tgz#38a8310bb60d8a80cd3f4174961846601cb8a40e"
+  integrity sha512-+Yo06bMJcBgvwLPqRV6sNQFzuDfR8iSzXb6e0Vju8SiBkVyU+PPNxy8cvM6y/+jtZHxnfETo+GN4X1G2JAJvfA==
 
 "@sprucelabs/jest-sheets-reporter@^1.2.2":
   version "1.2.2"
@@ -2095,10 +2095,10 @@
     dotenv "^8.2.0"
     google-spreadsheet "^3.0.13"
 
-"@sprucelabs/log@^10.2.240":
-  version "10.2.240"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.240.tgz#8ce981bca164fc6ad974dac90cb409ca7278bc1a"
-  integrity sha512-PzW837ikG08xbw8KHt40VJX53SAFQckvtyloWkOg718SAxDaRNi45tdtpn9AafPm2F9UdzTKjJi4K3/MIS3Ong==
+"@sprucelabs/log@^10.2.241":
+  version "10.2.241"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.241.tgz#e22477fbf8096a70743e90e0f81f8e7f23b9c684"
+  integrity sha512-j8X2jphMgaqkyrnnPbZPLOr7dK8FZ3o2SpFVfJnPqXVda+2zXqYOlgSO4QDFMDqZAX+ddiyDw/175hwlvCLfxw==
 
 "@sprucelabs/mercury@^10.5.72":
   version "10.5.72"
@@ -2110,13 +2110,13 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^12.0.48":
-  version "12.0.48"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.0.48.tgz#01ea18c476a794126e9fcd6af05e31f18444934f"
-  integrity sha512-iastvGt8o596HGz9PblgqNZ6KSCIvT6WuT9a2jkR2c2+BkRNJy43cKJaxaKLZPB09rbLhGIzEjaqUnV4UZuTGw==
+"@sprucelabs/schema@^12.0.49":
+  version "12.0.49"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.0.49.tgz#19d6bdad0e9ee5d29629d78850cc0645288ed4aa"
+  integrity sha512-N0UejO8FBea57yCzh7/pXQDFpuQu5AloR2Qa206gxqcaBJ3PDnz9nX8SMVoT/XUbbiKKLLCCQShZGZDkFxtpAw==
   dependencies:
-    "@sprucelabs/error" "^2.2.334"
-    "@sprucelabs/log" "^10.2.240"
+    "@sprucelabs/error" "^2.2.335"
+    "@sprucelabs/log" "^10.2.241"
     google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.8.1"
     mime-db "^1.45.0"
