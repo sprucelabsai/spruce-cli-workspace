@@ -39,6 +39,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			generateFieldTypes,
 			generateStandaloneTypesFile,
 			deleteDestinationDirIfNoSchemas,
+			fetchCoreSchemas,
 		} = normalizedOptions
 
 		if ((fetchRemoteSchemas || fetchLocalSchemas) && generateCoreSchemaTypes) {
@@ -87,6 +88,7 @@ export default class SyncAction extends AbstractFeatureAction<
 				resolvedSchemaTypesDestinationDir,
 				enableVersioning,
 				fetchRemoteSchemas,
+				fetchCoreSchemas,
 			})
 
 			schemaErrors.push(...templateResults.schemaErrors)
@@ -159,12 +161,14 @@ export default class SyncAction extends AbstractFeatureAction<
 		resolvedSchemaTypesDestinationDir: string
 		enableVersioning: boolean
 		fetchRemoteSchemas: boolean
+		fetchCoreSchemas: boolean
 	}) {
 		const {
 			schemaLookupDir,
 			resolvedSchemaTypesDestinationDir,
 			enableVersioning,
 			fetchRemoteSchemas,
+			fetchCoreSchemas,
 		} = options
 
 		const feature = this.getFeature('skill') as SkillFeature
@@ -178,6 +182,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			fetchRemoteSchemas,
 			enableVersioning,
 			localNamespace: namespace,
+			fetchCoreSchemas,
 		})
 
 		const hashSpruceDestination = resolvedSchemaTypesDestinationDir.replace(

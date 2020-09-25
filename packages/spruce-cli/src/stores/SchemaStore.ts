@@ -47,7 +47,7 @@ export default class SchemaStore extends AbstractStore {
 		fetchRemoteSchemas?: boolean
 		enableVersioning?: boolean
 		localNamespace: string
-		fetchCoreSchemas?: string
+		fetchCoreSchemas?: boolean
 	}): Promise<IFetchSchemasResults> {
 		const {
 			localSchemaDir = 'src/schemas',
