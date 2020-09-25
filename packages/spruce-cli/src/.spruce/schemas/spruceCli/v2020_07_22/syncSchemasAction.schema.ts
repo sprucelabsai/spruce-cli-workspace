@@ -3,7 +3,6 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-
 const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasActionSchema  = {
 	id: 'syncSchemasAction',
 	name: 'Sync schemas action',
@@ -18,9 +17,9 @@ const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasA
 	                defaultValue: "#spruce/schemas",
 	                options: undefined
 	            },
-	            /** Addons lookup directory. Where I'll look for new schema fields to be registered. */
+	            /** Id. Where I'll look for new schema fields to be registered. */
 	            'addonsLookupDir': {
-	                label: 'Addons lookup directory',
+	                label: 'Id',
 	                type: 'text',
 	                hint: 'Where I\'ll look for new schema fields to be registered.',
 	                defaultValue: "src/addons",
@@ -74,32 +73,40 @@ const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasA
 	                defaultValue: true,
 	                options: undefined
 	            },
-	            /** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
 	            'fetchLocalSchemas': {
 	                label: 'Fetch local schemas',
 	                type: 'boolean',
 	                isPrivate: true,
-	                hint: 'I will look in schemaLookupDir to load local schemas.',
+	                hint: 'I will check the server and your contracts to pull down schemas you need.',
 	                defaultValue: true,
 	                options: undefined
 	            },
-	            /** Fetch core schemas. Should I pull core schemas. It is recommended you use @sprucelabs/spruce-core-schemas to load core schemas. */
-	            'fetchCoreSchemas': {
-	                label: 'Fetch core schemas',
+	            'generateCoreSchemaTypes': {
+	                label: 'Fetch remote schemas',
 	                type: 'boolean',
-	                isPrivate: true,
-	                hint: 'Should I pull core schemas. It is recommended you use @sprucelabs/spruce-core-schemas to load core schemas.',
+	                hint: 'I will check the server and your contracts to pull down schemas you need.',
 	                defaultValue: false,
 	                options: undefined
-	            },
-	            /** Delete directory if no schemas. */
-	            'deleteDestinationDirIfNoSchemas': {
-	                label: 'Delete directory if no schemas',
-	                type: 'boolean',
-	                isPrivate: true,
-	                defaultValue: false,
-	                options: undefined
-	            },
+				},
+				fetchCoreSchemas: {
+					type: 'boolean',
+					label: 'Fetch core schemas',
+					isPrivate: true,
+					defaultValue: true,
+				},
+				generateStandaloneTypesFile: {
+					type: 'boolean',
+					label: 'Generate standalone types file',
+					isPrivate: true,
+					hint: `By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas`,
+					defaultValue: false,
+				},
+				deleteDestinationDirIfNoSchemas: {
+					type: 'boolean',
+					label: 'Delete directory if no schemas',
+					isPrivate: true,
+					defaultValue: false,
+				}
 	    }
 }
 

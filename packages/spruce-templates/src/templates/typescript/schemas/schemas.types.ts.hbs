@@ -3,12 +3,12 @@
 
 export { SpruceSchemas } from '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.types'
 
-{{#if (gt schemaTemplateItems.length 0)}}
+{{#if (hasNonCoreSchemaTemplateItems schemaTemplateItems)}}
 import { default as SchemaEntity } from '@sprucelabs/schema'
 {{/if}}
 
 
-{{#if (gt schemaTemplateItems.length 0)}}
+{{#if (hasNonCoreSchemaTemplateItems schemaTemplateItems)}}
 
 {{#each imports}}
 import * as {{importAs}} from '{{package}}'
@@ -18,6 +18,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 	{{#each schemaTemplateItems}}
 
+	{{#unless (isCoreSchemaTemplateItem this)}}
 	namespace {{../globalNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}} {
 
 		{{#if schema.description}}/** {{schema.description}} */{{/if}}
@@ -32,6 +33,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 		type {{namePascal}}Entity = SchemaEntity<{{../globalNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}}.I{{namePascal}}Schema>
 
 	}
+	{{/unless}}
 
 	{{/each}}
 }

@@ -53,8 +53,8 @@ export default class SchemaStore extends AbstractStore {
 			localSchemaDir = 'src/schemas',
 			fetchRemoteSchemas = true,
 			enableVersioning = true,
-			fetchCoreSchemas = true,
 			localNamespace,
+			fetchCoreSchemas = true,
 		} = options || {}
 
 		const results: IFetchSchemasResults = {

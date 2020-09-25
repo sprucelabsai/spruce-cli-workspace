@@ -3,6 +3,86 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.29.33](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.29.32...v10.29.33) (2020-09-25)
+
+**Note:** Version bump only for package @sprucelabs/spruce-skill-utils
+
+
+
+
+
+## [10.29.32](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.29.31...v10.29.32) (2020-09-25)
+
+**Note:** Version bump only for package @sprucelabs/spruce-skill-utils
+
+
+
+
+
+## [10.29.31](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.29.30...v10.29.31) (2020-09-25)
+
+**Note:** Version bump only for package @sprucelabs/spruce-skill-utils
+
+
+
+
+
+## [10.29.30](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.29.29...v10.29.30) (2020-09-25)
+
+**Note:** Version bump only for package @sprucelabs/spruce-skill-utils
+
+
+
+
+
+## [10.29.29](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.29.28...v10.29.29) (2020-09-25)
+
+**Note:** Version bump only for package @sprucelabs/spruce-skill-utils
+
+
+
+
+
+## [10.29.28](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.29.27...v10.29.28) (2020-09-25)
+
+**Note:** Version bump only for package @sprucelabs/spruce-skill-utils
+
+
+
+
+
+## [10.29.27](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.29.26...v10.29.27) (2020-09-25)
+
+**Note:** Version bump only for package @sprucelabs/spruce-skill-utils
+
+
+
+
+
+## [10.29.26](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.29.25...v10.29.26) (2020-09-25)
+
+**Note:** Version bump only for package @sprucelabs/spruce-skill-utils
+
+
+
+
+
+## [10.29.25](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.29.24...v10.29.25) (2020-09-24)
+
+**Note:** Version bump only for package @sprucelabs/spruce-skill-utils
+
+
+
+
+
+## [10.29.24](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.29.23...v10.29.24) (2020-09-24)
+
+**Note:** Version bump only for package @sprucelabs/spruce-skill-utils
+
+
+
+
+
 ## [10.29.23](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.29.22...v10.29.23) (2020-09-24)
 
 **Note:** Version bump only for package @sprucelabs/spruce-skill-utils
