@@ -1234,23 +1234,72 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		
+		interface IGeneratedDir {
+			
+				
+				'name': string
+				
+				'path': string
+				
+				'description'?: string| undefined | null
+				
+				'action': ("skipped" | "generated" | "updated" | "deleted")
+		}
+
+		interface IGeneratedDirSchema extends SpruceSchema.ISchema {
+			id: 'generatedDir',
+			name: '',
+			    fields: {
+			            /** . */
+			            'name': {
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'path': {
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'description': {
+			                type: 'text',
+			                options: undefined
+			            },
+			            /** . */
+			            'action': {
+			                type: 'select',
+			                isRequired: true,
+			                options: {choices: [{"label":"Skipped","value":"skipped"},{"label":"Generated","value":"generated"},{"label":"Updated","value":"updated"},{"label":"Deleted","value":"deleted"}],}
+			            },
+			    }
+		}
+
+		type GeneratedDirEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.IGeneratedDirSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		
 		interface IWatcherDidDetectChangesEmitPayload {
 			
-				/** First Field. */
-				'changes': (any)[]
+				
+				'changes': ({ schemaId: 'generatedFile', version: 'v2020_07_22', values: SpruceSchemas.SpruceCli.v2020_07_22.IGeneratedFile } | { schemaId: 'generatedDir', version: 'v2020_07_22', values: SpruceSchemas.SpruceCli.v2020_07_22.IGeneratedDir })[]
 		}
 
 		interface IWatcherDidDetectChangesEmitPayloadSchema extends SpruceSchema.ISchema {
 			id: 'watcherDidDetectChangesEmitPayload',
 			name: 'Watcher did detect changes emit payload',
 			    fields: {
-			            /** First Field. */
+			            /** . */
 			            'changes': {
-			                label: 'First Field',
-			                type: 'raw',
+			                type: 'schema',
 			                isRequired: true,
 			                isArray: true,
-			                options: {valueType: `GeneratedFileOrDir`,}
+			                options: {schemas: (SpruceSchemas.SpruceCli.v2020_07_22.IGeneratedFileSchema | SpruceSchemas.SpruceCli.v2020_07_22.IGeneratedDirSchema)[],}
 			            },
 			    }
 		}

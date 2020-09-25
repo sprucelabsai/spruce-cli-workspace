@@ -1,42 +1,45 @@
 import { buildSchema } from '@sprucelabs/schema'
 
-const fields = {
-	name: {
-		type: 'text',
-		isRequired: true,
-	},
-	path: {
-		type: 'text',
-		isRequired: true,
-	},
-	description: {
-		type: 'text',
-	},
-	action: {
-		type: 'select',
-		isRequired: true,
-		options: {
-			choices: [
-				{
-					label: 'Skipped',
-					value: 'skipped',
-				},
-				{
-					label: 'Generated',
-					value: 'generated',
-				},
-				{
-					label: 'Updated',
-					value: 'updated',
-				},
-				{
-					label: 'Deleted',
-					value: 'deleted',
-				},
-			],
+const fieldsSchema = buildSchema({
+	id: 'generatedFileFields',
+	fields: {
+		name: {
+			type: 'text',
+			isRequired: true,
+		},
+		path: {
+			type: 'text',
+			isRequired: true,
+		},
+		description: {
+			type: 'text',
+		},
+		action: {
+			type: 'select',
+			isRequired: true,
+			options: {
+				choices: [
+					{
+						label: 'Skipped',
+						value: 'skipped',
+					},
+					{
+						label: 'Generated',
+						value: 'generated',
+					},
+					{
+						label: 'Updated',
+						value: 'updated',
+					},
+					{
+						label: 'Deleted',
+						value: 'deleted',
+					},
+				],
+			},
 		},
 	},
-}
+})
 
 export default buildSchema({
 	id: 'watcherDidDetectChangesEmitPayload',
@@ -48,18 +51,14 @@ export default buildSchema({
 			isArray: true,
 			options: {
 				schemas: [
-					{
+					buildSchema({
 						id: 'generatedFile',
-						fields: {
-							...fields,
-						},
-					},
-					{
+						fields: fieldsSchema.fields,
+					}),
+					buildSchema({
 						id: 'generatedDir',
-						fields: {
-							...fields,
-						},
-					},
+						fields: fieldsSchema.fields,
+					}),
 				],
 			},
 		},

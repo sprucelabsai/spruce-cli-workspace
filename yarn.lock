@@ -2087,6 +2087,11 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.344.tgz#be1b45d2ac341d8b0631c4f92f29f1d17e26cb19"
   integrity sha512-X7cu+6b1q2w0hPSkNvys+OdenRwtwYwqjdvoJ/LiFKc9orwHrp/BIYikF/Kz8HvH4i4q6dAluSXBuxfVLIDdcw==
 
+"@sprucelabs/error@^2.2.347":
+  version "2.2.347"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.347.tgz#74075ad68a47cc85ce8880abcebefbbc41bce8cf"
+  integrity sha512-o8su2NA0DDinJJvTpdno765APulhiQA5BF2Txv7y+g6xM7QEmYgIyneE2DUbRz2QnOWTG00cwXtkly6Q5OB1qQ==
+
 "@sprucelabs/jest-sheets-reporter@^1.2.2":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@sprucelabs/jest-sheets-reporter/-/jest-sheets-reporter-1.2.2.tgz#3418fa4b27d5c9812488003b8d2134e64291ea4a"
@@ -2099,6 +2104,11 @@
   version "10.2.243"
   resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.243.tgz#29f3dbcc3f51f26ee926298b83c0fffe2274f97f"
   integrity sha512-LC2sOuSf8THSiBrySFxlfIV59lmKn2TMgFHT5cOq70WDhPF/45Re+UqHdlfjMt3qWF3ScED6EG+oZcuJRvEsuQ==
+
+"@sprucelabs/log@^10.2.245":
+  version "10.2.245"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.245.tgz#ba8cefa0054652ee0149e122d9e4d7dbdd3b893a"
+  integrity sha512-xVRGwh78keUp/GHeddflxvVsvpMfpFqWfa4Csyu7saROTHBhf7eTacQJcu0sM3MjhhQEfq49XuXr731hzzRhoQ==
 
 "@sprucelabs/mercury-event-emitter@^1.11.27":
   version "1.11.27"
@@ -2137,6 +2147,18 @@
   dependencies:
     "@sprucelabs/error" "^2.2.344"
     "@sprucelabs/log" "^10.2.243"
+    google-libphonenumber "^3.2.13"
+    libphonenumber-js "^1.8.1"
+    mime-db "^1.45.0"
+    mime-type "^4.0.0"
+
+"@sprucelabs/schema@^12.2.2":
+  version "12.2.2"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.2.2.tgz#ee78cef5dd08419e1f9f495a2adb442bd40b2eed"
+  integrity sha512-1C/1vNwmjgJAdaOLV668ApYk1RvTS92R2aaJKUytrdDshChnkToEW8gR6qHKK8CXG+dSMCJ+Ua8VmuFcfA3s3A==
+  dependencies:
+    "@sprucelabs/error" "^2.2.347"
+    "@sprucelabs/log" "^10.2.245"
     google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.8.1"
     mime-db "^1.45.0"
