@@ -98,9 +98,15 @@ export enum AuthedAs {
 export interface GeneratedFile {
 	name: string
 	path: string
-	description: string
-	action: 'skipped' | 'generated' | 'updated'
+	description?: string
+	action: 'skipped' | 'generated' | 'updated' | 'deleted'
 }
+
+export interface GeneratedDir extends GeneratedFile {
+	isDir: true
+}
+
+export type GeneratedFileOrDir = GeneratedFile | GeneratedDir
 
 export interface NpmPackage {
 	name: string

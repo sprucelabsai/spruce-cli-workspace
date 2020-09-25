@@ -3,6 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
+
 const onboardingSchema: SpruceSchemas.SpruceCli.v2020_07_22.IOnboardingSchema  = {
 	id: 'onboarding',
 	name: 'Onboarding',

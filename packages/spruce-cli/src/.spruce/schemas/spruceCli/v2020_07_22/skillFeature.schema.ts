@@ -3,6 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
+
 const skillFeatureSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISkillFeatureSchema  = {
 	id: 'skillFeature',
 	name: 'Skill Feature',

@@ -3,6 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
+
 const cliUserSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICliUserSchema  = {
 	id: 'cliUser',
 	name: 'Person',

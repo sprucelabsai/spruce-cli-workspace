@@ -3,6 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
+
 const namedTemplateItemSchema: SpruceSchemas.SpruceCli.v2020_07_22.INamedTemplateItemSchema  = {
 	id: 'namedTemplateItem',
 	name: 'NamedTemplateItem',

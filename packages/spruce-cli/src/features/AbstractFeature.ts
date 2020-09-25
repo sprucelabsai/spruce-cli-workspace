@@ -2,11 +2,11 @@ import pathUtil from 'path'
 import { ISchema, SchemaValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
-import { GlobalEmitter } from '../CliGlobalEmitter'
 import GeneratorFactory, {
 	GeneratorCode,
 	GeneratorMap,
 } from '../generators/GeneratorFactory'
+import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory, {
 	Service,
 	IServiceProvider,

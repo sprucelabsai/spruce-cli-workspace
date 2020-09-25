@@ -3,19 +3,12 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
+
 const createSchemaActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICreateSchemaActionSchema  = {
 	id: 'createSchemaAction',
 	name: 'Create schema action',
 	description: 'Create the builder to a fresh new schema!',
 	    fields: {
-	            /** Schema types destination directory. Where schema types and interfaces will be generated. */
-	            'schemaTypesDestinationDir': {
-	                label: 'Schema types destination directory',
-	                type: 'text',
-	                hint: 'Where schema types and interfaces will be generated.',
-	                defaultValue: "#spruce/schemas",
-	                options: undefined
-	            },
 	            /** Field types directory. Where field types and interfaces will be generated. */
 	            'fieldTypesDestinationDir': {
 	                label: 'Field types directory',
@@ -31,6 +24,23 @@ const createSchemaActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICreateSchem
 	                type: 'text',
 	                hint: 'Where I\'ll look for new schema fields to be registered.',
 	                defaultValue: "src/addons",
+	                options: undefined
+	            },
+	            /** Generate field types. Should I generate field types too? */
+	            'generateFieldTypes': {
+	                label: 'Generate field types',
+	                type: 'boolean',
+	                isPrivate: true,
+	                hint: 'Should I generate field types too?',
+	                defaultValue: true,
+	                options: undefined
+	            },
+	            /** Schema types destination directory. Where schema types and interfaces will be generated. */
+	            'schemaTypesDestinationDir': {
+	                label: 'Schema types destination directory',
+	                type: 'text',
+	                hint: 'Where schema types and interfaces will be generated.',
+	                defaultValue: "#spruce/schemas",
 	                options: undefined
 	            },
 	            /** . Where I should look for your schema builders? */
@@ -64,13 +74,38 @@ const createSchemaActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICreateSchem
 	                defaultValue: true,
 	                options: undefined
 	            },
-	            /** Generate field types. Should I generate field types too? */
-	            'generateFieldTypes': {
-	                label: 'Generate field types',
+	            /** Fetch local schemas. I will check the server and your contracts to pull down schemas you need. */
+	            'fetchLocalSchemas': {
+	                label: 'Fetch local schemas',
 	                type: 'boolean',
 	                isPrivate: true,
-	                hint: 'Should I generate field types too?',
+	                hint: 'I will check the server and your contracts to pull down schemas you need.',
 	                defaultValue: true,
+	                options: undefined
+	            },
+	            /** Fetch remote schemas. I will check the server and your contracts to pull down schemas you need. */
+	            'fetchCoreSchemas': {
+	                label: 'Fetch remote schemas',
+	                type: 'boolean',
+	                hint: 'I will check the server and your contracts to pull down schemas you need.',
+	                defaultValue: false,
+	                options: undefined
+	            },
+	            /** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas */
+	            'generateStandaloneTypesFile': {
+	                label: 'Generate standalone types file',
+	                type: 'boolean',
+	                isPrivate: true,
+	                hint: 'By default, I\'ll generate a types file that augments core types from @sprucelabs/spruce-core-schemas',
+	                defaultValue: false,
+	                options: undefined
+	            },
+	            /** Delete directory if no schemas. */
+	            'deleteDestinationDirIfNoSchemas': {
+	                label: 'Delete directory if no schemas',
+	                type: 'boolean',
+	                isPrivate: true,
+	                defaultValue: false,
 	                options: undefined
 	            },
 	            /** Schema builder destination directory. Where I'll save the new schema builder. */

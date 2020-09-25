@@ -3,6 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
+
 const autoloaderSchema: SpruceSchemas.SpruceCli.v2020_07_22.IAutoloaderSchema  = {
 	id: 'autoloader',
 	name: 'Autoloader',

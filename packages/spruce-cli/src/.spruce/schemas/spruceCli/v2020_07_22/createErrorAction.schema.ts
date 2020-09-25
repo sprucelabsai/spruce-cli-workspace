@@ -3,6 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
+
 const createErrorActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICreateErrorActionSchema  = {
 	id: 'createErrorAction',
 	name: 'Create error action',

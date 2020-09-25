@@ -3,6 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
+
 const createTestActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICreateTestActionSchema  = {
 	id: 'createTestAction',
 	name: 'Create test action',

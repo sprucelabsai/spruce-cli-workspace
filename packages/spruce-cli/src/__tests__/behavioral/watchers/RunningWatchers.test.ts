@@ -33,12 +33,16 @@ export default class SettingUpWatchersTest extends AbstractCliTest {
 		assert.isFalse(isWatching)
 	}
 
-	@test()
-	protected static async watcherFiresEventWhenASrcFileChanges() {
+	@test('fires once with one change', 1)
+	@test('fires once with two changes', 2)
+	@test('fires once with three changes', 3)
+	protected static async watcherFiresEventWhenASrcFileChanges(
+		changeCount: number
+	) {
+		let fireCount = 0
+
 		const cli = await this.installWatch()
 		const feature = cli.getFeature('watch')
-
-		let fireCount = 0
 
 		cli.emitter.on('watcher.did-detect-change', () => {
 			fireCount++
@@ -46,12 +50,14 @@ export default class SettingUpWatchersTest extends AbstractCliTest {
 
 		void feature.startWatching()
 
-		diskUtil.writeFile(
-			this.resolvePath('index.js'),
-			'console.log("hello world")'
-		)
-		await this.wait(2000)
+		for (let idx = 0; idx < changeCount; idx++) {
+			diskUtil.writeFile(
+				this.resolvePath(`index-${idx}.js`),
+				'console.log("hello world")'
+			)
+		}
 
+		await this.wait(1000)
 		await feature.stopWatching()
 
 		assert.isEqual(fireCount, 1)

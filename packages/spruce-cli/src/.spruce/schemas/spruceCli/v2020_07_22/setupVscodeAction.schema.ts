@@ -3,6 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
+
 const setupVscodeActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISetupVscodeActionSchema  = {
 	id: 'setupVscodeAction',
 	name: 'Setup vscode action',
