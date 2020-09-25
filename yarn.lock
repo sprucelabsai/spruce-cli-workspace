@@ -2082,10 +2082,10 @@
     tsconfig-paths "^3.9.0"
     yargs "^16.0.3"
 
-"@sprucelabs/error@^2.2.341":
-  version "2.2.341"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.341.tgz#4f0e1e24629ab5219ba0ccea45d8baeb505be702"
-  integrity sha512-B7xl4V8zmPPowITe1gNwZFhlAOnTmSoEfGTnRXwU/wMPF7+X9r8aNmrETsrs/Y3yYCIWlwPEoe09T4YeGA3Zog==
+"@sprucelabs/error@^2.2.342":
+  version "2.2.342"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.342.tgz#f96a3c24bbcf50b244bb2bbd5e9fa07d8bf55487"
+  integrity sha512-cfEMtqIfuznpqMOuIidH5ai9q8xudmMR5dnK83tPn9Hvkvo/4bJ9yLEDLNZ+oqNVc1xwci31dyhMa8hB2wJEag==
 
 "@sprucelabs/jest-sheets-reporter@^1.2.2":
   version "1.2.2"
@@ -2100,25 +2100,25 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.243.tgz#29f3dbcc3f51f26ee926298b83c0fffe2274f97f"
   integrity sha512-LC2sOuSf8THSiBrySFxlfIV59lmKn2TMgFHT5cOq70WDhPF/45Re+UqHdlfjMt3qWF3ScED6EG+oZcuJRvEsuQ==
 
-"@sprucelabs/mercury-event-emitter@^1.11.18":
-  version "1.11.18"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-event-emitter/-/mercury-event-emitter-1.11.18.tgz#3e0aba84d36be0bd731736c72621a5a66eee015f"
-  integrity sha512-lo6pKLeeAB50FsSZnVfO+TqlwuFfDjgtFwRCnX56JuYPSLnKpYlZloCoXfAzzF5csuA4bhnwnhE9uXqtEJXObQ==
+"@sprucelabs/mercury-event-emitter@^1.11.19":
+  version "1.11.19"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-event-emitter/-/mercury-event-emitter-1.11.19.tgz#e367e59cf284242f7135e4d58fc610e4aea1502c"
+  integrity sha512-JxUZHQdn4U4YrT0B5N9VeCsRrndf2H+yY/XES4NvjIyOBuGrNDefAKbkHoh1B2zarnX4D8i9ab7CvEQGI1WhIg==
   dependencies:
-    "@sprucelabs/error" "^2.2.341"
-    "@sprucelabs/mercury-types" "^1.11.18"
+    "@sprucelabs/error" "^2.2.342"
+    "@sprucelabs/mercury-types" "^1.11.19"
     "@sprucelabs/schema" "^12.0.56"
 
-"@sprucelabs/mercury-types@^1.11.18":
-  version "1.11.18"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-types/-/mercury-types-1.11.18.tgz#3562dac96d5b2ceb97ee25d67d374fd7e3d978ba"
-  integrity sha512-SLz9n2OY8MJQncQNfRh500Dwq0ZqOpFopbJwp1LZ3PMhEh2yjdb/FlRHzR/MEzy7l4eT483pyi5uhO0jRxmA8w==
+"@sprucelabs/mercury-types@^1.11.19":
+  version "1.11.19"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-types/-/mercury-types-1.11.19.tgz#af3eb932a77125972bf94d93c0526b4c3cdb6f0b"
+  integrity sha512-9SWK1BVEUmiD3sHloMOGEk1RUEkkr35V/pTru38L1swbBTrm080MkwRV5myvQrtZxl+1Qtm59K7uKBMGIPW7Vg==
   dependencies:
-    "@sprucelabs/error" "^2.2.341"
+    "@sprucelabs/error" "^2.2.342"
     "@sprucelabs/log" "^10.2.243"
     "@sprucelabs/schema" "^12.0.56"
-    "@sprucelabs/spruce-core-schemas" "^10.29.26"
-    "@sprucelabs/spruce-skill-utils" "^10.29.26"
+    "@sprucelabs/spruce-core-schemas" "^10.29.27"
+    "@sprucelabs/spruce-skill-utils" "^10.29.27"
 
 "@sprucelabs/mercury@^10.5.72":
   version "10.5.72"
@@ -2130,22 +2130,22 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^12.0.56":
-  version "12.0.56"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.0.56.tgz#947fb842abd673a26815bae422a0990d125afa3a"
-  integrity sha512-j0K402Mjz3/Az89GFFMutiAkkp2BqMQlujJAGYEXmy3PWeIIHSwFNvdN6Y42Ymy4LvQ+aEUAAbuiwyX5SXWJuQ==
+"@sprucelabs/schema@^12.0.56", "@sprucelabs/schema@^12.0.57":
+  version "12.0.57"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.0.57.tgz#640801f1712d69eefbf4fb145fb3c42a088c8440"
+  integrity sha512-ijdyydgUp7cT7/ju0CIRJp15m/enaHSuXA2V+lmqCpyqoHaDZIrf6J4TDDF57qbKEtcfM4bZBqdBHTsffF2Mag==
   dependencies:
-    "@sprucelabs/error" "^2.2.341"
+    "@sprucelabs/error" "^2.2.342"
     "@sprucelabs/log" "^10.2.243"
     google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.8.1"
     mime-db "^1.45.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^7.0.57":
-  version "7.0.57"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.57.tgz#b3014b98b21c9e3581ece32cb1378d0f1bd3d215"
-  integrity sha512-WMcOAGZy2dYfBOwjIr8fb5J89UdNZfXilGbwDIIlUlT+D84l2zDJY66P7IfqWPc4A9b2cBNQXkZwRJp/LojvtA==
+"@sprucelabs/test@^7.0.58":
+  version "7.0.58"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.58.tgz#1f048881ec8d940196a2f91521fc2530576ee26c"
+  integrity sha512-WbF/CS4Z9MT468SIz1GHwJQITzlAgRjqJGjw8QgS5UyB+EqmVeUfZ53v5Dze9I5GcuH0UIV3QM45+R0NMG/8vQ==
   dependencies:
     "@babel/core" "^7.11.6"
     "@babel/preset-env" "^7.11.5"
@@ -3379,9 +3379,9 @@ camelcase@^6.0.0:
   integrity sha512-8KMDF1Vz2gzOq54ONPJS65IvTUaB1cHJ2DMM7MbPmLZljDH1qpzzLsWdiN9pHh6qvkRVDTi/07+eNGch/oLU4w==
 
 caniuse-lite@^1.0.30001135:
-  version "1.0.30001136"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001136.tgz#6cc76c55b2dcd29a3a998cd5e21b68d5e12a5870"
-  integrity sha512-VRpgi7sxGbLKiok0v1ld5GK82wxCj/icLMMr6S0Akg83TYVfGWdPXoGILyefudS6chd8EX6RbW/Q26giELwaDA==
+  version "1.0.30001137"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001137.tgz#6f0127b1d3788742561a25af3607a17fc778b803"
+  integrity sha512-54xKQZTqZrKVHmVz0+UvdZR6kQc7pJDgfhsMYDG19ID1BWoNnDMFm5Q3uSBSU401pBvKYMsHAt9qhEDcxmk8aw==
 
 capture-exit@^2.0.0:
   version "2.0.0"
