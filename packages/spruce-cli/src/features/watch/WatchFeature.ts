@@ -12,6 +12,7 @@ export default class WatchFeature extends AbstractFeature {
 
 	private _isWatching = false
 	private watcher?: chokidar.FSWatcher
+	// eslint-disable-next-line no-undef
 	private timeoutId?: NodeJS.Timeout
 	private changesSinceLastChange: GeneratedFile[] = []
 

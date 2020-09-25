@@ -1009,7 +1009,37 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 		                type: 'text',
 		                hint: 'PascalCase of the name',
 		                options: undefined
-		            },
+					},
+					'fetchLocalSchemas': {
+						label: 'Fetch local schemas',
+						type: 'boolean',
+						isPrivate: true,
+						hint: 'I will check the server and your contracts to pull down schemas you need.',
+						defaultValue: true,
+						options: undefined
+					},
+					'fetchCoreSchemas': {
+						label: 'Fetch remote schemas',
+						type: 'boolean',
+						hint: 'I will check the server and your contracts to pull down schemas you need.',
+						defaultValue: false,
+						options: undefined
+					},
+					'deleteDestinationDirIfNoSchemas': {
+						label: 'Delete directory if no schemas',
+						type: 'boolean',
+						isPrivate: true,
+						defaultValue: false,
+						options: undefined
+					},
+					'generateStandaloneTypesFile': {
+						label: 'Generate standalone types file',
+						type: 'boolean',
+						isPrivate: true,
+						hint: 'By default, I\'ll generate a types file that augments core types from @sprucelabs/spruce-core-schemas',
+						defaultValue: false,
+						options: undefined
+					},
 		            /** Camel case name. camelCase version of the name */
 		            'nameCamel': {
 		                label: 'Camel case name',
