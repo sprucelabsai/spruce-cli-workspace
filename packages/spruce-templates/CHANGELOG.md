@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.30.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.29.33...v10.30.0) (2020-09-25)
+
+
+### Features
+
+* sync core schemas but not types ([78fc2df](https://github.com/sprucelabsai/spruce-cli-workspace/commit/78fc2df))
+
+
+
+
+
 ## [10.29.33](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.29.32...v10.29.33) (2020-09-25)
 
 **Note:** Version bump only for package @sprucelabs/spruce-templates
