@@ -2100,25 +2100,25 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.243.tgz#29f3dbcc3f51f26ee926298b83c0fffe2274f97f"
   integrity sha512-LC2sOuSf8THSiBrySFxlfIV59lmKn2TMgFHT5cOq70WDhPF/45Re+UqHdlfjMt3qWF3ScED6EG+oZcuJRvEsuQ==
 
-"@sprucelabs/mercury-event-emitter@^1.11.22":
-  version "1.11.22"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-event-emitter/-/mercury-event-emitter-1.11.22.tgz#855c079c7f073434f12a6cbd458aa4a44b08f51f"
-  integrity sha512-zZ706+ErmMAsrdMVMRvRAAaSma2/weUtJXIoyFJtZPul+aJzFTcTATzy39MYT8+MHwCF4lIZzS1qzpoaseuqBA==
+"@sprucelabs/mercury-event-emitter@^1.11.23":
+  version "1.11.23"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-event-emitter/-/mercury-event-emitter-1.11.23.tgz#f93039eca5cbfa927d6938354a25f4cece9f09b7"
+  integrity sha512-g3BwMNPZovAEn3YUIjoKlSG1BNJxNKKzfhFR01V5MkFKv1mYNd4k8178VH+khjWIEBesBJVbQZ5otJLuoCFQhw==
   dependencies:
     "@sprucelabs/error" "^2.2.344"
-    "@sprucelabs/mercury-types" "^1.11.22"
+    "@sprucelabs/mercury-types" "^1.11.23"
     "@sprucelabs/schema" "^12.0.59"
 
-"@sprucelabs/mercury-types@^1.11.22":
-  version "1.11.22"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-types/-/mercury-types-1.11.22.tgz#305efe5015bf8dc7959adf75ab0a24dfb7d26f75"
-  integrity sha512-qXJOsy2r0/XAXxBG08rYs56IrXBFLZzTznH0m5zeNOz3tIxXTWl8WV/UEqeG1XgIiJVNSOHGaYf93GqKoBGnyA==
+"@sprucelabs/mercury-types@^1.11.23":
+  version "1.11.23"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-types/-/mercury-types-1.11.23.tgz#1666cde8990de53eab78c81e9c6e731c98103601"
+  integrity sha512-8/TtCRndPjXBl3iidNtv2Ox+BgHomSZPGP8s6Ap/tb7PI94YoM/g5YSVY3TSuf4/sZmGWW03MGfjoUmWoqctfg==
   dependencies:
     "@sprucelabs/error" "^2.2.344"
     "@sprucelabs/log" "^10.2.243"
     "@sprucelabs/schema" "^12.0.59"
-    "@sprucelabs/spruce-core-schemas" "^10.29.30"
-    "@sprucelabs/spruce-skill-utils" "^10.29.30"
+    "@sprucelabs/spruce-core-schemas" "^10.29.31"
+    "@sprucelabs/spruce-skill-utils" "^10.29.31"
 
 "@sprucelabs/mercury@^10.5.72":
   version "10.5.72"
