@@ -34,23 +34,23 @@ export default class SyncAction extends AbstractFeatureAction<
 			enableVersioning,
 			globalNamespace,
 			fetchRemoteSchemas,
-			fetchCoreSchemas,
+			generateCoreSchemaTypes,
 			fetchLocalSchemas,
 			generateFieldTypes,
 			generateStandaloneTypesFile,
 			deleteDestinationDirIfNoSchemas,
 		} = normalizedOptions
 
-		if ((fetchRemoteSchemas || fetchLocalSchemas) && fetchCoreSchemas) {
+		if ((fetchRemoteSchemas || fetchLocalSchemas) && generateCoreSchemaTypes) {
 			throw new SpruceError({
 				code: 'INVALID_PARAMETERS',
 				parameters: [
 					'fetchLocalSchemas',
-					'fetchCoreSchemas',
+					'generateCoreSchemaTypes',
 					'fetchRemoteSchemas',
 				],
 				friendlyMessage:
-					'When `--fetchCoreSchemas true`, you must set `--fetchLocalSchemas false` and `--fetchRemoteSchemas false`',
+					'When `--generateCoreSchemaTypes true`, you must set `--fetchLocalSchemas false` and `--fetchRemoteSchemas false`',
 			})
 		}
 
@@ -59,7 +59,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			resolvedSchemaTypesDestinationDir,
 			resolvedSchemaTypesDestination,
 		} = this.resolvePaths(
-			fetchCoreSchemas,
+			generateCoreSchemaTypes,
 			schemaTypesDestinationDir,
 			fieldTypesDestinationDir
 		)
@@ -87,7 +87,6 @@ export default class SyncAction extends AbstractFeatureAction<
 				resolvedSchemaTypesDestinationDir,
 				enableVersioning,
 				fetchRemoteSchemas,
-				fetchCoreSchemas,
 			})
 
 			schemaErrors.push(...templateResults.schemaErrors)
@@ -130,7 +129,7 @@ export default class SyncAction extends AbstractFeatureAction<
 							valueTypes,
 							globalNamespace: globalNamespace ?? undefined,
 							typesTemplate:
-								fetchCoreSchemas || generateStandaloneTypesFile
+								generateCoreSchemaTypes || generateStandaloneTypesFile
 									? 'schemas/core.schemas.types.ts.hbs'
 									: undefined,
 						}
@@ -160,14 +159,12 @@ export default class SyncAction extends AbstractFeatureAction<
 		resolvedSchemaTypesDestinationDir: string
 		enableVersioning: boolean
 		fetchRemoteSchemas: boolean
-		fetchCoreSchemas: boolean
 	}) {
 		const {
 			schemaLookupDir,
 			resolvedSchemaTypesDestinationDir,
 			enableVersioning,
 			fetchRemoteSchemas,
-			fetchCoreSchemas,
 		} = options
 
 		const feature = this.getFeature('skill') as SkillFeature
@@ -179,7 +176,6 @@ export default class SyncAction extends AbstractFeatureAction<
 		} = await this.schemaStore.fetchSchemas({
 			localSchemaDir: schemaLookupDir,
 			fetchRemoteSchemas,
-			fetchCoreSchemas,
 			enableVersioning,
 			localNamespace: namespace,
 		})
@@ -224,13 +220,13 @@ export default class SyncAction extends AbstractFeatureAction<
 	}
 
 	private resolvePaths(
-		fetchCoreSchemas: boolean,
+		generateCoreSchemaTypes: boolean,
 		schemaTypesDestinationDir: string,
 		fieldTypesDestinationDir: string
 	) {
 		const resolvedSchemaTypesDestination = diskUtil.resolvePath(
 			this.cwd,
-			fetchCoreSchemas && diskUtil.isDirPath(schemaTypesDestinationDir)
+			generateCoreSchemaTypes && diskUtil.isDirPath(schemaTypesDestinationDir)
 				? diskUtil.resolvePath(
 						this.cwd,
 						schemaTypesDestinationDir,

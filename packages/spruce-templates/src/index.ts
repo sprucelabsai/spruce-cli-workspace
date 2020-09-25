@@ -115,16 +115,6 @@ export const templates = {
 		return template({ renderClassDefinition: true, ...options })
 	},
 
-	errorTypes(
-		options: {
-			schemaTemplateItems: ISchemaTemplateItem[]
-			relativeToSchema: string
-		} & IErrorTemplateItem
-	) {
-		const template = templateImportUtil.getTemplate('errors/error.types.ts.hbs')
-		return template(options)
-	},
-
 	errorOptionsTypes(options: {
 		options: { nameCamel: string; namePascal: string }[]
 	}) {
