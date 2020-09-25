@@ -365,7 +365,7 @@ const mercuryTemplateItem: ISchemaTemplateItem = {
 	id: nestedMercuryContract.id,
 	nameCamel: 'mercuryContract',
 	namePascal: 'MercuryContract',
-	nameReadable: nestedMercuryContract.name,
+	nameReadable: nestedMercuryContract.name ?? nestedMercuryContract.id,
 	isNested: false,
 	destinationDir: '#spruce/schemas',
 	schema: {
@@ -424,7 +424,8 @@ const mercuryTemplateItemArray: ISchemaTemplateItem = {
 	id: nestedMercuryContractArray.id,
 	nameCamel: 'mercuryContract',
 	namePascal: 'MercuryContract',
-	nameReadable: nestedMercuryContractArray.name,
+	nameReadable:
+		nestedMercuryContractArray.name ?? nestedMercuryContractArray.id,
 	isNested: false,
 	destinationDir: '#spruce/schemas',
 	schema: {

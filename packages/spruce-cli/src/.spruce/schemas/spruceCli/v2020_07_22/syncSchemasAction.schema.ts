@@ -3,6 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
+
 const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasActionSchema  = {
 	id: 'syncSchemasAction',
 	name: 'Sync schemas action',
@@ -17,9 +18,9 @@ const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasA
 	                defaultValue: "#spruce/schemas",
 	                options: undefined
 	            },
-	            /** Id. Where I'll look for new schema fields to be registered. */
+	            /** Addons lookup directory. Where I'll look for new schema fields to be registered. */
 	            'addonsLookupDir': {
-	                label: 'Id',
+	                label: 'Addons lookup directory',
 	                type: 'text',
 	                hint: 'Where I\'ll look for new schema fields to be registered.',
 	                defaultValue: "src/addons",
@@ -73,40 +74,39 @@ const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasA
 	                defaultValue: true,
 	                options: undefined
 	            },
+	            /** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
 	            'fetchLocalSchemas': {
 	                label: 'Fetch local schemas',
 	                type: 'boolean',
 	                isPrivate: true,
-	                hint: 'I will check the server and your contracts to pull down schemas you need.',
+	                hint: 'I will look in schemaLookupDir to load local schemas.',
 	                defaultValue: true,
 	                options: undefined
 	            },
-	            'generateCoreSchemaTypes': {
-	                label: 'Fetch remote schemas',
+	            /** Fetch core schemas. */
+	            'fetchCoreSchemas': {
+	                label: 'Fetch core schemas',
 	                type: 'boolean',
-	                hint: 'I will check the server and your contracts to pull down schemas you need.',
+	                isPrivate: true,
+	                defaultValue: true,
+	                options: undefined
+	            },
+	            /** Generate core schemas. */
+	            'generateCoreSchemaTypes': {
+	                label: 'Generate core schemas',
+	                type: 'boolean',
+	                isPrivate: true,
 	                defaultValue: false,
 	                options: undefined
-				},
-				fetchCoreSchemas: {
-					type: 'boolean',
-					label: 'Fetch core schemas',
-					isPrivate: true,
-					defaultValue: true,
-				},
-				generateStandaloneTypesFile: {
-					type: 'boolean',
-					label: 'Generate standalone types file',
-					isPrivate: true,
-					hint: `By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas`,
-					defaultValue: false,
-				},
-				deleteDestinationDirIfNoSchemas: {
-					type: 'boolean',
-					label: 'Delete directory if no schemas',
-					isPrivate: true,
-					defaultValue: false,
-				}
+	            },
+	            /** Delete directory if no schemas. */
+	            'deleteDestinationDirIfNoSchemas': {
+	                label: 'Delete directory if no schemas',
+	                type: 'boolean',
+	                isPrivate: true,
+	                defaultValue: false,
+	                options: undefined
+	            },
 	    }
 }
 

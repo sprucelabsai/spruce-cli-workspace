@@ -7,11 +7,11 @@ export enum SchemaRelationshipType {
 }
 
 const schemaUtil = {
-	generateNamesForSchema(definition: ISchema) {
+	generateNamesForSchema(schema: ISchema) {
 		return {
-			nameReadable: definition.name,
-			nameCamel: namesUtil.toCamel(definition.id),
-			namePascal: namesUtil.toPascal(definition.id),
+			nameReadable: schema.name ?? schema.id,
+			nameCamel: namesUtil.toCamel(schema.id),
+			namePascal: namesUtil.toPascal(schema.id),
 		}
 	},
 

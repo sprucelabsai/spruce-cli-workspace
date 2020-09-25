@@ -3,6 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
+
 const locationSchema: SpruceSchemas.Spruce.v2020_07_22.ILocationSchema  = {
 	id: 'location',
 	name: 'Location',

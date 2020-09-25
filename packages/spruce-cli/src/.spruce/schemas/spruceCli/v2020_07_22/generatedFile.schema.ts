@@ -8,9 +8,14 @@ const generatedFileSchema: SpruceSchemas.SpruceCli.v2020_07_22.IGeneratedFileSch
 	id: 'generatedFile',
 	name: 'Generated File',
 	    fields: {
-	            /** First Field. */
-	            'fieldName1': {
-	                label: 'First Field',
+	            /** . */
+	            'name': {
+	                type: 'text',
+	                isRequired: true,
+	                options: undefined
+	            },
+	            /** . */
+	            'path': {
 	                type: 'text',
 	                isRequired: true,
 	                options: undefined

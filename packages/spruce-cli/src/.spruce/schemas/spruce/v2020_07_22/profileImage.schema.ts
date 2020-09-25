@@ -3,6 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
+
 const profileImageSchema: SpruceSchemas.Spruce.v2020_07_22.IProfileImageSchema  = {
 	id: 'profileImage',
 	name: 'Profile Image Sizes',
