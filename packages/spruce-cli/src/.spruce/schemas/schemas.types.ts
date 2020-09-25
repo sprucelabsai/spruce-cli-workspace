@@ -1481,6 +1481,7 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 			'globalNamespace'?: string| undefined | null
 			/** Fetch remote schemas. I will check the server and your contracts to pull down schemas you need. */
 			'fetchRemoteSchemas'?: boolean| undefined | null
+			'generateCoreSchemaTypes'?: boolean| undefined | null
 			'fetchCoreSchemas'?: boolean| undefined | null
 	}
 
@@ -1562,12 +1563,18 @@ export declare namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 						defaultValue: true,
 						options: undefined
 					},
-					'fetchCoreSchemas': {
+					'generateCoreSchemaTypes': {
 						label: 'Fetch remote schemas',
 						type: 'boolean',
 						hint: 'I will check the server and your contracts to pull down schemas you need.',
 						defaultValue: false,
 						options: undefined
+					},
+					fetchCoreSchemas: {
+						type: 'boolean',
+						label: 'Fetch core schemas',
+						isPrivate: true,
+						defaultValue: true,
 					},
 					'generateStandaloneTypesFile': {
 						type: 'boolean',

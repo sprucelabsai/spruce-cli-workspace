@@ -10,6 +10,12 @@ import AbstractSchemaTest from '../../../AbstractSchemaTest'
 import testUtil from '../../../utilities/test.utility'
 
 export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
+	private static readonly coreSyncOptions = {
+		generateCoreSchemaTypes: true,
+		fetchLocalSchemas: false,
+		fetchRemoteSchemas: false,
+	}
+
 	@test()
 	protected static async hasSyncSchemaFunction() {
 		const cli = await this.Cli()
@@ -33,11 +39,11 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		await assert.doesThrowAsync(
 			() =>
 				cli.getFeature('schema').Action('sync').execute({
-					fetchCoreSchemas: true,
+					generateCoreSchemaTypes: true,
 					fetchLocalSchemas: true,
 					fetchRemoteSchemas: false,
 				}),
-			/When `--fetchCoreSchemas true`, you must set `--fetchLocalSchemas false` and `--fetchRemoteSchemas false`/
+			/When `--generateCoreSchemaTypes true`, you must set `--fetchLocalSchemas false` and `--fetchRemoteSchemas false`/
 		)
 	}
 
@@ -47,11 +53,11 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		await assert.doesThrowAsync(
 			() =>
 				cli.getFeature('schema').Action('sync').execute({
-					fetchCoreSchemas: true,
+					generateCoreSchemaTypes: true,
 					fetchLocalSchemas: false,
 					fetchRemoteSchemas: true,
 				}),
-			/When `--fetchCoreSchemas true`, you must set `--fetchLocalSchemas false` and `--fetchRemoteSchemas false`/
+			/When `--generateCoreSchemaTypes true`, you must set `--fetchLocalSchemas false` and `--fetchRemoteSchemas false`/
 		)
 	}
 
@@ -65,15 +71,9 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		testUtil.assertCountsByAction(results.files ?? [], {
 			updated: 0,
-			generated: 3,
+			generated: 11,
 			skipped: 0,
 		})
-	}
-
-	private static readonly coreSyncOptions = {
-		fetchCoreSchemas: true,
-		fetchLocalSchemas: false,
-		fetchRemoteSchemas: false,
 	}
 
 	@test()

@@ -48,8 +48,12 @@ export default buildSchema({
 			type: 'boolean',
 			label: 'Fetch core schemas',
 			isPrivate: true,
-			hint:
-				'Should I pull core schemas. It is recommended you use @sprucelabs/spruce-core-schemas to load core schemas.',
+			defaultValue: true,
+		},
+		generateCoreSchemaTypes: {
+			type: 'boolean',
+			label: 'Generate core schemas',
+			isPrivate: true,
 			defaultValue: false,
 		},
 		deleteDestinationDirIfNoSchemas: {
