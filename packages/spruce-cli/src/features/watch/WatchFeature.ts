@@ -1,6 +1,6 @@
 import pathUtil from 'path'
 import chokidar from 'chokidar'
-import { GeneratedFile } from '../../types/cli.types'
+import { GeneratedFile, GeneratedFileOrDir } from '../../types/cli.types'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
@@ -14,7 +14,7 @@ export default class WatchFeature extends AbstractFeature {
 	private watcher?: chokidar.FSWatcher
 	// eslint-disable-next-line no-undef
 	private timeoutId?: NodeJS.Timeout
-	private changesSinceLastChange: GeneratedFile[] = []
+	private changesSinceLastChange: GeneratedFileOrDir[] = []
 
 	public async isInstalled(): Promise<boolean> {
 		return true
@@ -31,9 +31,13 @@ export default class WatchFeature extends AbstractFeature {
 
 		this.watcher.on('all', async (action, stats) => {
 			this.changesSinceLastChange.push({
-				action: this.mapChokidarActionToGeneratedAction(action),
-				path: stats,
-				name: pathUtil.basename(stats),
+				schemaId: 'generatedFile',
+				version: 'v2020_07_22',
+				values: {
+					action: this.mapChokidarActionToGeneratedAction(action),
+					path: stats,
+					name: pathUtil.basename(stats),
+				},
 			})
 
 			if (this.timeoutId) {
@@ -61,7 +65,10 @@ export default class WatchFeature extends AbstractFeature {
 	}
 
 	private async fireChange() {
-		await this.emitter.emit('watcher.did-detect-change')
+		const changes = this.changesSinceLastChange
+		this.changesSinceLastChange = []
+
+		await this.emitter.emit('watcher.did-detect-change', { changes })
 	}
 
 	public async stopWatching() {

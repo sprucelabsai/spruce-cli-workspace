@@ -62,5 +62,13 @@ export default buildSchema({
 			isPrivate: true,
 			defaultValue: false,
 		},
+		generateStandaloneTypesFile: {
+			label: 'Generate standalone types file',
+			type: 'boolean',
+			isPrivate: true,
+			hint:
+				"By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas",
+			defaultValue: false,
+		},
 	},
 })

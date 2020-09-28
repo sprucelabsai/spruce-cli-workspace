@@ -658,51 +658,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		
-		interface IGeneratedFile {
-			
-				
-				'name': string
-				
-				'path': string
-				/** Second Field. A hint */
-				'fieldName2': number
-		}
-
-		interface IGeneratedFileSchema extends SpruceSchema.ISchema {
-			id: 'generatedFile',
-			name: 'Generated File',
-			    fields: {
-			            /** . */
-			            'name': {
-			                type: 'text',
-			                isRequired: true,
-			                options: undefined
-			            },
-			            /** . */
-			            'path': {
-			                type: 'text',
-			                isRequired: true,
-			                options: undefined
-			            },
-			            /** Second Field. A hint */
-			            'fieldName2': {
-			                label: 'Second Field',
-			                type: 'number',
-			                isRequired: true,
-			                hint: 'A hint',
-			                options: undefined
-			            },
-			    }
-		}
-
-		type GeneratedFileEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.IGeneratedFileSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
 		/** Options for event.listen. */
 		interface IListenEventAction {
 			
@@ -1089,6 +1044,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 				'generateCoreSchemaTypes'?: boolean| undefined | null
 				/** Delete directory if no schemas. */
 				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
+				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas */
+				'generateStandaloneTypesFile'?: boolean| undefined | null
 		}
 
 		interface ISyncSchemasActionSchema extends SpruceSchema.ISchema {
@@ -1194,6 +1151,15 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 			                defaultValue: false,
 			                options: undefined
 			            },
+			            /** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas */
+			            'generateStandaloneTypesFile': {
+			                label: 'Generate standalone types file',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'By default, I\'ll generate a types file that augments core types from @sprucelabs/spruce-core-schemas',
+			                defaultValue: false,
+			                options: undefined
+			            },
 			    }
 		}
 
@@ -1227,6 +1193,56 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 		}
 
 		type UpgradeSkillActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.IUpgradeSkillActionSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		
+		interface IGeneratedFile {
+			
+				
+				'name': string
+				
+				'path': string
+				
+				'description'?: string| undefined | null
+				
+				'action': ("skipped" | "generated" | "updated" | "deleted")
+		}
+
+		interface IGeneratedFileSchema extends SpruceSchema.ISchema {
+			id: 'generatedFile',
+			name: '',
+			    fields: {
+			            /** . */
+			            'name': {
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'path': {
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'description': {
+			                type: 'text',
+			                options: undefined
+			            },
+			            /** . */
+			            'action': {
+			                type: 'select',
+			                isRequired: true,
+			                options: {choices: [{"label":"Skipped","value":"skipped"},{"label":"Generated","value":"generated"},{"label":"Updated","value":"updated"},{"label":"Deleted","value":"deleted"}],}
+			            },
+			    }
+		}
+
+		type GeneratedFileEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.IGeneratedFileSchema>
 
 	}
 

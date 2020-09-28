@@ -37,15 +37,17 @@ export default class SettingUpWatchersTest extends AbstractCliTest {
 	@test('fires once with two changes', 2)
 	@test('fires once with three changes', 3)
 	protected static async watcherFiresEventWhenASrcFileChanges(
-		changeCount: number
+		changeCount: number,
+		expectedChanges: any
 	) {
 		let fireCount = 0
 
 		const cli = await this.installWatch()
 		const feature = cli.getFeature('watch')
 
-		cli.emitter.on('watcher.did-detect-change', () => {
+		cli.emitter.on('watcher.did-detect-change', (payload) => {
 			fireCount++
+			assert.isEqualDeep(payload.changes, expectedChanges)
 		})
 
 		void feature.startWatching()

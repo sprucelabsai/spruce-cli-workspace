@@ -107,6 +107,15 @@ const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasA
 	                defaultValue: false,
 	                options: undefined
 	            },
+	            /** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas */
+	            'generateStandaloneTypesFile': {
+	                label: 'Generate standalone types file',
+	                type: 'boolean',
+	                isPrivate: true,
+	                hint: 'By default, I\'ll generate a types file that augments core types from @sprucelabs/spruce-core-schemas',
+	                defaultValue: false,
+	                options: undefined
+	            },
 	    }
 }
 
