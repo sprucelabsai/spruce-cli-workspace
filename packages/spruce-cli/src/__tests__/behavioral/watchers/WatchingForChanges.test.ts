@@ -2,7 +2,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../../AbstractCliTest'
 
-export default class SettingUpWatchersTest extends AbstractCliTest {
+export default class WatchingForChangesTest extends AbstractCliTest {
 	@test()
 	protected static async installsWatchers() {
 		const cli = await this.installWatch()
