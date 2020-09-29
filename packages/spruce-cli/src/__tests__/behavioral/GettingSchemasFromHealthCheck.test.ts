@@ -1,6 +1,9 @@
 import { ISchema } from '@sprucelabs/schema'
 import * as coreSchemas from '@sprucelabs/spruce-core-schemas'
-import { CORE_SCHEMA_VERSION } from '@sprucelabs/spruce-skill-utils'
+import {
+	CORE_SCHEMA_VERSION,
+	versionUtil,
+} from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
 import { ICli } from '../../cli'
@@ -43,7 +46,7 @@ export default class GettingSchemasFromHealthCheckTest extends AbstractSchemaTes
 			{
 				id: 'test',
 				name: 'Test schema!',
-				version: 'v2020_09_29',
+				version: versionUtil.generateVersion().constValue,
 				namespace: 'Testing',
 				description: 'this is so great!',
 			},
@@ -62,7 +65,7 @@ export default class GettingSchemasFromHealthCheckTest extends AbstractSchemaTes
 			id: schema.id,
 			// @ts-ignore
 			name: schema.name,
-			version: CORE_SCHEMA_VERSION.constValue,
+			version: schema.version ?? CORE_SCHEMA_VERSION.constValue,
 			namespace: schema.namespace,
 			// @ts-ignore
 			description: schema.description,

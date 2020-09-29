@@ -122,7 +122,7 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 	) {
 		let resolvedVersion = versionUtil.generateVersion(
 			userSuppliedVersion ?? undefined
-		).dirValue
+		).constValue
 
 		if (!userSuppliedVersion) {
 			resolvedVersion = await this.askForVersion(
