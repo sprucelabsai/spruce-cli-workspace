@@ -11,23 +11,6 @@ import * as SpruceSchema from '@sprucelabs/schema'
 
 declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schemas.types' {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		/** The options for skill.boot. */
