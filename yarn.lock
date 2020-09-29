@@ -2152,14 +2152,6 @@
     mime-db "^1.45.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/spruce-core-schemas@^10.30.1":
-  version "10.30.2"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-core-schemas/-/spruce-core-schemas-10.30.2.tgz#fa39a26e6666dc82c503203db8d1625510a7478c"
-  integrity sha512-/mKncHQ3Fwces9CpFrP9FwbIQDSTl1PcVxVqikZW8Z2GhKiwEDh5S8Ujbi1oAB+xG3EpQpmmD7m3JQJGuIQWPg==
-  dependencies:
-    "@sprucelabs/error" "^2.2.344"
-    "@sprucelabs/schema" "^12.4.9"
-
 "@sprucelabs/test@^7.0.78":
   version "7.0.78"
   resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.78.tgz#ab6023b0e7c0555624cb594d62d67c5254547f34"
