@@ -4,7 +4,7 @@
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "10.30.0",
+	"version": "10.30.1",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -53,11 +53,11 @@
 		"@sprucelabs/error": "^2.2.374",
 		"@sprucelabs/log": "^10.2.253",
 		"@sprucelabs/mercury": "^10.5.72",
-		"@sprucelabs/schema": "^12.4.9",
 		"@sprucelabs/mercury-event-emitter": "^1.11.76",
 		"@sprucelabs/mercury-types": "^1.11.76",
-		"@sprucelabs/spruce-skill-utils": "^10.30.0",
-		"@sprucelabs/spruce-templates": "^10.30.0",
+		"@sprucelabs/schema": "^12.4.9",
+		"@sprucelabs/spruce-skill-utils": "^10.30.1",
+		"@sprucelabs/spruce-templates": "^10.30.1",
 		"blessed": "^0.1.81",
 		"blessed-contrib": "^4.8.20",
 		"cfonts": "^2.8.6",
