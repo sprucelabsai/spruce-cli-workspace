@@ -1,5 +1,5 @@
 import { buildSchema } from '@sprucelabs/schema'
-import namedTemplateItemSchema from '#spruce/schemas/spruceCli/v2020_07_22/namedTemplateItem.schema'
+import namedTemplateItemBuilder from './namedTemplateItem.builder'
 
 export default buildSchema({
 	id: 'createTestAction',
@@ -29,7 +29,7 @@ export default buildSchema({
 			hint: "Where I'll save your new test.",
 			defaultValue: 'src/__tests__',
 		},
-		nameCamel: namedTemplateItemSchema.fields.nameCamel,
-		namePascal: namedTemplateItemSchema.fields.namePascal,
+		nameCamel: namedTemplateItemBuilder.fields.nameCamel,
+		namePascal: namedTemplateItemBuilder.fields.namePascal,
 	},
 })

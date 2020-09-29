@@ -1,4 +1,4 @@
-export * from '#spruce/schemas/schemas.types'
+export * from '#spruce/schemas/core.schemas.types'
 export { default as aclSchema } from '#spruce/schemas/spruce/v2020_07_22/acl.schema'
 export { default as jobSchema } from '#spruce/schemas/spruce/v2020_07_22/job.schema'
 export { default as locationSchema } from '#spruce/schemas/spruce/v2020_07_22/location.schema'

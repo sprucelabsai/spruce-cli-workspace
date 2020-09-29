@@ -1,11 +1,12 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
-
-
 
 
 
 const setupVscodeActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISetupVscodeActionSchema  = {
 	id: 'setupVscodeAction',
+	version: 'v2020_07_22',
+	namespace: 'SpruceCli',
 	name: 'Setup vscode action',
 	description: 'Install vscode extensions the Spruce team recommends!',
 	    fields: {
@@ -17,5 +18,7 @@ const setupVscodeActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISetupVscodeA
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(setupVscodeActionSchema)
 
 export default setupVscodeActionSchema

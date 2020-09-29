@@ -2092,6 +2092,11 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.361.tgz#fbfcde6d828ef9ce42e51dd277c74abe9cffe737"
   integrity sha512-dnlUsTojb8VzBZ+3ciFsNG8gZEvkntxTlUG4JCFul5pQXeejwzeOmEWwCsQiX6lTUkIOGLWvC1prw7BwJWWguw==
 
+"@sprucelabs/error@^2.2.374":
+  version "2.2.374"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.374.tgz#f668ae81edf632b062cc6c19aaa55626df2f5e0a"
+  integrity sha512-M9BHNDzfIsOsJnbOpApRUCoevCO4fKMQVeZKSkP97N1hPCcixg3BJol7FRkQD4LZmpLqWpZyrn54CeEkgi2KIA==
+
 "@sprucelabs/jest-sheets-reporter@^1.2.2":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@sprucelabs/jest-sheets-reporter/-/jest-sheets-reporter-1.2.2.tgz#3418fa4b27d5c9812488003b8d2134e64291ea4a"
@@ -2109,6 +2114,11 @@
   version "10.2.251"
   resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.251.tgz#048e33084bcbc9aa65569b81969f5d790a173aac"
   integrity sha512-UdNeFlsCees/U7DnMW1PAiszy/GpoUq/lnerEgIg41WF9QnjJc0hMZNmt9rTuuKZaEJM3qlmbZyha4EeUjWnNA==
+
+"@sprucelabs/log@^10.2.253":
+  version "10.2.253"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.253.tgz#10665214110c09bb736540fe18c767217408f4d9"
+  integrity sha512-7SjH9usidX6N2UVg2ttKg2WBJb75Tp79/+jpZVByrjxOSVVZwSJv8M5yfm9L7ratGePiI5uMbLGR1NuIjgm19Q==
 
 "@sprucelabs/mercury-event-emitter@^1.11.53":
   version "1.11.53"
@@ -2152,10 +2162,22 @@
     mime-db "^1.45.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^7.0.59":
-  version "7.0.59"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.59.tgz#2ade6f7d90628ec4e9401045bd56f0ccaf9e2ef2"
-  integrity sha512-TibyORW/RzcsvTS3QVkCvB3zkNHn5SzLogd9F7cCFzs/9OkKlkzvl/+z30Fohb/V3O/UYSI0MPWPpP0wcwm1QA==
+"@sprucelabs/schema@^12.4.9":
+  version "12.4.9"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.4.9.tgz#0b413f0e69fdee5dfdaeddfc8a79c5ec641e112c"
+  integrity sha512-7ilU6bg+rYtwKzwoASDFFpCqmLOkAXzBd1kIaoOlJThGJGs48AOmaD9myYquIAZDiCckLXPXGuSLauiUg9WtwQ==
+  dependencies:
+    "@sprucelabs/error" "^2.2.374"
+    "@sprucelabs/log" "^10.2.253"
+    google-libphonenumber "^3.2.13"
+    libphonenumber-js "^1.8.1"
+    mime-db "^1.45.0"
+    mime-type "^4.0.0"
+
+"@sprucelabs/test@^7.0.78":
+  version "7.0.78"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.78.tgz#ab6023b0e7c0555624cb594d62d67c5254547f34"
+  integrity sha512-Dx2KeMA9NJS8BBfg2x3xCKq5/3ybaZ3RSAZKyo4+Z2x9LmiWlaA730B5zPBZ92Af2Hr02w0AFyPkYMzKqgoJgg==
   dependencies:
     "@babel/core" "^7.11.6"
     "@babel/preset-env" "^7.11.5"
@@ -2166,7 +2188,7 @@
     jest "^26.4.2"
     lodash "^4.17.20"
     ts-expect "^1.1.0"
-    ts-jest "^26.4.0"
+    ts-jest "^26.4.1"
     typescript "^4.0.3"
 
 "@ts-morph/common@~0.5.2":
@@ -10144,6 +10166,23 @@ ts-jest@^26.4.0:
   version "26.4.0"
   resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-26.4.0.tgz#903c7827f3d3bc33efc2f91be294b164400c32e3"
   integrity sha512-ofBzoCqf6Nv/PoWb/ByV3VNKy2KJSikamOBxvR3E6eVdIw10GwAXoyvMWXXjZJK2s6S27ZE8fI+JBTnGaovl6Q==
+  dependencies:
+    "@types/jest" "26.x"
+    bs-logger "0.x"
+    buffer-from "1.x"
+    fast-json-stable-stringify "2.x"
+    jest-util "^26.1.0"
+    json5 "2.x"
+    lodash.memoize "4.x"
+    make-error "1.x"
+    mkdirp "1.x"
+    semver "7.x"
+    yargs-parser "20.x"
+
+ts-jest@^26.4.1:
+  version "26.4.1"
+  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-26.4.1.tgz#08ec0d3fc2c3a39e4a46eae5610b69fafa6babd0"
+  integrity sha512-F4aFq01aS6mnAAa0DljNmKr/Kk9y4HVZ1m6/rtJ0ED56cuxINGq3Q9eVAh+z5vcYKe5qnTMvv90vE8vUMFxomg==
   dependencies:
     "@types/jest" "26.x"
     bs-logger "0.x"

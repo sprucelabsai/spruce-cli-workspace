@@ -1,6 +1,9 @@
 import pathUtil from 'path'
-import { ISchema } from '@sprucelabs/schema'
-import { IFieldRegistration } from '@sprucelabs/schema'
+import {
+	ISchema,
+	IFieldRegistration,
+	fieldRegistrations,
+} from '@sprucelabs/schema'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
@@ -31,7 +34,7 @@ interface IFetchSchemasResults {
 	errors: SpruceError[]
 }
 export interface IFetchedField {
-	path: string
+	path?: string
 	registration: IFieldRegistration
 	isLocal: boolean
 }
@@ -88,10 +91,7 @@ export default class SchemaStore extends AbstractStore {
 		enableVersioning?: boolean
 	) {
 		const localMatches = await globby(
-			pathUtil.join(
-				diskUtil.resolvePath(this.cwd, localLookupDir),
-				'**/*.builder.[t|j]s'
-			)
+			diskUtil.resolvePath(this.cwd, localLookupDir, '**/*.builder.[t|j]s')
 		)
 
 		const schemaService = this.Service('schema')
@@ -99,7 +99,7 @@ export default class SchemaStore extends AbstractStore {
 		const schemas: ISchema[] = []
 
 		await Promise.all(
-			localMatches.map(async (local) => {
+			localMatches.map(async (local: string) => {
 				let version: undefined | string
 
 				try {
@@ -149,67 +149,47 @@ export default class SchemaStore extends AbstractStore {
 	}): Promise<IFetchFieldsResults> {
 		const { localAddonsDir } = options || {}
 
-		const cwd = pathUtil.join(__dirname, '..', '..')
-		const localImportService = this.Service('import', cwd)
-
 		// TODO load from mercury-api when live
-		const coreAddonsPromise = Promise.all(
-			(
-				await globby([
-					pathUtil.join(
-						cwd,
-						'node_modules/@sprucelabs/schema/build/addons/*Field.addon.js'
-					),
-				])
-			).map(async (path) => {
-				const registration = await localImportService.importDefault<
-					IFieldRegistration
-				>(path)
-
-				return {
-					path,
-					registration,
-					isLocal: false,
-				}
-			})
-		)
+		const coreAddons = fieldRegistrations.map((registration) => {
+			return {
+				registration,
+				isLocal: false,
+			}
+		})
 
 		const localErrors: SpruceError[] = []
 		const importService = this.Service('import')
 
-		const localAddonsPromise =
-			localAddonsDir &&
-			Promise.all(
-				(
-					await globby([pathUtil.join(localAddonsDir, '/*Field.addon.[t|j]s')])
-				).map(async (file) => {
-					try {
-						const registration = await importService.importDefault<
-							IFieldRegistration
-						>(file)
+		const localAddons = !localAddonsDir
+			? []
+			: await Promise.all(
+					(
+						await globby([
+							pathUtil.join(localAddonsDir, '/*Field.addon.[t|j]s'),
+						])
+					).map(async (file: string) => {
+						try {
+							const registration = await importService.importDefault<
+								IFieldRegistration
+							>(file)
 
-						return {
-							path: file,
-							registration,
-							isLocal: true,
+							return {
+								path: file,
+								registration,
+								isLocal: true,
+							}
+						} catch (err) {
+							localErrors.push(
+								new SpruceError({
+									code: 'FAILED_TO_IMPORT',
+									file,
+									originalError: err,
+								})
+							)
+							return false
 						}
-					} catch (err) {
-						localErrors.push(
-							new SpruceError({
-								code: 'FAILED_TO_IMPORT',
-								file,
-								originalError: err,
-							})
-						)
-						return false
-					}
-				})
-			)
-
-		const [coreAddons, localAddons] = await Promise.all([
-			coreAddonsPromise,
-			localAddonsPromise || Promise.resolve([]),
-		])
+					})
+			  )
 
 		const allFields = uniqBy(
 			[

@@ -1,11 +1,12 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
-
-
 
 
 
 const generatedFileSchema: SpruceSchemas.SpruceCli.v2020_07_22.IGeneratedFileSchema  = {
 	id: 'generatedFile',
+	version: 'v2020_07_22',
+	namespace: 'SpruceCli',
 	name: '',
 	    fields: {
 	            /** . */
@@ -33,5 +34,7 @@ const generatedFileSchema: SpruceSchemas.SpruceCli.v2020_07_22.IGeneratedFileSch
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(generatedFileSchema)
 
 export default generatedFileSchema

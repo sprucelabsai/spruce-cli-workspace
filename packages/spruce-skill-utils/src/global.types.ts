@@ -14,14 +14,29 @@ export interface ISkillFeature {
 	isInstalled: () => Promise<boolean>
 }
 
-export interface IHealthCheckResults {
-	[featureKey: string]: IHealthCheckItem
+export interface SchemaHealthCheckItem extends IHealthCheckItem {
+	schemas: {
+		id: string
+		name?: string
+		namespace: string
+		version?: string
+		description?: string
+	}[]
+}
+
+export interface EventHealthCheckItem extends IHealthCheckItem {
+	listeners: Omit<IEventFeatureListener, 'callback'>[]
+}
+
+export interface HealthCheckResults {
+	skill: IHealthCheckItem
+	schema?: SchemaHealthCheckItem
+	event?: EventHealthCheckItem
 }
 
 export interface IHealthCheckItem {
 	status: 'failed' | 'passed'
 	errors?: AbstractSpruceError<any>[]
-	listeners?: IEventFeatureListener[]
 }
 
 export interface IEventFeatureListener {

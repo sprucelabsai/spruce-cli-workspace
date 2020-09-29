@@ -1,11 +1,12 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
-
-
 
 
 
 const skillFeatureSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISkillFeatureSchema  = {
 	id: 'skillFeature',
+	version: 'v2020_07_22',
+	namespace: 'SpruceCli',
 	name: 'Skill Feature',
 	    fields: {
 	            /** What's the name of your skill?. */
@@ -24,5 +25,7 @@ const skillFeatureSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISkillFeatureSchem
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(skillFeatureSchema)
 
 export default skillFeatureSchema

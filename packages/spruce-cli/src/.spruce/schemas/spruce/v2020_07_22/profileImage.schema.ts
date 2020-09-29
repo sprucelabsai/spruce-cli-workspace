@@ -1,11 +1,12 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
-
-
 
 
 
 const profileImageSchema: SpruceSchemas.Spruce.v2020_07_22.IProfileImageSchema  = {
 	id: 'profileImage',
+	version: 'v2020_07_22',
+	namespace: 'Spruce',
 	name: 'Profile Image Sizes',
 	description: 'Various sizes that a profile image comes in.',
 	    fields: {
@@ -39,5 +40,7 @@ const profileImageSchema: SpruceSchemas.Spruce.v2020_07_22.IProfileImageSchema  
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(profileImageSchema)
 
 export default profileImageSchema

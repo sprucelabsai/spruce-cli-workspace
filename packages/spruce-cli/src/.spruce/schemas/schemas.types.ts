@@ -30,55 +30,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		/** A directory that is autoloaded. */
-		interface IAutoloader {
-			
-				/** Source directory. */
-				'lookupDir': SpruceSchema.IDirectoryFieldValue
-				/** Destination. Where the file that does the autoloading is written */
-				'destination': SpruceSchema.IFileFieldValue
-				/** Pattern. */
-				'pattern': string
-		}
-
-		interface IAutoloaderSchema extends SpruceSchema.ISchema {
-			id: 'autoloader',
-			name: 'Autoloader',
-			description: 'A directory that is autoloaded.',
-			    fields: {
-			            /** Source directory. */
-			            'lookupDir': {
-			                label: 'Source directory',
-			                type: 'directory',
-			                isRequired: true,
-			                options: undefined
-			            },
-			            /** Destination. Where the file that does the autoloading is written */
-			            'destination': {
-			                label: 'Destination',
-			                type: 'file',
-			                isRequired: true,
-			                hint: 'Where the file that does the autoloading is written',
-			                options: undefined
-			            },
-			            /** Pattern. */
-			            'pattern': {
-			                label: 'Pattern',
-			                type: 'text',
-			                isRequired: true,
-			                defaultValue: "**/!(*.test).ts",
-			                options: undefined
-			            },
-			    }
-		}
-
-		type AutoloaderEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.IAutoloaderSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
 		/** The options for skill.boot. */
 		interface IBootSkillAction {
 			
@@ -88,6 +39,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 		interface IBootSkillActionSchema extends SpruceSchema.ISchema {
 			id: 'bootSkillAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
 			name: 'Boot skill action',
 			description: 'The options for skill.boot.',
 			    fields: {
@@ -123,6 +76,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 		interface ICliSkillSchema extends SpruceSchema.ISchema {
 			id: 'cliSkill',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
 			name: 'Skill',
 			description: 'A stripped down skill for the cli',
 			    fields: {
@@ -175,6 +130,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 		interface ICliUserSchema extends SpruceSchema.ISchema {
 			id: 'cliUser',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
 			name: 'Person',
 			description: 'A stripped down user for the cli',
 			    fields: {
@@ -218,6 +175,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 		interface ICliUserWithTokenSchema extends SpruceSchema.ISchema {
 			id: 'cliUserWithToken',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
 			name: 'Person',
 			description: 'A stripped down cli user with token details for login',
 			    fields: {
@@ -261,7 +220,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 		/** Create a builder for your brand new error!  */
 		interface ICreateErrorAction {
 			
-				/** Id. Where I'll look for new schema fields to be registered. */
+				/** Addons lookup directory. Where I'll look for new schema fields to be registered. */
 				'addonsLookupDir'?: string| undefined | null
 				/** Error class destination. Where I'll save your new Error class file? */
 				'errorClassDestinationDir': string
@@ -283,12 +242,14 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 		interface ICreateErrorActionSchema extends SpruceSchema.ISchema {
 			id: 'createErrorAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
 			name: 'Create error action',
 			description: 'Create a builder for your brand new error! ',
 			    fields: {
-			            /** Id. Where I'll look for new schema fields to be registered. */
+			            /** Addons lookup directory. Where I'll look for new schema fields to be registered. */
 			            'addonsLookupDir': {
-			                label: 'Id',
+			                label: 'Addons lookup directory',
 			                type: 'text',
 			                hint: 'Where I\'ll look for new schema fields to be registered.',
 			                defaultValue: "src/addons",
@@ -372,28 +333,30 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 			
 				/** Field types directory. Where field types and interfaces will be generated. */
 				'fieldTypesDestinationDir'?: string| undefined | null
-				/** Id. Where I'll look for new schema fields to be registered. */
+				/** Addons lookup directory. Where I'll look for new schema fields to be registered. */
 				'addonsLookupDir'?: string| undefined | null
 				/** Generate field types. Should I generate field types too? */
 				'generateFieldTypes'?: boolean| undefined | null
-				/** Schema types destination directory. Where schema types and interfaces will be generated. */
+				/** Schema types destination directory. Where I will generate schema types and interfaces. */
 				'schemaTypesDestinationDir'?: string| undefined | null
 				/** . Where I should look for your schema builders? */
 				'schemaLookupDir'?: string| undefined | null
-				/** Enable versioning. */
+				/** Enable versioning. Should we use versioning? */
 				'enableVersioning'?: boolean| undefined | null
-				/** Global namespace. */
+				/** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
 				'globalNamespace'?: string| undefined | null
 				/** Fetch remote schemas. I will check the server and your contracts to pull down schemas you need. */
 				'fetchRemoteSchemas'?: boolean| undefined | null
-				/** Fetch local schemas. I will check the server and your contracts to pull down schemas you need. */
+				/** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
 				'fetchLocalSchemas'?: boolean| undefined | null
-				/** Fetch remote schemas. I will check the server and your contracts to pull down schemas you need. */
+				/** Fetch core schemas. Should I pull in core schemas too? */
 				'fetchCoreSchemas'?: boolean| undefined | null
-				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas */
-				'generateStandaloneTypesFile'?: boolean| undefined | null
-				/** Delete directory if no schemas. */
+				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. */
+				'generateCoreSchemaTypes'?: boolean| undefined | null
+				/** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
 				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
+				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
+				'generateStandaloneTypesFile'?: boolean| undefined | null
 				/** Schema builder destination directory. Where I'll save the new schema builder. */
 				'schemaBuilderDestinationDir'?: string| undefined | null
 				/** Builder function. The function that builds this schema */
@@ -414,7 +377,9 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 		interface ICreateSchemaActionSchema extends SpruceSchema.ISchema {
 			id: 'createSchemaAction',
-			name: 'Create schema action',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'Create schema',
 			description: 'Create the builder to a fresh new schema!',
 			    fields: {
 			            /** Field types directory. Where field types and interfaces will be generated. */
@@ -426,9 +391,9 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 			                defaultValue: "#spruce/schemas",
 			                options: undefined
 			            },
-			            /** Id. Where I'll look for new schema fields to be registered. */
+			            /** Addons lookup directory. Where I'll look for new schema fields to be registered. */
 			            'addonsLookupDir': {
-			                label: 'Id',
+			                label: 'Addons lookup directory',
 			                type: 'text',
 			                hint: 'Where I\'ll look for new schema fields to be registered.',
 			                defaultValue: "src/addons",
@@ -443,11 +408,11 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 			                defaultValue: true,
 			                options: undefined
 			            },
-			            /** Schema types destination directory. Where schema types and interfaces will be generated. */
+			            /** Schema types destination directory. Where I will generate schema types and interfaces. */
 			            'schemaTypesDestinationDir': {
 			                label: 'Schema types destination directory',
 			                type: 'text',
-			                hint: 'Where schema types and interfaces will be generated.',
+			                hint: 'Where I will generate schema types and interfaces.',
 			                defaultValue: "#spruce/schemas",
 			                options: undefined
 			            },
@@ -458,19 +423,22 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 			                defaultValue: "src/schemas",
 			                options: undefined
 			            },
-			            /** Enable versioning. */
+			            /** Enable versioning. Should we use versioning? */
 			            'enableVersioning': {
 			                label: 'Enable versioning',
 			                type: 'boolean',
 			                isPrivate: true,
+			                hint: 'Should we use versioning?',
 			                defaultValue: true,
 			                options: undefined
 			            },
-			            /** Global namespace. */
+			            /** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
 			            'globalNamespace': {
 			                label: 'Global namespace',
 			                type: 'text',
 			                isPrivate: true,
+			                hint: 'The name you\'ll use when accessing these schemas, e.g. SpruceSchemas',
+			                defaultValue: "SpruceSchemas",
 			                options: undefined
 			            },
 			            /** Fetch remote schemas. I will check the server and your contracts to pull down schemas you need. */
@@ -482,37 +450,48 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 			                defaultValue: true,
 			                options: undefined
 			            },
-			            /** Fetch local schemas. I will check the server and your contracts to pull down schemas you need. */
+			            /** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
 			            'fetchLocalSchemas': {
 			                label: 'Fetch local schemas',
 			                type: 'boolean',
 			                isPrivate: true,
-			                hint: 'I will check the server and your contracts to pull down schemas you need.',
+			                hint: 'I will look in schemaLookupDir to load local schemas.',
 			                defaultValue: true,
 			                options: undefined
 			            },
-			            /** Fetch remote schemas. I will check the server and your contracts to pull down schemas you need. */
+			            /** Fetch core schemas. Should I pull in core schemas too? */
 			            'fetchCoreSchemas': {
-			                label: 'Fetch remote schemas',
-			                type: 'boolean',
-			                hint: 'I will check the server and your contracts to pull down schemas you need.',
-			                defaultValue: false,
-			                options: undefined
-			            },
-			            /** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas */
-			            'generateStandaloneTypesFile': {
-			                label: 'Generate standalone types file',
+			                label: 'Fetch core schemas',
 			                type: 'boolean',
 			                isPrivate: true,
-			                hint: 'By default, I\'ll generate a types file that augments core types from @sprucelabs/spruce-core-schemas',
+			                hint: 'Should I pull in core schemas too?',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. */
+			            'generateCoreSchemaTypes': {
+			                label: 'Generate core schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas.',
 			                defaultValue: false,
 			                options: undefined
 			            },
-			            /** Delete directory if no schemas. */
+			            /** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
 			            'deleteDestinationDirIfNoSchemas': {
 			                label: 'Delete directory if no schemas',
 			                type: 'boolean',
 			                isPrivate: true,
+			                hint: 'Should I delete the schema directory if no schemas are found?',
+			                defaultValue: false,
+			                options: undefined
+			            },
+			            /** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
+			            'generateStandaloneTypesFile': {
+			                label: 'Generate standalone types file',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'By default, I\'ll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file.',
 			                defaultValue: false,
 			                options: undefined
 			            },
@@ -607,6 +586,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 		interface ICreateTestActionSchema extends SpruceSchema.ISchema {
 			id: 'createTestAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
 			name: 'Create test action',
 			description: 'Options for creating a new test.',
 			    fields: {
@@ -673,6 +654,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 		interface IListenEventActionSchema extends SpruceSchema.ISchema {
 			id: 'listenEventAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
 			name: 'Listen to event action',
 			description: 'Options for event.listen.',
 			    fields: {
@@ -737,6 +720,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 		interface INamedTemplateItemSchema extends SpruceSchema.ISchema {
 			id: 'namedTemplateItem',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
 			name: 'NamedTemplateItem',
 			description: 'Used to collect input on the names of a class or interface',
 			    fields: {
@@ -812,6 +797,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 		interface IOnboardingSchema extends SpruceSchema.ISchema {
 			id: 'onboarding',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
 			name: 'Onboarding',
 			description: 'Track onboarding progress and tutorials & quizzes completed.',
 			    fields: {
@@ -849,6 +836,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 		interface ISetupVscodeActionSchema extends SpruceSchema.ISchema {
 			id: 'setupVscodeAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
 			name: 'Setup vscode action',
 			description: 'Install vscode extensions the Spruce team recommends!',
 			    fields: {
@@ -879,6 +868,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 		interface ISkillFeatureSchema extends SpruceSchema.ISchema {
 			id: 'skillFeature',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
 			name: 'Skill Feature',
 			    fields: {
 			            /** What's the name of your skill?. */
@@ -908,7 +899,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 		/** Keep your errors types in sync with your builders */
 		interface ISyncErrorAction {
 			
-				/** Id. Where I'll look for new schema fields to be registered. */
+				/** Addons lookup directory. Where I'll look for new schema fields to be registered. */
 				'addonsLookupDir'?: string| undefined | null
 				/** Error class destination. Where I'll save your new Error class file? */
 				'errorClassDestinationDir': string
@@ -920,12 +911,14 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 		interface ISyncErrorActionSchema extends SpruceSchema.ISchema {
 			id: 'syncErrorAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
 			name: 'Sync error action',
 			description: 'Keep your errors types in sync with your builders',
 			    fields: {
-			            /** Id. Where I'll look for new schema fields to be registered. */
+			            /** Addons lookup directory. Where I'll look for new schema fields to be registered. */
 			            'addonsLookupDir': {
-			                label: 'Id',
+			                label: 'Addons lookup directory',
 			                type: 'text',
 			                hint: 'Where I\'ll look for new schema fields to be registered.',
 			                defaultValue: "src/addons",
@@ -978,6 +971,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 		interface ISyncSchemaFieldsActionSchema extends SpruceSchema.ISchema {
 			id: 'syncSchemaFieldsAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
 			name: 'syncSchemaFieldsAction',
 			description: 'Sync schema fields so you can use schemas!',
 			    fields: {
@@ -1026,30 +1021,32 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 				'addonsLookupDir'?: string| undefined | null
 				/** Generate field types. Should I generate field types too? */
 				'generateFieldTypes'?: boolean| undefined | null
-				/** Schema types destination directory. Where schema types and interfaces will be generated. */
+				/** Schema types destination directory. Where I will generate schema types and interfaces. */
 				'schemaTypesDestinationDir'?: string| undefined | null
 				/** . Where I should look for your schema builders? */
 				'schemaLookupDir'?: string| undefined | null
-				/** Enable versioning. */
+				/** Enable versioning. Should we use versioning? */
 				'enableVersioning'?: boolean| undefined | null
-				/** Global namespace. */
+				/** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
 				'globalNamespace'?: string| undefined | null
 				/** Fetch remote schemas. I will check the server and your contracts to pull down schemas you need. */
 				'fetchRemoteSchemas'?: boolean| undefined | null
 				/** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
 				'fetchLocalSchemas'?: boolean| undefined | null
-				/** Fetch core schemas. */
+				/** Fetch core schemas. Should I pull in core schemas too? */
 				'fetchCoreSchemas'?: boolean| undefined | null
-				/** Generate core schemas. */
+				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. */
 				'generateCoreSchemaTypes'?: boolean| undefined | null
-				/** Delete directory if no schemas. */
+				/** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
 				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
-				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas */
+				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
 				'generateStandaloneTypesFile'?: boolean| undefined | null
 		}
 
 		interface ISyncSchemasActionSchema extends SpruceSchema.ISchema {
 			id: 'syncSchemasAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
 			name: 'Sync schemas action',
 			description: 'Options for schema.sync.',
 			    fields: {
@@ -1079,11 +1076,11 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 			                defaultValue: true,
 			                options: undefined
 			            },
-			            /** Schema types destination directory. Where schema types and interfaces will be generated. */
+			            /** Schema types destination directory. Where I will generate schema types and interfaces. */
 			            'schemaTypesDestinationDir': {
 			                label: 'Schema types destination directory',
 			                type: 'text',
-			                hint: 'Where schema types and interfaces will be generated.',
+			                hint: 'Where I will generate schema types and interfaces.',
 			                defaultValue: "#spruce/schemas",
 			                options: undefined
 			            },
@@ -1094,19 +1091,22 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 			                defaultValue: "src/schemas",
 			                options: undefined
 			            },
-			            /** Enable versioning. */
+			            /** Enable versioning. Should we use versioning? */
 			            'enableVersioning': {
 			                label: 'Enable versioning',
 			                type: 'boolean',
 			                isPrivate: true,
+			                hint: 'Should we use versioning?',
 			                defaultValue: true,
 			                options: undefined
 			            },
-			            /** Global namespace. */
+			            /** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
 			            'globalNamespace': {
 			                label: 'Global namespace',
 			                type: 'text',
 			                isPrivate: true,
+			                hint: 'The name you\'ll use when accessing these schemas, e.g. SpruceSchemas',
+			                defaultValue: "SpruceSchemas",
 			                options: undefined
 			            },
 			            /** Fetch remote schemas. I will check the server and your contracts to pull down schemas you need. */
@@ -1127,36 +1127,39 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 			                defaultValue: true,
 			                options: undefined
 			            },
-			            /** Fetch core schemas. */
+			            /** Fetch core schemas. Should I pull in core schemas too? */
 			            'fetchCoreSchemas': {
 			                label: 'Fetch core schemas',
 			                type: 'boolean',
 			                isPrivate: true,
+			                hint: 'Should I pull in core schemas too?',
 			                defaultValue: true,
 			                options: undefined
 			            },
-			            /** Generate core schemas. */
+			            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. */
 			            'generateCoreSchemaTypes': {
 			                label: 'Generate core schemas',
 			                type: 'boolean',
 			                isPrivate: true,
+			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas.',
 			                defaultValue: false,
 			                options: undefined
 			            },
-			            /** Delete directory if no schemas. */
+			            /** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
 			            'deleteDestinationDirIfNoSchemas': {
 			                label: 'Delete directory if no schemas',
 			                type: 'boolean',
 			                isPrivate: true,
+			                hint: 'Should I delete the schema directory if no schemas are found?',
 			                defaultValue: false,
 			                options: undefined
 			            },
-			            /** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas */
+			            /** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
 			            'generateStandaloneTypesFile': {
 			                label: 'Generate standalone types file',
 			                type: 'boolean',
 			                isPrivate: true,
-			                hint: 'By default, I\'ll generate a types file that augments core types from @sprucelabs/spruce-core-schemas',
+			                hint: 'By default, I\'ll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file.',
 			                defaultValue: false,
 			                options: undefined
 			            },
@@ -1179,6 +1182,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 		interface IUpgradeSkillActionSchema extends SpruceSchema.ISchema {
 			id: 'upgradeSkillAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
 			name: 'Upgrade skill action',
 			description: 'Options skill.upgrade.',
 			    fields: {
@@ -1214,6 +1219,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 		interface IGeneratedFileSchema extends SpruceSchema.ISchema {
 			id: 'generatedFile',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
 			name: '',
 			    fields: {
 			            /** . */
@@ -1264,6 +1271,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 		interface IGeneratedDirSchema extends SpruceSchema.ISchema {
 			id: 'generatedDir',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
 			name: '',
 			    fields: {
 			            /** . */
@@ -1308,6 +1317,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.ty
 
 		interface IWatcherDidDetectChangesEmitPayloadSchema extends SpruceSchema.ISchema {
 			id: 'watcherDidDetectChangesEmitPayload',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
 			name: 'Watcher did detect changes emit payload',
 			    fields: {
 			            /** . */

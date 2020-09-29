@@ -1,11 +1,12 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
-
-
 
 
 
 const onboardingSchema: SpruceSchemas.SpruceCli.v2020_07_22.IOnboardingSchema  = {
 	id: 'onboarding',
+	version: 'v2020_07_22',
+	namespace: 'SpruceCli',
 	name: 'Onboarding',
 	description: 'Track onboarding progress and tutorials & quizzes completed.',
 	    fields: {
@@ -26,5 +27,7 @@ const onboardingSchema: SpruceSchemas.SpruceCli.v2020_07_22.IOnboardingSchema  =
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(onboardingSchema)
 
 export default onboardingSchema

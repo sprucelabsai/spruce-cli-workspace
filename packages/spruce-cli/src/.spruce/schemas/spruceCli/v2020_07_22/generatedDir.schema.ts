@@ -1,11 +1,12 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
-
-
 
 
 
 const generatedDirSchema: SpruceSchemas.SpruceCli.v2020_07_22.IGeneratedDirSchema  = {
 	id: 'generatedDir',
+	version: 'v2020_07_22',
+	namespace: 'SpruceCli',
 	name: '',
 	    fields: {
 	            /** . */
@@ -33,5 +34,7 @@ const generatedDirSchema: SpruceSchemas.SpruceCli.v2020_07_22.IGeneratedDirSchem
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(generatedDirSchema)
 
 export default generatedDirSchema

@@ -1,10 +1,12 @@
-import { SpruceSchemas } from '../../schemas.types'
-
+import { SchemaRegistry } from '@sprucelabs/schema'
+import { SpruceSchemas } from '../../core.schemas.types'
 
 import aclSchema from '#spruce/schemas/spruce/v2020_07_22/acl.schema'
 
 const jobSchema: SpruceSchemas.Spruce.v2020_07_22.IJobSchema  = {
 	id: 'job',
+	version: 'v2020_07_22',
+	namespace: 'Spruce',
 	name: 'Job',
 	description: 'A position at a company. The answer to the question; What is your job?',
 	    fields: {
@@ -50,5 +52,7 @@ const jobSchema: SpruceSchemas.Spruce.v2020_07_22.IJobSchema  = {
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(jobSchema)
 
 export default jobSchema

@@ -1,12 +1,12 @@
 import { buildSchema } from '@sprucelabs/schema'
-import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
+import syncSchemasActionBuilder from './syncSchemasAction.builder'
 
 export default buildSchema({
 	id: 'syncErrorAction',
 	name: 'Sync error action',
 	description: 'Keep your errors types in sync with your builders',
 	fields: {
-		addonsLookupDir: syncSchemasActionSchema.fields.addonsLookupDir,
+		addonsLookupDir: syncSchemasActionBuilder.fields.addonsLookupDir,
 		errorClassDestinationDir: {
 			type: 'text',
 			label: 'Error class destination',

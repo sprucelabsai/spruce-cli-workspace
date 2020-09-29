@@ -1,17 +1,18 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
-
-
 
 
 
 const syncErrorActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncErrorActionSchema  = {
 	id: 'syncErrorAction',
+	version: 'v2020_07_22',
+	namespace: 'SpruceCli',
 	name: 'Sync error action',
 	description: 'Keep your errors types in sync with your builders',
 	    fields: {
-	            /** Id. Where I'll look for new schema fields to be registered. */
+	            /** Addons lookup directory. Where I'll look for new schema fields to be registered. */
 	            'addonsLookupDir': {
-	                label: 'Id',
+	                label: 'Addons lookup directory',
 	                type: 'text',
 	                hint: 'Where I\'ll look for new schema fields to be registered.',
 	                defaultValue: "src/addons",
@@ -43,5 +44,7 @@ const syncErrorActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncErrorActio
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(syncErrorActionSchema)
 
 export default syncErrorActionSchema

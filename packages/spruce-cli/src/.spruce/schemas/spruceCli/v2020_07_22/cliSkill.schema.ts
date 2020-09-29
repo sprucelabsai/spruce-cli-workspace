@@ -1,11 +1,12 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
-
-
 
 
 
 const cliSkillSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICliSkillSchema  = {
 	id: 'cliSkill',
+	version: 'v2020_07_22',
+	namespace: 'SpruceCli',
 	name: 'Skill',
 	description: 'A stripped down skill for the cli',
 	    fields: {
@@ -39,5 +40,7 @@ const cliSkillSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICliSkillSchema  = {
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(cliSkillSchema)
 
 export default cliSkillSchema

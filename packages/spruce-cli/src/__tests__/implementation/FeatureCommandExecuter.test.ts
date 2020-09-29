@@ -1,4 +1,4 @@
-import { diskUtil, IHealthCheckResults } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, HealthCheckResults } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../AbstractCliTest'
 import FeatureCommandExecuter from '../../features/FeatureCommandExecuter'
@@ -47,7 +47,7 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 
 	private static async assertHealthySkillNamed(
 		name: string,
-		expectedHealth: IHealthCheckResults = { skill: { status: 'passed' } }
+		expectedHealth: HealthCheckResults = { skill: { status: 'passed' } }
 	) {
 		const cli = await this.Cli()
 		await this.linkLocalPackages()
@@ -145,7 +145,7 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 
 		await this.assertHealthySkillNamed('my-great-skill', {
 			skill: { status: 'passed' },
-			schema: { status: 'passed' },
+			schema: { status: 'passed', schemas: [] },
 		})
 
 		const installer = this.FeatureInstaller()

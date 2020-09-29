@@ -1,6 +1,5 @@
 import { AbstractEventEmitter } from '@sprucelabs/mercury-event-emitter'
 import { MercuryClient } from '@sprucelabs/mercury-types'
-import { SchemaRegistry } from '@sprucelabs/schema'
 import watcherDidDetectChangesEmitPayloadSchema from '#spruce/schemas/spruceCli/v2020_07_22/watcherDidDetectChangesEmitPayload.schema'
 
 const contract = {
@@ -11,9 +10,6 @@ const contract = {
 		},
 	],
 } as const
-
-const registry = SchemaRegistry.getInstance()
-registry.trackSchema(watcherDidDetectChangesEmitPayloadSchema)
 
 type CliContract = typeof contract
 export type GlobalEmitter = MercuryClient<CliContract>

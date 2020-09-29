@@ -1,11 +1,12 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
-
-
 
 
 
 const namedTemplateItemSchema: SpruceSchemas.SpruceCli.v2020_07_22.INamedTemplateItemSchema  = {
 	id: 'namedTemplateItem',
+	version: 'v2020_07_22',
+	namespace: 'SpruceCli',
 	name: 'NamedTemplateItem',
 	description: 'Used to collect input on the names of a class or interface',
 	    fields: {
@@ -62,5 +63,7 @@ const namedTemplateItemSchema: SpruceSchemas.SpruceCli.v2020_07_22.INamedTemplat
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(namedTemplateItemSchema)
 
 export default namedTemplateItemSchema

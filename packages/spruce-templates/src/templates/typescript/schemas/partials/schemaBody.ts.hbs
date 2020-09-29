@@ -1,4 +1,6 @@
-id: '{{{escape schema.id}}}',
+id: '{{{escape schema.id}}}',{{#if schema.version}}
+version: '{{{escape schema.version}}}',{{/if}}{{#if namespace}}
+namespace: '{{{escape namespace}}}',{{/if}}
 name: '{{{escape schema.name}}}'{{#if schema.description}},
 description: '{{{escape schema.description}}}'{{/if}}{{#if schema.dynamicFieldSignature}},
 dynamicFieldSignature: { 

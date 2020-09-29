@@ -51,7 +51,7 @@ export default class SyncAction extends AbstractFeatureAction<
 					'fetchRemoteSchemas',
 				],
 				friendlyMessage:
-					'When `--generateCoreSchemaTypes true`, you must set `--fetchLocalSchemas false` and `--fetchRemoteSchemas false`',
+					'When `--generateCoreSchemaTypes true`, you must set `--fetchLocalSchemas false --fetchRemoteSchemas false`',
 			})
 		}
 

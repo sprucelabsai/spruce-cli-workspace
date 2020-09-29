@@ -5,7 +5,7 @@ import {
 } from '@sprucelabs/mercury'
 import {
 	diskUtil,
-	IHealthCheckResults,
+	HealthCheckResults,
 	HEALTH_DIVIDER,
 } from '@sprucelabs/spruce-skill-utils'
 import { Command, CommanderStatic } from 'commander'
@@ -25,7 +25,7 @@ import { AuthedAs, IGraphicsInterface } from './types/cli.types'
 export interface ICli {
 	installFeatures: FeatureInstaller['install']
 	getFeature: FeatureInstaller['getFeature']
-	checkHealth(): Promise<IHealthCheckResults>
+	checkHealth(): Promise<HealthCheckResults>
 	emitter: GlobalEmitter
 }
 
@@ -93,7 +93,7 @@ export default class Cli implements ICli {
 		return this.featureInstaller.getFeature(code)
 	}
 
-	public async checkHealth(): Promise<IHealthCheckResults> {
+	public async checkHealth(): Promise<HealthCheckResults> {
 		const isInstalled = await this.featureInstaller.isInstalled('skill')
 
 		if (!isInstalled) {
@@ -115,7 +115,7 @@ export default class Cli implements ICli {
 			const results = await commandService.execute('yarn health.local')
 			const resultParts = results.stdout.split(HEALTH_DIVIDER)
 
-			return JSON.parse(resultParts[1]) as IHealthCheckResults
+			return JSON.parse(resultParts[1]) as HealthCheckResults
 		} catch (originalError) {
 			const error = new SpruceError({
 				// @ts-ignore
