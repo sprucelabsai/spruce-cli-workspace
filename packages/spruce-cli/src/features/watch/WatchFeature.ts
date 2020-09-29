@@ -1,5 +1,4 @@
 import pathUtil from 'path'
-import { SchemaRegistry } from '@sprucelabs/schema'
 import chokidar from 'chokidar'
 import { GeneratedFile, GeneratedFileOrDir } from '../../types/cli.types'
 import AbstractFeature from '../AbstractFeature'
@@ -28,7 +27,7 @@ export default class WatchFeature extends AbstractFeature {
 	public async startWatching() {
 		this._isWatching = true
 
-		this.watcher = chokidar.watch(this.cwd + '/**/*')
+		this.watcher = chokidar.watch(this.cwd + '/**/*', { ignoreInitial: true })
 
 		this.watcher.on('all', async (action, stats) => {
 			this.changesSinceLastChange.push({
@@ -68,9 +67,6 @@ export default class WatchFeature extends AbstractFeature {
 	private async fireChange() {
 		const changes = this.changesSinceLastChange
 		this.changesSinceLastChange = []
-		const registry = SchemaRegistry.getInstance()
-		console.log(registry)
-		debugger
 		await this.emitter.emit('watcher.did-detect-change', { changes })
 	}
 
