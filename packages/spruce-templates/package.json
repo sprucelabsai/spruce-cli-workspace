@@ -5,6 +5,7 @@
 	},
 	"license": "MIT",
 	"version": "10.30.0",
+	"private": true,
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
 	"files": [

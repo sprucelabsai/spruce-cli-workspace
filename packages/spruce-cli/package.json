@@ -3,6 +3,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
+	"private": true,
 	"license": "MIT",
 	"version": "10.30.0",
 	"bin": {

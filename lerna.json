@@ -5,7 +5,8 @@
 	"command": {
 		"publish": {
 			"allowBranch": [
-				"master"
+				"master",
+				"taylor/watcher-debounce"
 			],
 			"conventionalCommits": true,
 			"changelogPreset": "sprucelabs"
