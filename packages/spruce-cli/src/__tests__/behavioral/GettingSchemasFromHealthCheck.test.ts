@@ -1,9 +1,6 @@
 import { ISchema } from '@sprucelabs/schema'
 import * as coreSchemas from '@sprucelabs/spruce-core-schemas'
-import {
-	CORE_SCHEMA_VERSION,
-	versionUtil,
-} from '@sprucelabs/spruce-skill-utils'
+import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
 import { ICli } from '../../cli'
@@ -13,7 +10,7 @@ export default class GettingSchemasFromHealthCheckTest extends AbstractSchemaTes
 	protected static async getsCoreSchemasFromHealthCheck() {
 		const cli = await this.installAndSyncSchemas()
 
-		const cleanedExpected = this.generateExpectedResponse(
+		const cleanedExpected = this.generateExpectedHealthSchemas(
 			Object.values(coreSchemas)
 		)
 
@@ -41,7 +38,7 @@ export default class GettingSchemasFromHealthCheckTest extends AbstractSchemaTes
 			description: 'this is so great!',
 		})
 
-		const cleanedExpected = this.generateExpectedResponse([
+		const cleanedExpected = this.generateExpectedHealthSchemas([
 			...Object.values(coreSchemas),
 			{
 				id: 'test',
@@ -53,27 +50,6 @@ export default class GettingSchemasFromHealthCheckTest extends AbstractSchemaTes
 		])
 
 		await this.assertExpectedSchemas(cli, cleanedExpected)
-	}
-
-	private static sortSchemas(schemas: ISchema[]) {
-		return schemas.sort((a, b) => (a.id > b.id ? -1 : 1))
-	}
-
-	private static generateExpectedResponse(schemas: ISchema[]) {
-		const expected = schemas.map((schema) => ({
-			// @ts-ignore
-			id: schema.id,
-			// @ts-ignore
-			name: schema.name,
-			version: schema.version ?? CORE_SCHEMA_VERSION.constValue,
-			namespace: schema.namespace,
-			// @ts-ignore
-			description: schema.description,
-		}))
-
-		const expectedJSon = JSON.stringify(expected)
-		const cleanedExpected = JSON.parse(expectedJSon)
-		return this.sortSchemas(cleanedExpected)
 	}
 
 	private static async installAndSyncSchemas() {

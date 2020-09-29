@@ -43,7 +43,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 					fetchLocalSchemas: true,
 					fetchRemoteSchemas: false,
 				}),
-			/When `--generateCoreSchemaTypes true`, you must set `--fetchLocalSchemas false` and `--fetchRemoteSchemas false`/
+			/When `--generateCoreSchemaTypes true`, you must set `--fetchLocalSchemas false --fetchRemoteSchemas false`/
 		)
 	}
 
@@ -57,7 +57,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 					fetchLocalSchemas: false,
 					fetchRemoteSchemas: true,
 				}),
-			/When `--generateCoreSchemaTypes true`, you must set `--fetchLocalSchemas false` and `--fetchRemoteSchemas false`/
+			/When `--generateCoreSchemaTypes true`, you must set `--fetchLocalSchemas false --fetchRemoteSchemas false`/
 		)
 	}
 

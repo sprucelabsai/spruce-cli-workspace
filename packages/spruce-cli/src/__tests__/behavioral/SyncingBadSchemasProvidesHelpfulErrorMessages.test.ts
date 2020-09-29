@@ -23,7 +23,7 @@ export default class SyncingBadSchemasProvidesHelpfulErrorMessagesTest extends A
 
 Failed to load related schema for schemaTwov2020_06_23.relatedToBad
 
-Original error: SCHEMA_NOT_FOUND: Could not find schema "{"id":"badSchema","version":"v2020_06_23"}"
+Original error: Could not find schema -> '{"id":"badSchema","version":"v2020_06_23"}'.
 
 Make sure you are pointing to the correct version.`
 		)

@@ -17,7 +17,7 @@ export default class SettingUpSchemasTests extends AbstractSchemaTest {
 						},
 					],
 				}),
-			'INVALID_FIELD'
+			/What's the name of your skill\?' is required/gi
 		)
 	}
 

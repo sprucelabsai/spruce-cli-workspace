@@ -1,11 +1,12 @@
+import * as coreSchemas from '@sprucelabs/spruce-core-schemas'
 import { diskUtil, HealthCheckResults } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import AbstractCliTest from '../../AbstractCliTest'
+import AbstractSchemaTest from '../../AbstractSchemaTest'
 import FeatureCommandExecuter from '../../features/FeatureCommandExecuter'
 import { FeatureCode } from '../../features/features.types'
 import testUtil from '../../utilities/test.utility'
 
-export default class FeatureCommandExecuterTest extends AbstractCliTest {
+export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
 	}
@@ -55,6 +56,10 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 		const health = await cli.checkHealth()
 
 		// @ts-ignore
+		if (health.schema?.schemas) {
+			//@ts-ignore
+			health.schema.schemas = this.sortSchemas(health.schema.schemas)
+		}
 		assert.isEqualDeep(health, expectedHealth)
 
 		const packageContents = diskUtil.readFile(this.resolvePath('package.json'))
@@ -145,7 +150,10 @@ export default class FeatureCommandExecuterTest extends AbstractCliTest {
 
 		await this.assertHealthySkillNamed('my-great-skill', {
 			skill: { status: 'passed' },
-			schema: { status: 'passed', schemas: [] },
+			schema: {
+				status: 'passed',
+				schemas: this.generateExpectedHealthSchemas(Object.values(coreSchemas)),
+			},
 		})
 
 		const installer = this.FeatureInstaller()
