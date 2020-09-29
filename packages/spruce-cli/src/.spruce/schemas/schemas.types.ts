@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 /* eslint-disable no-redeclare */
 
-export { SpruceSchemas } from '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.types'
+export { SpruceSchemas } from '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schemas.types'
 
 import { default as SchemaEntity } from '@sprucelabs/schema'
 
@@ -9,7 +9,7 @@ import { default as SchemaEntity } from '@sprucelabs/schema'
 
 import * as SpruceSchema from '@sprucelabs/schema'
 
-declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/schemas.types' {
+declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schemas.types' {
 
 
 
