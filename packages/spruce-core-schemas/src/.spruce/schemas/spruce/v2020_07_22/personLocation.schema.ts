@@ -1,4 +1,3 @@
-import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../core.schemas.types'
 
 import jobSchema from '#spruce/schemas/spruce/v2020_07_22/job.schema'
@@ -69,6 +68,5 @@ const personLocationSchema: SpruceSchemas.Spruce.v2020_07_22.IPersonLocationSche
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(personLocationSchema)
 
 export default personLocationSchema

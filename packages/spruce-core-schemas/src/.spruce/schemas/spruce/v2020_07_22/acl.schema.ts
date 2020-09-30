@@ -1,4 +1,3 @@
-import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../core.schemas.types'
 
 
@@ -16,6 +15,5 @@ const aclSchema: SpruceSchemas.Spruce.v2020_07_22.IAclSchema  = {
 	    options: undefined
 	}}
 
-SchemaRegistry.getInstance().trackSchema(aclSchema)
 
 export default aclSchema

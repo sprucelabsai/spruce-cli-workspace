@@ -1,4 +1,3 @@
-import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../core.schemas.types'
 
 
@@ -22,6 +21,5 @@ const skillCreatorSchema: SpruceSchemas.Spruce.v2020_07_22.ISkillCreatorSchema  
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(skillCreatorSchema)
 
 export default skillCreatorSchema

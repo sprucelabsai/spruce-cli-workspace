@@ -1,4 +1,3 @@
-import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../core.schemas.types'
 
 
@@ -41,6 +40,5 @@ const profileImageSchema: SpruceSchemas.Spruce.v2020_07_22.IProfileImageSchema  
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(profileImageSchema)
 
 export default profileImageSchema
