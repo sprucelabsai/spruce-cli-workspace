@@ -2082,10 +2082,10 @@
     tsconfig-paths "^3.9.0"
     yargs "^16.0.3"
 
-"@sprucelabs/error@^2.2.374", "@sprucelabs/error@^2.2.383":
-  version "2.2.383"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.383.tgz#0176e3b44f7590a5575a490337a3eab6fdc5d7e9"
-  integrity sha512-VqZogYXWtVrSjDKQ6SlXBXe8C2cu0bVQDf2u1rQeA7CNSRwr3OnWXETCzJR/q2IBSOvYly+OIVkqDwxuBqQW4A==
+"@sprucelabs/error@^2.2.374", "@sprucelabs/error@^2.2.384":
+  version "2.2.384"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.384.tgz#a49bd1282659f6fa1ddc85c98a122a2f11af9c8e"
+  integrity sha512-ia0weoAqJv+VGs5nEyrkHTO3L7daBIvouUff/uJSd+DJmKx3SJakDWgAQZw0pgJn7g2yt9bqrNnbH3UhOe96dg==
 
 "@sprucelabs/jest-sheets-reporter@^1.2.2":
   version "1.2.2"
@@ -2100,19 +2100,19 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.255.tgz#505d08405d1c6d654876272de88189a06909e17e"
   integrity sha512-b6hEsaoE7hzVCqI+yhueNCCdivoZv32nTQsUwfijcQ0ajp2E+M8eJxr3mZ+LMPL8lc/pwBoN5O5dzw/N9JP12w==
 
-"@sprucelabs/mercury-event-emitter@^1.11.83":
-  version "1.11.83"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-event-emitter/-/mercury-event-emitter-1.11.83.tgz#8ae71cd969514e51f2a751abd3151bffb8a9789e"
-  integrity sha512-/qBirvV6n3NyBP8k1JRNRO0prueXjE47i6LdWtkmcxcmwOrbTzNfBiHA1mhj686zK3Xikj5mO5HIR3pU5cchLw==
+"@sprucelabs/mercury-event-emitter@^1.11.84":
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-event-emitter/-/mercury-event-emitter-1.12.0.tgz#ea1ab0be4053daba63bbe21787b70266dc81039d"
+  integrity sha512-oVfFYA70f/YPN+5L6BgCaDpgBk4N5Pm6BQvh1cw8oiO6KSfW3c0D5WhIbK5ZjLWJfZTvzvF/SaFMxG7uwVm7xg==
   dependencies:
     "@sprucelabs/error" "^2.2.374"
-    "@sprucelabs/mercury-types" "^1.11.83"
+    "@sprucelabs/mercury-types" "^1.12.0"
     "@sprucelabs/schema" "^12.4.16"
 
-"@sprucelabs/mercury-types@^1.11.83":
-  version "1.11.83"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-types/-/mercury-types-1.11.83.tgz#1233de500621b7136e32a989fed2ac01ac4f992a"
-  integrity sha512-r1t+NPud0vhTZsrPWwOPl1qFjS8c5V++Bhry/MTiek7D7N+Fts/IbPlwFMWvV050p83KrzdBVXTB3ezd1iC7Iw==
+"@sprucelabs/mercury-types@^1.11.84", "@sprucelabs/mercury-types@^1.12.0":
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-types/-/mercury-types-1.12.0.tgz#6aafabffc8ea94bb2fd960f0921a8d8468690cad"
+  integrity sha512-MG1Km6HubCS8I2V1DBjfJkb9pOFti1hDTHQG1yTPPB8jpASIZGUNml57VXD8nZdGfjgTo7aUvCgHs3ojofBUWg==
   dependencies:
     "@sprucelabs/error" "^2.2.374"
     "@sprucelabs/log" "^10.2.253"
@@ -2130,22 +2130,22 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^12.4.16", "@sprucelabs/schema@^12.4.33":
-  version "12.4.33"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.4.33.tgz#e95e06ce18dde09d908661b1c327ff93d03fa354"
-  integrity sha512-isKnjf+/dRyMvcDRK7FrbGrrzNlJE055qtBcO1DIEwdPhrrO+0FguKeJhPgwDrmzAs7VFNE6DgII0H/r66IJyA==
+"@sprucelabs/schema@^12.4.16", "@sprucelabs/schema@^12.4.34":
+  version "12.4.34"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.4.34.tgz#107c8a68c2a318829298ca8f21b3e5fc3bfe4961"
+  integrity sha512-cktsfM0gJ0yoQRVrF0xywapdcq+N3MSoF8CLIq5bX8krlHuHeXvcY+VlBWacofyGUHY1lfna7LfyUBwPSLNMFw==
   dependencies:
-    "@sprucelabs/error" "^2.2.383"
+    "@sprucelabs/error" "^2.2.384"
     "@sprucelabs/log" "^10.2.255"
     google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.8.1"
     mime-db "^1.45.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^7.0.84":
-  version "7.0.84"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.84.tgz#ec9a3f12a0a79735fec540bf94bfd802be565fb2"
-  integrity sha512-emmjqure2qwkl6SlXpZIrHuoXeq460/xFQlMGtOa3Um+ZRplgv+5JPlEcQCrwd9TrEaLdtUiwv/5AG2ahvDgTA==
+"@sprucelabs/test@^7.0.85":
+  version "7.0.85"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.85.tgz#769af3dd2e1a3883bd0a982a7571eac0c9f47e26"
+  integrity sha512-xy2GcVKeXxd7zvQ19ThG8ra7N3Aks/JGvRzvrDvIgzKig2JDM0Zggs/Oq63n9TOvN401i6oIk9SZJr3NqCv5Fg==
   dependencies:
     "@babel/core" "^7.11.6"
     "@babel/preset-env" "^7.11.5"
