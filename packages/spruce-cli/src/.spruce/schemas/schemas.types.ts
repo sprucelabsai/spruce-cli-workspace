@@ -321,7 +321,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				/** Generate field types. Should I generate field types too? */
 				'generateFieldTypes'?: boolean| undefined | null
 				/** Schema types destination directory. Where I will generate schema types and interfaces. */
-				'schemaTypesDestinationDir'?: string| undefined | null
+				'schemaTypesDestinationDirOrFile'?: string| undefined | null
 				/** . Where I should look for your schema builders? */
 				'schemaLookupDir'?: string| undefined | null
 				/** Enable versioning. Should we use versioning? */
@@ -392,7 +392,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                options: undefined
 			            },
 			            /** Schema types destination directory. Where I will generate schema types and interfaces. */
-			            'schemaTypesDestinationDir': {
+			            'schemaTypesDestinationDirOrFile': {
 			                label: 'Schema types destination directory',
 			                type: 'text',
 			                hint: 'Where I will generate schema types and interfaces.',
@@ -1005,7 +1005,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				/** Generate field types. Should I generate field types too? */
 				'generateFieldTypes'?: boolean| undefined | null
 				/** Schema types destination directory. Where I will generate schema types and interfaces. */
-				'schemaTypesDestinationDir'?: string| undefined | null
+				'schemaTypesDestinationDirOrFile'?: string| undefined | null
 				/** . Where I should look for your schema builders? */
 				'schemaLookupDir'?: string| undefined | null
 				/** Enable versioning. Should we use versioning? */
@@ -1060,7 +1060,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                options: undefined
 			            },
 			            /** Schema types destination directory. Where I will generate schema types and interfaces. */
-			            'schemaTypesDestinationDir': {
+			            'schemaTypesDestinationDirOrFile': {
 			                label: 'Schema types destination directory',
 			                type: 'text',
 			                hint: 'Where I will generate schema types and interfaces.',

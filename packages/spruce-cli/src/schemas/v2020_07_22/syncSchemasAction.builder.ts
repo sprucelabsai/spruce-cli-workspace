@@ -8,7 +8,7 @@ export default buildSchema({
 	description: 'Options for schema.sync.',
 	fields: {
 		...syncSchemaFieldsBuilder.fields,
-		schemaTypesDestinationDir: {
+		schemaTypesDestinationDirOrFile: {
 			type: 'text',
 			label: 'Schema types destination directory',
 			hint: 'Where I will generate schema types and interfaces.',
