@@ -55,7 +55,7 @@ export default class SkillFeature<
 			"chokidar 'src/**/*' '../spruce-templates/src/**' -c 'yarn lint.tsc'",
 		health: 'yarn run boot --health',
 		'health.local': 'yarn run boot.local --health',
-		build: 'yarn build.babel',
+		build: 'yarn build.babel && yarn build.types',
 		'build.types': 'tsc --emitDeclarationOnly',
 		'build.babel':
 			"babel src --out-dir build --extensions '.ts, .tsx' --source-maps --copy-files",
