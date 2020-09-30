@@ -6,7 +6,6 @@ import RemoteStore from './RemoteStore'
 import SchemaStore from './SchemaStore'
 import SkillStore from './SkillStore'
 import UserStore from './UserStore'
-import WatcherStore from './WatcherStore'
 
 export interface IStoreMap {
 	onboarding: OnboardingStore
@@ -14,7 +13,6 @@ export interface IStoreMap {
 	schema: SchemaStore
 	skill: SkillStore
 	user: UserStore
-	watcher: WatcherStore
 }
 
 export type StoreCode = keyof IStoreMap
@@ -29,7 +27,6 @@ export default class StoreFactory {
 		schema: SchemaStore,
 		skill: SkillStore,
 		user: UserStore,
-		watcher: WatcherStore,
 	}
 
 	public constructor(

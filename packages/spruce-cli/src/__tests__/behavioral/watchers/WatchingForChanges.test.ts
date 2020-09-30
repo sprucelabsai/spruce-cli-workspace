@@ -89,7 +89,9 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 		await this.wait(1000)
 	}
 
-	protected static async watchRunStop(runner: () => GeneratedFileOrDir[]) {
+	protected static async watchRunStop(
+		runner: () => Promise<GeneratedFileOrDir[]>
+	) {
 		const cli = await this.installWatch()
 		const feature = cli.getFeature('watch')
 
@@ -100,7 +102,7 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 
 		await this.startWatching(feature)
 
-		const expected: GeneratedFileOrDir[] = runner()
+		const expected: GeneratedFileOrDir[] = await runner()
 
 		await this.stopWatching(feature)
 		assert.isEqualDeep(payloadChanges, expected)
@@ -108,7 +110,7 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 
 	@test()
 	protected static async canTrackAddingDir() {
-		await this.watchRunStop(() => {
+		await this.watchRunStop(async () => {
 			const newDirDest = this.resolvePath('new_dir')
 			diskUtil.createDir(newDirDest)
 
@@ -132,7 +134,7 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 		const newDirDest = this.resolvePath('new_dir')
 		diskUtil.createDir(newDirDest)
 
-		await this.watchRunStop(() => {
+		await this.watchRunStop(async () => {
 			diskUtil.deleteDir(newDirDest)
 
 			const expected: GeneratedFileOrDir[] = [
@@ -146,6 +148,9 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 					},
 				},
 			]
+
+			// NOTE: Linux machines seem to delay here (probably because they use polling)
+			await this.wait(1000)
 			return expected
 		})
 	}
@@ -155,7 +160,7 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 		const newFile = this.resolvePath('test.js')
 		diskUtil.writeFile(newFile, 'test')
 
-		await this.watchRunStop(() => {
+		await this.watchRunStop(async () => {
 			diskUtil.deleteFile(newFile)
 
 			const expected: GeneratedFileOrDir[] = [

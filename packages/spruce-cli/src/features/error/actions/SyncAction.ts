@@ -103,7 +103,7 @@ export default class SyncAction extends AbstractFeatureAction<
 
 		const syncOptions = normalizeSchemaValues(syncSchemasActionSchema, {
 			...normalizedOptions,
-			schemaTypesDestinationDir: resolvedErrorTypesDestinationDir,
+			schemaTypesDestinationDirOrFile: resolvedErrorTypesDestinationDir,
 			schemaLookupDir: normalizedOptions.errorLookupDir,
 			enableVersioning: false,
 			globalNamespace: 'SpruceErrors',

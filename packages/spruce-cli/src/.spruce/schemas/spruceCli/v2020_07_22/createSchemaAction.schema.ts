@@ -37,7 +37,7 @@ const createSchemaActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICreateSchem
 	                options: undefined
 	            },
 	            /** Schema types destination directory. Where I will generate schema types and interfaces. */
-	            'schemaTypesDestinationDir': {
+	            'schemaTypesDestinationDirOrFile': {
 	                label: 'Schema types destination directory',
 	                type: 'text',
 	                hint: 'Where I will generate schema types and interfaces.',
