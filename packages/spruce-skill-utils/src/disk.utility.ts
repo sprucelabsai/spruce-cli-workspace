@@ -64,8 +64,15 @@ const diskUtil = {
 
 	deleteDir(target: string) {
 		const resolved = this.resolvePath(target)
+		console.log('WE RESOLVED', resolved)
 		if (fs.existsSync(resolved)) {
 			fs.removeSync(resolved)
+			console.log('we removed', resolved)
+			if (fs.existsSync(resolved)) {
+				console.log('HMM, dir still exists', resolved)
+			}
+		} else {
+			console.log('we elsed')
 		}
 	},
 

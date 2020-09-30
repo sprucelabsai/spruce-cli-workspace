@@ -129,10 +129,11 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 		})
 	}
 
-	@test()
+	@test.only()
 	protected static async canTrackDeletingDir() {
 		const newDirDest = this.resolvePath('new_dir')
 		diskUtil.createDir(newDirDest)
+		//wait this.wait(1000)
 
 		await this.watchRunStop(async () => {
 			diskUtil.deleteDir(newDirDest)
@@ -150,7 +151,7 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 			]
 
 			// NOTE: Linux machines seem to delay here (probably because they use polling)
-			await this.wait(1000)
+
 			return expected
 		})
 	}

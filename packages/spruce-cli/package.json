@@ -135,32 +135,7 @@
 		"moduleNameMapper": {
 			"^#spruce/schemas/fields/(.*)": "<rootDir>/node_modules/@sprucelabs/schema/build/.spruce/schemas/fields/$1",
 			"^#spruce/(.*)$": "<rootDir>/build/.spruce/$1"
-		},
-		"reporters": [
-			"default",
-			[
-				"@sprucelabs/jest-sheets-reporter",
-				{
-					"sheetId": "1DoWM7mYgGDa-PJXptLomrZmbIBZiuxS1YiAsRXU2Gm0",
-					"worksheetId": 843037832,
-					"testMap": {
-						"canBootTheCli": "C4",
-						"getsAGoodHealthCheckAndNothingElse": "C5",
-						"schemaPassesHealthCheck": "C6",
-						"builderAndDefinitionFileValidates": "C7",
-						"schemasStayInSyncWhenDefinitionsAreDeleted": "C8",
-						"installsSchemasIfNotInstalled": "C9",
-						"errorFileShouldBeUpdated": "C10",
-						"buildCreatesValidDefinitionAndOptionsFile": "C11",
-						"errorsStayInSyncWhenSchemasAreDeleted": "C12",
-						"createsValidListener": "C13",
-						"canGetLatestVersionBasedOnDir": "C16",
-						"canBuildSkill": "C24",
-						"canWatchAndBuild": "C25"
-					}
-				}
-			]
-		]
+		}
 	},
 	"gitHead": "94ce410c05180cdfa9b6ca4b9e47061d52ac4e71"
 }
