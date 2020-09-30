@@ -129,7 +129,7 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 		})
 	}
 
-	@test.skip()
+	@test()
 	protected static async canTrackDeletingDir() {
 		const newDirDest = this.resolvePath('new_dir')
 		diskUtil.createDir(newDirDest)
@@ -149,8 +149,6 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 				},
 			]
 
-			// NOTE: Linux machines seem to delay here (probably because they use polling)
-			await this.wait(1000)
 			return expected
 		})
 	}
@@ -174,6 +172,32 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 					},
 				},
 			]
+			return expected
+		})
+	}
+
+	@test()
+	protected static async canTrackDeletingFileInDirectory() {
+		const newDirDest = this.resolvePath('new_dir')
+		diskUtil.createDir(newDirDest)
+		const newFile = this.resolvePath('new_dir', 'test.js')
+		diskUtil.writeFile(newFile, 'test')
+
+		await this.watchRunStop(async () => {
+			diskUtil.deleteFile(newFile)
+
+			const expected: GeneratedFileOrDir[] = [
+				{
+					schemaId: 'generatedFile',
+					version: 'v2020_07_22',
+					values: {
+						action: 'deleted',
+						name: 'test.js',
+						path: this.resolvePath('new_dir', 'test.js'),
+					},
+				},
+			]
+
 			return expected
 		})
 	}
