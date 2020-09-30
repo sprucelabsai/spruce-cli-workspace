@@ -4,6 +4,8 @@ import { GeneratedFile, GeneratedFileOrDir } from '../../types/cli.types'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
+type ChokidarAction = 'add' | 'addDir' | 'change' | 'unlink' | 'unlinkDir'
+
 export default class WatchFeature extends AbstractFeature {
 	public description =
 		'Watches for changes on the file system and emits app level events for other features to respond to.'
@@ -29,14 +31,14 @@ export default class WatchFeature extends AbstractFeature {
 
 		this.watcher = chokidar.watch(this.cwd + '/**/*', { ignoreInitial: true })
 
-		this.watcher.on('all', async (action, stats) => {
+		this.watcher.on('all', async (action, path) => {
 			this.changesSinceLastChange.push({
-				schemaId: 'generatedFile',
+				schemaId: this.mapChokidarActionToSchemaId(action),
 				version: 'v2020_07_22',
 				values: {
 					action: this.mapChokidarActionToGeneratedAction(action),
-					path: stats,
-					name: pathUtil.basename(stats),
+					path,
+					name: pathUtil.basename(path),
 				},
 			})
 
@@ -50,9 +52,13 @@ export default class WatchFeature extends AbstractFeature {
 		})
 	}
 
-	private mapChokidarActionToGeneratedAction(
-		chokidarAction: 'add' | 'addDir' | 'change' | 'unlink' | 'unlinkDir'
-	) {
+	private mapChokidarActionToSchemaId(
+		chokidar: ChokidarAction
+	): GeneratedFileOrDir['schemaId'] {
+		return chokidar.search(/dir/gi) > -1 ? 'generatedDir' : 'generatedFile'
+	}
+
+	private mapChokidarActionToGeneratedAction(chokidar: ChokidarAction) {
 		const map = {
 			add: 'generated',
 			addDir: 'generated',
@@ -61,7 +67,7 @@ export default class WatchFeature extends AbstractFeature {
 			unlinkDir: 'deleted',
 		}
 
-		return map[chokidarAction] as GeneratedFile['action']
+		return map[chokidar] as GeneratedFile['action']
 	}
 
 	private async fireChange() {
