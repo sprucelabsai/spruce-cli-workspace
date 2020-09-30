@@ -2082,10 +2082,10 @@
     tsconfig-paths "^3.9.0"
     yargs "^16.0.3"
 
-"@sprucelabs/error@^2.2.374", "@sprucelabs/error@^2.2.384":
-  version "2.2.384"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.384.tgz#a49bd1282659f6fa1ddc85c98a122a2f11af9c8e"
-  integrity sha512-ia0weoAqJv+VGs5nEyrkHTO3L7daBIvouUff/uJSd+DJmKx3SJakDWgAQZw0pgJn7g2yt9bqrNnbH3UhOe96dg==
+"@sprucelabs/error@^2.2.374", "@sprucelabs/error@^2.2.385":
+  version "2.2.385"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.385.tgz#fb708614739c4c157592de6352d383a3d1ba5e3b"
+  integrity sha512-nfRncRFUzNqpkalH+R2+PiCRmhzla56rUkC01AtenWmhYtr9JoSHAzTNLOZKJNOxf3RDN47kjVDK6RSPjB2iUA==
 
 "@sprucelabs/jest-sheets-reporter@^1.2.2":
   version "1.2.2"
@@ -2100,7 +2100,7 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.255.tgz#505d08405d1c6d654876272de88189a06909e17e"
   integrity sha512-b6hEsaoE7hzVCqI+yhueNCCdivoZv32nTQsUwfijcQ0ajp2E+M8eJxr3mZ+LMPL8lc/pwBoN5O5dzw/N9JP12w==
 
-"@sprucelabs/mercury-event-emitter@^1.11.84":
+"@sprucelabs/mercury-event-emitter@^1.12.0":
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-event-emitter/-/mercury-event-emitter-1.12.0.tgz#ea1ab0be4053daba63bbe21787b70266dc81039d"
   integrity sha512-oVfFYA70f/YPN+5L6BgCaDpgBk4N5Pm6BQvh1cw8oiO6KSfW3c0D5WhIbK5ZjLWJfZTvzvF/SaFMxG7uwVm7xg==
@@ -2109,7 +2109,7 @@
     "@sprucelabs/mercury-types" "^1.12.0"
     "@sprucelabs/schema" "^12.4.16"
 
-"@sprucelabs/mercury-types@^1.11.84", "@sprucelabs/mercury-types@^1.12.0":
+"@sprucelabs/mercury-types@^1.12.0":
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-types/-/mercury-types-1.12.0.tgz#6aafabffc8ea94bb2fd960f0921a8d8468690cad"
   integrity sha512-MG1Km6HubCS8I2V1DBjfJkb9pOFti1hDTHQG1yTPPB8jpASIZGUNml57VXD8nZdGfjgTo7aUvCgHs3ojofBUWg==
@@ -2130,22 +2130,22 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^12.4.16", "@sprucelabs/schema@^12.4.34":
-  version "12.4.34"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.4.34.tgz#107c8a68c2a318829298ca8f21b3e5fc3bfe4961"
-  integrity sha512-cktsfM0gJ0yoQRVrF0xywapdcq+N3MSoF8CLIq5bX8krlHuHeXvcY+VlBWacofyGUHY1lfna7LfyUBwPSLNMFw==
+"@sprucelabs/schema@^12.4.16", "@sprucelabs/schema@^12.4.35":
+  version "12.4.35"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.4.35.tgz#445382517efa001c9c425cbd0d5348c91496f54b"
+  integrity sha512-9oFjfK0yfaAK+feCGcbOVGFCrxEQSJzf7Fk34zSHmxd9jsMLPMwoF/ShTWvIYdI54MeOP1GuNsx4bmCkRfpJ0Q==
   dependencies:
-    "@sprucelabs/error" "^2.2.384"
+    "@sprucelabs/error" "^2.2.385"
     "@sprucelabs/log" "^10.2.255"
     google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.8.1"
     mime-db "^1.45.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/test@^7.0.85":
-  version "7.0.85"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.85.tgz#769af3dd2e1a3883bd0a982a7571eac0c9f47e26"
-  integrity sha512-xy2GcVKeXxd7zvQ19ThG8ra7N3Aks/JGvRzvrDvIgzKig2JDM0Zggs/Oq63n9TOvN401i6oIk9SZJr3NqCv5Fg==
+"@sprucelabs/test@^7.0.86":
+  version "7.0.86"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.86.tgz#8ff4cc68c597b125310cbb0b8fd6eb3162accd72"
+  integrity sha512-yaX97aoOoDabtRerYQlHI8cLCekfLL5Er8tjPL0bzmtLkVJO6whGa6BmiqnTUouJoIWWw/BOPadd3NlJiC4OiQ==
   dependencies:
     "@babel/core" "^7.11.6"
     "@babel/preset-env" "^7.11.5"
@@ -4454,21 +4454,21 @@ es-abstract@^1.17.0, es-abstract@^1.17.0-next.1, es-abstract@^1.17.4, es-abstrac
     string.prototype.trimend "^1.0.1"
     string.prototype.trimstart "^1.0.1"
 
-es-abstract@^1.18.0-next.0:
-  version "1.18.0-next.0"
-  resolved "https://registry.yarnpkg.com/es-abstract/-/es-abstract-1.18.0-next.0.tgz#b302834927e624d8e5837ed48224291f2c66e6fc"
-  integrity sha512-elZXTZXKn51hUBdJjSZGYRujuzilgXo8vSPQzjGYXLvSlGiCo8VO8ZGV3kjo9a0WNJJ57hENagwbtlRuHuzkcQ==
+es-abstract@^1.18.0-next.0, es-abstract@^1.18.0-next.1:
+  version "1.18.0-next.1"
+  resolved "https://registry.yarnpkg.com/es-abstract/-/es-abstract-1.18.0-next.1.tgz#6e3a0a4bda717e5023ab3b8e90bec36108d22c68"
+  integrity sha512-I4UGspA0wpZXWENrdA0uHbnhte683t3qT/1VFH9aX2dA5PPSf6QW5HHXf5HImaqPmjXaVeVk4RGWnaylmV7uAA==
   dependencies:
     es-to-primitive "^1.2.1"
     function-bind "^1.1.1"
     has "^1.0.3"
     has-symbols "^1.0.1"
-    is-callable "^1.2.0"
+    is-callable "^1.2.2"
     is-negative-zero "^2.0.0"
     is-regex "^1.1.1"
     object-inspect "^1.8.0"
     object-keys "^1.1.1"
-    object.assign "^4.1.0"
+    object.assign "^4.1.1"
     string.prototype.trimend "^1.0.1"
     string.prototype.trimstart "^1.0.1"
 
@@ -4540,10 +4540,10 @@ eslint-config-prettier@^6.12.0:
   dependencies:
     get-stdin "^6.0.0"
 
-eslint-config-spruce@10.9.67:
-  version "10.9.67"
-  resolved "https://registry.yarnpkg.com/eslint-config-spruce/-/eslint-config-spruce-10.9.67.tgz#b39bd5eef93fe95687ec7c419d23099604a0cd3a"
-  integrity sha512-GsUTvXOTbl0rhNunhch6HrVKUnyeE0zJy/eZldZUmCtcgf02Q/pdmt+/axGERtHhAKHlrK91zEFK6q33lyVwxA==
+eslint-config-spruce@10.9.68:
+  version "10.9.68"
+  resolved "https://registry.yarnpkg.com/eslint-config-spruce/-/eslint-config-spruce-10.9.68.tgz#34cacc9ca2bb0a2c1b6ecb47210bad44bb2040be"
+  integrity sha512-LTQqhamQKsTHpgVWkvOiUcpIqzOqzkhvOtfqf0XuTKxZVybF3Geu0nNzdvzqfyXovLm3OQhi+UlMVRpbSW3jlA==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^4.3.0"
     "@typescript-eslint/parser" "^4.3.0"
@@ -4553,7 +4553,7 @@ eslint-config-spruce@10.9.67:
     eslint-plugin-jsx-a11y "^6.3.1"
     eslint-plugin-prettier "^3.1.4"
     eslint-plugin-react "^7.21.2"
-    eslint-plugin-spruce "^10.9.67"
+    eslint-plugin-spruce "^10.9.68"
 
 eslint-import-resolver-node@^0.3.4:
   version "0.3.4"
@@ -4631,10 +4631,10 @@ eslint-plugin-react@^7.21.2:
     resolve "^1.17.0"
     string.prototype.matchall "^4.0.2"
 
-eslint-plugin-spruce@^10.9.67:
-  version "10.9.67"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-spruce/-/eslint-plugin-spruce-10.9.67.tgz#008ada7da5de75bb55983fcfe88ea37f4616b937"
-  integrity sha512-rf5QoNNc1oTRc/lbRVuL7jNM5X7o1v0Rs8ai3wHKcYl/38+S2dq/xOj+NOr1GfF62/GBRmdLFi5U+2IaV0nMuw==
+eslint-plugin-spruce@^10.9.68:
+  version "10.9.68"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-spruce/-/eslint-plugin-spruce-10.9.68.tgz#097c61a06e7bd2f2d0a62d8167db139527cc2c44"
+  integrity sha512-gJTBaDhI5PmWUsEfWT9VW65KnUjoPwvAYN2nYWzdU6Mr/RmE9nGPSE/OyqM1MnPoUOJKlw4+l8M5AadUIfpQdA==
   dependencies:
     pascal-case "^3.1.1"
 
@@ -5968,7 +5968,7 @@ is-buffer@^1.1.5, is-buffer@~1.1.6:
   resolved "https://registry.yarnpkg.com/is-buffer/-/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
   integrity sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==
 
-is-callable@^1.1.4, is-callable@^1.2.0:
+is-callable@^1.1.4, is-callable@^1.2.0, is-callable@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/is-callable/-/is-callable-1.2.2.tgz#c7c6715cd22d4ddb48d3e19970223aceabb080d9"
   integrity sha512-dnMqspv5nU3LoewK2N/y7KLtxtakvTuaCsU9FU50/QDmdbHNy/4/JuRtMHqRU22o3q+W89YQndQEeCVwK+3qrA==
@@ -7979,12 +7979,12 @@ object-inspect@^1.7.0, object-inspect@^1.8.0:
   integrity sha512-jLdtEOB112fORuypAyl/50VRVIBIdVQOSUUGQHzJ4xBSbit81zRarz7GThkEFZy1RceYrWYcPcBFPQwHyAc1gA==
 
 object-is@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/object-is/-/object-is-1.1.2.tgz#c5d2e87ff9e119f78b7a088441519e2eec1573b6"
-  integrity sha512-5lHCz+0uufF6wZ7CRFWJN3hp8Jqblpgve06U5CMQ3f//6iDjPr2PEo9MWCjEssDsa+UZEL4PkFpr+BMop6aKzQ==
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/object-is/-/object-is-1.1.3.tgz#2e3b9e65560137455ee3bd62aec4d90a2ea1cc81"
+  integrity sha512-teyqLvFWzLkq5B9ki8FVWA902UER2qkxmdA4nLf+wjOLAWgxzCWZNCxpDq9MvE8MmhWNr+I8w3BN49Vx36Y6Xg==
   dependencies:
     define-properties "^1.1.3"
-    es-abstract "^1.17.5"
+    es-abstract "^1.18.0-next.1"
 
 object-keys@^1.0.12, object-keys@^1.1.1:
   version "1.1.1"
@@ -7998,7 +7998,7 @@ object-visit@^1.0.0:
   dependencies:
     isobject "^3.0.0"
 
-object.assign@^4.1.0:
+object.assign@^4.1.0, object.assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object.assign/-/object.assign-4.1.1.tgz#303867a666cdd41936ecdedfb1f8f3e32a478cdd"
   integrity sha512-VT/cxmx5yaoHSOTSyrCygIDFco+RsibY2NM0a4RdEeY/4KgqezwFtK1yr3U67xYhqJSlASm2pKhLVzPj2lr4bA==
