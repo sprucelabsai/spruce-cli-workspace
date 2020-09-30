@@ -29,7 +29,7 @@ export default class WatchFeature extends AbstractFeature {
 	public async startWatching() {
 		this._isWatching = true
 
-		this.watcher = chokidar.watch(this.cwd + '/**/*', { ignoreInitial: true })
+		this.watcher = chokidar.watch(this.cwd, { ignoreInitial: true })
 
 		this.watcher.on('all', async (action, path) => {
 			this.changesSinceLastChange.push({
