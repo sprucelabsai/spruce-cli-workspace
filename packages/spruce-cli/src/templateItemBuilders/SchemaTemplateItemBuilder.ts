@@ -6,12 +6,13 @@ import {
 	ISchemaIdWithVersion,
 	SchemaError,
 	validateSchema,
+	isIdWithVersion,
 } from '@sprucelabs/schema'
 import cloneDeep from 'lodash/cloneDeep'
 import uniqWith from 'lodash/uniqWith'
 import SpruceError from '../errors/SpruceError'
 import { ISchemasByNamespace } from '../stores/SchemaStore'
-import schemaUtil, { SchemaRelationshipType } from '../utilities/schema.utility'
+import schemaUtil from '../utilities/schema.utility'
 
 export default class SchemaTemplateItemBuilder {
 	private schemaCache: Record<string, ISchema> = {}
@@ -114,11 +115,7 @@ export default class SchemaTemplateItemBuilder {
 			schemas.push(...field.options.schemas)
 		}
 		for (const schema of schemas) {
-			if (
-				schemaUtil.relationshipType(schema) ===
-					SchemaRelationshipType.Definition &&
-				!schema.version
-			) {
+			if (!isIdWithVersion(schema) && !schema.version) {
 				schema.version = normalized.version
 			}
 		}
@@ -202,10 +199,7 @@ export default class SchemaTemplateItemBuilder {
 		schemaOrIdWithVersion: ISchema | ISchemaIdWithVersion
 	) {
 		let schema: ISchema | undefined
-		if (
-			schemaUtil.relationshipType(schemaOrIdWithVersion) ===
-			SchemaRelationshipType.IdWithVersion
-		) {
+		if (isIdWithVersion(schemaOrIdWithVersion)) {
 			schema = this.cacheLookup(schemaOrIdWithVersion)
 			if (!schema) {
 				throw new SchemaError({

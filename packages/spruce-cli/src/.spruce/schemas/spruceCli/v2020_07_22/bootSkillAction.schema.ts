@@ -1,10 +1,12 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
-
 
 
 
 const bootSkillActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.IBootSkillActionSchema  = {
 	id: 'bootSkillAction',
+	version: 'v2020_07_22',
+	namespace: 'SpruceCli',
 	name: 'Boot skill action',
 	description: 'The options for skill.boot.',
 	    fields: {
@@ -17,5 +19,7 @@ const bootSkillActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.IBootSkillActio
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(bootSkillActionSchema)
 
 export default bootSkillActionSchema

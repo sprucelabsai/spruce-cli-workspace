@@ -1,10 +1,12 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
-
 
 
 
 const createTestActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICreateTestActionSchema  = {
 	id: 'createTestAction',
+	version: 'v2020_07_22',
+	namespace: 'SpruceCli',
 	name: 'Create test action',
 	description: 'Options for creating a new test.',
 	    fields: {
@@ -48,5 +50,7 @@ const createTestActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICreateTestAct
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(createTestActionSchema)
 
 export default createTestActionSchema

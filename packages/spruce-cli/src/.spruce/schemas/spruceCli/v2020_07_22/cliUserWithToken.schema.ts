@@ -1,10 +1,12 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
-
 
 
 
 const cliUserWithTokenSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICliUserWithTokenSchema  = {
 	id: 'cliUserWithToken',
+	version: 'v2020_07_22',
+	namespace: 'SpruceCli',
 	name: 'Person',
 	description: 'A stripped down cli user with token details for login',
 	    fields: {
@@ -37,5 +39,7 @@ const cliUserWithTokenSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICliUserWithTo
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(cliUserWithTokenSchema)
 
 export default cliUserWithTokenSchema

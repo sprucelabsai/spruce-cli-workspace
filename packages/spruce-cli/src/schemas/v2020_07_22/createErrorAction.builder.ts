@@ -1,13 +1,13 @@
 import { buildSchema } from '@sprucelabs/schema'
-import namedTemplateItemSchema from '#spruce/schemas/spruceCli/v2020_07_22/namedTemplateItem.schema'
-import syncErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncErrorAction.schema'
+import namedTemplateItemBuilder from './namedTemplateItem.builder'
+import syncErrorsActionBuilder from './syncErrorsAction.builder'
 
 export default buildSchema({
 	id: 'createErrorAction',
 	name: 'Create error action',
 	description: 'Create a builder for your brand new error! ',
 	fields: {
-		...syncErrorActionSchema.fields,
+		...syncErrorsActionBuilder.fields,
 		errorBuilderDestinationDir: {
 			type: 'text',
 			label: 'Error builder destination directory',
@@ -15,9 +15,9 @@ export default buildSchema({
 			hint: "Where I'll save your new builder file?",
 			defaultValue: './src/errors',
 		},
-		nameReadable: namedTemplateItemSchema.fields.nameReadable,
-		namePascal: namedTemplateItemSchema.fields.namePascal,
-		nameCamel: namedTemplateItemSchema.fields.nameCamel,
-		description: namedTemplateItemSchema.fields.description,
+		nameReadable: namedTemplateItemBuilder.fields.nameReadable,
+		namePascal: namedTemplateItemBuilder.fields.namePascal,
+		nameCamel: namedTemplateItemBuilder.fields.nameCamel,
+		description: namedTemplateItemBuilder.fields.description,
 	},
 })

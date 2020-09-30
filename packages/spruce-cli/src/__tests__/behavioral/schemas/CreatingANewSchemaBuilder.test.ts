@@ -79,6 +79,9 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		)
 
 		await checker.check(schemaMatch)
+
+		const schemaContents = diskUtil.readFile(schemaMatch)
+		assert.doesInclude(schemaContents, `namespace: 'Testing'`)
 	}
 
 	@test()
@@ -239,7 +242,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 	) {
 		assert.isUndefined(response.errors)
 
-		let firstSchemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
+		let schemaFile = testUtil.assertsFileByNameInGeneratedFiles(
 			expectedFileName,
 			response.files ?? []
 		)
@@ -249,11 +252,13 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 			assert.fail(errors[0].friendlyMessage())
 		}
 
-		assert.doesInclude(firstSchemaMatch, expectedVersion)
-		const firstContents = diskUtil.readFile(firstSchemaMatch)
+		assert.doesInclude(schemaFile, expectedVersion)
+		const schemaContents = diskUtil.readFile(schemaFile)
+
+		assert.doesInclude(schemaContents, `version: '${expectedVersion}'`)
 
 		assert.doesInclude(
-			firstContents,
+			schemaContents,
 			new RegExp(
 				'SpruceSchemas.Testing.' +
 					expectedVersion +

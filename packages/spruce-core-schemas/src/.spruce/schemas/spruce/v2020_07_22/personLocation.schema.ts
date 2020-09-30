@@ -1,5 +1,4 @@
-import { SpruceSchemas } from '../../schemas.types'
-
+import { SpruceSchemas } from '../../core.schemas.types'
 
 import jobSchema from '#spruce/schemas/spruce/v2020_07_22/job.schema'
 import locationSchema from '#spruce/schemas/spruce/v2020_07_22/location.schema'
@@ -7,6 +6,8 @@ import personSchema from '#spruce/schemas/spruce/v2020_07_22/person.schema'
 
 const personLocationSchema: SpruceSchemas.Spruce.v2020_07_22.IPersonLocationSchema  = {
 	id: 'personLocation',
+	version: 'v2020_07_22',
+	namespace: 'Spruce',
 	name: 'Person location',
 	description: 'A person\'s visit to a location (business or home).',
 	    fields: {
@@ -66,5 +67,6 @@ const personLocationSchema: SpruceSchemas.Spruce.v2020_07_22.IPersonLocationSche
 	            },
 	    }
 }
+
 
 export default personLocationSchema

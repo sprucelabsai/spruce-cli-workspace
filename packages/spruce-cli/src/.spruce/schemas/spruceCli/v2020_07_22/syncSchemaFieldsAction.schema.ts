@@ -1,10 +1,12 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
-
 
 
 
 const syncSchemaFieldsActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemaFieldsActionSchema  = {
 	id: 'syncSchemaFieldsAction',
+	version: 'v2020_07_22',
+	namespace: 'SpruceCli',
 	name: 'syncSchemaFieldsAction',
 	description: 'Sync schema fields so you can use schemas!',
 	    fields: {
@@ -17,9 +19,9 @@ const syncSchemaFieldsActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSch
 	                defaultValue: "#spruce/schemas",
 	                options: undefined
 	            },
-	            /** Id. Where I'll look for new schema fields to be registered. */
+	            /** Addons lookup directory. Where I'll look for new schema fields to be registered. */
 	            'addonsLookupDir': {
-	                label: 'Id',
+	                label: 'Addons lookup directory',
 	                type: 'text',
 	                hint: 'Where I\'ll look for new schema fields to be registered.',
 	                defaultValue: "src/addons",
@@ -36,5 +38,7 @@ const syncSchemaFieldsActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSch
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(syncSchemaFieldsActionSchema)
 
 export default syncSchemaFieldsActionSchema

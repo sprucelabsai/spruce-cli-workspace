@@ -1,13 +1,13 @@
 import { buildSchema } from '@sprucelabs/schema'
-import namedTemplateItemSchema from '#spruce/schemas/spruceCli/v2020_07_22/namedTemplateItem.schema'
-import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
+import namedTemplateItemBuilder from './namedTemplateItem.builder'
+import syncSchemasActionBuilder from './syncSchemasAction.builder'
 
 export default buildSchema({
 	id: 'createSchemaAction',
-	name: 'Create schema action',
+	name: 'Create schema',
 	description: 'Create the builder to a fresh new schema!',
 	fields: {
-		...syncSchemasActionSchema.fields,
+		...syncSchemasActionBuilder.fields,
 		schemaBuilderDestinationDir: {
 			type: 'text',
 			label: 'Schema builder destination directory',
@@ -35,9 +35,9 @@ export default buildSchema({
 			hint: 'Set a version yourself instead of letting me generate one for you',
 			isPrivate: true,
 		},
-		nameReadable: namedTemplateItemSchema.fields.nameReadable,
-		namePascal: namedTemplateItemSchema.fields.namePascal,
-		nameCamel: namedTemplateItemSchema.fields.nameCamel,
-		description: namedTemplateItemSchema.fields.description,
+		nameReadable: namedTemplateItemBuilder.fields.nameReadable,
+		namePascal: namedTemplateItemBuilder.fields.namePascal,
+		nameCamel: namedTemplateItemBuilder.fields.nameCamel,
+		description: namedTemplateItemBuilder.fields.description,
 	},
 })

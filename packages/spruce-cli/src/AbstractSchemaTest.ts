@@ -1,3 +1,8 @@
+import { ISchema } from '@sprucelabs/schema'
+import {
+	CORE_SCHEMA_VERSION,
+	SchemaHealthCheckItem,
+} from '@sprucelabs/spruce-skill-utils'
 import AbstractCliTest from './AbstractCliTest'
 import { ICliBootOptions } from './cli'
 
@@ -16,6 +21,28 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 		await cli.getFeature('schema').Action('sync').execute(syncOptions)
 
 		return cli
+	}
+
+	protected static generateExpectedHealthSchemas(schemas: ISchema[]) {
+		const expected = schemas.map((schema) => ({
+			// @ts-ignore
+			id: schema.id,
+			// @ts-ignore
+			name: schema.name,
+			version: schema.version ?? CORE_SCHEMA_VERSION.constValue,
+			namespace: schema.namespace,
+			// @ts-ignore
+			description: schema.description,
+		}))
+
+		const expectedJSon = JSON.stringify(expected)
+		const cleanedExpected = JSON.parse(expectedJSon)
+
+		return this.sortSchemas(cleanedExpected) as SchemaHealthCheckItem['schemas']
+	}
+
+	protected static sortSchemas(schemas: ISchema[]) {
+		return schemas.sort((a, b) => (a.id > b.id ? -1 : 1))
 	}
 
 	protected static async installSchemaFeature(

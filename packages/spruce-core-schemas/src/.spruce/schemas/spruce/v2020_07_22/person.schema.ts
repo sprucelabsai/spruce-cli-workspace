@@ -1,10 +1,11 @@
-import { SpruceSchemas } from '../../schemas.types'
-
+import { SpruceSchemas } from '../../core.schemas.types'
 
 import profileImageSchema from '#spruce/schemas/spruce/v2020_07_22/profileImage.schema'
 
 const personSchema: SpruceSchemas.Spruce.v2020_07_22.IPersonSchema  = {
 	id: 'person',
+	version: 'v2020_07_22',
+	namespace: 'Spruce',
 	name: 'Person',
 	description: 'A human being.',
 	    fields: {
@@ -53,5 +54,6 @@ const personSchema: SpruceSchemas.Spruce.v2020_07_22.IPersonSchema  = {
 	            },
 	    }
 }
+
 
 export default personSchema

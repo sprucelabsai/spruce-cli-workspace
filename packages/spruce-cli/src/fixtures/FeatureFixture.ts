@@ -139,7 +139,10 @@ export default class FeatureFixture implements IServiceProvider {
 		return cli
 	}
 
-	public async linkLocalPackages() {}
+	public async linkLocalPackages() {
+		const command = this.Service('command')
+		await command.execute(`yarn link @sprucelabs/spruce-skill-utils`)
+	}
 
 	private async copyCachedSkillAndTrackItsDir(cacheKey: string) {
 		const settingsFile = this.getSettingsFilePath()

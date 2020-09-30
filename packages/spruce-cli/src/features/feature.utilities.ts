@@ -25,8 +25,14 @@ const featuresUtil = {
 			const abbreviation = `${capitals.toLowerCase()}`
 
 			let placeholder = ''
-			if (fields[fieldName].type !== 'boolean') {
+			const field = fields[fieldName]
+			const type = field.type
+			if (type !== 'boolean') {
 				placeholder = ` <${fullName}>`
+			} else {
+				if (field.defaultValue === true) {
+					placeholder = ` [false]`
+				}
 			}
 
 			aliases[fieldName] = `${

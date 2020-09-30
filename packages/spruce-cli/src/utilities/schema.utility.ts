@@ -1,27 +1,12 @@
-import { ISchema, ISchemaIdWithVersion } from '@sprucelabs/schema'
+import { ISchema } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 
-export enum SchemaRelationshipType {
-	IdWithVersion,
-	Definition,
-}
-
 const schemaUtil = {
-	generateNamesForSchema(definition: ISchema) {
+	generateNamesForSchema(schema: ISchema) {
 		return {
-			nameReadable: definition.name,
-			nameCamel: namesUtil.toCamel(definition.id),
-			namePascal: namesUtil.toPascal(definition.id),
-		}
-	},
-
-	relationshipType(
-		item: ISchemaIdWithVersion | ISchema
-	): SchemaRelationshipType {
-		if ((item as ISchema).name) {
-			return SchemaRelationshipType.Definition
-		} else {
-			return SchemaRelationshipType.IdWithVersion
+			nameReadable: schema.name ?? schema.id,
+			nameCamel: namesUtil.toCamel(schema.id),
+			namePascal: namesUtil.toPascal(schema.id),
 		}
 	},
 

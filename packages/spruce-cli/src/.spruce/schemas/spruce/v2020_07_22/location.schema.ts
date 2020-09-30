@@ -1,10 +1,12 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
-
 
 
 
 const locationSchema: SpruceSchemas.Spruce.v2020_07_22.ILocationSchema  = {
 	id: 'location',
+	version: 'v2020_07_22',
+	namespace: 'Spruce',
 	name: 'Location',
 	description: 'A physical location where people meet. An organization has at least one of them.',
 	    fields: {
@@ -57,5 +59,7 @@ const locationSchema: SpruceSchemas.Spruce.v2020_07_22.ILocationSchema  = {
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(locationSchema)
 
 export default locationSchema

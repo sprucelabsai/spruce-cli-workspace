@@ -1,5 +1,5 @@
 import { templates } from '@sprucelabs/spruce-templates'
-import { GlobalEmitter } from '../CliGlobalEmitter'
+import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory from '../services/ServiceFactory'
 import StoreFactory from '../stores/StoreFactory'
 import { IGraphicsInterface } from '../types/cli.types'

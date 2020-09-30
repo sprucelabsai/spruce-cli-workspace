@@ -5,17 +5,17 @@ import {
 } from '@sprucelabs/mercury'
 import {
 	diskUtil,
-	IHealthCheckResults,
+	HealthCheckResults,
 	HEALTH_DIVIDER,
 } from '@sprucelabs/spruce-skill-utils'
 import { Command, CommanderStatic } from 'commander'
 import './addons/filePrompt.addon'
-import CliGlobalEmitter, { GlobalEmitter } from './CliGlobalEmitter'
 import SpruceError from './errors/SpruceError'
 import FeatureCommandAttacher from './features/FeatureCommandAttacher'
 import FeatureInstaller from './features/FeatureInstaller'
 import FeatureInstallerFactory from './features/FeatureInstallerFactory'
 import { FeatureCode, IInstallFeatureOptions } from './features/features.types'
+import CliGlobalEmitter, { GlobalEmitter } from './GlobalEmitter'
 import TerminalInterface from './interfaces/TerminalInterface'
 import ServiceFactory from './services/ServiceFactory'
 import log from './singletons/log'
@@ -25,7 +25,7 @@ import { AuthedAs, IGraphicsInterface } from './types/cli.types'
 export interface ICli {
 	installFeatures: FeatureInstaller['install']
 	getFeature: FeatureInstaller['getFeature']
-	checkHealth(): Promise<IHealthCheckResults>
+	checkHealth(): Promise<HealthCheckResults>
 	emitter: GlobalEmitter
 }
 
@@ -93,7 +93,7 @@ export default class Cli implements ICli {
 		return this.featureInstaller.getFeature(code)
 	}
 
-	public async checkHealth(): Promise<IHealthCheckResults> {
+	public async checkHealth(): Promise<HealthCheckResults> {
 		const isInstalled = await this.featureInstaller.isInstalled('skill')
 
 		if (!isInstalled) {
@@ -115,7 +115,7 @@ export default class Cli implements ICli {
 			const results = await commandService.execute('yarn health.local')
 			const resultParts = results.stdout.split(HEALTH_DIVIDER)
 
-			return JSON.parse(resultParts[1]) as IHealthCheckResults
+			return JSON.parse(resultParts[1]) as HealthCheckResults
 		} catch (originalError) {
 			const error = new SpruceError({
 				// @ts-ignore

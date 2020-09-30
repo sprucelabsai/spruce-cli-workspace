@@ -1,11 +1,12 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { {{globalNamespace}} } from '{{typesFile}}'
-
-{{#if (hasKeys schema.fields)}}{{/if}}{{#if (isDefined schema.dynamicFieldSignature)}}{{/if}}
 
 {{{ importRelatedSchemas schema }}}
 
 const {{nameCamel}}Schema: {{globalNamespace}}.{{namespace}}{{#if schema.version}}.{{schema.version}}{{/if}}.I{{namePascal}}Schema  = {
 	{{> schemaBody namespace=namespace schema=schema renderAs="value" }}
 }
+
+SchemaRegistry.getInstance().trackSchema({{nameCamel}}Schema)
 
 export default {{nameCamel}}Schema

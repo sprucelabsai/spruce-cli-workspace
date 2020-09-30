@@ -1,10 +1,12 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
-
 
 
 
 const listenEventActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.IListenEventActionSchema  = {
 	id: 'listenEventAction',
+	version: 'v2020_07_22',
+	namespace: 'SpruceCli',
 	name: 'Listen to event action',
 	description: 'Options for event.listen.',
 	    fields: {
@@ -40,5 +42,7 @@ const listenEventActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.IListenEventA
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(listenEventActionSchema)
 
 export default listenEventActionSchema

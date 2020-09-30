@@ -1,10 +1,12 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
-
 
 
 
 const cliUserSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICliUserSchema  = {
 	id: 'cliUser',
+	version: 'v2020_07_22',
+	namespace: 'SpruceCli',
 	name: 'Person',
 	description: 'A stripped down user for the cli',
 	    fields: {
@@ -25,5 +27,7 @@ const cliUserSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICliUserSchema  = {
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(cliUserSchema)
 
 export default cliUserSchema

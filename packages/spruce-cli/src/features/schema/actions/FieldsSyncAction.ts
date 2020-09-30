@@ -38,7 +38,7 @@ export default class FieldsSyncAction extends AbstractFeatureAction<
 		const schemaStore = this.Store('schema')
 
 		const { fields, errors } = await schemaStore.fetchFields({
-			localAddonsDir: addonsLookupDir,
+			localAddonsDir: diskUtil.resolvePath(this.cwd, addonsLookupDir),
 		})
 
 		const fieldTemplateItemBuilder = new FieldTemplateItemBuilder()

@@ -32,8 +32,9 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 		const health = await cli.checkHealth()
 
+		assert.isTruthy(health.skill)
 		assert.isUndefined(health.skill.errors)
-
+		assert.isTruthy(health.event)
 		assert.doesInclude(health.event.listeners, {
 			eventName: 'will-boot',
 			eventNamespace: 'skill',

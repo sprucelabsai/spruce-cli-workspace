@@ -5,6 +5,7 @@ import {
 	validateSchemaValues,
 	SchemaPartialValues,
 	SchemaValuesWithDefaults,
+	normalizeSchemaValues,
 } from '@sprucelabs/schema'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
@@ -92,23 +93,27 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 
 	protected validateAndNormalizeOptions(options: SchemaPartialValues<S>) {
 		const schema = this.optionsSchema
-		const o: Record<string, any> = {}
-		Object.keys(options).forEach((key: string) => {
-			// @ts-ignore
-			if (options[key] !== undefined) {
-				//@ts-ignore
-				o[key] = options[key]
-			}
-		})
 
 		const values = {
 			...defaultSchemaValues(schema),
-			...o,
+			...options,
 		}
 
 		validateSchemaValues(schema, values as SchemaValues<ISchema>, {})
 
-		return values as StripNulls<SchemaValuesWithDefaults<S>>
+		const normalized = normalizeSchemaValues(schema, values)
+
+		const noUndefined = {}
+
+		Object.keys(normalized).forEach((key: string) => {
+			// @ts-ignore
+			if (normalized[key] !== undefined) {
+				//@ts-ignore
+				noUndefined[key] = normalized[key]
+			}
+		})
+
+		return noUndefined as StripNulls<SchemaValuesWithDefaults<S>>
 	}
 
 	protected async resolveVersion(
@@ -117,7 +122,7 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 	) {
 		let resolvedVersion = versionUtil.generateVersion(
 			userSuppliedVersion ?? undefined
-		).dirValue
+		).constValue
 
 		if (!userSuppliedVersion) {
 			resolvedVersion = await this.askForVersion(

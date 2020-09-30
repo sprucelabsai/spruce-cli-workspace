@@ -30,7 +30,7 @@ export default class CommandService {
 			if (!executable) {
 				// eslint-disable-next-line no-debugger
 				debugger
-				throw new Error('coming sooon')
+				throw new Error('coming soon')
 			}
 			let stdout = ''
 			let stderr = ''

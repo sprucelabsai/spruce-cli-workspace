@@ -1,16 +1,17 @@
 import { buildSchema } from '@sprucelabs/schema'
-import syncSchemaFieldsSchema from './syncSchemaFieldsAction.builder'
+import { DEFAULT_NAMESPACE_PREFIX } from '@sprucelabs/spruce-skill-utils'
+import syncSchemaFieldsBuilder from './syncSchemaFieldsAction.builder'
 
 export default buildSchema({
 	id: 'syncSchemasAction',
 	name: 'Sync schemas action',
 	description: 'Options for schema.sync.',
 	fields: {
-		...syncSchemaFieldsSchema.fields,
+		...syncSchemaFieldsBuilder.fields,
 		schemaTypesDestinationDir: {
 			type: 'text',
 			label: 'Schema types destination directory',
-			hint: 'Where schema types and interfaces will be generated.',
+			hint: 'Where I will generate schema types and interfaces.',
 			defaultValue: '#spruce/schemas',
 		},
 		schemaLookupDir: {
@@ -22,12 +23,16 @@ export default buildSchema({
 			type: 'boolean',
 			defaultValue: true,
 			label: 'Enable versioning',
+			hint: 'Should we use versioning?',
 			isPrivate: true,
 		},
 		globalNamespace: {
 			type: 'text',
 			label: 'Global namespace',
+			hint:
+				"The name you'll use when accessing these schemas, e.g. SpruceSchemas",
 			isPrivate: true,
+			defaultValue: DEFAULT_NAMESPACE_PREFIX,
 		},
 		fetchRemoteSchemas: {
 			type: 'boolean',
@@ -48,18 +53,29 @@ export default buildSchema({
 			type: 'boolean',
 			label: 'Fetch core schemas',
 			isPrivate: true,
+			hint: 'Should I pull in core schemas too?',
 			defaultValue: true,
 		},
 		generateCoreSchemaTypes: {
 			type: 'boolean',
 			label: 'Generate core schemas',
 			isPrivate: true,
+			hint: 'Used only for updating the @sprucelabs/spruce-core-schemas.',
 			defaultValue: false,
 		},
 		deleteDestinationDirIfNoSchemas: {
 			type: 'boolean',
 			label: 'Delete directory if no schemas',
 			isPrivate: true,
+			hint: 'Should I delete the schema directory if no schemas are found?',
+			defaultValue: false,
+		},
+		generateStandaloneTypesFile: {
+			label: 'Generate standalone types file',
+			type: 'boolean',
+			isPrivate: true,
+			hint:
+				"By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file.",
 			defaultValue: false,
 		},
 	},

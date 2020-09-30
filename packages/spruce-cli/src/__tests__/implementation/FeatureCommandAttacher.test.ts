@@ -89,6 +89,11 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 			command: 'schema.fields.sync',
 			option: '--ald, --addonsLookupDir <addonsLookupDir>',
 		})
+
+		assert.doesInclude(this.program.optionInvocations, {
+			command: 'schema.sync',
+			option: '--frs, --fetchRemoteSchemas [false]',
+		})
 	}
 
 	@test()

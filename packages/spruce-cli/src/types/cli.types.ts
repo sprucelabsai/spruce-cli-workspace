@@ -1,5 +1,6 @@
 import { FieldDefinitionValueType } from '@sprucelabs/schema'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
+import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import { IFeatureActionExecuteResponse } from '../features/features.types'
 
 export enum IGraphicsTextEffect {
@@ -95,12 +96,10 @@ export enum AuthedAs {
 	Skill = 'skill',
 }
 
-export interface GeneratedFile {
-	name: string
-	path: string
-	description: string
-	action: 'skipped' | 'generated' | 'updated'
-}
+export type GeneratedFile = SpruceSchemas.SpruceCli.v2020_07_22.IGeneratedFile
+export type GeneratedDir = SpruceSchemas.SpruceCli.v2020_07_22.IGeneratedDir
+
+export type GeneratedFileOrDir = SpruceSchemas.SpruceCli.v2020_07_22.IWatcherDidDetectChangesEmitPayload['changes'][number]
 
 export interface NpmPackage {
 	name: string

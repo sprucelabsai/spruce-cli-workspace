@@ -23,7 +23,7 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 		const createAction = await this.installErrorsAndGetCreateAction()
 		await assert.doesThrowAsync(
 			() => createAction.execute({}),
-			/nameCamel is required/gis
+			/'Readable name' is required!/gis
 		)
 	}
 
