@@ -34,8 +34,8 @@
 		"release": "semantic-release"
 	},
 	"dependencies": {
-		"@sprucelabs/error": "^2.2.344",
-		"@sprucelabs/schema": "^12.4.9"
+		"@sprucelabs/error": "^2.2.374",
+		"@sprucelabs/schema": "^12.4.18"
 	},
 	"devDependencies": {
 		"@sprucelabs/babel-plugin-schema": "^3.0.15",
