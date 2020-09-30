@@ -57,7 +57,7 @@ export default class SyncAction extends AbstractFeatureAction<
 
 		const {
 			resolvedFieldTypesDestination,
-			resolvedschemaTypesDestinationDirOrFile,
+			resolvedSchemaTypesDestinationDirOrFile,
 			resolvedSchemaTypesDestination,
 		} = this.resolvePaths(
 			generateCoreSchemaTypes,
@@ -85,7 +85,7 @@ export default class SyncAction extends AbstractFeatureAction<
 		try {
 			const templateResults = await this.generateSchemaTemplateItems({
 				schemaLookupDir,
-				resolvedschemaTypesDestinationDirOrFile,
+				resolvedSchemaTypesDestinationDirOrFile,
 				enableVersioning,
 				fetchRemoteSchemas,
 				fetchCoreSchemas,
@@ -99,12 +99,12 @@ export default class SyncAction extends AbstractFeatureAction<
 
 		if (schemaTemplateItems) {
 			if (deleteDestinationDirIfNoSchemas && schemaTemplateItems.length === 0) {
-				diskUtil.deleteDir(resolvedschemaTypesDestinationDirOrFile)
+				diskUtil.deleteDir(resolvedSchemaTypesDestinationDirOrFile)
 				return {}
 			}
 
 			await this.deleteOrphanedSchemas(
-				resolvedschemaTypesDestinationDirOrFile,
+				resolvedSchemaTypesDestinationDirOrFile,
 				schemaTemplateItems
 			)
 
@@ -158,14 +158,14 @@ export default class SyncAction extends AbstractFeatureAction<
 
 	public async generateSchemaTemplateItems(options: {
 		schemaLookupDir: string
-		resolvedschemaTypesDestinationDirOrFile: string
+		resolvedSchemaTypesDestinationDirOrFile: string
 		enableVersioning: boolean
 		fetchRemoteSchemas: boolean
 		fetchCoreSchemas: boolean
 	}) {
 		const {
 			schemaLookupDir,
-			resolvedschemaTypesDestinationDirOrFile,
+			resolvedSchemaTypesDestinationDirOrFile,
 			enableVersioning,
 			fetchRemoteSchemas,
 			fetchCoreSchemas,
@@ -185,7 +185,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			fetchCoreSchemas,
 		})
 
-		const hashSpruceDestination = resolvedschemaTypesDestinationDirOrFile.replace(
+		const hashSpruceDestination = resolvedSchemaTypesDestinationDirOrFile.replace(
 			diskUtil.resolveHashSprucePath(this.cwd),
 			'#spruce'
 		)
@@ -231,7 +231,8 @@ export default class SyncAction extends AbstractFeatureAction<
 	) {
 		const resolvedSchemaTypesDestination = diskUtil.resolvePath(
 			this.cwd,
-			generateCoreSchemaTypes && diskUtil.isDirPath(schemaTypesDestinationDirOrFile)
+			generateCoreSchemaTypes &&
+				diskUtil.isDirPath(schemaTypesDestinationDirOrFile)
 				? diskUtil.resolvePath(
 						this.cwd,
 						schemaTypesDestinationDirOrFile,
@@ -240,7 +241,7 @@ export default class SyncAction extends AbstractFeatureAction<
 				: schemaTypesDestinationDirOrFile
 		)
 
-		const resolvedschemaTypesDestinationDirOrFile = diskUtil.isDirPath(
+		const resolvedSchemaTypesDestinationDirOrFile = diskUtil.isDirPath(
 			resolvedSchemaTypesDestination
 		)
 			? resolvedSchemaTypesDestination
@@ -248,12 +249,12 @@ export default class SyncAction extends AbstractFeatureAction<
 
 		const resolvedFieldTypesDestination = diskUtil.resolvePath(
 			this.cwd,
-			fieldTypesDestinationDir ?? resolvedschemaTypesDestinationDirOrFile
+			fieldTypesDestinationDir ?? resolvedSchemaTypesDestinationDirOrFile
 		)
 
 		return {
 			resolvedFieldTypesDestination,
-			resolvedschemaTypesDestinationDirOrFile,
+			resolvedSchemaTypesDestinationDirOrFile,
 			resolvedSchemaTypesDestination,
 		}
 	}
