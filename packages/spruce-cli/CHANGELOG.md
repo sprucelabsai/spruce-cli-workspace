@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.31.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.30.2...v10.31.0) (2020-09-30)
+
+
+### Features
+
+* solid watch tests ([8536537](https://github.com/sprucelabsai/spruce-cli-workspace/commit/8536537))
+
+
+
+
+
 ## [10.30.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.30.0...v10.30.1) (2020-09-29)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
