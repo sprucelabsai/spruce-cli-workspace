@@ -129,7 +129,7 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 		})
 	}
 
-	@test()
+	@test.skip()
 	protected static async canTrackDeletingDir() {
 		const newDirDest = this.resolvePath('new_dir')
 		diskUtil.createDir(newDirDest)
