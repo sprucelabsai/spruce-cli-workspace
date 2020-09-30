@@ -2082,7 +2082,7 @@
     tsconfig-paths "^3.9.0"
     yargs "^16.0.3"
 
-"@sprucelabs/error@^2.2.374", "@sprucelabs/error@^2.2.376":
+"@sprucelabs/error@^2.2.374", "@sprucelabs/error@^2.2.377":
   version "2.2.377"
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.377.tgz#fda48d05d2d2bb8f870bf6206941fe31bacb31eb"
   integrity sha512-GHOJlTptKh98bIRqNvbT9aDuozszYM6QndtGs9n5b/t8ik6DkstGF5dBmjDfFfD0Phpjkai1AZtoAjbAhmDGWQ==
@@ -2130,12 +2130,12 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^12.4.16", "@sprucelabs/schema@^12.4.21":
-  version "12.4.21"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.4.21.tgz#7978979904760e5dd4ae49f02745a52999cacb3a"
-  integrity sha512-jLjihQ+xGz8ksmY9wpm4eD7zHUbrx8vs0gnekWXk9zXkUCHbh80OBfAmBGsJjlTzjApLfMLVZQ5NDWQnB/TwTQ==
+"@sprucelabs/schema@^12.4.16", "@sprucelabs/schema@^12.4.22":
+  version "12.4.22"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.4.22.tgz#b1138d2022aa3ba016eb4d660eeeb385613e634b"
+  integrity sha512-39VZ1yOdrx/nqy9JRio3kioZAobp8hh3PQ7CtD2B8osMwhq2JyD6L/w/LSLvNLx69STG2y7XZT7D4zWpdTxFqg==
   dependencies:
-    "@sprucelabs/error" "^2.2.376"
+    "@sprucelabs/error" "^2.2.377"
     "@sprucelabs/log" "^10.2.253"
     google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.8.1"
@@ -5388,9 +5388,9 @@ git-up@^4.0.0:
     parse-url "^5.0.0"
 
 git-url-parse@^11.1.2:
-  version "11.2.0"
-  resolved "https://registry.yarnpkg.com/git-url-parse/-/git-url-parse-11.2.0.tgz#2955fd51befd6d96ea1389bbe2ef57e8e6042b04"
-  integrity sha512-KPoHZg8v+plarZvto4ruIzzJLFQoRx+sUs5DQSr07By9IBKguVd+e6jwrFR6/TP6xrCJlNV1tPqLO1aREc7O2g==
+  version "11.3.0"
+  resolved "https://registry.yarnpkg.com/git-url-parse/-/git-url-parse-11.3.0.tgz#1515b4574c4eb2efda7d25cc50b29ce8beaefaae"
+  integrity sha512-i3XNa8IKmqnUqWBcdWBjOcnyZYfN3C1WRvnKI6ouFWwsXCZEnlgbwbm55ZpJ3OJMhfEP/ryFhqW8bBhej3C5Ug==
   dependencies:
     git-up "^4.0.0"
 
