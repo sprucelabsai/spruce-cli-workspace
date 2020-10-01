@@ -2130,10 +2130,10 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^12.4.39", "@sprucelabs/schema@^12.4.41":
-  version "12.4.41"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.4.41.tgz#a1170cc37586df2e259cf499b3d92256000e2708"
-  integrity sha512-fijLulDPNa0XkW2ZEU9bpTMdSy4EjD5Zt2p1c/F9qdQbXbWUGvuFPxE/GGXUG7/hwQgbLcCvWZtn41CQ03Le7g==
+"@sprucelabs/schema@^12.4.39", "@sprucelabs/schema@^12.4.42":
+  version "12.4.42"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.4.42.tgz#3497edb26577ba793e1fcebb68c2c26db745c1db"
+  integrity sha512-Qbk1h+Bm0UD7jVGorZvS4HfG8E9IHEmJtVpp24QEQw9y/9YcMc63+X1PohN9f+PywX/VhqzLzym9v8XVHaVbbg==
   dependencies:
     "@sprucelabs/error" "^2.2.390"
     "@sprucelabs/log" "^10.2.257"
