@@ -10,11 +10,11 @@ export interface ISkill {
 
 export interface ISkillFeature {
 	execute: () => Promise<void>
-	checkHealth: () => Promise<IHealthCheckItem>
+	checkHealth: () => Promise<HealthCheckItem>
 	isInstalled: () => Promise<boolean>
 }
 
-export interface SchemaHealthCheckItem extends IHealthCheckItem {
+export interface SchemaHealthCheckItem extends HealthCheckItem {
 	schemas: {
 		id: string
 		name?: string
@@ -24,17 +24,18 @@ export interface SchemaHealthCheckItem extends IHealthCheckItem {
 	}[]
 }
 
-export interface EventHealthCheckItem extends IHealthCheckItem {
+export interface EventHealthCheckItem extends HealthCheckItem {
 	listeners: Omit<IEventFeatureListener, 'callback'>[]
 }
 
 export interface HealthCheckResults {
-	skill: IHealthCheckItem
+	skill: HealthCheckItem
 	schema?: SchemaHealthCheckItem
 	event?: EventHealthCheckItem
+	mercury?: HealthCheckItem
 }
 
-export interface IHealthCheckItem {
+export interface HealthCheckItem {
 	status: 'failed' | 'passed'
 	errors?: AbstractSpruceError<any>[]
 }
