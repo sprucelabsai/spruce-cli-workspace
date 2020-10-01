@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.31.18](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.31.17...v10.31.18) (2020-10-01)
+
+
+### Bug Fixes
+
+* change glob so unlinks work right ([fc81404](https://github.com/sprucelabsai/spruce-cli-workspace/commit/fc81404))
+
+
+
+
+
 ## [10.31.17](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.31.16...v10.31.17) (2020-09-30)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
