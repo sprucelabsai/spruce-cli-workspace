@@ -5,7 +5,7 @@ jobs:
   test:
     docker:
       - image: circleci/node:12
-    resource_class: xlarge
+    resource_class: large
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -142,7 +142,7 @@ workflows:
           context: public_package_publish
     triggers:
       - schedule:
-          cron: "20 * * * *"
+          cron: "20 0,2,4,6,8,10,12,14,16,18,20,22 * * *"
           filters:
             branches:
               only:
