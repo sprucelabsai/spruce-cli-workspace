@@ -45,7 +45,7 @@
 	},
 	"devDependencies": {
 		"@types/lodash": "^4.14.161",
-		"@types/node": "^14.11.2",
+		"@types/node": "^14.11.3",
 		"arkit": "^1.6.4",
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^5.3.0",
