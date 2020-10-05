@@ -35,7 +35,7 @@
 	},
 	"dependencies": {
 		"@sprucelabs/error": "^2.2.412",
-		"@sprucelabs/schema": "^12.4.146"
+		"@sprucelabs/schema": "^12.4.148"
 	},
 	"devDependencies": {
 		"@sprucelabs/babel-plugin-schema": "^3.0.15",
