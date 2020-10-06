@@ -1,4 +1,3 @@
-import { match } from 'assert'
 import { CORE_SCHEMA_VERSION, diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
