@@ -1,12 +1,13 @@
 import pathUtil from 'path'
 import { ISchemaTemplateItem, IFieldTemplateItem } from '@sprucelabs/schema'
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { CORE_NAMESPACE, diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { IValueTypes } from '@sprucelabs/spruce-templates'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
 import SpruceError from '../../../errors/SpruceError'
 import SchemaTemplateItemBuilder from '../../../templateItemBuilders/SchemaTemplateItemBuilder'
 import { GeneratedFile } from '../../../types/cli.types'
+import mergeUtil from '../../../utilities/merge.utility'
 import schemaGeneratorUtil from '../../../utilities/schemaGenerator.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { IFeatureActionExecuteResponse } from '../../features.types'
@@ -55,6 +56,21 @@ export default class SyncAction extends AbstractFeatureAction<
 			})
 		}
 
+		const shouldSyncRemoteSchemasFirst =
+			fetchLocalSchemas &&
+			!diskUtil.doesDirExist(
+				diskUtil.resolveHashSprucePath(this.cwd, 'schemas', CORE_NAMESPACE)
+			)
+
+		let coreSyncResults: IFeatureActionExecuteResponse | undefined
+
+		if (shouldSyncRemoteSchemasFirst) {
+			coreSyncResults = await this.execute({
+				...normalizedOptions,
+				fetchLocalSchemas: false,
+			})
+		}
+
 		const {
 			resolvedFieldTypesDestination,
 			resolvedSchemaTypesDestinationDirOrFile,
@@ -85,6 +101,7 @@ export default class SyncAction extends AbstractFeatureAction<
 		try {
 			const templateResults = await this.generateSchemaTemplateItems({
 				schemaLookupDir,
+				fetchLocalSchemas,
 				resolvedSchemaTypesDestinationDirOrFile,
 				enableVersioning,
 				fetchRemoteSchemas,
@@ -146,19 +163,20 @@ export default class SyncAction extends AbstractFeatureAction<
 
 		const errors = [...schemaErrors, ...fieldErrors]
 
-		return {
+		return mergeUtil.mergeActionResults(coreSyncResults || {}, {
 			files: [...typeResults, ...generateFieldFiles],
 			errors: errors.length > 0 ? errors : undefined,
 			meta: {
 				schemaTemplateItems,
 				fieldTemplateItems,
 			},
-		}
+		})
 	}
 
 	public async generateSchemaTemplateItems(options: {
-		schemaLookupDir: string
+		schemaLookupDir: string | undefined
 		resolvedSchemaTypesDestinationDirOrFile: string
+		fetchLocalSchemas: boolean
 		enableVersioning: boolean
 		fetchRemoteSchemas: boolean
 		fetchCoreSchemas: boolean
@@ -169,6 +187,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			enableVersioning,
 			fetchRemoteSchemas,
 			fetchCoreSchemas,
+			fetchLocalSchemas,
 		} = options
 
 		const feature = this.getFeature('skill') as SkillFeature
@@ -178,7 +197,8 @@ export default class SyncAction extends AbstractFeatureAction<
 			schemasByNamespace,
 			errors: schemaErrors,
 		} = await this.schemaStore.fetchSchemas({
-			localSchemaDir: schemaLookupDir,
+			localSchemaLookupDir: schemaLookupDir,
+			fetchLocalSchemas,
 			fetchRemoteSchemas,
 			enableVersioning,
 			localNamespace: namespace,

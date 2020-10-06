@@ -45,7 +45,10 @@ export default class CreateAction extends AbstractFeatureAction<
 			normalizedOptions
 		)
 		const syncResults = await this.Action('sync').execute(syncOptions)
-		const mergedResults = mergeUtil.mergeDeep(createResults, syncResults)
+		const mergedResults = mergeUtil.mergeActionResults(
+			createResults,
+			syncResults
+		)
 
 		return mergedResults
 	}

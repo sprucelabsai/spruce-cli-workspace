@@ -1,4 +1,5 @@
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { match } from 'assert'
+import { CORE_SCHEMA_VERSION, diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
 import testUtil from '../../../utilities/test.utility'
@@ -6,13 +7,7 @@ import testUtil from '../../../utilities/test.utility'
 export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 	@test()
 	protected static async relatedSchemasGeneratesValidFiles() {
-		const cli = await this.installSchemaFeature('related-schemas')
-		const source = this.resolveTestPath('related_schemas')
-		const destination = this.resolvePath('src/schemas')
-
-		await diskUtil.copyDir(source, destination)
-
-		const results = await cli.getFeature('schema').Action('sync').execute({})
+		const { syncResults: results } = await this.installCopyAndSync()
 
 		assert.isUndefined(results.errors)
 		testUtil.assertsFileByNameInGeneratedFiles(
@@ -38,5 +33,76 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 			}) ?? []
 
 		await Promise.all(all)
+	}
+
+	private static async installCopyAndSync() {
+		const cli = await this.installSchemaFeature('related-schemas')
+		const source = this.resolveTestPath('related_schemas')
+		const destination = this.resolvePath('src/schemas')
+
+		await diskUtil.copyDir(source, destination)
+
+		const syncResults = await cli
+			.getFeature('schema')
+			.Action('sync')
+			.execute({})
+
+		return { cli, syncResults }
+	}
+
+	@test()
+	protected static async nestedSchemasInDynamicFields() {
+		const cli = await this.installSchemaFeature('related-schemas')
+		const schemasDir = this.resolvePath('src', 'schemas')
+
+		await diskUtil.copyDir(
+			this.resolveTestPath('dynamic_key_schemas'),
+			schemasDir
+		)
+
+		const results = await cli.getFeature('schema').Action('sync').execute({})
+
+		const typesPath = this.resolveHashSprucePath('schemas', 'schemas.types.ts')
+		const typesContent = diskUtil.readFile(typesPath)
+		assert.doesInclude(
+			typesContent,
+			"[eventNameWithOptionalNamespace:string]: { schemaId: 'eventSignature', version: 'v2020_07_22', values: SpruceSchemas.Testing.v2020_07_22.IEventSignature } | { schemaId: 'eventSignature2', version: 'v2020_07_22', values: SpruceSchemas.Testing.v2020_07_22.IEventSignature2 }"
+		)
+
+		await this.Service('typeChecker').check(typesPath)
+
+		const schemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
+			'mercuryContract.schema.ts',
+			results.files ?? []
+		)
+		await this.Service('typeChecker').check(schemaMatch)
+	}
+
+	@test()
+	protected static async generatesCoreSchemasFirstSoSchemasCanRelateToThem() {
+		const { syncResults } = await this.installCopyAndSync()
+
+		assert.isFalsy(syncResults.errors)
+		assert.isTruthy(syncResults.files)
+
+		testUtil.assertCountsByAction(syncResults.files, {
+			generated: syncResults.files.length,
+			updated: 0,
+			skipped: 0,
+		})
+	}
+
+	@test()
+	protected static async makesSureMixinSchemaFieldsDontCopySchemaToLocal() {
+		const { syncResults } = await this.installCopyAndSync()
+
+		assert.isFalsy(syncResults.errors)
+		assert.isTruthy(syncResults.files)
+
+		const matches = syncResults.files.filter(
+			(f) => f.name === 'skillCreator.schema.ts'
+		)
+		assert.isLength(matches, 1)
+		assert.doesInclude(matches[0].path, CORE_SCHEMA_VERSION.dirValue)
 	}
 }

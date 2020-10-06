@@ -46,14 +46,16 @@ interface IFetchFieldsResults {
 
 export default class SchemaStore extends AbstractStore {
 	public async fetchSchemas(options: {
-		localSchemaDir?: string
+		localSchemaLookupDir?: string
 		fetchRemoteSchemas?: boolean
 		enableVersioning?: boolean
 		localNamespace: string
 		fetchCoreSchemas?: boolean
+		fetchLocalSchemas?: boolean
 	}): Promise<IFetchSchemasResults> {
 		const {
-			localSchemaDir = 'src/schemas',
+			localSchemaLookupDir: localSchemaDir = 'src/schemas',
+			fetchLocalSchemas = true,
 			fetchRemoteSchemas = true,
 			enableVersioning = true,
 			localNamespace,
@@ -79,9 +81,14 @@ export default class SchemaStore extends AbstractStore {
 			]
 		}
 
-		const locals = await this.loadLocalSchemas(localSchemaDir, enableVersioning)
-		results.schemasByNamespace[localNamespace] = locals.schemas
-		results.errors.push(...locals.errors)
+		if (fetchLocalSchemas) {
+			const locals = await this.loadLocalSchemas(
+				localSchemaDir,
+				enableVersioning
+			)
+			results.schemasByNamespace[localNamespace] = locals.schemas
+			results.errors.push(...locals.errors)
+		}
 
 		return results
 	}

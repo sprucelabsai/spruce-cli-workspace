@@ -257,32 +257,4 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		// and the schema should have been deleted
 		assert.isFalse(diskUtil.doesFileExist(schemaFile))
 	}
-
-	@test()
-	protected static async nestedSchemasInDynamicFields() {
-		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
-		const schemasDir = this.resolvePath('src', 'schemas')
-
-		await diskUtil.copyDir(
-			this.resolveTestPath('dynamic_key_schemas'),
-			schemasDir
-		)
-
-		const results = await cli.getFeature('schema').Action('sync').execute({})
-
-		const typesPath = this.resolveHashSprucePath('schemas', 'schemas.types.ts')
-		const typesContent = diskUtil.readFile(typesPath)
-		assert.doesInclude(
-			typesContent,
-			"[eventNameWithOptionalNamespace:string]: { schemaId: 'eventSignature', version: 'v2020_07_22', values: SpruceSchemas.Testing.v2020_07_22.IEventSignature } | { schemaId: 'eventSignature2', version: 'v2020_07_22', values: SpruceSchemas.Testing.v2020_07_22.IEventSignature2 }"
-		)
-
-		await this.Service('typeChecker').check(typesPath)
-
-		const schemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
-			'mercuryContract.schema.ts',
-			results.files ?? []
-		)
-		await this.Service('typeChecker').check(schemaMatch)
-	}
 }

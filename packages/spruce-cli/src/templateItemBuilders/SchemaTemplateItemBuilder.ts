@@ -52,7 +52,11 @@ export default class SchemaTemplateItemBuilder {
 			})
 		)
 
-		const templateTimes = flattened.map((schema) =>
+		const flattenedOurNamespace = flattened.filter(
+			(s) => !s.namespace || s.namespace === namespace
+		)
+
+		const templateTimes = flattenedOurNamespace.map((schema) =>
 			this.buildTemplateItem({
 				namespace,
 				schema,
