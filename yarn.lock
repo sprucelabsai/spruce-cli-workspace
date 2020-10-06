@@ -2087,6 +2087,11 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.425.tgz#f777963d7557cc5be355bb8c625df46864de6347"
   integrity sha512-9actpFXmgftH2PftQM6ryTCvBsqYVGTrI3y9RjOZtnyfkQtJJVv6IQKbOF3dz0ZPjyQrtNScPljS4v0EpXr6YA==
 
+"@sprucelabs/error@^2.2.428":
+  version "2.2.428"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.428.tgz#33a684fda99c79d02eb1f2157de0d3127fee2187"
+  integrity sha512-ULp+2QKce/HWKETq3IeHgSVINMm/DVeWYxpKIuMMpf/X5fAVTD146bDgmwVAJtB7gS4SBTr5EzJqgjZNwovzSA==
+
 "@sprucelabs/jest-sheets-reporter@^1.2.2":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@sprucelabs/jest-sheets-reporter/-/jest-sheets-reporter-1.2.2.tgz#3418fa4b27d5c9812488003b8d2134e64291ea4a"
@@ -2099,6 +2104,11 @@
   version "10.2.270"
   resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.270.tgz#b74f5047d86c6eae3b67e28b58b3f793f6420af9"
   integrity sha512-L2P+r9tSOEV/w1rOmG6nrV0XfFZFMdLbObXwxcChvHdSuKabQqSUKrww86+3sMm11+lP04vdrDr9/m949VMIZw==
+
+"@sprucelabs/log@^10.2.272":
+  version "10.2.272"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.272.tgz#0b91e0b6e11ae4b1a0047f073917eaf93948a6a2"
+  integrity sha512-Bihl/hfZFQcvx8vsd3r2HP5vJMu88q9a0Ar43jSHy/uRYER2T6SXx25AE8Ng3uNi6Z/3MNDqE5UiC2rO+4AXUQ==
 
 "@sprucelabs/mercury-event-emitter@^1.13.93":
   version "1.13.93"
@@ -2130,13 +2140,25 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^12.4.169", "@sprucelabs/schema@^12.4.170":
+"@sprucelabs/schema@^12.4.169":
   version "12.4.170"
   resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-12.4.170.tgz#944366324e986d095fbd2ee3e8f0951cc296291c"
   integrity sha512-s6RZsYRqnT/PXbl8nDt5jpoKfex+k4CvjBPq+4llTYsAAgN6NuMOMAqJu2duxqU1IA2aKQ5RrKoy8Kpk9N4pJQ==
   dependencies:
     "@sprucelabs/error" "^2.2.425"
     "@sprucelabs/log" "^10.2.270"
+    google-libphonenumber "^3.2.13"
+    libphonenumber-js "^1.8.3"
+    mime-db "^1.45.0"
+    mime-type "^4.0.0"
+
+"@sprucelabs/schema@^13.0.2":
+  version "13.0.2"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-13.0.2.tgz#d20c27b28f4cf06c1a241e5f382278313c83f7cd"
+  integrity sha512-HJdW7xzNcanift90Uf29AG+8zBaW6OWbwo7H3ba713Thx/FhG+Btzo043wRlUWmu8bYMhMZtNqxALcLDoRhtHQ==
+  dependencies:
+    "@sprucelabs/error" "^2.2.428"
+    "@sprucelabs/log" "^10.2.272"
     google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.8.3"
     mime-db "^1.45.0"
