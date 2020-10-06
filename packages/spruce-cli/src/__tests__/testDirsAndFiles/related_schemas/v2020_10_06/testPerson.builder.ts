@@ -12,14 +12,14 @@ export default buildSchema({
 		pet: {
 			type: 'schema',
 			options: {
-				schemaId: { id: 'pet', version: 'v2020_07_22' },
+				schemaId: { id: 'pet', version: 'v2020_10_06' },
 			},
 		},
 		pets: {
 			type: 'schema',
 			isArray: true,
 			options: {
-				schemaId: { id: 'pet', version: 'v2020_07_22' },
+				schemaId: { id: 'pet', version: 'v2020_10_06' },
 			},
 		},
 		petsOrFoods: {
@@ -27,8 +27,8 @@ export default buildSchema({
 			isArray: true,
 			options: {
 				schemaIds: [
-					{ id: 'pet', version: 'v2020_07_22' },
-					{ id: 'food', version: 'v2020_07_22' },
+					{ id: 'pet', version: 'v2020_10_06' },
+					{ id: 'food', version: 'v2020_10_06' },
 				],
 			},
 		},
@@ -36,8 +36,8 @@ export default buildSchema({
 			type: 'schema',
 			options: {
 				schemaIds: [
-					{ id: 'pet', version: 'v2020_07_22' },
-					{ id: 'food', version: 'v2020_07_22' },
+					{ id: 'pet', version: 'v2020_10_06' },
+					{ id: 'food', version: 'v2020_10_06' },
 				],
 			},
 		},
