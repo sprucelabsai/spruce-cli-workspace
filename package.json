@@ -4,7 +4,6 @@
 	"name": "spruce-cli-workspace",
 	"license": "MIT",
 	"workspaces": [
-		"packages/spruce-core-schemas",
 		"packages/spruce-templates",
 		"packages/spruce-cli"
 	],
