@@ -6,7 +6,6 @@
 	"workspaces": [
 		"packages/spruce-core-schemas",
 		"packages/spruce-templates",
-		"packages/spruce-skill-utils",
 		"packages/spruce-cli"
 	],
 	"engines": {

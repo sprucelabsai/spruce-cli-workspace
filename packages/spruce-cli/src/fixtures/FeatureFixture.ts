@@ -1,7 +1,7 @@
-import os from 'os'
+// import os from 'os'
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import fsUtil from 'fs-extra'
+// import fsUtil from 'fs-extra'
 import Cli, { ICliBootOptions, ICli } from '../cli'
 import { InstallFeature } from '../features/features.types'
 import ServiceFactory, {
@@ -65,37 +65,37 @@ export default class FeatureFixture implements IServiceProvider {
 		if (!FeatureFixture.linkedUtils) {
 			FeatureFixture.linkedUtils = true
 
-			const expectedLinkedDir = pathUtil.join(
-				os.homedir(),
-				'.config',
-				'yarn',
-				'link',
-				'@sprucelabs',
-				'spruce-skill-utils'
-			)
+			// const expectedLinkedDir = pathUtil.join(
+			// 	os.homedir(),
+			// 	'.config',
+			// 	'yarn',
+			// 	'link',
+			// 	'@sprucelabs',
+			// 	'spruce-skill-utils'
+			// )
 
-			if (!fsUtil.existsSync(expectedLinkedDir)) {
-				const command = this.Service('command')
-				try {
-					await command.execute(
-						`cd ${pathUtil.join(
-							__dirname,
-							'..',
-							'..',
-							'..',
-							'spruce-skill-utils'
-						)} && yarn link`
-					)
-				} catch (err) {
-					if (fsUtil.existsSync(expectedLinkedDir)) {
-						log.warn(`Symlink ${expectedLinkedDir} already exists`)
-					} else {
-						log.warn(
-							`Symlink ${expectedLinkedDir} failed, but the check thinks it is missing`
-						)
-					}
-				}
-			}
+			// if (!fsUtil.existsSync(expectedLinkedDir)) {
+			// 	const command = this.Service('command')
+			// 	try {
+			// 		await command.execute(
+			// 			`cd ${pathUtil.join(
+			// 				__dirname,
+			// 				'..',
+			// 				'..',
+			// 				'..',
+			// 				'spruce-skill-utils'
+			// 			)} && yarn link`
+			// 		)
+			// 	} catch (err) {
+			// 		if (fsUtil.existsSync(expectedLinkedDir)) {
+			// 			log.warn(`Symlink ${expectedLinkedDir} already exists`)
+			// 		} else {
+			// 			log.warn(
+			// 				`Symlink ${expectedLinkedDir} failed, but the check thinks it is missing`
+			// 			)
+			// 		}
+			// 	}
+			// }
 		}
 	}
 
@@ -140,8 +140,8 @@ export default class FeatureFixture implements IServiceProvider {
 	}
 
 	public async linkLocalPackages() {
-		const command = this.Service('command')
-		await command.execute(`yarn link @sprucelabs/spruce-skill-utils`)
+		// const command = this.Service('command')
+		// await command.execute(`yarn link @sprucelabs/spruce-skill-utils`)
 	}
 
 	private async copyCachedSkillAndTrackItsDir(cacheKey: string) {
