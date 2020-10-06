@@ -1,1 +1,0 @@
-# Spruce core schemas
