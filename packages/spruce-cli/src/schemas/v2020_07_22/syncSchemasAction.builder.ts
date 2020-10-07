@@ -60,8 +60,16 @@ export default buildSchema({
 			type: 'boolean',
 			label: 'Generate core schemas',
 			isPrivate: true,
-			hint: 'Used only for updating the @sprucelabs/spruce-core-schemas.',
+			hint:
+				'Used only for updating the @sprucelabs/spruce-core-schemas. Alias for `--fetchCoreRemoteSchemas=false --fetchLocalSchemas=false --registerBuiltSchemas=false --generateStandaloneTypesFile.',
 			defaultValue: false,
+		},
+		registerBuiltSchemas: {
+			type: 'boolean',
+			label: 'Register built schemas',
+			isPrivate: true,
+			hint: 'Should the schemas use the SchemaRegistry for tracking?',
+			defaultValue: true,
 		},
 		deleteDestinationDirIfNoSchemas: {
 			type: 'boolean',

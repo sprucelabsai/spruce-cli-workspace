@@ -4,7 +4,6 @@ export default buildSchema({
 	id: 'mercuryContract',
 	name: 'Mercury Contract',
 	description: '',
-	version: '2020_09_01',
 	dynamicFieldSignature: {
 		type: 'schema',
 		keyName: 'eventNameWithOptionalNamespace',

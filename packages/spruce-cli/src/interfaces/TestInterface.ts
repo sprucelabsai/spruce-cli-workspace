@@ -8,6 +8,11 @@ import {
 
 export default class TestInterface implements IGraphicsInterface {
 	public invocations: { command: string; options?: any }[] = []
+	private promptResolver?: (
+		input: FieldDefinitionValueType<FieldDefinition>
+	) => void | undefined
+
+	private promptDefaultValue: any
 
 	public renderWarning(
 		message: string,
@@ -21,9 +26,6 @@ export default class TestInterface implements IGraphicsInterface {
 	): void {
 		this.trackInvocation('renderHint', { message, effects })
 	}
-	private promptResolver?: (
-		input: FieldDefinitionValueType<FieldDefinition>
-	) => void | undefined
 
 	private confirmResolver?: (pass: boolean) => void | undefined
 
@@ -51,7 +53,7 @@ export default class TestInterface implements IGraphicsInterface {
 			const resolver = this.promptResolver
 			this.promptResolver = undefined
 
-			resolver(input)
+			resolver(input !== '\n' && input !== '' ? input : this.promptDefaultValue)
 		} else if (this.confirmResolver) {
 			const resolver = this.confirmResolver
 			this.confirmResolver = undefined
@@ -137,6 +139,7 @@ export default class TestInterface implements IGraphicsInterface {
 
 		return new Promise<FieldDefinitionValueType<FieldDefinition>>((resolve) => {
 			this.promptResolver = resolve
+			this.promptDefaultValue = definition.defaultValue
 		})
 	}
 

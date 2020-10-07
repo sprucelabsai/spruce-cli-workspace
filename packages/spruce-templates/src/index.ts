@@ -90,6 +90,7 @@ export const templates = {
 			fieldTemplateItems: IFieldTemplateItem[]
 			valueTypes: IValueTypes
 			globalNamespace?: string
+			registerBuiltSchemas: boolean
 			typesFile?: string
 		}
 	) {
@@ -98,6 +99,7 @@ export const templates = {
 		return template({
 			...options,
 			imports,
+			registerBuiltSchemas: options.registerBuiltSchemas,
 			globalNamespace: options.globalNamespace ?? DEFAULT_NAMESPACE_PREFIX,
 			typesFile: options.typesFile ?? DEFAULT_TYPES_FILE,
 		})

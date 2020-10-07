@@ -8,9 +8,12 @@ import { default as SchemaEntity } from '@sprucelabs/schema'
 
 
 import * as SpruceSchema from '@sprucelabs/schema'
-import { BaseWidget } from '../../widgets/widgets.types'
+
+import { BaseWidget } from '#spruce/../widgets/widgets.types'
 
 declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schemas.types' {
+
+
 
 
 
@@ -354,6 +357,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'fetchCoreSchemas'?: boolean| undefined | null
 				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. */
 				'generateCoreSchemaTypes'?: boolean| undefined | null
+				/** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
+				'registerBuiltSchemas'?: boolean| undefined | null
 				/** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
 				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
 				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
@@ -476,6 +481,15 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                isPrivate: true,
 			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas.',
 			                defaultValue: false,
+			                options: undefined
+			            },
+			            /** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
+			            'registerBuiltSchemas': {
+			                label: 'Register built schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Should the schemas use the SchemaRegistry for tracking?',
+			                defaultValue: true,
 			                options: undefined
 			            },
 			            /** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
@@ -844,7 +858,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            /** . */
 			            'widgets': {
 			                type: 'raw',
-			                options: {valueType: `require("#spruce/../widgets/widgets.types").BaseWidget`,}
+			                options: {valueType: `BaseWidget`,}
 			            },
 			    }
 		}
@@ -1066,6 +1080,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'fetchCoreSchemas'?: boolean| undefined | null
 				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. */
 				'generateCoreSchemaTypes'?: boolean| undefined | null
+				/** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
+				'registerBuiltSchemas'?: boolean| undefined | null
 				/** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
 				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
 				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
@@ -1172,6 +1188,15 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                isPrivate: true,
 			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas.',
 			                defaultValue: false,
+			                options: undefined
+			            },
+			            /** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
+			            'registerBuiltSchemas': {
+			                label: 'Register built schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Should the schemas use the SchemaRegistry for tracking?',
+			                defaultValue: true,
 			                options: undefined
 			            },
 			            /** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */

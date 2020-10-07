@@ -27,7 +27,7 @@ export default class SyncAction extends AbstractFeatureAction<
 	): Promise<IFeatureActionExecuteResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
-		const {
+		let {
 			schemaTypesDestinationDirOrFile,
 			fieldTypesDestinationDir,
 			schemaLookupDir,
@@ -41,19 +41,14 @@ export default class SyncAction extends AbstractFeatureAction<
 			generateStandaloneTypesFile,
 			deleteDestinationDirIfNoSchemas,
 			fetchCoreSchemas,
+			registerBuiltSchemas,
 		} = normalizedOptions
 
-		if ((fetchRemoteSchemas || fetchLocalSchemas) && generateCoreSchemaTypes) {
-			throw new SpruceError({
-				code: 'INVALID_PARAMETERS',
-				parameters: [
-					'fetchLocalSchemas',
-					'generateCoreSchemaTypes',
-					'fetchRemoteSchemas',
-				],
-				friendlyMessage:
-					'When `--generateCoreSchemaTypes true`, you must set `--fetchLocalSchemas false --fetchRemoteSchemas false`',
-			})
+		if (generateCoreSchemaTypes) {
+			fetchRemoteSchemas = false
+			fetchLocalSchemas = false
+			registerBuiltSchemas = false
+			generateStandaloneTypesFile = true
 		}
 
 		const shouldSyncRemoteSchemasFirst =
@@ -76,7 +71,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			resolvedSchemaTypesDestinationDirOrFile,
 			resolvedSchemaTypesDestination,
 		} = this.resolvePaths(
-			generateCoreSchemaTypes,
+			generateStandaloneTypesFile,
 			schemaTypesDestinationDirOrFile,
 			fieldTypesDestinationDir
 		)
@@ -143,14 +138,14 @@ export default class SyncAction extends AbstractFeatureAction<
 					typeResults = await this.schemaGenerator.generateSchemasAndTypes(
 						resolvedSchemaTypesDestination,
 						{
+							registerBuiltSchemas,
 							fieldTemplateItems,
 							schemaTemplateItems,
 							valueTypes,
 							globalNamespace: globalNamespace ?? undefined,
-							typesTemplate:
-								generateCoreSchemaTypes || generateStandaloneTypesFile
-									? 'schemas/core.schemas.types.ts.hbs'
-									: undefined,
+							typesTemplate: generateStandaloneTypesFile
+								? 'schemas/core.schemas.types.ts.hbs'
+								: undefined,
 						}
 					)
 				} catch (err) {
@@ -211,6 +206,7 @@ export default class SyncAction extends AbstractFeatureAction<
 		)
 
 		const schemaTemplateItemBuilder = new SchemaTemplateItemBuilder(namespace)
+
 		const schemaTemplateItems: ISchemaTemplateItem[] = schemaTemplateItemBuilder.generateTemplateItems(
 			schemasByNamespace,
 			hashSpruceDestination
@@ -245,13 +241,13 @@ export default class SyncAction extends AbstractFeatureAction<
 	}
 
 	private resolvePaths(
-		generateCoreSchemaTypes: boolean,
+		generateStandaloneTypesFile: boolean,
 		schemaTypesDestinationDirOrFile: string,
 		fieldTypesDestinationDir: string
 	) {
 		const resolvedSchemaTypesDestination = diskUtil.resolvePath(
 			this.cwd,
-			generateCoreSchemaTypes &&
+			generateStandaloneTypesFile &&
 				diskUtil.isDirPath(schemaTypesDestinationDirOrFile)
 				? diskUtil.resolvePath(
 						this.cwd,

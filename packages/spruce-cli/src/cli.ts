@@ -135,24 +135,7 @@ export default class Cli implements ICli {
 	public static async Boot(options?: ICliBootOptions): Promise<ICli> {
 		const program = options?.program
 
-		// TODO pull in without including package.json
-		// program?.version(pkg.version).description(pkg.description)
-		program?.storeOptionsAsProperties(false)
-		program?.option('--no-color', 'Disable color output in the console')
-		program?.option(
-			'-d, --directory <path>',
-			'The working directory to execute the command'
-		)
-
 		let cwd = options?.cwd ?? process.cwd()
-
-		program?.on('option:directory', function () {
-			if (program?.directory) {
-				const newCwd = diskUtil.resolvePath(cwd, program.directory)
-				log.trace(`CWD updated: ${newCwd}`)
-				cwd = newCwd
-			}
-		})
 
 		const mercury = new Mercury()
 		const serviceFactory = new ServiceFactory({ mercury })
@@ -202,8 +185,25 @@ export default class Cli implements ICli {
 
 export async function run(argv: string[] = []): Promise<void> {
 	const program = new Command()
+	let cwd = process.cwd()
 
-	await Cli.Boot({ program })
+	program.storeOptionsAsProperties(false)
+	program.option('--no-color', 'Disable color output in the console')
+	program.option(
+		'-d, --directory <path>',
+		'The working directory to execute the command'
+	)
+
+	program.parse(process.argv)
+
+	if (program.opts().directory) {
+		const dir = program.opts().directory
+		const newCwd = diskUtil.resolvePath(cwd, dir)
+		log.trace(`CWD updated: ${newCwd}`)
+		cwd = newCwd
+	}
+
+	await Cli.Boot({ program, cwd })
 
 	const commandResult = await program.parseAsync(argv)
 

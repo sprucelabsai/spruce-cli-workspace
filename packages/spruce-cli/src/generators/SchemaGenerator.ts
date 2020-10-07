@@ -28,6 +28,7 @@ export interface IGenerateSchemaTypesOptions {
 	valueTypes: IValueTypes
 	globalNamespace?: string
 	typesTemplate?: string
+	registerBuiltSchemas?: boolean
 }
 
 export interface ISchemaTypesGenerationStage {
@@ -190,12 +191,14 @@ export default class SchemaGenerator extends AbstractGenerator {
 			fieldTemplateItems: IFieldTemplateItem[]
 			valueTypes: IValueTypes
 			typesFile?: string
+			registerBuiltSchemas?: boolean
 		} & ISchemaTemplateItem
 	) {
 		const {
 			schemaTemplateItems,
 			fieldTemplateItems,
 			valueTypes,
+			registerBuiltSchemas = true,
 			...item
 		} = options
 
@@ -219,6 +222,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 		const schemaContents = this.templates.schema({
 			...item,
+			registerBuiltSchemas,
 			schemaTemplateItems,
 			fieldTemplateItems,
 			valueTypes,

@@ -40,7 +40,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		})
 
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		this.ui.sendInput('')
+		this.ui.sendInput('\n')
 
 		await promise
 	}

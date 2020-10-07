@@ -12,7 +12,7 @@ const registerDashboardWidgetsEmitPayloadSchemaSchema: SpruceSchemas.SpruceCli.v
 	            /** . */
 	            'widgets': {
 	                type: 'raw',
-	                options: {valueType: `require("#spruce/../widgets/widgets.types").BaseWidget`,}
+	                options: {valueType: `BaseWidget`,}
 	            },
 	    }
 }

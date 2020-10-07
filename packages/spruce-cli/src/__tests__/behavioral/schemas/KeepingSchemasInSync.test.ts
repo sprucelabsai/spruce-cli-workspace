@@ -1,3 +1,4 @@
+import * as schemas from '@sprucelabs/spruce-core-schemas'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import {
@@ -9,11 +10,11 @@ import { assert, test } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
 import testUtil from '../../../utilities/test.utility'
 
+const SYNC_FILE_COUNT = Object.keys(schemas).length + 3
+
 export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	private static readonly coreSyncOptions = {
 		generateCoreSchemaTypes: true,
-		fetchLocalSchemas: false,
-		fetchRemoteSchemas: false,
 	}
 
 	@test()
@@ -34,34 +35,6 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	}
 
 	@test()
-	protected static async cantSyncCoreAndLocalSchemas() {
-		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
-		await assert.doesThrowAsync(
-			() =>
-				cli.getFeature('schema').Action('sync').execute({
-					generateCoreSchemaTypes: true,
-					fetchLocalSchemas: true,
-					fetchRemoteSchemas: false,
-				}),
-			/When `--generateCoreSchemaTypes true`, you must set `--fetchLocalSchemas false --fetchRemoteSchemas false`/
-		)
-	}
-
-	@test()
-	protected static async cantSyncCoreAndRemoteSchemas() {
-		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
-		await assert.doesThrowAsync(
-			() =>
-				cli.getFeature('schema').Action('sync').execute({
-					generateCoreSchemaTypes: true,
-					fetchLocalSchemas: false,
-					fetchRemoteSchemas: true,
-				}),
-			/When `--generateCoreSchemaTypes true`, you must set `--fetchLocalSchemas false --fetchRemoteSchemas false`/
-		)
-	}
-
-	@test()
 	protected static async syncingWithNoSchemasSucceeds() {
 		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
 
@@ -71,7 +44,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		testUtil.assertCountsByAction(results.files ?? [], {
 			updated: 0,
-			generated: 11,
+			generated: SYNC_FILE_COUNT,
 			skipped: 0,
 		})
 	}
@@ -87,10 +60,10 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		assert.isUndefined(results.errors)
 		assert.isTruthy(results.files)
-		assert.isLength(results.files, 11)
+		assert.isLength(results.files, SYNC_FILE_COUNT)
 
 		testUtil.assertCountsByAction(results.files ?? [], {
-			generated: 11,
+			generated: SYNC_FILE_COUNT,
 			skipped: 0,
 			updated: 0,
 		})
@@ -159,6 +132,14 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 				'gis'
 			)
 		)
+
+		const locationSchema = testUtil.assertsFileByNameInGeneratedFiles(
+			'location.schema.ts',
+			results.files
+		)
+
+		const locationSchemaContents = diskUtil.readFile(locationSchema)
+		assert.doesNotInclude(locationSchemaContents, 'SchemaRegistry')
 	}
 
 	@test()
@@ -189,10 +170,13 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 			.Action('sync')
 			.execute({})
 
-		testUtil.assertsFileByNameInGeneratedFiles(
+		const testSchema = testUtil.assertsFileByNameInGeneratedFiles(
 			'test-schema.schema.ts',
 			syncResults.files ?? []
 		)
+
+		const testSchemaContents = diskUtil.readFile(testSchema)
+		assert.doesInclude(testSchemaContents, 'SchemaRegistry')
 
 		const typeChecker = this.Service('typeChecker')
 		for (const file of syncResults.files ?? []) {
