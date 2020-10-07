@@ -1,4 +1,5 @@
 import { validateSchema } from '@sprucelabs/schema'
+import cloneDeep from 'lodash/cloneDeep'
 import SpruceError from '../errors/SpruceError'
 import ImportService from './ImportService'
 
@@ -18,6 +19,6 @@ export default class SchemaService extends ImportService {
 			})
 		}
 
-		return definitionProxy
+		return cloneDeep(definitionProxy)
 	}
 }

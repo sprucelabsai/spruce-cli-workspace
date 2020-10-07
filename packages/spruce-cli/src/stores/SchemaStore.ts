@@ -131,8 +131,8 @@ export default class SchemaStore extends AbstractStore {
 				if (version || enableVersioning === false) {
 					try {
 						const schema = await schemaService.importSchema(local)
-
 						let errors: string[] = []
+
 						if (schema.version) {
 							errors.push('version_should_not_be_set')
 						}
@@ -150,6 +150,7 @@ export default class SchemaStore extends AbstractStore {
 									'You should not set a namespace nor version in your schema builder.',
 							})
 						}
+
 						schema.version = version
 
 						schemas.push(schema)
