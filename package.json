@@ -2,6 +2,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"name": "spruce-cli-workspace",
+	"description": "The DX tools used to build next generation experiences on the Spruce Experience Platform. 💻",
 	"license": "MIT",
 	"workspaces": [
 		"packages/spruce-templates",
