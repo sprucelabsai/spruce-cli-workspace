@@ -67,6 +67,7 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 			},
 			'test_builders_one_bad'
 		)
+
 		assert.isEqual(results.errors.length, 1)
 
 		assert.doesInclude(results.errors[0].message, 'badSchema')
