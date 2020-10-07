@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.32.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.31.101...v10.32.0) (2020-10-07)
+
+
+### Features
+
+* schema registery optional, org schema introduced ([b908737](https://github.com/sprucelabsai/spruce-cli-workspace/commit/b908737))
+
+
+
+
+
 ## [10.31.101](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.31.100...v10.31.101) (2020-10-07)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli

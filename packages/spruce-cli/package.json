@@ -4,7 +4,7 @@
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "10.31.101",
+	"version": "10.32.0",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -81,10 +81,10 @@
 		"uuid": "^8.3.1"
 	},
 	"devDependencies": {
-		"@sprucelabs/test-utils": "^1.1.206",
 		"@sprucelabs/babel-plugin-schema": "^3.0.15",
 		"@sprucelabs/jest-sheets-reporter": "^1.2.2",
 		"@sprucelabs/test": "^7.0.114",
+		"@sprucelabs/test-utils": "^1.1.206",
 		"@types/blessed": "^0.1.17",
 		"@types/eslint": "^7.2.3",
 		"@types/fs-extra": "^9.0.1",
