@@ -16,6 +16,7 @@ import {
 	skillSchema,
 	locationSchema,
 	aclSchema,
+	organizationSchema,
 } from '../temporary/schemas'
 import AbstractStore from './AbstractStore'
 
@@ -77,6 +78,7 @@ export default class SchemaStore extends AbstractStore {
 				skillSchema,
 				locationSchema,
 				personLocationSchema,
+				organizationSchema,
 				aclSchema,
 			]
 		}

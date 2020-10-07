@@ -105,6 +105,15 @@ const createSchemaActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICreateSchem
 	                defaultValue: false,
 	                options: undefined
 	            },
+	            /** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
+	            'registerBuiltSchemas': {
+	                label: 'Register built schemas',
+	                type: 'boolean',
+	                isPrivate: true,
+	                hint: 'Should the schemas use the SchemaRegistry for tracking?',
+	                defaultValue: true,
+	                options: undefined
+	            },
 	            /** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
 	            'deleteDestinationDirIfNoSchemas': {
 	                label: 'Delete directory if no schemas',

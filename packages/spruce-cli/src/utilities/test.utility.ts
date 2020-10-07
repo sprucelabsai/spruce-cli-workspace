@@ -28,19 +28,19 @@ const testUtil = {
 		assert.isEqual(
 			generated,
 			options.generated,
-			'Generated the wrong number of files'
+			`Generated the wrong number of files. Got ${generated} but expected ${options.generated}.`
 		)
 
 		assert.isEqual(
 			updated,
 			options.updated,
-			'Updated the wrong number of files'
+			`Updated the wrong number of files. Got ${updated} but expected ${options.updated}.`
 		)
 
 		assert.isEqual(
 			skipped,
 			options.skipped,
-			'Skipped the wrong number of files'
+			`Skipped the wrong number of files. Got ${skipped} but expected ${options.skipped}.`
 		)
 	},
 

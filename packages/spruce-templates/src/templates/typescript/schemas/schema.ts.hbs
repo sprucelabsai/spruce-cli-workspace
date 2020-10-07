@@ -1,4 +1,4 @@
-import { SchemaRegistry } from '@sprucelabs/schema'
+{{#if registerBuiltSchemas}}import { SchemaRegistry } from '@sprucelabs/schema'{{/if}}
 import { {{globalNamespace}} } from '{{typesFile}}'
 
 {{{ importRelatedSchemas schema }}}
@@ -7,6 +7,6 @@ const {{nameCamel}}Schema: {{globalNamespace}}.{{namespace}}{{#if schema.version
 	{{> schemaBody namespace=namespace schema=schema renderAs="value" }}
 }
 
-SchemaRegistry.getInstance().trackSchema({{nameCamel}}Schema)
+{{#if registerBuiltSchemas}}SchemaRegistry.getInstance().trackSchema({{nameCamel}}Schema){{/if}}
 
 export default {{nameCamel}}Schema

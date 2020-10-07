@@ -27,7 +27,7 @@ export default class SyncAction extends AbstractFeatureAction<
 	): Promise<IFeatureActionExecuteResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
-		const {
+		let {
 			schemaTypesDestinationDirOrFile,
 			fieldTypesDestinationDir,
 			schemaLookupDir,
@@ -41,19 +41,13 @@ export default class SyncAction extends AbstractFeatureAction<
 			generateStandaloneTypesFile,
 			deleteDestinationDirIfNoSchemas,
 			fetchCoreSchemas,
+			registerBuiltSchemas,
 		} = normalizedOptions
 
-		if ((fetchRemoteSchemas || fetchLocalSchemas) && generateCoreSchemaTypes) {
-			throw new SpruceError({
-				code: 'INVALID_PARAMETERS',
-				parameters: [
-					'fetchLocalSchemas',
-					'generateCoreSchemaTypes',
-					'fetchRemoteSchemas',
-				],
-				friendlyMessage:
-					'When `--generateCoreSchemaTypes true`, you must set `--fetchLocalSchemas false --fetchRemoteSchemas false`',
-			})
+		if (generateCoreSchemaTypes) {
+			fetchRemoteSchemas = false
+			fetchLocalSchemas = false
+			registerBuiltSchemas = false
 		}
 
 		const shouldSyncRemoteSchemasFirst =
@@ -143,6 +137,7 @@ export default class SyncAction extends AbstractFeatureAction<
 					typeResults = await this.schemaGenerator.generateSchemasAndTypes(
 						resolvedSchemaTypesDestination,
 						{
+							registerBuiltSchemas,
 							fieldTemplateItems,
 							schemaTemplateItems,
 							valueTypes,
