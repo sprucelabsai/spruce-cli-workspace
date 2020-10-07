@@ -63,6 +63,7 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 
 		const typesPath = this.resolveHashSprucePath('schemas', 'schemas.types.ts')
 		const typesContent = diskUtil.readFile(typesPath)
+
 		assert.doesInclude(
 			typesContent,
 			"[eventNameWithOptionalNamespace:string]: { schemaId: 'eventSignature', version: 'v2020_07_22', values: SpruceSchemas.Testing.v2020_07_22.IEventSignature } | { schemaId: 'eventSignature2', version: 'v2020_07_22', values: SpruceSchemas.Testing.v2020_07_22.IEventSignature2 }"
