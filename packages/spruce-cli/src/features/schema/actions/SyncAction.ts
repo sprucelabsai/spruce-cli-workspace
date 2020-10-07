@@ -210,7 +210,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			'#spruce'
 		)
 
-		const schemaTemplateItemBuilder = new SchemaTemplateItemBuilder()
+		const schemaTemplateItemBuilder = new SchemaTemplateItemBuilder(namespace)
 		const schemaTemplateItems: ISchemaTemplateItem[] = schemaTemplateItemBuilder.generateTemplateItems(
 			schemasByNamespace,
 			hashSpruceDestination

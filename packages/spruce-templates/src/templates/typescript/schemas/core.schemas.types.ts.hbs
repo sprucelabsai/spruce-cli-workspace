@@ -10,6 +10,10 @@ import * as {{importAs}} from '{{package}}'
 
 {{#each schemaTemplateItems}}
 
+{{#each imports}}
+{{{this}}}
+{{/each}}
+
 export declare namespace {{../globalNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}} {
 
 	{{#if schema.description}}/** {{schema.description}} */{{/if}}

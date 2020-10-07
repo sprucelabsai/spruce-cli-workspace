@@ -5,10 +5,10 @@ module.exports = (api) => {
 		ignore: ["**/testDirsAndFiles/**", "**/spruce-templates/src/templates/**"],
 		presets: ['@babel/preset-env', '@babel/preset-typescript'],
 		plugins: [
-			['@sprucelabs/babel-plugin-schema', {
-				cwd: __dirname,
-				destination: process.env.PWD
-			}],
+			// ['@sprucelabs/babel-plugin-schema', {
+			// 	cwd: __dirname,
+			// 	destination: process.env.PWD
+			// }],
 			'@babel/plugin-transform-runtime',
 			[
 				'@babel/plugin-proposal-decorators',

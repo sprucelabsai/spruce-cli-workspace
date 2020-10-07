@@ -14,6 +14,12 @@ import { default as SchemaEntity } from '@sprucelabs/schema'
 import * as {{importAs}} from '{{package}}'
 {{/each}}
 
+{{#each schemaTemplateItems}}
+{{#each imports}}
+{{{this}}}
+{{/each}}
+{{/each}}
+
 declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schemas.types' {
 
 	{{#each schemaTemplateItems}}

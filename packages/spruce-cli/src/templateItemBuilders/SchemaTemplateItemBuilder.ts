@@ -16,6 +16,11 @@ import schemaUtil from '../utilities/schema.utility'
 
 export default class SchemaTemplateItemBuilder {
 	private schemaCache: Record<string, ISchema> = {}
+	private localNamespace: string
+
+	public constructor(localNamespace: string) {
+		this.localNamespace = localNamespace
+	}
 
 	public generateTemplateItems(
 		schemasByNamespace: ISchemasByNamespace,
@@ -229,7 +234,8 @@ export default class SchemaTemplateItemBuilder {
 		destinationDir: string
 	}): ISchemaTemplateItem {
 		const { schema, namespace, isNested, destinationDir } = options
-		return {
+
+		const item: ISchemaTemplateItem = {
 			id: schema.id,
 			namespace,
 			schema: this.normalizeSchemaFieldsToIdsWithVersion(schema),
@@ -237,6 +243,20 @@ export default class SchemaTemplateItemBuilder {
 			isNested,
 			destinationDir,
 		}
+
+		if (
+			namespace.toLowerCase() === this.localNamespace.toLowerCase() &&
+			schema.importsWhenLocal
+		) {
+			item.imports = schema.importsWhenLocal
+		} else if (
+			namespace.toLowerCase() !== this.localNamespace.toLowerCase() &&
+			schema.importsWhenRemote
+		) {
+			item.imports = schema.importsWhenRemote
+		}
+
+		return item
 	}
 
 	private normalizeSchemaFieldsToIdsWithVersion(schema: ISchema): ISchema {

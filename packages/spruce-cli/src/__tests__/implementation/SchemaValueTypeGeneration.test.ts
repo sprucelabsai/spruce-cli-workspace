@@ -84,7 +84,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		assert.isLength(schemaErrors, 0)
 		assert.isLength(fieldErrors, 0)
 
-		const schemaBuilder = new SchemaTemplateItemBuilder()
+		const schemaBuilder = new SchemaTemplateItemBuilder('LocalNamespace')
 		const schemaTemplateItems = schemaBuilder.generateTemplateItems(
 			schemasByNamespace,
 			'#spruce/schemas'
