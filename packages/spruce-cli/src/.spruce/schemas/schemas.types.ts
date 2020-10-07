@@ -8,8 +8,26 @@ import { default as SchemaEntity } from '@sprucelabs/schema'
 
 
 import * as SpruceSchema from '@sprucelabs/schema'
+import { BaseWidget } from '../../widgets/widgets.types'
 
 declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schemas.types' {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
@@ -804,6 +822,34 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		}
 
 		type OnboardingEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.IOnboardingSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		
+		interface IRegisterDashboardWidgetsEmitPayloadSchema {
+			
+				
+				'widgets'?: (BaseWidget)| undefined | null
+		}
+
+		interface IRegisterDashboardWidgetsEmitPayloadSchemaSchema extends SpruceSchema.ISchema {
+			id: 'registerDashboardWidgetsEmitPayloadSchema',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'register dashboard widgets emit payload schema',
+			    fields: {
+			            /** . */
+			            'widgets': {
+			                type: 'raw',
+			                options: {valueType: `require("#spruce/../widgets/widgets.types").BaseWidget`,}
+			            },
+			    }
+		}
+
+		type RegisterDashboardWidgetsEmitPayloadSchemaEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.IRegisterDashboardWidgetsEmitPayloadSchemaSchema>
 
 	}
 

@@ -8,6 +8,9 @@ const contract = {
 			eventNameWithOptionalNamespace: 'watcher.did-detect-change',
 			emitPayload: watcherDidDetectChangesEmitPayloadSchema,
 		},
+		{
+			eventNameWithOptionalNamespace: 'skill.register-dashboard-widgets',
+		},
 	],
 } as const
 

@@ -1,4 +1,4 @@
-import { ISchema, ISchemaTemplateItem } from '@sprucelabs/schema'
+import { buildSchema, ISchema, ISchemaTemplateItem } from '@sprucelabs/schema'
 import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../AbstractCliTest'
@@ -244,7 +244,10 @@ const personV4: ISchema = {
 	id: 'person',
 	version: '2020_06_04',
 	name: 'Person test the last',
-
+	importsWhenLocal: ["import BaseParent from '../../file'"],
+	importsWhenRemote: [
+		"import BaseParent from '@sprucelabs/spruce-core-schemas'",
+	],
 	fields: {
 		cowbells: {
 			type: 'schema',
@@ -266,6 +269,7 @@ const personV4TemplateItem: ISchemaTemplateItem = {
 	nameReadable: 'Person test the last',
 	schema: personV4,
 	isNested: false,
+	imports: ["import BaseParent from '@sprucelabs/spruce-core-schemas'"],
 	destinationDir: '#spruce/schemas',
 }
 
@@ -486,9 +490,11 @@ const eventSignatureTemplateItem2: ISchemaTemplateItem = {
 export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 	private static itemBuilder: SchemaTemplateItemBuilder
 
+	private static readonly LOCAL_NAMESPACE = 'LocalNamespace'
+
 	protected static async beforeEach() {
 		await super.beforeEach()
-		this.itemBuilder = new SchemaTemplateItemBuilder()
+		this.itemBuilder = new SchemaTemplateItemBuilder(this.LOCAL_NAMESPACE)
 	}
 
 	@test()
@@ -591,5 +597,47 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 			assert.isTruthy(match, `Did not find a template item for ${expected.id}`)
 			assert.isEqualDeep(match, expected)
 		})
+	}
+
+	@test('properly set imports')
+	protected static async setsImports() {
+		const results = this.itemBuilder.generateTemplateItems(
+			{
+				[this.LOCAL_NAMESPACE]: [
+					buildSchema({
+						id: 'local',
+						importsWhenLocal: ['import local from "local"'],
+						importsWhenRemote: ['import remote from "remote"'],
+						fields: {
+							firstName: { type: 'text' },
+						},
+					}),
+				],
+			},
+			'#spruce/schemas'
+		)
+
+		assert.isEqualDeep(results, [
+			{
+				id: 'local',
+				namespace: 'LocalNamespace',
+				schema: {
+					id: 'local',
+					importsWhenLocal: [`import local from "local"`],
+					importsWhenRemote: [`import remote from "remote"`],
+					fields: {
+						firstName: {
+							type: 'text',
+						},
+					},
+				},
+				nameReadable: 'local',
+				nameCamel: 'local',
+				namePascal: 'Local',
+				isNested: false,
+				destinationDir: '#spruce/schemas',
+				imports: [`import local from "local"`],
+			},
+		])
 	}
 }

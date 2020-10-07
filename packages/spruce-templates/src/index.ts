@@ -47,6 +47,7 @@ export const templates = {
 		const template = templateImportUtil.getTemplate(
 			options.typesTemplate ?? 'schemas/schemas.types.ts.hbs'
 		)
+
 		return template({
 			...options,
 			imports,
