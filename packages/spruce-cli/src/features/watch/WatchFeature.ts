@@ -53,9 +53,9 @@ export default class WatchFeature extends AbstractFeature {
 	}
 
 	private mapChokidarActionToSchemaId(
-		chokidar: ChokidarAction
+		action: ChokidarAction
 	): GeneratedFileOrDir['schemaId'] {
-		return chokidar.search(/dir/gi) > -1 ? 'generatedDir' : 'generatedFile'
+		return action.search(/dir/gi) > -1 ? 'generatedDir' : 'generatedFile'
 	}
 
 	private mapChokidarActionToGeneratedAction(chokidar: ChokidarAction) {

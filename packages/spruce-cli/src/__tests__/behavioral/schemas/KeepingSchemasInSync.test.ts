@@ -10,7 +10,7 @@ import { assert, test } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
 import testUtil from '../../../utilities/test.utility'
 
-const SYNC_FILE_COUNT = Object.keys(schemas).length + 4
+const SYNC_FILE_COUNT = Object.keys(schemas).length + 3
 
 export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	private static readonly coreSyncOptions = {

@@ -131,6 +131,25 @@ export default class SchemaStore extends AbstractStore {
 				if (version || enableVersioning === false) {
 					try {
 						const schema = await schemaService.importSchema(local)
+
+						let errors: string[] = []
+						if (schema.version) {
+							errors.push('version_should_not_be_set')
+						}
+
+						if (schema.namespace) {
+							errors.push('namespace_should_not_be_set')
+						}
+
+						if (errors.length > 0) {
+							throw new SpruceError({
+								code: 'INVALID_SCHEMA',
+								schemaId: schema.id,
+								errors,
+								friendlyMessage:
+									'You should not set a namespace nor version in your schema builder.',
+							})
+						}
 						schema.version = version
 
 						schemas.push(schema)

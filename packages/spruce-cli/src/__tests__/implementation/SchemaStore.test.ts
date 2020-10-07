@@ -5,6 +5,7 @@ import {
 	namesUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import fieldClassMap from '#spruce/schemas/fields/fieldClassMap'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
 
@@ -117,6 +118,43 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		assert.doesInclude(results.errors[0].message, 'badField')
 	}
 
+	@test()
+	protected static async wontLetYouSpecifyANamespaceNorVersion() {
+		const results = await this.copySchemasAndFetchSchemas(
+			{},
+			'test_builders_with_namespace_and_version'
+		)
+
+		assert.isTruthy(results.errors)
+		assert.isLength(results.errors, 2)
+
+		errorAssertUtil.assertError(results.errors[0], 'SCHEMA_FAILED_TO_IMPORT')
+
+		errorAssertUtil.assertError(
+			// @ts-ignore
+			results.errors[0].originalError,
+			// @ts-ignore
+			'INVALID_SCHEMA',
+			{
+				schemaId: 'schemaWithNamespace',
+				errors: ['namespace_should_not_be_set'],
+			}
+		)
+
+		errorAssertUtil.assertError(results.errors[1], 'SCHEMA_FAILED_TO_IMPORT')
+
+		errorAssertUtil.assertError(
+			// @ts-ignore
+			results.errors[1].originalError,
+			// @ts-ignore
+			'INVALID_SCHEMA',
+			{
+				schemaId: 'schemaWithVersion',
+				errors: ['version_should_not_be_set'],
+			}
+		)
+	}
+
 	private static validateSchemas(schemas: ISchema[]) {
 		for (const schema of schemas) {
 			validateSchema(schema)
@@ -132,11 +170,11 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		const schemasDir = this.resolvePath('src', 'schemas')
 		await diskUtil.copyDir(this.resolveTestPath(testBuilderDir), schemasDir)
 
-		const schemasByNamespace = await this.Store('schema').fetchSchemas({
+		const results = await this.Store('schema').fetchSchemas({
 			localNamespace: LOCAL_NAMESPACE,
 			...(options || {}),
 		})
-		return schemasByNamespace
+		return results
 	}
 
 	private static async copySchemasAndFieldsThenFetchFields(

@@ -1,5 +1,9 @@
 import * as coreSchemas from '@sprucelabs/spruce-core-schemas'
-import { diskUtil, HealthCheckResults } from '@sprucelabs/spruce-skill-utils'
+import {
+	diskUtil,
+	HealthCheckResults,
+	versionUtil,
+} from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
 import FeatureCommandExecuter from '../../features/FeatureCommandExecuter'
@@ -60,6 +64,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 			//@ts-ignore
 			health.schema.schemas = this.sortSchemas(health.schema.schemas)
 		}
+
 		assert.isEqualDeep(health, expectedHealth)
 
 		const packageContents = diskUtil.readFile(this.resolvePath('package.json'))
@@ -140,11 +145,11 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 		//install is running and can take awhile, so we'll wait for the next time we're asked for input
 		while (!this.ui.isWaitingForInput()) {
-			await this.wait(5000)
+			await this.wait(1000)
 		}
 
 		await this.ui.sendInput('Restaurant')
-		await this.ui.sendInput('')
+		await this.ui.sendInput('\n')
 
 		await promise
 
@@ -152,7 +157,15 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 			skill: { status: 'passed' },
 			schema: {
 				status: 'passed',
-				schemas: this.generateExpectedHealthSchemas(Object.values(coreSchemas)),
+				schemas: this.generateExpectedHealthSchemas([
+					...Object.values(coreSchemas),
+					{
+						id: 'restaurant',
+						name: 'Restaurant',
+						namespace: 'MyGreatSkill',
+						version: versionUtil.generateVersion().constValue,
+					},
+				]),
 			},
 		})
 
