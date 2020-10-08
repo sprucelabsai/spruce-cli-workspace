@@ -10,6 +10,7 @@ const organizationSchema: ISchema = {
 		id: {
 			label: 'Id',
 			type: 'id',
+			isRequired: true,
 		},
 		name: {
 			label: 'Name',
