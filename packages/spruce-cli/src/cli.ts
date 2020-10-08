@@ -194,10 +194,11 @@ export async function run(argv: string[] = []): Promise<void> {
 		'The working directory to execute the command'
 	)
 
-	program.parse(process.argv)
+	// program.parse(process.argv)
+	const dirIdx = process.argv.findIndex((v) => v === '--directory')
 
-	if (program.opts().directory) {
-		const dir = program.opts().directory
+	if (dirIdx > -1) {
+		const dir = process.argv[dirIdx + 1]
 		const newCwd = diskUtil.resolvePath(cwd, dir)
 		log.trace(`CWD updated: ${newCwd}`)
 		cwd = newCwd
