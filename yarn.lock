@@ -2082,11 +2082,6 @@
     tsconfig-paths "^3.9.0"
     yargs "^16.0.3"
 
-"@sprucelabs/error@^2.2.431":
-  version "2.2.431"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.431.tgz#6cb8292947fadfbfacada0304935e09eef010501"
-  integrity sha512-wtkkAxRKKSmpJMjIpiSL+O0gIarMyYIQCgALzaq/MLO0u/HJiXngYtMAo3iE2skwSsi0AfRbkuw/0qelv5vCdQ==
-
 "@sprucelabs/error@^2.2.433":
   version "2.2.433"
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.433.tgz#716502c602e5b610ff57f06a38d4a03b57219195"
@@ -2124,16 +2119,16 @@
     "@sprucelabs/mercury-types" "^1.13.126"
     "@sprucelabs/schema" "^13.0.28"
 
-"@sprucelabs/mercury-types@^1.13.126":
-  version "1.13.126"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-types/-/mercury-types-1.13.126.tgz#464f3ee07919f1cebd0e49e0ca3c995302af98c2"
-  integrity sha512-3KpTz8OI+IxIRQ7R0UMocT2GM4VSyqCFPsskoq+lVNN89TmVCE6Pd102s0FVn8C/+G62ymGhW6vSuofjlWHiUQ==
+"@sprucelabs/mercury-types@^1.13.131":
+  version "1.13.131"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-types/-/mercury-types-1.13.131.tgz#99df627377c7714bc688e0cfc44375a5f3fbfb52"
+  integrity sha512-2YoIu1i8C4E2m8kalcyFLsorAPNaUwpWZuEoNO1cMxxvHKsEGYXXaxs9UDw5XaXv5jjJ/AYlzLDxUS7AtBiozw==
   dependencies:
-    "@sprucelabs/error" "^2.2.431"
+    "@sprucelabs/error" "^2.2.433"
     "@sprucelabs/log" "^10.2.272"
-    "@sprucelabs/schema" "^13.0.28"
-    "@sprucelabs/spruce-core-schemas" "^10.32.3"
-    "@sprucelabs/spruce-skill-utils" "^10.31.98"
+    "@sprucelabs/schema" "^13.0.33"
+    "@sprucelabs/spruce-core-schemas" "^10.32.8"
+    "@sprucelabs/spruce-skill-utils" "^10.31.101"
 
 "@sprucelabs/mercury@^10.5.72":
   version "10.5.72"
@@ -2145,24 +2140,12 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^13.0.25", "@sprucelabs/schema@^13.0.28":
-  version "13.0.28"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-13.0.28.tgz#addd71bc4411898825fa8961b9249d9e654935ee"
-  integrity sha512-WNj8+luD/UWTabNr49gl5WFMUqVSsb1pxNEsuX1aQLrF9aMeYu7QsYC4puroiKxao3bz6Z2PM+gQI1ZeNTWFyw==
+"@sprucelabs/schema@^13.0.33", "@sprucelabs/schema@^13.0.34":
+  version "13.0.34"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-13.0.34.tgz#a2054ea75e34ddef2dd06708d0ee8f3318ab75eb"
+  integrity sha512-LjMY6QnIdK4IfLiPgSz0h5QjHzHoLpc5x8RFp2xgCtttBDVTXWZh90CTMvNfef73ZmkEz1khWI7tYrhnK33Sig==
   dependencies:
-    "@sprucelabs/error" "^2.2.431"
-    "@sprucelabs/log" "^10.2.272"
-    google-libphonenumber "^3.2.13"
-    libphonenumber-js "^1.8.3"
-    mime-db "^1.45.0"
-    mime-type "^4.0.0"
-
-"@sprucelabs/schema@^13.0.27":
-  version "13.0.27"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-13.0.27.tgz#e655405f0e363a8a393fcb23e1965fe8fb5a63c5"
-  integrity sha512-LZT9cZfdvJhms7L+2UPjrFF1aSXvI5tEiXapdNLeswBpEgp66IGVO0ubw+J44bbBgyPesR27VZHkkLM+ZEQdBg==
-  dependencies:
-    "@sprucelabs/error" "^2.2.431"
+    "@sprucelabs/error" "^2.2.433"
     "@sprucelabs/log" "^10.2.272"
     google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.8.3"
@@ -2189,50 +2172,33 @@
     "@sprucelabs/error" "^2.2.436"
     "@sprucelabs/schema" "^13.0.50"
 
-"@sprucelabs/spruce-core-schemas@^10.32.3":
-  version "10.32.3"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-core-schemas/-/spruce-core-schemas-10.32.3.tgz#fb6b9e520d118058abd83a4c268599969c09e282"
-  integrity sha512-kTXucCozeeGqcaIS0MLDb6S9exgAawye5UOu3n4Da/CYQkUGQdDSulHUcfnyO1dV3SEhh8EunKkg699UAgWWWg==
+"@sprucelabs/spruce-core-schemas@^10.32.8":
+  version "10.32.8"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-core-schemas/-/spruce-core-schemas-10.32.8.tgz#9bcb8322254bb80114091ad8543ea6ba0275c3f5"
+  integrity sha512-uriZu88WQH35WhSM95U37UZH9aoeOnecNzcHrD7LXen0rwLccZRGQzSEchKwazD+CPwLPnJOb4+VMNNeOvg2Ow==
   dependencies:
-    "@sprucelabs/error" "^2.2.431"
-    "@sprucelabs/schema" "^13.0.28"
+    "@sprucelabs/error" "^2.2.433"
+    "@sprucelabs/schema" "^13.0.33"
 
-"@sprucelabs/spruce-skill-utils@^10.31.98":
-  version "10.31.98"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-skill-utils/-/spruce-skill-utils-10.31.98.tgz#6976ba64e615c66efc2823860cef09da8c10433b"
-  integrity sha512-z3YHNgkThWgGssndh9izcJ41BqK1nNRo1FtxQYh+4AhIGJKUZlIzeNgTVi0E+CiGzLiA77IkdMhvL4xhXTL9dQ==
+"@sprucelabs/spruce-skill-utils@^10.31.101":
+  version "10.31.101"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-skill-utils/-/spruce-skill-utils-10.31.101.tgz#1cdb82cc9546049b2522eac29079f493150a3fb0"
+  integrity sha512-0y5Q5D4ziYk/kn3T/UyNi1U4FntpoCVAodnkmb8EFBeNEjZXhVqrvE+44c6QyymENMoYuAH8MYaA9mpWfJX1LA==
   dependencies:
-    "@sprucelabs/error" "^2.2.431"
+    "@sprucelabs/error" "^2.2.433"
     fs-extra "^9.0.1"
     inflection "^1.12.0"
     lodash "^4.17.20"
     uuid "^8.3.1"
 
-"@sprucelabs/test-utils@^1.1.206":
-  version "1.1.206"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test-utils/-/test-utils-1.1.206.tgz#7649fc59905e12b38bab36865de74ab77e5fc5d9"
-  integrity sha512-Myo/cDycGuvobRTJAE7vosLYzS2BTEQxM2lr/vj/OITTQHfmtUzxt8F7I7QpXfX7TalB95s64ctq0DYa3KFDlw==
+"@sprucelabs/test-utils@^1.1.209":
+  version "1.1.209"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test-utils/-/test-utils-1.1.209.tgz#4eed8f69be465ab3d1b01815902af9338de6e337"
+  integrity sha512-mAJKgm2hDBSXNHd+lYyX3se6DcpI3RajyU9nURpeKd8otVYcKRDNXCTV3/mQSzguNKqe6UdBvo44wv4NaW4gYg==
   dependencies:
     "@sprucelabs/error" "^2.2.433"
     "@sprucelabs/test" "^7.0.115"
     "@types/lodash" "^4.14.161"
-
-"@sprucelabs/test@^7.0.114":
-  version "7.0.114"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test/-/test-7.0.114.tgz#e8fde44d2845799029a426d6756fe8b52ea684ac"
-  integrity sha512-Hm04TEsvp0wjS+VlJq6n3Gkkdq01Ii7XkPQ116yqJ0VfU0GEqc0uNfjX6wrMxGKIK9+aNyzeyvCL9OzEU2MK8g==
-  dependencies:
-    "@babel/core" "^7.11.6"
-    "@babel/preset-env" "^7.11.5"
-    "@types/jest" "^26.0.14"
-    babel-jest "^26.5.2"
-    chalk "^4.1.0"
-    deep-equal "^2.0.4"
-    jest "^26.5.2"
-    lodash "^4.17.20"
-    ts-expect "^1.1.0"
-    ts-jest "^26.4.1"
-    typescript "^4.0.3"
 
 "@sprucelabs/test@^7.0.115":
   version "7.0.115"
