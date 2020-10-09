@@ -2082,10 +2082,10 @@
     tsconfig-paths "^3.9.0"
     yargs "^16.0.3"
 
-"@sprucelabs/error@^2.2.441", "@sprucelabs/error@^2.2.442":
-  version "2.2.442"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.442.tgz#9be80e33b852d118394721158c6005fc6e2da7b8"
-  integrity sha512-YZDY4pP/E6DzB2Txkg5kFlWKamDcrtpXq+la9jKAN/rNRHGYloorph+w6ZyyoAMKGElALsx4I1js+jOMeUB61A==
+"@sprucelabs/error@^2.2.443":
+  version "2.2.443"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-2.2.443.tgz#c23979d2e27abdc0987f6fcd30149952b2166872"
+  integrity sha512-Z+UyOygJue8RgEx6T0IrnbTDv2toKKGbySv838S2/6E9xCDVUEmufqrsQi6oohAOQIVgi3xRlsKdz7sLZkxWew==
 
 "@sprucelabs/jest-sheets-reporter@^1.2.2":
   version "1.2.2"
@@ -2100,25 +2100,25 @@
   resolved "https://registry.yarnpkg.com/@sprucelabs/log/-/log-10.2.277.tgz#3256b9ad7608440dfc31ac5e7bf73cb5a05f3a52"
   integrity sha512-z5MFe8G+umsBO9pJ9/+bUHADgr0Fz0fMgFsWcJIchEaz6A4m07schepFccVwhZW8YaZcmxruRCVQJ8YdOMEx0Q==
 
-"@sprucelabs/mercury-event-emitter@^1.13.155":
-  version "1.13.155"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-event-emitter/-/mercury-event-emitter-1.13.155.tgz#65de09e8efb55ed7ae76b28cb950b2797f832bfa"
-  integrity sha512-dy2LT+KP7Rts+nRhU0nsAj69+M8q6yunjwp9hklyNw5fvlqsS3TJfMbzQ5d50PaPxu4KuoZ87g5xclih97zP0Q==
+"@sprucelabs/mercury-event-emitter@^1.13.157":
+  version "1.13.157"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-event-emitter/-/mercury-event-emitter-1.13.157.tgz#442234fc4095f774dd140f5f5a8337c2cdf9f223"
+  integrity sha512-JAwxpMWjW2O8Xe8JkFPycFmgw9Ywr0RVxCHXQ0tN3f+xZ3hQBxmfJxOxSMfwKtdf2wxi9KUyn6KSZ+xO23fvxw==
   dependencies:
-    "@sprucelabs/error" "^2.2.442"
-    "@sprucelabs/mercury-types" "^1.13.155"
-    "@sprucelabs/schema" "^13.0.57"
+    "@sprucelabs/error" "^2.2.443"
+    "@sprucelabs/mercury-types" "^1.13.157"
+    "@sprucelabs/schema" "^13.0.59"
 
-"@sprucelabs/mercury-types@^1.13.155":
-  version "1.13.155"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-types/-/mercury-types-1.13.155.tgz#fe47be3414afe4d14bfc24c5842085bb3cc9fd1f"
-  integrity sha512-FixiqEqQIPK5tFToFjMvfgV0c894Q+MOUWMpGIRdZMKHW+l5l158oDMmjo8VdWyTMPEila1AL8JNNR58uax1iQ==
+"@sprucelabs/mercury-types@^1.13.157":
+  version "1.13.157"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-types/-/mercury-types-1.13.157.tgz#e8a223b1147f99aa9930a55109b6049311903dd6"
+  integrity sha512-P30QaKMVReDcfcPv0+VKQEwBVE+Xnl632eZsKoV/PN3LxjqUICAR4Tf+/yvUndSM9jKQRIhgBFDqNtf/bWzRyA==
   dependencies:
-    "@sprucelabs/error" "^2.2.442"
+    "@sprucelabs/error" "^2.2.443"
     "@sprucelabs/log" "^10.2.277"
-    "@sprucelabs/schema" "^13.0.57"
-    "@sprucelabs/spruce-core-schemas" "^10.32.32"
-    "@sprucelabs/spruce-skill-utils" "^10.31.110"
+    "@sprucelabs/schema" "^13.0.59"
+    "@sprucelabs/spruce-core-schemas" "^10.32.34"
+    "@sprucelabs/spruce-skill-utils" "^10.31.112"
 
 "@sprucelabs/mercury@^10.5.72":
   version "10.5.72"
@@ -2130,43 +2130,43 @@
     socket.io-client "^2.3.0"
     superagent "^5.1.2"
 
-"@sprucelabs/schema@^13.0.57", "@sprucelabs/schema@^13.0.58":
-  version "13.0.58"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-13.0.58.tgz#92ff589269952e2d0afc80a7eb34c522f37453ba"
-  integrity sha512-ifS9jYY0dYShdX97bKgGB+9Eu8sbAdWA4FXuBiZP5fj5b4FoOZeyiy9rROyNQ/Ayw2y+oUAjLlKZY3Ig6yiO2Q==
+"@sprucelabs/schema@^13.0.59", "@sprucelabs/schema@^13.0.60":
+  version "13.0.60"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-13.0.60.tgz#9ba8b26ade41acee9a4822bbafab147cc7f33647"
+  integrity sha512-IS/tGjDvHN0Yz9k6BbqWllcWv+DgGHdjJHVWiyJZdyZOvpEPLmW5TZHfHaN4BFT9btyJNXZUrDPoGBFlYY44oQ==
   dependencies:
-    "@sprucelabs/error" "^2.2.442"
+    "@sprucelabs/error" "^2.2.443"
     "@sprucelabs/log" "^10.2.277"
     google-libphonenumber "^3.2.13"
     libphonenumber-js "^1.8.3"
     mime-db "^1.45.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/spruce-core-schemas@^10.32.32":
-  version "10.32.32"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-core-schemas/-/spruce-core-schemas-10.32.32.tgz#c3cf1e65ebc4dfeba1184d2c4656c823b8051a12"
-  integrity sha512-5xtEEQuxH8AGnWdtkbgyOjsQfUcNenNq4pMMozL8Ogy/K+paKdcCKCljhLr8U5gZ5sKvCIlUqyS9iauHLh5liA==
+"@sprucelabs/spruce-core-schemas@^10.32.34":
+  version "10.32.34"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-core-schemas/-/spruce-core-schemas-10.32.34.tgz#1a449304a6583664ac81b320e384ff641a94e2c5"
+  integrity sha512-NDXRVyyYNPTTZz3tmHseO0t5n/kR6+cUwWMwJTeWlXvOd1JzXVcgFwj1Y7V8qQFvIE2uWVl0SxUlTHfMkAqGOQ==
   dependencies:
-    "@sprucelabs/error" "^2.2.441"
-    "@sprucelabs/schema" "^13.0.57"
+    "@sprucelabs/error" "^2.2.443"
+    "@sprucelabs/schema" "^13.0.59"
 
-"@sprucelabs/spruce-skill-utils@^10.31.110":
-  version "10.31.110"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-skill-utils/-/spruce-skill-utils-10.31.110.tgz#08ef21aa9462847f5844962fad0c22549939ba6f"
-  integrity sha512-ASAM59I9fe2OluiDfOdeh4lwfHVrKqItbtn6DoPxgSRoJ+LtdRpyrQwMl4DWa4oWcxXb8x7pNFCG6OLkNqsguA==
+"@sprucelabs/spruce-skill-utils@^10.31.112":
+  version "10.31.112"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-skill-utils/-/spruce-skill-utils-10.31.112.tgz#f8774a90b64e87b653d0f57a769163f6c85de5b5"
+  integrity sha512-juKhJDQatKMujNWjUigqjMPURmBvrppD0ZYYrguZfVo0GQHm1tki9zCo8cyZrKeoHk2qhjOC/bRCoHxyFU/XuA==
   dependencies:
-    "@sprucelabs/error" "^2.2.441"
+    "@sprucelabs/error" "^2.2.443"
     fs-extra "^9.0.1"
     inflection "^1.12.0"
     lodash "^4.17.20"
     uuid "^8.3.1"
 
-"@sprucelabs/test-utils@^1.1.233":
-  version "1.1.233"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/test-utils/-/test-utils-1.1.233.tgz#e030d99f19b6267f88954e5e0a332b4df50473a4"
-  integrity sha512-Oh9kCguviuHWNoY3mCl31cydaKv7ykFt3dZouUUIr/3OegZ6qjpEu6fq00CxqE+84VEbOLhyQ/AMsAf3JFB3Sg==
+"@sprucelabs/test-utils@^1.1.235":
+  version "1.1.235"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/test-utils/-/test-utils-1.1.235.tgz#77d9968508cbe4893046d5349122a97005b62fdd"
+  integrity sha512-0Cp/KnZM8ZPkSQzgPE6r0yJQDOb9KmDxQJKPmPP3itMRC9DynCXDQnHsgIquu1tw8qgcJVl2wuhi9YhKlQ7p+A==
   dependencies:
-    "@sprucelabs/error" "^2.2.442"
+    "@sprucelabs/error" "^2.2.443"
     "@sprucelabs/test" "^7.0.122"
     "@types/lodash" "^4.14.161"
 
