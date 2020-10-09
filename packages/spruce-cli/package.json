@@ -4,7 +4,7 @@
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "10.32.4",
+	"version": "10.32.5",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
