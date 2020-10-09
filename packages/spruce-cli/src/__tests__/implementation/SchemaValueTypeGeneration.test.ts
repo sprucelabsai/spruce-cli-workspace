@@ -120,22 +120,12 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		}
 	)
 	@test(
-		'generates personLocation.roles value types (select)',
-		`${CORE_NAMESPACE}.personLocation.${CORE_SCHEMA_VERSION.constValue}.roles.valueTypes`,
+		'generates skill.creators value type (schema)',
+		`${CORE_NAMESPACE}.skill.${CORE_SCHEMA_VERSION.constValue}.creators.valueTypes`,
 		{
-			type: '("owner" | "groupManager" | "manager" | "teammate" | "guest")',
-			value: '("owner" | "groupManager" | "manager" | "teammate" | "guest")',
-			schemaType:
-				'("owner" | "groupManager" | "manager" | "teammate" | "guest")',
-		}
-	)
-	@test(
-		'generates personLocation.person value type (schema)',
-		`${CORE_NAMESPACE}.personLocation.${CORE_SCHEMA_VERSION.constValue}.person.valueTypes`,
-		{
-			type: `SpruceSchemas.${CORE_NAMESPACE}.${CORE_SCHEMA_VERSION.constValue}.IPerson`,
-			value: 'personSchema',
-			schemaType: `SpruceSchemas.${CORE_NAMESPACE}.${CORE_SCHEMA_VERSION.constValue}.IPersonSchema`,
+			type: `SpruceSchemas.Spruce.v2020_07_22.ISkillCreator[]`,
+			value: 'skillCreatorSchema',
+			schemaType: `SpruceSchemas.Spruce.v2020_07_22.ISkillCreatorSchema`,
 		}
 	)
 	@test(
