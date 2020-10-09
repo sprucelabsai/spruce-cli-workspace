@@ -30,8 +30,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 
 
-
-
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		/** The options for skill.boot. */

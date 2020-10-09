@@ -12,11 +12,11 @@ import { uniqBy } from 'lodash'
 import SpruceError from '../errors/SpruceError'
 import {
 	personSchema,
-	personLocationSchema,
 	skillSchema,
 	locationSchema,
-	aclSchema,
 	organizationSchema,
+	roleSchema,
+	personOrganizationSchema,
 } from '../temporary/schemas'
 import AbstractStore from './AbstractStore'
 
@@ -77,9 +77,9 @@ export default class SchemaStore extends AbstractStore {
 				personSchema,
 				skillSchema,
 				locationSchema,
-				personLocationSchema,
+				roleSchema,
+				personOrganizationSchema,
 				organizationSchema,
-				aclSchema,
 			]
 		}
 

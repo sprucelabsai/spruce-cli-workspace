@@ -1,9 +1,5 @@
 import { ISchema } from '@sprucelabs/schema'
 import { CORE_SCHEMA_VERSION } from '@sprucelabs/spruce-skill-utils'
-import JobSchema from './job.schema'
-import organizationSchema from './organization.schema'
-import personSchema from './person.schema'
-import { roleSelectChoices } from './role.schema'
 
 const personOrganization: ISchema = {
 	id: 'personOrganization',
@@ -13,37 +9,23 @@ const personOrganization: ISchema = {
 		id: {
 			label: 'Id',
 			type: 'id',
+			isRequired: true,
 		},
-		role: {
+		roleIds: {
 			label: 'Name',
-			type: 'select',
+			type: 'id',
 			isRequired: true,
-			options: {
-				choices: roleSelectChoices,
-			},
+			isArray: true,
 		},
-		jobs: {
-			label: 'Jobs',
-			type: 'schema',
-			options: {
-				schema: JobSchema,
-			},
-		},
-		organization: {
+		organizationId: {
 			label: 'Organization',
-			type: 'schema',
+			type: 'id',
 			isRequired: true,
-			options: {
-				schema: organizationSchema,
-			},
 		},
-		person: {
+		personId: {
 			label: 'Person',
-			type: 'schema',
+			type: 'id',
 			isRequired: true,
-			options: {
-				schema: personSchema,
-			},
 		},
 	},
 }
