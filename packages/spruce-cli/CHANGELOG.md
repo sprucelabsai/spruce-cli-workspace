@@ -3,6 +3,54 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.32.6](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.32.5...v10.32.6) (2020-10-09)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [10.32.5](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.32.4...v10.32.5) (2020-10-09)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [10.32.4](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.32.3...v10.32.4) (2020-10-09)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [10.32.3](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.32.2...v10.32.3) (2020-10-09)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [10.32.2](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.32.1...v10.32.2) (2020-10-08)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [10.32.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.32.0...v10.32.1) (2020-10-08)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
 # [10.32.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.31.101...v10.32.0) (2020-10-07)
 
 
