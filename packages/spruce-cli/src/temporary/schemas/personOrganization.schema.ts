@@ -27,6 +27,13 @@ const personOrganization: ISchema = {
 			type: 'id',
 			isRequired: true,
 		},
+		dateCreated: {
+			type: 'number',
+			isRequired: true,
+		},
+		dateDeleted: {
+			type: 'number',
+		},
 	},
 }
 

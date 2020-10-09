@@ -70,6 +70,13 @@ const personSchema: ISchema = {
 				schema: profileImageSchema,
 			},
 		},
+		dateCreated: {
+			type: 'number',
+			isRequired: true,
+		},
+		dateScrambled: {
+			type: 'number',
+		},
 	},
 }
 

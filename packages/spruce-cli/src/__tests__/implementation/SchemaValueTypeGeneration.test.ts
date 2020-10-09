@@ -139,15 +139,6 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		}
 	)
 	@test(
-		'generates acl dynamic field',
-		`${CORE_NAMESPACE}.acl.${CORE_SCHEMA_VERSION.constValue}.__dynamicFieldSignature.valueTypes`,
-		{
-			type: 'string[]',
-			value: 'string[]',
-			schemaType: 'string[]',
-		}
-	)
-	@test(
 		'generates dynamic field with nested schemas',
 		`${LOCAL_NAMESPACE}.mercuryContract.${CORE_SCHEMA_VERSION.constValue}.__dynamicFieldSignature.valueTypes`,
 		{

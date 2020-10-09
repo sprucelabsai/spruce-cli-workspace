@@ -56,6 +56,13 @@ const skillSchema: ISchema = {
 				},
 			},
 		},
+		dateCreated: {
+			type: 'number',
+			isRequired: true,
+		},
+		dateDeleted: {
+			type: 'number',
+		},
 	},
 }
 

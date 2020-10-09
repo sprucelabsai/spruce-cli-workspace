@@ -22,6 +22,13 @@ const organizationSchema: ISchema = {
 			type: 'text',
 			isRequired: true,
 		},
+		dateCreated: {
+			type: 'number',
+			isRequired: true,
+		},
+		dateDeleted: {
+			type: 'number',
+		},
 	},
 }
 

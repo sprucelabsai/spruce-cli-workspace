@@ -256,6 +256,13 @@ const locationSchema: ISchema = {
 			type: 'address',
 			isRequired: true,
 		},
+		dateCreated: {
+			type: 'number',
+			isRequired: true,
+		},
+		dateDeleted: {
+			type: 'number',
+		},
 	},
 }
 
