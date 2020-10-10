@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.0.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.32.6...v11.0.0) (2020-10-10)
+
+
+### Breaking Changes
+
+* core schemas moved to spruce-core-schemas ([2dcbe70](https://github.com/sprucelabsai/spruce-cli-workspace/commit/2dcbe70))
+* core types update ([64442e0](https://github.com/sprucelabsai/spruce-cli-workspace/commit/64442e0))
+
+
+
+
+
 ## [10.32.6](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v10.32.5...v10.32.6) (2020-10-09)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
