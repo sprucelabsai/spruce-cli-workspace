@@ -3,12 +3,12 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const organizationSchema: SpruceSchemas.Spruce.v2020_07_22.IOrganizationSchema  = {
-	id: 'organization',
+const roleSchema: SpruceSchemas.Spruce.v2020_07_22.IRoleSchema  = {
+	id: 'role',
 	version: 'v2020_07_22',
 	namespace: 'Spruce',
-	name: 'Organization',
-	description: 'A company or team. Comprises of many people and locations.',
+	name: 'Role',
+	description: 'Everyone in Spruce breaks into 5 roles. Owner, District/Regional Manager, Manager, Teammate, and Guest.',
 	    fields: {
 	            /** Id. */
 	            'id': {
@@ -17,16 +17,16 @@ const organizationSchema: SpruceSchemas.Spruce.v2020_07_22.IOrganizationSchema  
 	                isRequired: true,
 	                options: undefined
 	            },
-	            /** Name. */
-	            'name': {
-	                label: 'Name',
+	            /** Slug. */
+	            'slug': {
+	                label: 'Slug',
 	                type: 'text',
 	                isRequired: true,
 	                options: undefined
 	            },
-	            /** Slug. */
-	            'slug': {
-	                label: 'Slug',
+	            /** Name. */
+	            'name': {
+	                label: 'Name',
 	                type: 'text',
 	                isRequired: true,
 	                options: undefined
@@ -45,6 +45,6 @@ const organizationSchema: SpruceSchemas.Spruce.v2020_07_22.IOrganizationSchema  
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(organizationSchema)
+SchemaRegistry.getInstance().trackSchema(roleSchema)
 
-export default organizationSchema
+export default roleSchema

@@ -1,10 +1,8 @@
-import { ISchema } from '@sprucelabs/schema'
-import { CORE_SCHEMA_VERSION } from '@sprucelabs/spruce-skill-utils'
+import { buildSchema } from '@sprucelabs/schema'
 
-const organizationSchema: ISchema = {
+export default buildSchema({
 	id: 'organization',
 	name: 'Organization',
-	version: CORE_SCHEMA_VERSION.constValue,
 	description: 'A company or team. Comprises of many people and locations.',
 	fields: {
 		id: {
@@ -22,7 +20,12 @@ const organizationSchema: ISchema = {
 			type: 'text',
 			isRequired: true,
 		},
+		dateCreated: {
+			type: 'number',
+			isRequired: true,
+		},
+		dateDeleted: {
+			type: 'number',
+		},
 	},
-}
-
-export default organizationSchema
+})

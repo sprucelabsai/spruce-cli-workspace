@@ -3,12 +3,11 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const organizationSchema: SpruceSchemas.Spruce.v2020_07_22.IOrganizationSchema  = {
-	id: 'organization',
+const personOrganizationSchema: SpruceSchemas.Spruce.v2020_07_22.IPersonOrganizationSchema  = {
+	id: 'personOrganization',
 	version: 'v2020_07_22',
 	namespace: 'Spruce',
-	name: 'Organization',
-	description: 'A company or team. Comprises of many people and locations.',
+	name: 'Person <-> organization relationship',
 	    fields: {
 	            /** Id. */
 	            'id': {
@@ -18,16 +17,24 @@ const organizationSchema: SpruceSchemas.Spruce.v2020_07_22.IOrganizationSchema  
 	                options: undefined
 	            },
 	            /** Name. */
-	            'name': {
+	            'roleIds': {
 	                label: 'Name',
-	                type: 'text',
+	                type: 'id',
+	                isRequired: true,
+	                isArray: true,
+	                options: undefined
+	            },
+	            /** Organization. */
+	            'organizationId': {
+	                label: 'Organization',
+	                type: 'id',
 	                isRequired: true,
 	                options: undefined
 	            },
-	            /** Slug. */
-	            'slug': {
-	                label: 'Slug',
-	                type: 'text',
+	            /** Person. */
+	            'personId': {
+	                label: 'Person',
+	                type: 'id',
 	                isRequired: true,
 	                options: undefined
 	            },
@@ -45,6 +52,6 @@ const organizationSchema: SpruceSchemas.Spruce.v2020_07_22.IOrganizationSchema  
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(organizationSchema)
+SchemaRegistry.getInstance().trackSchema(personOrganizationSchema)
 
-export default organizationSchema
+export default personOrganizationSchema

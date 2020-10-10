@@ -130,6 +130,14 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		assert.isLength(results.errors, 2)
 
 		errorAssertUtil.assertError(results.errors[0], 'SCHEMA_FAILED_TO_IMPORT')
+		errorAssertUtil.assertError(results.errors[1], 'SCHEMA_FAILED_TO_IMPORT')
+
+		results.errors = results.errors.sort((a, b) =>
+			//@ts-ignore
+			a.originalError.options.schemaId > b.originalError.options.schemaId
+				? 1
+				: -1
+		)
 
 		errorAssertUtil.assertError(
 			// @ts-ignore
