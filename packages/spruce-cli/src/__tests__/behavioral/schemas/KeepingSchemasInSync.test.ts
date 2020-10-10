@@ -10,7 +10,9 @@ import { assert, test } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../AbstractSchemaTest'
 import testUtil from '../../../utilities/test.utility'
 
-const SYNC_FILE_COUNT = Object.keys(schemas).length + 3
+const TYPE_FILE_COUNT = 3
+const SYNC_FILE_COUNT = Object.keys(schemas).length + TYPE_FILE_COUNT
+const MOCK_CORE_SYNC_FILE_COUNT = 3 + TYPE_FILE_COUNT
 
 export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	private static readonly coreSyncOptions = {
@@ -52,6 +54,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	@test()
 	protected static async syncingCoreSchemasGeneratesTypesFile() {
 		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
+		await this.copyMockCoreSchemas()
 
 		const results = await cli
 			.getFeature('schema')
@@ -60,15 +63,22 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		assert.isUndefined(results.errors)
 		assert.isTruthy(results.files)
-		assert.isLength(results.files, SYNC_FILE_COUNT)
+		assert.isLength(results.files, MOCK_CORE_SYNC_FILE_COUNT)
 
 		testUtil.assertCountsByAction(results.files ?? [], {
-			generated: SYNC_FILE_COUNT,
+			generated: MOCK_CORE_SYNC_FILE_COUNT,
 			skipped: 0,
 			updated: 0,
 		})
 
 		assert.isTrue(diskUtil.doesFileExist(this.coreSchemaTypesFile))
+	}
+
+	private static async copyMockCoreSchemas() {
+		const source = this.resolveTestPath('mock_core_builders')
+		const destination = this.resolvePath('src', 'schemas')
+
+		await diskUtil.copyDir(source, destination)
 	}
 
 	@test()
@@ -94,10 +104,18 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async makeSureSchemaTypesAreVersioned() {
-		await this.syncSchemas('keeps-schemas-in-sync', this.coreSyncOptions)
+		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
+
+		await this.copyMockCoreSchemas()
+
+		const results = await cli
+			.getFeature('schema')
+			.Action('sync')
+			.execute(this.coreSyncOptions)
+
+		assert.isFalsy(results.errors)
 
 		const typesContents = diskUtil.readFile(this.coreSchemaTypesFile)
-
 		assert.doesInclude(
 			typesContents,
 			new RegExp(
@@ -110,6 +128,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	@test()
 	protected static async schemaGeneratesValidFiles() {
 		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
+		await this.copyMockCoreSchemas()
 		const results = await cli
 			.getFeature('schema')
 			.Action('sync')
@@ -133,12 +152,12 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 			)
 		)
 
-		const locationSchema = testUtil.assertsFileByNameInGeneratedFiles(
-			'location.schema.ts',
+		const orgSchema = testUtil.assertsFileByNameInGeneratedFiles(
+			'organization.schema.ts',
 			results.files
 		)
 
-		const locationSchemaContents = diskUtil.readFile(locationSchema)
+		const locationSchemaContents = diskUtil.readFile(orgSchema)
 		assert.doesNotInclude(locationSchemaContents, 'SchemaRegistry')
 	}
 

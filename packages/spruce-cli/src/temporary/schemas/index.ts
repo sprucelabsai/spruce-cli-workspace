@@ -1,6 +1,0 @@
-export { default as locationSchema } from './location.schema'
-export { default as organizationSchema } from './organization.schema'
-export { default as roleSchema } from './role.schema'
-export { default as skillSchema } from './skill.schema'
-export { default as personSchema } from './person.schema'
-export { default as personOrganizationSchema } from './personOrganization.schema'

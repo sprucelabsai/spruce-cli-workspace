@@ -4,20 +4,13 @@ import {
 	IFieldRegistration,
 	fieldRegistrations,
 } from '@sprucelabs/schema'
+import * as coreSchemas from '@sprucelabs/spruce-core-schemas'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
 import { uniqBy } from 'lodash'
 import SpruceError from '../errors/SpruceError'
-import {
-	personSchema,
-	skillSchema,
-	locationSchema,
-	organizationSchema,
-	roleSchema,
-	personOrganizationSchema,
-} from '../temporary/schemas'
 import AbstractStore from './AbstractStore'
 
 interface IAddonItem {
@@ -73,14 +66,7 @@ export default class SchemaStore extends AbstractStore {
 		}
 
 		if (fetchCoreSchemas) {
-			results.schemasByNamespace[CORE_NAMESPACE] = [
-				personSchema,
-				skillSchema,
-				locationSchema,
-				roleSchema,
-				personOrganizationSchema,
-				organizationSchema,
-			]
+			results.schemasByNamespace[CORE_NAMESPACE] = Object.values(coreSchemas)
 		}
 
 		if (fetchLocalSchemas) {

@@ -44,15 +44,21 @@ export default class SyncAction extends AbstractFeatureAction<
 			registerBuiltSchemas,
 		} = normalizedOptions
 
+		const feature = this.getFeature('skill') as SkillFeature
+		let localNamespace = feature.getSkillNamespace()
+
 		if (generateCoreSchemaTypes) {
 			fetchRemoteSchemas = false
-			fetchLocalSchemas = false
+			fetchLocalSchemas = true
+			fetchCoreSchemas = false
 			registerBuiltSchemas = false
 			generateStandaloneTypesFile = true
+			localNamespace = CORE_NAMESPACE
 		}
 
 		const shouldSyncRemoteSchemasFirst =
 			fetchLocalSchemas &&
+			fetchCoreSchemas &&
 			!diskUtil.doesDirExist(
 				diskUtil.resolveHashSprucePath(this.cwd, 'schemas', CORE_NAMESPACE)
 			)
@@ -101,6 +107,7 @@ export default class SyncAction extends AbstractFeatureAction<
 				enableVersioning,
 				fetchRemoteSchemas,
 				fetchCoreSchemas,
+				localNamespace,
 			})
 
 			schemaErrors.push(...templateResults.schemaErrors)
@@ -170,6 +177,7 @@ export default class SyncAction extends AbstractFeatureAction<
 
 	public async generateSchemaTemplateItems(options: {
 		schemaLookupDir: string | undefined
+		localNamespace: string
 		resolvedSchemaTypesDestinationDirOrFile: string
 		fetchLocalSchemas: boolean
 		enableVersioning: boolean
@@ -183,10 +191,8 @@ export default class SyncAction extends AbstractFeatureAction<
 			fetchRemoteSchemas,
 			fetchCoreSchemas,
 			fetchLocalSchemas,
+			localNamespace,
 		} = options
-
-		const feature = this.getFeature('skill') as SkillFeature
-		const namespace = feature.getSkillNamespace()
 
 		const {
 			schemasByNamespace,
@@ -196,7 +202,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			fetchLocalSchemas,
 			fetchRemoteSchemas,
 			enableVersioning,
-			localNamespace: namespace,
+			localNamespace,
 			fetchCoreSchemas,
 		})
 
@@ -205,7 +211,9 @@ export default class SyncAction extends AbstractFeatureAction<
 			'#spruce'
 		)
 
-		const schemaTemplateItemBuilder = new SchemaTemplateItemBuilder(namespace)
+		const schemaTemplateItemBuilder = new SchemaTemplateItemBuilder(
+			localNamespace
+		)
 
 		const schemaTemplateItems: ISchemaTemplateItem[] = schemaTemplateItemBuilder.generateTemplateItems(
 			schemasByNamespace,

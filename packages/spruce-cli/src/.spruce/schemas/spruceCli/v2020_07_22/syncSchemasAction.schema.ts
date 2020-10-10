@@ -96,12 +96,12 @@ const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasA
 	                defaultValue: true,
 	                options: undefined
 	            },
-	            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Alias for `--fetchCoreRemoteSchemas=false --fetchLocalSchemas=false --registerBuiltSchemas=false --generateStandaloneTypesFile. */
+	            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --registerBuiltSchemas=false --generateStandaloneTypesFile. */
 	            'generateCoreSchemaTypes': {
 	                label: 'Generate core schemas',
 	                type: 'boolean',
 	                isPrivate: true,
-	                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Alias for `--fetchCoreRemoteSchemas=false --fetchLocalSchemas=false --registerBuiltSchemas=false --generateStandaloneTypesFile.',
+	                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --registerBuiltSchemas=false --generateStandaloneTypesFile.',
 	                defaultValue: false,
 	                options: undefined
 	            },
