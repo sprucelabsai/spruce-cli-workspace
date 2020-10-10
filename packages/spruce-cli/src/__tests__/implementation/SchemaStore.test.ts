@@ -133,7 +133,9 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 
 		results.errors = results.errors.sort((a, b) =>
 			//@ts-ignore
-			a.options.schemaId > b.options.schemaId ? -1 : 1
+			a.originalError.options.schemaId > b.originalError.options.schemaId
+				? -1
+				: 1
 		)
 
 		errorAssertUtil.assertError(
