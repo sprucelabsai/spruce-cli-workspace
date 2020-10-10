@@ -119,7 +119,7 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		assert.doesInclude(results.errors[0].message, 'badField')
 	}
 
-	@test.only()
+	@test()
 	protected static async wontLetYouSpecifyANamespaceNorVersion() {
 		const results = await this.copySchemasAndFetchSchemas(
 			{},
@@ -132,7 +132,6 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		errorAssertUtil.assertError(results.errors[0], 'SCHEMA_FAILED_TO_IMPORT')
 		errorAssertUtil.assertError(results.errors[1], 'SCHEMA_FAILED_TO_IMPORT')
 
-		debugger
 		results.errors = results.errors.sort((a, b) =>
 			//@ts-ignore
 			a.originalError.options.schemaId > b.originalError.options.schemaId
