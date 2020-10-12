@@ -68,3 +68,5 @@ scratchpad.js
 api-docs.json
 
 .env.local
+
+yarn.lock
