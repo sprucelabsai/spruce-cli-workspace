@@ -61,7 +61,7 @@ export default buildSchema({
 			label: 'Generate core schemas',
 			isPrivate: true,
 			hint:
-				'Used only for updating the @sprucelabs/spruce-core-schemas. Alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --registerBuiltSchemas=false --generateStandaloneTypesFile.',
+				'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile.',
 			defaultValue: false,
 		},
 		registerBuiltSchemas: {
