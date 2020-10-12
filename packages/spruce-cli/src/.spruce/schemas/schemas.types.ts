@@ -353,7 +353,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'fetchLocalSchemas'?: boolean| undefined | null
 				/** Fetch core schemas. Should I pull in core schemas too? */
 				'fetchCoreSchemas'?: boolean| undefined | null
-				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --registerBuiltSchemas=false --generateStandaloneTypesFile. */
+				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
 				'generateCoreSchemaTypes'?: boolean| undefined | null
 				/** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
 				'registerBuiltSchemas'?: boolean| undefined | null
@@ -472,12 +472,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: true,
 			                options: undefined
 			            },
-			            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --registerBuiltSchemas=false --generateStandaloneTypesFile. */
+			            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
 			            'generateCoreSchemaTypes': {
 			                label: 'Generate core schemas',
 			                type: 'boolean',
 			                isPrivate: true,
-			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --registerBuiltSchemas=false --generateStandaloneTypesFile.',
+			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile.',
 			                defaultValue: false,
 			                options: undefined
 			            },
@@ -1076,7 +1076,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'fetchLocalSchemas'?: boolean| undefined | null
 				/** Fetch core schemas. Should I pull in core schemas too? */
 				'fetchCoreSchemas'?: boolean| undefined | null
-				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --registerBuiltSchemas=false --generateStandaloneTypesFile. */
+				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
 				'generateCoreSchemaTypes'?: boolean| undefined | null
 				/** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
 				'registerBuiltSchemas'?: boolean| undefined | null
@@ -1179,12 +1179,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: true,
 			                options: undefined
 			            },
-			            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --registerBuiltSchemas=false --generateStandaloneTypesFile. */
+			            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
 			            'generateCoreSchemaTypes': {
 			                label: 'Generate core schemas',
 			                type: 'boolean',
 			                isPrivate: true,
-			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --registerBuiltSchemas=false --generateStandaloneTypesFile.',
+			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile.',
 			                defaultValue: false,
 			                options: undefined
 			            },

@@ -91,11 +91,14 @@ export const templates = {
 			valueTypes: IValueTypes
 			globalNamespace?: string
 			registerBuiltSchemas: boolean
+			schemaFile?: string
 			typesFile?: string
 		}
 	) {
 		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
-		const template = templateImportUtil.getTemplate('schemas/schema.ts.hbs')
+		const template = templateImportUtil.getTemplate(
+			options.schemaFile ?? 'schemas/schema.ts.hbs'
+		)
 		return template({
 			...options,
 			imports,

@@ -1,7 +1,7 @@
 import path from 'path'
 import pathUtil from 'path'
 import { IFieldTemplateItem, ISchemaTemplateItem } from '@sprucelabs/schema'
-import { namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { CORE_NAMESPACE, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { LATEST_HANDLEBARS } from '@sprucelabs/spruce-skill-utils'
@@ -29,6 +29,7 @@ export interface IGenerateSchemaTypesOptions {
 	globalNamespace?: string
 	typesTemplate?: string
 	registerBuiltSchemas?: boolean
+	shouldImportCoreSchemas: boolean
 }
 
 export interface ISchemaTypesGenerationStage {
@@ -192,6 +193,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			valueTypes: IValueTypes
 			typesFile?: string
 			registerBuiltSchemas?: boolean
+			shouldImportCoreSchemas?: boolean
 		} & ISchemaTemplateItem
 	) {
 		const {
@@ -199,6 +201,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			fieldTemplateItems,
 			valueTypes,
 			registerBuiltSchemas = true,
+			shouldImportCoreSchemas,
 			...item
 		} = options
 
@@ -227,6 +230,10 @@ export default class SchemaGenerator extends AbstractGenerator {
 			fieldTemplateItems,
 			valueTypes,
 			typesFile,
+			schemaFile:
+				item.namespace === CORE_NAMESPACE && shouldImportCoreSchemas
+					? `schemas/imported.schema.ts.hbs`
+					: undefined,
 		})
 
 		return this.writeFileIfChangedMixinResults(

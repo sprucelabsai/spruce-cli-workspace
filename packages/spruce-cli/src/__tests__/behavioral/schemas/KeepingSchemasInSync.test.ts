@@ -1,4 +1,4 @@
-import * as schemas from '@sprucelabs/spruce-core-schemas'
+import * as coreSchemas from '@sprucelabs/spruce-core-schemas'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import {
@@ -11,7 +11,7 @@ import AbstractSchemaTest from '../../../AbstractSchemaTest'
 import testUtil from '../../../utilities/test.utility'
 
 const TYPE_FILE_COUNT = 3
-const SYNC_FILE_COUNT = Object.keys(schemas).length + TYPE_FILE_COUNT
+const SYNC_FILE_COUNT = Object.keys(coreSchemas).length + TYPE_FILE_COUNT
 const MOCK_CORE_SYNC_FILE_COUNT = 3 + TYPE_FILE_COUNT
 
 export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
@@ -126,9 +126,11 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	}
 
 	@test()
-	protected static async schemaGeneratesValidFiles() {
+	protected static async generateCoreSchemaTypesGeneratesValidFiles() {
 		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
+
 		await this.copyMockCoreSchemas()
+
 		const results = await cli
 			.getFeature('schema')
 			.Action('sync')
@@ -158,7 +160,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		)
 
 		const locationSchemaContents = diskUtil.readFile(orgSchema)
-		assert.doesNotInclude(locationSchemaContents, 'SchemaRegistry')
+		assert.doesInclude(locationSchemaContents, 'SchemaRegistry')
 	}
 
 	@test()
@@ -200,6 +202,32 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		const typeChecker = this.Service('typeChecker')
 		for (const file of syncResults.files ?? []) {
 			await typeChecker.check(file.path)
+		}
+	}
+
+	@test()
+	protected static async coreSchemasPullFromCoreSchemasModuleDuringNormalGeneration() {
+		const cli = await this.syncSchemas('keeps-schemas-in-sync')
+
+		const createResponse = await cli
+			.getFeature('schema')
+			.Action('create')
+			.execute({
+				nameReadable: 'Test schema',
+				nameCamel: 'testSchema',
+			})
+
+		for (const schema of Object.values(coreSchemas)) {
+			const id = schema.id
+			const match = testUtil.assertsFileByNameInGeneratedFiles(
+				`${id}.schema.ts`,
+				createResponse.files ?? []
+			)
+			const contents = diskUtil.readFile(match)
+			assert.doesInclude(
+				contents,
+				`export { ${id}Schema as default } from '@sprucelabs/spruce-core-schemas'`
+			)
 		}
 	}
 

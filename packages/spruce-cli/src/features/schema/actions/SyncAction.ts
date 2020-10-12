@@ -47,13 +47,16 @@ export default class SyncAction extends AbstractFeatureAction<
 		const feature = this.getFeature('skill') as SkillFeature
 		let localNamespace = feature.getSkillNamespace()
 
+		let shouldImportCoreSchemas = true
+
 		if (generateCoreSchemaTypes) {
 			fetchRemoteSchemas = false
 			fetchLocalSchemas = true
 			fetchCoreSchemas = false
-			registerBuiltSchemas = false
+			registerBuiltSchemas = true
 			generateStandaloneTypesFile = true
 			localNamespace = CORE_NAMESPACE
+			shouldImportCoreSchemas = false
 		}
 
 		const shouldSyncRemoteSchemasFirst =
@@ -148,6 +151,7 @@ export default class SyncAction extends AbstractFeatureAction<
 							registerBuiltSchemas,
 							fieldTemplateItems,
 							schemaTemplateItems,
+							shouldImportCoreSchemas,
 							valueTypes,
 							globalNamespace: globalNamespace ?? undefined,
 							typesTemplate: generateStandaloneTypesFile
