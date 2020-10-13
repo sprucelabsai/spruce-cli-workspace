@@ -105,11 +105,4 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 		assert.isLength(matches, 1)
 		assert.doesInclude(matches[0].path, CORE_SCHEMA_VERSION.dirValue)
 	}
-
-	@test.only()
-	protected static async generatesComplicateMercurySchemas() {
-		const results = await this.installCopyAndSync('mercury_contract')
-		debugger
-		assert.isFalsy(results.syncResults.errors)
-	}
 }
