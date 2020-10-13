@@ -9,6 +9,7 @@ import {
 	isIdWithVersion,
 } from '@sprucelabs/schema'
 import cloneDeep from 'lodash/cloneDeep'
+import merge from 'lodash/merge'
 import uniqWith from 'lodash/uniqWith'
 import SpruceError from '../errors/SpruceError'
 import { ISchemasByNamespace } from '../stores/SchemaStore'
@@ -33,7 +34,7 @@ export default class SchemaTemplateItemBuilder {
 			const schemas = schemasByNamespace[namespace]
 			const items = this.generateTemplateItemsForNamespace(
 				namespace,
-				schemas,
+				cloneDeep(schemas),
 				destinationDir
 			)
 
@@ -48,20 +49,30 @@ export default class SchemaTemplateItemBuilder {
 		destinationDir: string
 	): ISchemaTemplateItem[] {
 		this.schemaCache = {}
+
 		this.cacheSchemas(schemas)
 
-		const versionedSchemas = this.versionNestedSchemasForSchemas(schemas)
-		const flattened = this.flattenSchemas(
-			versionedSchemas.sort((a, b) => {
-				return `${a.id}${a.version}`.localeCompare(`${b.id}${b.version}`)
-			})
-		)
+		const flattened = Object.values(this.schemaCache)
 
-		const flattenedOurNamespace = flattened.filter(
+		const sorted: ISchema[] = []
+
+		flattened.forEach((schema) => {
+			const related = this.pullRelatedSchemas(schema)
+			sorted.push(...related)
+			sorted.push(schema)
+		})
+
+		let ourNamespace = sorted.filter(
 			(s) => !s.namespace || s.namespace === namespace
 		)
 
-		const templateTimes = flattenedOurNamespace.map((schema) =>
+		ourNamespace = uniqWith(
+			ourNamespace,
+			(d1, d2) =>
+				schemaUtil.generateCacheKey(d1) === schemaUtil.generateCacheKey(d2)
+		)
+
+		const templateTimes = ourNamespace.map((schema) =>
 			this.buildTemplateItem({
 				namespace,
 				schema,
@@ -69,65 +80,8 @@ export default class SchemaTemplateItemBuilder {
 				destinationDir,
 			})
 		)
+
 		return templateTimes
-	}
-
-	private versionNestedSchemasForSchemas(schemas: ISchema[]) {
-		let versions: ISchema[] = []
-		for (const schema of schemas) {
-			versions.push(this.versionNestedSchemas(schema))
-		}
-
-		return versions
-	}
-
-	private versionNestedSchemas(schema: ISchema) {
-		if (!schema.version) {
-			return schema
-		}
-
-		const normalized: ISchema = cloneDeep(schema)
-
-		let fields: Record<string, any> | undefined
-		if (normalized.dynamicFieldSignature) {
-			fields = { dynamicField: normalized.dynamicFieldSignature }
-		} else {
-			fields = normalized.fields
-		}
-
-		Object.keys(fields ?? {}).forEach((name) => {
-			//@ts-ignore
-			const field = fields[name]
-			if (field.type === 'schema') {
-				this.dropInVersionIfMissing(field, normalized)
-			}
-		})
-
-		if (normalized.dynamicFieldSignature) {
-			normalized.dynamicFieldSignature = fields?.dynamicField
-		} else {
-			normalized.fields = fields
-		}
-
-		return normalized
-	}
-
-	private dropInVersionIfMissing(
-		field: ISchemaFieldDefinition,
-		normalized: ISchema
-	) {
-		let schemas: (ISchema | ISchemaIdWithVersion)[] = []
-		if (field.options.schema) {
-			schemas.push(field.options.schema)
-		}
-		if (field.options.schemas) {
-			schemas.push(...field.options.schemas)
-		}
-		for (const schema of schemas) {
-			if (!isIdWithVersion(schema) && !schema.version) {
-				schema.version = normalized.version
-			}
-		}
 	}
 
 	private cacheSchemas(schemas: ISchema[]) {
@@ -137,30 +91,43 @@ export default class SchemaTemplateItemBuilder {
 	}
 
 	private cacheSchema(schema: ISchema) {
-		this.schemaCache[schemaUtil.generateCacheKey(schema)] = schema
+		const fields = schema.dynamicFieldSignature
+			? { dynamicField: schema.dynamicFieldSignature }
+			: schema.fields ?? {}
+
+		Object.keys(fields).forEach((name) => {
+			const field = fields[name]
+			if (field.type === 'schema') {
+				const schemasOrIdsWithVersion = SchemaField.mapFieldDefinitionToSchemasOrIdsWithVersion(
+					field
+				)
+
+				delete field.options.schema
+				delete field.options.schemaId
+				delete field.options.schemaIds
+				delete field.options.schemas
+				field.options.schemas = []
+
+				schemasOrIdsWithVersion.forEach((schemaOrId) => {
+					const related = { version: schema.version, ...schemaOrId }
+					field.options.schemas?.push(related)
+					this.cacheSchema(related)
+				})
+			}
+		})
+
+		const key = schemaUtil.generateCacheKey(schema)
+		this.schemaCache[key] = merge(
+			this.schemaCache[key] ?? {},
+			this.normalizeSchemaFieldsToIdsWithVersion(schema)
+		)
 	}
 
 	private cacheLookup(schema: { id: string; version?: string }) {
 		return this.schemaCache[schemaUtil.generateCacheKey(schema)]
 	}
 
-	private flattenSchemas(schemas: ISchema[]) {
-		const flattened: ISchema[] = []
-
-		schemas.forEach((schema) => {
-			const related = this.pullRelatedDefinitions(schema)
-			flattened.push(...related)
-			flattened.push(schema)
-		})
-
-		return uniqWith(
-			flattened,
-			(d1, d2) =>
-				schemaUtil.generateCacheKey(d1) === schemaUtil.generateCacheKey(d2)
-		)
-	}
-
-	private pullRelatedDefinitions(definition: ISchema) {
+	private pullRelatedSchemas(definition: ISchema) {
 		const related: ISchema[] = []
 
 		let fields: Record<string, any> | undefined
@@ -180,7 +147,7 @@ export default class SchemaTemplateItemBuilder {
 				} catch (err) {
 					throw new SpruceError({
 						code: 'GENERIC',
-						friendlyMessage: `Failed to load related schema for ${definition.id}${definition.version}.${fieldName}`,
+						friendlyMessage: `Failed to load related schema for ${definition.id}.${definition.version}.${fieldName}`,
 						originalError: err,
 					})
 				}
@@ -197,7 +164,6 @@ export default class SchemaTemplateItemBuilder {
 		)
 		schemasOrIdsWithVersion.forEach((item) => {
 			const schema = this.schemaOrIdsWithVersionToSchema(item)
-
 			related.push(schema)
 		})
 
@@ -210,6 +176,7 @@ export default class SchemaTemplateItemBuilder {
 		let schema: ISchema | undefined
 		if (isIdWithVersion(schemaOrIdWithVersion)) {
 			schema = this.cacheLookup(schemaOrIdWithVersion)
+
 			if (!schema) {
 				throw new SchemaError({
 					code: 'SCHEMA_NOT_FOUND',
@@ -219,8 +186,6 @@ export default class SchemaTemplateItemBuilder {
 			}
 		} else {
 			validateSchema(schemaOrIdWithVersion)
-
-			this.cacheSchema(schemaOrIdWithVersion)
 
 			schema = schemaOrIdWithVersion
 		}
@@ -238,7 +203,7 @@ export default class SchemaTemplateItemBuilder {
 		const item: ISchemaTemplateItem = {
 			id: schema.id,
 			namespace,
-			schema: this.normalizeSchemaFieldsToIdsWithVersion(schema),
+			schema,
 			...schemaUtil.generateNamesForSchema(schema),
 			isNested,
 			destinationDir,

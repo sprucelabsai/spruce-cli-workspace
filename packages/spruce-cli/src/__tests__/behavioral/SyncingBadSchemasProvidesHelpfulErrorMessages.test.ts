@@ -1,8 +1,8 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractSchemaTest from '../../AbstractSchemaTest'
 import SpruceError from '../../errors/SpruceError'
-import TerminalInterface from '../../interfaces/TerminalInterface'
 
 export default class SyncingBadSchemasProvidesHelpfulErrorMessagesTest extends AbstractSchemaTest {
 	@test()
@@ -17,26 +17,9 @@ export default class SyncingBadSchemasProvidesHelpfulErrorMessagesTest extends A
 
 		const results = await cli.getFeature('schema').Action('sync').execute({})
 		assert.isArray(results.errors)
-		assert.isEqual(
-			results.errors[0].friendlyMessage(),
-			`Oh shoot! 🤔
 
-Failed to load related schema for schemaTwov2020_06_23.relatedToBad
-
-Original error: Could not find schema -> '{"id":"badSchema","version":"v2020_06_23"}'.
-
-Make sure you are pointing to the correct version.`
-		)
-
-		const oldLog = console.log
-		let log = ''
-		console.log = function (message: string) {
-			log += message + '\n'
-		}
-		const terminalInterface = new TerminalInterface(this.cwd, true)
-		terminalInterface.renderError(results.errors[0])
-		console.log = oldLog
-		assert.doesNotInclude(log, 'Error:')
+		errorAssertUtil.assertError(results.errors[0], 'SCHEMA_FAILED_TO_IMPORT')
+		assert.doesInclude(results.errors[0].message, 'no is not defined')
 	}
 
 	@test()

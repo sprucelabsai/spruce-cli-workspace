@@ -487,6 +487,444 @@ const eventSignatureTemplateItem2: ISchemaTemplateItem = {
 		},
 	},
 }
+
+const schemaWithManyNestedSchemas: ISchema = {
+	id: 'manyNested',
+	version: '2020_09_01',
+	fields: {
+		firstLayer: {
+			type: 'schema',
+			options: {
+				schema: {
+					id: 'firstLayer',
+					fields: {
+						secondLayer: {
+							type: 'schema',
+							options: {
+								schema: {
+									id: 'secondLayer',
+									fields: {
+										lastLayer: {
+											type: 'schema',
+											options: {
+												schema: {
+													id: 'lastLayer',
+													fields: {
+														pass: {
+															type: 'boolean',
+														},
+													},
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	},
+}
+
+const manyNestedTemplateItem: ISchemaTemplateItem = {
+	id: 'manyNested',
+	namespace: 'Spruce',
+	schema: {
+		id: 'manyNested',
+		version: '2020_09_01',
+		fields: {
+			firstLayer: {
+				type: 'schema',
+				options: { schemaIds: [{ id: 'firstLayer', version: '2020_09_01' }] },
+			},
+		},
+	},
+	nameReadable: 'manyNested',
+	nameCamel: 'manyNested',
+	namePascal: 'ManyNested',
+	isNested: false,
+	destinationDir: '#spruce/schemas',
+}
+
+const firstLayerTemplateItem: ISchemaTemplateItem = {
+	id: 'firstLayer',
+	namespace: 'Spruce',
+	schema: {
+		id: 'firstLayer',
+		version: '2020_09_01',
+		fields: {
+			secondLayer: {
+				type: 'schema',
+				options: { schemaIds: [{ id: 'secondLayer', version: '2020_09_01' }] },
+			},
+		},
+	},
+	nameReadable: 'firstLayer',
+	nameCamel: 'firstLayer',
+	namePascal: 'FirstLayer',
+	isNested: true,
+	destinationDir: '#spruce/schemas',
+}
+
+const secondLayerTemplateItem: ISchemaTemplateItem = {
+	id: 'secondLayer',
+	namespace: 'Spruce',
+	schema: {
+		id: 'secondLayer',
+		version: '2020_09_01',
+		fields: {
+			lastLayer: {
+				type: 'schema',
+				options: { schemaIds: [{ id: 'lastLayer', version: '2020_09_01' }] },
+			},
+		},
+	},
+	nameReadable: 'secondLayer',
+	nameCamel: 'secondLayer',
+	namePascal: 'SecondLayer',
+	isNested: true,
+	destinationDir: '#spruce/schemas',
+}
+
+const lastLayerTemplateItem: ISchemaTemplateItem = {
+	id: 'lastLayer',
+	namespace: 'Spruce',
+	schema: {
+		id: 'lastLayer',
+		version: '2020_09_01',
+		fields: { pass: { type: 'boolean' } },
+	},
+	nameReadable: 'lastLayer',
+	nameCamel: 'lastLayer',
+	namePascal: 'LastLayer',
+	isNested: true,
+	destinationDir: '#spruce/schemas',
+}
+
+const mercurySchemas = [
+	{
+		id: 'mercuryContract',
+		name: 'Mercury Contract',
+		description: '',
+		fields: {
+			eventSignatures: {
+				type: 'schema',
+				isRequired: true,
+				isArray: true,
+				options: {
+					schema: {
+						id: 'eventSignature',
+						name: 'Event Signature',
+						description: '',
+						fields: {
+							eventNameWithOptionalNamespace: {
+								type: 'text',
+								isRequired: true,
+							},
+							responsePayload: {
+								type: 'raw',
+								options: { valueType: 'SpruceSchema.ISchema' },
+							},
+							emitPayload: {
+								type: 'raw',
+								options: { valueType: 'SpruceSchema.ISchema' },
+							},
+							listenPermissions: {
+								type: 'schema',
+								isArray: true,
+								options: {
+									schemaId: { id: 'permission', version: 'v2020_09_01' },
+								},
+							},
+							emitPermissions: {
+								type: 'schema',
+								isArray: true,
+								options: {
+									schemaId: { id: 'permission', version: 'v2020_09_01' },
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		version: 'v2020_09_01',
+	},
+	{
+		id: 'permissionContract',
+		name: 'Permission Contract',
+		description: '',
+		fields: {
+			requireAllPermissions: { type: 'boolean', defaultValue: false },
+			permissions: {
+				type: 'schema',
+				isRequired: true,
+				isArray: true,
+				options: {
+					schema: {
+						id: 'permission',
+						name: 'Permission',
+						fields: {
+							name: {
+								type: 'text',
+								label: 'Permission name',
+								isRequired: true,
+								hint:
+									'Hyphen separated name for this permission, e.g. can-unlock-doors',
+							},
+							requireAllStatuses: {
+								type: 'boolean',
+								label: 'Require all statuses',
+								defaultValue: false,
+							},
+							defaultsByRoleBase: {
+								type: 'schema',
+								options: {
+									schema: {
+										id: 'defaultsByRole',
+										fields: {
+											owner: { type: 'boolean' },
+											groupManager: { type: 'boolean' },
+											manager: { type: 'boolean' },
+											teammate: { type: 'boolean' },
+											guest: { type: 'boolean' },
+										},
+									},
+								},
+							},
+							can: {
+								type: 'schema',
+								options: {
+									schema: {
+										id: 'statusFlags',
+										fields: {
+											default: { type: 'boolean' },
+											clockedIn: {
+												label: 'Clocked in',
+												hint: 'Is the person clocked in and ready to rock?',
+												type: 'boolean',
+											},
+											clockedOut: {
+												label: 'Clocked out',
+												hint: 'When someone is not working (off the clock).',
+												type: 'boolean',
+											},
+											onPrem: {
+												label: 'On premise',
+												hint:
+													'Are they at work (maybe working, maybe visiting).',
+												type: 'boolean',
+											},
+											offPrem: {
+												label: 'Off premise',
+												hint: "They aren't at the office or shop.",
+												type: 'boolean',
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		version: 'v2020_09_01',
+	},
+]
+
+const mercuryTemplateItems = [
+	{
+		id: 'defaultsByRole',
+		namespace: 'Spruce',
+		schema: {
+			version: 'v2020_09_01',
+			id: 'defaultsByRole',
+			fields: {
+				owner: { type: 'boolean' },
+				groupManager: { type: 'boolean' },
+				manager: { type: 'boolean' },
+				teammate: { type: 'boolean' },
+				guest: { type: 'boolean' },
+			},
+		},
+		nameReadable: 'defaultsByRole',
+		nameCamel: 'defaultsByRole',
+		namePascal: 'DefaultsByRole',
+		isNested: true,
+		destinationDir: '#spruce/schemas',
+	},
+	{
+		id: 'statusFlags',
+		namespace: 'Spruce',
+		schema: {
+			version: 'v2020_09_01',
+			id: 'statusFlags',
+			fields: {
+				default: { type: 'boolean' },
+				clockedIn: {
+					label: 'Clocked in',
+					hint: 'Is the person clocked in and ready to rock?',
+					type: 'boolean',
+				},
+				clockedOut: {
+					label: 'Clocked out',
+					hint: 'When someone is not working (off the clock).',
+					type: 'boolean',
+				},
+				onPrem: {
+					label: 'On premise',
+					hint: 'Are they at work (maybe working, maybe visiting).',
+					type: 'boolean',
+				},
+				offPrem: {
+					label: 'Off premise',
+					hint: "They aren't at the office or shop.",
+					type: 'boolean',
+				},
+			},
+		},
+		nameReadable: 'statusFlags',
+		nameCamel: 'statusFlags',
+		namePascal: 'StatusFlags',
+		isNested: true,
+		destinationDir: '#spruce/schemas',
+	},
+	{
+		id: 'permission',
+		namespace: 'Spruce',
+		schema: {
+			version: 'v2020_09_01',
+			id: 'permission',
+			fields: {
+				name: {
+					type: 'text',
+					label: 'Permission name',
+					isRequired: true,
+					hint:
+						'Hyphen separated name for this permission, e.g. can-unlock-doors',
+				},
+				requireAllStatuses: {
+					type: 'boolean',
+					label: 'Require all statuses',
+					defaultValue: false,
+				},
+				defaultsByRoleBase: {
+					type: 'schema',
+					options: {
+						schemaIds: [{ id: 'defaultsByRole', version: 'v2020_09_01' }],
+					},
+				},
+				can: {
+					type: 'schema',
+					options: {
+						schemaIds: [{ id: 'statusFlags', version: 'v2020_09_01' }],
+					},
+				},
+			},
+			name: 'Permission',
+		},
+		nameReadable: 'Permission',
+		nameCamel: 'permission',
+		namePascal: 'Permission',
+		isNested: true,
+		destinationDir: '#spruce/schemas',
+	},
+	{
+		id: 'eventSignature',
+		namespace: 'Spruce',
+		schema: {
+			version: 'v2020_09_01',
+			id: 'eventSignature',
+			name: 'Event Signature',
+			description: '',
+			fields: {
+				eventNameWithOptionalNamespace: { type: 'text', isRequired: true },
+				responsePayload: {
+					type: 'raw',
+					options: { valueType: 'SpruceSchema.ISchema' },
+				},
+				emitPayload: {
+					type: 'raw',
+					options: { valueType: 'SpruceSchema.ISchema' },
+				},
+				listenPermissions: {
+					type: 'schema',
+					isArray: true,
+					options: {
+						schemaIds: [{ version: 'v2020_09_01', id: 'permission' }],
+					},
+				},
+				emitPermissions: {
+					type: 'schema',
+					isArray: true,
+					options: {
+						schemaIds: [{ version: 'v2020_09_01', id: 'permission' }],
+					},
+				},
+			},
+		},
+		nameReadable: 'Event Signature',
+		nameCamel: 'eventSignature',
+		namePascal: 'EventSignature',
+		isNested: true,
+		destinationDir: '#spruce/schemas',
+	},
+	{
+		id: 'mercuryContract',
+		namespace: 'Spruce',
+		schema: {
+			id: 'mercuryContract',
+			name: 'Mercury Contract',
+			description: '',
+			fields: {
+				eventSignatures: {
+					type: 'schema',
+					isRequired: true,
+					isArray: true,
+					options: {
+						schemaIds: [{ id: 'eventSignature', version: 'v2020_09_01' }],
+					},
+				},
+			},
+			version: 'v2020_09_01',
+		},
+		nameReadable: 'Mercury Contract',
+		nameCamel: 'mercuryContract',
+		namePascal: 'MercuryContract',
+		isNested: false,
+		destinationDir: '#spruce/schemas',
+	},
+	{
+		id: 'permissionContract',
+		namespace: 'Spruce',
+		schema: {
+			id: 'permissionContract',
+			name: 'Permission Contract',
+			description: '',
+			fields: {
+				requireAllPermissions: { type: 'boolean', defaultValue: false },
+				permissions: {
+					type: 'schema',
+					isRequired: true,
+					isArray: true,
+					options: {
+						schemaIds: [{ id: 'permission', version: 'v2020_09_01' }],
+					},
+				},
+			},
+			version: 'v2020_09_01',
+		},
+		nameReadable: 'Permission Contract',
+		nameCamel: 'permissionContract',
+		namePascal: 'PermissionContract',
+		isNested: false,
+		destinationDir: '#spruce/schemas',
+	},
+]
+
 export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 	private static itemBuilder: SchemaTemplateItemBuilder
 
@@ -529,7 +967,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 		[vehicleV1TemplateItem, personV2TemplateItem]
 	)
 	@test(
-		'handles recursion',
+		'handles recursion (by looking through nested schemas and their dependencies before self)',
 		[personV3],
 		[
 			cowbellV1NestedTemplateItem,
@@ -576,6 +1014,17 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 			mercuryTemplateItemArray,
 		]
 	)
+	@test(
+		'handles many layers of nested schemas',
+		[schemaWithManyNestedSchemas],
+		[
+			lastLayerTemplateItem,
+			secondLayerTemplateItem,
+			firstLayerTemplateItem,
+			manyNestedTemplateItem,
+		]
+	)
+	@test('can import mercury contracts', mercurySchemas, mercuryTemplateItems)
 	protected static async generationTests(
 		schemas: ISchema[],
 		expected: ISchemaTemplateItem[]
@@ -585,11 +1034,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 			'#spruce/schemas'
 		)
 
-		assert.isEqual(
-			results.length,
-			expected.length,
-			"Didn't generate the number of template items expected"
-		)
+		assert.isEqual(results.length, expected.length)
 
 		expected.forEach((expected, idx) => {
 			const match = results[idx]
@@ -599,7 +1044,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 		})
 	}
 
-	@test('properly set imports')
+	@test()
 	protected static async setsImports() {
 		const results = this.itemBuilder.generateTemplateItems(
 			{
