@@ -54,25 +54,25 @@ export default class SchemaTemplateItemBuilder {
 
 		const flattened = Object.values(this.schemaCache)
 
-		const ourNamespace = flattened.filter(
-			(s) => !s.namespace || s.namespace === namespace
-		)
+		const sorted: ISchema[] = []
 
-		let sorted: ISchema[] = []
-
-		ourNamespace.forEach((schema) => {
+		flattened.forEach((schema) => {
 			const related = this.pullRelatedSchemas(schema)
 			sorted.push(...related)
 			sorted.push(schema)
 		})
 
-		sorted = uniqWith(
-			sorted,
+		let ourNamespace = sorted.filter(
+			(s) => !s.namespace || s.namespace === namespace
+		)
+
+		ourNamespace = uniqWith(
+			ourNamespace,
 			(d1, d2) =>
 				schemaUtil.generateCacheKey(d1) === schemaUtil.generateCacheKey(d2)
 		)
 
-		const templateTimes = sorted.map((schema) =>
+		const templateTimes = ourNamespace.map((schema) =>
 			this.buildTemplateItem({
 				namespace,
 				schema,
