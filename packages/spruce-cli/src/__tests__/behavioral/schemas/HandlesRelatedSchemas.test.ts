@@ -34,9 +34,9 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 		await Promise.all(all)
 	}
 
-	private static async installCopyAndSync() {
+	private static async installCopyAndSync(testDir = 'related_schemas') {
 		const cli = await this.installSchemaFeature('related-schemas')
-		const source = this.resolveTestPath('related_schemas')
+		const source = this.resolveTestPath(testDir)
 		const destination = this.resolvePath('src/schemas')
 
 		await diskUtil.copyDir(source, destination)
@@ -104,5 +104,12 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 		)
 		assert.isLength(matches, 1)
 		assert.doesInclude(matches[0].path, CORE_SCHEMA_VERSION.dirValue)
+	}
+
+	@test.only()
+	protected static async generatesComplicateMercurySchemas() {
+		const results = await this.installCopyAndSync('mercury_contract')
+		debugger
+		assert.isFalsy(results.syncResults.errors)
 	}
 }
