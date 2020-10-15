@@ -70,7 +70,7 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 
 		assert.isLength(Object.keys(aliases), 2)
 		assert.doesInclude(aliases, {
-			defaultTrue: '--dt, --defaultTrue [false]',
+			defaultTrue: '--dt, --defaultTrue [true|false]',
 		})
 		assert.doesInclude(aliases, {
 			defaultFalse: '--df, --defaultFalse',
