@@ -30,9 +30,7 @@ const featuresUtil = {
 			if (type !== 'boolean') {
 				placeholder = ` <${fullName}>`
 			} else {
-				if (field.defaultValue === true) {
-					placeholder = ` [false]`
-				}
+				placeholder = ` [true|false]`
 			}
 
 			aliases[fieldName] = `${
