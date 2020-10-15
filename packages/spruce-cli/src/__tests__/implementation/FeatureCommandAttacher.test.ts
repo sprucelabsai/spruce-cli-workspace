@@ -92,7 +92,12 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'schema.sync',
-			option: '--frs, --fetchRemoteSchemas [false]',
+			option: '--frs, --fetchRemoteSchemas [true|false]',
+		})
+
+		assert.doesInclude(this.program.optionInvocations, {
+			command: 'schema.sync',
+			option: '--gcst, --generateCoreSchemaTypes [true|false]',
 		})
 	}
 
@@ -115,7 +120,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'vscode.setup',
-			option: '-a, --all',
+			option: '-a, --all [true|false]',
 		})
 	}
 
