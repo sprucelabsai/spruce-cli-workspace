@@ -33,7 +33,7 @@ import KeyGeneratorUtility from './utilities/KeyGeneratorUtility'
 import templateImportUtil from './utilities/templateImporter.utility'
 import templateItemUtil from './utilities/templateItem.utility'
 
-void addonUtil.import({}, __dirname, 'addons')
+addonUtil.importSync({}, __dirname, 'addons')
 
 export const templates = {
 	schemasTypes(options: {

@@ -57,7 +57,7 @@
 		"@sprucelabs/mercury-types": "^8.0.1",
 		"@sprucelabs/schema": "^14.0.0",
 		"@sprucelabs/spruce-core-schemas": "^15.0.0",
-		"@sprucelabs/spruce-skill-utils": "^11.0.0",
+		"@sprucelabs/spruce-skill-utils": "^11.1.0",
 		"blessed": "^0.1.81",
 		"blessed-contrib": "^4.8.20",
 		"cfonts": "^2.8.6",
