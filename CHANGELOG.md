@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.2.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.1.15...v11.2.0) (2020-10-20)
+
+
+### Features
+
+* mercury types update ([5616e58](https://github.com/sprucelabsai/spruce-cli-workspace/commit/5616e58))
+
+
+
+
+
 ## [11.1.15](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.1.14...v11.1.15) (2020-10-17)
 
 **Note:** Version bump only for package spruce-cli-workspace
