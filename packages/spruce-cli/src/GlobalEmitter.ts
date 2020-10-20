@@ -1,5 +1,5 @@
 import { AbstractEventEmitter } from '@sprucelabs/mercury-event-emitter'
-import { MercuryClient } from '@sprucelabs/mercury-types'
+import { MercuryEventEmitter } from '@sprucelabs/mercury-types'
 import watcherDidDetectChangesEmitPayloadSchema from '#spruce/schemas/spruceCli/v2020_07_22/watcherDidDetectChangesEmitPayload.schema'
 
 const contract = {
@@ -15,7 +15,7 @@ const contract = {
 } as const
 
 type CliContract = typeof contract
-export type GlobalEmitter = MercuryClient<CliContract>
+export type GlobalEmitter = MercuryEventEmitter<CliContract>
 
 export default class CliGlobalEmitter extends AbstractEventEmitter<
 	CliContract
