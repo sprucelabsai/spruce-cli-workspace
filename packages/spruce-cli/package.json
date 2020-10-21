@@ -56,7 +56,7 @@
 		"@sprucelabs/mercury-event-emitter": "^9.1.6",
 		"@sprucelabs/mercury-types": "^9.1.6",
 		"@sprucelabs/schema": "^14.0.1",
-		"@sprucelabs/spruce-core-schemas": "^20.0.0",
+		"@sprucelabs/spruce-core-schemas": "^20.1.1",
 		"@sprucelabs/spruce-skill-utils": "^11.1.1",
 		"blessed": "^0.1.81",
 		"blessed-contrib": "^4.8.20",
