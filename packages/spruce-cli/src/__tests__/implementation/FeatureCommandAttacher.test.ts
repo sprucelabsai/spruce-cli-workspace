@@ -124,6 +124,17 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		})
 	}
 
+	@test()
+	protected static async testActionWithSameNameAsFeature() {
+		const cli = await this.Cli()
+		const vscodeFeature = cli.getFeature('test')
+
+		await this.attacher.attachFeature(vscodeFeature)
+
+		const match = this.program.commandInvocations.find((i) => i === 'test')
+		assert.isTruthy(match)
+	}
+
 	private static MockCommanderProgram(): MockProgram {
 		// @ts-ignore
 		return {

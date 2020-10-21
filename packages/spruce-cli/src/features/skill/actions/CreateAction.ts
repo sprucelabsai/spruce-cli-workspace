@@ -8,7 +8,7 @@ export const skillCreateActionOptionsDefinition = buildSchema({
 	fields: {},
 })
 
-export type IDashboardActionDefinition = typeof skillCreateActionOptionsDefinition
+export type ActionSchema = typeof skillCreateActionOptionsDefinition
 
 export default class CreateAction extends AbstractFeatureAction {
 	public name = 'create'
