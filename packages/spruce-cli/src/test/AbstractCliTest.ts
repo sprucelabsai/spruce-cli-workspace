@@ -5,13 +5,16 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractSpruceTest from '@sprucelabs/test'
 import fs from 'fs-extra'
 import * as uuid from 'uuid'
-import { ICliBootOptions } from './cli'
-import FeatureInstallerFactory from './features/FeatureInstallerFactory'
-import FeatureFixture from './fixtures/FeatureFixture'
-import CliGlobalEmitter from './GlobalEmitter'
-import TestInterface from './interfaces/TestInterface'
-import ServiceFactory, { Service, IServiceMap } from './services/ServiceFactory'
-import StoreFactory, { StoreCode, IStoreMap } from './stores/StoreFactory'
+import { ICliBootOptions } from '../cli'
+import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
+import FeatureFixture from '../fixtures/FeatureFixture'
+import CliGlobalEmitter from '../GlobalEmitter'
+import TestInterface from '../interfaces/TestInterface'
+import ServiceFactory, {
+	Service,
+	IServiceMap,
+} from '../services/ServiceFactory'
+import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static cliRoot = pathUtil.join(__dirname)

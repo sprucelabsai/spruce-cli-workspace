@@ -1,8 +1,8 @@
 import { buildSchema, ISchema, ISchemaTemplateItem } from '@sprucelabs/schema'
 import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import AbstractCliTest from '../../AbstractCliTest'
 import SchemaTemplateItemBuilder from '../../templateItemBuilders/SchemaTemplateItemBuilder'
+import AbstractCliTest from '../../test/AbstractCliTest'
 
 const cowbellV1: ISchema = {
 	id: 'cowbell',

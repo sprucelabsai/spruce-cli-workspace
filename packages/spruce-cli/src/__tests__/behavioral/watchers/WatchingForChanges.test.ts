@@ -1,7 +1,7 @@
 import { CORE_SCHEMA_VERSION, diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import AbstractCliTest from '../../../AbstractCliTest'
 import WatchFeature from '../../../features/watch/WatchFeature'
+import AbstractCliTest from '../../../test/AbstractCliTest'
 import { GeneratedFileOrDir } from '../../../types/cli.types'
 
 export default class WatchingForChangesTest extends AbstractCliTest {

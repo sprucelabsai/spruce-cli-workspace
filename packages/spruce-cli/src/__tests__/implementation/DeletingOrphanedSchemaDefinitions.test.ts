@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
-import AbstractSchemaTest from '../../AbstractSchemaTest'
+import AbstractSchemaTest from '../../test/AbstractSchemaTest'
 import schemaGeneratorUtil from '../../utilities/schemaGenerator.utility'
 
 export default class DeletingOrphanedSchemaDefinitionsTest extends AbstractSchemaTest {

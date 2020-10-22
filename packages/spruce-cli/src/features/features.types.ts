@@ -98,6 +98,7 @@ export interface IFeatureActionExecuteResponse extends FeatureInstallResponse {
 	meta?: Record<string, any>
 	errors?: SpruceError[]
 	hints?: string[]
+	summaryLines?: string[]
 }
 
 export interface IFeatureAction<S extends ISchema = ISchema> {

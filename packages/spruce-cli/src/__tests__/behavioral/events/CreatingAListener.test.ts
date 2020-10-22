@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import AbstractEventTest from '../../../AbstractEventTest'
+import AbstractEventTest from '../../../test/AbstractEventTest'
 import testUtil from '../../../utilities/test.utility'
 
 const CACHE_KEY = 'bootstrap-event'

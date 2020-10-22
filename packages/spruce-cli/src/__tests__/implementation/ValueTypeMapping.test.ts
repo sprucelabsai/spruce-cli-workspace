@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import AbstractSchemaTest from '../../AbstractSchemaTest'
+import AbstractSchemaTest from '../../test/AbstractSchemaTest'
 
 export default class ValueTypeMappingTest extends AbstractSchemaTest {
 	protected static async beforeEach() {

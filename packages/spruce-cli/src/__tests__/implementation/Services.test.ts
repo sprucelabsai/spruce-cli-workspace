@@ -1,7 +1,7 @@
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { assert, test } from '@sprucelabs/test'
-import AbstractCliTest from '../../AbstractCliTest'
+import AbstractCliTest from '../../test/AbstractCliTest'
 
 export default class ServicesTests extends AbstractCliTest {
 	@test()

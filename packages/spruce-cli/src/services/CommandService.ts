@@ -15,6 +15,7 @@ export default class CommandService {
 	public execute(
 		cmd: string,
 		options?: {
+			ignoreErrors?: boolean
 			args?: string[]
 			stream?: boolean
 			outStream?: Writable
@@ -72,7 +73,7 @@ export default class CommandService {
 
 				this.activeChildProcess = undefined
 
-				if (code === 0 || this.ignoreCloseErrors) {
+				if (code === 0 || this.ignoreCloseErrors || options?.ignoreErrors) {
 					resolve({ stdout })
 					this.ignoreCloseErrors = false
 				} else {

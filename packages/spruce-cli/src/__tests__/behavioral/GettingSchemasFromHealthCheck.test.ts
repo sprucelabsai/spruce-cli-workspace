@@ -2,8 +2,8 @@ import { ISchema } from '@sprucelabs/schema'
 import * as coreSchemas from '@sprucelabs/spruce-core-schemas'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import AbstractSchemaTest from '../../AbstractSchemaTest'
 import { ICli } from '../../cli'
+import AbstractSchemaTest from '../../test/AbstractSchemaTest'
 
 export default class GettingSchemasFromHealthCheckTest extends AbstractSchemaTest {
 	@test()

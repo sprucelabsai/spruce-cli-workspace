@@ -41,6 +41,7 @@ export default class ServiceFactory {
 				return new PinService(this.mercury) as IServiceMap[S]
 			case 'pkg':
 				return new PkgService(cwd) as IServiceMap[S]
+
 			case 'vsCode':
 				return new VsCodeService(cwd) as IServiceMap[S]
 			case 'schema':
@@ -48,8 +49,7 @@ export default class ServiceFactory {
 			case 'lint':
 				return new LintService(cwd) as IServiceMap[S]
 			case 'command': {
-				const commandService = new CommandService(cwd)
-				return commandService as IServiceMap[S]
+				return new CommandService(cwd) as IServiceMap[S]
 			}
 			case 'typeChecker':
 				return new TypeCheckerService(cwd) as IServiceMap[S]

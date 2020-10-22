@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
-import AbstractEventTest from '../../../AbstractEventTest'
+import AbstractEventTest from '../../../test/AbstractEventTest'
 
 const CACHE_KEY = 'boot-events'
 
