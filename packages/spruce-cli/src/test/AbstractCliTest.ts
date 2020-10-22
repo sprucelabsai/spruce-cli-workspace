@@ -17,7 +17,7 @@ import ServiceFactory, {
 import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
-	protected static cliRoot = pathUtil.join(__dirname)
+	protected static cliRoot = pathUtil.join(__dirname, '..')
 	private static _ui: TestInterface
 
 	protected static freshCwd() {
