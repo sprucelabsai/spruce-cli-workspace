@@ -1,7 +1,7 @@
 import { IFieldTemplateItem } from '@sprucelabs/schema'
 import { test, assert } from '@sprucelabs/test'
-import AbstractCliTest from '../../AbstractCliTest'
 import FieldTemplateItemBuilder from '../../templateItemBuilders/FieldTemplateItemBuilder'
+import AbstractCliTest from '../../test/AbstractCliTest'
 
 const localAddressField = {
 	path:

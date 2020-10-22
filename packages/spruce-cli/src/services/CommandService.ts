@@ -1,4 +1,5 @@
 import { spawn, SpawnOptions, ChildProcess } from 'child_process'
+import { Writable } from 'stream'
 import stringArgv from 'string-argv'
 import SpruceError from '../errors/SpruceError'
 
@@ -14,9 +15,12 @@ export default class CommandService {
 	public execute(
 		cmd: string,
 		options?: {
+			ignoreErrors?: boolean
 			args?: string[]
-			/** When set to true will stream the results from the child process in real time instead of waiting to return */
 			stream?: boolean
+			outStream?: Writable
+			onData?: (data: string) => void
+			spawnOptions?: SpawnOptions
 		}
 	): Promise<{
 		stdout: string
@@ -43,12 +47,18 @@ export default class CommandService {
 							FORCE_COLOR: '0',
 						},
 						shell: true,
+						...options?.spawnOptions,
 				  }
 
 			const child = spawn(executable, args, spawnOptions)
 			this.activeChildProcess = child
 
+			if (options?.outStream) {
+				child.stdout?.pipe(options.outStream)
+			}
+
 			child.stdout?.addListener('data', (data) => {
+				options?.onData?.(data.toString())
 				stdout += data
 			})
 
@@ -63,7 +73,7 @@ export default class CommandService {
 
 				this.activeChildProcess = undefined
 
-				if (code === 0 || this.ignoreCloseErrors) {
+				if (code === 0 || this.ignoreCloseErrors || options?.ignoreErrors) {
 					resolve({ stdout })
 					this.ignoreCloseErrors = false
 				} else {

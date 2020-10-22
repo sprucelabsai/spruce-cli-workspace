@@ -1,7 +1,7 @@
 import { Readable, Writable } from 'stream'
 import { test, assert } from '@sprucelabs/test'
-import AbstractCliTest from '../../AbstractCliTest'
 import SpruceError from '../../errors/SpruceError'
+import AbstractCliTest from '../../test/AbstractCliTest'
 import WidgetFactory from '../../widgets/WidgetFactory'
 
 class MockInput extends Writable {}

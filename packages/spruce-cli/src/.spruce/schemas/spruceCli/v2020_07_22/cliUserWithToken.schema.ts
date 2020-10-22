@@ -7,7 +7,7 @@ const cliUserWithTokenSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICliUserWithTo
 	id: 'cliUserWithToken',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
-	name: 'Person',
+	name: '',
 	description: 'A stripped down cli user with token details for login',
 	    fields: {
 	            /** Id. */

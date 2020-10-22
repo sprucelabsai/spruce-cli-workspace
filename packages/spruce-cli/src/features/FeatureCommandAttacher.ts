@@ -35,7 +35,7 @@ export default class FeatureCommandAttacher {
 	private attachCode(code: string, feature: AbstractFeature) {
 		try {
 			const prefix = namesUtil.toCamel(feature.code)
-			const commandStr = `${prefix}.${code}`
+			const commandStr = prefix === code ? code : `${prefix}.${code}`
 			const action = feature.Action(code)
 
 			const executer = new FeatureCommandExecuter({

@@ -1,7 +1,7 @@
 import { Mercury } from '@sprucelabs/mercury'
 import { test, assert } from '@sprucelabs/test'
-import AbstractCliTest from '../../AbstractCliTest'
 import ServiceFactory, { Service } from '../../services/ServiceFactory'
+import AbstractCliTest from '../../test/AbstractCliTest'
 
 export default class ServiceFactoryTest extends AbstractCliTest {
 	private static factory: ServiceFactory

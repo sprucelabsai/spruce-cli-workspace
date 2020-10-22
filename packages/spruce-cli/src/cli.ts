@@ -143,6 +143,8 @@ export default class Cli implements ICli {
 		const terminal = options?.graphicsInterface ?? new TerminalInterface(cwd)
 		const emitter = CliGlobalEmitter.Emitter()
 
+		terminal.renderHero('Spruce XP')
+
 		const featureInstaller = FeatureInstallerFactory.WithAllFeatures({
 			cwd,
 			serviceFactory,

@@ -1,6 +1,6 @@
 import { test, assert } from '@sprucelabs/test'
 import globby from 'globby'
-import AbstractSchemaTest from '../../../AbstractSchemaTest'
+import AbstractSchemaTest from '../../../test/AbstractSchemaTest'
 import testUtil from '../../../utilities/test.utility'
 
 export default class GeneratingFieldTypesOnlyTest extends AbstractSchemaTest {

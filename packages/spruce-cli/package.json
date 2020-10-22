@@ -58,6 +58,7 @@
 		"@sprucelabs/schema": "^14.0.1",
 		"@sprucelabs/spruce-core-schemas": "^20.1.1",
 		"@sprucelabs/spruce-skill-utils": "^11.1.1",
+		"@sprucelabs/jest-json-reporter": "^1.0.1",
 		"blessed": "^0.1.81",
 		"blessed-contrib": "^4.8.20",
 		"cfonts": "^2.8.6",

@@ -1,7 +1,7 @@
 import { test, assert } from '@sprucelabs/test'
 import { CommanderStatic } from 'commander'
-import AbstractCliTest from '../../AbstractCliTest'
 import FeatureCommandAttacher from '../../features/FeatureCommandAttacher'
+import AbstractCliTest from '../../test/AbstractCliTest'
 
 type MockProgram = CommanderStatic['program'] & {
 	descriptionInvocations: { command: string; description: string }[]
@@ -122,6 +122,17 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 			command: 'vscode.setup',
 			option: '-a, --all [true|false]',
 		})
+	}
+
+	@test()
+	protected static async testActionWithSameNameAsFeature() {
+		const cli = await this.Cli()
+		const vscodeFeature = cli.getFeature('test')
+
+		await this.attacher.attachFeature(vscodeFeature)
+
+		const match = this.program.commandInvocations.find((i) => i === 'test')
+		assert.isTruthy(match)
 	}
 
 	private static MockCommanderProgram(): MockProgram {

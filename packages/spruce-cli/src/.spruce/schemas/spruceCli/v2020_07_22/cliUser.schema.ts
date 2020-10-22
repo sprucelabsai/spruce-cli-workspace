@@ -7,7 +7,7 @@ const cliUserSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICliUserSchema  = {
 	id: 'cliUser',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
-	name: 'Person',
+	name: '',
 	description: 'A stripped down user for the cli',
 	    fields: {
 	            /** Id. */

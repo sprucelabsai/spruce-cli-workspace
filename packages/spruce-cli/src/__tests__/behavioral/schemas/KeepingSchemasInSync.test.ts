@@ -7,7 +7,7 @@ import {
 	DEFAULT_NAMESPACE_PREFIX,
 } from '@sprucelabs/spruce-skill-utils'
 import { assert, test } from '@sprucelabs/test'
-import AbstractSchemaTest from '../../../AbstractSchemaTest'
+import AbstractSchemaTest from '../../../test/AbstractSchemaTest'
 import testUtil from '../../../utilities/test.utility'
 
 const TYPE_FILE_COUNT = 3

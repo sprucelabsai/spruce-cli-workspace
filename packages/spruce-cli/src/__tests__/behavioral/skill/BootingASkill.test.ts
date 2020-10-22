@@ -1,6 +1,6 @@
 import { test, assert } from '@sprucelabs/test'
 import findProcess from 'find-process'
-import AbstractCliTest from '../../../AbstractCliTest'
+import AbstractCliTest from '../../../test/AbstractCliTest'
 
 export default class BootingASkillTest extends AbstractCliTest {
 	@test()

@@ -5,9 +5,9 @@ import {
 	versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import AbstractSchemaTest from '../../AbstractSchemaTest'
 import FeatureCommandExecuter from '../../features/FeatureCommandExecuter'
 import { FeatureCode } from '../../features/features.types'
+import AbstractSchemaTest from '../../test/AbstractSchemaTest'
 import testUtil from '../../utilities/test.utility'
 
 export default class FeatureCommandExecuterTest extends AbstractSchemaTest {

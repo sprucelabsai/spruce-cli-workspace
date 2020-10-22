@@ -67,6 +67,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 
 		this.ui.stopLoading()
 
+		this.ui.clear()
 		this.ui.renderCommandSummary({
 			featureCode: this.featureCode,
 			actionCode: this.actionCode,

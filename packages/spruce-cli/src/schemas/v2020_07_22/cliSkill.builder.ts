@@ -2,7 +2,6 @@ import { buildSchema } from '@sprucelabs/schema'
 import skillSchema from '#spruce/schemas/spruce/v2020_07_22/skill.schema'
 
 export default buildSchema({
-	...skillSchema,
 	id: 'cliSkill',
 	description: 'A stripped down skill for the cli',
 	fields: {

@@ -25,6 +25,7 @@ export default class SkillFeature<
 		{ name: '@sprucelabs/spruce-skill-utils' },
 		{ name: '@sprucelabs/spruce-core-schemas' },
 		{ name: '@sprucelabs/babel-plugin-schema', isDev: true },
+		{ name: '@sprucelabs/jest-json-reporter', isDev: true },
 		{ name: '@types/node', isDev: true },
 		{ name: 'ts-node', isDev: true },
 		{ name: 'tsconfig-paths', isDev: true },

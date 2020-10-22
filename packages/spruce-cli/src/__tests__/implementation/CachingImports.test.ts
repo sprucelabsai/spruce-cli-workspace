@@ -1,7 +1,7 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import AbstractCliTest from '../../AbstractCliTest'
 import ImportService from '../../services/ImportService'
+import AbstractCliTest from '../../test/AbstractCliTest'
 
 export default class CachingImportsTest extends AbstractCliTest {
 	private static importService: ImportService

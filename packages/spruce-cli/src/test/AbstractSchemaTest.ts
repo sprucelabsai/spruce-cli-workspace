@@ -3,8 +3,8 @@ import {
 	CORE_SCHEMA_VERSION,
 	SchemaHealthCheckItem,
 } from '@sprucelabs/spruce-skill-utils'
+import { ICliBootOptions } from '../cli'
 import AbstractCliTest from './AbstractCliTest'
-import { ICliBootOptions } from './cli'
 
 export default abstract class AbstractSchemaTest extends AbstractCliTest {
 	protected static get schemaTypesFile() {

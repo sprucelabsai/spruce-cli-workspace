@@ -1,6 +1,6 @@
 import { test, assert } from '@sprucelabs/test'
-import AbstractCliTest from '../../AbstractCliTest'
 import FeatureInstaller from '../../features/FeatureInstaller'
+import AbstractCliTest from '../../test/AbstractCliTest'
 
 export default class FeatureInstallerTest extends AbstractCliTest {
 	protected static installer: FeatureInstaller

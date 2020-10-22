@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { assert, test } from '@sprucelabs/test'
-import AbstractErrorTest from '../../../AbstractErrorTest'
+import AbstractErrorTest from '../../../test/AbstractErrorTest'
 import testUtil from '../../../utilities/test.utility'
 
 export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
