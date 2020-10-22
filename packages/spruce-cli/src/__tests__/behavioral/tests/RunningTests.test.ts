@@ -9,7 +9,7 @@ export default class RunningTestsTest extends AbstractTestTest {
 		assert.isFunction(cli.getFeature('test').Action('test').execute)
 	}
 
-	@test()
+	@test.skip()
 	protected static async runningTestsActuallyRunsTests() {
 		const cli = await this.installTests('running-tests')
 		const creationResults = await cli
