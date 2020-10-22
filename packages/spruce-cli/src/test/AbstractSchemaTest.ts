@@ -46,7 +46,7 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 	}
 
 	protected static async installSchemaFeature(
-		cacheKey: string,
+		cacheKey?: string,
 		bootOptions?: ICliBootOptions
 	) {
 		const fixture = this.FeatureFixture()
