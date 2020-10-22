@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.3.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.2.9...v11.3.0) (2020-10-22)
+
+
+### Features
+
+* jest json parsing ([0378614](https://github.com/sprucelabsai/spruce-cli-workspace/commit/0378614))
+* schema updates ([471ee92](https://github.com/sprucelabsai/spruce-cli-workspace/commit/471ee92))
+
+
+
+
+
 ## [11.2.9](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.2.8...v11.2.9) (2020-10-22)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
