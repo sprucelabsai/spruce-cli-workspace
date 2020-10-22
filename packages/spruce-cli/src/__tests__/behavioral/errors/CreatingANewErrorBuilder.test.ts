@@ -28,7 +28,7 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 	}
 
 	protected static async installErrorsAndGetCreateAction() {
-		const cli = await this.installErrorFeature('error-builder')
+		const cli = await this.installErrorFeature('errors')
 		return cli.getFeature('error').Action('create')
 	}
 

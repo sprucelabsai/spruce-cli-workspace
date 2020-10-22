@@ -6,7 +6,7 @@ import testUtil from '../../../utilities/test.utility'
 export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 	@test()
 	protected static async asksForYouToSelectABaseClass() {
-		const cli = await this.installTests('test-finder')
+		const cli = await this.installTests('tests')
 		await this.copyTestFiles()
 
 		const response = cli.getFeature('test').Action('create').execute({

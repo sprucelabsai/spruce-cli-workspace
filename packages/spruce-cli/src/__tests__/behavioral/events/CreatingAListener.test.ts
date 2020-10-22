@@ -3,12 +3,10 @@ import { test, assert } from '@sprucelabs/test'
 import AbstractEventTest from '../../../test/AbstractEventTest'
 import testUtil from '../../../utilities/test.utility'
 
-const CACHE_KEY = 'bootstrap-event'
-
 export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 	@test()
 	protected static async createsValidListener() {
-		const cli = await this.installEventFeature(CACHE_KEY)
+		const cli = await this.installEventFeature('events')
 
 		const version = 'v2020_01_01'
 

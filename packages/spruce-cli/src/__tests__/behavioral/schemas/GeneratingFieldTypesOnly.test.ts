@@ -13,7 +13,7 @@ export default class GeneratingFieldTypesOnlyTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async generatesOnlyFieldTypes() {
-		const cli = await this.installSchemaFeature('fields-sync')
+		const cli = await this.installSchemaFeature('schemas')
 		const results = await cli
 			.getFeature('schema')
 			.Action('fields.sync')

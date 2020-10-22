@@ -5,7 +5,7 @@ import AbstractSchemaTest from '../../test/AbstractSchemaTest'
 export default class ValueTypeMappingTest extends AbstractSchemaTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
-		await this.installSchemaFeature('schema-value-type-mapping')
+		await this.installSchemaFeature('schemas')
 	}
 
 	// WE NEED THIS TEST BACK WHEN WE TEST INTRODUCING NEW SCHEMA FIELDS

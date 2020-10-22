@@ -12,7 +12,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 
 	@test()
 	protected static async errorsStayInSyncWhenSchemasAreDeleted() {
-		const cli = await this.installErrorFeature('options-in-sync')
+		const cli = await this.installErrorFeature('errors')
 
 		const createAction = cli.getFeature('error').Action('create')
 
@@ -119,7 +119,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 
 	@test()
 	protected static async canHandleNestedSchemasWithoutAddingThemToOptions() {
-		const cli = await this.installErrorFeature('options-in-sync')
+		const cli = await this.installErrorFeature('errors')
 		const source = this.resolveTestPath('nested_error_schemas')
 		const destination = this.resolvePath('src/errors')
 

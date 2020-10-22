@@ -25,7 +25,7 @@ export default class BootingASkillTest extends AbstractCliTest {
 					},
 				},
 			],
-			'booting-skill'
+			'skills'
 		)
 		return cli
 	}

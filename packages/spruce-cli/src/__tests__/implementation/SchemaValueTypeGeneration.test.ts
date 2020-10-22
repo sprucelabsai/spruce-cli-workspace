@@ -18,7 +18,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		await super.beforeEach()
 		this.generator = new SchemaGenerator({ templates, term: this.ui })
 
-		const cli = await this.installSchemaFeature('schema-value-type-generation')
+		const cli = await this.installSchemaFeature('schemas')
 
 		const schemasDir = this.resolvePath('src', 'schemas')
 		await diskUtil.copyDir(this.resolveTestPath('test_builders'), schemasDir)

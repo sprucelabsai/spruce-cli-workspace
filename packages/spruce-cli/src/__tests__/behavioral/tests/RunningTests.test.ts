@@ -11,7 +11,7 @@ export default class RunningTestsTest extends AbstractTestTest {
 
 	@test()
 	protected static async runningTestsActuallyRunsTests() {
-		const cli = await this.installTests('running-tests')
+		const cli = await this.installTests('tests')
 		const creationResults = await cli
 			.getFeature('test')
 			.Action('create')

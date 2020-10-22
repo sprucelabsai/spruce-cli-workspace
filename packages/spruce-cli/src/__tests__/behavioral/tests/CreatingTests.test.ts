@@ -11,7 +11,7 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 
 	@test()
 	protected static async canCreateBehavioralTest() {
-		const cli = await this.installTests('create-behavioral-tests')
+		const cli = await this.installTests('tests')
 		const response = await cli.getFeature('test').Action('create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can book appointment',

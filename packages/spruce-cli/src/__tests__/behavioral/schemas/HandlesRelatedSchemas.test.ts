@@ -39,7 +39,7 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 	}
 
 	private static async installCopyAndSync(testDir = 'related_schemas') {
-		const cli = await this.installSchemaFeature('related-schemas')
+		const cli = await this.installSchemaFeature('schemas')
 		const source = this.resolveTestPath(testDir)
 		const destination = this.resolvePath('src/schemas')
 
@@ -55,7 +55,7 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async nestedSchemasInDynamicFields() {
-		const cli = await this.installSchemaFeature('related-schemas')
+		const cli = await this.installSchemaFeature('schemas')
 		const schemasDir = this.resolvePath('src', 'schemas')
 
 		await diskUtil.copyDir(

@@ -145,7 +145,7 @@ export default class FeatureFixture implements IServiceProvider {
 	}
 
 	private async copyCachedSkillAndTrackItsDir(cacheKey: string) {
-		const settingsFile = this.getSettingsFilePath()
+		const settingsFile = this.getTestCacheTrackerFilePath()
 
 		const exists = diskUtil.doesFileExist(settingsFile)
 		let alreadyInstalled = false
@@ -187,18 +187,11 @@ export default class FeatureFixture implements IServiceProvider {
 		return alreadyInstalled
 	}
 
-	private getSettingsFilePath() {
-		const packagePath = diskUtil.resolvePath(
-			__dirname,
-			'..',
-			'..',
-			'package.json'
-		)
-		const packageContents = JSON.parse(diskUtil.readFile(packagePath))
+	public getTestCacheTrackerFilePath() {
 		return diskUtil.resolveHashSprucePath(
 			__dirname,
 			'tmp',
-			`${packageContents.version}-test-skill-dirs.json`
+			`cached-skills.json`
 		)
 	}
 

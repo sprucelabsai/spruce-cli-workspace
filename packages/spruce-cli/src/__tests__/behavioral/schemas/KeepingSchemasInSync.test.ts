@@ -38,7 +38,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async syncingWithNoSchemasSucceeds() {
-		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
+		const cli = await this.installSchemaFeature('schemas')
 
 		const results = await cli.getFeature('schema').Action('sync').execute({})
 
@@ -53,7 +53,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async syncingCoreSchemasGeneratesTypesFile() {
-		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
+		const cli = await this.installSchemaFeature('schemas')
 		await this.copyMockCoreSchemas()
 
 		const results = await cli
@@ -83,10 +83,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async syncSchemasTwiceSkipsFiles() {
-		const cli = await this.syncSchemas(
-			'keeps-schemas-in-sync',
-			this.coreSyncOptions
-		)
+		const cli = await this.syncSchemas('schemas', this.coreSyncOptions)
 		const results = await cli
 			.getFeature('schema')
 			.Action('sync')
@@ -104,7 +101,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async makeSureSchemaTypesAreVersioned() {
-		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
+		const cli = await this.installSchemaFeature('schemas')
 
 		await this.copyMockCoreSchemas()
 
@@ -127,7 +124,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async generateCoreSchemaTypesGeneratesValidFiles() {
-		const cli = await this.installSchemaFeature('keeps-schemas-in-sync')
+		const cli = await this.installSchemaFeature('schemas')
 
 		await this.copyMockCoreSchemas()
 
@@ -165,7 +162,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async canHandleHyphenSchemaIds() {
-		const cli = await this.syncSchemas('keeps-schemas-in-sync')
+		const cli = await this.syncSchemas('schemas')
 
 		const createResponse = await cli
 			.getFeature('schema')
@@ -207,7 +204,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async coreSchemasPullFromCoreSchemasModuleDuringNormalGeneration() {
-		const cli = await this.syncSchemas('keeps-schemas-in-sync')
+		const cli = await this.syncSchemas('schemas')
 
 		const createResponse = await cli
 			.getFeature('schema')
@@ -233,7 +230,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async schemasStayInSyncWhenBuildersAreDeleted() {
-		const cli = await this.syncSchemas('keeps-schemas-in-sync')
+		const cli = await this.syncSchemas('schemas')
 		const version = versionUtil.generateVersion()
 		const typeChecker = this.Service('typeChecker')
 		const createAction = cli.getFeature('schema').Action('create')
