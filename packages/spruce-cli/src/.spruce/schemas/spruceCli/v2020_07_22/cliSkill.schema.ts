@@ -7,7 +7,7 @@ const cliSkillSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICliSkillSchema  = {
 	id: 'cliSkill',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
-	name: 'Skill',
+	name: '',
 	description: 'A stripped down skill for the cli',
 	    fields: {
 	            /** Id. */
@@ -36,6 +36,7 @@ const cliSkillSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICliSkillSchema  = {
 	            'slug': {
 	                label: 'Slug',
 	                type: 'text',
+	                isRequired: true,
 	                options: undefined
 	            },
 	    }
