@@ -9,7 +9,7 @@ export default class RunningTestsTest extends AbstractTestTest {
 		assert.isFunction(cli.getFeature('test').Action('test').execute)
 	}
 
-	@test.skip()
+	@test()
 	protected static async runningTestsActuallyRunsTests() {
 		const cli = await this.installTests('running-tests')
 		const creationResults = await cli
@@ -45,6 +45,24 @@ export default class RunningTestsTest extends AbstractTestTest {
 		const results = await cli.getFeature('test').Action('test').execute({})
 
 		assert.isFalsy(results.errors)
-		// assert.isEqualDeep(results.meta, [{}])
+		// assert.isEqualDeep(results.meta, {
+		// 	testResults: [
+		// 		{
+		// 			testFile: 'behavioral/CanBookAppointment.test.ts',
+		// 			status: 'passed',
+		// 			tests: [
+		// 				{
+		// 					name: 'canBookAppointment',
+		// 					status: 'passed',
+		// 				},
+		// 			],
+		// 		},
+		// 		{
+		// 			testFile: 'behavioral/CanCancelAppointment.test.ts',
+		// 			status: 'failed',
+		// 			tests: [{ name: 'canCancelAppointment', status: 'failed' }],
+		// 		},
+		// 	],
+		// })
 	}
 }
