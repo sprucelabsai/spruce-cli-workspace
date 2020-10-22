@@ -33,7 +33,7 @@ jobs:
       - run:
           name: "Build"
           command: |
-            yarn build || yarn build
+            yarn build
       - run:
           name: "Lint"
           command: |

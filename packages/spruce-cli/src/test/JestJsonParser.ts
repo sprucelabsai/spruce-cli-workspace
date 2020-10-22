@@ -33,8 +33,8 @@ export default class JestJsonParser {
 				const json = JSON.parse(cleanedSegment)
 
 				const results: TestResult = {
-					testFile: this.fullPathToTestFile(json.test.path),
-					status: this.mapJestStatusToResultStatus(json.status),
+					testFile: this.fullPathToTestFile(json),
+					status: this.mapJestStatusToResultStatus(json),
 				}
 
 				this.results.push(results)
@@ -46,8 +46,10 @@ export default class JestJsonParser {
 		this.buffer = dataToProcess
 	}
 
-	private fullPathToTestFile(path: string) {
-		const partialPath = path.split('__tests__').pop()
+	private fullPathToTestFile(json: Record<string, any>) {
+		const partialPath = (json.test?.path ?? json.results?.testFilePath ?? '')
+			.split('__tests__')
+			.pop()
 		if (!partialPath) {
 			throw new Error('INVALID TEST FILE')
 		}
@@ -55,11 +57,14 @@ export default class JestJsonParser {
 		return tsFile
 	}
 
-	private mapJestStatusToResultStatus(status: string) {
-		const map: Record<string, any> = {
-			testStart: 'running',
+	private mapJestStatusToResultStatus(
+		json: Record<string, any>
+	): TestResult['status'] {
+		if (json.results) {
+			return json.results.numFailingTests == 0 ? 'passed' : 'failed'
+		} else {
+			return 'running'
 		}
-		return map[status]
 	}
 
 	public getResults(): TestResult[] {

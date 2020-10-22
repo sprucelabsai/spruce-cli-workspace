@@ -5,7 +5,7 @@ import AbstractSchemaTest from '../../test/AbstractSchemaTest'
 export default class ImportingSchemaImportsTest extends AbstractSchemaTest {
 	@test()
 	protected static async schemaImportsLocalImports() {
-		const cli = await this.installSchemaFeature('importing-schema-imports')
+		const cli = await this.installSchemaFeature('schemas')
 		const source = this.resolveTestPath('schemas_with_imports')
 		const destination = this.resolvePath('src', 'schemas')
 

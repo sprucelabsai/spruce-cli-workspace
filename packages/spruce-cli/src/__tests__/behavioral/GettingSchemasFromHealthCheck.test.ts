@@ -53,7 +53,7 @@ export default class GettingSchemasFromHealthCheckTest extends AbstractSchemaTes
 	}
 
 	private static async installAndSyncSchemas() {
-		const cli = await this.installSchemaFeature('getting-schemas-health-check')
+		const cli = await this.installSchemaFeature('schemas')
 		await cli.getFeature('schema').Action('sync').execute({})
 		return cli
 	}

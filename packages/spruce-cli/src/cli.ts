@@ -143,8 +143,6 @@ export default class Cli implements ICli {
 		const terminal = options?.graphicsInterface ?? new TerminalInterface(cwd)
 		const emitter = CliGlobalEmitter.Emitter()
 
-		terminal.renderHero('Spruce XP')
-
 		const featureInstaller = FeatureInstallerFactory.WithAllFeatures({
 			cwd,
 			serviceFactory,
@@ -205,6 +203,9 @@ export async function run(argv: string[] = []): Promise<void> {
 		log.trace(`CWD updated: ${newCwd}`)
 		cwd = newCwd
 	}
+
+	const terminal = new TerminalInterface(cwd)
+	terminal.renderHero('Spruce XP')
 
 	await Cli.Boot({ program, cwd })
 

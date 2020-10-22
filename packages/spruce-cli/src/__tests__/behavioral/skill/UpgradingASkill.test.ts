@@ -6,7 +6,7 @@ import AbstractCliTest from '../../../test/AbstractCliTest'
 export default class UpgradingASkillTest extends AbstractCliTest {
 	@test()
 	protected static async forceUpgradeOverwritesOldIndexFileWithoutAsking() {
-		const cli = await this.installAndBreakSkill('skill-upgrade-force')
+		const cli = await this.installAndBreakSkill('skills')
 
 		const results = await cli.getFeature('skill').Action('upgrade').execute({
 			force: true,
@@ -24,7 +24,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async upgradeWillAskIfYouWantToOverwriteFiles() {
-		const cli = await this.installAndBreakSkill('skill-upgrade-ask')
+		const cli = await this.installAndBreakSkill('skills')
 
 		const promise = cli.getFeature('skill').Action('upgrade').execute({})
 
