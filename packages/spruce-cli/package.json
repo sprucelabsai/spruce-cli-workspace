@@ -86,7 +86,7 @@
 		"@sprucelabs/babel-plugin-schema": "^3.1.2",
 		"@sprucelabs/jest-sheets-reporter": "^1.2.4",
 		"@sprucelabs/test": "^7.1.4",
-		"@sprucelabs/test-utils": "^1.1.565",
+		"@sprucelabs/test-utils": "^1.1.569",
 		"@types/blessed": "^0.1.17",
 		"@types/eslint": "^7.2.4",
 		"@types/fs-extra": "^9.0.2",
