@@ -80,11 +80,10 @@ export default class CommandService {
 					reject(
 						new SpruceError({
 							code: 'EXECUTING_COMMAND_FAILED',
-							cmd: JSON.stringify({ executable, args }),
+							cmd: `${executable} ${args.join(' ')}`,
 							cwd,
 							stdout,
 							stderr,
-							originalError: new Error(stderr),
 						})
 					)
 				}

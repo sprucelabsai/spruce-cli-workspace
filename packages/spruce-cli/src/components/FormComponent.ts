@@ -11,7 +11,7 @@ import SchemaEntity, {
 import { pick } from 'lodash'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import SpruceError from '../errors/SpruceError'
-import { IGraphicsInterface, IGraphicsTextEffect } from '../types/cli.types'
+import { GraphicsInterface, GraphicsTextEffect } from '../types/cli.types'
 
 export enum FormBuilderActionType {
 	Done = 'done',
@@ -51,7 +51,7 @@ export interface IFormPresentationOptions<
 }
 
 export interface IFormOptions<T extends ISchema> {
-	term: IGraphicsInterface
+	term: GraphicsInterface
 	schema: T
 	initialValues?: SchemaPartialValues<T>
 	onWillAskQuestion?: <K extends SchemaFieldNames<T>>(
@@ -66,7 +66,7 @@ interface IHandlers<T extends ISchema> {
 }
 
 export default class FormComponent<S extends ISchema> extends SchemaEntity<S> {
-	public term: IGraphicsInterface
+	public term: GraphicsInterface
 	public handlers: IHandlers<S> = {}
 
 	public constructor(options: IFormOptions<S>) {
@@ -103,7 +103,7 @@ export default class FormComponent<S extends ISchema> extends SchemaEntity<S> {
 
 			// Start with headline
 			if (headline) {
-				term.renderHeadline(headline, [IGraphicsTextEffect.SpruceHeader])
+				term.renderHeadline(headline, [GraphicsTextEffect.SpruceHeader])
 				term.renderLine('')
 			}
 
@@ -200,8 +200,8 @@ export default class FormComponent<S extends ISchema> extends SchemaEntity<S> {
 	public renderError(error: Error) {
 		this.term.renderDivider()
 		this.term.renderHeadline('Please fix the following...', [
-			IGraphicsTextEffect.Red,
-			IGraphicsTextEffect.Bold,
+			GraphicsTextEffect.Red,
+			GraphicsTextEffect.Bold,
 		])
 
 		this.term.renderLine('')

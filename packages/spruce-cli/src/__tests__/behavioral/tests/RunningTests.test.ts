@@ -10,6 +10,24 @@ export default class RunningTestsTest extends AbstractTestTest {
 	}
 
 	@test()
+	protected static async runningTestsWithoutProperDependenciesShowsHelpfulError() {
+		const cli = await this.installTests('tests')
+
+		await cli.getFeature('test').Action('create').execute({
+			type: 'behavioral',
+			nameReadable: 'Can book appointment',
+			nameCamel: 'canBookAppointment',
+			namePascal: 'CanBookAppointment',
+		})
+
+		const pkgService = this.Service('pkg')
+		await pkgService.uninstall('@sprucelabs/jest-json-reporter')
+
+		const results = await cli.getFeature('test').Action('test').execute({})
+		assert.isTruthy(results.errors)
+	}
+
+	@test()
 	protected static async runningTestsActuallyRunsTests() {
 		const cli = await this.installTests('tests')
 		const creationResults = await cli
@@ -45,24 +63,24 @@ export default class RunningTestsTest extends AbstractTestTest {
 		const results = await cli.getFeature('test').Action('test').execute({})
 
 		assert.isFalsy(results.errors)
-		// assert.isEqualDeep(results.meta, {
-		// 	testResults: [
-		// 		{
-		// 			testFile: 'behavioral/CanBookAppointment.test.ts',
-		// 			status: 'passed',
-		// 			tests: [
-		// 				{
-		// 					name: 'canBookAppointment',
-		// 					status: 'passed',
-		// 				},
-		// 			],
-		// 		},
-		// 		{
-		// 			testFile: 'behavioral/CanCancelAppointment.test.ts',
-		// 			status: 'failed',
-		// 			tests: [{ name: 'canCancelAppointment', status: 'failed' }],
-		// 		},
-		// 	],
-		// })
+		assert.isEqualDeep(results.meta, {
+			testResults: [
+				{
+					testFile: 'behavioral/CanBookAppointment.test.ts',
+					status: 'passed',
+					tests: [
+						{
+							name: 'canBookAppointment',
+							status: 'passed',
+						},
+					],
+				},
+				{
+					testFile: 'behavioral/CanCancelAppointment.test.ts',
+					status: 'failed',
+					tests: [{ name: 'canCancelAppointment', status: 'failed' }],
+				},
+			],
+		})
 	}
 }

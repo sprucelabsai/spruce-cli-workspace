@@ -2,7 +2,7 @@ import { templates } from '@sprucelabs/spruce-templates'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory from '../services/ServiceFactory'
 import StoreFactory from '../stores/StoreFactory'
-import { IGraphicsInterface } from '../types/cli.types'
+import { GraphicsInterface } from '../types/cli.types'
 import CircleCIFeature from './CircleCIFeature'
 import ErrorFeature from './error/ErrorFeature'
 import EventFeature from './event/EventFeature'
@@ -42,7 +42,7 @@ export default class FeatureInstallerFactory {
 		serviceFactory: ServiceFactory
 		storeFactory: StoreFactory
 		featureInstaller?: FeatureInstaller
-		term: IGraphicsInterface
+		term: GraphicsInterface
 		emitter: GlobalEmitter
 	}): FeatureInstaller {
 		const { cwd, serviceFactory, storeFactory, term, emitter } = options

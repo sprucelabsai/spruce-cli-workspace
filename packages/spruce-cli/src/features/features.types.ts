@@ -6,7 +6,7 @@ import ServiceFactory from '../services/ServiceFactory'
 import StoreFactory from '../stores/StoreFactory'
 import {
 	GeneratedFile,
-	IGraphicsInterface,
+	GraphicsInterface,
 	NpmPackage,
 } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
@@ -27,7 +27,7 @@ export interface IFeatureActionOptions {
 	parent: AbstractFeature
 	storeFactory: StoreFactory
 	featureInstaller: FeatureInstaller
-	term: IGraphicsInterface
+	term: GraphicsInterface
 	generatorFactory: GeneratorFactory
 }
 

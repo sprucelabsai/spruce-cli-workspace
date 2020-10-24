@@ -10,7 +10,7 @@ import ServiceFactory, {
 	IServiceMap,
 } from '../services/ServiceFactory'
 import log from '../singletons/log'
-import { IGraphicsInterface } from '../types/cli.types'
+import { GraphicsInterface } from '../types/cli.types'
 import testUtil from '../utilities/test.utility'
 
 export interface ICachedCli {
@@ -24,12 +24,12 @@ export default class FeatureFixture implements IServiceProvider {
 	private serviceFactory: ServiceFactory
 	private static linkedUtils = false
 	private static dirsToDelete: string[] = []
-	private term: IGraphicsInterface
+	private term: GraphicsInterface
 
 	public constructor(
 		cwd: string,
 		serviceFactory: ServiceFactory,
-		term: IGraphicsInterface
+		term: GraphicsInterface
 	) {
 		this.cwd = cwd
 		this.serviceFactory = serviceFactory

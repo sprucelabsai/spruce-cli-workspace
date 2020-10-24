@@ -2,7 +2,7 @@ import { ISchema, SchemaPartialValues, SchemaValues } from '@sprucelabs/schema'
 import merge from 'lodash/merge'
 import FormComponent from '../components/FormComponent'
 import SpruceError from '../errors/SpruceError'
-import { IGraphicsInterface } from '../types/cli.types'
+import { GraphicsInterface } from '../types/cli.types'
 import formUtil from '../utilities/form.utility'
 import AbstractFeature from './AbstractFeature'
 import FeatureInstaller from './FeatureInstaller'
@@ -22,11 +22,11 @@ type FeatureCommandExecuteOptions<
 export default class FeatureCommandExecuter<F extends FeatureCode> {
 	private featureCode: F
 	private actionCode: string
-	private ui: IGraphicsInterface
+	private ui: GraphicsInterface
 	private featureInstaller: FeatureInstaller
 
 	public constructor(options: {
-		term: IGraphicsInterface
+		term: GraphicsInterface
 		featureCode: F
 		actionCode: string
 		featureInstaller: FeatureInstaller

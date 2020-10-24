@@ -15,7 +15,7 @@ import ServiceFactory, {
 import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
 import {
 	NpmPackage,
-	IGraphicsInterface,
+	GraphicsInterface,
 	GeneratedFile,
 } from '../types/cli.types'
 import featuresUtil from './feature.utilities'
@@ -63,7 +63,7 @@ export default abstract class AbstractFeature<
 		storeFactory: StoreFactory
 		actionFactory?: FeatureActionFactory
 		featureInstaller: FeatureInstaller
-		term: IGraphicsInterface
+		term: GraphicsInterface
 		emitter: GlobalEmitter
 	}) {
 		this.cwd = options.cwd

@@ -51,8 +51,9 @@
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.12.1",
+		"@jest/reporters": "^26.6.0",
 		"@sprucelabs/error": "^2.4.0",
-		"@sprucelabs/jest-json-reporter": "^1.0.1",
+		"@sprucelabs/jest-json-reporter": "^2.0.0",
 		"@sprucelabs/log": "^10.2.293",
 		"@sprucelabs/mercury": "^10.5.72",
 		"@sprucelabs/mercury-event-emitter": "^9.1.10",

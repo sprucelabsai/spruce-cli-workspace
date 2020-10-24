@@ -1,5 +1,5 @@
 import { Templates } from '@sprucelabs/spruce-templates'
-import { IGraphicsInterface } from '../types/cli.types'
+import { GraphicsInterface } from '../types/cli.types'
 import { IGeneratorOptions } from './AbstractGenerator'
 import ErrorGenerator from './ErrorGenerator'
 import EventGenerator from './EventGenerator'
@@ -26,9 +26,9 @@ export type GeneratorCode = keyof GeneratorMap
 
 export default class GeneratorFactory {
 	private templates: Templates
-	private term: IGraphicsInterface
+	private term: GraphicsInterface
 
-	public constructor(templates: Templates, term: IGraphicsInterface) {
+	public constructor(templates: Templates, term: GraphicsInterface) {
 		this.templates = templates
 		this.term = term
 	}

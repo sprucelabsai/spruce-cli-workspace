@@ -73,4 +73,12 @@ export default class PkgService extends CommandService {
 			})
 		}
 	}
+
+	public async uninstall(pkg: string[] | string) {
+		const packages = Array.isArray(pkg) ? pkg : [pkg]
+		const args: string[] = ['remove', ...packages]
+		await this.execute('yarn', {
+			args,
+		})
+	}
 }

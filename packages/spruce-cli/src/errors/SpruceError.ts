@@ -1,5 +1,7 @@
 import AbstractSpruceError from '@sprucelabs/error'
-import ErrorOptions from '#spruce/errors/options.types'
+import ErrorOptions, {
+	IExecutingCommandFailedErrorOptions,
+} from '#spruce/errors/options.types'
 
 export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 	/** An easy to understand version of the errors */
@@ -75,13 +77,13 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				} else {
 					message = ''
 				}
-				message += `The command that was being executed failed ${options.cmd}.`
+				message += `Executing command failed '${options.cmd}'.\n\n`
 				if (options.cwd) {
-					message += `\n\nCWD: ${options.cwd}`
+					message += `cwd: ${options.cwd}\n\n`
 				}
 
-				if (options.stdout) {
-					message += '\n\nstdout:' + options.stdout
+				if (options.stderr) {
+					message += this.cleanStdErr(options.stderr) + '\n\n'
 				}
 
 				break
@@ -143,5 +145,9 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				  )}`
 				: ''
 		}`
+	}
+
+	private cleanStdErr(stderr: string) {
+		return stderr.replace('warning package.json: No license field', '').trim()
 	}
 }
