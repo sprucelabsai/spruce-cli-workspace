@@ -173,6 +173,7 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 		const firstPart = data.substr(0, 100)
 		const secondPart = data.substr(100)
 
+		this.parser.write(this.generateTestResults('onRunStart'))
 		this.parser.write(firstPart)
 		this.parser.write(secondPart)
 		this.parser.write(
@@ -183,17 +184,19 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 		)
 
 		const testResults = this.parser.getResults()
-		assert.isTruthy(testResults.testFiles)
-		assert.isLength(testResults.testFiles, 2)
 
-		assert.isEqualDeep(testResults.testFiles[0], {
-			testFile: `behavioral/errors/KeepingErrorsInSync.test.ts`,
-			status: 'running',
-		})
-
-		assert.isEqualDeep(testResults.testFiles[1], {
-			testFile: 'behavioral/tests/CreatingANewErrorBuilder.test.ts',
-			status: 'running',
+		assert.isEqualDeep(testResults, {
+			totalTestFiles: 43,
+			testFiles: [
+				{
+					testFile: 'behavioral/errors/KeepingErrorsInSync.test.ts',
+					status: 'running',
+				},
+				{
+					testFile: 'behavioral/tests/CreatingANewErrorBuilder.test.ts',
+					status: 'running',
+				},
+			],
 		})
 	}
 
@@ -295,9 +298,9 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 
 		assert.isTruthy(testResults.testFiles)
 		assert.isLength(testResults.testFiles, 11)
-		debugger
+
 		assert.isEqualDeep(testResults, {
-			totalTestFiles: 183,
+			totalTestFiles: 39,
 			testFiles: [
 				{
 					testFile: 'behavioral/errors/CreatingANewErrorBuilder.test.ts',
@@ -570,8 +573,10 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 					],
 				},
 			],
+			totalTestFilesComplete: 20,
 			totalFailed: 1,
 			totalPassed: 181,
+			totalTests: 183,
 		})
 	}
 }

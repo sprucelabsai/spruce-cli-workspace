@@ -16,6 +16,7 @@ import inquirer from 'inquirer'
 import _ from 'lodash'
 import { filter } from 'lodash'
 import ora from 'ora'
+import { terminal } from 'terminal-kit'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import SpruceError from '../errors/SpruceError'
 import log from '../singletons/log'
@@ -49,6 +50,10 @@ function filterEffectsForCFonts(effects: GraphicsTextEffect[]) {
 				GraphicsTextEffect.Visible,
 			].indexOf(effect) === -1
 	)
+}
+
+type TerminalSpecificOptions = {
+	eraseBeforeRender?: boolean
 }
 
 export default class TerminalInterface implements GraphicsInterface {
@@ -241,7 +246,6 @@ export default class TerminalInterface implements GraphicsInterface {
 		}
 	}
 
-	/** A BIG headline */
 	public renderHero(
 		message: string,
 		effects: GraphicsTextEffect[] = [
@@ -260,11 +264,20 @@ export default class TerminalInterface implements GraphicsInterface {
 		return this.renderLine(`👨‍🏫 ${message}`)
 	}
 
-	public renderLine(message: any, effects: GraphicsTextEffect[] = []) {
+	public renderLine(
+		message: any,
+		effects: GraphicsTextEffect[] = [],
+		options?: TerminalSpecificOptions
+	) {
 		let write: any = chalk
 		effects.forEach((effect) => {
 			write = write[effect]
 		})
+
+		if (options?.eraseBeforeRender) {
+			terminal.eraseLine()
+		}
+
 		console.log(effects.length > 0 ? write(message) : message)
 	}
 
@@ -275,7 +288,6 @@ export default class TerminalInterface implements GraphicsInterface {
 		])
 	}
 
-	/** Show a simple loader */
 	public async startLoading(message?: string) {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.stopLoading()
@@ -311,12 +323,10 @@ export default class TerminalInterface implements GraphicsInterface {
 		return
 	}
 
-	/** Clear the console */
 	public clear() {
 		console.clear()
 	}
 
-	/** Print some code beautifully */
 	public renderCodeSample(code: string) {
 		try {
 			const colored = emphasize.highlight('js', code).value
@@ -326,7 +336,6 @@ export default class TerminalInterface implements GraphicsInterface {
 		}
 	}
 
-	/** Ask the user for something */
 	public async prompt<T extends FieldDefinition>(
 		definition: T
 	): Promise<FieldDefinitionValueType<T>> {

@@ -1,6 +1,9 @@
 import { buildSchema } from '@sprucelabs/schema'
 import chalk from 'chalk'
+import { terminal } from 'terminal-kit'
+import TerminalInterface from '../../../interfaces/TerminalInterface'
 import JestJsonParser from '../../../test/JestJsonParser'
+import { GraphicsTextEffect } from '../../../types/cli.types'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { IFeatureActionExecuteResponse } from '../../features.types'
 
@@ -30,29 +33,48 @@ export interface SpruceTestResults {
 	totalPassed?: number
 	totalFailed?: number
 	totalTestFiles: number
+	totalTestFilesComplete?: number
 	testFiles?: SpruceTestFile[]
 }
 
 export default class TestAction extends AbstractFeatureAction<ActionSchema> {
 	public name = 'test'
 	public optionsSchema = optionsSchema
+	private testReportStartY = 0
 
 	public async execute(): Promise<IFeatureActionExecuteResponse> {
 		let testResults: SpruceTestResults | undefined
 		const parser = new JestJsonParser()
 		const results: IFeatureActionExecuteResponse = {}
 
-		this.ui.startLoading('Starting tests...')
+		this.ui.clear()
+		this.ui.renderHero('Testing...')
+
+		const progressBar = terminal.progressBar({
+			width: 100,
+			percent: true,
+		})
+
+		this.testReportStartY = await new Promise((resolve) => {
+			terminal.requestCursorLocation()
+			terminal.getCursorLocation((err, x, y) => {
+				resolve((y ?? 10) + 2)
+			})
+		})
 
 		try {
 			await this.Service('command').execute(
 				'yarn test --reporters="@sprucelabs/jest-json-reporter"',
 				{
 					onData: (data) => {
-						this.ui.stopLoading()
 						parser.write(data)
 						testResults = parser.getResults()
 						this.renderTestResults(testResults)
+
+						progressBar?.update(
+							(testResults.totalTestFilesComplete ?? 0) /
+								testResults.totalTestFiles
+						)
 					},
 				}
 			)
@@ -71,31 +93,65 @@ export default class TestAction extends AbstractFeatureAction<ActionSchema> {
 	}
 
 	private renderTestResults(testResults: SpruceTestResults) {
-		this.ui.clear()
-		this.ui.renderHero('Running tests')
+		terminal.moveTo(0, this.testReportStartY)
+		terminal.eraseDisplayBelow()
 		testResults.testFiles?.forEach((result) => {
 			this.renderTestFile(result)
 		})
 	}
 
 	private renderTestFile(result: SpruceTestFile) {
+		const term = this.ui as TerminalInterface
+
 		this.ui.renderLine(
-			`${this.renderStatusBlock(result.status)} ${result.testFile}`
+			`${this.renderStatusBlock(result.status)} ${result.testFile}`,
+			[]
 		)
+		if (result.status === 'failed') {
+			result.tests?.forEach((test) => {
+				const effects: GraphicsTextEffect[] = this.generateTestTextEffects(test)
+
+				term.renderLine(`           ${'x ' + test.name}`, effects, {})
+
+				if (test.status === 'failed') {
+					test.errorMessages?.forEach((message) => {
+						this.ui.renderDivider()
+						term.renderCodeSample(message)
+						this.ui.renderDivider()
+					})
+				}
+			})
+		}
+	}
+
+	private generateTestTextEffects(test: SpruceTestFileTest) {
+		const effects: GraphicsTextEffect[] = [GraphicsTextEffect.Italic]
+		switch (test.status) {
+			case 'failed':
+				effects.push(GraphicsTextEffect.Red)
+				break
+			case 'passed':
+				effects.push(GraphicsTextEffect.Green)
+				break
+		}
+		return effects
 	}
 
 	private renderStatusBlock(status: SpruceTestFile['status']) {
 		let method: keyof typeof chalk = 'bgYellow'
+		let padding = 10
 		switch (status) {
 			case 'passed':
 				method = 'bgGreen'
+				padding = 11
 				break
 			case 'failed':
+				padding = 11
 				method = 'bgRed'
 				break
 		}
 
-		return chalk[method].black(this.centerStringWithSpaces(status, 10))
+		return chalk[method].black(this.centerStringWithSpaces(status, padding))
 	}
 
 	private centerStringWithSpaces(text: string, numberOfSpaces: number) {

@@ -72,6 +72,7 @@ export default class JestJsonParser {
 				this.testResults = {
 					totalTestFiles: result.results.numTotalTestSuites,
 				}
+
 				break
 
 			case 'onTestFileStart':
@@ -79,11 +80,18 @@ export default class JestJsonParser {
 					testFile: this.pullPathFromTestResponse(result),
 					status: this.pullTestFileStatusFromTestResponse(result),
 				})
+
 				break
 			case 'onTestFileResult': {
-				this.testResults.totalTestFiles = result.aggregatedResult.numTotalTests
+				this.testResults.totalTestFilesComplete = this.pullTestFilesCompleteFromAggregatedResults(
+					result.aggregatedResult
+				)
+				this.testResults.totalTestFiles =
+					result.aggregatedResult.numTotalTestSuites
 				this.testResults.totalFailed = result.aggregatedResult.numFailedTests
 				this.testResults.totalPassed = result.aggregatedResult.numPassedTests
+				this.testResults.totalTests = result.aggregatedResult.numTotalTests
+
 				for (const testResult of result.aggregatedResult.testResults) {
 					const name = this.mapAbsoluteJsToRelativeTsPath(
 						testResult.testFilePath
@@ -102,6 +110,7 @@ export default class JestJsonParser {
 						testFiles[idx] = file
 					}
 				}
+
 				break
 			}
 		}
@@ -120,6 +129,16 @@ export default class JestJsonParser {
 		// }
 
 		// return spruceResult
+	}
+
+	private pullTestFilesCompleteFromAggregatedResults(
+		aggregatedResult: OnTestFileResult['aggregatedResult']
+	) {
+		const total =
+			aggregatedResult.numFailedTestSuites +
+			aggregatedResult.numPassedTestSuites
+
+		return total
 	}
 
 	private pullPathFromTestResponse(result: JsonParserResult) {

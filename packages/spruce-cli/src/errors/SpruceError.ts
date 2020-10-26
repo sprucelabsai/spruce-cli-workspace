@@ -1,7 +1,5 @@
 import AbstractSpruceError from '@sprucelabs/error'
-import ErrorOptions, {
-	IExecutingCommandFailedErrorOptions,
-} from '#spruce/errors/options.types'
+import ErrorOptions from '#spruce/errors/options.types'
 
 export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 	/** An easy to understand version of the errors */
