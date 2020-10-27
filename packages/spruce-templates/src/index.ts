@@ -183,7 +183,6 @@ export const templates = {
 		return template(options)
 	},
 
-	/** Copy an entire directory and pass a context for all files */
 	async directoryTemplate<K extends DirectoryTemplateCode>(options: {
 		kind: K
 		context: IDirectoryTemplateContextMap[K]
@@ -191,7 +190,6 @@ export const templates = {
 		return DirectoryTemplateUtility.build(options)
 	},
 
-	/** Tries our best to see if a specific directory is based on a valid directory template */
 	async isValidTemplatedDirectory(options: {
 		kind: DirectoryTemplateCode
 		dir: string

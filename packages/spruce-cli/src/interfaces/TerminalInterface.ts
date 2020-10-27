@@ -16,13 +16,17 @@ import inquirer from 'inquirer'
 import _ from 'lodash'
 import { filter } from 'lodash'
 import ora from 'ora'
+import { terminal } from 'terminal-kit'
+import { ProgressBarController } from 'terminal-kit/Terminal'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import SpruceError from '../errors/SpruceError'
 import log from '../singletons/log'
 import {
 	ExecutionResults,
-	IGraphicsInterface,
-	IGraphicsTextEffect,
+	GraphicsInterface,
+	GraphicsTextEffect,
+	ProgressBarOptions,
+	ProgressBarUpdateOptions,
 } from '../types/cli.types'
 
 let fieldCount = 0
@@ -32,30 +36,35 @@ function generateInquirerFieldName() {
 }
 
 /** Remove effects cfonts does not support */
-function filterEffectsForCFonts(effects: IGraphicsTextEffect[]) {
+function filterEffectsForCFonts(effects: GraphicsTextEffect[]) {
 	return filter(
 		effects,
 		(effect) =>
 			[
-				IGraphicsTextEffect.SpruceHeader,
-				IGraphicsTextEffect.Reset,
-				IGraphicsTextEffect.Bold,
-				IGraphicsTextEffect.Dim,
-				IGraphicsTextEffect.Italic,
-				IGraphicsTextEffect.Underline,
-				IGraphicsTextEffect.Inverse,
-				IGraphicsTextEffect.Hidden,
-				IGraphicsTextEffect.Strikethrough,
-				IGraphicsTextEffect.Visible,
+				GraphicsTextEffect.SpruceHeader,
+				GraphicsTextEffect.Reset,
+				GraphicsTextEffect.Bold,
+				GraphicsTextEffect.Dim,
+				GraphicsTextEffect.Italic,
+				GraphicsTextEffect.Underline,
+				GraphicsTextEffect.Inverse,
+				GraphicsTextEffect.Hidden,
+				GraphicsTextEffect.Strikethrough,
+				GraphicsTextEffect.Visible,
 			].indexOf(effect) === -1
 	)
 }
 
-export default class TerminalInterface implements IGraphicsInterface {
+type TerminalSpecificOptions = {
+	eraseBeforeRender?: boolean
+}
+
+export default class TerminalInterface implements GraphicsInterface {
 	public isPromptActive = false
 	public cwd: string
 	private renderStackTraces = false
 	private static loader?: ora.Ora | null
+	private progressBar: ProgressBarController | null = null
 
 	public constructor(cwd: string, renderStackTraces = false) {
 		this.cwd = cwd
@@ -66,7 +75,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 		throw new Error('sendInput not supported on the TerminalInterface!')
 	}
 
-	public renderLines(lines: any[], effects?: IGraphicsTextEffect[]) {
+	public renderLines(lines: any[], effects?: GraphicsTextEffect[]) {
 		lines.forEach((line) => {
 			this.renderLine(line, effects)
 		})
@@ -74,7 +83,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 
 	public renderObject(
 		object: Record<string, any>,
-		effects: IGraphicsTextEffect[] = [IGraphicsTextEffect.Green]
+		effects: GraphicsTextEffect[] = [GraphicsTextEffect.Green]
 	) {
 		this.renderDivider()
 		this.renderLine('')
@@ -96,17 +105,17 @@ export default class TerminalInterface implements IGraphicsInterface {
 		headline?: string
 		lines?: string[]
 		object?: Record<string, any>
-		headlineEffects?: IGraphicsTextEffect[]
-		bodyEffects?: IGraphicsTextEffect[]
-		dividerEffects?: IGraphicsTextEffect[]
+		headlineEffects?: GraphicsTextEffect[]
+		bodyEffects?: GraphicsTextEffect[]
+		dividerEffects?: GraphicsTextEffect[]
 	}) {
 		const {
 			headline,
 			lines,
 			object,
 			dividerEffects = [],
-			headlineEffects = [IGraphicsTextEffect.Blue, IGraphicsTextEffect.Bold],
-			bodyEffects = [IGraphicsTextEffect.Green],
+			headlineEffects = [GraphicsTextEffect.Blue, GraphicsTextEffect.Bold],
+			bodyEffects = [GraphicsTextEffect.Green],
 		} = options
 
 		if (headline) {
@@ -129,7 +138,7 @@ export default class TerminalInterface implements IGraphicsInterface {
 		this.renderLine('')
 	}
 
-	public renderDivider(effects?: IGraphicsTextEffect[]) {
+	public renderDivider(effects?: GraphicsTextEffect[]) {
 		const bar = '=================================================='
 		this.renderLine(bar, effects)
 	}
@@ -147,15 +156,28 @@ export default class TerminalInterface implements IGraphicsInterface {
 
 		this.renderHero(`${results.headline} Finished!`)
 
+		let lines: string[] = [
+			errors.length > 0 ? `Errors: ${errors.length}` : null,
+			generatedFiles.length > 0
+				? `Generated files: ${generatedFiles.length}`
+				: null,
+			updatedFiles.length > 0 ? `Updated files: ${updatedFiles.length}` : null,
+			skippedFiles.length > 0 ? `Skipped files: ${skippedFiles.length}` : null,
+			packagesInstalled.length > 0
+				? `NPM packages installed: ${packagesInstalled.length}`
+				: null,
+		].filter((line) => !!line) as string[]
+
+		if (lines.length === 0) {
+			lines.push('Nothing to report!')
+		}
 		this.renderSection({
-			headline: `${results.featureCode}.${results.actionCode} summary`,
-			lines: [
-				`Errors: ${errors.length}`,
-				`Generated files: ${generatedFiles.length}`,
-				`Updated files: ${updatedFiles.length}`,
-				`Skipped files: ${skippedFiles.length}`,
-				`NPM packages installed: ${packagesInstalled.length}`,
-			],
+			headline: `${
+				results.featureCode === results.actionCode
+					? results.featureCode
+					: results.featureCode + '.' + results.actionCode
+			} summary`,
+			lines,
 		})
 
 		if (errors.length > 0) {
@@ -206,17 +228,17 @@ export default class TerminalInterface implements IGraphicsInterface {
 
 	public renderHeadline(
 		message: string,
-		effects: IGraphicsTextEffect[] = [
-			IGraphicsTextEffect.Blue,
-			IGraphicsTextEffect.Bold,
+		effects: GraphicsTextEffect[] = [
+			GraphicsTextEffect.Blue,
+			GraphicsTextEffect.Bold,
 		],
-		dividerEffects: IGraphicsTextEffect[] = []
+		dividerEffects: GraphicsTextEffect[] = []
 	) {
-		const isSpruce = effects.indexOf(IGraphicsTextEffect.SpruceHeader) > -1
+		const isSpruce = effects.indexOf(GraphicsTextEffect.SpruceHeader) > -1
 
 		if (isSpruce) {
 			fonts.say(message, {
-				font: IGraphicsTextEffect.SpruceHeader,
+				font: GraphicsTextEffect.SpruceHeader,
 				align: 'left',
 				space: false,
 				colors: filterEffectsForCFonts(effects),
@@ -228,12 +250,11 @@ export default class TerminalInterface implements IGraphicsInterface {
 		}
 	}
 
-	/** A BIG headline */
 	public renderHero(
 		message: string,
-		effects: IGraphicsTextEffect[] = [
-			IGraphicsTextEffect.Blue,
-			IGraphicsTextEffect.Bold,
+		effects: GraphicsTextEffect[] = [
+			GraphicsTextEffect.Blue,
+			GraphicsTextEffect.Bold,
 		]
 	) {
 		fonts.say(message, {
@@ -247,22 +268,30 @@ export default class TerminalInterface implements IGraphicsInterface {
 		return this.renderLine(`👨‍🏫 ${message}`)
 	}
 
-	public renderLine(message: any, effects: IGraphicsTextEffect[] = []) {
+	public renderLine(
+		message: any,
+		effects: GraphicsTextEffect[] = [],
+		options?: TerminalSpecificOptions
+	) {
 		let write: any = chalk
 		effects.forEach((effect) => {
 			write = write[effect]
 		})
+
+		if (options?.eraseBeforeRender) {
+			terminal.eraseLine()
+		}
+
 		console.log(effects.length > 0 ? write(message) : message)
 	}
 
 	public renderWarning(message: string) {
 		this.renderLine(`⚠️ ${message}`, [
-			IGraphicsTextEffect.Bold,
-			IGraphicsTextEffect.Yellow,
+			GraphicsTextEffect.Bold,
+			GraphicsTextEffect.Yellow,
 		])
 	}
 
-	/** Show a simple loader */
 	public async startLoading(message?: string) {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.stopLoading()
@@ -298,12 +327,10 @@ export default class TerminalInterface implements IGraphicsInterface {
 		return
 	}
 
-	/** Clear the console */
 	public clear() {
 		console.clear()
 	}
 
-	/** Print some code beautifully */
 	public renderCodeSample(code: string) {
 		try {
 			const colored = emphasize.highlight('js', code).value
@@ -313,7 +340,6 @@ export default class TerminalInterface implements IGraphicsInterface {
 		}
 	}
 
-	/** Ask the user for something */
 	public async prompt<T extends FieldDefinition>(
 		definition: T
 	): Promise<FieldDefinitionValueType<T>> {
@@ -455,7 +481,6 @@ export default class TerminalInterface implements IGraphicsInterface {
 		return result
 	}
 
-	/** Generic way to handle error */
 	public renderError(err: Error) {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.stopLoading()
@@ -466,9 +491,9 @@ export default class TerminalInterface implements IGraphicsInterface {
 		this.renderSection({
 			headline: message,
 			lines: this.renderStackTraces ? stackLines.splice(0, 100) : undefined,
-			headlineEffects: [IGraphicsTextEffect.Bold, IGraphicsTextEffect.Red],
-			dividerEffects: [IGraphicsTextEffect.Red],
-			bodyEffects: [IGraphicsTextEffect.Red],
+			headlineEffects: [GraphicsTextEffect.Bold, GraphicsTextEffect.Red],
+			dividerEffects: [GraphicsTextEffect.Red],
+			bodyEffects: [GraphicsTextEffect.Red],
 		})
 	}
 
@@ -487,5 +512,49 @@ export default class TerminalInterface implements IGraphicsInterface {
 		const stackLines = stack.split('\n')
 
 		return stackLines
+	}
+
+	public renderProgressBar(options: ProgressBarOptions): void {
+		this.removeProgressBar()
+		this.progressBar = terminal.progressBar({
+			...options,
+			percent: options.showPercent,
+			eta: options.showEta,
+			items: options.totalItems,
+			inline: options.renderInline,
+		})
+	}
+
+	public removeProgressBar() {
+		if (this.progressBar) {
+			this.progressBar.stop()
+			this.progressBar = null
+		}
+	}
+
+	public updateProgressBar(options: ProgressBarUpdateOptions): void {
+		if (this.progressBar) {
+			this.progressBar.update({
+				...options,
+				items: options.totalItems,
+			})
+		}
+	}
+
+	public async getCursorPosition(): Promise<{ x: number; y: number } | null> {
+		return new Promise((resolve) => {
+			terminal.requestCursorLocation()
+			terminal.getCursorLocation((err, x, y) => {
+				resolve(err ? null : { x: x ?? 0, y: y ?? 0 })
+			})
+		})
+	}
+
+	public moveCursorTo(x: number, y: number): void {
+		terminal.moveTo(x, y)
+	}
+
+	public clearBelowCursor(): void {
+		terminal.eraseDisplayBelow()
 	}
 }

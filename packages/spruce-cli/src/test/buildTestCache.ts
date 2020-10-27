@@ -5,6 +5,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import FeatureFixture from '../fixtures/FeatureFixture'
 import TerminalInterface from '../interfaces/TerminalInterface'
 import ServiceFactory from '../services/ServiceFactory'
+import { GraphicsTextEffect } from '../types/cli.types'
 
 const packageJsonContents = diskUtil.readFile(
 	diskUtil.resolvePath(__dirname, '..', '..', 'package.json')
@@ -15,54 +16,75 @@ const { testSkillCache } = packageJson
 const testKeys = Object.keys(testSkillCache)
 
 let remaining = testKeys.length
+const term = new TerminalInterface(__dirname)
 
-console.log(`Found ${testKeys.length} skills to cache.`)
-testKeys.forEach(async (cacheKey: string) => {
-	const options = testSkillCache[cacheKey]
+async function run() {
+	term.clear()
+	term.renderHeadline(`Found ${testKeys.length} skills to cache.`)
 
-	const cwd = diskUtil.resolvePath(os.tmpdir(), 'spruce-cli', cacheKey)
-	const importCacheDir = diskUtil.resolvePath(
-		os.tmpdir(),
-		'spruce-cli-import-cache'
-	)
+	const promises = testKeys.map(async (cacheKey: string) => {
+		const options = testSkillCache[cacheKey]
 
-	const mercury = new Mercury()
-	const serviceFactory = new ServiceFactory({ mercury, importCacheDir })
-	const term = new TerminalInterface(cwd)
+		const importCacheDir = diskUtil.resolvePath(
+			os.tmpdir(),
+			'spruce-cli-import-cache'
+		)
 
-	const fixture = new FeatureFixture(cwd, serviceFactory, term)
+		const mercury = new Mercury()
+		const serviceFactory = new ServiceFactory({ mercury, importCacheDir })
+		const cwd = diskUtil.resolvePath(os.tmpdir(), 'spruce-cli', cacheKey)
 
-	const cacheTrackerPath = fixture.getTestCacheTrackerFilePath()
-	const cacheTrackerContents = diskUtil.doesFileExist(cacheTrackerPath)
-		? diskUtil.readFile(cacheTrackerPath)
-		: '{}'
-	const cacheTracker = JSON.parse(cacheTrackerContents)
+		const fixture = new FeatureFixture(
+			cwd,
+			serviceFactory,
+			new TerminalInterface(cwd)
+		)
 
-	if (cacheTracker[cacheKey] && diskUtil.doesDirExist(cwd)) {
+		const cacheTrackerPath = fixture.getTestCacheTrackerFilePath()
+		const cacheTrackerContents = diskUtil.doesFileExist(cacheTrackerPath)
+			? diskUtil.readFile(cacheTrackerPath)
+			: '{}'
+		const cacheTracker = JSON.parse(cacheTrackerContents)
+
+		if (cacheTracker[cacheKey] && diskUtil.doesDirExist(cwd)) {
+			remaining--
+			term.renderLine(`Skipping '${cacheKey}'.`, [GraphicsTextEffect.Italic])
+			return
+		}
+
+		if (diskUtil.doesDirExist(cwd)) {
+			term.renderWarning(
+				`Found cached '${cacheKey}', but deleted it since it was not in the cache tracker....`
+			)
+			diskUtil.deleteDir(cwd)
+		}
+
+		cacheTracker[cacheKey] = cwd
+
+		diskUtil.writeFile(cacheTrackerPath, JSON.stringify(cacheTracker, null, 2))
+
+		term.renderLine(`Starting to build '${cacheKey}'...`, [
+			GraphicsTextEffect.Bold,
+			GraphicsTextEffect.Green,
+		])
+
+		term.renderLine('')
+
+		await fixture.installFeatures(options)
+
 		remaining--
-		console.log(
-			`Skipping ${cacheKey} to ${cwd}. Already exists in cache tracker. ${remaining} caches remaining`
+
+		await term.startLoading(
+			`Done caching '${cacheKey}'. ${remaining} remaining...`
 		)
-		return
-	}
+	})
 
-	if (diskUtil.doesDirExist(cwd)) {
-		console.log(
-			'Found cached skill, but deleted it since it was not in the cache tracker.'
-		)
-		diskUtil.deleteDir(cwd)
-	}
+	await term.startLoading(`Building ${testKeys.length} skills...`)
+	await Promise.all(promises)
+	await term.stopLoading()
+	term.clear()
+}
 
-	cacheTracker[cacheKey] = cwd
-
-	console.log(`Adding to cache tracker at ${cacheTrackerPath}`)
-	diskUtil.writeFile(cacheTrackerPath, JSON.stringify(cacheTracker, null, 2))
-
-	console.log(`Starting to cache ${cacheKey} to ${cwd}.`)
-
-	await fixture.installFeatures(options)
-
-	remaining--
-
-	console.log(`Done installing ${cacheKey}. ${remaining} caches remaining.`)
+void run().catch((err) => {
+	term.renderError(err)
 })

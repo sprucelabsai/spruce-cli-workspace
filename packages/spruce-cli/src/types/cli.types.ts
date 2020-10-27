@@ -3,7 +3,7 @@ import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import { IFeatureActionExecuteResponse } from '../features/features.types'
 
-export enum IGraphicsTextEffect {
+export enum GraphicsTextEffect {
 	Reset = 'reset',
 	Bold = 'bold',
 	Dim = 'dim',
@@ -48,34 +48,48 @@ export enum IGraphicsTextEffect {
 	BgCyanBright = 'bgCyanBright',
 	BgWhiteBright = 'bgWhiteBright',
 
-	/** Spruce header style */
 	SpruceHeader = 'shade',
 }
 
-export interface IGraphicsInterface {
+export interface ProgressBarOptions {
+	width?: number
+	showPercent?: boolean
+	showEta?: boolean
+	totalItems?: number
+	title?: string
+	renderInline?: boolean
+}
+
+export interface ProgressBarUpdateOptions {
+	progress: number | null
+	totalItems?: number
+	title?: string
+}
+
+export interface GraphicsInterface {
 	renderSection(options: {
 		headline?: string
 		lines?: string[]
 		object?: Record<string, any>
-		headlineEffects?: IGraphicsTextEffect[]
-		bodyEffects?: IGraphicsTextEffect[]
-		dividerEffects?: IGraphicsTextEffect[]
+		headlineEffects?: GraphicsTextEffect[]
+		bodyEffects?: GraphicsTextEffect[]
+		dividerEffects?: GraphicsTextEffect[]
 	}): void
 	renderObject(obj: any): void
 	renderError(err: Error): void
 	renderCodeSample(code: string): void
 	renderCommandSummary(results: ExecutionResults): void
-	renderHero(message: string, effects?: IGraphicsTextEffect[]): void
+	renderHero(message: string, effects?: GraphicsTextEffect[]): void
 	renderHeadline(
 		message: string,
-		effects?: IGraphicsTextEffect[],
-		dividerEffects?: IGraphicsTextEffect[]
+		effects?: GraphicsTextEffect[],
+		dividerEffects?: GraphicsTextEffect[]
 	): void
-	renderDivider(effects?: IGraphicsTextEffect[]): void
-	renderLine(message: string, effects?: IGraphicsTextEffect[]): void
-	renderLines(messages: string[], effects?: IGraphicsTextEffect[]): void
-	renderWarning(message: string, effects?: IGraphicsTextEffect[]): void
-	renderHint(message: string, effects?: IGraphicsTextEffect[]): void
+	renderDivider(effects?: GraphicsTextEffect[]): void
+	renderLine(message: string, effects?: GraphicsTextEffect[]): void
+	renderLines(messages: string[], effects?: GraphicsTextEffect[]): void
+	renderWarning(message: string, effects?: GraphicsTextEffect[]): void
+	renderHint(message: string, effects?: GraphicsTextEffect[]): void
 
 	prompt<T extends FieldDefinition>(
 		definition: T
@@ -86,9 +100,18 @@ export interface IGraphicsInterface {
 	startLoading(message?: string): void
 	stopLoading(): void
 
+	renderProgressBar(options: ProgressBarOptions): void
+	updateProgressBar(options: ProgressBarUpdateOptions): void
+	removeProgressBar(): void
+
 	waitForEnter(message?: string): Promise<void>
 	confirm(question: string): Promise<boolean>
+
+	getCursorPosition(): Promise<{ x: number; y: number } | null>
+	moveCursorTo(x: number, y: number): void
+
 	clear(): void
+	clearBelowCursor(): void
 }
 
 export enum AuthedAs {

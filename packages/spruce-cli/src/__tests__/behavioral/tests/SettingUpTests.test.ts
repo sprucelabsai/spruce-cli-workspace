@@ -1,4 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractTestTest from '../../../test/AbstractTestTest'
 
 export default class SettingUpTestsTest extends AbstractTestTest {
@@ -14,9 +15,10 @@ export default class SettingUpTestsTest extends AbstractTestTest {
 	protected static async canRunTestsButSaysAtLeastOneTestIsNeeded() {
 		await this.installTests('tests')
 		const command = this.Service('command')
-		await assert.doesThrowAsync(
-			() => command.execute('yarn test'),
-			/passWithNoTests/gis
-		)
+		const err = await assert.doesThrowAsync(() => command.execute('yarn test'))
+
+		errorAssertUtil.assertError(err, 'EXECUTING_COMMAND_FAILED')
+		//@ts-ignore
+		assert.doesInclude(err.options.stdout, /passWithNoTests/)
 	}
 }

@@ -45,24 +45,54 @@ export default class RunningTestsTest extends AbstractTestTest {
 		const results = await cli.getFeature('test').Action('test').execute({})
 
 		assert.isFalsy(results.errors)
-		// assert.isEqualDeep(results.meta, {
-		// 	testResults: [
-		// 		{
-		// 			testFile: 'behavioral/CanBookAppointment.test.ts',
-		// 			status: 'passed',
-		// 			tests: [
-		// 				{
-		// 					name: 'canBookAppointment',
-		// 					status: 'passed',
-		// 				},
-		// 			],
-		// 		},
-		// 		{
-		// 			testFile: 'behavioral/CanCancelAppointment.test.ts',
-		// 			status: 'failed',
-		// 			tests: [{ name: 'canCancelAppointment', status: 'failed' }],
-		// 		},
-		// 	],
-		// })
+		assert.isTruthy(results.meta?.testResults)
+		// 		assert.isEqualDeep(results.meta, {
+		// 			testResults: {
+		// 				totalTestFiles: 2,
+		// 				testFiles: [
+		// 					{
+		// 						testFile: 'behavioral/CanCancelAppointment.test.ts',
+		// 						status: 'failed',
+		// 						tests: [
+		// 							{
+		// 								name: 'canCancelAppointment',
+		// 								status: 'failed',
+		// 								errorMessages: [
+		// 									`Error:
+
+		// false
+
+		//  does not equal
+
+		// true
+
+		//     at Object.fail (/private/var/folders/qw/v2bfr0c94bn37vclwvcltsj40000gn/T/spruce-cli/9480d08d-f4a7-47e9-9c86-35f9df426f5e/node_modules/@sprucelabs/test/src/utilities/assert.utility.ts:12:9)
+		//     at Object.isEqual (/private/var/folders/qw/v2bfr0c94bn37vclwvcltsj40000gn/T/spruce-cli/9480d08d-f4a7-47e9-9c86-35f9df426f5e/node_modules/@sprucelabs/test/src/assert.ts:99:9)
+		//     at Object.assert (/private/var/folders/qw/v2bfr0c94bn37vclwvcltsj40000gn/T/spruce-cli/9480d08d-f4a7-47e9-9c86-35f9df426f5e/node_modules/@sprucelabs/test/src/assert.ts:185:8)
+		//     at _callee$ (/private/var/folders/qw/v2bfr0c94bn37vclwvcltsj40000gn/T/spruce-cli/9480d08d-f4a7-47e9-9c86-35f9df426f5e/src/__tests__/behavioral/CanCancelAppointment.test.ts:8:3)`,
+		// 								],
+		// 								duration: 14,
+		// 							},
+		// 						],
+		// 					},
+		// 					{
+		// 						testFile: 'behavioral/CanBookAppointment.test.ts',
+		// 						status: 'passed',
+		// 						tests: [
+		// 							{
+		// 								name: 'canBookAppointment',
+		// 								status: 'passed',
+		// 								errorMessages: [],
+		// 								duration: 1,
+		// 							},
+		// 						],
+		// 					},
+		// 				],
+		// 				totalTestFilesComplete: 2,
+		// 				totalFailed: 1,
+		// 				totalPassed: 1,
+		// 				totalTests: 2,
+		// 			},
+		// 		})
 	}
 }

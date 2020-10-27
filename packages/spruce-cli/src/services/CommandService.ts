@@ -1,5 +1,8 @@
 import { spawn, SpawnOptions, ChildProcess } from 'child_process'
 import { Writable } from 'stream'
+import AbstractSpruceError from '@sprucelabs/error'
+import { ERROR_DIVIDER } from '@sprucelabs/spruce-skill-utils'
+import escapeRegExp from 'lodash/escapeRegExp'
 import stringArgv from 'string-argv'
 import SpruceError from '../errors/SpruceError'
 
@@ -77,14 +80,20 @@ export default class CommandService {
 					resolve({ stdout })
 					this.ignoreCloseErrors = false
 				} else {
+					if (stderr.search(escapeRegExp(ERROR_DIVIDER)) > -1) {
+						const stderrParts = stderr.split(ERROR_DIVIDER)
+						const err = AbstractSpruceError.parse(stderrParts[1], SpruceError)
+						reject(err)
+						return
+					}
+
 					reject(
 						new SpruceError({
 							code: 'EXECUTING_COMMAND_FAILED',
-							cmd: JSON.stringify({ executable, args }),
+							cmd: `${executable} ${args.join(' ')}`,
 							cwd,
 							stdout,
 							stderr,
-							originalError: new Error(stderr),
 						})
 					)
 				}

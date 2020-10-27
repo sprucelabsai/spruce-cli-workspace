@@ -2,20 +2,20 @@ import fs from 'fs'
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { Templates } from '@sprucelabs/spruce-templates'
-import { GeneratedFile, IGraphicsInterface } from '../types/cli.types'
+import { GeneratedFile, GraphicsInterface } from '../types/cli.types'
 
 export type GenerationResults = GeneratedFile[]
 
 export interface IGeneratorOptions {
 	templates: Templates
-	term: IGraphicsInterface
+	term: GraphicsInterface
 	askBeforeUpdating?: boolean
 }
 
 export default abstract class AbstractGenerator {
 	protected templates: Templates
 	private askBeforeUpdating = false
-	private term: IGraphicsInterface
+	private term: GraphicsInterface
 
 	public constructor(options: IGeneratorOptions) {
 		this.templates = options.templates

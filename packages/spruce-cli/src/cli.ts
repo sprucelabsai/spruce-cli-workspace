@@ -20,7 +20,7 @@ import TerminalInterface from './interfaces/TerminalInterface'
 import ServiceFactory from './services/ServiceFactory'
 import log from './singletons/log'
 import StoreFactory from './stores/StoreFactory'
-import { AuthedAs, IGraphicsInterface } from './types/cli.types'
+import { AuthedAs, GraphicsInterface } from './types/cli.types'
 
 export interface ICli {
 	installFeatures: FeatureInstaller['install']
@@ -32,7 +32,7 @@ export interface ICli {
 export interface ICliBootOptions {
 	cwd?: string
 	program?: CommanderStatic['program']
-	graphicsInterface?: IGraphicsInterface
+	graphicsInterface?: GraphicsInterface
 }
 
 async function login(storeFactory: StoreFactory, mercury: Mercury) {
@@ -205,6 +205,7 @@ export async function run(argv: string[] = []): Promise<void> {
 	}
 
 	const terminal = new TerminalInterface(cwd)
+	terminal.clear()
 	terminal.renderHero('Spruce XP')
 
 	await Cli.Boot({ program, cwd })

@@ -1,9 +1,33 @@
 import { END_DIVIDER, START_DIVIDER } from '@sprucelabs/jest-json-reporter'
+import JsonParser from '@sprucelabs/jest-json-reporter'
 import escapeRegExp from 'lodash/escapeRegExp'
-import { TestResult } from '../features/test/actions/TestAction'
+import {
+	SpruceTestFile,
+	TestResultStatus,
+	SpruceTestResults,
+} from '../features/test/actions/TestAction'
+
+export type JsonResultKeys = JsonParserResult['status']
+interface OnTestFileResult {
+	status: 'onTestFileResult'
+	test: Parameters<JsonParser['onTestFileResult']>[0]
+	testResult: Parameters<JsonParser['onTestFileResult']>[1]
+	aggregatedResult: Parameters<JsonParser['onTestFileResult']>[2]
+}
+
+export type JsonParserResult =
+	| {
+			status: 'onRunStart'
+			results: Parameters<JsonParser['onRunStart']>[0]
+	  }
+	| {
+			status: 'onTestFileStart'
+			test: Parameters<JsonParser['onTestFileStart']>[0]
+	  }
+	| OnTestFileResult
 
 export default class JestJsonParser {
-	private results: TestResult[] = []
+	private testResults: SpruceTestResults = { totalTestFiles: 0 }
 	private buffer = ''
 
 	public write(data: string) {
@@ -30,14 +54,9 @@ export default class JestJsonParser {
 					.replace(END_DIVIDER, '')
 					.trim()
 
-				const json = JSON.parse(cleanedSegment)
+				const result = JSON.parse(cleanedSegment) as JsonParserResult
 
-				const results: TestResult = {
-					testFile: this.fullPathToTestFile(json),
-					status: this.mapJestStatusToResultStatus(json),
-				}
-
-				this.results.push(results)
+				this.ingestJestResult(result)
 
 				dataToProcess = dataToProcess.substr(endDividerEndIdx)
 			}
@@ -46,10 +65,98 @@ export default class JestJsonParser {
 		this.buffer = dataToProcess
 	}
 
-	private fullPathToTestFile(json: Record<string, any>) {
-		const partialPath = (json.test?.path ?? json.results?.testFilePath ?? '')
-			.split('__tests__')
-			.pop()
+	private ingestJestResult(result: JsonParserResult) {
+		const testFiles = this.testResults.testFiles ?? []
+		switch (result.status) {
+			case 'onRunStart':
+				this.testResults = {
+					totalTestFiles: result.results.numTotalTestSuites,
+				}
+
+				break
+
+			case 'onTestFileStart':
+				testFiles.push({
+					testFile: this.pullPathFromTestResponse(result),
+					status: this.pullTestFileStatusFromTestResponse(result),
+				})
+
+				break
+			case 'onTestFileResult': {
+				this.testResults.totalTestFilesComplete = this.pullTestFilesCompleteFromAggregatedResults(
+					result.aggregatedResult
+				)
+				this.testResults.totalTestFiles =
+					result.aggregatedResult.numTotalTestSuites
+				this.testResults.totalFailed = result.aggregatedResult.numFailedTests
+				this.testResults.totalPassed = result.aggregatedResult.numPassedTests
+				this.testResults.totalTests = result.aggregatedResult.numTotalTests
+
+				for (const testResult of result.aggregatedResult.testResults) {
+					const name = this.mapAbsoluteJsToRelativeTsPath(
+						testResult.testFilePath
+					)
+					const idx = testFiles.findIndex((file) => file.testFile === name)
+					const file = {
+						...(testFiles[idx] ?? {}),
+						testFile: name,
+						status: this.pullTestFileResultStatus(testResult),
+						tests: this.pullTestsFromTestFileResult(testResult),
+					}
+
+					if (idx === -1) {
+						testFiles.push(file)
+					} else {
+						testFiles[idx] = file
+					}
+				}
+
+				break
+			}
+		}
+
+		if (testFiles.length > 0) {
+			this.testResults.testFiles = testFiles
+		}
+
+		// const spruceResult: SpruceTestFile = {
+		// 	testFile: this.pullPathFromTestResponse(result),
+		// 	status: this.pullStatusFromTestResponse(result),
+		// }
+
+		// if (result.status === 'onTestFileResult') {
+		// 	spruceResult.tests = this.pullTestsFromTestResponse(result)
+		// }
+
+		// return spruceResult
+	}
+
+	private pullTestFilesCompleteFromAggregatedResults(
+		aggregatedResult: OnTestFileResult['aggregatedResult']
+	) {
+		const total =
+			aggregatedResult.numFailedTestSuites +
+			aggregatedResult.numPassedTestSuites
+
+		return total
+	}
+
+	private pullPathFromTestResponse(result: JsonParserResult) {
+		let path = ''
+
+		switch (result.status) {
+			case 'onTestFileResult':
+			case 'onTestFileStart':
+				path = result.test.path
+				break
+		}
+
+		const tsFile = this.mapAbsoluteJsToRelativeTsPath(path)
+		return tsFile
+	}
+
+	private mapAbsoluteJsToRelativeTsPath(path: string) {
+		const partialPath = path.split('__tests__').pop()
 		if (!partialPath) {
 			throw new Error('INVALID TEST FILE')
 		}
@@ -57,17 +164,35 @@ export default class JestJsonParser {
 		return tsFile
 	}
 
-	private mapJestStatusToResultStatus(
-		json: Record<string, any>
-	): TestResult['status'] {
-		if (json.results) {
-			return json.results.numFailingTests == 0 ? 'passed' : 'failed'
-		} else {
-			return 'running'
+	private pullTestFileStatusFromTestResponse(
+		result: JsonParserResult
+	): SpruceTestFile['status'] {
+		switch (result.status) {
+			case 'onTestFileResult':
+				return this.pullTestFileResultStatus(result.testResult)
+			default:
+				return 'running'
 		}
 	}
 
-	public getResults(): TestResult[] {
-		return this.results
+	private pullTestFileResultStatus(
+		testResult: OnTestFileResult['testResult']
+	): TestResultStatus {
+		return testResult.numFailingTests > 0 ? 'failed' : 'passed'
+	}
+
+	private pullTestsFromTestFileResult(
+		testResult: OnTestFileResult['testResult']
+	): SpruceTestFile['tests'] {
+		return testResult.testResults.map((test) => ({
+			name: test.title,
+			status: test.status,
+			errorMessages: test.failureMessages,
+			duration: test.duration ?? 0,
+		}))
+	}
+
+	public getResults(): SpruceTestResults {
+		return this.testResults
 	}
 }

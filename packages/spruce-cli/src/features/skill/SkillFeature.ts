@@ -19,13 +19,12 @@ export default class SkillFeature<
 
 	public dependencies: FeatureCode[] = []
 	public packageDependencies: NpmPackage[] = [
-		{ name: 'typescript', isDev: true },
 		{ name: '@sprucelabs/log' },
 		{ name: '@sprucelabs/error' },
 		{ name: '@sprucelabs/spruce-skill-utils' },
 		{ name: '@sprucelabs/spruce-core-schemas' },
+		{ name: 'typescript', isDev: true },
 		{ name: '@sprucelabs/babel-plugin-schema', isDev: true },
-		{ name: '@sprucelabs/jest-json-reporter', isDev: true },
 		{ name: '@types/node', isDev: true },
 		{ name: 'ts-node', isDev: true },
 		{ name: 'tsconfig-paths', isDev: true },

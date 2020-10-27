@@ -1,4 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractEventTest from '../../../test/AbstractEventTest'
 
 export default class SkillEmitsBootEventsTest extends AbstractEventTest {
@@ -15,10 +16,12 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 
 		await this.Service('build').build()
 
-		await assert.doesThrowAsync(async () => {
+		const err = await assert.doesThrowAsync(async () => {
 			const response = await cli.getFeature('skill').Action('boot').execute({})
 			await response.meta?.promise
-		}, 'SKILL_WILL_BOOT_NOT_IMPLEMENTED')
+		})
+
+		errorAssertUtil.assertError(err, 'SKILL_WILL_BOOT_NOT_IMPLEMENTED')
 	}
 
 	@test()
@@ -34,9 +37,11 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 
 		await this.Service('build').build()
 
-		await assert.doesThrowAsync(async () => {
+		const err = await assert.doesThrowAsync(async () => {
 			const response = await cli.getFeature('skill').Action('boot').execute({})
 			await response.meta?.promise
-		}, 'SKILL_DID_BOOT_NOT_IMPLEMENTED')
+		})
+
+		errorAssertUtil.assertError(err, 'SKILL_DID_BOOT_NOT_IMPLEMENTED')
 	}
 }

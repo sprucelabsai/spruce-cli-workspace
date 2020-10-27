@@ -12,6 +12,7 @@ export default class TestFeature extends AbstractFeature {
 	public code: FeatureCode = 'test'
 	public packageDependencies: NpmPackage[] = [
 		{ name: '@sprucelabs/test', isDev: true },
+		{ name: '@sprucelabs/jest-json-reporter', isDev: true },
 		{ name: 'jest', isDev: true },
 	]
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
@@ -77,7 +78,10 @@ export default class TestFeature extends AbstractFeature {
 	public async isInstalled() {
 		try {
 			const service = this.Service('pkg')
-			return !!service.get('jest')
+			return (
+				!!service.get('jest') &&
+				service.isInstalled('@sprucelabs/jest-json-reporter')
+			)
 		} catch {
 			return false
 		}

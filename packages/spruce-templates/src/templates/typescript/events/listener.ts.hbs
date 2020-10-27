@@ -1,3 +1,8 @@
+import SpruceError from '#spruce/../errors/SpruceError'
+
 export default () => {
-	throw new Error('{{nameConst}}_NOT_IMPLEMENTED')
+	throw new SpruceError({
+		//@ts-ignore
+		code: '{{nameConst}}_NOT_IMPLEMENTED'
+	})
 }

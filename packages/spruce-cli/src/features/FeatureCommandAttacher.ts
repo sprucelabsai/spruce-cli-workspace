@@ -3,7 +3,7 @@ import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { CommanderStatic } from 'commander'
 import SpruceError from '../errors/SpruceError'
 import log from '../singletons/log'
-import { IGraphicsInterface } from '../types/cli.types'
+import { GraphicsInterface } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
 import featuresUtil from './feature.utilities'
 import FeatureCommandExecuter from './FeatureCommandExecuter'
@@ -12,12 +12,12 @@ import FeatureInstaller from './FeatureInstaller'
 export default class FeatureCommandAttacher {
 	private program: CommanderStatic['program']
 	private featureInstaller: FeatureInstaller
-	private term: IGraphicsInterface
+	private term: GraphicsInterface
 
 	public constructor(
 		program: CommanderStatic['program'],
 		featureInstaller: FeatureInstaller,
-		term: IGraphicsInterface
+		term: GraphicsInterface
 	) {
 		this.program = program
 		this.featureInstaller = featureInstaller

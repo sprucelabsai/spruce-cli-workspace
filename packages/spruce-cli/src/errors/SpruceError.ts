@@ -75,13 +75,17 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				} else {
 					message = ''
 				}
-				message += `The command that was being executed failed ${options.cmd}.`
+				message += `Executing command failed '${options.cmd}'.\n\n`
 				if (options.cwd) {
-					message += `\n\nCWD: ${options.cwd}`
+					message += `cwd: ${options.cwd}\n\n`
+				}
+
+				if (options.stderr) {
+					message += this.cleanStdErr(options.stderr) + '\n\n'
 				}
 
 				if (options.stdout) {
-					message += '\n\nstdout:' + options.stdout
+					message += options.stdout
 				}
 
 				break
@@ -143,5 +147,9 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				  )}`
 				: ''
 		}`
+	}
+
+	private cleanStdErr(stderr: string) {
+		return stderr.replace('warning package.json: No license field', '').trim()
 	}
 }

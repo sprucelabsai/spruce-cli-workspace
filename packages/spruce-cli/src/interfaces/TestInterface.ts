@@ -1,12 +1,14 @@
 import { FieldDefinitionValueType } from '@sprucelabs/schema'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import {
-	IGraphicsInterface,
+	GraphicsInterface,
 	ExecutionResults,
-	IGraphicsTextEffect,
+	GraphicsTextEffect,
+	ProgressBarOptions,
+	ProgressBarUpdateOptions,
 } from '../types/cli.types'
 
-export default class TestInterface implements IGraphicsInterface {
+export default class TestInterface implements GraphicsInterface {
 	public invocations: { command: string; options?: any }[] = []
 	private promptResolver?: (
 		input: FieldDefinitionValueType<FieldDefinition>
@@ -16,13 +18,13 @@ export default class TestInterface implements IGraphicsInterface {
 
 	public renderWarning(
 		message: string,
-		effects?: IGraphicsTextEffect[] | undefined
+		effects?: GraphicsTextEffect[] | undefined
 	): void {
 		this.trackInvocation('renderWarning', { message, effects })
 	}
 	public renderHint(
 		message: string,
-		effects?: IGraphicsTextEffect[] | undefined
+		effects?: GraphicsTextEffect[] | undefined
 	): void {
 		this.trackInvocation('renderHint', { message, effects })
 	}
@@ -71,9 +73,9 @@ export default class TestInterface implements IGraphicsInterface {
 	public renderSection(options: {
 		headline: string
 		lines?: string[] | string[]
-		headlineEffects?: IGraphicsTextEffect[]
-		dividerEffects?: IGraphicsTextEffect[]
-		bodyEffects?: IGraphicsTextEffect[]
+		headlineEffects?: GraphicsTextEffect[]
+		dividerEffects?: GraphicsTextEffect[]
+		bodyEffects?: GraphicsTextEffect[]
 		object?: any
 	}): void {
 		this.trackInvocation('renderSection', options)
@@ -97,33 +99,33 @@ export default class TestInterface implements IGraphicsInterface {
 
 	public renderHero(
 		message: string,
-		effects?: IGraphicsTextEffect[] | undefined
+		effects?: GraphicsTextEffect[] | undefined
 	): void {
 		this.trackInvocation('renderHero', { message, effects })
 	}
 
 	public renderHeadline(
 		message: string,
-		effects: IGraphicsTextEffect[],
-		dividerEffects: IGraphicsTextEffect[]
+		effects: GraphicsTextEffect[],
+		dividerEffects: GraphicsTextEffect[]
 	): void {
 		this.trackInvocation('renderHeadline', { message, effects, dividerEffects })
 	}
 
-	public renderDivider(effects?: IGraphicsTextEffect[] | undefined): void {
+	public renderDivider(effects?: GraphicsTextEffect[] | undefined): void {
 		this.trackInvocation('renderDivider', effects)
 	}
 
 	public renderLine(
 		message: string,
-		effects?: IGraphicsTextEffect[] | undefined
+		effects?: GraphicsTextEffect[] | undefined
 	): void {
 		this.trackInvocation('renderLine', { message, effects })
 	}
 
 	public renderLines(
 		messages: string[],
-		effects?: IGraphicsTextEffect[] | undefined
+		effects?: GraphicsTextEffect[] | undefined
 	): void {
 		this.trackInvocation('renderLines', { messages, effects })
 	}
@@ -165,5 +167,30 @@ export default class TestInterface implements IGraphicsInterface {
 
 	public clear(): void {
 		this.trackInvocation('clear')
+	}
+
+	public renderProgressBar(options: ProgressBarOptions): void {
+		this.trackInvocation('renderProgressBar', options)
+	}
+
+	public updateProgressBar(options: ProgressBarUpdateOptions): void {
+		this.trackInvocation('updateProgressBar', options)
+	}
+
+	public removeProgressBar(): void {
+		this.trackInvocation('removeProgressBar')
+	}
+
+	public async getCursorPosition(): Promise<{ x: number; y: number } | null> {
+		this.trackInvocation('getCursorPosition')
+		return { x: 0, y: 0 }
+	}
+
+	public moveCursorTo(x: number, y: number): void {
+		this.trackInvocation('moveCursorTo', { x, y })
+	}
+
+	public clearBelowCursor(): void {
+		this.trackInvocation('clearBelowCursor')
 	}
 }

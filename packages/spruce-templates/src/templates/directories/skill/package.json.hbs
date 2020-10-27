@@ -16,10 +16,11 @@
 		"lint.watch": "chokidar 'src/**/*' -c 'yarn lint.tsc'",
 		"health": "yarn run boot --health",
 		"health.local": "yarn run boot.local --health",
-		"build": "yarn build.babel",
+		"build": "yarn build.babel && yarn build.types && yarn build.resolve-paths",
 		"build.types": "tsc --emitDeclarationOnly",
 		"build.babel": "babel src --out-dir build --extensions '.ts, .tsx' --source-maps --copy-files",
-		"build.watch": "babel src --out-dir build --extensions '.ts, .tsx' --source-maps --copy-files --watch",
+		"build.watch": "concurrently 'yarn run build.babel --watch' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn build.types && yarn build.resolve-paths'\" \"chokidar '../spruce-templates/src/**/*' -c 'yarn clean.cache && yarn build.types'\"",
+		"build.resolve-paths": "resolve-path-aliases --target build --patterns **/*.js,**/*.d.ts",
 		"clean": "rm -rf build/",
 		"clean.all": "rm -rf build/ && rm -rf node_modules/"
 	},

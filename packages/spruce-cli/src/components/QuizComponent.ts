@@ -2,7 +2,7 @@ import { ISchema, ISchemaFields, SchemaFieldNames } from '@sprucelabs/schema'
 import chalk from 'chalk'
 import { shuffle } from 'lodash'
 import SpruceError from '../errors/SpruceError'
-import { IGraphicsInterface } from '../types/cli.types'
+import { GraphicsInterface } from '../types/cli.types'
 import FormComponent, {
 	IFormOptions,
 	IFormPresentationOptions,
@@ -106,7 +106,7 @@ export default class QuizComponent<
 	Q extends IQuizQuestions
 > {
 	public formBuilder: FormComponent<T>
-	public term: IGraphicsInterface
+	public term: GraphicsInterface
 	public randomizeQuestions = true
 	public originalQuestions: IQuizQuestions
 	public lastResults?: QuizPresentationResults<Q>
