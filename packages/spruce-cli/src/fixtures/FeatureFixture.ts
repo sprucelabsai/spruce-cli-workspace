@@ -209,13 +209,10 @@ export default class FeatureFixture implements IServiceProvider {
 			doesHashSpruceExist &&
 				diskUtil.resolvePath(this.resolveHashSprucePath(), 'schemas'),
 			doesHashSpruceExist &&
-				diskUtil.resolvePath(this.resolveHashSprucePath(), 'errors'),
-			doesHashSpruceExist &&
 				diskUtil.resolvePath(this.resolveHashSprucePath(), 'events'),
 			diskUtil.resolvePath(this.cwd, 'build'),
 			diskUtil.resolvePath(this.cwd, 'src', 'events'),
 			diskUtil.resolvePath(this.cwd, 'src', 'schemas'),
-			diskUtil.resolvePath(this.cwd, 'src', 'errors'),
 		]
 
 		dirs.forEach((dir) => {

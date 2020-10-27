@@ -48,8 +48,22 @@ export enum GraphicsTextEffect {
 	BgCyanBright = 'bgCyanBright',
 	BgWhiteBright = 'bgWhiteBright',
 
-	/** Spruce header style */
 	SpruceHeader = 'shade',
+}
+
+export interface ProgressBarOptions {
+	width?: number
+	showPercent?: boolean
+	showEta?: boolean
+	totalItems?: number
+	title?: string
+	renderInline?: boolean
+}
+
+export interface ProgressBarUpdateOptions {
+	progress: number | null
+	totalItems?: number
+	title?: string
 }
 
 export interface GraphicsInterface {
@@ -86,9 +100,18 @@ export interface GraphicsInterface {
 	startLoading(message?: string): void
 	stopLoading(): void
 
+	renderProgressBar(options: ProgressBarOptions): void
+	updateProgressBar(options: ProgressBarUpdateOptions): void
+	removeProgressBar(): void
+
 	waitForEnter(message?: string): Promise<void>
 	confirm(question: string): Promise<boolean>
+
+	getCursorPosition(): Promise<{ x: number; y: number } | null>
+	moveCursorTo(x: number, y: number): void
+
 	clear(): void
+	clearBelowCursor(): void
 }
 
 export enum AuthedAs {

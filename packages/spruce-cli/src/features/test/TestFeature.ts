@@ -80,7 +80,7 @@ export default class TestFeature extends AbstractFeature {
 			const service = this.Service('pkg')
 			return (
 				!!service.get('jest') &&
-				!!service.isInstalled('@sprucelabs/jest-json-reporter')
+				service.isInstalled('@sprucelabs/jest-json-reporter')
 			)
 		} catch {
 			return false

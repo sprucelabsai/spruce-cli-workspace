@@ -1,5 +1,10 @@
 // AUTO-GENERATED. ALL CHANGES WILL BE OVERWRITTEN
-import { HEALTH_DIVIDER, pluginUtil } from '@sprucelabs/spruce-skill-utils'
+import AbstractSpruceError from '@sprucelabs/error'
+import {
+	HEALTH_DIVIDER,
+	ERROR_DIVIDER,
+	pluginUtil,
+} from '@sprucelabs/spruce-skill-utils'
 // @ts-ignore
 import skill from '#spruce/skill'
 
@@ -23,6 +28,10 @@ run()
 		process.exit(0)
 	})
 	.catch((err) => {
-		console.log(err.stack)
+		if (err instanceof AbstractSpruceError) {
+			console.error(ERROR_DIVIDER + err.toJson() + ERROR_DIVIDER)
+		} else {
+			console.error(err.stack)
+		}
 		process.exit(1)
 	})

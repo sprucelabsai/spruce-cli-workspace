@@ -21,7 +21,7 @@ export default class KeepsErrorClassInSyncTest extends AbstractErrorTest {
 
 		assert.doesInclude(results.files ?? [], {
 			name: 'SpruceError.ts',
-			action: 'generated',
+			action: 'updated',
 		})
 
 		for (const file of results.files ?? []) {

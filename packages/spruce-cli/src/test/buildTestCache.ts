@@ -61,7 +61,6 @@ async function run() {
 
 		cacheTracker[cacheKey] = cwd
 
-		term.renderLine(`Adding to cache tracker.`, [GraphicsTextEffect.Yellow])
 		diskUtil.writeFile(cacheTrackerPath, JSON.stringify(cacheTracker, null, 2))
 
 		term.renderLine(`Starting to build '${cacheKey}'...`, [
@@ -76,7 +75,7 @@ async function run() {
 		remaining--
 
 		await term.startLoading(
-			`Done caching '${cacheKey}'. ${remaining} remaining.`
+			`Done caching '${cacheKey}'. ${remaining} remaining...`
 		)
 	})
 

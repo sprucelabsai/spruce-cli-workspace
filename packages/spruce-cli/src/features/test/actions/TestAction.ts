@@ -1,6 +1,5 @@
 import { buildSchema } from '@sprucelabs/schema'
 import chalk from 'chalk'
-import { terminal } from 'terminal-kit'
 import TerminalInterface from '../../../interfaces/TerminalInterface'
 import JestJsonParser from '../../../test/JestJsonParser'
 import { GraphicsTextEffect } from '../../../types/cli.types'
@@ -50,17 +49,10 @@ export default class TestAction extends AbstractFeatureAction<ActionSchema> {
 		this.ui.clear()
 		this.ui.renderHero('Testing...')
 
-		const progressBar = terminal.progressBar({
-			width: 100,
-			percent: true,
-		})
+		this.ui.renderProgressBar({ width: 100, showPercent: true })
 
-		this.testReportStartY = await new Promise((resolve) => {
-			terminal.requestCursorLocation()
-			terminal.getCursorLocation((err, x, y) => {
-				resolve((y ?? 10) + 2)
-			})
-		})
+		const pos = await this.ui.getCursorPosition()
+		this.testReportStartY = pos ? pos.y + 2 : 12
 
 		try {
 			await this.Service('command').execute(
@@ -71,10 +63,11 @@ export default class TestAction extends AbstractFeatureAction<ActionSchema> {
 						testResults = parser.getResults()
 						this.renderTestResults(testResults)
 
-						progressBar?.update(
-							(testResults.totalTestFilesComplete ?? 0) /
-								testResults.totalTestFiles
-						)
+						this.ui.updateProgressBar({
+							progress:
+								(testResults.totalTestFilesComplete ?? 0) /
+								testResults.totalTestFiles,
+						})
 					},
 				}
 			)
@@ -93,8 +86,9 @@ export default class TestAction extends AbstractFeatureAction<ActionSchema> {
 	}
 
 	private renderTestResults(testResults: SpruceTestResults) {
-		terminal.moveTo(0, this.testReportStartY)
-		terminal.eraseDisplayBelow()
+		this.ui.moveCursorTo(0, this.testReportStartY)
+		this.ui.clearBelowCursor()
+
 		testResults.testFiles?.forEach((result) => {
 			this.renderTestFile(result)
 		})

@@ -84,6 +84,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 					message += this.cleanStdErr(options.stderr) + '\n\n'
 				}
 
+				if (options.stdout) {
+					message += options.stdout
+				}
+
 				break
 
 			case 'BOOT_FAILED':

@@ -17,6 +17,7 @@ import _ from 'lodash'
 import { filter } from 'lodash'
 import ora from 'ora'
 import { terminal } from 'terminal-kit'
+import { ProgressBarController } from 'terminal-kit/Terminal'
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 import SpruceError from '../errors/SpruceError'
 import log from '../singletons/log'
@@ -24,6 +25,8 @@ import {
 	ExecutionResults,
 	GraphicsInterface,
 	GraphicsTextEffect,
+	ProgressBarOptions,
+	ProgressBarUpdateOptions,
 } from '../types/cli.types'
 
 let fieldCount = 0
@@ -61,6 +64,7 @@ export default class TerminalInterface implements GraphicsInterface {
 	public cwd: string
 	private renderStackTraces = false
 	private static loader?: ora.Ora | null
+	private progressBar: ProgressBarController | null = null
 
 	public constructor(cwd: string, renderStackTraces = false) {
 		this.cwd = cwd
@@ -477,7 +481,6 @@ export default class TerminalInterface implements GraphicsInterface {
 		return result
 	}
 
-	/** Generic way to handle error */
 	public renderError(err: Error) {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.stopLoading()
@@ -509,5 +512,49 @@ export default class TerminalInterface implements GraphicsInterface {
 		const stackLines = stack.split('\n')
 
 		return stackLines
+	}
+
+	public renderProgressBar(options: ProgressBarOptions): void {
+		this.removeProgressBar()
+		this.progressBar = terminal.progressBar({
+			...options,
+			percent: options.showPercent,
+			eta: options.showEta,
+			items: options.totalItems,
+			inline: options.renderInline,
+		})
+	}
+
+	public removeProgressBar() {
+		if (this.progressBar) {
+			this.progressBar.stop()
+			this.progressBar = null
+		}
+	}
+
+	public updateProgressBar(options: ProgressBarUpdateOptions): void {
+		if (this.progressBar) {
+			this.progressBar.update({
+				...options,
+				items: options.totalItems,
+			})
+		}
+	}
+
+	public async getCursorPosition(): Promise<{ x: number; y: number } | null> {
+		return new Promise((resolve) => {
+			terminal.requestCursorLocation()
+			terminal.getCursorLocation((err, x, y) => {
+				resolve(err ? null : { x: x ?? 0, y: y ?? 0 })
+			})
+		})
+	}
+
+	public moveCursorTo(x: number, y: number): void {
+		terminal.moveTo(x, y)
+	}
+
+	public clearBelowCursor(): void {
+		terminal.eraseDisplayBelow()
 	}
 }

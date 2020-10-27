@@ -4,6 +4,8 @@ import {
 	GraphicsInterface,
 	ExecutionResults,
 	GraphicsTextEffect,
+	ProgressBarOptions,
+	ProgressBarUpdateOptions,
 } from '../types/cli.types'
 
 export default class TestInterface implements GraphicsInterface {
@@ -165,5 +167,30 @@ export default class TestInterface implements GraphicsInterface {
 
 	public clear(): void {
 		this.trackInvocation('clear')
+	}
+
+	public renderProgressBar(options: ProgressBarOptions): void {
+		this.trackInvocation('renderProgressBar', options)
+	}
+
+	public updateProgressBar(options: ProgressBarUpdateOptions): void {
+		this.trackInvocation('updateProgressBar', options)
+	}
+
+	public removeProgressBar(): void {
+		this.trackInvocation('removeProgressBar')
+	}
+
+	public async getCursorPosition(): Promise<{ x: number; y: number } | null> {
+		this.trackInvocation('getCursorPosition')
+		return { x: 0, y: 0 }
+	}
+
+	public moveCursorTo(x: number, y: number): void {
+		this.trackInvocation('moveCursorTo', { x, y })
+	}
+
+	public clearBelowCursor(): void {
+		this.trackInvocation('clearBelowCursor')
 	}
 }
