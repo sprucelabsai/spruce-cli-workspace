@@ -12,6 +12,7 @@ export default buildSchema({
 			type: 'text',
 			label: 'Error builder destination directory',
 			isRequired: true,
+			isPrivate: true,
 			hint: "Where I'll save your new builder file?",
 			defaultValue: './src/errors',
 		},

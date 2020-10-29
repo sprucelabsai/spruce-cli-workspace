@@ -8,7 +8,6 @@ import {
 	diskUtil,
 	HASH_SPRUCE_DIR_NAME,
 } from "@sprucelabs/spruce-skill-utils";
-import { SchemaRegistry } from '@sprucelabs/schema'
 
 class SchemaSkillFeature implements ISkillFeature {
 	private skill: ISkill;
@@ -22,16 +21,10 @@ class SchemaSkillFeature implements ISkillFeature {
 	};
 
 	public checkHealth = async () => {
-		await this.loadSchemas()
+		const schemas = await this.loadSchemas()
 
-		const schemas = SchemaRegistry.getInstance().getAllSchemas().map(schema =>({
-			id: schema.id,
-			name: schema.name,
-			version: schema.version,
-			namespace: schema.namespace ?? '***MISSING***',
-			description: schema.description,
-		}))
-		
+
+
 		const health: SchemaHealthCheckItem = {
 			status: "passed",
 			schemas,
@@ -57,17 +50,23 @@ class SchemaSkillFeature implements ISkillFeature {
 			diskUtil.resolvePath(
 				this.skill.activeDir,
 				HASH_SPRUCE_DIR_NAME,
+				"schemas",
 				"**/*.schema.[t|j]s"
 			)
 		);
 
-		schemaFiles
-			.forEach((file) => require(file));
+		return schemaFiles
+			.map((file) => require(file).default).map(schema => ({
+				id: schema.id,
+				name: schema.name,
+				version: schema.version,
+				namespace: schema.namespace ?? '***MISSING***',
+				description: schema.description,
+			}));
 	}
 }
 
 export default (skill: ISkill) => {
 	const feature = new SchemaSkillFeature(skill);
-
 	skill.registerFeature("schema", feature);
 };

@@ -22,6 +22,7 @@ const syncErrorActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncErrorActio
 	            'errorClassDestinationDir': {
 	                label: 'Error class destination',
 	                type: 'text',
+	                isPrivate: true,
 	                isRequired: true,
 	                hint: 'Where I\'ll save your new Error class file?',
 	                defaultValue: "src/errors",
