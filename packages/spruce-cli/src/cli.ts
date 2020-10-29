@@ -194,7 +194,6 @@ export async function run(argv: string[] = []): Promise<void> {
 		'The working directory to execute the command'
 	)
 
-	// program.parse(process.argv)
 	const dirIdx = process.argv.findIndex((v) => v === '--directory')
 
 	if (dirIdx > -1) {

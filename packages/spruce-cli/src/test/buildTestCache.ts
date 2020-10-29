@@ -48,7 +48,9 @@ async function run() {
 
 		if (cacheTracker[cacheKey] && diskUtil.doesDirExist(cwd)) {
 			remaining--
-			term.renderLine(`Skipping '${cacheKey}'.`, [GraphicsTextEffect.Italic])
+			term.renderLine(`'${cacheKey}' already cached. Skipping...`, [
+				GraphicsTextEffect.Italic,
+			])
 			return
 		}
 

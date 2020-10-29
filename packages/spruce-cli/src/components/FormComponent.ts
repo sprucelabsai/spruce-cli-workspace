@@ -98,10 +98,6 @@ export default class FormComponent<S extends ISchema> extends SchemaEntity<S> {
 		let valid = false
 
 		do {
-			// Hard to read as menus build on menus
-			term.clear()
-
-			// Start with headline
 			if (headline) {
 				term.renderHeadline(headline, [GraphicsTextEffect.SpruceHeader])
 				term.renderLine('')

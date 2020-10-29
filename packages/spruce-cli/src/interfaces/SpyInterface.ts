@@ -8,8 +8,10 @@ import {
 	ProgressBarUpdateOptions,
 } from '../types/cli.types'
 
-export default class TestInterface implements GraphicsInterface {
+export default class SpyInterface implements GraphicsInterface {
 	public invocations: { command: string; options?: any }[] = []
+	private cursorPosition = { x: 0, y: 0 }
+
 	private promptResolver?: (
 		input: FieldDefinitionValueType<FieldDefinition>
 	) => void | undefined
@@ -183,7 +185,11 @@ export default class TestInterface implements GraphicsInterface {
 
 	public async getCursorPosition(): Promise<{ x: number; y: number } | null> {
 		this.trackInvocation('getCursorPosition')
-		return { x: 0, y: 0 }
+		return this.cursorPosition
+	}
+
+	public setCursorPosition(pos: { x: number; y: number }) {
+		this.cursorPosition = pos
 	}
 
 	public moveCursorTo(x: number, y: number): void {

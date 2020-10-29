@@ -5,7 +5,7 @@ import {
 	IFeatureActionExecuteResponse,
 	IFeatureAction,
 } from '../../../features/features.types'
-import TestInterface from '../../../interfaces/TestInterface'
+import SpyInterface from '../../../interfaces/SpyInterface'
 import AbstractSchemaTest from '../../../test/AbstractSchemaTest'
 import testUtil from '../../../utilities/test.utility'
 
@@ -207,7 +207,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		})
 
 		await this.wait(1000)
-		const term = this.ui as TestInterface
+		const term = this.ui as SpyInterface
 		const last = term.invocations[term.invocations.length - 1]
 
 		assert.isEqualDeep(last?.options?.options?.choices, [

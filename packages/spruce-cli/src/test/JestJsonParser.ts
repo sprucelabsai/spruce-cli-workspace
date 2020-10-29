@@ -5,7 +5,7 @@ import {
 	SpruceTestFile,
 	TestResultStatus,
 	SpruceTestResults,
-} from '../features/test/actions/TestAction'
+} from '../features/test/test.types'
 
 export type JsonResultKeys = JsonParserResult['status']
 interface OnTestFileResult {
