@@ -150,7 +150,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			)
 
 			while (notInstalled.length > 0) {
-				const toInstall = notInstalled.pop()
+				const toInstall = notInstalled.shift()
 				if (!toInstall) {
 					// for typescript
 					throw new Error('Dependent feature error')
@@ -183,6 +183,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		}
 
 		let installOptions = {}
+
 		if (toInstall.optionsDefinition) {
 			installOptions = await this.collectAnswers(
 				toInstall.optionsDefinition,
@@ -225,6 +226,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		const notInstalled = installedStatuses.filter(
 			(feature) => !!feature
 		) as AbstractFeature[]
+
 		return notInstalled
 	}
 
@@ -240,6 +242,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 				schema.fields?.[name].isRequired === true &&
 				schema.fields?.[name].isPrivate !== true
 		)
+
 		let answers = {}
 		if (fieldsToPresent.length > 0) {
 			const featureForm = new FormComponent({

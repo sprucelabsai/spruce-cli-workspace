@@ -14,6 +14,9 @@ export default class TestInterface implements GraphicsInterface {
 		input: FieldDefinitionValueType<FieldDefinition>
 	) => void | undefined
 
+	private confirmResolver?: (pass: boolean) => void | undefined
+	private waitForEnterResolver?: () => void | undefined
+
 	private promptDefaultValue: any
 
 	public renderWarning(
@@ -29,19 +32,22 @@ export default class TestInterface implements GraphicsInterface {
 		this.trackInvocation('renderHint', { message, effects })
 	}
 
-	private confirmResolver?: (pass: boolean) => void | undefined
-
 	private trackInvocation(command: string, options?: any) {
 		this.invocations.push({ command, options })
 	}
 
 	public isWaitingForInput() {
-		return !!(this.promptResolver || this.confirmResolver)
+		return !!(
+			this.promptResolver ||
+			this.confirmResolver ||
+			this.waitForEnterResolver
+		)
 	}
 
 	public reset() {
 		this.promptResolver = undefined
 		this.confirmResolver = undefined
+		this.waitForEnterResolver = undefined
 	}
 
 	public lastInvocation() {
@@ -51,7 +57,12 @@ export default class TestInterface implements GraphicsInterface {
 	public async sendInput(input: string): Promise<void> {
 		this.trackInvocation('sendInput', input)
 
-		if (this.promptResolver) {
+		if (this.waitForEnterResolver) {
+			const resolver = this.waitForEnterResolver
+			this.waitForEnterResolver = undefined
+
+			resolver()
+		} else if (this.promptResolver) {
 			const resolver = this.promptResolver
 			this.promptResolver = undefined
 
@@ -155,7 +166,9 @@ export default class TestInterface implements GraphicsInterface {
 
 	public async waitForEnter(message?: string | undefined): Promise<void> {
 		this.trackInvocation('waitForEnter', message)
-		await Promise.resolve()
+		return new Promise((resolve) => {
+			this.waitForEnterResolver = resolve
+		})
 	}
 
 	public confirm(question: string): Promise<boolean> {

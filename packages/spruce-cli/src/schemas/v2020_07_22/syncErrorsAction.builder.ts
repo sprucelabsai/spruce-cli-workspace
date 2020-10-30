@@ -11,6 +11,7 @@ export default buildSchema({
 			type: 'text',
 			label: 'Error class destination',
 			isRequired: true,
+			isPrivate: true,
 			hint: "Where I'll save your new Error class file?",
 			defaultValue: 'src/errors',
 		},

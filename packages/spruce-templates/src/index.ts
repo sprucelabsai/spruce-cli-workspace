@@ -144,6 +144,13 @@ export const templates = {
 		return template({})
 	},
 
+	errorPlugin() {
+		const template = templateImportUtil.getTemplate(
+			'errors/error.plugin.ts.hbs'
+		)
+		return template({})
+	},
+
 	errorExample(options: {
 		nameCamel: string
 		namePascal: string
