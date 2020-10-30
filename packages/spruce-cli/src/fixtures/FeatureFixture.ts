@@ -2,6 +2,7 @@
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 // import fsUtil from 'fs-extra'
+import globby from 'globby'
 import Cli, { ICliBootOptions, ICli } from '../cli'
 import { InstallFeature } from '../features/features.types'
 import ServiceFactory, {
@@ -210,6 +211,8 @@ export default class FeatureFixture implements IServiceProvider {
 				diskUtil.resolvePath(this.resolveHashSprucePath(), 'schemas'),
 			doesHashSpruceExist &&
 				diskUtil.resolvePath(this.resolveHashSprucePath(), 'events'),
+			doesHashSpruceExist &&
+				diskUtil.resolvePath(this.resolveHashSprucePath(), 'errors'),
 			diskUtil.resolvePath(this.cwd, 'build'),
 			diskUtil.resolvePath(this.cwd, 'src', 'events'),
 			diskUtil.resolvePath(this.cwd, 'src', 'schemas'),
@@ -221,6 +224,18 @@ export default class FeatureFixture implements IServiceProvider {
 				diskUtil.createDir(dir)
 			}
 		})
+
+		const errorDirPattern = diskUtil.resolvePath(
+			this.cwd,
+			'src',
+			'errors',
+			'**/*.builder.ts'
+		)
+		const results = globby.sync(errorDirPattern)
+
+		for (const file of results) {
+			diskUtil.deleteFile(file)
+		}
 	}
 
 	private resetCachedSkillDir() {

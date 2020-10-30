@@ -37,7 +37,12 @@ export default class SyncAction extends AbstractFeatureAction<
 			SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasActionSchema
 		>
 
-		const schemaSyncResults = await schemaSyncAction.execute({})
+		const syncOptions = normalizeSchemaValues(
+			syncSchemasActionSchema,
+			normalizedOptions
+		)
+
+		const schemaSyncResults = await schemaSyncAction.execute(syncOptions)
 		const errorSyncResults = await this.syncErrors(
 			schemaSyncAction,
 			normalizedOptions

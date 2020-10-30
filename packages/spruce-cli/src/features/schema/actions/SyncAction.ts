@@ -309,6 +309,8 @@ export default class SyncAction extends AbstractFeatureAction<
 			valueTypeResults[0].path
 		)
 
+		diskUtil.deleteFile(valueTypeResults[0].path)
+
 		return valueTypes
 	}
 

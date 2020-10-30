@@ -6,7 +6,7 @@ export default buildSchema({
 	name: 'Sync error action',
 	description: 'Keep your errors types in sync with your builders',
 	fields: {
-		addonsLookupDir: syncSchemasActionBuilder.fields.addonsLookupDir,
+		...syncSchemasActionBuilder.fields,
 		errorClassDestinationDir: {
 			type: 'text',
 			label: 'Error class destination',
