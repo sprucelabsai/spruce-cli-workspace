@@ -17,13 +17,6 @@ export default class TestReporter {
 
 		this.document = term.createDocument({
 			palette: new termKit.Palette(),
-			scrollable: true,
-			vScrollBar: true,
-		})
-
-		term.on('resize', (width, height) => {
-			term('RESIZE')
-			this.document.resizeInput({ width, height })
 		})
 
 		this.bar = new termKit.Bar({
@@ -76,6 +69,8 @@ export default class TestReporter {
 		for (let row = 0; row < results.totalTestFiles; row++) {
 			cellContents.push([' ', '', ' ', ' '])
 		}
+
+		debugger
 
 		this.table = new termKit.TextTable({
 			parent: this.document,
