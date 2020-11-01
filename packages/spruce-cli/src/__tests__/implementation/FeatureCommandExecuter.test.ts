@@ -148,6 +148,8 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 			await this.wait(1000)
 		}
 
+		await this.ui.sendInput('\n')
+
 		await this.ui.sendInput('Restaurant')
 		await this.ui.sendInput('\n')
 
@@ -166,6 +168,57 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 						version: versionUtil.generateVersion().constValue,
 					},
 				]),
+			},
+		})
+
+		const installer = this.FeatureInstaller()
+		const feature = installer.getFeature('schema')
+
+		const isInstalled = await feature.isInstalled()
+		assert.isTrue(isInstalled)
+	}
+
+	@test()
+	protected static async shouldInstallTwoDependentFeatures() {
+		const executer = this.Executer('error', 'create')
+		const promise = executer.execute()
+
+		await this.wait(1000)
+
+		await this.ui.sendInput('y')
+
+		await this.ui.sendInput('My great skill')
+		await this.ui.sendInput('A skill that is so good')
+
+		//install is running and can take awhile, so we'll wait for the next time we're asked for input
+		while (!this.ui.isWaitingForInput()) {
+			await this.wait(1000)
+		}
+		await this.ui.sendInput('y')
+
+		while (!this.ui.isWaitingForInput()) {
+			await this.wait(1000)
+		}
+
+		await this.ui.sendInput('\n')
+
+		await this.ui.sendInput('Test error')
+
+		await this.ui.sendInput('\n')
+
+		await promise
+
+		await this.assertHealthySkillNamed('my-great-skill', {
+			skill: { status: 'passed' },
+			schema: {
+				status: 'passed',
+				schemas: this.generateExpectedHealthSchemas([
+					...Object.values(coreSchemas),
+				]),
+			},
+			error: {
+				errorSchemas: [{ name: 'Test error', id: 'testError' }],
+				status: 'passed',
 			},
 		})
 

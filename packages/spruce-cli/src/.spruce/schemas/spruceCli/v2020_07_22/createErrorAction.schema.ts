@@ -22,6 +22,7 @@ const createErrorActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICreateErrorA
 	            'errorClassDestinationDir': {
 	                label: 'Error class destination',
 	                type: 'text',
+	                isPrivate: true,
 	                isRequired: true,
 	                hint: 'Where I\'ll save your new Error class file?',
 	                defaultValue: "src/errors",
@@ -46,6 +47,7 @@ const createErrorActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICreateErrorA
 	            'errorBuilderDestinationDir': {
 	                label: 'Error builder destination directory',
 	                type: 'text',
+	                isPrivate: true,
 	                isRequired: true,
 	                hint: 'Where I\'ll save your new builder file?',
 	                defaultValue: "./src/errors",

@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { NpmPackage } from '../../types/cli.types'
-import AbstractFeature from '../AbstractFeature'
+import AbstractFeature, { InstallResults } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
 export default class ErrorFeature extends AbstractFeature {
@@ -18,6 +18,35 @@ export default class ErrorFeature extends AbstractFeature {
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public async isInstalled() {
-		return this.Service('pkg').isInstalled('@sprucelabs/error')
+		return (
+			this.Service('pkg').isInstalled('@sprucelabs/error') &&
+			diskUtil.doesFileExist(this.getPluginDestination())
+		)
+	}
+
+	public async afterPackageInstall(): Promise<InstallResults> {
+		const plugin = this.templates.errorPlugin()
+		const destination = this.getPluginDestination()
+
+		diskUtil.writeFile(destination, plugin)
+
+		return {
+			files: [
+				{
+					name: 'error.plugin.ts',
+					path: destination,
+					action: 'generated',
+					description: 'Enables error support in your skill!',
+				},
+			],
+		}
+	}
+
+	private getPluginDestination() {
+		return diskUtil.resolveHashSprucePath(
+			this.cwd,
+			'features',
+			'error.plugin.ts'
+		)
 	}
 }
