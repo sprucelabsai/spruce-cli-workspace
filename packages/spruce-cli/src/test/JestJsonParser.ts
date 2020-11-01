@@ -77,7 +77,7 @@ export default class JestJsonParser {
 
 			case 'onTestFileStart':
 				testFiles.push({
-					testFile: this.pullPathFromTestResponse(result),
+					path: this.pullPathFromTestResponse(result),
 					status: this.pullTestFileStatusFromTestResponse(result),
 				})
 
@@ -96,7 +96,7 @@ export default class JestJsonParser {
 					const name = this.mapAbsoluteJsToRelativeTsPath(
 						testResult.testFilePath
 					)
-					const idx = testFiles.findIndex((file) => file.testFile === name)
+					const idx = testFiles.findIndex((file) => file.path === name)
 					const file = {
 						...(testFiles[idx] ?? {}),
 						testFile: name,

@@ -7,7 +7,7 @@ export interface SpruceTestFileTest {
 }
 
 export interface SpruceTestFile {
-	testFile: string
+	path: string
 	status: TestResultStatus
 	tests?: SpruceTestFileTest[]
 }

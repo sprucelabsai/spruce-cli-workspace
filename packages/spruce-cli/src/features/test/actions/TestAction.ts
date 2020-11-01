@@ -1,16 +1,9 @@
 import { buildSchema } from '@sprucelabs/schema'
-import chalk from 'chalk'
-import TerminalInterface from '../../../interfaces/TerminalInterface'
 import JestJsonParser from '../../../test/JestJsonParser'
 import TestReporter from '../../../test/TestReporter'
-import { GraphicsTextEffect } from '../../../types/cli.types'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { IFeatureActionExecuteResponse } from '../../features.types'
-import {
-	SpruceTestFile,
-	SpruceTestFileTest,
-	SpruceTestResults,
-} from '../test.types'
+import { SpruceTestResults } from '../test.types'
 
 export const optionsSchema = buildSchema({
 	id: 'testAction',
@@ -30,7 +23,7 @@ export default class TestAction extends AbstractFeatureAction<ActionSchema> {
 		const parser = new JestJsonParser()
 		const results: IFeatureActionExecuteResponse = {}
 
-		this.testReporter = new TestReporter({ ui: this.ui })
+		this.testReporter = new TestReporter()
 		await this.testReporter.start()
 
 		try {

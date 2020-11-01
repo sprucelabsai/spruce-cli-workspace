@@ -9,24 +9,59 @@ export default class TestReporter {
 	private document: any
 	private table?: any
 	private bar: any
+	private layout: any
+	private testLog: any
+	private errorLog?: any
 
 	public constructor() {}
 
 	public async start() {
 		this.started = true
 
+		term.hideCursor(true)
 		this.document = term.createDocument({
 			palette: new termKit.Palette(),
 		})
 
-		this.bar = new termKit.Bar({
+		this.layout = new termKit.Layout({
 			parent: this.document,
-			x: 0,
-			y: 1,
-			width: term.width - 1,
+			layout: {
+				id: 'main_layout',
+				widthPercent: 100,
+				heightPercent: 100,
+				rows: [
+					{
+						id: 'row_1',
+						heightPercent: 100,
+						columns: [{ id: 'results', widthPercent: 100 }],
+					},
+				],
+			},
+		})
+
+		this.bar = new termKit.Bar({
+			parent: this.document.elements.results,
+			x: 1,
+			y: 0,
 			barChars: 'solid',
-			content: ' Testing...',
+			width: this.barWidth(),
+			content: ' Booting Jest...',
 			value: 0,
+		})
+
+		this.testLog = new termKit.TextBox({
+			parent: this.document.elements.results,
+			scrollable: true,
+			vScrollBar: true,
+			autoWidth: true,
+			outputHeight: this.testLogHeight(),
+			wordWrap: false,
+			x: 0,
+			y: 2,
+		})
+
+		this.layout.on('parentResize', () => {
+			this.handleTerminalResize()
 		})
 
 		term.on('key', (key: string) => {
@@ -37,6 +72,20 @@ export default class TestReporter {
 					break
 			}
 		})
+	}
+
+	private handleTerminalResize() {
+		this.bar.outputWidth = this.barWidth()
+		this.testLog.setSizeAndPosition({ outputHeight: this.testLogHeight() })
+		this.testLog.draw()
+	}
+
+	private testLogHeight() {
+		return this.document.elements.results.inputHeight - 2
+	}
+
+	private barWidth() {
+		return this.document.inputWidth - 4
 	}
 
 	public updateResults(results: SpruceTestResults) {
@@ -50,39 +99,54 @@ export default class TestReporter {
 			`Testing: ${Math.round(this.generatePercentComplete(results) * 100)}%`
 		)
 
-		if (!this.table && results.totalTestFiles > 0) {
-			this.createTable(results)
-		}
+		let content = ''
+		let errorContent = ''
 
-		results.testFiles?.forEach((file, row) => {
-			this.updateCellColors(row, file.status)
-
-			this.table?.setCellContent(0, row, ` ${file.status}`, true, true)
-			this.table?.setCellContent(2, row, file.testFile, true, true)
-			this.table?.setCellContent(3, row, '0', true, true)
+		results.testFiles?.forEach((file) => {
+			if (file.status === 'failed') {
+				this.dropInErrorLog()
+				file.tests?.forEach((test) => {
+					test.errorMessages?.forEach((message) => {
+						errorContent += `^r^+${file.path}\n`
+						errorContent += ` - ^r^+${test.name}\n\n`
+						errorContent += message + '\n'
+					})
+				})
+			}
+			content += `${this.renderStatusBlock(file.status)}   ${file.path}\n`
 		})
+
+		this.testLog.setContent(content, true)
+		this.testLog.scrollToBottom()
+
+		this.errorLog?.setContent(errorContent, true)
 	}
 
-	private createTable(results: SpruceTestResults) {
-		const y = 3
-		const cellContents: any = []
-		for (let row = 0; row < results.totalTestFiles; row++) {
-			cellContents.push([' ', '', ' ', ' '])
+	private dropInErrorLog() {
+		if (this.layout.layoutDef.rows.length === 1) {
+			this.layout.layoutDef.rows[0].heightPercent = 50
+			this.layout.layoutDef.rows.push({
+				id: 'row_2',
+				columns: [{ id: 'errors', widthPercent: 100 }],
+			})
+
+			this.layout.computeBoundingBoxes()
+
+			this.errorLog = new termKit.TextBox({
+				parent: this.document.elements.errors,
+				contentHasMarkup: true,
+				scrollable: true,
+				vScrollBar: true,
+				hScrollBar: true,
+				autoWidth: true,
+				x: 1,
+				autoHeight: true,
+				wordWrap: false,
+			})
+
+			this.layout.draw()
+			this.handleTerminalResize()
 		}
-
-		debugger
-
-		this.table = new termKit.TextTable({
-			parent: this.document,
-			cellContents,
-			x: 0,
-			y,
-			fit: true,
-			hasBorder: false,
-			width: term.width - 1,
-			height: term.height - y,
-			outputHeight: cellContents.length,
-		})
 	}
 
 	private updateProgressBar(results: SpruceTestResults) {
@@ -94,6 +158,8 @@ export default class TestReporter {
 					results.totalTestFiles - (results.totalTestFilesComplete ?? 0)
 				} remaining...`
 			)
+		} else {
+			this.bar.setContent('Running...')
 		}
 
 		this.bar.setValue(this.generatePercentComplete(results))
@@ -108,37 +174,52 @@ export default class TestReporter {
 		return percent
 	}
 
-	private updateCellColors(row: number, status: SpruceTestFile['status']) {
-		const textBox = this.table?.textBoxes[row][0]
-
-		if (textBox && !textBox._contentSizeOverridden) {
-			textBox._contentSizeOverridden = true
-			textBox.getContentSize = () => {
-				return { width: 5, height: 1 }
-			}
-		}
-
-		textBox?.textBuffer.setDefaultAttr({
-			color: 'blue',
-			bgColor:
-				status === 'passed' ? 'green' : status === 'failed' ? 'red' : 'yellow',
-		})
-
-		textBox?.textBuffer.setVoidAttr({
-			bgColor:
-				status === 'passed' ? 'green' : status === 'failed' ? 'red' : 'yellow',
-		})
-	}
-
 	public render() {
 		this.table?.computeCells()
 		this.table?.draw()
+	}
+
+	private renderStatusBlock(status: SpruceTestFile['status']) {
+		let bgColor = 'y'
+		let color = 'k'
+		let padding = 10
+		switch (status) {
+			case 'passed':
+				bgColor = 'g'
+				padding = 11
+				color = 'w'
+				break
+			case 'failed':
+				padding = 11
+				bgColor = 'r'
+				color = 'w'
+				break
+		}
+
+		return `^b^#^${bgColor}^${color}^+${this.centerStringWithSpaces(
+			status,
+			padding
+		)}^`
+	}
+
+	private centerStringWithSpaces(text: string, numberOfSpaces: number) {
+		text = text.trim()
+		let l = text.length
+		let w2 = Math.floor(numberOfSpaces / 2)
+		let l2 = Math.floor(l / 2)
+		let s = new Array(w2 - l2 + 1).join(' ')
+		text = s + text + s
+		if (text.length < numberOfSpaces) {
+			text += new Array(numberOfSpaces - text.length + 1).join(' ')
+		}
+		return text
 	}
 
 	public destroy() {
 		term.grabInput(false)
 		term.hideCursor(false)
 		term.styleReset()
+		this.document.destroy()
 		term('\n')
 	}
 }
