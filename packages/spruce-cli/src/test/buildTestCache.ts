@@ -34,17 +34,14 @@ async function run() {
 		const serviceFactory = new ServiceFactory({ mercury, importCacheDir })
 		const cwd = diskUtil.resolvePath(os.tmpdir(), 'spruce-cli', cacheKey)
 
-		const fixture = new FeatureFixture(
+		const fixture = new FeatureFixture({
 			cwd,
 			serviceFactory,
-			new TerminalInterface(cwd)
-		)
+			ui: new TerminalInterface(cwd),
+			shouldGenerateCacheIfMissing: true,
+		})
 
-		const cacheTrackerPath = fixture.getTestCacheTrackerFilePath()
-		const cacheTrackerContents = diskUtil.doesFileExist(cacheTrackerPath)
-			? diskUtil.readFile(cacheTrackerPath)
-			: '{}'
-		const cacheTracker = JSON.parse(cacheTrackerContents)
+		const cacheTracker = fixture.loadCacheTracker()
 
 		if (cacheTracker[cacheKey] && diskUtil.doesDirExist(cwd)) {
 			remaining--
@@ -59,10 +56,6 @@ async function run() {
 			diskUtil.deleteDir(cwd)
 		}
 
-		cacheTracker[cacheKey] = cwd
-
-		diskUtil.writeFile(cacheTrackerPath, JSON.stringify(cacheTracker, null, 2))
-
 		term.renderLine(`Starting to build '${cacheKey}'...`, [
 			GraphicsTextEffect.Bold,
 			GraphicsTextEffect.Green,
@@ -70,7 +63,7 @@ async function run() {
 
 		term.renderLine('')
 
-		await fixture.installFeatures(options)
+		await fixture.installFeatures(options, cacheKey)
 
 		remaining--
 
@@ -79,7 +72,7 @@ async function run() {
 		)
 	})
 
-	await term.startLoading(`Building ${testKeys.length} skills...`)
+	await term.startLoading(`Building ${remaining} skills...`)
 	await Promise.all(promises)
 	await term.stopLoading()
 	term.clear()

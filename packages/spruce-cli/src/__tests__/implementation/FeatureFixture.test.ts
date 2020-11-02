@@ -9,12 +9,14 @@ export default class FeatureFixtureTest extends AbstractCliTest {
 	@test()
 	protected static async setsUpCachedDir() {
 		const cachedDir = await this.installSkill()
+
 		this.cacheDirs.push(cachedDir)
 	}
 
 	@test()
 	protected static async setsUpSecondCachedDir() {
 		const cachedDir = await this.installSkill()
+
 		this.cacheDirs.push(cachedDir)
 	}
 
@@ -29,7 +31,8 @@ export default class FeatureFixtureTest extends AbstractCliTest {
 	}
 
 	private static async installSkill() {
-		const fixture = this.FeatureFixture()
+		const fixture = this.FeatureFixture({ shouldGenerateCacheIfMissing: true })
+
 		await fixture.installFeatures(
 			[
 				{

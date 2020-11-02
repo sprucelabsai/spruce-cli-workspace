@@ -45,7 +45,7 @@
 	"eslint.options": {
 		"extensions": [".js", ".jsx", ".ts", ".tsx"]
 	},
-	"typescript.tsdk": "/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/node_modules/typescript/lib",
+	"typescript.tsdk": "node_modules/typescript/lib",
 	"typescript.preferences.importModuleSpecifier": "relative",
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": true
