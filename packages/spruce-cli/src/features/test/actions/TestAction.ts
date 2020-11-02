@@ -1,4 +1,4 @@
-import { buildSchema } from '@sprucelabs/schema'
+import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import JestJsonParser from '../../../test/JestJsonParser'
 import TestReporter from '../../../test/TestReporter'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
@@ -8,23 +8,37 @@ import { SpruceTestResults } from '../test.types'
 export const optionsSchema = buildSchema({
 	id: 'testAction',
 	name: 'Test skill',
-	fields: {},
+	fields: {
+		shouldReportWhileRunning: {
+			type: 'boolean',
+			label: 'Report while running',
+			hint: 'Should I output the test results while they are running?',
+			defaultValue: true,
+		},
+	},
 })
 
-export type ActionSchema = typeof optionsSchema
+export type OptionsSchema = typeof optionsSchema
 
-export default class TestAction extends AbstractFeatureAction<ActionSchema> {
+export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	public name = 'test'
 	public optionsSchema = optionsSchema
 	private testReporter: TestReporter | undefined
 
-	public async execute(): Promise<IFeatureActionExecuteResponse> {
+	public async execute(
+		options: SchemaValues<OptionsSchema>
+	): Promise<IFeatureActionExecuteResponse> {
+		const normalizedOptions = this.validateAndNormalizeOptions(options)
+		const { shouldReportWhileRunning } = normalizedOptions
+
 		let testResults: SpruceTestResults | undefined
 		const parser = new JestJsonParser()
 		const results: IFeatureActionExecuteResponse = {}
 
-		this.testReporter = new TestReporter()
-		await this.testReporter.start()
+		if (shouldReportWhileRunning) {
+			this.testReporter = new TestReporter()
+			await this.testReporter?.start()
+		}
 
 		try {
 			await this.Service('command').execute(
@@ -46,7 +60,7 @@ export default class TestAction extends AbstractFeatureAction<ActionSchema> {
 			}
 		}
 
-		await this.testReporter.destroy()
+		await this.testReporter?.destroy()
 
 		results.summaryLines = []
 		results.meta = {

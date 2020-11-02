@@ -42,7 +42,9 @@ export default class RunningTestsTest extends AbstractTestTest {
 
 		await this.Service('build').build()
 
-		const results = await cli.getFeature('test').Action('test').execute({})
+		const results = await cli.getFeature('test').Action('test').execute({
+			shouldReportWhileRunning: false,
+		})
 
 		assert.isFalsy(results.errors)
 		assert.isTruthy(results.meta?.testResults)
