@@ -173,4 +173,37 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 
 		assert.doesNotInclude(parentSchemaContents, this.cwd)
 	}
+
+	@test.only()
+	protected static async canCreateAndSyncErrorsWithNoCoreSchemasAndNoFields() {
+		const cli = await this.installErrorFeature('errors')
+
+		const createAction = cli.getFeature('error').Action('create')
+
+		const results = await createAction.execute({
+			nameReadable: 'Test error',
+			nameCamel: 'testError',
+			fetchCoreSchemas: false,
+		})
+
+		assert.isFalsy(results.errors)
+		assert.isTruthy(results.files)
+		diskUtil.writeFile(
+			results.files[0].path,
+			`import { buildErrorSchema } from '@sprucelabs/schema'
+
+
+		export default buildErrorSchema({
+			id: 'testError',
+			name: 'Test error',
+			description: '',
+			fields: {
+			}
+		})`
+		)
+
+		const syncAction = cli.getFeature('error').Action('sync')
+		const syncResults = await syncAction.execute({ fetchCoreSchemas: false })
+		assert.isFalsy(syncResults.errors)
+	}
 }

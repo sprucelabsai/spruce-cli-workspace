@@ -7,7 +7,9 @@ import fs from 'fs-extra'
 import * as uuid from 'uuid'
 import { ICliBootOptions } from '../cli'
 import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
-import FeatureFixture from '../fixtures/FeatureFixture'
+import FeatureFixture, {
+	FeatureFixtureOptions,
+} from '../fixtures/FeatureFixture'
 import CliGlobalEmitter from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
 import ServiceFactory, {
@@ -92,8 +94,13 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return new ServiceFactory({ mercury: new Mercury(), ...(options || {}) })
 	}
 
-	protected static FeatureFixture() {
-		return new FeatureFixture(this.cwd, this.ServiceFactory(), this.ui)
+	protected static FeatureFixture(options?: Partial<FeatureFixtureOptions>) {
+		return new FeatureFixture({
+			cwd: this.cwd,
+			serviceFactory: this.ServiceFactory(),
+			ui: this.ui,
+			...options,
+		})
 	}
 
 	protected static resolveHashSprucePath(...filePath: string[]) {

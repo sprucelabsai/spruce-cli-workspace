@@ -1,7 +1,5 @@
-// import os from 'os'
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-// import fsUtil from 'fs-extra'
 import Cli, { ICliBootOptions, ICli } from '../cli'
 import { InstallFeature } from '../features/features.types'
 import ServiceFactory, {
@@ -18,6 +16,13 @@ export interface ICachedCli {
 	cwd: string
 }
 
+export interface FeatureFixtureOptions {
+	cwd: string
+	serviceFactory: ServiceFactory
+	ui: GraphicsInterface
+	shouldGenerateCacheIfMissing?: boolean
+}
+
 export default class FeatureFixture implements IServiceProvider {
 	private cwd: string
 	private installedSkills: Record<string, ICachedCli> = {}
@@ -25,15 +30,13 @@ export default class FeatureFixture implements IServiceProvider {
 	private static linkedUtils = false
 	private static dirsToDelete: string[] = []
 	private term: GraphicsInterface
+	private generateCacheIfMissing = false
 
-	public constructor(
-		cwd: string,
-		serviceFactory: ServiceFactory,
-		term: GraphicsInterface
-	) {
-		this.cwd = cwd
-		this.serviceFactory = serviceFactory
-		this.term = term
+	public constructor(options: FeatureFixtureOptions) {
+		this.cwd = options.cwd
+		this.serviceFactory = options.serviceFactory
+		this.term = options.ui
+		this.generateCacheIfMissing = !!options.shouldGenerateCacheIfMissing
 	}
 
 	public static deleteOldSkillDirs() {
@@ -109,20 +112,27 @@ export default class FeatureFixture implements IServiceProvider {
 			this.installedSkills[cacheKey] &&
 			testUtil.isCacheEnabled()
 		) {
-			this.cleanCachedSkillDir()
-
 			return this.installedSkills[cacheKey].cli
 		}
 
-		let alreadyInstalled = false
-
+		let isCached = false
 		if (cacheKey && testUtil.isCacheEnabled()) {
-			alreadyInstalled = await this.copyCachedSkillAndTrackItsDir(cacheKey)
+			isCached = this.doesCacheExist(cacheKey)
+
+			if (!isCached && !this.generateCacheIfMissing) {
+				throw new Error(
+					`Cached skill not found, add\n\n"${cacheKey}":${JSON.stringify(
+						features
+					)}\n\nto your package.json and run\n\n\`yarn test.cache\``
+				)
+			}
+
+			await this.copyCachedSkillAndTrackItsDir(cacheKey)
 		}
 
 		const cli = await this.Cli(bootOptions)
 
-		if (!alreadyInstalled) {
+		if (!isCached) {
 			await cli.installFeatures({
 				features,
 			})
@@ -131,8 +141,6 @@ export default class FeatureFixture implements IServiceProvider {
 		if (cacheKey && testUtil.isCacheEnabled()) {
 			this.cacheCli(cacheKey, cli)
 		}
-
-		this.cleanCachedSkillDir()
 
 		await this.linkLocalPackages()
 
@@ -145,10 +153,50 @@ export default class FeatureFixture implements IServiceProvider {
 	}
 
 	private async copyCachedSkillAndTrackItsDir(cacheKey: string) {
+		let isCached = this.doesCacheExist(cacheKey)
+
+		if (isCached) {
+			let settings = this.loadCacheTracker()
+			await diskUtil.copyDir(settings[cacheKey], this.cwd)
+
+			FeatureFixture.dirsToDelete.push(this.cwd)
+		} else {
+			this.addCwdToCacheTracker(cacheKey)
+		}
+	}
+
+	private addCwdToCacheTracker(cacheKey: string) {
+		let settings = this.loadCacheTracker()
+
+		if (!settings) {
+			settings = {}
+		}
+
+		if (!settings[cacheKey]) {
+			const settingsFile = this.getTestCacheTrackerFilePath()
+
+			settings[cacheKey] = this.cwd
+			diskUtil.createDir(pathUtil.dirname(settingsFile))
+			diskUtil.writeFile(settingsFile, JSON.stringify(settings, null, 2))
+		}
+		return settings
+	}
+
+	private doesCacheExist(cacheKey: string) {
+		let alreadyInstalled = false
+
+		const settings = this.loadCacheTracker()
+
+		if (settings?.[cacheKey]) {
+			alreadyInstalled = true
+		}
+		return alreadyInstalled
+	}
+
+	public loadCacheTracker() {
 		const settingsFile = this.getTestCacheTrackerFilePath()
 
 		const exists = diskUtil.doesFileExist(settingsFile)
-		let alreadyInstalled = false
 		let settingsObject: Record<string, any> = {}
 
 		try {
@@ -156,35 +204,7 @@ export default class FeatureFixture implements IServiceProvider {
 		} catch (err) {
 			log.warn('Test cache settings file is broken, ignoring...')
 		}
-
-		if (settingsObject?.[cacheKey]) {
-			if (testUtil.shouldClearCache()) {
-				this.resetCachedSkillDir()
-			} else {
-				alreadyInstalled = true
-			}
-
-			await diskUtil.copyDir(settingsObject[cacheKey], this.cwd)
-
-			FeatureFixture.dirsToDelete.push(this.cwd)
-		}
-
-		if (settingsFile) {
-			if (!settingsObject) {
-				settingsObject = {}
-			}
-
-			if (!settingsObject[cacheKey]) {
-				settingsObject[cacheKey] = this.cwd
-				diskUtil.createDir(pathUtil.dirname(settingsFile))
-				diskUtil.writeFile(
-					settingsFile,
-					JSON.stringify(settingsObject, null, 2)
-				)
-			}
-		}
-
-		return alreadyInstalled
+		return settingsObject
 	}
 
 	public getTestCacheTrackerFilePath() {
@@ -193,39 +213,6 @@ export default class FeatureFixture implements IServiceProvider {
 			'tmp',
 			`cached-skills.json`
 		)
-	}
-
-	private resolveHashSprucePath(...filePath: string[]) {
-		return diskUtil.resolveHashSprucePath(this.cwd, ...filePath)
-	}
-
-	private cleanCachedSkillDir() {
-		const doesHashSpruceExist = diskUtil.doesHashSprucePathExist(this.cwd)
-
-		const dirs = [
-			// TODO make this so it does not need to be updated for each feature
-			doesHashSpruceExist &&
-				diskUtil.resolvePath(this.resolveHashSprucePath(), 'tmp'),
-			doesHashSpruceExist &&
-				diskUtil.resolvePath(this.resolveHashSprucePath(), 'schemas'),
-			doesHashSpruceExist &&
-				diskUtil.resolvePath(this.resolveHashSprucePath(), 'events'),
-			diskUtil.resolvePath(this.cwd, 'build'),
-			diskUtil.resolvePath(this.cwd, 'src', 'events'),
-			diskUtil.resolvePath(this.cwd, 'src', 'schemas'),
-		]
-
-		dirs.forEach((dir) => {
-			if (dir && diskUtil.doesFileExist(dir)) {
-				diskUtil.deleteDir(dir)
-				diskUtil.createDir(dir)
-			}
-		})
-	}
-
-	private resetCachedSkillDir() {
-		diskUtil.deleteDir(this.cwd)
-		diskUtil.createDir(this.cwd)
 	}
 
 	private cacheCli(cacheKey: string, cli: ICli) {

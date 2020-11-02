@@ -51,7 +51,7 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 	}
 
 	@test()
-	protected static async buildCreatesValidDefinitionAndOptionsFile() {
+	protected static async buildCreatesValidSchemaAndOptionsFile() {
 		const action = await this.installErrorsAndGetCreateAction()
 		const results = await action.execute({
 			nameReadable: 'Test pass',
@@ -74,5 +74,38 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 		for (const file of results.files ?? []) {
 			await typeChecker.check(file.path)
 		}
+	}
+
+	@test()
+	protected static async buildCreatesValidSchemaAndOptionsFileWhenFetchCoreSchemasFalse() {
+		const action = await this.installErrorsAndGetCreateAction()
+		const results = await action.execute({
+			nameReadable: 'Test pass',
+			nameCamel: 'testPass',
+			fetchCoreSchemas: false,
+		})
+
+		assert.isFalsy(results.errors)
+
+		testUtil.assertsFileByNameInGeneratedFiles(
+			/testPass\.schema/,
+			results.files ?? []
+		)
+
+		testUtil.assertsFileByNameInGeneratedFiles(
+			/options\.types/,
+			results.files ?? []
+		)
+
+		const typeChecker = this.Service('typeChecker')
+		for (const file of results.files ?? []) {
+			await typeChecker.check(file.path)
+		}
+
+		const cli = await this.Cli()
+		const health = await cli.checkHealth()
+
+		assert.isTruthy(health.schema?.schemas)
+		assert.isLength(health.schema.schemas, 0)
 	}
 }

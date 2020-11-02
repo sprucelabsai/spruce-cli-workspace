@@ -52,6 +52,41 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	}
 
 	@test()
+	protected static async syncingWithNoSchemasAnFetchCoreSchemasFalseSucceeds() {
+		const cli = await this.installSchemaFeature('schemas')
+
+		const results = await cli
+			.getFeature('schema')
+			.Action('sync')
+			.execute({ fetchCoreSchemas: false })
+
+		assert.isFalsy(results.errors)
+
+		testUtil.assertCountsByAction(results.files ?? [], {
+			updated: 0,
+			generated: TYPE_FILE_COUNT,
+			skipped: 0,
+		})
+	}
+
+	@test()
+	protected static async syncingCleansUpTempFiles() {
+		const cli = await this.installSchemaFeature('schemas')
+
+		const results = await cli.getFeature('schema').Action('sync').execute({})
+
+		assert.isFalsy(results.errors)
+
+		const tmpFile = this.resolveHashSprucePath(
+			'schemas',
+			'tmp',
+			'valueType.tmp.ts'
+		)
+
+		assert.isFalse(diskUtil.doesFileExist(tmpFile))
+	}
+
+	@test()
 	protected static async syncingCoreSchemasGeneratesTypesFile() {
 		const cli = await this.installSchemaFeature('schemas')
 		await this.copyMockCoreSchemas()
