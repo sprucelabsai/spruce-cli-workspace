@@ -46,7 +46,7 @@ export default class TestAction extends AbstractFeatureAction<ActionSchema> {
 			}
 		}
 
-		this.testReporter.destroy()
+		await this.testReporter.destroy()
 
 		results.summaryLines = []
 		results.meta = {

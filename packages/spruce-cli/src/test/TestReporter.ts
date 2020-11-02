@@ -2,7 +2,6 @@ import terminal_kit from 'terminal-kit'
 import { SpruceTestFile, SpruceTestResults } from '../features/test/test.types'
 
 const termKit = terminal_kit as any
-const term = termKit.terminal as any
 
 export default class TestReporter {
 	private started = false
@@ -12,14 +11,16 @@ export default class TestReporter {
 	private layout: any
 	private testLog: any
 	private errorLog?: any
+	private term: any
 
 	public constructor() {}
 
 	public async start() {
 		this.started = true
+		this.term = termKit.terminal as any
 
-		term.hideCursor(true)
-		this.document = term.createDocument({
+		this.term.hideCursor(true)
+		this.document = this.term.createDocument({
 			palette: new termKit.Palette(),
 		})
 
@@ -64,10 +65,10 @@ export default class TestReporter {
 			this.handleTerminalResize()
 		})
 
-		term.on('key', (key: string) => {
+		this.term.on('key', async (key: string) => {
 			switch (key) {
 				case 'CTRL_C':
-					this.destroy()
+					await this.destroy()
 					process.exit()
 					break
 			}
@@ -95,7 +96,7 @@ export default class TestReporter {
 
 		this.updateProgressBar(results)
 
-		term.windowTitle(
+		this.term.windowTitle(
 			`Testing: ${Math.round(this.generatePercentComplete(results) * 100)}%`
 		)
 
@@ -215,11 +216,15 @@ export default class TestReporter {
 		return text
 	}
 
-	public destroy() {
-		term.grabInput(false)
-		term.hideCursor(false)
-		term.styleReset()
+	public async destroy() {
+		await this.term.grabInput(false, true)
+
+		this.term.hideCursor(false)
+
+		this.term.styleReset()
+
 		this.document.destroy()
-		term('\n')
+
+		this.term('\n')
 	}
 }
