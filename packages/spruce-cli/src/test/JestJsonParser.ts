@@ -99,7 +99,7 @@ export default class JestJsonParser {
 					const idx = testFiles.findIndex((file) => file.path === name)
 					const file = {
 						...(testFiles[idx] ?? {}),
-						testFile: name,
+						path: name,
 						status: this.pullTestFileResultStatus(testResult),
 						tests: this.pullTestsFromTestFileResult(testResult),
 					}

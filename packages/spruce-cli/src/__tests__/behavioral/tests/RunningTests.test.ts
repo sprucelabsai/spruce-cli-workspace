@@ -52,7 +52,7 @@ export default class RunningTestsTest extends AbstractTestTest {
 				totalTestFiles: 2,
 				testFiles: [
 					{
-						testFile: 'behavioral/CanCancelAppointment.test.ts',
+						path: 'behavioral/CanCancelAppointment.test.ts',
 						status: 'failed',
 						tests: [
 							{
@@ -68,7 +68,7 @@ export default class RunningTestsTest extends AbstractTestTest {
 						],
 					},
 					{
-						testFile: 'behavioral/CanBookAppointment.test.ts',
+						path: 'behavioral/CanBookAppointment.test.ts',
 						status: 'passed',
 						tests: [
 							{
