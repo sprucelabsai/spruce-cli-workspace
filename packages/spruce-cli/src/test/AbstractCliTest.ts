@@ -9,7 +9,7 @@ import { ICliBootOptions } from '../cli'
 import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
 import FeatureFixture from '../fixtures/FeatureFixture'
 import CliGlobalEmitter from '../GlobalEmitter'
-import TestInterface from '../interfaces/TestInterface'
+import SpyInterface from '../interfaces/SpyInterface'
 import ServiceFactory, {
 	Service,
 	IServiceMap,
@@ -18,7 +18,7 @@ import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static cliRoot = pathUtil.join(__dirname, '..')
-	private static _ui: TestInterface
+	private static _ui: SpyInterface
 
 	protected static freshCwd() {
 		const tmpDirectory = pathUtil.join(os.tmpdir(), 'spruce-cli', uuid.v4())
@@ -29,7 +29,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static get ui() {
 		if (!this._ui) {
-			this._ui = new TestInterface()
+			this._ui = new SpyInterface()
 		}
 
 		return this._ui
@@ -47,6 +47,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
 		this.cwd = this.freshCwd()
+
+		this.ui.setCursorPosition({ x: 0, y: 0 })
 	}
 
 	protected static async afterEach() {

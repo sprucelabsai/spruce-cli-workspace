@@ -8,7 +8,7 @@ export default buildSchema({
 	fields: {
 		type: {
 			type: 'select',
-			label: 'Type',
+			label: 'Type of test',
 			isRequired: true,
 			options: {
 				choices: [

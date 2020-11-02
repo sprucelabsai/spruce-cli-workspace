@@ -139,8 +139,6 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		let results: FeatureInstallResponse = {}
 
 		if (notInstalled.length > 0) {
-			this.ui.clear()
-
 			this.ui.renderLine(
 				`Before you can run ${this.getCommandName()} I'll need to install ${
 					notInstalled.length
