@@ -43,7 +43,7 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 
 		assert.isLength(testResults.testFiles, 1)
 		assert.isEqualDeep(testResults.testFiles[0], {
-			testFile: `behavioral/errors/CreatingANewErrorBuilder.test.ts`,
+			path: `behavioral/errors/CreatingANewErrorBuilder.test.ts`,
 			status: 'running',
 		})
 	}
@@ -85,11 +85,11 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 		assert.isLength(testResults.testFiles, 2)
 		assert.isEqualDeep(testResults.testFiles, [
 			{
-				testFile: `behavioral/errors/CreatingANewErrorBuilder.test.ts`,
+				path: `behavioral/errors/CreatingANewErrorBuilder.test.ts`,
 				status: 'running',
 			},
 			{
-				testFile: `behavioral/tests/RunningTests.test.ts`,
+				path: `behavioral/tests/RunningTests.test.ts`,
 				status: 'running',
 			},
 		])
@@ -116,11 +116,11 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 		assert.isLength(testResults.testFiles, 2)
 		assert.isEqualDeep(testResults.testFiles, [
 			{
-				testFile: `behavioral/errors/CreatingANewErrorBuilder.test.ts`,
+				path: `behavioral/errors/CreatingANewErrorBuilder.test.ts`,
 				status: 'running',
 			},
 			{
-				testFile: `behavioral/tests/RunningTests.test.ts`,
+				path: `behavioral/tests/RunningTests.test.ts`,
 				status: 'running',
 			},
 		])
@@ -158,7 +158,7 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 		assert.isLength(testResults.testFiles, 1)
 
 		assert.isEqualDeep(testResults.testFiles[0], {
-			testFile: `behavioral/errors/KeepingErrorsInSync.test.ts`,
+			path: `behavioral/errors/KeepingErrorsInSync.test.ts`,
 			status: 'running',
 		})
 	}
@@ -189,11 +189,11 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 			totalTestFiles: 43,
 			testFiles: [
 				{
-					testFile: 'behavioral/errors/KeepingErrorsInSync.test.ts',
+					path: 'behavioral/errors/KeepingErrorsInSync.test.ts',
 					status: 'running',
 				},
 				{
-					testFile: 'behavioral/tests/CreatingANewErrorBuilder.test.ts',
+					path: 'behavioral/tests/CreatingANewErrorBuilder.test.ts',
 					status: 'running',
 				},
 			],
@@ -225,12 +225,12 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 		assert.isLength(testResults.testFiles, 2)
 
 		assert.isEqualDeep(testResults.testFiles[0], {
-			testFile: `behavioral/errors/KeepingErrorsInSync.test.ts`,
+			path: `behavioral/errors/KeepingErrorsInSync.test.ts`,
 			status: 'running',
 		})
 
 		assert.isEqualDeep(testResults.testFiles[1], {
-			testFile: 'behavioral/tests/CreatingANewErrorBuilder.test.ts',
+			path: 'behavioral/tests/CreatingANewErrorBuilder.test.ts',
 			status: 'running',
 		})
 	}
@@ -250,7 +250,7 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 		assert.isTruthy(testResults.testFiles)
 		assert.isLength(testResults.testFiles, 1)
 		assert.isEqualDeep(testResults.testFiles[0], {
-			testFile: `behavioral/errors/CreatingANewErrorBuilder.test.ts`,
+			path: `behavioral/errors/CreatingANewErrorBuilder.test.ts`,
 			status: 'running',
 		})
 	}
@@ -303,11 +303,11 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 			totalTestFiles: 39,
 			testFiles: [
 				{
-					testFile: 'behavioral/errors/CreatingANewErrorBuilder.test.ts',
+					path: 'behavioral/errors/CreatingANewErrorBuilder.test.ts',
 					status: 'running',
 				},
 				{
-					testFile: 'implementation/CasualNameUtility.test.ts',
+					path: 'implementation/CasualNameUtility.test.ts',
 					status: 'passed',
 					tests: [
 						{
@@ -337,7 +337,7 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 					],
 				},
 				{
-					testFile: 'implementation/PhoneUtility.test.ts',
+					path: 'implementation/PhoneUtility.test.ts',
 					status: 'passed',
 					tests: [
 						{
@@ -349,7 +349,7 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 					],
 				},
 				{
-					testFile: 'implementation/TokenUtility.test.ts',
+					path: 'implementation/TokenUtility.test.ts',
 					status: 'passed',
 					tests: [
 						{
@@ -391,7 +391,7 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 					],
 				},
 				{
-					testFile: 'implementation/RoleStore.test.ts',
+					path: 'implementation/RoleStore.test.ts',
 					status: 'passed',
 					tests: [
 						{
@@ -409,7 +409,7 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 					],
 				},
 				{
-					testFile: 'implementation/PersonRoleStore.test.ts',
+					path: 'implementation/PersonRoleStore.test.ts',
 					status: 'passed',
 					tests: [
 						{
@@ -463,7 +463,7 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 					],
 				},
 				{
-					testFile: 'implementation/ContractValidator.test.ts',
+					path: 'implementation/ContractValidator.test.ts',
 					status: 'passed',
 					tests: [
 						{
@@ -493,7 +493,7 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 					],
 				},
 				{
-					testFile: 'implementation/MercuryServer.test.ts',
+					path: 'implementation/MercuryServer.test.ts',
 					status: 'passed',
 					tests: [
 						{
@@ -511,7 +511,7 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 					],
 				},
 				{
-					testFile: 'behavioral/UpdatingARole.test.ts',
+					path: 'behavioral/UpdatingARole.test.ts',
 					status: 'failed',
 					tests: [
 						{
@@ -525,7 +525,7 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 					],
 				},
 				{
-					testFile: 'implementation/SkillGenerator.test.ts',
+					path: 'implementation/SkillGenerator.test.ts',
 					status: 'passed',
 					tests: [
 						{
@@ -543,7 +543,7 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 					],
 				},
 				{
-					testFile: 'implementation/Database.test.ts',
+					path: 'implementation/Database.test.ts',
 					status: 'passed',
 					tests: [
 						{

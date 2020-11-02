@@ -10,9 +10,9 @@ const createTestActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICreateTestAct
 	name: 'Create test action',
 	description: 'Options for creating a new test.',
 	    fields: {
-	            /** Type. */
+	            /** Type of test. */
 	            'type': {
-	                label: 'Type',
+	                label: 'Type of test',
 	                type: 'select',
 	                isRequired: true,
 	                options: {choices: [{"value":"behavioral","label":"Behavioral"},{"value":"implementation","label":"Implementation"}],}

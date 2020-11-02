@@ -95,7 +95,6 @@ export default class SyncAction extends AbstractFeatureAction<
 			resolvedFieldTypesDestination,
 		})
 
-		this.ui.clear()
 		this.ui.startLoading(`Syncing schemas...`)
 
 		const schemaErrors: SpruceError[] = []

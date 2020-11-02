@@ -5,7 +5,7 @@ import {
 	SpruceTestFile,
 	TestResultStatus,
 	SpruceTestResults,
-} from '../features/test/actions/TestAction'
+} from '../features/test/test.types'
 
 export type JsonResultKeys = JsonParserResult['status']
 interface OnTestFileResult {
@@ -77,7 +77,7 @@ export default class JestJsonParser {
 
 			case 'onTestFileStart':
 				testFiles.push({
-					testFile: this.pullPathFromTestResponse(result),
+					path: this.pullPathFromTestResponse(result),
 					status: this.pullTestFileStatusFromTestResponse(result),
 				})
 
@@ -96,10 +96,10 @@ export default class JestJsonParser {
 					const name = this.mapAbsoluteJsToRelativeTsPath(
 						testResult.testFilePath
 					)
-					const idx = testFiles.findIndex((file) => file.testFile === name)
+					const idx = testFiles.findIndex((file) => file.path === name)
 					const file = {
 						...(testFiles[idx] ?? {}),
-						testFile: name,
+						path: name,
 						status: this.pullTestFileResultStatus(testResult),
 						tests: this.pullTestsFromTestFileResult(testResult),
 					}

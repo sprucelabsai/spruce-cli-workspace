@@ -1,58 +1,44 @@
-import { buildSchema } from '@sprucelabs/schema'
-import chalk from 'chalk'
-import TerminalInterface from '../../../interfaces/TerminalInterface'
+import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import JestJsonParser from '../../../test/JestJsonParser'
-import { GraphicsTextEffect } from '../../../types/cli.types'
+import TestReporter from '../../../test/TestReporter'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { IFeatureActionExecuteResponse } from '../../features.types'
+import { SpruceTestResults } from '../test.types'
 
 export const optionsSchema = buildSchema({
 	id: 'testAction',
 	name: 'Test skill',
-	fields: {},
+	fields: {
+		shouldReportWhileRunning: {
+			type: 'boolean',
+			label: 'Report while running',
+			hint: 'Should I output the test results while they are running?',
+			defaultValue: true,
+		},
+	},
 })
 
-export type ActionSchema = typeof optionsSchema
-export type TestResultStatus = 'running' | 'passed' | 'failed'
-export interface SpruceTestFileTest {
-	name: string
-	status: 'passed' | 'failed' | 'skipped' | 'pending' | 'todo' | 'disabled'
-	errorMessages?: string[]
-	duration: number
-}
+export type OptionsSchema = typeof optionsSchema
 
-export interface SpruceTestFile {
-	testFile: string
-	status: TestResultStatus
-	tests?: SpruceTestFileTest[]
-}
-
-export interface SpruceTestResults {
-	totalTests?: number
-	totalPassed?: number
-	totalFailed?: number
-	totalTestFiles: number
-	totalTestFilesComplete?: number
-	testFiles?: SpruceTestFile[]
-}
-
-export default class TestAction extends AbstractFeatureAction<ActionSchema> {
+export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	public name = 'test'
 	public optionsSchema = optionsSchema
-	private testReportStartY = 0
+	private testReporter: TestReporter | undefined
 
-	public async execute(): Promise<IFeatureActionExecuteResponse> {
+	public async execute(
+		options: SchemaValues<OptionsSchema>
+	): Promise<IFeatureActionExecuteResponse> {
+		const normalizedOptions = this.validateAndNormalizeOptions(options)
+		const { shouldReportWhileRunning } = normalizedOptions
+
 		let testResults: SpruceTestResults | undefined
 		const parser = new JestJsonParser()
 		const results: IFeatureActionExecuteResponse = {}
 
-		this.ui.clear()
-		this.ui.renderHero('Testing...')
-
-		this.ui.renderProgressBar({ width: 100, showPercent: true })
-
-		const pos = await this.ui.getCursorPosition()
-		this.testReportStartY = pos ? pos.y + 2 : 12
+		if (shouldReportWhileRunning) {
+			this.testReporter = new TestReporter()
+			await this.testReporter?.start()
+		}
 
 		try {
 			await this.Service('command').execute(
@@ -60,14 +46,11 @@ export default class TestAction extends AbstractFeatureAction<ActionSchema> {
 				{
 					onData: (data) => {
 						parser.write(data)
-						testResults = parser.getResults()
-						this.renderTestResults(testResults)
 
-						this.ui.updateProgressBar({
-							progress:
-								(testResults.totalTestFilesComplete ?? 0) /
-								testResults.totalTestFiles,
-						})
+						testResults = parser.getResults()
+
+						this.testReporter?.updateResults(testResults)
+						this.testReporter?.render()
 					},
 				}
 			)
@@ -77,87 +60,13 @@ export default class TestAction extends AbstractFeatureAction<ActionSchema> {
 			}
 		}
 
+		await this.testReporter?.destroy()
+
 		results.summaryLines = []
 		results.meta = {
 			testResults,
 		}
 
 		return results
-	}
-
-	private renderTestResults(testResults: SpruceTestResults) {
-		this.ui.moveCursorTo(0, this.testReportStartY)
-		this.ui.clearBelowCursor()
-
-		testResults.testFiles?.forEach((result) => {
-			this.renderTestFile(result)
-		})
-	}
-
-	private renderTestFile(result: SpruceTestFile) {
-		const term = this.ui as TerminalInterface
-
-		this.ui.renderLine(
-			`${this.renderStatusBlock(result.status)} ${result.testFile}`,
-			[]
-		)
-		if (result.status === 'failed') {
-			result.tests?.forEach((test) => {
-				const effects: GraphicsTextEffect[] = this.generateTestTextEffects(test)
-
-				term.renderLine(`           ${'x ' + test.name}`, effects, {})
-
-				if (test.status === 'failed') {
-					test.errorMessages?.forEach((message) => {
-						this.ui.renderDivider()
-						term.renderCodeSample(message)
-						this.ui.renderDivider()
-					})
-				}
-			})
-		}
-	}
-
-	private generateTestTextEffects(test: SpruceTestFileTest) {
-		const effects: GraphicsTextEffect[] = [GraphicsTextEffect.Italic]
-		switch (test.status) {
-			case 'failed':
-				effects.push(GraphicsTextEffect.Red)
-				break
-			case 'passed':
-				effects.push(GraphicsTextEffect.Green)
-				break
-		}
-		return effects
-	}
-
-	private renderStatusBlock(status: SpruceTestFile['status']) {
-		let method: keyof typeof chalk = 'bgYellow'
-		let padding = 10
-		switch (status) {
-			case 'passed':
-				method = 'bgGreen'
-				padding = 11
-				break
-			case 'failed':
-				padding = 11
-				method = 'bgRed'
-				break
-		}
-
-		return chalk[method].black(this.centerStringWithSpaces(status, padding))
-	}
-
-	private centerStringWithSpaces(text: string, numberOfSpaces: number) {
-		text = text.trim()
-		let l = text.length
-		let w2 = Math.floor(numberOfSpaces / 2)
-		let l2 = Math.floor(l / 2)
-		let s = new Array(w2 - l2 + 1).join(' ')
-		text = s + text + s
-		if (text.length < numberOfSpaces) {
-			text += new Array(numberOfSpaces - text.length + 1).join(' ')
-		}
-		return text
 	}
 }
