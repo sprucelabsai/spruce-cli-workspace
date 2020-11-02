@@ -4,14 +4,10 @@ import TestReporter from '../../test/TestReporter'
 
 export default class TestReporterTest extends AbstractCliTest {
 	private static reporter: TestReporter
-	private static paddingTop = 2
 
 	protected static async beforeEach() {
 		await super.beforeEach()
-		this.reporter = new TestReporter({
-			ui: this.ui,
-			paddingTop: this.paddingTop,
-		})
+		this.reporter = new TestReporter()
 	}
 
 	@test()
@@ -28,16 +24,6 @@ export default class TestReporterTest extends AbstractCliTest {
 	@test()
 	protected static async hasRenderMethod() {
 		assert.isFunction(this.reporter.render)
-	}
-
-	@test()
-	protected static async startCapturesStartingYWithPadding() {
-		this.ui.setCursorPosition({ x: 0, y: 10 })
-
-		await this.reporter.start()
-
-		const startY = this.reporter.getCurrentY()
-		assert.isEqual(startY, 10 + this.paddingTop)
 	}
 
 	@test()
