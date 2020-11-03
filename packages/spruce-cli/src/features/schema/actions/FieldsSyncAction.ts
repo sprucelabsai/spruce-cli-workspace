@@ -18,7 +18,6 @@ export default class FieldsSyncAction extends AbstractFeatureAction<
 	public async execute(
 		options: SchemaValues<SyncFieldsSchema>
 	): Promise<IFeatureActionExecuteResponse> {
-		this.ui.clear()
 		this.ui.startLoading(`Syncing fields...`)
 
 		const normalizedOptions = this.validateAndNormalizeOptions(options)

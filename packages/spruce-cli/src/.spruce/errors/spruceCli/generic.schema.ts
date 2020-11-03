@@ -1,10 +1,11 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceErrors } from '../errors.types'
-
 
 
 
 const genericSchema: SpruceErrors.SpruceCli.IGenericSchema  = {
 	id: 'generic',
+	namespace: 'SpruceCli',
 	name: 'generic',
 	description: 'When you\'re too lazy to make a new error',
 	    fields: {
@@ -16,5 +17,7 @@ const genericSchema: SpruceErrors.SpruceCli.IGenericSchema  = {
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(genericSchema)
 
 export default genericSchema

@@ -1,10 +1,11 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceErrors } from '../errors.types'
-
 
 
 
 const userNotFoundSchema: SpruceErrors.SpruceCli.IUserNotFoundSchema  = {
 	id: 'userNotFound',
+	namespace: 'SpruceCli',
 	name: 'User not found',
 	description: 'Could not find a user',
 	    fields: {
@@ -22,5 +23,7 @@ const userNotFoundSchema: SpruceErrors.SpruceCli.IUserNotFoundSchema  = {
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(userNotFoundSchema)
 
 export default userNotFoundSchema

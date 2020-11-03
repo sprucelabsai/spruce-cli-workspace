@@ -1,10 +1,11 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceErrors } from '../errors.types'
-
 
 
 
 const fileExistsSchema: SpruceErrors.SpruceCli.IFileExistsSchema  = {
 	id: 'fileExists',
+	namespace: 'SpruceCli',
 	name: 'fileExists',
 	description: 'The file already exists',
 	    fields: {
@@ -18,5 +19,7 @@ const fileExistsSchema: SpruceErrors.SpruceCli.IFileExistsSchema  = {
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(fileExistsSchema)
 
 export default fileExistsSchema

@@ -156,7 +156,7 @@ export default class TerminalInterface implements GraphicsInterface {
 
 		this.renderHero(`${results.headline} Finished!`)
 
-		let lines: string[] = [
+		let summaryLines: string[] = [
 			errors.length > 0 ? `Errors: ${errors.length}` : null,
 			generatedFiles.length > 0
 				? `Generated files: ${generatedFiles.length}`
@@ -166,10 +166,11 @@ export default class TerminalInterface implements GraphicsInterface {
 			packagesInstalled.length > 0
 				? `NPM packages installed: ${packagesInstalled.length}`
 				: null,
+			...(results.summaryLines ?? []),
 		].filter((line) => !!line) as string[]
 
-		if (lines.length === 0) {
-			lines.push('Nothing to report!')
+		if (summaryLines.length === 0) {
+			summaryLines.push('Nothing to report!')
 		}
 		this.renderSection({
 			headline: `${
@@ -177,7 +178,7 @@ export default class TerminalInterface implements GraphicsInterface {
 					? results.featureCode
 					: results.featureCode + '.' + results.actionCode
 			} summary`,
-			lines,
+			lines: summaryLines,
 		})
 
 		if (errors.length > 0) {

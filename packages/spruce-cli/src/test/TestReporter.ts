@@ -110,7 +110,7 @@ export default class TestReporter {
 					test.errorMessages?.forEach((message) => {
 						errorContent += `^r^+${file.path}\n`
 						errorContent += ` - ^r^+${test.name}\n\n`
-						errorContent += message + '\n'
+						errorContent += message + '\n\n\n'
 					})
 				})
 			}
@@ -118,7 +118,7 @@ export default class TestReporter {
 		})
 
 		this.testLog.setContent(content, true)
-		this.testLog.scrollToBottom()
+		this.testLog.autoScrollAndDraw()
 
 		this.errorLog?.setContent(errorContent, true)
 	}
@@ -175,11 +175,6 @@ export default class TestReporter {
 		return percent
 	}
 
-	public render() {
-		this.table?.computeCells()
-		this.table?.draw()
-	}
-
 	private renderStatusBlock(status: SpruceTestFile['status']) {
 		let bgColor = 'y'
 		let color = 'k'
@@ -214,6 +209,35 @@ export default class TestReporter {
 			text += new Array(numberOfSpaces - text.length + 1).join(' ')
 		}
 		return text
+	}
+
+	public render() {
+		this.table?.computeCells()
+		this.table?.draw()
+	}
+
+	public async waitForConfirm() {
+		const parent =
+			this.document.elements.errors ?? this.document.elements.results
+		return new Promise((resolve) => {
+			this.dropInDoneButton(parent, resolve)
+			this.term.on('key', (key: string) => {
+				if (key === 'ENTER') {
+					resolve()
+				}
+			})
+		})
+	}
+
+	private dropInDoneButton(parent: any, resolve: () => void) {
+		let doneBtn = new termKit.Button({
+			parent,
+			content: ' Done ',
+			x: parent.inputWidth - 10,
+			y: parent.inputHeight - 3,
+		})
+
+		doneBtn.on('submit', resolve)
 	}
 
 	public async destroy() {

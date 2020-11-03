@@ -1,10 +1,11 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceErrors } from '../errors.types'
-
 
 
 
 const directoryEmptySchema: SpruceErrors.SpruceCli.IDirectoryEmptySchema  = {
 	id: 'directoryEmpty',
+	namespace: 'SpruceCli',
 	name: 'directory empty',
 	    fields: {
 	            /** . */
@@ -15,5 +16,7 @@ const directoryEmptySchema: SpruceErrors.SpruceCli.IDirectoryEmptySchema  = {
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(directoryEmptySchema)
 
 export default directoryEmptySchema
