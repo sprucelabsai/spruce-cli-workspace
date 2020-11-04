@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.8.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.7.1...v11.8.0) (2020-11-04)
+
+
+### Features
+
+* cache consildation, test reporter tweaks ([2adb716](https://github.com/sprucelabsai/spruce-cli-workspace/commit/2adb716))
+
+
+
+
+
 ## [11.7.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.7.0...v11.7.1) (2020-11-04)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
