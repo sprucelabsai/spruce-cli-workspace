@@ -11,7 +11,7 @@ export default class BuildServiceTest extends AbstractCliTest {
 
 	@test()
 	protected static async canBuildSkill() {
-		await this.installSkill('can-build')
+		await this.installSkill('skills')
 
 		const testFile = "const test: string = 'hello world'"
 		const destination = this.resolvePath('src/test.ts')
@@ -28,7 +28,7 @@ export default class BuildServiceTest extends AbstractCliTest {
 
 	@test()
 	protected static async canWatchAndBuild() {
-		await this.installSkill('can-build')
+		await this.installSkill('skills')
 
 		const service = this.Service('build')
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises

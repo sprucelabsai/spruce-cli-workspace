@@ -67,7 +67,7 @@ export default class CachingImportsTest extends AbstractCliTest {
 					},
 				},
 			],
-			'caching-imports'
+			'skills'
 		)
 
 		const test1Path = this.resolvePath('src/test1.ts')

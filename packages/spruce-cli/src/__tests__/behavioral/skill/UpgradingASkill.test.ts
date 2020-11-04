@@ -47,7 +47,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async upgradesUpdatesPackageScripts() {
-		const cli = await this.installSkill('package-update')
+		const cli = await this.installSkill('schemas')
 
 		const pkgService = this.Service('pkg')
 		pkgService.set({ path: 'scripts', value: {} })

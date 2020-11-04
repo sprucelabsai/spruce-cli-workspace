@@ -31,7 +31,6 @@ export default class CommandService {
 		const cwd = this.cwd
 
 		return new Promise((resolve, reject) => {
-			// const start = new Date()
 			const args = options?.args || stringArgv(cmd)
 			const executable = options?.args ? cmd : args.shift()
 			if (!executable) {

@@ -1,5 +1,6 @@
 import terminal_kit from 'terminal-kit'
 import { SpruceTestFile, SpruceTestResults } from '../features/test/test.types'
+import durationUtil from '../utilities/duration.utility'
 
 const termKit = terminal_kit as any
 
@@ -154,11 +155,29 @@ export default class TestReporter {
 
 		this.updateProgressBar(results)
 
+		const percentPassing = this.generatePercentPassing(results)
+		const percentComplete = this.generatePercentComplete(results)
+
 		this.term.windowTitle(
-			`Testing: ${Math.floor(this.generatePercentComplete(results) * 100)}%`
+			`Testing: ${percentComplete}% complete.${
+				percentComplete > 0 ? ` ${percentPassing}% passing.` : ''
+			}`
 		)
 
-		let content = ''
+		const isScrolledAllTheWay = this.isLogScrolledAllTheWay()
+
+		let { logContent, errorContent } = this.resultsToLogContents(results)
+		this.testLog.setContent(logContent, true)
+
+		if (isScrolledAllTheWay) {
+			this.testLog.scrollToBottom()
+		}
+
+		this.errorLog?.setContent(errorContent, true)
+	}
+
+	private resultsToLogContents(results: SpruceTestResults) {
+		let logContent = ''
 		let errorContent = ''
 
 		results.testFiles?.forEach((file) => {
@@ -172,18 +191,21 @@ export default class TestReporter {
 					})
 				})
 			}
-			content += `${this.renderStatusBlock(file.status)}   ${file.path}\n`
+
+			let duration: number | undefined
+
+			if (file.tests) {
+				duration = file.tests.reduce((time, test) => {
+					time += test.duration
+					return time
+				}, 0)
+			}
+
+			logContent += `${this.renderStatusBlock(file.status)}   ${file.path}${
+				duration ? ` ^g(${durationUtil.msToFriendly(duration)})^` : ''
+			}\n`
 		})
-
-		const isScrolledAllTheWay = this.isLogScrolledAllTheWay()
-
-		this.testLog.setContent(content, true)
-
-		if (isScrolledAllTheWay) {
-			this.testLog.scrollToBottom()
-		}
-
-		this.errorLog?.setContent(errorContent, true)
+		return { logContent, errorContent }
 	}
 
 	private isLogScrolledAllTheWay() {
@@ -229,18 +251,23 @@ export default class TestReporter {
 				results.totalTestFiles - (results.totalTestFilesComplete ?? 0)
 
 			if (testsRemaining === 0) {
+				const percent = this.generatePercentPassing(results)
 				this.bar.setContent(
-					` Finished! ${
-						Math.floor(this.generatePercentComplete(results)) * 100
-					}% passing.`
+					` Finished! ${percent}% passing.${
+						percent < 100 ? ` Don't give up! 💪` : ''
+					}`
 				)
 			} else {
 				this.bar.setContent(
-					` Completed ${results.totalTestFilesComplete} of ${results.totalTestFiles}. ${testsRemaining} remaining...`
+					` ${this.generatePercentComplete(results)}% (${
+						results.totalTestFilesComplete
+					} of ${
+						results.totalTestFiles
+					}) complete. ${testsRemaining} remaining...`
 				)
 			}
 		} else {
-			this.bar.setContent('Running...')
+			this.bar.setContent(' Running...')
 		}
 
 		this.bar.setValue(this.generatePercentComplete(results))
@@ -252,7 +279,15 @@ export default class TestReporter {
 		if (isNaN(percent)) {
 			return 0
 		}
-		return percent
+		return Math.round(percent * 100)
+	}
+
+	private generatePercentPassing(results: SpruceTestResults): number {
+		const percent = (results.totalPassed ?? 0) / (results.totalTests ?? 0)
+		if (isNaN(percent)) {
+			return 0
+		}
+		return Math.round(percent * 100)
 	}
 
 	private renderStatusBlock(status: SpruceTestFile['status']) {

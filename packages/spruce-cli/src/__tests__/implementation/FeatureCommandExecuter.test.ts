@@ -99,7 +99,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 					},
 				},
 			],
-			'feature-command-executer'
+			'skills'
 		)
 
 		const executer = this.Executer('event', 'listen')

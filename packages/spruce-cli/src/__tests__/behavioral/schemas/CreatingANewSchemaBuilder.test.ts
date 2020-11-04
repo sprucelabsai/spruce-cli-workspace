@@ -27,9 +27,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async canBuildFileWithoutCrashing() {
-		const createSchema = await this.syncSchemasAndGetCreateAction(
-			'creating-a-new-schema-builder'
-		)
+		const createSchema = await this.syncSchemasAndGetCreateAction('schemas')
 
 		const response = await createSchema.execute({
 			nameReadable: 'Test schema!',
@@ -86,9 +84,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async errorsWithBadVersion() {
-		const action = await this.syncSchemasAndGetCreateAction(
-			'creating-a-new-schema-builder'
-		)
+		const action = await this.syncSchemasAndGetCreateAction('schemas')
 
 		await assert.doesThrowAsync(
 			() =>
@@ -104,9 +100,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async canBuild2SpecificVersions() {
-		const action = await this.syncSchemasAndGetCreateAction(
-			'creating-a-new-schema-builder'
-		)
+		const action = await this.syncSchemasAndGetCreateAction('schemas')
 
 		const firstResponse = await action.execute({
 			nameReadable: 'First schema!',
@@ -146,9 +140,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async asksForVersionOnSecondSchema() {
-		const action = await this.syncSchemasAndGetCreateAction(
-			'creating-a-new-schema-builder'
-		)
+		const action = await this.syncSchemasAndGetCreateAction('schemas')
 
 		const newVersion = versionUtil.generateVersion()
 
@@ -270,9 +262,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 	}
 
 	private static async buildTestSchema() {
-		const action = await this.syncSchemasAndGetCreateAction(
-			'creating-a-new-schema-builder'
-		)
+		const action = await this.syncSchemasAndGetCreateAction('schemas')
 
 		const response = await action.execute({
 			nameReadable: 'Test schema!',

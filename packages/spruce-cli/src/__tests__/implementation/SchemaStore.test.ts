@@ -174,7 +174,7 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		options?: Record<string, any>,
 		testBuilderDir = 'test_builders'
 	) {
-		await this.syncSchemas('schema-store')
+		await this.syncSchemas('schemas')
 
 		const schemasDir = this.resolvePath('src', 'schemas')
 		await diskUtil.copyDir(this.resolveTestPath(testBuilderDir), schemasDir)
@@ -190,7 +190,7 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		options?: Record<string, any>,
 		registrationsDir = 'field_registrations'
 	) {
-		await this.syncSchemas('schema-store')
+		await this.syncSchemas('schemas')
 
 		const addonsDir = this.resolvePath('src', 'addons')
 		await diskUtil.copyDir(this.resolveTestPath(registrationsDir), addonsDir)
