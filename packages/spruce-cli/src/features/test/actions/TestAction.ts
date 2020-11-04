@@ -1,9 +1,14 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
+import { rest } from 'lodash'
 import SpruceError from '../../../errors/SpruceError'
+import CommandService from '../../../services/CommandService'
 import JestJsonParser from '../../../test/JestJsonParser'
 import TestReporter from '../../../test/TestReporter'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
-import { IFeatureActionExecuteResponse } from '../../features.types'
+import {
+	IFeatureActionExecuteResponse,
+	IFeatureActionOptions,
+} from '../../features.types'
 import {
 	SpruceTestFile,
 	SpruceTestFileTest,
@@ -29,6 +34,12 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	public name = 'test'
 	public optionsSchema = optionsSchema
 	private testReporter: TestReporter | undefined
+	private commandService: CommandService
+
+	public constructor(options: IFeatureActionOptions) {
+		super(options)
+		this.commandService = this.Service('command')
+	}
 
 	public async execute(
 		options: SchemaValues<OptionsSchema>
@@ -36,19 +47,36 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 		const { shouldReportWhileRunning } = normalizedOptions
 
-		let testResults: SpruceTestResults = {
-			totalTestFiles: 0,
-		}
+		const results: IFeatureActionExecuteResponse = await this.runTests(
+			shouldReportWhileRunning
+		)
+
+		return results
+	}
+
+	private async runTests(
+		shouldReportWhileRunning: boolean
+	): Promise<IFeatureActionExecuteResponse> {
 		const parser = new JestJsonParser()
 		const results: IFeatureActionExecuteResponse = {}
+		let restart = false
 
 		if (shouldReportWhileRunning) {
-			this.testReporter = new TestReporter()
+			this.testReporter = new TestReporter({
+				onRestart: () => {
+					restart = true
+					this.commandService.kill()
+				},
+			})
 			await this.testReporter?.start()
 		}
 
+		let testResults: SpruceTestResults = {
+			totalTestFiles: 0,
+		}
+
 		try {
-			await this.Service('command').execute(
+			await this.commandService.execute(
 				'yarn test --reporters="@sprucelabs/jest-json-reporter"',
 				{
 					onData: (data) => {
@@ -67,9 +95,16 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			}
 		}
 
-		await this.testReporter?.waitForConfirm()
+		if (!restart) {
+			await this.testReporter?.waitForConfirm()
+		}
 
 		await this.testReporter?.destroy()
+
+		if (restart) {
+			this.ui.clear()
+			return this.runTests(shouldReportWhileRunning)
+		}
 
 		if (testResults.totalTestFiles > 0) {
 			this.mixinSummaryAndTestResults(results, testResults)
@@ -93,23 +128,24 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			`Failed: ${testResults.totalFailed}`,
 		]
 
-		results.errors = []
-
-		this.mixinTestResults(testResults, results)
+		results.errors = this.generateErrorsFromTestResults(testResults)
 	}
 
-	private mixinTestResults(
-		testResults: SpruceTestResults,
-		results: IFeatureActionExecuteResponse
-	) {
+	private generateErrorsFromTestResults(testResults: SpruceTestResults) {
+		const errors: SpruceError[] = []
 		testResults.testFiles?.forEach((file) => {
 			file.tests?.forEach((test) => {
 				test.errorMessages?.forEach((message) => {
 					const err = this.mapErrorResultToSpruceError(test, file, message)
-					results.errors?.push(err)
+					errors.push(err)
 				})
 			})
 		})
+		if (errors.length > 0) {
+			return errors
+		}
+
+		return undefined
 	}
 
 	private mapErrorResultToSpruceError(
