@@ -1,5 +1,4 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
-import { rest } from 'lodash'
 import SpruceError from '../../../errors/SpruceError'
 import CommandService from '../../../services/CommandService'
 import JestJsonParser from '../../../test/JestJsonParser'
