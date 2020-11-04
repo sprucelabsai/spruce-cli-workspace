@@ -94,7 +94,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			}
 		}
 
-		if (!restart) {
+		if (!restart && shouldReportWhileRunning) {
 			await this.testReporter?.waitForConfirm()
 		}
 
