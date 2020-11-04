@@ -1,5 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractTestTest from '../../../test/AbstractTestTest'
 
 export default class RunningTestsTest extends AbstractTestTest {
@@ -46,7 +47,11 @@ export default class RunningTestsTest extends AbstractTestTest {
 			shouldReportWhileRunning: false,
 		})
 
-		assert.isFalsy(results.errors)
+		assert.isTruthy(results.errors)
+		assert.isLength(results.errors, 1)
+
+		errorAssertUtil.assertError(results.errors[0], 'TEST_FAILED')
+
 		assert.isTruthy(results.meta?.testResults)
 
 		assert.isEqualDeep(results.meta, {
