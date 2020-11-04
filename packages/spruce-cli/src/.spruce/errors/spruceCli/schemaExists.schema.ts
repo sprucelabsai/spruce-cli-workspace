@@ -1,10 +1,11 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceErrors } from '../errors.types'
-
 
 
 
 const schemaExistsSchema: SpruceErrors.SpruceCli.ISchemaExistsSchema  = {
 	id: 'schemaExists',
+	namespace: 'SpruceCli',
 	name: 'Schema exists',
 	    fields: {
 	            /** Schema id. */
@@ -22,5 +23,7 @@ const schemaExistsSchema: SpruceErrors.SpruceCli.ISchemaExistsSchema  = {
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(schemaExistsSchema)
 
 export default schemaExistsSchema

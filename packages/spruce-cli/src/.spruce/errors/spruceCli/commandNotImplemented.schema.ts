@@ -1,10 +1,11 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceErrors } from '../errors.types'
-
 
 
 
 const commandNotImplementedSchema: SpruceErrors.SpruceCli.ICommandNotImplementedSchema  = {
 	id: 'commandNotImplemented',
+	namespace: 'SpruceCli',
 	name: 'Command not implemented',
 	description: 'This command has not yet been implemented ',
 	    fields: {
@@ -26,5 +27,7 @@ const commandNotImplementedSchema: SpruceErrors.SpruceCli.ICommandNotImplemented
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(commandNotImplementedSchema)
 
 export default commandNotImplementedSchema

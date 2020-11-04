@@ -1,10 +1,11 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceErrors } from '../errors.types'
-
 
 
 
 const schemaFailedToImportSchema: SpruceErrors.SpruceCli.ISchemaFailedToImportSchema  = {
 	id: 'schemaFailedToImport',
+	namespace: 'SpruceCli',
 	name: 'Definition failed to import',
 	description: 'The definition file failed to import',
 	    fields: {
@@ -18,5 +19,7 @@ const schemaFailedToImportSchema: SpruceErrors.SpruceCli.ISchemaFailedToImportSc
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(schemaFailedToImportSchema)
 
 export default schemaFailedToImportSchema

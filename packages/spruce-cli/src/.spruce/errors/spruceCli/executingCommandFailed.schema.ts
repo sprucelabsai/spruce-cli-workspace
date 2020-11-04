@@ -1,10 +1,11 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceErrors } from '../errors.types'
-
 
 
 
 const executingCommandFailedSchema: SpruceErrors.SpruceCli.IExecutingCommandFailedSchema  = {
 	id: 'executingCommandFailed',
+	namespace: 'SpruceCli',
 	name: 'Executing command failed',
 	description: 'The command that was being executed failed',
 	    fields: {
@@ -42,5 +43,7 @@ const executingCommandFailedSchema: SpruceErrors.SpruceCli.IExecutingCommandFail
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(executingCommandFailedSchema)
 
 export default executingCommandFailedSchema

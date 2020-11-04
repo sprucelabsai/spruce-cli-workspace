@@ -29,11 +29,11 @@ export interface IFailedToImportErrorOptions extends SpruceErrors.SpruceCli.IFai
 export interface IFileExistsErrorOptions extends SpruceErrors.SpruceCli.IFileExists, ISpruceErrorOptions {
 	code: 'FILE_EXISTS'
 }
-export interface IGenericMercuryErrorOptions extends SpruceErrors.SpruceCli.IGenericMercury, ISpruceErrorOptions {
-	code: 'GENERIC_MERCURY'
-}
 export interface IGenericErrorOptions extends SpruceErrors.SpruceCli.IGeneric, ISpruceErrorOptions {
 	code: 'GENERIC'
+}
+export interface IGenericMercuryErrorOptions extends SpruceErrors.SpruceCli.IGenericMercury, ISpruceErrorOptions {
+	code: 'GENERIC_MERCURY'
 }
 export interface IInvalidCommandErrorOptions extends SpruceErrors.SpruceCli.IInvalidCommand, ISpruceErrorOptions {
 	code: 'INVALID_COMMAND'
@@ -53,6 +53,9 @@ export interface ISchemaExistsErrorOptions extends SpruceErrors.SpruceCli.ISchem
 export interface ISchemaFailedToImportErrorOptions extends SpruceErrors.SpruceCli.ISchemaFailedToImport, ISpruceErrorOptions {
 	code: 'SCHEMA_FAILED_TO_IMPORT'
 }
+export interface ITestFailedErrorOptions extends SpruceErrors.SpruceCli.ITestFailed, ISpruceErrorOptions {
+	code: 'TEST_FAILED'
+}
 export interface IUserNotFoundErrorOptions extends SpruceErrors.SpruceCli.IUserNotFound, ISpruceErrorOptions {
 	code: 'USER_NOT_FOUND'
 }
@@ -60,6 +63,6 @@ export interface IVscodeNotInstalledErrorOptions extends SpruceErrors.SpruceCli.
 	code: 'VSCODE_NOT_INSTALLED'
 }
 
-type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | IBootFailedErrorOptions  | IBuildFailedErrorOptions  | ICommandAbortedErrorOptions  | ICommandNotImplementedErrorOptions  | ICreateAutoloaderFailedErrorOptions  | IDirectoryEmptyErrorOptions  | IExecutingCommandFailedErrorOptions  | IFailedToImportErrorOptions  | IFileExistsErrorOptions  | IGenericMercuryErrorOptions  | IGenericErrorOptions  | IInvalidCommandErrorOptions  | IInvalidFeatureCodeErrorOptions  | ILintFailedErrorOptions  | INotImplementedErrorOptions  | ISchemaExistsErrorOptions  | ISchemaFailedToImportErrorOptions  | IUserNotFoundErrorOptions  | IVscodeNotInstalledErrorOptions 
+type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | IBootFailedErrorOptions  | IBuildFailedErrorOptions  | ICommandAbortedErrorOptions  | ICommandNotImplementedErrorOptions  | ICreateAutoloaderFailedErrorOptions  | IDirectoryEmptyErrorOptions  | IExecutingCommandFailedErrorOptions  | IFailedToImportErrorOptions  | IFileExistsErrorOptions  | IGenericErrorOptions  | IGenericMercuryErrorOptions  | IInvalidCommandErrorOptions  | IInvalidFeatureCodeErrorOptions  | ILintFailedErrorOptions  | INotImplementedErrorOptions  | ISchemaExistsErrorOptions  | ISchemaFailedToImportErrorOptions  | ITestFailedErrorOptions  | IUserNotFoundErrorOptions  | IVscodeNotInstalledErrorOptions 
 
 export default ErrorOptions

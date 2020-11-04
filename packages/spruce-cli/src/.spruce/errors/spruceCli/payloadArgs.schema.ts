@@ -1,10 +1,11 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceErrors } from '../errors.types'
-
 
 
 
 const payloadArgsSchema: SpruceErrors.SpruceCli.IPayloadArgsSchema  = {
 	id: 'payloadArgs',
+	namespace: 'SpruceCli',
 	name: 'Payload args',
 	    fields: {
 	            /** name. */
@@ -21,5 +22,7 @@ const payloadArgsSchema: SpruceErrors.SpruceCli.IPayloadArgsSchema  = {
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(payloadArgsSchema)
 
 export default payloadArgsSchema

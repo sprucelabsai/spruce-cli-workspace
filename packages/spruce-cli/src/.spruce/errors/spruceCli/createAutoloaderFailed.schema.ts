@@ -1,10 +1,11 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceErrors } from '../errors.types'
-
 
 
 
 const createAutoloaderFailedSchema: SpruceErrors.SpruceCli.ICreateAutoloaderFailedSchema  = {
 	id: 'createAutoloaderFailed',
+	namespace: 'SpruceCli',
 	name: 'Could not create an autoloader',
 	description: 'Autoloader creation failed',
 	    fields: {
@@ -43,5 +44,7 @@ const createAutoloaderFailedSchema: SpruceErrors.SpruceCli.ICreateAutoloaderFail
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(createAutoloaderFailedSchema)
 
 export default createAutoloaderFailedSchema

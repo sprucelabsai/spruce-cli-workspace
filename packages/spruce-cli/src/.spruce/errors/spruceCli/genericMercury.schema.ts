@@ -1,10 +1,11 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceErrors } from '../errors.types'
-
 
 import payloadArgsSchema from '#spruce/errors/spruceCli/payloadArgs.schema'
 
 const genericMercurySchema: SpruceErrors.SpruceCli.IGenericMercurySchema  = {
 	id: 'genericMercury',
+	namespace: 'SpruceCli',
 	name: 'Generic mercury',
 	description: 'Not sure what happened, but it has something to do with Mercury',
 	    fields: {
@@ -24,5 +25,7 @@ const genericMercurySchema: SpruceErrors.SpruceCli.IGenericMercurySchema  = {
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(genericMercurySchema)
 
 export default genericMercurySchema

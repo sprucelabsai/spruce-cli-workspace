@@ -3,6 +3,10 @@ import { SpruceTestFile, SpruceTestResults } from '../features/test/test.types'
 
 const termKit = terminal_kit as any
 
+interface TestReporterOptions {
+	onRestart?: () => void
+}
+
 export default class TestReporter {
 	private started = false
 	private document: any
@@ -12,8 +16,15 @@ export default class TestReporter {
 	private testLog: any
 	private errorLog?: any
 	private term: any
+	private doneBtn?: any
+	private restartBtn: any
 
-	public constructor() {}
+	private onRestart?: () => void
+	private waitForDoneResolver?: () => void
+
+	public constructor(options?: TestReporterOptions) {
+		this.onRestart = options?.onRestart
+	}
 
 	public async start() {
 		this.started = true
@@ -24,32 +35,34 @@ export default class TestReporter {
 			palette: new termKit.Palette(),
 		})
 
-		this.layout = new termKit.Layout({
-			parent: this.document,
-			layout: {
-				id: 'main_layout',
-				widthPercent: 100,
-				heightPercent: 100,
-				rows: [
-					{
-						id: 'row_1',
-						heightPercent: 100,
-						columns: [{ id: 'results', widthPercent: 100 }],
-					},
-				],
-			},
-		})
+		this.dropInLayout()
+		this.dropInProgressBar()
+		this.dropInTestLog()
+		this.dropInRestartButton()
 
-		this.bar = new termKit.Bar({
-			parent: this.document.elements.results,
-			x: 1,
-			y: 0,
-			barChars: 'solid',
-			width: this.barWidth(),
-			content: ' Booting Jest...',
-			value: 0,
-		})
+		this.attachGlobalKeyPressListener()
+	}
 
+	private attachGlobalKeyPressListener() {
+		this.term.on('key', async (key: string) => {
+			switch (key) {
+				case 'CTRL_C':
+					await this.destroy()
+					process.exit()
+					break
+				case 'R':
+				case 'r':
+					this.handleRestart()
+					break
+				case 'D':
+				case 'd':
+					this.handleDone()
+					break
+			}
+		})
+	}
+
+	private dropInTestLog() {
 		this.testLog = new termKit.TextBox({
 			parent: this.document.elements.results,
 			scrollable: true,
@@ -60,32 +73,77 @@ export default class TestReporter {
 			x: 0,
 			y: 2,
 		})
+	}
+
+	private dropInProgressBar() {
+		this.bar = new termKit.Bar({
+			parent: this.document.elements.results,
+			x: 1,
+			y: 0,
+			barChars: 'solid',
+			width: this.getProgressBarWidth(),
+			content: ' Booting Jest...',
+			value: 0,
+		})
+	}
+
+	private dropInLayout() {
+		this.layout = new termKit.Layout({
+			parent: this.document,
+			layout: {
+				id: 'main_layout',
+				widthPercent: 100,
+				height: this.document.inputHeight - 1,
+				rows: [
+					{
+						id: 'row_1',
+						heightPercent: 100,
+						columns: [{ id: 'results', widthPercent: 100 }],
+					},
+				],
+			},
+		})
 
 		this.layout.on('parentResize', () => {
 			this.handleTerminalResize()
 		})
-
-		this.term.on('key', async (key: string) => {
-			switch (key) {
-				case 'CTRL_C':
-					await this.destroy()
-					process.exit()
-					break
-			}
-		})
 	}
 
 	private handleTerminalResize() {
-		this.bar.outputWidth = this.barWidth()
+		this.placeProgressBar()
+		this.placeTestLog()
+		this.placeRestartBtn()
+		this.placeDoneBtn()
+	}
+
+	private placeProgressBar() {
+		this.bar.outputWidth = this.getProgressBarWidth()
+	}
+
+	private placeTestLog() {
 		this.testLog.setSizeAndPosition({ outputHeight: this.testLogHeight() })
 		this.testLog.draw()
+	}
+
+	private placeRestartBtn() {
+		const { x: doneX, y: doneY } = this.getRestartBtnPosition()
+		this.restartBtn.outputX = doneX
+		this.restartBtn.outputY = doneY
+	}
+
+	private placeDoneBtn() {
+		const { x: doneX, y: doneY } = this.getDoneBtnPosition()
+		if (this.doneBtn) {
+			this.doneBtn.outputX = doneX
+			this.doneBtn.outputY = doneY
+		}
 	}
 
 	private testLogHeight() {
 		return this.document.elements.results.inputHeight - 2
 	}
 
-	private barWidth() {
+	private getProgressBarWidth() {
 		return this.document.inputWidth - 4
 	}
 
@@ -97,7 +155,7 @@ export default class TestReporter {
 		this.updateProgressBar(results)
 
 		this.term.windowTitle(
-			`Testing: ${Math.round(this.generatePercentComplete(results) * 100)}%`
+			`Testing: ${Math.floor(this.generatePercentComplete(results) * 100)}%`
 		)
 
 		let content = ''
@@ -110,17 +168,32 @@ export default class TestReporter {
 					test.errorMessages?.forEach((message) => {
 						errorContent += `^r^+${file.path}\n`
 						errorContent += ` - ^r^+${test.name}\n\n`
-						errorContent += message + '\n'
+						errorContent += message + '\n\n\n'
 					})
 				})
 			}
 			content += `${this.renderStatusBlock(file.status)}   ${file.path}\n`
 		})
 
+		const isScrolledAllTheWay = this.isLogScrolledAllTheWay()
+
 		this.testLog.setContent(content, true)
-		this.testLog.scrollToBottom()
+
+		if (isScrolledAllTheWay) {
+			this.testLog.scrollToBottom()
+		}
 
 		this.errorLog?.setContent(errorContent, true)
+	}
+
+	private isLogScrolledAllTheWay() {
+		const scrollDistance = this.testLog.scrollY * -1
+		const contentHeight = this.testLog.textBuffer.cy
+		const visibleHeight = this.testLog.textAreaHeight
+		const maxScrollDistance =
+			Math.max(contentHeight, visibleHeight) - visibleHeight
+		const isScrolledAllTheWay = scrollDistance >= maxScrollDistance
+		return isScrolledAllTheWay
 	}
 
 	private dropInErrorLog() {
@@ -152,13 +225,20 @@ export default class TestReporter {
 
 	private updateProgressBar(results: SpruceTestResults) {
 		if (results.totalTestFilesComplete ?? 0 > 0) {
-			this.bar.setContent(
-				` Completed ${results.totalTestFilesComplete} of ${
-					results.totalTestFiles
-				}. ${
-					results.totalTestFiles - (results.totalTestFilesComplete ?? 0)
-				} remaining...`
-			)
+			const testsRemaining =
+				results.totalTestFiles - (results.totalTestFilesComplete ?? 0)
+
+			if (testsRemaining === 0) {
+				this.bar.setContent(
+					` Finished! ${
+						Math.floor(this.generatePercentComplete(results)) * 100
+					}% passing.`
+				)
+			} else {
+				this.bar.setContent(
+					` Completed ${results.totalTestFilesComplete} of ${results.totalTestFiles}. ${testsRemaining} remaining...`
+				)
+			}
 		} else {
 			this.bar.setContent('Running...')
 		}
@@ -173,11 +253,6 @@ export default class TestReporter {
 			return 0
 		}
 		return percent
-	}
-
-	public render() {
-		this.table?.computeCells()
-		this.table?.draw()
 	}
 
 	private renderStatusBlock(status: SpruceTestFile['status']) {
@@ -214,6 +289,73 @@ export default class TestReporter {
 			text += new Array(numberOfSpaces - text.length + 1).join(' ')
 		}
 		return text
+	}
+
+	public render() {
+		this.table?.computeCells()
+		this.table?.draw()
+	}
+
+	public async waitForConfirm() {
+		return new Promise((resolve) => {
+			this.waitForDoneResolver = resolve
+			this.dropInDoneBtn()
+			this.term.on('key', (key: string) => {
+				if (key === 'ENTER') {
+					this.handleDone()
+				}
+			})
+		})
+	}
+
+	private handleDone() {
+		this.waitForDoneResolver?.()
+	}
+
+	private dropInDoneBtn() {
+		const { x, y } = this.getDoneBtnPosition()
+
+		this.doneBtn = new termKit.Button({
+			parent: this.document,
+			content: ' Done ',
+			x,
+			y,
+		})
+
+		this.doneBtn.on('submit', this.handleDone.bind(this))
+	}
+
+	private dropInRestartButton() {
+		const { x, y } = this.getRestartBtnPosition()
+
+		this.restartBtn = new termKit.Button({
+			parent: this.document,
+			content: ' Restart ',
+			x,
+			y,
+		})
+
+		this.restartBtn.on('submit', this.handleRestart.bind(this))
+	}
+
+	private getRestartBtnPosition() {
+		const x = this.document.inputWidth - 10
+		const y = this.document.inputHeight - 1
+		return { x, y }
+	}
+
+	private getDoneBtnPosition() {
+		const x = this.document.inputWidth - 18
+		const y = this.document.inputHeight - 1
+		return { x, y }
+	}
+
+	private handleRestart() {
+		this.onRestart?.()
+
+		if (this.waitForDoneResolver) {
+			this.waitForDoneResolver()
+		}
 	}
 
 	public async destroy() {

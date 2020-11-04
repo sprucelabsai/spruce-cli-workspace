@@ -123,6 +123,15 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				message = `Oh no! I couldn't find a feature with the code '${options.featureCode}'.`
 				break
 
+			case 'TEST_FAILED':
+				message = `${options.fileName}\n - ${
+					options.testName
+				}\n\n${options.errorMessage
+					.split('\n')
+					.map((line) => `     ${line}`)
+					.join('\n')}`
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}

@@ -1,10 +1,11 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceErrors } from '../errors.types'
-
 
 
 
 const invalidFeatureCodeSchema: SpruceErrors.SpruceCli.IInvalidFeatureCodeSchema  = {
 	id: 'invalidFeatureCode',
+	namespace: 'SpruceCli',
 	name: 'Invalid feature code',
 	    fields: {
 	            /** . */
@@ -15,5 +16,7 @@ const invalidFeatureCodeSchema: SpruceErrors.SpruceCli.IInvalidFeatureCodeSchema
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(invalidFeatureCodeSchema)
 
 export default invalidFeatureCodeSchema

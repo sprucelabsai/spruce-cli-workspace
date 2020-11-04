@@ -1,10 +1,11 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceErrors } from '../errors.types'
-
 
 
 
 const failedToImportSchema: SpruceErrors.SpruceCli.IFailedToImportSchema  = {
 	id: 'failedToImport',
+	namespace: 'SpruceCli',
 	name: 'FailedToImport',
 	description: 'Failed to import a file through VM',
 	    fields: {
@@ -18,5 +19,7 @@ const failedToImportSchema: SpruceErrors.SpruceCli.IFailedToImportSchema  = {
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(failedToImportSchema)
 
 export default failedToImportSchema

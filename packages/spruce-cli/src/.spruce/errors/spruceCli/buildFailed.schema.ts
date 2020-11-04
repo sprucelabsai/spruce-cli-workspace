@@ -1,10 +1,11 @@
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceErrors } from '../errors.types'
-
 
 
 
 const buildFailedSchema: SpruceErrors.SpruceCli.IBuildFailedSchema  = {
 	id: 'buildFailed',
+	namespace: 'SpruceCli',
 	name: 'BuildFailed',
 	description: 'Error thrown when building or linting failed. Happens when a yarn command fails inside the package utility.',
 	    fields: {
@@ -17,5 +18,7 @@ const buildFailedSchema: SpruceErrors.SpruceCli.IBuildFailedSchema  = {
 	            },
 	    }
 }
+
+SchemaRegistry.getInstance().trackSchema(buildFailedSchema)
 
 export default buildFailedSchema
