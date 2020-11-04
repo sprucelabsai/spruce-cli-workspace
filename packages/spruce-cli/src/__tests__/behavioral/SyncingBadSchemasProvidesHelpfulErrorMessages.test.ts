@@ -7,7 +7,7 @@ import AbstractSchemaTest from '../../test/AbstractSchemaTest'
 export default class SyncingBadSchemasProvidesHelpfulErrorMessagesTest extends AbstractSchemaTest {
 	@test()
 	protected static async syncingBadSchemasProvidesHelpfulErrorMessages() {
-		const cli = await this.syncSchemas('syncing-bad-schemas')
+		const cli = await this.syncSchemas('schemas')
 
 		const schemasDir = this.resolvePath('src', 'schemas')
 		await diskUtil.copyDir(

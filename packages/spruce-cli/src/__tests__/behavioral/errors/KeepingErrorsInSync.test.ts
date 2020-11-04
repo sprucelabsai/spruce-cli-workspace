@@ -174,7 +174,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		assert.doesNotInclude(parentSchemaContents, this.cwd)
 	}
 
-	@test.only()
+	@test()
 	protected static async canCreateAndSyncErrorsWithNoCoreSchemasAndNoFields() {
 		const cli = await this.installErrorFeature('errors')
 

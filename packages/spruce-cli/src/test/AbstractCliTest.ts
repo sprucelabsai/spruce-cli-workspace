@@ -133,4 +133,10 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	): IStoreMap[C] {
 		return this.StoreFactory().Store(code, this.cwd ?? cwd)
 	}
+
+	protected static async waitForInput() {
+		while (!this.ui.isWaitingForInput()) {
+			await new Promise((resolve) => setTimeout(resolve, 100))
+		}
+	}
 }

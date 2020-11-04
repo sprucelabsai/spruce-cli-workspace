@@ -42,7 +42,7 @@ export default class BootAction extends AbstractFeatureAction<
 
 		return {
 			meta: {
-				kill: command.kill,
+				kill: command.kill.bind(command),
 				pid: command.pid() as number,
 				promise,
 			},

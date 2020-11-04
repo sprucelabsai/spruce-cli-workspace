@@ -15,8 +15,7 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 			nameCamel: 'canBookAppointment',
 		})
 
-		// wait for prompt
-		await this.wait(1000)
+		await this.waitForInput()
 
 		await this.ui.sendInput(this.cwd + '/src/deeper/AbstractBananaTest.ts')
 
@@ -56,7 +55,6 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 
 		await this.Service('build').build()
 
-		// the stubbed test fails with assert.IsTrue(false)
 		await assert.doesThrowAsync(
 			() => this.Service('command').execute('yarn test'),
 			/false.*?does not equal.*?true/gis
