@@ -38,16 +38,20 @@ export default class InstallCheckingActionDecorator implements IFeatureAction {
 			this.parent.code
 		)
 
-		dependencies.push(this.parent.code)
+		dependencies.push({ code: this.parent.code, isRequired: true })
 
-		for (const featureCode of dependencies) {
-			const isInstalled = await this.featureInstaller.isInstalled(featureCode)
+		for (const dependency of dependencies) {
+			if (dependency.isRequired) {
+				const isInstalled = await this.featureInstaller.isInstalled(
+					dependency.code
+				)
 
-			if (!isInstalled) {
-				throw new SpruceError({
-					// @ts-ignore
-					code: `${namesUtil.toConst(featureCode)}_NOT_INSTALLED`,
-				})
+				if (!isInstalled) {
+					throw new SpruceError({
+						// @ts-ignore
+						code: `${namesUtil.toConst(dependency)}_NOT_INSTALLED`,
+					})
+				}
 			}
 		}
 

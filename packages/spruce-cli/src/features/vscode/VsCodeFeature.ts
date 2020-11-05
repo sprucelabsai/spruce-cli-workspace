@@ -8,12 +8,7 @@ export default class VsCodeFeature extends AbstractFeature {
 	public nameReadable = 'VSCode'
 	public description = 'Create settings and install VSCode extensions'
 	public code: FeatureCode = 'vscode'
-	public dependencies: FeatureCode[] = []
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
-
-	public async isInstalled() {
-		return this.Service('vsCode').isInstalled()
-	}
 
 	public async afterPackageInstall() {
 		throw new SpruceError({

@@ -6,6 +6,7 @@ import LintService from './LintService'
 import PinService from './PinService'
 import PkgService from './PkgService'
 import SchemaService from './SchemaService'
+import SettingsService from './SettingsService'
 import TypeCheckerService from './TypeCheckerService'
 import VsCodeService from './VsCodeService'
 
@@ -19,6 +20,7 @@ export interface IServiceMap {
 	typeChecker: TypeCheckerService
 	import: ImportService
 	build: BuildService
+	settings: SettingsService
 }
 
 export type Service = keyof IServiceMap
@@ -53,6 +55,8 @@ export default class ServiceFactory {
 			}
 			case 'typeChecker':
 				return new TypeCheckerService(cwd) as IServiceMap[S]
+			case 'settings':
+				return new SettingsService(cwd) as IServiceMap[S]
 			case 'import':
 				return new ImportService(cwd, this.importCacheDir) as IServiceMap[S]
 			case 'build': {

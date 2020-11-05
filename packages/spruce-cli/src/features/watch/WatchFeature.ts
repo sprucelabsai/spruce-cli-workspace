@@ -18,10 +18,6 @@ export default class WatchFeature extends AbstractFeature {
 	private timeoutId?: NodeJS.Timeout
 	private changesSinceLastChange: GeneratedFileOrDir[] = []
 
-	public async isInstalled(): Promise<boolean> {
-		return true
-	}
-
 	public async isWatching() {
 		return this._isWatching
 	}

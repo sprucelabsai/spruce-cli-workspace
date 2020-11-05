@@ -2,11 +2,12 @@ import os from 'os'
 import pathUtil from 'path'
 import { Mercury } from '@sprucelabs/mercury'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import AbstractSpruceTest from '@sprucelabs/test'
+import AbstractSpruceTest, { assert } from '@sprucelabs/test'
 import fs from 'fs-extra'
 import * as uuid from 'uuid'
 import { ICliBootOptions } from '../cli'
 import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
+import { FeatureCode } from '../features/features.types'
 import FeatureFixture, {
 	FeatureFixtureOptions,
 } from '../fixtures/FeatureFixture'
@@ -138,5 +139,12 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		while (!this.ui.isWaitingForInput()) {
 			await new Promise((resolve) => setTimeout(resolve, 100))
 		}
+	}
+
+	protected static async assertIsFeatureInstalled(code: FeatureCode) {
+		const featureInstaller = this.FeatureInstaller()
+		const isInstalled = await featureInstaller.isInstalled(code)
+
+		assert.isTrue(isInstalled)
 	}
 }

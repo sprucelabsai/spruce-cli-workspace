@@ -26,7 +26,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		const executer = this.Executer('skill', 'create')
 		const promise = executer.execute()
 
-		await this.wait(1000)
+		await this.waitForInput()
 
 		await this.ui.sendInput('My new skill')
 		await this.ui.sendInput('So great!')
@@ -41,18 +41,19 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		const executer = this.Executer('skill', 'create')
 		const promise = executer.execute({ description: 'go team!' })
 
-		await this.wait(1000)
+		await this.waitForInput()
 
-		void this.ui.sendInput('My great skill')
+		void this.ui.sendInput('Already answered skill')
 
 		await promise
 
-		await this.assertHealthySkillNamed('my-great-skill')
+		await this.assertHealthySkillNamed('already-answered-skill')
 	}
 
 	private static async assertHealthySkillNamed(
 		name: string,
-		expectedHealth: HealthCheckResults = { skill: { status: 'passed' } }
+		expectedHealth: HealthCheckResults = { skill: { status: 'passed' } },
+		expectedInstalledSkills: FeatureCode[] = ['skill']
 	) {
 		const cli = await this.Cli()
 		await this.linkLocalPackages()
@@ -69,6 +70,13 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 		const packageContents = diskUtil.readFile(this.resolvePath('package.json'))
 		assert.doesInclude(packageContents, name)
+
+		const installer = this.FeatureInstaller()
+
+		for (const code of expectedInstalledSkills) {
+			const isInstalled = await installer.isInstalled(code)
+			assert.isTrue(isInstalled)
+		}
 	}
 
 	@test()
@@ -81,13 +89,12 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		})
 
 		const installer = this.FeatureInstaller()
-		const feature = installer.getFeature('test')
+		const isInstalled = await installer.isInstalled('test')
 
-		const isInstalled = await feature.isInstalled()
 		assert.isTrue(isInstalled)
 	}
 
-	@test()
+	@test.only()
 	protected static async shouldAddListenerWithoutBreakingOnSkill() {
 		await this.FeatureFixture().installFeatures(
 			[
@@ -105,8 +112,9 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		const executer = this.Executer('event', 'listen')
 		const promise = executer.execute()
 
-		await this.wait(1000)
+		await this.waitForInput()
 
+		debugger
 		await this.ui.sendInput('skill')
 		await this.ui.sendInput('will-boot')
 
@@ -123,7 +131,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		const executer = this.Executer('schema', 'create')
 		void executer.execute()
 
-		await this.wait(1000)
+		await this.waitForInput()
 
 		this.ui.reset()
 		const lastQuestion = this.ui.lastInvocation()
@@ -137,16 +145,14 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		const executer = this.Executer('schema', 'create')
 		const promise = executer.execute()
 
-		await this.wait(1000)
+		await this.waitForInput()
 
-		await this.ui.sendInput('y')
-		await this.ui.sendInput('My great skill')
+		await this.ui.sendInput('\n')
+
+		await this.ui.sendInput('Skill with 1 dependency')
 		await this.ui.sendInput('A skill that is so good')
 
-		//install is running and can take awhile, so we'll wait for the next time we're asked for input
-		while (!this.ui.isWaitingForInput()) {
-			await this.wait(1000)
-		}
+		await this.waitForInput()
 
 		await this.ui.sendInput('\n')
 
@@ -155,7 +161,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 		await promise
 
-		await this.assertHealthySkillNamed('my-great-skill', {
+		await this.assertHealthySkillNamed('skill-with-1-dependency', {
 			skill: { status: 'passed' },
 			schema: {
 				status: 'passed',
@@ -164,7 +170,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 					{
 						id: 'restaurant',
 						name: 'Restaurant',
-						namespace: 'MyGreatSkill',
+						namespace: 'SkillWith1Dependency',
 						version: versionUtil.generateVersion().constValue,
 					},
 				]),
@@ -172,9 +178,8 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		})
 
 		const installer = this.FeatureInstaller()
-		const feature = installer.getFeature('schema')
+		const isInstalled = await installer.isInstalled('schema')
 
-		const isInstalled = await feature.isInstalled()
 		assert.isTrue(isInstalled)
 	}
 
@@ -183,22 +188,19 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		const executer = this.Executer('error', 'create')
 		const promise = executer.execute()
 
-		await this.wait(1000)
+		await this.waitForInput()
 
-		await this.ui.sendInput('y')
+		await this.ui.sendInput('\n')
 
-		await this.ui.sendInput('My great skill')
+		await this.ui.sendInput('My skill with 2 dependent features')
+
 		await this.ui.sendInput('A skill that is so good')
 
-		//install is running and can take awhile, so we'll wait for the next time we're asked for input
-		while (!this.ui.isWaitingForInput()) {
-			await this.wait(1000)
-		}
-		await this.ui.sendInput('y')
+		await this.waitForInput()
 
-		while (!this.ui.isWaitingForInput()) {
-			await this.wait(1000)
-		}
+		await this.ui.sendInput('\n')
+
+		await this.waitForInput()
 
 		await this.ui.sendInput('\n')
 
@@ -208,7 +210,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 		await promise
 
-		await this.assertHealthySkillNamed('my-great-skill', {
+		await this.assertHealthySkillNamed('my-skill-with-2-dependent-features', {
 			skill: { status: 'passed' },
 			schema: {
 				status: 'passed',
@@ -223,9 +225,8 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		})
 
 		const installer = this.FeatureInstaller()
-		const feature = installer.getFeature('schema')
+		const isInstalled = await installer.isInstalled('schema')
 
-		const isInstalled = await feature.isInstalled()
 		assert.isTrue(isInstalled)
 	}
 
@@ -242,6 +243,51 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 		assert.isAbove(results.files.length, 0)
 		assert.isAbove(results.packagesInstalled.length, 0)
+	}
+
+	@test.skip()
+	protected static async canSkipOptionalDependencies() {
+		const executer = this.Executer('error', 'create')
+		const promise = executer.execute()
+
+		await this.waitForInput()
+
+		assert.doesInclude(this.ui.lastInvocation(), {
+			command: 'prompt',
+			options: {
+				type: 'select',
+				options: {
+					choices: [
+						{
+							value: 'yes',
+							label: 'Yes',
+						},
+						{
+							value: 'no',
+							label: 'No',
+						},
+						{
+							value: 'alwaysSkip',
+							label: 'Always skip',
+						},
+					],
+				},
+			},
+		})
+
+		await this.ui.sendInput('no')
+		await this.ui.sendInput('no')
+
+		await this.ui.sendInput('')
+
+		await this.waitForInput()
+
+		await this.ui.sendInput('My new error')
+		await this.ui.sendInput('')
+
+		await promise
+
+		debugger
 	}
 
 	private static Executer<F extends FeatureCode>(

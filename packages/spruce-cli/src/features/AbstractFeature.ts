@@ -30,11 +30,16 @@ export interface InstallResults {
 	files?: GeneratedFile[]
 }
 
+export interface FeatureDependency {
+	isRequired: boolean
+	code: FeatureCode
+}
+
 export default abstract class AbstractFeature<
 	S extends ISchema | undefined = ISchema | undefined
 > implements IServiceProvider {
 	public abstract description: string
-	public readonly dependencies: FeatureCode[] = []
+	public readonly dependencies: FeatureDependency[] = []
 	public readonly packageDependencies: NpmPackage[] = []
 	public readonly optionsDefinition?: S
 
@@ -46,6 +51,7 @@ export default abstract class AbstractFeature<
 	protected actionFactory?: FeatureActionFactory
 	protected templates: Templates
 	protected emitter: GlobalEmitter
+	protected featureInstaller: FeatureInstaller
 
 	private serviceFactory: ServiceFactory
 	private storeFactory: StoreFactory
@@ -73,6 +79,7 @@ export default abstract class AbstractFeature<
 		this.storeFactory = options.storeFactory
 		this.generatorFactory = new GeneratorFactory(this.templates, options.term)
 		this.emitter = options.emitter
+		this.featureInstaller = options.featureInstaller
 
 		this.actionFactoryOptions = {
 			...options,
@@ -93,14 +100,16 @@ export default abstract class AbstractFeature<
 		return {}
 	}
 
-	public abstract async isInstalled(): Promise<boolean>
-
 	public Service<S extends Service>(type: S, cwd?: string): IServiceMap[S] {
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
 	protected Generator<C extends GeneratorCode>(code: C): GeneratorMap[C] {
 		return this.generatorFactory.Generator(code)
+	}
+
+	public getFeature<Code extends FeatureCode>(code: Code) {
+		return this.featureInstaller.getFeature(code)
 	}
 
 	public Action(code: string): IFeatureAction {

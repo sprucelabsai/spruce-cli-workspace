@@ -17,7 +17,6 @@ export default class SkillFeature<
 	public description =
 		'Skill: The most basic configuration needed to enable a skill'
 
-	public dependencies: FeatureCode[] = []
 	public packageDependencies: NpmPackage[] = [
 		{ name: '@sprucelabs/log' },
 		{ name: '@sprucelabs/error' },
@@ -104,16 +103,5 @@ export default class SkillFeature<
 		}
 
 		pkg.set({ path: 'scripts', value: scripts })
-	}
-
-	public async isInstalled() {
-		try {
-			return (
-				diskUtil.doesDirExist(diskUtil.resolvePath(this.cwd, 'node_modules')) &&
-				diskUtil.doesDirExist(diskUtil.resolveHashSprucePath(this.cwd))
-			)
-		} catch {
-			return false
-		}
 	}
 }

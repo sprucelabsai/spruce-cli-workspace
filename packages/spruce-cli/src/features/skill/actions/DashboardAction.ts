@@ -279,7 +279,7 @@ export default class DashboardAction extends AbstractFeatureAction<
 		const tableRows = await Promise.all(
 			featureCodes.map(async (code) => {
 				const feature = this.getFeature(code)
-				const isInstalled = await feature.isInstalled()
+				const isInstalled = await this.featureInstaller.isInstalled(code)
 				return [
 					feature.nameReadable ?? code,
 					isInstalled ? 'Pass' : 'Not Installed',

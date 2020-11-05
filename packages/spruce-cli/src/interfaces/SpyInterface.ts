@@ -73,7 +73,9 @@ export default class SpyInterface implements GraphicsInterface {
 			const resolver = this.confirmResolver
 			this.confirmResolver = undefined
 
-			resolver(input.length === 0 || input.toLowerCase() === 'y')
+			resolver(
+				input === '\n' || input.length === 0 || input.toLowerCase() === 'y'
+			)
 		} else {
 			throw new Error('Sent input before prompted for input')
 		}
