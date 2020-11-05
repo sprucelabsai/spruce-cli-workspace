@@ -94,7 +94,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		assert.isTrue(isInstalled)
 	}
 
-	@test.only()
+	@test()
 	protected static async shouldAddListenerWithoutBreakingOnSkill() {
 		await this.FeatureFixture().installFeatures(
 			[
@@ -115,6 +115,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		await this.waitForInput()
 
 		debugger
+
 		await this.ui.sendInput('skill')
 		await this.ui.sendInput('will-boot')
 
@@ -136,8 +137,11 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		this.ui.reset()
 		const lastQuestion = this.ui.lastInvocation()
 
-		assert.isEqual(lastQuestion.command, 'confirm')
-		assert.doesInclude(lastQuestion.options, /install the skill feature/gi)
+		assert.isEqual(lastQuestion.command, 'prompt')
+		assert.doesInclude(
+			lastQuestion.options.label,
+			/install the skill feature/gi
+		)
 	}
 
 	@test()
@@ -245,7 +249,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		assert.isAbove(results.packagesInstalled.length, 0)
 	}
 
-	@test.skip()
+	@test.only()
 	protected static async canSkipOptionalDependencies() {
 		const executer = this.Executer('error', 'create')
 		const promise = executer.execute()

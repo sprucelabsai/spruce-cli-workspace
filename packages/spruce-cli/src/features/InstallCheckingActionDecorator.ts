@@ -48,8 +48,7 @@ export default class InstallCheckingActionDecorator implements IFeatureAction {
 
 				if (!isInstalled) {
 					throw new SpruceError({
-						// @ts-ignore
-						code: `${namesUtil.toConst(dependency)}_NOT_INSTALLED`,
+						code: `SKILL_NOT_INSTALLED`,
 					})
 				}
 			}
