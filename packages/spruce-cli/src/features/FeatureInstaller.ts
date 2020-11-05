@@ -22,6 +22,7 @@ export default class FeatureInstaller implements IServiceProvider {
 
 	private featureMap: Partial<IFeatureMap> = {}
 	private serviceFactory: ServiceFactory
+	private featuresMarkedAsSkippedThisRun: FeatureCode[] = []
 
 	public constructor(cwd: string, serviceFactory: ServiceFactory) {
 		this.cwd = cwd
@@ -30,6 +31,16 @@ export default class FeatureInstaller implements IServiceProvider {
 
 	public async isInstalled(code: FeatureCode) {
 		return this.Service('settings').isMarkedAsInstalled(code)
+	}
+
+	public markAsSkippedThisRun(code: FeatureCode) {
+		if (!this.isMarkedAsSkipped(code)) {
+			this.featuresMarkedAsSkippedThisRun.push(code)
+		}
+	}
+
+	public isMarkedAsSkipped(code: FeatureCode) {
+		return this.featuresMarkedAsSkippedThisRun.indexOf(code) > -1
 	}
 
 	public mapFeature<C extends FeatureCode>(code: C, feature: IFeatureMap[C]) {

@@ -85,6 +85,7 @@ export default class SkillFeature<
 	}
 
 	public getSkillName() {
+		debugger
 		const pkg = this.Service('pkg')
 		const nameFromPackage = pkg.get('name')
 		return nameFromPackage.split('/').pop()

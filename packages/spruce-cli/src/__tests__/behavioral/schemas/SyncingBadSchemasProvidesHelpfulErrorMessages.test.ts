@@ -1,8 +1,8 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
-import SpruceError from '../../errors/SpruceError'
-import AbstractSchemaTest from '../../test/AbstractSchemaTest'
+import SpruceError from '../../../errors/SpruceError'
+import AbstractSchemaTest from '../../../test/AbstractSchemaTest'
 
 export default class SyncingBadSchemasProvidesHelpfulErrorMessagesTest extends AbstractSchemaTest {
 	@test()

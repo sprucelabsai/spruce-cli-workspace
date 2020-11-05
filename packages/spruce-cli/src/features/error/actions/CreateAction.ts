@@ -38,6 +38,8 @@ export default class CreateAction extends AbstractFeatureAction<
 					normalizedOptions.errorBuilderDestinationDir,
 			}
 		)
+
+		debugger
 		const createResults = await schemaCreateAction.execute(createSchemaOptions)
 
 		const syncOptions = normalizeSchemaValues(

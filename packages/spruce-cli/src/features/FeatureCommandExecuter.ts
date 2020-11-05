@@ -45,7 +45,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 	public async execute(
 		options?: Record<string, any> & FeatureCommandExecuteOptions<F>
 	): Promise<FeatureInstallResponse> {
-		let response = await this.installMissingDependencies()
+		let response = await this.installOrMarkAsSkippedMissingDependencies()
 
 		const feature = this.featureInstaller.getFeature(this.featureCode)
 		const action = feature.Action(this.actionCode)
@@ -139,7 +139,9 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		return `${this.featureCode}.${this.actionCode}`
 	}
 
-	private async installMissingDependencies(): Promise<FeatureInstallResponse> {
+	private async installOrMarkAsSkippedMissingDependencies(): Promise<
+		FeatureInstallResponse
+	> {
 		const notInstalled = await this.getDependenciesNotInstalled()
 
 		let response: FeatureInstallResponse = {}
@@ -153,7 +155,9 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 					// for typescript
 					throw new Error('Dependent feature error')
 				}
-				const installResults = await this.installMissingDependency(toInstall)
+				const installResults = await this.installOrMarkAsSkippedMissingDependency(
+					toInstall
+				)
 				response = merge(response, installResults)
 			}
 
@@ -202,7 +206,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		return `Before you can run \`${this.getCommandName()}\`, ${message} Don't worry, I'll walk you through it!`
 	}
 
-	private async installMissingDependency(
+	private async installOrMarkAsSkippedMissingDependency(
 		toInstall: FeatureDependencyWithFeature
 	): Promise<FeatureInstallResponse> {
 		const { feature, isRequired } = toInstall
@@ -213,7 +217,6 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			)
 
 			if (!confirm) {
-				debugger
 				throw new SpruceError({
 					code: 'COMMAND_ABORTED',
 					command: this.getCommandName(),
@@ -244,6 +247,8 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 
 			if (response !== 'yes') {
 				this.ui.renderLine('Cool, skipping for now.')
+				this.featureInstaller.markAsSkippedThisRun(feature.code)
+
 				const installResponse: FeatureInstallResponse = {}
 				return installResponse
 			}
@@ -258,7 +263,6 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			)
 		}
 
-		this.ui.clear()
 		this.ui.startLoading(`Installing ${feature.nameReadable}...`)
 
 		const installResults = await this.featureInstaller.install({

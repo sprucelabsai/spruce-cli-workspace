@@ -28,7 +28,6 @@
 		},
 		{
 			"type": "node",
-			"preLaunchTask": "clear",
 			"request": "launch",
 			"name": "test.file",
 			"runtimeExecutable": "${env:NVM_BIN}/node",
@@ -46,7 +45,6 @@
 		},
 		{
 			"type": "node",
-			"preLaunchTask": "clear",
 			"request": "launch",
 			"name": "test.all",
 			"runtimeExecutable": "${env:NVM_BIN}/node",

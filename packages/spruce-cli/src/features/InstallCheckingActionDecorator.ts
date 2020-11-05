@@ -1,4 +1,3 @@
-import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../errors/SpruceError'
 import AbstractFeature from '../features/AbstractFeature'
 import FeatureInstaller from '../features/FeatureInstaller'
@@ -38,18 +37,24 @@ export default class InstallCheckingActionDecorator implements IFeatureAction {
 			this.parent.code
 		)
 
-		dependencies.push({ code: this.parent.code, isRequired: true })
+		debugger
+		if (!this.featureInstaller.isMarkedAsSkipped(this.parent.code)) {
+			dependencies.push({ code: this.parent.code, isRequired: true })
 
-		for (const dependency of dependencies) {
-			if (dependency.isRequired) {
-				const isInstalled = await this.featureInstaller.isInstalled(
-					dependency.code
-				)
+			for (const dependency of dependencies) {
+				if (dependency.isRequired) {
+					const [isInstalled, isSkipped] = await Promise.all([
+						this.featureInstaller.isInstalled(dependency.code),
+						this.featureInstaller.isMarkedAsSkipped(dependency.code),
+					])
 
-				if (!isInstalled) {
-					throw new SpruceError({
-						code: `SKILL_NOT_INSTALLED`,
-					})
+					debugger
+					if (!isInstalled && !isSkipped) {
+						throw new SpruceError({
+							code: 'FEATURE_NOT_INSTALLED',
+							featureCode: dependency.code,
+						})
+					}
 				}
 			}
 		}

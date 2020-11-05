@@ -114,8 +114,6 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 		await this.waitForInput()
 
-		debugger
-
 		await this.ui.sendInput('skill')
 		await this.ui.sendInput('will-boot')
 
@@ -289,9 +287,8 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		await this.ui.sendInput('My new error')
 		await this.ui.sendInput('')
 
-		await promise
-
 		debugger
+		await promise
 	}
 
 	private static Executer<F extends FeatureCode>(
