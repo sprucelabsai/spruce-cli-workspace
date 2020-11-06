@@ -130,6 +130,10 @@ export default class JestJsonParser {
 						tests: this.pullTestsFromTestFileResult(testResult),
 					}
 
+					if (testResult.failureMessage) {
+						file.errorMessage = testResult.failureMessage
+					}
+
 					if (idx === -1) {
 						testFiles.push(file)
 					} else {
@@ -204,7 +208,9 @@ export default class JestJsonParser {
 	private pullTestFileResultStatus(
 		testResult: OnTestFileResult['testResult']
 	): TestResultStatus {
-		return testResult.numFailingTests > 0 ? 'failed' : 'passed'
+		return testResult.failureMessage || testResult.numFailingTests > 0
+			? 'failed'
+			: 'passed'
 	}
 
 	private pullTestsFromTestFileResult(

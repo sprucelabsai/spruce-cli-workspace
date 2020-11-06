@@ -77,6 +77,11 @@ export default class TestLogItemGenerator {
 		let errorContent = ''
 
 		if (file.status === 'failed') {
+			if (file.errorMessage) {
+				errorContent += `^r^+${file.path}\n`
+				errorContent += file.errorMessage + '\n\n\n'
+			}
+
 			file.tests?.forEach((test) => {
 				test.errorMessages?.forEach((message) => {
 					errorContent += `^r^+${file.path}\n`

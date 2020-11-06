@@ -10,6 +10,7 @@ export interface SpruceTestFile {
 	path: string
 	status: TestResultStatus
 	tests?: SpruceTestFileTest[]
+	errorMessage?: string
 }
 
 export interface SpruceTestResults {

@@ -59,6 +59,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		const parser = new JestJsonParser()
 		const results: FeatureActionResponse = {}
 		let restart = false
+		let waitForConfirm = true
 
 		if (shouldReportWhileRunning) {
 			this.testReporter = new TestReporter({
@@ -76,7 +77,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 		try {
 			await this.commandService.execute(
-				'yarn test --reporters="@sprucelabs/jest-json-reporter" --forceExit',
+				'yarn test --reporters="@sprucelabs/jest-json-reporter" --testRunner="jest-circus/runner" --forceExit',
 				{
 					onData: (data) => {
 						testResults = this.sendToReporter(parser, data)
@@ -84,12 +85,13 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 				}
 			)
 		} catch (err) {
-			if (!testResults) {
+			if (!testResults.totalTestFiles) {
+				waitForConfirm = false
 				results.errors = [err]
 			}
 		}
 
-		if (!restart && shouldReportWhileRunning) {
+		if (!restart && waitForConfirm && shouldReportWhileRunning) {
 			await this.testReporter?.waitForConfirm()
 		}
 

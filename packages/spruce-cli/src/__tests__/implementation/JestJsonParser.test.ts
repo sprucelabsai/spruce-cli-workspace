@@ -577,6 +577,8 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 			totalFailed: 1,
 			totalPassed: 181,
 			totalTests: 183,
+			totalSkipped: 1,
+			totalTodo: 0,
 		})
 	}
 }
