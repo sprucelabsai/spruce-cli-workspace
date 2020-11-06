@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.9.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.8.7...v11.9.0) (2020-11-06)
+
+
+### Features
+
+* node feature and errors/schema don't need skill anymore ([15c3ef7](https://github.com/sprucelabsai/spruce-cli-workspace/commit/15c3ef7))
+
+
+
+
+
 ## [11.8.7](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.8.6...v11.8.7) (2020-11-06)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
