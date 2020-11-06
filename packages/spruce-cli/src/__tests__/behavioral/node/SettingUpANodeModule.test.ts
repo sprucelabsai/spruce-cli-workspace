@@ -1,0 +1,81 @@
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
+import AbstractCliTest from '../../../test/AbstractCliTest'
+
+export default class SettingUpANodeModuleTest extends AbstractCliTest {
+	@test()
+	protected static async settingUpANodeModule() {
+		const cli = await this.Cli()
+		const err = await assert.doesThrowAsync(() =>
+			cli.installFeatures({
+				features: [
+					{
+						code: 'node',
+						//@ts-ignore
+						options: {},
+					},
+				],
+			})
+		)
+
+		errorAssertUtil.assertError(err, 'INVALID_FIELD')
+	}
+
+	@test()
+	protected static async canTellIfNotInstalled() {
+		const installer = this.FeatureInstaller()
+		const isInstalled = await installer.isInstalled('node')
+		assert.isFalse(isInstalled)
+	}
+
+	@test()
+	protected static async canTellIfInstalledWithoutCreatingHashSpruceDir() {
+		const cli = await this.Cli()
+
+		await cli.installFeatures({
+			features: [
+				{
+					code: 'node',
+					options: {
+						name: 'Test module',
+						description: 'so great!',
+					},
+				},
+			],
+		})
+
+		const installer = this.FeatureInstaller()
+		const isInstalled = await installer.isInstalled('node')
+		assert.isTrue(isInstalled)
+
+		const doesExist = diskUtil.doesHashSprucePathExist(this.cwd)
+		assert.isFalse(doesExist)
+	}
+
+	@test()
+	protected static async installsNodeModuleWithCleanedUpPackageJson() {
+		const cli = await this.Cli()
+
+		await cli.installFeatures({
+			features: [
+				{
+					code: 'node',
+					options: {
+						name: 'Test module',
+						description: 'so great!',
+					},
+				},
+			],
+		})
+
+		const pkgService = this.Service('pkg')
+		const contents = pkgService.readPackage()
+
+		assert.doesInclude(contents, {
+			name: 'test-module',
+			description: 'so great!',
+			version: '0.0.1',
+		})
+	}
+}

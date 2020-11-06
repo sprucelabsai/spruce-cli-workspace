@@ -28,19 +28,16 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		const promise = cli.getFeature('skill').Action('upgrade').execute({})
 
-		await this.wait(5000)
+		await this.waitForInput()
 
-		// this should NOT have fixed the skill
 		await this.assertFailedHealthCheck(cli)
 
-		// should be asking for some files
 		assert.doesInclude(this.ui.invocations, {
 			command: 'confirm',
 			options: `Overwrite ${this.resolvePath('src/index.ts')}?`,
 		})
 
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		this.ui.sendInput('\n')
+		await this.ui.sendInput('\n')
 
 		await promise
 	}

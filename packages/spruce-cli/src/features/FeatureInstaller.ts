@@ -8,7 +8,7 @@ import ServiceFactory, {
 	IServiceMap,
 } from '../services/ServiceFactory'
 import { NpmPackage } from '../types/cli.types'
-import AbstractFeature from './AbstractFeature'
+import AbstractFeature, { FeatureDependency } from './AbstractFeature'
 import {
 	IInstallFeatureOptions,
 	FeatureInstallResponse,
@@ -22,6 +22,7 @@ export default class FeatureInstaller implements IServiceProvider {
 
 	private featureMap: Partial<IFeatureMap> = {}
 	private serviceFactory: ServiceFactory
+	private featuresMarkedAsSkippedThisRun: FeatureCode[] = []
 
 	public constructor(cwd: string, serviceFactory: ServiceFactory) {
 		this.cwd = cwd
@@ -29,7 +30,29 @@ export default class FeatureInstaller implements IServiceProvider {
 	}
 
 	public async isInstalled(code: FeatureCode) {
-		return this.getFeature(code).isInstalled()
+		const feature = this.getFeature(code)
+		if (feature.isInstalled) {
+			return feature.isInstalled()
+		}
+		return this.Service('settings').isMarkedAsInstalled(code)
+	}
+
+	public markAsSkippedThisRun(code: FeatureCode) {
+		if (!this.isMarkedAsSkipped(code)) {
+			this.featuresMarkedAsSkippedThisRun.push(code)
+		}
+	}
+	public markAsPermanentlySkipped(code: FeatureCode) {
+		if (!this.isMarkedAsSkipped(code)) {
+			this.Service('settings').markAsPermanentlySkipped(code)
+		}
+	}
+
+	public isMarkedAsSkipped(code: FeatureCode) {
+		return (
+			this.featuresMarkedAsSkippedThisRun.indexOf(code) > -1 ||
+			this.Service('settings').isMarkedAsPermanentlySkipped(code)
+		)
 	}
 
 	public mapFeature<C extends FeatureCode>(code: C, feature: IFeatureMap[C]) {
@@ -64,54 +87,64 @@ export default class FeatureInstaller implements IServiceProvider {
 
 	public getFeatureDependencies<C extends FeatureCode>(
 		featureCode: C,
-		trackedFeatures: FeatureCode[] = []
-	): FeatureCode[] {
+		trackedFeatures: FeatureDependency[] = []
+	): FeatureDependency[] {
 		let deps = this.getFeatureDependenciesIncludingSelf(
-			featureCode,
+			{ code: featureCode, isRequired: true },
 			trackedFeatures
-		).filter((f) => f !== featureCode)
+		).filter((f) => f.code !== featureCode)
 
 		deps = this.sortFeatures(deps)
 
 		return deps
 	}
 
-	private getFeatureDependenciesIncludingSelf<C extends FeatureCode>(
-		featureCode: C,
-		trackedFeatures: FeatureCode[] = []
-	): FeatureCode[] {
-		trackedFeatures.push(featureCode)
+	private getFeatureDependenciesIncludingSelf(
+		featureDependency: FeatureDependency,
+		trackedFeatures: FeatureDependency[] = []
+	): FeatureDependency[] {
+		const features: FeatureDependency[] = []
 
-		const feature = this.getFeature(featureCode)
+		if (!this.isDependencyInTracker(trackedFeatures, featureDependency)) {
+			features.push(featureDependency)
+			trackedFeatures.push(featureDependency)
+		}
+
+		const feature = this.getFeature(featureDependency.code)
 		const dependencies = feature.dependencies
 
 		for (let i = 0; i < dependencies.length; i += 1) {
-			trackedFeatures = this.trackFeatureDependencyIfNotTracked(
-				dependencies[i],
-				trackedFeatures
-			)
+			const dependency = dependencies[i]
+			if (!this.isDependencyInTracker(trackedFeatures, dependency)) {
+				features.push(dependency)
+				trackedFeatures.push(dependency)
+			}
 		}
 
-		return uniq(trackedFeatures)
+		for (let x = 0; x < dependencies.length; x += 1) {
+			const dependency = dependencies[x]
+			let dependencyDependencies = this.getFeatureDependenciesIncludingSelf(
+				dependency,
+				trackedFeatures
+			)
+			if (!dependency.isRequired) {
+				dependencyDependencies = dependencyDependencies.map((f) => ({
+					...f,
+					isRequired: false,
+				}))
+			}
+
+			features.push(...dependencyDependencies)
+		}
+
+		return features
 	}
 
-	private trackFeatureDependencyIfNotTracked<C extends FeatureCode>(
-		dependencyCode: C,
-		trackedFeatures: FeatureCode[]
+	private isDependencyInTracker(
+		trackedFeatures: FeatureDependency[],
+		dependency: FeatureDependency
 	) {
-		const isTracked = !!trackedFeatures.find((f) => f === dependencyCode)
-
-		if (!isTracked) {
-			trackedFeatures.push(dependencyCode)
-
-			const features = this.getFeatureDependenciesIncludingSelf(
-				dependencyCode,
-				trackedFeatures
-			)
-			trackedFeatures = trackedFeatures.concat(features)
-		}
-
-		return trackedFeatures
+		return !!trackedFeatures.find((f) => f.code === dependency.code)
 	}
 
 	public async install(
@@ -121,39 +154,35 @@ export default class FeatureInstaller implements IServiceProvider {
 
 		let results: FeatureInstallResponse = {}
 
-		let codesToInstall: FeatureCode[] = []
+		let dependenciesToInstall: FeatureDependency[] = []
 
 		for (let i = 0; i < features.length; i += 1) {
 			const f = features[i]
 			const code = f.code
-			const isInstalled = await this.getFeature(code).isInstalled()
+			const isInstalled = await this.isInstalled(code)
 			if (!isInstalled && installFeatureDependencies) {
-				codesToInstall = codesToInstall.concat(
-					this.getFeatureDependenciesIncludingSelf(code)
+				dependenciesToInstall = dependenciesToInstall.concat(
+					this.getFeatureDependenciesIncludingSelf({ code, isRequired: true })
 				)
 			} else if (!isInstalled) {
-				// eslint-disable-next-line no-debugger
-				debugger
-				throw new Error('make custom error')
+				dependenciesToInstall.push({ code, isRequired: true })
 			}
 		}
 
-		codesToInstall = uniq(codesToInstall)
-		codesToInstall = this.sortFeatures(codesToInstall)
+		dependenciesToInstall = uniq(dependenciesToInstall)
+		dependenciesToInstall = this.sortFeatures(dependenciesToInstall)
 
-		for (let i = 0; i < codesToInstall.length; i += 1) {
-			const code = codesToInstall[i]
+		for (let i = 0; i < dependenciesToInstall.length; i += 1) {
+			const { code, isRequired } = dependenciesToInstall[i]
 
-			const feature = this.getFeature(code)
+			const isInstalled = await this.isInstalled(code)
 
-			const isInstalled = await feature.isInstalled()
-
-			if (!isInstalled) {
+			if (!isInstalled && isRequired) {
 				const installOptions = options.features.find((f) => f.code === code)
 					?.options
 
 				const installFeature = {
-					code: codesToInstall[i],
+					code: dependenciesToInstall[i].code,
 					options: installOptions,
 				} as InstallFeature
 
@@ -186,6 +215,10 @@ export default class FeatureInstaller implements IServiceProvider {
 		const afterInstallResults = await feature.afterPackageInstall(
 			installFeature.options
 		)
+
+		if (!feature.isInstalled) {
+			this.Service('settings').markAsInstalled(feature.code)
+		}
 
 		const files = [
 			...(beforeInstallResults.files ?? []),
@@ -230,21 +263,29 @@ export default class FeatureInstaller implements IServiceProvider {
 		return packagesInstalled
 	}
 
-	private sortFeatures<F extends FeatureCode[]>(codes: F): F {
-		return [...codes].sort((a, b) => {
-			const aFeature = this.getFeature(a)
-			const bFeature = this.getFeature(b)
+	private sortFeatures(
+		featureDependencies: FeatureDependency[]
+	): FeatureDependency[] {
+		return [...featureDependencies].sort((a, b) => {
+			const aFeature = this.getFeature(a.code)
+			const bFeature = this.getFeature(b.code)
 
-			const aDependsOnB = aFeature.dependencies.find((d) => d === b)
-			const bDependsOnA = bFeature.dependencies.find((d) => d === a)
+			const aDependsOnB = aFeature.dependencies.find((d) => d.code === b.code)
+			const bDependsOnA = bFeature.dependencies.find((d) => d.code === a.code)
 
-			if (aDependsOnB) {
+			if (
+				aDependsOnB ||
+				aFeature.installOrderWeight < bFeature.installOrderWeight
+			) {
 				return 1
-			} else if (bDependsOnA) {
+			} else if (
+				bDependsOnA ||
+				aFeature.installOrderWeight > bFeature.installOrderWeight
+			) {
 				return -1
 			}
 			return 0
-		}) as F
+		})
 	}
 
 	public Service<S extends Service>(type: S, cwd?: string): IServiceMap[S] {
@@ -257,6 +298,8 @@ export default class FeatureInstaller implements IServiceProvider {
 
 	public getAllCodes(): FeatureCode[] {
 		const codes = Object.keys(this.featureMap) as FeatureCode[]
-		return this.sortFeatures(codes)
+		return this.sortFeatures(
+			codes.map((code) => ({ code, isRequired: true }))
+		).map((dep) => dep.code)
 	}
 }

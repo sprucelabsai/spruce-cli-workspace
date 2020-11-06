@@ -7,9 +7,8 @@ import { GeneratedFileOrDir } from '../../../types/cli.types'
 export default class WatchingForChangesTest extends AbstractCliTest {
 	@test()
 	protected static async installsWatchers() {
-		const cli = await this.installWatch()
-		const isInstalled = await cli.getFeature('watch').isInstalled()
-		assert.isTrue(isInstalled)
+		await this.installWatch()
+		await this.assertIsFeatureInstalled('watch')
 	}
 
 	@test()

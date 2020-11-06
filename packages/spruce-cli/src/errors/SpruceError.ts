@@ -1,4 +1,5 @@
 import AbstractSpruceError from '@sprucelabs/error'
+import upperFirst from 'lodash/upperFirst'
 import ErrorOptions from '#spruce/errors/options.types'
 
 export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
@@ -130,6 +131,12 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 					.split('\n')
 					.map((line) => `     ${line}`)
 					.join('\n')}`
+				break
+
+			case 'FEATURE_NOT_INSTALLED':
+				message = `\`${upperFirst(
+					options.featureCode
+				)}\` feature is not installed. Install it first, then try again.`
 				break
 
 			default:

@@ -5,7 +5,7 @@ import JestJsonParser from '../../../test/JestJsonParser'
 import TestReporter from '../../../test/TestReporter'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import {
-	IFeatureActionExecuteResponse,
+	FeatureActionResponse,
 	IFeatureActionOptions,
 } from '../../features.types'
 import {
@@ -42,11 +42,11 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 	public async execute(
 		options: SchemaValues<OptionsSchema>
-	): Promise<IFeatureActionExecuteResponse> {
+	): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 		const { shouldReportWhileRunning } = normalizedOptions
 
-		const results: IFeatureActionExecuteResponse = await this.runTests(
+		const results: FeatureActionResponse = await this.runTests(
 			shouldReportWhileRunning
 		)
 
@@ -55,9 +55,9 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 	private async runTests(
 		shouldReportWhileRunning: boolean
-	): Promise<IFeatureActionExecuteResponse> {
+	): Promise<FeatureActionResponse> {
 		const parser = new JestJsonParser()
-		const results: IFeatureActionExecuteResponse = {}
+		const results: FeatureActionResponse = {}
 		let restart = false
 
 		if (shouldReportWhileRunning) {
@@ -117,7 +117,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	}
 
 	private mixinSummaryAndTestResults(
-		results: IFeatureActionExecuteResponse,
+		results: FeatureActionResponse,
 		testResults: SpruceTestResults
 	) {
 		results.summaryLines = [

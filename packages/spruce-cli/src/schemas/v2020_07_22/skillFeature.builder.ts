@@ -2,7 +2,7 @@ import { buildSchema } from '@sprucelabs/schema'
 
 export default buildSchema({
 	id: 'skillFeature',
-	name: 'Skill Feature',
+	name: 'Skill feature options',
 	fields: {
 		name: {
 			type: 'text',

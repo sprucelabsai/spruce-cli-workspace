@@ -8,7 +8,6 @@ import { FeatureCode } from '../features.types'
 export default class TestFeature extends AbstractFeature {
 	public nameReadable = 'Test'
 	public description = 'Test first. Test everything! 💪'
-	public dependencies: FeatureCode[] = []
 	public code: FeatureCode = 'test'
 	public packageDependencies: NpmPackage[] = [
 		{ name: '@sprucelabs/test', isDev: true },
@@ -72,18 +71,6 @@ export default class TestFeature extends AbstractFeature {
 		const existingJest = service.get('jest') as Record<string, any>
 		if (!existingJest) {
 			service.set({ path: 'jest', value: jestConfig })
-		}
-	}
-
-	public async isInstalled() {
-		try {
-			const service = this.Service('pkg')
-			return (
-				!!service.get('jest') &&
-				service.isInstalled('@sprucelabs/jest-json-reporter')
-			)
-		} catch {
-			return false
 		}
 	}
 }

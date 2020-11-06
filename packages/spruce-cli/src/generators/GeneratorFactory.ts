@@ -3,6 +3,7 @@ import { GraphicsInterface } from '../types/cli.types'
 import { IGeneratorOptions } from './AbstractGenerator'
 import ErrorGenerator from './ErrorGenerator'
 import EventGenerator from './EventGenerator'
+import NodeGenerator from './NodeGenerator'
 import SchemaGenerator from './SchemaGenerator'
 import SkillGenerator from './SkillGenerator'
 import TestGenerator from './TestGenerator'
@@ -13,6 +14,7 @@ const classMap = {
 	schema: SchemaGenerator,
 	skill: SkillGenerator,
 	test: TestGenerator,
+	node: NodeGenerator,
 }
 
 export interface GeneratorMap {
@@ -21,6 +23,7 @@ export interface GeneratorMap {
 	schema: SchemaGenerator
 	skill: SkillGenerator
 	test: TestGenerator
+	node: NodeGenerator
 }
 export type GeneratorCode = keyof GeneratorMap
 

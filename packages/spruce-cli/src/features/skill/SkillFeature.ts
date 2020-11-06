@@ -10,22 +10,22 @@ type SkillFeatureSchema = SpruceSchemas.SpruceCli.v2020_07_22.ISkillFeatureSchem
 type Skill = SpruceSchemas.SpruceCli.v2020_07_22.ISkillFeature
 
 export default class SkillFeature<
-	T extends SkillFeatureSchema = SkillFeatureSchema
-> extends AbstractFeature<T> {
+	S extends SkillFeatureSchema = SkillFeatureSchema
+> extends AbstractFeature<S> {
 	public nameReadable = 'Skill'
 	public code: FeatureCode = 'skill'
 	public description =
 		'Skill: The most basic configuration needed to enable a skill'
+	public readonly installOrderWeight = 100
 
-	public dependencies: FeatureCode[] = []
 	public packageDependencies: NpmPackage[] = [
 		{ name: '@sprucelabs/log' },
 		{ name: '@sprucelabs/error' },
 		{ name: '@sprucelabs/spruce-skill-utils' },
 		{ name: '@sprucelabs/spruce-core-schemas' },
-		{ name: 'typescript', isDev: true },
 		{ name: '@sprucelabs/babel-plugin-schema', isDev: true },
 		{ name: '@types/node', isDev: true },
+		{ name: 'typescript', isDev: true },
 		{ name: 'ts-node', isDev: true },
 		{ name: 'tsconfig-paths', isDev: true },
 		{ name: '@babel/cli', isDev: true },
@@ -42,7 +42,7 @@ export default class SkillFeature<
 		{ name: 'globby' },
 	]
 
-	public optionsDefinition = skillFeatureSchema as T
+	public optionsDefinition = skillFeatureSchema as S
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 	private scripts = {
 		boot: 'node build/index',
@@ -88,6 +88,11 @@ export default class SkillFeature<
 	public getSkillName() {
 		const pkg = this.Service('pkg')
 		const nameFromPackage = pkg.get('name')
+		if (!nameFromPackage) {
+			throw new Error(
+				'Need name in package.json, make this error a proper spruce error'
+			)
+		}
 		return nameFromPackage.split('/').pop()
 	}
 
@@ -104,16 +109,5 @@ export default class SkillFeature<
 		}
 
 		pkg.set({ path: 'scripts', value: scripts })
-	}
-
-	public async isInstalled() {
-		try {
-			return (
-				diskUtil.doesDirExist(diskUtil.resolvePath(this.cwd, 'node_modules')) &&
-				diskUtil.doesDirExist(diskUtil.resolveHashSprucePath(this.cwd))
-			)
-		} catch {
-			return false
-		}
 	}
 }

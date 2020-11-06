@@ -62,7 +62,10 @@ export interface IUserNotFoundErrorOptions extends SpruceErrors.SpruceCli.IUserN
 export interface IVscodeNotInstalledErrorOptions extends SpruceErrors.SpruceCli.IVscodeNotInstalled, ISpruceErrorOptions {
 	code: 'VSCODE_NOT_INSTALLED'
 }
+export interface IFeatureNotInstalledErrorOptions extends SpruceErrors.SpruceCli.IFeatureNotInstalled, ISpruceErrorOptions {
+	code: 'FEATURE_NOT_INSTALLED'
+}
 
-type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | IBootFailedErrorOptions  | IBuildFailedErrorOptions  | ICommandAbortedErrorOptions  | ICommandNotImplementedErrorOptions  | ICreateAutoloaderFailedErrorOptions  | IDirectoryEmptyErrorOptions  | IExecutingCommandFailedErrorOptions  | IFailedToImportErrorOptions  | IFileExistsErrorOptions  | IGenericErrorOptions  | IGenericMercuryErrorOptions  | IInvalidCommandErrorOptions  | IInvalidFeatureCodeErrorOptions  | ILintFailedErrorOptions  | INotImplementedErrorOptions  | ISchemaExistsErrorOptions  | ISchemaFailedToImportErrorOptions  | ITestFailedErrorOptions  | IUserNotFoundErrorOptions  | IVscodeNotInstalledErrorOptions 
+type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | IBootFailedErrorOptions  | IBuildFailedErrorOptions  | ICommandAbortedErrorOptions  | ICommandNotImplementedErrorOptions  | ICreateAutoloaderFailedErrorOptions  | IDirectoryEmptyErrorOptions  | IExecutingCommandFailedErrorOptions  | IFailedToImportErrorOptions  | IFileExistsErrorOptions  | IGenericErrorOptions  | IGenericMercuryErrorOptions  | IInvalidCommandErrorOptions  | IInvalidFeatureCodeErrorOptions  | ILintFailedErrorOptions  | INotImplementedErrorOptions  | ISchemaExistsErrorOptions  | ISchemaFailedToImportErrorOptions  | ITestFailedErrorOptions  | IUserNotFoundErrorOptions  | IVscodeNotInstalledErrorOptions  | IFeatureNotInstalledErrorOptions 
 
 export default ErrorOptions

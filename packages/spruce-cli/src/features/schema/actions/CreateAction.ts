@@ -6,7 +6,7 @@ import createSchemaActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/crea
 import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
-import { IFeatureAction } from '../../features.types'
+import { FeatureAction } from '../../features.types'
 
 export default class CreateAction extends AbstractFeatureAction<
 	SpruceSchemas.SpruceCli.v2020_07_22.ICreateSchemaActionSchema
@@ -51,7 +51,7 @@ export default class CreateAction extends AbstractFeatureAction<
 			namePascal: namePascal ?? namesUtil.toPascal(nameCamel),
 		})
 
-		const syncAction = this.Action('sync') as IFeatureAction<
+		const syncAction = this.Action('sync') as FeatureAction<
 			SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasActionSchema
 		>
 		let errors: SpruceError[] | undefined

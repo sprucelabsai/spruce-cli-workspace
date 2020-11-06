@@ -1,14 +1,14 @@
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { FeatureCode } from '../../../features/features.types'
 import AbstractTestTest from '../../../test/AbstractTestTest'
 
 export default class SettingUpTestsTest extends AbstractTestTest {
 	@test()
 	protected static async installsTests() {
-		const cli = await this.installTests('tests')
-		const isInstalled = await cli.getFeature('test').isInstalled()
-
-		assert.isTrue(isInstalled)
+		await this.installTests('tests')
+		const code: FeatureCode = 'test'
+		await this.assertIsFeatureInstalled(code)
 	}
 
 	@test()

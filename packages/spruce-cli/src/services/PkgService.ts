@@ -15,13 +15,20 @@ export default class PkgService extends CommandService {
 		return contents[path]
 	}
 
-	public set(options: { path: string; value: string | Record<string, any> }) {
+	public set(options: {
+		path: string
+		value: string | Record<string, any> | undefined
+	}) {
 		const { path, value } = options
 		const contents = this.readPackage()
 		const updated = set(contents, path, value)
 		const destination = pathUtil.join(this.cwd, 'package.json')
 
 		fs.outputFileSync(destination, JSON.stringify(updated, null, 2))
+	}
+
+	public unset(path: string) {
+		this.set({ path, value: undefined })
 	}
 
 	public readPackage(): Record<string, any | undefined> {

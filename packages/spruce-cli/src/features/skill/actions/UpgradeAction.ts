@@ -2,7 +2,7 @@ import { SchemaValues } from '@sprucelabs/schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import upgradeSkillActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/upgradeSkillAction.schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
-import { IFeatureActionExecuteResponse } from '../../features.types'
+import { FeatureActionResponse } from '../../features.types'
 import SkillFeature from '../SkillFeature'
 
 export default class UpgradeAction extends AbstractFeatureAction<
@@ -15,7 +15,7 @@ export default class UpgradeAction extends AbstractFeatureAction<
 		options: SchemaValues<
 			SpruceSchemas.SpruceCli.v2020_07_22.IUpgradeSkillActionSchema
 		>
-	): Promise<IFeatureActionExecuteResponse> {
+	): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 		const generatedFiles = await this.copyFiles(normalizedOptions)
 

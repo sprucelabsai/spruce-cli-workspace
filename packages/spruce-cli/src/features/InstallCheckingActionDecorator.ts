@@ -1,13 +1,12 @@
-import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../errors/SpruceError'
 import AbstractFeature from '../features/AbstractFeature'
 import FeatureInstaller from '../features/FeatureInstaller'
-import { IFeatureAction } from '../features/features.types'
+import { FeatureAction } from '../features/features.types'
 
-export default class InstallCheckingActionDecorator implements IFeatureAction {
+export default class InstallCheckingActionDecorator implements FeatureAction {
 	public name = 'install-checking-action-facade'
 
-	private childAction: IFeatureAction
+	private childAction: FeatureAction
 	private parent: AbstractFeature
 	private featureInstaller: FeatureInstaller
 
@@ -16,7 +15,7 @@ export default class InstallCheckingActionDecorator implements IFeatureAction {
 	}
 
 	public constructor(
-		childAction: IFeatureAction,
+		childAction: FeatureAction,
 		parent: AbstractFeature,
 		featureInstaller: FeatureInstaller
 	) {
@@ -38,16 +37,23 @@ export default class InstallCheckingActionDecorator implements IFeatureAction {
 			this.parent.code
 		)
 
-		dependencies.push(this.parent.code)
+		if (!this.featureInstaller.isMarkedAsSkipped(this.parent.code)) {
+			dependencies.push({ code: this.parent.code, isRequired: true })
 
-		for (const featureCode of dependencies) {
-			const isInstalled = await this.featureInstaller.isInstalled(featureCode)
+			for (const dependency of dependencies) {
+				if (dependency.isRequired) {
+					const [isInstalled, isSkipped] = await Promise.all([
+						this.featureInstaller.isInstalled(dependency.code),
+						this.featureInstaller.isMarkedAsSkipped(dependency.code),
+					])
 
-			if (!isInstalled) {
-				throw new SpruceError({
-					// @ts-ignore
-					code: `${namesUtil.toConst(featureCode)}_NOT_INSTALLED`,
-				})
+					if (!isInstalled && !isSkipped) {
+						throw new SpruceError({
+							code: 'FEATURE_NOT_INSTALLED',
+							featureCode: dependency.code,
+						})
+					}
+				}
 			}
 		}
 

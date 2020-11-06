@@ -23,29 +23,37 @@ import FeatureActionFactory, {
 	IFeatureActionFactoryOptions,
 } from './FeatureActionFactory'
 import FeatureInstaller from './FeatureInstaller'
-import { IFeatureAction } from './features.types'
+import { FeatureAction } from './features.types'
 import { FeatureCode } from './features.types'
 
 export interface InstallResults {
 	files?: GeneratedFile[]
 }
 
+export interface FeatureDependency {
+	isRequired: boolean
+	code: FeatureCode
+}
+
 export default abstract class AbstractFeature<
 	S extends ISchema | undefined = ISchema | undefined
 > implements IServiceProvider {
 	public abstract description: string
-	public readonly dependencies: FeatureCode[] = []
+	public readonly dependencies: FeatureDependency[] = []
 	public readonly packageDependencies: NpmPackage[] = []
 	public readonly optionsDefinition?: S
+	public isInstalled?: () => Promise<boolean>
 
-	protected cwd: string
 	public abstract readonly code: FeatureCode
 	public abstract readonly nameReadable: string
+	public readonly installOrderWeight: number = 0
 
+	protected cwd: string
 	protected actionsDir: string | undefined
 	protected actionFactory?: FeatureActionFactory
 	protected templates: Templates
 	protected emitter: GlobalEmitter
+	protected featureInstaller: FeatureInstaller
 
 	private serviceFactory: ServiceFactory
 	private storeFactory: StoreFactory
@@ -73,6 +81,7 @@ export default abstract class AbstractFeature<
 		this.storeFactory = options.storeFactory
 		this.generatorFactory = new GeneratorFactory(this.templates, options.term)
 		this.emitter = options.emitter
+		this.featureInstaller = options.featureInstaller
 
 		this.actionFactoryOptions = {
 			...options,
@@ -93,8 +102,6 @@ export default abstract class AbstractFeature<
 		return {}
 	}
 
-	public abstract async isInstalled(): Promise<boolean>
-
 	public Service<S extends Service>(type: S, cwd?: string): IServiceMap[S] {
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
@@ -103,7 +110,11 @@ export default abstract class AbstractFeature<
 		return this.generatorFactory.Generator(code)
 	}
 
-	public Action(code: string): IFeatureAction {
+	public getFeature<Code extends FeatureCode>(code: Code) {
+		return this.featureInstaller.getFeature(code)
+	}
+
+	public Action(code: string): FeatureAction {
 		if (!this.actionFactory) {
 			if (!this.actionsDir) {
 				throw new Error(

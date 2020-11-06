@@ -758,4 +758,33 @@ export declare namespace SpruceErrors.SpruceCli {
 
 
 
+export declare namespace SpruceErrors.SpruceCli {
+
+	
+	export interface IFeatureNotInstalled {
+		
+			
+			'featureCode': string
+	}
+
+	export interface IFeatureNotInstalledSchema extends SpruceSchema.ISchema {
+		id: 'featureNotInstalled',
+		namespace: 'SpruceCli',
+		name: 'Feature not installed',
+		    fields: {
+		            /** . */
+		            'featureCode': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type FeatureNotInstalledEntity = SchemaEntity<SpruceErrors.SpruceCli.IFeatureNotInstalledSchema>
+
+}
+
+
+
 

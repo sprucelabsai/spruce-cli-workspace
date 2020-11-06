@@ -1,6 +1,9 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { NpmPackage } from '../../types/cli.types'
-import AbstractFeature, { InstallResults } from '../AbstractFeature'
+import AbstractFeature, {
+	FeatureDependency,
+	InstallResults,
+} from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
 export default class ErrorFeature extends AbstractFeature {
@@ -8,7 +11,10 @@ export default class ErrorFeature extends AbstractFeature {
 	public description =
 		'Errors: Use schemas to define your errors and get great type checking!'
 
-	public dependencies: FeatureCode[] = ['schema']
+	public dependencies: FeatureDependency[] = [
+		{ code: 'schema', isRequired: true },
+		{ code: 'node', isRequired: true },
+	]
 	public packageDependencies: NpmPackage[] = [
 		{
 			name: '@sprucelabs/error',
@@ -17,14 +23,13 @@ export default class ErrorFeature extends AbstractFeature {
 	public code: FeatureCode = 'error'
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
-	public async isInstalled() {
-		return (
-			this.Service('pkg').isInstalled('@sprucelabs/error') &&
-			diskUtil.doesFileExist(this.getPluginDestination())
-		)
-	}
-
 	public async afterPackageInstall(): Promise<InstallResults> {
+		const isSkillInstalled = await this.featureInstaller.isInstalled('skill')
+
+		if (!isSkillInstalled) {
+			return {}
+		}
+
 		const plugin = this.templates.errorPlugin()
 		const destination = this.getPluginDestination()
 

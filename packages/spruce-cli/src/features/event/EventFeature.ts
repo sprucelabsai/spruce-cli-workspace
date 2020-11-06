@@ -1,5 +1,5 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import AbstractFeature from '../AbstractFeature'
+import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
 export default class EventFeature extends AbstractFeature {
@@ -7,14 +7,10 @@ export default class EventFeature extends AbstractFeature {
 	public nameReadable = 'Event'
 	public description =
 		'Plug into the Mercury XP and start creating experiences!'
-	public dependencies: FeatureCode[] = ['skill']
+	public dependencies: FeatureDependency[] = [
+		{ code: 'skill', isRequired: true },
+	]
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
-
-	public async isInstalled(): Promise<boolean> {
-		return diskUtil.doesDirExist(
-			diskUtil.resolvePath(this.cwd, 'src', 'events')
-		)
-	}
 
 	public async afterPackageInstall() {
 		diskUtil.createDir(diskUtil.resolvePath(this.cwd, 'src', 'events'))
