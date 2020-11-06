@@ -76,15 +76,10 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 		try {
 			await this.commandService.execute(
-				'yarn test --reporters="@sprucelabs/jest-json-reporter"',
+				'yarn test --reporters="@sprucelabs/jest-json-reporter" --forceExit',
 				{
 					onData: (data) => {
-						parser.write(data)
-
-						testResults = parser.getResults()
-
-						this.testReporter?.updateResults(testResults)
-						this.testReporter?.render()
+						testResults = this.sendToReporter(parser, data)
 					},
 				}
 			)
@@ -116,6 +111,16 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		return results
 	}
 
+	private sendToReporter(parser: JestJsonParser, data: string) {
+		parser.write(data)
+
+		const testResults = parser.getResults()
+
+		this.testReporter?.updateResults(testResults)
+		this.testReporter?.render()
+		return testResults
+	}
+
 	private mixinSummaryAndTestResults(
 		results: FeatureActionResponse,
 		testResults: SpruceTestResults
@@ -125,6 +130,8 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			`Tests: ${testResults.totalTests}`,
 			`Passed: ${testResults.totalPassed}`,
 			`Failed: ${testResults.totalFailed}`,
+			`Skipped: ${testResults.totalSkipped}`,
+			`Todo: ${testResults.totalTodo}`,
 		]
 
 		results.errors = this.generateErrorsFromTestResults(testResults)

@@ -1,4 +1,8 @@
-import { END_DIVIDER, START_DIVIDER } from '@sprucelabs/jest-json-reporter'
+import {
+	AssertionResult,
+	END_DIVIDER,
+	START_DIVIDER,
+} from '@sprucelabs/jest-json-reporter'
 import JsonParser from '@sprucelabs/jest-json-reporter'
 import escapeRegExp from 'lodash/escapeRegExp'
 import {
@@ -19,6 +23,11 @@ export type JsonParserResult =
 	| {
 			status: 'onRunStart'
 			results: Parameters<JsonParser['onRunStart']>[0]
+	  }
+	| {
+			status: 'onTestCaseResult'
+			test: Parameters<JsonParser['onTestCaseResult']>[0]
+			testCaseResult: Parameters<JsonParser['onTestCaseResult']>[1]
 	  }
 	| {
 			status: 'onTestFileStart'
@@ -75,6 +84,20 @@ export default class JestJsonParser {
 
 				break
 
+			case 'onTestCaseResult': {
+				const relativePath = this.mapAbsoluteJsToRelativeTsPath(
+					result.test.path
+				)
+				const idx = testFiles.findIndex((file) => file.path === relativePath)
+				const test = this.testCaseResultToTest(result.testCaseResult)
+
+				if (!testFiles[idx].tests) {
+					testFiles[idx].tests = []
+				}
+				testFiles[idx].tests?.push(test)
+
+				break
+			}
 			case 'onTestFileStart':
 				testFiles.push({
 					path: this.pullPathFromTestResponse(result),
@@ -82,6 +105,7 @@ export default class JestJsonParser {
 				})
 
 				break
+
 			case 'onTestFileResult': {
 				this.testResults.totalTestFilesComplete = this.pullTestFilesCompleteFromAggregatedResults(
 					result.aggregatedResult
@@ -91,15 +115,17 @@ export default class JestJsonParser {
 				this.testResults.totalFailed = result.aggregatedResult.numFailedTests
 				this.testResults.totalPassed = result.aggregatedResult.numPassedTests
 				this.testResults.totalTests = result.aggregatedResult.numTotalTests
+				this.testResults.totalSkipped = result.aggregatedResult.numPendingTests
+				this.testResults.totalTodo = result.aggregatedResult.numTodoTests
 
 				for (const testResult of result.aggregatedResult.testResults) {
-					const name = this.mapAbsoluteJsToRelativeTsPath(
+					const relativePath = this.mapAbsoluteJsToRelativeTsPath(
 						testResult.testFilePath
 					)
-					const idx = testFiles.findIndex((file) => file.path === name)
+					const idx = testFiles.findIndex((file) => file.path === relativePath)
 					const file = {
 						...(testFiles[idx] ?? {}),
-						path: name,
+						path: relativePath,
 						status: this.pullTestFileResultStatus(testResult),
 						tests: this.pullTestsFromTestFileResult(testResult),
 					}
@@ -184,12 +210,23 @@ export default class JestJsonParser {
 	private pullTestsFromTestFileResult(
 		testResult: OnTestFileResult['testResult']
 	): SpruceTestFile['tests'] {
-		return testResult.testResults.map((test) => ({
+		return testResult.testResults.map((test) => this.testCaseResultToTest(test))
+	}
+
+	private testCaseResultToTest(
+		test: AssertionResult
+	): {
+		name: string
+		status: AssertionResult['status']
+		errorMessages: string[]
+		duration: number
+	} {
+		return {
 			name: test.title,
 			status: test.status,
 			errorMessages: test.failureMessages,
 			duration: test.duration ?? 0,
-		}))
+		}
 	}
 
 	public getResults(): SpruceTestResults {

@@ -12,6 +12,7 @@ export default class TestFeature extends AbstractFeature {
 	public packageDependencies: NpmPackage[] = [
 		{ name: '@sprucelabs/test', isDev: true },
 		{ name: '@sprucelabs/jest-json-reporter', isDev: true },
+		{ name: 'jest-circus', isDev: true },
 		{ name: 'jest', isDev: true },
 	]
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
@@ -54,6 +55,7 @@ export default class TestFeature extends AbstractFeature {
 
 	private configureJest(service: PkgService) {
 		const jestConfig = {
+			testRunner: 'jest-circus/runner',
 			maxWorkers: 4,
 			testTimeout: 120000,
 			testEnvironment: 'node',

@@ -1,6 +1,6 @@
 import terminal_kit from 'terminal-kit'
-import { SpruceTestFile, SpruceTestResults } from '../features/test/test.types'
-import durationUtil from '../utilities/duration.utility'
+import { SpruceTestResults } from '../features/test/test.types'
+import TestLogItemGenerator from './TestLogItemGenerator'
 
 const termKit = terminal_kit as any
 
@@ -19,12 +19,16 @@ export default class TestReporter {
 	private term: any
 	private doneBtn?: any
 	private restartBtn: any
+	private errorLogItemGenerator: TestLogItemGenerator
+	private lastResults?: SpruceTestResults
+	private updateInterval?: any
 
 	private onRestart?: () => void
 	private waitForDoneResolver?: () => void
 
 	public constructor(options?: TestReporterOptions) {
 		this.onRestart = options?.onRestart
+		this.errorLogItemGenerator = new TestLogItemGenerator()
 	}
 
 	public async start() {
@@ -40,8 +44,15 @@ export default class TestReporter {
 		this.dropInProgressBar()
 		this.dropInTestLog()
 		this.dropInRestartButton()
-
 		this.attachGlobalKeyPressListener()
+
+		this.updateInterval = setInterval(this.refreshResults.bind(this), 2000)
+	}
+
+	private refreshResults() {
+		if (this.lastResults) {
+			this.updateLogs(this.lastResults)
+		}
 	}
 
 	private attachGlobalKeyPressListener() {
@@ -153,6 +164,8 @@ export default class TestReporter {
 			throw new Error('You must call start() before anything else.')
 		}
 
+		this.lastResults = results
+
 		this.updateProgressBar(results)
 
 		const percentPassing = this.generatePercentPassing(results)
@@ -164,16 +177,23 @@ export default class TestReporter {
 			}`
 		)
 
+		this.updateLogs(results)
+	}
+
+	private updateLogs(results: SpruceTestResults) {
 		const isScrolledAllTheWay = this.isLogScrolledAllTheWay()
 
 		let { logContent, errorContent } = this.resultsToLogContents(results)
+
 		this.testLog.setContent(logContent, true)
 
 		if (isScrolledAllTheWay) {
 			this.testLog.scrollToBottom()
 		}
 
-		this.errorLog?.setContent(errorContent, true)
+		if (this.errorLog && this.errorLog.content !== errorContent) {
+			this.errorLog?.setContent(errorContent, true)
+		}
 	}
 
 	private resultsToLogContents(results: SpruceTestResults) {
@@ -183,27 +203,11 @@ export default class TestReporter {
 		results.testFiles?.forEach((file) => {
 			if (file.status === 'failed') {
 				this.dropInErrorLog()
-				file.tests?.forEach((test) => {
-					test.errorMessages?.forEach((message) => {
-						errorContent += `^r^+${file.path}\n`
-						errorContent += ` - ^r^+${test.name}\n\n`
-						errorContent += message + '\n\n\n'
-					})
-				})
 			}
-
-			let duration: number | undefined
-
-			if (file.tests) {
-				duration = file.tests.reduce((time, test) => {
-					time += test.duration
-					return time
-				}, 0)
-			}
-
-			logContent += `${this.renderStatusBlock(file.status)}   ${file.path}${
-				duration ? ` ^g(${durationUtil.msToFriendly(duration)})^` : ''
-			}\n`
+			logContent += this.errorLogItemGenerator.generateLogItemForFile(file)
+			errorContent += this.errorLogItemGenerator.generateErrorLogItemForFile(
+				file
+			)
 		})
 		return { logContent, errorContent }
 	}
@@ -270,7 +274,7 @@ export default class TestReporter {
 			this.bar.setContent(' Running...')
 		}
 
-		this.bar.setValue(this.generatePercentComplete(results))
+		this.bar.setValue(this.generatePercentComplete(results) / 100)
 	}
 
 	private generatePercentComplete(results: SpruceTestResults): number {
@@ -283,47 +287,16 @@ export default class TestReporter {
 	}
 
 	private generatePercentPassing(results: SpruceTestResults): number {
-		const percent = (results.totalPassed ?? 0) / (results.totalTests ?? 0)
+		const percent =
+			(results.totalPassed ?? 0) /
+			((results.totalTests ?? 0) -
+				(results.totalSkipped ?? 0) -
+				(results.totalTodo ?? 0))
 		if (isNaN(percent)) {
 			return 0
 		}
+
 		return Math.round(percent * 100)
-	}
-
-	private renderStatusBlock(status: SpruceTestFile['status']) {
-		let bgColor = 'y'
-		let color = 'k'
-		let padding = 10
-		switch (status) {
-			case 'passed':
-				bgColor = 'g'
-				padding = 11
-				color = 'w'
-				break
-			case 'failed':
-				padding = 11
-				bgColor = 'r'
-				color = 'w'
-				break
-		}
-
-		return `^b^#^${bgColor}^${color}^+${this.centerStringWithSpaces(
-			status,
-			padding
-		)}^`
-	}
-
-	private centerStringWithSpaces(text: string, numberOfSpaces: number) {
-		text = text.trim()
-		let l = text.length
-		let w2 = Math.floor(numberOfSpaces / 2)
-		let l2 = Math.floor(l / 2)
-		let s = new Array(w2 - l2 + 1).join(' ')
-		text = s + text + s
-		if (text.length < numberOfSpaces) {
-			text += new Array(numberOfSpaces - text.length + 1).join(' ')
-		}
-		return text
 	}
 
 	public render() {
@@ -395,6 +368,8 @@ export default class TestReporter {
 
 	public async destroy() {
 		await this.term.grabInput(false, true)
+
+		clearInterval(this.updateInterval)
 
 		this.term.hideCursor(false)
 

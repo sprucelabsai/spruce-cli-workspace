@@ -91,7 +91,9 @@ export default class RunningTestsTest extends AbstractTestTest {
 				totalTestFilesComplete: 2,
 				totalFailed: 1,
 				totalPassed: 1,
+				totalSkipped: 0,
 				totalTests: 2,
+				totalTodo: 0,
 			},
 		})
 	}

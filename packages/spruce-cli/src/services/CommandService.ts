@@ -69,33 +69,35 @@ export default class CommandService {
 			})
 
 			child.addListener('close', (code) => {
-				child.stdout?.removeAllListeners()
-				child.stderr?.removeAllListeners()
-				child.removeAllListeners()
+				setTimeout(() => {
+					child.stdout?.removeAllListeners()
+					child.stderr?.removeAllListeners()
+					child.removeAllListeners()
 
-				this.activeChildProcess = undefined
+					this.activeChildProcess = undefined
 
-				if (code === 0 || this.ignoreCloseErrors || options?.ignoreErrors) {
-					resolve({ stdout })
-					this.ignoreCloseErrors = false
-				} else {
-					if (stderr.search(escapeRegExp(ERROR_DIVIDER)) > -1) {
-						const stderrParts = stderr.split(ERROR_DIVIDER)
-						const err = AbstractSpruceError.parse(stderrParts[1], SpruceError)
-						reject(err)
-						return
+					if (code === 0 || this.ignoreCloseErrors || options?.ignoreErrors) {
+						resolve({ stdout })
+						this.ignoreCloseErrors = false
+					} else {
+						if (stderr.search(escapeRegExp(ERROR_DIVIDER)) > -1) {
+							const stderrParts = stderr.split(ERROR_DIVIDER)
+							const err = AbstractSpruceError.parse(stderrParts[1], SpruceError)
+							reject(err)
+							return
+						}
+
+						reject(
+							new SpruceError({
+								code: 'EXECUTING_COMMAND_FAILED',
+								cmd: `${executable} ${args.join(' ')}`,
+								cwd,
+								stdout,
+								stderr,
+							})
+						)
 					}
-
-					reject(
-						new SpruceError({
-							code: 'EXECUTING_COMMAND_FAILED',
-							cmd: `${executable} ${args.join(' ')}`,
-							cwd,
-							stdout,
-							stderr,
-						})
-					)
-				}
+				}, 500)
 			})
 		})
 	}

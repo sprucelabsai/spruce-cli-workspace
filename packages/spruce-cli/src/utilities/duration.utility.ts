@@ -12,20 +12,18 @@ const durationUtil = {
 		}
 
 		if (hours > 0 || minutes > 0) {
-			durationStr += `${minutes < 10 ? '0' + minutes : minutes}m `
+			durationStr += `${minutes}m `
 		}
 
 		if (durationStr.length > 0 || seconds > 0) {
-			durationStr += `${
-				durationStr.length > 0 && seconds < 10 ? '0' + seconds : seconds
-			}s `
+			durationStr += `${seconds}s `
 		}
 
-		if (durationStr.length > 0 || milliseconds > 0) {
+		if (hours === 0 && minutes === 0) {
 			durationStr += `${milliseconds}ms`
 		}
 
-		return durationStr
+		return durationStr.trim()
 	},
 }
 

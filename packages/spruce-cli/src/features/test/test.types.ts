@@ -16,6 +16,8 @@ export interface SpruceTestResults {
 	totalTests?: number
 	totalPassed?: number
 	totalFailed?: number
+	totalSkipped?: number
+	totalTodo?: number
 	totalTestFiles: number
 	totalTestFilesComplete?: number
 	testFiles?: SpruceTestFile[]
