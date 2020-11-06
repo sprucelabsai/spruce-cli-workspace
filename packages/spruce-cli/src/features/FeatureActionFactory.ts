@@ -2,7 +2,7 @@ import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../errors/SpruceError'
 import {
-	IFeatureAction,
+	FeatureAction,
 	IFeatureActionOptions,
 } from '../features/features.types'
 import AbstractFeatureAction from './AbstractFeatureAction'
@@ -21,7 +21,7 @@ export default class FeatureActionFactory {
 		this.actionOptions = options
 	}
 
-	public Action(name: string): IFeatureAction {
+	public Action(name: string): FeatureAction {
 		const classPath = diskUtil.resolvePath(
 			this.actionsDir,
 			`${namesUtil.toPascal(name)}Action`

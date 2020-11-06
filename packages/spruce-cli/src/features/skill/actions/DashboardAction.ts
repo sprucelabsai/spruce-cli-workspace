@@ -6,7 +6,7 @@ import fonts from 'cfonts'
 import chalk from 'chalk'
 import Theme from '../../../widgets/Theme'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
-import { IFeatureActionExecuteResponse } from '../../features.types'
+import { FeatureActionResponse } from '../../features.types'
 
 export const dashboardActionOptionsDefinition = buildSchema({
 	id: 'dashboard',
@@ -61,7 +61,7 @@ export default class DashboardAction extends AbstractFeatureAction<
 		},
 	}
 
-	public async execute(): Promise<IFeatureActionExecuteResponse> {
+	public async execute(): Promise<FeatureActionResponse> {
 		const screen = blessed.screen({
 			smartCSR: true,
 		})

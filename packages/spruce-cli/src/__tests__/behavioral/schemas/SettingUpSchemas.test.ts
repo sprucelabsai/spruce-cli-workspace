@@ -17,7 +17,7 @@ export default class SettingUpSchemasTests extends AbstractSchemaTest {
 						},
 					],
 				}),
-			/What's the name of your skill\?' is required/gi
+			/What's the name of your module?/gi
 		)
 	}
 

@@ -14,12 +14,4 @@ export default class CircleCIFeature extends AbstractFeature {
 	// 	// 	context: {}
 	// 	// })
 	// }
-
-	public async isInstalled() {
-		return false
-		// return this.templates.isValidTemplatedDirectory({
-		// 	kind: DirectoryTemplateKind.CircleCi,
-		// 	dir: dir || this.cwd
-		// })
-	}
 }

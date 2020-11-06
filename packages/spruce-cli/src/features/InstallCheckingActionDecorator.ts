@@ -1,12 +1,12 @@
 import SpruceError from '../errors/SpruceError'
 import AbstractFeature from '../features/AbstractFeature'
 import FeatureInstaller from '../features/FeatureInstaller'
-import { IFeatureAction } from '../features/features.types'
+import { FeatureAction } from '../features/features.types'
 
-export default class InstallCheckingActionDecorator implements IFeatureAction {
+export default class InstallCheckingActionDecorator implements FeatureAction {
 	public name = 'install-checking-action-facade'
 
-	private childAction: IFeatureAction
+	private childAction: FeatureAction
 	private parent: AbstractFeature
 	private featureInstaller: FeatureInstaller
 
@@ -15,7 +15,7 @@ export default class InstallCheckingActionDecorator implements IFeatureAction {
 	}
 
 	public constructor(
-		childAction: IFeatureAction,
+		childAction: FeatureAction,
 		parent: AbstractFeature,
 		featureInstaller: FeatureInstaller
 	) {
@@ -37,7 +37,6 @@ export default class InstallCheckingActionDecorator implements IFeatureAction {
 			this.parent.code
 		)
 
-		debugger
 		if (!this.featureInstaller.isMarkedAsSkipped(this.parent.code)) {
 			dependencies.push({ code: this.parent.code, isRequired: true })
 
@@ -48,7 +47,6 @@ export default class InstallCheckingActionDecorator implements IFeatureAction {
 						this.featureInstaller.isMarkedAsSkipped(dependency.code),
 					])
 
-					debugger
 					if (!isInstalled && !isSkipped) {
 						throw new SpruceError({
 							code: 'FEATURE_NOT_INSTALLED',

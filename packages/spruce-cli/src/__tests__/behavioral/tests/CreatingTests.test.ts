@@ -28,7 +28,6 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 
 		await this.Service('build').build()
 
-		// the stubbed test fails with assert.IsTrue(false)
 		await assert.doesThrowAsync(
 			() => this.Service('command').execute('yarn test'),
 			/false.*?does not equal.*?true/gis

@@ -11,10 +11,7 @@ import syncErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncErr
 import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
 import ErrorGenerator from '../../../generators/ErrorGenerator'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
-import {
-	IFeatureActionExecuteResponse,
-	IFeatureAction,
-} from '../../features.types'
+import { FeatureActionResponse, FeatureAction } from '../../features.types'
 
 export default class SyncAction extends AbstractFeatureAction<
 	SpruceSchemas.SpruceCli.v2020_07_22.ISyncErrorActionSchema
@@ -24,7 +21,7 @@ export default class SyncAction extends AbstractFeatureAction<
 
 	public async execute(
 		options: SpruceSchemas.SpruceCli.v2020_07_22.ISyncErrorAction
-	): Promise<IFeatureActionExecuteResponse> {
+	): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 		const {
 			errorTypesDestinationDir,
@@ -33,16 +30,10 @@ export default class SyncAction extends AbstractFeatureAction<
 
 		const schemaSyncAction = this.getFeature('schema').Action(
 			'sync'
-		) as IFeatureAction<
+		) as FeatureAction<
 			SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasActionSchema
 		>
 
-		const syncOptions = normalizeSchemaValues(
-			syncSchemasActionSchema,
-			normalizedOptions
-		)
-
-		const schemaSyncResults = await schemaSyncAction.execute(syncOptions)
 		const errorSyncResults = await this.syncErrors(
 			schemaSyncAction,
 			normalizedOptions
@@ -81,7 +72,6 @@ export default class SyncAction extends AbstractFeatureAction<
 		return {
 			files: [
 				...(errorSyncResults.files ?? []),
-				...(schemaSyncResults.files ?? []),
 				...errorClassGeneratedFiles,
 				...optionsResults,
 			],
@@ -93,7 +83,7 @@ export default class SyncAction extends AbstractFeatureAction<
 	}
 
 	private async syncErrors(
-		schemaSyncAction: IFeatureAction<
+		schemaSyncAction: FeatureAction<
 			SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasActionSchema
 		>,
 		normalizedOptions: SchemaValuesWithDefaults<
@@ -113,7 +103,7 @@ export default class SyncAction extends AbstractFeatureAction<
 			enableVersioning: false,
 			globalNamespace: 'SpruceErrors',
 			fetchRemoteSchemas: false,
-			generateFieldTypes: false,
+			generateFieldTypes: true,
 			generateStandaloneTypesFile: true,
 			deleteDestinationDirIfNoSchemas: true,
 			fetchCoreSchemas: false,
@@ -124,7 +114,7 @@ export default class SyncAction extends AbstractFeatureAction<
 		return errorSyncResults
 	}
 
-	private areSyncResultsEmpty(errorSyncResults: IFeatureActionExecuteResponse) {
+	private areSyncResultsEmpty(errorSyncResults: FeatureActionResponse) {
 		return (
 			!errorSyncResults.meta ||
 			!errorSyncResults.files ||

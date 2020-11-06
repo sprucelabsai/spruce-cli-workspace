@@ -1,4 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractErrorTest from '../../../test/AbstractErrorTest'
 import testUtil from '../../../utilities/test.utility'
 
@@ -12,10 +13,11 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 	@test()
 	protected static async failsWhenSkillNotInstalled() {
 		const cli = await this.Cli()
-		await assert.doesThrowAsync(
-			() => cli.getFeature('error').Action('create').execute({}),
-			/SKILL_NOT_INSTALLED/
+		const err = await assert.doesThrowAsync(() =>
+			cli.getFeature('error').Action('create').execute({})
 		)
+
+		errorAssertUtil.assertError(err, 'FEATURE_NOT_INSTALLED')
 	}
 
 	@test()

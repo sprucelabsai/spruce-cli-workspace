@@ -2,7 +2,7 @@ import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import setupVscodeSchema from '#spruce/schemas/spruceCli/v2020_07_22/setupVscodeAction.schema'
 import { IExtension } from '../../../services/VsCodeService'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
-import { IFeatureActionExecuteResponse } from '../../features.types'
+import { FeatureActionResponse } from '../../features.types'
 
 export default class SetupAction extends AbstractFeatureAction<
 	SpruceSchemas.SpruceCli.v2020_07_22.ISetupVscodeActionSchema
@@ -31,7 +31,7 @@ export default class SetupAction extends AbstractFeatureAction<
 
 	public async execute(
 		options: SpruceSchemas.SpruceCli.v2020_07_22.ISetupVscodeAction
-	): Promise<IFeatureActionExecuteResponse> {
+	): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
 		const missing = await this.getMissingExtensions()

@@ -4,24 +4,6 @@ import AbstractCliTest from '../../../test/AbstractCliTest'
 
 export default class SettingUpASkill extends AbstractCliTest {
 	@test()
-	protected static async setsUpASkillWithoutError() {
-		const cli = await this.Cli()
-		const response = await cli.installFeatures({
-			features: [
-				{
-					code: 'skill',
-					options: {
-						name: 'test',
-						description: 'This is such a good skill!',
-					},
-				},
-			],
-		})
-
-		assert.isTruthy(response)
-	}
-
-	@test()
 	protected static async failsWithBadParams() {
 		const cli = await this.Cli()
 		await assert.doesThrowAsync(async () => {
@@ -71,15 +53,18 @@ export default class SettingUpASkill extends AbstractCliTest {
 
 	private static async installSkill() {
 		const fixture = this.FeatureFixture()
-		const cli = await fixture.installFeatures([
-			{
-				code: 'skill',
-				options: {
-					name: 'test',
-					description: 'This is such a good skill!',
+		const cli = await fixture.installFeatures(
+			[
+				{
+					code: 'skill',
+					options: {
+						name: 'test',
+						description: 'This is such a good skill!',
+					},
 				},
-			},
-		])
+			],
+			'skills'
+		)
 		return cli
 	}
 

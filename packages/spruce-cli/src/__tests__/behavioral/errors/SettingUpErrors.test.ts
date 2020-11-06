@@ -12,7 +12,7 @@ export default class SettingUpErrorTest extends AbstractErrorTest {
 						code: 'error',
 					},
 				]),
-			/Skill feature.*name.*is required/gis
+			/What's the name of your module/gis
 		)
 	}
 

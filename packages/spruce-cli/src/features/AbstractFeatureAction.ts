@@ -25,8 +25,8 @@ import { GraphicsInterface } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
 import FeatureInstaller from './FeatureInstaller'
 import {
-	IFeatureAction,
-	IFeatureActionExecuteResponse,
+	FeatureAction,
+	FeatureActionResponse,
 	IFeatureActionOptions,
 	FeatureCode,
 } from './features.types'
@@ -35,7 +35,7 @@ type StripNulls<T extends Record<string, any>> = {
 	[K in keyof T]: Exclude<T[K], null>
 }
 export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
-	implements IFeatureAction<S>, IServiceProvider {
+	implements FeatureAction<S>, IServiceProvider {
 	public abstract name: string
 	public abstract optionsSchema: S
 
@@ -62,7 +62,7 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 
 	public abstract execute(
 		options: SchemaValues<S>
-	): Promise<IFeatureActionExecuteResponse>
+	): Promise<FeatureActionResponse>
 
 	protected Action(name: string) {
 		return this.parent.Action(name)

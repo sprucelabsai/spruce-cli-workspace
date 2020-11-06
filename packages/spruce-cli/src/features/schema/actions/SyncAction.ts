@@ -10,7 +10,7 @@ import { GeneratedFile } from '../../../types/cli.types'
 import mergeUtil from '../../../utilities/merge.utility'
 import schemaGeneratorUtil from '../../../utilities/schemaGenerator.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
-import { IFeatureActionExecuteResponse } from '../../features.types'
+import { FeatureActionResponse } from '../../features.types'
 import SkillFeature from '../../skill/SkillFeature'
 
 export default class SyncAction extends AbstractFeatureAction<
@@ -24,7 +24,7 @@ export default class SyncAction extends AbstractFeatureAction<
 
 	public async execute(
 		options: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasAction
-	): Promise<IFeatureActionExecuteResponse> {
+	): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
 		let {
@@ -66,7 +66,7 @@ export default class SyncAction extends AbstractFeatureAction<
 				diskUtil.resolveHashSprucePath(this.cwd, 'schemas', CORE_NAMESPACE)
 			)
 
-		let coreSyncResults: IFeatureActionExecuteResponse | undefined
+		let coreSyncResults: FeatureActionResponse | undefined
 
 		if (shouldSyncRemoteSchemasFirst) {
 			coreSyncResults = await this.execute({

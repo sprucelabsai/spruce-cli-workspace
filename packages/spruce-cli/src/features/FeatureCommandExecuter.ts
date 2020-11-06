@@ -1,5 +1,4 @@
 import { ISchema, SchemaPartialValues, SchemaValues } from '@sprucelabs/schema'
-import { option } from 'commander'
 import merge from 'lodash/merge'
 import FormComponent from '../components/FormComponent'
 import SpruceError from '../errors/SpruceError'
@@ -10,7 +9,8 @@ import FeatureInstaller from './FeatureInstaller'
 import {
 	FeatureCode,
 	FeatureInstallResponse,
-	IFeatureAction,
+	FeatureAction,
+	FeatureActionResponse,
 	IFeatureMap,
 } from './features.types'
 
@@ -44,7 +44,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 
 	public async execute(
 		options?: Record<string, any> & FeatureCommandExecuteOptions<F>
-	): Promise<FeatureInstallResponse> {
+	): Promise<FeatureInstallResponse & FeatureActionResponse> {
 		let response = await this.installOrMarkAsSkippedMissingDependencies()
 
 		const feature = this.featureInstaller.getFeature(this.featureCode)
@@ -84,7 +84,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 	}
 
 	private async askAboutMissingActionOptions(
-		action: IFeatureAction<ISchema>,
+		action: FeatureAction<ISchema>,
 		options: (Record<string, any> & FeatureCommandExecuteOptions<F>) | undefined
 	) {
 		let answers
@@ -145,9 +145,12 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		const notInstalled = await this.getDependenciesNotInstalled()
 
 		let response: FeatureInstallResponse = {}
+		let installCount = 0
 
 		if (notInstalled.length > 0) {
-			this.ui.renderLine(this.generateConfirmInstallMessage(notInstalled))
+			this.ui.renderLine(
+				this.generateConfirmInstallMessage(notInstalled) + '\n'
+			)
 
 			while (notInstalled.length > 0) {
 				const toInstall = notInstalled.shift()
@@ -155,17 +158,30 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 					// for typescript
 					throw new Error('Dependent feature error')
 				}
-				const installResults = await this.installOrMarkAsSkippedMissingDependency(
-					toInstall
+
+				const wasInstalled = await this.featureInstaller.isInstalled(
+					toInstall.code
 				)
-				response = merge(response, installResults)
+
+				if (
+					!wasInstalled &&
+					!this.featureInstaller.isMarkedAsSkipped(toInstall.code)
+				) {
+					const installResults = await this.installOrMarkAsSkippedMissingDependency(
+						toInstall
+					)
+					response = merge(response, installResults)
+					installCount++
+				}
 			}
 
-			this.ui.clear()
+			if (installCount > 0) {
+				this.ui.clear()
 
-			await this.ui.waitForEnter(
-				`Phew, now that we're done with that, lets get back to ${this.getCommandName()}!`
-			)
+				await this.ui.waitForEnter(
+					`Phew, now that we're done with that, lets get back to ${this.getCommandName()}!`
+				)
+			}
 		}
 
 		return response
@@ -193,7 +209,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			optional.length === 1 ? '' : 's'
 		} that could be installed.`
 
-		const mixedMessage = `I found ${required.length} required and ${option.length} optional features to install.`
+		const mixedMessage = `I found ${required.length} required and ${optional.length} optional features to install.`
 
 		let message = mixedMessage
 
@@ -226,7 +242,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			const response = await this.ui.prompt({
 				type: 'select',
 				defaultValue: 'yes',
-				label: `Install the ${feature.nameReadable} feature?`,
+				label: `Install the ${feature.nameReadable} feature? (optional)`,
 				options: {
 					choices: [
 						{
@@ -234,8 +250,8 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 							label: 'Yes',
 						},
 						{
-							value: 'no',
-							label: 'No',
+							value: 'skip',
+							label: 'Skip',
 						},
 						{
 							value: 'alwaysSkip',
@@ -247,7 +263,12 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 
 			if (response !== 'yes') {
 				this.ui.renderLine('Cool, skipping for now.')
-				this.featureInstaller.markAsSkippedThisRun(feature.code)
+
+				if (response === 'skip') {
+					this.featureInstaller.markAsSkippedThisRun(feature.code)
+				} else {
+					this.featureInstaller.markAsPermanentlySkipped(feature.code)
+				}
 
 				const installResponse: FeatureInstallResponse = {}
 				return installResponse

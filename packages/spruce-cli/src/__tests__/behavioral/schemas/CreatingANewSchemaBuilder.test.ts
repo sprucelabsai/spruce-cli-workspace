@@ -1,9 +1,10 @@
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import {
-	IFeatureActionExecuteResponse,
-	IFeatureAction,
+	FeatureActionResponse,
+	FeatureAction,
 } from '../../../features/features.types'
 import SpyInterface from '../../../interfaces/SpyInterface'
 import AbstractSchemaTest from '../../../test/AbstractSchemaTest'
@@ -13,16 +14,16 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 	@test()
 	protected static async failsWhenASkillIsNotInstalled() {
 		const cli = await this.Cli()
-		await assert.doesThrowAsync(
-			() =>
-				cli.getFeature('schema').Action('create').execute({
-					nameReadable: 'Test schema!',
-					namePascal: 'AnotherTest',
-					nameCamel: 'anotherTest',
-					description: 'this is so great!',
-				}),
-			/SKILL_NOT_INSTALLED/
+		const err = await assert.doesThrowAsync(() =>
+			cli.getFeature('schema').Action('create').execute({
+				nameReadable: 'Test schema!',
+				namePascal: 'AnotherTest',
+				nameCamel: 'anotherTest',
+				description: 'this is so great!',
+			})
 		)
+
+		errorAssertUtil.assertError(err, 'FEATURE_NOT_INSTALLED')
 	}
 
 	@test()
@@ -158,7 +159,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 
 	// should ask if we want to use the old version we created above or a New Version
 	private static async assertAnswersFirstTime(
-		action: IFeatureAction,
+		action: FeatureAction,
 		newVersion: { intValue: number; constValue: string; dirValue: string }
 	) {
 		const createPromise = action.execute({
@@ -189,7 +190,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 
 	// should only have 2 options, none of which one "new version" since that was created in secondAnswers
 	private static async assertAnswersSecondTime(
-		action: IFeatureAction,
+		action: FeatureAction,
 		newVersion: { intValue: number; constValue: string; dirValue: string }
 	) {
 		const createPromise = action.execute({
@@ -227,7 +228,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 	}
 
 	private static validateSchemaFiles(
-		response: IFeatureActionExecuteResponse,
+		response: FeatureActionResponse,
 		expectedFileName: string,
 		expectedVersion: string,
 		expectedSchemaInterfaceName: string

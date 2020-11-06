@@ -5,7 +5,7 @@ import syncSchemaFieldsActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/
 import FieldTemplateItemBuilder from '../../../templateItemBuilders/FieldTemplateItemBuilder'
 import { GeneratedFile } from '../../../types/cli.types'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
-import { IFeatureActionExecuteResponse } from '../../features.types'
+import { FeatureActionResponse } from '../../features.types'
 
 type SyncFieldsSchema = SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemaFieldsActionSchema
 
@@ -17,7 +17,7 @@ export default class FieldsSyncAction extends AbstractFeatureAction<
 
 	public async execute(
 		options: SchemaValues<SyncFieldsSchema>
-	): Promise<IFeatureActionExecuteResponse> {
+	): Promise<FeatureActionResponse> {
 		this.ui.startLoading(`Syncing fields...`)
 
 		const normalizedOptions = this.validateAndNormalizeOptions(options)

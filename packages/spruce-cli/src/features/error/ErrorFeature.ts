@@ -12,7 +12,8 @@ export default class ErrorFeature extends AbstractFeature {
 		'Errors: Use schemas to define your errors and get great type checking!'
 
 	public dependencies: FeatureDependency[] = [
-		{ code: 'schema', isRequired: false },
+		{ code: 'schema', isRequired: true },
+		{ code: 'node', isRequired: true },
 	]
 	public packageDependencies: NpmPackage[] = [
 		{
@@ -21,21 +22,6 @@ export default class ErrorFeature extends AbstractFeature {
 	]
 	public code: FeatureCode = 'error'
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
-
-	public async isInstalled() {
-		const pkgService = this.Service('pkg')
-		const isErrorPkgInstalled = pkgService.isInstalled('@sprucelabs/error')
-
-		const isSkillInstalled = await this.featureInstaller.isInstalled('skill')
-
-		if (!isSkillInstalled) {
-			return isErrorPkgInstalled
-		}
-
-		return (
-			isErrorPkgInstalled && diskUtil.doesFileExist(this.getPluginDestination())
-		)
-	}
 
 	public async afterPackageInstall(): Promise<InstallResults> {
 		const isSkillInstalled = await this.featureInstaller.isInstalled('skill')

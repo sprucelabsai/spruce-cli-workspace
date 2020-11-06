@@ -14,6 +14,7 @@ import CircleCIFeature from './CircleCIFeature'
 import ErrorFeature from './error/ErrorFeature'
 import EventFeature from './event/EventFeature'
 import FeatureInstaller from './FeatureInstaller'
+import NodeFeature from './node/NodeFeature'
 import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
 import TestFeature from './test/TestFeature'
@@ -40,6 +41,10 @@ export type FeatureOptions<
 	: undefined
 
 export type InstallFeature =
+	| {
+			code: 'node'
+			options: SchemaValues<NodeFeature['optionsDefinition']>
+	  }
 	| {
 			code: 'skill'
 			options: SchemaValues<SkillFeature['optionsDefinition']>
@@ -87,6 +92,7 @@ export interface IFeatureMap {
 	vscode: VsCodeFeature
 	event: EventFeature
 	watch: WatchFeature
+	node: NodeFeature
 }
 
 export interface FeatureInstallResponse {
@@ -94,15 +100,15 @@ export interface FeatureInstallResponse {
 	packagesInstalled?: NpmPackage[]
 }
 
-export interface IFeatureActionExecuteResponse extends FeatureInstallResponse {
+export interface FeatureActionResponse extends FeatureInstallResponse {
 	meta?: Record<string, any>
 	errors?: SpruceError[]
 	hints?: string[]
 	summaryLines?: string[]
 }
 
-export interface IFeatureAction<S extends ISchema = ISchema> {
+export interface FeatureAction<S extends ISchema = ISchema> {
 	name: string
 	optionsSchema?: S
-	execute: (options: SchemaValues<S>) => Promise<IFeatureActionExecuteResponse>
+	execute: (options: SchemaValues<S>) => Promise<FeatureActionResponse>
 }

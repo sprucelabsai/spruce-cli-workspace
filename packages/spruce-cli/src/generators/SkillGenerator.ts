@@ -22,7 +22,7 @@ export default class SkillGenerator extends AbstractGenerator {
 		let results: GenerationResults = []
 
 		for (const generated of files) {
-			if (!options.upgrade || generated.filename !== 'package.json') {
+			if (!options.upgrade || !this.shouldSkipOnUpgrade(generated.filename)) {
 				results = await this.writeFileIfChangedMixinResults(
 					pathUtil.join(destinationDir, generated.relativePath),
 					generated.contents,
@@ -33,5 +33,9 @@ export default class SkillGenerator extends AbstractGenerator {
 		}
 
 		return results
+	}
+
+	private shouldSkipOnUpgrade(filename: string) {
+		return filename === 'package.json' || filename === 'settings.json'
 	}
 }

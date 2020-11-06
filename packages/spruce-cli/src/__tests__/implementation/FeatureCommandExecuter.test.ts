@@ -6,7 +6,11 @@ import {
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import FeatureCommandExecuter from '../../features/FeatureCommandExecuter'
-import { FeatureCode } from '../../features/features.types'
+import {
+	FeatureActionResponse,
+	FeatureCode,
+	FeatureInstallResponse,
+} from '../../features/features.types'
 import AbstractSchemaTest from '../../test/AbstractSchemaTest'
 import testUtil from '../../utilities/test.utility'
 
@@ -149,9 +153,10 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 		await this.waitForInput()
 
-		await this.ui.sendInput('\n')
+		await this.ui.sendInput('yes')
 
 		await this.ui.sendInput('Skill with 1 dependency')
+
 		await this.ui.sendInput('A skill that is so good')
 
 		await this.waitForInput()
@@ -159,6 +164,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		await this.ui.sendInput('\n')
 
 		await this.ui.sendInput('Restaurant')
+
 		await this.ui.sendInput('\n')
 
 		await promise
@@ -192,7 +198,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 		await this.waitForInput()
 
-		await this.ui.sendInput('\n')
+		await this.ui.sendInput('yes')
 
 		await this.ui.sendInput('My skill with 2 dependent features')
 
@@ -216,9 +222,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 			skill: { status: 'passed' },
 			schema: {
 				status: 'passed',
-				schemas: this.generateExpectedHealthSchemas([
-					...Object.values(coreSchemas),
-				]),
+				schemas: [],
 			},
 			error: {
 				errorSchemas: [{ name: 'Test error', id: 'testError' }],
@@ -247,12 +251,58 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		assert.isAbove(results.packagesInstalled.length, 0)
 	}
 
-	@test.only()
+	@test()
 	protected static async canSkipOptionalDependencies() {
+		const {
+			promise: actionPromise,
+		} = await this.startBuildingNewErrorUntilOptionalDependencies('skip')
+
+		const results = await this.finishBuildingUpToNamingNewError(actionPromise)
+
+		assert.isTruthy(results.files)
+		assert.isFalsy(results.errors)
+
+		const pluginsDir = this.resolveHashSprucePath('features')
+		assert.isFalse(diskUtil.doesDirExist(pluginsDir))
+
+		testUtil.assertsFileByNameInGeneratedFiles(
+			'myNewError.schema.ts',
+			results.files
+		)
+	}
+
+	private static async finishBuildingUpToNamingNewError(
+		actionPromise: Promise<FeatureInstallResponse & FeatureActionResponse>
+	) {
+		await this.ui.sendInput('')
+
+		await this.waitForInput()
+
+		await this.ui.sendInput('')
+
+		await this.waitForInput()
+
+		await this.ui.sendInput('My new error')
+		await this.ui.sendInput('')
+
+		const results = await actionPromise
+		return results
+	}
+
+	private static async startBuildingNewErrorUntilOptionalDependencies(
+		skillFeatureAnswer: 'skip' | 'yes' | 'alwaysSkip'
+	) {
 		const executer = this.Executer('error', 'create')
 		const promise = executer.execute()
 
 		await this.waitForInput()
+
+		const message = this.ui.invocations[this.ui.invocations.length - 2].options
+			.message
+		assert.isTruthy(message)
+
+		assert.doesInclude(message, /2 required/gi)
+		assert.doesInclude(message, /1 optional/gi)
 
 		assert.doesInclude(this.ui.lastInvocation(), {
 			command: 'prompt',
@@ -265,8 +315,8 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 							label: 'Yes',
 						},
 						{
-							value: 'no',
-							label: 'No',
+							value: 'skip',
+							label: 'Skip',
 						},
 						{
 							value: 'alwaysSkip',
@@ -277,18 +327,51 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 			},
 		})
 
-		await this.ui.sendInput('no')
-		await this.ui.sendInput('no')
+		await this.ui.sendInput(skillFeatureAnswer)
 
-		await this.ui.sendInput('')
+		await this.ui.sendInput('y')
 
 		await this.waitForInput()
 
-		await this.ui.sendInput('My new error')
+		await this.ui.sendInput('My new module')
+		await this.ui.sendInput('it is for testing')
+
+		await this.waitForInput()
+
+		return { promise }
+	}
+
+	@test()
+	protected static async canPermanentlySkipOptionalDependencies() {
+		const {
+			promise: actionPromise,
+		} = await this.startBuildingNewErrorUntilOptionalDependencies('alwaysSkip')
+
+		await this.finishBuildingUpToNamingNewError(actionPromise)
+
+		const executer = this.Executer('error', 'create')
+		const promise = executer.execute()
+
+		await this.waitForInput()
+
+		assert.doesNotInclude(this.ui.lastInvocation(), {
+			command: 'prompt',
+			options: {
+				type: 'select',
+			},
+		})
+
+		await this.ui.sendInput('My second error')
 		await this.ui.sendInput('')
 
-		debugger
-		await promise
+		const secondTimeResults = await promise
+
+		assert.isTruthy(secondTimeResults.files)
+
+		testUtil.assertsFileByNameInGeneratedFiles(
+			'myNewError.schema.ts',
+			secondTimeResults.files
+		)
 	}
 
 	private static Executer<F extends FeatureCode>(

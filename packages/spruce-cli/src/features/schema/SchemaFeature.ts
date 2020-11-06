@@ -11,6 +11,7 @@ export default class SchemaFeature extends AbstractFeature {
 	public description = 'Define, validate, and normalize everything.'
 	public dependencies: FeatureDependency[] = [
 		{ code: 'skill', isRequired: false },
+		{ code: 'node', isRequired: true },
 	]
 	public packageDependencies: NpmPackage[] = [
 		{
@@ -23,6 +24,12 @@ export default class SchemaFeature extends AbstractFeature {
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public async afterPackageInstall(): Promise<InstallResults> {
+		const isSkillInstalled = await this.featureInstaller.isInstalled('skill')
+
+		if (!isSkillInstalled) {
+			return {}
+		}
+
 		const plugin = this.templates.schemaPlugin()
 		const destination = this.getPluginDestination()
 

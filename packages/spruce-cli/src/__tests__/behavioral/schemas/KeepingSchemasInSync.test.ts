@@ -7,6 +7,7 @@ import {
 	DEFAULT_NAMESPACE_PREFIX,
 } from '@sprucelabs/spruce-skill-utils'
 import { assert, test } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractSchemaTest from '../../../test/AbstractSchemaTest'
 import testUtil from '../../../utilities/test.utility'
 
@@ -29,11 +30,11 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	protected static async failsBecauseSchemasIsNotInstalled() {
 		const cli = await this.Cli()
 
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		assert.doesThrowAsync(
-			() => cli.getFeature('schema').Action('sync').execute({}),
-			/SKILL_NOT_INSTALLED/gi
+		const err = await assert.doesThrowAsync(() =>
+			cli.getFeature('schema').Action('sync').execute({})
 		)
+
+		errorAssertUtil.assertError(err, 'FEATURE_NOT_INSTALLED')
 	}
 
 	@test()

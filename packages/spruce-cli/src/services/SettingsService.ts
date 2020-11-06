@@ -27,6 +27,23 @@ export default class SettingsService {
 		}
 	}
 
+	public markAsPermanentlySkipped(code: FeatureCode) {
+		const settings = this.loadSettings()
+		if (!settings.skipped) {
+			settings.skipped = []
+		}
+
+		if (settings.skipped.indexOf(code) === -1) {
+			settings.skipped.push(code)
+			this.saveSettings(settings)
+		}
+	}
+
+	public isMarkedAsPermanentlySkipped(code: FeatureCode): boolean {
+		const settings = this.loadSettings()
+		return !!settings.skipped?.find((c) => c === code)
+	}
+
 	private loadSettings(): Settings {
 		if (!this.settings) {
 			const path = diskUtil.resolvePath(
