@@ -24,6 +24,11 @@ export const optionsSchema = buildSchema({
 			hint: 'Should I output the test results while they are running?',
 			defaultValue: true,
 		},
+		pattern: {
+			type: 'text',
+			label: 'Pattern',
+			hint: `I'll filter all tests that match this pattern`,
+		},
 	},
 })
 
@@ -47,14 +52,16 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		const { shouldReportWhileRunning } = normalizedOptions
 
 		const results: FeatureActionResponse = await this.runTests(
-			shouldReportWhileRunning
+			shouldReportWhileRunning,
+			options.pattern
 		)
 
 		return results
 	}
 
 	private async runTests(
-		shouldReportWhileRunning: boolean
+		shouldReportWhileRunning: boolean,
+		pattern?: string | null
 	): Promise<FeatureActionResponse> {
 		const parser = new JestJsonParser()
 		const results: FeatureActionResponse = {}
@@ -77,7 +84,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 		try {
 			await this.commandService.execute(
-				'yarn test --reporters="@sprucelabs/jest-json-reporter" --testRunner="jest-circus/runner" --forceExit',
+				`yarn test --reporters="@sprucelabs/jest-json-reporter" --testRunner="jest-circus/runner" --forceExit ${pattern}`,
 				{
 					forceColor: true,
 					onData: (data) => {

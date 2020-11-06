@@ -61,6 +61,7 @@ export default class RunningTestsTest extends AbstractTestTest {
 					{
 						path: 'behavioral/CanCancelAppointment.test.ts',
 						status: 'failed',
+						errorMessage: results.meta?.testResults.testFiles[0].errorMessage,
 						tests: [
 							{
 								name: 'canCancelAppointment',
