@@ -53,7 +53,7 @@
 		"@babel/runtime": "^7.12.5",
 		"@jest/reporters": "^26.6.2",
 		"@sprucelabs/error": "^2.4.1",
-		"@sprucelabs/jest-json-reporter": "^3.0.1",
+		"@sprucelabs/jest-json-reporter": "^5.1.2",
 		"@sprucelabs/log": "^10.2.294",
 		"@sprucelabs/mercury": "^10.5.72",
 		"@sprucelabs/mercury-event-emitter": "^10.1.154",
