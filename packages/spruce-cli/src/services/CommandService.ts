@@ -24,6 +24,7 @@ export default class CommandService {
 			outStream?: Writable
 			onData?: (data: string) => void
 			spawnOptions?: SpawnOptions
+			forceColor?: boolean
 		}
 	): Promise<{
 		stdout: string
@@ -46,7 +47,7 @@ export default class CommandService {
 						cwd,
 						env: {
 							PATH: process.env.PATH,
-							FORCE_COLOR: '0',
+							FORCE_COLOR: options?.forceColor ? '1' : '0',
 						},
 						shell: true,
 						...options?.spawnOptions,

@@ -79,6 +79,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			await this.commandService.execute(
 				'yarn test --reporters="@sprucelabs/jest-json-reporter" --testRunner="jest-circus/runner" --forceExit',
 				{
+					forceColor: true,
 					onData: (data) => {
 						testResults = this.sendToReporter(parser, data)
 					},

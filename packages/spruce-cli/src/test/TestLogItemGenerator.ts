@@ -1,3 +1,4 @@
+import chalk from 'chalk'
 import { SpruceTestFile, SpruceTestFileTest } from '../features/test/test.types'
 import durationUtil from '../utilities/duration.utility'
 
@@ -77,18 +78,18 @@ export default class TestLogItemGenerator {
 		let errorContent = ''
 
 		if (file.status === 'failed') {
-			if (file.errorMessage) {
-				errorContent += `^r^+${file.path}\n`
-				errorContent += file.errorMessage + '\n\n\n'
-			}
-
 			file.tests?.forEach((test) => {
 				test.errorMessages?.forEach((message) => {
-					errorContent += `^r^+${file.path}\n`
-					errorContent += ` - ^r^+${test.name}\n\n`
+					errorContent += `${chalk.red(file.path)}\n`
+					errorContent += ` - ${chalk.red(test.name)}\n\n`
 					errorContent += message + '\n\n\n'
 				})
 			})
+
+			if (!errorContent && file.errorMessage) {
+				errorContent += `${chalk.red(file.path)}\n`
+				errorContent += file.errorMessage + '\n\n\n'
+			}
 		}
 
 		return errorContent

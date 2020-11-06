@@ -192,7 +192,7 @@ export default class TestReporter {
 		}
 
 		if (this.errorLog && this.errorLog.content !== errorContent) {
-			this.errorLog?.setContent(errorContent, true)
+			this.errorLog?.setContent(errorContent, 'ansi')
 		}
 	}
 
@@ -209,6 +209,7 @@ export default class TestReporter {
 				file
 			)
 		})
+
 		return { logContent, errorContent }
 	}
 

@@ -148,17 +148,6 @@ export default class JestJsonParser {
 		if (testFiles.length > 0) {
 			this.testResults.testFiles = testFiles
 		}
-
-		// const spruceResult: SpruceTestFile = {
-		// 	testFile: this.pullPathFromTestResponse(result),
-		// 	status: this.pullStatusFromTestResponse(result),
-		// }
-
-		// if (result.status === 'onTestFileResult') {
-		// 	spruceResult.tests = this.pullTestsFromTestResponse(result)
-		// }
-
-		// return spruceResult
 	}
 
 	private pullTestFilesCompleteFromAggregatedResults(
