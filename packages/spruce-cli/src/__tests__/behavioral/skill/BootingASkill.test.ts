@@ -30,21 +30,24 @@ export default class BootingASkillTest extends AbstractCliTest {
 		return cli
 	}
 
-	@test()
+	@test.only()
 	protected static async aSkillCanBeBootedAndKilled() {
+		debugger
 		const cli = await this.install()
-
+		debugger
 		await this.Service('build').build()
 
 		const response = await cli.getFeature('skill').Action('boot').execute({})
 		const pid = response.meta?.pid
 
+		debugger
 		assert.isAbove(pid, 0)
 
 		// make sure it's running
 		const psResults = await findProcess('pid', pid)
 		assert.isAbove(psResults.length, 0)
 
+		debugger
 		// kill the skill
 		response.meta?.kill()
 

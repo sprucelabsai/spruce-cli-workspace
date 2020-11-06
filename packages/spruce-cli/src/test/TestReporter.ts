@@ -185,6 +185,10 @@ export default class TestReporter {
 
 		let { logContent, errorContent } = this.resultsToLogContents(results)
 
+		const logSelection = this.testLog.textBuffer.getSelectionText()
+		if (logSelection) {
+			debugger
+		}
 		this.testLog.setContent(logContent, true)
 
 		if (isScrolledAllTheWay) {
