@@ -24,7 +24,9 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 		const aliases = featuresUtil.generateCommandAliases(person)
 
 		assert.isLength(Object.keys(aliases), 1)
-		assert.doesInclude(aliases, { firstName: '--fn, --firstName <firstName>' })
+		assert.doesInclude(aliases, {
+			firstName: '--fn <firstName>, --firstName <firstName>',
+		})
 	}
 
 	@test()
@@ -45,8 +47,12 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 		const aliases = featuresUtil.generateCommandAliases(person)
 
 		assert.isLength(Object.keys(aliases), 2)
-		assert.doesInclude(aliases, { firstName: '--fn, --firstName <firstName>' })
-		assert.doesInclude(aliases, { lastName: '--ln, --lastName <lastName>' })
+		assert.doesInclude(aliases, {
+			firstName: '--fn <firstName>, --firstName <firstName>',
+		})
+		assert.doesInclude(aliases, {
+			lastName: '--ln <lastName>, --lastName <lastName>',
+		})
 	}
 
 	@test()
@@ -71,12 +77,12 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 
 		const aliases = featuresUtil.generateCommandAliases(person)
 
-		assert.isLength(Object.keys(aliases), 2)
+		assert.isLength(Object.keys(aliases), 3)
 		assert.doesInclude(aliases, {
-			defaultTrue: '--dt, --defaultTrue [true|false]',
+			defaultTrue: '--dt [true|false], --defaultTrue [true|false]',
 		})
 		assert.doesInclude(aliases, {
-			defaultFalse: '--df, --defaultFalse',
+			defaultFalse: '--df [true|false], --defaultFalse [true|false]',
 		})
 
 		assert.doesInclude(aliases, {

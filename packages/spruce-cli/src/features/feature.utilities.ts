@@ -35,7 +35,7 @@ const featuresUtil = {
 
 			aliases[fieldName] = `${
 				abbreviation.length === 1 ? '-' : '--'
-			}${abbreviation}, --${fullName}${placeholder}`
+			}${abbreviation}${placeholder}, --${fullName}${placeholder}`
 		})
 
 		return aliases
