@@ -63,6 +63,9 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 					type: 'boolean',
 					defaultValue: false,
 				},
+				boolNoDefault: {
+					type: 'boolean',
+				},
 			},
 		}
 
@@ -74,6 +77,10 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 		})
 		assert.doesInclude(aliases, {
 			defaultFalse: '--df, --defaultFalse',
+		})
+
+		assert.doesInclude(aliases, {
+			boolNoDefault: '--bnd [true|false], --boolNoDefault [true|false]',
 		})
 	}
 }

@@ -6,6 +6,7 @@ const termKit = terminal_kit as any
 
 interface TestReporterOptions {
 	onRestart?: () => void
+	onQuit?: () => void
 }
 
 export default class TestReporter {
@@ -24,10 +25,12 @@ export default class TestReporter {
 	private updateInterval?: any
 
 	private onRestart?: () => void
+	private onQuit?: () => void
 	private waitForDoneResolver?: () => void
 
 	public constructor(options?: TestReporterOptions) {
 		this.onRestart = options?.onRestart
+		this.onQuit = options?.onQuit
 		this.errorLogItemGenerator = new TestLogItemGenerator()
 	}
 
@@ -59,6 +62,7 @@ export default class TestReporter {
 		this.term.on('key', async (key: string) => {
 			switch (key) {
 				case 'CTRL_C':
+					this.onQuit?.()
 					await this.destroy()
 					process.exit()
 					break
@@ -185,11 +189,13 @@ export default class TestReporter {
 
 		let { logContent, errorContent } = this.resultsToLogContents(results)
 
-		const logSelection = this.testLog.textBuffer.getSelectionText()
-		if (logSelection) {
-			debugger
-		}
+		const logSelection = this.testLog.textBuffer.selectionRegion
+
 		this.testLog.setContent(logContent, true)
+
+		if (logSelection) {
+			this.testLog.textBuffer.setSelectionRegion(logSelection)
+		}
 
 		if (isScrolledAllTheWay) {
 			this.testLog.scrollToBottom()
