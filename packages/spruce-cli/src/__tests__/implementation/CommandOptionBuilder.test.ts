@@ -10,7 +10,7 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 	}
 
 	@test()
-	protected static canAliasOneField() {
+	protected static canAliasOneOptionalField() {
 		const person: ISchema = {
 			id: 'alias-person',
 			name: 'person alias',
@@ -24,11 +24,13 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 		const aliases = featuresUtil.generateCommandAliases(person)
 
 		assert.isLength(Object.keys(aliases), 1)
-		assert.doesInclude(aliases, { firstName: '--fn, --firstName <firstName>' })
+		assert.doesInclude(aliases, {
+			firstName: '--firstName <firstName>, --fn <firstName>',
+		})
 	}
 
 	@test()
-	protected static canAliasTwoFields() {
+	protected static canAliasTwoFieldsOneRequired() {
 		const person: ISchema = {
 			id: 'alias-person',
 			name: 'person alias',
@@ -38,6 +40,7 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 				},
 				lastName: {
 					type: 'text',
+					isRequired: true,
 				},
 			},
 		}
@@ -45,8 +48,12 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 		const aliases = featuresUtil.generateCommandAliases(person)
 
 		assert.isLength(Object.keys(aliases), 2)
-		assert.doesInclude(aliases, { firstName: '--fn, --firstName <firstName>' })
-		assert.doesInclude(aliases, { lastName: '--ln, --lastName <lastName>' })
+		assert.doesInclude(aliases, {
+			firstName: '--firstName <firstName>, --fn <firstName>',
+		})
+		assert.doesInclude(aliases, {
+			lastName: '--lastName <lastName>, --ln <lastName>',
+		})
 	}
 
 	@test()
@@ -63,17 +70,24 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 					type: 'boolean',
 					defaultValue: false,
 				},
+				boolNoDefault: {
+					type: 'boolean',
+				},
 			},
 		}
 
 		const aliases = featuresUtil.generateCommandAliases(person)
 
-		assert.isLength(Object.keys(aliases), 2)
+		assert.isLength(Object.keys(aliases), 3)
 		assert.doesInclude(aliases, {
-			defaultTrue: '--dt, --defaultTrue [true|false]',
+			defaultTrue: '--defaultTrue [true|false], --dt [true|false]',
 		})
 		assert.doesInclude(aliases, {
-			defaultFalse: '--df, --defaultFalse',
+			defaultFalse: '--defaultFalse [true|false], --df [true|false]',
+		})
+
+		assert.doesInclude(aliases, {
+			boolNoDefault: '--boolNoDefault [true|false], --bnd [true|false]',
 		})
 	}
 }

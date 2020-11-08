@@ -3,7 +3,6 @@
 	"configurations": [
 		{
 			"type": "node",
-			"preLaunchTask": "clear",
 			"request": "attach",
 			"name": "cli.attach",
 			"port": 5200,

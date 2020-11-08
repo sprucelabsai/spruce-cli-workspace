@@ -76,38 +76,38 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'schema.create',
 			option:
-				'--sbdd, --schemaBuilderDestinationDir <schemaBuilderDestinationDir>',
+				'--schemaBuilderDestinationDir <schemaBuilderDestinationDir>, --sbdd <schemaBuilderDestinationDir>',
 			defaultValue: 'src/schemas',
 		})
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'schema.create',
-			option: '-d, --description <description>',
+			option: '-d <description>, --description <description>',
 		})
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'schema.fields.sync',
-			option: '--ald, --addonsLookupDir <addonsLookupDir>',
+			option: '--addonsLookupDir <addonsLookupDir>, --ald <addonsLookupDir>',
 		})
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'schema.sync',
-			option: '--frs, --fetchRemoteSchemas [true|false]',
+			option: '--fetchRemoteSchemas [true|false], --frs [true|false]',
 		})
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'schema.sync',
-			option: '--gcst, --generateCoreSchemaTypes [true|false]',
+			option: '--generateCoreSchemaTypes [true|false], --gcst [true|false]',
 		})
 	}
 
-	@test()
+	@test.skip('enable when private fields can be optionally shown in help.')
 	protected static async ignoresPrivateFields() {
 		await this.attachSchemaFeature()
 
 		assert.doesNotInclude(this.program.optionInvocations, {
 			command: 'schema.create',
-			option: '--ev, --enableVersioning <enableVersioning>',
+			option: '--enableVersioning [true|false], --ev [true|false]',
 		})
 	}
 
@@ -120,7 +120,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'vscode.setup',
-			option: '-a, --all [true|false]',
+			option: '-a [true|false], --all [true|false]',
 		})
 	}
 

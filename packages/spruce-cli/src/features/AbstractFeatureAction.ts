@@ -39,11 +39,11 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 	public abstract name: string
 	public abstract optionsSchema: S
 
-	private parent: AbstractFeature
 	private serviceFactory: ServiceFactory
 	private storeFactory: StoreFactory
 	private generatorFactory: GeneratorFactory
 
+	protected parent: AbstractFeature
 	protected featureInstaller: FeatureInstaller
 	protected cwd: string
 	protected templates: Templates

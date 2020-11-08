@@ -513,13 +513,16 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 				{
 					path: 'behavioral/UpdatingARole.test.ts',
 					status: 'failed',
+					errorMessage: testResults.testFiles.find(
+						(file) => file.path === 'behavioral/UpdatingARole.test.ts'
+					)?.errorMessage,
 					tests: [
 						{
 							name: 'hasUpdateRoleEvent',
 							status: 'failed',
-							errorMessages: [
-								'Error: \n\n\u001b[1mfalse\u001b[22m\n\n does not equal \n\n\u001b[1mtrue\u001b[22m\n\n\n    at Object.fail (/Users/taylorromero/Development/SpruceLabs/spruce-mercury-api/node_modules/@sprucelabs/test/src/utilities/assert.utility.ts:12:9)\n    at Object.isEqual (/Users/taylorromero/Development/SpruceLabs/spruce-mercury-api/node_modules/@sprucelabs/test/src/assert.ts:99:9)\n    at Object.assert (/Users/taylorromero/Development/SpruceLabs/spruce-mercury-api/node_modules/@sprucelabs/test/src/assert.ts:185:8)\n    at _callee$ (/Users/taylorromero/Development/SpruceLabs/spruce-mercury-api/src/__tests__/behavioral/UpdatingARole.test.ts:7:3)\n    at new Promise (<anonymous>)\n    at Function.hasUpdateRoleEvent (/Users/taylorromero/Development/SpruceLabs/spruce-mercury-api/build/__tests__/behavioral/UpdatingARole.test.js:92:36)\n    at Object.<anonymous> (/Users/taylorromero/Development/SpruceLabs/spruce-mercury-api/node_modules/@sprucelabs/test/src/decorators.ts:36:11)\n    at Object.asyncJestTest (/Users/taylorromero/Development/SpruceLabs/spruce-mercury-api/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:106:37)\n    at /Users/taylorromero/Development/SpruceLabs/spruce-mercury-api/node_modules/jest-jasmine2/build/queueRunner.js:45:12\n    at new Promise (<anonymous>)\n    at mapper (/Users/taylorromero/Development/SpruceLabs/spruce-mercury-api/node_modules/jest-jasmine2/build/queueRunner.js:28:19)\n    at /Users/taylorromero/Development/SpruceLabs/spruce-mercury-api/node_modules/jest-jasmine2/build/queueRunner.js:75:41',
-							],
+							errorMessages: testResults.testFiles.find(
+								(file) => file.path === 'behavioral/UpdatingARole.test.ts'
+							)?.tests?.[0]?.errorMessages,
 							duration: 24,
 						},
 					],
@@ -577,6 +580,8 @@ export default class JestJsonParserTest extends AbstractSpruceTest {
 			totalFailed: 1,
 			totalPassed: 181,
 			totalTests: 183,
+			totalSkipped: 1,
+			totalTodo: 0,
 		})
 	}
 }

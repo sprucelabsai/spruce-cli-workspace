@@ -1,4 +1,6 @@
+import pathUtil from 'path'
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../../../errors/SpruceError'
 import CommandService from '../../../services/CommandService'
 import JestJsonParser from '../../../test/JestJsonParser'
@@ -24,6 +26,16 @@ export const optionsSchema = buildSchema({
 			hint: 'Should I output the test results while they are running?',
 			defaultValue: true,
 		},
+		pattern: {
+			type: 'text',
+			label: 'Pattern',
+			hint: `I'll filter all tests that match this pattern`,
+		},
+		inspect: {
+			type: 'number',
+			label: 'Inspect',
+			hint: `Pass --inspect related args to test process.`,
+		},
 	},
 })
 
@@ -44,26 +56,32 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		options: SchemaValues<OptionsSchema>
 	): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
-		const { shouldReportWhileRunning } = normalizedOptions
 
 		const results: FeatureActionResponse = await this.runTests(
-			shouldReportWhileRunning
+			normalizedOptions
 		)
 
 		return results
 	}
 
 	private async runTests(
-		shouldReportWhileRunning: boolean
+		options: SchemaValues<OptionsSchema>
 	): Promise<FeatureActionResponse> {
+		const { shouldReportWhileRunning, pattern, inspect } = options
+
 		const parser = new JestJsonParser()
 		const results: FeatureActionResponse = {}
 		let restart = false
+		let shouldWaitForConfirm = true
 
 		if (shouldReportWhileRunning) {
 			this.testReporter = new TestReporter({
 				onRestart: () => {
 					restart = true
+					this.commandService.kill()
+				},
+				onQuit: () => {
+					shouldWaitForConfirm = false
 					this.commandService.kill()
 				},
 			})
@@ -75,26 +93,26 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 
 		try {
-			await this.commandService.execute(
-				'yarn test --reporters="@sprucelabs/jest-json-reporter"',
-				{
-					onData: (data) => {
-						parser.write(data)
+			const debugArgs = (inspect ?? 0) > 0 ? `--inspect-brk=${inspect}` : ``
+			const jestPath = this.resolvePathToJest()
+			const command = `node ${debugArgs} ${jestPath} --reporters="@sprucelabs/jest-json-reporter" --testRunner="jest-circus/runner" --forceExit ${
+				pattern ?? ''
+			}`
 
-						testResults = parser.getResults()
-
-						this.testReporter?.updateResults(testResults)
-						this.testReporter?.render()
-					},
-				}
-			)
+			await this.commandService.execute(command, {
+				forceColor: true,
+				onData: (data) => {
+					testResults = this.sendToReporter(parser, data)
+				},
+			})
 		} catch (err) {
-			if (!testResults) {
+			if (!testResults.totalTestFiles) {
+				shouldWaitForConfirm = false
 				results.errors = [err]
 			}
 		}
 
-		if (!restart && shouldReportWhileRunning) {
+		if (!restart && shouldWaitForConfirm && shouldReportWhileRunning) {
 			await this.testReporter?.waitForConfirm()
 		}
 
@@ -102,7 +120,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 		if (restart) {
 			this.ui.clear()
-			return this.runTests(shouldReportWhileRunning)
+			return this.runTests(options)
 		}
 
 		if (testResults.totalTestFiles > 0) {
@@ -116,6 +134,16 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		return results
 	}
 
+	private sendToReporter(parser: JestJsonParser, data: string) {
+		parser.write(data)
+
+		const testResults = parser.getResults()
+
+		this.testReporter?.updateResults(testResults)
+		this.testReporter?.render()
+		return testResults
+	}
+
 	private mixinSummaryAndTestResults(
 		results: FeatureActionResponse,
 		testResults: SpruceTestResults
@@ -125,6 +153,8 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			`Tests: ${testResults.totalTests}`,
 			`Passed: ${testResults.totalPassed}`,
 			`Failed: ${testResults.totalFailed}`,
+			`Skipped: ${testResults.totalSkipped}`,
+			`Todo: ${testResults.totalTodo}`,
 		]
 
 		results.errors = this.generateErrorsFromTestResults(testResults)
@@ -145,6 +175,25 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 
 		return undefined
+	}
+
+	private resolvePathToJest() {
+		const fullPath = diskUtil.resolvePath(this.cwd, 'node_modules/.bin/jest')
+		const pathParts = fullPath.split(pathUtil.sep)
+
+		while (pathParts.length > 0) {
+			const path = pathUtil.sep + pathUtil.join(...pathParts)
+			if (diskUtil.doesFileExist(path)) {
+				return path
+			}
+			pathParts.pop()
+		}
+
+		throw new SpruceError({
+			code: 'FEATURE_NOT_INSTALLED',
+			featureCode: this.parent.code,
+			friendlyMessage: `You are missing dependencies I need to run tests. Try \`spruce test.install\` to reinstall.`,
+		})
 	}
 
 	private mapErrorResultToSpruceError(

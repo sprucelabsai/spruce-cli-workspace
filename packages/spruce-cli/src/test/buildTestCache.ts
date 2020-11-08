@@ -6,6 +6,7 @@ import FeatureFixture from '../fixtures/FeatureFixture'
 import TerminalInterface from '../interfaces/TerminalInterface'
 import ServiceFactory from '../services/ServiceFactory'
 import { GraphicsTextEffect } from '../types/cli.types'
+import durationUtil from '../utilities/duration.utility'
 
 const packageJsonContents = diskUtil.readFile(
 	diskUtil.resolvePath(__dirname, '..', '..', 'package.json')
@@ -17,6 +18,7 @@ const testKeys = Object.keys(testSkillCache)
 
 let remaining = testKeys.length
 const term = new TerminalInterface(__dirname)
+const start = new Date().getTime()
 
 async function run() {
 	term.clear()
@@ -53,7 +55,7 @@ async function run() {
 
 		if (diskUtil.doesDirExist(cwd)) {
 			term.renderWarning(
-				`Found cached '${cacheKey}', but deleted it since it was not in the cache tracker....`
+				`Found cached '${cacheKey}', but deleted it since it was not in the cache tracker (may take a minute)....`
 			)
 			diskUtil.deleteDir(cwd)
 		}
@@ -74,10 +76,20 @@ async function run() {
 		)
 	})
 
-	await term.startLoading(`Building ${remaining} skills...`)
+	const interval = setInterval(async () => {
+		const now = new Date().getTime()
+		const delta = now - start
+
+		await term.startLoading(
+			`Building ${remaining} skills (${durationUtil.msToFriendly(delta)})...`
+		)
+	}, 1000)
+
+	await term.startLoading(`Building ${remaining} remaining skills...`)
 	await Promise.all(promises)
 	await term.stopLoading()
 	term.clear()
+	clearInterval(interval)
 }
 
 void run().catch((err) => {

@@ -22,7 +22,7 @@ const featuresUtil = {
 		Object.keys(fields).forEach((fieldName: string) => {
 			const fullName = `${fieldName}`
 			const capitals = namesUtil.toPascal(fieldName).replace(/[a-z]/g, '')
-			const abbreviation = `${capitals.toLowerCase()}`
+			const alias = `${capitals.toLowerCase()}`
 
 			let placeholder = ''
 			const field = fields[fieldName]
@@ -33,9 +33,16 @@ const featuresUtil = {
 				placeholder = ` [true|false]`
 			}
 
-			aliases[fieldName] = `${
-				abbreviation.length === 1 ? '-' : '--'
-			}${abbreviation}, --${fullName}${placeholder}`
+			const aliasWithPlaceholder = `${
+				alias.length === 1 ? '-' : '--'
+			}${alias}${placeholder}`
+			const fullNameWithPlaceholder = `--${fullName}${placeholder}`
+			const fullOptions =
+				alias.length === 1
+					? [aliasWithPlaceholder, fullNameWithPlaceholder]
+					: [fullNameWithPlaceholder, aliasWithPlaceholder]
+
+			aliases[fieldName] = fullOptions.join(`, `).trim()
 		})
 
 		return aliases
