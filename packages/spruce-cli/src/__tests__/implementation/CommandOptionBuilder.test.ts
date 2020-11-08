@@ -10,7 +10,7 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 	}
 
 	@test()
-	protected static canAliasOneField() {
+	protected static canAliasOneOptionalField() {
 		const person: ISchema = {
 			id: 'alias-person',
 			name: 'person alias',
@@ -25,12 +25,12 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 
 		assert.isLength(Object.keys(aliases), 1)
 		assert.doesInclude(aliases, {
-			firstName: '--fn <firstName>, --firstName <firstName>',
+			firstName: '--firstName <firstName>, --fn <firstName>',
 		})
 	}
 
 	@test()
-	protected static canAliasTwoFields() {
+	protected static canAliasTwoFieldsOneRequired() {
 		const person: ISchema = {
 			id: 'alias-person',
 			name: 'person alias',
@@ -40,6 +40,7 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 				},
 				lastName: {
 					type: 'text',
+					isRequired: true,
 				},
 			},
 		}
@@ -48,10 +49,10 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 
 		assert.isLength(Object.keys(aliases), 2)
 		assert.doesInclude(aliases, {
-			firstName: '--fn <firstName>, --firstName <firstName>',
+			firstName: '--firstName <firstName>, --fn <firstName>',
 		})
 		assert.doesInclude(aliases, {
-			lastName: '--ln <lastName>, --lastName <lastName>',
+			lastName: '--lastName <lastName>, --ln <lastName>',
 		})
 	}
 
@@ -79,14 +80,14 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 
 		assert.isLength(Object.keys(aliases), 3)
 		assert.doesInclude(aliases, {
-			defaultTrue: '--dt [true|false], --defaultTrue [true|false]',
+			defaultTrue: '--defaultTrue [true|false], --dt [true|false]',
 		})
 		assert.doesInclude(aliases, {
-			defaultFalse: '--df [true|false], --defaultFalse [true|false]',
+			defaultFalse: '--defaultFalse [true|false], --df [true|false]',
 		})
 
 		assert.doesInclude(aliases, {
-			boolNoDefault: '--bnd [true|false], --boolNoDefault [true|false]',
+			boolNoDefault: '--boolNoDefault [true|false], --bnd [true|false]',
 		})
 	}
 }
