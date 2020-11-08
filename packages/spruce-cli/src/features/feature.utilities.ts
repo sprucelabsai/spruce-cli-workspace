@@ -36,7 +36,7 @@ const featuresUtil = {
 			const aliasWithPlaceholder = `${
 				alias.length === 1 ? '-' : '--'
 			}${alias}${placeholder}`
-			const fullNameWithPlaceholder = ` --${fullName}${placeholder}`
+			const fullNameWithPlaceholder = `--${fullName}${placeholder}`
 			const fullOptions =
 				alias.length === 1
 					? [aliasWithPlaceholder, fullNameWithPlaceholder]
