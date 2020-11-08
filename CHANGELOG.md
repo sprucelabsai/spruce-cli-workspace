@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.10.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.9.10...v11.10.0) (2020-11-08)
+
+
+### Features
+
+* errer message check. pattern on test ([fc9bd62](https://github.com/sprucelabsai/spruce-cli-workspace/commit/fc9bd62))
+* optional inspect flag with spruce test ([459279d](https://github.com/sprucelabsai/spruce-cli-workspace/commit/459279d))
+* test reporter improvements ([287d7fe](https://github.com/sprucelabsai/spruce-cli-workspace/commit/287d7fe))
+
+
+
+
+
 ## [11.9.10](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.9.9...v11.9.10) (2020-11-08)
 
 **Note:** Version bump only for package spruce-cli-workspace
