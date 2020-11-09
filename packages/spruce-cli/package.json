@@ -41,7 +41,7 @@
 		"build.resolve-paths": "resolve-path-aliases --target build --patterns **/*.js,**/*.d.ts",
 		"clean": "rm -rf build/",
 		"clean.all": "rm -rf build/ && rm -rf node_modules/ && yarn clean.cache",
-		"clean.cache": "rm -rf src/.spruce/tmp",
+		"clean.cache": "rm -rf src/.spruce/tmp && node build/test/cleanTestCache",
 		"release": "semantic-release",
 		"start": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node . $COMMANDS",
 		"local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node --inspect=5200 . $COMMANDS",

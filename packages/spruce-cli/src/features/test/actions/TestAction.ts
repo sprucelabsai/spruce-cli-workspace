@@ -92,6 +92,8 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			totalTestFiles: 0,
 		}
 
+		await new Promise(() => {})
+
 		try {
 			const debugArgs = (inspect ?? 0) > 0 ? `--inspect-brk=${inspect}` : ``
 			const jestPath = this.resolvePathToJest()
@@ -150,11 +152,11 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	) {
 		results.summaryLines = [
 			`Test files: ${testResults.totalTestFiles}`,
-			`Tests: ${testResults.totalTests}`,
-			`Passed: ${testResults.totalPassed}`,
-			`Failed: ${testResults.totalFailed}`,
-			`Skipped: ${testResults.totalSkipped}`,
-			`Todo: ${testResults.totalTodo}`,
+			`Tests: ${testResults.totalTests ?? '0'}`,
+			`Passed: ${testResults.totalPassed ?? '0'}`,
+			`Failed: ${testResults.totalFailed ?? '0'}`,
+			`Skipped: ${testResults.totalSkipped ?? '0'}`,
+			`Todo: ${testResults.totalTodo ?? '0'}`,
 		]
 
 		results.errors = this.generateErrorsFromTestResults(testResults)

@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import os from 'os'
 import { Mercury } from '@sprucelabs/mercury'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import FeatureFixture from '../fixtures/FeatureFixture'
@@ -7,6 +6,7 @@ import TerminalInterface from '../interfaces/TerminalInterface'
 import ServiceFactory from '../services/ServiceFactory'
 import { GraphicsTextEffect } from '../types/cli.types'
 import durationUtil from '../utilities/duration.utility'
+import testUtil from '../utilities/test.utility'
 
 const packageJsonContents = diskUtil.readFile(
 	diskUtil.resolvePath(__dirname, '..', '..', 'package.json')
@@ -27,14 +27,11 @@ async function run() {
 	const promises = testKeys.map(async (cacheKey: string) => {
 		const options = testSkillCache[cacheKey]
 
-		const importCacheDir = diskUtil.resolvePath(
-			os.tmpdir(),
-			'spruce-cli-import-cache'
-		)
+		const importCacheDir = testUtil.resolveCacheDir('spruce-cli-import-cache')
 
 		const mercury = new Mercury()
 		const serviceFactory = new ServiceFactory({ mercury, importCacheDir })
-		const cwd = diskUtil.resolvePath(os.tmpdir(), 'spruce-cli', cacheKey)
+		const cwd = testUtil.resolveCacheDir(cacheKey)
 
 		const fixture = new FeatureFixture({
 			cwd,

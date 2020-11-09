@@ -59,7 +59,7 @@ export default class TestLogItemGenerator {
 	}
 
 	private calculateDurationInMs(file: SpruceTestFile): number {
-		if (file.tests) {
+		if (file.status !== 'running' && file.tests) {
 			return file.tests.reduce((time, test) => {
 				time += test.duration
 				return time
