@@ -1,8 +1,8 @@
-import { BaseWidget, WidgetFrame } from './widgets.types'
+import { BaseWidget, WidgetFrame, WidgetFrameCalculated } from './widgets.types'
 
-const widgetUtils = {
+const widgetUtil = {
 	buildFrame(frame?: Partial<WidgetFrame>, parent?: BaseWidget | null) {
-		let { left = 0, top = 0, height = 0, width = 0 } = frame || {}
+		let { left, top, height, width } = frame || {}
 
 		if (typeof width === 'string') {
 			if (!parent) {
@@ -26,8 +26,8 @@ const widgetUtils = {
 			height = parent.getFrame().height * (parseInt(height, 10) / 100) - 2
 		}
 
-		return { left, top, height, width }
+		return { left, top, height, width } as Partial<WidgetFrameCalculated>
 	},
 }
 
-export default widgetUtils
+export default widgetUtil

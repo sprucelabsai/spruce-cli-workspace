@@ -22,7 +22,7 @@ export default class TkWindowWidget
 		})
 	}
 
-	private handleParentResize() {
+	protected handleParentResize() {
 		this.sizeLockedChildren()
 	}
 

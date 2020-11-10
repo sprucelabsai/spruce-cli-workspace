@@ -1,6 +1,7 @@
 import terminal_kit from 'terminal-kit'
-import widgetUtils from '../widget.utilities'
+import widgetUtil from '../widget.utilities'
 import { TextWidget, TextWidgetOptions, WidgetFrame } from '../widgets.types'
+import termKitUtil from './termKit.utility'
 import TkBaseWidget, { TkWidgetOptions } from './TkBaseWidget'
 const termKit = terminal_kit as any
 
@@ -14,7 +15,7 @@ export default class TkTextWidget extends TkBaseWidget implements TextWidget {
 
 		const { parent, enableScroll = false, ...rest } = options
 
-		const frame = widgetUtils.buildFrame(options, parent)
+		const frame = termKitUtil.buildFrame(options, parent)
 
 		this.text = new termKit.TextBox({
 			parent: parent ? parent.getTermKitElement() : undefined,
@@ -34,7 +35,7 @@ export default class TkTextWidget extends TkBaseWidget implements TextWidget {
 
 	public setFrame(frame: WidgetFrame) {
 		const oldFrame = this.getFrame()
-		const newFrame = widgetUtils.buildFrame(frame, this.parent)
+		const newFrame = widgetUtil.buildFrame(frame, this.parent)
 
 		this.text.setSizeAndPosition({
 			x: newFrame.left ?? oldFrame.left,

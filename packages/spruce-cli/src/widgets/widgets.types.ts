@@ -115,7 +115,15 @@ export interface ProgressBarWidget extends BaseWidget {
 // **** //
 
 // ** Menu Bar **/
-export interface MenuBarWidgetOptions {}
+export interface MenuBarWidgetOptions {
+	items: MenuBarWidgetItem[]
+}
+
+export interface MenuBarWidgetItem {
+	label: string
+	value: string
+	items?: MenuBarWidgetItem[]
+}
 
 export interface MenuBarWidget extends BaseWidget {
 	readonly type: 'menuBar'

@@ -65,6 +65,16 @@ export default class TestReporter {
 			parent: this.window,
 			left: 0,
 			top: 0,
+			items: [
+				{
+					label: 'Quit',
+					value: 'quit',
+				},
+				{
+					label: 'Quit',
+					value: 'quit',
+				},
+			],
 		})
 
 		return
