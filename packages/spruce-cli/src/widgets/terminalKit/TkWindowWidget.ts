@@ -5,7 +5,7 @@ const termKit = terminal_kit as any
 
 // const eventContract = buildEvent
 
-export default class TkWindowWidget<Contract extends WindowEventContract>
+export default class TkWindowWidget<Contract extends WindowEventContract = WindowEventContract>
 	extends TkBaseWidget<Contract>
 	implements WindowWidget<Contract> {
 	public readonly type = 'window'
