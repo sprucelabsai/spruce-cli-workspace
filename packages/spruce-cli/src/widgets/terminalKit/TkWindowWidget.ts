@@ -3,6 +3,8 @@ import { WindowWidget, WindowWidgetOptions } from '../widgets.types'
 import TkBaseWidget, { TkWidgetOptions } from './TkBaseWidget'
 const termKit = terminal_kit as any
 
+// const eventContract = buildEvent
+
 export default class TkWindowWidget
 	extends TkBaseWidget
 	implements WindowWidget {

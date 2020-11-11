@@ -1,9 +1,12 @@
+import { EventContract, MercuryEventEmitter } from '@sprucelabs/mercury-types'
+
 export interface WidgetButton {
 	label: string
 	onClick?: (cb: () => void) => void
 }
 
-export interface BaseWidget {
+export interface BaseWidget<Contract extends EventContract = EventContract>
+	extends MercuryEventEmitter<Contract> {
 	type: string
 	getId(): string | null
 	getFrame(): WidgetFrameCalculated
@@ -24,6 +27,7 @@ export interface UniversalWidgetOptions {
 	parent?: BaseWidget
 	shouldLockWidthWithParent?: boolean
 	shouldLockHeightWithParent?: boolean
+	eventContract?: EventContract
 }
 
 export interface WidgetFrame {

@@ -17,6 +17,7 @@ export default class TkLayoutWidget
 		super(options)
 
 		const mappedOptions = this.mapWidgetOptionsToTermKitOptions(options)
+
 		const {
 			parent,
 			lockWidthWithParent = true,
@@ -103,11 +104,15 @@ export default class TkLayoutWidget
 					case 'width':
 						if (typeof item === 'string') {
 							mapped.widthPercent = parseInt(item)
+						} else {
+							mapped.width = item
 						}
 						break
 					case 'height':
 						if (typeof item === 'string') {
 							mapped.heightPercent = parseInt(item)
+						} else {
+							mapped.height = item
 						}
 						break
 					case 'parent':

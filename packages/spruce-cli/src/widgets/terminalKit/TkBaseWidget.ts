@@ -1,3 +1,5 @@
+import { AbstractEventEmitter } from '@sprucelabs/mercury-event-emitter'
+import { EventContract } from '@sprucelabs/mercury-types'
 import { Terminal } from 'terminal-kit'
 import {
 	UniversalWidgetOptions,
@@ -15,7 +17,11 @@ export type TkWidgetOptions = UniversalWidgetOptions & {
 	parent: BaseWidgetWithTermKitAddons
 }
 
-export default abstract class TkBaseWidget implements BaseWidget {
+export default abstract class TkBaseWidget<
+		Contract extends EventContract = EventContract
+	>
+	extends AbstractEventEmitter<Contract>
+	implements BaseWidget<Contract> {
 	public type = 'abstract'
 	protected parent: BaseWidgetWithTermKitAddons | null
 	protected term: Terminal
@@ -36,6 +42,9 @@ export default abstract class TkBaseWidget implements BaseWidget {
 	}
 
 	public constructor(options: TkWidgetOptions) {
+		const eventContract = options.eventContract ?? {eventSignatures: []}
+		super(eventContract)
+
 		this.parent = options.parent ?? null
 		this.term = options.term
 		this.id = options.id ?? null
@@ -73,7 +82,11 @@ export default abstract class TkBaseWidget implements BaseWidget {
 				height: element.outputHeight,
 			}
 		}
-		throw new Error('Widget does not implement getFrame()')
+		throw new Error(
+			element
+				? `${this.type} does not implement getFrame()`
+				: `${this.type} does not implement getTermKitElement()`
+		)
 	}
 
 	public setFrame(frame: Partial<WidgetFrame>): void {

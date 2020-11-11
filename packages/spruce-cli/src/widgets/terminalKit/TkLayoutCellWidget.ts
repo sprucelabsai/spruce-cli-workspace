@@ -29,8 +29,8 @@ export default class TkLayoutCellWidget
 		return {
 			left: this.cell.outputDst.x,
 			top: this.cell.outputDst.y,
-			width: this.cell.outputDst.width,
-			height: this.cell.outputDst.height,
+			width: this.cell.inputWidth,
+			height: this.cell.inputHeight,
 		}
 	}
 

@@ -48,14 +48,13 @@ export default class TestReporter {
 		this.window = this.widgetFactory.Widget('window', {})
 		this.window.hideCursor()
 
+		this.dropInMenu()
 		this.dropInProgressBar()
 		this.dropInLayout()
 		this.dropInTestLog()
-		this.dropInMenu()
-
-		return
 
 		this.attachGlobalKeyPressListener()
+		return
 
 		this.updateInterval = setInterval(this.refreshResults.bind(this), 2000)
 	}
@@ -71,8 +70,8 @@ export default class TestReporter {
 					value: 'quit',
 				},
 				{
-					label: 'Quit',
-					value: 'quit',
+					label: 'Restart',
+					value: 'restart',
 				},
 			],
 		})
@@ -116,6 +115,10 @@ export default class TestReporter {
 	}
 
 	private attachGlobalKeyPressListener() {
+		this.window.on('key', (payload) => {
+			debugger
+		})
+		return
 		this.term.on('key', async (key: string) => {
 			switch (key) {
 				case 'CTRL_C':
@@ -171,7 +174,7 @@ export default class TestReporter {
 		this.bar = this.widgetFactory.Widget('progressBar', {
 			parent: this.window,
 			left: 1,
-			top: 1,
+			top: 2,
 			width: this.window.getFrame().width - 2,
 			shouldLockWidthWithParent: true,
 			label: 'Booting Jest...',
@@ -183,8 +186,8 @@ export default class TestReporter {
 		this.layout = this.widgetFactory.Widget('layout', {
 			parent: this.window,
 			width: '100%',
-			top: 2,
-			height: this.window.getFrame().height - 1,
+			top: 3,
+			height: this.window.getFrame().height - 4,
 			shouldLockWidthWithParent: true,
 			shouldLockHeightWithParent: true,
 			rows: [

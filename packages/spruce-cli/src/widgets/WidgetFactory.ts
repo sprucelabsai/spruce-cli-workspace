@@ -1,6 +1,7 @@
 import terminal_kit, { Terminal } from 'terminal-kit'
 import TkLayoutCellWidget from './terminalKit/TkLayoutCellWidget'
 import TkLayoutWidget from './terminalKit/TkLayoutWidget'
+import TkMenuBarWidget from './terminalKit/TkMenuBarWidget'
 import TkProgressBarWidget from './terminalKit/TkProgressBarWidget'
 import TkTextWidget from './terminalKit/TkTextWidget'
 import TkWindowWidget from './terminalKit/TkWindowWidget'
@@ -13,6 +14,7 @@ const widgetRegistry = {
 	layout: TkLayoutWidget,
 	layoutCell: TkLayoutCellWidget,
 	progressBar: TkProgressBarWidget,
+	menuBar: TkMenuBarWidget,
 }
 
 export default class WidgetFactory {

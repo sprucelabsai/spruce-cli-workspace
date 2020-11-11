@@ -22,8 +22,7 @@ const widgetUtil = {
 				)
 			}
 
-			// -2 is for border width, add border support to basewidget when this causes problems
-			height = parent.getFrame().height * (parseInt(height, 10) / 100) - 2
+			height = parent.getFrame().height * (parseInt(height, 10) / 100)
 		}
 
 		return { left, top, height, width } as Partial<WidgetFrameCalculated>
