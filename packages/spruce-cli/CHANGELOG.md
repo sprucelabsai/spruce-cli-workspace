@@ -3,6 +3,123 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.10.13](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.12...v11.10.13) (2020-11-11)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [11.10.12](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.11...v11.10.12) (2020-11-11)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [11.10.11](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.10...v11.10.11) (2020-11-11)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [11.10.10](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.9...v11.10.10) (2020-11-10)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [11.10.9](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.8...v11.10.9) (2020-11-10)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [11.10.8](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.7...v11.10.8) (2020-11-10)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [11.10.7](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.6...v11.10.7) (2020-11-10)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [11.10.6](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.5...v11.10.6) (2020-11-10)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [11.10.5](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.4...v11.10.5) (2020-11-09)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [11.10.4](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.3...v11.10.4) (2020-11-09)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [11.10.3](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.2...v11.10.3) (2020-11-09)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [11.10.2](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.1...v11.10.2) (2020-11-09)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [11.10.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.0...v11.10.1) (2020-11-09)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+# [11.10.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.9.10...v11.10.0) (2020-11-08)
+
+
+### Features
+
+* errer message check. pattern on test ([fc9bd62](https://github.com/sprucelabsai/spruce-cli-workspace/commit/fc9bd62))
+* optional inspect flag with spruce test ([459279d](https://github.com/sprucelabsai/spruce-cli-workspace/commit/459279d))
+* test reporter improvements ([287d7fe](https://github.com/sprucelabsai/spruce-cli-workspace/commit/287d7fe))
+
+
+
+
+
 ## [11.9.10](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.9.9...v11.9.10) (2020-11-08)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
