@@ -1,8 +1,8 @@
 import { AbstractEventEmitter } from '@sprucelabs/mercury-event-emitter'
-import { buildContract, MercuryEventEmitter } from '@sprucelabs/mercury-types'
+import { buildEventContract, MercuryEventEmitter } from '@sprucelabs/mercury-types'
 import watcherDidDetectChangesEmitPayloadSchema from '#spruce/schemas/spruceCli/v2020_07_22/watcherDidDetectChangesEmitPayload.schema'
 
-const contract = buildContract({
+const contract = buildEventContract({
 	eventSignatures: [
 		{
 			eventNameWithOptionalNamespace: 'watcher.did-detect-change',
