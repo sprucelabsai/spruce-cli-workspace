@@ -33,7 +33,6 @@ export default class FeatureCommandAttacher {
 	}
 
 	private attachCode(code: string, feature: AbstractFeature) {
-		try {
 			const prefix = namesUtil.toCamel(feature.code)
 			const commandStr = prefix === code ? code : `${prefix}.${code}`
 			const action = feature.Action(code)
@@ -59,11 +58,6 @@ export default class FeatureCommandAttacher {
 			if (definition) {
 				this.attachOptions(command, definition)
 			}
-		} catch (err) {
-			log.warn(
-				`I could not attach the ${code} action from the ${feature.nameReadable} feature to the command line.... skipping.`
-			)
-		}
 	}
 
 	private attachOptions(

@@ -1,9 +1,16 @@
-import { EventContract, MercuryEventEmitter } from '@sprucelabs/mercury-types'
+import { buildEventContract, EventContract, MercuryEventEmitter } from '@sprucelabs/mercury-types'
+import keySelectChoices from './keySelectChoices'
 
 export interface WidgetButton {
 	label: string
 	onClick?: (cb: () => void) => void
 }
+
+// const emptyEventContract = buildEventContract({
+// 	eventSignatures: []
+// } as const)
+
+// type EmptyEventContract = typeof emptyEventContract
 
 export interface BaseWidget<Contract extends EventContract = EventContract>
 	extends MercuryEventEmitter<Contract> {
@@ -56,9 +63,33 @@ export interface TableWidget extends BaseWidget {
 // **** //
 
 // ** Window Widget ** //
+export const windowEventContract = buildEventContract({
+	eventSignatures: [
+		{
+			eventNameWithOptionalNamespace: 'key',
+			emitPayloadSchema: {
+				id: 'windowKeyEmitPayload',
+				fields: {
+					test: {
+						type: 'text',
+					},
+					key: {
+						type: 'select',
+						options: {
+							choices: keySelectChoices
+						}
+					}
+				}
+			}
+		}
+	]
+} as const)
+
+export type WindowEventContract = typeof windowEventContract
+
 export interface WindowWidgetOptions {}
 
-export interface WindowWidget extends BaseWidget {
+export interface WindowWidget<Contract extends WindowEventContract = WindowEventContract> extends BaseWidget<Contract> {
 	readonly type: 'window'
 	hideCursor: () => void
 	showCursor: () => void

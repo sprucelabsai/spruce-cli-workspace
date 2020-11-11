@@ -5,7 +5,7 @@ import TkMenuBarWidget from './terminalKit/TkMenuBarWidget'
 import TkProgressBarWidget from './terminalKit/TkProgressBarWidget'
 import TkTextWidget from './terminalKit/TkTextWidget'
 import TkWindowWidget from './terminalKit/TkWindowWidget'
-import { FactoryOptions, WidgetRegistry, WidgetType } from './widgets.types'
+import { FactoryOptions, WidgetRegistry, WidgetType,windowEventContract } from './widgets.types'
 const termKit = terminal_kit as any
 
 const widgetRegistry = {
@@ -15,6 +15,10 @@ const widgetRegistry = {
 	layoutCell: TkLayoutCellWidget,
 	progressBar: TkProgressBarWidget,
 	menuBar: TkMenuBarWidget,
+}
+
+const contractRegistry = {
+	window: windowEventContract
 }
 
 export default class WidgetFactory {
@@ -30,7 +34,7 @@ export default class WidgetFactory {
 		const Class = widgetRegistry[type]
 
 		//@ts-ignore
-		const instance = new Class({ ...options, term: this.term })
+		const instance = new Class({ ...options, term: this.term, eventContract: contractRegistry[type] })
 
 		return instance as WidgetRegistry[T]
 	}

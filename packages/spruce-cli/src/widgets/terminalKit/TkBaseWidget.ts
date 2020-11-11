@@ -42,8 +42,7 @@ export default abstract class TkBaseWidget<
 	}
 
 	public constructor(options: TkWidgetOptions) {
-		const eventContract = options.eventContract ?? {eventSignatures: []}
-		super(eventContract)
+		super(options.eventContract ?? {eventSignatures: []})
 
 		this.parent = options.parent ?? null
 		this.term = options.term
@@ -52,7 +51,7 @@ export default abstract class TkBaseWidget<
 		this.shouldLockWidthToParent = options.shouldLockWidthWithParent ?? false
 
 		if (this.parent) {
-			this.parent.addChild(this)
+			this.parent.addChild(this as TkBaseWidget)
 		}
 	}
 

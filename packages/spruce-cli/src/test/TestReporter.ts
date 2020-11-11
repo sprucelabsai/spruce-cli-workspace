@@ -116,6 +116,7 @@ export default class TestReporter {
 
 	private attachGlobalKeyPressListener() {
 		this.window.on('key', (payload) => {
+			console.log(payload.key)
 			debugger
 		})
 		return
