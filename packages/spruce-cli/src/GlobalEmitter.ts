@@ -1,11 +1,10 @@
 import { AbstractEventEmitter } from '@sprucelabs/mercury-event-emitter'
 import {
-	buildEventContract,
 	MercuryEventEmitter,
 } from '@sprucelabs/mercury-types'
 import watcherDidDetectChangesEmitPayloadSchema from '#spruce/schemas/spruceCli/v2020_07_22/watcherDidDetectChangesEmitPayload.schema'
 
-const contract = buildEventContract({
+const contract = {
 	eventSignatures: [
 		{
 			eventNameWithOptionalNamespace: 'watcher.did-detect-change',
@@ -15,7 +14,7 @@ const contract = buildEventContract({
 			eventNameWithOptionalNamespace: 'skill.register-dashboard-widgets',
 		},
 	],
-} as const)
+} as const
 
 type CliContract = typeof contract
 export type GlobalEmitter = MercuryEventEmitter<CliContract>

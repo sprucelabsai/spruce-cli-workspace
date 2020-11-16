@@ -10,11 +10,18 @@ export default class VsCodeFeature extends AbstractFeature {
 	public code: FeatureCode = 'vscode'
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
-	public async afterPackageInstall() {
-		throw new SpruceError({
-			code: 'VSCODE_NOT_INSTALLED',
-		})
+	public isInstalled = async () =>{
+		const command = this.Service('command')
+		
+		try {
+			await command.execute('which code')
+		} catch (err) {
+			throw new SpruceError({
+				code: 'VSCODE_NOT_INSTALLED',
+			})
+		}
 
-		return {}
+
+		return true
 	}
 }
