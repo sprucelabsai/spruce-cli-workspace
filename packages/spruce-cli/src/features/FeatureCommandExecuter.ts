@@ -147,7 +147,6 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		let response: FeatureInstallResponse = {}
 		let installCount = 0
 
-
 		if (notInstalled.length > 0) {
 			this.ui.renderLine(
 				this.generateConfirmInstallMessage(notInstalled) + '\n'
@@ -263,7 +262,11 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			})
 
 			if (response !== 'yes') {
-				this.ui.renderLine(response === 'alwaysSkip' ? 'Skipping forever!' : 'Cool, skipping for now.')
+				this.ui.renderLine(
+					response === 'alwaysSkip'
+						? 'Skipping forever!'
+						: 'Cool, skipping for now.'
+				)
 
 				if (response === 'skip') {
 					this.featureInstaller.markAsSkippedThisRun(feature.code)
@@ -317,9 +320,13 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 					dependency.code
 				)
 
-				const isMarkedAsSkipped = this.featureInstaller.isMarkedAsSkipped(feature.code)
+				const isMarkedAsSkipped = this.featureInstaller.isMarkedAsSkipped(
+					feature.code
+				)
 
-				if (isMarkedAsSkipped) {return null}
+				if (isMarkedAsSkipped) {
+					return null
+				}
 
 				return !isInstalled ? { feature, ...dependency } : null
 			})
