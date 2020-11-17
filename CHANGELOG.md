@@ -3,6 +3,198 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.10.37](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.36...v11.10.37) (2020-11-16)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.36](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.35...v11.10.36) (2020-11-16)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.35](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.34...v11.10.35) (2020-11-16)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.34](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.33...v11.10.34) (2020-11-16)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.33](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.32...v11.10.33) (2020-11-15)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.32](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.31...v11.10.32) (2020-11-15)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.31](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.30...v11.10.31) (2020-11-15)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.30](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.29...v11.10.30) (2020-11-14)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.29](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.28...v11.10.29) (2020-11-14)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.28](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.27...v11.10.28) (2020-11-14)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.27](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.26...v11.10.27) (2020-11-14)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.26](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.25...v11.10.26) (2020-11-14)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.25](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.24...v11.10.25) (2020-11-13)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.24](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.23...v11.10.24) (2020-11-13)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.23](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.22...v11.10.23) (2020-11-13)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.22](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.21...v11.10.22) (2020-11-13)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.21](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.20...v11.10.21) (2020-11-13)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.20](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.19...v11.10.20) (2020-11-12)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.19](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.18...v11.10.19) (2020-11-12)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.18](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.17...v11.10.18) (2020-11-12)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.17](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.16...v11.10.17) (2020-11-12)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.16](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.15...v11.10.16) (2020-11-12)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.15](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.14...v11.10.15) (2020-11-11)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [11.10.14](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.13...v11.10.14) (2020-11-11)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
 ## [11.10.13](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.12...v11.10.13) (2020-11-11)
 
 **Note:** Version bump only for package spruce-cli-workspace
