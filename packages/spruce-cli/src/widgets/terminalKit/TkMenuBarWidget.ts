@@ -28,6 +28,11 @@ export default class TkMenuBarWidget
 		})
 
 		this.calculateSizeLockDeltas()
+		this.menu.on('submit', this.handleMenuSubmit.bind(this))
+	}
+
+	private handleMenuSubmit(value: string) {
+		void (this as MenuBarWidget).emit('select', { value })
 	}
 
 	public getTermKitElement() {
@@ -38,6 +43,7 @@ export default class TkMenuBarWidget
 		return items.map((item) => ({
 			value: item.value,
 			content: ` ${item.label} `,
+			topSubmit: !item.items || item.items.length === 0,
 		}))
 	}
 }

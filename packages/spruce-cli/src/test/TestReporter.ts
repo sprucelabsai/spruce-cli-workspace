@@ -46,6 +46,7 @@ export default class TestReporter {
 		this.started = true
 
 		this.window = this.widgetFactory.Widget('window', {})
+		this.handleGlobalKeypress()
 		this.window.hideCursor()
 
 		this.dropInMenu()
@@ -53,7 +54,6 @@ export default class TestReporter {
 		this.dropInLayout()
 		this.dropInTestLog()
 
-		this.attachGlobalKeyPressListener()
 		return
 
 		this.updateInterval = setInterval(this.refreshResults.bind(this), 2000)
@@ -76,6 +76,8 @@ export default class TestReporter {
 			],
 		})
 
+		void this.menu.on('select', this.handleMenuSelect.bind(this))
+
 		return
 		this.menu = new termKit.RowMenu({
 			parent: this.document,
@@ -97,8 +99,8 @@ export default class TestReporter {
 		this.menu.on('submit', this.handleMenuOption.bind(this))
 	}
 
-	private handleMenuOption(action: 'quit' | 'restart') {
-		switch (action) {
+	private handleMenuSelect(payload: { value: string }) {
+		switch (payload.value) {
 			case 'quit':
 				this.handleDone()
 				break
@@ -114,14 +116,9 @@ export default class TestReporter {
 		}
 	}
 
-	private attachGlobalKeyPressListener() {
-		this.window.on('key', (payload) => {
-			console.log(payload.key)
-			debugger
-		})
-		return
-		this.term.on('key', async (key: string) => {
-			switch (key) {
+	private handleGlobalKeypress() {
+		void this.window.on('key', async (payload) => {
+			switch (payload.key) {
 				case 'CTRL_C':
 					this.onQuit?.()
 					await this.destroy()
@@ -408,6 +405,6 @@ export default class TestReporter {
 
 	public async destroy() {
 		clearInterval(this.updateInterval)
-		this.window.destroy()
+		await this.window.destroy()
 	}
 }

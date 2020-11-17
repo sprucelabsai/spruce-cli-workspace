@@ -1,13 +1,12 @@
 import terminal_kit from 'terminal-kit'
-import { WindowWidget, WindowWidgetOptions ,WindowEventContract} from '../widgets.types'
+import { Key } from '../keySelectChoices'
+import { WindowWidget, WindowWidgetOptions } from '../widgets.types'
 import TkBaseWidget, { TkWidgetOptions } from './TkBaseWidget'
 const termKit = terminal_kit as any
 
-// const eventContract = buildEvent
-
-export default class TkWindowWidget<Contract extends WindowEventContract = WindowEventContract>
-	extends TkBaseWidget<Contract>
-	implements WindowWidget<Contract> {
+export default class TkWindowWidget
+	extends TkBaseWidget
+	implements WindowWidget {
 	public readonly type = 'window'
 
 	private document: any
@@ -27,8 +26,8 @@ export default class TkWindowWidget<Contract extends WindowEventContract = Windo
 		options.term.on('key', this.handleKeyPress.bind(this))
 	}
 
-	private handleKeyPress(key: string) {
-		this.emit('key', { key })
+	private handleKeyPress(key: Key) {
+		void (this as WindowWidget).emit('key', { key })
 	}
 
 	protected handleParentResize() {
@@ -60,11 +59,14 @@ export default class TkWindowWidget<Contract extends WindowEventContract = Windo
 		return this.document
 	}
 
-	public destroy() {
+	public async destroy() {
 		this.showCursor()
-		this.term.removeAllListeners('key')
+		//@ts-ignore
+		this.term.removeAllListeners()
 		this.term.styleReset()
-		this.term.grabInput(false, true)
+
+		await this.term.grabInput(false, true)
+
 		this.term(`\n`)
 	}
 }
