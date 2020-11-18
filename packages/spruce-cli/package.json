@@ -43,8 +43,8 @@
 		"clean.all": "rm -rf build/ && rm -rf node_modules/ && yarn clean.cache",
 		"clean.cache": "rm -rf src/.spruce/tmp && node build/test/cleanTestCache",
 		"release": "semantic-release",
-		"start": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node . $COMMANDS",
-		"local": "echo $COMMANDS && DEBUG=@sprucelabs/cli~debug node --inspect=5200 . $COMMANDS",
+		"start": "DEBUG=@sprucelabs/cli~debug node . $COMMANDS",
+		"local": "DEBUG=@sprucelabs/cli~debug node --inspect=5200 . $COMMANDS ; echo 'DONE'",
 		"test": "yarn test.cache && jest",
 		"test.cache": "node build/test/buildTestCache",
 		"test.watch": "yarn test.cache && jest --watch"
