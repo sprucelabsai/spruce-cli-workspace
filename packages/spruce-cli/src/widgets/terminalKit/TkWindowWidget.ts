@@ -25,14 +25,11 @@ export default class TkWindowWidget
 
 		options.term.on('key', this.handleKeyPress.bind(this))
 
-		debugger
 		process.on('exit', (code: number) => {
-			debugger
 			void (this as WindowWidget).emit('kill', { code })
 		})
 
 		process.on('SIGQUIT', (code: number) => {
-			debugger
 			void (this as WindowWidget).emit('kill', { code })
 		})
 
@@ -45,7 +42,6 @@ export default class TkWindowWidget
 		})
 
 		process.on('SIGTERM', (code: number) => {
-			debugger
 			void (this as WindowWidget).emit('kill', { code })
 		})
 
