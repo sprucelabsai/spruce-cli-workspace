@@ -24,6 +24,42 @@ export default class TkWindowWidget
 		})
 
 		options.term.on('key', this.handleKeyPress.bind(this))
+
+		debugger
+		process.on('exit', (code: number) => {
+			debugger
+			void (this as WindowWidget).emit('kill', { code })
+		})
+
+		process.on('SIGQUIT', (code: number) => {
+			debugger
+			void (this as WindowWidget).emit('kill', { code })
+		})
+
+		process.on('kill', (code: number) => {
+			void (this as WindowWidget).emit('kill', { code })
+		})
+
+		process.on('SIGINT', (code: number) => {
+			void (this as WindowWidget).emit('kill', { code })
+		})
+
+		process.on('SIGTERM', (code: number) => {
+			debugger
+			void (this as WindowWidget).emit('kill', { code })
+		})
+
+		process.on('SIGUSR1', (code: number) => {
+			void (this as WindowWidget).emit('kill', { code })
+		})
+
+		process.on('SIGUSR2', (code: number) => {
+			void (this as WindowWidget).emit('kill', { code })
+		})
+
+		process.on('uncaughtException', (code: number) => {
+			void (this as WindowWidget).emit('kill', { code })
+		})
 	}
 
 	private handleKeyPress(key: Key) {
@@ -66,6 +102,11 @@ export default class TkWindowWidget
 		this.term.styleReset()
 
 		await this.term.grabInput(false, true)
+
+		// termkit destroys all children, so we don't need to call for each children
+		// this may change if destroy is required in other widgets and there appears
+		// to be no penalty for calling destroy multiple times
+		this.document.destroy()
 
 		this.term(`\n`)
 	}

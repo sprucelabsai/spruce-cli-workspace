@@ -51,6 +51,7 @@ export type WidgetFrameAttribute = number | string
 // ** Table Widget **//
 
 export interface TableWidgetOptions {}
+
 export interface TableWidget extends BaseWidget {
 	type: 'table'
 }
@@ -71,6 +72,18 @@ export const windowEventContract = {
 						options: {
 							choices: keySelectChoices,
 						},
+					},
+				},
+			}),
+		},
+		{
+			eventNameWithOptionalNamespace: 'kill',
+			emitPayloadSchema: buildSchema({
+				id: 'killEmitPayload',
+				fields: {
+					code: {
+						type: 'number',
+						isRequired: true,
 					},
 				},
 			}),
@@ -98,6 +111,8 @@ export interface TextWidgetOptions {
 
 export interface TextWidget extends BaseWidget {
 	readonly type: 'text'
+	getContent(): string
+	setContent(content: string): void
 }
 // **** //
 
@@ -119,6 +134,11 @@ export type LayoutColumn = {
 
 export interface LayoutWidget extends BaseWidget {
 	readonly type: 'layout'
+
+	getRows(): any[]
+	addRow(row: LayoutRow): void
+	setRowHeight(rowIdx: number, height: WidgetFrameAttribute): void
+	updateLayout(): void
 }
 // **** //
 

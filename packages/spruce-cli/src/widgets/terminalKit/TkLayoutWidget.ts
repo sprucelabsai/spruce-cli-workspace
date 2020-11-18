@@ -1,7 +1,13 @@
-import { isObject } from 'lodash'
 import terminal_kit from 'terminal-kit'
 import SpruceError from '../../errors/SpruceError'
-import { LayoutWidget, LayoutWidgetOptions } from '../widgets.types'
+import {
+	LayoutColumn,
+	LayoutRow,
+	LayoutWidget,
+	LayoutWidgetOptions,
+	WidgetFrameAttribute,
+} from '../widgets.types'
+import termKitUtil from './termKit.utility'
 import TkBaseWidget, { TkWidgetOptions } from './TkBaseWidget'
 import TkLayoutCellWidget from './TkLayoutCellWidget'
 const termKit = terminal_kit as any
@@ -16,7 +22,7 @@ export default class TkLayoutWidget
 	public constructor(options: TkWidgetOptions & LayoutWidgetOptions) {
 		super(options)
 
-		const mappedOptions = this.mapWidgetOptionsToTermKitOptions(options)
+		const mappedOptions = termKitUtil.mapWidgetOptionsToTermKitOptions(options)
 
 		const {
 			parent,
@@ -71,7 +77,7 @@ export default class TkLayoutWidget
 		}
 	}
 
-	public destroy() {
+	public async destroy() {
 		this.layout.destroy()
 	}
 
@@ -82,51 +88,47 @@ export default class TkLayoutWidget
 		this.sizeLockedChildren()
 	}
 
-	private mapWidgetOptionsToTermKitOptions(options: Record<string, any>) {
-		const mapped: Record<string, any> = {}
-		const keys = Object.keys(options)
+	public getRows(): LayoutRow[] {
+		const rows = this.layout.layoutDef.rows
+		const layoutRows = this.termKitRowsToLayoutRows(rows)
 
-		for (const key of keys) {
-			const item = options[key]
-			if (Array.isArray(item)) {
-				mapped[key] = []
-				for (const i of item) {
-					mapped[key].push(this.mapWidgetOptionsToTermKitOptions(i))
-				}
-			} else {
-				switch (key) {
-					case 'left':
-						mapped.x = item
-						break
-					case 'top':
-						mapped.y = item
-						break
-					case 'width':
-						if (typeof item === 'string') {
-							mapped.widthPercent = parseInt(item)
-						} else {
-							mapped.width = item
-						}
-						break
-					case 'height':
-						if (typeof item === 'string') {
-							mapped.heightPercent = parseInt(item)
-						} else {
-							mapped.height = item
-						}
-						break
-					case 'parent':
-						mapped.parent = item.getTermKitElement()
-						break
-					default:
-						if (typeof item !== 'function' && isObject(item)) {
-							mapped[key] = this.mapWidgetOptionsToTermKitOptions(item)
-						} else {
-							mapped[key] = item
-						}
-				}
-			}
+		return layoutRows
+	}
+
+	private termKitRowsToLayoutRows(rows: any): LayoutRow[] {
+		return rows.map((row: any) => ({
+			...termKitUtil.mapTermKitOptionsToWidgetOptions(row),
+			columns: this.termKitColumnsToLayoutColumns(row.columns),
+		}))
+	}
+
+	private termKitColumnsToLayoutColumns(columns: any) {
+		return columns.map((col: any) =>
+			termKitUtil.mapTermKitOptionsToWidgetOptions(col)
+		)
+	}
+
+	public addRow(row: LayoutRow): void {
+		this.layout.layoutDef.rows.push({
+			...termKitUtil.mapWidgetOptionsToTermKitOptions(row),
+			columns: this.widgetColumnsToTermKitColumns(row.columns),
+		})
+	}
+
+	private widgetColumnsToTermKitColumns(columns: LayoutColumn[]) {
+		return columns.map((column) => ({
+			...termKitUtil.mapWidgetOptionsToTermKitOptions(column),
+		}))
+	}
+
+	public setRowHeight(rowIdx: number, height: WidgetFrameAttribute): void {
+		this.layout.layoutDef.rows[rowIdx] = {
+			...this.layout.layoutDef.rows[rowIdx],
+			...termKitUtil.mapWidgetOptionsToTermKitOptions({ height }),
 		}
-		return mapped
+	}
+
+	public updateLayout() {
+		this.setFrame()
 	}
 }

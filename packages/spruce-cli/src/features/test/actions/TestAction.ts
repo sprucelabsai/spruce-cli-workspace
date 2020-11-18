@@ -92,8 +92,6 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			totalTestFiles: 0,
 		}
 
-		await new Promise(() => {})
-
 		try {
 			const debugArgs = (inspect ?? 0) > 0 ? `--inspect-brk=${inspect}` : ``
 			const jestPath = this.resolvePathToJest()

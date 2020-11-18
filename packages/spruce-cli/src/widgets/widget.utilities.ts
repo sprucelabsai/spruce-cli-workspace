@@ -12,7 +12,7 @@ const widgetUtil = {
 			}
 
 			// -2 is for border width, add border support to basewidget when this causes problems
-			width = parent.getFrame().width * (parseInt(width, 10) / 100) - 2
+			width = parent.getFrame().width * (parseInt(width, 10) / 100)
 		}
 
 		if (typeof height === 'string') {

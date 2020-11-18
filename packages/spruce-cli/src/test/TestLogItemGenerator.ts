@@ -77,19 +77,17 @@ export default class TestLogItemGenerator {
 	public generateErrorLogItemForFile(file: SpruceTestFile): string {
 		let errorContent = ''
 
-		if (file.status === 'failed') {
-			file.tests?.forEach((test) => {
-				test.errorMessages?.forEach((message) => {
-					errorContent += `${chalk.red(file.path)}\n`
-					errorContent += ` - ${chalk.red(test.name)}\n\n`
-					errorContent += message + '\n\n\n'
-				})
-			})
-
-			if (!errorContent && file.errorMessage) {
+		file.tests?.forEach((test) => {
+			test.errorMessages?.forEach((message) => {
 				errorContent += `${chalk.red(file.path)}\n`
-				errorContent += file.errorMessage + '\n\n\n'
-			}
+				errorContent += ` - ${chalk.red(test.name)}\n\n`
+				errorContent += message + '\n\n\n'
+			})
+		})
+
+		if (!errorContent && file.errorMessage) {
+			errorContent += `${chalk.red(file.path)}\n`
+			errorContent += file.errorMessage + '\n\n\n'
 		}
 
 		return errorContent

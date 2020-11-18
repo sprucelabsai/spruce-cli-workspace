@@ -42,7 +42,7 @@ export default abstract class TkBaseWidget<
 	}
 
 	public constructor(options: TkWidgetOptions) {
-		super(options.eventContract ?? {eventSignatures: []})
+		super(options.eventContract ?? { eventSignatures: [] })
 
 		this.parent = options.parent ?? null
 		this.term = options.term
@@ -153,7 +153,7 @@ export default abstract class TkBaseWidget<
 		}
 	}
 
-	public destroy() {}
+	public async destroy() {}
 
 	public getTermKitElement(): any | null {
 		return null
