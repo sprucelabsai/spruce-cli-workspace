@@ -85,7 +85,7 @@ export default abstract class AbstractFeature<
 
 		this.actionFactoryOptions = {
 			...options,
-			parent: this,
+			parent: this as AbstractFeature<any>,
 			generatorFactory: this.generatorFactory,
 		}
 	}
@@ -114,7 +114,7 @@ export default abstract class AbstractFeature<
 		return this.featureInstaller.getFeature(code)
 	}
 
-	public Action(code: string): FeatureAction {
+	public Action<S extends ISchema = ISchema>(code: string): FeatureAction<S> {
 		if (!this.actionFactory) {
 			if (!this.actionsDir) {
 				throw new Error(

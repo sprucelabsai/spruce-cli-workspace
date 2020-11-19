@@ -64,8 +64,8 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 		options: SchemaValues<S>
 	): Promise<FeatureActionResponse>
 
-	protected Action(name: string) {
-		return this.parent.Action(name)
+	protected Action<S extends ISchema = ISchema>(name: string) {
+		return this.parent.Action<S>(name)
 	}
 
 	public Service<S extends Service>(type: S, cwd?: string): IServiceMap[S] {
