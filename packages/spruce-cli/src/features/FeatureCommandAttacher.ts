@@ -2,7 +2,6 @@ import Schema, { ISchema } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { CommanderStatic } from 'commander'
 import SpruceError from '../errors/SpruceError'
-import log from '../singletons/log'
 import { GraphicsInterface } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
 import featuresUtil from './feature.utilities'
@@ -33,36 +32,30 @@ export default class FeatureCommandAttacher {
 	}
 
 	private attachCode(code: string, feature: AbstractFeature) {
-		try {
-			const prefix = namesUtil.toCamel(feature.code)
-			const commandStr = prefix === code ? code : `${prefix}.${code}`
-			const action = feature.Action(code)
+		const prefix = namesUtil.toCamel(feature.code)
+		const commandStr = prefix === code ? code : `${prefix}.${code}`
+		const action = feature.Action(code)
 
-			const executer = new FeatureCommandExecuter({
-				featureCode: feature.code,
-				actionCode: code,
-				featureInstaller: this.featureInstaller,
-				term: this.term,
-			})
+		const executer = new FeatureCommandExecuter({
+			featureCode: feature.code,
+			actionCode: code,
+			featureInstaller: this.featureInstaller,
+			term: this.term,
+		})
 
-			let command = this.program.command(commandStr).action(async (command) => {
-				await executer.execute(command.opts())
-			})
+		let command = this.program.command(commandStr).action(async (command) => {
+			await executer.execute(command.opts())
+		})
 
-			const description = action.optionsSchema?.description
-			if (description) {
-				command = command.description(description)
-			}
+		const description = action.optionsSchema?.description
+		if (description) {
+			command = command.description(description)
+		}
 
-			const definition = action.optionsSchema
+		const definition = action.optionsSchema
 
-			if (definition) {
-				this.attachOptions(command, definition)
-			}
-		} catch (err) {
-			log.warn(
-				`I could not attach the ${code} action from the ${feature.nameReadable} feature to the command line.... skipping.`
-			)
+		if (definition) {
+			this.attachOptions(command, definition)
 		}
 	}
 

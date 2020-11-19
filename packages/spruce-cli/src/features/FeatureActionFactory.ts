@@ -1,3 +1,4 @@
+import { ISchema } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../errors/SpruceError'
@@ -21,7 +22,7 @@ export default class FeatureActionFactory {
 		this.actionOptions = options
 	}
 
-	public Action(name: string): FeatureAction {
+	public Action<S extends ISchema = ISchema>(name: string): FeatureAction<S> {
 		const classPath = diskUtil.resolvePath(
 			this.actionsDir,
 			`${namesUtil.toPascal(name)}Action`
@@ -59,6 +60,6 @@ export default class FeatureActionFactory {
 			this.actionOptions.featureInstaller
 		)
 
-		return installCheckingFacade
+		return installCheckingFacade as FeatureAction<S>
 	}
 }

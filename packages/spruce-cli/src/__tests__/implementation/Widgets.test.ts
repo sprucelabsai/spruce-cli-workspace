@@ -1,21 +1,12 @@
-import { Readable, Writable } from 'stream'
 import { test, assert } from '@sprucelabs/test'
-import SpruceError from '../../errors/SpruceError'
 import AbstractCliTest from '../../test/AbstractCliTest'
 import WidgetFactory from '../../widgets/WidgetFactory'
-
-class MockInput extends Writable {}
-class MockOutput extends Readable {}
 
 export default class WidgetsTest extends AbstractCliTest {
 	private static factory: WidgetFactory
 
 	protected static async beforeEach() {
-		this.factory = new WidgetFactory({
-			debug: true,
-			input: new MockInput(),
-			output: new MockOutput(),
-		})
+		this.factory = new WidgetFactory()
 	}
 
 	@test()
@@ -24,71 +15,15 @@ export default class WidgetsTest extends AbstractCliTest {
 	}
 
 	@test()
-	protected static async canCreateLogWidget() {
-		const log = this.buildLog()
+	protected static async canCreateTextWidget() {
+		const log = this.buildText()
 		assert.isTruthy(log)
 	}
 
 	@test()
-	protected static async createsLogWhereExpected() {
-		const log = this.buildLog()
-		const frame = log.getFrame()
-		assert.isEqualDeep(frame, { left: 0, top: 0, width: 4, height: 4 })
-	}
-
-	@test()
-	protected static async canSetStartingPaddingTop() {
-		this.factory.setPaddingTop(0.9)
-		const log = this.buildLog()
-		assert.isEqualDeep(log.getFrame(), {
-			left: 0,
-			top: 0.9,
-			width: 4,
-			height: 4,
-		})
-	}
-
-	@test()
-	protected static async canRenderTwoWidgetsSideBySide() {
-		const firstLog = this.buildLog()
-		const secondLog = this.factory.Widget('table', { width: 6, height: 6 })
-
-		assert.isEqualDeep(firstLog.getFrame(), {
-			left: 0,
-			top: 0,
-			width: 4,
-			height: 4,
-		})
-
-		assert.isEqualDeep(secondLog.getFrame(), {
-			left: 4,
-			top: 0,
-			width: 6,
-			height: 6,
-		})
-	}
-
-	@test()
-	protected static async canRenderWithoutAutoLayout() {
-		const box1 = this.factory.Widget('box', {
-			width: 4,
-			height: 4,
-			useAutoLayout: false,
-		})
-		const box2 = this.factory.Widget('box', {
-			width: 4,
-			height: 4,
-			useAutoLayout: false,
-		})
-
-		assert.isEqualDeep(box1.getFrame(), {
-			left: 0,
-			top: 0,
-			width: 4,
-			height: 4,
-		})
-
-		assert.isEqualDeep(box2.getFrame(), {
+	protected static async setsStartingFrame() {
+		const text = this.buildText()
+		assert.isEqualDeep(text.getFrame(), {
 			left: 0,
 			top: 0,
 			width: 4,
@@ -97,24 +32,52 @@ export default class WidgetsTest extends AbstractCliTest {
 	}
 
 	@test()
-	protected static async cantUsePercentageWidthOrHeightWithAutoLayoutEnabled() {
-		const err = assert.doesThrow(
-			() =>
-				this.factory.Widget('box', {
-					width: '100%',
+	protected static canCreateWindow() {
+		const window = this.factory.Widget('window', {})
+		assert.isTruthy(window)
+	}
+
+	@test()
+	protected static canCreateProgressBar() {
+		const progress = this.factory.Widget('progressBar', {
+			progress: 0,
+		})
+		assert.isTruthy(progress)
+	}
+
+	@test()
+	protected static canCreateText() {
+		const text = this.factory.Widget('text', {})
+		assert.isTruthy(text)
+	}
+
+	@test.skip('enable when ready to fake termkit')
+	protected static canCreateLayout() {
+		const window = this.factory.Widget('window', {})
+		const layout = this.factory.Widget('layout', {
+			parent: window,
+			width: '100%',
+			rows: [
+				{
+					id: 'row_1',
 					height: '100%',
-				}),
-			/can't use percentage sizes/
-		) as SpruceError
+					columns: [
+						{
+							id: 'column_1',
+							width: '100%',
+						},
+					],
+				},
+			],
+		})
+		assert.isTruthy(layout)
 
-		if (err.options.code === 'INVALID_PARAMETERS') {
-			assert.isEqualDeep(err.options.parameters, ['width', 'height'])
-		} else {
-			assert.fail('Bad error returned')
-		}
+		const column = layout.getChildById('results')
+
+		assert.isTruthy(column)
 	}
 
-	private static buildLog() {
-		return this.factory.Widget('log', { width: 4, height: 4 })
+	private static buildText() {
+		return this.factory.Widget('text', { left: 0, top: 0, width: 4, height: 4 })
 	}
 }

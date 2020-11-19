@@ -85,6 +85,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 					this.commandService.kill()
 				},
 			})
+
 			await this.testReporter?.start()
 		}
 
@@ -112,14 +113,16 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			}
 		}
 
-		if (!restart && shouldWaitForConfirm && shouldReportWhileRunning) {
+		const shouldWait =
+			!restart && shouldWaitForConfirm && shouldReportWhileRunning
+
+		if (shouldWait) {
 			await this.testReporter?.waitForConfirm()
 		}
 
 		await this.testReporter?.destroy()
 
 		if (restart) {
-			this.ui.clear()
 			return this.runTests(options)
 		}
 
@@ -150,11 +153,11 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	) {
 		results.summaryLines = [
 			`Test files: ${testResults.totalTestFiles}`,
-			`Tests: ${testResults.totalTests}`,
-			`Passed: ${testResults.totalPassed}`,
-			`Failed: ${testResults.totalFailed}`,
-			`Skipped: ${testResults.totalSkipped}`,
-			`Todo: ${testResults.totalTodo}`,
+			`Tests: ${testResults.totalTests ?? '0'}`,
+			`Passed: ${testResults.totalPassed ?? '0'}`,
+			`Failed: ${testResults.totalFailed ?? '0'}`,
+			`Skipped: ${testResults.totalSkipped ?? '0'}`,
+			`Todo: ${testResults.totalTodo ?? '0'}`,
 		]
 
 		results.errors = this.generateErrorsFromTestResults(testResults)

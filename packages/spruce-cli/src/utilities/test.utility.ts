@@ -1,3 +1,5 @@
+import os from 'os'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { assert } from '@sprucelabs/test'
 import { GeneratedFile } from '../types/cli.types'
 
@@ -11,6 +13,10 @@ const testUtil = {
 	},
 	isCacheEnabled() {
 		return !hasArg(/no.*?cache/gi)
+	},
+
+	resolveCacheDir(cacheKey = '') {
+		return diskUtil.resolvePath(os.tmpdir(), 'spruce-cli', cacheKey)
 	},
 
 	assertCountsByAction(

@@ -30,6 +30,9 @@ export default class CommandService {
 		stdout: string
 	}> {
 		const cwd = this.cwd
+		const boundKill = this.kill.bind(this)
+
+		process.on('exit', boundKill)
 
 		return new Promise((resolve, reject) => {
 			const args = options?.args || stringArgv(cmd)
@@ -70,6 +73,8 @@ export default class CommandService {
 			})
 
 			child.addListener('close', (code) => {
+				process.off('exit', boundKill)
+
 				setTimeout(() => {
 					child.stdout?.removeAllListeners()
 					child.stderr?.removeAllListeners()
