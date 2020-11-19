@@ -3,6 +3,78 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.10.46](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.45...v11.10.46) (2020-11-18)
+
+**Note:** Version bump only for package @sprucelabs/spruce-templates
+
+
+
+
+
+## [11.10.45](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.44...v11.10.45) (2020-11-18)
+
+**Note:** Version bump only for package @sprucelabs/spruce-templates
+
+
+
+
+
+## [11.10.44](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.43...v11.10.44) (2020-11-18)
+
+**Note:** Version bump only for package @sprucelabs/spruce-templates
+
+
+
+
+
+## [11.10.43](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.42...v11.10.43) (2020-11-18)
+
+**Note:** Version bump only for package @sprucelabs/spruce-templates
+
+
+
+
+
+## [11.10.42](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.41...v11.10.42) (2020-11-18)
+
+**Note:** Version bump only for package @sprucelabs/spruce-templates
+
+
+
+
+
+## [11.10.41](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.40...v11.10.41) (2020-11-17)
+
+**Note:** Version bump only for package @sprucelabs/spruce-templates
+
+
+
+
+
+## [11.10.40](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.39...v11.10.40) (2020-11-17)
+
+**Note:** Version bump only for package @sprucelabs/spruce-templates
+
+
+
+
+
+## [11.10.39](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.38...v11.10.39) (2020-11-17)
+
+**Note:** Version bump only for package @sprucelabs/spruce-templates
+
+
+
+
+
+## [11.10.38](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.37...v11.10.38) (2020-11-17)
+
+**Note:** Version bump only for package @sprucelabs/spruce-templates
+
+
+
+
+
 ## [11.10.37](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.10.36...v11.10.37) (2020-11-16)
 
 **Note:** Version bump only for package @sprucelabs/spruce-templates
