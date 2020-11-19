@@ -6,6 +6,7 @@ import {
 	BaseWidget,
 	WidgetFrame,
 	WidgetFrameCalculated,
+	WidgetPadding,
 } from '../widgets.types'
 
 export type BaseWidgetWithTermKitAddons = BaseWidget & {
@@ -29,6 +30,7 @@ export default abstract class TkBaseWidget<
 	private children: BaseWidget[] = []
 	protected shouldLockWidthToParent = false
 	protected shouldLockHeightToParent = false
+	protected padding: WidgetPadding = {}
 	private frameLockDeltas: {
 		leftDelta: number
 		widthDelta: number
@@ -49,6 +51,13 @@ export default abstract class TkBaseWidget<
 		this.id = options.id ?? null
 		this.shouldLockHeightToParent = options.shouldLockHeightWithParent ?? false
 		this.shouldLockWidthToParent = options.shouldLockWidthWithParent ?? false
+		this.padding = {
+			left: 0,
+			top: 0,
+			right: 0,
+			bottom: 0,
+			...options.padding,
+		}
 
 		if (this.parent) {
 			this.parent.addChild(this as TkBaseWidget)

@@ -27,6 +27,7 @@ export interface UniversalWidgetOptions {
 	left?: WidgetFrameAttribute
 	top?: WidgetFrameAttribute
 	parent?: BaseWidget
+	padding?: WidgetPadding
 	shouldLockWidthWithParent?: boolean
 	shouldLockHeightWithParent?: boolean
 	eventContract?: EventContract
@@ -101,6 +102,13 @@ export interface WindowWidget extends BaseWidget<WindowEventContract> {
 	showCursor: () => void
 	setTitle: (title: string) => void
 }
+export interface WidgetPadding {
+	top?: number
+	left?: number
+	bottom?: number
+	right?: number
+}
+
 // **** //
 
 // ** Text Widget ** //

@@ -39,7 +39,9 @@ export default class WidgetsTest extends AbstractCliTest {
 
 	@test()
 	protected static canCreateProgressBar() {
-		const progress = this.factory.Widget('progressBar', {})
+		const progress = this.factory.Widget('progressBar', {
+			progress: 0,
+		})
 		assert.isTruthy(progress)
 	}
 

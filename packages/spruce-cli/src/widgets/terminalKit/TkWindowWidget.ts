@@ -97,7 +97,7 @@ export default class TkWindowWidget
 		this.term.removeAllListeners()
 		this.term.styleReset()
 
-		this.term.grabInput(false, true)
+		await this.term.grabInput(false, true)
 
 		// termkit destroys all children, so we don't need to call for each children
 		// this may change if destroy is required in other widgets and there appears

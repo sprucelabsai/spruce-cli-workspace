@@ -85,6 +85,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 					this.commandService.kill()
 				},
 			})
+
 			await this.testReporter?.start()
 		}
 
@@ -112,14 +113,16 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			}
 		}
 
-		if (!restart && shouldWaitForConfirm && shouldReportWhileRunning) {
+		const shouldWait =
+			!restart && shouldWaitForConfirm && shouldReportWhileRunning
+
+		if (shouldWait) {
 			await this.testReporter?.waitForConfirm()
 		}
 
 		await this.testReporter?.destroy()
 
 		if (restart) {
-			this.ui.clear()
 			return this.runTests(options)
 		}
 

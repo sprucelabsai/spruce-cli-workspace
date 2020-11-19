@@ -1,4 +1,3 @@
-import terminal_kit from 'terminal-kit'
 import { SpruceTestResults } from '../features/test/test.types'
 import { Key } from '../widgets/keySelectChoices'
 import WidgetFactory from '../widgets/WidgetFactory'
@@ -10,8 +9,6 @@ import {
 	WindowWidget,
 } from '../widgets/widgets.types'
 import TestLogItemGenerator from './TestLogItemGenerator'
-
-const termKit = terminal_kit as any
 
 interface TestReporterOptions {
 	onRestart?: () => void
@@ -55,8 +52,6 @@ export default class TestReporter {
 		this.dropInProgressBar()
 		this.dropInLayout()
 		this.dropInTestLog()
-
-		return
 
 		this.updateInterval = setInterval(this.refreshResults.bind(this), 2000)
 	}
@@ -238,6 +233,7 @@ export default class TestReporter {
 				enableScroll: true,
 				shouldLockHeightWithParent: true,
 				shouldLockWidthWithParent: true,
+				padding: { left: 1 },
 			})
 		}
 	}
@@ -300,8 +296,8 @@ export default class TestReporter {
 	public async waitForConfirm() {
 		return new Promise((resolve) => {
 			this.waitForDoneResolver = resolve
-			this.term.on('key', (key: string) => {
-				if (key === 'ENTER') {
+			void this.window.on('key', (payload) => {
+				if (payload.key === 'ENTER') {
 					this.handleDone()
 				}
 			})
