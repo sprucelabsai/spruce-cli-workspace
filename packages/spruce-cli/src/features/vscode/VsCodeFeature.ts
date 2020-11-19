@@ -10,9 +10,9 @@ export default class VsCodeFeature extends AbstractFeature {
 	public code: FeatureCode = 'vscode'
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
-	public isInstalled = async () =>{
+	public isInstalled = async () => {
 		const command = this.Service('command')
-		
+
 		try {
 			await command.execute('which code')
 		} catch (err) {
@@ -20,7 +20,6 @@ export default class VsCodeFeature extends AbstractFeature {
 				code: 'VSCODE_NOT_INSTALLED',
 			})
 		}
-
 
 		return true
 	}

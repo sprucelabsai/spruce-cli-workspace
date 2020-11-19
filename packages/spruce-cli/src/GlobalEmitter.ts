@@ -1,7 +1,5 @@
 import { AbstractEventEmitter } from '@sprucelabs/mercury-event-emitter'
-import {
-	MercuryEventEmitter,
-} from '@sprucelabs/mercury-types'
+import { MercuryEventEmitter } from '@sprucelabs/mercury-types'
 import watcherDidDetectChangesEmitPayloadSchema from '#spruce/schemas/spruceCli/v2020_07_22/watcherDidDetectChangesEmitPayload.schema'
 
 const contract = {
