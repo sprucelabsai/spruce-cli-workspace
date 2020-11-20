@@ -24,9 +24,7 @@ export interface IRemoteStoreSettings extends ILocalStoreSettings {
 	remote?: RemoteStoreRemoteType
 }
 
-export default class RemoteStore extends AbstractLocalStore<
-	IRemoteStoreSettings
-> {
+export default class RemoteStore extends AbstractLocalStore<IRemoteStoreSettings> {
 	/** Map of remote urls and subscriptions url */
 	public static remotes = {
 		[RemoteStoreRemoteType.Production]: {

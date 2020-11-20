@@ -139,9 +139,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		return `${this.featureCode}.${this.actionCode}`
 	}
 
-	private async installOrMarkAsSkippedMissingDependencies(): Promise<
-		FeatureInstallResponse
-	> {
+	private async installOrMarkAsSkippedMissingDependencies(): Promise<FeatureInstallResponse> {
 		const notInstalled = await this.getDependenciesNotInstalled()
 
 		let response: FeatureInstallResponse = {}

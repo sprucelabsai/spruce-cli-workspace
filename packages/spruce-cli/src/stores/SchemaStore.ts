@@ -184,9 +184,9 @@ export default class SchemaStore extends AbstractStore {
 						])
 					).map(async (file: string) => {
 						try {
-							const registration = await importService.importDefault<
-								IFieldRegistration
-							>(file)
+							const registration = await importService.importDefault<IFieldRegistration>(
+								file
+							)
 
 							return {
 								path: file,

@@ -7,9 +7,7 @@ export interface IOnboardingStoreSettings
 	extends ILocalStoreSettings,
 		SpruceSchemas.SpruceCli.v2020_07_22.IOnboarding {}
 
-export default class OnboardingStore extends AbstractLocalStore<
-	IOnboardingStoreSettings
-> {
+export default class OnboardingStore extends AbstractLocalStore<IOnboardingStoreSettings> {
 	public name = 'onboarding'
 	public schema = new Schema(onboardingSchema)
 
