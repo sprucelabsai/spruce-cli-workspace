@@ -294,7 +294,7 @@ export default class TestReporter {
 	}
 
 	public async waitForConfirm() {
-		return new Promise((resolve) => {
+		return new Promise((resolve: (_?: any) => void) => {
 			this.waitForDoneResolver = resolve
 			void this.window.on('key', (payload) => {
 				if (payload.key === 'ENTER') {
