@@ -4,9 +4,7 @@ import { IExtension } from '../../../services/VsCodeService'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
-export default class SetupAction extends AbstractFeatureAction<
-	SpruceSchemas.SpruceCli.v2020_07_22.ISetupVscodeActionSchema
-> {
+export default class SetupAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.ISetupVscodeActionSchema> {
 	private recommendedExtensions: IExtension[] = [
 		{
 			id: 'dbaeumer.vscode-eslint',

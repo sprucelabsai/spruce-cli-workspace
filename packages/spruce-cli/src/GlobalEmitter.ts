@@ -17,9 +17,7 @@ const contract = {
 type CliContract = typeof contract
 export type GlobalEmitter = MercuryEventEmitter<CliContract>
 
-export default class CliGlobalEmitter extends AbstractEventEmitter<
-	CliContract
-> {
+export default class CliGlobalEmitter extends AbstractEventEmitter<CliContract> {
 	public static Emitter() {
 		return new CliGlobalEmitter(contract) as GlobalEmitter
 	}
