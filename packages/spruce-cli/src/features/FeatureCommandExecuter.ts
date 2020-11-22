@@ -17,9 +17,7 @@ import {
 type FeatureCommandExecuteOptions<
 	F extends FeatureCode,
 	S extends ISchema | undefined = IFeatureMap[F]['optionsDefinition']
-> = S extends ISchema
-	? SchemaPartialValues<S>
-	: undefined
+> = S extends ISchema ? SchemaPartialValues<S> : undefined
 
 type FeatureDependencyWithFeature = FeatureDependency & {
 	feature: AbstractFeature

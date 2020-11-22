@@ -185,7 +185,10 @@ export default class FormComponent<S extends ISchema> extends SchemaEntity<S> {
 				fieldName,
 				//@ts-ignore
 				definition,
-				this.getValues({ validate: false, createEntityInstances: false }) as unknown as SchemaPartialValues<S>
+				(this.getValues({
+					validate: false,
+					createEntityInstances: false,
+				}) as unknown) as SchemaPartialValues<S>
 			)
 		}
 
