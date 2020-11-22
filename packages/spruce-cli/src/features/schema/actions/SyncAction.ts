@@ -13,9 +13,7 @@ import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 import SkillFeature from '../../skill/SkillFeature'
 
-export default class SyncAction extends AbstractFeatureAction<
-	SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasActionSchema
-> {
+export default class SyncAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasActionSchema> {
 	public name = 'Schema sync'
 	public optionsSchema = syncSchemasActionSchema
 

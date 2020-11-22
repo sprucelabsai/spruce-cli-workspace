@@ -15,10 +15,9 @@ import {
 } from './features.types'
 
 type FeatureCommandExecuteOptions<
-	F extends FeatureCode
-> = IFeatureMap[F]['optionsDefinition'] extends ISchema
-	? SchemaPartialValues<IFeatureMap[F]['optionsDefinition']>
-	: undefined | Record<string, any>
+	F extends FeatureCode,
+	S extends ISchema | undefined = IFeatureMap[F]['optionsDefinition']
+> = S extends ISchema ? SchemaPartialValues<S> : undefined
 
 type FeatureDependencyWithFeature = FeatureDependency & {
 	feature: AbstractFeature
@@ -139,9 +138,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		return `${this.featureCode}.${this.actionCode}`
 	}
 
-	private async installOrMarkAsSkippedMissingDependencies(): Promise<
-		FeatureInstallResponse
-	> {
+	private async installOrMarkAsSkippedMissingDependencies(): Promise<FeatureInstallResponse> {
 		const notInstalled = await this.getDependenciesNotInstalled()
 
 		let response: FeatureInstallResponse = {}
@@ -341,7 +338,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 
 	private async collectAnswers<S extends ISchema>(
 		schema: S,
-		options: FeatureCommandExecuteOptions<F> | undefined
+		options: FeatureCommandExecuteOptions<F, S> | undefined
 	) {
 		const fieldNames = Object.keys(schema.fields ?? {})
 		const providedFieldNames = options ? Object.keys(options ?? {}) : []
@@ -354,7 +351,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 
 		let answers = {}
 		if (fieldsToPresent.length > 0) {
-			const featureForm = new FormComponent({
+			const featureForm = new FormComponent<S>({
 				term: this.ui,
 				schema,
 				initialValues: options,

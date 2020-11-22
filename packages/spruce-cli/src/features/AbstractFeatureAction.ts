@@ -99,7 +99,7 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 			...options,
 		}
 
-		validateSchemaValues(schema, values as SchemaValues<ISchema>, {})
+		validateSchemaValues(schema, values, {})
 
 		const normalized = normalizeSchemaValues(schema, values)
 
