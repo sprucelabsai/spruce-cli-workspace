@@ -7,7 +7,7 @@ export interface WidgetButton {
 	onClick?: (cb: () => void) => void
 }
 
-export interface BaseWidget<Contract extends EventContract = EventContract>
+export interface BaseWidget<Contract extends EventContract = any>
 	extends MercuryEventEmitter<Contract> {
 	type: string
 	getId(): string | null
@@ -61,9 +61,8 @@ export interface TableWidget extends BaseWidget {
 
 // ** Window Widget ** //
 export const windowEventContract = {
-	eventSignatures: [
-		{
-			eventNameWithOptionalNamespace: 'key',
+	eventSignatures: {
+		key: {
 			emitPayloadSchema: buildSchema({
 				id: 'windowKeyEmitPayload',
 				fields: {
@@ -77,8 +76,7 @@ export const windowEventContract = {
 				},
 			}),
 		},
-		{
-			eventNameWithOptionalNamespace: 'kill',
+		kill: {
 			emitPayloadSchema: buildSchema({
 				id: 'killEmitPayload',
 				fields: {
@@ -89,8 +87,8 @@ export const windowEventContract = {
 				},
 			}),
 		},
-	],
-} as const
+	},
+}
 
 export type WindowEventContract = typeof windowEventContract
 
@@ -142,7 +140,6 @@ export type LayoutColumn = {
 
 export interface LayoutWidget extends BaseWidget {
 	readonly type: 'layout'
-
 	getRows(): any[]
 	addRow(row: LayoutRow): void
 	setRowHeight(rowIdx: number, height: WidgetFrameAttribute): void
@@ -172,9 +169,8 @@ export interface ProgressBarWidget extends BaseWidget {
 
 // ** Menu Bar **/
 export const menuBarEventContract = {
-	eventSignatures: [
-		{
-			eventNameWithOptionalNamespace: 'select',
+	eventSignatures: {
+		select: {
 			emitPayloadSchema: buildSchema({
 				id: 'menuBarSelectEmitPayload',
 				fields: {
@@ -185,8 +181,8 @@ export const menuBarEventContract = {
 				},
 			}),
 		},
-	],
-} as const
+	},
+}
 
 export type MenuBarEventContract = typeof menuBarEventContract
 

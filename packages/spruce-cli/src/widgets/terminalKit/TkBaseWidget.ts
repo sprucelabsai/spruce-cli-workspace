@@ -18,9 +18,7 @@ export type TkWidgetOptions = UniversalWidgetOptions & {
 	parent: BaseWidgetWithTermKitAddons
 }
 
-export default abstract class TkBaseWidget<
-		Contract extends EventContract = EventContract
-	>
+export default abstract class TkBaseWidget<Contract extends EventContract = any>
 	extends AbstractEventEmitter<Contract>
 	implements BaseWidget<Contract> {
 	public type = 'abstract'
@@ -44,7 +42,7 @@ export default abstract class TkBaseWidget<
 	}
 
 	public constructor(options: TkWidgetOptions) {
-		super(options.eventContract ?? { eventSignatures: [] })
+		super(options.eventContract ?? { eventSignatures: {} })
 
 		this.parent = options.parent ?? null
 		this.term = options.term
