@@ -1,5 +1,5 @@
 import pathUtil from 'path'
-import { ISchema } from '@sprucelabs/schema'
+import { Schema } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 
 const featuresUtil = {
@@ -15,7 +15,7 @@ const featuresUtil = {
 		return hyphened.replace(/-/g, '.').toLowerCase()
 	},
 
-	generateCommandAliases(schema: ISchema): Record<string, string> {
+	generateCommandAliases(schema: Schema): Record<string, string> {
 		const fields = schema.fields || {}
 		const aliases: Record<string, string> = {}
 

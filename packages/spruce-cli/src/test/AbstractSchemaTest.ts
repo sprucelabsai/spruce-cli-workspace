@@ -1,4 +1,4 @@
-import { ISchema } from '@sprucelabs/schema'
+import { Schema } from '@sprucelabs/schema'
 import {
 	CORE_SCHEMA_VERSION,
 	SchemaHealthCheckItem,
@@ -23,7 +23,7 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 		return cli
 	}
 
-	protected static generateExpectedHealthSchemas(schemas: ISchema[]) {
+	protected static generateExpectedHealthSchemas(schemas: Schema[]) {
 		const expected = schemas.map((schema) => ({
 			// @ts-ignore
 			id: schema.id,
@@ -41,7 +41,7 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 		return this.sortSchemas(cleanedExpected) as SchemaHealthCheckItem['schemas']
 	}
 
-	protected static sortSchemas(schemas: ISchema[]) {
+	protected static sortSchemas(schemas: Schema[]) {
 		return schemas.sort((a, b) => (a.id > b.id ? -1 : 1))
 	}
 

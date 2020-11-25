@@ -47,10 +47,10 @@ export interface ILintFailedErrorOptions extends SpruceErrors.SpruceCli.LintFail
 export interface INotImplementedErrorOptions extends SpruceErrors.SpruceCli.NotImplemented, ISpruceErrorOptions {
 	code: 'NOT_IMPLEMENTED'
 }
-export interface ISchemaExistsErrorOptions extends SpruceErrors.SpruceCli.ISchemaExists, ISpruceErrorOptions {
+export interface ISchemaExistsErrorOptions extends SpruceErrors.SpruceCli.SchemaExists, ISpruceErrorOptions {
 	code: 'SCHEMA_EXISTS'
 }
-export interface ISchemaFailedToImportErrorOptions extends SpruceErrors.SpruceCli.ISchemaFailedToImport, ISpruceErrorOptions {
+export interface ISchemaFailedToImportErrorOptions extends SpruceErrors.SpruceCli.SchemaFailedToImport, ISpruceErrorOptions {
 	code: 'SCHEMA_FAILED_TO_IMPORT'
 }
 export interface ITestFailedErrorOptions extends SpruceErrors.SpruceCli.TestFailed, ISpruceErrorOptions {

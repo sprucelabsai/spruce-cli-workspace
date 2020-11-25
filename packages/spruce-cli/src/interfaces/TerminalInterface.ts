@@ -18,7 +18,7 @@ import { filter } from 'lodash'
 import ora from 'ora'
 import { terminal } from 'terminal-kit'
 import { ProgressBarController } from 'terminal-kit/Terminal'
-import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
+import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import SpruceError from '../errors/SpruceError'
 import log from '../singletons/log'
 import {
@@ -341,12 +341,12 @@ export default class TerminalInterface implements GraphicsInterface {
 		}
 	}
 
-	public async prompt<T extends FieldDefinition>(
+	public async prompt<T extends FieldDefinitions>(
 		definition: T
 	): Promise<FieldDefinitionValueType<T>> {
 		this.isPromptActive = true
 		const name = generateInquirerFieldName()
-		const fieldDefinition: FieldDefinition = definition
+		const fieldDefinition: FieldDefinitions = definition
 		const { isRequired, defaultValue, label } = fieldDefinition
 
 		const promptOptions: Record<string, any> = {

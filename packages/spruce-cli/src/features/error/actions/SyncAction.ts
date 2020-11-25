@@ -1,11 +1,11 @@
 import {
-	ISchemaTemplateItem,
+	SchemaTemplateItem,
 	normalizeSchemaValues,
 	SchemaValuesWithDefaults,
 } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { IErrorTemplateItem } from '@sprucelabs/spruce-templates'
+import { ErrorTemplateItem } from '@sprucelabs/spruce-templates'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import syncErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncErrorAction.schema'
 import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
@@ -49,7 +49,7 @@ export default class SyncAction extends AbstractFeatureAction<
 		}
 
 		const { schemaTemplateItems } = errorSyncResults.meta as {
-			schemaTemplateItems: ISchemaTemplateItem[]
+			schemaTemplateItems: SchemaTemplateItem[]
 		}
 
 		const errorTemplateItems = schemaTemplateItems.map((item) => ({
@@ -124,7 +124,7 @@ export default class SyncAction extends AbstractFeatureAction<
 
 	private async generateOptionTypes(
 		errorGenerator: ErrorGenerator,
-		errorTemplateItems: IErrorTemplateItem[],
+		errorTemplateItems: ErrorTemplateItem[],
 		errorTypesDestinationDir: string
 	) {
 		if (errorTemplateItems.length === 0) {

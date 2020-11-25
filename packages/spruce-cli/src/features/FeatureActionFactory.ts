@@ -1,4 +1,4 @@
-import { ISchema } from '@sprucelabs/schema'
+import { Schema } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../errors/SpruceError'
@@ -22,7 +22,7 @@ export default class FeatureActionFactory {
 		this.actionOptions = options
 	}
 
-	public Action<S extends ISchema = ISchema>(name: string): FeatureAction<S> {
+	public Action<S extends Schema = Schema>(name: string): FeatureAction<S> {
 		const classPath = diskUtil.resolvePath(
 			this.actionsDir,
 			`${namesUtil.toPascal(name)}Action`

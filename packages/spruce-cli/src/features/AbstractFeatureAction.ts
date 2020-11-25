@@ -1,5 +1,5 @@
 import {
-	ISchema,
+	Schema,
 	SchemaValues,
 	defaultSchemaValues,
 	validateSchemaValues,
@@ -34,7 +34,7 @@ import {
 type StripNulls<T extends Record<string, any>> = {
 	[K in keyof T]: Exclude<T[K], null>
 }
-export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
+export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 	implements FeatureAction<S>, IServiceProvider {
 	public abstract name: string
 	public abstract optionsSchema: S
@@ -64,7 +64,7 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 		options: SchemaValues<S>
 	): Promise<FeatureActionResponse>
 
-	protected Action<S extends ISchema = ISchema>(name: string) {
+	protected Action<S extends Schema = Schema>(name: string) {
 		return this.parent.Action<S>(name)
 	}
 
