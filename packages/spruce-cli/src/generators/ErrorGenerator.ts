@@ -1,12 +1,12 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { IErrorTemplateItem } from '@sprucelabs/spruce-templates'
+import { ErrorTemplateItem } from '@sprucelabs/spruce-templates'
 import { GeneratedFile } from '../types/cli.types'
 import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
 
 export default class ErrorGenerator extends AbstractGenerator {
 	public async generateOrAppendErrorsToClass(
 		destinationDir: string,
-		errors: IErrorTemplateItem[]
+		errors: ErrorTemplateItem[]
 	): Promise<GenerationResults> {
 		let results: GenerationResults = []
 
@@ -44,7 +44,7 @@ export default class ErrorGenerator extends AbstractGenerator {
 	}
 
 	private async dropInNewErrorCases(
-		errors: IErrorTemplateItem[],
+		errors: ErrorTemplateItem[],
 		destinationFile: string
 	) {
 		let results: GeneratedFile[] = []
@@ -63,7 +63,7 @@ export default class ErrorGenerator extends AbstractGenerator {
 	}
 
 	private async dropInErrorCaseIfMissing(
-		error: IErrorTemplateItem,
+		error: ErrorTemplateItem,
 		destinationFile: string
 	) {
 		let results: GeneratedFile[] = []
@@ -98,14 +98,14 @@ export default class ErrorGenerator extends AbstractGenerator {
 
 	private doesErrorCaseExist(
 		currentContents: string,
-		error: IErrorTemplateItem
+		error: ErrorTemplateItem
 	) {
 		return currentContents.search(new RegExp(`case '${error.code}':`)) > -1
 	}
 
 	public async generateOptionsTypesFile(
 		destinationDir: string,
-		errorTemplateItems: IErrorTemplateItem[]
+		errorTemplateItems: ErrorTemplateItem[]
 	): Promise<GenerationResults> {
 		const contents = this.templates.errorOptionsTypes({
 			options: errorTemplateItems,

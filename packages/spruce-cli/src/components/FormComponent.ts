@@ -1,15 +1,15 @@
 import AbstractSpruceError from '@sprucelabs/error'
 import SchemaEntity, {
-	ISchema,
+	Schema,
 	SchemaAllValues,
 	SchemaPartialValues,
 	SchemaFieldNames,
-	ISelectFieldDefinitionChoice,
+	SelectFieldDefinitionChoice,
 	SchemaError,
 	IFieldDefinition,
 } from '@sprucelabs/schema'
 import { pick } from 'lodash'
-import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
+import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import SpruceError from '../errors/SpruceError'
 import { GraphicsInterface, GraphicsTextEffect } from '../types/cli.types'
 
@@ -30,19 +30,19 @@ export interface IFormActionCancel {
 }
 
 /** In overview mode, this is when the user selects to edit a field */
-export type IFormActionEditField<T extends ISchema> = {
+export type IFormActionEditField<T extends Schema> = {
 	type: FormBuilderActionType.EditField
 	fieldName: SchemaFieldNames<T>
 }
 /** Actions that can be taken in overview mode */
-export type IFormAction<T extends ISchema> =
+export type IFormAction<T extends Schema> =
 	| IFormActionDone
 	| IFormActionCancel
 	| IFormActionEditField<T>
 
 /** Controls for when presenting the form */
 export interface IFormPresentationOptions<
-	T extends ISchema,
+	T extends Schema,
 	F extends SchemaFieldNames<T> = SchemaFieldNames<T>
 > {
 	headline?: string
@@ -50,22 +50,22 @@ export interface IFormPresentationOptions<
 	fields?: F[]
 }
 
-export interface IFormOptions<T extends ISchema> {
+export interface IFormOptions<T extends Schema> {
 	term: GraphicsInterface
 	schema: T
 	initialValues?: SchemaPartialValues<T>
 	onWillAskQuestion?: <K extends SchemaFieldNames<T>>(
 		name: K,
-		fieldDefinition: FieldDefinition,
+		fieldDefinition: FieldDefinitions,
 		values: SchemaPartialValues<T>
-	) => FieldDefinition
+	) => FieldDefinitions
 }
 
-interface IHandlers<T extends ISchema> {
+interface IHandlers<T extends Schema> {
 	onWillAskQuestion?: IFormOptions<T>['onWillAskQuestion']
 }
 
-export default class FormComponent<S extends ISchema> extends SchemaEntity<S> {
+export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 	public term: GraphicsInterface
 	public handlers: IHandlers<S> = {}
 
@@ -243,7 +243,7 @@ export default class FormComponent<S extends ISchema> extends SchemaEntity<S> {
 		const actionMap: Record<string, IFormAction<S>> = {}
 
 		// Create all choices
-		const choices: ISelectFieldDefinitionChoice[] = this.getNamedFields()
+		const choices: SelectFieldDefinitionChoice[] = this.getNamedFields()
 			.filter((namedField) => fields.indexOf(namedField.name) > -1)
 			.map((namedField) => {
 				const { field, name } = namedField

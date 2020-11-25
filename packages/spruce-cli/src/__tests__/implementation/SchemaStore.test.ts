@@ -1,4 +1,4 @@
-import { ISchema, validateSchema } from '@sprucelabs/schema'
+import { Schema, validateSchema } from '@sprucelabs/schema'
 import {
 	CORE_NAMESPACE,
 	diskUtil,
@@ -164,7 +164,7 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		)
 	}
 
-	private static validateSchemas(schemas: ISchema[]) {
+	private static validateSchemas(schemas: Schema[]) {
 		for (const schema of schemas) {
 			validateSchema(schema)
 		}

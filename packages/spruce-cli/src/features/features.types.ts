@@ -1,4 +1,4 @@
-import { ISchema, SchemaValues } from '@sprucelabs/schema'
+import { Schema, SchemaValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
 import SpruceError from '../errors/SpruceError'
 import GeneratorFactory from '../generators/GeneratorFactory'
@@ -36,7 +36,7 @@ export type FeatureCode = keyof IFeatureMap
 
 export type FeatureOptions<
 	F extends FeatureCode
-> = IFeatureMap[F]['optionsDefinition'] extends ISchema
+> = IFeatureMap[F]['optionsDefinition'] extends Schema
 	? SchemaValues<IFeatureMap[F]['optionsDefinition']>
 	: undefined
 
@@ -107,7 +107,7 @@ export interface FeatureActionResponse extends FeatureInstallResponse {
 	summaryLines?: string[]
 }
 
-export interface FeatureAction<S extends ISchema = ISchema> {
+export interface FeatureAction<S extends Schema = Schema> {
 	name: string
 	optionsSchema?: S
 	execute: (options: SchemaValues<S>) => Promise<FeatureActionResponse>

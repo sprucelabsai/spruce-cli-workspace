@@ -1,4 +1,4 @@
-import { IFieldTemplateItem } from '@sprucelabs/schema'
+import { FieldTemplateItem } from '@sprucelabs/schema'
 import { test, assert } from '@sprucelabs/test'
 import FieldTemplateItemBuilder from '../../templateItemBuilders/FieldTemplateItemBuilder'
 import AbstractCliTest from '../../test/AbstractCliTest'
@@ -16,7 +16,7 @@ const localAddressField = {
 	isLocal: true,
 }
 
-const localAddressFieldTemplateItem: IFieldTemplateItem = {
+const localAddressFieldTemplateItem: FieldTemplateItem = {
 	namePascal: 'AddressField',
 	nameCamel: 'addressField',
 	package: '#spruce/../fields/AddressField',

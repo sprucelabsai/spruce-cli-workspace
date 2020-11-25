@@ -1,4 +1,4 @@
-import { ISchema } from '@sprucelabs/schema'
+import { Schema } from '@sprucelabs/schema'
 import { test, assert } from '@sprucelabs/test'
 import featuresUtil from '../../features/feature.utilities'
 import AbstractCliTest from '../../test/AbstractCliTest'
@@ -11,7 +11,7 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 
 	@test()
 	protected static canAliasOneOptionalField() {
-		const person: ISchema = {
+		const person: Schema = {
 			id: 'alias-person',
 			name: 'person alias',
 			fields: {
@@ -31,7 +31,7 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 
 	@test()
 	protected static canAliasTwoFieldsOneRequired() {
-		const person: ISchema = {
+		const person: Schema = {
 			id: 'alias-person',
 			name: 'person alias',
 			fields: {
@@ -58,7 +58,7 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 
 	@test()
 	protected static properlyHandlesBooleans() {
-		const person: ISchema = {
+		const person: Schema = {
 			id: 'alias-person',
 			name: 'person alias',
 			fields: {

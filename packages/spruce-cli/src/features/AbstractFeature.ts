@@ -1,5 +1,5 @@
 import pathUtil from 'path'
-import { ISchema, SchemaValues } from '@sprucelabs/schema'
+import { Schema, SchemaValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import GeneratorFactory, {
@@ -36,7 +36,7 @@ export interface FeatureDependency {
 }
 
 export default abstract class AbstractFeature<
-	S extends ISchema | undefined = ISchema | undefined
+	S extends Schema | undefined = Schema | undefined
 > implements IServiceProvider {
 	public abstract description: string
 	public readonly dependencies: FeatureDependency[] = []
@@ -91,13 +91,13 @@ export default abstract class AbstractFeature<
 	}
 
 	public async beforePackageInstall(
-		_options: S extends ISchema ? SchemaValues<S> : undefined
+		_options: S extends Schema ? SchemaValues<S> : undefined
 	): Promise<InstallResults> {
 		return {}
 	}
 
 	public async afterPackageInstall(
-		_options: S extends ISchema ? SchemaValues<S> : undefined
+		_options: S extends Schema ? SchemaValues<S> : undefined
 	): Promise<InstallResults> {
 		return {}
 	}
@@ -114,7 +114,7 @@ export default abstract class AbstractFeature<
 		return this.featureInstaller.getFeature(code)
 	}
 
-	public Action<S extends ISchema = ISchema>(code: string): FeatureAction<S> {
+	public Action<S extends Schema = Schema>(code: string): FeatureAction<S> {
 		if (!this.actionFactory) {
 			if (!this.actionsDir) {
 				throw new Error(

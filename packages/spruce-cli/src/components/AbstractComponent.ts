@@ -1,4 +1,4 @@
-import { ISchema } from '@sprucelabs/schema'
+import { Schema } from '@sprucelabs/schema'
 import TerminalInterface from '../interfaces/TerminalInterface'
 import FormComponent, { IFormOptions } from './FormComponent'
 
@@ -8,7 +8,7 @@ export default abstract class AbstractComponent {
 		this.term = term
 	}
 
-	public formComponent<T extends ISchema>(
+	public formComponent<T extends Schema>(
 		options: Omit<IFormOptions<T>, 'term'>
 	): FormComponent<T> {
 		const formBuilder = new FormComponent({

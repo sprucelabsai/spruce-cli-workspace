@@ -3,7 +3,7 @@ import {
 	CORE_NAMESPACE,
 	CORE_SCHEMA_VERSION,
 } from '@sprucelabs/spruce-skill-utils'
-import { templates, IValueTypes } from '@sprucelabs/spruce-templates'
+import { templates, ValueTypes } from '@sprucelabs/spruce-templates'
 import { assert, test } from '@sprucelabs/test'
 import SchemaGenerator from '../../generators/SchemaGenerator'
 import FieldTemplateItemBuilder from '../../templateItemBuilders/FieldTemplateItemBuilder'
@@ -143,7 +143,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	) {
 		const results = await this.generateValueTypes()
 
-		const valueTypes = await this.Service('import').importDefault<IValueTypes>(
+		const valueTypes = await this.Service('import').importDefault<ValueTypes>(
 			results[0].path
 		)
 

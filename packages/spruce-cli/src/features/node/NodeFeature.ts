@@ -1,4 +1,4 @@
-import { buildSchema, ISchema, SchemaValues } from '@sprucelabs/schema'
+import { buildSchema, Schema, SchemaValues } from '@sprucelabs/schema'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
@@ -48,7 +48,7 @@ export default class NodeFeature<
 	}
 
 	public async afterPackageInstall(
-		options: S extends ISchema ? SchemaValues<S> : undefined
+		options: S extends Schema ? SchemaValues<S> : undefined
 	) {
 		const pkg = this.Service('pkg')
 		pkg.set({ path: 'name', value: namesUtil.toKebab(options.name) })

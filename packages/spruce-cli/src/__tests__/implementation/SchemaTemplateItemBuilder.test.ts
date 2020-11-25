@@ -1,10 +1,10 @@
-import { buildSchema, ISchema, ISchemaTemplateItem } from '@sprucelabs/schema'
+import { buildSchema, Schema, SchemaTemplateItem } from '@sprucelabs/schema'
 import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import SchemaTemplateItemBuilder from '../../templateItemBuilders/SchemaTemplateItemBuilder'
 import AbstractCliTest from '../../test/AbstractCliTest'
 
-const cowbellV1: ISchema = {
+const cowbellV1: Schema = {
 	id: 'cowbell',
 	version: '2020_06_01',
 	name: 'Cowbell test',
@@ -15,7 +15,7 @@ const cowbellV1: ISchema = {
 	},
 }
 
-const cowbellV1TemplateItem: ISchemaTemplateItem = {
+const cowbellV1TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: cowbellV1.id,
 	nameCamel: 'cowbell',
@@ -26,7 +26,7 @@ const cowbellV1TemplateItem: ISchemaTemplateItem = {
 	destinationDir: '#spruce/schemas',
 }
 
-const cowbellV1NestedTemplateItem: ISchemaTemplateItem = {
+const cowbellV1NestedTemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: cowbellV1.id,
 	nameCamel: 'cowbell',
@@ -37,7 +37,7 @@ const cowbellV1NestedTemplateItem: ISchemaTemplateItem = {
 	destinationDir: '#spruce/schemas',
 }
 
-const cowbellV2: ISchema = {
+const cowbellV2: Schema = {
 	id: 'cowbell',
 	version: '2020_06_02',
 	name: 'Cowbell test two!',
@@ -54,7 +54,7 @@ const cowbellV2: ISchema = {
 	},
 }
 
-const cowbellV2TemplateItem: ISchemaTemplateItem = {
+const cowbellV2TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: cowbellV2.id,
 	nameCamel: 'cowbell',
@@ -80,7 +80,7 @@ const cowbellV2TemplateItem: ISchemaTemplateItem = {
 	},
 }
 
-const cowbellV2NestedTemplateItem: ISchemaTemplateItem = {
+const cowbellV2NestedTemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: cowbellV2.id,
 	nameCamel: 'cowbell',
@@ -106,7 +106,7 @@ const cowbellV2NestedTemplateItem: ISchemaTemplateItem = {
 	},
 }
 
-const personV1: ISchema = {
+const personV1: Schema = {
 	id: 'person',
 	version: '2020_06_01',
 	name: 'Person test',
@@ -117,7 +117,7 @@ const personV1: ISchema = {
 	},
 }
 
-const personV1TemplateItem: ISchemaTemplateItem = {
+const personV1TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: personV1.id,
 	nameCamel: 'person',
@@ -128,7 +128,7 @@ const personV1TemplateItem: ISchemaTemplateItem = {
 	destinationDir: '#spruce/schemas',
 }
 
-const personV2: ISchema = {
+const personV2: Schema = {
 	id: 'person',
 	version: '2020_06_01',
 	name: 'Person version 2',
@@ -154,7 +154,7 @@ const personV2: ISchema = {
 	},
 }
 
-const personV2TemplateItem: ISchemaTemplateItem = {
+const personV2TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: personV1.id,
 	nameCamel: 'person',
@@ -180,7 +180,7 @@ const personV2TemplateItem: ISchemaTemplateItem = {
 	},
 }
 
-const personV3: ISchema = {
+const personV3: Schema = {
 	id: 'person',
 	version: '2020_06_03',
 	name: 'Person test the 3rd',
@@ -194,7 +194,7 @@ const personV3: ISchema = {
 	},
 }
 
-const personV3TemplateItem: ISchemaTemplateItem = {
+const personV3TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: personV3.id,
 	nameCamel: 'person',
@@ -220,7 +220,7 @@ const personV3TemplateItem: ISchemaTemplateItem = {
 	},
 }
 
-const vehicleV1TemplateItem: ISchemaTemplateItem = {
+const vehicleV1TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: 'vehicle',
 	nameCamel: 'vehicle',
@@ -240,7 +240,7 @@ const vehicleV1TemplateItem: ISchemaTemplateItem = {
 	},
 }
 
-const personV4: ISchema = {
+const personV4: Schema = {
 	id: 'person',
 	version: '2020_06_04',
 	name: 'Person test the last',
@@ -261,7 +261,7 @@ const personV4: ISchema = {
 	},
 }
 
-const personV4TemplateItem: ISchemaTemplateItem = {
+const personV4TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: personV4.id,
 	nameCamel: 'person',
@@ -273,7 +273,7 @@ const personV4TemplateItem: ISchemaTemplateItem = {
 	destinationDir: '#spruce/schemas',
 }
 
-const nestedMercuryContract: ISchema = {
+const nestedMercuryContract: Schema = {
 	id: 'mercuryContract',
 	name: 'Mercury Contract',
 	description: '',
@@ -307,7 +307,7 @@ const nestedMercuryContract: ISchema = {
 	},
 }
 
-const nestedMercuryContractArray: ISchema = {
+const nestedMercuryContractArray: Schema = {
 	id: 'mercuryContract',
 	name: 'Mercury Contract',
 	description: '',
@@ -364,7 +364,7 @@ const nestedMercuryContractArray: ISchema = {
 	},
 }
 
-const mercuryTemplateItem: ISchemaTemplateItem = {
+const mercuryTemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: nestedMercuryContract.id,
 	nameCamel: 'mercuryContract',
@@ -392,7 +392,7 @@ const mercuryTemplateItem: ISchemaTemplateItem = {
 	},
 }
 
-const eventSignatureTemplateItem: ISchemaTemplateItem = {
+const eventSignatureTemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: 'eventSignature',
 	nameCamel: 'eventSignature',
@@ -423,7 +423,7 @@ const eventSignatureTemplateItem: ISchemaTemplateItem = {
 		},
 	},
 }
-const mercuryTemplateItemArray: ISchemaTemplateItem = {
+const mercuryTemplateItemArray: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: nestedMercuryContractArray.id,
 	nameCamel: 'mercuryContract',
@@ -456,7 +456,7 @@ const mercuryTemplateItemArray: ISchemaTemplateItem = {
 	},
 }
 
-const eventSignatureTemplateItem2: ISchemaTemplateItem = {
+const eventSignatureTemplateItem2: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: 'eventSignature2',
 	nameCamel: 'eventSignature2',
@@ -488,7 +488,7 @@ const eventSignatureTemplateItem2: ISchemaTemplateItem = {
 	},
 }
 
-const schemaWithManyNestedSchemas: ISchema = {
+const schemaWithManyNestedSchemas: Schema = {
 	id: 'manyNested',
 	version: '2020_09_01',
 	fields: {
@@ -528,7 +528,7 @@ const schemaWithManyNestedSchemas: ISchema = {
 	},
 }
 
-const manyNestedTemplateItem: ISchemaTemplateItem = {
+const manyNestedTemplateItem: SchemaTemplateItem = {
 	id: 'manyNested',
 	namespace: 'Spruce',
 	schema: {
@@ -548,7 +548,7 @@ const manyNestedTemplateItem: ISchemaTemplateItem = {
 	destinationDir: '#spruce/schemas',
 }
 
-const firstLayerTemplateItem: ISchemaTemplateItem = {
+const firstLayerTemplateItem: SchemaTemplateItem = {
 	id: 'firstLayer',
 	namespace: 'Spruce',
 	schema: {
@@ -568,7 +568,7 @@ const firstLayerTemplateItem: ISchemaTemplateItem = {
 	destinationDir: '#spruce/schemas',
 }
 
-const secondLayerTemplateItem: ISchemaTemplateItem = {
+const secondLayerTemplateItem: SchemaTemplateItem = {
 	id: 'secondLayer',
 	namespace: 'Spruce',
 	schema: {
@@ -588,7 +588,7 @@ const secondLayerTemplateItem: ISchemaTemplateItem = {
 	destinationDir: '#spruce/schemas',
 }
 
-const lastLayerTemplateItem: ISchemaTemplateItem = {
+const lastLayerTemplateItem: SchemaTemplateItem = {
 	id: 'lastLayer',
 	namespace: 'Spruce',
 	schema: {
@@ -1026,8 +1026,8 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 	)
 	@test('can import mercury contracts', mercurySchemas, mercuryTemplateItems)
 	protected static async generationTests(
-		schemas: ISchema[],
-		expected: ISchemaTemplateItem[]
+		schemas: Schema[],
+		expected: SchemaTemplateItem[]
 	) {
 		const results = this.itemBuilder.generateTemplateItems(
 			{ [CORE_NAMESPACE]: schemas },

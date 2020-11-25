@@ -1,4 +1,4 @@
-import { ISchema } from '@sprucelabs/schema'
+import { Schema } from '@sprucelabs/schema'
 import * as coreSchemas from '@sprucelabs/spruce-core-schemas'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
@@ -17,7 +17,7 @@ export default class GettingSchemasFromHealthCheckTest extends AbstractSchemaTes
 		await this.assertExpectedSchemas(cli, cleanedExpected)
 	}
 
-	private static async assertExpectedSchemas(cli: ICli, expected: ISchema[]) {
+	private static async assertExpectedSchemas(cli: ICli, expected: Schema[]) {
 		const health = await cli.checkHealth()
 		assert.isFalsy(health.skill.errors)
 		assert.isTruthy(health.schema)

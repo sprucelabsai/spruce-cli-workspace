@@ -2,14 +2,14 @@ import fs from 'fs'
 import pathUtil from 'path'
 import {
 	HealthCheckItem,
-	ISkillFeature,
-	ISkill,
+	SkillFeature,
+	Skill,
 } from '@sprucelabs/spruce-skill-utils'
 
-class SchemaSkillFeature implements ISkillFeature {
-	private skill: ISkill
+class SchemaSkillFeature implements SkillFeature {
+	private skill: Skill
 
-	public constructor(skill: ISkill) {
+	public constructor(skill: Skill) {
 		this.skill = skill
 	}
 
@@ -35,7 +35,7 @@ class SchemaSkillFeature implements ISkillFeature {
 	}
 }
 
-export default (skill: ISkill) => {
+export default (skill: Skill) => {
 	const feature = new SchemaSkillFeature(skill)
 
 	skill.registerFeature('schema', feature)

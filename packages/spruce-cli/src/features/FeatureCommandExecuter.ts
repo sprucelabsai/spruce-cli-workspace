@@ -1,4 +1,4 @@
-import { ISchema, SchemaPartialValues, SchemaValues } from '@sprucelabs/schema'
+import { Schema, SchemaPartialValues, SchemaValues } from '@sprucelabs/schema'
 import merge from 'lodash/merge'
 import FormComponent from '../components/FormComponent'
 import SpruceError from '../errors/SpruceError'
@@ -16,8 +16,8 @@ import {
 
 type FeatureCommandExecuteOptions<
 	F extends FeatureCode,
-	S extends ISchema | undefined = IFeatureMap[F]['optionsDefinition']
-> = S extends ISchema ? SchemaPartialValues<S> : undefined
+	S extends Schema | undefined = IFeatureMap[F]['optionsDefinition']
+> = S extends Schema ? SchemaPartialValues<S> : undefined
 
 type FeatureDependencyWithFeature = FeatureDependency & {
 	feature: AbstractFeature
@@ -83,7 +83,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 	}
 
 	private async askAboutMissingActionOptions(
-		action: FeatureAction<ISchema>,
+		action: FeatureAction<Schema>,
 		options: (Record<string, any> & FeatureCommandExecuteOptions<F>) | undefined
 	) {
 		let answers
@@ -336,7 +336,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		return notInstalled
 	}
 
-	private async collectAnswers<S extends ISchema>(
+	private async collectAnswers<S extends Schema>(
 		schema: S,
 		options: FeatureCommandExecuteOptions<F, S> | undefined
 	) {

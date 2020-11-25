@@ -1,11 +1,11 @@
 import pathUtil from 'path'
-import { ITestOptions } from '@sprucelabs/spruce-templates'
+import { TestOptions } from '@sprucelabs/spruce-templates'
 import AbstractGenerator from './AbstractGenerator'
 
 export default class TestGenerator extends AbstractGenerator {
 	public async generateTest(
 		destinationDir: string,
-		options: ITestOptions & { type: string }
+		options: TestOptions & { type: string }
 	) {
 		const { namePascal } = options
 		const filename = `${namePascal}.test.ts`
