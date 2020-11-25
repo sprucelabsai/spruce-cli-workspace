@@ -17,15 +17,15 @@ import handlebars from 'handlebars'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import log from './singletons/log'
 import {
-	IAutoLoaderTemplateItem,
+	AutoLoaderTemplateItem,
 	DirectoryTemplateCode,
-	IDirectoryTemplateContextMap,
-	IValueTypes,
-	ISchemaBuilderTemplateItem,
-	IErrorOptions,
-	IErrorTemplateItem,
-	ITestOptions,
-	IEventListenerOptions,
+	DirectoryTemplateContextMap,
+	ValueTypes,
+	SchemaBuilderTemplateItem,
+	ErrorOptions,
+	ErrorTemplateItem,
+	TestOptions,
+	EventListenerOptions,
 } from './types/templates.types'
 import DirectoryTemplateUtility from './utilities/DirectoryTemplateUtility'
 import importExtractorUtil from './utilities/importExtractor.utility'
@@ -39,7 +39,7 @@ export const templates = {
 	schemasTypes(options: {
 		schemaTemplateItems: SchemaTemplateItem[]
 		fieldTemplateItems: FieldTemplateItem[]
-		valueTypes: IValueTypes
+		valueTypes: ValueTypes
 		globalNamespace?: string
 		typesTemplate?: string
 	}) {
@@ -88,7 +88,7 @@ export const templates = {
 		options: SchemaTemplateItem & {
 			schemaTemplateItems: SchemaTemplateItem[]
 			fieldTemplateItems: FieldTemplateItem[]
-			valueTypes: IValueTypes
+			valueTypes: ValueTypes
 			globalNamespace?: string
 			registerBuiltSchemas: boolean
 			schemaFile?: string
@@ -108,7 +108,7 @@ export const templates = {
 		})
 	},
 
-	schemaBuilder(options: ISchemaBuilderTemplateItem) {
+	schemaBuilder(options: SchemaBuilderTemplateItem) {
 		const template = templateImportUtil.getTemplate('schemas/builder.ts.hbs')
 		return template({
 			...options,
@@ -116,12 +116,12 @@ export const templates = {
 		})
 	},
 
-	error(options: IErrorOptions) {
+	error(options: ErrorOptions) {
 		const template = templateImportUtil.getTemplate('errors/SpruceError.ts.hbs')
 		return template({ renderClassDefinition: true, ...options })
 	},
 
-	errorOptionsTypes(options: { options: IErrorTemplateItem[] }) {
+	errorOptionsTypes(options: { options: ErrorTemplateItem[] }) {
 		const template = templateImportUtil.getTemplate(
 			'errors/options.types.ts.hbs'
 		)
@@ -160,12 +160,12 @@ export const templates = {
 		return template(options)
 	},
 
-	test(options: ITestOptions) {
+	test(options: TestOptions) {
 		const template = templateImportUtil.getTemplate('tests/Test.test.ts.hbs')
 		return template(options)
 	},
 
-	autoloader(options: IAutoLoaderTemplateItem) {
+	autoloader(options: AutoLoaderTemplateItem) {
 		const template = templateImportUtil.getTemplate(
 			'autoloader/autoloader.ts.hbs'
 		)
@@ -185,14 +185,14 @@ export const templates = {
 		return template(options)
 	},
 
-	listener(options: IEventListenerOptions) {
+	listener(options: EventListenerOptions) {
 		const template = templateImportUtil.getTemplate('events/listener.ts.hbs')
 		return template(options)
 	},
 
 	async directoryTemplate<K extends DirectoryTemplateCode>(options: {
 		kind: K
-		context: IDirectoryTemplateContextMap[K]
+		context: DirectoryTemplateContextMap[K]
 	}) {
 		return DirectoryTemplateUtility.build(options)
 	},
