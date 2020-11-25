@@ -1,9 +1,9 @@
 import fs from 'fs'
 import path from 'path'
 import {
-	ISchema,
-	ISchemaTemplateItem,
-	IFieldTemplateItem,
+	Schema,
+	SchemaTemplateItem,
+	FieldTemplateItem,
 } from '@sprucelabs/schema'
 import { TemplateRenderAs } from '@sprucelabs/schema'
 import {
@@ -14,7 +14,7 @@ import {
 	DEFAULT_TYPES_FILE,
 } from '@sprucelabs/spruce-skill-utils'
 import handlebars from 'handlebars'
-import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
+import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import log from './singletons/log'
 import {
 	IAutoLoaderTemplateItem,
@@ -37,8 +37,8 @@ addonUtil.importSync({}, __dirname, 'addons')
 
 export const templates = {
 	schemasTypes(options: {
-		schemaTemplateItems: ISchemaTemplateItem[]
-		fieldTemplateItems: IFieldTemplateItem[]
+		schemaTemplateItems: SchemaTemplateItem[]
+		fieldTemplateItems: FieldTemplateItem[]
 		valueTypes: IValueTypes
 		globalNamespace?: string
 		typesTemplate?: string
@@ -56,8 +56,8 @@ export const templates = {
 	},
 
 	valueTypes(options: {
-		schemaTemplateItems: ISchemaTemplateItem[]
-		fieldTemplateItems: IFieldTemplateItem[]
+		schemaTemplateItems: SchemaTemplateItem[]
+		fieldTemplateItems: FieldTemplateItem[]
 		globalNamespace?: string
 	}) {
 		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
@@ -85,9 +85,9 @@ export const templates = {
 	},
 
 	schema(
-		options: ISchemaTemplateItem & {
-			schemaTemplateItems: ISchemaTemplateItem[]
-			fieldTemplateItems: IFieldTemplateItem[]
+		options: SchemaTemplateItem & {
+			schemaTemplateItems: SchemaTemplateItem[]
+			fieldTemplateItems: FieldTemplateItem[]
 			valueTypes: IValueTypes
 			globalNamespace?: string
 			registerBuiltSchemas: boolean
@@ -131,7 +131,7 @@ export const templates = {
 	schemaExample(options: {
 		nameCamel: string
 		namePascal: string
-		definition: ISchema
+		definition: Schema
 	}) {
 		const template = templateImportUtil.getTemplate('schemas/example.ts.hbs')
 		return template(options)
@@ -154,7 +154,7 @@ export const templates = {
 	errorExample(options: {
 		nameCamel: string
 		namePascal: string
-		definition: ISchema
+		definition: Schema
 	}) {
 		const template = templateImportUtil.getTemplate('errors/example.ts.hbs')
 		return template(options)
@@ -172,13 +172,13 @@ export const templates = {
 		return template(options)
 	},
 
-	fieldsTypes(options: { fieldTemplateItems: IFieldTemplateItem[] }) {
+	fieldsTypes(options: { fieldTemplateItems: FieldTemplateItem[] }) {
 		const template = templateImportUtil.getTemplate(
 			'schemas/fields/fields.types.ts.hbs'
 		)
 		return template(options)
 	},
-	fieldClassMap(options: { fieldTemplateItems: IFieldTemplateItem[] }) {
+	fieldClassMap(options: { fieldTemplateItems: FieldTemplateItem[] }) {
 		const template = templateImportUtil.getTemplate(
 			'schemas/fields/fieldClassMap.ts.hbs'
 		)
@@ -229,7 +229,7 @@ export const templates = {
 		return false
 	},
 
-	generateFieldKey(renderAs: TemplateRenderAs, definition: FieldDefinition) {
+	generateFieldKey(renderAs: TemplateRenderAs, definition: FieldDefinitions) {
 		return KeyGeneratorUtility.generateFieldKey(renderAs, definition)
 	},
 }

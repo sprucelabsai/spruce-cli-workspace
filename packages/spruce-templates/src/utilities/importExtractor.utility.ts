@@ -1,4 +1,4 @@
-import { IFieldTemplateItem } from '@sprucelabs/schema'
+import { FieldTemplateItem } from '@sprucelabs/schema'
 import uniqWith from 'lodash/uniqWith'
 
 export interface ISchemaImport {
@@ -7,7 +7,7 @@ export interface ISchemaImport {
 }
 
 const importExtractorUtil = {
-	extract(fields: IFieldTemplateItem[]): ISchemaImport[] {
+	extract(fields: FieldTemplateItem[]): ISchemaImport[] {
 		const imports: (ISchemaImport & { namePascal: string })[] = fields.map(
 			(item) => ({
 				package: item.package,

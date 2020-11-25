@@ -1,4 +1,4 @@
-import { ISchemaTemplateItem } from '@sprucelabs/schema'
+import { SchemaTemplateItem } from '@sprucelabs/schema'
 
 export interface IAutoLoaderClassTemplateItem {
 	optionsInterfaceName?: string
@@ -89,7 +89,7 @@ export interface IErrorOptions {
 	renderClassDefinition?: boolean
 }
 
-export interface IErrorTemplateItem extends ISchemaTemplateItem {
+export interface IErrorTemplateItem extends SchemaTemplateItem {
 	code: string
 }
 

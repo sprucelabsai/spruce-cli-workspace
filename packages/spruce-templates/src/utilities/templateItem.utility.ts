@@ -1,12 +1,12 @@
-import { ISchemaTemplateItem, IFieldTemplateItem } from '@sprucelabs/schema'
+import { SchemaTemplateItem, FieldTemplateItem } from '@sprucelabs/schema'
 
 const templateItemUtil = {
 	groupSchemaTemplatesByNamespaceAndName(
-		schemaTemplateItems: ISchemaTemplateItem[]
+		schemaTemplateItems: SchemaTemplateItem[]
 	) {
 		const hash: {
 			[namespace: string]: {
-				[name: string]: ISchemaTemplateItem[]
+				[name: string]: SchemaTemplateItem[]
 			}
 		} = {}
 
@@ -25,9 +25,9 @@ const templateItemUtil = {
 		return hash
 	},
 
-	groupFieldItemsByNamespace(fieldTemplateItems: IFieldTemplateItem[]) {
+	groupFieldItemsByNamespace(fieldTemplateItems: FieldTemplateItem[]) {
 		const fieldTemplatesByType: {
-			[namespace: string]: IFieldTemplateItem[]
+			[namespace: string]: FieldTemplateItem[]
 		} = {}
 
 		fieldTemplateItems.forEach((item) => {
