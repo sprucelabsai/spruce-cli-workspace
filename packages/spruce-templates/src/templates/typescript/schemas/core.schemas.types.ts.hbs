@@ -25,7 +25,7 @@ export declare namespace {{../globalNamespace}}.{{namespace}}{{#if (isDefined sc
 		{{> schemaBody namespace=namespace schema=schema renderAs="type" }}
 	}
 
-	export type {{namePascal}}Entity = SchemaEntity<{{../globalNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}}.I{{namePascal}}Schema>
+	export type {{namePascal}}Entity = SchemaEntity<{{../globalNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}}.{{namePascal}}Schema>
 
 }
 
