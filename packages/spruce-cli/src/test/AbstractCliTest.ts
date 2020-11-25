@@ -5,7 +5,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractSpruceTest, { assert } from '@sprucelabs/test'
 import fs from 'fs-extra'
 import * as uuid from 'uuid'
-import { ICliBootOptions } from '../cli'
+import { CliBootOptions } from '../cli'
 import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
 import { FeatureCode } from '../features/features.types'
 import FeatureFixture, {
@@ -71,7 +71,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		FeatureFixture.deleteOldSkillDirs()
 	}
 
-	protected static async Cli(options?: ICliBootOptions) {
+	protected static async Cli(options?: CliBootOptions) {
 		return this.FeatureFixture().Cli({
 			cwd: this.cwd,
 			...(options ?? {}),

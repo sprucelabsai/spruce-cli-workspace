@@ -3,7 +3,7 @@ import { SpruceErrors } from '../errors.types'
 
 
 
-const notImplementedSchema: SpruceErrors.SpruceCli.INotImplementedSchema  = {
+const notImplementedSchema: SpruceErrors.SpruceCli.NotImplementedSchema  = {
 	id: 'notImplemented',
 	namespace: 'SpruceCli',
 	name: 'Not implemented',

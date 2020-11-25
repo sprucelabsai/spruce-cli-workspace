@@ -3,7 +3,7 @@ import { SpruceErrors } from '../errors.types'
 
 
 
-const fileExistsSchema: SpruceErrors.SpruceCli.IFileExistsSchema  = {
+const fileExistsSchema: SpruceErrors.SpruceCli.FileExistsSchema  = {
 	id: 'fileExists',
 	namespace: 'SpruceCli',
 	name: 'fileExists',

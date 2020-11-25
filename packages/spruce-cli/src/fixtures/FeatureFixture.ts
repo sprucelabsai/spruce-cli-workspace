@@ -1,6 +1,6 @@
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import Cli, { ICliBootOptions, ICli } from '../cli'
+import Cli, { CliBootOptions, ICli } from '../cli'
 import { InstallFeature } from '../features/features.types'
 import ServiceFactory, {
 	IServiceProvider,
@@ -52,7 +52,7 @@ export default class FeatureFixture implements IServiceProvider {
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
-	public async Cli(options?: ICliBootOptions) {
+	public async Cli(options?: CliBootOptions) {
 		await this.linkWorkspacePackages()
 
 		const cli = await Cli.Boot({
@@ -105,7 +105,7 @@ export default class FeatureFixture implements IServiceProvider {
 	public async installFeatures(
 		features: InstallFeature[],
 		cacheKey?: string,
-		bootOptions?: ICliBootOptions
+		bootOptions?: CliBootOptions
 	) {
 		if (
 			cacheKey &&

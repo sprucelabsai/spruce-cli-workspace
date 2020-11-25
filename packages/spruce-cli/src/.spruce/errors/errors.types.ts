@@ -11,11 +11,11 @@ import * as SpruceSchema from '@sprucelabs/schema'
 export declare namespace SpruceErrors.SpruceCli {
 
 	/** Booting your skill failed! */
-	export interface IBootFailed {
+	export interface BootFailed {
 		
 	}
 
-	export interface IBootFailedSchema extends SpruceSchema.ISchema {
+	export interface BootFailedSchema extends SpruceSchema.Schema {
 		id: 'bootFailed',
 		namespace: 'SpruceCli',
 		name: 'Boot failed',
@@ -24,7 +24,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type BootFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.IBootFailedSchema>
+	export type BootFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.BootFailedSchema>
 
 }
 
@@ -33,13 +33,13 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	/** Error thrown when building or linting failed. Happens when a yarn command fails inside the package utility. */
-	export interface IBuildFailed {
+	export interface BuildFailed {
 		
 			/** File. File we wanted to build, if not set we wanted to build everything.. */
 			'file'?: string| undefined | null
 	}
 
-	export interface IBuildFailedSchema extends SpruceSchema.ISchema {
+	export interface BuildFailedSchema extends SpruceSchema.Schema {
 		id: 'buildFailed',
 		namespace: 'SpruceCli',
 		name: 'BuildFailed',
@@ -55,7 +55,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type BuildFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.IBuildFailedSchema>
+	export type BuildFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.BuildFailedSchema>
 
 }
 
@@ -64,13 +64,13 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	
-	export interface ICommandAborted {
+	export interface CommandAborted {
 		
 			/** Command. */
 			'command': string
 	}
 
-	export interface ICommandAbortedSchema extends SpruceSchema.ISchema {
+	export interface CommandAbortedSchema extends SpruceSchema.Schema {
 		id: 'commandAborted',
 		namespace: 'SpruceCli',
 		name: 'Command aborted',
@@ -85,7 +85,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type CommandAbortedEntity = SchemaEntity<SpruceErrors.SpruceCli.ICommandAbortedSchema>
+	export type CommandAbortedEntity = SchemaEntity<SpruceErrors.SpruceCli.CommandAbortedSchema>
 
 }
 
@@ -94,7 +94,7 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	/** This command has not yet been implemented  */
-	export interface ICommandNotImplemented {
+	export interface CommandNotImplemented {
 		
 			/** Command. the command being run! */
 			'command': string
@@ -102,7 +102,7 @@ export declare namespace SpruceErrors.SpruceCli {
 			'args'?: string[]| undefined | null
 	}
 
-	export interface ICommandNotImplementedSchema extends SpruceSchema.ISchema {
+	export interface CommandNotImplementedSchema extends SpruceSchema.Schema {
 		id: 'commandNotImplemented',
 		namespace: 'SpruceCli',
 		name: 'Command not implemented',
@@ -127,7 +127,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type CommandNotImplementedEntity = SchemaEntity<SpruceErrors.SpruceCli.ICommandNotImplementedSchema>
+	export type CommandNotImplementedEntity = SchemaEntity<SpruceErrors.SpruceCli.CommandNotImplementedSchema>
 
 }
 
@@ -136,7 +136,7 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	/** Autoloader creation failed */
-	export interface ICreateAutoloaderFailed {
+	export interface CreateAutoloaderFailed {
 		
 			/** The globby pattern used to find files. Globby pattern */
 			'globbyPattern': string
@@ -148,7 +148,7 @@ export declare namespace SpruceErrors.SpruceCli {
 			'directory': string
 	}
 
-	export interface ICreateAutoloaderFailedSchema extends SpruceSchema.ISchema {
+	export interface CreateAutoloaderFailedSchema extends SpruceSchema.Schema {
 		id: 'createAutoloaderFailed',
 		namespace: 'SpruceCli',
 		name: 'Could not create an autoloader',
@@ -190,7 +190,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type CreateAutoloaderFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.ICreateAutoloaderFailedSchema>
+	export type CreateAutoloaderFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.CreateAutoloaderFailedSchema>
 
 }
 
@@ -199,13 +199,13 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	
-	export interface IDirectoryEmpty {
+	export interface DirectoryEmpty {
 		
 			
 			'directory': string
 	}
 
-	export interface IDirectoryEmptySchema extends SpruceSchema.ISchema {
+	export interface DirectoryEmptySchema extends SpruceSchema.Schema {
 		id: 'directoryEmpty',
 		namespace: 'SpruceCli',
 		name: 'directory empty',
@@ -219,7 +219,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type DirectoryEmptyEntity = SchemaEntity<SpruceErrors.SpruceCli.IDirectoryEmptySchema>
+	export type DirectoryEmptyEntity = SchemaEntity<SpruceErrors.SpruceCli.DirectoryEmptySchema>
 
 }
 
@@ -228,7 +228,7 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	/** The command that was being executed failed */
-	export interface IExecutingCommandFailed {
+	export interface ExecutingCommandFailed {
 		
 			/** The command being run. */
 			'cmd': string
@@ -242,7 +242,7 @@ export declare namespace SpruceErrors.SpruceCli {
 			'stderr'?: string| undefined | null
 	}
 
-	export interface IExecutingCommandFailedSchema extends SpruceSchema.ISchema {
+	export interface ExecutingCommandFailedSchema extends SpruceSchema.Schema {
 		id: 'executingCommandFailed',
 		namespace: 'SpruceCli',
 		name: 'Executing command failed',
@@ -283,7 +283,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type ExecutingCommandFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.IExecutingCommandFailedSchema>
+	export type ExecutingCommandFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.ExecutingCommandFailedSchema>
 
 }
 
@@ -292,13 +292,13 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	/** Failed to import a file through VM */
-	export interface IFailedToImport {
+	export interface FailedToImport {
 		
 			/** File. The file I tried to import */
 			'file': string
 	}
 
-	export interface IFailedToImportSchema extends SpruceSchema.ISchema {
+	export interface FailedToImportSchema extends SpruceSchema.Schema {
 		id: 'failedToImport',
 		namespace: 'SpruceCli',
 		name: 'FailedToImport',
@@ -315,7 +315,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type FailedToImportEntity = SchemaEntity<SpruceErrors.SpruceCli.IFailedToImportSchema>
+	export type FailedToImportEntity = SchemaEntity<SpruceErrors.SpruceCli.FailedToImportSchema>
 
 }
 
@@ -324,13 +324,13 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	/** The file already exists */
-	export interface IFileExists {
+	export interface FileExists {
 		
 			/** File. The file being created */
 			'file': string
 	}
 
-	export interface IFileExistsSchema extends SpruceSchema.ISchema {
+	export interface FileExistsSchema extends SpruceSchema.Schema {
 		id: 'fileExists',
 		namespace: 'SpruceCli',
 		name: 'fileExists',
@@ -347,7 +347,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type FileExistsEntity = SchemaEntity<SpruceErrors.SpruceCli.IFileExistsSchema>
+	export type FileExistsEntity = SchemaEntity<SpruceErrors.SpruceCli.FileExistsSchema>
 
 }
 
@@ -356,13 +356,13 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	/** When you&#x27;re too lazy to make a new error */
-	export interface IGeneric {
+	export interface Generic {
 		
 			/** Friendly message. */
 			'friendlyMessageSet'?: string| undefined | null
 	}
 
-	export interface IGenericSchema extends SpruceSchema.ISchema {
+	export interface GenericSchema extends SpruceSchema.Schema {
 		id: 'generic',
 		namespace: 'SpruceCli',
 		name: 'generic',
@@ -377,7 +377,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type GenericEntity = SchemaEntity<SpruceErrors.SpruceCli.IGenericSchema>
+	export type GenericEntity = SchemaEntity<SpruceErrors.SpruceCli.GenericSchema>
 
 }
 
@@ -386,7 +386,7 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	
-	export interface IPayloadArgs {
+	export interface PayloadArgs {
 		
 			/** name. */
 			'name'?: string| undefined | null
@@ -394,7 +394,7 @@ export declare namespace SpruceErrors.SpruceCli {
 			'value'?: string| undefined | null
 	}
 
-	export interface IPayloadArgsSchema extends SpruceSchema.ISchema {
+	export interface PayloadArgsSchema extends SpruceSchema.Schema {
 		id: 'payloadArgs',
 		namespace: 'SpruceCli',
 		name: 'Payload args',
@@ -414,7 +414,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type PayloadArgsEntity = SchemaEntity<SpruceErrors.SpruceCli.IPayloadArgsSchema>
+	export type PayloadArgsEntity = SchemaEntity<SpruceErrors.SpruceCli.PayloadArgsSchema>
 
 }
 
@@ -423,15 +423,15 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	/** Not sure what happened, but it has something to do with Mercury */
-	export interface IGenericMercury {
+	export interface GenericMercury {
 		
 			/** Event name. */
 			'eventName'?: string| undefined | null
 			/** Payload. A hint */
-			'payloadArgs'?: SpruceErrors.SpruceCli.IPayloadArgs[]| undefined | null
+			'payloadArgs'?: SpruceErrors.SpruceCli.PayloadArgs[]| undefined | null
 	}
 
-	export interface IGenericMercurySchema extends SpruceSchema.ISchema {
+	export interface GenericMercurySchema extends SpruceSchema.Schema {
 		id: 'genericMercury',
 		namespace: 'SpruceCli',
 		name: 'Generic mercury',
@@ -449,12 +449,12 @@ export declare namespace SpruceErrors.SpruceCli {
 		                type: 'schema',
 		                hint: 'A hint',
 		                isArray: true,
-		                options: {schema: SpruceErrors.SpruceCli.IPayloadArgsSchema,}
+		                options: {schema: SpruceErrors.SpruceCli.PayloadArgsSchema,}
 		            },
 		    }
 	}
 
-	export type GenericMercuryEntity = SchemaEntity<SpruceErrors.SpruceCli.IGenericMercurySchema>
+	export type GenericMercuryEntity = SchemaEntity<SpruceErrors.SpruceCli.GenericMercurySchema>
 
 }
 
@@ -463,13 +463,13 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	/** The command is not valid, try --help */
-	export interface IInvalidCommand {
+	export interface InvalidCommand {
 		
 			/** args. */
 			'args': string[]
 	}
 
-	export interface IInvalidCommandSchema extends SpruceSchema.ISchema {
+	export interface InvalidCommandSchema extends SpruceSchema.Schema {
 		id: 'invalidCommand',
 		namespace: 'SpruceCli',
 		name: 'Invalid command',
@@ -486,7 +486,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type InvalidCommandEntity = SchemaEntity<SpruceErrors.SpruceCli.IInvalidCommandSchema>
+	export type InvalidCommandEntity = SchemaEntity<SpruceErrors.SpruceCli.InvalidCommandSchema>
 
 }
 
@@ -495,13 +495,13 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	
-	export interface IInvalidFeatureCode {
+	export interface InvalidFeatureCode {
 		
 			
 			'featureCode': string
 	}
 
-	export interface IInvalidFeatureCodeSchema extends SpruceSchema.ISchema {
+	export interface InvalidFeatureCodeSchema extends SpruceSchema.Schema {
 		id: 'invalidFeatureCode',
 		namespace: 'SpruceCli',
 		name: 'Invalid feature code',
@@ -515,7 +515,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type InvalidFeatureCodeEntity = SchemaEntity<SpruceErrors.SpruceCli.IInvalidFeatureCodeSchema>
+	export type InvalidFeatureCodeEntity = SchemaEntity<SpruceErrors.SpruceCli.InvalidFeatureCodeSchema>
 
 }
 
@@ -524,7 +524,7 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	/** When linting a file fails */
-	export interface ILintFailed {
+	export interface LintFailed {
 		
 			/** Pattern. The pattern used to match files relative to the root of the skill */
 			'pattern': string
@@ -532,7 +532,7 @@ export declare namespace SpruceErrors.SpruceCli {
 			'stdout': string
 	}
 
-	export interface ILintFailedSchema extends SpruceSchema.ISchema {
+	export interface LintFailedSchema extends SpruceSchema.Schema {
 		id: 'lintFailed',
 		namespace: 'SpruceCli',
 		name: 'Lint failed!',
@@ -556,7 +556,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type LintFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.ILintFailedSchema>
+	export type LintFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.LintFailedSchema>
 
 }
 
@@ -565,11 +565,11 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	/** This feature has not been implemented */
-	export interface INotImplemented {
+	export interface NotImplemented {
 		
 	}
 
-	export interface INotImplementedSchema extends SpruceSchema.ISchema {
+	export interface NotImplementedSchema extends SpruceSchema.Schema {
 		id: 'notImplemented',
 		namespace: 'SpruceCli',
 		name: 'Not implemented',
@@ -578,7 +578,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type NotImplementedEntity = SchemaEntity<SpruceErrors.SpruceCli.INotImplementedSchema>
+	export type NotImplementedEntity = SchemaEntity<SpruceErrors.SpruceCli.NotImplementedSchema>
 
 }
 
@@ -587,7 +587,7 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	
-	export interface ISchemaExists {
+	export interface SchemaExists {
 		
 			/** Schema id. */
 			'schemaId': string
@@ -595,7 +595,7 @@ export declare namespace SpruceErrors.SpruceCli {
 			'destination'?: string| undefined | null
 	}
 
-	export interface ISchemaExistsSchema extends SpruceSchema.ISchema {
+	export interface SchemaExistsSchema extends SpruceSchema.Schema {
 		id: 'schemaExists',
 		namespace: 'SpruceCli',
 		name: 'Schema exists',
@@ -616,7 +616,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type SchemaExistsEntity = SchemaEntity<SpruceErrors.SpruceCli.ISchemaExistsSchema>
+	export type SchemaExistsEntity = SchemaEntity<SpruceErrors.SpruceCli.SchemaExistsSchema>
 
 }
 
@@ -625,13 +625,13 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	/** The definition file failed to import */
-	export interface ISchemaFailedToImport {
+	export interface SchemaFailedToImport {
 		
 			/** File. The file definition file I tried to import */
 			'file': string
 	}
 
-	export interface ISchemaFailedToImportSchema extends SpruceSchema.ISchema {
+	export interface SchemaFailedToImportSchema extends SpruceSchema.Schema {
 		id: 'schemaFailedToImport',
 		namespace: 'SpruceCli',
 		name: 'Definition failed to import',
@@ -648,7 +648,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type SchemaFailedToImportEntity = SchemaEntity<SpruceErrors.SpruceCli.ISchemaFailedToImportSchema>
+	export type SchemaFailedToImportEntity = SchemaEntity<SpruceErrors.SpruceCli.SchemaFailedToImportSchema>
 
 }
 
@@ -657,7 +657,7 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	
-	export interface ITestFailed {
+	export interface TestFailed {
 		
 			
 			'fileName': string
@@ -667,7 +667,7 @@ export declare namespace SpruceErrors.SpruceCli {
 			'errorMessage': string
 	}
 
-	export interface ITestFailedSchema extends SpruceSchema.ISchema {
+	export interface TestFailedSchema extends SpruceSchema.Schema {
 		id: 'testFailed',
 		namespace: 'SpruceCli',
 		name: 'Test failed',
@@ -693,7 +693,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type TestFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.ITestFailedSchema>
+	export type TestFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.TestFailedSchema>
 
 }
 
@@ -702,7 +702,7 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	/** Could not find a user */
-	export interface IUserNotFound {
+	export interface UserNotFound {
 		
 			/** Token. */
 			'token'?: string| undefined | null
@@ -710,7 +710,7 @@ export declare namespace SpruceErrors.SpruceCli {
 			'userId'?: number| undefined | null
 	}
 
-	export interface IUserNotFoundSchema extends SpruceSchema.ISchema {
+	export interface UserNotFoundSchema extends SpruceSchema.Schema {
 		id: 'userNotFound',
 		namespace: 'SpruceCli',
 		name: 'User not found',
@@ -731,7 +731,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type UserNotFoundEntity = SchemaEntity<SpruceErrors.SpruceCli.IUserNotFoundSchema>
+	export type UserNotFoundEntity = SchemaEntity<SpruceErrors.SpruceCli.UserNotFoundSchema>
 
 }
 
@@ -740,11 +740,11 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	
-	export interface IVscodeNotInstalled {
+	export interface VscodeNotInstalled {
 		
 	}
 
-	export interface IVscodeNotInstalledSchema extends SpruceSchema.ISchema {
+	export interface VscodeNotInstalledSchema extends SpruceSchema.Schema {
 		id: 'vscodeNotInstalled',
 		namespace: 'SpruceCli',
 		name: 'vscode not installed',
@@ -752,7 +752,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type VscodeNotInstalledEntity = SchemaEntity<SpruceErrors.SpruceCli.IVscodeNotInstalledSchema>
+	export type VscodeNotInstalledEntity = SchemaEntity<SpruceErrors.SpruceCli.VscodeNotInstalledSchema>
 
 }
 
@@ -761,13 +761,13 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	
-	export interface IFeatureNotInstalled {
+	export interface FeatureNotInstalled {
 		
 			
 			'featureCode': string
 	}
 
-	export interface IFeatureNotInstalledSchema extends SpruceSchema.ISchema {
+	export interface FeatureNotInstalledSchema extends SpruceSchema.Schema {
 		id: 'featureNotInstalled',
 		namespace: 'SpruceCli',
 		name: 'Feature not installed',
@@ -781,7 +781,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type FeatureNotInstalledEntity = SchemaEntity<SpruceErrors.SpruceCli.IFeatureNotInstalledSchema>
+	export type FeatureNotInstalledEntity = SchemaEntity<SpruceErrors.SpruceCli.FeatureNotInstalledSchema>
 
 }
 

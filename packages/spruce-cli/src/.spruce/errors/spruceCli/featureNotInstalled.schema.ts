@@ -3,7 +3,7 @@ import { SpruceErrors } from '../errors.types'
 
 
 
-const featureNotInstalledSchema: SpruceErrors.SpruceCli.IFeatureNotInstalledSchema  = {
+const featureNotInstalledSchema: SpruceErrors.SpruceCli.FeatureNotInstalledSchema  = {
 	id: 'featureNotInstalled',
 	namespace: 'SpruceCli',
 	name: 'Feature not installed',

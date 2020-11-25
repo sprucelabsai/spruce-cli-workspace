@@ -3,7 +3,7 @@ import { SpruceErrors } from '../errors.types'
 
 
 
-const executingCommandFailedSchema: SpruceErrors.SpruceCli.IExecutingCommandFailedSchema  = {
+const executingCommandFailedSchema: SpruceErrors.SpruceCli.ExecutingCommandFailedSchema  = {
 	id: 'executingCommandFailed',
 	namespace: 'SpruceCli',
 	name: 'Executing command failed',

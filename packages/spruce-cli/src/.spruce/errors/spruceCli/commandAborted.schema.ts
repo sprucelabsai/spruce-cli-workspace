@@ -3,7 +3,7 @@ import { SpruceErrors } from '../errors.types'
 
 
 
-const commandAbortedSchema: SpruceErrors.SpruceCli.ICommandAbortedSchema  = {
+const commandAbortedSchema: SpruceErrors.SpruceCli.CommandAbortedSchema  = {
 	id: 'commandAborted',
 	namespace: 'SpruceCli',
 	name: 'Command aborted',

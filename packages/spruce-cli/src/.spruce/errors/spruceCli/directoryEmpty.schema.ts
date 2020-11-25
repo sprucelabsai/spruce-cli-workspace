@@ -3,7 +3,7 @@ import { SpruceErrors } from '../errors.types'
 
 
 
-const directoryEmptySchema: SpruceErrors.SpruceCli.IDirectoryEmptySchema  = {
+const directoryEmptySchema: SpruceErrors.SpruceCli.DirectoryEmptySchema  = {
 	id: 'directoryEmpty',
 	namespace: 'SpruceCli',
 	name: 'directory empty',

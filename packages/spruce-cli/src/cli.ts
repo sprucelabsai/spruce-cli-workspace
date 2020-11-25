@@ -29,7 +29,7 @@ export interface ICli {
 	emitter: GlobalEmitter
 }
 
-export interface ICliBootOptions {
+export interface CliBootOptions {
 	cwd?: string
 	program?: CommanderStatic['program']
 	graphicsInterface?: GraphicsInterface
@@ -132,7 +132,7 @@ export default class Cli implements ICli {
 		}
 	}
 
-	public static async Boot(options?: ICliBootOptions): Promise<ICli> {
+	public static async Boot(options?: CliBootOptions): Promise<ICli> {
 		const program = options?.program
 
 		let cwd = options?.cwd ?? process.cwd()

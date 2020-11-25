@@ -3,7 +3,7 @@ import { SpruceErrors } from '../errors.types'
 
 
 
-const createAutoloaderFailedSchema: SpruceErrors.SpruceCli.ICreateAutoloaderFailedSchema  = {
+const createAutoloaderFailedSchema: SpruceErrors.SpruceCli.CreateAutoloaderFailedSchema  = {
 	id: 'createAutoloaderFailed',
 	namespace: 'SpruceCli',
 	name: 'Could not create an autoloader',

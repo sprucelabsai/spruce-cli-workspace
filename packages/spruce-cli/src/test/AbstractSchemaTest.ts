@@ -3,7 +3,7 @@ import {
 	CORE_SCHEMA_VERSION,
 	SchemaHealthCheckItem,
 } from '@sprucelabs/spruce-skill-utils'
-import { ICliBootOptions } from '../cli'
+import { CliBootOptions } from '../cli'
 import AbstractCliTest from './AbstractCliTest'
 
 export default abstract class AbstractSchemaTest extends AbstractCliTest {
@@ -47,7 +47,7 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 
 	protected static async installSchemaFeature(
 		cacheKey?: string,
-		bootOptions?: ICliBootOptions
+		bootOptions?: CliBootOptions
 	) {
 		const fixture = this.FeatureFixture()
 

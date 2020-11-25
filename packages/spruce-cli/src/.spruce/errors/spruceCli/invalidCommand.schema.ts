@@ -3,7 +3,7 @@ import { SpruceErrors } from '../errors.types'
 
 
 
-const invalidCommandSchema: SpruceErrors.SpruceCli.IInvalidCommandSchema  = {
+const invalidCommandSchema: SpruceErrors.SpruceCli.InvalidCommandSchema  = {
 	id: 'invalidCommand',
 	namespace: 'SpruceCli',
 	name: 'Invalid command',

@@ -3,7 +3,7 @@ import { SpruceErrors } from '../errors.types'
 
 
 
-const lintFailedSchema: SpruceErrors.SpruceCli.ILintFailedSchema  = {
+const lintFailedSchema: SpruceErrors.SpruceCli.LintFailedSchema  = {
 	id: 'lintFailed',
 	namespace: 'SpruceCli',
 	name: 'Lint failed!',
