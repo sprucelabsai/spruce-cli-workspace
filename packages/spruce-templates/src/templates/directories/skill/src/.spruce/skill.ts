@@ -1,9 +1,9 @@
 // AUTO-GENERATED. ALL CHANGES WILL BE OVERWRITTEN
 import pathUtil from 'path'
-import { HealthCheckResults, Skill, SkillFeature } from '@sprucelabs/spruce-skill-utils'
+import { HealthCheckResults, Skill as SkillDetails, SkillFeature } from '@sprucelabs/spruce-skill-utils'
 
 
-export class Skill implements Skill {
+export class Skill implements SkillDetails {
 	public readonly rootDir = pathUtil.join(__dirname, '..', '..')
 	public readonly activeDir = pathUtil.join(__dirname, '..')
 	public readonly hashSpruceDir = pathUtil.join(__dirname, '..', '.spruce')
