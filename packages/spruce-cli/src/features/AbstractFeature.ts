@@ -9,8 +9,8 @@ import GeneratorFactory, {
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory, {
 	Service,
-	IServiceProvider,
-	IServiceMap,
+	ServiceProvider,
+	ServiceMap,
 } from '../services/ServiceFactory'
 import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
 import {
@@ -37,7 +37,7 @@ export interface FeatureDependency {
 
 export default abstract class AbstractFeature<
 	S extends Schema | undefined = Schema | undefined
-> implements IServiceProvider {
+> implements ServiceProvider {
 	public abstract description: string
 	public readonly dependencies: FeatureDependency[] = []
 	public readonly packageDependencies: NpmPackage[] = []
@@ -102,7 +102,7 @@ export default abstract class AbstractFeature<
 		return {}
 	}
 
-	public Service<S extends Service>(type: S, cwd?: string): IServiceMap[S] {
+	public Service<S extends Service>(type: S, cwd?: string): ServiceMap[S] {
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 

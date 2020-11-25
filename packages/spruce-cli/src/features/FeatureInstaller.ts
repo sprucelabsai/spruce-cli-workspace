@@ -4,8 +4,8 @@ import merge from 'lodash/merge'
 import SpruceError from '../errors/SpruceError'
 import ServiceFactory, {
 	Service,
-	IServiceProvider,
-	IServiceMap,
+	ServiceProvider,
+	ServiceMap,
 } from '../services/ServiceFactory'
 import { NpmPackage } from '../types/cli.types'
 import AbstractFeature, { FeatureDependency } from './AbstractFeature'
@@ -17,7 +17,7 @@ import {
 	FeatureMap,
 } from './features.types'
 
-export default class FeatureInstaller implements IServiceProvider {
+export default class FeatureInstaller implements ServiceProvider {
 	public cwd: string
 
 	private featureMap: Partial<FeatureMap> = {}
@@ -288,7 +288,7 @@ export default class FeatureInstaller implements IServiceProvider {
 		})
 	}
 
-	public Service<S extends Service>(type: S, cwd?: string): IServiceMap[S] {
+	public Service<S extends Service>(type: S, cwd?: string): ServiceMap[S] {
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 

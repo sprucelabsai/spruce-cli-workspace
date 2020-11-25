@@ -12,17 +12,17 @@ import {
 import SpruceError from '../errors/SpruceError'
 import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
 
-export interface IGenerateSchemaTypesOptions {
+export interface GenerateSchemaTypesOptions {
 	fieldTemplateItems: FieldTemplateItem[]
 	schemaTemplateItems: SchemaTemplateItem[]
 }
 
-export interface IGenerateFieldTypesOptions {
+export interface GenerateFieldTypesOptions {
 	fieldTemplateItems: FieldTemplateItem[]
 }
 
 // eslint-disable-next-line no-redeclare
-export interface IGenerateSchemaTypesOptions {
+export interface GenerateSchemaTypesOptions {
 	fieldTemplateItems: FieldTemplateItem[]
 	schemaTemplateItems: SchemaTemplateItem[]
 	valueTypes: ValueTypes
@@ -32,7 +32,7 @@ export interface IGenerateSchemaTypesOptions {
 	shouldImportCoreSchemas: boolean
 }
 
-export interface ISchemaTypesGenerationStage {
+export interface SchemaTypesGenerationStage {
 	name: string
 	errors: SpruceError[]
 	successfulSchemas: number
@@ -97,7 +97,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 	public async generateFieldTypes(
 		destinationDir: string,
-		options: IGenerateFieldTypesOptions
+		options: GenerateFieldTypesOptions
 	): Promise<GenerationResults> {
 		const { fieldTemplateItems } = options
 
@@ -125,7 +125,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 	public async generateSchemasAndTypes(
 		destinationDirOrFilename: string,
-		options: IGenerateSchemaTypesOptions
+		options: GenerateSchemaTypesOptions
 	): Promise<GenerationResults> {
 		const {
 			fieldTemplateItems,
@@ -170,7 +170,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 	private async generateAllSchemas(
 		destinationDir: string,
-		options: IGenerateSchemaTypesOptions & { typesFile?: string }
+		options: GenerateSchemaTypesOptions & { typesFile?: string }
 	): Promise<GenerationResults> {
 		const results: GenerationResults = []
 

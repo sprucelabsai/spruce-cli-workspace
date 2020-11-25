@@ -3,9 +3,9 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import Cli, { CliBootOptions, ICli } from '../cli'
 import { InstallFeature } from '../features/features.types'
 import ServiceFactory, {
-	IServiceProvider,
+	ServiceProvider,
 	Service,
-	IServiceMap,
+	ServiceMap,
 } from '../services/ServiceFactory'
 import log from '../singletons/log'
 import { GraphicsInterface } from '../types/cli.types'
@@ -23,7 +23,7 @@ export interface FeatureFixtureOptions {
 	shouldGenerateCacheIfMissing?: boolean
 }
 
-export default class FeatureFixture implements IServiceProvider {
+export default class FeatureFixture implements ServiceProvider {
 	private cwd: string
 	private installedSkills: Record<string, CachedCli> = {}
 	private serviceFactory: ServiceFactory
@@ -48,7 +48,7 @@ export default class FeatureFixture implements IServiceProvider {
 	public Service<S extends Service>(
 		type: S,
 		cwd?: string | undefined
-	): IServiceMap[S] {
+	): ServiceMap[S] {
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 

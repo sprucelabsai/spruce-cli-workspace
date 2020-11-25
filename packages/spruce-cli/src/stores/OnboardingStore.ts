@@ -1,15 +1,13 @@
 import Schema from '@sprucelabs/schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import onboardingSchema from '#spruce/schemas/spruceCli/v2020_07_22/onboarding.schema'
-import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
+import AbstractLocalStore, { LocalStoreSettings } from './AbstractLocalStore'
 
-export interface IOnboardingStoreSettings
-	extends ILocalStoreSettings,
+export interface OnboardingStoreSettings
+	extends LocalStoreSettings,
 		SpruceSchemas.SpruceCli.v2020_07_22.Onboarding {}
 
-export default class OnboardingStore extends AbstractLocalStore<
-	IOnboardingStoreSettings
-> {
+export default class OnboardingStore extends AbstractLocalStore<OnboardingStoreSettings> {
 	public name = 'onboarding'
 	public schema = new Schema(onboardingSchema)
 

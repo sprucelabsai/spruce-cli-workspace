@@ -13,10 +13,7 @@ import FeatureFixture, {
 } from '../fixtures/FeatureFixture'
 import CliGlobalEmitter from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
-import ServiceFactory, {
-	Service,
-	IServiceMap,
-} from '../services/ServiceFactory'
+import ServiceFactory, { Service, ServiceMap } from '../services/ServiceFactory'
 import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
@@ -86,7 +83,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static Service<S extends Service>(
 		type: S,
 		cwd?: string
-	): IServiceMap[S] {
+	): ServiceMap[S] {
 		const sf = this.ServiceFactory()
 		return sf.Service(cwd ?? this.cwd, type)
 	}

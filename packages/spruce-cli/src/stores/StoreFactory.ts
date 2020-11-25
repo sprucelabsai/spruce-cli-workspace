@@ -1,6 +1,6 @@
 import { Mercury } from '@sprucelabs/mercury'
 import ServiceFactory from '../services/ServiceFactory'
-import { IStoreOptions } from './AbstractStore'
+import { StoreOptions } from './AbstractStore'
 import OnboardingStore from './OnboardingStore'
 import RemoteStore from './RemoteStore'
 import SchemaStore from './SchemaStore'
@@ -40,7 +40,7 @@ export default class StoreFactory {
 	}
 
 	public Store<C extends StoreCode>(code: C, cwd?: string): IStoreMap[C] {
-		const options: IStoreOptions = {
+		const options: StoreOptions = {
 			cwd: cwd ?? this.cwd,
 			serviceFactory: this.serviceFactory,
 			mercury: this.mercury,

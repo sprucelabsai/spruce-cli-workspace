@@ -16,9 +16,9 @@ import GeneratorFactory, {
 	GeneratorMap,
 } from '../generators/GeneratorFactory'
 import ServiceFactory, {
-	IServiceProvider,
+	ServiceProvider,
 	Service,
-	IServiceMap,
+	ServiceMap,
 } from '../services/ServiceFactory'
 import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
 import { GraphicsInterface } from '../types/cli.types'
@@ -35,7 +35,7 @@ type StripNulls<T extends Record<string, any>> = {
 	[K in keyof T]: Exclude<T[K], null>
 }
 export default abstract class AbstractFeatureAction<S extends Schema = Schema>
-	implements FeatureAction<S>, IServiceProvider {
+	implements FeatureAction<S>, ServiceProvider {
 	public abstract name: string
 	public abstract optionsSchema: S
 
@@ -68,7 +68,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 		return this.parent.Action<S>(name)
 	}
 
-	public Service<S extends Service>(type: S, cwd?: string): IServiceMap[S] {
+	public Service<S extends Service>(type: S, cwd?: string): ServiceMap[S] {
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
