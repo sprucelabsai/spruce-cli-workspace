@@ -3,7 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const syncSchemaFieldsActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemaFieldsActionSchema  = {
+const syncSchemaFieldsActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemaFieldsActionSchema  = {
 	id: 'syncSchemaFieldsAction',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',

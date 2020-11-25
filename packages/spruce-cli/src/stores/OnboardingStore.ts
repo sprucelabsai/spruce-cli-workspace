@@ -5,9 +5,11 @@ import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
 
 export interface IOnboardingStoreSettings
 	extends ILocalStoreSettings,
-		SpruceSchemas.SpruceCli.v2020_07_22.IOnboarding {}
+		SpruceSchemas.SpruceCli.v2020_07_22.Onboarding {}
 
-export default class OnboardingStore extends AbstractLocalStore<IOnboardingStoreSettings> {
+export default class OnboardingStore extends AbstractLocalStore<
+	IOnboardingStoreSettings
+> {
 	public name = 'onboarding'
 	public schema = new Schema(onboardingSchema)
 

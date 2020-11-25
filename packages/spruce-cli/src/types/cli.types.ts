@@ -119,10 +119,10 @@ export enum AuthedAs {
 	Skill = 'skill',
 }
 
-export type GeneratedFile = SpruceSchemas.SpruceCli.v2020_07_22.IGeneratedFile
-export type GeneratedDir = SpruceSchemas.SpruceCli.v2020_07_22.IGeneratedDir
+export type GeneratedFile = SpruceSchemas.SpruceCli.v2020_07_22.GeneratedFile
+export type GeneratedDir = SpruceSchemas.SpruceCli.v2020_07_22.GeneratedDir
 
-export type GeneratedFileOrDir = SpruceSchemas.SpruceCli.v2020_07_22.IWatcherDidDetectChangesEmitPayload['changes'][number]
+export type GeneratedFileOrDir = SpruceSchemas.SpruceCli.v2020_07_22.WatcherDidDetectChangesEmitPayload['changes'][number]
 
 export interface NpmPackage {
 	name: string

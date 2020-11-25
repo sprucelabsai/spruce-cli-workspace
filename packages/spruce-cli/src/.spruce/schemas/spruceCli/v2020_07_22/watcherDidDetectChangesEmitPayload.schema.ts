@@ -4,7 +4,7 @@ import { SpruceSchemas } from '../../schemas.types'
 import generatedFileSchema from '#spruce/schemas/spruceCli/v2020_07_22/generatedFile.schema'
 import generatedDirSchema from '#spruce/schemas/spruceCli/v2020_07_22/generatedDir.schema'
 
-const watcherDidDetectChangesEmitPayloadSchema: SpruceSchemas.SpruceCli.v2020_07_22.IWatcherDidDetectChangesEmitPayloadSchema  = {
+const watcherDidDetectChangesEmitPayloadSchema: SpruceSchemas.SpruceCli.v2020_07_22.WatcherDidDetectChangesEmitPayloadSchema  = {
 	id: 'watcherDidDetectChangesEmitPayload',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',

@@ -8,13 +8,15 @@ import log from '../singletons/log'
 import { AuthedAs } from '../types/cli.types'
 import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
 
-type ISkill = SpruceSchemas.SpruceCli.v2020_07_22.ICliSkill
+type ISkill = SpruceSchemas.SpruceCli.v2020_07_22.CliSkill
 
 export interface ISkillStoreSettings extends ILocalStoreSettings {
 	loggedInSkill: ISkill
 }
 
-export default class SkillStore extends AbstractLocalStore<ISkillStoreSettings> {
+export default class SkillStore extends AbstractLocalStore<
+	ISkillStoreSettings
+> {
 	public name = 'skill'
 
 	/** Build a skill with the passed values */

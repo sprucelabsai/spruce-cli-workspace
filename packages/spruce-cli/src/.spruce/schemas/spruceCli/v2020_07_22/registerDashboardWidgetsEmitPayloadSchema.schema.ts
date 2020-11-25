@@ -3,7 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const registerDashboardWidgetsEmitPayloadSchemaSchema: SpruceSchemas.SpruceCli.v2020_07_22.IRegisterDashboardWidgetsEmitPayloadSchemaSchema  = {
+const registerDashboardWidgetsEmitPayloadSchemaSchema: SpruceSchemas.SpruceCli.v2020_07_22.RegisterDashboardWidgetsEmitPayloadSchemaSchema  = {
 	id: 'registerDashboardWidgetsEmitPayloadSchema',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',

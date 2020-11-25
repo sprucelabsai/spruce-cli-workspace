@@ -4,7 +4,9 @@ import { IExtension } from '../../../services/VsCodeService'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
-export default class SetupAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.ISetupVscodeActionSchema> {
+export default class SetupAction extends AbstractFeatureAction<
+	SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeActionSchema
+> {
 	private recommendedExtensions: IExtension[] = [
 		{
 			id: 'dbaeumer.vscode-eslint',
@@ -28,7 +30,7 @@ export default class SetupAction extends AbstractFeatureAction<SpruceSchemas.Spr
 	public optionsSchema = setupVscodeSchema
 
 	public async execute(
-		options: SpruceSchemas.SpruceCli.v2020_07_22.ISetupVscodeAction
+		options: SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeAction
 	): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 

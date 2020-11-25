@@ -3,7 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const onboardingSchema: SpruceSchemas.SpruceCli.v2020_07_22.IOnboardingSchema  = {
+const onboardingSchema: SpruceSchemas.SpruceCli.v2020_07_22.OnboardingSchema  = {
 	id: 'onboarding',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',

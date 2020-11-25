@@ -6,8 +6,8 @@ import { NpmPackage } from '../../types/cli.types'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
-type SkillFeatureSchema = SpruceSchemas.SpruceCli.v2020_07_22.ISkillFeatureSchema
-type Skill = SpruceSchemas.SpruceCli.v2020_07_22.ISkillFeature
+type SkillFeatureSchema = SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema
+type Skill = SpruceSchemas.SpruceCli.v2020_07_22.SkillFeature
 
 export default class SkillFeature<
 	S extends SkillFeatureSchema = SkillFeatureSchema
@@ -73,7 +73,7 @@ export default class SkillFeature<
 	}
 
 	private async install(
-		options: SpruceSchemas.SpruceCli.v2020_07_22.ISkillFeature
+		options: SpruceSchemas.SpruceCli.v2020_07_22.SkillFeature
 	) {
 		validateSchemaValues(skillFeatureSchema, options)
 

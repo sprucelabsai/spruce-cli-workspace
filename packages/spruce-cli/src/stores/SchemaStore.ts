@@ -1,7 +1,7 @@
 import pathUtil from 'path'
 import {
-	ISchema,
-	IFieldRegistration,
+	Schema,
+	FieldRegistration,
 	fieldRegistrations,
 } from '@sprucelabs/schema'
 import * as coreSchemas from '@sprucelabs/spruce-core-schemas'
@@ -15,21 +15,21 @@ import AbstractStore from './AbstractStore'
 
 interface IAddonItem {
 	path: string
-	registration: IFieldRegistration
+	registration: FieldRegistration
 	isLocal: boolean
 }
 
-export interface ISchemasByNamespace {
-	[namespace: string]: ISchema[]
+export interface SchemasByNamespace {
+	[namespace: string]: Schema[]
 }
 
 interface IFetchSchemasResults {
-	schemasByNamespace: ISchemasByNamespace
+	schemasByNamespace: SchemasByNamespace
 	errors: SpruceError[]
 }
 export interface IFetchedField {
 	path?: string
-	registration: IFieldRegistration
+	registration: FieldRegistration
 	isLocal: boolean
 }
 
@@ -91,7 +91,7 @@ export default class SchemaStore extends AbstractStore {
 
 		const schemaService = this.Service('schema')
 		const errors: SpruceError[] = []
-		const schemas: ISchema[] = []
+		const schemas: Schema[] = []
 
 		await Promise.all(
 			localMatches.map(async (local: string) => {
@@ -184,9 +184,9 @@ export default class SchemaStore extends AbstractStore {
 						])
 					).map(async (file: string) => {
 						try {
-							const registration = await importService.importDefault<IFieldRegistration>(
-								file
-							)
+							const registration = await importService.importDefault<
+								FieldRegistration
+							>(file)
 
 							return {
 								path: file,

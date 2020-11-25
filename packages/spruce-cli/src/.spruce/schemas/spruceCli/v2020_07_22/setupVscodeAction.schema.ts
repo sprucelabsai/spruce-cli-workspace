@@ -3,7 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const setupVscodeActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISetupVscodeActionSchema  = {
+const setupVscodeActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeActionSchema  = {
 	id: 'setupVscodeAction',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',

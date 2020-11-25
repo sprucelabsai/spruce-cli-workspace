@@ -4,12 +4,14 @@ import eventListenActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/liste
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
-export default class ListenAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.IListenEventActionSchema> {
+export default class ListenAction extends AbstractFeatureAction<
+	SpruceSchemas.SpruceCli.v2020_07_22.ListenEventActionSchema
+> {
 	public name = 'listen'
-	public optionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.IListenEventActionSchema = eventListenActionSchema
+	public optionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventActionSchema = eventListenActionSchema
 
 	public async execute(
-		options: SpruceSchemas.SpruceCli.v2020_07_22.IListenEventAction
+		options: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventAction
 	): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 

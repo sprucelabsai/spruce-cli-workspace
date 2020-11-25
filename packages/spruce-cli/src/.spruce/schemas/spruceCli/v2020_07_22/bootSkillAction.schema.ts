@@ -3,7 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const bootSkillActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.IBootSkillActionSchema  = {
+const bootSkillActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.BootSkillActionSchema  = {
 	id: 'bootSkillAction',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',

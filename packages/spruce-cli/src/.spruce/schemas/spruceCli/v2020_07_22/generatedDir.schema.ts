@@ -3,7 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const generatedDirSchema: SpruceSchemas.SpruceCli.v2020_07_22.IGeneratedDirSchema  = {
+const generatedDirSchema: SpruceSchemas.SpruceCli.v2020_07_22.GeneratedDirSchema  = {
 	id: 'generatedDir',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',

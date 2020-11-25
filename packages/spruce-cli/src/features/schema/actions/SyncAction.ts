@@ -13,7 +13,9 @@ import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 import SkillFeature from '../../skill/SkillFeature'
 
-export default class SyncAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasActionSchema> {
+export default class SyncAction extends AbstractFeatureAction<
+	SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema
+> {
 	public name = 'Schema sync'
 	public optionsSchema = syncSchemasActionSchema
 
@@ -21,7 +23,7 @@ export default class SyncAction extends AbstractFeatureAction<SpruceSchemas.Spru
 	private readonly schemaStore = this.Store('schema')
 
 	public async execute(
-		options: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasAction
+		options: SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasAction
 	): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
