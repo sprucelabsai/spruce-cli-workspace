@@ -11,8 +11,8 @@ export default class PinService {
 		console.log(phone, this.mercury)
 		// try {
 		// 	await this.mercury.emit<
-		// 		SpruceEvents.Core.RequestLogin.IPayload,
-		// 		SpruceEvents.Core.RequestLogin.IResponseBody
+		// 		SpruceEvents.Core.RequestLogin.Payload,
+		// 		SpruceEvents.Core.RequestLogin.ResponseBody
 		// 	>({
 		// 		eventName: SpruceEvents.Core.RequestLogin.name,
 		// 		payload: {

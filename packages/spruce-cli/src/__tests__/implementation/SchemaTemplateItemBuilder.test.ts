@@ -289,11 +289,11 @@ const nestedMercuryContract: Schema = {
 				fields: {
 					responsePayload: {
 						type: 'raw',
-						options: { valueType: 'ISchema' },
+						options: { valueType: 'Schema' },
 					},
 					emitPayload: {
 						type: 'raw',
-						options: { valueType: 'ISchema' },
+						options: { valueType: 'Schema' },
 					},
 					listenPermissionsAny: {
 						type: 'text',
@@ -324,11 +324,11 @@ const nestedMercuryContractArray: Schema = {
 					fields: {
 						responsePayload: {
 							type: 'raw',
-							options: { valueType: 'ISchema' },
+							options: { valueType: 'Schema' },
 						},
 						emitPayload: {
 							type: 'raw',
-							options: { valueType: 'ISchema' },
+							options: { valueType: 'Schema' },
 						},
 						listenPermissionsAny: {
 							type: 'text',
@@ -345,11 +345,11 @@ const nestedMercuryContractArray: Schema = {
 					fields: {
 						responsePayload: {
 							type: 'raw',
-							options: { valueType: 'ISchema' },
+							options: { valueType: 'Schema' },
 						},
 						emitPayload: {
 							type: 'raw',
-							options: { valueType: 'ISchema' },
+							options: { valueType: 'Schema' },
 						},
 						listenPermissionsAny: {
 							type: 'text',
@@ -408,11 +408,11 @@ const eventSignatureTemplateItem: SchemaTemplateItem = {
 		fields: {
 			responsePayload: {
 				type: 'raw',
-				options: { valueType: 'ISchema' },
+				options: { valueType: 'Schema' },
 			},
 			emitPayload: {
 				type: 'raw',
-				options: { valueType: 'ISchema' },
+				options: { valueType: 'Schema' },
 			},
 			listenPermissionsAny: {
 				type: 'text',
@@ -472,11 +472,11 @@ const eventSignatureTemplateItem2: SchemaTemplateItem = {
 		fields: {
 			responsePayload: {
 				type: 'raw',
-				options: { valueType: 'ISchema' },
+				options: { valueType: 'Schema' },
 			},
 			emitPayload: {
 				type: 'raw',
-				options: { valueType: 'ISchema' },
+				options: { valueType: 'Schema' },
 			},
 			listenPermissionsAny: {
 				type: 'text',
@@ -625,11 +625,11 @@ const mercurySchemas = [
 							},
 							responsePayload: {
 								type: 'raw',
-								options: { valueType: 'SpruceSchema.ISchema' },
+								options: { valueType: 'SpruceSchema.Schema' },
 							},
 							emitPayload: {
 								type: 'raw',
-								options: { valueType: 'SpruceSchema.ISchema' },
+								options: { valueType: 'SpruceSchema.Schema' },
 							},
 							listenPermissions: {
 								type: 'schema',
@@ -844,11 +844,11 @@ const mercuryTemplateItems = [
 				eventNameWithOptionalNamespace: { type: 'text', isRequired: true },
 				responsePayload: {
 					type: 'raw',
-					options: { valueType: 'SpruceSchema.ISchema' },
+					options: { valueType: 'SpruceSchema.Schema' },
 				},
 				emitPayload: {
 					type: 'raw',
-					options: { valueType: 'SpruceSchema.ISchema' },
+					options: { valueType: 'SpruceSchema.Schema' },
 				},
 				listenPermissions: {
 					type: 'schema',

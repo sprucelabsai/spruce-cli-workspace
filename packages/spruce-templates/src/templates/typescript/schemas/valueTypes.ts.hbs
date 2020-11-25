@@ -1,7 +1,7 @@
 import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
 
 import fieldClassMap from '#spruce/schemas/fields/fieldClassMap'
-import { TemplateRenderAs, IFieldTemplateDetailOptions } from '@sprucelabs/schema'
+import { TemplateRenderAs, FieldTemplateDetailOptions } from '@sprucelabs/schema'
 
 
 {{#each imports}}
@@ -12,7 +12,7 @@ import * as {{importAs}} from '{{package}}'
 const schemaTemplateItems = {{{json schemaTemplateItems}}}
 // @ts-ignore
 const generateTypeLiteral = (definition: FieldDefinition, renderAs: TemplateRenderAs, importAs: string) => {
-	const options:SpruceSchema.IFieldTemplateDetailOptions<FieldDefinition> = {
+	const options:SpruceSchema.FieldTemplateDetailOptions<FieldDefinition> = {
 		language: 'ts',
 		// @ts-ignore
 		templateItems: schemaTemplateItems,
@@ -24,7 +24,7 @@ const generateTypeLiteral = (definition: FieldDefinition, renderAs: TemplateRend
 
 	const FieldClass = fieldClassMap[definition.type]
 	const details = FieldClass.generateTemplateDetails(
-		options as IFieldTemplateDetailOptions<any>
+		options as FieldTemplateDetailOptions<any>
 	)
 	
 	return details.valueType

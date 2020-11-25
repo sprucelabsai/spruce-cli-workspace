@@ -1,20 +1,20 @@
-import { IAutoLoadable, IAutoloaded } from '#spruce/autoloaders'
-import { I{{namePascalPlural}} } from '#spruce/autoloaders/{{nameCamelPlural}}'
+import { AutoLoadable, Autoloaded } from '#spruce/autoloaders'
+import { {{namePascalPlural}} } from '#spruce/autoloaders/{{nameCamelPlural}}'
 
-export interface I{{namePascal}}Options {
+export interface {{namePascal}}Options {
 	/* Define your constructor options here */
 }
 
 /** {{description}} **/
-export default abstract class Abstract{{namePascal}} implements IAutoLoadable {
-	public {{nameCamelPlural}}!: I{{namePascalPlural}}
+export default abstract class Abstract{{namePascal}} implements AutoLoadable {
+	public {{nameCamelPlural}}!: {{namePascalPlural}}
 
-	public constructor(options: I{{namePascal}}Options) {
+	public constructor(options: {{namePascal}}Options) {
 		console.log(options)
 	}
 
 	/** invoked after everything is autoloaded */
-	public async afterAutoload(autoloaded: IAutoloaded) {
+	public async afterAutoload(autoloaded: Autoloaded) {
 		this.{{nameCamelPlural}} = autoloaded.{{nameCamelPlural}}
 	}
 }

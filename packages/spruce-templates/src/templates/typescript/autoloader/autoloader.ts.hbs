@@ -11,7 +11,7 @@ import {{className}} from '{{relativeFilePath}}'
 
 export type {{namePascalPlural}} = {{#each classes}}{{#if @first}}{{className}}{{else}} | {{className}}{{/if}}{{/each}}
 
-export interface I{{namePascalPlural}} {
+export interface {{namePascalPlural}} {
 	{{#each classes}}
 	{{nameCamel}}: {{className}}
 	{{/each}}
@@ -29,9 +29,9 @@ export default async function autoloader<
 	options: {{#each constructorOptionInterfaces}} {{#unless @first}}|{{/unless}} {{name}}{{/each}}
 	after?: (instance: {{namePascalPlural}}) => Promise<void>
 	only?: K
-}): Promise<K extends undefined ? I{{namePascalPlural}} : Pick<I{{namePascalPlural}}, K[number]>> {
+}): Promise<K extends undefined ? {{namePascalPlural}} : Pick<{{namePascalPlural}}, K[number]>> {
 	const { options: constructorOptions, after, only } = options
-	const siblings:Partial<I{{namePascalPlural}}> = {}
+	const siblings:Partial<{{namePascalPlural}}> = {}
 
 	{{#each classes}}
 	if (!only || only.indexOf({{../namePascal}}.{{namePascal}}) > -1) {
@@ -43,5 +43,5 @@ export default async function autoloader<
 	}
 	{{/each}}
 
-	return siblings as K extends undefined ? I{{namePascalPlural}} : Pick<I{{namePascalPlural}}, K[number]>
+	return siblings as K extends undefined ? {{namePascalPlural}} : Pick<{{namePascalPlural}}, K[number]>
 }
