@@ -12,7 +12,7 @@ import ServiceFactory, {
 	ServiceProvider,
 	ServiceMap,
 } from '../services/ServiceFactory'
-import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
+import StoreFactory, { StoreCode, StoreMap } from '../stores/StoreFactory'
 import {
 	NpmPackage,
 	GraphicsInterface,
@@ -145,7 +145,7 @@ export default abstract class AbstractFeature<
 		return matches.map((path) => featuresUtil.filePathToActionCode(path))
 	}
 
-	public Store<C extends StoreCode>(code: C, cwd?: string): IStoreMap[C] {
+	public Store<C extends StoreCode>(code: C, cwd?: string): StoreMap[C] {
 		return this.storeFactory.Store(code, this.cwd ?? cwd)
 	}
 }

@@ -14,7 +14,7 @@ import FeatureFixture, {
 import CliGlobalEmitter from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
 import ServiceFactory, { Service, ServiceMap } from '../services/ServiceFactory'
-import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
+import StoreFactory, { StoreCode, StoreMap } from '../stores/StoreFactory'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static cliRoot = pathUtil.join(__dirname, '..')
@@ -128,7 +128,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static Store<C extends StoreCode>(
 		code: C,
 		cwd?: string
-	): IStoreMap[C] {
+	): StoreMap[C] {
 		return this.StoreFactory().Store(code, this.cwd ?? cwd)
 	}
 

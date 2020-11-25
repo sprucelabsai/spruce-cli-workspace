@@ -10,11 +10,11 @@ import AbstractLocalStore, { LocalStoreSettings } from './AbstractLocalStore'
 
 type ISkill = SpruceSchemas.SpruceCli.v2020_07_22.CliSkill
 
-export interface ISkillStoreSettings extends LocalStoreSettings {
+export interface SkillStoreSettings extends LocalStoreSettings {
 	loggedInSkill: ISkill
 }
 
-export default class SkillStore extends AbstractLocalStore<ISkillStoreSettings> {
+export default class SkillStore extends AbstractLocalStore<SkillStoreSettings> {
 	public name = 'skill'
 
 	/** Build a skill with the passed values */

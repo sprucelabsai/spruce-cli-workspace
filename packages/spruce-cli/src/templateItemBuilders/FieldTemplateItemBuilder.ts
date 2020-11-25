@@ -1,9 +1,9 @@
 import { FieldTemplateItem } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
-import { IFetchedField } from '../stores/SchemaStore'
+import { FetchedField } from '../stores/SchemaStore'
 
 export default class FieldTemplateItemBuilder {
-	public generateTemplateItems(fields: IFetchedField[]) {
+	public generateTemplateItems(fields: FetchedField[]) {
 		const templateItems: FieldTemplateItem[] = []
 		let generatedImportAsCount = 0
 

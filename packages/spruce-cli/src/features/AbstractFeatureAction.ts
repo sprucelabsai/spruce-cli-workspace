@@ -20,7 +20,7 @@ import ServiceFactory, {
 	Service,
 	ServiceMap,
 } from '../services/ServiceFactory'
-import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
+import StoreFactory, { StoreCode, StoreMap } from '../stores/StoreFactory'
 import { GraphicsInterface } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
 import FeatureInstaller from './FeatureInstaller'
@@ -72,7 +72,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
-	protected Store<C extends StoreCode>(code: C, cwd?: string): IStoreMap[C] {
+	protected Store<C extends StoreCode>(code: C, cwd?: string): StoreMap[C] {
 		return this.storeFactory.Store(code, cwd ?? this.cwd)
 	}
 

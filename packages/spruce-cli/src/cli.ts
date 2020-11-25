@@ -22,7 +22,7 @@ import log from './singletons/log'
 import StoreFactory from './stores/StoreFactory'
 import { AuthedAs, GraphicsInterface } from './types/cli.types'
 
-export interface ICli {
+export interface CliInterface {
 	installFeatures: FeatureInstaller['install']
 	getFeature: FeatureInstaller['getFeature']
 	checkHealth(): Promise<HealthCheckResults>
@@ -67,7 +67,7 @@ async function login(storeFactory: StoreFactory, mercury: Mercury) {
 	await mercury.connect(connectOptions)
 }
 
-export default class Cli implements ICli {
+export default class Cli implements CliInterface {
 	private cwd: string
 	private featureInstaller: FeatureInstaller
 	private serviceFactory: ServiceFactory
@@ -132,7 +132,7 @@ export default class Cli implements ICli {
 		}
 	}
 
-	public static async Boot(options?: CliBootOptions): Promise<ICli> {
+	public static async Boot(options?: CliBootOptions): Promise<CliInterface> {
 		const program = options?.program
 
 		let cwd = options?.cwd ?? process.cwd()
@@ -179,7 +179,7 @@ export default class Cli implements ICli {
 
 		const cli = new Cli(cwd, featureInstaller, serviceFactory, emitter)
 
-		return cli as ICli
+		return cli as CliInterface
 	}
 }
 

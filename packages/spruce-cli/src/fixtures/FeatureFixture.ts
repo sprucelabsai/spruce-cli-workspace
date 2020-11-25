@@ -1,6 +1,6 @@
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import Cli, { CliBootOptions, ICli } from '../cli'
+import Cli, { CliBootOptions, CliInterface } from '../cli'
 import { InstallFeature } from '../features/features.types'
 import ServiceFactory, {
 	ServiceProvider,
@@ -12,7 +12,7 @@ import { GraphicsInterface } from '../types/cli.types'
 import testUtil from '../utilities/test.utility'
 
 export interface CachedCli {
-	cli: ICli
+	cli: CliInterface
 	cwd: string
 }
 
@@ -215,7 +215,7 @@ export default class FeatureFixture implements ServiceProvider {
 		)
 	}
 
-	private cacheCli(cacheKey: string, cli: ICli) {
+	private cacheCli(cacheKey: string, cli: CliInterface) {
 		this.installedSkills[cacheKey] = {
 			cwd: this.cwd,
 			cli,

@@ -15,11 +15,11 @@ type UserWithToken = SpruceSchemas.SpruceCli.v2020_07_22.CliUserWithToken
 type User = SpruceSchemas.SpruceCli.v2020_07_22.CliUser
 
 /** Settings i need to save */
-interface IUserStoreSettings extends LocalStoreSettings {
+interface UserStoreSettings extends LocalStoreSettings {
 	authedUsers: UserWithToken[]
 }
 
-export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
+export default class UserStore extends AbstractLocalStore<UserStoreSettings> {
 	public name = 'user'
 
 	public static getUserWithToken(values?: Partial<UserWithToken>) {

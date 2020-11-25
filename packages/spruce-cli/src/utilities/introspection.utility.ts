@@ -2,7 +2,7 @@ import _ from 'lodash'
 import * as tsutils from 'tsutils'
 import * as ts from 'typescript'
 
-export interface IIntrospectionClass {
+export interface IntrospectionClass {
 	className: string
 	parentClassName: string
 	parentClassPath: string
@@ -10,28 +10,28 @@ export interface IIntrospectionClass {
 	isAbstract: boolean
 }
 
-export interface IIntrospectionInterface {
+export interface IntrospectionInterface {
 	interfaceName: string
 }
 
-export interface IIntrospection {
-	classes: IIntrospectionClass[]
-	interfaces: IIntrospectionInterface[]
+export interface Introspection {
+	classes: IntrospectionClass[]
+	interfaces: IntrospectionInterface[]
 }
 
-interface IDocEntry {
+interface DocEntry {
 	name?: string
 	fileName?: string
 	documentation?: string
 	type?: string
-	constructors?: IDocEntry[]
-	parameters?: IDocEntry[]
+	constructors?: DocEntry[]
+	parameters?: DocEntry[]
 	returnType?: string
 }
 const serializeSymbol = (options: {
 	checker: ts.TypeChecker
 	symbol: ts.Symbol
-}): IDocEntry => {
+}): DocEntry => {
 	const { checker, symbol } = options
 	return {
 		name: symbol.getName(),
@@ -62,18 +62,18 @@ const serializeSignature = (options: {
 
 const introspectionUtil = {
 	/** Gather helpful details re: a class definition */
-	introspect(tsFiles: string[]): IIntrospection[] {
+	introspect(tsFiles: string[]): Introspection[] {
 		const filePaths = tsFiles
 		const program = ts.createProgram(filePaths, {})
 		const checker = program.getTypeChecker()
 
 		// for building results
-		const introspects: IIntrospection[] = []
+		const introspects: Introspection[] = []
 
 		for (let i = 0; i < filePaths.length; i += 1) {
 			const tsFile = filePaths[i]
 			const sourceFile = program.getSourceFile(tsFile)
-			const results: IIntrospection = { classes: [], interfaces: [] }
+			const results: Introspection = { classes: [], interfaces: [] }
 			if (sourceFile && _.includes(filePaths, sourceFile.fileName)) {
 				ts.forEachChild(sourceFile, (node) => {
 					// if this is a class declaration
