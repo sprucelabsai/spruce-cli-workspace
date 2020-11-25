@@ -17,11 +17,11 @@ import * as {{importAs}} from '{{package}}'
 export declare namespace {{../globalNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}} {
 
 	{{#if schema.description}}/** {{schema.description}} */{{/if}}
-	export interface I{{namePascal}} {
+	export interface {{namePascal}} {
 		{{> schemaValues schema=schema renderAs="type" }}
 	}
 
-	export interface I{{namePascal}}Schema extends SpruceSchema.ISchema {
+	export interface {{namePascal}}Schema extends SpruceSchema.Schema {
 		{{> schemaBody namespace=namespace schema=schema renderAs="type" }}
 	}
 

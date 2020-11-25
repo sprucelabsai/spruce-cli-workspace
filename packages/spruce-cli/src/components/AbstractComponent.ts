@@ -1,6 +1,6 @@
 import { Schema } from '@sprucelabs/schema'
 import TerminalInterface from '../interfaces/TerminalInterface'
-import FormComponent, { IFormOptions } from './FormComponent'
+import FormComponent, { FormOptions } from './FormComponent'
 
 export default abstract class AbstractComponent {
 	protected term: TerminalInterface
@@ -9,7 +9,7 @@ export default abstract class AbstractComponent {
 	}
 
 	public formComponent<T extends Schema>(
-		options: Omit<IFormOptions<T>, 'term'>
+		options: Omit<FormOptions<T>, 'term'>
 	): FormComponent<T> {
 		const formBuilder = new FormComponent({
 			term: this.term,

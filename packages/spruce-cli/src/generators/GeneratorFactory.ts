@@ -1,6 +1,6 @@
 import { Templates } from '@sprucelabs/spruce-templates'
 import { GraphicsInterface } from '../types/cli.types'
-import { IGeneratorOptions } from './AbstractGenerator'
+import { GeneratorOptions } from './AbstractGenerator'
 import ErrorGenerator from './ErrorGenerator'
 import EventGenerator from './EventGenerator'
 import NodeGenerator from './NodeGenerator'
@@ -38,7 +38,7 @@ export default class GeneratorFactory {
 
 	public Generator<C extends GeneratorCode>(
 		code: C,
-		options?: Partial<IGeneratorOptions>
+		options?: Partial<GeneratorOptions>
 	): GeneratorMap[C] {
 		const Class = classMap[code]
 		return new Class({

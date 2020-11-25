@@ -20,7 +20,7 @@ import {
 } from '../types/cli.types'
 import featuresUtil from './feature.utilities'
 import FeatureActionFactory, {
-	IFeatureActionFactoryOptions,
+	FeatureActionFactoryOptions,
 } from './FeatureActionFactory'
 import FeatureInstaller from './FeatureInstaller'
 import { FeatureAction } from './features.types'
@@ -60,7 +60,7 @@ export default abstract class AbstractFeature<
 	private generatorFactory: GeneratorFactory
 
 	protected actionFactoryOptions: Omit<
-		IFeatureActionFactoryOptions,
+		FeatureActionFactoryOptions,
 		'actionsDir'
 	>
 

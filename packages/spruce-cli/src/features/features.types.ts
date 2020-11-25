@@ -21,7 +21,7 @@ import TestFeature from './test/TestFeature'
 import VsCodeFeature from './vscode/VsCodeFeature'
 import WatchFeature from './watch/WatchFeature'
 
-export interface IFeatureActionOptions {
+export interface FeatureActionOptions {
 	templates: Templates
 	serviceFactory: ServiceFactory
 	cwd: string
@@ -32,12 +32,12 @@ export interface IFeatureActionOptions {
 	generatorFactory: GeneratorFactory
 }
 
-export type FeatureCode = keyof IFeatureMap
+export type FeatureCode = keyof FeatureMap
 
 export type FeatureOptions<
 	F extends FeatureCode
-> = IFeatureMap[F]['optionsDefinition'] extends Schema
-	? SchemaValues<IFeatureMap[F]['optionsDefinition']>
+> = FeatureMap[F]['optionsDefinition'] extends Schema
+	? SchemaValues<FeatureMap[F]['optionsDefinition']>
 	: undefined
 
 export type InstallFeature =
@@ -78,12 +78,12 @@ export type InstallFeature =
 			options?: undefined
 	  }
 
-export interface IInstallFeatureOptions {
+export interface InstallFeatureOptions {
 	features: InstallFeature[]
 	installFeatureDependencies?: boolean
 }
 
-export interface IFeatureMap {
+export interface FeatureMap {
 	circleCi: CircleCIFeature
 	error: ErrorFeature
 	schema: SchemaFeature

@@ -20,28 +20,28 @@ export enum FormBuilderActionType {
 }
 
 /** In overview mode, this is when the user selects "done" */
-export interface IFormActionDone {
+export interface FormActionDone {
 	type: FormBuilderActionType.Done
 }
 
 /** In overview mode, this is when the user select "cancel". TODO: in normal mode, this is if they escape out of the questions. */
-export interface IFormActionCancel {
+export interface FormActionCancel {
 	type: FormBuilderActionType.Cancel
 }
 
 /** In overview mode, this is when the user selects to edit a field */
-export type IFormActionEditField<T extends Schema> = {
+export type FormActionEditField<T extends Schema> = {
 	type: FormBuilderActionType.EditField
 	fieldName: SchemaFieldNames<T>
 }
 /** Actions that can be taken in overview mode */
-export type IFormAction<T extends Schema> =
-	| IFormActionDone
-	| IFormActionCancel
-	| IFormActionEditField<T>
+export type FormAction<T extends Schema> =
+	| FormActionDone
+	| FormActionCancel
+	| FormActionEditField<T>
 
 /** Controls for when presenting the form */
-export interface IFormPresentationOptions<
+export interface FormPresentationOptions<
 	T extends Schema,
 	F extends SchemaFieldNames<T> = SchemaFieldNames<T>
 > {
@@ -50,7 +50,7 @@ export interface IFormPresentationOptions<
 	fields?: F[]
 }
 
-export interface IFormOptions<T extends Schema> {
+export interface FormOptions<T extends Schema> {
 	term: GraphicsInterface
 	schema: T
 	initialValues?: SchemaPartialValues<T>
@@ -61,15 +61,15 @@ export interface IFormOptions<T extends Schema> {
 	) => FieldDefinitions
 }
 
-interface IHandlers<T extends Schema> {
-	onWillAskQuestion?: IFormOptions<T>['onWillAskQuestion']
+interface Handlers<T extends Schema> {
+	onWillAskQuestion?: FormOptions<T>['onWillAskQuestion']
 }
 
 export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 	public term: GraphicsInterface
-	public handlers: IHandlers<S> = {}
+	public handlers: Handlers<S> = {}
 
-	public constructor(options: IFormOptions<S>) {
+	public constructor(options: FormOptions<S>) {
 		// Setup schema
 		super(options.schema, options.initialValues)
 
@@ -85,7 +85,7 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 
 	/** Pass me a schema and i'll give you back an object that conforms to it based on user input */
 	public async present<F extends SchemaFieldNames<S> = SchemaFieldNames<S>>(
-		options: IFormPresentationOptions<S, F> = {}
+		options: FormPresentationOptions<S, F> = {}
 	): Promise<Pick<SchemaAllValues<S>, F>> {
 		const { term } = this
 		const {
@@ -235,12 +235,12 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 	/** Render every field and a select to chose what to edit (or done/cancel) */
 	public async renderOverview<F extends SchemaFieldNames<S>>(
 		options: { fields?: F[] } = {}
-	): Promise<IFormAction<S>> {
+	): Promise<FormAction<S>> {
 		const { term } = this
 		const { fields = this.getNamedFields().map((nf) => nf.name) } = options
 
 		// Track actions while building choices
-		const actionMap: Record<string, IFormAction<S>> = {}
+		const actionMap: Record<string, FormAction<S>> = {}
 
 		// Create all choices
 		const choices: SelectFieldDefinitionChoice[] = this.getNamedFields()
@@ -249,7 +249,7 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 				const { field, name } = namedField
 
 				const actionKey = `field:${name}`
-				const action: IFormActionEditField<S> = {
+				const action: FormActionEditField<S> = {
 					type: FormBuilderActionType.EditField,
 					fieldName: name,
 				}

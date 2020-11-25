@@ -10,7 +10,7 @@ import {
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { Templates } from '@sprucelabs/spruce-templates'
-import { IGeneratorOptions } from '../generators/AbstractGenerator'
+import { GeneratorOptions } from '../generators/AbstractGenerator'
 import GeneratorFactory, {
 	GeneratorCode,
 	GeneratorMap,
@@ -27,7 +27,7 @@ import FeatureInstaller from './FeatureInstaller'
 import {
 	FeatureAction,
 	FeatureActionResponse,
-	IFeatureActionOptions,
+	FeatureActionOptions,
 	FeatureCode,
 } from './features.types'
 
@@ -49,7 +49,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 	protected templates: Templates
 	protected ui: GraphicsInterface
 
-	public constructor(options: IFeatureActionOptions) {
+	public constructor(options: FeatureActionOptions) {
 		this.cwd = options.cwd
 		this.templates = options.templates
 		this.parent = options.parent
@@ -78,7 +78,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 
 	protected Generator<C extends GeneratorCode>(
 		code: C,
-		options?: Partial<IGeneratorOptions>
+		options?: Partial<GeneratorOptions>
 	): GeneratorMap[C] {
 		return this.generatorFactory.Generator(code, options)
 	}

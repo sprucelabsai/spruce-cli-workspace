@@ -8,7 +8,7 @@ import TestReporter from '../../../test/TestReporter'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import {
 	FeatureActionResponse,
-	IFeatureActionOptions,
+	FeatureActionOptions,
 } from '../../features.types'
 import {
 	SpruceTestFile,
@@ -47,7 +47,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	private testReporter: TestReporter | undefined
 	private commandService: CommandService
 
-	public constructor(options: IFeatureActionOptions) {
+	public constructor(options: FeatureActionOptions) {
 		super(options)
 		this.commandService = this.Service('command')
 	}

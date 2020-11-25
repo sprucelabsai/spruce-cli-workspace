@@ -2,22 +2,19 @@ import { Schema } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../errors/SpruceError'
-import {
-	FeatureAction,
-	IFeatureActionOptions,
-} from '../features/features.types'
+import { FeatureAction, FeatureActionOptions } from '../features/features.types'
 import AbstractFeatureAction from './AbstractFeatureAction'
 import InstallCheckingActionDecorator from './InstallCheckingActionDecorator'
 
-export interface IFeatureActionFactoryOptions extends IFeatureActionOptions {
+export interface FeatureActionFactoryOptions extends FeatureActionOptions {
 	actionsDir: string
 }
 
 export default class FeatureActionFactory {
 	private actionsDir: string
-	private actionOptions: IFeatureActionOptions
+	private actionOptions: FeatureActionOptions
 
-	public constructor(options: IFeatureActionFactoryOptions) {
+	public constructor(options: FeatureActionFactoryOptions) {
 		this.actionsDir = options.actionsDir
 		this.actionOptions = options
 	}
@@ -28,7 +25,7 @@ export default class FeatureActionFactory {
 			`${namesUtil.toPascal(name)}Action`
 		)
 
-		const Class: new (options: IFeatureActionOptions) =>
+		const Class: new (options: FeatureActionOptions) =>
 			| AbstractFeatureAction
 			| undefined = require(classPath).default
 

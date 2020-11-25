@@ -14,7 +14,7 @@ import SpruceError from './errors/SpruceError'
 import FeatureCommandAttacher from './features/FeatureCommandAttacher'
 import FeatureInstaller from './features/FeatureInstaller'
 import FeatureInstallerFactory from './features/FeatureInstallerFactory'
-import { FeatureCode, IInstallFeatureOptions } from './features/features.types'
+import { FeatureCode, InstallFeatureOptions } from './features/features.types'
 import CliGlobalEmitter, { GlobalEmitter } from './GlobalEmitter'
 import TerminalInterface from './interfaces/TerminalInterface'
 import ServiceFactory from './services/ServiceFactory'
@@ -85,7 +85,7 @@ export default class Cli implements ICli {
 		this.emitter = emitter
 	}
 
-	public async installFeatures(options: IInstallFeatureOptions) {
+	public async installFeatures(options: InstallFeatureOptions) {
 		return this.featureInstaller.install(options)
 	}
 

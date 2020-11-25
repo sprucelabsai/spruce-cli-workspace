@@ -11,7 +11,7 @@ import log from '../singletons/log'
 import { GraphicsInterface } from '../types/cli.types'
 import testUtil from '../utilities/test.utility'
 
-export interface ICachedCli {
+export interface CachedCli {
 	cli: ICli
 	cwd: string
 }
@@ -25,7 +25,7 @@ export interface FeatureFixtureOptions {
 
 export default class FeatureFixture implements IServiceProvider {
 	private cwd: string
-	private installedSkills: Record<string, ICachedCli> = {}
+	private installedSkills: Record<string, CachedCli> = {}
 	private serviceFactory: ServiceFactory
 	private static linkedUtils = false
 	private static dirsToDelete: string[] = []

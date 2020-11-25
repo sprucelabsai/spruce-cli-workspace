@@ -11,12 +11,12 @@ import {
 	FeatureInstallResponse,
 	FeatureAction,
 	FeatureActionResponse,
-	IFeatureMap,
+	FeatureMap,
 } from './features.types'
 
 type FeatureCommandExecuteOptions<
 	F extends FeatureCode,
-	S extends Schema | undefined = IFeatureMap[F]['optionsDefinition']
+	S extends Schema | undefined = FeatureMap[F]['optionsDefinition']
 > = S extends Schema ? SchemaPartialValues<S> : undefined
 
 type FeatureDependencyWithFeature = FeatureDependency & {
@@ -117,7 +117,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 
 	private async askAboutMissingFeatureOptionsIfFeatureIsNotInstalled(
 		isInstalled: boolean,
-		feature: IFeatureMap[F],
+		feature: FeatureMap[F],
 		options: (Record<string, any> & FeatureCommandExecuteOptions<F>) | undefined
 	) {
 		let installOptions = { ...options }

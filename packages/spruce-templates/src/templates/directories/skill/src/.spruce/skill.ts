@@ -1,15 +1,15 @@
 // AUTO-GENERATED. ALL CHANGES WILL BE OVERWRITTEN
 import pathUtil from 'path'
-import { HealthCheckResults, ISkill, ISkillFeature } from '@sprucelabs/spruce-skill-utils'
+import { HealthCheckResults, Skill, SkillFeature } from '@sprucelabs/spruce-skill-utils'
 
 
-export class Skill implements ISkill {
+export class Skill implements Skill {
 	public readonly rootDir = pathUtil.join(__dirname, '..', '..')
 	public readonly activeDir = pathUtil.join(__dirname, '..')
 	public readonly hashSpruceDir = pathUtil.join(__dirname, '..', '.spruce')
 
 
-	private featureMap: Record<string, ISkillFeature> = {}
+	private featureMap: Record<string, SkillFeature> = {}
 
 
 	public isFeatureInstalled = async (featureCode: string) => {
@@ -20,7 +20,7 @@ export class Skill implements ISkill {
 		return this.featureMap[featureCode].isInstalled()
 	}
 
-	public registerFeature = async (featureCode: string, feature: ISkillFeature) => {
+	public registerFeature = async (featureCode: string, feature: SkillFeature) => {
 		this.featureMap[featureCode] = feature
 	}
 
