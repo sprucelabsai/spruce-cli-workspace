@@ -1,13 +1,12 @@
 import { SpruceTestResults } from '../features/test/test.types'
 import { Key } from '../widgets/keySelectChoices'
+import { LayoutWidget } from '../widgets/types/layout.types'
+import { MenuBarWidget } from '../widgets/types/menuBar.types'
+import { PopupWidget } from '../widgets/types/popup.types'
+import { ProgressBarWidget } from '../widgets/types/progressBar.types'
+import { TextWidget } from '../widgets/types/text.types'
+import { WindowWidget } from '../widgets/types/window.types'
 import WidgetFactory from '../widgets/WidgetFactory'
-import {
-	LayoutWidget,
-	MenuBarWidget,
-	ProgressBarWidget,
-	TextWidget,
-	WindowWidget,
-} from '../widgets/widgets.types'
 import TestLogItemGenerator from './TestLogItemGenerator'
 
 interface TestReporterOptions {
@@ -28,6 +27,7 @@ export default class TestReporter {
 	private menu!: MenuBarWidget
 	private window!: WindowWidget
 	private widgetFactory: WidgetFactory
+	private selectTestPopup?: PopupWidget
 
 	private onRestart?: () => void
 	private onQuit?: () => void
@@ -124,7 +124,97 @@ export default class TestReporter {
 				shouldLockHeightWithParent: true,
 				shouldLockWidthWithParent: true,
 			})
+
+			void this.testLog.on('click', this.handleClickTestFile.bind(this))
 		}
+	}
+
+	private async handleClickTestFile(payload: { row: number; column: number }) {
+		const testFile = this.getFileForLine(payload.row)
+		const { row, column } = payload
+
+		this.closeSelectTestPopup()
+
+		if (testFile) {
+			this.dropInSelectTestPopup({ testFile, column, row })
+		}
+	}
+
+	private closeSelectTestPopup() {
+		if (this.selectTestPopup) {
+			void this.selectTestPopup.destroy()
+			this.selectTestPopup = undefined
+		}
+	}
+
+	private dropInSelectTestPopup(options: {
+		testFile: string
+		column: number
+		row: number
+	}) {
+		const { testFile, row, column } = options
+
+		this.selectTestPopup = this.widgetFactory.Widget('popup', {
+			parent: this.window,
+			left: Math.max(1, column - 25),
+			top: Math.max(4, row - 2),
+			width: 50,
+			height: 10,
+		})
+
+		this.widgetFactory.Widget('text', {
+			parent: this.selectTestPopup,
+			left: 1,
+			top: 1,
+			height: 4,
+			width: this.selectTestPopup.getFrame().width - 2,
+			text: `What do you wanna do with:\n\n${testFile}`,
+		})
+
+		this.widgetFactory.Widget('button', {
+			parent: this.selectTestPopup,
+			left: 1,
+			top: 6,
+			text: 'Open',
+		})
+
+		this.widgetFactory.Widget('button', {
+			parent: this.selectTestPopup,
+			left: 20,
+			top: 6,
+			text: 'Rerun',
+		})
+
+		const cancel = this.widgetFactory.Widget('button', {
+			parent: this.selectTestPopup,
+			left: 40,
+			top: 6,
+			text: 'Cancel',
+		})
+
+		void cancel.on('click', this.closeSelectTestPopup.bind(this))
+	}
+
+	public getFileForLine(row: number): string | undefined {
+		let line = this.testLog.getScrollY()
+
+		for (let file of this.lastResults?.testFiles ?? []) {
+			if (line === row) {
+				return file.path
+			}
+
+			line++
+
+			for (let c = 0; c < (file.tests ?? []).length; c++) {
+				if (line === row) {
+					return file.path
+				}
+
+				line++
+			}
+		}
+
+		return undefined
 	}
 
 	private dropInProgressBar() {
@@ -183,12 +273,16 @@ export default class TestReporter {
 	}
 
 	private updateLogs(results: SpruceTestResults) {
+		if (this.selectTestPopup) {
+			return
+		}
+
 		let { logContent, errorContent } = this.resultsToLogContents(results)
 
-		this.testLog.setContent(logContent)
+		this.testLog.setText(logContent)
 
 		if (this.errorLog) {
-			this.errorLog?.setContent(errorContent)
+			this.errorLog?.setText(errorContent)
 		}
 	}
 

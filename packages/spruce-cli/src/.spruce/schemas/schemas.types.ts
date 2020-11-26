@@ -9,7 +9,7 @@ import { default as SchemaEntity } from '@sprucelabs/schema'
 
 import * as SpruceSchema from '@sprucelabs/schema'
 
-import { BaseWidget } from '#spruce/../widgets/widgets.types'
+import { BaseWidget } from '#spruce/../widgets/types/widgets.types'
 
 declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schemas.types' {
 
