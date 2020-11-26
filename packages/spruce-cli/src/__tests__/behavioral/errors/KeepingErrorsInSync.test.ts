@@ -35,15 +35,12 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 
 		// should contain our test error
 		let optionsContent = diskUtil.readFile(optionsMatch)
-		assert.doesInclude(
-			optionsContent,
-			/SpruceErrors\.TestingErrors\.ITestError/
-		)
+		assert.doesInclude(optionsContent, /SpruceErrors\.TestingErrors\.TestError/)
 
 		let typesContent = diskUtil.readFile(typesMatch)
 		assert.doesInclude(
 			typesContent,
-			/SpruceErrors\.TestingErrors.*?ITestError/gis
+			/SpruceErrors\.TestingErrors.*?TestError/gis
 		)
 
 		// delete our testError
