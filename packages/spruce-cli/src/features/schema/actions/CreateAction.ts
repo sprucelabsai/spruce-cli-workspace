@@ -7,9 +7,7 @@ import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncS
 import SpruceError from '../../../errors/SpruceError'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 
-export default class CreateAction extends AbstractFeatureAction<
-	SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaActionSchema
-> {
+export default class CreateAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaActionSchema> {
 	public name = 'create'
 	public optionsSchema = createSchemaActionSchema
 
@@ -50,9 +48,9 @@ export default class CreateAction extends AbstractFeatureAction<
 			namePascal: namePascal ?? namesUtil.toPascal(nameCamel),
 		})
 
-		const syncAction = this.Action<
-			SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema
-		>('sync')
+		const syncAction = this.Action<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema>(
+			'sync'
+		)
 
 		let errors: SpruceError[] | undefined
 		if (syncAfterCreate) {

@@ -7,9 +7,7 @@ import AbstractFeatureAction from '../../AbstractFeatureAction'
 import ParentTestFinder from '../../error/ParentTestFinder'
 import { FeatureActionResponse } from '../../features.types'
 
-export default class CreateAction extends AbstractFeatureAction<
-	SpruceSchemas.SpruceCli.v2020_07_22.CreateTestActionSchema
-> {
+export default class CreateAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.CreateTestActionSchema> {
 	public name = 'Test'
 	public optionsSchema = createTestActionSchema
 

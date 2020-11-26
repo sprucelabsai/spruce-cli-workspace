@@ -4,9 +4,7 @@ import SpruceError from '../../../errors/SpruceError'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
-export default class BootAction extends AbstractFeatureAction<
-	SpruceSchemas.SpruceCli.v2020_07_22.BootSkillActionSchema
-> {
+export default class BootAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.BootSkillActionSchema> {
 	public name = 'boot'
 	public optionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.BootSkillActionSchema = bootSkillActionSchema
 	public async execute(
