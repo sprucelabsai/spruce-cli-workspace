@@ -42,7 +42,7 @@ export default class TKButtonWidget
 		throw new Error('Method not implemented.')
 	}
 
-	public setText(content: string): void {
+	public setText(_content: string): void {
 		throw new Error('Method not implemented.')
 	}
 
