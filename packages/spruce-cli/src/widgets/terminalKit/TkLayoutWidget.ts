@@ -5,8 +5,8 @@ import {
 	LayoutRow,
 	LayoutWidget,
 	LayoutWidgetOptions,
-	WidgetFrameAttribute,
-} from '../widgets.types'
+} from '../types/layout.types'
+import { WidgetFrameAttribute } from '../types/widgets.types'
 import termKitUtil from './termKit.utility'
 import TkBaseWidget, { TkWidgetOptions } from './TkBaseWidget'
 import TkLayoutCellWidget from './TkLayoutCellWidget'

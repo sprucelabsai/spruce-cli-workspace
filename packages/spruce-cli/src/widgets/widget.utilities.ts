@@ -1,4 +1,8 @@
-import { BaseWidget, WidgetFrame, WidgetFrameCalculated } from './widgets.types'
+import {
+	BaseWidget,
+	WidgetFrame,
+	WidgetFrameCalculated,
+} from './types/widgets.types'
 
 const widgetUtil = {
 	buildFrame(frame?: Partial<WidgetFrame>, parent?: BaseWidget | null) {

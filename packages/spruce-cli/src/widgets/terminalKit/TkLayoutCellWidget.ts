@@ -1,9 +1,14 @@
-import { LayoutCellWidget, LayoutCellWidgetOptions } from '../widgets.types'
+import {
+	LayoutCellWidget,
+	LayoutCellWidgetOptions,
+} from '../types/layout.types'
 import TkBaseWidget, { TkWidgetOptions } from './TkBaseWidget'
 
 export default class TkLayoutCellWidget
 	extends TkBaseWidget
 	implements LayoutCellWidget {
+	public readonly type = 'layoutCell'
+
 	private cell: any
 
 	public constructor(

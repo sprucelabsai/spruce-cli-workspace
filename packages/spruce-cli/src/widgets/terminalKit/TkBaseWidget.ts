@@ -7,7 +7,7 @@ import {
 	WidgetFrame,
 	WidgetFrameCalculated,
 	WidgetPadding,
-} from '../widgets.types'
+} from '../types/widgets.types'
 
 export type BaseWidgetWithTermKitAddons = BaseWidget & {
 	getTermKitElement: () => any | null
@@ -140,6 +140,10 @@ export default abstract class TkBaseWidget<Contract extends EventContract = any>
 		return null
 	}
 
+	public removeChild(child: BaseWidget) {
+		this.children = this.children.filter((c) => c !== child)
+	}
+
 	protected handleParentResize(parentFrame: WidgetFrameCalculated): void {
 		const updatedFrame = this.getFrame()
 		let shouldSetFrame = false
@@ -160,7 +164,10 @@ export default abstract class TkBaseWidget<Contract extends EventContract = any>
 		}
 	}
 
-	public async destroy() {}
+	public async destroy() {
+		this.getTermKitElement()?.destroy()
+		this.getParent()?.removeChild(this as BaseWidget)
+	}
 
 	public getTermKitElement(): any | null {
 		return null

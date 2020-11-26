@@ -5,7 +5,7 @@ export default buildSchema({
 	name: 'register dashboard widgets emit payload schema',
 	description: '',
 	importsWhenLocal: [
-		"import { BaseWidget } from '#spruce/../widgets/widgets.types'",
+		"import { BaseWidget } from '#spruce/../widgets/types/widgets.types'",
 	],
 	fields: {
 		widgets: {
