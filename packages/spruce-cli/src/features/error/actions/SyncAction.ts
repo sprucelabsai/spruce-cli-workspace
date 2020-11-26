@@ -1,11 +1,11 @@
 import {
-	ISchemaTemplateItem,
+	SchemaTemplateItem,
 	normalizeSchemaValues,
 	SchemaValuesWithDefaults,
 } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { IErrorTemplateItem } from '@sprucelabs/spruce-templates'
+import { ErrorTemplateItem } from '@sprucelabs/spruce-templates'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import syncErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncErrorAction.schema'
 import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
@@ -13,12 +13,12 @@ import ErrorGenerator from '../../../generators/ErrorGenerator'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse, FeatureAction } from '../../features.types'
 
-export default class SyncAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.ISyncErrorActionSchema> {
+export default class SyncAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorActionSchema> {
 	public name = 'sync'
 	public optionsSchema = syncErrorActionSchema
 
 	public async execute(
-		options: SpruceSchemas.SpruceCli.v2020_07_22.ISyncErrorAction
+		options: SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorAction
 	): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 		const {
@@ -28,7 +28,7 @@ export default class SyncAction extends AbstractFeatureAction<SpruceSchemas.Spru
 
 		const schemaSyncAction = this.getFeature('schema').Action(
 			'sync'
-		) as FeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasActionSchema>
+		) as FeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema>
 
 		const errorSyncResults = await this.syncErrors(
 			schemaSyncAction,
@@ -45,7 +45,7 @@ export default class SyncAction extends AbstractFeatureAction<SpruceSchemas.Spru
 		}
 
 		const { schemaTemplateItems } = errorSyncResults.meta as {
-			schemaTemplateItems: ISchemaTemplateItem[]
+			schemaTemplateItems: SchemaTemplateItem[]
 		}
 
 		const errorTemplateItems = schemaTemplateItems.map((item) => ({
@@ -79,8 +79,8 @@ export default class SyncAction extends AbstractFeatureAction<SpruceSchemas.Spru
 	}
 
 	private async syncErrors(
-		schemaSyncAction: FeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasActionSchema>,
-		normalizedOptions: SchemaValuesWithDefaults<SpruceSchemas.SpruceCli.v2020_07_22.ISyncErrorActionSchema>
+		schemaSyncAction: FeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema>,
+		normalizedOptions: SchemaValuesWithDefaults<SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorActionSchema>
 	) {
 		const resolvedErrorTypesDestinationDir = diskUtil.resolvePath(
 			this.cwd,
@@ -116,7 +116,7 @@ export default class SyncAction extends AbstractFeatureAction<SpruceSchemas.Spru
 
 	private async generateOptionTypes(
 		errorGenerator: ErrorGenerator,
-		errorTemplateItems: IErrorTemplateItem[],
+		errorTemplateItems: ErrorTemplateItem[],
 		errorTypesDestinationDir: string
 	) {
 		if (errorTemplateItems.length === 0) {

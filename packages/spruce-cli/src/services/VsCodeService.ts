@@ -4,7 +4,7 @@ import CommandService from './CommandService'
 
 const VSCODE_MINIMUM_VERSION = '1.44.0'
 
-export interface IExtension {
+export interface Extension {
 	/** The vscode extension id like dbaeumer.vscode-eslint  */
 	id: string
 	/** A friendly name / description that will describe what the extension is or does */

@@ -3,7 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const createSchemaActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICreateSchemaActionSchema  = {
+const createSchemaActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaActionSchema  = {
 	id: 'createSchemaAction',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',

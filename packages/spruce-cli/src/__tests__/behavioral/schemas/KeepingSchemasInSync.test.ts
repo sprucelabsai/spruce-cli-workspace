@@ -152,7 +152,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		assert.doesInclude(
 			typesContents,
 			new RegExp(
-				`SpruceSchemas.${CORE_NAMESPACE}.${CORE_SCHEMA_VERSION.constValue}(.*?)interface IPerson`,
+				`SpruceSchemas.${CORE_NAMESPACE}.${CORE_SCHEMA_VERSION.constValue}(.*?)interface Person`,
 				'gis'
 			)
 		)
@@ -272,7 +272,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		const createAction = cli.getFeature('schema').Action('create')
 
 		const matcher = new RegExp(
-			`SpruceSchemas.Testing.${version.constValue}(.*?)interface ITestSchema`,
+			`SpruceSchemas.Testing.${version.constValue}(.*?)interface TestSchema`,
 			'gis'
 		)
 

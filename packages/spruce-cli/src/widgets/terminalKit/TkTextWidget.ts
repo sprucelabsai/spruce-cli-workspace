@@ -1,6 +1,7 @@
 import terminal_kit from 'terminal-kit'
+import { TextWidget, TextWidgetOptions } from '../types/text.types'
+import { WidgetFrame } from '../types/widgets.types'
 import widgetUtil from '../widget.utilities'
-import { TextWidget, TextWidgetOptions, WidgetFrame } from '../widgets.types'
 import termKitUtil from './termKit.utility'
 import TkBaseWidget, { TkWidgetOptions } from './TkBaseWidget'
 const termKit = terminal_kit as any
@@ -13,7 +14,7 @@ export default class TkTextWidget extends TkBaseWidget implements TextWidget {
 	public constructor(options: TkWidgetOptions & TextWidgetOptions) {
 		super(options)
 
-		const { parent, enableScroll = false, ...rest } = options
+		const { parent, text, enableScroll = false, ...rest } = options
 
 		const frame = termKitUtil.buildFrame(options, parent)
 
@@ -22,11 +23,26 @@ export default class TkTextWidget extends TkBaseWidget implements TextWidget {
 			scrollable: enableScroll,
 			vScrollBar: enableScroll,
 			hScrollBar: enableScroll && !rest.wordWrap,
+			content: text,
 			...rest,
 			...frame,
 		})
 
 		this.calculateSizeLockDeltas()
+
+		this.text.on('click', this.handleMouseDown.bind(this))
+	}
+
+	private async handleMouseDown(position: { x: number; y: number }) {
+		const { x, y } = position
+
+		const line = this.text.content.split('\n')[y]
+
+		await (this as TextWidget).emit('click', {
+			text: line,
+			row: y,
+			column: x,
+		})
 	}
 
 	public getTermKitElement() {
@@ -46,12 +62,12 @@ export default class TkTextWidget extends TkBaseWidget implements TextWidget {
 		this.text.draw()
 	}
 
-	public getContent(): string {
+	public getText(): string {
 		return this.text.content
 	}
 
 	private isLogScrolledAllTheWay() {
-		const scrollDistance = this.text.scrollY * -1
+		const scrollDistance = this.getScrollY() * -1
 		const contentHeight = this.text.textBuffer.cy
 		const visibleHeight = this.text.textAreaHeight
 		const maxScrollDistance =
@@ -61,15 +77,23 @@ export default class TkTextWidget extends TkBaseWidget implements TextWidget {
 		return isScrolledAllTheWay
 	}
 
-	public setContent(content: string): void {
-		if (this.getContent() === content) {
+	public getScrollY() {
+		return this.text.scrollY
+	}
+
+	public getScrollX() {
+		return this.text.scrollX
+	}
+
+	public setText(content: string): void {
+		if (this.getText() === content) {
 			return
 		}
 
 		const isScrolledAllTheWay = this.isLogScrolledAllTheWay()
 		const logSelection = this.text.textBuffer.selectionRegion
-
 		const markupType = this.markupType(content)
+
 		this.text.setContent(content, markupType)
 
 		if (logSelection) {

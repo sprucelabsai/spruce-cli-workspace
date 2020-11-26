@@ -7,18 +7,18 @@ import mergeUtil from '../../../utilities/merge.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
-export default class CreateAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.ICreateErrorActionSchema> {
+export default class CreateAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorActionSchema> {
 	public name = 'create'
 	public optionsSchema = createErrorActionSchema
 
 	public async execute(
-		options: SpruceSchemas.SpruceCli.v2020_07_22.ICreateErrorAction
+		options: SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorAction
 	): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
 		const schemaCreateAction = this.getFeature(
 			'schema'
-		).Action<SpruceSchemas.SpruceCli.v2020_07_22.ICreateSchemaActionSchema>(
+		).Action<SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaActionSchema>(
 			'create'
 		)
 

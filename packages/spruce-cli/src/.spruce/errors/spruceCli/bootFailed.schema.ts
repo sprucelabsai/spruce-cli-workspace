@@ -3,7 +3,7 @@ import { SpruceErrors } from '../errors.types'
 
 
 
-const bootFailedSchema: SpruceErrors.SpruceCli.IBootFailedSchema  = {
+const bootFailedSchema: SpruceErrors.SpruceCli.BootFailedSchema  = {
 	id: 'bootFailed',
 	namespace: 'SpruceCli',
 	name: 'Boot failed',

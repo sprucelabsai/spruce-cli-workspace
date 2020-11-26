@@ -1,7 +1,7 @@
 import { TemplateRenderAs } from '@sprucelabs/schema'
 import { SCHEMA_VERSION_FALLBACK } from '@sprucelabs/spruce-skill-utils'
 import handlebars from 'handlebars'
-import { IValueTypes } from '../types/templates.types'
+import { ValueTypes } from '../types/templates.types'
 
 /* The type for the value of a field. the special case is if the field is of type schema, then we get the target's interface */
 handlebars.registerHelper(
@@ -40,7 +40,7 @@ handlebars.registerHelper(
 			data: { root },
 		} = options
 
-		const valueTypes: IValueTypes = root?.valueTypes
+		const valueTypes: ValueTypes = root?.valueTypes
 		if (!valueTypes) {
 			throw new Error(
 				'valueTypeLiteral helper needs a valueTypeGenerator in the root context'

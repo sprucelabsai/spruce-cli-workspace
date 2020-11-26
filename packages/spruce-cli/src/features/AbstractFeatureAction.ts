@@ -1,5 +1,5 @@
 import {
-	ISchema,
+	Schema,
 	SchemaValues,
 	defaultSchemaValues,
 	validateSchemaValues,
@@ -10,32 +10,32 @@ import {
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { Templates } from '@sprucelabs/spruce-templates'
-import { IGeneratorOptions } from '../generators/AbstractGenerator'
+import { GeneratorOptions } from '../generators/AbstractGenerator'
 import GeneratorFactory, {
 	GeneratorCode,
 	GeneratorMap,
 } from '../generators/GeneratorFactory'
 import ServiceFactory, {
-	IServiceProvider,
+	ServiceProvider,
 	Service,
-	IServiceMap,
+	ServiceMap,
 } from '../services/ServiceFactory'
-import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
+import StoreFactory, { StoreCode, StoreMap } from '../stores/StoreFactory'
 import { GraphicsInterface } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
 import FeatureInstaller from './FeatureInstaller'
 import {
 	FeatureAction,
 	FeatureActionResponse,
-	IFeatureActionOptions,
+	FeatureActionOptions,
 	FeatureCode,
 } from './features.types'
 
 type StripNulls<T extends Record<string, any>> = {
 	[K in keyof T]: Exclude<T[K], null>
 }
-export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
-	implements FeatureAction<S>, IServiceProvider {
+export default abstract class AbstractFeatureAction<S extends Schema = Schema>
+	implements FeatureAction<S>, ServiceProvider {
 	public abstract name: string
 	public abstract optionsSchema: S
 
@@ -49,7 +49,7 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 	protected templates: Templates
 	protected ui: GraphicsInterface
 
-	public constructor(options: IFeatureActionOptions) {
+	public constructor(options: FeatureActionOptions) {
 		this.cwd = options.cwd
 		this.templates = options.templates
 		this.parent = options.parent
@@ -64,21 +64,21 @@ export default abstract class AbstractFeatureAction<S extends ISchema = ISchema>
 		options: SchemaValues<S>
 	): Promise<FeatureActionResponse>
 
-	protected Action<S extends ISchema = ISchema>(name: string) {
+	protected Action<S extends Schema = Schema>(name: string) {
 		return this.parent.Action<S>(name)
 	}
 
-	public Service<S extends Service>(type: S, cwd?: string): IServiceMap[S] {
+	public Service<S extends Service>(type: S, cwd?: string): ServiceMap[S] {
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
-	protected Store<C extends StoreCode>(code: C, cwd?: string): IStoreMap[C] {
+	protected Store<C extends StoreCode>(code: C, cwd?: string): StoreMap[C] {
 		return this.storeFactory.Store(code, cwd ?? this.cwd)
 	}
 
 	protected Generator<C extends GeneratorCode>(
 		code: C,
-		options?: Partial<IGeneratorOptions>
+		options?: Partial<GeneratorOptions>
 	): GeneratorMap[C] {
 		return this.generatorFactory.Generator(code, options)
 	}

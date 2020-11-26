@@ -1,5 +1,5 @@
 import { FieldDefinitionValueType } from '@sprucelabs/schema'
-import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
+import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import { FeatureCode, FeatureActionResponse } from '../features/features.types'
 
@@ -91,7 +91,7 @@ export interface GraphicsInterface {
 	renderWarning(message: string, effects?: GraphicsTextEffect[]): void
 	renderHint(message: string, effects?: GraphicsTextEffect[]): void
 
-	prompt<T extends FieldDefinition>(
+	prompt<T extends FieldDefinitions>(
 		definition: T
 	): Promise<FieldDefinitionValueType<T>>
 
@@ -119,10 +119,10 @@ export enum AuthedAs {
 	Skill = 'skill',
 }
 
-export type GeneratedFile = SpruceSchemas.SpruceCli.v2020_07_22.IGeneratedFile
-export type GeneratedDir = SpruceSchemas.SpruceCli.v2020_07_22.IGeneratedDir
+export type GeneratedFile = SpruceSchemas.SpruceCli.v2020_07_22.GeneratedFile
+export type GeneratedDir = SpruceSchemas.SpruceCli.v2020_07_22.GeneratedDir
 
-export type GeneratedFileOrDir = SpruceSchemas.SpruceCli.v2020_07_22.IWatcherDidDetectChangesEmitPayload['changes'][number]
+export type GeneratedFileOrDir = SpruceSchemas.SpruceCli.v2020_07_22.WatcherDidDetectChangesEmitPayload['changes'][number]
 
 export interface NpmPackage {
 	name: string

@@ -1,18 +1,18 @@
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import Cli, { ICliBootOptions, ICli } from '../cli'
+import Cli, { CliBootOptions, CliInterface } from '../cli'
 import { InstallFeature } from '../features/features.types'
 import ServiceFactory, {
-	IServiceProvider,
+	ServiceProvider,
 	Service,
-	IServiceMap,
+	ServiceMap,
 } from '../services/ServiceFactory'
 import log from '../singletons/log'
 import { GraphicsInterface } from '../types/cli.types'
 import testUtil from '../utilities/test.utility'
 
-export interface ICachedCli {
-	cli: ICli
+export interface CachedCli {
+	cli: CliInterface
 	cwd: string
 }
 
@@ -23,9 +23,9 @@ export interface FeatureFixtureOptions {
 	shouldGenerateCacheIfMissing?: boolean
 }
 
-export default class FeatureFixture implements IServiceProvider {
+export default class FeatureFixture implements ServiceProvider {
 	private cwd: string
-	private installedSkills: Record<string, ICachedCli> = {}
+	private installedSkills: Record<string, CachedCli> = {}
 	private serviceFactory: ServiceFactory
 	private static linkedUtils = false
 	private static dirsToDelete: string[] = []
@@ -48,11 +48,11 @@ export default class FeatureFixture implements IServiceProvider {
 	public Service<S extends Service>(
 		type: S,
 		cwd?: string | undefined
-	): IServiceMap[S] {
+	): ServiceMap[S] {
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
-	public async Cli(options?: ICliBootOptions) {
+	public async Cli(options?: CliBootOptions) {
 		await this.linkWorkspacePackages()
 
 		const cli = await Cli.Boot({
@@ -105,7 +105,7 @@ export default class FeatureFixture implements IServiceProvider {
 	public async installFeatures(
 		features: InstallFeature[],
 		cacheKey?: string,
-		bootOptions?: ICliBootOptions
+		bootOptions?: CliBootOptions
 	) {
 		if (
 			cacheKey &&
@@ -215,7 +215,7 @@ export default class FeatureFixture implements IServiceProvider {
 		)
 	}
 
-	private cacheCli(cacheKey: string, cli: ICli) {
+	private cacheCli(cacheKey: string, cli: CliInterface) {
 		this.installedSkills[cacheKey] = {
 			cwd: this.cwd,
 			cli,

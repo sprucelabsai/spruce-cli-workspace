@@ -1,7 +1,7 @@
 import pathUtil from 'path'
 import {
-	ISchema,
-	IFieldRegistration,
+	Schema,
+	FieldRegistration,
 	fieldRegistrations,
 } from '@sprucelabs/schema'
 import * as coreSchemas from '@sprucelabs/spruce-core-schemas'
@@ -13,29 +13,29 @@ import { uniqBy } from 'lodash'
 import SpruceError from '../errors/SpruceError'
 import AbstractStore from './AbstractStore'
 
-interface IAddonItem {
+interface AddonItem {
 	path: string
-	registration: IFieldRegistration
+	registration: FieldRegistration
 	isLocal: boolean
 }
 
-export interface ISchemasByNamespace {
-	[namespace: string]: ISchema[]
+export interface SchemasByNamespace {
+	[namespace: string]: Schema[]
 }
 
-interface IFetchSchemasResults {
-	schemasByNamespace: ISchemasByNamespace
+interface FetchSchemasResults {
+	schemasByNamespace: SchemasByNamespace
 	errors: SpruceError[]
 }
-export interface IFetchedField {
+export interface FetchedField {
 	path?: string
-	registration: IFieldRegistration
+	registration: FieldRegistration
 	isLocal: boolean
 }
 
-interface IFetchFieldsResults {
+interface FetchFieldsResults {
 	errors: SpruceError[]
-	fields: IFetchedField[]
+	fields: FetchedField[]
 }
 
 export default class SchemaStore extends AbstractStore {
@@ -46,7 +46,7 @@ export default class SchemaStore extends AbstractStore {
 		localNamespace: string
 		fetchCoreSchemas?: boolean
 		fetchLocalSchemas?: boolean
-	}): Promise<IFetchSchemasResults> {
+	}): Promise<FetchSchemasResults> {
 		const {
 			localSchemaLookupDir: localSchemaDir = 'src/schemas',
 			fetchLocalSchemas = true,
@@ -56,7 +56,7 @@ export default class SchemaStore extends AbstractStore {
 			fetchCoreSchemas = true,
 		} = options || {}
 
-		const results: IFetchSchemasResults = {
+		const results: FetchSchemasResults = {
 			errors: [],
 			schemasByNamespace: {},
 		}
@@ -91,7 +91,7 @@ export default class SchemaStore extends AbstractStore {
 
 		const schemaService = this.Service('schema')
 		const errors: SpruceError[] = []
-		const schemas: ISchema[] = []
+		const schemas: Schema[] = []
 
 		await Promise.all(
 			localMatches.map(async (local: string) => {
@@ -161,7 +161,7 @@ export default class SchemaStore extends AbstractStore {
 
 	public async fetchFields(options?: {
 		localAddonsDir?: string
-	}): Promise<IFetchFieldsResults> {
+	}): Promise<FetchFieldsResults> {
 		const { localAddonsDir } = options || {}
 
 		// TODO load from mercury-api when live
@@ -184,7 +184,7 @@ export default class SchemaStore extends AbstractStore {
 						])
 					).map(async (file: string) => {
 						try {
-							const registration = await importService.importDefault<IFieldRegistration>(
+							const registration = await importService.importDefault<FieldRegistration>(
 								file
 							)
 
@@ -209,7 +209,7 @@ export default class SchemaStore extends AbstractStore {
 		const allFields = uniqBy(
 			[
 				...coreAddons,
-				...(localAddons.filter((addon) => !!addon) as IAddonItem[]),
+				...(localAddons.filter((addon) => !!addon) as AddonItem[]),
 			],
 			'registration.type'
 		)

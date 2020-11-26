@@ -1,12 +1,12 @@
 import pathUtil from 'path'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
-import { IEventListenerOptions } from '@sprucelabs/spruce-templates'
+import { EventListenerOptions } from '@sprucelabs/spruce-templates'
 import AbstractGenerator from './AbstractGenerator'
 
 export default class EventGenerator extends AbstractGenerator {
 	public async generateListener(
 		destinationDir: string,
-		options: Omit<IEventListenerOptions, 'nameConst'> & { version: string }
+		options: Omit<EventListenerOptions, 'nameConst'> & { version: string }
 	) {
 		const { eventName, eventNamespace, version } = options
 		const filename = `${eventName}.listener.ts`

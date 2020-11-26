@@ -1,7 +1,7 @@
 import pathUtil from 'path'
-import { ISchemaTemplateItem, IFieldTemplateItem } from '@sprucelabs/schema'
+import { SchemaTemplateItem, FieldTemplateItem } from '@sprucelabs/schema'
 import { CORE_NAMESPACE, diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { IValueTypes } from '@sprucelabs/spruce-templates'
+import { ValueTypes } from '@sprucelabs/spruce-templates'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
 import SpruceError from '../../../errors/SpruceError'
@@ -13,7 +13,7 @@ import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 import SkillFeature from '../../skill/SkillFeature'
 
-export default class SyncAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasActionSchema> {
+export default class SyncAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema> {
 	public name = 'Schema sync'
 	public optionsSchema = syncSchemasActionSchema
 
@@ -21,7 +21,7 @@ export default class SyncAction extends AbstractFeatureAction<SpruceSchemas.Spru
 	private readonly schemaStore = this.Store('schema')
 
 	public async execute(
-		options: SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasAction
+		options: SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasAction
 	): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
@@ -96,7 +96,7 @@ export default class SyncAction extends AbstractFeatureAction<SpruceSchemas.Spru
 		this.ui.startLoading(`Syncing schemas...`)
 
 		const schemaErrors: SpruceError[] = []
-		let schemaTemplateItems: ISchemaTemplateItem[] | undefined
+		let schemaTemplateItems: SchemaTemplateItem[] | undefined
 		let typeResults: GeneratedFile[] = []
 
 		try {
@@ -127,7 +127,7 @@ export default class SyncAction extends AbstractFeatureAction<SpruceSchemas.Spru
 				schemaTemplateItems
 			)
 
-			let valueTypes: IValueTypes | undefined
+			let valueTypes: ValueTypes | undefined
 
 			try {
 				valueTypes = await this.generateValueTypes(
@@ -216,7 +216,7 @@ export default class SyncAction extends AbstractFeatureAction<SpruceSchemas.Spru
 			localNamespace
 		)
 
-		const schemaTemplateItems: ISchemaTemplateItem[] = schemaTemplateItemBuilder.generateTemplateItems(
+		const schemaTemplateItems: SchemaTemplateItem[] = schemaTemplateItemBuilder.generateTemplateItems(
 			schemasByNamespace,
 			hashSpruceDestination
 		)
@@ -286,8 +286,8 @@ export default class SyncAction extends AbstractFeatureAction<SpruceSchemas.Spru
 
 	private async generateValueTypes(
 		resolvedDestination: string,
-		fieldTemplateItems: IFieldTemplateItem[],
-		schemaTemplateItems: ISchemaTemplateItem[],
+		fieldTemplateItems: FieldTemplateItem[],
+		schemaTemplateItems: SchemaTemplateItem[],
 		globalNamespace?: string
 	) {
 		if (schemaTemplateItems.length === 0) {
@@ -302,7 +302,7 @@ export default class SyncAction extends AbstractFeatureAction<SpruceSchemas.Spru
 			}
 		)
 
-		const valueTypes: IValueTypes = await this.Service('import').importDefault(
+		const valueTypes: ValueTypes = await this.Service('import').importDefault(
 			valueTypeResults[0].path
 		)
 
@@ -313,7 +313,7 @@ export default class SyncAction extends AbstractFeatureAction<SpruceSchemas.Spru
 
 	private async deleteOrphanedSchemas(
 		resolvedDestination: string,
-		schemaTemplateItems: ISchemaTemplateItem[]
+		schemaTemplateItems: SchemaTemplateItem[]
 	) {
 		const definitionsToDelete = await schemaGeneratorUtil.filterSchemaFilesBySchemaIds(
 			resolvedDestination,

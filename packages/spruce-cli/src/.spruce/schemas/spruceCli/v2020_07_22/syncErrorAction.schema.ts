@@ -3,7 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const syncErrorActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ISyncErrorActionSchema  = {
+const syncErrorActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorActionSchema  = {
 	id: 'syncErrorAction',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',

@@ -7,12 +7,12 @@ import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncS
 import SpruceError from '../../../errors/SpruceError'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 
-export default class CreateAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.ICreateSchemaActionSchema> {
+export default class CreateAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaActionSchema> {
 	public name = 'create'
 	public optionsSchema = createSchemaActionSchema
 
 	public async execute(
-		options: SpruceSchemas.SpruceCli.v2020_07_22.ICreateSchemaAction
+		options: SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaAction
 	) {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
@@ -48,7 +48,7 @@ export default class CreateAction extends AbstractFeatureAction<SpruceSchemas.Sp
 			namePascal: namePascal ?? namesUtil.toPascal(nameCamel),
 		})
 
-		const syncAction = this.Action<SpruceSchemas.SpruceCli.v2020_07_22.ISyncSchemasActionSchema>(
+		const syncAction = this.Action<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema>(
 			'sync'
 		)
 

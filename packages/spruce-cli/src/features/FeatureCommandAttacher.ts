@@ -1,4 +1,4 @@
-import Schema, { ISchema } from '@sprucelabs/schema'
+import { Schema, SchemaEntityFactory } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { CommanderStatic } from 'commander'
 import SpruceError from '../errors/SpruceError'
@@ -61,9 +61,10 @@ export default class FeatureCommandAttacher {
 
 	private attachOptions(
 		command: CommanderStatic['program'],
-		definition: ISchema
+		definition: Schema
 	) {
-		const schema = new Schema(definition)
+		const schema = SchemaEntityFactory.Entity(definition)
+
 		let theProgram = command
 
 		const fields = schema.getNamedFields()

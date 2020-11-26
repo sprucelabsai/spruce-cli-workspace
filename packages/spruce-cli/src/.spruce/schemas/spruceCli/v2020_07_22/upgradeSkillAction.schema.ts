@@ -3,7 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const upgradeSkillActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.IUpgradeSkillActionSchema  = {
+const upgradeSkillActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillActionSchema  = {
 	id: 'upgradeSkillAction',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',

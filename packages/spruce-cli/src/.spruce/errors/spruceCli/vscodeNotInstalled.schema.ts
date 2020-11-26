@@ -3,7 +3,7 @@ import { SpruceErrors } from '../errors.types'
 
 
 
-const vscodeNotInstalledSchema: SpruceErrors.SpruceCli.IVscodeNotInstalledSchema  = {
+const vscodeNotInstalledSchema: SpruceErrors.SpruceCli.VscodeNotInstalledSchema  = {
 	id: 'vscodeNotInstalled',
 	namespace: 'SpruceCli',
 	name: 'vscode not installed',

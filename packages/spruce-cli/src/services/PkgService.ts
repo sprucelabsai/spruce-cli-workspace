@@ -5,7 +5,7 @@ import { set } from 'lodash'
 import SpruceError from '../errors/SpruceError'
 import CommandService from './CommandService'
 
-export interface IAddOptions {
+export interface AddOptions {
 	dev?: boolean
 }
 
@@ -58,7 +58,7 @@ export default class PkgService extends CommandService {
 		}
 	}
 
-	public async install(pkg: string[] | string, options?: IAddOptions) {
+	public async install(pkg: string[] | string, options?: AddOptions) {
 		const packages = Array.isArray(pkg) ? pkg : [pkg]
 		let install = false
 		for (const thisPackage of packages) {

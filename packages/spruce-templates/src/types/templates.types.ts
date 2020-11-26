@@ -1,6 +1,6 @@
-import { ISchemaTemplateItem } from '@sprucelabs/schema'
+import { SchemaTemplateItem } from '@sprucelabs/schema'
 
-export interface IAutoLoaderClassTemplateItem {
+export interface AutoLoaderClassTemplateItem {
 	optionsInterfaceName?: string
 	className: string
 	nameCamel: string
@@ -8,31 +8,31 @@ export interface IAutoLoaderClassTemplateItem {
 	relativeFilePath: string
 }
 
-export interface IAutoLoaderInterfaceTemplateItem {
+export interface AutoLoaderInterfaceTemplateItem {
 	interfaceName: string
 	relativeFilePath: string
 }
 
-export interface IAutoLoaderImportTemplateItem {
+export interface AutoLoaderImportTemplateItem {
 	name: string
 	filePath: string
 }
 
-export interface IAutoLoaderTemplateItem {
+export interface AutoLoaderTemplateItem {
 	abstractClassName: string
 	abstractClassRelativePath: string
 	abstractClassOptionsInterfaceName?: string
-	classes: IAutoLoaderClassTemplateItem[]
-	interfaces: IAutoLoaderInterfaceTemplateItem[]
-	constructorOptionInterfaces: IAutoLoaderImportTemplateItem[]
+	classes: AutoLoaderClassTemplateItem[]
+	interfaces: AutoLoaderInterfaceTemplateItem[]
+	constructorOptionInterfaces: AutoLoaderImportTemplateItem[]
 	namePascalPlural: string
 	namePascal: string
 	nameCamel: string
 	nameCamelPlural: string
 }
 
-export interface IRootAutoloaderTemplateItem {
-	autoloaders: IAutoLoaderTemplateItem[]
+export interface RootAutoloaderTemplateItem {
+	autoloaders: AutoLoaderTemplateItem[]
 }
 
 export enum DirectoryTemplateCode {
@@ -42,26 +42,26 @@ export enum DirectoryTemplateCode {
 	Autoloadable = 'autoloadable',
 }
 
-export interface IDirectoryTemplateContextSkill {
+export interface DirectoryTemplateContextSkill {
 	name: string
 	description: string
 }
-export interface IDirectoryTemplateContextVsCode {}
-export interface IDirectoryTemplateContextCircleCi {}
-export interface IDirectoryTemplateContextAutoloadable {
+export interface DirectoryTemplateContextVsCode {}
+export interface DirectoryTemplateContextCircleCi {}
+export interface DirectoryTemplateContextAutoloadable {
 	namePascalPlural: string
 	namePascal: string
 	nameCamelPlural: string
 }
 
-export interface IDirectoryTemplateContextMap {
-	[DirectoryTemplateCode.Skill]: IDirectoryTemplateContextSkill
-	[DirectoryTemplateCode.VsCode]: IDirectoryTemplateContextVsCode
-	[DirectoryTemplateCode.CircleCi]: IDirectoryTemplateContextCircleCi
-	[DirectoryTemplateCode.Autoloadable]: IDirectoryTemplateContextAutoloadable
+export interface DirectoryTemplateContextMap {
+	[DirectoryTemplateCode.Skill]: DirectoryTemplateContextSkill
+	[DirectoryTemplateCode.VsCode]: DirectoryTemplateContextVsCode
+	[DirectoryTemplateCode.CircleCi]: DirectoryTemplateContextCircleCi
+	[DirectoryTemplateCode.Autoloadable]: DirectoryTemplateContextAutoloadable
 }
 
-export interface IDirectoryTemplateFile {
+export interface DirectoryTemplateFile {
 	/** Whether this is a handlebars template file */
 	isHandlebarsTemplate: boolean
 	/** The full directory path before the filename */
@@ -76,7 +76,7 @@ export interface IDirectoryTemplateFile {
 	relativePath: string
 }
 
-export interface ISchemaBuilderTemplateItem {
+export interface SchemaBuilderTemplateItem {
 	nameCamel: string
 	description?: string | null
 	namePascal: string
@@ -84,16 +84,16 @@ export interface ISchemaBuilderTemplateItem {
 	builderFunction?: string
 }
 
-export interface IErrorOptions {
-	errors: IErrorTemplateItem[]
+export interface ErrorOptions {
+	errors: ErrorTemplateItem[]
 	renderClassDefinition?: boolean
 }
 
-export interface IErrorTemplateItem extends ISchemaTemplateItem {
+export interface ErrorTemplateItem extends SchemaTemplateItem {
 	code: string
 }
 
-export interface IValueTypes {
+export interface ValueTypes {
 	[namespace: string]: {
 		[schemaId: string]: {
 			[version: string]: {
@@ -110,13 +110,13 @@ export interface IValueTypes {
 	}
 }
 
-export interface ITestOptions {
+export interface TestOptions {
 	namePascal: string
 	nameCamel: string
 	parentTestClass?: { name: string; importPath: string }
 }
 
-export interface IEventListenerOptions {
+export interface EventListenerOptions {
 	eventName: string
 	eventNamespace: string
 	nameConst: string

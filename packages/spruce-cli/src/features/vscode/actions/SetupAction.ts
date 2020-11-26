@@ -1,11 +1,11 @@
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import setupVscodeSchema from '#spruce/schemas/spruceCli/v2020_07_22/setupVscodeAction.schema'
-import { IExtension } from '../../../services/VsCodeService'
+import { Extension } from '../../../services/VsCodeService'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
-export default class SetupAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.ISetupVscodeActionSchema> {
-	private recommendedExtensions: IExtension[] = [
+export default class SetupAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeActionSchema> {
+	private recommendedExtensions: Extension[] = [
 		{
 			id: 'dbaeumer.vscode-eslint',
 			label: 'ESLint syntax validation and fixing',
@@ -28,7 +28,7 @@ export default class SetupAction extends AbstractFeatureAction<SpruceSchemas.Spr
 	public optionsSchema = setupVscodeSchema
 
 	public async execute(
-		options: SpruceSchemas.SpruceCli.v2020_07_22.ISetupVscodeAction
+		options: SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeAction
 	): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 

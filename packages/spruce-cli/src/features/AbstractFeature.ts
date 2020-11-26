@@ -1,5 +1,5 @@
 import pathUtil from 'path'
-import { ISchema, SchemaValues } from '@sprucelabs/schema'
+import { Schema, SchemaValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import GeneratorFactory, {
@@ -9,10 +9,10 @@ import GeneratorFactory, {
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory, {
 	Service,
-	IServiceProvider,
-	IServiceMap,
+	ServiceProvider,
+	ServiceMap,
 } from '../services/ServiceFactory'
-import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
+import StoreFactory, { StoreCode, StoreMap } from '../stores/StoreFactory'
 import {
 	NpmPackage,
 	GraphicsInterface,
@@ -20,7 +20,7 @@ import {
 } from '../types/cli.types'
 import featuresUtil from './feature.utilities'
 import FeatureActionFactory, {
-	IFeatureActionFactoryOptions,
+	FeatureActionFactoryOptions,
 } from './FeatureActionFactory'
 import FeatureInstaller from './FeatureInstaller'
 import { FeatureAction } from './features.types'
@@ -36,8 +36,8 @@ export interface FeatureDependency {
 }
 
 export default abstract class AbstractFeature<
-	S extends ISchema | undefined = ISchema | undefined
-> implements IServiceProvider {
+	S extends Schema | undefined = Schema | undefined
+> implements ServiceProvider {
 	public abstract description: string
 	public readonly dependencies: FeatureDependency[] = []
 	public readonly packageDependencies: NpmPackage[] = []
@@ -60,7 +60,7 @@ export default abstract class AbstractFeature<
 	private generatorFactory: GeneratorFactory
 
 	protected actionFactoryOptions: Omit<
-		IFeatureActionFactoryOptions,
+		FeatureActionFactoryOptions,
 		'actionsDir'
 	>
 
@@ -91,18 +91,18 @@ export default abstract class AbstractFeature<
 	}
 
 	public async beforePackageInstall(
-		_options: S extends ISchema ? SchemaValues<S> : undefined
+		_options: S extends Schema ? SchemaValues<S> : undefined
 	): Promise<InstallResults> {
 		return {}
 	}
 
 	public async afterPackageInstall(
-		_options: S extends ISchema ? SchemaValues<S> : undefined
+		_options: S extends Schema ? SchemaValues<S> : undefined
 	): Promise<InstallResults> {
 		return {}
 	}
 
-	public Service<S extends Service>(type: S, cwd?: string): IServiceMap[S] {
+	public Service<S extends Service>(type: S, cwd?: string): ServiceMap[S] {
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
@@ -114,7 +114,7 @@ export default abstract class AbstractFeature<
 		return this.featureInstaller.getFeature(code)
 	}
 
-	public Action<S extends ISchema = ISchema>(code: string): FeatureAction<S> {
+	public Action<S extends Schema = Schema>(code: string): FeatureAction<S> {
 		if (!this.actionFactory) {
 			if (!this.actionsDir) {
 				throw new Error(
@@ -145,7 +145,7 @@ export default abstract class AbstractFeature<
 		return matches.map((path) => featuresUtil.filePathToActionCode(path))
 	}
 
-	public Store<C extends StoreCode>(code: C, cwd?: string): IStoreMap[C] {
+	public Store<C extends StoreCode>(code: C, cwd?: string): StoreMap[C] {
 		return this.storeFactory.Store(code, this.cwd ?? cwd)
 	}
 }

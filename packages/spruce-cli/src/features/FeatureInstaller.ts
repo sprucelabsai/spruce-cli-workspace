@@ -4,23 +4,23 @@ import merge from 'lodash/merge'
 import SpruceError from '../errors/SpruceError'
 import ServiceFactory, {
 	Service,
-	IServiceProvider,
-	IServiceMap,
+	ServiceProvider,
+	ServiceMap,
 } from '../services/ServiceFactory'
 import { NpmPackage } from '../types/cli.types'
 import AbstractFeature, { FeatureDependency } from './AbstractFeature'
 import {
-	IInstallFeatureOptions,
+	InstallFeatureOptions,
 	FeatureInstallResponse,
 	FeatureCode,
 	InstallFeature,
-	IFeatureMap,
+	FeatureMap,
 } from './features.types'
 
-export default class FeatureInstaller implements IServiceProvider {
+export default class FeatureInstaller implements ServiceProvider {
 	public cwd: string
 
-	private featureMap: Partial<IFeatureMap> = {}
+	private featureMap: Partial<FeatureMap> = {}
 	private serviceFactory: ServiceFactory
 	private featuresMarkedAsSkippedThisRun: FeatureCode[] = []
 
@@ -55,17 +55,17 @@ export default class FeatureInstaller implements IServiceProvider {
 		)
 	}
 
-	public mapFeature<C extends FeatureCode>(code: C, feature: IFeatureMap[C]) {
+	public mapFeature<C extends FeatureCode>(code: C, feature: FeatureMap[C]) {
 		this.featureMap[code] = feature
 	}
 
-	public getFeature<C extends FeatureCode>(code: C): IFeatureMap[C] {
+	public getFeature<C extends FeatureCode>(code: C): FeatureMap[C] {
 		const feature = this.featureMap[code]
 		if (!feature) {
 			throw new SpruceError({ code: 'INVALID_FEATURE_CODE', featureCode: code })
 		}
 
-		return feature as IFeatureMap[C]
+		return feature as FeatureMap[C]
 	}
 
 	public async areInstalled(codes: FeatureCode[]) {
@@ -148,7 +148,7 @@ export default class FeatureInstaller implements IServiceProvider {
 	}
 
 	public async install(
-		options: IInstallFeatureOptions
+		options: InstallFeatureOptions
 	): Promise<FeatureInstallResponse> {
 		const { features, installFeatureDependencies = true } = options
 
@@ -288,7 +288,7 @@ export default class FeatureInstaller implements IServiceProvider {
 		})
 	}
 
-	public Service<S extends Service>(type: S, cwd?: string): IServiceMap[S] {
+	public Service<S extends Service>(type: S, cwd?: string): ServiceMap[S] {
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 

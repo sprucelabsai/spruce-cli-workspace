@@ -114,7 +114,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 			firstResponse,
 			'firstSchema.schema.ts',
 			'v2020_01_10',
-			'IFirstSchema'
+			'FirstSchema'
 		)
 
 		const secondResponse = await action.execute({
@@ -128,14 +128,14 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 			secondResponse,
 			'secondSchema.schema.ts',
 			'v2020_01_11',
-			'ISecondSchema'
+			'SecondSchema'
 		)
 
 		this.validateSchemaFiles(
 			secondResponse,
 			'firstSchema.schema.ts',
 			'v2020_01_10',
-			'IFirstSchema'
+			'FirstSchema'
 		)
 	}
 

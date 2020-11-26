@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import { ICli } from '../../../cli'
+import { CliInterface } from '../../../cli'
 import AbstractCliTest from '../../../test/AbstractCliTest'
 
 export default class UpgradingASkillTest extends AbstractCliTest {
@@ -89,7 +89,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		return cli
 	}
 
-	private static async assertFailedHealthCheck(cli: ICli) {
+	private static async assertFailedHealthCheck(cli: CliInterface) {
 		const failedHealthCheck = await cli.checkHealth()
 
 		assert.doesInclude(failedHealthCheck, {

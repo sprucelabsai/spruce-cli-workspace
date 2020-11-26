@@ -1,10 +1,10 @@
-import { IFieldTemplateItem } from '@sprucelabs/schema'
+import { FieldTemplateItem } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
-import { IFetchedField } from '../stores/SchemaStore'
+import { FetchedField } from '../stores/SchemaStore'
 
 export default class FieldTemplateItemBuilder {
-	public generateTemplateItems(fields: IFetchedField[]) {
-		const templateItems: IFieldTemplateItem[] = []
+	public generateTemplateItems(fields: FetchedField[]) {
+		const templateItems: FieldTemplateItem[] = []
 		let generatedImportAsCount = 0
 
 		for (let field of fields) {
@@ -18,7 +18,7 @@ export default class FieldTemplateItemBuilder {
 				importAs = `generated_import_${generatedImportAsCount++}`
 			}
 
-			const item: IFieldTemplateItem = {
+			const item: FieldTemplateItem = {
 				namePascal: namesUtil.toPascal(name),
 				nameCamel: namesUtil.toCamel(name),
 				package: pkg,

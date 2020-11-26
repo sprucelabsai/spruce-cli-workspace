@@ -1,13 +1,13 @@
 import { Mercury } from '@sprucelabs/mercury'
 import ServiceFactory from '../services/ServiceFactory'
-import { IStoreOptions } from './AbstractStore'
+import { StoreOptions } from './AbstractStore'
 import OnboardingStore from './OnboardingStore'
 import RemoteStore from './RemoteStore'
 import SchemaStore from './SchemaStore'
 import SkillStore from './SkillStore'
 import UserStore from './UserStore'
 
-export interface IStoreMap {
+export interface StoreMap {
 	onboarding: OnboardingStore
 	remote: RemoteStore
 	schema: SchemaStore
@@ -15,7 +15,7 @@ export interface IStoreMap {
 	user: UserStore
 }
 
-export type StoreCode = keyof IStoreMap
+export type StoreCode = keyof StoreMap
 
 export default class StoreFactory {
 	private mercury: Mercury
@@ -39,14 +39,14 @@ export default class StoreFactory {
 		this.serviceFactory = serviceFactory
 	}
 
-	public Store<C extends StoreCode>(code: C, cwd?: string): IStoreMap[C] {
-		const options: IStoreOptions = {
+	public Store<C extends StoreCode>(code: C, cwd?: string): StoreMap[C] {
+		const options: StoreOptions = {
 			cwd: cwd ?? this.cwd,
 			serviceFactory: this.serviceFactory,
 			mercury: this.mercury,
 		}
 		const store = new this.storeMap[code](options)
 
-		return store as IStoreMap[C]
+		return store as StoreMap[C]
 	}
 }

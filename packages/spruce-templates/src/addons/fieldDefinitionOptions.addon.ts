@@ -1,6 +1,6 @@
-import { ISchemaTemplateItem, TemplateRenderAs } from '@sprucelabs/schema'
+import { SchemaTemplateItem, TemplateRenderAs } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
-import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
+import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 
 /** Renders field options */
 handlebars.registerHelper(
@@ -10,7 +10,7 @@ handlebars.registerHelper(
 		nameCamel: string,
 		version: string,
 		fieldName: string,
-		fieldDefinition: FieldDefinition,
+		fieldDefinition: FieldDefinitions,
 		renderAs: TemplateRenderAs,
 		options
 	) {
@@ -46,7 +46,7 @@ handlebars.registerHelper(
 			data: { root },
 		} = options
 
-		const schemaTemplateItems: ISchemaTemplateItem[] | undefined =
+		const schemaTemplateItems: SchemaTemplateItem[] | undefined =
 			root && root.schemaTemplateItems
 
 		if (!schemaTemplateItems) {

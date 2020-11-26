@@ -3,7 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const cliSkillSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICliSkillSchema  = {
+const cliSkillSchema: SpruceSchemas.SpruceCli.v2020_07_22.CliSkillSchema  = {
 	id: 'cliSkill',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',

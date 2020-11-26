@@ -3,7 +3,7 @@ import {
 	CORE_NAMESPACE,
 	CORE_SCHEMA_VERSION,
 } from '@sprucelabs/spruce-skill-utils'
-import { templates, IValueTypes } from '@sprucelabs/spruce-templates'
+import { templates, ValueTypes } from '@sprucelabs/spruce-templates'
 import { assert, test } from '@sprucelabs/test'
 import SchemaGenerator from '../../generators/SchemaGenerator'
 import FieldTemplateItemBuilder from '../../templateItemBuilders/FieldTemplateItemBuilder'
@@ -123,18 +123,18 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		'generates skill.creators value type (schema)',
 		`${CORE_NAMESPACE}.skill.${CORE_SCHEMA_VERSION.constValue}.creators.valueTypes`,
 		{
-			type: `SpruceSchemas.Spruce.v2020_07_22.ISkillCreator[]`,
+			type: `SpruceSchemas.Spruce.v2020_07_22.SkillCreator[]`,
 			value: 'skillCreatorSchema',
-			schemaType: `SpruceSchemas.Spruce.v2020_07_22.ISkillCreatorSchema`,
+			schemaType: `SpruceSchemas.Spruce.v2020_07_22.SkillCreatorSchema`,
 		}
 	)
 	@test(
 		'generates dynamic field with nested schemas',
 		`${LOCAL_NAMESPACE}.mercuryContract.${CORE_SCHEMA_VERSION.constValue}.__dynamicFieldSignature.valueTypes`,
 		{
-			type: `{ schemaId: 'eventSignature', version: 'v2020_07_22', values: SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.IEventSignature } | { schemaId: 'eventSignature2', version: 'v2020_07_22', values: SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.IEventSignature2 }`,
+			type: `{ schemaId: 'eventSignature', version: 'v2020_07_22', values: SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.EventSignature } | { schemaId: 'eventSignature2', version: 'v2020_07_22', values: SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.EventSignature2 }`,
 			value: '[eventSignatureSchema, eventSignature2Schema]',
-			schemaType: `(SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.IEventSignatureSchema | SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.IEventSignature2Schema)[]`,
+			schemaType: `(SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.EventSignatureSchema | SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.EventSignature2Schema)[]`,
 		}
 	)
 	protected static async importsTypes(
@@ -143,7 +143,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	) {
 		const results = await this.generateValueTypes()
 
-		const valueTypes = await this.Service('import').importDefault<IValueTypes>(
+		const valueTypes = await this.Service('import').importDefault<ValueTypes>(
 			results[0].path
 		)
 

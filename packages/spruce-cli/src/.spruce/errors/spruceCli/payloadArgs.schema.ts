@@ -3,7 +3,7 @@ import { SpruceErrors } from '../errors.types'
 
 
 
-const payloadArgsSchema: SpruceErrors.SpruceCli.IPayloadArgsSchema  = {
+const payloadArgsSchema: SpruceErrors.SpruceCli.PayloadArgsSchema  = {
 	id: 'payloadArgs',
 	namespace: 'SpruceCli',
 	name: 'Payload args',

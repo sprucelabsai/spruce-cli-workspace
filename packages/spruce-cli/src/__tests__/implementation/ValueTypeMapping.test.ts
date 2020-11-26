@@ -22,11 +22,11 @@ export default class ValueTypeMappingTest extends AbstractSchemaTest {
 		const typeContents = diskUtil.readFile(fieldTypesFile)
 		assert.doesInclude(
 			typeContents,
-			'SchemaFieldValueTypeMapper<F extends ISchemaFieldDefinition? F : ISchemaFieldDefinition, CreateEntityInstances>'
+			'SchemaFieldValueTypeMapper<F extends SchemaFieldFieldDefinition? F : SchemaFieldFieldDefinition, CreateEntityInstances>'
 		)
 		assert.doesInclude(
 			typeContents,
-			'SelectFieldValueTypeMapper<F extends ISelectFieldDefinition ? F: ISelectFieldDefinition>'
+			'SelectFieldValueTypeMapper<F extends SelectFieldDefinition ? F: SelectFieldDefinition>'
 		)
 
 		await this.Service('typeChecker').check(fieldTypesFile)

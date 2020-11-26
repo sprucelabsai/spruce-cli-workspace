@@ -5,7 +5,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractSpruceTest, { assert } from '@sprucelabs/test'
 import fs from 'fs-extra'
 import * as uuid from 'uuid'
-import { ICliBootOptions } from '../cli'
+import { CliBootOptions } from '../cli'
 import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
 import { FeatureCode } from '../features/features.types'
 import FeatureFixture, {
@@ -13,11 +13,8 @@ import FeatureFixture, {
 } from '../fixtures/FeatureFixture'
 import CliGlobalEmitter from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
-import ServiceFactory, {
-	Service,
-	IServiceMap,
-} from '../services/ServiceFactory'
-import StoreFactory, { StoreCode, IStoreMap } from '../stores/StoreFactory'
+import ServiceFactory, { Service, ServiceMap } from '../services/ServiceFactory'
+import StoreFactory, { StoreCode, StoreMap } from '../stores/StoreFactory'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static cliRoot = pathUtil.join(__dirname, '..')
@@ -71,7 +68,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		FeatureFixture.deleteOldSkillDirs()
 	}
 
-	protected static async Cli(options?: ICliBootOptions) {
+	protected static async Cli(options?: CliBootOptions) {
 		return this.FeatureFixture().Cli({
 			cwd: this.cwd,
 			...(options ?? {}),
@@ -86,7 +83,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static Service<S extends Service>(
 		type: S,
 		cwd?: string
-	): IServiceMap[S] {
+	): ServiceMap[S] {
 		const sf = this.ServiceFactory()
 		return sf.Service(cwd ?? this.cwd, type)
 	}
@@ -131,7 +128,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static Store<C extends StoreCode>(
 		code: C,
 		cwd?: string
-	): IStoreMap[C] {
+	): StoreMap[C] {
 		return this.StoreFactory().Store(code, this.cwd ?? cwd)
 	}
 

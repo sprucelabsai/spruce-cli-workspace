@@ -1,7 +1,7 @@
 import pathUtil from 'path'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import {
-	IDirectoryTemplateContextSkill,
+	DirectoryTemplateContextSkill,
 	DirectoryTemplateCode,
 } from '@sprucelabs/spruce-templates'
 import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
@@ -9,7 +9,7 @@ import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
 export default class SkillGenerator extends AbstractGenerator {
 	public async generateSkill(
 		destinationDir: string,
-		options: IDirectoryTemplateContextSkill & { upgrade?: boolean }
+		options: DirectoryTemplateContextSkill & { upgrade?: boolean }
 	): Promise<GenerationResults> {
 		const files = await this.templates.directoryTemplate({
 			kind: DirectoryTemplateCode.Skill,

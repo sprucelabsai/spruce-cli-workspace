@@ -3,7 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const cliUserWithTokenSchema: SpruceSchemas.SpruceCli.v2020_07_22.ICliUserWithTokenSchema  = {
+const cliUserWithTokenSchema: SpruceSchemas.SpruceCli.v2020_07_22.CliUserWithTokenSchema  = {
 	id: 'cliUserWithToken',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',

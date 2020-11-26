@@ -1,6 +1,6 @@
-import Schema, { ISelectFieldDefinitionChoice } from '@sprucelabs/schema'
+import Schema, { SelectFieldDefinitionChoice } from '@sprucelabs/schema'
 import { AuthedAs } from '../types/cli.types'
-import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
+import AbstractLocalStore, { LocalStoreSettings } from './AbstractLocalStore'
 
 export enum RemoteStoreRemoteType {
 	Production = 'production',
@@ -17,14 +17,14 @@ export const RemoteStoreChoices = Object.keys(RemoteStoreRemoteType).map(
 		// @ts-ignore https://github.com/microsoft/TypeScript/issues/33123
 		label: RemoteStoreRemoteType[remote],
 	})
-) as ISelectFieldDefinitionChoice[]
+) as SelectFieldDefinitionChoice[]
 
 /** The structure of the data remote saves */
-export interface IRemoteStoreSettings extends ILocalStoreSettings {
+export interface RemoteStoreSettings extends LocalStoreSettings {
 	remote?: RemoteStoreRemoteType
 }
 
-export default class RemoteStore extends AbstractLocalStore<IRemoteStoreSettings> {
+export default class RemoteStore extends AbstractLocalStore<RemoteStoreSettings> {
 	/** Map of remote urls and subscriptions url */
 	public static remotes = {
 		[RemoteStoreRemoteType.Production]: {

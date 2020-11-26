@@ -1,8 +1,8 @@
-import { ISchema } from '@sprucelabs/schema'
+import { Schema } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 
 const schemaUtil = {
-	generateNamesForSchema(schema: ISchema) {
+	generateNamesForSchema(schema: Schema) {
 		return {
 			nameReadable: schema.name ?? schema.id,
 			nameCamel: namesUtil.toCamel(schema.id),

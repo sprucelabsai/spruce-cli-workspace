@@ -3,7 +3,7 @@ import { SpruceErrors } from '../errors.types'
 
 
 
-const schemaExistsSchema: SpruceErrors.SpruceCli.ISchemaExistsSchema  = {
+const schemaExistsSchema: SpruceErrors.SpruceCli.SchemaExistsSchema  = {
 	id: 'schemaExists',
 	namespace: 'SpruceCli',
 	name: 'Schema exists',

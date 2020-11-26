@@ -3,7 +3,7 @@ import { SpruceErrors } from '../errors.types'
 
 
 
-const schemaFailedToImportSchema: SpruceErrors.SpruceCli.ISchemaFailedToImportSchema  = {
+const schemaFailedToImportSchema: SpruceErrors.SpruceCli.SchemaFailedToImportSchema  = {
 	id: 'schemaFailedToImport',
 	namespace: 'SpruceCli',
 	name: 'Definition failed to import',

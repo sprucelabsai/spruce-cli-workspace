@@ -1,16 +1,16 @@
 import globby from "globby";
 import {
 	ErrorHealthCheckItem,
-	ISkillFeature,
-	ISkill,
+	SkillFeature,
+	Skill,
 	diskUtil,
 	HASH_SPRUCE_DIR_NAME,
 } from "@sprucelabs/spruce-skill-utils";
 
-class ErrorSkillFeature implements ISkillFeature {
-	private skill: ISkill;
+class ErrorSkillFeature implements SkillFeature {
+	private skill: Skill;
 
-	public constructor(skill: ISkill) {
+	public constructor(skill: Skill) {
 		this.skill = skill;
 	}
 
@@ -54,7 +54,7 @@ class ErrorSkillFeature implements ISkillFeature {
 	}
 }
 
-export default (skill: ISkill) => {
+export default (skill: Skill) => {
 	const feature = new ErrorSkillFeature(skill);
 	skill.registerFeature("error", feature);
 };

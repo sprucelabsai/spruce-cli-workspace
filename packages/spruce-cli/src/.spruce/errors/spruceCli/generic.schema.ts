@@ -3,7 +3,7 @@ import { SpruceErrors } from '../errors.types'
 
 
 
-const genericSchema: SpruceErrors.SpruceCli.IGenericSchema  = {
+const genericSchema: SpruceErrors.SpruceCli.GenericSchema  = {
 	id: 'generic',
 	namespace: 'SpruceCli',
 	name: 'generic',

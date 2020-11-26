@@ -3,7 +3,7 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const listenEventActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.IListenEventActionSchema  = {
+const listenEventActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventActionSchema  = {
 	id: 'listenEventAction',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',

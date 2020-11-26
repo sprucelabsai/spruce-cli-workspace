@@ -1,38 +1,38 @@
 import path from 'path'
 import pathUtil from 'path'
-import { IFieldTemplateItem, ISchemaTemplateItem } from '@sprucelabs/schema'
+import { FieldTemplateItem, SchemaTemplateItem } from '@sprucelabs/schema'
 import { CORE_NAMESPACE, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { LATEST_HANDLEBARS } from '@sprucelabs/spruce-skill-utils'
 import {
-	ISchemaBuilderTemplateItem,
-	IValueTypes,
+	SchemaBuilderTemplateItem,
+	ValueTypes,
 } from '@sprucelabs/spruce-templates'
 import SpruceError from '../errors/SpruceError'
 import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
 
-export interface IGenerateSchemaTypesOptions {
-	fieldTemplateItems: IFieldTemplateItem[]
-	schemaTemplateItems: ISchemaTemplateItem[]
+export interface GenerateSchemaTypesOptions {
+	fieldTemplateItems: FieldTemplateItem[]
+	schemaTemplateItems: SchemaTemplateItem[]
 }
 
-export interface IGenerateFieldTypesOptions {
-	fieldTemplateItems: IFieldTemplateItem[]
+export interface GenerateFieldTypesOptions {
+	fieldTemplateItems: FieldTemplateItem[]
 }
 
 // eslint-disable-next-line no-redeclare
-export interface IGenerateSchemaTypesOptions {
-	fieldTemplateItems: IFieldTemplateItem[]
-	schemaTemplateItems: ISchemaTemplateItem[]
-	valueTypes: IValueTypes
+export interface GenerateSchemaTypesOptions {
+	fieldTemplateItems: FieldTemplateItem[]
+	schemaTemplateItems: SchemaTemplateItem[]
+	valueTypes: ValueTypes
 	globalNamespace?: string
 	typesTemplate?: string
 	registerBuiltSchemas?: boolean
 	shouldImportCoreSchemas: boolean
 }
 
-export interface ISchemaTypesGenerationStage {
+export interface SchemaTypesGenerationStage {
 	name: string
 	errors: SpruceError[]
 	successfulSchemas: number
@@ -60,7 +60,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 	public async generateBuilder(
 		destinationDir: string,
-		options: ISchemaBuilderTemplateItem & {
+		options: SchemaBuilderTemplateItem & {
 			enableVersioning?: boolean
 			version?: string
 		}
@@ -97,7 +97,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 	public async generateFieldTypes(
 		destinationDir: string,
-		options: IGenerateFieldTypesOptions
+		options: GenerateFieldTypesOptions
 	): Promise<GenerationResults> {
 		const { fieldTemplateItems } = options
 
@@ -125,7 +125,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 	public async generateSchemasAndTypes(
 		destinationDirOrFilename: string,
-		options: IGenerateSchemaTypesOptions
+		options: GenerateSchemaTypesOptions
 	): Promise<GenerationResults> {
 		const {
 			fieldTemplateItems,
@@ -170,7 +170,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 	private async generateAllSchemas(
 		destinationDir: string,
-		options: IGenerateSchemaTypesOptions & { typesFile?: string }
+		options: GenerateSchemaTypesOptions & { typesFile?: string }
 	): Promise<GenerationResults> {
 		const results: GenerationResults = []
 
@@ -188,13 +188,13 @@ export default class SchemaGenerator extends AbstractGenerator {
 	public async generateSchema(
 		destinationDir: string,
 		options: {
-			schemaTemplateItems: ISchemaTemplateItem[]
-			fieldTemplateItems: IFieldTemplateItem[]
-			valueTypes: IValueTypes
+			schemaTemplateItems: SchemaTemplateItem[]
+			fieldTemplateItems: FieldTemplateItem[]
+			valueTypes: ValueTypes
 			typesFile?: string
 			registerBuiltSchemas?: boolean
 			shouldImportCoreSchemas?: boolean
-		} & ISchemaTemplateItem
+		} & SchemaTemplateItem
 	) {
 		const {
 			schemaTemplateItems,
@@ -250,8 +250,8 @@ export default class SchemaGenerator extends AbstractGenerator {
 	public async generateValueTypes(
 		destinationDir: string,
 		options: {
-			schemaTemplateItems: ISchemaTemplateItem[]
-			fieldTemplateItems: IFieldTemplateItem[]
+			schemaTemplateItems: SchemaTemplateItem[]
+			fieldTemplateItems: FieldTemplateItem[]
 			globalNamespace?: string
 		}
 	): Promise<GenerationResults> {

@@ -6,7 +6,7 @@ import { GeneratedFile, GraphicsInterface } from '../types/cli.types'
 
 export type GenerationResults = GeneratedFile[]
 
-export interface IGeneratorOptions {
+export interface GeneratorOptions {
 	templates: Templates
 	term: GraphicsInterface
 	askBeforeUpdating?: boolean
@@ -17,7 +17,7 @@ export default abstract class AbstractGenerator {
 	private askBeforeUpdating = false
 	private term: GraphicsInterface
 
-	public constructor(options: IGeneratorOptions) {
+	public constructor(options: GeneratorOptions) {
 		this.templates = options.templates
 		this.term = options.term
 		this.askBeforeUpdating = !!options.askBeforeUpdating

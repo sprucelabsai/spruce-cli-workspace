@@ -1,5 +1,8 @@
 import terminal_kit from 'terminal-kit'
-import { ProgressBarWidget, ProgressBarWidgetOptions } from '../widgets.types'
+import {
+	ProgressBarWidget,
+	ProgressBarWidgetOptions,
+} from '../types/progressBar.types'
 import TkBaseWidget, { TkWidgetOptions } from './TkBaseWidget'
 const termKit = terminal_kit as any
 

@@ -3,7 +3,7 @@ import { SpruceErrors } from '../errors.types'
 
 import payloadArgsSchema from '#spruce/errors/spruceCli/payloadArgs.schema'
 
-const genericMercurySchema: SpruceErrors.SpruceCli.IGenericMercurySchema  = {
+const genericMercurySchema: SpruceErrors.SpruceCli.GenericMercurySchema  = {
 	id: 'genericMercury',
 	namespace: 'SpruceCli',
 	name: 'Generic mercury',

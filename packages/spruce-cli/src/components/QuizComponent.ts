@@ -1,15 +1,19 @@
-import { ISchema, ISchemaFields, SchemaFieldNames } from '@sprucelabs/schema'
+import {
+	Schema,
+	SchemaFieldsByName,
+	SchemaFieldNames,
+} from '@sprucelabs/schema'
 import chalk from 'chalk'
 import { shuffle } from 'lodash'
 import SpruceError from '../errors/SpruceError'
 import { GraphicsInterface } from '../types/cli.types'
 import FormComponent, {
-	IFormOptions,
-	IFormPresentationOptions,
+	FormOptions,
+	FormPresentationOptions,
 } from './FormComponent'
 
 /** Multiple choice question */
-export interface IQuizMultipleChoiceQuestion {
+export interface QuizMultipleChoiceQuestion {
 	type: 'select'
 	/** The question to ask */
 	question: string
@@ -17,7 +21,7 @@ export interface IQuizMultipleChoiceQuestion {
 	answers: string[]
 }
 
-export interface IQuizTextQuestion {
+export interface QuizTextQuestion {
 	type: 'text'
 	/** The question to ask */
 	question: string
@@ -26,8 +30,8 @@ export interface IQuizTextQuestion {
 }
 
 /** Quiz questions */
-export interface IQuizQuestions {
-	[key: string]: IQuizMultipleChoiceQuestion | IQuizTextQuestion
+export interface QuizQuestions {
+	[key: string]: QuizMultipleChoiceQuestion | QuizTextQuestion
 }
 
 /** Answer status */
@@ -37,10 +41,10 @@ export enum AnswerValidity {
 }
 
 /** Options to present */
-export interface IQuizPresentationOptions<
-	T extends ISchema,
-	Q extends IQuizQuestions
-> extends Omit<IFormPresentationOptions<T>, 'fields'> {
+export interface QuizPresentationOptions<
+	T extends Schema,
+	Q extends QuizQuestions
+> extends Omit<FormPresentationOptions<T>, 'fields'> {
 	/** Select which questions you want to output? random still applies */
 	questions?: QuizAnswerFieldNames<Q>[]
 
@@ -49,23 +53,23 @@ export interface IQuizPresentationOptions<
 }
 
 /** All field names */
-export type QuizAnswerFieldNames<Q extends IQuizQuestions> = Extract<
+export type QuizAnswerFieldNames<Q extends QuizQuestions> = Extract<
 	keyof Q,
 	string
 >
 
 /** The values returned by present */
-export type QuizAnswers<Q extends IQuizQuestions> = {
+export type QuizAnswers<Q extends QuizQuestions> = {
 	[K in QuizAnswerFieldNames<Q>]: string
 }
 
 /** Tracking of right/wrongs */
-export type QuizAnswerValidities<Q extends IQuizQuestions> = {
+export type QuizAnswerValidities<Q extends QuizQuestions> = {
 	[K in QuizAnswerFieldNames<Q>]: AnswerValidity
 }
 
 /** Response from all questions */
-export type QuizPresentationResults<Q extends IQuizQuestions> = {
+export type QuizPresentationResults<Q extends QuizQuestions> = {
 	/** The answers that were given */
 	answers: QuizAnswers<Q>
 
@@ -93,25 +97,22 @@ export type QuizPresentationResults<Q extends IQuizQuestions> = {
 }
 
 /** Options for instantiating a new quiz */
-export interface IQuizOptions<T extends ISchema, Q extends IQuizQuestions>
-	extends Omit<IFormOptions<T>, 'schema'> {
+export interface QuizOptions<T extends Schema, Q extends QuizQuestions>
+	extends Omit<FormOptions<T>, 'schema'> {
 	/** Should we randomize the questions */
 	randomizeQuestions?: boolean
 	/** The questions we are asking */
 	questions: Q
 }
 
-export default class QuizComponent<
-	T extends ISchema,
-	Q extends IQuizQuestions
-> {
+export default class QuizComponent<T extends Schema, Q extends QuizQuestions> {
 	public formBuilder: FormComponent<T>
 	public term: GraphicsInterface
 	public randomizeQuestions = true
-	public originalQuestions: IQuizQuestions
+	public originalQuestions: QuizQuestions
 	public lastResults?: QuizPresentationResults<Q>
 
-	public constructor(options: IQuizOptions<T, Q>) {
+	public constructor(options: QuizOptions<T, Q>) {
 		// We're going to build a schema from the questions and pass that to the form builder
 		const definition = this.buildSchemaFromQuestions(options.questions)
 
@@ -131,7 +132,7 @@ export default class QuizComponent<
 
 	/** Present the quiz */
 	public async present(
-		options: IQuizPresentationOptions<T, Q> = {}
+		options: QuizPresentationOptions<T, Q> = {}
 	): Promise<QuizPresentationResults<Q>> {
 		const {
 			questions = this.formBuilder
@@ -183,7 +184,7 @@ export default class QuizComponent<
 					// question with confidence
 					answers[questionName] = (this.originalQuestions[
 						questionName
-					] as IQuizMultipleChoiceQuestion).answers[parseInt(idx)]
+					] as QuizMultipleChoiceQuestion).answers[parseInt(idx)]
 					break
 				default:
 					// @ts-ignore TODO proper questions to schema should fix this because we only support a few fields
@@ -292,9 +293,9 @@ export default class QuizComponent<
 	}
 
 	/** Takes questions and builds a schema */
-	private buildSchemaFromQuestions(questions: IQuizQuestions): T {
-		// TODO change ISchemaFields to something based on schema generated from questions
-		const fields: ISchemaFields = {}
+	private buildSchemaFromQuestions(questions: QuizQuestions): T {
+		// TODO change SchemaFields to something based on schema generated from questions
+		const fields: SchemaFieldsByName = {}
 
 		Object.keys(questions).forEach((fieldName) => {
 			const question = questions[fieldName]

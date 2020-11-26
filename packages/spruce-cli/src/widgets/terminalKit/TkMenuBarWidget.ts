@@ -4,7 +4,7 @@ import {
 	MenuBarWidget,
 	MenuBarWidgetItem,
 	MenuBarWidgetOptions,
-} from '../widgets.types'
+} from '../types/menuBar.types'
 import termKitUtil from './termKit.utility'
 import TkBaseWidget, { TkWidgetOptions } from './TkBaseWidget'
 

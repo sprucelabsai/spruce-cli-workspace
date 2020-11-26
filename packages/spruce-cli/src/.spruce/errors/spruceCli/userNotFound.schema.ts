@@ -3,7 +3,7 @@ import { SpruceErrors } from '../errors.types'
 
 
 
-const userNotFoundSchema: SpruceErrors.SpruceCli.IUserNotFoundSchema  = {
+const userNotFoundSchema: SpruceErrors.SpruceCli.UserNotFoundSchema  = {
 	id: 'userNotFound',
 	namespace: 'SpruceCli',
 	name: 'User not found',

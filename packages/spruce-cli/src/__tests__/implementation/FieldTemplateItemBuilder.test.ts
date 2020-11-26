@@ -1,4 +1,4 @@
-import { IFieldTemplateItem } from '@sprucelabs/schema'
+import { FieldTemplateItem } from '@sprucelabs/schema'
 import { test, assert } from '@sprucelabs/test'
 import FieldTemplateItemBuilder from '../../templateItemBuilders/FieldTemplateItemBuilder'
 import AbstractCliTest from '../../test/AbstractCliTest'
@@ -16,7 +16,7 @@ const localAddressField = {
 	isLocal: true,
 }
 
-const localAddressFieldTemplateItem: IFieldTemplateItem = {
+const localAddressFieldTemplateItem: FieldTemplateItem = {
 	namePascal: 'AddressField',
 	nameCamel: 'addressField',
 	package: '#spruce/../fields/AddressField',
@@ -40,7 +40,7 @@ const remoteSchemaField = {
 		importAs: 'SpruceSchema',
 		description: 'A way to map relationships.',
 		valueTypeMapper:
-			'SchemaFieldValueTypeMapper<F extends ISchemaFieldDefinition? F : ISchemaFieldDefinition, CreateEntityInstances>',
+			'SchemaFieldValueTypeMapper<F extends SchemaFieldFieldDefinition? F : SchemaFieldFieldDefinition, CreateEntityInstances>',
 	},
 	isLocal: false,
 }
@@ -57,7 +57,7 @@ const remoteSchemaFieldTemplateItem = {
 	isLocal: false,
 	description: 'A way to map relationships.',
 	valueTypeMapper:
-		'SchemaFieldValueTypeMapper<F extends ISchemaFieldDefinition? F : ISchemaFieldDefinition, CreateEntityInstances>',
+		'SchemaFieldValueTypeMapper<F extends SchemaFieldFieldDefinition? F : SchemaFieldFieldDefinition, CreateEntityInstances>',
 }
 
 export default class FieldTemplateItemBuilderTest extends AbstractCliTest {

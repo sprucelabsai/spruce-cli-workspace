@@ -28,15 +28,15 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace {{../globalNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}} {
 
 		{{#if schema.description}}/** {{schema.description}} */{{/if}}
-		interface I{{namePascal}} {
+		interface {{namePascal}} {
 			{{> schemaValues schema=schema renderAs="type" }}
 		}
 
-		interface I{{namePascal}}Schema extends SpruceSchema.ISchema {
+		interface {{namePascal}}Schema extends SpruceSchema.Schema {
 			{{> schemaBody namespace=namespace schema=schema renderAs="type" }}
 		}
 
-		type {{namePascal}}Entity = SchemaEntity<{{../globalNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}}.I{{namePascal}}Schema>
+		type {{namePascal}}Entity = SchemaEntity<{{../globalNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}}.{{namePascal}}Schema>
 
 	}
 	{{/unless}}

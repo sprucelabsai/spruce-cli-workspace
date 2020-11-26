@@ -3,7 +3,7 @@ import { SpruceErrors } from '../errors.types'
 
 
 
-const invalidFeatureCodeSchema: SpruceErrors.SpruceCli.IInvalidFeatureCodeSchema  = {
+const invalidFeatureCodeSchema: SpruceErrors.SpruceCli.InvalidFeatureCodeSchema  = {
 	id: 'invalidFeatureCode',
 	namespace: 'SpruceCli',
 	name: 'Invalid feature code',

@@ -3,7 +3,7 @@ import fs from 'fs-extra'
 import SpruceError from '../errors/SpruceError'
 import CommandService from './CommandService'
 
-export interface IAddOptions {
+export interface AddOptions {
 	dev?: boolean
 }
 

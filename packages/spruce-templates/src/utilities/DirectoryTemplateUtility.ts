@@ -4,19 +4,19 @@ import globby from 'globby'
 import handlebars from 'handlebars'
 import {
 	DirectoryTemplateCode,
-	IDirectoryTemplateContextMap,
-	IDirectoryTemplateFile,
+	DirectoryTemplateContextMap,
+	DirectoryTemplateFile,
 } from '../types/templates.types'
 
-type DirectoryTemplateWithContent = IDirectoryTemplateFile & {
+type DirectoryTemplateWithContent = DirectoryTemplateFile & {
 	contents: string
 }
 
 export default class DirectoryTemplateUtility {
 	public static async filesInTemplate(
 		code: DirectoryTemplateCode
-	): Promise<IDirectoryTemplateFile[]> {
-		const filePaths: IDirectoryTemplateFile[] = []
+	): Promise<DirectoryTemplateFile[]> {
+		const filePaths: DirectoryTemplateFile[] = []
 
 		const files = await globby(
 			path.join(__dirname, '../templates/directories', code),
@@ -42,7 +42,7 @@ export default class DirectoryTemplateUtility {
 		/** The type of directory template to build */
 		kind: K
 		/** The data to pass into the templates */
-		context?: IDirectoryTemplateContextMap[K]
+		context?: DirectoryTemplateContextMap[K]
 	}): Promise<DirectoryTemplateWithContent[]> {
 		const builtFiles: DirectoryTemplateWithContent[] = []
 
@@ -73,7 +73,7 @@ export default class DirectoryTemplateUtility {
 	private static loadFileDetails(
 		code: DirectoryTemplateCode,
 		filePath: string
-	): IDirectoryTemplateFile {
+	): DirectoryTemplateFile {
 		const fullPath = path.resolve(filePath)
 
 		const matches = fullPath.match(/(.*)\/([^/]+)$/)

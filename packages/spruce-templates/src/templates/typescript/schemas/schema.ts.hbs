@@ -3,7 +3,7 @@ import { {{globalNamespace}} } from '{{typesFile}}'
 
 {{{ importRelatedSchemas schema }}}
 
-const {{nameCamel}}Schema: {{globalNamespace}}.{{namespace}}{{#if schema.version}}.{{schema.version}}{{/if}}.I{{namePascal}}Schema  = {
+const {{nameCamel}}Schema: {{globalNamespace}}.{{namespace}}{{#if schema.version}}.{{schema.version}}{{/if}}.{{namePascal}}Schema  = {
 	{{> schemaBody namespace=namespace schema=schema renderAs="value" }}
 }
 

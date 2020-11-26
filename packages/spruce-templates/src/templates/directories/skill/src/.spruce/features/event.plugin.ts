@@ -2,18 +2,18 @@ import pathUtil from "path";
 import fs from "fs";
 import {
 	EventHealthCheckItem,
-	IEventFeatureListener,
-	ISkillFeature,
-	ISkill,
+	EventFeatureListener,
+	SkillFeature,
+	Skill,
 } from "@sprucelabs/spruce-skill-utils";
 import globby from "globby";
 
-export class EventSkillFeature implements ISkillFeature {
-	private skill: ISkill;
+export class EventSkillFeature implements SkillFeature {
+	private skill: Skill;
 	private eventsPath: string;
-	private listeners: IEventFeatureListener[] = [];
+	private listeners: EventFeatureListener[] = [];
 
-	constructor(skill: ISkill) {
+	constructor(skill: Skill) {
 		this.skill = skill;
 		this.eventsPath = pathUtil.join(this.skill.activeDir, "events");
 	}
@@ -66,7 +66,7 @@ export class EventSkillFeature implements ISkillFeature {
 		const listenerMatches = await globby(
 			`${this.eventsPath}/**/*.listener.[j|t]s`
 		);
-		const listeners: IEventFeatureListener[] = [];
+		const listeners: EventFeatureListener[] = [];
 
 		listenerMatches.map((match) => {
 			const matchParts = match.split(pathUtil.sep);
@@ -76,7 +76,7 @@ export class EventSkillFeature implements ISkillFeature {
 			const eventNamespace = matchParts.pop() as string;
 			const version = matchParts.pop() as string;
 			const callback = require(match).default as
-				| IEventFeatureListener["callback"]
+				| EventFeatureListener["callback"]
 				| undefined;
 
 			if (!callback || typeof callback !== "function") {
@@ -97,7 +97,7 @@ export class EventSkillFeature implements ISkillFeature {
 	}
 }
 
-export default (skill: ISkill) => {
+export default (skill: Skill) => {
 	const feature = new EventSkillFeature(skill);
 
 	skill.registerFeature("event", feature);

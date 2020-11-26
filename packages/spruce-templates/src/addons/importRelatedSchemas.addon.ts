@@ -1,21 +1,19 @@
-import { ISchema } from '@sprucelabs/schema'
-import { ISchemaTemplateItem } from '@sprucelabs/schema'
-import { SchemaField } from '@sprucelabs/schema'
+import { Schema, SchemaField, SchemaTemplateItem } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
 import { camelCase, uniq } from 'lodash'
 
 handlebars.registerHelper(
 	'importRelatedSchemas',
-	function (schema: ISchema, options) {
+	function (schema: Schema, options) {
 		if (!schema) {
-			throw new Error('importRelatedSchemas needs a ISchema as the first arg')
+			throw new Error('importRelatedSchemas needs a Schema as the first arg')
 		}
 
 		const {
 			data: { root },
 		} = options
 
-		const schemaTemplateItems: ISchemaTemplateItem[] | undefined =
+		const schemaTemplateItems: SchemaTemplateItem[] | undefined =
 			root?.schemaTemplateItems
 
 		if (!schemaTemplateItems) {

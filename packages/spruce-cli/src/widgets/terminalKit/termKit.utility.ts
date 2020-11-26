@@ -1,6 +1,6 @@
 import { isObject } from 'lodash'
+import { BaseWidget, WidgetFrame } from '../types/widgets.types'
 import widgetUtil from '../widget.utilities'
-import { BaseWidget, WidgetFrame } from '../widgets.types'
 
 const termKitUtil = {
 	buildFrame(frame: Partial<WidgetFrame>, parent?: BaseWidget | null) {

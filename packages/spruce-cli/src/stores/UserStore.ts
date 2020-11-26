@@ -9,17 +9,17 @@ import CliUserWithTokenSchema from '#spruce/schemas/spruceCli/v2020_07_22/cliUse
 import SpruceError from '../errors/SpruceError'
 import log from '../singletons/log'
 import { AuthedAs } from '../types/cli.types'
-import AbstractLocalStore, { ILocalStoreSettings } from './AbstractLocalStore'
+import AbstractLocalStore, { LocalStoreSettings } from './AbstractLocalStore'
 
-type UserWithToken = SpruceSchemas.SpruceCli.v2020_07_22.ICliUserWithToken
-type User = SpruceSchemas.SpruceCli.v2020_07_22.ICliUser
+type UserWithToken = SpruceSchemas.SpruceCli.v2020_07_22.CliUserWithToken
+type User = SpruceSchemas.SpruceCli.v2020_07_22.CliUser
 
 /** Settings i need to save */
-interface IUserStoreSettings extends ILocalStoreSettings {
+interface UserStoreSettings extends LocalStoreSettings {
 	authedUsers: UserWithToken[]
 }
 
-export default class UserStore extends AbstractLocalStore<IUserStoreSettings> {
+export default class UserStore extends AbstractLocalStore<UserStoreSettings> {
 	public name = 'user'
 
 	public static getUserWithToken(values?: Partial<UserWithToken>) {

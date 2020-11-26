@@ -1,5 +1,5 @@
 import { FieldDefinitionValueType } from '@sprucelabs/schema'
-import { FieldDefinition } from '#spruce/schemas/fields/fields.types'
+import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import {
 	GraphicsInterface,
 	ExecutionResults,
@@ -13,7 +13,7 @@ export default class SpyInterface implements GraphicsInterface {
 	private cursorPosition = { x: 0, y: 0 }
 
 	private promptResolver?: (
-		input: FieldDefinitionValueType<FieldDefinition>
+		input: FieldDefinitionValueType<FieldDefinitions>
 	) => void | undefined
 
 	private confirmResolver?: (pass: boolean) => void | undefined
@@ -145,7 +145,7 @@ export default class SpyInterface implements GraphicsInterface {
 		this.trackInvocation('renderLines', { messages, effects })
 	}
 
-	public async prompt<T extends FieldDefinition>(definition: T) {
+	public async prompt<T extends FieldDefinitions>(definition: T) {
 		this.trackInvocation('prompt', definition)
 
 		if (this.promptResolver) {
@@ -154,10 +154,12 @@ export default class SpyInterface implements GraphicsInterface {
 			)
 		}
 
-		return new Promise<FieldDefinitionValueType<FieldDefinition>>((resolve) => {
-			this.promptResolver = resolve
-			this.promptDefaultValue = definition.defaultValue
-		})
+		return new Promise<FieldDefinitionValueType<FieldDefinitions>>(
+			(resolve) => {
+				this.promptResolver = resolve
+				this.promptDefaultValue = definition.defaultValue
+			}
+		)
 	}
 
 	public startLoading(message?: string | undefined): void {

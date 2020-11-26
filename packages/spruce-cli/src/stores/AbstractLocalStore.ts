@@ -2,16 +2,16 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import log from '../singletons/log'
 import { AuthedAs } from '../types/cli.types'
 import AbstractStore from './AbstractStore'
-import { IStoreOptions } from './AbstractStore'
+import { StoreOptions } from './AbstractStore'
 
-export interface ILocalStoreSettings {
+export interface LocalStoreSettings {
 	authType: AuthedAs
 }
 
 export default abstract class AbstractLocalStore<
-	Settings extends ILocalStoreSettings
+	Settings extends LocalStoreSettings
 > extends AbstractStore {
-	public constructor(options: IStoreOptions) {
+	public constructor(options: StoreOptions) {
 		super(options)
 
 		const { directory: localDirectory } = this.getConfigPath()
