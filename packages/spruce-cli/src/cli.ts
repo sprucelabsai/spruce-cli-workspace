@@ -139,7 +139,7 @@ export default class Cli implements CliInterface {
 
 		const mercury = new Mercury()
 		const serviceFactory = new ServiceFactory({ mercury })
-		const storeFactory = new StoreFactory(cwd, mercury, serviceFactory)
+		const storeFactory = new StoreFactory({ cwd, serviceFactory })
 		const terminal = options?.graphicsInterface ?? new TerminalInterface(cwd)
 		const emitter = CliGlobalEmitter.Emitter()
 

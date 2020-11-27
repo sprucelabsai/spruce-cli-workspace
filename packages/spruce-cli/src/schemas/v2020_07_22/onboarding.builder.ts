@@ -26,12 +26,5 @@ export default buildSchema({
 				],
 			},
 		},
-		runCount: {
-			type: 'number',
-			label: 'Run count',
-			isRequired: true,
-			hint:
-				'How many times spruce onboarding has been called (the story changes based on count)',
-		},
 	},
 })

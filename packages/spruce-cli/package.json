@@ -130,7 +130,7 @@
 			{
 				"code": "skill",
 				"options": {
-					"name": "testing events",
+					"name": "test skill",
 					"description": "this too, is a great test!"
 				}
 			}
@@ -139,7 +139,7 @@
 			{
 				"code": "skill",
 				"options": {
-					"name": "testing",
+					"name": "testing schemas",
 					"description": "this is a great test!"
 				}
 			},
