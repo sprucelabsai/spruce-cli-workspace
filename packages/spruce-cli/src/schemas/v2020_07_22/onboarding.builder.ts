@@ -5,10 +5,26 @@ export default buildSchema({
 	name: 'Onboarding',
 	description: 'Track onboarding progress and tutorials & quizzes completed.',
 	fields: {
-		isEnabled: {
-			type: 'boolean',
-			label: 'Remote',
+		mode: {
+			type: 'select',
+			label: 'mode',
 			isRequired: true,
+			options: {
+				choices: [
+					{
+						label: 'Short',
+						value: 'short',
+					},
+					{
+						label: 'Immersive',
+						value: 'Immersive',
+					},
+					{
+						label: 'Off',
+						value: 'off',
+					},
+				],
+			},
 		},
 		runCount: {
 			type: 'number',

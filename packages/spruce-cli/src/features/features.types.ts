@@ -109,6 +109,7 @@ export interface FeatureActionResponse extends FeatureInstallResponse {
 	meta?: Record<string, any>
 	errors?: SpruceError[]
 	hints?: string[]
+	headline?: string
 	summaryLines?: string[]
 }
 
