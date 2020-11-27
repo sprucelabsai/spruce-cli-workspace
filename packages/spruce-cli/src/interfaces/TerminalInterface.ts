@@ -25,9 +25,11 @@ import {
 	ExecutionResults,
 	GraphicsInterface,
 	GraphicsTextEffect,
+	ImageDimentions,
 	ProgressBarOptions,
 	ProgressBarUpdateOptions,
 } from '../types/cli.types'
+const terminalImage = require('terminal-image')
 
 let fieldCount = 0
 function generateInquirerFieldName() {
@@ -154,7 +156,7 @@ export default class TerminalInterface implements GraphicsInterface {
 		const errors = results.errors ?? []
 		const packagesInstalled = results.packagesInstalled ?? []
 
-		this.renderHero(`${results.headline} Finished!`)
+		this.renderHero(`${results.headline}`)
 
 		let summaryLines: string[] = [
 			errors.length > 0 ? `Errors: ${errors.length}` : null,
@@ -540,6 +542,14 @@ export default class TerminalInterface implements GraphicsInterface {
 				items: options.totalItems,
 			})
 		}
+	}
+
+	public async renderImage(
+		path: string,
+		options?: ImageDimentions
+	): Promise<void> {
+		const image = await terminalImage.file(path, options)
+		console.log(image)
 	}
 
 	public async getCursorPosition(): Promise<{ x: number; y: number } | null> {

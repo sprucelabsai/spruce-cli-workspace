@@ -75,7 +75,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		this.ui.renderCommandSummary({
 			featureCode: this.featureCode,
 			actionCode: this.actionCode,
-			headline: action.name,
+			headline: executeResults.headline ?? `${action.name} finished!`,
 			...response,
 		})
 
