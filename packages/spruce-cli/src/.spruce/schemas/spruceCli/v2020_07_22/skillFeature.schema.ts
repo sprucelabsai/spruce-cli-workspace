@@ -7,7 +7,7 @@ const skillFeatureSchema: SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema
 	id: 'skillFeature',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
-	name: 'Skill Feature',
+	name: 'Skill feature options',
 	    fields: {
 	            /** What's the name of your skill?. */
 	            'name': {
