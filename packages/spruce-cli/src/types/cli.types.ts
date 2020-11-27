@@ -66,7 +66,7 @@ export interface ProgressBarUpdateOptions {
 	title?: string
 }
 
-export interface ImageDimentions {
+export interface ImageDimensions {
 	width?: number
 	height?: number
 }
@@ -95,7 +95,7 @@ export interface GraphicsInterface {
 	renderLines(messages: string[], effects?: GraphicsTextEffect[]): void
 	renderWarning(message: string, effects?: GraphicsTextEffect[]): void
 	renderHint(message: string, effects?: GraphicsTextEffect[]): void
-	renderImage(path: string, options?: ImageDimentions): Promise<void>
+	renderImage(path: string, options?: ImageDimensions): Promise<void>
 	prompt<T extends FieldDefinitions>(
 		definition: T
 	): Promise<FieldDefinitionValueType<T>>

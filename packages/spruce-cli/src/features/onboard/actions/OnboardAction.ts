@@ -107,16 +107,16 @@ export default class ListenAction extends AbstractFeatureAction<SpruceSchemas.Sp
 				await this.renderInside()
 			},
 			"You push the door open and enter into the largest room you've ever seen.",
-			"So big, in fact, that you can't see the any of the walls.",
+			"So big, in fact, that you can't see any of the walls.",
 			'A familiar voice echos...',
 			'"Hey! It\'s Sprucebot again! 🌲🤖"',
 			async () => {
-				const line = `This is so much fun! I love playng both the narrator and a charactor!`
+				const line = `This is so much fun! I love playing both the narrator and a character!`
 				this.ui.renderLine(line, [GraphicsTextEffect.Italic])
 				this.ui.renderLine('')
 			},
 			'Anyway... "Since all good software starts with a test, lets start there!"',
-			'"Go ahead and create a new directory anywhere on your computer and run:"',
+			'"Go ahead and create a new directory anywhere on your computer, enter the directory, then run:"',
 			async () => {
 				this.renderCommand('spruce error.create')
 			},
