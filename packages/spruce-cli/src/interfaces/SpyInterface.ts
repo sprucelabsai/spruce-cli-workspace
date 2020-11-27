@@ -6,7 +6,7 @@ import {
 	GraphicsTextEffect,
 	ProgressBarOptions,
 	ProgressBarUpdateOptions,
-	ImageDimentions,
+	ImageDimensions,
 } from '../types/cli.types'
 
 export default class SpyInterface implements GraphicsInterface {
@@ -141,7 +141,7 @@ export default class SpyInterface implements GraphicsInterface {
 
 	public async renderImage(
 		path: string,
-		options?: ImageDimentions
+		options?: ImageDimensions
 	): Promise<void> {
 		this.trackInvocation('renderImage', { path, options })
 	}
