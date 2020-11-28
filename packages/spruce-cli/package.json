@@ -4,7 +4,7 @@
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "11.12.7",
+	"version": "11.12.8",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -57,8 +57,8 @@
 		"@sprucelabs/log": "^10.2.294",
 		"@sprucelabs/mercury": "^10.5.72",
 		"@sprucelabs/mercury-event-emitter": "^14.1.0",
-		"@sprucelabs/schema": "^18.0.3",
 		"@sprucelabs/mercury-types": "^14.0.2",
+		"@sprucelabs/schema": "^18.0.3",
 		"@sprucelabs/spruce-core-schemas": "^22.0.2",
 		"@sprucelabs/spruce-skill-utils": "^12.0.1",
 		"blessed": "^0.1.81",
