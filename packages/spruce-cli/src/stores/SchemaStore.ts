@@ -39,6 +39,8 @@ interface FetchFieldsResults {
 }
 
 export default class SchemaStore extends AbstractStore {
+	public readonly name = 'schema'
+
 	public async fetchSchemas(options: {
 		localSchemaLookupDir?: string
 		fetchRemoteSchemas?: boolean

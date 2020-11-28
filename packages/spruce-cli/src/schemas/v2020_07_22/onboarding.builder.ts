@@ -17,11 +17,23 @@ export default buildSchema({
 					},
 					{
 						label: 'Immersive',
-						value: 'Immersive',
+						value: 'immersive',
 					},
 					{
 						label: 'Off',
 						value: 'off',
+					},
+				],
+			},
+		},
+		stage: {
+			type: 'select',
+			label: 'Stage',
+			options: {
+				choices: [
+					{
+						label: 'Create test',
+						value: 'test.create',
 					},
 				],
 			},

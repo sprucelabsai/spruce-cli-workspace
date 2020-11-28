@@ -1,4 +1,3 @@
-import { Mercury } from '@sprucelabs/mercury'
 import ServiceFactory, {
 	ServiceProvider,
 	Service,
@@ -12,6 +11,7 @@ export interface StoreOptions {
 
 export default abstract class AbstractStore implements ServiceProvider {
 	protected cwd: string
+	public abstract name: string
 
 	private serviceFactory: ServiceFactory
 

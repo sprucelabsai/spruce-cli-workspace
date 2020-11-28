@@ -1,5 +1,4 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import log from '../singletons/log'
 import { AuthedAs } from '../types/cli.types'
 import AbstractStore from './AbstractStore'
 import { StoreOptions } from './AbstractStore'
@@ -13,31 +12,26 @@ export default abstract class AbstractLocalStore<
 > extends AbstractStore {
 	public constructor(options: StoreOptions) {
 		super(options)
-
-		const { directory: localDirectory } = this.getConfigPath()
-
-		if (!diskUtil.doesDirExist(localDirectory)) {
-			diskUtil.createDir(localDirectory)
-		}
 	}
 
-	/** Write a value to disk (should only be used in save()) */
 	protected writeValue<F extends keyof Settings>(key: F, value: Settings[F]) {
 		this.writeValues({ [key]: value })
 		return
 	}
 
-	/** Write a whole object to disk (should only be used in save()) */
 	protected writeValues<T extends Record<string, any>>(values: T) {
-		const currentValues = this.readValues()
-		const updatedValues = { ...currentValues, ...values }
+		const currentValues = this.readConfig()
+		const updatedValues = {
+			...currentValues,
+			[this.name]: { ...currentValues[this.name], ...values },
+		}
 		const { file, directory } = this.getConfigPath()
 
 		if (!diskUtil.doesDirExist(directory)) {
 			diskUtil.createDir(directory)
 		}
 
-		const contents = JSON.stringify(updatedValues)
+		const contents = JSON.stringify(updatedValues, null, 2)
 		diskUtil.writeFile(file, contents)
 
 		return this
@@ -53,29 +47,30 @@ export default abstract class AbstractLocalStore<
 		}
 	}
 
-	/** Read a single value */
 	protected readValue<F extends keyof Settings>(key: F) {
 		const settings = this.readValues()
 		return settings[key]
 	}
 
-	/** Read values from disk */
 	protected readValues<T extends Settings>(): Partial<T> {
+		const values = this.readConfig()
+		return (values[this.name] ?? {}) as T
+	}
+
+	private readConfig() {
 		const { file, directory } = this.getConfigPath()
 
-		try {
-			// Make sure dir exists
-			if (!diskUtil.doesDirExist(directory)) {
-				diskUtil.createDir(directory)
-			}
-
-			const contents = diskUtil.readFile(file)
-			const values = JSON.parse(contents) as T
-			return values
-		} catch (err) {
-			log.info(`No skill detected`)
+		if (!diskUtil.doesDirExist(directory)) {
+			diskUtil.createDir(directory)
 		}
-		// Falls back to an empty object
-		return {}
+
+		try {
+			const contents = diskUtil.readFile(file)
+			const values = JSON.parse(contents)
+
+			return values
+		} catch {
+			return {}
+		}
 	}
 }

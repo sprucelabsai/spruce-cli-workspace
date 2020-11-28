@@ -48,6 +48,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		await super.beforeEach()
 		this.cwd = this.freshCwd()
 
+		this.ui.invocations = []
 		this.ui.setCursorPosition({ x: 0, y: 0 })
 	}
 
