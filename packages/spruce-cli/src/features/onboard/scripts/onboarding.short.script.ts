@@ -30,7 +30,6 @@ const script: Script = [
 	async (player) => {
 		await player.ui.waitForEnter('"Ok, lets do it! See you there!"')
 
-		debugger
 		player.onboardingStore.setMode('short')
 		player.onboardingStore.setStage('test.create')
 	},
