@@ -272,7 +272,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		const createAction = cli.getFeature('schema').Action('create')
 
 		const matcher = new RegExp(
-			`SpruceSchemas.Testing.${version.constValue}(.*?)interface TestSchema`,
+			`SpruceSchemas.TestingSchemas.${version.constValue}(.*?)interface TestSchema`,
 			'gis'
 		)
 
