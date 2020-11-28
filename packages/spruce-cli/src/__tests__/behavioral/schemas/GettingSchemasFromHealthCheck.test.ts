@@ -47,7 +47,7 @@ export default class GettingSchemasFromHealthCheckTest extends AbstractSchemaTes
 				id: 'test',
 				name: 'Test schema!',
 				version: versionUtil.generateVersion().constValue,
-				namespace: 'Testing',
+				namespace: 'TestingSchemas',
 				description: 'this is so great!',
 			},
 		])

@@ -80,7 +80,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		await checker.check(schemaMatch)
 
 		const schemaContents = diskUtil.readFile(schemaMatch)
-		assert.doesInclude(schemaContents, `namespace: 'Testing'`)
+		assert.doesInclude(schemaContents, `namespace: 'TestingSchemas'`)
 	}
 
 	@test()
@@ -253,7 +253,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		assert.doesInclude(
 			schemaContents,
 			new RegExp(
-				'SpruceSchemas.Testing.' +
+				'SpruceSchemas.TestingSchemas.' +
 					expectedVersion +
 					'.*?' +
 					expectedSchemaInterfaceName,
