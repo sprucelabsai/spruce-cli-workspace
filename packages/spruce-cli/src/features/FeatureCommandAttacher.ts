@@ -2,6 +2,7 @@ import { Schema, SchemaEntityFactory } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { CommanderStatic } from 'commander'
 import SpruceError from '../errors/SpruceError'
+import { GlobalEmitter } from '../GlobalEmitter'
 import { GraphicsInterface } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
 import featuresUtil from './feature.utilities'
@@ -11,16 +12,21 @@ import FeatureInstaller from './FeatureInstaller'
 export default class FeatureCommandAttacher {
 	private program: CommanderStatic['program']
 	private featureInstaller: FeatureInstaller
-	private term: GraphicsInterface
+	private ui: GraphicsInterface
+	private emitter: GlobalEmitter
 
-	public constructor(
-		program: CommanderStatic['program'],
-		featureInstaller: FeatureInstaller,
-		term: GraphicsInterface
-	) {
+	public constructor(options: {
+		program: CommanderStatic['program']
+		featureInstaller: FeatureInstaller
+		ui: GraphicsInterface
+		emitter: GlobalEmitter
+	}) {
+		const { program, featureInstaller, ui: term, emitter } = options
+
 		this.program = program
 		this.featureInstaller = featureInstaller
-		this.term = term
+		this.ui = term
+		this.emitter = emitter
 	}
 
 	public async attachFeature(feature: AbstractFeature) {
@@ -40,7 +46,8 @@ export default class FeatureCommandAttacher {
 			featureCode: feature.code,
 			actionCode: code,
 			featureInstaller: this.featureInstaller,
-			term: this.term,
+			term: this.ui,
+			emitter: this.emitter,
 		})
 
 		let command = this.program.command(commandStr).action(async (command) => {

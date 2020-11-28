@@ -35,6 +35,17 @@ export interface FeatureDependency {
 	code: FeatureCode
 }
 
+export interface FeatureOptions {
+	cwd: string
+	serviceFactory: ServiceFactory
+	templates: Templates
+	storeFactory: StoreFactory
+	actionFactory?: FeatureActionFactory
+	featureInstaller: FeatureInstaller
+	ui: GraphicsInterface
+	emitter: GlobalEmitter
+}
+
 export default abstract class AbstractFeature<
 	S extends Schema | undefined = Schema | undefined
 > implements ServiceProvider {
@@ -54,6 +65,7 @@ export default abstract class AbstractFeature<
 	protected templates: Templates
 	protected emitter: GlobalEmitter
 	protected featureInstaller: FeatureInstaller
+	protected ui: GraphicsInterface
 
 	private serviceFactory: ServiceFactory
 	private storeFactory: StoreFactory
@@ -64,24 +76,16 @@ export default abstract class AbstractFeature<
 		'actionsDir'
 	>
 
-	public constructor(options: {
-		cwd: string
-		serviceFactory: ServiceFactory
-		templates: Templates
-		storeFactory: StoreFactory
-		actionFactory?: FeatureActionFactory
-		featureInstaller: FeatureInstaller
-		term: GraphicsInterface
-		emitter: GlobalEmitter
-	}) {
+	public constructor(options: FeatureOptions) {
 		this.cwd = options.cwd
 		this.serviceFactory = options.serviceFactory
 		this.templates = options.templates
 		this.actionFactory = options.actionFactory
 		this.storeFactory = options.storeFactory
-		this.generatorFactory = new GeneratorFactory(this.templates, options.term)
+		this.generatorFactory = new GeneratorFactory(this.templates, options.ui)
 		this.emitter = options.emitter
 		this.featureInstaller = options.featureInstaller
+		this.ui = options.ui
 
 		this.actionFactoryOptions = {
 			...options,

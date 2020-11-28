@@ -84,13 +84,13 @@ export interface FeatureActionOptions {
 	parent: AbstractFeature
 	storeFactory: StoreFactory
 	featureInstaller: FeatureInstaller
-	term: GraphicsInterface
+	ui: GraphicsInterface
 	generatorFactory: GeneratorFactory
 }
 
 export type FeatureCode = keyof FeatureMap
 
-export type FeatureOptions<
+export type FeatureExecuteOptions<
 	F extends FeatureCode
 > = FeatureMap[F]['optionsDefinition'] extends Schema
 	? SchemaValues<FeatureMap[F]['optionsDefinition']>

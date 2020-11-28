@@ -140,23 +140,24 @@ export default class Cli implements CliInterface {
 		const mercury = new Mercury()
 		const serviceFactory = new ServiceFactory({ mercury })
 		const storeFactory = new StoreFactory({ cwd, serviceFactory })
-		const terminal = options?.graphicsInterface ?? new TerminalInterface(cwd)
-		const emitter = CliGlobalEmitter.Emitter()
+		const ui = options?.graphicsInterface ?? new TerminalInterface(cwd)
+		const emitter = CliGlobalEmitter.EmitterInstance()
 
 		const featureInstaller = FeatureInstallerFactory.WithAllFeatures({
 			cwd,
 			serviceFactory,
 			storeFactory,
-			term: terminal,
+			ui,
 			emitter,
 		})
 
 		if (program) {
-			const attacher = new FeatureCommandAttacher(
+			const attacher = new FeatureCommandAttacher({
 				program,
 				featureInstaller,
-				terminal
-			)
+				ui,
+				emitter,
+			})
 			const codes = FeatureInstallerFactory.featureCodes
 
 			for (const code of codes) {

@@ -2,9 +2,11 @@ import { Schema, SchemaPartialValues, SchemaValues } from '@sprucelabs/schema'
 import merge from 'lodash/merge'
 import FormComponent from '../components/FormComponent'
 import SpruceError from '../errors/SpruceError'
+import { GlobalEmitter } from '../GlobalEmitter'
 import { GraphicsInterface } from '../types/cli.types'
 import formUtil from '../utilities/form.utility'
 import AbstractFeature, { FeatureDependency } from './AbstractFeature'
+import featuresUtil from './feature.utilities'
 import FeatureInstaller from './FeatureInstaller'
 import {
 	FeatureCode,
@@ -28,9 +30,11 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 	private actionCode: string
 	private ui: GraphicsInterface
 	private featureInstaller: FeatureInstaller
+	private emitter: GlobalEmitter
 
 	public constructor(options: {
 		term: GraphicsInterface
+		emitter: GlobalEmitter
 		featureCode: F
 		actionCode: string
 		featureInstaller: FeatureInstaller
@@ -39,11 +43,17 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		this.actionCode = options.actionCode
 		this.ui = options.term
 		this.featureInstaller = options.featureInstaller
+		this.emitter = options.emitter
 	}
 
 	public async execute(
 		options?: Record<string, any> & FeatureCommandExecuteOptions<F>
 	): Promise<FeatureInstallResponse & FeatureActionResponse> {
+		await this.emitter.emit('feature.will-execute', {
+			featureCode: this.featureCode,
+			actionCode: this.actionCode,
+		})
+
 		let response = await this.installOrMarkAsSkippedMissingDependencies()
 
 		const feature = this.featureInstaller.getFeature(this.featureCode)
@@ -68,6 +78,12 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 
 		const executeResults = await action.execute(answers || {})
 		response = merge(response, executeResults)
+
+		await this.emitter.emit('feature.did-execute', {
+			results: response,
+			featureCode: this.featureCode,
+			actionCode: this.actionCode,
+		})
 
 		this.ui.stopLoading()
 
@@ -135,7 +151,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 	}
 
 	private getCommandName() {
-		return `${this.featureCode}.${this.actionCode}`
+		return featuresUtil.generateCommand(this.featureCode, this.actionCode)
 	}
 
 	private async installOrMarkAsSkippedMissingDependencies(): Promise<FeatureInstallResponse> {

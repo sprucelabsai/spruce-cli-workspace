@@ -4,7 +4,7 @@ import { renderCommand, renderEnter } from './onboarding.short.script'
 const script: Script = [
 	(player) => player.ui.clear(),
 	(player) => renderEnter(player),
-	'You return to the doors in the forest and enter the door on the left.',
+	'You return to the doors in the forest and enter the one on the left.',
 	'"Welcome back!", shouts Sprucebot.',
 	'"It looks like you\'re supposed to be running"',
 	(player) => {

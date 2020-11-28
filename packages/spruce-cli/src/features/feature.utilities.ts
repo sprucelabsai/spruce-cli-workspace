@@ -15,6 +15,14 @@ const featuresUtil = {
 		return hyphened.replace(/-/g, '.').toLowerCase()
 	},
 
+	generateCommand(featureCode: string, actionCode: string) {
+		if (featureCode === actionCode) {
+			return featureCode
+		}
+
+		return `${featureCode}.${actionCode}`
+	},
+
 	generateCommandAliases(schema: Schema): Record<string, string> {
 		const fields = schema.fields || {}
 		const aliases: Record<string, string> = {}

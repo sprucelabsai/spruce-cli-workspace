@@ -1,6 +1,7 @@
 import { test, assert } from '@sprucelabs/test'
 import { CommanderStatic } from 'commander'
 import FeatureCommandAttacher from '../../features/FeatureCommandAttacher'
+import CliGlobalEmitter from '../../GlobalEmitter'
 import AbstractCliTest from '../../test/AbstractCliTest'
 
 type MockProgram = CommanderStatic['program'] & {
@@ -26,7 +27,12 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		const installer = this.FeatureInstaller()
 		const term = this.ui
 
-		this.attacher = new FeatureCommandAttacher(this.program, installer, term)
+		this.attacher = new FeatureCommandAttacher({
+			program: this.program,
+			featureInstaller: installer,
+			ui: term,
+			emitter: CliGlobalEmitter.EmitterInstance(),
+		})
 	}
 
 	@test()

@@ -109,13 +109,13 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static FeatureInstaller() {
 		const serviceFactory = this.ServiceFactory()
 		const storeFactory = this.StoreFactory()
-		const emitter = CliGlobalEmitter.Emitter()
+		const emitter = CliGlobalEmitter.EmitterInstance()
 
 		return FeatureInstallerFactory.WithAllFeatures({
 			cwd: this.cwd,
 			serviceFactory,
 			storeFactory,
-			term: this.ui,
+			ui: this.ui,
 			emitter,
 		})
 	}

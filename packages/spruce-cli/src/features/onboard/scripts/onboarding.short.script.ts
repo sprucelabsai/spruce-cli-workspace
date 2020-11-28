@@ -1,5 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { GraphicsInterface, GraphicsTextEffect } from '../../../types/cli.types'
+import featuresUtil from '../../feature.utilities'
 import { CallbackPlayer, Script } from '../ScriptPlayer'
 
 const script: Script = [
@@ -31,7 +32,9 @@ const script: Script = [
 		await player.ui.waitForEnter('"Ok, lets do it! See you there!"')
 
 		player.onboardingStore.setMode('short')
-		player.onboardingStore.setStage('test.create')
+		player.onboardingStore.setStage(
+			featuresUtil.generateCommand('test', 'create') as 'test.create'
+		)
 	},
 ]
 
