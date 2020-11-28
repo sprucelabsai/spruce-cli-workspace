@@ -1,4 +1,3 @@
-import { Mercury } from '@sprucelabs/mercury'
 import ServiceFactory from '../services/ServiceFactory'
 import { StoreOptions } from './AbstractStore'
 import OnboardingStore from './OnboardingStore'
@@ -18,7 +17,6 @@ export interface StoreMap {
 export type StoreCode = keyof StoreMap
 
 export default class StoreFactory {
-	private mercury: Mercury
 	private serviceFactory: ServiceFactory
 	private cwd: string
 	private storeMap = {
@@ -29,13 +27,9 @@ export default class StoreFactory {
 		user: UserStore,
 	}
 
-	public constructor(
-		cwd: string,
-		mercury: Mercury,
-		serviceFactory: ServiceFactory
-	) {
+	public constructor(options: { cwd: string; serviceFactory: ServiceFactory }) {
+		const { cwd, serviceFactory } = options
 		this.cwd = cwd
-		this.mercury = mercury
 		this.serviceFactory = serviceFactory
 	}
 
@@ -43,7 +37,6 @@ export default class StoreFactory {
 		const options: StoreOptions = {
 			cwd: cwd ?? this.cwd,
 			serviceFactory: this.serviceFactory,
-			mercury: this.mercury,
 		}
 		const store = new this.storeMap[code](options)
 

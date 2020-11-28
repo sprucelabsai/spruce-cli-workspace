@@ -20,7 +20,7 @@ interface UserStoreSettings extends LocalStoreSettings {
 }
 
 export default class UserStore extends AbstractLocalStore<UserStoreSettings> {
-	public name = 'user'
+	public readonly name = 'user'
 
 	public static getUserWithToken(values?: Partial<UserWithToken>) {
 		return new Schema(CliUserWithTokenSchema, values)
@@ -68,7 +68,7 @@ export default class UserStore extends AbstractLocalStore<UserStoreSettings> {
 		}
 
 		// Setup mercury to use creds
-		this.mercury = await this.mercuryForUser(token)
+		// this.mercury = await this.mercuryForUser(token)
 
 		// Now load from id
 		const userId: string = decoded.userId

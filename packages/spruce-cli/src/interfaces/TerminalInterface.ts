@@ -319,7 +319,6 @@ export default class TerminalInterface implements GraphicsInterface {
 	}
 
 	public async waitForEnter(message?: string) {
-		this.renderLine('')
 		await this.prompt({
 			type: 'text',
 			label: `${message ? message + ' ' : ''}${chalk.bgGreenBright.black(

@@ -48,6 +48,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		await super.beforeEach()
 		this.cwd = this.freshCwd()
 
+		this.ui.invocations = []
 		this.ui.setCursorPosition({ x: 0, y: 0 })
 	}
 
@@ -120,9 +121,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static StoreFactory() {
-		const mercury = new Mercury()
 		const serviceFactory = this.ServiceFactory()
-		return new StoreFactory(this.cwd, mercury, serviceFactory)
+		return new StoreFactory({ cwd: this.cwd, serviceFactory })
 	}
 
 	protected static Store<C extends StoreCode>(

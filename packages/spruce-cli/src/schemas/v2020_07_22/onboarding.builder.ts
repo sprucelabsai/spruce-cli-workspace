@@ -17,7 +17,7 @@ export default buildSchema({
 					},
 					{
 						label: 'Immersive',
-						value: 'Immersive',
+						value: 'immersive',
 					},
 					{
 						label: 'Off',
@@ -26,12 +26,17 @@ export default buildSchema({
 				],
 			},
 		},
-		runCount: {
-			type: 'number',
-			label: 'Run count',
-			isRequired: true,
-			hint:
-				'How many times spruce onboarding has been called (the story changes based on count)',
+		stage: {
+			type: 'select',
+			label: 'Stage',
+			options: {
+				choices: [
+					{
+						label: 'Create test',
+						value: 'test.create',
+					},
+				],
+			},
 		},
 	},
 })

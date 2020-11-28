@@ -10,20 +10,18 @@ const onboardingSchema: SpruceSchemas.SpruceCli.v2020_07_22.OnboardingSchema  = 
 	name: 'Onboarding',
 	description: 'Track onboarding progress and tutorials & quizzes completed.',
 	    fields: {
-	            /** Remote. */
-	            'isEnabled': {
-	                label: 'Remote',
-	                type: 'boolean',
+	            /** mode. */
+	            'mode': {
+	                label: 'mode',
+	                type: 'select',
 	                isRequired: true,
-	                options: undefined
+	                options: {choices: [{"label":"Short","value":"short"},{"label":"Immersive","value":"immersive"},{"label":"Off","value":"off"}],}
 	            },
-	            /** Run count. How many times spruce onboarding has been called (the story changes based on count) */
-	            'runCount': {
-	                label: 'Run count',
-	                type: 'number',
-	                isRequired: true,
-	                hint: 'How many times spruce onboarding has been called (the story changes based on count)',
-	                options: undefined
+	            /** Stage. */
+	            'stage': {
+	                label: 'Stage',
+	                type: 'select',
+	                options: {choices: [{"label":"Create test","value":"test.create"}],}
 	            },
 	    }
 }
