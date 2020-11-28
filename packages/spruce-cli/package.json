@@ -4,7 +4,7 @@
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "11.12.3",
+	"version": "11.12.7",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -57,9 +57,9 @@
 		"@sprucelabs/log": "^10.2.294",
 		"@sprucelabs/mercury": "^10.5.72",
 		"@sprucelabs/mercury-event-emitter": "^14.1.0",
-		"@sprucelabs/mercury-types": "^14.0.1",
 		"@sprucelabs/schema": "^18.0.3",
-		"@sprucelabs/spruce-core-schemas": "^22.0.1",
+		"@sprucelabs/mercury-types": "^14.0.2",
+		"@sprucelabs/spruce-core-schemas": "^22.0.2",
 		"@sprucelabs/spruce-skill-utils": "^12.0.1",
 		"blessed": "^0.1.81",
 		"blessed-contrib": "^4.8.20",
@@ -89,7 +89,7 @@
 		"@sprucelabs/babel-plugin-schema": "^3.1.2",
 		"@sprucelabs/jest-sheets-reporter": "^1.2.5",
 		"@sprucelabs/test": "^7.2.0",
-		"@sprucelabs/test-utils": "^2.0.356",
+		"@sprucelabs/test-utils": "^2.0.359",
 		"@types/blessed": "^0.1.17",
 		"@types/eslint": "^7.2.5",
 		"@types/fs-extra": "^9.0.4",
@@ -119,7 +119,7 @@
 		"jest-circus": "^26.6.3",
 		"jest-reporters": "^0.0.2",
 		"md5": "^2.3.0",
-		"prettier": "^2.2.0",
+		"prettier": "^2.2.1",
 		"rimraf": "^3.0.2",
 		"ts-jest": "^26.4.4",
 		"ts-node": "^9.0.0",

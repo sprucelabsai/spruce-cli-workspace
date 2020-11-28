@@ -25,7 +25,7 @@ import {
 	ExecutionResults,
 	GraphicsInterface,
 	GraphicsTextEffect,
-	ImageDimentions,
+	ImageDimensions,
 	ProgressBarOptions,
 	ProgressBarUpdateOptions,
 } from '../types/cli.types'
@@ -545,7 +545,7 @@ export default class TerminalInterface implements GraphicsInterface {
 
 	public async renderImage(
 		path: string,
-		options?: ImageDimentions
+		options?: ImageDimensions
 	): Promise<void> {
 		const image = await terminalImage.file(path, options)
 		console.log(image)
