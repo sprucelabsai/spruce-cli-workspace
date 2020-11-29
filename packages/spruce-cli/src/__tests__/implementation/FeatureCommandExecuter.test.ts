@@ -16,10 +16,6 @@ import AbstractSchemaTest from '../../test/AbstractSchemaTest'
 import testUtil from '../../utilities/test.utility'
 
 export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
-	protected static async beforeEach() {
-		await super.beforeEach()
-	}
-
 	@test()
 	protected static async canInstantiateExecuter() {
 		const executer = this.Executer('schema', 'create')
@@ -70,10 +66,10 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 			return {}
 		})
 
-		const promise = executer.execute()
-
 		assert.isFalse(emittedWillEvent)
 		assert.isFalse(emittedDidEvent)
+
+		const promise = executer.execute()
 
 		await this.waitForInput()
 

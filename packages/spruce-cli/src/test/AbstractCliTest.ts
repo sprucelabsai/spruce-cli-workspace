@@ -29,6 +29,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		this.cwd = this.freshTmpDir()
 		this.homeDir = this.freshTmpDir()
 
+		this.ui.reset()
 		this.ui.invocations = []
 		this.ui.setCursorPosition({ x: 0, y: 0 })
 	}
