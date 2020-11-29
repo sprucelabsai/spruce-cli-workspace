@@ -27,10 +27,4 @@ export default class TestReporterTest extends AbstractCliTest {
 			/call start/
 		)
 	}
-
-	@test.skip('terminal kit cannot clean itself up properly')
-	protected static async startRendersProgress() {
-		await this.reporter.start()
-		assert.doesInclude(this.ui.invocations, { command: 'renderProgressBar' })
-	}
 }

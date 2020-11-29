@@ -1,16 +1,12 @@
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import OnboardingStore from '../../stores/OnboardingStore'
 import AbstractCliTest from '../../test/AbstractCliTest'
 
 export default class OnboardingStoreTest extends AbstractCliTest {
 	private static store: OnboardingStore
-	private static storeDir: string
 
 	protected static async beforeEach() {
 		await super.beforeEach()
-
-		this.storeDir = diskUtil.createRandomTempDir()
 
 		const store = this.OnboardingStore()
 		this.store = store
@@ -18,8 +14,6 @@ export default class OnboardingStoreTest extends AbstractCliTest {
 
 	private static OnboardingStore() {
 		const store = this.Store('onboarding')
-
-		store.setConfigDir(this.storeDir)
 		return store
 	}
 
@@ -60,6 +54,15 @@ export default class OnboardingStoreTest extends AbstractCliTest {
 
 		const newStore = this.OnboardingStore()
 		assert.isEqual(newStore.getStage(), 'test.create')
+	}
+
+	@test()
+	protected static valuesSharedBetween2Instances() {
+		const store1 = this.OnboardingStore()
+		const store2 = this.OnboardingStore()
+
+		store1.setMode('immersive')
+		assert.isEqual(store2.getMode(), store1.getMode())
 	}
 
 	@test()

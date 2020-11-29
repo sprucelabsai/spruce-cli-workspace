@@ -5,6 +5,7 @@ import {
 	versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import featuresUtil from '../../features/feature.utilities'
 import FeatureCommandExecuter from '../../features/FeatureCommandExecuter'
 import {
 	FeatureActionResponse,
@@ -15,10 +16,6 @@ import AbstractSchemaTest from '../../test/AbstractSchemaTest'
 import testUtil from '../../utilities/test.utility'
 
 export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
-	protected static async beforeEach() {
-		await super.beforeEach()
-	}
-
 	@test()
 	protected static async canInstantiateExecuter() {
 		const executer = this.Executer('schema', 'create')
@@ -38,6 +35,51 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		await promise
 
 		await this.assertHealthySkillNamed('my-new-skill')
+	}
+
+	@test()
+	protected static async shouldEmitExecutionEvents() {
+		const executer = this.Executer('skill', 'create')
+
+		let emittedWillEvent = false
+		let willEventCommand = ''
+		let emittedDidEvent = false
+		let didEventCommand = ''
+
+		const emitter = this.Emitter()
+
+		void emitter.on('feature.will-execute', (payload) => {
+			emittedWillEvent = true
+			willEventCommand = featuresUtil.generateCommand(
+				payload.featureCode,
+				payload.actionCode
+			)
+			return {}
+		})
+
+		void emitter.on('feature.did-execute', (payload) => {
+			emittedDidEvent = true
+			didEventCommand = featuresUtil.generateCommand(
+				payload.featureCode,
+				payload.actionCode
+			)
+			return {}
+		})
+
+		assert.isFalse(emittedWillEvent)
+		assert.isFalse(emittedDidEvent)
+
+		const promise = executer.execute()
+
+		await this.waitForInput()
+
+		await this.ui.sendInput('My new skill')
+		await this.ui.sendInput('So great!')
+
+		await promise
+
+		assert.isEqual(willEventCommand, 'skill.create')
+		assert.isEqual(didEventCommand, 'skill.create')
 	}
 
 	@test()
@@ -385,6 +427,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 			actionCode,
 			featureInstaller,
 			term: this.ui,
+			emitter: this.Emitter(),
 		})
 
 		return executer

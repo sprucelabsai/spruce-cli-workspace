@@ -26,7 +26,12 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		const installer = this.FeatureInstaller()
 		const term = this.ui
 
-		this.attacher = new FeatureCommandAttacher(this.program, installer, term)
+		this.attacher = new FeatureCommandAttacher({
+			program: this.program,
+			featureInstaller: installer,
+			ui: term,
+			emitter: this.Emitter(),
+		})
 	}
 
 	@test()

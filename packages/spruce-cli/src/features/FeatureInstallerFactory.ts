@@ -48,10 +48,10 @@ export default class FeatureInstallerFactory {
 		serviceFactory: ServiceFactory
 		storeFactory: StoreFactory
 		featureInstaller?: FeatureInstaller
-		term: GraphicsInterface
+		ui: GraphicsInterface
 		emitter: GlobalEmitter
 	}): FeatureInstaller {
-		const { cwd, serviceFactory, storeFactory, term, emitter } = options
+		const { cwd, serviceFactory, storeFactory, ui, emitter } = options
 
 		// lazy load installer
 		const featureInstaller =
@@ -64,7 +64,7 @@ export default class FeatureInstallerFactory {
 				templates,
 				storeFactory,
 				featureInstaller,
-				term,
+				ui,
 				emitter,
 			})
 

@@ -1,20 +1,24 @@
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import ScriptPlayer from '../../features/onboard/ScriptPlayer'
 import AbstractCliTest from '../../test/AbstractCliTest'
 
 export default class OnboardingScriptPlayerTest extends AbstractCliTest {
 	private static player: ScriptPlayer
+	private static commandExecuterCommands: string[] = []
 
 	protected static async beforeEach() {
 		await super.beforeEach()
 
-		const storeDir = diskUtil.createRandomTempDir()
 		const store = this.Store('onboarding')
 
-		store.setConfigDir(storeDir)
-
-		this.player = new ScriptPlayer(this.ui, store)
+		this.commandExecuterCommands = []
+		this.player = new ScriptPlayer({
+			ui: this.ui,
+			onboardingStore: store,
+			commandExecuter: async (command: string) => {
+				this.commandExecuterCommands.push(command)
+			},
+		})
 	}
 
 	@test()
@@ -138,5 +142,17 @@ export default class OnboardingScriptPlayerTest extends AbstractCliTest {
 				assert.isEqual(mode, 'off')
 			},
 		])
+	}
+
+	@test()
+	protected static async canInvokeCommand() {
+		await this.player.playScript([
+			async (player) => {
+				await player.executeCommand('test.command')
+			},
+		])
+
+		assert.isLength(this.commandExecuterCommands, 1)
+		assert.isEqual(this.commandExecuterCommands[0], 'test.command')
 	}
 }

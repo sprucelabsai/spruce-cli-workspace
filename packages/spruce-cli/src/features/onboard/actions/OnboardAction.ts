@@ -1,9 +1,8 @@
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import onboardActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/onboardAction.schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
-import ScriptLoader from '../ScriptLoader'
+import OnboardFeature from '../OnboardFeature'
 
 export default class ListenAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.OnboardActionSchema> {
 	public name = 'onboard'
@@ -12,17 +11,12 @@ export default class ListenAction extends AbstractFeatureAction<SpruceSchemas.Sp
 	public async execute(
 		_options: SpruceSchemas.SpruceCli.v2020_07_22.OnboardAction
 	): Promise<FeatureActionResponse> {
-		const store = this.Store('onboarding')
+		const store = this.getParent().OnboardingStore()
 		const mode = store.getMode()
 
 		let response = {}
 
-		const scriptDir = diskUtil.resolvePath(__dirname, '../scripts')
-		const player = await ScriptLoader.LoadScripts({
-			ui: this.ui,
-			dir: scriptDir,
-			onboardingStore: store,
-		})
+		const player = await this.getParent().ScriptPlayer()
 
 		switch (mode) {
 			case 'short':
@@ -50,5 +44,9 @@ export default class ListenAction extends AbstractFeatureAction<SpruceSchemas.Sp
 		}
 
 		return response
+	}
+
+	private getParent(): OnboardFeature {
+		return this.parent as OnboardFeature
 	}
 }

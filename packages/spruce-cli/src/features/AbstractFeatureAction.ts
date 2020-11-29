@@ -56,7 +56,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 		this.storeFactory = options.storeFactory
 		this.serviceFactory = options.serviceFactory
 		this.featureInstaller = options.featureInstaller
-		this.ui = options.term
+		this.ui = options.ui
 		this.generatorFactory = options.generatorFactory
 	}
 

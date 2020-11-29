@@ -20,6 +20,7 @@ import { terminal } from 'terminal-kit'
 import { ProgressBarController } from 'terminal-kit/Terminal'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import SpruceError from '../errors/SpruceError'
+import featuresUtil from '../features/feature.utilities'
 import log from '../singletons/log'
 import {
 	ExecutionResults,
@@ -175,11 +176,10 @@ export default class TerminalInterface implements GraphicsInterface {
 			summaryLines.push('Nothing to report!')
 		}
 		this.renderSection({
-			headline: `${
-				results.featureCode === results.actionCode
-					? results.featureCode
-					: results.featureCode + '.' + results.actionCode
-			} summary`,
+			headline: `${featuresUtil.generateCommand(
+				results.featureCode,
+				results.actionCode
+			)} summary`,
 			lines: summaryLines,
 		})
 
