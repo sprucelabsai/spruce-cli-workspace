@@ -43,8 +43,8 @@ export default class OnboardFeature extends AbstractFeature {
 			ui: this.ui,
 			dir: this.scriptsDir,
 			onboardingStore: store,
-			commandExecuter: async (command: string) => {
-				debugger
+			commandExecuter: async (_command: string) => {
+				throw new Error('coming soon')
 			},
 		})
 

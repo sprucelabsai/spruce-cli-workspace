@@ -43,9 +43,7 @@ const script: Script = [
 				player.onboardingStore.reset()
 				break
 			default: {
-				const results = await player.executeCommand(stage)
-				console.log(results)
-				debugger
+				await player.executeCommand(stage as string)
 			}
 		}
 
