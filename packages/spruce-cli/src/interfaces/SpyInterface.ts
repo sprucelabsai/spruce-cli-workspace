@@ -157,7 +157,6 @@ export default class SpyInterface implements GraphicsInterface {
 		this.trackInvocation('prompt', definition)
 
 		if (this.promptResolver) {
-			debugger
 			throw new Error(
 				'Tried to double prompt. Try this.term.sendInput() before calling prompt next.'
 			)
