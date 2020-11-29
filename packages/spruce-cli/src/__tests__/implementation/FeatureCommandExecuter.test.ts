@@ -12,7 +12,6 @@ import {
 	FeatureCode,
 	FeatureInstallResponse,
 } from '../../features/features.types'
-import CliGlobalEmitter from '../../GlobalEmitter'
 import AbstractSchemaTest from '../../test/AbstractSchemaTest'
 import testUtil from '../../utilities/test.utility'
 
@@ -51,7 +50,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		let emittedDidEvent = false
 		let didEventCommand = ''
 
-		const emitter = CliGlobalEmitter.EmitterInstance()
+		const emitter = this.Emitter()
 
 		void emitter.on('feature.will-execute', (payload) => {
 			emittedWillEvent = true
@@ -432,7 +431,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 			actionCode,
 			featureInstaller,
 			term: this.ui,
-			emitter: CliGlobalEmitter.EmitterInstance(),
+			emitter: this.Emitter(),
 		})
 
 		return executer

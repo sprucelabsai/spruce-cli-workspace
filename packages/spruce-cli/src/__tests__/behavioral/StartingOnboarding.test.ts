@@ -1,5 +1,4 @@
 import { test, assert } from '@sprucelabs/test'
-import CliGlobalEmitter from '../../GlobalEmitter'
 import AbstractCliTest from '../../test/AbstractCliTest'
 import TestEmitter from '../../test/TestEmitter'
 
@@ -13,11 +12,9 @@ export default class StartingOnboardingTest extends AbstractCliTest {
 	@test()
 	protected static async addsCommandListeners() {
 		const testEmitter = TestEmitter.TestEmitter()
-		CliGlobalEmitter.setInstance(testEmitter)
 
-		await this.Cli()
+		await this.Cli({ emitter: testEmitter })
 
 		assert.isTrue(testEmitter.hasListeners('feature.will-execute'))
-		// assert.isTrue(testEmitter.hasListeners('feature.did-execute'))
 	}
 }

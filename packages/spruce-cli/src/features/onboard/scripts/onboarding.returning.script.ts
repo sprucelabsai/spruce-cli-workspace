@@ -42,8 +42,11 @@ const script: Script = [
 			case 'stop':
 				player.onboardingStore.reset()
 				break
-			default:
-				player.ui.renderLine('Coming soon...')
+			default: {
+				const results = await player.executeCommand(stage)
+				console.log(results)
+				debugger
+			}
 		}
 
 		return

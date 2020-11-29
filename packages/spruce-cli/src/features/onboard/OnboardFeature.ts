@@ -43,6 +43,9 @@ export default class OnboardFeature extends AbstractFeature {
 			ui: this.ui,
 			dir: this.scriptsDir,
 			onboardingStore: store,
+			commandExecuter: async (command: string) => {
+				debugger
+			},
 		})
 
 		return player

@@ -4,6 +4,8 @@ import ScriptPlayer from '../../features/onboard/ScriptPlayer'
 import AbstractCliTest from '../../test/AbstractCliTest'
 
 export default class OnboardingScriptLoaderTest extends AbstractCliTest {
+	private static commandExecuterCommands: string[] = []
+
 	@test()
 	protected static scripLoaderLoadScriptsFunction() {
 		assert.isFunction(ScriptLoader.LoadScripts)
@@ -20,6 +22,9 @@ export default class OnboardingScriptLoaderTest extends AbstractCliTest {
 			ui: this.ui,
 			dir: this.resolveTestPath('../support/scripts'),
 			onboardingStore: this.Store('onboarding'),
+			commandExecuter: async (command: string) => {
+				this.commandExecuterCommands.push(command)
+			},
 		})
 	}
 
@@ -43,5 +48,11 @@ export default class OnboardingScriptLoaderTest extends AbstractCliTest {
 			command: 'renderLine',
 			options: { message: 'the last script' },
 		})
+
+		assert.isLength(this.commandExecuterCommands, 1)
+		assert.isEqual(
+			this.commandExecuterCommands[0],
+			'first script command executed'
+		)
 	}
 }

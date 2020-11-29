@@ -67,16 +67,7 @@ type CliContract = typeof globalContract
 export type GlobalEmitter = MercuryEventEmitter<CliContract>
 
 export default class CliGlobalEmitter extends AbstractEventEmitter<CliContract> {
-	private static globalEmitter: GlobalEmitter
-
-	public static EmitterInstance() {
-		if (!this.globalEmitter) {
-			this.globalEmitter = new CliGlobalEmitter(globalContract) as GlobalEmitter
-		}
-		return this.globalEmitter
-	}
-
-	public static setInstance(instance: GlobalEmitter) {
-		this.globalEmitter = instance
+	public static Emitter() {
+		return new CliGlobalEmitter(globalContract) as GlobalEmitter
 	}
 }

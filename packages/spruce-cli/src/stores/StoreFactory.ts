@@ -16,29 +16,38 @@ export interface StoreMap {
 
 export type StoreCode = keyof StoreMap
 
+const storeMap = {
+	onboarding: OnboardingStore,
+	remote: RemoteStore,
+	schema: SchemaStore,
+	skill: SkillStore,
+	user: UserStore,
+}
+
 export default class StoreFactory {
 	private serviceFactory: ServiceFactory
 	private cwd: string
-	private storeMap = {
-		onboarding: OnboardingStore,
-		remote: RemoteStore,
-		schema: SchemaStore,
-		skill: SkillStore,
-		user: UserStore,
-	}
+	private homeDir: string
 
-	public constructor(options: { cwd: string; serviceFactory: ServiceFactory }) {
-		const { cwd, serviceFactory } = options
+	public constructor(options: {
+		cwd: string
+		serviceFactory: ServiceFactory
+		homeDir: string
+	}) {
+		const { cwd, serviceFactory, homeDir } = options
+
 		this.cwd = cwd
 		this.serviceFactory = serviceFactory
+		this.homeDir = homeDir
 	}
 
 	public Store<C extends StoreCode>(code: C, cwd?: string): StoreMap[C] {
 		const options: StoreOptions = {
 			cwd: cwd ?? this.cwd,
 			serviceFactory: this.serviceFactory,
+			homeDir: this.homeDir,
 		}
-		const store = new this.storeMap[code](options)
+		const store = new storeMap[code](options)
 
 		return store as StoreMap[C]
 	}

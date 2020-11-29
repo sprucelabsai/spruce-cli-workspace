@@ -1,5 +1,4 @@
-import osUtil from 'os'
-import Schema from '@sprucelabs/schema'
+import { SchemaEntityFactory, StaticSchemaEntity } from '@sprucelabs/schema'
 import { diskUtil, HASH_SPRUCE_DIR_NAME } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import onboardingSchema from '#spruce/schemas/spruceCli/v2020_07_22/onboarding.schema'
@@ -10,21 +9,30 @@ export interface OnboardingStoreSettings
 	extends LocalStoreSettings,
 		SpruceSchemas.SpruceCli.v2020_07_22.Onboarding {}
 
+type OnboardingSchema = SpruceSchemas.SpruceCli.v2020_07_22.OnboardingSchema
 export type OnboardingMode = OnboardingStoreSettings['mode']
 export type OnboardingStage = OnboardingStoreSettings['stage']
 
 export default class OnboardingStore extends AbstractLocalStore<OnboardingStoreSettings> {
-	public name = 'onboarding'
-	public schema = new Schema(onboardingSchema)
-
-	private configDir = diskUtil.resolvePath(
-		osUtil.homedir(),
-		HASH_SPRUCE_DIR_NAME
-	)
+	public readonly name = 'onboarding'
+	private static schemasByHome: Record<
+		string,
+		StaticSchemaEntity<OnboardingSchema>
+	> = {}
 
 	public constructor(options: StoreOptions) {
 		super(options)
 		this.load()
+	}
+
+	private get schema() {
+		if (!OnboardingStore.schemasByHome[this.homeDir]) {
+			OnboardingStore.schemasByHome[this.homeDir] = SchemaEntityFactory.Entity(
+				onboardingSchema
+			)
+		}
+
+		return OnboardingStore.schemasByHome[this.homeDir]
 	}
 
 	private save() {
@@ -52,11 +60,6 @@ export default class OnboardingStore extends AbstractLocalStore<OnboardingStoreS
 		this.save()
 	}
 
-	public setConfigDir(dir: string) {
-		this.configDir = dir
-		this.load()
-	}
-
 	public getStage() {
 		return this.schema.get('stage')
 	}
@@ -73,10 +76,11 @@ export default class OnboardingStore extends AbstractLocalStore<OnboardingStoreS
 	}
 
 	protected getConfigPath() {
-		const filePath = diskUtil.resolvePath(this.configDir, 'settings.json')
+		const home = diskUtil.resolvePath(this.homeDir, HASH_SPRUCE_DIR_NAME)
+		const filePath = diskUtil.resolvePath(home, 'settings.json')
 
 		return {
-			directory: this.configDir,
+			directory: home,
 			file: filePath,
 		}
 	}

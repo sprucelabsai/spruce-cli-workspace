@@ -15,16 +15,26 @@ export interface CallbackPlayer {
 	ui: GraphicsInterface
 	redirect(toScriptKey: string): ScriptRedirect
 	onboardingStore: OnboardingStore
+	executeCommand: CommandExecuter
 }
+
+export type CommandExecuter = (command: string) => Promise<void>
 
 export default class ScriptPlayer {
 	private ui: GraphicsInterface
 	private scriptsByKey: Record<string, Script> = {}
 	private onboardingStore: OnboardingStore
 
-	public constructor(ui: GraphicsInterface, onboardingStore: OnboardingStore) {
-		this.ui = ui
-		this.onboardingStore = onboardingStore
+	private commandExecuter: CommandExecuter
+
+	public constructor(options: {
+		ui: GraphicsInterface
+		onboardingStore: OnboardingStore
+		commandExecuter: CommandExecuter
+	}) {
+		this.ui = options.ui
+		this.onboardingStore = options.onboardingStore
+		this.commandExecuter = options.commandExecuter
 	}
 
 	public async playScriptWithKey(key: string) {
@@ -75,6 +85,7 @@ export default class ScriptPlayer {
 			ui: this.ui,
 			redirect: ScriptPlayer.redirect,
 			onboardingStore: this.onboardingStore,
+			executeCommand: this.commandExecuter,
 		}
 	}
 

@@ -11,16 +11,29 @@ import { FeatureCode } from '../features/features.types'
 import FeatureFixture, {
 	FeatureFixtureOptions,
 } from '../fixtures/FeatureFixture'
-import CliGlobalEmitter from '../GlobalEmitter'
+import CliGlobalEmitter, { GlobalEmitter } from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
 import ServiceFactory, { Service, ServiceMap } from '../services/ServiceFactory'
 import StoreFactory, { StoreCode, StoreMap } from '../stores/StoreFactory'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static cliRoot = pathUtil.join(__dirname, '..')
-	private static _ui: SpyInterface
+	protected static homeDir: string
 
-	protected static freshCwd() {
+	private static _ui: SpyInterface
+	private static emitter: GlobalEmitter
+
+	protected static async beforeEach() {
+		await super.beforeEach()
+
+		this.cwd = this.freshTmpDir()
+		this.homeDir = this.freshTmpDir()
+
+		this.ui.invocations = []
+		this.ui.setCursorPosition({ x: 0, y: 0 })
+	}
+
+	protected static freshTmpDir() {
 		const tmpDirectory = pathUtil.join(os.tmpdir(), 'spruce-cli', uuid.v4())
 		fs.ensureDirSync(tmpDirectory)
 
@@ -35,6 +48,13 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return this._ui
 	}
 
+	protected static Emitter() {
+		if (!this.emitter) {
+			this.emitter = CliGlobalEmitter.Emitter()
+		}
+		return this.emitter
+	}
+
 	protected static resolveTestPath(...pathAfterTestDirsAndFiles: string[]) {
 		return pathUtil.join(
 			this.cliRoot,
@@ -42,14 +62,6 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			'testDirsAndFiles',
 			...pathAfterTestDirsAndFiles
 		)
-	}
-
-	protected static async beforeEach() {
-		await super.beforeEach()
-		this.cwd = this.freshCwd()
-
-		this.ui.invocations = []
-		this.ui.setCursorPosition({ x: 0, y: 0 })
 	}
 
 	protected static async afterEach() {
@@ -72,6 +84,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static async Cli(options?: CliBootOptions) {
 		return this.FeatureFixture().Cli({
 			cwd: this.cwd,
+			homeDir: this.homeDir,
 			...(options ?? {}),
 		})
 	}
@@ -109,7 +122,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static FeatureInstaller() {
 		const serviceFactory = this.ServiceFactory()
 		const storeFactory = this.StoreFactory()
-		const emitter = CliGlobalEmitter.EmitterInstance()
+		const emitter = this.Emitter()
 
 		return FeatureInstallerFactory.WithAllFeatures({
 			cwd: this.cwd,
@@ -122,7 +135,11 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static StoreFactory() {
 		const serviceFactory = this.ServiceFactory()
-		return new StoreFactory({ cwd: this.cwd, serviceFactory })
+		return new StoreFactory({
+			cwd: this.cwd,
+			serviceFactory,
+			homeDir: this.homeDir,
+		})
 	}
 
 	protected static Store<C extends StoreCode>(

@@ -1,3 +1,4 @@
+import osUtil from 'os'
 import {
 	Mercury,
 	IMercuryConnectOptions,
@@ -31,8 +32,10 @@ export interface CliInterface {
 
 export interface CliBootOptions {
 	cwd?: string
+	homeDir?: string
 	program?: CommanderStatic['program']
 	graphicsInterface?: GraphicsInterface
+	emitter?: GlobalEmitter
 }
 
 async function login(storeFactory: StoreFactory, mercury: Mercury) {
@@ -139,9 +142,13 @@ export default class Cli implements CliInterface {
 
 		const mercury = new Mercury()
 		const serviceFactory = new ServiceFactory({ mercury })
-		const storeFactory = new StoreFactory({ cwd, serviceFactory })
+		const storeFactory = new StoreFactory({
+			cwd,
+			serviceFactory,
+			homeDir: options?.homeDir ?? osUtil.homedir(),
+		})
 		const ui = options?.graphicsInterface ?? new TerminalInterface(cwd)
-		const emitter = CliGlobalEmitter.EmitterInstance()
+		const emitter = options?.emitter ?? CliGlobalEmitter.Emitter()
 
 		const featureInstaller = FeatureInstallerFactory.WithAllFeatures({
 			cwd,
