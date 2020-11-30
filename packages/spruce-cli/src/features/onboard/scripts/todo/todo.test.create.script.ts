@@ -9,7 +9,7 @@ const script: Script = [
 	async (player) => {
 		await player.ui.waitForEnter('')
 		player.ui.renderLine(
-			'Ok, last thing, this is the end of the onboarding for now. More to come, 2021. Turning of onboarding. Please check out developer.spruce.ai and play around. Thanks! 💪'
+			'Ok, last thing, this is the end of the onboarding for now. More to come, 2021. Turning off onboarding. Please check out developer.spruce.ai and play around. Thanks! 💪'
 		)
 		player.ui.renderLine('')
 		await player.ui.waitForEnter('')
