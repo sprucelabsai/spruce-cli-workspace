@@ -44,7 +44,11 @@ export default class OnboardFeature extends AbstractFeature {
 			dir: this.scriptsDir,
 			onboardingStore: store,
 			commandExecuter: async (_command: string) => {
-				throw new Error('coming soon')
+				throw new Error(
+					"I can't run commands for you yet, but will be able to soon. For now run `" +
+						_command +
+						'` manually.'
+				)
 			},
 		})
 

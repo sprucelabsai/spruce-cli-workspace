@@ -26,7 +26,7 @@ const script: Script = [
 					} as const,
 					{
 						label: `Execute \`${stage}\``,
-						value: 'letMePass',
+						value: 'executeCommand',
 					} as const,
 				],
 			},
@@ -44,6 +44,8 @@ const script: Script = [
 			case 'letMePass':
 				await player.ui.waitForEnter('As you were!')
 				break
+			default:
+				throw new Error('Coming soon! For now you have to manually run!')
 		}
 	},
 ]

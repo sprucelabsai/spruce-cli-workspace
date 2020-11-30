@@ -13,14 +13,14 @@ const script: Script = [
 	'A familiar voice echos...',
 	'"Hey! It\'s Sprucebot again! 🌲🤖"',
 	async (player) => {
-		const line = `This is so much fun! I love playng both the narrator and a charactor!`
+		const line = `This is so much fun! I love playng both the narrator and a character!`
 		player.ui.renderLine(line, [GraphicsTextEffect.Italic])
 		player.ui.renderLine('')
 	},
-	'Anyway... "Since all good software starts with a test, lets start there!"',
-	'"Go ahead and create a new directory anywhere on your computer and run"',
+	'Anyway... "Since all good software starts with a test, lets create one!"',
+	'"Go ahead and create a new directory anywhere on your computer, `cd` into it, and run"',
 	async (player) => {
-		renderCommand(player.ui, 'spruce error.create')
+		renderCommand(player.ui, 'spruce test.create')
 	},
 
 	'"Tip! If you ever got lost, just run"',
@@ -29,7 +29,7 @@ const script: Script = [
 	},
 	'"and I\'ll get you back on track."',
 	async (player) => {
-		await player.ui.waitForEnter('"Ok, lets do it! See you there!"')
+		await player.ui.waitForEnter('"Lets do it!"')
 
 		player.onboardingStore.setMode('short')
 		player.onboardingStore.setStage(
