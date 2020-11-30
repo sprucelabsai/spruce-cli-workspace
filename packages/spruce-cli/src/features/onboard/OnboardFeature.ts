@@ -63,6 +63,8 @@ export default class OnboardFeature extends AbstractFeature {
 
 		if (store.getMode() !== 'off') {
 			await this.assertExpectedCommand(payload, store)
+			const player = await this.ScriptPlayer()
+			await player.playScriptWithKey('todo.test.create')
 		}
 	}
 
