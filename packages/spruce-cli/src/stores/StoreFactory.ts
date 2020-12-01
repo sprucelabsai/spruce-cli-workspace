@@ -1,44 +1,41 @@
 import ServiceFactory from '../services/ServiceFactory'
-import { StoreOptions } from './AbstractStore'
+import { StoreOptions, ApiClientFactory } from './AbstractStore'
+import EventStore from './EventStore'
 import OnboardingStore from './OnboardingStore'
-import RemoteStore from './RemoteStore'
 import SchemaStore from './SchemaStore'
-import SkillStore from './SkillStore'
-import UserStore from './UserStore'
 
 export interface StoreMap {
 	onboarding: OnboardingStore
-	remote: RemoteStore
 	schema: SchemaStore
-	skill: SkillStore
-	user: UserStore
+	event: EventStore
 }
 
 export type StoreCode = keyof StoreMap
 
 const storeMap = {
 	onboarding: OnboardingStore,
-	remote: RemoteStore,
 	schema: SchemaStore,
-	skill: SkillStore,
-	user: UserStore,
+	event: EventStore,
 }
 
 export default class StoreFactory {
 	private serviceFactory: ServiceFactory
 	private cwd: string
 	private homeDir: string
+	private apiClientFactory: ApiClientFactory
 
 	public constructor(options: {
 		cwd: string
 		serviceFactory: ServiceFactory
 		homeDir: string
+		apiClientFactory: ApiClientFactory
 	}) {
-		const { cwd, serviceFactory, homeDir } = options
+		const { cwd, serviceFactory, homeDir, apiClientFactory } = options
 
 		this.cwd = cwd
 		this.serviceFactory = serviceFactory
 		this.homeDir = homeDir
+		this.apiClientFactory = apiClientFactory
 	}
 
 	public Store<C extends StoreCode>(code: C, cwd?: string): StoreMap[C] {
@@ -46,6 +43,7 @@ export default class StoreFactory {
 			cwd: cwd ?? this.cwd,
 			serviceFactory: this.serviceFactory,
 			homeDir: this.homeDir,
+			apiClientFactory: this.apiClientFactory,
 		}
 		const store = new storeMap[code](options)
 

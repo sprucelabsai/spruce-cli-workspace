@@ -21,7 +21,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	}
 
 	@test()
-	protected static async hasSyncSchemaFunction() {
+	protected static async hasSyncSchemaAction() {
 		const cli = await this.Cli()
 		assert.isFunction(cli.getFeature('schema').Action('sync').execute)
 	}

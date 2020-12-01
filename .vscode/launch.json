@@ -4,7 +4,7 @@
 		{
 			"type": "node",
 			"request": "attach",
-			"name": "cli.attach",
+			"name": "attach.cli",
 			"port": 5200,
 			"restart": true,
 			"timeout": 10000
@@ -12,10 +12,13 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "cli.debug",
+			"name": "debug.cli",
 			"protocol": "inspector",
 			"runtimeExecutable": "yarn",
-			"runtimeArgs": ["run", "local"],
+			"runtimeArgs": [
+				"run",
+				"local"
+			],
 			"console": "integratedTerminal",
 			"port": 5200,
 			"cwd": "${workspaceFolder}/packages/spruce-cli",

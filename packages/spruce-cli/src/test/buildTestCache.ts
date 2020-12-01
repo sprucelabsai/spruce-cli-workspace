@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import { Mercury } from '@sprucelabs/mercury'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import FeatureFixture from '../fixtures/FeatureFixture'
 import TerminalInterface from '../interfaces/TerminalInterface'
@@ -29,8 +28,7 @@ async function run() {
 
 		const importCacheDir = testUtil.resolveCacheDir('spruce-cli-import-cache')
 
-		const mercury = new Mercury()
-		const serviceFactory = new ServiceFactory({ mercury, importCacheDir })
+		const serviceFactory = new ServiceFactory({ importCacheDir })
 		const cwd = testUtil.resolveCacheDir(cacheKey)
 
 		const fixture = new FeatureFixture({

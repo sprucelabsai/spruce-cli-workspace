@@ -1,4 +1,3 @@
-import { Mercury } from '@sprucelabs/mercury'
 import { test, assert } from '@sprucelabs/test'
 import ServiceFactory, { Service } from '../../services/ServiceFactory'
 import AbstractCliTest from '../../test/AbstractCliTest'
@@ -7,7 +6,7 @@ export default class ServiceFactoryTest extends AbstractCliTest {
 	private static factory: ServiceFactory
 
 	protected static async beforeEach() {
-		this.factory = new ServiceFactory({ mercury: new Mercury() })
+		this.factory = new ServiceFactory()
 		await super.beforeEach()
 	}
 
