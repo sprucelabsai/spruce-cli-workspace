@@ -151,8 +151,6 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				: ''
 		}`
 
-		debugger
-
 		// Handle repeating text from original message by remove it
 		return `${fullMessage}${
 			this.originalError &&

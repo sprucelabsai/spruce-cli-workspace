@@ -1,4 +1,4 @@
 export default class PinService {
 	public constructor() {}
-	public async requestPin(phone: string) {}
+	public async requestPin(_phone: string) {}
 }

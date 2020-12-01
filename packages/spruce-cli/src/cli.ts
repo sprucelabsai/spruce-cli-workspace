@@ -1,4 +1,5 @@
 import osUtil from 'os'
+import { MercuryClientFactory } from '@sprucelabs/mercury-client'
 import {
 	diskUtil,
 	HealthCheckResults,
@@ -18,7 +19,6 @@ import log from './singletons/log'
 import { ApiClient } from './stores/AbstractStore'
 import StoreFactory from './stores/StoreFactory'
 import { GraphicsInterface } from './types/cli.types'
-import { MercuryClientFactory } from '@sprucelabs/mercury-client'
 
 export interface CliInterface {
 	installFeatures: FeatureInstaller['install']
