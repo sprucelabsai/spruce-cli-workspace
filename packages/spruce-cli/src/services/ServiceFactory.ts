@@ -1,4 +1,3 @@
-import { Mercury } from '@sprucelabs/mercury'
 import BuildService from './BuildService'
 import CommandService from './CommandService'
 import ImportService from './ImportService'
@@ -29,18 +28,16 @@ export interface ServiceProvider {
 	Service<S extends Service>(type: S, cwd?: string): ServiceMap[S]
 }
 export default class ServiceFactory {
-	private mercury: Mercury
 	private importCacheDir?: string
 
-	public constructor(options: { mercury: Mercury; importCacheDir?: string }) {
-		this.mercury = options.mercury
+	public constructor(options: { importCacheDir?: string }) {
 		this.importCacheDir = options.importCacheDir
 	}
 
 	public Service<S extends Service>(cwd: string, type: S): ServiceMap[S] {
 		switch (type) {
 			case 'pin':
-				return new PinService(this.mercury) as ServiceMap[S]
+				return new PinService() as ServiceMap[S]
 			case 'pkg':
 				return new PkgService(cwd) as ServiceMap[S]
 

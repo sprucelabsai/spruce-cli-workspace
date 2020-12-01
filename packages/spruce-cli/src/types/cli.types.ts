@@ -119,11 +119,6 @@ export interface GraphicsInterface {
 	clearBelowCursor(): void
 }
 
-export enum AuthedAs {
-	User = 'user',
-	Skill = 'skill',
-}
-
 export type GeneratedFile = SpruceSchemas.SpruceCli.v2020_07_22.GeneratedFile
 export type GeneratedDir = SpruceSchemas.SpruceCli.v2020_07_22.GeneratedDir
 

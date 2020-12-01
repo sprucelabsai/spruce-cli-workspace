@@ -1,10 +1,5 @@
 import osUtil from 'os'
 import {
-	Mercury,
-	IMercuryConnectOptions,
-	MercuryAuth,
-} from '@sprucelabs/mercury'
-import {
 	diskUtil,
 	HealthCheckResults,
 	HEALTH_DIVIDER,
@@ -21,7 +16,7 @@ import TerminalInterface from './interfaces/TerminalInterface'
 import ServiceFactory from './services/ServiceFactory'
 import log from './singletons/log'
 import StoreFactory from './stores/StoreFactory'
-import { AuthedAs, GraphicsInterface } from './types/cli.types'
+import { GraphicsInterface } from './types/cli.types'
 
 export interface CliInterface {
 	installFeatures: FeatureInstaller['install']
@@ -36,38 +31,6 @@ export interface CliBootOptions {
 	program?: CommanderStatic['program']
 	graphicsInterface?: GraphicsInterface
 	emitter?: GlobalEmitter
-}
-
-async function login(storeFactory: StoreFactory, mercury: Mercury) {
-	const remoteStore = storeFactory.Store('remote')
-	const remoteUrl = remoteStore.getRemoteUrl()
-
-	const userStore = storeFactory.Store('user')
-	const loggedInUser = userStore.getLoggedInUser()
-	const skillStore = storeFactory.Store('skill')
-	const loggedInSkill = skillStore.getLoggedInSkill()
-
-	let creds: MercuryAuth | undefined
-	const authType = remoteStore.authType
-
-	switch (authType) {
-		case AuthedAs.User:
-			creds = loggedInUser && { token: loggedInUser.token }
-			break
-		case AuthedAs.Skill:
-			creds = loggedInSkill && {
-				id: loggedInSkill.id,
-				apiKey: loggedInSkill.apiKey,
-			}
-			break
-	}
-
-	const connectOptions: IMercuryConnectOptions = {
-		spruceApiUrl: remoteUrl,
-		credentials: creds,
-	}
-
-	await mercury.connect(connectOptions)
 }
 
 export default class Cli implements CliInterface {
@@ -140,8 +103,7 @@ export default class Cli implements CliInterface {
 
 		let cwd = options?.cwd ?? process.cwd()
 
-		const mercury = new Mercury()
-		const serviceFactory = new ServiceFactory({ mercury })
+		const serviceFactory = new ServiceFactory({})
 		const storeFactory = new StoreFactory({
 			cwd,
 			serviceFactory,
@@ -177,12 +139,6 @@ export default class Cli implements CliInterface {
 			program.action((command, args) => {
 				throw new SpruceError({ code: 'INVALID_COMMAND', args: args || [] })
 			})
-		}
-
-		const isInstalled = await featureInstaller.isInstalled('skill')
-
-		if (isInstalled) {
-			await login(storeFactory, mercury)
 		}
 
 		const cli = new Cli(cwd, featureInstaller, serviceFactory, emitter)

@@ -55,7 +55,6 @@
 		"@sprucelabs/error": "^4.0.1",
 		"@sprucelabs/jest-json-reporter": "^5.1.2",
 		"@sprucelabs/log": "^10.2.294",
-		"@sprucelabs/mercury": "^10.5.72",
 		"@sprucelabs/mercury-event-emitter": "^14.1.0",
 		"@sprucelabs/mercury-types": "^14.0.3",
 		"@sprucelabs/schema": "^18.0.4",

@@ -3,12 +3,10 @@ import { StoreOptions } from './AbstractStore'
 import EventStore from './EventStore'
 import OnboardingStore from './OnboardingStore'
 import SchemaStore from './SchemaStore'
-import UserStore from './UserStore'
 
 export interface StoreMap {
 	onboarding: OnboardingStore
 	schema: SchemaStore
-	user: UserStore
 	event: EventStore
 }
 
@@ -17,7 +15,6 @@ export type StoreCode = keyof StoreMap
 const storeMap = {
 	onboarding: OnboardingStore,
 	schema: SchemaStore,
-	user: UserStore,
 	event: EventStore,
 }
 
