@@ -15,8 +15,10 @@ import CliGlobalEmitter, { GlobalEmitter } from './GlobalEmitter'
 import TerminalInterface from './interfaces/TerminalInterface'
 import ServiceFactory from './services/ServiceFactory'
 import log from './singletons/log'
+import { ApiClient } from './stores/AbstractStore'
 import StoreFactory from './stores/StoreFactory'
 import { GraphicsInterface } from './types/cli.types'
+import { MercuryClientFactory } from '@sprucelabs/mercury-client'
 
 export interface CliInterface {
 	installFeatures: FeatureInstaller['install']
@@ -103,11 +105,19 @@ export default class Cli implements CliInterface {
 
 		let cwd = options?.cwd ?? process.cwd()
 
+		let apiClient: ApiClient | undefined
 		const serviceFactory = new ServiceFactory({})
 		const storeFactory = new StoreFactory({
 			cwd,
 			serviceFactory,
 			homeDir: options?.homeDir ?? osUtil.homedir(),
+			apiClientFactory: async () => {
+				if (!apiClient) {
+					apiClient = await MercuryClientFactory.Client()
+				}
+
+				return apiClient
+			},
 		})
 		const ui = options?.graphicsInterface ?? new TerminalInterface(cwd)
 		const emitter = options?.emitter ?? CliGlobalEmitter.Emitter()

@@ -16,9 +16,13 @@ export default class EventStoreTest extends AbstractCliTest {
 	@test()
 	protected static async fetchesEventContracts() {
 		const results = await this.Store('event').fetchEventContracts()
-		const { contract, errors } = results
+		const { contracts, errors } = results
 
-		validateEventContract(contract)
+		assert.isAbove(contracts.length, 0)
+
+		for (const contract of contracts) {
+			validateEventContract(contract)
+		}
 		assert.isEqual(errors.length, 0)
 	}
 }

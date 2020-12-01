@@ -1,5 +1,5 @@
 import ServiceFactory from '../services/ServiceFactory'
-import { StoreOptions } from './AbstractStore'
+import { StoreOptions, ApiClientFactory } from './AbstractStore'
 import EventStore from './EventStore'
 import OnboardingStore from './OnboardingStore'
 import SchemaStore from './SchemaStore'
@@ -22,17 +22,20 @@ export default class StoreFactory {
 	private serviceFactory: ServiceFactory
 	private cwd: string
 	private homeDir: string
+	private apiClientFactory: ApiClientFactory
 
 	public constructor(options: {
 		cwd: string
 		serviceFactory: ServiceFactory
 		homeDir: string
+		apiClientFactory: ApiClientFactory
 	}) {
-		const { cwd, serviceFactory, homeDir } = options
+		const { cwd, serviceFactory, homeDir, apiClientFactory } = options
 
 		this.cwd = cwd
 		this.serviceFactory = serviceFactory
 		this.homeDir = homeDir
+		this.apiClientFactory = apiClientFactory
 	}
 
 	public Store<C extends StoreCode>(code: C, cwd?: string): StoreMap[C] {
@@ -40,6 +43,7 @@ export default class StoreFactory {
 			cwd: cwd ?? this.cwd,
 			serviceFactory: this.serviceFactory,
 			homeDir: this.homeDir,
+			apiClientFactory: this.apiClientFactory,
 		}
 		const store = new storeMap[code](options)
 

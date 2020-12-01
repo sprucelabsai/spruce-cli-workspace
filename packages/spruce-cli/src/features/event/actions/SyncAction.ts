@@ -11,6 +11,7 @@ export default class SyncAction extends AbstractFeatureAction<SpruceSchemas.Spru
 		options: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventAction
 	): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
+		console.log(normalizedOptions)
 
 		return {}
 	}

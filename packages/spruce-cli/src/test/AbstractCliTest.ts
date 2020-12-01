@@ -1,6 +1,6 @@
 import os from 'os'
 import pathUtil from 'path'
-import { Mercury } from '@sprucelabs/mercury'
+import { MercuryClientFactory } from '@sprucelabs/mercury-client'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractSpruceTest, { assert } from '@sprucelabs/test'
 import fs from 'fs-extra'
@@ -14,11 +14,15 @@ import FeatureFixture, {
 import CliGlobalEmitter, { GlobalEmitter } from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
 import ServiceFactory, { Service, ServiceMap } from '../services/ServiceFactory'
+import { ApiClient } from '../stores/AbstractStore'
 import StoreFactory, { StoreCode, StoreMap } from '../stores/StoreFactory'
+
+const TEST_HOST = 'https://sandbox.mercury.spruce.ai'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static cliRoot = pathUtil.join(__dirname, '..')
 	protected static homeDir: string
+	protected static apiClient: ApiClient
 
 	private static _ui: SpyInterface
 	private static emitter: GlobalEmitter
@@ -68,6 +72,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static async afterEach() {
 		await super.afterEach()
 
+		await this.apiClient?.disconnect()
+
 		if (this._ui) {
 			if (this._ui.isWaitingForInput()) {
 				throw new Error(
@@ -104,7 +110,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static ServiceFactory(options?: { importCacheDir?: string }) {
-		return new ServiceFactory({ mercury: new Mercury(), ...(options || {}) })
+		return new ServiceFactory({ ...(options || {}) })
 	}
 
 	protected static FeatureFixture(options?: Partial<FeatureFixtureOptions>) {
@@ -136,10 +142,20 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static StoreFactory() {
 		const serviceFactory = this.ServiceFactory()
+
 		return new StoreFactory({
 			cwd: this.cwd,
 			serviceFactory,
 			homeDir: this.homeDir,
+			apiClientFactory: async () => {
+				if (!this.apiClient) {
+					this.apiClient = await MercuryClientFactory.Client({
+						host: TEST_HOST,
+					})
+				}
+
+				return this.apiClient
+			},
 		})
 	}
 

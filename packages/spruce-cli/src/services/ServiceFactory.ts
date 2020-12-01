@@ -30,8 +30,8 @@ export interface ServiceProvider {
 export default class ServiceFactory {
 	private importCacheDir?: string
 
-	public constructor(options: { importCacheDir?: string }) {
-		this.importCacheDir = options.importCacheDir
+	public constructor(options?: { importCacheDir?: string }) {
+		this.importCacheDir = options?.importCacheDir
 	}
 
 	public Service<S extends Service>(cwd: string, type: S): ServiceMap[S] {

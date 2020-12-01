@@ -1,11 +1,8 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { AuthedAs } from '../types/cli.types'
 import AbstractStore from './AbstractStore'
 import { StoreOptions } from './AbstractStore'
 
-export interface LocalStoreSettings {
-	authType: AuthedAs
-}
+export interface LocalStoreSettings {}
 
 export default abstract class AbstractLocalStore<
 	Settings extends LocalStoreSettings
