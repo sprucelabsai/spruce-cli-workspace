@@ -76,15 +76,23 @@ async function run() {
 		const delta = now - start
 
 		await term.startLoading(
-			`Building ${remaining} skills (${durationUtil.msToFriendly(delta)})...`
+			`Building ${remaining} skill${dropInS(
+				remaining
+			)} (${durationUtil.msToFriendly(delta)})...`
 		)
 	}, 1000)
 
-	await term.startLoading(`Building ${remaining} remaining skills...`)
+	await term.startLoading(
+		`Building ${remaining} remaining skill${dropInS(remaining)}...`
+	)
 	await Promise.all(promises)
 	await term.stopLoading()
 	term.clear()
 	clearInterval(interval)
+}
+
+function dropInS(remaining: number) {
+	return remaining === 1 ? '' : 's'
 }
 
 void run().catch((err) => {

@@ -7,8 +7,14 @@ export default class EventFeature extends AbstractFeature {
 	public nameReadable = 'Event'
 	public description =
 		'Plug into the Mercury XP and start creating experiences!'
-	public dependencies: FeatureDependency[] = [
-		{ code: 'skill', isRequired: true },
+	public dependencies: FeatureDependency[] = []
+	public packageDependencies = [
+		{
+			name: '@sprucelabs/mercury-client',
+		},
+		{
+			name: '@sprucelabs/mercury-types',
+		},
 	]
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 

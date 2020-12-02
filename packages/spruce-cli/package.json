@@ -52,17 +52,17 @@
 	"dependencies": {
 		"@babel/runtime": "^7.12.5",
 		"@jest/reporters": "^26.6.2",
-		"@sprucelabs/error": "^4.0.1",
-		"@sprucelabs/jest-json-reporter": "^5.1.2",
-		"@sprucelabs/mercury-client": "^14.1.0",
-		"@sprucelabs/log": "^10.2.295",
-		"@sprucelabs/mercury": "^10.5.72",
-		"@sprucelabs/mercury-event-emitter": "^14.1.0",
-		"@sprucelabs/mercury-types": "^14.0.3",
-		"@sprucelabs/schema": "^18.0.4",
-		"@sprucelabs/spruce-core-schemas": "^22.0.3",
-		"@sprucelabs/spruce-skill-utils": "^12.0.1",
-		"@sprucelabs/spruce-templates": "^11.12.17",
+		"@sprucelabs/error": ">=4.0.1",
+		"@sprucelabs/jest-json-reporter": ">=5.1.2",
+		"@sprucelabs/log": ">=10.2.295",
+		"@sprucelabs/mercury": ">=10.5.72",
+		"@sprucelabs/mercury-client": ">=14.3.2",
+		"@sprucelabs/mercury-event-emitter": ">=14.1.0",
+		"@sprucelabs/mercury-types": ">=14.1.1",
+		"@sprucelabs/schema": ">=18.0.4",
+		"@sprucelabs/spruce-core-schemas": ">=22.0.3",
+		"@sprucelabs/spruce-skill-utils": ">=12.0.1",
+		"@sprucelabs/spruce-templates": ">=11.12.17",
 		"blessed": "^0.1.81",
 		"blessed-contrib": "^4.8.20",
 		"cfonts": "^2.8.6",
@@ -184,6 +184,18 @@
 			{
 				"code": "error"
 			}
+		],
+		"eventsInNodeModule": [
+			{
+				"code": "node",
+				"options": {
+					"name": "event test skill",
+					"description": ""
+				}
+			},
+			{
+				"code": "event"
+			}
 		]
 	},
 	"jest": {
@@ -226,7 +238,8 @@
 						"createsValidListener": "C13",
 						"canGetLatestVersionBasedOnDir": "C16",
 						"canBuildSkill": "C23",
-						"canWatchAndBuild": "C24"
+						"canWatchAndBuild": "C24",
+						"fetchesEventContracts": "F55"
 					}
 				}
 			]

@@ -39,6 +39,10 @@ export default class NodeFeature<
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public async beforePackageInstall() {
+		if (!diskUtil.doesDirExist(this.cwd)) {
+			diskUtil.createDir(this.cwd)
+		}
+
 		await this.Service('command').execute('yarn init -y')
 
 		const nodeGenerator = this.Generator('node')

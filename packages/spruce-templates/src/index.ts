@@ -190,6 +190,13 @@ export const templates = {
 		return template(options)
 	},
 
+	eventsContract(options: { eventContract: string }) {
+		const template = templateImportUtil.getTemplate(
+			'events/events.contract.ts.hbs'
+		)
+		return template(options)
+	},
+
 	async directoryTemplate<K extends DirectoryTemplateCode>(options: {
 		kind: K
 		context: DirectoryTemplateContextMap[K]

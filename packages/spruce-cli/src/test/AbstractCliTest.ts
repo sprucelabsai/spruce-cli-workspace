@@ -10,14 +10,13 @@ import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
 import { FeatureCode } from '../features/features.types'
 import FeatureFixture, {
 	FeatureFixtureOptions,
+	TEST_HOST,
 } from '../fixtures/FeatureFixture'
 import CliGlobalEmitter, { GlobalEmitter } from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
 import ServiceFactory, { Service, ServiceMap } from '../services/ServiceFactory'
 import { ApiClient } from '../stores/AbstractStore'
 import StoreFactory, { StoreCode, StoreMap } from '../stores/StoreFactory'
-
-const TEST_HOST = 'https://sandbox.mercury.spruce.ai'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static cliRoot = pathUtil.join(__dirname, '..')

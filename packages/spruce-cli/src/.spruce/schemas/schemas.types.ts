@@ -526,6 +526,27 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
+		
+		interface SyncErrorContract {
+			
+		}
+
+		interface SyncErrorContractSchema extends SpruceSchema.Schema {
+			id: 'syncErrorContract',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'sync error contract',
+			    fields: {
+			    }
+		}
+
+		type SyncErrorContractEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorContractSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
 		/** Sync schema fields so you can use schemas! */
 		interface SyncSchemaFieldsAction {
 			
@@ -746,20 +767,30 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		
-		interface SyncErrorContract {
+		interface SyncEventAction {
 			
+				/** Contract destination. Where I will generate event contract. */
+				'contractDestinationFile'?: string| undefined | null
 		}
 
-		interface SyncErrorContractSchema extends SpruceSchema.Schema {
-			id: 'syncErrorContract',
+		interface SyncEventActionSchema extends SpruceSchema.Schema {
+			id: 'syncEventAction',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
-			name: 'sync error contract',
+			name: 'sync event action',
 			    fields: {
+			            /** Contract destination. Where I will generate event contract. */
+			            'contractDestinationFile': {
+			                label: 'Contract destination',
+			                type: 'text',
+			                hint: 'Where I will generate event contract.',
+			                defaultValue: "#spruce/events/events.contract.ts",
+			                options: undefined
+			            },
 			    }
 		}
 
-		type SyncErrorContractEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorContractSchema>
+		type SyncEventActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncEventActionSchema>
 
 	}
 
@@ -1008,8 +1039,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		/** Keep your errors types in sync with your builders */
-		interface SyncErrorAction {
+		/** Create the builder to a fresh new schema! */
+		interface CreateSchemaAction {
 			
 				/** Field types directory. Where field types and interfaces will be generated. */
 				'fieldTypesDestinationDir'?: string| undefined | null
@@ -1039,20 +1070,30 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
 				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
 				'generateStandaloneTypesFile'?: boolean| undefined | null
-				/** Error class destination. Where I'll save your new Error class file? */
-				'errorClassDestinationDir': string
-				/** . Where I should look for your error builders? */
-				'errorLookupDir'?: string| undefined | null
-				/** Types destination dir. This is where error options and type information will be written */
-				'errorTypesDestinationDir'?: string| undefined | null
+				/** Schema builder destination directory. Where I'll save the new schema builder. */
+				'schemaBuilderDestinationDir'?: string| undefined | null
+				/** Builder function. The function that builds this schema */
+				'builderFunction'?: string| undefined | null
+				/** Sync after creation. This will ensure types and schemas are in sync after you create your builder. */
+				'syncAfterCreate'?: boolean| undefined | null
+				/** Version. Set a version yourself instead of letting me generate one for you */
+				'version'?: string| undefined | null
+				/** Readable name. The name people will read */
+				'nameReadable': string
+				/** Pascal case name. PascalCase of the name */
+				'namePascal'?: string| undefined | null
+				/** Camel case name. camelCase version of the name */
+				'nameCamel': string
+				/** Description. Describe a bit more here */
+				'description'?: string| undefined | null
 		}
 
-		interface SyncErrorActionSchema extends SpruceSchema.Schema {
-			id: 'syncErrorAction',
+		interface CreateSchemaActionSchema extends SpruceSchema.Schema {
+			id: 'createSchemaAction',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
-			name: 'Sync error action',
-			description: 'Keep your errors types in sync with your builders',
+			name: 'Create schema',
+			description: 'Create the builder to a fresh new schema!',
 			    fields: {
 			            /** Field types directory. Where field types and interfaces will be generated. */
 			            'fieldTypesDestinationDir': {
@@ -1176,35 +1217,74 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: false,
 			                options: undefined
 			            },
-			            /** Error class destination. Where I'll save your new Error class file? */
-			            'errorClassDestinationDir': {
-			                label: 'Error class destination',
+			            /** Schema builder destination directory. Where I'll save the new schema builder. */
+			            'schemaBuilderDestinationDir': {
+			                label: 'Schema builder destination directory',
+			                type: 'text',
+			                hint: 'Where I\'ll save the new schema builder.',
+			                defaultValue: "src/schemas",
+			                options: undefined
+			            },
+			            /** Builder function. The function that builds this schema */
+			            'builderFunction': {
+			                label: 'Builder function',
 			                type: 'text',
 			                isPrivate: true,
+			                hint: 'The function that builds this schema',
+			                defaultValue: "buildSchema",
+			                options: undefined
+			            },
+			            /** Sync after creation. This will ensure types and schemas are in sync after you create your builder. */
+			            'syncAfterCreate': {
+			                label: 'Sync after creation',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'This will ensure types and schemas are in sync after you create your builder.',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Version. Set a version yourself instead of letting me generate one for you */
+			            'version': {
+			                label: 'Version',
+			                type: 'text',
+			                isPrivate: true,
+			                hint: 'Set a version yourself instead of letting me generate one for you',
+			                options: undefined
+			            },
+			            /** Readable name. The name people will read */
+			            'nameReadable': {
+			                label: 'Readable name',
+			                type: 'text',
 			                isRequired: true,
-			                hint: 'Where I\'ll save your new Error class file?',
-			                defaultValue: "src/errors",
+			                hint: 'The name people will read',
 			                options: undefined
 			            },
-			            /** . Where I should look for your error builders? */
-			            'errorLookupDir': {
+			            /** Pascal case name. PascalCase of the name */
+			            'namePascal': {
+			                label: 'Pascal case name',
 			                type: 'text',
-			                hint: 'Where I should look for your error builders?',
-			                defaultValue: "src/errors",
+			                hint: 'PascalCase of the name',
 			                options: undefined
 			            },
-			            /** Types destination dir. This is where error options and type information will be written */
-			            'errorTypesDestinationDir': {
-			                label: 'Types destination dir',
+			            /** Camel case name. camelCase version of the name */
+			            'nameCamel': {
+			                label: 'Camel case name',
 			                type: 'text',
-			                hint: 'This is where error options and type information will be written',
-			                defaultValue: "#spruce/errors",
+			                isRequired: true,
+			                hint: 'camelCase version of the name',
+			                options: undefined
+			            },
+			            /** Description. Describe a bit more here */
+			            'description': {
+			                label: 'Description',
+			                type: 'text',
+			                hint: 'Describe a bit more here',
 			                options: undefined
 			            },
 			    }
 		}
 
-		type SyncErrorActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorActionSchema>
+		type CreateSchemaActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaActionSchema>
 
 	}
 
@@ -1464,8 +1544,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		/** Create the builder to a fresh new schema! */
-		interface CreateSchemaAction {
+		/** Keep your errors types in sync with your builders */
+		interface SyncErrorAction {
 			
 				/** Field types directory. Where field types and interfaces will be generated. */
 				'fieldTypesDestinationDir'?: string| undefined | null
@@ -1495,30 +1575,20 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
 				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
 				'generateStandaloneTypesFile'?: boolean| undefined | null
-				/** Schema builder destination directory. Where I'll save the new schema builder. */
-				'schemaBuilderDestinationDir'?: string| undefined | null
-				/** Builder function. The function that builds this schema */
-				'builderFunction'?: string| undefined | null
-				/** Sync after creation. This will ensure types and schemas are in sync after you create your builder. */
-				'syncAfterCreate'?: boolean| undefined | null
-				/** Version. Set a version yourself instead of letting me generate one for you */
-				'version'?: string| undefined | null
-				/** Readable name. The name people will read */
-				'nameReadable': string
-				/** Pascal case name. PascalCase of the name */
-				'namePascal'?: string| undefined | null
-				/** Camel case name. camelCase version of the name */
-				'nameCamel': string
-				/** Description. Describe a bit more here */
-				'description'?: string| undefined | null
+				/** Error class destination. Where I'll save your new Error class file? */
+				'errorClassDestinationDir': string
+				/** . Where I should look for your error builders? */
+				'errorLookupDir'?: string| undefined | null
+				/** Types destination dir. This is where error options and type information will be written */
+				'errorTypesDestinationDir'?: string| undefined | null
 		}
 
-		interface CreateSchemaActionSchema extends SpruceSchema.Schema {
-			id: 'createSchemaAction',
+		interface SyncErrorActionSchema extends SpruceSchema.Schema {
+			id: 'syncErrorAction',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
-			name: 'Create schema',
-			description: 'Create the builder to a fresh new schema!',
+			name: 'Sync error action',
+			description: 'Keep your errors types in sync with your builders',
 			    fields: {
 			            /** Field types directory. Where field types and interfaces will be generated. */
 			            'fieldTypesDestinationDir': {
@@ -1642,74 +1712,35 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: false,
 			                options: undefined
 			            },
-			            /** Schema builder destination directory. Where I'll save the new schema builder. */
-			            'schemaBuilderDestinationDir': {
-			                label: 'Schema builder destination directory',
-			                type: 'text',
-			                hint: 'Where I\'ll save the new schema builder.',
-			                defaultValue: "src/schemas",
-			                options: undefined
-			            },
-			            /** Builder function. The function that builds this schema */
-			            'builderFunction': {
-			                label: 'Builder function',
+			            /** Error class destination. Where I'll save your new Error class file? */
+			            'errorClassDestinationDir': {
+			                label: 'Error class destination',
 			                type: 'text',
 			                isPrivate: true,
-			                hint: 'The function that builds this schema',
-			                defaultValue: "buildSchema",
-			                options: undefined
-			            },
-			            /** Sync after creation. This will ensure types and schemas are in sync after you create your builder. */
-			            'syncAfterCreate': {
-			                label: 'Sync after creation',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'This will ensure types and schemas are in sync after you create your builder.',
-			                defaultValue: true,
-			                options: undefined
-			            },
-			            /** Version. Set a version yourself instead of letting me generate one for you */
-			            'version': {
-			                label: 'Version',
-			                type: 'text',
-			                isPrivate: true,
-			                hint: 'Set a version yourself instead of letting me generate one for you',
-			                options: undefined
-			            },
-			            /** Readable name. The name people will read */
-			            'nameReadable': {
-			                label: 'Readable name',
-			                type: 'text',
 			                isRequired: true,
-			                hint: 'The name people will read',
+			                hint: 'Where I\'ll save your new Error class file?',
+			                defaultValue: "src/errors",
 			                options: undefined
 			            },
-			            /** Pascal case name. PascalCase of the name */
-			            'namePascal': {
-			                label: 'Pascal case name',
+			            /** . Where I should look for your error builders? */
+			            'errorLookupDir': {
 			                type: 'text',
-			                hint: 'PascalCase of the name',
+			                hint: 'Where I should look for your error builders?',
+			                defaultValue: "src/errors",
 			                options: undefined
 			            },
-			            /** Camel case name. camelCase version of the name */
-			            'nameCamel': {
-			                label: 'Camel case name',
+			            /** Types destination dir. This is where error options and type information will be written */
+			            'errorTypesDestinationDir': {
+			                label: 'Types destination dir',
 			                type: 'text',
-			                isRequired: true,
-			                hint: 'camelCase version of the name',
-			                options: undefined
-			            },
-			            /** Description. Describe a bit more here */
-			            'description': {
-			                label: 'Description',
-			                type: 'text',
-			                hint: 'Describe a bit more here',
+			                hint: 'This is where error options and type information will be written',
+			                defaultValue: "#spruce/errors",
 			                options: undefined
 			            },
 			    }
 		}
 
-		type CreateSchemaActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaActionSchema>
+		type SyncErrorActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorActionSchema>
 
 	}
 

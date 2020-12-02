@@ -4,9 +4,10 @@ import eventListenActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/liste
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
-export default class ListenAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.ListenEventActionSchema> {
+type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.ListenEventActionSchema
+export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 	public name = 'listen'
-	public optionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventActionSchema = eventListenActionSchema
+	public optionsSchema: OptionsSchema = eventListenActionSchema
 
 	public async execute(
 		options: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventAction

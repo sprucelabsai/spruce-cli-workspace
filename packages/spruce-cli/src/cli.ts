@@ -33,6 +33,7 @@ export interface CliBootOptions {
 	program?: CommanderStatic['program']
 	graphicsInterface?: GraphicsInterface
 	emitter?: GlobalEmitter
+	apiHost?: string
 }
 
 export default class Cli implements CliInterface {
@@ -113,7 +114,9 @@ export default class Cli implements CliInterface {
 			homeDir: options?.homeDir ?? osUtil.homedir(),
 			apiClientFactory: async () => {
 				if (!apiClient) {
-					apiClient = await MercuryClientFactory.Client()
+					apiClient = await MercuryClientFactory.Client({
+						host: options?.apiHost,
+					})
 				}
 
 				return apiClient

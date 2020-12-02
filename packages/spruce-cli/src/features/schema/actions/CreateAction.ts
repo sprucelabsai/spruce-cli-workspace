@@ -7,13 +7,13 @@ import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncS
 import SpruceError from '../../../errors/SpruceError'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 
-export default class CreateAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaActionSchema> {
+type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaActionSchema
+type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaAction
+export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public name = 'create'
 	public optionsSchema = createSchemaActionSchema
 
-	public async execute(
-		options: SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaAction
-	) {
+	public async execute(options: Options) {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
 		const {

@@ -23,6 +23,8 @@ export interface FeatureFixtureOptions {
 	shouldGenerateCacheIfMissing?: boolean
 }
 
+export const TEST_HOST = 'https://sandbox.mercury.spruce.ai'
+
 export default class FeatureFixture implements ServiceProvider {
 	private cwd: string
 	private installedSkills: Record<string, CachedCli> = {}
@@ -58,6 +60,7 @@ export default class FeatureFixture implements ServiceProvider {
 		const cli = await Cli.Boot({
 			cwd: this.cwd,
 			graphicsInterface: this.term,
+			apiHost: TEST_HOST,
 			...(options ?? {}),
 		})
 
@@ -123,11 +126,13 @@ export default class FeatureFixture implements ServiceProvider {
 				throw new Error(
 					`Cached skill not found, add\n\n"${cacheKey}":${JSON.stringify(
 						features
-					)}\n\nto your package.json and run\n\n\`yarn test.cache\``
+					)}\n\nto your package.json and run\n\n\`yarn cache.test\``
 				)
 			}
 
-			await this.copyCachedSkillAndTrackItsDir(cacheKey)
+			if (isCached) {
+				await this.copyCachedSkillToCwd(cacheKey)
+			}
 		}
 
 		const cli = await this.Cli(bootOptions)
@@ -139,6 +144,7 @@ export default class FeatureFixture implements ServiceProvider {
 		}
 
 		if (cacheKey && testUtil.isCacheEnabled()) {
+			!isCached && this.addCwdToCacheTracker(cacheKey)
 			this.cacheCli(cacheKey, cli)
 		}
 
@@ -152,7 +158,7 @@ export default class FeatureFixture implements ServiceProvider {
 		// await command.execute(`yarn link @sprucelabs/spruce-skill-utils`)
 	}
 
-	private async copyCachedSkillAndTrackItsDir(cacheKey: string) {
+	private async copyCachedSkillToCwd(cacheKey: string) {
 		let isCached = this.doesCacheExist(cacheKey)
 
 		if (isCached) {
@@ -160,8 +166,6 @@ export default class FeatureFixture implements ServiceProvider {
 			await diskUtil.copyDir(settings[cacheKey], this.cwd)
 
 			FeatureFixture.dirsToDelete.push(this.cwd)
-		} else {
-			this.addCwdToCacheTracker(cacheKey)
 		}
 	}
 
@@ -174,9 +178,13 @@ export default class FeatureFixture implements ServiceProvider {
 
 		if (!settings[cacheKey]) {
 			const settingsFile = this.getTestCacheTrackerFilePath()
-
 			settings[cacheKey] = this.cwd
-			diskUtil.createDir(pathUtil.dirname(settingsFile))
+
+			const settingsFolder = pathUtil.dirname(settingsFile)
+
+			!diskUtil.doesDirExist(settingsFolder) &&
+				diskUtil.createDir(settingsFolder)
+
 			diskUtil.writeFile(settingsFile, JSON.stringify(settings, null, 2))
 		}
 		return settings
