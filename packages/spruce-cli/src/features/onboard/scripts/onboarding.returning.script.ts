@@ -42,9 +42,9 @@ const script: Script = [
 			case 'stop':
 				player.onboardingStore.reset()
 				break
-			default: {
+			case 'run':
 				await player.executeCommand(stage as string)
-			}
+				break
 		}
 
 		return
