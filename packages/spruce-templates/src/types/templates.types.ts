@@ -1,3 +1,4 @@
+import { EventContract } from '@sprucelabs/mercury-types'
 import { SchemaTemplateItem } from '@sprucelabs/schema'
 
 export interface AutoLoaderClassTemplateItem {
@@ -120,4 +121,10 @@ export interface EventListenerOptions {
 	eventName: string
 	eventNamespace: string
 	nameConst: string
+}
+
+export interface EventContractTemplateItem extends EventContract {
+	namePascal: string
+	nameCamel: string
+	namespace: string
 }

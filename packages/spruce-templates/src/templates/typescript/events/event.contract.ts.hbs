@@ -1,6 +1,12 @@
 import { buildEventContract } from '@sprucelabs/mercury-types'
 
-const eventsContract = buildEventContract({{{ eventContract }}})
-export default eventsContract
+const {{nameCamel}}EventContract = buildEventContract({
+    eventSignatures: {
+        {{#each eventSignatures}}
+        '{{@key}}': {}
+        {{/each}}
+    }
+})
+export default {{nameCamel}}EventContract
 
-export type EventsContract = typeof eventsContract
+export type {{namePascal}}EventContract = typeof {{nameCamel}}EventContract

@@ -38,6 +38,9 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 			testUtil.assertsFileByNameInGeneratedFiles(file, results.files ?? [])
 		}
 
+		await this.Service('command').execute(`code ${this.cwd}`)
+		debugger
+
 		await this.validateActionResponseFiles(results)
 	}
 }

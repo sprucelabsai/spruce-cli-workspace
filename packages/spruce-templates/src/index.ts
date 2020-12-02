@@ -26,6 +26,7 @@ import {
 	ErrorTemplateItem,
 	TestOptions,
 	EventListenerOptions,
+	EventContractTemplateItem,
 } from './types/templates.types'
 import DirectoryTemplateUtility from './utilities/DirectoryTemplateUtility'
 import importExtractorUtil from './utilities/importExtractor.utility'
@@ -178,6 +179,7 @@ export const templates = {
 		)
 		return template(options)
 	},
+
 	fieldClassMap(options: { fieldTemplateItems: FieldTemplateItem[] }) {
 		const template = templateImportUtil.getTemplate(
 			'schemas/fields/fieldClassMap.ts.hbs'
@@ -190,11 +192,11 @@ export const templates = {
 		return template(options)
 	},
 
-	eventContract(options: { eventContract: string }) {
+	eventContract(contract: EventContractTemplateItem) {
 		const template = templateImportUtil.getTemplate(
 			'events/event.contract.ts.hbs'
 		)
-		return template(options)
+		return template(contract)
 	},
 
 	async directoryTemplate<K extends DirectoryTemplateCode>(options: {

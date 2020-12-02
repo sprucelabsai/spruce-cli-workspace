@@ -1,6 +1,7 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventAction.schema'
+import EventTemplateItemBuilder from '../../../templateItemBuilders/EventTemplateItemBuilder'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -32,10 +33,14 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			}
 		}
 
+		const itemBuilder = new EventTemplateItemBuilder()
+		const templateItems = itemBuilder.generateTemplateItems(
+			contractResults.contracts
+		)
 		const generator = this.Generator('event')
 		const files = await generator.generateContracts(resolvedDestination, {
 			...normalizedOptions,
-			contracts: contractResults.contracts,
+			templateItems,
 		})
 
 		return {

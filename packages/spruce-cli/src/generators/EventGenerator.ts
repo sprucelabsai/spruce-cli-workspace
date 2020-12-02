@@ -1,7 +1,9 @@
 import pathUtil from 'path'
-import { EventContract, eventContractUtil } from '@sprucelabs/mercury-types'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
-import { EventListenerOptions } from '@sprucelabs/spruce-templates'
+import {
+	EventContractTemplateItem,
+	EventListenerOptions,
+} from '@sprucelabs/spruce-templates'
 import { GeneratedFile } from '../types/cli.types'
 import AbstractGenerator from './AbstractGenerator'
 
@@ -9,30 +11,15 @@ export default class EventGenerator extends AbstractGenerator {
 	public async generateContracts(
 		destinationDir: string,
 		options: {
-			contracts: EventContract[]
+			templateItems: EventContractTemplateItem[]
 		}
 	) {
-		const { contracts } = options
+		const { templateItems } = options
 
 		const generated: Promise<GeneratedFile>[] = []
 
-		for (const contract of contracts) {
-			const signatures = eventContractUtil.getNamedEventSignatures(contract)
-			for (const namedSig of signatures) {
-				const destination = diskUtil.resolvePath(
-					destinationDir,
-					namesUtil.toCamel(namedSig.eventNameWithOptionalNamespace) +
-						'.contract.ts'
-				)
-
-				generated.push(
-					this.generateContract(destination, {
-						eventSignatures: {
-							[namedSig.eventNameWithOptionalNamespace]: namedSig.signature,
-						},
-					})
-				)
-			}
+		for (const item of templateItems) {
+			generated.push(this.generateContract(destinationDir, item))
 		}
 
 		const all = await Promise.all(generated)
@@ -41,17 +28,19 @@ export default class EventGenerator extends AbstractGenerator {
 	}
 
 	private async generateContract(
-		destinationFile: string,
-		contract: EventContract
+		destinationDir: string,
+		templateItem: EventContractTemplateItem
 	): Promise<GeneratedFile> {
-		const eventsContractContents = this.templates.eventContract({
-			eventContract: JSON.stringify(contract),
-		})
+		const destinationFile = diskUtil.resolvePath(
+			destinationDir,
+			`${templateItem.nameCamel}.contract.ts`
+		)
+		const eventsContractContents = this.templates.eventContract(templateItem)
 
 		const results = await this.writeFileIfChangedMixinResults(
 			destinationFile,
 			eventsContractContents,
-			`The event contract for ${contract}`
+			`The event contract for ${templateItem}`
 		)
 
 		return results[0]
