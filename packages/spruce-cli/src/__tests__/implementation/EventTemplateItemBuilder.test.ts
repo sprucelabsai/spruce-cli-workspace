@@ -1,35 +1,63 @@
 import { EventContract } from '@sprucelabs/mercury-types'
+import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import { EventContractTemplateItem } from '@sprucelabs/spruce-templates'
 import { test, assert } from '@sprucelabs/test'
 import EventTemplateItemBuilder from '../../templateItemBuilders/EventTemplateItemBuilder'
 import AbstractCliTest from '../../test/AbstractCliTest'
 
-const didBookContract = {
+const didBookContract: EventContract = {
 	eventSignatures: {
 		'did-book': {},
 	},
 }
 
-const didBookTemplateItem = {
+const contractWith2Signatures: EventContract = {
+	eventSignatures: {
+		'did-book': {},
+		'will-book': {},
+	},
+}
+
+const contractWith2NamespacedSignatures: EventContract = {
+	eventSignatures: {
+		'appointments.did-book': {},
+		'appointments.will-book': {},
+	},
+}
+
+const didBookTemplateItem: EventContractTemplateItem = {
 	namePascal: 'DidBook',
 	nameCamel: 'didBook',
+	namespace: CORE_NAMESPACE,
 	eventSignatures: {
 		'did-book': {},
 	},
 }
 
-const willBookTemplateItem = {
+const willBookTemplateItem: EventContractTemplateItem = {
 	namePascal: 'WillBook',
 	nameCamel: 'willBook',
+	namespace: CORE_NAMESPACE,
 	eventSignatures: {
 		'will-book': {},
 	},
 }
 
-const contractWith2Signatures = {
+const didBookWithNamespaceTemplateItem: EventContractTemplateItem = {
+	namePascal: 'DidBook',
+	nameCamel: 'didBook',
+	namespace: 'appointments',
 	eventSignatures: {
-		'did-book': {},
-		'will-book': {},
+		'appointments.did-book': {},
+	},
+}
+
+const willBookWithNamespaceTemplateItem: EventContractTemplateItem = {
+	namePascal: 'WillBook',
+	nameCamel: 'willBook',
+	namespace: 'appointments',
+	eventSignatures: {
+		'appointments.will-book': {},
 	},
 }
 
@@ -74,6 +102,11 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 			didBookTemplateItem,
 			willBookTemplateItem,
 		]
+	)
+	@test(
+		'turns 1 contract with 2 namespaced event signatures to 2 template items',
+		[contractWith2NamespacedSignatures],
+		[didBookWithNamespaceTemplateItem, willBookWithNamespaceTemplateItem]
 	)
 	protected static generateItems(
 		contracts: EventContract[],

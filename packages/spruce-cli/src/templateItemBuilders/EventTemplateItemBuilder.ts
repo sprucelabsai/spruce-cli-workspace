@@ -1,5 +1,5 @@
 import { EventContract, eventContractUtil } from '@sprucelabs/mercury-types'
-import { namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { CORE_NAMESPACE, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { EventContractTemplateItem } from '@sprucelabs/spruce-templates'
 
 export default class EventTemplateItemBuilder {
@@ -24,9 +24,9 @@ export default class EventTemplateItemBuilder {
 
 		for (const namedSig of namedSignatures) {
 			const item: EventContractTemplateItem = {
-				nameCamel: namesUtil.toCamel(namedSig.eventNameWithOptionalNamespace),
-				namePascal: namesUtil.toPascal(namedSig.eventNameWithOptionalNamespace),
-				namespace: 'test',
+				nameCamel: namesUtil.toCamel(namedSig.eventName),
+				namePascal: namesUtil.toPascal(namedSig.eventName),
+				namespace: namedSig.eventNamespace ?? CORE_NAMESPACE,
 				eventSignatures: {
 					[namedSig.eventNameWithOptionalNamespace]: namedSig.signature,
 				},

@@ -1,3 +1,5 @@
+import pathUtil from 'path'
+import { CORE_NAMESPACE, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractEventTest from '../../../test/AbstractEventTest'
 import testUtil from '../../../utilities/test.utility'
@@ -35,11 +37,20 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		const filesToCheck = ['whoAmI.contract.ts', 'getEventContracts.contract.ts']
 
 		for (const file of filesToCheck) {
-			testUtil.assertsFileByNameInGeneratedFiles(file, results.files ?? [])
+			const match = testUtil.assertsFileByNameInGeneratedFiles(
+				file,
+				results.files ?? []
+			)
+			assert.doesInclude(
+				match,
+				`events${pathUtil.sep}${namesUtil.toCamel(CORE_NAMESPACE)}${
+					pathUtil.sep
+				}`
+			)
 		}
 
-		await this.Service('command').execute(`code ${this.cwd}`)
-		debugger
+		// await this.Service('command').execute(`code ${this.cwd}`)
+		// debugger
 
 		await this.validateActionResponseFiles(results)
 	}

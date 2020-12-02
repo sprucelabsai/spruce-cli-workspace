@@ -33,6 +33,7 @@ export default class EventGenerator extends AbstractGenerator {
 	): Promise<GeneratedFile> {
 		const destinationFile = diskUtil.resolvePath(
 			destinationDir,
+			namesUtil.toCamel(templateItem.namespace),
 			`${templateItem.nameCamel}.contract.ts`
 		)
 		const eventsContractContents = this.templates.eventContract(templateItem)
