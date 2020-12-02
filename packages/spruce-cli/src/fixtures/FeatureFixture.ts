@@ -8,6 +8,7 @@ import ServiceFactory, {
 	ServiceMap,
 } from '../services/ServiceFactory'
 import log from '../singletons/log'
+import { ApiClientFactory } from '../stores/AbstractStore'
 import { GraphicsInterface } from '../types/cli.types'
 import testUtil from '../utilities/test.utility'
 
@@ -21,9 +22,8 @@ export interface FeatureFixtureOptions {
 	serviceFactory: ServiceFactory
 	ui: GraphicsInterface
 	shouldGenerateCacheIfMissing?: boolean
+	apiClientFactory: ApiClientFactory
 }
-
-export const TEST_HOST = 'https://sandbox.mercury.spruce.ai'
 
 export default class FeatureFixture implements ServiceProvider {
 	private cwd: string
@@ -33,12 +33,14 @@ export default class FeatureFixture implements ServiceProvider {
 	private static dirsToDelete: string[] = []
 	private term: GraphicsInterface
 	private generateCacheIfMissing = false
+	private apiClientFactory: ApiClientFactory
 
 	public constructor(options: FeatureFixtureOptions) {
 		this.cwd = options.cwd
 		this.serviceFactory = options.serviceFactory
 		this.term = options.ui
 		this.generateCacheIfMissing = !!options.shouldGenerateCacheIfMissing
+		this.apiClientFactory = options.apiClientFactory
 	}
 
 	public static deleteOldSkillDirs() {
@@ -60,7 +62,7 @@ export default class FeatureFixture implements ServiceProvider {
 		const cli = await Cli.Boot({
 			cwd: this.cwd,
 			graphicsInterface: this.term,
-			apiHost: TEST_HOST,
+			apiClientFactory: this.apiClientFactory,
 			...(options ?? {}),
 		})
 

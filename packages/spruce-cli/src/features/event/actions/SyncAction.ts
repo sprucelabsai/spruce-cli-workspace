@@ -14,11 +14,11 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
-		const { contractDestinationFile } = normalizedOptions
+		const { contractDestinationDir } = normalizedOptions
 
 		const resolvedDestination = diskUtil.resolvePath(
 			this.cwd,
-			contractDestinationFile
+			contractDestinationDir
 		)
 
 		this.ui.startLoading('Pulling contracts...')
@@ -33,7 +33,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 
 		const generator = this.Generator('event')
-		const files = await generator.generateContract(resolvedDestination, {
+		const files = await generator.generateContracts(resolvedDestination, {
 			...normalizedOptions,
 			contracts: contractResults.contracts,
 		})

@@ -9,12 +9,12 @@ const syncEventActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncEventAction
 	namespace: 'SpruceCli',
 	name: 'sync event action',
 	    fields: {
-	            /** Contract destination. Where I will generate event contract. */
-	            'contractDestinationFile': {
+	            /** Contract destination. Where I will generate event contracts. */
+	            'contractDestinationDir': {
 	                label: 'Contract destination',
 	                type: 'text',
-	                hint: 'Where I will generate event contract.',
-	                defaultValue: "#spruce/events/events.contract.ts",
+	                hint: 'Where I will generate event contracts.',
+	                defaultValue: "#spruce/events",
 	                options: undefined
 	            },
 	    }

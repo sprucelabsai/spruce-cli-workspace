@@ -1,5 +1,4 @@
 import { test, assert } from '@sprucelabs/test'
-import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractEventTest from '../../../test/AbstractEventTest'
 import testUtil from '../../../utilities/test.utility'
 
@@ -32,19 +31,13 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		const results = await cli.getFeature('event').Action('sync').execute({})
 
 		assert.isFalsy(results.errors)
-		testUtil.assertsFileByNameInGeneratedFiles(
-			'events.contract.ts',
-			results.files ?? []
-		)
 
-		await this.validateFiles(results)
-	}
+		const filesToCheck = ['whoAmI.contract.ts', 'getEventContracts.contract.ts']
 
-	private static async validateFiles(results: FeatureActionResponse) {
-		const checker = this.Service('typeChecker')
+		for (const file of filesToCheck) {
+			testUtil.assertsFileByNameInGeneratedFiles(file, results.files ?? [])
+		}
 
-		await Promise.all(
-			(results.files ?? []).map((file) => checker.check(file.path))
-		)
+		await this.validateActionResponseFiles(results)
 	}
 }

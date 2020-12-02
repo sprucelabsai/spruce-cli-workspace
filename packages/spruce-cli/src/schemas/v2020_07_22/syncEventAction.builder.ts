@@ -5,11 +5,11 @@ export default buildSchema({
 	name: 'sync event action',
 	description: '',
 	fields: {
-		contractDestinationFile: {
+		contractDestinationDir: {
 			type: 'text',
 			label: 'Contract destination',
-			hint: 'Where I will generate event contract.',
-			defaultValue: '#spruce/events/events.contract.ts',
+			hint: 'Where I will generate event contracts.',
+			defaultValue: '#spruce/events',
 		},
 	},
 })

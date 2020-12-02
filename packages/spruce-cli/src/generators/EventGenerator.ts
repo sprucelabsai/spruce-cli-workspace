@@ -1,29 +1,60 @@
 import pathUtil from 'path'
 import { EventContract, eventContractUtil } from '@sprucelabs/mercury-types'
-import { namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { EventListenerOptions } from '@sprucelabs/spruce-templates'
+import { GeneratedFile } from '../types/cli.types'
 import AbstractGenerator from './AbstractGenerator'
 
 export default class EventGenerator extends AbstractGenerator {
-	public async generateContract(
-		resolvedDestination: string,
+	public async generateContracts(
+		destinationDir: string,
 		options: {
 			contracts: EventContract[]
 		}
 	) {
-		const eventContract = eventContractUtil.unifyContracts(options.contracts)
+		const { contracts } = options
 
-		const eventsContractContents = this.templates.eventsContract({
-			eventContract: JSON.stringify(eventContract),
+		const generated: Promise<GeneratedFile>[] = []
+
+		for (const contract of contracts) {
+			const signatures = eventContractUtil.getNamedEventSignatures(contract)
+			for (const namedSig of signatures) {
+				const destination = diskUtil.resolvePath(
+					destinationDir,
+					namesUtil.toCamel(namedSig.eventNameWithOptionalNamespace) +
+						'.contract.ts'
+				)
+
+				generated.push(
+					this.generateContract(destination, {
+						eventSignatures: {
+							[namedSig.eventNameWithOptionalNamespace]: namedSig.signature,
+						},
+					})
+				)
+			}
+		}
+
+		const all = await Promise.all(generated)
+
+		return all
+	}
+
+	private async generateContract(
+		destinationFile: string,
+		contract: EventContract
+	): Promise<GeneratedFile> {
+		const eventsContractContents = this.templates.eventContract({
+			eventContract: JSON.stringify(contract),
 		})
 
 		const results = await this.writeFileIfChangedMixinResults(
-			resolvedDestination,
+			destinationFile,
 			eventsContractContents,
-			`The event contract for communicating with Mercury.`
+			`The event contract for ${contract}`
 		)
 
-		return results
+		return results[0]
 	}
 
 	public async generateListener(

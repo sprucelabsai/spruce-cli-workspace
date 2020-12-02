@@ -72,10 +72,7 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 			results.files ?? []
 		)
 
-		const typeChecker = this.Service('typeChecker')
-		for (const file of results.files ?? []) {
-			await typeChecker.check(file.path)
-		}
+		await this.validateActionResponseFiles(results)
 	}
 
 	@test()
@@ -99,10 +96,7 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 			results.files ?? []
 		)
 
-		const typeChecker = this.Service('typeChecker')
-		for (const file of results.files ?? []) {
-			await typeChecker.check(file.path)
-		}
+		await this.validateActionResponseFiles(results)
 
 		const cli = await this.Cli()
 		const health = await cli.checkHealth()

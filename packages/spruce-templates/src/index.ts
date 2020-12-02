@@ -190,9 +190,9 @@ export const templates = {
 		return template(options)
 	},
 
-	eventsContract(options: { eventContract: string }) {
+	eventContract(options: { eventContract: string }) {
 		const template = templateImportUtil.getTemplate(
-			'events/events.contract.ts.hbs'
+			'events/event.contract.ts.hbs'
 		)
 		return template(options)
 	},

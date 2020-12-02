@@ -157,9 +157,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		classContents = diskUtil.readFile(errorClassFile)
 		assert.doesNotInclude(classContents, /NESTED_SCHEMA/)
 
-		for (const generated of syncResults.files ?? []) {
-			await typeChecker.check(generated.path)
-		}
+		await this.validateActionResponseFiles(syncResults)
 
 		const parentSchema = testUtil.assertsFileByNameInGeneratedFiles(
 			'good.schema.ts',

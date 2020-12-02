@@ -7,6 +7,7 @@ import {
 } from '@sprucelabs/spruce-skill-utils'
 import { Command, CommanderStatic } from 'commander'
 import './addons/filePrompt.addon'
+import eventsContract, { EventsContract } from '#spruce/events/events.contract'
 import SpruceError from './errors/SpruceError'
 import FeatureCommandAttacher from './features/FeatureCommandAttacher'
 import FeatureInstaller from './features/FeatureInstaller'
@@ -16,7 +17,7 @@ import CliGlobalEmitter, { GlobalEmitter } from './GlobalEmitter'
 import TerminalInterface from './interfaces/TerminalInterface'
 import ServiceFactory from './services/ServiceFactory'
 import log from './singletons/log'
-import { ApiClient } from './stores/AbstractStore'
+import { ApiClient, ApiClientFactory } from './stores/AbstractStore'
 import StoreFactory from './stores/StoreFactory'
 import { GraphicsInterface } from './types/cli.types'
 
@@ -33,7 +34,7 @@ export interface CliBootOptions {
 	program?: CommanderStatic['program']
 	graphicsInterface?: GraphicsInterface
 	emitter?: GlobalEmitter
-	apiHost?: string
+	apiClientFactory?: ApiClientFactory
 }
 
 export default class Cli implements CliInterface {
@@ -112,15 +113,18 @@ export default class Cli implements CliInterface {
 			cwd,
 			serviceFactory,
 			homeDir: options?.homeDir ?? osUtil.homedir(),
-			apiClientFactory: async () => {
-				if (!apiClient) {
-					apiClient = await MercuryClientFactory.Client({
-						host: options?.apiHost,
-					})
-				}
+			apiClientFactory: options?.apiClientFactory
+				? options.apiClientFactory
+				: async () => {
+						if (!apiClient) {
+							apiClient = await MercuryClientFactory.Client<EventsContract>({
+								contracts: [eventsContract],
+								host: 'https://sandbox.mercury.spruce.ai',
+							})
+						}
 
-				return apiClient
-			},
+						return apiClient
+				  },
 		})
 		const ui = options?.graphicsInterface ?? new TerminalInterface(cwd)
 		const emitter = options?.emitter ?? CliGlobalEmitter.Emitter()

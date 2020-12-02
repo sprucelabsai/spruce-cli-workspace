@@ -57,7 +57,7 @@ const testUtil = {
 		const file = files.find((f) => f.name.search(name) > -1)?.path
 		assert.isTruthy(
 			file,
-			`file named ${name} not found in generated files. ${JSON.stringify(
+			`file named '${name}' not found in generated files.\n\n${JSON.stringify(
 				files,
 				null,
 				2
