@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import FeatureFixture from '../fixtures/FeatureFixture'
+import MercuryFixture from '../fixtures/MercuryFixture'
 import TerminalInterface from '../interfaces/TerminalInterface'
 import ServiceFactory from '../services/ServiceFactory'
 import { GraphicsTextEffect } from '../types/cli.types'
@@ -31,11 +32,13 @@ async function run() {
 		const serviceFactory = new ServiceFactory({ importCacheDir })
 		const cwd = testUtil.resolveCacheDir(cacheKey)
 
+		const mercuryFixture = new MercuryFixture()
 		const fixture = new FeatureFixture({
 			cwd,
 			serviceFactory,
 			ui: new TerminalInterface(cwd),
 			shouldGenerateCacheIfMissing: true,
+			apiClientFactory: mercuryFixture.getApiClientFactory()
 		})
 
 		const cacheTracker = fixture.loadCacheTracker()
