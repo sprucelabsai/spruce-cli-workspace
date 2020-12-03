@@ -4,7 +4,7 @@
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "11.12.21",
+	"version": "11.12.24",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -92,7 +92,7 @@
 		"@sprucelabs/babel-plugin-schema": "^3.1.2",
 		"@sprucelabs/jest-sheets-reporter": "^1.2.5",
 		"@sprucelabs/test": "^7.2.0",
-		"@sprucelabs/test-utils": "^2.0.378",
+		"@sprucelabs/test-utils": "^2.0.385",
 		"@types/blessed": "^0.1.17",
 		"@types/eslint": "^7.2.6",
 		"@types/fs-extra": "^9.0.4",
@@ -125,7 +125,7 @@
 		"prettier": "^2.2.1",
 		"rimraf": "^3.0.2",
 		"ts-jest": "^26.4.4",
-		"ts-node": "^9.0.0",
+		"ts-node": "^9.1.0",
 		"tsconfig-paths": "^3.9.0"
 	},
 	"testSkillCache": {
