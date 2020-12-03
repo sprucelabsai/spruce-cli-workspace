@@ -1,5 +1,5 @@
 import { EventContract } from '@sprucelabs/mercury-types'
-import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
+import { CORE_NAMESPACE, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { EventContractTemplateItem } from '@sprucelabs/spruce-templates'
 import { test, assert } from '@sprucelabs/test'
 import EventTemplateItemBuilder from '../../templateItemBuilders/EventTemplateItemBuilder'
@@ -29,6 +29,7 @@ const didBookTemplateItem: EventContractTemplateItem = {
 	namePascal: 'DidBook',
 	nameCamel: 'didBook',
 	namespace: CORE_NAMESPACE,
+	namespaceCamel: namesUtil.toCamel(CORE_NAMESPACE),
 	eventSignatures: {
 		'did-book': {},
 	},
@@ -38,6 +39,7 @@ const willBookTemplateItem: EventContractTemplateItem = {
 	namePascal: 'WillBook',
 	nameCamel: 'willBook',
 	namespace: CORE_NAMESPACE,
+	namespaceCamel: namesUtil.toCamel(CORE_NAMESPACE),
 	eventSignatures: {
 		'will-book': {},
 	},
@@ -47,6 +49,7 @@ const didBookWithNamespaceTemplateItem: EventContractTemplateItem = {
 	namePascal: 'DidBook',
 	nameCamel: 'didBook',
 	namespace: 'appointments',
+	namespaceCamel: 'appointments',
 	eventSignatures: {
 		'appointments.did-book': {},
 	},
@@ -56,6 +59,7 @@ const willBookWithNamespaceTemplateItem: EventContractTemplateItem = {
 	namePascal: 'WillBook',
 	nameCamel: 'willBook',
 	namespace: 'appointments',
+	namespaceCamel: 'appointments',
 	eventSignatures: {
 		'appointments.will-book': {},
 	},
