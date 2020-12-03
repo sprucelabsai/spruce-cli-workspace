@@ -1,27 +1,29 @@
 import pathUtil from "path";
-import fs from "fs";
 import {
 	EventHealthCheckItem,
 	EventFeatureListener,
 	SkillFeature,
-	Skill,
+	Skill as contractsFile,
 	HASH_SPRUCE_DIR_NAME,
+	SettingsService,
+	diskUtil,
+	HealthCheckItem,
 } from "@sprucelabs/spruce-skill-utils";
 import globby from "globby";
 import { EventContract, eventContractUtil } from "@sprucelabs/mercury-types";
 
 export class EventSkillFeature implements SkillFeature {
-	
-	private skill: Skill;
+
+	private skill: contractsFile;
 	private eventsPath: string;
 	private listeners: EventFeatureListener[] = [];
 	private contracts: { eventNameWithOptionalNamespace: string }[] = []
-	private contractsPath: string
+	private combinedContractsFile: string
 
-	constructor(skill: Skill) {
+	constructor(skill: contractsFile) {
 		this.skill = skill;
 		this.eventsPath = pathUtil.join(this.skill.activeDir, "events");
-		this.contractsPath = pathUtil.join(this.skill.activeDir, HASH_SPRUCE_DIR_NAME, 'events','events.contract');
+		this.combinedContractsFile = pathUtil.join(this.skill.activeDir, HASH_SPRUCE_DIR_NAME, 'events', 'events.contract');
 	}
 
 	public async execute() {
@@ -37,36 +39,52 @@ export class EventSkillFeature implements SkillFeature {
 		if (didBoot) {
 			await didBoot(this.skill);
 		}
-	};
+	}
 
 	public async checkHealth() {
-		await this.loadListeners();
-		await this.loadContracts()
 
-		const health: EventHealthCheckItem = {
-			status: "passed",
-			listeners: this.listeners,
-			contracts: this.contracts
-		};
+		try {
+			await this.loadListeners();
+			await this.loadContracts()
 
-		return health;
-	};
+
+
+			const health: EventHealthCheckItem = {
+				status: "passed",
+				listeners: this.listeners,
+				contracts: this.contracts
+			}
+
+			return health;
+
+		} catch (err) {
+
+			const health: HealthCheckItem = {
+				status: "failed",
+				errors: [err]
+			}
+
+			return health;
+		}
+	}
 
 	private async loadContracts() {
-		try {
+		if (diskUtil.doesFileExist(this.combinedContractsFile + '.ts') || diskUtil.doesFileExist(this.combinedContractsFile + '.js')) {
+			const contracts = require(this.combinedContractsFile).default
 
-			const contracts = require(this.contractsPath).default
 			contracts.forEach((contract: EventContract) => {
 				const names = eventContractUtil.getEventNames(contract)
-				this.contracts.push(...names.map(name => ({ eventNameWithOptionalNamespace: name})))
+				this.contracts.push(...names.map(name => ({ eventNameWithOptionalNamespace: name })))
 			})
-		} catch { }
+		}
+
 	}
 
 	public async isInstalled() {
-		const isInstalled = fs.existsSync(this.eventsPath);
-		return isInstalled;
-	};
+		const settingsService = new SettingsService(this.skill.rootDir)
+		const isInstalled = settingsService.isMarkedAsInstalled('event')
+		return isInstalled
+	}
 
 	private getListener(eventNamespace: string, eventName: string) {
 		const match = this.listeners.find(
@@ -116,8 +134,8 @@ export class EventSkillFeature implements SkillFeature {
 	}
 }
 
-export default (skill: Skill) => {
+export default (skill: contractsFile) => {
 	const feature = new EventSkillFeature(skill);
 
 	skill.registerFeature("event", feature);
-};
+}
