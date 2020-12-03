@@ -1,4 +1,5 @@
 import pathUtil from 'path'
+import { EventContract } from '@sprucelabs/mercury-types'
 import { CORE_NAMESPACE, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { FeatureActionResponse } from '../../../features/features.types'
@@ -38,24 +39,76 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		await this.assertValidActionResponseFiles(results)
 
 		this.assertExpectedFilesAreCreated(results)
-		await this.assertCombineContractContents(results)
+		await this.assertCombinedContractContents(results)
+		this.assertCombinedContractsHasEmitPayloads(results)
 	}
 
-	private static async assertCombineContractContents(
+	@test.only()
+	protected static async canGetNumberOfEventsBackFromHealthCheck() {
+		const fixture = this.FeatureFixture()
+		const cli = await fixture.installFeatures(
+			[
+				{
+					code: 'skill',
+					options: {
+						name: 'testing events',
+						description: 'this too, is a great test!',
+					},
+				},
+				{
+					code: 'event',
+				},
+			],
+			'events'
+		)
+
+		const results = await cli.getFeature('event').Action('sync').execute({})
+
+		assert.isFalsy(results.errors)
+
+		await this.Service('build').build()
+
+		await this.openInVsCode()
+		const health = await cli.checkHealth({ isRunningLocally: false })
+
+		assert.isTruthy(health.event)
+		assert.isEqual(health.event.status, 'passed')
+		assert.isTruthy(health.event.contracts)
+
+		const imported = await this.importCombinedContractsFile(results)
+
+		assert.isLength(health.event.contracts, imported.length)
+	}
+
+	private static async assertCombinedContractContents(
 		results: FeatureActionResponse
 	) {
+		const imported = await this.importCombinedContractsFile(results)
+
+		assert.isTruthy(imported)
+		assert.isArray(imported)
+		assert.isLength(imported, (results.files?.length ?? 0) - 1)
+	}
+
+	private static async importCombinedContractsFile(
+		results: FeatureActionResponse
+	): Promise<EventContract[]> {
 		const eventContractsFile = testUtil.assertsFileByNameInGeneratedFiles(
 			'events.contract',
 			results.files ?? []
 		)
 
-		const imported = await this.Service('import').importDefault(
-			eventContractsFile
-		)
+		const imported: EventContract[] = await this.Service(
+			'import'
+		).importDefault(eventContractsFile)
 
-		assert.isTruthy(imported)
-		assert.isArray(imported)
-		assert.isLength(imported, (results.files?.length ?? 0) - 1)
+		return imported
+	}
+
+	static assertCombinedContractsHasEmitPayloads(
+		results: FeatureActionResponse
+	) {
+		throw new Error('Method not implemented.')
 	}
 
 	private static assertExpectedFilesAreCreated(results: FeatureActionResponse) {

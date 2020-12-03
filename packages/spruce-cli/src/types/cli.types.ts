@@ -1,7 +1,7 @@
 import { FieldDefinitionValueType } from '@sprucelabs/schema'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import { FeatureCode, FeatureActionResponse } from '../features/features.types'
+import { FeatureActionResponse } from '../features/features.types'
 
 export enum GraphicsTextEffect {
 	Reset = 'reset',
@@ -136,9 +136,4 @@ export interface ExecutionResults extends FeatureActionResponse {
 	featureCode: string
 	actionCode: string
 	headline: string
-}
-
-export interface Settings {
-	installed?: FeatureCode[]
-	skipped?: FeatureCode[]
 }

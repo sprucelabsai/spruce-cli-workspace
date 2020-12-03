@@ -21,10 +21,14 @@ import { ApiClient, ApiClientFactory } from './stores/AbstractStore'
 import StoreFactory from './stores/StoreFactory'
 import { GraphicsInterface } from './types/cli.types'
 
+interface HealthOptions {
+	isRunningLocally?: boolean
+}
+
 export interface CliInterface {
 	installFeatures: FeatureInstaller['install']
 	getFeature: FeatureInstaller['getFeature']
-	checkHealth(): Promise<HealthCheckResults>
+	checkHealth(options?: HealthOptions): Promise<HealthCheckResults>
 	emitter: GlobalEmitter
 }
 
@@ -63,7 +67,9 @@ export default class Cli implements CliInterface {
 		return this.featureInstaller.getFeature(code)
 	}
 
-	public async checkHealth(): Promise<HealthCheckResults> {
+	public async checkHealth(
+		options?: HealthOptions
+	): Promise<HealthCheckResults> {
 		const isInstalled = await this.featureInstaller.isInstalled('skill')
 
 		if (!isInstalled) {
@@ -82,7 +88,11 @@ export default class Cli implements CliInterface {
 
 		try {
 			const commandService = this.serviceFactory.Service(this.cwd, 'command')
-			const results = await commandService.execute('yarn health.local')
+			const command =
+				options?.isRunningLocally === false
+					? 'yarn health'
+					: 'yarn health.local'
+			const results = await commandService.execute(command)
 			const resultParts = results.stdout.split(HEALTH_DIVIDER)
 
 			return JSON.parse(resultParts[1]) as HealthCheckResults
@@ -126,6 +136,7 @@ export default class Cli implements CliInterface {
 						return apiClient
 				  },
 		})
+
 		const ui = options?.graphicsInterface ?? new TerminalInterface(cwd)
 		const emitter = options?.emitter ?? CliGlobalEmitter.Emitter()
 

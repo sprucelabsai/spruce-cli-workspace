@@ -17,7 +17,6 @@ import handlebars from 'handlebars'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import log from './singletons/log'
 import {
-	AutoLoaderTemplateItem,
 	DirectoryTemplateCode,
 	DirectoryTemplateContextMap,
 	ValueTypes,
@@ -163,13 +162,6 @@ export const templates = {
 
 	test(options: TestOptions) {
 		const template = templateImportUtil.getTemplate('tests/Test.test.ts.hbs')
-		return template(options)
-	},
-
-	autoloader(options: AutoLoaderTemplateItem) {
-		const template = templateImportUtil.getTemplate(
-			'autoloader/autoloader.ts.hbs'
-		)
 		return template(options)
 	},
 

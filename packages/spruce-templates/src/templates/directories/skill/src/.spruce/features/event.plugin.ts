@@ -5,20 +5,26 @@ import {
 	EventFeatureListener,
 	SkillFeature,
 	Skill,
+	HASH_SPRUCE_DIR_NAME,
 } from "@sprucelabs/spruce-skill-utils";
 import globby from "globby";
+import { EventContract, eventContractUtil } from "@sprucelabs/mercury-types";
 
 export class EventSkillFeature implements SkillFeature {
+	
 	private skill: Skill;
 	private eventsPath: string;
 	private listeners: EventFeatureListener[] = [];
+	private contracts: { eventNameWithOptionalNamespace: string }[] = []
+	private contractsPath: string
 
 	constructor(skill: Skill) {
 		this.skill = skill;
 		this.eventsPath = pathUtil.join(this.skill.activeDir, "events");
+		this.contractsPath = pathUtil.join(this.skill.activeDir, HASH_SPRUCE_DIR_NAME, 'events','events.contract');
 	}
 
-	public execute = async () => {
+	public async execute() {
 		await this.loadListeners();
 
 		const willBoot = this.getListener("skill", "will-boot");
@@ -33,18 +39,31 @@ export class EventSkillFeature implements SkillFeature {
 		}
 	};
 
-	public checkHealth = async () => {
+	public async checkHealth() {
 		await this.loadListeners();
+		await this.loadContracts()
 
 		const health: EventHealthCheckItem = {
 			status: "passed",
 			listeners: this.listeners,
+			contracts: this.contracts
 		};
 
 		return health;
 	};
 
-	isInstalled = async () => {
+	private async loadContracts() {
+		try {
+
+			const contracts = require(this.contractsPath).default
+			contracts.forEach((contract: EventContract) => {
+				const names = eventContractUtil.getEventNames(contract)
+				this.contracts.push(...names.map(name => ({ eventNameWithOptionalNamespace: name})))
+			})
+		} catch { }
+	}
+
+	public async isInstalled() {
 		const isInstalled = fs.existsSync(this.eventsPath);
 		return isInstalled;
 	};

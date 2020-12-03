@@ -1,3 +1,5 @@
+import { SettingsService } from '@sprucelabs/spruce-skill-utils'
+import { FeatureCode } from '../features/features.types'
 import BuildService from './BuildService'
 import CommandService from './CommandService'
 import ImportService from './ImportService'
@@ -5,7 +7,6 @@ import LintService from './LintService'
 import PinService from './PinService'
 import PkgService from './PkgService'
 import SchemaService from './SchemaService'
-import SettingsService from './SettingsService'
 import TypeCheckerService from './TypeCheckerService'
 import VsCodeService from './VsCodeService'
 
@@ -53,7 +54,7 @@ export default class ServiceFactory {
 			case 'typeChecker':
 				return new TypeCheckerService(cwd) as ServiceMap[S]
 			case 'settings':
-				return new SettingsService(cwd) as ServiceMap[S]
+				return new SettingsService<FeatureCode>(cwd) as ServiceMap[S]
 			case 'import':
 				return new ImportService(cwd, this.importCacheDir) as ServiceMap[S]
 			case 'build': {

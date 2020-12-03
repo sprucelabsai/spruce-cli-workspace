@@ -34,9 +34,18 @@ export class Skill implements SkillDetails {
 		await Promise.all(this.getFeaturesWithCode().map(async featureWithCode => {
 			const isInstalled = await featureWithCode.feature.isInstalled()
 			if (isInstalled) {
-				const item = await featureWithCode.feature.checkHealth()
-				//@ts-ignore
-				results[featureWithCode.code] = item
+				try {
+					const item = await featureWithCode.feature.checkHealth()
+					//@ts-ignore
+					results[featureWithCode.code] = item
+					
+				} catch (err) {
+					//@ts-ignore
+					results[featureWithCode.code] = {
+						status: 'failed',
+						errors: [err]
+					}
+				}
 			}
 
 		}))
