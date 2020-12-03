@@ -232,7 +232,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		const testSchemaContents = diskUtil.readFile(testSchema)
 		assert.doesInclude(testSchemaContents, 'SchemaRegistry')
 
-		await this.validateActionResponseFiles(syncResults)
+		await this.assertValidActionResponseFiles(syncResults)
 	}
 
 	@test()

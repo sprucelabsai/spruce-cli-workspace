@@ -72,7 +72,7 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 			results.files ?? []
 		)
 
-		await this.validateActionResponseFiles(results)
+		await this.assertValidActionResponseFiles(results)
 	}
 
 	@test()
@@ -96,7 +96,7 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 			results.files ?? []
 		)
 
-		await this.validateActionResponseFiles(results)
+		await this.assertValidActionResponseFiles(results)
 
 		const cli = await this.Cli()
 		const health = await cli.checkHealth()

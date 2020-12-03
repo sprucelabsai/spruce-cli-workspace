@@ -1,65 +1,17 @@
 import { EventContract } from '@sprucelabs/mercury-types'
 import { SchemaTemplateItem } from '@sprucelabs/schema'
 
-export interface AutoLoaderClassTemplateItem {
-	optionsInterfaceName?: string
-	className: string
-	nameCamel: string
-	namePascal: string
-	relativeFilePath: string
-}
-
-export interface AutoLoaderInterfaceTemplateItem {
-	interfaceName: string
-	relativeFilePath: string
-}
-
-export interface AutoLoaderImportTemplateItem {
-	name: string
-	filePath: string
-}
-
-export interface AutoLoaderTemplateItem {
-	abstractClassName: string
-	abstractClassRelativePath: string
-	abstractClassOptionsInterfaceName?: string
-	classes: AutoLoaderClassTemplateItem[]
-	interfaces: AutoLoaderInterfaceTemplateItem[]
-	constructorOptionInterfaces: AutoLoaderImportTemplateItem[]
-	namePascalPlural: string
-	namePascal: string
-	nameCamel: string
-	nameCamelPlural: string
-}
-
-export interface RootAutoloaderTemplateItem {
-	autoloaders: AutoLoaderTemplateItem[]
-}
-
 export enum DirectoryTemplateCode {
 	Skill = 'skill',
-	VsCode = 'vscode',
-	CircleCi = 'circleci',
-	Autoloadable = 'autoloadable',
 }
 
 export interface DirectoryTemplateContextSkill {
 	name: string
 	description: string
 }
-export interface DirectoryTemplateContextVsCode {}
-export interface DirectoryTemplateContextCircleCi {}
-export interface DirectoryTemplateContextAutoloadable {
-	namePascalPlural: string
-	namePascal: string
-	nameCamelPlural: string
-}
 
 export interface DirectoryTemplateContextMap {
 	[DirectoryTemplateCode.Skill]: DirectoryTemplateContextSkill
-	[DirectoryTemplateCode.VsCode]: DirectoryTemplateContextVsCode
-	[DirectoryTemplateCode.CircleCi]: DirectoryTemplateContextCircleCi
-	[DirectoryTemplateCode.Autoloadable]: DirectoryTemplateContextAutoloadable
 }
 
 export interface DirectoryTemplateFile {
@@ -127,4 +79,5 @@ export interface EventContractTemplateItem extends EventContract {
 	namePascal: string
 	nameCamel: string
 	namespace: string
+	namespaceCamel: string
 }

@@ -1,1 +1,12 @@
-// hello world
+{{#each contracts}}
+import {{nameCamel}}EventContract, { {{namePascal}}EventContract } from '#spruce/events/{{ namespaceCamel }}/{{ nameCamel }}.contract.ts'
+{{/each}}
+
+export default [
+    {{#each contracts}}
+    {{nameCamel}}EventContract,
+    {{/each}}
+]
+
+
+export type EventContracts = {{#each contracts}}{{namePascal}}EventContract {{#unless @last}}&{{/unless}} {{/each}}

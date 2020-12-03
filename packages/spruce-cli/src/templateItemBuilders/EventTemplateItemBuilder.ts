@@ -27,6 +27,9 @@ export default class EventTemplateItemBuilder {
 				nameCamel: namesUtil.toCamel(namedSig.eventName),
 				namePascal: namesUtil.toPascal(namedSig.eventName),
 				namespace: namedSig.eventNamespace ?? CORE_NAMESPACE,
+				namespaceCamel: namesUtil.toCamel(
+					namedSig.eventNamespace ?? CORE_NAMESPACE
+				),
 				eventSignatures: {
 					[namedSig.eventNameWithOptionalNamespace]: namedSig.signature,
 				},

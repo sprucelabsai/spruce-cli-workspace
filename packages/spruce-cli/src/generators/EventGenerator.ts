@@ -29,7 +29,7 @@ export default class EventGenerator extends AbstractGenerator {
 		return all
 	}
 
-	public async generateCombinedEvents(
+	private async generateCombinedEvents(
 		destinationDir: string,
 		templateItems: EventContractTemplateItem[]
 	): Promise<GeneratedFile> {
@@ -38,7 +38,7 @@ export default class EventGenerator extends AbstractGenerator {
 			`events.contract.ts`
 		)
 
-		const contents = this.templates.combineEventsContract(templateItems)
+		const contents = this.templates.combinedEventsContract(templateItems)
 
 		const results = await this.writeFileIfChangedMixinResults(
 			destinationFile,

@@ -35,12 +35,27 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		assert.isFalsy(results.errors)
 
+		await this.assertValidActionResponseFiles(results)
+
 		this.assertExpectedFilesAreCreated(results)
+		await this.assertCombineContractContents(results)
+	}
 
-		// await this.Service('command').execute(`code ${this.cwd}`)
-		// debugger
+	private static async assertCombineContractContents(
+		results: FeatureActionResponse
+	) {
+		const eventContractsFile = testUtil.assertsFileByNameInGeneratedFiles(
+			'events.contract',
+			results.files ?? []
+		)
 
-		await this.validateActionResponseFiles(results)
+		const imported = await this.Service('import').importDefault(
+			eventContractsFile
+		)
+
+		assert.isTruthy(imported)
+		assert.isArray(imported)
+		assert.isLength(imported, (results.files?.length ?? 0) - 1)
 	}
 
 	private static assertExpectedFilesAreCreated(results: FeatureActionResponse) {
@@ -59,10 +74,5 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 				}`
 			)
 		}
-
-		testUtil.assertsFileByNameInGeneratedFiles(
-			'events.contract',
-			results.files ?? []
-		)
 	}
 }

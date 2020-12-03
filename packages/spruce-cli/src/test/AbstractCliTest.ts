@@ -177,7 +177,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		assert.isTrue(isInstalled)
 	}
 
-	protected static async validateActionResponseFiles(
+	protected static async assertValidActionResponseFiles(
 		results: FeatureActionResponse
 	) {
 		const checker = this.Service('typeChecker')
@@ -185,5 +185,10 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		await Promise.all(
 			(results.files ?? []).map((file) => checker.check(file.path))
 		)
+	}
+
+	protected static async openInVsCode(file: string = this.cwd) {
+		await this.Service('command').execute(`code ${file}`)
+		await this.wait(99999999)
 	}
 }

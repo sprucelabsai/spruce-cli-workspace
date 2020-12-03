@@ -199,11 +199,11 @@ export const templates = {
 		return template(contract)
 	},
 
-	combineEventsContract(contracts: EventContractTemplateItem[]) {
+	combinedEventsContract(contracts: EventContractTemplateItem[]) {
 		const template = templateImportUtil.getTemplate(
 			'events/events.contract.ts.hbs'
 		)
-		return template(contracts)
+		return template({ contracts })
 	},
 
 	async directoryTemplate<K extends DirectoryTemplateCode>(options: {
