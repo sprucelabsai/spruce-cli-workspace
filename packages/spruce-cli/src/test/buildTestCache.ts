@@ -38,7 +38,7 @@ async function run() {
 			serviceFactory,
 			ui: new TerminalInterface(cwd),
 			shouldGenerateCacheIfMissing: true,
-			apiClientFactory: mercuryFixture.getApiClientFactory()
+			apiClientFactory: mercuryFixture.getApiClientFactory(),
 		})
 
 		const cacheTracker = fixture.loadCacheTracker()
