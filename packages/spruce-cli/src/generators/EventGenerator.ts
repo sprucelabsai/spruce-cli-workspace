@@ -22,9 +22,31 @@ export default class EventGenerator extends AbstractGenerator {
 			generated.push(this.generateContract(destinationDir, item))
 		}
 
+		generated.push(this.generateCombinedEvents(destinationDir, templateItems))
+
 		const all = await Promise.all(generated)
 
 		return all
+	}
+
+	public async generateCombinedEvents(
+		destinationDir: string,
+		templateItems: EventContractTemplateItem[]
+	): Promise<GeneratedFile> {
+		const destinationFile = diskUtil.resolvePath(
+			destinationDir,
+			`events.contract.ts`
+		)
+
+		const contents = this.templates.combineEventsContract(templateItems)
+
+		const results = await this.writeFileIfChangedMixinResults(
+			destinationFile,
+			contents,
+			'All event contracts combined to a single export.'
+		)
+
+		return results[0]
 	}
 
 	private async generateContract(
@@ -41,7 +63,7 @@ export default class EventGenerator extends AbstractGenerator {
 		const results = await this.writeFileIfChangedMixinResults(
 			destinationFile,
 			eventsContractContents,
-			`The event contract for ${templateItem}`
+			`The event contract for ${Object.keys(templateItem.eventSignatures)[0]}`
 		)
 
 		return results[0]
