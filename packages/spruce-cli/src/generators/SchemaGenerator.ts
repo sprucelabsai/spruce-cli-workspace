@@ -12,12 +12,7 @@ import {
 import SpruceError from '../errors/SpruceError'
 import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
 
-export interface GenerateSchemaTypesOptions {
-	fieldTemplateItems: FieldTemplateItem[]
-	schemaTemplateItems: SchemaTemplateItem[]
-}
-
-export interface GenerateFieldTypesOptions {
+interface GenerateFieldTypesOptions {
 	fieldTemplateItems: FieldTemplateItem[]
 }
 
@@ -32,12 +27,6 @@ export interface GenerateSchemaTypesOptions {
 	shouldImportCoreSchemas: boolean
 }
 
-export interface SchemaTypesGenerationStage {
-	name: string
-	errors: SpruceError[]
-	successfulSchemas: number
-	successfulFields: number
-}
 export default class SchemaGenerator extends AbstractGenerator {
 	private readonly fieldTemplates: {
 		filename: string

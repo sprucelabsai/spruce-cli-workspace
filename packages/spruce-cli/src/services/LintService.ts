@@ -3,10 +3,6 @@ import fs from 'fs-extra'
 import SpruceError from '../errors/SpruceError'
 import CommandService from './CommandService'
 
-export interface AddOptions {
-	dev?: boolean
-}
-
 export default class LintService extends CommandService {
 	/** Lint fix based on a glob. Returns an array of filepaths that were fixed. */
 	public fix = async (

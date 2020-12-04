@@ -2,7 +2,7 @@ import _ from 'lodash'
 import * as tsutils from 'tsutils'
 import * as ts from 'typescript'
 
-export interface IntrospectionClass {
+interface IntrospectionClass {
 	className: string
 	parentClassName: string
 	parentClassPath: string
@@ -10,11 +10,11 @@ export interface IntrospectionClass {
 	isAbstract: boolean
 }
 
-export interface IntrospectionInterface {
+interface IntrospectionInterface {
 	interfaceName: string
 }
 
-export interface Introspection {
+interface Introspection {
 	classes: IntrospectionClass[]
 	interfaces: IntrospectionInterface[]
 }

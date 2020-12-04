@@ -19,7 +19,7 @@ interface OnTestFileResult {
 	aggregatedResult: Parameters<JsonParser['onTestFileResult']>[2]
 }
 
-export type JsonParserResult =
+type JsonParserResult =
 	| {
 			status: 'onRunStart'
 			results: Parameters<JsonParser['onRunStart']>[0]

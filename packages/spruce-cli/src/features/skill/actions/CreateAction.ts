@@ -2,15 +2,15 @@ import { buildSchema } from '@sprucelabs/schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
-export const skillCreateActionOptionsDefinition = buildSchema({
+const skillCreateActionOptionsDefinition = buildSchema({
 	id: 'createSkill',
 	name: 'create skill',
 	fields: {},
 })
 
-export type ActionSchema = typeof skillCreateActionOptionsDefinition
+type ActionSchema = typeof skillCreateActionOptionsDefinition
 
-export default class CreateAction extends AbstractFeatureAction {
+export default class CreateAction extends AbstractFeatureAction<ActionSchema> {
 	public name = 'create'
 	public optionsSchema = skillCreateActionOptionsDefinition
 

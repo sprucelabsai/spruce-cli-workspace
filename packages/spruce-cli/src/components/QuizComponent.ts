@@ -12,64 +12,44 @@ import FormComponent, {
 	FormPresentationOptions,
 } from './FormComponent'
 
-/** Multiple choice question */
-export interface QuizMultipleChoiceQuestion {
+interface QuizMultipleChoiceQuestion {
 	type: 'select'
-	/** The question to ask */
 	question: string
-	/** All answers, first one is correct  */
 	answers: string[]
 }
 
-export interface QuizTextQuestion {
+interface QuizTextQuestion {
 	type: 'text'
-	/** The question to ask */
 	question: string
-	/** All answers, first one is correct  */
 	answer: string
 }
 
-/** Quiz questions */
-export interface QuizQuestions {
+interface QuizQuestions {
 	[key: string]: QuizMultipleChoiceQuestion | QuizTextQuestion
 }
 
-/** Answer status */
-export enum AnswerValidity {
+enum AnswerValidity {
 	Correct = 'correct',
 	Incorrect = 'incorrect',
 }
 
-/** Options to present */
-export interface QuizPresentationOptions<
-	T extends Schema,
-	Q extends QuizQuestions
-> extends Omit<FormPresentationOptions<T>, 'fields'> {
-	/** Select which questions you want to output? random still applies */
+interface QuizPresentationOptions<T extends Schema, Q extends QuizQuestions>
+	extends Omit<FormPresentationOptions<T>, 'fields'> {
 	questions?: QuizAnswerFieldNames<Q>[]
-
-	/** Overrides the randomize setting on the builder */
 	randomizeQuestions?: boolean
 }
 
-/** All field names */
-export type QuizAnswerFieldNames<Q extends QuizQuestions> = Extract<
-	keyof Q,
-	string
->
+type QuizAnswerFieldNames<Q extends QuizQuestions> = Extract<keyof Q, string>
 
-/** The values returned by present */
-export type QuizAnswers<Q extends QuizQuestions> = {
+type QuizAnswers<Q extends QuizQuestions> = {
 	[K in QuizAnswerFieldNames<Q>]: string
 }
 
-/** Tracking of right/wrongs */
-export type QuizAnswerValidities<Q extends QuizQuestions> = {
+type QuizAnswerValidities<Q extends QuizQuestions> = {
 	[K in QuizAnswerFieldNames<Q>]: AnswerValidity
 }
 
-/** Response from all questions */
-export type QuizPresentationResults<Q extends QuizQuestions> = {
+type QuizPresentationResults<Q extends QuizQuestions> = {
 	/** The answers that were given */
 	answers: QuizAnswers<Q>
 
@@ -96,8 +76,7 @@ export type QuizPresentationResults<Q extends QuizQuestions> = {
 	totalQuestions: number
 }
 
-/** Options for instantiating a new quiz */
-export interface QuizOptions<T extends Schema, Q extends QuizQuestions>
+interface QuizOptions<T extends Schema, Q extends QuizQuestions>
 	extends Omit<FormOptions<T>, 'schema'> {
 	/** Should we randomize the questions */
 	randomizeQuestions?: boolean

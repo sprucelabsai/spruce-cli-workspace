@@ -126,9 +126,7 @@ export type GeneratedFileOrDir = SpruceSchemas.SpruceCli.v2020_07_22.WatcherDidD
 
 export interface NpmPackage {
 	name: string
-	/** Defaults to "latest" */
 	version?: string
-	/** Whether to install this in "devDependencies" */
 	isDev?: boolean
 }
 
