@@ -50,7 +50,7 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 
 		testUtil.assertsFileByNameInGeneratedFiles(
 			'CanBookAppointment.test.ts',
-			results.files ?? []
+			results.files
 		)
 
 		await this.Service('build').build()

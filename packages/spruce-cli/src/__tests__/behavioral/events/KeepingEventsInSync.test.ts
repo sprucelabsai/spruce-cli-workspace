@@ -1,5 +1,9 @@
 import pathUtil from 'path'
-import { EventContract } from '@sprucelabs/mercury-types'
+import {
+	EventContract,
+	eventContractUtil,
+	validateEventContract,
+} from '@sprucelabs/mercury-types'
 import { CORE_NAMESPACE, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { FeatureActionResponse } from '../../../features/features.types'
@@ -16,51 +20,23 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	@test()
 	protected static async generatesValidContractFile() {
 		const fixture = this.FeatureFixture()
-		const cli = await fixture.installFeatures(
-			[
-				{
-					code: 'node',
-					options: {
-						name: 'event test skill',
-						description: '',
-					},
-				},
-				{
-					code: 'event',
-				},
-			],
-			'eventsInNodeModule'
-		)
+		const cli = await fixture.installCachedFeatures('eventsInNodeModule')
 
 		const results = await cli.getFeature('event').Action('sync').execute({})
 
 		assert.isFalsy(results.errors)
 
+		await this.assertsContractsHaveEmitPayload(results)
 		await this.assertValidActionResponseFiles(results)
 
 		this.assertExpectedFilesAreCreated(results)
 		await this.assertCombinedContractContents(results)
-		this.assertCombinedContractsHasEmitPayloads(results)
 	}
 
 	@test()
 	protected static async canGetNumberOfEventsBackFromHealthCheck() {
 		const fixture = this.FeatureFixture()
-		const cli = await fixture.installFeatures(
-			[
-				{
-					code: 'skill',
-					options: {
-						name: 'testing events',
-						description: 'this too, is a great test!',
-					},
-				},
-				{
-					code: 'event',
-				},
-			],
-			'events'
-		)
+		const cli = await fixture.installCachedFeatures('events')
 
 		const results = await cli.getFeature('event').Action('sync').execute({})
 
@@ -94,7 +70,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	): Promise<EventContract[]> {
 		const eventContractsFile = testUtil.assertsFileByNameInGeneratedFiles(
 			'events.contract',
-			results.files ?? []
+			results.files
 		)
 
 		const imported: EventContract[] = await this.Service(
@@ -104,9 +80,29 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		return imported
 	}
 
-	private static assertCombinedContractsHasEmitPayloads(
-		_results: FeatureActionResponse
-	) {}
+	private static async assertsContractsHaveEmitPayload(
+		results: FeatureActionResponse
+	) {
+		const match = testUtil.assertsFileByNameInGeneratedFiles(
+			'authenticate.contract.ts',
+			results.files
+		)
+
+		const contract: EventContract = await this.Service('import').importDefault(
+			match
+		)
+
+		assert.isTruthy(contract)
+
+		validateEventContract(contract)
+
+		const signature = eventContractUtil.getSignatureByName(
+			contract,
+			'authenticate'
+		)
+
+		assert.isTruthy(signature.emitPayloadSchema)
+	}
 
 	private static assertExpectedFilesAreCreated(results: FeatureActionResponse) {
 		const filesToCheck = ['whoAmI.contract.ts', 'getEventContracts.contract.ts']
@@ -114,7 +110,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		for (const file of filesToCheck) {
 			const match = testUtil.assertsFileByNameInGeneratedFiles(
 				file,
-				results.files ?? []
+				results.files
 			)
 
 			assert.doesInclude(

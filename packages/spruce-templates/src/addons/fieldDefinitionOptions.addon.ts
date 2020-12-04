@@ -19,7 +19,9 @@ handlebars.registerHelper(
 		}
 
 		if (typeof nameCamel !== 'string') {
-			throw new Error('fieldDefinitionOptions helper needs nameCamel 2nd')
+			throw new Error(
+				"fieldDefinitionOptions helper needs nameCamel 2nd. This can happen if you didn't convert the schema into a template item."
+			)
 		}
 
 		if (typeof fieldName !== 'string') {

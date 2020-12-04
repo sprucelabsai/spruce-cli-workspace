@@ -15,18 +15,7 @@ export default class BootingASkillTest extends AbstractCliTest {
 
 	private static async install() {
 		const fixture = this.FeatureFixture()
-		const cli = await fixture.installFeatures(
-			[
-				{
-					code: 'skill',
-					options: {
-						name: 'testing events',
-						description: 'this too, is a great test!',
-					},
-				},
-			],
-			'skills'
-		)
+		const cli = await fixture.installCachedFeatures('skills')
 		return cli
 	}
 

@@ -15,17 +15,14 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 		assert.isUndefined(results.errors)
 		testUtil.assertsFileByNameInGeneratedFiles(
 			/testPerson\.schema/,
-			results.files ?? []
+			results.files
 		)
 
-		testUtil.assertsFileByNameInGeneratedFiles(
-			/pet\.schema/,
-			results.files ?? []
-		)
+		testUtil.assertsFileByNameInGeneratedFiles(/pet\.schema/, results.files)
 
 		testUtil.assertsFileByNameInGeneratedFiles(
 			/nested-schema\.schema/,
-			results.files ?? []
+			results.files
 		)
 
 		const checker = this.Service('typeChecker')
@@ -77,7 +74,7 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 
 		const schemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
 			'mercuryContract.schema.ts',
-			results.files ?? []
+			results.files
 		)
 		await this.Service('typeChecker').check(schemaMatch)
 	}

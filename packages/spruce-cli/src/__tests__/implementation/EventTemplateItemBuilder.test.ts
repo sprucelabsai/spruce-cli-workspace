@@ -1,11 +1,12 @@
 import { EventContract } from '@sprucelabs/mercury-types'
+import { buildSchema, SchemaTemplateItem } from '@sprucelabs/schema'
 import { CORE_NAMESPACE, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { EventContractTemplateItem } from '@sprucelabs/spruce-templates'
 import { test, assert } from '@sprucelabs/test'
 import EventTemplateItemBuilder from '../../templateItemBuilders/EventTemplateItemBuilder'
 import AbstractCliTest from '../../test/AbstractCliTest'
 
-const didBookContract: EventContract = {
+const bookContract: EventContract = {
 	eventSignatures: {
 		'did-book': {},
 	},
@@ -28,8 +29,9 @@ const contractWith2NamespacedSignatures: EventContract = {
 const didBookTemplateItem: EventContractTemplateItem = {
 	namePascal: 'DidBook',
 	nameCamel: 'didBook',
-	namespace: CORE_NAMESPACE,
+	namespace: namesUtil.toKebab(CORE_NAMESPACE),
 	namespaceCamel: namesUtil.toCamel(CORE_NAMESPACE),
+	namespacePascal: CORE_NAMESPACE,
 	eventSignatures: {
 		'did-book': {},
 	},
@@ -38,8 +40,9 @@ const didBookTemplateItem: EventContractTemplateItem = {
 const willBookTemplateItem: EventContractTemplateItem = {
 	namePascal: 'WillBook',
 	nameCamel: 'willBook',
-	namespace: CORE_NAMESPACE,
+	namespace: namesUtil.toKebab(CORE_NAMESPACE),
 	namespaceCamel: namesUtil.toCamel(CORE_NAMESPACE),
+	namespacePascal: CORE_NAMESPACE,
 	eventSignatures: {
 		'will-book': {},
 	},
@@ -50,6 +53,7 @@ const didBookWithNamespaceTemplateItem: EventContractTemplateItem = {
 	nameCamel: 'didBook',
 	namespace: 'appointments',
 	namespaceCamel: 'appointments',
+	namespacePascal: 'Appointments',
 	eventSignatures: {
 		'appointments.did-book': {},
 	},
@@ -60,8 +64,50 @@ const willBookWithNamespaceTemplateItem: EventContractTemplateItem = {
 	nameCamel: 'willBook',
 	namespace: 'appointments',
 	namespaceCamel: 'appointments',
+	namespacePascal: 'Appointments',
 	eventSignatures: {
 		'appointments.will-book': {},
+	},
+}
+
+const proximityEmitPayloadSchema = buildSchema({
+	id: 'proximityEmitPayload',
+	fields: {
+		onlyField: {
+			type: 'text',
+		},
+	},
+})
+
+const proximityEmitPayloadTemplateItem: SchemaTemplateItem = {
+	namespace: 'Proximity',
+	id: proximityEmitPayloadSchema.id,
+	nameCamel: 'proximityEmitPayload',
+	namePascal: 'ProximityEmitPayload',
+	nameReadable: 'proximityEmitPayload',
+	schema: proximityEmitPayloadSchema,
+	isNested: false,
+	destinationDir: '#spruce/events',
+}
+
+const contractWithEmitPayload: EventContract = {
+	eventSignatures: {
+		'proximity.did-enter': {
+			emitPayloadSchema: proximityEmitPayloadSchema,
+		},
+	},
+}
+
+const contractWithEmitPayloadTemplateItem: EventContractTemplateItem = {
+	namePascal: 'DidEnter',
+	nameCamel: 'didEnter',
+	namespace: 'proximity',
+	namespaceCamel: 'proximity',
+	namespacePascal: 'Proximity',
+	eventSignatures: {
+		'proximity.did-enter': {
+			emitPayloadSchema: proximityEmitPayloadTemplateItem,
+		},
 	},
 }
 
@@ -85,13 +131,18 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 
 	@test()
 	protected static turnsSingleContractIntoTemplateItem() {
-		const results = this.itemBuilder.generateTemplateItems([didBookContract])
+		const results = this.itemBuilder.generateTemplateItems([bookContract])
 
 		const actual = results[0]
 
 		assert.isEqualDeep(actual, didBookTemplateItem)
 	}
 
+	@test(
+		'builds emit payload schema into a templaet item',
+		[contractWithEmitPayload],
+		[contractWithEmitPayloadTemplateItem]
+	)
 	@test(
 		'turns 1 contract with 2 event signature into 2 template items',
 		[contractWith2Signatures],

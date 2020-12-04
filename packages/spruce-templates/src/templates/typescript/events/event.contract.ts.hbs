@@ -3,7 +3,11 @@ import { buildEventContract } from '@sprucelabs/mercury-types'
 const {{nameCamel}}EventContract = buildEventContract({
     eventSignatures: {
         {{#each eventSignatures}}
-        '{{@key}}': {}
+        '{{@key}}': {
+            {{#if emitPayloadSchema}}emitPayloadSchema: {
+                {{> schemaBody namespace=./../namespace schema=emitPayloadSchema renderAs="value" }}
+            }{{/if}}
+        }
         {{/each}}
     }
 })

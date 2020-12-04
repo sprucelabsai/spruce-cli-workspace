@@ -242,7 +242,6 @@ export const templates = {
 	},
 }
 
-/** All the templates */
 export type Templates = typeof templates
 export { default as importExtractor } from './utilities/importExtractor.utility'
 

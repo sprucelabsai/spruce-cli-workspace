@@ -107,6 +107,13 @@ export default class FeatureFixture implements ServiceProvider {
 		}
 	}
 
+	public async installCachedFeatures(
+		cacheKey: string,
+		bootOptions?: CliBootOptions
+	) {
+		return this.installFeatures([], cacheKey, bootOptions)
+	}
+
 	public async installFeatures(
 		features: InstallFeature[],
 		cacheKey?: string,

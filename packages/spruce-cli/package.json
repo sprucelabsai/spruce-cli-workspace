@@ -48,7 +48,9 @@
 		"start": "DEBUG=@sprucelabs/cli~debug node . $COMMANDS",
 		"local": "DEBUG=@sprucelabs/cli~debug node --inspect=5200 . $COMMANDS ; echo 'DONE'",
 		"test": "yarn cache.test && jest",
-		"test.watch": "yarn cache.test && jest --watch"
+		"test.watch": "yarn cache.test && jest --watch",
+		"arkit": "arkit -f index.ts -o docs/images/arkit.svg",
+		"arkit.png": "arkit -f index.ts -o docs/images/arkit.png"
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.12.5",
@@ -169,6 +171,9 @@
 					"name": "testing events",
 					"description": "this too, is a great test!"
 				}
+			},
+			{
+				"code": "schema"
 			},
 			{
 				"code": "event"

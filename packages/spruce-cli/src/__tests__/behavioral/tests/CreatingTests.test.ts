@@ -21,7 +21,7 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
 			'CanBookAppointment.test.ts',
-			response.files ?? []
+			response.files
 		)
 
 		assert.doesInclude(match, 'behavioral')

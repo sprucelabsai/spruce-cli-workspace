@@ -47,8 +47,6 @@ export class EventSkillFeature implements SkillFeature {
 			await this.loadListeners();
 			await this.loadContracts()
 
-
-
 			const health: EventHealthCheckItem = {
 				status: "passed",
 				listeners: this.listeners,

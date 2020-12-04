@@ -18,7 +18,7 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
 			'will-boot.listener.ts',
-			results.files ?? []
+			results.files
 		)
 
 		assert.doesInclude(match, version)

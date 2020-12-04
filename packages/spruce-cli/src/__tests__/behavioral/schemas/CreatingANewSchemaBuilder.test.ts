@@ -68,13 +68,13 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 
 		const builderMatch = testUtil.assertsFileByNameInGeneratedFiles(
 			'anotherTest.builder.ts',
-			response.files ?? []
+			response.files
 		)
 
 		await checker.check(builderMatch)
 		const schemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
 			'anotherTest.schema.ts',
-			response.files ?? []
+			response.files
 		)
 
 		await checker.check(schemaMatch)
@@ -221,7 +221,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 
 		const schemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
 			'secondSchema.schema.ts',
-			createResults.files ?? []
+			createResults.files
 		)
 
 		assert.doesInclude(schemaMatch, newVersion.dirValue)
@@ -237,7 +237,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 
 		let schemaFile = testUtil.assertsFileByNameInGeneratedFiles(
 			expectedFileName,
-			response.files ?? []
+			response.files
 		)
 
 		const errors = response.errors ?? []

@@ -167,7 +167,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 		testUtil.assertsFileByNameInGeneratedFiles(
 			'will-boot.listener.ts',
-			results.files ?? []
+			results.files
 		)
 	}
 

@@ -187,8 +187,14 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		)
 	}
 
-	protected static async openInVsCode(file: string = this.cwd) {
-		await this.Service('command').execute(`code ${file}`)
-		await this.wait(99999999)
+	protected static async openInVsCode(options?: {
+		file?: string
+		dir?: string
+		timeout?: number
+	}) {
+		await this.Service('command').execute(
+			`code ${options?.file ?? options?.dir ?? this.cwd}`
+		)
+		await this.wait(options?.timeout ?? 99999999)
 	}
 }

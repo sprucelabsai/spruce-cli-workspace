@@ -17,8 +17,10 @@ const { testSkillCache } = packageJson
 const testKeys = Object.keys(testSkillCache)
 
 let remaining = testKeys.length
-const term = new TerminalInterface(__dirname)
+const term = new TerminalInterface(__dirname, true)
 const start = new Date().getTime()
+
+let progressInterval: any
 
 async function run() {
 	term.clear()
@@ -74,7 +76,7 @@ async function run() {
 		)
 	})
 
-	const interval = setInterval(async () => {
+	progressInterval = setInterval(async () => {
 		const now = new Date().getTime()
 		const delta = now - start
 
@@ -91,7 +93,7 @@ async function run() {
 	await Promise.all(promises)
 	await term.stopLoading()
 	term.clear()
-	clearInterval(interval)
+	clearInterval(progressInterval)
 }
 
 function dropInS(remaining: number) {
@@ -100,4 +102,7 @@ function dropInS(remaining: number) {
 
 void run().catch((err) => {
 	term.renderError(err)
+	if (progressInterval) {
+		clearInterval(progressInterval)
+	}
 })

@@ -7,7 +7,9 @@ export default class EventFeature extends AbstractFeature {
 	public nameReadable = 'Event'
 	public description =
 		'Plug into the Mercury XP and start creating experiences!'
-	public dependencies: FeatureDependency[] = []
+	public dependencies: FeatureDependency[] = [
+		{ code: 'schema', isRequired: true },
+	]
 	public packageDependencies = [
 		{
 			name: '@sprucelabs/mercury-client',
