@@ -43,7 +43,7 @@ handlebars.registerHelper(
 		const valueTypes: ValueTypes = root?.valueTypes
 		if (!valueTypes) {
 			throw new Error(
-				'valueTypeLiteral helper needs a valueTypeGenerator in the root context'
+				'valueTypeLiteral helper needs a valuesTypes in the root context'
 			)
 		}
 

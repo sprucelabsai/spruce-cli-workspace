@@ -99,6 +99,7 @@ export const templates = {
 		const template = templateImportUtil.getTemplate(
 			options.schemaFile ?? 'schemas/schema.ts.hbs'
 		)
+
 		return template({
 			...options,
 			imports,
@@ -184,11 +185,17 @@ export const templates = {
 		return template(options)
 	},
 
-	eventContract(contract: EventContractTemplateItem) {
+	eventContract(
+		options: EventContractTemplateItem & {
+			schemaTemplateItems: SchemaTemplateItem[]
+			valueTypes: ValueTypes
+		}
+	) {
 		const template = templateImportUtil.getTemplate(
 			'events/event.contract.ts.hbs'
 		)
-		return template(contract)
+
+		return template(options)
 	},
 
 	combinedEventsContract(contracts: EventContractTemplateItem[]) {

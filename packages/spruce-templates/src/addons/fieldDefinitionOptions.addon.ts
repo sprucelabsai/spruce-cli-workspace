@@ -7,7 +7,7 @@ handlebars.registerHelper(
 	'fieldDefinitionOptions',
 	function (
 		namespace: string,
-		nameCamel: string,
+		schemaNameCamel: string,
 		version: string,
 		fieldName: string,
 		fieldDefinition: FieldDefinitions,
@@ -18,9 +18,9 @@ handlebars.registerHelper(
 			throw new Error('fieldDefinitionOptions helper needs namespace first')
 		}
 
-		if (typeof nameCamel !== 'string') {
+		if (typeof schemaNameCamel !== 'string') {
 			throw new Error(
-				"fieldDefinitionOptions helper needs nameCamel 2nd. This can happen if you didn't convert the schema into a template item."
+				'fieldDefinitionOptions helper needs schemaNameCamel 2nd.'
 			)
 		}
 
@@ -66,7 +66,7 @@ handlebars.registerHelper(
 		if (fieldDefinition.type === 'schema' && updatedOptions) {
 			const value = handlebars.helpers.valueTypeLiteral(
 				namespace,
-				nameCamel,
+				schemaNameCamel,
 				version,
 				fieldName,
 				renderAs === TemplateRenderAs.Type

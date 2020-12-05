@@ -24,6 +24,8 @@ const skillFeatureSchema: SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema
 	                options: undefined
 	            },
 	    }
+	
+	
 }
 
 SchemaRegistry.getInstance().trackSchema(skillFeatureSchema)

@@ -18,6 +18,8 @@ const upgradeSkillActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkill
 	                options: undefined
 	            },
 	    }
+	
+	
 }
 
 SchemaRegistry.getInstance().trackSchema(upgradeSkillActionSchema)

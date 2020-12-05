@@ -24,6 +24,8 @@ const onboardingSchema: SpruceSchemas.SpruceCli.v2020_07_22.OnboardingSchema  = 
 	                options: {choices: [{"label":"Create test","value":"test.create"}],}
 	            },
 	    }
+	
+	
 }
 
 SchemaRegistry.getInstance().trackSchema(onboardingSchema)

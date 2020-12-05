@@ -37,6 +37,8 @@ const syncSchemaFieldsActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncSche
 	                options: undefined
 	            },
 	    }
+	
+	
 }
 
 SchemaRegistry.getInstance().trackSchema(syncSchemaFieldsActionSchema)

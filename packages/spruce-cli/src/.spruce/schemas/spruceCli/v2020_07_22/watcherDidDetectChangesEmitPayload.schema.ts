@@ -18,6 +18,8 @@ const watcherDidDetectChangesEmitPayloadSchema: SpruceSchemas.SpruceCli.v2020_07
 	                options: {schemas: [generatedFileSchema, generatedDirSchema],}
 	            },
 	    }
+	
+	
 }
 
 SchemaRegistry.getInstance().trackSchema(watcherDidDetectChangesEmitPayloadSchema)

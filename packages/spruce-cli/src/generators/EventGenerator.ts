@@ -1,8 +1,10 @@
 import pathUtil from 'path'
+import { SchemaTemplateItem } from '@sprucelabs/schema'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import {
 	EventContractTemplateItem,
 	EventListenerOptions,
+	ValueTypes,
 } from '@sprucelabs/spruce-templates'
 import { GeneratedFile } from '../types/cli.types'
 import AbstractGenerator from './AbstractGenerator'
@@ -11,22 +13,73 @@ export default class EventGenerator extends AbstractGenerator {
 	public async generateContracts(
 		destinationDir: string,
 		options: {
-			templateItems: EventContractTemplateItem[]
+			eventContractTemplateItems: EventContractTemplateItem[]
+			schemaTemplateItems: SchemaTemplateItem[]
+			valueTypes: ValueTypes
 		}
 	) {
-		const { templateItems } = options
+		const {
+			eventContractTemplateItems,
+			schemaTemplateItems,
+			valueTypes,
+		} = options
 
 		const generated: Promise<GeneratedFile>[] = []
 
-		for (const item of templateItems) {
-			generated.push(this.generateContract(destinationDir, item))
+		for (const item of eventContractTemplateItems) {
+			generated.push(
+				this.generateContract({
+					destinationDir,
+					eventContractTemplateItem: item,
+					schemaTemplateItems,
+					valueTypes,
+				})
+			)
 		}
 
-		generated.push(this.generateCombinedEvents(destinationDir, templateItems))
+		generated.push(
+			this.generateCombinedEvents(destinationDir, eventContractTemplateItems)
+		)
 
 		const all = await Promise.all(generated)
 
 		return all
+	}
+
+	private async generateContract(options: {
+		destinationDir: string
+		eventContractTemplateItem: EventContractTemplateItem
+		schemaTemplateItems: SchemaTemplateItem[]
+		valueTypes: ValueTypes
+	}): Promise<GeneratedFile> {
+		const {
+			destinationDir,
+			eventContractTemplateItem,
+			schemaTemplateItems,
+			valueTypes,
+		} = options
+
+		const destinationFile = diskUtil.resolvePath(
+			destinationDir,
+			namesUtil.toCamel(eventContractTemplateItem.namespace),
+			`${eventContractTemplateItem.nameCamel}.contract.ts`
+		)
+
+		const eventsContractContents = this.templates.eventContract({
+			...eventContractTemplateItem,
+			schemaTemplateItems,
+			valueTypes,
+		})
+
+		const results = await this.writeFileIfChangedMixinResults(
+			destinationFile,
+			eventsContractContents,
+			`The event contract for ${
+				Object.keys(eventContractTemplateItem.eventSignatures)[0]
+			}`
+		)
+
+		return results[0]
 	}
 
 	private async generateCombinedEvents(
@@ -44,26 +97,6 @@ export default class EventGenerator extends AbstractGenerator {
 			destinationFile,
 			contents,
 			'All event contracts combined to a single export.'
-		)
-
-		return results[0]
-	}
-
-	private async generateContract(
-		destinationDir: string,
-		templateItem: EventContractTemplateItem
-	): Promise<GeneratedFile> {
-		const destinationFile = diskUtil.resolvePath(
-			destinationDir,
-			namesUtil.toCamel(templateItem.namespace),
-			`${templateItem.nameCamel}.contract.ts`
-		)
-		const eventsContractContents = this.templates.eventContract(templateItem)
-
-		const results = await this.writeFileIfChangedMixinResults(
-			destinationFile,
-			eventsContractContents,
-			`The event contract for ${Object.keys(templateItem.eventSignatures)[0]}`
 		)
 
 		return results[0]

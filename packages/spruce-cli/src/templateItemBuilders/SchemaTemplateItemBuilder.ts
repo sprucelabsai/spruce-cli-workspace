@@ -109,7 +109,10 @@ export default class SchemaTemplateItemBuilder {
 				field.options.schemas = []
 
 				schemasOrIdsWithVersion.forEach((schemaOrId) => {
-					const related = { version: schema.version, ...schemaOrId }
+					const related = { ...schemaOrId }
+					if (schema.version) {
+						related.version = schema.version
+					}
 					field.options.schemas?.push(related)
 					this.cacheSchema(related)
 				})

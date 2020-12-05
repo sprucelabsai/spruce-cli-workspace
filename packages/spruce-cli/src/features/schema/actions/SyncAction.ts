@@ -12,6 +12,7 @@ import schemaGeneratorUtil from '../../../utilities/schemaGenerator.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 import SkillFeature from '../../skill/SkillFeature'
+import ValueTypeBuilder from '../ValueTypeBuilder'
 
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasAction
@@ -89,7 +90,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			generateFieldFiles,
 		} = await this.generateFieldTemplateItems({
 			addonsLookupDir,
-			generateFieldTypes,
+			shouldGenerateFieldTypes: generateFieldTypes,
 			resolvedFieldTypesDestination,
 		})
 
@@ -130,12 +131,12 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			let valueTypes: ValueTypes | undefined
 
 			try {
-				valueTypes = await this.generateValueTypes(
-					resolvedFieldTypesDestination,
+				valueTypes = await this.generateValueTypes({
+					resolvedDestination: resolvedFieldTypesDestination,
 					fieldTemplateItems,
 					schemaTemplateItems,
-					globalNamespace ?? undefined
-				)
+					globalNamespace: globalNamespace ?? undefined,
+				})
 			} catch (err) {
 				schemaErrors.push(err)
 			}
@@ -176,7 +177,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 		})
 	}
 
-	public async generateSchemaTemplateItems(options: {
+	private async generateSchemaTemplateItems(options: {
 		schemaLookupDir: string | undefined
 		localNamespace: string
 		resolvedSchemaTypesDestinationDirOrFile: string
@@ -226,12 +227,12 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 
 	private async generateFieldTemplateItems(options: {
 		addonsLookupDir: string
-		generateFieldTypes: boolean
+		shouldGenerateFieldTypes: boolean
 		resolvedFieldTypesDestination: string
 	}) {
 		const {
 			addonsLookupDir,
-			generateFieldTypes,
+			shouldGenerateFieldTypes: generateFieldTypes,
 			resolvedFieldTypesDestination,
 		} = options
 
@@ -284,31 +285,18 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 	}
 
-	private async generateValueTypes(
-		resolvedDestination: string,
-		fieldTemplateItems: FieldTemplateItem[],
-		schemaTemplateItems: SchemaTemplateItem[],
+	private async generateValueTypes(options: {
+		resolvedDestination: string
+		fieldTemplateItems: FieldTemplateItem[]
+		schemaTemplateItems: SchemaTemplateItem[]
 		globalNamespace?: string
-	) {
-		if (schemaTemplateItems.length === 0) {
-			return {}
-		}
-		const valueTypeResults = await this.schemaGenerator.generateValueTypes(
-			resolvedDestination,
-			{
-				fieldTemplateItems,
-				schemaTemplateItems,
-				globalNamespace,
-			}
+	}) {
+		const builder = new ValueTypeBuilder(
+			this.schemaGenerator,
+			this.Service('import')
 		)
 
-		const valueTypes: ValueTypes = await this.Service('import').importDefault(
-			valueTypeResults[0].path
-		)
-
-		diskUtil.deleteFile(valueTypeResults[0].path)
-
-		return valueTypes
+		return builder.generateValueTypes(options)
 	}
 
 	private async deleteOrphanedSchemas(

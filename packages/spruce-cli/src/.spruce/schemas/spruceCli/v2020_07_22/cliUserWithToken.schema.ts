@@ -38,6 +38,8 @@ const cliUserWithTokenSchema: SpruceSchemas.SpruceCli.v2020_07_22.CliUserWithTok
 	                options: undefined
 	            },
 	    }
+	
+	
 }
 
 SchemaRegistry.getInstance().trackSchema(cliUserWithTokenSchema)

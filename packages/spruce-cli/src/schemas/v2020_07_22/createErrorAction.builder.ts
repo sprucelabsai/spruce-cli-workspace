@@ -1,6 +1,6 @@
 import { buildSchema } from '@sprucelabs/schema'
 import namedTemplateItemBuilder from './namedTemplateItem.builder'
-import syncErrorsActionBuilder from './syncErrorsAction.builder'
+import syncErrorsActionBuilder from './syncErrorAction.builder'
 
 export default buildSchema({
 	id: 'createErrorAction',

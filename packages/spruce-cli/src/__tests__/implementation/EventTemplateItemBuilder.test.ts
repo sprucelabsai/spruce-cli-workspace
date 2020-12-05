@@ -70,11 +70,76 @@ const willBookWithNamespaceTemplateItem: EventContractTemplateItem = {
 	},
 }
 
-const proximityEmitPayloadSchema = buildSchema({
-	id: 'proximityEmitPayload',
+const relatedToRelatedToProximitySchema = buildSchema({
+	id: 'relatedToRelatedToProximitySchema',
 	fields: {
 		onlyField: {
 			type: 'text',
+		},
+	},
+})
+
+const relatedToRelatedToProximitySchemaTemplateItem: SchemaTemplateItem = {
+	namespace: 'Proximity',
+	id: relatedToRelatedToProximitySchema.id,
+	nameCamel: 'relatedToRelatedToProximitySchema',
+	namePascal: 'RelatedToRelatedToProximitySchema',
+	nameReadable: 'relatedToRelatedToProximitySchema',
+	schema: relatedToRelatedToProximitySchema,
+	isNested: true,
+	destinationDir: '#spruce/events',
+}
+
+const relatedToProximitySchema = buildSchema({
+	id: 'relatedToProximitySchema',
+	fields: {
+		boolField: {
+			type: 'boolean',
+		},
+		relatedToRelatedSchema: {
+			type: 'schema',
+			options: {
+				schema: relatedToRelatedToProximitySchema,
+			},
+		},
+	},
+})
+
+const relatedToProximitySchemaTemplateItem: SchemaTemplateItem = {
+	namespace: 'Proximity',
+	id: relatedToProximitySchema.id,
+	nameCamel: 'relatedToProximitySchema',
+	namePascal: 'RelatedToProximitySchema',
+	nameReadable: 'relatedToProximitySchema',
+	schema: {
+		id: 'relatedToProximitySchema',
+		fields: {
+			boolField: {
+				type: 'boolean',
+			},
+			relatedToRelatedSchema: {
+				type: 'schema',
+				options: {
+					schemaIds: [{ id: 'relatedToRelatedToProximitySchema' }],
+				},
+			},
+		},
+	},
+	isNested: true,
+	destinationDir: '#spruce/events',
+}
+
+const proximityEmitPayloadSchema = buildSchema({
+	id: 'proximityEmitPayload',
+	fields: {
+		textField: {
+			type: 'text',
+		},
+		relatedSchema: {
+			type: 'schema',
+			options: {
+				schema: relatedToProximitySchema,
+			},
 		},
 	},
 })
@@ -85,7 +150,20 @@ const proximityEmitPayloadTemplateItem: SchemaTemplateItem = {
 	nameCamel: 'proximityEmitPayload',
 	namePascal: 'ProximityEmitPayload',
 	nameReadable: 'proximityEmitPayload',
-	schema: proximityEmitPayloadSchema,
+	schema: {
+		id: 'proximityEmitPayload',
+		fields: {
+			textField: {
+				type: 'text',
+			},
+			relatedSchema: {
+				type: 'schema',
+				options: {
+					schemaIds: [{ id: 'relatedToProximitySchema' }],
+				},
+			},
+		},
+	},
 	isNested: false,
 	destinationDir: '#spruce/events',
 }
@@ -131,17 +209,24 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 
 	@test()
 	protected static turnsSingleContractIntoTemplateItem() {
-		const results = this.itemBuilder.generateTemplateItems([bookContract])
+		const {
+			eventContractTemplateItems,
+		} = this.itemBuilder.generateTemplateItems([bookContract])
 
-		const actual = results[0]
+		const actual = eventContractTemplateItems[0]
 
 		assert.isEqualDeep(actual, didBookTemplateItem)
 	}
 
-	@test(
-		'builds emit payload schema into a templaet item',
+	@test.only(
+		'builds emit payload schema into a template item',
 		[contractWithEmitPayload],
-		[contractWithEmitPayloadTemplateItem]
+		[contractWithEmitPayloadTemplateItem],
+		[
+			relatedToRelatedToProximitySchemaTemplateItem,
+			relatedToProximitySchemaTemplateItem,
+			proximityEmitPayloadTemplateItem,
+		]
 	)
 	@test(
 		'turns 1 contract with 2 event signature into 2 template items',
@@ -165,9 +250,19 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 	)
 	protected static generateItems(
 		contracts: EventContract[],
-		expected: EventContractTemplateItem[]
+		expectedEventContractTemplateItems: EventContractTemplateItem[],
+		expectedSchemaTemplateItems: SchemaTemplateItem[] = []
 	) {
-		const actual = this.itemBuilder.generateTemplateItems(contracts)
-		assert.isEqualDeep(actual, expected)
+		const {
+			eventContractTemplateItems,
+			schemaTemplateItems,
+		} = this.itemBuilder.generateTemplateItems(contracts)
+
+		assert.isEqualDeep(
+			eventContractTemplateItems,
+			expectedEventContractTemplateItems
+		)
+
+		assert.isEqualDeep(schemaTemplateItems, expectedSchemaTemplateItems)
 	}
 }

@@ -33,6 +33,8 @@ const generatedDirSchema: SpruceSchemas.SpruceCli.v2020_07_22.GeneratedDirSchema
 	                options: {choices: [{"label":"Skipped","value":"skipped"},{"label":"Generated","value":"generated"},{"label":"Updated","value":"updated"},{"label":"Deleted","value":"deleted"}],}
 	            },
 	    }
+	
+	
 }
 
 SchemaRegistry.getInstance().trackSchema(generatedDirSchema)

@@ -21,34 +21,46 @@ export interface NamedEventSignature {
 export default class EventTemplateItemBuilder {
 	public generateTemplateItems(
 		contracts: EventContract[]
-	): EventContractTemplateItem[] {
-		const items: EventContractTemplateItem[] = []
+	): {
+		eventContractTemplateItems: EventContractTemplateItem[]
+		schemaTemplateItems: SchemaTemplateItem[]
+	} {
+		const eventContractTemplateItems: EventContractTemplateItem[] = []
+		const schemaTemplateItems: SchemaTemplateItem[] = []
 
 		for (const contract of contracts) {
-			const contractItems = this.generateTemplateItemsForContract(contract)
-			items.push(...contractItems)
+			const {
+				schemaTemplateItems: schemaItems,
+				eventContractTemplateItems: contractItems,
+			} = this.generateTemplateItemsForContract(contract)
+
+			eventContractTemplateItems.push(...contractItems)
+			schemaTemplateItems.push(...schemaItems)
 		}
 
-		return items
+		return { eventContractTemplateItems, schemaTemplateItems }
 	}
 
 	private generateTemplateItemsForContract(
 		contract: EventContract
-	): EventContractTemplateItem[] {
+	): {
+		eventContractTemplateItems: EventContractTemplateItem[]
+		schemaTemplateItems: SchemaTemplateItem[]
+	} {
 		const namedSignatures = eventContractUtil.getNamedEventSignatures(contract)
 
-		const schemaItems: SchemaTemplateItem[] = this.mapEventSigsToSchemaTemplateItems(
+		const schemaTemplateItems: SchemaTemplateItem[] = this.mapEventSigsToSchemaTemplateItems(
 			namedSignatures
 		)
 
-		const items: EventContractTemplateItem[] = []
+		const eventContractTemplateItems: EventContractTemplateItem[] = []
 
 		for (const namedSig of namedSignatures) {
 			const namespacePascal = this.sigToNamespacePascal(namedSig)
 
 			const signatureTemplateItem: EventSignatureTemplateItem = this.buildEventSigTemplateItem(
 				namedSig,
-				schemaItems
+				schemaTemplateItems
 			)
 
 			const item: EventContractTemplateItem = {
@@ -64,10 +76,13 @@ export default class EventTemplateItemBuilder {
 				},
 			}
 
-			items.push(item)
+			eventContractTemplateItems.push(item)
 		}
 
-		return items
+		return {
+			eventContractTemplateItems,
+			schemaTemplateItems,
+		}
 	}
 
 	private buildEventSigTemplateItem(

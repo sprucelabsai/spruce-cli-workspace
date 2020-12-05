@@ -15,6 +15,8 @@ const registerDashboardWidgetsEmitPayloadSchemaSchema: SpruceSchemas.SpruceCli.v
 	                options: {valueType: `BaseWidget`,}
 	            },
 	    }
+	
+	
 }
 
 SchemaRegistry.getInstance().trackSchema(registerDashboardWidgetsEmitPayloadSchemaSchema)

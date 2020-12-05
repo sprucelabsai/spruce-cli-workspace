@@ -4,6 +4,7 @@ import {
 	eventContractUtil,
 	validateEventContract,
 } from '@sprucelabs/mercury-types'
+import { validateSchema } from '@sprucelabs/schema'
 import { CORE_NAMESPACE, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { FeatureActionResponse } from '../../../features/features.types'
@@ -17,7 +18,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		assert.isFunction(cli.getFeature('event').Action('sync').execute)
 	}
 
-	@test()
+	@test.only()
 	protected static async generatesValidContractFile() {
 		const fixture = this.FeatureFixture()
 		const cli = await fixture.installCachedFeatures('eventsInNodeModule')
@@ -26,7 +27,9 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		assert.isFalsy(results.errors)
 
-		await this.assertsContractsHaveEmitPayload(results)
+		await this.openInVsCode()
+
+		await this.assertsContractsHaveValidEmitPayload(results)
 		await this.assertValidActionResponseFiles(results)
 
 		this.assertExpectedFilesAreCreated(results)
@@ -80,7 +83,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		return imported
 	}
 
-	private static async assertsContractsHaveEmitPayload(
+	private static async assertsContractsHaveValidEmitPayload(
 		results: FeatureActionResponse
 	) {
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
@@ -102,6 +105,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		)
 
 		assert.isTruthy(signature.emitPayloadSchema)
+		validateSchema(signature.emitPayloadSchema)
 	}
 
 	private static assertExpectedFilesAreCreated(results: FeatureActionResponse) {

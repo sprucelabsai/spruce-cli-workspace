@@ -158,6 +158,8 @@ const syncErrorActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorAction
 	                options: undefined
 	            },
 	    }
+	
+	
 }
 
 SchemaRegistry.getInstance().trackSchema(syncErrorActionSchema)

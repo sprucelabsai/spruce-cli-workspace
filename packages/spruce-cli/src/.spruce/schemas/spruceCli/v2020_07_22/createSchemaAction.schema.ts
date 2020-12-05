@@ -197,6 +197,8 @@ const createSchemaActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateSchema
 	                options: undefined
 	            },
 	    }
+	
+	
 }
 
 SchemaRegistry.getInstance().trackSchema(createSchemaActionSchema)
