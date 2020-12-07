@@ -5,6 +5,7 @@ import { EventContractTemplateItem } from '@sprucelabs/spruce-templates'
 import { test, assert } from '@sprucelabs/test'
 import EventTemplateItemBuilder from '../../templateItemBuilders/EventTemplateItemBuilder'
 import AbstractCliTest from '../../test/AbstractCliTest'
+import coreEventContract from '../support/coreEventContract'
 
 const bookContract: EventContract = {
 	eventSignatures: {
@@ -85,7 +86,7 @@ const relatedToRelatedToProximitySchemaTemplateItem: SchemaTemplateItem = {
 	nameCamel: 'relatedToRelatedToProximitySchema',
 	namePascal: 'RelatedToRelatedToProximitySchema',
 	nameReadable: 'relatedToRelatedToProximitySchema',
-	schema: relatedToRelatedToProximitySchema,
+	schema: { ...relatedToRelatedToProximitySchema, namespace: 'Proximity' },
 	isNested: true,
 	destinationDir: '#spruce/events',
 }
@@ -113,6 +114,7 @@ const relatedToProximitySchemaTemplateItem: SchemaTemplateItem = {
 	nameReadable: 'relatedToProximitySchema',
 	schema: {
 		id: 'relatedToProximitySchema',
+		namespace: 'Proximity',
 		fields: {
 			boolField: {
 				type: 'boolean',
@@ -120,7 +122,9 @@ const relatedToProximitySchemaTemplateItem: SchemaTemplateItem = {
 			relatedToRelatedSchema: {
 				type: 'schema',
 				options: {
-					schemaIds: [{ id: 'relatedToRelatedToProximitySchema' }],
+					schemaIds: [
+						{ id: 'relatedToRelatedToProximitySchema', namespace: 'Proximity' },
+					],
 				},
 			},
 		},
@@ -152,6 +156,7 @@ const proximityEmitPayloadTemplateItem: SchemaTemplateItem = {
 	nameReadable: 'proximityEmitPayload',
 	schema: {
 		id: 'proximityEmitPayload',
+		namespace: 'Proximity',
 		fields: {
 			textField: {
 				type: 'text',
@@ -159,7 +164,9 @@ const proximityEmitPayloadTemplateItem: SchemaTemplateItem = {
 			relatedSchema: {
 				type: 'schema',
 				options: {
-					schemaIds: [{ id: 'relatedToProximitySchema' }],
+					schemaIds: [
+						{ id: 'relatedToProximitySchema', namespace: 'Proximity' },
+					],
 				},
 			},
 		},
@@ -218,7 +225,7 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 		assert.isEqualDeep(actual, didBookTemplateItem)
 	}
 
-	@test.only(
+	@test(
 		'builds emit payload schema into a template item',
 		[contractWithEmitPayload],
 		[contractWithEmitPayloadTemplateItem],
@@ -253,16 +260,38 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 		expectedEventContractTemplateItems: EventContractTemplateItem[],
 		expectedSchemaTemplateItems: SchemaTemplateItem[] = []
 	) {
+		debugger
 		const {
 			eventContractTemplateItems,
 			schemaTemplateItems,
 		} = this.itemBuilder.generateTemplateItems(contracts)
+
+		debugger
 
 		assert.isEqualDeep(
 			eventContractTemplateItems,
 			expectedEventContractTemplateItems
 		)
 
+		debugger
+
 		assert.isEqualDeep(schemaTemplateItems, expectedSchemaTemplateItems)
+	}
+
+	@test()
+	protected static canPullEventContractSchemaFromCoreEventContract() {
+		const { schemaTemplateItems } = this.itemBuilder.generateTemplateItems([
+			{
+				eventSignatures: {
+					'register-events':
+						coreEventContract.eventSignatures['register-events'],
+				},
+			},
+		])
+
+		const match = schemaTemplateItems.find(
+			(item) => item.id === 'eventContract'
+		)
+		assert.isTruthy(match)
 	}
 }

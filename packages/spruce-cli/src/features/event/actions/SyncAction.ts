@@ -69,8 +69,6 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 		const store = this.Store('event')
 		const contractResults = await store.fetchEventContracts()
 
-		debugger
-
 		if (contractResults.errors.length > 0) {
 			return {
 				errors: contractResults.errors,

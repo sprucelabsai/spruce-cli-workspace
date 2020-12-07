@@ -217,7 +217,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			localNamespace
 		)
 
-		const schemaTemplateItems: SchemaTemplateItem[] = schemaTemplateItemBuilder.generateTemplateItems(
+		const schemaTemplateItems: SchemaTemplateItem[] = schemaTemplateItemBuilder.buildTemplateItems(
 			schemasByNamespace,
 			hashSpruceDestination
 		)

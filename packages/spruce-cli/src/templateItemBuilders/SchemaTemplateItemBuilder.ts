@@ -7,40 +7,76 @@ import {
 	SchemaError,
 	validateSchema,
 	isIdWithVersion,
+	normalizeSchemaToIdWithVersion,
 } from '@sprucelabs/schema'
 import cloneDeep from 'lodash/cloneDeep'
+import isEqual from 'lodash/isEqual'
 import merge from 'lodash/merge'
 import uniqWith from 'lodash/uniqWith'
 import SpruceError from '../errors/SpruceError'
 import { SchemasByNamespace } from '../stores/SchemaStore'
 import schemaUtil from '../utilities/schema.utility'
 
+interface SchemaWithDependencies {
+	schema: Schema
+	dependencies: SchemaIdWithVersion[]
+	isNested: boolean
+}
+
 export default class SchemaTemplateItemBuilder {
-	private schemaCache: Record<string, Schema> = {}
+	private schemasByKey: Record<string, SchemaWithDependencies> = {}
 	private localNamespace: string
 
 	public constructor(localNamespace: string) {
 		this.localNamespace = localNamespace
 	}
 
-	public generateTemplateItems(
+	public buildTemplateItems(
 		schemasByNamespace: SchemasByNamespace,
 		destinationDir: string
 	) {
-		const schemaTemplateItems: SchemaTemplateItem[] = []
+		const schemas: Schema[] = []
 		const namespaces = Object.keys(schemasByNamespace)
 
 		for (const namespace of namespaces) {
-			const schemas = schemasByNamespace[namespace]
-			const items = this.generateTemplateItemsForNamespace(
-				namespace,
-				cloneDeep(schemas),
-				destinationDir
+			schemas.push(
+				...schemasByNamespace[namespace].map((s) => ({ namespace, ...s }))
 			)
-
-			schemaTemplateItems.push(...items)
 		}
+
+		this.flattenSchemas(schemas)
+
+		const flattened = Object.values(this.schemasByKey)
+		const sorted = flattened
+			.sort((a, b) => {
+				if (this.doesADependOnB(a, b)) {
+					return -1
+				} else if (this.doesADependOnB(b, a)) {
+					return 1
+				}
+				return 0
+			})
+			.reverse()
+
+		const schemaTemplateItems = sorted.map((s) =>
+			this.buildTemplateItem({
+				...s,
+				destinationDir,
+			})
+		)
+
 		return schemaTemplateItems
+	}
+
+	private doesADependOnB(a: SchemaWithDependencies, b: SchemaWithDependencies) {
+		const { dependencies } = a
+		const idWithVersion = normalizeSchemaToIdWithVersion(b.schema)
+
+		if (dependencies.find((dep) => isEqual(dep, idWithVersion))) {
+			return true
+		}
+
+		return false
 	}
 
 	private generateTemplateItemsForNamespace(
@@ -48,11 +84,11 @@ export default class SchemaTemplateItemBuilder {
 		schemas: Schema[],
 		destinationDir: string
 	): SchemaTemplateItem[] {
-		this.schemaCache = {}
+		this.schemasByKey = {}
 
-		this.cacheSchemas(schemas)
+		this.flattenSchemas(schemas)
 
-		const flattened = Object.values(this.schemaCache)
+		const flattened = Object.values(this.schemasByKey)
 
 		const sorted: Schema[] = []
 
@@ -62,9 +98,7 @@ export default class SchemaTemplateItemBuilder {
 			sorted.push(schema)
 		})
 
-		let ourNamespace = sorted.filter(
-			(s) => !s.namespace || s.namespace === namespace
-		)
+		let ourNamespace = flattened
 
 		ourNamespace = uniqWith(
 			ourNamespace,
@@ -84,16 +118,20 @@ export default class SchemaTemplateItemBuilder {
 		return templateTimes
 	}
 
-	private cacheSchemas(schemas: Schema[]) {
+	private flattenSchemas(schemas: Schema[]) {
 		schemas.forEach((def) => {
-			this.cacheSchema(def)
+			this.flattenSchema(def)
 		})
 	}
 
-	private cacheSchema(schema: Schema) {
-		const fields = schema.dynamicFieldSignature
-			? { dynamicField: schema.dynamicFieldSignature }
-			: schema.fields ?? {}
+	private flattenSchema(schema: Schema, isNested = false) {
+		const localSchema = cloneDeep(schema)
+
+		const fields = localSchema.dynamicFieldSignature
+			? { dynamicField: localSchema.dynamicFieldSignature }
+			: localSchema.fields ?? {}
+
+		const dependencies: SchemaIdWithVersion[] = []
 
 		Object.keys(fields).forEach((name) => {
 			const field = fields[name]
@@ -106,28 +144,39 @@ export default class SchemaTemplateItemBuilder {
 				delete field.options.schemaId
 				delete field.options.schemaIds
 				delete field.options.schemas
-				field.options.schemas = []
+				field.options.schemaIds = []
 
 				schemasOrIdsWithVersion.forEach((schemaOrId) => {
 					const related = { ...schemaOrId }
-					if (schema.version) {
-						related.version = schema.version
+
+					if (localSchema.version && !related.version) {
+						related.version = localSchema.version
 					}
-					field.options.schemas?.push(related)
-					this.cacheSchema(related)
+
+					if (!related.namespace) {
+						related.namespace = schema.namespace
+					}
+
+					const relatedIdWithVersion = normalizeSchemaToIdWithVersion(related)
+
+					field.options.schemaIds?.push(relatedIdWithVersion)
+					dependencies.push(relatedIdWithVersion)
+
+					this.flattenSchema(related, true)
 				})
 			}
 		})
 
-		const key = schemaUtil.generateCacheKey(schema)
-		this.schemaCache[key] = merge(
-			this.schemaCache[key] ?? {},
-			this.normalizeSchemaFieldsToIdsWithVersion(schema)
-		)
+		const key = schemaUtil.generateCacheKey(localSchema)
+		this.schemasByKey[key] = merge(this.schemasByKey[key] ?? {}, {
+			schema: localSchema,
+			dependencies,
+			isNested: this.schemasByKey[key]?.isNested === false ? false : isNested,
+		})
 	}
 
 	private cacheLookup(schema: { id: string; version?: string }) {
-		return this.schemaCache[schemaUtil.generateCacheKey(schema)]
+		return this.schemasByKey[schemaUtil.generateCacheKey(schema)]
 	}
 
 	private pullRelatedSchemas(definition: Schema) {
@@ -196,12 +245,12 @@ export default class SchemaTemplateItemBuilder {
 	}
 
 	private buildTemplateItem(options: {
-		namespace: string
 		schema: Schema
 		isNested: boolean
 		destinationDir: string
 	}): SchemaTemplateItem {
-		const { schema, namespace, isNested, destinationDir } = options
+		const { schema, isNested, destinationDir } = options
+		const namespace = schema.namespace ?? this.localNamespace
 
 		const item: SchemaTemplateItem = {
 			id: schema.id,

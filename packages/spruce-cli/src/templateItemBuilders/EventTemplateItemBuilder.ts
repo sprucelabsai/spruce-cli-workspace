@@ -120,10 +120,11 @@ export default class EventTemplateItemBuilder {
 		> = this.mapEventSigsToSchemasByNampace(namedSignatures)
 
 		const schemaTemplateItemBuilder = new SchemaTemplateItemBuilder('Cli')
-		const schemaItems: SchemaTemplateItem[] = schemaTemplateItemBuilder.generateTemplateItems(
+		const schemaItems: SchemaTemplateItem[] = schemaTemplateItemBuilder.buildTemplateItems(
 			schemasByNamespace,
 			'#spruce/events'
 		)
+
 		return schemaItems
 	}
 
@@ -148,6 +149,7 @@ export default class EventTemplateItemBuilder {
 				schemasByNamespace[namespacePascal].push(responsePayloadSchema)
 			}
 		}
+
 		return schemasByNamespace
 	}
 
