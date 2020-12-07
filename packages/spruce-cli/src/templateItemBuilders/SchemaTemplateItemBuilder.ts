@@ -142,6 +142,7 @@ export default class SchemaTemplateItemBuilder {
 			id: schema.id,
 			namespace,
 			schema,
+			isCoreSchema: this.isCoreSchema(schema),
 			...schemaUtil.generateNamesForSchema(schema),
 			isNested,
 			destinationDir,
@@ -160,5 +161,9 @@ export default class SchemaTemplateItemBuilder {
 		}
 
 		return item
+	}
+
+	private isCoreSchema(schema: Schema & { isCoreSchema?: boolean }): boolean {
+		return !!schema.isCoreSchema
 	}
 }

@@ -1,4 +1,10 @@
-import { buildSchema, Schema, validateSchema } from '@sprucelabs/schema'
+import {
+	buildSchema,
+	normalizeSchemaToIdWithVersion,
+	Schema,
+	validateSchema,
+} from '@sprucelabs/schema'
+import * as coreSchemas from '@sprucelabs/spruce-core-schemas'
 import {
 	CORE_NAMESPACE,
 	diskUtil,
@@ -180,6 +186,48 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		})
 
 		assert.isTrue(wasFired)
+	}
+
+	@test()
+	protected static async fetchEventPayloadIncludesAllOtherSchemas() {
+		const cli = await this.installSchemaFeature('schemas')
+
+		let emitPayload: any
+		await cli.on('schema.did-fetch-schemas', (payload) => {
+			emitPayload = payload
+			return {}
+		})
+
+		await this.Store('schema').fetchSchemas({
+			localNamespace: LOCAL_NAMESPACE,
+		})
+
+		for (const name in coreSchemas) {
+			assert.doesInclude(
+				emitPayload.schemas,
+				//@ts-ignore
+				normalizeSchemaToIdWithVersion(coreSchemas[name])
+			)
+		}
+	}
+
+	@test()
+	protected static async droppingInDuplicateEventsThrows() {
+		const cli = await this.installSchemaFeature('schemas')
+
+		await cli.on('schema.did-fetch-schemas', () => {
+			return {
+				schemas: [coreSchemas.locationSchema],
+			}
+		})
+
+		const err = await assert.doesThrowAsync(() =>
+			this.Store('schema').fetchSchemas({
+				localNamespace: LOCAL_NAMESPACE,
+			})
+		)
+
+		errorAssertUtil.assertError(err, 'SCHEMA_EXISTS')
 	}
 
 	@test()

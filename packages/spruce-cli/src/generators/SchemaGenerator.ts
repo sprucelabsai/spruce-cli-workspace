@@ -1,7 +1,7 @@
 import path from 'path'
 import pathUtil from 'path'
 import { FieldTemplateItem, SchemaTemplateItem } from '@sprucelabs/schema'
-import { CORE_NAMESPACE, namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { LATEST_HANDLEBARS } from '@sprucelabs/spruce-skill-utils'
@@ -220,7 +220,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			valueTypes,
 			typesFile,
 			schemaFile:
-				item.namespace === CORE_NAMESPACE && shouldImportCoreSchemas
+				item.isCoreSchema && shouldImportCoreSchemas
 					? `schemas/imported.schema.ts.hbs`
 					: undefined,
 		})

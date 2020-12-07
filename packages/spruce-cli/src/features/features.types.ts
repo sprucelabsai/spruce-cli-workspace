@@ -2,6 +2,7 @@ import { Schema, SchemaValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
 import SpruceError from '../errors/SpruceError'
 import GeneratorFactory from '../generators/GeneratorFactory'
+import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory from '../services/ServiceFactory'
 import StoreFactory from '../stores/StoreFactory'
 import {
@@ -86,6 +87,7 @@ export interface FeatureActionOptions {
 	featureInstaller: FeatureInstaller
 	ui: GraphicsInterface
 	generatorFactory: GeneratorFactory
+	emitter: GlobalEmitter
 }
 
 export type FeatureCode = keyof FeatureMap

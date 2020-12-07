@@ -1,9 +1,17 @@
-import { FieldTemplateItem, SchemaTemplateItem } from '@sprucelabs/schema'
+import {
+	FieldTemplateItem,
+	normalizeSchemaToIdWithVersion,
+	Schema,
+	SchemaTemplateItem,
+} from '@sprucelabs/schema'
+import normaizeSchemaToIdWithVersion from '@sprucelabs/schema/build/utilities/normalizeSchemaToIdWithVersion'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { isEqual } from 'lodash'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventAction.schema'
 import SpruceError from '../../../errors/SpruceError'
 import EventTemplateItemBuilder from '../../../templateItemBuilders/EventTemplateItemBuilder'
+import mergeUtil from '../../../utilities/merge.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 import ValueTypeBuilder from '../../schema/ValueTypeBuilder'
@@ -57,9 +65,41 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			valueTypes,
 		})
 
-		return {
-			files,
+		const fetchCallback = (payload: { schemas: Schema[] }) => {
+			const filteredSchemas = this.filterSchemasBasedOnCallbackPayload(
+				payload.schemas,
+				schemaTemplateItems
+			)
+
+			return {
+				schemas: filteredSchemas,
+			}
 		}
+
+		await this.emitter.on('schema.did-fetch-schemas', fetchCallback)
+		const schemaSyncResults = await this.getFeature('schema')
+			.Action('sync')
+			.execute({})
+		await this.emitter.off('schema.did-fetch-schemas', fetchCallback)
+
+		return mergeUtil.mergeActionResults(schemaSyncResults, {
+			files,
+		})
+	}
+
+	private filterSchemasBasedOnCallbackPayload(
+		existingSchemas: Schema[],
+		schemaTemplateItems: SchemaTemplateItem[]
+	) {
+		const schemas = schemaTemplateItems.map((i) => i.schema)
+		const filteredSchemas = schemas.filter((schema) => {
+			const idWithVersion = normaizeSchemaToIdWithVersion(schema)
+			return !existingSchemas.find((s) =>
+				isEqual(normalizeSchemaToIdWithVersion(s), idWithVersion)
+			)
+		})
+
+		return filteredSchemas
 	}
 
 	private async generateTemplateItems(addonsLookupDir: string) {

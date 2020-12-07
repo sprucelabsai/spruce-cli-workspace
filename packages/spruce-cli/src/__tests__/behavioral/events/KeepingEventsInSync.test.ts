@@ -24,11 +24,11 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		const cli = await fixture.installCachedFeatures('eventsInNodeModule')
 
 		const results = await cli.getFeature('event').Action('sync').execute({})
+		
+		assert.isFalsy(results.errors)
 
 		await this.openInVsCode()
 		debugger
-
-		assert.isFalsy(results.errors)
 
 		await this.assertsContractsHaveValidEmitPayload(results)
 		await this.assertValidActionResponseFiles(results)

@@ -12,6 +12,19 @@ export const globalContract = buildEventContract({
 			emitPayloadSchema: watcherDidDetectChangesEmitPayloadSchema,
 		},
 		'schema.did-fetch-schemas': {
+			emitPayloadSchema: buildSchema({
+				id: 'didFetchSchemasEmitPayload',
+				fields: {
+					schemas: {
+						type: 'raw',
+						isArray: true,
+						isRequired: true,
+						options: {
+							valueType: 'Schema',
+						},
+					},
+				},
+			}),
 			responsePayloadSchema: buildSchema({
 				id: 'didFetchSchemasResponsePayload',
 				fields: {
