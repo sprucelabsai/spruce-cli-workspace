@@ -2,18 +2,12 @@ import {
 	Schema,
 	SchemaTemplateItem,
 	SchemaField,
-	SchemaFieldFieldDefinition,
 	SchemaIdWithVersion,
-	SchemaError,
-	validateSchema,
-	isIdWithVersion,
 	normalizeSchemaToIdWithVersion,
 } from '@sprucelabs/schema'
 import cloneDeep from 'lodash/cloneDeep'
 import isEqual from 'lodash/isEqual'
 import merge from 'lodash/merge'
-import uniqWith from 'lodash/uniqWith'
-import SpruceError from '../errors/SpruceError'
 import { SchemasByNamespace } from '../stores/SchemaStore'
 import schemaUtil from '../utilities/schema.utility'
 
@@ -79,45 +73,6 @@ export default class SchemaTemplateItemBuilder {
 		return false
 	}
 
-	private generateTemplateItemsForNamespace(
-		namespace: string,
-		schemas: Schema[],
-		destinationDir: string
-	): SchemaTemplateItem[] {
-		this.schemasByKey = {}
-
-		this.flattenSchemas(schemas)
-
-		const flattened = Object.values(this.schemasByKey)
-
-		const sorted: Schema[] = []
-
-		flattened.forEach((schema) => {
-			const related = this.pullRelatedSchemas(schema)
-			sorted.push(...related)
-			sorted.push(schema)
-		})
-
-		let ourNamespace = flattened
-
-		ourNamespace = uniqWith(
-			ourNamespace,
-			(d1, d2) =>
-				schemaUtil.generateCacheKey(d1) === schemaUtil.generateCacheKey(d2)
-		)
-
-		const templateTimes = ourNamespace.map((schema) =>
-			this.buildTemplateItem({
-				namespace,
-				schema,
-				isNested: !schemas.find((s) => s.id === schema.id),
-				destinationDir,
-			})
-		)
-
-		return templateTimes
-	}
-
 	private flattenSchemas(schemas: Schema[]) {
 		schemas.forEach((def) => {
 			this.flattenSchema(def)
@@ -175,75 +130,6 @@ export default class SchemaTemplateItemBuilder {
 		})
 	}
 
-	private cacheLookup(schema: { id: string; version?: string }) {
-		return this.schemasByKey[schemaUtil.generateCacheKey(schema)]
-	}
-
-	private pullRelatedSchemas(definition: Schema) {
-		const related: Schema[] = []
-
-		let fields: Record<string, any> | undefined
-		if (definition.dynamicFieldSignature) {
-			fields = { dynamicField: definition.dynamicFieldSignature }
-		} else {
-			fields = definition.fields
-		}
-
-		Object.keys(fields ?? {}).forEach((fieldName: string) => {
-			//@ts-ignore
-			const field = fields[fieldName]
-
-			if (field?.type === 'schema') {
-				try {
-					related.push(...this.pullRelatedFromSchemaField(field))
-				} catch (err) {
-					throw new SpruceError({
-						code: 'GENERIC',
-						friendlyMessage: `Failed to load related schema for ${definition.id}.${definition.version}.${fieldName}`,
-						originalError: err,
-					})
-				}
-			}
-		})
-
-		return related
-	}
-
-	private pullRelatedFromSchemaField(field: SchemaFieldFieldDefinition) {
-		const related: Schema[] = []
-		const schemasOrIdsWithVersion = SchemaField.mapFieldDefinitionToSchemasOrIdsWithVersion(
-			field
-		)
-		schemasOrIdsWithVersion.forEach((item) => {
-			const schema = this.schemaOrIdsWithVersionToSchema(item)
-			related.push(schema)
-		})
-
-		return related
-	}
-
-	private schemaOrIdsWithVersionToSchema(
-		schemaOrIdWithVersion: Schema | SchemaIdWithVersion
-	) {
-		let schema: Schema | undefined
-		if (isIdWithVersion(schemaOrIdWithVersion)) {
-			schema = this.cacheLookup(schemaOrIdWithVersion)
-
-			if (!schema) {
-				throw new SchemaError({
-					code: 'SCHEMA_NOT_FOUND',
-					schemaId: JSON.stringify(schemaOrIdWithVersion),
-					friendlyMessage: 'Make sure you are pointing to the correct version.',
-				})
-			}
-		} else {
-			validateSchema(schemaOrIdWithVersion)
-
-			schema = schemaOrIdWithVersion
-		}
-		return schema
-	}
-
 	private buildTemplateItem(options: {
 		schema: Schema
 		isNested: boolean
@@ -274,41 +160,5 @@ export default class SchemaTemplateItemBuilder {
 		}
 
 		return item
-	}
-
-	private normalizeSchemaFieldsToIdsWithVersion(schema: Schema): Schema {
-		const normalized: Schema = cloneDeep(schema)
-
-		let fields: Record<string, any> | undefined
-		if (normalized.dynamicFieldSignature) {
-			fields = { dynamicField: normalized.dynamicFieldSignature }
-		} else {
-			fields = normalized.fields
-		}
-
-		Object.keys(fields ?? {}).forEach((name) => {
-			//@ts-ignore
-			const field = fields[name]
-			if (field && field.type === 'schema') {
-				const idsWithVersion = SchemaField.mapFieldDefinitionToSchemaIdsWithVersion(
-					field
-				)
-				delete field.options.schema
-				delete field.options.schemaId
-				delete field.options.schemaIds
-				delete field.options.schemas
-				delete field.options.schemasCallback
-
-				field.options.schemaIds = idsWithVersion
-			}
-		})
-
-		if (normalized.dynamicFieldSignature) {
-			normalized.dynamicFieldSignature = fields?.dynamicField
-		} else {
-			normalized.fields = fields
-		}
-
-		return normalized
 	}
 }
