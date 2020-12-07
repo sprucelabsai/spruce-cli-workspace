@@ -41,15 +41,12 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 
 		this.ui.startLoading('Generating contracts...')
-		debugger
 
 		const valueTypes = await this.generateValueTypes({
 			resolvedDestination,
 			schemaTemplateItems,
 			fieldTemplateItems,
 		})
-
-		debugger
 
 		const generator = this.Generator('event')
 

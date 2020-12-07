@@ -7,9 +7,9 @@ const {{nameCamel}}EventContract = buildEventContract({
         {{#each eventSignatures}}
         '{{@key}}': {
             {{#if emitPayloadSchema}}emitPayloadSchema: {
-                {{> schemaBody nameCamel=../nameCamel namespace=../namespace schema=emitPayloadSchema.schema renderAs="value" }}
+                {{> schemaBody nameCamel=emitPayloadSchema.nameCamel namespace=emitPayloadSchema.namespace schema=emitPayloadSchema.schema renderAs="value" }}
 
-            }{{/if}},
+            },{{/if}}
         }
         {{/each}}
     }
