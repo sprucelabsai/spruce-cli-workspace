@@ -1,5 +1,6 @@
 import osUtil from 'os'
 import { MercuryClientFactory } from '@sprucelabs/mercury-client'
+import { MercuryEventEmitter } from '@sprucelabs/mercury-types'
 import {
 	diskUtil,
 	HealthCheckResults,
@@ -13,7 +14,10 @@ import FeatureCommandAttacher from './features/FeatureCommandAttacher'
 import FeatureInstaller from './features/FeatureInstaller'
 import FeatureInstallerFactory from './features/FeatureInstallerFactory'
 import { FeatureCode, InstallFeatureOptions } from './features/features.types'
-import CliGlobalEmitter, { GlobalEmitter } from './GlobalEmitter'
+import CliGlobalEmitter, {
+	GlobalEmitter,
+	GlobalEventContract,
+} from './GlobalEmitter'
 import TerminalInterface from './interfaces/TerminalInterface'
 import ServiceFactory from './services/ServiceFactory'
 import log from './singletons/log'
@@ -25,11 +29,10 @@ interface HealthOptions {
 	isRunningLocally?: boolean
 }
 
-export interface CliInterface {
+export interface CliInterface extends MercuryEventEmitter<GlobalEventContract> {
 	installFeatures: FeatureInstaller['install']
 	getFeature: FeatureInstaller['getFeature']
 	checkHealth(options?: HealthOptions): Promise<HealthCheckResults>
-	emitter: GlobalEmitter
 }
 
 export interface CliBootOptions {
@@ -57,6 +60,21 @@ export default class Cli implements CliInterface {
 		this.featureInstaller = featureInstaller
 		this.serviceFactory = serviceFactory
 		this.emitter = emitter
+	}
+
+	public async on(...args: any[]) {
+		//@ts-ignore
+		return this.emitter.on(...args)
+	}
+
+	public async off(...args: any[]) {
+		//@ts-ignore
+		return this.emitter.off(...args)
+	}
+
+	public async emit(...args: any[]) {
+		//@ts-ignore
+		return this.emitter.emit(...args)
 	}
 
 	public async installFeatures(options: InstallFeatureOptions) {
@@ -114,6 +132,7 @@ export default class Cli implements CliInterface {
 
 	public static async Boot(options?: CliBootOptions): Promise<CliInterface> {
 		const program = options?.program
+		const emitter = options?.emitter ?? CliGlobalEmitter.Emitter()
 
 		let cwd = options?.cwd ?? process.cwd()
 
@@ -123,6 +142,7 @@ export default class Cli implements CliInterface {
 			cwd,
 			serviceFactory,
 			homeDir: options?.homeDir ?? osUtil.homedir(),
+			emitter,
 			apiClientFactory: options?.apiClientFactory
 				? options.apiClientFactory
 				: async () => {
@@ -138,7 +158,6 @@ export default class Cli implements CliInterface {
 		})
 
 		const ui = options?.graphicsInterface ?? new TerminalInterface(cwd)
-		const emitter = options?.emitter ?? CliGlobalEmitter.Emitter()
 
 		const featureInstaller = FeatureInstallerFactory.WithAllFeatures({
 			cwd,

@@ -11,6 +11,20 @@ export const globalContract = buildEventContract({
 		'watcher.did-detect-change': {
 			emitPayloadSchema: watcherDidDetectChangesEmitPayloadSchema,
 		},
+		'schema.did-fetch-schemas': {
+			responsePayloadSchema: buildSchema({
+				id: 'didFetchSchemasResponsePayload',
+				fields: {
+					schemas: {
+						type: 'raw',
+						isArray: true,
+						options: {
+							valueType: 'Schema',
+						},
+					},
+				},
+			}),
+		},
 		'skill.register-dashboard-widgets': {},
 		'feature.will-execute': {
 			emitPayloadSchema: buildSchema({
@@ -63,10 +77,10 @@ export const globalContract = buildEventContract({
 	},
 })
 
-type CliContract = typeof globalContract
-export type GlobalEmitter = MercuryEventEmitter<CliContract>
+export type GlobalEventContract = typeof globalContract
+export type GlobalEmitter = MercuryEventEmitter<GlobalEventContract>
 
-export default class CliGlobalEmitter extends AbstractEventEmitter<CliContract> {
+export default class CliGlobalEmitter extends AbstractEventEmitter<GlobalEventContract> {
 	public static Emitter() {
 		return new CliGlobalEmitter(globalContract) as GlobalEmitter
 	}

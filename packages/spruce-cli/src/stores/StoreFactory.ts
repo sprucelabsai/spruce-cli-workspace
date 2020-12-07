@@ -1,3 +1,4 @@
+import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory from '../services/ServiceFactory'
 import { StoreOptions, ApiClientFactory } from './AbstractStore'
 import EventStore from './EventStore'
@@ -23,19 +24,22 @@ export default class StoreFactory {
 	private cwd: string
 	private homeDir: string
 	private apiClientFactory: ApiClientFactory
+	private emitter: GlobalEmitter
 
 	public constructor(options: {
 		cwd: string
 		serviceFactory: ServiceFactory
 		homeDir: string
 		apiClientFactory: ApiClientFactory
+		emitter: GlobalEmitter
 	}) {
-		const { cwd, serviceFactory, homeDir, apiClientFactory } = options
+		const { cwd, serviceFactory, homeDir, apiClientFactory, emitter } = options
 
 		this.cwd = cwd
 		this.serviceFactory = serviceFactory
 		this.homeDir = homeDir
 		this.apiClientFactory = apiClientFactory
+		this.emitter = emitter
 	}
 
 	public Store<C extends StoreCode>(code: C, cwd?: string): StoreMap[C] {
@@ -44,6 +48,7 @@ export default class StoreFactory {
 			serviceFactory: this.serviceFactory,
 			homeDir: this.homeDir,
 			apiClientFactory: this.apiClientFactory,
+			emitter: this.emitter,
 		}
 		const store = new storeMap[code](options)
 

@@ -1,4 +1,4 @@
-import { Schema, validateSchema } from '@sprucelabs/schema'
+import { buildSchema, Schema, validateSchema } from '@sprucelabs/schema'
 import {
 	CORE_NAMESPACE,
 	diskUtil,
@@ -162,6 +162,50 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 				errors: ['version_should_not_be_set'],
 			}
 		)
+	}
+
+	@test()
+	protected static async emitsDidFetchEvent() {
+		const cli = await this.installSchemaFeature('schemas')
+
+		let wasFired = false
+
+		await cli.on('schema.did-fetch-schemas', () => {
+			wasFired = true
+			return {}
+		})
+
+		await this.Store('schema').fetchSchemas({
+			localNamespace: LOCAL_NAMESPACE,
+		})
+
+		assert.isTrue(wasFired)
+	}
+
+	@test()
+	protected static async canListenToFetchEventToDropInAdditionalSchemas() {
+		const cli = await this.installSchemaFeature('schemas')
+
+		await cli.on('schema.did-fetch-schemas', () => {
+			return {
+				schemas: [
+					buildSchema({
+						id: 'test',
+						namespace: 'MyCoolNamespace',
+						fields: {},
+					}),
+				],
+			}
+		})
+
+		const results = await this.Store('schema').fetchSchemas({
+			localNamespace: LOCAL_NAMESPACE,
+		})
+
+		assert.isLength(results.errors, 0)
+		const { schemasByNamespace } = results
+
+		assert.isTruthy(schemasByNamespace.MyCoolNamespace)
 	}
 
 	private static validateSchemas(schemas: Schema[]) {

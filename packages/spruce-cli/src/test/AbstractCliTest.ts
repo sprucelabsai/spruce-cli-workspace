@@ -115,6 +115,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			cwd: this.cwd,
 			serviceFactory: this.ServiceFactory(),
 			ui: this.ui,
+			emitter: this.Emitter(),
 			apiClientFactory: this.MercuryFixture().getApiClientFactory(),
 			...options,
 		})
@@ -154,6 +155,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			serviceFactory,
 			homeDir: this.homeDir,
 			apiClientFactory: this.MercuryFixture().getApiClientFactory(),
+			emitter: this.Emitter(),
 		})
 	}
 

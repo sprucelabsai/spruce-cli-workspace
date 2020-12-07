@@ -46,7 +46,7 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 		const feature = cli.getFeature('watch')
 		let payloadChanges: any = {}
 
-		void cli.emitter.on('watcher.did-detect-change', (payload) => {
+		void cli.on('watcher.did-detect-change', (payload) => {
 			fireCount++
 			payloadChanges = payload.changes
 		})
@@ -100,7 +100,7 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 		const feature = cli.getFeature('watch')
 
 		let payloadChanges: any = {}
-		void cli.emitter.on('watcher.did-detect-change', (payload) => {
+		void cli.on('watcher.did-detect-change', (payload) => {
 			payloadChanges = payload.changes
 		})
 

@@ -1,5 +1,6 @@
 import { MercuryClient } from '@sprucelabs/mercury-client'
 import { EventContracts } from '#spruce/events/events.contract'
+import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory, {
 	ServiceProvider,
 	Service,
@@ -11,6 +12,7 @@ export interface StoreOptions {
 	cwd: string
 	homeDir: string
 	apiClientFactory: ApiClientFactory
+	emitter: GlobalEmitter
 }
 
 export type ApiClient = MercuryClient<EventContracts>
@@ -20,6 +22,7 @@ export default abstract class AbstractStore implements ServiceProvider {
 	protected cwd: string
 	protected homeDir: string
 	protected apiClientFactory: ApiClientFactory
+	protected emitter: GlobalEmitter
 
 	public abstract name: string
 
@@ -30,6 +33,7 @@ export default abstract class AbstractStore implements ServiceProvider {
 		this.serviceFactory = options.serviceFactory
 		this.homeDir = options.homeDir
 		this.apiClientFactory = options.apiClientFactory
+		this.emitter = options.emitter
 	}
 
 	public Service<S extends Service>(type: S, cwd?: string): ServiceMap[S] {

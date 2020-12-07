@@ -63,10 +63,6 @@ export default class SchemaStore extends AbstractStore {
 			schemasByNamespace: {},
 		}
 
-		if (fetchRemoteSchemas) {
-			// TODO - make mercury request when mercury-api is running
-		}
-
 		if (fetchCoreSchemas) {
 			results.schemasByNamespace[CORE_NAMESPACE] = Object.values(coreSchemas)
 		}
@@ -78,6 +74,20 @@ export default class SchemaStore extends AbstractStore {
 			)
 			results.schemasByNamespace[localNamespace] = locals.schemas
 			results.errors.push(...locals.errors)
+		}
+
+		if (fetchRemoteSchemas) {
+			const remoteResults = await this.emitter.emit('schema.did-fetch-schemas')
+
+			remoteResults.responses.forEach((response) => {
+				response.payload?.schemas?.forEach((schema: Schema) => {
+					const namespace = schema.namespace ?? localNamespace
+					if (!results.schemasByNamespace[namespace]) {
+						results.schemasByNamespace[namespace] = []
+					}
+					results.schemasByNamespace[namespace].push(schema)
+				})
+			})
 		}
 
 		return results
