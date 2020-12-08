@@ -39,11 +39,11 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		await this.assertCombinedContractContents(results)
 	}
 
-	@test.only()
+	@test()
 	protected static async canGetNumberOfEventsBackFromHealthCheck() {
 		const fixture = this.FeatureFixture()
 		const cli = await fixture.installCachedFeatures('events')
-		test
+
 		const results = await cli.getFeature('event').Action('sync').execute({})
 
 		assert.isFalsy(results.errors)
@@ -51,9 +51,6 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		await this.Service('build').build()
 
 		const health = await cli.checkHealth({ isRunningLocally: false })
-
-		debugger
-		await this.openInVsCode()
 
 		assert.isTruthy(health.skill)
 		assert.isFalsy(health.skill.errors)
