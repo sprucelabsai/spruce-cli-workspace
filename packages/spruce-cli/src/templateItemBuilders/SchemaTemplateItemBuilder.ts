@@ -5,6 +5,7 @@ import {
 	SchemaIdWithVersion,
 	normalizeSchemaToIdWithVersion,
 } from '@sprucelabs/schema'
+import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import cloneDeep from 'lodash/cloneDeep'
 import isEqual from 'lodash/isEqual'
 import merge from 'lodash/merge'
@@ -138,14 +139,18 @@ export default class SchemaTemplateItemBuilder {
 		const { schema, isNested, destinationDir } = options
 		const namespace = schema.namespace ?? this.localNamespace
 
+		const importFrom = this.getImportFromForSchema(schema)
 		const item: SchemaTemplateItem = {
 			id: schema.id,
 			namespace,
 			schema,
-			isCoreSchema: this.isCoreSchema(schema),
 			...schemaUtil.generateNamesForSchema(schema),
 			isNested,
 			destinationDir,
+		}
+
+		if (importFrom) {
+			item.importFrom = importFrom
 		}
 
 		if (
@@ -163,7 +168,14 @@ export default class SchemaTemplateItemBuilder {
 		return item
 	}
 
-	private isCoreSchema(schema: Schema & { isCoreSchema?: boolean }): boolean {
-		return !!schema.isCoreSchema
+	private getImportFromForSchema(schema: Schema): string | undefined {
+		switch (schema.namespace) {
+			case CORE_NAMESPACE:
+				return '@sprucelabs/spruce-core-schemas'
+			case 'MercuryTypes':
+				return '@sprucelabs/mercury-types'
+			default:
+				return undefined
+		}
 	}
 }

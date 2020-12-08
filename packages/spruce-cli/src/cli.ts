@@ -25,6 +25,9 @@ import { ApiClient, ApiClientFactory } from './stores/AbstractStore'
 import StoreFactory from './stores/StoreFactory'
 import { GraphicsInterface } from './types/cli.types'
 
+// TODO: remove when skill-utils updates
+export const MERCURY_API_NAMESPACE = 'mercuryApi'
+
 interface HealthOptions {
 	isRunningLocally?: boolean
 }

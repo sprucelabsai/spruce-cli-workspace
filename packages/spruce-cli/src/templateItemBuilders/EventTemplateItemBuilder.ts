@@ -4,11 +4,12 @@ import {
 	EventSignature,
 } from '@sprucelabs/mercury-types'
 import { Schema, SchemaTemplateItem } from '@sprucelabs/schema'
-import { CORE_NAMESPACE, namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import {
 	EventContractTemplateItem,
 	EventSignatureTemplateItem,
 } from '@sprucelabs/spruce-templates'
+import { MERCURY_API_NAMESPACE } from '../cli'
 import SchemaTemplateItemBuilder from './SchemaTemplateItemBuilder'
 
 export interface NamedEventSignature {
@@ -66,9 +67,11 @@ export default class EventTemplateItemBuilder {
 			const item: EventContractTemplateItem = {
 				nameCamel: namesUtil.toCamel(namedSig.eventName),
 				namePascal: namesUtil.toPascal(namedSig.eventName),
-				namespace: namesUtil.toKebab(namedSig.eventNamespace ?? CORE_NAMESPACE),
+				namespace: namesUtil.toKebab(
+					namedSig.eventNamespace ?? MERCURY_API_NAMESPACE
+				),
 				namespaceCamel: namesUtil.toCamel(
-					namedSig.eventNamespace ?? CORE_NAMESPACE
+					namedSig.eventNamespace ?? MERCURY_API_NAMESPACE
 				),
 				imports: [
 					signatureTemplateItem.emitPayloadSchema as SchemaTemplateItem,
@@ -165,6 +168,6 @@ export default class EventTemplateItemBuilder {
 	}
 
 	private sigToNamespacePascal(namedSig: NamedEventSignature) {
-		return namesUtil.toPascal(namedSig.eventNamespace ?? CORE_NAMESPACE)
+		return namesUtil.toPascal(namedSig.eventNamespace ?? MERCURY_API_NAMESPACE)
 	}
 }

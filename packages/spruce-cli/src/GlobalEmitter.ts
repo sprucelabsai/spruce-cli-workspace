@@ -18,7 +18,6 @@ export const globalContract = buildEventContract({
 					schemas: {
 						type: 'raw',
 						isArray: true,
-						isRequired: true,
 						options: {
 							valueType: 'Schema',
 						},

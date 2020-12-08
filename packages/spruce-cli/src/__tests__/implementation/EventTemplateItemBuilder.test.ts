@@ -1,8 +1,9 @@
 import { EventContract } from '@sprucelabs/mercury-types'
 import { buildSchema, SchemaTemplateItem } from '@sprucelabs/schema'
-import { CORE_NAMESPACE, namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { EventContractTemplateItem } from '@sprucelabs/spruce-templates'
 import { test, assert } from '@sprucelabs/test'
+import { MERCURY_API_NAMESPACE } from '../../cli'
 import EventTemplateItemBuilder from '../../templateItemBuilders/EventTemplateItemBuilder'
 import AbstractCliTest from '../../test/AbstractCliTest'
 import coreEventContract from '../support/coreEventContract'
@@ -30,9 +31,9 @@ const contractWith2NamespacedSignatures: EventContract = {
 const didBookTemplateItem: EventContractTemplateItem = {
 	namePascal: 'DidBook',
 	nameCamel: 'didBook',
-	namespace: namesUtil.toKebab(CORE_NAMESPACE),
-	namespaceCamel: namesUtil.toCamel(CORE_NAMESPACE),
-	namespacePascal: CORE_NAMESPACE,
+	namespace: namesUtil.toKebab(MERCURY_API_NAMESPACE),
+	namespaceCamel: namesUtil.toCamel(MERCURY_API_NAMESPACE),
+	namespacePascal: namesUtil.toPascal(MERCURY_API_NAMESPACE),
 	imports: [],
 	eventSignatures: {
 		'did-book': {},
@@ -42,10 +43,10 @@ const didBookTemplateItem: EventContractTemplateItem = {
 const willBookTemplateItem: EventContractTemplateItem = {
 	namePascal: 'WillBook',
 	nameCamel: 'willBook',
-	namespace: namesUtil.toKebab(CORE_NAMESPACE),
+	namespace: namesUtil.toKebab(MERCURY_API_NAMESPACE),
 	imports: [],
-	namespaceCamel: namesUtil.toCamel(CORE_NAMESPACE),
-	namespacePascal: CORE_NAMESPACE,
+	namespaceCamel: namesUtil.toCamel(MERCURY_API_NAMESPACE),
+	namespacePascal: namesUtil.toPascal(MERCURY_API_NAMESPACE),
 	eventSignatures: {
 		'will-book': {},
 	},
@@ -90,7 +91,6 @@ const relatedToRelatedToProximitySchemaTemplateItem: SchemaTemplateItem = {
 	nameCamel: 'relatedToRelatedToProximitySchema',
 	namePascal: 'RelatedToRelatedToProximitySchema',
 	nameReadable: 'relatedToRelatedToProximitySchema',
-	isCoreSchema: false,
 	schema: {
 		...relatedToRelatedToProximitySchema,
 		namespace: 'Proximity',
@@ -120,7 +120,6 @@ const relatedToProximitySchemaTemplateItem: SchemaTemplateItem = {
 	nameCamel: 'relatedToProximitySchema',
 	namePascal: 'RelatedToProximitySchema',
 	nameReadable: 'relatedToProximitySchema',
-	isCoreSchema: false,
 	schema: {
 		id: 'relatedToProximitySchema',
 		namespace: 'Proximity',
@@ -163,7 +162,6 @@ const proximityEmitPayloadTemplateItem: SchemaTemplateItem = {
 	nameCamel: 'proximityEmitPayload',
 	namePascal: 'ProximityEmitPayload',
 	nameReadable: 'proximityEmitPayload',
-	isCoreSchema: false,
 	schema: {
 		id: 'proximityEmitPayload',
 		namespace: 'Proximity',
@@ -209,7 +207,6 @@ const contractWithEmitPayloadTemplateItem: EventContractTemplateItem = {
 		'proximity.did-enter': {
 			emitPayloadSchema: {
 				...proximityEmitPayloadTemplateItem,
-				isCoreSchema: false,
 			},
 		},
 	},

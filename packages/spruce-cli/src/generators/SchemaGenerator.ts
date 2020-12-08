@@ -1,7 +1,7 @@
 import path from 'path'
 import pathUtil from 'path'
 import { FieldTemplateItem, SchemaTemplateItem } from '@sprucelabs/schema'
-import { namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { CORE_NAMESPACE, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { LATEST_HANDLEBARS } from '@sprucelabs/spruce-skill-utils'
@@ -164,11 +164,16 @@ export default class SchemaGenerator extends AbstractGenerator {
 		const results: GenerationResults = []
 
 		for (const item of options.schemaTemplateItems) {
-			const schemaResults = await this.generateSchema(destinationDir, {
-				...options,
-				...item,
-			})
-			results.push(...schemaResults)
+			if (
+				options.shouldImportCoreSchemas ||
+				item.namespace !== CORE_NAMESPACE
+			) {
+				const schemaResults = await this.generateSchema(destinationDir, {
+					...options,
+					...item,
+				})
+				results.push(...schemaResults)
+			}
 		}
 
 		return results
@@ -182,7 +187,6 @@ export default class SchemaGenerator extends AbstractGenerator {
 			valueTypes: ValueTypes
 			typesFile?: string
 			registerBuiltSchemas?: boolean
-			shouldImportCoreSchemas?: boolean
 		} & SchemaTemplateItem
 	) {
 		const {
@@ -190,7 +194,6 @@ export default class SchemaGenerator extends AbstractGenerator {
 			fieldTemplateItems,
 			valueTypes,
 			registerBuiltSchemas = true,
-			shouldImportCoreSchemas,
 			...item
 		} = options
 
@@ -219,10 +222,9 @@ export default class SchemaGenerator extends AbstractGenerator {
 			fieldTemplateItems,
 			valueTypes,
 			typesFile,
-			schemaFile:
-				item.isCoreSchema && shouldImportCoreSchemas
-					? `schemas/imported.schema.ts.hbs`
-					: undefined,
+			schemaFile: item.importFrom
+				? `schemas/imported.schema.ts.hbs`
+				: undefined,
 		})
 
 		return this.writeFileIfChangedMixinResults(

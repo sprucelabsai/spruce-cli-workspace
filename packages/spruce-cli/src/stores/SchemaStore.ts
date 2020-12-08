@@ -70,7 +70,6 @@ export default class SchemaStore extends AbstractStore {
 			).map((schema) => ({
 				...schema,
 				namespace: CORE_NAMESPACE,
-				isCoreSchema: true,
 			}))
 		}
 

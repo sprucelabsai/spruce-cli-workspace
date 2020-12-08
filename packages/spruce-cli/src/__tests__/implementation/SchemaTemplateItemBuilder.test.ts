@@ -18,7 +18,6 @@ const cowbellV1: Schema = {
 const cowbellV1TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: cowbellV1.id,
-	isCoreSchema: false,
 	nameCamel: 'cowbell',
 	namePascal: 'Cowbell',
 	nameReadable: 'Cowbell test',
@@ -30,7 +29,6 @@ const cowbellV1TemplateItem: SchemaTemplateItem = {
 const cowbellV1NestedTemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: cowbellV1.id,
-	isCoreSchema: false,
 	nameCamel: 'cowbell',
 	namePascal: 'Cowbell',
 	nameReadable: 'Cowbell test',
@@ -59,7 +57,6 @@ const cowbellV2: Schema = {
 const cowbellV2TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: cowbellV2.id,
-	isCoreSchema: false,
 	nameCamel: 'cowbell',
 	namePascal: 'Cowbell',
 	nameReadable: 'Cowbell test two!',
@@ -89,7 +86,6 @@ const cowbellV2TemplateItem: SchemaTemplateItem = {
 const cowbellV2NestedTemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: cowbellV2.id,
-	isCoreSchema: false,
 	nameCamel: 'cowbell',
 	namePascal: 'Cowbell',
 	nameReadable: 'Cowbell test two!',
@@ -129,8 +125,8 @@ const personV1: Schema = {
 
 const personV1TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	id: personV1.id,
-	isCoreSchema: false,
 	nameCamel: 'person',
 	namePascal: 'Person',
 	nameReadable: 'Person test',
@@ -168,10 +164,10 @@ const personV2: Schema = {
 const personV2TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: personV1.id,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	nameCamel: 'person',
 	namePascal: 'Person',
 	nameReadable: 'Person version 2',
-	isCoreSchema: false,
 	isNested: false,
 	destinationDir: '#spruce/schemas',
 	schema: {
@@ -211,8 +207,8 @@ const personV3: Schema = {
 
 const personV3TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	id: personV3.id,
-	isCoreSchema: false,
 	nameCamel: 'person',
 	namePascal: 'Person',
 	nameReadable: 'Person test the 3rd',
@@ -239,12 +235,12 @@ const personV3TemplateItem: SchemaTemplateItem = {
 
 const vehicleV1TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	id: 'vehicle',
 	nameCamel: 'vehicle',
 	namePascal: 'Vehicle',
 	nameReadable: 'Vehicle v1',
 	isNested: true,
-	isCoreSchema: false,
 	destinationDir: '#spruce/schemas',
 	schema: {
 		id: 'vehicle',
@@ -282,10 +278,10 @@ const personV4: Schema = {
 
 const personV4TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	id: personV4.id,
 	nameCamel: 'person',
 	namePascal: 'Person',
-	isCoreSchema: false,
 	nameReadable: 'Person test the last',
 	schema: {
 		id: 'person',
@@ -407,10 +403,10 @@ const nestedMercuryContractArray: Schema = {
 
 const mercuryTemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	id: nestedMercuryContract.id,
 	nameCamel: 'mercuryContract',
 	namePascal: 'MercuryContract',
-	isCoreSchema: false,
 	nameReadable: nestedMercuryContract.name ?? nestedMercuryContract.id,
 	isNested: false,
 	destinationDir: '#spruce/schemas',
@@ -439,12 +435,12 @@ const mercuryTemplateItem: SchemaTemplateItem = {
 const eventSignatureTemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: 'eventSignature',
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	nameCamel: 'eventSignature',
 	namePascal: 'EventSignature',
 	nameReadable: 'Event Signature',
 	isNested: true,
 	destinationDir: '#spruce/schemas',
-	isCoreSchema: false,
 	schema: {
 		id: 'eventSignature',
 		name: 'Event Signature',
@@ -472,12 +468,12 @@ const eventSignatureTemplateItem: SchemaTemplateItem = {
 const mercuryTemplateItemArray: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: nestedMercuryContractArray.id,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	nameCamel: 'mercuryContract',
 	namePascal: 'MercuryContract',
 	nameReadable:
 		nestedMercuryContractArray.name ?? nestedMercuryContractArray.id,
 	isNested: false,
-	isCoreSchema: false,
 	destinationDir: '#spruce/schemas',
 	schema: {
 		id: 'mercuryContract',
@@ -510,11 +506,11 @@ const eventSignatureTemplateItem2: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: 'eventSignature2',
 	nameCamel: 'eventSignature2',
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	namePascal: 'EventSignature2',
 	nameReadable: 'Event Signature2',
 	isNested: true,
 	destinationDir: '#spruce/schemas',
-	isCoreSchema: false,
 	schema: {
 		id: 'eventSignature2',
 		name: 'Event Signature2',
@@ -584,7 +580,7 @@ const schemaWithManyNestedSchemas: Schema = {
 const manyNestedTemplateItem: SchemaTemplateItem = {
 	id: 'manyNested',
 	namespace: CORE_NAMESPACE,
-	isCoreSchema: false,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	schema: {
 		id: 'manyNested',
 		version: '2020_09_01',
@@ -614,7 +610,7 @@ const manyNestedTemplateItem: SchemaTemplateItem = {
 const firstLayerTemplateItem: SchemaTemplateItem = {
 	id: 'firstLayer',
 	namespace: CORE_NAMESPACE,
-	isCoreSchema: false,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	schema: {
 		id: 'firstLayer',
 		version: '2020_09_01',
@@ -644,7 +640,6 @@ const firstLayerTemplateItem: SchemaTemplateItem = {
 const secondLayerTemplateItem: SchemaTemplateItem = {
 	id: 'secondLayer',
 	namespace: 'OutsideNamespace',
-	isCoreSchema: false,
 	schema: {
 		id: 'secondLayer',
 		version: '2020_09_01',
@@ -674,7 +669,6 @@ const secondLayerTemplateItem: SchemaTemplateItem = {
 const lastLayerTemplateItem: SchemaTemplateItem = {
 	id: 'lastLayer',
 	namespace: 'OutsideNamespace',
-	isCoreSchema: false,
 	schema: {
 		id: 'lastLayer',
 		namespace: 'OutsideNamespace',
@@ -823,8 +817,8 @@ const mercurySchemas = [
 const mercuryTemplateItems = [
 	{
 		id: 'statusFlags',
+		importFrom: '@sprucelabs/spruce-core-schemas',
 		namespace: CORE_NAMESPACE,
-		isCoreSchema: false,
 		schema: {
 			version: 'v2020_09_01',
 			id: 'statusFlags',
@@ -861,8 +855,8 @@ const mercuryTemplateItems = [
 	},
 	{
 		id: 'defaultsByRole',
+		importFrom: '@sprucelabs/spruce-core-schemas',
 		namespace: CORE_NAMESPACE,
-		isCoreSchema: false,
 		schema: {
 			version: 'v2020_09_01',
 			id: 'defaultsByRole',
@@ -884,7 +878,7 @@ const mercuryTemplateItems = [
 	{
 		id: 'permission',
 		namespace: CORE_NAMESPACE,
-		isCoreSchema: false,
+		importFrom: '@sprucelabs/spruce-core-schemas',
 		schema: {
 			version: 'v2020_09_01',
 			id: 'permission',
@@ -938,7 +932,7 @@ const mercuryTemplateItems = [
 	{
 		id: 'permissionContract',
 		namespace: CORE_NAMESPACE,
-		isCoreSchema: false,
+		importFrom: '@sprucelabs/spruce-core-schemas',
 		schema: {
 			id: 'permissionContract',
 			name: 'Permission Contract',
@@ -972,7 +966,7 @@ const mercuryTemplateItems = [
 	{
 		id: 'eventSignature',
 		namespace: CORE_NAMESPACE,
-		isCoreSchema: false,
+		importFrom: '@sprucelabs/spruce-core-schemas',
 		schema: {
 			version: 'v2020_09_01',
 			id: 'eventSignature',
@@ -1025,8 +1019,8 @@ const mercuryTemplateItems = [
 	},
 	{
 		id: 'mercuryContract',
-		isCoreSchema: false,
 		namespace: CORE_NAMESPACE,
+		importFrom: '@sprucelabs/spruce-core-schemas',
 		schema: {
 			id: 'mercuryContract',
 			name: 'Mercury Contract',
@@ -1147,7 +1141,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 			mercuryTemplateItemArray,
 		]
 	)
-	@test(
+	@test.only(
 		'handles many layers of nested schemas',
 		[schemaWithManyNestedSchemas],
 		[
@@ -1171,7 +1165,6 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 
 		expected.forEach((expected, idx) => {
 			const match = results[idx]
-
 			assert.isTruthy(match, `Did not find a template item for ${expected.id}`)
 			assert.isEqualDeep(match, expected)
 		})
@@ -1184,7 +1177,6 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 				[this.LOCAL_NAMESPACE]: [
 					buildSchema({
 						id: 'local',
-						isCoreSchema: false,
 						importsWhenLocal: ['import local from "local"'],
 						importsWhenRemote: ['import remote from "remote"'],
 						fields: {
@@ -1200,10 +1192,8 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 			{
 				id: 'local',
 				namespace: 'LocalNamespace',
-				isCoreSchema: false,
 				schema: {
 					//@ts-ignore
-					isCoreSchema: false,
 					id: 'local',
 					namespace: 'LocalNamespace',
 					importsWhenLocal: [`import local from "local"`],

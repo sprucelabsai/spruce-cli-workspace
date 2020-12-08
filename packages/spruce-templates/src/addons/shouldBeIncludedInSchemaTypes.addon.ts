@@ -4,9 +4,6 @@ import handlebars from 'handlebars'
 handlebars.registerHelper(
 	'shouldBeIncludedInSchemaTypes',
 	function (schemaTemplateItem: SchemaTemplateItem) {
-		return (
-			!schemaTemplateItem.isCoreSchema &&
-			schemaTemplateItem.namespace !== 'MercuryTypes'
-		)
+		return !schemaTemplateItem.importFrom
 	}
 )

@@ -65,9 +65,9 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			valueTypes,
 		})
 
-		const fetchCallback = (payload: { schemas: Schema[] }) => {
+		const fetchCallback = (payload: { schemas?: Schema[] | null }) => {
 			const filteredSchemas = this.filterSchemasBasedOnCallbackPayload(
-				payload.schemas,
+				payload.schemas ?? [],
 				schemaTemplateItems
 			)
 
