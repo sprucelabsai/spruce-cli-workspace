@@ -18,6 +18,9 @@ async function run() {
 		console.log(HEALTH_DIVIDER)
 		console.log(JSON.stringify(health))
 		console.log(HEALTH_DIVIDER)
+		setTimeout(() => {
+			console.log('done')
+		}, 2000)
 	} else {
 		await skill.execute()
 	}

@@ -5,11 +5,16 @@ import {
 	validateEventContract,
 } from '@sprucelabs/mercury-types'
 import { validateSchema } from '@sprucelabs/schema'
-import { CORE_NAMESPACE, namesUtil } from '@sprucelabs/spruce-skill-utils'
+import {
+	MERCURY_API_NAMESPACE,
+	namesUtil,
+} from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractEventTest from '../../../test/AbstractEventTest'
 import testUtil from '../../../utilities/test.utility'
+
+const EXPECTED_NUM_CONTRACTS_GENERATED = 30
 
 export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	@test()
@@ -18,7 +23,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		assert.isFunction(cli.getFeature('event').Action('sync').execute)
 	}
 
-	@test.only()
+	@test()
 	protected static async generatesValidContractFile() {
 		const fixture = this.FeatureFixture()
 		const cli = await fixture.installCachedFeatures('eventsInNodeModule')
@@ -34,11 +39,11 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		await this.assertCombinedContractContents(results)
 	}
 
-	@test()
+	@test.only()
 	protected static async canGetNumberOfEventsBackFromHealthCheck() {
 		const fixture = this.FeatureFixture()
 		const cli = await fixture.installCachedFeatures('events')
-
+		test
 		const results = await cli.getFeature('event').Action('sync').execute({})
 
 		assert.isFalsy(results.errors)
@@ -47,6 +52,11 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		const health = await cli.checkHealth({ isRunningLocally: false })
 
+		debugger
+		await this.openInVsCode()
+
+		assert.isTruthy(health.skill)
+		assert.isFalsy(health.skill.errors)
 		assert.isTruthy(health.event)
 		assert.isEqual(health.event.status, 'passed')
 		assert.isTruthy(health.event.contracts)
@@ -63,7 +73,8 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		assert.isTruthy(imported)
 		assert.isArray(imported)
-		assert.isLength(imported, (results.files?.length ?? 0) - 1)
+
+		assert.isLength(imported, EXPECTED_NUM_CONTRACTS_GENERATED)
 	}
 
 	private static async importCombinedContractsFile(
@@ -120,7 +131,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 			assert.doesInclude(
 				match,
-				`events${pathUtil.sep}${namesUtil.toCamel(CORE_NAMESPACE)}${
+				`events${pathUtil.sep}${namesUtil.toCamel(MERCURY_API_NAMESPACE)}${
 					pathUtil.sep
 				}`
 			)

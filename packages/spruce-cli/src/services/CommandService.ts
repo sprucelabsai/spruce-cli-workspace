@@ -1,4 +1,4 @@
-import { spawn, SpawnOptions, ChildProcess } from 'child_process'
+import { spawn, SpawnOptions, ChildProcess, ExecOptions } from 'child_process'
 import { Writable } from 'stream'
 import AbstractSpruceError from '@sprucelabs/error'
 import { ERROR_DIVIDER } from '@sprucelabs/spruce-skill-utils'
