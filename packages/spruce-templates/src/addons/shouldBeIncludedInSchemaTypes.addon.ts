@@ -2,8 +2,11 @@ import { SchemaTemplateItem } from '@sprucelabs/schema'
 import handlebars from 'handlebars'
 
 handlebars.registerHelper(
-	'isCoreSchemaTemplateItem',
+	'shouldBeIncludedInSchemaTypes',
 	function (schemaTemplateItem: SchemaTemplateItem) {
-		return schemaTemplateItem.isCoreSchema
+		return (
+			!schemaTemplateItem.isCoreSchema &&
+			schemaTemplateItem.namespace !== 'MercuryTypes'
+		)
 	}
 )

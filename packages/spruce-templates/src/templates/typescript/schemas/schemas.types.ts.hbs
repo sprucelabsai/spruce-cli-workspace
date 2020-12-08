@@ -24,7 +24,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	{{#each schemaTemplateItems}}
 
-	{{#unless (isCoreSchemaTemplateItem this)}}
+	{{#if (shouldBeIncludedInSchemaTypes this)}}
 	namespace {{../globalNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}} {
 
 		{{#if schema.description}}/** {{schema.description}} */{{/if}}
@@ -39,7 +39,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		type {{namePascal}}Entity = SchemaEntity<{{../globalNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}}.{{namePascal}}Schema>
 
 	}
-	{{/unless}}
+	{{/if}}
 
 	{{/each}}
 }

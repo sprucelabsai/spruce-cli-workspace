@@ -70,6 +70,17 @@ export default class EventTemplateItemBuilder {
 				namespaceCamel: namesUtil.toCamel(
 					namedSig.eventNamespace ?? CORE_NAMESPACE
 				),
+				imports: [
+					signatureTemplateItem.emitPayloadSchema as SchemaTemplateItem,
+					signatureTemplateItem.responsePayloadSchema as SchemaTemplateItem,
+				]
+					.filter((i) => !!i)
+					.map((item: SchemaTemplateItem) => ({
+						package: `#spruce/schemas/${namesUtil.toCamel(item.namespace)}/${
+							item.nameCamel
+						}.schema`,
+						importAs: `${item.nameCamel}Schema`,
+					})),
 				namespacePascal,
 				eventSignatures: {
 					[namedSig.eventNameWithOptionalNamespace]: signatureTemplateItem,

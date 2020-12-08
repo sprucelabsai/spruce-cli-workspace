@@ -21,7 +21,6 @@ const importExtractorUtil = {
 			(i1, i2) => i1.package === i2.package && i1.importAs === i2.importAs
 		)
 
-		// Lets do some tests catch some error
 		const schemaName = uniqueImports.find(
 			(i) => i.importAs.toLowerCase() === 'schema'
 		)
@@ -31,7 +30,6 @@ const importExtractorUtil = {
 			)
 		}
 
-		// See if there are any duplicate exportAs
 		const aliases: Record<string, string> = {}
 		uniqueImports.forEach((item) => {
 			if (item.importAs in aliases) {

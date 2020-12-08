@@ -1,5 +1,6 @@
 import { EventContract, EventSignature } from '@sprucelabs/mercury-types'
 import { SchemaTemplateItem } from '@sprucelabs/schema'
+import { SchemaImport } from '../utilities/importExtractor.utility'
 
 export enum DirectoryTemplateCode {
 	Skill = 'skill',
@@ -81,6 +82,7 @@ export interface EventContractTemplateItem extends EventContract {
 	namespace: string
 	namespaceCamel: string
 	namespacePascal: string
+	imports: SchemaImport[]
 	eventSignatures: {
 		[eventName: string]: EventSignatureTemplateItem
 	}
