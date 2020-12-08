@@ -164,16 +164,11 @@ export default class SchemaGenerator extends AbstractGenerator {
 		const results: GenerationResults = []
 
 		for (const item of options.schemaTemplateItems) {
-			if (
-				options.shouldImportCoreSchemas ||
-				item.namespace !== CORE_NAMESPACE
-			) {
-				const schemaResults = await this.generateSchema(destinationDir, {
-					...options,
-					...item,
-				})
-				results.push(...schemaResults)
-			}
+			const schemaResults = await this.generateSchema(destinationDir, {
+				...options,
+				...item,
+			})
+			results.push(...schemaResults)
 		}
 
 		return results
@@ -187,6 +182,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			valueTypes: ValueTypes
 			typesFile?: string
 			registerBuiltSchemas?: boolean
+			shouldImportCoreSchemas: boolean
 		} & SchemaTemplateItem
 	) {
 		const {
@@ -222,9 +218,10 @@ export default class SchemaGenerator extends AbstractGenerator {
 			fieldTemplateItems,
 			valueTypes,
 			typesFile,
-			schemaFile: item.importFrom
-				? `schemas/imported.schema.ts.hbs`
-				: undefined,
+			schemaFile:
+				item.importFrom && options.shouldImportCoreSchemas
+					? `schemas/imported.schema.ts.hbs`
+					: undefined,
 		})
 
 		return this.writeFileIfChangedMixinResults(

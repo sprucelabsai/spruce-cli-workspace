@@ -54,8 +54,8 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			fetchCoreSchemas = false
 			registerBuiltSchemas = true
 			generateStandaloneTypesFile = true
-			localNamespace = CORE_NAMESPACE
 			shouldImportCoreSchemas = false
+			localNamespace = CORE_NAMESPACE
 		}
 
 		const shouldSyncRemoteSchemasFirst =

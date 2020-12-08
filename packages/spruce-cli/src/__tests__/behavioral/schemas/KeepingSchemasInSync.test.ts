@@ -172,9 +172,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		assert.isFalsy(results.errors)
 		assert.isTruthy(results.files)
 
-		for (const file of results.files) {
-			await this.Service('typeChecker').check(file.path)
-		}
+		await this.assertValidActionResponseFiles(results)
 
 		const typesContents = diskUtil.readFile(this.coreSchemaTypesFile)
 
