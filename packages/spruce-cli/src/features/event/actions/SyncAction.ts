@@ -4,7 +4,7 @@ import {
 	Schema,
 	SchemaTemplateItem,
 } from '@sprucelabs/schema'
-import normaizeSchemaToIdWithVersion from '@sprucelabs/schema/build/utilities/normalizeSchemaToIdWithVersion'
+import { normaizeSchemaToIdWithVersion } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { isEqual } from 'lodash'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'

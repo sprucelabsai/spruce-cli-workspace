@@ -25,8 +25,41 @@ let progressInterval: any
 async function run() {
 	term.clear()
 	term.renderHeadline(`Found ${testKeys.length} skills to cache.`)
+	let messages: [string, any][] = []
 
-	const promises = testKeys.map(async (cacheKey: string) => {
+	progressInterval = setInterval(async () => {
+		term.clear()
+		term.renderHeadline(`Found ${testKeys.length} skills to cache.`)
+
+		for (const message of messages) {
+			term.renderLine(message[0], message[1])
+		}
+
+		term.renderLine('\n')
+
+		const now = new Date().getTime()
+		const delta = now - start
+
+		await term.startLoading(
+			`Building ${remaining} skill${dropInS(
+				remaining
+			)} (${durationUtil.msToFriendly(delta)})...`
+		)
+	}, 1000)
+
+	function renderLine(message: any, effects?: any) {
+		messages.push([message, effects])
+	}
+
+	function renderWarning(message: any, effects?: any) {
+		messages.push([message, effects])
+	}
+
+	await term.startLoading(
+		`Building ${remaining} remaining skill${dropInS(remaining)}...`
+	)
+
+	for (const cacheKey of testKeys) {
 		const options = testSkillCache[cacheKey]
 
 		const importCacheDir = testUtil.resolveCacheDir('spruce-cli-import-cache')
@@ -47,25 +80,25 @@ async function run() {
 
 		if (cacheTracker[cacheKey] && diskUtil.doesDirExist(cwd)) {
 			remaining--
-			term.renderLine(`'${cacheKey}' already cached. Skipping...`, [
+			renderLine(`'${cacheKey}' already cached. Skipping...`, [
 				GraphicsTextEffect.Italic,
 			])
 			return
 		}
 
 		if (diskUtil.doesDirExist(cwd)) {
-			term.renderWarning(
+			renderWarning(
 				`Found cached '${cacheKey}', but deleted it since it was not in the cache tracker (may take a minute)....`
 			)
 			diskUtil.deleteDir(cwd)
 		}
 
-		term.renderLine(`Starting to build '${cacheKey}'...`, [
+		renderLine(`Starting to build '${cacheKey}'...`, [
 			GraphicsTextEffect.Bold,
 			GraphicsTextEffect.Green,
 		])
 
-		term.renderLine('')
+		renderLine('')
 
 		await fixture.installFeatures(options, cacheKey)
 
@@ -74,23 +107,9 @@ async function run() {
 		await term.startLoading(
 			`Done caching '${cacheKey}'. ${remaining} remaining...`
 		)
-	})
+	}
 
-	progressInterval = setInterval(async () => {
-		const now = new Date().getTime()
-		const delta = now - start
-
-		await term.startLoading(
-			`Building ${remaining} skill${dropInS(
-				remaining
-			)} (${durationUtil.msToFriendly(delta)})...`
-		)
-	}, 1000)
-
-	await term.startLoading(
-		`Building ${remaining} remaining skill${dropInS(remaining)}...`
-	)
-	await Promise.all(promises)
+	// await Promise.all(promises)
 	await term.stopLoading()
 	term.clear()
 	clearInterval(progressInterval)
