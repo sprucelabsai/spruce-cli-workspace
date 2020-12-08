@@ -33,6 +33,7 @@ const didBookTemplateItem: EventContractTemplateItem = {
 	namespace: namesUtil.toKebab(CORE_NAMESPACE),
 	namespaceCamel: namesUtil.toCamel(CORE_NAMESPACE),
 	namespacePascal: CORE_NAMESPACE,
+	imports: [],
 	eventSignatures: {
 		'did-book': {},
 	},
@@ -42,6 +43,7 @@ const willBookTemplateItem: EventContractTemplateItem = {
 	namePascal: 'WillBook',
 	nameCamel: 'willBook',
 	namespace: namesUtil.toKebab(CORE_NAMESPACE),
+	imports: [],
 	namespaceCamel: namesUtil.toCamel(CORE_NAMESPACE),
 	namespacePascal: CORE_NAMESPACE,
 	eventSignatures: {
@@ -55,6 +57,7 @@ const didBookWithNamespaceTemplateItem: EventContractTemplateItem = {
 	namespace: 'appointments',
 	namespaceCamel: 'appointments',
 	namespacePascal: 'Appointments',
+	imports: [],
 	eventSignatures: {
 		'appointments.did-book': {},
 	},
@@ -66,6 +69,7 @@ const willBookWithNamespaceTemplateItem: EventContractTemplateItem = {
 	namespace: 'appointments',
 	namespaceCamel: 'appointments',
 	namespacePascal: 'Appointments',
+	imports: [],
 	eventSignatures: {
 		'appointments.will-book': {},
 	},
@@ -86,7 +90,11 @@ const relatedToRelatedToProximitySchemaTemplateItem: SchemaTemplateItem = {
 	nameCamel: 'relatedToRelatedToProximitySchema',
 	namePascal: 'RelatedToRelatedToProximitySchema',
 	nameReadable: 'relatedToRelatedToProximitySchema',
-	schema: { ...relatedToRelatedToProximitySchema, namespace: 'Proximity' },
+	isCoreSchema: false,
+	schema: {
+		...relatedToRelatedToProximitySchema,
+		namespace: 'Proximity',
+	},
 	isNested: true,
 	destinationDir: '#spruce/events',
 }
@@ -112,6 +120,7 @@ const relatedToProximitySchemaTemplateItem: SchemaTemplateItem = {
 	nameCamel: 'relatedToProximitySchema',
 	namePascal: 'RelatedToProximitySchema',
 	nameReadable: 'relatedToProximitySchema',
+	isCoreSchema: false,
 	schema: {
 		id: 'relatedToProximitySchema',
 		namespace: 'Proximity',
@@ -154,6 +163,7 @@ const proximityEmitPayloadTemplateItem: SchemaTemplateItem = {
 	nameCamel: 'proximityEmitPayload',
 	namePascal: 'ProximityEmitPayload',
 	nameReadable: 'proximityEmitPayload',
+	isCoreSchema: false,
 	schema: {
 		id: 'proximityEmitPayload',
 		namespace: 'Proximity',
@@ -189,9 +199,18 @@ const contractWithEmitPayloadTemplateItem: EventContractTemplateItem = {
 	namespace: 'proximity',
 	namespaceCamel: 'proximity',
 	namespacePascal: 'Proximity',
+	imports: [
+		{
+			package: '#spruce/schemas/proximity/proximityEmitPayload.schema',
+			importAs: 'proximityEmitPayloadSchema',
+		},
+	],
 	eventSignatures: {
 		'proximity.did-enter': {
-			emitPayloadSchema: proximityEmitPayloadTemplateItem,
+			emitPayloadSchema: {
+				...proximityEmitPayloadTemplateItem,
+				isCoreSchema: false,
+			},
 		},
 	},
 }
@@ -260,20 +279,15 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 		expectedEventContractTemplateItems: EventContractTemplateItem[],
 		expectedSchemaTemplateItems: SchemaTemplateItem[] = []
 	) {
-		debugger
 		const {
 			eventContractTemplateItems,
 			schemaTemplateItems,
 		} = this.itemBuilder.generateTemplateItems(contracts)
 
-		debugger
-
 		assert.isEqualDeep(
 			eventContractTemplateItems,
 			expectedEventContractTemplateItems
 		)
-
-		debugger
 
 		assert.isEqualDeep(schemaTemplateItems, expectedSchemaTemplateItems)
 	}

@@ -18,19 +18,16 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		assert.isFunction(cli.getFeature('event').Action('sync').execute)
 	}
 
-	@test.only()
+	@test()
 	protected static async generatesValidContractFile() {
 		const fixture = this.FeatureFixture()
 		const cli = await fixture.installCachedFeatures('eventsInNodeModule')
 
 		const results = await cli.getFeature('event').Action('sync').execute({})
-		
+
 		assert.isFalsy(results.errors)
 
-		await this.openInVsCode()
-		debugger
-
-		await this.assertsContractsHaveValidEmitPayload(results)
+		await this.assertsContractsHaveValidPayloads(results)
 		await this.assertValidActionResponseFiles(results)
 
 		this.assertExpectedFilesAreCreated(results)
@@ -84,7 +81,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		return imported
 	}
 
-	private static async assertsContractsHaveValidEmitPayload(
+	private static async assertsContractsHaveValidPayloads(
 		results: FeatureActionResponse
 	) {
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
@@ -107,6 +104,9 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		assert.isTruthy(signature.emitPayloadSchema)
 		validateSchema(signature.emitPayloadSchema)
+
+		assert.isTruthy(signature.responsePayloadSchema)
+		validateSchema(signature.responsePayloadSchema)
 	}
 
 	private static assertExpectedFilesAreCreated(results: FeatureActionResponse) {

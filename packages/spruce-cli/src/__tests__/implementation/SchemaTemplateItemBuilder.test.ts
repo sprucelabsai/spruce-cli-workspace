@@ -18,6 +18,7 @@ const cowbellV1: Schema = {
 const cowbellV1TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: cowbellV1.id,
+	isCoreSchema: false,
 	nameCamel: 'cowbell',
 	namePascal: 'Cowbell',
 	nameReadable: 'Cowbell test',
@@ -29,6 +30,7 @@ const cowbellV1TemplateItem: SchemaTemplateItem = {
 const cowbellV1NestedTemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: cowbellV1.id,
+	isCoreSchema: false,
 	nameCamel: 'cowbell',
 	namePascal: 'Cowbell',
 	nameReadable: 'Cowbell test',
@@ -57,6 +59,7 @@ const cowbellV2: Schema = {
 const cowbellV2TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: cowbellV2.id,
+	isCoreSchema: false,
 	nameCamel: 'cowbell',
 	namePascal: 'Cowbell',
 	nameReadable: 'Cowbell test two!',
@@ -86,6 +89,7 @@ const cowbellV2TemplateItem: SchemaTemplateItem = {
 const cowbellV2NestedTemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: cowbellV2.id,
+	isCoreSchema: false,
 	nameCamel: 'cowbell',
 	namePascal: 'Cowbell',
 	nameReadable: 'Cowbell test two!',
@@ -126,6 +130,7 @@ const personV1: Schema = {
 const personV1TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: personV1.id,
+	isCoreSchema: false,
 	nameCamel: 'person',
 	namePascal: 'Person',
 	nameReadable: 'Person test',
@@ -166,6 +171,7 @@ const personV2TemplateItem: SchemaTemplateItem = {
 	nameCamel: 'person',
 	namePascal: 'Person',
 	nameReadable: 'Person version 2',
+	isCoreSchema: false,
 	isNested: false,
 	destinationDir: '#spruce/schemas',
 	schema: {
@@ -206,6 +212,7 @@ const personV3: Schema = {
 const personV3TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: personV3.id,
+	isCoreSchema: false,
 	nameCamel: 'person',
 	namePascal: 'Person',
 	nameReadable: 'Person test the 3rd',
@@ -237,6 +244,7 @@ const vehicleV1TemplateItem: SchemaTemplateItem = {
 	namePascal: 'Vehicle',
 	nameReadable: 'Vehicle v1',
 	isNested: true,
+	isCoreSchema: false,
 	destinationDir: '#spruce/schemas',
 	schema: {
 		id: 'vehicle',
@@ -277,6 +285,7 @@ const personV4TemplateItem: SchemaTemplateItem = {
 	id: personV4.id,
 	nameCamel: 'person',
 	namePascal: 'Person',
+	isCoreSchema: false,
 	nameReadable: 'Person test the last',
 	schema: {
 		id: 'person',
@@ -343,6 +352,7 @@ const nestedMercuryContractArray: Schema = {
 	name: 'Mercury Contract',
 	description: '',
 	version: '2020_09_01',
+
 	dynamicFieldSignature: {
 		type: 'schema',
 		keyName: 'eventNameWithOptionalNamespace',
@@ -400,6 +410,7 @@ const mercuryTemplateItem: SchemaTemplateItem = {
 	id: nestedMercuryContract.id,
 	nameCamel: 'mercuryContract',
 	namePascal: 'MercuryContract',
+	isCoreSchema: false,
 	nameReadable: nestedMercuryContract.name ?? nestedMercuryContract.id,
 	isNested: false,
 	destinationDir: '#spruce/schemas',
@@ -433,6 +444,7 @@ const eventSignatureTemplateItem: SchemaTemplateItem = {
 	nameReadable: 'Event Signature',
 	isNested: true,
 	destinationDir: '#spruce/schemas',
+	isCoreSchema: false,
 	schema: {
 		id: 'eventSignature',
 		name: 'Event Signature',
@@ -465,6 +477,7 @@ const mercuryTemplateItemArray: SchemaTemplateItem = {
 	nameReadable:
 		nestedMercuryContractArray.name ?? nestedMercuryContractArray.id,
 	isNested: false,
+	isCoreSchema: false,
 	destinationDir: '#spruce/schemas',
 	schema: {
 		id: 'mercuryContract',
@@ -501,6 +514,7 @@ const eventSignatureTemplateItem2: SchemaTemplateItem = {
 	nameReadable: 'Event Signature2',
 	isNested: true,
 	destinationDir: '#spruce/schemas',
+	isCoreSchema: false,
 	schema: {
 		id: 'eventSignature2',
 		name: 'Event Signature2',
@@ -570,6 +584,7 @@ const schemaWithManyNestedSchemas: Schema = {
 const manyNestedTemplateItem: SchemaTemplateItem = {
 	id: 'manyNested',
 	namespace: CORE_NAMESPACE,
+	isCoreSchema: false,
 	schema: {
 		id: 'manyNested',
 		version: '2020_09_01',
@@ -599,6 +614,7 @@ const manyNestedTemplateItem: SchemaTemplateItem = {
 const firstLayerTemplateItem: SchemaTemplateItem = {
 	id: 'firstLayer',
 	namespace: CORE_NAMESPACE,
+	isCoreSchema: false,
 	schema: {
 		id: 'firstLayer',
 		version: '2020_09_01',
@@ -628,6 +644,7 @@ const firstLayerTemplateItem: SchemaTemplateItem = {
 const secondLayerTemplateItem: SchemaTemplateItem = {
 	id: 'secondLayer',
 	namespace: 'OutsideNamespace',
+	isCoreSchema: false,
 	schema: {
 		id: 'secondLayer',
 		version: '2020_09_01',
@@ -657,6 +674,7 @@ const secondLayerTemplateItem: SchemaTemplateItem = {
 const lastLayerTemplateItem: SchemaTemplateItem = {
 	id: 'lastLayer',
 	namespace: 'OutsideNamespace',
+	isCoreSchema: false,
 	schema: {
 		id: 'lastLayer',
 		namespace: 'OutsideNamespace',
@@ -806,6 +824,7 @@ const mercuryTemplateItems = [
 	{
 		id: 'statusFlags',
 		namespace: CORE_NAMESPACE,
+		isCoreSchema: false,
 		schema: {
 			version: 'v2020_09_01',
 			id: 'statusFlags',
@@ -843,6 +862,7 @@ const mercuryTemplateItems = [
 	{
 		id: 'defaultsByRole',
 		namespace: CORE_NAMESPACE,
+		isCoreSchema: false,
 		schema: {
 			version: 'v2020_09_01',
 			id: 'defaultsByRole',
@@ -864,6 +884,7 @@ const mercuryTemplateItems = [
 	{
 		id: 'permission',
 		namespace: CORE_NAMESPACE,
+		isCoreSchema: false,
 		schema: {
 			version: 'v2020_09_01',
 			id: 'permission',
@@ -917,6 +938,7 @@ const mercuryTemplateItems = [
 	{
 		id: 'permissionContract',
 		namespace: CORE_NAMESPACE,
+		isCoreSchema: false,
 		schema: {
 			id: 'permissionContract',
 			name: 'Permission Contract',
@@ -950,6 +972,7 @@ const mercuryTemplateItems = [
 	{
 		id: 'eventSignature',
 		namespace: CORE_NAMESPACE,
+		isCoreSchema: false,
 		schema: {
 			version: 'v2020_09_01',
 			id: 'eventSignature',
@@ -1002,6 +1025,7 @@ const mercuryTemplateItems = [
 	},
 	{
 		id: 'mercuryContract',
+		isCoreSchema: false,
 		namespace: CORE_NAMESPACE,
 		schema: {
 			id: 'mercuryContract',
@@ -1143,7 +1167,6 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 			'#spruce/schemas'
 		)
 
-		debugger
 		assert.isLength(results, expected.length)
 
 		expected.forEach((expected, idx) => {
@@ -1161,6 +1184,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 				[this.LOCAL_NAMESPACE]: [
 					buildSchema({
 						id: 'local',
+						isCoreSchema: false,
 						importsWhenLocal: ['import local from "local"'],
 						importsWhenRemote: ['import remote from "remote"'],
 						fields: {
@@ -1176,7 +1200,10 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 			{
 				id: 'local',
 				namespace: 'LocalNamespace',
+				isCoreSchema: false,
 				schema: {
+					//@ts-ignore
+					isCoreSchema: false,
 					id: 'local',
 					namespace: 'LocalNamespace',
 					importsWhenLocal: [`import local from "local"`],

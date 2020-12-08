@@ -246,7 +246,8 @@
 						"canGetLatestVersionBasedOnDir": "C16",
 						"canBuildSkill": "C23",
 						"canWatchAndBuild": "C24",
-						"fetchesEventContracts": "F55"
+						"fetchesEventContracts": "F55",
+						"canGetNumberOfEventsBackFromHealthCheck": "F56"
 					}
 				}
 			]
