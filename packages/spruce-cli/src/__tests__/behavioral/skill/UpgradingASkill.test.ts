@@ -38,6 +38,8 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		})
 
 		await this.ui.sendInput('\n')
+		await this.ui.sendInput('\n')
+		await this.ui.sendInput('\n')
 
 		await promise
 	}
