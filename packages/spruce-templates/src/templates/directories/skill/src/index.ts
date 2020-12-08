@@ -18,18 +18,13 @@ async function run() {
 		console.log(HEALTH_DIVIDER)
 		console.log(JSON.stringify(health))
 		console.log(HEALTH_DIVIDER)
-		setTimeout(() => {
-			console.log('done')
-		}, 2000)
 	} else {
 		await skill.execute()
 	}
 }
 
 run()
-	.then(() => {
-		process.exit(0)
-	})
+	.then(() => {})
 	.catch((err) => {
 		if (err instanceof AbstractSpruceError) {
 			console.error(ERROR_DIVIDER + err.toJson() + ERROR_DIVIDER)
