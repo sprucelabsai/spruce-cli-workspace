@@ -246,7 +246,6 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			)
 
 			if (!confirm) {
-				debugger
 				throw new SpruceError({
 					code: 'COMMAND_ABORTED',
 					command: this.getCommandName(),

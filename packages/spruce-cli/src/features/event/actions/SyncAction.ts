@@ -4,7 +4,6 @@ import {
 	Schema,
 	SchemaTemplateItem,
 } from '@sprucelabs/schema'
-import normaizeSchemaToIdWithVersion from '@sprucelabs/schema/build/utilities/normalizeSchemaToIdWithVersion'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { isEqual } from 'lodash'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
@@ -93,7 +92,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	) {
 		const schemas = schemaTemplateItems.map((i) => i.schema)
 		const filteredSchemas = schemas.filter((schema) => {
-			const idWithVersion = normaizeSchemaToIdWithVersion(schema)
+			const idWithVersion = normalizeSchemaToIdWithVersion(schema)
 			return !existingSchemas.find((s) =>
 				isEqual(normalizeSchemaToIdWithVersion(s), idWithVersion)
 			)

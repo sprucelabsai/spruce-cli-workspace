@@ -115,7 +115,7 @@ export default class Cli implements CliInterface {
 					: 'yarn health.local'
 			const results = await commandService.execute(command)
 			const resultParts = results.stdout.split(HEALTH_DIVIDER)
-			debugger
+
 			return JSON.parse(resultParts[1]) as HealthCheckResults
 		} catch (originalError) {
 			const error = new SpruceError({
