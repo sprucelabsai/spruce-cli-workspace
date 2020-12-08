@@ -22,7 +22,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	private static _ui: SpyInterface
 	private static emitter?: GlobalEmitter
-	private static mercuryFixture: MercuryFixture
+	private static mercuryFixture?: MercuryFixture
 
 	protected static async beforeEach() {
 		await super.beforeEach()
@@ -34,6 +34,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		this.ui.invocations = []
 		this.ui.setCursorPosition({ x: 0, y: 0 })
 		this.emitter = undefined
+
+		this.mercuryFixture = undefined
 	}
 
 	protected static async afterEach() {
