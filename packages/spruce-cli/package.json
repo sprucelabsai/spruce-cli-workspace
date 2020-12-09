@@ -248,7 +248,7 @@
 						"canBuildSkill": "C23",
 						"canWatchAndBuild": "C24",
 						"fetchesEventContracts": "F55",
-						"canGetNumberOfEventsBackFromHealthCheck": "F56"
+						"canGetNumberOfEventsBackFromHealthCheck": "F64"
 					}
 				}
 			]
