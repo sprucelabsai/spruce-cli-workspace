@@ -5,10 +5,7 @@ import {
 	validateEventContract,
 } from '@sprucelabs/mercury-types'
 import { validateSchema } from '@sprucelabs/schema'
-import {
-	MERCURY_API_NAMESPACE,
-	namesUtil,
-} from '@sprucelabs/spruce-skill-utils'
+import { MERCURY_API_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractEventTest from '../../../test/AbstractEventTest'
