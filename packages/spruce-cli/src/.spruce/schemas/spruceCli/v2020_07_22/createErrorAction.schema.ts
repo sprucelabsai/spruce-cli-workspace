@@ -69,12 +69,12 @@ const createErrorActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorAc
 	                defaultValue: "SpruceSchemas",
 	                options: undefined
 	            },
-	            /** Fetch remote schemas. I will check the server and your contracts to pull down schemas you need. */
+	            /** Fetch remote schemas. I will pull in schemas from other features. */
 	            'fetchRemoteSchemas': {
 	                label: 'Fetch remote schemas',
 	                type: 'boolean',
 	                isPrivate: true,
-	                hint: 'I will check the server and your contracts to pull down schemas you need.',
+	                hint: 'I will pull in schemas from other features.',
 	                defaultValue: true,
 	                options: undefined
 	            },
@@ -198,8 +198,6 @@ const createErrorActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorAc
 	                options: undefined
 	            },
 	    }
-	
-	
 }
 
 SchemaRegistry.getInstance().trackSchema(createErrorActionSchema)

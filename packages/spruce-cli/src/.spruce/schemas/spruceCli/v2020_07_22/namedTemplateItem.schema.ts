@@ -62,8 +62,6 @@ const namedTemplateItemSchema: SpruceSchemas.SpruceCli.v2020_07_22.NamedTemplate
 	                options: undefined
 	            },
 	    }
-	
-	
 }
 
 SchemaRegistry.getInstance().trackSchema(namedTemplateItemSchema)

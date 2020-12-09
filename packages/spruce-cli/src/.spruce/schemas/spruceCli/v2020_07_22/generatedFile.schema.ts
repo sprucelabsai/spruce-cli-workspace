@@ -33,8 +33,6 @@ const generatedFileSchema: SpruceSchemas.SpruceCli.v2020_07_22.GeneratedFileSche
 	                options: {choices: [{"label":"Skipped","value":"skipped"},{"label":"Generated","value":"generated"},{"label":"Updated","value":"updated"},{"label":"Deleted","value":"deleted"}],}
 	            },
 	    }
-	
-	
 }
 
 SchemaRegistry.getInstance().trackSchema(generatedFileSchema)

@@ -18,8 +18,6 @@ const bootSkillActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.BootSkillAction
 	                options: undefined
 	            },
 	    }
-	
-	
 }
 
 SchemaRegistry.getInstance().trackSchema(bootSkillActionSchema)

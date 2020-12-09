@@ -26,8 +26,6 @@ const syncEventActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncEventAction
 	                options: undefined
 	            },
 	    }
-	
-	
 }
 
 SchemaRegistry.getInstance().trackSchema(syncEventActionSchema)

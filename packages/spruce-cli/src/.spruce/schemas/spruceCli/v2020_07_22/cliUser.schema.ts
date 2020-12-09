@@ -26,8 +26,6 @@ const cliUserSchema: SpruceSchemas.SpruceCli.v2020_07_22.CliUserSchema  = {
 	                options: undefined
 	            },
 	    }
-	
-	
 }
 
 SchemaRegistry.getInstance().trackSchema(cliUserSchema)

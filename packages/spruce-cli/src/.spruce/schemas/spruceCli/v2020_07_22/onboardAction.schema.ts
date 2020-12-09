@@ -10,8 +10,6 @@ const onboardActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.OnboardActionSche
 	name: 'Onboard action',
 	    fields: {
 	    }
-	
-	
 }
 
 SchemaRegistry.getInstance().trackSchema(onboardActionSchema)

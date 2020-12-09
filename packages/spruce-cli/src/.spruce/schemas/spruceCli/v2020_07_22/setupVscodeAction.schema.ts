@@ -17,8 +17,6 @@ const setupVscodeActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeAc
 	                options: undefined
 	            },
 	    }
-	
-	
 }
 
 SchemaRegistry.getInstance().trackSchema(setupVscodeActionSchema)

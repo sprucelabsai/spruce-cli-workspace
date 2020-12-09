@@ -49,8 +49,6 @@ const createTestActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateTestActi
 	                options: undefined
 	            },
 	    }
-	
-	
 }
 
 SchemaRegistry.getInstance().trackSchema(createTestActionSchema)

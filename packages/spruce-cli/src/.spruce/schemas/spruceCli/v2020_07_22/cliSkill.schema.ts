@@ -40,8 +40,6 @@ const cliSkillSchema: SpruceSchemas.SpruceCli.v2020_07_22.CliSkillSchema  = {
 	                options: undefined
 	            },
 	    }
-	
-	
 }
 
 SchemaRegistry.getInstance().trackSchema(cliSkillSchema)

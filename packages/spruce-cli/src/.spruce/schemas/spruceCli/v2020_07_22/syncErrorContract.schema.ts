@@ -10,8 +10,6 @@ const syncErrorContractSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorCont
 	name: 'sync error contract',
 	    fields: {
 	    }
-	
-	
 }
 
 SchemaRegistry.getInstance().trackSchema(syncErrorContractSchema)
