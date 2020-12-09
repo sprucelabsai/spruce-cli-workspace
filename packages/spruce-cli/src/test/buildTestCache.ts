@@ -77,7 +77,7 @@ async function run() {
 		)
 	}
 
-	for (const cacheKey of testKeys) {
+	const promises = testKeys.map(async (cacheKey) => {
 		currentlyBuilding = cacheKey
 
 		const { cacheTracker, cwd, fixture, options } = setup(cacheKey)
@@ -91,8 +91,9 @@ async function run() {
 			await cache(cwd, cacheKey, fixture, options)
 			remaining--
 		}
-	}
+	})
 
+	await Promise.all(promises)
 	clearInterval(progressInterval)
 	await term.stopLoading()
 	term.renderLine(`Done! ${durationUtil.msToFriendly(getTimeSpent())}`)
