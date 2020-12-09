@@ -5,7 +5,7 @@ jobs:
   setup_for_test:
     docker:
       - image: circleci/node:12
-    resource_class: medium+
+    resource_class: large
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -24,8 +24,6 @@ jobs:
           command: |
             [ -n "$BASE64_ENV" ] && echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
       - run: node -v && npm -v && yarn -v
-      - restore_cache:
-          key: cli-import-service
       - run:
           name: "Install"
           command: |
@@ -42,6 +40,16 @@ jobs:
           name: "Cache Tests"
           command: |
             yarn run cache.tests
+      - save_cache:
+          key: cli-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - /tmp/spruce-cli
+            - ~/project/packages/spruce-cli/src/.spruce/tmp/cached-skills.json
+      - save_cache:
+          key: cli-build-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/project/node_modules
+            - ~/project/build
   test:
     docker:
       - image: circleci/node:12
@@ -50,6 +58,13 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "ec:9f:2e:aa:1f:c9:ab:49:57:8f:c0:cd:2e:5b:f3:b0"
+      - checkout
+      - restore_cache:
+          keys:
+            - cli-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - cli-build-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           name: "ENV file creation"
           command: |
@@ -57,7 +72,11 @@ jobs:
       - run:
           name: "Test 💪"
           command: |
-            yarn test -w 4
+            yarn test -w 2
+      - run:
+          name: "Max memory usage for tests"
+          command: cat /sys/fs/cgroup/memory/memory.max_usage_in_bytes
+          when: always
       - run:
           name: Check branch for auto-upgrade
           command: |
@@ -92,9 +111,7 @@ jobs:
             fi
       - restore_cache:
           keys:
-            - yarn-packages-{{ checksum "yarn.lock" }}
-      - run: yarn install
-      - run: yarn run build
+            - cli-build-{{ .Environment.CIRCLE_SHA1 }}
       - run: git config --global user.email "$GIT_AUTHOR_EMAIL"
       - run: git config --global user.name "$GIT_AUTHOR_NAME"
       - run:
@@ -141,9 +158,12 @@ workflows:
       - setup_for_test:
           context: public_package_publish
       - test:
+          requires:
+            - setup_for_test
           context: public_package_publish
       - npm_publish:
           requires:
+            - setup_for_test
             - test
           context: public_package_publish
           filters:
