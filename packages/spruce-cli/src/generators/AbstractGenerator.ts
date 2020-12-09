@@ -15,11 +15,11 @@ export interface GeneratorOptions {
 export default abstract class AbstractGenerator {
 	protected templates: Templates
 	private askBeforeUpdating = false
-	private term: GraphicsInterface
+	private ui: GraphicsInterface
 
 	public constructor(options: GeneratorOptions) {
 		this.templates = options.templates
-		this.term = options.term
+		this.ui = options.term
 		this.askBeforeUpdating = !!options.askBeforeUpdating
 	}
 
@@ -37,13 +37,14 @@ export default abstract class AbstractGenerator {
 		if (diskUtil.isDir(destination)) {
 			throw new Error(`Can't write to a directory ${destination}.`)
 		}
+
 		if (!diskUtil.doesFileExist(destination)) {
 			diskUtil.writeFile(destination, contents)
 			action = 'generated'
 		} else if (diskUtil.isFileDifferent(destination, contents)) {
 			let write = true
 			if (this.askBeforeUpdating) {
-				write = await this.term.confirm(`Overwrite ${destination}?`)
+				write = await this.ui.confirm(`Overwrite ${destination}?`)
 			}
 
 			if (write) {
