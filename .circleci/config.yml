@@ -42,15 +42,21 @@ jobs:
             cd packages/spruce-cli
             yarn run cache.tests
       - save_cache:
+          name: Save Cache  Tests
           key: cli-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - /tmp/spruce-cli
             - ~/project/packages/spruce-cli/src/.spruce/tmp/cached-skills.json
       - save_cache:
+          name: Save Cache  node modules/build
           key: cli-build-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - ~/project/node_modules
             - ~/project/build
+            - ~/project/spruce-cli/node_modules
+            - ~/project/spruce-cli/build
+            - ~/project/spruce-templates/node_modules
+            - ~/project/spruce-templates/build
   test:
     docker:
       - image: circleci/node:12
