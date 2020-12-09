@@ -18,6 +18,7 @@ const cowbellV1: Schema = {
 const cowbellV1TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: cowbellV1.id,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	nameCamel: 'cowbell',
 	namePascal: 'Cowbell',
 	nameReadable: 'Cowbell test',
@@ -29,6 +30,7 @@ const cowbellV1TemplateItem: SchemaTemplateItem = {
 const cowbellV1NestedTemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: cowbellV1.id,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	nameCamel: 'cowbell',
 	namePascal: 'Cowbell',
 	nameReadable: 'Cowbell test',
@@ -62,6 +64,7 @@ const cowbellV2TemplateItem: SchemaTemplateItem = {
 	nameReadable: 'Cowbell test two!',
 	isNested: false,
 	destinationDir: '#spruce/schemas',
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	schema: {
 		id: 'cowbell',
 		version: '2020_06_02',
@@ -91,6 +94,7 @@ const cowbellV2NestedTemplateItem: SchemaTemplateItem = {
 	nameReadable: 'Cowbell test two!',
 	isNested: true,
 	destinationDir: '#spruce/schemas',
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	schema: {
 		id: 'cowbell',
 		version: '2020_06_02',
@@ -1141,7 +1145,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 			mercuryTemplateItemArray,
 		]
 	)
-	@test.only(
+	@test(
 		'handles many layers of nested schemas',
 		[schemaWithManyNestedSchemas],
 		[
