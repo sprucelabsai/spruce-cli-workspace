@@ -19,6 +19,7 @@ const testKeys = Object.keys(testSkillCache)
 let remaining = testKeys.length
 const term = new TerminalInterface(__dirname, true)
 const start = new Date().getTime()
+let currentlyBuilding = ''
 
 let progressInterval: any
 
@@ -27,39 +28,76 @@ async function run() {
 	term.renderHeadline(`Found ${testKeys.length} skills to cache.`)
 	let messages: [string, any][] = []
 
-	progressInterval = setInterval(async () => {
-		term.clear()
-		term.renderHeadline(`Found ${testKeys.length} skills to cache.`)
+	progressInterval =
+		process.stdout.isTTY &&
+		setInterval(async () => {
+			term.clear()
+			term.renderHeadline(`Found ${testKeys.length} skills to cache.`)
 
-		for (const message of messages) {
-			term.renderLine(message[0], message[1])
-		}
+			for (const message of messages) {
+				term.renderLine(message[0], message[1])
+			}
 
-		term.renderLine('\n')
+			term.renderLine('')
 
+			await term.startLoading(
+				`${
+					currentlyBuilding
+						? `Building \`${currentlyBuilding}\``
+						: `Building ${remaining} skill${dropInS(remaining)}`
+				}. ${durationUtil.msToFriendly(getTimeSpent())}`
+			)
+		}, 1000)
+
+	function getTimeSpent() {
 		const now = new Date().getTime()
 		const delta = now - start
-
-		await term.startLoading(
-			`Building ${remaining} skill${dropInS(
-				remaining
-			)} (${durationUtil.msToFriendly(delta)})...`
-		)
-	}, 1000)
+		return delta
+	}
 
 	function renderLine(message: any, effects?: any) {
-		messages.push([message, effects])
+		if (process.stdout.isTTY) {
+			messages.push([message, effects])
+		} else {
+			console.log(message)
+		}
 	}
 
 	function renderWarning(message: any, effects?: any) {
-		messages.push([message, effects])
+		if (process.stdout.isTTY) {
+			messages.push([message, effects])
+		} else {
+			console.log(message)
+		}
 	}
 
-	await term.startLoading(
-		`Building ${remaining} remaining skill${dropInS(remaining)}...`
-	)
+	if (process.stdout.isTTY) {
+		await term.startLoading(
+			`Building ${remaining} remaining skill${dropInS(remaining)}...`
+		)
+	}
 
 	for (const cacheKey of testKeys) {
+		currentlyBuilding = cacheKey
+
+		const { cacheTracker, cwd, fixture, options } = setup(cacheKey)
+
+		if (cacheTracker[cacheKey] && diskUtil.doesDirExist(cwd)) {
+			remaining--
+			renderLine(`'${cacheKey}' already cached. Skipping...`, [
+				GraphicsTextEffect.Italic,
+			])
+		} else {
+			await cache(cwd, cacheKey, fixture, options)
+			remaining--
+		}
+	}
+
+	clearInterval(progressInterval)
+	await term.stopLoading()
+	term.renderLine(`Done! ${durationUtil.msToFriendly(getTimeSpent())}`)
+
+	function setup(cacheKey: string) {
 		const options = testSkillCache[cacheKey]
 
 		const importCacheDir = testUtil.resolveCacheDir('spruce-cli-import-cache')
@@ -77,42 +115,32 @@ async function run() {
 		})
 
 		const cacheTracker = fixture.loadCacheTracker()
+		return { cacheTracker, cwd, fixture, options }
+	}
 
-		if (cacheTracker[cacheKey] && diskUtil.doesDirExist(cwd)) {
-			remaining--
-			renderLine(`'${cacheKey}' already cached. Skipping...`, [
-				GraphicsTextEffect.Italic,
-			])
-			return
-		}
-
+	async function cache(
+		cwd: string,
+		cacheKey: string,
+		fixture: FeatureFixture,
+		options: any
+	) {
 		if (diskUtil.doesDirExist(cwd)) {
 			renderWarning(
-				`Found cached '${cacheKey}', but deleted it since it was not in the cache tracker (may take a minute)....`
+				`Found cached '${cacheKey}', but deleted it since it was not in the cache tracker...`,
+				[GraphicsTextEffect.Italic]
 			)
 			diskUtil.deleteDir(cwd)
 		}
 
-		renderLine(`Starting to build '${cacheKey}'...`, [
-			GraphicsTextEffect.Bold,
-			GraphicsTextEffect.Green,
-		])
-
-		renderLine('')
+		renderLine(`Starting to build '${cacheKey}'...`, [GraphicsTextEffect.Green])
 
 		await fixture.installFeatures(options, cacheKey)
 
-		remaining--
-
-		await term.startLoading(
-			`Done caching '${cacheKey}'. ${remaining} remaining...`
-		)
+		renderLine(`Done caching '${cacheKey}'. ${remaining} remaining...`, [
+			GraphicsTextEffect.Green,
+			GraphicsTextEffect.Bold,
+		])
 	}
-
-	// await Promise.all(promises)
-	await term.stopLoading()
-	term.clear()
-	clearInterval(progressInterval)
 }
 
 function dropInS(remaining: number) {

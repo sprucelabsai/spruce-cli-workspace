@@ -118,20 +118,28 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	}
 
 	private static assertExpectedFilesAreCreated(results: FeatureActionResponse) {
-		const filesToCheck = ['whoAmI.contract.ts', 'getEventContracts.contract.ts']
+		const filesToCheck = [
+			{
+				name: `whoAmI.contract.ts`,
+				path: `events${pathUtil.sep}${MERCURY_API_NAMESPACE}`,
+			},
+			{
+				name: `getEventContracts.contract.ts`,
+				path: `events${pathUtil.sep}${MERCURY_API_NAMESPACE}`,
+			},
+			{
+				name: `unRegisterListenersTargetAndPayload.schema.ts`,
+				path: `schemas${pathUtil.sep}${MERCURY_API_NAMESPACE}`,
+			},
+		]
 
 		for (const file of filesToCheck) {
 			const match = testUtil.assertsFileByNameInGeneratedFiles(
-				file,
+				file.name,
 				results.files
 			)
 
-			assert.doesInclude(
-				match,
-				`events${pathUtil.sep}${namesUtil.toCamel(MERCURY_API_NAMESPACE)}${
-					pathUtil.sep
-				}`
-			)
+			assert.doesInclude(match, file.path)
 		}
 	}
 }

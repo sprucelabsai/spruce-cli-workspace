@@ -71,6 +71,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			coreSyncResults = await this.execute({
 				...normalizedOptions,
 				fetchLocalSchemas: false,
+				fetchRemoteSchemas: false,
 			})
 		}
 

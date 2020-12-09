@@ -36,7 +36,7 @@
 			"runtimeExecutable": "yarn",
 			"runtimeArgs": [
 				"run",
-				"cache.test"
+				"cache.tests"
 			],
 			"console": "integratedTerminal",
 			"port": 5200,
