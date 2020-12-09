@@ -5,7 +5,7 @@ jobs:
   test:
     docker:
       - image: circleci/node:12
-    resource_class: medium
+    resource_class: large
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -41,11 +41,15 @@ jobs:
       - run:
           name: "Test 💪"
           command: |
-            yarn test -w 4
+            yarn test -w 2
       - save_cache:
           key: cli-import-service
           paths:
             - /tmp/import-service
+      - run:
+          name: "Max memory usage for tests"
+          command: cat /sys/fs/cgroup/memory/memory.max_usage_in_bytes
+          when: always
       - run:
           name: Check branch for auto-upgrade
           command: |

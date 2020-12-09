@@ -2,12 +2,14 @@ import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import Cli, { CliBootOptions, CliInterface } from '../cli'
 import { InstallFeature } from '../features/features.types'
+import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory, {
 	ServiceProvider,
 	Service,
 	ServiceMap,
 } from '../services/ServiceFactory'
 import log from '../singletons/log'
+import { ApiClientFactory } from '../stores/AbstractStore'
 import { GraphicsInterface } from '../types/cli.types'
 import testUtil from '../utilities/test.utility'
 
@@ -21,6 +23,8 @@ export interface FeatureFixtureOptions {
 	serviceFactory: ServiceFactory
 	ui: GraphicsInterface
 	shouldGenerateCacheIfMissing?: boolean
+	apiClientFactory: ApiClientFactory
+	emitter?: GlobalEmitter
 }
 
 export default class FeatureFixture implements ServiceProvider {
@@ -31,12 +35,16 @@ export default class FeatureFixture implements ServiceProvider {
 	private static dirsToDelete: string[] = []
 	private term: GraphicsInterface
 	private generateCacheIfMissing = false
+	private apiClientFactory: ApiClientFactory
+	private emitter?: GlobalEmitter
 
 	public constructor(options: FeatureFixtureOptions) {
 		this.cwd = options.cwd
 		this.serviceFactory = options.serviceFactory
 		this.term = options.ui
 		this.generateCacheIfMissing = !!options.shouldGenerateCacheIfMissing
+		this.apiClientFactory = options.apiClientFactory
+		this.emitter = options.emitter
 	}
 
 	public static deleteOldSkillDirs() {
@@ -58,6 +66,8 @@ export default class FeatureFixture implements ServiceProvider {
 		const cli = await Cli.Boot({
 			cwd: this.cwd,
 			graphicsInterface: this.term,
+			apiClientFactory: this.apiClientFactory,
+			emitter: this.emitter,
 			...(options ?? {}),
 		})
 
@@ -102,6 +112,13 @@ export default class FeatureFixture implements ServiceProvider {
 		}
 	}
 
+	public async installCachedFeatures(
+		cacheKey: string,
+		bootOptions?: CliBootOptions
+	) {
+		return this.installFeatures([], cacheKey, bootOptions)
+	}
+
 	public async installFeatures(
 		features: InstallFeature[],
 		cacheKey?: string,
@@ -121,13 +138,13 @@ export default class FeatureFixture implements ServiceProvider {
 
 			if (!isCached && !this.generateCacheIfMissing) {
 				throw new Error(
-					`Cached skill not found, add\n\n"${cacheKey}":${JSON.stringify(
-						features
-					)}\n\nto your package.json and run\n\n\`yarn test.cache\``
+					`Cached skill not found, add\n\n"${cacheKey}"\n\nto your package.json under "testSkillCache" and run\n\n\`yarn cache.test\``
 				)
 			}
 
-			await this.copyCachedSkillAndTrackItsDir(cacheKey)
+			if (isCached) {
+				await this.copyCachedSkillToCwd(cacheKey)
+			}
 		}
 
 		const cli = await this.Cli(bootOptions)
@@ -139,6 +156,7 @@ export default class FeatureFixture implements ServiceProvider {
 		}
 
 		if (cacheKey && testUtil.isCacheEnabled()) {
+			!isCached && this.addCwdToCacheTracker(cacheKey)
 			this.cacheCli(cacheKey, cli)
 		}
 
@@ -152,7 +170,7 @@ export default class FeatureFixture implements ServiceProvider {
 		// await command.execute(`yarn link @sprucelabs/spruce-skill-utils`)
 	}
 
-	private async copyCachedSkillAndTrackItsDir(cacheKey: string) {
+	private async copyCachedSkillToCwd(cacheKey: string) {
 		let isCached = this.doesCacheExist(cacheKey)
 
 		if (isCached) {
@@ -160,8 +178,6 @@ export default class FeatureFixture implements ServiceProvider {
 			await diskUtil.copyDir(settings[cacheKey], this.cwd)
 
 			FeatureFixture.dirsToDelete.push(this.cwd)
-		} else {
-			this.addCwdToCacheTracker(cacheKey)
 		}
 	}
 
@@ -174,9 +190,13 @@ export default class FeatureFixture implements ServiceProvider {
 
 		if (!settings[cacheKey]) {
 			const settingsFile = this.getTestCacheTrackerFilePath()
-
 			settings[cacheKey] = this.cwd
-			diskUtil.createDir(pathUtil.dirname(settingsFile))
+
+			const settingsFolder = pathUtil.dirname(settingsFile)
+
+			!diskUtil.doesDirExist(settingsFolder) &&
+				diskUtil.createDir(settingsFolder)
+
 			diskUtil.writeFile(settingsFile, JSON.stringify(settings, null, 2))
 		}
 		return settings

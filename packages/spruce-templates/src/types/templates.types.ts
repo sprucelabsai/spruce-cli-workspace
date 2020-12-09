@@ -1,66 +1,17 @@
+import { EventContract, EventSignature } from '@sprucelabs/mercury-types'
 import { SchemaTemplateItem } from '@sprucelabs/schema'
-
-export interface AutoLoaderClassTemplateItem {
-	optionsInterfaceName?: string
-	className: string
-	nameCamel: string
-	namePascal: string
-	relativeFilePath: string
-}
-
-export interface AutoLoaderInterfaceTemplateItem {
-	interfaceName: string
-	relativeFilePath: string
-}
-
-export interface AutoLoaderImportTemplateItem {
-	name: string
-	filePath: string
-}
-
-export interface AutoLoaderTemplateItem {
-	abstractClassName: string
-	abstractClassRelativePath: string
-	abstractClassOptionsInterfaceName?: string
-	classes: AutoLoaderClassTemplateItem[]
-	interfaces: AutoLoaderInterfaceTemplateItem[]
-	constructorOptionInterfaces: AutoLoaderImportTemplateItem[]
-	namePascalPlural: string
-	namePascal: string
-	nameCamel: string
-	nameCamelPlural: string
-}
-
-export interface RootAutoloaderTemplateItem {
-	autoloaders: AutoLoaderTemplateItem[]
-}
+import { SchemaImport } from '../utilities/importExtractor.utility'
 
 export enum DirectoryTemplateCode {
 	Skill = 'skill',
-	VsCode = 'vscode',
-	CircleCi = 'circleci',
-	Autoloadable = 'autoloadable',
 }
-
 export interface DirectoryTemplateContextSkill {
 	name: string
 	description: string
 }
-export interface DirectoryTemplateContextVsCode {}
-export interface DirectoryTemplateContextCircleCi {}
-export interface DirectoryTemplateContextAutoloadable {
-	namePascalPlural: string
-	namePascal: string
-	nameCamelPlural: string
-}
-
 export interface DirectoryTemplateContextMap {
 	[DirectoryTemplateCode.Skill]: DirectoryTemplateContextSkill
-	[DirectoryTemplateCode.VsCode]: DirectoryTemplateContextVsCode
-	[DirectoryTemplateCode.CircleCi]: DirectoryTemplateContextCircleCi
-	[DirectoryTemplateCode.Autoloadable]: DirectoryTemplateContextAutoloadable
 }
-
 export interface DirectoryTemplateFile {
 	/** Whether this is a handlebars template file */
 	isHandlebarsTemplate: boolean
@@ -75,7 +26,6 @@ export interface DirectoryTemplateFile {
 	/** The relative path of the output file, without a leading forward slash */
 	relativePath: string
 }
-
 export interface SchemaBuilderTemplateItem {
 	nameCamel: string
 	description?: string | null
@@ -83,16 +33,13 @@ export interface SchemaBuilderTemplateItem {
 	nameReadable: string
 	builderFunction?: string
 }
-
 export interface ErrorOptions {
 	errors: ErrorTemplateItem[]
 	renderClassDefinition?: boolean
 }
-
 export interface ErrorTemplateItem extends SchemaTemplateItem {
 	code: string
 }
-
 export interface ValueTypes {
 	[namespace: string]: {
 		[schemaId: string]: {
@@ -109,15 +56,34 @@ export interface ValueTypes {
 		}
 	}
 }
-
 export interface TestOptions {
 	namePascal: string
 	nameCamel: string
-	parentTestClass?: { name: string; importPath: string }
+	parentTestClass?: {
+		name: string
+		importPath: string
+	}
 }
-
 export interface EventListenerOptions {
 	eventName: string
 	eventNamespace: string
 	nameConst: string
+}
+
+export interface EventSignatureTemplateItem
+	extends Omit<EventSignature, 'emitPayloadSchema'> {
+	emitPayloadSchema?: SchemaTemplateItem
+	responsePayloadSchema?: SchemaTemplateItem
+}
+
+export interface EventContractTemplateItem extends EventContract {
+	namePascal: string
+	nameCamel: string
+	namespace: string
+	namespaceCamel: string
+	namespacePascal: string
+	imports: SchemaImport[]
+	eventSignatures: {
+		[eventName: string]: EventSignatureTemplateItem
+	}
 }

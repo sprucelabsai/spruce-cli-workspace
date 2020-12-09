@@ -18,10 +18,11 @@ const cowbellV1: Schema = {
 const cowbellV1TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: cowbellV1.id,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	nameCamel: 'cowbell',
 	namePascal: 'Cowbell',
 	nameReadable: 'Cowbell test',
-	schema: cowbellV1,
+	schema: { ...cowbellV1, namespace: CORE_NAMESPACE },
 	isNested: false,
 	destinationDir: '#spruce/schemas',
 }
@@ -29,10 +30,11 @@ const cowbellV1TemplateItem: SchemaTemplateItem = {
 const cowbellV1NestedTemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: cowbellV1.id,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	nameCamel: 'cowbell',
 	namePascal: 'Cowbell',
 	nameReadable: 'Cowbell test',
-	schema: cowbellV1,
+	schema: { ...cowbellV1, namespace: CORE_NAMESPACE },
 	isNested: true,
 	destinationDir: '#spruce/schemas',
 }
@@ -62,10 +64,12 @@ const cowbellV2TemplateItem: SchemaTemplateItem = {
 	nameReadable: 'Cowbell test two!',
 	isNested: false,
 	destinationDir: '#spruce/schemas',
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	schema: {
 		id: 'cowbell',
 		version: '2020_06_02',
 		name: 'Cowbell test two!',
+		namespace: CORE_NAMESPACE,
 		fields: {
 			radius: {
 				type: 'number',
@@ -73,7 +77,9 @@ const cowbellV2TemplateItem: SchemaTemplateItem = {
 			owner: {
 				type: 'schema',
 				options: {
-					schemaIds: [{ id: 'person', version: '2020_06_03' }],
+					schemaIds: [
+						{ id: 'person', version: '2020_06_03', namespace: CORE_NAMESPACE },
+					],
 				},
 			},
 		},
@@ -88,10 +94,12 @@ const cowbellV2NestedTemplateItem: SchemaTemplateItem = {
 	nameReadable: 'Cowbell test two!',
 	isNested: true,
 	destinationDir: '#spruce/schemas',
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	schema: {
 		id: 'cowbell',
 		version: '2020_06_02',
 		name: 'Cowbell test two!',
+		namespace: CORE_NAMESPACE,
 		fields: {
 			radius: {
 				type: 'number',
@@ -99,7 +107,9 @@ const cowbellV2NestedTemplateItem: SchemaTemplateItem = {
 			owner: {
 				type: 'schema',
 				options: {
-					schemaIds: [{ id: 'person', version: '2020_06_03' }],
+					schemaIds: [
+						{ id: 'person', version: '2020_06_03', namespace: CORE_NAMESPACE },
+					],
 				},
 			},
 		},
@@ -119,11 +129,12 @@ const personV1: Schema = {
 
 const personV1TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	id: personV1.id,
 	nameCamel: 'person',
 	namePascal: 'Person',
 	nameReadable: 'Person test',
-	schema: personV1,
+	schema: { ...personV1, namespace: CORE_NAMESPACE },
 	isNested: false,
 	destinationDir: '#spruce/schemas',
 }
@@ -157,6 +168,7 @@ const personV2: Schema = {
 const personV2TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: personV1.id,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	nameCamel: 'person',
 	namePascal: 'Person',
 	nameReadable: 'Person version 2',
@@ -166,6 +178,7 @@ const personV2TemplateItem: SchemaTemplateItem = {
 		id: 'person',
 		version: '2020_06_01',
 		name: 'Person version 2',
+		namespace: CORE_NAMESPACE,
 		fields: {
 			name: {
 				type: 'text',
@@ -173,7 +186,9 @@ const personV2TemplateItem: SchemaTemplateItem = {
 			favoriteVehicle: {
 				type: 'schema',
 				options: {
-					schemaIds: [{ id: 'vehicle', version: '2020_06_01' }],
+					schemaIds: [
+						{ id: 'vehicle', version: '2020_06_01', namespace: CORE_NAMESPACE },
+					],
 				},
 			},
 		},
@@ -196,6 +211,7 @@ const personV3: Schema = {
 
 const personV3TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	id: personV3.id,
 	nameCamel: 'person',
 	namePascal: 'Person',
@@ -206,13 +222,14 @@ const personV3TemplateItem: SchemaTemplateItem = {
 		id: 'person',
 		version: '2020_06_03',
 		name: 'Person test the 3rd',
+		namespace: CORE_NAMESPACE,
 		fields: {
 			relatedField: {
 				type: 'schema',
 				options: {
 					schemaIds: [
-						{ id: 'cowbell', version: '2020_06_01' },
-						{ id: 'cowbell', version: '2020_06_02' },
+						{ id: 'cowbell', version: '2020_06_01', namespace: CORE_NAMESPACE },
+						{ id: 'cowbell', version: '2020_06_02', namespace: CORE_NAMESPACE },
 					],
 				},
 			},
@@ -222,6 +239,7 @@ const personV3TemplateItem: SchemaTemplateItem = {
 
 const vehicleV1TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	id: 'vehicle',
 	nameCamel: 'vehicle',
 	namePascal: 'Vehicle',
@@ -231,6 +249,7 @@ const vehicleV1TemplateItem: SchemaTemplateItem = {
 	schema: {
 		id: 'vehicle',
 		name: 'Vehicle v1',
+		namespace: CORE_NAMESPACE,
 		version: '2020_06_01',
 		fields: {
 			make: {
@@ -263,11 +282,32 @@ const personV4: Schema = {
 
 const personV4TemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	id: personV4.id,
 	nameCamel: 'person',
 	namePascal: 'Person',
 	nameReadable: 'Person test the last',
-	schema: personV4,
+	schema: {
+		id: 'person',
+		version: '2020_06_04',
+		name: 'Person test the last',
+		namespace: CORE_NAMESPACE,
+		importsWhenLocal: ["import BaseParent from '../../file'"],
+		importsWhenRemote: [
+			"import BaseParent from '@sprucelabs/spruce-core-schemas'",
+		],
+		fields: {
+			cowbells: {
+				type: 'schema',
+				options: {
+					schemaIds: [
+						{ id: 'cowbell', version: '2020_06_01', namespace: CORE_NAMESPACE },
+						{ id: 'cowbell', version: '2020_06_02', namespace: CORE_NAMESPACE },
+					],
+				},
+			},
+		},
+	},
 	isNested: false,
 	imports: ["import BaseParent from '@sprucelabs/spruce-core-schemas'"],
 	destinationDir: '#spruce/schemas',
@@ -312,6 +352,7 @@ const nestedMercuryContractArray: Schema = {
 	name: 'Mercury Contract',
 	description: '',
 	version: '2020_09_01',
+
 	dynamicFieldSignature: {
 		type: 'schema',
 		keyName: 'eventNameWithOptionalNamespace',
@@ -366,6 +407,7 @@ const nestedMercuryContractArray: Schema = {
 
 const mercuryTemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	id: nestedMercuryContract.id,
 	nameCamel: 'mercuryContract',
 	namePascal: 'MercuryContract',
@@ -376,6 +418,7 @@ const mercuryTemplateItem: SchemaTemplateItem = {
 		id: 'mercuryContract',
 		name: 'Mercury Contract',
 		description: '',
+		namespace: CORE_NAMESPACE,
 		version: '2020_09_01',
 		dynamicFieldSignature: {
 			type: 'schema',
@@ -385,6 +428,7 @@ const mercuryTemplateItem: SchemaTemplateItem = {
 					{
 						id: 'eventSignature',
 						version: '2020_09_01',
+						namespace: CORE_NAMESPACE,
 					},
 				],
 			},
@@ -395,6 +439,7 @@ const mercuryTemplateItem: SchemaTemplateItem = {
 const eventSignatureTemplateItem: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: 'eventSignature',
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	nameCamel: 'eventSignature',
 	namePascal: 'EventSignature',
 	nameReadable: 'Event Signature',
@@ -405,6 +450,7 @@ const eventSignatureTemplateItem: SchemaTemplateItem = {
 		name: 'Event Signature',
 		description: '',
 		version: '2020_09_01',
+		namespace: CORE_NAMESPACE,
 		fields: {
 			responsePayload: {
 				type: 'raw',
@@ -426,6 +472,7 @@ const eventSignatureTemplateItem: SchemaTemplateItem = {
 const mercuryTemplateItemArray: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: nestedMercuryContractArray.id,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	nameCamel: 'mercuryContract',
 	namePascal: 'MercuryContract',
 	nameReadable:
@@ -437,6 +484,7 @@ const mercuryTemplateItemArray: SchemaTemplateItem = {
 		name: 'Mercury Contract',
 		description: '',
 		version: '2020_09_01',
+		namespace: CORE_NAMESPACE,
 		dynamicFieldSignature: {
 			type: 'schema',
 			keyName: 'eventNameWithOptionalNamespace',
@@ -445,10 +493,12 @@ const mercuryTemplateItemArray: SchemaTemplateItem = {
 					{
 						id: 'eventSignature',
 						version: '2020_09_01',
+						namespace: CORE_NAMESPACE,
 					},
 					{
 						id: 'eventSignature2',
 						version: '2020_09_01',
+						namespace: CORE_NAMESPACE,
 					},
 				],
 			},
@@ -460,6 +510,7 @@ const eventSignatureTemplateItem2: SchemaTemplateItem = {
 	namespace: CORE_NAMESPACE,
 	id: 'eventSignature2',
 	nameCamel: 'eventSignature2',
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	namePascal: 'EventSignature2',
 	nameReadable: 'Event Signature2',
 	isNested: true,
@@ -469,6 +520,7 @@ const eventSignatureTemplateItem2: SchemaTemplateItem = {
 		name: 'Event Signature2',
 		description: '',
 		version: '2020_09_01',
+		namespace: CORE_NAMESPACE,
 		fields: {
 			responsePayload: {
 				type: 'raw',
@@ -503,6 +555,7 @@ const schemaWithManyNestedSchemas: Schema = {
 							options: {
 								schema: {
 									id: 'secondLayer',
+									namespace: 'OutsideNamespace',
 									fields: {
 										lastLayer: {
 											type: 'schema',
@@ -530,14 +583,24 @@ const schemaWithManyNestedSchemas: Schema = {
 
 const manyNestedTemplateItem: SchemaTemplateItem = {
 	id: 'manyNested',
-	namespace: 'Spruce',
+	namespace: CORE_NAMESPACE,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	schema: {
 		id: 'manyNested',
 		version: '2020_09_01',
+		namespace: CORE_NAMESPACE,
 		fields: {
 			firstLayer: {
 				type: 'schema',
-				options: { schemaIds: [{ id: 'firstLayer', version: '2020_09_01' }] },
+				options: {
+					schemaIds: [
+						{
+							id: 'firstLayer',
+							version: '2020_09_01',
+							namespace: CORE_NAMESPACE,
+						},
+					],
+				},
 			},
 		},
 	},
@@ -550,14 +613,24 @@ const manyNestedTemplateItem: SchemaTemplateItem = {
 
 const firstLayerTemplateItem: SchemaTemplateItem = {
 	id: 'firstLayer',
-	namespace: 'Spruce',
+	namespace: CORE_NAMESPACE,
+	importFrom: '@sprucelabs/spruce-core-schemas',
 	schema: {
 		id: 'firstLayer',
 		version: '2020_09_01',
+		namespace: CORE_NAMESPACE,
 		fields: {
 			secondLayer: {
 				type: 'schema',
-				options: { schemaIds: [{ id: 'secondLayer', version: '2020_09_01' }] },
+				options: {
+					schemaIds: [
+						{
+							id: 'secondLayer',
+							namespace: 'OutsideNamespace',
+							version: '2020_09_01',
+						},
+					],
+				},
 			},
 		},
 	},
@@ -570,14 +643,23 @@ const firstLayerTemplateItem: SchemaTemplateItem = {
 
 const secondLayerTemplateItem: SchemaTemplateItem = {
 	id: 'secondLayer',
-	namespace: 'Spruce',
+	namespace: 'OutsideNamespace',
 	schema: {
 		id: 'secondLayer',
 		version: '2020_09_01',
+		namespace: 'OutsideNamespace',
 		fields: {
 			lastLayer: {
 				type: 'schema',
-				options: { schemaIds: [{ id: 'lastLayer', version: '2020_09_01' }] },
+				options: {
+					schemaIds: [
+						{
+							id: 'lastLayer',
+							version: '2020_09_01',
+							namespace: 'OutsideNamespace',
+						},
+					],
+				},
 			},
 		},
 	},
@@ -590,9 +672,10 @@ const secondLayerTemplateItem: SchemaTemplateItem = {
 
 const lastLayerTemplateItem: SchemaTemplateItem = {
 	id: 'lastLayer',
-	namespace: 'Spruce',
+	namespace: 'OutsideNamespace',
 	schema: {
 		id: 'lastLayer',
+		namespace: 'OutsideNamespace',
 		version: '2020_09_01',
 		fields: { pass: { type: 'boolean' } },
 	},
@@ -737,31 +820,13 @@ const mercurySchemas = [
 
 const mercuryTemplateItems = [
 	{
-		id: 'defaultsByRole',
-		namespace: 'Spruce',
-		schema: {
-			version: 'v2020_09_01',
-			id: 'defaultsByRole',
-			fields: {
-				owner: { type: 'boolean' },
-				groupManager: { type: 'boolean' },
-				manager: { type: 'boolean' },
-				teammate: { type: 'boolean' },
-				guest: { type: 'boolean' },
-			},
-		},
-		nameReadable: 'defaultsByRole',
-		nameCamel: 'defaultsByRole',
-		namePascal: 'DefaultsByRole',
-		isNested: true,
-		destinationDir: '#spruce/schemas',
-	},
-	{
 		id: 'statusFlags',
-		namespace: 'Spruce',
+		importFrom: '@sprucelabs/spruce-core-schemas',
+		namespace: CORE_NAMESPACE,
 		schema: {
 			version: 'v2020_09_01',
 			id: 'statusFlags',
+			namespace: CORE_NAMESPACE,
 			fields: {
 				default: { type: 'boolean' },
 				clockedIn: {
@@ -793,11 +858,35 @@ const mercuryTemplateItems = [
 		destinationDir: '#spruce/schemas',
 	},
 	{
+		id: 'defaultsByRole',
+		importFrom: '@sprucelabs/spruce-core-schemas',
+		namespace: CORE_NAMESPACE,
+		schema: {
+			version: 'v2020_09_01',
+			id: 'defaultsByRole',
+			namespace: CORE_NAMESPACE,
+			fields: {
+				owner: { type: 'boolean' },
+				groupManager: { type: 'boolean' },
+				manager: { type: 'boolean' },
+				teammate: { type: 'boolean' },
+				guest: { type: 'boolean' },
+			},
+		},
+		nameReadable: 'defaultsByRole',
+		nameCamel: 'defaultsByRole',
+		namePascal: 'DefaultsByRole',
+		isNested: true,
+		destinationDir: '#spruce/schemas',
+	},
+	{
 		id: 'permission',
-		namespace: 'Spruce',
+		namespace: CORE_NAMESPACE,
+		importFrom: '@sprucelabs/spruce-core-schemas',
 		schema: {
 			version: 'v2020_09_01',
 			id: 'permission',
+			namespace: CORE_NAMESPACE,
 			fields: {
 				name: {
 					type: 'text',
@@ -814,13 +903,25 @@ const mercuryTemplateItems = [
 				defaultsByRoleBase: {
 					type: 'schema',
 					options: {
-						schemaIds: [{ id: 'defaultsByRole', version: 'v2020_09_01' }],
+						schemaIds: [
+							{
+								id: 'defaultsByRole',
+								version: 'v2020_09_01',
+								namespace: CORE_NAMESPACE,
+							},
+						],
 					},
 				},
 				can: {
 					type: 'schema',
 					options: {
-						schemaIds: [{ id: 'statusFlags', version: 'v2020_09_01' }],
+						schemaIds: [
+							{
+								id: 'statusFlags',
+								version: 'v2020_09_01',
+								namespace: CORE_NAMESPACE,
+							},
+						],
 					},
 				},
 			},
@@ -833,12 +934,48 @@ const mercuryTemplateItems = [
 		destinationDir: '#spruce/schemas',
 	},
 	{
+		id: 'permissionContract',
+		namespace: CORE_NAMESPACE,
+		importFrom: '@sprucelabs/spruce-core-schemas',
+		schema: {
+			id: 'permissionContract',
+			name: 'Permission Contract',
+			namespace: CORE_NAMESPACE,
+			description: '',
+			fields: {
+				requireAllPermissions: { type: 'boolean', defaultValue: false },
+				permissions: {
+					type: 'schema',
+					isRequired: true,
+					isArray: true,
+					options: {
+						schemaIds: [
+							{
+								id: 'permission',
+								version: 'v2020_09_01',
+								namespace: CORE_NAMESPACE,
+							},
+						],
+					},
+				},
+			},
+			version: 'v2020_09_01',
+		},
+		nameReadable: 'Permission Contract',
+		nameCamel: 'permissionContract',
+		namePascal: 'PermissionContract',
+		isNested: false,
+		destinationDir: '#spruce/schemas',
+	},
+	{
 		id: 'eventSignature',
-		namespace: 'Spruce',
+		namespace: CORE_NAMESPACE,
+		importFrom: '@sprucelabs/spruce-core-schemas',
 		schema: {
 			version: 'v2020_09_01',
 			id: 'eventSignature',
 			name: 'Event Signature',
+			namespace: CORE_NAMESPACE,
 			description: '',
 			fields: {
 				eventNameWithOptionalNamespace: { type: 'text', isRequired: true },
@@ -854,14 +991,26 @@ const mercuryTemplateItems = [
 					type: 'schema',
 					isArray: true,
 					options: {
-						schemaIds: [{ version: 'v2020_09_01', id: 'permission' }],
+						schemaIds: [
+							{
+								version: 'v2020_09_01',
+								id: 'permission',
+								namespace: CORE_NAMESPACE,
+							},
+						],
 					},
 				},
 				emitPermissions: {
 					type: 'schema',
 					isArray: true,
 					options: {
-						schemaIds: [{ version: 'v2020_09_01', id: 'permission' }],
+						schemaIds: [
+							{
+								version: 'v2020_09_01',
+								id: 'permission',
+								namespace: CORE_NAMESPACE,
+							},
+						],
 					},
 				},
 			},
@@ -874,10 +1023,12 @@ const mercuryTemplateItems = [
 	},
 	{
 		id: 'mercuryContract',
-		namespace: 'Spruce',
+		namespace: CORE_NAMESPACE,
+		importFrom: '@sprucelabs/spruce-core-schemas',
 		schema: {
 			id: 'mercuryContract',
 			name: 'Mercury Contract',
+			namespace: CORE_NAMESPACE,
 			description: '',
 			fields: {
 				eventSignatures: {
@@ -885,7 +1036,13 @@ const mercuryTemplateItems = [
 					isRequired: true,
 					isArray: true,
 					options: {
-						schemaIds: [{ id: 'eventSignature', version: 'v2020_09_01' }],
+						schemaIds: [
+							{
+								id: 'eventSignature',
+								version: 'v2020_09_01',
+								namespace: CORE_NAMESPACE,
+							},
+						],
 					},
 				},
 			},
@@ -894,32 +1051,6 @@ const mercuryTemplateItems = [
 		nameReadable: 'Mercury Contract',
 		nameCamel: 'mercuryContract',
 		namePascal: 'MercuryContract',
-		isNested: false,
-		destinationDir: '#spruce/schemas',
-	},
-	{
-		id: 'permissionContract',
-		namespace: 'Spruce',
-		schema: {
-			id: 'permissionContract',
-			name: 'Permission Contract',
-			description: '',
-			fields: {
-				requireAllPermissions: { type: 'boolean', defaultValue: false },
-				permissions: {
-					type: 'schema',
-					isRequired: true,
-					isArray: true,
-					options: {
-						schemaIds: [{ id: 'permission', version: 'v2020_09_01' }],
-					},
-				},
-			},
-			version: 'v2020_09_01',
-		},
-		nameReadable: 'Permission Contract',
-		nameCamel: 'permissionContract',
-		namePascal: 'PermissionContract',
 		isNested: false,
 		destinationDir: '#spruce/schemas',
 	},
@@ -942,12 +1073,12 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 
 	@test()
 	protected static async hasGenerateFunction() {
-		assert.isFunction(this.itemBuilder.generateTemplateItems)
+		assert.isFunction(this.itemBuilder.buildTemplateItems)
 	}
 
 	@test()
 	protected static async turnsSingleDefinitionIntoTemplateItem() {
-		const results = this.itemBuilder.generateTemplateItems(
+		const results = this.itemBuilder.buildTemplateItems(
 			{ [CORE_NAMESPACE]: [personV1] },
 			'#spruce/schemas'
 		)
@@ -959,7 +1090,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 	@test(
 		'turns 2 definitions into 2 template items',
 		[cowbellV1, personV1],
-		[cowbellV1TemplateItem, personV1TemplateItem]
+		[personV1TemplateItem, cowbellV1TemplateItem]
 	)
 	@test(
 		'turns one nested definition into 2 items',
@@ -967,12 +1098,12 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 		[vehicleV1TemplateItem, personV2TemplateItem]
 	)
 	@test(
-		'handles recursion (by looking through nested schemas and their dependencies before self)',
+		'handles recursion without looping forever',
 		[personV3],
 		[
 			cowbellV1NestedTemplateItem,
-			cowbellV2NestedTemplateItem,
 			personV3TemplateItem,
+			cowbellV2NestedTemplateItem,
 		]
 	)
 	@test(
@@ -984,9 +1115,9 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 		'handles resolving by id and version',
 		[personV4, personV3, cowbellV1, cowbellV2],
 		[
+			cowbellV2TemplateItem,
 			cowbellV1TemplateItem,
 			personV3TemplateItem,
-			cowbellV2TemplateItem,
 			personV4TemplateItem,
 		]
 	)
@@ -994,9 +1125,9 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 		'handles resolving by id and version in different order',
 		[cowbellV1, personV4, personV3, cowbellV2],
 		[
+			cowbellV2TemplateItem,
 			cowbellV1TemplateItem,
 			personV3TemplateItem,
-			cowbellV2TemplateItem,
 			personV4TemplateItem,
 		]
 	)
@@ -1009,8 +1140,8 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 		'handles nested schemas in dynamic key signature',
 		[nestedMercuryContractArray],
 		[
-			eventSignatureTemplateItem,
 			eventSignatureTemplateItem2,
+			eventSignatureTemplateItem,
 			mercuryTemplateItemArray,
 		]
 	)
@@ -1024,21 +1155,20 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 			manyNestedTemplateItem,
 		]
 	)
-	@test('can import mercury contracts', mercurySchemas, mercuryTemplateItems)
+	@test('can import event contracts', mercurySchemas, mercuryTemplateItems)
 	protected static async generationTests(
 		schemas: Schema[],
 		expected: SchemaTemplateItem[]
 	) {
-		const results = this.itemBuilder.generateTemplateItems(
+		const results = this.itemBuilder.buildTemplateItems(
 			{ [CORE_NAMESPACE]: schemas },
 			'#spruce/schemas'
 		)
 
-		assert.isEqual(results.length, expected.length)
+		assert.isLength(results, expected.length)
 
 		expected.forEach((expected, idx) => {
 			const match = results[idx]
-
 			assert.isTruthy(match, `Did not find a template item for ${expected.id}`)
 			assert.isEqualDeep(match, expected)
 		})
@@ -1046,7 +1176,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 
 	@test()
 	protected static async setsImports() {
-		const results = this.itemBuilder.generateTemplateItems(
+		const results = this.itemBuilder.buildTemplateItems(
 			{
 				[this.LOCAL_NAMESPACE]: [
 					buildSchema({
@@ -1067,7 +1197,9 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 				id: 'local',
 				namespace: 'LocalNamespace',
 				schema: {
+					//@ts-ignore
 					id: 'local',
+					namespace: 'LocalNamespace',
 					importsWhenLocal: [`import local from "local"`],
 					importsWhenRemote: [`import remote from "remote"`],
 					fields: {

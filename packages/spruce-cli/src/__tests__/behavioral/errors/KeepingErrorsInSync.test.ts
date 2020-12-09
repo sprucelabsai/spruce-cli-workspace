@@ -23,14 +23,14 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 
 		const optionsMatch = testUtil.assertsFileByNameInGeneratedFiles(
 			/^options\.types/,
-			results.files ?? []
+			results.files
 		)
 
 		await this.Service('typeChecker').check(optionsMatch)
 
 		const typesMatch = testUtil.assertsFileByNameInGeneratedFiles(
 			/^errors\.types/,
-			results.files ?? []
+			results.files
 		)
 
 		// should contain our test error
@@ -46,7 +46,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		// delete our testError
 		const builderMatch = testUtil.assertsFileByNameInGeneratedFiles(
 			/testError\.builder/,
-			results.files ?? []
+			results.files
 		)
 
 		diskUtil.deleteFile(builderMatch)
@@ -65,12 +65,12 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 
 		const testError1SchemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
 			'testError1.schema',
-			testError1.files ?? []
+			testError1.files
 		)
 
 		const testError1BuilderMatch = testUtil.assertsFileByNameInGeneratedFiles(
 			'testError1.builder',
-			testError1.files ?? []
+			testError1.files
 		)
 
 		await createAction.execute({
@@ -125,7 +125,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		const results = await cli.getFeature('error').Action('sync').execute({})
 		const errorTypesFile = testUtil.assertsFileByNameInGeneratedFiles(
 			/errors\.types/,
-			results.files ?? []
+			results.files
 		)
 
 		const typeChecker = this.Service('typeChecker')
@@ -133,7 +133,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 
 		const errorOptionsFile = testUtil.assertsFileByNameInGeneratedFiles(
 			/options\.types/,
-			results.files ?? []
+			results.files
 		)
 
 		const contents = diskUtil.readFile(errorOptionsFile)
@@ -141,7 +141,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 
 		const errorClassFile = testUtil.assertsFileByNameInGeneratedFiles(
 			'SpruceError.ts',
-			results.files ?? []
+			results.files
 		)
 		let classContents = diskUtil.readFile(errorClassFile)
 		assert.doesNotInclude(classContents, /NESTED_SCHEMA/)
@@ -157,13 +157,11 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		classContents = diskUtil.readFile(errorClassFile)
 		assert.doesNotInclude(classContents, /NESTED_SCHEMA/)
 
-		for (const generated of syncResults.files ?? []) {
-			await typeChecker.check(generated.path)
-		}
+		await this.assertValidActionResponseFiles(syncResults)
 
 		const parentSchema = testUtil.assertsFileByNameInGeneratedFiles(
 			'good.schema.ts',
-			syncResults.files ?? []
+			syncResults.files
 		)
 
 		const parentSchemaContents = diskUtil.readFile(parentSchema)

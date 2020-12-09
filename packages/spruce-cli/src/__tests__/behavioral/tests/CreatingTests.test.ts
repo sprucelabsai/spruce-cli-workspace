@@ -11,7 +11,7 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 
 	@test()
 	protected static async canCreateBehavioralTest() {
-		const cli = await this.installTests('tests')
+		const cli = await this.installTests()
 		const response = await cli.getFeature('test').Action('create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can book appointment',
@@ -21,7 +21,7 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
 			'CanBookAppointment.test.ts',
-			response.files ?? []
+			response.files
 		)
 
 		assert.doesInclude(match, 'behavioral')

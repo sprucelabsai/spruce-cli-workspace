@@ -31,6 +31,22 @@
 		{
 			"type": "node",
 			"request": "launch",
+			"name": "debug.cache",
+			"protocol": "inspector",
+			"runtimeExecutable": "yarn",
+			"runtimeArgs": [
+				"run",
+				"cache.tests"
+			],
+			"console": "integratedTerminal",
+			"port": 5200,
+			"cwd": "${workspaceFolder}/packages/spruce-cli",
+			"localRoot": "${workspaceRoot}/packages/spruce-cli",
+			"remoteRoot": "${workspaceRoot}/packages/spruce-cli",
+		},
+		{
+			"type": "node",
+			"request": "launch",
 			"name": "test.file",
 			"runtimeExecutable": "${env:NVM_BIN}/node",
 			"runtimeArgs": [

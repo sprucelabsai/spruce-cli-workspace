@@ -15,6 +15,7 @@ import GeneratorFactory, {
 	GeneratorCode,
 	GeneratorMap,
 } from '../generators/GeneratorFactory'
+import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory, {
 	ServiceProvider,
 	Service,
@@ -48,6 +49,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 	protected cwd: string
 	protected templates: Templates
 	protected ui: GraphicsInterface
+	protected emitter: GlobalEmitter
 
 	public constructor(options: FeatureActionOptions) {
 		this.cwd = options.cwd
@@ -58,6 +60,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 		this.featureInstaller = options.featureInstaller
 		this.ui = options.ui
 		this.generatorFactory = options.generatorFactory
+		this.emitter = options.emitter
 	}
 
 	public abstract execute(

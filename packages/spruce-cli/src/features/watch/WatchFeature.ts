@@ -22,7 +22,7 @@ export default class WatchFeature extends AbstractFeature {
 		return this._isWatching
 	}
 
-	public async startWatching() {
+	public async startWatching(options?: { delay?: number }) {
 		this._isWatching = true
 
 		this.watcher = chokidar.watch(this.cwd, { ignoreInitial: true })
@@ -44,7 +44,7 @@ export default class WatchFeature extends AbstractFeature {
 
 			this.timeoutId = setTimeout(async () => {
 				await this.fireChange()
-			}, 500)
+			}, options?.delay ?? 500)
 		})
 	}
 
@@ -69,6 +69,7 @@ export default class WatchFeature extends AbstractFeature {
 	private async fireChange() {
 		const changes = this.changesSinceLastChange
 		this.changesSinceLastChange = []
+
 		await this.emitter.emit('watcher.did-detect-change', { changes })
 	}
 

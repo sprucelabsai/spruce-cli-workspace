@@ -4,7 +4,10 @@ import { Extension } from '../../../services/VsCodeService'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
-export default class SetupAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeActionSchema> {
+type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeActionSchema
+type Options = SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeAction
+
+export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 	private recommendedExtensions: Extension[] = [
 		{
 			id: 'dbaeumer.vscode-eslint',
@@ -27,9 +30,7 @@ export default class SetupAction extends AbstractFeatureAction<SpruceSchemas.Spr
 	public name = 'setup'
 	public optionsSchema = setupVscodeSchema
 
-	public async execute(
-		options: SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeAction
-	): Promise<FeatureActionResponse> {
+	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
 		const missing = await this.getMissingExtensions()

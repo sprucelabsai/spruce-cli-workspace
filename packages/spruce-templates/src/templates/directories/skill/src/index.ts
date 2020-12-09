@@ -24,9 +24,7 @@ async function run() {
 }
 
 run()
-	.then(() => {
-		process.exit(0)
-	})
+	.then(() => {})
 	.catch((err) => {
 		if (err instanceof AbstractSpruceError) {
 			console.error(ERROR_DIVIDER + err.toJson() + ERROR_DIVIDER)

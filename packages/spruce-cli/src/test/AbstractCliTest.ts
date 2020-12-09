@@ -1,31 +1,28 @@
 import os from 'os'
 import pathUtil from 'path'
-import { MercuryClientFactory } from '@sprucelabs/mercury-client'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractSpruceTest, { assert } from '@sprucelabs/test'
 import fs from 'fs-extra'
 import * as uuid from 'uuid'
 import { CliBootOptions } from '../cli'
 import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
-import { FeatureCode } from '../features/features.types'
+import { FeatureActionResponse, FeatureCode } from '../features/features.types'
 import FeatureFixture, {
 	FeatureFixtureOptions,
 } from '../fixtures/FeatureFixture'
+import MercuryFixture from '../fixtures/MercuryFixture'
 import CliGlobalEmitter, { GlobalEmitter } from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
 import ServiceFactory, { Service, ServiceMap } from '../services/ServiceFactory'
-import { ApiClient } from '../stores/AbstractStore'
 import StoreFactory, { StoreCode, StoreMap } from '../stores/StoreFactory'
-
-const TEST_HOST = 'https://sandbox.mercury.spruce.ai'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static cliRoot = pathUtil.join(__dirname, '..')
 	protected static homeDir: string
-	protected static apiClient: ApiClient
 
 	private static _ui: SpyInterface
-	private static emitter: GlobalEmitter
+	private static emitter?: GlobalEmitter
+	private static mercuryFixture?: MercuryFixture
 
 	protected static async beforeEach() {
 		await super.beforeEach()
@@ -36,6 +33,23 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		this.ui.reset()
 		this.ui.invocations = []
 		this.ui.setCursorPosition({ x: 0, y: 0 })
+		this.emitter = undefined
+
+		this.mercuryFixture = undefined
+	}
+
+	protected static async afterEach() {
+		await super.afterEach()
+
+		await this.mercuryFixture?.disconnect()
+
+		if (this._ui) {
+			if (this._ui.isWaitingForInput()) {
+				throw new Error(
+					`Terminal interface is waiting for input. Make sure you are invoking this.term.sendInput() as many times as needed.`
+				)
+			}
+		}
 	}
 
 	protected static freshTmpDir() {
@@ -67,20 +81,6 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			'testDirsAndFiles',
 			...pathAfterTestDirsAndFiles
 		)
-	}
-
-	protected static async afterEach() {
-		await super.afterEach()
-
-		await this.apiClient?.disconnect()
-
-		if (this._ui) {
-			if (this._ui.isWaitingForInput()) {
-				throw new Error(
-					`Terminal interface is waiting for input. Make sure you are invoking this.term.sendInput() as many times as needed.`
-				)
-			}
-		}
 	}
 
 	protected static async afterAll() {
@@ -118,8 +118,18 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			cwd: this.cwd,
 			serviceFactory: this.ServiceFactory(),
 			ui: this.ui,
+			emitter: this.Emitter(),
+			apiClientFactory: this.MercuryFixture().getApiClientFactory(),
 			...options,
 		})
+	}
+
+	protected static MercuryFixture() {
+		if (!this.mercuryFixture) {
+			this.mercuryFixture = new MercuryFixture()
+		}
+
+		return this.mercuryFixture
 	}
 
 	protected static resolveHashSprucePath(...filePath: string[]) {
@@ -147,15 +157,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			cwd: this.cwd,
 			serviceFactory,
 			homeDir: this.homeDir,
-			apiClientFactory: async () => {
-				if (!this.apiClient) {
-					this.apiClient = await MercuryClientFactory.Client({
-						host: TEST_HOST,
-					})
-				}
-
-				return this.apiClient
-			},
+			apiClientFactory: this.MercuryFixture().getApiClientFactory(),
+			emitter: this.Emitter(),
 		})
 	}
 
@@ -177,5 +180,26 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		const isInstalled = await featureInstaller.isInstalled(code)
 
 		assert.isTrue(isInstalled)
+	}
+
+	protected static async assertValidActionResponseFiles(
+		results: FeatureActionResponse
+	) {
+		const checker = this.Service('typeChecker')
+
+		await Promise.all(
+			(results.files ?? []).map((file) => checker.check(file.path))
+		)
+	}
+
+	protected static async openInVsCode(options?: {
+		file?: string
+		dir?: string
+		timeout?: number
+	}) {
+		await this.Service('command').execute(
+			`code ${options?.file ?? options?.dir ?? this.cwd}`
+		)
+		await this.wait(options?.timeout ?? 99999999)
 	}
 }

@@ -13,13 +13,13 @@ import ErrorGenerator from '../../../generators/ErrorGenerator'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse, FeatureAction } from '../../features.types'
 
-export default class SyncAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorActionSchema> {
+type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorActionSchema
+type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorAction
+export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	public name = 'sync'
 	public optionsSchema = syncErrorActionSchema
 
-	public async execute(
-		options: SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorAction
-	): Promise<FeatureActionResponse> {
+	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 		const {
 			errorTypesDestinationDir,

@@ -142,18 +142,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async shouldAddListenerWithoutBreakingOnSkill() {
-		await this.FeatureFixture().installFeatures(
-			[
-				{
-					code: 'skill',
-					options: {
-						name: 'listener-skill',
-						description: 'Testing if listeners can be set.',
-					},
-				},
-			],
-			'skills'
-		)
+		await this.FeatureFixture().installCachedFeatures('schemas')
 
 		const executer = this.Executer('event', 'listen')
 		const promise = executer.execute()
@@ -167,7 +156,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 		testUtil.assertsFileByNameInGeneratedFiles(
 			'will-boot.listener.ts',
-			results.files ?? []
+			results.files
 		)
 	}
 

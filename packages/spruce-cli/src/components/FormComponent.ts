@@ -13,34 +13,30 @@ import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import SpruceError from '../errors/SpruceError'
 import { GraphicsInterface, GraphicsTextEffect } from '../types/cli.types'
 
-export enum FormBuilderActionType {
+enum FormBuilderActionType {
 	Done = 'done',
 	Cancel = 'cancel',
 	EditField = 'edit_field',
 }
 
-/** In overview mode, this is when the user selects "done" */
-export interface FormActionDone {
+interface FormActionDone {
 	type: FormBuilderActionType.Done
 }
 
-/** In overview mode, this is when the user select "cancel". TODO: in normal mode, this is if they escape out of the questions. */
-export interface FormActionCancel {
+interface FormActionCancel {
 	type: FormBuilderActionType.Cancel
 }
 
-/** In overview mode, this is when the user selects to edit a field */
-export type FormActionEditField<T extends Schema> = {
+type FormActionEditField<T extends Schema> = {
 	type: FormBuilderActionType.EditField
 	fieldName: SchemaFieldNames<T>
 }
-/** Actions that can be taken in overview mode */
-export type FormAction<T extends Schema> =
+
+type FormAction<T extends Schema> =
 	| FormActionDone
 	| FormActionCancel
 	| FormActionEditField<T>
 
-/** Controls for when presenting the form */
 export interface FormPresentationOptions<
 	T extends Schema,
 	F extends SchemaFieldNames<T> = SchemaFieldNames<T>

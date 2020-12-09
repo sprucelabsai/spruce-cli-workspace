@@ -1,5 +1,6 @@
 import osUtil from 'os'
 import { MercuryClientFactory } from '@sprucelabs/mercury-client'
+import { MercuryEventEmitter } from '@sprucelabs/mercury-types'
 import {
 	diskUtil,
 	HealthCheckResults,
@@ -7,24 +8,34 @@ import {
 } from '@sprucelabs/spruce-skill-utils'
 import { Command, CommanderStatic } from 'commander'
 import './addons/filePrompt.addon'
+import eventsContracts, { EventContracts } from '#spruce/events/events.contract'
 import SpruceError from './errors/SpruceError'
 import FeatureCommandAttacher from './features/FeatureCommandAttacher'
 import FeatureInstaller from './features/FeatureInstaller'
 import FeatureInstallerFactory from './features/FeatureInstallerFactory'
 import { FeatureCode, InstallFeatureOptions } from './features/features.types'
-import CliGlobalEmitter, { GlobalEmitter } from './GlobalEmitter'
+import CliGlobalEmitter, {
+	GlobalEmitter,
+	GlobalEventContract,
+} from './GlobalEmitter'
 import TerminalInterface from './interfaces/TerminalInterface'
 import ServiceFactory from './services/ServiceFactory'
 import log from './singletons/log'
-import { ApiClient } from './stores/AbstractStore'
+import { ApiClient, ApiClientFactory } from './stores/AbstractStore'
 import StoreFactory from './stores/StoreFactory'
 import { GraphicsInterface } from './types/cli.types'
 
-export interface CliInterface {
+// TODO: remove when skill-utils updates
+export const MERCURY_API_NAMESPACE = 'mercuryApi'
+
+interface HealthOptions {
+	isRunningLocally?: boolean
+}
+
+export interface CliInterface extends MercuryEventEmitter<GlobalEventContract> {
 	installFeatures: FeatureInstaller['install']
 	getFeature: FeatureInstaller['getFeature']
-	checkHealth(): Promise<HealthCheckResults>
-	emitter: GlobalEmitter
+	checkHealth(options?: HealthOptions): Promise<HealthCheckResults>
 }
 
 export interface CliBootOptions {
@@ -33,6 +44,7 @@ export interface CliBootOptions {
 	program?: CommanderStatic['program']
 	graphicsInterface?: GraphicsInterface
 	emitter?: GlobalEmitter
+	apiClientFactory?: ApiClientFactory
 }
 
 export default class Cli implements CliInterface {
@@ -53,6 +65,21 @@ export default class Cli implements CliInterface {
 		this.emitter = emitter
 	}
 
+	public async on(...args: any[]) {
+		//@ts-ignore
+		return this.emitter.on(...args)
+	}
+
+	public async off(...args: any[]) {
+		//@ts-ignore
+		return this.emitter.off(...args)
+	}
+
+	public async emit(...args: any[]) {
+		//@ts-ignore
+		return this.emitter.emit(...args)
+	}
+
 	public async installFeatures(options: InstallFeatureOptions) {
 		return this.featureInstaller.install(options)
 	}
@@ -61,7 +88,9 @@ export default class Cli implements CliInterface {
 		return this.featureInstaller.getFeature(code)
 	}
 
-	public async checkHealth(): Promise<HealthCheckResults> {
+	public async checkHealth(
+		options?: HealthOptions
+	): Promise<HealthCheckResults> {
 		const isInstalled = await this.featureInstaller.isInstalled('skill')
 
 		if (!isInstalled) {
@@ -80,7 +109,11 @@ export default class Cli implements CliInterface {
 
 		try {
 			const commandService = this.serviceFactory.Service(this.cwd, 'command')
-			const results = await commandService.execute('yarn health.local')
+			const command =
+				options?.isRunningLocally === false
+					? 'yarn health'
+					: 'yarn health.local'
+			const results = await commandService.execute(command)
 			const resultParts = results.stdout.split(HEALTH_DIVIDER)
 
 			return JSON.parse(resultParts[1]) as HealthCheckResults
@@ -102,6 +135,7 @@ export default class Cli implements CliInterface {
 
 	public static async Boot(options?: CliBootOptions): Promise<CliInterface> {
 		const program = options?.program
+		const emitter = options?.emitter ?? CliGlobalEmitter.Emitter()
 
 		let cwd = options?.cwd ?? process.cwd()
 
@@ -111,16 +145,22 @@ export default class Cli implements CliInterface {
 			cwd,
 			serviceFactory,
 			homeDir: options?.homeDir ?? osUtil.homedir(),
-			apiClientFactory: async () => {
-				if (!apiClient) {
-					apiClient = await MercuryClientFactory.Client()
-				}
+			emitter,
+			apiClientFactory: options?.apiClientFactory
+				? options.apiClientFactory
+				: async () => {
+						if (!apiClient) {
+							apiClient = await MercuryClientFactory.Client<EventContracts>({
+								contracts: eventsContracts,
+								host: 'https://sandbox.mercury.spruce.ai',
+							})
+						}
 
-				return apiClient
-			},
+						return apiClient
+				  },
 		})
+
 		const ui = options?.graphicsInterface ?? new TerminalInterface(cwd)
-		const emitter = options?.emitter ?? CliGlobalEmitter.Emitter()
 
 		const featureInstaller = FeatureInstallerFactory.WithAllFeatures({
 			cwd,

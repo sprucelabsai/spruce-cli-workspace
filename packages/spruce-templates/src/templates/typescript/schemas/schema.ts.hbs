@@ -4,7 +4,7 @@ import { {{globalNamespace}} } from '{{typesFile}}'
 {{{ importRelatedSchemas schema }}}
 
 const {{nameCamel}}Schema: {{globalNamespace}}.{{namespace}}{{#if schema.version}}.{{schema.version}}{{/if}}.{{namePascal}}Schema  = {
-	{{> schemaBody namespace=namespace schema=schema renderAs="value" }}
+	{{> schemaBody nameCamel=nameCamel namespace=namespace schema=schema renderAs="value" }}
 }
 
 {{#if registerBuiltSchemas}}SchemaRegistry.getInstance().trackSchema({{nameCamel}}Schema){{/if}}

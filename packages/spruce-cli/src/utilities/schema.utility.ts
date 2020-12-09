@@ -10,8 +10,14 @@ const schemaUtil = {
 		}
 	},
 
-	generateCacheKey(options: { id: string; version?: string }) {
-		return `${options.id}-${options.version}`
+	generateCacheKey(options: {
+		id: string
+		namespace?: string
+		version?: string
+	}) {
+		return `${options.id}-${options.namespace ?? 'no-namespace'}-${
+			options.version
+		}`
 	},
 }
 

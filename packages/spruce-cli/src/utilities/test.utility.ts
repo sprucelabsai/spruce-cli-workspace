@@ -20,16 +20,17 @@ const testUtil = {
 	},
 
 	assertCountsByAction(
-		files: GeneratedFile[],
+		files: GeneratedFile[] | undefined,
 		options: {
 			generated: number
 			updated: number
 			skipped: number
 		}
 	) {
-		const generated = files.filter((f) => f.action === 'generated').length
-		const updated = files.filter((f) => f.action === 'updated').length
-		const skipped = files.filter((f) => f.action === 'skipped').length
+		const generated = (files ?? []).filter((f) => f.action === 'generated')
+			.length
+		const updated = (files ?? []).filter((f) => f.action === 'updated').length
+		const skipped = (files ?? []).filter((f) => f.action === 'skipped').length
 
 		assert.isEqual(
 			generated,
@@ -52,13 +53,13 @@ const testUtil = {
 
 	assertsFileByNameInGeneratedFiles(
 		name: string | RegExp,
-		files: GeneratedFile[]
+		files: GeneratedFile[] | undefined
 	): string {
-		const file = files.find((f) => f.name.search(name) > -1)?.path
+		const file = (files ?? []).find((f) => f.name.search(name) > -1)?.path
 		assert.isTruthy(
 			file,
-			`file named ${name} not found in generated files. ${JSON.stringify(
-				files,
+			`file named '${name}' not found in generated files.\n\n${JSON.stringify(
+				files ?? [],
 				null,
 				2
 			)}`

@@ -53,18 +53,7 @@ export default class SettingUpASkill extends AbstractCliTest {
 
 	private static async installSkill() {
 		const fixture = this.FeatureFixture()
-		const cli = await fixture.installFeatures(
-			[
-				{
-					code: 'skill',
-					options: {
-						name: 'test',
-						description: 'This is such a good skill!',
-					},
-				},
-			],
-			'skills'
-		)
+		const cli = await fixture.installCachedFeatures('skills')
 		return cli
 	}
 

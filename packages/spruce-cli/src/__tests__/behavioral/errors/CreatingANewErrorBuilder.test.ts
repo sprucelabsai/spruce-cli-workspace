@@ -46,7 +46,7 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
 			/testFailed.builder/,
-			results.files ?? []
+			results.files
 		)
 
 		await this.Service('typeChecker').check(match)
@@ -64,18 +64,12 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 
 		testUtil.assertsFileByNameInGeneratedFiles(
 			/testPass\.schema/,
-			results.files ?? []
+			results.files
 		)
 
-		testUtil.assertsFileByNameInGeneratedFiles(
-			/options\.types/,
-			results.files ?? []
-		)
+		testUtil.assertsFileByNameInGeneratedFiles(/options\.types/, results.files)
 
-		const typeChecker = this.Service('typeChecker')
-		for (const file of results.files ?? []) {
-			await typeChecker.check(file.path)
-		}
+		await this.assertValidActionResponseFiles(results)
 	}
 
 	@test()
@@ -91,18 +85,12 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 
 		testUtil.assertsFileByNameInGeneratedFiles(
 			/testPass\.schema/,
-			results.files ?? []
+			results.files
 		)
 
-		testUtil.assertsFileByNameInGeneratedFiles(
-			/options\.types/,
-			results.files ?? []
-		)
+		testUtil.assertsFileByNameInGeneratedFiles(/options\.types/, results.files)
 
-		const typeChecker = this.Service('typeChecker')
-		for (const file of results.files ?? []) {
-			await typeChecker.check(file.path)
-		}
+		await this.assertValidActionResponseFiles(results)
 
 		const cli = await this.Cli()
 		const health = await cli.checkHealth()

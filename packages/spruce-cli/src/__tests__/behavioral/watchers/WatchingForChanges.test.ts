@@ -46,10 +46,12 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 		const feature = cli.getFeature('watch')
 		let payloadChanges: any = {}
 
-		void cli.emitter.on('watcher.did-detect-change', (payload) => {
+		void cli.on('watcher.did-detect-change', (payload) => {
 			fireCount++
 			payloadChanges = payload.changes
 		})
+
+		diskUtil.createDir(this.cwd)
 
 		await this.startWatching(feature)
 
@@ -74,18 +76,21 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 		await this.stopWatching(feature)
 
 		assert.isEqual(fireCount, 1)
-		assert.isLength(payloadChanges, changeCount)
-		assert.isEqualDeep(payloadChanges, expectedChanges)
+		assert.isTrue(payloadChanges.length >= changeCount)
+		for (const expected of expectedChanges) {
+			assert.doesInclude(payloadChanges, expected)
+		}
 	}
 
 	private static async stopWatching(feature: WatchFeature) {
-		await this.wait(1000)
+		await this.wait(3000)
 		await feature.stopWatching()
+		await this.wait(500)
 	}
 
 	private static async startWatching(feature: WatchFeature) {
-		void feature.startWatching()
-		await this.wait(1000)
+		void feature.startWatching({ delay: 2000 })
+		await this.wait(500)
 	}
 
 	protected static async watchRunStop(
@@ -95,7 +100,7 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 		const feature = cli.getFeature('watch')
 
 		let payloadChanges: any = {}
-		void cli.emitter.on('watcher.did-detect-change', (payload) => {
+		void cli.on('watcher.did-detect-change', (payload) => {
 			payloadChanges = payload.changes
 		})
 
@@ -104,7 +109,10 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 		const expected: GeneratedFileOrDir[] = await runner()
 
 		await this.stopWatching(feature)
-		assert.isEqualDeep(payloadChanges, expected)
+
+		for (const e of expected) {
+			assert.doesInclude(payloadChanges, e)
+		}
 	}
 
 	@test()

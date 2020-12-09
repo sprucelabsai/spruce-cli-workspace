@@ -69,12 +69,12 @@ const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasAc
 	                defaultValue: "SpruceSchemas",
 	                options: undefined
 	            },
-	            /** Fetch remote schemas. I will check the server and your contracts to pull down schemas you need. */
+	            /** Fetch remote schemas. I will pull in schemas from other features. */
 	            'fetchRemoteSchemas': {
 	                label: 'Fetch remote schemas',
 	                type: 'boolean',
 	                isPrivate: true,
-	                hint: 'I will check the server and your contracts to pull down schemas you need.',
+	                hint: 'I will pull in schemas from other features.',
 	                defaultValue: true,
 	                options: undefined
 	            },

@@ -38,8 +38,7 @@ export default buildSchema({
 			type: 'boolean',
 			label: 'Fetch remote schemas',
 			isPrivate: true,
-			hint:
-				'I will check the server and your contracts to pull down schemas you need.',
+			hint: 'I will pull in schemas from other features.',
 			defaultValue: true,
 		},
 		fetchLocalSchemas: {

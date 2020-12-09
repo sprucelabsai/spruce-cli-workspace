@@ -3,13 +3,14 @@ import {
 	Schema,
 	FieldRegistration,
 	fieldRegistrations,
+	normalizeSchemaToIdWithVersion,
 } from '@sprucelabs/schema'
 import * as coreSchemas from '@sprucelabs/spruce-core-schemas'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
-import { uniqBy } from 'lodash'
+import { isEqual, uniqBy } from 'lodash'
 import SpruceError from '../errors/SpruceError'
 import AbstractStore from './AbstractStore'
 
@@ -63,28 +64,82 @@ export default class SchemaStore extends AbstractStore {
 			schemasByNamespace: {},
 		}
 
-		if (fetchRemoteSchemas) {
-			// TODO - make mercury request when mercury-api is running
-		}
-
 		if (fetchCoreSchemas) {
-			results.schemasByNamespace[CORE_NAMESPACE] = Object.values(coreSchemas)
+			results.schemasByNamespace[CORE_NAMESPACE] = Object.values(
+				coreSchemas
+			).map((schema) => ({
+				...schema,
+				namespace: CORE_NAMESPACE,
+			}))
 		}
 
 		if (fetchLocalSchemas) {
 			const locals = await this.loadLocalSchemas(
 				localSchemaDir,
+				localNamespace,
 				enableVersioning
 			)
 			results.schemasByNamespace[localNamespace] = locals.schemas
 			results.errors.push(...locals.errors)
 		}
 
+		if (fetchRemoteSchemas) {
+			await this.fetchAndMixinRemoteSchemas(localNamespace, results)
+		}
+
 		return results
+	}
+
+	private async fetchAndMixinRemoteSchemas(
+		localNamespace: string,
+		results: FetchSchemasResults
+	) {
+		const schemas: Schema[] = []
+		for (const namespace in results.schemasByNamespace) {
+			schemas.push(...results.schemasByNamespace[namespace])
+		}
+
+		const remoteResults = await this.emitter.emit('schema.did-fetch-schemas', {
+			schemas,
+		})
+
+		remoteResults.responses.forEach((response) => {
+			response.payload?.schemas?.forEach((schema: Schema) => {
+				this.mixinSchemaOrThrowIfExists(schema, localNamespace, results)
+			})
+		})
+	}
+
+	private mixinSchemaOrThrowIfExists(
+		schema: Schema,
+		localNamespace: string,
+		results: FetchSchemasResults
+	) {
+		const namespace = schema.namespace ?? localNamespace
+
+		if (!results.schemasByNamespace[namespace]) {
+			results.schemasByNamespace[namespace] = []
+		}
+
+		const idWithVersion = normalizeSchemaToIdWithVersion(schema)
+		const match = results.schemasByNamespace[namespace].find((s) =>
+			isEqual(normalizeSchemaToIdWithVersion(s), idWithVersion)
+		)
+
+		if (match) {
+			throw new SpruceError({
+				code: 'SCHEMA_EXISTS',
+				schemaId: schema.id,
+				destination: 'schema.did-fetch-schemas listener',
+			})
+		}
+
+		results.schemasByNamespace[namespace].push(schema)
 	}
 
 	private async loadLocalSchemas(
 		localLookupDir: string,
+		localNamespace: string,
 		enableVersioning?: boolean
 	) {
 		const localMatches = await globby(
@@ -128,6 +183,8 @@ export default class SchemaStore extends AbstractStore {
 						if (schema.namespace) {
 							errors.push('namespace_should_not_be_set')
 						}
+
+						schema.namespace = localNamespace
 
 						if (errors.length > 0) {
 							throw new SpruceError({

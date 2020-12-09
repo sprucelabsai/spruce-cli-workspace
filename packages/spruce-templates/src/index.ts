@@ -17,7 +17,6 @@ import handlebars from 'handlebars'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import log from './singletons/log'
 import {
-	AutoLoaderTemplateItem,
 	DirectoryTemplateCode,
 	DirectoryTemplateContextMap,
 	ValueTypes,
@@ -26,6 +25,7 @@ import {
 	ErrorTemplateItem,
 	TestOptions,
 	EventListenerOptions,
+	EventContractTemplateItem,
 } from './types/templates.types'
 import DirectoryTemplateUtility from './utilities/DirectoryTemplateUtility'
 import importExtractorUtil from './utilities/importExtractor.utility'
@@ -99,10 +99,10 @@ export const templates = {
 		const template = templateImportUtil.getTemplate(
 			options.schemaFile ?? 'schemas/schema.ts.hbs'
 		)
+
 		return template({
 			...options,
 			imports,
-			registerBuiltSchemas: options.registerBuiltSchemas,
 			globalNamespace: options.globalNamespace ?? DEFAULT_NAMESPACE_PREFIX,
 			typesFile: options.typesFile ?? DEFAULT_TYPES_FILE,
 		})
@@ -165,19 +165,13 @@ export const templates = {
 		return template(options)
 	},
 
-	autoloader(options: AutoLoaderTemplateItem) {
-		const template = templateImportUtil.getTemplate(
-			'autoloader/autoloader.ts.hbs'
-		)
-		return template(options)
-	},
-
 	fieldsTypes(options: { fieldTemplateItems: FieldTemplateItem[] }) {
 		const template = templateImportUtil.getTemplate(
 			'schemas/fields/fields.types.ts.hbs'
 		)
 		return template(options)
 	},
+
 	fieldClassMap(options: { fieldTemplateItems: FieldTemplateItem[] }) {
 		const template = templateImportUtil.getTemplate(
 			'schemas/fields/fieldClassMap.ts.hbs'
@@ -188,6 +182,26 @@ export const templates = {
 	listener(options: EventListenerOptions) {
 		const template = templateImportUtil.getTemplate('events/listener.ts.hbs')
 		return template(options)
+	},
+
+	eventContract(
+		options: EventContractTemplateItem & {
+			schemaTemplateItems: SchemaTemplateItem[]
+			valueTypes: ValueTypes
+		}
+	) {
+		const template = templateImportUtil.getTemplate(
+			'events/event.contract.ts.hbs'
+		)
+
+		return template(options)
+	},
+
+	combinedEventsContract(contracts: EventContractTemplateItem[]) {
+		const template = templateImportUtil.getTemplate(
+			'events/events.contract.ts.hbs'
+		)
+		return template({ contracts })
 	},
 
 	async directoryTemplate<K extends DirectoryTemplateCode>(options: {
@@ -234,7 +248,6 @@ export const templates = {
 	},
 }
 
-/** All the templates */
 export type Templates = typeof templates
 export { default as importExtractor } from './utilities/importExtractor.utility'
 

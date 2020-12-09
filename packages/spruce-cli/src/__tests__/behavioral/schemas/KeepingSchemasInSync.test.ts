@@ -45,7 +45,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		assert.isFalsy(results.errors)
 
-		testUtil.assertCountsByAction(results.files ?? [], {
+		testUtil.assertCountsByAction(results.files, {
 			updated: 0,
 			generated: SYNC_FILE_COUNT,
 			skipped: 0,
@@ -63,7 +63,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		assert.isFalsy(results.errors)
 
-		testUtil.assertCountsByAction(results.files ?? [], {
+		testUtil.assertCountsByAction(results.files, {
 			updated: 0,
 			generated: TYPE_FILE_COUNT,
 			skipped: 0,
@@ -101,7 +101,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		assert.isTruthy(results.files)
 		assert.isLength(results.files, MOCK_CORE_SYNC_FILE_COUNT)
 
-		testUtil.assertCountsByAction(results.files ?? [], {
+		testUtil.assertCountsByAction(results.files, {
 			generated: MOCK_CORE_SYNC_FILE_COUNT,
 			skipped: 0,
 			updated: 0,
@@ -128,7 +128,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		assert.isFalsy(results.errors)
 		assert.isAbove(results.files?.length, 0)
 
-		testUtil.assertCountsByAction(results.files ?? [], {
+		testUtil.assertCountsByAction(results.files, {
 			generated: 0,
 			skipped: results.files?.length ?? 0,
 			updated: 0,
@@ -172,9 +172,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		assert.isFalsy(results.errors)
 		assert.isTruthy(results.files)
 
-		for (const file of results.files) {
-			await this.Service('typeChecker').check(file.path)
-		}
+		await this.assertValidActionResponseFiles(results)
 
 		const typesContents = diskUtil.readFile(this.coreSchemaTypesFile)
 
@@ -210,7 +208,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		const builderPath = testUtil.assertsFileByNameInGeneratedFiles(
 			'testSchema.builder.ts',
-			createResponse.files ?? []
+			createResponse.files
 		)
 
 		const contents = diskUtil
@@ -226,16 +224,13 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		const testSchema = testUtil.assertsFileByNameInGeneratedFiles(
 			'test-schema.schema.ts',
-			syncResults.files ?? []
+			syncResults.files
 		)
 
 		const testSchemaContents = diskUtil.readFile(testSchema)
 		assert.doesInclude(testSchemaContents, 'SchemaRegistry')
 
-		const typeChecker = this.Service('typeChecker')
-		for (const file of syncResults.files ?? []) {
-			await typeChecker.check(file.path)
-		}
+		await this.assertValidActionResponseFiles(syncResults)
 	}
 
 	@test()
@@ -254,7 +249,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 			const id = schema.id
 			const match = testUtil.assertsFileByNameInGeneratedFiles(
 				`${id}.schema.ts`,
-				createResponse.files ?? []
+				createResponse.files
 			)
 			const contents = diskUtil.readFile(match)
 			assert.doesInclude(
@@ -285,7 +280,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		const builderFile = testUtil.assertsFileByNameInGeneratedFiles(
 			/testSchema\.builder/,
-			createResponse.files ?? []
+			createResponse.files
 		)
 
 		// make sure builder is versioned
@@ -293,7 +288,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		const schemaFile = testUtil.assertsFileByNameInGeneratedFiles(
 			/testSchema\.schema/,
-			createResponse.files ?? []
+			createResponse.files
 		)
 
 		// make sure this path is versioned

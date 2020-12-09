@@ -7,13 +7,13 @@ import AbstractFeatureAction from '../../AbstractFeatureAction'
 import ParentTestFinder from '../../error/ParentTestFinder'
 import { FeatureActionResponse } from '../../features.types'
 
-export default class CreateAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.CreateTestActionSchema> {
+type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestActionSchema
+type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestAction
+export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public name = 'Test'
 	public optionsSchema = createTestActionSchema
 
-	public async execute(
-		options: SpruceSchemas.SpruceCli.v2020_07_22.CreateTestAction
-	): Promise<FeatureActionResponse> {
+	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 		const {
 			testDestinationDir,

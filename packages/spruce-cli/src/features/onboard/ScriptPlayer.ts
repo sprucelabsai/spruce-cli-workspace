@@ -2,9 +2,9 @@ import OnboardingStore from '../../stores/OnboardingStore'
 import { GraphicsInterface } from '../../types/cli.types'
 
 export type Script = ScriptItem[]
-export type ScriptItem = string | ScriptItemCallback
-export type ScriptRedirect = string
-export interface ScriptItemCallback {
+type ScriptItem = string | ScriptItemCallback
+type ScriptRedirect = string
+interface ScriptItemCallback {
 	(player: CallbackPlayer):
 		| Promise<void | ScriptRedirect>
 		| void

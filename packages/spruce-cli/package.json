@@ -39,30 +39,33 @@
 		"build.babel.debug": "node --inspect-brk=5200 ../../node_modules/.bin/babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
 		"build.watch": "concurrently 'yarn run build.babel --watch' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'clear && yarn build.types && yarn build.resolve-paths'\" \"chokidar '../spruce-templates/src/**/*' -c 'yarn clean.cache && yarn build.types'\"",
 		"build.resolve-paths": "resolve-path-aliases --target build --patterns **/*.js,**/*.d.ts",
-		"cache.test": "node build/test/buildTestCache",
+		"cache.tests": "node build/test/buildTestCache",
 		"clean": "rm -rf build/",
 		"clean.all": "rm -rf build/ && rm -rf node_modules/ && yarn clean.cache",
-		"clean.cache": "rm -rf src/.spruce/tmp && node build/test/cleanTestCache",
+		"clean.cache": "rm -rf src/.spruce/tmp && node build/test/cleanTestCache && echo '******** TEST CACHE CLEARED ********'",
+		"clean.cache.disabled": "echo 'disabled'",
 		"release": "semantic-release",
 		"start": "DEBUG=@sprucelabs/cli~debug node . $COMMANDS",
 		"local": "DEBUG=@sprucelabs/cli~debug node --inspect=5200 . $COMMANDS ; echo 'DONE'",
-		"test": "yarn cache.test && jest",
-		"test.watch": "yarn cache.test && jest --watch"
+		"test": "yarn cache.tests && jest",
+		"test.watch": "yarn cache.tests && jest --watch",
+		"arkit": "arkit -f index.ts -o docs/images/arkit.svg",
+		"arkit.png": "arkit -f index.ts -o docs/images/arkit.png"
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.12.5",
 		"@jest/reporters": "^26.6.2",
-		"@sprucelabs/error": "^4.0.1",
-		"@sprucelabs/jest-json-reporter": "^5.1.3",
-		"@sprucelabs/log": "^10.2.295",
-		"@sprucelabs/mercury": "^10.5.72",
-		"@sprucelabs/mercury-client": "^14.4.11",
-		"@sprucelabs/mercury-event-emitter": "^14.4.11",
-		"@sprucelabs/mercury-types": "^14.4.3",
-		"@sprucelabs/schema": "^18.2.4",
-		"@sprucelabs/spruce-core-schemas": "^22.0.11",
-		"@sprucelabs/spruce-skill-utils": "^12.3.0",
-		"@sprucelabs/spruce-templates": "^11.12.31",
+		"@sprucelabs/error": ">=4.0.1",
+		"@sprucelabs/jest-json-reporter": ">=5.1.3",
+		"@sprucelabs/log": ">=10.2.295",
+		"@sprucelabs/mercury": ">=10.5.72",
+		"@sprucelabs/mercury-client": ">=14.4.11",
+		"@sprucelabs/mercury-event-emitter": ">=14.4.11",
+		"@sprucelabs/mercury-types": ">=14.4.3",
+		"@sprucelabs/schema": ">=18.2.4",
+		"@sprucelabs/spruce-core-schemas": ">=22.0.11",
+		"@sprucelabs/spruce-skill-utils": ">=12.3.0",
+		"@sprucelabs/spruce-templates": ">=11.12.25",
 		"blessed": "^0.1.81",
 		"blessed-contrib": "^4.8.20",
 		"cfonts": "^2.9.0",
@@ -73,6 +76,7 @@
 		"core-js": "^3.8.1",
 		"emphasize": "^4.1.0",
 		"fs-extra": "^9.0.1",
+		"gifwrap": "SimenB/gifwrap#patch-1",
 		"globby": "^11.0.1",
 		"inflection": "^1.12.0",
 		"inquirer": "^7.3.3",
@@ -171,6 +175,9 @@
 				}
 			},
 			{
+				"code": "schema"
+			},
+			{
 				"code": "event"
 			}
 		],
@@ -184,6 +191,18 @@
 			},
 			{
 				"code": "error"
+			}
+		],
+		"eventsInNodeModule": [
+			{
+				"code": "node",
+				"options": {
+					"name": "event test skill",
+					"description": ""
+				}
+			},
+			{
+				"code": "event"
 			}
 		]
 	},
@@ -227,7 +246,9 @@
 						"createsValidListener": "C13",
 						"canGetLatestVersionBasedOnDir": "C16",
 						"canBuildSkill": "C23",
-						"canWatchAndBuild": "C24"
+						"canWatchAndBuild": "C24",
+						"fetchesEventContracts": "F55",
+						"canGetNumberOfEventsBackFromHealthCheck": "F56"
 					}
 				}
 			]

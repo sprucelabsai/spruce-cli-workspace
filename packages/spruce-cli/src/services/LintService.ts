@@ -3,16 +3,8 @@ import fs from 'fs-extra'
 import SpruceError from '../errors/SpruceError'
 import CommandService from './CommandService'
 
-export interface AddOptions {
-	dev?: boolean
-}
-
 export default class LintService extends CommandService {
-	/** Lint fix based on a glob. Returns an array of filepaths that were fixed. */
-	public fix = async (
-		/** The file or pattern to run eslint --fix on */
-		pattern: string
-	): Promise<string[]> => {
+	public fix = async (pattern: string): Promise<string[]> => {
 		if (!pattern) {
 			throw new SpruceError({
 				code: 'LINT_FAILED',

@@ -6,7 +6,7 @@ import testUtil from '../../../utilities/test.utility'
 export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 	@test()
 	protected static async asksForYouToSelectABaseClass() {
-		const cli = await this.installTests('tests')
+		const cli = await this.installTests()
 		await this.copyTestFiles()
 
 		const response = cli.getFeature('test').Action('create').execute({
@@ -50,7 +50,7 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 
 		testUtil.assertsFileByNameInGeneratedFiles(
 			'CanBookAppointment.test.ts',
-			results.files ?? []
+			results.files
 		)
 
 		await this.Service('build').build()

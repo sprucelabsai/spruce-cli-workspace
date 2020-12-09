@@ -4,13 +4,13 @@ import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 import OnboardFeature from '../OnboardFeature'
 
+type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.OnboardActionSchema
+type Options = SpruceSchemas.SpruceCli.v2020_07_22.OnboardAction
 export default class ListenAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.OnboardActionSchema> {
 	public name = 'onboard'
-	public optionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.OnboardActionSchema = onboardActionSchema
+	public optionsSchema: OptionsSchema = onboardActionSchema
 
-	public async execute(
-		_options: SpruceSchemas.SpruceCli.v2020_07_22.OnboardAction
-	): Promise<FeatureActionResponse> {
+	public async execute(_options: Options): Promise<FeatureActionResponse> {
 		const store = this.getParent().OnboardingStore()
 		const mode = store.getMode()
 

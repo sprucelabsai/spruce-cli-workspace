@@ -3,6 +3,7 @@
     "skill",
     "schema",
     "error",
-    "test"
+    "test",
+    "event"
   ]
 }

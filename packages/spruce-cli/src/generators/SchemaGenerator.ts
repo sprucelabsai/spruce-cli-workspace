@@ -1,7 +1,7 @@
 import path from 'path'
 import pathUtil from 'path'
 import { FieldTemplateItem, SchemaTemplateItem } from '@sprucelabs/schema'
-import { CORE_NAMESPACE, namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { LATEST_HANDLEBARS } from '@sprucelabs/spruce-skill-utils'
@@ -12,12 +12,7 @@ import {
 import SpruceError from '../errors/SpruceError'
 import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
 
-export interface GenerateSchemaTypesOptions {
-	fieldTemplateItems: FieldTemplateItem[]
-	schemaTemplateItems: SchemaTemplateItem[]
-}
-
-export interface GenerateFieldTypesOptions {
+interface GenerateFieldTypesOptions {
 	fieldTemplateItems: FieldTemplateItem[]
 }
 
@@ -32,12 +27,6 @@ export interface GenerateSchemaTypesOptions {
 	shouldImportCoreSchemas: boolean
 }
 
-export interface SchemaTypesGenerationStage {
-	name: string
-	errors: SpruceError[]
-	successfulSchemas: number
-	successfulFields: number
-}
 export default class SchemaGenerator extends AbstractGenerator {
 	private readonly fieldTemplates: {
 		filename: string
@@ -193,7 +182,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			valueTypes: ValueTypes
 			typesFile?: string
 			registerBuiltSchemas?: boolean
-			shouldImportCoreSchemas?: boolean
+			shouldImportCoreSchemas: boolean
 		} & SchemaTemplateItem
 	) {
 		const {
@@ -201,7 +190,6 @@ export default class SchemaGenerator extends AbstractGenerator {
 			fieldTemplateItems,
 			valueTypes,
 			registerBuiltSchemas = true,
-			shouldImportCoreSchemas,
 			...item
 		} = options
 
@@ -231,7 +219,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			valueTypes,
 			typesFile,
 			schemaFile:
-				item.namespace === CORE_NAMESPACE && shouldImportCoreSchemas
+				item.importFrom && options.shouldImportCoreSchemas
 					? `schemas/imported.schema.ts.hbs`
 					: undefined,
 		})

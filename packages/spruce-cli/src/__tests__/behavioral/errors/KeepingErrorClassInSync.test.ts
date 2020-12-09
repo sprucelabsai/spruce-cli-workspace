@@ -14,10 +14,7 @@ export default class KeepsErrorClassInSyncTest extends AbstractErrorTest {
 			nameCamel: 'testError',
 		})
 
-		testUtil.assertsFileByNameInGeneratedFiles(
-			/SpruceError/,
-			results.files ?? []
-		)
+		testUtil.assertsFileByNameInGeneratedFiles(/SpruceError/, results.files)
 
 		assert.doesInclude(results.files ?? [], {
 			name: 'SpruceError.ts',
@@ -44,7 +41,7 @@ export default class KeepsErrorClassInSyncTest extends AbstractErrorTest {
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
 			/SpruceError/,
-			results.files ?? []
+			results.files
 		)
 		const contents = diskUtil.readFile(match)
 

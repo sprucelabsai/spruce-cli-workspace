@@ -1,7 +1,7 @@
 import { FieldDefinitionValueType } from '@sprucelabs/schema'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import { FeatureCode, FeatureActionResponse } from '../features/features.types'
+import { FeatureActionResponse } from '../features/features.types'
 
 export enum GraphicsTextEffect {
 	Reset = 'reset',
@@ -126,9 +126,7 @@ export type GeneratedFileOrDir = SpruceSchemas.SpruceCli.v2020_07_22.WatcherDidD
 
 export interface NpmPackage {
 	name: string
-	/** Defaults to "latest" */
 	version?: string
-	/** Whether to install this in "devDependencies" */
 	isDev?: boolean
 }
 
@@ -136,9 +134,4 @@ export interface ExecutionResults extends FeatureActionResponse {
 	featureCode: string
 	actionCode: string
 	headline: string
-}
-
-export interface Settings {
-	installed?: FeatureCode[]
-	skipped?: FeatureCode[]
 }

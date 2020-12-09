@@ -40,6 +40,9 @@ export default class SkillFeature<
 		{ name: 'eslint-config-spruce', isDev: true },
 		{ name: 'prettier', isDev: true },
 		{ name: 'globby' },
+		{
+			name: '@sprucelabs/mercury-types',
+		},
 	]
 
 	public optionsDefinition = skillFeatureSchema as S

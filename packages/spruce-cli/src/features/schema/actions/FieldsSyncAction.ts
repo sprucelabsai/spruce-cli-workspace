@@ -7,14 +7,14 @@ import { GeneratedFile } from '../../../types/cli.types'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
-type SyncFieldsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemaFieldsActionSchema
+type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemaFieldsActionSchema
 
-export default class FieldsSyncAction extends AbstractFeatureAction<SyncFieldsSchema> {
+export default class FieldsSyncAction extends AbstractFeatureAction<OptionsSchema> {
 	public name = 'fields.sync'
 	public optionsSchema = syncSchemaFieldsActionSchema
 
 	public async execute(
-		options: SchemaValues<SyncFieldsSchema>
+		options: SchemaValues<OptionsSchema>
 	): Promise<FeatureActionResponse> {
 		this.ui.startLoading(`Syncing fields...`)
 
