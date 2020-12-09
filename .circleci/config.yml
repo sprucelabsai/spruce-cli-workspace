@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   hub: yasuhiroki/hub@0.0.2
 jobs:
-  test:
+  setup_for_test:
     docker:
       - image: circleci/node:12
     resource_class: medium+
@@ -33,19 +33,31 @@ jobs:
       - run:
           name: "Build"
           command: |
-            yarn build
+            yarn run build
       - run:
           name: "Lint"
           command: |
-            yarn lint
+            yarn run lint
+      - run:
+          name: "Cache Tests"
+          command: |
+            yarn run cache.tests
+  test:
+    docker:
+      - image: circleci/node:12
+    resource_class: medium
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "ec:9f:2e:aa:1f:c9:ab:49:57:8f:c0:cd:2e:5b:f3:b0"
+      - run:
+          name: "ENV file creation"
+          command: |
+            [ -n "$BASE64_ENV" ] && echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
       - run:
           name: "Test 💪"
           command: |
             yarn test -w 4
-      - save_cache:
-          key: cli-import-service
-          paths:
-            - /tmp/import-service
       - run:
           name: Check branch for auto-upgrade
           command: |
@@ -126,6 +138,8 @@ workflows:
   version: 2.1
   do_build:
     jobs:
+      - setup_for_test:
+          context: public_package_publish
       - test:
           context: public_package_publish
       - npm_publish:
