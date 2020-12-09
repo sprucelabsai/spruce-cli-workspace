@@ -47,9 +47,9 @@ jobs:
           paths:
             - /tmp/import-service
       - run:
-        name: "Max memory usage for tests"
-        command: cat /sys/fs/cgroup/memory/memory.max_usage_in_bytes
-        when: always
+          name: "Max memory usage for tests"
+          command: cat /sys/fs/cgroup/memory/memory.max_usage_in_bytes
+          when: always
       - run:
           name: Check branch for auto-upgrade
           command: |
