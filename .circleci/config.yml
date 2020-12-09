@@ -53,10 +53,10 @@ jobs:
           paths:
             - ~/project/node_modules
             - ~/project/build
-            - ~/project/spruce-cli/node_modules
-            - ~/project/spruce-cli/build
-            - ~/project/spruce-templates/node_modules
-            - ~/project/spruce-templates/build
+            - ~/project/packages/spruce-cli/node_modules
+            - ~/project/packages/spruce-cli/build
+            - ~/project/packages/spruce-templates/node_modules
+            - ~/project/packages/spruce-templates/build
   test:
     docker:
       - image: circleci/node:12
