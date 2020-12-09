@@ -5,7 +5,7 @@ jobs:
   setup_for_test:
     docker:
       - image: circleci/node:12
-    resource_class: large
+    resource_class: medium
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -39,6 +39,7 @@ jobs:
       - run:
           name: "Cache Tests"
           command: |
+            cd packages/spruce-cli
             yarn run cache.tests
       - save_cache:
           key: cli-{{ .Environment.CIRCLE_SHA1 }}
@@ -53,7 +54,7 @@ jobs:
   test:
     docker:
       - image: circleci/node:12
-    resource_class: medium
+    resource_class: large
     steps:
       - add_ssh_keys:
           fingerprints:
