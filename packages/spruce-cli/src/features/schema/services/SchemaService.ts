@@ -1,7 +1,7 @@
 import { validateSchema } from '@sprucelabs/schema'
 import cloneDeep from 'lodash/cloneDeep'
-import SpruceError from '../errors/SpruceError'
-import ImportService from './ImportService'
+import SpruceError from '../../../errors/SpruceError'
+import ImportService from '../../../services/ImportService'
 
 export default class SchemaService extends ImportService {
 	public importSchema = async (file: string) => {

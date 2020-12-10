@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
-import AbstractCliTest from '../../test/AbstractCliTest'
+import AbstractCliTest from '../../tests/AbstractCliTest'
 import WidgetFactory from '../../widgets/WidgetFactory'
 
 export default class WidgetsTest extends AbstractCliTest {

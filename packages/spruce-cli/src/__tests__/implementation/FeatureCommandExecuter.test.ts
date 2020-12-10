@@ -12,8 +12,8 @@ import {
 	FeatureCode,
 	FeatureInstallResponse,
 } from '../../features/features.types'
-import AbstractSchemaTest from '../../test/AbstractSchemaTest'
-import testUtil from '../../utilities/test.utility'
+import AbstractSchemaTest from '../../tests/AbstractSchemaTest'
+import testUtil from '../../tests/utilities/test.utility'
 
 export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 	@test()

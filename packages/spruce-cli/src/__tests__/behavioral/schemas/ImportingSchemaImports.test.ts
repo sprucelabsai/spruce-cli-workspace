@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import AbstractSchemaTest from '../../../test/AbstractSchemaTest'
+import AbstractSchemaTest from '../../../tests/AbstractSchemaTest'
 
 export default class ImportingSchemaImportsTest extends AbstractSchemaTest {
 	@test()

@@ -5,7 +5,7 @@ import { EventContractTemplateItem } from '@sprucelabs/spruce-templates'
 import { test, assert } from '@sprucelabs/test'
 import { MERCURY_API_NAMESPACE } from '../../cli'
 import EventTemplateItemBuilder from '../../templateItemBuilders/EventTemplateItemBuilder'
-import AbstractCliTest from '../../test/AbstractCliTest'
+import AbstractCliTest from '../../tests/AbstractCliTest'
 import coreEventContract from '../support/coreEventContract'
 
 const bookContract: EventContract = {

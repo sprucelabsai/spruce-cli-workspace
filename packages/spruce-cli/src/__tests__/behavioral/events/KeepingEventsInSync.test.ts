@@ -8,8 +8,8 @@ import { validateSchema } from '@sprucelabs/schema'
 import { MERCURY_API_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { FeatureActionResponse } from '../../../features/features.types'
-import AbstractEventTest from '../../../test/AbstractEventTest'
-import testUtil from '../../../utilities/test.utility'
+import AbstractEventTest from '../../../tests/AbstractEventTest'
+import testUtil from '../../../tests/utilities/test.utility'
 
 const EXPECTED_NUM_CONTRACTS_GENERATED = 30
 
@@ -22,24 +22,31 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 	@test()
 	protected static async generatesValidContractFile() {
-		const fixture = this.FeatureFixture()
-		const cli = await fixture.installCachedFeatures('eventsInNodeModule')
+		const cli = await this.FeatureFixture().installCachedFeatures(
+			'eventsInNodeModule'
+		)
 
 		const results = await cli.getFeature('event').Action('sync').execute({})
+		await this.assertValidEventResults(results)
+	}
 
-		assert.isFalsy(results.errors)
+	@test()
+	protected static async syncingSchemasRetainsEventSchemas() {
+		const cli = await this.FeatureFixture().installCachedFeatures('events')
+		const results = await cli.getFeature('schema').Action('sync').execute({})
+		this.assertExpectedSchemasAreCreated(results)
+	}
 
-		await this.assertsContractsHaveValidPayloads(results)
-		await this.assertValidActionResponseFiles(results)
-
-		this.assertExpectedFilesAreCreated(results)
-		await this.assertCombinedContractContents(results)
+	@test()
+	protected static async syncingSchemasDoesNotSyncEventSchemasIfEventsNotInstalled() {
+		const cli = await this.FeatureFixture().installCachedFeatures('schemas')
+		const results = await cli.getFeature('schema').Action('sync').execute({})
+		assert.doesThrow(() => this.assertExpectedSchemasAreCreated(results))
 	}
 
 	@test()
 	protected static async canGetNumberOfEventsBackFromHealthCheck() {
-		const fixture = this.FeatureFixture()
-		const cli = await fixture.installCachedFeatures('events')
+		const cli = await this.FeatureFixture().installCachedFeatures('events')
 
 		const results = await cli.getFeature('event').Action('sync').execute({})
 
@@ -58,6 +65,17 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		const imported = await this.importCombinedContractsFile(results)
 
 		assert.isLength(health.event.contracts, imported.length)
+	}
+
+	private static async assertValidEventResults(results: FeatureActionResponse) {
+		assert.isFalsy(results.errors)
+
+		await this.assertsContractsHaveValidPayloads(results)
+		await this.assertValidActionResponseFiles(results)
+
+		this.assertExpectedContractsAreCreated(results)
+		this.assertExpectedSchemasAreCreated(results)
+		await this.assertCombinedContractContents(results)
 	}
 
 	private static async assertCombinedContractContents(
@@ -114,7 +132,9 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		validateSchema(signature.responsePayloadSchema)
 	}
 
-	private static assertExpectedFilesAreCreated(results: FeatureActionResponse) {
+	private static assertExpectedContractsAreCreated(
+		results: FeatureActionResponse
+	) {
 		const filesToCheck = [
 			{
 				name: `whoAmI.contract.ts`,
@@ -124,12 +144,28 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 				name: `getEventContracts.contract.ts`,
 				path: `events${pathUtil.sep}${MERCURY_API_NAMESPACE}`,
 			},
+		]
+
+		this.assertFilesWereGenerated(filesToCheck, results)
+	}
+
+	private static assertExpectedSchemasAreCreated(
+		results: FeatureActionResponse
+	) {
+		const filesToCheck = [
 			{
 				name: `unRegisterListenersTargetAndPayload.schema.ts`,
 				path: `schemas${pathUtil.sep}${MERCURY_API_NAMESPACE}`,
 			},
 		]
 
+		this.assertFilesWereGenerated(filesToCheck, results)
+	}
+
+	private static assertFilesWereGenerated(
+		filesToCheck: { name: string; path: string }[],
+		results: FeatureActionResponse
+	) {
 		for (const file of filesToCheck) {
 			const match = testUtil.assertsFileByNameInGeneratedFiles(
 				file.name,

@@ -8,8 +8,8 @@ import {
 } from '@sprucelabs/spruce-skill-utils'
 import { assert, test } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
-import AbstractSchemaTest from '../../../test/AbstractSchemaTest'
-import testUtil from '../../../utilities/test.utility'
+import AbstractSchemaTest from '../../../tests/AbstractSchemaTest'
+import testUtil from '../../../tests/utilities/test.utility'
 
 const TYPE_FILE_COUNT = 3
 const SYNC_FILE_COUNT = Object.keys(coreSchemas).length + TYPE_FILE_COUNT

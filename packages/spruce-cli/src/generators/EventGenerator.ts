@@ -4,7 +4,6 @@ import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import {
 	EventContractTemplateItem,
 	EventListenerOptions,
-	ValueTypes,
 } from '@sprucelabs/spruce-templates'
 import { GeneratedFile } from '../types/cli.types'
 import AbstractGenerator from './AbstractGenerator'
@@ -15,14 +14,9 @@ export default class EventGenerator extends AbstractGenerator {
 		options: {
 			eventContractTemplateItems: EventContractTemplateItem[]
 			schemaTemplateItems: SchemaTemplateItem[]
-			valueTypes: ValueTypes
 		}
 	) {
-		const {
-			eventContractTemplateItems,
-			schemaTemplateItems,
-			valueTypes,
-		} = options
+		const { eventContractTemplateItems, schemaTemplateItems } = options
 
 		const generated: Promise<GeneratedFile>[] = []
 
@@ -32,7 +26,6 @@ export default class EventGenerator extends AbstractGenerator {
 					destinationDir,
 					eventContractTemplateItem: item,
 					schemaTemplateItems,
-					valueTypes,
 				})
 			)
 		}
@@ -50,13 +43,11 @@ export default class EventGenerator extends AbstractGenerator {
 		destinationDir: string
 		eventContractTemplateItem: EventContractTemplateItem
 		schemaTemplateItems: SchemaTemplateItem[]
-		valueTypes: ValueTypes
 	}): Promise<GeneratedFile> {
 		const {
 			destinationDir,
 			eventContractTemplateItem,
 			schemaTemplateItems,
-			valueTypes,
 		} = options
 
 		const destinationFile = diskUtil.resolvePath(
@@ -68,7 +59,6 @@ export default class EventGenerator extends AbstractGenerator {
 		const eventsContractContents = this.templates.eventContract({
 			...eventContractTemplateItem,
 			schemaTemplateItems,
-			valueTypes,
 		})
 
 		const results = await this.writeFileIfChangedMixinResults(

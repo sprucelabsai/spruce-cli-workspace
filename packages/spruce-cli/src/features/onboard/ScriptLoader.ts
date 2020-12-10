@@ -1,8 +1,8 @@
 import pathUtil from 'path'
 import globby from 'globby'
-import OnboardingStore from '../../stores/OnboardingStore'
 import { GraphicsInterface } from '../../types/cli.types'
 import ScriptPlayer, { CommandExecuter } from './ScriptPlayer'
+import OnboardingStore from './stores/OnboardingStore'
 
 export default class ScriptLoader {
 	public static async LoadScripts(options: {

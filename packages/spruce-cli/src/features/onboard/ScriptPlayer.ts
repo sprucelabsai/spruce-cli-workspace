@@ -1,5 +1,5 @@
-import OnboardingStore from '../../stores/OnboardingStore'
 import { GraphicsInterface } from '../../types/cli.types'
+import OnboardingStore from './stores/OnboardingStore'
 
 export type Script = ScriptItem[]
 type ScriptItem = string | ScriptItemCallback

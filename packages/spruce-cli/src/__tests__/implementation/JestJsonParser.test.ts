@@ -1,6 +1,6 @@
 import { START_DIVIDER, END_DIVIDER } from '@sprucelabs/jest-json-reporter'
 import AbstractSpruceTest, { test, assert } from '@sprucelabs/test'
-import JestJsonParser, { JsonResultKeys } from '../../test/JestJsonParser'
+import JestJsonParser, { JsonResultKeys } from '../../tests/JestJsonParser'
 import onTestFileResult from '../support/onTestFileResult'
 export default class JestJsonParserTest extends AbstractSpruceTest {
 	private static parser: JestJsonParser

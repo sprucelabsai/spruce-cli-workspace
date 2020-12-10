@@ -1,6 +1,6 @@
 import semver from 'semver'
-import log from '../singletons/log'
-import CommandService from './CommandService'
+import CommandService from '../../../services/CommandService'
+import log from '../../../singletons/log'
 
 const VSCODE_MINIMUM_VERSION = '1.44.0'
 

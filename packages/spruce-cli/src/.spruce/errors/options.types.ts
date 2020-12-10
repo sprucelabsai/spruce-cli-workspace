@@ -2,9 +2,6 @@ import { SpruceErrors } from "#spruce/errors/errors.types"
 import { SpruceErrorOptions, ErrorOptions as ISpruceErrorOptions} from "@sprucelabs/error"
 import { SchemaErrorOptions } from '@sprucelabs/schema'
 
-export interface InvalidTestDirectoryErrorOptions extends SpruceErrors.SpruceCli.InvalidTestDirectory, ISpruceErrorOptions {
-	code: 'INVALID_TEST_DIRECTORY'
-}
 export interface VscodeNotInstalledErrorOptions extends SpruceErrors.SpruceCli.VscodeNotInstalled, ISpruceErrorOptions {
 	code: 'VSCODE_NOT_INSTALLED'
 }
@@ -23,17 +20,20 @@ export interface SchemaExistsErrorOptions extends SpruceErrors.SpruceCli.SchemaE
 export interface NotImplementedErrorOptions extends SpruceErrors.SpruceCli.NotImplemented, ISpruceErrorOptions {
 	code: 'NOT_IMPLEMENTED'
 }
+export interface MercuryResponseErrorErrorOptions extends SpruceErrors.SpruceCli.MercuryResponseError, ISpruceErrorOptions {
+	code: 'MERCURY_RESPONSE_ERROR'
+}
 export interface LintFailedErrorOptions extends SpruceErrors.SpruceCli.LintFailed, ISpruceErrorOptions {
 	code: 'LINT_FAILED'
+}
+export interface InvalidTestDirectoryErrorOptions extends SpruceErrors.SpruceCli.InvalidTestDirectory, ISpruceErrorOptions {
+	code: 'INVALID_TEST_DIRECTORY'
 }
 export interface InvalidFeatureCodeErrorOptions extends SpruceErrors.SpruceCli.InvalidFeatureCode, ISpruceErrorOptions {
 	code: 'INVALID_FEATURE_CODE'
 }
 export interface InvalidCommandErrorOptions extends SpruceErrors.SpruceCli.InvalidCommand, ISpruceErrorOptions {
 	code: 'INVALID_COMMAND'
-}
-export interface GenericMercuryErrorOptions extends SpruceErrors.SpruceCli.GenericMercury, ISpruceErrorOptions {
-	code: 'GENERIC_MERCURY'
 }
 export interface GenericErrorOptions extends SpruceErrors.SpruceCli.Generic, ISpruceErrorOptions {
 	code: 'GENERIC'
@@ -69,6 +69,6 @@ export interface BootFailedErrorOptions extends SpruceErrors.SpruceCli.BootFaile
 	code: 'BOOT_FAILED'
 }
 
-type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | InvalidTestDirectoryErrorOptions  | VscodeNotInstalledErrorOptions  | UserNotFoundErrorOptions  | TestFailedErrorOptions  | SchemaFailedToImportErrorOptions  | SchemaExistsErrorOptions  | NotImplementedErrorOptions  | LintFailedErrorOptions  | InvalidFeatureCodeErrorOptions  | InvalidCommandErrorOptions  | GenericMercuryErrorOptions  | GenericErrorOptions  | FileExistsErrorOptions  | FeatureNotInstalledErrorOptions  | FailedToImportErrorOptions  | ExecutingCommandFailedErrorOptions  | DirectoryEmptyErrorOptions  | CreateAutoloaderFailedErrorOptions  | CommandNotImplementedErrorOptions  | CommandAbortedErrorOptions  | BuildFailedErrorOptions  | BootFailedErrorOptions 
+type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | VscodeNotInstalledErrorOptions  | UserNotFoundErrorOptions  | TestFailedErrorOptions  | SchemaFailedToImportErrorOptions  | SchemaExistsErrorOptions  | NotImplementedErrorOptions  | MercuryResponseErrorErrorOptions  | LintFailedErrorOptions  | InvalidTestDirectoryErrorOptions  | InvalidFeatureCodeErrorOptions  | InvalidCommandErrorOptions  | GenericErrorOptions  | FileExistsErrorOptions  | FeatureNotInstalledErrorOptions  | FailedToImportErrorOptions  | ExecutingCommandFailedErrorOptions  | DirectoryEmptyErrorOptions  | CreateAutoloaderFailedErrorOptions  | CommandNotImplementedErrorOptions  | CommandAbortedErrorOptions  | BuildFailedErrorOptions  | BootFailedErrorOptions 
 
 export default ErrorOptions

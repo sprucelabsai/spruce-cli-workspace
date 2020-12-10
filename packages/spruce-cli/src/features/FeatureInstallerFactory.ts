@@ -1,15 +1,17 @@
 import { templates } from '@sprucelabs/spruce-templates'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory from '../services/ServiceFactory'
+import { ApiClientFactory } from '../stores/AbstractStore'
 import StoreFactory from '../stores/StoreFactory'
 import { GraphicsInterface } from '../types/cli.types'
-import CircleCIFeature from './CircleCIFeature'
+import { FeatureOptions } from './AbstractFeature'
 import ErrorFeature from './error/ErrorFeature'
 import EventFeature from './event/EventFeature'
 import FeatureInstaller from './FeatureInstaller'
 import { FeatureCode } from './features.types'
 import NodeFeature from './node/NodeFeature'
 import OnboardFeature from './onboard/OnboardFeature'
+import PersonFeature from './person/PersonFeature'
 import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
 import TestFeature from './test/TestFeature'
@@ -18,7 +20,6 @@ import WatchFeature from './watch/WatchFeature'
 
 export default class FeatureInstallerFactory {
 	private static readonly features: any[] = [
-		CircleCIFeature,
 		ErrorFeature,
 		SchemaFeature,
 		SkillFeature,
@@ -28,10 +29,10 @@ export default class FeatureInstallerFactory {
 		WatchFeature,
 		NodeFeature,
 		OnboardFeature,
+		PersonFeature,
 	]
 
 	public static readonly featureCodes: FeatureCode[] = [
-		'circleCi',
 		'error',
 		'schema',
 		'skill',
@@ -41,6 +42,7 @@ export default class FeatureInstallerFactory {
 		'watch',
 		'node',
 		'onboard',
+		'person',
 	]
 
 	public static WithAllFeatures(options: {
@@ -50,23 +52,26 @@ export default class FeatureInstallerFactory {
 		featureInstaller?: FeatureInstaller
 		ui: GraphicsInterface
 		emitter: GlobalEmitter
+		apiClientFactory: ApiClientFactory
 	}): FeatureInstaller {
 		const { cwd, serviceFactory, storeFactory, ui, emitter } = options
 
-		// lazy load installer
 		const featureInstaller =
 			options.featureInstaller ?? new FeatureInstaller(cwd, serviceFactory)
 
+		const featureOptions: FeatureOptions = {
+			cwd,
+			serviceFactory,
+			templates,
+			storeFactory,
+			featureInstaller,
+			ui,
+			emitter,
+			apiClientFactory: options.apiClientFactory,
+		}
+
 		this.features.forEach((Feature) => {
-			const feature = new Feature({
-				cwd,
-				serviceFactory,
-				templates,
-				storeFactory,
-				featureInstaller,
-				ui,
-				emitter,
-			})
+			const feature = new Feature(featureOptions)
 
 			featureInstaller.mapFeature(feature.code, feature)
 		})
