@@ -92,9 +92,7 @@ jobs:
             mkdir ~/junit
             TEST=$(circleci tests glob build/__tests__/implementation/*.test.js build/__tests__/behavioral/*/*.test.js | circleci tests split --split-by=timings)
             yarn test -w 2 $TEST
-      - run:
-          command: mv junit.xml ~/junit/
-          when: always
+            mv junit.xml ~/junit
       - store_test_results:
           path: ~/junit
       - run:
