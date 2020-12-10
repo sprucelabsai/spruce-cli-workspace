@@ -42,14 +42,6 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 
 				break
 
-			case 'GENERIC_MERCURY':
-				message = `Error: Event "${options.eventName ?? 'n/a'}"${
-					options.friendlyMessage
-						? `: ${options.friendlyMessage}`
-						: `: ${this.originalError?.message}`
-				}`
-				break
-
 			case 'SCHEMA_FAILED_TO_IMPORT':
 				message = `Error importing "${options.file}"`
 				break
