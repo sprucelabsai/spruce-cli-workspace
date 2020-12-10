@@ -141,7 +141,7 @@ export default class Cli implements CliInterface {
 
 		let apiClient: ApiClient | undefined
 		const serviceFactory = new ServiceFactory({})
-		const apiClientFactory = options?.apiClientFactory
+		const apiClientFactoryAnon = options?.apiClientFactory
 			? options.apiClientFactory
 			: async () => {
 					if (!apiClient) {
@@ -153,6 +153,20 @@ export default class Cli implements CliInterface {
 
 					return apiClient
 			  }
+
+		const apiClientFactory = async () => {
+			if (!apiClient) {
+				apiClient = await apiClientFactoryAnon()
+				const personStore = storeFactory.Store('person')
+				const person = personStore.getLoggedInPerson()
+				if (person) {
+					await apiClient.emit('authenticate', {
+						payload: { token: person.token },
+					})
+				}
+			}
+			return apiClient
+		}
 
 		const storeFactory = new StoreFactory({
 			cwd,

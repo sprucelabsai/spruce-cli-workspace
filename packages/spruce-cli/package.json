@@ -249,7 +249,8 @@
 						"canWatchAndBuild": "C24",
 						"fetchesEventContracts": "F55",
 						"canGetNumberOfEventsBackFromHealthCheck": "F64",
-						"canLoginAsDummyPerson": "F66"
+						"canLoginAsDummyPerson": "F66",
+						"canSeeWhoIsLoggedIn": "F67"
 					}
 				}
 			]

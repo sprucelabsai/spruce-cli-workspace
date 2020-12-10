@@ -1,8 +1,9 @@
 import { test, assert } from '@sprucelabs/test'
-import AbstractCliTest from '../../../tests/AbstractCliTest'
+import AbstractPersonTest, {
+	DUMMY_PHONE,
+} from '../../../tests/AbstractPersonTest'
 
-const DUMMY_PHONE = '555-123-4567'
-export default class LoggingInAsPersonTest extends AbstractCliTest {
+export default class LoggingInAsPersonTest extends AbstractPersonTest {
 	@test()
 	protected static async hasSyncErrorAction() {
 		const cli = await this.Cli()
@@ -61,21 +62,7 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 
 	@test()
 	protected static async canLoginAsDummyPerson() {
-		const cli = await this.FeatureFixture().installCachedFeatures('skills')
-
-		const promise = cli.getFeature('person').Action('login').execute({
-			phone: DUMMY_PHONE,
-		})
-
-		await this.waitForInput()
-
-		await this.ui.sendInput('7777')
-
-		const results = await promise
-
-		assert.isFalsy(results.errors)
-
-		const person = this.Store('person').getLoggedInPerson()
+		const { person } = await this.installSkillAndLoginAsDummyPerson()
 
 		assert.isTruthy(person)
 		assert.isString(person.id)
