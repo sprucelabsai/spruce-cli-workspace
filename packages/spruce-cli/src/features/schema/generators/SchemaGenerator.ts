@@ -9,8 +9,10 @@ import {
 	SchemaBuilderTemplateItem,
 	ValueTypes,
 } from '@sprucelabs/spruce-templates'
-import SpruceError from '../errors/SpruceError'
-import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
+import SpruceError from '../../../errors/SpruceError'
+import AbstractGenerator, {
+	GenerationResults,
+} from '../../../generators/AbstractGenerator'
 
 interface GenerateFieldTypesOptions {
 	fieldTemplateItems: FieldTemplateItem[]
