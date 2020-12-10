@@ -2,10 +2,10 @@ version: 2.1
 orbs:
   hub: yasuhiroki/hub@0.0.2
 jobs:
-  test:
+  setup_for_test:
     docker:
       - image: circleci/node:12
-    resource_class: large
+    resource_class: medium
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -24,8 +24,6 @@ jobs:
           command: |
             [ -n "$BASE64_ENV" ] && echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
       - run: node -v && npm -v && yarn -v
-      - restore_cache:
-          key: cli-import-service
       - run:
           name: "Install"
           command: |
@@ -33,29 +31,74 @@ jobs:
       - run:
           name: "Build"
           command: |
-            yarn build
+            yarn run build
       - run:
           name: "Lint"
           command: |
-            yarn lint
+            yarn run lint
+      - run:
+          name: "Cache Tests"
+          command: |
+            cd packages/spruce-cli
+            yarn run cache.tests
+      - save_cache:
+          name: Save Cache  Tests
+          key: cli-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - /tmp/spruce-cli
+            - ~/project/packages/spruce-cli/src/.spruce/tmp/cached-skills.json
+      - save_cache:
+          name: Save Cache  node modules/build
+          key: cli-build-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/project/node_modules
+            - ~/project/build
+            - ~/project/packages/spruce-cli/node_modules
+            - ~/project/packages/spruce-cli/build
+            - ~/project/packages/spruce-templates/node_modules
+            - ~/project/packages/spruce-templates/build
+  test:
+    docker:
+      - image: circleci/node:12
+    resource_class: large
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "ec:9f:2e:aa:1f:c9:ab:49:57:8f:c0:cd:2e:5b:f3:b0"
+      - checkout
+      - restore_cache:
+          keys:
+            - cli-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - cli-build-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: "ENV file creation"
+          command: |
+            [ -n "$BASE64_ENV" ] && echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
       - run:
           name: "Test 💪"
           command: |
             yarn test -w 2
-      - save_cache:
-          key: cli-import-service
-          paths:
-            - /tmp/import-service
       - run:
           name: "Max memory usage for tests"
           command: cat /sys/fs/cgroup/memory/memory.max_usage_in_bytes
           when: always
+  merge_auto_upgrade:
+    docker:
+      - image: circleci/node:12
+    resource_class: medium
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "ec:9f:2e:aa:1f:c9:ab:49:57:8f:c0:cd:2e:5b:f3:b0"
       - run:
           name: Check branch for auto-upgrade
           command: |
             if [[ ${CIRCLE_BRANCH} != "upgrade-"* ]]; then
               circleci-agent step halt
             fi
+      - checkout
       - run:
           name: Merge auto-upgrade into master
           command: |
@@ -84,9 +127,7 @@ jobs:
             fi
       - restore_cache:
           keys:
-            - yarn-packages-{{ checksum "yarn.lock" }}
-      - run: yarn install
-      - run: yarn run build
+            - cli-build-{{ .Environment.CIRCLE_SHA1 }}
       - run: git config --global user.email "$GIT_AUTHOR_EMAIL"
       - run: git config --global user.name "$GIT_AUTHOR_NAME"
       - run:
@@ -113,7 +154,7 @@ jobs:
             git checkout -b $TARGETBRANCH || git checkout $TARGETBRANCH
             git reset --hard master
             git config --global user.email "$GIT_AUTHOR_EMAIL"
-            git config --global user.name "$GIT_AUTHOR_NAME"
+            git confpig --global user.name "$GIT_AUTHOR_NAME"
             yarn run upgrade.packages.all
             if [[ $(git status) != *"modified"* ]]; then 
               echo "No modifications detected.  No push/PR necessary 👊"
@@ -130,10 +171,23 @@ workflows:
   version: 2.1
   do_build:
     jobs:
-      - test:
+      - setup_for_test:
           context: public_package_publish
+      - test:
+          requires:
+            - setup_for_test
+          context: public_package_publish
+      - merge_auto_upgrade:
+          requires:
+            - setup_for_test
+            - test
+          context: public_package_publish
+          filters:
+            branches:
+              only: /upgrade-.*/
       - npm_publish:
           requires:
+            - setup_for_test
             - test
           context: public_package_publish
           filters:
