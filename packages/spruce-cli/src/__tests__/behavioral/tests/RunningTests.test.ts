@@ -49,6 +49,7 @@ export default class RunningTestsTest extends AbstractTestTest {
 
 		assert.isEqualDeep(results.meta, {
 			testResults: {
+				wasKilled: false,
 				totalTestFiles: 2,
 				testFiles: [
 					{
