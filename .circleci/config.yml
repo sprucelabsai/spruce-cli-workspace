@@ -89,7 +89,7 @@ jobs:
           name: "Test 💪"
           command: |
             cd packages/spruce-cli
-            TEST=$(circleci tests glob build/__tests__/**/*.test.js | circleci tests split)
+            TEST=$(circleci tests glob build/__tests__/implementation/*.test.js build/__tests__/behavioral/*/*.test.js | circleci tests split)
             yarn test -w 2 $TEST
       - run:
           name: "Max memory usage for tests"
