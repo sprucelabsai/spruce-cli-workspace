@@ -8,11 +8,11 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { EventContractTemplateItem } from '@sprucelabs/spruce-templates'
 import { isEqual } from 'lodash'
 import SpruceError from '../../errors/SpruceError'
-import EventGenerator from '../../generators/EventGenerator'
 import EventTemplateItemBuilder from '../../templateItemBuilders/EventTemplateItemBuilder'
 import { GraphicsInterface } from '../../types/cli.types'
 import { FeatureActionResponse } from '../features.types'
 import validateAndNormalizeUtil from '../validateAndNormalize.utility'
+import EventGenerator from './generators/EventGenerator'
 import EventStore from './stores/EventStore'
 
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventActionSchema
