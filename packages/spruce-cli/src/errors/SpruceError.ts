@@ -131,6 +131,7 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 					.split('\n')
 					.map((line) => `     ${line}`)
 					.join('\n')}`
+
 				break
 
 			case 'FEATURE_NOT_INSTALLED':
@@ -144,7 +145,11 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
                 message = 'A Mercury response error just happened!'
                 break
 
-default:
+			case 'INVALID_TEST_DIRECTORY':
+				message = `You are missing dependencies I need to run tests. Try \`spruce test.install\` to reinstall.`
+				break
+
+			default:
 				message = super.friendlyMessage()
 		}
 

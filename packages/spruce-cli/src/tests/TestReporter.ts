@@ -12,6 +12,7 @@ import TestLogItemGenerator from './TestLogItemGenerator'
 interface TestReporterOptions {
 	onRestart?: () => void
 	onQuit?: () => void
+	onRerun?: (fileName: string) => void
 }
 
 export default class TestReporter {
@@ -31,11 +32,13 @@ export default class TestReporter {
 
 	private onRestart?: () => void
 	private onQuit?: () => void
+	private onRerun?: (fileName: string) => void
 	private waitForDoneResolver?: () => void
 
 	public constructor(options?: TestReporterOptions) {
 		this.onRestart = options?.onRestart
 		this.onQuit = options?.onQuit
+		this.onRerun = options?.onRerun
 		this.errorLogItemGenerator = new TestLogItemGenerator()
 		this.widgetFactory = new WidgetFactory()
 	}
@@ -178,7 +181,7 @@ export default class TestReporter {
 			text: 'Open',
 		})
 
-		this.widgetFactory.Widget('button', {
+		const rerun = this.widgetFactory.Widget('button', {
 			parent: this.selectTestPopup,
 			left: 20,
 			top: 6,
@@ -192,6 +195,10 @@ export default class TestReporter {
 			text: 'Cancel',
 		})
 
+		void rerun.on('click', () => {
+			this.onRerun?.(testFile)
+			this.closeSelectTestPopup()
+		})
 		void cancel.on('click', this.closeSelectTestPopup.bind(this))
 	}
 

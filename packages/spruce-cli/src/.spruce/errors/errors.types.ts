@@ -7,37 +7,6 @@ import * as SpruceSchema from '@sprucelabs/schema'
 
 
 
-import AbstractSpruceError from '@sprucelabs/error'
-
-export declare namespace SpruceErrors.SpruceCli {
-
-	
-	export interface MercuryResponseError {
-		
-			
-			'responseErrors': (AbstractSpruceError<any>)[]
-	}
-
-	export interface MercuryResponseErrorSchema extends SpruceSchema.Schema {
-		id: 'mercuryResponseError',
-		namespace: 'SpruceCli',
-		name: 'Mercury response error',
-		    fields: {
-		            /** . */
-		            'responseErrors': {
-		                type: 'raw',
-		                isRequired: true,
-		                isArray: true,
-		                options: {valueType: `AbstractSpruceError<any>`,}
-		            },
-		    }
-	}
-
-	export type MercuryResponseErrorEntity = SchemaEntity<SpruceErrors.SpruceCli.MercuryResponseErrorSchema>
-
-}
-
-
 
 export declare namespace SpruceErrors.SpruceCli {
 
@@ -234,6 +203,37 @@ export declare namespace SpruceErrors.SpruceCli {
 }
 
 
+import AbstractSpruceError from '@sprucelabs/error'
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
+	export interface MercuryResponseError {
+		
+			
+			'responseErrors': (AbstractSpruceError<any>)[]
+	}
+
+	export interface MercuryResponseErrorSchema extends SpruceSchema.Schema {
+		id: 'mercuryResponseError',
+		namespace: 'SpruceCli',
+		name: 'Mercury response error',
+		    fields: {
+		            /** . */
+		            'responseErrors': {
+		                type: 'raw',
+		                isRequired: true,
+		                isArray: true,
+		                options: {valueType: `AbstractSpruceError<any>`,}
+		            },
+		    }
+	}
+
+	export type MercuryResponseErrorEntity = SchemaEntity<SpruceErrors.SpruceCli.MercuryResponseErrorSchema>
+
+}
+
+
 
 export declare namespace SpruceErrors.SpruceCli {
 
@@ -271,6 +271,35 @@ export declare namespace SpruceErrors.SpruceCli {
 	}
 
 	export type LintFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.LintFailedSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
+	export interface InvalidTestDirectory {
+		
+			
+			'dir': string
+	}
+
+	export interface InvalidTestDirectorySchema extends SpruceSchema.Schema {
+		id: 'invalidTestDirectory',
+		namespace: 'SpruceCli',
+		name: 'invalid test directory',
+		    fields: {
+		            /** . */
+		            'dir': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type InvalidTestDirectoryEntity = SchemaEntity<SpruceErrors.SpruceCli.InvalidTestDirectorySchema>
 
 }
 

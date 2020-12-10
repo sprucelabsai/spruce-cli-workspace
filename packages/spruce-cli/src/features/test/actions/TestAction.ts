@@ -1,9 +1,5 @@
-import pathUtil from 'path'
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../../../errors/SpruceError'
-import CommandService from '../../../services/CommandService'
-import JestJsonParser from '../../../tests/JestJsonParser'
 import TestReporter from '../../../tests/TestReporter'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import {
@@ -15,6 +11,7 @@ import {
 	SpruceTestFileTest,
 	SpruceTestResults,
 } from '../test.types'
+import TestRunner from '../TestRunner'
 
 export const optionsSchema = buildSchema({
 	id: 'testAction',
@@ -45,11 +42,9 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	public name = 'test'
 	public optionsSchema = optionsSchema
 	private testReporter: TestReporter | undefined
-	private commandService: CommandService
 
 	public constructor(options: FeatureActionOptions) {
 		super(options)
-		this.commandService = this.Service('command')
 	}
 
 	public async execute(
@@ -69,49 +64,42 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	): Promise<FeatureActionResponse> {
 		const { shouldReportWhileRunning, pattern, inspect } = options
 
-		const parser = new JestJsonParser()
 		const results: FeatureActionResponse = {}
 		let restart = false
 		let shouldWaitForConfirm = true
+		const testRunner = new TestRunner({
+			cwd: this.cwd,
+			commandService: this.Service('command'),
+		})
 
 		if (shouldReportWhileRunning) {
 			this.testReporter = new TestReporter({
 				onRestart: () => {
 					restart = true
-					this.commandService.kill()
+					testRunner.kill()
 				},
 				onQuit: () => {
 					shouldWaitForConfirm = false
-					this.commandService.kill()
+					testRunner.kill()
 				},
+				onRerun: (_fileName: string) => {},
 			})
 
 			await this.testReporter?.start()
+
+			await testRunner.on(
+				'did-update',
+				(payload: { results: SpruceTestResults }) => {
+					this.testReporter?.updateResults(payload.results)
+					this.testReporter?.render()
+				}
+			)
 		}
 
-		let testResults: SpruceTestResults = {
-			totalTestFiles: 0,
-		}
-
-		try {
-			const debugArgs = (inspect ?? 0) > 0 ? `--inspect-brk=${inspect}` : ``
-			const jestPath = this.resolvePathToJest()
-			const command = `node ${debugArgs} ${jestPath} --reporters="@sprucelabs/jest-json-reporter" --testRunner="jest-circus/runner" --forceExit ${
-				pattern ?? ''
-			}`
-
-			await this.commandService.execute(command, {
-				forceColor: true,
-				onData: (data) => {
-					testResults = this.sendToReporter(parser, data)
-				},
-			})
-		} catch (err) {
-			if (!testResults.totalTestFiles) {
-				shouldWaitForConfirm = false
-				results.errors = [err]
-			}
-		}
+		let testResults: SpruceTestResults = await testRunner.run({
+			pattern,
+			debugPort: inspect,
+		})
 
 		const shouldWait =
 			!restart && shouldWaitForConfirm && shouldReportWhileRunning
@@ -135,16 +123,6 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 
 		return results
-	}
-
-	private sendToReporter(parser: JestJsonParser, data: string) {
-		parser.write(data)
-
-		const testResults = parser.getResults()
-
-		this.testReporter?.updateResults(testResults)
-		this.testReporter?.render()
-		return testResults
 	}
 
 	private mixinSummaryAndTestResults(
@@ -178,25 +156,6 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 
 		return undefined
-	}
-
-	private resolvePathToJest() {
-		const fullPath = diskUtil.resolvePath(this.cwd, 'node_modules/.bin/jest')
-		const pathParts = fullPath.split(pathUtil.sep)
-
-		while (pathParts.length > 0) {
-			const path = pathUtil.sep + pathUtil.join(...pathParts)
-			if (diskUtil.doesFileExist(path)) {
-				return path
-			}
-			pathParts.pop()
-		}
-
-		throw new SpruceError({
-			code: 'FEATURE_NOT_INSTALLED',
-			featureCode: this.parent.code,
-			friendlyMessage: `You are missing dependencies I need to run tests. Try \`spruce test.install\` to reinstall.`,
-		})
 	}
 
 	private mapErrorResultToSpruceError(
