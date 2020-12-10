@@ -1,4 +1,3 @@
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractTestTest from '../../../test/AbstractTestTest'
@@ -26,13 +25,7 @@ export default class RunningTestsTest extends AbstractTestTest {
 		const file = creationResults.files?.[0]
 		assert.isTruthy(file)
 
-		const contents = diskUtil.readFile(file.path)
-		const passingContent = contents.replace(
-			'assert.isTrue(false)',
-			'assert.isTrue(true)'
-		)
-
-		diskUtil.writeFile(file.path, passingContent)
+		this.fixBadTest(file.path)
 
 		await cli.getFeature('test').Action('create').execute({
 			type: 'behavioral',
@@ -56,6 +49,7 @@ export default class RunningTestsTest extends AbstractTestTest {
 
 		assert.isEqualDeep(results.meta, {
 			testResults: {
+				wasKilled: false,
 				totalTestFiles: 2,
 				testFiles: [
 					{

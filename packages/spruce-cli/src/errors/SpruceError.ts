@@ -131,12 +131,17 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 					.split('\n')
 					.map((line) => `     ${line}`)
 					.join('\n')}`
+
 				break
 
 			case 'FEATURE_NOT_INSTALLED':
 				message = `\`${upperFirst(
 					options.featureCode
 				)}\` feature is not installed. Install it first, then try again.`
+				break
+
+			case 'INVALID_TEST_DIRECTORY':
+				message = `You are missing dependencies I need to run tests. Try \`spruce test.install\` to reinstall.`
 				break
 
 			default:
