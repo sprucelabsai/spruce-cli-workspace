@@ -1,12 +1,12 @@
 import { buildSchema } from '@sprucelabs/schema'
-import userSchema from '#spruce/schemas/spruce/v2020_07_22/person.schema'
+import personSchema from '#spruce/schemas/spruce/v2020_07_22/person.schema'
 
 export default buildSchema({
-	id: 'cliUserWithToken',
+	id: 'personWithToken',
 	description: 'A stripped down cli user with token details for login',
 	fields: {
-		id: userSchema.fields.id,
-		casualName: userSchema.fields.casualName,
+		id: personSchema.fields.id,
+		casualName: personSchema.fields.casualName,
 		token: { type: 'text', isRequired: true },
 		isLoggedIn: {
 			type: 'boolean',

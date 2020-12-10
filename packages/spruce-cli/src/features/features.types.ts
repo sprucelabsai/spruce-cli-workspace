@@ -17,6 +17,7 @@ import EventFeature from './event/EventFeature'
 import FeatureInstaller from './FeatureInstaller'
 import NodeFeature from './node/NodeFeature'
 import OnboardFeature from './onboard/OnboardFeature'
+import PersonFeature from './person/PersonFeature'
 import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
 import TestFeature from './test/TestFeature'
@@ -34,6 +35,7 @@ export interface FeatureMap {
 	watch: WatchFeature
 	node: NodeFeature
 	onboard: OnboardFeature
+	person: PersonFeature
 }
 
 export type InstallFeature =
@@ -47,10 +49,6 @@ export type InstallFeature =
 	  }
 	| {
 			code: 'schema'
-			options?: undefined
-	  }
-	| {
-			code: 'circleCi'
 			options?: undefined
 	  }
 	| {
@@ -75,6 +73,10 @@ export type InstallFeature =
 	  }
 	| {
 			code: 'onboard'
+			options?: undefined
+	  }
+	| {
+			code: 'person'
 			options?: undefined
 	  }
 

@@ -3,12 +3,12 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const cliUserSchema: SpruceSchemas.SpruceCli.v2020_07_22.CliUserSchema  = {
-	id: 'cliUser',
+const personWithTokenSchema: SpruceSchemas.SpruceCli.v2020_07_22.PersonWithTokenSchema  = {
+	id: 'personWithToken',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
 	name: '',
-	description: 'A stripped down user for the cli',
+	description: 'A stripped down cli user with token details for login',
 	    fields: {
 	            /** Id. */
 	            'id': {
@@ -25,9 +25,21 @@ const cliUserSchema: SpruceSchemas.SpruceCli.v2020_07_22.CliUserSchema  = {
 	                hint: 'The name you can use when talking to this person.',
 	                options: undefined
 	            },
+	            /** . */
+	            'token': {
+	                type: 'text',
+	                isRequired: true,
+	                options: undefined
+	            },
+	            /** Logged in. */
+	            'isLoggedIn': {
+	                label: 'Logged in',
+	                type: 'boolean',
+	                options: undefined
+	            },
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(cliUserSchema)
+SchemaRegistry.getInstance().trackSchema(personWithTokenSchema)
 
-export default cliUserSchema
+export default personWithTokenSchema

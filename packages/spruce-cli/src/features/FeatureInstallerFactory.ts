@@ -10,6 +10,7 @@ import FeatureInstaller from './FeatureInstaller'
 import { FeatureCode } from './features.types'
 import NodeFeature from './node/NodeFeature'
 import OnboardFeature from './onboard/OnboardFeature'
+import PersonFeature from './person/PersonFeature'
 import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
 import TestFeature from './test/TestFeature'
@@ -28,6 +29,7 @@ export default class FeatureInstallerFactory {
 		WatchFeature,
 		NodeFeature,
 		OnboardFeature,
+		PersonFeature,
 	]
 
 	public static readonly featureCodes: FeatureCode[] = [
@@ -41,6 +43,7 @@ export default class FeatureInstallerFactory {
 		'watch',
 		'node',
 		'onboard',
+		'person',
 	]
 
 	public static WithAllFeatures(options: {

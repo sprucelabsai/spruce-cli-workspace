@@ -19,7 +19,6 @@ const testKeys = Object.keys(testSkillCache)
 let remaining = testKeys.length
 const term = new TerminalInterface(__dirname, true)
 const start = new Date().getTime()
-let currentlyBuilding = ''
 
 let progressInterval: any
 
@@ -41,11 +40,9 @@ async function run() {
 			term.renderLine('')
 
 			await term.startLoading(
-				`${
-					currentlyBuilding
-						? `Building \`${currentlyBuilding}\``
-						: `Building ${remaining} skill${dropInS(remaining)}`
-				}. ${durationUtil.msToFriendly(getTimeSpent())}`
+				`${`Building ${remaining} skill${dropInS(
+					remaining
+				)}`}. ${durationUtil.msToFriendly(getTimeSpent())}`
 			)
 		}, 1000)
 
@@ -78,8 +75,6 @@ async function run() {
 	}
 
 	const promises = testKeys.map(async (cacheKey) => {
-		currentlyBuilding = cacheKey
-
 		const { cacheTracker, cwd, fixture, options } = setup(cacheKey)
 
 		if (cacheTracker[cacheKey] && diskUtil.doesDirExist(cwd)) {

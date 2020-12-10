@@ -53,6 +53,7 @@ export default abstract class AbstractFeature<
 	public readonly dependencies: FeatureDependency[] = []
 	public readonly packageDependencies: NpmPackage[] = []
 	public readonly optionsDefinition?: S
+
 	public isInstalled?: () => Promise<boolean>
 
 	public abstract readonly code: FeatureCode

@@ -1,12 +1,4 @@
-import {
-	Schema,
-	SchemaValues,
-	defaultSchemaValues,
-	validateSchemaValues,
-	SchemaPartialValues,
-	SchemaValuesWithDefaults,
-	normalizeSchemaValues,
-} from '@sprucelabs/schema'
+import { Schema, SchemaValues, SchemaPartialValues } from '@sprucelabs/schema'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { Templates } from '@sprucelabs/spruce-templates'
@@ -31,10 +23,8 @@ import {
 	FeatureActionOptions,
 	FeatureCode,
 } from './features.types'
+import validateAndNormalizeUtil from './validateAndNormalize.utility'
 
-type StripNulls<T extends Record<string, any>> = {
-	[K in keyof T]: Exclude<T[K], null>
-}
 export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 	implements FeatureAction<S>, ServiceProvider {
 	public abstract name: string
@@ -96,27 +86,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 
 	protected validateAndNormalizeOptions(options: SchemaPartialValues<S>) {
 		const schema = this.optionsSchema
-
-		const values = {
-			...defaultSchemaValues(schema),
-			...options,
-		}
-
-		validateSchemaValues(schema, values, {})
-
-		const normalized = normalizeSchemaValues(schema, values)
-
-		const noUndefined = {}
-
-		Object.keys(normalized).forEach((key: string) => {
-			// @ts-ignore
-			if (normalized[key] !== undefined) {
-				//@ts-ignore
-				noUndefined[key] = normalized[key]
-			}
-		})
-
-		return noUndefined as StripNulls<SchemaValuesWithDefaults<S>>
+		return validateAndNormalizeUtil.validateAndNormalize(schema, options)
 	}
 
 	protected async resolveVersion(
