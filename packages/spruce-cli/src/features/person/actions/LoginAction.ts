@@ -1,5 +1,6 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
+import eventResponseUtil from '../../event/utilities/eventResponse.utility'
 import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
@@ -23,12 +24,46 @@ export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
 		const { phone } = this.validateAndNormalizeOptions(options)
 		let loggedIn = false
 
-		do {
-			const pin = await this.ui.prompt({ type: 'text', label: 'Pin' })
+		const client = await this.connectToApi()
 
-			this.ui.renderWarning('Oops, bad pin. Try again please! 🙏')
+		const requestPinResults = await client.emit('request-pin', {
+			payload: { phone },
+		})
+
+		const { challenge } = eventResponseUtil.getFirstResponseOrThrow(
+			requestPinResults
+		)
+
+		const response: FeatureActionResponse = {}
+
+		do {
+			const pin = await this.ui.prompt({
+				type: 'text',
+				label: 'Pin',
+				isRequired: true,
+			})
+
+			const confirmPinResults = await client.emit('confirm-pin', {
+				payload: { challenge, pin },
+			})
+
+			try {
+				const { person, token } = eventResponseUtil.getFirstResponseOrThrow(
+					confirmPinResults
+				)
+
+				const loggedInPerson = { ...person, token }
+
+				this.Store('person').setLoggedInPerson(loggedInPerson)
+
+				loggedIn = true
+
+				response.summaryLines = [`Logged in as ${loggedInPerson.casualName}`]
+			} catch (err) {
+				this.ui.renderWarning('Oops, bad pin. Try again please! 🙏')
+			}
 		} while (!loggedIn)
 
-		return {}
+		return response
 	}
 }

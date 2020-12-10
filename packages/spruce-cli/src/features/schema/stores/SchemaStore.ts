@@ -11,8 +11,8 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
 import { isEqual, uniqBy } from 'lodash'
-import SpruceError from '../errors/SpruceError'
-import AbstractStore from './AbstractStore'
+import SpruceError from '../../../errors/SpruceError'
+import AbstractStore from '../../../stores/AbstractStore'
 
 interface AddonItem {
 	path: string

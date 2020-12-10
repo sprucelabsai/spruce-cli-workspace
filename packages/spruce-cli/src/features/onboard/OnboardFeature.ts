@@ -1,5 +1,4 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import OnboardingStore from '../../stores/OnboardingStore'
 import AbstractFeature, {
 	FeatureDependency,
 	FeatureOptions,
@@ -7,6 +6,7 @@ import AbstractFeature, {
 import featuresUtil from '../feature.utilities'
 import { FeatureCode } from '../features.types'
 import ScriptLoader from './ScriptLoader'
+import OnboardingStore from './stores/OnboardingStore'
 
 export default class OnboardFeature extends AbstractFeature {
 	public code: FeatureCode = 'onboard'

@@ -2,8 +2,8 @@
 
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import TerminalInterface from '../interfaces/TerminalInterface'
+import testUtil from '../tests/utilities/test.utility'
 import { GraphicsTextEffect } from '../types/cli.types'
-import testUtil from '../utilities/test.utility'
 
 const term = new TerminalInterface(__dirname)
 

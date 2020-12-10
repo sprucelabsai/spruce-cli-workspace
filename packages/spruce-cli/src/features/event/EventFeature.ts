@@ -41,14 +41,22 @@ export default class EventFeature extends AbstractFeature {
 	}
 
 	private async handleDidFetchSchemas(payload: { schemas?: Schema[] | null }) {
-		const generator = this.UnifiedGenerator()
+		const isInstalled = await this.featureInstaller.isInstalled(this.code)
 
-		const uniqueSchemas = await generator.getUniqueSchemasFromContracts(
-			payload.schemas ?? []
-		)
+		if (isInstalled) {
+			const generator = this.UnifiedGenerator()
+
+			const uniqueSchemas = await generator.getUniqueSchemasFromContracts(
+				payload.schemas ?? []
+			)
+
+			return {
+				schemas: uniqueSchemas.schemas ?? [],
+			}
+		}
 
 		return {
-			schemas: uniqueSchemas.schemas ?? [],
+			schemas: [],
 		}
 	}
 

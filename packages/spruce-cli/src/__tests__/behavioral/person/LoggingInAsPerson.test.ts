@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
-import AbstractCliTest from '../../../test/AbstractCliTest'
+import AbstractCliTest from '../../../tests/AbstractCliTest'
 
 const DUMMY_PHONE = '555-123-4567'
 export default class LoggingInAsPersonTest extends AbstractCliTest {
@@ -41,6 +41,8 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 
 		await this.ui.sendInput('0000')
 
+		await this.waitForInput()
+
 		assert.doesInclude(this.ui.invocations, {
 			command: 'renderWarning',
 		})
@@ -57,7 +59,7 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 		this.ui.reset()
 	}
 
-	@test.only()
+	@test()
 	protected static async canLoginAsDummyPerson() {
 		const cli = await this.FeatureFixture().installCachedFeatures('skills')
 

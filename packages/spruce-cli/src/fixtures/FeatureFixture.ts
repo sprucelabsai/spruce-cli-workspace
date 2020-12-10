@@ -10,8 +10,8 @@ import ServiceFactory, {
 } from '../services/ServiceFactory'
 import log from '../singletons/log'
 import { ApiClientFactory } from '../stores/AbstractStore'
+import testUtil from '../tests/utilities/test.utility'
 import { GraphicsInterface } from '../types/cli.types'
-import testUtil from '../utilities/test.utility'
 
 export interface CachedCli {
 	cli: CliInterface

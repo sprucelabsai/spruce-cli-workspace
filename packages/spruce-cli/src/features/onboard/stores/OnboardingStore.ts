@@ -2,8 +2,10 @@ import { SchemaEntityFactory, StaticSchemaEntity } from '@sprucelabs/schema'
 import { diskUtil, HASH_SPRUCE_DIR_NAME } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import onboardingSchema from '#spruce/schemas/spruceCli/v2020_07_22/onboarding.schema'
-import AbstractLocalStore, { LocalStoreSettings } from './AbstractLocalStore'
-import { StoreOptions } from './AbstractStore'
+import AbstractLocalStore, {
+	LocalStoreSettings,
+} from '../../../stores/AbstractLocalStore'
+import { StoreOptions } from '../../../stores/AbstractStore'
 
 export interface OnboardingStoreSettings
 	extends LocalStoreSettings,

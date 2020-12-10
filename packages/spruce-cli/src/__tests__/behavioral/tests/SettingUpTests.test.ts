@@ -1,7 +1,7 @@
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import { FeatureCode } from '../../../features/features.types'
-import AbstractTestTest from '../../../test/AbstractTestTest'
+import AbstractTestTest from '../../../tests/AbstractTestTest'
 
 export default class SettingUpTestsTest extends AbstractTestTest {
 	@test()

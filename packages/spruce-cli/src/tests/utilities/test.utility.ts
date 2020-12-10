@@ -1,7 +1,7 @@
 import os from 'os'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { assert } from '@sprucelabs/test'
-import { GeneratedFile } from '../types/cli.types'
+import { GeneratedFile } from '../../types/cli.types'
 
 function hasArg(regex: RegExp) {
 	return !!process.argv?.find((arg) => arg.search(regex) > -1)

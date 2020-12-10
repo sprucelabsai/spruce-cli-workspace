@@ -1,7 +1,9 @@
 import { SpruceSchemas } from '@sprucelabs/mercury-types'
-import { validateSchemaValues } from '@sprucelabs/schema'
+import { normalizeSchemaValues, validateSchemaValues } from '@sprucelabs/schema'
 import personWithTokenSchema from '#spruce/schemas/spruceCli/v2020_07_22/personWithToken.schema'
-import AbstractLocalStore, { LocalStoreSettings } from './AbstractLocalStore'
+import AbstractLocalStore, {
+	LocalStoreSettings,
+} from '../../../stores/AbstractLocalStore'
 
 export type PersonWithToken = SpruceSchemas.SpruceCli.v2020_07_22.PersonWithToken
 
@@ -17,8 +19,9 @@ export default class PersonStore extends AbstractLocalStore<Settings> {
 	}
 
 	public setLoggedInPerson(person: PersonWithToken) {
-		validateSchemaValues(personWithTokenSchema, person)
-		this.writeValue('loggedInPerson', { ...person, isLoggedIn: true })
+		const normalized = normalizeSchemaValues(personWithTokenSchema, person)
+		validateSchemaValues(personWithTokenSchema, normalized)
+		this.writeValue('loggedInPerson', { ...normalized, isLoggedIn: true })
 	}
 
 	public logOutPerson() {

@@ -1,7 +1,7 @@
 import { Schema } from '@sprucelabs/schema'
 import { test, assert } from '@sprucelabs/test'
 import featuresUtil from '../../features/feature.utilities'
-import AbstractCliTest from '../../test/AbstractCliTest'
+import AbstractCliTest from '../../tests/AbstractCliTest'
 
 export default class CommandGeneratorTest extends AbstractCliTest {
 	@test()

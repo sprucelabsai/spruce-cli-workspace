@@ -1,6 +1,6 @@
 import { EventContract } from '@sprucelabs/mercury-types'
-import SpruceError from '../errors/SpruceError'
-import AbstractStore from './AbstractStore'
+import SpruceError from '../../../errors/SpruceError'
+import AbstractStore from '../../../stores/AbstractStore'
 
 export interface EventStoreFetchEventContractsResponse {
 	errors: SpruceError[]

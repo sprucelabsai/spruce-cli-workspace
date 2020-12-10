@@ -8,8 +8,8 @@ import { validateSchema } from '@sprucelabs/schema'
 import { MERCURY_API_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { FeatureActionResponse } from '../../../features/features.types'
-import AbstractEventTest from '../../../test/AbstractEventTest'
-import testUtil from '../../../utilities/test.utility'
+import AbstractEventTest from '../../../tests/AbstractEventTest'
+import testUtil from '../../../tests/utilities/test.utility'
 
 const EXPECTED_NUM_CONTRACTS_GENERATED = 30
 
@@ -35,6 +35,13 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 		const results = await cli.getFeature('schema').Action('sync').execute({})
 		this.assertExpectedSchemasAreCreated(results)
+	}
+
+	@test()
+	protected static async syncingSchemasDoesNotSyncEventSchemasIfEventsNotInstalled() {
+		const cli = await this.FeatureFixture().installCachedFeatures('schemas')
+		const results = await cli.getFeature('schema').Action('sync').execute({})
+		assert.doesThrow(() => this.assertExpectedSchemasAreCreated(results))
 	}
 
 	@test()

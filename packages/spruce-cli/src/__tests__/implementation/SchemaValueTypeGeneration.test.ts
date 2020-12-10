@@ -8,7 +8,7 @@ import { assert, test } from '@sprucelabs/test'
 import SchemaGenerator from '../../generators/SchemaGenerator'
 import FieldTemplateItemBuilder from '../../templateItemBuilders/FieldTemplateItemBuilder'
 import SchemaTemplateItemBuilder from '../../templateItemBuilders/SchemaTemplateItemBuilder'
-import AbstractSchemaTest from '../../test/AbstractSchemaTest'
+import AbstractSchemaTest from '../../tests/AbstractSchemaTest'
 
 const LOCAL_NAMESPACE = 'TacoBell'
 

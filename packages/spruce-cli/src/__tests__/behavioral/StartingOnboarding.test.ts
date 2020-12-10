@@ -1,6 +1,6 @@
 import { test, assert } from '@sprucelabs/test'
-import AbstractCliTest from '../../test/AbstractCliTest'
-import TestEmitter from '../../test/TestEmitter'
+import AbstractCliTest from '../../tests/AbstractCliTest'
+import TestEmitter from '../../tests/TestEmitter'
 
 export default class StartingOnboardingTest extends AbstractCliTest {
 	@test()

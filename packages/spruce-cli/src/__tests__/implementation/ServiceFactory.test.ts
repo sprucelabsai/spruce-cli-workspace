@@ -1,6 +1,6 @@
 import { test, assert } from '@sprucelabs/test'
 import ServiceFactory, { Service } from '../../services/ServiceFactory'
-import AbstractCliTest from '../../test/AbstractCliTest'
+import AbstractCliTest from '../../tests/AbstractCliTest'
 
 export default class ServiceFactoryTest extends AbstractCliTest {
 	private static factory: ServiceFactory

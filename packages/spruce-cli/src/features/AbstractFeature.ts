@@ -12,6 +12,7 @@ import ServiceFactory, {
 	ServiceProvider,
 	ServiceMap,
 } from '../services/ServiceFactory'
+import { ApiClientFactory } from '../stores/AbstractStore'
 import StoreFactory, { StoreCode, StoreMap } from '../stores/StoreFactory'
 import {
 	NpmPackage,
@@ -44,6 +45,7 @@ export interface FeatureOptions {
 	featureInstaller: FeatureInstaller
 	ui: GraphicsInterface
 	emitter: GlobalEmitter
+	apiClientFactory: ApiClientFactory
 }
 
 export default abstract class AbstractFeature<
@@ -92,6 +94,7 @@ export default abstract class AbstractFeature<
 			...options,
 			parent: this as AbstractFeature<any>,
 			generatorFactory: this.generatorFactory,
+			apiClientFactory: options.apiClientFactory,
 		}
 	}
 

@@ -141,23 +141,25 @@ export default class Cli implements CliInterface {
 
 		let apiClient: ApiClient | undefined
 		const serviceFactory = new ServiceFactory({})
+		const apiClientFactory = options?.apiClientFactory
+			? options.apiClientFactory
+			: async () => {
+					if (!apiClient) {
+						apiClient = await MercuryClientFactory.Client<EventContracts>({
+							contracts: eventsContracts,
+							host: 'https://sandbox.mercury.spruce.ai',
+						})
+					}
+
+					return apiClient
+			  }
+
 		const storeFactory = new StoreFactory({
 			cwd,
 			serviceFactory,
 			homeDir: options?.homeDir ?? osUtil.homedir(),
 			emitter,
-			apiClientFactory: options?.apiClientFactory
-				? options.apiClientFactory
-				: async () => {
-						if (!apiClient) {
-							apiClient = await MercuryClientFactory.Client<EventContracts>({
-								contracts: eventsContracts,
-								host: 'https://sandbox.mercury.spruce.ai',
-							})
-						}
-
-						return apiClient
-				  },
+			apiClientFactory,
 		})
 
 		const ui = options?.graphicsInterface ?? new TerminalInterface(cwd)
@@ -168,6 +170,7 @@ export default class Cli implements CliInterface {
 			storeFactory,
 			ui,
 			emitter,
+			apiClientFactory,
 		})
 
 		if (program) {

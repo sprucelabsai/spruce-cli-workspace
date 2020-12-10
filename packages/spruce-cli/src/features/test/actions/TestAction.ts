@@ -3,8 +3,8 @@ import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../../../errors/SpruceError'
 import CommandService from '../../../services/CommandService'
-import JestJsonParser from '../../../test/JestJsonParser'
-import TestReporter from '../../../test/TestReporter'
+import JestJsonParser from '../../../tests/JestJsonParser'
+import TestReporter from '../../../tests/TestReporter'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import {
 	FeatureActionResponse,

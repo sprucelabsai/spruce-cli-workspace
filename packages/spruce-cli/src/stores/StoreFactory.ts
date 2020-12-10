@@ -1,10 +1,10 @@
+import EventStore from '../features/event/stores/EventStore'
+import OnboardingStore from '../features/onboard/stores/OnboardingStore'
+import PersonStore from '../features/person/stores/PersonStore'
+import SchemaStore from '../features/schema/stores/SchemaStore'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory from '../services/ServiceFactory'
 import { StoreOptions, ApiClientFactory } from './AbstractStore'
-import EventStore from './EventStore'
-import OnboardingStore from './OnboardingStore'
-import PersonStore from './PersonStore'
-import SchemaStore from './SchemaStore'
 
 export interface StoreMap {
 	onboarding: OnboardingStore

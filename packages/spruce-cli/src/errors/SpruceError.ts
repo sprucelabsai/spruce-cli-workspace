@@ -139,7 +139,12 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				)}\` feature is not installed. Install it first, then try again.`
 				break
 
-			default:
+			
+            case 'MERCURY_RESPONSE_ERROR':
+                message = 'A Mercury response error just happened!'
+                break
+
+default:
 				message = super.friendlyMessage()
 		}
 

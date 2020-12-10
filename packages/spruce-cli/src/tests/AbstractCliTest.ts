@@ -140,6 +140,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		const serviceFactory = this.ServiceFactory()
 		const storeFactory = this.StoreFactory()
 		const emitter = this.Emitter()
+		const apiClientFactory = this.MercuryFixture().getApiClientFactory()
 
 		return FeatureInstallerFactory.WithAllFeatures({
 			cwd: this.cwd,
@@ -147,6 +148,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			storeFactory,
 			ui: this.ui,
 			emitter,
+			apiClientFactory,
 		})
 	}
 

@@ -1,7 +1,7 @@
 import { test, assert } from '@sprucelabs/test'
 import { CommanderStatic } from 'commander'
 import FeatureCommandAttacher from '../../features/FeatureCommandAttacher'
-import AbstractCliTest from '../../test/AbstractCliTest'
+import AbstractCliTest from '../../tests/AbstractCliTest'
 
 type MockProgram = CommanderStatic['program'] & {
 	descriptionInvocations: { command: string; description: string }[]

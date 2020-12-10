@@ -1,7 +1,7 @@
 import { diskUtil, HASH_SPRUCE_DIR } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
-import AbstractCliTest from '../../test/AbstractCliTest'
+import AbstractCliTest from '../../tests/AbstractCliTest'
 
 export default class PersonStoreTest extends AbstractCliTest {
 	protected static async beforeEach() {

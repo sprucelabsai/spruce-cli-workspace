@@ -13,6 +13,7 @@ import ServiceFactory, {
 	Service,
 	ServiceMap,
 } from '../services/ServiceFactory'
+import { ApiClient, ApiClientFactory } from '../stores/AbstractStore'
 import StoreFactory, { StoreCode, StoreMap } from '../stores/StoreFactory'
 import { GraphicsInterface } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
@@ -40,6 +41,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 	protected templates: Templates
 	protected ui: GraphicsInterface
 	protected emitter: GlobalEmitter
+	protected apiClientFactory: ApiClientFactory
 
 	public constructor(options: FeatureActionOptions) {
 		this.cwd = options.cwd
@@ -51,6 +53,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 		this.ui = options.ui
 		this.generatorFactory = options.generatorFactory
 		this.emitter = options.emitter
+		this.apiClientFactory = options.apiClientFactory
 	}
 
 	public abstract execute(
@@ -153,5 +156,9 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 			})
 		}
 		return version
+	}
+
+	protected async connectToApi(): Promise<ApiClient> {
+		return this.apiClientFactory()
 	}
 }

@@ -1,7 +1,7 @@
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
-import AbstractErrorTest from '../../../test/AbstractErrorTest'
-import testUtil from '../../../utilities/test.utility'
+import AbstractErrorTest from '../../../tests/AbstractErrorTest'
+import testUtil from '../../../tests/utilities/test.utility'
 
 export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 	@test()

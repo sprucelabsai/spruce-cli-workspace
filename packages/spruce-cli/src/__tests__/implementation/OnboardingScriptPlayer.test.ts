@@ -1,6 +1,6 @@
 import { test, assert } from '@sprucelabs/test'
 import ScriptPlayer from '../../features/onboard/ScriptPlayer'
-import AbstractCliTest from '../../test/AbstractCliTest'
+import AbstractCliTest from '../../tests/AbstractCliTest'
 
 export default class OnboardingScriptPlayerTest extends AbstractCliTest {
 	private static player: ScriptPlayer
