@@ -4,6 +4,7 @@ node_modules/
 # Built files
 coverage/
 __TEST__/
+junit.xml
 
 # Logs
 *.log

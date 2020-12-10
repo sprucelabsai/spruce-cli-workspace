@@ -125,6 +125,7 @@
 		"find-process": "^1.4.4",
 		"jest": "^26.6.3",
 		"jest-circus": "^26.6.3",
+		"jest-junit": "^12.0.0",
 		"jest-reporters": "^0.0.2",
 		"prettier": "^2.2.1",
 		"rimraf": "^3.0.2",
@@ -251,8 +252,12 @@
 						"canGetNumberOfEventsBackFromHealthCheck": "F64"
 					}
 				}
-			]
+			],
+			"jest-junit"
 		]
+	},
+	"jest-junit": {
+		"addFileAttribute": "true"
 	},
 	"yarn-upgrade-all": {
 		"ignore": [
