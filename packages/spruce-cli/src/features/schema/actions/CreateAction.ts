@@ -1,10 +1,10 @@
+import AbstractSpruceError from '@sprucelabs/error'
 import { normalizeSchemaValues } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import createSchemaActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/createSchemaAction.schema'
 import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
-import SpruceError from '../../../errors/SpruceError'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaActionSchema
@@ -52,7 +52,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			'sync'
 		)
 
-		let errors: SpruceError[] | undefined
+		let errors: AbstractSpruceError<any>[] | undefined
 		if (syncAfterCreate) {
 			const syncOptions = normalizeSchemaValues(syncSchemasActionSchema, rest, {
 				includePrivateFields: true,
