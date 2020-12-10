@@ -15,6 +15,7 @@ import CliGlobalEmitter, { GlobalEmitter } from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
 import ServiceFactory, { Service, ServiceMap } from '../services/ServiceFactory'
 import StoreFactory, { StoreCode, StoreMap } from '../stores/StoreFactory'
+import testUtil from './utilities/test.utility'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static cliRoot = pathUtil.join(__dirname, '..')
@@ -85,7 +86,9 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static async afterAll() {
 		await super.afterAll()
-		FeatureFixture.deleteOldSkillDirs()
+		if (testUtil.shouldCleanupTestSkillDirs()) {
+			FeatureFixture.deleteOldSkillDirs()
+		}
 	}
 
 	protected static async Cli(options?: CliBootOptions) {
