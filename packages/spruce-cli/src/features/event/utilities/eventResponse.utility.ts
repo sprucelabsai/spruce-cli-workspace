@@ -9,7 +9,7 @@ const eventResponseUtil = {
 		const errors = emitResponse.responses[0].errors
 
 		if (errors) {
-			throw new SpruceError({t
+			throw new SpruceError({
 				code: 'MERCURY_RESPONSE_ERROR',
 				responseErrors: errors,
 			})
