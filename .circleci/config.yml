@@ -61,7 +61,7 @@ jobs:
     docker:
       - image: circleci/node:12
     resource_class: medium
-    parallelism: 4
+    parallelism: 8
     steps:
       - add_ssh_keys:
           fingerprints:
