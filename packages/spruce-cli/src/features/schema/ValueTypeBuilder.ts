@@ -1,8 +1,8 @@
 import { FieldTemplateItem, SchemaTemplateItem } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { ValueTypes } from '@sprucelabs/spruce-templates'
-import SchemaGenerator from '../../generators/SchemaGenerator'
 import ImportService from '../../services/ImportService'
+import SchemaGenerator from './generators/SchemaGenerator'
 
 export default class ValueTypeBuilder {
 	private schemaGenerator: SchemaGenerator

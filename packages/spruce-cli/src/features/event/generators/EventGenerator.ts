@@ -5,8 +5,8 @@ import {
 	EventContractTemplateItem,
 	EventListenerOptions,
 } from '@sprucelabs/spruce-templates'
-import { GeneratedFile } from '../types/cli.types'
-import AbstractGenerator from './AbstractGenerator'
+import AbstractGenerator from '../../../generators/AbstractGenerator'
+import { GeneratedFile } from '../../../types/cli.types'
 
 export default class EventGenerator extends AbstractGenerator {
 	public async generateContracts(

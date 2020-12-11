@@ -1,6 +1,6 @@
 import pathUtil from 'path'
 import { TestOptions } from '@sprucelabs/spruce-templates'
-import AbstractGenerator from './AbstractGenerator'
+import AbstractGenerator from '../../../generators/AbstractGenerator'
 
 export default class TestGenerator extends AbstractGenerator {
 	public async generateTest(

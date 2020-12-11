@@ -1,7 +1,9 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { ErrorTemplateItem } from '@sprucelabs/spruce-templates'
-import { GeneratedFile } from '../types/cli.types'
-import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
+import AbstractGenerator, {
+	GenerationResults,
+} from '../../../generators/AbstractGenerator'
+import { GeneratedFile } from '../../../types/cli.types'
 
 export default class ErrorGenerator extends AbstractGenerator {
 	public async generateOrAppendErrorsToClass(

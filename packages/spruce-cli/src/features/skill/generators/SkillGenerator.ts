@@ -4,7 +4,9 @@ import {
 	DirectoryTemplateContextSkill,
 	DirectoryTemplateCode,
 } from '@sprucelabs/spruce-templates'
-import AbstractGenerator, { GenerationResults } from './AbstractGenerator'
+import AbstractGenerator, {
+	GenerationResults,
+} from '../../../generators/AbstractGenerator'
 
 export default class SkillGenerator extends AbstractGenerator {
 	public async generateSkill(

@@ -19,6 +19,10 @@ const testUtil = {
 		return diskUtil.resolvePath(os.tmpdir(), 'spruce-cli', cacheKey)
 	},
 
+	shouldCleanupTestSkillDirs() {
+		return process.env.CLEANUP_TEST_SKILL_DIRS !== 'false'
+	},
+
 	assertCountsByAction(
 		files: GeneratedFile[] | undefined,
 		options: {

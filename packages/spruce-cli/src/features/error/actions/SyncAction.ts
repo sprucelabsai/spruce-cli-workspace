@@ -9,9 +9,9 @@ import { ErrorTemplateItem } from '@sprucelabs/spruce-templates'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import syncErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncErrorAction.schema'
 import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
-import ErrorGenerator from '../../../generators/ErrorGenerator'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse, FeatureAction } from '../../features.types'
+import ErrorGenerator from '../generators/ErrorGenerator'
 
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorActionSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorAction
