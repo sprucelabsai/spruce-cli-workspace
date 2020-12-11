@@ -8,7 +8,7 @@ import { buildSchema } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../../errors/SpruceError'
 import CommandService from '../../services/CommandService'
-import JestJsonParser from '../../test/JestJsonParser'
+import JestJsonParser from '../../tests/JestJsonParser'
 import { SpruceTestResults } from './test.types'
 
 const testRunnerContract = buildEventContract({

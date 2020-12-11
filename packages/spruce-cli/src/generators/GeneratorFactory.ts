@@ -1,12 +1,12 @@
 import { Templates } from '@sprucelabs/spruce-templates'
+import ErrorGenerator from '../features/error/generators/ErrorGenerator'
+import EventGenerator from '../features/event/generators/EventGenerator'
+import NodeGenerator from '../features/node/generators/NodeGenerator'
+import SchemaGenerator from '../features/schema/generators/SchemaGenerator'
+import SkillGenerator from '../features/skill/generators/SkillGenerator'
+import TestGenerator from '../features/test/generators/TestGenerator'
 import { GraphicsInterface } from '../types/cli.types'
 import { GeneratorOptions } from './AbstractGenerator'
-import ErrorGenerator from './ErrorGenerator'
-import EventGenerator from './EventGenerator'
-import NodeGenerator from './NodeGenerator'
-import SchemaGenerator from './SchemaGenerator'
-import SkillGenerator from './SkillGenerator'
-import TestGenerator from './TestGenerator'
 
 const classMap = {
 	error: ErrorGenerator,

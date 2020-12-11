@@ -1,6 +1,6 @@
 import { test, assert } from '@sprucelabs/test'
-import OnboardingStore from '../../stores/OnboardingStore'
-import AbstractCliTest from '../../test/AbstractCliTest'
+import OnboardingStore from '../../features/onboard/stores/OnboardingStore'
+import AbstractCliTest from '../../tests/AbstractCliTest'
 
 export default class OnboardingStoreTest extends AbstractCliTest {
 	private static store: OnboardingStore

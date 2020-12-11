@@ -1,6 +1,6 @@
 import { validateEventContract } from '@sprucelabs/mercury-types'
 import { test, assert } from '@sprucelabs/test'
-import AbstractCliTest from '../../test/AbstractCliTest'
+import AbstractCliTest from '../../tests/AbstractCliTest'
 
 export default class EventStoreTest extends AbstractCliTest {
 	@test()

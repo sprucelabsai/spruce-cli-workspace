@@ -42,14 +42,6 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 
 				break
 
-			case 'GENERIC_MERCURY':
-				message = `Error: Event "${options.eventName ?? 'n/a'}"${
-					options.friendlyMessage
-						? `: ${options.friendlyMessage}`
-						: `: ${this.originalError?.message}`
-				}`
-				break
-
 			case 'SCHEMA_FAILED_TO_IMPORT':
 				message = `Error importing "${options.file}"`
 				break
@@ -138,6 +130,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				message = `\`${upperFirst(
 					options.featureCode
 				)}\` feature is not installed. Install it first, then try again.`
+				break
+
+			case 'MERCURY_RESPONSE_ERROR':
+				message = 'A Mercury response error just happened!'
 				break
 
 			case 'INVALID_TEST_DIRECTORY':

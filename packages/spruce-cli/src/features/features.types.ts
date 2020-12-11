@@ -1,9 +1,10 @@
+import AbstractSpruceError from '@sprucelabs/error'
 import { Schema, SchemaValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
-import SpruceError from '../errors/SpruceError'
 import GeneratorFactory from '../generators/GeneratorFactory'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory from '../services/ServiceFactory'
+import { ApiClientFactory } from '../stores/AbstractStore'
 import StoreFactory from '../stores/StoreFactory'
 import {
 	GeneratedFile,
@@ -11,12 +12,12 @@ import {
 	NpmPackage,
 } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
-import CircleCIFeature from './CircleCIFeature'
 import ErrorFeature from './error/ErrorFeature'
 import EventFeature from './event/EventFeature'
 import FeatureInstaller from './FeatureInstaller'
 import NodeFeature from './node/NodeFeature'
 import OnboardFeature from './onboard/OnboardFeature'
+import PersonFeature from './person/PersonFeature'
 import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
 import TestFeature from './test/TestFeature'
@@ -24,7 +25,6 @@ import VsCodeFeature from './vscode/VsCodeFeature'
 import WatchFeature from './watch/WatchFeature'
 
 export interface FeatureMap {
-	circleCi: CircleCIFeature
 	error: ErrorFeature
 	schema: SchemaFeature
 	skill: SkillFeature
@@ -34,6 +34,7 @@ export interface FeatureMap {
 	watch: WatchFeature
 	node: NodeFeature
 	onboard: OnboardFeature
+	person: PersonFeature
 }
 
 export type InstallFeature =
@@ -47,10 +48,6 @@ export type InstallFeature =
 	  }
 	| {
 			code: 'schema'
-			options?: undefined
-	  }
-	| {
-			code: 'circleCi'
 			options?: undefined
 	  }
 	| {
@@ -77,6 +74,10 @@ export type InstallFeature =
 			code: 'onboard'
 			options?: undefined
 	  }
+	| {
+			code: 'person'
+			options?: undefined
+	  }
 
 export interface FeatureActionOptions {
 	templates: Templates
@@ -88,6 +89,7 @@ export interface FeatureActionOptions {
 	ui: GraphicsInterface
 	generatorFactory: GeneratorFactory
 	emitter: GlobalEmitter
+	apiClientFactory: ApiClientFactory
 }
 
 export type FeatureCode = keyof FeatureMap
@@ -109,7 +111,7 @@ export interface FeatureInstallResponse {
 
 export interface FeatureActionResponse extends FeatureInstallResponse {
 	meta?: Record<string, any>
-	errors?: SpruceError[]
+	errors?: AbstractSpruceError<any>[]
 	hints?: string[]
 	headline?: string
 	summaryLines?: string[]

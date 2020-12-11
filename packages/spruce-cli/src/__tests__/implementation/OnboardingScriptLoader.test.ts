@@ -1,7 +1,7 @@
 import { test, assert } from '@sprucelabs/test'
 import ScriptLoader from '../../features/onboard/ScriptLoader'
 import ScriptPlayer from '../../features/onboard/ScriptPlayer'
-import AbstractCliTest from '../../test/AbstractCliTest'
+import AbstractCliTest from '../../tests/AbstractCliTest'
 
 export default class OnboardingScriptLoaderTest extends AbstractCliTest {
 	private static commandExecuterCommands: string[] = []

@@ -1,14 +1,14 @@
 import { SettingsService } from '@sprucelabs/spruce-skill-utils'
 import { FeatureCode } from '../features/features.types'
+import SchemaService from '../features/schema/services/SchemaService'
+import VsCodeService from '../features/vscode/services/VsCodeService'
 import BuildService from './BuildService'
 import CommandService from './CommandService'
 import ImportService from './ImportService'
 import LintService from './LintService'
 import PinService from './PinService'
 import PkgService from './PkgService'
-import SchemaService from './SchemaService'
 import TypeCheckerService from './TypeCheckerService'
-import VsCodeService from './VsCodeService'
 
 export interface ServiceMap {
 	pin: PinService

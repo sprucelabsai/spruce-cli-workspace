@@ -1,14 +1,16 @@
+import EventStore from '../features/event/stores/EventStore'
+import OnboardingStore from '../features/onboard/stores/OnboardingStore'
+import PersonStore from '../features/person/stores/PersonStore'
+import SchemaStore from '../features/schema/stores/SchemaStore'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory from '../services/ServiceFactory'
 import { StoreOptions, ApiClientFactory } from './AbstractStore'
-import EventStore from './EventStore'
-import OnboardingStore from './OnboardingStore'
-import SchemaStore from './SchemaStore'
 
 export interface StoreMap {
 	onboarding: OnboardingStore
 	schema: SchemaStore
 	event: EventStore
+	person: PersonStore
 }
 
 export type StoreCode = keyof StoreMap
@@ -17,6 +19,7 @@ const storeMap = {
 	onboarding: OnboardingStore,
 	schema: SchemaStore,
 	event: EventStore,
+	person: PersonStore,
 }
 
 export default class StoreFactory {
@@ -49,6 +52,10 @@ export default class StoreFactory {
 			homeDir: this.homeDir,
 			apiClientFactory: this.apiClientFactory,
 			emitter: this.emitter,
+		}
+
+		if (!storeMap[code]) {
+			throw new Error(`Could not find store with code '${code}'.`)
 		}
 		const store = new storeMap[code](options)
 

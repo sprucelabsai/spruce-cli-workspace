@@ -13,7 +13,7 @@ import {
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import fieldClassMap from '#spruce/schemas/fields/fieldClassMap'
-import AbstractSchemaTest from '../../test/AbstractSchemaTest'
+import AbstractSchemaTest from '../../tests/AbstractSchemaTest'
 
 const LOCAL_NAMESPACE = 'TestSkill'
 

@@ -187,7 +187,6 @@ export const templates = {
 	eventContract(
 		options: EventContractTemplateItem & {
 			schemaTemplateItems: SchemaTemplateItem[]
-			valueTypes: ValueTypes
 		}
 	) {
 		const template = templateImportUtil.getTemplate(

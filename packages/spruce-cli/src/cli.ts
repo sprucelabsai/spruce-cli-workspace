@@ -141,23 +141,39 @@ export default class Cli implements CliInterface {
 
 		let apiClient: ApiClient | undefined
 		const serviceFactory = new ServiceFactory({})
+		const apiClientFactoryAnon = options?.apiClientFactory
+			? options.apiClientFactory
+			: async () => {
+					if (!apiClient) {
+						apiClient = await MercuryClientFactory.Client<EventContracts>({
+							contracts: eventsContracts,
+							host: 'https://sandbox.mercury.spruce.ai',
+						})
+					}
+
+					return apiClient
+			  }
+
+		const apiClientFactory = async () => {
+			if (!apiClient) {
+				apiClient = await apiClientFactoryAnon()
+				const personStore = storeFactory.Store('person')
+				const person = personStore.getLoggedInPerson()
+				if (person) {
+					await apiClient.emit('authenticate', {
+						payload: { token: person.token },
+					})
+				}
+			}
+			return apiClient
+		}
+
 		const storeFactory = new StoreFactory({
 			cwd,
 			serviceFactory,
 			homeDir: options?.homeDir ?? osUtil.homedir(),
 			emitter,
-			apiClientFactory: options?.apiClientFactory
-				? options.apiClientFactory
-				: async () => {
-						if (!apiClient) {
-							apiClient = await MercuryClientFactory.Client<EventContracts>({
-								contracts: eventsContracts,
-								host: 'https://sandbox.mercury.spruce.ai',
-							})
-						}
-
-						return apiClient
-				  },
+			apiClientFactory,
 		})
 
 		const ui = options?.graphicsInterface ?? new TerminalInterface(cwd)
@@ -168,6 +184,7 @@ export default class Cli implements CliInterface {
 			storeFactory,
 			ui,
 			emitter,
+			apiClientFactory,
 		})
 
 		if (program) {

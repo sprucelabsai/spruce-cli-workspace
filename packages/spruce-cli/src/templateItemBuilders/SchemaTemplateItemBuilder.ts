@@ -9,8 +9,8 @@ import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import cloneDeep from 'lodash/cloneDeep'
 import isEqual from 'lodash/isEqual'
 import merge from 'lodash/merge'
-import { SchemasByNamespace } from '../stores/SchemaStore'
-import schemaUtil from '../utilities/schema.utility'
+import { SchemasByNamespace } from '../features/schema/stores/SchemaStore'
+import schemaUtil from '../features/schema/utilities/schema.utility'
 
 interface SchemaWithDependencies {
 	schema: Schema

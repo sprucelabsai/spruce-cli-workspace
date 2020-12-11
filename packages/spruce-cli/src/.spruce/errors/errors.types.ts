@@ -11,35 +11,6 @@ import * as SpruceSchema from '@sprucelabs/schema'
 export declare namespace SpruceErrors.SpruceCli {
 
 	
-	export interface InvalidTestDirectory {
-		
-			
-			'dir': string
-	}
-
-	export interface InvalidTestDirectorySchema extends SpruceSchema.Schema {
-		id: 'invalidTestDirectory',
-		namespace: 'SpruceCli',
-		name: 'invalid test directory',
-		    fields: {
-		            /** . */
-		            'dir': {
-		                type: 'text',
-		                isRequired: true,
-		                options: undefined
-		            },
-		    }
-	}
-
-	export type InvalidTestDirectoryEntity = SchemaEntity<SpruceErrors.SpruceCli.InvalidTestDirectorySchema>
-
-}
-
-
-
-export declare namespace SpruceErrors.SpruceCli {
-
-	
 	export interface VscodeNotInstalled {
 		
 	}
@@ -232,6 +203,37 @@ export declare namespace SpruceErrors.SpruceCli {
 }
 
 
+import AbstractSpruceError from '@sprucelabs/error'
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
+	export interface MercuryResponseError {
+		
+			
+			'responseErrors': (AbstractSpruceError<any>)[]
+	}
+
+	export interface MercuryResponseErrorSchema extends SpruceSchema.Schema {
+		id: 'mercuryResponseError',
+		namespace: 'SpruceCli',
+		name: 'Mercury response error',
+		    fields: {
+		            /** . */
+		            'responseErrors': {
+		                type: 'raw',
+		                isRequired: true,
+		                isArray: true,
+		                options: {valueType: `AbstractSpruceError<any>`,}
+		            },
+		    }
+	}
+
+	export type MercuryResponseErrorEntity = SchemaEntity<SpruceErrors.SpruceCli.MercuryResponseErrorSchema>
+
+}
+
+
 
 export declare namespace SpruceErrors.SpruceCli {
 
@@ -269,6 +271,35 @@ export declare namespace SpruceErrors.SpruceCli {
 	}
 
 	export type LintFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.LintFailedSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
+	export interface InvalidTestDirectory {
+		
+			
+			'dir': string
+	}
+
+	export interface InvalidTestDirectorySchema extends SpruceSchema.Schema {
+		id: 'invalidTestDirectory',
+		namespace: 'SpruceCli',
+		name: 'invalid test directory',
+		    fields: {
+		            /** . */
+		            'dir': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type InvalidTestDirectoryEntity = SchemaEntity<SpruceErrors.SpruceCli.InvalidTestDirectorySchema>
 
 }
 
@@ -330,83 +361,6 @@ export declare namespace SpruceErrors.SpruceCli {
 	}
 
 	export type InvalidCommandEntity = SchemaEntity<SpruceErrors.SpruceCli.InvalidCommandSchema>
-
-}
-
-
-
-export declare namespace SpruceErrors.SpruceCli {
-
-	
-	export interface PayloadArgs {
-		
-			/** name. */
-			'name'?: string| undefined | null
-			/** value. */
-			'value'?: string| undefined | null
-	}
-
-	export interface PayloadArgsSchema extends SpruceSchema.Schema {
-		id: 'payloadArgs',
-		namespace: 'SpruceCli',
-		name: 'Payload args',
-		    fields: {
-		            /** name. */
-		            'name': {
-		                label: 'name',
-		                type: 'text',
-		                options: undefined
-		            },
-		            /** value. */
-		            'value': {
-		                label: 'value',
-		                type: 'text',
-		                options: undefined
-		            },
-		    }
-	}
-
-	export type PayloadArgsEntity = SchemaEntity<SpruceErrors.SpruceCli.PayloadArgsSchema>
-
-}
-
-
-
-export declare namespace SpruceErrors.SpruceCli {
-
-	/** Not sure what happened, but it has something to do with Mercury */
-	export interface GenericMercury {
-		
-			/** Event name. */
-			'eventName'?: string| undefined | null
-			/** Payload. A hint */
-			'payloadArgs'?: SpruceErrors.SpruceCli.PayloadArgs[]| undefined | null
-	}
-
-	export interface GenericMercurySchema extends SpruceSchema.Schema {
-		id: 'genericMercury',
-		namespace: 'SpruceCli',
-		name: 'Generic mercury',
-		description: 'Not sure what happened, but it has something to do with Mercury',
-		    fields: {
-		            /** Event name. */
-		            'eventName': {
-		                label: 'Event name',
-		                type: 'text',
-		                options: undefined
-		            },
-		            /** Payload. A hint */
-		            'payloadArgs': {
-		                label: 'Payload',
-		                type: 'schema',
-		                hint: 'A hint',
-		                isArray: true,
-		                options: {schema: SpruceErrors.SpruceCli.PayloadArgsSchema,}
-		            },
-		    }
-	}
-
-	export type GenericMercuryEntity = SchemaEntity<SpruceErrors.SpruceCli.GenericMercurySchema>
 
 }
 

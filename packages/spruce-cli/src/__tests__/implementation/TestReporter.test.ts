@@ -1,6 +1,6 @@
 import { test, assert } from '@sprucelabs/test'
-import AbstractCliTest from '../../test/AbstractCliTest'
-import TestReporter from '../../test/TestReporter'
+import AbstractCliTest from '../../tests/AbstractCliTest'
+import TestReporter from '../../tests/TestReporter'
 
 export default class TestReporterTest extends AbstractCliTest {
 	private static reporter: TestReporter

@@ -8,10 +8,10 @@ import SpruceError from '../../../errors/SpruceError'
 import SchemaTemplateItemBuilder from '../../../templateItemBuilders/SchemaTemplateItemBuilder'
 import { GeneratedFile } from '../../../types/cli.types'
 import mergeUtil from '../../../utilities/merge.utility'
-import schemaGeneratorUtil from '../../../utilities/schemaGenerator.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 import SkillFeature from '../../skill/SkillFeature'
+import schemaGeneratorUtil from '../utilities/schemaGenerator.utility'
 import ValueTypeBuilder from '../ValueTypeBuilder'
 
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema

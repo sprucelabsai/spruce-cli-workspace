@@ -1,6 +1,6 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import SpruceError from '../../../errors/SpruceError'
-import TestReporter from '../../../test/TestReporter'
+import TestReporter from '../../../tests/TestReporter'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import {
 	FeatureActionResponse,
