@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.15.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.14.0...v11.15.0) (2020-12-11)
+
+**Note:** Version bump only for package @sprucelabs/spruce-templates
+
+
+
+
+
+# [11.14.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.13.3...v11.14.0) (2020-12-10)
+
+
+### Features
+
+* login and saved login started with event schemas ([aecee88](https://github.com/sprucelabsai/spruce-cli-workspace/commit/aecee88))
+
+
+
+
+
 ## [11.13.3](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.13.2...v11.13.3) (2020-12-10)
 
 **Note:** Version bump only for package @sprucelabs/spruce-templates
