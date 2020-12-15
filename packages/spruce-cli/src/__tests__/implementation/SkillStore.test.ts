@@ -1,9 +1,9 @@
 import { eventResponseUtil } from '@sprucelabs/mercury-types'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
-import AbstractCliTest from '../../tests/AbstractCliTest'
+import AbstractPersonTest from '../../tests/AbstractPersonTest'
 
-export default class SkillStoreTest extends AbstractCliTest {
+export default class SkillStoreTest extends AbstractPersonTest {
 	@test()
 	protected static async canInstantiateSkillStore() {
 		assert.isTruthy(this.Store('skill'))
@@ -27,16 +27,16 @@ export default class SkillStoreTest extends AbstractCliTest {
 
 	@test()
 	protected static async canRegister() {
-		await this.FeatureFixture().installCachedFeatures('skills')
-
+		const slug = `awesome-skill-${new Date().getTime()}`
+		await this.installSkillAndLoginAsDummyPerson()
 		const skill = await this.Store('skill').register({
 			name: 'awesome skill',
-			slug: 'awesome-skill',
+			slug,
 		})
 
 		assert.isTruthy(skill)
 		assert.isEqual(skill.name, 'awesome skill')
-		assert.isEqual(skill.slug, 'awesome-skill')
+		assert.isEqual(skill.slug, slug)
 		assert.isString(skill.apiKey)
 		assert.isString(skill.id)
 
@@ -49,6 +49,6 @@ export default class SkillStoreTest extends AbstractCliTest {
 		})
 
 		const response = eventResponseUtil.getFirstResponseOrThrow(results)
-		assert.isEqual(response.auth, 'skill')
+		assert.isEqual(response.auth.skill?.id, skill.id)
 	}
 }
