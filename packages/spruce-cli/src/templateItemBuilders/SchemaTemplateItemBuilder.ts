@@ -171,11 +171,16 @@ export default class SchemaTemplateItemBuilder {
 	private getImportFromForSchema(schema: Schema): string | undefined {
 		switch (schema.namespace) {
 			case CORE_NAMESPACE:
-				return '@sprucelabs/spruce-core-schemas'
+				if (this.localNamespace !== CORE_NAMESPACE) {
+					return '@sprucelabs/spruce-core-schemas'
+				}
+				break
 			case 'MercuryTypes':
-				return '@sprucelabs/mercury-types'
-			default:
-				return undefined
+				if (this.localNamespace !== 'MercuryTypes') {
+					return '@sprucelabs/mercury-types'
+				}
 		}
+
+		return undefined
 	}
 }

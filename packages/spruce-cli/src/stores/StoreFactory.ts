@@ -2,6 +2,7 @@ import EventStore from '../features/event/stores/EventStore'
 import OnboardingStore from '../features/onboard/stores/OnboardingStore'
 import PersonStore from '../features/person/stores/PersonStore'
 import SchemaStore from '../features/schema/stores/SchemaStore'
+import SkillStore from '../features/skill/stores/SkillStore'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory from '../services/ServiceFactory'
 import { StoreOptions, ApiClientFactory } from './AbstractStore'
@@ -11,6 +12,7 @@ export interface StoreMap {
 	schema: SchemaStore
 	event: EventStore
 	person: PersonStore
+	skill: SkillStore
 }
 
 export type StoreCode = keyof StoreMap
@@ -20,6 +22,7 @@ const storeMap = {
 	schema: SchemaStore,
 	event: EventStore,
 	person: PersonStore,
+	skill: SkillStore,
 }
 
 export default class StoreFactory {

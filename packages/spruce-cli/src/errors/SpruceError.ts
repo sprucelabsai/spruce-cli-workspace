@@ -133,11 +133,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				break
 
 			case 'MERCURY_RESPONSE_ERROR': {
-				debugger
 				const errors = options.responseErrors
 				message = `Got ${
 					errors.length === 1 ? 'an error' : `${errors.length} errors`
-				} from the server:\n`
+				} from the server:\n\n`
 
 				const errorMessages: string[] = []
 				for (const err of errors) {
@@ -150,6 +149,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 			}
 			case 'INVALID_TEST_DIRECTORY':
 				message = `You are missing dependencies I need to run tests. Try \`spruce test.install\` to reinstall.`
+				break
+
+			case 'DIRECTORY_NOT_SKILL':
+				message = 'The directory you are in is not a skill!'
 				break
 
 			default:

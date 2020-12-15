@@ -1,6 +1,6 @@
+import { eventResponseUtil } from '@sprucelabs/mercury-types'
 import { buildSchema } from '@sprucelabs/schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
-import eventResponseUtil from '../../event/utilities/eventResponse.utility'
 import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({

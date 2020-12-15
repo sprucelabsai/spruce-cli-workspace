@@ -19,6 +19,10 @@ export default class MercuryFixture {
 		}
 	}
 
+	public connectToApi() {
+		return this.getApiClientFactory()()
+	}
+
 	public async disconnect() {
 		await this.client?.disconnect()
 	}

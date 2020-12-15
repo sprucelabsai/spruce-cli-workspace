@@ -37,6 +37,11 @@ export default buildSchema({
 			label: 'Constant case name',
 			hint: 'CONST_CASE of the name',
 		},
+		nameKebab: {
+			type: 'text',
+			label: 'Kebab case name',
+			hint: 'kebab-case of the name',
+		},
 		description: {
 			type: 'text',
 			label: 'Description',
