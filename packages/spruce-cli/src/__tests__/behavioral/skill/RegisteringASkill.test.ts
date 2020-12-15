@@ -1,3 +1,4 @@
+import { eventResponseUtil } from '@sprucelabs/mercury-types'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractPersonTest from '../../../tests/AbstractPersonTest'
@@ -26,7 +27,7 @@ export default class RegisteringASkillTest extends AbstractPersonTest {
 		)
 	}
 
-	@test.only()
+	@test()
 	protected static async canRegisterSkill() {
 		const { cli } = await this.installSkillAndLoginAsDummyPerson()
 		const results = await cli.getFeature('skill').Action('register').execute({
@@ -37,5 +38,16 @@ export default class RegisteringASkillTest extends AbstractPersonTest {
 		assert.isFalsy(results.errors)
 		const skill = results.meta?.skill
 		assert.isTruthy(skill)
+
+		const client = await this.connectToApi()
+		const getSkillResults = await client.emit('get-skill', {
+			payload: { id: skill.id },
+		})
+
+		const { skill: getSkill } = eventResponseUtil.getFirstResponseOrThrow(
+			getSkillResults
+		)
+
+		assert.isEqual(skill.id, getSkill.id)
 	}
 }
