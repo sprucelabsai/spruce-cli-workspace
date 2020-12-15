@@ -3,7 +3,7 @@ import {
 	eventContractUtil,
 	eventResponseUtil,
 } from '@sprucelabs/mercury-types'
-import { SelectFieldDefinitionChoice } from '@sprucelabs/schema'
+import { SelectChoice } from '@sprucelabs/schema'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import eventListenActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/listenEventAction.schema'
@@ -93,9 +93,8 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 		contracts: EventContract[],
 		eventNamespace: string
 	): Promise<string> {
-		const eventChoices: SelectFieldDefinitionChoice[] = this.generateChoices(
-			contracts
-		).eventChoicesByNamespace[eventNamespace]
+		const eventChoices: SelectChoice[] = this.generateChoices(contracts)
+			.eventChoicesByNamespace[eventNamespace]
 
 		const eventName = await this.ui.prompt({
 			type: 'select',
@@ -126,16 +125,13 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 	private generateChoices(
 		contracts: SpruceSchemas.MercuryTypes.v2020_09_01.EventContract[]
 	) {
-		const namespaceChoices: SelectFieldDefinitionChoice[] = [
+		const namespaceChoices: SelectChoice[] = [
 			{
 				label: 'Skill',
 				value: 'skill',
 			},
 		]
-		const eventChoicesByNamespace: Record<
-			string,
-			SelectFieldDefinitionChoice[]
-		> = {
+		const eventChoicesByNamespace: Record<string, SelectChoice[]> = {
 			skill: [
 				{
 					label: 'will-boot',

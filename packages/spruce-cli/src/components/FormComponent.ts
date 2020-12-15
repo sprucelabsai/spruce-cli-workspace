@@ -4,7 +4,7 @@ import SchemaEntity, {
 	SchemaAllValues,
 	SchemaPartialValues,
 	SchemaFieldNames,
-	SelectFieldDefinitionChoice,
+	SelectChoice,
 	SchemaError,
 	IFieldDefinition,
 } from '@sprucelabs/schema'
@@ -239,7 +239,7 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 		const actionMap: Record<string, FormAction<S>> = {}
 
 		// Create all choices
-		const choices: SelectFieldDefinitionChoice[] = this.getNamedFields()
+		const choices: SelectChoice[] = this.getNamedFields()
 			.filter((namedField) => fields.indexOf(namedField.name) > -1)
 			.map((namedField) => {
 				const { field, name } = namedField
