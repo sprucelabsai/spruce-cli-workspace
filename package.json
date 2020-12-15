@@ -27,6 +27,7 @@
 		"publish": "lerna publish",
 		"clean": "lerna run clean --parallel",
 		"clean.cache": "lerna run clean.cache --parallel",
+		"cache.tests": "lerna run cache.tests --parallel",
 		"clean.all": "rm -f yarn.lock && lerna run clean && rm -rf node_modules; for d in packages/*/node_modules; do echo $d; rm -rf $d; done && yarn clean.build",
 		"clean.build": "for d in packages/*/build; do echo $d; rm -rf $d; done",
 		"upgrade.packages": "yarn upgrade --latest && rm -f yarn.lock && yarn | true && yarn lint.fix || true",
