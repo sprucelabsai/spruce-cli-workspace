@@ -250,7 +250,8 @@
 						"canGetNumberOfEventsBackFromHealthCheck": "F64",
 						"canLoginAsDummyPerson": "F66",
 						"canSeeWhoIsLoggedIn": "F67",
-						"canRegisterSkill": "F69"
+						"canRegisterSkill": "F69",
+						"throwsWithBadEventName": "F72"
 					}
 				}
 			]
