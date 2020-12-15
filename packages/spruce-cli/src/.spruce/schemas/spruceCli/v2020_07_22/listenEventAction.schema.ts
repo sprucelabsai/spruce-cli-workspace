@@ -14,14 +14,12 @@ const listenEventActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventAc
 	            'eventNamespace': {
 	                label: 'Namespace',
 	                type: 'text',
-	                isRequired: true,
 	                options: undefined
 	            },
 	            /** Event name. */
 	            'eventName': {
 	                label: 'Event name',
 	                type: 'text',
-	                isRequired: true,
 	                options: undefined
 	            },
 	            /** Events destination directory. Where should I add your listeners? */

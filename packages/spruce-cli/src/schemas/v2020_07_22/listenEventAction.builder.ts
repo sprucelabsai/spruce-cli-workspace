@@ -8,12 +8,10 @@ export default buildSchema({
 		eventNamespace: {
 			type: 'text',
 			label: 'Namespace',
-			isRequired: true,
 		},
 		eventName: {
 			type: 'text',
 			label: 'Event name',
-			isRequired: true,
 		},
 		eventsDestinationDir: {
 			type: 'text',
