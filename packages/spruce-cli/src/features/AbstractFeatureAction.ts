@@ -31,17 +31,17 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 	public abstract name: string
 	public abstract optionsSchema: S
 
-	private serviceFactory: ServiceFactory
-	private storeFactory: StoreFactory
-	private generatorFactory: GeneratorFactory
-
 	protected parent: AbstractFeature
 	protected featureInstaller: FeatureInstaller
 	protected cwd: string
 	protected templates: Templates
 	protected ui: GraphicsInterface
 	protected emitter: GlobalEmitter
-	protected apiClientFactory: ApiClientFactory
+
+	private serviceFactory: ServiceFactory
+	private storeFactory: StoreFactory
+	private generatorFactory: GeneratorFactory
+	private apiClientFactory: ApiClientFactory
 
 	public constructor(options: FeatureActionOptions) {
 		this.cwd = options.cwd

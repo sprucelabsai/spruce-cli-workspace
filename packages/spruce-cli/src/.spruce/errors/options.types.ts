@@ -50,6 +50,9 @@ export interface FailedToImportErrorOptions extends SpruceErrors.SpruceCli.Faile
 export interface ExecutingCommandFailedErrorOptions extends SpruceErrors.SpruceCli.ExecutingCommandFailed, ISpruceErrorOptions {
 	code: 'EXECUTING_COMMAND_FAILED'
 }
+export interface DirectoryNotSkillErrorOptions extends SpruceErrors.SpruceCli.DirectoryNotSkill, ISpruceErrorOptions {
+	code: 'DIRECTORY_NOT_SKILL'
+}
 export interface DirectoryEmptyErrorOptions extends SpruceErrors.SpruceCli.DirectoryEmpty, ISpruceErrorOptions {
 	code: 'DIRECTORY_EMPTY'
 }
@@ -69,6 +72,6 @@ export interface BootFailedErrorOptions extends SpruceErrors.SpruceCli.BootFaile
 	code: 'BOOT_FAILED'
 }
 
-type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | VscodeNotInstalledErrorOptions  | UserNotFoundErrorOptions  | TestFailedErrorOptions  | SchemaFailedToImportErrorOptions  | SchemaExistsErrorOptions  | NotImplementedErrorOptions  | MercuryResponseErrorErrorOptions  | LintFailedErrorOptions  | InvalidTestDirectoryErrorOptions  | InvalidFeatureCodeErrorOptions  | InvalidCommandErrorOptions  | GenericErrorOptions  | FileExistsErrorOptions  | FeatureNotInstalledErrorOptions  | FailedToImportErrorOptions  | ExecutingCommandFailedErrorOptions  | DirectoryEmptyErrorOptions  | CreateAutoloaderFailedErrorOptions  | CommandNotImplementedErrorOptions  | CommandAbortedErrorOptions  | BuildFailedErrorOptions  | BootFailedErrorOptions 
+type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | VscodeNotInstalledErrorOptions  | UserNotFoundErrorOptions  | TestFailedErrorOptions  | SchemaFailedToImportErrorOptions  | SchemaExistsErrorOptions  | NotImplementedErrorOptions  | MercuryResponseErrorErrorOptions  | LintFailedErrorOptions  | InvalidTestDirectoryErrorOptions  | InvalidFeatureCodeErrorOptions  | InvalidCommandErrorOptions  | GenericErrorOptions  | FileExistsErrorOptions  | FeatureNotInstalledErrorOptions  | FailedToImportErrorOptions  | ExecutingCommandFailedErrorOptions  | DirectoryNotSkillErrorOptions  | DirectoryEmptyErrorOptions  | CreateAutoloaderFailedErrorOptions  | CommandNotImplementedErrorOptions  | CommandAbortedErrorOptions  | BuildFailedErrorOptions  | BootFailedErrorOptions 
 
 export default ErrorOptions

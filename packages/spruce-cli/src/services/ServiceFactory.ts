@@ -4,14 +4,13 @@ import SchemaService from '../features/schema/services/SchemaService'
 import VsCodeService from '../features/vscode/services/VsCodeService'
 import BuildService from './BuildService'
 import CommandService from './CommandService'
+import EnvService from './EnvService'
 import ImportService from './ImportService'
 import LintService from './LintService'
-import PinService from './PinService'
 import PkgService from './PkgService'
 import TypeCheckerService from './TypeCheckerService'
 
 export interface ServiceMap {
-	pin: PinService
 	pkg: PkgService
 	vsCode: VsCodeService
 	schema: SchemaService
@@ -21,6 +20,7 @@ export interface ServiceMap {
 	import: ImportService
 	build: BuildService
 	settings: SettingsService
+	env: EnvService
 }
 
 export type Service = keyof ServiceMap
@@ -37,11 +37,10 @@ export default class ServiceFactory {
 
 	public Service<S extends Service>(cwd: string, type: S): ServiceMap[S] {
 		switch (type) {
-			case 'pin':
-				return new PinService() as ServiceMap[S]
 			case 'pkg':
 				return new PkgService(cwd) as ServiceMap[S]
-
+			case 'env':
+				return new EnvService(cwd) as ServiceMap[S]
 			case 'vsCode':
 				return new VsCodeService(cwd) as ServiceMap[S]
 			case 'schema':

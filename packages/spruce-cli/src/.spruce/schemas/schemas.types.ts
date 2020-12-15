@@ -1222,6 +1222,90 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.MercuryApi {
 
 		
+		interface GetSkillEmitPayload {
+			
+				
+				'id': string
+		}
+
+		interface GetSkillEmitPayloadSchema extends SpruceSchema.Schema {
+			id: 'getSkillEmitPayload',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'id': {
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			    }
+		}
+
+		type GetSkillEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetSkillEmitPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi {
+
+		
+		interface GetSkillTargetAndPayload {
+			
+				
+				'payload': SpruceSchemas.MercuryApi.GetSkillEmitPayload
+		}
+
+		interface GetSkillTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'getSkillTargetAndPayload',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.GetSkillEmitPayloadSchema,}
+			            },
+			    }
+		}
+
+		type GetSkillTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetSkillTargetAndPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi {
+
+		
+		interface GetSkillResponsePayload {
+			
+				
+				'skill': SpruceSchemas.Spruce.v2020_07_22.Skill
+		}
+
+		interface GetSkillResponsePayloadSchema extends SpruceSchema.Schema {
+			id: 'getSkillResponsePayload',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'skill': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.Spruce.v2020_07_22.SkillSchema,}
+			            },
+			    }
+		}
+
+		type GetSkillResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetSkillResponsePayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi {
+
+		
 		interface HealthCheckItem {
 			
 				
@@ -2674,8 +2758,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		/** Create a builder for your brand new error!  */
-		interface CreateErrorAction {
+		/** Options for schema.sync. */
+		interface SyncSchemasAction {
 			
 				/** Field types directory. Where field types and interfaces will be generated. */
 				'fieldTypesDestinationDir'?: string| undefined | null
@@ -2705,30 +2789,14 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
 				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
 				'generateStandaloneTypesFile'?: boolean| undefined | null
-				/** Error class destination. Where I'll save your new Error class file? */
-				'errorClassDestinationDir': string
-				/** . Where I should look for your error builders? */
-				'errorLookupDir'?: string| undefined | null
-				/** Types destination dir. This is where error options and type information will be written */
-				'errorTypesDestinationDir'?: string| undefined | null
-				/** Error builder destination directory. Where I'll save your new builder file? */
-				'errorBuilderDestinationDir': string
-				/** Readable name. The name people will read */
-				'nameReadable': string
-				/** Pascal case name. PascalCase of the name */
-				'namePascal'?: string| undefined | null
-				/** Camel case name. camelCase version of the name */
-				'nameCamel': string
-				/** Description. Describe a bit more here */
-				'description'?: string| undefined | null
 		}
 
-		interface CreateErrorActionSchema extends SpruceSchema.Schema {
-			id: 'createErrorAction',
+		interface SyncSchemasActionSchema extends SpruceSchema.Schema {
+			id: 'syncSchemasAction',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
-			name: 'Create error action',
-			description: 'Create a builder for your brand new error! ',
+			name: 'Sync schemas action',
+			description: 'Options for schema.sync.',
 			    fields: {
 			            /** Field types directory. Where field types and interfaces will be generated. */
 			            'fieldTypesDestinationDir': {
@@ -2852,75 +2920,10 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: false,
 			                options: undefined
 			            },
-			            /** Error class destination. Where I'll save your new Error class file? */
-			            'errorClassDestinationDir': {
-			                label: 'Error class destination',
-			                type: 'text',
-			                isPrivate: true,
-			                isRequired: true,
-			                hint: 'Where I\'ll save your new Error class file?',
-			                defaultValue: "src/errors",
-			                options: undefined
-			            },
-			            /** . Where I should look for your error builders? */
-			            'errorLookupDir': {
-			                type: 'text',
-			                hint: 'Where I should look for your error builders?',
-			                defaultValue: "src/errors",
-			                options: undefined
-			            },
-			            /** Types destination dir. This is where error options and type information will be written */
-			            'errorTypesDestinationDir': {
-			                label: 'Types destination dir',
-			                type: 'text',
-			                hint: 'This is where error options and type information will be written',
-			                defaultValue: "#spruce/errors",
-			                options: undefined
-			            },
-			            /** Error builder destination directory. Where I'll save your new builder file? */
-			            'errorBuilderDestinationDir': {
-			                label: 'Error builder destination directory',
-			                type: 'text',
-			                isPrivate: true,
-			                isRequired: true,
-			                hint: 'Where I\'ll save your new builder file?',
-			                defaultValue: "./src/errors",
-			                options: undefined
-			            },
-			            /** Readable name. The name people will read */
-			            'nameReadable': {
-			                label: 'Readable name',
-			                type: 'text',
-			                isRequired: true,
-			                hint: 'The name people will read',
-			                options: undefined
-			            },
-			            /** Pascal case name. PascalCase of the name */
-			            'namePascal': {
-			                label: 'Pascal case name',
-			                type: 'text',
-			                hint: 'PascalCase of the name',
-			                options: undefined
-			            },
-			            /** Camel case name. camelCase version of the name */
-			            'nameCamel': {
-			                label: 'Camel case name',
-			                type: 'text',
-			                isRequired: true,
-			                hint: 'camelCase version of the name',
-			                options: undefined
-			            },
-			            /** Description. Describe a bit more here */
-			            'description': {
-			                label: 'Description',
-			                type: 'text',
-			                hint: 'Describe a bit more here',
-			                options: undefined
-			            },
 			    }
 		}
 
-		type CreateErrorActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorActionSchema>
+		type SyncSchemasActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema>
 
 	}
 
@@ -3382,8 +3385,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		/** Options for schema.sync. */
-		interface SyncSchemasAction {
+		/** Create a builder for your brand new error!  */
+		interface CreateErrorAction {
 			
 				/** Field types directory. Where field types and interfaces will be generated. */
 				'fieldTypesDestinationDir'?: string| undefined | null
@@ -3413,14 +3416,30 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
 				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
 				'generateStandaloneTypesFile'?: boolean| undefined | null
+				/** Error class destination. Where I'll save your new Error class file? */
+				'errorClassDestinationDir': string
+				/** . Where I should look for your error builders? */
+				'errorLookupDir'?: string| undefined | null
+				/** Types destination dir. This is where error options and type information will be written */
+				'errorTypesDestinationDir'?: string| undefined | null
+				/** Error builder destination directory. Where I'll save your new builder file? */
+				'errorBuilderDestinationDir': string
+				/** Readable name. The name people will read */
+				'nameReadable': string
+				/** Pascal case name. PascalCase of the name */
+				'namePascal'?: string| undefined | null
+				/** Camel case name. camelCase version of the name */
+				'nameCamel': string
+				/** Description. Describe a bit more here */
+				'description'?: string| undefined | null
 		}
 
-		interface SyncSchemasActionSchema extends SpruceSchema.Schema {
-			id: 'syncSchemasAction',
+		interface CreateErrorActionSchema extends SpruceSchema.Schema {
+			id: 'createErrorAction',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
-			name: 'Sync schemas action',
-			description: 'Options for schema.sync.',
+			name: 'Create error action',
+			description: 'Create a builder for your brand new error! ',
 			    fields: {
 			            /** Field types directory. Where field types and interfaces will be generated. */
 			            'fieldTypesDestinationDir': {
@@ -3544,59 +3563,54 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: false,
 			                options: undefined
 			            },
-			    }
-		}
-
-		type SyncSchemasActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
-		/** Options for creating a new test. */
-		interface CreateTestAction {
-			
-				/** Type of test. */
-				'type': ("behavioral" | "implementation")
-				/** What are you testing?. E.g. Booking an appointment or turning on a light */
-				'nameReadable': string
-				/** Test destination directory. Where I'll save your new test. */
-				'testDestinationDir'?: string| undefined | null
-				/** Camel case name. camelCase version of the name */
-				'nameCamel': string
-				/** Pascal case name. PascalCase of the name */
-				'namePascal'?: string| undefined | null
-		}
-
-		interface CreateTestActionSchema extends SpruceSchema.Schema {
-			id: 'createTestAction',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'Create test action',
-			description: 'Options for creating a new test.',
-			    fields: {
-			            /** Type of test. */
-			            'type': {
-			                label: 'Type of test',
-			                type: 'select',
-			                isRequired: true,
-			                options: {choices: [{"value":"behavioral","label":"Behavioral"},{"value":"implementation","label":"Implementation"}],}
-			            },
-			            /** What are you testing?. E.g. Booking an appointment or turning on a light */
-			            'nameReadable': {
-			                label: 'What are you testing?',
+			            /** Error class destination. Where I'll save your new Error class file? */
+			            'errorClassDestinationDir': {
+			                label: 'Error class destination',
 			                type: 'text',
+			                isPrivate: true,
 			                isRequired: true,
-			                hint: 'E.g. Booking an appointment or turning on a light',
+			                hint: 'Where I\'ll save your new Error class file?',
+			                defaultValue: "src/errors",
 			                options: undefined
 			            },
-			            /** Test destination directory. Where I'll save your new test. */
-			            'testDestinationDir': {
-			                label: 'Test destination directory',
+			            /** . Where I should look for your error builders? */
+			            'errorLookupDir': {
 			                type: 'text',
-			                hint: 'Where I\'ll save your new test.',
-			                defaultValue: "src/__tests__",
+			                hint: 'Where I should look for your error builders?',
+			                defaultValue: "src/errors",
+			                options: undefined
+			            },
+			            /** Types destination dir. This is where error options and type information will be written */
+			            'errorTypesDestinationDir': {
+			                label: 'Types destination dir',
+			                type: 'text',
+			                hint: 'This is where error options and type information will be written',
+			                defaultValue: "#spruce/errors",
+			                options: undefined
+			            },
+			            /** Error builder destination directory. Where I'll save your new builder file? */
+			            'errorBuilderDestinationDir': {
+			                label: 'Error builder destination directory',
+			                type: 'text',
+			                isPrivate: true,
+			                isRequired: true,
+			                hint: 'Where I\'ll save your new builder file?',
+			                defaultValue: "./src/errors",
+			                options: undefined
+			            },
+			            /** Readable name. The name people will read */
+			            'nameReadable': {
+			                label: 'Readable name',
+			                type: 'text',
+			                isRequired: true,
+			                hint: 'The name people will read',
+			                options: undefined
+			            },
+			            /** Pascal case name. PascalCase of the name */
+			            'namePascal': {
+			                label: 'Pascal case name',
+			                type: 'text',
+			                hint: 'PascalCase of the name',
 			                options: undefined
 			            },
 			            /** Camel case name. camelCase version of the name */
@@ -3607,48 +3621,17 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                hint: 'camelCase version of the name',
 			                options: undefined
 			            },
-			            /** Pascal case name. PascalCase of the name */
-			            'namePascal': {
-			                label: 'Pascal case name',
+			            /** Description. Describe a bit more here */
+			            'description': {
+			                label: 'Description',
 			                type: 'text',
-			                hint: 'PascalCase of the name',
+			                hint: 'Describe a bit more here',
 			                options: undefined
 			            },
 			    }
 		}
 
-		type CreateTestActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateTestActionSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
-		
-		interface SyncEventAction {
-			
-				/** Contract destination. Where I will generate event contracts. */
-				'contractDestinationDir'?: string| undefined | null
-		}
-
-		interface SyncEventActionSchema extends SpruceSchema.Schema {
-			id: 'syncEventAction',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'sync event action',
-			    fields: {
-			            /** Contract destination. Where I will generate event contracts. */
-			            'contractDestinationDir': {
-			                label: 'Contract destination',
-			                type: 'text',
-			                hint: 'Where I will generate event contracts.',
-			                defaultValue: "#spruce/events",
-			                options: undefined
-			            },
-			    }
-		}
-
-		type SyncEventActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncEventActionSchema>
+		type CreateErrorActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorActionSchema>
 
 	}
 
@@ -3789,37 +3772,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		/** Options skill.upgrade. */
-		interface UpgradeSkillAction {
-			
-				/** Force. This will force overwrite each file */
-				'force'?: boolean| undefined | null
-		}
-
-		interface UpgradeSkillActionSchema extends SpruceSchema.Schema {
-			id: 'upgradeSkillAction',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'Upgrade skill action',
-			description: 'Options skill.upgrade.',
-			    fields: {
-			            /** Force. This will force overwrite each file */
-			            'force': {
-			                label: 'Force',
-			                type: 'boolean',
-			                hint: 'This will force overwrite each file',
-			                options: undefined
-			            },
-			    }
-		}
-
-		type UpgradeSkillActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillActionSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
 		/** Sync schema fields so you can use schemas! */
 		interface SyncSchemaFieldsAction {
 			
@@ -3874,39 +3826,316 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		
-		interface SkillFeature {
+		/** Options skill.upgrade. */
+		interface UpgradeSkillAction {
 			
-				/** What's the name of your skill?. */
-				'name': string
-				/** How would you describe your skill?. */
-				'description': string
+				/** Force. This will force overwrite each file */
+				'force'?: boolean| undefined | null
 		}
 
-		interface SkillFeatureSchema extends SpruceSchema.Schema {
-			id: 'skillFeature',
+		interface UpgradeSkillActionSchema extends SpruceSchema.Schema {
+			id: 'upgradeSkillAction',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
-			name: 'Skill feature options',
+			name: 'Upgrade skill action',
+			description: 'Options skill.upgrade.',
 			    fields: {
-			            /** What's the name of your skill?. */
-			            'name': {
-			                label: 'What\'s the name of your skill?',
-			                type: 'text',
-			                isRequired: true,
-			                options: undefined
-			            },
-			            /** How would you describe your skill?. */
-			            'description': {
-			                label: 'How would you describe your skill?',
-			                type: 'text',
-			                isRequired: true,
+			            /** Force. This will force overwrite each file */
+			            'force': {
+			                label: 'Force',
+			                type: 'boolean',
+			                hint: 'This will force overwrite each file',
 			                options: undefined
 			            },
 			    }
 		}
 
-		type SkillFeatureEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema>
+		type UpgradeSkillActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillActionSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		/** Used to collect input on the names of a class or interface */
+		interface NamedTemplateItem {
+			
+				/** Readable name. The name people will read */
+				'nameReadable': string
+				/** Camel case name. camelCase version of the name */
+				'nameCamel': string
+				/** Plural camel case name. camelCase version of the name */
+				'nameCamelPlural'?: string| undefined | null
+				/** Pascal case name. PascalCase of the name */
+				'namePascal'?: string| undefined | null
+				/** Plural Pascal case name. PascalCase of the name */
+				'namePascalPlural'?: string| undefined | null
+				/** Constant case name. CONST_CASE of the name */
+				'nameConst'?: string| undefined | null
+				/** Kebab case name. kebab-case of the name */
+				'nameKebab'?: string| undefined | null
+				/** Description. Describe a bit more here */
+				'description'?: string| undefined | null
+		}
+
+		interface NamedTemplateItemSchema extends SpruceSchema.Schema {
+			id: 'namedTemplateItem',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'NamedTemplateItem',
+			description: 'Used to collect input on the names of a class or interface',
+			    fields: {
+			            /** Readable name. The name people will read */
+			            'nameReadable': {
+			                label: 'Readable name',
+			                type: 'text',
+			                isRequired: true,
+			                hint: 'The name people will read',
+			                options: undefined
+			            },
+			            /** Camel case name. camelCase version of the name */
+			            'nameCamel': {
+			                label: 'Camel case name',
+			                type: 'text',
+			                isRequired: true,
+			                hint: 'camelCase version of the name',
+			                options: undefined
+			            },
+			            /** Plural camel case name. camelCase version of the name */
+			            'nameCamelPlural': {
+			                label: 'Plural camel case name',
+			                type: 'text',
+			                hint: 'camelCase version of the name',
+			                options: undefined
+			            },
+			            /** Pascal case name. PascalCase of the name */
+			            'namePascal': {
+			                label: 'Pascal case name',
+			                type: 'text',
+			                hint: 'PascalCase of the name',
+			                options: undefined
+			            },
+			            /** Plural Pascal case name. PascalCase of the name */
+			            'namePascalPlural': {
+			                label: 'Plural Pascal case name',
+			                type: 'text',
+			                hint: 'PascalCase of the name',
+			                options: undefined
+			            },
+			            /** Constant case name. CONST_CASE of the name */
+			            'nameConst': {
+			                label: 'Constant case name',
+			                type: 'text',
+			                hint: 'CONST_CASE of the name',
+			                options: undefined
+			            },
+			            /** Kebab case name. kebab-case of the name */
+			            'nameKebab': {
+			                label: 'Kebab case name',
+			                type: 'text',
+			                hint: 'kebab-case of the name',
+			                options: undefined
+			            },
+			            /** Description. Describe a bit more here */
+			            'description': {
+			                label: 'Description',
+			                type: 'text',
+			                hint: 'Describe a bit more here',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type NamedTemplateItemEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.NamedTemplateItemSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		/** Options for event.listen. */
+		interface ListenEventAction {
+			
+				/** Namespace. */
+				'eventNamespace': string
+				/** Event name. */
+				'eventName': string
+				/** Events destination directory. Where should I add your listeners? */
+				'eventsDestinationDir'?: string| undefined | null
+				/** Version. Set a version yourself instead of letting me generate one for you */
+				'version'?: string| undefined | null
+		}
+
+		interface ListenEventActionSchema extends SpruceSchema.Schema {
+			id: 'listenEventAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'Listen to event action',
+			description: 'Options for event.listen.',
+			    fields: {
+			            /** Namespace. */
+			            'eventNamespace': {
+			                label: 'Namespace',
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** Event name. */
+			            'eventName': {
+			                label: 'Event name',
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** Events destination directory. Where should I add your listeners? */
+			            'eventsDestinationDir': {
+			                label: 'Events destination directory',
+			                type: 'text',
+			                hint: 'Where should I add your listeners?',
+			                defaultValue: "src/events",
+			                options: undefined
+			            },
+			            /** Version. Set a version yourself instead of letting me generate one for you */
+			            'version': {
+			                label: 'Version',
+			                type: 'text',
+			                isPrivate: true,
+			                hint: 'Set a version yourself instead of letting me generate one for you',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type ListenEventActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ListenEventActionSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		
+		interface RegisterDashboardWidgetsEmitPayloadSchema {
+			
+				
+				'widgets'?: (BaseWidget)| undefined | null
+		}
+
+		interface RegisterDashboardWidgetsEmitPayloadSchemaSchema extends SpruceSchema.Schema {
+			id: 'registerDashboardWidgetsEmitPayloadSchema',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'register dashboard widgets emit payload schema',
+			    fields: {
+			            /** . */
+			            'widgets': {
+			                type: 'raw',
+			                options: {valueType: `BaseWidget`,}
+			            },
+			    }
+		}
+
+		type RegisterDashboardWidgetsEmitPayloadSchemaEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.RegisterDashboardWidgetsEmitPayloadSchemaSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		/** Options for creating a new test. */
+		interface CreateTestAction {
+			
+				/** Type of test. */
+				'type': ("behavioral" | "implementation")
+				/** What are you testing?. E.g. Booking an appointment or turning on a light */
+				'nameReadable': string
+				/** Test destination directory. Where I'll save your new test. */
+				'testDestinationDir'?: string| undefined | null
+				/** Camel case name. camelCase version of the name */
+				'nameCamel': string
+				/** Pascal case name. PascalCase of the name */
+				'namePascal'?: string| undefined | null
+		}
+
+		interface CreateTestActionSchema extends SpruceSchema.Schema {
+			id: 'createTestAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'Create test action',
+			description: 'Options for creating a new test.',
+			    fields: {
+			            /** Type of test. */
+			            'type': {
+			                label: 'Type of test',
+			                type: 'select',
+			                isRequired: true,
+			                options: {choices: [{"value":"behavioral","label":"Behavioral"},{"value":"implementation","label":"Implementation"}],}
+			            },
+			            /** What are you testing?. E.g. Booking an appointment or turning on a light */
+			            'nameReadable': {
+			                label: 'What are you testing?',
+			                type: 'text',
+			                isRequired: true,
+			                hint: 'E.g. Booking an appointment or turning on a light',
+			                options: undefined
+			            },
+			            /** Test destination directory. Where I'll save your new test. */
+			            'testDestinationDir': {
+			                label: 'Test destination directory',
+			                type: 'text',
+			                hint: 'Where I\'ll save your new test.',
+			                defaultValue: "src/__tests__",
+			                options: undefined
+			            },
+			            /** Camel case name. camelCase version of the name */
+			            'nameCamel': {
+			                label: 'Camel case name',
+			                type: 'text',
+			                isRequired: true,
+			                hint: 'camelCase version of the name',
+			                options: undefined
+			            },
+			            /** Pascal case name. PascalCase of the name */
+			            'namePascal': {
+			                label: 'Pascal case name',
+			                type: 'text',
+			                hint: 'PascalCase of the name',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type CreateTestActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateTestActionSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		
+		interface SyncEventAction {
+			
+				/** Contract destination. Where I will generate event contracts. */
+				'contractDestinationDir'?: string| undefined | null
+		}
+
+		interface SyncEventActionSchema extends SpruceSchema.Schema {
+			id: 'syncEventAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'sync event action',
+			    fields: {
+			            /** Contract destination. Where I will generate event contracts. */
+			            'contractDestinationDir': {
+			                label: 'Contract destination',
+			                type: 'text',
+			                hint: 'Where I will generate event contracts.',
+			                defaultValue: "#spruce/events",
+			                options: undefined
+			            },
+			    }
+		}
+
+		type SyncEventActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncEventActionSchema>
 
 	}
 
@@ -3937,34 +4166,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		}
 
 		type SetupVscodeActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeActionSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
-		
-		interface RegisterDashboardWidgetsEmitPayloadSchema {
-			
-				
-				'widgets'?: (BaseWidget)| undefined | null
-		}
-
-		interface RegisterDashboardWidgetsEmitPayloadSchemaSchema extends SpruceSchema.Schema {
-			id: 'registerDashboardWidgetsEmitPayloadSchema',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'register dashboard widgets emit payload schema',
-			    fields: {
-			            /** . */
-			            'widgets': {
-			                type: 'raw',
-			                options: {valueType: `BaseWidget`,}
-			            },
-			    }
-		}
-
-		type RegisterDashboardWidgetsEmitPayloadSchemaEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.RegisterDashboardWidgetsEmitPayloadSchemaSchema>
 
 	}
 
@@ -4067,174 +4268,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		
-		interface OnboardAction {
-			
-		}
-
-		interface OnboardActionSchema extends SpruceSchema.Schema {
-			id: 'onboardAction',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'Onboard action',
-			    fields: {
-			    }
-		}
-
-		type OnboardActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.OnboardActionSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
-		/** Used to collect input on the names of a class or interface */
-		interface NamedTemplateItem {
-			
-				/** Readable name. The name people will read */
-				'nameReadable': string
-				/** Camel case name. camelCase version of the name */
-				'nameCamel': string
-				/** Plural camel case name. camelCase version of the name */
-				'nameCamelPlural'?: string| undefined | null
-				/** Pascal case name. PascalCase of the name */
-				'namePascal'?: string| undefined | null
-				/** Plural Pascal case name. PascalCase of the name */
-				'namePascalPlural'?: string| undefined | null
-				/** Constant case name. CONST_CASE of the name */
-				'nameConst'?: string| undefined | null
-				/** Description. Describe a bit more here */
-				'description'?: string| undefined | null
-		}
-
-		interface NamedTemplateItemSchema extends SpruceSchema.Schema {
-			id: 'namedTemplateItem',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'NamedTemplateItem',
-			description: 'Used to collect input on the names of a class or interface',
-			    fields: {
-			            /** Readable name. The name people will read */
-			            'nameReadable': {
-			                label: 'Readable name',
-			                type: 'text',
-			                isRequired: true,
-			                hint: 'The name people will read',
-			                options: undefined
-			            },
-			            /** Camel case name. camelCase version of the name */
-			            'nameCamel': {
-			                label: 'Camel case name',
-			                type: 'text',
-			                isRequired: true,
-			                hint: 'camelCase version of the name',
-			                options: undefined
-			            },
-			            /** Plural camel case name. camelCase version of the name */
-			            'nameCamelPlural': {
-			                label: 'Plural camel case name',
-			                type: 'text',
-			                hint: 'camelCase version of the name',
-			                options: undefined
-			            },
-			            /** Pascal case name. PascalCase of the name */
-			            'namePascal': {
-			                label: 'Pascal case name',
-			                type: 'text',
-			                hint: 'PascalCase of the name',
-			                options: undefined
-			            },
-			            /** Plural Pascal case name. PascalCase of the name */
-			            'namePascalPlural': {
-			                label: 'Plural Pascal case name',
-			                type: 'text',
-			                hint: 'PascalCase of the name',
-			                options: undefined
-			            },
-			            /** Constant case name. CONST_CASE of the name */
-			            'nameConst': {
-			                label: 'Constant case name',
-			                type: 'text',
-			                hint: 'CONST_CASE of the name',
-			                options: undefined
-			            },
-			            /** Description. Describe a bit more here */
-			            'description': {
-			                label: 'Description',
-			                type: 'text',
-			                hint: 'Describe a bit more here',
-			                options: undefined
-			            },
-			    }
-		}
-
-		type NamedTemplateItemEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.NamedTemplateItemSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
-		/** Options for event.listen. */
-		interface ListenEventAction {
-			
-				/** Namespace. */
-				'eventNamespace': string
-				/** Event name. */
-				'eventName': string
-				/** Events destination directory. Where should I add your listeners? */
-				'eventsDestinationDir'?: string| undefined | null
-				/** Version. Set a version yourself instead of letting me generate one for you */
-				'version'?: string| undefined | null
-		}
-
-		interface ListenEventActionSchema extends SpruceSchema.Schema {
-			id: 'listenEventAction',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'Listen to event action',
-			description: 'Options for event.listen.',
-			    fields: {
-			            /** Namespace. */
-			            'eventNamespace': {
-			                label: 'Namespace',
-			                type: 'text',
-			                isRequired: true,
-			                options: undefined
-			            },
-			            /** Event name. */
-			            'eventName': {
-			                label: 'Event name',
-			                type: 'text',
-			                isRequired: true,
-			                options: undefined
-			            },
-			            /** Events destination directory. Where should I add your listeners? */
-			            'eventsDestinationDir': {
-			                label: 'Events destination directory',
-			                type: 'text',
-			                hint: 'Where should I add your listeners?',
-			                defaultValue: "src/events",
-			                options: undefined
-			            },
-			            /** Version. Set a version yourself instead of letting me generate one for you */
-			            'version': {
-			                label: 'Version',
-			                type: 'text',
-			                isPrivate: true,
-			                hint: 'Set a version yourself instead of letting me generate one for you',
-			                options: undefined
-			            },
-			    }
-		}
-
-		type ListenEventActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ListenEventActionSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
 		/** The options for skill.boot. */
 		interface BootSkillAction {
 			
@@ -4260,6 +4293,66 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		}
 
 		type BootSkillActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.BootSkillActionSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		
+		interface SkillFeature {
+			
+				/** What's the name of your skill?. */
+				'name': string
+				/** How would you describe your skill?. */
+				'description': string
+		}
+
+		interface SkillFeatureSchema extends SpruceSchema.Schema {
+			id: 'skillFeature',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'Skill feature options',
+			    fields: {
+			            /** What's the name of your skill?. */
+			            'name': {
+			                label: 'What\'s the name of your skill?',
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** How would you describe your skill?. */
+			            'description': {
+			                label: 'How would you describe your skill?',
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			    }
+		}
+
+		type SkillFeatureEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		
+		interface OnboardAction {
+			
+		}
+
+		interface OnboardActionSchema extends SpruceSchema.Schema {
+			id: 'onboardAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'Onboard action',
+			    fields: {
+			    }
+		}
+
+		type OnboardActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.OnboardActionSchema>
 
 	}
 

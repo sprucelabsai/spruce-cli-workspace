@@ -54,6 +54,13 @@ const namedTemplateItemSchema: SpruceSchemas.SpruceCli.v2020_07_22.NamedTemplate
 	                hint: 'CONST_CASE of the name',
 	                options: undefined
 	            },
+	            /** Kebab case name. kebab-case of the name */
+	            'nameKebab': {
+	                label: 'Kebab case name',
+	                type: 'text',
+	                hint: 'kebab-case of the name',
+	                options: undefined
+	            },
 	            /** Description. Describe a bit more here */
 	            'description': {
 	                label: 'Description',

@@ -556,6 +556,27 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	
+	export interface DirectoryNotSkill {
+		
+	}
+
+	export interface DirectoryNotSkillSchema extends SpruceSchema.Schema {
+		id: 'directoryNotSkill',
+		namespace: 'SpruceCli',
+		name: 'Dir not skill',
+		    fields: {
+		    }
+	}
+
+	export type DirectoryNotSkillEntity = SchemaEntity<SpruceErrors.SpruceCli.DirectoryNotSkillSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
 	export interface DirectoryEmpty {
 		
 			

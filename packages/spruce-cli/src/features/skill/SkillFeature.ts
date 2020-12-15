@@ -103,6 +103,11 @@ export default class SkillFeature<
 		return namesUtil.toPascal(this.getSkillName())
 	}
 
+	public getSkillDescription() {
+		const pkg = this.Service('pkg')
+		return pkg.get('description')
+	}
+
 	public installScripts() {
 		const pkg = this.Service('pkg')
 		const scripts = pkg.get('scripts') as Record<string, string>

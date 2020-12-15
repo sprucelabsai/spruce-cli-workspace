@@ -197,6 +197,10 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		)
 	}
 
+	protected static async connectToApi() {
+		return this.MercuryFixture().connectToApi()
+	}
+
 	protected static async openInVsCode(options?: {
 		file?: string
 		dir?: string
