@@ -30,9 +30,10 @@ export default class RegisteringASkillTest extends AbstractPersonTest {
 	@test()
 	protected static async canRegisterSkill() {
 		const { cli } = await this.installSkillAndLoginAsDummyPerson()
+		const slug = `my-new-skill-${new Date().getTime()}`
 		const results = await cli.getFeature('skill').Action('register').execute({
 			nameReadable: 'my new skill',
-			nameKebab: 'my-new-skill',
+			nameKebab: slug,
 		})
 
 		assert.isFalsy(results.errors)
