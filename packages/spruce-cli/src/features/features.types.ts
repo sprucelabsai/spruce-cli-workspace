@@ -17,6 +17,7 @@ import EventFeature from './event/EventFeature'
 import FeatureInstaller from './FeatureInstaller'
 import NodeFeature from './node/NodeFeature'
 import OnboardFeature from './onboard/OnboardFeature'
+import OrganizationFeature from './organization/OrganizationFeature'
 import PersonFeature from './person/PersonFeature'
 import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
@@ -35,6 +36,7 @@ export interface FeatureMap {
 	node: NodeFeature
 	onboard: OnboardFeature
 	person: PersonFeature
+	organization: OrganizationFeature
 }
 
 export type InstallFeature =
@@ -76,6 +78,10 @@ export type InstallFeature =
 	  }
 	| {
 			code: 'person'
+			options?: undefined
+	  }
+	| {
+			code: 'organization'
 			options?: undefined
 	  }
 

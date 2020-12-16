@@ -4,8 +4,8 @@ import AbstractCliTest from './AbstractCliTest'
 export const DUMMY_PHONE = '555-123-4567'
 
 export default class AbstractPersonTest extends AbstractCliTest {
-	public static async installSkillAndLoginAsDummyPerson() {
-		const cli = await this.FeatureFixture().installCachedFeatures('skills')
+	public static async installSkillAndLoginAsDummyPerson(cacheKey = 'skills') {
+		const cli = await this.FeatureFixture().installCachedFeatures(cacheKey)
 		const person = await this.loginAsDummyPerson(cli)
 
 		return { person, cli }

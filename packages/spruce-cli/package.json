@@ -203,6 +203,24 @@
 			{
 				"code": "event"
 			}
+		],
+		"organizations": [
+			{
+				"code": "skill",
+				"options": {
+					"name": "testing events",
+					"description": "this too, is a great test!"
+				}
+			},
+			{
+				"code": "schema"
+			},
+			{
+				"code": "event"
+			},
+			{
+				"code": "organization"
+			}
 		]
 	},
 	"jest": {
