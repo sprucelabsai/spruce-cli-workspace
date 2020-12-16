@@ -269,7 +269,8 @@
 						"canLoginAsDummyPerson": "F66",
 						"canSeeWhoIsLoggedIn": "F67",
 						"canRegisterSkill": "F69",
-						"throwsWithBadEventName": "F72"
+						"throwsWithBadEventName": "F72",
+						"createsAnOrg": "F75"
 					}
 				}
 			]
