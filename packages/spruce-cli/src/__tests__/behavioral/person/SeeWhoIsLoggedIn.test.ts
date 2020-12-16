@@ -1,7 +1,7 @@
 import { test, assert } from '@sprucelabs/test'
-import AbstractPersonTest from '../../../tests/AbstractPersonTest'
+import AbstractCliTest from '../../../tests/AbstractCliTest'
 
-export default class SeeWhoIsLoggedInTest extends AbstractPersonTest {
+export default class SeeWhoIsLoggedInTest extends AbstractCliTest {
 	@test()
 	protected static async hasWhoAmIAction() {
 		const cli = await this.Cli()
@@ -20,7 +20,8 @@ export default class SeeWhoIsLoggedInTest extends AbstractPersonTest {
 
 	@test()
 	protected static async canSeeWhoIsLoggedIn() {
-		const { cli } = await this.installSkillAndLoginAsDummyPerson()
+		const cli = await this.FeatureFixture().installCachedFeatures('skills')
+		await this.PersonFixture().loginAsDummyPerson()
 
 		const results = await cli.getFeature('person').Action('whoami').execute({})
 

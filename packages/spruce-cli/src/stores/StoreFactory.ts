@@ -1,5 +1,6 @@
 import EventStore from '../features/event/stores/EventStore'
 import OnboardingStore from '../features/onboard/stores/OnboardingStore'
+import OrganizationStore from '../features/organization/stores/OrganizationStore'
 import PersonStore from '../features/person/stores/PersonStore'
 import SchemaStore from '../features/schema/stores/SchemaStore'
 import SkillStore from '../features/skill/stores/SkillStore'
@@ -13,6 +14,7 @@ export interface StoreMap {
 	event: EventStore
 	person: PersonStore
 	skill: SkillStore
+	organization: OrganizationStore
 }
 
 export type StoreCode = keyof StoreMap
@@ -23,6 +25,7 @@ const storeMap = {
 	event: EventStore,
 	person: PersonStore,
 	skill: SkillStore,
+	organization: OrganizationStore,
 }
 
 export default class StoreFactory {

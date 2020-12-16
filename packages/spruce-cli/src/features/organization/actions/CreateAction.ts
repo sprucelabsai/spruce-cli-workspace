@@ -1,4 +1,3 @@
-import { eventResponseUtil } from '@sprucelabs/mercury-types'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import createOrganizationActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/createOrganizationAction.schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
@@ -16,16 +15,10 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			options
 		)
 
-		const client = await this.connectToApi()
-
-		const results = await client.emit('create-organization', {
-			payload: {
-				name: nameReadable,
-				slug: nameKebab,
-			},
+		const organization = this.Store('organization').create({
+			name: nameReadable,
+			slug: nameKebab,
 		})
-
-		const { organization } = eventResponseUtil.getFirstResponseOrThrow(results)
 
 		return {
 			meta: {

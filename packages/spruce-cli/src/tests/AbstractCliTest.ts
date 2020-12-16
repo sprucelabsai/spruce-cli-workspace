@@ -11,6 +11,8 @@ import FeatureFixture, {
 	FeatureFixtureOptions,
 } from '../fixtures/FeatureFixture'
 import MercuryFixture from '../fixtures/MercuryFixture'
+import OrganizationFixture from '../fixtures/OrganizationFixture'
+import PersonFixture from '../fixtures/PersonFixture'
 import CliGlobalEmitter, { GlobalEmitter } from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
 import ServiceFactory, { Service, ServiceMap } from '../services/ServiceFactory'
@@ -24,6 +26,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	private static _ui: SpyInterface
 	private static emitter?: GlobalEmitter
 	private static mercuryFixture?: MercuryFixture
+	private static personFixture?: PersonFixture
+	private static organizationFixture?: OrganizationFixture
 
 	protected static async beforeEach() {
 		await super.beforeEach()
@@ -34,15 +38,23 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		this.ui.reset()
 		this.ui.invocations = []
 		this.ui.setCursorPosition({ x: 0, y: 0 })
-		this.emitter = undefined
 
+		this.clearFixtures()
+	}
+
+	private static clearFixtures() {
+		this.emitter = undefined
 		this.mercuryFixture = undefined
+		this.organizationFixture = undefined
+		this.personFixture = undefined
 	}
 
 	protected static async afterEach() {
 		await super.afterEach()
 
 		await this.mercuryFixture?.disconnect()
+
+		this.clearFixtures()
 
 		if (this._ui) {
 			if (this._ui.isWaitingForInput()) {
@@ -133,6 +145,27 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		}
 
 		return this.mercuryFixture
+	}
+
+	protected static PersonFixture() {
+		if (!this.personFixture) {
+			this.personFixture = new PersonFixture(
+				this.MercuryFixture().getApiClientFactory()
+			)
+		}
+
+		return this.personFixture
+	}
+
+	protected static OrganizationFixture() {
+		if (!this.organizationFixture) {
+			this.organizationFixture = new OrganizationFixture(
+				this.Store('organization'),
+				this.PersonFixture()
+			)
+		}
+
+		return this.organizationFixture
 	}
 
 	protected static resolveHashSprucePath(...filePath: string[]) {

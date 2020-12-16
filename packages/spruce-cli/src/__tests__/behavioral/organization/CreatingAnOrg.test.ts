@@ -1,8 +1,8 @@
 import { eventResponseUtil } from '@sprucelabs/mercury-types'
 import { test, assert } from '@sprucelabs/test'
-import AbstractPersonTest from '../../../tests/AbstractPersonTest'
+import AbstractCliTest from '../../../tests/AbstractCliTest'
 
-export default class CreatingAnOrgTest extends AbstractPersonTest {
+export default class CreatingAnOrgTest extends AbstractCliTest {
 	@test()
 	protected static async hasCreateAction() {
 		const cli = await this.Cli()
@@ -13,9 +13,11 @@ export default class CreatingAnOrgTest extends AbstractPersonTest {
 	protected static async createsAnOrg() {
 		const slug = `my-org-${new Date().getTime()}`
 
-		const { cli } = await this.installSkillAndLoginAsDummyPerson(
+		const cli = await this.FeatureFixture().installCachedFeatures(
 			'organizations'
 		)
+
+		await this.PersonFixture().loginAsDummyPerson()
 
 		const results = await cli
 			.getFeature('organization')

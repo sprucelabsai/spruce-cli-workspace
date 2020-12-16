@@ -13,7 +13,7 @@ const optionsSchema = buildSchema({
 		},
 		nameKebab: {
 			type: 'text',
-			label: 'Skill slug',
+			label: 'Slug',
 			isRequired: true,
 		},
 		description: {
