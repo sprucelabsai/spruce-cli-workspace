@@ -15,7 +15,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			options
 		)
 
-		const organization = this.Store('organization').create({
+		const organization = await this.Store('organization').create({
 			name: nameReadable,
 			slug: nameKebab,
 		})

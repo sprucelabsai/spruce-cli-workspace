@@ -24,6 +24,11 @@ export default class MercuryFixture {
 		return this.getApiClientFactory()()
 	}
 
+	public async logout() {
+		await this.disconnect()
+		await this.connectToApi()
+	}
+
 	public async disconnect() {
 		await this.client?.disconnect()
 		this.client = undefined

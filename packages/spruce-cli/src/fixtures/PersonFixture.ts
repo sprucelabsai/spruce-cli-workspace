@@ -4,20 +4,12 @@ export const DUMMY_PHONE = '555-123-4567'
 
 export default class PersonFixture {
 	private apiClientFactory: ApiClientFactory
-	private peopleByPhone: Record<
-		string,
-		SpruceSchemas.Spruce.v2020_07_22.Person
-	> = {}
 
 	public constructor(apiClientFactory: ApiClientFactory) {
 		this.apiClientFactory = apiClientFactory
 	}
 
 	public async loginAsDummyPerson(phone = DUMMY_PHONE) {
-		if (this.peopleByPhone[phone]) {
-			return this.peopleByPhone[phone]
-		}
-
 		const client = await this.apiClientFactory()
 
 		const requestPinResults = await client.emit('request-pin', {
@@ -35,8 +27,6 @@ export default class PersonFixture {
 		const { person } = eventResponseUtil.getFirstResponseOrThrow(
 			confirmPinResults
 		)
-
-		this.peopleByPhone[phone] = person
 
 		return person
 	}

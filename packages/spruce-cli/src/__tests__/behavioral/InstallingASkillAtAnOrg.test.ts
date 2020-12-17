@@ -21,6 +21,12 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 			'organizations'
 		)
 
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'my amazing skill',
+		})
+
+		await this.MercuryFixture().logout()
+
 		const anonResults = await cli
 			.getFeature('organization')
 			.Action('install')
@@ -40,6 +46,10 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 		)
 
 		await this.PersonFixture().loginAsDummyPerson()
+
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'my amazing skill',
+		})
 
 		const anonResults = await cli
 			.getFeature('organization')
