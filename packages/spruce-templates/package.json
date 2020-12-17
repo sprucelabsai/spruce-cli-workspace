@@ -4,7 +4,7 @@
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "11.15.0",
+	"version": "11.17.0",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
 	"files": [
@@ -29,7 +29,6 @@
 		"build": "yarn build.babel && yarn build.types && yarn build.resolve-paths",
 		"build.types": "tsc --emitDeclarationOnly && echo PASS",
 		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps --root-mode upward --copy-files",
-		"build.watch": "concurrently 'yarn build.babel --watch' \"chokidar 'src/**/*' -c 'yarn build.types && yarn build.resolve-paths'\"",
 		"build.resolve-paths": "resolve-path-aliases --target build",
 		"rebuild": "cd ../ && yarn rebuild",
 		"clean": "rm -rf build/",
@@ -38,6 +37,7 @@
 		"lint.fix": "eslint --fix '**/*.ts'",
 		"release": "semantic-release",
 		"local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS",
+		"watch.build": "concurrently 'yarn build.babel --watch' \"chokidar 'src/**/*' -c 'yarn build.types && yarn build.resolve-paths'\"",
 		"arkit": "arkit -f index.ts -o docs/images/arkit.svg",
 		"arkit.png": "arkit -f index.ts -o docs/images/arkit.png"
 	},
@@ -52,13 +52,13 @@
 	},
 	"devDependencies": {
 		"@types/lodash": "^4.14.165",
-		"@types/node": "^14.14.12",
+		"@types/node": "^14.14.14",
 		"arkit": "^1.6.4",
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^5.3.0",
 		"conventional-changelog-sprucelabs": "^1.1.2",
 		"prettier": "^2.2.1",
-		"typescript": "^4.1.2"
+		"typescript": "^4.1.3"
 	},
 	"yarn-upgrade-all": {
 		"ignore": [

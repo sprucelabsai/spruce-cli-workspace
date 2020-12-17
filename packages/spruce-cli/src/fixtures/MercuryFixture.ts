@@ -15,11 +15,22 @@ export default class MercuryFixture {
 					contracts: eventsContract,
 				})
 			}
-			return this.client
+
+			return this.client as ApiClient
 		}
+	}
+
+	public connectToApi() {
+		return this.getApiClientFactory()()
+	}
+
+	public async logout() {
+		await this.disconnect()
+		await this.connectToApi()
 	}
 
 	public async disconnect() {
 		await this.client?.disconnect()
+		this.client = undefined
 	}
 }

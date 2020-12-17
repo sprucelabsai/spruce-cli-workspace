@@ -1056,6 +1056,27 @@ const mercuryTemplateItems = [
 	},
 ]
 
+const localSchema = buildSchema({
+	id: 'localNamespaceSchema',
+	namespace: 'MercuryTypes',
+	fields: {
+		onlyField: {
+			type: 'text',
+		},
+	},
+})
+
+const localSchemaTemplateItem: SchemaTemplateItem = {
+	namespace: 'MercuryTypes',
+	id: 'localNamespaceSchema',
+	nameCamel: 'localNamespaceSchema',
+	namePascal: 'LocalNamespaceSchema',
+	nameReadable: 'localNamespaceSchema',
+	isNested: false,
+	destinationDir: '#spruce/schemas',
+	schema: localSchema,
+}
+
 export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 	private static itemBuilder: SchemaTemplateItemBuilder
 
@@ -1156,10 +1177,19 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 		]
 	)
 	@test('can import event contracts', mercurySchemas, mercuryTemplateItems)
+	@test(
+		'import from not set if matching local namespace',
+		[localSchema],
+		[localSchemaTemplateItem],
+		'MercuryTypes'
+	)
 	protected static async generationTests(
 		schemas: Schema[],
-		expected: SchemaTemplateItem[]
+		expected: SchemaTemplateItem[],
+		localNamespace = this.LOCAL_NAMESPACE
 	) {
+		this.itemBuilder = new SchemaTemplateItemBuilder(localNamespace)
+
 		const results = this.itemBuilder.buildTemplateItems(
 			{ [CORE_NAMESPACE]: schemas },
 			'#spruce/schemas'

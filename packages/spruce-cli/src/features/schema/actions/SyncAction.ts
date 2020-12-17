@@ -10,7 +10,6 @@ import { GeneratedFile } from '../../../types/cli.types'
 import mergeUtil from '../../../utilities/merge.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
-import SkillFeature from '../../skill/SkillFeature'
 import schemaGeneratorUtil from '../utilities/schemaGenerator.utility'
 import ValueTypeBuilder from '../ValueTypeBuilder'
 
@@ -43,8 +42,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			registerBuiltSchemas,
 		} = normalizedOptions
 
-		const feature = this.getFeature('skill') as SkillFeature
-		let localNamespace = feature.getSkillNamespace()
+		let localNamespace = this.Store('skill').loadCurrentSkillsNamespace()
 
 		let shouldImportCoreSchemas = true
 

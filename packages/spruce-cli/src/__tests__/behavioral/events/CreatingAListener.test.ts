@@ -1,5 +1,6 @@
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, MERCURY_API_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
@@ -23,7 +24,6 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 		assert.doesInclude(match, version)
 
-		// make sure the listener doesn't throw exception (all new listeners will throw NOT_IMPLEMENTED) error
 		diskUtil.writeFile(match, 'export default () => {}')
 
 		await this.Service('typeChecker').check(match)
@@ -37,6 +37,60 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 			eventName: 'will-boot',
 			eventNamespace: 'skill',
 			version,
+		})
+	}
+
+	@test()
+	protected static async creatingANewListenerAsksWhichEventToListenTo() {
+		const cli = await this.installEventFeature('events')
+
+		void cli.getFeature('event').Action('listen').execute({})
+
+		await this.waitForInput()
+
+		let lastInvocation = this.ui.lastInvocation()
+
+		assert.isEqual(lastInvocation.command, 'prompt')
+		assert.doesInclude(lastInvocation.options.label, 'namespace')
+
+		await this.ui.sendInput(MERCURY_API_NAMESPACE)
+
+		await this.waitForInput()
+
+		lastInvocation = this.ui.lastInvocation()
+
+		assert.doesInclude(lastInvocation.options.label, 'event')
+
+		this.ui.reset()
+	}
+
+	@test()
+	protected static async throwsWithBadNamespace() {
+		const cli = await this.installEventFeature('events')
+		const err = await assert.doesThrowAsync(() =>
+			cli
+				.getFeature('event')
+				.Action('listen')
+				.execute({ eventNamespace: 'taco-bell' })
+		)
+
+		errorAssertUtil.assertError(err, 'INVALID_PARAMETERS', {
+			parameters: ['eventNamespace'],
+		})
+	}
+
+	@test()
+	protected static async throwsWithBadEventName() {
+		const cli = await this.installEventFeature('events')
+		const err = await assert.doesThrowAsync(() =>
+			cli
+				.getFeature('event')
+				.Action('listen')
+				.execute({ eventNamespace: 'mercuryApi', eventName: 'bad-time' })
+		)
+
+		errorAssertUtil.assertError(err, 'INVALID_PARAMETERS', {
+			parameters: ['eventName'],
 		})
 	}
 }

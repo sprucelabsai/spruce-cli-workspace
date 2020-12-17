@@ -11,6 +11,7 @@ import FeatureInstaller from './FeatureInstaller'
 import { FeatureCode } from './features.types'
 import NodeFeature from './node/NodeFeature'
 import OnboardFeature from './onboard/OnboardFeature'
+import OrganizationFeature from './organization/OrganizationFeature'
 import PersonFeature from './person/PersonFeature'
 import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
@@ -30,6 +31,7 @@ export default class FeatureInstallerFactory {
 		NodeFeature,
 		OnboardFeature,
 		PersonFeature,
+		OrganizationFeature,
 	]
 
 	public static readonly featureCodes: FeatureCode[] = [
@@ -43,6 +45,7 @@ export default class FeatureInstallerFactory {
 		'node',
 		'onboard',
 		'person',
+		'organization',
 	]
 
 	public static WithAllFeatures(options: {

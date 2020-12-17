@@ -132,12 +132,35 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				)}\` feature is not installed. Install it first, then try again.`
 				break
 
-			case 'MERCURY_RESPONSE_ERROR':
-				message = 'A Mercury response error just happened!'
-				break
+			case 'MERCURY_RESPONSE_ERROR': {
+				const errors = options.responseErrors
+				message = `Got ${
+					errors.length === 1 ? 'an error' : `${errors.length} errors`
+				} from the server:\n\n`
 
+				const errorMessages: string[] = []
+				for (const err of errors) {
+					errorMessages.push(err.message)
+				}
+
+				message += errorMessages.join('\n')
+
+				break
+			}
 			case 'INVALID_TEST_DIRECTORY':
 				message = `You are missing dependencies I need to run tests. Try \`spruce test.install\` to reinstall.`
+				break
+
+			case 'DIRECTORY_NOT_SKILL':
+				message = 'The directory you are in is not a skill!'
+				break
+
+			case 'SKILL_NOT_REGISTERED':
+				message = 'A skill not registered just happened!'
+				break
+
+			case 'NO_ORGANIZATIONS_FOUND':
+				message = 'A no organizations found just happened!'
 				break
 
 			default:

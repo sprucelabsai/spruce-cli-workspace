@@ -10,6 +10,7 @@ import { default as SchemaEntity } from '@sprucelabs/schema'
 import * as SpruceSchema from '@sprucelabs/schema'
 
 import '@sprucelabs/mercury-types'
+import '@sprucelabs/mercury-types'
 import { BaseWidget } from '#spruce/../widgets/types/widgets.types'
 
 declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schemas.types' {
@@ -982,6 +983,35 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.MercuryApi {
 
 		
+		interface GetEventContractsResponsePayload {
+			
+				
+				'contracts': SpruceSchemas.MercuryTypes.v2020_09_01.EventContract[]
+		}
+
+		interface GetEventContractsResponsePayloadSchema extends SpruceSchema.Schema {
+			id: 'getEventContractsResponsePayload',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'contracts': {
+			                type: 'schema',
+			                isRequired: true,
+			                isArray: true,
+			                options: {schema: SpruceSchemas.MercuryTypes.v2020_09_01.EventContractSchema,}
+			            },
+			    }
+		}
+
+		type GetEventContractsResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetEventContractsResponsePayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi {
+
+		
 		interface GetLocationEmitPayload {
 			
 				
@@ -1074,10 +1104,38 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.MercuryApi {
 
 		
+		interface GetOrganizationEmitPayload {
+			
+				
+				'id': string
+		}
+
+		interface GetOrganizationEmitPayloadSchema extends SpruceSchema.Schema {
+			id: 'getOrganizationEmitPayload',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'id': {
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			    }
+		}
+
+		type GetOrganizationEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetOrganizationEmitPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi {
+
+		
 		interface GetOrganizationTargetAndPayload {
 			
 				
-				'target': SpruceSchemas.MercuryApi.EventTarget
+				'payload': SpruceSchemas.MercuryApi.GetOrganizationEmitPayload
 		}
 
 		interface GetOrganizationTargetAndPayloadSchema extends SpruceSchema.Schema {
@@ -1086,10 +1144,10 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			name: '',
 			    fields: {
 			            /** . */
-			            'target': {
+			            'payload': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.EventTargetSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.GetOrganizationEmitPayloadSchema,}
 			            },
 			    }
 		}
@@ -1215,6 +1273,90 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		}
 
 		type GetRoleResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetRoleResponsePayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi {
+
+		
+		interface GetSkillEmitPayload {
+			
+				
+				'id': string
+		}
+
+		interface GetSkillEmitPayloadSchema extends SpruceSchema.Schema {
+			id: 'getSkillEmitPayload',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'id': {
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			    }
+		}
+
+		type GetSkillEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetSkillEmitPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi {
+
+		
+		interface GetSkillTargetAndPayload {
+			
+				
+				'payload': SpruceSchemas.MercuryApi.GetSkillEmitPayload
+		}
+
+		interface GetSkillTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'getSkillTargetAndPayload',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.GetSkillEmitPayloadSchema,}
+			            },
+			    }
+		}
+
+		type GetSkillTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetSkillTargetAndPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi {
+
+		
+		interface GetSkillResponsePayload {
+			
+				
+				'skill': SpruceSchemas.Spruce.v2020_07_22.Skill
+		}
+
+		interface GetSkillResponsePayloadSchema extends SpruceSchema.Schema {
+			id: 'getSkillResponsePayload',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'skill': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.Spruce.v2020_07_22.SkillSchema,}
+			            },
+			    }
+		}
+
+		type GetSkillResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetSkillResponsePayloadSchema>
 
 	}
 
@@ -1367,6 +1509,97 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.MercuryApi {
 
 		
+		interface IsSkillInstalledEmitPayload {
+			
+				
+				'skillId': string
+		}
+
+		interface IsSkillInstalledEmitPayloadSchema extends SpruceSchema.Schema {
+			id: 'isSkillInstalledEmitPayload',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'skillId': {
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			    }
+		}
+
+		type IsSkillInstalledEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.IsSkillInstalledEmitPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi {
+
+		
+		interface IsSkillInstalledTargetAndPayload {
+			
+				
+				'payload': SpruceSchemas.MercuryApi.IsSkillInstalledEmitPayload
+				
+				'target': SpruceSchemas.MercuryApi.EventTarget
+		}
+
+		interface IsSkillInstalledTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'isSkillInstalledTargetAndPayload',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.IsSkillInstalledEmitPayloadSchema,}
+			            },
+			            /** . */
+			            'target': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.EventTargetSchema,}
+			            },
+			    }
+		}
+
+		type IsSkillInstalledTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.IsSkillInstalledTargetAndPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi {
+
+		
+		interface IsSkillInstalledResponsePayload {
+			
+				
+				'isInstalled'?: boolean| undefined | null
+		}
+
+		interface IsSkillInstalledResponsePayloadSchema extends SpruceSchema.Schema {
+			id: 'isSkillInstalledResponsePayload',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'isInstalled': {
+			                type: 'boolean',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type IsSkillInstalledResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.IsSkillInstalledResponsePayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi {
+
+		
 		interface ListLocationsEmitPayload {
 			
 				
@@ -1452,6 +1685,61 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		}
 
 		type ListLocationsResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.ListLocationsResponsePayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi {
+
+		
+		interface ListOrgsEmitPayload {
+			
+				
+				'showMineOnly'?: boolean| undefined | null
+		}
+
+		interface ListOrgsEmitPayloadSchema extends SpruceSchema.Schema {
+			id: 'listOrgsEmitPayload',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'showMineOnly': {
+			                type: 'boolean',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type ListOrgsEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.ListOrgsEmitPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi {
+
+		
+		interface ListOrganizationsTargetAndPayload {
+			
+				
+				'payload': SpruceSchemas.MercuryApi.ListOrgsEmitPayload
+		}
+
+		interface ListOrganizationsTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'listOrganizationsTargetAndPayload',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.ListOrgsEmitPayloadSchema,}
+			            },
+			    }
+		}
+
+		type ListOrganizationsTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.ListOrganizationsTargetAndPayloadSchema>
 
 	}
 
@@ -2674,6 +2962,258 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
+		/** Create the builder to a fresh new schema! */
+		interface CreateSchemaAction {
+			
+				/** Field types directory. Where field types and interfaces will be generated. */
+				'fieldTypesDestinationDir'?: string| undefined | null
+				/** Addons lookup directory. Where I'll look for new schema fields to be registered. */
+				'addonsLookupDir'?: string| undefined | null
+				/** Generate field types. Should I generate field types too? */
+				'generateFieldTypes'?: boolean| undefined | null
+				/** Schema types destination directory. Where I will generate schema types and interfaces. */
+				'schemaTypesDestinationDirOrFile'?: string| undefined | null
+				/** . Where I should look for your schema builders? */
+				'schemaLookupDir'?: string| undefined | null
+				/** Enable versioning. Should we use versioning? */
+				'enableVersioning'?: boolean| undefined | null
+				/** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
+				'globalNamespace'?: string| undefined | null
+				/** Fetch remote schemas. I will pull in schemas from other features. */
+				'fetchRemoteSchemas'?: boolean| undefined | null
+				/** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
+				'fetchLocalSchemas'?: boolean| undefined | null
+				/** Fetch core schemas. Should I pull in core schemas too? */
+				'fetchCoreSchemas'?: boolean| undefined | null
+				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
+				'generateCoreSchemaTypes'?: boolean| undefined | null
+				/** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
+				'registerBuiltSchemas'?: boolean| undefined | null
+				/** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
+				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
+				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
+				'generateStandaloneTypesFile'?: boolean| undefined | null
+				/** Schema builder destination directory. Where I'll save the new schema builder. */
+				'schemaBuilderDestinationDir'?: string| undefined | null
+				/** Builder function. The function that builds this schema */
+				'builderFunction'?: string| undefined | null
+				/** Sync after creation. This will ensure types and schemas are in sync after you create your builder. */
+				'syncAfterCreate'?: boolean| undefined | null
+				/** Version. Set a version yourself instead of letting me generate one for you */
+				'version'?: string| undefined | null
+				/** Readable name. The name people will read */
+				'nameReadable': string
+				/** Pascal case name. PascalCase of the name */
+				'namePascal'?: string| undefined | null
+				/** Camel case name. camelCase version of the name */
+				'nameCamel': string
+				/** Description. Describe a bit more here */
+				'description'?: string| undefined | null
+		}
+
+		interface CreateSchemaActionSchema extends SpruceSchema.Schema {
+			id: 'createSchemaAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'Create schema',
+			description: 'Create the builder to a fresh new schema!',
+			    fields: {
+			            /** Field types directory. Where field types and interfaces will be generated. */
+			            'fieldTypesDestinationDir': {
+			                label: 'Field types directory',
+			                type: 'text',
+			                isPrivate: true,
+			                hint: 'Where field types and interfaces will be generated.',
+			                defaultValue: "#spruce/schemas",
+			                options: undefined
+			            },
+			            /** Addons lookup directory. Where I'll look for new schema fields to be registered. */
+			            'addonsLookupDir': {
+			                label: 'Addons lookup directory',
+			                type: 'text',
+			                hint: 'Where I\'ll look for new schema fields to be registered.',
+			                defaultValue: "src/addons",
+			                options: undefined
+			            },
+			            /** Generate field types. Should I generate field types too? */
+			            'generateFieldTypes': {
+			                label: 'Generate field types',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Should I generate field types too?',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Schema types destination directory. Where I will generate schema types and interfaces. */
+			            'schemaTypesDestinationDirOrFile': {
+			                label: 'Schema types destination directory',
+			                type: 'text',
+			                hint: 'Where I will generate schema types and interfaces.',
+			                defaultValue: "#spruce/schemas",
+			                options: undefined
+			            },
+			            /** . Where I should look for your schema builders? */
+			            'schemaLookupDir': {
+			                type: 'text',
+			                hint: 'Where I should look for your schema builders?',
+			                defaultValue: "src/schemas",
+			                options: undefined
+			            },
+			            /** Enable versioning. Should we use versioning? */
+			            'enableVersioning': {
+			                label: 'Enable versioning',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Should we use versioning?',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
+			            'globalNamespace': {
+			                label: 'Global namespace',
+			                type: 'text',
+			                isPrivate: true,
+			                hint: 'The name you\'ll use when accessing these schemas, e.g. SpruceSchemas',
+			                defaultValue: "SpruceSchemas",
+			                options: undefined
+			            },
+			            /** Fetch remote schemas. I will pull in schemas from other features. */
+			            'fetchRemoteSchemas': {
+			                label: 'Fetch remote schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'I will pull in schemas from other features.',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
+			            'fetchLocalSchemas': {
+			                label: 'Fetch local schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'I will look in schemaLookupDir to load local schemas.',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Fetch core schemas. Should I pull in core schemas too? */
+			            'fetchCoreSchemas': {
+			                label: 'Fetch core schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Should I pull in core schemas too?',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
+			            'generateCoreSchemaTypes': {
+			                label: 'Generate core schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile.',
+			                defaultValue: false,
+			                options: undefined
+			            },
+			            /** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
+			            'registerBuiltSchemas': {
+			                label: 'Register built schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Should the schemas use the SchemaRegistry for tracking?',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
+			            'deleteDestinationDirIfNoSchemas': {
+			                label: 'Delete directory if no schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Should I delete the schema directory if no schemas are found?',
+			                defaultValue: false,
+			                options: undefined
+			            },
+			            /** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
+			            'generateStandaloneTypesFile': {
+			                label: 'Generate standalone types file',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'By default, I\'ll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file.',
+			                defaultValue: false,
+			                options: undefined
+			            },
+			            /** Schema builder destination directory. Where I'll save the new schema builder. */
+			            'schemaBuilderDestinationDir': {
+			                label: 'Schema builder destination directory',
+			                type: 'text',
+			                hint: 'Where I\'ll save the new schema builder.',
+			                defaultValue: "src/schemas",
+			                options: undefined
+			            },
+			            /** Builder function. The function that builds this schema */
+			            'builderFunction': {
+			                label: 'Builder function',
+			                type: 'text',
+			                isPrivate: true,
+			                hint: 'The function that builds this schema',
+			                defaultValue: "buildSchema",
+			                options: undefined
+			            },
+			            /** Sync after creation. This will ensure types and schemas are in sync after you create your builder. */
+			            'syncAfterCreate': {
+			                label: 'Sync after creation',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'This will ensure types and schemas are in sync after you create your builder.',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Version. Set a version yourself instead of letting me generate one for you */
+			            'version': {
+			                label: 'Version',
+			                type: 'text',
+			                isPrivate: true,
+			                hint: 'Set a version yourself instead of letting me generate one for you',
+			                options: undefined
+			            },
+			            /** Readable name. The name people will read */
+			            'nameReadable': {
+			                label: 'Readable name',
+			                type: 'text',
+			                isRequired: true,
+			                hint: 'The name people will read',
+			                options: undefined
+			            },
+			            /** Pascal case name. PascalCase of the name */
+			            'namePascal': {
+			                label: 'Pascal case name',
+			                type: 'text',
+			                hint: 'PascalCase of the name',
+			                options: undefined
+			            },
+			            /** Camel case name. camelCase version of the name */
+			            'nameCamel': {
+			                label: 'Camel case name',
+			                type: 'text',
+			                isRequired: true,
+			                hint: 'camelCase version of the name',
+			                options: undefined
+			            },
+			            /** Description. Describe a bit more here */
+			            'description': {
+			                label: 'Description',
+			                type: 'text',
+			                hint: 'Describe a bit more here',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type CreateSchemaActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaActionSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
 		/** Create a builder for your brand new error!  */
 		interface CreateErrorAction {
 			
@@ -2921,258 +3461,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		}
 
 		type CreateErrorActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorActionSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
-		/** Create the builder to a fresh new schema! */
-		interface CreateSchemaAction {
-			
-				/** Field types directory. Where field types and interfaces will be generated. */
-				'fieldTypesDestinationDir'?: string| undefined | null
-				/** Addons lookup directory. Where I'll look for new schema fields to be registered. */
-				'addonsLookupDir'?: string| undefined | null
-				/** Generate field types. Should I generate field types too? */
-				'generateFieldTypes'?: boolean| undefined | null
-				/** Schema types destination directory. Where I will generate schema types and interfaces. */
-				'schemaTypesDestinationDirOrFile'?: string| undefined | null
-				/** . Where I should look for your schema builders? */
-				'schemaLookupDir'?: string| undefined | null
-				/** Enable versioning. Should we use versioning? */
-				'enableVersioning'?: boolean| undefined | null
-				/** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
-				'globalNamespace'?: string| undefined | null
-				/** Fetch remote schemas. I will pull in schemas from other features. */
-				'fetchRemoteSchemas'?: boolean| undefined | null
-				/** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
-				'fetchLocalSchemas'?: boolean| undefined | null
-				/** Fetch core schemas. Should I pull in core schemas too? */
-				'fetchCoreSchemas'?: boolean| undefined | null
-				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
-				'generateCoreSchemaTypes'?: boolean| undefined | null
-				/** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
-				'registerBuiltSchemas'?: boolean| undefined | null
-				/** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
-				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
-				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
-				'generateStandaloneTypesFile'?: boolean| undefined | null
-				/** Schema builder destination directory. Where I'll save the new schema builder. */
-				'schemaBuilderDestinationDir'?: string| undefined | null
-				/** Builder function. The function that builds this schema */
-				'builderFunction'?: string| undefined | null
-				/** Sync after creation. This will ensure types and schemas are in sync after you create your builder. */
-				'syncAfterCreate'?: boolean| undefined | null
-				/** Version. Set a version yourself instead of letting me generate one for you */
-				'version'?: string| undefined | null
-				/** Readable name. The name people will read */
-				'nameReadable': string
-				/** Pascal case name. PascalCase of the name */
-				'namePascal'?: string| undefined | null
-				/** Camel case name. camelCase version of the name */
-				'nameCamel': string
-				/** Description. Describe a bit more here */
-				'description'?: string| undefined | null
-		}
-
-		interface CreateSchemaActionSchema extends SpruceSchema.Schema {
-			id: 'createSchemaAction',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'Create schema',
-			description: 'Create the builder to a fresh new schema!',
-			    fields: {
-			            /** Field types directory. Where field types and interfaces will be generated. */
-			            'fieldTypesDestinationDir': {
-			                label: 'Field types directory',
-			                type: 'text',
-			                isPrivate: true,
-			                hint: 'Where field types and interfaces will be generated.',
-			                defaultValue: "#spruce/schemas",
-			                options: undefined
-			            },
-			            /** Addons lookup directory. Where I'll look for new schema fields to be registered. */
-			            'addonsLookupDir': {
-			                label: 'Addons lookup directory',
-			                type: 'text',
-			                hint: 'Where I\'ll look for new schema fields to be registered.',
-			                defaultValue: "src/addons",
-			                options: undefined
-			            },
-			            /** Generate field types. Should I generate field types too? */
-			            'generateFieldTypes': {
-			                label: 'Generate field types',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'Should I generate field types too?',
-			                defaultValue: true,
-			                options: undefined
-			            },
-			            /** Schema types destination directory. Where I will generate schema types and interfaces. */
-			            'schemaTypesDestinationDirOrFile': {
-			                label: 'Schema types destination directory',
-			                type: 'text',
-			                hint: 'Where I will generate schema types and interfaces.',
-			                defaultValue: "#spruce/schemas",
-			                options: undefined
-			            },
-			            /** . Where I should look for your schema builders? */
-			            'schemaLookupDir': {
-			                type: 'text',
-			                hint: 'Where I should look for your schema builders?',
-			                defaultValue: "src/schemas",
-			                options: undefined
-			            },
-			            /** Enable versioning. Should we use versioning? */
-			            'enableVersioning': {
-			                label: 'Enable versioning',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'Should we use versioning?',
-			                defaultValue: true,
-			                options: undefined
-			            },
-			            /** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
-			            'globalNamespace': {
-			                label: 'Global namespace',
-			                type: 'text',
-			                isPrivate: true,
-			                hint: 'The name you\'ll use when accessing these schemas, e.g. SpruceSchemas',
-			                defaultValue: "SpruceSchemas",
-			                options: undefined
-			            },
-			            /** Fetch remote schemas. I will pull in schemas from other features. */
-			            'fetchRemoteSchemas': {
-			                label: 'Fetch remote schemas',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'I will pull in schemas from other features.',
-			                defaultValue: true,
-			                options: undefined
-			            },
-			            /** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
-			            'fetchLocalSchemas': {
-			                label: 'Fetch local schemas',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'I will look in schemaLookupDir to load local schemas.',
-			                defaultValue: true,
-			                options: undefined
-			            },
-			            /** Fetch core schemas. Should I pull in core schemas too? */
-			            'fetchCoreSchemas': {
-			                label: 'Fetch core schemas',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'Should I pull in core schemas too?',
-			                defaultValue: true,
-			                options: undefined
-			            },
-			            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
-			            'generateCoreSchemaTypes': {
-			                label: 'Generate core schemas',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile.',
-			                defaultValue: false,
-			                options: undefined
-			            },
-			            /** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
-			            'registerBuiltSchemas': {
-			                label: 'Register built schemas',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'Should the schemas use the SchemaRegistry for tracking?',
-			                defaultValue: true,
-			                options: undefined
-			            },
-			            /** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
-			            'deleteDestinationDirIfNoSchemas': {
-			                label: 'Delete directory if no schemas',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'Should I delete the schema directory if no schemas are found?',
-			                defaultValue: false,
-			                options: undefined
-			            },
-			            /** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
-			            'generateStandaloneTypesFile': {
-			                label: 'Generate standalone types file',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'By default, I\'ll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file.',
-			                defaultValue: false,
-			                options: undefined
-			            },
-			            /** Schema builder destination directory. Where I'll save the new schema builder. */
-			            'schemaBuilderDestinationDir': {
-			                label: 'Schema builder destination directory',
-			                type: 'text',
-			                hint: 'Where I\'ll save the new schema builder.',
-			                defaultValue: "src/schemas",
-			                options: undefined
-			            },
-			            /** Builder function. The function that builds this schema */
-			            'builderFunction': {
-			                label: 'Builder function',
-			                type: 'text',
-			                isPrivate: true,
-			                hint: 'The function that builds this schema',
-			                defaultValue: "buildSchema",
-			                options: undefined
-			            },
-			            /** Sync after creation. This will ensure types and schemas are in sync after you create your builder. */
-			            'syncAfterCreate': {
-			                label: 'Sync after creation',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'This will ensure types and schemas are in sync after you create your builder.',
-			                defaultValue: true,
-			                options: undefined
-			            },
-			            /** Version. Set a version yourself instead of letting me generate one for you */
-			            'version': {
-			                label: 'Version',
-			                type: 'text',
-			                isPrivate: true,
-			                hint: 'Set a version yourself instead of letting me generate one for you',
-			                options: undefined
-			            },
-			            /** Readable name. The name people will read */
-			            'nameReadable': {
-			                label: 'Readable name',
-			                type: 'text',
-			                isRequired: true,
-			                hint: 'The name people will read',
-			                options: undefined
-			            },
-			            /** Pascal case name. PascalCase of the name */
-			            'namePascal': {
-			                label: 'Pascal case name',
-			                type: 'text',
-			                hint: 'PascalCase of the name',
-			                options: undefined
-			            },
-			            /** Camel case name. camelCase version of the name */
-			            'nameCamel': {
-			                label: 'Camel case name',
-			                type: 'text',
-			                isRequired: true,
-			                hint: 'camelCase version of the name',
-			                options: undefined
-			            },
-			            /** Description. Describe a bit more here */
-			            'description': {
-			                label: 'Description',
-			                type: 'text',
-			                hint: 'Describe a bit more here',
-			                options: undefined
-			            },
-			    }
-		}
-
-		type CreateSchemaActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaActionSchema>
 
 	}
 
@@ -3625,30 +3913,68 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		
-		interface SyncEventAction {
+		interface CreateOrganizationAction {
 			
-				/** Contract destination. Where I will generate event contracts. */
-				'contractDestinationDir'?: string| undefined | null
+				/** Name. The name people will read */
+				'nameReadable': string
+				/** Slug. kebab-case of the name */
+				'nameKebab'?: string| undefined | null
 		}
 
-		interface SyncEventActionSchema extends SpruceSchema.Schema {
-			id: 'syncEventAction',
+		interface CreateOrganizationActionSchema extends SpruceSchema.Schema {
+			id: 'createOrganizationAction',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
-			name: 'sync event action',
+			name: 'create organization action',
 			    fields: {
-			            /** Contract destination. Where I will generate event contracts. */
-			            'contractDestinationDir': {
-			                label: 'Contract destination',
+			            /** Name. The name people will read */
+			            'nameReadable': {
+			                label: 'Name',
 			                type: 'text',
-			                hint: 'Where I will generate event contracts.',
-			                defaultValue: "#spruce/events",
+			                isRequired: true,
+			                hint: 'The name people will read',
+			                options: undefined
+			            },
+			            /** Slug. kebab-case of the name */
+			            'nameKebab': {
+			                label: 'Slug',
+			                type: 'text',
+			                hint: 'kebab-case of the name',
 			                options: undefined
 			            },
 			    }
 		}
 
-		type SyncEventActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncEventActionSchema>
+		type CreateOrganizationActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateOrganizationActionSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		
+		interface InstallSkillAtOrganizationAction {
+			
+				/** Organization id. */
+				'organizationId'?: string| undefined | null
+		}
+
+		interface InstallSkillAtOrganizationActionSchema extends SpruceSchema.Schema {
+			id: 'installSkillAtOrganizationAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'install skill at organization action',
+			    fields: {
+			            /** Organization id. */
+			            'organizationId': {
+			                label: 'Organization id',
+			                type: 'id',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type InstallSkillAtOrganizationActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizationActionSchema>
 
 	}
 
@@ -3868,6 +4194,37 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		}
 
 		type SyncSchemaFieldsActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemaFieldsActionSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		
+		interface SyncEventAction {
+			
+				/** Contract destination. Where I will generate event contracts. */
+				'contractDestinationDir'?: string| undefined | null
+		}
+
+		interface SyncEventActionSchema extends SpruceSchema.Schema {
+			id: 'syncEventAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'sync event action',
+			    fields: {
+			            /** Contract destination. Where I will generate event contracts. */
+			            'contractDestinationDir': {
+			                label: 'Contract destination',
+			                type: 'text',
+			                hint: 'Where I will generate event contracts.',
+			                defaultValue: "#spruce/events",
+			                options: undefined
+			            },
+			    }
+		}
+
+		type SyncEventActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncEventActionSchema>
 
 	}
 
@@ -4103,6 +4460,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'namePascalPlural'?: string| undefined | null
 				/** Constant case name. CONST_CASE of the name */
 				'nameConst'?: string| undefined | null
+				/** Kebab case name. kebab-case of the name */
+				'nameKebab'?: string| undefined | null
 				/** Description. Describe a bit more here */
 				'description'?: string| undefined | null
 		}
@@ -4158,6 +4517,13 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                hint: 'CONST_CASE of the name',
 			                options: undefined
 			            },
+			            /** Kebab case name. kebab-case of the name */
+			            'nameKebab': {
+			                label: 'Kebab case name',
+			                type: 'text',
+			                hint: 'kebab-case of the name',
+			                options: undefined
+			            },
 			            /** Description. Describe a bit more here */
 			            'description': {
 			                label: 'Description',
@@ -4179,9 +4545,9 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		interface ListenEventAction {
 			
 				/** Namespace. */
-				'eventNamespace': string
+				'eventNamespace'?: string| undefined | null
 				/** Event name. */
-				'eventName': string
+				'eventName'?: string| undefined | null
 				/** Events destination directory. Where should I add your listeners? */
 				'eventsDestinationDir'?: string| undefined | null
 				/** Version. Set a version yourself instead of letting me generate one for you */
@@ -4199,14 +4565,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            'eventNamespace': {
 			                label: 'Namespace',
 			                type: 'text',
-			                isRequired: true,
 			                options: undefined
 			            },
 			            /** Event name. */
 			            'eventName': {
 			                label: 'Event name',
 			                type: 'text',
-			                isRequired: true,
 			                options: undefined
 			            },
 			            /** Events destination directory. Where should I add your listeners? */

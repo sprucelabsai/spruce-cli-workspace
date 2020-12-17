@@ -10,7 +10,6 @@ export default class ServiceFactoryTest extends AbstractCliTest {
 		await super.beforeEach()
 	}
 
-	@test('can build pin service', 'pin', 'requestPin')
 	@test('can build pin service', 'pkg', 'readPackage')
 	@test('can build pin service', 'vsCode', 'installExtensions')
 	protected static canBuild(type: Service, functionName: string) {

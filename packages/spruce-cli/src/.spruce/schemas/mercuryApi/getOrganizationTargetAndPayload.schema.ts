@@ -1,7 +1,7 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../schemas.types'
 
-import eventTargetSchema from '#spruce/schemas/mercuryApi/eventTarget.schema'
+import getOrganizationEmitPayloadSchema from '#spruce/schemas/mercuryApi/getOrganizationEmitPayload.schema'
 
 const getOrganizationTargetAndPayloadSchema: SpruceSchemas.MercuryApi.GetOrganizationTargetAndPayloadSchema  = {
 	id: 'getOrganizationTargetAndPayload',
@@ -9,10 +9,10 @@ const getOrganizationTargetAndPayloadSchema: SpruceSchemas.MercuryApi.GetOrganiz
 	name: '',
 	    fields: {
 	            /** . */
-	            'target': {
+	            'payload': {
 	                type: 'schema',
 	                isRequired: true,
-	                options: {schema: eventTargetSchema,}
+	                options: {schema: getOrganizationEmitPayloadSchema,}
 	            },
 	    }
 }

@@ -1,5 +1,5 @@
 import { validateSchemaValues } from '@sprucelabs/schema'
-import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import skillFeatureSchema from '#spruce/schemas/spruceCli/v2020_07_22/skillFeature.schema'
 import { NpmPackage } from '../../types/cli.types'
@@ -86,21 +86,6 @@ export default class SkillFeature<
 		this.installScripts()
 
 		return { files }
-	}
-
-	public getSkillName() {
-		const pkg = this.Service('pkg')
-		const nameFromPackage = pkg.get('name')
-		if (!nameFromPackage) {
-			throw new Error(
-				'Need name in package.json, make this error a proper spruce error'
-			)
-		}
-		return nameFromPackage.split('/').pop()
-	}
-
-	public getSkillNamespace() {
-		return namesUtil.toPascal(this.getSkillName())
 	}
 
 	public installScripts() {

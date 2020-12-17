@@ -6,6 +6,8 @@ import escapeRegExp from 'lodash/escapeRegExp'
 import stringArgv from 'string-argv'
 import SpruceError from '../errors/SpruceError'
 
+process.setMaxListeners(100)
+
 export default class CommandService {
 	public cwd: string
 	private activeChildProcess: ChildProcess | undefined

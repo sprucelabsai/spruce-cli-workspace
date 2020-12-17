@@ -46,6 +46,13 @@ const formUtil = {
 					)
 				}
 				break
+			case 'nameKebab':
+				if (!values.nameKebab) {
+					fieldDefinition.defaultValue = namesUtil.toKebab(
+						values.nameReadable || ''
+					)
+				}
+				break
 		}
 		return fieldDefinition
 	},

@@ -1,10 +1,11 @@
 {
 	"name": "@sprucelabs/spruce-cli",
+	"description": "Command line interface for building Spruce skills",
 	"publishConfig": {
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "11.15.0",
+	"version": "11.17.0",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -13,7 +14,6 @@
 	"files": [
 		"**/*"
 	],
-	"description": "Command line interface for building Spruce skills",
 	"keywords": [
 		"node",
 		"components",
@@ -30,14 +30,11 @@
 		"lint": "eslint '**/*.ts' && yarn lint.tsc",
 		"lint.tsc": "tsc --noEmit && echo 'spruce-cli PASS'",
 		"lint.fix": "eslint --fix '**/*.ts'",
-		"lint.watch": "chokidar 'src/**/*' '../spruce-templates/src/**' -c 'yarn lint.tsc'",
-		"rebuild": "cd ../ && yarn rebuild && yarn clean.cache",
-		"rebuild.watch": "cd ../ && yarn rebuild.watch",
+		"rebuild": "cd ../ && yarn rebuild && yarn clean.cache && yarn cache.tests",
 		"build": "yarn build.babel && yarn build.types && yarn build.resolve-paths",
 		"build.types": "tsc --emitDeclarationOnly && echo PASS",
 		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
 		"build.babel.debug": "node --inspect-brk=5200 ../../node_modules/.bin/babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
-		"build.watch": "concurrently 'yarn run build.babel --watch' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'clear && yarn build.types && yarn build.resolve-paths'\" \"chokidar '../spruce-templates/src/**/*.hbs' -c 'yarn clean.cache && yarn build.types'\"",
 		"build.resolve-paths": "resolve-path-aliases --target build --patterns **/*.js,**/*.d.ts",
 		"cache.tests": "node build/tests/buildTestCache",
 		"clean": "rm -rf build/",
@@ -48,7 +45,10 @@
 		"start": "DEBUG=@sprucelabs/cli~debug node . $COMMANDS",
 		"local": "DEBUG=@sprucelabs/cli~debug node --inspect=5200 . $COMMANDS ; echo 'DONE'",
 		"test": "yarn cache.tests && jest",
-		"test.watch": "yarn cache.tests && jest --watch",
+		"watch.tests": "yarn cache.tests && jest --watch",
+		"watch.build": "concurrently 'yarn run build.babel --watch' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'clear && yarn build.types && yarn build.resolve-paths'\" \"chokidar '../spruce-templates/src/**/*.hbs' -c 'yarn clean.cache && yarn build.types'\"",
+		"watch.rebuild": "cd ../ && yarn watch.rebuild",
+		"watch.lint": "chokidar 'src/**/*' '../spruce-templates/src/**' -c 'yarn lint.tsc'",
 		"arkit": "arkit -f index.ts -o docs/images/arkit.svg",
 		"arkit.png": "arkit -f index.ts -o docs/images/arkit.png"
 	},
@@ -58,21 +58,20 @@
 		"@sprucelabs/error": ">=4.0.1",
 		"@sprucelabs/jest-json-reporter": "^5.1.3",
 		"@sprucelabs/log": ">=10.2.295",
-		"@sprucelabs/mercury": ">=10.5.72",
-		"@sprucelabs/mercury-client": ">=14.4.11",
-		"@sprucelabs/mercury-event-emitter": ">=14.4.11",
-		"@sprucelabs/mercury-types": ">=14.4.3",
-		"@sprucelabs/schema": ">=18.2.4",
+		"@sprucelabs/mercury-client": ">=14.5.3",
+		"@sprucelabs/mercury-event-emitter": ">=14.5.3",
+		"@sprucelabs/mercury-types": ">=14.9.0",
+		"@sprucelabs/schema": ">=18.3.0",
 		"@sprucelabs/spruce-core-schemas": ">=22.0.11",
 		"@sprucelabs/spruce-skill-utils": ">=12.3.0",
-		"@sprucelabs/spruce-templates": "^11.15.0",
+		"@sprucelabs/spruce-templates": "^11.17.0",
 		"blessed": "^0.1.81",
 		"blessed-contrib": "^4.8.20",
 		"cfonts": "^2.9.0",
 		"chalk": "^4.1.0",
 		"chokidar": "^3.4.3",
 		"cli-table3": "^0.6.0",
-		"commander": "^6.2.0",
+		"commander": "^6.2.1",
 		"core-js": "^3.8.1",
 		"emphasize": "^4.1.0",
 		"fs-extra": "^9.0.1",
@@ -90,14 +89,14 @@
 		"terminal-image": "^1.2.1",
 		"terminal-kit": "^1.44.0",
 		"tsutils": "^3.17.1",
-		"typescript": "^4.1.2",
+		"typescript": "^4.1.3",
 		"uuid": "^8.3.2"
 	},
 	"devDependencies": {
 		"@sprucelabs/babel-plugin-schema": ">=3.1.2",
 		"@sprucelabs/jest-sheets-reporter": ">=1.2.5",
 		"@sprucelabs/test": ">=7.3.0",
-		"@sprucelabs/test-utils": ">=2.0.417",
+		"@sprucelabs/test-utils": ">=3.0.2",
 		"@types/blessed": "^0.1.17",
 		"@types/eslint": "^7.2.6",
 		"@types/fs-extra": "^9.0.5",
@@ -107,7 +106,7 @@
 		"@types/lodash": "^4.14.165",
 		"@types/md5": "^2.2.1",
 		"@types/mkdirp": "^1.0.1",
-		"@types/node": "^14.14.12",
+		"@types/node": "^14.14.14",
 		"@types/promise.allsettled": "^1.0.3",
 		"@types/rimraf": "^3.0.0",
 		"@types/semver": "^7.3.4",
@@ -205,6 +204,24 @@
 			{
 				"code": "event"
 			}
+		],
+		"organizations": [
+			{
+				"code": "skill",
+				"options": {
+					"name": "testing events",
+					"description": "this too, is a great test!"
+				}
+			},
+			{
+				"code": "schema"
+			},
+			{
+				"code": "event"
+			},
+			{
+				"code": "organization"
+			}
 		]
 	},
 	"jest": {
@@ -251,7 +268,11 @@
 						"fetchesEventContracts": "F55",
 						"canGetNumberOfEventsBackFromHealthCheck": "F64",
 						"canLoginAsDummyPerson": "F66",
-						"canSeeWhoIsLoggedIn": "F67"
+						"canSeeWhoIsLoggedIn": "F67",
+						"canRegisterSkill": "F69",
+						"throwsWithBadEventName": "F72",
+						"createsAnOrg": "F75",
+						"asksYouToSelectOrgWithMoreThanOne": "F76"
 					}
 				}
 			],
