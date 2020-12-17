@@ -4,6 +4,7 @@ node_modules/
 # Built files
 coverage/
 __TEST__/
+junit.xml
 
 # Logs
 *.log
@@ -17,3 +18,4 @@ mercury.min.*
 package-lock.json
 
 tmp/
+.clinic/
