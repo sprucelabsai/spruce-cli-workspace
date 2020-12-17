@@ -11,6 +11,9 @@ import FeatureFixture, {
 	FeatureFixtureOptions,
 } from '../fixtures/FeatureFixture'
 import MercuryFixture from '../fixtures/MercuryFixture'
+import OrganizationFixture from '../fixtures/OrganizationFixture'
+import PersonFixture from '../fixtures/PersonFixture'
+import SkillFixture from '../fixtures/SkillFixture'
 import CliGlobalEmitter, { GlobalEmitter } from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
 import ServiceFactory, { Service, ServiceMap } from '../services/ServiceFactory'
@@ -24,6 +27,9 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	private static _ui: SpyInterface
 	private static emitter?: GlobalEmitter
 	private static mercuryFixture?: MercuryFixture
+	private static personFixture?: PersonFixture
+	private static organizationFixture?: OrganizationFixture
+	private static skillFixture?: SkillFixture
 
 	protected static async beforeEach() {
 		await super.beforeEach()
@@ -34,15 +40,25 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		this.ui.reset()
 		this.ui.invocations = []
 		this.ui.setCursorPosition({ x: 0, y: 0 })
-		this.emitter = undefined
 
+		this.clearFixtures()
+	}
+
+	private static clearFixtures() {
+		this.emitter = undefined
 		this.mercuryFixture = undefined
+		this.organizationFixture = undefined
+		this.personFixture = undefined
+		this.skillFixture = undefined
 	}
 
 	protected static async afterEach() {
 		await super.afterEach()
 
+		await this.organizationFixture?.clearAllOrgs()
 		await this.mercuryFixture?.disconnect()
+
+		this.clearFixtures()
 
 		if (this._ui) {
 			if (this._ui.isWaitingForInput()) {
@@ -135,6 +151,38 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return this.mercuryFixture
 	}
 
+	protected static PersonFixture() {
+		if (!this.personFixture) {
+			this.personFixture = new PersonFixture(
+				this.MercuryFixture().getApiClientFactory()
+			)
+		}
+
+		return this.personFixture
+	}
+
+	protected static OrganizationFixture() {
+		if (!this.organizationFixture) {
+			this.organizationFixture = new OrganizationFixture(
+				this.Store('organization'),
+				this.PersonFixture()
+			)
+		}
+
+		return this.organizationFixture
+	}
+
+	protected static SkillFixture() {
+		if (!this.skillFixture) {
+			this.skillFixture = new SkillFixture(
+				this.Store('skill'),
+				this.PersonFixture()
+			)
+		}
+
+		return this.skillFixture
+	}
+
 	protected static resolveHashSprucePath(...filePath: string[]) {
 		return diskUtil.resolveHashSprucePath(this.cwd, ...filePath)
 	}
@@ -192,9 +240,13 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	) {
 		const checker = this.Service('typeChecker')
 
-		await Promise.all(
-			(results.files ?? []).map((file) => checker.check(file.path))
-		)
+		for (const file of results.files ?? []) {
+			await checker.check(file.path)
+		}
+
+		// await Promise.all(
+		// 	(results.files ?? []).map((file) => checker.check(file.path))
+		// )
 	}
 
 	protected static async connectToApi() {

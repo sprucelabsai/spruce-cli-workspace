@@ -11,7 +11,7 @@ import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
-const EXPECTED_NUM_CONTRACTS_GENERATED = 31
+const EXPECTED_NUM_CONTRACTS_GENERATED = 32
 
 export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	@test()

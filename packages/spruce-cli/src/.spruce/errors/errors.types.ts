@@ -11,6 +11,27 @@ import * as SpruceSchema from '@sprucelabs/schema'
 export declare namespace SpruceErrors.SpruceCli {
 
 	
+	export interface NoOrganizationsFound {
+		
+	}
+
+	export interface NoOrganizationsFoundSchema extends SpruceSchema.Schema {
+		id: 'noOrganizationsFound',
+		namespace: 'SpruceCli',
+		name: 'no organizations found',
+		    fields: {
+		    }
+	}
+
+	export type NoOrganizationsFoundEntity = SchemaEntity<SpruceErrors.SpruceCli.NoOrganizationsFoundSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
 	export interface VscodeNotInstalled {
 		
 	}
@@ -107,6 +128,27 @@ export declare namespace SpruceErrors.SpruceCli {
 	}
 
 	export type TestFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.TestFailedSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
+	export interface SkillNotRegistered {
+		
+	}
+
+	export interface SkillNotRegisteredSchema extends SpruceSchema.Schema {
+		id: 'skillNotRegistered',
+		namespace: 'SpruceCli',
+		name: 'Skill not registered',
+		    fields: {
+		    }
+	}
+
+	export type SkillNotRegisteredEntity = SchemaEntity<SpruceErrors.SpruceCli.SkillNotRegisteredSchema>
 
 }
 

@@ -87,7 +87,7 @@ jobs:
       - run:
           name: "Test 💪"
           command: |
-            yarn test -w 2
+            yarn test -w 4
       - run:
           name: "Max memory usage for tests"
           command: cat /sys/fs/cgroup/memory/memory.max_usage_in_bytes

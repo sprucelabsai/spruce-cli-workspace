@@ -14,6 +14,13 @@ export default class EnvServiceTest extends AbstractCliTest {
 	@test('Can set boolean false', 'MY_KEY', false, 'MY_KEY=false')
 	@test('Can set integer', 'MY_KEY', 123, 'MY_KEY=123')
 	@test('Can set negative integer', 'MY_KEY', -1, 'MY_KEY=-1')
+	@test('Can set negative integer', 'MY_KEY', -1, 'MY_KEY=-1')
+	@test(
+		'Can set uuid',
+		'MY_KEY',
+		'5fdaccbd40a09d00459b0e71',
+		'MY_KEY="5fdaccbd40a09d00459b0e71"'
+	)
 	protected static async canGetAndSet(
 		key: string,
 		value: string | boolean | number,

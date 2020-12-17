@@ -13,7 +13,7 @@ export default class BuildServiceTest extends AbstractCliTest {
 	protected static async canBuildSkill() {
 		await this.installSkill('skills')
 
-		const testFile = "const test: string = 'hello world'"
+		const testFile = "const testVar: string = 'hello world'"
 		const destination = this.resolvePath('src/test.ts')
 		diskUtil.writeFile(destination, testFile)
 
@@ -23,7 +23,7 @@ export default class BuildServiceTest extends AbstractCliTest {
 		const builtFilePath = this.resolvePath('build/test.js')
 		const contents = diskUtil.readFile(builtFilePath)
 
-		assert.doesInclude(contents, "var test = 'hello world';")
+		assert.doesInclude(contents, "var testVar = 'hello world';")
 	}
 
 	@test()
