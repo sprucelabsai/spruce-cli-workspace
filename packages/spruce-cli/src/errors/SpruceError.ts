@@ -155,17 +155,15 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				message = 'The directory you are in is not a skill!'
 				break
 
-			
-            case 'SKILL_NOT_REGISTERED':
-                message = 'A skill not registered just happened!'
-                break
+			case 'SKILL_NOT_REGISTERED':
+				message = 'A skill not registered just happened!'
+				break
 
+			case 'NO_ORGANIZATIONS_FOUND':
+				message = 'A no organizations found just happened!'
+				break
 
-            case 'NO_ORGANIZATIONS_FOUND':
-                message = 'A no organizations found just happened!'
-                break
-
-default:
+			default:
 				message = super.friendlyMessage()
 		}
 
