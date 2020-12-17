@@ -88,26 +88,6 @@ export default class SkillFeature<
 		return { files }
 	}
 
-	public getSkillName() {
-		const pkg = this.Service('pkg')
-		const nameFromPackage = pkg.get('name')
-		if (!nameFromPackage) {
-			throw new Error(
-				'Need name in package.json, make this error a proper spruce error'
-			)
-		}
-		return nameFromPackage.split('/').pop()
-	}
-
-	public getSkillNamespace() {
-		return namesUtil.toPascal(this.getSkillName())
-	}
-
-	public getSkillDescription() {
-		const pkg = this.Service('pkg')
-		return pkg.get('description')
-	}
-
 	public installScripts() {
 		const pkg = this.Service('pkg')
 		const scripts = pkg.get('scripts') as Record<string, string>

@@ -32,7 +32,7 @@ export default class EnvService {
 		const env = this.parseEnv()
 		const value = env[key]
 		const numValue = parseInt(value, 10)
-		if (!isNaN(numValue)) {
+		if (/^-?\d+$/.test(value) && !isNaN(numValue)) {
 			return numValue
 		} else if (value === 'true') {
 			return true

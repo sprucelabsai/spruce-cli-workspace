@@ -10,6 +10,13 @@ export default class InstallAction extends AbstractFeatureAction<OptionsSchema> 
 	public optionsSchema: OptionsSchema = bootSkillActionSchema
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
+		const orgs = await this.Store('organization').fetchMyOrganizations()
+
+		if (orgs.length === 0) {
+		}
+
+		const confirm = await this.ui.confirm('')
+
 		return {}
 	}
 }

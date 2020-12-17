@@ -9,19 +9,11 @@ export default class MercuryFixture {
 
 	public getApiClientFactory() {
 		return async () => {
-			debugger
 			if (!this.client) {
-				try {
-					debugger
-					this.client = await MercuryClientFactory.Client({
-						host: TEST_HOST,
-						contracts: eventsContract,
-					})
-				} catch (err) {
-					debugger
-					console.log(err)
-				}
-				debugger
+				this.client = await MercuryClientFactory.Client({
+					host: TEST_HOST,
+					contracts: eventsContract,
+				})
 			}
 
 			return this.client as ApiClient
@@ -34,5 +26,6 @@ export default class MercuryFixture {
 
 	public async disconnect() {
 		await this.client?.disconnect()
+		this.client = undefined
 	}
 }

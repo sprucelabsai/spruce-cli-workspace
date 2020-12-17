@@ -43,8 +43,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			registerBuiltSchemas,
 		} = normalizedOptions
 
-		const feature = this.getFeature('skill') as SkillFeature
-		let localNamespace = feature.getSkillNamespace()
+		let localNamespace = this.Store('skill').loadCurrentSkillsNamespace()
 
 		let shouldImportCoreSchemas = true
 

@@ -20,6 +20,9 @@ let remaining = testKeys.length
 const term = new TerminalInterface(__dirname, true)
 const start = new Date().getTime()
 
+const shouldRunSequentially = !!process.argv.find(
+	(a) => a === '--shouldRunSequentially=true' || '--shouldRunSequentially'
+)
 let progressInterval: any
 
 async function run() {
@@ -74,7 +77,22 @@ async function run() {
 		)
 	}
 
-	const promises = testKeys.map(async (cacheKey) => {
+	if (shouldRunSequentially) {
+		for (const cacheKey of testKeys) {
+			await cacheOrSkip(cacheKey)
+		}
+	} else {
+		const promises = testKeys.map(async (cacheKey) => {
+			await cacheOrSkip(cacheKey)
+		})
+		await Promise.all(promises)
+	}
+
+	clearInterval(progressInterval)
+	await term.stopLoading()
+	term.renderLine(`Done! ${durationUtil.msToFriendly(getTimeSpent())}`)
+
+	async function cacheOrSkip(cacheKey: string) {
 		const { cacheTracker, cwd, fixture, options } = setup(cacheKey)
 
 		if (cacheTracker[cacheKey] && diskUtil.doesDirExist(cwd)) {
@@ -86,12 +104,7 @@ async function run() {
 			await cache(cwd, cacheKey, fixture, options)
 			remaining--
 		}
-	})
-
-	await Promise.all(promises)
-	clearInterval(progressInterval)
-	await term.stopLoading()
-	term.renderLine(`Done! ${durationUtil.msToFriendly(getTimeSpent())}`)
+	}
 
 	function setup(cacheKey: string) {
 		const options = testSkillCache[cacheKey]

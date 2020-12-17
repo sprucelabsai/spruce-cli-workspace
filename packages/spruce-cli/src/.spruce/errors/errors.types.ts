@@ -11,6 +11,27 @@ import * as SpruceSchema from '@sprucelabs/schema'
 export declare namespace SpruceErrors.SpruceCli {
 
 	
+	export interface SkillNotRegistered {
+		
+	}
+
+	export interface SkillNotRegisteredSchema extends SpruceSchema.Schema {
+		id: 'skillNotRegistered',
+		namespace: 'SpruceCli',
+		name: 'Skill not registered',
+		    fields: {
+		    }
+	}
+
+	export type SkillNotRegisteredEntity = SchemaEntity<SpruceErrors.SpruceCli.SkillNotRegisteredSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
 	export interface VscodeNotInstalled {
 		
 	}

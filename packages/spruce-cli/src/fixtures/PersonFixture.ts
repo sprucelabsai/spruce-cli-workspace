@@ -15,12 +15,10 @@ export default class PersonFixture {
 
 	public async loginAsDummyPerson(phone = DUMMY_PHONE) {
 		if (this.peopleByPhone[phone]) {
-			return phone
+			return this.peopleByPhone[phone]
 		}
 
-		debugger
 		const client = await this.apiClientFactory()
-		debugger
 
 		const requestPinResults = await client.emit('request-pin', {
 			payload: { phone },

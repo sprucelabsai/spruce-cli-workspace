@@ -13,6 +13,7 @@ import FeatureFixture, {
 import MercuryFixture from '../fixtures/MercuryFixture'
 import OrganizationFixture from '../fixtures/OrganizationFixture'
 import PersonFixture from '../fixtures/PersonFixture'
+import SkillFixture from '../fixtures/SkillFixture'
 import CliGlobalEmitter, { GlobalEmitter } from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
 import ServiceFactory, { Service, ServiceMap } from '../services/ServiceFactory'
@@ -28,6 +29,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	private static mercuryFixture?: MercuryFixture
 	private static personFixture?: PersonFixture
 	private static organizationFixture?: OrganizationFixture
+	private static skillFixture?: SkillFixture
 
 	protected static async beforeEach() {
 		await super.beforeEach()
@@ -47,6 +49,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		this.mercuryFixture = undefined
 		this.organizationFixture = undefined
 		this.personFixture = undefined
+		this.skillFixture = undefined
 	}
 
 	protected static async afterEach() {
@@ -166,6 +169,17 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		}
 
 		return this.organizationFixture
+	}
+
+	protected static SkillFixture() {
+		if (!this.skillFixture) {
+			this.skillFixture = new SkillFixture(
+				this.Store('skill'),
+				this.PersonFixture()
+			)
+		}
+
+		return this.skillFixture
 	}
 
 	protected static resolveHashSprucePath(...filePath: string[]) {
