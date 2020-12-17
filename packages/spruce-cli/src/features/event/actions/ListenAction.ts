@@ -1,17 +1,19 @@
+import { EventContract, eventContractUtil } from '@sprucelabs/mercury-types'
+import { normalizeSchemaValues, SelectChoice } from '@sprucelabs/schema'
 import {
-	EventContract,
-	eventContractUtil,
-	eventResponseUtil,
-} from '@sprucelabs/mercury-types'
-import { SelectChoice } from '@sprucelabs/schema'
-import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
+	diskUtil,
+	namesUtil,
+	MERCURY_API_NAMESPACE,
+} from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import eventListenActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/listenEventAction.schema'
-import { MERCURY_API_NAMESPACE } from '../../../cli'
+import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventAction.schema'
 import SpruceError from '../../../errors/SpruceError'
+import mergeUtil from '../../../utilities/merge.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
+const SKILL_EVENT_NAMESPACE = 'skill'
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.ListenEventActionSchema
 export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 	public name = 'listen'
@@ -22,71 +24,106 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 	): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
-		let {
-			eventsDestinationDir,
-			version,
-			eventName,
-			eventNamespace,
-		} = normalizedOptions
+		try {
+			let response: FeatureActionResponse = {}
 
-		this.ui.startLoading('Loading event contracts...')
+			let {
+				eventsDestinationDir,
+				version,
+				eventName,
+				eventNamespace,
+			} = normalizedOptions
 
-		const client = await this.connectToApi()
-		const contractResults = await client.emit('get-event-contracts')
+			this.ui.startLoading('Loading event contracts...')
 
-		const { contracts } = eventResponseUtil.getFirstResponseOrThrow(
-			contractResults
-		)
+			let clientFactory = () => {
+				return this.connectToApi()
+			}
 
-		this.ui.stopLoading()
+			const skill = await this.Store('skill').loadCurrentSkill()
 
-		if (!eventNamespace) {
-			eventNamespace = await this.collectNamespace(contracts)
-		}
+			if (skill.id) {
+				const client = await this.connectToApi({
+					skillId: skill.id,
+					apiKey: skill.apiKey,
+				})
 
-		const { eventChoicesByNamespace } = this.generateChoices(contracts)
+				clientFactory = async () => client
+			}
 
-		if (!eventChoicesByNamespace[eventNamespace]) {
-			throw new SpruceError({
-				code: 'INVALID_PARAMETERS',
-				parameters: ['eventNamespace'],
+			const eventStore = this.Store('event', {
+				apiClientFactory: clientFactory,
 			})
-		}
 
-		if (!eventName) {
-			eventName = await this.collectEvent(contracts, eventNamespace)
-		}
+			const { contracts } = await eventStore.fetchEventContracts()
 
-		const isValidEvent = !!eventChoicesByNamespace[eventNamespace].find(
-			(e) => e.value === eventName
-		)
+			this.ui.stopLoading()
 
-		if (!isValidEvent) {
-			throw new SpruceError({
-				code: 'INVALID_PARAMETERS',
-				parameters: ['eventName'],
+			if (!eventNamespace) {
+				eventNamespace = await this.collectNamespace(contracts)
+			}
+
+			const { eventChoicesByNamespace } = this.generateChoices(contracts)
+
+			if (!eventChoicesByNamespace[eventNamespace]) {
+				throw new SpruceError({
+					code: 'INVALID_PARAMETERS',
+					parameters: ['eventNamespace'],
+				})
+			}
+
+			if (!eventName) {
+				eventName = await this.collectEvent(contracts, eventNamespace)
+			}
+
+			const isValidEvent = !!eventChoicesByNamespace[eventNamespace].find(
+				(e) => e.value === eventName
+			)
+
+			if (!isValidEvent) {
+				throw new SpruceError({
+					code: 'INVALID_PARAMETERS',
+					parameters: ['eventName'],
+				})
+			}
+
+			const resolvedDestination = diskUtil.resolvePath(
+				this.cwd,
+				eventsDestinationDir
+			)
+
+			const resolvedVersion = await this.resolveVersion(
+				version,
+				resolvedDestination
+			)
+
+			const generator = this.Generator('event')
+			const results = await generator.generateListener(resolvedDestination, {
+				...normalizedOptions,
+				version: resolvedVersion,
+				eventName,
+				eventNamespace,
 			})
+
+			response.files = results
+
+			if (eventNamespace !== SKILL_EVENT_NAMESPACE) {
+				const syncOptions = normalizeSchemaValues(
+					syncEventActionSchema,
+					options
+				)
+
+				const syncResults = await this.Action('sync').execute(syncOptions)
+
+				response = mergeUtil.mergeActionResults(syncResults, response)
+			}
+
+			return response
+		} catch (err) {
+			return {
+				errors: [err],
+			}
 		}
-
-		const resolvedDestination = diskUtil.resolvePath(
-			this.cwd,
-			eventsDestinationDir
-		)
-
-		const resolvedVersion = await this.resolveVersion(
-			version,
-			resolvedDestination
-		)
-
-		const generator = this.Generator('event')
-		const results = await generator.generateListener(resolvedDestination, {
-			...normalizedOptions,
-			version: resolvedVersion,
-			eventName,
-			eventNamespace,
-		})
-
-		return { files: results }
 	}
 
 	private async collectEvent(
@@ -128,7 +165,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 		const namespaceChoices: SelectChoice[] = [
 			{
 				label: 'Skill',
-				value: 'skill',
+				value: SKILL_EVENT_NAMESPACE,
 			},
 		]
 		const eventChoicesByNamespace: Record<string, SelectChoice[]> = {

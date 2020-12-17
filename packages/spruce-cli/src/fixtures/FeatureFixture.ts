@@ -9,8 +9,8 @@ import ServiceFactory, {
 	ServiceMap,
 } from '../services/ServiceFactory'
 import log from '../singletons/log'
-import { ApiClientFactory } from '../stores/AbstractStore'
 import testUtil from '../tests/utilities/test.utility'
+import { ApiClientFactory } from '../types/apiClient.types'
 import { GraphicsInterface } from '../types/cli.types'
 
 export interface CachedCli {

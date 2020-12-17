@@ -17,7 +17,12 @@ import SkillFixture from '../fixtures/SkillFixture'
 import CliGlobalEmitter, { GlobalEmitter } from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
 import ServiceFactory, { Service, ServiceMap } from '../services/ServiceFactory'
-import StoreFactory, { StoreCode, StoreMap } from '../stores/StoreFactory'
+import StoreFactory, {
+	StoreCode,
+	StoreFactoryMethodOptions,
+	StoreMap,
+} from '../stores/StoreFactory'
+import { ApiClientFactoryOptions } from '../types/apiClient.types'
 import testUtil from './utilities/test.utility'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
@@ -56,7 +61,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		await super.afterEach()
 
 		await this.organizationFixture?.clearAllOrgs()
-		await this.mercuryFixture?.disconnect()
+		await this.mercuryFixture?.disconnectAll()
 
 		this.clearFixtures()
 
@@ -164,8 +169,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static OrganizationFixture() {
 		if (!this.organizationFixture) {
 			this.organizationFixture = new OrganizationFixture(
-				this.Store('organization'),
-				this.PersonFixture()
+				this.PersonFixture(),
+				this.StoreFactory()
 			)
 		}
 
@@ -175,8 +180,9 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static SkillFixture() {
 		if (!this.skillFixture) {
 			this.skillFixture = new SkillFixture(
-				this.Store('skill'),
-				this.PersonFixture()
+				this.PersonFixture(),
+				this.StoreFactory(),
+				this.MercuryFixture().getApiClientFactory()
 			)
 		}
 
@@ -217,9 +223,12 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static Store<C extends StoreCode>(
 		code: C,
-		cwd?: string
+		options?: StoreFactoryMethodOptions
 	): StoreMap[C] {
-		return this.StoreFactory().Store(code, this.cwd ?? cwd)
+		return this.StoreFactory().Store(code, {
+			cwd: this.cwd,
+			...options,
+		})
 	}
 
 	protected static async waitForInput() {
@@ -249,8 +258,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		// )
 	}
 
-	protected static async connectToApi() {
-		return this.MercuryFixture().connectToApi()
+	protected static async connectToApi(options?: ApiClientFactoryOptions) {
+		return this.MercuryFixture().connectToApi(options)
 	}
 
 	protected static async openInVsCode(options?: {

@@ -6,6 +6,36 @@ import testUtil from '../../../tests/utilities/test.utility'
 
 export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 	@test()
+	protected static async throwsWithBadNamespace() {
+		const cli = await this.installEventFeature('events')
+		const err = await assert.doesThrowAsync(() =>
+			cli
+				.getFeature('event')
+				.Action('listen')
+				.execute({ eventNamespace: 'taco-bell' })
+		)
+
+		errorAssertUtil.assertError(err, 'INVALID_PARAMETERS', {
+			parameters: ['eventNamespace'],
+		})
+	}
+
+	@test()
+	protected static async throwsWithBadEventName() {
+		const cli = await this.installEventFeature('events')
+		const err = await assert.doesThrowAsync(() =>
+			cli
+				.getFeature('event')
+				.Action('listen')
+				.execute({ eventNamespace: 'mercuryApi', eventName: 'bad-time' })
+		)
+
+		errorAssertUtil.assertError(err, 'INVALID_PARAMETERS', {
+			parameters: ['eventName'],
+		})
+	}
+
+	@test()
 	protected static async createsValidListener() {
 		const cli = await this.installEventFeature('events')
 
@@ -31,8 +61,10 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 		const health = await cli.checkHealth()
 
 		assert.isTruthy(health.skill)
+
 		assert.isUndefined(health.skill.errors)
 		assert.isTruthy(health.event)
+
 		assert.doesInclude(health.event.listeners, {
 			eventName: 'will-boot',
 			eventNamespace: 'skill',
@@ -64,33 +96,49 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 		this.ui.reset()
 	}
 
-	@test()
-	protected static async throwsWithBadNamespace() {
-		const cli = await this.installEventFeature('events')
-		const err = await assert.doesThrowAsync(() =>
-			cli
-				.getFeature('event')
-				.Action('listen')
-				.execute({ eventNamespace: 'taco-bell' })
+	@test.only()
+	protected static async generatesTypedListenerForAnotherSkillsEvents() {
+		const cliPromise = this.installEventFeature('events')
+
+		const skillFixture = this.SkillFixture()
+
+		const skill2 = await skillFixture.seedDummySkill({
+			name: 'my second skill',
+		})
+
+		const orgFixture = this.OrganizationFixture()
+		const org = await orgFixture.seedDummyOrg({ name: 'my org' })
+
+		await orgFixture.installSkillAtOrganization(skill2.id, org.id)
+
+		await skillFixture.registerEventContract(skill2, {
+			eventSignatures: {
+				'my-new-event': {},
+			},
+		})
+
+		const cli = await cliPromise
+
+		const skill = await skillFixture.registerCurrentSkill({
+			name: 'my first skill',
+		})
+
+		await orgFixture.installSkillAtOrganization(skill.id, org.id)
+
+		const results = await cli.getFeature('event').Action('listen').execute({
+			eventNamespace: skill2.slug,
+			eventName: 'my-new-event',
+		})
+
+		assert.isFalsy(results.errors)
+
+		const listener = testUtil.assertsFileByNameInGeneratedFiles(
+			'my-new-event.listener.ts',
+			results.files
 		)
 
-		errorAssertUtil.assertError(err, 'INVALID_PARAMETERS', {
-			parameters: ['eventNamespace'],
-		})
-	}
+		await this.Service('typeChecker').check(listener)
 
-	@test()
-	protected static async throwsWithBadEventName() {
-		const cli = await this.installEventFeature('events')
-		const err = await assert.doesThrowAsync(() =>
-			cli
-				.getFeature('event')
-				.Action('listen')
-				.execute({ eventNamespace: 'mercuryApi', eventName: 'bad-time' })
-		)
-
-		errorAssertUtil.assertError(err, 'INVALID_PARAMETERS', {
-			parameters: ['eventName'],
-		})
+		await this.openInVsCode()
 	}
 }

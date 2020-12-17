@@ -11,7 +11,7 @@ import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
-const EXPECTED_NUM_CONTRACTS_GENERATED = 32
+const EXPECTED_NUM_CONTRACTS_GENERATED = 33
 
 export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	@test()
@@ -34,6 +34,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	protected static async syncingSchemasRetainsEventSchemas() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 		const results = await cli.getFeature('schema').Action('sync').execute({})
+
 		this.assertExpectedSchemasAreCreated(results)
 	}
 
@@ -41,6 +42,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	protected static async syncingSchemasDoesNotSyncEventSchemasIfEventsNotInstalled() {
 		const cli = await this.FeatureFixture().installCachedFeatures('schemas')
 		const results = await cli.getFeature('schema').Action('sync').execute({})
+
 		assert.doesThrow(() => this.assertExpectedSchemasAreCreated(results))
 	}
 
@@ -75,6 +77,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		this.assertExpectedContractsAreCreated(results)
 		this.assertExpectedSchemasAreCreated(results)
+
 		await this.assertCombinedContractContents(results)
 	}
 

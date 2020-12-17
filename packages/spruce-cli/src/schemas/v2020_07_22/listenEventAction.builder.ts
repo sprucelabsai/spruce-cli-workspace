@@ -1,10 +1,12 @@
 import { buildSchema } from '@sprucelabs/schema'
+import syncEventActionBuilder from './syncEventAction.builder'
 
 export default buildSchema({
 	id: 'listenEventAction',
 	name: 'Listen to event action',
 	description: 'Options for event.listen.',
 	fields: {
+		...syncEventActionBuilder.fields,
 		eventNamespace: {
 			type: 'text',
 			label: 'Namespace',

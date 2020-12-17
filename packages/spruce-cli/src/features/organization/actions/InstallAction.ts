@@ -57,7 +57,7 @@ export default class InstallAction extends AbstractFeatureAction<OptionsSchema> 
 					})
 				}
 
-				await this.Store('organization').installSkillAtOrg(
+				await this.Store('organization').installSkillAtOrganization(
 					skill.id,
 					organizationId
 				)

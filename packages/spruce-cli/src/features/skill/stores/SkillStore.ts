@@ -12,17 +12,27 @@ export interface CreateSkill {
 	description?: string
 }
 
-type LoadedSkill = Partial<Skill> & {
+type CurrentSkill = Partial<Skill> & {
 	name: string
 	isRegistered: boolean
 	namespacePascal: string
 }
 
+export interface RegisterSkillOptions {
+	isRegisteringCurrentSkill: boolean
+}
+
 export default class SkillStore extends AbstractStore {
 	public readonly name = 'skill'
 
-	public async register(values: CreateSkill): Promise<Skill> {
-		this.assertInSkill()
+	public async register(
+		values: CreateSkill,
+		options?: RegisterSkillOptions
+	): Promise<Skill> {
+		const isRegisteringCurrentSkill =
+			options?.isRegisteringCurrentSkill !== false
+
+		isRegisteringCurrentSkill && this.assertInSkill()
 
 		const { name, slug, description } = values
 
@@ -38,10 +48,12 @@ export default class SkillStore extends AbstractStore {
 
 		const { skill } = eventResponseUtil.getFirstResponseOrThrow(results)
 
-		const env = this.Service('env')
+		if (isRegisteringCurrentSkill) {
+			const env = this.Service('env')
 
-		env.set('SKILL_ID', skill.id)
-		env.set('SKILL_API_KEY', skill.apiKey)
+			env.set('SKILL_ID', skill.id)
+			env.set('SKILL_API_KEY', skill.apiKey)
+		}
 
 		return skill
 	}
@@ -54,7 +66,7 @@ export default class SkillStore extends AbstractStore {
 		}
 	}
 
-	public async loadCurrentSkill(): Promise<LoadedSkill> {
+	public async loadCurrentSkill(): Promise<CurrentSkill> {
 		this.assertInSkill()
 
 		const envService = this.Service('env')
@@ -74,6 +86,7 @@ export default class SkillStore extends AbstractStore {
 				...skill,
 				namespacePascal: this.loadCurrentSkillsNamespace(),
 				isRegistered: true,
+				apiKey: envService.get('SKILL_API_KEY') as string,
 			}
 		} else {
 			return {

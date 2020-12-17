@@ -84,6 +84,7 @@ export default class SkillStoreTest extends AbstractCliTest {
 		assert.isTrue(currentSkill.isRegistered)
 		assert.isEqual(currentSkill.name, 'awesome skill')
 		assert.isEqual(currentSkill.slug, slug)
+		assert.isEqual(currentSkill.apiKey, skill.apiKey)
 
 		const env = this.Service('env')
 

@@ -4,12 +4,14 @@ import {
 	EventSignature,
 } from '@sprucelabs/mercury-types'
 import { Schema, SchemaTemplateItem } from '@sprucelabs/schema'
-import { namesUtil } from '@sprucelabs/spruce-skill-utils'
+import {
+	MERCURY_API_NAMESPACE,
+	namesUtil,
+} from '@sprucelabs/spruce-skill-utils'
 import {
 	EventContractTemplateItem,
 	EventSignatureTemplateItem,
 } from '@sprucelabs/spruce-templates'
-import { MERCURY_API_NAMESPACE } from '../cli'
 import SchemaTemplateItemBuilder from './SchemaTemplateItemBuilder'
 
 export interface NamedEventSignature {

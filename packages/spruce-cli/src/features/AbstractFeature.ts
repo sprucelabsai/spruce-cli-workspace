@@ -12,8 +12,12 @@ import ServiceFactory, {
 	ServiceProvider,
 	ServiceMap,
 } from '../services/ServiceFactory'
-import { ApiClientFactory } from '../stores/AbstractStore'
-import StoreFactory, { StoreCode, StoreMap } from '../stores/StoreFactory'
+import StoreFactory, {
+	StoreCode,
+	StoreFactoryMethodOptions,
+	StoreMap,
+} from '../stores/StoreFactory'
+import { ApiClientFactory } from '../types/apiClient.types'
 import {
 	NpmPackage,
 	GraphicsInterface,
@@ -153,7 +157,10 @@ export default abstract class AbstractFeature<
 		return matches.map((path) => featuresUtil.filePathToActionCode(path))
 	}
 
-	public Store<C extends StoreCode>(code: C, cwd?: string): StoreMap[C] {
-		return this.storeFactory.Store(code, this.cwd ?? cwd)
+	public Store<C extends StoreCode>(
+		code: C,
+		options?: StoreFactoryMethodOptions
+	): StoreMap[C] {
+		return this.storeFactory.Store(code, { cwd: this.cwd, ...options })
 	}
 }

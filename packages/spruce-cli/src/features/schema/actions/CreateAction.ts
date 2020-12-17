@@ -53,6 +53,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 		)
 
 		let errors: AbstractSpruceError<any>[] | undefined
+
 		if (syncAfterCreate) {
 			const syncOptions = normalizeSchemaValues(syncSchemasActionSchema, rest, {
 				includePrivateFields: true,

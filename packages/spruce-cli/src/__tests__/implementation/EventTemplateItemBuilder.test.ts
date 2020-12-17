@@ -1,9 +1,11 @@
 import { EventContract } from '@sprucelabs/mercury-types'
 import { buildSchema, SchemaTemplateItem } from '@sprucelabs/schema'
-import { namesUtil } from '@sprucelabs/spruce-skill-utils'
+import {
+	MERCURY_API_NAMESPACE,
+	namesUtil,
+} from '@sprucelabs/spruce-skill-utils'
 import { EventContractTemplateItem } from '@sprucelabs/spruce-templates'
 import { test, assert } from '@sprucelabs/test'
-import { MERCURY_API_NAMESPACE } from '../../cli'
 import EventTemplateItemBuilder from '../../templateItemBuilders/EventTemplateItemBuilder'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 import coreEventContract from '../support/coreEventContract'

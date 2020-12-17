@@ -57,7 +57,10 @@ export default class OrganizationStoreTest extends AbstractCliTest {
 			name: 'a new skill',
 		})
 
-		await this.Store('organization').installSkillAtOrg(skill.id, org.id)
+		await this.Store('organization').installSkillAtOrganization(
+			skill.id,
+			org.id
+		)
 
 		const isInstalled = await this.Store('organization').isSkillInstalledAtOrg(
 			skill.id,

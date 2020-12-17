@@ -162,6 +162,11 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 			case 'NO_ORGANIZATIONS_FOUND':
 				message = 'A no organizations found just happened!'
 				break
+			case 'INVALID_PARAMETERS':
+				message = `The following paramater${
+					options.parameters.length === 1 ? 's are' : ' is'
+				} invalid:\n\n${options.parameters.join('\n')}`
+				break
 
 			default:
 				message = super.friendlyMessage()

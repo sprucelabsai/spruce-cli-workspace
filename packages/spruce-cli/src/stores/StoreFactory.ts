@@ -6,7 +6,8 @@ import SchemaStore from '../features/schema/stores/SchemaStore'
 import SkillStore from '../features/skill/stores/SkillStore'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory from '../services/ServiceFactory'
-import { StoreOptions, ApiClientFactory } from './AbstractStore'
+import { ApiClientFactory } from '../types/apiClient.types'
+import { StoreOptions } from './AbstractStore'
 
 export interface StoreMap {
 	onboarding: OnboardingStore
@@ -26,6 +27,11 @@ const storeMap = {
 	person: PersonStore,
 	skill: SkillStore,
 	organization: OrganizationStore,
+}
+
+export interface StoreFactoryMethodOptions {
+	cwd?: string
+	apiClientFactory?: ApiClientFactory
 }
 
 export default class StoreFactory {
@@ -51,19 +57,23 @@ export default class StoreFactory {
 		this.emitter = emitter
 	}
 
-	public Store<C extends StoreCode>(code: C, cwd?: string): StoreMap[C] {
-		const options: StoreOptions = {
-			cwd: cwd ?? this.cwd,
+	public Store<C extends StoreCode>(
+		code: C,
+		options?: StoreFactoryMethodOptions
+	): StoreMap[C] {
+		const storeOptions: StoreOptions = {
+			cwd: options?.cwd ?? this.cwd,
 			serviceFactory: this.serviceFactory,
 			homeDir: this.homeDir,
-			apiClientFactory: this.apiClientFactory,
+			apiClientFactory: options?.apiClientFactory ?? this.apiClientFactory,
 			emitter: this.emitter,
 		}
 
 		if (!storeMap[code]) {
 			throw new Error(`Could not find store with code '${code}'.`)
 		}
-		const store = new storeMap[code](options)
+
+		const store = new storeMap[code](storeOptions)
 
 		return store as StoreMap[C]
 	}

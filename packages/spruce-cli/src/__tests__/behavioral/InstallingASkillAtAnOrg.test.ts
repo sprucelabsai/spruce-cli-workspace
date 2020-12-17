@@ -25,7 +25,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 			name: 'my amazing skill',
 		})
 
-		await this.MercuryFixture().logout()
+		await this.MercuryFixture().logoutAll()
 
 		const anonResults = await cli
 			.getFeature('organization')

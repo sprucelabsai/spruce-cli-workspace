@@ -10,6 +10,14 @@ const listenEventActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventAc
 	name: 'Listen to event action',
 	description: 'Options for event.listen.',
 	    fields: {
+	            /** Contract destination. Where I will generate event contracts. */
+	            'contractDestinationDir': {
+	                label: 'Contract destination',
+	                type: 'text',
+	                hint: 'Where I will generate event contracts.',
+	                defaultValue: "#spruce/events",
+	                options: undefined
+	            },
 	            /** Namespace. */
 	            'eventNamespace': {
 	                label: 'Namespace',

@@ -1,5 +1,5 @@
 import { eventResponseUtil } from '@sprucelabs/mercury-types'
-import { ApiClientFactory } from '../stores/AbstractStore'
+import { ApiClientFactory } from '../types/apiClient.types'
 export const DUMMY_PHONE = '555-123-4567'
 
 export default class PersonFixture {
