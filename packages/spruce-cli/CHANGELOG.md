@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.17.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.16.1...v11.17.0) (2020-12-16)
+
+
+### Features
+
+* selecting an event based on contract ([d228806](https://github.com/sprucelabsai/spruce-cli-workspace/commit/d228806))
+
+
+
+
+
+## [11.16.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.16.0...v11.16.1) (2020-12-15)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
 # [11.16.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v11.15.2...v11.16.0) (2020-12-15)
 
 
