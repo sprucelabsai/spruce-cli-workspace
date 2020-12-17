@@ -28,6 +28,7 @@ let progressInterval: any
 async function run() {
 	term.clear()
 	term.renderHeadline(`Found ${testKeys.length} skills to cache.`)
+
 	let messages: [string, any][] = []
 
 	progressInterval =
@@ -35,6 +36,9 @@ async function run() {
 		setInterval(async () => {
 			term.clear()
 			term.renderHeadline(`Found ${testKeys.length} skills to cache.`)
+			term.renderLine(
+				shouldRunSequentially ? 'Running sequentionally' : 'Running in pararell'
+			)
 
 			for (const message of messages) {
 				term.renderLine(message[0], message[1])
