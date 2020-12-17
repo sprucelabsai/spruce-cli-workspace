@@ -27,6 +27,25 @@ export default class OrganizationStoreTest extends AbstractCliTest {
 	}
 
 	@test()
+	protected static async canDeleteOrg() {
+		await this.FeatureFixture().installCachedFeatures('organizations')
+
+		const org = await this.OrganizationFixture().seedDummyOrg({
+			name: 'A cool org',
+		})
+
+		const myOrgs = await this.Store('organization').fetchMyOrganizations()
+
+		assert.doesInclude(myOrgs, org)
+
+		await this.Store('organization').deleteOrganization(org.id)
+
+		const myOrgs2 = await this.Store('organization').fetchMyOrganizations()
+
+		assert.doesNotInclude(myOrgs2, org)
+	}
+
+	@test()
 	protected static async installSkill() {
 		await this.FeatureFixture().installCachedFeatures('organizations')
 
@@ -58,8 +77,8 @@ export default class OrganizationStoreTest extends AbstractCliTest {
 			name: 'A cool org',
 		})
 
-		const orgs = await this.Store('organization').getMyOrganizations()
-		assert.isAbove(orgs.length, 2)
+		const orgs = await this.Store('organization').fetchMyOrganizations()
+		assert.isLength(orgs, 2)
 		assert.doesInclude(orgs, org1)
 		assert.doesInclude(orgs, org2)
 	}

@@ -55,6 +55,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static async afterEach() {
 		await super.afterEach()
 
+		await this.organizationFixture?.clearAllOrgs()
 		await this.mercuryFixture?.disconnect()
 
 		this.clearFixtures()

@@ -10,7 +10,6 @@ import { GeneratedFile } from '../../../types/cli.types'
 import mergeUtil from '../../../utilities/merge.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
-import SkillFeature from '../../skill/SkillFeature'
 import schemaGeneratorUtil from '../utilities/schemaGenerator.utility'
 import ValueTypeBuilder from '../ValueTypeBuilder'
 

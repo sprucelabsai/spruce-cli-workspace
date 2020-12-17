@@ -160,6 +160,11 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
                 message = 'A skill not registered just happened!'
                 break
 
+
+            case 'NO_ORGANIZATIONS_FOUND':
+                message = 'A no organizations found just happened!'
+                break
+
 default:
 				message = super.friendlyMessage()
 		}

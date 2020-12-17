@@ -21,4 +21,14 @@ export default class OrganizationFixture {
 			...options,
 		})
 	}
+
+	public async clearAllOrgs() {
+		await this.personFixture.loginAsDummyPerson()
+
+		const orgs = await this.store.fetchMyOrganizations()
+
+		for (const org of orgs) {
+			await this.store.deleteOrganization(org.id)
+		}
+	}
 }

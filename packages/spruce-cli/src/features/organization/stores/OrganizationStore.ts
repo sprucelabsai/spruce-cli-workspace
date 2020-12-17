@@ -34,7 +34,7 @@ export default class OrganizationStore extends AbstractStore {
 		eventResponseUtil.getFirstResponseOrThrow(results)
 	}
 
-	public async getMyOrganizations() {
+	public async fetchMyOrganizations() {
 		const client = await this.connectToApi()
 		const results = await client.emit('list-organizations', {
 			payload: {
@@ -62,5 +62,17 @@ export default class OrganizationStore extends AbstractStore {
 		const { organization } = eventResponseUtil.getFirstResponseOrThrow(results)
 
 		return organization
+	}
+
+	public async deleteOrganization(orgId: string) {
+		const client = await this.connectToApi()
+
+		const results = await client.emit('delete-organization', {
+			target: {
+				organizationId: orgId,
+			},
+		})
+
+		eventResponseUtil.getFirstResponseOrThrow(results)
 	}
 }
