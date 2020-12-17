@@ -1,4 +1,4 @@
-import { eventResponseUtil, SpruceSchemas } from '@sprucelabs/mercury-types'
+import { eventResponseUtil } from '@sprucelabs/mercury-types'
 import { ApiClientFactory } from '../stores/AbstractStore'
 export const DUMMY_PHONE = '555-123-4567'
 
