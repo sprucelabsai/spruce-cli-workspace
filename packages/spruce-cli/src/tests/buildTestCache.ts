@@ -21,7 +21,7 @@ const term = new TerminalInterface(__dirname, true)
 const start = new Date().getTime()
 
 const shouldRunSequentially = !!process.argv.find(
-	(a) => a === '--shouldRunSequentially=true' || '--shouldRunSequentially'
+	(a) => a === '--shouldRunSequentially=true' || a === '--shouldRunSequentially'
 )
 let progressInterval: any
 
