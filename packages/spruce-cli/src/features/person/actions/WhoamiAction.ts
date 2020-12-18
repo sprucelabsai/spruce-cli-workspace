@@ -1,5 +1,5 @@
-import { eventResponseUtil } from '@sprucelabs/mercury-types'
 import { buildSchema } from '@sprucelabs/schema'
+import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 

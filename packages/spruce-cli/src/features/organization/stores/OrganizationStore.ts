@@ -1,4 +1,4 @@
-import { eventResponseUtil } from '@sprucelabs/mercury-types'
+import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import AbstractStore from '../../../stores/AbstractStore'
 
 export default class OrganizationStore extends AbstractStore {
