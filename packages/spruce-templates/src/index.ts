@@ -11,7 +11,7 @@ import {
 	SCHEMA_VERSION_FALLBACK,
 	DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
 	DEFAULT_BUILDER_FUNCTION,
-	DEFAULT_TYPES_FILE,
+	DEFAULT_SCHEMA_TYPES_FILE,
 } from '@sprucelabs/spruce-skill-utils'
 import handlebars from 'handlebars'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
@@ -107,7 +107,7 @@ export const templates = {
 			imports,
 			globalSchemaNamespace:
 				options.globalSchemaNamespace ?? DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
-			typesFile: options.typesFile ?? DEFAULT_TYPES_FILE,
+			typesFile: options.typesFile ?? DEFAULT_SCHEMA_TYPES_FILE,
 		})
 	},
 

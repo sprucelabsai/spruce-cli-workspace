@@ -4,7 +4,10 @@ import { FieldTemplateItem, SchemaTemplateItem } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { LATEST_HANDLEBARS } from '@sprucelabs/spruce-skill-utils'
+import {
+	LATEST_HANDLEBARS,
+	DEFAULT_SCHEMA_TYPES_FILENAME,
+} from '@sprucelabs/spruce-skill-utils'
 import {
 	SchemaBuilderTemplateItem,
 	ValueTypes,
@@ -28,9 +31,6 @@ export interface GenerateSchemaTypesOptions {
 	registerBuiltSchemas?: boolean
 	shouldImportCoreSchemas: boolean
 }
-
-//TODO: pull from skill utils when it comes out
-export const DEFAULT_SCHEMA_TYPES_FILENAME = 'schemas.types.ts'
 
 export default class SchemaGenerator extends AbstractGenerator {
 	private readonly fieldTemplates: {

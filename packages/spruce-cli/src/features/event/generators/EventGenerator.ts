@@ -1,13 +1,16 @@
 import pathUtil from 'path'
 import { SchemaTemplateItem } from '@sprucelabs/schema'
-import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
+import {
+	diskUtil,
+	namesUtil,
+	DEFAULT_SCHEMA_TYPES_FILENAME,
+} from '@sprucelabs/spruce-skill-utils'
 import {
 	EventContractTemplateItem,
 	EventListenerOptions,
 } from '@sprucelabs/spruce-templates'
 import AbstractGenerator from '../../../generators/AbstractGenerator'
 import { GeneratedFile } from '../../../types/cli.types'
-import { DEFAULT_SCHEMA_TYPES_FILENAME } from '../../schema/generators/SchemaGenerator'
 
 const CONTRACT_FILE_NAME = `events.contract.ts`
 export default class EventGenerator extends AbstractGenerator {
