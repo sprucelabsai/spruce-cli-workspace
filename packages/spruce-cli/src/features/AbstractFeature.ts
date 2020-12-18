@@ -17,7 +17,11 @@ import StoreFactory, {
 	StoreFactoryMethodOptions,
 	StoreMap,
 } from '../stores/StoreFactory'
-import { ApiClientFactory } from '../types/apiClient.types'
+import {
+	ApiClient,
+	ApiClientFactory,
+	ApiClientFactoryOptions,
+} from '../types/apiClient.types'
 import {
 	NpmPackage,
 	GraphicsInterface,
@@ -77,6 +81,7 @@ export default abstract class AbstractFeature<
 	private serviceFactory: ServiceFactory
 	private storeFactory: StoreFactory
 	private generatorFactory: GeneratorFactory
+	private apiClientFactory: ApiClientFactory
 
 	protected actionFactoryOptions: Omit<
 		FeatureActionFactoryOptions,
@@ -93,6 +98,7 @@ export default abstract class AbstractFeature<
 		this.emitter = options.emitter
 		this.featureInstaller = options.featureInstaller
 		this.ui = options.ui
+		this.apiClientFactory = options.apiClientFactory
 
 		this.actionFactoryOptions = {
 			...options,
@@ -162,5 +168,30 @@ export default abstract class AbstractFeature<
 		options?: StoreFactoryMethodOptions
 	): StoreMap[C] {
 		return this.storeFactory.Store(code, { cwd: this.cwd, ...options })
+	}
+
+	protected async connectToApi(
+		options?: ApiClientFactoryOptions
+	): Promise<ApiClient> {
+		return this.apiClientFactory(options)
+	}
+
+	public getApiClientFactoryAuthedAsCurrentSkill() {
+		let client: ApiClient | undefined
+
+		return async () => {
+			if (!client) {
+				const skill = await this.Store('skill').loadCurrentSkill()
+
+				if (skill.id) {
+					client = await this.connectToApi({
+						skillId: skill.id,
+						apiKey: skill.apiKey,
+					})
+				}
+			}
+
+			return client as ApiClient
+		}
 	}
 }

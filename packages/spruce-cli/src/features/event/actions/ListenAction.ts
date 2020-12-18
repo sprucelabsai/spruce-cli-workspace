@@ -36,23 +36,8 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 
 			this.ui.startLoading('Loading event contracts...')
 
-			let clientFactory = () => {
-				return this.connectToApi()
-			}
-
-			const skill = await this.Store('skill').loadCurrentSkill()
-
-			if (skill.id) {
-				const client = await this.connectToApi({
-					skillId: skill.id,
-					apiKey: skill.apiKey,
-				})
-
-				clientFactory = async () => client
-			}
-
 			const eventStore = this.Store('event', {
-				apiClientFactory: clientFactory,
+				apiClientFactory: this.parent.getApiClientFactoryAuthedAsCurrentSkill(),
 			})
 
 			const { contracts } = await eventStore.fetchEventContracts()
@@ -156,6 +141,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 				choices: namespaceChoices,
 			},
 		})
+
 		return eventNamespace
 	}
 
@@ -168,6 +154,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 				value: SKILL_EVENT_NAMESPACE,
 			},
 		]
+
 		const eventChoicesByNamespace: Record<string, SelectChoice[]> = {
 			skill: [
 				{
@@ -206,6 +193,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 				})
 			}
 		})
+
 		return { eventChoicesByNamespace, namespaceChoices }
 	}
 }

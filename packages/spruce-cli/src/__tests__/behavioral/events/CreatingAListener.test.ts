@@ -1,3 +1,4 @@
+import { buildSchema } from '@sprucelabs/schema'
 import { diskUtil, MERCURY_API_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
@@ -98,32 +99,34 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 	@test.only()
 	protected static async generatesTypedListenerForAnotherSkillsEvents() {
-		const cliPromise = this.installEventFeature('events')
-
-		const skillFixture = this.SkillFixture()
-
-		const skill2 = await skillFixture.seedDummySkill({
-			name: 'my second skill',
-		})
-
-		const orgFixture = this.OrganizationFixture()
-		const org = await orgFixture.seedDummyOrg({ name: 'my org' })
-
-		await orgFixture.installSkillAtOrganization(skill2.id, org.id)
+		const {
+			skillFixture,
+			skill2,
+			cli,
+		} = await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
 
 		await skillFixture.registerEventContract(skill2, {
 			eventSignatures: {
-				'my-new-event': {},
+				'my-new-event': {
+					emitPayloadSchema: buildSchema({
+						id: 'myNewEventEmitPayload',
+						fields: {
+							aBooleanField: {
+								type: 'boolean',
+							},
+						},
+					}),
+					responsePayloadSchema: buildSchema({
+						id: 'myNewEventResponsePayload',
+						fields: {
+							aTextField: {
+								type: 'text',
+							},
+						},
+					}),
+				},
 			},
 		})
-
-		const cli = await cliPromise
-
-		const skill = await skillFixture.registerCurrentSkill({
-			name: 'my first skill',
-		})
-
-		await orgFixture.installSkillAtOrganization(skill.id, org.id)
 
 		const results = await cli.getFeature('event').Action('listen').execute({
 			eventNamespace: skill2.slug,
@@ -139,6 +142,7 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 		await this.Service('typeChecker').check(listener)
 
-		await this.openInVsCode()
+		await this.openInVsCode({ timeout: 1000 })
+		debugger
 	}
 }
