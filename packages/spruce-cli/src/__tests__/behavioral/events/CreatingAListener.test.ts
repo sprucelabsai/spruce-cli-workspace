@@ -1,4 +1,3 @@
-import { buildSchema } from '@sprucelabs/schema'
 import { diskUtil, MERCURY_API_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
@@ -36,7 +35,7 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 		})
 	}
 
-	@test()
+	@test.only()
 	protected static async createsValidListener() {
 		const cli = await this.installEventFeature('events')
 
@@ -47,6 +46,9 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 			eventName: 'will-boot',
 			version,
 		})
+
+		assert.isFalsy(results.errors)
+		await this.openInVsCode()
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
 			'will-boot.listener.ts',
@@ -97,8 +99,8 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 		this.ui.reset()
 	}
 
-	@test.only()
-	protected static async generatesTypedListenerForAnotherSkillsEvents() {
+	@test()
+	protected static async generatesTypedListenerWithoutPayloads() {
 		const {
 			skillFixture,
 			skill2,
@@ -107,24 +109,7 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 		await skillFixture.registerEventContract(skill2, {
 			eventSignatures: {
-				'my-new-event': {
-					emitPayloadSchema: buildSchema({
-						id: 'myNewEventEmitPayload',
-						fields: {
-							aBooleanField: {
-								type: 'boolean',
-							},
-						},
-					}),
-					responsePayloadSchema: buildSchema({
-						id: 'myNewEventResponsePayload',
-						fields: {
-							aTextField: {
-								type: 'text',
-							},
-						},
-					}),
-				},
+				'my-new-event': {},
 			},
 		})
 

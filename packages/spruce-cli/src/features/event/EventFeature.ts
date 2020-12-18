@@ -23,6 +23,9 @@ export default class EventFeature extends AbstractFeature {
 		{
 			name: '@sprucelabs/mercury-types',
 		},
+		{
+			name: '@sprucelabs/spruce-event-utils',
+		},
 	]
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 

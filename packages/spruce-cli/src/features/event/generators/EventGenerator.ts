@@ -110,6 +110,8 @@ export default class EventGenerator extends AbstractGenerator {
 			nameConst: namesUtil.toConst(`${eventNamespace}_${eventName}`),
 		})
 
+		debugger
+
 		const results = await this.writeFileIfChangedMixinResults(
 			resolvedDestination,
 			listenerContents,

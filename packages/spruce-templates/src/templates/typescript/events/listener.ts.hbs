@@ -1,6 +1,7 @@
 import SpruceError from '#spruce/../errors/SpruceError'
+import { SpruceEvent, SpruceEventResponse } from '@sprucelabs/spruce-event-utils'
 
-export default () => {
+export default (event: SpruceEvent): SpruceEventResponse => {
 	throw new SpruceError({
 		//@ts-ignore
 		code: '{{nameConst}}_NOT_IMPLEMENTED'

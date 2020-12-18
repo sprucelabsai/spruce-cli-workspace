@@ -188,6 +188,8 @@ export default abstract class AbstractFeature<
 						skillId: skill.id,
 						apiKey: skill.apiKey,
 					})
+				} else {
+					client = await this.connectToApi()
 				}
 			}
 

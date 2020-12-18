@@ -106,6 +106,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 
 			return response
 		} catch (err) {
+			debugger
 			return {
 				errors: [err],
 			}
