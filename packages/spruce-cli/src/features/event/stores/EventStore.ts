@@ -1,4 +1,5 @@
-import { EventContract, eventResponseUtil } from '@sprucelabs/mercury-types'
+import { EventContract } from '@sprucelabs/mercury-types'
+import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractStore from '../../../stores/AbstractStore'
 

@@ -1,9 +1,6 @@
-import {
-	EventContract,
-	eventContractUtil,
-	EventSignature,
-} from '@sprucelabs/mercury-types'
+import { EventContract, EventSignature } from '@sprucelabs/mercury-types'
 import { Schema, SchemaTemplateItem } from '@sprucelabs/schema'
+import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
 import {
 	MERCURY_API_NAMESPACE,
 	namesUtil,
