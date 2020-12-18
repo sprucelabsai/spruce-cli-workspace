@@ -1,7 +1,5 @@
-import {
-	eventContractUtil,
-	validateEventContract,
-} from '@sprucelabs/mercury-types'
+import { validateEventContract } from '@sprucelabs/mercury-types'
+import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 

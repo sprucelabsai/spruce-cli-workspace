@@ -1,5 +1,6 @@
-import { EventContract, eventContractUtil } from '@sprucelabs/mercury-types'
+import { EventContract } from '@sprucelabs/mercury-types'
 import { normalizeSchemaValues, SelectChoice } from '@sprucelabs/schema'
+import { eventContractUtil } from '@sprucelabs/spruce-skill-utils'
 import {
 	diskUtil,
 	namesUtil,

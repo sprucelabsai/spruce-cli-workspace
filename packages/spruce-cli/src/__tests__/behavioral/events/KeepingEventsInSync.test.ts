@@ -1,10 +1,7 @@
 import pathUtil from 'path'
-import {
-	EventContract,
-	eventContractUtil,
-	validateEventContract,
-} from '@sprucelabs/mercury-types'
+import { EventContract, validateEventContract } from '@sprucelabs/mercury-types'
 import { validateSchema } from '@sprucelabs/schema'
+import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
 import {
 	MERCURY_API_NAMESPACE,
 	namesUtil,

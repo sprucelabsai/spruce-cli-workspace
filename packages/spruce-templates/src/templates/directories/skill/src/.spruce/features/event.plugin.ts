@@ -10,7 +10,8 @@ import {
 	HealthCheckItem,
 } from "@sprucelabs/spruce-skill-utils";
 import globby from "globby";
-import { EventContract, eventContractUtil } from "@sprucelabs/mercury-types";
+import { EventContract } from "@sprucelabs/mercury-types";
+import {eventContractUtil} from '@sprucelabs/spruce-event-utils'
 
 export class EventSkillFeature implements SkillFeature {
 
