@@ -9,7 +9,7 @@ import { TemplateRenderAs } from '@sprucelabs/schema'
 import {
 	addonUtil,
 	SCHEMA_VERSION_FALLBACK,
-	DEFAULT_NAMESPACE_PREFIX,
+	DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
 	DEFAULT_BUILDER_FUNCTION,
 	DEFAULT_TYPES_FILE,
 } from '@sprucelabs/spruce-skill-utils'
@@ -52,7 +52,7 @@ export const templates = {
 			...options,
 			imports,
 			globalSchemaNamespace:
-				options.globalSchemaNamespace ?? DEFAULT_NAMESPACE_PREFIX,
+				options.globalSchemaNamespace ?? DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
 		})
 	},
 
@@ -82,7 +82,7 @@ export const templates = {
 			SCHEMA_VERSION_FALLBACK,
 			rendersAs,
 			globalSchemaNamespace:
-				options.globalSchemaNamespace ?? DEFAULT_NAMESPACE_PREFIX,
+				options.globalSchemaNamespace ?? DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
 		})
 	},
 
@@ -106,7 +106,7 @@ export const templates = {
 			...options,
 			imports,
 			globalSchemaNamespace:
-				options.globalSchemaNamespace ?? DEFAULT_NAMESPACE_PREFIX,
+				options.globalSchemaNamespace ?? DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
 			typesFile: options.typesFile ?? DEFAULT_TYPES_FILE,
 		})
 	},
@@ -185,7 +185,7 @@ export const templates = {
 	listener(options: EventListenerOptions) {
 		const template = templateImportUtil.getTemplate('events/listener.ts.hbs')
 		return template({
-			globalSchemaNamespace: DEFAULT_NAMESPACE_PREFIX,
+			globalSchemaNamespace: DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
 			...options,
 		})
 	},
