@@ -61,7 +61,7 @@ const syncErrorActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorAction
 	                options: undefined
 	            },
 	            /** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
-	            'globalNamespace': {
+	            'globalSchemaNamespace': {
 	                label: 'Global namespace',
 	                type: 'text',
 	                isPrivate: true,

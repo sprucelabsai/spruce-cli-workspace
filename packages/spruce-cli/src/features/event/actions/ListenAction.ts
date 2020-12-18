@@ -1,5 +1,9 @@
 import { EventContract } from '@sprucelabs/mercury-types'
-import { normalizeSchemaValues, SelectChoice } from '@sprucelabs/schema'
+import {
+	normalizeSchemaValues,
+	SchemaTemplateItem,
+	SelectChoice,
+} from '@sprucelabs/schema'
 import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
 import {
 	diskUtil,
@@ -10,6 +14,7 @@ import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import eventListenActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/listenEventAction.schema'
 import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventAction.schema'
 import SpruceError from '../../../errors/SpruceError'
+import EventTemplateItemBuilder from '../../../templateItemBuilders/EventTemplateItemBuilder'
 import mergeUtil from '../../../utilities/merge.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
@@ -33,6 +38,8 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 				version,
 				eventName,
 				eventNamespace,
+				schemaTypesLookupDir,
+				contractDestinationDir,
 			} = normalizedOptions
 
 			this.ui.startLoading('Loading event contracts...')
@@ -83,12 +90,40 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 				resolvedDestination
 			)
 
+			const resolvedSchemaTypesLookupDir = diskUtil.resolvePath(
+				this.cwd,
+				schemaTypesLookupDir
+			)
+
+			let emitPayloadSchemaTemplateItem: SchemaTemplateItem | undefined
+			let responsePayloadSchemaTemplateItem: SchemaTemplateItem | undefined
+
+			if (eventNamespace !== SKILL_EVENT_NAMESPACE) {
+				const builder = new EventTemplateItemBuilder()
+				const templateItems = builder.generateEventTemplateItemForName(
+					contracts,
+					eventContractUtil.joinEventNameWithOptionalNamespace({
+						eventNamespace,
+						eventName,
+					})
+				)
+
+				emitPayloadSchemaTemplateItem =
+					templateItems.emitPayloadSchemaTemplateItem
+				responsePayloadSchemaTemplateItem =
+					templateItems.responsePayloadSchemaTemplateItem
+			}
+
 			const generator = this.Generator('event')
 			const results = await generator.generateListener(resolvedDestination, {
 				...normalizedOptions,
 				version: resolvedVersion,
 				eventName,
 				eventNamespace,
+				emitPayloadSchemaTemplateItem,
+				contractDestinationDir,
+				responsePayloadSchemaTemplateItem,
+				schemaTypesLookupDir: resolvedSchemaTypesLookupDir,
 			})
 
 			response.files = results
@@ -106,7 +141,6 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 
 			return response
 		} catch (err) {
-			debugger
 			return {
 				errors: [err],
 			}

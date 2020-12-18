@@ -18,6 +18,14 @@ const listenEventActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventAc
 	                defaultValue: "#spruce/events",
 	                options: undefined
 	            },
+	            /** Schema types lookup directory. Where I will lookup schema types and interfaces. */
+	            'schemaTypesLookupDir': {
+	                label: 'Schema types lookup directory',
+	                type: 'text',
+	                hint: 'Where I will lookup schema types and interfaces.',
+	                defaultValue: "#spruce/schemas",
+	                options: undefined
+	            },
 	            /** Namespace. */
 	            'eventNamespace': {
 	                label: 'Namespace',

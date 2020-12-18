@@ -68,6 +68,11 @@ export interface EventListenerOptions {
 	eventName: string
 	eventNamespace: string
 	nameConst: string
+	emitPayloadSchemaTemplateItem?: SchemaTemplateItem | null
+	responsePayloadSchemaTemplateItem?: SchemaTemplateItem | null
+	globalSchemaNamespace?: string
+	schemaTypesFile: string
+	contractsFile: string
 }
 
 export interface EventSignatureTemplateItem

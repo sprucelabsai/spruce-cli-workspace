@@ -25,7 +25,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	{{#each schemaTemplateItems}}
 
 	{{#if (shouldBeIncludedInSchemaTypes this)}}
-	namespace {{../globalNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}} {
+	namespace {{../globalSchemaNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}} {
 
 		{{#if schema.description}}/** {{schema.description}} */{{/if}}
 		interface {{namePascal}} {
@@ -36,7 +36,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			{{> schemaBody namespace=namespace schema=schema renderAs="type" }}
 		}
 
-		type {{namePascal}}Entity = SchemaEntity<{{../globalNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}}.{{namePascal}}Schema>
+		type {{namePascal}}Entity = SchemaEntity<{{../globalSchemaNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}}.{{namePascal}}Schema>
 
 	}
 	{{/if}}

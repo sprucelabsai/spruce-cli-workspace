@@ -9,6 +9,7 @@ import {
 	EventContractTemplateItem,
 	EventSignatureTemplateItem,
 } from '@sprucelabs/spruce-templates'
+import SpruceError from '../errors/SpruceError'
 import SchemaTemplateItemBuilder from './SchemaTemplateItemBuilder'
 
 export interface NamedEventSignature {
@@ -39,6 +40,47 @@ export default class EventTemplateItemBuilder {
 		}
 
 		return { eventContractTemplateItems, schemaTemplateItems }
+	}
+
+	public generateEventTemplateItemForName(
+		contracts: EventContract[],
+		eventNameWithOptionalNamespace: string
+	): {
+		responsePayloadSchemaTemplateItem: SchemaTemplateItem | undefined
+		emitPayloadSchemaTemplateItem: SchemaTemplateItem | undefined
+	} {
+		for (const contract of contracts) {
+			const namedSignatures = eventContractUtil.getNamedEventSignatures(
+				contract
+			)
+			for (const namedSig of namedSignatures) {
+				if (
+					namedSig.eventNameWithOptionalNamespace ===
+					eventNameWithOptionalNamespace
+				) {
+					const schemaTemplateItems: SchemaTemplateItem[] = this.mapEventSigsToSchemaTemplateItems(
+						namedSignatures
+					)
+
+					const signatureTemplateItem: EventSignatureTemplateItem = this.buildEventSigTemplateItem(
+						namedSig,
+						schemaTemplateItems
+					)
+
+					return {
+						emitPayloadSchemaTemplateItem:
+							signatureTemplateItem.emitPayloadSchema,
+						responsePayloadSchemaTemplateItem:
+							signatureTemplateItem.responsePayloadSchema,
+					}
+				}
+			}
+		}
+
+		throw new SpruceError({
+			code: 'INVALID_PARAMETERS',
+			parameters: ['eventNameWithOptionalNamespace'],
+		})
 	}
 
 	private generateTemplateItemsForContract(

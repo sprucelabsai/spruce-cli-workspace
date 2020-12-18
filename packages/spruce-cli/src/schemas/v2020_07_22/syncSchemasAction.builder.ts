@@ -26,7 +26,7 @@ export default buildSchema({
 			hint: 'Should we use versioning?',
 			isPrivate: true,
 		},
-		globalNamespace: {
+		globalSchemaNamespace: {
 			type: 'text',
 			label: 'Global namespace',
 			hint:

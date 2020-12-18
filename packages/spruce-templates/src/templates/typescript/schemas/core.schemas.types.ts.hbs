@@ -14,7 +14,7 @@ import * as {{importAs}} from '{{package}}'
 {{{this}}}
 {{/each}}
 
-export declare namespace {{../globalNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}} {
+export declare namespace {{../globalSchemaNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}} {
 
 	{{#if schema.description}}/** {{schema.description}} */{{/if}}
 	export interface {{namePascal}} {
@@ -25,7 +25,7 @@ export declare namespace {{../globalNamespace}}.{{namespace}}{{#if (isDefined sc
 		{{> schemaBody namespace=namespace schema=schema renderAs="type" }}
 	}
 
-	export type {{namePascal}}Entity = SchemaEntity<{{../globalNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}}.{{namePascal}}Schema>
+	export type {{namePascal}}Entity = SchemaEntity<{{../globalSchemaNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}}.{{namePascal}}Schema>
 
 }
 

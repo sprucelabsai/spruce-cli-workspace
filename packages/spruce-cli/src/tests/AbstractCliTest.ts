@@ -1,5 +1,5 @@
-import os from 'os'
 import pathUtil from 'path'
+import { SchemaRegistry } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractSpruceTest, { assert } from '@sprucelabs/test'
 import fs from 'fs-extra'
@@ -39,6 +39,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
 
+		SchemaRegistry.getInstance().forgetAllSchemas()
+
 		this.cwd = this.freshTmpDir()
 		this.homeDir = this.freshTmpDir()
 
@@ -75,9 +77,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static freshTmpDir() {
-		const tmpDirectory = pathUtil.join(os.tmpdir(), 'spruce-cli', uuid.v4())
+		const tmpDirectory = testUtil.resolveTestDir(uuid.v4())
 		fs.ensureDirSync(tmpDirectory)
-
 		return tmpDirectory
 	}
 

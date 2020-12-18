@@ -31,7 +31,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			schemaLookupDir,
 			addonsLookupDir,
 			enableVersioning,
-			globalNamespace,
+			globalSchemaNamespace,
 			fetchRemoteSchemas,
 			generateCoreSchemaTypes,
 			fetchLocalSchemas,
@@ -134,7 +134,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 					resolvedDestination: resolvedFieldTypesDestination,
 					fieldTemplateItems,
 					schemaTemplateItems,
-					globalNamespace: globalNamespace ?? undefined,
+					globalSchemaNamespace: globalSchemaNamespace ?? undefined,
 				})
 			} catch (err) {
 				schemaErrors.push(err)
@@ -150,7 +150,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 							schemaTemplateItems,
 							shouldImportCoreSchemas,
 							valueTypes,
-							globalNamespace: globalNamespace ?? undefined,
+							globalSchemaNamespace: globalSchemaNamespace ?? undefined,
 							typesTemplate: generateStandaloneTypesFile
 								? 'schemas/core.schemas.types.ts.hbs'
 								: undefined,
@@ -288,7 +288,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 		resolvedDestination: string
 		fieldTemplateItems: FieldTemplateItem[]
 		schemaTemplateItems: SchemaTemplateItem[]
-		globalNamespace?: string
+		globalSchemaNamespace?: string
 	}) {
 		const builder = new ValueTypeBuilder(
 			this.schemaGenerator,

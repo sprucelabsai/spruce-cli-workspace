@@ -23,11 +23,14 @@ export interface GenerateSchemaTypesOptions {
 	fieldTemplateItems: FieldTemplateItem[]
 	schemaTemplateItems: SchemaTemplateItem[]
 	valueTypes: ValueTypes
-	globalNamespace?: string
+	globalSchemaNamespace?: string
 	typesTemplate?: string
 	registerBuiltSchemas?: boolean
 	shouldImportCoreSchemas: boolean
 }
+
+//TODO: pull from skill utils when it comes out
+export const DEFAULT_SCHEMA_TYPES_FILENAME = 'schemas.types.ts'
 
 export default class SchemaGenerator extends AbstractGenerator {
 	private readonly fieldTemplates: {
@@ -127,7 +130,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 		const resolvedTypesDestination = this.resolveFilenameWithFallback(
 			destinationDirOrFilename,
-			'schemas.types.ts'
+			DEFAULT_SCHEMA_TYPES_FILENAME
 		)
 
 		let results: GenerationResults = []
@@ -136,7 +139,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			schemaTemplateItems,
 			fieldTemplateItems,
 			valueTypes,
-			globalNamespace: options.globalNamespace,
+			globalSchemaNamespace: options.globalSchemaNamespace,
 			typesTemplate,
 		})
 
@@ -242,7 +245,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 		options: {
 			schemaTemplateItems: SchemaTemplateItem[]
 			fieldTemplateItems: FieldTemplateItem[]
-			globalNamespace?: string
+			globalSchemaNamespace?: string
 		}
 	): Promise<GenerationResults> {
 		const contents = this.templates.valueTypes(options)

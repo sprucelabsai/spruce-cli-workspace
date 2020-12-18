@@ -40,7 +40,7 @@ export const templates = {
 		schemaTemplateItems: SchemaTemplateItem[]
 		fieldTemplateItems: FieldTemplateItem[]
 		valueTypes: ValueTypes
-		globalNamespace?: string
+		globalSchemaNamespace?: string
 		typesTemplate?: string
 	}) {
 		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
@@ -51,14 +51,15 @@ export const templates = {
 		return template({
 			...options,
 			imports,
-			globalNamespace: options.globalNamespace ?? DEFAULT_NAMESPACE_PREFIX,
+			globalSchemaNamespace:
+				options.globalSchemaNamespace ?? DEFAULT_NAMESPACE_PREFIX,
 		})
 	},
 
 	valueTypes(options: {
 		schemaTemplateItems: SchemaTemplateItem[]
 		fieldTemplateItems: FieldTemplateItem[]
-		globalNamespace?: string
+		globalSchemaNamespace?: string
 	}) {
 		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
 		const rendersAs = Object.values(TemplateRenderAs)
@@ -80,7 +81,8 @@ export const templates = {
 			schemaTemplatesByNamespaceAndName,
 			SCHEMA_VERSION_FALLBACK,
 			rendersAs,
-			globalNamespace: options.globalNamespace ?? DEFAULT_NAMESPACE_PREFIX,
+			globalSchemaNamespace:
+				options.globalSchemaNamespace ?? DEFAULT_NAMESPACE_PREFIX,
 		})
 	},
 
@@ -89,7 +91,7 @@ export const templates = {
 			schemaTemplateItems: SchemaTemplateItem[]
 			fieldTemplateItems: FieldTemplateItem[]
 			valueTypes: ValueTypes
-			globalNamespace?: string
+			globalSchemaNamespace?: string
 			registerBuiltSchemas: boolean
 			schemaFile?: string
 			typesFile?: string
@@ -103,7 +105,8 @@ export const templates = {
 		return template({
 			...options,
 			imports,
-			globalNamespace: options.globalNamespace ?? DEFAULT_NAMESPACE_PREFIX,
+			globalSchemaNamespace:
+				options.globalSchemaNamespace ?? DEFAULT_NAMESPACE_PREFIX,
 			typesFile: options.typesFile ?? DEFAULT_TYPES_FILE,
 		})
 	},
@@ -181,7 +184,10 @@ export const templates = {
 
 	listener(options: EventListenerOptions) {
 		const template = templateImportUtil.getTemplate('events/listener.ts.hbs')
-		return template(options)
+		return template({
+			globalSchemaNamespace: DEFAULT_NAMESPACE_PREFIX,
+			...options,
+		})
 	},
 
 	eventContract(

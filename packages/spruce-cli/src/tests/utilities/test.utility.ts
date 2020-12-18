@@ -1,7 +1,9 @@
 import os from 'os'
+import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { assert } from '@sprucelabs/test'
 import { GeneratedFile } from '../../types/cli.types'
+require('dotenv').config()
 
 function hasArg(regex: RegExp) {
 	return !!process.argv?.find((arg) => arg.search(regex) > -1)
@@ -15,12 +17,16 @@ const testUtil = {
 		return !hasArg(/no.*?cache/gi)
 	},
 
-	resolveCacheDir(cacheKey = '') {
-		return diskUtil.resolvePath(os.tmpdir(), 'spruce-cli', cacheKey)
+	resolveTestDir(cacheKey = '') {
+		return diskUtil.resolvePath(this.getTestRootDir(), 'spruce-cli', cacheKey)
 	},
 
 	shouldCleanupTestSkillDirs() {
 		return process.env.CLEANUP_TEST_SKILL_DIRS !== 'false'
+	},
+
+	getTestRootDir() {
+		return process.env.TEST_CACHE_ROOT_DIR ?? pathUtil.join(os.tmpdir())
 	},
 
 	assertCountsByAction(
