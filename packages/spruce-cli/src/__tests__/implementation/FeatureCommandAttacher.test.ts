@@ -48,23 +48,23 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 	protected static async attachFeatureSetsUpCommands() {
 		await this.attachSchemaFeature()
 
-		assert.doesInclude(this.program.commandInvocations, 'schema.create')
-		assert.doesInclude(this.program.commandInvocations, 'schema.sync')
-		assert.doesInclude(this.program.commandInvocations, 'schema.fields.sync')
+		assert.doesInclude(this.program.commandInvocations, 'create.schema')
+		assert.doesInclude(this.program.commandInvocations, 'sync.schema')
+		assert.doesInclude(this.program.commandInvocations, 'fields.sync.schema')
 
 		assert.doesInclude(this.program.descriptionInvocations, {
-			command: 'schema.create',
+			command: 'create.schema',
 		})
 		assert.doesInclude(this.program.descriptionInvocations, {
-			command: 'schema.sync',
+			command: 'sync.schema',
 		})
 		assert.doesInclude(this.program.descriptionInvocations, {
-			command: 'schema.fields.sync',
+			command: 'fields.sync.schema',
 		})
 
-		assert.doesInclude(this.program.actionInvocations, 'schema.create')
-		assert.doesInclude(this.program.actionInvocations, 'schema.sync')
-		assert.doesInclude(this.program.actionInvocations, 'schema.fields.sync')
+		assert.doesInclude(this.program.actionInvocations, 'create.schema')
+		assert.doesInclude(this.program.actionInvocations, 'sync.schema')
+		assert.doesInclude(this.program.actionInvocations, 'fields.sync.schema')
 	}
 
 	private static async attachSchemaFeature() {
@@ -79,29 +79,29 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		await this.attachSchemaFeature()
 
 		assert.doesInclude(this.program.optionInvocations, {
-			command: 'schema.create',
+			command: 'create.schema',
 			option:
 				'--schemaBuilderDestinationDir <schemaBuilderDestinationDir>, --sbdd <schemaBuilderDestinationDir>',
 			defaultValue: 'src/schemas',
 		})
 
 		assert.doesInclude(this.program.optionInvocations, {
-			command: 'schema.create',
+			command: 'create.schema',
 			option: '-d <description>, --description <description>',
 		})
 
 		assert.doesInclude(this.program.optionInvocations, {
-			command: 'schema.fields.sync',
+			command: 'fields.sync.schema',
 			option: '--addonsLookupDir <addonsLookupDir>, --ald <addonsLookupDir>',
 		})
 
 		assert.doesInclude(this.program.optionInvocations, {
-			command: 'schema.sync',
+			command: 'sync.schema',
 			option: '--fetchRemoteSchemas [true|false], --frs [true|false]',
 		})
 
 		assert.doesInclude(this.program.optionInvocations, {
-			command: 'schema.sync',
+			command: 'sync.schema',
 			option: '--generateCoreSchemaTypes [true|false], --gcst [true|false]',
 		})
 	}
@@ -111,7 +111,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		await this.attachSchemaFeature()
 
 		assert.doesNotInclude(this.program.optionInvocations, {
-			command: 'schema.create',
+			command: 'create.schema',
 			option: '--enableVersioning [true|false], --ev [true|false]',
 		})
 	}
@@ -124,7 +124,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		await this.attacher.attachFeature(vscodeFeature)
 
 		assert.doesInclude(this.program.optionInvocations, {
-			command: 'vscode.setup',
+			command: 'setup.vscode',
 			option: '-a [true|false], --all [true|false]',
 		})
 	}
