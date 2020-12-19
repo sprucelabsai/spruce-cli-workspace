@@ -31,14 +31,13 @@ export default class BuildServiceTest extends AbstractCliTest {
 		await this.installSkill('skills')
 
 		const service = this.Service('build')
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		service.watchStart()
+		void service.watchStart()
 
 		const testFile = "const test: string = 'hello world'"
 		const destination = this.resolvePath('src/test-watch.ts')
+
 		diskUtil.writeFile(destination, testFile)
 
-		// give a second for build to complete
 		await this.wait(10000)
 
 		const builtFilePath = this.resolvePath('build/test-watch.js')
@@ -50,18 +49,6 @@ export default class BuildServiceTest extends AbstractCliTest {
 	}
 
 	private static async installSkill(cacheKey?: string) {
-		const fixture = this.FeatureFixture()
-		await fixture.installFeatures(
-			[
-				{
-					code: 'skill',
-					options: {
-						name: 'builder-skill',
-						description: 'Used for building tests',
-					},
-				},
-			],
-			cacheKey
-		)
+		await this.FeatureFixture().installCachedFeatures(cacheKey ?? 'skills')
 	}
 }

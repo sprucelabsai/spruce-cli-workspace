@@ -13,8 +13,16 @@ import ServiceFactory, {
 	Service,
 	ServiceMap,
 } from '../services/ServiceFactory'
-import { ApiClient, ApiClientFactory } from '../stores/AbstractStore'
-import StoreFactory, { StoreCode, StoreMap } from '../stores/StoreFactory'
+import StoreFactory, {
+	StoreCode,
+	StoreFactoryMethodOptions,
+	StoreMap,
+} from '../stores/StoreFactory'
+import {
+	ApiClient,
+	ApiClientFactory,
+	ApiClientFactoryOptions,
+} from '../types/apiClient.types'
 import { GraphicsInterface } from '../types/cli.types'
 import AbstractFeature from './AbstractFeature'
 import FeatureInstaller from './FeatureInstaller'
@@ -68,8 +76,11 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
-	protected Store<C extends StoreCode>(code: C, cwd?: string): StoreMap[C] {
-		return this.storeFactory.Store(code, cwd ?? this.cwd)
+	protected Store<C extends StoreCode>(
+		code: C,
+		options?: StoreFactoryMethodOptions
+	): StoreMap[C] {
+		return this.storeFactory.Store(code, { cwd: this.cwd, ...options })
 	}
 
 	protected Generator<C extends GeneratorCode>(
@@ -158,7 +169,9 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 		return version
 	}
 
-	protected async connectToApi(): Promise<ApiClient> {
-		return this.apiClientFactory()
+	protected async connectToApi(
+		options?: ApiClientFactoryOptions
+	): Promise<ApiClient> {
+		return this.apiClientFactory(options)
 	}
 }

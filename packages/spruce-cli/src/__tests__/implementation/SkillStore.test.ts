@@ -1,4 +1,4 @@
-import { eventResponseUtil } from '@sprucelabs/mercury-types'
+import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractCliTest from '../../tests/AbstractCliTest'
@@ -84,6 +84,7 @@ export default class SkillStoreTest extends AbstractCliTest {
 		assert.isTrue(currentSkill.isRegistered)
 		assert.isEqual(currentSkill.name, 'awesome skill')
 		assert.isEqual(currentSkill.slug, slug)
+		assert.isEqual(currentSkill.apiKey, skill.apiKey)
 
 		const env = this.Service('env')
 

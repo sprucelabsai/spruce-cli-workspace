@@ -21,12 +21,14 @@ import CliGlobalEmitter, {
 import TerminalInterface from './interfaces/TerminalInterface'
 import ServiceFactory from './services/ServiceFactory'
 import log from './singletons/log'
-import { ApiClient, ApiClientFactory } from './stores/AbstractStore'
 import StoreFactory from './stores/StoreFactory'
+import {
+	ApiClient,
+	ApiClientFactory,
+	ApiClientFactoryOptions,
+} from './types/apiClient.types'
 import { GraphicsInterface } from './types/cli.types'
-
-// TODO: remove when skill-utils updates
-export const MERCURY_API_NAMESPACE = 'mercuryApi'
+import apiClientUtil from './utilities/apiClient.utility'
 
 interface HealthOptions {
 	isRunningLocally?: boolean
@@ -139,33 +141,48 @@ export default class Cli implements CliInterface {
 
 		let cwd = options?.cwd ?? process.cwd()
 
-		let apiClient: ApiClient | undefined
+		let apiClients: Record<string, ApiClient> = {}
 		const serviceFactory = new ServiceFactory({})
 		const apiClientFactoryAnon = options?.apiClientFactory
 			? options.apiClientFactory
-			: async () => {
-					if (!apiClient) {
-						apiClient = await MercuryClientFactory.Client<EventContracts>({
-							contracts: eventsContracts,
-							host: 'https://sandbox.mercury.spruce.ai',
-						})
+			: async (options?: ApiClientFactoryOptions) => {
+					const key = apiClientUtil.generateClientKey(options)
+
+					if (!apiClients[key]) {
+						apiClients[key] = await MercuryClientFactory.Client<EventContracts>(
+							{
+								contracts: eventsContracts,
+								host: 'https://sandbox.mercury.spruce.ai',
+							}
+						)
 					}
 
-					return apiClient
+					return apiClients[key]
 			  }
 
-		const apiClientFactory = async () => {
-			if (!apiClient) {
-				apiClient = await apiClientFactoryAnon()
-				const personStore = storeFactory.Store('person')
-				const person = personStore.getLoggedInPerson()
-				if (person) {
-					await apiClient.emit('authenticate', {
-						payload: { token: person.token },
+		const apiClientFactory = async (options?: ApiClientFactoryOptions) => {
+			const key = apiClientUtil.generateClientKey(options)
+
+			if (!apiClients[key]) {
+				apiClients[key] = await apiClientFactoryAnon(options)
+
+				const auth = { ...options }
+				if (!options) {
+					const personStore = storeFactory.Store('person')
+					const person = personStore.getLoggedInPerson()
+
+					if (person) {
+						auth.token = person.token
+					}
+				}
+
+				if (Object.keys(auth).length > 0) {
+					await apiClients[key].emit('authenticate', {
+						payload: auth,
 					})
 				}
 			}
-			return apiClient
+			return apiClients[key]
 		}
 
 		const storeFactory = new StoreFactory({

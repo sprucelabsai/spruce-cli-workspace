@@ -1,4 +1,4 @@
-import { mercuryErrorAssertUtil } from '@sprucelabs/mercury-types'
+import { eventErrorAssertUtil } from '@sprucelabs/spruce-event-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractCliTest from '../../tests/AbstractCliTest'
@@ -25,7 +25,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 			name: 'my amazing skill',
 		})
 
-		await this.MercuryFixture().logout()
+		await this.MercuryFixture().logoutAll()
 
 		const anonResults = await cli
 			.getFeature('organization')
@@ -33,7 +33,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 			.execute({})
 
 		assert.isTruthy(anonResults.errors)
-		mercuryErrorAssertUtil.assertError(
+		eventErrorAssertUtil.assertError(
 			anonResults.errors[0],
 			'UNAUTHORIZED_ACCESS'
 		)

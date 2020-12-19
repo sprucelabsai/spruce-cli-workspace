@@ -1,17 +1,17 @@
 import pathUtil from 'path'
-import {
-	EventContract,
-	eventContractUtil,
-	validateEventContract,
-} from '@sprucelabs/mercury-types'
+import { EventContract, validateEventContract } from '@sprucelabs/mercury-types'
 import { validateSchema } from '@sprucelabs/schema'
-import { MERCURY_API_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
+import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
+import {
+	MERCURY_API_NAMESPACE,
+	namesUtil,
+} from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
-const EXPECTED_NUM_CONTRACTS_GENERATED = 32
+const EXPECTED_NUM_CONTRACTS_GENERATED = 33
 
 export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	@test()
@@ -34,6 +34,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	protected static async syncingSchemasRetainsEventSchemas() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 		const results = await cli.getFeature('schema').Action('sync').execute({})
+
 		this.assertExpectedSchemasAreCreated(results)
 	}
 
@@ -41,6 +42,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	protected static async syncingSchemasDoesNotSyncEventSchemasIfEventsNotInstalled() {
 		const cli = await this.FeatureFixture().installCachedFeatures('schemas')
 		const results = await cli.getFeature('schema').Action('sync').execute({})
+
 		assert.doesThrow(() => this.assertExpectedSchemasAreCreated(results))
 	}
 
@@ -67,6 +69,33 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		assert.isLength(health.event.contracts, imported.length)
 	}
 
+	@test()
+	protected static async syncsEventsFromOtherSkills() {
+		const {
+			skillFixture,
+			skill2,
+			cli,
+		} = await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
+
+		await skillFixture.registerEventContract(skill2, {
+			eventSignatures: {
+				'my-new-event': {},
+			},
+		})
+
+		const results = await cli.getFeature('event').Action('sync').execute({})
+
+		const match = testUtil.assertsFileByNameInGeneratedFiles(
+			'myNewEvent.contract.ts',
+			results.files
+		)
+
+		assert.doesInclude(
+			match,
+			`${namesUtil.toCamel(skill2.slug)}${pathUtil.sep}myNewEvent.contract.ts`
+		)
+	}
+
 	private static async assertValidEventResults(results: FeatureActionResponse) {
 		assert.isFalsy(results.errors)
 
@@ -75,6 +104,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		this.assertExpectedContractsAreCreated(results)
 		this.assertExpectedSchemasAreCreated(results)
+
 		await this.assertCombinedContractContents(results)
 	}
 

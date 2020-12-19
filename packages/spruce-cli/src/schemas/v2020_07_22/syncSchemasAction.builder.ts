@@ -1,5 +1,5 @@
 import { buildSchema } from '@sprucelabs/schema'
-import { DEFAULT_NAMESPACE_PREFIX } from '@sprucelabs/spruce-skill-utils'
+import { DEFAULT_GLOBAL_SCHEMA_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import syncSchemaFieldsBuilder from './syncSchemaFieldsAction.builder'
 
 export default buildSchema({
@@ -26,13 +26,13 @@ export default buildSchema({
 			hint: 'Should we use versioning?',
 			isPrivate: true,
 		},
-		globalNamespace: {
+		globalSchemaNamespace: {
 			type: 'text',
 			label: 'Global namespace',
 			hint:
 				"The name you'll use when accessing these schemas, e.g. SpruceSchemas",
 			isPrivate: true,
-			defaultValue: DEFAULT_NAMESPACE_PREFIX,
+			defaultValue: DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
 		},
 		fetchRemoteSchemas: {
 			type: 'boolean',

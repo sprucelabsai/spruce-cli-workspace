@@ -1,6 +1,10 @@
 import pathUtil from 'path'
 import { SchemaTemplateItem } from '@sprucelabs/schema'
-import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
+import {
+	diskUtil,
+	namesUtil,
+	DEFAULT_SCHEMA_TYPES_FILENAME,
+} from '@sprucelabs/spruce-skill-utils'
 import {
 	EventContractTemplateItem,
 	EventListenerOptions,
@@ -8,6 +12,7 @@ import {
 import AbstractGenerator from '../../../generators/AbstractGenerator'
 import { GeneratedFile } from '../../../types/cli.types'
 
+const CONTRACT_FILE_NAME = `events.contract.ts`
 export default class EventGenerator extends AbstractGenerator {
 	public async generateContracts(
 		destinationDir: string,
@@ -78,7 +83,7 @@ export default class EventGenerator extends AbstractGenerator {
 	): Promise<GeneratedFile> {
 		const destinationFile = diskUtil.resolvePath(
 			destinationDir,
-			`events.contract.ts`
+			CONTRACT_FILE_NAME
 		)
 
 		const contents = this.templates.combinedEventsContract(templateItems)
@@ -94,9 +99,22 @@ export default class EventGenerator extends AbstractGenerator {
 
 	public async generateListener(
 		destinationDir: string,
-		options: Omit<EventListenerOptions, 'nameConst'> & { version: string }
+		options: Omit<
+			EventListenerOptions,
+			'nameConst' | 'schemaTypesFile' | 'contractsFile'
+		> & {
+			version: string
+			schemaTypesLookupDir: string
+			contractDestinationDir: string
+		}
 	) {
-		const { eventName, eventNamespace, version } = options
+		const {
+			eventName,
+			eventNamespace,
+			version,
+			schemaTypesLookupDir,
+			contractDestinationDir,
+		} = options
 		const filename = `${eventName}.listener.ts`
 
 		const resolvedDestination = pathUtil.join(
@@ -105,9 +123,22 @@ export default class EventGenerator extends AbstractGenerator {
 			eventNamespace,
 			filename
 		)
+
+		const relativeTypesFile = this.resolveSchemaTypesFile(
+			schemaTypesLookupDir,
+			resolvedDestination
+		)
+
+		const contractsFile = pathUtil.join(
+			contractDestinationDir,
+			CONTRACT_FILE_NAME.replace('.ts', '')
+		)
+
 		const listenerContents = this.templates.listener({
 			...options,
 			nameConst: namesUtil.toConst(`${eventNamespace}_${eventName}`),
+			schemaTypesFile: relativeTypesFile,
+			contractsFile,
 		})
 
 		const results = await this.writeFileIfChangedMixinResults(
@@ -117,5 +148,26 @@ export default class EventGenerator extends AbstractGenerator {
 		)
 
 		return results
+	}
+
+	private resolveSchemaTypesFile(
+		schemaTypesLookupDir: string,
+		resolvedDestination: string
+	) {
+		const schemaTypesFile = pathUtil.join(
+			schemaTypesLookupDir,
+			DEFAULT_SCHEMA_TYPES_FILENAME
+		)
+
+		let relativeTypesFile = pathUtil.relative(
+			pathUtil.dirname(resolvedDestination),
+			schemaTypesFile
+		)
+
+		relativeTypesFile = relativeTypesFile.replace(
+			pathUtil.extname(relativeTypesFile),
+			''
+		)
+		return relativeTypesFile
 	}
 }

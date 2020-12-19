@@ -18,13 +18,19 @@ const validateAndNormalizeUtil = {
 	) {
 		const values = {
 			...defaultSchemaValues(schema),
-			...options,
-		}
+			...this.stripUndefined(options),
+		} as SchemaPartialValues<S, false>
 
 		validateSchemaValues(schema, values, {})
 
 		const normalized = normalizeSchemaValues(schema, values)
 
+		return this.stripUndefined(normalized) as StripNulls<
+			SchemaValuesWithDefaults<S>
+		>
+	},
+
+	stripUndefined(normalized: Record<string, any>) {
 		const noUndefined = {}
 
 		Object.keys(normalized).forEach((key: string) => {
@@ -34,7 +40,7 @@ const validateAndNormalizeUtil = {
 				noUndefined[key] = normalized[key]
 			}
 		})
-		return noUndefined as StripNulls<SchemaValuesWithDefaults<S>>
+		return noUndefined
 	},
 }
 

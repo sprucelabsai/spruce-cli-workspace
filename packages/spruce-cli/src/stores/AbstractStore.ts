@@ -1,11 +1,10 @@
-import { MercuryClient } from '@sprucelabs/mercury-client'
-import { EventContracts } from '#spruce/events/events.contract'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory, {
 	ServiceProvider,
 	Service,
 	ServiceMap,
 } from '../services/ServiceFactory'
+import { ApiClientFactory, ApiClient } from '../types/apiClient.types'
 
 export interface StoreOptions {
 	serviceFactory: ServiceFactory
@@ -14,9 +13,6 @@ export interface StoreOptions {
 	apiClientFactory: ApiClientFactory
 	emitter: GlobalEmitter
 }
-
-export type ApiClient = MercuryClient<EventContracts>
-export type ApiClientFactory = () => Promise<ApiClient>
 
 export default abstract class AbstractStore implements ServiceProvider {
 	protected cwd: string

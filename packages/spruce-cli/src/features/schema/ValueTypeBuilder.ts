@@ -20,13 +20,13 @@ export default class ValueTypeBuilder {
 		resolvedDestination: string
 		fieldTemplateItems: FieldTemplateItem[]
 		schemaTemplateItems: SchemaTemplateItem[]
-		globalNamespace?: string
+		globalSchemaNamespace?: string
 	}) {
 		const {
 			resolvedDestination,
 			fieldTemplateItems,
 			schemaTemplateItems,
-			globalNamespace,
+			globalSchemaNamespace,
 		} = options
 
 		if (schemaTemplateItems.length === 0) {
@@ -38,7 +38,7 @@ export default class ValueTypeBuilder {
 			{
 				fieldTemplateItems,
 				schemaTemplateItems,
-				globalNamespace,
+				globalSchemaNamespace,
 			}
 		)
 

@@ -1,4 +1,4 @@
-import { eventResponseUtil } from '@sprucelabs/mercury-types'
+import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractCliTest from '../../../tests/AbstractCliTest'

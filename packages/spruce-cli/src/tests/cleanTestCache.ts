@@ -7,7 +7,7 @@ import { GraphicsTextEffect } from '../types/cli.types'
 
 const term = new TerminalInterface(__dirname)
 
-const dir = testUtil.resolveCacheDir()
+const dir = testUtil.resolveTestDir()
 
 term.renderHeadline(`Clearing test cache at ${dir}.`)
 diskUtil.deleteDir(dir)

@@ -9,9 +9,9 @@ import { TemplateRenderAs } from '@sprucelabs/schema'
 import {
 	addonUtil,
 	SCHEMA_VERSION_FALLBACK,
-	DEFAULT_NAMESPACE_PREFIX,
+	DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
 	DEFAULT_BUILDER_FUNCTION,
-	DEFAULT_TYPES_FILE,
+	DEFAULT_SCHEMA_TYPES_FILE,
 } from '@sprucelabs/spruce-skill-utils'
 import handlebars from 'handlebars'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
@@ -40,7 +40,7 @@ export const templates = {
 		schemaTemplateItems: SchemaTemplateItem[]
 		fieldTemplateItems: FieldTemplateItem[]
 		valueTypes: ValueTypes
-		globalNamespace?: string
+		globalSchemaNamespace?: string
 		typesTemplate?: string
 	}) {
 		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
@@ -51,14 +51,15 @@ export const templates = {
 		return template({
 			...options,
 			imports,
-			globalNamespace: options.globalNamespace ?? DEFAULT_NAMESPACE_PREFIX,
+			globalSchemaNamespace:
+				options.globalSchemaNamespace ?? DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
 		})
 	},
 
 	valueTypes(options: {
 		schemaTemplateItems: SchemaTemplateItem[]
 		fieldTemplateItems: FieldTemplateItem[]
-		globalNamespace?: string
+		globalSchemaNamespace?: string
 	}) {
 		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
 		const rendersAs = Object.values(TemplateRenderAs)
@@ -80,7 +81,8 @@ export const templates = {
 			schemaTemplatesByNamespaceAndName,
 			SCHEMA_VERSION_FALLBACK,
 			rendersAs,
-			globalNamespace: options.globalNamespace ?? DEFAULT_NAMESPACE_PREFIX,
+			globalSchemaNamespace:
+				options.globalSchemaNamespace ?? DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
 		})
 	},
 
@@ -89,7 +91,7 @@ export const templates = {
 			schemaTemplateItems: SchemaTemplateItem[]
 			fieldTemplateItems: FieldTemplateItem[]
 			valueTypes: ValueTypes
-			globalNamespace?: string
+			globalSchemaNamespace?: string
 			registerBuiltSchemas: boolean
 			schemaFile?: string
 			typesFile?: string
@@ -103,8 +105,9 @@ export const templates = {
 		return template({
 			...options,
 			imports,
-			globalNamespace: options.globalNamespace ?? DEFAULT_NAMESPACE_PREFIX,
-			typesFile: options.typesFile ?? DEFAULT_TYPES_FILE,
+			globalSchemaNamespace:
+				options.globalSchemaNamespace ?? DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
+			typesFile: options.typesFile ?? DEFAULT_SCHEMA_TYPES_FILE,
 		})
 	},
 
@@ -181,7 +184,10 @@ export const templates = {
 
 	listener(options: EventListenerOptions) {
 		const template = templateImportUtil.getTemplate('events/listener.ts.hbs')
-		return template(options)
+		return template({
+			globalSchemaNamespace: DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
+			...options,
+		})
 	},
 
 	eventContract(

@@ -93,7 +93,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			schemaTypesDestinationDirOrFile: resolvedErrorTypesDestinationDir,
 			schemaLookupDir: normalizedOptions.errorLookupDir,
 			enableVersioning: false,
-			globalNamespace: 'SpruceErrors',
+			globalSchemaNamespace: 'SpruceErrors',
 			fetchRemoteSchemas: false,
 			generateFieldTypes: true,
 			generateStandaloneTypesFile: true,

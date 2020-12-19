@@ -1,22 +1,19 @@
-import OrganizationStore from '../features/organization/stores/OrganizationStore'
+import StoreFactory from '../stores/StoreFactory'
 import PersonFixture from './PersonFixture'
 
 export default class OrganizationFixture {
-	private store: OrganizationStore
+	private storeFactory: StoreFactory
 	private personFixture: PersonFixture
 
-	public constructor(
-		organizationStore: OrganizationStore,
-		personFixture: PersonFixture
-	) {
-		this.store = organizationStore
+	public constructor(personFixture: PersonFixture, storeFactory: StoreFactory) {
+		this.storeFactory = storeFactory
 		this.personFixture = personFixture
 	}
 
 	public async seedDummyOrg(options: { name: string; slug?: string }) {
 		await this.personFixture.loginAsDummyPerson()
 
-		return this.store.create({
+		return this.storeFactory.Store('organization').create({
 			slug: `my-org-${new Date().getTime()}`,
 			...options,
 		})
@@ -25,10 +22,18 @@ export default class OrganizationFixture {
 	public async clearAllOrgs() {
 		await this.personFixture.loginAsDummyPerson()
 
-		const orgs = await this.store.fetchMyOrganizations()
+		const orgStore = this.storeFactory.Store('organization')
+		const orgs = await orgStore.fetchMyOrganizations()
 
 		for (const org of orgs) {
-			await this.store.deleteOrganization(org.id)
+			await orgStore.deleteOrganization(org.id)
 		}
+	}
+
+	public async installSkillAtOrganization(skillId: string, orgId: string) {
+		await this.personFixture.loginAsDummyPerson()
+		const orgStore = this.storeFactory.Store('organization')
+
+		await orgStore.installSkillAtOrganization(skillId, orgId)
 	}
 }

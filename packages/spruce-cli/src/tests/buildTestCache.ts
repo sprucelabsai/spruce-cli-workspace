@@ -113,10 +113,10 @@ async function run() {
 	function setup(cacheKey: string) {
 		const options = testSkillCache[cacheKey]
 
-		const importCacheDir = testUtil.resolveCacheDir('spruce-cli-import-cache')
+		const importCacheDir = testUtil.resolveTestDir('spruce-cli-import-cache')
 
 		const serviceFactory = new ServiceFactory({ importCacheDir })
-		const cwd = testUtil.resolveCacheDir(cacheKey)
+		const cwd = testUtil.resolveTestDir(cacheKey)
 
 		const mercuryFixture = new MercuryFixture()
 		const fixture = new FeatureFixture({
@@ -145,7 +145,9 @@ async function run() {
 			diskUtil.deleteDir(cwd)
 		}
 
-		renderLine(`Starting to build '${cacheKey}'...`, [GraphicsTextEffect.Green])
+		renderLine(`Starting to build '${cacheKey}' to ${cwd}...`, [
+			GraphicsTextEffect.Green,
+		])
 
 		await fixture.installFeatures(options, cacheKey)
 

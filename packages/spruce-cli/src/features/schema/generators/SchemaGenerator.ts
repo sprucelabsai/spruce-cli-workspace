@@ -4,7 +4,10 @@ import { FieldTemplateItem, SchemaTemplateItem } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { LATEST_HANDLEBARS } from '@sprucelabs/spruce-skill-utils'
+import {
+	LATEST_HANDLEBARS,
+	DEFAULT_SCHEMA_TYPES_FILENAME,
+} from '@sprucelabs/spruce-skill-utils'
 import {
 	SchemaBuilderTemplateItem,
 	ValueTypes,
@@ -23,7 +26,7 @@ export interface GenerateSchemaTypesOptions {
 	fieldTemplateItems: FieldTemplateItem[]
 	schemaTemplateItems: SchemaTemplateItem[]
 	valueTypes: ValueTypes
-	globalNamespace?: string
+	globalSchemaNamespace?: string
 	typesTemplate?: string
 	registerBuiltSchemas?: boolean
 	shouldImportCoreSchemas: boolean
@@ -127,7 +130,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 
 		const resolvedTypesDestination = this.resolveFilenameWithFallback(
 			destinationDirOrFilename,
-			'schemas.types.ts'
+			DEFAULT_SCHEMA_TYPES_FILENAME
 		)
 
 		let results: GenerationResults = []
@@ -136,7 +139,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			schemaTemplateItems,
 			fieldTemplateItems,
 			valueTypes,
-			globalNamespace: options.globalNamespace,
+			globalSchemaNamespace: options.globalSchemaNamespace,
 			typesTemplate,
 		})
 
@@ -242,7 +245,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 		options: {
 			schemaTemplateItems: SchemaTemplateItem[]
 			fieldTemplateItems: FieldTemplateItem[]
-			globalNamespace?: string
+			globalSchemaNamespace?: string
 		}
 	): Promise<GenerationResults> {
 		const contents = this.templates.valueTypes(options)

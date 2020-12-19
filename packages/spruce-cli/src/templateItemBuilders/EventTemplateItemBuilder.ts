@@ -1,15 +1,15 @@
-import {
-	EventContract,
-	eventContractUtil,
-	EventSignature,
-} from '@sprucelabs/mercury-types'
+import { EventContract, EventSignature } from '@sprucelabs/mercury-types'
 import { Schema, SchemaTemplateItem } from '@sprucelabs/schema'
-import { namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
+import {
+	MERCURY_API_NAMESPACE,
+	namesUtil,
+} from '@sprucelabs/spruce-skill-utils'
 import {
 	EventContractTemplateItem,
 	EventSignatureTemplateItem,
 } from '@sprucelabs/spruce-templates'
-import { MERCURY_API_NAMESPACE } from '../cli'
+import SpruceError from '../errors/SpruceError'
 import SchemaTemplateItemBuilder from './SchemaTemplateItemBuilder'
 
 export interface NamedEventSignature {
@@ -40,6 +40,47 @@ export default class EventTemplateItemBuilder {
 		}
 
 		return { eventContractTemplateItems, schemaTemplateItems }
+	}
+
+	public generateEventTemplateItemForName(
+		contracts: EventContract[],
+		eventNameWithOptionalNamespace: string
+	): {
+		responsePayloadSchemaTemplateItem: SchemaTemplateItem | undefined
+		emitPayloadSchemaTemplateItem: SchemaTemplateItem | undefined
+	} {
+		for (const contract of contracts) {
+			const namedSignatures = eventContractUtil.getNamedEventSignatures(
+				contract
+			)
+			for (const namedSig of namedSignatures) {
+				if (
+					namedSig.eventNameWithOptionalNamespace ===
+					eventNameWithOptionalNamespace
+				) {
+					const schemaTemplateItems: SchemaTemplateItem[] = this.mapEventSigsToSchemaTemplateItems(
+						namedSignatures
+					)
+
+					const signatureTemplateItem: EventSignatureTemplateItem = this.buildEventSigTemplateItem(
+						namedSig,
+						schemaTemplateItems
+					)
+
+					return {
+						emitPayloadSchemaTemplateItem:
+							signatureTemplateItem.emitPayloadSchema,
+						responsePayloadSchemaTemplateItem:
+							signatureTemplateItem.responsePayloadSchema,
+					}
+				}
+			}
+		}
+
+		throw new SpruceError({
+			code: 'INVALID_PARAMETERS',
+			parameters: ['eventNameWithOptionalNamespace'],
+		})
 	}
 
 	private generateTemplateItemsForContract(

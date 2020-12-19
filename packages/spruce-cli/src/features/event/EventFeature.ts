@@ -23,6 +23,9 @@ export default class EventFeature extends AbstractFeature {
 		{
 			name: '@sprucelabs/mercury-types',
 		},
+		{
+			name: '@sprucelabs/spruce-event-utils',
+		},
 	]
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
@@ -66,7 +69,9 @@ export default class EventFeature extends AbstractFeature {
 			optionsSchema: syncEventActionSchema,
 			ui: this.ui,
 			eventGenerator: this.Generator('event'),
-			eventStore: this.Store('event'),
+			eventStore: this.Store('event', {
+				apiClientFactory: this.getApiClientFactoryAuthedAsCurrentSkill(),
+			}),
 		})
 	}
 }

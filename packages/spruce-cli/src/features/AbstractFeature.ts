@@ -12,8 +12,16 @@ import ServiceFactory, {
 	ServiceProvider,
 	ServiceMap,
 } from '../services/ServiceFactory'
-import { ApiClientFactory } from '../stores/AbstractStore'
-import StoreFactory, { StoreCode, StoreMap } from '../stores/StoreFactory'
+import StoreFactory, {
+	StoreCode,
+	StoreFactoryMethodOptions,
+	StoreMap,
+} from '../stores/StoreFactory'
+import {
+	ApiClient,
+	ApiClientFactory,
+	ApiClientFactoryOptions,
+} from '../types/apiClient.types'
 import {
 	NpmPackage,
 	GraphicsInterface,
@@ -73,6 +81,7 @@ export default abstract class AbstractFeature<
 	private serviceFactory: ServiceFactory
 	private storeFactory: StoreFactory
 	private generatorFactory: GeneratorFactory
+	private apiClientFactory: ApiClientFactory
 
 	protected actionFactoryOptions: Omit<
 		FeatureActionFactoryOptions,
@@ -89,6 +98,7 @@ export default abstract class AbstractFeature<
 		this.emitter = options.emitter
 		this.featureInstaller = options.featureInstaller
 		this.ui = options.ui
+		this.apiClientFactory = options.apiClientFactory
 
 		this.actionFactoryOptions = {
 			...options,
@@ -153,7 +163,40 @@ export default abstract class AbstractFeature<
 		return matches.map((path) => featuresUtil.filePathToActionCode(path))
 	}
 
-	public Store<C extends StoreCode>(code: C, cwd?: string): StoreMap[C] {
-		return this.storeFactory.Store(code, this.cwd ?? cwd)
+	public Store<C extends StoreCode>(
+		code: C,
+		options?: StoreFactoryMethodOptions
+	): StoreMap[C] {
+		return this.storeFactory.Store(code, { cwd: this.cwd, ...options })
+	}
+
+	protected async connectToApi(
+		options?: ApiClientFactoryOptions
+	): Promise<ApiClient> {
+		return this.apiClientFactory(options)
+	}
+
+	public getApiClientFactoryAuthedAsCurrentSkill() {
+		let client: ApiClient | undefined
+
+		return async () => {
+			if (!client) {
+				const isInstalled = await this.featureInstaller.isInstalled('skill')
+
+				if (isInstalled) {
+					const skill = await this.Store('skill').loadCurrentSkill()
+
+					if (skill.isRegistered) {
+						client = await this.connectToApi({
+							skillId: skill.id,
+							apiKey: skill.apiKey,
+						})
+					}
+				}
+				client = client ?? (await this.connectToApi())
+			}
+
+			return client as ApiClient
+		}
 	}
 }

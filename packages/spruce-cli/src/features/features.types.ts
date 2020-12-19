@@ -4,8 +4,8 @@ import { Templates } from '@sprucelabs/spruce-templates'
 import GeneratorFactory from '../generators/GeneratorFactory'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory from '../services/ServiceFactory'
-import { ApiClientFactory } from '../stores/AbstractStore'
 import StoreFactory from '../stores/StoreFactory'
+import { ApiClientFactory } from '../types/apiClient.types'
 import {
 	GeneratedFile,
 	GraphicsInterface,

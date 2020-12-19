@@ -4,7 +4,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import {
 	CORE_SCHEMA_VERSION,
 	CORE_NAMESPACE,
-	DEFAULT_NAMESPACE_PREFIX,
+	DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
 } from '@sprucelabs/spruce-skill-utils'
 import { assert, test } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
@@ -180,7 +180,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		assert.doesInclude(
 			typesContents,
 			new RegExp(
-				`export declare namespace ${DEFAULT_NAMESPACE_PREFIX}.${CORE_NAMESPACE}.${CORE_SCHEMA_VERSION.constValue}`,
+				`export declare namespace ${DEFAULT_GLOBAL_SCHEMA_NAMESPACE}.${CORE_NAMESPACE}.${CORE_SCHEMA_VERSION.constValue}`,
 				'gis'
 			)
 		)

@@ -1,4 +1,4 @@
-import { eventResponseUtil } from '@sprucelabs/mercury-types'
+import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import AbstractStore from '../../../stores/AbstractStore'
 
 export default class OrganizationStore extends AbstractStore {
@@ -20,7 +20,10 @@ export default class OrganizationStore extends AbstractStore {
 		return isInstalled
 	}
 
-	public async installSkillAtOrg(skillId: string, orgId: any): Promise<void> {
+	public async installSkillAtOrganization(
+		skillId: string,
+		orgId: any
+	): Promise<void> {
 		const client = await this.connectToApi()
 		const results = await client.emit('install-skill', {
 			target: {

@@ -10,6 +10,22 @@ const listenEventActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventAc
 	name: 'Listen to event action',
 	description: 'Options for event.listen.',
 	    fields: {
+	            /** Contract destination. Where I will generate event contracts. */
+	            'contractDestinationDir': {
+	                label: 'Contract destination',
+	                type: 'text',
+	                hint: 'Where I will generate event contracts.',
+	                defaultValue: "#spruce/events",
+	                options: undefined
+	            },
+	            /** Schema types lookup directory. Where I will lookup schema types and interfaces. */
+	            'schemaTypesLookupDir': {
+	                label: 'Schema types lookup directory',
+	                type: 'text',
+	                hint: 'Where I will lookup schema types and interfaces.',
+	                defaultValue: "#spruce/schemas",
+	                options: undefined
+	            },
 	            /** Namespace. */
 	            'eventNamespace': {
 	                label: 'Namespace',

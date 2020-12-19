@@ -48,7 +48,7 @@ export default class TestFeature extends AbstractFeature {
 
 		if (!scripts.test) {
 			scripts.test = 'jest'
-			scripts['test.watch'] = 'jest --watch'
+			scripts['watch.tests'] = 'jest --watch'
 			service.set({ path: 'scripts', value: scripts })
 		}
 	}
