@@ -182,6 +182,16 @@ export const templates = {
 		return template(options)
 	},
 
+	launchConfig() {
+		const template = templateImportUtil.getTemplate('vscode/launch.json')
+		return template({})
+	},
+
+	vsCodeSettings() {
+		const template = templateImportUtil.getTemplate('vscode/settings.json')
+		return template({})
+	},
+
 	listener(options: EventListenerOptions) {
 		const template = templateImportUtil.getTemplate('events/listener.ts.hbs')
 		return template({

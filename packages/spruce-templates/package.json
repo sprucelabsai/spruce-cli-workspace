@@ -28,7 +28,7 @@
 	"scripts": {
 		"build": "yarn build.babel && yarn build.types && yarn build.resolve-paths",
 		"build.types": "tsc --emitDeclarationOnly && echo PASS",
-		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps --root-mode upward --copy-files",
+		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps --root-mode upward --copy-files --include-dotfiles",
 		"build.resolve-paths": "resolve-path-aliases --target build",
 		"rebuild": "cd ../ && yarn rebuild",
 		"clean": "rm -rf build/",

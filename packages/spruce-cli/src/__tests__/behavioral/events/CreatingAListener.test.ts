@@ -104,7 +104,9 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 	@test()
 	protected static async generatesTypedListenerWithoutPayloads() {
-		const contents = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
+		const {
+			contents,
+		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
 			{}
 		)
 
@@ -116,7 +118,9 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 	@test()
 	protected static async generatesTypedListenerWithEmitPayload() {
-		const contents = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
+		const {
+			contents,
+		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
 			{
 				emitPayloadSchema: buildSchema({
 					id: 'myNewEventEmitPayload',
@@ -137,7 +141,9 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 	@test()
 	protected static async generatesTypedListenerWithAllPayloads() {
-		const contents = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
+		const {
+			contents,
+		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
 			{
 				emitPayloadSchema: buildSchema({
 					id: 'myNewEventEmitPayload',
@@ -162,6 +168,36 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 			contents,
 			'export default (event: SpruceEvent<EventContracts, EmitPayload>): SpruceEventResponse<ResponsePayload>'
 		)
+	}
+
+	@test.only()
+	protected static async emittingEventTriggersListener() {
+		const {
+			skill2,
+			contents,
+			listenerPath,
+		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
+			{
+				emitPayloadSchema: buildSchema({
+					id: 'myNewEventEmitPayload',
+					fields: {
+						booleanField: {
+							type: 'boolean',
+						},
+					},
+				}),
+				responsePayloadSchema: buildSchema({
+					id: 'myNewEventResponsePayload',
+					fields: {
+						booleanField: {
+							type: 'boolean',
+						},
+					},
+				}),
+			}
+		)
+
+		await this.openInVsCode()
 	}
 
 	private static async setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
@@ -197,6 +233,6 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 		const contents = diskUtil.readFile(listener)
 
-		return contents
+		return { contents, skill2, listenerPath: listener }
 	}
 }

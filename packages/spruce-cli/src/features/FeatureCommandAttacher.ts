@@ -66,23 +66,20 @@ export default class FeatureCommandAttacher {
 			command = command.description(description)
 		}
 
-		const definition = action.optionsSchema
+		const schema = action.optionsSchema
 
-		if (definition) {
-			this.attachOptions(command, definition)
+		if (schema) {
+			this.attachOptions(command, schema)
 		}
 	}
 
-	private attachOptions(
-		command: CommanderStatic['program'],
-		definition: Schema
-	) {
-		const schema = SchemaEntityFactory.Entity(definition)
+	private attachOptions(command: CommanderStatic['program'], schema: Schema) {
+		const entity = SchemaEntityFactory.Entity(schema)
 
 		let theProgram = command
 
-		const fields = schema.getNamedFields()
-		const aliases = featuresUtil.generateOptionAliases(definition)
+		const fields = entity.getNamedFields()
+		const aliases = featuresUtil.generateOptionAliases(schema)
 
 		fields.forEach(({ field, name }) => {
 			try {
@@ -98,9 +95,9 @@ export default class FeatureCommandAttacher {
 					//@ts-ignore
 					code: 'FAILED_TO_ATTACH_COMMAND',
 					fieldName: name,
-					id: schema.schemaId,
+					id: entity.schemaId,
 					originalError: err,
-					friendlyMessage: `Could not attach option ${aliases[name]} from ${schema.schemaId}.${name} to the command`,
+					friendlyMessage: `Could not attach option ${aliases[name]} from ${entity.schemaId}.${name} to the command`,
 				})
 			}
 		})

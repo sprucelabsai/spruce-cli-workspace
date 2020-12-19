@@ -81,29 +81,28 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'create.schema',
-			option:
-				'--schemaBuilderDestinationDir <schemaBuilderDestinationDir>, --sbdd <schemaBuilderDestinationDir>',
+			option: '--schemaBuilderDestinationDir <schemaBuilderDestinationDir>',
 			defaultValue: 'src/schemas',
 		})
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'create.schema',
-			option: '-d <description>, --description <description>',
+			option: '--description <description>',
 		})
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'sync.fields',
-			option: '--addonsLookupDir <addonsLookupDir>, --ald <addonsLookupDir>',
+			option: '--addonsLookupDir <addonsLookupDir>',
 		})
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'sync.schemas',
-			option: '--fetchRemoteSchemas [true|false], --frs [true|false]',
+			option: '--fetchRemoteSchemas [true|false]',
 		})
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'sync.schemas',
-			option: '--generateCoreSchemaTypes [true|false], --gcst [true|false]',
+			option: '--generateCoreSchemaTypes [true|false]',
 		})
 	}
 
@@ -113,7 +112,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 
 		assert.doesNotInclude(this.program.optionInvocations, {
 			command: 'create.schema',
-			option: '--enableVersioning [true|false], --ev [true|false]',
+			option: '--enableVersioning [true|false]',
 		})
 	}
 
@@ -126,7 +125,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'setup.vscode',
-			option: '-a [true|false], --all [true|false]',
+			option: '--all [true|false]',
 		})
 	}
 

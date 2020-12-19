@@ -1,0 +1,18 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "debug.boot",
+			"protocol": "inspector",
+			"runtimeExecutable": "yarn",
+			"runtimeArgs": [
+				"run",
+				"boot.local"
+			],
+			"console": "integratedTerminal",
+			"port": 5200,
+		}
+	]
+}

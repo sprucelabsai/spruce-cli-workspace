@@ -1,5 +1,7 @@
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import setupVscodeSchema from '#spruce/schemas/spruceCli/v2020_07_22/setupVscodeAction.schema'
+import { NpmPackage } from '../../../types/cli.types'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 import { Extension } from '../services/VsCodeService'
@@ -29,18 +31,31 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 
 	public name = 'setup'
 	public optionsSchema = setupVscodeSchema
+	private dependencies: NpmPackage[] = [
+		{
+			name: 'eslint',
+			isDev: true,
+		},
+		{
+			name: 'eslint-config-spruce',
+			isDev: true,
+		},
+	]
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
-		const normalizedOptions = this.validateAndNormalizeOptions(options)
+		const { all } = this.validateAndNormalizeOptions(options)
 
 		const missing = await this.getMissingExtensions()
 		const choices = missing.map((ext) => ({ value: ext.id, label: ext.label }))
+		const response: FeatureActionResponse = {
+			summaryLines: [],
+		}
 
-		const answers = normalizedOptions.all
+		const answers = all
 			? missing.map((m) => m.id)
 			: await this.ui.prompt({
 					type: 'select',
-					label: 'What should I install?',
+					label: 'Which extensions should I install?',
 					isArray: true,
 					options: {
 						choices,
@@ -49,19 +64,87 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 
 		if (answers && answers?.length > 0) {
 			this.ui.startLoading(`Installing ${answers.length} extensions...`)
+			for (const answer of answers) {
+				response.summaryLines?.push(`Installed ${answer} extension.`)
+			}
 
 			await this.Service('vsCode').installExtensions(answers)
 
 			this.ui.stopLoading()
 
-			return {
-				hints: [
-					'You will need to restart vscode for the changes to take effect. 👊',
-				],
+			response.hints = [
+				'You will need to restart vscode for the changes to take effect. 👊',
+			]
+		}
+
+		const launchConfigPath = diskUtil.resolvePath(
+			this.cwd,
+			'.vscode',
+			'launch.json'
+		)
+
+		if (!diskUtil.doesFileExist(launchConfigPath)) {
+			const confirm =
+				all || (await this.ui.confirm('Want me to setup debugging for you?'))
+
+			if (confirm) {
+				const contents = this.templates.launchConfig()
+				diskUtil.writeFile(launchConfigPath, contents)
+				response.files = response.files ?? []
+				response.files.push({
+					name: 'launch.json',
+					path: launchConfigPath,
+					description:
+						'Sets you up for debugging directly from Visual Studio Code.',
+					action: 'generated',
+				})
+
+				response.summaryLines?.push(
+					`Installed debug configuration (launch.json)`
+				)
 			}
 		}
 
-		return {}
+		const settingsFilePath = diskUtil.resolvePath(
+			this.cwd,
+			'.vscode',
+			'settings.json'
+		)
+
+		if (!diskUtil.doesFileExist(settingsFilePath)) {
+			const confirm =
+				all ||
+				(await this.ui.confirm(
+					"Want me to configure vscode's for Lint and other Spruce recommended settings?"
+				))
+
+			if (confirm) {
+				const contents = this.templates.vsCodeSettings()
+				diskUtil.writeFile(settingsFilePath, contents)
+				response.files = response.files ?? []
+				response.files.push({
+					name: 'settings.json',
+					path: settingsFilePath,
+					description:
+						'Sets you up for list and other helpful workflow optimizations in Visual Studio Code.',
+					action: 'generated',
+				})
+
+				response.packagesInstalled = []
+				for (const module of this.dependencies) {
+					response.packagesInstalled.push(module)
+					await this.Service('pkg').install(module.name, {
+						isDev: module.isDev,
+					})
+				}
+
+				response.summaryLines?.push(
+					`Installed lint and other settings for code (settings.json).`
+				)
+			}
+		}
+
+		return response
 	}
 
 	private async getMissingExtensions() {

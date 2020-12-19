@@ -25,7 +25,7 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 
 		assert.isLength(Object.keys(aliases), 1)
 		assert.doesInclude(aliases, {
-			firstName: '--firstName <firstName>, --fn <firstName>',
+			firstName: '--firstName <firstName>',
 		})
 	}
 
@@ -49,10 +49,10 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 
 		assert.isLength(Object.keys(aliases), 2)
 		assert.doesInclude(aliases, {
-			firstName: '--firstName <firstName>, --fn <firstName>',
+			firstName: '--firstName <firstName>',
 		})
 		assert.doesInclude(aliases, {
-			lastName: '--lastName <lastName>, --ln <lastName>',
+			lastName: '--lastName <lastName>',
 		})
 	}
 
@@ -80,14 +80,14 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 
 		assert.isLength(Object.keys(aliases), 3)
 		assert.doesInclude(aliases, {
-			defaultTrue: '--defaultTrue [true|false], --dt [true|false]',
+			defaultTrue: '--defaultTrue [true|false]',
 		})
 		assert.doesInclude(aliases, {
-			defaultFalse: '--defaultFalse [true|false], --df [true|false]',
+			defaultFalse: '--defaultFalse [true|false]',
 		})
 
 		assert.doesInclude(aliases, {
-			boolNoDefault: '--boolNoDefault [true|false], --bnd [true|false]',
+			boolNoDefault: '--boolNoDefault [true|false]',
 		})
 	}
 }
