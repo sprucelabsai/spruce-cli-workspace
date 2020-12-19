@@ -181,8 +181,7 @@ export default abstract class AbstractFeature<
 
 		return async () => {
 			if (!client) {
-				
-				const isInstalled = async this.featureInstaller.isInstalled('skill')
+				const isInstalled = await this.featureInstaller.isInstalled('skill')
 
 				if (isInstalled) {
 					const skill = await this.Store('skill').loadCurrentSkill()
