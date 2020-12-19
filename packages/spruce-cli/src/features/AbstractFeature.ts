@@ -181,12 +181,13 @@ export default abstract class AbstractFeature<
 
 		return async () => {
 			if (!client) {
-				const isInstalled = this.featureInstaller.isInstalled('skill')
+				
+				const isInstalled = async this.featureInstaller.isInstalled('skill')
 
 				if (isInstalled) {
 					const skill = await this.Store('skill').loadCurrentSkill()
 
-					if (skill.id) {
+					if (skill.isRegistered) {
 						client = await this.connectToApi({
 							skillId: skill.id,
 							apiKey: skill.apiKey,
