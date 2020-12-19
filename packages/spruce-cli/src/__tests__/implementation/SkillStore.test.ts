@@ -22,7 +22,9 @@ export default class SkillStoreTest extends AbstractCliTest {
 				slug: 'awesome-skill',
 			})
 		)
-		errorAssertUtil.assertError(err, 'DIRECTORY_NOT_SKILL')
+		errorAssertUtil.assertError(err, 'FEATURE_NOT_INSTALLED', {
+			featureCode: 'event',
+		})
 	}
 
 	@test()
@@ -30,7 +32,9 @@ export default class SkillStoreTest extends AbstractCliTest {
 		const err = await assert.doesThrowAsync(() =>
 			this.Store('skill').loadCurrentSkill()
 		)
-		errorAssertUtil.assertError(err, 'DIRECTORY_NOT_SKILL')
+		errorAssertUtil.assertError(err, 'FEATURE_NOT_INSTALLED', {
+			featureCode: 'event',
+		})
 	}
 
 	@test()
@@ -38,12 +42,15 @@ export default class SkillStoreTest extends AbstractCliTest {
 		const err = await assert.doesThrowAsync(() =>
 			this.Store('skill').isCurrentSkillRegistered()
 		)
-		errorAssertUtil.assertError(err, 'DIRECTORY_NOT_SKILL')
+		errorAssertUtil.assertError(err, 'FEATURE_NOT_INSTALLED', {
+			featureCode: 'event',
+		})
 	}
 
-	@test()
-	protected static async canRegister() {
-		await this.FeatureFixture().installCachedFeatures('skills')
+	@test('can register in skill', 'skills')
+	@test('can register in node module', 'eventsInNodeModule')
+	protected static async canRegister(cacheKey: string) {
+		await this.FeatureFixture().installCachedFeatures(cacheKey)
 
 		const slug = `awesome-skill-${new Date().getTime()}`
 		await this.PersonFixture().loginAsDummyPerson()

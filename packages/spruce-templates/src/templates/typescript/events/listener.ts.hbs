@@ -11,7 +11,7 @@ type EmitPayload = {{{ schemaNamespacePath schemaTemplateItem=emitPayloadSchemaT
 type ResponsePayload = {{{ schemaNamespacePath schemaTemplateItem=responsePayloadSchemaTemplateItem }}}
 {{/if}}
 
-export default (event: SpruceEvent{{#if emitPayloadSchemaTemplateItem}}<EventContracts, EmitPayload>{{/if}}): SpruceEventResponse{{#if ResponsePayload}}<ResponsePayload>{{/if}} => {
+export default (event: SpruceEvent{{#if emitPayloadSchemaTemplateItem}}<EventContracts, EmitPayload>{{/if}}): SpruceEventResponse{{#if responsePayloadSchemaTemplateItem}}<ResponsePayload>{{/if}} => {
 	console.log(event)
 
 	throw new SpruceError({
