@@ -234,7 +234,10 @@ export default class Cli implements CliInterface {
 					const skill = serviceFactory.Service(cwd, 'auth').getCurrentSkill()
 
 					if (skill) {
-						auth = skill
+						auth = {
+							skillId: skill.id,
+							apiKey: skill.apiKey,
+						}
 					}
 				} else if (options.skillId && options.apiKey) {
 					auth = {
