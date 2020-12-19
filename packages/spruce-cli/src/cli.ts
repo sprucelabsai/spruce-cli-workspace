@@ -244,6 +244,7 @@ export default class Cli implements CliInterface {
 				}
 
 				if (Object.keys(auth).length > 0) {
+					debugger
 					await apiClients[key].emit('authenticate', {
 						payload: auth,
 					})
