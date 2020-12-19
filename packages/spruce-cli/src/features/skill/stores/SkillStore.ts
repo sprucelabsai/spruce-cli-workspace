@@ -32,7 +32,7 @@ export default class SkillStore extends AbstractStore {
 		const isRegisteringCurrentSkill =
 			options?.isRegisteringCurrentSkill !== false
 
-		isRegisteringCurrentSkill && this.assertEventsInstalled()
+		isRegisteringCurrentSkill && this.assertInSkill()
 
 		const { name, slug, description } = values
 
@@ -58,19 +58,16 @@ export default class SkillStore extends AbstractStore {
 		return skill
 	}
 
-	private assertEventsInstalled() {
-		const isInstalled = this.Service('settings').isMarkedAsInstalled('event')
+	private assertInSkill() {
+		const isInstalled = this.Service('settings').isMarkedAsInstalled('skill')
 
 		if (!isInstalled) {
-			throw new SpruceError({
-				code: 'FEATURE_NOT_INSTALLED',
-				featureCode: 'event',
-			})
+			throw new SpruceError({ code: 'DIRECTORY_NOT_SKILL' })
 		}
 	}
 
 	public async loadCurrentSkill(): Promise<CurrentSkill> {
-		this.assertEventsInstalled()
+		this.assertInSkill()
 
 		const envService = this.Service('env')
 		const skillId = envService.get('SKILL_ID') as string | undefined
