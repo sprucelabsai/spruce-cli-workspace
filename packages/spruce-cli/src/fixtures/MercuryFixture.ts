@@ -5,6 +5,7 @@ import {
 	ApiClientFactory,
 	ApiClientFactoryOptions,
 } from '../types/apiClient.types'
+import apiClientUtil from '../utilities/apiClient.utility'
 
 const TEST_HOST = 'https://sandbox.mercury.spruce.ai'
 
@@ -12,7 +13,7 @@ export default class MercuryFixture {
 	private clients: Record<string, ApiClient> = {}
 	private cwd: string
 	private serviceFactory: ServiceFactory
-	private apiClientFactory: ApiClientFactory
+	private apiClientFactory: any
 
 	public constructor(cwd: string, serviceFactory: ServiceFactory) {
 		this.cwd = cwd
@@ -25,7 +26,15 @@ export default class MercuryFixture {
 	}
 
 	public getApiClientFactory(): ApiClientFactory {
-		return this.apiClientFactory
+		return async (options?: ApiClientFactoryOptions) => {
+			const key = apiClientUtil.generateClientKey(options)
+
+			if (!this.clients[key]) {
+				this.clients[key] = await this.apiClientFactory(options)
+			}
+
+			return this.clients[key] as ApiClient
+		}
 	}
 
 	public connectToApi(options?: ApiClientFactoryOptions) {
