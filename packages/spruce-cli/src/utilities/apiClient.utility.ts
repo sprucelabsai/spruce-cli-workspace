@@ -6,9 +6,14 @@ type Skill = SpruceSchemas.Spruce.v2020_07_22.Skill
 
 const apiClientUtil = {
 	generateClientKey: (options?: ApiClientFactoryOptions) => {
-		if (!options) {
+		if (!options || (!options.token && !options.skillId)) {
 			return 'anon'
 		}
+
+		if (options.authAsCurrentSkill) {
+			return 'skill'
+		}
+
 		if (options.token) {
 			return `person:${options.token}`
 		}

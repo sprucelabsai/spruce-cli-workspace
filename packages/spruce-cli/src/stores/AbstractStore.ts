@@ -4,7 +4,11 @@ import ServiceFactory, {
 	Service,
 	ServiceMap,
 } from '../services/ServiceFactory'
-import { ApiClientFactory, ApiClient } from '../types/apiClient.types'
+import {
+	ApiClientFactory,
+	ApiClient,
+	ApiClientFactoryOptions,
+} from '../types/apiClient.types'
 
 export interface StoreOptions {
 	serviceFactory: ServiceFactory
@@ -36,7 +40,9 @@ export default abstract class AbstractStore implements ServiceProvider {
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
-	protected async connectToApi(): Promise<ApiClient> {
-		return this.apiClientFactory()
+	protected async connectToApi(
+		options?: ApiClientFactoryOptions
+	): Promise<ApiClient> {
+		return this.apiClientFactory(options)
 	}
 }

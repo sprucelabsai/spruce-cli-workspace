@@ -1,7 +1,6 @@
 import EventStore from '../features/event/stores/EventStore'
 import OnboardingStore from '../features/onboard/stores/OnboardingStore'
 import OrganizationStore from '../features/organization/stores/OrganizationStore'
-import PersonStore from '../features/person/stores/PersonStore'
 import SchemaStore from '../features/schema/stores/SchemaStore'
 import SkillStore from '../features/skill/stores/SkillStore'
 import { GlobalEmitter } from '../GlobalEmitter'
@@ -13,7 +12,6 @@ export interface StoreMap {
 	onboarding: OnboardingStore
 	schema: SchemaStore
 	event: EventStore
-	person: PersonStore
 	skill: SkillStore
 	organization: OrganizationStore
 }
@@ -24,7 +22,6 @@ const storeMap = {
 	onboarding: OnboardingStore,
 	schema: SchemaStore,
 	event: EventStore,
-	person: PersonStore,
 	skill: SkillStore,
 	organization: OrganizationStore,
 }

@@ -44,9 +44,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 
 			this.ui.startLoading('Loading event contracts...')
 
-			const eventStore = this.Store('event', {
-				apiClientFactory: this.parent.getApiClientFactoryAuthedAsCurrentSkill(),
-			})
+			const eventStore = this.Store('event')
 
 			const { contracts } = await eventStore.fetchEventContracts()
 

@@ -118,7 +118,7 @@ async function run() {
 		const serviceFactory = new ServiceFactory({ importCacheDir })
 		const cwd = testUtil.resolveTestDir(cacheKey)
 
-		const mercuryFixture = new MercuryFixture()
+		const mercuryFixture = new MercuryFixture(cwd, serviceFactory)
 		const fixture = new FeatureFixture({
 			cwd,
 			serviceFactory,

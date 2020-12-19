@@ -2,6 +2,7 @@ import { SettingsService } from '@sprucelabs/spruce-skill-utils'
 import { FeatureCode } from '../features/features.types'
 import SchemaService from '../features/schema/services/SchemaService'
 import VsCodeService from '../features/vscode/services/VsCodeService'
+import AuthService from './AuthService'
 import BuildService from './BuildService'
 import CommandService from './CommandService'
 import EnvService from './EnvService'
@@ -21,6 +22,7 @@ export interface ServiceMap {
 	build: BuildService
 	settings: SettingsService
 	env: EnvService
+	auth: AuthService
 }
 
 export type Service = keyof ServiceMap
@@ -37,6 +39,11 @@ export default class ServiceFactory {
 
 	public Service<S extends Service>(cwd: string, type: S): ServiceMap[S] {
 		switch (type) {
+			case 'auth':
+				return new AuthService(
+					new SettingsService(cwd),
+					new EnvService(cwd)
+				) as ServiceMap[S]
 			case 'pkg':
 				return new PkgService(cwd) as ServiceMap[S]
 			case 'env':

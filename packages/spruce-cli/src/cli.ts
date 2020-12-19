@@ -1,6 +1,6 @@
 import osUtil from 'os'
 import { MercuryClientFactory } from '@sprucelabs/mercury-client'
-import { MercuryEventEmitter } from '@sprucelabs/mercury-types'
+import { MercuryEventEmitter, SpruceSchemas } from '@sprucelabs/mercury-types'
 import {
 	diskUtil,
 	HealthCheckResults,
@@ -47,6 +47,7 @@ export interface CliBootOptions {
 	graphicsInterface?: GraphicsInterface
 	emitter?: GlobalEmitter
 	apiClientFactory?: ApiClientFactory
+	host?: string
 }
 
 export default class Cli implements CliInterface {
@@ -140,50 +141,12 @@ export default class Cli implements CliInterface {
 		const emitter = options?.emitter ?? CliGlobalEmitter.Emitter()
 
 		let cwd = options?.cwd ?? process.cwd()
-
-		let apiClients: Record<string, ApiClient> = {}
 		const serviceFactory = new ServiceFactory({})
-		const apiClientFactoryAnon = options?.apiClientFactory
-			? options.apiClientFactory
-			: async (options?: ApiClientFactoryOptions) => {
-					const key = apiClientUtil.generateClientKey(options)
-
-					if (!apiClients[key]) {
-						apiClients[key] = await MercuryClientFactory.Client<EventContracts>(
-							{
-								contracts: eventsContracts,
-								host: 'https://sandbox.mercury.spruce.ai',
-							}
-						)
-					}
-
-					return apiClients[key]
-			  }
-
-		const apiClientFactory = async (options?: ApiClientFactoryOptions) => {
-			const key = apiClientUtil.generateClientKey(options)
-
-			if (!apiClients[key]) {
-				apiClients[key] = await apiClientFactoryAnon(options)
-
-				const auth = { ...options }
-				if (!options) {
-					const personStore = storeFactory.Store('person')
-					const person = personStore.getLoggedInPerson()
-
-					if (person) {
-						auth.token = person.token
-					}
-				}
-
-				if (Object.keys(auth).length > 0) {
-					await apiClients[key].emit('authenticate', {
-						payload: auth,
-					})
-				}
-			}
-			return apiClients[key]
-		}
+		const apiClientFactory = Cli.buildApiClientFactory(
+			cwd,
+			serviceFactory,
+			options
+		)
 
 		const storeFactory = new StoreFactory({
 			cwd,
@@ -228,6 +191,68 @@ export default class Cli implements CliInterface {
 		const cli = new Cli(cwd, featureInstaller, serviceFactory, emitter)
 
 		return cli as CliInterface
+	}
+
+	public static buildApiClientFactory(
+		cwd: string,
+		serviceFactory: ServiceFactory,
+		bootOptions?: CliBootOptions
+	): ApiClientFactory {
+		let apiClients: Record<string, ApiClient> = {}
+
+		const apiClientFactoryAnon = bootOptions?.apiClientFactory
+			? bootOptions.apiClientFactory
+			: async (options?: ApiClientFactoryOptions) => {
+					const key = apiClientUtil.generateClientKey(options)
+
+					if (!apiClients[key]) {
+						apiClients[key] = await MercuryClientFactory.Client<EventContracts>(
+							{
+								contracts: eventsContracts,
+								host: bootOptions?.host ?? 'https://sandbox.mercury.spruce.ai',
+							}
+						)
+					}
+
+					return apiClients[key]
+			  }
+
+		const apiClientFactory = async (options?: ApiClientFactoryOptions) => {
+			const key = apiClientUtil.generateClientKey(options)
+
+			if (!apiClients[key]) {
+				apiClients[key] = await apiClientFactoryAnon(options)
+
+				let auth: SpruceSchemas.MercuryApi.AuthenticateEmitPayload = {}
+				if (!options) {
+					const person = serviceFactory.Service(cwd, 'auth').getLoggedInPerson()
+
+					if (person) {
+						auth.token = person.token
+					}
+				} else if (options.authAsCurrentSkill) {
+					const skill = serviceFactory.Service(cwd, 'auth').getCurrentSkill()
+
+					if (skill) {
+						auth = skill
+					}
+				} else if (options.skillId && options.apiKey) {
+					auth = {
+						skillId: options.skillId,
+						apiKey: options.apiKey,
+					}
+				}
+
+				if (Object.keys(auth).length > 0) {
+					await apiClients[key].emit('authenticate', {
+						payload: auth,
+					})
+				}
+			}
+			return apiClients[key]
+		}
+
+		return apiClientFactory
 	}
 }
 

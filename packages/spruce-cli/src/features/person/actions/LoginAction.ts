@@ -54,7 +54,7 @@ export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
 
 				const loggedInPerson = { ...person, token }
 
-				this.Store('person').setLoggedInPerson(loggedInPerson)
+				this.Service('auth').setLoggedInPerson(loggedInPerson)
 
 				loggedIn = true
 
