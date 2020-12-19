@@ -1,34 +1,37 @@
 import { diskUtil, HASH_SPRUCE_DIR } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
+import AuthService from '../../services/AuthService'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 
-export default class PersonStoreTest extends AbstractCliTest {
+export default class AuthServiceTest extends AbstractCliTest {
+	private static auth: AuthService
 	protected static async beforeEach() {
 		await super.beforeEach()
 		diskUtil.createDir(this.resolvePath(HASH_SPRUCE_DIR))
+		this.auth = this.Service('auth')
 	}
 
 	@test()
 	protected static async canInstantiatePersonStore() {
-		assert.isTruthy(this.Store('person'))
+		assert.isTruthy(this.auth)
 	}
 
 	@test()
 	protected static async hasLoggedInPersonMethod() {
-		assert.isFunction(this.Store('person').getLoggedInPerson)
+		assert.isFunction(this.auth.getLoggedInPerson)
 	}
 
 	@test()
 	protected static async loggedInPersonIsNullWhenNotLoggedIn() {
-		assert.isNull(this.Store('person').getLoggedInPerson())
+		assert.isNull(this.auth.getLoggedInPerson())
 	}
 
 	@test()
 	protected static async cantSaveBadLoggedInPerson() {
 		const err = assert.doesThrow(() =>
 			//@ts-ignore
-			this.Store('person').setLoggedInPerson({ test: true })
+			this.auth.setLoggedInPerson({ test: true })
 		)
 
 		errorAssertUtil.assertError(err, 'INVALID_FIELD')
@@ -36,32 +39,46 @@ export default class PersonStoreTest extends AbstractCliTest {
 
 	@test()
 	protected static canSaveLoggedInPerson() {
-		const store = this.Store('person')
+		const auth = this.auth
 		const person = {
 			id: 'test',
 			casualName: 'friend',
 			token: 'token',
 		}
 
-		store.setLoggedInPerson(person)
+		auth.setLoggedInPerson(person)
 
-		const loggedIn = store.getLoggedInPerson()
+		const loggedIn = auth.getLoggedInPerson()
 
 		assert.isEqualDeep(loggedIn, { ...person, isLoggedIn: true })
 	}
 
 	@test()
 	protected static canLogOut() {
-		const store = this.Store('person')
+		const auth = this.auth
 		const person = {
 			id: 'test',
 			casualName: 'friend',
 			token: 'token',
 		}
 
-		store.setLoggedInPerson(person)
-		store.logOutPerson()
+		auth.setLoggedInPerson(person)
+		auth.logOutPerson()
 
-		assert.isNull(store.getLoggedInPerson())
+		assert.isNull(auth.getLoggedInPerson())
+	}
+
+	@test()
+	protected static getCurrentSkillReturnsNull() {
+		assert.isNull(this.auth.getCurrentSkill())
+	}
+
+	@test()
+	protected static canSetCurrentSkill() {
+		const skill = { id: '123467aaoeuaoeu', apiKey: 'taco' }
+
+		this.auth.updateCurrentSkill(skill)
+
+		assert.isEqualDeep(this.auth.getCurrentSkill(), skill)
 	}
 }

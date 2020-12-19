@@ -69,9 +69,7 @@ export default class EventFeature extends AbstractFeature {
 			optionsSchema: syncEventActionSchema,
 			ui: this.ui,
 			eventGenerator: this.Generator('event'),
-			eventStore: this.Store('event', {
-				apiClientFactory: this.getApiClientFactoryAuthedAsCurrentSkill(),
-			}),
+			eventStore: this.Store('event'),
 		})
 	}
 }

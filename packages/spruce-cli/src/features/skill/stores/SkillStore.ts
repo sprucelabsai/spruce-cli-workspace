@@ -69,14 +69,13 @@ export default class SkillStore extends AbstractStore {
 	public async loadCurrentSkill(): Promise<CurrentSkill> {
 		this.assertInSkill()
 
-		const envService = this.Service('env')
-		const skillId = envService.get('SKILL_ID') as string | undefined
+		const currentSkill = this.Service('auth').getCurrentSkill()
 
-		if (skillId) {
+		if (currentSkill) {
 			const client = await this.connectToApi()
 			const response = await client.emit('get-skill', {
 				payload: {
-					id: skillId,
+					id: currentSkill.id,
 				},
 			})
 
@@ -86,7 +85,7 @@ export default class SkillStore extends AbstractStore {
 				...skill,
 				namespacePascal: this.loadCurrentSkillsNamespace(),
 				isRegistered: true,
-				apiKey: envService.get('SKILL_API_KEY') as string,
+				apiKey: currentSkill.apiKey,
 			}
 		} else {
 			return {

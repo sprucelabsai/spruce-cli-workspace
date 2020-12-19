@@ -1,5 +1,5 @@
-import { MercuryClientFactory } from '@sprucelabs/mercury-client'
-import eventsContract from '#spruce/events/events.contract'
+import Cli from '../cli'
+import ServiceFactory from '../services/ServiceFactory'
 import {
 	ApiClient,
 	ApiClientFactory,
@@ -11,22 +11,26 @@ const TEST_HOST = 'https://sandbox.mercury.spruce.ai'
 
 export default class MercuryFixture {
 	private clients: Record<string, ApiClient> = {}
+	private cwd: string
+	private serviceFactory: ServiceFactory
+	private apiClientFactory: any
+
+	public constructor(cwd: string, serviceFactory: ServiceFactory) {
+		this.cwd = cwd
+		this.serviceFactory = serviceFactory
+		this.apiClientFactory = Cli.buildApiClientFactory(
+			this.cwd,
+			this.serviceFactory,
+			{ host: TEST_HOST }
+		)
+	}
 
 	public getApiClientFactory(): ApiClientFactory {
 		return async (options?: ApiClientFactoryOptions) => {
 			const key = apiClientUtil.generateClientKey(options)
 
 			if (!this.clients[key]) {
-				this.clients[key] = await MercuryClientFactory.Client({
-					host: TEST_HOST,
-					contracts: eventsContract,
-				})
-
-				if (options) {
-					await this.clients[key].emit('authenticate', {
-						payload: options,
-					})
-				}
+				this.clients[key] = await this.apiClientFactory(options)
 			}
 
 			return this.clients[key] as ApiClient

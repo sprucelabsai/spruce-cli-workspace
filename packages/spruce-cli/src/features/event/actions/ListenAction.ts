@@ -44,9 +44,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 
 			this.ui.startLoading('Loading event contracts...')
 
-			const eventStore = this.Store('event', {
-				apiClientFactory: this.parent.getApiClientFactoryAuthedAsCurrentSkill(),
-			})
+			const eventStore = this.Store('event')
 
 			const { contracts } = await eventStore.fetchEventContracts()
 
@@ -95,10 +93,12 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 				schemaTypesLookupDir
 			)
 
+			const isSkillEvent = eventNamespace !== SKILL_EVENT_NAMESPACE
+
 			let emitPayloadSchemaTemplateItem: SchemaTemplateItem | undefined
 			let responsePayloadSchemaTemplateItem: SchemaTemplateItem | undefined
 
-			if (eventNamespace !== SKILL_EVENT_NAMESPACE) {
+			if (isSkillEvent) {
 				const builder = new EventTemplateItemBuilder()
 				const templateItems = builder.generateEventTemplateItemForName(
 					contracts,
@@ -128,7 +128,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 
 			response.files = results
 
-			if (eventNamespace !== SKILL_EVENT_NAMESPACE) {
+			if (isSkillEvent) {
 				const syncOptions = normalizeSchemaValues(
 					syncEventActionSchema,
 					options

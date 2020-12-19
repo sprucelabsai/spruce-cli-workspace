@@ -74,7 +74,7 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 
 		assert.isFalsy(results.errors)
 
-		const person = this.Store('person').getLoggedInPerson()
+		const person = this.Service('auth').getLoggedInPerson()
 
 		assert.isTruthy(person)
 		assert.isString(person.id)

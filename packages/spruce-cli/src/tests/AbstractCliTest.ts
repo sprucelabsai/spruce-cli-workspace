@@ -151,7 +151,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static MercuryFixture() {
 		if (!this.mercuryFixture) {
-			this.mercuryFixture = new MercuryFixture()
+			this.mercuryFixture = new MercuryFixture(this.cwd, this.ServiceFactory())
 		}
 
 		return this.mercuryFixture
