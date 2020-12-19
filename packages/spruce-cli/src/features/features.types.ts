@@ -126,5 +126,6 @@ export interface FeatureActionResponse extends FeatureInstallResponse {
 export interface FeatureAction<S extends Schema = Schema> {
 	name: string
 	optionsSchema?: S
+	commandAliases: string[]
 	execute: (options: SchemaValues<S>) => Promise<FeatureActionResponse>
 }

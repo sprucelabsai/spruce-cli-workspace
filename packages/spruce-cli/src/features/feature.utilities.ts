@@ -1,7 +1,6 @@
 import pathUtil from 'path'
 import { Schema } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
-import { FeatureCode } from './features.types'
 
 const featuresUtil = {
 	filePathToActionCode(path: string): string {
@@ -21,20 +20,10 @@ const featuresUtil = {
 			return featureCode
 		}
 
-		return `${featureCode}.${actionCode}`
+		return `${actionCode}.${featureCode}`
 	},
 
-	parseCommand(
-		command: string
-	): { featureCode: FeatureCode; actionCode: string } {
-		const parts = command.split('.')
-		return {
-			featureCode: parts[0] as FeatureCode,
-			actionCode: parts[1],
-		}
-	},
-
-	generateCommandAliases(schema: Schema): Record<string, string> {
+	generateOptionAliases(schema: Schema): Record<string, string> {
 		const fields = schema.fields || {}
 		const aliases: Record<string, string> = {}
 

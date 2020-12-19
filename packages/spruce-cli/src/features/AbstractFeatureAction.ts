@@ -38,6 +38,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 	implements FeatureAction<S>, ServiceProvider {
 	public abstract name: string
 	public abstract optionsSchema: S
+	public readonly commandAliases: string[] = []
 
 	protected parent: AbstractFeature
 	protected featureInstaller: FeatureInstaller

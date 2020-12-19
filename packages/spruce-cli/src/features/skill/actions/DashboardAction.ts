@@ -19,6 +19,7 @@ export type DashboardActionDefinition = typeof dashboardActionOptionsDefinition
 export default class DashboardAction extends AbstractFeatureAction<DashboardActionDefinition> {
 	public name = 'dashboard'
 	public optionsSchema = dashboardActionOptionsDefinition
+	public commandAliases = ['dashboard']
 
 	private interactiveElementOptions = {
 		keys: true,

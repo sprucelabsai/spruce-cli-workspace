@@ -9,6 +9,7 @@ type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizat
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizationAction
 export default class InstallAction extends AbstractFeatureAction<OptionsSchema> {
 	public name = 'install'
+	public commandAliases = ['install.skill']
 	public optionsSchema: OptionsSchema = installSkillAtOrganizationActionSchema
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {

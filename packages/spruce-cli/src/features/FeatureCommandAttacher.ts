@@ -1,5 +1,4 @@
 import { Schema, SchemaEntityFactory } from '@sprucelabs/schema'
-import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { CommanderStatic } from 'commander'
 import SpruceError from '../errors/SpruceError'
 import { GlobalEmitter } from '../GlobalEmitter'
@@ -38,9 +37,12 @@ export default class FeatureCommandAttacher {
 	}
 
 	private attachCode(code: string, feature: AbstractFeature) {
-		const prefix = namesUtil.toCamel(feature.code)
-		const commandStr = prefix === code ? code : `${code}.${prefix}`
+		let commandStr = featuresUtil.generateCommand(feature.code, code)
 		const action = feature.Action(code)
+
+		if (action.commandAliases.length === 1) {
+			commandStr = action.commandAliases[0]
+		}
 
 		const executer = new FeatureCommandExecuter({
 			featureCode: feature.code,
@@ -54,7 +56,12 @@ export default class FeatureCommandAttacher {
 			await executer.execute(command.opts())
 		})
 
+		if (action.commandAliases.length > 1) {
+			throw new Error('more than one alias not supported yet')
+		}
+
 		const description = action.optionsSchema?.description
+
 		if (description) {
 			command = command.description(description)
 		}
@@ -75,7 +82,7 @@ export default class FeatureCommandAttacher {
 		let theProgram = command
 
 		const fields = schema.getNamedFields()
-		const aliases = featuresUtil.generateCommandAliases(definition)
+		const aliases = featuresUtil.generateOptionAliases(definition)
 
 		fields.forEach(({ field, name }) => {
 			try {

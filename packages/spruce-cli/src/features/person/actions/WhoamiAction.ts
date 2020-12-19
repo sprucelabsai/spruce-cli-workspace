@@ -13,6 +13,7 @@ type OptionsSchema = typeof optionsSchema
 export default class WhoAmIAction extends AbstractFeatureAction<OptionsSchema> {
 	public name = 'whoami'
 	public optionsSchema: OptionsSchema = optionsSchema
+	public commandAliases = ['whoami']
 
 	public async execute(): Promise<FeatureActionResponse> {
 		const client = await this.connectToApi()

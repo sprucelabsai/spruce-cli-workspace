@@ -6,7 +6,7 @@ import AbstractCliTest from '../../tests/AbstractCliTest'
 export default class CommandGeneratorTest extends AbstractCliTest {
 	@test()
 	protected static hasAliasGenerated() {
-		assert.isFunction(featuresUtil.generateCommandAliases)
+		assert.isFunction(featuresUtil.generateOptionAliases)
 	}
 
 	@test()
@@ -21,7 +21,7 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 			},
 		}
 
-		const aliases = featuresUtil.generateCommandAliases(person)
+		const aliases = featuresUtil.generateOptionAliases(person)
 
 		assert.isLength(Object.keys(aliases), 1)
 		assert.doesInclude(aliases, {
@@ -45,7 +45,7 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 			},
 		}
 
-		const aliases = featuresUtil.generateCommandAliases(person)
+		const aliases = featuresUtil.generateOptionAliases(person)
 
 		assert.isLength(Object.keys(aliases), 2)
 		assert.doesInclude(aliases, {
@@ -76,7 +76,7 @@ export default class CommandGeneratorTest extends AbstractCliTest {
 			},
 		}
 
-		const aliases = featuresUtil.generateCommandAliases(person)
+		const aliases = featuresUtil.generateOptionAliases(person)
 
 		assert.isLength(Object.keys(aliases), 3)
 		assert.doesInclude(aliases, {
