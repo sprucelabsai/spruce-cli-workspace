@@ -5,9 +5,7 @@ import { SpruceEvent, SpruceEventResponse } from '@sprucelabs/spruce-event-utils
 
 {{#if emitPayloadSchemaTemplateItem}}
 type EmitPayload = {{{ schemaNamespacePath schemaTemplateItem=emitPayloadSchemaTemplateItem }}}
-{{/if}}
-
-{{#if responsePayloadSchemaTemplateItem}}
+{{/if}}{{#if responsePayloadSchemaTemplateItem}}
 type ResponsePayload = {{{ schemaNamespacePath schemaTemplateItem=responsePayloadSchemaTemplateItem }}}
 {{/if}}
 
@@ -16,6 +14,8 @@ export default (event: SpruceEvent{{#if emitPayloadSchemaTemplateItem}}<EventCon
 
 	throw new SpruceError({
 		//@ts-ignore
-		code: '{{nameConst}}_NOT_IMPLEMENTED'
+		code: 'LISTENER_NOT_IMPLEMENTED',
+		//@ts-ignore
+		eventNameWithOptionalNamespace: '{{nameConst}}'
 	})
 }

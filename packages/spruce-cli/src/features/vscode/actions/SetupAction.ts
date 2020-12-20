@@ -126,7 +126,7 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 					name: 'settings.json',
 					path: settingsFilePath,
 					description:
-						'Sets you up for list and other helpful workflow optimizations in Visual Studio Code.',
+						'Sets you up for lint and helpful workflow optimizations in Visual Studio Code.',
 					action: 'generated',
 				})
 

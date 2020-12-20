@@ -204,12 +204,12 @@ export default class Cli implements CliInterface {
 			? bootOptions.apiClientFactory
 			: async (options?: ApiClientFactoryOptions) => {
 					const key = apiClientUtil.generateClientKey(options)
-
 					if (!apiClients[key]) {
 						apiClients[key] = await MercuryClientFactory.Client<EventContracts>(
 							{
 								contracts: eventsContracts,
 								host: bootOptions?.host ?? 'https://sandbox.mercury.spruce.ai',
+								allowSelfSignedCrt: true,
 							}
 						)
 					}

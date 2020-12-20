@@ -11,8 +11,12 @@ const unRegisterListenersEmitPayloadSchema: SpruceSchemas.MercuryApi.UnRegisterL
 	            /** . */
 	            'eventNamesWithOptionalNamespace': {
 	                type: 'text',
-	                isRequired: true,
 	                isArray: true,
+	                options: undefined
+	            },
+	            /** . */
+	            'shouldUnRegisterAll': {
+	                type: 'boolean',
 	                options: undefined
 	            },
 	    }

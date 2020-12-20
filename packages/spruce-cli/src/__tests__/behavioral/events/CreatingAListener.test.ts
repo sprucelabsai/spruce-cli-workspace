@@ -139,17 +139,30 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 		)
 	}
 
-	@test()
-	protected static async generatesTypedListenerWithAllPayloads() {
+	@test.only()
+	protected static async emittingEventTriggersListenerAndCrashesWithListenerNotImplemented() {
 		const {
+			cli,
+			skill2,
 			contents,
+			eventContract,
 		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
 			{
 				emitPayloadSchema: buildSchema({
-					id: 'myNewEventEmitPayload',
+					id: 'myNewEventEmitPayloadAndTarget',
 					fields: {
-						booleanField: {
-							type: 'boolean',
+						payload: {
+							type: 'schema',
+							options: {
+								schema: buildSchema({
+									id: 'myNewEventEmitPayload',
+									fields: {
+										booleanField: {
+											type: 'boolean',
+										},
+									},
+								}),
+							},
 						},
 					},
 				}),
@@ -168,36 +181,45 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 			contents,
 			'export default (event: SpruceEvent<EventContracts, EmitPayload>): SpruceEventResponse<ResponsePayload>'
 		)
-	}
 
-	@test.only()
-	protected static async emittingEventTriggersListener() {
-		const {
-			skill2,
-			contents,
-			listenerPath,
-		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
-			{
-				emitPayloadSchema: buildSchema({
-					id: 'myNewEventEmitPayload',
-					fields: {
-						booleanField: {
-							type: 'boolean',
-						},
-					},
-				}),
-				responsePayloadSchema: buildSchema({
-					id: 'myNewEventResponsePayload',
-					fields: {
-						booleanField: {
-							type: 'boolean',
-						},
-					},
-				}),
-			}
+		const boot = await cli
+			.getFeature('skill')
+			.Action('boot')
+			.execute({ local: true })
+
+		await this.openInVsCode({ timeout: 1000 })
+
+		const client = (await this.connectToApi({
+			skillId: skill2.id,
+			apiKey: skill2.apiKey,
+		})) as any
+
+		const eventName = `${skill2.slug}.my-new-event`
+
+		client.mixinContract({
+			eventSignatures: {
+				[eventName]: eventContract.eventSignatures['my-new-event'],
+			},
+		})
+
+		debugger
+
+		const results = await client.emit(eventName, {
+			payload: {
+				booleanField: true,
+			},
+		})
+
+		console.log(results)
+		debugger
+
+		const err = await assert.doesThrowAsync(
+			async () => await boot.meta?.promise
 		)
 
-		await this.openInVsCode()
+		debugger
+
+		errorAssertUtil.assertError(err, 'TEST')
 	}
 
 	private static async setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
@@ -233,6 +255,6 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 		const contents = diskUtil.readFile(listener)
 
-		return { contents, skill2, listenerPath: listener }
+		return { contents, skill2, listenerPath: listener, cli, eventContract }
 	}
 }

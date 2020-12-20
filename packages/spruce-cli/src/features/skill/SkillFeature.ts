@@ -56,15 +56,15 @@ export default class SkillFeature<
 		lint: "eslint '**/*.ts' && yarn lint.tsc",
 		'lint.tsc': "tsc --noEmit && echo 'PASS'",
 		'lint.fix': "eslint --fix '**/*.ts'",
-		'lint.watch':
-			"chokidar 'src/**/*' '../spruce-templates/src/**' -c 'yarn lint.tsc'",
 		health: 'yarn run boot --health',
 		'health.local': 'yarn run boot.local --health',
 		build: 'yarn build.babel && yarn build.types',
 		'build.types': 'tsc --emitDeclarationOnly',
 		'build.babel':
 			"babel src --out-dir build --extensions '.ts, .tsx' --source-maps --copy-files",
-		'build.watch':
+		'watch.lint':
+			"chokidar 'src/**/*' '../spruce-templates/src/**' -c 'yarn lint.tsc'",
+		'watch.build':
 			"babel src --out-dir build --extensions '.ts, .tsx' --source-maps --copy-files --watch",
 		clean: 'rm -rf build/',
 		'clean.all': 'rm -rf build/ && rm -rf node_modules/',

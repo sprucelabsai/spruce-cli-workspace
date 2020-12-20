@@ -12,7 +12,7 @@
 				"boot.local"
 			],
 			"console": "integratedTerminal",
-			"port": 5200,
+			"port": 5200
 		}
 	]
 }

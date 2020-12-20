@@ -44,7 +44,7 @@
 	"dependencies": {
 		"@sprucelabs/log": ">=10.2.295",
 		"@sprucelabs/schema": ">=19.0.0",
-		"@sprucelabs/spruce-skill-utils": ">=13.2.0",
+		"@sprucelabs/spruce-skill-utils": ">=13.5.0",
 		"globby": "^11.0.1",
 		"handlebars": "^4.7.6",
 		"lodash": "^4.17.20",
