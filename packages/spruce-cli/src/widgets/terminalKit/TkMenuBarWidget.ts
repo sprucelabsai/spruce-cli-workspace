@@ -24,6 +24,7 @@ export default class TkMenuBarWidget
 			parent: options.parent.getTermKitElement(),
 			separator: '|',
 			items: this.mapItemsToTkItems(options.items),
+			buttonFocusAttr: { bgColor: 'gray' },
 			...frame,
 		})
 
