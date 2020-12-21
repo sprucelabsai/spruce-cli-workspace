@@ -1,4 +1,4 @@
-import { namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { namesUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractEventTest from '../../tests/AbstractEventTest'
@@ -6,7 +6,7 @@ import testUtil from '../../tests/utilities/test.utility'
 
 const EVENT_NAME = 'my fantastically amazing event'
 const EVENT_SLUG = 'my-fantastically-amazing-event'
-const EVENT_CAMEL = 'MyFantasticallyAmazingEvent'
+const EVENT_CAMEL = 'myFantasticallyAmazingEvent'
 
 export default class CreatingAnEventTest extends AbstractEventTest {
 	@test()
@@ -30,7 +30,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 	}
 
 	@test()
-	protected static async createsEventFiles() {
+	protected static async createsVersionedEventFiles() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 
 		const skill = await this.SkillFixture().registerCurrentSkill({
@@ -45,23 +45,41 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 
 		assert.isFalsy(results.errors)
 
-		const files = ['emitPayload.builder.ts', 'responsePayload.builder.ts']
+		const payloads = [
+			{
+				fileName: 'emitPayload.builder.ts',
+				expectedId: 'myFantasticallyAmazingEventEmitPayload',
+			},
+			{
+				fileName: 'responsePayload.builder.ts',
+				expectedId: 'myFantasticallyAmazingEventResponsePayload',
+			},
+		]
 
-		for (const file of files) {
+		const schemas = this.Service('schema')
+
+		for (const payload of payloads) {
 			const match = testUtil.assertsFileByNameInGeneratedFiles(
-				file,
+				payload.fileName,
 				results.files
 			)
 
 			assert.isEqual(
 				match,
-				this.resolvePath(
-					'src/events/',
-					namesUtil.toPascal(skill.slug),
-					EVENT_SLUG,
-					file
+				versionUtil.resolveNewLatestPath(
+					this.resolvePath(
+						'src/events/',
+						namesUtil.toPascal(skill.slug),
+						'{{@latest}}',
+						EVENT_SLUG,
+						payload.fileName
+					)
 				)
 			)
+
+			const imported = await schemas.importSchema(match)
+
+			assert.isEqual(imported.id, payload.expectedId)
 		}
 
 		await this.assertValidActionResponseFiles(results)

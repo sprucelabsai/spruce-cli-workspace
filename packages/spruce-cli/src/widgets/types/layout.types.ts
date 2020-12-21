@@ -21,6 +21,7 @@ export interface LayoutWidget extends BaseWidget {
 	readonly type: 'layout'
 	getRows(): any[]
 	addRow(row: LayoutRow): void
+	removeRow(rowIdx: number): void
 	setRowHeight(rowIdx: number, height: WidgetFrameAttribute): void
 	updateLayout(): void
 }

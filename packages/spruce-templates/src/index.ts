@@ -26,6 +26,7 @@ import {
 	TestOptions,
 	EventListenerOptions,
 	EventContractTemplateItem,
+	EventPayloadOptions,
 } from './types/templates.types'
 import DirectoryTemplateUtility from './utilities/DirectoryTemplateUtility'
 import importExtractorUtil from './utilities/importExtractor.utility'
@@ -212,7 +213,7 @@ export const templates = {
 		return template(options)
 	},
 
-	eventEmitPayload(options: { nameCamel: string }) {
+	eventEmitPayload(options: EventPayloadOptions) {
 		const template = templateImportUtil.getTemplate(
 			'events/payload.builder.ts.hbs'
 		)
@@ -220,7 +221,7 @@ export const templates = {
 		return template({ ...options, actionCamel: 'Emit' })
 	},
 
-	eventResponsePayload(options: { nameCamel: string }) {
+	eventResponsePayload(options: EventPayloadOptions) {
 		const template = templateImportUtil.getTemplate(
 			'events/payload.builder.ts.hbs'
 		)

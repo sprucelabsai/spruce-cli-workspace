@@ -113,7 +113,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 		).constValue
 
 		if (!userSuppliedVersion) {
-			resolvedVersion = await this.askForVersion(
+			resolvedVersion = await this.askForVersionIfTodaysVersionDoesNotExist(
 				resolvedDestination,
 				resolvedVersion
 			)
@@ -123,7 +123,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 		return versionUtil.generateVersion(resolvedVersion).dirValue
 	}
 
-	private async askForVersion(
+	private async askForVersionIfTodaysVersionDoesNotExist(
 		resolvedDestination: string,
 		fallbackVersion: string
 	) {

@@ -39,8 +39,8 @@
 		"cache.tests": "node build/tests/buildTestCache",
 		"clean": "rm -rf build/",
 		"clean.all": "rm -rf build/ && rm -rf node_modules/ && yarn clean.cache",
-		"clean.cache": "rm -rf src/.spruce/tmp && node build/tests/cleanTestCache && echo '******** TEST CACHE CLEARED ********'",
-		"clean.cache.disabled": "echo 'CLEAN.CACHE DISABLED'",
+		"clean.cache.disabled": "rm -rf src/.spruce/tmp && node build/tests/cleanTestCache && echo '******** TEST CACHE CLEARED ********'",
+		"clean.cache": "echo 'CLEAN.CACHE DISABLED'",
 		"release": "semantic-release",
 		"start": "DEBUG=@sprucelabs/cli~debug node . $COMMANDS",
 		"local": "DEBUG=@sprucelabs/cli~debug node --inspect=5200 . $COMMANDS ; echo 'DONE'",
@@ -277,7 +277,7 @@
 						"createsAnOrg": "F75",
 						"asksYouToSelectOrgWithMoreThanOne": "F76",
 						"generatesTypedListenerWithAllPayloads": "F77",
-						"createsEventFiles": "F80"
+						"createsVersionedEventFiles": "F80"
 					}
 				}
 			],

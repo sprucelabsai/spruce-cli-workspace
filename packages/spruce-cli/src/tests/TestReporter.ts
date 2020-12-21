@@ -71,7 +71,9 @@ export default class TestReporter {
 	public setIsDebugging(isDebugging: boolean) {
 		this.menu.setTextForItem(
 			'toggleDebug',
-			`^w^#^K${isDebugging ? ' √ ' : ' x '}^ Debugging`
+			`Debugging ^${isDebugging ? 'k' : 'w'}^#^${isDebugging ? 'g' : 'b'}${
+				isDebugging ? ' ON ' : ' OFF '
+			}^`
 		)
 		this.isDebugging = isDebugging
 	}
@@ -285,7 +287,7 @@ export default class TestReporter {
 	private dropInFilterControls() {
 		const parent = this.topLayout.getChildById('filter') ?? this.window
 
-		const buttonWidth = 1
+		const buttonWidth = 3
 		this.filterInput = this.widgetFactory.Widget('input', {
 			parent,
 			left: 0,
@@ -395,7 +397,10 @@ export default class TestReporter {
 
 		this.testLog.setText(logContent)
 
-		if (this.errorLog) {
+		if (!errorContent) {
+			this.errorLog && this.destroyErrorLog()
+		} else {
+			!this.errorLog && this.dropInErrorLog()
 			this.errorLog?.setText(errorContent)
 		}
 	}
@@ -409,10 +414,6 @@ export default class TestReporter {
 			errorContent += this.errorLogItemGenerator.generateErrorLogItemForFile(
 				file
 			)
-
-			if (errorContent.length > 0) {
-				this.dropInErrorLog()
-			}
 		})
 
 		return { logContent, errorContent }
@@ -443,6 +444,16 @@ export default class TestReporter {
 				shouldLockWidthWithParent: true,
 				padding: { left: 1 },
 			})
+		}
+	}
+
+	private destroyErrorLog() {
+		if (this.errorLog) {
+			void this.errorLog?.destroy()
+			this.errorLog = undefined
+			this.layout.removeRow(1)
+			this.layout.setRowHeight(0, '100%')
+			this.layout.updateLayout()
 		}
 	}
 
@@ -511,5 +522,5 @@ export default class TestReporter {
 	}
 }
 function buildPatternButtonText(pattern: string | undefined): string {
-	return pattern ? 'x' : '-'
+	return pattern ? ' x ' : ' - '
 }

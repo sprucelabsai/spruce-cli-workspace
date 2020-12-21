@@ -19,8 +19,13 @@ const optionsSchema = buildSchema({
 			isRequired: true,
 		},
 		nameCamel: {
-			...namedTemplateItemBuilder.fields.namePascal,
+			...namedTemplateItemBuilder.fields.nameCamel,
 			isRequired: true,
+		},
+		version: {
+			type: 'text',
+			label: 'Version',
+			isPrivate: true,
 		},
 	},
 })
@@ -34,7 +39,9 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public async execute(
 		options: SchemaValues<OptionsSchema>
 	): Promise<FeatureActionResponse> {
-		const { nameKebab, nameCamel } = this.validateAndNormalizeOptions(options)
+		const { nameKebab, nameCamel, version } = this.validateAndNormalizeOptions(
+			options
+		)
 
 		const skill = await this.Store('skill').loadCurrentSkill()
 
@@ -46,6 +53,23 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 
 		try {
 			let response: FeatureActionResponse = {}
+
+			const eventNamespaceDir = diskUtil.resolvePath(
+				this.cwd,
+				'src',
+				'events',
+				namesUtil.toPascal(skill.slug)
+			)
+
+			const resolvedVersion = await this.resolveVersion(
+				version,
+				eventNamespaceDir
+			)
+
+			const versionedDestination = diskUtil.resolvePath(
+				eventNamespaceDir,
+				resolvedVersion
+			)
 
 			const files: ({
 				templateMethod: 'eventEmitPayload' | 'eventResponsePayload'
@@ -70,16 +94,14 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 
 			for (const file of files) {
 				const destination = diskUtil.resolvePath(
-					this.cwd,
-					'src',
-					'events',
-					namesUtil.toPascal(skill.slug),
+					versionedDestination,
 					nameKebab,
 					file.name
 				)
 
 				const contents = this.templates[file.templateMethod]({
 					nameCamel,
+					version: resolvedVersion,
 				})
 
 				diskUtil.writeFile(destination, contents)

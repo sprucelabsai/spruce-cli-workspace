@@ -115,6 +115,10 @@ export default class TkLayoutWidget
 		})
 	}
 
+	public removeRow(rowIdx: number): void {
+		this.layout.layoutDef.rows.splice(rowIdx, 1)
+	}
+
 	private widgetColumnsToTermKitColumns(columns: LayoutColumn[]) {
 		return columns.map((column) => ({
 			...termKitUtil.mapWidgetOptionsToTermKitOptions(column),

@@ -4,7 +4,7 @@ import SpruceError from '../../../errors/SpruceError'
 import ImportService from '../../../services/ImportService'
 
 export default class SchemaService extends ImportService {
-	public importSchema = async (file: string) => {
+	public async importSchema(file: string) {
 		const definitionProxy = await this.importDefault(file)
 
 		try {

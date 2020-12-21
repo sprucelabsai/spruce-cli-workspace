@@ -63,8 +63,12 @@ export default class TkWindowWidget
 		return null
 	}
 
-	private handleKeyPress(key: Key) {
-		void (this as WindowWidget).emit('key', { key })
+	private async handleKeyPress(key: Key) {
+		try {
+			await (this as WindowWidget).emit('key', { key })
+		} catch (err) {
+			console.log(err)
+		}
 	}
 
 	protected handleParentResize() {
@@ -100,6 +104,7 @@ export default class TkWindowWidget
 		this.showCursor()
 		//@ts-ignore
 		this.term.removeAllListeners()
+		debugger
 		this.term.styleReset()
 
 		await this.term.grabInput(false, true)
@@ -108,6 +113,8 @@ export default class TkWindowWidget
 		// this may change if destroy is required in other widgets and there appears
 		// to be no penalty for calling destroy multiple times
 		this.document.destroy()
+
+		this.term.clear()
 
 		this.term(`\n`)
 	}

@@ -92,3 +92,8 @@ export interface EventContractTemplateItem extends EventContract {
 		[eventName: string]: EventSignatureTemplateItem
 	}
 }
+
+export interface EventPayloadOptions {
+	nameCamel: string
+	version: string
+}
