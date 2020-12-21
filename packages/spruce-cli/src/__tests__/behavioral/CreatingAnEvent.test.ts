@@ -52,16 +52,30 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		assert.isFalsy(results.errors)
 
 		await this.assertExpectedPayloadSchemas(results, skill)
-		await this.assertExpectedPermissionContract(results, skill)
 		await this.assertValidActionResponseFiles(results)
 	}
 
-	private static assertExpectedPermissionContract(
-		results: FeatureActionResponse,
-		skill: RegisteredSkill
-	) {
-		const name = 'permissions.contract.ts'
+	@test()
+	protected static async createsExpectedPermissionContract() {
+		const cli = await this.FeatureFixture().installCachedFeatures('events')
+
+		const skill = await this.SkillFixture().registerCurrentSkill({
+			name: 'my new skill',
+		})
+
+		const results = await cli.getFeature('event').Action('create').execute({
+			nameReadable: EVENT_NAME,
+			nameKebab: EVENT_SLUG,
+			nameCamel: EVENT_CAMEL,
+		})
+
+		const name = 'permission.builder.ts'
+		const match = testUtil.assertsFileByNameInGeneratedFiles(
+			name,
+			results.files
+		)
 		const path = versionUtil.resolvePath(
+			this.cwd,
 			'src/events/',
 			namesUtil.toPascal(skill.slug ?? 'missing'),
 			'{{@latest}}',
@@ -69,6 +83,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 			name
 		)
 
+		assert.isEqual(match, path)
 		assert.isTrue(diskUtil.doesFileExist(path))
 	}
 
@@ -98,6 +113,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 			assert.isEqual(
 				match,
 				versionUtil.resolvePath(
+					this.cwd,
 					'src/events/',
 					namesUtil.toPascal(skill.slug ?? 'missing'),
 					'{{@latest}}',

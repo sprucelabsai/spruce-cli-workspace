@@ -213,6 +213,17 @@ export const templates = {
 		return template(options)
 	},
 
+	permissionContractBuilder(options: {
+		nameCamel: string
+		nameReadable: string
+	}) {
+		const template = templateImportUtil.getTemplate(
+			'permissions/contract.builder.ts.hbs'
+		)
+
+		return template(options)
+	},
+
 	eventEmitPayload(options: EventPayloadOptions) {
 		const template = templateImportUtil.getTemplate(
 			'events/payload.builder.ts.hbs'

@@ -277,7 +277,8 @@
 						"createsAnOrg": "F75",
 						"asksYouToSelectOrgWithMoreThanOne": "F76",
 						"generatesTypedListenerWithAllPayloads": "F77",
-						"createsVersionedEventFiles": "F80"
+						"createsVersionedEventFiles": "F81",
+						"createsExpectedPermissionContract": "F82"
 					}
 				}
 			],

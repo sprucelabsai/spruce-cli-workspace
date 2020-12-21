@@ -131,8 +131,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	private handleFilterPatternChange(filterPattern?: string) {
 		this.pattern = filterPattern
 		this.testReporter?.setFilterPattern(filterPattern)
-		this.exitAction = 'restart'
-		this.kill()
+		this.handleRestart()
 	}
 
 	private handleRestart() {

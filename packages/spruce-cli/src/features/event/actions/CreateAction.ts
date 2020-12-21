@@ -39,9 +39,12 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public async execute(
 		options: SchemaValues<OptionsSchema>
 	): Promise<FeatureActionResponse> {
-		const { nameKebab, nameCamel, version } = this.validateAndNormalizeOptions(
-			options
-		)
+		const {
+			nameKebab,
+			nameReadable,
+			nameCamel,
+			version,
+		} = this.validateAndNormalizeOptions(options)
 
 		const skill = await this.Store('skill').loadCurrentSkill()
 
@@ -72,7 +75,10 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			)
 
 			const files: ({
-				templateMethod: 'eventEmitPayload' | 'eventResponsePayload'
+				templateMethod:
+					| 'eventEmitPayload'
+					| 'eventResponsePayload'
+					| 'permissionContractBuilder'
 			} & Omit<GeneratedFile, 'path'>)[] = [
 				{
 					templateMethod: 'eventEmitPayload',
@@ -88,6 +94,12 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 					description:
 						'The payload that every listener will need to respond with. Delete this file for events that are fire and forget.',
 				},
+				{
+					templateMethod: 'permissionContractBuilder',
+					name: 'permission.builder.ts',
+					action: 'generated',
+					description: 'Permissions you can tie to your events!',
+				},
 			]
 
 			response.files = []
@@ -101,6 +113,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 
 				const contents = this.templates[file.templateMethod]({
 					nameCamel,
+					nameReadable,
 					version: resolvedVersion,
 				})
 
