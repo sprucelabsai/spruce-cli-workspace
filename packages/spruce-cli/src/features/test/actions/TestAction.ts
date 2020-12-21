@@ -36,6 +36,11 @@ export const optionsSchema = buildSchema({
 			label: 'Inspect',
 			hint: `Pass --inspect related args to test process.`,
 		},
+		shouldStartTestsImmediately: {
+			type: 'boolean',
+			label: 'Start test immediately',
+			defaultValue: true,
+		},
 	},
 })
 
@@ -50,6 +55,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	private pattern: string | undefined
 	private inspect?: number | null
 	private holdPromiseResolve?: () => void
+	private holdToStartPromiseResolve?: () => void
 
 	public constructor(options: FeatureActionOptions) {
 		super(options)
@@ -60,7 +66,12 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
-		const { pattern, shouldReportWhileRunning, inspect } = normalizedOptions
+		const {
+			pattern,
+			shouldReportWhileRunning,
+			inspect,
+			shouldStartTestsImmediately,
+		} = normalizedOptions
 
 		this.inspect = inspect
 		this.pattern = pattern
@@ -78,6 +89,12 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			})
 
 			await this.testReporter.start()
+		}
+
+		if (!shouldStartTestsImmediately) {
+			await new Promise((resolve: any) => {
+				this.holdToStartPromiseResolve = resolve
+			})
 		}
 
 		const results: FeatureActionResponse = await this.startTestRunner(
@@ -119,8 +136,13 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	}
 
 	private handleRestart() {
-		this.exitAction = 'restart'
-		this.kill()
+		if (this.holdToStartPromiseResolve) {
+			this.holdToStartPromiseResolve()
+			this.holdToStartPromiseResolve = undefined
+		} else {
+			this.exitAction = 'restart'
+			this.kill()
+		}
 	}
 
 	private kill() {
