@@ -1,4 +1,5 @@
 import TKButtonWidget from '../terminalKit/TKButtonWidget'
+import TkInputWidget from '../terminalKit/TkInputWidget'
 import TkLayoutCellWidget from '../terminalKit/TkLayoutCellWidget'
 import TkLayoutWidget from '../terminalKit/TkLayoutWidget'
 import TkMenuBarWidget from '../terminalKit/TkMenuBarWidget'
@@ -11,6 +12,11 @@ import {
 	ButtonWidget,
 	ButtonWidgetOptions,
 } from './button.types'
+import {
+	inputEventContract,
+	InputWidget,
+	InputWidgetOptions,
+} from './input.types'
 import {
 	LayoutWidgetOptions,
 	LayoutWidget,
@@ -51,6 +57,7 @@ interface OptionsMap {
 	menuBar: MenuBarWidgetOptions
 	popup: PopupWidgetOptions
 	button: ButtonWidgetOptions
+	input: InputWidgetOptions
 }
 
 export interface WidgetRegistry {
@@ -62,6 +69,7 @@ export interface WidgetRegistry {
 	menuBar: MenuBarWidget
 	popup: PopupWidget
 	button: ButtonWidget
+	input: InputWidget
 }
 
 export const widgetRegistry = {
@@ -73,6 +81,7 @@ export const widgetRegistry = {
 	menuBar: TkMenuBarWidget,
 	popup: TkPopupWidget,
 	button: TKButtonWidget,
+	input: TkInputWidget,
 }
 
 export const contractRegistry = {
@@ -84,4 +93,5 @@ export const contractRegistry = {
 	menuBar: menuBarEventContract,
 	popup: null,
 	button: buttonEventContract,
+	input: inputEventContract,
 }

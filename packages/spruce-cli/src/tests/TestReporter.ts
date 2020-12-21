@@ -1,5 +1,6 @@
 import { SpruceTestResults } from '../features/test/test.types'
 import { Key } from '../widgets/keySelectChoices'
+import { InputWidget } from '../widgets/types/input.types'
 import { LayoutWidget } from '../widgets/types/layout.types'
 import { MenuBarWidget } from '../widgets/types/menuBar.types'
 import { PopupWidget } from '../widgets/types/popup.types'
@@ -12,7 +13,11 @@ import TestLogItemGenerator from './TestLogItemGenerator'
 interface TestReporterOptions {
 	onRestart?: () => void
 	onQuit?: () => void
-	onRerun?: (fileName: string) => void
+	onRequestOpenTestFile?: () => void
+	handleRerunTestFile?: (fileName: string) => void
+	handleOpenTestFile?: (fileName: string) => void
+	handleFilterChange?: (pattern?: string) => void
+	filter?: string
 }
 
 export default class TestReporter {
@@ -29,18 +34,32 @@ export default class TestReporter {
 	private window!: WindowWidget
 	private widgetFactory: WidgetFactory
 	private selectTestPopup?: PopupWidget
+	private topLayout!: LayoutWidget
+	private filterInput!: InputWidget
+	private filterPattern?: string
 
 	private onRestart?: () => void
 	private onQuit?: () => void
-	private onRerun?: (fileName: string) => void
+	private handleRerunTestFile?: (fileName: string) => void
+	private handleFilterChange?: (pattern?: string) => void
 	private waitForDoneResolver?: () => void
+	private handleOpenTestFile?: (testFile: string) => void
 
 	public constructor(options?: TestReporterOptions) {
+		this.filterPattern = options?.filter
 		this.onRestart = options?.onRestart
 		this.onQuit = options?.onQuit
-		this.onRerun = options?.onRerun
+		this.handleRerunTestFile = options?.handleRerunTestFile
+		this.handleOpenTestFile = options?.handleOpenTestFile
+		this.handleFilterChange = options?.handleFilterChange
+
 		this.errorLogItemGenerator = new TestLogItemGenerator()
 		this.widgetFactory = new WidgetFactory()
+	}
+
+	public setFilter(filter: string | undefined) {
+		this.filterPattern = filter
+		this.filterInput.setValue(filter ?? '')
 	}
 
 	public async start() {
@@ -52,9 +71,11 @@ export default class TestReporter {
 		void this.window.on('kill', this.destroy.bind(this))
 
 		this.dropInMenu()
+		this.dropInTopLayout()
 		this.dropInProgressBar()
-		this.dropInLayout()
+		this.dropInBottomLayout()
 		this.dropInTestLog()
+		this.dropInFilterControls()
 
 		this.updateInterval = setInterval(this.refreshResults.bind(this), 2000)
 	}
@@ -101,14 +122,6 @@ export default class TestReporter {
 			case 'CTRL_C':
 				this.onQuit?.()
 				process.exit()
-				break
-			case 'R':
-			case 'r':
-				this.handleRestart()
-				break
-			case 'D':
-			case 'd':
-				this.handleDone()
 				break
 		}
 	}
@@ -174,7 +187,7 @@ export default class TestReporter {
 			text: `What do you wanna do with:\n\n${testFile}`,
 		})
 
-		this.widgetFactory.Widget('button', {
+		const open = this.widgetFactory.Widget('button', {
 			parent: this.selectTestPopup,
 			left: 1,
 			top: 6,
@@ -190,16 +203,24 @@ export default class TestReporter {
 
 		const cancel = this.widgetFactory.Widget('button', {
 			parent: this.selectTestPopup,
-			left: 40,
+			left: 37,
 			top: 6,
-			text: 'Cancel',
+			text: 'Nevermind',
 		})
 
 		void rerun.on('click', () => {
-			this.onRerun?.(testFile)
+			this.handleRerunTestFile?.(testFile)
 			this.closeSelectTestPopup()
 		})
 		void cancel.on('click', this.closeSelectTestPopup.bind(this))
+		void open.on('click', () => {
+			this.openTestFile(testFile)
+		})
+	}
+
+	private openTestFile(testFile: string) {
+		this.handleOpenTestFile?.(testFile)
+		this.closeSelectTestPopup()
 	}
 
 	public getFileForLine(row: number): string | undefined {
@@ -225,22 +246,47 @@ export default class TestReporter {
 	}
 
 	private dropInProgressBar() {
+		const parent = this.topLayout.getChildById('progress') ?? this.window
 		this.bar = this.widgetFactory.Widget('progressBar', {
-			parent: this.window,
+			parent,
 			left: 0,
-			top: 2,
-			width: this.window.getFrame().width,
+			top: 0,
+			width: parent.getFrame().width,
 			shouldLockWidthWithParent: true,
 			label: 'Booting Jest...',
 			progress: 0,
 		})
 	}
 
-	private dropInLayout() {
+	private dropInFilterControls() {
+		const parent = this.topLayout.getChildById('filter') ?? this.window
+
+		this.filterInput = this.widgetFactory.Widget('input', {
+			parent,
+			left: 0,
+			top: 0,
+			label: 'Filter',
+			placeholder: '.*server.*log.*',
+			width: '100%',
+			height: 1,
+			value: this.filterPattern,
+		})
+
+		void this.filterInput.on('cancel', () => {
+			this.filterInput.setValue(this.filterPattern ?? '')
+		})
+
+		void this.filterInput.on('submit', (payload) => {
+			this.handleFilterChange?.(payload.value ?? undefined)
+			this.setFilter(payload.value)
+		})
+	}
+
+	private dropInBottomLayout() {
 		this.layout = this.widgetFactory.Widget('layout', {
 			parent: this.window,
 			width: '100%',
-			top: 3,
+			top: 4,
 			height: this.window.getFrame().height - 4,
 			shouldLockWidthWithParent: true,
 			shouldLockHeightWithParent: true,
@@ -251,6 +297,32 @@ export default class TestReporter {
 						{
 							id: 'results',
 							width: '100%',
+						},
+					],
+				},
+			],
+		})
+	}
+
+	private dropInTopLayout() {
+		this.topLayout = this.widgetFactory.Widget('layout', {
+			parent: this.window,
+			width: '100%',
+			top: 1,
+			height: 3,
+			shouldLockWidthWithParent: true,
+			shouldLockHeightWithParent: true,
+			rows: [
+				{
+					height: '100%',
+					columns: [
+						{
+							id: 'progress',
+							width: '60%',
+						},
+						{
+							id: 'filter',
+							width: '40%',
 						},
 					],
 				},
@@ -361,7 +433,7 @@ export default class TestReporter {
 				)
 			}
 		} else {
-			this.bar.setLabel('Running...')
+			this.bar.setLabel('Racing to get your first test done ⚡️')
 		}
 
 		this.bar.setProgress(this.generatePercentComplete(results) / 100)

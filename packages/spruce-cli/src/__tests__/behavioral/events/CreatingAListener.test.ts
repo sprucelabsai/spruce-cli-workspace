@@ -1,5 +1,6 @@
 import { EventSignature } from '@sprucelabs/mercury-types'
 import { buildSchema } from '@sprucelabs/schema'
+import { buildEmitTargetAndPayloadSchema } from '@sprucelabs/spruce-event-utils'
 import { diskUtil, MERCURY_API_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
@@ -122,7 +123,7 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 			contents,
 		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
 			{
-				emitPayloadSchema: buildSchema({
+				emitPayloadSchema: buildEmitTargetAndPayloadSchema({
 					id: 'myNewEventEmitPayload',
 					fields: {
 						booleanField: {
@@ -146,9 +147,10 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 			skill2,
 			contents,
 			eventContract,
+			org,
 		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
 			{
-				emitPayloadSchema: buildSchema({
+				emitPayloadSchema: buildEmitTargetAndPayloadSchema({
 					id: 'myNewEventEmitPayloadAndTarget',
 					fields: {
 						payload: {
@@ -187,7 +189,7 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 			.Action('boot')
 			.execute({ local: true })
 
-		await this.openInVsCode({ timeout: 1000 })
+		await this.openInVsCode({ timeout: 30000 })
 
 		const client = (await this.connectToApi({
 			skillId: skill2.id,
@@ -202,22 +204,24 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 			},
 		})
 
-		debugger
-
 		const results = await client.emit(eventName, {
+			target: {
+				organizationId: org.id,
+			},
 			payload: {
 				booleanField: true,
 			},
 		})
 
-		console.log(results)
 		debugger
+
+		assert.isEqual(results.totalContracts, 1)
+		assert.isEqual(results.totalErrors, 0)
+		assert.isEqual(results.totalResponses, 1)
 
 		const err = await assert.doesThrowAsync(
 			async () => await boot.meta?.promise
 		)
-
-		debugger
 
 		errorAssertUtil.assertError(err, 'TEST')
 	}
@@ -235,6 +239,7 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 			skillFixture,
 			skill2,
 			cli,
+			org,
 		} = await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
 
 		await skillFixture.registerEventContract(skill2, eventContract)
@@ -255,6 +260,6 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 		const contents = diskUtil.readFile(listener)
 
-		return { contents, skill2, listenerPath: listener, cli, eventContract }
+		return { contents, skill2, listenerPath: listener, cli, eventContract, org }
 	}
 }

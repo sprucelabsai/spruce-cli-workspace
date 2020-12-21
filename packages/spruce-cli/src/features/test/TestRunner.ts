@@ -52,7 +52,7 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
 			(options?.debugPort ?? 0) > 0 ? `--inspect-brk=${options?.debugPort}` : ``
 		const pattern = options?.pattern ?? ''
 
-		const command = `node ${debugArgs} ${jestPath} --reporters="@sprucelabs/jest-json-reporter" --testRunner="jest-circus/runner" ${
+		const command = `node ${debugArgs} ${jestPath} --reporters="@sprucelabs/jest-json-reporter" --testRunner="jest-circus/runner" --passWithNoTests ${
 			pattern ?? ''
 		}`
 

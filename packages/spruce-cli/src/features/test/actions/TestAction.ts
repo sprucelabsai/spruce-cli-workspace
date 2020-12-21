@@ -1,4 +1,6 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import open from 'open'
 import SpruceError from '../../../errors/SpruceError'
 import TestReporter from '../../../tests/TestReporter'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
@@ -41,7 +43,10 @@ export type OptionsSchema = typeof optionsSchema
 export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	public name = 'test'
 	public optionsSchema = optionsSchema
-	private testReporter: TestReporter | undefined
+	private testReporter?: TestReporter | undefined
+	private testRunner?: TestRunner
+	private exitAction: 'restart' | 'hold' | 'quit' = 'hold'
+	private filter: string | undefined
 
 	public constructor(options: FeatureActionOptions) {
 		super(options)
@@ -52,42 +57,71 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
-		const results: FeatureActionResponse = await this.runTests(
+		const { pattern, shouldReportWhileRunning } = normalizedOptions
+
+		if (shouldReportWhileRunning) {
+			this.testReporter = new TestReporter({
+				filter: pattern ?? undefined,
+				onRestart: this.handleRestart.bind(this),
+				onQuit: this.handleQuit.bind(this),
+				handleRerunTestFile: this.handleRerunTestFile.bind(this),
+				handleOpenTestFile: this.handleOpenTestFile.bind(this),
+				handleFilterChange: this.handleFilterChange.bind(this),
+			})
+
+			await this.testReporter.start()
+		}
+
+		const results: FeatureActionResponse = await this.startTestRunner(
 			normalizedOptions
 		)
+
+		await this.testReporter?.destroy()
 
 		return results
 	}
 
-	private async runTests(
+	private handleQuit() {
+		this.exitAction = 'quit'
+
+		this.testRunner?.kill()
+	}
+
+	private handleRerunTestFile(file: string) {
+		this.testReporter?.setFilter(file)
+		this.handleFilterChange(file)
+	}
+
+	private handleFilterChange(filter?: string) {
+		this.filter = filter?.replace('.ts', '')
+		this.exitAction = 'restart'
+		this.testRunner?.kill()
+	}
+
+	private handleRestart() {
+		this.exitAction = 'restart'
+
+		this.testRunner?.kill()
+	}
+
+	private async handleOpenTestFile(fileName: string) {
+		await this.openTestFile(fileName)
+	}
+
+	private async startTestRunner(
 		options: SchemaValues<OptionsSchema>
 	): Promise<FeatureActionResponse> {
-		const { shouldReportWhileRunning, pattern, inspect } = options
+		let { shouldReportWhileRunning, inspect } = options
 
 		const results: FeatureActionResponse = {}
-		let restart = false
-		let shouldWaitForConfirm = true
-		const testRunner = new TestRunner({
+
+		this.testRunner = new TestRunner({
 			cwd: this.cwd,
 			commandService: this.Service('command'),
 		})
 
-		if (shouldReportWhileRunning) {
-			this.testReporter = new TestReporter({
-				onRestart: () => {
-					restart = true
-					testRunner.kill()
-				},
-				onQuit: () => {
-					shouldWaitForConfirm = false
-					testRunner.kill()
-				},
-				onRerun: (_fileName: string) => {},
-			})
-
-			await this.testReporter?.start()
-
-			await testRunner.on(
+		if (this.testReporter) {
+			await this.testRunner.on(
 				'did-update',
 				(payload: { results: SpruceTestResults }) => {
 					this.testReporter?.updateResults(payload.results)
@@ -96,22 +130,20 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			)
 		}
 
-		let testResults: SpruceTestResults = await testRunner.run({
-			pattern,
+		let testResults: SpruceTestResults = await this.testRunner.run({
+			pattern: this.filter,
 			debugPort: inspect,
 		})
 
-		const shouldWait =
-			!restart && shouldWaitForConfirm && shouldReportWhileRunning
+		const shouldWait = this.exitAction === 'hold' && shouldReportWhileRunning
 
 		if (shouldWait) {
 			await this.testReporter?.waitForConfirm()
 		}
 
-		await this.testReporter?.destroy()
-
-		if (restart) {
-			return this.runTests(options)
+		if (this.exitAction === 'restart') {
+			this.exitAction = 'hold'
+			return this.startTestRunner(options)
 		}
 
 		if (testResults.totalTestFiles > 0) {
@@ -123,6 +155,11 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 
 		return results
+	}
+
+	private async openTestFile(fileName: string): Promise<void> {
+		const path = diskUtil.resolvePath(this.cwd, 'src', '__tests__', fileName)
+		await open(path)
 	}
 
 	private mixinSummaryAndTestResults(
