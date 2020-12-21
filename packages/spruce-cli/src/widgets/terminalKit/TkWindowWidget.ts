@@ -64,11 +64,7 @@ export default class TkWindowWidget
 	}
 
 	private async handleKeyPress(key: Key) {
-		try {
-			await (this as WindowWidget).emit('key', { key })
-		} catch (err) {
-			console.log(err)
-		}
+		await (this as WindowWidget).emit('key', { key })
 	}
 
 	protected handleParentResize() {
@@ -104,7 +100,7 @@ export default class TkWindowWidget
 		this.showCursor()
 		//@ts-ignore
 		this.term.removeAllListeners()
-		debugger
+
 		this.term.styleReset()
 
 		await this.term.grabInput(false, true)

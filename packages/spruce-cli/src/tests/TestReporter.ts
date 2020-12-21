@@ -1,5 +1,4 @@
 import { SpruceTestResults } from '../features/test/test.types'
-import { Key } from '../widgets/keySelectChoices'
 import { ButtonWidget } from '../widgets/types/button.types'
 import { InputWidget } from '../widgets/types/input.types'
 import { LayoutWidget } from '../widgets/types/layout.types'
@@ -143,7 +142,7 @@ export default class TestReporter {
 		}
 	}
 
-	private async handleGlobalKeypress(payload: { key: Key }) {
+	private async handleGlobalKeypress(payload: { key: string }) {
 		switch (payload.key) {
 			case 'CTRL_C':
 				this.handleQuit?.()

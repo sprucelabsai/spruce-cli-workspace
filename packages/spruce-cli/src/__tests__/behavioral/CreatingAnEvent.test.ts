@@ -45,7 +45,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 
 		assert.isFalsy(results.errors)
 
-		const payloads = [
+		const payloadSchemas = [
 			{
 				fileName: 'emitPayload.builder.ts',
 				expectedId: 'myFantasticallyAmazingEventEmitPayload',
@@ -58,7 +58,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 
 		const schemas = this.Service('schema')
 
-		for (const payload of payloads) {
+		for (const payload of payloadSchemas) {
 			const match = testUtil.assertsFileByNameInGeneratedFiles(
 				payload.fileName,
 				results.files
