@@ -71,7 +71,7 @@ export default class TestReporter {
 	public setIsDebugging(isDebugging: boolean) {
 		this.menu.setTextForItem(
 			'toggleDebug',
-			isDebugging ? 'Stop debugging' : 'Start debugging'
+			`^w^#^K${isDebugging ? ' √ ' : ' x '}^ Debugging`
 		)
 		this.isDebugging = isDebugging
 	}
@@ -504,6 +504,10 @@ export default class TestReporter {
 	public async destroy() {
 		clearInterval(this.updateInterval)
 		await this.window.destroy()
+	}
+
+	public resetStartTimes() {
+		this.errorLogItemGenerator.resetStartTimes()
 	}
 }
 function buildPatternButtonText(pattern: string | undefined): string {

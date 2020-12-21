@@ -24,6 +24,7 @@ export default class TkMenuBarWidget
 			parent: options.parent.getTermKitElement(),
 			separator: '|',
 			items: this.mapItemsToTkItems(options.items),
+			buttonFocusAttr: { bgColor: 'gray' },
 			...frame,
 		})
 
@@ -40,7 +41,7 @@ export default class TkMenuBarWidget
 			throw new Error(`No menu item with value of ${value}`)
 		}
 
-		buttonItem.setContent(this.buildItemText(text))
+		buttonItem.setContent(this.buildItemText(text), true)
 	}
 
 	private handleMenuSubmit(value: string) {

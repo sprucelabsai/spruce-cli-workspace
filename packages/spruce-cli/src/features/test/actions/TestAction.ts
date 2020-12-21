@@ -169,6 +169,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 		if (this.exitAction === 'restart') {
 			this.exitAction = 'hold'
+			this.testReporter?.resetStartTimes()
 			return this.startTestRunner(options)
 		}
 
