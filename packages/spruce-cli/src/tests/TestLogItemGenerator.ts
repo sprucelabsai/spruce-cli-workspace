@@ -93,6 +93,10 @@ export default class TestLogItemGenerator {
 		return errorContent
 	}
 
+	public resetStartTimes() {
+		this.startTimes = {}
+	}
+
 	private generateStatusBlock(status: SpruceTestFile['status']) {
 		const bgColor = this.colorBasedOnStatus(status)
 		let color = 'k'

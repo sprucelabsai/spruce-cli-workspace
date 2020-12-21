@@ -212,6 +212,22 @@ export const templates = {
 		return template(options)
 	},
 
+	eventEmitPayload(options: { nameCamel: string }) {
+		const template = templateImportUtil.getTemplate(
+			'events/payload.builder.ts.hbs'
+		)
+
+		return template({ ...options, actionCamel: 'Emit' })
+	},
+
+	eventResponsePayload(options: { nameCamel: string }) {
+		const template = templateImportUtil.getTemplate(
+			'events/payload.builder.ts.hbs'
+		)
+
+		return template({ ...options, actionCamel: 'Response' })
+	},
+
 	combinedEventsContract(contracts: EventContractTemplateItem[]) {
 		const template = templateImportUtil.getTemplate(
 			'events/events.contract.ts.hbs'

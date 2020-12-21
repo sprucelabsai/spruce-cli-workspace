@@ -40,7 +40,7 @@ export default class TkMenuBarWidget
 			throw new Error(`No menu item with value of ${value}`)
 		}
 
-		buttonItem.setContent(this.buildItemText(text))
+		buttonItem.setContent(this.buildItemText(text), true)
 	}
 
 	private handleMenuSubmit(value: string) {
