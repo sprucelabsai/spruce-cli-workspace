@@ -38,6 +38,9 @@ export default class BootAction extends AbstractFeatureAction<OptionsSchema> {
 				})
 		})
 
+		// give skill time to boot
+		await new Promise((resolve) => setTimeout(resolve, 5000))
+
 		return {
 			meta: {
 				kill: command.kill.bind(command),

@@ -108,9 +108,18 @@ export class EventSkillFeature implements SkillFeature {
 					})
 
 					await client.on(name, async (...args: []) => {
+
 						this.log.info(`Incoming event - ${name}`)
-						//@ts-ignore
-						await listener.callback(...args)
+						try {
+							//@ts-ignore
+							const results = await listener.callback(...args)
+							return results
+
+						} catch(err) {
+							return {
+								errors: [err]
+							}
+						}
 					})
 					this.log.info(`Registered listener for ${name}`)
 

@@ -1,3 +1,4 @@
+import pathUtil from 'path'
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import open from 'open'
@@ -88,12 +89,13 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	}
 
 	private handleRerunTestFile(file: string) {
-		this.testReporter?.setFilter(file)
-		this.handleFilterChange(file)
+		const name = file.split(pathUtil.sep).pop()?.replace('.test.ts', '')
+		this.testReporter?.setFilter(name)
+		this.handleFilterChange(name)
 	}
 
 	private handleFilterChange(filter?: string) {
-		this.filter = filter?.replace('.ts', '')
+		this.filter = filter
 		this.exitAction = 'restart'
 		this.testRunner?.kill()
 	}

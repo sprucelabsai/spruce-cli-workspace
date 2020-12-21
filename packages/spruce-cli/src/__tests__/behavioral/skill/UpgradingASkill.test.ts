@@ -22,7 +22,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		assert.isEqualDeep(passedHealthCheck, { skill: { status: 'passed' } })
 	}
 
-	@test.only()
+	@test()
 	protected static async upgradeWillAskIfYouWantToOverwriteFiles() {
 		const cli = await this.installAndBreakSkill('skills')
 

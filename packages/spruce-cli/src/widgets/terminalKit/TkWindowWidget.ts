@@ -60,8 +60,7 @@ export default class TkWindowWidget
 	}
 
 	public getFocusedWidget(): BaseWidget<any> | null {
-		this.document
-		debugger
+		return null
 	}
 
 	private handleKeyPress(key: Key) {

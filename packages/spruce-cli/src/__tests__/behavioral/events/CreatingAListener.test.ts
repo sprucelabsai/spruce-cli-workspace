@@ -1,6 +1,10 @@
 import { EventSignature } from '@sprucelabs/mercury-types'
 import { buildSchema } from '@sprucelabs/schema'
-import { buildEmitTargetAndPayloadSchema } from '@sprucelabs/spruce-event-utils'
+import {
+	buildEmitTargetAndPayloadSchema,
+	eventErrorAssertUtil,
+	eventResponseUtil,
+} from '@sprucelabs/spruce-event-utils'
 import { diskUtil, MERCURY_API_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
@@ -140,10 +144,11 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 		)
 	}
 
-	@test.only()
+	@test()
 	protected static async emittingEventTriggersListenerAndCrashesWithListenerNotImplemented() {
 		const {
 			cli,
+			currentSkill,
 			skill2,
 			contents,
 			eventContract,
@@ -151,20 +156,10 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
 			{
 				emitPayloadSchema: buildEmitTargetAndPayloadSchema({
-					id: 'myNewEventEmitPayloadAndTarget',
+					id: 'myNewEventEmitPayload',
 					fields: {
-						payload: {
-							type: 'schema',
-							options: {
-								schema: buildSchema({
-									id: 'myNewEventEmitPayload',
-									fields: {
-										booleanField: {
-											type: 'boolean',
-										},
-									},
-								}),
-							},
+						booleanField: {
+							type: 'boolean',
 						},
 					},
 				}),
@@ -189,8 +184,6 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 			.Action('boot')
 			.execute({ local: true })
 
-		await this.openInVsCode({ timeout: 30000 })
-
 		const client = (await this.connectToApi({
 			skillId: skill2.id,
 			apiKey: skill2.apiKey,
@@ -213,17 +206,23 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 			},
 		})
 
-		debugger
+		await boot.meta?.kill()
 
 		assert.isEqual(results.totalContracts, 1)
-		assert.isEqual(results.totalErrors, 0)
+		assert.isEqual(results.totalErrors, 1)
 		assert.isEqual(results.totalResponses, 1)
 
-		const err = await assert.doesThrowAsync(
-			async () => await boot.meta?.promise
+		const error = assert.doesThrow(() =>
+			eventResponseUtil.getFirstResponseOrThrow(results)
 		)
 
-		errorAssertUtil.assertError(err, 'TEST')
+		eventErrorAssertUtil.assertError(error, 'LISTENER_NOT_IMPLEMENTED')
+
+		const responderRef = results.responses[0].responderRef
+		assert.isEqual(
+			responderRef,
+			`skill:${currentSkill.id}:${currentSkill.slug}`
+		)
 	}
 
 	private static async setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
@@ -233,11 +232,12 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 			eventSignatures: {
 				'my-new-event': eventSignature,
 			},
-		}
+		} as const
 
 		const {
 			skillFixture,
 			skill2,
+			currentSkill,
 			cli,
 			org,
 		} = await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
@@ -260,6 +260,14 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 		const contents = diskUtil.readFile(listener)
 
-		return { contents, skill2, listenerPath: listener, cli, eventContract, org }
+		return {
+			contents,
+			skill2,
+			listenerPath: listener,
+			cli,
+			eventContract,
+			org,
+			currentSkill,
+		}
 	}
 }

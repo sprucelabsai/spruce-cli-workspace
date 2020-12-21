@@ -36,7 +36,8 @@ handlebars.registerHelper(
 					const matched = schemaTemplateItems.find(
 						(t) =>
 							t.id === idWithVersion.id &&
-							t.schema.version === idWithVersion.version
+							t.schema.version === idWithVersion.version &&
+							t.schema.namespace === idWithVersion.namespace
 					)
 					if (matched) {
 						imports.push(
