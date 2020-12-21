@@ -71,7 +71,7 @@ export default class TestReporter {
 	public setIsDebugging(isDebugging: boolean) {
 		this.menu.setTextForItem(
 			'toggleDebug',
-			isDebugging ? 'Start debugging' : 'Stop debugging'
+			isDebugging ? 'Stop debugging' : 'Start debugging'
 		)
 		this.isDebugging = isDebugging
 	}

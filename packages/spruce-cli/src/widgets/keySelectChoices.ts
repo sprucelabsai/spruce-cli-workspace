@@ -1,5 +1,6 @@
 type KeySelectChoices = [
 	{ label: 'ESCAPE'; value: 'ESCAPE' },
+	{ label: 'SPACE'; value: ' ' },
 	{ label: 'TAB'; value: 'TAB' },
 	{ label: 'ENTER'; value: 'ENTER' },
 	{ label: 'SHIFT_TAB'; value: 'SHIFT_TAB' },
@@ -284,6 +285,7 @@ export type Key = KeySelectChoices[number]['value']
 
 const keySelectChoices: KeySelectChoices = [
 	{ label: 'ESCAPE', value: 'ESCAPE' },
+	{ label: 'SPACE', value: ' ' },
 	{ label: 'TAB', value: 'TAB' },
 	{ label: 'ENTER', value: 'ENTER' },
 	{ label: 'SHIFT_TAB', value: 'SHIFT_TAB' },
