@@ -1,17 +1,4 @@
-# Spruce CLI
+# [Your Skill Name]
 
-Spruce Experience Platform via CLI.
-
-## Local CLI Development
-
-```
-yarn
-yarn local <command>
-```
-
-Example:
-
-```
-yarn local user:login
-```
-
+## Useful links
+* [Spruce Developer Documentation: https://developer.spruce.ai](https://developer.spruce.ai)

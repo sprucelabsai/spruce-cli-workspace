@@ -144,6 +144,8 @@ export default class FeatureFixture implements ServiceProvider {
 
 			if (isCached) {
 				await this.copyCachedSkillToCwd(cacheKey)
+			} else {
+				this.removeCwdFromCacheTracker(cacheKey)
 			}
 		}
 
@@ -189,17 +191,32 @@ export default class FeatureFixture implements ServiceProvider {
 		}
 
 		if (!settings[cacheKey]) {
-			const settingsFile = this.getTestCacheTrackerFilePath()
 			settings[cacheKey] = this.cwd
-
-			const settingsFolder = pathUtil.dirname(settingsFile)
-
-			!diskUtil.doesDirExist(settingsFolder) &&
-				diskUtil.createDir(settingsFolder)
-
-			diskUtil.writeFile(settingsFile, JSON.stringify(settings, null, 2))
+			this.writeCacheSettings(settings)
 		}
 		return settings
+	}
+
+	private removeCwdFromCacheTracker(cacheKey: string) {
+		let settings = this.loadCacheTracker()
+
+		if (!settings) {
+			settings = {}
+		}
+
+		if (settings[cacheKey]) {
+			delete settings[cacheKey]
+			this.writeCacheSettings(settings)
+		}
+	}
+
+	private writeCacheSettings(settings: Record<string, any>) {
+		const settingsFile = this.getTestCacheTrackerFilePath()
+		const settingsFolder = pathUtil.dirname(settingsFile)
+
+		!diskUtil.doesDirExist(settingsFolder) && diskUtil.createDir(settingsFolder)
+
+		diskUtil.writeFile(settingsFile, JSON.stringify(settings, null, 2))
 	}
 
 	private doesCacheExist(cacheKey: string) {
@@ -210,6 +227,13 @@ export default class FeatureFixture implements ServiceProvider {
 		if (settings?.[cacheKey]) {
 			alreadyInstalled = true
 		}
+
+		if (alreadyInstalled) {
+			alreadyInstalled = diskUtil.doesDirExist(
+				diskUtil.resolvePath(settings[cacheKey], 'node_modules')
+			)
+		}
+
 		return alreadyInstalled
 	}
 

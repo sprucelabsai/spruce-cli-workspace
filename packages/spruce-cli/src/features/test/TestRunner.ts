@@ -47,6 +47,7 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
 		debugPort?: number | null
 	}): Promise<SpruceTestResults & { wasKilled: boolean }> {
 		this.wasKilled = false
+
 		const jestPath = this.resolvePathToJest()
 		const debugArgs =
 			(options?.debugPort ?? 0) > 0 ? `--inspect=${options?.debugPort}` : ``

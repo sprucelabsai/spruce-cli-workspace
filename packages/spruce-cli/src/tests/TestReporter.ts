@@ -19,6 +19,7 @@ interface TestReporterOptions {
 	handleFilterPatternChange?: (pattern?: string) => void
 	handleToggleDebug: () => void
 	filterPattern?: string
+	isDebugging?: boolean
 }
 
 export default class TestReporter {
@@ -56,6 +57,7 @@ export default class TestReporter {
 		this.handleOpenTestFile = options?.handleOpenTestFile
 		this.handleFilterChange = options?.handleFilterPatternChange
 		this.handleToggleDebug = options?.handleToggleDebug
+		this.isDebugging = options?.isDebugging ?? false
 
 		this.errorLogItemGenerator = new TestLogItemGenerator()
 		this.widgetFactory = new WidgetFactory()

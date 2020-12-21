@@ -135,3 +135,16 @@ export interface ExecutionResults extends FeatureActionResponse {
 	actionCode: string
 	headline: string
 }
+
+type Skill = Omit<SpruceSchemas.Spruce.v2020_07_22.Skill, 'creators'>
+
+export type CurrentSkill = Partial<Skill> & {
+	name: string
+	isRegistered: boolean
+	namespacePascal: string
+}
+
+export type RegisteredSkill = Omit<
+	SpruceSchemas.Spruce.v2020_07_22.Skill,
+	'creators'
+>
