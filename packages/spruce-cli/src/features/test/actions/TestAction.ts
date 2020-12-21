@@ -49,6 +49,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	private exitAction: 'restart' | 'hold' | 'quit' = 'hold'
 	private pattern: string | undefined
 	private inspect?: number | null
+	private holdPromiseResolve?: () => void
 
 	public constructor(options: FeatureActionOptions) {
 		super(options)
@@ -67,8 +68,8 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		if (shouldReportWhileRunning) {
 			this.testReporter = new TestReporter({
 				filterPattern: pattern ?? undefined,
-				onRestart: this.handleRestart.bind(this),
-				onQuit: this.handleQuit.bind(this),
+				handleRestart: this.handleRestart.bind(this),
+				handleQuit: this.handleQuit.bind(this),
 				handleRerunTestFile: this.handleRerunTestFile.bind(this),
 				handleOpenTestFile: this.handleOpenTestFile.bind(this),
 				handleFilterPatternChange: this.handleFilterPatternChange.bind(this),
@@ -100,7 +101,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 	private handleQuit() {
 		this.exitAction = 'quit'
-		this.testRunner?.kill()
+		this.kill()
 	}
 
 	private handleRerunTestFile(file: string) {
@@ -111,14 +112,20 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 	private handleFilterPatternChange(filterPattern?: string) {
 		this.pattern = filterPattern
-		this.exitAction = 'restart'
 		this.testReporter?.setFilterPattern(filterPattern)
-		this.testRunner?.kill()
+		this.exitAction = 'restart'
+		this.kill()
 	}
 
 	private handleRestart() {
 		this.exitAction = 'restart'
+		this.kill()
+	}
+
+	private kill() {
 		this.testRunner?.kill()
+		this.holdPromiseResolve?.()
+		this.holdPromiseResolve = undefined
 	}
 
 	private async handleOpenTestFile(fileName: string) {
@@ -155,7 +162,9 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		const shouldWait = this.exitAction === 'hold' && shouldReportWhileRunning
 
 		if (shouldWait) {
-			await this.testReporter?.waitForConfirm()
+			await new Promise((resolve) => {
+				this.holdPromiseResolve = resolve as any
+			})
 		}
 
 		if (this.exitAction === 'restart') {

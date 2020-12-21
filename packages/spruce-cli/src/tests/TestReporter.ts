@@ -12,8 +12,8 @@ import WidgetFactory from '../widgets/WidgetFactory'
 import TestLogItemGenerator from './TestLogItemGenerator'
 
 interface TestReporterOptions {
-	onRestart?: () => void
-	onQuit?: () => void
+	handleRestart?: () => void
+	handleQuit?: () => void
 	onRequestOpenTestFile?: () => void
 	handleRerunTestFile?: (fileName: string) => void
 	handleOpenTestFile?: (fileName: string) => void
@@ -42,18 +42,17 @@ export default class TestReporter {
 	private clearFilterPatternButton!: ButtonWidget
 	private isDebugging = false
 
-	private onRestart?: () => void
-	private onQuit?: () => void
+	private handleRestart?: () => void
+	private handleQuit?: () => void
 	private handleRerunTestFile?: (fileName: string) => void
 	private handleFilterChange?: (pattern?: string) => void
-	private waitForDoneResolver?: () => void
 	private handleOpenTestFile?: (testFile: string) => void
 	private handleToggleDebug?: () => void
 
 	public constructor(options?: TestReporterOptions) {
 		this.filterPattern = options?.filterPattern
-		this.onRestart = options?.onRestart
-		this.onQuit = options?.onQuit
+		this.handleRestart = options?.handleRestart
+		this.handleQuit = options?.handleQuit
 		this.handleRerunTestFile = options?.handleRerunTestFile
 		this.handleOpenTestFile = options?.handleOpenTestFile
 		this.handleFilterChange = options?.handleFilterPatternChange
@@ -72,7 +71,7 @@ export default class TestReporter {
 	public setIsDebugging(isDebugging: boolean) {
 		this.menu.setTextForItem(
 			'toggleDebug',
-			isDebugging ? 'Turn off debug' : 'Start debuging'
+			isDebugging ? 'Start debugging' : 'Stop debugging'
 		)
 		this.isDebugging = isDebugging
 	}
@@ -125,10 +124,10 @@ export default class TestReporter {
 	private handleMenuSelect(payload: { value: string }) {
 		switch (payload.value) {
 			case 'quit':
-				this.handleDone()
+				this.handleQuit?.()
 				break
 			case 'restart':
-				this.handleRestart()
+				this.handleRestart?.()
 				break
 			case 'toggleDebug':
 				this.handleToggleDebug?.()
@@ -145,7 +144,7 @@ export default class TestReporter {
 	private async handleGlobalKeypress(payload: { key: Key }) {
 		switch (payload.key) {
 			case 'CTRL_C':
-				this.onQuit?.()
+				this.handleQuit?.()
 				process.exit()
 				break
 		}
@@ -223,7 +222,7 @@ export default class TestReporter {
 			parent: this.selectTestPopup,
 			left: 20,
 			top: 6,
-			text: 'Rerun',
+			text: 'Test',
 		})
 
 		const cancel = this.widgetFactory.Widget('button', {
@@ -500,33 +499,6 @@ export default class TestReporter {
 	public render() {
 		this.table?.computeCells()
 		this.table?.draw()
-	}
-
-	public async waitForConfirm() {
-		return new Promise((resolve: (_?: any) => void) => {
-			this.waitForDoneResolver = resolve
-			void this.window.on('key', (payload) => {
-				if (payload.key === 'ENTER') {
-					this.handleDone()
-				}
-			})
-		})
-	}
-
-	private handleDone() {
-		if (this.waitForDoneResolver) {
-			this.waitForDoneResolver()
-		} else {
-			this.onQuit?.()
-		}
-	}
-
-	private handleRestart() {
-		this.onRestart?.()
-
-		if (this.waitForDoneResolver) {
-			this.waitForDoneResolver()
-		}
 	}
 
 	public async destroy() {
