@@ -14,6 +14,7 @@ export default class TkInputWidget extends TkBaseWidget implements InputWidget {
 		options: TkWidgetOptions & InputWidgetOptions & { termKitElement: any }
 	) {
 		super(options)
+
 		const frame = termKitUtil.buildFrame(options, options.parent)
 
 		const { parent, ...rest } = options
@@ -23,7 +24,7 @@ export default class TkInputWidget extends TkBaseWidget implements InputWidget {
 			textAttr: { bgColor: 'black' },
 			voidAttr: { bgColor: 'black' },
 			placeholder: options.placeholder
-				? chalk.italic.gray(options.placeholder)
+				? chalk.italic.black(options.placeholder)
 				: undefined,
 			placeholderHasMarkup: true,
 			prompt: {

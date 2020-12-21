@@ -41,6 +41,7 @@ export default class TkMenuBarWidget
 
 	public mapItemsToTkItems(items: MenuBarWidgetItem[]) {
 		return items.map((item) => ({
+			id: item.id,
 			value: item.value,
 			content: ` ${item.label} `,
 			topSubmit: !item.items || item.items.length === 0,

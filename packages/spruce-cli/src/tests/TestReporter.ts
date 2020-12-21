@@ -1,5 +1,6 @@
 import { SpruceTestResults } from '../features/test/test.types'
 import { Key } from '../widgets/keySelectChoices'
+import { ButtonWidget } from '../widgets/types/button.types'
 import { InputWidget } from '../widgets/types/input.types'
 import { LayoutWidget } from '../widgets/types/layout.types'
 import { MenuBarWidget } from '../widgets/types/menuBar.types'
@@ -16,8 +17,8 @@ interface TestReporterOptions {
 	onRequestOpenTestFile?: () => void
 	handleRerunTestFile?: (fileName: string) => void
 	handleOpenTestFile?: (fileName: string) => void
-	handleFilterChange?: (pattern?: string) => void
-	filter?: string
+	handleFilterPatternChange?: (pattern?: string) => void
+	filterPattern?: string
 }
 
 export default class TestReporter {
@@ -37,6 +38,7 @@ export default class TestReporter {
 	private topLayout!: LayoutWidget
 	private filterInput!: InputWidget
 	private filterPattern?: string
+	private clearFilterPatternButton!: ButtonWidget
 
 	private onRestart?: () => void
 	private onQuit?: () => void
@@ -46,20 +48,22 @@ export default class TestReporter {
 	private handleOpenTestFile?: (testFile: string) => void
 
 	public constructor(options?: TestReporterOptions) {
-		this.filterPattern = options?.filter
+		this.filterPattern = options?.filterPattern
 		this.onRestart = options?.onRestart
 		this.onQuit = options?.onQuit
 		this.handleRerunTestFile = options?.handleRerunTestFile
 		this.handleOpenTestFile = options?.handleOpenTestFile
-		this.handleFilterChange = options?.handleFilterChange
+		this.handleFilterChange = options?.handleFilterPatternChange
 
 		this.errorLogItemGenerator = new TestLogItemGenerator()
 		this.widgetFactory = new WidgetFactory()
 	}
 
-	public setFilter(filter: string | undefined) {
-		this.filterPattern = filter
-		this.filterInput.setValue(filter ?? '')
+	public setFilterPattern(pattern: string | undefined) {
+		this.filterPattern = pattern
+		this.filterInput.setValue(pattern ?? '')
+		debugger
+		this.clearFilterPatternButton.setText(buildPatternButtonText(pattern))
 	}
 
 	public async start() {
@@ -67,6 +71,7 @@ export default class TestReporter {
 
 		this.window = this.widgetFactory.Widget('window', {})
 		this.window.hideCursor()
+
 		void this.window.on('key', this.handleGlobalKeypress.bind(this))
 		void this.window.on('kill', this.destroy.bind(this))
 
@@ -94,6 +99,11 @@ export default class TestReporter {
 					label: 'Restart',
 					value: 'restart',
 				},
+				{
+					id: 'test',
+					label: 'Enable debug',
+					value: 'toggleDebug',
+				},
 			],
 		})
 
@@ -108,7 +118,14 @@ export default class TestReporter {
 			case 'restart':
 				this.handleRestart()
 				break
+			case 'toggleDebug':
+				this.handleToggleDebug()
+				break
 		}
+	}
+
+	public handleToggleDebug() {
+		// this.menu.menu.buttons[2].content = [' disable debug ']
 	}
 
 	private refreshResults() {
@@ -261,15 +278,14 @@ export default class TestReporter {
 	private dropInFilterControls() {
 		const parent = this.topLayout.getChildById('filter') ?? this.window
 
+		const buttonWidth = 1
 		this.filterInput = this.widgetFactory.Widget('input', {
 			parent,
 			left: 0,
-			top: 0,
-			label: 'Filter',
-			placeholder: '.*server.*log.*',
-			width: '100%',
+			label: 'Pattern',
+			width: parent.getFrame().width - buttonWidth,
 			height: 1,
-			value: this.filterPattern,
+			value: buildPatternButtonText(this.filterPattern),
 		})
 
 		void this.filterInput.on('cancel', () => {
@@ -278,7 +294,20 @@ export default class TestReporter {
 
 		void this.filterInput.on('submit', (payload) => {
 			this.handleFilterChange?.(payload.value ?? undefined)
-			this.setFilter(payload.value)
+		})
+
+		this.clearFilterPatternButton = this.widgetFactory.Widget('button', {
+			parent,
+			left: this.filterInput.getFrame().width,
+			width: buttonWidth,
+			top: 0,
+			text: '-',
+		})
+
+		void this.clearFilterPatternButton.on('click', () => {
+			if (this.filterPattern || this.filterPattern?.length === 0) {
+				this.handleFilterChange?.(undefined)
+			}
 		})
 	}
 
@@ -318,11 +347,10 @@ export default class TestReporter {
 					columns: [
 						{
 							id: 'progress',
-							width: '60%',
+							width: 45,
 						},
 						{
 							id: 'filter',
-							width: '40%',
 						},
 					],
 				},
@@ -433,7 +461,7 @@ export default class TestReporter {
 				)
 			}
 		} else {
-			this.bar.setLabel('Racing to get your first test done ⚡️')
+			this.bar.setLabel('0%')
 		}
 
 		this.bar.setProgress(this.generatePercentComplete(results) / 100)
@@ -497,4 +525,7 @@ export default class TestReporter {
 		clearInterval(this.updateInterval)
 		await this.window.destroy()
 	}
+}
+function buildPatternButtonText(pattern: string | undefined): string {
+	return pattern ? 'x' : '-'
 }

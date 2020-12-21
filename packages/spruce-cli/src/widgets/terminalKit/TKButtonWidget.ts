@@ -43,6 +43,7 @@ export default class TKButtonWidget
 	}
 
 	public setText(_content: string): void {
+		debugger
 		throw new Error('Method not implemented.')
 	}
 

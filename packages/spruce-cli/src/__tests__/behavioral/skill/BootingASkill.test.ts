@@ -13,12 +13,6 @@ export default class BootingASkillTest extends AbstractCliTest {
 		}, /You must build/gis)
 	}
 
-	private static async install() {
-		const fixture = this.FeatureFixture()
-		const cli = await fixture.installCachedFeatures('skills')
-		return cli
-	}
-
 	@test()
 	protected static async aSkillCanBeBootedAndKilled() {
 		const cli = await this.install()
@@ -39,5 +33,11 @@ export default class BootingASkillTest extends AbstractCliTest {
 
 		const psResultsEmpty = await findProcess('pid', pid)
 		assert.isLength(psResultsEmpty, 0)
+	}
+
+	private static async install() {
+		const fixture = this.FeatureFixture()
+		const cli = await fixture.installCachedFeatures('skills')
+		return cli
 	}
 }

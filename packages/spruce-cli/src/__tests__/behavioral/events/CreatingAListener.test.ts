@@ -184,6 +184,9 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 			.Action('boot')
 			.execute({ local: true })
 
+		//give the skill time to boot
+		await this.wait(5000)
+
 		const client = (await this.connectToApi({
 			skillId: skill2.id,
 			apiKey: skill2.apiKey,

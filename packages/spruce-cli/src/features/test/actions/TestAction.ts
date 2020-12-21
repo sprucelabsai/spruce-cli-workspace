@@ -47,7 +47,8 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	private testReporter?: TestReporter | undefined
 	private testRunner?: TestRunner
 	private exitAction: 'restart' | 'hold' | 'quit' = 'hold'
-	private filter: string | undefined
+	private pattern: string | undefined
+	private inspect?: number | null
 
 	public constructor(options: FeatureActionOptions) {
 		super(options)
@@ -58,16 +59,19 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
-		const { pattern, shouldReportWhileRunning } = normalizedOptions
+		const { pattern, shouldReportWhileRunning, inspect } = normalizedOptions
+
+		this.inspect = inspect
+		this.pattern = pattern
 
 		if (shouldReportWhileRunning) {
 			this.testReporter = new TestReporter({
-				filter: pattern ?? undefined,
+				filterPattern: pattern ?? undefined,
 				onRestart: this.handleRestart.bind(this),
 				onQuit: this.handleQuit.bind(this),
 				handleRerunTestFile: this.handleRerunTestFile.bind(this),
 				handleOpenTestFile: this.handleOpenTestFile.bind(this),
-				handleFilterChange: this.handleFilterChange.bind(this),
+				handleFilterPatternChange: this.handleFilterPatternChange.bind(this),
 			})
 
 			await this.testReporter.start()
@@ -90,13 +94,14 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 	private handleRerunTestFile(file: string) {
 		const name = file.split(pathUtil.sep).pop()?.replace('.test.ts', '')
-		this.testReporter?.setFilter(name)
-		this.handleFilterChange(name)
+		this.testReporter?.setFilterPattern(name)
+		this.handleFilterPatternChange(name)
 	}
 
-	private handleFilterChange(filter?: string) {
-		this.filter = filter
+	private handleFilterPatternChange(filterPattern?: string) {
+		this.pattern = filterPattern
 		this.exitAction = 'restart'
+		this.testReporter?.setFilterPattern(filterPattern)
 		this.testRunner?.kill()
 	}
 
@@ -113,7 +118,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	private async startTestRunner(
 		options: SchemaValues<OptionsSchema>
 	): Promise<FeatureActionResponse> {
-		let { shouldReportWhileRunning, inspect } = options
+		let { shouldReportWhileRunning } = options
 
 		const results: FeatureActionResponse = {}
 
@@ -133,8 +138,8 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 
 		let testResults: SpruceTestResults = await this.testRunner.run({
-			pattern: this.filter,
-			debugPort: inspect,
+			pattern: this.pattern,
+			debugPort: this.inspect,
 		})
 
 		const shouldWait = this.exitAction === 'hold' && shouldReportWhileRunning

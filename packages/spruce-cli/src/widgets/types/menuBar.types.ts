@@ -27,6 +27,7 @@ export interface MenuBarWidgetOptions {
 }
 
 export interface MenuBarWidgetItem {
+	id?: string
 	label: string
 	value: string
 	items?: MenuBarWidgetItem[]
