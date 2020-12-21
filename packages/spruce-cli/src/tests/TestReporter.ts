@@ -18,6 +18,7 @@ interface TestReporterOptions {
 	handleRerunTestFile?: (fileName: string) => void
 	handleOpenTestFile?: (fileName: string) => void
 	handleFilterPatternChange?: (pattern?: string) => void
+	handleToggleDebug: () => void
 	filterPattern?: string
 }
 
@@ -39,6 +40,7 @@ export default class TestReporter {
 	private filterInput!: InputWidget
 	private filterPattern?: string
 	private clearFilterPatternButton!: ButtonWidget
+	private isDebugging = false
 
 	private onRestart?: () => void
 	private onQuit?: () => void
@@ -46,6 +48,7 @@ export default class TestReporter {
 	private handleFilterChange?: (pattern?: string) => void
 	private waitForDoneResolver?: () => void
 	private handleOpenTestFile?: (testFile: string) => void
+	private handleToggleDebug?: () => void
 
 	public constructor(options?: TestReporterOptions) {
 		this.filterPattern = options?.filterPattern
@@ -54,6 +57,7 @@ export default class TestReporter {
 		this.handleRerunTestFile = options?.handleRerunTestFile
 		this.handleOpenTestFile = options?.handleOpenTestFile
 		this.handleFilterChange = options?.handleFilterPatternChange
+		this.handleToggleDebug = options?.handleToggleDebug
 
 		this.errorLogItemGenerator = new TestLogItemGenerator()
 		this.widgetFactory = new WidgetFactory()
@@ -62,8 +66,15 @@ export default class TestReporter {
 	public setFilterPattern(pattern: string | undefined) {
 		this.filterPattern = pattern
 		this.filterInput.setValue(pattern ?? '')
-		debugger
 		this.clearFilterPatternButton.setText(buildPatternButtonText(pattern))
+	}
+
+	public setIsDebugging(isDebugging: boolean) {
+		this.menu.setTextForItem(
+			'toggleDebug',
+			isDebugging ? 'Turn off debug' : 'Start debuging'
+		)
+		this.isDebugging = isDebugging
 	}
 
 	public async start() {
@@ -100,7 +111,6 @@ export default class TestReporter {
 					value: 'restart',
 				},
 				{
-					id: 'test',
 					label: 'Enable debug',
 					value: 'toggleDebug',
 				},
@@ -108,6 +118,8 @@ export default class TestReporter {
 		})
 
 		void this.menu.on('select', this.handleMenuSelect.bind(this))
+
+		this.setIsDebugging(this.isDebugging)
 	}
 
 	private handleMenuSelect(payload: { value: string }) {
@@ -119,13 +131,9 @@ export default class TestReporter {
 				this.handleRestart()
 				break
 			case 'toggleDebug':
-				this.handleToggleDebug()
+				this.handleToggleDebug?.()
 				break
 		}
-	}
-
-	public handleToggleDebug() {
-		// this.menu.menu.buttons[2].content = [' disable debug ']
 	}
 
 	private refreshResults() {
@@ -285,7 +293,7 @@ export default class TestReporter {
 			label: 'Pattern',
 			width: parent.getFrame().width - buttonWidth,
 			height: 1,
-			value: buildPatternButtonText(this.filterPattern),
+			value: this.filterPattern,
 		})
 
 		void this.filterInput.on('cancel', () => {
@@ -301,7 +309,7 @@ export default class TestReporter {
 			left: this.filterInput.getFrame().width,
 			width: buttonWidth,
 			top: 0,
-			text: '-',
+			text: buildPatternButtonText(this.filterPattern),
 		})
 
 		void this.clearFilterPatternButton.on('click', () => {

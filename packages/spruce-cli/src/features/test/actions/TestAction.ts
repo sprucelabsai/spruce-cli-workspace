@@ -72,6 +72,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 				handleRerunTestFile: this.handleRerunTestFile.bind(this),
 				handleOpenTestFile: this.handleOpenTestFile.bind(this),
 				handleFilterPatternChange: this.handleFilterPatternChange.bind(this),
+				handleToggleDebug: this.toggleDebug.bind(this),
 			})
 
 			await this.testReporter.start()
@@ -86,9 +87,19 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		return results
 	}
 
+	private toggleDebug() {
+		if (this.inspect) {
+			this.inspect = undefined
+		} else {
+			this.inspect = 5200
+		}
+
+		this.testReporter?.setIsDebugging(!!this.inspect)
+		this.handleRestart()
+	}
+
 	private handleQuit() {
 		this.exitAction = 'quit'
-
 		this.testRunner?.kill()
 	}
 
@@ -107,7 +118,6 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 	private handleRestart() {
 		this.exitAction = 'restart'
-
 		this.testRunner?.kill()
 	}
 

@@ -27,12 +27,12 @@ export interface MenuBarWidgetOptions {
 }
 
 export interface MenuBarWidgetItem {
-	id?: string
 	label: string
 	value: string
 	items?: MenuBarWidgetItem[]
 }
 
 export interface MenuBarWidget extends BaseWidget<MenuBarEventContract> {
+	setTextForItem(value: string, text: string): void
 	readonly type: 'menuBar'
 }

@@ -31,6 +31,18 @@ export default class TkMenuBarWidget
 		this.menu.on('submit', this.handleMenuSubmit.bind(this))
 	}
 
+	public setTextForItem(value: string, text: string): void {
+		const buttonItem = this.menu.buttons.find(
+			(it: any) => it.def.value === value
+		)
+
+		if (!buttonItem) {
+			throw new Error(`No menu item with value of ${value}`)
+		}
+
+		buttonItem.setContent(this.buildItemText(text))
+	}
+
 	private handleMenuSubmit(value: string) {
 		void (this as MenuBarWidget).emit('select', { value })
 	}
@@ -39,12 +51,15 @@ export default class TkMenuBarWidget
 		return this.menu
 	}
 
-	public mapItemsToTkItems(items: MenuBarWidgetItem[]) {
+	private mapItemsToTkItems(items: MenuBarWidgetItem[]) {
 		return items.map((item) => ({
-			id: item.id,
 			value: item.value,
-			content: ` ${item.label} `,
+			content: this.buildItemText(item.label),
 			topSubmit: !item.items || item.items.length === 0,
 		}))
+	}
+
+	private buildItemText(text: string): string {
+		return ` ${text} `
 	}
 }
