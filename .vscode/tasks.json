@@ -11,7 +11,26 @@
 			"runOptions": {
 				"runOn": "folderOpen"
 			}
-			
+		},
+		{
+			"label": "test.file",
+			"command": "spruce",
+			"args": [
+				"test",
+				"--inspect",
+				"5200",
+				"--pattern",
+				"${fileBasenameNoExtension}"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/packages/spruce-cli"
+			},
+			"promptOnClose": false,
+			"group": "test",
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			}
 		}
 	]
 }

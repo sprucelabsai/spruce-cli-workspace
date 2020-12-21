@@ -1,8 +1,14 @@
-import { namesUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
+import {
+	diskUtil,
+	namesUtil,
+	versionUtil,
+} from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { FeatureActionResponse } from '../../features/features.types'
 import AbstractEventTest from '../../tests/AbstractEventTest'
 import testUtil from '../../tests/utilities/test.utility'
+import { RegisteredSkill } from '../../types/cli.types'
 
 const EVENT_NAME = 'my fantastically amazing event'
 const EVENT_SLUG = 'my-fantastically-amazing-event'
@@ -45,6 +51,31 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 
 		assert.isFalsy(results.errors)
 
+		await this.assertExpectedPayloadSchemas(results, skill)
+		await this.assertExpectedPermissionContract(results, skill)
+		await this.assertValidActionResponseFiles(results)
+	}
+
+	private static assertExpectedPermissionContract(
+		results: FeatureActionResponse,
+		skill: RegisteredSkill
+	) {
+		const name = 'permissions.contract.ts'
+		const path = versionUtil.resolvePath(
+			'src/events/',
+			namesUtil.toPascal(skill.slug ?? 'missing'),
+			'{{@latest}}',
+			EVENT_SLUG,
+			name
+		)
+
+		assert.isTrue(diskUtil.doesFileExist(path))
+	}
+
+	private static async assertExpectedPayloadSchemas(
+		results: FeatureActionResponse,
+		skill: RegisteredSkill
+	) {
 		const payloadSchemas = [
 			{
 				fileName: 'emitPayload.builder.ts',
@@ -66,14 +97,12 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 
 			assert.isEqual(
 				match,
-				versionUtil.resolveNewLatestPath(
-					this.resolvePath(
-						'src/events/',
-						namesUtil.toPascal(skill.slug),
-						'{{@latest}}',
-						EVENT_SLUG,
-						payload.fileName
-					)
+				versionUtil.resolvePath(
+					'src/events/',
+					namesUtil.toPascal(skill.slug ?? 'missing'),
+					'{{@latest}}',
+					EVENT_SLUG,
+					payload.fileName
 				)
 			)
 
@@ -81,7 +110,5 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 
 			assert.isEqual(imported.id, payload.expectedId)
 		}
-
-		await this.assertValidActionResponseFiles(results)
 	}
 }

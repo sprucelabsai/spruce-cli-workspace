@@ -1,21 +1,13 @@
-import { SpruceSchemas } from '@sprucelabs/mercury-types'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractStore from '../../../stores/AbstractStore'
-
-type Skill = Omit<SpruceSchemas.Spruce.v2020_07_22.Skill, 'creators'>
+import { CurrentSkill, RegisteredSkill } from '../../../types/cli.types'
 
 export interface CreateSkill {
 	name: string
 	slug: string
 	description?: string
-}
-
-type CurrentSkill = Partial<Skill> & {
-	name: string
-	isRegistered: boolean
-	namespacePascal: string
 }
 
 export interface RegisterSkillOptions {
@@ -28,7 +20,7 @@ export default class SkillStore extends AbstractStore {
 	public async register(
 		values: CreateSkill,
 		options?: RegisterSkillOptions
-	): Promise<Skill> {
+	): Promise<RegisteredSkill> {
 		const isRegisteringCurrentSkill =
 			options?.isRegisteringCurrentSkill !== false
 

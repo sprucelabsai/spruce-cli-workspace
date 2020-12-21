@@ -67,6 +67,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 		if (shouldReportWhileRunning) {
 			this.testReporter = new TestReporter({
+				isDebugging: !!inspect,
 				filterPattern: pattern ?? undefined,
 				handleRestart: this.handleRestart.bind(this),
 				handleQuit: this.handleQuit.bind(this),

@@ -93,13 +93,17 @@ async function run() {
 	}
 
 	clearInterval(progressInterval)
+
 	await term.stopLoading()
 	term.renderLine(`Done! ${durationUtil.msToFriendly(getTimeSpent())}`)
 
 	async function cacheOrSkip(cacheKey: string) {
 		const { cacheTracker, cwd, fixture, options } = setup(cacheKey)
 
-		if (cacheTracker[cacheKey] && diskUtil.doesDirExist(cwd)) {
+		if (
+			cacheTracker[cacheKey] &&
+			diskUtil.doesDirExist(diskUtil.resolvePath(cwd, 'node_modules'))
+		) {
 			remaining--
 			renderLine(`'${cacheKey}' already cached. Skipping...`, [
 				GraphicsTextEffect.Italic,
