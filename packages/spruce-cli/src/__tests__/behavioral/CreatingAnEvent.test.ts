@@ -17,7 +17,6 @@ const EVENT_CAMEL = 'myFantasticallyAmazingEvent'
 export default class CreatingAnEventTest extends AbstractEventTest {
 	@test()
 	protected static async hasCreateAction() {
-		debugger
 		assert.isFunction(
 			(await this.Cli()).getFeature('event').Action('create').execute
 		)
