@@ -1,5 +1,4 @@
 import { Schema, SchemaEntityFactory } from '@sprucelabs/schema'
-import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { CommanderStatic } from 'commander'
 import SpruceError from '../errors/SpruceError'
 import { GlobalEmitter } from '../GlobalEmitter'
@@ -38,9 +37,12 @@ export default class FeatureCommandAttacher {
 	}
 
 	private attachCode(code: string, feature: AbstractFeature) {
-		const prefix = namesUtil.toCamel(feature.code)
-		const commandStr = prefix === code ? code : `${code}.${prefix}`
+		let commandStr = featuresUtil.generateCommand(feature.code, code)
 		const action = feature.Action(code)
+
+		if (action.commandAliases.length === 1) {
+			commandStr = action.commandAliases[0]
+		}
 
 		const executer = new FeatureCommandExecuter({
 			featureCode: feature.code,
@@ -54,28 +56,30 @@ export default class FeatureCommandAttacher {
 			await executer.execute(command.opts())
 		})
 
+		if (action.commandAliases.length > 1) {
+			throw new Error('more than one alias not supported yet')
+		}
+
 		const description = action.optionsSchema?.description
+
 		if (description) {
 			command = command.description(description)
 		}
 
-		const definition = action.optionsSchema
+		const schema = action.optionsSchema
 
-		if (definition) {
-			this.attachOptions(command, definition)
+		if (schema) {
+			this.attachOptions(command, schema)
 		}
 	}
 
-	private attachOptions(
-		command: CommanderStatic['program'],
-		definition: Schema
-	) {
-		const schema = SchemaEntityFactory.Entity(definition)
+	private attachOptions(command: CommanderStatic['program'], schema: Schema) {
+		const entity = SchemaEntityFactory.Entity(schema)
 
 		let theProgram = command
 
-		const fields = schema.getNamedFields()
-		const aliases = featuresUtil.generateCommandAliases(definition)
+		const fields = entity.getNamedFields()
+		const aliases = featuresUtil.generateOptionAliases(schema)
 
 		fields.forEach(({ field, name }) => {
 			try {
@@ -91,9 +95,9 @@ export default class FeatureCommandAttacher {
 					//@ts-ignore
 					code: 'FAILED_TO_ATTACH_COMMAND',
 					fieldName: name,
-					id: schema.schemaId,
+					id: entity.schemaId,
 					originalError: err,
-					friendlyMessage: `Could not attach option ${aliases[name]} from ${schema.schemaId}.${name} to the command`,
+					friendlyMessage: `Could not attach option ${aliases[name]} from ${entity.schemaId}.${name} to the command`,
 				})
 			}
 		})

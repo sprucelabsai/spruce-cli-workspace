@@ -78,8 +78,8 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 		await promise
 
-		assert.isEqual(willEventCommand, 'skill.create')
-		assert.isEqual(didEventCommand, 'skill.create')
+		assert.isEqual(willEventCommand, 'create.skill')
+		assert.isEqual(didEventCommand, 'create.skill')
 	}
 
 	@test()

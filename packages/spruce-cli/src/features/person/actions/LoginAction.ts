@@ -19,6 +19,7 @@ type Options = SchemaValues<OptionsSchema>
 export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
 	public name = 'login'
 	public optionsSchema: OptionsSchema = optionsSchema
+	public commandAliases = ['login']
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const { phone } = this.validateAndNormalizeOptions(options)

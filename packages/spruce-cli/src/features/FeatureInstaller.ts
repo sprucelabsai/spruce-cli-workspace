@@ -256,7 +256,7 @@ export default class FeatureInstaller implements ServiceProvider {
 
 		if (devPackagesToInstall.length > 0) {
 			await pkgService.install(devPackagesToInstall, {
-				dev: true,
+				isDev: true,
 			})
 		}
 

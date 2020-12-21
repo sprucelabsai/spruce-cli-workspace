@@ -42,4 +42,5 @@ export interface WindowWidget extends BaseWidget<WindowEventContract> {
 	hideCursor: () => void
 	showCursor: () => void
 	setTitle: (title: string) => void
+	getFocusedWidget(): BaseWidget | null
 }

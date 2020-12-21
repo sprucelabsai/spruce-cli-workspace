@@ -21,7 +21,7 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 			await response.meta?.promise
 		})
 
-		errorAssertUtil.assertError(err, 'SKILL_WILL_BOOT_NOT_IMPLEMENTED')
+		errorAssertUtil.assertError(err, 'LISTENER_NOT_IMPLEMENTED')
 	}
 
 	@test()
@@ -42,6 +42,6 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 			await response.meta?.promise
 		})
 
-		errorAssertUtil.assertError(err, 'SKILL_DID_BOOT_NOT_IMPLEMENTED')
+		errorAssertUtil.assertError(err, 'LISTENER_NOT_IMPLEMENTED')
 	}
 }

@@ -1,5 +1,6 @@
 import terminal_kit from 'terminal-kit'
 import { Key } from '../keySelectChoices'
+import { BaseWidget } from '../types/widgets.types'
 import { WindowWidget, WindowWidgetOptions } from '../types/window.types'
 import TkBaseWidget, { TkWidgetOptions } from './TkBaseWidget'
 const termKit = terminal_kit as any
@@ -56,6 +57,10 @@ export default class TkWindowWidget
 		process.on('uncaughtException', (code: number) => {
 			void (this as WindowWidget).emit('kill', { code })
 		})
+	}
+
+	public getFocusedWidget(): BaseWidget<any> | null {
+		return null
 	}
 
 	private handleKeyPress(key: Key) {

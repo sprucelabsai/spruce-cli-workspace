@@ -33,5 +33,6 @@ export interface MenuBarWidgetItem {
 }
 
 export interface MenuBarWidget extends BaseWidget<MenuBarEventContract> {
+	setTextForItem(value: string, text: string): void
 	readonly type: 'menuBar'
 }

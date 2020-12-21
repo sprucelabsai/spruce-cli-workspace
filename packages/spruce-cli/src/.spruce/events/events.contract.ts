@@ -18,6 +18,7 @@ import isSkillInstalledEventContract, { IsSkillInstalledEventContract } from '#s
 import listLocationsEventContract, { ListLocationsEventContract } from '#spruce/events/mercuryApi/listLocations.contract'
 import listOrganizationsEventContract, { ListOrganizationsEventContract } from '#spruce/events/mercuryApi/listOrganizations.contract'
 import listRolesEventContract, { ListRolesEventContract } from '#spruce/events/mercuryApi/listRoles.contract'
+import logoutEventContract, { LogoutEventContract } from '#spruce/events/mercuryApi/logout.contract'
 import registerEventsEventContract, { RegisterEventsEventContract } from '#spruce/events/mercuryApi/registerEvents.contract'
 import registerListenersEventContract, { RegisterListenersEventContract } from '#spruce/events/mercuryApi/registerListeners.contract'
 import registerSkillEventContract, { RegisterSkillEventContract } from '#spruce/events/mercuryApi/registerSkill.contract'
@@ -52,6 +53,7 @@ export default [
     listLocationsEventContract,
     listOrganizationsEventContract,
     listRolesEventContract,
+    logoutEventContract,
     registerEventsEventContract,
     registerListenersEventContract,
     registerSkillEventContract,
@@ -67,4 +69,4 @@ export default [
 ]
 
 
-export type EventContracts = AuthenticateEventContract & CanListenEventContract & ConfirmPinEventContract & CreateLocationEventContract & CreateOrganizationEventContract & CreateRoleEventContract & DeleteLocationEventContract & DeleteOrganizationEventContract & DeleteRoleEventContract & GetEventContractsEventContract & GetLocationEventContract & GetOrganizationEventContract & GetRoleEventContract & GetSkillEventContract & HealthEventContract & InstallSkillEventContract & IsSkillInstalledEventContract & ListLocationsEventContract & ListOrganizationsEventContract & ListRolesEventContract & RegisterEventsEventContract & RegisterListenersEventContract & RegisterSkillEventContract & RequestPinEventContract & ScrambleAccountEventContract & UnRegisterEventsEventContract & UnRegisterListenersEventContract & UninstallSkillEventContract & UpdateLocationEventContract & UpdateOrganizationEventContract & UpdateRoleEventContract & WhoAmIEventContract  
+export type EventContracts = AuthenticateEventContract & CanListenEventContract & ConfirmPinEventContract & CreateLocationEventContract & CreateOrganizationEventContract & CreateRoleEventContract & DeleteLocationEventContract & DeleteOrganizationEventContract & DeleteRoleEventContract & GetEventContractsEventContract & GetLocationEventContract & GetOrganizationEventContract & GetRoleEventContract & GetSkillEventContract & HealthEventContract & InstallSkillEventContract & IsSkillInstalledEventContract & ListLocationsEventContract & ListOrganizationsEventContract & ListRolesEventContract & LogoutEventContract & RegisterEventsEventContract & RegisterListenersEventContract & RegisterSkillEventContract & RequestPinEventContract & ScrambleAccountEventContract & UnRegisterEventsEventContract & UnRegisterListenersEventContract & UninstallSkillEventContract & UpdateLocationEventContract & UpdateOrganizationEventContract & UpdateRoleEventContract & WhoAmIEventContract  

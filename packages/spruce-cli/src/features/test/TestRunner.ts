@@ -49,10 +49,10 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
 		this.wasKilled = false
 		const jestPath = this.resolvePathToJest()
 		const debugArgs =
-			(options?.debugPort ?? 0) > 0 ? `--inspect-brk=${options?.debugPort}` : ``
+			(options?.debugPort ?? 0) > 0 ? `--inspect=${options?.debugPort}` : ``
 		const pattern = options?.pattern ?? ''
 
-		const command = `node ${debugArgs} ${jestPath} --reporters="@sprucelabs/jest-json-reporter" --testRunner="jest-circus/runner" ${
+		const command = `node ${debugArgs} ${jestPath} --reporters="@sprucelabs/jest-json-reporter" --testRunner="jest-circus/runner" --passWithNoTests ${
 			pattern ?? ''
 		}`
 

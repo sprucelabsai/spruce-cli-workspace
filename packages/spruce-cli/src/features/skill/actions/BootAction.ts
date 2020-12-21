@@ -19,9 +19,9 @@ export default class BootAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 
 		const promise = new Promise((resolve, reject) => {
-			const promise = command.execute(`yarn ${script}`)
+			const activeCommand = command.execute(`yarn ${script}`)
 
-			promise
+			activeCommand
 				.then((results) => resolve(results))
 				.catch((err) => {
 					if (err.message.search(/cannot find module/gis) > -1) {

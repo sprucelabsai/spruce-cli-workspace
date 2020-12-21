@@ -1,5 +1,7 @@
 import { SpruceTestResults } from '../features/test/test.types'
 import { Key } from '../widgets/keySelectChoices'
+import { ButtonWidget } from '../widgets/types/button.types'
+import { InputWidget } from '../widgets/types/input.types'
 import { LayoutWidget } from '../widgets/types/layout.types'
 import { MenuBarWidget } from '../widgets/types/menuBar.types'
 import { PopupWidget } from '../widgets/types/popup.types'
@@ -10,9 +12,14 @@ import WidgetFactory from '../widgets/WidgetFactory'
 import TestLogItemGenerator from './TestLogItemGenerator'
 
 interface TestReporterOptions {
-	onRestart?: () => void
-	onQuit?: () => void
-	onRerun?: (fileName: string) => void
+	handleRestart?: () => void
+	handleQuit?: () => void
+	onRequestOpenTestFile?: () => void
+	handleRerunTestFile?: (fileName: string) => void
+	handleOpenTestFile?: (fileName: string) => void
+	handleFilterPatternChange?: (pattern?: string) => void
+	handleToggleDebug: () => void
+	filterPattern?: string
 }
 
 export default class TestReporter {
@@ -29,18 +36,44 @@ export default class TestReporter {
 	private window!: WindowWidget
 	private widgetFactory: WidgetFactory
 	private selectTestPopup?: PopupWidget
+	private topLayout!: LayoutWidget
+	private filterInput!: InputWidget
+	private filterPattern?: string
+	private clearFilterPatternButton!: ButtonWidget
+	private isDebugging = false
 
-	private onRestart?: () => void
-	private onQuit?: () => void
-	private onRerun?: (fileName: string) => void
-	private waitForDoneResolver?: () => void
+	private handleRestart?: () => void
+	private handleQuit?: () => void
+	private handleRerunTestFile?: (fileName: string) => void
+	private handleFilterChange?: (pattern?: string) => void
+	private handleOpenTestFile?: (testFile: string) => void
+	private handleToggleDebug?: () => void
 
 	public constructor(options?: TestReporterOptions) {
-		this.onRestart = options?.onRestart
-		this.onQuit = options?.onQuit
-		this.onRerun = options?.onRerun
+		this.filterPattern = options?.filterPattern
+		this.handleRestart = options?.handleRestart
+		this.handleQuit = options?.handleQuit
+		this.handleRerunTestFile = options?.handleRerunTestFile
+		this.handleOpenTestFile = options?.handleOpenTestFile
+		this.handleFilterChange = options?.handleFilterPatternChange
+		this.handleToggleDebug = options?.handleToggleDebug
+
 		this.errorLogItemGenerator = new TestLogItemGenerator()
 		this.widgetFactory = new WidgetFactory()
+	}
+
+	public setFilterPattern(pattern: string | undefined) {
+		this.filterPattern = pattern
+		this.filterInput.setValue(pattern ?? '')
+		this.clearFilterPatternButton.setText(buildPatternButtonText(pattern))
+	}
+
+	public setIsDebugging(isDebugging: boolean) {
+		this.menu.setTextForItem(
+			'toggleDebug',
+			isDebugging ? 'Stop debugging' : 'Start debugging'
+		)
+		this.isDebugging = isDebugging
 	}
 
 	public async start() {
@@ -48,13 +81,16 @@ export default class TestReporter {
 
 		this.window = this.widgetFactory.Widget('window', {})
 		this.window.hideCursor()
+
 		void this.window.on('key', this.handleGlobalKeypress.bind(this))
 		void this.window.on('kill', this.destroy.bind(this))
 
 		this.dropInMenu()
+		this.dropInTopLayout()
 		this.dropInProgressBar()
-		this.dropInLayout()
+		this.dropInBottomLayout()
 		this.dropInTestLog()
+		this.dropInFilterControls()
 
 		this.updateInterval = setInterval(this.refreshResults.bind(this), 2000)
 	}
@@ -73,19 +109,28 @@ export default class TestReporter {
 					label: 'Restart',
 					value: 'restart',
 				},
+				{
+					label: 'Enable debug',
+					value: 'toggleDebug',
+				},
 			],
 		})
 
 		void this.menu.on('select', this.handleMenuSelect.bind(this))
+
+		this.setIsDebugging(this.isDebugging)
 	}
 
 	private handleMenuSelect(payload: { value: string }) {
 		switch (payload.value) {
 			case 'quit':
-				this.handleDone()
+				this.handleQuit?.()
 				break
 			case 'restart':
-				this.handleRestart()
+				this.handleRestart?.()
+				break
+			case 'toggleDebug':
+				this.handleToggleDebug?.()
 				break
 		}
 	}
@@ -99,16 +144,8 @@ export default class TestReporter {
 	private async handleGlobalKeypress(payload: { key: Key }) {
 		switch (payload.key) {
 			case 'CTRL_C':
-				this.onQuit?.()
+				this.handleQuit?.()
 				process.exit()
-				break
-			case 'R':
-			case 'r':
-				this.handleRestart()
-				break
-			case 'D':
-			case 'd':
-				this.handleDone()
 				break
 		}
 	}
@@ -174,7 +211,7 @@ export default class TestReporter {
 			text: `What do you wanna do with:\n\n${testFile}`,
 		})
 
-		this.widgetFactory.Widget('button', {
+		const open = this.widgetFactory.Widget('button', {
 			parent: this.selectTestPopup,
 			left: 1,
 			top: 6,
@@ -185,21 +222,29 @@ export default class TestReporter {
 			parent: this.selectTestPopup,
 			left: 20,
 			top: 6,
-			text: 'Rerun',
+			text: 'Test',
 		})
 
 		const cancel = this.widgetFactory.Widget('button', {
 			parent: this.selectTestPopup,
-			left: 40,
+			left: 37,
 			top: 6,
-			text: 'Cancel',
+			text: 'Nevermind',
 		})
 
 		void rerun.on('click', () => {
-			this.onRerun?.(testFile)
+			this.handleRerunTestFile?.(testFile)
 			this.closeSelectTestPopup()
 		})
 		void cancel.on('click', this.closeSelectTestPopup.bind(this))
+		void open.on('click', () => {
+			this.openTestFile(testFile)
+		})
+	}
+
+	private openTestFile(testFile: string) {
+		this.handleOpenTestFile?.(testFile)
+		this.closeSelectTestPopup()
 	}
 
 	public getFileForLine(row: number): string | undefined {
@@ -225,22 +270,59 @@ export default class TestReporter {
 	}
 
 	private dropInProgressBar() {
+		const parent = this.topLayout.getChildById('progress') ?? this.window
 		this.bar = this.widgetFactory.Widget('progressBar', {
-			parent: this.window,
+			parent,
 			left: 0,
-			top: 2,
-			width: this.window.getFrame().width,
+			top: 0,
+			width: parent.getFrame().width,
 			shouldLockWidthWithParent: true,
 			label: 'Booting Jest...',
 			progress: 0,
 		})
 	}
 
-	private dropInLayout() {
+	private dropInFilterControls() {
+		const parent = this.topLayout.getChildById('filter') ?? this.window
+
+		const buttonWidth = 1
+		this.filterInput = this.widgetFactory.Widget('input', {
+			parent,
+			left: 0,
+			label: 'Pattern',
+			width: parent.getFrame().width - buttonWidth,
+			height: 1,
+			value: this.filterPattern,
+		})
+
+		void this.filterInput.on('cancel', () => {
+			this.filterInput.setValue(this.filterPattern ?? '')
+		})
+
+		void this.filterInput.on('submit', (payload) => {
+			this.handleFilterChange?.(payload.value ?? undefined)
+		})
+
+		this.clearFilterPatternButton = this.widgetFactory.Widget('button', {
+			parent,
+			left: this.filterInput.getFrame().width,
+			width: buttonWidth,
+			top: 0,
+			text: buildPatternButtonText(this.filterPattern),
+		})
+
+		void this.clearFilterPatternButton.on('click', () => {
+			if (this.filterPattern || this.filterPattern?.length === 0) {
+				this.handleFilterChange?.(undefined)
+			}
+		})
+	}
+
+	private dropInBottomLayout() {
 		this.layout = this.widgetFactory.Widget('layout', {
 			parent: this.window,
 			width: '100%',
-			top: 3,
+			top: 4,
 			height: this.window.getFrame().height - 4,
 			shouldLockWidthWithParent: true,
 			shouldLockHeightWithParent: true,
@@ -251,6 +333,31 @@ export default class TestReporter {
 						{
 							id: 'results',
 							width: '100%',
+						},
+					],
+				},
+			],
+		})
+	}
+
+	private dropInTopLayout() {
+		this.topLayout = this.widgetFactory.Widget('layout', {
+			parent: this.window,
+			width: '100%',
+			top: 1,
+			height: 3,
+			shouldLockWidthWithParent: true,
+			shouldLockHeightWithParent: true,
+			rows: [
+				{
+					height: '100%',
+					columns: [
+						{
+							id: 'progress',
+							width: 45,
+						},
+						{
+							id: 'filter',
 						},
 					],
 				},
@@ -361,7 +468,7 @@ export default class TestReporter {
 				)
 			}
 		} else {
-			this.bar.setLabel('Running...')
+			this.bar.setLabel('0%')
 		}
 
 		this.bar.setProgress(this.generatePercentComplete(results) / 100)
@@ -394,35 +501,11 @@ export default class TestReporter {
 		this.table?.draw()
 	}
 
-	public async waitForConfirm() {
-		return new Promise((resolve: (_?: any) => void) => {
-			this.waitForDoneResolver = resolve
-			void this.window.on('key', (payload) => {
-				if (payload.key === 'ENTER') {
-					this.handleDone()
-				}
-			})
-		})
-	}
-
-	private handleDone() {
-		if (this.waitForDoneResolver) {
-			this.waitForDoneResolver()
-		} else {
-			this.onQuit?.()
-		}
-	}
-
-	private handleRestart() {
-		this.onRestart?.()
-
-		if (this.waitForDoneResolver) {
-			this.waitForDoneResolver()
-		}
-	}
-
 	public async destroy() {
 		clearInterval(this.updateInterval)
 		await this.window.destroy()
 	}
+}
+function buildPatternButtonText(pattern: string | undefined): string {
+	return pattern ? 'x' : '-'
 }

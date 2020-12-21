@@ -22,7 +22,7 @@ export default class BuildService {
 	}
 
 	public async watchStart() {
-		this.activeWatch = this.commandService.execute('yarn build.watch')
+		this.activeWatch = this.commandService.execute('yarn watch.build')
 		return this.activeWatch
 	}
 

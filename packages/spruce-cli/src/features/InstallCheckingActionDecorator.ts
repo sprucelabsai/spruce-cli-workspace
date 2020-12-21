@@ -5,6 +5,9 @@ import { FeatureAction } from '../features/features.types'
 
 export default class InstallCheckingActionDecorator implements FeatureAction {
 	public name = 'install-checking-action-facade'
+	public get commandAliases() {
+		return this.childAction.commandAliases
+	}
 
 	private childAction: FeatureAction
 	private parent: AbstractFeature

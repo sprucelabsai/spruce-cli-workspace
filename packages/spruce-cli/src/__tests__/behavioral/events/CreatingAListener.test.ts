@@ -1,5 +1,10 @@
 import { EventSignature } from '@sprucelabs/mercury-types'
 import { buildSchema } from '@sprucelabs/schema'
+import {
+	buildEmitTargetAndPayloadSchema,
+	eventErrorAssertUtil,
+	eventResponseUtil,
+} from '@sprucelabs/spruce-event-utils'
 import { diskUtil, MERCURY_API_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
@@ -104,7 +109,9 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 	@test()
 	protected static async generatesTypedListenerWithoutPayloads() {
-		const contents = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
+		const {
+			contents,
+		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
 			{}
 		)
 
@@ -116,9 +123,11 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 	@test()
 	protected static async generatesTypedListenerWithEmitPayload() {
-		const contents = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
+		const {
+			contents,
+		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
 			{
-				emitPayloadSchema: buildSchema({
+				emitPayloadSchema: buildEmitTargetAndPayloadSchema({
 					id: 'myNewEventEmitPayload',
 					fields: {
 						booleanField: {
@@ -136,10 +145,17 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 	}
 
 	@test()
-	protected static async generatesTypedListenerWithAllPayloads() {
-		const contents = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
+	protected static async emittingEventTriggersListenerAndCrashesWithListenerNotImplemented() {
+		const {
+			cli,
+			currentSkill,
+			skill2,
+			contents,
+			eventContract,
+			org,
+		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
 			{
-				emitPayloadSchema: buildSchema({
+				emitPayloadSchema: buildEmitTargetAndPayloadSchema({
 					id: 'myNewEventEmitPayload',
 					fields: {
 						booleanField: {
@@ -162,6 +178,54 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 			contents,
 			'export default (event: SpruceEvent<EventContracts, EmitPayload>): SpruceEventResponse<ResponsePayload>'
 		)
+
+		const boot = await cli
+			.getFeature('skill')
+			.Action('boot')
+			.execute({ local: true })
+
+		//give the skill time to boot
+		await this.wait(30000)
+
+		const client = (await this.connectToApi({
+			skillId: skill2.id,
+			apiKey: skill2.apiKey,
+		})) as any
+
+		const eventName = `${skill2.slug}.my-new-event`
+
+		client.mixinContract({
+			eventSignatures: {
+				[eventName]: eventContract.eventSignatures['my-new-event'],
+			},
+		})
+
+		const results = await client.emit(eventName, {
+			target: {
+				organizationId: org.id,
+			},
+			payload: {
+				booleanField: true,
+			},
+		})
+
+		await boot.meta?.kill()
+
+		assert.isEqual(results.totalContracts, 1)
+		assert.isEqual(results.totalErrors, 1)
+		assert.isEqual(results.totalResponses, 1)
+
+		const error = assert.doesThrow(() =>
+			eventResponseUtil.getFirstResponseOrThrow(results)
+		)
+
+		eventErrorAssertUtil.assertError(error, 'LISTENER_NOT_IMPLEMENTED')
+
+		const responderRef = results.responses[0].responderRef
+		assert.isEqual(
+			responderRef,
+			`skill:${currentSkill.id}:${currentSkill.slug}`
+		)
 	}
 
 	private static async setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
@@ -171,12 +235,14 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 			eventSignatures: {
 				'my-new-event': eventSignature,
 			},
-		}
+		} as const
 
 		const {
 			skillFixture,
 			skill2,
+			currentSkill,
 			cli,
+			org,
 		} = await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
 
 		await skillFixture.registerEventContract(skill2, eventContract)
@@ -197,6 +263,14 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 		const contents = diskUtil.readFile(listener)
 
-		return contents
+		return {
+			contents,
+			skill2,
+			listenerPath: listener,
+			cli,
+			eventContract,
+			org,
+			currentSkill,
+		}
 	}
 }

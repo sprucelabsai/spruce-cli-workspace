@@ -42,4 +42,4 @@ build/
 
 tmp/
 
-.spruce/settings.json
+yarn.lock

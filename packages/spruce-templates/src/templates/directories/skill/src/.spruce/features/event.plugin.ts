@@ -3,28 +3,37 @@ import {
 	EventHealthCheckItem,
 	EventFeatureListener,
 	SkillFeature,
-	Skill as contractsFile,
+	Skill,
 	HASH_SPRUCE_DIR_NAME,
 	SettingsService,
 	diskUtil,
 	HealthCheckItem,
+	Log,
 } from "@sprucelabs/spruce-skill-utils";
 import globby from "globby";
 import { EventContract } from "@sprucelabs/mercury-types";
-import {eventContractUtil} from '@sprucelabs/spruce-event-utils'
+import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
+
+require('dotenv').config()
 
 export class EventSkillFeature implements SkillFeature {
 
-	private skill: contractsFile;
+	private skill: Skill;
 	private eventsPath: string;
 	private listeners: EventFeatureListener[] = [];
 	private contracts: { eventNameWithOptionalNamespace: string }[] = []
 	private combinedContractsFile: string
+	private _shouldConnectToApi: boolean
+	//@ts-ignore
+	private apiClient?: any
+	private log: Log;
 
-	constructor(skill: contractsFile) {
+	constructor(skill: Skill) {
 		this.skill = skill;
 		this.eventsPath = pathUtil.join(this.skill.activeDir, "events");
 		this.combinedContractsFile = pathUtil.join(this.skill.activeDir, HASH_SPRUCE_DIR_NAME, 'events', 'events.contract');
+		this._shouldConnectToApi = diskUtil.doesFileExist(this.combinedContractsFile + '.ts') || diskUtil.doesFileExist(this.combinedContractsFile + '.js')
+		this.log = skill.buildLog('feature.event')
 	}
 
 	public async execute() {
@@ -34,12 +43,91 @@ export class EventSkillFeature implements SkillFeature {
 		const didBoot = this.getListener("skill", "did-boot");
 
 		if (willBoot) {
+			this.log.info(`Emitting skill.willBoot internally`)
 			await willBoot(this.skill);
 		}
-
+		
+		if (this.shouldConnectToApi()) {
+			await this.connectToApiAndRegisterListeners()
+		}
+		
 		if (didBoot) {
+			this.log.info(`Emitting skill.didBoot internally`)
 			await didBoot(this.skill);
 		}
+
+		if (this.apiClient) {
+			this.log.info('Connection to Mercury successful. Waiting for events')
+			await new Promise(_r => {})
+		}
+	}
+
+	private async connectToApiAndRegisterListeners() {
+		const contracts = require('#spruce/events/events.contract').default
+		const MercuryClientFactory = require('@sprucelabs/mercury-client').MercuryClientFactory
+		const host = 'https://sandbox.mercury.spruce.ai'
+
+		this.log.info('Connecting to Mercury at',host)
+		const client = await MercuryClientFactory.Client({
+			host,
+			allowSelfSignedCrt: true,
+			contracts
+		})
+
+		this.log.info('Connection successful')
+
+		const skillId = process.env.SKILL_ID
+		const apiKey = process.env.SKILL_API_KEY
+
+		if (skillId && apiKey) {
+
+			this.log.info('Logging in as skill')
+
+			await client.emit('authenticate', {
+				payload: {
+					skillId,
+					apiKey
+				}
+			} as any)
+
+			this.log.info('Authentication successful')
+
+			await client.emit('un-register-listeners', {
+				payload: {
+					shouldUnRegisterAll: true
+				}
+			})
+
+			this.log.info('Un-registered all existing listeners')
+
+			for (const listener of this.listeners) {
+				if (listener.eventNamespace !== 'skill') {
+					const name = eventContractUtil.joinEventNameWithOptionalNamespace({
+						eventName: listener.eventName,
+						eventNamespace: listener.eventNamespace
+					})
+
+					await client.on(name, async (...args: []) => {
+
+						this.log.info(`Incoming event - ${name}`)
+						try {
+							//@ts-ignore
+							const results = await listener.callback(...args)
+							return results
+
+						} catch(err) {
+							return {
+								errors: [err]
+							}
+						}
+					})
+					this.log.info(`Registered listener for ${name}`)
+
+				}
+			}
+		}
+
+		this.apiClient = client
 	}
 
 	public async checkHealth() {
@@ -68,7 +156,7 @@ export class EventSkillFeature implements SkillFeature {
 	}
 
 	private async loadContracts() {
-		if (diskUtil.doesFileExist(this.combinedContractsFile + '.ts') || diskUtil.doesFileExist(this.combinedContractsFile + '.js')) {
+		if (this.shouldConnectToApi()) {
 			const contracts = require(this.combinedContractsFile).default
 
 			contracts.forEach((contract: EventContract) => {
@@ -79,11 +167,17 @@ export class EventSkillFeature implements SkillFeature {
 
 	}
 
+	private shouldConnectToApi() {
+		return this._shouldConnectToApi
+	}
+
 	public async isInstalled() {
 		const settingsService = new SettingsService(this.skill.rootDir)
 		const isInstalled = settingsService.isMarkedAsInstalled('event')
 		return isInstalled
 	}
+
+
 
 	private getListener(eventNamespace: string, eventName: string) {
 		const match = this.listeners.find(
@@ -99,6 +193,9 @@ export class EventSkillFeature implements SkillFeature {
 	}
 
 	private async loadListeners() {
+
+		this.log.info('Loading listeners')
+
 		const listenerMatches = await globby(
 			`${this.eventsPath}/**/*.listener.[j|t]s`
 		);
@@ -121,6 +218,13 @@ export class EventSkillFeature implements SkillFeature {
 				);
 			}
 
+			const name = eventContractUtil.joinEventNameWithOptionalNamespace({
+				eventName: eventName,
+				eventNamespace: eventNamespace
+			})
+
+			this.log.info(`Found listener for ${name}`)
+
 			listeners.push({
 				eventName,
 				eventNamespace,
@@ -133,7 +237,7 @@ export class EventSkillFeature implements SkillFeature {
 	}
 }
 
-export default (skill: contractsFile) => {
+export default (skill: Skill) => {
 	const feature = new EventSkillFeature(skill);
 
 	skill.registerFeature("event", feature);

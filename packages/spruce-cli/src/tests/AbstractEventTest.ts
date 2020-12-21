@@ -44,6 +44,6 @@ export default abstract class AbstractEventTest extends AbstractCliTest {
 
 		await orgFixture.installSkillAtOrganization(skill.id, org.id)
 
-		return { skillFixture, skill1: skill, skill2, cli }
+		return { skillFixture, currentSkill: skill, skill2, cli, org }
 	}
 }

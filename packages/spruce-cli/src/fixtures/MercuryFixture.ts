@@ -8,6 +8,7 @@ import {
 import apiClientUtil from '../utilities/apiClient.utility'
 
 const TEST_HOST = 'https://sandbox.mercury.spruce.ai'
+// const TEST_HOST = 'https://127.0.0.1:8001'
 
 export default class MercuryFixture {
 	private clients: Record<string, ApiClient> = {}

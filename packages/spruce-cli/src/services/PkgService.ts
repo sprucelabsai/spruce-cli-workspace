@@ -6,7 +6,7 @@ import SpruceError from '../errors/SpruceError'
 import CommandService from './CommandService'
 
 export interface AddOptions {
-	dev?: boolean
+	isDev?: boolean
 }
 
 export default class PkgService extends CommandService {
@@ -69,7 +69,7 @@ export default class PkgService extends CommandService {
 		}
 		if (install) {
 			const args: string[] = ['add', ...packages]
-			if (options?.dev) {
+			if (options?.isDev) {
 				args.push('--dev')
 			}
 
