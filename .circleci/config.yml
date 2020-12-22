@@ -24,7 +24,7 @@ jobs:
           name: "ENV file creation"
           command: |
             [ -n "$BASE64_ENV" ] && echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
-      - run: node -v && npm -v && yarn -v
+      - run: node -v && npm -v && yarn -v && pwd
       - run:
           name: "Install"
           command: |
