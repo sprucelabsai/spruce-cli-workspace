@@ -11,7 +11,6 @@ const formUtil = {
 	>(fieldName: K, fieldDefinition: FieldDefinitions, values: V) {
 		switch (fieldName) {
 			case 'nameCamel':
-				debugger
 				if (!values.nameCamel) {
 					fieldDefinition.defaultValue = namesUtil.toCamel(
 						values.nameReadable || ''
