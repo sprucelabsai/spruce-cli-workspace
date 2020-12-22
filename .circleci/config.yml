@@ -47,17 +47,17 @@ jobs:
           key: cli-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - /tmp/spruce-cli
-            - /mnt/ramdisk/circleci/project/packages/spruce-cli/src/.spruce/tmp/cached-skills.json
+            - /mnt/ramdisk/packages/spruce-cli/src/.spruce/tmp/cached-skills.json
       - save_cache:
           name: Save Cache node modules/build
           key: cli-build-{{ .Environment.CIRCLE_SHA1 }}
           paths:
-            - /mnt/ramdisk/circleci/project/node_modules
-            - /mnt/ramdisk/circleci/project/build
-            - /mnt/ramdisk/circleci/project/packages/spruce-cli/node_modules
-            - /mnt/ramdisk/circleci/project/packages/spruce-cli/build
-            - /mnt/ramdisk/circleci/project/packages/spruce-templates/node_modules
-            - /mnt/ramdisk/circleci/project/packages/spruce-templates/build
+            - /mnt/ramdisk/node_modules
+            - /mnt/ramdisk/build
+            - /mnt/ramdisk/packages/spruce-cli/node_modules
+            - /mnt/ramdisk/packages/spruce-cli/build
+            - /mnt/ramdisk/packages/spruce-templates/node_modules
+            - /mnt/ramdisk/packages/spruce-templates/build
   test:
     docker:
       - image: circleci/node:12
