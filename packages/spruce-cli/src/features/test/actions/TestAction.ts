@@ -51,11 +51,11 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	public optionsSchema = optionsSchema
 	private testReporter?: TestReporter | undefined
 	private testRunner?: TestRunner
-	private exitAction: 'restart' | 'hold' | 'quit' = 'hold'
+	private runnerStatus: 'hold' | 'quit' | 'run' = 'hold'
 	private pattern: string | undefined
 	private inspect?: number | null
 	private holdPromiseResolve?: () => void
-	private holdToStartPromiseResolve?: () => void
+	private lastTestResults: SpruceTestResults = { totalTestFiles: 0 }
 
 	public constructor(options: FeatureActionOptions) {
 		super(options)
@@ -80,7 +80,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			this.testReporter = new TestReporter({
 				isDebugging: !!inspect,
 				filterPattern: pattern ?? undefined,
-				handleRestart: this.handleRestart.bind(this),
+				handleStartStop: this.handleStartStop.bind(this),
 				handleQuit: this.handleQuit.bind(this),
 				handleRerunTestFile: this.handleRerunTestFile.bind(this),
 				handleOpenTestFile: this.handleOpenTestFile.bind(this),
@@ -91,19 +91,28 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			await this.testReporter.start()
 		}
 
-		if (!shouldStartTestsImmediately) {
-			await new Promise((resolve: any) => {
-				this.holdToStartPromiseResolve = resolve
-			})
-		}
+		this.runnerStatus = shouldStartTestsImmediately ? 'run' : 'hold'
 
-		const results: FeatureActionResponse = await this.startTestRunner(
-			normalizedOptions
-		)
+		const testResults = await this.startTestRunner(normalizedOptions)
 
 		await this.testReporter?.destroy()
 
-		return results
+		const actionResponse: FeatureActionResponse = {
+			summaryLines: [
+				`Test files: ${testResults.totalTestFiles}`,
+				`Tests: ${testResults.totalTests ?? '0'}`,
+				`Passed: ${testResults.totalPassed ?? '0'}`,
+				`Failed: ${testResults.totalFailed ?? '0'}`,
+				`Skipped: ${testResults.totalSkipped ?? '0'}`,
+				`Todo: ${testResults.totalTodo ?? '0'}`,
+			],
+		}
+
+		if (testResults.totalFailed ?? 0 > 0) {
+			actionResponse.errors = this.generateErrorsFromTestResults(testResults)
+		}
+
+		return actionResponse
 	}
 
 	private toggleDebug() {
@@ -114,11 +123,20 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 
 		this.testReporter?.setIsDebugging(!!this.inspect)
-		this.handleRestart()
+		if (this.runnerStatus === 'run') {
+			this.restart()
+		}
+	}
+
+	private restart() {
+		this.handleStartStop()
+		if (this.runnerStatus !== 'run') {
+			this.handleStartStop()
+		}
 	}
 
 	private handleQuit() {
-		this.exitAction = 'quit'
+		this.runnerStatus = 'quit'
 		this.kill()
 	}
 
@@ -131,15 +149,16 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	private handleFilterPatternChange(filterPattern?: string) {
 		this.pattern = filterPattern
 		this.testReporter?.setFilterPattern(filterPattern)
-		this.handleRestart()
+		this.handleStartStop()
 	}
 
-	private handleRestart() {
-		if (this.holdToStartPromiseResolve) {
-			this.holdToStartPromiseResolve()
-			this.holdToStartPromiseResolve = undefined
-		} else {
-			this.exitAction = 'restart'
+	private handleStartStop() {
+		if (this.runnerStatus === 'hold') {
+			this.runnerStatus = 'run'
+			this.holdPromiseResolve?.()
+			this.holdPromiseResolve = undefined
+		} else if (this.runnerStatus === 'run') {
+			this.runnerStatus = 'hold'
 			this.kill()
 		}
 	}
@@ -156,10 +175,14 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 	private async startTestRunner(
 		options: SchemaValues<OptionsSchema>
-	): Promise<FeatureActionResponse> {
-		let { shouldReportWhileRunning } = options
+	): Promise<SpruceTestResults> {
+		if (this.runnerStatus === 'hold') {
+			await this.waitForStart()
+		}
 
-		const results: FeatureActionResponse = {}
+		if (this.runnerStatus === 'quit') {
+			return this.lastTestResults
+		}
 
 		this.testRunner = new TestRunner({
 			cwd: this.cwd,
@@ -176,55 +199,37 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			)
 		}
 
+		this.runnerStatus = 'run'
+		this.testReporter?.setStatus('running')
+		this.testReporter?.resetStartTimes()
+
 		let testResults: SpruceTestResults = await this.testRunner.run({
 			pattern: this.pattern,
 			debugPort: this.inspect,
 		})
 
-		const shouldWait = this.exitAction === 'hold' && shouldReportWhileRunning
-
-		if (shouldWait) {
-			await new Promise((resolve) => {
-				this.holdPromiseResolve = resolve as any
-			})
+		if (!options.shouldReportWhileRunning) {
+			return testResults
 		}
 
-		if (this.exitAction === 'restart') {
-			this.exitAction = 'hold'
-			this.testReporter?.resetStartTimes()
-			return this.startTestRunner(options)
-		}
+		this.testReporter?.setStatus('stopped')
+		this.runnerStatus = 'hold'
 
-		if (testResults.totalTestFiles > 0) {
-			this.mixinSummaryAndTestResults(results, testResults)
-		}
+		this.lastTestResults = testResults
 
-		results.meta = {
-			testResults,
-		}
+		return this.startTestRunner(options)
+	}
 
-		return results
+	public async waitForStart() {
+		await new Promise((resolve: any) => {
+			this.runnerStatus = 'hold'
+			this.holdPromiseResolve = resolve
+		})
 	}
 
 	private async openTestFile(fileName: string): Promise<void> {
 		const path = diskUtil.resolvePath(this.cwd, 'src', '__tests__', fileName)
 		await open(path)
-	}
-
-	private mixinSummaryAndTestResults(
-		results: FeatureActionResponse,
-		testResults: SpruceTestResults
-	) {
-		results.summaryLines = [
-			`Test files: ${testResults.totalTestFiles}`,
-			`Tests: ${testResults.totalTests ?? '0'}`,
-			`Passed: ${testResults.totalPassed ?? '0'}`,
-			`Failed: ${testResults.totalFailed ?? '0'}`,
-			`Skipped: ${testResults.totalSkipped ?? '0'}`,
-			`Todo: ${testResults.totalTodo ?? '0'}`,
-		]
-
-		results.errors = this.generateErrorsFromTestResults(testResults)
 	}
 
 	private generateErrorsFromTestResults(testResults: SpruceTestResults) {

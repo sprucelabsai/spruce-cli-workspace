@@ -1,11 +1,21 @@
 import chalk from 'chalk'
-import { SpruceTestFile, SpruceTestFileTest } from '../features/test/test.types'
+import {
+	SpruceTestFile,
+	SpruceTestFileTest,
+	TestRunnerStatus,
+} from '../features/test/test.types'
 import durationUtil from '../utilities/duration.utility'
 
 export default class TestLogItemGenerator {
 	private startTimes: Record<string, number> = {}
+	private testRunnerStatus!: TestRunnerStatus
 
-	public generateLogItemForFile(file: SpruceTestFile): string {
+	public generateLogItemForFile(
+		file: SpruceTestFile,
+		status: TestRunnerStatus
+	): string {
+		this.testRunnerStatus = status
+
 		let logContent = ''
 		const duration = this.calculateDurationInMs(file)
 
@@ -99,6 +109,8 @@ export default class TestLogItemGenerator {
 
 	private generateStatusBlock(status: SpruceTestFile['status']) {
 		const bgColor = this.colorBasedOnStatus(status)
+
+		let statusLabel = status as string
 		let color = 'k'
 		let padding = 10
 		switch (status) {
@@ -112,8 +124,13 @@ export default class TestLogItemGenerator {
 				break
 		}
 
+		if (status === 'running' && this.testRunnerStatus === 'stopped') {
+			statusLabel = 'stopped'
+			color = 'w'
+		}
+
 		return `^b^#^${bgColor}^${color}^+${this.centerStringWithSpaces(
-			status,
+			statusLabel,
 			padding
 		)}^`
 	}
@@ -128,6 +145,10 @@ export default class TestLogItemGenerator {
 			case 'failed':
 				color = 'r'
 				break
+		}
+
+		if (status === 'running' && this.testRunnerStatus === 'stopped') {
+			color = 'b'
 		}
 
 		return color

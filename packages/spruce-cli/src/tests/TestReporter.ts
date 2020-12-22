@@ -1,4 +1,7 @@
-import { SpruceTestResults } from '../features/test/test.types'
+import {
+	SpruceTestResults,
+	TestRunnerStatus,
+} from '../features/test/test.types'
 import { ButtonWidget } from '../widgets/types/button.types'
 import { InputWidget } from '../widgets/types/input.types'
 import { LayoutWidget } from '../widgets/types/layout.types'
@@ -11,7 +14,7 @@ import WidgetFactory from '../widgets/WidgetFactory'
 import TestLogItemGenerator from './TestLogItemGenerator'
 
 interface TestReporterOptions {
-	handleRestart?: () => void
+	handleStartStop?: () => void
 	handleQuit?: () => void
 	onRequestOpenTestFile?: () => void
 	handleRerunTestFile?: (fileName: string) => void
@@ -41,6 +44,7 @@ export default class TestReporter {
 	private filterPattern?: string
 	private clearFilterPatternButton!: ButtonWidget
 	private isDebugging = false
+	private status: TestRunnerStatus = 'ready'
 
 	private handleRestart?: () => void
 	private handleQuit?: () => void
@@ -51,7 +55,7 @@ export default class TestReporter {
 
 	public constructor(options?: TestReporterOptions) {
 		this.filterPattern = options?.filterPattern
-		this.handleRestart = options?.handleRestart
+		this.handleRestart = options?.handleStartStop
 		this.handleQuit = options?.handleQuit
 		this.handleRerunTestFile = options?.handleRerunTestFile
 		this.handleOpenTestFile = options?.handleOpenTestFile
@@ -95,7 +99,13 @@ export default class TestReporter {
 		this.dropInTestLog()
 		this.dropInFilterControls()
 
-		this.updateInterval = setInterval(this.refreshResults.bind(this), 2000)
+		this.setIsDebugging(this.isDebugging)
+		this.setStatus(this.status)
+
+		this.updateInterval = setInterval(
+			this.handleUpdateInterval.bind(this),
+			2000
+		)
 	}
 
 	private dropInMenu() {
@@ -113,15 +123,32 @@ export default class TestReporter {
 					value: 'restart',
 				},
 				{
-					label: 'Enable debug',
+					label: 'Debugging',
 					value: 'toggleDebug',
 				},
 			],
 		})
 
 		void this.menu.on('select', this.handleMenuSelect.bind(this))
+	}
 
-		this.setIsDebugging(this.isDebugging)
+	public setStatus(status: TestRunnerStatus) {
+		let restartLabel = ' Start'
+		switch (status) {
+			case 'running':
+				restartLabel = ' Stop'
+				break
+			case 'stopped':
+				restartLabel = 'Restart'
+				break
+		}
+
+		this.menu.setTextForItem('restart', restartLabel)
+		this.status = status
+
+		if (this.status === 'stopped') {
+			this.refreshResults()
+		}
 	}
 
 	private handleMenuSelect(payload: { value: string }) {
@@ -135,6 +162,12 @@ export default class TestReporter {
 			case 'toggleDebug':
 				this.handleToggleDebug?.()
 				break
+		}
+	}
+
+	private handleUpdateInterval() {
+		if (this.status !== 'stopped') {
+			this.refreshResults()
 		}
 	}
 
@@ -280,7 +313,7 @@ export default class TestReporter {
 			top: 0,
 			width: parent.getFrame().width,
 			shouldLockWidthWithParent: true,
-			label: 'Booting Jest...',
+			label: 'Ready and waiting...',
 			progress: 0,
 		})
 	}
@@ -411,7 +444,10 @@ export default class TestReporter {
 		let errorContent = ''
 
 		results.testFiles?.forEach((file) => {
-			logContent += this.errorLogItemGenerator.generateLogItemForFile(file)
+			logContent += this.errorLogItemGenerator.generateLogItemForFile(
+				file,
+				this.status
+			)
 			errorContent += this.errorLogItemGenerator.generateErrorLogItemForFile(
 				file
 			)
