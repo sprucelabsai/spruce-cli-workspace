@@ -31,7 +31,7 @@
     "lint.tsc": "tsc --noEmit && echo 'spruce-cli PASS'",
     "lint.fix": "eslint --fix '**/*.ts'",
     "rebuild": "cd ../ && yarn rebuild",
-    "build": "yarn build.babel && yarn build.types && yarn build.resolve-paths",
+    "build": "yarn build.babel && yarn build.types || yarn build.resolve-paths",
     "build.types": "tsc --emitDeclarationOnly && echo PASS",
     "build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
     "build.babel.debug": "node --inspect-brk=5200 ../../node_modules/.bin/babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",

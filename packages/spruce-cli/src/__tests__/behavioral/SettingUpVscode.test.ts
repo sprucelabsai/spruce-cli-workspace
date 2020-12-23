@@ -16,6 +16,7 @@ export default class SettingUpVscodeTest extends AbstractCliTest {
 
 		await this.waitForInput()
 
+		// which extensions
 		assert.doesInclude(this.ui.lastInvocation(), {
 			command: 'prompt',
 			options: {
@@ -23,6 +24,7 @@ export default class SettingUpVscodeTest extends AbstractCliTest {
 			},
 		})
 
+		// none
 		await this.ui.sendInput('')
 
 		await this.waitForInput()
@@ -38,11 +40,18 @@ export default class SettingUpVscodeTest extends AbstractCliTest {
 
 		assert.isEqualDeep(this.ui.lastInvocation(), {
 			command: 'confirm',
-			options:
-				"Want me to configure vscode's for Lint and other Spruce recommended settings?",
+			options: 'Want me to setup tasks for building and testing?',
 		})
 
 		await this.ui.sendInput('y')
+
+		await this.waitForInput()
+
+		assert.isEqualDeep(this.ui.lastInvocation(), {
+			command: 'confirm',
+			options:
+				'Want me to setup vscode settings for building, testing and linting on save?',
+		})
 
 		const results = await promise
 
