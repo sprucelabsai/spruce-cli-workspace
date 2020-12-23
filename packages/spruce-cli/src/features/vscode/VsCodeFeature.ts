@@ -19,19 +19,19 @@ export default class VsCodeFeature extends AbstractFeature {
 			confirmPromptOnFirstWrite: 'Want me to setup debugging for you?',
 		},
 		{
+			path: '.vscode/settings.json',
+			description: 'Ties everything together for optimal team productivity.',
+			shouldOverwriteWhenChanged: true,
+			confirmPromptOnFirstWrite:
+				'Want me to setup vscode settings for building, testing and linting on save?',
+		},
+		{
 			path: '.vscode/tasks.json',
 			description:
 				'command+shift+t to open the Test Reporter, build watch on load, etc.',
 			shouldOverwriteWhenChanged: true,
 			confirmPromptOnFirstWrite:
 				'Want me to setup tasks for building and testing?',
-		},
-		{
-			path: '.vscode/settings.json',
-			description: 'Ties everything together for optimal team productivity.',
-			shouldOverwriteWhenChanged: true,
-			confirmPromptOnFirstWrite:
-				'Want me to setup vscode settings for building, testing and linting on save?',
 		},
 	]
 

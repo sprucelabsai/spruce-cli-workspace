@@ -5,7 +5,9 @@
 			"type": "npm",
 			"script": "watch.build",
 			"group": "build",
-			"problemMatcher": [],
+			"problemMatcher": [
+				"$tsc"
+			],
 			"label": "npm: watch.build",
 			"detail": "lerna run watch.build --stream --parallel",
 			"presentation": {

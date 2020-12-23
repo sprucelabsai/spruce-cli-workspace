@@ -68,10 +68,6 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 			await this.Service('vsCode').installExtensions(answers)
 
 			this.ui.stopLoading()
-
-			response.hints = [
-				'You will need to restart vscode for the changes to take effect. 👊',
-			]
 		}
 
 		const files = await this.Generator('vscode').generateVsCodeConfigurations(

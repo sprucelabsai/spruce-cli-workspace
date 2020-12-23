@@ -7,7 +7,6 @@ export default class VsCodeGenerator extends AbstractGenerator {
 	public async generateVsCodeConfigurations(
 		destinationDir: string
 	): Promise<GenerationResults> {
-		debugger
 		return this.writeDirectoryTemplate({
 			destinationDir,
 			code: DirectoryTemplateCode.VsCode,

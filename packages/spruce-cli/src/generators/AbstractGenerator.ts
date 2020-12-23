@@ -79,9 +79,18 @@ export default abstract class AbstractGenerator {
 			throw new Error(`Can't write to a directory ${destination}.`)
 		}
 
+		const fileDescription = this.getFileDescription(destination)
+
 		if (!diskUtil.doesFileExist(destination)) {
-			diskUtil.writeFile(destination, contents)
-			action = 'generated'
+			let write = true
+			if (fileDescription?.confirmPromptOnFirstWrite) {
+				write = await this.ui.confirm(fileDescription.confirmPromptOnFirstWrite)
+			}
+
+			if (write) {
+				diskUtil.writeFile(destination, contents)
+				action = 'generated'
+			}
 		} else if (
 			diskUtil.isFileDifferent(destination, contents) &&
 			this.shouldOverwriteIfChanged(destination)
@@ -99,7 +108,7 @@ export default abstract class AbstractGenerator {
 		}
 
 		if (!desc) {
-			desc = this.getFileDescription(destination)?.description
+			desc = fileDescription?.description
 		}
 
 		if (!desc) {

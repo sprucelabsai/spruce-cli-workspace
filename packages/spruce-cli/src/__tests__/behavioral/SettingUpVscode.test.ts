@@ -16,22 +16,19 @@ export default class SettingUpVscodeTest extends AbstractCliTest {
 
 		await this.waitForInput()
 
-		// which extensions
-		assert.doesInclude(this.ui.lastInvocation(), {
-			command: 'prompt',
-			options: {
-				type: 'select',
-			},
+		assert.isEqualDeep(this.ui.lastInvocation(), {
+			command: 'confirm',
+			options: 'Want me to setup debugging for you?',
 		})
 
-		// none
-		await this.ui.sendInput('')
+		await this.ui.sendInput('y')
 
 		await this.waitForInput()
 
 		assert.isEqualDeep(this.ui.lastInvocation(), {
 			command: 'confirm',
-			options: 'Want me to setup debugging for you?',
+			options:
+				'Want me to setup vscode settings for building, testing and linting on save?',
 		})
 
 		await this.ui.sendInput('y')
@@ -44,14 +41,6 @@ export default class SettingUpVscodeTest extends AbstractCliTest {
 		})
 
 		await this.ui.sendInput('y')
-
-		await this.waitForInput()
-
-		assert.isEqualDeep(this.ui.lastInvocation(), {
-			command: 'confirm',
-			options:
-				'Want me to setup vscode settings for building, testing and linting on save?',
-		})
 
 		const results = await promise
 
