@@ -1,5 +1,4 @@
 import pathUtil from 'path'
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import fs from 'fs-extra'
 import { set } from 'lodash'
 import SpruceError from '../errors/SpruceError'
@@ -68,14 +67,12 @@ export default class PkgService extends CommandService {
 			}
 		}
 		if (install) {
-			const args: string[] = ['add', ...packages]
+			const args: string[] = ['-timeout=9999999', 'add', ...packages]
 			if (options?.isDev) {
 				args.push('--dev')
 			}
 
-			args.push('--cache-folder', diskUtil.createRandomTempDir())
-
-			await this.execute('yarn', {
+			await this.execute('npm', {
 				args,
 			})
 		}
@@ -83,8 +80,8 @@ export default class PkgService extends CommandService {
 
 	public async uninstall(pkg: string[] | string) {
 		const packages = Array.isArray(pkg) ? pkg : [pkg]
-		const args: string[] = ['remove', ...packages]
-		await this.execute('yarn', {
+		const args: string[] = ['uninstall', ...packages]
+		await this.execute('npm', {
 			args,
 		})
 	}

@@ -58,6 +58,8 @@ export class Skill implements SkillDetails {
 
 	public execute = async () => {
 		await Promise.all(this.getFeatures().map(feature => feature.execute()))
+		this.log.info('All features have finished execution.')
+		this.log.info('Shutting down.')
 	}
 
 	public getFeatures() {

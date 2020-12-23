@@ -23,10 +23,6 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 			id: 'christian-kohler.npm-intellisense',
 			label: 'Intellisense autocompletion of installed npm modules',
 		},
-		{
-			id: 'endormi.2077-theme',
-			label: "Tay's favorite theme",
-		},
 	]
 
 	public name = 'setup'
@@ -51,19 +47,21 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 			summaryLines: [],
 		}
 
-		const answers = all
-			? missing.map((m) => m.id)
-			: await this.ui.prompt({
-					type: 'select',
-					label: 'Which extensions should I install?',
-					isArray: true,
-					options: {
-						choices,
-					},
-			  })
+		const answers =
+			all || missing.length === 0
+				? missing.map((m) => m.id)
+				: await this.ui.prompt({
+						type: 'select',
+						label: 'Which extensions should I install?',
+						isArray: true,
+						options: {
+							choices,
+						},
+				  })
 
 		if (answers && answers?.length > 0) {
 			this.ui.startLoading(`Installing ${answers.length} extensions...`)
+
 			for (const answer of answers) {
 				response.summaryLines?.push(`Installed ${answer} extension.`)
 			}
@@ -76,72 +74,20 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 				'You will need to restart vscode for the changes to take effect. 👊',
 			]
 		}
-
-		const launchConfigPath = diskUtil.resolvePath(
-			this.cwd,
-			'.vscode',
-			'launch.json'
+		debugger
+		const files = await this.Generator('vscode').generateVsCodeConfigurations(
+			this.cwd
 		)
 
-		if (!diskUtil.doesFileExist(launchConfigPath)) {
-			const confirm =
-				all || (await this.ui.confirm('Want me to setup debugging for you?'))
+		response.files = files
+		response.packagesInstalled = []
 
-			if (confirm) {
-				const contents = this.templates.launchConfig()
-				diskUtil.writeFile(launchConfigPath, contents)
-				response.files = response.files ?? []
-				response.files.push({
-					name: 'launch.json',
-					path: launchConfigPath,
-					description:
-						'Sets you up for debugging directly from Visual Studio Code.',
-					action: 'generated',
-				})
-
-				response.summaryLines?.push(
-					`Installed debug configuration (launch.json)`
-				)
-			}
-		}
-
-		const settingsFilePath = diskUtil.resolvePath(
-			this.cwd,
-			'.vscode',
-			'settings.json'
-		)
-
-		if (!diskUtil.doesFileExist(settingsFilePath)) {
-			const confirm =
-				all ||
-				(await this.ui.confirm(
-					"Want me to configure vscode's for Lint and other Spruce recommended settings?"
-				))
-
-			if (confirm) {
-				const contents = this.templates.vsCodeSettings()
-				diskUtil.writeFile(settingsFilePath, contents)
-				response.files = response.files ?? []
-				response.files.push({
-					name: 'settings.json',
-					path: settingsFilePath,
-					description:
-						'Sets you up for lint and helpful workflow optimizations in Visual Studio Code.',
-					action: 'generated',
-				})
-
-				response.packagesInstalled = []
-				for (const module of this.dependencies) {
-					response.packagesInstalled.push(module)
-					await this.Service('pkg').install(module.name, {
-						isDev: module.isDev,
-					})
-				}
-
-				response.summaryLines?.push(
-					`Installed lint and other settings for code (settings.json).`
-				)
-			}
+		debugger
+		for (const module of this.dependencies) {
+			response.packagesInstalled.push(module)
+			await this.Service('pkg').install(module.name, {
+				isDev: module.isDev,
+			})
 		}
 
 		return response

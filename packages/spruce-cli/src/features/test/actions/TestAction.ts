@@ -36,7 +36,7 @@ export const optionsSchema = buildSchema({
 			label: 'Inspect',
 			hint: `Pass --inspect related args to test process.`,
 		},
-		shouldStartTestsImmediately: {
+		shouldTestAtStart: {
 			type: 'boolean',
 			label: 'Start test immediately',
 			defaultValue: true,
@@ -51,11 +51,12 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	public optionsSchema = optionsSchema
 	private testReporter?: TestReporter | undefined
 	private testRunner?: TestRunner
-	private runnerStatus: 'hold' | 'quit' | 'run' = 'hold'
+	private runnerStatus: 'hold' | 'quit' | 'run' | 'restart' = 'hold'
 	private pattern: string | undefined
 	private inspect?: number | null
 	private holdPromiseResolve?: () => void
 	private lastTestResults: SpruceTestResults = { totalTestFiles: 0 }
+	private originalInspect!: number
 
 	public constructor(options: FeatureActionOptions) {
 		super(options)
@@ -70,14 +71,16 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			pattern,
 			shouldReportWhileRunning,
 			inspect,
-			shouldStartTestsImmediately,
+			shouldTestAtStart,
 		} = normalizedOptions
 
+		this.originalInspect = inspect ?? 5200
 		this.inspect = inspect
 		this.pattern = pattern
 
 		if (shouldReportWhileRunning) {
 			this.testReporter = new TestReporter({
+				status: shouldTestAtStart ? 'ready' : 'stopped',
 				isDebugging: !!inspect,
 				filterPattern: pattern ?? undefined,
 				handleStartStop: this.handleStartStop.bind(this),
@@ -91,7 +94,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			await this.testReporter.start()
 		}
 
-		this.runnerStatus = shouldStartTestsImmediately ? 'run' : 'hold'
+		this.runnerStatus = shouldTestAtStart ? 'run' : 'hold'
 
 		const testResults = await this.startTestRunner(normalizedOptions)
 
@@ -119,7 +122,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		if (this.inspect) {
 			this.inspect = undefined
 		} else {
-			this.inspect = 5200
+			this.inspect = this.originalInspect
 		}
 
 		this.testReporter?.setIsDebugging(!!this.inspect)
@@ -129,10 +132,8 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	}
 
 	private restart() {
-		this.handleStartStop()
-		if (this.runnerStatus !== 'run') {
-			this.handleStartStop()
-		}
+		this.runnerStatus = 'restart'
+		this.kill()
 	}
 
 	private handleQuit() {
@@ -149,7 +150,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	private handleFilterPatternChange(filterPattern?: string) {
 		this.pattern = filterPattern
 		this.testReporter?.setFilterPattern(filterPattern)
-		this.handleStartStop()
+		this.restart()
 	}
 
 	private handleStartStop() {
@@ -184,36 +185,46 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			return this.lastTestResults
 		}
 
+		this.testReporter?.setStatus('ready')
+
 		this.testRunner = new TestRunner({
 			cwd: this.cwd,
 			commandService: this.Service('command'),
 		})
 
 		if (this.testReporter) {
-			await this.testRunner.on(
-				'did-update',
-				(payload: { results: SpruceTestResults }) => {
-					this.testReporter?.updateResults(payload.results)
-					this.testReporter?.render()
-				}
-			)
+			await this.testRunner.on('did-update', (payload) => {
+				this.testReporter?.updateResults(payload.results)
+				this.testReporter?.render()
+			})
+
+			await this.testRunner.on('did-error', (payload) => {
+				this.testReporter?.appendError(payload.message)
+				this.testReporter?.render()
+			})
 		}
 
 		this.runnerStatus = 'run'
 		this.testReporter?.setStatus('running')
-		this.testReporter?.resetStartTimes()
+		this.testReporter?.reset()
 
 		let testResults: SpruceTestResults = await this.testRunner.run({
 			pattern: this.pattern,
 			debugPort: this.inspect,
 		})
 
-		if (!options.shouldReportWhileRunning) {
+		if (
+			!options.shouldReportWhileRunning ||
+			(this.runnerStatus as any) === 'quit'
+		) {
 			return testResults
 		}
 
+		if (this.runnerStatus === 'run') {
+			this.runnerStatus = 'hold'
+		}
+
 		this.testReporter?.setStatus('stopped')
-		this.runnerStatus = 'hold'
 
 		this.lastTestResults = testResults
 

@@ -11,7 +11,7 @@ import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
-export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
+export default class CreatingAListenerTest extends AbstractEventTest {
 	@test()
 	protected static async throwsWithBadNamespace() {
 		const cli = await this.installEventFeature('events')

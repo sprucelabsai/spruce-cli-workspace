@@ -16,7 +16,11 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	private static generator: SchemaGenerator
 	protected static async beforeEach() {
 		await super.beforeEach()
-		this.generator = new SchemaGenerator({ templates, term: this.ui })
+		this.generator = new SchemaGenerator({
+			templates,
+			term: this.ui,
+			fileDescriptions: [],
+		})
 
 		const cli = await this.installSchemaFeature('schemas')
 

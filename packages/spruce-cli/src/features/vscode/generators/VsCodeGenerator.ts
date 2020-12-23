@@ -3,15 +3,15 @@ import AbstractGenerator, {
 	GenerationResults,
 } from '../../../generators/AbstractGenerator'
 
-export default class NodeGenerator extends AbstractGenerator {
-	public async generateNodeModule(
+export default class VsCodeGenerator extends AbstractGenerator {
+	public async generateVsCodeConfigurations(
 		destinationDir: string
 	): Promise<GenerationResults> {
+		debugger
 		return this.writeDirectoryTemplate({
 			destinationDir,
-			code: DirectoryTemplateCode.Skill,
-			filesToWrite: ['tsconfig.json'],
-			context: { name: 'ignored', description: 'ignored' },
+			code: DirectoryTemplateCode.VsCode,
+			context: {},
 		})
 	}
 }

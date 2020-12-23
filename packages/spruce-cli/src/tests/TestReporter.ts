@@ -1,3 +1,4 @@
+import chalk from 'chalk'
 import {
 	SpruceTestResults,
 	TestRunnerStatus,
@@ -23,6 +24,11 @@ interface TestReporterOptions {
 	handleToggleDebug: () => void
 	filterPattern?: string
 	isDebugging?: boolean
+	status?: TestRunnerStatus
+}
+
+type TestReporterResults = SpruceTestResults & {
+	customErrors: string[]
 }
 
 export default class TestReporter {
@@ -33,7 +39,10 @@ export default class TestReporter {
 	private testLog!: TextWidget
 	private errorLog?: TextWidget
 	private errorLogItemGenerator: TestLogItemGenerator
-	private lastResults?: SpruceTestResults
+	private lastResults: TestReporterResults = {
+		totalTestFiles: 0,
+		customErrors: [],
+	}
 	private updateInterval?: any
 	private menu!: MenuBarWidget
 	private window!: WindowWidget
@@ -60,6 +69,7 @@ export default class TestReporter {
 		this.handleRerunTestFile = options?.handleRerunTestFile
 		this.handleOpenTestFile = options?.handleOpenTestFile
 		this.handleFilterChange = options?.handleFilterPatternChange
+		this.status = options?.status ?? 'ready'
 		this.handleToggleDebug = options?.handleToggleDebug
 		this.isDebugging = options?.isDebugging ?? false
 
@@ -76,8 +86,8 @@ export default class TestReporter {
 	public setIsDebugging(isDebugging: boolean) {
 		this.menu.setTextForItem(
 			'toggleDebug',
-			`Debugging ^${isDebugging ? 'k' : 'w'}^#^${isDebugging ? 'g' : 'b'}${
-				isDebugging ? ' ON ' : ' OFF '
+			`Debugging ^${isDebugging ? 'k' : 'w'}^#^${isDebugging ? 'g' : 'r'}${
+				isDebugging ? ' • ' : ' • '
 			}^`
 		)
 		this.isDebugging = isDebugging
@@ -115,16 +125,16 @@ export default class TestReporter {
 			top: 0,
 			items: [
 				{
-					label: 'Quit',
-					value: 'quit',
-				},
-				{
-					label: 'Restart',
+					label: 'Restart    ',
 					value: 'restart',
 				},
 				{
-					label: 'Debugging',
+					label: 'Debugging    ',
 					value: 'toggleDebug',
+				},
+				{
+					label: 'Quit',
+					value: 'quit',
 				},
 			],
 		})
@@ -133,22 +143,32 @@ export default class TestReporter {
 	}
 
 	public setStatus(status: TestRunnerStatus) {
-		let restartLabel = ' Start'
-		switch (status) {
-			case 'running':
-				restartLabel = ' Stop'
-				break
-			case 'stopped':
-				restartLabel = 'Restart'
-				break
-		}
-
-		this.menu.setTextForItem('restart', restartLabel)
 		this.status = status
+
+		this.updateMenuLabels()
 
 		if (this.status === 'stopped') {
 			this.refreshResults()
 		}
+	}
+
+	private updateMenuLabels() {
+		let restartLabel = 'Stopped ^#^r › ^'
+		switch (this.status) {
+			case 'running':
+				restartLabel = 'Running ^k^#^g › ^'
+				break
+			case 'stopped':
+				restartLabel = `${
+					this.lastResults.totalTestFiles === 0 ? ' Start ' : 'Stopped'
+				} ^w^#^r › ^`
+				break
+			case 'ready':
+				restartLabel = 'Booting'
+				break
+		}
+
+		this.menu.setTextForItem('restart', restartLabel)
 	}
 
 	private handleMenuSelect(payload: { value: string }) {
@@ -173,7 +193,7 @@ export default class TestReporter {
 
 	private refreshResults() {
 		if (this.lastResults) {
-			this.updateLogs(this.lastResults)
+			this.updateLogs()
 		}
 	}
 
@@ -286,7 +306,7 @@ export default class TestReporter {
 	public getFileForLine(row: number): string | undefined {
 		let line = this.testLog.getScrollY()
 
-		for (let file of this.lastResults?.testFiles ?? []) {
+		for (let file of this.lastResults.testFiles ?? []) {
 			if (line === row) {
 				return file.path
 			}
@@ -406,7 +426,10 @@ export default class TestReporter {
 			throw new Error('You must call start() before anything else.')
 		}
 
-		this.lastResults = results
+		this.lastResults = {
+			...this.lastResults,
+			...results,
+		}
 
 		this.updateProgressBar(results)
 
@@ -419,15 +442,17 @@ export default class TestReporter {
 			}`
 		)
 
-		this.updateLogs(results)
+		this.updateLogs()
 	}
 
-	private updateLogs(results: SpruceTestResults) {
+	private updateLogs() {
 		if (this.selectTestPopup) {
 			return
 		}
 
-		let { logContent, errorContent } = this.resultsToLogContents(results)
+		let { logContent, errorContent } = this.resultsToLogContents(
+			this.lastResults
+		)
 
 		this.testLog.setText(logContent)
 
@@ -452,6 +477,12 @@ export default class TestReporter {
 				file
 			)
 		})
+
+		if (this.lastResults.customErrors.length > 0) {
+			errorContent =
+				this.lastResults.customErrors.map((err) => chalk.red(err)).join(`\n`) +
+				`\n${errorContent}`
+		}
 
 		return { logContent, errorContent }
 	}
@@ -554,8 +585,13 @@ export default class TestReporter {
 		await this.window.destroy()
 	}
 
-	public resetStartTimes() {
+	public reset() {
+		this.lastResults.customErrors = []
 		this.errorLogItemGenerator.resetStartTimes()
+	}
+
+	public appendError(message: string) {
+		this.lastResults.customErrors.push(message)
 	}
 }
 function buildPatternButtonText(pattern: string | undefined): string {

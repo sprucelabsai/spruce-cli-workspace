@@ -1,6 +1,7 @@
 import { Schema } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventAction.schema'
+import { FileDescription } from '../../types/cli.types'
 import AbstractFeature, {
 	FeatureDependency,
 	FeatureOptions,
@@ -27,7 +28,10 @@ export default class EventFeature extends AbstractFeature {
 			name: '@sprucelabs/spruce-event-utils',
 		},
 	]
+
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+
+	public readonly fileDescriptions: FileDescription[] = []
 
 	public constructor(options: FeatureOptions) {
 		super(options)

@@ -1,0 +1,60 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "npm",
+            "script": "watch.build",
+            "group": "build",
+            "problemMatcher": [],
+            "label": "watch.build",
+            "runOptions": {
+                "runOn": "folderOpen"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "dedicated",
+                "clear": true
+            }
+        },
+        {
+            "label": "test.file",
+            "command": "spruce",
+            "args": [
+                "test",
+                "--inspect",
+                "5200",
+                "--pattern",
+                "${fileBasenameNoExtension}"
+            ],
+            "promptOnClose": false,
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "test.reporter",
+            "command": "spruce",
+            "args": [
+                "test",
+                "--inspect",
+                "5200",
+                "--shouldTestAtStart",
+                "false"
+            ],
+            "promptOnClose": false,
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        }
+    ]
+}

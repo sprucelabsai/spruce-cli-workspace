@@ -1,3 +1,4 @@
+import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
 import {
 	diskUtil,
 	namesUtil,
@@ -5,6 +6,7 @@ import {
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { CliInterface } from '../../cli'
 import { FeatureActionResponse } from '../../features/features.types'
 import AbstractEventTest from '../../tests/AbstractEventTest'
 import testUtil from '../../tests/utilities/test.utility'
@@ -35,7 +37,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		errorAssertUtil.assertError(results.errors[0], 'SKILL_NOT_REGISTERED')
 	}
 
-	@test()
+	@test.only()
 	protected static async createsVersionedEventFiles() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 
@@ -49,8 +51,16 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 			nameCamel: EVENT_CAMEL,
 		})
 
+		await this.openInVsCode()
+
 		assert.isFalsy(results.errors)
 
+		const eventName = eventContractUtil.joinEventNameWithOptionalNamespace({
+			eventNamespace: skill.slug,
+			eventName: EVENT_NAME,
+		})
+
+		await this.assertReturnsEventFromHealthCheck(cli, eventName)
 		await this.assertExpectedPayloadSchemas(results, skill)
 		await this.assertValidActionResponseFiles(results)
 	}
@@ -69,22 +79,43 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 			nameCamel: EVENT_CAMEL,
 		})
 
-		const name = 'permission.builder.ts'
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
-			name,
-			results.files
-		)
-		const path = versionUtil.resolvePath(
-			this.cwd,
-			'src/events/',
-			namesUtil.toPascal(skill.slug ?? 'missing'),
-			'{{@latest}}',
-			EVENT_SLUG,
-			name
-		)
+		const builders = [
+			{ filename: 'emitPermissions.builder.ts' },
+			{ filename: 'listenPermissions.builder.ts' },
+		]
 
-		assert.isEqual(match, path)
-		assert.isTrue(diskUtil.doesFileExist(path))
+		for (const builder of builders) {
+			const { filename } = builder
+
+			const match = testUtil.assertsFileByNameInGeneratedFiles(
+				filename,
+				results.files
+			)
+
+			const path = versionUtil.resolvePath(
+				this.cwd,
+				'src/events/',
+				namesUtil.toPascal(skill.slug ?? 'missing'),
+				'{{@latest}}',
+				EVENT_SLUG,
+				filename
+			)
+
+			assert.isEqual(match, path)
+			assert.isTrue(diskUtil.doesFileExist(path))
+		}
+	}
+
+	private static async assertReturnsEventFromHealthCheck(
+		cli: CliInterface,
+		eventName: string
+	) {
+		const health = await cli.checkHealth()
+		debugger
+		assert.isTruthy(health.event)
+		assert.doesInclude(health.event.contracts, {
+			eventNameWithOptionalNamespace: eventName,
+		})
 	}
 
 	private static async assertExpectedPayloadSchemas(

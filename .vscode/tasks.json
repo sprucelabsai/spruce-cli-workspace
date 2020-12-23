@@ -8,6 +8,11 @@
 			"problemMatcher": [],
 			"label": "npm: watch.build",
 			"detail": "lerna run watch.build --stream --parallel",
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated",
+				"clear": true
+			},
 			"runOptions": {
 				"runOn": "folderOpen"
 			}
@@ -39,7 +44,7 @@
 				"test",
 				"--inspect",
 				"5200",
-				"--shouldStartTestsImmediately",
+				"--shouldTestAtStart",
 				"false"
 			],
 			"options": {

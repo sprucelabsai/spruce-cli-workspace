@@ -13,6 +13,17 @@ import { SpruceTestResults } from './test.types'
 
 const testRunnerContract = buildEventContract({
 	eventSignatures: {
+		'did-error': {
+			emitPayloadSchema: buildSchema({
+				id: 'testRunnerDidErrorEmitPayload',
+				fields: {
+					message: {
+						type: 'text',
+						isRequired: true,
+					},
+				},
+			}),
+		},
 		'did-update': {
 			emitPayloadSchema: buildSchema({
 				id: 'testRunnerDidUpdateEmitPayload',
@@ -66,6 +77,16 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
 		try {
 			await this.commandService.execute(command, {
 				forceColor: true,
+				onError: async (data) => {
+					const isDebugMessaging = this.isDebugMessage(data)
+
+					if (!isDebugMessaging) {
+						await (this as MercuryEventEmitter<TestRunnerContract>).emit(
+							'did-error',
+							{ message: data }
+						)
+					}
+				},
 				onData: async (data) => {
 					parser.write(data)
 					testResults = parser.getResults()
@@ -82,6 +103,14 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
 		}
 
 		return { ...testResults, wasKilled: this.wasKilled }
+	}
+
+	private isDebugMessage(data: string) {
+		return (
+			data.search(/^debugger attached/i) === 0 ||
+			data.search(/^debugger listening/i) === 0 ||
+			data.search(/^waiting for the debugger/i) === 0
+		)
 	}
 
 	public kill() {

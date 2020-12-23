@@ -26,6 +26,7 @@ import {
 	NpmPackage,
 	GraphicsInterface,
 	GeneratedFile,
+	FileDescription,
 } from '../types/cli.types'
 import featuresUtil from './feature.utilities'
 import FeatureActionFactory, {
@@ -63,6 +64,7 @@ export default abstract class AbstractFeature<
 	public readonly dependencies: FeatureDependency[] = []
 	public readonly packageDependencies: NpmPackage[] = []
 	public readonly optionsDefinition?: S
+	public readonly fileDescriptions: FileDescription[] = []
 
 	public isInstalled?: () => Promise<boolean>
 
@@ -125,7 +127,9 @@ export default abstract class AbstractFeature<
 	}
 
 	protected Generator<C extends GeneratorCode>(code: C): GeneratorMap[C] {
-		return this.generatorFactory.Generator(code)
+		return this.generatorFactory.Generator(code, {
+			fileDescriptions: this.fileDescriptions,
+		})
 	}
 
 	public getFeature<Code extends FeatureCode>(code: Code) {

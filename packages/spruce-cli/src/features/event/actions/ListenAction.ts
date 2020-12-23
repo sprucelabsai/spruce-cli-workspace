@@ -34,7 +34,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 			let response: FeatureActionResponse = {}
 
 			let {
-				eventsDestinationDir,
+				listenerDestinationDir,
 				version,
 				eventName,
 				eventNamespace,
@@ -80,7 +80,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 
 			const resolvedDestination = diskUtil.resolvePath(
 				this.cwd,
-				eventsDestinationDir
+				listenerDestinationDir
 			)
 
 			const resolvedVersion = await this.resolveVersion(

@@ -4,13 +4,17 @@ import { SchemaImport } from '../utilities/importExtractor.utility'
 
 export enum DirectoryTemplateCode {
 	Skill = 'skill',
+	VsCode = 'vscode',
 }
 export interface DirectoryTemplateContextSkill {
 	name: string
 	description: string
 }
+export interface DirectoryTemplateContextVsCode {}
+
 export interface DirectoryTemplateContextMap {
 	[DirectoryTemplateCode.Skill]: DirectoryTemplateContextSkill
+	[DirectoryTemplateCode.VsCode]: DirectoryTemplateContextVsCode
 }
 export interface DirectoryTemplateFile {
 	/** Whether this is a handlebars template file */

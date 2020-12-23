@@ -1,5 +1,6 @@
 import { buildSchema, Schema, SchemaValues } from '@sprucelabs/schema'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { FileDescription } from '../../types/cli.types'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
@@ -34,6 +35,13 @@ export default class NodeFeature<
 		{ name: 'typescript', isDev: true },
 		{ name: 'ts-node', isDev: true },
 		{ name: 'tsconfig-paths', isDev: true },
+	]
+	public readonly fileDescriptions: FileDescription[] = [
+		{
+			path: 'tsconfig.json',
+			description: 'For mapping #spruce dirs.',
+			shouldOverwriteWhenChanged: true,
+		},
 	]
 
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')

@@ -10,12 +10,12 @@ const upgradeSkillActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkill
 	name: 'Upgrade skill action',
 	description: 'Options skill.upgrade.',
 	    fields: {
-	            /** Force. This will force overwrite each file */
-	            'force': {
-	                label: 'Force',
-	                type: 'boolean',
-	                hint: 'This will force overwrite each file',
-	                options: undefined
+	            /** Upgrade mode. */
+	            'upgradeMode': {
+	                label: 'Upgrade mode',
+	                type: 'select',
+	                defaultValue: "forceRequiredSkipRest",
+	                options: {choices: [{"value":"askEverything","label":"Ask for everything"},{"value":"forceEverything","label":"Force everything"},{"value":"forceRequiredSkipRest","label":"Force required (skipping all non-essential)"}],}
 	            },
 	    }
 }

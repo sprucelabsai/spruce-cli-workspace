@@ -148,3 +148,12 @@ export type RegisteredSkill = Omit<
 	SpruceSchemas.Spruce.v2020_07_22.Skill,
 	'creators'
 >
+
+export type UpgradeMode = SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillAction['upgradeMode']
+
+export type FileDescription = {
+	path: string
+	description: string
+	shouldOverwriteWhenChanged: boolean
+	confirmPromptOnFirstWrite?: string
+}

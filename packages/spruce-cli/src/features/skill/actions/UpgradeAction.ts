@@ -6,14 +6,13 @@ import { FeatureActionResponse } from '../../features.types'
 import SkillFeature from '../SkillFeature'
 
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillActionSchema
+type Options = SchemaValues<OptionsSchema>
 
 export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> {
 	public name = 'Upgrade'
 	public optionsSchema = upgradeSkillActionSchema
 
-	public async execute(
-		options: SchemaValues<OptionsSchema>
-	): Promise<FeatureActionResponse> {
+	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 		const generatedFiles = await this.copyFiles(normalizedOptions)
 
@@ -31,9 +30,9 @@ export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> 
 		this.ui.stopLoading()
 	}
 
-	private async copyFiles(normalizedOptions: { force?: boolean | undefined }) {
+	private async copyFiles(normalizedOptions: Options) {
 		const skillGenerator = this.Generator('skill', {
-			askBeforeUpdating: !normalizedOptions.force,
+			upgradeMode: normalizedOptions.upgradeMode,
 		})
 		const pkgService = this.Service('pkg')
 		const name = pkgService.get('name')
@@ -42,7 +41,6 @@ export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> 
 		const generatedFiles = await skillGenerator.generateSkill(this.cwd, {
 			name,
 			description,
-			upgrade: true,
 		})
 		return generatedFiles
 	}

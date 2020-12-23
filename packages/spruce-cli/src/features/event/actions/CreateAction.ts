@@ -96,9 +96,16 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 				},
 				{
 					templateMethod: 'permissionContractBuilder',
-					name: 'permission.builder.ts',
+					name: 'emitPermissions.builder.ts',
 					action: 'generated',
-					description: 'Permissions you can tie to your events!',
+					description: 'Permissions someone else will need to emit your event.',
+				},
+				{
+					templateMethod: 'permissionContractBuilder',
+					name: 'listenPermissions.builder.ts',
+					action: 'generated',
+					description:
+						'Permissions someone else will need to listen to your event.',
 				},
 			]
 

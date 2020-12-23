@@ -88,7 +88,10 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 		code: C,
 		options?: Partial<GeneratorOptions>
 	): GeneratorMap[C] {
-		return this.generatorFactory.Generator(code, options)
+		return this.generatorFactory.Generator(code, {
+			fileDescriptions: this.parent.fileDescriptions,
+			...options,
+		})
 	}
 
 	protected getFeature(code: FeatureCode) {

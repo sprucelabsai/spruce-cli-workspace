@@ -24,6 +24,7 @@ export default class CommandService {
 			args?: string[]
 			stream?: boolean
 			outStream?: Writable
+			onError?: (error: string) => void
 			onData?: (data: string) => void
 			spawnOptions?: SpawnOptions
 			forceColor?: boolean
@@ -71,6 +72,7 @@ export default class CommandService {
 			})
 
 			child.stderr?.addListener('data', (data) => {
+				options?.onError?.(data.toString())
 				stderr += data
 			})
 

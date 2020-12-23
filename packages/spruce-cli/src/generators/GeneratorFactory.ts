@@ -5,7 +5,8 @@ import NodeGenerator from '../features/node/generators/NodeGenerator'
 import SchemaGenerator from '../features/schema/generators/SchemaGenerator'
 import SkillGenerator from '../features/skill/generators/SkillGenerator'
 import TestGenerator from '../features/test/generators/TestGenerator'
-import { GraphicsInterface } from '../types/cli.types'
+import VsCodeGenerator from '../features/vscode/generators/VsCodeGenerator'
+import { FileDescription, GraphicsInterface } from '../types/cli.types'
 import { GeneratorOptions } from './AbstractGenerator'
 
 const classMap = {
@@ -15,6 +16,7 @@ const classMap = {
 	skill: SkillGenerator,
 	test: TestGenerator,
 	node: NodeGenerator,
+	vscode: VsCodeGenerator,
 }
 
 export interface GeneratorMap {
@@ -24,6 +26,7 @@ export interface GeneratorMap {
 	skill: SkillGenerator
 	test: TestGenerator
 	node: NodeGenerator
+	vscode: VsCodeGenerator
 }
 export type GeneratorCode = keyof GeneratorMap
 
@@ -38,7 +41,7 @@ export default class GeneratorFactory {
 
 	public Generator<C extends GeneratorCode>(
 		code: C,
-		options?: Partial<GeneratorOptions>
+		options: Partial<GeneratorOptions> & { fileDescriptions: FileDescription[] }
 	): GeneratorMap[C] {
 		const Class = classMap[code]
 		return new Class({
