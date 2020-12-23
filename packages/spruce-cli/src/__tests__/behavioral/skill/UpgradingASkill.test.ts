@@ -94,10 +94,14 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 	protected static async upgradeWillAskIfYouWantToOverwriteFiles() {
 		const cli = await this.installAndBreakSkill('skills')
 
-		const promise = cli.getFeature('skill').Action('upgrade').execute({})
+		const promise = cli
+			.getFeature('skill')
+			.Action('upgrade')
+			.execute({ upgradeMode: 'askEverything' })
 
 		await this.waitForInput()
 
+		// should still fail because we haven't written yet
 		await this.assertFailedHealthCheck(cli)
 
 		assert.doesInclude(this.ui.invocations, {
@@ -107,7 +111,13 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		await this.ui.sendInput('\n')
 
+		await this.wait(1000)
+
 		await promise
+
+		const health = await cli.checkHealth()
+
+		assert.isEqual(health.skill.status, 'passed')
 	}
 
 	@test()
@@ -161,7 +171,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		const failedHealthCheck = await cli.checkHealth()
 
 		assert.doesInclude(failedHealthCheck, {
-			'skill.errors[0].originalError.options.stderr': 'cheese',
+			'skill.errors[].message': 'cheese',
 		})
 	}
 }

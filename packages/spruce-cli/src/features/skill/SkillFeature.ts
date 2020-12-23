@@ -41,6 +41,8 @@ export default class SkillFeature<
 		{ name: 'eslint', isDev: true },
 		{ name: 'eslint-config-spruce', isDev: true },
 		{ name: 'prettier', isDev: true },
+		{ name: 'chokidar', isDev: true },
+		{ name: 'concurrently', isDev: true },
 		{ name: 'globby' },
 		{
 			name: '@sprucelabs/mercury-types',
@@ -62,8 +64,7 @@ export default class SkillFeature<
 			"babel src --out-dir build --extensions '.ts, .tsx' --source-maps --copy-files",
 		'build.resolve-paths':
 			'resolve-path-aliases --target build --patterns **/*.js,**/*.d.ts',
-		'build.types.resolve-paths.lint':
-			'yarn build.types || yarn build.resolve-paths || yarn lint',
+		"build.types.resolve-paths.lint": "concurrently 'yarn build.types' 'yarn build.resolve-paths' 'yarn lint'",
 		rebuild: 'yarn clean.all && yarn && yarn build',
 		clean: 'rm -rf build/',
 		'clean.all': 'rm -rf build/ && rm -rf node_modules/',

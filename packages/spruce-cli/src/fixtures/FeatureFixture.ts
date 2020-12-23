@@ -39,6 +39,10 @@ export default class FeatureFixture implements ServiceProvider {
 	private emitter?: GlobalEmitter
 
 	public constructor(options: FeatureFixtureOptions) {
+		if (options.cwd.search('packages/spruce-cli') > -1) {
+			throw new Error("You can't run FeatureFixture in the cli directory.")
+		}
+
 		this.cwd = options.cwd
 		this.serviceFactory = options.serviceFactory
 		this.term = options.ui
