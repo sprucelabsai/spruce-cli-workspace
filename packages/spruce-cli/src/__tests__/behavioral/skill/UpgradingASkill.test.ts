@@ -1,6 +1,5 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
 import { CliInterface } from '../../../cli'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import { GeneratedFile } from '../../../types/cli.types'
@@ -82,13 +81,11 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		const passedHealthCheck = await cli.checkHealth()
 
-		debugger
-		assert.doesInclude(passedHealthCheck.skill.status, 'failed')
-
-		errorAssertUtil
-
-		assert.doesInclude({
+		assert.doesInclude(passedHealthCheck, {
 			'skill.status': 'failed',
+		})
+
+		assert.doesInclude(passedHealthCheck, {
 			'skill.errors[0].options.code': 'SKILL_NOT_INSTALLED',
 		})
 	}
@@ -164,7 +161,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		const failedHealthCheck = await cli.checkHealth()
 
 		assert.doesInclude(failedHealthCheck, {
-			'skill.errors[].stack': 'cheese',
+			'skill.errors[0].originalError.options.stderr': 'cheese',
 		})
 	}
 }

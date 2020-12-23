@@ -89,7 +89,7 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 			const shouldInstallPackages =
 				all ||
 				(await this.ui.confirm(
-					'Last thing! Ready for me to install eslint node modules?'
+					'Last thing! Ready for me to install eslint modules?'
 				))
 
 			if (shouldInstallPackages) {

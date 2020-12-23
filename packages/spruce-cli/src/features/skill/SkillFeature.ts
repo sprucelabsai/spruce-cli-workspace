@@ -56,7 +56,7 @@ export default class SkillFeature<
 			"concurrently 'yarn lint' \"chokidar 'src/**/*' -c 'yarn lint.tsc'\"",
 		health: 'yarn boot --health',
 		'health.local': 'yarn boot.local --health',
-		build: 'yarn build.babel && yarn build.types || yarn build.resolve-paths',
+		build: 'yarn build.babel && yarn build.types.resolve-paths.lint',
 		'build.types': 'tsc --emitDeclarationOnly && echo PASS',
 		'build.babel':
 			"babel src --out-dir build --extensions '.ts, .tsx' --source-maps --copy-files",
