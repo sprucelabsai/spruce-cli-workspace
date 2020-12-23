@@ -53,7 +53,8 @@ export default abstract class AbstractGenerator {
 					pathUtil.join(destinationDir, generated.relativePath),
 					generated.contents,
 					'',
-					results
+					results,
+					destinationDir
 				)
 			}
 		}
@@ -65,7 +66,8 @@ export default abstract class AbstractGenerator {
 		destination: string,
 		contents: string,
 		description: string,
-		results?: GenerationResults
+		results?: GenerationResults,
+		destinationDir = ''
 	): Promise<GenerationResults> {
 		const myResults: GenerationResults = results ?? []
 		let desc: string | undefined = description
@@ -102,7 +104,10 @@ export default abstract class AbstractGenerator {
 
 		if (!desc) {
 			throw new Error(
-				`No FileDescription provided for ${destination}. Check your feature's fileDescriptions property.`
+				`No FileDescription provided for ${destination.replace(
+					destinationDir,
+					''
+				)}. Check your feature's fileDescriptions property.`
 			)
 		}
 

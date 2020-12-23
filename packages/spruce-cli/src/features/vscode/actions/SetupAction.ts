@@ -1,4 +1,3 @@
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import setupVscodeSchema from '#spruce/schemas/spruceCli/v2020_07_22/setupVscodeAction.schema'
 import { NpmPackage } from '../../../types/cli.types'
@@ -74,7 +73,7 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 				'You will need to restart vscode for the changes to take effect. 👊',
 			]
 		}
-		debugger
+
 		const files = await this.Generator('vscode').generateVsCodeConfigurations(
 			this.cwd
 		)
@@ -82,12 +81,28 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 		response.files = files
 		response.packagesInstalled = []
 
-		debugger
+		const pkg = this.Service('pkg')
+
 		for (const module of this.dependencies) {
-			response.packagesInstalled.push(module)
-			await this.Service('pkg').install(module.name, {
-				isDev: module.isDev,
-			})
+			if (!pkg.isInstalled(module.name)) {
+				response.packagesInstalled.push(module)
+			}
+		}
+
+		if (response.packagesInstalled.length > 0) {
+			const shouldInstallPackages =
+				all ||
+				(await this.ui.confirm(
+					'Last thing! Ready for me to install eslint node modules?'
+				))
+
+			if (shouldInstallPackages) {
+				for (const module of response.packagesInstalled) {
+					await pkg.install(module.name, {
+						isDev: module.isDev,
+					})
+				}
+			}
 		}
 
 		return response
