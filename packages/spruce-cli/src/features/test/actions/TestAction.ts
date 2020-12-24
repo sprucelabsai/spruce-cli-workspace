@@ -68,6 +68,9 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	private originalInspect!: number
 	private watcher?: WatchFeature
 	private isWatchingForChanges = false
+	private fileChangeTimeout?: number
+
+	private readonly watchDelaySec = 2
 
 	public constructor(options: FeatureActionOptions) {
 		super(options)
@@ -111,7 +114,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 
 		this.watcher = this.getFeature('watch') as WatchFeature
-		void this.watcher.startWatching({ delay: 2000 })
+		void this.watcher.startWatching({ delay: 0 })
 
 		await this.emitter.on(
 			'watcher.did-detect-change',
@@ -165,7 +168,14 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 
 		if (shouldRestart) {
-			this.restart()
+			if (this.fileChangeTimeout) {
+				clearTimeout(this.fileChangeTimeout)
+			}
+
+			this.testReporter?.startCountdownTimer(this.watchDelaySec)
+			this.fileChangeTimeout = setTimeout(() => {
+				this.restart()
+			}, this.watchDelaySec * 1000) as any
 		}
 	}
 
@@ -261,6 +271,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 
 		this.testReporter?.setStatus('ready')
+		this.testReporter?.stopCountdownTimer()
 
 		this.testRunner = new TestRunner({
 			cwd: this.cwd,

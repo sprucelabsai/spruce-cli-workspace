@@ -58,6 +58,7 @@ export default class TestReporter {
 	private isDebugging = false
 	private isWatching = false
 	private status: TestRunnerStatus = 'ready'
+	private countDownTimeInterval?: number
 
 	private handleStartStop?: () => void
 	private handleRestart?: () => void
@@ -102,14 +103,45 @@ export default class TestReporter {
 		this.isDebugging = isDebugging
 	}
 
+	public startCountdownTimer(durationSec: number) {
+		clearInterval(this.countDownTimeInterval)
+		this.countDownTimeInterval = undefined
+
+		let remaining = durationSec
+
+		this.setWatchLabel(`  ${remaining}  `)
+
+		this.countDownTimeInterval = setInterval(() => {
+			remaining--
+
+			if (remaining < 0) {
+				this.stopCountdownTimer()
+			} else {
+				this.setWatchLabel(`  ${remaining}  `)
+			}
+		}, 1000) as any
+	}
+
+	public stopCountdownTimer() {
+		clearInterval(this.countDownTimeInterval)
+		this.countDownTimeInterval = undefined
+		this.setWatchLabel('Watch')
+	}
+
 	public setIsWatching(isWatching: boolean) {
+		this.isWatching = isWatching
+		if (!this.countDownTimeInterval) {
+			this.setWatchLabel('Watch')
+		}
+	}
+
+	private setWatchLabel(label: string) {
 		this.menu.setTextForItem(
 			'toggleWatch',
-			`Watch ^${isWatching ? 'k' : 'w'}^#^${isWatching ? 'g' : 'r'}${
-				isWatching ? ' • ' : ' • '
-			}^`
+			`${label} ^${this.isWatching ? 'k' : 'w'}^#^${
+				this.isWatching ? 'g' : 'r'
+			}${this.isWatching ? ' • ' : ' • '}^`
 		)
-		this.isWatching = isWatching
 	}
 
 	public async start() {
