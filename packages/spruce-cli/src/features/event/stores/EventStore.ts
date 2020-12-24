@@ -5,7 +5,7 @@ import {
 	eventDiskUtil,
 	eventContractUtil,
 } from '@sprucelabs/spruce-event-utils'
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractStore from '../../../stores/AbstractStore'
@@ -47,6 +47,8 @@ export default class EventStore extends AbstractStore {
 			diskUtil.resolvePath(this.cwd, 'src', 'events', '**/*.builder.ts')
 		)
 
+		const ns = namesUtil.toKebab(localNamespace)
+
 		const eventSignatures: Record<string, EventSignature> = {}
 		const i = this.Service('import')
 
@@ -55,7 +57,7 @@ export default class EventStore extends AbstractStore {
 				const { eventName } = eventDiskUtil.splitPathToEvent(match)
 
 				const eventNameWithNamespace = eventContractUtil.joinEventNameWithOptionalNamespace(
-					{ eventName, eventNamespace: localNamespace }
+					{ eventName, eventNamespace: ns }
 				)
 
 				if (!eventSignatures[eventNameWithNamespace]) {

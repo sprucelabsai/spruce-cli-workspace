@@ -196,6 +196,18 @@
         "code": "error"
       }
     ],
+    "schemasInNodeModule": [
+      {
+        "code": "node",
+        "options": {
+          "name": "plain node module",
+          "description": ""
+        }
+      },
+      {
+        "code": "schema"
+      }
+    ],
     "eventsInNodeModule": [
       {
         "code": "node",

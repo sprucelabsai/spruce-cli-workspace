@@ -85,5 +85,11 @@ export default buildSchema({
 				"By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file.",
 			defaultValue: false,
 		},
+		syncingMessage: {
+			label: ' message',
+			type: 'text',
+			defaultValue: 'Syncing schemas...',
+			isPrivate: true,
+		},
 	},
 })

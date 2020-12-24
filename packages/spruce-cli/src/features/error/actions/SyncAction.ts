@@ -100,6 +100,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			generateStandaloneTypesFile: true,
 			deleteDestinationDirIfNoSchemas: true,
 			fetchCoreSchemas: false,
+			syncingMessage: 'Syncing errors...',
 		})
 
 		const errorSyncResults = await schemaSyncAction.execute(syncOptions)

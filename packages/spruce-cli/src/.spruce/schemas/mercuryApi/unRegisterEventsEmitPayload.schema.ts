@@ -9,10 +9,14 @@ const unRegisterEventsEmitPayloadSchema: SpruceSchemas.MercuryApi.UnRegisterEven
 	name: '',
 	    fields: {
 	            /** . */
-	            'eventNamesWithOptionalNamespace': {
+	            'eventNames': {
 	                type: 'text',
-	                isRequired: true,
 	                isArray: true,
+	                options: undefined
+	            },
+	            /** . */
+	            'shouldUnRegisterAll': {
+	                type: 'boolean',
 	                options: undefined
 	            },
 	    }

@@ -41,7 +41,10 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			deleteDestinationDirIfNoSchemas,
 			fetchCoreSchemas,
 			registerBuiltSchemas,
+			syncingMessage,
 		} = normalizedOptions
+
+		this.ui.startLoading('Loading details about your skill... 🧐')
 
 		let localNamespace = await this.Store('skill').loadCurrentSkillsNamespace()
 
@@ -94,7 +97,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			resolvedFieldTypesDestination,
 		})
 
-		this.ui.startLoading(`Syncing schemas...`)
+		this.ui.startLoading(syncingMessage)
 
 		const schemaErrors: SpruceError[] = []
 		let schemaTemplateItems: SchemaTemplateItem[] | undefined
@@ -143,6 +146,8 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 
 			if (valueTypes) {
 				try {
+					this.ui.startLoading('Determining what changed... ⚡️')
+
 					typeResults = await this.schemaGenerator.generateSchemasAndTypes(
 						resolvedSchemaTypesDestination,
 						{

@@ -106,11 +106,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		cli: CliInterface,
 		skill: RegisteredSkill
 	) {
-		await this.openInVsCode({ timeout: 1000 })
 		const health = await cli.checkHealth()
-
-		debugger
-		await this.openInVsCode()
 
 		assert.isTruthy(health.event)
 		assert.isLength(health.event.events, 1)

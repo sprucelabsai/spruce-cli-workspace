@@ -106,8 +106,13 @@ export default class SkillStore extends AbstractStore {
 	}
 
 	public async loadCurrentSkillsNamespace() {
-		const current = await this.loadCurrentSkill()
-		return current.slug ?? namesUtil.toKebab(this.getSkillNameFromPkg())
+		const fallback = namesUtil.toPascal(this.getSkillNameFromPkg())
+		if (this.Service('auth').getCurrentSkill()) {
+			const current = await this.loadCurrentSkill()
+			return namesUtil.toPascal(current.slug ?? fallback)
+		}
+
+		return fallback
 	}
 
 	private getEventNamespaceForNotRegistered() {

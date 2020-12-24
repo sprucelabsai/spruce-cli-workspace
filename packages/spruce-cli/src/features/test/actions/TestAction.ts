@@ -1,4 +1,5 @@
 import pathUtil from 'path'
+import { SpruceSchemas } from '@sprucelabs/mercury-types'
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import open from 'open'
@@ -9,6 +10,7 @@ import {
 	FeatureActionResponse,
 	FeatureActionOptions,
 } from '../../features.types'
+import WatchFeature from '../../watch/WatchFeature'
 import {
 	SpruceTestFile,
 	SpruceTestFileTest,
@@ -36,15 +38,22 @@ export const optionsSchema = buildSchema({
 			label: 'Inspect',
 			hint: `Pass --inspect related args to test process.`,
 		},
-		shouldTestAtStart: {
+		shouldHoldAtStart: {
 			type: 'boolean',
-			label: 'Start test immediately',
-			defaultValue: true,
+			label: 'Should wait for manual start?',
+			defaultValue: false,
+		},
+		shouldWatch: {
+			type: 'boolean',
+			label: 'Watch',
+			defaultValue: false,
 		},
 	},
 })
 
 export type OptionsSchema = typeof optionsSchema
+
+type DidChangePayload = SchemaValues<SpruceSchemas.SpruceCli.v2020_07_22.WatcherDidDetectChangesEmitPayloadSchema>
 
 export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	public name = 'test'
@@ -57,6 +66,8 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	private holdPromiseResolve?: () => void
 	private lastTestResults: SpruceTestResults = { totalTestFiles: 0 }
 	private originalInspect!: number
+	private watcher?: WatchFeature
+	private isWatchingForChanges = false
 
 	public constructor(options: FeatureActionOptions) {
 		super(options)
@@ -71,16 +82,19 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			pattern,
 			shouldReportWhileRunning,
 			inspect,
-			shouldTestAtStart,
+			shouldHoldAtStart,
+			shouldWatch,
 		} = normalizedOptions
 
 		this.originalInspect = inspect ?? 5200
 		this.inspect = inspect
 		this.pattern = pattern
+		this.isWatchingForChanges = shouldWatch
 
 		if (shouldReportWhileRunning) {
 			this.testReporter = new TestReporter({
-				status: shouldTestAtStart ? 'ready' : 'stopped',
+				isWatching: this.isWatchingForChanges,
+				status: shouldHoldAtStart ? 'stopped' : 'ready',
 				isDebugging: !!inspect,
 				filterPattern: pattern ?? undefined,
 				handleRestart: this.handleRestart.bind(this),
@@ -89,16 +103,26 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 				handleRerunTestFile: this.handleRerunTestFile.bind(this),
 				handleOpenTestFile: this.handleOpenTestFile.bind(this),
 				handleFilterPatternChange: this.handleFilterPatternChange.bind(this),
-				handleToggleDebug: this.toggleDebug.bind(this),
+				handleToggleDebug: this.handleToggleDebug.bind(this),
+				handleToggleWatch: this.toggleWatch.bind(this),
 			})
 
 			await this.testReporter.start()
 		}
 
-		this.runnerStatus = shouldTestAtStart ? 'run' : 'hold'
+		this.watcher = this.getFeature('watch') as WatchFeature
+		void this.watcher.startWatching({ delay: 2000 })
+
+		await this.emitter.on(
+			'watcher.did-detect-change',
+			this.handleFileChange.bind(this)
+		)
+
+		this.runnerStatus = shouldHoldAtStart ? 'hold' : 'run'
 
 		const testResults = await this.startTestRunner(normalizedOptions)
 
+		await this.watcher?.stopWatching()
 		await this.testReporter?.destroy()
 
 		const actionResponse: FeatureActionResponse = {
@@ -119,7 +143,42 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		return actionResponse
 	}
 
-	private toggleDebug() {
+	private handleFileChange(payload: DidChangePayload) {
+		if (
+			!this.isWatchingForChanges ||
+			!(this.runnerStatus === 'run' || this.runnerStatus == 'hold')
+		) {
+			return
+		}
+
+		const { changes } = payload
+
+		let shouldRestart = false
+
+		for (const change of changes) {
+			const { path } = change.values
+
+			if (this.doWeCareAboutThisFileChanging(path)) {
+				shouldRestart = true
+				break
+			}
+		}
+
+		if (shouldRestart) {
+			this.restart()
+		}
+	}
+
+	private doWeCareAboutThisFileChanging(path: string) {
+		const ext = pathUtil.extname(path)
+		if (path.search('/src/') > -1 && ext === '.ts') {
+			return true
+		}
+
+		return false
+	}
+
+	private handleToggleDebug() {
 		if (this.inspect) {
 			this.inspect = undefined
 		} else {
@@ -127,8 +186,19 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 
 		this.testReporter?.setIsDebugging(!!this.inspect)
+
 		if (this.runnerStatus === 'run') {
 			this.restart()
+		}
+	}
+
+	private toggleWatch() {
+		if (this.isWatchingForChanges) {
+			this.isWatchingForChanges = false
+			this.testReporter?.setIsWatching(false)
+		} else {
+			this.isWatchingForChanges = true
+			this.testReporter?.setIsWatching(true)
 		}
 	}
 

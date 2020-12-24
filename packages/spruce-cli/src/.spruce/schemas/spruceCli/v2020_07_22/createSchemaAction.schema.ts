@@ -132,6 +132,14 @@ const createSchemaActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateSchema
 	                defaultValue: false,
 	                options: undefined
 	            },
+	            /**  message. */
+	            'syncingMessage': {
+	                label: ' message',
+	                type: 'text',
+	                isPrivate: true,
+	                defaultValue: "Syncing schemas...",
+	                options: undefined
+	            },
 	            /** Schema builder destination directory. Where I'll save the new schema builder. */
 	            'schemaBuilderDestinationDir': {
 	                label: 'Schema builder destination directory',

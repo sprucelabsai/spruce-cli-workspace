@@ -29,7 +29,8 @@ export const textEventContract = {
 export type TextEventContract = typeof textEventContract
 
 export interface TextWidgetOptions {
-	enableScroll?: boolean
+	isScrollEnabled?: boolean
+	shouldAutoScrollWhenAppendingContent?: boolean
 	wordWrap?: boolean
 	text?: string
 }

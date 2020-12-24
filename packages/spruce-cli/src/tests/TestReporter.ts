@@ -22,9 +22,11 @@ interface TestReporterOptions {
 	handleRerunTestFile?: (fileName: string) => void
 	handleOpenTestFile?: (fileName: string) => void
 	handleFilterPatternChange?: (pattern?: string) => void
-	handleToggleDebug: () => void
+	handleToggleDebug?: () => void
+	handleToggleWatch?: () => void
 	filterPattern?: string
 	isDebugging?: boolean
+	isWatching?: boolean
 	status?: TestRunnerStatus
 }
 
@@ -54,6 +56,7 @@ export default class TestReporter {
 	private filterPattern?: string
 	private clearFilterPatternButton!: ButtonWidget
 	private isDebugging = false
+	private isWatching = false
 	private status: TestRunnerStatus = 'ready'
 
 	private handleStartStop?: () => void
@@ -63,6 +66,7 @@ export default class TestReporter {
 	private handleFilterChange?: (pattern?: string) => void
 	private handleOpenTestFile?: (testFile: string) => void
 	private handleToggleDebug?: () => void
+	private handleToggleWatch?: () => void
 
 	public constructor(options?: TestReporterOptions) {
 		this.filterPattern = options?.filterPattern
@@ -74,7 +78,9 @@ export default class TestReporter {
 		this.handleFilterChange = options?.handleFilterPatternChange
 		this.status = options?.status ?? 'ready'
 		this.handleToggleDebug = options?.handleToggleDebug
+		this.handleToggleWatch = options?.handleToggleWatch
 		this.isDebugging = options?.isDebugging ?? false
+		this.isWatching = options?.isWatching ?? false
 
 		this.errorLogItemGenerator = new TestLogItemGenerator()
 		this.widgetFactory = new WidgetFactory()
@@ -89,11 +95,21 @@ export default class TestReporter {
 	public setIsDebugging(isDebugging: boolean) {
 		this.menu.setTextForItem(
 			'toggleDebug',
-			`Debugging ^${isDebugging ? 'k' : 'w'}^#^${isDebugging ? 'g' : 'r'}${
+			`Debug ^${isDebugging ? 'k' : 'w'}^#^${isDebugging ? 'g' : 'r'}${
 				isDebugging ? ' • ' : ' • '
 			}^`
 		)
 		this.isDebugging = isDebugging
+	}
+
+	public setIsWatching(isWatching: boolean) {
+		this.menu.setTextForItem(
+			'toggleWatch',
+			`Watch ^${isWatching ? 'k' : 'w'}^#^${isWatching ? 'g' : 'r'}${
+				isWatching ? ' • ' : ' • '
+			}^`
+		)
+		this.isWatching = isWatching
 	}
 
 	public async start() {
@@ -113,6 +129,7 @@ export default class TestReporter {
 		this.dropInFilterControls()
 
 		this.setIsDebugging(this.isDebugging)
+		this.setIsWatching(this.isWatching)
 		this.setStatus(this.status)
 
 		this.updateInterval = setInterval(
@@ -132,8 +149,12 @@ export default class TestReporter {
 					value: 'restart',
 				},
 				{
-					label: 'Debugging    ',
+					label: 'Debug    ',
 					value: 'toggleDebug',
+				},
+				{
+					label: 'Watch    ',
+					value: 'toggleWatch',
 				},
 				{
 					label: 'Quit',
@@ -185,6 +206,9 @@ export default class TestReporter {
 			case 'toggleDebug':
 				this.handleToggleDebug?.()
 				break
+			case 'toggleWatch':
+				this.handleToggleWatch?.()
+				break
 		}
 	}
 
@@ -201,7 +225,6 @@ export default class TestReporter {
 	}
 
 	private async handleGlobalKeypress(payload: { key: string }) {
-		debugger
 		if (this.window.getFocusedWidget() === this.filterInput) {
 			return
 		}
@@ -223,7 +246,7 @@ export default class TestReporter {
 		if (parent) {
 			this.testLog = this.widgetFactory.Widget('text', {
 				parent,
-				enableScroll: true,
+				isScrollEnabled: true,
 				left: 0,
 				top: 0,
 				height: '100%',
@@ -520,7 +543,8 @@ export default class TestReporter {
 				parent: cell,
 				width: '100%',
 				height: '100%',
-				enableScroll: true,
+				isScrollEnabled: true,
+				shouldAutoScrollWhenAppendingContent: false,
 				shouldLockHeightWithParent: true,
 				shouldLockWidthWithParent: true,
 				padding: { left: 1 },

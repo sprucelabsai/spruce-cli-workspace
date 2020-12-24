@@ -65,8 +65,6 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 		assert.doesInclude(match, version)
 
-		diskUtil.writeFile(match, 'export default () => {}')
-
 		await this.Service('typeChecker').check(match)
 
 		const health = await cli.checkHealth()
