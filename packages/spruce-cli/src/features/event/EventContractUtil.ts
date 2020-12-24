@@ -1,3 +1,4 @@
+// TODO this class does two things. Part writer, part utility (writeContracts, getUniqueSchemasFromContracts))
 import { SpruceSchemas } from '@sprucelabs/mercury-types'
 import {
 	normalizeSchemaToIdWithVersion,
@@ -13,16 +14,16 @@ import { GraphicsInterface } from '../../types/cli.types'
 import { FeatureActionResponse } from '../features.types'
 import SkillStore from '../skill/stores/SkillStore'
 import validateAndNormalizeUtil from '../validateAndNormalize.utility'
-import EventGenerator from './generators/EventGenerator'
 import EventStore from './stores/EventStore'
+import EventWriter from './writers/EventWriter'
 
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventActionSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventAction
 
-export default class EventContractUnifiedGenerator {
+export default class EventContractController {
 	private optionsSchema: OptionsSchema
 	private ui: GraphicsInterface
-	private eventGenerator: EventGenerator
+	private eventGenerator: EventWriter
 	private cwd: string
 	private eventStore: EventStore
 	private cachedTemplateItems?: {
@@ -35,7 +36,7 @@ export default class EventContractUnifiedGenerator {
 	public constructor(options: {
 		optionsSchema: OptionsSchema
 		ui: GraphicsInterface
-		eventGenerator: EventGenerator
+		eventGenerator: EventWriter
 		cwd: string
 		eventStore: EventStore
 		skillStore: SkillStore
@@ -48,7 +49,7 @@ export default class EventContractUnifiedGenerator {
 		this.skillStore = options.skillStore
 	}
 
-	public async generateContracts(
+	public async writeContracts(
 		options: Options
 	): Promise<FeatureActionResponse> {
 		const normalizedOptions = validateAndNormalizeUtil.validateAndNormalize(
@@ -69,7 +70,7 @@ export default class EventContractUnifiedGenerator {
 			errors,
 			schemaTemplateItems,
 			eventContractTemplateItems,
-		} = await this.generateTemplateItems()
+		} = await this.buildTemplateItems()
 
 		if (errors && errors?.length > 0) {
 			return {
@@ -79,7 +80,7 @@ export default class EventContractUnifiedGenerator {
 
 		this.ui.startLoading('Generating contracts...')
 
-		const files = await this.eventGenerator.generateContracts(
+		const files = await this.eventGenerator.writeContracts(
 			resolvedDestination,
 			{
 				...normalizedOptions,
@@ -96,7 +97,7 @@ export default class EventContractUnifiedGenerator {
 	public async getUniqueSchemasFromContracts(
 		existingSchemas: Schema[]
 	): Promise<FeatureActionResponse & { schemas?: Schema[] }> {
-		const { errors, schemaTemplateItems } = await this.generateTemplateItems()
+		const { errors, schemaTemplateItems } = await this.buildTemplateItems()
 
 		if (errors && errors?.length > 0) {
 			return {
@@ -129,7 +130,7 @@ export default class EventContractUnifiedGenerator {
 		return filteredSchemas
 	}
 
-	private async generateTemplateItems() {
+	private async buildTemplateItems() {
 		if (this.cachedTemplateItems) {
 			return this.cachedTemplateItems
 		}
@@ -154,7 +155,7 @@ export default class EventContractUnifiedGenerator {
 		const {
 			eventContractTemplateItems,
 			schemaTemplateItems,
-		} = itemBuilder.generateTemplateItems(contractResults.contracts)
+		} = itemBuilder.buildTemplateItems(contractResults.contracts)
 
 		this.cachedTemplateItems = {
 			eventContractTemplateItems,

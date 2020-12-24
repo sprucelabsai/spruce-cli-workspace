@@ -148,7 +148,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 				try {
 					this.ui.startLoading('Determining what changed... ⚡️')
 
-					typeResults = await this.schemaGenerator.generateSchemasAndTypes(
+					typeResults = await this.schemaGenerator.writeSchemasAndTypes(
 						resolvedSchemaTypesDestination,
 						{
 							registerBuiltSchemas,

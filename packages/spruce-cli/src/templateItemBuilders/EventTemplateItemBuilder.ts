@@ -20,7 +20,7 @@ export interface NamedEventSignature {
 }
 
 export default class EventTemplateItemBuilder {
-	public generateTemplateItems(
+	public buildTemplateItems(
 		contracts: EventContract[]
 	): {
 		eventContractTemplateItems: EventContractTemplateItem[]
@@ -33,7 +33,7 @@ export default class EventTemplateItemBuilder {
 			const {
 				schemaTemplateItems: schemaItems,
 				eventContractTemplateItems: contractItems,
-			} = this.generateTemplateItemsForContract(contract)
+			} = this.buildTemplateItemsForContract(contract)
 
 			eventContractTemplateItems.push(...contractItems)
 			schemaTemplateItems.push(...schemaItems)
@@ -42,7 +42,7 @@ export default class EventTemplateItemBuilder {
 		return { eventContractTemplateItems, schemaTemplateItems }
 	}
 
-	public generateEventTemplateItemForName(
+	public buildEventTemplateItemForName(
 		contracts: EventContract[],
 		eventNameWithOptionalNamespace: string
 	): {
@@ -83,7 +83,7 @@ export default class EventTemplateItemBuilder {
 		})
 	}
 
-	private generateTemplateItemsForContract(
+	private buildTemplateItemsForContract(
 		contract: EventContract
 	): {
 		eventContractTemplateItems: EventContractTemplateItem[]

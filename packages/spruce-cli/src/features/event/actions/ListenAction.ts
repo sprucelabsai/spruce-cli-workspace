@@ -104,7 +104,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 
 			if (isSkillEvent) {
 				const builder = new EventTemplateItemBuilder()
-				const templateItems = builder.generateEventTemplateItemForName(
+				const templateItems = builder.buildEventTemplateItemForName(
 					contracts,
 					eventContractUtil.joinEventNameWithOptionalNamespace({
 						eventNamespace,
@@ -119,7 +119,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 			}
 
 			const generator = this.Generator('event')
-			const results = await generator.generateListener(resolvedDestination, {
+			const results = await generator.writeListener(resolvedDestination, {
 				...normalizedOptions,
 				version: resolvedVersion,
 				eventName,

@@ -9,12 +9,12 @@ import {
 	EventContractTemplateItem,
 	EventListenerOptions,
 } from '@sprucelabs/spruce-templates'
-import AbstractGenerator from '../../../generators/AbstractGenerator'
 import { GeneratedFile } from '../../../types/cli.types'
+import AbstractWriter from '../../../writers/AbstractWriter'
 
 const CONTRACT_FILE_NAME = `events.contract.ts`
-export default class EventGenerator extends AbstractGenerator {
-	public async generateContracts(
+export default class EventWriter extends AbstractWriter {
+	public async writeContracts(
 		destinationDir: string,
 		options: {
 			eventContractTemplateItems: EventContractTemplateItem[]
@@ -27,7 +27,7 @@ export default class EventGenerator extends AbstractGenerator {
 
 		for (const item of eventContractTemplateItems) {
 			generated.push(
-				this.generateContract({
+				this.writeContract({
 					destinationDir,
 					eventContractTemplateItem: item,
 					schemaTemplateItems,
@@ -36,7 +36,7 @@ export default class EventGenerator extends AbstractGenerator {
 		}
 
 		generated.push(
-			this.generateCombinedEvents(destinationDir, eventContractTemplateItems)
+			this.writeCombinedEvents(destinationDir, eventContractTemplateItems)
 		)
 
 		const all = await Promise.all(generated)
@@ -44,7 +44,7 @@ export default class EventGenerator extends AbstractGenerator {
 		return all
 	}
 
-	private async generateContract(options: {
+	private async writeContract(options: {
 		destinationDir: string
 		eventContractTemplateItem: EventContractTemplateItem
 		schemaTemplateItems: SchemaTemplateItem[]
@@ -77,7 +77,7 @@ export default class EventGenerator extends AbstractGenerator {
 		return results[0]
 	}
 
-	private async generateCombinedEvents(
+	private async writeCombinedEvents(
 		destinationDir: string,
 		templateItems: EventContractTemplateItem[]
 	): Promise<GeneratedFile> {
@@ -97,7 +97,7 @@ export default class EventGenerator extends AbstractGenerator {
 		return results[0]
 	}
 
-	public async generateListener(
+	public async writeListener(
 		destinationDir: string,
 		options: Omit<
 			EventListenerOptions,
@@ -168,6 +168,7 @@ export default class EventGenerator extends AbstractGenerator {
 			pathUtil.extname(relativeTypesFile),
 			''
 		)
+
 		return relativeTypesFile
 	}
 }

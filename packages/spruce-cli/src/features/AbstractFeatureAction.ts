@@ -2,11 +2,6 @@ import { Schema, SchemaValues, SchemaPartialValues } from '@sprucelabs/schema'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { Templates } from '@sprucelabs/spruce-templates'
-import { GeneratorOptions } from '../generators/AbstractGenerator'
-import GeneratorFactory, {
-	GeneratorCode,
-	GeneratorMap,
-} from '../generators/GeneratorFactory'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory, {
 	ServiceProvider,
@@ -24,6 +19,8 @@ import {
 	ApiClientFactoryOptions,
 } from '../types/apiClient.types'
 import { GraphicsInterface } from '../types/cli.types'
+import { WriterOptions } from '../writers/AbstractWriter'
+import WriterFactory, { WriterCode, WriterMap } from '../writers/WriterFactory'
 import AbstractFeature from './AbstractFeature'
 import FeatureInstaller from './FeatureInstaller'
 import {
@@ -49,7 +46,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 
 	private serviceFactory: ServiceFactory
 	private storeFactory: StoreFactory
-	private generatorFactory: GeneratorFactory
+	private generatorFactory: WriterFactory
 	private apiClientFactory: ApiClientFactory
 
 	public constructor(options: FeatureActionOptions) {
@@ -84,11 +81,11 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 		return this.storeFactory.Store(code, { cwd: this.cwd, ...options })
 	}
 
-	protected Generator<C extends GeneratorCode>(
+	protected Generator<C extends WriterCode>(
 		code: C,
-		options?: Partial<GeneratorOptions>
-	): GeneratorMap[C] {
-		return this.generatorFactory.Generator(code, {
+		options?: Partial<WriterOptions>
+	): WriterMap[C] {
+		return this.generatorFactory.Writer(code, {
 			fileDescriptions: this.parent.fileDescriptions,
 			...options,
 		})

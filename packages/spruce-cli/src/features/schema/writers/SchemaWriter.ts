@@ -13,11 +13,9 @@ import {
 	ValueTypes,
 } from '@sprucelabs/spruce-templates'
 import SpruceError from '../../../errors/SpruceError'
-import AbstractGenerator, {
-	GenerationResults,
-} from '../../../generators/AbstractGenerator'
+import AbstractWriter, { WriteResults } from '../../../writers/AbstractWriter'
 
-interface GenerateFieldTypesOptions {
+interface WriteFieldTypesOptions {
 	fieldTemplateItems: FieldTemplateItem[]
 }
 
@@ -32,7 +30,7 @@ export interface GenerateSchemaTypesOptions {
 	shouldImportCoreSchemas: boolean
 }
 
-export default class SchemaGenerator extends AbstractGenerator {
+export default class SchemaWriter extends AbstractWriter {
 	private readonly fieldTemplates: {
 		filename: string
 		templateFuncName: 'fieldsTypes' | 'fieldClassMap'
@@ -52,13 +50,13 @@ export default class SchemaGenerator extends AbstractGenerator {
 		},
 	]
 
-	public async generateBuilder(
+	public async writeBuilder(
 		destinationDir: string,
 		options: SchemaBuilderTemplateItem & {
 			enableVersioning?: boolean
 			version?: string
 		}
-	): Promise<GenerationResults> {
+	): Promise<WriteResults> {
 		const filename = `${options.nameCamel}.builder.ts`
 
 		const resolvedBuilderDestination =
@@ -89,13 +87,13 @@ export default class SchemaGenerator extends AbstractGenerator {
 		return results
 	}
 
-	public async generateFieldTypes(
+	public async writeFieldTypes(
 		destinationDir: string,
-		options: GenerateFieldTypesOptions
-	): Promise<GenerationResults> {
+		options: WriteFieldTypesOptions
+	): Promise<WriteResults> {
 		const { fieldTemplateItems } = options
 
-		let results: GenerationResults = []
+		let results: WriteResults = []
 
 		for (const fileAndFunc of this.fieldTemplates) {
 			const { filename, templateFuncName, description } = fileAndFunc
@@ -117,10 +115,10 @@ export default class SchemaGenerator extends AbstractGenerator {
 		return results
 	}
 
-	public async generateSchemasAndTypes(
+	public async writeSchemasAndTypes(
 		destinationDirOrFilename: string,
 		options: GenerateSchemaTypesOptions
-	): Promise<GenerationResults> {
+	): Promise<WriteResults> {
 		const {
 			fieldTemplateItems,
 			schemaTemplateItems,
@@ -133,7 +131,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			DEFAULT_SCHEMA_TYPES_FILENAME
 		)
 
-		let results: GenerationResults = []
+		let results: WriteResults = []
 
 		const schemaTypesContents = this.templates.schemasTypes({
 			schemaTemplateItems,
@@ -149,7 +147,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 			'Namespace for accessing all your schemas. Type `SpruceSchemas` in your IDE to get started. ⚡️'
 		)
 
-		const allSchemaResults = await this.generateAllSchemas(
+		const allSchemaResults = await this.writeAllSchemas(
 			pathUtil.dirname(resolvedTypesDestination),
 			{
 				...options,
@@ -162,14 +160,14 @@ export default class SchemaGenerator extends AbstractGenerator {
 		return results
 	}
 
-	private async generateAllSchemas(
+	private async writeAllSchemas(
 		destinationDir: string,
 		options: GenerateSchemaTypesOptions & { typesFile?: string }
-	): Promise<GenerationResults> {
-		const results: GenerationResults = []
+	): Promise<WriteResults> {
+		const results: WriteResults = []
 
 		for (const item of options.schemaTemplateItems) {
-			const schemaResults = await this.generateSchema(destinationDir, {
+			const schemaResults = await this.writeSchema(destinationDir, {
 				...options,
 				...item,
 			})
@@ -179,7 +177,7 @@ export default class SchemaGenerator extends AbstractGenerator {
 		return results
 	}
 
-	public async generateSchema(
+	public async writeSchema(
 		destinationDir: string,
 		options: {
 			schemaTemplateItems: SchemaTemplateItem[]
@@ -240,14 +238,14 @@ export default class SchemaGenerator extends AbstractGenerator {
 		)
 	}
 
-	public async generateValueTypes(
+	public async writeValueTypes(
 		destinationDir: string,
 		options: {
 			schemaTemplateItems: SchemaTemplateItem[]
 			fieldTemplateItems: FieldTemplateItem[]
 			globalSchemaNamespace?: string
 		}
-	): Promise<GenerationResults> {
+	): Promise<WriteResults> {
 		const contents = this.templates.valueTypes(options)
 		const destination = pathUtil.join(destinationDir, 'tmp', 'valueType.tmp.ts')
 

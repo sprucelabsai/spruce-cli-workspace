@@ -229,14 +229,14 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 
 	@test()
 	protected static async hasGenerateFunction() {
-		assert.isFunction(this.itemBuilder.generateTemplateItems)
+		assert.isFunction(this.itemBuilder.buildTemplateItems)
 	}
 
 	@test()
 	protected static turnsSingleContractIntoTemplateItem() {
-		const {
-			eventContractTemplateItems,
-		} = this.itemBuilder.generateTemplateItems([bookContract])
+		const { eventContractTemplateItems } = this.itemBuilder.buildTemplateItems([
+			bookContract,
+		])
 
 		const actual = eventContractTemplateItems[0]
 
@@ -281,7 +281,7 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 		const {
 			eventContractTemplateItems,
 			schemaTemplateItems,
-		} = this.itemBuilder.generateTemplateItems(contracts)
+		} = this.itemBuilder.buildTemplateItems(contracts)
 
 		assert.isEqualDeep(
 			eventContractTemplateItems,
@@ -293,7 +293,7 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 
 	@test()
 	protected static canPullEventContractSchemaFromCoreEventContract() {
-		const { schemaTemplateItems } = this.itemBuilder.generateTemplateItems([
+		const { schemaTemplateItems } = this.itemBuilder.buildTemplateItems([
 			{
 				eventSignatures: {
 					'register-events':

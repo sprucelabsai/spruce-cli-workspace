@@ -2,14 +2,14 @@ import { FieldTemplateItem, SchemaTemplateItem } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { ValueTypes } from '@sprucelabs/spruce-templates'
 import ImportService from '../../services/ImportService'
-import SchemaGenerator from './generators/SchemaGenerator'
+import SchemaWriter from './writers/SchemaWriter'
 
 export default class ValueTypeBuilder {
-	private schemaGenerator: SchemaGenerator
+	private schemaGenerator: SchemaWriter
 	private importService: ImportService
 
 	public constructor(
-		schemaGenerator: SchemaGenerator,
+		schemaGenerator: SchemaWriter,
 		importService: ImportService
 	) {
 		this.schemaGenerator = schemaGenerator
@@ -33,7 +33,7 @@ export default class ValueTypeBuilder {
 			return {}
 		}
 
-		const valueTypeResults = await this.schemaGenerator.generateValueTypes(
+		const valueTypeResults = await this.schemaGenerator.writeValueTypes(
 			resolvedDestination,
 			{
 				fieldTemplateItems,

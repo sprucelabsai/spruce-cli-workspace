@@ -70,7 +70,7 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 			this.ui.stopLoading()
 		}
 
-		const files = await this.Generator('vscode').generateVsCodeConfigurations(
+		const files = await this.Generator('vscode').writeVsCodeConfigurations(
 			this.cwd
 		)
 

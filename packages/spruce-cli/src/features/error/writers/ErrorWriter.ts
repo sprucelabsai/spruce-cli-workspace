@@ -1,16 +1,14 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { ErrorTemplateItem } from '@sprucelabs/spruce-templates'
-import AbstractGenerator, {
-	GenerationResults,
-} from '../../../generators/AbstractGenerator'
 import { GeneratedFile } from '../../../types/cli.types'
+import AbstractWriter, { WriteResults } from '../../../writers/AbstractWriter'
 
-export default class ErrorGenerator extends AbstractGenerator {
-	public async generateOrAppendErrorsToClass(
+export default class ErrorWriter extends AbstractWriter {
+	public async writeOrAppendErrorsToClass(
 		destinationDir: string,
 		errors: ErrorTemplateItem[]
-	): Promise<GenerationResults> {
-		let results: GenerationResults = []
+	): Promise<WriteResults> {
+		let results: WriteResults = []
 
 		if (errors.length === 0) {
 			// todo move to proper error
@@ -105,10 +103,10 @@ export default class ErrorGenerator extends AbstractGenerator {
 		return currentContents.search(new RegExp(`case '${error.code}':`)) > -1
 	}
 
-	public async generateOptionsTypesFile(
+	public async writeOptionsTypesFile(
 		destinationDir: string,
 		errorTemplateItems: ErrorTemplateItem[]
-	): Promise<GenerationResults> {
+	): Promise<WriteResults> {
 		const contents = this.templates.errorOptionsTypes({
 			options: errorTemplateItems,
 		})

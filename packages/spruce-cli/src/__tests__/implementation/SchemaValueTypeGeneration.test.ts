@@ -5,7 +5,7 @@ import {
 } from '@sprucelabs/spruce-skill-utils'
 import { templates, ValueTypes } from '@sprucelabs/spruce-templates'
 import { assert, test } from '@sprucelabs/test'
-import SchemaGenerator from '../../features/schema/generators/SchemaGenerator'
+import SchemaWriter from '../../features/schema/writers/SchemaWriter'
 import FieldTemplateItemBuilder from '../../templateItemBuilders/FieldTemplateItemBuilder'
 import SchemaTemplateItemBuilder from '../../templateItemBuilders/SchemaTemplateItemBuilder'
 import AbstractSchemaTest from '../../tests/AbstractSchemaTest'
@@ -13,10 +13,10 @@ import AbstractSchemaTest from '../../tests/AbstractSchemaTest'
 const LOCAL_NAMESPACE = 'TacoBell'
 
 export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
-	private static generator: SchemaGenerator
+	private static generator: SchemaWriter
 	protected static async beforeEach() {
 		await super.beforeEach()
-		this.generator = new SchemaGenerator({
+		this.generator = new SchemaWriter({
 			templates,
 			term: this.ui,
 			fileDescriptions: [],
@@ -36,12 +36,12 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async hasGenerateMethod() {
-		assert.isFunction(this.generator.generateValueTypes)
+		assert.isFunction(this.generator.writeValueTypes)
 	}
 
 	@test()
 	protected static async runsWithoutBreakingWithNoArgs() {
-		const results = await this.generator.generateValueTypes(
+		const results = await this.generator.writeValueTypes(
 			this.resolveHashSprucePath('tmp'),
 			{
 				schemaTemplateItems: [],
@@ -58,20 +58,17 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 			schemaTemplateItems,
 		} = await this.fetchAllTemplateItems()
 
-		await this.generator.generateFieldTypes(
+		await this.generator.writeFieldTypes(
 			this.resolveHashSprucePath('schemas'),
 			{
 				fieldTemplateItems,
 			}
 		)
 
-		return this.generator.generateValueTypes(
-			this.resolveHashSprucePath('tmp'),
-			{
-				schemaTemplateItems,
-				fieldTemplateItems,
-			}
-		)
+		return this.generator.writeValueTypes(this.resolveHashSprucePath('tmp'), {
+			schemaTemplateItems,
+			fieldTemplateItems,
+		})
 	}
 
 	private static async fetchAllTemplateItems() {

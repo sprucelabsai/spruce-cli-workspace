@@ -1,0 +1,53 @@
+import { Templates } from '@sprucelabs/spruce-templates'
+import ErrorWriter from '../features/error/writers/ErrorWriter'
+import EventWriter from '../features/event/writers/EventWriter'
+import NodeWriter from '../features/node/writers/NodeWriter'
+import SchemaWriter from '../features/schema/writers/SchemaWriter'
+import SkillGenerator from '../features/skill/writers/SkillWriter'
+import TestGenerator from '../features/test/writers/TestWriter'
+import VsCodeWriter from '../features/vscode/writers/VsCodeWriter'
+import { FileDescription, GraphicsInterface } from '../types/cli.types'
+import { WriterOptions } from './AbstractWriter'
+
+const classMap = {
+	error: ErrorWriter,
+	event: EventWriter,
+	schema: SchemaWriter,
+	skill: SkillGenerator,
+	test: TestGenerator,
+	node: NodeWriter,
+	vscode: VsCodeWriter,
+}
+
+export interface WriterMap {
+	error: ErrorWriter
+	event: EventWriter
+	schema: SchemaWriter
+	skill: SkillGenerator
+	test: TestGenerator
+	node: NodeWriter
+	vscode: VsCodeWriter
+}
+export type WriterCode = keyof WriterMap
+
+export default class WriterFactory {
+	private templates: Templates
+	private term: GraphicsInterface
+
+	public constructor(templates: Templates, term: GraphicsInterface) {
+		this.templates = templates
+		this.term = term
+	}
+
+	public Writer<C extends WriterCode>(
+		code: C,
+		options: Partial<WriterOptions> & { fileDescriptions: FileDescription[] }
+	): WriterMap[C] {
+		const Class = classMap[code]
+		return new Class({
+			templates: this.templates,
+			term: this.term,
+			...(options || {}),
+		}) as WriterMap[C]
+	}
+}

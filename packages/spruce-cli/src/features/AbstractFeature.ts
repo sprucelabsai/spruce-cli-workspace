@@ -2,10 +2,6 @@ import pathUtil from 'path'
 import { Schema, SchemaValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
-import GeneratorFactory, {
-	GeneratorCode,
-	GeneratorMap,
-} from '../generators/GeneratorFactory'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory, {
 	Service,
@@ -28,6 +24,7 @@ import {
 	GeneratedFile,
 	FileDescription,
 } from '../types/cli.types'
+import WriterFactory, { WriterCode, WriterMap } from '../writers/WriterFactory'
 import featuresUtil from './feature.utilities'
 import FeatureActionFactory, {
 	FeatureActionFactoryOptions,
@@ -82,7 +79,7 @@ export default abstract class AbstractFeature<
 
 	private serviceFactory: ServiceFactory
 	private storeFactory: StoreFactory
-	private generatorFactory: GeneratorFactory
+	private writerFactory: WriterFactory
 	private apiClientFactory: ApiClientFactory
 
 	protected actionFactoryOptions: Omit<
@@ -96,7 +93,7 @@ export default abstract class AbstractFeature<
 		this.templates = options.templates
 		this.actionFactory = options.actionFactory
 		this.storeFactory = options.storeFactory
-		this.generatorFactory = new GeneratorFactory(this.templates, options.ui)
+		this.writerFactory = new WriterFactory(this.templates, options.ui)
 		this.emitter = options.emitter
 		this.featureInstaller = options.featureInstaller
 		this.ui = options.ui
@@ -105,7 +102,7 @@ export default abstract class AbstractFeature<
 		this.actionFactoryOptions = {
 			...options,
 			parent: this as AbstractFeature<any>,
-			generatorFactory: this.generatorFactory,
+			generatorFactory: this.writerFactory,
 			apiClientFactory: options.apiClientFactory,
 		}
 	}
@@ -126,8 +123,8 @@ export default abstract class AbstractFeature<
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
-	protected Generator<C extends GeneratorCode>(code: C): GeneratorMap[C] {
-		return this.generatorFactory.Generator(code, {
+	protected Writer<C extends WriterCode>(code: C): WriterMap[C] {
+		return this.writerFactory.Writer(code, {
 			fileDescriptions: this.fileDescriptions,
 		})
 	}

@@ -39,7 +39,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 
 		const generator = this.Generator('schema')
-		const results = await generator.generateBuilder(resolvedDestination, {
+		const results = await generator.writeBuilder(resolvedDestination, {
 			...rest,
 			nameCamel,
 			enableVersioning: enableVersioning ?? undefined,

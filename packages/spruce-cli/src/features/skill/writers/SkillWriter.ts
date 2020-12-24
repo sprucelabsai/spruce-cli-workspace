@@ -3,15 +3,13 @@ import {
 	DirectoryTemplateContextSkill,
 	DirectoryTemplateCode,
 } from '@sprucelabs/spruce-templates'
-import AbstractGenerator, {
-	GenerationResults,
-} from '../../../generators/AbstractGenerator'
+import AbstractWriter, { WriteResults } from '../../../writers/AbstractWriter'
 
-export default class SkillGenerator extends AbstractGenerator {
+export default class SkillGenerator extends AbstractWriter {
 	public async generateSkill(
 		destinationDir: string,
 		options: DirectoryTemplateContextSkill
-	): Promise<GenerationResults> {
+	): Promise<WriteResults> {
 		return this.writeDirectoryTemplate({
 			destinationDir,
 			code: DirectoryTemplateCode.Skill,

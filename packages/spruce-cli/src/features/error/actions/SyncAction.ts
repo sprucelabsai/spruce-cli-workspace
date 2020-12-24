@@ -11,7 +11,7 @@ import syncErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncErr
 import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse, FeatureAction } from '../../features.types'
-import ErrorGenerator from '../generators/ErrorGenerator'
+import ErrorWriter from '../writers/ErrorWriter'
 
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorActionSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorAction
@@ -61,7 +61,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			errorTypesDestinationDir
 		)
 
-		const errorClassGeneratedFiles = await errorGenerator.generateOrAppendErrorsToClass(
+		const errorClassGeneratedFiles = await errorGenerator.writeOrAppendErrorsToClass(
 			diskUtil.resolvePath(this.cwd, errorClassDestinationDir),
 			errorTemplateItems
 		)
@@ -117,7 +117,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	}
 
 	private async generateOptionTypes(
-		errorGenerator: ErrorGenerator,
+		errorGenerator: ErrorWriter,
 		errorTemplateItems: ErrorTemplateItem[],
 		errorTypesDestinationDir: string
 	) {
@@ -132,7 +132,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 
 		const topLevelItems = errorTemplateItems.filter((i) => !i.isNested)
 
-		const optionsResults = await errorGenerator.generateOptionsTypesFile(
+		const optionsResults = await errorGenerator.writeOptionsTypesFile(
 			resolvedTypesDestination,
 			topLevelItems
 		)

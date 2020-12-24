@@ -64,7 +64,8 @@ export default class SkillFeature<
 			"babel src --out-dir build --extensions '.ts, .tsx' --source-maps --copy-files",
 		'build.resolve-paths':
 			'resolve-path-aliases --target build --patterns **/*.js,**/*.d.ts',
-		"build.types.resolve-paths.lint": "concurrently 'yarn build.types' 'yarn build.resolve-paths' 'yarn lint'",
+		'build.types.resolve-paths.lint':
+			"concurrently 'yarn build.types' 'yarn build.resolve-paths' 'yarn lint'",
 		rebuild: 'yarn clean.all && yarn && yarn build',
 		clean: 'rm -rf build/',
 		'clean.all': 'rm -rf build/ && rm -rf node_modules/',
@@ -179,7 +180,7 @@ export default class SkillFeature<
 	) {
 		validateSchemaValues(skillFeatureSchema, options)
 
-		const skillGenerator = this.Generator('skill')
+		const skillGenerator = this.Writer('skill')
 
 		const files = await skillGenerator.generateSkill(this.cwd, options)
 		this.installScripts()

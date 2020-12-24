@@ -1,12 +1,10 @@
 import { DirectoryTemplateCode } from '@sprucelabs/spruce-templates'
-import AbstractGenerator, {
-	GenerationResults,
-} from '../../../generators/AbstractGenerator'
+import AbstractWriter, { WriteResults } from '../../../writers/AbstractWriter'
 
-export default class NodeGenerator extends AbstractGenerator {
+export default class NodeWriter extends AbstractWriter {
 	public async generateNodeModule(
 		destinationDir: string
-	): Promise<GenerationResults> {
+	): Promise<WriteResults> {
 		return this.writeDirectoryTemplate({
 			destinationDir,
 			code: DirectoryTemplateCode.Skill,

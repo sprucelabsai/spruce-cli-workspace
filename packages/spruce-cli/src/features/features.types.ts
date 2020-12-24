@@ -1,7 +1,6 @@
 import AbstractSpruceError from '@sprucelabs/error'
 import { Schema, SchemaValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
-import GeneratorFactory from '../generators/GeneratorFactory'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory from '../services/ServiceFactory'
 import StoreFactory from '../stores/StoreFactory'
@@ -11,6 +10,7 @@ import {
 	GraphicsInterface,
 	NpmPackage,
 } from '../types/cli.types'
+import WriterFactory from '../writers/WriterFactory'
 import AbstractFeature from './AbstractFeature'
 import ErrorFeature from './error/ErrorFeature'
 import EventFeature from './event/EventFeature'
@@ -93,7 +93,7 @@ export interface FeatureActionOptions {
 	storeFactory: StoreFactory
 	featureInstaller: FeatureInstaller
 	ui: GraphicsInterface
-	generatorFactory: GeneratorFactory
+	generatorFactory: WriterFactory
 	emitter: GlobalEmitter
 	apiClientFactory: ApiClientFactory
 }

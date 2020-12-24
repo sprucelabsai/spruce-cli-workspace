@@ -9,9 +9,9 @@ import {
 	UpgradeMode,
 } from '../types/cli.types'
 
-export type GenerationResults = GeneratedFile[]
+export type WriteResults = GeneratedFile[]
 
-export interface GeneratorOptions {
+export interface WriterOptions {
 	templates: Templates
 	term: GraphicsInterface
 	askBeforeUpdating?: boolean
@@ -19,13 +19,13 @@ export interface GeneratorOptions {
 	fileDescriptions: FileDescription[]
 }
 
-export default abstract class AbstractGenerator {
+export default abstract class AbstractWriter {
 	protected templates: Templates
 	private ui: GraphicsInterface
 	private upgradeMode: UpgradeMode
 	private fileDescriptions: FileDescription[] = []
 
-	public constructor(options: GeneratorOptions) {
+	public constructor(options: WriterOptions) {
 		this.templates = options.templates
 		this.ui = options.term
 		this.upgradeMode = options.upgradeMode
@@ -45,7 +45,7 @@ export default abstract class AbstractGenerator {
 			context: context ?? {},
 		})
 
-		let results: GenerationResults = []
+		let results: WriteResults = []
 
 		for (const generated of files) {
 			if (!filesToWrite || filesToWrite.indexOf(generated.filename) > -1) {
@@ -66,10 +66,10 @@ export default abstract class AbstractGenerator {
 		destination: string,
 		contents: string,
 		description: string,
-		results?: GenerationResults,
-		destinationDir = ''
-	): Promise<GenerationResults> {
-		const myResults: GenerationResults = results ?? []
+		results?: WriteResults,
+		cwd = ''
+	): Promise<WriteResults> {
+		const myResults: WriteResults = results ?? []
 		let desc: string | undefined = description
 
 		const name = pathUtil.basename(destination)
@@ -114,7 +114,7 @@ export default abstract class AbstractGenerator {
 		if (!desc) {
 			throw new Error(
 				`No FileDescription provided for ${destination.replace(
-					destinationDir,
+					cwd,
 					''
 				)}. Check your feature's fileDescriptions property.`
 			)
