@@ -75,14 +75,14 @@ export default class SkillStore extends AbstractStore {
 
 			return {
 				...skill,
-				namespacePascal: this.loadCurrentSkillsNamespace(),
+				namespacePascal: namesUtil.toPascal(skill.slug),
 				isRegistered: true,
 				apiKey: currentSkill.apiKey,
 			}
 		} else {
 			return {
 				name: this.getSkillNameFromPkg(),
-				namespacePascal: this.loadCurrentSkillsNamespace(),
+				namespacePascal: this.getEventNamespaceForNotRegistered(),
 				description: this.getSkillDescriptionFromPkg(),
 				isRegistered: false,
 			}
@@ -105,7 +105,12 @@ export default class SkillStore extends AbstractStore {
 		return nameFromPackage.split('/').pop()
 	}
 
-	public loadCurrentSkillsNamespace() {
+	public async loadCurrentSkillsNamespace() {
+		const current = await this.loadCurrentSkill()
+		return current.slug ?? namesUtil.toKebab(this.getSkillNameFromPkg())
+	}
+
+	private getEventNamespaceForNotRegistered() {
 		return namesUtil.toPascal(this.getSkillNameFromPkg())
 	}
 

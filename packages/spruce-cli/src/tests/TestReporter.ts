@@ -16,6 +16,7 @@ import TestLogItemGenerator from './TestLogItemGenerator'
 
 interface TestReporterOptions {
 	handleStartStop?: () => void
+	handleRestart?: () => void
 	handleQuit?: () => void
 	onRequestOpenTestFile?: () => void
 	handleRerunTestFile?: (fileName: string) => void
@@ -55,6 +56,7 @@ export default class TestReporter {
 	private isDebugging = false
 	private status: TestRunnerStatus = 'ready'
 
+	private handleStartStop?: () => void
 	private handleRestart?: () => void
 	private handleQuit?: () => void
 	private handleRerunTestFile?: (fileName: string) => void
@@ -64,7 +66,8 @@ export default class TestReporter {
 
 	public constructor(options?: TestReporterOptions) {
 		this.filterPattern = options?.filterPattern
-		this.handleRestart = options?.handleStartStop
+		this.handleRestart = options?.handleRestart
+		this.handleStartStop = options?.handleStartStop
 		this.handleQuit = options?.handleQuit
 		this.handleRerunTestFile = options?.handleRerunTestFile
 		this.handleOpenTestFile = options?.handleOpenTestFile
@@ -177,7 +180,7 @@ export default class TestReporter {
 				this.handleQuit?.()
 				break
 			case 'restart':
-				this.handleRestart?.()
+				this.handleStartStop?.()
 				break
 			case 'toggleDebug':
 				this.handleToggleDebug?.()
@@ -198,7 +201,15 @@ export default class TestReporter {
 	}
 
 	private async handleGlobalKeypress(payload: { key: string }) {
+		debugger
+		if (this.window.getFocusedWidget() === this.filterInput) {
+			return
+		}
+
 		switch (payload.key) {
+			case 'ENTER':
+				this.handleRestart?.()
+				break
 			case 'CTRL_C':
 				this.handleQuit?.()
 				process.exit()

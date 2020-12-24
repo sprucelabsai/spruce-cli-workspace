@@ -51,6 +51,7 @@ export default class TkLayoutWidget
 			layout,
 		})
 
+		this.layout.__widget = this
 		this.layout.off('parentResize', this.layout.onParentResize)
 	}
 

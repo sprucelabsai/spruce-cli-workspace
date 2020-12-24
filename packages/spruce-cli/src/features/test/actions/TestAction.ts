@@ -83,6 +83,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 				status: shouldTestAtStart ? 'ready' : 'stopped',
 				isDebugging: !!inspect,
 				filterPattern: pattern ?? undefined,
+				handleRestart: this.handleRestart.bind(this),
 				handleStartStop: this.handleStartStop.bind(this),
 				handleQuit: this.handleQuit.bind(this),
 				handleRerunTestFile: this.handleRerunTestFile.bind(this),
@@ -162,6 +163,10 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			this.runnerStatus = 'hold'
 			this.kill()
 		}
+	}
+
+	private handleRestart() {
+		this.restart()
 	}
 
 	private kill() {

@@ -27,6 +27,7 @@ export default class TkProgressBarWidget
 			...barOptions,
 		})
 
+		this.bar.__widget = this
 		this.calculateSizeLockDeltas()
 	}
 

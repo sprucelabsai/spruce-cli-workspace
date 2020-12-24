@@ -45,13 +45,16 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 			name: 'my new skill',
 		})
 
+		debugger
 		const results = await cli.getFeature('event').Action('create').execute({
 			nameReadable: EVENT_NAME_READABLE,
 			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
 		})
 
-		assert.isFalsy(results.errors)
+		debugger
+
+		assert.isFalsy(results.errors?.[0])
 
 		await this.assertReturnsEventFromHealthCheck(cli, skill)
 		await this.assertExpectedPayloadSchemas(results, skill)
@@ -103,7 +106,11 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		cli: CliInterface,
 		skill: RegisteredSkill
 	) {
+		await this.openInVsCode({ timeout: 1000 })
 		const health = await cli.checkHealth()
+
+		debugger
+		await this.openInVsCode()
 
 		assert.isTruthy(health.event)
 		assert.isLength(health.event.events, 1)

@@ -20,7 +20,9 @@ export default class EventStoreTest extends AbstractCliTest {
 
 	@test()
 	protected static async fetchesEventContracts() {
-		const results = await this.Store('event').fetchEventContracts()
+		const results = await this.Store('event').fetchEventContracts({
+			localNamespace: 'my-skill',
+		})
 		const { contracts, errors } = results
 
 		assert.isLength(contracts, 1)
@@ -57,7 +59,9 @@ export default class EventStoreTest extends AbstractCliTest {
 			},
 		})
 
-		const { contracts } = await eventStore2.fetchEventContracts()
+		const { contracts } = await eventStore2.fetchEventContracts({
+			localNamespace: 'my-skill',
+		})
 
 		assert.isLength(contracts, 2)
 		const skillContract = contracts[1]
@@ -68,11 +72,11 @@ export default class EventStoreTest extends AbstractCliTest {
 		)
 	}
 
-	@test.only()
+	@test()
 	protected static async mixesInLocalContracts() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 
-		await this.SkillFixture().registerCurrentSkill({
+		const skill = await this.SkillFixture().registerCurrentSkill({
 			name: 'my new skill',
 		})
 
@@ -82,12 +86,29 @@ export default class EventStoreTest extends AbstractCliTest {
 			nameCamel: EVENT_CAMEL,
 		})
 
-		const { contracts } = await this.Store('event').fetchEventContracts()
+		const { contracts } = await this.Store('event').fetchEventContracts({
+			localNamespace: skill.slug,
+		})
 
-		debugger
 		assert.isLength(contracts, 2)
+		assert.isTruthy(
+			contracts[1].eventSignatures[`${skill.slug}.${EVENT_NAME}`]
+				.emitPayloadSchema
+		)
+		assert.isTruthy(
+			contracts[1].eventSignatures[`${skill.slug}.${EVENT_NAME}`]
+				.responsePayloadSchema
+		)
+		assert.isTruthy(
+			contracts[1].eventSignatures[`${skill.slug}.${EVENT_NAME}`]
+				.emitPermissionContract
+		)
+		assert.isTruthy(
+			contracts[1].eventSignatures[`${skill.slug}.${EVENT_NAME}`]
+				.emitPermissionContract
+		)
 
-		debugger
+		validateEventContract(contracts[1])
 	}
 
 	private static async seedSkillAndInstallAtOrg(org: any, name: string) {

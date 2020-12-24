@@ -74,6 +74,7 @@ export default class EventFeature extends AbstractFeature {
 			ui: this.ui,
 			eventGenerator: this.Generator('event'),
 			eventStore: this.Store('event'),
+			skillStore: this.Store('skill'),
 		})
 	}
 }

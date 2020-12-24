@@ -46,7 +46,11 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 
 			const eventStore = this.Store('event')
 
-			const { contracts } = await eventStore.fetchEventContracts()
+			const skill = await this.Store('skill').loadCurrentSkill()
+
+			const { contracts } = skill.slug
+				? await eventStore.fetchEventContracts({ localNamespace: skill.slug })
+				: await eventStore.fetchEventContracts()
 
 			this.ui.stopLoading()
 

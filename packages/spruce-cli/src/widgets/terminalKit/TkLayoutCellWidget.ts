@@ -19,7 +19,9 @@ export default class TkLayoutCellWidget
 			shouldLockWidthWithParent: true,
 			...options,
 		})
+
 		this.cell = options.termKitElement
+		this.cell.__widget = this
 	}
 
 	public getId() {

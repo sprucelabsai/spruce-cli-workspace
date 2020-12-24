@@ -36,6 +36,7 @@ export default class TkInputWidget extends TkBaseWidget implements InputWidget {
 			...frame,
 		})
 
+		this.input.__widget = this
 		this.input.on('submit', this.handleSubmit.bind(this))
 		this.input.on('cancel', this.handleCancel.bind(this))
 	}

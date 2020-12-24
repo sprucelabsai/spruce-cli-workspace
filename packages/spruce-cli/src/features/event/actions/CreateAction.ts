@@ -3,7 +3,8 @@ import {
 	normalizeSchemaValues,
 	SchemaValues,
 } from '@sprucelabs/schema'
-import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { eventDiskUtil } from '@sprucelabs/spruce-event-utils'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventAction.schema'
 import SpruceError from '../../../errors/SpruceError'
 import namedTemplateItemBuilder from '../../../schemas/v2020_07_22/namedTemplateItem.builder'
@@ -65,22 +66,9 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 		try {
 			let response: FeatureActionResponse = {}
 
-			const eventNamespaceDir = diskUtil.resolvePath(
-				this.cwd,
-				'src',
-				'events',
-				namesUtil.toPascal(skill.slug)
-			)
+			const eventsDir = diskUtil.resolvePath(this.cwd, 'src', 'events')
 
-			const resolvedVersion = await this.resolveVersion(
-				version,
-				eventNamespaceDir
-			)
-
-			const versionedDestination = diskUtil.resolvePath(
-				eventNamespaceDir,
-				resolvedVersion
-			)
+			const resolvedVersion = await this.resolveVersion(version, eventsDir)
 
 			const files: ({
 				templateMethod:
@@ -121,8 +109,10 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 
 			for (const file of files) {
 				const destination = diskUtil.resolvePath(
-					versionedDestination,
-					nameKebab,
+					eventDiskUtil.resolveEventPath(eventsDir, {
+						eventName: nameKebab,
+						version: resolvedVersion,
+					}),
 					file.name
 				)
 

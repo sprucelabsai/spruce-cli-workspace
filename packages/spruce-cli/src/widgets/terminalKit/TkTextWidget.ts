@@ -31,6 +31,7 @@ export default class TkTextWidget extends TkBaseWidget implements TextWidget {
 
 		this.calculateSizeLockDeltas()
 
+		this.text.__widget = this
 		this.text.on('click', this.handleMouseDown.bind(this))
 	}
 

@@ -11,6 +11,7 @@ import SpruceError from '../../errors/SpruceError'
 import EventTemplateItemBuilder from '../../templateItemBuilders/EventTemplateItemBuilder'
 import { GraphicsInterface } from '../../types/cli.types'
 import { FeatureActionResponse } from '../features.types'
+import SkillStore from '../skill/stores/SkillStore'
 import validateAndNormalizeUtil from '../validateAndNormalize.utility'
 import EventGenerator from './generators/EventGenerator'
 import EventStore from './stores/EventStore'
@@ -29,6 +30,7 @@ export default class EventContractUnifiedGenerator {
 		eventContractTemplateItems: EventContractTemplateItem[]
 		schemaTemplateItems: SchemaTemplateItem[]
 	}
+	private skillStore: SkillStore
 
 	public constructor(options: {
 		optionsSchema: OptionsSchema
@@ -36,12 +38,14 @@ export default class EventContractUnifiedGenerator {
 		eventGenerator: EventGenerator
 		cwd: string
 		eventStore: EventStore
+		skillStore: SkillStore
 	}) {
 		this.optionsSchema = options.optionsSchema
 		this.ui = options.ui
 		this.eventGenerator = options.eventGenerator
 		this.cwd = options.cwd
 		this.eventStore = options.eventStore
+		this.skillStore = options.skillStore
 	}
 
 	public async generateContracts(
@@ -130,7 +134,11 @@ export default class EventContractUnifiedGenerator {
 			return this.cachedTemplateItems
 		}
 
-		const contractResults = await this.eventStore.fetchEventContracts()
+		const namespace = await this.skillStore.loadCurrentSkillsNamespace()
+
+		const contractResults = await this.eventStore.fetchEventContracts({
+			localNamespace: namespace,
+		})
 
 		if (contractResults.errors.length > 0) {
 			this.cachedTemplateItems = {

@@ -24,6 +24,8 @@ export default class TkWindowWidget
 			this.handleParentResize()
 		})
 
+		this.document.__widget = this
+
 		options.term.on('key', this.handleKeyPress.bind(this))
 
 		process.on('exit', (code: number) => {
@@ -60,7 +62,7 @@ export default class TkWindowWidget
 	}
 
 	public getFocusedWidget(): BaseWidget<any> | null {
-		return null
+		return this.document.focusElement.__widget
 	}
 
 	private async handleKeyPress(key: Key) {

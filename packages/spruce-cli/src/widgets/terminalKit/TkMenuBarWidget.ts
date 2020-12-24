@@ -29,6 +29,8 @@ export default class TkMenuBarWidget
 		})
 
 		this.calculateSizeLockDeltas()
+
+		this.menu.__widget = this
 		this.menu.on('submit', this.handleMenuSubmit.bind(this))
 	}
 

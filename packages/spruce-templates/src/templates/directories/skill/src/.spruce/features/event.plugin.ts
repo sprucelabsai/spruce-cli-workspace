@@ -1,8 +1,18 @@
-import pathUtil from "path";
+import pathUtil from 'path'
+import { MercuryClient } from '@sprucelabs/mercury-client'
+import {
+	EventContract,
+	EventSignature,
+	SpruceSchemas,
+} from '@sprucelabs/mercury-types'
+import {
+	eventContractUtil,
+	eventDiskUtil,
+	eventResponseUtil,
+} from '@sprucelabs/spruce-event-utils'
 import {
 	EventHealthCheckItem,
 	EventFeatureListener,
-	EventFeatureEvent,
 	SkillFeature,
 	Skill,
 	HASH_SPRUCE_DIR_NAME,
@@ -10,136 +20,231 @@ import {
 	diskUtil,
 	HealthCheckItem,
 	Log,
-} from "@sprucelabs/spruce-skill-utils";
-import globby from "globby";
-import { EventContract, EventSignature } from "@sprucelabs/mercury-types";
-import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
+} from '@sprucelabs/spruce-skill-utils'
+import globby from 'globby'
 
 require('dotenv').config()
 
-type Event = (EventFeatureEvent & {
-	signature: EventSignature;
-});
+type Event = {
+	eventNameWithOptionalNamespace: string
+	eventName: string
+	eventNamespace?: string
+	version?: string
+	signature: EventSignature
+}
 
 export class EventSkillFeature implements SkillFeature {
-
-	private skill: Skill;
-	private eventsPath: string;
-	private listenersPath: string;
-	private listeners: EventFeatureListener[] = [];
-	private events: Event[] = [];
-	private contracts: { eventNameWithOptionalNamespace: string }[] = []
+	private skill: Skill
+	private listenersPath: string
+	private listeners: EventFeatureListener[] = []
+	private eventsIRegistered: Required<Event>[] = []
+	private allEventSignatures: Event[] = []
 	private combinedContractsFile: string
 	private _shouldConnectToApi: boolean
 	//@ts-ignore
 	private apiClient?: any
-	private log: Log;
+	private log: Log
+	private currentSkill: SpruceSchemas.Spruce.v2020_07_22.Skill | undefined
 
-	constructor(skill: Skill) {
-		this.skill = skill;
-		this.eventsPath = pathUtil.join(this.skill.activeDir, "events");
-		this.listenersPath = pathUtil.join(this.skill.activeDir, "listeners");
-		this.combinedContractsFile = pathUtil.join(this.skill.activeDir, HASH_SPRUCE_DIR_NAME, 'events', 'events.contract');
-		this._shouldConnectToApi = diskUtil.doesFileExist(this.combinedContractsFile + '.ts') || diskUtil.doesFileExist(this.combinedContractsFile + '.js')
+	public constructor(skill: Skill) {
+		this.skill = skill
+		this.listenersPath = pathUtil.join(this.skill.activeDir, 'listeners')
+		this.combinedContractsFile = pathUtil.join(
+			this.skill.activeDir,
+			HASH_SPRUCE_DIR_NAME,
+			'events',
+			'events.contract'
+		)
+		this._shouldConnectToApi =
+			diskUtil.doesFileExist(this.combinedContractsFile + '.ts') ||
+			diskUtil.doesFileExist(this.combinedContractsFile + '.js')
 		this.log = skill.buildLog('feature.event')
 	}
 
 	public async execute() {
-		await this.loadListeners();
-		await this.loadEvents()
+		await this.loadEverything()
 
-		const willBoot = this.getListener("skill", "will-boot");
-		const didBoot = this.getListener("skill", "did-boot");
+		const willBoot = this.getListener('skill', 'will-boot')
+		const didBoot = this.getListener('skill', 'did-boot')
 
 		if (willBoot) {
 			this.log.info(`Emitting skill.willBoot internally`)
-			await willBoot(this.skill);
+			await willBoot(this.skill)
 		}
 
-		if (this.shouldConnectToApi()) {
-			await this.connectToApiAndRegisterListeners()
-		}
+		await this.reRegisterListeners()
+		await this.reRegisterEvents()
 
 		if (didBoot) {
 			this.log.info(`Emitting skill.didBoot internally`)
-			await didBoot(this.skill);
+			await didBoot(this.skill)
 		}
 
 		if (this.apiClient) {
 			this.log.info('Connection to Mercury successful. Waiting for events')
-			await new Promise(_r => { })
+			await new Promise((_r) => {})
 		} else {
 			this.log.info('This skill not registered so I have nothing to do. 🌲🤖')
 		}
-
-
 	}
 
-	private async connectToApiAndRegisterListeners() {
-		const contracts = require('#spruce/events/events.contract').default
-		const MercuryClientFactory = require('@sprucelabs/mercury-client').MercuryClientFactory
+	public async checkHealth() {
+		try {
+			await this.loadEverything()
+
+			const health: EventHealthCheckItem = {
+				status: 'passed',
+				listeners: this.listeners,
+				contracts: this.allEventSignatures.map((contract) => ({
+					eventNameWithOptionalNamespace:
+						contract.eventNameWithOptionalNamespace,
+				})),
+				events: this.eventsIRegistered.map((e) => ({
+					eventName: e.eventName,
+					eventNamespace: e.eventNamespace,
+					version: e.version,
+				})),
+			}
+
+			
+			await this.destroy()
+
+			return health
+		} catch (err) {
+			const health: HealthCheckItem = {
+				status: 'failed',
+				errors: [err],
+			}
+
+			return health
+		}
+	}
+
+	private async destroy() {
+		if (this.apiClient) {
+			this.log.info(`Disconnecting from Mercury.`)
+			await this.apiClient.disconnect()
+		}
+	}
+
+	private async loadEverything() {
+		await this.loadListeners()
+		await this.loadContracts()
+		await this.loadEvents()
+	}
+
+	private async connectToApi(): Promise<{
+		client?: MercuryClient<any>
+		currentSkill?: SpruceSchemas.Spruce.v2020_07_22.Skill
+	}> {
+		if (!this.shouldConnectToApi()) {
+			return { client: undefined, currentSkill: undefined }
+		}
+
+		if (this.apiClient) {
+			return { client: this.apiClient, currentSkill: this.currentSkill }
+		}
+
+		const contracts = require(this.combinedContractsFile).default
+		const MercuryClientFactory = require('@sprucelabs/mercury-client')
+			.MercuryClientFactory
 		const host = 'https://sandbox.mercury.spruce.ai'
 
 		this.log.info('Connecting to Mercury at', host)
 		const client = await MercuryClientFactory.Client({
 			host,
 			allowSelfSignedCrt: true,
-			contracts
+			contracts,
 		})
 
 		this.log.info('Connection successful')
 
 		const skillId = process.env.SKILL_ID
 		const apiKey = process.env.SKILL_API_KEY
+		let currentSkill: SpruceSchemas.Spruce.v2020_07_22.Skill | undefined
 
 		if (skillId && apiKey) {
-
 			this.log.info('Logging in as skill')
 
-			await client.emit('authenticate', {
+			const results = await client.emit('authenticate', {
 				payload: {
 					skillId,
-					apiKey
-				}
+					apiKey,
+				},
 			} as any)
 
-			this.log.info('Authentication successful')
+			const { auth } = eventResponseUtil.getFirstResponseOrThrow(results)
 
+			currentSkill = auth.skill
+			this.currentSkill = currentSkill
+
+			this.log.info('Authentication successful')
+		}
+
+		this.apiClient = client
+
+		return { client, currentSkill }
+	}
+
+	private async reRegisterListeners() {
+		if (!this.shouldConnectToApi()) {
+			return
+		}
+
+		const { client, currentSkill } = await this.connectToApi()
+
+		if (client && currentSkill) {
 			await client.emit('un-register-listeners', {
 				payload: {
-					shouldUnRegisterAll: true
-				}
+					shouldUnRegisterAll: true,
+				},
 			})
 
 			this.log.info('Un-registered all existing registered listeners')
 
-			await this.registerListeners(client);
-
-			this.log.info('Registered all listeners')
-
-			await client.emit('un-register-events', {
-
-				payload: {
-					shouldUnRegisterAll: true
-				}
-			})
-
-
-			this.log.info('Un-registered all existing registered event')
-
-			await this.registerEvents(client)
-
-			this.log.info('Registered all events')
+			await this.registerListeners(client)
 		}
 
 		this.apiClient = client
 	}
 
-	private async registerEvents(client: any) {
-		for (const event of this.events) {
-			console.log(event)
+	private async reRegisterEvents() {
+		const { client, currentSkill } = await this.connectToApi()
+
+		if (client && currentSkill) {
+			await client.emit('un-register-events', {
+				payload: {
+					shouldUnRegisterAll: true,
+				},
+			})
+
+			this.log.info('Un-registered existing event contracts')
+
+			await this.registerEvents()
 		}
-		debugger
+	}
+
+	private async registerEvents() {
+		const { client } = await this.connectToApi()
+		if (client) {
+			const contract = {
+				eventSignatures: {},
+			}
+
+			for (const event of this.eventsIRegistered) {
+				//@ts-ignore
+				contract.eventSignatures[event.eventNameWithOptionalNamespace] =
+					event.signature
+			}
+
+			await client.emit('register-events', { payload: { contract } })
+
+			this.log.info(
+				`Registered ${this.eventsIRegistered.length} event contract${
+					this.eventsIRegistered.length === 1 ? '' : 's'
+				}`
+			)
+		}
 	}
 
 	private async registerListeners(client: any) {
@@ -147,72 +252,48 @@ export class EventSkillFeature implements SkillFeature {
 			if (listener.eventNamespace !== 'skill') {
 				const name = eventContractUtil.joinEventNameWithOptionalNamespace({
 					eventName: listener.eventName,
-					eventNamespace: listener.eventNamespace
-				});
+					eventNamespace: listener.eventNamespace,
+				})
 
 				await client.on(name, async (...args: []) => {
-
-					this.log.info(`Incoming event - ${name}`);
+					this.log.info(`Incoming event - ${name}`)
 					try {
 						//@ts-ignore
-						const results = await listener.callback(...args);
-						return results;
-
+						const results = await listener.callback(...args)
+						return results
 					} catch (err) {
 						return {
-							errors: [err]
-						};
+							errors: [err],
+						}
 					}
-				});
-				this.log.info(`Registered listener for ${name}`);
-
+				})
+				this.log.info(`Registered listener for ${name}`)
 			}
 		}
 	}
-
-	public async checkHealth() {
-
-		try {
-			await this.loadListeners();
-			await this.loadContracts()
-			await this.loadEvents()
-
-			const health: EventHealthCheckItem = {
-				status: "passed",
-				listeners: this.listeners,
-				contracts: this.contracts,
-				events: this.events.map(e => ({
-					eventName: e.eventName,
-					eventNamespace: e.eventNamespace,
-					version: e.version
-				}))
-			}
-
-			return health;
-
-		} catch (err) {
-
-			const health: HealthCheckItem = {
-				status: "failed",
-				errors: [err]
-			}
-
-			return health;
-		}
-	}
-
-
 
 	private async loadContracts() {
 		if (this.shouldConnectToApi()) {
 			const contracts = require(this.combinedContractsFile).default
 
 			contracts.forEach((contract: EventContract) => {
-				const names = eventContractUtil.getEventNames(contract)
-				this.contracts.push(...names.map(name => ({ eventNameWithOptionalNamespace: name })))
+				const named = eventContractUtil.getNamedEventSignatures(contract)
+
+				this.allEventSignatures.push(
+					...named.map((named) => ({
+						eventNameWithOptionalNamespace:
+							named.eventNameWithOptionalNamespace,
+						eventName: named.eventName,
+						eventNamespace: named.eventNamespace,
+						signature: named.signature,
+					}))
+				)
 			})
+
+			return this.allEventSignatures
 		}
 
+		return null
 	}
 
 	private shouldConnectToApi() {
@@ -225,138 +306,90 @@ export class EventSkillFeature implements SkillFeature {
 		return isInstalled
 	}
 
-
-
 	private getListener(eventNamespace: string, eventName: string) {
 		const match = this.listeners.find(
 			(listener) =>
 				listener.eventNamespace === eventNamespace &&
 				listener.eventName === eventName
-		);
+		)
 		if (match) {
-			return match.callback;
+			return match.callback
 		}
 
-		return undefined;
+		return undefined
 	}
 
 	private async loadListeners() {
-
 		this.log.info('Loading listeners')
 
 		const listenerMatches = await globby(
 			`${this.listenersPath}/**/*.listener.[j|t]s`
-		);
-		const listeners: EventFeatureListener[] = [];
+		)
+		const listeners: EventFeatureListener[] = []
 
 		listenerMatches.map((match) => {
-			debugger
-			const { eventName, eventNamespace, version, name } = this.splitPathToEvent(match);
+			const {
+				eventName,
+				eventNamespace,
+				version,
+			} = eventDiskUtil.splitPathToListener(match)
 
 			const callback = require(match).default as
-				| EventFeatureListener["callback"]
-				| undefined;
+				| EventFeatureListener['callback']
+				| undefined
 
-			if (!callback || typeof callback !== "function") {
+			if (!callback || typeof callback !== 'function') {
 				throw new Error(
 					`The plugin at ${match} is missing a default export that is a function`
-				);
+				)
 			}
 
-			this.log.info(`Found listener for ${name}`)
+			this.log.info(
+				`Found listener for ${eventContractUtil.joinEventNameWithOptionalNamespace(
+					{
+						eventName,
+						eventNamespace,
+					}
+				)}`
+			)
 
 			listeners.push({
 				eventName,
 				eventNamespace,
 				version,
 				callback,
-			});
-		});
+			})
+		})
 
-		this.listeners = listeners;
+		this.listeners = listeners
 	}
 
 	private async loadEvents() {
-		this.log.info('Loading events')
+		const { currentSkill } = await this.connectToApi()
 
-		this.events = []
-		const fileMatches = await globby(
-			`${this.eventsPath}/**/*`
-		);
+		if (currentSkill) {
+			this.log.info('Loading events')
+			this.eventsIRegistered = []
 
-		const eventsByName: Record<string, Event> = {}
-
-		for (const match of fileMatches) {
-
-			const { eventName, eventNamespace, version, name } = this.splitPathToEvent(match)
-			const filename = pathUtil.basename(match)
-
-			let key: string | undefined = ``
-
-			switch (filename) {
-				case 'emitPayload.builder.ts':
-					key = 'emitPayloadSchema'
-					break
-				case 'responsePayload.builder.ts':
-					key = 'responsePayloadSchema'
-					break
-				case 'emitPermissions.builder.ts':
-					key = 'listenPermissionContract'
-					break
-				case 'responsePermissions.builder.ts':
-					key = 'emitPermissionContract'
-					break
-			}
-
-			if (key) {
-				const value = require(match).default
-
-				eventsByName[name] = {
-					...(eventsByName[name] ?? {}),
-					eventName,
-					eventNamespace,
-					version,
-					[key]: value
+			this.allEventSignatures.forEach((signature) => {
+				if (signature.eventNamespace === currentSkill.slug) {
+					this.eventsIRegistered.push({
+						eventName: signature.eventName,
+						eventNamespace: currentSkill.slug,
+						version: signature.version ?? '***coming soon***',
+						signature: signature.signature,
+						eventNameWithOptionalNamespace:
+							signature.eventNameWithOptionalNamespace,
+					})
 				}
-			}
-
+			})
 		}
 
-		for (const eventName in eventsByName) {
-			const event = eventsByName[eventName]
-			this.events.push(event)
-		}
-
-	}
-
-	private splitPathToEvent(match: string) {
-		const matchParts = match.split(pathUtil.sep);
-		const isEvent = match.search(this.eventsPath) > -1
-		
-		let eventName = matchParts.pop() as string;
-		let eventNamespace = ''
-		let version = ''
-
-		if (isEvent) {
-			eventName = matchParts.pop() ?? ''
-			version = matchParts.pop() as string;
-			eventNamespace = matchParts.pop() as string;
-		} else {
-			eventName = eventName.split(".")[0] as string;
-			eventNamespace = matchParts.pop() as string;
-			version = matchParts.pop() as string;
-		}
-
-		const name = eventContractUtil.joinEventNameWithOptionalNamespace({
-			eventName: eventName,
-			eventNamespace: eventNamespace
-		})
-		return { eventName, eventNamespace, version, name };
+		return this.eventsIRegistered
 	}
 }
 
 export default (skill: Skill) => {
-	const feature = new EventSkillFeature(skill);
-
-	skill.registerFeature("event", feature);
+	const feature = new EventSkillFeature(skill)
+	skill.registerFeature('event', feature)
 }

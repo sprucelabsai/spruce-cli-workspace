@@ -32,6 +32,7 @@ export default class TKButtonWidget
 		})
 
 		this.button.on('submit', this.handleClick.bind(this))
+		this.button.__widget = this
 	}
 
 	private handleClick() {
