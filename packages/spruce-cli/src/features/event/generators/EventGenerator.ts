@@ -119,8 +119,8 @@ export default class EventGenerator extends AbstractGenerator {
 
 		const resolvedDestination = pathUtil.join(
 			destinationDir,
-			version,
 			eventNamespace,
+			version,
 			filename
 		)
 

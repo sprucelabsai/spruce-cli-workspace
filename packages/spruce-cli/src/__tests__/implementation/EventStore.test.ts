@@ -3,6 +3,10 @@ import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 
+const EVENT_NAME_READABLE = 'my fantastically amazing event'
+const EVENT_NAME = 'my-fantastically-amazing-event'
+const EVENT_CAMEL = 'myFantasticallyAmazingEvent'
+
 export default class EventStoreTest extends AbstractCliTest {
 	@test()
 	protected static async canInstantiateEventStore() {
@@ -19,7 +23,7 @@ export default class EventStoreTest extends AbstractCliTest {
 		const results = await this.Store('event').fetchEventContracts()
 		const { contracts, errors } = results
 
-		assert.isAbove(contracts.length, 0)
+		assert.isLength(contracts, 1)
 
 		for (const contract of contracts) {
 			validateEventContract(contract)
@@ -62,6 +66,28 @@ export default class EventStoreTest extends AbstractCliTest {
 			skillContract,
 			`${skill1.slug}.my-fantastic-event`
 		)
+	}
+
+	@test.only()
+	protected static async mixesInLocalContracts() {
+		const cli = await this.FeatureFixture().installCachedFeatures('events')
+
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'my new skill',
+		})
+
+		await cli.getFeature('event').Action('create').execute({
+			nameReadable: EVENT_NAME_READABLE,
+			nameKebab: EVENT_NAME,
+			nameCamel: EVENT_CAMEL,
+		})
+
+		const { contracts } = await this.Store('event').fetchEventContracts()
+
+		debugger
+		assert.isLength(contracts, 2)
+
+		debugger
 	}
 
 	private static async seedSkillAndInstallAtOrg(org: any, name: string) {

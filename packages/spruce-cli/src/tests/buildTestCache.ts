@@ -7,6 +7,7 @@ import ServiceFactory from '../services/ServiceFactory'
 import testUtil from '../tests/utilities/test.utility'
 import { GraphicsTextEffect } from '../types/cli.types'
 import durationUtil from '../utilities/duration.utility'
+require('dotenv').config()
 
 const packageJsonContents = diskUtil.readFile(
 	diskUtil.resolvePath(__dirname, '..', '..', 'package.json')
@@ -19,6 +20,9 @@ const testKeys = Object.keys(testSkillCache)
 let remaining = testKeys.length
 const term = new TerminalInterface(__dirname, true)
 const start = new Date().getTime()
+const onlyInstall = process.env.TEST_SKILLS_TO_CACHE?.split(',').map((t) =>
+	t.trim()
+) as string[] | undefined
 
 const shouldRunSequentially = !!process.argv.find(
 	(a) => a === '--shouldRunSequentially=true' || a === '--shouldRunSequentially'
@@ -100,7 +104,12 @@ async function run() {
 	async function cacheOrSkip(cacheKey: string) {
 		const { cacheTracker, cwd, fixture, options } = setup(cacheKey)
 
-		if (
+		if (onlyInstall && onlyInstall.indexOf(cacheKey) === -1) {
+			renderLine(
+				`Skipping '${cacheKey}' because TEST_SKILLS_TO_CACHE=${process.env.TEST_SKILLS_TO_CACHE}.`
+			)
+			remaining--
+		} else if (
 			cacheTracker[cacheKey] &&
 			diskUtil.doesDirExist(diskUtil.resolvePath(cwd, 'node_modules'))
 		) {

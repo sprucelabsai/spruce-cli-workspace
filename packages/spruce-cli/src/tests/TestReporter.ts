@@ -370,6 +370,8 @@ export default class TestReporter {
 		void this.clearFilterPatternButton.on('click', () => {
 			if (this.filterPattern || this.filterPattern?.length === 0) {
 				this.handleFilterChange?.(undefined)
+			} else {
+				this.filterInput.setValue('')
 			}
 		})
 	}

@@ -72,7 +72,7 @@ export class EventSkillFeature implements SkillFeature {
 			this.log.info('This skill not registered so I have nothing to do. 🌲🤖')
 		}
 
-		
+
 	}
 
 	private async connectToApiAndRegisterListeners() {
@@ -139,6 +139,7 @@ export class EventSkillFeature implements SkillFeature {
 		for (const event of this.events) {
 			console.log(event)
 		}
+		debugger
 	}
 
 	private async registerListeners(client: any) {
@@ -286,11 +287,11 @@ export class EventSkillFeature implements SkillFeature {
 		const eventsByName: Record<string, Event> = {}
 
 		for (const match of fileMatches) {
-			
+
 			const { eventName, eventNamespace, version, name } = this.splitPathToEvent(match)
 			const filename = pathUtil.basename(match)
 
-			let key: string | undefined= ``
+			let key: string | undefined = ``
 
 			switch (filename) {
 				case 'emitPayload.builder.ts':
@@ -309,13 +310,13 @@ export class EventSkillFeature implements SkillFeature {
 
 			if (key) {
 				const value = require(match).default
-	
-				eventsByName[name] = { 
-					...(eventsByName[name] ?? {}), 
-					eventName, 
-					eventNamespace, 
+
+				eventsByName[name] = {
+					...(eventsByName[name] ?? {}),
+					eventName,
+					eventNamespace,
 					version,
-					[key]: value 
+					[key]: value
 				}
 			}
 
@@ -325,16 +326,27 @@ export class EventSkillFeature implements SkillFeature {
 			const event = eventsByName[eventName]
 			this.events.push(event)
 		}
-		
+
 	}
 
 	private splitPathToEvent(match: string) {
-		const matchParts = pathUtil.dirname(match).split(pathUtil.sep);
-		const filename = matchParts.pop() as string;
+		const matchParts = match.split(pathUtil.sep);
+		const isEvent = match.search(this.eventsPath) > -1
+		
+		let eventName = matchParts.pop() as string;
+		let eventNamespace = ''
+		let version = ''
 
-		const eventName = filename.split(".")[0] as string;
-		const eventNamespace = matchParts.pop() as string;
-		const version = matchParts.pop() as string;
+		if (isEvent) {
+			eventName = matchParts.pop() ?? ''
+			version = matchParts.pop() as string;
+			eventNamespace = matchParts.pop() as string;
+		} else {
+			eventName = eventName.split(".")[0] as string;
+			eventNamespace = matchParts.pop() as string;
+			version = matchParts.pop() as string;
+		}
+
 		const name = eventContractUtil.joinEventNameWithOptionalNamespace({
 			eventName: eventName,
 			eventNamespace: eventNamespace

@@ -1,8 +1,15 @@
-import { buildSchema, SchemaValues } from '@sprucelabs/schema'
+import {
+	buildSchema,
+	normalizeSchemaValues,
+	SchemaValues,
+} from '@sprucelabs/schema'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
+import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventAction.schema'
 import SpruceError from '../../../errors/SpruceError'
 import namedTemplateItemBuilder from '../../../schemas/v2020_07_22/namedTemplateItem.builder'
+import syncEventActionBuilder from '../../../schemas/v2020_07_22/syncEventAction.builder'
 import { GeneratedFile } from '../../../types/cli.types'
+import mergeUtil from '../../../utilities/merge.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -27,6 +34,7 @@ const optionsSchema = buildSchema({
 			label: 'Version',
 			isPrivate: true,
 		},
+		...syncEventActionBuilder.fields,
 	},
 })
 
@@ -132,7 +140,17 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 				})
 			}
 
-			return response
+			const syncOptions = normalizeSchemaValues(
+				syncEventActionSchema,
+				options,
+				{
+					includePrivateFields: true,
+				}
+			)
+
+			const syncResponse = await this.parent.Action('sync').execute(syncOptions)
+
+			return mergeUtil.mergeActionResults(response, syncResponse)
 		} catch (err) {
 			return {
 				errors: [err],

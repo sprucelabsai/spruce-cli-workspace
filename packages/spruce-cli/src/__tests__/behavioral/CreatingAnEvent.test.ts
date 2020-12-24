@@ -12,8 +12,8 @@ import AbstractEventTest from '../../tests/AbstractEventTest'
 import testUtil from '../../tests/utilities/test.utility'
 import { RegisteredSkill } from '../../types/cli.types'
 
-const EVENT_NAME = 'my fantastically amazing event'
-const EVENT_SLUG = 'my-fantastically-amazing-event'
+const EVENT_NAME_READABLE = 'my fantastically amazing event'
+const EVENT_NAME = 'my-fantastically-amazing-event'
 const EVENT_CAMEL = 'myFantasticallyAmazingEvent'
 
 export default class CreatingAnEventTest extends AbstractEventTest {
@@ -28,8 +28,8 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 	protected static async cantCreateWithoutBeingRegistered() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 		const results = await cli.getFeature('event').Action('create').execute({
-			nameReadable: EVENT_NAME,
-			nameKebab: EVENT_SLUG,
+			nameReadable: EVENT_NAME_READABLE,
+			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
 		})
 
@@ -46,21 +46,14 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		})
 
 		const results = await cli.getFeature('event').Action('create').execute({
-			nameReadable: EVENT_NAME,
-			nameKebab: EVENT_SLUG,
+			nameReadable: EVENT_NAME_READABLE,
+			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
 		})
 
-		await this.openInVsCode()
-
 		assert.isFalsy(results.errors)
 
-		const eventName = eventContractUtil.joinEventNameWithOptionalNamespace({
-			eventNamespace: skill.slug,
-			eventName: EVENT_NAME,
-		})
-
-		await this.assertReturnsEventFromHealthCheck(cli, eventName)
+		await this.assertReturnsEventFromHealthCheck(cli, skill)
 		await this.assertExpectedPayloadSchemas(results, skill)
 		await this.assertValidActionResponseFiles(results)
 	}
@@ -74,8 +67,8 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		})
 
 		const results = await cli.getFeature('event').Action('create').execute({
-			nameReadable: EVENT_NAME,
-			nameKebab: EVENT_SLUG,
+			nameReadable: EVENT_NAME_READABLE,
+			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
 		})
 
@@ -97,7 +90,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 				'src/events/',
 				namesUtil.toPascal(skill.slug ?? 'missing'),
 				'{{@latest}}',
-				EVENT_SLUG,
+				EVENT_NAME,
 				filename
 			)
 
@@ -108,13 +101,29 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 
 	private static async assertReturnsEventFromHealthCheck(
 		cli: CliInterface,
-		eventName: string
+		skill: RegisteredSkill
 	) {
 		const health = await cli.checkHealth()
-		debugger
+
 		assert.isTruthy(health.event)
+		assert.isLength(health.event.events, 1)
+
+		const eventName = EVENT_NAME
+		const eventNamespace = namesUtil.toPascal(skill.slug)
+
+		assert.doesInclude(health.event.events, {
+			eventName,
+			eventNamespace,
+			version: versionUtil.generateVersion().constValue,
+		})
+
 		assert.doesInclude(health.event.contracts, {
-			eventNameWithOptionalNamespace: eventName,
+			eventNameWithOptionalNamespace: eventContractUtil.joinEventNameWithOptionalNamespace(
+				{
+					eventName,
+					eventNamespace,
+				}
+			),
 		})
 	}
 
@@ -148,7 +157,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 					'src/events/',
 					namesUtil.toPascal(skill.slug ?? 'missing'),
 					'{{@latest}}',
-					EVENT_SLUG,
+					EVENT_NAME,
 					payload.fileName
 				)
 			)
