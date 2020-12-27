@@ -51,8 +51,8 @@
 		"sha1": "^1.1.1"
 	},
 	"devDependencies": {
-		"@types/lodash": "^4.14.165",
-		"@types/node": "^14.14.14",
+		"@types/lodash": "^4.14.166",
+		"@types/node": "^14.14.16",
 		"arkit": "^1.6.4",
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^5.3.0",
