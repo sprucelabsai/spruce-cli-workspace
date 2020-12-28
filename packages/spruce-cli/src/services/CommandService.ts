@@ -76,8 +76,12 @@ export default class CommandService {
 				stderr += data
 			})
 
-			child.addListener('close', (code) => {
+			const closeHandler = (code: number) => {
 				process.off('exit', boundKill)
+
+				if (!this.activeChildProcess) {
+					return
+				}
 
 				setTimeout(() => {
 					child.stdout?.removeAllListeners()
@@ -108,7 +112,10 @@ export default class CommandService {
 						)
 					}
 				}, 500)
-			})
+			}
+
+			child.addListener('close', closeHandler)
+			child.addListener('exit', closeHandler)
 		})
 	}
 

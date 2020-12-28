@@ -224,7 +224,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	}
 
 	private handleRerunTestFile(file: string) {
-		const name = file.split(pathUtil.sep).pop()?.replace('.test.ts', '')
+		const name = file.split(pathUtil.sep).pop()?.replace('.ts', '')
 		this.testReporter?.setFilterPattern(name)
 		this.handleFilterPatternChange(name)
 	}
