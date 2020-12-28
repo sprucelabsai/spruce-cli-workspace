@@ -96,6 +96,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 		if (shouldReportWhileRunning) {
 			this.testReporter = new TestReporter({
+				cwd: this.cwd,
 				isWatching: this.isWatchingForChanges,
 				status: shouldHoldAtStart ? 'stopped' : 'ready',
 				isDebugging: !!inspect,

@@ -10,12 +10,9 @@
             "runOptions": {
                 "runOn": "folderOpen"
             },
+            "promptOnClose": false,
             "presentation": {
-                "echo": true,
-                "reveal": "silent",
-                "focus": false,
                 "panel": "dedicated",
-                "clear": true
             }
         },
         {
@@ -26,7 +23,8 @@
                 "--inspect",
                 "5200",
                 "--pattern",
-                "${fileBasenameNoExtension}"
+                "${fileBasenameNoExtension}",
+                "--shouldWatch"
             ],
             "promptOnClose": false,
             "group": {
@@ -46,8 +44,8 @@
                 "test",
                 "--inspect",
                 "5200",
-                "--shouldTestAtStart",
-                "false"
+                "--shouldHoldAtStart",
+                "true"
             ],
             "promptOnClose": false,
             "group": "test",

@@ -28,6 +28,7 @@ interface TestReporterOptions {
 	isDebugging?: boolean
 	isWatching?: boolean
 	status?: TestRunnerStatus
+	cwd?: string
 }
 
 type TestReporterResults = SpruceTestResults & {
@@ -59,6 +60,7 @@ export default class TestReporter {
 	private isWatching = false
 	private status: TestRunnerStatus = 'ready'
 	private countDownTimeInterval?: number
+	private cwd: string | undefined
 
 	private handleStartStop?: () => void
 	private handleRestart?: () => void
@@ -70,6 +72,7 @@ export default class TestReporter {
 	private handleToggleWatch?: () => void
 
 	public constructor(options?: TestReporterOptions) {
+		this.cwd = options?.cwd
 		this.filterPattern = options?.filterPattern
 		this.handleRestart = options?.handleRestart
 		this.handleStartStop = options?.handleStartStop
@@ -528,7 +531,11 @@ export default class TestReporter {
 			this.errorLog && this.destroyErrorLog()
 		} else {
 			!this.errorLog && this.dropInErrorLog()
-			this.errorLog?.setText(errorContent)
+			const cleanedLog = this.cwd
+				? errorContent.replace(new RegExp(this.cwd + '/', 'gim'), '')
+				: errorContent
+
+			this.errorLog?.setText(cleanedLog)
 		}
 	}
 
@@ -655,7 +662,11 @@ export default class TestReporter {
 	}
 
 	public reset() {
-		this.lastResults.customErrors = []
+		this.testLog.setText('')
+		this.lastResults = {
+			totalTestFiles: 0,
+			customErrors: [],
+		}
 		this.errorLogItemGenerator.resetStartTimes()
 	}
 

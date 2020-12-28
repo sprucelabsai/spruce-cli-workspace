@@ -30,6 +30,7 @@ export default class FeatureInstaller implements ServiceProvider {
 	}
 
 	public async isInstalled(code: FeatureCode): Promise<boolean> {
+		debugger
 		const feature = this.getFeature(code)
 		if (feature.isInstalled) {
 			return feature.isInstalled()

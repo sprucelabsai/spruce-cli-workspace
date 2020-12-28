@@ -10,7 +10,7 @@
 		"**/node_modules/**": true,
 	},
 	"search.exclude": {
-		"packages/*/build/**": true,
+		"**/build/**": true,
 		"**/node_modules/**": true,
 		"**/.next/**": true
 	},
@@ -37,11 +37,6 @@
 	"[handlebars]": {
 		"editor.formatOnSave": false
 	},
-	"eslint.workingDirectories": [
-		"./packages/spruce-cli",
-		"./packages/spruce-templates",
-		"./packages/spruce-skill-utils"
-	],
 	"eslint.options": {
 		"extensions": [
 			".js",
