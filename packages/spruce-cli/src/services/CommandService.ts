@@ -82,13 +82,12 @@ export default class CommandService {
 				if (!this.activeChildProcess) {
 					return
 				}
+				this.activeChildProcess = undefined
 
 				setTimeout(() => {
 					child.stdout?.removeAllListeners()
 					child.stderr?.removeAllListeners()
 					child.removeAllListeners()
-
-					this.activeChildProcess = undefined
 
 					if (code === 0 || this.ignoreCloseErrors || options?.ignoreErrors) {
 						resolve({ stdout })
