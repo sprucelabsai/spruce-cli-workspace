@@ -122,7 +122,6 @@ export default class CommandService {
 		if (this.activeChildProcess) {
 			this.ignoreCloseErrors = true
 			this.activeChildProcess.kill()
-			this.activeChildProcess = undefined
 		}
 	}
 
