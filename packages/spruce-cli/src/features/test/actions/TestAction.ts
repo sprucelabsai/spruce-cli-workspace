@@ -4,7 +4,6 @@ import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import open from 'open'
 import SpruceError from '../../../errors/SpruceError'
-import TestReporter from '../../../tests/TestReporter'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import {
 	FeatureActionResponse,
@@ -16,6 +15,7 @@ import {
 	SpruceTestFileTest,
 	SpruceTestResults,
 } from '../test.types'
+import TestReporter from '../TestReporter'
 import TestRunner from '../TestRunner'
 
 export const optionsSchema = buildSchema({

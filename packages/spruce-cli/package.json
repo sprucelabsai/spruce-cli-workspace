@@ -1,6 +1,6 @@
 {
   "name": "@sprucelabs/spruce-cli",
-  "description": "Command line interface for building Spruce skills",
+  "description": "Command line interface for building Spruce skills.",
   "publishConfig": {
     "access": "public"
   },

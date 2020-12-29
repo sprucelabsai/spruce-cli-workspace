@@ -1,10 +1,10 @@
 import chalk from 'chalk'
+import durationUtil from '../../utilities/duration.utility'
 import {
 	SpruceTestFile,
 	SpruceTestFileTest,
 	TestRunnerStatus,
-} from '../features/test/test.types'
-import durationUtil from '../utilities/duration.utility'
+} from './test.types'
 
 export default class TestLogItemGenerator {
 	private startTimes: Record<string, number> = {}

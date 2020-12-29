@@ -1,17 +1,15 @@
 import chalk from 'chalk'
-import {
-	SpruceTestResults,
-	TestRunnerStatus,
-} from '../features/test/test.types'
-import { ButtonWidget } from '../widgets/types/button.types'
-import { InputWidget } from '../widgets/types/input.types'
-import { LayoutWidget } from '../widgets/types/layout.types'
-import { MenuBarWidget } from '../widgets/types/menuBar.types'
-import { PopupWidget } from '../widgets/types/popup.types'
-import { ProgressBarWidget } from '../widgets/types/progressBar.types'
-import { TextWidget } from '../widgets/types/text.types'
-import { WindowWidget } from '../widgets/types/window.types'
-import WidgetFactory from '../widgets/WidgetFactory'
+import durationUtil from '../../utilities/duration.utility'
+import { ButtonWidget } from '../../widgets/types/button.types'
+import { InputWidget } from '../../widgets/types/input.types'
+import { LayoutWidget } from '../../widgets/types/layout.types'
+import { MenuBarWidget } from '../../widgets/types/menuBar.types'
+import { PopupWidget } from '../../widgets/types/popup.types'
+import { ProgressBarWidget } from '../../widgets/types/progressBar.types'
+import { TextWidget } from '../../widgets/types/text.types'
+import { WindowWidget } from '../../widgets/types/window.types'
+import WidgetFactory from '../../widgets/WidgetFactory'
+import { SpruceTestResults, TestRunnerStatus } from './test.types'
 import TestLogItemGenerator from './TestLogItemGenerator'
 
 interface TestReporterOptions {
@@ -201,6 +199,20 @@ export default class TestReporter {
 				{
 					label: 'Watch    ',
 					value: 'toggleWatch',
+					items_disabled: [
+						{
+							label: 'Off',
+							value: 'watchOff',
+						},
+						{
+							label: 'Run all',
+							value: 'watchAllTests',
+						},
+						{
+							label: 'Smart',
+							value: 'watchAllTests',
+						},
+					],
 				},
 				{
 					label: 'Quit',
@@ -492,7 +504,7 @@ export default class TestReporter {
 					columns: [
 						{
 							id: 'progress',
-							width: 45,
+							width: 50,
 						},
 						{
 							id: 'filter',
@@ -630,11 +642,17 @@ export default class TestReporter {
 				results.totalTestFiles - (results.totalTestFilesComplete ?? 0)
 
 			if (testsRemaining === 0) {
-				const percent = this.generatePercentPassing(results)
+				const {
+					percent,
+					totalTests,
+					totalPassedTests,
+					totalTime,
+				} = this.generateProgressStats(results)
+
 				this.bar.setLabel(
-					`Finished! ${percent}% passing.${
-						percent < 100 ? ` Don't give up! 💪` : ''
-					}`
+					`Finished! ${totalPassedTests} of ${totalTests} (${percent}%) passed in ${durationUtil.msToFriendly(
+						totalTime
+					)}.${percent < 100 ? ` Don't give up! 💪` : ''}`
 				)
 			} else {
 				this.bar.setLabel(
@@ -652,6 +670,33 @@ export default class TestReporter {
 		this.bar.setProgress(this.generatePercentComplete(results) / 100)
 	}
 
+	private generateProgressStats(
+		results: SpruceTestResults
+	): {
+		percent: number
+		totalTests: number
+		totalPassedTests: number
+		totalTime: number
+	} {
+		const percent = this.generatePercentPassing(results)
+		const totalTests = this.getTotalTestsRun(results)
+		const totalPassedTests = results.totalPassed ?? 0
+		let totalTime = 0
+
+		results.testFiles?.forEach((file) => {
+			file.tests?.forEach((test) => {
+				totalTime += test.duration
+			})
+		})
+
+		return {
+			percent,
+			totalTests,
+			totalPassedTests,
+			totalTime,
+		}
+	}
+
 	private generatePercentComplete(results: SpruceTestResults): number {
 		const percent =
 			(results.totalTestFilesComplete ?? 0) / results.totalTestFiles
@@ -662,16 +707,21 @@ export default class TestReporter {
 	}
 
 	private generatePercentPassing(results: SpruceTestResults): number {
-		const percent =
-			(results.totalPassed ?? 0) /
-			((results.totalTests ?? 0) -
-				(results.totalSkipped ?? 0) -
-				(results.totalTodo ?? 0))
+		const percent = (results.totalPassed ?? 0) / this.getTotalTestsRun(results)
+
 		if (isNaN(percent)) {
 			return 0
 		}
 
-		return Math.round(percent * 100)
+		return Math.floor(percent * 100)
+	}
+
+	private getTotalTestsRun(results: SpruceTestResults) {
+		return (
+			(results.totalTests ?? 0) -
+			(results.totalSkipped ?? 0) -
+			(results.totalTodo ?? 0)
+		)
 	}
 
 	public render() {

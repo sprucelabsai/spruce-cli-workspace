@@ -16,6 +16,21 @@
 			}
 		},
 		{
+			"type": "npm",
+			"script": "sync.ct",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "sync.ct",
+			"runOptions": {
+				"runOn": "folderOpen"
+			},
+			"promptOnClose": false,
+			"presentation": {
+				"panel": "dedicated",
+				"focus": false,
+			}
+		},
+		{
 			"label": "test.file",
 			"command": "spruce",
 			"args": [
@@ -23,7 +38,8 @@
 				"--inspect",
 				"5200",
 				"--pattern",
-				"${fileBasenameNoExtension}"
+				"${fileBasenameNoExtension}",
+				"--shouldWatch"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}/packages/spruce-cli"
