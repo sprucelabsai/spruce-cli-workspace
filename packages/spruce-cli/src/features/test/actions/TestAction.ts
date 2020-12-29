@@ -69,6 +69,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	private watcher?: WatchFeature
 	private isWatchingForChanges = false
 	private fileChangeTimeout?: number
+	private hasWatchEverBeenEnabled = false
 
 	private readonly watchDelaySec = 2
 
@@ -92,7 +93,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		this.originalInspect = inspect ?? 5200
 		this.inspect = inspect
 		this.pattern = pattern
-		this.isWatchingForChanges = shouldWatch
+		this.isWatchingForChanges = this.hasWatchEverBeenEnabled = shouldWatch
 
 		if (shouldReportWhileRunning) {
 			this.testReporter = new TestReporter({
@@ -208,6 +209,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			this.isWatchingForChanges = false
 			this.testReporter?.setIsWatching(false)
 		} else {
+			this.hasWatchEverBeenEnabled = true
 			this.isWatchingForChanges = true
 			this.testReporter?.setIsWatching(true)
 		}
@@ -306,6 +308,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 		if (
 			!options.shouldReportWhileRunning ||
+			!this.hasWatchEverBeenEnabled ||
 			(this.runnerStatus as any) === 'quit'
 		) {
 			return testResults
