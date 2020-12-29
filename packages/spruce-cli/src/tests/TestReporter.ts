@@ -203,10 +203,6 @@ export default class TestReporter {
 					value: 'toggleWatch',
 				},
 				{
-					label: 'Portrait',
-					value: 'toggleOrientation',
-				},
-				{
 					label: 'Quit',
 					value: 'quit',
 				},
