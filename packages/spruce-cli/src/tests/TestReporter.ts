@@ -174,8 +174,6 @@ export default class TestReporter {
 			this.orientation = 'portrait'
 		}
 
-		this.orientation = 'landscape'
-
 		this.setIsDebugging(this.isDebugging)
 		this.setIsWatching(this.isWatching)
 		this.setStatus(this.status)
