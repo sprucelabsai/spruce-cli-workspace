@@ -120,11 +120,26 @@ export default class TkLayoutWidget
 		this.layout.layoutDef.rows.splice(rowIdx, 1)
 	}
 
+	public removeColumn(rowIdx: number, columnIdx: number): void {
+		const row = this.layout.layoutDef.rows[rowIdx]
+		if (row) {
+			row.columns.splice(columnIdx, 1)
+		} else {
+			throw new Error(
+				`Can't add remove column because row at index ${rowIdx} does not exist.`
+			)
+		}
+	}
+
 	public addColumn(rowIdx: number, column: LayoutColumn): void {
 		if (this.layout.layoutDef.rows[rowIdx]) {
 			this.layout.layoutDef.rows[rowIdx].columns.push({
 				...termKitUtil.mapWidgetOptionsToTermKitOptions(column),
 			})
+		} else {
+			throw new Error(
+				`Can't add column because row at index ${rowIdx} does not exist.`
+			)
 		}
 	}
 
@@ -135,12 +150,16 @@ export default class TkLayoutWidget
 	}): void {
 		const { rowIdx, columnIdx, width } = options
 
-		const col = this.layout.layoutDef.rows[rowIdx].columns[columnIdx]
+		const col = this.layout.layoutDef.rows[rowIdx]?.columns[columnIdx]
 		if (col) {
 			this.layout.layoutDef.rows[rowIdx].columns[columnIdx] = {
 				...col,
 				...termKitUtil.mapWidgetOptionsToTermKitOptions({ width }),
 			}
+		} else {
+			throw new Error(
+				`Can't add set column width because column ${columnIdx} at row ${rowIdx} does not exist.`
+			)
 		}
 	}
 

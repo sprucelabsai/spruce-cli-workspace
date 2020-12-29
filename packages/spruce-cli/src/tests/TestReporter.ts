@@ -168,11 +168,13 @@ export default class TestReporter {
 
 		const frame = this.window.getFrame()
 
-		if (frame.width > frame.height * 3) {
+		if (frame.width > frame.height * 2) {
 			this.orientation = 'landscape'
 		} else {
 			this.orientation = 'portrait'
 		}
+
+		this.orientation = 'landscape'
 
 		this.setIsDebugging(this.isDebugging)
 		this.setIsWatching(this.isWatching)
@@ -612,8 +614,14 @@ export default class TestReporter {
 		if (this.errorLog) {
 			void this.errorLog?.destroy()
 			this.errorLog = undefined
-			this.layout.removeRow(1)
-			this.layout.setRowHeight(0, '100%')
+
+			if (this.orientation === 'landscape') {
+				this.layout.removeColumn(0, 1)
+				this.layout.setColumnWidth({ rowIdx: 0, columnIdx: 0, width: '100%' })
+			} else {
+				this.layout.removeRow(1)
+				this.layout.setRowHeight(0, '100%')
+			}
 			this.layout.updateLayout()
 		}
 	}
@@ -684,6 +692,7 @@ export default class TestReporter {
 			totalTestFiles: 0,
 			customErrors: [],
 		}
+		this.destroyErrorLog()
 		this.errorLogItemGenerator.resetStartTimes()
 	}
 
