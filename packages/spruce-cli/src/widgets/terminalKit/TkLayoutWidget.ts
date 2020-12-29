@@ -120,6 +120,30 @@ export default class TkLayoutWidget
 		this.layout.layoutDef.rows.splice(rowIdx, 1)
 	}
 
+	public addColumn(rowIdx: number, column: LayoutColumn): void {
+		if (this.layout.layoutDef.rows[rowIdx]) {
+			this.layout.layoutDef.rows[rowIdx].columns.push({
+				...termKitUtil.mapWidgetOptionsToTermKitOptions(column),
+			})
+		}
+	}
+
+	public setColumnWidth(options: {
+		rowIdx: number
+		columnIdx: number
+		width: WidgetFrameAttribute
+	}): void {
+		const { rowIdx, columnIdx, width } = options
+
+		const col = this.layout.layoutDef.rows[rowIdx].columns[columnIdx]
+		if (col) {
+			this.layout.layoutDef.rows[rowIdx].columns[columnIdx] = {
+				...col,
+				...termKitUtil.mapWidgetOptionsToTermKitOptions({ width }),
+			}
+		}
+	}
+
 	private widgetColumnsToTermKitColumns(columns: LayoutColumn[]) {
 		return columns.map((column) => ({
 			...termKitUtil.mapWidgetOptionsToTermKitOptions(column),

@@ -35,6 +35,8 @@ type TestReporterResults = SpruceTestResults & {
 	customErrors: string[]
 }
 
+export type TestEporterOrientation = 'landscape' | 'portrait'
+
 export default class TestReporter {
 	private started = false
 	private table?: any
@@ -61,6 +63,7 @@ export default class TestReporter {
 	private status: TestRunnerStatus = 'ready'
 	private countDownTimeInterval?: number
 	private cwd: string | undefined
+	private orientation: TestEporterOrientation = 'landscape'
 
 	private handleStartStop?: () => void
 	private handleRestart?: () => void
@@ -163,6 +166,14 @@ export default class TestReporter {
 		this.dropInTestLog()
 		this.dropInFilterControls()
 
+		const frame = this.window.getFrame()
+
+		if (frame.width > frame.height * 3) {
+			this.orientation = 'landscape'
+		} else {
+			this.orientation = 'portrait'
+		}
+
 		this.setIsDebugging(this.isDebugging)
 		this.setIsWatching(this.isWatching)
 		this.setStatus(this.status)
@@ -190,6 +201,10 @@ export default class TestReporter {
 				{
 					label: 'Watch    ',
 					value: 'toggleWatch',
+				},
+				{
+					label: 'Portrait',
+					value: 'toggleOrientation',
 				},
 				{
 					label: 'Quit',
@@ -564,12 +579,18 @@ export default class TestReporter {
 
 	private dropInErrorLog() {
 		if (this.layout.getRows().length === 1) {
-			this.layout.addRow({
-				id: 'row_2',
-				columns: [{ id: 'errors', width: '100%' }],
-			})
+			if (this.orientation === 'portrait') {
+				this.layout.addRow({
+					id: 'row_2',
+					columns: [{ id: 'errors', width: '100%' }],
+				})
 
-			this.layout.setRowHeight(0, '50%')
+				this.layout.setRowHeight(0, '50%')
+			} else {
+				this.layout.addColumn(0, { id: 'errors', width: '50%' })
+				this.layout.setColumnWidth({ rowIdx: 0, columnIdx: 0, width: '50%' })
+			}
+
 			this.layout.updateLayout()
 
 			const cell = this.layout.getChildById('errors')
