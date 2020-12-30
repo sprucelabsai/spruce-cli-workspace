@@ -251,11 +251,7 @@ export class EventSkillFeature implements SkillFeature {
 	private async registerListeners(client: any) {
 		for (const listener of this.listeners) {
 			if (listener.eventNamespace !== 'skill') {
-<<<<<<< HEAD
 				const name = eventNameUtil.join({
-=======
-				const name = eventContractUtil.joinfullyQualifiedEventName({
->>>>>>> 57e8712d06d0d82b7216994f3bff9e310d3b21fd
 					eventName: listener.eventName,
 					eventNamespace: listener.eventNamespace,
 					version: listener.version
