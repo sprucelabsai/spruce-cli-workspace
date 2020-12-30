@@ -64,9 +64,11 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
 		const debugArgs =
 			(options?.debugPort ?? 0) > 0 ? `--inspect=${options?.debugPort}` : ``
 		const pattern = options?.pattern ?? ''
-
+		let escapeShell = function (cmd: string) {
+			return '"' + cmd.replace(/(["\s'$`\\])/g, '\\$1') + '"'
+		}
 		const command = `node ${debugArgs} ${jestPath} --reporters="@sprucelabs/jest-json-reporter" --testRunner="jest-circus/runner" --passWithNoTests ${
-			pattern ?? ''
+			pattern ? escapeShell(pattern) : ''
 		}`
 
 		const parser = new JestJsonParser()

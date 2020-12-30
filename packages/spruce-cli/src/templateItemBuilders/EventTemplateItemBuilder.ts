@@ -15,14 +15,6 @@ import {
 import SpruceError from '../errors/SpruceError'
 import SchemaTemplateItemBuilder from './SchemaTemplateItemBuilder'
 
-export interface NamedEventSignature {
-	eventNameWithOptionalNamespace: string
-	eventName: string
-	eventNamespace?: string
-	version: string
-	signature: EventSignature
-}
-
 export default class EventTemplateItemBuilder {
 	public buildTemplateItems(
 		contracts: EventContract[]
