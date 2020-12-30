@@ -40,7 +40,7 @@ export default class EventTemplateItemBuilder {
 
 	public buildEventTemplateItemForName(
 		contracts: EventContract[],
-		eventNameWithOptionalNamespace: string
+		fullyQualifiedEventName: string
 	): {
 		responsePayloadSchemaTemplateItem: SchemaTemplateItem | undefined
 		emitPayloadSchemaTemplateItem: SchemaTemplateItem | undefined
@@ -51,10 +51,7 @@ export default class EventTemplateItemBuilder {
 			)
 
 			for (const namedSig of namedSignatures) {
-				if (
-					namedSig.eventNameWithOptionalNamespace ===
-					eventNameWithOptionalNamespace
-				) {
+				if (namedSig.fullyQualifiedEventName === fullyQualifiedEventName) {
 					const schemaTemplateItems: SchemaTemplateItem[] = this.mapEventSigsToSchemaTemplateItems(
 						namedSignatures
 					)
@@ -76,7 +73,7 @@ export default class EventTemplateItemBuilder {
 
 		throw new SpruceError({
 			code: 'INVALID_PARAMETERS',
-			parameters: ['eventNameWithOptionalNamespace'],
+			parameters: ['fullyQualifiedEventName'],
 		})
 	}
 

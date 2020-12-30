@@ -14,7 +14,7 @@ const canListenEmitPayloadSchema: SpruceSchemas.MercuryApi.CanListenEmitPayloadS
 	                options: {choices: [{"label":"Clocked in","value":"clockedIn"},{"label":"Clocked out","value":"clockedOut"},{"label":"On premise","value":"onPrem"},{"label":"Off premise","value":"offPrem"}],}
 	            },
 	            /** . */
-	            'eventNameWithOptionalNamespace': {
+	            'fullyQualifiedEventName': {
 	                type: 'text',
 	                isRequired: true,
 	                options: undefined

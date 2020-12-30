@@ -202,7 +202,7 @@ const coreEventContract: EventContract = {
 											],
 										},
 									},
-									eventNameWithOptionalNamespace: {
+									fullyQualifiedEventName: {
 										type: 'text',
 										isRequired: true,
 									},

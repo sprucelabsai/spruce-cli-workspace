@@ -3,7 +3,6 @@ import { EventContract, EventSignature } from '@sprucelabs/mercury-types'
 import {
 	eventResponseUtil,
 	eventDiskUtil,
-	eventContractUtil,
 	eventNameUtil,
 } from '@sprucelabs/spruce-event-utils'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'

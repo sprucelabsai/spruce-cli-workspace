@@ -27,7 +27,7 @@ import globby from 'globby'
 require('dotenv').config()
 
 type Event = {
-	eventNameWithOptionalNamespace: string
+	fullyQualifiedEventName: string
 	eventName: string
 	eventNamespace?: string
 	version?: string
@@ -97,8 +97,8 @@ export class EventSkillFeature implements SkillFeature {
 				status: 'passed',
 				listeners: this.listeners,
 				contracts: this.allEventSignatures.map((contract) => ({
-					eventNameWithOptionalNamespace:
-						contract.eventNameWithOptionalNamespace,
+					fullyQualifiedEventName:
+						contract.fullyQualifiedEventName,
 				})),
 				events: this.eventsIRegistered.map((e) => ({
 					eventName: e.eventName,
@@ -234,7 +234,7 @@ export class EventSkillFeature implements SkillFeature {
 
 			for (const event of this.eventsIRegistered) {
 				//@ts-ignore
-				contract.eventSignatures[event.eventNameWithOptionalNamespace] =
+				contract.eventSignatures[event.fullyQualifiedEventName] =
 					event.signature
 			}
 
@@ -251,7 +251,11 @@ export class EventSkillFeature implements SkillFeature {
 	private async registerListeners(client: any) {
 		for (const listener of this.listeners) {
 			if (listener.eventNamespace !== 'skill') {
+<<<<<<< HEAD
 				const name = eventNameUtil.join({
+=======
+				const name = eventContractUtil.joinfullyQualifiedEventName({
+>>>>>>> 57e8712d06d0d82b7216994f3bff9e310d3b21fd
 					eventName: listener.eventName,
 					eventNamespace: listener.eventNamespace,
 					version: listener.version
@@ -283,8 +287,8 @@ export class EventSkillFeature implements SkillFeature {
 
 				this.allEventSignatures.push(
 					...named.map((named) => ({
-						eventNameWithOptionalNamespace:
-							named.eventNameWithOptionalNamespace,
+						fullyQualifiedEventName:
+							named.fullyQualifiedEventName,
 						eventName: named.eventName,
 						eventNamespace: named.eventNamespace,
 						signature: named.signature,
@@ -381,8 +385,8 @@ export class EventSkillFeature implements SkillFeature {
 						eventNamespace: currentSkill.slug,
 						version: signature.version ?? '***coming soon***',
 						signature: signature.signature,
-						eventNameWithOptionalNamespace:
-							signature.eventNameWithOptionalNamespace,
+						fullyQualifiedEventName:
+							signature.fullyQualifiedEventName,
 					})
 				}
 			})
