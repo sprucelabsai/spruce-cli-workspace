@@ -5,6 +5,7 @@ import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
 import {
 	MERCURY_API_NAMESPACE,
 	namesUtil,
+	versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { FeatureActionResponse } from '../../../features/features.types'
@@ -14,13 +15,17 @@ import testUtil from '../../../tests/utilities/test.utility'
 const EXPECTED_NUM_CONTRACTS_GENERATED = 33
 
 export default class KeepingEventsInSyncTest extends AbstractEventTest {
+	private static get version() {
+		return versionUtil.generateVersion('2020-12-25')
+	}
+
 	@test()
 	protected static async hasSyncEventsAction() {
 		const cli = await this.Cli()
 		assert.isFunction(cli.getFeature('event').Action('sync').execute)
 	}
 
-	@test()
+	@test.only()
 	protected static async generatesValidContractFile() {
 		const cli = await this.FeatureFixture().installCachedFeatures(
 			'eventsInNodeModule'
@@ -31,11 +36,11 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	}
 
 	@test()
-	protected static async syncingSchemasRetainsEventSchemas() {
+	protected static async syncingSchemasRetainsEventPayloadSchemas() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 		const results = await cli.getFeature('schema').Action('sync').execute({})
 
-		this.assertExpectedSchemasAreCreated(results)
+		this.assertExpectedPayloadSchemasAreCreated(results)
 	}
 
 	@test()
@@ -43,16 +48,20 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		const cli = await this.FeatureFixture().installCachedFeatures('schemas')
 		const results = await cli.getFeature('schema').Action('sync').execute({})
 
-		assert.doesThrow(() => this.assertExpectedSchemasAreCreated(results))
+		assert.doesThrow(() => this.assertExpectedPayloadSchemasAreCreated(results))
 	}
 
 	@test()
 	protected static async canGetNumberOfEventsBackFromHealthCheck() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 
+		debugger
+
 		const results = await cli.getFeature('event').Action('sync').execute({})
 
 		assert.isFalsy(results.errors)
+
+		debugger
 
 		await this.Service('build').build()
 
@@ -86,26 +95,30 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		const results = await cli.getFeature('event').Action('sync').execute({})
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
-			'myNewEvent.contract.ts',
+			`myNewEvent.${this.version.dirValue}.contract.ts`,
 			results.files
 		)
 
 		assert.doesInclude(
 			match,
-			`${namesUtil.toCamel(skill2.slug)}${pathUtil.sep}myNewEvent.contract.ts`
+			`${namesUtil.toCamel(skill2.slug)}${pathUtil.sep}myNewEvent.${
+				this.version.dirValue
+			}.contract.ts`
 		)
 	}
 
 	private static async assertValidEventResults(results: FeatureActionResponse) {
 		assert.isFalsy(results.errors)
-
+		debugger
 		await this.assertsContractsHaveValidPayloads(results)
-		await this.assertValidActionResponseFiles(results)
+		debugger
 
 		this.assertExpectedContractsAreCreated(results)
-		this.assertExpectedSchemasAreCreated(results)
+		debugger
+		this.assertExpectedPayloadSchemasAreCreated(results)
 
 		await this.assertCombinedContractContents(results)
+		await this.assertValidActionResponseFiles(results)
 	}
 
 	private static async assertCombinedContractContents(
@@ -138,7 +151,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		results: FeatureActionResponse
 	) {
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
-			'authenticate.contract.ts',
+			`authenticate.${this.version.dirValue}.contract.ts`,
 			results.files
 		)
 
@@ -167,19 +180,20 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	) {
 		const filesToCheck = [
 			{
-				name: `whoAmI.contract.ts`,
+				name: `whoami.${this.version.dirValue}.contract.ts`,
 				path: `events${pathUtil.sep}${MERCURY_API_NAMESPACE}`,
 			},
 			{
-				name: `getEventContracts.contract.ts`,
+				name: `getEventContracts.${this.version.dirValue}.contract.ts`,
 				path: `events${pathUtil.sep}${MERCURY_API_NAMESPACE}`,
 			},
 		]
 
+		debugger
 		this.assertFilesWereGenerated(filesToCheck, results)
 	}
 
-	private static assertExpectedSchemasAreCreated(
+	private static assertExpectedPayloadSchemasAreCreated(
 		results: FeatureActionResponse
 	) {
 		const filesToCheck = [

@@ -30,7 +30,7 @@ export default class SkillStore extends AbstractStore {
 
 		const client = await this.connectToApi()
 
-		const results = await client.emit('register-skill', {
+		const results = await client.emit('register-skill::v2020_12_25', {
 			payload: {
 				name,
 				slug,
@@ -65,7 +65,7 @@ export default class SkillStore extends AbstractStore {
 
 		if (currentSkill) {
 			const client = await this.connectToApi()
-			const response = await client.emit('get-skill', {
+			const response = await client.emit('get-skill::v2020_12_25', {
 				payload: {
 					id: currentSkill.id,
 				},

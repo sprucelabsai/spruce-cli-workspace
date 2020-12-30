@@ -19,11 +19,12 @@ export default class TkMenuBarWidget
 		super(options)
 
 		const frame = termKitUtil.buildFrame(options, options.parent)
+		const items = this.mapItemsToTkItems(options.items)
 
 		this.menu = new termKit.DropDownMenu({
 			parent: options.parent.getTermKitElement(),
 			separator: '|',
-			items: this.mapItemsToTkItems(options.items),
+			items,
 			buttonFocusAttr: { bgColor: 'gray' },
 			...frame,
 		})
@@ -35,9 +36,18 @@ export default class TkMenuBarWidget
 	}
 
 	public setTextForItem(value: string, text: string): void {
-		const buttonItem = this.menu.buttons.find(
-			(it: any) => it.def.value === value
-		)
+		let buttonItem = this.getButtonByValue(value, this.menu.buttons)
+
+		if (!buttonItem) {
+			for (const item of this.menu.itemsDef) {
+				for (const subItem of item.items ?? []) {
+					if (subItem.value === value) {
+						subItem.content = this.buildItemText(text)
+						return
+					}
+				}
+			}
+		}
 
 		if (!buttonItem) {
 			throw new Error(`No menu item with value of ${value}`)
@@ -46,7 +56,19 @@ export default class TkMenuBarWidget
 		buttonItem.setContent(this.buildItemText(text), true)
 	}
 
+	private getButtonByValue(value: string, buttons: any[]) {
+		let button: any
+		for (const button of buttons) {
+			if (button.def.value === value) {
+				return button
+			}
+		}
+
+		return button
+	}
+
 	private handleMenuSubmit(value: string) {
+		this.menu.clearColumnMenu()
 		void (this as MenuBarWidget).emit('select', { value })
 	}
 
@@ -54,11 +76,12 @@ export default class TkMenuBarWidget
 		return this.menu
 	}
 
-	private mapItemsToTkItems(items: MenuBarWidgetItem[]) {
+	private mapItemsToTkItems(items: MenuBarWidgetItem[]): any {
 		return items.map((item) => ({
 			value: item.value,
 			content: this.buildItemText(item.label),
 			topSubmit: !item.items || item.items.length === 0,
+			items: item.items ? this.mapItemsToTkItems(item.items) : undefined,
 		}))
 	}
 

@@ -92,6 +92,7 @@ export interface EventContractTemplateItem extends EventContract {
 	namespaceCamel: string
 	namespacePascal: string
 	imports: SchemaImport[]
+	version: string
 	eventSignatures: {
 		[eventName: string]: EventSignatureTemplateItem
 	}

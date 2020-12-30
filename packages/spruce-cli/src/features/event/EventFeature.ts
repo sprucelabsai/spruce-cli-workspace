@@ -7,7 +7,7 @@ import AbstractFeature, {
 	FeatureOptions,
 } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
-import EventContractController from './EventContractUtil'
+import EventContractController from './EventContractController'
 
 export default class EventFeature extends AbstractFeature {
 	public code: FeatureCode = 'event'
@@ -51,11 +51,13 @@ export default class EventFeature extends AbstractFeature {
 		const isInstalled = await this.featureInstaller.isInstalled(this.code)
 
 		if (isInstalled) {
-			const generator = this.EventContractUtil()
+			const generator = this.EventContractController()
 
-			const uniqueSchemas = await generator.getUniqueSchemasFromContracts(
+			const uniqueSchemas = await generator.fetchContractsAndGenerateUniqueSchemas(
 				payload.schemas ?? []
 			)
+
+			debugger
 
 			return {
 				schemas: uniqueSchemas.schemas ?? [],
@@ -67,7 +69,7 @@ export default class EventFeature extends AbstractFeature {
 		}
 	}
 
-	public EventContractUtil() {
+	public EventContractController() {
 		return new EventContractController({
 			cwd: this.cwd,
 			optionsSchema: syncEventActionSchema,

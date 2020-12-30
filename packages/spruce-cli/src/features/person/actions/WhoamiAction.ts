@@ -18,7 +18,7 @@ export default class WhoAmIAction extends AbstractFeatureAction<OptionsSchema> {
 	public async execute(): Promise<FeatureActionResponse> {
 		const client = await this.connectToApi()
 
-		const results = await client.emit('who-am-i')
+		const results = await client.emit('whoami::v2020_12_25')
 		const { type, auth } = eventResponseUtil.getFirstResponseOrThrow(results)
 
 		const summaryLines: string[] = []

@@ -6,7 +6,7 @@ export default class OrganizationStore extends AbstractStore {
 
 	public async isSkillInstalledAtOrg(skillId: string, orgId: string) {
 		const client = await this.connectToApi()
-		const results = await client.emit('is-skill-installed', {
+		const results = await client.emit('is-skill-installed::v2020_12_25', {
 			target: {
 				organizationId: orgId,
 			},
@@ -25,7 +25,7 @@ export default class OrganizationStore extends AbstractStore {
 		orgId: any
 	): Promise<void> {
 		const client = await this.connectToApi()
-		const results = await client.emit('install-skill', {
+		const results = await client.emit('install-skill::v2020_12_25', {
 			target: {
 				organizationId: orgId,
 			},
@@ -39,7 +39,7 @@ export default class OrganizationStore extends AbstractStore {
 
 	public async fetchMyOrganizations() {
 		const client = await this.connectToApi()
-		const results = await client.emit('list-organizations', {
+		const results = await client.emit('list-organizations::v2020_12_25', {
 			payload: {
 				showMineOnly: true,
 			},
@@ -55,7 +55,7 @@ export default class OrganizationStore extends AbstractStore {
 
 		const client = await this.connectToApi()
 
-		const results = await client.emit('create-organization', {
+		const results = await client.emit('create-organization::v2020_12_25', {
 			payload: {
 				name,
 				slug,
@@ -70,7 +70,7 @@ export default class OrganizationStore extends AbstractStore {
 	public async deleteOrganization(orgId: string) {
 		const client = await this.connectToApi()
 
-		const results = await client.emit('delete-organization', {
+		const results = await client.emit('delete-organization::v2020_12_25', {
 			target: {
 				organizationId: orgId,
 			},

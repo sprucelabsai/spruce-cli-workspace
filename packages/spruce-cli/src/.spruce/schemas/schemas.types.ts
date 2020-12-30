@@ -1599,6 +1599,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.MercuryApi {
 
+
 		
 		interface ListLocationsEmitPayload {
 			

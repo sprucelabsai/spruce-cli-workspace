@@ -1,6 +1,9 @@
 import { EventContract, EventSignature } from '@sprucelabs/mercury-types'
 import { Schema, SchemaTemplateItem } from '@sprucelabs/schema'
-import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
+import {
+	eventContractUtil,
+	NamedEventSignature,
+} from '@sprucelabs/spruce-event-utils'
 import {
 	MERCURY_API_NAMESPACE,
 	namesUtil,
@@ -16,6 +19,7 @@ export interface NamedEventSignature {
 	eventNameWithOptionalNamespace: string
 	eventName: string
 	eventNamespace?: string
+	version: string
 	signature: EventSignature
 }
 
@@ -53,6 +57,7 @@ export default class EventTemplateItemBuilder {
 			const namedSignatures = eventContractUtil.getNamedEventSignatures(
 				contract
 			)
+
 			for (const namedSig of namedSignatures) {
 				if (
 					namedSig.eventNameWithOptionalNamespace ===
@@ -95,41 +100,15 @@ export default class EventTemplateItemBuilder {
 			namedSignatures
 		)
 
+		debugger
+
 		const eventContractTemplateItems: EventContractTemplateItem[] = []
 
 		for (const namedSig of namedSignatures) {
-			const namespacePascal = this.sigToNamespacePascal(namedSig)
-
-			const signatureTemplateItem: EventSignatureTemplateItem = this.buildEventSigTemplateItem(
+			const item: EventContractTemplateItem = this.buildTemplateItemForEventSignature(
 				namedSig,
 				schemaTemplateItems
 			)
-
-			const item: EventContractTemplateItem = {
-				nameCamel: namesUtil.toCamel(namedSig.eventName),
-				namePascal: namesUtil.toPascal(namedSig.eventName),
-				namespace: namesUtil.toKebab(
-					namedSig.eventNamespace ?? MERCURY_API_NAMESPACE
-				),
-				namespaceCamel: namesUtil.toCamel(
-					namedSig.eventNamespace ?? MERCURY_API_NAMESPACE
-				),
-				imports: [
-					signatureTemplateItem.emitPayloadSchema as SchemaTemplateItem,
-					signatureTemplateItem.responsePayloadSchema as SchemaTemplateItem,
-				]
-					.filter((i) => !!i)
-					.map((item: SchemaTemplateItem) => ({
-						package: `#spruce/schemas/${namesUtil.toCamel(item.namespace)}/${
-							item.nameCamel
-						}.schema`,
-						importAs: `${item.nameCamel}Schema`,
-					})),
-				namespacePascal,
-				eventSignatures: {
-					[namedSig.eventNameWithOptionalNamespace]: signatureTemplateItem,
-				},
-			}
 
 			eventContractTemplateItems.push(item)
 		}
@@ -138,6 +117,46 @@ export default class EventTemplateItemBuilder {
 			eventContractTemplateItems,
 			schemaTemplateItems,
 		}
+	}
+
+	private buildTemplateItemForEventSignature(
+		namedSig: NamedEventSignature,
+		schemaTemplateItems: SchemaTemplateItem[]
+	) {
+		const namespacePascal = this.sigToNamespacePascal(namedSig)
+
+		const signatureTemplateItem: EventSignatureTemplateItem = this.buildEventSigTemplateItem(
+			namedSig,
+			schemaTemplateItems
+		)
+
+		const item: EventContractTemplateItem = {
+			nameCamel: namesUtil.toCamel(namedSig.eventName),
+			namePascal: namesUtil.toPascal(namedSig.eventName),
+			version: namedSig.version ?? '***MISSING***',
+			namespace: namesUtil.toKebab(
+				namedSig.eventNamespace ?? MERCURY_API_NAMESPACE
+			),
+			namespaceCamel: namesUtil.toCamel(
+				namedSig.eventNamespace ?? MERCURY_API_NAMESPACE
+			),
+			imports: [
+				signatureTemplateItem.emitPayloadSchema as SchemaTemplateItem,
+				signatureTemplateItem.responsePayloadSchema as SchemaTemplateItem,
+			]
+				.filter((i) => !!i)
+				.map((item: SchemaTemplateItem) => ({
+					package: `#spruce/schemas/${namesUtil.toCamel(item.namespace)}/${
+						item.nameCamel
+					}.schema`,
+					importAs: `${item.nameCamel}Schema`,
+				})),
+			namespacePascal,
+			eventSignatures: {
+				[namedSig.eventNameWithOptionalNamespace]: signatureTemplateItem,
+			},
+		}
+		return item
 	}
 
 	private buildEventSigTemplateItem(
@@ -197,11 +216,17 @@ export default class EventTemplateItemBuilder {
 			}
 
 			if (emitPayloadSchema) {
-				schemasByNamespace[namespacePascal].push(emitPayloadSchema)
+				schemasByNamespace[namespacePascal].push({
+					version: namedSig.version,
+					...emitPayloadSchema,
+				})
 			}
 
 			if (responsePayloadSchema) {
-				schemasByNamespace[namespacePascal].push(responsePayloadSchema)
+				schemasByNamespace[namespacePascal].push({
+					version: namedSig.version,
+					...responsePayloadSchema,
+				})
 			}
 		}
 

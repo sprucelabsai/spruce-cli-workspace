@@ -46,6 +46,7 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
 	private cwd: string
 	private commandService: CommandService
 	private wasKilled = false
+	private testResults: SpruceTestResults = { totalTestFiles: 0 }
 
 	public constructor(options: { cwd: string; commandService: CommandService }) {
 		super(testRunnerContract)
@@ -70,7 +71,7 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
 
 		const parser = new JestJsonParser()
 
-		let testResults: SpruceTestResults = {
+		this.testResults = {
 			totalTestFiles: 0,
 		}
 
@@ -89,20 +90,20 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
 				},
 				onData: async (data) => {
 					parser.write(data)
-					testResults = parser.getResults()
+					this.testResults = parser.getResults()
 					await (this as MercuryEventEmitter<TestRunnerContract>).emit(
 						'did-update',
-						{ results: testResults }
+						{ results: this.testResults }
 					)
 				},
 			})
 		} catch (err) {
-			if (!testResults.totalTestFiles) {
+			if (!this.testResults.totalTestFiles) {
 				throw err
 			}
 		}
 
-		return { ...testResults, wasKilled: this.wasKilled }
+		return { ...this.testResults, wasKilled: this.wasKilled }
 	}
 
 	private isDebugMessage(data: string) {
@@ -111,6 +112,10 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
 			data.search(/^debugger listening/i) === 0 ||
 			data.search(/^waiting for the debugger/i) === 0
 		)
+	}
+
+	public hasFailedTests() {
+		return (this.testResults.totalFailed ?? 0) > 0
 	}
 
 	public kill() {

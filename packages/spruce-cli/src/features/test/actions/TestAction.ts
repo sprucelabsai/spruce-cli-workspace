@@ -15,7 +15,7 @@ import {
 	SpruceTestFileTest,
 	SpruceTestResults,
 } from '../test.types'
-import TestReporter from '../TestReporter'
+import TestReporter, { WatchMode } from '../TestReporter'
 import TestRunner from '../TestRunner'
 
 export const optionsSchema = buildSchema({
@@ -67,7 +67,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	private lastTestResults: SpruceTestResults = { totalTestFiles: 0 }
 	private originalInspect!: number
 	private watcher?: WatchFeature
-	private isWatchingForChanges = false
+	private watchMode: WatchMode = 'off'
 	private fileChangeTimeout?: number
 	private hasWatchEverBeenEnabled = false
 
@@ -93,12 +93,13 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		this.originalInspect = inspect ?? 5200
 		this.inspect = inspect
 		this.pattern = pattern
-		this.isWatchingForChanges = this.hasWatchEverBeenEnabled = shouldWatch
+		this.hasWatchEverBeenEnabled = shouldWatch
+		this.watchMode = shouldWatch ? 'smart' : 'off'
 
 		if (shouldReportWhileRunning) {
 			this.testReporter = new TestReporter({
 				cwd: this.cwd,
-				isWatching: this.isWatchingForChanges,
+				watchMode: this.watchMode,
 				status: shouldHoldAtStart ? 'stopped' : 'ready',
 				isDebugging: !!inspect,
 				filterPattern: pattern ?? undefined,
@@ -109,7 +110,8 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 				handleOpenTestFile: this.handleOpenTestFile.bind(this),
 				handleFilterPatternChange: this.handleFilterPatternChange.bind(this),
 				handleToggleDebug: this.handleToggleDebug.bind(this),
-				handleToggleWatch: this.toggleWatch.bind(this),
+				handleToggleWatchAll: this.handleToggleWatchAll.bind(this),
+				handleToggleSmartWatch: this.handleToggleSmartWatch?.bind(this),
 			})
 
 			await this.testReporter.start()
@@ -150,7 +152,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 	private handleFileChange(payload: DidChangePayload) {
 		if (
-			!this.isWatchingForChanges ||
+			this.watchMode === 'off' ||
 			!(this.runnerStatus === 'run' || this.runnerStatus == 'hold')
 		) {
 			return
@@ -159,12 +161,14 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		const { changes } = payload
 
 		let shouldRestart = false
+		const filesWeCareAbout: string[] = []
 
 		for (const change of changes) {
 			const { path } = change.values
 
 			if (this.doWeCareAboutThisFileChanging(path)) {
 				shouldRestart = true
+				filesWeCareAbout.push(path)
 				break
 			}
 		}
@@ -176,9 +180,29 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 			this.testReporter?.startCountdownTimer(this.watchDelaySec)
 			this.fileChangeTimeout = setTimeout(() => {
-				this.restart()
+				if (this.watchMode === 'smart') {
+					const smartFilter = this.generateFilterFromChangedFiles(
+						filesWeCareAbout
+					)
+					if (smartFilter.length > 0) {
+						this.handleFilterPatternChange(smartFilter)
+					} else {
+						this.restart()
+					}
+				} else {
+					this.restart()
+				}
 			}, this.watchDelaySec * 1000) as any
 		}
+	}
+
+	private generateFilterFromChangedFiles(filesWeCareAbout: string[]): string {
+		const filter = filesWeCareAbout
+			.filter((file) => file.search('test.ts') > -1)
+			.map((file) => this.fileToFilterPattern(file))
+			.join(' ')
+
+		return filter
 	}
 
 	private doWeCareAboutThisFileChanging(path: string) {
@@ -204,14 +228,25 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 	}
 
-	private toggleWatch() {
-		if (this.isWatchingForChanges) {
-			this.isWatchingForChanges = false
-			this.testReporter?.setIsWatching(false)
+	private handleToggleWatchAll() {
+		if (this.watchMode === 'all') {
+			this.watchMode = 'off'
+			this.testReporter?.setWatchMode('off')
 		} else {
 			this.hasWatchEverBeenEnabled = true
-			this.isWatchingForChanges = true
-			this.testReporter?.setIsWatching(true)
+			this.watchMode = 'all'
+			this.testReporter?.setWatchMode('all')
+		}
+	}
+
+	private handleToggleSmartWatch() {
+		if (this.watchMode === 'smart') {
+			this.watchMode = 'off'
+			this.testReporter?.setWatchMode('off')
+		} else {
+			this.hasWatchEverBeenEnabled = true
+			this.watchMode = 'smart'
+			this.testReporter?.setWatchMode('smart')
 		}
 	}
 
@@ -226,13 +261,18 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	}
 
 	private handleRerunTestFile(file: string) {
-		const filename = pathUtil.basename(file, '.ts')
-		const dirname = pathUtil.dirname(file)
-
-		const name = pathUtil.join(dirname, filename)
+		const name = this.fileToFilterPattern(file)
 
 		this.testReporter?.setFilterPattern(name)
 		this.handleFilterPatternChange(name)
+	}
+
+	private fileToFilterPattern(file: string) {
+		const filename = pathUtil.basename(file, '.ts')
+		const dirname = pathUtil.dirname(file).split(pathUtil.sep).pop() ?? ''
+
+		const name = pathUtil.join(dirname, filename)
+		return name
 	}
 
 	private handleFilterPatternChange(filterPattern?: string) {
@@ -285,8 +325,29 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			commandService: this.Service('command'),
 		})
 
+		let firstUpdate = true
+
 		if (this.testReporter) {
 			await this.testRunner.on('did-update', (payload) => {
+				if (firstUpdate) {
+					firstUpdate = false
+					this.testReporter?.setStatus('running')
+					this.testReporter?.reset()
+				}
+
+				if (this.watchMode === 'smart' && payload.results.totalFailed > 0) {
+					const failed = payload.results.testFiles.find(
+						(file: any) => file.status === 'failed'
+					)
+					if (failed) {
+						const pattern = this.fileToFilterPattern(failed.path)
+						if (this.pattern !== pattern) {
+							this.handleFilterPatternChange(pattern)
+						}
+						return
+					}
+				}
+
 				this.testReporter?.updateResults(payload.results)
 				this.testReporter?.render()
 			})
@@ -298,8 +359,6 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 
 		this.runnerStatus = 'run'
-		this.testReporter?.setStatus('running')
-		this.testReporter?.reset()
 
 		let testResults: SpruceTestResults = await this.testRunner.run({
 			pattern: this.pattern,
@@ -312,6 +371,24 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			(this.runnerStatus as any) === 'quit'
 		) {
 			return testResults
+		}
+
+		if (
+			this.runnerStatus === 'run' &&
+			this.watchMode === 'smart' &&
+			this.testRunner?.hasFailedTests() === false &&
+			(this.pattern ?? []).length > 0
+		) {
+			this.runnerStatus = 'restart'
+			this.testReporter?.startCountdownTimer(3)
+
+			return await new Promise((resolve) => {
+				setTimeout(() => {
+					this.pattern = ''
+					this.testReporter?.setFilterPattern('')
+					resolve(this.startTestRunner(options))
+				}, 3000)
+			})
 		}
 
 		if (this.runnerStatus === 'run') {

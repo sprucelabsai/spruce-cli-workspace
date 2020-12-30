@@ -5,7 +5,7 @@ import { ApiClientFactoryOptions } from '../types/apiClient.types'
 type Skill = SpruceSchemas.Spruce.v2020_07_22.Skill
 
 const apiClientUtil = {
-	generateClientKey: (options?: ApiClientFactoryOptions) => {
+	generateClientCacheKey: (options?: ApiClientFactoryOptions) => {
 		if (!options || (!options.token && !options.skillId)) {
 			return 'anon'
 		}

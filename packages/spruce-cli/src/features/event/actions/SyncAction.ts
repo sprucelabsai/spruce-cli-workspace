@@ -14,9 +14,9 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	public optionsSchema: OptionsSchema = syncEventActionSchema
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
-		const unifiedGenerator = this.UnifiedGenerator()
+		const writer = this.ContractWriter()
 
-		const results: FeatureActionResponse = await unifiedGenerator.writeContracts(
+		const results: FeatureActionResponse = await writer.fetchAndWriteContracts(
 			options
 		)
 
@@ -33,7 +33,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 		return mergeUtil.mergeActionResults(schemaSyncResults, results)
 	}
 
-	private UnifiedGenerator() {
-		return (this.parent as EventFeature).EventContractUtil()
+	private ContractWriter() {
+		return (this.parent as EventFeature).EventContractController()
 	}
 }

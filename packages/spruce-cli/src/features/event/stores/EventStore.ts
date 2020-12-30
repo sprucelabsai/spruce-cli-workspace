@@ -4,6 +4,7 @@ import {
 	eventResponseUtil,
 	eventDiskUtil,
 	eventContractUtil,
+	eventNameUtil,
 } from '@sprucelabs/spruce-event-utils'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
@@ -23,7 +24,7 @@ export default class EventStore extends AbstractStore {
 	}): Promise<EventStoreFetchEventContractsResponse> {
 		const client = await this.connectToApi({ authAsCurrentSkill: true })
 
-		const results = await client.emit('get-event-contracts')
+		const results = await client.emit('get-event-contracts::v2020_12_25')
 		const { contracts } = eventResponseUtil.getFirstResponseOrThrow(results)
 
 		const localContract =
@@ -56,9 +57,10 @@ export default class EventStore extends AbstractStore {
 			localMatches.map(async (match: string) => {
 				const { eventName } = eventDiskUtil.splitPathToEvent(match)
 
-				const eventNameWithNamespace = eventContractUtil.joinEventNameWithOptionalNamespace(
-					{ eventName, eventNamespace: ns }
-				)
+				const eventNameWithNamespace = eventNameUtil.join({
+					eventName,
+					eventNamespace: ns,
+				})
 
 				if (!eventSignatures[eventNameWithNamespace]) {
 					eventSignatures[eventNameWithNamespace] = {}
@@ -104,7 +106,7 @@ export default class EventStore extends AbstractStore {
 	}) {
 		const client = await this.connectToApi({ authAsCurrentSkill: true })
 
-		const results = await client.emit('register-events', {
+		const results = await client.emit('register-events::v2020_12_25', {
 			payload: {
 				contract: options.eventContract,
 			},

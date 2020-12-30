@@ -9,6 +9,7 @@ import {
 	eventContractUtil,
 	eventDiskUtil,
 	eventResponseUtil,
+	eventNameUtil
 } from '@sprucelabs/spruce-event-utils'
 import {
 	EventHealthCheckItem,
@@ -166,7 +167,7 @@ export class EventSkillFeature implements SkillFeature {
 		if (skillId && apiKey) {
 			this.log.info('Logging in as skill')
 
-			const results = await client.emit('authenticate', {
+			const results = await client.emit('authenticate::v2020_12_25', {
 				payload: {
 					skillId,
 					apiKey,
@@ -194,7 +195,7 @@ export class EventSkillFeature implements SkillFeature {
 		const { client, currentSkill } = await this.connectToApi()
 
 		if (client && currentSkill) {
-			await client.emit('un-register-listeners', {
+			await client.emit('un-register-listeners::v2020_12_25', {
 				payload: {
 					shouldUnRegisterAll: true,
 				},
@@ -212,7 +213,7 @@ export class EventSkillFeature implements SkillFeature {
 		const { client, currentSkill } = await this.connectToApi()
 
 		if (client && currentSkill) {
-			await client.emit('un-register-events', {
+			await client.emit('un-register-events::v2020_12_25', {
 				payload: {
 					shouldUnRegisterAll: true,
 				},
@@ -237,7 +238,7 @@ export class EventSkillFeature implements SkillFeature {
 					event.signature
 			}
 
-			await client.emit('register-events', { payload: { contract } })
+			await client.emit('register-events::v2020_12_25', { payload: { contract } })
 
 			this.log.info(
 				`Registered ${this.eventsIRegistered.length} event contract${
@@ -250,9 +251,10 @@ export class EventSkillFeature implements SkillFeature {
 	private async registerListeners(client: any) {
 		for (const listener of this.listeners) {
 			if (listener.eventNamespace !== 'skill') {
-				const name = eventContractUtil.joinEventNameWithOptionalNamespace({
+				const name = eventNameUtil.join({
 					eventName: listener.eventName,
 					eventNamespace: listener.eventNamespace,
+					version: listener.version
 				})
 
 				await client.on(name, async (...args: []) => {
@@ -345,10 +347,11 @@ export class EventSkillFeature implements SkillFeature {
 			}
 
 			this.log.info(
-				`Found listener for ${eventContractUtil.joinEventNameWithOptionalNamespace(
+				`Found listener for ${eventNameUtil.join(
 					{
 						eventName,
 						eventNamespace,
+						version
 					}
 				)}`
 			)

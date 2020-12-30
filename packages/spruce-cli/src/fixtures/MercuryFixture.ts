@@ -28,7 +28,7 @@ export default class MercuryFixture {
 
 	public getApiClientFactory(): ApiClientFactory {
 		return async (options?: ApiClientFactoryOptions) => {
-			const key = apiClientUtil.generateClientKey(options)
+			const key = apiClientUtil.generateClientCacheKey(options)
 
 			if (!this.clients[key]) {
 				this.clients[key] = await this.apiClientFactory(options)

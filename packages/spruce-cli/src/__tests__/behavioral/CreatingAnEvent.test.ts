@@ -1,4 +1,4 @@
-import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
+import { eventNameUtil } from '@sprucelabs/spruce-event-utils'
 import {
 	diskUtil,
 	namesUtil,
@@ -38,7 +38,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 	}
 
 	@test.only()
-	protected static async createsVersionedEventFiles() {
+	protected static async createsVersionedEventFilesDefaultingtoToday() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 
 		const skill = await this.SkillFixture().registerCurrentSkill({
@@ -121,12 +121,10 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		})
 
 		assert.doesInclude(health.event.contracts, {
-			eventNameWithOptionalNamespace: eventContractUtil.joinEventNameWithOptionalNamespace(
-				{
-					eventName,
-					eventNamespace,
-				}
-			),
+			eventNameWithOptionalNamespace: eventNameUtil.join({
+				eventName,
+				eventNamespace,
+			}),
 		})
 	}
 

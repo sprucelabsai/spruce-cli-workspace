@@ -27,7 +27,7 @@ export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
 
 		const client = await this.connectToApi()
 
-		const requestPinResults = await client.emit('request-pin', {
+		const requestPinResults = await client.emit('request-pin::v2020_12_25', {
 			payload: { phone },
 		})
 
@@ -44,7 +44,7 @@ export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
 				isRequired: true,
 			})
 
-			const confirmPinResults = await client.emit('confirm-pin', {
+			const confirmPinResults = await client.emit('confirm-pin::v2020_12_25', {
 				payload: { challenge, pin },
 			})
 

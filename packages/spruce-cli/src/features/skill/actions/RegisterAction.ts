@@ -38,7 +38,7 @@ export default class RegisterAction extends AbstractFeatureAction<OptionsSchema>
 		} = this.validateAndNormalizeOptions(options)
 
 		const client = await this.connectToApi()
-		const results = await client.emit('register-skill', {
+		const results = await client.emit('register-skill::v2020_12_25', {
 			payload: {
 				name: nameReadable,
 				slug: nameKebab,

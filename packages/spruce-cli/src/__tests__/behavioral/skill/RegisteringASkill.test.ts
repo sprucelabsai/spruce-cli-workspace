@@ -43,7 +43,7 @@ export default class RegisteringASkillTest extends AbstractCliTest {
 		assert.isTruthy(skill)
 
 		const client = await this.connectToApi()
-		const getSkillResults = await client.emit('get-skill', {
+		const getSkillResults = await client.emit('get-skill::v2020_12_25', {
 			payload: { id: skill.id },
 		})
 

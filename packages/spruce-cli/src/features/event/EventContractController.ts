@@ -23,7 +23,7 @@ type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventAction
 export default class EventContractController {
 	private optionsSchema: OptionsSchema
 	private ui: GraphicsInterface
-	private eventGenerator: EventWriter
+	private eventWriter: EventWriter
 	private cwd: string
 	private eventStore: EventStore
 	private cachedTemplateItems?: {
@@ -43,19 +43,21 @@ export default class EventContractController {
 	}) {
 		this.optionsSchema = options.optionsSchema
 		this.ui = options.ui
-		this.eventGenerator = options.eventGenerator
+		this.eventWriter = options.eventGenerator
 		this.cwd = options.cwd
 		this.eventStore = options.eventStore
 		this.skillStore = options.skillStore
 	}
 
-	public async writeContracts(
+	public async fetchAndWriteContracts(
 		options: Options
 	): Promise<FeatureActionResponse> {
 		const normalizedOptions = validateAndNormalizeUtil.validateAndNormalize(
 			this.optionsSchema,
 			options
 		)
+
+		debugger
 
 		const { contractDestinationDir } = normalizedOptions
 
@@ -70,7 +72,7 @@ export default class EventContractController {
 			errors,
 			schemaTemplateItems,
 			eventContractTemplateItems,
-		} = await this.buildTemplateItems()
+		} = await this.fetchAndBuildTemplateItems()
 
 		if (errors && errors?.length > 0) {
 			return {
@@ -80,30 +82,32 @@ export default class EventContractController {
 
 		this.ui.startLoading('Generating contracts...')
 
-		const files = await this.eventGenerator.writeContracts(
-			resolvedDestination,
-			{
-				...normalizedOptions,
-				eventContractTemplateItems,
-				schemaTemplateItems,
-			}
-		)
+		const files = await this.eventWriter.writeContracts(resolvedDestination, {
+			...normalizedOptions,
+			eventContractTemplateItems,
+			schemaTemplateItems,
+		})
 
 		return {
 			files,
 		}
 	}
 
-	public async getUniqueSchemasFromContracts(
+	public async fetchContractsAndGenerateUniqueSchemas(
 		existingSchemas: Schema[]
 	): Promise<FeatureActionResponse & { schemas?: Schema[] }> {
-		const { errors, schemaTemplateItems } = await this.buildTemplateItems()
+		const {
+			errors,
+			schemaTemplateItems,
+		} = await this.fetchAndBuildTemplateItems()
 
 		if (errors && errors?.length > 0) {
 			return {
 				errors,
 			}
 		}
+
+		debugger
 
 		const filteredSchemas = this.filterSchemasBasedOnCallbackPayload(
 			existingSchemas,
@@ -130,7 +134,7 @@ export default class EventContractController {
 		return filteredSchemas
 	}
 
-	private async buildTemplateItems() {
+	private async fetchAndBuildTemplateItems() {
 		if (this.cachedTemplateItems) {
 			return this.cachedTemplateItems
 		}

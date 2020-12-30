@@ -21,10 +21,11 @@ interface TestReporterOptions {
 	handleOpenTestFile?: (fileName: string) => void
 	handleFilterPatternChange?: (pattern?: string) => void
 	handleToggleDebug?: () => void
-	handleToggleWatch?: () => void
+	handleToggleWatchAll?: () => void
+	handleToggleSmartWatch?: () => void
 	filterPattern?: string
 	isDebugging?: boolean
-	isWatching?: boolean
+	watchMode?: WatchMode
 	status?: TestRunnerStatus
 	cwd?: string
 }
@@ -34,6 +35,8 @@ type TestReporterResults = SpruceTestResults & {
 }
 
 export type TestEporterOrientation = 'landscape' | 'portrait'
+
+export type WatchMode = 'off' | 'all' | 'smart'
 
 export default class TestReporter {
 	private started = false
@@ -57,7 +60,7 @@ export default class TestReporter {
 	private filterPattern?: string
 	private clearFilterPatternButton!: ButtonWidget
 	private isDebugging = false
-	private isWatching = false
+	private watchMode: WatchMode = 'off'
 	private status: TestRunnerStatus = 'ready'
 	private countDownTimeInterval?: number
 	private cwd: string | undefined
@@ -70,7 +73,8 @@ export default class TestReporter {
 	private handleFilterChange?: (pattern?: string) => void
 	private handleOpenTestFile?: (testFile: string) => void
 	private handleToggleDebug?: () => void
-	private handleToggleWatch?: () => void
+	private handleToggleWatchAll?: () => void
+	private handleToggleSmartWatch?: () => any
 
 	public constructor(options?: TestReporterOptions) {
 		this.cwd = options?.cwd
@@ -83,9 +87,10 @@ export default class TestReporter {
 		this.handleFilterChange = options?.handleFilterPatternChange
 		this.status = options?.status ?? 'ready'
 		this.handleToggleDebug = options?.handleToggleDebug
-		this.handleToggleWatch = options?.handleToggleWatch
+		this.handleToggleWatchAll = options?.handleToggleWatchAll
 		this.isDebugging = options?.isDebugging ?? false
-		this.isWatching = options?.isWatching ?? false
+		this.watchMode = options?.watchMode ?? 'off'
+		this.handleToggleSmartWatch = options?.handleToggleSmartWatch
 
 		this.errorLogItemGenerator = new TestLogItemGenerator()
 		this.widgetFactory = new WidgetFactory()
@@ -129,22 +134,38 @@ export default class TestReporter {
 	public stopCountdownTimer() {
 		clearInterval(this.countDownTimeInterval)
 		this.countDownTimeInterval = undefined
-		this.setWatchLabel('Watch')
+		this.setWatchMode(this.watchMode)
 	}
 
-	public setIsWatching(isWatching: boolean) {
-		this.isWatching = isWatching
+	public setWatchMode(watchMode: WatchMode) {
+		this.watchMode = watchMode
 		if (!this.countDownTimeInterval) {
-			this.setWatchLabel('Watch')
+			let label = watchMode === 'smart' ? 'Smart Watch' : 'Standard Watch'
+			if (watchMode === 'off') {
+				label = 'Not Watching'
+			}
+			this.setWatchLabel(label)
 		}
 	}
 
 	private setWatchLabel(label: string) {
+		const isWatching = this.watchMode !== 'off'
+
 		this.menu.setTextForItem(
-			'toggleWatch',
-			`${label} ^${this.isWatching ? 'k' : 'w'}^#^${
-				this.isWatching ? 'g' : 'r'
-			}${this.isWatching ? ' • ' : ' • '}^`
+			'watchDropdown',
+			`${label} ^${isWatching ? 'k' : 'w'}^#^${isWatching ? 'g' : 'r'}${
+				isWatching ? ' • ' : ' • '
+			}^`
+		)
+
+		this.menu.setTextForItem(
+			'toggleWatchAll',
+			this.watchMode === 'all' ? '√ Standard' : 'Standard'
+		)
+
+		this.menu.setTextForItem(
+			'toggleSmartWatch',
+			this.watchMode === 'smart' ? '√ Smart' : 'Smart'
 		)
 	}
 
@@ -157,9 +178,9 @@ export default class TestReporter {
 		void this.window.on('key', this.handleGlobalKeypress.bind(this))
 		void this.window.on('kill', this.destroy.bind(this))
 
-		this.dropInMenu()
 		this.dropInTopLayout()
 		this.dropInProgressBar()
+		this.dropInMenu()
 		this.dropInBottomLayout()
 		this.dropInTestLog()
 		this.dropInFilterControls()
@@ -173,7 +194,7 @@ export default class TestReporter {
 		}
 
 		this.setIsDebugging(this.isDebugging)
-		this.setIsWatching(this.isWatching)
+		this.setWatchMode(this.watchMode)
 		this.setStatus(this.status)
 
 		this.updateInterval = setInterval(
@@ -197,20 +218,16 @@ export default class TestReporter {
 					value: 'toggleDebug',
 				},
 				{
-					label: 'Watch    ',
-					value: 'toggleWatch',
-					items_disabled: [
+					label: 'Not Watching   ',
+					value: 'watchDropdown',
+					items: [
 						{
-							label: 'Off',
-							value: 'watchOff',
+							label: 'Watch all',
+							value: 'toggleWatchAll',
 						},
 						{
-							label: 'Run all',
-							value: 'watchAllTests',
-						},
-						{
-							label: 'Smart',
-							value: 'watchAllTests',
+							label: 'Smart watch',
+							value: 'toggleSmartWatch',
 						},
 					],
 				},
@@ -228,8 +245,9 @@ export default class TestReporter {
 		this.status = status
 
 		this.updateMenuLabels()
-
-		if (this.status === 'stopped') {
+		if (status === 'ready') {
+			this.bar.setLabel('Loading...')
+		} else if (this.status === 'stopped') {
 			this.refreshResults()
 		}
 	}
@@ -246,7 +264,7 @@ export default class TestReporter {
 				} ^w^#^r › ^`
 				break
 			case 'ready':
-				restartLabel = 'Booting'
+				restartLabel = 'Booting ^#^K › ^'
 				break
 		}
 
@@ -264,8 +282,11 @@ export default class TestReporter {
 			case 'toggleDebug':
 				this.handleToggleDebug?.()
 				break
-			case 'toggleWatch':
-				this.handleToggleWatch?.()
+			case 'toggleWatchAll':
+				this.handleToggleWatchAll?.()
+				break
+			case 'toggleSmartWatch':
+				this.handleToggleSmartWatch?.()
 				break
 		}
 	}
