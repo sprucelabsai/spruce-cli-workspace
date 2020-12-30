@@ -56,7 +56,7 @@ export default class EventStore extends AbstractStore {
 			localMatches.map(async (match: string) => {
 				const { eventName } = eventDiskUtil.splitPathToEvent(match)
 
-				const eventNameWithNamespace = eventContractUtil.joinEventNameWithOptionalNamespace(
+				const eventNameWithNamespace = eventContractUtil.joinfullyQualifiedEventName(
 					{ eventName, eventNamespace: ns }
 				)
 

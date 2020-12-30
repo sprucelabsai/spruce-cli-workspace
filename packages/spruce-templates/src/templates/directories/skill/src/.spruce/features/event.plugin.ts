@@ -26,7 +26,7 @@ import globby from 'globby'
 require('dotenv').config()
 
 type Event = {
-	eventNameWithOptionalNamespace: string
+	fullyQualifiedEventName: string
 	eventName: string
 	eventNamespace?: string
 	version?: string
@@ -96,8 +96,8 @@ export class EventSkillFeature implements SkillFeature {
 				status: 'passed',
 				listeners: this.listeners,
 				contracts: this.allEventSignatures.map((contract) => ({
-					eventNameWithOptionalNamespace:
-						contract.eventNameWithOptionalNamespace,
+					fullyQualifiedEventName:
+						contract.fullyQualifiedEventName,
 				})),
 				events: this.eventsIRegistered.map((e) => ({
 					eventName: e.eventName,
@@ -233,7 +233,7 @@ export class EventSkillFeature implements SkillFeature {
 
 			for (const event of this.eventsIRegistered) {
 				//@ts-ignore
-				contract.eventSignatures[event.eventNameWithOptionalNamespace] =
+				contract.eventSignatures[event.fullyQualifiedEventName] =
 					event.signature
 			}
 
@@ -250,7 +250,7 @@ export class EventSkillFeature implements SkillFeature {
 	private async registerListeners(client: any) {
 		for (const listener of this.listeners) {
 			if (listener.eventNamespace !== 'skill') {
-				const name = eventContractUtil.joinEventNameWithOptionalNamespace({
+				const name = eventContractUtil.joinfullyQualifiedEventName({
 					eventName: listener.eventName,
 					eventNamespace: listener.eventNamespace,
 				})
@@ -281,8 +281,8 @@ export class EventSkillFeature implements SkillFeature {
 
 				this.allEventSignatures.push(
 					...named.map((named) => ({
-						eventNameWithOptionalNamespace:
-							named.eventNameWithOptionalNamespace,
+						fullyQualifiedEventName:
+							named.fullyQualifiedEventName,
 						eventName: named.eventName,
 						eventNamespace: named.eventNamespace,
 						signature: named.signature,
@@ -345,7 +345,7 @@ export class EventSkillFeature implements SkillFeature {
 			}
 
 			this.log.info(
-				`Found listener for ${eventContractUtil.joinEventNameWithOptionalNamespace(
+				`Found listener for ${eventContractUtil.joinfullyQualifiedEventName(
 					{
 						eventName,
 						eventNamespace,
@@ -378,8 +378,8 @@ export class EventSkillFeature implements SkillFeature {
 						eventNamespace: currentSkill.slug,
 						version: signature.version ?? '***coming soon***',
 						signature: signature.signature,
-						eventNameWithOptionalNamespace:
-							signature.eventNameWithOptionalNamespace,
+						fullyQualifiedEventName:
+							signature.fullyQualifiedEventName,
 					})
 				}
 			})

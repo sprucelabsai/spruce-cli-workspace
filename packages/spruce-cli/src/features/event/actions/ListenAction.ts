@@ -106,7 +106,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 				const builder = new EventTemplateItemBuilder()
 				const templateItems = builder.buildEventTemplateItemForName(
 					contracts,
-					eventContractUtil.joinEventNameWithOptionalNamespace({
+					eventContractUtil.joinfullyQualifiedEventName({
 						eventNamespace,
 						eventName,
 					})

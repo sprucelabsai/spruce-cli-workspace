@@ -13,7 +13,7 @@ import SpruceError from '../errors/SpruceError'
 import SchemaTemplateItemBuilder from './SchemaTemplateItemBuilder'
 
 export interface NamedEventSignature {
-	eventNameWithOptionalNamespace: string
+	fullyQualifiedEventName: string
 	eventName: string
 	eventNamespace?: string
 	signature: EventSignature
@@ -44,7 +44,7 @@ export default class EventTemplateItemBuilder {
 
 	public buildEventTemplateItemForName(
 		contracts: EventContract[],
-		eventNameWithOptionalNamespace: string
+		fullyQualifiedEventName: string
 	): {
 		responsePayloadSchemaTemplateItem: SchemaTemplateItem | undefined
 		emitPayloadSchemaTemplateItem: SchemaTemplateItem | undefined
@@ -54,10 +54,7 @@ export default class EventTemplateItemBuilder {
 				contract
 			)
 			for (const namedSig of namedSignatures) {
-				if (
-					namedSig.eventNameWithOptionalNamespace ===
-					eventNameWithOptionalNamespace
-				) {
+				if (namedSig.fullyQualifiedEventName === fullyQualifiedEventName) {
 					const schemaTemplateItems: SchemaTemplateItem[] = this.mapEventSigsToSchemaTemplateItems(
 						namedSignatures
 					)
@@ -79,7 +76,7 @@ export default class EventTemplateItemBuilder {
 
 		throw new SpruceError({
 			code: 'INVALID_PARAMETERS',
-			parameters: ['eventNameWithOptionalNamespace'],
+			parameters: ['fullyQualifiedEventName'],
 		})
 	}
 
@@ -127,7 +124,7 @@ export default class EventTemplateItemBuilder {
 					})),
 				namespacePascal,
 				eventSignatures: {
-					[namedSig.eventNameWithOptionalNamespace]: signatureTemplateItem,
+					[namedSig.fullyQualifiedEventName]: signatureTemplateItem,
 				},
 			}
 

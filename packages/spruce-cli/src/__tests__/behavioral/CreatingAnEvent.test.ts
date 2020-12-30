@@ -121,12 +121,10 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		})
 
 		assert.doesInclude(health.event.contracts, {
-			eventNameWithOptionalNamespace: eventContractUtil.joinEventNameWithOptionalNamespace(
-				{
-					eventName,
-					eventNamespace,
-				}
-			),
+			fullyQualifiedEventName: eventContractUtil.joinfullyQualifiedEventName({
+				eventName,
+				eventNamespace,
+			}),
 		})
 	}
 

@@ -175,7 +175,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				
 				'authorizerStatuses'?: ("clockedIn" | "clockedOut" | "onPrem" | "offPrem")| undefined | null
 				
-				'eventNameWithOptionalNamespace': string
+				'fullyQualifiedEventName': string
 		}
 
 		interface CanListenEmitPayloadSchema extends SpruceSchema.Schema {
@@ -189,7 +189,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                options: {choices: [{"label":"Clocked in","value":"clockedIn"},{"label":"Clocked out","value":"clockedOut"},{"label":"On premise","value":"onPrem"},{"label":"Off premise","value":"offPrem"}],}
 			            },
 			            /** . */
-			            'eventNameWithOptionalNamespace': {
+			            'fullyQualifiedEventName': {
 			                type: 'text',
 			                isRequired: true,
 			                options: undefined

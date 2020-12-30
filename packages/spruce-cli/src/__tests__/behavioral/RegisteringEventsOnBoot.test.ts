@@ -39,7 +39,7 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 			apiClientFactory: async () => client,
 		}).fetchEventContracts()
 
-		const name = eventContractUtil.joinEventNameWithOptionalNamespace({
+		const name = eventContractUtil.joinfullyQualifiedEventName({
 			eventNamespace: currentSkill.slug,
 			eventName: EVENT_NAME,
 		})
