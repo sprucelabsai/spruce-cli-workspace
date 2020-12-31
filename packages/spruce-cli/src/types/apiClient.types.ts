@@ -3,7 +3,7 @@ import { SpruceSchemas } from '@sprucelabs/mercury-types'
 import { EventContracts } from '#spruce/events/events.contract'
 
 export type ApiClientFactoryOptions = SpruceSchemas.MercuryApi.AuthenticateEmitPayload & {
-	authAsCurrentSkill?: boolean
+	shouldAuthAsCurrentSkill?: boolean
 }
 export type ApiClient = MercuryClient<EventContracts>
 export type ApiClientFactory = (

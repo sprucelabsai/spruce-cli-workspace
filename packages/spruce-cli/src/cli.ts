@@ -55,6 +55,7 @@ export default class Cli implements CliInterface {
 	private featureInstaller: FeatureInstaller
 	private serviceFactory: ServiceFactory
 	public readonly emitter: GlobalEmitter
+	private static apiClients: Record<string, ApiClient> = {}
 
 	private constructor(
 		cwd: string,
@@ -66,6 +67,7 @@ export default class Cli implements CliInterface {
 		this.featureInstaller = featureInstaller
 		this.serviceFactory = serviceFactory
 		this.emitter = emitter
+		Cli.apiClients = {}
 	}
 
 	public async on(...args: any[]) {
@@ -198,31 +200,29 @@ export default class Cli implements CliInterface {
 		serviceFactory: ServiceFactory,
 		bootOptions?: CliBootOptions
 	): ApiClientFactory {
-		let apiClients: Record<string, ApiClient> = {}
-
 		const apiClientFactoryAnon = bootOptions?.apiClientFactory
 			? bootOptions.apiClientFactory
 			: async (options?: ApiClientFactoryOptions) => {
 					const key = apiClientUtil.generateClientCacheKey(options)
-					if (!apiClients[key]) {
-						apiClients[key] = await MercuryClientFactory.Client<EventContracts>(
-							{
-								// TODO comment back in when contracts are fixed
-								// contracts: eventsContracts,
-								host: bootOptions?.host ?? 'https://sandbox.mercury.spruce.ai',
-								allowSelfSignedCrt: true,
-							}
-						)
+					if (!Cli.apiClients[key]) {
+						Cli.apiClients[
+							key
+						] = await MercuryClientFactory.Client<EventContracts>({
+							// TODO comment back in when contracts are fixed
+							// contracts: eventsContracts,
+							host: bootOptions?.host ?? 'https://sandbox.mercury.spruce.ai',
+							allowSelfSignedCrt: true,
+						})
 					}
 
-					return apiClients[key]
+					return Cli.apiClients[key]
 			  }
 
 		const apiClientFactory = async (options?: ApiClientFactoryOptions) => {
 			const key = apiClientUtil.generateClientCacheKey(options)
 
-			if (!apiClients[key]) {
-				apiClients[key] = await apiClientFactoryAnon(options)
+			if (!Cli.apiClients[key]) {
+				Cli.apiClients[key] = await apiClientFactoryAnon(options)
 
 				let auth: SpruceSchemas.MercuryApi.AuthenticateEmitPayload = {}
 				if (!options) {
@@ -231,7 +231,7 @@ export default class Cli implements CliInterface {
 					if (person) {
 						auth.token = person.token
 					}
-				} else if (options.authAsCurrentSkill) {
+				} else if (options.shouldAuthAsCurrentSkill) {
 					const skill = serviceFactory.Service(cwd, 'auth').getCurrentSkill()
 
 					if (skill) {
@@ -248,12 +248,16 @@ export default class Cli implements CliInterface {
 				}
 
 				if (Object.keys(auth).length > 0) {
-					await apiClients[key].emit('authenticate::v2020_12_25', {
+					await Cli.apiClients[key].emit('authenticate::v2020_12_25', {
 						payload: auth,
 					})
+
+					//@ts-ignore
+					Cli.apiClients[key].auth = auth
 				}
 			}
-			return apiClients[key]
+
+			return Cli.apiClients[key]
 		}
 
 		return apiClientFactory

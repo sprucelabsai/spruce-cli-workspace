@@ -1,4 +1,4 @@
-import { EventContract, EventSignature } from '@sprucelabs/mercury-types'
+import { EventContract } from '@sprucelabs/mercury-types'
 import { Schema, SchemaTemplateItem } from '@sprucelabs/schema'
 import {
 	eventContractUtil,
@@ -13,6 +13,7 @@ import {
 	EventSignatureTemplateItem,
 } from '@sprucelabs/spruce-templates'
 import SpruceError from '../errors/SpruceError'
+import schemaDiskUtil from '../features/schema/utilities/schemaDisk.utility'
 import SchemaTemplateItemBuilder from './SchemaTemplateItemBuilder'
 
 export default class EventTemplateItemBuilder {
@@ -89,8 +90,6 @@ export default class EventTemplateItemBuilder {
 			namedSignatures
 		)
 
-		debugger
-
 		const eventContractTemplateItems: EventContractTemplateItem[] = []
 
 		for (const namedSig of namedSignatures) {
@@ -135,16 +134,19 @@ export default class EventTemplateItemBuilder {
 			]
 				.filter((i) => !!i)
 				.map((item: SchemaTemplateItem) => ({
-					package: `#spruce/schemas/${namesUtil.toCamel(item.namespace)}/${
-						item.nameCamel
-					}.schema`,
+					package: schemaDiskUtil.resolvePath({
+						destination: '#spruce/schemas',
+						schema: item.schema,
+						shouldIncludeFileExtension: false,
+					}),
 					importAs: `${item.nameCamel}Schema`,
 				})),
 			namespacePascal,
 			eventSignatures: {
-				[namedSig.eventNameWithOptionalNamespace]: signatureTemplateItem,
+				[namedSig.fullyQualifiedEventName]: signatureTemplateItem,
 			},
 		}
+
 		return item
 	}
 

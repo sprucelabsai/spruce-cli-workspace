@@ -7,7 +7,7 @@ import AbstractFeature, {
 	FeatureOptions,
 } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
-import EventContractController from './EventContractController'
+import EventContractWriter from './writers/EventContractWriter'
 
 export default class EventFeature extends AbstractFeature {
 	public code: FeatureCode = 'event'
@@ -32,6 +32,7 @@ export default class EventFeature extends AbstractFeature {
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public readonly fileDescriptions: FileDescription[] = []
+	private contractWriter?: EventContractWriter
 
 	public constructor(options: FeatureOptions) {
 		super(options)
@@ -51,13 +52,11 @@ export default class EventFeature extends AbstractFeature {
 		const isInstalled = await this.featureInstaller.isInstalled(this.code)
 
 		if (isInstalled) {
-			const generator = this.EventContractController()
+			const generator = this.EventContractWriter()
 
 			const uniqueSchemas = await generator.fetchContractsAndGenerateUniqueSchemas(
 				payload.schemas ?? []
 			)
-
-			debugger
 
 			return {
 				schemas: uniqueSchemas.schemas ?? [],
@@ -69,14 +68,18 @@ export default class EventFeature extends AbstractFeature {
 		}
 	}
 
-	public EventContractController() {
-		return new EventContractController({
-			cwd: this.cwd,
-			optionsSchema: syncEventActionSchema,
-			ui: this.ui,
-			eventGenerator: this.Writer('event'),
-			eventStore: this.Store('event'),
-			skillStore: this.Store('skill'),
-		})
+	public EventContractWriter() {
+		if (!this.contractWriter) {
+			this.contractWriter = new EventContractWriter({
+				cwd: this.cwd,
+				optionsSchema: syncEventActionSchema,
+				ui: this.ui,
+				eventGenerator: this.Writer('event'),
+				eventStore: this.Store('event'),
+				skillStore: this.Store('skill'),
+			})
+		}
+
+		return this.contractWriter
 	}
 }

@@ -1,4 +1,8 @@
-import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
+import {
+	eventContractUtil,
+	eventNameUtil,
+} from '@sprucelabs/spruce-event-utils'
+import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractEventTest from '../../tests/AbstractEventTest'
 
@@ -39,12 +43,20 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 			apiClientFactory: async () => client,
 		}).fetchEventContracts()
 
-		const name = eventContractUtil.joinfullyQualifiedEventName({
+		debugger
+
+		const name = eventNameUtil.join({
 			eventNamespace: currentSkill.slug,
 			eventName: EVENT_NAME,
+			version: versionUtil.generateVersion().constValue,
 		})
 
+		debugger
+
 		await this.openInVsCode()
+
+		debugger
+
 		assert.isLength(contracts, 2)
 		assert.isEqualDeep(contracts[1].eventSignatures[name], {})
 	}

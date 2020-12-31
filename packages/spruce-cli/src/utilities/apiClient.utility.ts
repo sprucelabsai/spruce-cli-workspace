@@ -6,12 +6,12 @@ type Skill = SpruceSchemas.Spruce.v2020_07_22.Skill
 
 const apiClientUtil = {
 	generateClientCacheKey: (options?: ApiClientFactoryOptions) => {
-		if (!options || (!options.token && !options.skillId)) {
-			return 'anon'
+		if (options?.shouldAuthAsCurrentSkill) {
+			return 'skill'
 		}
 
-		if (options.authAsCurrentSkill) {
-			return 'skill'
+		if (!options || (!options.token && !options.skillId)) {
+			return 'anon'
 		}
 
 		if (options.token) {

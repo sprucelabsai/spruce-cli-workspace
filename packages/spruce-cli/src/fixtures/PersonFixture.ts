@@ -1,6 +1,11 @@
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { ApiClientFactory } from '../types/apiClient.types'
-export const DUMMY_PHONE = '555-123-4567'
+
+require('dotenv').config()
+
+export const DUMMY_PHONE = process.env.DUMMY_PHONE ?? '+1 555-555-5555'
+export const DUMMY_PHONE2 = '+1 555-555-1234'
+export const DUMMY_PHONE3 = '+1 555-555-1235'
 
 export default class PersonFixture {
 	private apiClientFactory: ApiClientFactory
@@ -12,7 +17,6 @@ export default class PersonFixture {
 	public async loginAsDummyPerson(phone = DUMMY_PHONE) {
 		const client = await this.apiClientFactory()
 
-		debugger
 		const requestPinResults = await client.emit('request-pin::v2020_12_25', {
 			payload: { phone },
 		})
@@ -28,6 +32,9 @@ export default class PersonFixture {
 		const { person } = eventResponseUtil.getFirstResponseOrThrow(
 			confirmPinResults
 		)
+
+		//@ts-ignore
+		client.auth = { person }
 
 		return person
 	}

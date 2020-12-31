@@ -366,9 +366,11 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		})
 
 		if (
-			!options.shouldReportWhileRunning ||
-			!this.hasWatchEverBeenEnabled ||
-			(this.runnerStatus as any) === 'quit'
+			//@ts-ignore
+			this.runnerStatus !== 'restart' &&
+			(!options.shouldReportWhileRunning ||
+				!this.hasWatchEverBeenEnabled ||
+				(this.runnerStatus as any) === 'quit')
 		) {
 			return testResults
 		}

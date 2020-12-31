@@ -45,19 +45,19 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 			name: 'my new skill',
 		})
 
-		debugger
 		const results = await cli.getFeature('event').Action('create').execute({
 			nameReadable: EVENT_NAME_READABLE,
 			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
 		})
 
+		assert.isFalsy(results.errors)
+
 		debugger
-
-		assert.isFalsy(results.errors?.[0])
-
 		await this.assertReturnsEventFromHealthCheck(cli, skill)
+		debugger
 		await this.assertExpectedPayloadSchemas(results, skill)
+		debugger
 		await this.assertValidActionResponseFiles(results)
 	}
 
@@ -107,6 +107,8 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		skill: RegisteredSkill
 	) {
 		const health = await cli.checkHealth()
+
+		debugger
 
 		assert.isTruthy(health.event)
 		assert.isLength(health.event.events, 1)

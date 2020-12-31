@@ -14,6 +14,7 @@ import {
 } from '@sprucelabs/spruce-templates'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractWriter, { WriteResults } from '../../../writers/AbstractWriter'
+import schemaDiskUtil from '../utilities/schemaDisk.utility'
 
 interface WriteFieldTypesOptions {
 	fieldTemplateItems: FieldTemplateItem[]
@@ -196,12 +197,10 @@ export default class SchemaWriter extends AbstractWriter {
 			...item
 		} = options
 
-		const resolvedDestination = path.join(
-			destinationDir,
-			namesUtil.toCamel(options.namespace),
-			options.schema.version ?? '',
-			`${item.id}.schema.ts`
-		)
+		const resolvedDestination = schemaDiskUtil.resolvePath({
+			destination: destinationDir,
+			schema: options.schema,
+		})
 
 		let typesFile = options.typesFile
 			? pathUtil.relative(

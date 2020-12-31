@@ -34,6 +34,6 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	}
 
 	private ContractWriter() {
-		return (this.parent as EventFeature).EventContractController()
+		return (this.parent as EventFeature).EventContractWriter()
 	}
 }

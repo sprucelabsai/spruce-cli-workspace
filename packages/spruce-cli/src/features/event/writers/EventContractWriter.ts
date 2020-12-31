@@ -8,14 +8,14 @@ import {
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { EventContractTemplateItem } from '@sprucelabs/spruce-templates'
 import { isEqual } from 'lodash'
-import SpruceError from '../../errors/SpruceError'
-import EventTemplateItemBuilder from '../../templateItemBuilders/EventTemplateItemBuilder'
-import { GraphicsInterface } from '../../types/cli.types'
-import { FeatureActionResponse } from '../features.types'
-import SkillStore from '../skill/stores/SkillStore'
-import validateAndNormalizeUtil from '../validateAndNormalize.utility'
-import EventStore from './stores/EventStore'
-import EventWriter from './writers/EventWriter'
+import SpruceError from '../../../errors/SpruceError'
+import EventTemplateItemBuilder from '../../../templateItemBuilders/EventTemplateItemBuilder'
+import { GraphicsInterface } from '../../../types/cli.types'
+import { FeatureActionResponse } from '../../features.types'
+import SkillStore from '../../skill/stores/SkillStore'
+import validateAndNormalizeUtil from '../../validateAndNormalize.utility'
+import EventStore from '../stores/EventStore'
+import EventWriter from './EventWriter'
 
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventActionSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventAction
@@ -56,8 +56,6 @@ export default class EventContractController {
 			this.optionsSchema,
 			options
 		)
-
-		debugger
 
 		const { contractDestinationDir } = normalizedOptions
 
@@ -106,8 +104,6 @@ export default class EventContractController {
 				errors,
 			}
 		}
-
-		debugger
 
 		const filteredSchemas = this.filterSchemasBasedOnCallbackPayload(
 			existingSchemas,

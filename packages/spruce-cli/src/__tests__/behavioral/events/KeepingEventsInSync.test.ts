@@ -15,8 +15,12 @@ import testUtil from '../../../tests/utilities/test.utility'
 const EXPECTED_NUM_CONTRACTS_GENERATED = 33
 
 export default class KeepingEventsInSyncTest extends AbstractEventTest {
-	private static get version() {
+	private static get mercuryVersion() {
 		return versionUtil.generateVersion('2020-12-25')
+	}
+
+	private static get todaysVersion() {
+		return versionUtil.generateVersion()
 	}
 
 	@test()
@@ -25,13 +29,14 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		assert.isFunction(cli.getFeature('event').Action('sync').execute)
 	}
 
-	@test.only()
+	@test()
 	protected static async generatesValidContractFile() {
 		const cli = await this.FeatureFixture().installCachedFeatures(
 			'eventsInNodeModule'
 		)
 
 		const results = await cli.getFeature('event').Action('sync').execute({})
+
 		await this.assertValidEventResults(results)
 	}
 
@@ -55,13 +60,9 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	protected static async canGetNumberOfEventsBackFromHealthCheck() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 
-		debugger
-
 		const results = await cli.getFeature('event').Action('sync').execute({})
 
 		assert.isFalsy(results.errors)
-
-		debugger
 
 		await this.Service('build').build()
 
@@ -88,33 +89,32 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		await skillFixture.registerEventContract(skill2, {
 			eventSignatures: {
-				'my-new-event': {},
+				[`my-new-event::${this.todaysVersion.constValue}`]: {},
 			},
 		})
 
 		const results = await cli.getFeature('event').Action('sync').execute({})
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
-			`myNewEvent.${this.version.dirValue}.contract.ts`,
+			`myNewEvent.${this.todaysVersion.dirValue}.contract.ts`,
 			results.files
 		)
 
 		assert.doesInclude(
 			match,
 			`${namesUtil.toCamel(skill2.slug)}${pathUtil.sep}myNewEvent.${
-				this.version.dirValue
+				this.todaysVersion.dirValue
 			}.contract.ts`
 		)
 	}
 
 	private static async assertValidEventResults(results: FeatureActionResponse) {
 		assert.isFalsy(results.errors)
-		debugger
+
 		await this.assertsContractsHaveValidPayloads(results)
-		debugger
 
 		this.assertExpectedContractsAreCreated(results)
-		debugger
+
 		this.assertExpectedPayloadSchemasAreCreated(results)
 
 		await this.assertCombinedContractContents(results)
@@ -151,7 +151,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		results: FeatureActionResponse
 	) {
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
-			`authenticate.${this.version.dirValue}.contract.ts`,
+			`authenticate.${this.mercuryVersion.dirValue}.contract.ts`,
 			results.files
 		)
 
@@ -180,16 +180,15 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	) {
 		const filesToCheck = [
 			{
-				name: `whoami.${this.version.dirValue}.contract.ts`,
+				name: `whoami.${this.mercuryVersion.dirValue}.contract.ts`,
 				path: `events${pathUtil.sep}${MERCURY_API_NAMESPACE}`,
 			},
 			{
-				name: `getEventContracts.${this.version.dirValue}.contract.ts`,
+				name: `getEventContracts.${this.mercuryVersion.dirValue}.contract.ts`,
 				path: `events${pathUtil.sep}${MERCURY_API_NAMESPACE}`,
 			},
 		]
 
-		debugger
 		this.assertFilesWereGenerated(filesToCheck, results)
 	}
 

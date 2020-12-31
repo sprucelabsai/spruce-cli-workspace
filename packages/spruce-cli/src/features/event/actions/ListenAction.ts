@@ -4,7 +4,10 @@ import {
 	SchemaTemplateItem,
 	SelectChoice,
 } from '@sprucelabs/schema'
-import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
+import {
+	eventContractUtil,
+	eventNameUtil,
+} from '@sprucelabs/spruce-event-utils'
 import {
 	diskUtil,
 	namesUtil,
@@ -58,7 +61,9 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 				eventNamespace = await this.collectNamespace(contracts)
 			}
 
-			const { eventChoicesByNamespace } = this.generateChoices(contracts)
+			const { eventChoicesByNamespace } = this.mapContractsToSelectChoices(
+				contracts
+			)
 
 			if (!eventChoicesByNamespace[eventNamespace]) {
 				throw new SpruceError({
@@ -106,9 +111,10 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 				const builder = new EventTemplateItemBuilder()
 				const templateItems = builder.buildEventTemplateItemForName(
 					contracts,
-					eventContractUtil.joinfullyQualifiedEventName({
+					eventNameUtil.join({
 						eventNamespace,
 						eventName,
+						version: resolvedVersion,
 					})
 				)
 
@@ -155,8 +161,9 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 		contracts: EventContract[],
 		eventNamespace: string
 	): Promise<string> {
-		const eventChoices: SelectChoice[] = this.generateChoices(contracts)
-			.eventChoicesByNamespace[eventNamespace]
+		const eventChoices: SelectChoice[] = this.mapContractsToSelectChoices(
+			contracts
+		).eventChoicesByNamespace[eventNamespace]
 
 		const eventName = await this.ui.prompt({
 			type: 'select',
@@ -171,7 +178,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 	}
 
 	private async collectNamespace(contracts: EventContract[]): Promise<string> {
-		const { namespaceChoices } = this.generateChoices(contracts)
+		const { namespaceChoices } = this.mapContractsToSelectChoices(contracts)
 
 		const eventNamespace = await this.ui.prompt({
 			type: 'select',
@@ -185,7 +192,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 		return eventNamespace
 	}
 
-	private generateChoices(
+	private mapContractsToSelectChoices(
 		contracts: SpruceSchemas.MercuryTypes.v2020_09_01.EventContract[]
 	) {
 		const namespaceChoices: SelectChoice[] = [
@@ -228,8 +235,8 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 				}
 
 				eventChoicesByNamespace[namespace].push({
-					value: namedSig.eventName,
-					label: namedSig.eventName,
+					value: namedSig.fullyQualifiedEventName,
+					label: namedSig.fullyQualifiedEventName,
 				})
 			}
 		})

@@ -5,7 +5,11 @@ import {
 	eventErrorAssertUtil,
 	eventResponseUtil,
 } from '@sprucelabs/spruce-event-utils'
-import { diskUtil, MERCURY_API_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
+import {
+	diskUtil,
+	MERCURY_API_NAMESPACE,
+	versionUtil,
+} from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
@@ -105,7 +109,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		this.ui.reset()
 	}
 
-	@test()
+	@test.only()
 	protected static async generatesTypedListenerWithoutPayloads() {
 		const {
 			contents,
@@ -229,9 +233,11 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 	private static async setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
 		eventSignature: EventSignature
 	) {
+		const expectedVersion = versionUtil.generateVersion().dirValue
+
 		const eventContract = {
 			eventSignatures: {
-				'my-new-event': eventSignature,
+				[`my-new-event::${expectedVersion}`]: eventSignature,
 			},
 		} as const
 
@@ -250,10 +256,12 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 			eventName: 'my-new-event',
 		})
 
+		debugger
+
 		assert.isFalsy(results.errors)
 
 		const listener = testUtil.assertsFileByNameInGeneratedFiles(
-			'my-new-event.listener.ts',
+			`my-new-event.${expectedVersion}.listener.ts`,
 			results.files
 		)
 

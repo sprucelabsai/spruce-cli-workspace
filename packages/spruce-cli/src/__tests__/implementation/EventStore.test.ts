@@ -1,5 +1,9 @@
 import { validateEventContract } from '@sprucelabs/mercury-types'
-import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
+import {
+	eventContractUtil,
+	eventNameUtil,
+} from '@sprucelabs/spruce-event-utils'
+import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 
@@ -8,6 +12,9 @@ const EVENT_NAME = 'my-fantastically-amazing-event'
 const EVENT_CAMEL = 'myFantasticallyAmazingEvent'
 
 export default class EventStoreTest extends AbstractCliTest {
+	protected static get version() {
+		return versionUtil.generateVersion()
+	}
 	@test()
 	protected static async canInstantiateEventStore() {
 		assert.isTruthy(this.Store('event'))
@@ -54,7 +61,7 @@ export default class EventStoreTest extends AbstractCliTest {
 		await eventStore1.registerEventContract({
 			eventContract: {
 				eventSignatures: {
-					'my-fantastic-event': {},
+					[`my-fantastic-event::${this.version.constValue}`]: {},
 				},
 			},
 		})
@@ -68,7 +75,7 @@ export default class EventStoreTest extends AbstractCliTest {
 
 		eventContractUtil.getSignatureByName(
 			skillContract,
-			`${skill1.slug}.my-fantastic-event`
+			`${skill1.slug}.my-fantastic-event::${this.version.constValue}`
 		)
 	}
 
@@ -91,22 +98,15 @@ export default class EventStoreTest extends AbstractCliTest {
 		})
 
 		assert.isLength(contracts, 2)
-		assert.isTruthy(
-			contracts[1].eventSignatures[`${skill.slug}.${EVENT_NAME}`]
-				.emitPayloadSchema
-		)
-		assert.isTruthy(
-			contracts[1].eventSignatures[`${skill.slug}.${EVENT_NAME}`]
-				.responsePayloadSchema
-		)
-		assert.isTruthy(
-			contracts[1].eventSignatures[`${skill.slug}.${EVENT_NAME}`]
-				.emitPermissionContract
-		)
-		assert.isTruthy(
-			contracts[1].eventSignatures[`${skill.slug}.${EVENT_NAME}`]
-				.emitPermissionContract
-		)
+		const name = eventNameUtil.join({
+			eventName: EVENT_NAME,
+			eventNamespace: skill.slug,
+			version: this.version.constValue,
+		})
+		assert.isTruthy(contracts[1].eventSignatures[name].emitPayloadSchema)
+		assert.isTruthy(contracts[1].eventSignatures[name].responsePayloadSchema)
+		assert.isTruthy(contracts[1].eventSignatures[name].emitPermissionContract)
+		assert.isTruthy(contracts[1].eventSignatures[name].emitPermissionContract)
 
 		validateEventContract(contracts[1])
 	}

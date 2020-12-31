@@ -2,14 +2,14 @@ import pathUtil from 'path'
 import { MercuryClient } from '@sprucelabs/mercury-client'
 import {
 	EventContract,
-	EventSignature,
 	SpruceSchemas,
 } from '@sprucelabs/mercury-types'
 import {
 	eventContractUtil,
 	eventDiskUtil,
 	eventResponseUtil,
-	eventNameUtil
+	eventNameUtil,
+	NamedEventSignature
 } from '@sprucelabs/spruce-event-utils'
 import {
 	EventHealthCheckItem,
@@ -26,20 +26,14 @@ import globby from 'globby'
 
 require('dotenv').config()
 
-type Event = {
-	fullyQualifiedEventName: string
-	eventName: string
-	eventNamespace?: string
-	version?: string
-	signature: EventSignature
-}
+
 
 export class EventSkillFeature implements SkillFeature {
 	private skill: Skill
 	private listenersPath: string
 	private listeners: EventFeatureListener[] = []
-	private eventsIRegistered: Required<Event>[] = []
-	private allEventSignatures: Event[] = []
+	private eventsIRegistered: Required<NamedEventSignature>[] = []
+	private allEventSignatures: NamedEventSignature[] = []
 	private combinedContractsFile: string
 	private _shouldConnectToApi: boolean
 	//@ts-ignore
@@ -83,7 +77,7 @@ export class EventSkillFeature implements SkillFeature {
 
 		if (this.apiClient) {
 			this.log.info('Connection to Mercury successful. Waiting for events')
-			await new Promise((_r) => {})
+			await new Promise((_r) => { })
 		} else {
 			this.log.info('This skill not registered so I have nothing to do. 🌲🤖')
 		}
@@ -107,7 +101,7 @@ export class EventSkillFeature implements SkillFeature {
 				})),
 			}
 
-			
+
 			await this.destroy()
 
 			return health
@@ -241,8 +235,7 @@ export class EventSkillFeature implements SkillFeature {
 			await client.emit('register-events::v2020_12_25', { payload: { contract } })
 
 			this.log.info(
-				`Registered ${this.eventsIRegistered.length} event contract${
-					this.eventsIRegistered.length === 1 ? '' : 's'
+				`Registered ${this.eventsIRegistered.length} event contract${this.eventsIRegistered.length === 1 ? '' : 's'
 				}`
 			)
 		}
@@ -262,6 +255,7 @@ export class EventSkillFeature implements SkillFeature {
 					try {
 						//@ts-ignore
 						const results = await listener.callback(...args)
+
 						return results
 					} catch (err) {
 						return {
@@ -288,6 +282,7 @@ export class EventSkillFeature implements SkillFeature {
 						eventName: named.eventName,
 						eventNamespace: named.eventNamespace,
 						signature: named.signature,
+						version: named.version
 					}))
 				)
 			})

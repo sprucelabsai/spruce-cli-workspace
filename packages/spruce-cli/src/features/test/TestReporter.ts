@@ -118,7 +118,10 @@ export default class TestReporter {
 
 		let remaining = durationSec
 
-		this.setWatchLabel(`  ${remaining}  `)
+		function renderCountdownTime(time: number) {
+			return `     ${time}     `
+		}
+		this.setWatchLabel(renderCountdownTime(remaining))
 
 		this.countDownTimeInterval = setInterval(() => {
 			remaining--
@@ -126,7 +129,7 @@ export default class TestReporter {
 			if (remaining < 0) {
 				this.stopCountdownTimer()
 			} else {
-				this.setWatchLabel(`  ${remaining}  `)
+				this.setWatchLabel(renderCountdownTime(remaining))
 			}
 		}, 1000) as any
 	}

@@ -2,12 +2,36 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			"label": "test.reporter",
+			"command": "spruce",
+			"args": [
+				"test",
+				"--shouldHoldAtStart",
+				"true",
+				"--shouldWatch",
+				"--inspect",
+				"5200"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/packages/spruce-cli"
+			},
+			"promptOnClose": false,
+			"group": "test",
+			"runOptions": {
+				"runOn": "folderOpen"
+			},
+			"presentation": {
+				"panel": "dedicated",
+				"focus": true,
+			}
+		},
+		{
 			"type": "npm",
 			"script": "watch.build",
 			"group": "build",
 			"label": "watch.build",
 			"presentation": {
-				"reveal": "always",
+				"reveal": "silent",
 				"panel": "dedicated",
 				"clear": true
 			},
@@ -28,6 +52,7 @@
 			"presentation": {
 				"panel": "dedicated",
 				"focus": false,
+				"reveal": "silent"
 			}
 		},
 		{
@@ -40,26 +65,6 @@
 				"--pattern",
 				"${fileBasenameNoExtension}",
 				"--shouldWatch"
-			],
-			"options": {
-				"cwd": "${workspaceFolder}/packages/spruce-cli"
-			},
-			"promptOnClose": false,
-			"group": "test",
-			"presentation": {
-				"reveal": "always",
-				"panel": "new"
-			}
-		},
-		{
-			"label": "test.reporter",
-			"command": "spruce",
-			"args": [
-				"test",
-				"--inspect",
-				"5200",
-				"--shouldTestAtStart",
-				"false"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}/packages/spruce-cli"

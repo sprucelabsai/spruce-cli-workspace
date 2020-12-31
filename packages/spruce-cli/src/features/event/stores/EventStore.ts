@@ -21,7 +21,7 @@ export default class EventStore extends AbstractStore {
 	public async fetchEventContracts(options?: {
 		localNamespace?: string
 	}): Promise<EventStoreFetchEventContractsResponse> {
-		const client = await this.connectToApi({ authAsCurrentSkill: true })
+		const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
 
 		const results = await client.emit('get-event-contracts::v2020_12_25')
 		const { contracts } = eventResponseUtil.getFirstResponseOrThrow(results)
@@ -50,30 +50,35 @@ export default class EventStore extends AbstractStore {
 		const ns = namesUtil.toKebab(localNamespace)
 
 		const eventSignatures: Record<string, EventSignature> = {}
-		const i = this.Service('import')
+		const schemaImporter = this.Service('schema')
+		const importer = this.Service('import')
 
 		await Promise.all(
 			localMatches.map(async (match: string) => {
-				const { eventName } = eventDiskUtil.splitPathToEvent(match)
+				const { eventName, version } = eventDiskUtil.splitPathToEvent(match)
 
-				const eventNameWithNamespace = eventNameUtil.join({
+				const fullyQualifiedEventName = eventNameUtil.join({
 					eventName,
+					version,
 					eventNamespace: ns,
 				})
 
-				if (!eventSignatures[eventNameWithNamespace]) {
-					eventSignatures[eventNameWithNamespace] = {}
+				if (!eventSignatures[fullyQualifiedEventName]) {
+					eventSignatures[fullyQualifiedEventName] = {}
 				}
 
 				const filename = pathUtil.basename(match)
 				let key: keyof EventSignature | undefined
+				let isSchema = false
 
 				switch (filename) {
 					case 'emitPayload.builder.ts':
 						key = 'emitPayloadSchema'
+						isSchema = true
 						break
 					case 'responsePayload.builder.ts':
 						key = 'responsePayloadSchema'
+						isSchema = true
 						break
 					case 'emitPermissions.builder.ts':
 						key = 'emitPermissionContract'
@@ -83,10 +88,19 @@ export default class EventStore extends AbstractStore {
 						break
 				}
 				if (key) {
-					//@ts-ignore
-					eventSignatures[eventNameWithNamespace][key] = await i.importDefault(
-						match
-					)
+					if (isSchema) {
+						//@ts-ignore
+						eventSignatures[fullyQualifiedEventName][
+							key
+						] = await schemaImporter.importSchema(match)
+						//@ts-ignore
+						eventSignatures[fullyQualifiedEventName][key].version = version
+					} else {
+						//@ts-ignore
+						eventSignatures[fullyQualifiedEventName][
+							key
+						] = await importer.importDefault(match)
+					}
 				}
 			})
 		)
@@ -103,7 +117,7 @@ export default class EventStore extends AbstractStore {
 	public async registerEventContract(options: {
 		eventContract: EventContract
 	}) {
-		const client = await this.connectToApi({ authAsCurrentSkill: true })
+		const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
 
 		const results = await client.emit('register-events::v2020_12_25', {
 			payload: {

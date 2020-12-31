@@ -16,6 +16,7 @@ export interface RegisterSkillOptions {
 
 export default class SkillStore extends AbstractStore {
 	public readonly name = 'skill'
+	private static currentSkill?: CurrentSkill
 
 	public async register(
 		values: CreateSkill,
@@ -59,12 +60,16 @@ export default class SkillStore extends AbstractStore {
 	}
 
 	public async loadCurrentSkill(): Promise<CurrentSkill> {
+		if (SkillStore.currentSkill) {
+			return SkillStore.currentSkill
+		}
+
 		this.assertInSkill()
 
 		const currentSkill = this.Service('auth').getCurrentSkill()
 
 		if (currentSkill) {
-			const client = await this.connectToApi()
+			const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
 			const response = await client.emit('get-skill::v2020_12_25', {
 				payload: {
 					id: currentSkill.id,
@@ -73,20 +78,22 @@ export default class SkillStore extends AbstractStore {
 
 			const { skill } = eventResponseUtil.getFirstResponseOrThrow(response)
 
-			return {
+			SkillStore.currentSkill = {
 				...skill,
 				namespacePascal: namesUtil.toPascal(skill.slug),
 				isRegistered: true,
 				apiKey: currentSkill.apiKey,
 			}
 		} else {
-			return {
+			SkillStore.currentSkill = {
 				name: this.getSkillNameFromPkg(),
 				namespacePascal: this.getEventNamespaceForNotRegistered(),
 				description: this.getSkillDescriptionFromPkg(),
 				isRegistered: false,
 			}
 		}
+
+		return SkillStore.currentSkill as CurrentSkill
 	}
 
 	public async isCurrentSkillRegistered() {
