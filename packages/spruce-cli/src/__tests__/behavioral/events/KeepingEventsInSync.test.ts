@@ -29,7 +29,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		assert.isFunction(cli.getFeature('event').Action('sync').execute)
 	}
 
-	@test()
+	@test.only()
 	protected static async generatesValidContractFile() {
 		const cli = await this.FeatureFixture().installCachedFeatures(
 			'eventsInNodeModule'

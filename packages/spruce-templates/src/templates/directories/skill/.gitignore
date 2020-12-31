@@ -43,3 +43,4 @@ build/
 tmp/
 
 yarn.lock
+package-lock.json

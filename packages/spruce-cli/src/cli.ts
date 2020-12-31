@@ -70,6 +70,10 @@ export default class Cli implements CliInterface {
 		Cli.apiClients = {}
 	}
 
+	public static resetApiClients() {
+		this.apiClients = {}
+	}
+
 	public async on(...args: any[]) {
 		//@ts-ignore
 		return this.emitter.on(...args)

@@ -53,8 +53,6 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 
 		debugger
 
-		await this.openInVsCode()
-
 		debugger
 
 		assert.isLength(contracts, 2)

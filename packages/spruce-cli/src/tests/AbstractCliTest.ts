@@ -4,7 +4,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractSpruceTest, { assert } from '@sprucelabs/test'
 import fs from 'fs-extra'
 import * as uuid from 'uuid'
-import { CliBootOptions } from '../cli'
+import Cli, { CliBootOptions } from '../cli'
 import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
 import { FeatureActionResponse, FeatureCode } from '../features/features.types'
 import FeatureFixture, {
@@ -64,6 +64,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 		await this.organizationFixture?.clearAllOrgs()
 		await this.mercuryFixture?.disconnectAll()
+
+		Cli.resetApiClients()
 
 		this.clearFixtures()
 

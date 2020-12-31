@@ -256,8 +256,6 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 			eventName: 'my-new-event',
 		})
 
-		debugger
-
 		assert.isFalsy(results.errors)
 
 		const listener = testUtil.assertsFileByNameInGeneratedFiles(
