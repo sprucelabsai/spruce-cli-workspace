@@ -20,6 +20,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 			templates,
 			term: this.ui,
 			fileDescriptions: [],
+			linter: this.Service('lint'),
 		})
 
 		const cli = await this.installSchemaFeature('schemas')
