@@ -1,7 +1,7 @@
 import pathUtil from 'path'
 import { Schema } from '@sprucelabs/schema'
-import SpruceError from '@sprucelabs/schema/build/errors/SpruceError'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
+import SpruceError from '../../../errors/SpruceError'
 
 const schemaDiskUtil = {
 	resolvePath(options: {

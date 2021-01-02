@@ -40,17 +40,11 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 			apiClientFactory: async () => client,
 		}).fetchEventContracts()
 
-		debugger
-
 		const name = eventNameUtil.join({
 			eventNamespace: currentSkill.slug,
 			eventName: EVENT_NAME,
 			version: versionUtil.generateVersion().constValue,
 		})
-
-		debugger
-
-		debugger
 
 		assert.isLength(contracts, 2)
 		assert.isEqualDeep(contracts[1].eventSignatures[name], {})
