@@ -227,10 +227,8 @@ export default class SchemaStore extends AbstractStore {
 		localNamespace: string,
 		version: string | undefined
 	) {
-		console.log('started', local)
 		const schemaService = this.Service('schema')
 		const schema = await schemaService.importSchema(local)
-		console.log('finished', local)
 
 		let errors: string[] = []
 

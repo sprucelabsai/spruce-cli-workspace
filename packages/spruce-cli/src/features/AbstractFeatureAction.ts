@@ -46,7 +46,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 
 	private serviceFactory: ServiceFactory
 	private storeFactory: StoreFactory
-	private generatorFactory: WriterFactory
+	private writerFactory: WriterFactory
 	private apiClientFactory: ApiClientFactory
 
 	public constructor(options: FeatureActionOptions) {
@@ -57,7 +57,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 		this.serviceFactory = options.serviceFactory
 		this.featureInstaller = options.featureInstaller
 		this.ui = options.ui
-		this.generatorFactory = options.generatorFactory
+		this.writerFactory = options.generatorFactory
 		this.emitter = options.emitter
 		this.apiClientFactory = options.apiClientFactory
 	}
@@ -85,8 +85,9 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 		code: C,
 		options?: Partial<WriterOptions>
 	): WriterMap[C] {
-		return this.generatorFactory.Writer(code, {
+		return this.writerFactory.Writer(code, {
 			fileDescriptions: this.parent.fileDescriptions,
+			linter: this.Service('lint'),
 			...options,
 		})
 	}

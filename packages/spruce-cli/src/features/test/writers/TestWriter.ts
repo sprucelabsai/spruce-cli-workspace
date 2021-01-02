@@ -19,6 +19,8 @@ export default class TestGenerator extends AbstractWriter {
 			`Your ${options.type} test.`
 		)
 
+		await this.linter.fix(resolvedDestination)
+
 		return results
 	}
 }

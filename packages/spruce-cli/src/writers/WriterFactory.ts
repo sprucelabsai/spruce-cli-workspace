@@ -6,6 +6,7 @@ import SchemaWriter from '../features/schema/writers/SchemaWriter'
 import SkillGenerator from '../features/skill/writers/SkillWriter'
 import TestGenerator from '../features/test/writers/TestWriter'
 import VsCodeWriter from '../features/vscode/writers/VsCodeWriter'
+import LintService from '../services/LintService'
 import { FileDescription, GraphicsInterface } from '../types/cli.types'
 import { WriterOptions } from './AbstractWriter'
 
@@ -33,10 +34,16 @@ export type WriterCode = keyof WriterMap
 export default class WriterFactory {
 	private templates: Templates
 	private term: GraphicsInterface
+	private linter: LintService
 
-	public constructor(templates: Templates, term: GraphicsInterface) {
+	public constructor(
+		templates: Templates,
+		term: GraphicsInterface,
+		linter: LintService
+	) {
 		this.templates = templates
 		this.term = term
+		this.linter = linter
 	}
 
 	public Writer<C extends WriterCode>(
@@ -47,6 +54,7 @@ export default class WriterFactory {
 		return new Class({
 			templates: this.templates,
 			term: this.term,
+			linter: this.linter,
 			...(options || {}),
 		}) as WriterMap[C]
 	}

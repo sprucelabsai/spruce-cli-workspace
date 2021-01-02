@@ -2,6 +2,7 @@ import fs from 'fs'
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { DirectoryTemplateCode, Templates } from '@sprucelabs/spruce-templates'
+import LintService from '../services/LintService'
 import {
 	FileDescription,
 	GeneratedFile,
@@ -17,6 +18,7 @@ export interface WriterOptions {
 	askBeforeUpdating?: boolean
 	upgradeMode?: UpgradeMode
 	fileDescriptions: FileDescription[]
+	linter: LintService
 }
 
 export default abstract class AbstractWriter {
@@ -25,12 +27,14 @@ export default abstract class AbstractWriter {
 	private upgradeMode: UpgradeMode
 	private fileDescriptions: FileDescription[] = []
 	private shouldConfirmBeforeWriting = true
+	protected linter: LintService
 
 	public constructor(options: WriterOptions) {
 		this.templates = options.templates
 		this.ui = options.term
 		this.upgradeMode = options.upgradeMode
 		this.fileDescriptions = options.fileDescriptions
+		this.linter = options.linter
 	}
 
 	protected async writeDirectoryTemplate(options: {
