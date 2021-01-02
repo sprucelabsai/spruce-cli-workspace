@@ -133,6 +133,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		await this.testReporter?.destroy()
 
 		const actionResponse: FeatureActionResponse = {
+			meta: { testResults },
 			summaryLines: [
 				`Test files: ${testResults.totalTestFiles}`,
 				`Tests: ${testResults.totalTests ?? '0'}`,
