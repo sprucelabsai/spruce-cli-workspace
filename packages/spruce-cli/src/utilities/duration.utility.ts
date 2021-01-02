@@ -21,7 +21,7 @@ const durationUtil = {
 
 		if (hours === 0 && minutes === 0) {
 			if (seconds > 0) {
-				durationStr += `${seconds}.${milliseconds}s`
+				durationStr = `${seconds}.${milliseconds}s`
 			} else {
 				durationStr += `${milliseconds}ms`
 			}
