@@ -1,7 +1,6 @@
 import path from 'path'
 import pathUtil from 'path'
 import { FieldTemplateItem, SchemaTemplateItem } from '@sprucelabs/schema'
-import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import {
