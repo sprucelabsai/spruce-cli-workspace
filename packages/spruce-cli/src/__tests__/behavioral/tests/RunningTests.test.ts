@@ -45,7 +45,6 @@ export default class RunningTestsTest extends AbstractTestTest {
 
 		errorAssertUtil.assertError(results.errors[0], 'TEST_FAILED')
 
-		debugger
 		assert.isTruthy(results.meta?.testResults)
 
 		assert.isEqualDeep(results.meta, {

@@ -584,6 +584,8 @@ export default class TestReporter {
 
 			this.errorLog?.setText(cleanedLog)
 		}
+
+		this.layout.updateLayout()
 	}
 
 	private resultsToLogContents(results: SpruceTestResults) {
