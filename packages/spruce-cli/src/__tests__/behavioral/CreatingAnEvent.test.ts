@@ -45,8 +45,8 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 
 		assert.isFalsy(results.errors)
 
-		await this.assertReturnsEventFromHealthCheck(cli, skill)
 		await this.assertExpectedPayloadSchemas(results)
+		await this.assertReturnsEventFromHealthCheck(cli, skill)
 		await this.assertValidActionResponseFiles(results)
 		await this.createsExpectedPermissionContract(results)
 	}
@@ -127,6 +127,10 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 			{
 				fileName: 'responsePayload.builder.ts',
 				expectedId: 'myFantasticallyAmazingEventResponsePayload',
+			},
+			{
+				fileName: 'myFantasticallyAmazingEventTargetAndPayload.schema.ts',
+				expectedId: 'myFantasticallyAmazingEventTargetAndPayload',
 			},
 		]
 

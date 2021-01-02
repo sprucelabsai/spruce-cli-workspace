@@ -33,9 +33,9 @@ let progressInterval: any
 async function run() {
 	term.clear()
 
-	if (process.env.PRE_BUILD_CACHE_SCRIPT) {
+	if (process.env.WILL_BUILD_CACHE_SCRIPT) {
 		term.renderLine('Running pre build cache script')
-		execSync(process.env.PRE_BUILD_CACHE_SCRIPT)
+		execSync(process.env.WILL_BUILD_CACHE_SCRIPT)
 	}
 
 	term.renderHeadline(`Found ${testKeys.length} skills to cache.`)

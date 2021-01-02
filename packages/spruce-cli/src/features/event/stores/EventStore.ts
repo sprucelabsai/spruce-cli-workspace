@@ -4,6 +4,7 @@ import {
 	eventResponseUtil,
 	eventDiskUtil,
 	eventNameUtil,
+	buildEmitTargetAndPayloadSchema,
 } from '@sprucelabs/spruce-event-utils'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
@@ -87,7 +88,18 @@ export default class EventStore extends AbstractStore {
 						break
 				}
 				if (key) {
-					if (isSchema) {
+					if (key === 'emitPayloadSchema') {
+						const schema = await schemaImporter.importSchema(match)
+						const targetAndPayload = buildEmitTargetAndPayloadSchema({
+							emitPayloadSchema: schema,
+							eventName,
+						})
+						//@ts-ignore
+						targetAndPayload.version = version
+
+						//@ts-ignore
+						eventSignatures[fullyQualifiedEventName][key] = targetAndPayload
+					} else if (isSchema) {
 						//@ts-ignore
 						eventSignatures[fullyQualifiedEventName][
 							key

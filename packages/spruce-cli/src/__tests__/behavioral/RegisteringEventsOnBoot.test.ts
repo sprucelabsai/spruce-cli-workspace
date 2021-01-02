@@ -1,11 +1,11 @@
 import { eventNameUtil } from '@sprucelabs/spruce-event-utils'
-import { versionUtil } from '@sprucelabs/spruce-skill-utils'
+import { namesUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractEventTest from '../../tests/AbstractEventTest'
 
-const EVENT_NAME_READABLE = 'On boot check'
-const EVENT_NAME = 'on-boot-check'
-const EVENT_CAMEL = 'onBootCheck'
+const EVENT_NAME_READABLE = 'did book appointment'
+const EVENT_NAME = 'did-book-appointment'
+const EVENT_CAMEL = 'didBookAppointment'
 
 export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 	@test()
@@ -39,13 +39,29 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 			apiClientFactory: async () => client,
 		}).fetchEventContracts()
 
+		const version = versionUtil.generateVersion().constValue
 		const name = eventNameUtil.join({
 			eventNamespace: currentSkill.slug,
 			eventName: EVENT_NAME,
-			version: versionUtil.generateVersion().constValue,
+			version,
 		})
 
 		assert.isLength(contracts, 2)
-		assert.isEqualDeep(contracts[1].eventSignatures[name], {})
+		assert.isEqualDeep(contracts[1].eventSignatures[name], {
+			emitPayloadSchema: {
+				fields: {},
+				id: 'willBootCheckEmitTargetAndPayload',
+				namespace: namesUtil.toPascal(currentSkill.slug),
+				version,
+			},
+			responsePayloadSchema: {
+				fields: {},
+				id: 'onBootCheckResponsePayload',
+				namespace: namesUtil.toPascal(currentSkill.slug),
+				version,
+			},
+			emitPermissionContract: {},
+			listenPermissionContract: {},
+		})
 	}
 }

@@ -119,8 +119,9 @@ export default class TestReporter {
 		let remaining = durationSec
 
 		function renderCountdownTime(time: number) {
-			return `     ${time}     `
+			return `Starting in ${time}`
 		}
+
 		this.setWatchLabel(renderCountdownTime(remaining))
 
 		this.countDownTimeInterval = setInterval(() => {
@@ -248,6 +249,8 @@ export default class TestReporter {
 		this.status = status
 
 		this.updateMenuLabels()
+		this.layout.updateLayout()
+
 		if (status === 'ready') {
 			this.bar.setLabel('Loading...')
 		} else if (this.status === 'stopped') {
@@ -584,8 +587,6 @@ export default class TestReporter {
 
 			this.errorLog?.setText(cleanedLog)
 		}
-
-		this.layout.updateLayout()
 	}
 
 	private resultsToLogContents(results: SpruceTestResults) {

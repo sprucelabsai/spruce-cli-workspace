@@ -104,6 +104,10 @@ export default class EventStoreTest extends AbstractCliTest {
 			version: this.version.constValue,
 		})
 		assert.isTruthy(contracts[1].eventSignatures[name].emitPayloadSchema)
+		assert.isEqual(
+			contracts[1].eventSignatures[name].emitPayloadSchema?.id,
+			EVENT_CAMEL + 'EmitTargetAndPayload'
+		)
 		assert.isTruthy(contracts[1].eventSignatures[name].responsePayloadSchema)
 		assert.isTruthy(contracts[1].eventSignatures[name].emitPermissionContract)
 		assert.isTruthy(contracts[1].eventSignatures[name].emitPermissionContract)
