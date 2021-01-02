@@ -15,7 +15,6 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 		})
 
 		await this.Service('build').build()
-		await this.openInVsCode()
 
 		const err = await assert.doesThrowAsync(async () => {
 			const response = await cli.getFeature('skill').Action('boot').execute({})
