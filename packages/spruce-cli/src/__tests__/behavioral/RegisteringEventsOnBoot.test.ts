@@ -27,7 +27,6 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 			.Action('boot')
 			.execute({ local: true })
 
-		//give the skill time to boot
 		await this.wait(10000)
 		boot.meta?.kill()
 

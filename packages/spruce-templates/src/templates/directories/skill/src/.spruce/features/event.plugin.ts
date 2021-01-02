@@ -86,9 +86,9 @@ export class EventSkillFeature implements SkillFeature {
 
 	public async checkHealth() {
 		try {
-			
+
 			await this.loadEverything()
-			
+
 
 			const health: EventHealthCheckItem = {
 				status: 'passed',
@@ -109,7 +109,7 @@ export class EventSkillFeature implements SkillFeature {
 
 			return health
 		} catch (err) {
-			
+
 			const health: HealthCheckItem = {
 				status: 'failed',
 				errors: [
@@ -153,7 +153,7 @@ export class EventSkillFeature implements SkillFeature {
 		const contracts = require(this.combinedContractsFile).default
 		const MercuryClientFactory = require('@sprucelabs/mercury-client')
 			.MercuryClientFactory
-		const host = 'https://sandbox.mercury.spruce.ai'
+		const host = process.env.HOST ?? 'https://sandbox.mercury.spruce.ai'
 
 		this.log.info('Connecting to Mercury at', host)
 		const client = await MercuryClientFactory.Client({
@@ -177,6 +177,8 @@ export class EventSkillFeature implements SkillFeature {
 					apiKey,
 				},
 			} as any)
+
+
 
 			const { auth } = eventResponseUtil.getFirstResponseOrThrow(results)
 
@@ -237,12 +239,17 @@ export class EventSkillFeature implements SkillFeature {
 			}
 
 			for (const event of this.eventsIRegistered) {
+				debugger
+				const name = eventNameUtil.join({ eventName: event.eventName, version: event.version })
 				//@ts-ignore
-				contract.eventSignatures[event.fullyQualifiedEventName] =
+				contract.eventSignatures[name] =
 					event.signature
 			}
 
-			await client.emit('register-events::v2020_12_25', { payload: { contract } })
+
+			const registerResults = await client.emit('register-events::v2020_12_25', { payload: { contract } })
+
+			eventResponseUtil.getFirstResponseOrThrow(registerResults)
 
 			this.log.info(
 				`Registered ${this.eventsIRegistered.length} event contract${this.eventsIRegistered.length === 1 ? '' : 's'
@@ -335,7 +342,7 @@ export class EventSkillFeature implements SkillFeature {
 		const listeners: EventFeatureListener[] = []
 
 		listenerMatches.map((match) => {
-			
+
 			const {
 				eventName,
 				eventNamespace,
