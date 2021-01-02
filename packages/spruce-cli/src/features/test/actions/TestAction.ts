@@ -379,6 +379,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			this.runnerStatus === 'run' &&
 			this.watchMode === 'smart' &&
 			this.testRunner?.hasFailedTests() === false &&
+			!this.testRunner?.hasSkippedTests() &&
 			(this.pattern ?? []).length > 0
 		) {
 			this.runnerStatus = 'restart'

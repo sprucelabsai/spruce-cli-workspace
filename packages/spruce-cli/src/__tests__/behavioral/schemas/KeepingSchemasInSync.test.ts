@@ -317,7 +317,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		assert.isFalse(diskUtil.doesFileExist(schemaFile))
 	}
 
-	@test.only()
+	@test()
 	protected static async canSyncSchemasWhenOnlyNodeModuleIsInstalled() {
 		const cli = await this.FeatureFixture().installCachedFeatures(
 			'schemasInNodeModule'

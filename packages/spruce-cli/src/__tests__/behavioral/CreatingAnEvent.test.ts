@@ -1,4 +1,4 @@
-import { eventNameUtil } from '@sprucelabs/spruce-event-utils'
+import { eventDiskUtil, eventNameUtil } from '@sprucelabs/spruce-event-utils'
 import {
 	diskUtil,
 	namesUtil,
@@ -17,6 +17,9 @@ const EVENT_NAME = 'my-fantastically-amazing-event'
 const EVENT_CAMEL = 'myFantasticallyAmazingEvent'
 
 export default class CreatingAnEventTest extends AbstractEventTest {
+	private static readonly expectedVersion = versionUtil.generateVersion()
+		.constValue
+
 	@test()
 	protected static async hasCreateAction() {
 		assert.isFunction(
@@ -25,21 +28,10 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 	}
 
 	@test()
-	protected static async cantCreateWithoutBeingRegistered() {
+	protected static async createsVersionedEventFilesDefaultingToToday() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
-		const results = await cli.getFeature('event').Action('create').execute({
-			nameReadable: EVENT_NAME_READABLE,
-			nameKebab: EVENT_NAME,
-			nameCamel: EVENT_CAMEL,
-		})
 
-		assert.isArray(results.errors)
-		errorAssertUtil.assertError(results.errors[0], 'SKILL_NOT_REGISTERED')
-	}
-
-	@test.only()
-	protected static async createsVersionedEventFilesDefaultingtoToday() {
-		const cli = await this.FeatureFixture().installCachedFeatures('events')
+		await this.assertCantCreateWithoutBeingRegistered(cli)
 
 		const skill = await this.SkillFixture().registerCurrentSkill({
 			name: 'my new skill',
@@ -53,28 +45,13 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 
 		assert.isFalsy(results.errors)
 
-		debugger
 		await this.assertReturnsEventFromHealthCheck(cli, skill)
-		debugger
-		await this.assertExpectedPayloadSchemas(results, skill)
-		debugger
+		await this.assertExpectedPayloadSchemas(results)
 		await this.assertValidActionResponseFiles(results)
+		await this.createsExpectedPermissionContract(results)
 	}
 
-	@test()
-	protected static async createsExpectedPermissionContract() {
-		const cli = await this.FeatureFixture().installCachedFeatures('events')
-
-		const skill = await this.SkillFixture().registerCurrentSkill({
-			name: 'my new skill',
-		})
-
-		const results = await cli.getFeature('event').Action('create').execute({
-			nameReadable: EVENT_NAME_READABLE,
-			nameKebab: EVENT_NAME,
-			nameCamel: EVENT_CAMEL,
-		})
-
+	protected static async createsExpectedPermissionContract(results: any) {
 		const builders = [
 			{ filename: 'emitPermissions.builder.ts' },
 			{ filename: 'listenPermissions.builder.ts' },
@@ -91,9 +68,8 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 			const path = versionUtil.resolvePath(
 				this.cwd,
 				'src/events/',
-				namesUtil.toPascal(skill.slug ?? 'missing'),
-				'{{@latest}}',
 				EVENT_NAME,
+				'{{@latest}}',
 				filename
 			)
 
@@ -102,37 +78,46 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		}
 	}
 
+	protected static async assertCantCreateWithoutBeingRegistered(cli: any) {
+		const results = await cli.getFeature('event').Action('create').execute({
+			nameReadable: EVENT_NAME_READABLE,
+			nameKebab: EVENT_NAME,
+			nameCamel: EVENT_CAMEL,
+		})
+
+		assert.isArray(results.errors)
+		errorAssertUtil.assertError(results.errors[0], 'SKILL_NOT_REGISTERED')
+	}
+
 	private static async assertReturnsEventFromHealthCheck(
 		cli: CliInterface,
 		skill: RegisteredSkill
 	) {
 		const health = await cli.checkHealth()
 
-		debugger
-
 		assert.isTruthy(health.event)
 		assert.isLength(health.event.events, 1)
 
 		const eventName = EVENT_NAME
-		const eventNamespace = namesUtil.toPascal(skill.slug)
+		const eventNamespace = namesUtil.toKebab(skill.slug)
 
 		assert.doesInclude(health.event.events, {
 			eventName,
 			eventNamespace,
-			version: versionUtil.generateVersion().constValue,
+			version: this.expectedVersion,
 		})
 
 		assert.doesInclude(health.event.contracts, {
-			eventNameWithOptionalNamespace: eventNameUtil.join({
+			fullyQualifiedEventName: eventNameUtil.join({
 				eventName,
 				eventNamespace,
+				version: this.expectedVersion,
 			}),
 		})
 	}
 
 	private static async assertExpectedPayloadSchemas(
-		results: FeatureActionResponse,
-		skill: RegisteredSkill
+		results: FeatureActionResponse
 	) {
 		const payloadSchemas = [
 			{
@@ -155,14 +140,11 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 
 			assert.isEqual(
 				match,
-				versionUtil.resolvePath(
-					this.cwd,
-					'src/events/',
-					namesUtil.toPascal(skill.slug ?? 'missing'),
-					'{{@latest}}',
-					EVENT_NAME,
-					payload.fileName
-				)
+				eventDiskUtil.resolveEventPath(this.cwd + '/src/events', {
+					fileName: payload.fileName as any,
+					eventName: EVENT_NAME,
+					version: this.expectedVersion,
+				})
 			)
 
 			const imported = await schemas.importSchema(match)

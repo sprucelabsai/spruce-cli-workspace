@@ -70,7 +70,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			}
 		}
 
-		const generator = this.Generator('test')
+		const generator = this.Writer('test')
 
 		const results = await generator.generateTest(resolvedDestination, {
 			...normalizedOptions,

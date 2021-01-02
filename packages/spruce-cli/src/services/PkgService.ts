@@ -69,7 +69,7 @@ export default class PkgService extends CommandService {
 		if (install) {
 			const args: string[] = ['-timeout=9999999', 'add', ...packages]
 			if (options?.isDev) {
-				args.push('--also=dev')
+				args.push('-D')
 			}
 
 			await this.execute('npm', {

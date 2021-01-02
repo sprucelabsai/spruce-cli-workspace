@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { execSync } from 'child_process'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import FeatureFixture from '../fixtures/FeatureFixture'
 import MercuryFixture from '../fixtures/MercuryFixture'
@@ -31,6 +32,12 @@ let progressInterval: any
 
 async function run() {
 	term.clear()
+
+	if (process.env.PRE_BUILD_CACHE_SCRIPT) {
+		term.renderLine('Running pre build cache script')
+		execSync(process.env.PRE_BUILD_CACHE_SCRIPT)
+	}
+
 	term.renderHeadline(`Found ${testKeys.length} skills to cache.`)
 
 	let messages: [string, any][] = []

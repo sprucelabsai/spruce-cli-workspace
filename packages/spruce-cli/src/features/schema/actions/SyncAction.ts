@@ -20,7 +20,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	public optionsSchema = syncSchemasActionSchema
 	public commandAliases = ['sync.schemas']
 
-	private readonly schemaGenerator = this.Generator('schema')
+	private readonly schemaGenerator = this.Writer('schema')
 	private readonly schemaStore = this.Store('schema')
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {

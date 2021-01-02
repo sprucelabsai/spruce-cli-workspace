@@ -16,6 +16,9 @@ import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
 export default class CreatingAListenerTest extends AbstractEventTest {
+	private static readonly expectedVersion = versionUtil.generateVersion()
+		.constValue
+
 	@test()
 	protected static async throwsWithBadNamespace() {
 		const cli = await this.installEventFeature('events')
@@ -63,7 +66,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		assert.isFalsy(results.errors)
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
-			'will-boot.listener.ts',
+			`will-boot.${version}.listener.ts`,
 			results.files
 		)
 
@@ -109,7 +112,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		this.ui.reset()
 	}
 
-	@test.only()
+	@test()
 	protected static async generatesTypedListenerWithoutPayloads() {
 		const {
 			contents,
@@ -187,18 +190,21 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 			.execute({ local: true })
 
 		//give the skill time to boot
-		await this.wait(30000)
+		await this.wait(10000)
 
 		const client = (await this.connectToApi({
 			skillId: skill2.id,
 			apiKey: skill2.apiKey,
 		})) as any
 
-		const eventName = `${skill2.slug}.my-new-event`
+		const eventName = `${skill2.slug}.my-new-event::${this.expectedVersion}`
 
 		client.mixinContract({
 			eventSignatures: {
-				[eventName]: eventContract.eventSignatures['my-new-event'],
+				[eventName]:
+					eventContract.eventSignatures[
+						`my-new-event::${this.expectedVersion}`
+					],
 			},
 		})
 
@@ -233,7 +239,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 	private static async setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
 		eventSignature: EventSignature
 	) {
-		const expectedVersion = versionUtil.generateVersion().dirValue
+		const expectedVersion = this.expectedVersion
 
 		const eventContract = {
 			eventSignatures: {
@@ -253,7 +259,8 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 		const results = await cli.getFeature('event').Action('listen').execute({
 			eventNamespace: skill2.slug,
-			eventName: 'my-new-event',
+			eventName: `my-new-event`,
+			version: expectedVersion,
 		})
 
 		assert.isFalsy(results.errors)

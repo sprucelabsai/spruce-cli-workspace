@@ -270,6 +270,9 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		dir?: string
 		timeout?: number
 	}) {
+		const cli = await this.Cli()
+		await cli.getFeature('vscode').Action('setup').execute({ all: true })
+
 		await this.Service('command').execute(
 			`code ${options?.file ?? options?.dir ?? this.cwd}`
 		)

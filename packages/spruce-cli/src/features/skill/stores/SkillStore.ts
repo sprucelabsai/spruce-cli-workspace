@@ -84,16 +84,15 @@ export default class SkillStore extends AbstractStore {
 				isRegistered: true,
 				apiKey: currentSkill.apiKey,
 			}
-		} else {
-			SkillStore.currentSkill = {
-				name: this.getSkillNameFromPkg(),
-				namespacePascal: this.getEventNamespaceForNotRegistered(),
-				description: this.getSkillDescriptionFromPkg(),
-				isRegistered: false,
-			}
+			return SkillStore.currentSkill as CurrentSkill
 		}
 
-		return SkillStore.currentSkill as CurrentSkill
+		return {
+			name: this.getSkillNameFromPkg(),
+			namespacePascal: this.getEventNamespaceForNotRegistered(),
+			description: this.getSkillDescriptionFromPkg(),
+			isRegistered: false,
+		}
 	}
 
 	public async isCurrentSkillRegistered() {
@@ -114,6 +113,7 @@ export default class SkillStore extends AbstractStore {
 
 	public async loadCurrentSkillsNamespace() {
 		const fallback = namesUtil.toPascal(this.getSkillNameFromPkg())
+
 		if (this.Service('auth').getCurrentSkill()) {
 			const current = await this.loadCurrentSkill()
 			return namesUtil.toPascal(current.slug ?? fallback)

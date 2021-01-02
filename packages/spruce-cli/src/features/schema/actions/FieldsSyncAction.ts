@@ -44,7 +44,7 @@ export default class FieldsSyncAction extends AbstractFeatureAction<OptionsSchem
 			fields
 		)
 
-		const schemaGenerator = this.Generator('schema')
+		const schemaGenerator = this.Writer('schema')
 		if (generateFieldTypes) {
 			const results = await schemaGenerator.writeFieldTypes(
 				resolvedFieldTypesDestination,

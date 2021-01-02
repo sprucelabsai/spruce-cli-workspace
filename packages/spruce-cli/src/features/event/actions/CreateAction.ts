@@ -108,13 +108,11 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			response.files = []
 
 			for (const file of files) {
-				const destination = diskUtil.resolvePath(
-					eventDiskUtil.resolveEventPath(eventsDir, {
-						eventName: nameKebab,
-						version: resolvedVersion,
-					}),
-					file.name
-				)
+				const destination = eventDiskUtil.resolveEventPath(eventsDir, {
+					fileName: file.name as any,
+					eventName: nameKebab,
+					version: resolvedVersion,
+				})
 
 				const contents = this.templates[file.templateMethod]({
 					nameCamel,

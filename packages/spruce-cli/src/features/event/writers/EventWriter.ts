@@ -1,5 +1,6 @@
 import pathUtil from 'path'
 import { SchemaTemplateItem } from '@sprucelabs/schema'
+import { eventDiskUtil } from '@sprucelabs/spruce-event-utils'
 import {
 	diskUtil,
 	namesUtil,
@@ -115,15 +116,14 @@ export default class EventWriter extends AbstractWriter {
 			schemaTypesLookupDir,
 			contractDestinationDir,
 		} = options
-		const filename = `${eventName}.listener.ts`
 
-		debugger
-
-		const resolvedDestination = pathUtil.join(
+		const resolvedDestination = eventDiskUtil.resolveListenerPath(
 			destinationDir,
-			eventNamespace,
-			version,
-			filename
+			{
+				eventName,
+				eventNamespace,
+				version,
+			}
 		)
 
 		const relativeTypesFile = this.resolveSchemaTypesFile(
@@ -146,7 +146,7 @@ export default class EventWriter extends AbstractWriter {
 		const results = await this.writeFileIfChangedMixinResults(
 			resolvedDestination,
 			listenerContents,
-			`Listener for  ${eventNamespace}.${eventName}.`
+			`Listener for ${eventNamespace}.${eventName}.`
 		)
 
 		return results

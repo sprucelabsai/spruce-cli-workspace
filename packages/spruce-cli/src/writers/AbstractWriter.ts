@@ -24,6 +24,7 @@ export default abstract class AbstractWriter {
 	private ui: GraphicsInterface
 	private upgradeMode: UpgradeMode
 	private fileDescriptions: FileDescription[] = []
+	private shouldConfirmBeforeWriting = true
 
 	public constructor(options: WriterOptions) {
 		this.templates = options.templates
@@ -37,8 +38,16 @@ export default abstract class AbstractWriter {
 		code: DirectoryTemplateCode
 		filesToWrite?: string[]
 		context: any
+		shouldConfirmBeforeWriting?: boolean
 	}) {
-		const { context, destinationDir, filesToWrite } = options
+		const {
+			context,
+			destinationDir,
+			filesToWrite,
+			shouldConfirmBeforeWriting = true,
+		} = options
+
+		this.shouldConfirmBeforeWriting = shouldConfirmBeforeWriting
 
 		const files = await this.templates.directoryTemplate({
 			kind: options.code,
@@ -83,7 +92,10 @@ export default abstract class AbstractWriter {
 
 		if (!diskUtil.doesFileExist(destination)) {
 			let write = true
-			if (fileDescription?.confirmPromptOnFirstWrite) {
+			if (
+				this.shouldConfirmBeforeWriting &&
+				fileDescription?.confirmPromptOnFirstWrite
+			) {
 				write = await this.ui.confirm(fileDescription.confirmPromptOnFirstWrite)
 			}
 
@@ -153,7 +165,10 @@ export default abstract class AbstractWriter {
 	}
 
 	private shouldAskForOverwrite() {
-		if (this.upgradeMode === 'askEverything') {
+		if (
+			this.shouldConfirmBeforeWriting &&
+			this.upgradeMode === 'askEverything'
+		) {
 			return true
 		}
 

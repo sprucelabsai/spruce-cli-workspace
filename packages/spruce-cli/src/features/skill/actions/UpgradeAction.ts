@@ -31,7 +31,7 @@ export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> 
 	}
 
 	private async copyFiles(normalizedOptions: Options) {
-		const skillGenerator = this.Generator('skill', {
+		const skillGenerator = this.Writer('skill', {
 			upgradeMode: normalizedOptions.upgradeMode,
 		})
 		const pkgService = this.Service('pkg')

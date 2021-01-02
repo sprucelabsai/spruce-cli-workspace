@@ -1,7 +1,4 @@
-import {
-	eventContractUtil,
-	eventNameUtil,
-} from '@sprucelabs/spruce-event-utils'
+import { eventNameUtil } from '@sprucelabs/spruce-event-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractEventTest from '../../tests/AbstractEventTest'

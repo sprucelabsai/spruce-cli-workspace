@@ -102,5 +102,13 @@ export default class SettingUpASkill extends AbstractCliTest {
 
 		const hiddenFiles = results.files.filter((file) => file.name[0] === '.')
 		assert.isAbove(hiddenFiles.length, 0)
+
+		this.assertDevDependenciesExist()
+	}
+
+	protected static assertDevDependenciesExist() {
+		const pkg = this.Service('pkg')
+		const devDependencies = pkg.get('devDependencies')
+		assert.isTruthy(devDependencies)
 	}
 }

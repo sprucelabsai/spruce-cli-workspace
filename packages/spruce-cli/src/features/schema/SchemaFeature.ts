@@ -17,6 +17,9 @@ export default class SchemaFeature extends AbstractFeature {
 		{
 			name: '@sprucelabs/schema',
 		},
+		{
+			name: '@sprucelabs/spruce-core-schemas',
+		},
 		{ name: '@sprucelabs/babel-plugin-schema', isDev: true },
 	]
 

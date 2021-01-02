@@ -68,6 +68,9 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 			if (!eventChoicesByNamespace[eventNamespace]) {
 				throw new SpruceError({
 					code: 'INVALID_PARAMETERS',
+					friendlyMessage: `${eventNamespace} is not a valid event namespace. Try: \n\n${Object.keys(
+						eventChoicesByNamespace
+					).join('\n')}`,
 					parameters: ['eventNamespace'],
 				})
 			}
@@ -76,13 +79,24 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 				eventName = await this.collectEvent(contracts, eventNamespace)
 			}
 
+			const fqen = eventNameUtil.join({
+				eventName,
+				eventNamespace,
+				version,
+			})
+
 			const isValidEvent = !!eventChoicesByNamespace[eventNamespace].find(
-				(e) => e.value === eventName
+				(e) => e.value === eventName || e.value === fqen
 			)
 
 			if (!isValidEvent) {
 				throw new SpruceError({
 					code: 'INVALID_PARAMETERS',
+					friendlyMessage: `${eventName} is not a valid event . Try: \n\n${eventChoicesByNamespace[
+						eventNamespace
+					]
+						.map((i) => i.value)
+						.join('\n')}`,
 					parameters: ['eventName'],
 				})
 			}
@@ -124,7 +138,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 					templateItems.responsePayloadSchemaTemplateItem
 			}
 
-			const generator = this.Generator('event')
+			const generator = this.Writer('event')
 			const results = await generator.writeListener(resolvedDestination, {
 				...normalizedOptions,
 				version: resolvedVersion,

@@ -606,10 +606,6 @@ export default class TestReporter {
 				`\n${errorContent}`
 		}
 
-		if (errorContent) {
-			debugger
-		}
-
 		return { logContent, errorContent }
 	}
 

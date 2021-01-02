@@ -53,7 +53,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			...item,
 			code: namesUtil.toConst(item.namePascal),
 		}))
-		const errorGenerator = this.Generator('error')
+		const errorGenerator = this.Writer('error')
 
 		const optionsResults = await this.generateOptionTypes(
 			errorGenerator,

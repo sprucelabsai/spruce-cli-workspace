@@ -120,6 +120,10 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
 		return (this.testResults.totalFailed ?? 0) > 0
 	}
 
+	public hasSkippedTests() {
+		return (this.testResults.totalSkipped ?? 0) > 0
+	}
+
 	public kill() {
 		this.wasKilled = true
 		this.commandService.kill()

@@ -150,6 +150,8 @@ export default class SchemaStore extends AbstractStore {
 		const errors: SpruceError[] = []
 		const schemas: Schema[] = []
 
+		let count = 0
+
 		await Promise.all(
 			localMatches.map(async (local: string) => {
 				let version: undefined | string
@@ -158,7 +160,7 @@ export default class SchemaStore extends AbstractStore {
 					version =
 						enableVersioning === false
 							? undefined
-							: versionUtil.extractVersion(this.cwd, local).dirValue
+							: versionUtil.extractVersion(this.cwd, local).constValue
 				} catch (err) {
 					errors.push(
 						new SpruceError({
@@ -173,7 +175,10 @@ export default class SchemaStore extends AbstractStore {
 
 				if (version || enableVersioning === false) {
 					try {
+						console.log('started', count++, local)
 						const schema = await schemaService.importSchema(local)
+						console.log('finished', --count, local)
+
 						let errors: string[] = []
 
 						if (schema.version) {

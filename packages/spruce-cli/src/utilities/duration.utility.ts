@@ -20,7 +20,11 @@ const durationUtil = {
 		}
 
 		if (hours === 0 && minutes === 0) {
-			durationStr += `${milliseconds}ms`
+			if (seconds > 0) {
+				durationStr += `${seconds}.${milliseconds}s`
+			} else {
+				durationStr += `${milliseconds}ms`
+			}
 		}
 
 		return durationStr.trim()

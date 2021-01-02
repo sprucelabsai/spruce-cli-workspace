@@ -81,7 +81,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 		return this.storeFactory.Store(code, { cwd: this.cwd, ...options })
 	}
 
-	protected Generator<C extends WriterCode>(
+	protected Writer<C extends WriterCode>(
 		code: C,
 		options?: Partial<WriterOptions>
 	): WriterMap[C] {

@@ -1,5 +1,4 @@
 import pathUtil from 'path'
-import { MercuryClient } from '@sprucelabs/mercury-client'
 import {
 	EventContract,
 	SpruceSchemas,
@@ -23,9 +22,11 @@ import {
 	Log,
 } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
+import SpruceError from '@sprucelabs/spruce-skill-utils/build/SpruceError'
 
 require('dotenv').config()
 
+type MercuryClient<T> = T extends any ? any : any
 
 
 export class EventSkillFeature implements SkillFeature {
@@ -85,7 +86,9 @@ export class EventSkillFeature implements SkillFeature {
 
 	public async checkHealth() {
 		try {
+			
 			await this.loadEverything()
+			
 
 			const health: EventHealthCheckItem = {
 				status: 'passed',
@@ -106,9 +109,16 @@ export class EventSkillFeature implements SkillFeature {
 
 			return health
 		} catch (err) {
+			
 			const health: HealthCheckItem = {
 				status: 'failed',
-				errors: [err],
+				errors: [
+					new SpruceError({
+						//@ts-ignore
+						code: 'EVENT_PLUGIN_ERROR',
+						originalError: err
+					}).toObject()
+				],
 			}
 
 			return health
@@ -325,6 +335,7 @@ export class EventSkillFeature implements SkillFeature {
 		const listeners: EventFeatureListener[] = []
 
 		listenerMatches.map((match) => {
+			
 			const {
 				eventName,
 				eventNamespace,
