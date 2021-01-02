@@ -33,10 +33,6 @@ jobs:
           command: |
             yarn run build
       - run:
-          name: "Lint"
-          command: |
-            yarn run lint
-      - run:
           name: "Cache Tests"
           command: |
             cd packages/spruce-cli
