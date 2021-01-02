@@ -146,73 +146,25 @@ export default class SchemaStore extends AbstractStore {
 			diskUtil.resolvePath(this.cwd, localLookupDir, '**/*.builder.[t|j]s')
 		)
 
-		const schemaService = this.Service('schema')
 		const errors: SpruceError[] = []
 		const schemas: Schema[] = []
 
-		let count = 0
-
 		await Promise.all(
-			localMatches.map(async (local: string) => {
-				let version: undefined | string
-
-				try {
-					version =
-						enableVersioning === false
-							? undefined
-							: versionUtil.extractVersion(this.cwd, local).constValue
-				} catch (err) {
-					errors.push(
-						new SpruceError({
-							// @ts-ignore
-							code: 'VERSION_MISSING',
-							friendlyMessage: `It looks like your schema's are not versioned. Make sure schemas are in a directory like src/schemas/${
-								versionUtil.generateVersion().dirValue
-							}/*.ts`,
-						})
-					)
-				}
+			localMatches.map(async (local) => {
+				let version: undefined | string = this.resolveLocalVersion(
+					enableVersioning,
+					local,
+					errors
+				)
 
 				if (version || enableVersioning === false) {
-					try {
-						console.log('started', count++, local)
-						const schema = await schemaService.importSchema(local)
-						console.log('finished', --count, local)
-
-						let errors: string[] = []
-
-						if (schema.version) {
-							errors.push('version_should_not_be_set')
-						}
-
-						if (schema.namespace) {
-							errors.push('namespace_should_not_be_set')
-						}
-
-						schema.namespace = localNamespace
-
-						if (errors.length > 0) {
-							throw new SpruceError({
-								code: 'INVALID_SCHEMA',
-								schemaId: schema.id,
-								errors,
-								friendlyMessage:
-									'You should not set a namespace nor version in your schema builder.',
-							})
-						}
-
-						schema.version = version
-
-						schemas.push(schema)
-					} catch (err) {
-						errors.push(
-							new SpruceError({
-								code: 'SCHEMA_FAILED_TO_IMPORT',
-								file: local,
-								originalError: err,
-							})
-						)
-					}
+					await this.loadLocalSchema(
+						local,
+						localNamespace,
+						version,
+						schemas,
+						errors
+					)
 				}
 			})
 		)
@@ -221,6 +173,90 @@ export default class SchemaStore extends AbstractStore {
 			schemas,
 			errors,
 		}
+	}
+
+	private async loadLocalSchema(
+		local: string,
+		localNamespace: string,
+		version: string | undefined,
+		schemas: Schema[],
+		errors: SpruceError[]
+	) {
+		try {
+			let schema = await this.importSchema(local, localNamespace, version)
+			schemas.push(schema)
+		} catch (err) {
+			errors.push(
+				new SpruceError({
+					code: 'SCHEMA_FAILED_TO_IMPORT',
+					file: local,
+					originalError: err,
+				})
+			)
+		}
+	}
+
+	private resolveLocalVersion(
+		enableVersioning: boolean | undefined,
+		local: string,
+		errors: SpruceError[]
+	) {
+		let version: undefined | string
+
+		try {
+			version =
+				enableVersioning === false
+					? undefined
+					: versionUtil.extractVersion(this.cwd, local).constValue
+		} catch (err) {
+			errors.push(
+				new SpruceError({
+					// @ts-ignore
+					code: 'VERSION_MISSING',
+					friendlyMessage: `It looks like your schema's are not versioned. Make sure schemas are in a directory like src/schemas/${
+						versionUtil.generateVersion().dirValue
+					}/*.ts`,
+				})
+			)
+		}
+		return version
+	}
+
+	private async importSchema(
+		local: string,
+		localNamespace: string,
+		version: string | undefined
+	) {
+		console.log('started', local)
+		const schemaService = this.Service('schema')
+		const schema = await schemaService.importSchema(local)
+		console.log('finished', local)
+
+		let errors: string[] = []
+
+		if (schema.version) {
+			errors.push('version_should_not_be_set')
+		}
+
+		if (schema.namespace) {
+			errors.push('namespace_should_not_be_set')
+		}
+
+		schema.namespace = localNamespace
+
+		if (errors.length > 0) {
+			throw new SpruceError({
+				code: 'INVALID_SCHEMA',
+				schemaId: schema.id,
+				errors,
+				friendlyMessage:
+					'You should not set a namespace nor version in your schema builder.',
+			})
+		}
+
+		schema.version = version
+
+		return schema
 	}
 
 	public async fetchFields(options?: {

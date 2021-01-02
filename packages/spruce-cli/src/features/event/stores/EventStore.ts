@@ -25,7 +25,7 @@ export default class EventStore extends AbstractStore {
 
 		const results = await client.emit('get-event-contracts::v2020_12_25')
 		const { contracts } = eventResponseUtil.getFirstResponseOrThrow(results)
-
+		debugger
 		const localContract =
 			options?.localNamespace &&
 			(await this.loadLocalContract(options.localNamespace))
