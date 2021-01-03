@@ -133,10 +133,13 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
 			{
 				emitPayloadSchema: buildEmitTargetAndPayloadSchema({
-					id: 'myNewEventEmitPayload',
-					fields: {
-						booleanField: {
-							type: 'boolean',
+					eventName: 'my-new-event',
+					emitPayloadSchema: {
+						id: 'myNewEventEmitPayload',
+						fields: {
+							booleanField: {
+								type: 'boolean',
+							},
 						},
 					},
 				}),
@@ -161,10 +164,13 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
 			{
 				emitPayloadSchema: buildEmitTargetAndPayloadSchema({
-					id: 'myNewEventEmitPayload',
-					fields: {
-						booleanField: {
-							type: 'boolean',
+					eventName: 'my-new-event',
+					emitPayloadSchema: {
+						id: 'myNewEventEmitPayload',
+						fields: {
+							booleanField: {
+								type: 'boolean',
+							},
 						},
 					},
 				}),

@@ -137,5 +137,7 @@ export default class EventStore extends AbstractStore {
 		})
 
 		eventResponseUtil.getFirstResponseOrThrow(results)
+
+		return results
 	}
 }

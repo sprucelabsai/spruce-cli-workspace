@@ -1,4 +1,7 @@
-import { eventNameUtil } from '@sprucelabs/spruce-event-utils'
+import {
+	eventContractUtil,
+	eventNameUtil,
+} from '@sprucelabs/spruce-event-utils'
 import { namesUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractEventTest from '../../tests/AbstractEventTest'
@@ -47,21 +50,69 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 		})
 
 		assert.isLength(contracts, 2)
-		assert.isEqualDeep(contracts[1].eventSignatures[name], {
+		const namespace = namesUtil.toPascal(currentSkill.slug)
+		const sig = eventContractUtil.getSignatureByName(contracts[1], name)
+
+		assert.isEqualDeep(sig, {
 			emitPayloadSchema: {
-				fields: {},
-				id: 'willBootCheckEmitTargetAndPayload',
-				namespace: namesUtil.toPascal(currentSkill.slug),
+				id: 'didBookAppointmentEmitTargetAndPayload',
 				version,
+				namespace,
+				name: '',
+				fields: {
+					target: {
+						type: 'schema',
+						isRequired: true,
+						options: {
+							schema: {
+								id: 'eventTarget',
+								version,
+								namespace,
+								name: '',
+								fields: {
+									locationId: { type: 'id' },
+									personId: { type: 'id' },
+									organizationId: { type: 'id' },
+									skillSlug: { type: 'id' },
+								},
+							},
+						},
+					},
+				},
 			},
 			responsePayloadSchema: {
-				fields: {},
-				id: 'onBootCheckResponsePayload',
-				namespace: namesUtil.toPascal(currentSkill.slug),
+				id: 'didBookAppointmentResponsePayload',
 				version,
+				namespace,
+				name: '',
+				fields: {},
 			},
-			emitPermissionContract: {},
-			listenPermissionContract: {},
+			emitPermissionContract: {
+				id: 'didBookAppointmentEmitPermissions',
+				name: 'did book appointment',
+				requireAllPermissions: false,
+				permissions: [
+					{
+						id: 'can-high-five',
+						name: 'Can give high five',
+						description: 'Will this person be allowed to high five?',
+						requireAllStatuses: false,
+					},
+				],
+			},
+			listenPermissionContract: {
+				id: 'didBookAppointmentListenPermissions',
+				name: 'did book appointment',
+				requireAllPermissions: false,
+				permissions: [
+					{
+						id: 'can-high-five',
+						name: 'Can give high five',
+						description: 'Will this person be allowed to high five?',
+						requireAllStatuses: false,
+					},
+				],
+			},
 		})
 	}
 }

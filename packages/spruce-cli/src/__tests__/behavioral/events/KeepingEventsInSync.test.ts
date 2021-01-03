@@ -1,7 +1,14 @@
 import pathUtil from 'path'
-import { EventContract, validateEventContract } from '@sprucelabs/mercury-types'
+import {
+	buildPermissionContract,
+	EventContract,
+	validateEventContract,
+} from '@sprucelabs/mercury-types'
 import { validateSchema } from '@sprucelabs/schema'
-import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
+import {
+	buildEmitTargetAndPayloadSchema,
+	eventContractUtil,
+} from '@sprucelabs/spruce-event-utils'
 import {
 	MERCURY_API_NAMESPACE,
 	namesUtil,
@@ -87,9 +94,44 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 			cli,
 		} = await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
 
+		const eventName = `my-new-event::${this.todaysVersion.constValue}`
+		const fqen = `${skill2.slug}.my-new-event::${this.todaysVersion.constValue}`
+
 		await skillFixture.registerEventContract(skill2, {
 			eventSignatures: {
-				[`my-new-event::${this.todaysVersion.constValue}`]: {},
+				[eventName]: {
+					emitPayloadSchema: buildEmitTargetAndPayloadSchema({
+						eventName: 'my-new-event',
+						emitPayloadSchema: {
+							id: 'myNewEventEmitPayloadId',
+							fields: { onlyField: { type: 'text' } },
+						},
+					}),
+					responsePayloadSchema: {
+						id: 'myNewEventResponsePayloadId',
+						fields: {},
+					},
+					emitPermissionContract: buildPermissionContract({
+						id: 'myNewEventEmitPermissionContract',
+						name: 'My new event emit permissionContract',
+						permissions: [
+							{
+								id: 'can-emit',
+								name: 'Can emit my new event',
+							},
+						],
+					}),
+					listenPermissionContract: buildPermissionContract({
+						id: 'myNewEventListenPermissionContract',
+						name: 'My new event listen permissionContract',
+						permissions: [
+							{
+								id: 'can-listen',
+								name: 'Can emit my new event',
+							},
+						],
+					}),
+				},
 			},
 		})
 
@@ -106,6 +148,33 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 				this.todaysVersion.dirValue
 			}.contract.ts`
 		)
+
+		const contract = (await this.Service('import').importDefault(match)) as any
+		const sig = eventContractUtil.getSignatureByName(contract, fqen)
+
+		assert.isTruthy(sig.emitPayloadSchema)
+		assert.isTruthy(
+			//@ts-ignore
+			sig.emitPayloadSchema.fields?.payload?.options?.schema?.id,
+			'myNewEventEmitPayloadId'
+		)
+		assert.isTruthy(
+			sig.responsePayloadSchema?.id,
+			'myNewEventResponsePayloadId'
+		)
+
+		assert.isTruthy(sig.emitPermissionContract)
+		assert.isEqual(
+			sig.emitPermissionContract.id,
+			'myNewEventEmitPermissionContract'
+		)
+		assert.isEqual(sig.emitPermissionContract.permissions[0].id, 'can-emit')
+		assert.isTruthy(sig.listenPermissionContract)
+		assert.isEqual(
+			sig.listenPermissionContract.id,
+			'myNewEventListenPermissionContract'
+		)
+		assert.isEqual(sig.listenPermissionContract.permissions[0].id, 'can-listen')
 	}
 
 	private static async assertValidEventResults(results: FeatureActionResponse) {

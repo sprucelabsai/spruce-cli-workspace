@@ -5,19 +5,25 @@ import md5 from 'md5'
 import SpruceError from '../errors/SpruceError'
 import CommandService from './CommandService'
 
-export default class ImportService extends CommandService {
+export default class ImportService {
+	public cwd: string
+
 	private divider = '## SPRUCE-CLI DIVIDER ##'
 	private errorDivider = '## SPRUCE-CLI ERROR DIVIDER ##'
 
 	private static cachedImports: Record<string, Record<string, any>> = {}
 	private importCacheDir: string
+	private command: CommandService
 
-	public constructor(
-		cwd: string,
-		importCacheDir = diskUtil.createTempDir('import-service')
-	) {
-		super(cwd)
-		this.importCacheDir = importCacheDir
+	public constructor(options: {
+		cwd: string
+		importCacheDir?: string
+		command: CommandService
+	}) {
+		this.cwd = options.cwd
+		this.command = options.command
+		this.importCacheDir =
+			options.importCacheDir ?? diskUtil.createTempDir('import-service')
 	}
 
 	public importAll = async <T extends Record<string, any>>(
@@ -118,7 +124,7 @@ export default class ImportService extends CommandService {
 		}
 
 		try {
-			const { stdout } = await this.execute('node', {
+			const { stdout } = await this.command.execute('node', {
 				args,
 			})
 

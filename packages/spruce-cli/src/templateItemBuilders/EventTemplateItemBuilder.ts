@@ -147,6 +147,16 @@ export default class EventTemplateItemBuilder {
 			},
 		}
 
+		if (
+			namedSig.signature.listenPermissionContract ||
+			namedSig.signature.emitPermissionContract
+		) {
+			item.imports.push({
+				importAs: '{ buildPermissionContract }',
+				package: '@sprucelabs/mercury-types',
+			})
+		}
+
 		return item
 	}
 

@@ -71,6 +71,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			const resolvedVersion = await this.resolveVersion(version, eventsDir)
 
 			const files: ({
+				context?: any
 				templateMethod:
 					| 'eventEmitPayload'
 					| 'eventResponsePayload'
@@ -95,6 +96,9 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 					name: 'emitPermissions.builder.ts',
 					action: 'generated',
 					description: 'Permissions someone else will need to emit your event.',
+					context: {
+						nameCamel: nameCamel + 'Emit',
+					},
 				},
 				{
 					templateMethod: 'permissionContractBuilder',
@@ -102,6 +106,9 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 					action: 'generated',
 					description:
 						'Permissions someone else will need to listen to your event.',
+					context: {
+						nameCamel: nameCamel + 'Listen',
+					},
 				},
 			]
 
@@ -118,6 +125,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 					nameCamel,
 					nameReadable,
 					version: resolvedVersion,
+					...file.context,
 				})
 
 				diskUtil.writeFile(destination, contents)

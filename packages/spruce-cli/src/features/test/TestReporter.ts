@@ -119,7 +119,7 @@ export default class TestReporter {
 		let remaining = durationSec
 
 		function renderCountdownTime(time: number) {
-			return `Starting in ${time}`
+			return `Starting ${time} `
 		}
 
 		this.setWatchLabel(renderCountdownTime(remaining))

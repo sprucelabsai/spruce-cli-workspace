@@ -51,18 +51,28 @@ export default class ServiceFactory {
 			case 'vsCode':
 				return new VsCodeService(cwd) as ServiceMap[S]
 			case 'schema':
-				return new SchemaService(cwd) as ServiceMap[S]
+				return new SchemaService({
+					cwd,
+					command: new CommandService(cwd),
+				}) as ServiceMap[S]
 			case 'lint':
 				return new LintService(cwd) as ServiceMap[S]
 			case 'command': {
 				return new CommandService(cwd) as ServiceMap[S]
 			}
 			case 'typeChecker':
-				return new TypeCheckerService(cwd) as ServiceMap[S]
+				return new TypeCheckerService({
+					cwd,
+					command: new CommandService(cwd),
+				}) as ServiceMap[S]
 			case 'settings':
 				return new SettingsService<FeatureCode>(cwd) as ServiceMap[S]
 			case 'import':
-				return new ImportService(cwd, this.importCacheDir) as ServiceMap[S]
+				return new ImportService({
+					cwd,
+					command: new CommandService(cwd),
+					importCacheDir: this.importCacheDir,
+				}) as ServiceMap[S]
 			case 'build': {
 				const commandService = new CommandService(cwd)
 				return new BuildService(commandService) as ServiceMap[S]

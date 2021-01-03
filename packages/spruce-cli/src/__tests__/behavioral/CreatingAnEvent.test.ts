@@ -45,10 +45,23 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 
 		assert.isFalsy(results.errors)
 
+		await this.assertExpectedTargetAndPayload(results)
 		await this.assertExpectedPayloadSchemas(results)
 		await this.assertReturnsEventFromHealthCheck(cli, skill)
 		await this.assertValidActionResponseFiles(results)
+
 		await this.createsExpectedPermissionContract(results)
+	}
+
+	private static async assertExpectedTargetAndPayload(
+		results: FeatureActionResponse
+	) {
+		const match = testUtil.assertsFileByNameInGeneratedFiles(
+			'myFantasticallyAmazingEventEmitTargetAndPayload.schema.ts',
+			results.files
+		)
+		const schema = await this.Service('schema').importSchema(match)
+		assert.isEqual(schema.id, 'myFantasticallyAmazingEventEmitTargetAndPayload')
 	}
 
 	protected static async createsExpectedPermissionContract(results: any) {
@@ -127,10 +140,6 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 			{
 				fileName: 'responsePayload.builder.ts',
 				expectedId: 'myFantasticallyAmazingEventResponsePayload',
-			},
-			{
-				fileName: 'myFantasticallyAmazingEventTargetAndPayload.schema.ts',
-				expectedId: 'myFantasticallyAmazingEventTargetAndPayload',
 			},
 		]
 
