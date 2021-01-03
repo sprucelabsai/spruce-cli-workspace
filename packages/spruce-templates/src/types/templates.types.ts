@@ -71,6 +71,7 @@ export interface TestOptions {
 export interface EventListenerOptions {
 	eventName: string
 	eventNamespace: string
+	fullyQualifiedEventName: string
 	nameConst: string
 	emitPayloadSchemaTemplateItem?: SchemaTemplateItem | null
 	responsePayloadSchemaTemplateItem?: SchemaTemplateItem | null

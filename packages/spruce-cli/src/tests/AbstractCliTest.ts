@@ -7,6 +7,7 @@ import * as uuid from 'uuid'
 import Cli, { CliBootOptions } from '../cli'
 import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
 import { FeatureActionResponse, FeatureCode } from '../features/features.types'
+import SkillStore from '../features/skill/stores/SkillStore'
 import FeatureFixture, {
 	FeatureFixtureOptions,
 } from '../fixtures/FeatureFixture'
@@ -65,6 +66,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		await this.organizationFixture?.clearAllOrgs()
 		await this.mercuryFixture?.disconnectAll()
 
+		SkillStore.reset()
 		Cli.resetApiClients()
 
 		this.clearFixtures()

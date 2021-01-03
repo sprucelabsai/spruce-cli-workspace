@@ -18,6 +18,10 @@ export default class SkillStore extends AbstractStore {
 	public readonly name = 'skill'
 	private static currentSkill?: CurrentSkill
 
+	public static reset() {
+		this.currentSkill = undefined
+	}
+
 	public async register(
 		values: CreateSkill,
 		options?: RegisterSkillOptions

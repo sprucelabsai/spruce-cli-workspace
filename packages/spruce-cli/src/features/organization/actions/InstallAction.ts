@@ -32,6 +32,7 @@ export default class InstallAction extends AbstractFeatureAction<OptionsSchema> 
 				}
 
 				let organizationId: string | undefined
+
 				if (orgs.length === 1) {
 					const confirm = await this.ui.confirm(
 						`You ready to install your skill at ${orgs[0].name}?`

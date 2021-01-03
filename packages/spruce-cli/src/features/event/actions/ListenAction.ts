@@ -144,6 +144,11 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 				version: resolvedVersion,
 				eventName,
 				eventNamespace,
+				fullyQualifiedEventName: eventNameUtil.join({
+					eventName,
+					eventNamespace,
+					version: resolvedVersion,
+				}),
 				emitPayloadSchemaTemplateItem,
 				contractDestinationDir,
 				responsePayloadSchemaTemplateItem,

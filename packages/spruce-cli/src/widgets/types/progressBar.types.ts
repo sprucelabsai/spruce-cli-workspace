@@ -1,8 +1,5 @@
 import { BaseWidget } from './widgets.types'
 
-// **** //
-// ** Progress Bar **//
-
 export interface ProgressBarWidgetOptions {
 	label?: string
 	progress: number

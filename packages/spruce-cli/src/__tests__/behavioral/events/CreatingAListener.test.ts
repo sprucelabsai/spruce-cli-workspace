@@ -130,6 +130,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 	protected static async generatesTypedListenerWithEmitPayload() {
 		const {
 			contents,
+			skill2,
 		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
 			{
 				emitPayloadSchema: buildEmitTargetAndPayloadSchema({
@@ -148,7 +149,12 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 		assert.doesInclude(
 			contents,
-			'export default (event: SpruceEvent<EventContracts, EmitPayload>): SpruceEventResponse'
+			'event: SpruceEvent<EventContracts, EmitPayload>'
+		)
+
+		assert.doesInclude(
+			contents,
+			`fullyQualifiedEventName: '${skill2.slug}.my-new-event::${this.expectedVersion}'`
 		)
 	}
 
@@ -158,7 +164,6 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 			cli,
 			currentSkill,
 			skill2,
-			contents,
 			eventContract,
 			org,
 		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
@@ -183,11 +188,6 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 					},
 				}),
 			}
-		)
-
-		assert.doesInclude(
-			contents,
-			'export default (event: SpruceEvent<EventContracts, EmitPayload>): SpruceEventResponse<ResponsePayload>'
 		)
 
 		const boot = await cli
