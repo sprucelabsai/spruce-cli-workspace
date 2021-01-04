@@ -82,7 +82,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		await this.mercuryFixture?.disconnectAll()
 
 		SkillStore.reset()
-		Cli.resetApiClients()
+		await Cli.resetApiClients()
 
 		this.clearFixtures()
 

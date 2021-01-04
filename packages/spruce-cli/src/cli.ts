@@ -70,7 +70,10 @@ export default class Cli implements CliInterface {
 		Cli.apiClients = {}
 	}
 
-	public static resetApiClients() {
+	public static async resetApiClients() {
+		for (const key in this.apiClients) {
+			await this.apiClients[key].disconnect()
+		}
 		this.apiClients = {}
 	}
 
