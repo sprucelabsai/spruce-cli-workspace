@@ -3,9 +3,7 @@ import { ApiClientFactory } from '../types/apiClient.types'
 
 require('dotenv').config()
 
-export const DUMMY_PHONE = process.env.DUMMY_PHONE ?? '+1 555-555-5555'
-export const DUMMY_PHONE2 = '+1 555-555-1234'
-export const DUMMY_PHONE3 = '+1 555-555-1235'
+export const DUMMY_PHONE = process.env.DUMMY_PHONE ?? '+1 555-555-1235'
 
 export default class PersonFixture {
 	private apiClientFactory: ApiClientFactory
