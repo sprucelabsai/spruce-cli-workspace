@@ -40,8 +40,6 @@ export default class ErrorWriter extends AbstractWriter {
 			}
 		}
 
-		await this.linter.fix(destinationFile)
-
 		return results
 	}
 
