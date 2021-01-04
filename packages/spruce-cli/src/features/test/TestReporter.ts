@@ -341,11 +341,11 @@ export default class TestReporter {
 				shouldLockWidthWithParent: true,
 			})
 
-			void this.testLog.on('click', this.handleClickTestFile.bind(this))
+			void this.testLog.on('click', this.handleClickTestLog.bind(this))
 		}
 	}
 
-	private async handleClickTestFile(payload: { row: number; column: number }) {
+	private async handleClickTestLog(payload: { row: number; column: number }) {
 		const testFile = this.getFileForLine(payload.row)
 		const { row, column } = payload
 

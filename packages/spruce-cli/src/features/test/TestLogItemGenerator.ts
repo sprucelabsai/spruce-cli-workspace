@@ -91,7 +91,7 @@ export default class TestLogItemGenerator {
 			test.errorMessages?.forEach((message) => {
 				errorContent += `${chalk.red(file.path)}\n`
 				errorContent += ` - ${chalk.red(test.name)}\n\n`
-				errorContent += message + '\n\n\n'
+				errorContent += message.replace(`    at`, '\n    at') + '\n\n\n'
 			})
 		})
 
