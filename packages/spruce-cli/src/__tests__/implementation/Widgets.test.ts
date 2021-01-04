@@ -6,6 +6,7 @@ export default class WidgetsTest extends AbstractCliTest {
 	private static factory: WidgetFactory
 
 	protected static async beforeEach() {
+		await super.beforeEach()
 		this.factory = new WidgetFactory()
 	}
 
