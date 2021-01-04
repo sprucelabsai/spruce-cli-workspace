@@ -171,10 +171,12 @@ async function run() {
 
 		await fixture.installFeatures(options, cacheKey)
 
-		renderLine(`Done caching '${cacheKey}'. ${remaining - 1} remaining...`, [
-			GraphicsTextEffect.Green,
-			GraphicsTextEffect.Bold,
-		])
+		renderLine(
+			`Done caching '${cacheKey}'. ${
+				remaining - 1
+			} remaining (${durationUtil.msToFriendly(getTimeSpent())})...`,
+			[GraphicsTextEffect.Green, GraphicsTextEffect.Bold]
+		)
 	}
 }
 

@@ -3,6 +3,7 @@ import { SchemaRegistry } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractSpruceTest, { assert } from '@sprucelabs/test'
 import fs from 'fs-extra'
+import globby from 'globby'
 import * as uuid from 'uuid'
 import Cli, { CliBootOptions } from '../cli'
 import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
@@ -36,6 +37,20 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	private static personFixture?: PersonFixture
 	private static organizationFixture?: OrganizationFixture
 	private static skillFixture?: SkillFixture
+
+	protected static async beforeAll() {
+		await super.beforeAll()
+		await this.cleanTestDirsAndFiles()
+	}
+
+	private static async cleanTestDirsAndFiles() {
+		const pattern = this.resolveTestPath('**/*.d.ts')
+		const matches = await globby(pattern)
+
+		for (const match of matches) {
+			diskUtil.deleteFile(match)
+		}
+	}
 
 	protected static async beforeEach() {
 		await super.beforeEach()
@@ -77,6 +92,14 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 					`Terminal interface is waiting for input. Make sure you are invoking this.term.sendInput() as many times as needed.`
 				)
 			}
+		}
+
+		if (diskUtil.doesDirExist(this.cwd) && testUtil.shouldClearCache()) {
+			diskUtil.deleteDir(this.cwd)
+		}
+
+		if (diskUtil.doesDirExist(this.homeDir) && testUtil.shouldClearCache()) {
+			diskUtil.deleteDir(this.homeDir)
 		}
 	}
 
