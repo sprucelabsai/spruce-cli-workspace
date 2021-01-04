@@ -34,12 +34,12 @@ export type WriterCode = keyof WriterMap
 export default class WriterFactory {
 	private templates: Templates
 	private term: GraphicsInterface
-	private linter: LintService
+	private linter?: LintService
 
 	public constructor(
 		templates: Templates,
 		term: GraphicsInterface,
-		linter: LintService
+		linter?: LintService
 	) {
 		this.templates = templates
 		this.term = term

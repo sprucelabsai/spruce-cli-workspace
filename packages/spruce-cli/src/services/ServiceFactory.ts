@@ -56,7 +56,7 @@ export default class ServiceFactory {
 					command: new CommandService(cwd),
 				}) as ServiceMap[S]
 			case 'lint':
-				return new LintService(cwd) as ServiceMap[S]
+				return new LintService(cwd, new CommandService(cwd)) as ServiceMap[S]
 			case 'command': {
 				return new CommandService(cwd) as ServiceMap[S]
 			}

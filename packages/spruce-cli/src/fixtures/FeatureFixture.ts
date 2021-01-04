@@ -142,7 +142,7 @@ export default class FeatureFixture implements ServiceProvider {
 
 			if (!isCached && !this.generateCacheIfMissing) {
 				throw new Error(
-					`Cached skill not found, add\n\n"${cacheKey}"\n\nto your package.json under "testSkillCache" and run\n\n\`yarn cache.test\``
+					`Cached skill not found, make sure\n\n"${cacheKey}"\n\nisin your package.json under "testSkillCache" and run\n\n\`yarn cache.tests\``
 				)
 			}
 

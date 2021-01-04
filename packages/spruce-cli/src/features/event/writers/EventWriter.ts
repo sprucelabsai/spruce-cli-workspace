@@ -149,7 +149,7 @@ export default class EventWriter extends AbstractWriter {
 			`Listener for ${eventNamespace}.${eventName}.`
 		)
 
-		await this.linter.fix(resolvedDestination)
+		await this.linter?.fix(resolvedDestination)
 
 		return results
 	}

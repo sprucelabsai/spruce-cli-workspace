@@ -3,7 +3,15 @@ import fs from 'fs-extra'
 import SpruceError from '../errors/SpruceError'
 import CommandService from './CommandService'
 
-export default class LintService extends CommandService {
+export default class LintService {
+	public cwd: string
+	private command: CommandService
+
+	public constructor(cwd: string, command: CommandService) {
+		this.cwd = cwd
+		this.command = command
+	}
+
 	public fix = async (pattern: string): Promise<string[]> => {
 		if (!pattern) {
 			throw new SpruceError({
@@ -13,7 +21,7 @@ export default class LintService extends CommandService {
 			})
 		}
 
-		const { stdout } = await this.execute('node', {
+		const { stdout } = await this.command.execute('node', {
 			args: [
 				'-e',
 				`"try { const ESLint = require('eslint');const cli = new ESLint.CLIEngine({fix: true,cwd: '${this.cwd}'});const result=cli.executeOnFiles(['${pattern}']);console.log(JSON.stringify(result)); } catch(err) { console.log(err.toString()); }"`,

@@ -18,16 +18,16 @@ export interface WriterOptions {
 	askBeforeUpdating?: boolean
 	upgradeMode?: UpgradeMode
 	fileDescriptions: FileDescription[]
-	linter: LintService
+	linter?: LintService
 }
 
 export default abstract class AbstractWriter {
 	protected templates: Templates
+	protected linter?: LintService
 	private ui: GraphicsInterface
 	private upgradeMode: UpgradeMode
 	private fileDescriptions: FileDescription[] = []
 	private shouldConfirmBeforeWriting = true
-	protected linter: LintService
 
 	public constructor(options: WriterOptions) {
 		this.templates = options.templates
