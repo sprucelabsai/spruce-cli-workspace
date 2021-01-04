@@ -16,14 +16,15 @@
 			},
 			"problemMatcher": {
 				"pattern": {
-					"regexp": "@sprucelabs\\/spruce-cli:.*\\] .*/(.*)\\((\\d+),(\\d+)\\):\\s+error (.*)",
+					"regexp": "@sprucelabs\\/spruce-cli:.*\\] (.*)\\((\\d+),(\\d+)\\):\\s+error (.*)",
 					"file": 1,
 					"line": 2,
 					"message": 4
 				},
 				"background": {
 					"activeOnStart": true
-				}
+				},
+				"fileLocation":["relative", "${workspaceFolder}/packages/spruce-cli/"]		
 			}
 		},
 		{
