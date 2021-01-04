@@ -266,7 +266,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	) {
 		const filesToCheck = [
 			{
-				name: `unRegisterListenersTargetAndPayload.schema.ts`,
+				name: `unRegisterListenersEmitTargetAndPayload.schema.ts`,
 				path: `schemas${pathUtil.sep}${MERCURY_API_NAMESPACE}`,
 			},
 		]
