@@ -15,8 +15,8 @@ export default class TKButtonWidget
 		options: TkWidgetOptions & ButtonWidgetOptions & { termKitElement: any }
 	) {
 		super({
-			shouldLockHeightWithParent: true,
-			shouldLockWidthWithParent: true,
+			// shouldLockHeightWithParent: true,
+			// shouldLockWidthWithParent: true,
 			...options,
 		})
 
@@ -33,6 +33,8 @@ export default class TKButtonWidget
 
 		this.button.on('submit', this.handleClick.bind(this))
 		this.button.__widget = this
+
+		this.calculateSizeLockDeltas()
 	}
 
 	private handleClick() {

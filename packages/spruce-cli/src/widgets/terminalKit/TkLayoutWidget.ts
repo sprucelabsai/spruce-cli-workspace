@@ -6,7 +6,7 @@ import {
 	LayoutWidget,
 	LayoutWidgetOptions,
 } from '../types/layout.types'
-import { WidgetFrameAttribute } from '../types/widgets.types'
+import { WidgetFrameAttribute, WidgetFrame } from '../types/widgets.types'
 import termKitUtil from './termKit.utility'
 import TkBaseWidget, { TkWidgetOptions } from './TkBaseWidget'
 import TkLayoutCellWidget from './TkLayoutCellWidget'
@@ -24,25 +24,12 @@ export default class TkLayoutWidget
 
 		const mappedOptions = termKitUtil.mapWidgetOptionsToTermKitOptions(options)
 
-		const {
-			parent,
-			lockWidthWithParent = true,
-			lockHeightWithParent = true,
-			...layout
-		} = mappedOptions
+		const { parent, ...layout } = mappedOptions
 
 		if (!parent) {
 			throw new SpruceError({
 				code: 'MISSING_PARAMETERS',
 				parameters: ['parent'],
-			})
-		}
-
-		if (!lockWidthWithParent || !lockHeightWithParent) {
-			throw new SpruceError({
-				code: 'INVALID_PARAMETERS',
-				parameters: ['lockWidthWithParent', 'lockHeightWithParent'],
-				friendlyMessage: `A layout widget must have lockWidthWithParent & lockHeightWithParent true (don't set to false since default is true)`,
 			})
 		}
 
@@ -53,6 +40,8 @@ export default class TkLayoutWidget
 
 		this.layout.__widget = this
 		this.layout.off('parentResize', this.layout.onParentResize)
+
+		this.calculateSizeLockDeltas()
 	}
 
 	public getChildren() {
@@ -71,10 +60,10 @@ export default class TkLayoutWidget
 
 	public getFrame() {
 		return {
-			left: 0,
-			top: 0,
-			width: this.layout.outputDst.width,
-			height: this.layout.outputDst.height,
+			left: this.layout.computed.xmin,
+			top: this.layout.computed.ymin,
+			width: this.layout.computed.width,
+			height: this.layout.computed.height,
 		}
 	}
 
@@ -82,7 +71,19 @@ export default class TkLayoutWidget
 		this.layout.destroy()
 	}
 
-	public setFrame() {
+	public setFrame(frame: Partial<WidgetFrame>) {
+		const calculated = termKitUtil.buildFrame(frame, this.parent)
+		const def = this.layout.layoutDef
+
+		delete def.height
+		delete def.heightPercent
+
+		this.layout.layoutDef.height = calculated.height
+
+		this.handleResize()
+	}
+
+	private handleResize() {
 		this.layout.computeBoundingBoxes()
 		this.layout.draw()
 
@@ -177,6 +178,6 @@ export default class TkLayoutWidget
 	}
 
 	public updateLayout() {
-		this.setFrame()
+		this.handleResize()
 	}
 }

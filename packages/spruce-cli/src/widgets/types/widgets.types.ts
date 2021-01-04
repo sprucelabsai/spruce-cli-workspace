@@ -36,6 +36,7 @@ export interface UniversalWidgetOptions {
 	padding?: WidgetPadding
 	shouldLockWidthWithParent?: boolean
 	shouldLockHeightWithParent?: boolean
+	shouldLockRightWithParent?: boolean
 	eventContract?: EventContract
 }
 

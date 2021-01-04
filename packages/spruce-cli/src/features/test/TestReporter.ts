@@ -212,6 +212,7 @@ export default class TestReporter {
 			parent: this.window,
 			left: 0,
 			top: 0,
+			shouldLockWidthWithParent: true,
 			items: [
 				{
 					label: 'Restart    ',
@@ -467,6 +468,7 @@ export default class TestReporter {
 			label: 'Pattern',
 			width: parent.getFrame().width - buttonWidth,
 			height: 1,
+			shouldLockWidthWithParent: true,
 			value: this.filterPattern,
 		})
 
@@ -484,6 +486,7 @@ export default class TestReporter {
 			width: buttonWidth,
 			top: 0,
 			text: buildPatternButtonText(this.filterPattern),
+			shouldLockRightWithParent: true,
 		})
 
 		void this.clearFilterPatternButton.on('click', () => {
@@ -524,7 +527,7 @@ export default class TestReporter {
 			top: 1,
 			height: 3,
 			shouldLockWidthWithParent: true,
-			shouldLockHeightWithParent: true,
+			shouldLockHeightWithParent: false,
 			rows: [
 				{
 					height: '100%',
@@ -621,6 +624,7 @@ export default class TestReporter {
 				})
 
 				this.layout.setRowHeight(0, '50%')
+				this.layout.setRowHeight(1, '50%')
 			} else {
 				this.layout.addColumn(0, { id: 'errors', width: '50%' })
 				this.layout.setColumnWidth({ rowIdx: 0, columnIdx: 0, width: '50%' })
