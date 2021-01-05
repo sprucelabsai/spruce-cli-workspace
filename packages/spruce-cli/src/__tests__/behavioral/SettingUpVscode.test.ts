@@ -9,7 +9,7 @@ export default class SettingUpVscodeTest extends AbstractCliTest {
 		assert.isFunction(cli.getFeature('vscode').Action('setup').execute)
 	}
 
-	@test()
+	@test.skip()
 	protected static async settingUpAsksAboutExtensonsAndSetsUpDebug() {
 		const cli = await this.FeatureFixture().installCachedFeatures('skills')
 		const promise = cli.getFeature('vscode').Action('setup').execute({})
