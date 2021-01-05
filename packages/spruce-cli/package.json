@@ -242,7 +242,6 @@
   "jest": {
     "maxWorkers": 3,
     "testTimeout": 300000,
-    "verbose": true,
     "testEnvironment": "node",
     "testPathIgnorePatterns": [
       "<rootDir>/tmp/",
@@ -292,7 +291,9 @@
             "asksYouToSelectOrgWithMoreThanOne": "F76",
             "generatesTypedListenerWithAllPayloads": "F77",
             "createsVersionedEventFiles": "F81",
-            "createsExpectedPermissionContract": "F82"
+            "createsExpectedPermissionContract": "F82",
+            "registeringEventsOnBoot": "F83",
+            "createsVersionedEventFilesDefaultingToToday": "F84"
           }
         }
       ],
