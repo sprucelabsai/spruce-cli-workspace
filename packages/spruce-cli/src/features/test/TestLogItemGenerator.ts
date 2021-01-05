@@ -17,7 +17,7 @@ export default class TestLogItemGenerator {
 		this.testRunnerStatus = status
 
 		let logContent = ''
-		const duration = this.calculateDurationInMs(file)
+		const duration = this.calculateDurationInMsForFile(file)
 
 		logContent += `${this.generateStatusBlock(file.status)}   ${file.path}${
 			duration ? ` ${this.generateDuration(file.status, duration)}` : ''
@@ -32,6 +32,14 @@ export default class TestLogItemGenerator {
 			})
 		}
 
+		if (file.status === 'running') {
+			const pendingKey = `${file.path}-pending-${file.tests?.length ?? 0}`
+			logContent += `              ^-${'Running test...'}^ ${this.generateDuration(
+				'running',
+				this.calculateDurationInMs(pendingKey)
+			)}\n`
+		}
+
 		return logContent
 	}
 
@@ -43,10 +51,15 @@ export default class TestLogItemGenerator {
 		return `^${durationColor}(${durationUtil.msToFriendly(duration)})^`
 	}
 
-	private bulletBasedOnStatus(status: SpruceTestFileTest['status']) {
+	private bulletBasedOnStatus(
+		status: SpruceTestFileTest['status'] | 'running'
+	) {
 		let bullet = 'y'
 
 		switch (status) {
+			case 'running':
+				bullet = '^g(running)^'
+				break
 			case 'passed':
 				bullet = '^g√^'
 				break
@@ -68,7 +81,7 @@ export default class TestLogItemGenerator {
 		return bullet
 	}
 
-	private calculateDurationInMs(file: SpruceTestFile): number {
+	private calculateDurationInMsForFile(file: SpruceTestFile): number {
 		if (file.status !== 'running' && file.tests) {
 			return file.tests.reduce((time, test) => {
 				time += test.duration
@@ -76,11 +89,16 @@ export default class TestLogItemGenerator {
 			}, 0)
 		}
 
-		if (!this.startTimes[file.path]) {
-			this.startTimes[file.path] = new Date().getTime()
+		const key = file.path
+		return this.calculateDurationInMs(key)
+	}
+
+	private calculateDurationInMs(key: string) {
+		if (!this.startTimes[key]) {
+			this.startTimes[key] = new Date().getTime()
 		}
 
-		const delta = new Date().getTime() - this.startTimes[file.path]
+		const delta = new Date().getTime() - this.startTimes[key]
 		return delta
 	}
 
