@@ -17,7 +17,7 @@ export const dashboardActionOptionsDefinition = buildSchema({
 export type DashboardActionDefinition = typeof dashboardActionOptionsDefinition
 
 export default class DashboardAction extends AbstractFeatureAction<DashboardActionDefinition> {
-	public name = 'dashboard'
+	public code = 'dashboard'
 	public optionsSchema = dashboardActionOptionsDefinition
 	public commandAliases = ['dashboard']
 

@@ -2,9 +2,12 @@ import SpruceError from '../errors/SpruceError'
 import AbstractFeature from '../features/AbstractFeature'
 import FeatureInstaller from '../features/FeatureInstaller'
 import { FeatureAction } from '../features/features.types'
+import { GlobalEmitter } from '../GlobalEmitter'
 
 export default class InstallCheckingActionDecorator implements FeatureAction {
-	public name = 'install-checking-action-facade'
+	public code = 'install-checking-action-facade'
+	private emitter: GlobalEmitter
+
 	public get commandAliases() {
 		return this.childAction.commandAliases
 	}
@@ -20,7 +23,8 @@ export default class InstallCheckingActionDecorator implements FeatureAction {
 	public constructor(
 		childAction: FeatureAction,
 		parent: AbstractFeature,
-		featureInstaller: FeatureInstaller
+		featureInstaller: FeatureInstaller,
+		emitter: GlobalEmitter
 	) {
 		if (!childAction || !childAction.execute) {
 			throw new SpruceError({
@@ -30,9 +34,10 @@ export default class InstallCheckingActionDecorator implements FeatureAction {
 		}
 
 		this.childAction = childAction
-		this.name = childAction.name
+		this.code = childAction.code
 		this.parent = parent
 		this.featureInstaller = featureInstaller
+		this.emitter = emitter
 	}
 
 	public execute = async (options: any) => {
@@ -60,6 +65,19 @@ export default class InstallCheckingActionDecorator implements FeatureAction {
 			}
 		}
 
-		return this.childAction.execute(options)
+		await this.emitter.emit('feature.will-execute', {
+			featureCode: this.parent.code,
+			actionCode: this.code,
+		})
+
+		const response = await this.childAction.execute(options)
+
+		await this.emitter.emit('feature.did-execute', {
+			results: response,
+			featureCode: this.parent.code,
+			actionCode: this.code,
+		})
+
+		return response
 	}
 }

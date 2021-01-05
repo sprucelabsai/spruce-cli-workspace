@@ -17,7 +17,7 @@ type OptionsSchema = typeof optionsSchema
 type Options = SchemaValues<OptionsSchema>
 
 export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'login'
+	public code = 'login'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['login']
 

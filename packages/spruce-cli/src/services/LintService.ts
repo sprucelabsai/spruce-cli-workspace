@@ -15,28 +15,27 @@ export default class LintService {
 	public fix = async (pattern: string): Promise<string[]> => {
 		if (!pattern) {
 			throw new SpruceError({
-				code: 'LINT_FAILED',
-				pattern: '***missing***',
-				stdout: '***never run***',
+				code: 'MISSING_PARAMETERS',
+				parameters: ['pattern'],
 			})
 		}
 
-		const { stdout } = await this.command.execute('node', {
-			args: [
-				'-e',
-				`"try { const ESLint = require('eslint');const cli = new ESLint.CLIEngine({fix: true,cwd: '${this.cwd}'});const result=cli.executeOnFiles(['${pattern}']);console.log(JSON.stringify(result)); } catch(err) { console.log(err.toString()); }"`,
-			],
-		})
-
-		const fixedPaths: string[] = []
 		let fixedFiles: any = {}
+		const fixedPaths: string[] = []
 		try {
+			const { stdout } = await this.command.execute('node', {
+				args: [
+					'-e',
+					`"try { const ESLint = require('eslint');const cli = new ESLint.CLIEngine({fix: true,cwd: '${this.cwd}'});const result=cli.executeOnFiles(['${pattern}']);console.log(JSON.stringify(result)); } catch(err) { console.log(err.toString()); }"`,
+				],
+			})
+
 			fixedFiles = JSON.parse(stdout)
 		} catch (err) {
 			throw new SpruceError({
 				code: 'LINT_FAILED',
 				pattern,
-				stdout,
+				originalError: err,
 			})
 		}
 

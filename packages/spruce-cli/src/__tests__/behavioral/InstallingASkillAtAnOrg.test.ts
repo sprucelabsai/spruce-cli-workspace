@@ -17,15 +17,13 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 
 	@test()
 	protected static async cantInstallWithoutBeingLoggedIn() {
-		const cli = await this.FeatureFixture().installCachedFeatures(
-			'organizations'
-		)
+		await this.FeatureFixture().installCachedFeatures('organizations')
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'my amazing skill',
 		})
 
-		await this.MercuryFixture().logoutAll()
+		const cli = await this.Cli()
 
 		const anonResults = await cli
 			.getFeature('organization')

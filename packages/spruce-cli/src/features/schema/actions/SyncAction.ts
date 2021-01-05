@@ -16,7 +16,7 @@ import ValueTypeBuilder from '../ValueTypeBuilder'
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasAction
 export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'Schema sync'
+	public code = 'Schema sync'
 	public optionsSchema = syncSchemasActionSchema
 	public commandAliases = ['sync.schemas']
 

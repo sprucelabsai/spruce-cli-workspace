@@ -14,7 +14,7 @@
 			"runOptions": {
 				"runOn": "folderOpen"
 			},
-			"problemMatcher": {
+			"problemMatcher.disabled": {
 				"pattern": {
 					"regexp": "@sprucelabs\\/spruce-cli:.*\\] (.*)\\((\\d+),(\\d+)\\):\\s+error (.*)",
 					"file": 1,
@@ -22,9 +22,14 @@
 					"message": 4
 				},
 				"background": {
-					"activeOnStart": true
+					"activeOnStart": true,
+					"beginsPattern": ".*tsc --emitDeclarationOnly && echo PASS.*",
+					"endsPattern": ".*\\] PASS.*"
 				},
-				"fileLocation":["relative", "${workspaceFolder}/packages/spruce-cli/"]		
+				"fileLocation": [
+					"relative",
+					"${workspaceFolder}/packages/spruce-cli/"
+				]
 			}
 		},
 		{
@@ -50,9 +55,7 @@
 				"test",
 				"--shouldHoldAtStart",
 				"true",
-				"--shouldWatch",
-				"--inspect",
-				"5200"
+				"--shouldWatch"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}/packages/spruce-cli"
@@ -87,6 +90,20 @@
 				"reveal": "always",
 				"panel": "shared",
 			}
-		}
+		},
+		{
+			"label": "spruce",
+			"type": "shell",
+			"command": "spruce ${input:command}",
+			"problemMatcher": []
+		},
+	],
+	"inputs": [
+		{
+			"id": "command",
+			"description": "spruce command",
+			"default": "create.test",
+			"type": "promptString"
+		},
 	]
 }

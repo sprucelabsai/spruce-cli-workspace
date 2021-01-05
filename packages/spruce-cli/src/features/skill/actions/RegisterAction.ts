@@ -27,7 +27,7 @@ type OptionsSchema = typeof optionsSchema
 type Options = SchemaValues<OptionsSchema>
 
 export default class RegisterAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'register'
+	public code = 'register'
 	public optionsSchema: OptionsSchema = optionsSchema
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {

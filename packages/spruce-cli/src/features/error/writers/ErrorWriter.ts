@@ -15,23 +15,26 @@ export default class ErrorWriter extends AbstractWriter {
 			throw new Error('Need at least one error')
 		}
 
-		const destinationFile = diskUtil.resolvePath(
+		const resolvedDestination = diskUtil.resolvePath(
 			destinationDir,
 			`SpruceError.ts`
 		)
 
-		if (!diskUtil.doesFileExist(destinationFile)) {
+		if (!diskUtil.doesFileExist(resolvedDestination)) {
 			const errorContents = this.templates.error({
 				errors: errors.filter((error) => !error.isNested),
 			})
 			results = await this.writeFileIfChangedMixinResults(
-				destinationFile,
+				resolvedDestination,
 				errorContents,
 				'A new subclass of SpruceBaseError where you can control your error messaging.',
 				results
 			)
 		} else {
-			const updates = await this.dropInNewErrorCases(errors, destinationFile)
+			const updates = await this.dropInNewErrorCases(
+				errors,
+				resolvedDestination
+			)
 			if (updates.length > 0) {
 				results.push({
 					...updates[0],
@@ -39,6 +42,8 @@ export default class ErrorWriter extends AbstractWriter {
 				})
 			}
 		}
+
+		await this.lint(resolvedDestination)
 
 		return results
 	}
@@ -113,10 +118,14 @@ export default class ErrorWriter extends AbstractWriter {
 
 		const destination = diskUtil.resolvePath(destinationDir, 'options.types.ts')
 
-		return this.writeFileIfChangedMixinResults(
+		const results = this.writeFileIfChangedMixinResults(
 			destination,
 			contents,
 			'A union of all possible error options for your skill. Used as the type for first parameter to the SpruceError constructor.'
 		)
+
+		await this.lint(destination)
+
+		return results
 	}
 }

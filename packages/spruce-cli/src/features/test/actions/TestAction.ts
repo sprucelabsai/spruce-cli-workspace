@@ -56,7 +56,7 @@ export type OptionsSchema = typeof optionsSchema
 type DidChangePayload = SchemaValues<SpruceSchemas.SpruceCli.v2020_07_22.WatcherDidDetectChangesEmitPayloadSchema>
 
 export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'test'
+	public code = 'test'
 	public optionsSchema = optionsSchema
 	private testReporter?: TestReporter | undefined
 	private testRunner?: TestRunner

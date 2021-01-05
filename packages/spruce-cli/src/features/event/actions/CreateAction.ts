@@ -42,7 +42,7 @@ const optionsSchema = buildSchema({
 type OptionsSchema = typeof optionsSchema
 
 export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'create'
+	public code = 'create'
 	public optionsSchema: OptionsSchema = optionsSchema
 
 	public async execute(

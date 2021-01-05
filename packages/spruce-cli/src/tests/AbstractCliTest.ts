@@ -5,7 +5,7 @@ import AbstractSpruceTest, { assert } from '@sprucelabs/test'
 import fs from 'fs-extra'
 import globby from 'globby'
 import * as uuid from 'uuid'
-import Cli, { CliBootOptions } from '../cli'
+import { CliBootOptions } from '../cli'
 import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
 import { FeatureActionResponse, FeatureCode } from '../features/features.types'
 import SkillStore from '../features/skill/stores/SkillStore'
@@ -54,6 +54,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static async beforeEach() {
 		await super.beforeEach()
+		testUtil.startLogTimer()
 
 		SchemaRegistry.getInstance().forgetAllSchemas()
 
@@ -82,7 +83,6 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		await this.mercuryFixture?.disconnectAll()
 
 		SkillStore.reset()
-		await Cli.resetApiClients()
 
 		this.clearFixtures()
 
@@ -302,5 +302,9 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			`code ${options?.file ?? options?.dir ?? this.cwd}`
 		)
 		await this.wait(options?.timeout ?? 99999999)
+	}
+
+	protected static log(...args: any[]) {
+		testUtil.log(...args)
 	}
 }

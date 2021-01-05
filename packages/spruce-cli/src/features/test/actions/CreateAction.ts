@@ -10,7 +10,7 @@ import { FeatureActionResponse } from '../../features.types'
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestActionSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestAction
 export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'Test'
+	public code = 'Test'
 	public optionsSchema = createTestActionSchema
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {

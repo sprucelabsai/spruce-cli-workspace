@@ -75,6 +75,16 @@ export default class FeatureFixture implements ServiceProvider {
 			...(options ?? {}),
 		})
 
+		await cli.on('feature.will-execute', (payload) => {
+			testUtil.log('will execute', payload.featureCode, payload.actionCode)
+			return {}
+		})
+
+		await cli.on('feature.did-execute', (payload) => {
+			testUtil.log('did execute', payload.featureCode, payload.actionCode)
+			return {}
+		})
+
 		return cli
 	}
 
@@ -128,12 +138,8 @@ export default class FeatureFixture implements ServiceProvider {
 		cacheKey?: string,
 		bootOptions?: CliBootOptions
 	) {
-		if (
-			cacheKey &&
-			this.installedSkills[cacheKey] &&
-			testUtil.isCacheEnabled()
-		) {
-			return this.installedSkills[cacheKey].cli
+		if (this.isCached(cacheKey)) {
+			return this.installedSkills[cacheKey as string].cli
 		}
 
 		let isCached = false
@@ -169,6 +175,12 @@ export default class FeatureFixture implements ServiceProvider {
 		await this.linkLocalPackages()
 
 		return cli
+	}
+
+	private isCached(cacheKey: string | undefined) {
+		return (
+			cacheKey && this.installedSkills[cacheKey] && testUtil.isCacheEnabled()
+		)
 	}
 
 	public async linkLocalPackages() {

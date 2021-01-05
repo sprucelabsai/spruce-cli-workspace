@@ -25,14 +25,7 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 			results.files
 		)
 
-		const checker = this.Service('typeChecker')
-
-		const all =
-			results.files?.map((file) => {
-				return checker.check(file.path)
-			}) ?? []
-
-		await Promise.all(all)
+		await this.assertValidActionResponseFiles(results)
 	}
 
 	private static async installCopyAndSync(testDir = 'related_schemas') {

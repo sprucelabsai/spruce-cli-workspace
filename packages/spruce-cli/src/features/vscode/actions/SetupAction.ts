@@ -24,7 +24,7 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 		},
 	]
 
-	public name = 'setup'
+	public code = 'setup'
 	public optionsSchema = setupVscodeSchema
 	private dependencies: NpmPackage[] = [
 		{

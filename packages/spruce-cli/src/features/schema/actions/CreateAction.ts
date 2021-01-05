@@ -10,7 +10,7 @@ import AbstractFeatureAction from '../../AbstractFeatureAction'
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaActionSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaAction
 export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'create'
+	public code = 'create'
 	public optionsSchema = createSchemaActionSchema
 
 	public async execute(options: Options) {

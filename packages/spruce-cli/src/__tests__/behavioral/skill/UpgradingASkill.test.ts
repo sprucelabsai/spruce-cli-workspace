@@ -7,7 +7,6 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 	@test()
 	protected static async forceEverythingUpgradeOverwritesWhatHasChanged() {
 		const cli = await this.installAndBreakSkill('skills')
-
 		const files: {
 			name: string
 			path: string
@@ -141,10 +140,8 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 	private static async installAndBreakSkill(cacheKey: string) {
 		const cli = await this.installSkill(cacheKey)
-
 		const indexFile = this.resolvePath('src/index.ts')
 		diskUtil.writeFile(indexFile, 'throw new Error("cheese!")')
-
 		await this.assertFailedHealthCheck(cli)
 
 		return cli

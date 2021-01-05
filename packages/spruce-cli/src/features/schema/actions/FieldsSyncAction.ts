@@ -10,7 +10,7 @@ import { FeatureActionResponse } from '../../features.types'
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemaFieldsActionSchema
 
 export default class FieldsSyncAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'fields.sync'
+	public code = 'fields.sync'
 	public optionsSchema = syncSchemaFieldsActionSchema
 	public commandAliases = ['sync.fields']
 

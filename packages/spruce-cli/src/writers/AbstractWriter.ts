@@ -23,7 +23,7 @@ export interface WriterOptions {
 
 export default abstract class AbstractWriter {
 	protected templates: Templates
-	protected linter?: LintService
+	private linter?: LintService
 	private ui: GraphicsInterface
 	private upgradeMode: UpgradeMode
 	private fileDescriptions: FileDescription[] = []
@@ -35,6 +35,13 @@ export default abstract class AbstractWriter {
 		this.upgradeMode = options.upgradeMode
 		this.fileDescriptions = options.fileDescriptions
 		this.linter = options.linter
+	}
+
+	protected async lint(file: string) {
+		try {
+			await this.linter?.fix(file)
+			// eslint-disable-next-line no-empty
+		} catch {}
 	}
 
 	protected async writeDirectoryTemplate(options: {

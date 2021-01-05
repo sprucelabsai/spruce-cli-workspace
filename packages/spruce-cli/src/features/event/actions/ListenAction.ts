@@ -25,7 +25,7 @@ import { FeatureActionResponse } from '../../features.types'
 const SKILL_EVENT_NAMESPACE = 'skill'
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.ListenEventActionSchema
 export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'listen'
+	public code = 'listen'
 	public optionsSchema: OptionsSchema = eventListenActionSchema
 
 	public async execute(

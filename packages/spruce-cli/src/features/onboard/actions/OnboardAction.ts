@@ -7,7 +7,7 @@ import OnboardFeature from '../OnboardFeature'
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.OnboardActionSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.OnboardAction
 export default class ListenAction extends AbstractFeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.OnboardActionSchema> {
-	public name = 'onboard'
+	public code = 'onboard'
 	public optionsSchema: OptionsSchema = onboardActionSchema
 
 	public async execute(_options: Options): Promise<FeatureActionResponse> {

@@ -11,7 +11,7 @@ const optionsSchema = buildSchema({
 type OptionsSchema = typeof optionsSchema
 
 export default class WhoAmIAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'whoami'
+	public code = 'whoami'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['whoami']
 

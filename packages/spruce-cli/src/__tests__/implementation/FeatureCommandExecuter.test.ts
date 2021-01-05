@@ -401,7 +401,6 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 			actionCode,
 			featureInstaller,
 			term: this.ui,
-			emitter: this.Emitter(),
 		})
 
 		return executer

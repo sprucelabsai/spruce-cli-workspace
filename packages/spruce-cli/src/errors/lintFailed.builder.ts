@@ -11,11 +11,6 @@ const lintFailedDefinition = buildErrorSchema({
 			hint: 'The pattern used to match files relative to the root of the skill',
 			isRequired: true,
 		},
-		stdout: {
-			type: 'text',
-			label: 'Output from lint',
-			isRequired: true,
-		},
 	},
 })
 

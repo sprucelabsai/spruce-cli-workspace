@@ -9,7 +9,7 @@ type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillActionSchem
 type Options = SchemaValues<OptionsSchema>
 
 export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'Upgrade'
+	public code = 'Upgrade'
 	public optionsSchema = upgradeSkillActionSchema
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
