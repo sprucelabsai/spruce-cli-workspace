@@ -53,6 +53,20 @@
                 "reveal": "always",
                 "panel": "new"
             }
+        },
+        {
+            "label": "spruce",
+            "type": "shell",
+            "command": "spruce ${input:command}",
+            "problemMatcher": []
         }
+    ],
+    "inputs": [
+        {
+            "id": "command",
+            "description": "spruce command",
+            "default": "create.test",
+            "type": "promptString"
+        },
     ]
 }
