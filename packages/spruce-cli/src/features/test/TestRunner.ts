@@ -67,7 +67,7 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
 		let escapeShell = function (cmd: string) {
 			return '"' + cmd.replace(/(["\s'$`\\])/g, '\\$1') + '"'
 		}
-		const command = `node ${debugArgs} ${jestPath} --reporters="@sprucelabs/jest-json-reporter" --testRunner="jest-circus/runner" --passWithNoTests ${
+		const command = `node --unhandled-rejections=strict ${debugArgs} ${jestPath} --reporters="@sprucelabs/jest-json-reporter" --testRunner="jest-circus/runner" --passWithNoTests ${
 			pattern ? escapeShell(pattern) : ''
 		}`
 

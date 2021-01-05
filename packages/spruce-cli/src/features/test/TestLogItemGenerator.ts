@@ -34,7 +34,7 @@ export default class TestLogItemGenerator {
 
 		if (file.status === 'running') {
 			const pendingKey = `${file.path}-pending-${file.tests?.length ?? 0}`
-			logContent += `              ^-${'Running test...'}^ ${this.generateDuration(
+			logContent += `                ^-${'Running next test... ⚡️⚡️⚡️'}^ ${this.generateDuration(
 				'running',
 				this.calculateDurationInMs(pendingKey)
 			)}\n`

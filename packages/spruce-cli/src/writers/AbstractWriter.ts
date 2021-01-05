@@ -38,10 +38,7 @@ export default abstract class AbstractWriter {
 	}
 
 	protected async lint(file: string) {
-		try {
-			await this.linter?.fix(file)
-			// eslint-disable-next-line no-empty
-		} catch {}
+		void this.linter?.fix(file).catch(() => {})
 	}
 
 	protected async writeDirectoryTemplate(options: {

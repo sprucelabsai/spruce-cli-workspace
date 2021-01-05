@@ -121,7 +121,7 @@ export default class ErrorWriter extends AbstractWriter {
 		const results = this.writeFileIfChangedMixinResults(
 			destination,
 			contents,
-			'A union of all possible error options for your skill. Used as the type for first parameter to the SpruceError constructor.'
+			'A union of all possible error codes and their options.'
 		)
 
 		await this.lint(destination)

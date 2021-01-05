@@ -81,7 +81,7 @@ export default class SchemaWriter extends AbstractWriter {
 		const results = await this.writeFileIfChangedMixinResults(
 			resolvedBuilderDestination,
 			builderContent,
-			'The source of truth for generating your schema and associated types.'
+			'The source of truth for building your schemas and their types. Run spruce sync.errors when you change this.'
 		)
 
 		return results
