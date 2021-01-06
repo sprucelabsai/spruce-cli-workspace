@@ -184,9 +184,16 @@ function dropInS(remaining: number) {
 	return remaining === 1 ? '' : 's'
 }
 
-void run().catch((err) => {
-	term.renderError(err)
-	if (progressInterval) {
-		clearInterval(progressInterval)
-	}
-})
+void run()
+	.then(() => {
+		if (process.env.DID_BUILD_CACHE_SCRIPT) {
+			term.renderLine('Running pre build cache script')
+			execSync(process.env.DID_BUILD_CACHE_SCRIPT)
+		}
+	})
+	.catch((err) => {
+		term.renderError(err)
+		if (progressInterval) {
+			clearInterval(progressInterval)
+		}
+	})
