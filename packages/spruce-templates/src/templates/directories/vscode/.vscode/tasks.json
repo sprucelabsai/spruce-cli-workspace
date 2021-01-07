@@ -18,22 +18,6 @@
             }
         },
         {
-            "type": "npm",
-            "script": "sync.ct",
-            "group": "build",
-            "problemMatcher": [],
-            "label": "sync.ct",
-            "runOptions": {
-                "runOn": "folderOpen"
-            },
-            "promptOnClose": false,
-            "presentation": {
-                "panel": "dedicated",
-                "focus": false,
-                "reveal": "silent"
-            }
-        },
-        {
             "label": "test.file",
             "command": "spruce",
             "args": [
