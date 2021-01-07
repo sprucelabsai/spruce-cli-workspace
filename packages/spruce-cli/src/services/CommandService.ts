@@ -4,6 +4,7 @@ import AbstractSpruceError from '@sprucelabs/error'
 import { ERROR_DIVIDER } from '@sprucelabs/spruce-skill-utils'
 import escapeRegExp from 'lodash/escapeRegExp'
 import stringArgv from 'string-argv'
+import treeKill from 'tree-kill'
 import SpruceError from '../errors/SpruceError'
 
 process.setMaxListeners(100)
@@ -121,7 +122,7 @@ export default class CommandService {
 	public kill = () => {
 		if (this.activeChildProcess) {
 			this.ignoreCloseErrors = true
-			this.activeChildProcess.kill()
+			treeKill(this.activeChildProcess?.pid, 'SIGTERM')
 		}
 	}
 
