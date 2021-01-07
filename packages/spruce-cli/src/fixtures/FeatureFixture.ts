@@ -75,16 +75,6 @@ export default class FeatureFixture implements ServiceProvider {
 			...(options ?? {}),
 		})
 
-		await cli.on('feature.will-execute', (payload) => {
-			testUtil.log('will execute', payload.featureCode, payload.actionCode)
-			return {}
-		})
-
-		await cli.on('feature.did-execute', (payload) => {
-			testUtil.log('did execute', payload.featureCode, payload.actionCode)
-			return {}
-		})
-
 		return cli
 	}
 

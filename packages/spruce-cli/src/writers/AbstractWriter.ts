@@ -38,7 +38,7 @@ export default abstract class AbstractWriter {
 	}
 
 	protected async lint(file: string) {
-		void this.linter?.fix(file).catch(() => {})
+		await this.linter?.fix(file).catch(() => {})
 	}
 
 	protected async writeDirectoryTemplate(options: {

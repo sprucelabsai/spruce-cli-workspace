@@ -1,10 +1,18 @@
 import {{#unless (isDefined parentTestClass)}}AbstractSpruceTest, {{/unless}}{ test, assert } from '@sprucelabs/test'
 {{#if (isDefined parentTestClass)}}import {{parentTestClass.name}} from '{{parentTestClass.importPath}}'{{/if}}
 
+class {{namePascal}} {}
+
 export default class {{namePascal}}Test extends {{#if (isDefined parentTestClass)}}{{parentTestClass.name}}{{else}}AbstractSpruceTest{{/if}} {
 
 	@test()
-	protected static async {{nameCamel}}() {
-		assert.isTrue(false)	
+	protected static async canCreate{{namePascal}}() {
+		const {{nameCamel}} = new {{namePascal}}()
+		assert.isTruthy({{nameCamel}})
+	}
+
+	@test()
+	protected static async yourNextTest() {
+		assert.isTrue(false)
 	}
 }
