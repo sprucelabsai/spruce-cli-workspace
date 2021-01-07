@@ -40,6 +40,8 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const { all } = this.validateAndNormalizeOptions(options)
 
+		this.ui.startLoading('Checking state of vscode.')
+
 		const missing = await this.getMissingExtensions()
 		const choices = missing.map((ext) => ({ value: ext.id, label: ext.label }))
 		const response: FeatureActionResponse = {
@@ -70,6 +72,8 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 			this.ui.stopLoading()
 		}
 
+		this.ui.startLoading('Writing vscode configurations...')
+
 		const files = await this.Writer('vscode').writeVsCodeConfigurations(
 			this.cwd,
 			!all
@@ -87,12 +91,14 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 
 		if (response.packagesInstalled.length > 0) {
+			this.ui.stopLoading()
 			const shouldInstallPackages =
 				all ||
 				(await this.ui.confirm(
 					'Last thing! Ready for me to install eslint modules?'
 				))
 
+			this.ui.startLoading('Installing dev dependencies')
 			if (shouldInstallPackages) {
 				for (const module of response.packagesInstalled) {
 					await pkg.install(module.name, {

@@ -250,6 +250,7 @@ export default class TestReporter {
 		this.status = status
 
 		this.updateMenuLabels()
+		this.closeSelectTestPopup()
 		this.layout.updateLayout()
 
 		if (status === 'ready') {
