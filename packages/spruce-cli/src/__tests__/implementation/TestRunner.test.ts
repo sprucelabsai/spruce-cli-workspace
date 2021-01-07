@@ -81,7 +81,7 @@ export default class TestRunnerTest extends AbstractTestTest {
 		assert.isTruthy(results)
 		assert.isEqual(results.totalTestFiles, 1)
 		assert.isEqual(results.totalFailed, 1)
-		assert.isEqual(results.totalTests, 1)
+		assert.isEqual(results.totalTests, 2)
 	}
 
 	@test()
@@ -102,7 +102,7 @@ export default class TestRunnerTest extends AbstractTestTest {
 		assert.isTruthy(results)
 		assert.isEqual(results.totalTestFiles, 1)
 		assert.isEqual(results.totalFailed, 1)
-		assert.isEqual(results.totalTests, 1)
+		assert.isEqual(results.totalTests, 2)
 	}
 
 	@test()
