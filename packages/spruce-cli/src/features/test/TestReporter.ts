@@ -75,6 +75,7 @@ export default class TestReporter {
 	private handleToggleDebug?: () => void
 	private handleToggleWatchAll?: () => void
 	private handleToggleSmartWatch?: () => any
+	private minWidth = 50
 
 	public constructor(options?: TestReporterOptions) {
 		this.cwd = options?.cwd
@@ -178,6 +179,13 @@ export default class TestReporter {
 
 		this.window = this.widgetFactory.Widget('window', {})
 		this.window.hideCursor()
+
+		const { width } = this.window.getFrame()
+		if (width < this.minWidth) {
+			throw new Error(
+				`Your screen must be at least ${this.minWidth} characters wide.`
+			)
+		}
 
 		void this.window.on('key', this.handleGlobalKeypress.bind(this))
 		void this.window.on('kill', this.destroy.bind(this))
