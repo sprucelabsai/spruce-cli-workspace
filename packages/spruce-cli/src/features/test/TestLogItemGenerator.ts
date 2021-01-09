@@ -111,7 +111,7 @@ export default class TestLogItemGenerator {
 				const cleaned = StackCleaner.clean(message)
 				errorContent += `${chalk.red(file.path)}\n`
 				errorContent += ` - ${chalk.red(test.name)}\n\n`
-				errorContent += cleaned.replace(`    at`, '\n    at') + '\n'
+				errorContent += cleaned.replace(/\n+ {4}at/i, '\n\n\n   at') + '\n\n\n'
 			})
 		})
 
