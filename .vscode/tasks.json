@@ -94,16 +94,46 @@
 		{
 			"label": "spruce",
 			"type": "shell",
-			"command": "spruce ${input:command}",
-			"problemMatcher": []
+			"command": "spruce ${input:spruceCommand}",
+			"problemMatcher": [],
+			"options": {
+				"cwd": "${workspaceFolder}/packages/spruce-cli"
+			},
+			"presentation": {
+				"reveal": "always",
+				"focus": true,
+				"panel": "new",
+				"clear": false
+			}
 		},
+		{
+			"label": "yarn",
+			"type": "shell",
+			"command": "yarn ${input:yarnCommand}",
+			"problemMatcher": [],
+			"options": {
+				"cwd": "${workspaceFolder}/packages/spruce-cli"
+			},
+			"presentation": {
+				"reveal": "always",
+				"focus": true,
+				"panel": "new",
+				"clear": false
+			}
+		}
 	],
 	"inputs": [
 		{
-			"id": "command",
+			"id": "spruceCommand",
 			"description": "spruce command",
 			"default": "create.test",
 			"type": "promptString"
 		},
+		{
+			"id": "yarnCommand",
+			"description": "yarn command",
+			"default": "add",
+			"type": "promptString"
+		}
 	]
 }

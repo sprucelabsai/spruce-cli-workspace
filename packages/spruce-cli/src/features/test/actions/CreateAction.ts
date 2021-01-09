@@ -82,6 +82,9 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			namePascal: namePascal ?? namesUtil.toPascal(nameCamel),
 		})
 
-		return { files: results, hints: ['run `spruce test` in your skill when you\'re ready!] }
+		return {
+			files: results,
+			hints: ["run `spruce test` in your skill when you're ready!"],
+		}
 	}
 }

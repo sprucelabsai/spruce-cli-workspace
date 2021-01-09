@@ -1,3 +1,4 @@
+import { StackCleaner } from '@sprucelabs/test'
 import chalk from 'chalk'
 import durationUtil from '../../utilities/duration.utility'
 import {
@@ -107,9 +108,10 @@ export default class TestLogItemGenerator {
 
 		file.tests?.forEach((test) => {
 			test.errorMessages?.forEach((message) => {
+				const cleaned = StackCleaner.clean(message)
 				errorContent += `${chalk.red(file.path)}\n`
 				errorContent += ` - ${chalk.red(test.name)}\n\n`
-				errorContent += message.replace(`    at`, '\n    at') + '\n\n\n'
+				errorContent += cleaned.replace(`    at`, '\n    at') + '\n'
 			})
 		})
 
