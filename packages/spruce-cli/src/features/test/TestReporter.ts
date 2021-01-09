@@ -718,19 +718,25 @@ export default class TestReporter {
 		totalPassedTests: number
 		totalTime: number
 	} {
-		const percent = this.generatePercentPassing(results)
-		const totalTests = this.getTotalTestsRun(results)
-		const totalPassedTests = results.totalPassed ?? 0
+		let totalTests = 0
+		let totalPassedTests = 0
 		let totalTime = 0
 
 		results.testFiles?.forEach((file) => {
 			file.tests?.forEach((test) => {
 				totalTime += test.duration
+				if (test.status === 'passed') {
+					totalPassedTests++
+				}
+
+				if (test.status === 'passed' || test.status === 'failed') {
+					totalTests++
+				}
 			})
 		})
 
 		return {
-			percent,
+			percent: Math.floor((totalPassedTests / totalTests) * 100),
 			totalTests,
 			totalPassedTests,
 			totalTime,
@@ -747,7 +753,8 @@ export default class TestReporter {
 	}
 
 	private generatePercentPassing(results: SpruceTestResults): number {
-		const percent = (results.totalPassed ?? 0) / this.getTotalTestsRun(results)
+		const percent =
+			(results.totalPassed ?? 0) / this.getTotalTestFilesRun(results)
 
 		if (isNaN(percent)) {
 			return 0
@@ -756,7 +763,7 @@ export default class TestReporter {
 		return Math.floor(percent * 100)
 	}
 
-	private getTotalTestsRun(results: SpruceTestResults) {
+	private getTotalTestFilesRun(results: SpruceTestResults) {
 		return (
 			(results.totalTests ?? 0) -
 			(results.totalSkipped ?? 0) -
