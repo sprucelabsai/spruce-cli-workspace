@@ -48,7 +48,7 @@ export enum GraphicsTextEffect {
 	BgCyanBright = 'bgCyanBright',
 	BgWhiteBright = 'bgWhiteBright',
 
-	SpruceHeader = 'shade',
+	SpruceHeader = 'tiny',
 }
 
 export interface ProgressBarOptions {

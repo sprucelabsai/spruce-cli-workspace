@@ -67,8 +67,6 @@
     "@sprucelabs/spruce-event-utils": "latest",
     "@sprucelabs/spruce-skill-utils": "latest",
     "@sprucelabs/spruce-templates": "^13.1.2",
-    "blessed": "^0.1.81",
-    "blessed-contrib": "^4.8.20",
     "cfonts": "^2.9.0",
     "chalk": "^4.1.0",
     "chokidar": "^3.4.3",
