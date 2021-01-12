@@ -1,13 +1,13 @@
 import { FieldDefinitionValueType } from '@sprucelabs/schema'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import {
-	GraphicsInterface,
 	ExecutionResults,
 	GraphicsTextEffect,
 	ProgressBarOptions,
 	ProgressBarUpdateOptions,
 	ImageDimensions,
 } from '../types/cli.types'
+import { GraphicsInterface } from '../types/cli.types'
 
 export default class SpyInterface implements GraphicsInterface {
 	public invocations: { command: string; options?: any }[] = []

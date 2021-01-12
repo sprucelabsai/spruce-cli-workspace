@@ -3,12 +3,8 @@ import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { DirectoryTemplateCode, Templates } from '@sprucelabs/spruce-templates'
 import LintService from '../services/LintService'
-import {
-	FileDescription,
-	GeneratedFile,
-	GraphicsInterface,
-	UpgradeMode,
-} from '../types/cli.types'
+import { FileDescription, GeneratedFile, UpgradeMode } from '../types/cli.types'
+import { GraphicsInterface } from '../types/cli.types'
 
 export type WriteResults = GeneratedFile[]
 

@@ -28,11 +28,11 @@ import featuresUtil from '../features/feature.utilities'
 import log from '../singletons/log'
 import {
 	ExecutionResults,
-	GraphicsInterface,
 	GraphicsTextEffect,
 	ImageDimensions,
 	ProgressBarOptions,
 	ProgressBarUpdateOptions,
+	GraphicsInterface,
 } from '../types/cli.types'
 const terminalImage = require('terminal-image')
 

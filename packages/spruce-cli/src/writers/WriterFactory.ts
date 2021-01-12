@@ -7,7 +7,8 @@ import SkillGenerator from '../features/skill/writers/SkillWriter'
 import TestGenerator from '../features/test/writers/TestWriter'
 import VsCodeWriter from '../features/vscode/writers/VsCodeWriter'
 import LintService from '../services/LintService'
-import { FileDescription, GraphicsInterface } from '../types/cli.types'
+import { FileDescription } from '../types/cli.types'
+import { GraphicsInterface } from '../types/cli.types'
 import { WriterOptions } from './AbstractWriter'
 
 const classMap = {

@@ -18,12 +18,8 @@ import {
 	ApiClientFactory,
 	ApiClientFactoryOptions,
 } from '../types/apiClient.types'
-import {
-	NpmPackage,
-	GraphicsInterface,
-	GeneratedFile,
-	FileDescription,
-} from '../types/cli.types'
+import { NpmPackage, GeneratedFile, FileDescription } from '../types/cli.types'
+import { GraphicsInterface } from '../types/cli.types'
 import WriterFactory, { WriterCode, WriterMap } from '../writers/WriterFactory'
 import featuresUtil from './feature.utilities'
 import FeatureActionFactory, {

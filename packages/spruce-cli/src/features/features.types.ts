@@ -5,11 +5,8 @@ import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory from '../services/ServiceFactory'
 import StoreFactory from '../stores/StoreFactory'
 import { ApiClientFactory } from '../types/apiClient.types'
-import {
-	GeneratedFile,
-	GraphicsInterface,
-	NpmPackage,
-} from '../types/cli.types'
+import { GeneratedFile, NpmPackage } from '../types/cli.types'
+import { GraphicsInterface } from '../types/cli.types'
 import WriterFactory from '../writers/WriterFactory'
 import AbstractFeature from './AbstractFeature'
 import ErrorFeature from './error/ErrorFeature'
