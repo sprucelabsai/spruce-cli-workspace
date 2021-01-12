@@ -23,7 +23,7 @@
 				},
 				"background": {
 					"activeOnStart": false,
-					"beginsPattern": ".*tsc --emitDeclarationOnly && echo PASS.*",
+					"beginsPattern": ".*echo PASS.*",
 					"endsPattern": ".*\\] PASS.*",
 				},
 				"fileLocation": [
