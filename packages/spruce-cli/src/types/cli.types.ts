@@ -4,6 +4,10 @@ import { GraphicsInterface as IGraphicsInterface } from './graphicsInterface.typ
 
 export interface GraphicsInterface extends IGraphicsInterface {
 	renderCommandSummary(results: ExecutionResults): void
+	getCursorPosition(): Promise<{ x: number; y: number } | null>
+	moveCursorTo(x: number, y: number): void
+	clearBelowCursor(): void
+	clear(): void
 }
 
 export type GeneratedFile = SpruceSchemas.SpruceCli.v2020_07_22.GeneratedFile
