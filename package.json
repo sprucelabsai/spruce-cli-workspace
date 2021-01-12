@@ -16,7 +16,7 @@
     "lint": "lerna run lint --parallel",
     "lint.tsc": "lerna run lint.tsc --parallel",
     "lint.fix": "lerna run lint.fix --parallel",
-    "rebuild": "yarn clean.all && yarn && yarn build && yarn cache.tests",
+    "rebuild": "yarn clean.all && yarn && yarn build; yarn cache.tests",
     "build": "lerna run build",
     "build.types": "lerna run build.types",
     "test": "lerna run test --parallel --",
