@@ -36,7 +36,7 @@
     "build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
     "build.babel.debug": "node --inspect-brk=5200 ../../node_modules/.bin/babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
     "build.resolve-paths": "resolve-path-aliases --target build --patterns **/*.js,**/*.d.ts",
-    "build.types.resolve-paths.lint": "yarn build.types && yarn build.resolve-paths && yarn lint'",
+    "build.types.resolve-paths.lint": "yarn build.types && yarn build.resolve-paths && yarn lint",
     "cache.tests": "node build/tests/buildTestCache",
     "clean": "rm -rf build/",
     "clean.all": "rm -rf build/ && rm -rf node_modules/ && rm -f yarn.lock && yarn clean.cache",

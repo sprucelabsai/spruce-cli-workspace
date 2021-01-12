@@ -26,14 +26,13 @@ import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import SpruceError from '../errors/SpruceError'
 import featuresUtil from '../features/feature.utilities'
 import log from '../singletons/log'
+import { ExecutionResults, GraphicsInterface } from '../types/cli.types'
 import {
-	ExecutionResults,
 	GraphicsTextEffect,
 	ImageDimensions,
 	ProgressBarOptions,
 	ProgressBarUpdateOptions,
-	GraphicsInterface,
-} from '../types/cli.types'
+} from '../types/graphicsInterface.types'
 const terminalImage = require('terminal-image')
 
 let fieldCount = 0

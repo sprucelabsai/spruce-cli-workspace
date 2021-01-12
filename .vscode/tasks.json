@@ -14,7 +14,7 @@
 			"runOptions": {
 				"runOn": "folderOpen"
 			},
-			"problemMatcher.disabled": {
+			"problemMatcher": {
 				"pattern": {
 					"regexp": "@sprucelabs\\/spruce-cli:.*\\] (.*)\\((\\d+),(\\d+)\\):\\s+error (.*)",
 					"file": 1,
@@ -22,9 +22,9 @@
 					"message": 4
 				},
 				"background": {
-					"activeOnStart": true,
+					"activeOnStart": false,
 					"beginsPattern": ".*tsc --emitDeclarationOnly && echo PASS.*",
-					"endsPattern": ".*\\] PASS.*"
+					"endsPattern": ".*\\] PASS.*",
 				},
 				"fileLocation": [
 					"relative",

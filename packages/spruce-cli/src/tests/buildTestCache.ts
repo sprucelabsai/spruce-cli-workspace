@@ -6,7 +6,7 @@ import MercuryFixture from '../fixtures/MercuryFixture'
 import TerminalInterface from '../interfaces/TerminalInterface'
 import ServiceFactory from '../services/ServiceFactory'
 import testUtil from '../tests/utilities/test.utility'
-import { GraphicsTextEffect } from '../types/cli.types'
+import { GraphicsTextEffect } from '../types/graphicsInterface.types'
 import durationUtil from '../utilities/duration.utility'
 require('dotenv').config()
 

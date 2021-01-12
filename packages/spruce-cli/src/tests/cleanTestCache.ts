@@ -4,7 +4,7 @@ import { execSync } from 'child_process'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import TerminalInterface from '../interfaces/TerminalInterface'
 import testUtil from '../tests/utilities/test.utility'
-import { GraphicsTextEffect } from '../types/cli.types'
+import { GraphicsTextEffect } from '../types/graphicsInterface.types'
 require('dotenv').config()
 
 const term = new TerminalInterface(__dirname)

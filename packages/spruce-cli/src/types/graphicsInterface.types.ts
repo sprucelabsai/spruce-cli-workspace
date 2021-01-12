@@ -1,11 +1,73 @@
 import { FieldDefinitionValueType } from '@sprucelabs/schema'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
-import {
-	GraphicsTextEffect,
-	ImageDimensions,
-	ProgressBarOptions,
-	ProgressBarUpdateOptions,
-} from './cli.types'
+
+export enum GraphicsTextEffect {
+	Reset = 'reset',
+	Bold = 'bold',
+	Dim = 'dim',
+	Italic = 'italic',
+	Underline = 'underline',
+	Inverse = 'inverse',
+	Hidden = 'hidden',
+	Strikethrough = 'strikethrough',
+	Visible = 'visible',
+	Black = 'black',
+	Red = 'red',
+	Green = 'green',
+	Yellow = 'yellow',
+	Blue = 'blue',
+	Magenta = 'magenta',
+	Cyan = 'cyan',
+	White = 'white',
+	Gray = 'gray',
+	Grey = 'grey',
+	BlackBright = 'blackBright',
+	RedBright = 'redBright',
+	GreenBright = 'greenBright',
+	YellowBright = 'yellowBright',
+	BlueBright = 'blueBright',
+	MagentaBright = 'magentaBright',
+	CyanBright = 'cyanBright',
+	WhiteBright = 'whiteBright',
+	BgBlack = 'bgBlack',
+	BgRed = 'bgRed',
+	BgGreen = 'bgGreen',
+	BgYellow = 'bgYellow',
+	BgBlue = 'bgBlue',
+	BgMagenta = 'bgMagenta',
+	BgCyan = 'bgCyan',
+	BgWhite = 'bgWhite',
+	BgBlackBright = 'bgBlackBright',
+	BgRedBright = 'bgRedBright',
+	BgGreenBright = 'bgGreenBright',
+	BgYellowBright = 'bgYellowBright',
+	BgBlueBright = 'bgBlueBright',
+	BgMagentaBright = 'bgMagentaBright',
+	BgCyanBright = 'bgCyanBright',
+	BgWhiteBright = 'bgWhiteBright',
+
+	SpruceHeader = 'tiny',
+}
+
+export interface ImageDimensions {
+	width?: number
+	height?: number
+}
+
+export interface ProgressBarOptions {
+	width?: number
+	showPercent?: boolean
+	showEta?: boolean
+	totalItems?: number
+	title?: string
+	renderInline?: boolean
+}
+
+export interface ProgressBarUpdateOptions {
+	progress: number | null
+	totalItems?: number
+	title?: string
+}
 
 export interface GraphicsInterface {
 	renderSection(options: {

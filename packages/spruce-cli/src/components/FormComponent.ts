@@ -11,8 +11,8 @@ import SchemaEntity, {
 import { pick } from 'lodash'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import SpruceError from '../errors/SpruceError'
-import { GraphicsTextEffect } from '../types/cli.types'
 import { GraphicsInterface } from '../types/cli.types'
+import { GraphicsTextEffect } from '../types/graphicsInterface.types'
 
 enum FormBuilderActionType {
 	Done = 'done',

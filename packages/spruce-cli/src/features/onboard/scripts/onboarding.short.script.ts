@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { GraphicsTextEffect } from '../../../types/cli.types'
 import { GraphicsInterface } from '../../../types/cli.types'
+import { GraphicsTextEffect } from '../../../types/graphicsInterface.types'
 import featuresUtil from '../../feature.utilities'
 import { CallbackPlayer, Script } from '../ScriptPlayer'
 
