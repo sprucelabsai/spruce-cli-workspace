@@ -28,7 +28,9 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 		const anonResults = await cli
 			.getFeature('organization')
 			.Action('install')
-			.execute({})
+			.execute({
+				organizationId: '13456',
+			})
 
 		assert.isTruthy(anonResults.errors)
 		eventErrorAssertUtil.assertError(

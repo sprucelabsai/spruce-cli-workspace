@@ -159,7 +159,8 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				break
 
 			case 'NO_ORGANIZATIONS_FOUND':
-				message = 'A no organizations found just happened!'
+				message =
+					"It looks like you don't have any organizations setup yet. Try `spruce create.organization` first."
 				break
 			case 'INVALID_PARAMETERS':
 				message = `The following paramater${
