@@ -3419,7 +3419,7 @@ const coreEventContract: EventContract = {
 				},
 			},
 			responsePayloadSchema: {
-				id: 'unRegisterEventsResponsePayload',
+				id: 'unregisterEventsResponsePayload',
 				fields: {},
 			},
 		},

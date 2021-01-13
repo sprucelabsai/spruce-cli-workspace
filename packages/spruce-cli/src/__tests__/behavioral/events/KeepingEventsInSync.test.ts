@@ -19,7 +19,7 @@ import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
-const EXPECTED_NUM_CONTRACTS_GENERATED = 33
+const EXPECTED_NUM_CONTRACTS_GENERATED = 35
 
 export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	private static get mercuryVersion() {
@@ -266,7 +266,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	) {
 		const filesToCheck = [
 			{
-				name: `unRegisterListenersEmitTargetAndPayload.schema.ts`,
+				name: `unregisterListenersEmitTargetAndPayload.schema.ts`,
 				path: `schemas${pathUtil.sep}${MERCURY_API_NAMESPACE}`,
 			},
 		]
