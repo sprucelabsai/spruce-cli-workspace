@@ -1,3 +1,4 @@
+import didMessageEventContract, { DidMessageEventContract } from '#spruce/events/mercuryApi/didMessage.v2020_12_25.contract'
 import authenticateEventContract, { AuthenticateEventContract } from '#spruce/events/mercuryApi/authenticate.v2020_12_25.contract'
 import canListenEventContract, { CanListenEventContract } from '#spruce/events/mercuryApi/canListen.v2020_12_25.contract'
 import confirmPinEventContract, { ConfirmPinEventContract } from '#spruce/events/mercuryApi/confirmPin.v2020_12_25.contract'
@@ -19,20 +20,22 @@ import listLocationsEventContract, { ListLocationsEventContract } from '#spruce/
 import listOrganizationsEventContract, { ListOrganizationsEventContract } from '#spruce/events/mercuryApi/listOrganizations.v2020_12_25.contract'
 import listRolesEventContract, { ListRolesEventContract } from '#spruce/events/mercuryApi/listRoles.v2020_12_25.contract'
 import logoutEventContract, { LogoutEventContract } from '#spruce/events/mercuryApi/logout.v2020_12_25.contract'
+import registerConversationTopicsEventContract, { RegisterConversationTopicsEventContract } from '#spruce/events/mercuryApi/registerConversationTopics.v2020_12_25.contract'
 import registerEventsEventContract, { RegisterEventsEventContract } from '#spruce/events/mercuryApi/registerEvents.v2020_12_25.contract'
 import registerListenersEventContract, { RegisterListenersEventContract } from '#spruce/events/mercuryApi/registerListeners.v2020_12_25.contract'
 import registerSkillEventContract, { RegisterSkillEventContract } from '#spruce/events/mercuryApi/registerSkill.v2020_12_25.contract'
 import requestPinEventContract, { RequestPinEventContract } from '#spruce/events/mercuryApi/requestPin.v2020_12_25.contract'
 import scrambleAccountEventContract, { ScrambleAccountEventContract } from '#spruce/events/mercuryApi/scrambleAccount.v2020_12_25.contract'
-import unRegisterEventsEventContract, { UnRegisterEventsEventContract } from '#spruce/events/mercuryApi/unRegisterEvents.v2020_12_25.contract'
-import unRegisterListenersEventContract, { UnRegisterListenersEventContract } from '#spruce/events/mercuryApi/unRegisterListeners.v2020_12_25.contract'
 import uninstallSkillEventContract, { UninstallSkillEventContract } from '#spruce/events/mercuryApi/uninstallSkill.v2020_12_25.contract'
+import unregisterEventsEventContract, { UnregisterEventsEventContract } from '#spruce/events/mercuryApi/unregisterEvents.v2020_12_25.contract'
+import unregisterListenersEventContract, { UnregisterListenersEventContract } from '#spruce/events/mercuryApi/unregisterListeners.v2020_12_25.contract'
 import updateLocationEventContract, { UpdateLocationEventContract } from '#spruce/events/mercuryApi/updateLocation.v2020_12_25.contract'
 import updateOrganizationEventContract, { UpdateOrganizationEventContract } from '#spruce/events/mercuryApi/updateOrganization.v2020_12_25.contract'
 import updateRoleEventContract, { UpdateRoleEventContract } from '#spruce/events/mercuryApi/updateRole.v2020_12_25.contract'
 import whoamiEventContract, { WhoamiEventContract } from '#spruce/events/mercuryApi/whoami.v2020_12_25.contract'
 
 export default [
+    didMessageEventContract,
     authenticateEventContract,
     canListenEventContract,
     confirmPinEventContract,
@@ -54,14 +57,15 @@ export default [
     listOrganizationsEventContract,
     listRolesEventContract,
     logoutEventContract,
+    registerConversationTopicsEventContract,
     registerEventsEventContract,
     registerListenersEventContract,
     registerSkillEventContract,
     requestPinEventContract,
     scrambleAccountEventContract,
-    unRegisterEventsEventContract,
-    unRegisterListenersEventContract,
     uninstallSkillEventContract,
+    unregisterEventsEventContract,
+    unregisterListenersEventContract,
     updateLocationEventContract,
     updateOrganizationEventContract,
     updateRoleEventContract,
@@ -69,4 +73,4 @@ export default [
 ]
 
 
-export type EventContracts = AuthenticateEventContract & CanListenEventContract & ConfirmPinEventContract & CreateLocationEventContract & CreateOrganizationEventContract & CreateRoleEventContract & DeleteLocationEventContract & DeleteOrganizationEventContract & DeleteRoleEventContract & GetEventContractsEventContract & GetLocationEventContract & GetOrganizationEventContract & GetRoleEventContract & GetSkillEventContract & HealthEventContract & InstallSkillEventContract & IsSkillInstalledEventContract & ListLocationsEventContract & ListOrganizationsEventContract & ListRolesEventContract & LogoutEventContract & RegisterEventsEventContract & RegisterListenersEventContract & RegisterSkillEventContract & RequestPinEventContract & ScrambleAccountEventContract & UnRegisterEventsEventContract & UnRegisterListenersEventContract & UninstallSkillEventContract & UpdateLocationEventContract & UpdateOrganizationEventContract & UpdateRoleEventContract & WhoamiEventContract  
+export type EventContracts = DidMessageEventContract & AuthenticateEventContract & CanListenEventContract & ConfirmPinEventContract & CreateLocationEventContract & CreateOrganizationEventContract & CreateRoleEventContract & DeleteLocationEventContract & DeleteOrganizationEventContract & DeleteRoleEventContract & GetEventContractsEventContract & GetLocationEventContract & GetOrganizationEventContract & GetRoleEventContract & GetSkillEventContract & HealthEventContract & InstallSkillEventContract & IsSkillInstalledEventContract & ListLocationsEventContract & ListOrganizationsEventContract & ListRolesEventContract & LogoutEventContract & RegisterConversationTopicsEventContract & RegisterEventsEventContract & RegisterListenersEventContract & RegisterSkillEventContract & RequestPinEventContract & ScrambleAccountEventContract & UninstallSkillEventContract & UnregisterEventsEventContract & UnregisterListenersEventContract & UpdateLocationEventContract & UpdateOrganizationEventContract & UpdateRoleEventContract & WhoamiEventContract  

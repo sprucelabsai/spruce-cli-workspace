@@ -1,12 +1,14 @@
 import { buildEventContract } from '@sprucelabs/mercury-types'
 
-import registerListenersTargetAndPayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/registerListenersTargetAndPayload.schema"
+import registerListenersEmitTargetAndPayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/registerListenersEmitTargetAndPayload.schema"
 
 
 const registerListenersEventContract = buildEventContract({
     eventSignatures: {
         'register-listeners::v2020_12_25': {
-            emitPayloadSchema: registerListenersTargetAndPayloadSchema,
+            emitPayloadSchema: registerListenersEmitTargetAndPayloadSchema,
+            
+            
             
         }
     }

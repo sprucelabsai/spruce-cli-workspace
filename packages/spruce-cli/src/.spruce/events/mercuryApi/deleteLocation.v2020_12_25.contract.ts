@@ -1,14 +1,16 @@
 import { buildEventContract } from '@sprucelabs/mercury-types'
 
-import deleteLocationTargetAndPayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/deleteLocationTargetAndPayload.schema"
+import deleteLocationEmitTargetAndPayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/deleteLocationEmitTargetAndPayload.schema"
 import deleteLocationResponsePayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/deleteLocationResponsePayload.schema"
 
 
 const deleteLocationEventContract = buildEventContract({
     eventSignatures: {
         'delete-location::v2020_12_25': {
-            emitPayloadSchema: deleteLocationTargetAndPayloadSchema,
+            emitPayloadSchema: deleteLocationEmitTargetAndPayloadSchema,
             responsePayloadSchema: deleteLocationResponsePayloadSchema,
+            
+            
         }
     }
 })

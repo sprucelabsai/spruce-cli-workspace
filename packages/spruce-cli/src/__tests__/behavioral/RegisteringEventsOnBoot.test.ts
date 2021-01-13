@@ -20,17 +20,18 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 			currentSkill,
 		} = await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
 		debugger
+
 		await cli.getFeature('event').Action('create').execute({
 			nameReadable: EVENT_NAME_READABLE,
 			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
 		})
-		debugger
+
 		const boot = await cli
 			.getFeature('skill')
 			.Action('boot')
 			.execute({ local: true })
-		debugger
+
 		await this.wait(10000)
 		boot.meta?.kill()
 
@@ -38,7 +39,7 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 			skillId: skill2.id,
 			apiKey: skill2.apiKey,
 		})
-		debugger
+
 		const { contracts } = await this.Store('event', {
 			apiClientFactory: async () => client,
 		}).fetchEventContracts()

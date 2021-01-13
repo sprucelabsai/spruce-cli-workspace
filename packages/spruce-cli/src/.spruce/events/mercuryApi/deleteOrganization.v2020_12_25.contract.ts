@@ -1,14 +1,16 @@
 import { buildEventContract } from '@sprucelabs/mercury-types'
 
-import deleteOrganizationTargetAndPayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/deleteOrganizationTargetAndPayload.schema"
+import deleteOrganizationEmitTargetAndPayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/deleteOrganizationEmitTargetAndPayload.schema"
 import deleteOrgResponsePayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/deleteOrgResponsePayload.schema"
 
 
 const deleteOrganizationEventContract = buildEventContract({
     eventSignatures: {
         'delete-organization::v2020_12_25': {
-            emitPayloadSchema: deleteOrganizationTargetAndPayloadSchema,
+            emitPayloadSchema: deleteOrganizationEmitTargetAndPayloadSchema,
             responsePayloadSchema: deleteOrgResponsePayloadSchema,
+            
+            
         }
     }
 })

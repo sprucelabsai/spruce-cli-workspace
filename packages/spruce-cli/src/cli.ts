@@ -67,13 +67,13 @@ export default class Cli implements CliInterface {
 		this.featureInstaller = featureInstaller
 		this.serviceFactory = serviceFactory
 		this.emitter = emitter
-		Cli.apiClients = {}
 	}
 
 	public static async resetApiClients() {
 		for (const key in this.apiClients) {
 			await this.apiClients[key].disconnect()
 		}
+
 		this.apiClients = {}
 	}
 
@@ -151,11 +151,9 @@ export default class Cli implements CliInterface {
 
 		let cwd = options?.cwd ?? process.cwd()
 		const serviceFactory = new ServiceFactory({})
-		const apiClientFactory = Cli.buildApiClientFactory(
-			cwd,
-			serviceFactory,
-			options
-		)
+		const apiClientFactory =
+			options?.apiClientFactory ??
+			Cli.buildApiClientFactory(cwd, serviceFactory, options)
 
 		const storeFactory = new StoreFactory({
 			cwd,
@@ -225,15 +223,13 @@ export default class Cli implements CliInterface {
 
 		const apiClientFactory = async (options?: ApiClientFactoryOptions) => {
 			const key = apiClientUtil.generateClientCacheKey(options)
-			debugger
+
 			if (!Cli.apiClients[key]) {
 				Cli.apiClients[key] = await apiClientFactoryAnon(options)
 
 				let auth: SpruceSchemas.MercuryApi.v2020_12_25.AuthenticateEmitPayload = {}
 				if (!options) {
 					const person = serviceFactory.Service(cwd, 'auth').getLoggedInPerson()
-
-					debugger
 
 					if (person) {
 						auth.token = person.token

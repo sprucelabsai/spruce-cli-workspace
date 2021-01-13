@@ -8,6 +8,8 @@ const logoutEventContract = buildEventContract({
         'logout::v2020_12_25': {
             
             responsePayloadSchema: logoutResponsePayloadSchema,
+            
+            
         }
     }
 })

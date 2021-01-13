@@ -239,7 +239,6 @@ export class EventSkillFeature implements SkillFeature {
 			}
 
 			for (const event of this.eventsIRegistered) {
-				debugger
 				const name = eventNameUtil.join({ eventName: event.eventName, version: event.version })
 				//@ts-ignore
 				contract.eventSignatures[name] =

@@ -1,14 +1,16 @@
 import { buildEventContract } from '@sprucelabs/mercury-types'
 
-import installSkillTargetAndPayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/installSkillTargetAndPayload.schema"
+import installSkillEmitTargetAndPayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/installSkillEmitTargetAndPayload.schema"
 import installSkillResponsePayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/installSkillResponsePayload.schema"
 
 
 const installSkillEventContract = buildEventContract({
     eventSignatures: {
         'install-skill::v2020_12_25': {
-            emitPayloadSchema: installSkillTargetAndPayloadSchema,
+            emitPayloadSchema: installSkillEmitTargetAndPayloadSchema,
             responsePayloadSchema: installSkillResponsePayloadSchema,
+            
+            
         }
     }
 })

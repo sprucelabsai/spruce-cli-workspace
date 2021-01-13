@@ -25,7 +25,7 @@ const eventTargetSchema: SpruceSchemas.MercuryApi.v2020_12_25.EventTargetSchema 
 	                options: undefined
 	            },
 	            /** . */
-	            'skillSlug': {
+	            'skillId': {
 	                type: 'id',
 	                options: undefined
 	            },

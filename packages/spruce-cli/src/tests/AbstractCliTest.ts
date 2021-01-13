@@ -166,6 +166,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static FeatureFixture(options?: Partial<FeatureFixtureOptions>) {
+		this.log('getting feature fixture')
 		return new FeatureFixture({
 			cwd: this.cwd,
 			serviceFactory: this.ServiceFactory(),

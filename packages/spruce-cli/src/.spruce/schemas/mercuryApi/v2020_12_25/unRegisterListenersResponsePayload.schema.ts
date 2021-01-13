@@ -3,14 +3,14 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const unRegisterListenersResponsePayloadSchema: SpruceSchemas.MercuryApi.v2020_12_25.UnRegisterListenersResponsePayloadSchema  = {
-	id: 'unRegisterListenersResponsePayload',
+const unregisterListenersResponsePayloadSchema: SpruceSchemas.MercuryApi.v2020_12_25.UnregisterListenersResponsePayloadSchema  = {
+	id: 'unregisterListenersResponsePayload',
 	version: 'v2020_12_25',
 	namespace: 'MercuryApi',
 	name: '',
 	    fields: {
 	            /** . */
-	            'unRegisterCount': {
+	            'unregisterCount': {
 	                type: 'number',
 	                isRequired: true,
 	                options: undefined
@@ -18,6 +18,6 @@ const unRegisterListenersResponsePayloadSchema: SpruceSchemas.MercuryApi.v2020_1
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(unRegisterListenersResponsePayloadSchema)
+SchemaRegistry.getInstance().trackSchema(unregisterListenersResponsePayloadSchema)
 
-export default unRegisterListenersResponsePayloadSchema
+export default unregisterListenersResponsePayloadSchema

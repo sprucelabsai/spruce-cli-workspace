@@ -10,7 +10,7 @@ const registerListenersEmitPayloadSchema: SpruceSchemas.MercuryApi.v2020_12_25.R
 	name: '',
 	    fields: {
 	            /** . */
-	            'eventNamesWithOptionalNamespace': {
+	            'fullyQualifiedEventNames': {
 	                type: 'text',
 	                isRequired: true,
 	                isArray: true,

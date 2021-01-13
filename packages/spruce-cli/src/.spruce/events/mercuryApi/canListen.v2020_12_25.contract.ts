@@ -1,14 +1,16 @@
 import { buildEventContract } from '@sprucelabs/mercury-types'
 
-import canListenTargetAndPayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/canListenTargetAndPayload.schema"
+import canListenEmitTargetAndPayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/canListenEmitTargetAndPayload.schema"
 import canListenResponsePayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/canListenResponsePayload.schema"
 
 
 const canListenEventContract = buildEventContract({
     eventSignatures: {
         'can-listen::v2020_12_25': {
-            emitPayloadSchema: canListenTargetAndPayloadSchema,
+            emitPayloadSchema: canListenEmitTargetAndPayloadSchema,
             responsePayloadSchema: canListenResponsePayloadSchema,
+            
+            
         }
     }
 })

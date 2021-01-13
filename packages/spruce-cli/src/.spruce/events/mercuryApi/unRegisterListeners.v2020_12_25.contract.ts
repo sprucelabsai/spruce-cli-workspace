@@ -1,17 +1,19 @@
 import { buildEventContract } from '@sprucelabs/mercury-types'
 
-import unRegisterListenersTargetAndPayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/unRegisterListenersTargetAndPayload.schema"
-import unRegisterListenersResponsePayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/unRegisterListenersResponsePayload.schema"
+import unregisterListenersEmitTargetAndPayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/unregisterListenersEmitTargetAndPayload.schema"
+import unregisterListenersResponsePayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/unregisterListenersResponsePayload.schema"
 
 
-const unRegisterListenersEventContract = buildEventContract({
+const unregisterListenersEventContract = buildEventContract({
     eventSignatures: {
         'unregister-listeners::v2020_12_25': {
-            emitPayloadSchema: unRegisterListenersTargetAndPayloadSchema,
-            responsePayloadSchema: unRegisterListenersResponsePayloadSchema,
+            emitPayloadSchema: unregisterListenersEmitTargetAndPayloadSchema,
+            responsePayloadSchema: unregisterListenersResponsePayloadSchema,
+            
+            
         }
     }
 })
-export default unRegisterListenersEventContract
+export default unregisterListenersEventContract
 
-export type UnRegisterListenersEventContract = typeof unRegisterListenersEventContract
+export type UnregisterListenersEventContract = typeof unregisterListenersEventContract

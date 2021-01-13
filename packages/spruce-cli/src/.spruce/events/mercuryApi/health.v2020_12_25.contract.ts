@@ -8,6 +8,8 @@ const healthEventContract = buildEventContract({
         'health::v2020_12_25': {
             
             responsePayloadSchema: healthResponsePayloadSchema,
+            
+            
         }
     }
 })

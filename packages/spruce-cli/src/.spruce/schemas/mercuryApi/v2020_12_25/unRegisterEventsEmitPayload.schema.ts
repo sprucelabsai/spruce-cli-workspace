@@ -3,8 +3,8 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const unRegisterEventsEmitPayloadSchema: SpruceSchemas.MercuryApi.v2020_12_25.UnRegisterEventsEmitPayloadSchema  = {
-	id: 'unRegisterEventsEmitPayload',
+const unregisterEventsEmitPayloadSchema: SpruceSchemas.MercuryApi.v2020_12_25.UnregisterEventsEmitPayloadSchema  = {
+	id: 'unregisterEventsEmitPayload',
 	version: 'v2020_12_25',
 	namespace: 'MercuryApi',
 	name: '',
@@ -23,6 +23,6 @@ const unRegisterEventsEmitPayloadSchema: SpruceSchemas.MercuryApi.v2020_12_25.Un
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(unRegisterEventsEmitPayloadSchema)
+SchemaRegistry.getInstance().trackSchema(unregisterEventsEmitPayloadSchema)
 
-export default unRegisterEventsEmitPayloadSchema
+export default unregisterEventsEmitPayloadSchema

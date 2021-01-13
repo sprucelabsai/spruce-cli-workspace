@@ -1,14 +1,16 @@
 import { buildEventContract } from '@sprucelabs/mercury-types'
 
-import requestPinTargetAndPayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/requestPinTargetAndPayload.schema"
+import requestPinEmitTargetAndPayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/requestPinEmitTargetAndPayload.schema"
 import requestPinResponsePayloadSchema from "#spruce/schemas/mercuryApi/v2020_12_25/requestPinResponsePayload.schema"
 
 
 const requestPinEventContract = buildEventContract({
     eventSignatures: {
         'request-pin::v2020_12_25': {
-            emitPayloadSchema: requestPinTargetAndPayloadSchema,
+            emitPayloadSchema: requestPinEmitTargetAndPayloadSchema,
             responsePayloadSchema: requestPinResponsePayloadSchema,
+            
+            
         }
     }
 })

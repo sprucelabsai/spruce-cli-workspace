@@ -42,9 +42,7 @@ export default class CommandService {
 			const args = options?.args || stringArgv(cmd)
 			const executable = options?.args ? cmd : args.shift()
 			if (!executable) {
-				// eslint-disable-next-line no-debugger
-				debugger
-				throw new Error('coming soon')
+				throw new Error('Bad params sent to command service')
 			}
 			let stdout = ''
 			let stderr = ''

@@ -31,19 +31,17 @@ export default abstract class AbstractEventTest extends AbstractCliTest {
 			name: 'my second skill',
 		})
 
-		debugger
-
 		const orgFixture = this.OrganizationFixture()
 		const org = await orgFixture.seedDummyOrg({ name: 'my org' })
-		debugger
+
 		await orgFixture.installSkillAtOrganization(skill2.id, org.id)
 
 		const cli = await cliPromise
-		debugger
+
 		const skill = await skillFixture.registerCurrentSkill({
 			name: 'my first skill',
 		})
-		debugger
+
 		await orgFixture.installSkillAtOrganization(skill.id, org.id)
 
 		return { skillFixture, currentSkill: skill, skill2, cli, org }

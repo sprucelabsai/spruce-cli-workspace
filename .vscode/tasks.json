@@ -15,7 +15,7 @@
 			"runOptions": {
 				"runOn": "folderOpen"
 			},
-			"problemMatcher": {
+			"problemMatcher.disabled": {
 				"pattern": {
 					"regexp": "@sprucelabs\\/spruce-cli:.*\\] (.*)\\((\\d+),(\\d+)\\):\\s+error (.*)",
 					"file": 1,

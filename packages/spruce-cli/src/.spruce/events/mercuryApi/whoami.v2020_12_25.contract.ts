@@ -8,6 +8,8 @@ const whoamiEventContract = buildEventContract({
         'whoami::v2020_12_25': {
             
             responsePayloadSchema: authenticateResponsePayloadSchema,
+            
+            
         }
     }
 })

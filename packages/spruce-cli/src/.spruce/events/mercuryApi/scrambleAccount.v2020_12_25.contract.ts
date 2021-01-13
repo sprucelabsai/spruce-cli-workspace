@@ -8,6 +8,8 @@ const scrambleAccountEventContract = buildEventContract({
         'scramble-account::v2020_12_25': {
             
             responsePayloadSchema: scrambleAccountResponsePayloadSchema,
+            
+            
         }
     }
 })

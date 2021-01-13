@@ -8,6 +8,8 @@ const getEventContractsEventContract = buildEventContract({
         'get-event-contracts::v2020_12_25': {
             
             responsePayloadSchema: getEventContractsResponsePayloadSchema,
+            
+            
         }
     }
 })
