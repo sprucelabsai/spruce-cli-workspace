@@ -1,14 +1,11 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceErrors } from '../errors.types'
 
-
-
-const vscodeNotInstalledSchema: SpruceErrors.SpruceCli.VscodeNotInstalledSchema  = {
+const vscodeNotInstalledSchema: SpruceErrors.SpruceCli.VscodeNotInstalledSchema = {
 	id: 'vscodeNotInstalled',
 	namespace: 'SpruceCli',
 	name: 'vscode not installed',
-	    fields: {
-	    }
+	fields: {},
 }
 
 SchemaRegistry.getInstance().trackSchema(vscodeNotInstalledSchema)

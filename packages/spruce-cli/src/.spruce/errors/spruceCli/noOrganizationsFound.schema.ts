@@ -1,14 +1,11 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceErrors } from '../errors.types'
 
-
-
-const noOrganizationsFoundSchema: SpruceErrors.SpruceCli.NoOrganizationsFoundSchema  = {
+const noOrganizationsFoundSchema: SpruceErrors.SpruceCli.NoOrganizationsFoundSchema = {
 	id: 'noOrganizationsFound',
 	namespace: 'SpruceCli',
 	name: 'no organizations found',
-	    fields: {
-	    }
+	fields: {},
 }
 
 SchemaRegistry.getInstance().trackSchema(noOrganizationsFoundSchema)

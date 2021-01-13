@@ -13,13 +13,11 @@ const EVENT_CAMEL = 'didBookAppointment'
 export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 	@test()
 	protected static async registeringEventsOnBoot() {
-		debugger
 		const {
 			cli,
 			skill2,
 			currentSkill,
 		} = await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
-		debugger
 
 		await cli.getFeature('event').Action('create').execute({
 			nameReadable: EVENT_NAME_READABLE,
