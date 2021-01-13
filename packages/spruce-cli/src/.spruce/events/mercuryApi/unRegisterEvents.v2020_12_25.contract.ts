@@ -6,7 +6,7 @@ import unRegisterEventsResponsePayloadSchema from "#spruce/schemas/mercuryApi/v2
 
 const unRegisterEventsEventContract = buildEventContract({
     eventSignatures: {
-        'un-register-events::v2020_12_25': {
+        'unregister-events::v2020_12_25': {
             emitPayloadSchema: unRegisterEventsTargetAndPayloadSchema,
             responsePayloadSchema: unRegisterEventsResponsePayloadSchema,
         }

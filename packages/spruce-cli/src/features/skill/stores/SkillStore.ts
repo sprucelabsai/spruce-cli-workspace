@@ -32,7 +32,7 @@ export default class SkillStore extends AbstractStore {
 		isRegisteringCurrentSkill && this.assertInSkill()
 
 		const { name, slug, description } = values
-
+		debugger
 		const client = await this.connectToApi()
 
 		const results = await client.emit('register-skill::v2020_12_25', {

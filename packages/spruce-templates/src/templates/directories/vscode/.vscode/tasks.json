@@ -5,8 +5,8 @@
             "type": "npm",
             "script": "watch.build",
             "group": "build",
-            "problemMatcher": [],
             "label": "watch.build",
+            "isBackground": true,
             "runOptions": {
                 "runOn": "folderOpen"
             },
@@ -15,6 +15,19 @@
                 "panel": "dedicated",
                 "focus": false,
                 "reveal": "silent"
+            },
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "@sprucelabs\\/spruce-cli:.*\\] (.*)\\((\\d+),(\\d+)\\):\\s+error (.*)",
+                    "file": 1,
+                    "line": 2,
+                    "message": 4
+                },
+                "background": {
+                    "activeOnStart": false,
+                    "beginsPattern": "echo PASS TYPES",
+                    "endsPattern": "\\] (PASS|FAIL) TYPES",
+                }
             }
         },
         {

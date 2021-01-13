@@ -59,13 +59,15 @@ export default class SkillFeature<
 		health: 'yarn boot --health',
 		'health.local': 'yarn boot.local --health',
 		build: 'yarn build.babel && yarn build.types.resolve-paths.lint',
-		'build.types': 'tsc --emitDeclarationOnly && echo PASS',
+		'build.types':
+			'tsc --emitDeclarationOnly && echo PASS TYPES || echo FAIL TYPES',
 		'build.babel':
 			"babel src --out-dir build --extensions '.ts, .tsx' --source-maps --copy-files",
 		'build.resolve-paths':
 			'resolve-path-aliases --target build --patterns **/*.js,**/*.d.ts',
 		'build.types.resolve-paths.lint':
-			"concurrently 'yarn build.types' 'yarn build.resolve-paths' 'yarn lint'",
+			'yarn build.types && yarn resolve-paths.lint',
+		'resolve-paths.lint': 'yarn build.resolve-paths && yarn lint',
 		rebuild: 'yarn clean.all && yarn && yarn build',
 		clean: 'rm -rf build/',
 		'clean.all': 'rm -rf build/ && rm -rf node_modules/',
@@ -78,7 +80,7 @@ export default class SkillFeature<
 		test: 'jest',
 		'watch.tests': 'yarn test --watch',
 		'watch.build':
-			"concurrently 'yarn build.types.resolve-paths.lint' 'yarn build.babel --watch' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn build.types.resolve-paths.lint'\"",
+			"concurrently 'yarn build.types.resolve-paths.lint' 'tsc --emitDeclarationOnly -w' 'yarn build.babel --watch' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn resolve-paths.lint'\"",
 		'watch.rebuild': 'yarn clean.all && yarn && yarn build.watch',
 		'upgrade.packages':
 			'yarn-upgrade-all && rm yarn.lock ; yarn ; yarn lint.fix | true',

@@ -11,6 +11,17 @@
 		},
 		{
 			"type": "node",
+			"request": "attach",
+			"name": "attach.tests.ct",
+			"address": "3.tcp.ngrok.io",
+			"port": 25981,
+			"restart": true,
+			"timeout": 10000,
+			"localRoot": "${workspaceFolder}",
+			"remoteRoot": "/media/ramdisk/spruce-cli-workspace/packages/spruce-cli"
+		},
+		{
+			"type": "node",
 			"request": "launch",
 			"name": "debug.cli",
 			"protocol": "inspector",

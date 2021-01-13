@@ -22,7 +22,7 @@ import {
 	Log,
 } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
-import SpruceError from '@sprucelabs/spruce-skill-utils/build/SpruceError'
+import SpruceError from '../../errors/SpruceError'
 
 require('dotenv').config()
 
@@ -201,13 +201,13 @@ export class EventSkillFeature implements SkillFeature {
 		const { client, currentSkill } = await this.connectToApi()
 
 		if (client && currentSkill) {
-			await client.emit('un-register-listeners::v2020_12_25', {
+			await client.emit('unregister-listeners::v2020_12_25', {
 				payload: {
 					shouldUnRegisterAll: true,
 				},
 			})
 
-			this.log.info('Un-registered all existing registered listeners')
+			this.log.info('Unregistered all existing registered listeners')
 
 			await this.registerListeners(client)
 		}
@@ -219,13 +219,13 @@ export class EventSkillFeature implements SkillFeature {
 		const { client, currentSkill } = await this.connectToApi()
 
 		if (client && currentSkill) {
-			await client.emit('un-register-events::v2020_12_25', {
+			await client.emit('unregister-events::v2020_12_25', {
 				payload: {
 					shouldUnRegisterAll: true,
 				},
 			})
 
-			this.log.info('Un-registered existing event contracts')
+			this.log.info('Unregistered existing event contracts')
 
 			await this.registerEvents()
 		}

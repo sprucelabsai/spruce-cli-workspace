@@ -225,13 +225,15 @@ export default class Cli implements CliInterface {
 
 		const apiClientFactory = async (options?: ApiClientFactoryOptions) => {
 			const key = apiClientUtil.generateClientCacheKey(options)
-
+			debugger
 			if (!Cli.apiClients[key]) {
 				Cli.apiClients[key] = await apiClientFactoryAnon(options)
 
 				let auth: SpruceSchemas.MercuryApi.v2020_12_25.AuthenticateEmitPayload = {}
 				if (!options) {
 					const person = serviceFactory.Service(cwd, 'auth').getLoggedInPerson()
+
+					debugger
 
 					if (person) {
 						auth.token = person.token

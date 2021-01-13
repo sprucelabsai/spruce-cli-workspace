@@ -3396,7 +3396,7 @@ const coreEventContract: EventContract = {
 				fields: {},
 			},
 		},
-		'un-register-events': {
+		'unregister-events': {
 			emitPayloadSchema: {
 				id: 'unRegisterEventsTargetAndPayload',
 				fields: {
@@ -3423,7 +3423,7 @@ const coreEventContract: EventContract = {
 				fields: {},
 			},
 		},
-		'un-register-listeners': {
+		'unregister-listeners': {
 			emitPayloadSchema: {
 				id: 'unRegisterListenersTargetAndPayload',
 				fields: {

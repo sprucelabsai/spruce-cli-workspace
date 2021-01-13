@@ -66,6 +66,5 @@
 	],
 	"debug.javascript.unmapMissingSources": true,
 	"javascript.preferences.importModuleSpecifier": "relative",
-	"typescript.preferences.importModuleSpecifier": "relative",
-	"workbench.sideBar.location": "right"
+	"typescript.preferences.importModuleSpecifier": "relative"
 }

@@ -13,6 +13,7 @@ export default class PersonFixture {
 	}
 
 	public async loginAsDummyPerson(phone = DUMMY_PHONE) {
+		debugger
 		const client = await this.apiClientFactory()
 
 		const requestPinResults = await client.emit('request-pin::v2020_12_25', {
@@ -26,6 +27,8 @@ export default class PersonFixture {
 		const confirmPinResults = await client.emit('confirm-pin::v2020_12_25', {
 			payload: { challenge, pin: '7777' },
 		})
+
+		debugger
 
 		const { person } = eventResponseUtil.getFirstResponseOrThrow(
 			confirmPinResults
