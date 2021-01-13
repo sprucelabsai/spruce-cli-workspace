@@ -6,6 +6,7 @@
 			"script": "watch.build",
 			"group": "build",
 			"label": "watch.build",
+			"isBackground": true,
 			"presentation": {
 				"reveal": "silent",
 				"panel": "dedicated",
@@ -23,8 +24,8 @@
 				},
 				"background": {
 					"activeOnStart": false,
-					"beginsPattern": ".*echo PASS.*",
-					"endsPattern": ".*\\] PASS.*",
+					"beginsPattern": "echo PASS TYPES",
+					"endsPattern": "\\] (PASS|FAIL) TYPES",
 				},
 				"fileLocation": [
 					"relative",

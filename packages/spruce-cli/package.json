@@ -32,7 +32,7 @@
     "lint.fix": "eslint --fix '**/*.ts'",
     "rebuild": "cd ../ && yarn rebuild",
     "build": "yarn build.babel && yarn build.types.resolve-paths.lint",
-    "build.types": "tsc --emitDeclarationOnly && echo PASS",
+    "build.types": "tsc --emitDeclarationOnly && echo PASS TYPES || echo FAIL TYPES",
     "build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
     "build.babel.debug": "node --inspect-brk=5200 ../../node_modules/.bin/babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
     "build.resolve-paths": "resolve-path-aliases --target build --patterns **/*.js,**/*.d.ts",
