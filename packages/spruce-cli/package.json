@@ -240,8 +240,8 @@
     ]
   },
   "jest": {
-    "maxWorkers": 2,
-    "testTimeout": 600000,
+    "maxWorkers": 4,
+    "testTimeout": 300000,
     "testEnvironment": "node",
     "testPathIgnorePatterns": [
       "<rootDir>/tmp/",

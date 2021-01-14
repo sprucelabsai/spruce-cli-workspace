@@ -86,12 +86,11 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 		this.clearFixtures()
 
-		if (this._ui) {
-			if (this._ui.isWaitingForInput()) {
-				throw new Error(
-					`Terminal interface is waiting for input. Make sure you are invoking this.term.sendInput() as many times as needed.`
-				)
-			}
+		if (this._ui?.isWaitingForInput()) {
+			debugger
+			throw new Error(
+				`Terminal interface is waiting for input. Make sure you are invoking this.term.sendInput() as many times as needed.`
+			)
 		}
 
 		if (diskUtil.doesDirExist(this.cwd) && testUtil.shouldClearCache()) {
