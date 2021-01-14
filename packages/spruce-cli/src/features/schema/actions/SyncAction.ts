@@ -70,11 +70,13 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 		let coreSyncResults: FeatureActionResponse | undefined
 
 		if (shouldSyncRemoteSchemasFirst) {
+			this.ui.startLoading('Syncing core schemas first...')
 			coreSyncResults = await this.execute({
 				...normalizedOptions,
 				fetchLocalSchemas: false,
 				fetchRemoteSchemas: false,
 			})
+			this.ui.startLoading('Done syncing core schemas...')
 		}
 
 		const {
@@ -86,6 +88,8 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			schemaTypesDestinationDirOrFile,
 			fieldTypesDestinationDir
 		)
+
+		this.ui.startLoading('Generating field types...')
 
 		const {
 			fieldTemplateItems,

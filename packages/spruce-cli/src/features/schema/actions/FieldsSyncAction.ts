@@ -35,6 +35,8 @@ export default class FieldsSyncAction extends AbstractFeatureAction<OptionsSchem
 		const generatedFiles: GeneratedFile[] = []
 		const schemaStore = this.Store('schema')
 
+		this.ui.startLoading('Pulling field types...')
+
 		const { fields, errors } = await schemaStore.fetchFields({
 			localAddonsDir: diskUtil.resolvePath(this.cwd, addonsLookupDir),
 		})
