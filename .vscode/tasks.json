@@ -31,10 +31,7 @@
 					"relative",
 					"${workspaceFolder}/packages/spruce-cli/"
 				]
-			},
-			"problemMatcher": [
-				"$tsc"
-			]
+			}
 		},
 		{
 			"type": "npm",
