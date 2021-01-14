@@ -6,7 +6,7 @@ import {
 import AbstractWriter, { WriteResults } from '../../../writers/AbstractWriter'
 
 export default class SkillGenerator extends AbstractWriter {
-	public async generateSkill(
+	public async writeSkill(
 		destinationDir: string,
 		options: DirectoryTemplateContextSkill
 	): Promise<WriteResults> {

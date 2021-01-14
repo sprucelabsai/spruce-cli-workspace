@@ -184,7 +184,7 @@ export default class SkillFeature<
 
 		const skillGenerator = this.Writer('skill')
 
-		const files = await skillGenerator.generateSkill(this.cwd, options)
+		const files = await skillGenerator.writeSkill(this.cwd, options)
 		this.installScripts()
 
 		return { files }

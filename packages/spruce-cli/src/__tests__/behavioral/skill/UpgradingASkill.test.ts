@@ -43,7 +43,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		for (const upgradeMode of ['forceRequiredSkipRest', 'forceEverything']) {
 			for (const file of files) {
-				diskUtil.writeFile(this.resolvePath(file.path), '')
+				this.clearEmptyIfAboutToBeUpdated(file, upgradeMode)
 			}
 
 			const results = await cli.getFeature('skill').Action('upgrade').execute({
@@ -52,6 +52,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 			if (upgradeMode === 'forceRequiredSkipRest') {
 				const passedHealthCheck = await cli.checkHealth()
+
 				assert.isEqualDeep(passedHealthCheck, { skill: { status: 'passed' } })
 				assert.isTrue(this.Service('settings').get('testing'))
 			}
@@ -87,6 +88,21 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		assert.doesInclude(passedHealthCheck, {
 			'skill.errors[0].options.code': 'SKILL_NOT_INSTALLED',
 		})
+	}
+
+	private static clearEmptyIfAboutToBeUpdated(
+		file: {
+			name: string
+			path: string
+			forceEverythingAction: GeneratedFile['action']
+			forceRequiredSkipRestAction: GeneratedFile['action']
+		},
+		upgradeMode: string
+	) {
+		//@ts-ignore
+		if (file[`${upgradeMode}Action`] === 'updated') {
+			diskUtil.writeFile(this.resolvePath(file.path), '')
+		}
 	}
 
 	@test()

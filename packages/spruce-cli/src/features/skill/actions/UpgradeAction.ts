@@ -31,14 +31,14 @@ export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> 
 	}
 
 	private async copyFiles(normalizedOptions: Options) {
-		const skillGenerator = this.Writer('skill', {
+		const skillWriter = this.Writer('skill', {
 			upgradeMode: normalizedOptions.upgradeMode,
 		})
 		const pkgService = this.Service('pkg')
 		const name = pkgService.get('name')
 		const description = pkgService.get('description')
 
-		const generatedFiles = await skillGenerator.generateSkill(this.cwd, {
+		const generatedFiles = await skillWriter.writeSkill(this.cwd, {
 			name,
 			description,
 		})

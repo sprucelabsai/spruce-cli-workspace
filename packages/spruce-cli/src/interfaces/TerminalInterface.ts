@@ -256,17 +256,12 @@ export default class TerminalInterface implements GraphicsInterface {
 		}
 	}
 
-	public renderHero(
-		message: string,
-		effects: GraphicsTextEffect[] = [
-			GraphicsTextEffect.Blue,
-			GraphicsTextEffect.Bold,
-		]
-	) {
+	public renderHero(message: string, effects?: GraphicsTextEffect[]) {
 		fonts.say(message, {
 			// Font: 'tiny',
 			align: 'left',
-			colors: filterEffectsForCFonts(effects),
+			gradient: [GraphicsTextEffect.Red, GraphicsTextEffect.Blue],
+			colors: effects ? filterEffectsForCFonts(effects) : undefined,
 		})
 	}
 
