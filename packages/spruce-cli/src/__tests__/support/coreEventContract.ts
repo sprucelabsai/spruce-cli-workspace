@@ -3283,7 +3283,7 @@ const coreEventContract: EventContract = {
 							schema: {
 								id: 'registerListenersEmitPayload',
 								fields: {
-									eventNamesWithOptionalNamespace: {
+									fullyQualifiedEventName: {
 										type: 'text',
 										isRequired: true,
 										isArray: true,
@@ -3407,7 +3407,7 @@ const coreEventContract: EventContract = {
 							schema: {
 								id: 'unRegisterEventsEmitPayload',
 								fields: {
-									eventNamesWithOptionalNamespace: {
+									fullyQualifiedEventName: {
 										type: 'text',
 										isRequired: true,
 										isArray: true,
@@ -3434,7 +3434,7 @@ const coreEventContract: EventContract = {
 							schema: {
 								id: 'unRegisterListenersEmitPayload',
 								fields: {
-									eventNamesWithOptionalNamespace: {
+									fullyQualifiedEventName: {
 										type: 'text',
 										isRequired: true,
 										isArray: true,

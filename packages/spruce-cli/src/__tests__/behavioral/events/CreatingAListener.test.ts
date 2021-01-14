@@ -90,8 +90,6 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 	@test()
 	protected static async creatingANewListenerAsksWhichEventToListenTo() {
-		this.log('Starting test')
-
 		const cli = await this.installEventFeature('events')
 
 		void cli.getFeature('event').Action('listen').execute({})
