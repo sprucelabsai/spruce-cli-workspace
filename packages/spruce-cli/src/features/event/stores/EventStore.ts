@@ -23,9 +23,9 @@ export default class EventStore extends AbstractStore {
 		localNamespace?: string
 	}): Promise<EventStoreFetchEventContractsResponse> {
 		const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
-		debugger
+
 		const results = await client.emit('get-event-contracts::v2020_12_25')
-		debugger
+
 		const { contracts } = eventResponseUtil.getFirstResponseOrThrow(results)
 
 		const localContract =

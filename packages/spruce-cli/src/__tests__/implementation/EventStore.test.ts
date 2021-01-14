@@ -103,23 +103,22 @@ export default class EventStoreTest extends AbstractCliTest {
 
 	@test()
 	protected static async mixesInLocalContracts() {
-		debugger
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
-		debugger
+
 		const skill = await this.SkillFixture().registerCurrentSkill({
 			name: 'my new skill',
 		})
-		debugger
+
 		await cli.getFeature('event').Action('create').execute({
 			nameReadable: EVENT_NAME_READABLE,
 			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
 		})
-		debugger
+
 		const { contracts } = await this.Store('event').fetchEventContracts({
 			localNamespace: skill.slug,
 		})
-		debugger
+
 		assert.isLength(contracts, 2)
 		const name = eventNameUtil.join({
 			eventName: EVENT_NAME,
