@@ -206,26 +206,22 @@ export default class Cli implements CliInterface {
 	): ApiClientFactory {
 		const apiClientFactoryAnon = bootOptions?.apiClientFactory
 			? bootOptions.apiClientFactory
-			: async (options?: ApiClientFactoryOptions) => {
-					const key = apiClientUtil.generateClientCacheKey(options)
-					if (!Cli.apiClients[key]) {
-						Cli.apiClients[
-							key
-						] = await MercuryClientFactory.Client<EventContracts>({
-							contracts: eventsContracts,
-							host: bootOptions?.host ?? 'https://sandbox.mercury.spruce.ai',
-							allowSelfSignedCrt: true,
-						})
-					}
+			: async () => {
+					const client = await MercuryClientFactory.Client<EventContracts>({
+						contracts: eventsContracts,
+						host: bootOptions?.host ?? 'https://sandbox.mercury.spruce.ai',
+						allowSelfSignedCrt: true,
+					})
 
-					return Cli.apiClients[key]
+					return client
 			  }
 
 		const apiClientFactory = async (options?: ApiClientFactoryOptions) => {
 			const key = apiClientUtil.generateClientCacheKey(options)
 
 			if (!Cli.apiClients[key]) {
-				Cli.apiClients[key] = await apiClientFactoryAnon(options)
+				Cli.apiClients[key] = apiClientFactoryAnon(options) as any
+				Cli.apiClients[key] = await Cli.apiClients[key]
 
 				let auth: SpruceSchemas.MercuryApi.v2020_12_25.AuthenticateEmitPayload = {}
 				if (!options) {
