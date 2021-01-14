@@ -126,6 +126,8 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 				return {}
 			}
 
+			this.ui.startLoading('Identifying orphaned schemas...')
+
 			await this.deleteOrphanedSchemas(
 				resolvedSchemaTypesDestinationDirOrFile,
 				schemaTemplateItems
@@ -201,6 +203,8 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			localNamespace,
 		} = options
 
+		this.ui.startLoading('Loading builders')
+
 		const {
 			schemasByNamespace,
 			errors: schemaErrors,
@@ -216,6 +220,17 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 		const hashSpruceDestination = resolvedSchemaTypesDestinationDirOrFile.replace(
 			diskUtil.resolveHashSprucePath(this.cwd),
 			'#spruce'
+		)
+
+		let total = 0
+		let totalNamespaces = 0
+		for (const namespace of Object.keys(schemasByNamespace)) {
+			totalNamespaces++
+			total += schemasByNamespace[namespace].length
+		}
+
+		this.ui.startLoading(
+			`Building ${total} schemas from ${totalNamespaces} namespaces.`
 		)
 
 		const schemaTemplateItemBuilder = new SchemaTemplateItemBuilder(
@@ -296,6 +311,8 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 		schemaTemplateItems: SchemaTemplateItem[]
 		globalSchemaNamespace?: string
 	}) {
+		this.ui.startLoading('Generating value types...')
+
 		const builder = new ValueTypeBuilder(
 			this.schemaGenerator,
 			this.Service('import')

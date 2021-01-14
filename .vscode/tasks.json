@@ -25,13 +25,16 @@
 				"background": {
 					"activeOnStart": false,
 					"beginsPattern": "echo PASS TYPES",
-					"endsPattern": "\\] (PASS|FAIL) TYPES",
+					"endsPattern": "\\] (PASS|FAIL) TYPES"
 				},
 				"fileLocation": [
 					"relative",
 					"${workspaceFolder}/packages/spruce-cli/"
 				]
-			}
+			},
+			"problemMatcher": [
+				"$tsc"
+			]
 		},
 		{
 			"type": "npm",
@@ -68,7 +71,7 @@
 			},
 			"presentation": {
 				"panel": "shared",
-				"focus": true,
+				"focus": true
 			}
 		},
 		{
@@ -89,7 +92,7 @@
 			"group": "test",
 			"presentation": {
 				"reveal": "always",
-				"panel": "shared",
+				"panel": "shared"
 			}
 		},
 		{

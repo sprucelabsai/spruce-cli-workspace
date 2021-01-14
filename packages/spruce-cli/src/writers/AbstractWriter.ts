@@ -19,8 +19,8 @@ export interface WriterOptions {
 
 export default abstract class AbstractWriter {
 	protected templates: Templates
+	protected ui: GraphicsInterface
 	private linter?: LintService
-	private ui: GraphicsInterface
 	private upgradeMode: UpgradeMode
 	private fileDescriptions: FileDescription[] = []
 	private shouldConfirmBeforeWriting = true

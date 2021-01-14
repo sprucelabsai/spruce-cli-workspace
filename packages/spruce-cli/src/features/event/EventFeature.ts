@@ -52,9 +52,9 @@ export default class EventFeature extends AbstractFeature {
 		const isInstalled = await this.featureInstaller.isInstalled(this.code)
 
 		if (isInstalled) {
-			const generator = this.EventContractWriter()
+			const writer = this.EventContractWriter()
 
-			const uniqueSchemas = await generator.fetchContractsAndGenerateUniqueSchemas(
+			const uniqueSchemas = await writer.fetchContractsAndGenerateUniqueSchemas(
 				payload.schemas ?? []
 			)
 

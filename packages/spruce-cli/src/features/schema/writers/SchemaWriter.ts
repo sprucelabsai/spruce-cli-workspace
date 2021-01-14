@@ -57,6 +57,8 @@ export default class SchemaWriter extends AbstractWriter {
 			version?: string
 		}
 	): Promise<WriteResults> {
+		this.ui.startLoading('Writing builder...')
+
 		const filename = `${options.nameCamel}.builder.ts`
 
 		const resolvedBuilderDestination =
@@ -91,6 +93,8 @@ export default class SchemaWriter extends AbstractWriter {
 		destinationDir: string,
 		options: WriteFieldTypesOptions
 	): Promise<WriteResults> {
+		this.ui.startLoading('Checking schema field types...')
+
 		const { fieldTemplateItems } = options
 
 		let results: WriteResults = []
@@ -132,6 +136,7 @@ export default class SchemaWriter extends AbstractWriter {
 		)
 
 		let results: WriteResults = []
+		this.ui.startLoading('Checking schema types...')
 
 		const schemaTypesContents = this.templates.schemasTypes({
 			schemaTemplateItems,
@@ -146,6 +151,10 @@ export default class SchemaWriter extends AbstractWriter {
 			schemaTypesContents,
 			'Namespace for accessing all your schemas. Type `SpruceSchemas` in your IDE to get started. ⚡️'
 		)
+
+		await this.lint(resolvedTypesDestination)
+
+		this.ui.startLoading(`Checking ${schemaTemplateItems.length} schemas...`)
 
 		const allSchemaResults = await this.writeAllSchemas(
 			pathUtil.dirname(resolvedTypesDestination),

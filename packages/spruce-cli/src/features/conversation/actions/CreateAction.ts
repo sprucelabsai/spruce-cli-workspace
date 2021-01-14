@@ -1,15 +1,15 @@
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import createErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/createErrorAction.schema'
+import createConversationTopicOptionsSchema from '#spruce/schemas/spruceCli/v2020_07_22/createConversationTopicOptions.schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
-type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorActionSchema
-type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorAction
+type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateConversationTopicOptionsSchema
+type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateConversationTopicOptions
 export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'create'
-	public optionsSchema = createErrorActionSchema
+	public optionsSchema = createConversationTopicOptionsSchema
 
-	public async execute(options: Options): Promise<FeatureActionResponse> {
+	public async execute(_options: Options): Promise<FeatureActionResponse> {
 		return {}
 	}
 }
