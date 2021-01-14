@@ -85,7 +85,9 @@ const testUtil = {
 	},
 
 	log(...args: any[]) {
-		process.stderr.write(this.getTimeSpentFormatted() + ': ' + args.join(' '))
+		process.stderr.write(
+			this.getTimeSpentFormatted() + ': ' + args.join(' ') + '\n'
+		)
 	},
 
 	getTimeSpent() {

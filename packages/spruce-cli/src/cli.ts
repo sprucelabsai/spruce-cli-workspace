@@ -50,12 +50,14 @@ export interface CliBootOptions {
 	host?: string
 }
 
+type PromiseCache = Record<string, Promise<ApiClient>>
+
 export default class Cli implements CliInterface {
 	private cwd: string
 	private featureInstaller: FeatureInstaller
 	private serviceFactory: ServiceFactory
 	public readonly emitter: GlobalEmitter
-	private static apiClients: Record<string, ApiClient> = {}
+	private static apiClients: PromiseCache = {}
 
 	private constructor(
 		cwd: string,
@@ -71,7 +73,7 @@ export default class Cli implements CliInterface {
 
 	public static async resetApiClients() {
 		for (const key in this.apiClients) {
-			await this.apiClients[key].disconnect()
+			await (await this.apiClients[key]).disconnect()
 		}
 
 		this.apiClients = {}
@@ -204,7 +206,31 @@ export default class Cli implements CliInterface {
 		serviceFactory: ServiceFactory,
 		bootOptions?: CliBootOptions
 	): ApiClientFactory {
-		const apiClientFactoryAnon = bootOptions?.apiClientFactory
+		const apiClientFactory = async (options?: ApiClientFactoryOptions) => {
+			const key = apiClientUtil.generateClientCacheKey(options)
+
+			if (!Cli.apiClients[key]) {
+				Cli.apiClients[key] = Cli.connectToApi(
+					cwd,
+					serviceFactory,
+					options,
+					bootOptions
+				)
+			}
+
+			return Cli.apiClients[key]
+		}
+
+		return apiClientFactory
+	}
+
+	private static async connectToApi(
+		cwd: string,
+		serviceFactory: ServiceFactory,
+		options?: ApiClientFactoryOptions,
+		bootOptions?: CliBootOptions
+	): Promise<ApiClient> {
+		const connect = bootOptions?.apiClientFactory
 			? bootOptions.apiClientFactory
 			: async () => {
 					const client = await MercuryClientFactory.Client<EventContracts>({
@@ -216,50 +242,41 @@ export default class Cli implements CliInterface {
 					return client
 			  }
 
-		const apiClientFactory = async (options?: ApiClientFactoryOptions) => {
-			const key = apiClientUtil.generateClientCacheKey(options)
+		const client = await connect()
 
-			if (!Cli.apiClients[key]) {
-				Cli.apiClients[key] = apiClientFactoryAnon(options) as any
-				Cli.apiClients[key] = await Cli.apiClients[key]
+		let auth: SpruceSchemas.MercuryApi.v2020_12_25.AuthenticateEmitPayload = {}
+		if (!options) {
+			const person = serviceFactory.Service(cwd, 'auth').getLoggedInPerson()
 
-				let auth: SpruceSchemas.MercuryApi.v2020_12_25.AuthenticateEmitPayload = {}
-				if (!options) {
-					const person = serviceFactory.Service(cwd, 'auth').getLoggedInPerson()
+			if (person) {
+				auth.token = person.token
+			}
+		} else if (options.shouldAuthAsCurrentSkill) {
+			const skill = serviceFactory.Service(cwd, 'auth').getCurrentSkill()
 
-					if (person) {
-						auth.token = person.token
-					}
-				} else if (options.shouldAuthAsCurrentSkill) {
-					const skill = serviceFactory.Service(cwd, 'auth').getCurrentSkill()
-
-					if (skill) {
-						auth = {
-							skillId: skill.id,
-							apiKey: skill.apiKey,
-						}
-					}
-				} else if (options.skillId && options.apiKey) {
-					auth = {
-						skillId: options.skillId,
-						apiKey: options.apiKey,
-					}
-				}
-
-				if (Object.keys(auth).length > 0) {
-					await Cli.apiClients[key].emit('authenticate::v2020_12_25', {
-						payload: auth,
-					})
-
-					//@ts-ignore
-					Cli.apiClients[key].auth = auth
+			if (skill) {
+				auth = {
+					skillId: skill.id,
+					apiKey: skill.apiKey,
 				}
 			}
-
-			return Cli.apiClients[key]
+		} else if (options.skillId && options.apiKey) {
+			auth = {
+				skillId: options.skillId,
+				apiKey: options.apiKey,
+			}
 		}
 
-		return apiClientFactory
+		if (Object.keys(auth).length > 0) {
+			await client.emit('authenticate::v2020_12_25', {
+				payload: auth,
+			})
+
+			//@ts-ignore
+			client.auth = auth
+		}
+
+		return client
 	}
 }
 
