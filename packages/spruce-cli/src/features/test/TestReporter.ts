@@ -735,8 +735,9 @@ export default class TestReporter {
 			})
 		})
 
+		const percent = Math.floor((totalPassedTests / totalTests) * 100)
 		return {
-			percent: Math.floor((totalPassedTests / totalTests) * 100),
+			percent: percent > 0 ? percent : 0,
 			totalTests,
 			totalPassedTests,
 			totalTime,

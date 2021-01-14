@@ -36,6 +36,7 @@ export default class SpyInterface implements GraphicsInterface {
 	}
 
 	private trackInvocation(command: string, options?: any) {
+		process.stderr.write(command + ' ' + JSON.stringify(options ?? ''))
 		this.invocations.push({ command, options })
 	}
 
