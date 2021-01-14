@@ -1,20 +1,21 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
-import organizationSchema from '#spruce/schemas/spruce/v2020_07_22/organization.schema'
 import { SpruceSchemas } from '../../schemas.types'
 
-const getOrgResponsePayloadSchema: SpruceSchemas.MercuryApi.v2020_12_25.GetOrgResponsePayloadSchema = {
+import organizationSchema from '#spruce/schemas/spruce/v2020_07_22/organization.schema'
+
+const getOrgResponsePayloadSchema: SpruceSchemas.MercuryApi.v2020_12_25.GetOrgResponsePayloadSchema  = {
 	id: 'getOrgResponsePayload',
 	version: 'v2020_12_25',
 	namespace: 'MercuryApi',
 	name: '',
-	fields: {
-		/** . */
-		organization: {
-			type: 'schema',
-			isRequired: true,
-			options: { schema: organizationSchema },
-		},
-	},
+	    fields: {
+	            /** . */
+	            'organization': {
+	                type: 'schema',
+	                isRequired: true,
+	                options: {schema: organizationSchema,}
+	            },
+	    }
 }
 
 SchemaRegistry.getInstance().trackSchema(getOrgResponsePayloadSchema)

@@ -9,6 +9,7 @@ import { GeneratedFile, NpmPackage } from '../types/cli.types'
 import { GraphicsInterface } from '../types/cli.types'
 import WriterFactory from '../writers/WriterFactory'
 import AbstractFeature from './AbstractFeature'
+import ConversationFeature from './conversation/ConversationFeature'
 import ErrorFeature from './error/ErrorFeature'
 import EventFeature from './event/EventFeature'
 import FeatureInstaller from './FeatureInstaller'
@@ -34,6 +35,7 @@ export interface FeatureMap {
 	onboard: OnboardFeature
 	person: PersonFeature
 	organization: OrganizationFeature
+	conversation: ConversationFeature
 }
 
 export type InstallFeature =
@@ -79,6 +81,10 @@ export type InstallFeature =
 	  }
 	| {
 			code: 'organization'
+			options?: undefined
+	  }
+	| {
+			code: 'conversation'
 			options?: undefined
 	  }
 

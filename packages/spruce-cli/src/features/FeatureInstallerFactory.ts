@@ -5,6 +5,7 @@ import StoreFactory from '../stores/StoreFactory'
 import { ApiClientFactory } from '../types/apiClient.types'
 import { GraphicsInterface } from '../types/cli.types'
 import { FeatureOptions } from './AbstractFeature'
+import ConversationFeature from './conversation/ConversationFeature'
 import ErrorFeature from './error/ErrorFeature'
 import EventFeature from './event/EventFeature'
 import FeatureInstaller from './FeatureInstaller'
@@ -32,6 +33,7 @@ export default class FeatureInstallerFactory {
 		OnboardFeature,
 		PersonFeature,
 		OrganizationFeature,
+		ConversationFeature,
 	]
 
 	public static readonly featureCodes: FeatureCode[] = [
@@ -46,6 +48,7 @@ export default class FeatureInstallerFactory {
 		'onboard',
 		'person',
 		'organization',
+		'conversation',
 	]
 
 	public static WithAllFeatures(options: {
