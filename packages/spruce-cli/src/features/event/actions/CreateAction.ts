@@ -144,7 +144,9 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 				}
 			)
 
+			debugger
 			const syncResponse = await this.parent.Action('sync').execute(syncOptions)
+			debugger
 
 			return mergeUtil.mergeActionResults(response, syncResponse)
 		} catch (err) {
