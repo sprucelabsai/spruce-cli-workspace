@@ -293,7 +293,8 @@
             "createsVersionedEventFiles": "F81",
             "createsExpectedPermissionContract": "F82",
             "registeringEventsOnBoot": "F83",
-            "createsVersionedEventFilesDefaultingToToday": "F84"
+            "createsVersionedEventFilesDefaultingToToday": "F84",
+            "hasCreateConversationAction": "F100"
           }
         }
       ],
