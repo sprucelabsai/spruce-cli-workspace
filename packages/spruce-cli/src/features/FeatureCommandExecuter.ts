@@ -98,7 +98,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 
 	private async installOurFeature(installOptions: Record<string, any>) {
 		this.ui.clear()
-		this.ui.startLoading(`Installing ${this.featureCode}...`)
+		this.ui.startLoading(`Installing ${this.featureCode} feature...`)
 
 		const installResults = await this.featureInstaller.install({
 			installFeatureDependencies: false,

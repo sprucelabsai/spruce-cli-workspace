@@ -48,17 +48,22 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 			summaryLines: [],
 		}
 
-		const answers =
-			all || missing.length === 0
-				? missing.map((m) => m.id)
-				: await this.ui.prompt({
-						type: 'select',
-						label: 'Which extensions should I install?',
-						isArray: true,
-						options: {
-							choices,
-						},
-				  })
+		const skipConfirmExtensions = all || missing.length === 0
+
+		if (!skipConfirmExtensions) {
+			this.ui.stopLoading()
+		}
+
+		const answers = skipConfirmExtensions
+			? missing.map((m) => m.id)
+			: await this.ui.prompt({
+					type: 'select',
+					label: 'Which extensions should I install?',
+					isArray: true,
+					options: {
+						choices,
+					},
+			  })
 
 		if (answers && answers?.length > 0) {
 			this.ui.startLoading(`Installing ${answers.length} extensions...`)

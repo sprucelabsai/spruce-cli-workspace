@@ -100,6 +100,7 @@ export default abstract class AbstractWriter {
 				this.shouldConfirmBeforeWriting &&
 				fileDescription?.confirmPromptOnFirstWrite
 			) {
+				this.ui.stopLoading()
 				write = await this.ui.confirm(fileDescription.confirmPromptOnFirstWrite)
 			}
 
