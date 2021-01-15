@@ -124,7 +124,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			schemaErrors.push(err)
 		}
 
-		if (schemaTemplateItems) {
+		if (schemaErrors.length === 0 && schemaTemplateItems) {
 			if (deleteDestinationDirIfNoSchemas && schemaTemplateItems.length === 0) {
 				diskUtil.deleteDir(resolvedSchemaTypesDestinationDirOrFile)
 				return {}

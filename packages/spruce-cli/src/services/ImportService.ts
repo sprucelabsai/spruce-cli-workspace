@@ -196,6 +196,7 @@ export default class ImportService {
 	}
 
 	public clearCache() {
+		ImportService.cachedImports = {}
 		diskUtil.deleteDir(this.cacheDir())
 	}
 

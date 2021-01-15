@@ -11,6 +11,29 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 	}
 
 	@test()
+	protected static async returnsHelpfulErrorWhenTsNodeIsRemoved() {
+		const cli = await this.installErrorFeature('errors')
+
+		const createAction = cli.getFeature('error').Action('create')
+
+		await createAction.execute({
+			nameReadable: 'Test error',
+			nameCamel: 'testError',
+		})
+
+		const pkg = this.Service('pkg')
+		await pkg.uninstall('ts-node')
+
+		const importService = this.Service('import')
+		importService.clearCache()
+
+		const results = await cli.getFeature('error').Action('sync').execute({})
+
+		assert.isTruthy(results.errors)
+		assert.isLength(results.errors, 1)
+	}
+
+	@test()
 	protected static async errorsStayInSyncWhenSchemasAreDeleted() {
 		const cli = await this.installErrorFeature('errors')
 

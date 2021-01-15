@@ -53,15 +53,15 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			...item,
 			code: namesUtil.toConst(item.namePascal),
 		}))
-		const errorGenerator = this.Writer('error')
+		const errorWriter = this.Writer('error')
 
 		const optionsResults = await this.generateOptionTypes(
-			errorGenerator,
+			errorWriter,
 			errorTemplateItems,
 			errorTypesDestinationDir
 		)
 
-		const errorClassGeneratedFiles = await errorGenerator.writeOrAppendErrorsToClass(
+		const errorClassGeneratedFiles = await errorWriter.writeOrAppendErrorsToClass(
 			diskUtil.resolvePath(this.cwd, errorClassDestinationDir),
 			errorTemplateItems
 		)
