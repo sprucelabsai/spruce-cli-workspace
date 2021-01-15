@@ -162,6 +162,8 @@ export class EventSkillFeature implements SkillFeature {
 			contracts,
 		})
 
+		this.apiClient = client
+
 		this.log.info('Connection successful')
 
 		const skillId = process.env.SKILL_ID
@@ -187,8 +189,6 @@ export class EventSkillFeature implements SkillFeature {
 
 			this.log.info('Authentication successful')
 		}
-
-		this.apiClient = client
 
 		return { client, currentSkill }
 	}
