@@ -43,10 +43,10 @@ export default class ImportService {
 		}
 
 		ImportService.cachedImports[hash] = this.importAllUncached(file)
-		return ImportService.cachedImports[hash].then((response: T) => {
-			this.writeCacheFile(hash, response)
-			return response
-		})
+		const response = (await ImportService.cachedImports[hash]) as T
+		this.writeCacheFile(hash, response)
+
+		return response
 	}
 
 	private haveImportsChanged(
