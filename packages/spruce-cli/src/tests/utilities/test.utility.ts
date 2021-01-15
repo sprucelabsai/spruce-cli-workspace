@@ -85,8 +85,13 @@ const testUtil = {
 	},
 
 	log(...args: any[]) {
+		//@ts-ignore
+		const prefix = global.activeTest
+			? //@ts-ignore
+			  `${global.activeTest?.file}::${global.activeTest?.test} :: `
+			: ''
 		process.stderr.write(
-			this.getTimeSpentFormatted() + ': ' + args.join(' ') + '\n'
+			prefix + this.getTimeSpentFormatted() + ': ' + args.join(' ') + '\n'
 		)
 	},
 

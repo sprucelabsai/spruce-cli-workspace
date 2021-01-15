@@ -43,15 +43,6 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		await this.cleanTestDirsAndFiles()
 	}
 
-	private static async cleanTestDirsAndFiles() {
-		const pattern = this.resolveTestPath('**/*.d.ts')
-		const matches = await globby(pattern)
-
-		for (const match of matches) {
-			diskUtil.deleteFile(match)
-		}
-	}
-
 	protected static async beforeEach() {
 		await super.beforeEach()
 		testUtil.startLogTimer()
@@ -66,14 +57,6 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		this.ui.setCursorPosition({ x: 0, y: 0 })
 
 		this.clearFixtures()
-	}
-
-	private static clearFixtures() {
-		this.emitter = undefined
-		this.mercuryFixture = undefined
-		this.organizationFixture = undefined
-		this.personFixture = undefined
-		this.skillFixture = undefined
 	}
 
 	protected static async afterEach() {
@@ -99,6 +82,23 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		if (diskUtil.doesDirExist(this.homeDir) && testUtil.shouldClearCache()) {
 			diskUtil.deleteDir(this.homeDir)
 		}
+	}
+
+	private static async cleanTestDirsAndFiles() {
+		const pattern = this.resolveTestPath('**/*.d.ts')
+		const matches = await globby(pattern)
+
+		for (const match of matches) {
+			diskUtil.deleteFile(match)
+		}
+	}
+
+	private static clearFixtures() {
+		this.emitter = undefined
+		this.mercuryFixture = undefined
+		this.organizationFixture = undefined
+		this.personFixture = undefined
+		this.skillFixture = undefined
 	}
 
 	protected static freshTmpDir() {
