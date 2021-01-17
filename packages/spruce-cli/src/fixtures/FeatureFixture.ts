@@ -128,8 +128,6 @@ export default class FeatureFixture implements ServiceProvider {
 		cacheKey?: string,
 		bootOptions?: CliBootOptions
 	) {
-		testUtil.log('Copying cached test', cacheKey)
-
 		if (this.isCached(cacheKey)) {
 			return this.installedSkills[cacheKey as string].cli
 		}
@@ -165,8 +163,6 @@ export default class FeatureFixture implements ServiceProvider {
 		}
 
 		await this.linkLocalPackages()
-
-		testUtil.log('Done copying cached test', cacheKey)
 
 		return cli
 	}

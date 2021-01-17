@@ -211,7 +211,7 @@ export default class TestReporter {
 
 		this.updateInterval = setInterval(
 			this.handleUpdateInterval.bind(this),
-			2000
+			1000
 		)
 	}
 
