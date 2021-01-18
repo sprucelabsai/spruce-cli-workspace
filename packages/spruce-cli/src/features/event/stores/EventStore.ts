@@ -81,6 +81,8 @@ export default class EventStore extends AbstractStore {
 						eventSignatures[fullyQualifiedEventName] = {}
 					}
 
+					testUtil.log('trying to load', match, fullyQualifiedEventName)
+
 					const filename = pathUtil.basename(match)
 					let isSchema = false
 
@@ -100,8 +102,10 @@ export default class EventStore extends AbstractStore {
 							key = 'listenPermissionContract'
 							break
 					}
+
 					if (key) {
 						if (key === 'emitPayloadSchema') {
+							testUtil.log('importing schem at', match)
 							const schema = await schemaImporter.importSchema(match)
 							const targetAndPayload = buildEmitTargetAndPayloadSchema({
 								emitPayloadSchema: schema,
@@ -113,6 +117,7 @@ export default class EventStore extends AbstractStore {
 							//@ts-ignore
 							eventSignatures[fullyQualifiedEventName][key] = targetAndPayload
 						} else if (isSchema) {
+							testUtil.log('importing schem at', match)
 							//@ts-ignore
 							eventSignatures[fullyQualifiedEventName][
 								key
@@ -120,11 +125,14 @@ export default class EventStore extends AbstractStore {
 							//@ts-ignore
 							eventSignatures[fullyQualifiedEventName][key].version = version
 						} else {
+							testUtil.log('importing default', match)
 							//@ts-ignore
 							eventSignatures[fullyQualifiedEventName][
 								key
 							] = await importer.importDefault(match)
 						}
+
+						testUtil.log('import finished', match)
 					}
 				} catch (err) {
 					testUtil.log(
