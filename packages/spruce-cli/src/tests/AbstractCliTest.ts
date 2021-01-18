@@ -45,9 +45,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		await this.cleanTestDirsAndFiles()
 		AbstractWriter.disableLinting()
 
-		ImportService.setCacheDir(
-			diskUtil.createRandomTempDir('import-cache-for-tests')
-		)
+		ImportService.setCacheDir(diskUtil.createRandomTempDir())
 	}
 
 	protected static async beforeEach() {

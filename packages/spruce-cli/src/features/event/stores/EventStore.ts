@@ -10,7 +10,6 @@ import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractStore from '../../../stores/AbstractStore'
-import testUtil from '../../../tests/utilities/test.utility'
 
 export interface EventStoreFetchEventContractsResponse {
 	errors: SpruceError[]
@@ -23,18 +22,12 @@ export default class EventStore extends AbstractStore {
 	public async fetchEventContracts(options?: {
 		localNamespace?: string
 	}): Promise<EventStoreFetchEventContractsResponse> {
-		testUtil.log('Connecting to api as skill')
 		const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
 
-		testUtil.log('getting event contrcats')
 		const results = await client.emit('get-event-contracts::v2020_12_25')
-		testUtil.log('got event contracts')
 
 		const { contracts } = eventResponseUtil.getFirstResponseOrThrow(results)
 
-		testUtil.log('pulled contracts')
-
-		testUtil.log('loading local contracts')
 		const localContract =
 			options?.localNamespace &&
 			(await this.loadLocalContract(options.localNamespace))
@@ -43,7 +36,6 @@ export default class EventStore extends AbstractStore {
 			contracts.push(localContract)
 		}
 
-		testUtil.log('done loading local contracts')
 		return {
 			contracts,
 			errors: [],
@@ -81,8 +73,6 @@ export default class EventStore extends AbstractStore {
 						eventSignatures[fullyQualifiedEventName] = {}
 					}
 
-					testUtil.log('trying to load', match, fullyQualifiedEventName)
-
 					const filename = pathUtil.basename(match)
 					let isSchema = false
 
@@ -105,7 +95,6 @@ export default class EventStore extends AbstractStore {
 
 					if (key) {
 						if (key === 'emitPayloadSchema') {
-							testUtil.log('importing as schema', match)
 							const schema = await schemaImporter.importSchema(match)
 							const targetAndPayload = buildEmitTargetAndPayloadSchema({
 								emitPayloadSchema: schema,
@@ -117,7 +106,6 @@ export default class EventStore extends AbstractStore {
 							//@ts-ignore
 							eventSignatures[fullyQualifiedEventName][key] = targetAndPayload
 						} else if (isSchema) {
-							testUtil.log('importing as schema', match)
 							//@ts-ignore
 							eventSignatures[fullyQualifiedEventName][
 								key
@@ -125,21 +113,13 @@ export default class EventStore extends AbstractStore {
 							//@ts-ignore
 							eventSignatures[fullyQualifiedEventName][key].version = version
 						} else {
-							testUtil.log('importing default', match)
 							//@ts-ignore
 							eventSignatures[fullyQualifiedEventName][
 								key
 							] = await importer.importDefault(match)
 						}
-
-						testUtil.log('import finished', match)
 					}
 				} catch (err) {
-					testUtil.log(
-						'error importing event contract',
-						fullyQualifiedEventName,
-						key
-					)
 					throw new SpruceError({
 						code: 'INVALID_EVENT_CONTRACT',
 						fullyQualifiedEventName:
@@ -150,7 +130,6 @@ export default class EventStore extends AbstractStore {
 				}
 			})
 		)
-		testUtil.log('done loading contracts')
 		if (Object.keys(eventSignatures).length > 0) {
 			return {
 				eventSignatures,

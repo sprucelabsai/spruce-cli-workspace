@@ -1,6 +1,5 @@
 import { FieldDefinitionValueType } from '@sprucelabs/schema'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
-import testUtil from '../tests/utilities/test.utility'
 import { ExecutionResults } from '../types/cli.types'
 import { GraphicsInterface } from '../types/cli.types'
 import {
@@ -37,7 +36,7 @@ export default class SpyInterface implements GraphicsInterface {
 	}
 
 	private trackInvocation(command: string, options?: any) {
-		testUtil.log(command, JSON.stringify(options), '\n')
+		// testUtil.log(command, JSON.stringify(options), '\n')
 		this.invocations.push({ command, options })
 	}
 
