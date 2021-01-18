@@ -19,7 +19,6 @@ export default class SpyInterface implements GraphicsInterface {
 
 	private confirmResolver?: (pass: boolean) => void | undefined
 	private waitForEnterResolver?: () => void | undefined
-
 	private promptDefaultValue: any
 
 	public renderWarning(
