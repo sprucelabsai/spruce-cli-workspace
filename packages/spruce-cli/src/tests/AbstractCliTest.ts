@@ -44,7 +44,10 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		await super.beforeAll()
 		await this.cleanTestDirsAndFiles()
 		AbstractWriter.disableLinting()
-		ImportService.disableCache()
+
+		ImportService.setCacheDir(
+			diskUtil.createRandomTempDir('import-cache-for-tests')
+		)
 	}
 
 	protected static async beforeEach() {
@@ -61,6 +64,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		this.ui.setCursorPosition({ x: 0, y: 0 })
 
 		this.clearFixtures()
+
+		ImportService.clearCache()
 	}
 
 	protected static async afterEach() {
