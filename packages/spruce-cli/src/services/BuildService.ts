@@ -20,7 +20,7 @@ export default class BuildService {
 	}
 
 	public async build(options?: { shouldFixLintFirst?: boolean }) {
-		if (options?.shouldFixLintFirst) {
+		if (options?.shouldFixLintFirst !== false) {
 			await this.lintService.fix('**/*.ts')
 		}
 		const results = await this.commandService.execute(`yarn build`)

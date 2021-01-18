@@ -14,7 +14,7 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 			version,
 		})
 
-		await this.Service('build').build({ shouldFixLintFirst: true })
+		await this.Service('build').build()
 
 		const err = await assert.doesThrowAsync(async () => {
 			const response = await cli.getFeature('skill').Action('boot').execute({})
@@ -35,7 +35,7 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 			version,
 		})
 
-		await this.Service('build').build({ shouldFixLintFirst: true })
+		await this.Service('build').build()
 
 		const err = await assert.doesThrowAsync(async () => {
 			const response = await cli.getFeature('skill').Action('boot').execute({})
