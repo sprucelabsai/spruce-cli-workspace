@@ -205,7 +205,6 @@ export default class TestReporter {
 			this.orientation = 'portrait'
 		}
 
-		debugger
 		this.setIsDebugging(this.isDebugging)
 		this.setWatchMode(this.watchMode)
 		this.setStatus(this.status)
