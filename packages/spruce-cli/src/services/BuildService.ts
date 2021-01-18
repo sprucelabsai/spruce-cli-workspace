@@ -1,4 +1,5 @@
 import CommandService from './CommandService'
+import LintService from './LintService'
 
 export default class BuildService {
 	public set cwd(cwd: string) {
@@ -11,12 +12,17 @@ export default class BuildService {
 
 	private activeWatch: any
 	private commandService: CommandService
+	private lintService: LintService
 
-	public constructor(commandService: CommandService) {
+	public constructor(commandService: CommandService, lintService: LintService) {
 		this.commandService = commandService
+		this.lintService = lintService
 	}
 
-	public async build() {
+	public async build(options?: { shouldFixLintFirst?: boolean }) {
+		if (options?.shouldFixLintFirst) {
+			await this.lintService.fix('**/*.ts')
+		}
 		const results = await this.commandService.execute(`yarn build`)
 		return results
 	}

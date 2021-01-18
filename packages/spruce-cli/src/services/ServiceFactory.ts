@@ -68,7 +68,10 @@ export default class ServiceFactory {
 				}) as ServiceMap[S]
 			case 'build': {
 				const commandService = new CommandService(cwd)
-				return new BuildService(commandService) as ServiceMap[S]
+				return new BuildService(
+					commandService,
+					new LintService(cwd, commandService)
+				) as ServiceMap[S]
 			}
 			default:
 				throw new Error(`Service "${type}" not found`)
