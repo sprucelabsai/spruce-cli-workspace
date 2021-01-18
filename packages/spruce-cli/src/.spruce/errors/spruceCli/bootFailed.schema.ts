@@ -1,12 +1,15 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceErrors } from '../errors.types'
 
-const bootFailedSchema: SpruceErrors.SpruceCli.BootFailedSchema = {
+
+
+const bootFailedSchema: SpruceErrors.SpruceCli.BootFailedSchema  = {
 	id: 'bootFailed',
 	namespace: 'SpruceCli',
 	name: 'Boot failed',
 	description: 'Booting your skill failed!',
-	fields: {},
+	    fields: {
+	    }
 }
 
 SchemaRegistry.getInstance().trackSchema(bootFailedSchema)

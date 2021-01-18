@@ -6,9 +6,11 @@ import {
 	eventContractUtil,
 	eventNameUtil,
 } from '@sprucelabs/spruce-event-utils'
-import { versionUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractCliTest from '../../tests/AbstractCliTest'
+import testUtil from '../../tests/utilities/test.utility'
 
 const EVENT_NAME_READABLE = 'my fantastically amazing event'
 const EVENT_NAME = 'my-fantastically-amazing-event'
@@ -101,35 +103,55 @@ export default class EventStoreTest extends AbstractCliTest {
 		)
 	}
 
-	@test()
-	protected static async mixesInLocalContracts() {
-		this.log('copy cached')
+	@test.only()
+	protected static async badLocalContractThrowsNiceError() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
-		this.log('DONE copy cached')
 
-		this.log('registering skill')
 		const skill = await this.SkillFixture().registerCurrentSkill({
 			name: 'my new skill',
 		})
-		this.log('done registering skill')
 
-		this.log('creating event')
+		const results = await cli.getFeature('event').Action('create').execute({
+			nameReadable: EVENT_NAME_READABLE,
+			nameKebab: EVENT_NAME,
+			nameCamel: EVENT_CAMEL,
+		})
+
+		const match = testUtil.assertsFileByNameInGeneratedFiles(
+			`emitPayload.builder.ts`,
+			results.files
+		)
+
+		diskUtil.writeFile(match, '')
+
+		const err = await assert.doesThrowAsync(() =>
+			this.Store('event').loadLocalContract(skill.slug)
+		)
+
+		errorAssertUtil.assertError(err, 'INVALID_EVENT_CONTRACT', {
+			fullyQualifiedEventName: '',
+			brokenProperty: 'emitPayload',
+		})
+	}
+
+	@test()
+	protected static async mixesInLocalContracts() {
+		const cli = await this.FeatureFixture().installCachedFeatures('events')
+
+		const skill = await this.SkillFixture().registerCurrentSkill({
+			name: 'my new skill',
+		})
+
 		await cli.getFeature('event').Action('create').execute({
 			nameReadable: EVENT_NAME_READABLE,
 			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
 		})
 
-		this.log('done creating event')
-		this.log('fetching event contract')
-
 		const { contracts } = await this.Store('event').fetchEventContracts({
 			localNamespace: skill.slug,
 		})
 
-		this.log('done fetching event contract')
-
-		this.log('doing checks')
 		assert.isLength(contracts, 2)
 		const name = eventNameUtil.join({
 			eventName: EVENT_NAME,
@@ -153,7 +175,6 @@ export default class EventStoreTest extends AbstractCliTest {
 		assert.isTruthy(contracts[1].eventSignatures[name].listenPermissionContract)
 
 		validateEventContract(contracts[1])
-		this.log('done doing checks')
 	}
 
 	private static async seedSkillAndInstallAtOrg(org: any, name: string) {

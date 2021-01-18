@@ -65,63 +65,75 @@ export default class EventStore extends AbstractStore {
 
 		await Promise.all(
 			localMatches.map(async (match: string) => {
-				const { eventName, version } = eventDiskUtil.splitPathToEvent(match)
-
-				const fullyQualifiedEventName = eventNameUtil.join({
-					eventName,
-					version,
-					eventNamespace: ns,
-				})
-
-				if (!eventSignatures[fullyQualifiedEventName]) {
-					eventSignatures[fullyQualifiedEventName] = {}
-				}
-
-				const filename = pathUtil.basename(match)
 				let key: keyof EventSignature | undefined
-				let isSchema = false
+				let fullyQualifiedEventName: string | undefined
+				testUtil.log('trying to load', match)
+				try {
+					const { eventName, version } = eventDiskUtil.splitPathToEvent(match)
 
-				switch (filename) {
-					case 'emitPayload.builder.ts':
-						key = 'emitPayloadSchema'
-						isSchema = true
-						break
-					case 'responsePayload.builder.ts':
-						key = 'responsePayloadSchema'
-						isSchema = true
-						break
-					case 'emitPermissions.builder.ts':
-						key = 'emitPermissionContract'
-						break
-					case 'listenPermissions.builder.ts':
-						key = 'listenPermissionContract'
-						break
-				}
-				if (key) {
-					if (key === 'emitPayloadSchema') {
-						const schema = await schemaImporter.importSchema(match)
-						const targetAndPayload = buildEmitTargetAndPayloadSchema({
-							emitPayloadSchema: schema,
-							eventName,
-						})
-						//@ts-ignore
-						targetAndPayload.version = version
+					fullyQualifiedEventName = eventNameUtil.join({
+						eventName,
+						version,
+						eventNamespace: ns,
+					})
 
-						//@ts-ignore
-						eventSignatures[fullyQualifiedEventName][key] = targetAndPayload
-					} else if (isSchema) {
-						//@ts-ignore
-						eventSignatures[fullyQualifiedEventName][
-							key
-						] = await schemaImporter.importSchema(match)
-						//@ts-ignore
-						eventSignatures[fullyQualifiedEventName][key].version = version
-					} else {
-						//@ts-ignore
-						eventSignatures[fullyQualifiedEventName][
-							key
-						] = await importer.importDefault(match)
+					if (!eventSignatures[fullyQualifiedEventName]) {
+						eventSignatures[fullyQualifiedEventName] = {}
 					}
+
+					const filename = pathUtil.basename(match)
+					let isSchema = false
+
+					switch (filename) {
+						case 'emitPayload.builder.ts':
+							key = 'emitPayloadSchema'
+							isSchema = true
+							break
+						case 'responsePayload.builder.ts':
+							key = 'responsePayloadSchema'
+							isSchema = true
+							break
+						case 'emitPermissions.builder.ts':
+							key = 'emitPermissionContract'
+							break
+						case 'listenPermissions.builder.ts':
+							key = 'listenPermissionContract'
+							break
+					}
+					if (key) {
+						if (key === 'emitPayloadSchema') {
+							const schema = await schemaImporter.importSchema(match)
+							const targetAndPayload = buildEmitTargetAndPayloadSchema({
+								emitPayloadSchema: schema,
+								eventName,
+							})
+							//@ts-ignore
+							targetAndPayload.version = version
+
+							//@ts-ignore
+							eventSignatures[fullyQualifiedEventName][key] = targetAndPayload
+						} else if (isSchema) {
+							//@ts-ignore
+							eventSignatures[fullyQualifiedEventName][
+								key
+							] = await schemaImporter.importSchema(match)
+							//@ts-ignore
+							eventSignatures[fullyQualifiedEventName][key].version = version
+						} else {
+							//@ts-ignore
+							eventSignatures[fullyQualifiedEventName][
+								key
+							] = await importer.importDefault(match)
+						}
+					}
+				} catch (err) {
+					throw new SpruceError({
+						code: 'INVALID_EVENT_CONTRACT',
+						fullyQualifiedEventName:
+							fullyQualifiedEventName ?? '** bad event name **',
+						brokenProperty: key ?? '** never got to first key **',
+						originalError: err,
+					})
 				}
 			})
 		)

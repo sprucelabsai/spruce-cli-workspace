@@ -168,6 +168,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				} invalid:\n\n${options.parameters.join('\n')}`
 				break
 
+			case 'INVALID_EVENT_CONTRACT':
+				message = 'A invalid event contract just happened!'
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}

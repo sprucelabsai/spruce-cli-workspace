@@ -1,11 +1,14 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceErrors } from '../errors.types'
 
-const skillNotRegisteredSchema: SpruceErrors.SpruceCli.SkillNotRegisteredSchema = {
+
+
+const skillNotRegisteredSchema: SpruceErrors.SpruceCli.SkillNotRegisteredSchema  = {
 	id: 'skillNotRegistered',
 	namespace: 'SpruceCli',
 	name: 'Skill not registered',
-	fields: {},
+	    fields: {
+	    }
 }
 
 SchemaRegistry.getInstance().trackSchema(skillNotRegisteredSchema)

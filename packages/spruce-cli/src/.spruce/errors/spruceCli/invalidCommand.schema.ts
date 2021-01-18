@@ -1,21 +1,23 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceErrors } from '../errors.types'
 
-const invalidCommandSchema: SpruceErrors.SpruceCli.InvalidCommandSchema = {
+
+
+const invalidCommandSchema: SpruceErrors.SpruceCli.InvalidCommandSchema  = {
 	id: 'invalidCommand',
 	namespace: 'SpruceCli',
 	name: 'Invalid command',
 	description: 'The command is not valid, try --help',
-	fields: {
-		/** Args. */
-		args: {
-			label: 'args',
-			type: 'text',
-			isRequired: true,
-			isArray: true,
-			options: undefined,
-		},
-	},
+	    fields: {
+	            /** args. */
+	            'args': {
+	                label: 'args',
+	                type: 'text',
+	                isRequired: true,
+	                isArray: true,
+	                options: undefined
+	            },
+	    }
 }
 
 SchemaRegistry.getInstance().trackSchema(invalidCommandSchema)

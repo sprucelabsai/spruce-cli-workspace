@@ -1,11 +1,14 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceErrors } from '../errors.types'
 
-const directoryNotSkillSchema: SpruceErrors.SpruceCli.DirectoryNotSkillSchema = {
+
+
+const directoryNotSkillSchema: SpruceErrors.SpruceCli.DirectoryNotSkillSchema  = {
 	id: 'directoryNotSkill',
 	namespace: 'SpruceCli',
 	name: 'Dir not skill',
-	fields: {},
+	    fields: {
+	    }
 }
 
 SchemaRegistry.getInstance().trackSchema(directoryNotSkillSchema)

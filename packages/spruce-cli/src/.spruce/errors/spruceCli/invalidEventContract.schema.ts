@@ -3,25 +3,19 @@ import { SpruceErrors } from '../errors.types'
 
 
 
-const testFailedSchema: SpruceErrors.SpruceCli.TestFailedSchema  = {
-	id: 'testFailed',
+const invalidEventContractSchema: SpruceErrors.SpruceCli.InvalidEventContractSchema  = {
+	id: 'invalidEventContract',
 	namespace: 'SpruceCli',
-	name: 'Test failed',
+	name: 'invalid event contract',
 	    fields: {
 	            /** . */
-	            'fileName': {
+	            'fullyQualifiedEventName': {
 	                type: 'text',
 	                isRequired: true,
 	                options: undefined
 	            },
 	            /** . */
-	            'testName': {
-	                type: 'text',
-	                isRequired: true,
-	                options: undefined
-	            },
-	            /** . */
-	            'errorMessage': {
+	            'brokenProperty': {
 	                type: 'text',
 	                isRequired: true,
 	                options: undefined
@@ -29,6 +23,6 @@ const testFailedSchema: SpruceErrors.SpruceCli.TestFailedSchema  = {
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(testFailedSchema)
+SchemaRegistry.getInstance().trackSchema(invalidEventContractSchema)
 
-export default testFailedSchema
+export default invalidEventContractSchema
