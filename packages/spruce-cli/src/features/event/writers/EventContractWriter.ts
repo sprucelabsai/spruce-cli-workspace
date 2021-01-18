@@ -135,9 +135,11 @@ export default class EventContractController {
 			return this.cachedTemplateItems
 		}
 
-		this.ui.startLoading('Fetching event contracts...')
+		this.ui.startLoading('Loading skill details...')
 
 		const namespace = await this.skillStore.loadCurrentSkillsNamespace()
+
+		this.ui.startLoading('Fetching event contracts...')
 
 		const contractResults = await this.eventStore.fetchEventContracts({
 			localNamespace: namespace,
