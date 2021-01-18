@@ -27,7 +27,7 @@ export default class BootAction extends AbstractFeatureAction<OptionsSchema> {
 					if (err.message.search(/cannot find module/gis) > -1) {
 						reject(
 							new SpruceError({
-								code: 'BOOT_FAILED',
+								code: 'BOOT_ERROR',
 								friendlyMessage:
 									'You must build your skill before you can boot it!',
 							})

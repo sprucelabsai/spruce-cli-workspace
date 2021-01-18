@@ -133,7 +133,6 @@ export default class Cli implements CliInterface {
 			return JSON.parse(resultParts[1]) as HealthCheckResults
 		} catch (originalError) {
 			const error = new SpruceError({
-				// @ts-ignore
 				code: 'BOOT_ERROR',
 				originalError,
 			})
@@ -152,7 +151,7 @@ export default class Cli implements CliInterface {
 		const emitter = options?.emitter ?? CliGlobalEmitter.Emitter()
 
 		let cwd = options?.cwd ?? process.cwd()
-		const serviceFactory = new ServiceFactory({})
+		const serviceFactory = new ServiceFactory()
 		const apiClientFactory =
 			options?.apiClientFactory ??
 			Cli.buildApiClientFactory(cwd, serviceFactory, options)

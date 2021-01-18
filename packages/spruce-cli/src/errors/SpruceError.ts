@@ -82,10 +82,6 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 
 				break
 
-			case 'BOOT_FAILED':
-				message = `I couldn't boot your skill!`
-				break
-
 			case 'CREATE_AUTOLOADER_FAILED':
 				message = 'A Could not create an autoloader just happened!'
 				break
@@ -170,6 +166,12 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 
 			case 'INVALID_EVENT_CONTRACT':
 				message = 'A invalid event contract just happened!'
+				break
+
+			case 'BOOT_ERROR':
+				message = `Booting your skill failed: ${
+					options.originalError?.message ?? 'Not sure why, tho.'
+				}`
 				break
 
 			default:

@@ -11,43 +11,6 @@ import * as SpruceSchema from '@sprucelabs/schema'
 export declare namespace SpruceErrors.SpruceCli {
 
 	
-	export interface InvalidEventContract {
-		
-			
-			'fullyQualifiedEventName': string
-			
-			'brokenProperty': string
-	}
-
-	export interface InvalidEventContractSchema extends SpruceSchema.Schema {
-		id: 'invalidEventContract',
-		namespace: 'SpruceCli',
-		name: 'invalid event contract',
-		    fields: {
-		            /** . */
-		            'fullyQualifiedEventName': {
-		                type: 'text',
-		                isRequired: true,
-		                options: undefined
-		            },
-		            /** . */
-		            'brokenProperty': {
-		                type: 'text',
-		                isRequired: true,
-		                options: undefined
-		            },
-		    }
-	}
-
-	export type InvalidEventContractEntity = SchemaEntity<SpruceErrors.SpruceCli.InvalidEventContractSchema>
-
-}
-
-
-
-export declare namespace SpruceErrors.SpruceCli {
-
-	
 	export interface VscodeNotInstalled {
 		
 	}
@@ -399,6 +362,43 @@ export declare namespace SpruceErrors.SpruceCli {
 	}
 
 	export type InvalidFeatureCodeEntity = SchemaEntity<SpruceErrors.SpruceCli.InvalidFeatureCodeSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
+	export interface InvalidEventContract {
+		
+			
+			'fullyQualifiedEventName': string
+			
+			'brokenProperty': string
+	}
+
+	export interface InvalidEventContractSchema extends SpruceSchema.Schema {
+		id: 'invalidEventContract',
+		namespace: 'SpruceCli',
+		name: 'invalid event contract',
+		    fields: {
+		            /** . */
+		            'fullyQualifiedEventName': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		            /** . */
+		            'brokenProperty': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type InvalidEventContractEntity = SchemaEntity<SpruceErrors.SpruceCli.InvalidEventContractSchema>
 
 }
 
@@ -841,21 +841,20 @@ export declare namespace SpruceErrors.SpruceCli {
 
 export declare namespace SpruceErrors.SpruceCli {
 
-	/** Booting your skill failed! */
-	export interface BootFailed {
+	
+	export interface BootError {
 		
 	}
 
-	export interface BootFailedSchema extends SpruceSchema.Schema {
-		id: 'bootFailed',
+	export interface BootErrorSchema extends SpruceSchema.Schema {
+		id: 'bootError',
 		namespace: 'SpruceCli',
-		name: 'Boot failed',
-		description: 'Booting your skill failed!',
+		name: 'boot error',
 		    fields: {
 		    }
 	}
 
-	export type BootFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.BootFailedSchema>
+	export type BootErrorEntity = SchemaEntity<SpruceErrors.SpruceCli.BootErrorSchema>
 
 }
 
