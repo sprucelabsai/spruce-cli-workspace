@@ -1,4 +1,3 @@
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import setupVscodeSchema from '#spruce/schemas/spruceCli/v2020_07_22/setupVscodeAction.schema'
 import { NpmPackage } from '../../../types/cli.types'
@@ -23,13 +22,9 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 			id: 'christian-kohler.npm-intellisense',
 			label: 'Intellisense autocompletion of installed npm modules',
 		},
-		{
-			id: 'endormi.2077-theme',
-			label: "Tay's favorite theme",
-		},
 	]
 
-	public name = 'setup'
+	public code = 'setup'
 	public optionsSchema = setupVscodeSchema
 	private dependencies: NpmPackage[] = [
 		{
@@ -45,13 +40,21 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const { all } = this.validateAndNormalizeOptions(options)
 
+		this.ui.startLoading('Checking state of vscode.')
+
 		const missing = await this.getMissingExtensions()
 		const choices = missing.map((ext) => ({ value: ext.id, label: ext.label }))
 		const response: FeatureActionResponse = {
 			summaryLines: [],
 		}
 
-		const answers = all
+		const skipConfirmExtensions = all || missing.length === 0
+
+		if (!skipConfirmExtensions) {
+			this.ui.stopLoading()
+		}
+
+		const answers = skipConfirmExtensions
 			? missing.map((m) => m.id)
 			: await this.ui.prompt({
 					type: 'select',
@@ -64,6 +67,7 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 
 		if (answers && answers?.length > 0) {
 			this.ui.startLoading(`Installing ${answers.length} extensions...`)
+
 			for (const answer of answers) {
 				response.summaryLines?.push(`Installed ${answer} extension.`)
 			}
@@ -71,76 +75,41 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 			await this.Service('vsCode').installExtensions(answers)
 
 			this.ui.stopLoading()
-
-			response.hints = [
-				'You will need to restart vscode for the changes to take effect. 👊',
-			]
 		}
 
-		const launchConfigPath = diskUtil.resolvePath(
+		this.ui.startLoading('Writing vscode configurations...')
+
+		const files = await this.Writer('vscode').writeVsCodeConfigurations(
 			this.cwd,
-			'.vscode',
-			'launch.json'
+			!all
 		)
 
-		if (!diskUtil.doesFileExist(launchConfigPath)) {
-			const confirm =
-				all || (await this.ui.confirm('Want me to setup debugging for you?'))
+		response.files = files
+		response.packagesInstalled = []
 
-			if (confirm) {
-				const contents = this.templates.launchConfig()
-				diskUtil.writeFile(launchConfigPath, contents)
-				response.files = response.files ?? []
-				response.files.push({
-					name: 'launch.json',
-					path: launchConfigPath,
-					description:
-						'Sets you up for debugging directly from Visual Studio Code.',
-					action: 'generated',
-				})
+		const pkg = this.Service('pkg')
 
-				response.summaryLines?.push(
-					`Installed debug configuration (launch.json)`
-				)
+		for (const module of this.dependencies) {
+			if (!pkg.isInstalled(module.name)) {
+				response.packagesInstalled.push(module)
 			}
 		}
 
-		const settingsFilePath = diskUtil.resolvePath(
-			this.cwd,
-			'.vscode',
-			'settings.json'
-		)
-
-		if (!diskUtil.doesFileExist(settingsFilePath)) {
-			const confirm =
+		if (response.packagesInstalled.length > 0) {
+			this.ui.stopLoading()
+			const shouldInstallPackages =
 				all ||
 				(await this.ui.confirm(
-					"Want me to configure vscode's for Lint and other Spruce recommended settings?"
+					'Last thing! Ready for me to install eslint modules?'
 				))
 
-			if (confirm) {
-				const contents = this.templates.vsCodeSettings()
-				diskUtil.writeFile(settingsFilePath, contents)
-				response.files = response.files ?? []
-				response.files.push({
-					name: 'settings.json',
-					path: settingsFilePath,
-					description:
-						'Sets you up for lint and helpful workflow optimizations in Visual Studio Code.',
-					action: 'generated',
-				})
-
-				response.packagesInstalled = []
-				for (const module of this.dependencies) {
-					response.packagesInstalled.push(module)
-					await this.Service('pkg').install(module.name, {
+			this.ui.startLoading('Installing dev dependencies')
+			if (shouldInstallPackages) {
+				for (const module of response.packagesInstalled) {
+					await pkg.install(module.name, {
 						isDev: module.isDev,
 					})
 				}
-
-				response.summaryLines?.push(
-					`Installed lint and other settings for code (settings.json).`
-				)
 			}
 		}
 

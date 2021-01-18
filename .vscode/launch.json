@@ -11,6 +11,17 @@
 		},
 		{
 			"type": "node",
+			"request": "attach",
+			"name": "attach.tests.ct",
+			"address": "3.tcp.ngrok.io",
+			"port": 25981,
+			"restart": true,
+			"timeout": 10000,
+			"localRoot": "${workspaceFolder}/packagets/spruce-cli",
+			"remoteRoot": "/media/ramdisk/spruce-cli-workspace/packages/spruce-cli"
+		},
+		{
+			"type": "node",
 			"request": "launch",
 			"name": "debug.cli",
 			"protocol": "inspector",
@@ -70,6 +81,22 @@
 				"--inspect-brk",
 				"--trace-warnings",
 				"${workspaceFolder}/node_modules/.bin/jest"
+			],
+			"port": 9229,
+			"cwd": "${workspaceFolder}/packages/spruce-cli",
+			"console": "integratedTerminal",
+			"internalConsoleOptions": "neverOpen"
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "test.all.detectOpenHandles",
+			"runtimeExecutable": "${env:NVM_BIN}/node",
+			"runtimeArgs": [
+				"--inspect-brk",
+				"--trace-warnings",
+				"${workspaceFolder}/node_modules/.bin/jest",
+				"--detectOpenHandles"
 			],
 			"port": 9229,
 			"cwd": "${workspaceFolder}/packages/spruce-cli",

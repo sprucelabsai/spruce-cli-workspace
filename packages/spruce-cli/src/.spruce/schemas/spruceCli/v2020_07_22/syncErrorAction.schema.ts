@@ -132,6 +132,14 @@ const syncErrorActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorAction
 	                defaultValue: false,
 	                options: undefined
 	            },
+	            /**  message. */
+	            'syncingMessage': {
+	                label: ' message',
+	                type: 'text',
+	                isPrivate: true,
+	                defaultValue: "Syncing schemas...",
+	                options: undefined
+	            },
 	            /** Error class destination. Where I'll save your new Error class file? */
 	            'errorClassDestinationDir': {
 	                label: 'Error class destination',

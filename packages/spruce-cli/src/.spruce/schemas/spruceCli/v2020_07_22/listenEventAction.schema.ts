@@ -39,11 +39,11 @@ const listenEventActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventAc
 	                options: undefined
 	            },
 	            /** Events destination directory. Where should I add your listeners? */
-	            'eventsDestinationDir': {
+	            'listenerDestinationDir': {
 	                label: 'Events destination directory',
 	                type: 'text',
 	                hint: 'Where should I add your listeners?',
-	                defaultValue: "src/events",
+	                defaultValue: "src/listeners",
 	                options: undefined
 	            },
 	            /** Version. Set a version yourself instead of letting me generate one for you */

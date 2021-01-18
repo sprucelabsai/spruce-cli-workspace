@@ -16,11 +16,11 @@ import ValueTypeBuilder from '../ValueTypeBuilder'
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasAction
 export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'Schema sync'
+	public code = 'Schema sync'
 	public optionsSchema = syncSchemasActionSchema
 	public commandAliases = ['sync.schemas']
 
-	private readonly schemaGenerator = this.Generator('schema')
+	private readonly schemaGenerator = this.Writer('schema')
 	private readonly schemaStore = this.Store('schema')
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
@@ -41,9 +41,12 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			deleteDestinationDirIfNoSchemas,
 			fetchCoreSchemas,
 			registerBuiltSchemas,
+			syncingMessage,
 		} = normalizedOptions
 
-		let localNamespace = this.Store('skill').loadCurrentSkillsNamespace()
+		this.ui.startLoading('Loading details about your skill... 🧐')
+
+		let localNamespace = await this.Store('skill').loadCurrentSkillsNamespace()
 
 		let shouldImportCoreSchemas = true
 
@@ -67,11 +70,13 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 		let coreSyncResults: FeatureActionResponse | undefined
 
 		if (shouldSyncRemoteSchemasFirst) {
+			this.ui.startLoading('Syncing core schemas first...')
 			coreSyncResults = await this.execute({
 				...normalizedOptions,
 				fetchLocalSchemas: false,
 				fetchRemoteSchemas: false,
 			})
+			this.ui.startLoading('Done syncing core schemas...')
 		}
 
 		const {
@@ -84,6 +89,8 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			fieldTypesDestinationDir
 		)
 
+		this.ui.startLoading('Generating field types...')
+
 		const {
 			fieldTemplateItems,
 			fieldErrors,
@@ -94,7 +101,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			resolvedFieldTypesDestination,
 		})
 
-		this.ui.startLoading(`Syncing schemas...`)
+		this.ui.startLoading(syncingMessage)
 
 		const schemaErrors: SpruceError[] = []
 		let schemaTemplateItems: SchemaTemplateItem[] | undefined
@@ -117,11 +124,13 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			schemaErrors.push(err)
 		}
 
-		if (schemaTemplateItems) {
+		if (schemaErrors.length === 0 && schemaTemplateItems) {
 			if (deleteDestinationDirIfNoSchemas && schemaTemplateItems.length === 0) {
 				diskUtil.deleteDir(resolvedSchemaTypesDestinationDirOrFile)
 				return {}
 			}
+
+			this.ui.startLoading('Identifying orphaned schemas...')
 
 			await this.deleteOrphanedSchemas(
 				resolvedSchemaTypesDestinationDirOrFile,
@@ -143,7 +152,9 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 
 			if (valueTypes) {
 				try {
-					typeResults = await this.schemaGenerator.generateSchemasAndTypes(
+					this.ui.startLoading('Determining what changed... ⚡️')
+
+					typeResults = await this.schemaGenerator.writeSchemasAndTypes(
 						resolvedSchemaTypesDestination,
 						{
 							registerBuiltSchemas,
@@ -196,6 +207,8 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			localNamespace,
 		} = options
 
+		this.ui.startLoading('Loading builders')
+
 		const {
 			schemasByNamespace,
 			errors: schemaErrors,
@@ -211,6 +224,17 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 		const hashSpruceDestination = resolvedSchemaTypesDestinationDirOrFile.replace(
 			diskUtil.resolveHashSprucePath(this.cwd),
 			'#spruce'
+		)
+
+		let total = 0
+		let totalNamespaces = 0
+		for (const namespace of Object.keys(schemasByNamespace)) {
+			totalNamespaces++
+			total += schemasByNamespace[namespace].length
+		}
+
+		this.ui.startLoading(
+			`Building ${total} schemas from ${totalNamespaces} namespaces.`
 		)
 
 		const schemaTemplateItemBuilder = new SchemaTemplateItemBuilder(
@@ -291,6 +315,8 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 		schemaTemplateItems: SchemaTemplateItem[]
 		globalSchemaNamespace?: string
 	}) {
+		this.ui.startLoading('Generating value types...')
+
 		const builder = new ValueTypeBuilder(
 			this.schemaGenerator,
 			this.Service('import')

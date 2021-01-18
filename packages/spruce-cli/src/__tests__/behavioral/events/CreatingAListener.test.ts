@@ -5,13 +5,20 @@ import {
 	eventErrorAssertUtil,
 	eventResponseUtil,
 } from '@sprucelabs/spruce-event-utils'
-import { diskUtil, MERCURY_API_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
+import {
+	diskUtil,
+	MERCURY_API_NAMESPACE,
+	versionUtil,
+} from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
-export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
+export default class CreatingAListenerTest extends AbstractEventTest {
+	private static readonly expectedVersion = versionUtil.generateVersion()
+		.constValue
+
 	@test()
 	protected static async throwsWithBadNamespace() {
 		const cli = await this.installEventFeature('events')
@@ -59,13 +66,11 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 		assert.isFalsy(results.errors)
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
-			'will-boot.listener.ts',
+			`will-boot.${version}.listener.ts`,
 			results.files
 		)
 
 		assert.doesInclude(match, version)
-
-		diskUtil.writeFile(match, 'export default () => {}')
 
 		await this.Service('typeChecker').check(match)
 
@@ -125,13 +130,17 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 	protected static async generatesTypedListenerWithEmitPayload() {
 		const {
 			contents,
+			skill2,
 		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
 			{
 				emitPayloadSchema: buildEmitTargetAndPayloadSchema({
-					id: 'myNewEventEmitPayload',
-					fields: {
-						booleanField: {
-							type: 'boolean',
+					eventName: 'my-new-event',
+					emitPayloadSchema: {
+						id: 'myNewEventEmitPayload',
+						fields: {
+							booleanField: {
+								type: 'boolean',
+							},
 						},
 					},
 				}),
@@ -140,7 +149,12 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 		assert.doesInclude(
 			contents,
-			'export default (event: SpruceEvent<EventContracts, EmitPayload>): SpruceEventResponse'
+			'event: SpruceEvent<EventContracts, EmitPayload>'
+		)
+
+		assert.doesInclude(
+			contents,
+			`fullyQualifiedEventName: '${skill2.slug}.my-new-event::${this.expectedVersion}'`
 		)
 	}
 
@@ -150,16 +164,18 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 			cli,
 			currentSkill,
 			skill2,
-			contents,
 			eventContract,
 			org,
 		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
 			{
 				emitPayloadSchema: buildEmitTargetAndPayloadSchema({
-					id: 'myNewEventEmitPayload',
-					fields: {
-						booleanField: {
-							type: 'boolean',
+					eventName: 'my-new-event',
+					emitPayloadSchema: {
+						id: 'myNewEventEmitPayload',
+						fields: {
+							booleanField: {
+								type: 'boolean',
+							},
 						},
 					},
 				}),
@@ -174,29 +190,27 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 			}
 		)
 
-		assert.doesInclude(
-			contents,
-			'export default (event: SpruceEvent<EventContracts, EmitPayload>): SpruceEventResponse<ResponsePayload>'
-		)
-
 		const boot = await cli
 			.getFeature('skill')
 			.Action('boot')
 			.execute({ local: true })
 
 		//give the skill time to boot
-		await this.wait(30000)
+		await this.wait(10000)
 
 		const client = (await this.connectToApi({
 			skillId: skill2.id,
 			apiKey: skill2.apiKey,
 		})) as any
 
-		const eventName = `${skill2.slug}.my-new-event`
+		const eventName = `${skill2.slug}.my-new-event::${this.expectedVersion}`
 
 		client.mixinContract({
 			eventSignatures: {
-				[eventName]: eventContract.eventSignatures['my-new-event'],
+				[eventName]:
+					eventContract.eventSignatures[
+						`my-new-event::${this.expectedVersion}`
+					],
 			},
 		})
 
@@ -231,9 +245,11 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 	private static async setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
 		eventSignature: EventSignature
 	) {
+		const expectedVersion = this.expectedVersion
+
 		const eventContract = {
 			eventSignatures: {
-				'my-new-event': eventSignature,
+				[`my-new-event::${expectedVersion}`]: eventSignature,
 			},
 		} as const
 
@@ -249,13 +265,14 @@ export default class SkillEmitsBootstrapEventTest extends AbstractEventTest {
 
 		const results = await cli.getFeature('event').Action('listen').execute({
 			eventNamespace: skill2.slug,
-			eventName: 'my-new-event',
+			eventName: `my-new-event`,
+			version: expectedVersion,
 		})
 
 		assert.isFalsy(results.errors)
 
 		const listener = testUtil.assertsFileByNameInGeneratedFiles(
-			'my-new-event.listener.ts',
+			`my-new-event.${expectedVersion}.listener.ts`,
 			results.files
 		)
 

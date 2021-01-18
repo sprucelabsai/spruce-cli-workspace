@@ -316,4 +316,15 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		// and the schema should have been deleted
 		assert.isFalse(diskUtil.doesFileExist(schemaFile))
 	}
+
+	@test()
+	protected static async canSyncSchemasWhenOnlyNodeModuleIsInstalled() {
+		const cli = await this.FeatureFixture().installCachedFeatures(
+			'schemasInNodeModule'
+		)
+
+		const results = await cli.getFeature('schema').Action('sync').execute({})
+		assert.isFalsy(results.errors)
+		await this.assertValidActionResponseFiles(results)
+	}
 }

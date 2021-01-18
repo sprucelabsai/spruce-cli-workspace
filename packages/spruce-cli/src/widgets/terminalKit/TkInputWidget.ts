@@ -1,6 +1,8 @@
 import chalk from 'chalk'
 import terminal_kit from 'terminal-kit'
 import { InputWidget, InputWidgetOptions } from '../types/input.types'
+import { WidgetFrame } from '../types/widgets.types'
+import widgetUtil from '../widget.utilities'
 import termKitUtil from './termKit.utility'
 import TkBaseWidget, { TkWidgetOptions } from './TkBaseWidget'
 const termKit = terminal_kit as any
@@ -21,7 +23,7 @@ export default class TkInputWidget extends TkBaseWidget implements InputWidget {
 
 		this.input = new termKit.InlineInput({
 			parent: parent ? parent.getTermKitElement() : undefined,
-			textAttr: { bgColor: 'black' },
+			textAttr: { bgColor: 'black', color: 'white' },
 			voidAttr: { bgColor: 'black' },
 			placeholder: options.placeholder
 				? chalk.italic.black(options.placeholder)
@@ -36,8 +38,25 @@ export default class TkInputWidget extends TkBaseWidget implements InputWidget {
 			...frame,
 		})
 
+		this.input.__widget = this
 		this.input.on('submit', this.handleSubmit.bind(this))
 		this.input.on('cancel', this.handleCancel.bind(this))
+
+		this.calculateSizeLockDeltas()
+	}
+
+	public setFrame(frame: WidgetFrame) {
+		const oldFrame = this.getFrame()
+		const newFrame = widgetUtil.buildFrame(frame, this.parent)
+
+		this.input.setSizeAndPosition({
+			x: newFrame.left ?? oldFrame.left,
+			y: newFrame.top ?? oldFrame.top,
+			width: newFrame.width ?? oldFrame.width,
+			height: newFrame.height ?? oldFrame.height,
+		})
+
+		this.input.draw()
 	}
 
 	private async handleCancel() {

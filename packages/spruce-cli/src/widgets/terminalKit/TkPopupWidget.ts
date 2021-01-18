@@ -28,6 +28,8 @@ export default class TkPopupWidget extends TkBaseWidget implements PopupWidget {
 			...rest,
 			...frame,
 		})
+
+		this.popup.__widget = this
 	}
 
 	public getTermKitElement() {

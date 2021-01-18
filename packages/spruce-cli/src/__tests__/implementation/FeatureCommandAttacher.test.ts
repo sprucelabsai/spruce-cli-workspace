@@ -31,7 +31,6 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 			program: this.program,
 			featureInstaller: installer,
 			ui: term,
-			emitter: this.Emitter(),
 		})
 	}
 

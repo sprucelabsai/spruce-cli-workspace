@@ -4,7 +4,10 @@ import {
 	SchemaTemplateItem,
 	SelectChoice,
 } from '@sprucelabs/schema'
-import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
+import {
+	eventContractUtil,
+	eventNameUtil,
+} from '@sprucelabs/spruce-event-utils'
 import {
 	diskUtil,
 	namesUtil,
@@ -22,7 +25,7 @@ import { FeatureActionResponse } from '../../features.types'
 const SKILL_EVENT_NAMESPACE = 'skill'
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.ListenEventActionSchema
 export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'listen'
+	public code = 'listen'
 	public optionsSchema: OptionsSchema = eventListenActionSchema
 
 	public async execute(
@@ -34,7 +37,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 			let response: FeatureActionResponse = {}
 
 			let {
-				eventsDestinationDir,
+				listenerDestinationDir,
 				version,
 				eventName,
 				eventNamespace,
@@ -46,7 +49,11 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 
 			const eventStore = this.Store('event')
 
-			const { contracts } = await eventStore.fetchEventContracts()
+			const skill = await this.Store('skill').loadCurrentSkill()
+
+			const { contracts } = skill.slug
+				? await eventStore.fetchEventContracts({ localNamespace: skill.slug })
+				: await eventStore.fetchEventContracts()
 
 			this.ui.stopLoading()
 
@@ -54,11 +61,16 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 				eventNamespace = await this.collectNamespace(contracts)
 			}
 
-			const { eventChoicesByNamespace } = this.generateChoices(contracts)
+			const { eventChoicesByNamespace } = this.mapContractsToSelectChoices(
+				contracts
+			)
 
 			if (!eventChoicesByNamespace[eventNamespace]) {
 				throw new SpruceError({
 					code: 'INVALID_PARAMETERS',
+					friendlyMessage: `${eventNamespace} is not a valid event namespace. Try: \n\n${Object.keys(
+						eventChoicesByNamespace
+					).join('\n')}`,
 					parameters: ['eventNamespace'],
 				})
 			}
@@ -67,20 +79,31 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 				eventName = await this.collectEvent(contracts, eventNamespace)
 			}
 
+			const fqen = eventNameUtil.join({
+				eventName,
+				eventNamespace,
+				version,
+			})
+
 			const isValidEvent = !!eventChoicesByNamespace[eventNamespace].find(
-				(e) => e.value === eventName
+				(e) => e.value === eventName || e.value === fqen
 			)
 
 			if (!isValidEvent) {
 				throw new SpruceError({
 					code: 'INVALID_PARAMETERS',
+					friendlyMessage: `${eventName} is not a valid event . Try: \n\n${eventChoicesByNamespace[
+						eventNamespace
+					]
+						.map((i) => i.value)
+						.join('\n')}`,
 					parameters: ['eventName'],
 				})
 			}
 
 			const resolvedDestination = diskUtil.resolvePath(
 				this.cwd,
-				eventsDestinationDir
+				listenerDestinationDir
 			)
 
 			const resolvedVersion = await this.resolveVersion(
@@ -100,11 +123,12 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 
 			if (isSkillEvent) {
 				const builder = new EventTemplateItemBuilder()
-				const templateItems = builder.generateEventTemplateItemForName(
+				const templateItems = builder.buildEventTemplateItemForName(
 					contracts,
-					eventContractUtil.joinEventNameWithOptionalNamespace({
+					eventNameUtil.join({
 						eventNamespace,
 						eventName,
+						version: resolvedVersion,
 					})
 				)
 
@@ -114,12 +138,17 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 					templateItems.responsePayloadSchemaTemplateItem
 			}
 
-			const generator = this.Generator('event')
-			const results = await generator.generateListener(resolvedDestination, {
+			const generator = this.Writer('event')
+			const results = await generator.writeListener(resolvedDestination, {
 				...normalizedOptions,
 				version: resolvedVersion,
 				eventName,
 				eventNamespace,
+				fullyQualifiedEventName: eventNameUtil.join({
+					eventName,
+					eventNamespace,
+					version: resolvedVersion,
+				}),
 				emitPayloadSchemaTemplateItem,
 				contractDestinationDir,
 				responsePayloadSchemaTemplateItem,
@@ -151,8 +180,9 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 		contracts: EventContract[],
 		eventNamespace: string
 	): Promise<string> {
-		const eventChoices: SelectChoice[] = this.generateChoices(contracts)
-			.eventChoicesByNamespace[eventNamespace]
+		const eventChoices: SelectChoice[] = this.mapContractsToSelectChoices(
+			contracts
+		).eventChoicesByNamespace[eventNamespace]
 
 		const eventName = await this.ui.prompt({
 			type: 'select',
@@ -167,7 +197,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 	}
 
 	private async collectNamespace(contracts: EventContract[]): Promise<string> {
-		const { namespaceChoices } = this.generateChoices(contracts)
+		const { namespaceChoices } = this.mapContractsToSelectChoices(contracts)
 
 		const eventNamespace = await this.ui.prompt({
 			type: 'select',
@@ -181,7 +211,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 		return eventNamespace
 	}
 
-	private generateChoices(
+	private mapContractsToSelectChoices(
 		contracts: SpruceSchemas.MercuryTypes.v2020_09_01.EventContract[]
 	) {
 		const namespaceChoices: SelectChoice[] = [
@@ -224,8 +254,8 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 				}
 
 				eventChoicesByNamespace[namespace].push({
-					value: namedSig.eventName,
-					label: namedSig.eventName,
+					value: namedSig.fullyQualifiedEventName,
+					label: namedSig.fullyQualifiedEventName,
 				})
 			}
 		})

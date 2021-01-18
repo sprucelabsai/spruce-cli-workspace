@@ -4,6 +4,7 @@ import AbstractSpruceError from '@sprucelabs/error'
 import { ERROR_DIVIDER } from '@sprucelabs/spruce-skill-utils'
 import escapeRegExp from 'lodash/escapeRegExp'
 import stringArgv from 'string-argv'
+import treeKill from 'tree-kill'
 import SpruceError from '../errors/SpruceError'
 
 process.setMaxListeners(100)
@@ -24,6 +25,7 @@ export default class CommandService {
 			args?: string[]
 			stream?: boolean
 			outStream?: Writable
+			onError?: (error: string) => void
 			onData?: (data: string) => void
 			spawnOptions?: SpawnOptions
 			forceColor?: boolean
@@ -40,9 +42,7 @@ export default class CommandService {
 			const args = options?.args || stringArgv(cmd)
 			const executable = options?.args ? cmd : args.shift()
 			if (!executable) {
-				// eslint-disable-next-line no-debugger
-				debugger
-				throw new Error('coming soon')
+				throw new Error('Bad params sent to command service')
 			}
 			let stdout = ''
 			let stderr = ''
@@ -71,18 +71,22 @@ export default class CommandService {
 			})
 
 			child.stderr?.addListener('data', (data) => {
+				options?.onError?.(data.toString())
 				stderr += data
 			})
 
-			child.addListener('close', (code) => {
+			const closeHandler = (code: number) => {
 				process.off('exit', boundKill)
+
+				if (!this.activeChildProcess) {
+					return
+				}
+				this.activeChildProcess = undefined
 
 				setTimeout(() => {
 					child.stdout?.removeAllListeners()
 					child.stderr?.removeAllListeners()
 					child.removeAllListeners()
-
-					this.activeChildProcess = undefined
 
 					if (code === 0 || this.ignoreCloseErrors || options?.ignoreErrors) {
 						resolve({ stdout })
@@ -106,15 +110,17 @@ export default class CommandService {
 						)
 					}
 				}, 500)
-			})
+			}
+
+			child.addListener('close', closeHandler)
+			child.addListener('exit', closeHandler)
 		})
 	}
 
 	public kill = () => {
 		if (this.activeChildProcess) {
 			this.ignoreCloseErrors = true
-			this.activeChildProcess.kill()
-			this.activeChildProcess = undefined
+			treeKill(this.activeChildProcess?.pid, 'SIGTERM')
 		}
 	}
 

@@ -10,7 +10,7 @@ import { FeatureActionResponse } from '../../features.types'
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemaFieldsActionSchema
 
 export default class FieldsSyncAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'fields.sync'
+	public code = 'fields.sync'
 	public optionsSchema = syncSchemaFieldsActionSchema
 	public commandAliases = ['sync.fields']
 
@@ -35,6 +35,8 @@ export default class FieldsSyncAction extends AbstractFeatureAction<OptionsSchem
 		const generatedFiles: GeneratedFile[] = []
 		const schemaStore = this.Store('schema')
 
+		this.ui.startLoading('Pulling field types...')
+
 		const { fields, errors } = await schemaStore.fetchFields({
 			localAddonsDir: diskUtil.resolvePath(this.cwd, addonsLookupDir),
 		})
@@ -44,9 +46,9 @@ export default class FieldsSyncAction extends AbstractFeatureAction<OptionsSchem
 			fields
 		)
 
-		const schemaGenerator = this.Generator('schema')
+		const schemaGenerator = this.Writer('schema')
 		if (generateFieldTypes) {
-			const results = await schemaGenerator.generateFieldTypes(
+			const results = await schemaGenerator.writeFieldTypes(
 				resolvedFieldTypesDestination,
 				{
 					fieldTemplateItems,

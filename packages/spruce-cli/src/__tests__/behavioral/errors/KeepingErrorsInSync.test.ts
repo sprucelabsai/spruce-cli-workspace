@@ -1,5 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { assert, test } from '@sprucelabs/test'
+import ImportService from '../../../services/ImportService'
 import AbstractErrorTest from '../../../tests/AbstractErrorTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
@@ -8,6 +9,28 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 	protected static async hasSyncErrorAction() {
 		const cli = await this.Cli()
 		assert.isFunction(cli.getFeature('error').Action('sync').execute)
+	}
+
+	@test()
+	protected static async returnsHelpfulErrorWhenTsNodeIsRemoved() {
+		const cli = await this.installErrorFeature('errors')
+
+		const createAction = cli.getFeature('error').Action('create')
+
+		await createAction.execute({
+			nameReadable: 'Test error',
+			nameCamel: 'testError',
+		})
+
+		const pkg = this.Service('pkg')
+		await pkg.uninstall('ts-node')
+
+		ImportService.clearCache()
+
+		const results = await cli.getFeature('error').Action('sync').execute({})
+
+		assert.isTruthy(results.errors)
+		assert.isLength(results.errors, 1)
 	}
 
 	@test()

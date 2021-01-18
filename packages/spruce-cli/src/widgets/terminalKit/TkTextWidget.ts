@@ -10,11 +10,20 @@ export default class TkTextWidget extends TkBaseWidget implements TextWidget {
 	public readonly type = 'text'
 
 	private text: any
+	private shouldAutoScrollWhenAppendingContent: boolean
 
 	public constructor(options: TkWidgetOptions & TextWidgetOptions) {
 		super(options)
 
-		const { parent, text, enableScroll = false, ...rest } = options
+		const {
+			parent,
+			text,
+			isScrollEnabled: enableScroll = false,
+			shouldAutoScrollWhenAppendingContent = true,
+			...rest
+		} = options
+
+		this.shouldAutoScrollWhenAppendingContent = shouldAutoScrollWhenAppendingContent
 
 		const frame = termKitUtil.buildFrame(options, parent)
 
@@ -31,6 +40,7 @@ export default class TkTextWidget extends TkBaseWidget implements TextWidget {
 
 		this.calculateSizeLockDeltas()
 
+		this.text.__widget = this
 		this.text.on('click', this.handleMouseDown.bind(this))
 	}
 
@@ -101,7 +111,7 @@ export default class TkTextWidget extends TkBaseWidget implements TextWidget {
 			this.text.textBuffer.setSelectionRegion(logSelection)
 		}
 
-		if (isScrolledAllTheWay) {
+		if (this.shouldAutoScrollWhenAppendingContent && isScrolledAllTheWay) {
 			this.text.scrollToBottom()
 		}
 	}

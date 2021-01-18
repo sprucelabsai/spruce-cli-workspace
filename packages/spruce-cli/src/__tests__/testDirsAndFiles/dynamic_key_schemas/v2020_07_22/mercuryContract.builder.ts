@@ -6,7 +6,7 @@ export default buildSchema({
 	description: '',
 	dynamicFieldSignature: {
 		type: 'schema',
-		keyName: 'eventNameWithOptionalNamespace',
+		keyName: 'fullyQualifiedEventName',
 		options: {
 			schemas: [
 				{

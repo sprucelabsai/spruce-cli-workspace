@@ -1,5 +1,5 @@
 import { buildSchema } from '@sprucelabs/schema'
-import keySelectChoices from '../keySelectChoices'
+// import keySelectChoices from '../keySelectChoices'
 import { BaseWidget } from './widgets.types'
 
 // ** Window Widget ** //
@@ -10,11 +10,8 @@ export const windowEventContract = {
 				id: 'windowKeyEmitPayload',
 				fields: {
 					key: {
-						type: 'select',
+						type: 'text',
 						isRequired: true,
-						options: {
-							choices: keySelectChoices,
-						},
 					},
 				},
 			}),

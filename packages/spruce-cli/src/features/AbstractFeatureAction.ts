@@ -2,11 +2,6 @@ import { Schema, SchemaValues, SchemaPartialValues } from '@sprucelabs/schema'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { Templates } from '@sprucelabs/spruce-templates'
-import { GeneratorOptions } from '../generators/AbstractGenerator'
-import GeneratorFactory, {
-	GeneratorCode,
-	GeneratorMap,
-} from '../generators/GeneratorFactory'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory, {
 	ServiceProvider,
@@ -24,6 +19,8 @@ import {
 	ApiClientFactoryOptions,
 } from '../types/apiClient.types'
 import { GraphicsInterface } from '../types/cli.types'
+import { WriterOptions } from '../writers/AbstractWriter'
+import WriterFactory, { WriterCode, WriterMap } from '../writers/WriterFactory'
 import AbstractFeature from './AbstractFeature'
 import FeatureInstaller from './FeatureInstaller'
 import {
@@ -36,7 +33,7 @@ import validateAndNormalizeUtil from './validateAndNormalize.utility'
 
 export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 	implements FeatureAction<S>, ServiceProvider {
-	public abstract name: string
+	public abstract code: string
 	public abstract optionsSchema: S
 	public readonly commandAliases: string[] = []
 
@@ -49,7 +46,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 
 	private serviceFactory: ServiceFactory
 	private storeFactory: StoreFactory
-	private generatorFactory: GeneratorFactory
+	private writerFactory: WriterFactory
 	private apiClientFactory: ApiClientFactory
 
 	public constructor(options: FeatureActionOptions) {
@@ -60,7 +57,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 		this.serviceFactory = options.serviceFactory
 		this.featureInstaller = options.featureInstaller
 		this.ui = options.ui
-		this.generatorFactory = options.generatorFactory
+		this.writerFactory = options.generatorFactory
 		this.emitter = options.emitter
 		this.apiClientFactory = options.apiClientFactory
 	}
@@ -84,11 +81,15 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 		return this.storeFactory.Store(code, { cwd: this.cwd, ...options })
 	}
 
-	protected Generator<C extends GeneratorCode>(
+	protected Writer<C extends WriterCode>(
 		code: C,
-		options?: Partial<GeneratorOptions>
-	): GeneratorMap[C] {
-		return this.generatorFactory.Generator(code, options)
+		options?: Partial<WriterOptions>
+	): WriterMap[C] {
+		return this.writerFactory.Writer(code, {
+			fileDescriptions: this.parent.fileDescriptions,
+			linter: this.Service('lint'),
+			...options,
+		})
 	}
 
 	protected getFeature(code: FeatureCode) {
@@ -113,7 +114,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 		).constValue
 
 		if (!userSuppliedVersion) {
-			resolvedVersion = await this.askForVersion(
+			resolvedVersion = await this.askForVersionIfTodaysVersionDoesNotExist(
 				resolvedDestination,
 				resolvedVersion
 			)
@@ -123,7 +124,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 		return versionUtil.generateVersion(resolvedVersion).dirValue
 	}
 
-	private async askForVersion(
+	private async askForVersionIfTodaysVersionDoesNotExist(
 		resolvedDestination: string,
 		fallbackVersion: string
 	) {

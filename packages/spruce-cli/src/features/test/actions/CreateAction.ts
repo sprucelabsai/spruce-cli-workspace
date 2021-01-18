@@ -10,7 +10,7 @@ import { FeatureActionResponse } from '../../features.types'
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestActionSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestAction
 export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'Test'
+	public code = 'Test'
 	public optionsSchema = createTestActionSchema
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
@@ -70,9 +70,11 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			}
 		}
 
-		const generator = this.Generator('test')
+		this.ui.startLoading('Generating test file...')
 
-		const results = await generator.generateTest(resolvedDestination, {
+		const writer = this.Writer('test')
+
+		const results = await writer.generateTest(resolvedDestination, {
 			...normalizedOptions,
 			type,
 			nameCamel,
@@ -80,6 +82,9 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			namePascal: namePascal ?? namesUtil.toPascal(nameCamel),
 		})
 
-		return { files: results }
+		return {
+			files: results,
+			hints: ["run `spruce test` in your skill when you're ready!"],
+		}
 	}
 }

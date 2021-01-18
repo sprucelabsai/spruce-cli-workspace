@@ -27,7 +27,7 @@ type OptionsSchema = typeof optionsSchema
 type Options = SchemaValues<OptionsSchema>
 
 export default class RegisterAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'register'
+	public code = 'register'
 	public optionsSchema: OptionsSchema = optionsSchema
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
@@ -38,7 +38,7 @@ export default class RegisterAction extends AbstractFeatureAction<OptionsSchema>
 		} = this.validateAndNormalizeOptions(options)
 
 		const client = await this.connectToApi()
-		const results = await client.emit('register-skill', {
+		const results = await client.emit('register-skill::v2020_12_25', {
 			payload: {
 				name: nameReadable,
 				slug: nameKebab,

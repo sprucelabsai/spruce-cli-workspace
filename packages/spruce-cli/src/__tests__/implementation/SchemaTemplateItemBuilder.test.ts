@@ -320,7 +320,7 @@ const nestedMercuryContract: Schema = {
 	version: '2020_09_01',
 	dynamicFieldSignature: {
 		type: 'schema',
-		keyName: 'eventNameWithOptionalNamespace',
+		keyName: 'fullyQualifiedEventName',
 		options: {
 			schema: {
 				id: 'eventSignature',
@@ -355,7 +355,7 @@ const nestedMercuryContractArray: Schema = {
 
 	dynamicFieldSignature: {
 		type: 'schema',
-		keyName: 'eventNameWithOptionalNamespace',
+		keyName: 'fullyQualifiedEventName',
 		options: {
 			schemas: [
 				{
@@ -422,7 +422,7 @@ const mercuryTemplateItem: SchemaTemplateItem = {
 		version: '2020_09_01',
 		dynamicFieldSignature: {
 			type: 'schema',
-			keyName: 'eventNameWithOptionalNamespace',
+			keyName: 'fullyQualifiedEventName',
 			options: {
 				schemaIds: [
 					{
@@ -487,7 +487,7 @@ const mercuryTemplateItemArray: SchemaTemplateItem = {
 		namespace: CORE_NAMESPACE,
 		dynamicFieldSignature: {
 			type: 'schema',
-			keyName: 'eventNameWithOptionalNamespace',
+			keyName: 'fullyQualifiedEventName',
 			options: {
 				schemaIds: [
 					{
@@ -702,7 +702,7 @@ const mercurySchemas = [
 						name: 'Event Signature',
 						description: '',
 						fields: {
-							eventNameWithOptionalNamespace: {
+							fullyQualifiedEventName: {
 								type: 'text',
 								isRequired: true,
 							},
@@ -978,7 +978,7 @@ const mercuryTemplateItems = [
 			namespace: CORE_NAMESPACE,
 			description: '',
 			fields: {
-				eventNameWithOptionalNamespace: { type: 'text', isRequired: true },
+				fullyQualifiedEventName: { type: 'text', isRequired: true },
 				responsePayload: {
 					type: 'raw',
 					options: { valueType: 'SpruceSchema.Schema' },

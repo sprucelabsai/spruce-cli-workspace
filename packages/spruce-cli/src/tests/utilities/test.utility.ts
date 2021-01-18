@@ -3,6 +3,7 @@ import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { assert } from '@sprucelabs/test'
 import { GeneratedFile } from '../../types/cli.types'
+import durationUtil from '../../utilities/duration.utility'
 require('dotenv').config()
 
 function hasArg(regex: RegExp) {
@@ -76,6 +77,43 @@ const testUtil = {
 		)
 
 		return file
+	},
+
+	startTime: 0,
+	startLogTimer() {
+		this.startTime = new Date().getTime()
+	},
+
+	log(...args: any[]) {
+		//@ts-ignore
+		const prefix = global.activeTest
+			? //@ts-ignore
+			  `${global.activeTest?.file}::${global.activeTest?.test} :: `
+			: ''
+
+		if (process.env.TEST_LOG_FILTER) {
+			const match = prefix.search(
+				new RegExp(process.env.TEST_LOG_FILTER, 'igm')
+			)
+			if (match < 0) {
+				return
+			}
+		}
+
+		process.stderr.write(
+			prefix + this.getTimeSpentFormatted() + ': ' + args.join(' ')
+		)
+	},
+
+	getTimeSpent() {
+		const now = new Date().getTime()
+		const delta = now - this.startTime
+		return delta
+	},
+
+	getTimeSpentFormatted() {
+		const spent = this.getTimeSpent()
+		return durationUtil.msToFriendly(spent)
 	},
 }
 

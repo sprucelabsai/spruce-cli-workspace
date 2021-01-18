@@ -35,7 +35,7 @@ export default class CreatingAnOrgTest extends AbstractCliTest {
 
 		const client = await this.connectToApi()
 
-		const orgResults = await client.emit('get-organization', {
+		const orgResults = await client.emit('get-organization::v2020_12_25', {
 			payload: {
 				id: organization.id,
 			},

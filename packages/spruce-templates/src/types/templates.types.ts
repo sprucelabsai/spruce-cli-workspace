@@ -4,13 +4,17 @@ import { SchemaImport } from '../utilities/importExtractor.utility'
 
 export enum DirectoryTemplateCode {
 	Skill = 'skill',
+	VsCode = 'vscode',
 }
 export interface DirectoryTemplateContextSkill {
 	name: string
 	description: string
 }
+export interface DirectoryTemplateContextVsCode {}
+
 export interface DirectoryTemplateContextMap {
 	[DirectoryTemplateCode.Skill]: DirectoryTemplateContextSkill
+	[DirectoryTemplateCode.VsCode]: DirectoryTemplateContextVsCode
 }
 export interface DirectoryTemplateFile {
 	/** Whether this is a handlebars template file */
@@ -67,6 +71,7 @@ export interface TestOptions {
 export interface EventListenerOptions {
 	eventName: string
 	eventNamespace: string
+	fullyQualifiedEventName: string
 	nameConst: string
 	emitPayloadSchemaTemplateItem?: SchemaTemplateItem | null
 	responsePayloadSchemaTemplateItem?: SchemaTemplateItem | null
@@ -88,7 +93,13 @@ export interface EventContractTemplateItem extends EventContract {
 	namespaceCamel: string
 	namespacePascal: string
 	imports: SchemaImport[]
+	version: string
 	eventSignatures: {
 		[eventName: string]: EventSignatureTemplateItem
 	}
+}
+
+export interface EventPayloadOptions {
+	nameCamel: string
+	version: string
 }

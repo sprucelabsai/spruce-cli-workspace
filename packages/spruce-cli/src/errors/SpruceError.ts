@@ -43,7 +43,9 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				break
 
 			case 'SCHEMA_FAILED_TO_IMPORT':
-				message = `Error importing "${options.file}"`
+				message = `Error importing "${options.file}". Original error:\n\n${
+					options.originalError?.message ?? '**MISSING**'
+				}`
 				break
 
 			case 'BUILD_FAILED':
@@ -54,12 +56,13 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				break
 
 			case 'FAILED_TO_IMPORT':
-				message = `Failed to import ${options.file}`
+				message = `Failed to import "${options.file}". Original error:\n\n${
+					options.originalError?.message ?? '**MISSING**'
+				}`
 				break
 
 			case 'LINT_FAILED':
-				message = `Lint failed on pattern ${options.pattern}. Response from lint was:\n\n`
-				message += options.stdout
+				message = `Lint failed on pattern ${options.pattern}.`
 				break
 
 			case 'EXECUTING_COMMAND_FAILED':
@@ -81,10 +84,6 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 					message += options.stdout
 				}
 
-				break
-
-			case 'BOOT_FAILED':
-				message = `I couldn't boot your skill!`
 				break
 
 			case 'CREATE_AUTOLOADER_FAILED':
@@ -160,12 +159,23 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				break
 
 			case 'NO_ORGANIZATIONS_FOUND':
-				message = 'A no organizations found just happened!'
+				message =
+					"It looks like you don't have any organizations setup yet. Try `spruce create.organization` first."
 				break
 			case 'INVALID_PARAMETERS':
 				message = `The following paramater${
 					options.parameters.length === 1 ? 's are' : ' is'
 				} invalid:\n\n${options.parameters.join('\n')}`
+				break
+
+			case 'INVALID_EVENT_CONTRACT':
+				message = 'A invalid event contract just happened!'
+				break
+
+			case 'BOOT_ERROR':
+				message = `Booting your skill failed: ${
+					options.originalError?.message ?? 'Not sure why, tho.'
+				}`
 				break
 
 			default:
@@ -180,18 +190,7 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				: ''
 		}`
 
-		// Handle repeating text from original message by remove it
-		return `${fullMessage}${
-			this.originalError &&
-			this.originalError.message &&
-			this.originalError.message !== message &&
-			this.originalError.message !== fullMessage
-				? `\n\nOriginal error: ${this.originalError.message.replace(
-						message,
-						''
-				  )}`
-				: ''
-		}`
+		return fullMessage
 	}
 
 	private cleanStdErr(stderr: string) {

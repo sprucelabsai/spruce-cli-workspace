@@ -126,21 +126,6 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 	}
 
 	@test()
-	protected static async shouldInstallEvenIfFeatureHasNoOptionsSchema() {
-		const executer = this.Executer('test', 'create')
-		await executer.execute({
-			type: 'behavioral',
-			nameReadable: 'Testing Test Creation',
-			nameCamel: 'testTestCreation',
-		})
-
-		const installer = this.FeatureInstaller()
-		const isInstalled = await installer.isInstalled('test')
-
-		assert.isTrue(isInstalled)
-	}
-
-	@test()
 	protected static async shouldAddListenerWithoutBreakingOnSkill() {
 		await this.FeatureFixture().installCachedFeatures('schemas')
 
@@ -153,9 +138,9 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		await this.ui.sendInput('will-boot')
 
 		const results = await promise
-
+		const version = versionUtil.generateVersion().dirValue
 		testUtil.assertsFileByNameInGeneratedFiles(
-			'will-boot.listener.ts',
+			`will-boot.${version}.listener.ts`,
 			results.files
 		)
 	}
@@ -416,7 +401,6 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 			actionCode,
 			featureInstaller,
 			term: this.ui,
-			emitter: this.Emitter(),
 		})
 
 		return executer

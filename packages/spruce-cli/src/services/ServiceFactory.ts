@@ -31,12 +31,6 @@ export interface ServiceProvider {
 	Service<S extends Service>(type: S, cwd?: string): ServiceMap[S]
 }
 export default class ServiceFactory {
-	private importCacheDir?: string
-
-	public constructor(options?: { importCacheDir?: string }) {
-		this.importCacheDir = options?.importCacheDir
-	}
-
 	public Service<S extends Service>(cwd: string, type: S): ServiceMap[S] {
 		switch (type) {
 			case 'auth':
@@ -51,21 +45,33 @@ export default class ServiceFactory {
 			case 'vsCode':
 				return new VsCodeService(cwd) as ServiceMap[S]
 			case 'schema':
-				return new SchemaService(cwd) as ServiceMap[S]
+				return new SchemaService({
+					cwd,
+					command: new CommandService(cwd),
+				}) as ServiceMap[S]
 			case 'lint':
-				return new LintService(cwd) as ServiceMap[S]
+				return new LintService(cwd, new CommandService(cwd)) as ServiceMap[S]
 			case 'command': {
 				return new CommandService(cwd) as ServiceMap[S]
 			}
 			case 'typeChecker':
-				return new TypeCheckerService(cwd) as ServiceMap[S]
+				return new TypeCheckerService({
+					cwd,
+					command: new CommandService(cwd),
+				}) as ServiceMap[S]
 			case 'settings':
 				return new SettingsService<FeatureCode>(cwd) as ServiceMap[S]
 			case 'import':
-				return new ImportService(cwd, this.importCacheDir) as ServiceMap[S]
+				return new ImportService({
+					cwd,
+					command: new CommandService(cwd),
+				}) as ServiceMap[S]
 			case 'build': {
 				const commandService = new CommandService(cwd)
-				return new BuildService(commandService) as ServiceMap[S]
+				return new BuildService(
+					commandService,
+					new LintService(cwd, commandService)
+				) as ServiceMap[S]
 			}
 			default:
 				throw new Error(`Service "${type}" not found`)

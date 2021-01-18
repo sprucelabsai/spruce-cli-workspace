@@ -6,7 +6,7 @@ import {
 	LayoutWidget,
 	LayoutWidgetOptions,
 } from '../types/layout.types'
-import { WidgetFrameAttribute } from '../types/widgets.types'
+import { WidgetFrameAttribute, WidgetFrame } from '../types/widgets.types'
 import termKitUtil from './termKit.utility'
 import TkBaseWidget, { TkWidgetOptions } from './TkBaseWidget'
 import TkLayoutCellWidget from './TkLayoutCellWidget'
@@ -24,12 +24,7 @@ export default class TkLayoutWidget
 
 		const mappedOptions = termKitUtil.mapWidgetOptionsToTermKitOptions(options)
 
-		const {
-			parent,
-			lockWidthWithParent = true,
-			lockHeightWithParent = true,
-			...layout
-		} = mappedOptions
+		const { parent, ...layout } = mappedOptions
 
 		if (!parent) {
 			throw new SpruceError({
@@ -38,20 +33,15 @@ export default class TkLayoutWidget
 			})
 		}
 
-		if (!lockWidthWithParent || !lockHeightWithParent) {
-			throw new SpruceError({
-				code: 'INVALID_PARAMETERS',
-				parameters: ['lockWidthWithParent', 'lockHeightWithParent'],
-				friendlyMessage: `A layout widget must have lockWidthWithParent & lockHeightWithParent true (don't set to false since default is true)`,
-			})
-		}
-
 		this.layout = new termKit.Layout({
 			parent,
 			layout,
 		})
 
+		this.layout.__widget = this
 		this.layout.off('parentResize', this.layout.onParentResize)
+
+		this.calculateSizeLockDeltas()
 	}
 
 	public getChildren() {
@@ -70,10 +60,10 @@ export default class TkLayoutWidget
 
 	public getFrame() {
 		return {
-			left: 0,
-			top: 0,
-			width: this.layout.outputDst.width,
-			height: this.layout.outputDst.height,
+			left: this.layout.computed.xmin,
+			top: this.layout.computed.ymin,
+			width: this.layout.computed.width,
+			height: this.layout.computed.height,
 		}
 	}
 
@@ -81,7 +71,19 @@ export default class TkLayoutWidget
 		this.layout.destroy()
 	}
 
-	public setFrame() {
+	public setFrame(frame: Partial<WidgetFrame>) {
+		const calculated = termKitUtil.buildFrame(frame, this.parent)
+		const def = this.layout.layoutDef
+
+		delete def.height
+		delete def.heightPercent
+
+		this.layout.layoutDef.height = calculated.height
+
+		this.handleResize()
+	}
+
+	private handleResize() {
 		this.layout.computeBoundingBoxes()
 		this.layout.draw()
 
@@ -115,6 +117,53 @@ export default class TkLayoutWidget
 		})
 	}
 
+	public removeRow(rowIdx: number): void {
+		this.layout.layoutDef.rows.splice(rowIdx, 1)
+	}
+
+	public removeColumn(rowIdx: number, columnIdx: number): void {
+		const row = this.layout.layoutDef.rows[rowIdx]
+		if (row) {
+			row.columns.splice(columnIdx, 1)
+		} else {
+			throw new Error(
+				`Can't add remove column because row at index ${rowIdx} does not exist.`
+			)
+		}
+	}
+
+	public addColumn(rowIdx: number, column: LayoutColumn): void {
+		if (this.layout.layoutDef.rows[rowIdx]) {
+			this.layout.layoutDef.rows[rowIdx].columns.push({
+				...termKitUtil.mapWidgetOptionsToTermKitOptions(column),
+			})
+		} else {
+			throw new Error(
+				`Can't add column because row at index ${rowIdx} does not exist.`
+			)
+		}
+	}
+
+	public setColumnWidth(options: {
+		rowIdx: number
+		columnIdx: number
+		width: WidgetFrameAttribute
+	}): void {
+		const { rowIdx, columnIdx, width } = options
+
+		const col = this.layout.layoutDef.rows[rowIdx]?.columns[columnIdx]
+		if (col) {
+			this.layout.layoutDef.rows[rowIdx].columns[columnIdx] = {
+				...col,
+				...termKitUtil.mapWidgetOptionsToTermKitOptions({ width }),
+			}
+		} else {
+			throw new Error(
+				`Can't add set column width because column ${columnIdx} at row ${rowIdx} does not exist.`
+			)
+		}
+	}
+
 	private widgetColumnsToTermKitColumns(columns: LayoutColumn[]) {
 		return columns.map((column) => ({
 			...termKitUtil.mapWidgetOptionsToTermKitOptions(column),
@@ -129,6 +178,6 @@ export default class TkLayoutWidget
 	}
 
 	public updateLayout() {
-		this.setFrame()
+		this.handleResize()
 	}
 }

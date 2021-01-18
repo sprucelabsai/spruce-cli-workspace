@@ -1,19 +1,35 @@
 import pathUtil from 'path'
-import { EventContract, validateEventContract } from '@sprucelabs/mercury-types'
+import {
+	buildPermissionContract,
+	EventContract,
+	validateEventContract,
+} from '@sprucelabs/mercury-types'
 import { validateSchema } from '@sprucelabs/schema'
-import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
+import {
+	buildEmitTargetAndPayloadSchema,
+	eventContractUtil,
+} from '@sprucelabs/spruce-event-utils'
 import {
 	MERCURY_API_NAMESPACE,
 	namesUtil,
+	versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
-const EXPECTED_NUM_CONTRACTS_GENERATED = 33
+const EXPECTED_NUM_CONTRACTS_GENERATED = 35
 
 export default class KeepingEventsInSyncTest extends AbstractEventTest {
+	private static get mercuryVersion() {
+		return versionUtil.generateVersion('2020-12-25')
+	}
+
+	private static get todaysVersion() {
+		return versionUtil.generateVersion()
+	}
+
 	@test()
 	protected static async hasSyncEventsAction() {
 		const cli = await this.Cli()
@@ -27,15 +43,16 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		)
 
 		const results = await cli.getFeature('event').Action('sync').execute({})
+
 		await this.assertValidEventResults(results)
 	}
 
 	@test()
-	protected static async syncingSchemasRetainsEventSchemas() {
+	protected static async syncingSchemasRetainsEventPayloadSchemas() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 		const results = await cli.getFeature('schema').Action('sync').execute({})
 
-		this.assertExpectedSchemasAreCreated(results)
+		this.assertExpectedPayloadSchemasAreCreated(results)
 	}
 
 	@test()
@@ -43,7 +60,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		const cli = await this.FeatureFixture().installCachedFeatures('schemas')
 		const results = await cli.getFeature('schema').Action('sync').execute({})
 
-		assert.doesThrow(() => this.assertExpectedSchemasAreCreated(results))
+		assert.doesThrow(() => this.assertExpectedPayloadSchemasAreCreated(results))
 	}
 
 	@test()
@@ -77,33 +94,97 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 			cli,
 		} = await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
 
+		const eventName = `my-new-event::${this.todaysVersion.constValue}`
+		const fqen = `${skill2.slug}.my-new-event::${this.todaysVersion.constValue}`
+
 		await skillFixture.registerEventContract(skill2, {
 			eventSignatures: {
-				'my-new-event': {},
+				[eventName]: {
+					emitPayloadSchema: buildEmitTargetAndPayloadSchema({
+						eventName: 'my-new-event',
+						emitPayloadSchema: {
+							id: 'myNewEventEmitPayloadId',
+							fields: { onlyField: { type: 'text' } },
+						},
+					}),
+					responsePayloadSchema: {
+						id: 'myNewEventResponsePayloadId',
+						fields: {},
+					},
+					emitPermissionContract: buildPermissionContract({
+						id: 'myNewEventEmitPermissionContract',
+						name: 'My new event emit permissionContract',
+						permissions: [
+							{
+								id: 'can-emit',
+								name: 'Can emit my new event',
+							},
+						],
+					}),
+					listenPermissionContract: buildPermissionContract({
+						id: 'myNewEventListenPermissionContract',
+						name: 'My new event listen permissionContract',
+						permissions: [
+							{
+								id: 'can-listen',
+								name: 'Can emit my new event',
+							},
+						],
+					}),
+				},
 			},
 		})
 
 		const results = await cli.getFeature('event').Action('sync').execute({})
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
-			'myNewEvent.contract.ts',
+			`myNewEvent.${this.todaysVersion.dirValue}.contract.ts`,
 			results.files
 		)
 
 		assert.doesInclude(
 			match,
-			`${namesUtil.toCamel(skill2.slug)}${pathUtil.sep}myNewEvent.contract.ts`
+			`${namesUtil.toCamel(skill2.slug)}${pathUtil.sep}myNewEvent.${
+				this.todaysVersion.dirValue
+			}.contract.ts`
 		)
+
+		const contract = (await this.Service('import').importDefault(match)) as any
+		const sig = eventContractUtil.getSignatureByName(contract, fqen)
+
+		assert.isTruthy(sig.emitPayloadSchema)
+		assert.isTruthy(
+			//@ts-ignore
+			sig.emitPayloadSchema.fields?.payload?.options?.schema?.id,
+			'myNewEventEmitPayloadId'
+		)
+		assert.isTruthy(
+			sig.responsePayloadSchema?.id,
+			'myNewEventResponsePayloadId'
+		)
+
+		assert.isTruthy(sig.emitPermissionContract)
+		assert.isEqual(
+			sig.emitPermissionContract.id,
+			'myNewEventEmitPermissionContract'
+		)
+		assert.isEqual(sig.emitPermissionContract.permissions[0].id, 'can-emit')
+		assert.isTruthy(sig.listenPermissionContract)
+		assert.isEqual(
+			sig.listenPermissionContract.id,
+			'myNewEventListenPermissionContract'
+		)
+		assert.isEqual(sig.listenPermissionContract.permissions[0].id, 'can-listen')
 	}
 
 	private static async assertValidEventResults(results: FeatureActionResponse) {
 		assert.isFalsy(results.errors)
 
 		await this.assertsContractsHaveValidPayloads(results)
-		await this.assertValidActionResponseFiles(results)
 
 		this.assertExpectedContractsAreCreated(results)
-		this.assertExpectedSchemasAreCreated(results)
+
+		this.assertExpectedPayloadSchemasAreCreated(results)
 
 		await this.assertCombinedContractContents(results)
 	}
@@ -138,7 +219,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		results: FeatureActionResponse
 	) {
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
-			'authenticate.contract.ts',
+			`authenticate.${this.mercuryVersion.dirValue}.contract.ts`,
 			results.files
 		)
 
@@ -167,11 +248,11 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	) {
 		const filesToCheck = [
 			{
-				name: `whoAmI.contract.ts`,
+				name: `whoami.${this.mercuryVersion.dirValue}.contract.ts`,
 				path: `events${pathUtil.sep}${MERCURY_API_NAMESPACE}`,
 			},
 			{
-				name: `getEventContracts.contract.ts`,
+				name: `getEventContracts.${this.mercuryVersion.dirValue}.contract.ts`,
 				path: `events${pathUtil.sep}${MERCURY_API_NAMESPACE}`,
 			},
 		]
@@ -179,12 +260,12 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		this.assertFilesWereGenerated(filesToCheck, results)
 	}
 
-	private static assertExpectedSchemasAreCreated(
+	private static assertExpectedPayloadSchemasAreCreated(
 		results: FeatureActionResponse
 	) {
 		const filesToCheck = [
 			{
-				name: `unRegisterListenersTargetAndPayload.schema.ts`,
+				name: `unregisterListenersEmitTargetAndPayload.schema.ts`,
 				path: `schemas${pathUtil.sep}${MERCURY_API_NAMESPACE}`,
 			},
 		]

@@ -40,7 +40,7 @@ export default class TestRunnerTest extends AbstractTestTest {
 
 		assert.isEqual(results.totalTestFiles, 1)
 		assert.isEqual(results.totalFailed, 1)
-		assert.isEqual(results.totalTests, 1)
+		assert.isEqual(results.totalTests, 2)
 
 		await this.createTest({ cli, name: 'Can cancel appointment' })
 
@@ -48,7 +48,7 @@ export default class TestRunnerTest extends AbstractTestTest {
 
 		assert.isEqual(results.totalTestFiles, 2)
 		assert.isEqual(results.totalFailed, 2)
-		assert.isEqual(results.totalTests, 2)
+		assert.isEqual(results.totalTests, 4)
 	}
 
 	@test()
@@ -61,8 +61,8 @@ export default class TestRunnerTest extends AbstractTestTest {
 
 		assert.isEqual(testResults.totalTestFiles, 1)
 		assert.isEqual(testResults.totalFailed, 0)
-		assert.isEqual(testResults.totalPassed, 1)
-		assert.isEqual(testResults.totalTests, 1)
+		assert.isEqual(testResults.totalPassed, 2)
+		assert.isEqual(testResults.totalTests, 2)
 	}
 
 	@test()
@@ -81,7 +81,7 @@ export default class TestRunnerTest extends AbstractTestTest {
 		assert.isTruthy(results)
 		assert.isEqual(results.totalTestFiles, 1)
 		assert.isEqual(results.totalFailed, 1)
-		assert.isEqual(results.totalTests, 1)
+		assert.isEqual(results.totalTests, 2)
 	}
 
 	@test()
@@ -102,7 +102,7 @@ export default class TestRunnerTest extends AbstractTestTest {
 		assert.isTruthy(results)
 		assert.isEqual(results.totalTestFiles, 1)
 		assert.isEqual(results.totalFailed, 1)
-		assert.isEqual(results.totalTests, 1)
+		assert.isEqual(results.totalTests, 2)
 	}
 
 	@test()

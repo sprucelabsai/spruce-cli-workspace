@@ -1,6 +1,10 @@
 import path from 'path'
 import AbstractSpruceError from '@sprucelabs/error'
-import { FieldFactory, FieldDefinitionValueType } from '@sprucelabs/schema'
+import {
+	FieldFactory,
+	FieldDefinitionValueType,
+	areSchemaValuesValid,
+} from '@sprucelabs/schema'
 import { IField } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 // @ts-ignore
@@ -22,14 +26,13 @@ import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import SpruceError from '../errors/SpruceError'
 import featuresUtil from '../features/feature.utilities'
 import log from '../singletons/log'
+import { ExecutionResults, GraphicsInterface } from '../types/cli.types'
 import {
-	ExecutionResults,
-	GraphicsInterface,
 	GraphicsTextEffect,
 	ImageDimensions,
 	ProgressBarOptions,
 	ProgressBarUpdateOptions,
-} from '../types/cli.types'
+} from '../types/graphicsInterface.types'
 const terminalImage = require('terminal-image')
 
 let fieldCount = 0
@@ -207,7 +210,7 @@ export default class TerminalInterface implements GraphicsInterface {
 			})
 		}
 
-		for (let files of [generatedFiles, updatedFiles, skippedFiles]) {
+		for (let files of [generatedFiles, updatedFiles]) {
 			if (files.length > 0) {
 				const table = new Table({
 					head: ['File', 'Description'],
@@ -253,17 +256,12 @@ export default class TerminalInterface implements GraphicsInterface {
 		}
 	}
 
-	public renderHero(
-		message: string,
-		effects: GraphicsTextEffect[] = [
-			GraphicsTextEffect.Blue,
-			GraphicsTextEffect.Bold,
-		]
-	) {
+	public renderHero(message: string, effects?: GraphicsTextEffect[]) {
 		fonts.say(message, {
 			// Font: 'tiny',
 			align: 'left',
-			colors: filterEffectsForCFonts(effects),
+			gradient: [GraphicsTextEffect.Red, GraphicsTextEffect.Blue],
+			colors: effects ? filterEffectsForCFonts(effects) : undefined,
 		})
 	}
 
@@ -348,7 +346,7 @@ export default class TerminalInterface implements GraphicsInterface {
 		this.isPromptActive = true
 		const name = generateInquirerFieldName()
 		const fieldDefinition: FieldDefinitions = definition
-		const { isRequired, defaultValue, label } = fieldDefinition
+		const { defaultValue, label } = fieldDefinition
 
 		const promptOptions: Record<string, any> = {
 			default: defaultValue,
@@ -358,12 +356,21 @@ export default class TerminalInterface implements GraphicsInterface {
 
 		const field = FieldFactory.Field('prompt', fieldDefinition)
 
-		// Setup transform and validate
 		promptOptions.transformer = (value: string) => {
 			return (field as IField<any>).toValueType(value)
 		}
+
 		promptOptions.validate = (value: string) => {
-			return field.validate(value, {}).length === 0
+			return areSchemaValuesValid(
+				{
+					id: 'promptvalidateschema',
+					fields: {
+						prompt: fieldDefinition,
+					},
+				},
+				{ prompt: value }
+			)
+			// return field.validate(value, {}).length === 0
 		}
 
 		switch (fieldDefinition.type) {
@@ -384,13 +391,6 @@ export default class TerminalInterface implements GraphicsInterface {
 					})
 				)
 
-				if (!isRequired) {
-					promptOptions.choices.push(new inquirer.Separator())
-					promptOptions.choices.push({
-						name: 'Cancel',
-						value: -1,
-					})
-				}
 				break
 			// Directory select
 			// File select
@@ -474,7 +474,9 @@ export default class TerminalInterface implements GraphicsInterface {
 		}
 
 		const response = (await inquirer.prompt(promptOptions)) as any
+
 		this.isPromptActive = false
+
 		const result =
 			typeof response[name] !== 'undefined'
 				? (field as IField<any>).toValueType(response[name])

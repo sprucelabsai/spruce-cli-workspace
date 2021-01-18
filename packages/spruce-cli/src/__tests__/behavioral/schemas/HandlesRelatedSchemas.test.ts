@@ -25,14 +25,7 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 			results.files
 		)
 
-		const checker = this.Service('typeChecker')
-
-		const all =
-			results.files?.map((file) => {
-				return checker.check(file.path)
-			}) ?? []
-
-		await Promise.all(all)
+		await this.assertValidActionResponseFiles(results)
 	}
 
 	private static async installCopyAndSync(testDir = 'related_schemas') {
@@ -67,7 +60,7 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 
 		assert.doesInclude(
 			typesContent,
-			"[eventNameWithOptionalNamespace:string]: { schemaId: 'eventSignature', version: 'v2020_07_22', values: SpruceSchemas.TestingSchemas.v2020_07_22.EventSignature } | { schemaId: 'eventSignature2', version: 'v2020_07_22', values: SpruceSchemas.TestingSchemas.v2020_07_22.EventSignature2 }"
+			"[fullyQualifiedEventName:string]: { schemaId: 'eventSignature', version: 'v2020_07_22', values: SpruceSchemas.TestingSchemas.v2020_07_22.EventSignature } | { schemaId: 'eventSignature2', version: 'v2020_07_22', values: SpruceSchemas.TestingSchemas.v2020_07_22.EventSignature2 }"
 		)
 
 		await this.Service('typeChecker').check(typesPath)

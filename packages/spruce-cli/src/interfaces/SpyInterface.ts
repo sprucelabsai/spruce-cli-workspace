@@ -1,13 +1,13 @@
 import { FieldDefinitionValueType } from '@sprucelabs/schema'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
+import { ExecutionResults } from '../types/cli.types'
+import { GraphicsInterface } from '../types/cli.types'
 import {
-	GraphicsInterface,
-	ExecutionResults,
 	GraphicsTextEffect,
 	ProgressBarOptions,
 	ProgressBarUpdateOptions,
 	ImageDimensions,
-} from '../types/cli.types'
+} from '../types/graphicsInterface.types'
 
 export default class SpyInterface implements GraphicsInterface {
 	public invocations: { command: string; options?: any }[] = []
@@ -19,7 +19,6 @@ export default class SpyInterface implements GraphicsInterface {
 
 	private confirmResolver?: (pass: boolean) => void | undefined
 	private waitForEnterResolver?: () => void | undefined
-
 	private promptDefaultValue: any
 
 	public renderWarning(
@@ -36,6 +35,7 @@ export default class SpyInterface implements GraphicsInterface {
 	}
 
 	private trackInvocation(command: string, options?: any) {
+		// testUtil.log(command, JSON.stringify(options), '\n')
 		this.invocations.push({ command, options })
 	}
 

@@ -11,14 +11,14 @@ const optionsSchema = buildSchema({
 type OptionsSchema = typeof optionsSchema
 
 export default class WhoAmIAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'whoami'
+	public code = 'whoami'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['whoami']
 
 	public async execute(): Promise<FeatureActionResponse> {
 		const client = await this.connectToApi()
 
-		const results = await client.emit('who-am-i')
+		const results = await client.emit('whoami::v2020_12_25')
 		const { type, auth } = eventResponseUtil.getFirstResponseOrThrow(results)
 
 		const summaryLines: string[] = []

@@ -50,11 +50,14 @@ export interface CliBootOptions {
 	host?: string
 }
 
+type PromiseCache = Record<string, Promise<ApiClient>>
+
 export default class Cli implements CliInterface {
 	private cwd: string
 	private featureInstaller: FeatureInstaller
 	private serviceFactory: ServiceFactory
 	public readonly emitter: GlobalEmitter
+	private static apiClients: PromiseCache = {}
 
 	private constructor(
 		cwd: string,
@@ -66,6 +69,14 @@ export default class Cli implements CliInterface {
 		this.featureInstaller = featureInstaller
 		this.serviceFactory = serviceFactory
 		this.emitter = emitter
+	}
+
+	public static async resetApiClients() {
+		for (const key in this.apiClients) {
+			await (await this.apiClients[key]).disconnect()
+		}
+
+		this.apiClients = {}
 	}
 
 	public async on(...args: any[]) {
@@ -122,7 +133,6 @@ export default class Cli implements CliInterface {
 			return JSON.parse(resultParts[1]) as HealthCheckResults
 		} catch (originalError) {
 			const error = new SpruceError({
-				// @ts-ignore
 				code: 'BOOT_ERROR',
 				originalError,
 			})
@@ -141,12 +151,10 @@ export default class Cli implements CliInterface {
 		const emitter = options?.emitter ?? CliGlobalEmitter.Emitter()
 
 		let cwd = options?.cwd ?? process.cwd()
-		const serviceFactory = new ServiceFactory({})
-		const apiClientFactory = Cli.buildApiClientFactory(
-			cwd,
-			serviceFactory,
-			options
-		)
+		const serviceFactory = new ServiceFactory()
+		const apiClientFactory =
+			options?.apiClientFactory ??
+			Cli.buildApiClientFactory(cwd, serviceFactory, options)
 
 		const storeFactory = new StoreFactory({
 			cwd,
@@ -172,7 +180,6 @@ export default class Cli implements CliInterface {
 				program,
 				featureInstaller,
 				ui,
-				emitter,
 			})
 			const codes = FeatureInstallerFactory.featureCodes
 
@@ -198,64 +205,77 @@ export default class Cli implements CliInterface {
 		serviceFactory: ServiceFactory,
 		bootOptions?: CliBootOptions
 	): ApiClientFactory {
-		let apiClients: Record<string, ApiClient> = {}
-
-		const apiClientFactoryAnon = bootOptions?.apiClientFactory
-			? bootOptions.apiClientFactory
-			: async (options?: ApiClientFactoryOptions) => {
-					const key = apiClientUtil.generateClientKey(options)
-					if (!apiClients[key]) {
-						apiClients[key] = await MercuryClientFactory.Client<EventContracts>(
-							{
-								contracts: eventsContracts,
-								host: bootOptions?.host ?? 'https://sandbox.mercury.spruce.ai',
-								allowSelfSignedCrt: true,
-							}
-						)
-					}
-
-					return apiClients[key]
-			  }
-
 		const apiClientFactory = async (options?: ApiClientFactoryOptions) => {
-			const key = apiClientUtil.generateClientKey(options)
+			const key = apiClientUtil.generateClientCacheKey(options)
 
-			if (!apiClients[key]) {
-				apiClients[key] = await apiClientFactoryAnon(options)
-
-				let auth: SpruceSchemas.MercuryApi.AuthenticateEmitPayload = {}
-				if (!options) {
-					const person = serviceFactory.Service(cwd, 'auth').getLoggedInPerson()
-
-					if (person) {
-						auth.token = person.token
-					}
-				} else if (options.authAsCurrentSkill) {
-					const skill = serviceFactory.Service(cwd, 'auth').getCurrentSkill()
-
-					if (skill) {
-						auth = {
-							skillId: skill.id,
-							apiKey: skill.apiKey,
-						}
-					}
-				} else if (options.skillId && options.apiKey) {
-					auth = {
-						skillId: options.skillId,
-						apiKey: options.apiKey,
-					}
-				}
-
-				if (Object.keys(auth).length > 0) {
-					await apiClients[key].emit('authenticate', {
-						payload: auth,
-					})
-				}
+			if (!Cli.apiClients[key]) {
+				Cli.apiClients[key] = Cli.connectToApi(
+					cwd,
+					serviceFactory,
+					options,
+					bootOptions
+				)
 			}
-			return apiClients[key]
+
+			return Cli.apiClients[key]
 		}
 
 		return apiClientFactory
+	}
+
+	private static async connectToApi(
+		cwd: string,
+		serviceFactory: ServiceFactory,
+		options?: ApiClientFactoryOptions,
+		bootOptions?: CliBootOptions
+	): Promise<ApiClient> {
+		const connect = bootOptions?.apiClientFactory
+			? bootOptions.apiClientFactory
+			: async () => {
+					const client = await MercuryClientFactory.Client<EventContracts>({
+						contracts: eventsContracts,
+						host: bootOptions?.host ?? 'https://sandbox.mercury.spruce.ai',
+						allowSelfSignedCrt: true,
+					})
+
+					return client
+			  }
+
+		const client = await connect()
+
+		let auth: SpruceSchemas.MercuryApi.v2020_12_25.AuthenticateEmitPayload = {}
+		if (!options) {
+			const person = serviceFactory.Service(cwd, 'auth').getLoggedInPerson()
+
+			if (person) {
+				auth.token = person.token
+			}
+		} else if (options.shouldAuthAsCurrentSkill) {
+			const skill = serviceFactory.Service(cwd, 'auth').getCurrentSkill()
+
+			if (skill) {
+				auth = {
+					skillId: skill.id,
+					apiKey: skill.apiKey,
+				}
+			}
+		} else if (options.skillId && options.apiKey) {
+			auth = {
+				skillId: options.skillId,
+				apiKey: options.apiKey,
+			}
+		}
+
+		if (Object.keys(auth).length > 0) {
+			await client.emit('authenticate::v2020_12_25', {
+				payload: auth,
+			})
+
+			//@ts-ignore
+			client.auth = auth
+		}
+
+		return client
 	}
 }
 

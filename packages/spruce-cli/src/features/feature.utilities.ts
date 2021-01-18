@@ -3,6 +3,9 @@ import { Schema } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 
 const featuresUtil = {
+	/**
+	 * @deprecated move to code prop on action
+	 */
 	filePathToActionCode(path: string): string {
 		const parts = path.split(pathUtil.sep)
 		const name = parts.pop() ?? ''

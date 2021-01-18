@@ -65,7 +65,7 @@ export default class SkillStoreTest extends AbstractCliTest {
 		assert.isString(skill.id)
 
 		const client = await this.connectToApi()
-		const results = await client.emit('authenticate', {
+		const results = await client.emit('authenticate::v2020_12_25', {
 			payload: {
 				skillId: skill.id,
 				apiKey: skill.apiKey,

@@ -1,12 +1,15 @@
 #!/usr/bin/env node
+import { execSync } from 'child_process'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import FeatureFixture from '../fixtures/FeatureFixture'
 import MercuryFixture from '../fixtures/MercuryFixture'
 import TerminalInterface from '../interfaces/TerminalInterface'
+import ImportService from '../services/ImportService'
 import ServiceFactory from '../services/ServiceFactory'
 import testUtil from '../tests/utilities/test.utility'
-import { GraphicsTextEffect } from '../types/cli.types'
+import { GraphicsTextEffect } from '../types/graphicsInterface.types'
 import durationUtil from '../utilities/duration.utility'
+require('dotenv').config()
 
 const packageJsonContents = diskUtil.readFile(
 	diskUtil.resolvePath(__dirname, '..', '..', 'package.json')
@@ -19,6 +22,9 @@ const testKeys = Object.keys(testSkillCache)
 let remaining = testKeys.length
 const term = new TerminalInterface(__dirname, true)
 const start = new Date().getTime()
+const onlyInstall = process.env.TEST_SKILLS_TO_CACHE?.split(',').map((t) =>
+	t.trim()
+) as string[] | undefined
 
 const shouldRunSequentially = !!process.argv.find(
 	(a) => a === '--shouldRunSequentially=true' || a === '--shouldRunSequentially'
@@ -27,6 +33,12 @@ let progressInterval: any
 
 async function run() {
 	term.clear()
+
+	if (process.env.WILL_BUILD_CACHE_SCRIPT) {
+		term.renderLine('Running pre build cache script')
+		execSync(process.env.WILL_BUILD_CACHE_SCRIPT)
+	}
+
 	term.renderHeadline(`Found ${testKeys.length} skills to cache.`)
 
 	let messages: [string, any][] = []
@@ -93,13 +105,22 @@ async function run() {
 	}
 
 	clearInterval(progressInterval)
+
 	await term.stopLoading()
 	term.renderLine(`Done! ${durationUtil.msToFriendly(getTimeSpent())}`)
 
 	async function cacheOrSkip(cacheKey: string) {
 		const { cacheTracker, cwd, fixture, options } = setup(cacheKey)
 
-		if (cacheTracker[cacheKey] && diskUtil.doesDirExist(cwd)) {
+		if (onlyInstall && onlyInstall.indexOf(cacheKey) === -1) {
+			renderLine(
+				`Skipping '${cacheKey}' because TEST_SKILLS_TO_CACHE=${process.env.TEST_SKILLS_TO_CACHE}.`
+			)
+			remaining--
+		} else if (
+			cacheTracker[cacheKey] &&
+			diskUtil.doesDirExist(diskUtil.resolvePath(cwd, 'node_modules'))
+		) {
 			remaining--
 			renderLine(`'${cacheKey}' already cached. Skipping...`, [
 				GraphicsTextEffect.Italic,
@@ -114,8 +135,9 @@ async function run() {
 		const options = testSkillCache[cacheKey]
 
 		const importCacheDir = testUtil.resolveTestDir('spruce-cli-import-cache')
+		ImportService.setCacheDir(importCacheDir)
 
-		const serviceFactory = new ServiceFactory({ importCacheDir })
+		const serviceFactory = new ServiceFactory()
 		const cwd = testUtil.resolveTestDir(cacheKey)
 
 		const mercuryFixture = new MercuryFixture(cwd, serviceFactory)
@@ -151,10 +173,12 @@ async function run() {
 
 		await fixture.installFeatures(options, cacheKey)
 
-		renderLine(`Done caching '${cacheKey}'. ${remaining - 1} remaining...`, [
-			GraphicsTextEffect.Green,
-			GraphicsTextEffect.Bold,
-		])
+		renderLine(
+			`Done caching '${cacheKey}'. ${
+				remaining - 1
+			} remaining (${durationUtil.msToFriendly(getTimeSpent())})...`,
+			[GraphicsTextEffect.Green, GraphicsTextEffect.Bold]
+		)
 	}
 }
 
@@ -162,9 +186,16 @@ function dropInS(remaining: number) {
 	return remaining === 1 ? '' : 's'
 }
 
-void run().catch((err) => {
-	term.renderError(err)
-	if (progressInterval) {
-		clearInterval(progressInterval)
-	}
-})
+void run()
+	.then(() => {
+		if (process.env.DID_BUILD_CACHE_SCRIPT) {
+			term.renderLine('Running pre build cache script')
+			execSync(process.env.DID_BUILD_CACHE_SCRIPT)
+		}
+	})
+	.catch((err) => {
+		term.renderError(err)
+		if (progressInterval) {
+			clearInterval(progressInterval)
+		}
+	})

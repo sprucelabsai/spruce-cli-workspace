@@ -5,10 +5,26 @@ export default buildSchema({
 	name: 'Upgrade skill action',
 	description: 'Options skill.upgrade.',
 	fields: {
-		force: {
-			type: 'boolean',
-			label: 'Force',
-			hint: 'This will force overwrite each file',
+		upgradeMode: {
+			type: 'select',
+			label: 'Upgrade mode',
+			defaultValue: 'forceRequiredSkipRest',
+			options: {
+				choices: [
+					{
+						value: 'askEverything',
+						label: 'Ask for everything',
+					},
+					{
+						value: 'forceEverything',
+						label: 'Force everything',
+					},
+					{
+						value: 'forceRequiredSkipRest',
+						label: 'Force required (skipping all non-essential)',
+					},
+				],
+			},
 		},
 	},
 })

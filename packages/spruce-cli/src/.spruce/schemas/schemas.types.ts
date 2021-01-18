@@ -28,7 +28,205 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
+
+		
+		interface GetRoleEmitTargetAndPayload {
+			
+				
+				'target': SpruceSchemas.MercuryApi.v2020_12_25.EventTarget
+				
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.GetRoleEmitPayload
+		}
+
+		interface GetRoleEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'getRoleEmitTargetAndPayload',
+			version: 'v2020_12_25',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'target': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.EventTargetSchema,}
+			            },
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.GetRoleEmitPayloadSchema,}
+			            },
+			    }
+		}
+
+		type GetRoleEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.GetRoleEmitTargetAndPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
+
+		
+		interface DidMessageEmitPayload {
+			
+				
+				'message': SpruceSchemas.Spruce.v2020_07_22.Message
+				
+				'conversationState'?: string| undefined | null
+				
+				'topic'?: string| undefined | null
+		}
+
+		interface DidMessageEmitPayloadSchema extends SpruceSchema.Schema {
+			id: 'didMessageEmitPayload',
+			version: 'v2020_12_25',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'message': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.Spruce.v2020_07_22.MessageSchema,}
+			            },
+			            /** . */
+			            'conversationState': {
+			                type: 'text',
+			                options: undefined
+			            },
+			            /** . */
+			            'topic': {
+			                type: 'text',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type DidMessageEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.DidMessageEmitPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
+
+		
+		interface DidMessageEmitTargetAndPayload {
+			
+				
+				'target': SpruceSchemas.MercuryApi.v2020_12_25.EventTarget
+				
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.DidMessageEmitPayload
+		}
+
+		interface DidMessageEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'didMessageEmitTargetAndPayload',
+			version: 'v2020_12_25',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'target': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.EventTargetSchema,}
+			            },
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.DidMessageEmitPayloadSchema,}
+			            },
+			    }
+		}
+
+		type DidMessageEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.DidMessageEmitTargetAndPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
+
+		
+		interface ConversationTopic {
+			
+				
+				'key': string
+				
+				'confidence': number
+				
+				'label': string
+		}
+
+		interface ConversationTopicSchema extends SpruceSchema.Schema {
+			id: 'conversationTopic',
+			version: 'v2020_12_25',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'key': {
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'confidence': {
+			                type: 'number',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'label': {
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			    }
+		}
+
+		type ConversationTopicEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.ConversationTopicSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
+
+		
+		interface DidMessageResponsePayload {
+			
+				
+				'transitionConversationTo'?: string| undefined | null
+				
+				'suggestedTopics'?: SpruceSchemas.MercuryApi.v2020_12_25.ConversationTopic[]| undefined | null
+		}
+
+		interface DidMessageResponsePayloadSchema extends SpruceSchema.Schema {
+			id: 'didMessageResponsePayload',
+			version: 'v2020_12_25',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'transitionConversationTo': {
+			                type: 'text',
+			                options: undefined
+			            },
+			            /** . */
+			            'suggestedTopics': {
+			                type: 'schema',
+			                isArray: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.ConversationTopicSchema,}
+			            },
+			    }
+		}
+
+		type DidMessageResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.DidMessageResponsePayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface AuthenticateEmitPayload {
@@ -43,6 +241,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface AuthenticateEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'authenticateEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -64,22 +263,23 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type AuthenticateEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.AuthenticateEmitPayloadSchema>
+		type AuthenticateEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.AuthenticateEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface AuthenticateTargetAndPayload {
+		interface AuthenticateEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.AuthenticateEmitPayload
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.AuthenticateEmitPayload
 		}
 
-		interface AuthenticateTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'authenticateTargetAndPayload',
+		interface AuthenticateEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'authenticateEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -87,17 +287,17 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            'payload': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.AuthenticateEmitPayloadSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.AuthenticateEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type AuthenticateTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.AuthenticateTargetAndPayloadSchema>
+		type AuthenticateEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.AuthenticateEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface AuthSchema {
@@ -110,6 +310,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface AuthSchemaSchema extends SpruceSchema.Schema {
 			id: 'authSchema',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -126,12 +327,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type AuthSchemaEntity = SchemaEntity<SpruceSchemas.MercuryApi.AuthSchemaSchema>
+		type AuthSchemaEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.AuthSchemaSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface AuthenticateResponsePayload {
@@ -139,11 +340,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				
 				'type': ("authenticated" | "anonymous")
 				
-				'auth': SpruceSchemas.MercuryApi.AuthSchema
+				'auth': SpruceSchemas.MercuryApi.v2020_12_25.AuthSchema
 		}
 
 		interface AuthenticateResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'authenticateResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -157,17 +359,17 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            'auth': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.AuthSchemaSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.AuthSchemaSchema,}
 			            },
 			    }
 		}
 
-		type AuthenticateResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.AuthenticateResponsePayloadSchema>
+		type AuthenticateResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.AuthenticateResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface CanListenEmitPayload {
@@ -175,11 +377,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				
 				'authorizerStatuses'?: ("clockedIn" | "clockedOut" | "onPrem" | "offPrem")| undefined | null
 				
-				'eventNameWithOptionalNamespace': string
+				'fullyQualifiedEventName': string
 		}
 
 		interface CanListenEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'canListenEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -189,7 +392,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                options: {choices: [{"label":"Clocked in","value":"clockedIn"},{"label":"Clocked out","value":"clockedOut"},{"label":"On premise","value":"onPrem"},{"label":"Off premise","value":"offPrem"}],}
 			            },
 			            /** . */
-			            'eventNameWithOptionalNamespace': {
+			            'fullyQualifiedEventName': {
 			                type: 'text',
 			                isRequired: true,
 			                options: undefined
@@ -197,22 +400,23 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type CanListenEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.CanListenEmitPayloadSchema>
+		type CanListenEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.CanListenEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface CanListenTargetAndPayload {
+		interface CanListenEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.CanListenEmitPayload
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.CanListenEmitPayload
 		}
 
-		interface CanListenTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'canListenTargetAndPayload',
+		interface CanListenEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'canListenEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -220,17 +424,17 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            'payload': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.CanListenEmitPayloadSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.CanListenEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type CanListenTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.CanListenTargetAndPayloadSchema>
+		type CanListenEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.CanListenEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface CanListenResponsePayload {
@@ -241,6 +445,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface CanListenResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'canListenResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -252,12 +457,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type CanListenResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.CanListenResponsePayloadSchema>
+		type CanListenResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.CanListenResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface ConfirmPinEmitPayload {
@@ -270,6 +475,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface ConfirmPinEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'confirmPinEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -288,22 +494,23 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type ConfirmPinEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.ConfirmPinEmitPayloadSchema>
+		type ConfirmPinEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.ConfirmPinEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface ConfirmPinTargetAndPayload {
+		interface ConfirmPinEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.ConfirmPinEmitPayload
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.ConfirmPinEmitPayload
 		}
 
-		interface ConfirmPinTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'confirmPinTargetAndPayload',
+		interface ConfirmPinEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'confirmPinEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -311,17 +518,17 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            'payload': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.ConfirmPinEmitPayloadSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.ConfirmPinEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type ConfirmPinTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.ConfirmPinTargetAndPayloadSchema>
+		type ConfirmPinEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.ConfirmPinEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface ConfirmPinRespondPayload {
@@ -334,6 +541,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface ConfirmPinRespondPayloadSchema extends SpruceSchema.Schema {
 			id: 'confirmPinRespondPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -352,12 +560,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type ConfirmPinRespondPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.ConfirmPinRespondPayloadSchema>
+		type ConfirmPinRespondPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.ConfirmPinRespondPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface CreateLocationEmitPayload {
@@ -382,6 +590,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface CreateLocationEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'createLocationEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -439,84 +648,49 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type CreateLocationEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.CreateLocationEmitPayloadSchema>
+		type CreateLocationEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.CreateLocationEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface CreateLocationTargetAndPayload {
+		interface CreateLocationEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.CreateLocationEmitPayload
+				'target': SpruceSchemas.MercuryApi.v2020_12_25.EventTarget
 				
-				'target': SpruceSchemas.MercuryApi.EventTarget
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.CreateLocationEmitPayload
 		}
 
-		interface CreateLocationTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'createLocationTargetAndPayload',
+		interface CreateLocationEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'createLocationEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
 			            /** . */
-			            'payload': {
-			                type: 'schema',
-			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.CreateLocationEmitPayloadSchema,}
-			            },
-			            /** . */
 			            'target': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.EventTargetSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.EventTargetSchema,}
 			            },
-			    }
-		}
-
-		type CreateLocationTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.CreateLocationTargetAndPayloadSchema>
-
-	}
-
-
-	namespace SpruceSchemas.MercuryApi {
-
-		
-		interface DeleteRoleTargetAndPayload {
-			
-				
-				'payload': SpruceSchemas.MercuryApi.DeleteRoleEmitPayload
-				
-				'target': SpruceSchemas.MercuryApi.EventTarget
-		}
-
-		interface DeleteRoleTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'deleteRoleTargetAndPayload',
-			namespace: 'MercuryApi',
-			name: '',
-			    fields: {
 			            /** . */
 			            'payload': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.DeleteRoleEmitPayloadSchema,}
-			            },
-			            /** . */
-			            'target': {
-			                type: 'schema',
-			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.EventTargetSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.CreateLocationEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type DeleteRoleTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.DeleteRoleTargetAndPayloadSchema>
+		type CreateLocationEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.CreateLocationEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface CreateLocationResponsePayload {
@@ -527,6 +701,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface CreateLocationResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'createLocationResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -539,12 +714,41 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type CreateLocationResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.CreateLocationResponsePayloadSchema>
+		type CreateLocationResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.CreateLocationResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
+
+		
+		interface GetLocationResponsePayload {
+			
+				
+				'location': SpruceSchemas.Spruce.v2020_07_22.Location
+		}
+
+		interface GetLocationResponsePayloadSchema extends SpruceSchema.Schema {
+			id: 'getLocationResponsePayload',
+			version: 'v2020_12_25',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'location': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.Spruce.v2020_07_22.LocationSchema,}
+			            },
+			    }
+		}
+
+		type GetLocationResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.GetLocationResponsePayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface CreateOrgEmitPayload {
@@ -559,6 +763,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface CreateOrgEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'createOrgEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -582,22 +787,23 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type CreateOrgEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.CreateOrgEmitPayloadSchema>
+		type CreateOrgEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.CreateOrgEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface CreateOrganizationTargetAndPayload {
+		interface CreateOrganizationEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.CreateOrgEmitPayload
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.CreateOrgEmitPayload
 		}
 
-		interface CreateOrganizationTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'createOrganizationTargetAndPayload',
+		interface CreateOrganizationEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'createOrganizationEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -605,17 +811,17 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            'payload': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.CreateOrgEmitPayloadSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.CreateOrgEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type CreateOrganizationTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.CreateOrganizationTargetAndPayloadSchema>
+		type CreateOrganizationEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.CreateOrganizationEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface CreateOrgResponsePayload {
@@ -626,6 +832,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface CreateOrgResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'createOrgResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -638,12 +845,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type CreateOrgResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.CreateOrgResponsePayloadSchema>
+		type CreateOrgResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.CreateOrgResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface CreateRoleEmitPayload {
@@ -662,6 +869,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface CreateRoleEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'createRoleEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -700,48 +908,49 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type CreateRoleEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.CreateRoleEmitPayloadSchema>
+		type CreateRoleEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.CreateRoleEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface CreateRoleTargetAndPayload {
+		interface CreateRoleEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.CreateRoleEmitPayload
+				'target': SpruceSchemas.MercuryApi.v2020_12_25.EventTarget
 				
-				'target': SpruceSchemas.MercuryApi.EventTarget
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.CreateRoleEmitPayload
 		}
 
-		interface CreateRoleTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'createRoleTargetAndPayload',
+		interface CreateRoleEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'createRoleEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
 			            /** . */
-			            'payload': {
-			                type: 'schema',
-			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.CreateRoleEmitPayloadSchema,}
-			            },
-			            /** . */
 			            'target': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.EventTargetSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.EventTargetSchema,}
+			            },
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.CreateRoleEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type CreateRoleTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.CreateRoleTargetAndPayloadSchema>
+		type CreateRoleEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.CreateRoleEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface CreateRoleResponsePayload {
@@ -752,6 +961,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface CreateRoleResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'createRoleResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -764,12 +974,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type CreateRoleResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.CreateRoleResponsePayloadSchema>
+		type CreateRoleResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.CreateRoleResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface DeleteLocationEmitPayload {
@@ -780,6 +990,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface DeleteLocationEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'deleteLocationEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -792,48 +1003,49 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type DeleteLocationEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.DeleteLocationEmitPayloadSchema>
+		type DeleteLocationEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.DeleteLocationEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface DeleteLocationTargetAndPayload {
+		interface DeleteLocationEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.DeleteLocationEmitPayload
+				'target': SpruceSchemas.MercuryApi.v2020_12_25.EventTarget
 				
-				'target': SpruceSchemas.MercuryApi.EventTarget
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.DeleteLocationEmitPayload
 		}
 
-		interface DeleteLocationTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'deleteLocationTargetAndPayload',
+		interface DeleteLocationEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'deleteLocationEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
 			            /** . */
-			            'payload': {
-			                type: 'schema',
-			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.DeleteLocationEmitPayloadSchema,}
-			            },
-			            /** . */
 			            'target': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.EventTargetSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.EventTargetSchema,}
+			            },
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.DeleteLocationEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type DeleteLocationTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.DeleteLocationTargetAndPayloadSchema>
+		type DeleteLocationEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.DeleteLocationEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface DeleteLocationResponsePayload {
@@ -844,6 +1056,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface DeleteLocationResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'deleteLocationResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -856,22 +1069,23 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type DeleteLocationResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.DeleteLocationResponsePayloadSchema>
+		type DeleteLocationResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.DeleteLocationResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface DeleteOrganizationTargetAndPayload {
+		interface DeleteOrganizationEmitTargetAndPayload {
 			
 				
-				'target': SpruceSchemas.MercuryApi.EventTarget
+				'target': SpruceSchemas.MercuryApi.v2020_12_25.EventTarget
 		}
 
-		interface DeleteOrganizationTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'deleteOrganizationTargetAndPayload',
+		interface DeleteOrganizationEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'deleteOrganizationEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -879,17 +1093,17 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            'target': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.EventTargetSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.EventTargetSchema,}
 			            },
 			    }
 		}
 
-		type DeleteOrganizationTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.DeleteOrganizationTargetAndPayloadSchema>
+		type DeleteOrganizationEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.DeleteOrganizationEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface DeleteOrgResponsePayload {
@@ -900,6 +1114,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface DeleteOrgResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'deleteOrgResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -912,12 +1127,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type DeleteOrgResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.DeleteOrgResponsePayloadSchema>
+		type DeleteOrgResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.DeleteOrgResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface DeleteRoleEmitPayload {
@@ -930,6 +1145,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface DeleteRoleEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'deleteRoleEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -947,12 +1163,49 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type DeleteRoleEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.DeleteRoleEmitPayloadSchema>
+		type DeleteRoleEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.DeleteRoleEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
+
+		
+		interface DeleteRoleEmitTargetAndPayload {
+			
+				
+				'target': SpruceSchemas.MercuryApi.v2020_12_25.EventTarget
+				
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.DeleteRoleEmitPayload
+		}
+
+		interface DeleteRoleEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'deleteRoleEmitTargetAndPayload',
+			version: 'v2020_12_25',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'target': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.EventTargetSchema,}
+			            },
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.DeleteRoleEmitPayloadSchema,}
+			            },
+			    }
+		}
+
+		type DeleteRoleEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.DeleteRoleEmitTargetAndPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface DeleteRoleResponsePayload {
@@ -963,6 +1216,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface DeleteRoleResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'deleteRoleResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -975,12 +1229,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type DeleteRoleResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.DeleteRoleResponsePayloadSchema>
+		type DeleteRoleResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.DeleteRoleResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface GetEventContractsResponsePayload {
@@ -991,6 +1245,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface GetEventContractsResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'getEventContractsResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1004,12 +1259,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type GetEventContractsResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetEventContractsResponsePayloadSchema>
+		type GetEventContractsResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.GetEventContractsResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface GetLocationEmitPayload {
@@ -1020,6 +1275,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface GetLocationEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'getLocationEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1032,76 +1288,49 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type GetLocationEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetLocationEmitPayloadSchema>
+		type GetLocationEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.GetLocationEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface GetLocationTargetAndPayload {
+		interface GetLocationEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.GetLocationEmitPayload
+				'target': SpruceSchemas.MercuryApi.v2020_12_25.EventTarget
 				
-				'target': SpruceSchemas.MercuryApi.EventTarget
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.GetLocationEmitPayload
 		}
 
-		interface GetLocationTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'getLocationTargetAndPayload',
+		interface GetLocationEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'getLocationEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
-			            /** . */
-			            'payload': {
-			                type: 'schema',
-			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.GetLocationEmitPayloadSchema,}
-			            },
 			            /** . */
 			            'target': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.EventTargetSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.EventTargetSchema,}
 			            },
-			    }
-		}
-
-		type GetLocationTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetLocationTargetAndPayloadSchema>
-
-	}
-
-
-	namespace SpruceSchemas.MercuryApi {
-
-		
-		interface GetLocationResponsePayload {
-			
-				
-				'location': SpruceSchemas.Spruce.v2020_07_22.Location
-		}
-
-		interface GetLocationResponsePayloadSchema extends SpruceSchema.Schema {
-			id: 'getLocationResponsePayload',
-			namespace: 'MercuryApi',
-			name: '',
-			    fields: {
 			            /** . */
-			            'location': {
+			            'payload': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.Spruce.v2020_07_22.LocationSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.GetLocationEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type GetLocationResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetLocationResponsePayloadSchema>
+		type GetLocationEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.GetLocationEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface GetOrganizationEmitPayload {
@@ -1112,6 +1341,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface GetOrganizationEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'getOrganizationEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1124,22 +1354,23 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type GetOrganizationEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetOrganizationEmitPayloadSchema>
+		type GetOrganizationEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.GetOrganizationEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface GetOrganizationTargetAndPayload {
+		interface GetOrganizationEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.GetOrganizationEmitPayload
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.GetOrganizationEmitPayload
 		}
 
-		interface GetOrganizationTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'getOrganizationTargetAndPayload',
+		interface GetOrganizationEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'getOrganizationEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1147,17 +1378,17 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            'payload': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.GetOrganizationEmitPayloadSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.GetOrganizationEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type GetOrganizationTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetOrganizationTargetAndPayloadSchema>
+		type GetOrganizationEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.GetOrganizationEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface GetOrgResponsePayload {
@@ -1168,6 +1399,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface GetOrgResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'getOrgResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1180,12 +1412,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type GetOrgResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetOrgResponsePayloadSchema>
+		type GetOrgResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.GetOrgResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface GetRoleEmitPayload {
@@ -1196,6 +1428,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface GetRoleEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'getRoleEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1208,48 +1441,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type GetRoleEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetRoleEmitPayloadSchema>
+		type GetRoleEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.GetRoleEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
-
-		
-		interface GetRoleTargetAndPayload {
-			
-				
-				'payload': SpruceSchemas.MercuryApi.GetRoleEmitPayload
-				
-				'target': SpruceSchemas.MercuryApi.EventTarget
-		}
-
-		interface GetRoleTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'getRoleTargetAndPayload',
-			namespace: 'MercuryApi',
-			name: '',
-			    fields: {
-			            /** . */
-			            'payload': {
-			                type: 'schema',
-			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.GetRoleEmitPayloadSchema,}
-			            },
-			            /** . */
-			            'target': {
-			                type: 'schema',
-			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.EventTargetSchema,}
-			            },
-			    }
-		}
-
-		type GetRoleTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetRoleTargetAndPayloadSchema>
-
-	}
-
-
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface GetRoleResponsePayload {
@@ -1260,6 +1457,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface GetRoleResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'getRoleResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1272,12 +1470,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type GetRoleResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetRoleResponsePayloadSchema>
+		type GetRoleResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.GetRoleResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface GetSkillEmitPayload {
@@ -1288,6 +1486,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface GetSkillEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'getSkillEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1300,22 +1499,23 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type GetSkillEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetSkillEmitPayloadSchema>
+		type GetSkillEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.GetSkillEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface GetSkillTargetAndPayload {
+		interface GetSkillEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.GetSkillEmitPayload
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.GetSkillEmitPayload
 		}
 
-		interface GetSkillTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'getSkillTargetAndPayload',
+		interface GetSkillEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'getSkillEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1323,17 +1523,17 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            'payload': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.GetSkillEmitPayloadSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.GetSkillEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type GetSkillTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetSkillTargetAndPayloadSchema>
+		type GetSkillEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.GetSkillEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface GetSkillResponsePayload {
@@ -1344,6 +1544,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface GetSkillResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'getSkillResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1356,12 +1557,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type GetSkillResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.GetSkillResponsePayloadSchema>
+		type GetSkillResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.GetSkillResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface HealthCheckItem {
@@ -1372,6 +1573,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface HealthCheckItemSchema extends SpruceSchema.Schema {
 			id: 'healthCheckItem',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1383,46 +1585,47 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type HealthCheckItemEntity = SchemaEntity<SpruceSchemas.MercuryApi.HealthCheckItemSchema>
+		type HealthCheckItemEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.HealthCheckItemSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface HealthResponsePayload {
 			
 				
-				'skill'?: SpruceSchemas.MercuryApi.HealthCheckItem| undefined | null
+				'skill'?: SpruceSchemas.MercuryApi.v2020_12_25.HealthCheckItem| undefined | null
 				
-				'mercury'?: SpruceSchemas.MercuryApi.HealthCheckItem| undefined | null
+				'mercury'?: SpruceSchemas.MercuryApi.v2020_12_25.HealthCheckItem| undefined | null
 		}
 
 		interface HealthResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'healthResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
 			            /** . */
 			            'skill': {
 			                type: 'schema',
-			                options: {schema: SpruceSchemas.MercuryApi.HealthCheckItemSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.HealthCheckItemSchema,}
 			            },
 			            /** . */
 			            'mercury': {
 			                type: 'schema',
-			                options: {schema: SpruceSchemas.MercuryApi.HealthCheckItemSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.HealthCheckItemSchema,}
 			            },
 			    }
 		}
 
-		type HealthResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.HealthResponsePayloadSchema>
+		type HealthResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.HealthResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface InstallSkillEmitPayload {
@@ -1433,6 +1636,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface InstallSkillEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'installSkillEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1445,48 +1649,49 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type InstallSkillEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.InstallSkillEmitPayloadSchema>
+		type InstallSkillEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.InstallSkillEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface InstallSkillTargetAndPayload {
+		interface InstallSkillEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.InstallSkillEmitPayload
+				'target': SpruceSchemas.MercuryApi.v2020_12_25.EventTarget
 				
-				'target': SpruceSchemas.MercuryApi.EventTarget
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.InstallSkillEmitPayload
 		}
 
-		interface InstallSkillTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'installSkillTargetAndPayload',
+		interface InstallSkillEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'installSkillEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
 			            /** . */
-			            'payload': {
-			                type: 'schema',
-			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.InstallSkillEmitPayloadSchema,}
-			            },
-			            /** . */
 			            'target': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.EventTargetSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.EventTargetSchema,}
+			            },
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.InstallSkillEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type InstallSkillTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.InstallSkillTargetAndPayloadSchema>
+		type InstallSkillEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.InstallSkillEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface InstallSkillResponsePayload {
@@ -1495,18 +1700,19 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface InstallSkillResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'installSkillResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
 			    }
 		}
 
-		type InstallSkillResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.InstallSkillResponsePayloadSchema>
+		type InstallSkillResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.InstallSkillResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface IsSkillInstalledEmitPayload {
@@ -1517,6 +1723,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface IsSkillInstalledEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'isSkillInstalledEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1529,48 +1736,49 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type IsSkillInstalledEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.IsSkillInstalledEmitPayloadSchema>
+		type IsSkillInstalledEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.IsSkillInstalledEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface IsSkillInstalledTargetAndPayload {
+		interface IsSkillInstalledEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.IsSkillInstalledEmitPayload
+				'target': SpruceSchemas.MercuryApi.v2020_12_25.EventTarget
 				
-				'target': SpruceSchemas.MercuryApi.EventTarget
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.IsSkillInstalledEmitPayload
 		}
 
-		interface IsSkillInstalledTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'isSkillInstalledTargetAndPayload',
+		interface IsSkillInstalledEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'isSkillInstalledEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
 			            /** . */
-			            'payload': {
-			                type: 'schema',
-			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.IsSkillInstalledEmitPayloadSchema,}
-			            },
-			            /** . */
 			            'target': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.EventTargetSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.EventTargetSchema,}
+			            },
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.IsSkillInstalledEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type IsSkillInstalledTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.IsSkillInstalledTargetAndPayloadSchema>
+		type IsSkillInstalledEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.IsSkillInstalledEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface IsSkillInstalledResponsePayload {
@@ -1581,6 +1789,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface IsSkillInstalledResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'isSkillInstalledResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1592,12 +1801,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type IsSkillInstalledResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.IsSkillInstalledResponsePayloadSchema>
+		type IsSkillInstalledResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.IsSkillInstalledResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface ListLocationsEmitPayload {
@@ -1608,6 +1817,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface ListLocationsEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'listLocationsEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1619,48 +1829,49 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type ListLocationsEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.ListLocationsEmitPayloadSchema>
+		type ListLocationsEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.ListLocationsEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface ListLocationsTargetAndPayload {
+		interface ListLocationsEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.ListLocationsEmitPayload
+				'target': SpruceSchemas.MercuryApi.v2020_12_25.EventTarget
 				
-				'target': SpruceSchemas.MercuryApi.EventTarget
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.ListLocationsEmitPayload
 		}
 
-		interface ListLocationsTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'listLocationsTargetAndPayload',
+		interface ListLocationsEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'listLocationsEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
 			            /** . */
-			            'payload': {
-			                type: 'schema',
-			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.ListLocationsEmitPayloadSchema,}
-			            },
-			            /** . */
 			            'target': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.EventTargetSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.EventTargetSchema,}
+			            },
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.ListLocationsEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type ListLocationsTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.ListLocationsTargetAndPayloadSchema>
+		type ListLocationsEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.ListLocationsEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface ListLocationsResponsePayload {
@@ -1671,6 +1882,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface ListLocationsResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'listLocationsResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1684,12 +1896,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type ListLocationsResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.ListLocationsResponsePayloadSchema>
+		type ListLocationsResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.ListLocationsResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface ListOrgsEmitPayload {
@@ -1700,6 +1912,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface ListOrgsEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'listOrgsEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1711,22 +1924,23 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type ListOrgsEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.ListOrgsEmitPayloadSchema>
+		type ListOrgsEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.ListOrgsEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface ListOrganizationsTargetAndPayload {
+		interface ListOrganizationsEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.ListOrgsEmitPayload
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.ListOrgsEmitPayload
 		}
 
-		interface ListOrganizationsTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'listOrganizationsTargetAndPayload',
+		interface ListOrganizationsEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'listOrganizationsEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1734,17 +1948,17 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            'payload': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.ListOrgsEmitPayloadSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.ListOrgsEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type ListOrganizationsTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.ListOrganizationsTargetAndPayloadSchema>
+		type ListOrganizationsEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.ListOrganizationsEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface ListOrgsResponsePayload {
@@ -1755,6 +1969,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface ListOrgsResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'listOrgsResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1768,12 +1983,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type ListOrgsResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.ListOrgsResponsePayloadSchema>
+		type ListOrgsResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.ListOrgsResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface ListRolesEmitPayload {
@@ -1784,6 +1999,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface ListRolesEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'listRolesEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1795,48 +2011,49 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type ListRolesEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.ListRolesEmitPayloadSchema>
+		type ListRolesEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.ListRolesEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface ListRolesTargetAndPayload {
+		interface ListRolesEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.ListRolesEmitPayload
+				'target': SpruceSchemas.MercuryApi.v2020_12_25.EventTarget
 				
-				'target': SpruceSchemas.MercuryApi.EventTarget
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.ListRolesEmitPayload
 		}
 
-		interface ListRolesTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'listRolesTargetAndPayload',
+		interface ListRolesEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'listRolesEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
 			            /** . */
-			            'payload': {
-			                type: 'schema',
-			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.ListRolesEmitPayloadSchema,}
-			            },
-			            /** . */
 			            'target': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.EventTargetSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.EventTargetSchema,}
+			            },
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.ListRolesEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type ListRolesTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.ListRolesTargetAndPayloadSchema>
+		type ListRolesEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.ListRolesEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface ListRolesResponsePayload {
@@ -1847,6 +2064,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface ListRolesResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'listRolesResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1860,12 +2078,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type ListRolesResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.ListRolesResponsePayloadSchema>
+		type ListRolesResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.ListRolesResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface LogoutResponsePayload {
@@ -1874,20 +2092,132 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface LogoutResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'logoutResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
 			    }
 		}
 
-		type LogoutResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.LogoutResponsePayloadSchema>
+		type LogoutResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.LogoutResponsePayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
+
+		
+		interface RegisterConversationTopicEmitPayloadTopic {
+			
+				/** Key. A way to identify this topic, must be unique for your skill. */
+				'key': string
+		}
+
+		interface RegisterConversationTopicEmitPayloadTopicSchema extends SpruceSchema.Schema {
+			id: 'registerConversationTopicEmitPayloadTopic',
+			version: 'v2020_12_25',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** Key. A way to identify this topic, must be unique for your skill. */
+			            'key': {
+			                label: 'Key',
+			                type: 'text',
+			                isRequired: true,
+			                hint: 'A way to identify this topic, must be unique for your skill.',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type RegisterConversationTopicEmitPayloadTopicEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.RegisterConversationTopicEmitPayloadTopicSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
+
+		
+		interface RegisterConversationTopicsEmitPayload {
+			
+				
+				'topics': SpruceSchemas.MercuryApi.v2020_12_25.RegisterConversationTopicEmitPayloadTopic[]
+		}
+
+		interface RegisterConversationTopicsEmitPayloadSchema extends SpruceSchema.Schema {
+			id: 'registerConversationTopicsEmitPayload',
+			version: 'v2020_12_25',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'topics': {
+			                type: 'schema',
+			                isRequired: true,
+			                isArray: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.RegisterConversationTopicEmitPayloadTopicSchema,}
+			            },
+			    }
+		}
+
+		type RegisterConversationTopicsEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.RegisterConversationTopicsEmitPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
+
+		
+		interface RegisterConversationTopicsEmitTargetAndPayload {
+			
+				
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.RegisterConversationTopicsEmitPayload
+		}
+
+		interface RegisterConversationTopicsEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'registerConversationTopicsEmitTargetAndPayload',
+			version: 'v2020_12_25',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.RegisterConversationTopicsEmitPayloadSchema,}
+			            },
+			    }
+		}
+
+		type RegisterConversationTopicsEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.RegisterConversationTopicsEmitTargetAndPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
+
+		
+		interface RegisterConversationTopicsResponsePayload {
+			
+		}
+
+		interface RegisterConversationTopicsResponsePayloadSchema extends SpruceSchema.Schema {
+			id: 'registerConversationTopicsResponsePayload',
+			version: 'v2020_12_25',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			    }
+		}
+
+		type RegisterConversationTopicsResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.RegisterConversationTopicsResponsePayloadSchema>
 
 	}
 
 
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface RegisterEventsEmitPayload {
@@ -1898,6 +2228,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface RegisterEventsEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'registerEventsEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1910,22 +2241,23 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type RegisterEventsEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.RegisterEventsEmitPayloadSchema>
+		type RegisterEventsEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.RegisterEventsEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface RegisterEventsTargetAndPayload {
+		interface RegisterEventsEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.RegisterEventsEmitPayload
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.RegisterEventsEmitPayload
 		}
 
-		interface RegisterEventsTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'registerEventsTargetAndPayload',
+		interface RegisterEventsEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'registerEventsEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -1933,17 +2265,17 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            'payload': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.RegisterEventsEmitPayloadSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.RegisterEventsEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type RegisterEventsTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.RegisterEventsTargetAndPayloadSchema>
+		type RegisterEventsEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.RegisterEventsEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface RegisterEventsResponsePayload {
@@ -1952,33 +2284,35 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface RegisterEventsResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'registerEventsResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
 			    }
 		}
 
-		type RegisterEventsResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.RegisterEventsResponsePayloadSchema>
+		type RegisterEventsResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.RegisterEventsResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface RegisterListenersEmitPayload {
 			
 				
-				'eventNamesWithOptionalNamespace': string[]
+				'fullyQualifiedEventNames': string[]
 		}
 
 		interface RegisterListenersEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'registerListenersEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
 			            /** . */
-			            'eventNamesWithOptionalNamespace': {
+			            'fullyQualifiedEventNames': {
 			                type: 'text',
 			                isRequired: true,
 			                isArray: true,
@@ -1987,22 +2321,23 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type RegisterListenersEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.RegisterListenersEmitPayloadSchema>
+		type RegisterListenersEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.RegisterListenersEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface RegisterListenersTargetAndPayload {
+		interface RegisterListenersEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.RegisterListenersEmitPayload
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.RegisterListenersEmitPayload
 		}
 
-		interface RegisterListenersTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'registerListenersTargetAndPayload',
+		interface RegisterListenersEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'registerListenersEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -2010,17 +2345,17 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            'payload': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.RegisterListenersEmitPayloadSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.RegisterListenersEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type RegisterListenersTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.RegisterListenersTargetAndPayloadSchema>
+		type RegisterListenersEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.RegisterListenersEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface RegisterSkillEmitPayload {
@@ -2035,6 +2370,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface RegisterSkillEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'registerSkillEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -2060,22 +2396,23 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type RegisterSkillEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.RegisterSkillEmitPayloadSchema>
+		type RegisterSkillEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.RegisterSkillEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface RegisterSkillTargetAndPayload {
+		interface RegisterSkillEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.RegisterSkillEmitPayload
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.RegisterSkillEmitPayload
 		}
 
-		interface RegisterSkillTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'registerSkillTargetAndPayload',
+		interface RegisterSkillEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'registerSkillEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -2083,17 +2420,17 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            'payload': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.RegisterSkillEmitPayloadSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.RegisterSkillEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type RegisterSkillTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.RegisterSkillTargetAndPayloadSchema>
+		type RegisterSkillEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.RegisterSkillEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface RegisterSkillResponsePayload {
@@ -2104,6 +2441,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface RegisterSkillResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'registerSkillResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -2116,12 +2454,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type RegisterSkillResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.RegisterSkillResponsePayloadSchema>
+		type RegisterSkillResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.RegisterSkillResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface RequestPinEmitPayload {
@@ -2132,6 +2470,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface RequestPinEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'requestPinEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -2144,22 +2483,23 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type RequestPinEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.RequestPinEmitPayloadSchema>
+		type RequestPinEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.RequestPinEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface RequestPinTargetAndPayload {
+		interface RequestPinEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.RequestPinEmitPayload
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.RequestPinEmitPayload
 		}
 
-		interface RequestPinTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'requestPinTargetAndPayload',
+		interface RequestPinEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'requestPinEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -2167,17 +2507,17 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            'payload': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.RequestPinEmitPayloadSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.RequestPinEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type RequestPinTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.RequestPinTargetAndPayloadSchema>
+		type RequestPinEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.RequestPinEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface RequestPinResponsePayload {
@@ -2188,6 +2528,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface RequestPinResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'requestPinResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -2200,12 +2541,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type RequestPinResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.RequestPinResponsePayloadSchema>
+		type RequestPinResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.RequestPinResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface ScrambleAccountResponsePayload {
@@ -2214,186 +2555,19 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface ScrambleAccountResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'scrambleAccountResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
 			    }
 		}
 
-		type ScrambleAccountResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.ScrambleAccountResponsePayloadSchema>
+		type ScrambleAccountResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.ScrambleAccountResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
-
-		
-		interface UnRegisterEventsEmitPayload {
-			
-				
-				'eventNamesWithOptionalNamespace': string[]
-		}
-
-		interface UnRegisterEventsEmitPayloadSchema extends SpruceSchema.Schema {
-			id: 'unRegisterEventsEmitPayload',
-			namespace: 'MercuryApi',
-			name: '',
-			    fields: {
-			            /** . */
-			            'eventNamesWithOptionalNamespace': {
-			                type: 'text',
-			                isRequired: true,
-			                isArray: true,
-			                options: undefined
-			            },
-			    }
-		}
-
-		type UnRegisterEventsEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.UnRegisterEventsEmitPayloadSchema>
-
-	}
-
-
-	namespace SpruceSchemas.MercuryApi {
-
-		
-		interface UnRegisterEventsTargetAndPayload {
-			
-				
-				'payload': SpruceSchemas.MercuryApi.UnRegisterEventsEmitPayload
-		}
-
-		interface UnRegisterEventsTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'unRegisterEventsTargetAndPayload',
-			namespace: 'MercuryApi',
-			name: '',
-			    fields: {
-			            /** . */
-			            'payload': {
-			                type: 'schema',
-			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.UnRegisterEventsEmitPayloadSchema,}
-			            },
-			    }
-		}
-
-		type UnRegisterEventsTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.UnRegisterEventsTargetAndPayloadSchema>
-
-	}
-
-
-	namespace SpruceSchemas.MercuryApi {
-
-		
-		interface UnRegisterEventsResponsePayload {
-			
-		}
-
-		interface UnRegisterEventsResponsePayloadSchema extends SpruceSchema.Schema {
-			id: 'unRegisterEventsResponsePayload',
-			namespace: 'MercuryApi',
-			name: '',
-			    fields: {
-			    }
-		}
-
-		type UnRegisterEventsResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.UnRegisterEventsResponsePayloadSchema>
-
-	}
-
-
-	namespace SpruceSchemas.MercuryApi {
-
-		
-		interface UnRegisterListenersEmitPayload {
-			
-				
-				'eventNamesWithOptionalNamespace'?: string[]| undefined | null
-				
-				'shouldUnRegisterAll'?: boolean| undefined | null
-		}
-
-		interface UnRegisterListenersEmitPayloadSchema extends SpruceSchema.Schema {
-			id: 'unRegisterListenersEmitPayload',
-			namespace: 'MercuryApi',
-			name: '',
-			    fields: {
-			            /** . */
-			            'eventNamesWithOptionalNamespace': {
-			                type: 'text',
-			                isArray: true,
-			                options: undefined
-			            },
-			            /** . */
-			            'shouldUnRegisterAll': {
-			                type: 'boolean',
-			                options: undefined
-			            },
-			    }
-		}
-
-		type UnRegisterListenersEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.UnRegisterListenersEmitPayloadSchema>
-
-	}
-
-
-	namespace SpruceSchemas.MercuryApi {
-
-		
-		interface UnRegisterListenersTargetAndPayload {
-			
-				
-				'payload': SpruceSchemas.MercuryApi.UnRegisterListenersEmitPayload
-		}
-
-		interface UnRegisterListenersTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'unRegisterListenersTargetAndPayload',
-			namespace: 'MercuryApi',
-			name: '',
-			    fields: {
-			            /** . */
-			            'payload': {
-			                type: 'schema',
-			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.UnRegisterListenersEmitPayloadSchema,}
-			            },
-			    }
-		}
-
-		type UnRegisterListenersTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.UnRegisterListenersTargetAndPayloadSchema>
-
-	}
-
-
-	namespace SpruceSchemas.MercuryApi {
-
-		
-		interface UnRegisterListenersResponsePayload {
-			
-				
-				'unRegisterCount': number
-		}
-
-		interface UnRegisterListenersResponsePayloadSchema extends SpruceSchema.Schema {
-			id: 'unRegisterListenersResponsePayload',
-			namespace: 'MercuryApi',
-			name: '',
-			    fields: {
-			            /** . */
-			            'unRegisterCount': {
-			                type: 'number',
-			                isRequired: true,
-			                options: undefined
-			            },
-			    }
-		}
-
-		type UnRegisterListenersResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.UnRegisterListenersResponsePayloadSchema>
-
-	}
-
-
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface UnInstallSkillEmitPayload {
@@ -2404,6 +2578,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface UnInstallSkillEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'unInstallSkillEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -2416,48 +2591,49 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type UnInstallSkillEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.UnInstallSkillEmitPayloadSchema>
+		type UnInstallSkillEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.UnInstallSkillEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface UninstallSkillTargetAndPayload {
+		interface UninstallSkillEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.UnInstallSkillEmitPayload
+				'target': SpruceSchemas.MercuryApi.v2020_12_25.EventTarget
 				
-				'target': SpruceSchemas.MercuryApi.EventTarget
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.UnInstallSkillEmitPayload
 		}
 
-		interface UninstallSkillTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'uninstallSkillTargetAndPayload',
+		interface UninstallSkillEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'uninstallSkillEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
 			            /** . */
-			            'payload': {
-			                type: 'schema',
-			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.UnInstallSkillEmitPayloadSchema,}
-			            },
-			            /** . */
 			            'target': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.EventTargetSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.EventTargetSchema,}
+			            },
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.UnInstallSkillEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type UninstallSkillTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.UninstallSkillTargetAndPayloadSchema>
+		type UninstallSkillEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.UninstallSkillEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface UnInstallSkillResponsePayload {
@@ -2466,18 +2642,199 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface UnInstallSkillResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'unInstallSkillResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
 			    }
 		}
 
-		type UnInstallSkillResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.UnInstallSkillResponsePayloadSchema>
+		type UnInstallSkillResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.UnInstallSkillResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
+
+		
+		interface UnregisterEventsEmitPayload {
+			
+				
+				'eventNames'?: string[]| undefined | null
+				
+				'shouldUnRegisterAll'?: boolean| undefined | null
+		}
+
+		interface UnregisterEventsEmitPayloadSchema extends SpruceSchema.Schema {
+			id: 'unregisterEventsEmitPayload',
+			version: 'v2020_12_25',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'eventNames': {
+			                type: 'text',
+			                isArray: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'shouldUnRegisterAll': {
+			                type: 'boolean',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type UnregisterEventsEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.UnregisterEventsEmitPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
+
+		
+		interface UnregisterEventsEmitTargetAndPayload {
+			
+				
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.UnregisterEventsEmitPayload
+		}
+
+		interface UnregisterEventsEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'unregisterEventsEmitTargetAndPayload',
+			version: 'v2020_12_25',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.UnregisterEventsEmitPayloadSchema,}
+			            },
+			    }
+		}
+
+		type UnregisterEventsEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.UnregisterEventsEmitTargetAndPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
+
+		
+		interface UnregisterEventsResponsePayload {
+			
+		}
+
+		interface UnregisterEventsResponsePayloadSchema extends SpruceSchema.Schema {
+			id: 'unregisterEventsResponsePayload',
+			version: 'v2020_12_25',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			    }
+		}
+
+		type UnregisterEventsResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.UnregisterEventsResponsePayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
+
+		
+		interface UnregisterListenersEmitPayload {
+			
+				
+				'fullyQualifiedEventNames'?: string[]| undefined | null
+				
+				'shouldUnRegisterAll'?: boolean| undefined | null
+		}
+
+		interface UnregisterListenersEmitPayloadSchema extends SpruceSchema.Schema {
+			id: 'unregisterListenersEmitPayload',
+			version: 'v2020_12_25',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'fullyQualifiedEventNames': {
+			                type: 'text',
+			                isArray: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'shouldUnRegisterAll': {
+			                type: 'boolean',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type UnregisterListenersEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.UnregisterListenersEmitPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
+
+		
+		interface UnregisterListenersEmitTargetAndPayload {
+			
+				
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.UnregisterListenersEmitPayload
+		}
+
+		interface UnregisterListenersEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'unregisterListenersEmitTargetAndPayload',
+			version: 'v2020_12_25',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.UnregisterListenersEmitPayloadSchema,}
+			            },
+			    }
+		}
+
+		type UnregisterListenersEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.UnregisterListenersEmitTargetAndPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
+
+		
+		interface UnregisterListenersResponsePayload {
+			
+				
+				'unregisterCount': number
+		}
+
+		interface UnregisterListenersResponsePayloadSchema extends SpruceSchema.Schema {
+			id: 'unregisterListenersResponsePayload',
+			version: 'v2020_12_25',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'unregisterCount': {
+			                type: 'number',
+			                isRequired: true,
+			                options: undefined
+			            },
+			    }
+		}
+
+		type UnregisterListenersResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.UnregisterListenersResponsePayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface UpdateLocationEmitPayload {
@@ -2508,6 +2865,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface UpdateLocationEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'updateLocationEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -2580,48 +2938,49 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type UpdateLocationEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.UpdateLocationEmitPayloadSchema>
+		type UpdateLocationEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.UpdateLocationEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface UpdateLocationTargetAndPayload {
+		interface UpdateLocationEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.UpdateLocationEmitPayload
+				'target': SpruceSchemas.MercuryApi.v2020_12_25.EventTarget
 				
-				'target': SpruceSchemas.MercuryApi.EventTarget
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.UpdateLocationEmitPayload
 		}
 
-		interface UpdateLocationTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'updateLocationTargetAndPayload',
+		interface UpdateLocationEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'updateLocationEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
 			            /** . */
-			            'payload': {
-			                type: 'schema',
-			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.UpdateLocationEmitPayloadSchema,}
-			            },
-			            /** . */
 			            'target': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.EventTargetSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.EventTargetSchema,}
+			            },
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.UpdateLocationEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type UpdateLocationTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.UpdateLocationTargetAndPayloadSchema>
+		type UpdateLocationEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.UpdateLocationEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface UpdateLocationResponsePayload {
@@ -2632,6 +2991,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface UpdateLocationResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'updateLocationResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -2644,12 +3004,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type UpdateLocationResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.UpdateLocationResponsePayloadSchema>
+		type UpdateLocationResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.UpdateLocationResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface UpdateOrgWithoutSlugSchema {
@@ -2664,6 +3024,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface UpdateOrgWithoutSlugSchemaSchema extends SpruceSchema.Schema {
 			id: 'updateOrgWithoutSlugSchema',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -2686,48 +3047,49 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type UpdateOrgWithoutSlugSchemaEntity = SchemaEntity<SpruceSchemas.MercuryApi.UpdateOrgWithoutSlugSchemaSchema>
+		type UpdateOrgWithoutSlugSchemaEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.UpdateOrgWithoutSlugSchemaSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface UpdateOrganizationTargetAndPayload {
+		interface UpdateOrganizationEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.UpdateOrgWithoutSlugSchema
+				'target': SpruceSchemas.MercuryApi.v2020_12_25.EventTarget
 				
-				'target': SpruceSchemas.MercuryApi.EventTarget
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.UpdateOrgWithoutSlugSchema
 		}
 
-		interface UpdateOrganizationTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'updateOrganizationTargetAndPayload',
+		interface UpdateOrganizationEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'updateOrganizationEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
 			            /** . */
-			            'payload': {
-			                type: 'schema',
-			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.UpdateOrgWithoutSlugSchemaSchema,}
-			            },
-			            /** . */
 			            'target': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.EventTargetSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.EventTargetSchema,}
+			            },
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.UpdateOrgWithoutSlugSchemaSchema,}
 			            },
 			    }
 		}
 
-		type UpdateOrganizationTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.UpdateOrganizationTargetAndPayloadSchema>
+		type UpdateOrganizationEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.UpdateOrganizationEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface UpdateOrg {
@@ -2744,6 +3106,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface UpdateOrgSchema extends SpruceSchema.Schema {
 			id: 'updateOrg',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -2772,22 +3135,23 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type UpdateOrgEntity = SchemaEntity<SpruceSchemas.MercuryApi.UpdateOrgSchema>
+		type UpdateOrgEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.UpdateOrgSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface UpdateOrgResponsePayload {
 			
 				
-				'organization': SpruceSchemas.MercuryApi.UpdateOrg
+				'organization': SpruceSchemas.MercuryApi.v2020_12_25.UpdateOrg
 		}
 
 		interface UpdateOrgResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'updateOrgResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -2795,17 +3159,17 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            'organization': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.UpdateOrgSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.UpdateOrgSchema,}
 			            },
 			    }
 		}
 
-		type UpdateOrgResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.UpdateOrgResponsePayloadSchema>
+		type UpdateOrgResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.UpdateOrgResponsePayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface EventTarget {
@@ -2817,11 +3181,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				
 				'organizationId'?: string| undefined | null
 				
-				'skillSlug'?: string| undefined | null
+				'skillId'?: string| undefined | null
 		}
 
 		interface EventTargetSchema extends SpruceSchema.Schema {
 			id: 'eventTarget',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -2841,19 +3206,19 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                options: undefined
 			            },
 			            /** . */
-			            'skillSlug': {
+			            'skillId': {
 			                type: 'id',
 			                options: undefined
 			            },
 			    }
 		}
 
-		type EventTargetEntity = SchemaEntity<SpruceSchemas.MercuryApi.EventTargetSchema>
+		type EventTargetEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.EventTargetSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface UpdateRoleEmitPayload {
@@ -2874,6 +3239,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface UpdateRoleEmitPayloadSchema extends SpruceSchema.Schema {
 			id: 'updateRoleEmitPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -2917,48 +3283,49 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type UpdateRoleEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.UpdateRoleEmitPayloadSchema>
+		type UpdateRoleEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.UpdateRoleEmitPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
-		interface UpdateRoleTargetAndPayload {
+		interface UpdateRoleEmitTargetAndPayload {
 			
 				
-				'payload': SpruceSchemas.MercuryApi.UpdateRoleEmitPayload
+				'target': SpruceSchemas.MercuryApi.v2020_12_25.EventTarget
 				
-				'target': SpruceSchemas.MercuryApi.EventTarget
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.UpdateRoleEmitPayload
 		}
 
-		interface UpdateRoleTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'updateRoleTargetAndPayload',
+		interface UpdateRoleEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'updateRoleEmitTargetAndPayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
 			            /** . */
-			            'payload': {
-			                type: 'schema',
-			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.UpdateRoleEmitPayloadSchema,}
-			            },
-			            /** . */
 			            'target': {
 			                type: 'schema',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.EventTargetSchema,}
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.EventTargetSchema,}
+			            },
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.UpdateRoleEmitPayloadSchema,}
 			            },
 			    }
 		}
 
-		type UpdateRoleTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.UpdateRoleTargetAndPayloadSchema>
+		type UpdateRoleEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.UpdateRoleEmitTargetAndPayloadSchema>
 
 	}
 
 
-	namespace SpruceSchemas.MercuryApi {
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
 
 		
 		interface UpdateRoleResponsePayload {
@@ -2969,6 +3336,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 		interface UpdateRoleResponsePayloadSchema extends SpruceSchema.Schema {
 			id: 'updateRoleResponsePayload',
+			version: 'v2020_12_25',
 			namespace: 'MercuryApi',
 			name: '',
 			    fields: {
@@ -2981,7 +3349,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type UpdateRoleResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.UpdateRoleResponsePayloadSchema>
+		type UpdateRoleResponsePayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.UpdateRoleResponsePayloadSchema>
 
 	}
 
@@ -3029,78 +3397,213 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		/** Options for event.listen. */
-		interface ListenEventAction {
+		/** Keep your errors types in sync with your builders */
+		interface SyncErrorAction {
 			
-				/** Contract destination. Where I will generate event contracts. */
-				'contractDestinationDir'?: string| undefined | null
-				/** Schema types lookup directory. Where I will lookup schema types and interfaces. */
-				'schemaTypesLookupDir'?: string| undefined | null
-				/** Namespace. */
-				'eventNamespace'?: string| undefined | null
-				/** Event name. */
-				'eventName'?: string| undefined | null
-				/** Events destination directory. Where should I add your listeners? */
-				'eventsDestinationDir'?: string| undefined | null
-				/** Version. Set a version yourself instead of letting me generate one for you */
-				'version'?: string| undefined | null
+				/** Field types directory. Where field types and interfaces will be generated. */
+				'fieldTypesDestinationDir'?: string| undefined | null
+				/** Addons lookup directory. Where I'll look for new schema fields to be registered. */
+				'addonsLookupDir'?: string| undefined | null
+				/** Generate field types. Should I generate field types too? */
+				'generateFieldTypes'?: boolean| undefined | null
+				/** Schema types destination directory. Where I will generate schema types and interfaces. */
+				'schemaTypesDestinationDirOrFile'?: string| undefined | null
+				/** . Where I should look for your schema builders? */
+				'schemaLookupDir'?: string| undefined | null
+				/** Enable versioning. Should we use versioning? */
+				'enableVersioning'?: boolean| undefined | null
+				/** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
+				'globalSchemaNamespace'?: string| undefined | null
+				/** Fetch remote schemas. I will pull in schemas from other features. */
+				'fetchRemoteSchemas'?: boolean| undefined | null
+				/** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
+				'fetchLocalSchemas'?: boolean| undefined | null
+				/** Fetch core schemas. Should I pull in core schemas too? */
+				'fetchCoreSchemas'?: boolean| undefined | null
+				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
+				'generateCoreSchemaTypes'?: boolean| undefined | null
+				/** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
+				'registerBuiltSchemas'?: boolean| undefined | null
+				/** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
+				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
+				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
+				'generateStandaloneTypesFile'?: boolean| undefined | null
+				/**  message. */
+				'syncingMessage'?: string| undefined | null
+				/** Error class destination. Where I'll save your new Error class file? */
+				'errorClassDestinationDir': string
+				/** . Where I should look for your error builders? */
+				'errorLookupDir'?: string| undefined | null
+				/** Types destination dir. This is where error options and type information will be written */
+				'errorTypesDestinationDir'?: string| undefined | null
 		}
 
-		interface ListenEventActionSchema extends SpruceSchema.Schema {
-			id: 'listenEventAction',
+		interface SyncErrorActionSchema extends SpruceSchema.Schema {
+			id: 'syncErrorAction',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
-			name: 'Listen to event action',
-			description: 'Options for event.listen.',
+			name: 'Sync error action',
+			description: 'Keep your errors types in sync with your builders',
 			    fields: {
-			            /** Contract destination. Where I will generate event contracts. */
-			            'contractDestinationDir': {
-			                label: 'Contract destination',
+			            /** Field types directory. Where field types and interfaces will be generated. */
+			            'fieldTypesDestinationDir': {
+			                label: 'Field types directory',
 			                type: 'text',
-			                hint: 'Where I will generate event contracts.',
-			                defaultValue: "#spruce/events",
-			                options: undefined
-			            },
-			            /** Schema types lookup directory. Where I will lookup schema types and interfaces. */
-			            'schemaTypesLookupDir': {
-			                label: 'Schema types lookup directory',
-			                type: 'text',
-			                hint: 'Where I will lookup schema types and interfaces.',
+			                isPrivate: true,
+			                hint: 'Where field types and interfaces will be generated.',
 			                defaultValue: "#spruce/schemas",
 			                options: undefined
 			            },
-			            /** Namespace. */
-			            'eventNamespace': {
-			                label: 'Namespace',
+			            /** Addons lookup directory. Where I'll look for new schema fields to be registered. */
+			            'addonsLookupDir': {
+			                label: 'Addons lookup directory',
 			                type: 'text',
+			                hint: 'Where I\'ll look for new schema fields to be registered.',
+			                defaultValue: "src/addons",
 			                options: undefined
 			            },
-			            /** Event name. */
-			            'eventName': {
-			                label: 'Event name',
-			                type: 'text',
+			            /** Generate field types. Should I generate field types too? */
+			            'generateFieldTypes': {
+			                label: 'Generate field types',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Should I generate field types too?',
+			                defaultValue: true,
 			                options: undefined
 			            },
-			            /** Events destination directory. Where should I add your listeners? */
-			            'eventsDestinationDir': {
-			                label: 'Events destination directory',
+			            /** Schema types destination directory. Where I will generate schema types and interfaces. */
+			            'schemaTypesDestinationDirOrFile': {
+			                label: 'Schema types destination directory',
 			                type: 'text',
-			                hint: 'Where should I add your listeners?',
-			                defaultValue: "src/events",
+			                hint: 'Where I will generate schema types and interfaces.',
+			                defaultValue: "#spruce/schemas",
 			                options: undefined
 			            },
-			            /** Version. Set a version yourself instead of letting me generate one for you */
-			            'version': {
-			                label: 'Version',
+			            /** . Where I should look for your schema builders? */
+			            'schemaLookupDir': {
+			                type: 'text',
+			                hint: 'Where I should look for your schema builders?',
+			                defaultValue: "src/schemas",
+			                options: undefined
+			            },
+			            /** Enable versioning. Should we use versioning? */
+			            'enableVersioning': {
+			                label: 'Enable versioning',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Should we use versioning?',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
+			            'globalSchemaNamespace': {
+			                label: 'Global namespace',
 			                type: 'text',
 			                isPrivate: true,
-			                hint: 'Set a version yourself instead of letting me generate one for you',
+			                hint: 'The name you\'ll use when accessing these schemas, e.g. SpruceSchemas',
+			                defaultValue: "SpruceSchemas",
+			                options: undefined
+			            },
+			            /** Fetch remote schemas. I will pull in schemas from other features. */
+			            'fetchRemoteSchemas': {
+			                label: 'Fetch remote schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'I will pull in schemas from other features.',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
+			            'fetchLocalSchemas': {
+			                label: 'Fetch local schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'I will look in schemaLookupDir to load local schemas.',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Fetch core schemas. Should I pull in core schemas too? */
+			            'fetchCoreSchemas': {
+			                label: 'Fetch core schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Should I pull in core schemas too?',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
+			            'generateCoreSchemaTypes': {
+			                label: 'Generate core schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile.',
+			                defaultValue: false,
+			                options: undefined
+			            },
+			            /** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
+			            'registerBuiltSchemas': {
+			                label: 'Register built schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Should the schemas use the SchemaRegistry for tracking?',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
+			            'deleteDestinationDirIfNoSchemas': {
+			                label: 'Delete directory if no schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Should I delete the schema directory if no schemas are found?',
+			                defaultValue: false,
+			                options: undefined
+			            },
+			            /** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
+			            'generateStandaloneTypesFile': {
+			                label: 'Generate standalone types file',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'By default, I\'ll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file.',
+			                defaultValue: false,
+			                options: undefined
+			            },
+			            /**  message. */
+			            'syncingMessage': {
+			                label: ' message',
+			                type: 'text',
+			                isPrivate: true,
+			                defaultValue: "Syncing schemas...",
+			                options: undefined
+			            },
+			            /** Error class destination. Where I'll save your new Error class file? */
+			            'errorClassDestinationDir': {
+			                label: 'Error class destination',
+			                type: 'text',
+			                isPrivate: true,
+			                isRequired: true,
+			                hint: 'Where I\'ll save your new Error class file?',
+			                defaultValue: "src/errors",
+			                options: undefined
+			            },
+			            /** . Where I should look for your error builders? */
+			            'errorLookupDir': {
+			                type: 'text',
+			                hint: 'Where I should look for your error builders?',
+			                defaultValue: "src/errors",
+			                options: undefined
+			            },
+			            /** Types destination dir. This is where error options and type information will be written */
+			            'errorTypesDestinationDir': {
+			                label: 'Types destination dir',
+			                type: 'text',
+			                hint: 'This is where error options and type information will be written',
+			                defaultValue: "#spruce/errors",
 			                options: undefined
 			            },
 			    }
 		}
 
-		type ListenEventActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ListenEventActionSchema>
+		type SyncErrorActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorActionSchema>
 
 	}
 
@@ -3138,6 +3641,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
 				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
 				'generateStandaloneTypesFile'?: boolean| undefined | null
+				/**  message. */
+				'syncingMessage'?: string| undefined | null
 				/** Error class destination. Where I'll save your new Error class file? */
 				'errorClassDestinationDir': string
 				/** . Where I should look for your error builders? */
@@ -3285,6 +3790,14 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: false,
 			                options: undefined
 			            },
+			            /**  message. */
+			            'syncingMessage': {
+			                label: ' message',
+			                type: 'text',
+			                isPrivate: true,
+			                defaultValue: "Syncing schemas...",
+			                options: undefined
+			            },
 			            /** Error class destination. Where I'll save your new Error class file? */
 			            'errorClassDestinationDir': {
 			                label: 'Error class destination',
@@ -3360,6 +3873,188 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
+		/** Options for schema.sync. */
+		interface SyncSchemasAction {
+			
+				/** Field types directory. Where field types and interfaces will be generated. */
+				'fieldTypesDestinationDir'?: string| undefined | null
+				/** Addons lookup directory. Where I'll look for new schema fields to be registered. */
+				'addonsLookupDir'?: string| undefined | null
+				/** Generate field types. Should I generate field types too? */
+				'generateFieldTypes'?: boolean| undefined | null
+				/** Schema types destination directory. Where I will generate schema types and interfaces. */
+				'schemaTypesDestinationDirOrFile'?: string| undefined | null
+				/** . Where I should look for your schema builders? */
+				'schemaLookupDir'?: string| undefined | null
+				/** Enable versioning. Should we use versioning? */
+				'enableVersioning'?: boolean| undefined | null
+				/** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
+				'globalSchemaNamespace'?: string| undefined | null
+				/** Fetch remote schemas. I will pull in schemas from other features. */
+				'fetchRemoteSchemas'?: boolean| undefined | null
+				/** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
+				'fetchLocalSchemas'?: boolean| undefined | null
+				/** Fetch core schemas. Should I pull in core schemas too? */
+				'fetchCoreSchemas'?: boolean| undefined | null
+				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
+				'generateCoreSchemaTypes'?: boolean| undefined | null
+				/** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
+				'registerBuiltSchemas'?: boolean| undefined | null
+				/** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
+				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
+				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
+				'generateStandaloneTypesFile'?: boolean| undefined | null
+				/**  message. */
+				'syncingMessage'?: string| undefined | null
+		}
+
+		interface SyncSchemasActionSchema extends SpruceSchema.Schema {
+			id: 'syncSchemasAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'Sync schemas action',
+			description: 'Options for schema.sync.',
+			    fields: {
+			            /** Field types directory. Where field types and interfaces will be generated. */
+			            'fieldTypesDestinationDir': {
+			                label: 'Field types directory',
+			                type: 'text',
+			                isPrivate: true,
+			                hint: 'Where field types and interfaces will be generated.',
+			                defaultValue: "#spruce/schemas",
+			                options: undefined
+			            },
+			            /** Addons lookup directory. Where I'll look for new schema fields to be registered. */
+			            'addonsLookupDir': {
+			                label: 'Addons lookup directory',
+			                type: 'text',
+			                hint: 'Where I\'ll look for new schema fields to be registered.',
+			                defaultValue: "src/addons",
+			                options: undefined
+			            },
+			            /** Generate field types. Should I generate field types too? */
+			            'generateFieldTypes': {
+			                label: 'Generate field types',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Should I generate field types too?',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Schema types destination directory. Where I will generate schema types and interfaces. */
+			            'schemaTypesDestinationDirOrFile': {
+			                label: 'Schema types destination directory',
+			                type: 'text',
+			                hint: 'Where I will generate schema types and interfaces.',
+			                defaultValue: "#spruce/schemas",
+			                options: undefined
+			            },
+			            /** . Where I should look for your schema builders? */
+			            'schemaLookupDir': {
+			                type: 'text',
+			                hint: 'Where I should look for your schema builders?',
+			                defaultValue: "src/schemas",
+			                options: undefined
+			            },
+			            /** Enable versioning. Should we use versioning? */
+			            'enableVersioning': {
+			                label: 'Enable versioning',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Should we use versioning?',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
+			            'globalSchemaNamespace': {
+			                label: 'Global namespace',
+			                type: 'text',
+			                isPrivate: true,
+			                hint: 'The name you\'ll use when accessing these schemas, e.g. SpruceSchemas',
+			                defaultValue: "SpruceSchemas",
+			                options: undefined
+			            },
+			            /** Fetch remote schemas. I will pull in schemas from other features. */
+			            'fetchRemoteSchemas': {
+			                label: 'Fetch remote schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'I will pull in schemas from other features.',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
+			            'fetchLocalSchemas': {
+			                label: 'Fetch local schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'I will look in schemaLookupDir to load local schemas.',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Fetch core schemas. Should I pull in core schemas too? */
+			            'fetchCoreSchemas': {
+			                label: 'Fetch core schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Should I pull in core schemas too?',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
+			            'generateCoreSchemaTypes': {
+			                label: 'Generate core schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile.',
+			                defaultValue: false,
+			                options: undefined
+			            },
+			            /** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
+			            'registerBuiltSchemas': {
+			                label: 'Register built schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Should the schemas use the SchemaRegistry for tracking?',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
+			            'deleteDestinationDirIfNoSchemas': {
+			                label: 'Delete directory if no schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Should I delete the schema directory if no schemas are found?',
+			                defaultValue: false,
+			                options: undefined
+			            },
+			            /** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
+			            'generateStandaloneTypesFile': {
+			                label: 'Generate standalone types file',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'By default, I\'ll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file.',
+			                defaultValue: false,
+			                options: undefined
+			            },
+			            /**  message. */
+			            'syncingMessage': {
+			                label: ' message',
+			                type: 'text',
+			                isPrivate: true,
+			                defaultValue: "Syncing schemas...",
+			                options: undefined
+			            },
+			    }
+		}
+
+		type SyncSchemasActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
 		/** Create the builder to a fresh new schema! */
 		interface CreateSchemaAction {
 			
@@ -3391,6 +4086,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
 				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
 				'generateStandaloneTypesFile'?: boolean| undefined | null
+				/**  message. */
+				'syncingMessage'?: string| undefined | null
 				/** Schema builder destination directory. Where I'll save the new schema builder. */
 				'schemaBuilderDestinationDir'?: string| undefined | null
 				/** Builder function. The function that builds this schema */
@@ -3538,6 +4235,14 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: false,
 			                options: undefined
 			            },
+			            /**  message. */
+			            'syncingMessage': {
+			                label: ' message',
+			                type: 'text',
+			                isPrivate: true,
+			                defaultValue: "Syncing schemas...",
+			                options: undefined
+			            },
 			            /** Schema builder destination directory. Where I'll save the new schema builder. */
 			            'schemaBuilderDestinationDir': {
 			                label: 'Schema builder destination directory',
@@ -3612,8 +4317,86 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		/** Options for schema.sync. */
-		interface SyncSchemasAction {
+		/** Options for event.listen. */
+		interface ListenEventAction {
+			
+				/** Contract destination. Where I will generate event contracts. */
+				'contractDestinationDir'?: string| undefined | null
+				/** Schema types lookup directory. Where I will lookup schema types and interfaces. */
+				'schemaTypesLookupDir'?: string| undefined | null
+				/** Namespace. */
+				'eventNamespace'?: string| undefined | null
+				/** Event name. */
+				'eventName'?: string| undefined | null
+				/** Events destination directory. Where should I add your listeners? */
+				'listenerDestinationDir'?: string| undefined | null
+				/** Version. Set a version yourself instead of letting me generate one for you */
+				'version'?: string| undefined | null
+		}
+
+		interface ListenEventActionSchema extends SpruceSchema.Schema {
+			id: 'listenEventAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'Listen to event action',
+			description: 'Options for event.listen.',
+			    fields: {
+			            /** Contract destination. Where I will generate event contracts. */
+			            'contractDestinationDir': {
+			                label: 'Contract destination',
+			                type: 'text',
+			                hint: 'Where I will generate event contracts.',
+			                defaultValue: "#spruce/events",
+			                options: undefined
+			            },
+			            /** Schema types lookup directory. Where I will lookup schema types and interfaces. */
+			            'schemaTypesLookupDir': {
+			                label: 'Schema types lookup directory',
+			                type: 'text',
+			                hint: 'Where I will lookup schema types and interfaces.',
+			                defaultValue: "#spruce/schemas",
+			                options: undefined
+			            },
+			            /** Namespace. */
+			            'eventNamespace': {
+			                label: 'Namespace',
+			                type: 'text',
+			                options: undefined
+			            },
+			            /** Event name. */
+			            'eventName': {
+			                label: 'Event name',
+			                type: 'text',
+			                options: undefined
+			            },
+			            /** Events destination directory. Where should I add your listeners? */
+			            'listenerDestinationDir': {
+			                label: 'Events destination directory',
+			                type: 'text',
+			                hint: 'Where should I add your listeners?',
+			                defaultValue: "src/listeners",
+			                options: undefined
+			            },
+			            /** Version. Set a version yourself instead of letting me generate one for you */
+			            'version': {
+			                label: 'Version',
+			                type: 'text',
+			                isPrivate: true,
+			                hint: 'Set a version yourself instead of letting me generate one for you',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type ListenEventActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ListenEventActionSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		/** Sync schema fields so you can use schemas! */
+		interface SyncSchemaFieldsAction {
 			
 				/** Field types directory. Where field types and interfaces will be generated. */
 				'fieldTypesDestinationDir'?: string| undefined | null
@@ -3621,36 +4404,14 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'addonsLookupDir'?: string| undefined | null
 				/** Generate field types. Should I generate field types too? */
 				'generateFieldTypes'?: boolean| undefined | null
-				/** Schema types destination directory. Where I will generate schema types and interfaces. */
-				'schemaTypesDestinationDirOrFile'?: string| undefined | null
-				/** . Where I should look for your schema builders? */
-				'schemaLookupDir'?: string| undefined | null
-				/** Enable versioning. Should we use versioning? */
-				'enableVersioning'?: boolean| undefined | null
-				/** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
-				'globalSchemaNamespace'?: string| undefined | null
-				/** Fetch remote schemas. I will pull in schemas from other features. */
-				'fetchRemoteSchemas'?: boolean| undefined | null
-				/** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
-				'fetchLocalSchemas'?: boolean| undefined | null
-				/** Fetch core schemas. Should I pull in core schemas too? */
-				'fetchCoreSchemas'?: boolean| undefined | null
-				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
-				'generateCoreSchemaTypes'?: boolean| undefined | null
-				/** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
-				'registerBuiltSchemas'?: boolean| undefined | null
-				/** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
-				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
-				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
-				'generateStandaloneTypesFile'?: boolean| undefined | null
 		}
 
-		interface SyncSchemasActionSchema extends SpruceSchema.Schema {
-			id: 'syncSchemasAction',
+		interface SyncSchemaFieldsActionSchema extends SpruceSchema.Schema {
+			id: 'syncSchemaFieldsAction',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
-			name: 'Sync schemas action',
-			description: 'Options for schema.sync.',
+			name: 'syncSchemaFieldsAction',
+			description: 'Sync schema fields so you can use schemas!',
 			    fields: {
 			            /** Field types directory. Where field types and interfaces will be generated. */
 			            'fieldTypesDestinationDir': {
@@ -3678,419 +4439,10 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: true,
 			                options: undefined
 			            },
-			            /** Schema types destination directory. Where I will generate schema types and interfaces. */
-			            'schemaTypesDestinationDirOrFile': {
-			                label: 'Schema types destination directory',
-			                type: 'text',
-			                hint: 'Where I will generate schema types and interfaces.',
-			                defaultValue: "#spruce/schemas",
-			                options: undefined
-			            },
-			            /** . Where I should look for your schema builders? */
-			            'schemaLookupDir': {
-			                type: 'text',
-			                hint: 'Where I should look for your schema builders?',
-			                defaultValue: "src/schemas",
-			                options: undefined
-			            },
-			            /** Enable versioning. Should we use versioning? */
-			            'enableVersioning': {
-			                label: 'Enable versioning',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'Should we use versioning?',
-			                defaultValue: true,
-			                options: undefined
-			            },
-			            /** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
-			            'globalSchemaNamespace': {
-			                label: 'Global namespace',
-			                type: 'text',
-			                isPrivate: true,
-			                hint: 'The name you\'ll use when accessing these schemas, e.g. SpruceSchemas',
-			                defaultValue: "SpruceSchemas",
-			                options: undefined
-			            },
-			            /** Fetch remote schemas. I will pull in schemas from other features. */
-			            'fetchRemoteSchemas': {
-			                label: 'Fetch remote schemas',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'I will pull in schemas from other features.',
-			                defaultValue: true,
-			                options: undefined
-			            },
-			            /** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
-			            'fetchLocalSchemas': {
-			                label: 'Fetch local schemas',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'I will look in schemaLookupDir to load local schemas.',
-			                defaultValue: true,
-			                options: undefined
-			            },
-			            /** Fetch core schemas. Should I pull in core schemas too? */
-			            'fetchCoreSchemas': {
-			                label: 'Fetch core schemas',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'Should I pull in core schemas too?',
-			                defaultValue: true,
-			                options: undefined
-			            },
-			            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
-			            'generateCoreSchemaTypes': {
-			                label: 'Generate core schemas',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile.',
-			                defaultValue: false,
-			                options: undefined
-			            },
-			            /** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
-			            'registerBuiltSchemas': {
-			                label: 'Register built schemas',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'Should the schemas use the SchemaRegistry for tracking?',
-			                defaultValue: true,
-			                options: undefined
-			            },
-			            /** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
-			            'deleteDestinationDirIfNoSchemas': {
-			                label: 'Delete directory if no schemas',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'Should I delete the schema directory if no schemas are found?',
-			                defaultValue: false,
-			                options: undefined
-			            },
-			            /** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
-			            'generateStandaloneTypesFile': {
-			                label: 'Generate standalone types file',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'By default, I\'ll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file.',
-			                defaultValue: false,
-			                options: undefined
-			            },
 			    }
 		}
 
-		type SyncSchemasActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
-		/** Keep your errors types in sync with your builders */
-		interface SyncErrorAction {
-			
-				/** Field types directory. Where field types and interfaces will be generated. */
-				'fieldTypesDestinationDir'?: string| undefined | null
-				/** Addons lookup directory. Where I'll look for new schema fields to be registered. */
-				'addonsLookupDir'?: string| undefined | null
-				/** Generate field types. Should I generate field types too? */
-				'generateFieldTypes'?: boolean| undefined | null
-				/** Schema types destination directory. Where I will generate schema types and interfaces. */
-				'schemaTypesDestinationDirOrFile'?: string| undefined | null
-				/** . Where I should look for your schema builders? */
-				'schemaLookupDir'?: string| undefined | null
-				/** Enable versioning. Should we use versioning? */
-				'enableVersioning'?: boolean| undefined | null
-				/** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
-				'globalSchemaNamespace'?: string| undefined | null
-				/** Fetch remote schemas. I will pull in schemas from other features. */
-				'fetchRemoteSchemas'?: boolean| undefined | null
-				/** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
-				'fetchLocalSchemas'?: boolean| undefined | null
-				/** Fetch core schemas. Should I pull in core schemas too? */
-				'fetchCoreSchemas'?: boolean| undefined | null
-				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
-				'generateCoreSchemaTypes'?: boolean| undefined | null
-				/** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
-				'registerBuiltSchemas'?: boolean| undefined | null
-				/** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
-				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
-				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
-				'generateStandaloneTypesFile'?: boolean| undefined | null
-				/** Error class destination. Where I'll save your new Error class file? */
-				'errorClassDestinationDir': string
-				/** . Where I should look for your error builders? */
-				'errorLookupDir'?: string| undefined | null
-				/** Types destination dir. This is where error options and type information will be written */
-				'errorTypesDestinationDir'?: string| undefined | null
-		}
-
-		interface SyncErrorActionSchema extends SpruceSchema.Schema {
-			id: 'syncErrorAction',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'Sync error action',
-			description: 'Keep your errors types in sync with your builders',
-			    fields: {
-			            /** Field types directory. Where field types and interfaces will be generated. */
-			            'fieldTypesDestinationDir': {
-			                label: 'Field types directory',
-			                type: 'text',
-			                isPrivate: true,
-			                hint: 'Where field types and interfaces will be generated.',
-			                defaultValue: "#spruce/schemas",
-			                options: undefined
-			            },
-			            /** Addons lookup directory. Where I'll look for new schema fields to be registered. */
-			            'addonsLookupDir': {
-			                label: 'Addons lookup directory',
-			                type: 'text',
-			                hint: 'Where I\'ll look for new schema fields to be registered.',
-			                defaultValue: "src/addons",
-			                options: undefined
-			            },
-			            /** Generate field types. Should I generate field types too? */
-			            'generateFieldTypes': {
-			                label: 'Generate field types',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'Should I generate field types too?',
-			                defaultValue: true,
-			                options: undefined
-			            },
-			            /** Schema types destination directory. Where I will generate schema types and interfaces. */
-			            'schemaTypesDestinationDirOrFile': {
-			                label: 'Schema types destination directory',
-			                type: 'text',
-			                hint: 'Where I will generate schema types and interfaces.',
-			                defaultValue: "#spruce/schemas",
-			                options: undefined
-			            },
-			            /** . Where I should look for your schema builders? */
-			            'schemaLookupDir': {
-			                type: 'text',
-			                hint: 'Where I should look for your schema builders?',
-			                defaultValue: "src/schemas",
-			                options: undefined
-			            },
-			            /** Enable versioning. Should we use versioning? */
-			            'enableVersioning': {
-			                label: 'Enable versioning',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'Should we use versioning?',
-			                defaultValue: true,
-			                options: undefined
-			            },
-			            /** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
-			            'globalSchemaNamespace': {
-			                label: 'Global namespace',
-			                type: 'text',
-			                isPrivate: true,
-			                hint: 'The name you\'ll use when accessing these schemas, e.g. SpruceSchemas',
-			                defaultValue: "SpruceSchemas",
-			                options: undefined
-			            },
-			            /** Fetch remote schemas. I will pull in schemas from other features. */
-			            'fetchRemoteSchemas': {
-			                label: 'Fetch remote schemas',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'I will pull in schemas from other features.',
-			                defaultValue: true,
-			                options: undefined
-			            },
-			            /** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
-			            'fetchLocalSchemas': {
-			                label: 'Fetch local schemas',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'I will look in schemaLookupDir to load local schemas.',
-			                defaultValue: true,
-			                options: undefined
-			            },
-			            /** Fetch core schemas. Should I pull in core schemas too? */
-			            'fetchCoreSchemas': {
-			                label: 'Fetch core schemas',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'Should I pull in core schemas too?',
-			                defaultValue: true,
-			                options: undefined
-			            },
-			            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
-			            'generateCoreSchemaTypes': {
-			                label: 'Generate core schemas',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile.',
-			                defaultValue: false,
-			                options: undefined
-			            },
-			            /** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
-			            'registerBuiltSchemas': {
-			                label: 'Register built schemas',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'Should the schemas use the SchemaRegistry for tracking?',
-			                defaultValue: true,
-			                options: undefined
-			            },
-			            /** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
-			            'deleteDestinationDirIfNoSchemas': {
-			                label: 'Delete directory if no schemas',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'Should I delete the schema directory if no schemas are found?',
-			                defaultValue: false,
-			                options: undefined
-			            },
-			            /** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
-			            'generateStandaloneTypesFile': {
-			                label: 'Generate standalone types file',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'By default, I\'ll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file.',
-			                defaultValue: false,
-			                options: undefined
-			            },
-			            /** Error class destination. Where I'll save your new Error class file? */
-			            'errorClassDestinationDir': {
-			                label: 'Error class destination',
-			                type: 'text',
-			                isPrivate: true,
-			                isRequired: true,
-			                hint: 'Where I\'ll save your new Error class file?',
-			                defaultValue: "src/errors",
-			                options: undefined
-			            },
-			            /** . Where I should look for your error builders? */
-			            'errorLookupDir': {
-			                type: 'text',
-			                hint: 'Where I should look for your error builders?',
-			                defaultValue: "src/errors",
-			                options: undefined
-			            },
-			            /** Types destination dir. This is where error options and type information will be written */
-			            'errorTypesDestinationDir': {
-			                label: 'Types destination dir',
-			                type: 'text',
-			                hint: 'This is where error options and type information will be written',
-			                defaultValue: "#spruce/errors",
-			                options: undefined
-			            },
-			    }
-		}
-
-		type SyncErrorActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorActionSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
-		/** Options for creating a new test. */
-		interface CreateTestAction {
-			
-				/** Type of test. */
-				'type': ("behavioral" | "implementation")
-				/** What are you testing?. E.g. Booking an appointment or turning on a light */
-				'nameReadable': string
-				/** Test destination directory. Where I'll save your new test. */
-				'testDestinationDir'?: string| undefined | null
-				/** Camel case name. camelCase version of the name */
-				'nameCamel': string
-				/** Pascal case name. PascalCase of the name */
-				'namePascal'?: string| undefined | null
-		}
-
-		interface CreateTestActionSchema extends SpruceSchema.Schema {
-			id: 'createTestAction',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'Create test action',
-			description: 'Options for creating a new test.',
-			    fields: {
-			            /** Type of test. */
-			            'type': {
-			                label: 'Type of test',
-			                type: 'select',
-			                isRequired: true,
-			                options: {choices: [{"value":"behavioral","label":"Behavioral"},{"value":"implementation","label":"Implementation"}],}
-			            },
-			            /** What are you testing?. E.g. Booking an appointment or turning on a light */
-			            'nameReadable': {
-			                label: 'What are you testing?',
-			                type: 'text',
-			                isRequired: true,
-			                hint: 'E.g. Booking an appointment or turning on a light',
-			                options: undefined
-			            },
-			            /** Test destination directory. Where I'll save your new test. */
-			            'testDestinationDir': {
-			                label: 'Test destination directory',
-			                type: 'text',
-			                hint: 'Where I\'ll save your new test.',
-			                defaultValue: "src/__tests__",
-			                options: undefined
-			            },
-			            /** Camel case name. camelCase version of the name */
-			            'nameCamel': {
-			                label: 'Camel case name',
-			                type: 'text',
-			                isRequired: true,
-			                hint: 'camelCase version of the name',
-			                options: undefined
-			            },
-			            /** Pascal case name. PascalCase of the name */
-			            'namePascal': {
-			                label: 'Pascal case name',
-			                type: 'text',
-			                hint: 'PascalCase of the name',
-			                options: undefined
-			            },
-			    }
-		}
-
-		type CreateTestActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateTestActionSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
-		
-		interface CreateOrganizationAction {
-			
-				/** Name. The name people will read */
-				'nameReadable': string
-				/** Slug. kebab-case of the name */
-				'nameKebab'?: string| undefined | null
-		}
-
-		interface CreateOrganizationActionSchema extends SpruceSchema.Schema {
-			id: 'createOrganizationAction',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'create organization action',
-			    fields: {
-			            /** Name. The name people will read */
-			            'nameReadable': {
-			                label: 'Name',
-			                type: 'text',
-			                isRequired: true,
-			                hint: 'The name people will read',
-			                options: undefined
-			            },
-			            /** Slug. kebab-case of the name */
-			            'nameKebab': {
-			                label: 'Slug',
-			                type: 'text',
-			                hint: 'kebab-case of the name',
-			                options: undefined
-			            },
-			    }
-		}
-
-		type CreateOrganizationActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateOrganizationActionSchema>
+		type SyncSchemaFieldsActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemaFieldsActionSchema>
 
 	}
 
@@ -4231,85 +4583,39 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		/** Options skill.upgrade. */
-		interface UpgradeSkillAction {
+		/** Track onboarding progress and tutorials &amp; quizzes completed. */
+		interface Onboarding {
 			
-				/** Force. This will force overwrite each file */
-				'force'?: boolean| undefined | null
+				/** mode. */
+				'mode': ("short" | "immersive" | "off")
+				/** Stage. */
+				'stage'?: ("test.create")| undefined | null
 		}
 
-		interface UpgradeSkillActionSchema extends SpruceSchema.Schema {
-			id: 'upgradeSkillAction',
+		interface OnboardingSchema extends SpruceSchema.Schema {
+			id: 'onboarding',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
-			name: 'Upgrade skill action',
-			description: 'Options skill.upgrade.',
+			name: 'Onboarding',
+			description: 'Track onboarding progress and tutorials & quizzes completed.',
 			    fields: {
-			            /** Force. This will force overwrite each file */
-			            'force': {
-			                label: 'Force',
-			                type: 'boolean',
-			                hint: 'This will force overwrite each file',
-			                options: undefined
+			            /** mode. */
+			            'mode': {
+			                label: 'mode',
+			                type: 'select',
+			                isRequired: true,
+			                options: {choices: [{"label":"Short","value":"short"},{"label":"Immersive","value":"immersive"},{"label":"Off","value":"off"}],}
+			            },
+			            /** Stage. */
+			            'stage': {
+			                label: 'Stage',
+			                type: 'select',
+			                options: {choices: [{"label":"Create test","value":"test.create"}],}
 			            },
 			    }
 		}
 
-		type UpgradeSkillActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillActionSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
-		/** Sync schema fields so you can use schemas! */
-		interface SyncSchemaFieldsAction {
-			
-				/** Field types directory. Where field types and interfaces will be generated. */
-				'fieldTypesDestinationDir'?: string| undefined | null
-				/** Addons lookup directory. Where I'll look for new schema fields to be registered. */
-				'addonsLookupDir'?: string| undefined | null
-				/** Generate field types. Should I generate field types too? */
-				'generateFieldTypes'?: boolean| undefined | null
-		}
-
-		interface SyncSchemaFieldsActionSchema extends SpruceSchema.Schema {
-			id: 'syncSchemaFieldsAction',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'syncSchemaFieldsAction',
-			description: 'Sync schema fields so you can use schemas!',
-			    fields: {
-			            /** Field types directory. Where field types and interfaces will be generated. */
-			            'fieldTypesDestinationDir': {
-			                label: 'Field types directory',
-			                type: 'text',
-			                isPrivate: true,
-			                hint: 'Where field types and interfaces will be generated.',
-			                defaultValue: "#spruce/schemas",
-			                options: undefined
-			            },
-			            /** Addons lookup directory. Where I'll look for new schema fields to be registered. */
-			            'addonsLookupDir': {
-			                label: 'Addons lookup directory',
-			                type: 'text',
-			                hint: 'Where I\'ll look for new schema fields to be registered.',
-			                defaultValue: "src/addons",
-			                options: undefined
-			            },
-			            /** Generate field types. Should I generate field types too? */
-			            'generateFieldTypes': {
-			                label: 'Generate field types',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'Should I generate field types too?',
-			                defaultValue: true,
-			                options: undefined
-			            },
-			    }
-		}
-
-		type SyncSchemaFieldsActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemaFieldsActionSchema>
+		type OnboardingEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.OnboardingSchema>
 
 	}
 
@@ -4355,58 +4661,108 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		/** Install vscode extensions, launch configs, and settings the Spruce team uses in-house! */
-		interface SetupVscodeAction {
+		
+		interface TestOptions {
 			
-				/** Install everything. */
-				'all'?: boolean| undefined | null
+				/** Report while running. Should I output the test results while they are running? */
+				'shouldReportWhileRunning'?: boolean| undefined | null
+				/** Pattern. I'll filter all tests that match this pattern */
+				'pattern'?: string| undefined | null
+				/** Inspect. Pass --inspect related args to test process. */
+				'inspect'?: number| undefined | null
+				/** Should wait for manual start?. */
+				'shouldHoldAtStart'?: boolean| undefined | null
+				/** Wait until tests are finished. For testing. Returns immediately after executing test so the running process can be managed programatically. */
+				'shouldWaitUntilTestsAreFinished'?: boolean| undefined | null
+				/** Watch. */
+				'watchMode'?: ("off" | "standard" | "smart")| undefined | null
 		}
 
-		interface SetupVscodeActionSchema extends SpruceSchema.Schema {
-			id: 'setupVscodeAction',
+		interface TestOptionsSchema extends SpruceSchema.Schema {
+			id: 'testOptions',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
-			name: 'Setup vscode action',
-			description: 'Install vscode extensions, launch configs, and settings the Spruce team uses in-house!',
+			name: 'Test skill',
 			    fields: {
-			            /** Install everything. */
-			            'all': {
-			                label: 'Install everything',
+			            /** Report while running. Should I output the test results while they are running? */
+			            'shouldReportWhileRunning': {
+			                label: 'Report while running',
 			                type: 'boolean',
+			                hint: 'Should I output the test results while they are running?',
+			                defaultValue: true,
 			                options: undefined
+			            },
+			            /** Pattern. I'll filter all tests that match this pattern */
+			            'pattern': {
+			                label: 'Pattern',
+			                type: 'text',
+			                hint: 'I\'ll filter all tests that match this pattern',
+			                options: undefined
+			            },
+			            /** Inspect. Pass --inspect related args to test process. */
+			            'inspect': {
+			                label: 'Inspect',
+			                type: 'number',
+			                hint: 'Pass --inspect related args to test process.',
+			                options: undefined
+			            },
+			            /** Should wait for manual start?. */
+			            'shouldHoldAtStart': {
+			                label: 'Should wait for manual start?',
+			                type: 'boolean',
+			                defaultValue: false,
+			                options: undefined
+			            },
+			            /** Wait until tests are finished. For testing. Returns immediately after executing test so the running process can be managed programatically. */
+			            'shouldWaitUntilTestsAreFinished': {
+			                label: 'Wait until tests are finished',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'For testing. Returns immediately after executing test so the running process can be managed programatically.',
+			                defaultValue: true,
+			                options: undefined
+			            },
+			            /** Watch. */
+			            'watchMode': {
+			                label: 'Watch',
+			                type: 'select',
+			                options: {choices: [{"value":"off","label":"Off"},{"value":"standard","label":"Standard"},{"value":"smart","label":"Smart"}],}
 			            },
 			    }
 		}
 
-		type SetupVscodeActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeActionSchema>
+		type TestOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.TestOptionsSchema>
 
 	}
 
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		
-		interface RegisterDashboardWidgetsEmitPayloadSchema {
+		/** Options skill.upgrade. */
+		interface UpgradeSkillAction {
 			
-				
-				'widgets'?: (BaseWidget)| undefined | null
+				/** Upgrade mode. */
+				'upgradeMode'?: ("askEverything" | "forceEverything" | "forceRequiredSkipRest")| undefined | null
 		}
 
-		interface RegisterDashboardWidgetsEmitPayloadSchemaSchema extends SpruceSchema.Schema {
-			id: 'registerDashboardWidgetsEmitPayloadSchema',
+		interface UpgradeSkillActionSchema extends SpruceSchema.Schema {
+			id: 'upgradeSkillAction',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
-			name: 'register dashboard widgets emit payload schema',
+			name: 'Upgrade skill action',
+			description: 'Options skill.upgrade.',
 			    fields: {
-			            /** . */
-			            'widgets': {
-			                type: 'raw',
-			                options: {valueType: `BaseWidget`,}
+			            /** Upgrade mode. */
+			            'upgradeMode': {
+			                label: 'Upgrade mode',
+			                type: 'select',
+			                defaultValue: "forceRequiredSkipRest",
+			                options: {choices: [{"value":"askEverything","label":"Ask for everything"},{"value":"forceEverything","label":"Force everything"},{"value":"forceRequiredSkipRest","label":"Force required (skipping all non-essential)"}],}
 			            },
 			    }
 		}
 
-		type RegisterDashboardWidgetsEmitPayloadSchemaEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.RegisterDashboardWidgetsEmitPayloadSchemaSchema>
+		type UpgradeSkillActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillActionSchema>
 
 	}
 
@@ -4470,39 +4826,28 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		/** Track onboarding progress and tutorials &amp; quizzes completed. */
-		interface Onboarding {
+		
+		interface RegisterDashboardWidgetsEmitPayloadSchema {
 			
-				/** mode. */
-				'mode': ("short" | "immersive" | "off")
-				/** Stage. */
-				'stage'?: ("test.create")| undefined | null
+				
+				'widgets'?: (BaseWidget)| undefined | null
 		}
 
-		interface OnboardingSchema extends SpruceSchema.Schema {
-			id: 'onboarding',
+		interface RegisterDashboardWidgetsEmitPayloadSchemaSchema extends SpruceSchema.Schema {
+			id: 'registerDashboardWidgetsEmitPayloadSchema',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
-			name: 'Onboarding',
-			description: 'Track onboarding progress and tutorials & quizzes completed.',
+			name: 'register dashboard widgets emit payload schema',
 			    fields: {
-			            /** mode. */
-			            'mode': {
-			                label: 'mode',
-			                type: 'select',
-			                isRequired: true,
-			                options: {choices: [{"label":"Short","value":"short"},{"label":"Immersive","value":"immersive"},{"label":"Off","value":"off"}],}
-			            },
-			            /** Stage. */
-			            'stage': {
-			                label: 'Stage',
-			                type: 'select',
-			                options: {choices: [{"label":"Create test","value":"test.create"}],}
+			            /** . */
+			            'widgets': {
+			                type: 'raw',
+			                options: {valueType: `BaseWidget`,}
 			            },
 			    }
 		}
 
-		type OnboardingEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.OnboardingSchema>
+		type RegisterDashboardWidgetsEmitPayloadSchemaEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.RegisterDashboardWidgetsEmitPayloadSchemaSchema>
 
 	}
 
@@ -4626,6 +4971,106 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
+		/** Options for creating a new test. */
+		interface CreateTestAction {
+			
+				/** Type of test. */
+				'type': ("behavioral" | "implementation")
+				/** What are you testing?. E.g. Booking an appointment or turning on a light */
+				'nameReadable': string
+				/** Test destination directory. Where I'll save your new test. */
+				'testDestinationDir'?: string| undefined | null
+				/** Camel case name. camelCase version of the name */
+				'nameCamel': string
+				/** Pascal case name. PascalCase of the name */
+				'namePascal'?: string| undefined | null
+		}
+
+		interface CreateTestActionSchema extends SpruceSchema.Schema {
+			id: 'createTestAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'Create test action',
+			description: 'Options for creating a new test.',
+			    fields: {
+			            /** Type of test. */
+			            'type': {
+			                label: 'Type of test',
+			                type: 'select',
+			                isRequired: true,
+			                options: {choices: [{"value":"behavioral","label":"Behavioral"},{"value":"implementation","label":"Implementation"}],}
+			            },
+			            /** What are you testing?. E.g. Booking an appointment or turning on a light */
+			            'nameReadable': {
+			                label: 'What are you testing?',
+			                type: 'text',
+			                isRequired: true,
+			                hint: 'E.g. Booking an appointment or turning on a light',
+			                options: undefined
+			            },
+			            /** Test destination directory. Where I'll save your new test. */
+			            'testDestinationDir': {
+			                label: 'Test destination directory',
+			                type: 'text',
+			                hint: 'Where I\'ll save your new test.',
+			                defaultValue: "src/__tests__",
+			                options: undefined
+			            },
+			            /** Camel case name. camelCase version of the name */
+			            'nameCamel': {
+			                label: 'Camel case name',
+			                type: 'text',
+			                isRequired: true,
+			                hint: 'camelCase version of the name',
+			                options: undefined
+			            },
+			            /** Pascal case name. PascalCase of the name */
+			            'namePascal': {
+			                label: 'Pascal case name',
+			                type: 'text',
+			                hint: 'PascalCase of the name',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type CreateTestActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateTestActionSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		/** Install vscode extensions, launch configs, and settings the Spruce team uses in-house! */
+		interface SetupVscodeAction {
+			
+				/** Install everything. */
+				'all'?: boolean| undefined | null
+		}
+
+		interface SetupVscodeActionSchema extends SpruceSchema.Schema {
+			id: 'setupVscodeAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'Setup vscode action',
+			description: 'Install vscode extensions, launch configs, and settings the Spruce team uses in-house!',
+			    fields: {
+			            /** Install everything. */
+			            'all': {
+			                label: 'Install everything',
+			                type: 'boolean',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type SetupVscodeActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeActionSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
 		
 		interface InstallSkillAtOrganizationAction {
 			
@@ -4649,6 +5094,67 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		}
 
 		type InstallSkillAtOrganizationActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizationActionSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		
+		interface CreateOrganizationAction {
+			
+				/** Name. The name people will read */
+				'nameReadable': string
+				/** Slug. kebab-case of the name */
+				'nameKebab'?: string| undefined | null
+		}
+
+		interface CreateOrganizationActionSchema extends SpruceSchema.Schema {
+			id: 'createOrganizationAction',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'create organization action',
+			    fields: {
+			            /** Name. The name people will read */
+			            'nameReadable': {
+			                label: 'Name',
+			                type: 'text',
+			                isRequired: true,
+			                hint: 'The name people will read',
+			                options: undefined
+			            },
+			            /** Slug. kebab-case of the name */
+			            'nameKebab': {
+			                label: 'Slug',
+			                type: 'text',
+			                hint: 'kebab-case of the name',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type CreateOrganizationActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateOrganizationActionSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		
+		interface CreateConversationTopicOptions {
+			
+		}
+
+		interface CreateConversationTopicOptionsSchema extends SpruceSchema.Schema {
+			id: 'createConversationTopicOptions',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'Create conversation topic options',
+			    fields: {
+			    }
+		}
+
+		type CreateConversationTopicOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateConversationTopicOptionsSchema>
 
 	}
 
@@ -4682,6 +5188,16 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		type BootSkillActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.BootSkillActionSchema>
 
 	}
+
+
+
+
+
+
+
+
+
+
 
 
 

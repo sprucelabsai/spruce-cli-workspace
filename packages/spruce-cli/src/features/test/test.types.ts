@@ -23,3 +23,5 @@ export interface SpruceTestResults {
 	totalTestFilesComplete?: number
 	testFiles?: SpruceTestFile[]
 }
+
+export type TestRunnerStatus = 'running' | 'stopped' | 'ready'

@@ -28,17 +28,20 @@ export default abstract class TkBaseWidget<Contract extends EventContract = any>
 	private children: BaseWidget[] = []
 	protected shouldLockWidthToParent = false
 	protected shouldLockHeightToParent = false
+	protected shouldLockRightToParent = false
 	protected padding: WidgetPadding = {}
 	private frameLockDeltas: {
 		leftDelta: number
 		widthDelta: number
 		topDelta: number
 		heightDelta: number
+		rightDelta: number
 	} = {
 		leftDelta: 0,
 		widthDelta: 0,
 		topDelta: 0,
 		heightDelta: 0,
+		rightDelta: 0,
 	}
 
 	public constructor(options: TkWidgetOptions) {
@@ -49,6 +52,8 @@ export default abstract class TkBaseWidget<Contract extends EventContract = any>
 		this.id = options.id ?? null
 		this.shouldLockHeightToParent = options.shouldLockHeightWithParent ?? false
 		this.shouldLockWidthToParent = options.shouldLockWidthWithParent ?? false
+		this.shouldLockRightToParent = options.shouldLockRightWithParent ?? false
+
 		this.padding = {
 			left: 0,
 			top: 0,
@@ -159,6 +164,12 @@ export default abstract class TkBaseWidget<Contract extends EventContract = any>
 			updatedFrame.width = parentFrame.width - this.frameLockDeltas.widthDelta
 		}
 
+		if (this.shouldLockRightToParent) {
+			shouldSetFrame = true
+			updatedFrame.left =
+				parentFrame.width - this.frameLockDeltas.rightDelta - updatedFrame.width
+		}
+
 		if (shouldSetFrame) {
 			this.setFrame(updatedFrame)
 		}
@@ -185,6 +196,7 @@ export default abstract class TkBaseWidget<Contract extends EventContract = any>
 		let widthDelta = 0
 		let topDelta = 0
 		let heightDelta = 0
+		let rightDelta = 0
 
 		if (this.shouldLockWidthToParent) {
 			leftDelta = frame.left
@@ -196,11 +208,16 @@ export default abstract class TkBaseWidget<Contract extends EventContract = any>
 			heightDelta = parentFrame.height - frame.height
 		}
 
+		if (this.shouldLockRightToParent) {
+			rightDelta = frame.left + frame.width - parentFrame.width
+		}
+
 		this.frameLockDeltas = {
 			leftDelta,
 			widthDelta,
 			topDelta,
 			heightDelta,
+			rightDelta,
 		}
 	}
 }

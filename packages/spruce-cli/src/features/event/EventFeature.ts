@@ -1,12 +1,13 @@
 import { Schema } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventAction.schema'
+import { FileDescription } from '../../types/cli.types'
 import AbstractFeature, {
 	FeatureDependency,
 	FeatureOptions,
 } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
-import EventContractUnifiedGenerator from './EventContractUnifiedGenerator'
+import EventContractWriter from './writers/EventContractWriter'
 
 export default class EventFeature extends AbstractFeature {
 	public code: FeatureCode = 'event'
@@ -27,7 +28,11 @@ export default class EventFeature extends AbstractFeature {
 			name: '@sprucelabs/spruce-event-utils',
 		},
 	]
+
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+
+	public readonly fileDescriptions: FileDescription[] = []
+	private contractWriter?: EventContractWriter
 
 	public constructor(options: FeatureOptions) {
 		super(options)
@@ -47,9 +52,9 @@ export default class EventFeature extends AbstractFeature {
 		const isInstalled = await this.featureInstaller.isInstalled(this.code)
 
 		if (isInstalled) {
-			const generator = this.UnifiedGenerator()
+			const writer = this.EventContractWriter()
 
-			const uniqueSchemas = await generator.getUniqueSchemasFromContracts(
+			const uniqueSchemas = await writer.fetchContractsAndGenerateUniqueSchemas(
 				payload.schemas ?? []
 			)
 
@@ -63,13 +68,18 @@ export default class EventFeature extends AbstractFeature {
 		}
 	}
 
-	public UnifiedGenerator() {
-		return new EventContractUnifiedGenerator({
-			cwd: this.cwd,
-			optionsSchema: syncEventActionSchema,
-			ui: this.ui,
-			eventGenerator: this.Generator('event'),
-			eventStore: this.Store('event'),
-		})
+	public EventContractWriter() {
+		if (!this.contractWriter) {
+			this.contractWriter = new EventContractWriter({
+				cwd: this.cwd,
+				optionsSchema: syncEventActionSchema,
+				ui: this.ui,
+				eventGenerator: this.Writer('event'),
+				eventStore: this.Store('event'),
+				skillStore: this.Store('skill'),
+			})
+		}
+
+		return this.contractWriter
 	}
 }

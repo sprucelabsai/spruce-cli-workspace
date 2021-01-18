@@ -8,7 +8,7 @@ import { FeatureActionResponse } from '../../features.types'
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizationActionSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizationAction
 export default class InstallAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'install'
+	public code = 'install'
 	public commandAliases = ['install.skill']
 	public optionsSchema: OptionsSchema = installSkillAtOrganizationActionSchema
 
@@ -31,7 +31,6 @@ export default class InstallAction extends AbstractFeatureAction<OptionsSchema> 
 					})
 				}
 
-				let organizationId: string | undefined
 				if (orgs.length === 1) {
 					const confirm = await this.ui.confirm(
 						`You ready to install your skill at ${orgs[0].name}?`
@@ -57,24 +56,20 @@ export default class InstallAction extends AbstractFeatureAction<OptionsSchema> 
 						},
 					})
 				}
+			}
 
-				await this.Store('organization').installSkillAtOrganization(
-					skill.id,
-					organizationId
-				)
+			await this.Store('organization').installSkillAtOrganization(
+				skill.id,
+				organizationId
+			)
 
-				return {
-					summaryLines: ['Skill installed!'],
-				}
+			return {
+				summaryLines: ['Skill installed!'],
 			}
 		} catch (err) {
 			return {
 				errors: [err],
 			}
 		}
-
-		// const confirm = await this.ui.confirm('')
-
-		return {}
 	}
 }

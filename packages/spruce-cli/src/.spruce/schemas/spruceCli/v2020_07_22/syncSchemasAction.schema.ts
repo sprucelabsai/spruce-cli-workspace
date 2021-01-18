@@ -132,6 +132,14 @@ const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasAc
 	                defaultValue: false,
 	                options: undefined
 	            },
+	            /**  message. */
+	            'syncingMessage': {
+	                label: ' message',
+	                type: 'text',
+	                isPrivate: true,
+	                defaultValue: "Syncing schemas...",
+	                options: undefined
+	            },
 	    }
 }
 

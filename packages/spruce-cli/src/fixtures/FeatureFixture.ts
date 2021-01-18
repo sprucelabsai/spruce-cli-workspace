@@ -39,6 +39,10 @@ export default class FeatureFixture implements ServiceProvider {
 	private emitter?: GlobalEmitter
 
 	public constructor(options: FeatureFixtureOptions) {
+		if (options.cwd.search('packages/spruce-cli') > -1) {
+			throw new Error("You can't run FeatureFixture in the cli directory.")
+		}
+
 		this.cwd = options.cwd
 		this.serviceFactory = options.serviceFactory
 		this.term = options.ui
@@ -124,12 +128,8 @@ export default class FeatureFixture implements ServiceProvider {
 		cacheKey?: string,
 		bootOptions?: CliBootOptions
 	) {
-		if (
-			cacheKey &&
-			this.installedSkills[cacheKey] &&
-			testUtil.isCacheEnabled()
-		) {
-			return this.installedSkills[cacheKey].cli
+		if (this.isCached(cacheKey)) {
+			return this.installedSkills[cacheKey as string].cli
 		}
 
 		let isCached = false
@@ -138,12 +138,14 @@ export default class FeatureFixture implements ServiceProvider {
 
 			if (!isCached && !this.generateCacheIfMissing) {
 				throw new Error(
-					`Cached skill not found, add\n\n"${cacheKey}"\n\nto your package.json under "testSkillCache" and run\n\n\`yarn cache.test\``
+					`Cached skill not found, make sure\n\n"${cacheKey}"\n\nisin your package.json under "testSkillCache" and run\n\n\`yarn cache.tests\``
 				)
 			}
 
 			if (isCached) {
 				await this.copyCachedSkillToCwd(cacheKey)
+			} else {
+				this.removeCwdFromCacheTracker(cacheKey)
 			}
 		}
 
@@ -163,6 +165,12 @@ export default class FeatureFixture implements ServiceProvider {
 		await this.linkLocalPackages()
 
 		return cli
+	}
+
+	private isCached(cacheKey: string | undefined) {
+		return (
+			cacheKey && this.installedSkills[cacheKey] && testUtil.isCacheEnabled()
+		)
 	}
 
 	public async linkLocalPackages() {
@@ -189,17 +197,32 @@ export default class FeatureFixture implements ServiceProvider {
 		}
 
 		if (!settings[cacheKey]) {
-			const settingsFile = this.getTestCacheTrackerFilePath()
 			settings[cacheKey] = this.cwd
-
-			const settingsFolder = pathUtil.dirname(settingsFile)
-
-			!diskUtil.doesDirExist(settingsFolder) &&
-				diskUtil.createDir(settingsFolder)
-
-			diskUtil.writeFile(settingsFile, JSON.stringify(settings, null, 2))
+			this.writeCacheSettings(settings)
 		}
 		return settings
+	}
+
+	private removeCwdFromCacheTracker(cacheKey: string) {
+		let settings = this.loadCacheTracker()
+
+		if (!settings) {
+			settings = {}
+		}
+
+		if (settings[cacheKey]) {
+			delete settings[cacheKey]
+			this.writeCacheSettings(settings)
+		}
+	}
+
+	private writeCacheSettings(settings: Record<string, any>) {
+		const settingsFile = this.getTestCacheTrackerFilePath()
+		const settingsFolder = pathUtil.dirname(settingsFile)
+
+		!diskUtil.doesDirExist(settingsFolder) && diskUtil.createDir(settingsFolder)
+
+		diskUtil.writeFile(settingsFile, JSON.stringify(settings, null, 2))
 	}
 
 	private doesCacheExist(cacheKey: string) {
@@ -210,6 +233,13 @@ export default class FeatureFixture implements ServiceProvider {
 		if (settings?.[cacheKey]) {
 			alreadyInstalled = true
 		}
+
+		if (alreadyInstalled) {
+			alreadyInstalled = diskUtil.doesDirExist(
+				diskUtil.resolvePath(settings[cacheKey], 'node_modules')
+			)
+		}
+
 		return alreadyInstalled
 	}
 

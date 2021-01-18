@@ -15,11 +15,11 @@ export default buildSchema({
 			type: 'text',
 			label: 'Event name',
 		},
-		eventsDestinationDir: {
+		listenerDestinationDir: {
 			type: 'text',
 			label: 'Events destination directory',
 			hint: 'Where should I add your listeners?',
-			defaultValue: 'src/events',
+			defaultValue: 'src/listeners',
 		},
 		version: {
 			type: 'text',

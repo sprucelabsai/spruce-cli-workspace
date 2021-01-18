@@ -9,14 +9,14 @@ type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventActionSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventAction
 
 export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'sync'
+	public code = 'sync'
 	public commandAliases = ['sync.events']
 	public optionsSchema: OptionsSchema = syncEventActionSchema
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
-		const unifiedGenerator = this.UnifiedGenerator()
+		const writer = this.ContractWriter()
 
-		const results: FeatureActionResponse = await unifiedGenerator.generateContracts(
+		const results: FeatureActionResponse = await writer.fetchAndWriteContracts(
 			options
 		)
 
@@ -33,7 +33,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 		return mergeUtil.mergeActionResults(schemaSyncResults, results)
 	}
 
-	private UnifiedGenerator() {
-		return (this.parent as EventFeature).UnifiedGenerator()
+	private ContractWriter() {
+		return (this.parent as EventFeature).EventContractWriter()
 	}
 }

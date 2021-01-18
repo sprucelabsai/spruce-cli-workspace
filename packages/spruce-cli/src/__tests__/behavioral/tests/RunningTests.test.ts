@@ -45,51 +45,18 @@ export default class RunningTestsTest extends AbstractTestTest {
 
 		errorAssertUtil.assertError(results.errors[0], 'TEST_FAILED')
 
+		assert.isTruthy(results.meta)
 		assert.isTruthy(results.meta?.testResults)
 
-		assert.isEqualDeep(results.meta, {
-			testResults: {
-				wasKilled: false,
-				totalTestFiles: 2,
-				testFiles: [
-					{
-						path: 'behavioral/CanCancelAppointment.test.ts',
-						status: 'failed',
-						errorMessage: results.meta?.testResults.testFiles[0].errorMessage,
-						tests: [
-							{
-								name: 'canCancelAppointment',
-								status: 'failed',
-								errorMessages: [
-									results.meta?.testResults.testFiles[0].tests[0]
-										.errorMessages[0],
-								],
-								duration:
-									results.meta?.testResults.testFiles[0].tests[0].duration,
-							},
-						],
-					},
-					{
-						path: 'behavioral/CanBookAppointment.test.ts',
-						status: 'passed',
-						tests: [
-							{
-								name: 'canBookAppointment',
-								status: 'passed',
-								errorMessages: [],
-								duration:
-									results.meta?.testResults.testFiles[1].tests[0].duration,
-							},
-						],
-					},
-				],
-				totalTestFilesComplete: 2,
-				totalFailed: 1,
-				totalPassed: 1,
-				totalSkipped: 0,
-				totalTests: 2,
-				totalTodo: 0,
-			},
+		assert.doesInclude(results.meta?.testResults, {
+			wasKilled: false,
+			totalTestFiles: 2,
+			totalTestFilesComplete: 2,
+			totalFailed: 1,
+			totalPassed: 3,
+			totalSkipped: 0,
+			totalTests: 4,
+			totalTodo: 0,
 		})
 	}
 }

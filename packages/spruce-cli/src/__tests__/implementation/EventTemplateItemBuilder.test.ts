@@ -3,6 +3,7 @@ import { buildSchema, SchemaTemplateItem } from '@sprucelabs/schema'
 import {
 	MERCURY_API_NAMESPACE,
 	namesUtil,
+	versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { EventContractTemplateItem } from '@sprucelabs/spruce-templates'
 import { test, assert } from '@sprucelabs/test'
@@ -10,27 +11,30 @@ import EventTemplateItemBuilder from '../../templateItemBuilders/EventTemplateIt
 import AbstractCliTest from '../../tests/AbstractCliTest'
 import coreEventContract from '../support/coreEventContract'
 
+const expectedVersion = versionUtil.generateVersion().dirValue
+
 const bookContract: EventContract = {
 	eventSignatures: {
-		'did-book': {},
+		[`did-book::${expectedVersion}`]: {},
 	},
 }
 
 const contractWith2Signatures: EventContract = {
 	eventSignatures: {
-		'did-book': {},
-		'will-book': {},
+		[`did-book::${expectedVersion}`]: {},
+		[`will-book::${expectedVersion}`]: {},
 	},
 }
 
 const contractWith2NamespacedSignatures: EventContract = {
 	eventSignatures: {
-		'appointments.did-book': {},
-		'appointments.will-book': {},
+		[`appointments.did-book::${expectedVersion}`]: {},
+		[`appointments.will-book::${expectedVersion}`]: {},
 	},
 }
 
 const didBookTemplateItem: EventContractTemplateItem = {
+	version: expectedVersion,
 	namePascal: 'DidBook',
 	nameCamel: 'didBook',
 	namespace: namesUtil.toKebab(MERCURY_API_NAMESPACE),
@@ -38,11 +42,12 @@ const didBookTemplateItem: EventContractTemplateItem = {
 	namespacePascal: namesUtil.toPascal(MERCURY_API_NAMESPACE),
 	imports: [],
 	eventSignatures: {
-		'did-book': {},
+		[`did-book::${expectedVersion}`]: {},
 	},
 }
 
 const willBookTemplateItem: EventContractTemplateItem = {
+	version: expectedVersion,
 	namePascal: 'WillBook',
 	nameCamel: 'willBook',
 	namespace: namesUtil.toKebab(MERCURY_API_NAMESPACE),
@@ -50,11 +55,12 @@ const willBookTemplateItem: EventContractTemplateItem = {
 	namespaceCamel: namesUtil.toCamel(MERCURY_API_NAMESPACE),
 	namespacePascal: namesUtil.toPascal(MERCURY_API_NAMESPACE),
 	eventSignatures: {
-		'will-book': {},
+		[`will-book::${expectedVersion}`]: {},
 	},
 }
 
 const didBookWithNamespaceTemplateItem: EventContractTemplateItem = {
+	version: expectedVersion,
 	namePascal: 'DidBook',
 	nameCamel: 'didBook',
 	namespace: 'appointments',
@@ -62,11 +68,12 @@ const didBookWithNamespaceTemplateItem: EventContractTemplateItem = {
 	namespacePascal: 'Appointments',
 	imports: [],
 	eventSignatures: {
-		'appointments.did-book': {},
+		[`appointments.did-book::${expectedVersion}`]: {},
 	},
 }
 
 const willBookWithNamespaceTemplateItem: EventContractTemplateItem = {
+	version: expectedVersion,
 	namePascal: 'WillBook',
 	nameCamel: 'willBook',
 	namespace: 'appointments',
@@ -74,12 +81,13 @@ const willBookWithNamespaceTemplateItem: EventContractTemplateItem = {
 	namespacePascal: 'Appointments',
 	imports: [],
 	eventSignatures: {
-		'appointments.will-book': {},
+		[`appointments.will-book::${expectedVersion}`]: {},
 	},
 }
 
 const relatedToRelatedToProximitySchema = buildSchema({
 	id: 'relatedToRelatedToProximitySchema',
+	version: expectedVersion,
 	fields: {
 		onlyField: {
 			type: 'text',
@@ -102,6 +110,7 @@ const relatedToRelatedToProximitySchemaTemplateItem: SchemaTemplateItem = {
 }
 
 const relatedToProximitySchema = buildSchema({
+	version: expectedVersion,
 	id: 'relatedToProximitySchema',
 	fields: {
 		boolField: {
@@ -125,6 +134,7 @@ const relatedToProximitySchemaTemplateItem: SchemaTemplateItem = {
 	schema: {
 		id: 'relatedToProximitySchema',
 		namespace: 'Proximity',
+		version: expectedVersion,
 		fields: {
 			boolField: {
 				type: 'boolean',
@@ -133,7 +143,11 @@ const relatedToProximitySchemaTemplateItem: SchemaTemplateItem = {
 				type: 'schema',
 				options: {
 					schemaIds: [
-						{ id: 'relatedToRelatedToProximitySchema', namespace: 'Proximity' },
+						{
+							id: 'relatedToRelatedToProximitySchema',
+							namespace: 'Proximity',
+							version: expectedVersion,
+						},
 					],
 				},
 			},
@@ -144,6 +158,7 @@ const relatedToProximitySchemaTemplateItem: SchemaTemplateItem = {
 }
 
 const proximityEmitPayloadSchema = buildSchema({
+	version: expectedVersion,
 	id: 'proximityEmitPayload',
 	fields: {
 		textField: {
@@ -167,6 +182,7 @@ const proximityEmitPayloadTemplateItem: SchemaTemplateItem = {
 	schema: {
 		id: 'proximityEmitPayload',
 		namespace: 'Proximity',
+		version: expectedVersion,
 		fields: {
 			textField: {
 				type: 'text',
@@ -175,7 +191,11 @@ const proximityEmitPayloadTemplateItem: SchemaTemplateItem = {
 				type: 'schema',
 				options: {
 					schemaIds: [
-						{ id: 'relatedToProximitySchema', namespace: 'Proximity' },
+						{
+							id: 'relatedToProximitySchema',
+							namespace: 'Proximity',
+							version: expectedVersion,
+						},
 					],
 				},
 			},
@@ -187,26 +207,27 @@ const proximityEmitPayloadTemplateItem: SchemaTemplateItem = {
 
 const contractWithEmitPayload: EventContract = {
 	eventSignatures: {
-		'proximity.did-enter': {
+		[`proximity.did-enter::${expectedVersion}`]: {
 			emitPayloadSchema: proximityEmitPayloadSchema,
 		},
 	},
 }
 
-const contractWithEmitPayloadTemplateItem: EventContractTemplateItem = {
+const expectedContractWithEmitPayloadTemplateItem: EventContractTemplateItem = {
 	namePascal: 'DidEnter',
 	nameCamel: 'didEnter',
 	namespace: 'proximity',
+	version: expectedVersion,
 	namespaceCamel: 'proximity',
 	namespacePascal: 'Proximity',
 	imports: [
 		{
-			package: '#spruce/schemas/proximity/proximityEmitPayload.schema',
+			package: `#spruce/schemas/proximity/${expectedVersion}/proximityEmitPayload.schema`,
 			importAs: 'proximityEmitPayloadSchema',
 		},
 	],
 	eventSignatures: {
-		'proximity.did-enter': {
+		[`proximity.did-enter::${expectedVersion}`]: {
 			emitPayloadSchema: {
 				...proximityEmitPayloadTemplateItem,
 			},
@@ -229,14 +250,14 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 
 	@test()
 	protected static async hasGenerateFunction() {
-		assert.isFunction(this.itemBuilder.generateTemplateItems)
+		assert.isFunction(this.itemBuilder.buildTemplateItems)
 	}
 
 	@test()
 	protected static turnsSingleContractIntoTemplateItem() {
-		const {
-			eventContractTemplateItems,
-		} = this.itemBuilder.generateTemplateItems([bookContract])
+		const { eventContractTemplateItems } = this.itemBuilder.buildTemplateItems([
+			bookContract,
+		])
 
 		const actual = eventContractTemplateItems[0]
 
@@ -246,7 +267,7 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 	@test(
 		'builds emit payload schema into a template item',
 		[contractWithEmitPayload],
-		[contractWithEmitPayloadTemplateItem],
+		[expectedContractWithEmitPayloadTemplateItem],
 		[
 			relatedToRelatedToProximitySchemaTemplateItem,
 			relatedToProximitySchemaTemplateItem,
@@ -281,7 +302,7 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 		const {
 			eventContractTemplateItems,
 			schemaTemplateItems,
-		} = this.itemBuilder.generateTemplateItems(contracts)
+		} = this.itemBuilder.buildTemplateItems(contracts)
 
 		assert.isEqualDeep(
 			eventContractTemplateItems,
@@ -293,7 +314,7 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 
 	@test()
 	protected static canPullEventContractSchemaFromCoreEventContract() {
-		const { schemaTemplateItems } = this.itemBuilder.generateTemplateItems([
+		const { schemaTemplateItems } = this.itemBuilder.buildTemplateItems([
 			{
 				eventSignatures: {
 					'register-events':

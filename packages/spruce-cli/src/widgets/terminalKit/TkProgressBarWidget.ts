@@ -23,10 +23,14 @@ export default class TkProgressBarWidget
 			content: label ? ` ${label}` : undefined,
 			x: left,
 			y: top,
+			barChars: 'solid',
+			bodyAttr: { bgColor: 'black', dim: false },
+			overTextFullAttr: { bgColor: 'blue', color: 'black', dim: false },
 			value: progress,
 			...barOptions,
 		})
 
+		this.bar.__widget = this
 		this.calculateSizeLockDeltas()
 	}
 

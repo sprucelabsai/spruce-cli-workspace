@@ -1,8 +1,16 @@
-import { buildSchema, SchemaValues } from '@sprucelabs/schema'
-import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
+import {
+	buildSchema,
+	normalizeSchemaValues,
+	SchemaValues,
+} from '@sprucelabs/schema'
+import { eventDiskUtil } from '@sprucelabs/spruce-event-utils'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventAction.schema'
 import SpruceError from '../../../errors/SpruceError'
 import namedTemplateItemBuilder from '../../../schemas/v2020_07_22/namedTemplateItem.builder'
+import syncEventActionBuilder from '../../../schemas/v2020_07_22/syncEventAction.builder'
 import { GeneratedFile } from '../../../types/cli.types'
+import mergeUtil from '../../../utilities/merge.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -19,22 +27,33 @@ const optionsSchema = buildSchema({
 			isRequired: true,
 		},
 		nameCamel: {
-			...namedTemplateItemBuilder.fields.namePascal,
+			...namedTemplateItemBuilder.fields.nameCamel,
 			isRequired: true,
 		},
+		version: {
+			type: 'text',
+			label: 'Version',
+			isPrivate: true,
+		},
+		...syncEventActionBuilder.fields,
 	},
 })
 
 type OptionsSchema = typeof optionsSchema
 
 export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'create'
+	public code = 'create'
 	public optionsSchema: OptionsSchema = optionsSchema
 
 	public async execute(
 		options: SchemaValues<OptionsSchema>
 	): Promise<FeatureActionResponse> {
-		const { nameKebab, nameCamel } = this.validateAndNormalizeOptions(options)
+		const {
+			nameKebab,
+			nameReadable,
+			nameCamel,
+			version,
+		} = this.validateAndNormalizeOptions(options)
 
 		const skill = await this.Store('skill').loadCurrentSkill()
 
@@ -47,8 +66,16 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 		try {
 			let response: FeatureActionResponse = {}
 
+			const eventsDir = diskUtil.resolvePath(this.cwd, 'src', 'events')
+
+			const resolvedVersion = await this.resolveVersion(version, eventsDir)
+
 			const files: ({
-				templateMethod: 'eventEmitPayload' | 'eventResponsePayload'
+				context?: any
+				templateMethod:
+					| 'eventEmitPayload'
+					| 'eventResponsePayload'
+					| 'permissionContractBuilder'
 			} & Omit<GeneratedFile, 'path'>)[] = [
 				{
 					templateMethod: 'eventEmitPayload',
@@ -64,22 +91,41 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 					description:
 						'The payload that every listener will need to respond with. Delete this file for events that are fire and forget.',
 				},
+				{
+					templateMethod: 'permissionContractBuilder',
+					name: 'emitPermissions.builder.ts',
+					action: 'generated',
+					description: 'Permissions someone else will need to emit your event.',
+					context: {
+						nameCamel: nameCamel + 'Emit',
+					},
+				},
+				{
+					templateMethod: 'permissionContractBuilder',
+					name: 'listenPermissions.builder.ts',
+					action: 'generated',
+					description:
+						'Permissions someone else will need to listen to your event.',
+					context: {
+						nameCamel: nameCamel + 'Listen',
+					},
+				},
 			]
 
 			response.files = []
 
 			for (const file of files) {
-				const destination = diskUtil.resolvePath(
-					this.cwd,
-					'src',
-					'events',
-					namesUtil.toPascal(skill.slug),
-					nameKebab,
-					file.name
-				)
+				const destination = eventDiskUtil.resolveEventPath(eventsDir, {
+					fileName: file.name as any,
+					eventName: nameKebab,
+					version: resolvedVersion,
+				})
 
 				const contents = this.templates[file.templateMethod]({
 					nameCamel,
+					nameReadable,
+					version: resolvedVersion,
+					...file.context,
 				})
 
 				diskUtil.writeFile(destination, contents)
@@ -90,7 +136,17 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 				})
 			}
 
-			return response
+			const syncOptions = normalizeSchemaValues(
+				syncEventActionSchema,
+				options,
+				{
+					includePrivateFields: true,
+				}
+			)
+
+			const syncResponse = await this.parent.Action('sync').execute(syncOptions)
+
+			return mergeUtil.mergeActionResults(response, syncResponse)
 		} catch (err) {
 			return {
 				errors: [err],

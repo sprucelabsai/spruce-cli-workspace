@@ -202,7 +202,7 @@ const coreEventContract: EventContract = {
 											],
 										},
 									},
-									eventNameWithOptionalNamespace: {
+									fullyQualifiedEventName: {
 										type: 'text',
 										isRequired: true,
 									},
@@ -3283,7 +3283,7 @@ const coreEventContract: EventContract = {
 							schema: {
 								id: 'registerListenersEmitPayload',
 								fields: {
-									eventNamesWithOptionalNamespace: {
+									fullyQualifiedEventName: {
 										type: 'text',
 										isRequired: true,
 										isArray: true,
@@ -3396,7 +3396,7 @@ const coreEventContract: EventContract = {
 				fields: {},
 			},
 		},
-		'un-register-events': {
+		'unregister-events': {
 			emitPayloadSchema: {
 				id: 'unRegisterEventsTargetAndPayload',
 				fields: {
@@ -3407,7 +3407,7 @@ const coreEventContract: EventContract = {
 							schema: {
 								id: 'unRegisterEventsEmitPayload',
 								fields: {
-									eventNamesWithOptionalNamespace: {
+									fullyQualifiedEventName: {
 										type: 'text',
 										isRequired: true,
 										isArray: true,
@@ -3419,11 +3419,11 @@ const coreEventContract: EventContract = {
 				},
 			},
 			responsePayloadSchema: {
-				id: 'unRegisterEventsResponsePayload',
+				id: 'unregisterEventsResponsePayload',
 				fields: {},
 			},
 		},
-		'un-register-listeners': {
+		'unregister-listeners': {
 			emitPayloadSchema: {
 				id: 'unRegisterListenersTargetAndPayload',
 				fields: {
@@ -3434,7 +3434,7 @@ const coreEventContract: EventContract = {
 							schema: {
 								id: 'unRegisterListenersEmitPayload',
 								fields: {
-									eventNamesWithOptionalNamespace: {
+									fullyQualifiedEventName: {
 										type: 'text',
 										isRequired: true,
 										isArray: true,

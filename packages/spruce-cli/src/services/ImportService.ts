@@ -5,24 +5,31 @@ import md5 from 'md5'
 import SpruceError from '../errors/SpruceError'
 import CommandService from './CommandService'
 
-export default class ImportService extends CommandService {
+export default class ImportService {
+	public cwd: string
+
 	private divider = '## SPRUCE-CLI DIVIDER ##'
 	private errorDivider = '## SPRUCE-CLI ERROR DIVIDER ##'
 
 	private static cachedImports: Record<string, Record<string, any>> = {}
-	private importCacheDir: string
+	private static importCacheDir: string = diskUtil.createTempDir(
+		'import-service'
+	)
+	private command: CommandService
+	private static isCachingEnabled: boolean
 
-	public constructor(
-		cwd: string,
-		importCacheDir = diskUtil.createTempDir('import-service')
-	) {
-		super(cwd)
-		this.importCacheDir = importCacheDir
+	public constructor(options: { cwd: string; command: CommandService }) {
+		this.cwd = options.cwd
+		this.command = options.command
 	}
 
 	public importAll = async <T extends Record<string, any>>(
 		file: string
 	): Promise<T> => {
+		if (!ImportService.isCachingEnabled) {
+			return this.importAllUncached(file)
+		}
+
 		const { hash, fileContents } = this.pullHashAndContents(file)
 
 		if (!this.hasFileChanged(hash)) {
@@ -37,10 +44,10 @@ export default class ImportService extends CommandService {
 		}
 
 		ImportService.cachedImports[hash] = this.importAllUncached(file)
-		return ImportService.cachedImports[hash].then((response: T) => {
-			this.writeCacheFile(hash, response)
-			return response
-		})
+		const response = (await ImportService.cachedImports[hash]) as T
+		this.writeCacheFile(hash, response)
+
+		return response
 	}
 
 	private haveImportsChanged(
@@ -118,7 +125,7 @@ export default class ImportService extends CommandService {
 		}
 
 		try {
-			const { stdout } = await this.execute('node', {
+			const { stdout } = await this.command.execute('node', {
 				args,
 			})
 
@@ -189,8 +196,21 @@ export default class ImportService extends CommandService {
 		return proxyError
 	}
 
-	public clearCache() {
+	public static clearCache() {
+		ImportService.cachedImports = {}
 		diskUtil.deleteDir(this.cacheDir())
+	}
+
+	public static setCacheDir(cacheDir: string) {
+		this.importCacheDir = cacheDir
+	}
+
+	public static disableCache() {
+		this.isCachingEnabled = false
+	}
+
+	public static enableCaching() {
+		this.isCachingEnabled = true
 	}
 
 	private hasFileChanged(hash: string) {
@@ -199,10 +219,10 @@ export default class ImportService extends CommandService {
 	}
 
 	private resolveCacheFile(hash: string) {
-		return diskUtil.resolvePath(this.cacheDir(), hash + '.json')
+		return diskUtil.resolvePath(ImportService.cacheDir(), hash + '.json')
 	}
 
-	private cacheDir(): string {
+	private static cacheDir(): string {
 		return this.importCacheDir
 	}
 

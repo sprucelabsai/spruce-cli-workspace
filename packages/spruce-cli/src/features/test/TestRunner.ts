@@ -13,6 +13,17 @@ import { SpruceTestResults } from './test.types'
 
 const testRunnerContract = buildEventContract({
 	eventSignatures: {
+		'did-error': {
+			emitPayloadSchema: buildSchema({
+				id: 'testRunnerDidErrorEmitPayload',
+				fields: {
+					message: {
+						type: 'text',
+						isRequired: true,
+					},
+				},
+			}),
+		},
 		'did-update': {
 			emitPayloadSchema: buildSchema({
 				id: 'testRunnerDidUpdateEmitPayload',
@@ -35,6 +46,7 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
 	private cwd: string
 	private commandService: CommandService
 	private wasKilled = false
+	private testResults: SpruceTestResults = { totalTestFiles: 0 }
 
 	public constructor(options: { cwd: string; commandService: CommandService }) {
 		super(testRunnerContract)
@@ -47,40 +59,69 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
 		debugPort?: number | null
 	}): Promise<SpruceTestResults & { wasKilled: boolean }> {
 		this.wasKilled = false
+
 		const jestPath = this.resolvePathToJest()
 		const debugArgs =
 			(options?.debugPort ?? 0) > 0 ? `--inspect=${options?.debugPort}` : ``
 		const pattern = options?.pattern ?? ''
-
-		const command = `node ${debugArgs} ${jestPath} --reporters="@sprucelabs/jest-json-reporter" --testRunner="jest-circus/runner" --passWithNoTests ${
-			pattern ?? ''
+		let escapeShell = function (cmd: string) {
+			return '--testPathPattern="' + cmd.replace(/(["\s'$`\\])/g, '\\$1') + '"'
+		}
+		const command = `node --unhandled-rejections=strict ${debugArgs} ${jestPath} --reporters="@sprucelabs/jest-json-reporter" --testRunner="jest-circus/runner" --passWithNoTests ${
+			pattern ? escapeShell(pattern) : ''
 		}`
 
 		const parser = new JestJsonParser()
 
-		let testResults: SpruceTestResults = {
+		this.testResults = {
 			totalTestFiles: 0,
 		}
 
 		try {
 			await this.commandService.execute(command, {
 				forceColor: true,
+				onError: async (data) => {
+					const isDebugMessaging = this.isDebugMessage(data)
+
+					if (!isDebugMessaging) {
+						await (this as MercuryEventEmitter<TestRunnerContract>).emit(
+							'did-error',
+							{ message: data }
+						)
+					}
+				},
 				onData: async (data) => {
 					parser.write(data)
-					testResults = parser.getResults()
+					this.testResults = parser.getResults()
 					await (this as MercuryEventEmitter<TestRunnerContract>).emit(
 						'did-update',
-						{ results: testResults }
+						{ results: this.testResults }
 					)
 				},
 			})
 		} catch (err) {
-			if (!testResults.totalTestFiles) {
+			if (!this.testResults.totalTestFiles) {
 				throw err
 			}
 		}
 
-		return { ...testResults, wasKilled: this.wasKilled }
+		return { ...this.testResults, wasKilled: this.wasKilled }
+	}
+
+	private isDebugMessage(data: string) {
+		return (
+			data.search(/^debugger attached/i) === 0 ||
+			data.search(/^debugger listening/i) === 0 ||
+			data.search(/^waiting for the debugger/i) === 0
+		)
+	}
+
+	public hasFailedTests() {
+		return (this.testResults.totalFailed ?? 0) > 0
+	}
+
+	public hasSkippedTests() {
+		return (this.testResults.totalSkipped ?? 0) > 0
 	}
 
 	public kill() {

@@ -13,7 +13,7 @@ export default class BuildServiceTest extends AbstractCliTest {
 	protected static async canBuildSkill() {
 		await this.installSkill('skills')
 
-		const testFile = "const testVar: string = 'hello world'"
+		const testFile = "const testVar = 'hello world'\nconsole.log(testVar)\n"
 		const destination = this.resolvePath('src/test.ts')
 		diskUtil.writeFile(destination, testFile)
 

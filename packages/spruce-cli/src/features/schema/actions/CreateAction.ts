@@ -10,7 +10,7 @@ import AbstractFeatureAction from '../../AbstractFeatureAction'
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaActionSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaAction
 export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'create'
+	public code = 'create'
 	public optionsSchema = createSchemaActionSchema
 
 	public async execute(options: Options) {
@@ -38,8 +38,8 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			resolvedVersion = await this.resolveVersion(version, resolvedDestination)
 		}
 
-		const generator = this.Generator('schema')
-		const results = await generator.generateBuilder(resolvedDestination, {
+		const generator = this.Writer('schema')
+		const results = await generator.writeBuilder(resolvedDestination, {
 			...rest,
 			nameCamel,
 			enableVersioning: enableVersioning ?? undefined,

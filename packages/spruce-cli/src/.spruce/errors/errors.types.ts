@@ -11,27 +11,6 @@ import * as SpruceSchema from '@sprucelabs/schema'
 export declare namespace SpruceErrors.SpruceCli {
 
 	
-	export interface NoOrganizationsFound {
-		
-	}
-
-	export interface NoOrganizationsFoundSchema extends SpruceSchema.Schema {
-		id: 'noOrganizationsFound',
-		namespace: 'SpruceCli',
-		name: 'no organizations found',
-		    fields: {
-		    }
-	}
-
-	export type NoOrganizationsFoundEntity = SchemaEntity<SpruceErrors.SpruceCli.NoOrganizationsFoundSchema>
-
-}
-
-
-
-export declare namespace SpruceErrors.SpruceCli {
-
-	
 	export interface VscodeNotInstalled {
 		
 	}
@@ -245,6 +224,27 @@ export declare namespace SpruceErrors.SpruceCli {
 }
 
 
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
+	export interface NoOrganizationsFound {
+		
+	}
+
+	export interface NoOrganizationsFoundSchema extends SpruceSchema.Schema {
+		id: 'noOrganizationsFound',
+		namespace: 'SpruceCli',
+		name: 'no organizations found',
+		    fields: {
+		    }
+	}
+
+	export type NoOrganizationsFoundEntity = SchemaEntity<SpruceErrors.SpruceCli.NoOrganizationsFoundSchema>
+
+}
+
+
 import AbstractSpruceError from '@sprucelabs/error'
 
 export declare namespace SpruceErrors.SpruceCli {
@@ -284,8 +284,6 @@ export declare namespace SpruceErrors.SpruceCli {
 		
 			/** Pattern. The pattern used to match files relative to the root of the skill */
 			'pattern': string
-			/** Output from lint. */
-			'stdout': string
 	}
 
 	export interface LintFailedSchema extends SpruceSchema.Schema {
@@ -300,13 +298,6 @@ export declare namespace SpruceErrors.SpruceCli {
 		                type: 'text',
 		                isRequired: true,
 		                hint: 'The pattern used to match files relative to the root of the skill',
-		                options: undefined
-		            },
-		            /** Output from lint. */
-		            'stdout': {
-		                label: 'Output from lint',
-		                type: 'text',
-		                isRequired: true,
 		                options: undefined
 		            },
 		    }
@@ -371,6 +362,43 @@ export declare namespace SpruceErrors.SpruceCli {
 	}
 
 	export type InvalidFeatureCodeEntity = SchemaEntity<SpruceErrors.SpruceCli.InvalidFeatureCodeSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
+	export interface InvalidEventContract {
+		
+			
+			'fullyQualifiedEventName': string
+			
+			'brokenProperty': string
+	}
+
+	export interface InvalidEventContractSchema extends SpruceSchema.Schema {
+		id: 'invalidEventContract',
+		namespace: 'SpruceCli',
+		name: 'invalid event contract',
+		    fields: {
+		            /** . */
+		            'fullyQualifiedEventName': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		            /** . */
+		            'brokenProperty': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type InvalidEventContractEntity = SchemaEntity<SpruceErrors.SpruceCli.InvalidEventContractSchema>
 
 }
 
@@ -813,21 +841,20 @@ export declare namespace SpruceErrors.SpruceCli {
 
 export declare namespace SpruceErrors.SpruceCli {
 
-	/** Booting your skill failed! */
-	export interface BootFailed {
+	
+	export interface BootError {
 		
 	}
 
-	export interface BootFailedSchema extends SpruceSchema.Schema {
-		id: 'bootFailed',
+	export interface BootErrorSchema extends SpruceSchema.Schema {
+		id: 'bootError',
 		namespace: 'SpruceCli',
-		name: 'Boot failed',
-		description: 'Booting your skill failed!',
+		name: 'boot error',
 		    fields: {
 		    }
 	}
 
-	export type BootFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.BootFailedSchema>
+	export type BootErrorEntity = SchemaEntity<SpruceErrors.SpruceCli.BootErrorSchema>
 
 }
 

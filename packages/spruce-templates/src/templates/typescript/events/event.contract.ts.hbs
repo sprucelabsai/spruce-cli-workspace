@@ -11,6 +11,8 @@ const {{nameCamel}}EventContract = buildEventContract({
         '{{@key}}': {
             {{#if emitPayloadSchema}}emitPayloadSchema: {{emitPayloadSchema.nameCamel}}Schema,{{/if}}
             {{#if responsePayloadSchema}}responsePayloadSchema: {{responsePayloadSchema.nameCamel}}Schema,{{/if}}
+            {{#if emitPermissionContract}}emitPermissionContract: {{{ permissionContractBuilder emitPermissionContract }}},{{/if}}
+            {{#if listenPermissionContract}}listenPermissionContract: {{{ permissionContractBuilder listenPermissionContract }}},{{/if}}
         }
         {{/each}}
     }

@@ -2,34 +2,121 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { CliInterface } from '../../../cli'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
-
+import { GeneratedFile } from '../../../types/cli.types'
 export default class UpgradingASkillTest extends AbstractCliTest {
 	@test()
-	protected static async forceUpgradeOverwritesOldIndexFileWithoutAsking() {
+	protected static async forceEverythingUpgradeOverwritesWhatHasChanged() {
 		const cli = await this.installAndBreakSkill('skills')
+		const files: {
+			name: string
+			path: string
+			forceEverythingAction: GeneratedFile['action']
+			forceRequiredSkipRestAction: GeneratedFile['action']
+		}[] = [
+			{
+				name: 'index.ts',
+				path: 'src/index.ts',
+				forceEverythingAction: 'updated',
+				forceRequiredSkipRestAction: 'updated',
+			},
+			{
+				name: '.eslintrc.js',
+				path: '.eslintrc.js',
+				forceEverythingAction: 'updated',
+				forceRequiredSkipRestAction: 'updated',
+			},
+			{
+				name: 'SpruceError.ts',
+				path: 'src/errors/SpruceError.ts',
+				forceEverythingAction: 'updated',
+				forceRequiredSkipRestAction: 'skipped',
+			},
+			{
+				name: 'options.types.ts',
+				path: 'src/.spruce/errors/options.types.ts',
+				forceEverythingAction: 'updated',
+				forceRequiredSkipRestAction: 'skipped',
+			},
+		]
 
-		const results = await cli.getFeature('skill').Action('upgrade').execute({
-			force: true,
-		})
+		this.Service('settings').set('testing', true)
 
-		assert.doesInclude(results.files, {
-			name: 'index.ts',
-			action: 'updated',
-		})
+		for (const upgradeMode of ['forceRequiredSkipRest', 'forceEverything']) {
+			for (const file of files) {
+				this.clearEmptyIfAboutToBeUpdated(file, upgradeMode)
+			}
+
+			const results = await cli.getFeature('skill').Action('upgrade').execute({
+				upgradeMode,
+			})
+
+			if (upgradeMode === 'forceRequiredSkipRest') {
+				const passedHealthCheck = await cli.checkHealth()
+
+				assert.isEqualDeep(passedHealthCheck, { skill: { status: 'passed' } })
+				assert.isTrue(this.Service('settings').get('testing'))
+			}
+
+			for (const file of files) {
+				//@ts-ignore
+				const action = file[`${upgradeMode}Action`]
+				assert.doesInclude(
+					results.files,
+					{
+						name: file.name,
+						action,
+					},
+					`${
+						file.name
+					} was not ${action} when ${upgradeMode} in \n\n ${JSON.stringify(
+						results.files ?? [],
+						null,
+						2
+					)}`
+				)
+			}
+		}
+
+		assert.isUndefined(this.Service('settings').get('testing'))
 
 		const passedHealthCheck = await cli.checkHealth()
 
-		assert.isEqualDeep(passedHealthCheck, { skill: { status: 'passed' } })
+		assert.doesInclude(passedHealthCheck, {
+			'skill.status': 'failed',
+		})
+
+		assert.doesInclude(passedHealthCheck, {
+			'skill.errors[0].options.code': 'SKILL_NOT_INSTALLED',
+		})
+	}
+
+	private static clearEmptyIfAboutToBeUpdated(
+		file: {
+			name: string
+			path: string
+			forceEverythingAction: GeneratedFile['action']
+			forceRequiredSkipRestAction: GeneratedFile['action']
+		},
+		upgradeMode: string
+	) {
+		//@ts-ignore
+		if (file[`${upgradeMode}Action`] === 'updated') {
+			diskUtil.writeFile(this.resolvePath(file.path), '')
+		}
 	}
 
 	@test()
 	protected static async upgradeWillAskIfYouWantToOverwriteFiles() {
 		const cli = await this.installAndBreakSkill('skills')
 
-		const promise = cli.getFeature('skill').Action('upgrade').execute({})
+		const promise = cli
+			.getFeature('skill')
+			.Action('upgrade')
+			.execute({ upgradeMode: 'askEverything' })
 
 		await this.waitForInput()
 
+		// should still fail because we haven't written yet
 		await this.assertFailedHealthCheck(cli)
 
 		assert.doesInclude(this.ui.invocations, {
@@ -39,7 +126,13 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		await this.ui.sendInput('\n')
 
+		await this.wait(1000)
+
 		await promise
+
+		const health = await cli.checkHealth()
+
+		assert.isEqual(health.skill.status, 'passed')
 	}
 
 	@test()
@@ -55,7 +148,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 			'skill.errors[].message': '"health.local" not found',
 		})
 
-		await cli.getFeature('skill').Action('upgrade').execute({ force: true })
+		await cli.getFeature('skill').Action('upgrade').execute({})
 
 		const passedHealth = await cli.checkHealth()
 		assert.isEqual(passedHealth.skill.status, 'passed')
@@ -63,10 +156,8 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 	private static async installAndBreakSkill(cacheKey: string) {
 		const cli = await this.installSkill(cacheKey)
-
 		const indexFile = this.resolvePath('src/index.ts')
 		diskUtil.writeFile(indexFile, 'throw new Error("cheese!")')
-
 		await this.assertFailedHealthCheck(cli)
 
 		return cli
@@ -93,7 +184,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		const failedHealthCheck = await cli.checkHealth()
 
 		assert.doesInclude(failedHealthCheck, {
-			'skill.errors[].stack': 'cheese',
+			'skill.errors[].message': 'cheese',
 		})
 	}
 }

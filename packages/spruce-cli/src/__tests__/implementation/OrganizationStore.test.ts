@@ -10,6 +10,7 @@ export default class OrganizationStoreTest extends AbstractCliTest {
 	@test()
 	protected static async skillIsNotInstalledByDefault() {
 		await this.FeatureFixture().installCachedFeatures('organizations')
+
 		const org = await this.OrganizationFixture().seedDummyOrg({
 			name: 'A cool org',
 		})

@@ -3,11 +3,13 @@ import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../errors/SpruceError'
 import { FeatureAction, FeatureActionOptions } from '../features/features.types'
+import { GlobalEmitter } from '../GlobalEmitter'
 import AbstractFeatureAction from './AbstractFeatureAction'
 import InstallCheckingActionDecorator from './InstallCheckingActionDecorator'
 
 export interface FeatureActionFactoryOptions extends FeatureActionOptions {
 	actionsDir: string
+	emitter: GlobalEmitter
 }
 
 export default class FeatureActionFactory {
@@ -54,7 +56,8 @@ export default class FeatureActionFactory {
 		const installCheckingFacade = new InstallCheckingActionDecorator(
 			action,
 			this.actionOptions.parent,
-			this.actionOptions.featureInstaller
+			this.actionOptions.featureInstaller,
+			this.actionOptions.emitter
 		)
 
 		return installCheckingFacade as FeatureAction<S>

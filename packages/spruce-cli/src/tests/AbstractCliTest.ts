@@ -3,10 +3,12 @@ import { SchemaRegistry } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractSpruceTest, { assert } from '@sprucelabs/test'
 import fs from 'fs-extra'
+import globby from 'globby'
 import * as uuid from 'uuid'
 import { CliBootOptions } from '../cli'
 import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
 import { FeatureActionResponse, FeatureCode } from '../features/features.types'
+import SkillStore from '../features/skill/stores/SkillStore'
 import FeatureFixture, {
 	FeatureFixtureOptions,
 } from '../fixtures/FeatureFixture'
@@ -16,6 +18,7 @@ import PersonFixture from '../fixtures/PersonFixture'
 import SkillFixture from '../fixtures/SkillFixture'
 import CliGlobalEmitter, { GlobalEmitter } from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
+import ImportService from '../services/ImportService'
 import ServiceFactory, { Service, ServiceMap } from '../services/ServiceFactory'
 import StoreFactory, {
 	StoreCode,
@@ -23,6 +26,7 @@ import StoreFactory, {
 	StoreMap,
 } from '../stores/StoreFactory'
 import { ApiClientFactoryOptions } from '../types/apiClient.types'
+import AbstractWriter from '../writers/AbstractWriter'
 import testUtil from './utilities/test.utility'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
@@ -36,8 +40,17 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	private static organizationFixture?: OrganizationFixture
 	private static skillFixture?: SkillFixture
 
+	protected static async beforeAll() {
+		await super.beforeAll()
+		await this.cleanTestDirsAndFiles()
+		AbstractWriter.disableLinting()
+
+		ImportService.setCacheDir(diskUtil.createRandomTempDir())
+	}
+
 	protected static async beforeEach() {
 		await super.beforeEach()
+		testUtil.startLogTimer()
 
 		SchemaRegistry.getInstance().forgetAllSchemas()
 
@@ -49,14 +62,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		this.ui.setCursorPosition({ x: 0, y: 0 })
 
 		this.clearFixtures()
-	}
 
-	private static clearFixtures() {
-		this.emitter = undefined
-		this.mercuryFixture = undefined
-		this.organizationFixture = undefined
-		this.personFixture = undefined
-		this.skillFixture = undefined
+		ImportService.clearCache()
 	}
 
 	protected static async afterEach() {
@@ -65,15 +72,40 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		await this.organizationFixture?.clearAllOrgs()
 		await this.mercuryFixture?.disconnectAll()
 
+		SkillStore.reset()
+
 		this.clearFixtures()
 
-		if (this._ui) {
-			if (this._ui.isWaitingForInput()) {
-				throw new Error(
-					`Terminal interface is waiting for input. Make sure you are invoking this.term.sendInput() as many times as needed.`
-				)
-			}
+		if (this._ui?.isWaitingForInput()) {
+			throw new Error(
+				`Terminal interface is waiting for input. Make sure you are invoking this.term.sendInput() as many times as needed.`
+			)
 		}
+
+		if (diskUtil.doesDirExist(this.cwd) && testUtil.shouldClearCache()) {
+			diskUtil.deleteDir(this.cwd)
+		}
+
+		if (diskUtil.doesDirExist(this.homeDir) && testUtil.shouldClearCache()) {
+			diskUtil.deleteDir(this.homeDir)
+		}
+	}
+
+	private static async cleanTestDirsAndFiles() {
+		const pattern = this.resolveTestPath('**/*.d.ts')
+		const matches = await globby(pattern)
+
+		for (const match of matches) {
+			diskUtil.deleteFile(match)
+		}
+	}
+
+	private static clearFixtures() {
+		this.emitter = undefined
+		this.mercuryFixture = undefined
+		this.organizationFixture = undefined
+		this.personFixture = undefined
+		this.skillFixture = undefined
 	}
 
 	protected static freshTmpDir() {
@@ -134,8 +166,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return sf.Service(cwd ?? this.cwd, type)
 	}
 
-	protected static ServiceFactory(options?: { importCacheDir?: string }) {
-		return new ServiceFactory({ ...(options || {}) })
+	protected static ServiceFactory() {
+		return new ServiceFactory()
 	}
 
 	protected static FeatureFixture(options?: Partial<FeatureFixtureOptions>) {
@@ -268,9 +300,16 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		dir?: string
 		timeout?: number
 	}) {
+		const cli = await this.Cli()
+		await cli.getFeature('vscode').Action('setup').execute({ all: true })
+
 		await this.Service('command').execute(
 			`code ${options?.file ?? options?.dir ?? this.cwd}`
 		)
 		await this.wait(options?.timeout ?? 99999999)
+	}
+
+	protected static log(...args: any[]) {
+		testUtil.log(...args)
 	}
 }

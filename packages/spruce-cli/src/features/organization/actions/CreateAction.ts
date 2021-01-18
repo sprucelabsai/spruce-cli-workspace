@@ -7,7 +7,7 @@ type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateOrganizationActio
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateOrganizationAction
 
 export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'create'
+	public code = 'create'
 	public optionsSchema = createOrganizationActionSchema
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {

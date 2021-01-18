@@ -24,6 +24,8 @@ export default class TkWindowWidget
 			this.handleParentResize()
 		})
 
+		this.document.__widget = this
+
 		options.term.on('key', this.handleKeyPress.bind(this))
 
 		process.on('exit', (code: number) => {
@@ -60,11 +62,11 @@ export default class TkWindowWidget
 	}
 
 	public getFocusedWidget(): BaseWidget<any> | null {
-		return null
+		return this.document.focusElement.__widget
 	}
 
-	private handleKeyPress(key: Key) {
-		void (this as WindowWidget).emit('key', { key })
+	private async handleKeyPress(key: Key) {
+		await (this as WindowWidget).emit('key', { key })
 	}
 
 	protected handleParentResize() {
@@ -100,6 +102,7 @@ export default class TkWindowWidget
 		this.showCursor()
 		//@ts-ignore
 		this.term.removeAllListeners()
+
 		this.term.styleReset()
 
 		await this.term.grabInput(false, true)
@@ -108,6 +111,8 @@ export default class TkWindowWidget
 		// this may change if destroy is required in other widgets and there appears
 		// to be no penalty for calling destroy multiple times
 		this.document.destroy()
+
+		this.term.clear()
 
 		this.term(`\n`)
 	}

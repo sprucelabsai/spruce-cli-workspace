@@ -11,12 +11,12 @@ import syncErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncErr
 import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse, FeatureAction } from '../../features.types'
-import ErrorGenerator from '../generators/ErrorGenerator'
+import ErrorWriter from '../writers/ErrorWriter'
 
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorActionSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorAction
 export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
-	public name = 'sync'
+	public code = 'sync'
 	public optionsSchema = syncErrorActionSchema
 	public commandAliases = ['sync.errors']
 
@@ -53,15 +53,15 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			...item,
 			code: namesUtil.toConst(item.namePascal),
 		}))
-		const errorGenerator = this.Generator('error')
+		const errorWriter = this.Writer('error')
 
 		const optionsResults = await this.generateOptionTypes(
-			errorGenerator,
+			errorWriter,
 			errorTemplateItems,
 			errorTypesDestinationDir
 		)
 
-		const errorClassGeneratedFiles = await errorGenerator.generateOrAppendErrorsToClass(
+		const errorClassGeneratedFiles = await errorWriter.writeOrAppendErrorsToClass(
 			diskUtil.resolvePath(this.cwd, errorClassDestinationDir),
 			errorTemplateItems
 		)
@@ -100,6 +100,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			generateStandaloneTypesFile: true,
 			deleteDestinationDirIfNoSchemas: true,
 			fetchCoreSchemas: false,
+			syncingMessage: 'Syncing errors...',
 		})
 
 		const errorSyncResults = await schemaSyncAction.execute(syncOptions)
@@ -116,7 +117,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	}
 
 	private async generateOptionTypes(
-		errorGenerator: ErrorGenerator,
+		errorGenerator: ErrorWriter,
 		errorTemplateItems: ErrorTemplateItem[],
 		errorTypesDestinationDir: string
 	) {
@@ -131,7 +132,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 
 		const topLevelItems = errorTemplateItems.filter((i) => !i.isNested)
 
-		const optionsResults = await errorGenerator.generateOptionsTypesFile(
+		const optionsResults = await errorGenerator.writeOptionsTypesFile(
 			resolvedTypesDestination,
 			topLevelItems
 		)
