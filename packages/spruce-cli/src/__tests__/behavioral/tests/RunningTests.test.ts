@@ -1,6 +1,7 @@
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractTestTest from '../../../tests/AbstractTestTest'
+import AbstractWriter from '../../../writers/AbstractWriter'
 
 export default class RunningTestsTest extends AbstractTestTest {
 	@test()
@@ -11,6 +12,8 @@ export default class RunningTestsTest extends AbstractTestTest {
 
 	@test()
 	protected static async runningTestsActuallyRunsTests() {
+		AbstractWriter.enableLinting()
+
 		const cli = await this.installTests()
 		const creationResults = await cli
 			.getFeature('test')
