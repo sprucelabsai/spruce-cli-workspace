@@ -32,6 +32,9 @@ export default class EventStore extends AbstractStore {
 
 		const { contracts } = eventResponseUtil.getFirstResponseOrThrow(results)
 
+		testUtil.log('pulled contracts')
+
+		testUtil.log('loading local contracts')
 		const localContract =
 			options?.localNamespace &&
 			(await this.loadLocalContract(options.localNamespace))
@@ -40,6 +43,7 @@ export default class EventStore extends AbstractStore {
 			contracts.push(localContract)
 		}
 
+		testUtil.log('done loading local contracts')
 		return {
 			contracts,
 			errors: [],
