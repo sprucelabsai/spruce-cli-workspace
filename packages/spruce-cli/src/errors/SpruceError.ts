@@ -184,18 +184,7 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				: ''
 		}`
 
-		// Handle repeating text from original message by remove it
-		return `${fullMessage}${
-			this.originalError &&
-			this.originalError.message &&
-			this.originalError.message !== message &&
-			this.originalError.message !== fullMessage
-				? `\n\nOriginal error: ${this.originalError.message.replace(
-						message,
-						''
-				  )}`
-				: ''
-		}`
+		return fullMessage
 	}
 
 	private cleanStdErr(stderr: string) {

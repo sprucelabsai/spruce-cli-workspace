@@ -24,6 +24,7 @@ export default abstract class AbstractWriter {
 	private upgradeMode: UpgradeMode
 	private fileDescriptions: FileDescription[] = []
 	private shouldConfirmBeforeWriting = true
+	private static isLintingEnabled = true
 
 	public constructor(options: WriterOptions) {
 		this.templates = options.templates
@@ -34,7 +35,13 @@ export default abstract class AbstractWriter {
 	}
 
 	protected async lint(file: string) {
-		await this.linter?.fix(file).catch(() => {})
+		if (AbstractWriter.isLintingEnabled) {
+			await this.linter?.fix(file).catch(() => {})
+		}
+	}
+
+	public static disableLinting() {
+		this.isLintingEnabled = false
 	}
 
 	protected async writeDirectoryTemplate(options: {

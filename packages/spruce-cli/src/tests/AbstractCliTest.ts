@@ -25,6 +25,7 @@ import StoreFactory, {
 	StoreMap,
 } from '../stores/StoreFactory'
 import { ApiClientFactoryOptions } from '../types/apiClient.types'
+import AbstractWriter from '../writers/AbstractWriter'
 import testUtil from './utilities/test.utility'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
@@ -41,6 +42,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static async beforeAll() {
 		await super.beforeAll()
 		await this.cleanTestDirsAndFiles()
+
+		AbstractWriter.disableLinting()
 	}
 
 	protected static async beforeEach() {

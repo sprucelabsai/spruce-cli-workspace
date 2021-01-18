@@ -325,7 +325,6 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		const results = await cli.getFeature('schema').Action('sync').execute({})
 		assert.isFalsy(results.errors)
-
 		await this.assertValidActionResponseFiles(results)
 	}
 }

@@ -101,7 +101,7 @@ const testUtil = {
 		}
 
 		process.stderr.write(
-			prefix + this.getTimeSpentFormatted() + ': ' + args.join(' ') + '\n'
+			prefix + this.getTimeSpentFormatted() + ': ' + args.join(' ')
 		)
 	},
 

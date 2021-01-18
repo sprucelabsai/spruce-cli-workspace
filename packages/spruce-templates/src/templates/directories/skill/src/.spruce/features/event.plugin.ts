@@ -89,7 +89,6 @@ export class EventSkillFeature implements SkillFeature {
 
 			await this.loadEverything()
 
-
 			const health: EventHealthCheckItem = {
 				status: 'passed',
 				listeners: this.listeners,
@@ -340,7 +339,7 @@ export class EventSkillFeature implements SkillFeature {
 		)
 		const listeners: EventFeatureListener[] = []
 
-		listenerMatches.map((match) => {
+		listenerMatches.forEach((match) => {
 
 			const {
 				eventName,
