@@ -103,7 +103,7 @@ export default class EventStoreTest extends AbstractCliTest {
 		)
 	}
 
-	@test.only()
+	@test()
 	protected static async badLocalContractThrowsNiceError() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 
@@ -129,8 +129,10 @@ export default class EventStoreTest extends AbstractCliTest {
 		)
 
 		errorAssertUtil.assertError(err, 'INVALID_EVENT_CONTRACT', {
-			fullyQualifiedEventName: '',
-			brokenProperty: 'emitPayload',
+			fullyQualifiedEventName: `${skill.slug}.my-fantastically-amazing-event::${
+				versionUtil.generateVersion().constValue
+			}`,
+			brokenProperty: 'emitPayloadSchema',
 		})
 	}
 
