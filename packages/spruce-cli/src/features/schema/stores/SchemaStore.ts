@@ -271,7 +271,6 @@ export default class SchemaStore extends AbstractStore {
 		})
 
 		const localErrors: SpruceError[] = []
-		const importService = this.Service('import')
 
 		const localAddons = !localAddonsDir
 			? []
@@ -282,6 +281,7 @@ export default class SchemaStore extends AbstractStore {
 						])
 					).map(async (file: string) => {
 						try {
+							const importService = this.Service('import')
 							const registration = await importService.importDefault<FieldRegistration>(
 								file
 							)
