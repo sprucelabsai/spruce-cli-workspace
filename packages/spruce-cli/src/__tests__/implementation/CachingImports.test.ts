@@ -11,6 +11,8 @@ export default class CachingImportsTest extends AbstractCliTest {
 
 		ImportService.setCacheDir(diskUtil.createRandomTempDir())
 		this.importService = this.Service('import')
+
+		ImportService.enableCaching()
 	}
 
 	@test()

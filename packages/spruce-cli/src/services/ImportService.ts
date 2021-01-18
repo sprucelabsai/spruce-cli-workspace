@@ -16,6 +16,7 @@ export default class ImportService {
 		'import-service'
 	)
 	private command: CommandService
+	private static isCachingEnabled: boolean
 
 	public constructor(options: { cwd: string; command: CommandService }) {
 		this.cwd = options.cwd
@@ -25,6 +26,10 @@ export default class ImportService {
 	public importAll = async <T extends Record<string, any>>(
 		file: string
 	): Promise<T> => {
+		if (!ImportService.isCachingEnabled) {
+			return this.importAllUncached(file)
+		}
+
 		const { hash, fileContents } = this.pullHashAndContents(file)
 
 		if (!this.hasFileChanged(hash)) {
@@ -198,6 +203,14 @@ export default class ImportService {
 
 	public static setCacheDir(cacheDir: string) {
 		this.importCacheDir = cacheDir
+	}
+
+	public static disableCache() {
+		this.isCachingEnabled = false
+	}
+
+	public static enableCaching() {
+		this.isCachingEnabled = true
 	}
 
 	private hasFileChanged(hash: string) {
