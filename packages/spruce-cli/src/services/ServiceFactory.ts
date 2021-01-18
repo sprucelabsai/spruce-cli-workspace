@@ -31,12 +31,6 @@ export interface ServiceProvider {
 	Service<S extends Service>(type: S, cwd?: string): ServiceMap[S]
 }
 export default class ServiceFactory {
-	private importCacheDir?: string
-
-	public constructor(options?: { importCacheDir?: string }) {
-		this.importCacheDir = options?.importCacheDir
-	}
-
 	public Service<S extends Service>(cwd: string, type: S): ServiceMap[S] {
 		switch (type) {
 			case 'auth':
@@ -71,7 +65,6 @@ export default class ServiceFactory {
 				return new ImportService({
 					cwd,
 					command: new CommandService(cwd),
-					importCacheDir: this.importCacheDir,
 				}) as ServiceMap[S]
 			case 'build': {
 				const commandService = new CommandService(cwd)

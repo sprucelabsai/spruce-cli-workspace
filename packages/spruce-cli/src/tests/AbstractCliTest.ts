@@ -18,6 +18,7 @@ import PersonFixture from '../fixtures/PersonFixture'
 import SkillFixture from '../fixtures/SkillFixture'
 import CliGlobalEmitter, { GlobalEmitter } from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
+import ImportService from '../services/ImportService'
 import ServiceFactory, { Service, ServiceMap } from '../services/ServiceFactory'
 import StoreFactory, {
 	StoreCode,
@@ -60,6 +61,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		this.ui.setCursorPosition({ x: 0, y: 0 })
 
 		this.clearFixtures()
+
+		ImportService.clearCache()
 	}
 
 	protected static async afterEach() {
@@ -162,8 +165,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return sf.Service(cwd ?? this.cwd, type)
 	}
 
-	protected static ServiceFactory(options?: { importCacheDir?: string }) {
-		return new ServiceFactory({ ...(options || {}) })
+	protected static ServiceFactory() {
+		return new ServiceFactory()
 	}
 
 	protected static FeatureFixture(options?: Partial<FeatureFixtureOptions>) {

@@ -60,14 +60,14 @@ export default class EventStore extends AbstractStore {
 		const ns = namesUtil.toKebab(localNamespace)
 
 		const eventSignatures: Record<string, EventSignature> = {}
-		const schemaImporter = this.Service('schema')
-		const importer = this.Service('import')
 
 		await Promise.all(
 			localMatches.map(async (match: string) => {
+				const schemaImporter = this.Service('schema')
+				const importer = this.Service('import')
+
 				let key: keyof EventSignature | undefined
 				let fullyQualifiedEventName: string | undefined
-				testUtil.log('trying to load', match)
 				try {
 					const { eventName, version } = eventDiskUtil.splitPathToEvent(match)
 
@@ -105,7 +105,7 @@ export default class EventStore extends AbstractStore {
 
 					if (key) {
 						if (key === 'emitPayloadSchema') {
-							testUtil.log('importing schem at', match)
+							testUtil.log('importing as schema', match)
 							const schema = await schemaImporter.importSchema(match)
 							const targetAndPayload = buildEmitTargetAndPayloadSchema({
 								emitPayloadSchema: schema,
@@ -117,7 +117,7 @@ export default class EventStore extends AbstractStore {
 							//@ts-ignore
 							eventSignatures[fullyQualifiedEventName][key] = targetAndPayload
 						} else if (isSchema) {
-							testUtil.log('importing schem at', match)
+							testUtil.log('importing as schema', match)
 							//@ts-ignore
 							eventSignatures[fullyQualifiedEventName][
 								key
