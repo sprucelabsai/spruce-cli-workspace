@@ -43,7 +43,9 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				break
 
 			case 'SCHEMA_FAILED_TO_IMPORT':
-				message = `Error importing "${options.file}"`
+				message = `Error importing "${options.file}". Original error:\n\n${
+					options.originalError?.message ?? '**MISSING**'
+				}`
 				break
 
 			case 'BUILD_FAILED':
@@ -54,7 +56,9 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				break
 
 			case 'FAILED_TO_IMPORT':
-				message = `Failed to import ${options.file}`
+				message = `Failed to import "${options.file}". Original error:\n\n${
+					options.originalError?.message ?? '**MISSING**'
+				}`
 				break
 
 			case 'LINT_FAILED':
