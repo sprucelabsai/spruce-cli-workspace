@@ -21,7 +21,7 @@ interface TestReporterOptions {
 	handleOpenTestFile?: (fileName: string) => void
 	handleFilterPatternChange?: (pattern?: string) => void
 	handleToggleDebug?: () => void
-	handletoggleWatchStandard?: () => void
+	handletoggleStandardWatch?: () => void
 	handleToggleSmartWatch?: () => void
 	filterPattern?: string
 	isDebugging?: boolean
@@ -73,7 +73,7 @@ export default class TestReporter {
 	private handleFilterChange?: (pattern?: string) => void
 	private handleOpenTestFile?: (testFile: string) => void
 	private handleToggleDebug?: () => void
-	private handletoggleWatchStandard?: () => void
+	private handletoggleStandardWatch?: () => void
 	private handleToggleSmartWatch?: () => any
 	private minWidth = 50
 
@@ -88,7 +88,7 @@ export default class TestReporter {
 		this.handleFilterChange = options?.handleFilterPatternChange
 		this.status = options?.status ?? 'ready'
 		this.handleToggleDebug = options?.handleToggleDebug
-		this.handletoggleWatchStandard = options?.handletoggleWatchStandard
+		this.handletoggleStandardWatch = options?.handletoggleStandardWatch
 		this.isDebugging = options?.isDebugging ?? false
 		this.watchMode = options?.watchMode ?? 'off'
 		this.handleToggleSmartWatch = options?.handleToggleSmartWatch
@@ -164,7 +164,7 @@ export default class TestReporter {
 		)
 
 		this.menu.setTextForItem(
-			'toggleWatchStandard',
+			'toggleStandardWatch',
 			this.watchMode === 'standard' ? '√ Standard' : 'Standard'
 		)
 
@@ -205,6 +205,7 @@ export default class TestReporter {
 			this.orientation = 'portrait'
 		}
 
+		debugger
 		this.setIsDebugging(this.isDebugging)
 		this.setWatchMode(this.watchMode)
 		this.setStatus(this.status)
@@ -236,7 +237,7 @@ export default class TestReporter {
 					items: [
 						{
 							label: 'Watch all',
-							value: 'toggleWatchStandard',
+							value: 'toggleStandardWatch',
 						},
 						{
 							label: 'Smart watch',
@@ -298,8 +299,8 @@ export default class TestReporter {
 			case 'toggleDebug':
 				this.handleToggleDebug?.()
 				break
-			case 'toggleWatchStandard':
-				this.handletoggleWatchStandard?.()
+			case 'toggleStandardWatch':
+				this.handletoggleStandardWatch?.()
 				break
 			case 'toggleSmartWatch':
 				this.handleToggleSmartWatch?.()

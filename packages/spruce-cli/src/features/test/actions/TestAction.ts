@@ -70,7 +70,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		this.inspect = inspect
 		this.pattern = pattern
 		this.hasWatchEverBeenEnabled = watchMode !== 'off'
-		this.watchMode = watchMode
+		this.watchMode = watchMode as WatchMode
 
 		if (shouldReportWhileRunning) {
 			this.testReporter = new TestReporter({
@@ -86,7 +86,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 				handleOpenTestFile: this.handleOpenTestFile.bind(this),
 				handleFilterPatternChange: this.handleFilterPatternChange.bind(this),
 				handleToggleDebug: this.handleToggleDebug.bind(this),
-				handletoggleWatchStandard: this.handletoggleWatchStandard.bind(this),
+				handletoggleStandardWatch: this.handletoggleStandardWatch.bind(this),
 				handleToggleSmartWatch: this.handleToggleSmartWatch?.bind(this),
 			})
 
@@ -215,7 +215,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 	}
 
-	private handletoggleWatchStandard() {
+	private handletoggleStandardWatch() {
 		if (this.watchMode === 'standard') {
 			this.testReporter?.setWatchMode('off')
 		} else {
@@ -233,7 +233,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 	public setWatchMode(mode: WatchMode) {
 		this.watchMode = mode
-		this.testReporter?.setWatchMode('off')
+		this.testReporter?.setWatchMode(mode)
 		this.hasWatchEverBeenEnabled = true
 	}
 

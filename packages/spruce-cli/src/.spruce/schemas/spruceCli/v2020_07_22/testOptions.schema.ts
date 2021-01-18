@@ -44,13 +44,13 @@ const testOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.TestOptionsSchema  
 	                type: 'boolean',
 	                isPrivate: true,
 	                hint: 'For testing. Returns immediately after executing test so the running process can be managed programatically.',
+	                defaultValue: true,
 	                options: undefined
 	            },
 	            /** Watch. */
 	            'watchMode': {
 	                label: 'Watch',
 	                type: 'select',
-	                defaultValue: "off",
 	                options: {choices: [{"value":"off","label":"Off"},{"value":"standard","label":"Standard"},{"value":"smart","label":"Smart"}],}
 	            },
 	    }
