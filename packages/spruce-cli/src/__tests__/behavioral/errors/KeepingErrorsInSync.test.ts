@@ -1,5 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { assert, test } from '@sprucelabs/test'
+import ImportService from '../../../services/ImportService'
 import AbstractErrorTest from '../../../tests/AbstractErrorTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
@@ -24,8 +25,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		const pkg = this.Service('pkg')
 		await pkg.uninstall('ts-node')
 
-		const importService = this.Service('import')
-		importService.clearCache()
+		ImportService.clearCache()
 
 		const results = await cli.getFeature('error').Action('sync').execute({})
 

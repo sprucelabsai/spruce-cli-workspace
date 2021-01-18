@@ -156,7 +156,9 @@ export default class SchemaWriter extends AbstractWriter {
 
 		await this.lint(resolvedTypesDestination)
 
-		this.ui.startLoading(`Checking ${schemaTemplateItems.length} schemas...`)
+		this.ui.startLoading(
+			`Checking ${schemaTemplateItems.length} schemas for changes...`
+		)
 
 		const allSchemaResults = await this.writeAllSchemas(
 			pathUtil.dirname(resolvedTypesDestination),
