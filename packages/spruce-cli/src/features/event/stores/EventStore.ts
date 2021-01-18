@@ -10,6 +10,7 @@ import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractStore from '../../../stores/AbstractStore'
+import testUtil from '../../../tests/utilities/test.utility'
 
 export interface EventStoreFetchEventContractsResponse {
 	errors: SpruceError[]
@@ -22,9 +23,12 @@ export default class EventStore extends AbstractStore {
 	public async fetchEventContracts(options?: {
 		localNamespace?: string
 	}): Promise<EventStoreFetchEventContractsResponse> {
+		testUtil.log('Connecting to api as skill')
 		const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
 
+		testUtil.log('getting event contrcats')
 		const results = await client.emit('get-event-contracts::v2020_12_25')
+		testUtil.log('got event contracts')
 
 		const { contracts } = eventResponseUtil.getFirstResponseOrThrow(results)
 
