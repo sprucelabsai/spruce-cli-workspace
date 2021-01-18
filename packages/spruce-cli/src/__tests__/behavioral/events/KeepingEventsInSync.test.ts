@@ -187,7 +187,6 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		this.assertExpectedPayloadSchemasAreCreated(results)
 
 		await this.assertCombinedContractContents(results)
-		await this.assertValidActionResponseFiles(results)
 	}
 
 	private static async assertCombinedContractContents(
