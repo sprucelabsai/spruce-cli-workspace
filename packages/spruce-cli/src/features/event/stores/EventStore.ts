@@ -127,6 +127,11 @@ export default class EventStore extends AbstractStore {
 						}
 					}
 				} catch (err) {
+					testUtil.log(
+						'error importing event contract',
+						fullyQualifiedEventName,
+						key
+					)
 					throw new SpruceError({
 						code: 'INVALID_EVENT_CONTRACT',
 						fullyQualifiedEventName:
@@ -137,7 +142,7 @@ export default class EventStore extends AbstractStore {
 				}
 			})
 		)
-
+		testUtil.log('done loading contracts')
 		if (Object.keys(eventSignatures).length > 0) {
 			return {
 				eventSignatures,
