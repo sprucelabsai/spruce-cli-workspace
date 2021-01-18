@@ -21,7 +21,7 @@ interface TestReporterOptions {
 	handleOpenTestFile?: (fileName: string) => void
 	handleFilterPatternChange?: (pattern?: string) => void
 	handleToggleDebug?: () => void
-	handleToggleWatchAll?: () => void
+	handletoggleWatchStandard?: () => void
 	handleToggleSmartWatch?: () => void
 	filterPattern?: string
 	isDebugging?: boolean
@@ -36,7 +36,7 @@ type TestReporterResults = SpruceTestResults & {
 
 export type TestEporterOrientation = 'landscape' | 'portrait'
 
-export type WatchMode = 'off' | 'all' | 'smart'
+export type WatchMode = 'off' | 'standard' | 'smart'
 
 export default class TestReporter {
 	private started = false
@@ -73,7 +73,7 @@ export default class TestReporter {
 	private handleFilterChange?: (pattern?: string) => void
 	private handleOpenTestFile?: (testFile: string) => void
 	private handleToggleDebug?: () => void
-	private handleToggleWatchAll?: () => void
+	private handletoggleWatchStandard?: () => void
 	private handleToggleSmartWatch?: () => any
 	private minWidth = 50
 
@@ -88,7 +88,7 @@ export default class TestReporter {
 		this.handleFilterChange = options?.handleFilterPatternChange
 		this.status = options?.status ?? 'ready'
 		this.handleToggleDebug = options?.handleToggleDebug
-		this.handleToggleWatchAll = options?.handleToggleWatchAll
+		this.handletoggleWatchStandard = options?.handletoggleWatchStandard
 		this.isDebugging = options?.isDebugging ?? false
 		this.watchMode = options?.watchMode ?? 'off'
 		this.handleToggleSmartWatch = options?.handleToggleSmartWatch
@@ -164,8 +164,8 @@ export default class TestReporter {
 		)
 
 		this.menu.setTextForItem(
-			'toggleWatchAll',
-			this.watchMode === 'all' ? '√ Standard' : 'Standard'
+			'toggleWatchStandard',
+			this.watchMode === 'standard' ? '√ Standard' : 'Standard'
 		)
 
 		this.menu.setTextForItem(
@@ -236,7 +236,7 @@ export default class TestReporter {
 					items: [
 						{
 							label: 'Watch all',
-							value: 'toggleWatchAll',
+							value: 'toggleWatchStandard',
 						},
 						{
 							label: 'Smart watch',
@@ -298,8 +298,8 @@ export default class TestReporter {
 			case 'toggleDebug':
 				this.handleToggleDebug?.()
 				break
-			case 'toggleWatchAll':
-				this.handleToggleWatchAll?.()
+			case 'toggleWatchStandard':
+				this.handletoggleWatchStandard?.()
 				break
 			case 'toggleSmartWatch':
 				this.handleToggleSmartWatch?.()

@@ -1,8 +1,9 @@
 import pathUtil from 'path'
 import { SpruceSchemas } from '@sprucelabs/mercury-types'
-import { buildSchema, SchemaValues } from '@sprucelabs/schema'
+import { SchemaValues } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import open from 'open'
+import testOptionsSchema from '#spruce/schemas/spruceCli/v2020_07_22/testOptions.schema'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import {
@@ -18,38 +19,7 @@ import {
 import TestReporter, { WatchMode } from '../TestReporter'
 import TestRunner from '../TestRunner'
 
-export const optionsSchema = buildSchema({
-	id: 'testAction',
-	name: 'Test skill',
-	fields: {
-		shouldReportWhileRunning: {
-			type: 'boolean',
-			label: 'Report while running',
-			hint: 'Should I output the test results while they are running?',
-			defaultValue: true,
-		},
-		pattern: {
-			type: 'text',
-			label: 'Pattern',
-			hint: `I'll filter all tests that match this pattern`,
-		},
-		inspect: {
-			type: 'number',
-			label: 'Inspect',
-			hint: `Pass --inspect related args to test process.`,
-		},
-		shouldHoldAtStart: {
-			type: 'boolean',
-			label: 'Should wait for manual start?',
-			defaultValue: false,
-		},
-		shouldWatch: {
-			type: 'boolean',
-			label: 'Watch',
-			defaultValue: false,
-		},
-	},
-})
+export const optionsSchema = testOptionsSchema
 
 export type OptionsSchema = typeof optionsSchema
 
@@ -80,6 +50,11 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	public async execute(
 		options: SchemaValues<OptionsSchema>
 	): Promise<FeatureActionResponse> {
+		if (!options.watchMode) {
+			const settings = this.Service('settings')
+			options.watchMode = settings.get('test.watchMode') ?? 'off'
+		}
+
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
 		const {
@@ -87,14 +62,15 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			shouldReportWhileRunning,
 			inspect,
 			shouldHoldAtStart,
-			shouldWatch,
+			watchMode,
+			shouldWaitUntilTestsAreFinished,
 		} = normalizedOptions
 
 		this.originalInspect = inspect ?? 5200
 		this.inspect = inspect
 		this.pattern = pattern
-		this.hasWatchEverBeenEnabled = shouldWatch
-		this.watchMode = shouldWatch ? 'smart' : 'off'
+		this.hasWatchEverBeenEnabled = watchMode !== 'off'
+		this.watchMode = watchMode
 
 		if (shouldReportWhileRunning) {
 			this.testReporter = new TestReporter({
@@ -110,7 +86,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 				handleOpenTestFile: this.handleOpenTestFile.bind(this),
 				handleFilterPatternChange: this.handleFilterPatternChange.bind(this),
 				handleToggleDebug: this.handleToggleDebug.bind(this),
-				handleToggleWatchAll: this.handleToggleWatchAll.bind(this),
+				handletoggleWatchStandard: this.handletoggleWatchStandard.bind(this),
 				handleToggleSmartWatch: this.handleToggleSmartWatch?.bind(this),
 			})
 
@@ -127,7 +103,17 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 		this.runnerStatus = shouldHoldAtStart ? 'hold' : 'run'
 
-		const testResults = await this.startTestRunner(normalizedOptions)
+		const promise = this.startTestRunner(normalizedOptions)
+
+		if (!shouldWaitUntilTestsAreFinished) {
+			return {
+				meta: {
+					promise,
+					test: this,
+				},
+			}
+		}
+		const testResults = await promise
 
 		await this.watcher?.stopWatching()
 		await this.testReporter?.destroy()
@@ -229,26 +215,26 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 	}
 
-	private handleToggleWatchAll() {
-		if (this.watchMode === 'all') {
-			this.watchMode = 'off'
+	private handletoggleWatchStandard() {
+		if (this.watchMode === 'standard') {
 			this.testReporter?.setWatchMode('off')
 		} else {
-			this.hasWatchEverBeenEnabled = true
-			this.watchMode = 'all'
-			this.testReporter?.setWatchMode('all')
+			this.setWatchMode('standard')
 		}
 	}
 
 	private handleToggleSmartWatch() {
 		if (this.watchMode === 'smart') {
-			this.watchMode = 'off'
-			this.testReporter?.setWatchMode('off')
+			this.setWatchMode('off')
 		} else {
-			this.hasWatchEverBeenEnabled = true
-			this.watchMode = 'smart'
-			this.testReporter?.setWatchMode('smart')
+			this.setWatchMode('smart')
 		}
+	}
+
+	public setWatchMode(mode: WatchMode) {
+		this.watchMode = mode
+		this.testReporter?.setWatchMode('off')
+		this.hasWatchEverBeenEnabled = true
 	}
 
 	private restart() {
@@ -297,7 +283,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		this.restart()
 	}
 
-	private kill() {
+	public kill() {
 		this.testRunner?.kill()
 		this.holdPromiseResolve?.()
 		this.holdPromiseResolve = undefined
@@ -446,5 +432,9 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			fileName: file.path,
 			errorMessage: message,
 		})
+	}
+
+	public getWatchMode() {
+		return this.watchMode
 	}
 }

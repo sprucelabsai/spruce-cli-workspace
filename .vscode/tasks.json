@@ -56,7 +56,8 @@
 				"test",
 				"--shouldHoldAtStart",
 				"true",
-				"--shouldWatch"
+				"--watchMode",
+				"smart"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}/packages/spruce-cli"
@@ -80,7 +81,8 @@
 				"5200",
 				"--pattern",
 				"${fileBasenameNoExtension}",
-				"--shouldWatch"
+				"--watchMode",
+				"standard"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}/packages/spruce-cli"

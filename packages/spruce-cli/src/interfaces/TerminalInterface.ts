@@ -473,7 +473,9 @@ export default class TerminalInterface implements GraphicsInterface {
 				promptOptions.type = 'input'
 		}
 
+		debugger
 		const response = (await inquirer.prompt(promptOptions)) as any
+		debugger
 		this.isPromptActive = false
 
 		const result =

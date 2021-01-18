@@ -1,7 +1,7 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
 
-import messageSchema from '#spruce/schemas/mercuryApi/v2020_12_25/message.schema'
+import messageSchema from '#spruce/schemas/spruce/v2020_07_22/message.schema'
 
 const didMessageEmitPayloadSchema: SpruceSchemas.MercuryApi.v2020_12_25.DidMessageEmitPayloadSchema  = {
 	id: 'didMessageEmitPayload',

@@ -103,22 +103,33 @@ export default class EventStoreTest extends AbstractCliTest {
 
 	@test()
 	protected static async mixesInLocalContracts() {
+		this.log('copy cached')
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
+		this.log('DONE copy cached')
 
+		this.log('registering skill')
 		const skill = await this.SkillFixture().registerCurrentSkill({
 			name: 'my new skill',
 		})
+		this.log('done registering skill')
 
+		this.log('creating event')
 		await cli.getFeature('event').Action('create').execute({
 			nameReadable: EVENT_NAME_READABLE,
 			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
 		})
 
+		this.log('done creating event')
+		this.log('fetching event contract')
+
 		const { contracts } = await this.Store('event').fetchEventContracts({
 			localNamespace: skill.slug,
 		})
 
+		this.log('done fetching event contract')
+
+		this.log('doing checks')
 		assert.isLength(contracts, 2)
 		const name = eventNameUtil.join({
 			eventName: EVENT_NAME,
@@ -142,6 +153,7 @@ export default class EventStoreTest extends AbstractCliTest {
 		assert.isTruthy(contracts[1].eventSignatures[name].listenPermissionContract)
 
 		validateEventContract(contracts[1])
+		this.log('done doing checks')
 	}
 
 	private static async seedSkillAndInstallAtOrg(org: any, name: string) {

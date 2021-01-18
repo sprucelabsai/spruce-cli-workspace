@@ -90,6 +90,16 @@ const testUtil = {
 			? //@ts-ignore
 			  `${global.activeTest?.file}::${global.activeTest?.test} :: `
 			: ''
+
+		if (process.env.TEST_LOG_FILTER) {
+			const match = prefix.search(
+				new RegExp(process.env.TEST_LOG_FILTER, 'igm')
+			)
+			if (match < 0) {
+				return
+			}
+		}
+
 		process.stderr.write(
 			prefix + this.getTimeSpentFormatted() + ': ' + args.join(' ') + '\n'
 		)
