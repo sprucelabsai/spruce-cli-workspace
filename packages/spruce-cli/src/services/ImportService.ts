@@ -1,7 +1,7 @@
-import pathUtil from 'path'
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+// import pathUtil from 'path'
+// import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import fs from 'fs-extra'
-import md5 from 'md5'
+// import md5 from 'md5'
 import SpruceError from '../errors/SpruceError'
 import CommandService from './CommandService'
 
@@ -11,8 +11,8 @@ export default class ImportService {
 	private divider = '## SPRUCE-CLI DIVIDER ##'
 	private errorDivider = '## SPRUCE-CLI ERROR DIVIDER ##'
 
-	private static cachedImports: Record<string, Record<string, any>> = {}
-	private importCacheDir: string
+	// private static cachedImports: Record<string, Record<string, any>> = {}
+	// private importCacheDir: string
 	private command: CommandService
 
 	public constructor(options: {
@@ -22,8 +22,8 @@ export default class ImportService {
 	}) {
 		this.cwd = options.cwd
 		this.command = options.command
-		this.importCacheDir =
-			options.importCacheDir ?? diskUtil.createTempDir('import-service')
+		// this.importCacheDir =
+		// 	options.importCacheDir ?? diskUtil.createTempDir('import-service')
 	}
 
 	public importAll = async <T extends Record<string, any>>(
@@ -50,51 +50,51 @@ export default class ImportService {
 		// return response
 	}
 
-	private haveImportsChanged(
-		originalFilepath: string,
-		contents: string
-	): boolean {
-		let changed = false
-		let importMatches
+	// private haveImportsChanged(
+	// 	originalFilepath: string,
+	// 	contents: string
+	// ): boolean {
+	// 	let changed = false
+	// 	let importMatches
 
-		// only check files that start with dot because they are local and we can actually only check local files
-		const regex =
-			originalFilepath.search(/\.js$/i) > -1
-				? /require\(['"](\..*?)['"]\)/gis
-				: /import.*["'](\..*?)["']/gis
+	// 	// only check files that start with dot because they are local and we can actually only check local files
+	// 	const regex =
+	// 		originalFilepath.search(/\.js$/i) > -1
+	// 			? /require\(['"](\..*?)['"]\)/gis
+	// 			: /import.*["'](\..*?)["']/gis
 
-		while ((importMatches = regex.exec(contents)) !== null) {
-			try {
-				const match = importMatches[1]
-				const dir = pathUtil.dirname(originalFilepath)
-				const nodeResolved = require.resolve(pathUtil.join(dir, match))
-				const { hash } = this.pullHashAndContents(nodeResolved)
+	// 	while ((importMatches = regex.exec(contents)) !== null) {
+	// 		try {
+	// 			const match = importMatches[1]
+	// 			const dir = pathUtil.dirname(originalFilepath)
+	// 			const nodeResolved = require.resolve(pathUtil.join(dir, match))
+	// 			const { hash } = this.pullHashAndContents(nodeResolved)
 
-				if (this.hasFileChanged(hash)) {
-					changed = true
-				}
-			} catch {
-				changed = true
-			}
-		}
+	// 			if (this.hasFileChanged(hash)) {
+	// 				changed = true
+	// 			}
+	// 		} catch {
+	// 			changed = true
+	// 		}
+	// 	}
 
-		return changed
-	}
+	// 	return changed
+	// }
 
-	private writeCacheFile(hash: string, contents: Record<string, any>) {
-		const destination = this.resolveCacheFile(hash)
+	// private writeCacheFile(hash: string, contents: Record<string, any>) {
+	// 	const destination = this.resolveCacheFile(hash)
 
-		diskUtil.writeFile(destination, JSON.stringify(contents))
-	}
+	// 	diskUtil.writeFile(destination, JSON.stringify(contents))
+	// }
 
-	private importAllCached(file: string) {
-		const { hash } = this.pullHashAndContents(file)
+	// private importAllCached(file: string) {
+	// 	const { hash } = this.pullHashAndContents(file)
 
-		const cacheFile = this.resolveCacheFile(hash)
-		const contents = diskUtil.readFile(cacheFile)
+	// 	const cacheFile = this.resolveCacheFile(hash)
+	// 	const contents = diskUtil.readFile(cacheFile)
 
-		return JSON.parse(contents)
-	}
+	// 	return JSON.parse(contents)
+	// }
 
 	private importAllUncached = async <T extends Record<string, any>>(
 		file: string
@@ -197,26 +197,26 @@ export default class ImportService {
 	}
 
 	public clearCache() {
-		ImportService.cachedImports = {}
-		diskUtil.deleteDir(this.cacheDir())
+		// ImportService.cachedImports = {}
+		// diskUtil.deleteDir(this.cacheDir())
 	}
 
-	private hasFileChanged(hash: string) {
-		const resolvedFilePath = this.resolveCacheFile(hash)
-		return !diskUtil.doesFileExist(resolvedFilePath)
-	}
+	// private hasFileChanged(hash: string) {
+	// 	const resolvedFilePath = this.resolveCacheFile(hash)
+	// 	return !diskUtil.doesFileExist(resolvedFilePath)
+	// }
 
-	private resolveCacheFile(hash: string) {
-		return diskUtil.resolvePath(this.cacheDir(), hash + '.json')
-	}
+	// private resolveCacheFile(hash: string) {
+	// 	return diskUtil.resolvePath(this.cacheDir(), hash + '.json')
+	// }
 
-	private cacheDir(): string {
-		return this.importCacheDir
-	}
+	// private cacheDir(): string {
+	// 	return this.importCacheDir
+	// }
 
-	private pullHashAndContents(file: string) {
-		const fileContents = diskUtil.readFile(file)
-		const hash = md5(fileContents)
-		return { hash, fileContents }
-	}
+	// private pullHashAndContents(file: string) {
+	// 	const fileContents = diskUtil.readFile(file)
+	// 	const hash = md5(fileContents)
+	// 	return { hash, fileContents }
+	// }
 }
