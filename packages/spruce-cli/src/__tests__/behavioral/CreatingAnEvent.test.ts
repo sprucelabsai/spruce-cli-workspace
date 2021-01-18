@@ -30,7 +30,6 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 	@test()
 	protected static async createsVersionedEventFilesDefaultingToToday() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
-
 		await this.assertCantCreateWithoutBeingRegistered(cli)
 
 		const skill = await this.SkillFixture().registerCurrentSkill({
@@ -48,8 +47,6 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		await this.assertExpectedTargetAndPayload(results)
 		await this.assertExpectedPayloadSchemas(results)
 		await this.assertReturnsEventFromHealthCheck(cli, skill)
-		await this.assertValidActionResponseFiles(results)
-
 		await this.createsExpectedPermissionContract(results)
 	}
 
