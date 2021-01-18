@@ -29,24 +29,25 @@ export default class ImportService {
 	public importAll = async <T extends Record<string, any>>(
 		file: string
 	): Promise<T> => {
-		const { hash, fileContents } = this.pullHashAndContents(file)
+		return this.importAllUncached(file)
+		// const { hash, fileContents } = this.pullHashAndContents(file)
 
-		if (!this.hasFileChanged(hash)) {
-			const isDirty = this.haveImportsChanged(file, fileContents)
+		// if (!this.hasFileChanged(hash)) {
+		// 	const isDirty = this.haveImportsChanged(file, fileContents)
 
-			if (!isDirty && ImportService.cachedImports[hash]) {
-				return ImportService.cachedImports[hash] as T
-			} else if (!isDirty) {
-				ImportService.cachedImports[hash] = this.importAllCached(file)
-				return ImportService.cachedImports[hash] as T
-			}
-		}
+		// 	if (!isDirty && ImportService.cachedImports[hash]) {
+		// 		return ImportService.cachedImports[hash] as T
+		// 	} else if (!isDirty) {
+		// 		ImportService.cachedImports[hash] = this.importAllCached(file)
+		// 		return ImportService.cachedImports[hash] as T
+		// 	}
+		// }
 
-		ImportService.cachedImports[hash] = this.importAllUncached(file)
-		const response = (await ImportService.cachedImports[hash]) as T
-		this.writeCacheFile(hash, response)
+		// ImportService.cachedImports[hash] = this.importAllUncached(file)
+		// const response = (await ImportService.cachedImports[hash]) as T
+		// this.writeCacheFile(hash, response)
 
-		return response
+		// return response
 	}
 
 	private haveImportsChanged(
