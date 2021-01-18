@@ -5,7 +5,6 @@ import { CliInterface } from '../../cli'
 import { SpruceTestResults } from '../../features/test/test.types'
 import TestRunner from '../../features/test/TestRunner'
 import AbstractTestTest from '../../tests/AbstractTestTest'
-import AbstractWriter from '../../writers/AbstractWriter'
 
 export default class TestRunnerTest extends AbstractTestTest {
 	protected static testRunner: TestRunner
@@ -16,8 +15,6 @@ export default class TestRunnerTest extends AbstractTestTest {
 			cwd: this.cwd,
 			commandService: this.Service('command'),
 		})
-
-		AbstractWriter.enableLinting()
 	}
 
 	@test()
