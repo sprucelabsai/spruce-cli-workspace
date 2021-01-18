@@ -44,6 +44,10 @@ export default abstract class AbstractWriter {
 		this.isLintingEnabled = false
 	}
 
+	public static enableLinting() {
+		this.isLintingEnabled = true
+	}
+
 	protected async writeDirectoryTemplate(options: {
 		destinationDir: string
 		code: DirectoryTemplateCode
