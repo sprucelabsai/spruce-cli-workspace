@@ -45,14 +45,14 @@
 		"@sprucelabs/mercury-types": "^15.1.8",
 		"@sprucelabs/schema": ">=19.0.0",
 		"@sprucelabs/spruce-skill-utils": ">=13.5.1",
-		"globby": "^11.0.1",
+		"globby": "^11.0.2",
 		"handlebars": "^4.7.6",
 		"lodash": "^4.17.20",
 		"sha1": "^1.1.1"
 	},
 	"devDependencies": {
-		"@types/lodash": "^4.14.165",
-		"@types/node": "^14.14.14",
+		"@types/lodash": "^4.14.168",
+		"@types/node": "^14.14.21",
 		"arkit": "^1.6.4",
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^5.3.0",
