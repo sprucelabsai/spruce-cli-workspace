@@ -155,6 +155,7 @@ export class EventSkillFeature implements SkillFeature {
 		const host = process.env.HOST ?? 'https://sandbox.mercury.spruce.ai'
 
 		this.log.info('Connecting to Mercury at', host)
+
 		const client = await MercuryClientFactory.Client({
 			host,
 			allowSelfSignedCrt: true,
@@ -167,6 +168,7 @@ export class EventSkillFeature implements SkillFeature {
 
 		const skillId = process.env.SKILL_ID
 		const apiKey = process.env.SKILL_API_KEY
+		
 		let currentSkill: SpruceSchemas.Spruce.v2020_07_22.Skill | undefined
 
 		if (skillId && apiKey) {
@@ -178,8 +180,6 @@ export class EventSkillFeature implements SkillFeature {
 					apiKey,
 				},
 			} as any)
-
-
 
 			const { auth } = eventResponseUtil.getFirstResponseOrThrow(results)
 

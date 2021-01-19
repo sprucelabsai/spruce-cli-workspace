@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.1.5](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.1.4...v13.1.5) (2021-01-19)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [13.1.4](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.1.3...v13.1.4) (2021-01-19)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+## [13.1.3](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.1.2...v13.1.3) (2021-01-19)
+
+
+### Bug Fixes
+
+* explicitly kill children on kill() ([b6af99d](https://github.com/sprucelabsai/spruce-cli-workspace/commit/b6af99d))
+* set apiclient earlier in connectToApi ([8dc676f](https://github.com/sprucelabsai/spruce-cli-workspace/commit/8dc676f))
+
+
+
+
+
 ## [13.1.2](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.1.1...v13.1.2) (2020-12-21)
 
 **Note:** Version bump only for package spruce-cli-workspace
