@@ -45,7 +45,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 			'organizations'
 		)
 
-		await this.PersonFixture().loginAsDummyPerson()
+		await this.PersonFixture().loginAsDemoPerson()
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'my amazing skill',
@@ -66,7 +66,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 			'organizations'
 		)
 
-		await this.PersonFixture().loginAsDummyPerson()
+		await this.PersonFixture().loginAsDemoPerson()
 
 		await this.OrganizationFixture().seedDummyOrg({
 			name: 'My great org',

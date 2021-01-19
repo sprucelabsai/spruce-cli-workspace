@@ -17,7 +17,7 @@ export default class CreatingAnOrgTest extends AbstractCliTest {
 			'organizations'
 		)
 
-		await this.PersonFixture().loginAsDummyPerson()
+		await this.PersonFixture().loginAsDemoPerson()
 
 		const results = await cli
 			.getFeature('organization')

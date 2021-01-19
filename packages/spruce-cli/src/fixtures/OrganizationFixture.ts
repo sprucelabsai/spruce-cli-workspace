@@ -11,7 +11,7 @@ export default class OrganizationFixture {
 	}
 
 	public async seedDummyOrg(options: { name: string; slug?: string }) {
-		await this.personFixture.loginAsDummyPerson()
+		await this.personFixture.loginAsDemoPerson()
 
 		return this.storeFactory.Store('organization').create({
 			slug: `my-org-${new Date().getTime()}`,
@@ -20,7 +20,7 @@ export default class OrganizationFixture {
 	}
 
 	public async clearAllOrgs() {
-		await this.personFixture.loginAsDummyPerson()
+		await this.personFixture.loginAsDemoPerson()
 
 		const orgStore = this.storeFactory.Store('organization')
 		const orgs = await orgStore.fetchMyOrganizations()
@@ -31,7 +31,7 @@ export default class OrganizationFixture {
 	}
 
 	public async installSkillAtOrganization(skillId: string, orgId: string) {
-		await this.personFixture.loginAsDummyPerson()
+		await this.personFixture.loginAsDemoPerson()
 		const orgStore = this.storeFactory.Store('organization')
 
 		await orgStore.installSkillAtOrganization(skillId, orgId)

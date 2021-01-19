@@ -12,7 +12,7 @@ export default class PersonFixture {
 		this.apiClientFactory = apiClientFactory
 	}
 
-	public async loginAsDummyPerson(phone = DUMMY_PHONE) {
+	public async loginAsDemoPerson(phone = DUMMY_PHONE) {
 		const client = await this.apiClientFactory()
 
 		//@ts-ignore

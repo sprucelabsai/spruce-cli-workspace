@@ -33,7 +33,7 @@ export default class SkillFixture {
 		values: { name: string; slug?: string },
 		options?: RegisterSkillOptions
 	) {
-		await this.personFixture.loginAsDummyPerson()
+		await this.personFixture.loginAsDemoPerson()
 
 		return this.storeFactory.Store('skill').register(
 			{

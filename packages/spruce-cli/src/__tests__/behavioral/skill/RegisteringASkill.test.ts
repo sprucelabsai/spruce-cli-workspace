@@ -30,7 +30,7 @@ export default class RegisteringASkillTest extends AbstractCliTest {
 	@test()
 	protected static async canRegisterSkill() {
 		const cli = await this.FeatureFixture().installCachedFeatures('skills')
-		await this.PersonFixture().loginAsDummyPerson()
+		await this.PersonFixture().loginAsDemoPerson()
 
 		const slug = `my-new-skill-${new Date().getTime()}`
 		const results = await cli.getFeature('skill').Action('register').execute({
