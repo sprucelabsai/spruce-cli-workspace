@@ -47,8 +47,8 @@ export default class FeatureCommandAttacher {
 			term: this.ui,
 		})
 
-		let command = this.program.command(commandStr).action(async (command) => {
-			await executer.execute(command.opts())
+		let command = this.program.command(commandStr).action(async (options) => {
+			await executer.execute(options)
 		})
 
 		if (action.commandAliases.length > 1) {
