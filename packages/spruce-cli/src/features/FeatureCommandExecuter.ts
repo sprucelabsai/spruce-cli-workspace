@@ -53,7 +53,6 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		const isInstalled = await this.featureInstaller.isInstalled(
 			this.featureCode
 		)
-
 		const installOptions = await this.askAboutMissingFeatureOptionsIfFeatureIsNotInstalled(
 			isInstalled,
 			feature,
@@ -341,8 +340,17 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		schema: S,
 		options: FeatureCommandExecuteOptions<F, S> | undefined
 	) {
+		const cleaned: Record<string, any> = {}
+		Object.keys(options ?? {}).forEach((key) => {
+			//@ts-ignore
+			if (typeof options[key] !== 'undefined') {
+				//@ts-ignore
+				cleaned[key] = options[key]
+			}
+		})
+
 		const fieldNames = Object.keys(schema.fields ?? {})
-		const providedFieldNames = options ? Object.keys(options ?? {}) : []
+		const providedFieldNames = cleaned ? Object.keys(cleaned ?? {}) : []
 		const fieldsToPresent = fieldNames.filter(
 			(name) =>
 				providedFieldNames.indexOf(name) === -1 &&
@@ -355,7 +363,8 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			const featureForm = new FormComponent<S>({
 				term: this.ui,
 				schema,
-				initialValues: options,
+				//@ts-ignore
+				initialValues: cleaned,
 				onWillAskQuestion: formUtil.onWillAskQuestionHandler.bind(
 					formUtil
 				) as any,
@@ -368,6 +377,6 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			})
 		}
 
-		return { ...(options ?? {}), ...answers } as SchemaValues<S>
+		return { ...(cleaned ?? {}), ...answers } as SchemaValues<S>
 	}
 }

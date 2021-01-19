@@ -11,6 +11,7 @@ type MockProgram = CommanderStatic['program'] & {
 		hint: string
 		defaultValue: string
 	}[]
+	_lastCommand: string
 	commandInvocations: string[]
 	actionInvocations: string[]
 	aliasesInvocations: string[]
