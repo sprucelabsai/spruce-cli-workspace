@@ -53,8 +53,8 @@ export default class NodeFeature<
 
 		await this.Service('command').execute('yarn init -y')
 
-		const nodeGenerator = this.Writer('node')
-		const files = await nodeGenerator.generateNodeModule(this.cwd)
+		const nodeWriter = this.Writer('node')
+		const files = await nodeWriter.generateNodeModule(this.cwd)
 
 		return { files }
 	}
