@@ -73,7 +73,7 @@
     "chokidar": "^3.5.1",
     "cli-table3": "^0.6.0",
     "commander": "^7.0.0",
-    "core-js": "^3.8.2",
+    "core-js": "^3.8.3",
     "emphasize": "^4.2.0",
     "fs-extra": "^9.0.1",
     "gifwrap": "SimenB/gifwrap#patch-1",
