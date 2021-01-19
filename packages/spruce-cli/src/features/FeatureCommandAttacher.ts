@@ -48,9 +48,7 @@ export default class FeatureCommandAttacher {
 		})
 
 		let command = this.program.command(commandStr).action(async (command) => {
-			await executer.execute(
-				typeof command.opts === 'function' ? command.opts() : command
-			)
+			await executer.execute(command.opts())
 		})
 
 		if (action.commandAliases.length > 1) {

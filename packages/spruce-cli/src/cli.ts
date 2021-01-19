@@ -283,7 +283,7 @@ export async function run(argv: string[] = []): Promise<void> {
 	const program = new Command()
 	let cwd = process.cwd()
 
-	program.storeOptionsAsProperties(false)
+	program.storeOptionsAsProperties()
 	program.option('--no-color', 'Disable color output in the console')
 	program.option(
 		'-d, --directory <path>',
