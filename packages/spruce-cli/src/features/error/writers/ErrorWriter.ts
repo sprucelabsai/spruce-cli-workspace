@@ -21,6 +21,8 @@ export default class ErrorWriter extends AbstractWriter {
 		)
 
 		if (!diskUtil.doesFileExist(resolvedDestination)) {
+			this.ui.startLoading('Creating Error class')
+
 			const errorContents = this.templates.error({
 				errors: errors.filter((error) => !error.isNested),
 			})
@@ -31,6 +33,8 @@ export default class ErrorWriter extends AbstractWriter {
 				results
 			)
 		} else {
+			this.ui.startLoading('Updating Error class')
+
 			const updates = await this.dropInNewErrorCases(
 				errors,
 				resolvedDestination
@@ -117,6 +121,8 @@ export default class ErrorWriter extends AbstractWriter {
 		})
 
 		const destination = diskUtil.resolvePath(destinationDir, 'options.types.ts')
+
+		this.ui.startLoading('Updating error options...')
 
 		const results = this.writeFileIfChangedMixinResults(
 			destination,
