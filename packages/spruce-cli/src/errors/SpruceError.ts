@@ -10,7 +10,7 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 
 		switch (options?.code) {
 			case 'INVALID_COMMAND':
-				if (options.args.length === 0) {
+				if (!options.args || options.args.length === 0) {
 					message = `Hey friend 👋.`
 				} else {
 					message = `Invalid command: ${options.args.join(' ')}.`

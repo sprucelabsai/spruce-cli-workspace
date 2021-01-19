@@ -190,8 +190,11 @@ export default class Cli implements CliInterface {
 
 			program.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
 
-			program.action((command, args) => {
-				throw new SpruceError({ code: 'INVALID_COMMAND', args: args || [] })
+			program.action((command) => {
+				throw new SpruceError({
+					code: 'INVALID_COMMAND',
+					args: command.args || [],
+				})
 			})
 		}
 
@@ -305,9 +308,5 @@ export async function run(argv: string[] = []): Promise<void> {
 
 	await Cli.Boot({ program, cwd })
 
-	const commandResult = await program.parseAsync(argv)
-
-	if (commandResult.length === 0) {
-		program.outputHelp()
-	}
+	await program.parseAsync(argv)
 }
