@@ -68,7 +68,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 
 		await this.PersonFixture().loginAsDemoPerson()
 
-		await this.OrganizationFixture().seedDummyOrg({
+		await this.OrganizationFixture().seedDemoOrg({
 			name: 'My great org',
 		})
 
@@ -87,7 +87,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 			'organizations'
 		)
 
-		const org = await this.OrganizationFixture().seedDummyOrg({
+		const org = await this.OrganizationFixture().seedDemoOrg({
 			name: 'My great org',
 		})
 
@@ -121,11 +121,11 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 			'organizations'
 		)
 
-		await this.OrganizationFixture().seedDummyOrg({
+		await this.OrganizationFixture().seedDemoOrg({
 			name: 'My great org',
 		})
 
-		const org2 = await this.OrganizationFixture().seedDummyOrg({
+		const org2 = await this.OrganizationFixture().seedDemoOrg({
 			name: 'My great org',
 		})
 

@@ -11,7 +11,7 @@ export default class OrganizationStoreTest extends AbstractCliTest {
 	protected static async skillIsNotInstalledByDefault() {
 		await this.FeatureFixture().installCachedFeatures('organizations')
 
-		const org = await this.OrganizationFixture().seedDummyOrg({
+		const org = await this.OrganizationFixture().seedDemoOrg({
 			name: 'A cool org',
 		})
 
@@ -31,7 +31,7 @@ export default class OrganizationStoreTest extends AbstractCliTest {
 	protected static async canDeleteOrg() {
 		await this.FeatureFixture().installCachedFeatures('organizations')
 
-		const org = await this.OrganizationFixture().seedDummyOrg({
+		const org = await this.OrganizationFixture().seedDemoOrg({
 			name: 'A cool org',
 		})
 
@@ -50,7 +50,7 @@ export default class OrganizationStoreTest extends AbstractCliTest {
 	protected static async installSkill() {
 		await this.FeatureFixture().installCachedFeatures('organizations')
 
-		const org = await this.OrganizationFixture().seedDummyOrg({
+		const org = await this.OrganizationFixture().seedDemoOrg({
 			name: 'A cool org',
 		})
 
@@ -74,10 +74,10 @@ export default class OrganizationStoreTest extends AbstractCliTest {
 	protected static async canGetMyOrgs() {
 		await this.FeatureFixture().installCachedFeatures('organizations')
 		const orgFixture = this.OrganizationFixture()
-		const org1 = await orgFixture.seedDummyOrg({
+		const org1 = await orgFixture.seedDemoOrg({
 			name: 'A cool org',
 		})
-		const org2 = await orgFixture.seedDummyOrg({
+		const org2 = await orgFixture.seedDemoOrg({
 			name: 'A cool org',
 		})
 

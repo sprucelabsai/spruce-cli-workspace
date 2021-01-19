@@ -49,7 +49,7 @@ export default class EventStoreTest extends AbstractCliTest {
 	@test()
 	protected static async registerEventContract() {
 		const organizationFixture = this.OrganizationFixture()
-		const org = await organizationFixture.seedDummyOrg({
+		const org = await organizationFixture.seedDemoOrg({
 			name: 'my new org',
 		})
 
@@ -180,7 +180,7 @@ export default class EventStoreTest extends AbstractCliTest {
 	}
 
 	private static async seedSkillAndInstallAtOrg(org: any, name: string) {
-		const skill = await this.SkillFixture().seedDummySkill({
+		const skill = await this.SkillFixture().seedDemoSkill({
 			name,
 		})
 

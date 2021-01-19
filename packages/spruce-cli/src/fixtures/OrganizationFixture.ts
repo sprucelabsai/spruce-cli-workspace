@@ -10,7 +10,7 @@ export default class OrganizationFixture {
 		this.personFixture = personFixture
 	}
 
-	public async seedDummyOrg(options: { name: string; slug?: string }) {
+	public async seedDemoOrg(options: { name: string; slug?: string }) {
 		await this.personFixture.loginAsDemoPerson()
 
 		return this.storeFactory.Store('organization').create({

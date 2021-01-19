@@ -23,7 +23,7 @@ export default class SkillFixture {
 		this.apiClientFactory = apiClientFactory
 	}
 
-	public async seedDummySkill(values: { name: string }) {
+	public async seedDemoSkill(values: { name: string }) {
 		return this.registerCurrentSkill(values, {
 			isRegisteringCurrentSkill: false,
 		})
