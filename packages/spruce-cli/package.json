@@ -75,7 +75,7 @@
     "commander": "^7.0.0",
     "core-js": "^3.8.3",
     "emphasize": "^4.2.0",
-    "fs-extra": "^9.0.1",
+    "fs-extra": "^9.1.0",
     "gifwrap": "SimenB/gifwrap#patch-1",
     "globby": "^11.0.2",
     "inflection": "^1.12.0",
