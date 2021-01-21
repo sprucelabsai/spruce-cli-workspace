@@ -24,6 +24,7 @@ export default class SkillFeature<
 		{ name: '@sprucelabs/spruce-skill-utils' },
 		{ name: '@sprucelabs/spruce-skill-booter' },
 		{ name: '@sprucelabs/spruce-event-utils' },
+		{ name: '@sprucelabs/spruce-event-plugin' },
 		{ name: '@sprucelabs/spruce-core-schemas' },
 		{ name: 'dotenv' },
 		{ name: '@sprucelabs/babel-plugin-schema', isDev: true },
