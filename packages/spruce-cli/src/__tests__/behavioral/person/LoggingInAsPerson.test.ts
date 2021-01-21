@@ -68,7 +68,7 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 		})
 
 		await this.waitForInput()
-		await this.ui.sendInput('7777')
+		await this.ui.sendInput(DUMMY_PHONE.substr(-4))
 
 		const results = await promise
 
