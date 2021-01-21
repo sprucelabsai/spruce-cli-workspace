@@ -19,7 +19,7 @@ import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
-const EXPECTED_NUM_CONTRACTS_GENERATED = 35
+const EXPECTED_NUM_CONTRACTS_GENERATED = 36
 
 export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	private static get mercuryVersion() {

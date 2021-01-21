@@ -27,6 +27,9 @@ export default class EventFeature extends AbstractFeature {
 		{
 			name: '@sprucelabs/spruce-event-utils',
 		},
+		{
+			name: '@sprucelabs/spruce-event-plugin',
+		},
 	]
 
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')

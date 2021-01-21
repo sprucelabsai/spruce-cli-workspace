@@ -41,6 +41,8 @@ class ErrorSkillFeature implements SkillFeature {
 		return true
 	};
 
+	public async destroy() {}
+
 	private async getErrors() {
 		const schemaFiles = await globby(
 			diskUtil.resolvePath(

@@ -9,7 +9,7 @@ import {
 	HASH_SPRUCE_DIR_NAME,
 } from "@sprucelabs/spruce-skill-utils";
 
-class SchemaSkillFeature implements SkillFeature {
+class SchemaFeature implements SkillFeature {
 	private skill: Skill;
 
 	public constructor(skill: Skill) {
@@ -32,6 +32,9 @@ class SchemaSkillFeature implements SkillFeature {
 
 		return health;
 	};
+
+	public async destroy() {}
+
 
 	public isInstalled = async () => {
 		const schemaPath = pathUtil.join(
@@ -67,6 +70,6 @@ class SchemaSkillFeature implements SkillFeature {
 }
 
 export default (skill: Skill) => {
-	const feature = new SchemaSkillFeature(skill);
+	const feature = new SchemaFeature(skill);
 	skill.registerFeature("schema", feature);
 };

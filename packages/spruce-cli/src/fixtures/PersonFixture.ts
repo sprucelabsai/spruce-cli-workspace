@@ -29,7 +29,7 @@ export default class PersonFixture {
 		)
 
 		const confirmPinResults = await client.emit('confirm-pin::v2020_12_25', {
-			payload: { challenge, pin: '7777' },
+			payload: { challenge, pin: phone.substr(-4) },
 		})
 
 		const { person } = eventResponseUtil.getFirstResponseOrThrow(

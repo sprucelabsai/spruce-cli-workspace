@@ -1,1 +1,1 @@
-export { plugin as default } from '@sprucelabs/spruce-event-utils'
+export { plugin as default } from '@sprucelabs/spruce-event-plugin'

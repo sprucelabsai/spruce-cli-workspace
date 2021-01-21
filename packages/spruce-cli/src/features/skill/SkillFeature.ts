@@ -22,6 +22,7 @@ export default class SkillFeature<
 		{ name: '@sprucelabs/log' },
 		{ name: '@sprucelabs/error' },
 		{ name: '@sprucelabs/spruce-skill-utils' },
+		{ name: '@sprucelabs/spruce-skill-booter' },
 		{ name: '@sprucelabs/spruce-event-utils' },
 		{ name: '@sprucelabs/spruce-core-schemas' },
 		{ name: 'dotenv' },

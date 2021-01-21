@@ -1,5 +1,5 @@
 import pathUtil from 'path'
-import Skill from '@sprucelabs/spruce-skill-utils'
+import Skill from '@sprucelabs/spruce-skill-booter'
 
 
 export default new Skill({
