@@ -25,8 +25,6 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 			nameCamel: EVENT_CAMEL,
 		})
 
-		await this.openInVsCode({ timeout: 10000 })
-
 		const boot = await cli
 			.getFeature('skill')
 			.Action('boot')
