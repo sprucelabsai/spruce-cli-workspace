@@ -19,7 +19,6 @@ export default class SkillFeature<
 	public readonly installOrderWeight = 100
 
 	public packageDependencies: NpmPackage[] = [
-		{ name: '@sprucelabs/log' },
 		{ name: '@sprucelabs/error' },
 		{ name: '@sprucelabs/spruce-skill-utils' },
 		{ name: '@sprucelabs/spruce-skill-booter' },

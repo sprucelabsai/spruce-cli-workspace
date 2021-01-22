@@ -266,4 +266,22 @@ export default class SchemaWriter extends AbstractWriter {
 			'For constructing what goes to the right of the : after each property in the interface.'
 		)
 	}
+
+	public writePlugin(cwd: string) {
+		const destination = diskUtil.resolveHashSprucePath(
+			cwd,
+			'features',
+			'schema.plugin.ts'
+		)
+
+		const pluginContents = this.templates.schemaPlugin()
+
+		const results = this.writeFileIfChangedMixinResults(
+			destination,
+			pluginContents,
+			'Enable schema support in your skill.'
+		)
+
+		return results
+	}
 }
