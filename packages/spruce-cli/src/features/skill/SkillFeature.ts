@@ -72,7 +72,7 @@ export default class SkillFeature<
 		'resolve-paths.lint': 'yarn build.resolve-paths && yarn lint',
 		rebuild: 'yarn clean.all && yarn && yarn build',
 		clean: 'rm -rf build/',
-		'clean.all': 'rm -rf build/ && rm -rf node_modules/',
+		'clean.all': 'yarn clean && rm yarn.lock | true && rm -rf node_modules/',
 		boot: 'node build/index',
 		'boot.local':
 			'node -r ts-node/register -r tsconfig-paths/register ./src/index',
@@ -91,7 +91,6 @@ export default class SkillFeature<
 			'yarn upgrade.packages.all && yarn lint && yarn build && yarn test',
 		'watch.lint':
 			"chokidar 'src/**/*' '../spruce-templates/src/**' -c 'yarn lint.tsc'",
-		// eslint-disable-next-line no-undef
 	} as const
 
 	public readonly fileDescriptions: FileDescription[] = [
@@ -168,7 +167,8 @@ export default class SkillFeature<
 		},
 		{
 			path: 'src/.spruce/features/event.plugin.ts',
-			description: 'Used to support booting the skill.',
+			description:
+				'Gives your skill event support through local boot events and Mercury.',
 			shouldOverwriteWhenChanged: true,
 		},
 	]
