@@ -2,6 +2,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { NpmPackage } from '../../types/cli.types'
 import AbstractFeature, {
 	FeatureDependency,
+	FeatureOptions,
 	InstallResults,
 } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
@@ -23,6 +24,33 @@ export default class ErrorFeature extends AbstractFeature {
 	public code: FeatureCode = 'error'
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
+	public constructor(options: FeatureOptions) {
+		super(options)
+
+		void this.emitter.on(
+			'feature.did-execute',
+			this.handleDidExecuteFeature.bind(this)
+		)
+	}
+
+	private async handleDidExecuteFeature(payload: {
+		actionCode: string
+		featureCode: string
+	}) {
+		const isSkillInstalled = await this.featureInstaller.isInstalled('error')
+
+		if (!isSkillInstalled) {
+			return {}
+		}
+
+		if (payload.featureCode === 'skill' && payload.actionCode === 'upgrade') {
+			const files = await this.writePlugin()
+			return { files }
+		}
+
+		return {}
+	}
+
 	public async afterPackageInstall(): Promise<InstallResults> {
 		const isSkillInstalled = await this.featureInstaller.isInstalled('skill')
 
@@ -30,28 +58,14 @@ export default class ErrorFeature extends AbstractFeature {
 			return {}
 		}
 
-		const plugin = this.templates.errorPlugin()
-		const destination = this.getPluginDestination()
-
-		diskUtil.writeFile(destination, plugin)
+		const files = await this.writePlugin()
 
 		return {
-			files: [
-				{
-					name: 'error.plugin.ts',
-					path: destination,
-					action: 'generated',
-					description: 'Enables error support in your skill!',
-				},
-			],
+			files,
 		}
 	}
 
-	private getPluginDestination() {
-		return diskUtil.resolveHashSprucePath(
-			this.cwd,
-			'features',
-			'error.plugin.ts'
-		)
+	private async writePlugin() {
+		return this.Writer('error').writePlugin(this.cwd)
 	}
 }

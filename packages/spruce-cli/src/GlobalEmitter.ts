@@ -4,6 +4,7 @@ import {
 	MercuryEventEmitter,
 } from '@sprucelabs/mercury-types'
 import { buildSchema } from '@sprucelabs/schema'
+import generatedFileSchema from '#spruce/schemas/spruceCli/v2020_07_22/generatedFile.schema'
 import watcherDidDetectChangesEmitPayloadSchema from '#spruce/schemas/spruceCli/v2020_07_22/watcherDidDetectChangesEmitPayload.schema'
 
 export const globalContract = buildEventContract({
@@ -83,7 +84,15 @@ export const globalContract = buildEventContract({
 			}),
 			responsePayloadSchema: buildSchema({
 				id: 'didExecuteResponsePayload',
-				fields: {},
+				fields: {
+					files: {
+						type: 'schema',
+						isArray: true,
+						options: {
+							schema: generatedFileSchema,
+						},
+					},
+				},
 			}),
 		},
 	},

@@ -1,8 +1,10 @@
+import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import SpruceError from '../errors/SpruceError'
 import AbstractFeature from '../features/AbstractFeature'
 import FeatureInstaller from '../features/FeatureInstaller'
 import { FeatureAction } from '../features/features.types'
 import { GlobalEmitter } from '../GlobalEmitter'
+import mergeUtil from '../utilities/merge.utility'
 
 export default class InstallCheckingActionDecorator implements FeatureAction {
 	public code = 'install-checking-action-facade'
@@ -72,12 +74,19 @@ export default class InstallCheckingActionDecorator implements FeatureAction {
 
 		const response = await this.childAction.execute(options)
 
-		await this.emitter.emit('feature.did-execute', {
+		const didExecuteResults = await this.emitter.emit('feature.did-execute', {
 			results: response,
 			featureCode: this.parent.code,
 			actionCode: this.code,
 		})
 
-		return response
+		const { payloads } = eventResponseUtil.getAllResponsePayloadsAndErrors(
+			didExecuteResults,
+			SpruceError
+		)
+
+		const merged = mergeUtil.mergeActionResults(response, ...payloads)
+
+		return merged
 	}
 }

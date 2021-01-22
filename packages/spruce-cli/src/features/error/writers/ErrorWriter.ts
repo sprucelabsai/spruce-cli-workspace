@@ -134,4 +134,22 @@ export default class ErrorWriter extends AbstractWriter {
 
 		return results
 	}
+
+	public writePlugin(cwd: string) {
+		const destination = diskUtil.resolveHashSprucePath(
+			cwd,
+			'features',
+			'error.plugin.ts'
+		)
+
+		const pluginContents = this.templates.errorPlugin()
+
+		const results = this.writeFileIfChangedMixinResults(
+			destination,
+			pluginContents,
+			'Supports your skill with Error generation and handling.'
+		)
+
+		return results
+	}
 }

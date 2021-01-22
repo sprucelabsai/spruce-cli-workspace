@@ -2,6 +2,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { CliInterface } from '../../../cli'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
+import testUtil from '../../../tests/utilities/test.utility'
 import { GeneratedFile } from '../../../types/cli.types'
 export default class UpgradingASkillTest extends AbstractCliTest {
 	@test()
@@ -152,6 +153,23 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		const passedHealth = await cli.checkHealth()
 		assert.isEqual(passedHealth.skill.status, 'passed')
+	}
+
+	@test()
+	protected static async errorFeatureUpgrades() {
+		const cli = await this.FeatureFixture().installCachedFeatures('errors')
+		const pluginPath = this.resolveHashSprucePath('features/error.plugin.ts')
+		const originalContents = diskUtil.readFile(pluginPath)
+
+		diskUtil.writeFile(pluginPath, '')
+
+		const results = await cli.getFeature('skill').Action('upgrade').execute({})
+
+		testUtil.assertsFileByNameInGeneratedFiles('error.plugin.ts', results.files)
+
+		const updatedContents = diskUtil.readFile(pluginPath)
+
+		assert.isEqual(updatedContents, originalContents)
 	}
 
 	private static async installAndBreakSkill(cacheKey: string) {

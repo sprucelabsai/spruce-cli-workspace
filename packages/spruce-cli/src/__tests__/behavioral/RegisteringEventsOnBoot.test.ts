@@ -28,7 +28,7 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 			.Action('boot')
 			.execute({ local: true })
 
-		await this.wait(10000)
+		await this.wait(15000)
 		boot.meta?.kill()
 
 		const client = await this.connectToApi({
@@ -39,6 +39,7 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 		const { contracts } = await this.Store('event', {
 			apiClientFactory: async () => client,
 		}).fetchEventContracts()
+
 		const version = versionUtil.generateVersion().constValue
 		const name = eventNameUtil.join({
 			eventNamespace: currentSkill.slug,
