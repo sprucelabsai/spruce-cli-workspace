@@ -1,9 +1,10 @@
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
+import SpruceError from '../errors/SpruceError'
 import { ApiClientFactory } from '../types/apiClient.types'
 
 require('dotenv').config()
 
-export const DUMMY_PHONE = process.env.DUMMY_PHONE ?? '+1 555-555-1235'
+export const DUMMY_PHONE = process.env.DEMO_PHONE
 
 export default class PersonFixture {
 	private apiClientFactory: ApiClientFactory
@@ -13,6 +14,13 @@ export default class PersonFixture {
 	}
 
 	public async loginAsDemoPerson(phone = DUMMY_PHONE) {
+		if (!phone) {
+			throw new SpruceError({
+				code: 'MISSING_PARAMETERS',
+				parameters: ['env.DEMO_PHONE'],
+			})
+		}
+
 		const client = await this.apiClientFactory()
 
 		//@ts-ignore
