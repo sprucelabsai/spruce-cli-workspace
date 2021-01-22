@@ -15,7 +15,7 @@
   "scripts": {
     "lint": "lerna run lint --parallel",
     "lint.tsc": "lerna run lint.tsc --parallel",
-    "lint.fix": "lerna run lint.fix --parallel",
+    "fix.lint": "lerna run fix.lint --parallel",
     "rebuild": "yarn clean.all && yarn && yarn build; yarn cache.tests",
     "build": "lerna run build",
     "build.types": "lerna run build.types",
@@ -31,7 +31,7 @@
     "sync.ct": "yarn chokidar \"**/*.ts\" \"**/*.js\" \"**/*.json\" --ignore \"**/build/**\" -c \"rsync . root@3.tcp.ngrok.io:/media/ramdisk/$(basename `pwd`)/ -e 'ssh -p 25956' -avz --exclude=yarn.lock --exclude=node_modules --exclude=build --exclude=.git --exclude=tmp --inplace --delete --progress\"",
     "clean.all": "yarn clean.cache && rm -f yarn.lock && lerna run clean && rm -rf node_modules; for d in packages/*/node_modules; do echo $d; rm -rf $d; done && yarn clean.build",
     "clean.build": "for d in packages/*/build; do echo $d; rm -rf $d; done",
-    "upgrade.packages": "yarn upgrade --latest && rm -f yarn.lock && yarn | true && yarn lint.fix || true",
+    "upgrade.packages": "yarn upgrade --latest && rm -f yarn.lock && yarn | true && yarn fix.lint || true",
     "upgrade.packages.workspaces": "yarn && for d in packages/*; do cd $d; yarn-upgrade-all; cd ../..; done",
     "upgrade.packages.all": "yarn install && yarn upgrade.packages.workspaces && yarn upgrade.packages",
     "upgrade.packages.test": "yarn upgrade.packages.all && yarn lint && yarn build && yarn test"

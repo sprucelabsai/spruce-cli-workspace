@@ -29,7 +29,7 @@
   "scripts": {
     "lint": "eslint '**/*.ts'",
     "lint.tsc": "tsc --noEmit && echo 'spruce-cli PASS'",
-    "lint.fix": "eslint --fix '**/*.ts'",
+    "fix.lint": "eslint --fix '**/*.ts'",
     "rebuild": "cd ../ && yarn rebuild",
     "build": "yarn build.babel && yarn build.types.resolve-paths.lint",
     "build.types": "tsc --emitDeclarationOnly && echo PASS TYPES || echo FAIL TYPES",

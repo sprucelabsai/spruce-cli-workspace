@@ -34,7 +34,7 @@
 		"clean": "rm -rf build/",
 		"copy-templates": "mkdirp ./build/templates && cp -r ./src/templates/* ./build/templates",
 		"lint": "eslint '**/*.ts' && tsc -p . --noEmit",
-		"lint.fix": "eslint --fix '**/*.ts'",
+		"fix.lint": "eslint --fix '**/*.ts'",
 		"release": "semantic-release",
 		"local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS",
 		"watch.build": "concurrently 'yarn build.babel --watch' \"chokidar 'src/**/*' -c 'yarn build.types && yarn build.resolve-paths'\"",

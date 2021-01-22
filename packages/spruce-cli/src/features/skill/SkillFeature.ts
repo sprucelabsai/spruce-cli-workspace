@@ -55,8 +55,8 @@ export default class SkillFeature<
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 	private scripts = {
 		lint: "eslint '**/*.ts'",
-		'lint.fix': "eslint --fix '**/*.ts'",
-		'lint.watch':
+		'fix.lint': "eslint --fix '**/*.ts'",
+		'watch.lint':
 			"concurrently 'yarn lint' \"chokidar 'src/**/*' -c 'yarn lint.tsc'\"",
 		health: 'yarn boot --health',
 		'health.local': 'yarn boot.local --health',
@@ -85,12 +85,10 @@ export default class SkillFeature<
 			"concurrently 'yarn build.types.resolve-paths.lint' 'tsc --emitDeclarationOnly -w' 'yarn build.babel --watch' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn resolve-paths.lint'\"",
 		'watch.rebuild': 'yarn clean.all && yarn && yarn build.watch',
 		'upgrade.packages':
-			'yarn-upgrade-all && rm yarn.lock ; yarn ; yarn lint.fix | true',
+			'yarn-upgrade-all && rm yarn.lock ; yarn ; yarn fix.lint | true',
 		'upgrade.packages.all': 'yarn install && yarn upgrade.packages',
 		'upgrade.packages.test':
 			'yarn upgrade.packages.all && yarn lint && yarn build && yarn test',
-		'watch.lint':
-			"chokidar 'src/**/*' '../spruce-templates/src/**' -c 'yarn lint.tsc'",
 	} as const
 
 	public readonly fileDescriptions: FileDescription[] = [
