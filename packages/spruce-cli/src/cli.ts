@@ -190,7 +190,7 @@ export default class Cli implements CliInterface {
 
 			program.commands.sort((a: any, b: any) => a._name.localeCompare(b._name))
 
-			program.action((command) => {
+			program.action((_, command) => {
 				throw new SpruceError({
 					code: 'INVALID_COMMAND',
 					args: command.args || [],

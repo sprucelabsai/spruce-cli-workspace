@@ -122,7 +122,7 @@ export default class SkillFeature<
 		{
 			path: 'readme.md',
 			description: "Don't forget to update this at some point.",
-			shouldOverwriteWhenChanged: true,
+			shouldOverwriteWhenChanged: false,
 		},
 		{
 			path: 'babel.config.js',

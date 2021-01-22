@@ -11,9 +11,11 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 		switch (options?.code) {
 			case 'INVALID_COMMAND':
 				if (!options.args || options.args.length === 0) {
-					message = `Hey friend 👋.`
+					message = `Hey friend 👋.. I don't support the command you tried.`
 				} else {
-					message = `Invalid command: ${options.args.join(' ')}.`
+					message = `Hey friend 👋. I don't know the command: ${options.args.join(
+						' '
+					)}.`
 				}
 				message += ' Try running `spruce --help`'
 				break
