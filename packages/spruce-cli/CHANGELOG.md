@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.1.13](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.1.12...v13.1.13) (2021-01-22)
+
+
+### Bug Fixes
+
+* add spruce-event-plugin to skill feature ([603505e](https://github.com/sprucelabsai/spruce-cli-workspace/commit/603505e))
+* canLoginAsDummyPerson should use last 4 of phone for pin ([78f380b](https://github.com/sprucelabsai/spruce-cli-workspace/commit/78f380b))
+
+
+
+
+
 ## [13.1.12](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.1.11...v13.1.12) (2021-01-20)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
