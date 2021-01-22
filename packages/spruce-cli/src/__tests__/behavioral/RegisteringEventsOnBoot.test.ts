@@ -18,27 +18,38 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 			skill2,
 			currentSkill,
 		} = await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
+
 		await cli.getFeature('event').Action('create').execute({
 			nameReadable: EVENT_NAME_READABLE,
 			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
 		})
+
+		await this.openInVsCode({ timeout: 10000 })
+
 		const boot = await cli
 			.getFeature('skill')
 			.Action('boot')
 			.execute({ local: true })
-
-		await this.wait(15000)
-		boot.meta?.kill()
 
 		const client = await this.connectToApi({
 			skillId: skill2.id,
 			apiKey: skill2.apiKey,
 		})
 
-		const { contracts } = await this.Store('event', {
-			apiClientFactory: async () => client,
-		}).fetchEventContracts()
+		let contracts: any
+
+		do {
+			await this.wait(1000)
+
+			const contractResults = await this.Store('event', {
+				apiClientFactory: async () => client,
+			}).fetchEventContracts()
+
+			contracts = contractResults.contracts
+		} while (contracts.length < 2)
+
+		boot.meta?.kill()
 
 		const version = versionUtil.generateVersion().constValue
 		const name = eventNameUtil.join({
