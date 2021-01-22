@@ -4,7 +4,7 @@ import { ApiClientFactory } from '../types/apiClient.types'
 
 require('dotenv').config()
 
-export const DUMMY_PHONE = process.env.DEMO_PHONE
+export const DUMMY_PHONE = process.env.DEMO_NUMBER
 
 export default class PersonFixture {
 	private apiClientFactory: ApiClientFactory
@@ -17,7 +17,7 @@ export default class PersonFixture {
 		if (!phone) {
 			throw new SpruceError({
 				code: 'MISSING_PARAMETERS',
-				parameters: ['env.DEMO_PHONE'],
+				parameters: ['env.DEMO_NUMBER'],
 			})
 		}
 
