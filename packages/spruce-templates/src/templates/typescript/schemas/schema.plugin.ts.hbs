@@ -11,6 +11,7 @@ import {
 
 class SchemaFeature implements SkillFeature {
 	private skill: Skill;
+	private _isBooted = false
 
 	public constructor(skill: Skill) {
 		this.skill = skill;
@@ -18,12 +19,11 @@ class SchemaFeature implements SkillFeature {
 
 	public execute = async () => {
 		await this.loadSchemas();
+		this._isBooted = true
 	};
 
 	public checkHealth = async () => {
 		const schemas = await this.loadSchemas()
-
-
 
 		const health: SchemaHealthCheckItem = {
 			status: "passed",
@@ -33,8 +33,9 @@ class SchemaFeature implements SkillFeature {
 		return health;
 	};
 
-	public async destroy() {}
-
+	public async destroy() {
+		this._isBooted = false
+	}
 
 	public isInstalled = async () => {
 		const schemaPath = pathUtil.join(
@@ -47,6 +48,10 @@ class SchemaFeature implements SkillFeature {
 
 		return isSchemaInstalled;
 	};
+
+	public isBooted() {
+		return this._isBooted
+	}
 
 	private async loadSchemas() {
 		const schemaFiles = await globby(

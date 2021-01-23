@@ -9,12 +9,15 @@ import {
 
 class ErrorSkillFeature implements SkillFeature {
 	private skill: Skill;
+	private _isBooted = false
 
 	public constructor(skill: Skill) {
 		this.skill = skill;
 	}
 
-	public execute = async () => { };
+	public execute = async () => {
+		this._isBooted = true
+	 };
 
 	public checkHealth = async () => {
 		const errorFiles = await this.getErrors()
@@ -41,7 +44,13 @@ class ErrorSkillFeature implements SkillFeature {
 		return true
 	};
 
-	public async destroy() {}
+	public async destroy() {
+		this._isBooted = false
+	}
+
+	public isBooted() {
+		return this._isBooted
+	}
 
 	private async getErrors() {
 		const schemaFiles = await globby(
