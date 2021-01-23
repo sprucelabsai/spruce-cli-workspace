@@ -196,7 +196,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 			.execute({ local: true })
 
 		//give the skill time to boot
-		await this.wait(10000)
+		await this.wait(20000)
 
 		const client = (await this.connectToApi({
 			skillId: skill2.id,
