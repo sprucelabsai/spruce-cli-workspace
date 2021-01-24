@@ -23,6 +23,8 @@ export default class PullAction extends AbstractFeatureAction<PullOptionsSchema>
 			contracts[0]
 		)}\n\nexport default [coreEventContract]\n\nexport type CoreEventContract = typeof coreEventContract`
 
+		const action = diskUtil.doesFileExist(destination) ? 'updated' : 'generated'
+
 		diskUtil.writeFile(destination, contents)
 
 		return {
@@ -30,7 +32,7 @@ export default class PullAction extends AbstractFeatureAction<PullOptionsSchema>
 				{
 					name: filename,
 					path: destination,
-					action: 'generated',
+					action,
 					description: 'All your Mercury Core Events ready for production use!',
 				},
 			],

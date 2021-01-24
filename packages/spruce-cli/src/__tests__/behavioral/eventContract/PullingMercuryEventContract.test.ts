@@ -83,4 +83,24 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 			'export type CoreEventContract = typeof coreEventContract'
 		)
 	}
+
+	@test()
+	protected static async generatingASecondTimeReportsAnUpdate() {
+		await this.cli.getFeature('eventContract').Action('pull').execute({})
+
+		const results = await this.cli
+			.getFeature('eventContract')
+			.Action('pull')
+			.execute({})
+
+		testUtil.assertsFileByNameInGeneratedFiles(
+			'events.contract.ts',
+			results.files
+		)
+
+		assert.doesInclude(results.files ?? [], {
+			name: 'events.contract.ts',
+			action: 'updated',
+		})
+	}
 }
