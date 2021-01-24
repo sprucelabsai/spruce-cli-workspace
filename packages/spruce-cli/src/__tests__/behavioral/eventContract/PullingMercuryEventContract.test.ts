@@ -76,17 +76,13 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 			results.files
 		)
 
-		debugger
-
 		const contents = diskUtil.readFile(match)
-		debugger
 
 		assert.doesInclude(
 			contents,
 			'export type CoreEventContract = typeof coreEventContract'
 		)
 
-		debugger
 		await this.openInVsCode()
 	}
 }
