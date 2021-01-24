@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.2.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.1.15...v13.2.0) (2021-01-24)
+
+
+### Features
+
+* pulling core event contract for distribution in mercury-types ([6a3df5c](https://github.com/sprucelabsai/spruce-cli-workspace/commit/6a3df5c))
+
+
+
+
+
 ## [13.1.15](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.1.14...v13.1.15) (2021-01-23)
 
 **Note:** Version bump only for package spruce-cli-workspace
