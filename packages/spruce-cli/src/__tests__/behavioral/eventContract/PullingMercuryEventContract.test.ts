@@ -82,7 +82,5 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 			contents,
 			'export type CoreEventContract = typeof coreEventContract'
 		)
-
-		await this.openInVsCode()
 	}
 }
