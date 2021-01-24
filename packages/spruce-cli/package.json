@@ -207,6 +207,15 @@
         "code": "schema"
       }
     ],
+    "node": [
+      {
+        "code": "node",
+        "options": {
+          "name": "plain node module",
+          "description": "go team!"
+        }
+      }
+    ],
     "eventsInNodeModule": [
       {
         "code": "node",

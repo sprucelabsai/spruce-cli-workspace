@@ -12,6 +12,7 @@ import AbstractFeature from './AbstractFeature'
 import ConversationFeature from './conversation/ConversationFeature'
 import ErrorFeature from './error/ErrorFeature'
 import EventFeature from './event/EventFeature'
+import EventContractFeature from './eventContract/EventContractFeature'
 import FeatureInstaller from './FeatureInstaller'
 import NodeFeature from './node/NodeFeature'
 import OnboardFeature from './onboard/OnboardFeature'
@@ -36,6 +37,7 @@ export interface FeatureMap {
 	person: PersonFeature
 	organization: OrganizationFeature
 	conversation: ConversationFeature
+	eventContract: EventContractFeature
 }
 
 export type InstallFeature =

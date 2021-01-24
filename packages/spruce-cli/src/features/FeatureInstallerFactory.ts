@@ -8,6 +8,7 @@ import { FeatureOptions } from './AbstractFeature'
 import ConversationFeature from './conversation/ConversationFeature'
 import ErrorFeature from './error/ErrorFeature'
 import EventFeature from './event/EventFeature'
+import EventContractFeature from './eventContract/EventContractFeature'
 import FeatureInstaller from './FeatureInstaller'
 import { FeatureCode } from './features.types'
 import NodeFeature from './node/NodeFeature'
@@ -34,6 +35,7 @@ export default class FeatureInstallerFactory {
 		PersonFeature,
 		OrganizationFeature,
 		ConversationFeature,
+		EventContractFeature,
 	]
 
 	public static readonly featureCodes: FeatureCode[] = [
@@ -49,6 +51,7 @@ export default class FeatureInstallerFactory {
 		'person',
 		'organization',
 		'conversation',
+		'eventContract',
 	]
 
 	public static WithAllFeatures(options: {
