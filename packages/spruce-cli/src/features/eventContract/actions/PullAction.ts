@@ -17,9 +17,21 @@ export default class PullAction extends AbstractFeatureAction<PullOptionsSchema>
 
 		const { contracts } = await this.Store('event').fetchEventContracts()
 
-		const destination = diskUtil.resolvePath(this.cwd, 'src', filename)
+		let destination = diskUtil.resolvePath(this.cwd, filename)
+		let buildEventContractImport = `import { buildEventContract } from '@sprucelabs/mercury-types'`
 
-		const contents = `import buildEventContract from './utilities/buildEventContract'\n\nconst coreEventContract = buildEventContract(${JSON.stringify(
+		try {
+			const pkg = this.Service('pkg')
+			const name = pkg.get('name')
+
+			if (name === '@sprucelabs/mercury-types') {
+				destination = diskUtil.resolvePath(this.cwd, 'src', filename)
+				buildEventContractImport = `import buildEventContract from './utilities/buildEventContract'`
+			}
+			// eslint-disable-next-line no-empty
+		} catch {}
+
+		const contents = `${buildEventContractImport}\n\nconst coreEventContract = buildEventContract(${JSON.stringify(
 			contracts[0]
 		)})\n\nconst coreEventContracts = [coreEventContract]\n\nexport default coreEventContracts\n\nexport type CoreEventContract = typeof coreEventContract`
 

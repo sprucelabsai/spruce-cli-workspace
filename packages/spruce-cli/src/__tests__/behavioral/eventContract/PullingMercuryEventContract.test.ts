@@ -24,26 +24,71 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 	}
 
 	@test()
-	protected static async generatesContractAtCwd() {
+	protected static async generatesContractAtCwdWhenInNormalModule() {
 		const results = await this.cli
 			.getFeature('eventContract')
 			.Action('pull')
 			.execute({})
 
-		testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertsFileByNameInGeneratedFiles(
 			'events.contract.ts',
 			results.files
 		)
+
+		assert.isEqual(match, this.resolvePath('events.contract.ts'))
 
 		assert.doesInclude(results.files ?? [], {
 			name: 'events.contract.ts',
 			action: 'generated',
 		})
+
+		const contents = diskUtil.readFile(match)
+
+		assert.doesInclude(
+			contents,
+			"import { buildEventContract } from '@sprucelabs/mercury-types'"
+		)
 	}
 
-	@test.skip('skipped because only imports from mercury-types')
+	@test()
+	protected static async generatesContractAtCwdWhenInMercuryTypes() {
+		this.copyMercuryTypesPackageJson()
+
+		const results = await this.cli
+			.getFeature('eventContract')
+			.Action('pull')
+			.execute({})
+
+		const match = testUtil.assertsFileByNameInGeneratedFiles(
+			'events.contract.ts',
+			results.files
+		)
+
+		assert.doesInclude(match, this.resolvePath('src', 'events.contract.ts'))
+
+		assert.doesInclude(results.files ?? [], {
+			name: 'events.contract.ts',
+			action: 'generated',
+		})
+
+		const contents = diskUtil.readFile(match)
+
+		assert.doesInclude(
+			contents,
+			"import buildEventContract from './utilities/buildEventContract"
+		)
+	}
+
+	private static copyMercuryTypesPackageJson() {
+		const source = this.resolveTestPath('mercury-types-package.json')
+		const destination = this.resolvePath('package.json')
+		const contents = diskUtil.readFile(source)
+		diskUtil.writeFile(destination, contents)
+	}
+
+	@test()
 	protected static async savesContractLocallyAndImportsAsDefault() {
-		this.cli = await this.FeatureFixture().installCachedFeatures('node')
+		this.cli = await this.FeatureFixture().installCachedFeatures('events')
 
 		const results = await this.cli
 			.getFeature('eventContract')
