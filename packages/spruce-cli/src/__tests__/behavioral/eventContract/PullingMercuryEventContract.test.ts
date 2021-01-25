@@ -41,7 +41,7 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 		})
 	}
 
-	@test()
+	@test.skip('skipped because only imports from mercury-types')
 	protected static async savesContractLocallyAndImportsAsDefault() {
 		this.cli = await this.FeatureFixture().installCachedFeatures('node')
 
