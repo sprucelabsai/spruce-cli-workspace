@@ -78,6 +78,7 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 
 		const contents = diskUtil.readFile(match)
 
+		assert.doesInclude(contents, 'export default coreEventContracts')
 		assert.doesInclude(
 			contents,
 			'export type CoreEventContract = typeof coreEventContract'
