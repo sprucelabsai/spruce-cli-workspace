@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.3.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.2.2...v13.3.0) (2021-01-25)
+
+
+### Features
+
+* generates specially for mercury-types and other node module ([722bf08](https://github.com/sprucelabsai/spruce-cli-workspace/commit/722bf08))
+
+
+
+
+
 ## [13.2.2](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.2.1...v13.2.2) (2021-01-25)
 
 **Note:** Version bump only for package spruce-cli-workspace
