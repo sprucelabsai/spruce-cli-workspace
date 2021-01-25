@@ -89,6 +89,10 @@ export type InstallFeature =
 			code: 'conversation'
 			options?: undefined
 	  }
+	| {
+			code: 'eventContract'
+			options?: undefined
+	  }
 
 export interface FeatureActionOptions {
 	templates: Templates

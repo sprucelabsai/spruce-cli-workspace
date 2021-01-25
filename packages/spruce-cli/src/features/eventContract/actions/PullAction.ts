@@ -17,11 +17,11 @@ export default class PullAction extends AbstractFeatureAction<PullOptionsSchema>
 
 		const { contracts } = await this.Store('event').fetchEventContracts()
 
-		const destination = diskUtil.resolvePath(this.cwd, filename)
+		const destination = diskUtil.resolvePath(this.cwd, 'src', filename)
 
-		const contents = `const coreEventContract = ${JSON.stringify(
+		const contents = `import buildEventContract from './utilities/buildEventContract'\n\nconst coreEventContract = buildEventContract(${JSON.stringify(
 			contracts[0]
-		)}\n\nexport default [coreEventContract]\n\nexport type CoreEventContract = typeof coreEventContract`
+		)})\n\nexport default [coreEventContract]\n\nexport type CoreEventContract = typeof coreEventContract`
 
 		const action = diskUtil.doesFileExist(destination) ? 'updated' : 'generated'
 

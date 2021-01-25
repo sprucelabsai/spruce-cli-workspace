@@ -4,7 +4,7 @@ import { ApiClientFactory } from '../types/apiClient.types'
 
 require('dotenv').config()
 
-export const DUMMY_PHONE = process.env.DEMO_NUMBER
+export const DUMMY_PHONE = process.env.DEMO_NUMBER as string
 
 export default class PersonFixture {
 	private apiClientFactory: ApiClientFactory
