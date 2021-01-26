@@ -26,25 +26,25 @@
 		"url": "https://github.com/sprucelabsai/spruce-cli-workspace/issues"
 	},
 	"scripts": {
+		"arkit": "arkit -f index.ts -o docs/images/arkit.svg",
+		"arkit.png": "arkit -f index.ts -o docs/images/arkit.png",
 		"build": "yarn build.babel && yarn build.types && yarn build.resolve-paths",
 		"build.types": "tsc --emitDeclarationOnly && echo PASS",
 		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps --root-mode upward --copy-files --include-dotfiles",
 		"build.resolve-paths": "resolve-path-aliases --target build",
-		"rebuild": "cd ../ && yarn rebuild",
 		"clean": "rm -rf build/",
 		"copy-templates": "mkdirp ./build/templates && cp -r ./src/templates/* ./build/templates",
-		"lint": "eslint '**/*.ts' && tsc -p . --noEmit",
 		"fix.lint": "eslint --fix '**/*.ts'",
-		"release": "semantic-release",
+		"lint": "eslint '**/*.ts' && tsc -p . --noEmit",
 		"local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS",
-		"watch.build": "concurrently 'yarn build.babel --watch' \"chokidar 'src/**/*' -c 'yarn build.types && yarn build.resolve-paths'\"",
-		"arkit": "arkit -f index.ts -o docs/images/arkit.svg",
-		"arkit.png": "arkit -f index.ts -o docs/images/arkit.png"
+		"rebuild": "cd ../ && yarn rebuild",
+		"release": "semantic-release",
+		"watch.build": "concurrently 'yarn build.babel --watch' \"chokidar 'src/**/*' -c 'yarn build.types && yarn build.resolve-paths'\""
 	},
 	"dependencies": {
-		"@sprucelabs/mercury-types": "^15.1.8",
-		"@sprucelabs/schema": ">=19.0.0",
-		"@sprucelabs/spruce-skill-utils": ">=13.5.1",
+		"@sprucelabs/mercury-types": "latest",
+		"@sprucelabs/schema": "latest",
+		"@sprucelabs/spruce-skill-utils": "latest",
 		"globby": "^11.0.2",
 		"handlebars": "^4.7.6",
 		"lodash": "^4.17.20",
@@ -56,7 +56,7 @@
 		"arkit": "^1.6.4",
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^5.3.0",
-		"conventional-changelog-sprucelabs": "^1.1.2",
+		"conventional-changelog-sprucelabs": "latest",
 		"prettier": "^2.2.1",
 		"typescript": "^4.1.3"
 	},
