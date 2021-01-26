@@ -155,6 +155,13 @@ export const templates = {
 		return template({})
 	},
 
+	conversationPlugin() {
+		const template = templateImportUtil.getTemplate(
+			'conversation/conversation.plugin.ts.hbs'
+		)
+		return template({})
+	},
+
 	errorExample(options: {
 		nameCamel: string
 		namePascal: string

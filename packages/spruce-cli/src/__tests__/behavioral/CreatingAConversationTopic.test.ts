@@ -1,6 +1,14 @@
+import { ConversationHealthCheckItem } from '@sprucelabs/spruce-conversation-plugin'
 import { test, assert } from '@sprucelabs/test'
+import { CliInterface } from '../../cli'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 import testUtil from '../../tests/utilities/test.utility'
+
+declare module '@sprucelabs/spruce-skill-utils/build/skill.types' {
+	interface HealthCheckResults {
+		conversation?: ConversationHealthCheckItem
+	}
+}
 
 export default class CreatingAConversationTopicTest extends AbstractCliTest {
 	@test()
@@ -34,5 +42,15 @@ export default class CreatingAConversationTopicTest extends AbstractCliTest {
 		assert.isEqual(imported.label, 'book an appointment')
 		assert.isArray(imported.utterances)
 		assert.isArray(imported.script)
+
+		await this.assertHealthCheckResultsAreValid(cli)
+	}
+
+	private static async assertHealthCheckResultsAreValid(cli: CliInterface) {
+		const health = await cli.checkHealth()
+		assert.isTruthy(health.conversation)
+		assert.isArray(health.conversation.topics)
+		assert.isLength(health.conversation.topics, 1)
+		assert.doesInclude(health.conversation.topics, 'bookAnAppointment')
 	}
 }

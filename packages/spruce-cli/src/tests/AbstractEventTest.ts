@@ -22,8 +22,10 @@ export default abstract class AbstractEventTest extends AbstractCliTest {
 		return cli
 	}
 
-	protected static async seedDummySkillRegisterCurrentSkillAndInstallToOrg() {
-		const cliPromise = this.installEventFeature('events')
+	protected static async seedDummySkillRegisterCurrentSkillAndInstallToOrg(
+		cacheKey = 'events'
+	) {
+		const cliPromise = this.installEventFeature(cacheKey)
 
 		const skillFixture = this.SkillFixture()
 

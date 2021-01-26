@@ -1,7 +1,5 @@
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import createConversationTopicOptionsSchema from '#spruce/schemas/spruceCli/v2020_07_22/createConversationTopicOptions.schema'
-import { GeneratedFile } from '../../../types/cli.types'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -16,24 +14,10 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			options
 		)
 
-		const filename = `${nameCamel}.topic.ts`
-		const destination = diskUtil.resolvePath(
-			this.cwd,
-			'src',
-			'conversations',
-			filename
-		)
-
-		const contents = this.templates.conversationTopic({ nameReadable })
-
-		diskUtil.writeFile(destination, contents)
-
-		const file: GeneratedFile = {
-			name: filename,
-			path: destination,
-			action: 'generated',
-			description: `The definition talking about ${nameReadable.toLowerCase()}`,
-		}
+		const file = this.Writer('conversation').writeDefinition(this.cwd, {
+			nameCamel,
+			nameReadable,
+		})
 
 		return {
 			files: [file],
