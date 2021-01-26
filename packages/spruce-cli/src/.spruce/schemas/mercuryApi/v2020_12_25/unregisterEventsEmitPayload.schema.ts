@@ -16,7 +16,7 @@ const unregisterEventsEmitPayloadSchema: SpruceSchemas.MercuryApi.v2020_12_25.Un
 	                options: undefined
 	            },
 	            /** . */
-	            'shouldUnRegisterAll': {
+	            'shouldUnregisterAll': {
 	                type: 'boolean',
 	                options: undefined
 	            },

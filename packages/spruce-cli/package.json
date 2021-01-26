@@ -183,6 +183,24 @@
         "code": "event"
       }
     ],
+    "conversation": [
+      {
+        "code": "skill",
+        "options": {
+          "name": "testing conversations",
+          "description": "this too, is a great test!"
+        }
+      },
+      {
+        "code": "schema"
+      },
+      {
+        "code": "event"
+      },
+      {
+        "code": "conversation"
+      }
+    ],
     "errors": [
       {
         "code": "skill",
@@ -302,7 +320,8 @@
             "createsExpectedPermissionContract": "F82",
             "registeringEventsOnBoot": "F83",
             "createsVersionedEventFilesDefaultingToToday": "F84",
-            "hasCreateConversationAction": "F100"
+            "hasCreateConversationAction": "F100",
+            "createsValidConversationTopicDefinition": "F101"
           }
         }
       ],

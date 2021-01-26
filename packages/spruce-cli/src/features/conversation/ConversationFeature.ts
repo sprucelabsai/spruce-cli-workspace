@@ -11,6 +11,11 @@ export default class ConversationFeature extends AbstractFeature {
 	public dependencies: FeatureDependency[] = [
 		{ code: 'event', isRequired: true },
 	]
-	public packageDependencies: NpmPackage[] = []
+	public packageDependencies: NpmPackage[] = [
+		{
+			name: '@sprucelabs/spruce-conversation-plugin',
+			isDev: false,
+		},
+	]
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 }

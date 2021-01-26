@@ -11,8 +11,8 @@ const didMessageResponsePayloadSchema: SpruceSchemas.MercuryApi.v2020_12_25.DidM
 	    fields: {
 	            /** . */
 	            'transitionConversationTo': {
-	                type: 'text',
-	                options: undefined
+	                type: 'select',
+	                options: {choices: [{"label":"Greeting","value":"greeting"},{"label":"Discovery","value":"discovery"},{"label":"Topic","value":"topic"},{"label":"Closing","value":"closing"}],}
 	            },
 	            /** . */
 	            'suggestedTopics': {

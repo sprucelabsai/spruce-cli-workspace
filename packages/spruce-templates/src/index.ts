@@ -286,6 +286,13 @@ export const templates = {
 		return false
 	},
 
+	conversationTopic(options: { nameReadable: string }) {
+		const template = templateImportUtil.getTemplate(
+			'conversation/conversation.topic.ts.hbs'
+		)
+		return template(options)
+	},
+
 	generateFieldKey(renderAs: TemplateRenderAs, definition: FieldDefinitions) {
 		return KeyGeneratorUtility.generateFieldKey(renderAs, definition)
 	},

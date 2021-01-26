@@ -7,8 +7,24 @@ const createConversationTopicOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.
 	id: 'createConversationTopicOptions',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
-	name: 'Create conversation topic options',
+	name: 'Define a topic you want to discuss.',
 	    fields: {
+	            /** Readable name. The name people will read */
+	            'nameReadable': {
+	                label: 'Readable name',
+	                type: 'text',
+	                isRequired: true,
+	                hint: 'The name people will read',
+	                options: undefined
+	            },
+	            /** Camel case name. camelCase version of the name */
+	            'nameCamel': {
+	                label: 'Camel case name',
+	                type: 'text',
+	                isRequired: true,
+	                hint: 'camelCase version of the name',
+	                options: undefined
+	            },
 	    }
 }
 

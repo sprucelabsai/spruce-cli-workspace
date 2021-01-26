@@ -3,14 +3,14 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const unregisterListenersEmitPayloadSchema: SpruceSchemas.MercuryApi.v2020_12_25.UnregisterListenersEmitPayloadSchema  = {
-	id: 'unregisterListenersEmitPayload',
+const unregisterConversationTopicsEmitPayloadSchema: SpruceSchemas.MercuryApi.v2020_12_25.UnregisterConversationTopicsEmitPayloadSchema  = {
+	id: 'unregisterConversationTopicsEmitPayload',
 	version: 'v2020_12_25',
 	namespace: 'MercuryApi',
 	name: '',
 	    fields: {
 	            /** . */
-	            'fullyQualifiedEventNames': {
+	            'topics': {
 	                type: 'text',
 	                isArray: true,
 	                options: undefined
@@ -23,6 +23,6 @@ const unregisterListenersEmitPayloadSchema: SpruceSchemas.MercuryApi.v2020_12_25
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(unregisterListenersEmitPayloadSchema)
+SchemaRegistry.getInstance().trackSchema(unregisterConversationTopicsEmitPayloadSchema)
 
-export default unregisterListenersEmitPayloadSchema
+export default unregisterConversationTopicsEmitPayloadSchema

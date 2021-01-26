@@ -1,8 +1,12 @@
 import { buildSchema } from '@sprucelabs/schema'
+import namedTemplateItemBuilder from './namedTemplateItem.builder'
 
 export default buildSchema({
 	id: 'createConversationTopicOptions',
-	name: 'Create conversation topic options',
+	name: 'Define a topic you want to discuss.',
 	description: '',
-	fields: {},
+	fields: {
+		nameReadable: namedTemplateItemBuilder.fields.nameReadable,
+		nameCamel: namedTemplateItemBuilder.fields.nameCamel,
+	},
 })
