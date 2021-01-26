@@ -322,7 +322,8 @@
             "registeringEventsOnBoot": "F83",
             "createsVersionedEventFilesDefaultingToToday": "F84",
             "hasCreateConversationAction": "F100",
-            "createsValidConversationTopicDefinition": "F101"
+            "createsValidConversationTopicDefinition": "F101",
+            "canRegisterConversationsOnBoot": "F104"
           }
         }
       ],

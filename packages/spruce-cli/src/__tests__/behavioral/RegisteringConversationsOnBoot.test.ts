@@ -3,7 +3,7 @@ import AbstractEventTest from '../../tests/AbstractEventTest'
 
 export default class RegisteringConversationsOnBootTest extends AbstractEventTest {
 	@test()
-	protected static async canCreateRegisteringConversationsOnBoot() {
+	protected static async canRegisterConversationsOnBoot() {
 		const {
 			cli,
 			currentSkill,
@@ -31,7 +31,7 @@ export default class RegisteringConversationsOnBootTest extends AbstractEventTes
 		do {
 			await this.wait(1000)
 
-			const topicResults = await this.Store('event', {
+			const topicResults = await this.Store('conversation', {
 				apiClientFactory: async () => client,
 			}).fetchRegisteredTopics()
 

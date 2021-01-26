@@ -1,3 +1,4 @@
+import ConversationStore from '../features/conversation/stores/ConversationStore'
 import EventStore from '../features/event/stores/EventStore'
 import OnboardingStore from '../features/onboard/stores/OnboardingStore'
 import OrganizationStore from '../features/organization/stores/OrganizationStore'
@@ -14,6 +15,7 @@ export interface StoreMap {
 	event: EventStore
 	skill: SkillStore
 	organization: OrganizationStore
+	conversation: ConversationStore
 }
 
 export type StoreCode = keyof StoreMap
@@ -24,6 +26,7 @@ const storeMap = {
 	event: EventStore,
 	skill: SkillStore,
 	organization: OrganizationStore,
+	conversation: ConversationStore,
 }
 
 export interface StoreFactoryMethodOptions {

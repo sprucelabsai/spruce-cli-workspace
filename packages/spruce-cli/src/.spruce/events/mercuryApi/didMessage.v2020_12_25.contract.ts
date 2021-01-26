@@ -9,31 +9,24 @@ const didMessageEventContract = buildEventContract({
 			emitPayloadSchema: didMessageEmitTargetAndPayloadSchema,
 			responsePayloadSchema: didMessageResponsePayloadSchema,
 			emitPermissionContract: buildPermissionContract({
-				id: 'messaging',
-				name: 'Messaging',
-				description: 'Various permissions related to messaging',
+				id: 'emit-messaging',
+				name: 'Emit messaging events',
+				description:
+					'Various permissions related to emitting messaging events.',
 				requireAllPermissions: false,
 				permissions: [
 					{
 						id: 'can-emit-did-message-event',
 						name: 'Emit did-message event',
-					},
-					{
-						id: 'can-listen-to-did-message-event',
-						name: 'Listen to did-message event',
 					},
 				],
 			}),
 			listenPermissionContract: buildPermissionContract({
-				id: 'messaging',
-				name: 'Messaging',
-				description: 'Various permissions related to messaging',
+				id: 'listen-messaging',
+				name: 'Listen to messaging events',
+				description: 'Various permissions related to listening for messages.',
 				requireAllPermissions: false,
 				permissions: [
-					{
-						id: 'can-emit-did-message-event',
-						name: 'Emit did-message event',
-					},
 					{
 						id: 'can-listen-to-did-message-event',
 						name: 'Listen to did-message event',

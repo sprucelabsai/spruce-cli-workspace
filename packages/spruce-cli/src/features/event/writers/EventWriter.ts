@@ -42,6 +42,8 @@ export default class EventWriter extends AbstractWriter {
 
 		const all = await Promise.all(generated)
 
+		await this.lint(destinationDir)
+
 		return all
 	}
 

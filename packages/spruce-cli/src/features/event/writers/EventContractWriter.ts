@@ -20,7 +20,7 @@ import EventWriter from './EventWriter'
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventActionSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventAction
 
-export default class EventContractController {
+export default class EventContractWriter {
 	private optionsSchema: OptionsSchema
 	private ui: GraphicsInterface
 	private eventWriter: EventWriter

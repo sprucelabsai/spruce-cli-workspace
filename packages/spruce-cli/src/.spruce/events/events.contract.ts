@@ -28,6 +28,9 @@ import deleteRoleEventContract, {
 import didMessageEventContract, {
 	DidMessageEventContract,
 } from '#spruce/events/mercuryApi/didMessage.v2020_12_25.contract'
+import getConversationTopicsEventContract, {
+	GetConversationTopicsEventContract,
+} from '#spruce/events/mercuryApi/getConversationTopics.v2020_12_25.contract'
 import getEventContractsEventContract, {
 	GetEventContractsEventContract,
 } from '#spruce/events/mercuryApi/getEventContracts.v2020_12_25.contract'
@@ -82,9 +85,15 @@ import requestPinEventContract, {
 import scrambleAccountEventContract, {
 	ScrambleAccountEventContract,
 } from '#spruce/events/mercuryApi/scrambleAccount.v2020_12_25.contract'
+import sendMessageEventContract, {
+	SendMessageEventContract,
+} from '#spruce/events/mercuryApi/sendMessage.v2020_12_25.contract'
 import uninstallSkillEventContract, {
 	UninstallSkillEventContract,
 } from '#spruce/events/mercuryApi/uninstallSkill.v2020_12_25.contract'
+import unregisterConversationTopicsEventContract, {
+	UnregisterConversationTopicsEventContract,
+} from '#spruce/events/mercuryApi/unregisterConversationTopics.v2020_12_25.contract'
 import unregisterEventsEventContract, {
 	UnregisterEventsEventContract,
 } from '#spruce/events/mercuryApi/unregisterEvents.v2020_12_25.contract'
@@ -115,6 +124,7 @@ export default [
 	deleteLocationEventContract,
 	deleteOrganizationEventContract,
 	deleteRoleEventContract,
+	getConversationTopicsEventContract,
 	getEventContractsEventContract,
 	getLocationEventContract,
 	getOrganizationEventContract,
@@ -133,7 +143,9 @@ export default [
 	registerSkillEventContract,
 	requestPinEventContract,
 	scrambleAccountEventContract,
+	sendMessageEventContract,
 	uninstallSkillEventContract,
+	unregisterConversationTopicsEventContract,
 	unregisterEventsEventContract,
 	unregisterListenersEventContract,
 	updateLocationEventContract,
@@ -152,6 +164,7 @@ export type EventContracts = DidMessageEventContract &
 	DeleteLocationEventContract &
 	DeleteOrganizationEventContract &
 	DeleteRoleEventContract &
+	GetConversationTopicsEventContract &
 	GetEventContractsEventContract &
 	GetLocationEventContract &
 	GetOrganizationEventContract &
@@ -170,7 +183,9 @@ export type EventContracts = DidMessageEventContract &
 	RegisterSkillEventContract &
 	RequestPinEventContract &
 	ScrambleAccountEventContract &
+	SendMessageEventContract &
 	UninstallSkillEventContract &
+	UnregisterConversationTopicsEventContract &
 	UnregisterEventsEventContract &
 	UnregisterListenersEventContract &
 	UpdateLocationEventContract &
