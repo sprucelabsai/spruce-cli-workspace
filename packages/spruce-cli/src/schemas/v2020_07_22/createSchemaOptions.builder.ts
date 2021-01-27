@@ -1,13 +1,13 @@
 import { buildSchema } from '@sprucelabs/schema'
 import namedTemplateItemBuilder from './namedTemplateItem.builder'
-import syncSchemasActionBuilder from './syncSchemasAction.builder'
+import syncSchemasOptionsBuilder from './syncSchemasOptions.builder'
 
 export default buildSchema({
-	id: 'createSchemaAction',
+	id: 'createSchemaOptions',
 	name: 'Create schema',
 	description: 'Create the builder to a fresh new schema!',
 	fields: {
-		...syncSchemasActionBuilder.fields,
+		...syncSchemasOptionsBuilder.fields,
 		schemaBuilderDestinationDir: {
 			type: 'text',
 			label: 'Schema builder destination directory',

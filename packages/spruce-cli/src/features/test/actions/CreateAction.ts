@@ -2,13 +2,13 @@ import pathUtil from 'path'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import createTestActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/createTestAction.schema'
+import createTestActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/createTestOptions.schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import ParentTestFinder from '../../error/ParentTestFinder'
 import { FeatureActionResponse } from '../../features.types'
 
-type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestActionSchema
-type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestAction
+type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestOptionsSchema
+type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestOptions
 export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'Test'
 	public optionsSchema = createTestActionSchema

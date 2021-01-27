@@ -3,8 +3,8 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const bootSkillActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.BootSkillActionSchema  = {
-	id: 'bootSkillAction',
+const bootSkillOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.BootSkillOptionsSchema  = {
+	id: 'bootSkillOptions',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
 	name: 'Boot skill action',
@@ -20,6 +20,6 @@ const bootSkillActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.BootSkillAction
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(bootSkillActionSchema)
+SchemaRegistry.getInstance().trackSchema(bootSkillOptionsSchema)
 
-export default bootSkillActionSchema
+export default bootSkillOptionsSchema

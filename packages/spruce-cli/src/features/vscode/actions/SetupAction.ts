@@ -1,12 +1,12 @@
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import setupVscodeSchema from '#spruce/schemas/spruceCli/v2020_07_22/setupVscodeAction.schema'
+import setupVscodeSchema from '#spruce/schemas/spruceCli/v2020_07_22/setupVscodeOptions.schema'
 import { NpmPackage } from '../../../types/cli.types'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 import { Extension } from '../services/VsCodeService'
 
-type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeActionSchema
-type Options = SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeAction
+type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeOptionsSchema
+type Options = SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeOptions
 
 export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 	private recommendedExtensions: Extension[] = [

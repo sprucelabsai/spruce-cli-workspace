@@ -3,7 +3,7 @@ import { SchemaTemplateItem, FieldTemplateItem } from '@sprucelabs/schema'
 import { CORE_NAMESPACE, diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { ValueTypes } from '@sprucelabs/spruce-templates'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
+import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasOptions.schema'
 import SpruceError from '../../../errors/SpruceError'
 import SchemaTemplateItemBuilder from '../../../templateItemBuilders/SchemaTemplateItemBuilder'
 import { GeneratedFile } from '../../../types/cli.types'
@@ -13,8 +13,8 @@ import { FeatureActionResponse } from '../../features.types'
 import schemaGeneratorUtil from '../utilities/schemaGenerator.utility'
 import ValueTypeBuilder from '../ValueTypeBuilder'
 
-type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema
-type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasAction
+type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptionsSchema
+type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptions
 export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'Schema sync'
 	public optionsSchema = syncSchemasActionSchema

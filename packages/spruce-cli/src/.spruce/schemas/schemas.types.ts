@@ -3657,7 +3657,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		/** Options for event.listen. */
-		interface ListenEventAction {
+		interface ListenEventOptions {
 			
 				/** Contract destination. Where I will generate event contracts. */
 				'contractDestinationDir'?: string| undefined | null
@@ -3673,8 +3673,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'version'?: string| undefined | null
 		}
 
-		interface ListenEventActionSchema extends SpruceSchema.Schema {
-			id: 'listenEventAction',
+		interface ListenEventOptionsSchema extends SpruceSchema.Schema {
+			id: 'listenEventOptions',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
 			name: 'Listen to event action',
@@ -3727,7 +3727,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type ListenEventActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ListenEventActionSchema>
+		type ListenEventActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ListenEventOptionsSchema>
 
 	}
 
@@ -3735,7 +3735,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		/** Create a builder for your brand new error!  */
-		interface CreateErrorAction {
+		interface CreateErrorOptions {
 			
 				/** Field types directory. Where field types and interfaces will be generated. */
 				'fieldTypesDestinationDir'?: string| undefined | null
@@ -3785,8 +3785,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'description'?: string| undefined | null
 		}
 
-		interface CreateErrorActionSchema extends SpruceSchema.Schema {
-			id: 'createErrorAction',
+		interface CreateErrorOptionsSchema extends SpruceSchema.Schema {
+			id: 'createErrorOptions',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
 			name: 'Create error action',
@@ -3990,7 +3990,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type CreateErrorActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorActionSchema>
+		type CreateErrorActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorOptionsSchema>
 
 	}
 
@@ -3998,7 +3998,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		/** Create the builder to a fresh new schema! */
-		interface CreateSchemaAction {
+		interface CreateSchemaOptions {
 			
 				/** Field types directory. Where field types and interfaces will be generated. */
 				'fieldTypesDestinationDir'?: string| undefined | null
@@ -4048,8 +4048,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'description'?: string| undefined | null
 		}
 
-		interface CreateSchemaActionSchema extends SpruceSchema.Schema {
-			id: 'createSchemaAction',
+		interface CreateSchemaOptionsSchema extends SpruceSchema.Schema {
+			id: 'createSchemaOptions',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
 			name: 'Create schema',
@@ -4252,7 +4252,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type CreateSchemaActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaActionSchema>
+		type CreateSchemaActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaOptionsSchema>
 
 	}
 
@@ -4260,7 +4260,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		/** Keep your errors types in sync with your builders */
-		interface SyncErrorAction {
+		interface SyncErrorOptions {
 			
 				/** Field types directory. Where field types and interfaces will be generated. */
 				'fieldTypesDestinationDir'?: string| undefined | null
@@ -4300,8 +4300,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'errorTypesDestinationDir'?: string| undefined | null
 		}
 
-		interface SyncErrorActionSchema extends SpruceSchema.Schema {
-			id: 'syncErrorAction',
+		interface SyncErrorOptionsSchema extends SpruceSchema.Schema {
+			id: 'syncErrorOptions',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
 			name: 'Sync error action',
@@ -4465,7 +4465,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type SyncErrorActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorActionSchema>
+		type SyncErrorActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorOptionsSchema>
 
 	}
 
@@ -4473,7 +4473,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		/** Options for schema.sync. */
-		interface SyncSchemasAction {
+		interface SyncSchemasOptions {
 			
 				/** Field types directory. Where field types and interfaces will be generated. */
 				'fieldTypesDestinationDir'?: string| undefined | null
@@ -4507,8 +4507,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'syncingMessage'?: string| undefined | null
 		}
 
-		interface SyncSchemasActionSchema extends SpruceSchema.Schema {
-			id: 'syncSchemasAction',
+		interface SyncSchemasOptionsSchema extends SpruceSchema.Schema {
+			id: 'syncSchemasOptions',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
 			name: 'Sync schemas action',
@@ -4647,7 +4647,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type SyncSchemasActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema>
+		type SyncSchemasActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptionsSchema>
 
 	}
 
@@ -4655,7 +4655,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		
-		interface SyncEventAction {
+		interface SyncEventOptions {
 			
 				/** Contract destination. Where I will generate event contracts. */
 				'contractDestinationDir'?: string| undefined | null
@@ -4663,8 +4663,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'schemaTypesLookupDir'?: string| undefined | null
 		}
 
-		interface SyncEventActionSchema extends SpruceSchema.Schema {
-			id: 'syncEventAction',
+		interface SyncEventOptionsSchema extends SpruceSchema.Schema {
+			id: 'syncEventOptions',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
 			name: 'sync event action',
@@ -4688,7 +4688,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type SyncEventActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncEventActionSchema>
+		type SyncEventActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptionsSchema>
 
 	}
 
@@ -4830,14 +4830,14 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		/** Options skill.upgrade. */
-		interface UpgradeSkillAction {
+		interface UpgradeSkillOptions {
 			
 				/** Upgrade mode. */
 				'upgradeMode'?: ("askEverything" | "forceEverything" | "forceRequiredSkipRest")| undefined | null
 		}
 
-		interface UpgradeSkillActionSchema extends SpruceSchema.Schema {
-			id: 'upgradeSkillAction',
+		interface UpgradeSkillOptionsSchema extends SpruceSchema.Schema {
+			id: 'upgradeSkillOptions',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
 			name: 'Upgrade skill action',
@@ -4853,7 +4853,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type UpgradeSkillActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillActionSchema>
+		type UpgradeSkillActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillOptionsSchema>
 
 	}
 
@@ -4995,7 +4995,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		/** Options for creating a new test. */
-		interface CreateTestAction {
+		interface CreateTestOptions {
 			
 				/** Type of test. */
 				'type': ("behavioral" | "implementation")
@@ -5009,8 +5009,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'namePascal'?: string| undefined | null
 		}
 
-		interface CreateTestActionSchema extends SpruceSchema.Schema {
-			id: 'createTestAction',
+		interface CreateTestOptionsSchema extends SpruceSchema.Schema {
+			id: 'createTestOptions',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
 			name: 'Create test action',
@@ -5057,7 +5057,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type CreateTestActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateTestActionSchema>
+		type CreateTestActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateTestOptionsSchema>
 
 	}
 
@@ -5228,7 +5228,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		/** Sync schema fields so you can use schemas! */
-		interface SyncSchemaFieldsAction {
+		interface SyncSchemaFieldsOptions {
 			
 				/** Field types directory. Where field types and interfaces will be generated. */
 				'fieldTypesDestinationDir'?: string| undefined | null
@@ -5238,11 +5238,11 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'generateFieldTypes'?: boolean| undefined | null
 		}
 
-		interface SyncSchemaFieldsActionSchema extends SpruceSchema.Schema {
-			id: 'syncSchemaFieldsAction',
+		interface SyncSchemaFieldsOptionsSchema extends SpruceSchema.Schema {
+			id: 'syncSchemaFieldsOptions',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
-			name: 'syncSchemaFieldsAction',
+			name: 'syncSchemaFieldsOptions',
 			description: 'Sync schema fields so you can use schemas!',
 			    fields: {
 			            /** Field types directory. Where field types and interfaces will be generated. */
@@ -5274,7 +5274,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type SyncSchemaFieldsActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemaFieldsActionSchema>
+		type SyncSchemaFieldsActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemaFieldsOptionsSchema>
 
 	}
 
@@ -5323,14 +5323,14 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		/** Install vscode extensions, launch configs, and settings the Spruce team uses in-house! */
-		interface SetupVscodeAction {
+		interface SetupVscodeOptions {
 			
 				/** Install everything. */
 				'all'?: boolean| undefined | null
 		}
 
-		interface SetupVscodeActionSchema extends SpruceSchema.Schema {
-			id: 'setupVscodeAction',
+		interface SetupVscodeOptionsSchema extends SpruceSchema.Schema {
+			id: 'setupVscodeOptions',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
 			name: 'Setup vscode action',
@@ -5345,7 +5345,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type SetupVscodeActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeActionSchema>
+		type SetupVscodeActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeOptionsSchema>
 
 	}
 
@@ -5353,7 +5353,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		
-		interface CreateOrganizationAction {
+		interface CreateOrganizationOptions {
 			
 				/** Name. The name people will read */
 				'nameReadable': string
@@ -5361,8 +5361,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'nameKebab'?: string| undefined | null
 		}
 
-		interface CreateOrganizationActionSchema extends SpruceSchema.Schema {
-			id: 'createOrganizationAction',
+		interface CreateOrganizationOptionsSchema extends SpruceSchema.Schema {
+			id: 'createOrganizationOptions',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
 			name: 'create organization action',
@@ -5385,7 +5385,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type CreateOrganizationActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateOrganizationActionSchema>
+		type CreateOrganizationActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateOrganizationOptionsSchema>
 
 	}
 
@@ -5432,14 +5432,14 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		
-		interface InstallSkillAtOrganizationAction {
+		interface InstallSkillAtOrganizationOptions {
 			
 				/** Organization id. */
 				'organizationId'?: string| undefined | null
 		}
 
-		interface InstallSkillAtOrganizationActionSchema extends SpruceSchema.Schema {
-			id: 'installSkillAtOrganizationAction',
+		interface InstallSkillAtOrganizationOptionsSchema extends SpruceSchema.Schema {
+			id: 'installSkillAtOrganizationOptions',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
 			name: 'install skill at organization action',
@@ -5453,7 +5453,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type InstallSkillAtOrganizationActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizationActionSchema>
+		type InstallSkillAtOrganizationActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizationOptionsSchema>
 
 	}
 
@@ -5461,14 +5461,14 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		/** The options for skill.boot. */
-		interface BootSkillAction {
+		interface BootSkillOptions {
 			
 				/** Run local. Will run using ts-node and typescript directly. Longer boot times */
 				'local'?: boolean| undefined | null
 		}
 
-		interface BootSkillActionSchema extends SpruceSchema.Schema {
-			id: 'bootSkillAction',
+		interface BootSkillOptionsSchema extends SpruceSchema.Schema {
+			id: 'bootSkillOptions',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
 			name: 'Boot skill action',
@@ -5484,7 +5484,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type BootSkillActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.BootSkillActionSchema>
+		type BootSkillActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.BootSkillOptionsSchema>
 
 	}
 
@@ -5492,12 +5492,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		
-		interface OnboardAction {
+		interface OnboardOptions {
 			
 		}
 
-		interface OnboardActionSchema extends SpruceSchema.Schema {
-			id: 'onboardAction',
+		interface OnboardOptionsSchema extends SpruceSchema.Schema {
+			id: 'onboardOptions',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
 			name: 'Onboard action',
@@ -5505,7 +5505,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type OnboardActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.OnboardActionSchema>
+		type OnboardActionEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.OnboardOptionsSchema>
 
 	}
 

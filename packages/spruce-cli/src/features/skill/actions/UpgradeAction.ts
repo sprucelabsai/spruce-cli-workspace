@@ -1,11 +1,11 @@
 import { SchemaValues } from '@sprucelabs/schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import upgradeSkillActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/upgradeSkillAction.schema'
+import upgradeSkillActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/upgradeSkillOptions.schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 import SkillFeature from '../SkillFeature'
 
-type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillActionSchema
+type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillOptionsSchema
 type Options = SchemaValues<OptionsSchema>
 
 export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> {

@@ -3,8 +3,8 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const setupVscodeActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeActionSchema  = {
-	id: 'setupVscodeAction',
+const setupVscodeOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeOptionsSchema  = {
+	id: 'setupVscodeOptions',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
 	name: 'Setup vscode action',
@@ -19,6 +19,6 @@ const setupVscodeActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeAc
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(setupVscodeActionSchema)
+SchemaRegistry.getInstance().trackSchema(setupVscodeOptionsSchema)
 
-export default setupVscodeActionSchema
+export default setupVscodeOptionsSchema

@@ -3,12 +3,12 @@ import { normalizeSchemaValues } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import createSchemaActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/createSchemaAction.schema'
-import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
+import createSchemaActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/createSchemaOptions.schema'
+import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasOptions.schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 
-type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaActionSchema
-type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaAction
+type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaOptionsSchema
+type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaOptions
 export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'create'
 	public optionsSchema = createSchemaActionSchema
@@ -48,7 +48,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			namePascal: namePascal ?? namesUtil.toPascal(nameCamel),
 		})
 
-		const syncAction = this.Action<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema>(
+		const syncAction = this.Action<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptionsSchema>(
 			'sync'
 		)
 

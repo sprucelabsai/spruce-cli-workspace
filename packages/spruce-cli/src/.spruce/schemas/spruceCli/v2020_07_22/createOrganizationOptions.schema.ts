@@ -3,8 +3,8 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const createOrganizationActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateOrganizationActionSchema  = {
-	id: 'createOrganizationAction',
+const createOrganizationOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateOrganizationOptionsSchema  = {
+	id: 'createOrganizationOptions',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
 	name: 'create organization action',
@@ -27,6 +27,6 @@ const createOrganizationActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.Create
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(createOrganizationActionSchema)
+SchemaRegistry.getInstance().trackSchema(createOrganizationOptionsSchema)
 
-export default createOrganizationActionSchema
+export default createOrganizationOptionsSchema

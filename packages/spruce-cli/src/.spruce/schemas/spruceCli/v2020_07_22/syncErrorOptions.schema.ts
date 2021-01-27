@@ -3,12 +3,12 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema  = {
-	id: 'syncSchemasAction',
+const syncErrorOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorOptionsSchema  = {
+	id: 'syncErrorOptions',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
-	name: 'Sync schemas action',
-	description: 'Options for schema.sync.',
+	name: 'Sync error action',
+	description: 'Keep your errors types in sync with your builders',
 	    fields: {
 	            /** Field types directory. Where field types and interfaces will be generated. */
 	            'fieldTypesDestinationDir': {
@@ -140,9 +140,34 @@ const syncSchemasActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasAc
 	                defaultValue: "Syncing schemas...",
 	                options: undefined
 	            },
+	            /** Error class destination. Where I'll save your new Error class file? */
+	            'errorClassDestinationDir': {
+	                label: 'Error class destination',
+	                type: 'text',
+	                isPrivate: true,
+	                isRequired: true,
+	                hint: 'Where I\'ll save your new Error class file?',
+	                defaultValue: "src/errors",
+	                options: undefined
+	            },
+	            /** . Where I should look for your error builders? */
+	            'errorLookupDir': {
+	                type: 'text',
+	                hint: 'Where I should look for your error builders?',
+	                defaultValue: "src/errors",
+	                options: undefined
+	            },
+	            /** Types destination dir. This is where error options and type information will be written */
+	            'errorTypesDestinationDir': {
+	                label: 'Types destination dir',
+	                type: 'text',
+	                hint: 'This is where error options and type information will be written',
+	                defaultValue: "#spruce/errors",
+	                options: undefined
+	            },
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(syncSchemasActionSchema)
+SchemaRegistry.getInstance().trackSchema(syncErrorOptionsSchema)
 
-export default syncSchemasActionSchema
+export default syncErrorOptionsSchema

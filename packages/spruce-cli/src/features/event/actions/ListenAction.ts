@@ -14,8 +14,8 @@ import {
 	MERCURY_API_NAMESPACE,
 } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import eventListenActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/listenEventAction.schema'
-import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventAction.schema'
+import eventListenActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/listenEventOptions.schema'
+import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventOptions.schema'
 import SpruceError from '../../../errors/SpruceError'
 import EventTemplateItemBuilder from '../../../templateItemBuilders/EventTemplateItemBuilder'
 import mergeUtil from '../../../utilities/merge.utility'
@@ -23,13 +23,13 @@ import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
 const SKILL_EVENT_NAMESPACE = 'skill'
-type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.ListenEventActionSchema
+type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.ListenEventOptionsSchema
 export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'listen'
 	public optionsSchema: OptionsSchema = eventListenActionSchema
 
 	public async execute(
-		options: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventAction
+		options: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventOptions
 	): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 

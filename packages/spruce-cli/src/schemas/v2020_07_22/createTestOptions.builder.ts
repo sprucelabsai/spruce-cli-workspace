@@ -2,7 +2,7 @@ import { buildSchema } from '@sprucelabs/schema'
 import namedTemplateItemBuilder from './namedTemplateItem.builder'
 
 export default buildSchema({
-	id: 'createTestAction',
+	id: 'createTestOptions',
 	name: 'Create test action',
 	description: 'Options for creating a new test.',
 	fields: {

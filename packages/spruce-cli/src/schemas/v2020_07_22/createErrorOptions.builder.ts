@@ -1,13 +1,13 @@
 import { buildSchema } from '@sprucelabs/schema'
 import namedTemplateItemBuilder from './namedTemplateItem.builder'
-import syncErrorsActionBuilder from './syncErrorAction.builder'
+import syncErrorsOptionsBuilder from './syncErrorOptions.builder'
 
 export default buildSchema({
-	id: 'createErrorAction',
+	id: 'createErrorOptions',
 	name: 'Create error action',
 	description: 'Create a builder for your brand new error! ',
 	fields: {
-		...syncErrorsActionBuilder.fields,
+		...syncErrorsOptionsBuilder.fields,
 		errorBuilderDestinationDir: {
 			type: 'text',
 			label: 'Error builder destination directory',

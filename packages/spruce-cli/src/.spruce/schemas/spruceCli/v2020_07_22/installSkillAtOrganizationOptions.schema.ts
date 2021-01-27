@@ -3,8 +3,8 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const installSkillAtOrganizationActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizationActionSchema  = {
-	id: 'installSkillAtOrganizationAction',
+const installSkillAtOrganizationOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizationOptionsSchema  = {
+	id: 'installSkillAtOrganizationOptions',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
 	name: 'install skill at organization action',
@@ -18,6 +18,6 @@ const installSkillAtOrganizationActionSchema: SpruceSchemas.SpruceCli.v2020_07_2
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(installSkillAtOrganizationActionSchema)
+SchemaRegistry.getInstance().trackSchema(installSkillAtOrganizationOptionsSchema)
 
-export default installSkillAtOrganizationActionSchema
+export default installSkillAtOrganizationOptionsSchema

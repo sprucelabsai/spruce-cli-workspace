@@ -1,7 +1,7 @@
 import { buildSchema } from '@sprucelabs/schema'
 
 export default buildSchema({
-	id: 'upgradeSkillAction',
+	id: 'upgradeSkillOptions',
 	name: 'Upgrade skill action',
 	description: 'Options skill.upgrade.',
 	fields: {

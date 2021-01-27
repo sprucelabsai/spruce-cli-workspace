@@ -1,12 +1,12 @@
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventAction.schema'
+import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventOptions.schema'
 import mergeUtil from '../../../utilities/merge.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 import EventFeature from '../EventFeature'
 
-type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventActionSchema
-type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventAction
+type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptionsSchema
+type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptions
 
 export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'sync'
