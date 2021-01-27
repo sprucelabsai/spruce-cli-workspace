@@ -159,13 +159,13 @@ export default class SkillFeature<
 		{
 			path: '.spruce/errors/options.types.ts',
 			description:
-				'Used to support booting the skill. Will be updated as you create more errors.',
+				'Holds all possible error codes and options. Will be updated as you create more errors (spruce create.error).',
 			shouldOverwriteWhenChanged: false,
 		},
 		{
 			path: 'src/.spruce/features/event.plugin.ts',
 			description:
-				'Gives your skill event support through local boot events and Mercury.',
+				'Gives your skill event support through local boot events and optionall Mercury (spruce event.listen).',
 			shouldOverwriteWhenChanged: true,
 		},
 	]
