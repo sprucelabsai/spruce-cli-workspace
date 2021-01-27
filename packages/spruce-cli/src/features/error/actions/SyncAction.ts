@@ -7,14 +7,14 @@ import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { ErrorTemplateItem } from '@sprucelabs/spruce-templates'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import syncErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncErrorAction.schema'
-import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasAction.schema'
+import syncErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncErrorOptions.schema'
+import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasOptions.schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse, FeatureAction } from '../../features.types'
 import ErrorWriter from '../writers/ErrorWriter'
 
-type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorActionSchema
-type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorAction
+type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorOptionsSchema
+type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorOptions
 export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'sync'
 	public optionsSchema = syncErrorActionSchema
@@ -29,7 +29,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 
 		const schemaSyncAction = this.getFeature('schema').Action(
 			'sync'
-		) as FeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema>
+		) as FeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptionsSchema>
 
 		const errorSyncResults = await this.syncErrors(
 			schemaSyncAction,
@@ -80,8 +80,8 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	}
 
 	private async syncErrors(
-		schemaSyncAction: FeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasActionSchema>,
-		normalizedOptions: SchemaValuesWithDefaults<SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorActionSchema>
+		schemaSyncAction: FeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptionsSchema>,
+		normalizedOptions: SchemaValuesWithDefaults<SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorOptionsSchema>
 	) {
 		const resolvedErrorTypesDestinationDir = diskUtil.resolvePath(
 			this.cwd,

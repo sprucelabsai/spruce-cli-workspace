@@ -1,6 +1,6 @@
 import { SelectChoice } from '@sprucelabs/schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import installSkillAtOrganizationActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/installSkillAtOrganizationAction.schema'
+import installSkillAtOrganizationActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/installSkillAtOrganizationOptions.schema'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'

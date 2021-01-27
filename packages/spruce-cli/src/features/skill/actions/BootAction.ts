@@ -1,14 +1,14 @@
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import bootSkillActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/bootSkillAction.schema'
+import bootSkillOptionsSchema from '#spruce/schemas/spruceCli/v2020_07_22/bootSkillOptions.schema'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
-type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.BootSkillActionSchema
-type Options = SpruceSchemas.SpruceCli.v2020_07_22.BootSkillAction
+type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.BootSkillOptionsSchema
+type Options = SpruceSchemas.SpruceCli.v2020_07_22.BootSkillOptions
 export default class BootAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'boot'
-	public optionsSchema: OptionsSchema = bootSkillActionSchema
+	public optionsSchema: OptionsSchema = bootSkillOptionsSchema
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const command = this.Service('command')
 

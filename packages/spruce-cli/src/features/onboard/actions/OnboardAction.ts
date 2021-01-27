@@ -1,5 +1,5 @@
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import onboardActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/onboardAction.schema'
+import onboardActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/onboardOptions.schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 import OnboardFeature from '../OnboardFeature'

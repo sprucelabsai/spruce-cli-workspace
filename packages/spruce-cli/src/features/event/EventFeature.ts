@@ -1,6 +1,6 @@
 import { Schema } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventAction.schema'
+import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventOptions.schema'
 import { FileDescription } from '../../types/cli.types'
 import AbstractFeature, {
 	FeatureDependency,
