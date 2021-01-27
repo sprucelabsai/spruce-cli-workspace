@@ -3,8 +3,8 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const createTestActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateTestActionSchema  = {
-	id: 'createTestAction',
+const createTestOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateTestOptionsSchema  = {
+	id: 'createTestOptions',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
 	name: 'Create test action',
@@ -51,6 +51,6 @@ const createTestActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateTestActi
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(createTestActionSchema)
+SchemaRegistry.getInstance().trackSchema(createTestOptionsSchema)
 
-export default createTestActionSchema
+export default createTestOptionsSchema

@@ -1,7 +1,7 @@
 import { buildSchema } from '@sprucelabs/schema'
 
 export default buildSchema({
-	id: 'bootSkillAction',
+	id: 'bootSkillOptions',
 	name: 'Boot skill action',
 	description: 'The options for skill.boot.',
 	fields: {

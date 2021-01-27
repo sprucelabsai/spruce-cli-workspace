@@ -1,9 +1,9 @@
 import { buildSchema } from '@sprucelabs/schema'
 import { DEFAULT_GLOBAL_SCHEMA_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
-import syncSchemaFieldsBuilder from './syncSchemaFieldsAction.builder'
+import syncSchemaFieldsBuilder from './syncSchemaFieldsOptions.builder'
 
 export default buildSchema({
-	id: 'syncSchemasAction',
+	id: 'syncSchemasOptions',
 	name: 'Sync schemas action',
 	description: 'Options for schema.sync.',
 	fields: {

@@ -3,12 +3,12 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const createErrorActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorActionSchema  = {
-	id: 'createErrorAction',
+const createSchemaOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaOptionsSchema  = {
+	id: 'createSchemaOptions',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
-	name: 'Create error action',
-	description: 'Create a builder for your brand new error! ',
+	name: 'Create schema',
+	description: 'Create the builder to a fresh new schema!',
 	    fields: {
 	            /** Field types directory. Where field types and interfaces will be generated. */
 	            'fieldTypesDestinationDir': {
@@ -140,39 +140,38 @@ const createErrorActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorAc
 	                defaultValue: "Syncing schemas...",
 	                options: undefined
 	            },
-	            /** Error class destination. Where I'll save your new Error class file? */
-	            'errorClassDestinationDir': {
-	                label: 'Error class destination',
+	            /** Schema builder destination directory. Where I'll save the new schema builder. */
+	            'schemaBuilderDestinationDir': {
+	                label: 'Schema builder destination directory',
+	                type: 'text',
+	                hint: 'Where I\'ll save the new schema builder.',
+	                defaultValue: "src/schemas",
+	                options: undefined
+	            },
+	            /** Builder function. The function that builds this schema */
+	            'builderFunction': {
+	                label: 'Builder function',
 	                type: 'text',
 	                isPrivate: true,
-	                isRequired: true,
-	                hint: 'Where I\'ll save your new Error class file?',
-	                defaultValue: "src/errors",
+	                hint: 'The function that builds this schema',
+	                defaultValue: "buildSchema",
 	                options: undefined
 	            },
-	            /** . Where I should look for your error builders? */
-	            'errorLookupDir': {
-	                type: 'text',
-	                hint: 'Where I should look for your error builders?',
-	                defaultValue: "src/errors",
+	            /** Sync after creation. This will ensure types and schemas are in sync after you create your builder. */
+	            'syncAfterCreate': {
+	                label: 'Sync after creation',
+	                type: 'boolean',
+	                isPrivate: true,
+	                hint: 'This will ensure types and schemas are in sync after you create your builder.',
+	                defaultValue: true,
 	                options: undefined
 	            },
-	            /** Types destination dir. This is where error options and type information will be written */
-	            'errorTypesDestinationDir': {
-	                label: 'Types destination dir',
-	                type: 'text',
-	                hint: 'This is where error options and type information will be written',
-	                defaultValue: "#spruce/errors",
-	                options: undefined
-	            },
-	            /** Error builder destination directory. Where I'll save your new builder file? */
-	            'errorBuilderDestinationDir': {
-	                label: 'Error builder destination directory',
+	            /** Version. Set a version yourself instead of letting me generate one for you */
+	            'version': {
+	                label: 'Version',
 	                type: 'text',
 	                isPrivate: true,
-	                isRequired: true,
-	                hint: 'Where I\'ll save your new builder file?',
-	                defaultValue: "./src/errors",
+	                hint: 'Set a version yourself instead of letting me generate one for you',
 	                options: undefined
 	            },
 	            /** Readable name. The name people will read */
@@ -208,6 +207,6 @@ const createErrorActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorAc
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(createErrorActionSchema)
+SchemaRegistry.getInstance().trackSchema(createSchemaOptionsSchema)
 
-export default createErrorActionSchema
+export default createSchemaOptionsSchema

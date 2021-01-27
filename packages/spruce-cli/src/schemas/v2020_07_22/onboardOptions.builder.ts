@@ -1,7 +1,7 @@
 import { buildSchema } from '@sprucelabs/schema'
 
 export default buildSchema({
-	id: 'onboardAction',
+	id: 'onboardOptions',
 	name: 'Onboard action',
 	description: '',
 	fields: {},

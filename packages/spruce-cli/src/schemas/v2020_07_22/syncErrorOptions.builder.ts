@@ -1,12 +1,12 @@
 import { buildSchema } from '@sprucelabs/schema'
-import syncSchemasActionBuilder from './syncSchemasAction.builder'
+import syncSchemasOptionsBuilder from './syncSchemasOptions.builder'
 
 export default buildSchema({
-	id: 'syncErrorAction',
+	id: 'syncErrorOptions',
 	name: 'Sync error action',
 	description: 'Keep your errors types in sync with your builders',
 	fields: {
-		...syncSchemasActionBuilder.fields,
+		...syncSchemasOptionsBuilder.fields,
 		errorClassDestinationDir: {
 			type: 'text',
 			label: 'Error class destination',

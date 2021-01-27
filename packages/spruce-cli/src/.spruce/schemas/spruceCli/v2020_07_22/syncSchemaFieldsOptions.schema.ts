@@ -3,11 +3,11 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const syncSchemaFieldsActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemaFieldsActionSchema  = {
-	id: 'syncSchemaFieldsAction',
+const syncSchemaFieldsOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemaFieldsOptionsSchema  = {
+	id: 'syncSchemaFieldsOptions',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
-	name: 'syncSchemaFieldsAction',
+	name: 'syncSchemaFieldsOptions',
 	description: 'Sync schema fields so you can use schemas!',
 	    fields: {
 	            /** Field types directory. Where field types and interfaces will be generated. */
@@ -39,6 +39,6 @@ const syncSchemaFieldsActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncSche
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(syncSchemaFieldsActionSchema)
+SchemaRegistry.getInstance().trackSchema(syncSchemaFieldsOptionsSchema)
 
-export default syncSchemaFieldsActionSchema
+export default syncSchemaFieldsOptionsSchema

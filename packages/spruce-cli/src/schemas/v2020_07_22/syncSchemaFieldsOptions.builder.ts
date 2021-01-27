@@ -1,8 +1,8 @@
 import { buildSchema } from '@sprucelabs/schema'
 
 export default buildSchema({
-	id: 'syncSchemaFieldsAction',
-	name: 'syncSchemaFieldsAction',
+	id: 'syncSchemaFieldsOptions',
+	name: 'syncSchemaFieldsOptions',
 	description: 'Sync schema fields so you can use schemas!',
 	fields: {
 		fieldTypesDestinationDir: {

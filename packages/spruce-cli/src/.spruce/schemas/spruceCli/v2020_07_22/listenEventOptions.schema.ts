@@ -3,8 +3,8 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const listenEventActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventActionSchema  = {
-	id: 'listenEventAction',
+const listenEventOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventOptionsSchema  = {
+	id: 'listenEventOptions',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
 	name: 'Listen to event action',
@@ -57,6 +57,6 @@ const listenEventActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventAc
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(listenEventActionSchema)
+SchemaRegistry.getInstance().trackSchema(listenEventOptionsSchema)
 
-export default listenEventActionSchema
+export default listenEventOptionsSchema

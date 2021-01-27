@@ -1,8 +1,8 @@
 import { buildSchema } from '@sprucelabs/schema'
-import syncSchemasActionBuilder from './syncSchemasAction.builder'
+import syncSchemasOptionsBuilder from './syncSchemasOptions.builder'
 
 export default buildSchema({
-	id: 'syncEventAction',
+	id: 'syncEventOptions',
 	name: 'sync event action',
 	description: '',
 	fields: {
@@ -17,7 +17,7 @@ export default buildSchema({
 			label: 'Schema types lookup directory',
 			hint: 'Where I will lookup schema types and interfaces.',
 			defaultValue:
-				syncSchemasActionBuilder.fields.schemaTypesDestinationDirOrFile
+				syncSchemasOptionsBuilder.fields.schemaTypesDestinationDirOrFile
 					.defaultValue,
 		},
 	},

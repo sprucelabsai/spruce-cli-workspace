@@ -3,8 +3,8 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const upgradeSkillActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillActionSchema  = {
-	id: 'upgradeSkillAction',
+const upgradeSkillOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillOptionsSchema  = {
+	id: 'upgradeSkillOptions',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
 	name: 'Upgrade skill action',
@@ -20,6 +20,6 @@ const upgradeSkillActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkill
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(upgradeSkillActionSchema)
+SchemaRegistry.getInstance().trackSchema(upgradeSkillOptionsSchema)
 
-export default upgradeSkillActionSchema
+export default upgradeSkillOptionsSchema

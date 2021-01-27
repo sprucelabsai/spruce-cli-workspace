@@ -3,8 +3,8 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const syncEventActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncEventActionSchema  = {
-	id: 'syncEventAction',
+const syncEventOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptionsSchema  = {
+	id: 'syncEventOptions',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
 	name: 'sync event action',
@@ -28,6 +28,6 @@ const syncEventActionSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncEventAction
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(syncEventActionSchema)
+SchemaRegistry.getInstance().trackSchema(syncEventOptionsSchema)
 
-export default syncEventActionSchema
+export default syncEventOptionsSchema

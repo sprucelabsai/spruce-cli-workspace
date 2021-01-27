@@ -2,7 +2,7 @@ import { buildSchema } from '@sprucelabs/schema'
 import namedTemplateItemBuilder from './namedTemplateItem.builder'
 
 export default buildSchema({
-	id: 'createOrganizationAction',
+	id: 'createOrganizationOptions',
 	name: 'create organization action',
 	description: '',
 	fields: {

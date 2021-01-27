@@ -1,7 +1,7 @@
 import { buildSchema } from '@sprucelabs/schema'
 
 export default buildSchema({
-	id: 'installSkillAtOrganizationAction',
+	id: 'installSkillAtOrganizationOptions',
 	name: 'install skill at organization action',
 	description: '',
 	fields: {
