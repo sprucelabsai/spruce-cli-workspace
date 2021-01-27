@@ -97,6 +97,8 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 
 	private async installOurFeature(installOptions: Record<string, any>) {
 		this.ui.clear()
+
+		this.ui.renderHero('Spruce XP')
 		this.ui.startLoading(`Installing ${this.featureCode} feature...`)
 
 		const installResults = await this.featureInstaller.install({

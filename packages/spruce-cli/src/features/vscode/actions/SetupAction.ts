@@ -1,5 +1,6 @@
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import setupVscodeSchema from '#spruce/schemas/spruceCli/v2020_07_22/setupVscodeOptions.schema'
+import PkgService from '../../../services/PkgService'
 import { NpmPackage } from '../../../types/cli.types'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
@@ -54,6 +55,45 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 			this.ui.stopLoading()
 		}
 
+		await this.optionallyInstallVscodeExtensions(
+			skipConfirmExtensions,
+			missing,
+			choices,
+			response
+		)
+
+		this.ui.startLoading('Writing vscode configurations...')
+
+		const files = await this.Writer('vscode').writeVsCodeConfigurations(
+			this.cwd,
+			!all
+		)
+
+		response.files = files
+		response.packagesInstalled = []
+
+		await this.optionallyInstallEsListModules(response, all)
+
+		response.hints = [
+			"Ok, now that that's done 😅, lets make sure Visual Studio Code can run tasks whenever you open this project.",
+			'',
+			'Step 1: Open the Command Palette (View -> Command Palette or CMD+SHIFT+P) and type "Manage".',
+			'Step 2: Select "Tasks: Manage Automatic Tasks in Folder".',
+			'Step 3: Allow.',
+			'Step 4: Reload the window (type "reload" into the Command Palette).',
+			'',
+			'💪',
+		]
+
+		return response
+	}
+
+	private async optionallyInstallVscodeExtensions(
+		skipConfirmExtensions: boolean,
+		missing: Extension[],
+		choices: { value: string; label: string }[],
+		response: FeatureActionResponse
+	) {
 		const answers = skipConfirmExtensions
 			? missing.map((m) => m.id)
 			: await this.ui.prompt({
@@ -76,44 +116,45 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 
 			this.ui.stopLoading()
 		}
+	}
 
-		this.ui.startLoading('Writing vscode configurations...')
-
-		const files = await this.Writer('vscode').writeVsCodeConfigurations(
-			this.cwd,
-			!all
-		)
-
-		response.files = files
-		response.packagesInstalled = []
-
+	private async optionallyInstallEsListModules(
+		response: FeatureActionResponse,
+		all: boolean | undefined
+	) {
 		const pkg = this.Service('pkg')
 
 		for (const module of this.dependencies) {
 			if (!pkg.isInstalled(module.name)) {
-				response.packagesInstalled.push(module)
+				;(response.packagesInstalled ?? []).push(module)
 			}
 		}
 
-		if (response.packagesInstalled.length > 0) {
-			this.ui.stopLoading()
-			const shouldInstallPackages =
-				all ||
-				(await this.ui.confirm(
-					'Last thing! Ready for me to install eslint modules?'
-				))
+		if ((response.packagesInstalled ?? []).length > 0) {
+			await this.installEsLintModules(all, response, pkg)
+		}
+	}
 
-			this.ui.startLoading('Installing dev dependencies')
-			if (shouldInstallPackages) {
-				for (const module of response.packagesInstalled) {
-					await pkg.install(module.name, {
-						isDev: module.isDev,
-					})
-				}
+	private async installEsLintModules(
+		all: boolean | undefined,
+		response: FeatureActionResponse,
+		pkg: PkgService
+	) {
+		this.ui.stopLoading()
+		const shouldInstallPackages =
+			all ||
+			(await this.ui.confirm(
+				'Last thing! Ready for me to install eslint modules?'
+			))
+
+		this.ui.startLoading('Installing dev dependencies')
+		if (shouldInstallPackages) {
+			for (const module of response.packagesInstalled ?? []) {
+				await pkg.install(module.name, {
+					isDev: module.isDev,
+				})
 			}
 		}
-
-		return response
 	}
 
 	private async getMissingExtensions() {

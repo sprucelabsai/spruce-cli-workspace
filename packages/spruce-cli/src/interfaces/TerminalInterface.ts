@@ -230,6 +230,13 @@ export default class TerminalInterface implements GraphicsInterface {
 				})
 			}
 		}
+
+		if (results.hints) {
+			this.renderSection({
+				headline: 'Read below 👇',
+				lines: results.hints,
+			})
+		}
 	}
 
 	public renderHeadline(
