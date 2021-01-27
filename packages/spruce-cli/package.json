@@ -97,7 +97,7 @@
   "devDependencies": {
     "@sprucelabs/babel-plugin-schema": "latest",
     "@sprucelabs/jest-sheets-reporter": "latest",
-    "@sprucelabs/spruce-conversation-plugin": "^1.1.3",
+    "@sprucelabs/spruce-conversation-plugin": "^1.1.4",
     "@sprucelabs/test": "latest",
     "@sprucelabs/test-utils": "latest",
     "@types/blessed": "^0.1.17",
