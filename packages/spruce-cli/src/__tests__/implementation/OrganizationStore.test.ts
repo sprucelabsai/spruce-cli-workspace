@@ -82,7 +82,7 @@ export default class OrganizationStoreTest extends AbstractCliTest {
 		})
 
 		const orgs = await this.Store('organization').fetchMyOrganizations()
-		assert.isAbove(orgs.length, 2)
+		assert.isAbove(orgs.length, 1)
 		assert.doesInclude(orgs, org1)
 		assert.doesInclude(orgs, org2)
 	}
