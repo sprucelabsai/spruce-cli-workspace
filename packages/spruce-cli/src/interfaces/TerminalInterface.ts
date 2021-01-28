@@ -353,12 +353,12 @@ export default class TerminalInterface implements GraphicsInterface {
 		this.isPromptActive = true
 		const name = generateInquirerFieldName()
 		const fieldDefinition: FieldDefinitions = definition
-		const { defaultValue, label } = fieldDefinition
+		const { defaultValue } = fieldDefinition
 
 		const promptOptions: Record<string, any> = {
 			default: defaultValue,
 			name,
-			message: label,
+			message: this.generatePromptLabel(fieldDefinition),
 		}
 
 		const field = FieldFactory.Field('prompt', fieldDefinition)
@@ -490,6 +490,17 @@ export default class TerminalInterface implements GraphicsInterface {
 				: response[name]
 
 		return result
+	}
+	private generatePromptLabel(fieldDefinition: FieldDefinitions): any {
+		let label = fieldDefinition.label
+
+		if (fieldDefinition.hint) {
+			label = `${label} ${chalk.italic.dim(`(${fieldDefinition.hint})`)}`
+		}
+
+		label = label + ': '
+
+		return label
 	}
 
 	public renderError(err: Error) {

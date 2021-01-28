@@ -9,12 +9,12 @@ const createConversationTopicOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.
 	namespace: 'SpruceCli',
 	name: 'Define a topic you want to discuss.',
 	    fields: {
-	            /** Readable name. The name people will read */
+	            /** Topic. What should we talk about or try and get done, e.g. Book an appointment or tell a knock knock joke. */
 	            'nameReadable': {
-	                label: 'Readable name',
+	                label: 'Topic',
 	                type: 'text',
 	                isRequired: true,
-	                hint: 'The name people will read',
+	                hint: 'What should we talk about or try and get done, e.g. Book an appointment or tell a knock knock joke.',
 	                options: undefined
 	            },
 	            /** Camel case name. camelCase version of the name */
