@@ -306,7 +306,7 @@ export async function run(argv: string[] = []): Promise<void> {
 	terminal.clear()
 	terminal.renderHero('Spruce XP')
 
-	await Cli.Boot({ program, cwd })
+	await Cli.Boot({ program, cwd, host: process.env.HOST })
 
 	await program.parseAsync(argv)
 }
