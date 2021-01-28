@@ -5,7 +5,11 @@ import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory from '../services/ServiceFactory'
 import StoreFactory from '../stores/StoreFactory'
 import { ApiClientFactory } from '../types/apiClient.types'
-import { GeneratedFile, NpmPackage } from '../types/cli.types'
+import {
+	GeneratedFile,
+	NpmPackage,
+	InternalUpdateHandler,
+} from '../types/cli.types'
 import { GraphicsInterface } from '../types/cli.types'
 import WriterFactory from '../writers/WriterFactory'
 import AbstractFeature from './AbstractFeature'
@@ -118,6 +122,7 @@ export type FeatureExecuteOptions<
 export interface InstallFeatureOptions {
 	features: InstallFeature[]
 	installFeatureDependencies?: boolean
+	didUpdateHandler?: InternalUpdateHandler
 }
 export interface FeatureInstallResponse {
 	files?: GeneratedFile[]

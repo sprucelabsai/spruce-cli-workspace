@@ -110,6 +110,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 					options: installOptions,
 				},
 			],
+			didUpdateHandler: (message) => this.ui.startLoading(message),
 		})
 
 		this.ui.stopLoading()
@@ -291,6 +292,10 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 
 		const installResults = await this.featureInstaller.install({
 			installFeatureDependencies: false,
+			didUpdateHandler: (message: string) => {
+				this.ui.stopLoading()
+				this.ui.renderLine(message)
+			},
 			features: [
 				{
 					code: feature.code,

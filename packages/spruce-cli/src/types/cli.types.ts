@@ -49,3 +49,5 @@ export type FileDescription = {
 	shouldOverwriteWhenChanged: boolean
 	confirmPromptOnFirstWrite?: string
 }
+
+export type InternalUpdateHandler = (message: string) => void
