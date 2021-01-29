@@ -123,6 +123,15 @@ const syncSchemasOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasO
 	                defaultValue: false,
 	                options: undefined
 	            },
+	            /** Delete orphaned schemas. Should I delete schemas where the builders are missing? */
+	            'deleteOrphanedSchemas': {
+	                label: 'Delete orphaned schemas',
+	                type: 'boolean',
+	                isPrivate: true,
+	                hint: 'Should I delete schemas where the builders are missing?',
+	                defaultValue: true,
+	                options: undefined
+	            },
 	            /** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
 	            'generateStandaloneTypesFile': {
 	                label: 'Generate standalone types file',

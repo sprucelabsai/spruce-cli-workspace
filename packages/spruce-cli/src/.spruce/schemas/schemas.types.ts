@@ -3656,47 +3656,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		
-		interface SyncEventOptions {
-			
-				/** Contract destination. Where I will generate event contracts. */
-				'contractDestinationDir'?: string| undefined | null
-				/** Schema types lookup directory. Where I will lookup schema types and interfaces. */
-				'schemaTypesLookupDir'?: string| undefined | null
-		}
-
-		interface SyncEventOptionsSchema extends SpruceSchema.Schema {
-			id: 'syncEventOptions',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'sync event action',
-			    fields: {
-			            /** Contract destination. Where I will generate event contracts. */
-			            'contractDestinationDir': {
-			                label: 'Contract destination',
-			                type: 'text',
-			                hint: 'Where I will generate event contracts.',
-			                defaultValue: "#spruce/events",
-			                options: undefined
-			            },
-			            /** Schema types lookup directory. Where I will lookup schema types and interfaces. */
-			            'schemaTypesLookupDir': {
-			                label: 'Schema types lookup directory',
-			                type: 'text',
-			                hint: 'Where I will lookup schema types and interfaces.',
-			                defaultValue: "#spruce/schemas",
-			                options: undefined
-			            },
-			    }
-		}
-
-		type SyncEventOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptionsSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
 		/** Create the builder to a fresh new schema! */
 		interface CreateSchemaOptions {
 			
@@ -3726,6 +3685,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'registerBuiltSchemas'?: boolean| undefined | null
 				/** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
 				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
+				/** Delete orphaned schemas. Should I delete schemas where the builders are missing? */
+				'deleteOrphanedSchemas'?: boolean| undefined | null
 				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
 				'generateStandaloneTypesFile'?: boolean| undefined | null
 				/**  message. */
@@ -3868,6 +3829,15 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: false,
 			                options: undefined
 			            },
+			            /** Delete orphaned schemas. Should I delete schemas where the builders are missing? */
+			            'deleteOrphanedSchemas': {
+			                label: 'Delete orphaned schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Should I delete schemas where the builders are missing?',
+			                defaultValue: true,
+			                options: undefined
+			            },
 			            /** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
 			            'generateStandaloneTypesFile': {
 			                label: 'Generate standalone types file',
@@ -3959,84 +3929,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		/** Options for event.listen. */
-		interface ListenEventOptions {
-			
-				/** Contract destination. Where I will generate event contracts. */
-				'contractDestinationDir'?: string| undefined | null
-				/** Schema types lookup directory. Where I will lookup schema types and interfaces. */
-				'schemaTypesLookupDir'?: string| undefined | null
-				/** Namespace. */
-				'eventNamespace'?: string| undefined | null
-				/** Event name. */
-				'eventName'?: string| undefined | null
-				/** Events destination directory. Where should I add your listeners? */
-				'listenerDestinationDir'?: string| undefined | null
-				/** Version. Set a version yourself instead of letting me generate one for you */
-				'version'?: string| undefined | null
-		}
-
-		interface ListenEventOptionsSchema extends SpruceSchema.Schema {
-			id: 'listenEventOptions',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'Listen to event action',
-			description: 'Options for event.listen.',
-			    fields: {
-			            /** Contract destination. Where I will generate event contracts. */
-			            'contractDestinationDir': {
-			                label: 'Contract destination',
-			                type: 'text',
-			                hint: 'Where I will generate event contracts.',
-			                defaultValue: "#spruce/events",
-			                options: undefined
-			            },
-			            /** Schema types lookup directory. Where I will lookup schema types and interfaces. */
-			            'schemaTypesLookupDir': {
-			                label: 'Schema types lookup directory',
-			                type: 'text',
-			                hint: 'Where I will lookup schema types and interfaces.',
-			                defaultValue: "#spruce/schemas",
-			                options: undefined
-			            },
-			            /** Namespace. */
-			            'eventNamespace': {
-			                label: 'Namespace',
-			                type: 'text',
-			                options: undefined
-			            },
-			            /** Event name. */
-			            'eventName': {
-			                label: 'Event name',
-			                type: 'text',
-			                options: undefined
-			            },
-			            /** Events destination directory. Where should I add your listeners? */
-			            'listenerDestinationDir': {
-			                label: 'Events destination directory',
-			                type: 'text',
-			                hint: 'Where should I add your listeners?',
-			                defaultValue: "src/listeners",
-			                options: undefined
-			            },
-			            /** Version. Set a version yourself instead of letting me generate one for you */
-			            'version': {
-			                label: 'Version',
-			                type: 'text',
-			                isPrivate: true,
-			                hint: 'Set a version yourself instead of letting me generate one for you',
-			                options: undefined
-			            },
-			    }
-		}
-
-		type ListenEventOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ListenEventOptionsSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
 		/** Create a builder for your brand new error!  */
 		interface CreateErrorOptions {
 			
@@ -4064,8 +3956,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'generateCoreSchemaTypes'?: boolean| undefined | null
 				/** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
 				'registerBuiltSchemas'?: boolean| undefined | null
-				/** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
-				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
 				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
 				'generateStandaloneTypesFile'?: boolean| undefined | null
 				/**  message. */
@@ -4199,15 +4089,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: true,
 			                options: undefined
 			            },
-			            /** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
-			            'deleteDestinationDirIfNoSchemas': {
-			                label: 'Delete directory if no schemas',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'Should I delete the schema directory if no schemas are found?',
-			                defaultValue: false,
-			                options: undefined
-			            },
 			            /** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
 			            'generateStandaloneTypesFile': {
 			                label: 'Generate standalone types file',
@@ -4300,6 +4181,47 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
+		
+		interface SyncEventOptions {
+			
+				/** Contract destination. Where I will generate event contracts. */
+				'contractDestinationDir'?: string| undefined | null
+				/** Schema types lookup directory. Where I will lookup schema types and interfaces. */
+				'schemaTypesLookupDir'?: string| undefined | null
+		}
+
+		interface SyncEventOptionsSchema extends SpruceSchema.Schema {
+			id: 'syncEventOptions',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'sync event action',
+			    fields: {
+			            /** Contract destination. Where I will generate event contracts. */
+			            'contractDestinationDir': {
+			                label: 'Contract destination',
+			                type: 'text',
+			                hint: 'Where I will generate event contracts.',
+			                defaultValue: "#spruce/events",
+			                options: undefined
+			            },
+			            /** Schema types lookup directory. Where I will lookup schema types and interfaces. */
+			            'schemaTypesLookupDir': {
+			                label: 'Schema types lookup directory',
+			                type: 'text',
+			                hint: 'Where I will lookup schema types and interfaces.',
+			                defaultValue: "#spruce/schemas",
+			                options: undefined
+			            },
+			    }
+		}
+
+		type SyncEventOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptionsSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
 		/** Keep your errors types in sync with your builders */
 		interface SyncErrorOptions {
 			
@@ -4327,8 +4249,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'generateCoreSchemaTypes'?: boolean| undefined | null
 				/** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
 				'registerBuiltSchemas'?: boolean| undefined | null
-				/** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
-				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
 				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
 				'generateStandaloneTypesFile'?: boolean| undefined | null
 				/**  message. */
@@ -4452,15 +4372,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: true,
 			                options: undefined
 			            },
-			            /** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
-			            'deleteDestinationDirIfNoSchemas': {
-			                label: 'Delete directory if no schemas',
-			                type: 'boolean',
-			                isPrivate: true,
-			                hint: 'Should I delete the schema directory if no schemas are found?',
-			                defaultValue: false,
-			                options: undefined
-			            },
 			            /** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
 			            'generateStandaloneTypesFile': {
 			                label: 'Generate standalone types file',
@@ -4513,6 +4424,84 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
+		/** Options for event.listen. */
+		interface ListenEventOptions {
+			
+				/** Contract destination. Where I will generate event contracts. */
+				'contractDestinationDir'?: string| undefined | null
+				/** Schema types lookup directory. Where I will lookup schema types and interfaces. */
+				'schemaTypesLookupDir'?: string| undefined | null
+				/** Namespace. */
+				'eventNamespace'?: string| undefined | null
+				/** Event name. */
+				'eventName'?: string| undefined | null
+				/** Events destination directory. Where should I add your listeners? */
+				'listenerDestinationDir'?: string| undefined | null
+				/** Version. Set a version yourself instead of letting me generate one for you */
+				'version'?: string| undefined | null
+		}
+
+		interface ListenEventOptionsSchema extends SpruceSchema.Schema {
+			id: 'listenEventOptions',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'Listen to event action',
+			description: 'Options for event.listen.',
+			    fields: {
+			            /** Contract destination. Where I will generate event contracts. */
+			            'contractDestinationDir': {
+			                label: 'Contract destination',
+			                type: 'text',
+			                hint: 'Where I will generate event contracts.',
+			                defaultValue: "#spruce/events",
+			                options: undefined
+			            },
+			            /** Schema types lookup directory. Where I will lookup schema types and interfaces. */
+			            'schemaTypesLookupDir': {
+			                label: 'Schema types lookup directory',
+			                type: 'text',
+			                hint: 'Where I will lookup schema types and interfaces.',
+			                defaultValue: "#spruce/schemas",
+			                options: undefined
+			            },
+			            /** Namespace. */
+			            'eventNamespace': {
+			                label: 'Namespace',
+			                type: 'text',
+			                options: undefined
+			            },
+			            /** Event name. */
+			            'eventName': {
+			                label: 'Event name',
+			                type: 'text',
+			                options: undefined
+			            },
+			            /** Events destination directory. Where should I add your listeners? */
+			            'listenerDestinationDir': {
+			                label: 'Events destination directory',
+			                type: 'text',
+			                hint: 'Where should I add your listeners?',
+			                defaultValue: "src/listeners",
+			                options: undefined
+			            },
+			            /** Version. Set a version yourself instead of letting me generate one for you */
+			            'version': {
+			                label: 'Version',
+			                type: 'text',
+			                isPrivate: true,
+			                hint: 'Set a version yourself instead of letting me generate one for you',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type ListenEventOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ListenEventOptionsSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
 		/** Options for schema.sync. */
 		interface SyncSchemasOptions {
 			
@@ -4542,6 +4531,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'registerBuiltSchemas'?: boolean| undefined | null
 				/** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
 				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
+				/** Delete orphaned schemas. Should I delete schemas where the builders are missing? */
+				'deleteOrphanedSchemas'?: boolean| undefined | null
 				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
 				'generateStandaloneTypesFile'?: boolean| undefined | null
 				/**  message. */
@@ -4668,6 +4659,15 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: false,
 			                options: undefined
 			            },
+			            /** Delete orphaned schemas. Should I delete schemas where the builders are missing? */
+			            'deleteOrphanedSchemas': {
+			                label: 'Delete orphaned schemas',
+			                type: 'boolean',
+			                isPrivate: true,
+			                hint: 'Should I delete schemas where the builders are missing?',
+			                defaultValue: true,
+			                options: undefined
+			            },
 			            /** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
 			            'generateStandaloneTypesFile': {
 			                label: 'Generate standalone types file',
@@ -4689,6 +4689,94 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		}
 
 		type SyncSchemasOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptionsSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		/** A stripped down cli user with token details for login */
+		interface PersonWithToken {
+			
+				/** Id. */
+				'id': string
+				/** Casual name. The name you can use when talking to this person. */
+				'casualName': string
+				
+				'token': string
+				/** Logged in. */
+				'isLoggedIn'?: boolean| undefined | null
+		}
+
+		interface PersonWithTokenSchema extends SpruceSchema.Schema {
+			id: 'personWithToken',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: '',
+			description: 'A stripped down cli user with token details for login',
+			    fields: {
+			            /** Id. */
+			            'id': {
+			                label: 'Id',
+			                type: 'id',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** Casual name. The name you can use when talking to this person. */
+			            'casualName': {
+			                label: 'Casual name',
+			                type: 'text',
+			                isRequired: true,
+			                hint: 'The name you can use when talking to this person.',
+			                options: undefined
+			            },
+			            /** . */
+			            'token': {
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** Logged in. */
+			            'isLoggedIn': {
+			                label: 'Logged in',
+			                type: 'boolean',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type PersonWithTokenEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.PersonWithTokenSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		/** Options skill.upgrade. */
+		interface UpgradeSkillOptions {
+			
+				/** Upgrade mode. */
+				'upgradeMode'?: ("askEverything" | "forceEverything" | "forceRequiredSkipRest")| undefined | null
+		}
+
+		interface UpgradeSkillOptionsSchema extends SpruceSchema.Schema {
+			id: 'upgradeSkillOptions',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'Upgrade skill action',
+			description: 'Options skill.upgrade.',
+			    fields: {
+			            /** Upgrade mode. */
+			            'upgradeMode': {
+			                label: 'Upgrade mode',
+			                type: 'select',
+			                defaultValue: "forceRequiredSkipRest",
+			                options: {choices: [{"value":"askEverything","label":"Ask for everything"},{"value":"forceEverything","label":"Force everything"},{"value":"forceRequiredSkipRest","label":"Force required (skipping all non-essential)"}],}
+			            },
+			    }
+		}
+
+		type UpgradeSkillOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillOptionsSchema>
 
 	}
 
@@ -4820,141 +4908,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		}
 
 		type SyncSchemaFieldsOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemaFieldsOptionsSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
-		/** A stripped down cli user with token details for login */
-		interface PersonWithToken {
-			
-				/** Id. */
-				'id': string
-				/** Casual name. The name you can use when talking to this person. */
-				'casualName': string
-				
-				'token': string
-				/** Logged in. */
-				'isLoggedIn'?: boolean| undefined | null
-		}
-
-		interface PersonWithTokenSchema extends SpruceSchema.Schema {
-			id: 'personWithToken',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: '',
-			description: 'A stripped down cli user with token details for login',
-			    fields: {
-			            /** Id. */
-			            'id': {
-			                label: 'Id',
-			                type: 'id',
-			                isRequired: true,
-			                options: undefined
-			            },
-			            /** Casual name. The name you can use when talking to this person. */
-			            'casualName': {
-			                label: 'Casual name',
-			                type: 'text',
-			                isRequired: true,
-			                hint: 'The name you can use when talking to this person.',
-			                options: undefined
-			            },
-			            /** . */
-			            'token': {
-			                type: 'text',
-			                isRequired: true,
-			                options: undefined
-			            },
-			            /** Logged in. */
-			            'isLoggedIn': {
-			                label: 'Logged in',
-			                type: 'boolean',
-			                options: undefined
-			            },
-			    }
-		}
-
-		type PersonWithTokenEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.PersonWithTokenSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
-		/** Options skill.upgrade. */
-		interface UpgradeSkillOptions {
-			
-				/** Upgrade mode. */
-				'upgradeMode'?: ("askEverything" | "forceEverything" | "forceRequiredSkipRest")| undefined | null
-		}
-
-		interface UpgradeSkillOptionsSchema extends SpruceSchema.Schema {
-			id: 'upgradeSkillOptions',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'Upgrade skill action',
-			description: 'Options skill.upgrade.',
-			    fields: {
-			            /** Upgrade mode. */
-			            'upgradeMode': {
-			                label: 'Upgrade mode',
-			                type: 'select',
-			                defaultValue: "forceRequiredSkipRest",
-			                options: {choices: [{"value":"askEverything","label":"Ask for everything"},{"value":"forceEverything","label":"Force everything"},{"value":"forceRequiredSkipRest","label":"Force required (skipping all non-essential)"}],}
-			            },
-			    }
-		}
-
-		type UpgradeSkillOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillOptionsSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
-		
-		interface SkillFeature {
-			
-				
-				'destination'?: string| undefined | null
-				/** What's the name of your skill?. */
-				'name': string
-				/** How would you describe your skill?. */
-				'description': string
-		}
-
-		interface SkillFeatureSchema extends SpruceSchema.Schema {
-			id: 'skillFeature',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'Skill feature options',
-			    fields: {
-			            /** . */
-			            'destination': {
-			                type: 'text',
-			                defaultValue: ".",
-			                options: undefined
-			            },
-			            /** What's the name of your skill?. */
-			            'name': {
-			                label: 'What\'s the name of your skill?',
-			                type: 'text',
-			                isRequired: true,
-			                options: undefined
-			            },
-			            /** How would you describe your skill?. */
-			            'description': {
-			                label: 'How would you describe your skill?',
-			                type: 'text',
-			                isRequired: true,
-			                options: undefined
-			            },
-			    }
-		}
-
-		type SkillFeatureEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema>
 
 	}
 
@@ -5095,6 +5048,83 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
+		
+		interface SkillFeature {
+			
+				
+				'destination'?: string| undefined | null
+				/** What's the name of your skill?. */
+				'name': string
+				/** How would you describe your skill?. */
+				'description': string
+		}
+
+		interface SkillFeatureSchema extends SpruceSchema.Schema {
+			id: 'skillFeature',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'Skill feature options',
+			    fields: {
+			            /** . */
+			            'destination': {
+			                type: 'text',
+			                defaultValue: ".",
+			                options: undefined
+			            },
+			            /** What's the name of your skill?. */
+			            'name': {
+			                label: 'What\'s the name of your skill?',
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** How would you describe your skill?. */
+			            'description': {
+			                label: 'How would you describe your skill?',
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			    }
+		}
+
+		type SkillFeatureEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		/** Install vscode extensions, launch configs, and settings the Spruce team uses in-house! */
+		interface SetupVscodeOptions {
+			
+				/** Install everything. */
+				'all'?: boolean| undefined | null
+		}
+
+		interface SetupVscodeOptionsSchema extends SpruceSchema.Schema {
+			id: 'setupVscodeOptions',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'Setup vscode action',
+			description: 'Install vscode extensions, launch configs, and settings the Spruce team uses in-house!',
+			    fields: {
+			            /** Install everything. */
+			            'all': {
+			                label: 'Install everything',
+			                type: 'boolean',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type SetupVscodeOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeOptionsSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
 		/** Track onboarding progress and tutorials &amp; quizzes completed. */
 		interface Onboarding {
 			
@@ -5204,55 +5234,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		
-		interface OnboardOptions {
-			
-		}
-
-		interface OnboardOptionsSchema extends SpruceSchema.Schema {
-			id: 'onboardOptions',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'Onboard action',
-			    fields: {
-			    }
-		}
-
-		type OnboardOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.OnboardOptionsSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
-		
-		interface RegisterDashboardWidgetsEmitPayloadSchema {
-			
-				
-				'widgets'?: (BaseWidget)| undefined | null
-		}
-
-		interface RegisterDashboardWidgetsEmitPayloadSchemaSchema extends SpruceSchema.Schema {
-			id: 'registerDashboardWidgetsEmitPayloadSchema',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'register dashboard widgets emit payload schema',
-			    fields: {
-			            /** . */
-			            'widgets': {
-			                type: 'raw',
-			                options: {valueType: `BaseWidget`,}
-			            },
-			    }
-		}
-
-		type RegisterDashboardWidgetsEmitPayloadSchemaEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.RegisterDashboardWidgetsEmitPayloadSchemaSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
 		/** Used to collect input on the names of a class or interface */
 		interface NamedTemplateItem {
 			
@@ -5350,6 +5331,34 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		
+		interface RegisterDashboardWidgetsEmitPayloadSchema {
+			
+				
+				'widgets'?: (BaseWidget)| undefined | null
+		}
+
+		interface RegisterDashboardWidgetsEmitPayloadSchemaSchema extends SpruceSchema.Schema {
+			id: 'registerDashboardWidgetsEmitPayloadSchema',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'register dashboard widgets emit payload schema',
+			    fields: {
+			            /** . */
+			            'widgets': {
+			                type: 'raw',
+			                options: {valueType: `BaseWidget`,}
+			            },
+			    }
+		}
+
+		type RegisterDashboardWidgetsEmitPayloadSchemaEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.RegisterDashboardWidgetsEmitPayloadSchemaSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		
 		interface CreateOrganizationOptions {
 			
 				/** Name. The name people will read */
@@ -5383,65 +5392,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		}
 
 		type CreateOrganizationOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateOrganizationOptionsSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
-		
-		interface InstallSkillAtOrganizationOptions {
-			
-				/** Organization id. */
-				'organizationId'?: string| undefined | null
-		}
-
-		interface InstallSkillAtOrganizationOptionsSchema extends SpruceSchema.Schema {
-			id: 'installSkillAtOrganizationOptions',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'install skill at organization action',
-			    fields: {
-			            /** Organization id. */
-			            'organizationId': {
-			                label: 'Organization id',
-			                type: 'id',
-			                options: undefined
-			            },
-			    }
-		}
-
-		type InstallSkillAtOrganizationOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizationOptionsSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
-		/** Install vscode extensions, launch configs, and settings the Spruce team uses in-house! */
-		interface SetupVscodeOptions {
-			
-				/** Install everything. */
-				'all'?: boolean| undefined | null
-		}
-
-		interface SetupVscodeOptionsSchema extends SpruceSchema.Schema {
-			id: 'setupVscodeOptions',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'Setup vscode action',
-			description: 'Install vscode extensions, launch configs, and settings the Spruce team uses in-house!',
-			    fields: {
-			            /** Install everything. */
-			            'all': {
-			                label: 'Install everything',
-			                type: 'boolean',
-			                options: undefined
-			            },
-			    }
-		}
-
-		type SetupVscodeOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeOptionsSchema>
 
 	}
 
@@ -5489,6 +5439,27 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
+		
+		interface OnboardOptions {
+			
+		}
+
+		interface OnboardOptionsSchema extends SpruceSchema.Schema {
+			id: 'onboardOptions',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'Onboard action',
+			    fields: {
+			    }
+		}
+
+		type OnboardOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.OnboardOptionsSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
 		/** The options for skill.boot. */
 		interface BootSkillOptions {
 			
@@ -5514,6 +5485,35 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		}
 
 		type BootSkillOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.BootSkillOptionsSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		
+		interface InstallSkillAtOrganizationOptions {
+			
+				/** Organization id. */
+				'organizationId'?: string| undefined | null
+		}
+
+		interface InstallSkillAtOrganizationOptionsSchema extends SpruceSchema.Schema {
+			id: 'installSkillAtOrganizationOptions',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'install skill at organization action',
+			    fields: {
+			            /** Organization id. */
+			            'organizationId': {
+			                label: 'Organization id',
+			                type: 'id',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type InstallSkillAtOrganizationOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizationOptionsSchema>
 
 	}
 

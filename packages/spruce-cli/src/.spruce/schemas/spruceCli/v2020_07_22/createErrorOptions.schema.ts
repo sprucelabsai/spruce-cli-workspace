@@ -114,15 +114,6 @@ const createErrorOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorO
 	                defaultValue: true,
 	                options: undefined
 	            },
-	            /** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
-	            'deleteDestinationDirIfNoSchemas': {
-	                label: 'Delete directory if no schemas',
-	                type: 'boolean',
-	                isPrivate: true,
-	                hint: 'Should I delete the schema directory if no schemas are found?',
-	                defaultValue: false,
-	                options: undefined
-	            },
 	            /** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
 	            'generateStandaloneTypesFile': {
 	                label: 'Generate standalone types file',
