@@ -34,10 +34,7 @@ export default class ServiceFactory {
 	public Service<S extends Service>(cwd: string, type: S): ServiceMap[S] {
 		switch (type) {
 			case 'auth':
-				return new AuthService(
-					new SettingsService(cwd),
-					new EnvService(cwd)
-				) as ServiceMap[S]
+				return new AuthService(new EnvService(cwd)) as ServiceMap[S]
 			case 'pkg':
 				return new PkgService(cwd) as ServiceMap[S]
 			case 'env':

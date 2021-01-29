@@ -43,6 +43,12 @@ export default class EnvService {
 		return value
 	}
 
+	public unset(key: string) {
+		const env = this.parseEnv()
+		delete env[key]
+		this.writeConfig(env)
+	}
+
 	private parseEnv() {
 		const path = this.getEnvPath()
 		if (!diskUtil.doesFileExist(path)) {

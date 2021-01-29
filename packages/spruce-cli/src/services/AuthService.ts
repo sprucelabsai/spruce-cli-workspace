@@ -1,6 +1,5 @@
 import { SpruceSchemas } from '@sprucelabs/mercury-types'
 import { normalizeSchemaValues, validateSchemaValues } from '@sprucelabs/schema'
-import { SettingsService } from '@sprucelabs/spruce-skill-utils'
 import personWithTokenSchema from '#spruce/schemas/spruceCli/v2020_07_22/personWithToken.schema'
 import EnvService from './EnvService'
 
@@ -12,30 +11,36 @@ interface SkillAuth {
 }
 
 export default class AuthService {
-	private settings: SettingsService<string>
 	private env: EnvService
 
-	public constructor(settingsService: SettingsService, envService: EnvService) {
-		this.settings = settingsService
+	public constructor(envService: EnvService) {
 		this.env = envService
 	}
 
 	public getLoggedInPerson(): PersonWithToken | null {
-		return this.settings.get('loggedInPerson') ?? null
+		const p = this.env.get('loggedInPerson')
+		if (typeof p === 'string') {
+			return JSON.parse(p)
+		}
+
+		return null
 	}
 
 	public setLoggedInPerson(person: PersonWithToken) {
 		const normalized = normalizeSchemaValues(personWithTokenSchema, person)
 		validateSchemaValues(personWithTokenSchema, normalized)
 
-		this.settings.set('loggedInPerson', {
-			...normalized,
-			isLoggedIn: true,
-		})
+		this.env.set(
+			'loggedInPerson',
+			JSON.stringify({
+				...normalized,
+				isLoggedIn: true,
+			})
+		)
 	}
 
 	public logOutPerson() {
-		this.settings.set('loggedInPerson', null)
+		this.env.unset('loggedInPerson')
 	}
 
 	public getCurrentSkill(): SkillAuth | null {
