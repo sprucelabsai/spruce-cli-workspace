@@ -14,7 +14,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			options
 		)
 
-		const file = this.Writer('conversation').writeDefinition(this.cwd, {
+		const file = await this.Writer('conversation').writeDefinition(this.cwd, {
 			nameCamel,
 			nameReadable,
 		})

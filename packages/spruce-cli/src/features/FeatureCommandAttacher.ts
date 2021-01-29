@@ -2,6 +2,7 @@ import { Schema, SchemaEntityFactory } from '@sprucelabs/schema'
 import { CommanderStatic } from 'commander'
 import SpruceError from '../errors/SpruceError'
 import { GraphicsInterface } from '../types/cli.types'
+import commanderUtil from '../utilities/commander.utility'
 import AbstractFeature from './AbstractFeature'
 import featuresUtil from './feature.utilities'
 import FeatureCommandExecuter from './FeatureCommandExecuter'
@@ -47,9 +48,16 @@ export default class FeatureCommandAttacher {
 			term: this.ui,
 		})
 
-		let command = this.program.command(commandStr).action(async (options) => {
-			await executer.execute(options)
-		})
+		let command = this.program
+			.command(commandStr)
+			.action(async (...args: any[]) => {
+				const options = commanderUtil.mapIncomingToOptions(
+					...args,
+					feature.optionsSchema ?? action.optionsSchema
+				)
+
+				await executer.execute(options)
+			})
 
 		if (action.commandAliases.length > 1) {
 			throw new Error('more than one alias not supported yet')

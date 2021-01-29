@@ -3,7 +3,7 @@ import { GeneratedFile } from '../../../types/cli.types'
 import AbstractWriter from '../../../writers/AbstractWriter'
 
 export default class ConversationWriter extends AbstractWriter {
-	public writeDefinition(
+	public async writeDefinition(
 		destinationDir: string,
 		options: { nameCamel: string; nameReadable: string }
 	) {
@@ -20,6 +20,8 @@ export default class ConversationWriter extends AbstractWriter {
 		const contents = this.templates.conversationTopic({ nameReadable })
 
 		diskUtil.writeFile(destination, contents)
+
+		await this.lint(destination)
 
 		const file: GeneratedFile = {
 			name: filename,

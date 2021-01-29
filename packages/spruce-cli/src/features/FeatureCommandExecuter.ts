@@ -17,7 +17,7 @@ import {
 
 type FeatureCommandExecuteOptions<
 	F extends FeatureCode,
-	S extends Schema | undefined = FeatureMap[F]['optionsDefinition']
+	S extends Schema | undefined = FeatureMap[F]['optionsSchema']
 > = S extends Schema ? SchemaPartialValues<S> : undefined
 
 type FeatureDependencyWithFeature = FeatureDependency & {
@@ -125,9 +125,9 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 	) {
 		let installOptions = { ...options }
 		if (!isInstalled) {
-			if (feature.optionsDefinition) {
+			if (feature.optionsSchema) {
 				const answers = await this.collectAnswers(
-					feature.optionsDefinition,
+					feature.optionsSchema,
 					options
 				)
 
@@ -281,9 +281,9 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 
 		let installOptions = {}
 
-		if (feature.optionsDefinition) {
+		if (feature.optionsSchema) {
 			installOptions = await this.collectAnswers(
-				feature.optionsDefinition,
+				feature.optionsSchema,
 				undefined
 			)
 		}
@@ -293,8 +293,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		const installResults = await this.featureInstaller.install({
 			installFeatureDependencies: false,
 			didUpdateHandler: (message: string) => {
-				this.ui.stopLoading()
-				this.ui.renderLine(message)
+				this.ui.startLoading(message)
 			},
 			features: [
 				{

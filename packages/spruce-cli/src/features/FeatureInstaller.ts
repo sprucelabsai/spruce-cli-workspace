@@ -213,17 +213,18 @@ export default class FeatureInstaller implements ServiceProvider {
 	): Promise<FeatureInstallResponse> {
 		const feature = this.getFeature(installFeature.code) as AbstractFeature
 
-		if (feature.optionsDefinition) {
-			validateSchemaValues(
-				feature.optionsDefinition,
-				installFeature.options ?? {}
-			)
+		if (feature.optionsSchema) {
+			validateSchemaValues(feature.optionsSchema, installFeature.options ?? {})
 		}
 
 		didUpdateHandler?.(`Running before package install hook...`)
 		const beforeInstallResults = await feature.beforePackageInstall(
 			installFeature.options
 		)
+
+		if (beforeInstallResults.cwd) {
+			this.cwd = beforeInstallResults.cwd
+		}
 
 		didUpdateHandler?.(`Installing package dependencies...`)
 		const packagesInstalled = await this.installPackageDependencies(
@@ -332,7 +333,7 @@ export default class FeatureInstaller implements ServiceProvider {
 	}
 
 	public getDefinitionForFeature(code: FeatureCode) {
-		return this.getFeature(code).optionsDefinition
+		return this.getFeature(code).optionsSchema
 	}
 
 	public getAllCodes(): FeatureCode[] {

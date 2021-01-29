@@ -207,7 +207,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			localNamespace,
 		} = options
 
-		this.ui.startLoading('Loading builders')
+		this.ui.startLoading('Loading builders...')
 
 		const {
 			schemasByNamespace,
@@ -219,6 +219,9 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			enableVersioning,
 			localNamespace,
 			fetchCoreSchemas,
+			didUpdateHandler: (message) => {
+				this.ui.startLoading(message)
+			},
 		})
 
 		const hashSpruceDestination = resolvedSchemaTypesDestinationDirOrFile.replace(

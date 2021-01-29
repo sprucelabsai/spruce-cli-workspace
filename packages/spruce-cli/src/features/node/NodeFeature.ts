@@ -30,7 +30,7 @@ export default class NodeFeature<
 	public nameReadable = 'Node'
 	public description = 'Get a fresh node module started!'
 	public dependencies: FeatureDependency[] = []
-	public optionsDefinition = nodeFeatureSchema as S
+	public optionsSchema = nodeFeatureSchema as S
 	public packageDependencies = [
 		{ name: 'typescript', isDev: true },
 		{ name: 'ts-node', isDev: true },

@@ -13,6 +13,7 @@ import globby from 'globby'
 import { isEqual, uniqBy } from 'lodash'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractStore from '../../../stores/AbstractStore'
+import { InternalUpdateHandler } from '../../../types/cli.types'
 
 interface AddonItem {
 	path: string
@@ -49,6 +50,7 @@ export default class SchemaStore extends AbstractStore {
 		localNamespace: string
 		fetchCoreSchemas?: boolean
 		fetchLocalSchemas?: boolean
+		didUpdateHandler?: InternalUpdateHandler
 	}): Promise<FetchSchemasResults> {
 		const {
 			localSchemaLookupDir: localSchemaDir = 'src/schemas',
@@ -57,6 +59,7 @@ export default class SchemaStore extends AbstractStore {
 			enableVersioning = true,
 			localNamespace,
 			fetchCoreSchemas = true,
+			didUpdateHandler,
 		} = options || {}
 
 		const results: FetchSchemasResults = {
@@ -77,7 +80,8 @@ export default class SchemaStore extends AbstractStore {
 			const locals = await this.loadLocalSchemas(
 				localSchemaDir,
 				localNamespace,
-				enableVersioning
+				enableVersioning,
+				didUpdateHandler
 			)
 			results.schemasByNamespace[localNamespace] = locals.schemas
 			results.errors.push(...locals.errors)
@@ -140,7 +144,8 @@ export default class SchemaStore extends AbstractStore {
 	private async loadLocalSchemas(
 		localLookupDir: string,
 		localNamespace: string,
-		enableVersioning?: boolean
+		enableVersioning?: boolean,
+		didUpdateHandler?: InternalUpdateHandler
 	) {
 		const localMatches = await globby(
 			diskUtil.resolvePath(this.cwd, localLookupDir, '**/*.builder.[t|j]s')
@@ -163,7 +168,8 @@ export default class SchemaStore extends AbstractStore {
 						localNamespace,
 						version,
 						schemas,
-						errors
+						errors,
+						didUpdateHandler
 					)
 				}
 			})
@@ -180,10 +186,16 @@ export default class SchemaStore extends AbstractStore {
 		localNamespace: string,
 		version: string | undefined,
 		schemas: Schema[],
-		errors: SpruceError[]
+		errors: SpruceError[],
+		didUpdateHandler?: InternalUpdateHandler
 	) {
 		try {
-			let schema = await this.importSchema(local, localNamespace, version)
+			let schema = await this.importSchema(
+				local,
+				localNamespace,
+				version,
+				didUpdateHandler
+			)
 			schemas.push(schema)
 		} catch (err) {
 			errors.push(
@@ -225,8 +237,11 @@ export default class SchemaStore extends AbstractStore {
 	private async importSchema(
 		local: string,
 		localNamespace: string,
-		version: string | undefined
+		version: string | undefined,
+		didUpdateHandler?: InternalUpdateHandler
 	) {
+		didUpdateHandler?.(`Starting import of ${pathUtil.basename(local)}.`)
+
 		const schemaService = this.Service('schema')
 		const schema = await schemaService.importSchema(local)
 
@@ -253,6 +268,8 @@ export default class SchemaStore extends AbstractStore {
 		}
 
 		schema.version = version
+
+		didUpdateHandler?.(`Imported ${schema.id} builder.`)
 
 		return schema
 	}

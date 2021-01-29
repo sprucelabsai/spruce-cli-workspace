@@ -31,6 +31,7 @@ import { FeatureCode } from './features.types'
 
 export interface InstallResults {
 	files?: GeneratedFile[]
+	cwd?: string
 }
 
 export interface FeatureDependency {
@@ -56,7 +57,7 @@ export default abstract class AbstractFeature<
 	public abstract description: string
 	public readonly dependencies: FeatureDependency[] = []
 	public readonly packageDependencies: NpmPackage[] = []
-	public readonly optionsDefinition?: S
+	public readonly optionsSchema?: S
 	public readonly fileDescriptions: FileDescription[] = []
 
 	public isInstalled?: () => Promise<boolean>

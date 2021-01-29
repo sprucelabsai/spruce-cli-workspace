@@ -47,11 +47,11 @@ export interface FeatureMap {
 export type InstallFeature =
 	| {
 			code: 'node'
-			options: SchemaValues<NodeFeature['optionsDefinition']>
+			options: SchemaValues<NodeFeature['optionsSchema']>
 	  }
 	| {
 			code: 'skill'
-			options: SchemaValues<SkillFeature['optionsDefinition']>
+			options: SchemaValues<SkillFeature['optionsSchema']>
 	  }
 	| {
 			code: 'schema'
@@ -115,8 +115,8 @@ export type FeatureCode = keyof FeatureMap
 
 export type FeatureExecuteOptions<
 	F extends FeatureCode
-> = FeatureMap[F]['optionsDefinition'] extends Schema
-	? SchemaValues<FeatureMap[F]['optionsDefinition']>
+> = FeatureMap[F]['optionsSchema'] extends Schema
+	? SchemaValues<FeatureMap[F]['optionsSchema']>
 	: undefined
 
 export interface InstallFeatureOptions {
