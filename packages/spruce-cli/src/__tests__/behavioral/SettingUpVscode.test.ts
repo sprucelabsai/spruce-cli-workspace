@@ -9,7 +9,7 @@ export default class SettingUpVscodeTest extends AbstractCliTest {
 		assert.isFunction(cli.getFeature('vscode').Action('setup').execute)
 	}
 
-	@test.skip()
+	@test.skip('Cant run on machine without vscode installed')
 	protected static async settingUpAsksAboutExtensonsAndSetsUpDebug() {
 		const cli = await this.FeatureFixture().installCachedFeatures('skills')
 		const promise = cli.getFeature('vscode').Action('setup').execute({})
@@ -50,6 +50,7 @@ export default class SettingUpVscodeTest extends AbstractCliTest {
 			'launch.json',
 			results.files ?? []
 		)
+
 		assert.isEqual(match, this.resolvePath('.vscode/launch.json'))
 	}
 }
