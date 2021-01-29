@@ -50,7 +50,7 @@ export default class SkillFeature<
 		},
 	]
 
-	public optionsDefinition = skillFeatureSchema as S
+	public optionsSchema = skillFeatureSchema as S
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 	private scripts = {
 		lint: "eslint '**/*.ts'",
@@ -173,24 +173,31 @@ export default class SkillFeature<
 	public async beforePackageInstall(options: Skill) {
 		const { files } = await this.install(options)
 
-		return { files }
+		return { files, cwd: this.resolveDestination(options) }
 	}
 
-	private async install(
-		options: SpruceSchemas.SpruceCli.v2020_07_22.SkillFeature
-	) {
+	private async install(options: Skill) {
 		validateSchemaValues(skillFeatureSchema, options)
+
+		const destination = this.resolveDestination(options)
+		if (!diskUtil.doesDirExist(destination)) {
+			diskUtil.createDir(destination)
+		}
 
 		const skillGenerator = this.Writer('skill')
 
-		const files = await skillGenerator.writeSkill(this.cwd, options)
-		this.installScripts()
+		const files = await skillGenerator.writeSkill(destination, options)
+		this.installScripts(destination)
 
 		return { files }
 	}
 
-	public installScripts() {
-		const pkg = this.Service('pkg')
+	private resolveDestination(options: Skill) {
+		return diskUtil.resolvePath(this.cwd, options.destination ?? '')
+	}
+
+	public installScripts(destination = this.cwd) {
+		const pkg = this.Service('pkg', destination)
 		const scripts = pkg.get('scripts') as Record<string, string>
 
 		for (const name in this.scripts) {

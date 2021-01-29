@@ -1,4 +1,4 @@
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, HASH_SPRUCE_DIR } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 
@@ -104,6 +104,37 @@ export default class SettingUpASkill extends AbstractCliTest {
 		assert.isAbove(hiddenFiles.length, 0)
 
 		this.assertDevDependenciesExist()
+	}
+
+	@test()
+	protected static async canAcceptOptionalDestination() {
+		const cli = await this.Cli()
+		const results = await cli.installFeatures({
+			features: [
+				{
+					code: 'skill',
+					options: {
+						name: 'Transfer file check skill',
+						description: 'For tracking files copied count',
+						destination: 'taco',
+					},
+				},
+			],
+		})
+
+		assert.isTrue(diskUtil.doesDirExist(this.resolvePath('taco')))
+		assert.isFalse(diskUtil.doesFileExist(this.resolvePath('package.json')))
+		assert.isFalse(diskUtil.doesFileExist(this.resolvePath('src')))
+		assert.isFalse(diskUtil.doesFileExist(this.resolvePath('node_modules')))
+		assert.isFalse(diskUtil.doesFileExist(this.resolvePath(HASH_SPRUCE_DIR)))
+		assert.isTrue(
+			diskUtil.doesFileExist(this.resolvePath('taco', 'package.json'))
+		)
+
+		const first = results.files?.[0]
+		assert.isTruthy(first)
+
+		assert.doesInclude(first.path, 'taco')
 	}
 
 	protected static assertDevDependenciesExist() {

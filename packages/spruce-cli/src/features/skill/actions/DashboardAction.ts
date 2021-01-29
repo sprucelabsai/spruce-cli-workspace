@@ -2,17 +2,17 @@ import { buildSchema } from '@sprucelabs/schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
-export const dashboardActionOptionsDefinition = buildSchema({
+export const optionsSchema = buildSchema({
 	id: 'dashboard',
 	name: 'Skill dashboard',
 	fields: {},
 })
 
-export type DashboardActionDefinition = typeof dashboardActionOptionsDefinition
+export type DashboardActionDefinition = typeof optionsSchema
 
 export default class DashboardAction extends AbstractFeatureAction<DashboardActionDefinition> {
 	public code = 'dashboard'
-	public optionsSchema = dashboardActionOptionsDefinition
+	public optionsSchema = optionsSchema
 	public commandAliases = ['dashboard']
 
 	public async execute(): Promise<FeatureActionResponse> {

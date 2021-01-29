@@ -9,6 +9,12 @@ const skillFeatureSchema: SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema
 	namespace: 'SpruceCli',
 	name: 'Skill feature options',
 	    fields: {
+	            /** . */
+	            'destination': {
+	                type: 'text',
+	                defaultValue: ".",
+	                options: undefined
+	            },
 	            /** What's the name of your skill?. */
 	            'name': {
 	                label: 'What\'s the name of your skill?',

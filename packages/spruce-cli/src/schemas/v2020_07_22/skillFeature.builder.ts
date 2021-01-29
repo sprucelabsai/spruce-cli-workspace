@@ -4,6 +4,10 @@ export default buildSchema({
 	id: 'skillFeature',
 	name: 'Skill feature options',
 	fields: {
+		destination: {
+			type: 'text',
+			defaultValue: '.',
+		},
 		name: {
 			type: 'text',
 			isRequired: true,
