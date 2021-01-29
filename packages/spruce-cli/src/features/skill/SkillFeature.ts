@@ -6,11 +6,11 @@ import { FileDescription, NpmPackage } from '../../types/cli.types'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
-type SkillFeatureSchema = SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema
-type Skill = SpruceSchemas.SpruceCli.v2020_07_22.SkillFeature
+type SkillFeatureOptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema
+type SkillFeatureOptions = SpruceSchemas.SpruceCli.v2020_07_22.SkillFeature
 
 export default class SkillFeature<
-	S extends SkillFeatureSchema = SkillFeatureSchema
+	S extends SkillFeatureOptionsSchema = SkillFeatureOptionsSchema
 > extends AbstractFeature<S> {
 	public nameReadable = 'Skill'
 	public code: FeatureCode = 'skill'
@@ -170,13 +170,13 @@ export default class SkillFeature<
 		},
 	]
 
-	public async beforePackageInstall(options: Skill) {
+	public async beforePackageInstall(options: SkillFeatureOptions) {
 		const { files } = await this.install(options)
 
 		return { files, cwd: this.resolveDestination(options) }
 	}
 
-	private async install(options: Skill) {
+	private async install(options: SkillFeatureOptions) {
 		validateSchemaValues(skillFeatureSchema, options)
 
 		const destination = this.resolveDestination(options)
@@ -189,10 +189,13 @@ export default class SkillFeature<
 		const files = await skillGenerator.writeSkill(destination, options)
 		this.installScripts(destination)
 
+		const env = this.Service('env')
+		env.set('SKILL_NAME', options.name)
+
 		return { files }
 	}
 
-	private resolveDestination(options: Skill) {
+	private resolveDestination(options: SkillFeatureOptions) {
 		return diskUtil.resolvePath(this.cwd, options.destination ?? '')
 	}
 

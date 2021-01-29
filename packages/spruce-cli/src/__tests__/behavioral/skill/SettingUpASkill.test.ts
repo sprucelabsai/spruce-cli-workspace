@@ -104,6 +104,13 @@ export default class SettingUpASkill extends AbstractCliTest {
 		assert.isAbove(hiddenFiles.length, 0)
 
 		this.assertDevDependenciesExist()
+		this.assertSkillNameIsSaved()
+	}
+
+	private static assertSkillNameIsSaved() {
+		const env = this.Service('env')
+		assert.isTruthy(env.get('SKILL_NAME'))
+		assert.isEqual(env.get('SKILL_NAME'), 'Transfer file check skill')
 	}
 
 	@test()
