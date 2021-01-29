@@ -288,10 +288,10 @@ export default class FeatureInstaller implements ServiceProvider {
 
 		if (devPackagesToInstall.length > 0) {
 			didUpdateHandler?.(
-				`Now installing ${packagesToInstall.length} DEV node dependenc${
-					packagesToInstall.length === 1
+				`Now installing ${devPackagesToInstall.length} DEV node dependenc${
+					devPackagesToInstall.length === 1
 						? 'y.'
-						: 'ies using NPM. NPM is slow, so this may take a sec....'
+						: 'ies using NPM. NPM is still slow, so hang tight. 🤘'
 				}.`
 			)
 			await pkgService.install(devPackagesToInstall, {
