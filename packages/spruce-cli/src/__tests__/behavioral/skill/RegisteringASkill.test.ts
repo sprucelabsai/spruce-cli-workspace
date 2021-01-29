@@ -52,5 +52,10 @@ export default class RegisteringASkillTest extends AbstractCliTest {
 		)
 
 		assert.isEqual(skill.id, getSkill.id)
+
+		const auth = this.Service('auth')
+		const currentSkill = auth.getCurrentSkill()
+
+		assert.isTruthy(currentSkill)
 	}
 }

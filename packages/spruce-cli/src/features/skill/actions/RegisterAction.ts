@@ -55,8 +55,15 @@ export default class RegisterAction extends AbstractFeatureAction<OptionsSchema>
 				`API Key: ${skill.apiKey}`,
 			]
 
+			this.Service('auth').updateCurrentSkill(skill)
+
 			return {
 				summaryLines,
+				hints: [
+					'Your skill is registered.',
+					'You can check your .env for more details.',
+					"If you're ready to deploy, try `spruce deploy`. 🚀",
+				],
 				meta: {
 					skill,
 				},

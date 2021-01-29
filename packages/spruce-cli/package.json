@@ -97,7 +97,7 @@
   "devDependencies": {
     "@sprucelabs/babel-plugin-schema": "latest",
     "@sprucelabs/jest-sheets-reporter": "latest",
-    "@sprucelabs/spruce-conversation-plugin": "^1.1.8",
+    "@sprucelabs/spruce-conversation-plugin": "latest",
     "@sprucelabs/test": "latest",
     "@sprucelabs/test-utils": "latest",
     "@types/blessed": "^0.1.17",
@@ -352,7 +352,8 @@
       "@sprucelabs/test",
       "@sprucelabs/test-utils",
       "gifwrap",
-      "terminal-kit"
+      "terminal-kit",
+      "@sprucelabs/spruce-conversation-plugin"
     ]
   },
   "gitHead": "94ce410c05180cdfa9b6ca4b9e47061d52ac4e71"
