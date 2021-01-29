@@ -67,7 +67,12 @@ export default class PkgService extends CommandService {
 			}
 		}
 		if (install) {
-			const args: string[] = ['-timeout=9999999', 'add', ...packages]
+			const args: string[] = [
+				'-timeout=9999999',
+				'--no-progress',
+				'add',
+				...packages,
+			]
 			if (options?.isDev) {
 				args.push('-D')
 			}

@@ -7,7 +7,7 @@ import ServiceFactory, {
 	ServiceProvider,
 	ServiceMap,
 } from '../services/ServiceFactory'
-import { NpmPackage } from '../types/cli.types'
+import { InternalUpdateHandler, NpmPackage } from '../types/cli.types'
 import AbstractFeature, { FeatureDependency } from './AbstractFeature'
 import {
 	InstallFeatureOptions,
@@ -150,7 +150,11 @@ export default class FeatureInstaller implements ServiceProvider {
 	public async install(
 		options: InstallFeatureOptions
 	): Promise<FeatureInstallResponse> {
-		const { features, installFeatureDependencies = true } = options
+		const {
+			features,
+			installFeatureDependencies = true,
+			didUpdateHandler,
+		} = options
 
 		let results: FeatureInstallResponse = {}
 
@@ -159,8 +163,12 @@ export default class FeatureInstaller implements ServiceProvider {
 		for (let i = 0; i < features.length; i += 1) {
 			const f = features[i]
 			const code = f.code
+
+			didUpdateHandler?.(`Checking if ${code} is installed...`)
+
 			const isInstalled = await this.isInstalled(code)
 			if (!isInstalled && installFeatureDependencies) {
+				didUpdateHandler?.(`It is not, checking dependencies...`)
 				dependenciesToInstall = dependenciesToInstall.concat(
 					this.getFeatureDependenciesIncludingSelf({ code, isRequired: true })
 				)
@@ -186,7 +194,12 @@ export default class FeatureInstaller implements ServiceProvider {
 					options: installOptions,
 				} as InstallFeature
 
-				const installResults = await this.installFeature(installFeature)
+				didUpdateHandler?.(`Installing ${installFeature.code}...`)
+
+				const installResults = await this.installFeature(
+					installFeature,
+					didUpdateHandler
+				)
 				results = merge(results, installResults)
 			}
 		}
@@ -195,7 +208,8 @@ export default class FeatureInstaller implements ServiceProvider {
 	}
 
 	private async installFeature(
-		installFeature: InstallFeature
+		installFeature: InstallFeature,
+		didUpdateHandler?: InternalUpdateHandler
 	): Promise<FeatureInstallResponse> {
 		const feature = this.getFeature(installFeature.code) as AbstractFeature
 
@@ -206,12 +220,18 @@ export default class FeatureInstaller implements ServiceProvider {
 			)
 		}
 
+		didUpdateHandler?.(`Running before package install hook...`)
 		const beforeInstallResults = await feature.beforePackageInstall(
 			installFeature.options
 		)
 
-		const packagesInstalled = await this.installPackageDependencies(feature)
+		didUpdateHandler?.(`Installing package dependencies...`)
+		const packagesInstalled = await this.installPackageDependencies(
+			feature,
+			didUpdateHandler
+		)
 
+		didUpdateHandler?.(`Running after package install hook...`)
 		const afterInstallResults = await feature.afterPackageInstall(
 			installFeature.options
 		)
@@ -231,7 +251,10 @@ export default class FeatureInstaller implements ServiceProvider {
 		}
 	}
 
-	public async installPackageDependencies(feature: AbstractFeature) {
+	public async installPackageDependencies(
+		feature: AbstractFeature,
+		didUpdateHandler?: InternalUpdateHandler
+	) {
 		const packagesToInstall: string[] = []
 		const devPackagesToInstall: string[] = []
 		const packagesInstalled: NpmPackage[] = []
@@ -240,6 +263,8 @@ export default class FeatureInstaller implements ServiceProvider {
 			const packageName = `${pkg.name}@${pkg.version ?? 'latest'}`
 
 			packagesInstalled.push(pkg)
+
+			didUpdateHandler?.(`Checking node dependency: ${pkg.name}`)
 
 			if (pkg.isDev) {
 				devPackagesToInstall.push(packageName)
@@ -251,10 +276,24 @@ export default class FeatureInstaller implements ServiceProvider {
 		const pkgService = this.Service('pkg')
 
 		if (packagesToInstall.length > 0) {
-			await pkgService.install(packagesToInstall)
+			didUpdateHandler?.(
+				`Installing ${packagesToInstall.length} node dependenc${
+					packagesToInstall.length === 1
+						? 'y.'
+						: 'ies using. NPM is slow, so this may take a sec....'
+				}.`
+			)
+			await pkgService.install(packagesToInstall, {})
 		}
 
 		if (devPackagesToInstall.length > 0) {
+			didUpdateHandler?.(
+				`Now installing ${packagesToInstall.length} DEV node dependenc${
+					packagesToInstall.length === 1
+						? 'y.'
+						: 'ies using NPM. NPM is slow, so this may take a sec....'
+				}.`
+			)
 			await pkgService.install(devPackagesToInstall, {
 				isDev: true,
 			})

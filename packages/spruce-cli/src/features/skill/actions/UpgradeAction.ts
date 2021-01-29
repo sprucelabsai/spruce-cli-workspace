@@ -26,7 +26,12 @@ export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> 
 	private async reInstallPackageDependencies() {
 		this.ui.startLoading('Updating dependencies...')
 		const feature = this.parent
-		await this.featureInstaller.installPackageDependencies(feature)
+		await this.featureInstaller.installPackageDependencies(
+			feature,
+			(message: string) => {
+				this.ui.startLoading(message)
+			}
+		)
 		this.ui.stopLoading()
 	}
 
