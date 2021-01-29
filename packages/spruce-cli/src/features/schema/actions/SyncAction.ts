@@ -42,6 +42,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			fetchCoreSchemas,
 			registerBuiltSchemas,
 			syncingMessage,
+			deleteOrphanedSchemas,
 		} = normalizedOptions
 
 		this.ui.startLoading('Loading details about your skill... 🧐')
@@ -73,6 +74,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			this.ui.startLoading('Syncing core schemas first...')
 			coreSyncResults = await this.execute({
 				...normalizedOptions,
+				deleteOrphanedSchemas: false,
 				fetchLocalSchemas: false,
 				fetchRemoteSchemas: false,
 			})
@@ -130,12 +132,14 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 				return {}
 			}
 
-			this.ui.startLoading('Identifying orphaned schemas...')
+			if (deleteOrphanedSchemas) {
+				this.ui.startLoading('Identifying orphaned schemas...')
 
-			await this.deleteOrphanedSchemas(
-				resolvedSchemaTypesDestinationDirOrFile,
-				schemaTemplateItems
-			)
+				await this.deleteOrphanedSchemas(
+					resolvedSchemaTypesDestinationDirOrFile,
+					schemaTemplateItems
+				)
+			}
 
 			let valueTypes: ValueTypes | undefined
 

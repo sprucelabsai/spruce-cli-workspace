@@ -10,11 +10,13 @@ import {
 	eventContractUtil,
 } from '@sprucelabs/spruce-event-utils'
 import {
+	diskUtil,
 	MERCURY_API_NAMESPACE,
 	namesUtil,
 	versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import EventFeature from '../../../features/event/EventFeature'
 import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
@@ -53,6 +55,35 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		const results = await cli.getFeature('schema').Action('sync').execute({})
 
 		this.assertExpectedPayloadSchemasAreCreated(results)
+	}
+
+	@test()
+	protected static async syncingSchemasWithBrokenConnectionStopsWithError() {
+		const cli = await this.FeatureFixture().installCachedFeatures('events')
+
+		const results = await cli.getFeature('schema').Action('sync').execute({})
+
+		const match = testUtil.assertsFileByNameInGeneratedFiles(
+			'sendMessageEmitPayload.schema.ts',
+			results.files
+		)
+
+		assert.isTrue(diskUtil.doesFileExist(match))
+
+		const client = await this.MercuryFixture().connectToApi({
+			shouldAuthAsCurrentSkill: true,
+		})
+		await client.disconnect()
+
+		const eventFeature = cli.getFeature('event') as EventFeature
+		const writer = eventFeature.EventContractWriter()
+		writer.clearCache()
+
+		const results2 = await cli.getFeature('schema').Action('sync').execute({})
+
+		assert.isTruthy(results2.errors)
+
+		assert.isTrue(diskUtil.doesFileExist(match))
 	}
 
 	@test()

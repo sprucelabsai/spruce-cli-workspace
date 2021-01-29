@@ -130,6 +130,10 @@ export default class EventContractWriter {
 		return filteredSchemas
 	}
 
+	public clearCache() {
+		this.cachedTemplateItems = undefined
+	}
+
 	private async fetchAndBuildTemplateItems() {
 		if (this.cachedTemplateItems) {
 			return this.cachedTemplateItems

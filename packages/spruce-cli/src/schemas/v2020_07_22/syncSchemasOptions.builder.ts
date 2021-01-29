@@ -77,6 +77,13 @@ export default buildSchema({
 			hint: 'Should I delete the schema directory if no schemas are found?',
 			defaultValue: false,
 		},
+		deleteOrphanedSchemas: {
+			type: 'boolean',
+			label: 'Delete orphaned schemas',
+			isPrivate: true,
+			hint: 'Should I delete schemas where the builders are missing?',
+			defaultValue: true,
+		},
 		generateStandaloneTypesFile: {
 			label: 'Generate standalone types file',
 			type: 'boolean',

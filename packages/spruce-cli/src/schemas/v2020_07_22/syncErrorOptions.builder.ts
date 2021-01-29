@@ -1,4 +1,4 @@
-import { buildSchema } from '@sprucelabs/schema'
+import { buildSchema, dropFields } from '@sprucelabs/schema'
 import syncSchemasOptionsBuilder from './syncSchemasOptions.builder'
 
 export default buildSchema({
@@ -6,7 +6,10 @@ export default buildSchema({
 	name: 'Sync error action',
 	description: 'Keep your errors types in sync with your builders',
 	fields: {
-		...syncSchemasOptionsBuilder.fields,
+		...dropFields(syncSchemasOptionsBuilder.fields, [
+			'deleteDestinationDirIfNoSchemas',
+			'deleteOrphanedSchemas',
+		]),
 		errorClassDestinationDir: {
 			type: 'text',
 			label: 'Error class destination',

@@ -6,6 +6,7 @@ import {
 	normalizeSchemaToIdWithVersion,
 } from '@sprucelabs/schema'
 import * as coreSchemas from '@sprucelabs/spruce-core-schemas'
+import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
@@ -107,11 +108,23 @@ export default class SchemaStore extends AbstractStore {
 			schemas,
 		})
 
-		remoteResults.responses.forEach((response) => {
-			response.payload?.schemas?.forEach((schema: Schema) => {
-				this.mixinSchemaOrThrowIfExists(schema, localNamespace, results)
+		const {
+			payloads,
+			errors,
+		} = eventResponseUtil.getAllResponsePayloadsAndErrors(
+			remoteResults,
+			SpruceError
+		)
+
+		if (errors && errors.length > 0) {
+			results.errors.push(...errors)
+		} else {
+			payloads.forEach((payload) => {
+				payload.schemas?.forEach((schema: Schema) => {
+					this.mixinSchemaOrThrowIfExists(schema, localNamespace, results)
+				})
 			})
-		})
+		}
 	}
 
 	private mixinSchemaOrThrowIfExists(
