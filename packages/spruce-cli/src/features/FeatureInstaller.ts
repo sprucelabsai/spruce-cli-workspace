@@ -280,7 +280,7 @@ export default class FeatureInstaller implements ServiceProvider {
 				`Installing ${packagesToInstall.length} node dependenc${
 					packagesToInstall.length === 1
 						? 'y.'
-						: 'ies using. NPM is slow, so this may take a sec....'
+						: 'ies using NPM. NPM is slow, so this may take a sec....'
 				}.`
 			)
 			await pkgService.install(packagesToInstall, {})
