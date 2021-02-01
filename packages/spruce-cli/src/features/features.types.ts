@@ -14,6 +14,7 @@ import { GraphicsInterface } from '../types/cli.types'
 import WriterFactory from '../writers/WriterFactory'
 import AbstractFeature from './AbstractFeature'
 import ConversationFeature from './conversation/ConversationFeature'
+import DeployFeature from './deploy/DeployFeature'
 import ErrorFeature from './error/ErrorFeature'
 import EventFeature from './event/EventFeature'
 import EventContractFeature from './eventContract/EventContractFeature'
@@ -42,6 +43,7 @@ export interface FeatureMap {
 	organization: OrganizationFeature
 	conversation: ConversationFeature
 	eventContract: EventContractFeature
+	deploy: DeployFeature
 }
 
 export type InstallFeature =
@@ -95,6 +97,10 @@ export type InstallFeature =
 	  }
 	| {
 			code: 'eventContract'
+			options?: undefined
+	  }
+	| {
+			code: 'deploy'
 			options?: undefined
 	  }
 
