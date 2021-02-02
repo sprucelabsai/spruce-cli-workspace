@@ -11,19 +11,27 @@ import * as SpruceSchema from '@sprucelabs/schema'
 export declare namespace SpruceErrors.SpruceCli {
 
 	
-	export interface VscodeNotInstalled {
+	export interface InvalidFeatureCode {
 		
+			
+			'featureCode': string
 	}
 
-	export interface VscodeNotInstalledSchema extends SpruceSchema.Schema {
-		id: 'vscodeNotInstalled',
+	export interface InvalidFeatureCodeSchema extends SpruceSchema.Schema {
+		id: 'invalidFeatureCode',
 		namespace: 'SpruceCli',
-		name: 'vscode not installed',
+		name: 'Invalid feature code',
 		    fields: {
+		            /** . */
+		            'featureCode': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
 		    }
 	}
 
-	export type VscodeNotInstalledEntity = SchemaEntity<SpruceErrors.SpruceCli.VscodeNotInstalledSchema>
+	export type InvalidFeatureCodeEntity = SchemaEntity<SpruceErrors.SpruceCli.InvalidFeatureCodeSchema>
 
 }
 
@@ -70,104 +78,6 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	
-	export interface TestFailed {
-		
-			
-			'fileName': string
-			
-			'testName': string
-			
-			'errorMessage': string
-	}
-
-	export interface TestFailedSchema extends SpruceSchema.Schema {
-		id: 'testFailed',
-		namespace: 'SpruceCli',
-		name: 'Test failed',
-		    fields: {
-		            /** . */
-		            'fileName': {
-		                type: 'text',
-		                isRequired: true,
-		                options: undefined
-		            },
-		            /** . */
-		            'testName': {
-		                type: 'text',
-		                isRequired: true,
-		                options: undefined
-		            },
-		            /** . */
-		            'errorMessage': {
-		                type: 'text',
-		                isRequired: true,
-		                options: undefined
-		            },
-		    }
-	}
-
-	export type TestFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.TestFailedSchema>
-
-}
-
-
-
-export declare namespace SpruceErrors.SpruceCli {
-
-	
-	export interface SkillNotRegistered {
-		
-	}
-
-	export interface SkillNotRegisteredSchema extends SpruceSchema.Schema {
-		id: 'skillNotRegistered',
-		namespace: 'SpruceCli',
-		name: 'Skill not registered',
-		    fields: {
-		    }
-	}
-
-	export type SkillNotRegisteredEntity = SchemaEntity<SpruceErrors.SpruceCli.SkillNotRegisteredSchema>
-
-}
-
-
-
-export declare namespace SpruceErrors.SpruceCli {
-
-	/** The definition file failed to import */
-	export interface SchemaFailedToImport {
-		
-			/** File. The file definition file I tried to import */
-			'file': string
-	}
-
-	export interface SchemaFailedToImportSchema extends SpruceSchema.Schema {
-		id: 'schemaFailedToImport',
-		namespace: 'SpruceCli',
-		name: 'Definition failed to import',
-		description: 'The definition file failed to import',
-		    fields: {
-		            /** File. The file definition file I tried to import */
-		            'file': {
-		                label: 'File',
-		                type: 'text',
-		                isRequired: true,
-		                hint: 'The file definition file I tried to import',
-		                options: undefined
-		            },
-		    }
-	}
-
-	export type SchemaFailedToImportEntity = SchemaEntity<SpruceErrors.SpruceCli.SchemaFailedToImportSchema>
-
-}
-
-
-
-export declare namespace SpruceErrors.SpruceCli {
-
-	
 	export interface SchemaExists {
 		
 			/** Schema id. */
@@ -198,170 +108,6 @@ export declare namespace SpruceErrors.SpruceCli {
 	}
 
 	export type SchemaExistsEntity = SchemaEntity<SpruceErrors.SpruceCli.SchemaExistsSchema>
-
-}
-
-
-
-export declare namespace SpruceErrors.SpruceCli {
-
-	/** This feature has not been implemented */
-	export interface NotImplemented {
-		
-	}
-
-	export interface NotImplementedSchema extends SpruceSchema.Schema {
-		id: 'notImplemented',
-		namespace: 'SpruceCli',
-		name: 'Not implemented',
-		description: 'This feature has not been implemented',
-		    fields: {
-		    }
-	}
-
-	export type NotImplementedEntity = SchemaEntity<SpruceErrors.SpruceCli.NotImplementedSchema>
-
-}
-
-
-
-export declare namespace SpruceErrors.SpruceCli {
-
-	
-	export interface NoOrganizationsFound {
-		
-	}
-
-	export interface NoOrganizationsFoundSchema extends SpruceSchema.Schema {
-		id: 'noOrganizationsFound',
-		namespace: 'SpruceCli',
-		name: 'no organizations found',
-		    fields: {
-		    }
-	}
-
-	export type NoOrganizationsFoundEntity = SchemaEntity<SpruceErrors.SpruceCli.NoOrganizationsFoundSchema>
-
-}
-
-
-import AbstractSpruceError from '@sprucelabs/error'
-
-export declare namespace SpruceErrors.SpruceCli {
-
-	
-	export interface MercuryResponseError {
-		
-			
-			'responseErrors': (AbstractSpruceError<any>)[]
-	}
-
-	export interface MercuryResponseErrorSchema extends SpruceSchema.Schema {
-		id: 'mercuryResponseError',
-		namespace: 'SpruceCli',
-		name: 'Mercury response error',
-		    fields: {
-		            /** . */
-		            'responseErrors': {
-		                type: 'raw',
-		                isRequired: true,
-		                isArray: true,
-		                options: {valueType: `AbstractSpruceError<any>`,}
-		            },
-		    }
-	}
-
-	export type MercuryResponseErrorEntity = SchemaEntity<SpruceErrors.SpruceCli.MercuryResponseErrorSchema>
-
-}
-
-
-
-export declare namespace SpruceErrors.SpruceCli {
-
-	/** When linting a file fails */
-	export interface LintFailed {
-		
-			/** Pattern. The pattern used to match files relative to the root of the skill */
-			'pattern': string
-	}
-
-	export interface LintFailedSchema extends SpruceSchema.Schema {
-		id: 'lintFailed',
-		namespace: 'SpruceCli',
-		name: 'Lint failed!',
-		description: 'When linting a file fails',
-		    fields: {
-		            /** Pattern. The pattern used to match files relative to the root of the skill */
-		            'pattern': {
-		                label: 'Pattern',
-		                type: 'text',
-		                isRequired: true,
-		                hint: 'The pattern used to match files relative to the root of the skill',
-		                options: undefined
-		            },
-		    }
-	}
-
-	export type LintFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.LintFailedSchema>
-
-}
-
-
-
-export declare namespace SpruceErrors.SpruceCli {
-
-	
-	export interface InvalidTestDirectory {
-		
-			
-			'dir': string
-	}
-
-	export interface InvalidTestDirectorySchema extends SpruceSchema.Schema {
-		id: 'invalidTestDirectory',
-		namespace: 'SpruceCli',
-		name: 'invalid test directory',
-		    fields: {
-		            /** . */
-		            'dir': {
-		                type: 'text',
-		                isRequired: true,
-		                options: undefined
-		            },
-		    }
-	}
-
-	export type InvalidTestDirectoryEntity = SchemaEntity<SpruceErrors.SpruceCli.InvalidTestDirectorySchema>
-
-}
-
-
-
-export declare namespace SpruceErrors.SpruceCli {
-
-	
-	export interface InvalidFeatureCode {
-		
-			
-			'featureCode': string
-	}
-
-	export interface InvalidFeatureCodeSchema extends SpruceSchema.Schema {
-		id: 'invalidFeatureCode',
-		namespace: 'SpruceCli',
-		name: 'Invalid feature code',
-		    fields: {
-		            /** . */
-		            'featureCode': {
-		                type: 'text',
-		                isRequired: true,
-		                options: undefined
-		            },
-		    }
-	}
-
-	export type InvalidFeatureCodeEntity = SchemaEntity<SpruceErrors.SpruceCli.InvalidFeatureCodeSchema>
 
 }
 
@@ -406,31 +152,29 @@ export declare namespace SpruceErrors.SpruceCli {
 
 export declare namespace SpruceErrors.SpruceCli {
 
-	/** The command is not valid, try --help */
-	export interface InvalidCommand {
+	
+	export interface CommandAborted {
 		
-			/** args. */
-			'args': string[]
+			/** Command. */
+			'command': string
 	}
 
-	export interface InvalidCommandSchema extends SpruceSchema.Schema {
-		id: 'invalidCommand',
+	export interface CommandAbortedSchema extends SpruceSchema.Schema {
+		id: 'commandAborted',
 		namespace: 'SpruceCli',
-		name: 'Invalid command',
-		description: 'The command is not valid, try --help',
+		name: 'Command aborted',
 		    fields: {
-		            /** args. */
-		            'args': {
-		                label: 'args',
+		            /** Command. */
+		            'command': {
+		                label: 'Command',
 		                type: 'text',
 		                isRequired: true,
-		                isArray: true,
 		                options: undefined
 		            },
 		    }
 	}
 
-	export type InvalidCommandEntity = SchemaEntity<SpruceErrors.SpruceCli.InvalidCommandSchema>
+	export type CommandAbortedEntity = SchemaEntity<SpruceErrors.SpruceCli.CommandAbortedSchema>
 
 }
 
@@ -438,61 +182,21 @@ export declare namespace SpruceErrors.SpruceCli {
 
 export declare namespace SpruceErrors.SpruceCli {
 
-	/** When you&#x27;re too lazy to make a new error */
-	export interface Generic {
+	/** This feature has not been implemented */
+	export interface NotImplemented {
 		
-			/** Friendly message. */
-			'friendlyMessageSet'?: string| undefined | null
 	}
 
-	export interface GenericSchema extends SpruceSchema.Schema {
-		id: 'generic',
+	export interface NotImplementedSchema extends SpruceSchema.Schema {
+		id: 'notImplemented',
 		namespace: 'SpruceCli',
-		name: 'generic',
-		description: 'When you\'re too lazy to make a new error',
+		name: 'Not implemented',
+		description: 'This feature has not been implemented',
 		    fields: {
-		            /** Friendly message. */
-		            'friendlyMessageSet': {
-		                label: 'Friendly message',
-		                type: 'text',
-		                options: undefined
-		            },
 		    }
 	}
 
-	export type GenericEntity = SchemaEntity<SpruceErrors.SpruceCli.GenericSchema>
-
-}
-
-
-
-export declare namespace SpruceErrors.SpruceCli {
-
-	/** The file already exists */
-	export interface FileExists {
-		
-			/** File. The file being created */
-			'file': string
-	}
-
-	export interface FileExistsSchema extends SpruceSchema.Schema {
-		id: 'fileExists',
-		namespace: 'SpruceCli',
-		name: 'fileExists',
-		description: 'The file already exists',
-		    fields: {
-		            /** File. The file being created */
-		            'file': {
-		                label: 'File',
-		                type: 'text',
-		                isRequired: true,
-		                hint: 'The file being created',
-		                options: undefined
-		            },
-		    }
-	}
-
-	export type FileExistsEntity = SchemaEntity<SpruceErrors.SpruceCli.FileExistsSchema>
+	export type NotImplementedEntity = SchemaEntity<SpruceErrors.SpruceCli.NotImplementedSchema>
 
 }
 
@@ -501,59 +205,19 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	
-	export interface FeatureNotInstalled {
+	export interface NoOrganizationsFound {
 		
-			
-			'featureCode': string
 	}
 
-	export interface FeatureNotInstalledSchema extends SpruceSchema.Schema {
-		id: 'featureNotInstalled',
+	export interface NoOrganizationsFoundSchema extends SpruceSchema.Schema {
+		id: 'noOrganizationsFound',
 		namespace: 'SpruceCli',
-		name: 'Feature not installed',
+		name: 'no organizations found',
 		    fields: {
-		            /** . */
-		            'featureCode': {
-		                type: 'text',
-		                isRequired: true,
-		                options: undefined
-		            },
 		    }
 	}
 
-	export type FeatureNotInstalledEntity = SchemaEntity<SpruceErrors.SpruceCli.FeatureNotInstalledSchema>
-
-}
-
-
-
-export declare namespace SpruceErrors.SpruceCli {
-
-	/** Failed to import a file through VM */
-	export interface FailedToImport {
-		
-			/** File. The file I tried to import */
-			'file': string
-	}
-
-	export interface FailedToImportSchema extends SpruceSchema.Schema {
-		id: 'failedToImport',
-		namespace: 'SpruceCli',
-		name: 'FailedToImport',
-		description: 'Failed to import a file through VM',
-		    fields: {
-		            /** File. The file I tried to import */
-		            'file': {
-		                label: 'File',
-		                type: 'text',
-		                isRequired: true,
-		                hint: 'The file I tried to import',
-		                options: undefined
-		            },
-		    }
-	}
-
-	export type FailedToImportEntity = SchemaEntity<SpruceErrors.SpruceCli.FailedToImportSchema>
+	export type NoOrganizationsFoundEntity = SchemaEntity<SpruceErrors.SpruceCli.NoOrganizationsFoundSchema>
 
 }
 
@@ -626,19 +290,220 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	
-	export interface DirectoryNotSkill {
+	export interface SkillNotRegistered {
 		
 	}
 
-	export interface DirectoryNotSkillSchema extends SpruceSchema.Schema {
-		id: 'directoryNotSkill',
+	export interface SkillNotRegisteredSchema extends SpruceSchema.Schema {
+		id: 'skillNotRegistered',
 		namespace: 'SpruceCli',
-		name: 'Dir not skill',
+		name: 'Skill not registered',
 		    fields: {
 		    }
 	}
 
-	export type DirectoryNotSkillEntity = SchemaEntity<SpruceErrors.SpruceCli.DirectoryNotSkillSchema>
+	export type SkillNotRegisteredEntity = SchemaEntity<SpruceErrors.SpruceCli.SkillNotRegisteredSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
+	export interface VscodeNotInstalled {
+		
+	}
+
+	export interface VscodeNotInstalledSchema extends SpruceSchema.Schema {
+		id: 'vscodeNotInstalled',
+		namespace: 'SpruceCli',
+		name: 'vscode not installed',
+		    fields: {
+		    }
+	}
+
+	export type VscodeNotInstalledEntity = SchemaEntity<SpruceErrors.SpruceCli.VscodeNotInstalledSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
+	export interface InvalidTestDirectory {
+		
+			
+			'dir': string
+	}
+
+	export interface InvalidTestDirectorySchema extends SpruceSchema.Schema {
+		id: 'invalidTestDirectory',
+		namespace: 'SpruceCli',
+		name: 'invalid test directory',
+		    fields: {
+		            /** . */
+		            'dir': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type InvalidTestDirectoryEntity = SchemaEntity<SpruceErrors.SpruceCli.InvalidTestDirectorySchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	/** This command has not yet been implemented  */
+	export interface CommandNotImplemented {
+		
+			/** Command. the command being run! */
+			'command': string
+			/** Args. Arguments passed to the command */
+			'args'?: string[]| undefined | null
+	}
+
+	export interface CommandNotImplementedSchema extends SpruceSchema.Schema {
+		id: 'commandNotImplemented',
+		namespace: 'SpruceCli',
+		name: 'Command not implemented',
+		description: 'This command has not yet been implemented ',
+		    fields: {
+		            /** Command. the command being run! */
+		            'command': {
+		                label: 'Command',
+		                type: 'text',
+		                isRequired: true,
+		                hint: 'the command being run!',
+		                options: undefined
+		            },
+		            /** Args. Arguments passed to the command */
+		            'args': {
+		                label: 'Args',
+		                type: 'text',
+		                hint: 'Arguments passed to the command',
+		                isArray: true,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type CommandNotImplementedEntity = SchemaEntity<SpruceErrors.SpruceCli.CommandNotImplementedSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
+	export interface TestFailed {
+		
+			
+			'fileName': string
+			
+			'testName': string
+			
+			'errorMessage': string
+	}
+
+	export interface TestFailedSchema extends SpruceSchema.Schema {
+		id: 'testFailed',
+		namespace: 'SpruceCli',
+		name: 'Test failed',
+		    fields: {
+		            /** . */
+		            'fileName': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		            /** . */
+		            'testName': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		            /** . */
+		            'errorMessage': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type TestFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.TestFailedSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	/** When linting a file fails */
+	export interface LintFailed {
+		
+			/** Pattern. The pattern used to match files relative to the root of the skill */
+			'pattern': string
+	}
+
+	export interface LintFailedSchema extends SpruceSchema.Schema {
+		id: 'lintFailed',
+		namespace: 'SpruceCli',
+		name: 'Lint failed!',
+		description: 'When linting a file fails',
+		    fields: {
+		            /** Pattern. The pattern used to match files relative to the root of the skill */
+		            'pattern': {
+		                label: 'Pattern',
+		                type: 'text',
+		                isRequired: true,
+		                hint: 'The pattern used to match files relative to the root of the skill',
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type LintFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.LintFailedSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	/** The file already exists */
+	export interface FileExists {
+		
+			/** File. The file being created */
+			'file': string
+	}
+
+	export interface FileExistsSchema extends SpruceSchema.Schema {
+		id: 'fileExists',
+		namespace: 'SpruceCli',
+		name: 'fileExists',
+		description: 'The file already exists',
+		    fields: {
+		            /** File. The file being created */
+		            'file': {
+		                label: 'File',
+		                type: 'text',
+		                isRequired: true,
+		                hint: 'The file being created',
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type FileExistsEntity = SchemaEntity<SpruceErrors.SpruceCli.FileExistsSchema>
 
 }
 
@@ -735,44 +600,33 @@ export declare namespace SpruceErrors.SpruceCli {
 }
 
 
+import AbstractSpruceError from '@sprucelabs/error'
 
 export declare namespace SpruceErrors.SpruceCli {
 
-	/** This command has not yet been implemented  */
-	export interface CommandNotImplemented {
+	
+	export interface MercuryResponseError {
 		
-			/** Command. the command being run! */
-			'command': string
-			/** Args. Arguments passed to the command */
-			'args'?: string[]| undefined | null
+			
+			'responseErrors': (AbstractSpruceError<any>)[]
 	}
 
-	export interface CommandNotImplementedSchema extends SpruceSchema.Schema {
-		id: 'commandNotImplemented',
+	export interface MercuryResponseErrorSchema extends SpruceSchema.Schema {
+		id: 'mercuryResponseError',
 		namespace: 'SpruceCli',
-		name: 'Command not implemented',
-		description: 'This command has not yet been implemented ',
+		name: 'Mercury response error',
 		    fields: {
-		            /** Command. the command being run! */
-		            'command': {
-		                label: 'Command',
-		                type: 'text',
+		            /** . */
+		            'responseErrors': {
+		                type: 'raw',
 		                isRequired: true,
-		                hint: 'the command being run!',
-		                options: undefined
-		            },
-		            /** Args. Arguments passed to the command */
-		            'args': {
-		                label: 'Args',
-		                type: 'text',
-		                hint: 'Arguments passed to the command',
 		                isArray: true,
-		                options: undefined
+		                options: {valueType: `AbstractSpruceError<any>`,}
 		            },
 		    }
 	}
 
-	export type CommandNotImplementedEntity = SchemaEntity<SpruceErrors.SpruceCli.CommandNotImplementedSchema>
+	export type MercuryResponseErrorEntity = SchemaEntity<SpruceErrors.SpruceCli.MercuryResponseErrorSchema>
 
 }
 
@@ -781,20 +635,174 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	
-	export interface CommandAborted {
+	export interface DirectoryNotSkill {
 		
-			/** Command. */
-			'command': string
 	}
 
-	export interface CommandAbortedSchema extends SpruceSchema.Schema {
-		id: 'commandAborted',
+	export interface DirectoryNotSkillSchema extends SpruceSchema.Schema {
+		id: 'directoryNotSkill',
 		namespace: 'SpruceCli',
-		name: 'Command aborted',
+		name: 'Dir not skill',
 		    fields: {
-		            /** Command. */
-		            'command': {
-		                label: 'Command',
+		    }
+	}
+
+	export type DirectoryNotSkillEntity = SchemaEntity<SpruceErrors.SpruceCli.DirectoryNotSkillSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	/** When you&#x27;re too lazy to make a new error */
+	export interface Generic {
+		
+			/** Friendly message. */
+			'friendlyMessageSet'?: string| undefined | null
+	}
+
+	export interface GenericSchema extends SpruceSchema.Schema {
+		id: 'generic',
+		namespace: 'SpruceCli',
+		name: 'generic',
+		description: 'When you\'re too lazy to make a new error',
+		    fields: {
+		            /** Friendly message. */
+		            'friendlyMessageSet': {
+		                label: 'Friendly message',
+		                type: 'text',
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type GenericEntity = SchemaEntity<SpruceErrors.SpruceCli.GenericSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
+	export interface DeployFailed {
+		
+			/** First Field. */
+			'fieldName1': string
+			/** Second Field. A hint */
+			'fieldName2': number
+	}
+
+	export interface DeployFailedSchema extends SpruceSchema.Schema {
+		id: 'deployFailed',
+		namespace: 'SpruceCli',
+		name: 'Deploy Failed',
+		    fields: {
+		            /** First Field. */
+		            'fieldName1': {
+		                label: 'First Field',
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		            /** Second Field. A hint */
+		            'fieldName2': {
+		                label: 'Second Field',
+		                type: 'number',
+		                isRequired: true,
+		                hint: 'A hint',
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type DeployFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.DeployFailedSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	/** The command is not valid, try --help */
+	export interface InvalidCommand {
+		
+			/** args. */
+			'args': string[]
+	}
+
+	export interface InvalidCommandSchema extends SpruceSchema.Schema {
+		id: 'invalidCommand',
+		namespace: 'SpruceCli',
+		name: 'Invalid command',
+		description: 'The command is not valid, try --help',
+		    fields: {
+		            /** args. */
+		            'args': {
+		                label: 'args',
+		                type: 'text',
+		                isRequired: true,
+		                isArray: true,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type InvalidCommandEntity = SchemaEntity<SpruceErrors.SpruceCli.InvalidCommandSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	/** The definition file failed to import */
+	export interface SchemaFailedToImport {
+		
+			/** File. The file definition file I tried to import */
+			'file': string
+	}
+
+	export interface SchemaFailedToImportSchema extends SpruceSchema.Schema {
+		id: 'schemaFailedToImport',
+		namespace: 'SpruceCli',
+		name: 'Definition failed to import',
+		description: 'The definition file failed to import',
+		    fields: {
+		            /** File. The file definition file I tried to import */
+		            'file': {
+		                label: 'File',
+		                type: 'text',
+		                isRequired: true,
+		                hint: 'The file definition file I tried to import',
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type SchemaFailedToImportEntity = SchemaEntity<SpruceErrors.SpruceCli.SchemaFailedToImportSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
+	export interface FeatureNotInstalled {
+		
+			
+			'featureCode': string
+	}
+
+	export interface FeatureNotInstalledSchema extends SpruceSchema.Schema {
+		id: 'featureNotInstalled',
+		namespace: 'SpruceCli',
+		name: 'Feature not installed',
+		    fields: {
+		            /** . */
+		            'featureCode': {
 		                type: 'text',
 		                isRequired: true,
 		                options: undefined
@@ -802,7 +810,7 @@ export declare namespace SpruceErrors.SpruceCli {
 		    }
 	}
 
-	export type CommandAbortedEntity = SchemaEntity<SpruceErrors.SpruceCli.CommandAbortedSchema>
+	export type FeatureNotInstalledEntity = SchemaEntity<SpruceErrors.SpruceCli.FeatureNotInstalledSchema>
 
 }
 
@@ -834,6 +842,38 @@ export declare namespace SpruceErrors.SpruceCli {
 	}
 
 	export type BuildFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.BuildFailedSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	/** Failed to import a file through VM */
+	export interface FailedToImport {
+		
+			/** File. The file I tried to import */
+			'file': string
+	}
+
+	export interface FailedToImportSchema extends SpruceSchema.Schema {
+		id: 'failedToImport',
+		namespace: 'SpruceCli',
+		name: 'FailedToImport',
+		description: 'Failed to import a file through VM',
+		    fields: {
+		            /** File. The file I tried to import */
+		            'file': {
+		                label: 'File',
+		                type: 'text',
+		                isRequired: true,
+		                hint: 'The file I tried to import',
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type FailedToImportEntity = SchemaEntity<SpruceErrors.SpruceCli.FailedToImportSchema>
 
 }
 

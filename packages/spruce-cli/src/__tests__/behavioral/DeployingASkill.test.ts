@@ -1,4 +1,6 @@
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 
 export default class DeployingASkillTest extends AbstractCliTest {
@@ -6,6 +8,27 @@ export default class DeployingASkillTest extends AbstractCliTest {
 	protected static async hasDeployAction() {
 		const cli = await this.Cli()
 		assert.isFunction(cli.getFeature('deploy').Action('heroku').execute)
+	}
+
+	@test()
+	protected static async deployHaltedWithBadBuild() {
+		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+
+		diskUtil.writeFile(this.resolvePath('src/index.ts'), 'aoeustahoesuntao')
+
+		const results = await cli
+			.getFeature('deploy')
+			.Action('heroku')
+
+			.execute({
+				teamName: process.env.HEROKU_TEAM_NAME ?? '',
+			})
+
+		assert.isTruthy(results.errors)
+		assert.isArray(results.errors)
+		errorAssertUtil.assertError(results.errors[0], 'DEPLOY_FAILED', {
+			stage: 'buliding',
+		})
 	}
 
 	@test()
@@ -17,6 +40,28 @@ export default class DeployingASkillTest extends AbstractCliTest {
 		assert.isTruthy(health.deploy)
 		assert.isEqual(health.deploy.status, 'passed')
 		assert.isLength(health.deploy.deploys, 0)
+	}
+
+	@test()
+	protected static async deployHaltedWithBadTest() {
+		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+		await cli.getFeature('test').Action('create').execute({
+			nameReadable: 'Test failed',
+			nameCamel: 'testFailed',
+		})
+
+		const results = await cli
+			.getFeature('deploy')
+			.Action('heroku')
+			.execute({
+				teamName: process.env.HEROKU_TEAM_NAME ?? '',
+			})
+
+		assert.isTruthy(results.errors)
+		assert.isArray(results.errors)
+		errorAssertUtil.assertError(results.errors[0], 'DEPLOY_FAILED', {
+			stage: 'testing',
+		})
 	}
 
 	@test()

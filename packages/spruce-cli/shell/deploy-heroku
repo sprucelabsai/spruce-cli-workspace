@@ -76,7 +76,7 @@ if [[ $? -ne 0 ]]; then
       if [[ $ARGC -ne 1 ]]; then
         heroku create "$response"
       else
-        heroku create -t sprucelabs "$response"
+        heroku create -t $1 "$response"
       fi
       heroku buildpacks:set heroku/nodejs
       [[ $? -ne 0 ]] || break
