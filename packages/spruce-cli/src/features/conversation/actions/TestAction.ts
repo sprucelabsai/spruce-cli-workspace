@@ -15,12 +15,17 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 	public async execute(): Promise<FeatureActionResponse> {
 		this.ui.clear()
-		await this.Service('command').execute('yarn boot.local', {
-			env: {
-				ACTION: 'test.conversation',
-			},
-			shouldStream: true,
-		})
-		return {}
+		try {
+			await this.Service('command').execute('yarn boot.local', {
+				env: {
+					ACTION: 'test.conversation',
+				},
+				shouldStream: true,
+			})
+			// eslint-disable-next-line no-empty
+		} catch {}
+		return {
+			summaryLines: ['Talk soon! 👋'],
+		}
 	}
 }
