@@ -35,7 +35,6 @@ type TestReporterResults = SpruceTestResults & {
 }
 
 export type TestEporterOrientation = 'landscape' | 'portrait'
-
 export type WatchMode = 'off' | 'standard' | 'smart'
 
 export default class TestReporter {

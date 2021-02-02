@@ -176,7 +176,9 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 
 			case 'BOOT_ERROR':
 				message = `Booting your skill failed: ${
-					options.originalError?.message ?? 'Not sure why, tho.'
+					options.friendlyMessage ??
+					options.originalError?.message ??
+					'Not sure why, tho.'
 				}`
 				break
 

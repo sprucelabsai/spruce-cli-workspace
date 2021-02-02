@@ -23,8 +23,8 @@ export default class TkInputWidget extends TkBaseWidget implements InputWidget {
 
 		this.input = new termKit.InlineInput({
 			parent: parent ? parent.getTermKitElement() : undefined,
-			textAttr: { bgColor: 'black', color: 'white' },
-			voidAttr: { bgColor: 'black' },
+			textAttr: { bgColor: 'black', color: 'yellow' },
+			voidAttr: { bgColor: 'black', color: 'yellow' },
 			placeholder: options.placeholder
 				? chalk.italic.black(options.placeholder)
 				: undefined,

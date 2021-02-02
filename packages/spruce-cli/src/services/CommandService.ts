@@ -102,6 +102,7 @@ export default class CommandService {
 						resolve({ stdout })
 						this.ignoreCloseErrors = false
 					} else {
+						debugger
 						if (stderr.search(escapeRegExp(ERROR_DIVIDER)) > -1) {
 							const stderrParts = stderr.split(ERROR_DIVIDER)
 							const err = AbstractSpruceError.parse(stderrParts[1], SpruceError)
