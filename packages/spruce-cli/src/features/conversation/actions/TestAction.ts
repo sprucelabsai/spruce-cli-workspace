@@ -61,8 +61,9 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 				await promise
 			}
 		} catch (err) {
-			debugger
-			console.log(err)
+			return {
+				errors: [err],
+			}
 		}
 
 		return {

@@ -92,7 +92,7 @@ export default class TestingAConversationTest extends AbstractCliTest {
 		assert.isFalsy(results.errors)
 	}
 
-	@test.only()
+	@test()
 	protected static async returnsErrorWhenScriptErrors() {
 		const {
 			conversation,
@@ -105,8 +105,6 @@ export default class TestingAConversationTest extends AbstractCliTest {
 		)
 
 		diskUtil.writeFile(topic, 'throw new Error("whaaa")')
-
-		await this.openInVsCode()
 
 		const test = conversation.Action('test')
 
