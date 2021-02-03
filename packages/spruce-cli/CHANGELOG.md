@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.8.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.7.5...v13.8.0) (2021-02-03)
+
+
+### Features
+
+* full deploy ([5a81b4e](https://github.com/sprucelabsai/spruce-cli-workspace/commit/5a81b4e))
+* testing a convo ([c1ea76c](https://github.com/sprucelabsai/spruce-cli-workspace/commit/c1ea76c))
+
+
+
+
+
 ## [13.7.5](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.7.4...v13.7.5) (2021-02-01)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
