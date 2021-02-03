@@ -6,6 +6,7 @@ import { ApiClientFactory } from '../types/apiClient.types'
 import { GraphicsInterface } from '../types/cli.types'
 import { FeatureOptions } from './AbstractFeature'
 import ConversationFeature from './conversation/ConversationFeature'
+import DeployFeature from './deploy/DeployFeature'
 import ErrorFeature from './error/ErrorFeature'
 import EventFeature from './event/EventFeature'
 import EventContractFeature from './eventContract/EventContractFeature'
@@ -20,7 +21,6 @@ import SkillFeature from './skill/SkillFeature'
 import TestFeature from './test/TestFeature'
 import VsCodeFeature from './vscode/VsCodeFeature'
 import WatchFeature from './watch/WatchFeature'
-
 export default class FeatureInstallerFactory {
 	private static readonly features: any[] = [
 		ErrorFeature,
@@ -36,6 +36,7 @@ export default class FeatureInstallerFactory {
 		OrganizationFeature,
 		ConversationFeature,
 		EventContractFeature,
+		DeployFeature,
 	]
 
 	public static readonly featureCodes: FeatureCode[] = [
@@ -52,6 +53,7 @@ export default class FeatureInstallerFactory {
 		'organization',
 		'conversation',
 		'eventContract',
+		'deploy',
 	]
 
 	public static WithAllFeatures(options: {

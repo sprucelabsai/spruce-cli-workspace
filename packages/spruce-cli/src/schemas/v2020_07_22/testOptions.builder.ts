@@ -25,11 +25,11 @@ export default buildSchema({
 			label: 'Should wait for manual start?',
 			defaultValue: false,
 		},
-		shouldWaitUntilTestsAreFinished: {
+		shouldReturnImmediately: {
 			type: 'boolean',
 			label: 'Wait until tests are finished',
 			isPrivate: true,
-			defaultValue: true,
+			defaultValue: false,
 			hint:
 				'For testing. Returns immediately after executing test so the running process can be managed programatically.',
 		},

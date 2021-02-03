@@ -9,16 +9,23 @@ import SpruceError from '../errors/SpruceError'
 
 process.setMaxListeners(100)
 
+interface MockResponse {
+	code: number
+	stdout?: string
+	stderr?: string
+}
+
 export default class CommandService {
 	public cwd: string
 	private activeChildProcess: ChildProcess | undefined
 	private ignoreCloseErrors = false
+	private static mockResponses: Record<string, MockResponse> = {}
 
 	public constructor(cwd: string) {
 		this.cwd = cwd
 	}
 
-	public execute(
+	public async execute(
 		cmd: string,
 		options?: {
 			ignoreErrors?: boolean
@@ -35,16 +42,32 @@ export default class CommandService {
 		stdout: string
 	}> {
 		const cwd = this.cwd
+		const args = options?.args || stringArgv(cmd)
+		const executable = options?.args ? cmd : args.shift()
 		const boundKill = this.kill.bind(this)
+
+		if (!executable) {
+			throw new Error('Bad params sent to command service')
+		}
+
+		const mockKey = `${executable} ${args.join(' ')}`.trim()
+		const mockResponse = CommandService.mockResponses[mockKey]
+		if (mockResponse) {
+			if (mockResponse.code !== 0) {
+				throw new SpruceError({
+					code: 'EXECUTING_COMMAND_FAILED',
+					cmd: `${executable} ${args.join(' ')}`,
+					cwd,
+					stdout: mockResponse.stdout,
+					stderr: mockResponse.stderr,
+				})
+			}
+			return { stdout: mockResponse.stdout ?? '' }
+		}
 
 		process.on('exit', boundKill)
 
 		return new Promise((resolve, reject) => {
-			const args = options?.args || stringArgv(cmd)
-			const executable = options?.args ? cmd : args.shift()
-			if (!executable) {
-				throw new Error('Bad params sent to command service')
-			}
 			let stdout = ''
 			let stderr = ''
 			const spawnOptions: SpawnOptions = options?.shouldStream
@@ -136,5 +159,9 @@ export default class CommandService {
 
 	public pid = () => {
 		return this.activeChildProcess?.pid
+	}
+
+	public static setMockResponse(command: string, response: MockResponse) {
+		this.mockResponses[command] = response
 	}
 }

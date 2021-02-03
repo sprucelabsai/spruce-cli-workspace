@@ -43,6 +43,8 @@ interface FetchFieldsResults {
 
 export default class SchemaStore extends AbstractStore {
 	public readonly name = 'schema'
+	private totalLocalImports = 0
+	private localImportIdx = 0
 
 	public async fetchSchemas(options: {
 		localSchemaLookupDir?: string
@@ -167,6 +169,28 @@ export default class SchemaStore extends AbstractStore {
 		const errors: SpruceError[] = []
 		const schemas: Schema[] = []
 
+		this.totalLocalImports = localMatches.length
+
+		// run sequentially - really slow
+		// for (const local of localMatches) {
+		// 	let version: undefined | string = this.resolveLocalVersion(
+		// 		enableVersioning,
+		// 		local,
+		// 		errors
+		// 	)
+
+		// 	if (version || enableVersioning === false) {
+		// 		await this.loadLocalSchema(
+		// 			local,
+		// 			localNamespace,
+		// 			version,
+		// 			schemas,
+		// 			errors,
+		// 			didUpdateHandler
+		// 		)
+		// 	}
+		// }
+
 		await Promise.all(
 			localMatches.map(async (local) => {
 				let version: undefined | string = this.resolveLocalVersion(
@@ -253,7 +277,15 @@ export default class SchemaStore extends AbstractStore {
 		version: string | undefined,
 		didUpdateHandler?: InternalUpdateHandler
 	) {
-		didUpdateHandler?.(`Starting import of ${pathUtil.basename(local)}.`)
+		if (this.localImportIdx === this.totalLocalImports - 1) {
+			didUpdateHandler?.(
+				`Importing and validating ${this.totalLocalImports} builders...`
+			)
+		} else {
+			didUpdateHandler?.(`Starting import of ${pathUtil.basename(local)}.`)
+		}
+
+		this.localImportIdx++
 
 		const schemaService = this.Service('schema')
 		const schema = await schemaService.importSchema(local)

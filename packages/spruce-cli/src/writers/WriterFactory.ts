@@ -1,5 +1,6 @@
 import { Templates } from '@sprucelabs/spruce-templates'
 import ConversationWriter from '../features/conversation/writers/ConversationWriter'
+import DeployWriter from '../features/deploy/writers/DeployWriter'
 import ErrorWriter from '../features/error/writers/ErrorWriter'
 import EventWriter from '../features/event/writers/EventWriter'
 import NodeWriter from '../features/node/writers/NodeWriter'
@@ -21,6 +22,7 @@ const classMap = {
 	node: NodeWriter,
 	vscode: VsCodeWriter,
 	conversation: ConversationWriter,
+	deploy: DeployWriter,
 }
 
 export interface WriterMap {
@@ -32,6 +34,7 @@ export interface WriterMap {
 	node: NodeWriter
 	vscode: VsCodeWriter
 	conversation: ConversationWriter
+	deploy: DeployWriter
 }
 
 export type WriterCode = keyof WriterMap

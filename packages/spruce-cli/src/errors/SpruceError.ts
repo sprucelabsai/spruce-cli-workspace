@@ -180,6 +180,14 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				}`
 				break
 
+			case 'DEPLOY_FAILED':
+				message = 'A Deploy Failed just happened!'
+				break
+
+			case 'MISSING_DEPENDENCIES':
+				message = 'A Missing dependencies just happened!'
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}

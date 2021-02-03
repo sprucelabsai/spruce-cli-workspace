@@ -39,12 +39,12 @@ const testOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.TestOptionsSchema  
 	                options: undefined
 	            },
 	            /** Wait until tests are finished. For testing. Returns immediately after executing test so the running process can be managed programatically. */
-	            'shouldWaitUntilTestsAreFinished': {
+	            'shouldReturnImmediately': {
 	                label: 'Wait until tests are finished',
 	                type: 'boolean',
 	                isPrivate: true,
 	                hint: 'For testing. Returns immediately after executing test so the running process can be managed programatically.',
-	                defaultValue: true,
+	                defaultValue: false,
 	                options: undefined
 	            },
 	            /** Watch. */

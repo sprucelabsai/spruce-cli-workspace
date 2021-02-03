@@ -13,7 +13,7 @@ export default class TestReporterSettingsRememberedTest extends AbstractTestTest
 		const action = cli.getFeature('test').Action('test')
 
 		const results = await action.execute({
-			shouldWaitUntilTestsAreFinished: false,
+			shouldReturnImmediately: true,
 			shouldReportWhileRunning: false,
 		})
 
@@ -38,7 +38,7 @@ export default class TestReporterSettingsRememberedTest extends AbstractTestTest
 		const action = cli.getFeature('test').Action('test')
 
 		const results = await action.execute({
-			shouldWaitUntilTestsAreFinished: false,
+			shouldReturnImmediately: true,
 			shouldReportWhileRunning: false,
 		})
 

@@ -63,7 +63,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			inspect,
 			shouldHoldAtStart,
 			watchMode,
-			shouldWaitUntilTestsAreFinished,
+			shouldReturnImmediately,
 		} = normalizedOptions
 
 		this.originalInspect = inspect ?? 5200
@@ -105,7 +105,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 		const promise = this.startTestRunner(normalizedOptions)
 
-		if (!shouldWaitUntilTestsAreFinished) {
+		if (shouldReturnImmediately) {
 			return {
 				meta: {
 					promise,
