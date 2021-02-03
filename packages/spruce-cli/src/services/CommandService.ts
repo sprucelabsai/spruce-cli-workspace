@@ -30,12 +30,13 @@ export default class CommandService {
 		options?: {
 			ignoreErrors?: boolean
 			args?: string[]
-			stream?: boolean
+			shouldStream?: boolean
 			outStream?: Writable
 			onError?: (error: string) => void
 			onData?: (data: string) => void
 			spawnOptions?: SpawnOptions
 			forceColor?: boolean
+			env?: Record<string, any>
 		}
 	): Promise<{
 		stdout: string
@@ -69,13 +70,22 @@ export default class CommandService {
 		return new Promise((resolve, reject) => {
 			let stdout = ''
 			let stderr = ''
-			const spawnOptions: SpawnOptions = options?.stream
-				? { stdio: 'inherit' }
+			const spawnOptions: SpawnOptions = options?.shouldStream
+				? {
+						stdio: 'inherit',
+						cwd,
+						env: {
+							PATH: process.env.PATH,
+							FORCE_COLOR: options?.forceColor ? '1' : '0',
+							...options?.env,
+						},
+				  }
 				: {
 						cwd,
 						env: {
 							PATH: process.env.PATH,
 							FORCE_COLOR: options?.forceColor ? '1' : '0',
+							...options?.env,
 						},
 						shell: true,
 						...options?.spawnOptions,
