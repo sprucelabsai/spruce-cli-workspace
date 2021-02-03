@@ -58,7 +58,7 @@
 		"@babel/runtime": "^7.12.5",
 		"@jest/reporters": "^26.6.2",
 		"@sprucelabs/error": "latest",
-		"@sprucelabs/jest-json-reporter": "^5.1.9",
+		"@sprucelabs/jest-json-reporter": "latest",
 		"@sprucelabs/mercury-client": "latest",
 		"@sprucelabs/mercury-event-emitter": "latest",
 		"@sprucelabs/mercury-types": "latest",
@@ -383,7 +383,8 @@
 			"gifwrap",
 			"terminal-kit",
 			"@sprucelabs/spruce-conversation-plugin",
-			"@sprucelabs/spruce-deploy-plugin"
+			"@sprucelabs/spruce-deploy-plugin",
+			"@sprucelabs/jest-json-reporter"
 		]
 	},
 	"gitHead": "94ce410c05180cdfa9b6ca4b9e47061d52ac4e71"

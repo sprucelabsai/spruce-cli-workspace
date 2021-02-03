@@ -22,6 +22,10 @@ export default class InstallCheckingActionDecorator implements FeatureAction {
 		return this.childAction.optionsSchema
 	}
 
+	public getChild() {
+		return this.childAction
+	}
+
 	public constructor(
 		childAction: FeatureAction,
 		parent: AbstractFeature,

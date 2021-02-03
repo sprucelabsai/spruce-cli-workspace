@@ -281,7 +281,9 @@ export default class FeatureInstaller implements ServiceProvider {
 				`Installing ${packagesToInstall.length} node dependenc${
 					packagesToInstall.length === 1
 						? 'y.'
-						: 'ies using NPM. NPM is slow, so this may take a sec....'
+						: 'ies for ' +
+						  feature.nameReadable +
+						  ' using NPM. NPM is slow, so this may take a sec....'
 				}.`
 			)
 			await pkgService.install(packagesToInstall, {})
@@ -292,7 +294,9 @@ export default class FeatureInstaller implements ServiceProvider {
 				`Now installing ${devPackagesToInstall.length} DEV node dependenc${
 					devPackagesToInstall.length === 1
 						? 'y.'
-						: 'ies using NPM. NPM is still slow, so hang tight. 🤘'
+						: 'ies ' +
+						  feature.nameReadable +
+						  'using NPM. NPM is still slow, so hang tight. 🤘'
 				}.`
 			)
 			await pkgService.install(devPackagesToInstall, {

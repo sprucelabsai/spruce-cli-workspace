@@ -21,21 +21,19 @@ export default class BootAction extends AbstractFeatureAction<OptionsSchema> {
 		const promise = new Promise((resolve, reject) => {
 			const activeCommand = command.execute(`yarn ${script}`)
 
-			activeCommand
-				.then((results) => resolve(results))
-				.catch((err) => {
-					if (err.message.search(/cannot find module/gis) > -1) {
-						reject(
-							new SpruceError({
-								code: 'BOOT_ERROR',
-								friendlyMessage:
-									'You must build your skill before you can boot it!',
-							})
-						)
-					} else {
-						reject(err)
-					}
-				})
+			activeCommand.then(resolve).catch((err) => {
+				if (err.message.search(/cannot find module/gis) > -1) {
+					reject(
+						new SpruceError({
+							code: 'BOOT_ERROR',
+							friendlyMessage:
+								'You must build your skill before you can boot it!',
+						})
+					)
+				} else {
+					reject(err)
+				}
+			})
 		})
 
 		return {

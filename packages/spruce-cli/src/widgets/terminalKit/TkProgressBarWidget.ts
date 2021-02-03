@@ -24,8 +24,9 @@ export default class TkProgressBarWidget
 			x: left,
 			y: top,
 			barChars: 'solid',
-			bodyAttr: { bgColor: 'black', dim: false },
-			overTextFullAttr: { bgColor: 'blue', color: 'black', dim: false },
+			bodyAttr: { bgColor: 'yellow', dim: false, color: 'yellow' },
+			overTextFullAttr: { bgColor: 'yellow', color: 'black', dim: false },
+			overTextEmptyAttr: { bgColor: 'yellow', color: 'black', dim: false },
 			value: progress,
 			...barOptions,
 		})
