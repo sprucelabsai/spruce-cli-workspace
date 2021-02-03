@@ -5,20 +5,59 @@ import { SchemaErrorOptions } from '@sprucelabs/schema'
 export interface VscodeNotInstalledErrorOptions extends SpruceErrors.SpruceCli.VscodeNotInstalled, ISpruceErrorOptions {
 	code: 'VSCODE_NOT_INSTALLED'
 }
-export interface UserNotFoundErrorOptions extends SpruceErrors.SpruceCli.UserNotFound, ISpruceErrorOptions {
-	code: 'USER_NOT_FOUND'
+export interface InvalidFeatureCodeErrorOptions extends SpruceErrors.SpruceCli.InvalidFeatureCode, ISpruceErrorOptions {
+	code: 'INVALID_FEATURE_CODE'
+}
+export interface MercuryResponseErrorErrorOptions extends SpruceErrors.SpruceCli.MercuryResponseError, ISpruceErrorOptions {
+	code: 'MERCURY_RESPONSE_ERROR'
+}
+export interface SchemaExistsErrorOptions extends SpruceErrors.SpruceCli.SchemaExists, ISpruceErrorOptions {
+	code: 'SCHEMA_EXISTS'
 }
 export interface TestFailedErrorOptions extends SpruceErrors.SpruceCli.TestFailed, ISpruceErrorOptions {
 	code: 'TEST_FAILED'
 }
+export interface FeatureNotInstalledErrorOptions extends SpruceErrors.SpruceCli.FeatureNotInstalled, ISpruceErrorOptions {
+	code: 'FEATURE_NOT_INSTALLED'
+}
+export interface LintFailedErrorOptions extends SpruceErrors.SpruceCli.LintFailed, ISpruceErrorOptions {
+	code: 'LINT_FAILED'
+}
 export interface SkillNotRegisteredErrorOptions extends SpruceErrors.SpruceCli.SkillNotRegistered, ISpruceErrorOptions {
 	code: 'SKILL_NOT_REGISTERED'
+}
+export interface MissingDependenciesErrorOptions extends SpruceErrors.SpruceCli.MissingDependencies, ISpruceErrorOptions {
+	code: 'MISSING_DEPENDENCIES'
 }
 export interface SchemaFailedToImportErrorOptions extends SpruceErrors.SpruceCli.SchemaFailedToImport, ISpruceErrorOptions {
 	code: 'SCHEMA_FAILED_TO_IMPORT'
 }
-export interface SchemaExistsErrorOptions extends SpruceErrors.SpruceCli.SchemaExists, ISpruceErrorOptions {
-	code: 'SCHEMA_EXISTS'
+export interface GenericErrorOptions extends SpruceErrors.SpruceCli.Generic, ISpruceErrorOptions {
+	code: 'GENERIC'
+}
+export interface ExecutingCommandFailedErrorOptions extends SpruceErrors.SpruceCli.ExecutingCommandFailed, ISpruceErrorOptions {
+	code: 'EXECUTING_COMMAND_FAILED'
+}
+export interface FileExistsErrorOptions extends SpruceErrors.SpruceCli.FileExists, ISpruceErrorOptions {
+	code: 'FILE_EXISTS'
+}
+export interface UserNotFoundErrorOptions extends SpruceErrors.SpruceCli.UserNotFound, ISpruceErrorOptions {
+	code: 'USER_NOT_FOUND'
+}
+export interface InvalidCommandErrorOptions extends SpruceErrors.SpruceCli.InvalidCommand, ISpruceErrorOptions {
+	code: 'INVALID_COMMAND'
+}
+export interface InvalidEventContractErrorOptions extends SpruceErrors.SpruceCli.InvalidEventContract, ISpruceErrorOptions {
+	code: 'INVALID_EVENT_CONTRACT'
+}
+export interface InvalidTestDirectoryErrorOptions extends SpruceErrors.SpruceCli.InvalidTestDirectory, ISpruceErrorOptions {
+	code: 'INVALID_TEST_DIRECTORY'
+}
+export interface DeployFailedErrorOptions extends SpruceErrors.SpruceCli.DeployFailed, ISpruceErrorOptions {
+	code: 'DEPLOY_FAILED'
+}
+export interface FailedToImportErrorOptions extends SpruceErrors.SpruceCli.FailedToImport, ISpruceErrorOptions {
+	code: 'FAILED_TO_IMPORT'
 }
 export interface NotImplementedErrorOptions extends SpruceErrors.SpruceCli.NotImplemented, ISpruceErrorOptions {
 	code: 'NOT_IMPLEMENTED'
@@ -26,47 +65,11 @@ export interface NotImplementedErrorOptions extends SpruceErrors.SpruceCli.NotIm
 export interface NoOrganizationsFoundErrorOptions extends SpruceErrors.SpruceCli.NoOrganizationsFound, ISpruceErrorOptions {
 	code: 'NO_ORGANIZATIONS_FOUND'
 }
-export interface MercuryResponseErrorErrorOptions extends SpruceErrors.SpruceCli.MercuryResponseError, ISpruceErrorOptions {
-	code: 'MERCURY_RESPONSE_ERROR'
-}
-export interface LintFailedErrorOptions extends SpruceErrors.SpruceCli.LintFailed, ISpruceErrorOptions {
-	code: 'LINT_FAILED'
-}
-export interface InvalidTestDirectoryErrorOptions extends SpruceErrors.SpruceCli.InvalidTestDirectory, ISpruceErrorOptions {
-	code: 'INVALID_TEST_DIRECTORY'
-}
-export interface InvalidFeatureCodeErrorOptions extends SpruceErrors.SpruceCli.InvalidFeatureCode, ISpruceErrorOptions {
-	code: 'INVALID_FEATURE_CODE'
-}
-export interface InvalidEventContractErrorOptions extends SpruceErrors.SpruceCli.InvalidEventContract, ISpruceErrorOptions {
-	code: 'INVALID_EVENT_CONTRACT'
-}
-export interface InvalidCommandErrorOptions extends SpruceErrors.SpruceCli.InvalidCommand, ISpruceErrorOptions {
-	code: 'INVALID_COMMAND'
-}
-export interface GenericErrorOptions extends SpruceErrors.SpruceCli.Generic, ISpruceErrorOptions {
-	code: 'GENERIC'
-}
-export interface FileExistsErrorOptions extends SpruceErrors.SpruceCli.FileExists, ISpruceErrorOptions {
-	code: 'FILE_EXISTS'
-}
-export interface FeatureNotInstalledErrorOptions extends SpruceErrors.SpruceCli.FeatureNotInstalled, ISpruceErrorOptions {
-	code: 'FEATURE_NOT_INSTALLED'
-}
-export interface FailedToImportErrorOptions extends SpruceErrors.SpruceCli.FailedToImport, ISpruceErrorOptions {
-	code: 'FAILED_TO_IMPORT'
-}
-export interface ExecutingCommandFailedErrorOptions extends SpruceErrors.SpruceCli.ExecutingCommandFailed, ISpruceErrorOptions {
-	code: 'EXECUTING_COMMAND_FAILED'
-}
 export interface DirectoryNotSkillErrorOptions extends SpruceErrors.SpruceCli.DirectoryNotSkill, ISpruceErrorOptions {
 	code: 'DIRECTORY_NOT_SKILL'
 }
 export interface DirectoryEmptyErrorOptions extends SpruceErrors.SpruceCli.DirectoryEmpty, ISpruceErrorOptions {
 	code: 'DIRECTORY_EMPTY'
-}
-export interface CreateAutoloaderFailedErrorOptions extends SpruceErrors.SpruceCli.CreateAutoloaderFailed, ISpruceErrorOptions {
-	code: 'CREATE_AUTOLOADER_FAILED'
 }
 export interface CommandNotImplementedErrorOptions extends SpruceErrors.SpruceCli.CommandNotImplemented, ISpruceErrorOptions {
 	code: 'COMMAND_NOT_IMPLEMENTED'
@@ -74,13 +77,16 @@ export interface CommandNotImplementedErrorOptions extends SpruceErrors.SpruceCl
 export interface CommandAbortedErrorOptions extends SpruceErrors.SpruceCli.CommandAborted, ISpruceErrorOptions {
 	code: 'COMMAND_ABORTED'
 }
-export interface BuildFailedErrorOptions extends SpruceErrors.SpruceCli.BuildFailed, ISpruceErrorOptions {
-	code: 'BUILD_FAILED'
+export interface CreateAutoloaderFailedErrorOptions extends SpruceErrors.SpruceCli.CreateAutoloaderFailed, ISpruceErrorOptions {
+	code: 'CREATE_AUTOLOADER_FAILED'
 }
 export interface BootErrorErrorOptions extends SpruceErrors.SpruceCli.BootError, ISpruceErrorOptions {
 	code: 'BOOT_ERROR'
 }
+export interface BuildFailedErrorOptions extends SpruceErrors.SpruceCli.BuildFailed, ISpruceErrorOptions {
+	code: 'BUILD_FAILED'
+}
 
-type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | VscodeNotInstalledErrorOptions  | UserNotFoundErrorOptions  | TestFailedErrorOptions  | SkillNotRegisteredErrorOptions  | SchemaFailedToImportErrorOptions  | SchemaExistsErrorOptions  | NotImplementedErrorOptions  | NoOrganizationsFoundErrorOptions  | MercuryResponseErrorErrorOptions  | LintFailedErrorOptions  | InvalidTestDirectoryErrorOptions  | InvalidFeatureCodeErrorOptions  | InvalidEventContractErrorOptions  | InvalidCommandErrorOptions  | GenericErrorOptions  | FileExistsErrorOptions  | FeatureNotInstalledErrorOptions  | FailedToImportErrorOptions  | ExecutingCommandFailedErrorOptions  | DirectoryNotSkillErrorOptions  | DirectoryEmptyErrorOptions  | CreateAutoloaderFailedErrorOptions  | CommandNotImplementedErrorOptions  | CommandAbortedErrorOptions  | BuildFailedErrorOptions  | BootErrorErrorOptions 
+type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | VscodeNotInstalledErrorOptions  | InvalidFeatureCodeErrorOptions  | MercuryResponseErrorErrorOptions  | SchemaExistsErrorOptions  | TestFailedErrorOptions  | FeatureNotInstalledErrorOptions  | LintFailedErrorOptions  | SkillNotRegisteredErrorOptions  | MissingDependenciesErrorOptions  | SchemaFailedToImportErrorOptions  | GenericErrorOptions  | ExecutingCommandFailedErrorOptions  | FileExistsErrorOptions  | UserNotFoundErrorOptions  | InvalidCommandErrorOptions  | InvalidEventContractErrorOptions  | InvalidTestDirectoryErrorOptions  | DeployFailedErrorOptions  | FailedToImportErrorOptions  | NotImplementedErrorOptions  | NoOrganizationsFoundErrorOptions  | DirectoryNotSkillErrorOptions  | DirectoryEmptyErrorOptions  | CommandNotImplementedErrorOptions  | CommandAbortedErrorOptions  | CreateAutoloaderFailedErrorOptions  | BootErrorErrorOptions  | BuildFailedErrorOptions 
 
 export default ErrorOptions

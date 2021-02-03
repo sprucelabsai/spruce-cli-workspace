@@ -52,6 +52,10 @@ export default class SkillFeature<
 
 	public optionsSchema = skillFeatureSchema as S
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+	private engines = {
+		node: '12.x',
+		yarn: '1.x',
+	}
 	private scripts = {
 		lint: "eslint '**/*.ts'",
 		'fix.lint': "eslint --fix '**/*.ts'",
@@ -189,6 +193,7 @@ export default class SkillFeature<
 
 		const files = await skillGenerator.writeSkill(destination, options)
 		this.installScripts(destination)
+		this.setEngines(destination)
 
 		const env = this.Service('env')
 		env.set('SKILL_NAME', options.name)
@@ -210,5 +215,17 @@ export default class SkillFeature<
 		}
 
 		pkg.set({ path: 'scripts', value: scripts })
+	}
+
+	public setEngines(destination: string) {
+		const pkg = this.Service('pkg', destination)
+		const engines = (pkg.get('engines') as Record<string, string>) || {}
+
+		for (const name in this.engines) {
+			const all = this.engines
+			engines[name] = this.engines[name as keyof typeof all]
+		}
+
+		pkg.set({ path: 'engines', value: engines })
 	}
 }

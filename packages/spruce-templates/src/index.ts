@@ -162,6 +162,13 @@ export const templates = {
 		return template({})
 	},
 
+	deployPlugin() {
+		const template = templateImportUtil.getTemplate(
+			'deploy/deploy.plugin.ts.hbs'
+		)
+		return template({})
+	},
+
 	errorExample(options: {
 		nameCamel: string
 		namePascal: string

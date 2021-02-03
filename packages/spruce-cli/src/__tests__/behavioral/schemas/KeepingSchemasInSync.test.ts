@@ -53,7 +53,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	}
 
 	@test()
-	protected static async syncingWithNoSchemasAnFetchCoreSchemasFalseSucceeds() {
+	protected static async syncingWithNoSchemasAndFetchCoreSchemasFalseSucceeds() {
 		const cli = await this.installSchemaFeature('schemas')
 
 		const results = await cli
@@ -173,6 +173,40 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		assert.isTruthy(results.files)
 
 		await this.assertValidActionResponseFiles(results)
+
+		const typesContents = diskUtil.readFile(this.coreSchemaTypesFile)
+
+		assert.doesNotInclude(typesContents, /@sprucelabs\/spruce-core-schemas/gi)
+		assert.doesInclude(
+			typesContents,
+			new RegExp(
+				`export declare namespace ${DEFAULT_GLOBAL_SCHEMA_NAMESPACE}.${CORE_NAMESPACE}.${CORE_SCHEMA_VERSION.constValue}`,
+				'gis'
+			)
+		)
+
+		const orgSchema = testUtil.assertsFileByNameInGeneratedFiles(
+			'organization.schema.ts',
+			results.files
+		)
+
+		const locationSchemaContents = diskUtil.readFile(orgSchema)
+		assert.doesInclude(locationSchemaContents, 'SchemaRegistry')
+	}
+
+	@test()
+	protected static async generateCoreSchemaInCoreSchemasModule() {
+		const cli = await this.installSchemaFeature('schemas')
+
+		const pkg = this.Service('pkg')
+		pkg.set({ path: 'name', value: '@sprucelabs/spruce-core-schemas' })
+
+		await this.copyMockCoreSchemas()
+
+		const results = await cli.getFeature('schema').Action('sync').execute({})
+
+		assert.isFalsy(results.errors)
+		assert.isTruthy(results.files)
 
 		const typesContents = diskUtil.readFile(this.coreSchemaTypesFile)
 
