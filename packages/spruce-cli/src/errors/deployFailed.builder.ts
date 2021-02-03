@@ -18,6 +18,22 @@ export default buildErrorSchema({
 						label: 'Testing',
 						value: 'testing',
 					},
+					{
+						label: 'Git',
+						value: 'git',
+					},
+					{
+						label: 'Procfile',
+						value: 'procfile',
+					},
+					{
+						label: 'Remote',
+						value: 'remote',
+					},
+					{
+						label: 'Heroku',
+						value: 'heroku',
+					},
 				],
 			},
 		},

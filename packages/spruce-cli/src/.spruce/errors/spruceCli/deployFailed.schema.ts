@@ -8,20 +8,11 @@ const deployFailedSchema: SpruceErrors.SpruceCli.DeployFailedSchema  = {
 	namespace: 'SpruceCli',
 	name: 'Deploy Failed',
 	    fields: {
-	            /** First Field. */
-	            'fieldName1': {
-	                label: 'First Field',
-	                type: 'text',
+	            /** . */
+	            'stage': {
+	                type: 'select',
 	                isRequired: true,
-	                options: undefined
-	            },
-	            /** Second Field. A hint */
-	            'fieldName2': {
-	                label: 'Second Field',
-	                type: 'number',
-	                isRequired: true,
-	                hint: 'A hint',
-	                options: undefined
+	                options: {choices: [{"label":"Building","value":"building"},{"label":"Testing","value":"testing"},{"label":"Git","value":"git"},{"label":"Procfile","value":"procfile"},{"label":"Remote","value":"remote"},{"label":"Heroku","value":"heroku"}],}
 	            },
 	    }
 }

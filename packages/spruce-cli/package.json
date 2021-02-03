@@ -277,6 +277,21 @@
 			{
 				"code": "deploy"
 			}
+		],
+		"deployWithTests": [
+			{
+				"code": "skill",
+				"options": {
+					"name": "deploy test skill",
+					"description": "go team!"
+				}
+			},
+			{
+				"code": "test"
+			},
+			{
+				"code": "deploy"
+			}
 		]
 	},
 	"jest": {
@@ -336,7 +351,8 @@
 						"createsVersionedEventFilesDefaultingToToday": "F84",
 						"hasCreateConversationAction": "F100",
 						"createsValidConversationTopicDefinition": "F101",
-						"canRegisterConversationsOnBoot": "F104"
+						"canRegisterConversationsOnBoot": "F104",
+						"canDeploySkill": "M4"
 					}
 				}
 			],

@@ -102,7 +102,6 @@ const syncErrorOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorOptio
 	                type: 'boolean',
 	                isPrivate: true,
 	                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile.',
-	                defaultValue: false,
 	                options: undefined
 	            },
 	            /** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
