@@ -1,5 +1,4 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
-import SpruceError from '../../../errors/SpruceError'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
