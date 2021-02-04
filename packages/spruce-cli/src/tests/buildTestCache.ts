@@ -22,9 +22,13 @@ const testKeys = Object.keys(testSkillCache)
 let remaining = testKeys.length
 const term = new TerminalInterface(__dirname, true)
 const start = new Date().getTime()
-const onlyInstall = process.env.TEST_SKILLS_TO_CACHE?.split(',').map((t) =>
-	t.trim()
-) as string[] | undefined
+const testSkillsToCache =
+	process.env.TEST_SKILLS_TO_CACHE === '*'
+		? undefined
+		: process.env.TEST_SKILLS_TO_CACHE
+const onlyInstall = testSkillsToCache?.split(',').map((t) => t.trim()) as
+	| string[]
+	| undefined
 
 const shouldRunSequentially = !!process.argv.find(
 	(a) => a === '--shouldRunSequentially=true' || a === '--shouldRunSequentially'
