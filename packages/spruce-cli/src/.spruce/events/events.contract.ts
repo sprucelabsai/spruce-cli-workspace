@@ -64,6 +64,9 @@ import listOrganizationsEventContract, {
 import listRolesEventContract, {
 	ListRolesEventContract,
 } from '#spruce/events/mercuryApi/listRoles.v2020_12_25.contract'
+import listSkillsEventContract, {
+	ListSkillsEventContract,
+} from '#spruce/events/mercuryApi/listSkills.v2020_12_25.contract'
 import logoutEventContract, {
 	LogoutEventContract,
 } from '#spruce/events/mercuryApi/logout.v2020_12_25.contract'
@@ -136,6 +139,7 @@ export default [
 	listLocationsEventContract,
 	listOrganizationsEventContract,
 	listRolesEventContract,
+	listSkillsEventContract,
 	logoutEventContract,
 	registerConversationTopicsEventContract,
 	registerEventsEventContract,
@@ -176,6 +180,7 @@ export type EventContracts = DidMessageEventContract &
 	ListLocationsEventContract &
 	ListOrganizationsEventContract &
 	ListRolesEventContract &
+	ListSkillsEventContract &
 	LogoutEventContract &
 	RegisterConversationTopicsEventContract &
 	RegisterEventsEventContract &

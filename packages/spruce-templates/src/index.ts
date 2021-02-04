@@ -261,6 +261,13 @@ export const templates = {
 		return template({ contracts })
 	},
 
+	sandboxWillBootListener() {
+		const template = templateImportUtil.getTemplate(
+			'sandbox/will-boot.listener.ts.hbs'
+		)
+		return template({})
+	},
+
 	async directoryTemplate<K extends DirectoryTemplateCode>(options: {
 		kind: K
 		context: DirectoryTemplateContextMap[K]

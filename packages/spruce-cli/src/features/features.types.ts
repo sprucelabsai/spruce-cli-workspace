@@ -23,6 +23,7 @@ import NodeFeature from './node/NodeFeature'
 import OnboardFeature from './onboard/OnboardFeature'
 import OrganizationFeature from './organization/OrganizationFeature'
 import PersonFeature from './person/PersonFeature'
+import SandboxFeature from './sandbox/SandboxFeature'
 import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
 import TestFeature from './test/TestFeature'
@@ -44,6 +45,7 @@ export interface FeatureMap {
 	conversation: ConversationFeature
 	eventContract: EventContractFeature
 	deploy: DeployFeature
+	sandbox: SandboxFeature
 }
 
 export type InstallFeature =
@@ -101,6 +103,10 @@ export type InstallFeature =
 	  }
 	| {
 			code: 'deploy'
+			options?: undefined
+	  }
+	| {
+			code: 'sandbox'
 			options?: undefined
 	  }
 
