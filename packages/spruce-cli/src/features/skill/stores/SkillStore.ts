@@ -45,10 +45,7 @@ export default class SkillStore extends AbstractStore {
 		const { skill } = eventResponseUtil.getFirstResponseOrThrow(results)
 
 		if (isRegisteringCurrentSkill) {
-			const env = this.Service('env')
-
-			env.set('SKILL_ID', skill.id)
-			env.set('SKILL_API_KEY', skill.apiKey)
+			this.Service('auth').updateCurrentSkill(skill)
 		}
 
 		return skill
