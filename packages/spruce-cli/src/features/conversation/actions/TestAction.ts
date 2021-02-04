@@ -1,4 +1,5 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
+import SpruceError from '../../../errors/SpruceError'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -25,20 +26,40 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	private killHandler?: () => void
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
-		this.ui.clear()
-
 		const {
 			shouldReturnImmediately,
 			shouldRunSilently,
 		} = this.validateAndNormalizeOptions(options)
 
+		this.ui.startLoading('Booting skill...')
+
 		try {
 			const command = this.Service('command')
+			let isWriting = false
 
 			const promise = new Promise((resolve, reject) => {
 				command
 					.execute('yarn boot.local', {
-						shouldStream: !shouldRunSilently,
+						spawnOptions: shouldRunSilently
+							? undefined
+							: {
+									stdio: [process.stdin, 'pipe', 'pipe'],
+							  },
+						onData: (data) => {
+							if (!shouldRunSilently) {
+								if (!isWriting) {
+									isWriting = data.search('first message') > -1
+									if (isWriting) {
+										this.ui.clear()
+										this.ui.stopLoading()
+										this.ui.renderHero('Lets chat!')
+									}
+								}
+								if (isWriting) {
+									process.stdout?.write(data)
+								}
+							}
+						},
 						env: {
 							ACTION: 'test.conversation',
 						},
