@@ -23,6 +23,10 @@ export default class FeatureInstaller implements ServiceProvider {
 	private featureMap: Partial<FeatureMap> = {}
 	private serviceFactory: ServiceFactory
 	private featuresMarkedAsSkippedThisRun: FeatureCode[] = []
+	public static startInstallIntertainmentHandler?: (
+		didUpdateHandler: (handler: (message: string) => void) => void
+	) => void
+	public static stopInstallIntertainmentHandler?: () => void
 
 	public constructor(cwd: string, serviceFactory: ServiceFactory) {
 		this.cwd = cwd
@@ -150,11 +154,24 @@ export default class FeatureInstaller implements ServiceProvider {
 	public async install(
 		options: InstallFeatureOptions
 	): Promise<FeatureInstallResponse> {
-		const {
+		let {
 			features,
 			installFeatureDependencies = true,
 			didUpdateHandler,
 		} = options
+
+		const shouldAllowEntertainment = !!features.find((f) => f.code === 'skill')
+
+		if (
+			FeatureInstaller.startInstallIntertainmentHandler &&
+			shouldAllowEntertainment
+		) {
+			FeatureInstaller.startInstallIntertainmentHandler(
+				(handler: InternalUpdateHandler) => {
+					didUpdateHandler = handler
+				}
+			)
+		}
 
 		let results: FeatureInstallResponse = {}
 
@@ -202,6 +219,13 @@ export default class FeatureInstaller implements ServiceProvider {
 				)
 				results = merge(results, installResults)
 			}
+		}
+
+		if (
+			FeatureInstaller.stopInstallIntertainmentHandler &&
+			shouldAllowEntertainment
+		) {
+			FeatureInstaller.stopInstallIntertainmentHandler()
 		}
 
 		return results
@@ -294,9 +318,9 @@ export default class FeatureInstaller implements ServiceProvider {
 				`Now installing ${devPackagesToInstall.length} DEV node dependenc${
 					devPackagesToInstall.length === 1
 						? 'y.'
-						: 'ies ' +
+						: 'ies for ' +
 						  feature.nameReadable +
-						  'using NPM. NPM is still slow, so hang tight. 🤘'
+						  ' using NPM. NPM is still slow, so hang tight. 🤘'
 				}.`
 			)
 			await pkgService.install(devPackagesToInstall, {

@@ -335,6 +335,7 @@ export default class TerminalInterface implements GraphicsInterface {
 	}
 
 	public clear() {
+		void this.stopLoading()
 		console.clear()
 	}
 
@@ -578,6 +579,14 @@ export default class TerminalInterface implements GraphicsInterface {
 				resolve(err ? null : { x: x ?? 0, y: y ?? 0 })
 			})
 		})
+	}
+
+	public saveCursor() {
+		terminal.saveCursor()
+	}
+
+	public restoreCursor() {
+		terminal.restoreCursor()
 	}
 
 	public moveCursorTo(x: number, y: number): void {
