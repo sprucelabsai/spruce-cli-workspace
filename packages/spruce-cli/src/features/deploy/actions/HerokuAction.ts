@@ -145,7 +145,10 @@ export default class DeployAction extends AbstractFeatureAction<OptionsSchema> {
 			name = namesUtil.toKebab(name)
 
 			try {
-				await command.execute('heroku create', { args: [name] })
+				await command.execute('heroku create', {
+					args: [name],
+					env: { HOME: process.env.HOME },
+				})
 
 				pass = true
 			} catch {
@@ -154,7 +157,9 @@ export default class DeployAction extends AbstractFeatureAction<OptionsSchema> {
 		} while (!pass)
 
 		try {
-			await command.execute('heroku buildpacks:set heroku/nodejs')
+			await command.execute('heroku buildpacks:set heroku/nodejs', {
+				env: { HOME: process.env.HOME },
+			})
 		} catch {
 			throw new SpruceError({ code: 'DEPLOY_FAILED', stage: 'remote' })
 		}
