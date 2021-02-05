@@ -18,29 +18,43 @@ export default class BootAction extends AbstractFeatureAction<OptionsSchema> {
 			script += '.local'
 		}
 
-		const promise = new Promise((resolve, reject) => {
-			const activeCommand = command.execute(`yarn ${script}`)
+		let runningPromise: any
+		let isBooted = false
 
-			activeCommand.then(resolve).catch((err) => {
+		const bootPromise = new Promise((resolve, reject) => {
+			const runningPromise = command.execute(`yarn ${script}`, {
+				onData: (data) => {
+					if (!isBooted && data.search(':: Skill booted') > -1) {
+						isBooted = true
+						resolve(undefined)
+					}
+				},
+			})
+
+			runningPromise.catch((err) => {
 				if (err.message.search(/cannot find module/gis) > -1) {
-					reject(
-						new SpruceError({
-							code: 'BOOT_ERROR',
-							friendlyMessage:
-								'You must build your skill before you can boot it!',
-						})
-					)
-				} else {
+					err = new SpruceError({
+						code: 'BOOT_ERROR',
+						friendlyMessage:
+							'You must build your skill before you can boot it!',
+					})
+				}
+
+				if (!isBooted) {
 					reject(err)
+				} else {
+					throw err
 				}
 			})
 		})
+
+		await bootPromise
 
 		return {
 			meta: {
 				kill: command.kill.bind(command),
 				pid: command.pid() as number,
-				promise,
+				promise: runningPromise,
 			},
 		}
 	}

@@ -103,6 +103,9 @@ import unregisterEventsEventContract, {
 import unregisterListenersEventContract, {
 	UnregisterListenersEventContract,
 } from '#spruce/events/mercuryApi/unregisterListeners.v2020_12_25.contract'
+import unregisterSkillEventContract, {
+	UnregisterSkillEventContract,
+} from '#spruce/events/mercuryApi/unregisterSkill.v2020_12_25.contract'
 import updateLocationEventContract, {
 	UpdateLocationEventContract,
 } from '#spruce/events/mercuryApi/updateLocation.v2020_12_25.contract'
@@ -152,6 +155,7 @@ export default [
 	unregisterConversationTopicsEventContract,
 	unregisterEventsEventContract,
 	unregisterListenersEventContract,
+	unregisterSkillEventContract,
 	updateLocationEventContract,
 	updateOrganizationEventContract,
 	updateRoleEventContract,
@@ -193,6 +197,7 @@ export type EventContracts = DidMessageEventContract &
 	UnregisterConversationTopicsEventContract &
 	UnregisterEventsEventContract &
 	UnregisterListenersEventContract &
+	UnregisterSkillEventContract &
 	UpdateLocationEventContract &
 	UpdateOrganizationEventContract &
 	UpdateRoleEventContract &

@@ -25,7 +25,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 		await personFixture.loginAsDemoPerson(this.sandboxDemoNumber)
 	}
 
-	protected static async afterEAch() {
+	protected static async afterEach() {
 		await super.afterEach()
 
 		const skillFixture = this.SkillFixture()
@@ -60,8 +60,6 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 			.Action('boot')
 			.execute({ local: true })
 
-		await this.wait(10000)
-
 		boot.meta?.kill()
 
 		const results2 = await client.emit(`list-skills::v2020_12_25`, {
@@ -87,8 +85,6 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 			.getFeature('skill')
 			.Action('boot')
 			.execute({ local: true })
-
-		await this.wait(10000)
 
 		boot.meta?.kill()
 
