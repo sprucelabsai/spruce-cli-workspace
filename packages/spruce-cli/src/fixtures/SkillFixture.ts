@@ -61,4 +61,15 @@ export default class SkillFixture {
 			eventContract: contract,
 		})
 	}
+
+	public async clearAllSkills() {
+		await this.personFixture.loginAsDemoPerson()
+
+		const skillStore = this.storeFactory.Store('skill')
+		const skills = await skillStore.fetchMySkills()
+
+		for (const skill of skills) {
+			await skillStore.unregisterSkill(skill.id)
+		}
+	}
 }

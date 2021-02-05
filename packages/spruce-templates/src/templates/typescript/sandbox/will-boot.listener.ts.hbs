@@ -7,7 +7,7 @@ import {EventFeature} from '@sprucelabs/spruce-event-plugin'
 
 export default async (event: SpruceEvent): SpruceEventResponse => {
 
-	const sandboxNumber = process.env.DEMO_SANDBOX_NUMBER
+	const sandboxNumber = process.env.SANDBOX_DEMO_NUMBER
 
 	if (sandboxNumber) {
 		const log = event.log.buildLog("Sandbox");

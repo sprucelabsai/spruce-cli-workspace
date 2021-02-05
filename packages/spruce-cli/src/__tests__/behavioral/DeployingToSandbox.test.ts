@@ -7,6 +7,31 @@ import AbstractCliTest from '../../tests/AbstractCliTest'
 import testUtil from '../../tests/utilities/test.utility'
 
 export default class DeployingToSandboxTest extends AbstractCliTest {
+	private static sandboxDemoNumber = process.env.SANDBOX_DEMO_NUMBER
+
+	protected static async beforeAll() {
+		await super.beforeAll()
+		if (!this.sandboxDemoNumber) {
+			assert.fail(
+				'You gotta have a SANDBOX_DEMO_NUMBER set in your ENV for the Deploying to Sandbox test pass.'
+			)
+		}
+	}
+
+	protected static async beforeEach() {
+		await super.beforeEach()
+
+		const personFixture = this.PersonFixture()
+		await personFixture.loginAsDemoPerson(this.sandboxDemoNumber)
+	}
+
+	protected static async afterEAch() {
+		await super.afterEach()
+
+		const skillFixture = this.SkillFixture()
+		await skillFixture.clearAllSkills()
+	}
+
 	@test()
 	protected static async hasSetupSandboxAction() {
 		const cli = await this.Cli()
@@ -42,6 +67,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 		const results2 = await client.emit(`list-skills::v2020_12_25`, {
 			payload: { showMineOnly: true },
 		})
+
 		const { skills: skills2 } = eventResponseUtil.getFirstResponseOrThrow(
 			results2
 		)
