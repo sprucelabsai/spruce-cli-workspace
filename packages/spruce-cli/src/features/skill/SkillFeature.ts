@@ -76,13 +76,11 @@ export default class SkillFeature<
 		rebuild: 'yarn clean.all && yarn && yarn build',
 		clean: 'rm -rf build/',
 		'clean.all':
-			'yarn clean && rm yarn.lock | true && rm package-lock.json | true && rm -rf node_modules/',
+			'yarn clean && rm -f yarn.lock package-lock.json && rm -rf node_modules/',
 		boot: 'node build/index',
 		'boot.local':
 			'node -r ts-node/register -r tsconfig-paths/register ./src/index',
 
-		'boot.sender': 'ACTION=sender node build/index',
-		'boot.sender.local': 'ACTION=sender yarn boot.local',
 		test: 'jest',
 		'watch.tests': 'yarn test --watch',
 		'watch.build':

@@ -57,5 +57,6 @@ export default class RegisteringASkillTest extends AbstractCliTest {
 		const currentSkill = auth.getCurrentSkill()
 
 		assert.isTruthy(currentSkill)
+		assert.isEqual(currentSkill.name, 'my new skill')
 	}
 }

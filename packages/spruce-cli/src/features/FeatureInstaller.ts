@@ -251,7 +251,7 @@ export default class FeatureInstaller implements ServiceProvider {
 		}
 
 		didUpdateHandler?.(`Installing package dependencies...`)
-		const packagesInstalled = await this.installPackageDependencies(
+		const packagesInstalled = await this.installPackageDependenciesWithoutEntertainment(
 			feature,
 			didUpdateHandler
 		)
@@ -277,6 +277,28 @@ export default class FeatureInstaller implements ServiceProvider {
 	}
 
 	public async installPackageDependencies(
+		feature: AbstractFeature,
+		didUpdateHandler?: InternalUpdateHandler
+	) {
+		if (FeatureInstaller.startInstallIntertainmentHandler) {
+			FeatureInstaller.startInstallIntertainmentHandler(
+				(handler: InternalUpdateHandler) => {
+					didUpdateHandler = handler
+				}
+			)
+		}
+
+		await this.installPackageDependenciesWithoutEntertainment(
+			feature,
+			didUpdateHandler
+		)
+
+		if (FeatureInstaller.stopInstallIntertainmentHandler) {
+			FeatureInstaller.stopInstallIntertainmentHandler()
+		}
+	}
+
+	private async installPackageDependenciesWithoutEntertainment(
 		feature: AbstractFeature,
 		didUpdateHandler?: InternalUpdateHandler
 	) {

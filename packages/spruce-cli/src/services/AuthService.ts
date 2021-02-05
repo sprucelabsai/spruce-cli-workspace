@@ -8,6 +8,7 @@ type PersonWithToken = SpruceSchemas.SpruceCli.v2020_07_22.PersonWithToken
 interface SkillAuth {
 	id: string
 	apiKey: string
+	name: string
 }
 
 export default class AuthService {
@@ -46,11 +47,13 @@ export default class AuthService {
 	public getCurrentSkill(): SkillAuth | null {
 		const id = this.env.get('SKILL_ID') as string
 		const apiKey = this.env.get('SKILL_API_KEY') as string
+		const name = this.env.get('SKILL_NAME') as string
 
 		if (id && apiKey) {
 			return {
 				id,
 				apiKey,
+				name,
 			}
 		}
 
@@ -60,5 +63,6 @@ export default class AuthService {
 	public updateCurrentSkill(skill: SkillAuth) {
 		this.env.set('SKILL_ID', skill.id)
 		this.env.set('SKILL_API_KEY', skill.apiKey)
+		this.env.set('SKILL_NAME', skill.name)
 	}
 }
