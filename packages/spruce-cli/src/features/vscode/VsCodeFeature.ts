@@ -1,6 +1,5 @@
 /* eslint-disable no-unreachable */
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import SpruceError from '../../errors/SpruceError'
 import { FileDescription } from '../../types/cli.types'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
@@ -41,9 +40,7 @@ export default class VsCodeFeature extends AbstractFeature {
 		try {
 			await command.execute('which code')
 		} catch (err) {
-			throw new SpruceError({
-				code: 'VSCODE_NOT_INSTALLED',
-			})
+			return false
 		}
 
 		return true

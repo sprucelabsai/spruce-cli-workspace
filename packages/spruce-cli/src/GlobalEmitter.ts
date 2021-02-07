@@ -95,6 +95,7 @@ export const globalContract = buildEventContract({
 				},
 			}),
 		},
+		'skill.did-upgrade': {},
 	},
 })
 

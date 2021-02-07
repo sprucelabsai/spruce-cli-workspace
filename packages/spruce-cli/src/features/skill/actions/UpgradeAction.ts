@@ -21,18 +21,24 @@ export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> 
 		const skillFeature = this.parent as SkillFeature
 		skillFeature.installScripts()
 
-		return { files: generatedFiles }
+		const results = { files: generatedFiles }
+
+		await this.emitter.emit('skill.did-upgrade')
+
+		return results
 	}
 
 	private async reInstallPackageDependencies() {
 		this.ui.startLoading('Updating dependencies...')
-		const feature = this.parent
-		await this.featureInstaller.installPackageDependencies(
-			feature,
+		const features = await this.featureInstaller.getInstalledFeatures()
+
+		await this.featureInstaller.installPackageDependenciesForManyFeatures(
+			features,
 			(message: string) => {
 				this.ui.startLoading(message)
 			}
 		)
+
 		this.ui.stopLoading()
 	}
 
