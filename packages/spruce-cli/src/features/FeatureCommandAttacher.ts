@@ -1,5 +1,5 @@
 import { Schema, SchemaEntityFactory } from '@sprucelabs/schema'
-import { alias, CommanderStatic } from 'commander'
+import { CommanderStatic } from 'commander'
 import SpruceError from '../errors/SpruceError'
 import { GraphicsInterface } from '../types/cli.types'
 import commanderUtil from '../utilities/commander.utility'
