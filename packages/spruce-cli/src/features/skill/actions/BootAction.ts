@@ -31,6 +31,13 @@ export default class BootAction extends AbstractFeatureAction<OptionsSchema> {
 				},
 			})
 
+			void runningPromise.then(() => {
+				if (!isBooted) {
+					isBooted = true
+					resolve(undefined)
+				}
+			})
+
 			runningPromise.catch((err) => {
 				if (err.message.search(/cannot find module/gis) > -1) {
 					err = new SpruceError({

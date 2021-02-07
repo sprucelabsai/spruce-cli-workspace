@@ -11,6 +11,7 @@ type Options = SchemaValues<OptionsSchema>
 export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'upgrade'
 	public optionsSchema = upgradeSkillActionSchema
+	public commandAliases = ['upgrade', 'update']
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)

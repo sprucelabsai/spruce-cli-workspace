@@ -130,6 +130,16 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 	}
 
 	@test()
+	protected static async handlesAliases() {
+		const cli = await this.Cli()
+		const feature = cli.getFeature('skill')
+
+		await this.attacher.attachFeature(feature)
+
+		assert.doesInclude(this.program.aliasesInvocations, 'update')
+	}
+
+	@test()
 	protected static async testActionWithSameNameAsFeature() {
 		const cli = await this.Cli()
 		const vscodeFeature = cli.getFeature('test')

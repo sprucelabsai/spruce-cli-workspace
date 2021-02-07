@@ -1,5 +1,5 @@
 import { Schema, SchemaEntityFactory } from '@sprucelabs/schema'
-import { CommanderStatic } from 'commander'
+import { alias, CommanderStatic } from 'commander'
 import SpruceError from '../errors/SpruceError'
 import { GraphicsInterface } from '../types/cli.types'
 import commanderUtil from '../utilities/commander.utility'
@@ -37,8 +37,10 @@ export default class FeatureCommandAttacher {
 		let commandStr = featuresUtil.generateCommand(feature.code, code)
 		const action = feature.Action(code)
 
-		if (action.commandAliases.length === 1) {
-			commandStr = action.commandAliases[0]
+		const aliases = action.commandAliases ? [...action.commandAliases] : []
+
+		if (aliases.length > 0) {
+			commandStr = aliases.shift() as string
 		}
 
 		const executer = new FeatureCommandExecuter({
@@ -48,20 +50,20 @@ export default class FeatureCommandAttacher {
 			term: this.ui,
 		})
 
-		let command = this.program
-			.command(commandStr)
-			.action(async (...args: any[]) => {
-				const options = commanderUtil.mapIncomingToOptions(
-					...args,
-					feature.optionsSchema ?? action.optionsSchema
-				)
+		let command = this.program.command(commandStr)
 
-				await executer.execute(options)
-			})
-
-		if (action.commandAliases.length > 1) {
-			throw new Error('more than one alias not supported yet')
+		if (aliases.length > 0) {
+			command = command.aliases(aliases)
 		}
+
+		command = command.action(async (...args: any[]) => {
+			const options = commanderUtil.mapIncomingToOptions(
+				...args,
+				feature.optionsSchema ?? action.optionsSchema
+			)
+
+			await executer.execute(options)
+		})
 
 		const description = action.optionsSchema?.description
 
