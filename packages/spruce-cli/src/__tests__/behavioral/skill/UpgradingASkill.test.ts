@@ -190,7 +190,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		let didHit = false
 
-		await cli.on('skill.did-upgrade', () => {
+		await cli.on('skill.did-upgrade', async () => {
 			didHit = true
 		})
 
