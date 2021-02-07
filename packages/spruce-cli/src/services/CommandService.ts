@@ -142,7 +142,7 @@ export default class CommandService {
 							})
 						)
 					}
-				}, 500)
+				}, 0)
 			}
 
 			child.addListener('close', closeHandler)

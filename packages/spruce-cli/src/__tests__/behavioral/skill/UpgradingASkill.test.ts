@@ -174,6 +174,11 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		assert.isEqual(updatedContents, originalContents)
 	}
 
+	@test()
+	protected static async upgradeSkillEmitsDidUpdateEventAndOtherFeaturesListenAndAct() {
+		assert.isTrue(false)
+	}
+
 	private static async installAndBreakSkill(cacheKey: string) {
 		const cli = await this.installSkill(cacheKey)
 		const indexFile = this.resolvePath('src/index.ts')
