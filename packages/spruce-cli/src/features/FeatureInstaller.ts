@@ -211,7 +211,7 @@ export default class FeatureInstaller implements ServiceProvider {
 					options: installOptions,
 				} as InstallFeature
 
-				didUpdateHandler?.(`Installing ${installFeature.code}...`)
+				didUpdateHandler?.(`Installing the ${installFeature.code} feature....`)
 
 				const installResults = await this.installFeature(
 					installFeature,

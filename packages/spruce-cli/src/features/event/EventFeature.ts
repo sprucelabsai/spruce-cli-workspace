@@ -11,7 +11,7 @@ import EventContractWriter from './writers/EventContractWriter'
 
 export default class EventFeature extends AbstractFeature {
 	public code: FeatureCode = 'event'
-	public nameReadable = 'Event'
+	public nameReadable = 'Mercury  support'
 	public description =
 		'Plug into the Mercury XP and start creating experiences!'
 	public dependencies: FeatureDependency[] = [
