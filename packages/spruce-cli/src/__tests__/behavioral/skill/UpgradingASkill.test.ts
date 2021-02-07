@@ -157,7 +157,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 	@test('Upgrades error.plugin', 'error.plugin.ts', 'errors')
 	@test('Upgrades schema.plugin', 'schema.plugin.ts', 'schemas')
-	@test.only(
+	@test(
 		'Upgrades conversation.plugin',
 		'conversation.plugin.ts',
 		'conversation'
