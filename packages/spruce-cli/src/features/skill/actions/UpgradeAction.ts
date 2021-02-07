@@ -1,6 +1,9 @@
 import { SchemaValues } from '@sprucelabs/schema'
+import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import upgradeSkillActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/upgradeSkillOptions.schema'
+import SpruceError from '../../../errors/SpruceError'
+import mergeUtil from '../../../utilities/merge.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 import SkillFeature from '../SkillFeature'
@@ -21,9 +24,17 @@ export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> 
 		const skillFeature = this.parent as SkillFeature
 		skillFeature.installScripts()
 
-		const results = { files: generatedFiles }
+		let results = { files: generatedFiles }
 
-		await this.emitter.emit('skill.did-upgrade')
+		const response = await this.emitter.emit('skill.did-upgrade')
+		const { payloads } = eventResponseUtil.getAllResponsePayloadsAndErrors(
+			response,
+			SpruceError
+		)
+
+		for (const p of payloads) {
+			results = mergeUtil.mergeActionResults(results, p)
+		}
 
 		return results
 	}

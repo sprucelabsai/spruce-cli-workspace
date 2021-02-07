@@ -30,9 +30,13 @@ export default class ConversationFeature extends AbstractFeature {
 			const isInstalled = await this.featureInstaller.isInstalled(
 				'conversation'
 			)
+
 			if (isInstalled) {
-				await this.writePlugin()
+				const files = await this.writePlugin()
+				return { files }
 			}
+
+			return {}
 		})
 	}
 
