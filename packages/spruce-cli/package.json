@@ -109,7 +109,7 @@
 		"@types/inquirer": "^7.3.1",
 		"@types/jsonwebtoken": "^8.5.0",
 		"@types/lodash": "^4.14.168",
-		"@types/md5": "^2.2.1",
+		"@types/md5": "^2.3.0",
 		"@types/mkdirp": "^1.0.1",
 		"@types/node": "^14.14.25",
 		"@types/promise.allsettled": "^1.0.3",
