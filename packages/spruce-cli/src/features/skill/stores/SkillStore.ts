@@ -144,6 +144,7 @@ export default class SkillStore extends AbstractStore {
 
 	public async fetchMySkills() {
 		const client = await this.connectToApi()
+
 		const response = await client.emit('list-skills::v2020_12_25', {
 			payload: {
 				showMineOnly: true,
