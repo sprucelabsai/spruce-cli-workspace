@@ -43,6 +43,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static async beforeAll() {
 		await super.beforeAll()
 		await this.cleanTestDirsAndFiles()
+
 		AbstractWriter.disableLinting()
 
 		ImportService.setCacheDir(diskUtil.createRandomTempDir())
@@ -282,15 +283,17 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static async assertValidActionResponseFiles(
 		results: FeatureActionResponse
 	) {
-		const checker = this.Service('typeChecker')
+		// for (const file of results.files ?? []) {
+		// 	const checker = this.Service('typeChecker')
+		// 	await checker.check(file.path)
+		// }
 
-		for (const file of results.files ?? []) {
-			await checker.check(file.path)
-		}
-
-		// await Promise.all(
-		// 	(results.files ?? []).map((file) => checker.check(file.path))
-		// )
+		await Promise.all(
+			(results.files ?? []).map((file) => {
+				const checker = this.Service('typeChecker')
+				return checker.check(file.path)
+			})
+		)
 	}
 
 	protected static async connectToApi(options?: ApiClientFactoryOptions) {

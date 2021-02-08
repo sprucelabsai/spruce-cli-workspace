@@ -2,6 +2,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { NpmPackage } from '../../types/cli.types'
 import AbstractFeature, {
 	FeatureDependency,
+	FeatureOptions,
 	InstallResults,
 } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
@@ -22,11 +23,32 @@ export default class ConversationFeature extends AbstractFeature {
 	]
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
+	public constructor(options: FeatureOptions) {
+		super(options)
+
+		void this.emitter.on('skill.did-upgrade', async () => {
+			const isInstalled = await this.featureInstaller.isInstalled(
+				'conversation'
+			)
+
+			if (isInstalled) {
+				const files = await this.writePlugin()
+				return { files }
+			}
+
+			return {}
+		})
+	}
+
 	public async afterPackageInstall(): Promise<InstallResults> {
-		const files = await this.Writer('conversation').writePlugin(this.cwd)
+		const files = await this.writePlugin()
 
 		return {
 			files,
 		}
+	}
+
+	private async writePlugin() {
+		return this.Writer('conversation').writePlugin(this.cwd)
 	}
 }

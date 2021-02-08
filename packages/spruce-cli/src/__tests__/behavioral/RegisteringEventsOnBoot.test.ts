@@ -35,17 +35,11 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 			apiKey: skill2.apiKey,
 		})
 
-		let contracts: any
+		const contractResults = await this.Store('event', {
+			apiClientFactory: async () => client,
+		}).fetchEventContracts()
 
-		do {
-			await this.wait(1000)
-
-			const contractResults = await this.Store('event', {
-				apiClientFactory: async () => client,
-			}).fetchEventContracts()
-
-			contracts = contractResults.contracts
-		} while (contracts.length < 2)
+		const contracts = contractResults.contracts
 
 		boot.meta?.kill()
 

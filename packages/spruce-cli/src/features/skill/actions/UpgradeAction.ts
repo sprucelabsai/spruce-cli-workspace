@@ -1,6 +1,9 @@
 import { SchemaValues } from '@sprucelabs/schema'
+import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import upgradeSkillActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/upgradeSkillOptions.schema'
+import SpruceError from '../../../errors/SpruceError'
+import mergeUtil from '../../../utilities/merge.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 import SkillFeature from '../SkillFeature'
@@ -11,6 +14,7 @@ type Options = SchemaValues<OptionsSchema>
 export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'upgrade'
 	public optionsSchema = upgradeSkillActionSchema
+	public commandAliases = ['upgrade', 'update']
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
@@ -20,18 +24,32 @@ export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> 
 		const skillFeature = this.parent as SkillFeature
 		skillFeature.installScripts()
 
-		return { files: generatedFiles }
+		let results = { files: generatedFiles }
+
+		const response = await this.emitter.emit('skill.did-upgrade')
+		const { payloads } = eventResponseUtil.getAllResponsePayloadsAndErrors(
+			response,
+			SpruceError
+		)
+
+		for (const p of payloads) {
+			results = mergeUtil.mergeActionResults(results, p)
+		}
+
+		return results
 	}
 
 	private async reInstallPackageDependencies() {
 		this.ui.startLoading('Updating dependencies...')
-		const feature = this.parent
-		await this.featureInstaller.installPackageDependencies(
-			feature,
+		const features = await this.featureInstaller.getInstalledFeatures()
+
+		await this.featureInstaller.installPackageDependenciesForManyFeatures(
+			features,
 			(message: string) => {
 				this.ui.startLoading(message)
 			}
 		)
+
 		this.ui.stopLoading()
 	}
 

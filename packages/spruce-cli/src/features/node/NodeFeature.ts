@@ -27,7 +27,7 @@ export default class NodeFeature<
 	S extends NodeFeatureSchema = NodeFeatureSchema
 > extends AbstractFeature<S> {
 	public code: FeatureCode = 'node'
-	public nameReadable = 'Node'
+	public nameReadable = 'nodejs support'
 	public description = 'Get a fresh node module started!'
 	public dependencies: FeatureDependency[] = []
 	public optionsSchema = nodeFeatureSchema as S

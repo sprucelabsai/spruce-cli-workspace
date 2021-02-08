@@ -64,6 +64,9 @@ import listOrganizationsEventContract, {
 import listRolesEventContract, {
 	ListRolesEventContract,
 } from '#spruce/events/mercuryApi/listRoles.v2020_12_25.contract'
+import listSkillsEventContract, {
+	ListSkillsEventContract,
+} from '#spruce/events/mercuryApi/listSkills.v2020_12_25.contract'
 import logoutEventContract, {
 	LogoutEventContract,
 } from '#spruce/events/mercuryApi/logout.v2020_12_25.contract'
@@ -100,6 +103,9 @@ import unregisterEventsEventContract, {
 import unregisterListenersEventContract, {
 	UnregisterListenersEventContract,
 } from '#spruce/events/mercuryApi/unregisterListeners.v2020_12_25.contract'
+import unregisterSkillEventContract, {
+	UnregisterSkillEventContract,
+} from '#spruce/events/mercuryApi/unregisterSkill.v2020_12_25.contract'
 import updateLocationEventContract, {
 	UpdateLocationEventContract,
 } from '#spruce/events/mercuryApi/updateLocation.v2020_12_25.contract'
@@ -136,6 +142,7 @@ export default [
 	listLocationsEventContract,
 	listOrganizationsEventContract,
 	listRolesEventContract,
+	listSkillsEventContract,
 	logoutEventContract,
 	registerConversationTopicsEventContract,
 	registerEventsEventContract,
@@ -148,6 +155,7 @@ export default [
 	unregisterConversationTopicsEventContract,
 	unregisterEventsEventContract,
 	unregisterListenersEventContract,
+	unregisterSkillEventContract,
 	updateLocationEventContract,
 	updateOrganizationEventContract,
 	updateRoleEventContract,
@@ -176,6 +184,7 @@ export type EventContracts = DidMessageEventContract &
 	ListLocationsEventContract &
 	ListOrganizationsEventContract &
 	ListRolesEventContract &
+	ListSkillsEventContract &
 	LogoutEventContract &
 	RegisterConversationTopicsEventContract &
 	RegisterEventsEventContract &
@@ -188,6 +197,7 @@ export type EventContracts = DidMessageEventContract &
 	UnregisterConversationTopicsEventContract &
 	UnregisterEventsEventContract &
 	UnregisterListenersEventContract &
+	UnregisterSkillEventContract &
 	UpdateLocationEventContract &
 	UpdateOrganizationEventContract &
 	UpdateRoleEventContract &

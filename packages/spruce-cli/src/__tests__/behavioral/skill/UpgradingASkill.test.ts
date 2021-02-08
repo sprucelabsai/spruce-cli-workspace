@@ -157,6 +157,11 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 	@test('Upgrades error.plugin', 'error.plugin.ts', 'errors')
 	@test('Upgrades schema.plugin', 'schema.plugin.ts', 'schemas')
+	@test(
+		'Upgrades conversation.plugin',
+		'conversation.plugin.ts',
+		'conversation'
+	)
 	protected static async upgradesPlugins(pluginName: string, cacheKey: string) {
 		const cli = await this.FeatureFixture().installCachedFeatures(cacheKey)
 
@@ -172,6 +177,30 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		const updatedContents = diskUtil.readFile(pluginPath)
 
 		assert.isEqual(updatedContents, originalContents)
+	}
+
+	@test()
+	protected static async upgradeSkillEmitsDidUpdateEventAndOtherFeaturesDependenciesUpdate() {
+		const cli = await this.FeatureFixture().installCachedFeatures(
+			'conversation'
+		)
+		const pkg = this.Service('pkg')
+		const path = 'dependencies.@sprucelabs/spruce-conversation-plugin'
+		pkg.unset(path)
+
+		let didHit = false
+
+		await cli.on('skill.did-upgrade', async () => {
+			didHit = true
+		})
+
+		const results = await cli.getFeature('skill').Action('upgrade').execute({})
+
+		assert.isFalsy(results.errors)
+
+		assert.isTrue(didHit)
+
+		assert.isTruthy(pkg.get(path))
 	}
 
 	private static async installAndBreakSkill(cacheKey: string) {

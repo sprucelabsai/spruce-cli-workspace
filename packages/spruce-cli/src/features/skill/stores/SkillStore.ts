@@ -130,4 +130,29 @@ export default class SkillStore extends AbstractStore {
 		const pkg = this.Service('pkg')
 		return pkg.get('description')
 	}
+
+	public async unregisterSkill(skillId: string) {
+		const client = await this.connectToApi()
+		const response = await client.emit('unregister-skill::v2020_12_25', {
+			target: {
+				skillId,
+			},
+		})
+
+		eventResponseUtil.getFirstResponseOrThrow(response)
+	}
+
+	public async fetchMySkills() {
+		const client = await this.connectToApi()
+
+		const response = await client.emit('list-skills::v2020_12_25', {
+			payload: {
+				showMineOnly: true,
+			},
+		})
+
+		const { skills } = eventResponseUtil.getFirstResponseOrThrow(response)
+
+		return skills
+	}
 }

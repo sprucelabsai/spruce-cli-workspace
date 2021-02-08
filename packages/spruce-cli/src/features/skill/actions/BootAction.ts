@@ -1,6 +1,7 @@
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import bootSkillOptionsSchema from '#spruce/schemas/spruceCli/v2020_07_22/bootSkillOptions.schema'
 import SpruceError from '../../../errors/SpruceError'
+import CommandService from '../../../services/CommandService'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -18,30 +19,62 @@ export default class BootAction extends AbstractFeatureAction<OptionsSchema> {
 			script += '.local'
 		}
 
-		const promise = new Promise((resolve, reject) => {
-			const activeCommand = command.execute(`yarn ${script}`)
+		let runningPromise: any
 
-			activeCommand.then(resolve).catch((err) => {
-				if (err.message.search(/cannot find module/gis) > -1) {
-					reject(
-						new SpruceError({
-							code: 'BOOT_ERROR',
-							friendlyMessage:
-								'You must build your skill before you can boot it!',
-						})
-					)
-				} else {
-					reject(err)
-				}
-			})
+		const bootPromise = new Promise((resolve, reject) => {
+			runningPromise = this.boot(command, script, resolve, reject)
 		})
+
+		await bootPromise
 
 		return {
 			meta: {
 				kill: command.kill.bind(command),
 				pid: command.pid() as number,
-				promise,
+				promise: runningPromise,
 			},
 		}
+	}
+
+	private async boot(
+		command: CommandService,
+		script: string,
+		resolve: (value: unknown) => void,
+		reject: (reason?: any) => void
+	) {
+		let isBooted = false
+		try {
+			const results = await command.execute(`yarn ${script}`, {
+				onData: (data) => {
+					if (!isBooted && data.search(':: Skill booted') > -1) {
+						isBooted = true
+						resolve(undefined)
+					}
+				},
+			})
+
+			if (!isBooted) {
+				isBooted = true
+				resolve(undefined)
+			}
+
+			return results
+		} catch (err) {
+			let mappedErr = err
+			if (mappedErr.message.search(/cannot find module/gis) > -1) {
+				mappedErr = new SpruceError({
+					code: 'BOOT_ERROR',
+					friendlyMessage: 'You must build your skill before you can boot it!',
+				})
+			}
+
+			if (!isBooted) {
+				reject(mappedErr)
+			} else {
+				throw mappedErr
+			}
+		}
+
+		return null
 	}
 }

@@ -26,17 +26,11 @@ export default class RegisteringConversationsOnBootTest extends AbstractEventTes
 			apiKey: currentSkill.apiKey,
 		})
 
-		let topics: any
+		const topicResults = await this.Store('conversation', {
+			apiClientFactory: async () => client,
+		}).fetchRegisteredTopics()
 
-		do {
-			await this.wait(1000)
-
-			const topicResults = await this.Store('conversation', {
-				apiClientFactory: async () => client,
-			}).fetchRegisteredTopics()
-
-			topics = topicResults.topics
-		} while (topics.length === 0)
+		const topics = topicResults.topics
 
 		boot.meta?.kill()
 

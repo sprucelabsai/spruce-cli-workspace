@@ -1,6 +1,6 @@
 import pathUtil from 'path'
 import fs from 'fs-extra'
-import { set } from 'lodash'
+import { set, get } from 'lodash'
 import SpruceError from '../errors/SpruceError'
 import CommandService from './CommandService'
 
@@ -11,7 +11,7 @@ export interface AddOptions {
 export default class PkgService extends CommandService {
 	public get(path: string) {
 		const contents = this.readPackage()
-		return contents[path]
+		return get(contents, path)
 	}
 
 	public set(options: {

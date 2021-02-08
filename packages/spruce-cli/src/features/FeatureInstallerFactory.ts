@@ -16,6 +16,7 @@ import NodeFeature from './node/NodeFeature'
 import OnboardFeature from './onboard/OnboardFeature'
 import OrganizationFeature from './organization/OrganizationFeature'
 import PersonFeature from './person/PersonFeature'
+import SandboxFeature from './sandbox/SandboxFeature'
 import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
 import TestFeature from './test/TestFeature'
@@ -37,6 +38,7 @@ export default class FeatureInstallerFactory {
 		ConversationFeature,
 		EventContractFeature,
 		DeployFeature,
+		SandboxFeature,
 	]
 
 	public static readonly featureCodes: FeatureCode[] = [
@@ -54,6 +56,7 @@ export default class FeatureInstallerFactory {
 		'conversation',
 		'eventContract',
 		'deploy',
+		'sandbox',
 	]
 
 	public static WithAllFeatures(options: {

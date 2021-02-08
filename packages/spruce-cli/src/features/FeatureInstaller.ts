@@ -211,7 +211,7 @@ export default class FeatureInstaller implements ServiceProvider {
 					options: installOptions,
 				} as InstallFeature
 
-				didUpdateHandler?.(`Installing ${installFeature.code}...`)
+				didUpdateHandler?.(`Installing the ${installFeature.code} feature....`)
 
 				const installResults = await this.installFeature(
 					installFeature,
@@ -280,6 +280,16 @@ export default class FeatureInstaller implements ServiceProvider {
 		feature: AbstractFeature,
 		didUpdateHandler?: InternalUpdateHandler
 	) {
+		return this.installPackageDependenciesForManyFeatures(
+			[feature],
+			didUpdateHandler
+		)
+	}
+
+	public async installPackageDependenciesForManyFeatures(
+		features: AbstractFeature[],
+		didUpdateHandler?: InternalUpdateHandler
+	) {
 		if (FeatureInstaller.startInstallIntertainmentHandler) {
 			FeatureInstaller.startInstallIntertainmentHandler(
 				(handler: InternalUpdateHandler) => {
@@ -288,10 +298,12 @@ export default class FeatureInstaller implements ServiceProvider {
 			)
 		}
 
-		await this.installPackageDependenciesWithoutEntertainment(
-			feature,
-			didUpdateHandler
-		)
+		for (const feature of features) {
+			await this.installPackageDependenciesWithoutEntertainment(
+				feature,
+				didUpdateHandler
+			)
+		}
 
 		if (FeatureInstaller.stopInstallIntertainmentHandler) {
 			FeatureInstaller.stopInstallIntertainmentHandler()
@@ -306,7 +318,7 @@ export default class FeatureInstaller implements ServiceProvider {
 		const devPackagesToInstall: string[] = []
 		const packagesInstalled: NpmPackage[] = []
 
-		feature.packageDependencies.forEach((pkg) => {
+		feature.packageDependencies?.forEach((pkg) => {
 			const packageName = `${pkg.name}@${pkg.version ?? 'latest'}`
 
 			packagesInstalled.push(pkg)
@@ -382,7 +394,7 @@ export default class FeatureInstaller implements ServiceProvider {
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
-	public getDefinitionForFeature(code: FeatureCode) {
+	public getOptionsForFeature(code: FeatureCode) {
 		return this.getFeature(code).optionsSchema
 	}
 
@@ -391,5 +403,22 @@ export default class FeatureInstaller implements ServiceProvider {
 		return this.sortFeatures(
 			codes.map((code) => ({ code, isRequired: true }))
 		).map((dep) => dep.code)
+	}
+
+	public async getInstalledFeatures() {
+		const installed = await Promise.all(
+			this.getAllCodes()
+				.map(async (code) => {
+					const isInstalled = await this.isInstalled(code)
+					if (isInstalled) {
+						return this.getFeature(code)
+					}
+
+					return false
+				})
+				.filter((f) => !!f)
+		)
+
+		return installed as FeatureMap[keyof FeatureMap][]
 	}
 }
