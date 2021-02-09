@@ -23,12 +23,15 @@ export default class WatchFeature extends AbstractFeature {
 		return this._isWatching
 	}
 
-	public async startWatching(options?: { delay?: number }) {
+	public async startWatching(options?: { delay?: number; sourceDir?: string }) {
 		this._isWatching = true
 
-		this.watcher = chokidar.watch(diskUtil.resolvePath(this.cwd, 'src'), {
-			ignoreInitial: true,
-		})
+		this.watcher = chokidar.watch(
+			diskUtil.resolvePath(this.cwd, options?.sourceDir ?? 'src'),
+			{
+				ignoreInitial: true,
+			}
+		)
 
 		this.watcher.on('all', async (action, path) => {
 			this.changesSinceLastChange.push({
