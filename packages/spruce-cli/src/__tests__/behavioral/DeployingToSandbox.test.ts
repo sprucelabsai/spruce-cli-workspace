@@ -27,7 +27,10 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 	protected static async afterEach() {
 		await super.afterEach()
+		await this.resetSkills()
+	}
 
+	private static async resetSkills() {
 		const skillFixture = this.SkillFixture()
 		await skillFixture.clearAllSkills()
 	}
@@ -81,6 +84,8 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	protected static async doesNotReRegisterIfNotRegisteredFirstTime() {
 		const { cli, client } = await this.installAndLoginAndSetupForSandbox()
 
+		await this.resetSkills()
+
 		const boot = await cli
 			.getFeature('skill')
 			.Action('boot')
@@ -123,10 +128,15 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 	private static async installAndLoginAndSetupForSandbox() {
 		await this.PersonFixture().loginAsDemoPerson()
+
 		const client = await this.MercuryFixture().connectToApi()
+
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
+
 		await cli.getFeature('sandbox').Action('setup').execute({})
+
 		this.Service('env').set('SANDBOX_DEMO_NUMBER', this.sandboxDemoNumber)
+
 		return { cli, client }
 	}
 
