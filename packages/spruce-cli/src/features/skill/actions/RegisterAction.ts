@@ -51,6 +51,7 @@ export default class RegisterAction extends AbstractFeatureAction<OptionsSchema>
 
 			const summaryLines = [
 				`Name: ${skill.name}`,
+				`Slug: ${skill.slug}`,
 				`ID: ${skill.id}`,
 				`API Key: ${skill.apiKey}`,
 			]

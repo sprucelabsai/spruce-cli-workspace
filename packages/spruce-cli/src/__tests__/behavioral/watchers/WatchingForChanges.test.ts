@@ -77,6 +77,7 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 
 		assert.isEqual(fireCount, 1)
 		assert.isTrue(payloadChanges.length >= changeCount)
+
 		for (const expected of expectedChanges) {
 			assert.doesInclude(payloadChanges, expected)
 		}
@@ -89,7 +90,7 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 	}
 
 	private static async startWatching(feature: WatchFeature) {
-		void feature.startWatching({ delay: 2000 })
+		void feature.startWatching({ delay: 2000, sourceDir: '.' })
 		await this.wait(500)
 	}
 

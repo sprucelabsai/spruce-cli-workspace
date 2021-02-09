@@ -7,7 +7,7 @@ import AbstractCliTest from '../../tests/AbstractCliTest'
 import testUtil from '../../tests/utilities/test.utility'
 
 export default class DeployingToSandboxTest extends AbstractCliTest {
-	private static sandboxDemoNumber = process.env.SANDBOX_DEMO_NUMBER
+	private static sandboxDemoNumber = process.env.SANDBOX_DEMO_NUMBER as string
 
 	protected static async beforeAll() {
 		await super.beforeAll()
@@ -27,7 +27,10 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 	protected static async afterEach() {
 		await super.afterEach()
+		await this.resetSkills()
+	}
 
+	private static async resetSkills() {
 		const skillFixture = this.SkillFixture()
 		await skillFixture.clearAllSkills()
 	}
@@ -52,8 +55,36 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	}
 
 	@test()
+	protected static async throwsHelpfulErrorWhenMissingParams() {
+		const { cli } = await this.installAndLoginAndSetupForSandbox()
+
+		const skill = await this.SkillFixture().registerCurrentSkill({
+			name: 'My new skill',
+		})
+
+		await this.Store('skill').unregisterSkill(skill.id)
+
+		const env = this.Service('env')
+
+		env.unset('SKILL_NAME')
+		env.unset('SKILL_SLUG')
+
+		const err = await assert.doesThrowAsync(() =>
+			cli.getFeature('skill').Action('boot').execute({ local: true })
+		)
+
+		assert.isEqual(
+			//@ts-ignore
+			err.options.responseErrors[0].options.code,
+			'INVALID_SKILL_ID_OR_KEY'
+		)
+	}
+
+	@test()
 	protected static async doesNotReRegisterIfNotRegisteredFirstTime() {
-		const { cli, client } = await this.setup()
+		const { cli, client } = await this.installAndLoginAndSetupForSandbox()
+
+		await this.resetSkills()
 
 		const boot = await cli
 			.getFeature('skill')
@@ -75,7 +106,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 	@test()
 	protected static async skipsAlreadyRegisteredSkill() {
-		const { cli, client } = await this.setup()
+		const { cli, client } = await this.installAndLoginAndSetupForSandbox()
 
 		const registered = await this.SkillFixture().registerCurrentSkill({
 			name: 'My new skill',
@@ -89,19 +120,22 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 		boot.meta?.kill()
 
 		const skills = await this.fetchSkills(client)
+
 		assert.isLength(skills, 1)
 		assert.isTruthy(skills[0])
 		assert.isEqual(skills[0].id, registered.id)
 	}
 
-	private static async setup() {
+	private static async installAndLoginAndSetupForSandbox() {
 		await this.PersonFixture().loginAsDemoPerson()
+
 		const client = await this.MercuryFixture().connectToApi()
 
-		await this.fetchSkills(client)
-
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
+
 		await cli.getFeature('sandbox').Action('setup').execute({})
+
+		this.Service('env').set('SANDBOX_DEMO_NUMBER', this.sandboxDemoNumber)
 
 		return { cli, client }
 	}

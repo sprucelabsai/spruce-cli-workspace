@@ -1,4 +1,5 @@
 import pathUtil from 'path'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import chokidar from 'chokidar'
 import { GeneratedFile, GeneratedFileOrDir } from '../../types/cli.types'
 import AbstractFeature from '../AbstractFeature'
@@ -22,10 +23,15 @@ export default class WatchFeature extends AbstractFeature {
 		return this._isWatching
 	}
 
-	public async startWatching(options?: { delay?: number }) {
+	public async startWatching(options?: { delay?: number; sourceDir?: string }) {
 		this._isWatching = true
 
-		this.watcher = chokidar.watch(this.cwd, { ignoreInitial: true })
+		this.watcher = chokidar.watch(
+			diskUtil.resolvePath(this.cwd, options?.sourceDir ?? 'src'),
+			{
+				ignoreInitial: true,
+			}
+		)
 
 		this.watcher.on('all', async (action, path) => {
 			this.changesSinceLastChange.push({

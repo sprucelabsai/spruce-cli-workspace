@@ -1,63 +1,84 @@
+import { EventFeature } from '@sprucelabs/spruce-event-plugin'
 import {
 	SpruceEvent,
 	SpruceEventResponse,
-	eventResponseUtil
-} from "@sprucelabs/spruce-event-utils";
-import {EventFeature} from '@sprucelabs/spruce-event-plugin'
+	eventResponseUtil,
+} from '@sprucelabs/spruce-event-utils'
+import SpruceError from '../../errors/SpruceError'
 
 export default async (event: SpruceEvent): SpruceEventResponse => {
-
 	const sandboxNumber = process.env.SANDBOX_DEMO_NUMBER
 
 	if (sandboxNumber) {
-		const log = event.log.buildLog("Sandbox");
+		const log = event.log.buildLog('Sandbox')
 
-		log.info("Demo sandbox number detected. Checking skill status.");
+		log.info('Demo sandbox number detected. Checking skill status.')
 
-		const events = event.skill.getFeatureByCode("event") as EventFeature;
-		const skill = await events.getCurrentSkill();
+		const events = event.skill.getFeatureByCode('event') as EventFeature
+		const skill = await events.getCurrentSkill()
 
 		if (!skill) {
-			log.info("This skill was never registered so I'm stepping away.");
-			return;
+			log.info("This skill was never registered so I'm stepping away.")
+			return
 		}
 
 		if (skill) {
 			try {
-				await events.connectToApi();
+				await events.connectToApi()
 				return
+				// eslint-disable-next-line no-empty
 			} catch {}
+
+			const name = process.env.SKILL_NAME
+			const slug = process.env.SKILL_SLUG
+			
+			assertRequiredParams(name, slug)
 
 			delete process.env.SKILL_ID
 			delete process.env.SKILL_API_KEY
-			
-			const name = process.env.SKILL_NAME
 
 			const client = await events.connectToApi()
 
 			await client.emit('request-pin::v2020_12_25')
 			await client.emit('confirm-pin::v2020_12_25', {
 				payload: {
-					pin: sandboxNumber.substr(-4)
-				}
+					pin: sandboxNumber.substr(-4),
+				},
 			})
 
 			const results = await client.emit('register-skill::v2020_12_25', {
 				payload: {
-					name: name,
+					name,
 					description: 'Auto-generate for sandbox',
-					slug: `auto-generated-${new Date().getTime()}`
-				}
+					slug: `auto-generated-${new Date().getTime()}`,
+				},
 			})
 
-			const {skill} = eventResponseUtil.getFirstResponseOrThrow(results)
+			const { skill } = eventResponseUtil.getFirstResponseOrThrow(results)
 
 			process.env.SKILL_ID = skill.id
 			process.env.SKILL_API_KEY = skill.apiKey
-
 		}
-
 	}
-	
+
 	return
-};
+}
+
+function assertRequiredParams(
+	name: string | undefined,
+	slug: string | undefined
+) {
+	const missing: string[] = []
+
+	if (!name) {
+		missing.push('env.SKILL_NAME')
+	}
+
+	if (!slug) {
+		missing.push('env.SKILL_SLUG')
+	}
+
+	if (missing.length > 0) {
+		throw new SpruceError({ code: 'MISSING_PARAMETERS', parameters: missing })
+	}
+}
