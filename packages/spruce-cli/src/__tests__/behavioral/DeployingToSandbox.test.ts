@@ -24,8 +24,6 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 		const personFixture = this.PersonFixture()
 		await personFixture.loginAsDemoPerson(this.sandboxDemoNumber)
-
-		this.Service('env').set('SANDBOX_DEMO_NUMBER', this.sandboxDemoNumber)
 	}
 
 	protected static async afterEach() {
@@ -54,13 +52,15 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 		)
 	}
 
-	@test.only()
+	@test()
 	protected static async throwsHelpfulErrorWhenMissingParams() {
-		const { cli } = await this.setup()
+		const { cli } = await this.installAndLoginAndSetupForSandbox()
 
-		await this.SkillFixture().registerCurrentSkill({
+		const skill = await this.SkillFixture().registerCurrentSkill({
 			name: 'My new skill',
 		})
+
+		await this.Store('skill').unregisterSkill(skill.id)
 
 		const env = this.Service('env')
 
@@ -78,7 +78,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 	@test()
 	protected static async doesNotReRegisterIfNotRegisteredFirstTime() {
-		const { cli, client } = await this.setup()
+		const { cli, client } = await this.installAndLoginAndSetupForSandbox()
 
 		const boot = await cli
 			.getFeature('skill')
@@ -100,7 +100,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 	@test()
 	protected static async skipsAlreadyRegisteredSkill() {
-		const { cli, client } = await this.setup()
+		const { cli, client } = await this.installAndLoginAndSetupForSandbox()
 
 		const registered = await this.SkillFixture().registerCurrentSkill({
 			name: 'My new skill',
@@ -120,15 +120,12 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 		assert.isEqual(skills[0].id, registered.id)
 	}
 
-	private static async setup() {
+	private static async installAndLoginAndSetupForSandbox() {
 		await this.PersonFixture().loginAsDemoPerson()
 		const client = await this.MercuryFixture().connectToApi()
-
-		await this.fetchSkills(client)
-
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 		await cli.getFeature('sandbox').Action('setup').execute({})
-
+		this.Service('env').set('SANDBOX_DEMO_NUMBER', this.sandboxDemoNumber)
 		return { cli, client }
 	}
 

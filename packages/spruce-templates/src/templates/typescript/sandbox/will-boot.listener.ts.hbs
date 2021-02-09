@@ -31,7 +31,7 @@ export default async (event: SpruceEvent): SpruceEventResponse => {
 
 			const name = process.env.SKILL_NAME
 			const slug = process.env.SKILL_SLUG
-
+			
 			assertRequiredParams(name, slug)
 
 			delete process.env.SKILL_ID

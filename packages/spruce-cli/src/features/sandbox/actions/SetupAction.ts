@@ -28,7 +28,6 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 		)
 
 		if (!match) {
-			debugger
 			throw new Error('file was not generated')
 		}
 
