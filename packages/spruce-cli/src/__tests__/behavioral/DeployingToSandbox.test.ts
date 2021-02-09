@@ -71,6 +71,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 		)
 
 		assert.isEqual(
+			//@ts-ignore
 			err.options.responseErrors[0].options.code,
 			'INVALID_SKILL_ID_OR_KEY'
 		)
