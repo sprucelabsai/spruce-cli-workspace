@@ -29,6 +29,7 @@ type Options = SchemaValues<OptionsSchema>
 export default class RegisterAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'register'
 	public optionsSchema: OptionsSchema = optionsSchema
+	public commandAliases = ['register.skill', 'register']
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const {
