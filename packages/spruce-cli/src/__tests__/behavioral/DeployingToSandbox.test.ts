@@ -1,11 +1,7 @@
 import { MercuryClient } from '@sprucelabs/mercury-client'
-import {
-	eventErrorAssertUtil,
-	eventResponseUtil,
-} from '@sprucelabs/spruce-event-utils'
+import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
 import { EventContracts } from '#spruce/events/events.contract'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 import testUtil from '../../tests/utilities/test.utility'
@@ -74,7 +70,10 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 			cli.getFeature('skill').Action('boot').execute({ local: true })
 		)
 
-		eventErrorAssertUtil.assertError(err, 'INVALID_SKILL_ID_OR_KEY')
+		assert.isEqual(
+			err.options.responseErrors[0].options.code,
+			'INVALID_SKILL_ID_OR_KEY'
+		)
 	}
 
 	@test()
