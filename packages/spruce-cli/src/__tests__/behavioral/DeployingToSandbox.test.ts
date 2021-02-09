@@ -2,12 +2,13 @@ import { MercuryClient } from '@sprucelabs/mercury-client'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import { EventContracts } from '#spruce/events/events.contract'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 import testUtil from '../../tests/utilities/test.utility'
 
 export default class DeployingToSandboxTest extends AbstractCliTest {
-	private static sandboxDemoNumber = process.env.SANDBOX_DEMO_NUMBER
+	private static sandboxDemoNumber = process.env.SANDBOX_DEMO_NUMBER as string
 
 	protected static async beforeAll() {
 		await super.beforeAll()
@@ -23,6 +24,8 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 		const personFixture = this.PersonFixture()
 		await personFixture.loginAsDemoPerson(this.sandboxDemoNumber)
+
+		this.Service('env').set('SANDBOX_DEMO_NUMBER', this.sandboxDemoNumber)
 	}
 
 	protected static async afterEach() {
@@ -49,6 +52,28 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 			`will-boot.${version}.listener.ts`,
 			results.files
 		)
+	}
+
+	@test.only()
+	protected static async throwsHelpfulErrorWhenMissingParams() {
+		const { cli } = await this.setup()
+
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'My new skill',
+		})
+
+		const env = this.Service('env')
+
+		env.unset('SKILL_NAME')
+		env.unset('SKILL_SLUG')
+
+		const err = await assert.doesThrowAsync(() =>
+			cli.getFeature('skill').Action('boot').execute({ local: true })
+		)
+
+		errorAssertUtil.assertError(err, 'MISSING_PARAMETERS', {
+			parameters: ['env.SKILL_NAME', 'env.SKILL_SLUG'],
+		})
 	}
 
 	@test()
@@ -89,6 +114,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 		boot.meta?.kill()
 
 		const skills = await this.fetchSkills(client)
+
 		assert.isLength(skills, 1)
 		assert.isTruthy(skills[0])
 		assert.isEqual(skills[0].id, registered.id)

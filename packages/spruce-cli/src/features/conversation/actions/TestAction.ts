@@ -21,7 +21,7 @@ type Options = SchemaValues<OptionsSchema>
 export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'test'
 	public optionsSchema = optionsSchema
-	public commandAliases = ['test.conversation']
+	public commandAliases = ['test.conversation', 'chat']
 	private killHandler?: () => void
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
@@ -44,21 +44,21 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 							: {
 									stdio: [process.stdin, 'pipe', 'pipe'],
 							  },
-						onData: (data) => {
-							if (!shouldRunSilently) {
-								if (!isWriting) {
-									isWriting = data.search('first message') > -1
-									if (isWriting) {
-										this.ui.clear()
-										this.ui.stopLoading()
-										this.ui.renderHero('Lets chat!')
+						onData: shouldRunSilently
+							? undefined
+							: (data) => {
+									if (!isWriting) {
+										isWriting = data.search('first message') > -1
+										if (isWriting) {
+											this.ui.clear()
+											this.ui.stopLoading()
+											this.ui.renderHero('Lets chat!')
+										}
 									}
-								}
-								if (isWriting) {
-									process.stdout?.write(data)
-								}
-							}
-						},
+									if (isWriting) {
+										process.stdout?.write(data)
+									}
+							  },
 						env: {
 							ACTION: 'test.conversation',
 						},

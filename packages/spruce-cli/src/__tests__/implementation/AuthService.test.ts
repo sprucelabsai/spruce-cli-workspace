@@ -75,7 +75,12 @@ export default class AuthServiceTest extends AbstractCliTest {
 
 	@test()
 	protected static canSetCurrentSkill() {
-		const skill = { id: '123467aaoeuaoeu', apiKey: 'taco', name: 'go team' }
+		const skill = {
+			id: '123467aaoeuaoeu',
+			apiKey: 'taco',
+			name: 'go team',
+			slug: 'taco-bravo',
+		}
 
 		this.auth.updateCurrentSkill(skill)
 

@@ -9,7 +9,10 @@ interface SkillAuth {
 	id: string
 	apiKey: string
 	name: string
+	slug: string
 }
+
+const LOGGED_IN_PERSON_KEY = 'LOGGED_IN_PERSON'
 
 export default class AuthService {
 	private env: EnvService
@@ -19,7 +22,7 @@ export default class AuthService {
 	}
 
 	public getLoggedInPerson(): PersonWithToken | null {
-		const p = this.env.get('loggedInPerson')
+		const p = this.env.get(LOGGED_IN_PERSON_KEY)
 		if (typeof p === 'string') {
 			return JSON.parse(p)
 		}
@@ -32,7 +35,7 @@ export default class AuthService {
 		validateSchemaValues(personWithTokenSchema, normalized)
 
 		this.env.set(
-			'loggedInPerson',
+			LOGGED_IN_PERSON_KEY,
 			JSON.stringify({
 				...normalized,
 				isLoggedIn: true,
@@ -41,19 +44,21 @@ export default class AuthService {
 	}
 
 	public logOutPerson() {
-		this.env.unset('loggedInPerson')
+		this.env.unset(LOGGED_IN_PERSON_KEY)
 	}
 
 	public getCurrentSkill(): SkillAuth | null {
 		const id = this.env.get('SKILL_ID') as string
 		const apiKey = this.env.get('SKILL_API_KEY') as string
 		const name = this.env.get('SKILL_NAME') as string
+		const slug = this.env.get('SKILL_SLUG') as string
 
 		if (id && apiKey) {
 			return {
 				id,
 				apiKey,
 				name,
+				slug,
 			}
 		}
 
@@ -64,5 +69,6 @@ export default class AuthService {
 		this.env.set('SKILL_ID', skill.id)
 		this.env.set('SKILL_API_KEY', skill.apiKey)
 		this.env.set('SKILL_NAME', skill.name)
+		this.env.set('SKILL_SLUG', skill.slug)
 	}
 }

@@ -58,5 +58,6 @@ export default class RegisteringASkillTest extends AbstractCliTest {
 
 		assert.isTruthy(currentSkill)
 		assert.isEqual(currentSkill.name, 'my new skill')
+		assert.isEqual(currentSkill.slug, slug)
 	}
 }
