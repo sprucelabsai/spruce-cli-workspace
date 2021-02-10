@@ -65,7 +65,7 @@ export default class SkillFeature<
 		'health.local': 'yarn boot.local --health',
 		build: 'yarn build.babel && yarn build.types.resolve-paths.lint',
 		'build.types':
-			'tsc --emitDeclarationOnly && echo PASS TYPES || echo FAIL TYPES',
+			'tsc --emitDeclarationOnly && echo PASS TYPES || (echo FAIL TYPES && false)',
 		'build.babel':
 			"babel src --out-dir build --extensions '.ts, .tsx' --source-maps --copy-files",
 		'build.resolve-paths':
