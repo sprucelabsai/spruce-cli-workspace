@@ -45,7 +45,7 @@ export default class PullAction extends AbstractFeatureAction<PullOptionsSchema>
 					name: filename,
 					path: destination,
 					action,
-					description: 'All your Mercury Core Events ready for production use!',
+					description: 'All your Mercury core events ready for testing!',
 				},
 			],
 		}
