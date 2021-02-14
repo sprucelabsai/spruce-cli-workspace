@@ -324,7 +324,6 @@ export default class SchemaStore extends AbstractStore {
 	}): Promise<FetchFieldsResults> {
 		const { localAddonsDir } = options || {}
 
-		// TODO load from mercury-api when live
 		const coreAddons = fieldRegistrations.map((registration) => {
 			return {
 				registration,

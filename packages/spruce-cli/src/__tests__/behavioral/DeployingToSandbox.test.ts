@@ -58,7 +58,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 	@test()
 	protected static async throwsHelpfulErrorWhenMissingParams() {
-		const { cli } = await this.installAndLoginAndSetupForSandbox()
+		const { cli } = await this.installAndSetupForSandbox()
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'My new skill',
@@ -82,7 +82,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 	@test()
 	protected static async doesNotReRegisterIfNotRegisteredFirstTime() {
-		const { cli, client } = await this.installAndLoginAndSetupForSandbox()
+		const { cli, client } = await this.installAndSetupForSandbox()
 
 		const boot = await cli
 			.getFeature('skill')
@@ -104,7 +104,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 	@test()
 	protected static async skipsAlreadyRegisteredSkill() {
-		const { cli, client } = await this.installAndLoginAndSetupForSandbox()
+		const { cli, client } = await this.installAndSetupForSandbox()
 
 		const registered = await this.SkillFixture().registerCurrentSkill({
 			name: 'My new skill',
@@ -126,13 +126,13 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 	@test()
 	protected static async registersSkillAgain() {
-		const { cli, client } = await this.installAndLoginAndSetupForSandbox()
+		const { cli, client } = await this.installAndSetupForSandbox()
 
 		const skill = await this.SkillFixture().registerCurrentSkill({
 			name: 'My new skill',
 		})
 
-		await this.SkillFixture().clearAllSkills()
+		await this.resetSkills()
 
 		const boot = await cli
 			.getFeature('skill')
@@ -149,7 +149,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 		assert.isNotEqual(skills[0].id, skill.id)
 	}
 
-	private static async installAndLoginAndSetupForSandbox() {
+	private static async installAndSetupForSandbox() {
 		const client = await this.MercuryFixture().connectToApi()
 
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
