@@ -15,50 +15,56 @@ export default async (event: SpruceEvent): SpruceEventResponse => {
 		log.info('Demo sandbox number detected. Checking skill status.')
 
 		const events = event.skill.getFeatureByCode('event') as EventFeature
-		const skill = await events.getCurrentSkill()
 
-		if (!skill) {
-			log.info("This skill was never registered so I'm stepping away.")
+		try {
+			await events.connectToApi({ shouldWaitForWillBoot: false })
 			return
-		}
+			// eslint-disable-next-line no-empty
+		} catch {}
 
-		if (skill) {
-			try {
-				await events.connectToApi()
-				return
-				// eslint-disable-next-line no-empty
-			} catch {}
+		log.warn('It looks like sandbox was reset. Re-registering.')
 
-			const name = process.env.SKILL_NAME
-			const slug = process.env.SKILL_SLUG
-			
-			assertRequiredParams(name, slug)
+		const name = process.env.SKILL_NAME
+		const slug = process.env.SKILL_SLUG
 
-			delete process.env.SKILL_ID
-			delete process.env.SKILL_API_KEY
+		assertRequiredParams(name, slug)
 
-			const client = await events.connectToApi()
+		delete process.env.SKILL_ID
+		delete process.env.SKILL_API_KEY
 
-			await client.emit('request-pin::v2020_12_25')
-			await client.emit('confirm-pin::v2020_12_25', {
-				payload: {
-					pin: sandboxNumber.substr(-4),
-				},
-			})
+		const client = await events.connectToApi({ shouldWaitForWillBoot: false })
 
-			const results = await client.emit('register-skill::v2020_12_25', {
-				payload: {
-					name,
-					description: 'Auto-generate for sandbox',
-					slug: `auto-generated-${new Date().getTime()}`,
-				},
-			})
+		const requestResults = await client.emit('request-pin::v2020_12_25', {
+			payload: {
+				phone: sandboxNumber,
+			},
+		})
 
-			const { skill } = eventResponseUtil.getFirstResponseOrThrow(results)
+		const { challenge } = eventResponseUtil.getFirstResponseOrThrow(
+			requestResults
+		)
 
-			process.env.SKILL_ID = skill.id
-			process.env.SKILL_API_KEY = skill.apiKey
-		}
+		const confirmResults = await client.emit('confirm-pin::v2020_12_25', {
+			payload: {
+				challenge,
+				pin: sandboxNumber.substr(-4),
+			},
+		})
+
+		eventResponseUtil.getFirstResponseOrThrow(confirmResults)
+
+		const results = await client.emit('register-skill::v2020_12_25', {
+			payload: {
+				name,
+				description: 'Auto-generate for sandbox',
+				slug: slug,
+			},
+		})
+
+		const { skill } = eventResponseUtil.getFirstResponseOrThrow(results)
+
+		process.env.SKILL_ID = skill.id
+		process.env.SKILL_API_KEY = skill.apiKey
 	}
 
 	return

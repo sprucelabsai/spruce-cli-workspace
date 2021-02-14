@@ -183,11 +183,13 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				break
 
 			case 'DEPLOY_FAILED':
-				message = 'A Deploy Failed just happened!'
+				message = 'Deploy halted!'
 				break
 
 			case 'MISSING_DEPENDENCIES':
-				message = 'A Missing dependencies just happened!'
+				message = `Looks like you're missing some dependencies:\n\n${options.dependencies
+					.map((d) => `${d.name}: ${d.hint}`)
+					.join('\n')}`
 				break
 
 			default:

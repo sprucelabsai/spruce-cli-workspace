@@ -2,7 +2,9 @@ import { MercuryClient } from '@sprucelabs/mercury-client'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import { EventContracts } from '#spruce/events/events.contract'
+import { DUMMY_PHONE } from '../../fixtures/PersonFixture'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 import testUtil from '../../tests/utilities/test.utility'
 
@@ -73,11 +75,9 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 			cli.getFeature('skill').Action('boot').execute({ local: true })
 		)
 
-		assert.isEqual(
-			//@ts-ignore
-			err.options.responseErrors[0].options.code,
-			'INVALID_SKILL_ID_OR_KEY'
-		)
+		errorAssertUtil.assertError(err, 'MISSING_PARAMETERS', {
+			parameters: ['env.SKILL_NAME', 'env.SKILL_SLUG'],
+		})
 	}
 
 	@test()
@@ -126,6 +126,31 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 		assert.isEqual(skills[0].id, registered.id)
 	}
 
+	@test.only()
+	protected static async registersSkillAgain() {
+		const { cli, client } = await this.installAndLoginAndSetupForSandbox()
+
+		const skill = await this.SkillFixture().registerCurrentSkill({
+			name: 'My new skill',
+		})
+
+		await this.SkillFixture().clearAllSkills()
+
+		const boot = await cli
+			.getFeature('skill')
+			.Action('boot')
+			.execute({ local: true })
+
+		boot.meta?.kill()
+
+		const skills = await this.fetchSkills(client)
+
+		assert.isLength(skills, 1)
+		assert.isTruthy(skills[0])
+		assert.isEqual(skills[0].slug, skill.slug)
+		assert.isNotEqual(skills[0].id, skill.id)
+	}
+
 	private static async installAndLoginAndSetupForSandbox() {
 		await this.PersonFixture().loginAsDemoPerson()
 
@@ -135,7 +160,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 		await cli.getFeature('sandbox').Action('setup').execute({})
 
-		this.Service('env').set('SANDBOX_DEMO_NUMBER', this.sandboxDemoNumber)
+		this.Service('env').set('SANDBOX_DEMO_NUMBER', DUMMY_PHONE)
 
 		return { cli, client }
 	}

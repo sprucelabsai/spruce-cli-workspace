@@ -4,6 +4,7 @@ import DeployWriter from '../features/deploy/writers/DeployWriter'
 import ErrorWriter from '../features/error/writers/ErrorWriter'
 import EventWriter from '../features/event/writers/EventWriter'
 import NodeWriter from '../features/node/writers/NodeWriter'
+import SandboxWriter from '../features/sandbox/writers/SandboxWriter'
 import SchemaWriter from '../features/schema/writers/SchemaWriter'
 import SkillGenerator from '../features/skill/writers/SkillWriter'
 import TestGenerator from '../features/test/writers/TestWriter'
@@ -23,6 +24,7 @@ const classMap = {
 	vscode: VsCodeWriter,
 	conversation: ConversationWriter,
 	deploy: DeployWriter,
+	sandbox: SandboxWriter,
 }
 
 export interface WriterMap {
@@ -35,6 +37,7 @@ export interface WriterMap {
 	vscode: VsCodeWriter
 	conversation: ConversationWriter
 	deploy: DeployWriter
+	sandbox: SandboxWriter
 }
 
 export type WriterCode = keyof WriterMap

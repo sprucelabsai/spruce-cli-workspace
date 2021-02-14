@@ -11,6 +11,10 @@ export default buildErrorSchema({
 			options: {
 				choices: [
 					{
+						label: 'Skill',
+						value: 'skill',
+					},
+					{
 						label: 'Building',
 						value: 'building',
 					},

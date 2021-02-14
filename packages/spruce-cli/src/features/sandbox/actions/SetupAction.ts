@@ -1,5 +1,4 @@
 import { buildSchema } from '@sprucelabs/schema'
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import setupVscodeSchema from '#spruce/schemas/spruceCli/v2020_07_22/setupVscodeOptions.schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
@@ -23,6 +22,10 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 			eventName: 'will-boot',
 		})
 
+		if (results.errors) {
+			return results
+		}
+
 		const match = (results.files ?? []).find(
 			(file) => file.name.search('will-boot') === 0
 		)
@@ -31,9 +34,7 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 			throw new Error('file was not generated')
 		}
 
-		const newContents = this.templates.sandboxWillBootListener()
-
-		diskUtil.writeFile(match.path, newContents)
+		await this.Writer('sandbox').writeDidBootListener(match.path)
 
 		return results
 	}

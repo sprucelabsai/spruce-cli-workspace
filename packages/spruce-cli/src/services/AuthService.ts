@@ -5,7 +5,7 @@ import EnvService from './EnvService'
 
 type PersonWithToken = SpruceSchemas.SpruceCli.v2020_07_22.PersonWithToken
 
-interface SkillAuth {
+export interface SkillAuth {
 	id: string
 	apiKey: string
 	name: string

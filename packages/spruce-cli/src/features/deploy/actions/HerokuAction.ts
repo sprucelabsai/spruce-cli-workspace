@@ -1,6 +1,7 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../../../errors/SpruceError'
+import { SkillAuth } from '../../../services/AuthService'
 import mergeUtil from '../../../utilities/merge.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
@@ -42,13 +43,16 @@ export default class DeployAction extends AbstractFeatureAction<OptionsSchema> {
 		let results: FeatureActionResponse = {}
 
 		try {
+			await this.assertRegisteredSkill()
 			await this.assertDependencies()
 			await this.assertLoggedInToHeroku()
 			await this.setupGitRepo()
-			await this.assertNoPendingGitChanges()
 			await this.setupGitRemote()
+
 			const procResults = await this.setupProcFile()
 			results = mergeUtil.mergeActionResults(results, procResults)
+
+			await this.assertNoPendingGitChanges()
 		} catch (err) {
 			return {
 				errors: [err],
@@ -80,7 +84,30 @@ export default class DeployAction extends AbstractFeatureAction<OptionsSchema> {
 
 		this.ui.clear()
 
+		const skill = this.Service('auth').getCurrentSkill() as SkillAuth
+
+		results.summaryLines = [
+			`You are good to go!`,
+			"You gotta make sure that your ENV's are set on Heroku to the following:\n",
+			`SKILL_NAME=${skill.name}`,
+			`SKILL_SLUG=${skill.slug}`,
+			`SKILL_ID=${skill.id}`,
+			`SKILL_API_KEY=${skill.apiKey}`,
+		]
+
 		return results
+	}
+
+	private assertRegisteredSkill() {
+		const skill = this.Service('auth').getCurrentSkill()
+		if (!skill) {
+			throw new SpruceError({
+				code: 'DEPLOY_FAILED',
+				stage: 'skill',
+				friendlyMessage:
+					'You have to register your skill. Try `spruce login && spruce register` to get going!',
+			})
+		}
 	}
 
 	private async deploy() {
@@ -92,14 +119,15 @@ export default class DeployAction extends AbstractFeatureAction<OptionsSchema> {
 	private async assertNoPendingGitChanges() {
 		const results = await this.Service('command').execute('git status')
 
-		const failed = (results.stdout ?? '').search('not staged') > -1
+		const failed =
+			(results.stdout ?? '').toLowerCase().search('not staged') > -1 ||
+			(results.stdout ?? '').toLowerCase().search('no commits') > -1
 
 		if (failed) {
 			throw new SpruceError({
 				code: 'DEPLOY_FAILED',
 				stage: 'git',
-				friendlyMessage:
-					'You have pending changes. Commit them before deploying!',
+				friendlyMessage: 'You have pending changes. Commit them and try again!',
 			})
 		}
 	}
@@ -183,7 +211,7 @@ export default class DeployAction extends AbstractFeatureAction<OptionsSchema> {
 				})
 			}
 
-			diskUtil.writeFile(procFile, 'web: npm run boot')
+			diskUtil.writeFile(procFile, 'worker: npm run boot')
 			results.files?.push({
 				name: 'Procfile',
 				action: 'generated',
@@ -280,7 +308,10 @@ export default class DeployAction extends AbstractFeatureAction<OptionsSchema> {
 
 				const testResults = await this.getFeature('test')
 					.Action('test')
-					.execute({})
+					.execute({
+						watchMode: 'off',
+						shouldReportWhileRunning: false,
+					})
 
 				results = mergeUtil.mergeActionResults(results, testResults)
 			} catch (err) {

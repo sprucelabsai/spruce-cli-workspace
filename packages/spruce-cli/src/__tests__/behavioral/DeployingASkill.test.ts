@@ -62,8 +62,32 @@ export default class DeployingASkillTest extends AbstractCliTest {
 	}
 
 	@test()
+	protected static async deployHaltedBecauseNotRegistered() {
+		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+
+		diskUtil.writeFile(this.resolvePath('src/index.ts'), 'aoeustahoesuntao')
+
+		const results = await cli
+			.getFeature('deploy')
+			.Action('heroku')
+			.execute({
+				teamName: process.env.HEROKU_TEAM_NAME ?? '',
+			})
+
+		assert.isTruthy(results.errors)
+		assert.isArray(results.errors)
+		errorAssertUtil.assertError(results.errors[0], 'DEPLOY_FAILED', {
+			stage: 'skill',
+		})
+	}
+
+	@test()
 	protected static async deployHaltedWithBadBuild() {
 		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'haulted wth bad build',
+		})
 
 		diskUtil.writeFile(this.resolvePath('src/index.ts'), 'aoeustahoesuntao')
 
@@ -98,6 +122,11 @@ export default class DeployingASkillTest extends AbstractCliTest {
 		const cli = await this.FeatureFixture().installCachedFeatures(
 			'deployWithTests'
 		)
+
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'haulted wth bad test',
+		})
+
 		await cli.getFeature('test').Action('create').execute({
 			nameReadable: 'Test failed',
 			nameCamel: 'testFailed',
@@ -112,9 +141,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		assert.isTruthy(results.errors)
 		assert.isArray(results.errors)
-		errorAssertUtil.assertError(results.errors[0], 'DEPLOY_FAILED', {
-			stage: 'testing',
-		})
+		errorAssertUtil.assertError(results.errors[0], 'TEST_FAILED')
 	}
 
 	@test()
@@ -124,6 +151,11 @@ export default class DeployingASkillTest extends AbstractCliTest {
 		})
 
 		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'heroku not installed',
+		})
+
 		const results = await cli
 			.getFeature('deploy')
 			.Action('heroku')
@@ -143,6 +175,11 @@ export default class DeployingASkillTest extends AbstractCliTest {
 		})
 
 		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'git not installed',
+		})
+
 		const results = await cli
 			.getFeature('deploy')
 			.Action('heroku')
@@ -164,6 +201,11 @@ export default class DeployingASkillTest extends AbstractCliTest {
 		})
 
 		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'not in git repo',
+		})
+
 		const promise = cli
 			.getFeature('deploy')
 			.Action('heroku')
@@ -188,6 +230,11 @@ export default class DeployingASkillTest extends AbstractCliTest {
 		})
 
 		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'creates git repo',
+		})
+
 		const promise = cli
 			.getFeature('deploy')
 			.Action('heroku')
@@ -213,6 +260,11 @@ export default class DeployingASkillTest extends AbstractCliTest {
 		})
 
 		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'not logged into heroku',
+		})
+
 		const results = await cli
 			.getFeature('deploy')
 			.Action('heroku')
@@ -229,6 +281,11 @@ export default class DeployingASkillTest extends AbstractCliTest {
 	protected static async failsWhenDeclineToCreateProcFile() {
 		diskUtil.deleteFile(this.resolvePath('Procfile'))
 		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'decline proc file',
+		})
+
 		const promise = cli
 			.getFeature('deploy')
 			.Action('heroku')
@@ -254,6 +311,11 @@ export default class DeployingASkillTest extends AbstractCliTest {
 	protected static async createsValidProcFile() {
 		diskUtil.deleteFile(this.resolvePath('Procfile'))
 		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'valid proc file',
+		})
+
 		const promise = cli
 			.getFeature('deploy')
 			.Action('heroku')
@@ -274,7 +336,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		const contents = diskUtil.readFile(match)
 
-		assert.isEqual(contents, 'web: npm run boot')
+		assert.isEqual(contents, 'worker: npm run boot')
 	}
 
 	@test()
@@ -284,6 +346,11 @@ export default class DeployingASkillTest extends AbstractCliTest {
 		})
 
 		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'decline to create remote branch',
+		})
+
 		const promise = cli
 			.getFeature('deploy')
 			.Action('heroku')
@@ -312,6 +379,11 @@ export default class DeployingASkillTest extends AbstractCliTest {
 		})
 
 		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'ask for app name',
+		})
+
 		const promise = cli
 			.getFeature('deploy')
 			.Action('heroku')
@@ -343,6 +415,11 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			code: 128,
 		})
 		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'haulted wth bad build',
+		})
+
 		const promise = cli
 			.getFeature('deploy')
 			.Action('heroku')
@@ -383,6 +460,11 @@ export default class DeployingASkillTest extends AbstractCliTest {
 		})
 
 		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'pending changes to commit',
+		})
+
 		const results = await cli
 			.getFeature('deploy')
 			.Action('heroku')
@@ -398,6 +480,11 @@ export default class DeployingASkillTest extends AbstractCliTest {
 	@test()
 	protected static async canDeploySkill() {
 		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'can deploy',
+		})
+
 		const results = await cli
 			.getFeature('deploy')
 			.Action('heroku')
