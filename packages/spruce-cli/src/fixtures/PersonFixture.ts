@@ -21,7 +21,7 @@ export default class PersonFixture {
 			return client
 		}
 
-		phone = DEMO_PHONE
+		phone = phone || DEMO_PHONE
 
 		if (!phone) {
 			throw new SpruceError({
