@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
-import { DUMMY_PHONE } from '../../../fixtures/PersonFixture'
+import { DEMO_PHONE } from '../../../fixtures/PersonFixture'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 
 export default class LoggingInAsPersonTest extends AbstractCliTest {
@@ -14,7 +14,7 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 		const cli = await this.FeatureFixture().installCachedFeatures('skills')
 
 		void cli.getFeature('person').Action('login').execute({
-			phone: DUMMY_PHONE,
+			phone: DEMO_PHONE,
 		})
 
 		await this.waitForInput()
@@ -34,7 +34,7 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 		const cli = await this.FeatureFixture().installCachedFeatures('skills')
 
 		void cli.getFeature('person').Action('login').execute({
-			phone: DUMMY_PHONE,
+			phone: DEMO_PHONE,
 		})
 
 		await this.waitForInput()
@@ -64,11 +64,11 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 		const cli = await this.FeatureFixture().installCachedFeatures('skills')
 
 		const promise = cli.getFeature('person').Action('login').execute({
-			phone: DUMMY_PHONE,
+			phone: DEMO_PHONE,
 		})
 
 		await this.waitForInput()
-		await this.ui.sendInput(DUMMY_PHONE.substr(-4))
+		await this.ui.sendInput(DEMO_PHONE.substr(-4))
 
 		const results = await promise
 
