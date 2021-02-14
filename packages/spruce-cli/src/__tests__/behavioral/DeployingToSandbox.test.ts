@@ -4,7 +4,6 @@ import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import { EventContracts } from '#spruce/events/events.contract'
-import { DUMMY_PHONE } from '../../fixtures/PersonFixture'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 import testUtil from '../../tests/utilities/test.utility'
 
@@ -28,8 +27,9 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	}
 
 	protected static async afterEach() {
-		await super.afterEach()
 		await this.resetSkills()
+
+		await super.afterEach()
 	}
 
 	private static async resetSkills() {
@@ -60,11 +60,11 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	protected static async throwsHelpfulErrorWhenMissingParams() {
 		const { cli } = await this.installAndLoginAndSetupForSandbox()
 
-		const skill = await this.SkillFixture().registerCurrentSkill({
+		await this.SkillFixture().registerCurrentSkill({
 			name: 'My new skill',
 		})
 
-		await this.Store('skill').unregisterSkill(skill.id)
+		await this.resetSkills()
 
 		const env = this.Service('env')
 
@@ -83,8 +83,6 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	@test()
 	protected static async doesNotReRegisterIfNotRegisteredFirstTime() {
 		const { cli, client } = await this.installAndLoginAndSetupForSandbox()
-
-		await this.resetSkills()
 
 		const boot = await cli
 			.getFeature('skill')
@@ -126,7 +124,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 		assert.isEqual(skills[0].id, registered.id)
 	}
 
-	@test.only()
+	@test()
 	protected static async registersSkillAgain() {
 		const { cli, client } = await this.installAndLoginAndSetupForSandbox()
 
@@ -152,15 +150,13 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	}
 
 	private static async installAndLoginAndSetupForSandbox() {
-		await this.PersonFixture().loginAsDemoPerson()
-
 		const client = await this.MercuryFixture().connectToApi()
 
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 
 		await cli.getFeature('sandbox').Action('setup').execute({})
 
-		this.Service('env').set('SANDBOX_DEMO_NUMBER', DUMMY_PHONE)
+		this.Service('env').set('SANDBOX_DEMO_NUMBER', this.sandboxDemoNumber)
 
 		return { cli, client }
 	}

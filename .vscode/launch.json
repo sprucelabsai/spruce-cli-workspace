@@ -4,7 +4,7 @@
 		{
 			"type": "node",
 			"request": "attach",
-			"name": "attach.cli",
+			"name": "attach.tests",
 			"port": 5200,
 			"restart": true,
 			"timeout": 10000

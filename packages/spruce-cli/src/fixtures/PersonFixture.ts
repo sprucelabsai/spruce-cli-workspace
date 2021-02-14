@@ -13,15 +13,20 @@ export default class PersonFixture {
 		this.apiClientFactory = apiClientFactory
 	}
 
-	public async loginAsDemoPerson(phone = DUMMY_PHONE) {
+	public async loginAsDemoPerson(phone?: string) {
+		const client = await this.apiClientFactory()
+
+		//@ts-ignore
+		if (!phone && client.auth?.person) {
+			return client
+		}
+
 		if (!phone) {
 			throw new SpruceError({
 				code: 'MISSING_PARAMETERS',
 				parameters: ['env.DEMO_NUMBER'],
 			})
 		}
-
-		const client = await this.apiClientFactory()
 
 		//@ts-ignore
 		if (client.auth?.person?.phone === phone) {
