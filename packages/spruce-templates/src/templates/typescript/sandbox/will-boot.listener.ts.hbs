@@ -59,7 +59,6 @@ export default async (event: SpruceEvent): SpruceEventResponse => {
 			},
 		})
 		
-		
 		eventResponseUtil.getFirstResponseOrThrow(confirmResults)
 		
 		const results = await client.emit('register-skill::v2020_12_25', {

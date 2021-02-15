@@ -353,7 +353,8 @@
 						"hasCreateConversationAction": "F100",
 						"createsValidConversationTopicDefinition": "F101",
 						"canRegisterConversationsOnBoot": "F104",
-						"canDeploySkill": "L4"
+						"canDeploySkill": "L4",
+						"canReRegisterAndThenRegisterConversationsWithoutCrash": "I17"
 					}
 				}
 			],
