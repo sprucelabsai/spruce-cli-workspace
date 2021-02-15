@@ -5,7 +5,7 @@ import {
 	eventResponseUtil,
 } from '@sprucelabs/spruce-event-utils'
 import SpruceError from '../../errors/SpruceError'
-import { SettingsService } from '@sprucelabs/spruce-skill-utils'
+import { EnvService } from '@sprucelabs/spruce-skill-utils'
 
 export default async (event: SpruceEvent): SpruceEventResponse => {
 	const sandboxNumber = process.env.SANDBOX_DEMO_NUMBER
@@ -17,10 +17,10 @@ export default async (event: SpruceEvent): SpruceEventResponse => {
 
 		const events = event.skill.getFeatureByCode('event') as EventFeature
 
-		const settings = new SettingsService(event.skill.rootDir)
+		const env = new EnvService(event.skill.rootDir)
 
-		process.env.SKILL_ID = settings.get('SKILL_ID') ?? process.env.SKILL_ID
-		process.env.SKILL_API_KEY = settings.get('SKILL_API_KEY') ?? process.env.SKILL_API_KEY
+		process.env.SKILL_ID = (env.get('SKILL_ID') ?? process.env.SKILL_ID) as string
+		process.env.SKILL_API_KEY = (env.get('SKILL_API_KEY') ?? process.env.SKILL_API_KEY) as string
 
 		try {
 			await events.connectToApi({ shouldWaitForWillBoot: false })
@@ -85,8 +85,8 @@ export default async (event: SpruceEvent): SpruceEventResponse => {
 		
 		eventResponseUtil.getFirstResponseOrThrow(authResults)
 
-		settings.set('SKILL_ID', skill.id)
-		settings.set('SKILL_API_KEY', skill.apiKey)
+		env.set('SKILL_ID', skill.id)
+		env.set('SKILL_API_KEY', skill.apiKey)
 
 	}
 

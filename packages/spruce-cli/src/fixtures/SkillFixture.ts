@@ -13,7 +13,7 @@ export default class SkillFixture {
 	private apiClientFactory: ApiClientFactory
 	private personFixture: PersonFixture
 
-	private static skillCount = Math.random() * 100
+	private static skillCount = Math.round(Math.random() * 100)
 
 	public constructor(
 		personFixture: PersonFixture,
