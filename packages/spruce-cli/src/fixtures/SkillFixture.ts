@@ -13,6 +13,8 @@ export default class SkillFixture {
 	private apiClientFactory: ApiClientFactory
 	private personFixture: PersonFixture
 
+	private static skillCount = Math.random() * 100000
+
 	public constructor(
 		personFixture: PersonFixture,
 		storeFactory: StoreFactory,
@@ -37,11 +39,16 @@ export default class SkillFixture {
 
 		return this.storeFactory.Store('skill').register(
 			{
-				slug: values.slug ?? `my-skill-${new Date().getTime()}`,
+				slug: values.slug ?? this.generateSkillSlug(),
 				...values,
 			},
 			options
 		)
+	}
+
+	private generateSkillSlug(): string {
+		SkillFixture.skillCount++
+		return `my-skill-${new Date().getTime() + SkillFixture.skillCount}`
 	}
 
 	public async registerEventContract(
