@@ -112,7 +112,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		this.ui.reset()
 	}
 
-	@test.only()
+	@test()
 	protected static async generatesTypedListenerWithoutPayloads() {
 		const {
 			contents,
