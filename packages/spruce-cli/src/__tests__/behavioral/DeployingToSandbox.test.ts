@@ -149,10 +149,58 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 		assert.isNotEqual(skills[0].id, skill.id)
 	}
 
-	private static async installAndSetupForSandbox() {
+	@test()
+	protected static async registersSkillAndCanBootAgoin() {
+		const { cli } = await this.installAndSetupForSandbox()
+
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'My new skill',
+		})
+
+		await this.resetSkills()
+
+		const boot = await cli
+			.getFeature('skill')
+			.Action('boot')
+			.execute({ local: true })
+
+		boot.meta?.kill()
+
+		const boot2 = await cli
+			.getFeature('skill')
+			.Action('boot')
+			.execute({ local: true })
+
+		boot2.meta?.kill()
+	}
+
+	@test()
+	protected static async canReRegisterAndThenRegisterConversationsWithoutCrash() {
+		const { cli } = await this.installAndSetupForSandbox('conversation')
+
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'Conversation test',
+		})
+
+		await this.resetSkills()
+
+		await cli.getFeature('conversation').Action('create').execute({
+			nameReadable: 'book an appointment',
+			nameCamel: 'bookAnAppointment',
+		})
+
+		const boot = await cli
+			.getFeature('skill')
+			.Action('boot')
+			.execute({ local: true })
+
+		boot.meta?.kill()
+	}
+
+	private static async installAndSetupForSandbox(cacheKey = 'events') {
 		const client = await this.MercuryFixture().connectToApi()
 
-		const cli = await this.FeatureFixture().installCachedFeatures('events')
+		const cli = await this.FeatureFixture().installCachedFeatures(cacheKey)
 
 		await cli.getFeature('sandbox').Action('setup').execute({})
 
