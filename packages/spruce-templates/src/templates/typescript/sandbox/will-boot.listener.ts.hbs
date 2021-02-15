@@ -10,7 +10,7 @@ import { SettingsService } from '@sprucelabs/spruce-skill-utils'
 export default async (event: SpruceEvent): SpruceEventResponse => {
 	const sandboxNumber = process.env.SANDBOX_DEMO_NUMBER
 
-	if (sandboxNumber) {
+	if (sandboxNumber && process.env.SKILL_ID) {
 		const log = event.log.buildLog('Sandbox')
 
 		log.info('Demo sandbox number detected. Checking skill status.')
@@ -19,8 +19,8 @@ export default async (event: SpruceEvent): SpruceEventResponse => {
 
 		const settings = new SettingsService(event.skill.rootDir)
 
-		process.env.SKILL_ID = settings.get('SKILL_ID')
-		process.env.SKILL_API_KEY = settings.get('SKILL_API_KEY')
+		process.env.SKILL_ID = settings.get('SKILL_ID') ?? process.env.SKILL_ID
+		process.env.SKILL_API_KEY = settings.get('SKILL_API_KEY') ?? process.env.SKILL_API_KEY
 
 		try {
 			await events.connectToApi({ shouldWaitForWillBoot: false })
