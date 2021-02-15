@@ -1,7 +1,7 @@
 import { SpruceSchemas } from '@sprucelabs/mercury-types'
 import { normalizeSchemaValues, validateSchemaValues } from '@sprucelabs/schema'
+import { EnvService } from '@sprucelabs/spruce-skill-utils'
 import personWithTokenSchema from '#spruce/schemas/spruceCli/v2020_07_22/personWithToken.schema'
-import EnvService from './EnvService'
 
 type PersonWithToken = SpruceSchemas.SpruceCli.v2020_07_22.PersonWithToken
 
