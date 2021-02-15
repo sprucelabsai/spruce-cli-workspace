@@ -4,7 +4,7 @@ import { CliInterface } from '../../cli'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 import testUtil from '../../tests/utilities/test.utility'
 
-declare module '@sprucelabs/spruce-skill-utils/build/skill.types' {
+declare module '@sprucelabs/spruce-skill-utils/build/types/skill.types' {
 	interface HealthCheckResults {
 		conversation?: ConversationHealthCheckItem
 	}
