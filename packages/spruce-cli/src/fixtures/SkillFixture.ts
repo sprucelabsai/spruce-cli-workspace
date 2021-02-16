@@ -48,7 +48,7 @@ export default class SkillFixture {
 
 	private generateSkillSlug(): string {
 		SkillFixture.skillCount++
-		return `my-skill-${new Date().getTime()}-${SkillFixture.skillCount}`
+		return `my-skill-${new Date().getTime()}-count-${SkillFixture.skillCount}`
 	}
 
 	public async registerEventContract(

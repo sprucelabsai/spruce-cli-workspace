@@ -23,6 +23,10 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 			id: 'christian-kohler.npm-intellisense',
 			label: 'Intellisense autocompletion of installed npm modules',
 		},
+		{
+			id: 'mikestead.dotenv',
+			label: '.env support',
+		},
 	]
 
 	public code = 'setup'
