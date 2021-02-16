@@ -42,7 +42,7 @@ export default class SkillFeature<
 		{ name: 'eslint', isDev: true },
 		{ name: 'eslint-config-spruce', isDev: true },
 		{ name: 'prettier', isDev: true },
-		{ name: 'chokidar', isDev: true },
+		{ name: 'chokidar-cli', isDev: true },
 		{ name: 'concurrently', isDev: true },
 		{ name: 'globby' },
 		{
