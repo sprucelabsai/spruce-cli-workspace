@@ -8,7 +8,7 @@ const optionsSchema = buildSchema({
 	fields: {
 		phone: {
 			type: 'phone',
-			label: 'Phone number (for pin)',
+			label: 'Phone number',
 			isRequired: true,
 		},
 	},
