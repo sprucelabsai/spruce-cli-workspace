@@ -1,6 +1,16 @@
 import { test, assert } from '@sprucelabs/test'
+import CliGlobalEmitter, { globalContract } from '../../../GlobalEmitter'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
-import TestEmitter from '../../../tests/TestEmitter'
+
+class TheTestEmitter extends CliGlobalEmitter {
+	public static TestEmitter() {
+		return new TheTestEmitter(globalContract)
+	}
+
+	public hasListeners(eventName: string) {
+		return !!this.listenersByEvent[eventName]
+	}
+}
 
 export default class StartingOnboardingTest extends AbstractCliTest {
 	@test()
@@ -11,7 +21,7 @@ export default class StartingOnboardingTest extends AbstractCliTest {
 
 	@test()
 	protected static async addsCommandListeners() {
-		const testEmitter = TestEmitter.TestEmitter()
+		const testEmitter = TheTestEmitter.TestEmitter()
 
 		await this.Cli({ emitter: testEmitter })
 
