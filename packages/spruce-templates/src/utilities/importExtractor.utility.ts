@@ -1,4 +1,5 @@
-import { FieldTemplateItem } from '@sprucelabs/schema'
+import { FieldTemplateItem, SchemaTemplateItem } from '@sprucelabs/schema'
+import uniq from 'lodash/uniq'
 import uniqWith from 'lodash/uniqWith'
 
 export interface SchemaImport {
@@ -7,7 +8,7 @@ export interface SchemaImport {
 }
 
 const importExtractorUtil = {
-	extract(fields: FieldTemplateItem[]): SchemaImport[] {
+	extractFieldImports(fields: FieldTemplateItem[]): SchemaImport[] {
 		const imports: (SchemaImport & { namePascal: string })[] = fields.map(
 			(item) => ({
 				package: item.package,
@@ -40,6 +41,16 @@ const importExtractorUtil = {
 		})
 
 		return uniqueImports
+	},
+
+	extractSchemaImports(schemas: SchemaTemplateItem[]): string[] {
+		const imports: string[] = []
+
+		schemas.forEach((schema) => {
+			imports.push(...(schema.imports ?? []))
+		})
+
+		return uniq(imports)
 	},
 	// eslint-disable-next-line no-undef
 } as const

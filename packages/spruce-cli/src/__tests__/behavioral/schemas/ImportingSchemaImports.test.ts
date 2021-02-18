@@ -1,6 +1,7 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractSchemaTest from '../../../tests/AbstractSchemaTest'
+import testUtil from '../../../tests/utilities/test.utility'
 
 export default class ImportingSchemaImportsTest extends AbstractSchemaTest {
 	@test()
@@ -22,6 +23,17 @@ export default class ImportingSchemaImportsTest extends AbstractSchemaTest {
 
 		assert.isFalsy(results.errors)
 		assert.isTruthy(results.files)
+
+		const match = testUtil.assertsFileByNameInGeneratedFiles(
+			'schemas.types.ts',
+			results.files
+		)
+
+		const contents = diskUtil.readFile(match)
+		assert.doesInclude(
+			contents,
+			"import { BaseWidget } from '#spruce/../widgets/widgets.types'"
+		)
 
 		await this.assertValidActionResponseFiles(results)
 	}

@@ -20,7 +20,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	public optionsSchema = syncSchemasActionSchema
 	public commandAliases = ['sync.schemas']
 
-	private readonly schemaGenerator = this.Writer('schema')
+	private readonly schemaWriter = this.Writer('schema')
 	private readonly schemaStore = this.Store('schema')
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
@@ -160,7 +160,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 				try {
 					this.ui.startLoading('Determining what changed... ⚡️')
 
-					typeResults = await this.schemaGenerator.writeSchemasAndTypes(
+					typeResults = await this.schemaWriter.writeSchemasAndTypes(
 						resolvedSchemaTypesDestination,
 						{
 							registerBuiltSchemas,
@@ -327,7 +327,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 		this.ui.startLoading('Generating value types...')
 
 		const builder = new ValueTypeBuilder(
-			this.schemaGenerator,
+			this.schemaWriter,
 			this.Service('import')
 		)
 

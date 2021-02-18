@@ -44,14 +44,21 @@ export const templates = {
 		globalSchemaNamespace?: string
 		typesTemplate?: string
 	}) {
-		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
+		const imports = importExtractorUtil.extractFieldImports(
+			options.fieldTemplateItems
+		)
 		const template = templateImportUtil.getTemplate(
 			options.typesTemplate ?? 'schemas/schemas.types.ts.hbs'
+		)
+
+		const schemaImports = importExtractorUtil.extractSchemaImports(
+			options.schemaTemplateItems
 		)
 
 		return template({
 			...options,
 			imports,
+			schemaImports,
 			globalSchemaNamespace:
 				options.globalSchemaNamespace ?? DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
 		})
@@ -62,7 +69,9 @@ export const templates = {
 		fieldTemplateItems: FieldTemplateItem[]
 		globalSchemaNamespace?: string
 	}) {
-		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
+		const imports = importExtractorUtil.extractFieldImports(
+			options.fieldTemplateItems
+		)
 		const rendersAs = Object.values(TemplateRenderAs)
 
 		const schemaTemplatesByNamespaceAndName = templateItemUtil.groupSchemaTemplatesByNamespaceAndName(
@@ -98,7 +107,9 @@ export const templates = {
 			typesFile?: string
 		}
 	) {
-		const imports = importExtractorUtil.extract(options.fieldTemplateItems)
+		const imports = importExtractorUtil.extractFieldImports(
+			options.fieldTemplateItems
+		)
 		const template = templateImportUtil.getTemplate(
 			options.schemaFile ?? 'schemas/schema.ts.hbs'
 		)
