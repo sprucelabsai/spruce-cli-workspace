@@ -32,7 +32,7 @@ export default class ImportingSchemaImportsTest extends AbstractSchemaTest {
 		const contents = diskUtil.readFile(match)
 		assert.doesInclude(
 			contents,
-			"import { BaseWidget } from '#spruce/../widgets/widgets.types'"
+			'import { BaseWidget } from ' + "#spruce/../widgets/widgets.types'"
 		)
 
 		await this.assertValidActionResponseFiles(results)
