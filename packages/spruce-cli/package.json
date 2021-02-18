@@ -55,7 +55,7 @@
 		"watch.tests": "yarn cache.tests && jest --watch"
 	},
 	"dependencies": {
-		"@babel/runtime": "^7.12.13",
+		"@babel/runtime": "^7.12.18",
 		"@jest/reporters": "^26.6.2",
 		"@sprucelabs/error": "latest",
 		"@sprucelabs/jest-json-reporter": "latest",
@@ -72,7 +72,7 @@
 		"chokidar": "^3.5.1",
 		"cli-table3": "^0.6.0",
 		"commander": "^7.1.0",
-		"core-js": "^3.8.3",
+		"core-js": "^3.9.0",
 		"emphasize": "^4.2.0",
 		"fs-extra": "^9.1.0",
 		"gifwrap": "SimenB/gifwrap#patch-1",
