@@ -1,6 +1,6 @@
 import CliGlobalEmitter, { globalContract } from '../GlobalEmitter'
 
-export default class TestEmitter extends CliGlobalEmitter {
+class TestEmitter extends CliGlobalEmitter {
 	public static TestEmitter() {
 		return new TestEmitter(globalContract)
 	}
@@ -9,3 +9,5 @@ export default class TestEmitter extends CliGlobalEmitter {
 		return !!this.listenersByEvent[eventName]
 	}
 }
+
+export default TestEmitter
