@@ -5,14 +5,14 @@ import ImportService from '../../services/ImportService'
 import SchemaWriter from './writers/SchemaWriter'
 
 export default class ValueTypeBuilder {
-	private schemaGenerator: SchemaWriter
+	private writer: SchemaWriter
 	private importService: ImportService
 
 	public constructor(
 		schemaGenerator: SchemaWriter,
 		importService: ImportService
 	) {
-		this.schemaGenerator = schemaGenerator
+		this.writer = schemaGenerator
 		this.importService = importService
 	}
 
@@ -33,7 +33,7 @@ export default class ValueTypeBuilder {
 			return {}
 		}
 
-		const valueTypeResults = await this.schemaGenerator.writeValueTypes(
+		const valueTypeResults = await this.writer.writeValueTypes(
 			resolvedDestination,
 			{
 				fieldTemplateItems,
