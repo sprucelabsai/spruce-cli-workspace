@@ -111,7 +111,7 @@
 		"@types/lodash": "^4.14.168",
 		"@types/md5": "^2.3.0",
 		"@types/mkdirp": "^1.0.1",
-		"@types/node": "^14.14.30",
+		"@types/node": "^14.14.31",
 		"@types/promise.allsettled": "^1.0.3",
 		"@types/rimraf": "^3.0.0",
 		"@types/semver": "^7.3.4",
