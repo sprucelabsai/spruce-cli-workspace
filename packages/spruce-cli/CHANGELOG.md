@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.10.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.9.1...v13.10.0) (2021-02-20)
+
+
+### Features
+
+* tsx support in tests ([a2703ba](https://github.com/sprucelabsai/spruce-cli-workspace/commit/a2703ba))
+
+
+
+
+
 ## [13.9.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.9.0...v13.9.1) (2021-02-20)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
