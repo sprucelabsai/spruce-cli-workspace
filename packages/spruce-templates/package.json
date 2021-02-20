@@ -4,7 +4,7 @@
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "13.8.22",
+	"version": "13.9.1",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
 	"files": [
@@ -52,7 +52,7 @@
 	},
 	"devDependencies": {
 		"@types/lodash": "^4.14.168",
-		"@types/node": "^14.14.30",
+		"@types/node": "^14.14.31",
 		"arkit": "^1.6.4",
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^5.3.0",
