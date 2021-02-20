@@ -185,7 +185,9 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 	private generateFilterFromChangedFiles(filesWeCareAbout: string[]): string {
 		const filter = filesWeCareAbout
-			.filter((file) => file.search('test.ts') > -1)
+			.filter(
+				(file) => file.search('test.ts') > -1 || file.search('test.tsx') > -1
+			)
 			.map((file) => this.fileToFilterPattern(file))
 			.join(' ')
 
@@ -194,7 +196,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 	private doWeCareAboutThisFileChanging(path: string) {
 		const ext = pathUtil.extname(path)
-		if (path.search('/src/') > -1 && ext === '.ts') {
+		if (path.search('/src/') > -1 && (ext === '.ts' || ext === '.tsx')) {
 			return true
 		}
 
@@ -255,7 +257,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	}
 
 	private fileToFilterPattern(file: string) {
-		const filename = pathUtil.basename(file, '.ts')
+		const filename = pathUtil.basename(file, '.ts').replace('.tsx', '')
 		const dirname = pathUtil.dirname(file).split(pathUtil.sep).pop() ?? ''
 
 		const name = pathUtil.join(dirname, filename)
