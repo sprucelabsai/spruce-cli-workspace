@@ -47,7 +47,7 @@
 		"@sprucelabs/spruce-skill-utils": "latest",
 		"globby": "^11.0.2",
 		"handlebars": "^4.7.7",
-		"lodash": "^4.17.20",
+		"lodash": "^4.17.21",
 		"sha1": "^1.1.1"
 	},
 	"devDependencies": {
