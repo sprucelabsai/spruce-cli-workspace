@@ -122,7 +122,7 @@
 		"@types/uuid": "^8.3.0",
 		"arkit": "^1.6.4",
 		"chokidar-cli": "^2.1.0",
-		"concurrently": "^5.3.0",
+		"concurrently": "^6.0.0",
 		"conventional-changelog-sprucelabs": "^1.1.2",
 		"dotenv": "^8.2.0",
 		"eslint": "^7.20.0",
