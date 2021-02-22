@@ -211,10 +211,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 
 		this.testReporter?.setIsDebugging(!!this.inspect)
-
-		if (this.runnerStatus === 'run') {
-			this.restart()
-		}
+		this.restart()
 	}
 
 	private handletoggleStandardWatch() {
