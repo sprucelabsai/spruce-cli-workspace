@@ -5,7 +5,7 @@
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "13.9.1",
+	"version": "13.10.1",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -66,7 +66,7 @@
 		"@sprucelabs/spruce-core-schemas": "latest",
 		"@sprucelabs/spruce-event-utils": "latest",
 		"@sprucelabs/spruce-skill-utils": "latest",
-		"@sprucelabs/spruce-templates": "^13.9.1",
+		"@sprucelabs/spruce-templates": "^13.10.1",
 		"cfonts": "^2.9.1",
 		"chalk": "^4.1.0",
 		"chokidar": "^3.5.1",
@@ -82,7 +82,7 @@
 		"inquirer-file-tree-selection-prompt": "^1.0.7",
 		"js-tetris-cli": "^0.0.3",
 		"jsonwebtoken": "^8.5.1",
-		"lodash": "^4.17.20",
+		"lodash": "^4.17.21",
 		"md5": "^2.3.0",
 		"open": "^7.4.2",
 		"ora": "^5.3.0",
@@ -122,7 +122,7 @@
 		"@types/uuid": "^8.3.0",
 		"arkit": "^1.6.4",
 		"chokidar-cli": "^2.1.0",
-		"concurrently": "^5.3.0",
+		"concurrently": "^6.0.0",
 		"conventional-changelog-sprucelabs": "^1.1.2",
 		"dotenv": "^8.2.0",
 		"eslint": "^7.20.0",
