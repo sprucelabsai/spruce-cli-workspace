@@ -55,7 +55,7 @@
 		"watch.tests": "yarn cache.tests && jest --watch"
 	},
 	"dependencies": {
-		"@babel/runtime": "^7.13.4",
+		"@babel/runtime": "^7.13.6",
 		"@jest/reporters": "^26.6.2",
 		"@sprucelabs/error": "latest",
 		"@sprucelabs/jest-json-reporter": "latest",
