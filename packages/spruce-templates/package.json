@@ -3,15 +3,24 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"license": "MIT",
 	"version": "13.10.6",
-	"main": "./build/index.js",
-	"types": "./build/index.d.ts",
 	"files": [
 		"build/**/*",
 		"tsconfig.json",
 		"package.json"
 	],
+	"main": "./build/index.js",
+	"types": "./build/index.d.ts",
+	"exports": {
+        ".": {
+            "node": "./build/index.js",
+            "require": "./build/index.js",
+            "import": "./build/esm/index.js",
+            "default": "./build/esm/index.js"
+        }
+    },
+    "module": "./build/esm/index.js",
+	"license": "MIT",
 	"description": "Templates used for code generation in skills!",
 	"keywords": [
 		"node",
@@ -26,11 +35,10 @@
 		"url": "https://github.com/sprucelabsai/spruce-cli-workspace/issues"
 	},
 	"scripts": {
-		"arkit": "arkit -f index.ts -o docs/images/arkit.svg",
-		"arkit.png": "arkit -f index.ts -o docs/images/arkit.png",
 		"build": "yarn build.babel && yarn build.types && yarn build.resolve-paths",
 		"build.types": "tsc --emitDeclarationOnly && echo PASS",
 		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps --root-mode upward --copy-files --include-dotfiles",
+		"build.dist": "tsc --project tsconfig.dist.json",
 		"build.resolve-paths": "resolve-path-aliases --target build",
 		"clean": "rm -rf build/",
 		"copy-templates": "mkdirp ./build/templates && cp -r ./src/templates/* ./build/templates",
@@ -53,7 +61,6 @@
 	"devDependencies": {
 		"@types/lodash": "^4.14.168",
 		"@types/node": "^14.14.31",
-		"arkit": "^1.6.4",
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^6.0.0",
 		"conventional-changelog-sprucelabs": "^1.1.2",
