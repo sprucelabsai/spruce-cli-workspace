@@ -340,7 +340,7 @@ export default class FeatureInstaller implements ServiceProvider {
 					packagesToInstall.length === 1
 						? 'y.'
 						: 'ies for ' +
-						  feature.nameReadable +
+						  this.getFeaturesName(feature) +
 						  ' using NPM. NPM is slow, so this may take a sec....'
 				}.`
 			)
@@ -353,7 +353,7 @@ export default class FeatureInstaller implements ServiceProvider {
 					devPackagesToInstall.length === 1
 						? 'y.'
 						: 'ies for ' +
-						  feature.nameReadable +
+						  this.getFeaturesName(feature) +
 						  ' using NPM. NPM is still slow, so hang tight. 🤘'
 				}.`
 			)
@@ -363,6 +363,10 @@ export default class FeatureInstaller implements ServiceProvider {
 		}
 
 		return packagesInstalled
+	}
+
+	private getFeaturesName(feature: ) {
+		return feature.nameReadable
 	}
 
 	private sortFeatures(
