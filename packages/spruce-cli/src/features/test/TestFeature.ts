@@ -6,7 +6,7 @@ import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
 export default class TestFeature extends AbstractFeature {
-	public nameReadable = 'Test'
+	public nameReadable = 'Testing'
 	public description = 'Test first. Test everything! 💪'
 	public code: FeatureCode = 'test'
 	public packageDependencies: NpmPackage[] = [

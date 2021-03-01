@@ -30,7 +30,7 @@ export default class VsCodeFeature extends AbstractFeature {
 				'command+shift+t to open the Test Reporter, build watch on load, etc.',
 			shouldOverwriteWhenChanged: true,
 			confirmPromptOnFirstWrite:
-				'Want me to setup tasks for building and testing?',
+				'Want me to start watchers when you start vscode?',
 		},
 	]
 

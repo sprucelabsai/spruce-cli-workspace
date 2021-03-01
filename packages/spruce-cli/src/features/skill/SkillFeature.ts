@@ -26,28 +26,21 @@ export default class SkillFeature<
 		{ name: '@sprucelabs/spruce-event-plugin' },
 		{ name: '@sprucelabs/spruce-core-schemas' },
 		{ name: 'dotenv' },
+
+		{ name: 'globby' },
+		{
+			name: '@sprucelabs/mercury-types',
+		},
 		{ name: '@sprucelabs/babel-plugin-schema', isDev: true },
 		{ name: '@types/node', isDev: true },
 		{ name: 'typescript', isDev: true },
 		{ name: 'ts-node', isDev: true },
 		{ name: 'tsconfig-paths', isDev: true },
-		{ name: '@babel/cli', isDev: true },
-		{ name: '@babel/core', isDev: true },
-		{ name: '@babel/plugin-proposal-class-properties', isDev: true },
-		{ name: '@babel/plugin-proposal-decorators', isDev: true },
-		{ name: '@babel/plugin-transform-runtime', isDev: true },
-		{ name: '@babel/preset-env', isDev: true },
-		{ name: '@babel/preset-typescript', isDev: true },
-		{ name: 'babel-plugin-module-resolver', isDev: true },
 		{ name: 'eslint', isDev: true },
 		{ name: 'eslint-config-spruce', isDev: true },
 		{ name: 'prettier', isDev: true },
 		{ name: 'chokidar-cli', isDev: true },
 		{ name: 'concurrently', isDev: true },
-		{ name: 'globby' },
-		{
-			name: '@sprucelabs/mercury-types',
-		},
 	]
 
 	public optionsSchema = skillFeatureSchema as S
@@ -57,40 +50,37 @@ export default class SkillFeature<
 		yarn: '1.x',
 	}
 	private scripts = {
-		lint: "eslint '**/*.ts'",
-		'fix.lint': "eslint --fix '**/*.ts'",
-		'watch.lint':
-			"concurrently 'yarn lint' \"chokidar 'src/**/*' -c 'yarn lint.tsc'\"",
-		health: 'yarn boot --health',
-		'health.local': 'yarn boot.local --health',
-		build: 'yarn build.babel && yarn build.types.resolve-paths.lint',
-		'build.types':
-			'tsc --emitDeclarationOnly && echo PASS TYPES || (echo FAIL TYPES && false)',
-		'build.babel':
-			"babel src --out-dir build --extensions '.ts, .tsx' --source-maps --copy-files",
-		'build.resolve-paths':
-			'resolve-path-aliases --target build --patterns **/*.js,**/*.d.ts',
-		'build.types.resolve-paths.lint':
-			'yarn build.types && yarn resolve-paths.lint',
-		'resolve-paths.lint': 'yarn build.resolve-paths && yarn lint',
-		rebuild: 'yarn clean.all && yarn && yarn build',
-		clean: 'rm -rf build/',
-		'clean.all':
-			'yarn clean && rm -f yarn.lock package-lock.json && rm -rf node_modules/',
 		boot: 'node build/index',
 		'boot.local':
 			'node -r ts-node/register -r tsconfig-paths/register ./src/index',
-
+		'boot.sender': 'ACTION=sender node build/index',
+		'boot.sender.local': 'ACTION=sender yarn boot.local',
+		build: 'yarn build.tsc && yarn resolve-paths.lint',
+		'build.copy-files':
+			"mkdir -p build && rsync -avzq --exclude='*.ts' ./src/ ./build/",
+		'build.resolve-paths':
+			'resolve-path-aliases --target build --patterns **/*.js,**/*.d.ts',
+		'build.tsc': 'yarn build.copy-files && tsc',
+		clean: 'rm -rf build/',
+		'clean.all':
+			'yarn clean && rm -f yarn.lock package-lock.json && rm -rf node_modules/',
+		'fix.lint': "eslint --fix '**/*.ts'",
+		health: 'yarn boot --health',
+		'health.local': 'yarn boot.local --health',
+		lint: "eslint '**/*.ts'",
+		rebuild: 'yarn clean.all && yarn && yarn build',
+		'resolve-paths.lint': 'yarn build.resolve-paths && yarn lint',
 		test: 'jest',
-		'watch.tests': 'yarn test --watch',
-		'watch.build':
-			"concurrently 'yarn build.types.resolve-paths.lint' 'tsc --emitDeclarationOnly -w' 'yarn build.babel --watch' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn resolve-paths.lint'\"",
-		'watch.rebuild': 'yarn clean.all && yarn && yarn build.watch',
 		'upgrade.packages':
 			'yarn-upgrade-all && rm yarn.lock ; yarn ; yarn fix.lint | true',
 		'upgrade.packages.all': 'yarn install && yarn upgrade.packages',
 		'upgrade.packages.test':
 			'yarn upgrade.packages.all && yarn lint && yarn build && yarn test',
+		'watch.build':
+			"concurrently 'yarn build' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn build'\"",
+		'watch.lint':
+			"concurrently 'yarn lint' \"chokidar 'src/**/*' -c 'yarn lint.tsc'\"",
+		'watch.rebuild': 'yarn clean.all && yarn && yarn watch.build',
 	} as const
 
 	public readonly fileDescriptions: FileDescription[] = [
