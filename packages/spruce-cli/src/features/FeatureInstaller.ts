@@ -367,7 +367,7 @@ export default class FeatureInstaller implements ServiceProvider {
 
 	private getFeatureNameAndDesc(feature: AbstractFeature) {
 		return `${feature.nameReadable}${
-			feature.description ? '(' + feature.description + ')' : ''
+			feature.description ? ' (' + feature.description + ')' : ''
 		}`
 	}
 
