@@ -72,6 +72,7 @@ jobs:
               echo "[npm-publish] detected. No publish necessary 👊"
               circleci-agent step halt
             fi
+      - run: which rsync || ( sudo apt-get update -y && sudo apt-get install rsync -y )
       - restore_cache:
           name: Restoring Cached Tests
           keys:
