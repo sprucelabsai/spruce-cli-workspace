@@ -15,6 +15,23 @@ const didMessageResponsePayloadSchema: SpruceSchemas.MercuryApi.v2020_12_25.DidM
 	                options: {choices: [{"label":"Greeting","value":"greeting"},{"label":"Discovery","value":"discovery"},{"label":"Topic","value":"topic"},{"label":"Closing","value":"closing"}],}
 	            },
 	            /** . */
+	            'repairs': {
+	                type: 'text',
+	                isArray: true,
+	                options: undefined
+	            },
+	            /** . */
+	            'topicChangers': {
+	                type: 'text',
+	                isArray: true,
+	                options: undefined
+	            },
+	            /** . */
+	            'utterance': {
+	                type: 'text',
+	                options: undefined
+	            },
+	            /** . */
 	            'suggestedTopics': {
 	                type: 'schema',
 	                isArray: true,

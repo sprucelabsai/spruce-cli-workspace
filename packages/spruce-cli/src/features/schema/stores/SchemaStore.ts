@@ -122,7 +122,7 @@ export default class SchemaStore extends AbstractStore {
 			results.errors.push(...errors)
 		} else {
 			payloads.forEach((payload) => {
-				payload.schemas?.forEach((schema: Schema) => {
+				payload?.schemas?.forEach((schema: Schema) => {
 					this.mixinSchemaOrThrowIfExists(schema, localNamespace, results)
 				})
 			})
