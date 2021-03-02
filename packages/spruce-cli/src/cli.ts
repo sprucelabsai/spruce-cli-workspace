@@ -271,8 +271,8 @@ export default class Cli implements CliInterface {
 		}
 
 		if (Object.keys(auth).length > 0) {
-			await client.emit('authenticate::v2020_12_25', {
-				payload: auth,
+			await client.authenticate({
+				...(auth as any),
 			})
 
 			//@ts-ignore

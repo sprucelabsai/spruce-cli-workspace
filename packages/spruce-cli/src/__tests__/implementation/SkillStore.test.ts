@@ -1,4 +1,3 @@
-import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractCliTest from '../../tests/AbstractCliTest'
@@ -65,15 +64,12 @@ export default class SkillStoreTest extends AbstractCliTest {
 		assert.isString(skill.id)
 
 		const client = await this.connectToApi()
-		const results = await client.emit('authenticate::v2020_12_25', {
-			payload: {
-				skillId: skill.id,
-				apiKey: skill.apiKey,
-			},
+		const results = await client.authenticate({
+			skillId: skill.id,
+			apiKey: skill.apiKey,
 		})
 
-		const response = eventResponseUtil.getFirstResponseOrThrow(results)
-		assert.isEqual(response.auth.skill?.id, skill.id)
+		assert.isEqual(results.skill?.id, skill.id)
 
 		isRegistered = await skillStore.isCurrentSkillRegistered()
 		assert.isTrue(isRegistered)
