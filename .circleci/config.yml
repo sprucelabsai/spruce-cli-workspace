@@ -24,6 +24,7 @@ jobs:
           command: |
             [ -n "$BASE64_ENV" ] && echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
       - run: node -v && npm -v && yarn -v
+      - run: which rsync || ( sudo apt-get update -y && sudo apt-get install rsync -y )
       - run:
           name: "Install"
           command: |
