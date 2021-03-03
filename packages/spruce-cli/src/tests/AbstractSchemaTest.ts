@@ -8,11 +8,11 @@ import AbstractCliTest from './AbstractCliTest'
 
 export default abstract class AbstractSchemaTest extends AbstractCliTest {
 	protected static get schemaTypesFile() {
-		return this.resolveHashSprucePath('schema', 'schemas.types.ts')
+		return this.resolveHashSprucePath('schemas', 'schemas.types.ts')
 	}
 
 	protected static get coreSchemaTypesFile() {
-		return this.resolveHashSprucePath('schema', 'core.schemas.types.ts')
+		return this.resolveHashSprucePath('schemas', 'core.schemas.types.ts')
 	}
 
 	protected static async syncSchemas(cacheKey?: string, syncOptions = {}) {

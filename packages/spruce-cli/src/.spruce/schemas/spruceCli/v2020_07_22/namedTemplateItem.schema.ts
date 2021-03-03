@@ -18,6 +18,14 @@ const namedTemplateItemSchema: SpruceSchemas.SpruceCli.v2020_07_22.NamedTemplate
 	                hint: 'The name people will read',
 	                options: undefined
 	            },
+	            /** Readable name (plural). The plural form of the name people will read */
+	            'nameReadablePlural': {
+	                label: 'Readable name (plural)',
+	                type: 'text',
+	                isRequired: true,
+	                hint: 'The plural form of the name people will read',
+	                options: undefined
+	            },
 	            /** Camel case name. camelCase version of the name */
 	            'nameCamel': {
 	                label: 'Camel case name',
@@ -66,6 +74,13 @@ const namedTemplateItemSchema: SpruceSchemas.SpruceCli.v2020_07_22.NamedTemplate
 	                label: 'Snake case name',
 	                type: 'text',
 	                hint: 'snake_case of the name',
+	                options: undefined
+	            },
+	            /** Snake case name (plural). snakes_case of the name */
+	            'nameSnakePlural': {
+	                label: 'Snake case name (plural)',
+	                type: 'text',
+	                hint: 'snakes_case of the name',
 	                options: undefined
 	            },
 	            /** Description. Describe a bit more here */

@@ -1,18 +1,16 @@
-import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { StoreTemplateOptions } from '@sprucelabs/spruce-templates'
 import SpruceError from '../../../errors/SpruceError'
 import { GeneratedFile } from '../../../types/cli.types'
 import AbstractWriter from '../../../writers/AbstractWriter'
 
 export default class StoreWriter extends AbstractWriter {
-	public async writeStore(
-		destination: string,
-		options: { nameCamel: string; namePascal: string; nameSnake: string }
-	) {
-		const camel = namesUtil.toCamel(options.nameCamel)
-		const pascal = namesUtil.toPascal(camel)
+	public async writeStore(destination: string, options: StoreTemplateOptions) {
+		const { namePascalPlural } = options
+
 		const files: GeneratedFile[] = []
 
-		const filename = `${pascal}.store.ts`
+		const filename = `${namePascalPlural}.store.ts`
 
 		const fileDest = diskUtil.resolvePath(
 			destination,

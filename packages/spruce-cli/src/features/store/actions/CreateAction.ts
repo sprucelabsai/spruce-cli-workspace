@@ -8,12 +8,20 @@ const optionsSchema = buildSchema({
 	fields: {
 		nameReadable: {
 			...namedTemplateItemBuilder.fields.nameReadable,
-			label: 'Store name',
+			label: 'Store name (singular)',
+			hint: 'Make it easy to read and singlar, e.g. Person or Bid',
+		},
+		nameReadablePlural: {
+			...namedTemplateItemBuilder.fields.nameReadablePlural,
+			label: 'Store name (plural)',
 			hint: 'Make it easy to read and plural, e.g. People or Bids',
 		},
-		namePascal: namedTemplateItemBuilder.fields.namePascal,
-		nameCamel: namedTemplateItemBuilder.fields.nameCamel,
-		nameSnake: namedTemplateItemBuilder.fields.nameSnake,
+		namePascal: {
+			...namedTemplateItemBuilder.fields.namePascal,
+			isRequired: true,
+		},
+		namePascalPlural: namedTemplateItemBuilder.fields.namePascalPlural,
+		nameSnakePlural: namedTemplateItemBuilder.fields.nameSnakePlural,
 	},
 })
 
@@ -26,18 +34,21 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 
 	public async execute(options: Options) {
 		const {
-			nameCamel,
 			namePascal,
-			nameSnake,
+			namePascalPlural,
+			nameSnakePlural,
+			nameReadablePlural,
 		} = this.validateAndNormalizeOptions(options)
 
 		const writer = this.Writer('store')
 
 		try {
 			const files = await writer.writeStore(this.cwd, {
-				nameCamel,
-				namePascal: namePascal ?? namesUtil.toPascal(nameCamel),
-				nameSnake: nameSnake ?? namesUtil.toSnake(nameCamel),
+				namePascal,
+				namePascalPlural:
+					namePascalPlural ?? namesUtil.toPascal(nameReadablePlural),
+				nameSnakePlural:
+					nameSnakePlural ?? namesUtil.toSnake(nameReadablePlural),
 			})
 
 			return {

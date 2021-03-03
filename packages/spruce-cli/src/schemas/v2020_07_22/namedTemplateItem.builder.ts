@@ -11,6 +11,12 @@ export default buildSchema({
 			hint: 'The name people will read',
 			isRequired: true,
 		},
+		nameReadablePlural: {
+			type: 'text',
+			label: 'Readable name (plural)',
+			hint: 'The plural form of the name people will read',
+			isRequired: true,
+		},
 		nameCamel: {
 			type: 'text',
 			label: 'Camel case name',
@@ -46,6 +52,11 @@ export default buildSchema({
 			type: 'text',
 			label: 'Snake case name',
 			hint: 'snake_case of the name',
+		},
+		nameSnakePlural: {
+			type: 'text',
+			label: 'Snake case name (plural)',
+			hint: 'snakes_case of the name',
 		},
 		description: {
 			type: 'text',

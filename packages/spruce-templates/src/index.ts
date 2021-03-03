@@ -27,6 +27,7 @@ import {
 	EventListenerOptions,
 	EventContractTemplateItem,
 	EventPayloadOptions,
+	StoreTemplateOptions,
 } from './types/templates.types'
 import DirectoryTemplateUtility from './utilities/DirectoryTemplateUtility'
 import importExtractorUtil from './utilities/importExtractor.utility'
@@ -154,7 +155,7 @@ export const templates = {
 
 	schemaPlugin() {
 		const template = templateImportUtil.getTemplate(
-			'schemas/schema.plugin.ts.hbs'
+			'schema/schema.plugin.ts.hbs'
 		)
 		return template({})
 	},
@@ -332,7 +333,7 @@ export const templates = {
 		return template({})
 	},
 
-	store(options: { nameCamel: string; namePascal: string; nameSnake: string }) {
+	store(options: StoreTemplateOptions) {
 		const template = templateImportUtil.getTemplate('store/Store.Store.ts.hbs')
 		return template(options)
 	},

@@ -30,6 +30,13 @@ export interface DirectoryTemplateFile {
 	/** The relative path of the output file, without a leading forward slash */
 	relativePath: string
 }
+
+export interface StoreTemplateOptions {
+	namePascal: string
+	namePascalPlural: string
+	nameSnakePlural: string
+}
+
 export interface SchemaBuilderTemplateItem {
 	nameCamel: string
 	description?: string | null

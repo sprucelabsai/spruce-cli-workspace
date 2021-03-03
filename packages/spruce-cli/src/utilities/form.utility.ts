@@ -27,36 +27,52 @@ const formUtil = {
 			case 'namePascal':
 				if (!values.namePascal) {
 					fieldDefinition.defaultValue = namesUtil.toPascal(
-						values.nameReadable || ''
+						values.nameCamel ?? values.nameReadable ?? ''
 					)
 				}
 
 				break
 			case 'namePascalPlural':
 				if (!values.namePascalPlural) {
-					fieldDefinition.defaultValue = namesUtil.toPlural(
-						namesUtil.toPascal(values.nameReadable || '')
-					)
+					if (values.nameCamelPlural || values.nameReadablePlural) {
+						fieldDefinition.defaultValue = namesUtil.toPascal(
+							values.nameCamelPlural ?? values.nameReadablePlural ?? ''
+						)
+					} else if (values.nameCamel || values.nameReadable) {
+						fieldDefinition.defaultValue = namesUtil.toPlural(
+							namesUtil.toPascal(values.nameCamel ?? values.nameReadable ?? '')
+						)
+					}
 				}
 				break
 			case 'nameConst':
 				if (!values.nameConst) {
 					fieldDefinition.defaultValue = namesUtil.toConst(
-						values.nameReadable || ''
+						values.nameCamel ?? values.namePascal ?? values.nameReadable ?? ''
 					)
 				}
 				break
 			case 'nameKebab':
 				if (!values.nameKebab) {
 					fieldDefinition.defaultValue = namesUtil.toKebab(
-						values.nameReadable || ''
+						values.nameCamel ?? values.namePascal ?? values.nameReadable ?? ''
 					)
 				}
 				break
 			case 'nameSnake':
 				if (!values.nameSnake) {
 					fieldDefinition.defaultValue = namesUtil.toSnake(
-						values.nameReadable || ''
+						values.nameCamel ?? values.namePascal ?? values.nameReadable ?? ''
+					)
+				}
+				break
+			case 'nameSnakePlural':
+				if (!values.nameSnake) {
+					fieldDefinition.defaultValue = namesUtil.toSnake(
+						values.nameCamelPlural ??
+							values.namePascalPlural ??
+							values.nameReadablePlural ??
+							''
 					)
 				}
 				break
