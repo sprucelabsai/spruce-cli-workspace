@@ -35,19 +35,19 @@
 		"url": "https://github.com/sprucelabsai/spruce-cli-workspace/issues"
 	},
 	"scripts": {
-		"build": "yarn build.babel && yarn build.types && yarn build.resolve-paths",
-		"build.types": "tsc --emitDeclarationOnly && echo PASS",
-		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps --root-mode upward --copy-files --include-dotfiles",
-		"build.dist": "tsc --project tsconfig.dist.json",
+		"build.copy-files": "mkdir -p build && rsync -avzq --exclude='*.ts' src/ build/ && rsync -avzq src/templates/ build/templates/",
+		"build.copy-files.dist": "mkdir -p build && rsync -avzq --exclude='*.ts' src/ build/dist/ && rsync -avzq src/templates/ build/esm/templates/",
+		"build.dev": "yarn build.tsc && yarn build.copy-files && yarn build.resolve-paths",
+		"build.dist": "yarn build.tsc && yarn build.copy-files && tsc --project tsconfig.dist.json && yarn build.copy-files.dist && yarn build.resolve-paths",
 		"build.resolve-paths": "resolve-path-aliases --target build",
+		"build.tsc": "tsc",
 		"clean": "rm -rf build/",
-		"copy-templates": "mkdirp ./build/templates && cp -r ./src/templates/* ./build/templates",
 		"fix.lint": "eslint --fix '**/*.ts'",
 		"lint": "eslint '**/*.ts' && tsc -p . --noEmit",
 		"local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS",
 		"rebuild": "cd ../ && yarn rebuild",
 		"release": "semantic-release",
-		"watch.build": "concurrently 'yarn build.babel --watch' \"chokidar 'src/**/*' -c 'yarn build.types && yarn build.resolve-paths'\""
+		"watch.build.dev": "concurrently 'yarn build.dev' \"chokidar 'src/**/*' -c 'yarn build.dev'\""
 	},
 	"dependencies": {
 		"@sprucelabs/mercury-types": "latest",
