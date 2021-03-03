@@ -53,6 +53,13 @@ const formUtil = {
 					)
 				}
 				break
+			case 'nameSnake':
+				if (!values.nameSnake) {
+					fieldDefinition.defaultValue = namesUtil.toSnake(
+						values.nameReadable || ''
+					)
+				}
+				break
 		}
 		return fieldDefinition
 	},

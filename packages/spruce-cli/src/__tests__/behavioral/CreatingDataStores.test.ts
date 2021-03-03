@@ -2,6 +2,7 @@ import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import { CliInterface } from '../../cli'
 import AbstractCliTest from '../../tests/AbstractCliTest'
+import '@sprucelabs/spruce-store-plugin'
 import testUtil from '../../tests/utilities/test.utility'
 
 export default class CreatingDataStoresTest extends AbstractCliTest {
@@ -40,6 +41,7 @@ export default class CreatingDataStoresTest extends AbstractCliTest {
 			.getFeature('store')
 			.Action('create')
 			.execute({
+				nameReadable: 'People',
 				nameCamel: 'people',
 			})
 
@@ -57,8 +59,9 @@ export default class CreatingDataStoresTest extends AbstractCliTest {
 	protected static async getsOneStoresBackFromHealthCheck() {
 		const health = await this.cli.checkHealth({ isRunningLocally: true })
 		assert.isTruthy(health.store)
+		assert.isFalsy(health.store.errors)
 		assert.isLength(health.store.stores, 1)
-		assert.isEqual(health.store.stores[0], 'People')
+		assert.isEqual(health.store.stores[0].name, 'People')
 	}
 
 	@test()
@@ -67,6 +70,7 @@ export default class CreatingDataStoresTest extends AbstractCliTest {
 			.getFeature('store')
 			.Action('create')
 			.execute({
+				nameReadable: 'Bids',
 				nameCamel: 'bids',
 			})
 
@@ -84,8 +88,10 @@ export default class CreatingDataStoresTest extends AbstractCliTest {
 	protected static async getsSecondStoresBackFromHealthCheck() {
 		const health = await this.cli.checkHealth({ isRunningLocally: true })
 		assert.isTruthy(health.store)
+		assert.isFalsy(health.store.errors)
 		assert.isLength(health.store.stores, 2)
-		assert.doesInclude(health.store.stores[1], 'Bids')
+		assert.isEqual(health.store.stores[0].name, 'Bids')
+		assert.isEqual(health.store.stores[1].name, 'People')
 	}
 
 	@test()
@@ -94,6 +100,7 @@ export default class CreatingDataStoresTest extends AbstractCliTest {
 			.getFeature('store')
 			.Action('create')
 			.execute({
+				nameReadable: 'Bids',
 				nameCamel: 'bids',
 			})
 

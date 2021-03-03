@@ -1,0 +1,42 @@
+import { AbstractStore, StoreOptions } from '@sprucelabs/data-stores'
+import { buildSchema, dropFields } from '@sprucelabs/schema'
+
+const fullSchema = buildSchema({
+	id: 'full{{namePascal}}',
+	fields: {
+        id: {
+            type: 'id',
+        }
+    },
+})
+
+const createSchema = buildSchema({
+	id: 'create{{namePascal}}',
+	fields: {
+        ...dropFields(fullSchema.fields, ['id'])
+    },
+})
+
+const updateSchema = buildSchema({
+	id: 'update{{namePascal}}',
+	fields: {
+        ...dropFields(fullSchema.fields, ['id'])
+    },
+})
+
+type FullSchema = typeof fullSchema
+type CreateSchema = typeof createSchema
+type UpdateSchema = typeof updateSchema
+
+export default class GoodStore extends AbstractStore<FullSchema, CreateSchema, UpdateSchema> {
+	public name = '{{namePascal}}'
+	protected collectionName = '{{nameSnake}}'
+	protected createSchema = createSchema
+	protected updateSchema = updateSchema
+	protected fullSchema = fullSchema
+	protected databaseSchema = fullSchema
+
+	public static Store(options: StoreOptions) {
+		return new this(options.db)
+	}
+}

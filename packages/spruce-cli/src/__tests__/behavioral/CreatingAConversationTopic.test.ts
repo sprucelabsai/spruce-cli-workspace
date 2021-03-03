@@ -1,14 +1,8 @@
-import { ConversationHealthCheckItem } from '@sprucelabs/spruce-conversation-plugin'
+import '@sprucelabs/spruce-conversation-plugin'
 import { test, assert } from '@sprucelabs/test'
 import { CliInterface } from '../../cli'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 import testUtil from '../../tests/utilities/test.utility'
-
-declare module '@sprucelabs/spruce-skill-utils/build/types/skill.types' {
-	interface HealthCheckResults {
-		conversation?: ConversationHealthCheckItem
-	}
-}
 
 export default class CreatingAConversationTopicTest extends AbstractCliTest {
 	@test()

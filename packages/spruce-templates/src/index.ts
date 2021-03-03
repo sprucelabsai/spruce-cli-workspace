@@ -331,6 +331,11 @@ export const templates = {
 		const template = templateImportUtil.getTemplate('store/store.plugin.ts.hbs')
 		return template({})
 	},
+
+	store(options: { nameCamel: string; namePascal: string; nameSnake: string }) {
+		const template = templateImportUtil.getTemplate('store/Store.Store.ts.hbs')
+		return template(options)
+	},
 }
 
 export type Templates = typeof templates

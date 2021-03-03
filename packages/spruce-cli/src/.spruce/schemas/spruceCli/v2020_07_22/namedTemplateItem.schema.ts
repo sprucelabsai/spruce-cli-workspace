@@ -61,6 +61,13 @@ const namedTemplateItemSchema: SpruceSchemas.SpruceCli.v2020_07_22.NamedTemplate
 	                hint: 'kebab-case of the name',
 	                options: undefined
 	            },
+	            /** Snake case name. snake_case of the name */
+	            'nameSnake': {
+	                label: 'Snake case name',
+	                type: 'text',
+	                hint: 'snake_case of the name',
+	                options: undefined
+	            },
 	            /** Description. Describe a bit more here */
 	            'description': {
 	                label: 'Description',

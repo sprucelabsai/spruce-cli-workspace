@@ -1,5 +1,4 @@
-/* eslint-disable no-unreachable */
-import { diskUtil, HealthCheckItem } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
@@ -20,7 +19,7 @@ export default class StoreFeature extends AbstractFeature {
 		},
 	]
 	public packageDependencies = [
-		{ name: '@sprucelabs/data-stores', isDev: false },
+		{ name: '@sprucelabs/spruce-store-plugin', isDev: false },
 	]
 
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')

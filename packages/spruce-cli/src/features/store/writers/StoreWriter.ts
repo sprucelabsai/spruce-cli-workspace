@@ -4,20 +4,30 @@ import { GeneratedFile } from '../../../types/cli.types'
 import AbstractWriter from '../../../writers/AbstractWriter'
 
 export default class StoreWriter extends AbstractWriter {
-	public async writeStore(destination: string, options: { nameCamel: string }) {
+	public async writeStore(
+		destination: string,
+		options: { nameCamel: string; namePascal: string; nameSnake: string }
+	) {
 		const camel = namesUtil.toCamel(options.nameCamel)
 		const pascal = namesUtil.toPascal(camel)
 		const files: GeneratedFile[] = []
 
 		const filename = `${pascal}.store.ts`
 
-		const fileDest = diskUtil.resolvePath(destination, 'stores', filename)
+		const fileDest = diskUtil.resolvePath(
+			destination,
+			'src',
+			'stores',
+			filename
+		)
 
 		if (diskUtil.doesFileExist(fileDest)) {
 			throw new SpruceError({ code: 'STORE_EXISTS' })
 		}
 
-		diskUtil.writeFile(fileDest, 'const yes = true\nconsole.log(yes)')
+		const contents = this.templates.store(options)
+
+		diskUtil.writeFile(fileDest, contents)
 
 		files.push({
 			action: 'generated',

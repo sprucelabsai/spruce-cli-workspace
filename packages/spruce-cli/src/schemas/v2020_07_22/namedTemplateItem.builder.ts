@@ -42,6 +42,11 @@ export default buildSchema({
 			label: 'Kebab case name',
 			hint: 'kebab-case of the name',
 		},
+		nameSnake: {
+			type: 'text',
+			label: 'Snake case name',
+			hint: 'snake_case of the name',
+		},
 		description: {
 			type: 'text',
 			label: 'Description',

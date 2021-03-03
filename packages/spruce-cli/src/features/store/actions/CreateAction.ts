@@ -1,15 +1,19 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
+import { namesUtil } from '@sprucelabs/spruce-skill-utils'
+import namedTemplateItemBuilder from '../../../schemas/v2020_07_22/namedTemplateItem.builder'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 
 const optionsSchema = buildSchema({
 	id: 'createStoreOptions',
 	fields: {
-		nameCamel: {
-			type: 'text',
-			isRequired: true,
-			label: 'Camelcase name',
-			hint: 'The name should be plural, like dogHouses or people.',
+		nameReadable: {
+			...namedTemplateItemBuilder.fields.nameReadable,
+			label: 'Store name',
+			hint: 'Make it easy to read and plural, e.g. People or Bids',
 		},
+		namePascal: namedTemplateItemBuilder.fields.namePascal,
+		nameCamel: namedTemplateItemBuilder.fields.nameCamel,
+		nameSnake: namedTemplateItemBuilder.fields.nameSnake,
 	},
 })
 
@@ -21,13 +25,19 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'create'
 
 	public async execute(options: Options) {
-		const { nameCamel } = this.validateAndNormalizeOptions(options)
+		const {
+			nameCamel,
+			namePascal,
+			nameSnake,
+		} = this.validateAndNormalizeOptions(options)
 
 		const writer = this.Writer('store')
 
 		try {
 			const files = await writer.writeStore(this.cwd, {
 				nameCamel,
+				namePascal: namePascal ?? namesUtil.toPascal(nameCamel),
+				nameSnake: nameSnake ?? namesUtil.toSnake(nameCamel),
 			})
 
 			return {
