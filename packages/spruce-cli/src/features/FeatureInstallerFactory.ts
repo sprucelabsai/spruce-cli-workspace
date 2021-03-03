@@ -19,6 +19,7 @@ import PersonFeature from './person/PersonFeature'
 import SandboxFeature from './sandbox/SandboxFeature'
 import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
+import StoreFeature from './store/StoreFeature'
 import TestFeature from './test/TestFeature'
 import VsCodeFeature from './vscode/VsCodeFeature'
 import WatchFeature from './watch/WatchFeature'
@@ -39,6 +40,7 @@ export default class FeatureInstallerFactory {
 		EventContractFeature,
 		DeployFeature,
 		SandboxFeature,
+		StoreFeature,
 	]
 
 	public static readonly featureCodes: FeatureCode[] = [
@@ -57,6 +59,7 @@ export default class FeatureInstallerFactory {
 		'eventContract',
 		'deploy',
 		'sandbox',
+		'store',
 	]
 
 	public static WithAllFeatures(options: {

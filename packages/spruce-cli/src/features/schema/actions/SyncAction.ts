@@ -170,7 +170,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 							valueTypes,
 							globalSchemaNamespace: globalSchemaNamespace ?? undefined,
 							typesTemplate: generateStandaloneTypesFile
-								? 'schemas/core.schemas.types.ts.hbs'
+								? 'schema/core.schemas.types.ts.hbs'
 								: undefined,
 						}
 					)

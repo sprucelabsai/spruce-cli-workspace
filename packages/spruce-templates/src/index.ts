@@ -48,7 +48,7 @@ export const templates = {
 			options.fieldTemplateItems
 		)
 		const template = templateImportUtil.getTemplate(
-			options.typesTemplate ?? 'schemas/schemas.types.ts.hbs'
+			options.typesTemplate ?? 'schema/schemas.types.ts.hbs'
 		)
 
 		const schemaImports = importExtractorUtil.extractSchemaImports(
@@ -82,7 +82,7 @@ export const templates = {
 			options.fieldTemplateItems
 		)
 
-		const template = templateImportUtil.getTemplate('schemas/valueTypes.ts.hbs')
+		const template = templateImportUtil.getTemplate('schema/valueTypes.ts.hbs')
 
 		return template({
 			...options,
@@ -111,7 +111,7 @@ export const templates = {
 			options.fieldTemplateItems
 		)
 		const template = templateImportUtil.getTemplate(
-			options.schemaFile ?? 'schemas/schema.ts.hbs'
+			options.schemaFile ?? 'schema/schema.ts.hbs'
 		)
 
 		return template({
@@ -124,7 +124,7 @@ export const templates = {
 	},
 
 	schemaBuilder(options: SchemaBuilderTemplateItem) {
-		const template = templateImportUtil.getTemplate('schemas/builder.ts.hbs')
+		const template = templateImportUtil.getTemplate('schema/builder.ts.hbs')
 		return template({
 			...options,
 			builderFunction: options.builderFunction ?? DEFAULT_BUILDER_FUNCTION,
@@ -132,13 +132,13 @@ export const templates = {
 	},
 
 	error(options: ErrorOptions) {
-		const template = templateImportUtil.getTemplate('errors/SpruceError.ts.hbs')
+		const template = templateImportUtil.getTemplate('error/SpruceError.ts.hbs')
 		return template({ renderClassDefinition: true, ...options })
 	},
 
 	errorOptionsTypes(options: { options: ErrorTemplateItem[] }) {
 		const template = templateImportUtil.getTemplate(
-			'errors/options.types.ts.hbs'
+			'error/options.types.ts.hbs'
 		)
 		return template(options)
 	},
@@ -148,7 +148,7 @@ export const templates = {
 		namePascal: string
 		definition: Schema
 	}) {
-		const template = templateImportUtil.getTemplate('schemas/example.ts.hbs')
+		const template = templateImportUtil.getTemplate('schema/example.ts.hbs')
 		return template(options)
 	},
 
@@ -160,9 +160,7 @@ export const templates = {
 	},
 
 	errorPlugin() {
-		const template = templateImportUtil.getTemplate(
-			'errors/error.plugin.ts.hbs'
-		)
+		const template = templateImportUtil.getTemplate('error/error.plugin.ts.hbs')
 		return template({})
 	},
 
@@ -185,25 +183,25 @@ export const templates = {
 		namePascal: string
 		definition: Schema
 	}) {
-		const template = templateImportUtil.getTemplate('errors/example.ts.hbs')
+		const template = templateImportUtil.getTemplate('error/example.ts.hbs')
 		return template(options)
 	},
 
 	test(options: TestOptions) {
-		const template = templateImportUtil.getTemplate('tests/Test.test.ts.hbs')
+		const template = templateImportUtil.getTemplate('test/Test.test.ts.hbs')
 		return template(options)
 	},
 
 	fieldsTypes(options: { fieldTemplateItems: FieldTemplateItem[] }) {
 		const template = templateImportUtil.getTemplate(
-			'schemas/fields/fields.types.ts.hbs'
+			'schema/fields/fields.types.ts.hbs'
 		)
 		return template(options)
 	},
 
 	fieldClassMap(options: { fieldTemplateItems: FieldTemplateItem[] }) {
 		const template = templateImportUtil.getTemplate(
-			'schemas/fields/fieldClassMap.ts.hbs'
+			'schema/fields/fieldClassMap.ts.hbs'
 		)
 		return template(options)
 	},
@@ -219,7 +217,7 @@ export const templates = {
 	},
 
 	listener(options: EventListenerOptions) {
-		const template = templateImportUtil.getTemplate('events/listener.ts.hbs')
+		const template = templateImportUtil.getTemplate('event/listener.ts.hbs')
 		return template({
 			globalSchemaNamespace: DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
 			...options,
@@ -232,7 +230,7 @@ export const templates = {
 		}
 	) {
 		const template = templateImportUtil.getTemplate(
-			'events/event.contract.ts.hbs'
+			'event/event.contract.ts.hbs'
 		)
 
 		return template(options)
@@ -251,7 +249,7 @@ export const templates = {
 
 	eventEmitPayload(options: EventPayloadOptions) {
 		const template = templateImportUtil.getTemplate(
-			'events/payload.builder.ts.hbs'
+			'event/payload.builder.ts.hbs'
 		)
 
 		return template({ ...options, actionCamel: 'Emit' })
@@ -259,7 +257,7 @@ export const templates = {
 
 	eventResponsePayload(options: EventPayloadOptions) {
 		const template = templateImportUtil.getTemplate(
-			'events/payload.builder.ts.hbs'
+			'event/payload.builder.ts.hbs'
 		)
 
 		return template({ ...options, actionCamel: 'Response' })
@@ -267,7 +265,7 @@ export const templates = {
 
 	combinedEventsContract(contracts: EventContractTemplateItem[]) {
 		const template = templateImportUtil.getTemplate(
-			'events/events.contract.ts.hbs'
+			'event/events.contract.ts.hbs'
 		)
 		return template({ contracts })
 	},
@@ -327,6 +325,11 @@ export const templates = {
 
 	generateFieldKey(renderAs: TemplateRenderAs, definition: FieldDefinitions) {
 		return KeyGeneratorUtility.generateFieldKey(renderAs, definition)
+	},
+
+	storePlugin() {
+		const template = templateImportUtil.getTemplate('store/store.plugin.ts.hbs')
+		return template({})
 	},
 }
 

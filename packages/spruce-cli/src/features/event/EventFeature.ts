@@ -9,11 +9,20 @@ import AbstractFeature, {
 import { FeatureCode } from '../features.types'
 import EventContractWriter from './writers/EventContractWriter'
 
+declare module '../../features/features.types' {
+	interface FeatureMap {
+		event: EventFeature
+	}
+
+	interface FeatureOptionsMap {
+		event: undefined
+	}
+}
+
 export default class EventFeature extends AbstractFeature {
 	public code: FeatureCode = 'event'
-	public nameReadable = 'Mercury'
-	public description =
-		'Plug into the Mercury XP and start creating experiences!'
+	public nameReadable = 'Events'
+	public description = 'Connect to the Mercury Event Engine.'
 	public dependencies: FeatureDependency[] = [
 		{ code: 'schema', isRequired: true },
 	]

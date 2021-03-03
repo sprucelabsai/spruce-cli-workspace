@@ -76,13 +76,11 @@ export default async (event: SpruceEvent): SpruceEventResponse => {
 		
 		await client.emit(`logout::v2020_12_25`)
 		
-		const authResults = await client.authenticate({
+		await client.authenticate({
 			skillId: skill.id,
 			apiKey: skill.apiKey,
 		})
 		
-		eventResponseUtil.getFirstResponseOrThrow(authResults)
-
 		env.set('SKILL_ID', skill.id)
 		env.set('SKILL_API_KEY', skill.apiKey)
 

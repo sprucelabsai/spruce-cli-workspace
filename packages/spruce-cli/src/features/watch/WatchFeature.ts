@@ -7,6 +7,16 @@ import { FeatureCode } from '../features.types'
 
 type ChokidarAction = 'add' | 'addDir' | 'change' | 'unlink' | 'unlinkDir'
 
+declare module '../../features/features.types' {
+	interface FeatureMap {
+		watch: WatchFeature
+	}
+
+	interface FeatureOptionsMap {
+		watch: undefined
+	}
+}
+
 export default class WatchFeature extends AbstractFeature {
 	public description =
 		'Watches for changes on the file system and emits app level events for other features to respond to.'

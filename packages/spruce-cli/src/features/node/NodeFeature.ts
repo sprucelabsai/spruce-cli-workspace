@@ -21,14 +21,24 @@ const nodeFeatureSchema = buildSchema({
 	},
 })
 
-type NodeFeatureSchema = typeof nodeFeatureSchema
+type OptionsSchema = typeof nodeFeatureSchema
+
+declare module '../../features/features.types' {
+	interface FeatureMap {
+		node: NodeFeature
+	}
+
+	interface FeatureOptionsMap {
+		node: SchemaValues<OptionsSchema>
+	}
+}
 
 export default class NodeFeature<
-	S extends NodeFeatureSchema = NodeFeatureSchema
+	S extends OptionsSchema = OptionsSchema
 > extends AbstractFeature<S> {
 	public code: FeatureCode = 'node'
 	public nameReadable = 'nodejs support'
-	public description = 'Get a fresh node module started!'
+	public description = ''
 	public dependencies: FeatureDependency[] = []
 	public optionsSchema = nodeFeatureSchema as S
 	public packageDependencies = [

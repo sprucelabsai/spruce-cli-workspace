@@ -105,9 +105,8 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			installFeatureDependencies: false,
 			features: [
 				{
-					code: this.featureCode,
-					//@ts-ignore
-					options: installOptions,
+					code: this.featureCode as any,
+					options: installOptions as any,
 				},
 			],
 			didUpdateHandler: (message) => this.ui.startLoading(message),
@@ -297,9 +296,8 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			},
 			features: [
 				{
-					code: feature.code,
-					//@ts-ignore
-					options: installOptions,
+					code: feature.code as any,
+					options: installOptions as any,
 				},
 			],
 		})

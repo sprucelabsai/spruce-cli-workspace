@@ -5,6 +5,12 @@ import tsConfigUtil from '../../utilities/tsConfig.utility'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
+declare module '../../features/features.types' {
+	interface FeatureMap {
+		test: TestFeature
+	}
+}
+
 export default class TestFeature extends AbstractFeature {
 	public nameReadable = 'Testing'
 	public description = 'Test first. Test everything! 💪'

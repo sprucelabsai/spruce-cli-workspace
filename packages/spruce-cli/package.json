@@ -276,6 +276,18 @@
 				"code": "deploy"
 			}
 		],
+		"stores": [
+			{
+				"code": "skill",
+				"options": {
+					"name": "data stores test skill",
+					"description": "go team!"
+				}
+			},
+			{
+				"code": "store"
+			}
+		],
 		"deployWithTests": [
 			{
 				"code": "skill",

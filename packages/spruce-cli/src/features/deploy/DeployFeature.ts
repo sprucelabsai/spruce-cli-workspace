@@ -5,6 +5,12 @@ import AbstractFeature, {
 } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
+declare module '../../features/features.types' {
+	interface FeatureMap {
+		deploy: DeployFeature
+	}
+}
+
 export default class DeployFeature extends AbstractFeature {
 	public description = 'Deploy your skill with ease. '
 	public code: FeatureCode = 'deploy'

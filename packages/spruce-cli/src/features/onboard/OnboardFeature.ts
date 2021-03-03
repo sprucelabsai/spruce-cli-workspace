@@ -8,6 +8,12 @@ import { FeatureCode } from '../features.types'
 import ScriptLoader from './ScriptLoader'
 import OnboardingStore from './stores/OnboardingStore'
 
+declare module '../../features/features.types' {
+	interface FeatureMap {
+		onboard: OnboardFeature
+	}
+}
+
 export default class OnboardFeature extends AbstractFeature {
 	public code: FeatureCode = 'onboard'
 	public nameReadable = 'Onboard'

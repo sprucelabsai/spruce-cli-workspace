@@ -7,6 +7,7 @@ import NodeWriter from '../features/node/writers/NodeWriter'
 import SandboxWriter from '../features/sandbox/writers/SandboxWriter'
 import SchemaWriter from '../features/schema/writers/SchemaWriter'
 import SkillGenerator from '../features/skill/writers/SkillWriter'
+import StoreWriter from '../features/store/writers/StoreWriter'
 import TestGenerator from '../features/test/writers/TestWriter'
 import VsCodeWriter from '../features/vscode/writers/VsCodeWriter'
 import LintService from '../services/LintService'
@@ -25,6 +26,7 @@ const classMap = {
 	conversation: ConversationWriter,
 	deploy: DeployWriter,
 	sandbox: SandboxWriter,
+	store: StoreWriter,
 }
 
 export interface WriterMap {
@@ -38,6 +40,7 @@ export interface WriterMap {
 	conversation: ConversationWriter
 	deploy: DeployWriter
 	sandbox: SandboxWriter
+	store: StoreWriter
 }
 
 export type WriterCode = keyof WriterMap

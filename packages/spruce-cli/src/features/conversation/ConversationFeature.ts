@@ -7,6 +7,12 @@ import AbstractFeature, {
 } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
+declare module '../../features/features.types' {
+	interface FeatureMap {
+		conversation: ConversationFeature
+	}
+}
+
 export default class ConversationFeature extends AbstractFeature {
 	public nameReadable = 'Conversation'
 	public code: FeatureCode = 'conversation'

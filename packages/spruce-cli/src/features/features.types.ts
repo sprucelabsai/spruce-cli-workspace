@@ -13,102 +13,22 @@ import {
 import { GraphicsInterface } from '../types/cli.types'
 import WriterFactory from '../writers/WriterFactory'
 import AbstractFeature from './AbstractFeature'
-import ConversationFeature from './conversation/ConversationFeature'
-import DeployFeature from './deploy/DeployFeature'
-import ErrorFeature from './error/ErrorFeature'
-import EventFeature from './event/EventFeature'
-import EventContractFeature from './eventContract/EventContractFeature'
 import FeatureInstaller from './FeatureInstaller'
-import NodeFeature from './node/NodeFeature'
-import OnboardFeature from './onboard/OnboardFeature'
-import OrganizationFeature from './organization/OrganizationFeature'
-import PersonFeature from './person/PersonFeature'
-import SandboxFeature from './sandbox/SandboxFeature'
-import SchemaFeature from './schema/SchemaFeature'
-import SkillFeature from './skill/SkillFeature'
-import TestFeature from './test/TestFeature'
-import VsCodeFeature from './vscode/VsCodeFeature'
-import WatchFeature from './watch/WatchFeature'
 
-export interface FeatureMap {
-	error: ErrorFeature
-	schema: SchemaFeature
-	skill: SkillFeature
-	test: TestFeature
-	vscode: VsCodeFeature
-	event: EventFeature
-	watch: WatchFeature
-	node: NodeFeature
-	onboard: OnboardFeature
-	person: PersonFeature
-	organization: OrganizationFeature
-	conversation: ConversationFeature
-	eventContract: EventContractFeature
-	deploy: DeployFeature
-	sandbox: SandboxFeature
-}
+export interface FeatureMap {}
+export interface FeatureOptionsMap {}
 
-export type InstallFeature =
-	| {
-			code: 'node'
-			options: SchemaValues<NodeFeature['optionsSchema']>
-	  }
-	| {
-			code: 'skill'
-			options: SchemaValues<SkillFeature['optionsSchema']>
-	  }
-	| {
-			code: 'schema'
-			options?: undefined
-	  }
-	| {
-			code: 'error'
-			options?: undefined
-	  }
-	| {
-			code: 'test'
-			options?: undefined
-	  }
-	| {
-			code: 'vscode'
-			options?: undefined
-	  }
-	| {
-			code: 'event'
-			options?: undefined
-	  }
-	| {
-			code: 'watch'
-			options?: undefined
-	  }
-	| {
-			code: 'onboard'
-			options?: undefined
-	  }
-	| {
-			code: 'person'
-			options?: undefined
-	  }
-	| {
-			code: 'organization'
-			options?: undefined
-	  }
-	| {
-			code: 'conversation'
-			options?: undefined
-	  }
-	| {
-			code: 'eventContract'
-			options?: undefined
-	  }
-	| {
-			code: 'deploy'
-			options?: undefined
-	  }
-	| {
-			code: 'sandbox'
-			options?: undefined
-	  }
+export type InstallFeature<
+	Keys extends keyof FeatureOptionsMap = keyof FeatureOptionsMap
+> = {
+	[Key in Keys]: Omit<
+		{
+			code: Key
+			options: FeatureOptionsMap[Key]
+		},
+		FeatureOptionsMap[Key] extends Record<string, any> ? never : 'options'
+	>
+}[Keys]
 
 export interface FeatureActionOptions {
 	templates: Templates

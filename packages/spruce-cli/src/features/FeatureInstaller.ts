@@ -203,8 +203,9 @@ export default class FeatureInstaller implements ServiceProvider {
 			const isInstalled = await this.isInstalled(code)
 
 			if (!isInstalled && isRequired) {
-				const installOptions = options.features.find((f) => f.code === code)
-					?.options
+				const installOptions =
+					//@ts-ignore
+					options.features.find((f) => f.code === code)?.options
 
 				const installFeature = {
 					code: dependenciesToInstall[i].code,
@@ -238,11 +239,13 @@ export default class FeatureInstaller implements ServiceProvider {
 		const feature = this.getFeature(installFeature.code) as AbstractFeature
 
 		if (feature.optionsSchema) {
+			//@ts-ignore
 			validateSchemaValues(feature.optionsSchema, installFeature.options ?? {})
 		}
 
 		didUpdateHandler?.(`Running before package install hook...`)
 		const beforeInstallResults = await feature.beforePackageInstall(
+			//@ts-ignore
 			installFeature.options
 		)
 
@@ -258,6 +261,7 @@ export default class FeatureInstaller implements ServiceProvider {
 
 		didUpdateHandler?.(`Running after package install hook...`)
 		const afterInstallResults = await feature.afterPackageInstall(
+			//@ts-ignore
 			installFeature.options
 		)
 

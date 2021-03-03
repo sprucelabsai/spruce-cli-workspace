@@ -1,4 +1,4 @@
-import { validateSchemaValues } from '@sprucelabs/schema'
+import { SchemaValues, validateSchemaValues } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import skillFeatureSchema from '#spruce/schemas/spruceCli/v2020_07_22/skillFeature.schema'
@@ -9,13 +9,22 @@ import { FeatureCode } from '../features.types'
 type SkillFeatureOptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema
 type SkillFeatureOptions = SpruceSchemas.SpruceCli.v2020_07_22.SkillFeature
 
+declare module '../../features/features.types' {
+	interface FeatureMap {
+		skill: SkillFeature
+	}
+
+	interface FeatureOptionsMap {
+		skill: SchemaValues<SkillFeatureOptionsSchema>
+	}
+}
+
 export default class SkillFeature<
 	S extends SkillFeatureOptionsSchema = SkillFeatureOptionsSchema
 > extends AbstractFeature<S> {
 	public nameReadable = 'Skill'
 	public code: FeatureCode = 'skill'
-	public description =
-		'Skill: The most basic configuration needed to enable a skill'
+	public description = 'The scaffolding needed to run a Skill'
 	public readonly installOrderWeight = 100
 
 	public packageDependencies: NpmPackage[] = [
@@ -53,8 +62,6 @@ export default class SkillFeature<
 		boot: 'node build/index',
 		'boot.local':
 			'node -r ts-node/register -r tsconfig-paths/register ./src/index',
-		'boot.sender': 'ACTION=sender node build/index',
-		'boot.sender.local': 'ACTION=sender yarn boot.local',
 		build: 'yarn build.tsc && yarn resolve-paths.lint',
 		'build.copy-files':
 			"mkdir -p build && rsync -avzq --exclude='*.ts' ./src/ ./build/",

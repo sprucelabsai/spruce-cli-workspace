@@ -234,7 +234,7 @@ export default class SchemaWriter extends AbstractWriter {
 			typesFile,
 			schemaFile:
 				item.importFrom && options.shouldImportCoreSchemas
-					? `schemas/imported.schema.ts.hbs`
+					? `schema/imported.schema.ts.hbs`
 					: undefined,
 		})
 

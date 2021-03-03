@@ -6,7 +6,7 @@ const templatePath = path.join(__dirname, '..', 'templates', 'typescript')
 
 const fieldPartial: string = fs
 	.readFileSync(
-		path.join(templatePath, 'schemas/partials/fieldDefinitionBody.ts.hbs')
+		path.join(templatePath, 'schema/partials/fieldDefinitionBody.ts.hbs')
 	)
 	.toString()
 

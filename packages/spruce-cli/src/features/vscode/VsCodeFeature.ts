@@ -4,6 +4,12 @@ import { FileDescription } from '../../types/cli.types'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
+declare module '../../features/features.types' {
+	interface FeatureMap {
+		vscode: VsCodeFeature
+	}
+}
+
 export default class VsCodeFeature extends AbstractFeature {
 	public nameReadable = 'VSCode'
 	public description = 'Create settings and install VSCode extensions'

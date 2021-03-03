@@ -2,6 +2,12 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
+declare module '../../features/features.types' {
+	interface FeatureMap {
+		organization: OrganizationFeature
+	}
+}
+
 export default class OrganizationFeature extends AbstractFeature {
 	public code: FeatureCode = 'organization'
 	public nameReadable = 'Organization'

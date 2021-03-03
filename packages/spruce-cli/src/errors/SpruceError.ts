@@ -192,6 +192,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 					.join('\n')}`
 				break
 
+			case 'STORE_EXISTS':
+				message = 'A Store exists just happened!'
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}
