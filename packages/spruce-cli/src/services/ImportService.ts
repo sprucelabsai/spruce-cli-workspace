@@ -196,6 +196,42 @@ export default class ImportService {
 		return proxyError
 	}
 
+	public async bulkImport(files: string[]): Promise<any[]> {
+		if (files.length === 0) {
+			return []
+		}
+		const filepath = diskUtil.resolvePath(this.cwd, '.tmp')
+		const filename = 'bulk-import-' + new Date().getTime() + '.ts'
+
+		let imports = ``
+		let exports = `export default [\n`
+
+		let idx = 0
+		for (const file of files) {
+			const relative = pathUtil
+				.relative(filepath, file)
+				.replace(pathUtil.extname(file), '')
+
+			imports += `import { default as import${idx}} from '${relative}'\n`
+			exports += `import${idx},\n`
+			idx++
+		}
+
+		exports += ']'
+
+		const contents = imports + `\n\n` + exports
+		const fullPath = pathUtil.join(filepath, filename)
+		diskUtil.writeFile(fullPath, contents)
+
+		try {
+			const results = await this.importDefault(fullPath)
+
+			return results as any
+		} finally {
+			diskUtil.deleteDir(filepath)
+		}
+	}
+
 	public static clearCache() {
 		ImportService.cachedImports = {}
 		diskUtil.deleteDir(this.cacheDir())

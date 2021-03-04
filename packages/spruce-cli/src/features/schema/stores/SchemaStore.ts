@@ -171,77 +171,40 @@ export default class SchemaStore extends AbstractStore {
 
 		this.totalLocalImports = localMatches.length
 
-		// run sequentially - really slow
-		// for (const local of localMatches) {
-		// 	let version: undefined | string = this.resolveLocalVersion(
-		// 		enableVersioning,
-		// 		local,
-		// 		errors
-		// 	)
+		didUpdateHandler?.(
+			`Starting import of ${localMatches.length} schema builders...`
+		)
 
-		// 	if (version || enableVersioning === false) {
-		// 		await this.loadLocalSchema(
-		// 			local,
-		// 			localNamespace,
-		// 			version,
-		// 			schemas,
-		// 			errors,
-		// 			didUpdateHandler
-		// 		)
-		// 	}
-		// }
+		const importer = this.Service('import')
+		const imported = await importer.bulkImport(localMatches)
 
-		await Promise.all(
-			localMatches.map(async (local) => {
+		for (let c = 0; c < localMatches.length; c++) {
+			try {
+				const local = localMatches[c]
+				let schema = imported[c]
+
 				let version: undefined | string = this.resolveLocalVersion(
 					enableVersioning,
 					local,
 					errors
 				)
-
 				if (version || enableVersioning === false) {
-					await this.loadLocalSchema(
-						local,
+					schema = this.prepareLocalSchema(
+						schema,
 						localNamespace,
 						version,
-						schemas,
-						errors,
 						didUpdateHandler
 					)
+					schemas.push(schema)
 				}
-			})
-		)
+			} catch (err) {
+				errors.push(err)
+			}
+		}
 
 		return {
 			schemas,
 			errors,
-		}
-	}
-
-	private async loadLocalSchema(
-		local: string,
-		localNamespace: string,
-		version: string | undefined,
-		schemas: Schema[],
-		errors: SpruceError[],
-		didUpdateHandler?: InternalUpdateHandler
-	) {
-		try {
-			let schema = await this.importSchema(
-				local,
-				localNamespace,
-				version,
-				didUpdateHandler
-			)
-			schemas.push(schema)
-		} catch (err) {
-			errors.push(
-				new SpruceError({
-					code: 'SCHEMA_FAILED_TO_IMPORT',
-					file: local,
-					originalError: err,
-				})
-			)
 		}
 	}
 
@@ -271,25 +234,12 @@ export default class SchemaStore extends AbstractStore {
 		return version
 	}
 
-	private async importSchema(
-		local: string,
+	private prepareLocalSchema(
+		schema: Schema,
 		localNamespace: string,
 		version: string | undefined,
-		didUpdateHandler?: InternalUpdateHandler
+		didUpdateHandler: InternalUpdateHandler | undefined
 	) {
-		if (this.localImportIdx === this.totalLocalImports - 1) {
-			didUpdateHandler?.(
-				`Importing and validating ${this.totalLocalImports} builders...`
-			)
-		} else {
-			didUpdateHandler?.(`Starting import of ${pathUtil.basename(local)}.`)
-		}
-
-		this.localImportIdx++
-
-		const schemaService = this.Service('schema')
-		const schema = await schemaService.importSchema(local)
-
 		let errors: string[] = []
 
 		if (schema.version) {
