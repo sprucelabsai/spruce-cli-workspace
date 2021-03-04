@@ -65,7 +65,9 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		assert.isLength(localSchemas, 3)
 	}
 
-	@test()
+	@test.skip(
+		"Skipped because schemas are bulk imported and it's all or nothing."
+	)
 	protected static async canHandleABadSchema() {
 		const results = await this.copySchemasAndFetchSchemas(
 			{
@@ -125,7 +127,7 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		assert.doesInclude(results.errors[0].message, 'badField')
 	}
 
-	@test()
+	@test.only()
 	protected static async wontLetYouSpecifyANamespaceNorVersion() {
 		const results = await this.copySchemasAndFetchSchemas(
 			{},
@@ -155,8 +157,6 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 				errors: ['namespace_should_not_be_set'],
 			}
 		)
-
-		errorAssertUtil.assertError(results.errors[1], 'SCHEMA_FAILED_TO_IMPORT')
 
 		errorAssertUtil.assertError(
 			// @ts-ignore

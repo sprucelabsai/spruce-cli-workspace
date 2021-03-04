@@ -110,6 +110,22 @@ export default class BulkImportingTest extends AbstractSpruceTest {
 		assert.doesInclude((err as any).options.file, 'anotherBad.builder.ts')
 	}
 
+	@test()
+	protected static async helpfulErrorWhenImportNotExportedAsDefault() {
+		const err = await assert.doesThrowAsync(() =>
+			this.importer.bulkImport([
+				this.resolveTestPath('test_builders/v2020_06_23/schemaTwo.builder.ts'),
+				this.resolveTestPath('test_builders/v2020_06_23/schemaOne.builder.ts'),
+				this.resolveTestPath(
+					'test_builders_two_bad/v2020_06_23/notDefault.builder.ts'
+				),
+			])
+		)
+
+		errorAssertUtil.assertError(err, 'FAILED_TO_IMPORT')
+		assert.doesInclude((err as any).options.file, 'notDefault.builder.ts')
+	}
+
 	protected static resolveTestPath(...pathAfterTestDirsAndFiles: string[]) {
 		return pathUil.join(
 			this.cwd,
