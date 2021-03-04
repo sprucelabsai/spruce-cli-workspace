@@ -54,7 +54,7 @@ console.log(testVar);
 			`"use strict";
 const testVar = 'hello world';
 console.log(testVar);
-//# sourceMappingURL=test.js.map`
+//# sourceMappingURL=test-watch.js.map`
 		)
 
 		await service.watchStop()
