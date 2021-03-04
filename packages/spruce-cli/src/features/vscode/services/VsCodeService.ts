@@ -1,6 +1,5 @@
 import semver from 'semver'
 import CommandService from '../../../services/CommandService'
-import log from '../../../singletons/log'
 
 const VSCODE_MINIMUM_VERSION = '1.44.0'
 
@@ -28,9 +27,8 @@ export default class VsCodeService extends CommandService {
 			) {
 				return true
 			}
-		} catch (e) {
-			log.trace(e)
-		}
+			// eslint-disable-next-line no-empty
+		} catch (e) {}
 
 		return isInstalled
 	}
@@ -44,11 +42,8 @@ export default class VsCodeService extends CommandService {
 			})
 
 			extensions = stdout.split('\n')
-		} catch (e) {
-			log.warn(
-				'VSCode extensions not installed. Check that VSCode is installed and the "code" cli tool is available. See https://code.visualstudio.com/docs/setup/setup-overview for more information.'
-			)
-		}
+			// eslint-disable-next-line no-empty
+		} catch (e) {}
 
 		return extensions
 	}
@@ -58,16 +53,9 @@ export default class VsCodeService extends CommandService {
 		extensionIds.forEach((eId) => {
 			args = args.concat('--install-extension', eId)
 		})
-		try {
-			const { stdout } = await this.execute('code', {
-				args,
-			})
 
-			log.debug('VSCode installed extensions', stdout)
-		} catch (e) {
-			log.warn(
-				'VSCode extensions not installed. Check that VSCode is installed and the "code" cli tool is available. See https://code.visualstudio.com/docs/setup/setup-overview for more information.'
-			)
-		}
+		await this.execute('code', {
+			args,
+		})
 	}
 }

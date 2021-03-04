@@ -8,7 +8,6 @@ import ServiceFactory, {
 	Service,
 	ServiceMap,
 } from '../services/ServiceFactory'
-import log from '../singletons/log'
 import testUtil from '../tests/utilities/test.utility'
 import { ApiClientFactory } from '../types/apiClient.types'
 import { GraphicsInterface } from '../types/cli.types'
@@ -251,9 +250,9 @@ export default class FeatureFixture implements ServiceProvider {
 
 		try {
 			settingsObject = exists ? JSON.parse(diskUtil.readFile(settingsFile)) : {}
-		} catch (err) {
-			log.warn('Test cache settings file is broken, ignoring...')
-		}
+			// eslint-disable-next-line no-empty
+		} catch {}
+
 		return settingsObject
 	}
 

@@ -25,7 +25,6 @@ import { ProgressBarController } from 'terminal-kit/Terminal'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import SpruceError from '../errors/SpruceError'
 import featuresUtil from '../features/feature.utilities'
-import log from '../singletons/log'
 import { ExecutionResults, GraphicsInterface } from '../types/cli.types'
 import {
 	GraphicsTextEffect,
@@ -443,8 +442,6 @@ export default class TerminalInterface implements GraphicsInterface {
 					fieldDefinition.defaultValue?.path ?? this.cwd,
 					'/'
 				)
-
-				log.trace(`TerminalUtility filePrompt for directory: ${dirPath}`)
 
 				// Check if directory is empty.
 				const files = await globby(`${dirPath}**/*`)

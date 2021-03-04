@@ -21,7 +21,6 @@ import CliGlobalEmitter, {
 import TerminalInterface from './interfaces/TerminalInterface'
 import CommandService from './services/CommandService'
 import ServiceFactory from './services/ServiceFactory'
-import log from './singletons/log'
 import StoreFactory from './stores/StoreFactory'
 import {
 	ApiClient,
@@ -299,7 +298,6 @@ export async function run(argv: string[] = []): Promise<void> {
 	if (dirIdx > -1) {
 		const dir = process.argv[dirIdx + 1]
 		const newCwd = diskUtil.resolvePath(cwd, dir)
-		log.trace(`CWD updated: ${newCwd}`)
 		cwd = newCwd
 	}
 
