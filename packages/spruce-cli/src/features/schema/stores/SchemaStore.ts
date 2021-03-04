@@ -43,8 +43,6 @@ interface FetchFieldsResults {
 
 export default class SchemaStore extends AbstractStore {
 	public readonly name = 'schema'
-	private totalLocalImports = 0
-	private localImportIdx = 0
 
 	public async fetchSchemas(options: {
 		localSchemaLookupDir?: string
@@ -168,8 +166,6 @@ export default class SchemaStore extends AbstractStore {
 
 		const errors: SpruceError[] = []
 		const schemas: Schema[] = []
-
-		this.totalLocalImports = localMatches.length
 
 		didUpdateHandler?.(
 			`Starting import of ${localMatches.length} schema builders...`
