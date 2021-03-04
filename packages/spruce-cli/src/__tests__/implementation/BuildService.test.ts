@@ -52,8 +52,7 @@ console.log(testVar);
 		assert.isEqual(
 			contents,
 			`"use strict";
-const testVar = 'hello world';
-console.log(testVar);
+const test = 'hello world';
 //# sourceMappingURL=test-watch.js.map`
 		)
 
