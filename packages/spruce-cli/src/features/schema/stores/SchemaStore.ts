@@ -244,7 +244,6 @@ export default class SchemaStore extends AbstractStore {
 		version: string | undefined,
 		didUpdateHandler: InternalUpdateHandler | undefined
 	) {
-		debugger
 		let errors: string[] = []
 
 		if (schema.version) {
