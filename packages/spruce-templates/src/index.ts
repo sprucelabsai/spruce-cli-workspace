@@ -15,7 +15,6 @@ import {
 } from '@sprucelabs/spruce-skill-utils'
 import handlebars from 'handlebars'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
-import log from './singletons/log'
 import {
 	DirectoryTemplateCode,
 	DirectoryTemplateContextMap,
@@ -302,9 +301,6 @@ export const templates = {
 			const file = filesToCheck[i].path
 
 			if (!fs.existsSync(file)) {
-				log.debug(
-					`[${kind}] containsAllTemplateFiles failed because ${file} is missing`
-				)
 				filesMissing = true
 				break
 			}
