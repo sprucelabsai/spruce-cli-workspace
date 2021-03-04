@@ -1,6 +1,7 @@
 import pathUil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractSpruceTest, { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import ImportService from '../../services/ImportService'
 import ServiceFactory from '../../services/ServiceFactory'
 
@@ -73,6 +74,40 @@ export default class BulkImportingTest extends AbstractSpruceTest {
 
 		const tmpDir = this.resolvePath('.tmp')
 		assert.isFalse(diskUtil.doesDirExist(tmpDir))
+	}
+
+	@test()
+	protected static async throwsOnTheActualFileWithAnError() {
+		const err = await assert.doesThrowAsync(() =>
+			this.importer.bulkImport([
+				this.resolveTestPath(
+					'test_builders_one_bad/v2020_06_23/badSchema.builder.ts'
+				),
+			])
+		)
+
+		errorAssertUtil.assertError(err, 'FAILED_TO_IMPORT')
+		assert.doesInclude((err as any).options.file, 'badSchema.builder.ts')
+	}
+
+	@test()
+	protected static async throwsOnTheFirstActualFileWithAnErrorWithManyFiles() {
+		const err = await assert.doesThrowAsync(() =>
+			this.importer.bulkImport([
+				this.resolveTestPath(
+					'test_builders_two_bad/v2020_06_23/anotherBad.builder.ts'
+				),
+				this.resolveTestPath(
+					'test_builders_two_bad/v2020_06_23/badSchema.builder.ts'
+				),
+
+				this.resolveTestPath('test_builders/v2020_06_23/schemaTwo.builder.ts'),
+				this.resolveTestPath('test_builders/v2020_06_23/schemaOne.builder.ts'),
+			])
+		)
+
+		errorAssertUtil.assertError(err, 'FAILED_TO_IMPORT')
+		assert.doesInclude((err as any).options.file, 'anotherBad.builder.ts')
 	}
 
 	protected static resolveTestPath(...pathAfterTestDirsAndFiles: string[]) {

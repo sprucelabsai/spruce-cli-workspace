@@ -227,9 +227,16 @@ export default class ImportService {
 			const results = await this.importDefault(fullPath)
 
 			return results as any
+		} catch (err) {
+			// if something failed, lets load one at a time until we find the one that failes
+			for (const file of files) {
+				await this.importDefault(file)
+			}
 		} finally {
 			diskUtil.deleteDir(filepath)
 		}
+
+		return []
 	}
 
 	public static clearCache() {

@@ -171,31 +171,39 @@ export default class SchemaStore extends AbstractStore {
 			`Starting import of ${localMatches.length} schema builders...`
 		)
 
-		const importer = this.Service('import')
-		const imported = await importer.bulkImport(localMatches)
+		try {
+			const importer = this.Service('import')
+			const imported = await importer.bulkImport(localMatches)
 
-		for (let c = 0; c < localMatches.length; c++) {
-			try {
-				const local = localMatches[c]
-				let schema = imported[c]
+			for (let c = 0; c < localMatches.length; c++) {
+				try {
+					const local = localMatches[c]
+					let schema = imported[c]
 
-				let version: undefined | string = this.resolveLocalVersion(
-					enableVersioning,
-					local,
-					errors
-				)
-				if (version || enableVersioning === false) {
-					schema = this.prepareLocalSchema(
-						schema,
-						localNamespace,
-						version,
-						didUpdateHandler
+					let version: undefined | string = this.resolveLocalVersion(
+						enableVersioning,
+						local,
+						errors
 					)
-					schemas.push(schema)
+					if (version || enableVersioning === false) {
+						schema = this.prepareLocalSchema(
+							schema,
+							localNamespace,
+							version,
+							didUpdateHandler
+						)
+						schemas.push(schema)
+					}
+				} catch (err) {
+					errors.push(err)
 				}
-			} catch (err) {
-				errors.push(err)
 			}
+		} catch (err) {
+			throw new SpruceError({
+				code: 'SCHEMA_FAILED_TO_IMPORT',
+				file: err?.options?.file ?? '**UNKWOWN**',
+				originalError: err?.originalError ?? err,
+			})
 		}
 
 		return {
