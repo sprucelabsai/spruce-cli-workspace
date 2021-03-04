@@ -23,7 +23,13 @@ export default class BuildServiceTest extends AbstractCliTest {
 		const builtFilePath = this.resolvePath('build/test.js')
 		const contents = diskUtil.readFile(builtFilePath)
 
-		assert.doesInclude(contents, "var testVar = 'hello world';")
+		assert.isEqual(
+			contents,
+			`"use strict";
+const testVar = 'hello world';
+console.log(testVar);
+//# sourceMappingURL=test.js.map`
+		)
 	}
 
 	@test()
@@ -43,7 +49,13 @@ export default class BuildServiceTest extends AbstractCliTest {
 		const builtFilePath = this.resolvePath('build/test-watch.js')
 		const contents = diskUtil.readFile(builtFilePath)
 
-		assert.doesInclude(contents, "var test = 'hello world';")
+		assert.isEqual(
+			contents,
+			`"use strict";
+const testVar = 'hello world';
+console.log(testVar);
+//# sourceMappingURL=test.js.map`
+		)
 
 		await service.watchStop()
 	}
