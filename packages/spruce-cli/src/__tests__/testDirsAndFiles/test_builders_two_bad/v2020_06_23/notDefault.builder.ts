@@ -1,7 +1,7 @@
 import { buildSchema } from '@sprucelabs/schema'
 
 export const schema = buildSchema({
-	id: 'schemaOne',
+	id: 'notDefault',
 	name: 'First schema',
 	description: 'It is going to be great!',
 	fields: {
@@ -13,7 +13,7 @@ export const schema = buildSchema({
 			type: 'schema',
 			options: {
 				schema: buildSchema({
-					id: 'nested-inline-schema',
+					id: 'notDefaultInline',
 					name: 'nested with dynamic fields',
 					dynamicFieldSignature: {
 						keyName: 'prop',

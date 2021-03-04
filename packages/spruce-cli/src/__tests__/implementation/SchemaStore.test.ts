@@ -127,7 +127,7 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		assert.doesInclude(results.errors[0].message, 'badField')
 	}
 
-	@test.only()
+	@test()
 	protected static async wontLetYouSpecifyANamespaceNorVersion() {
 		const results = await this.copySchemasAndFetchSchemas(
 			{},
