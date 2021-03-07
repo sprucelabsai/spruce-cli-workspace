@@ -89,7 +89,7 @@
 		"terminal-image": "^1.2.1",
 		"terminal-kit": "sprucelabsai/terminal-kit",
 		"tree-kill": "^1.2.2",
-		"tsutils": "^3.20.0",
+		"tsutils": "^3.21.0",
 		"typescript": "^4.2.3",
 		"uuid": "^8.3.2"
 	},
