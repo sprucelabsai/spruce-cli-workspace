@@ -336,7 +336,7 @@ export const templates = {
 	},
 
 	storeTypes(options: { stores: StoreTemplateItem[] }) {
-		const template = templateImportUtil.getTemplate('store/store.types.ts.hbs')
+		const template = templateImportUtil.getTemplate('store/stores.types.ts.hbs')
 		return template(options)
 	},
 }
