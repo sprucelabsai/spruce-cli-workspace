@@ -365,7 +365,8 @@
 						"createsValidConversationTopicDefinition": "F101",
 						"canRegisterConversationsOnBoot": "F104",
 						"canDeploySkill": "L4",
-						"canReRegisterAndThenRegisterConversationsWithoutCrash": "I17"
+						"canReRegisterAndThenRegisterConversationsWithoutCrash": "I17",
+						"generatesValidTypeFile": "I39"
 					}
 				}
 			],
