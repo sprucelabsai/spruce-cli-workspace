@@ -4,6 +4,7 @@ import OnboardingStore from '../features/onboard/stores/OnboardingStore'
 import OrganizationStore from '../features/organization/stores/OrganizationStore'
 import SchemaStore from '../features/schema/stores/SchemaStore'
 import SkillStore from '../features/skill/stores/SkillStore'
+import StoreStore from '../features/store/stores/StoreStore'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory from '../services/ServiceFactory'
 import { ApiClientFactory } from '../types/apiClient.types'
@@ -16,6 +17,7 @@ export interface StoreMap {
 	skill: SkillStore
 	organization: OrganizationStore
 	conversation: ConversationStore
+	store: StoreStore
 }
 
 export type StoreCode = keyof StoreMap
@@ -27,6 +29,7 @@ const storeMap = {
 	skill: SkillStore,
 	organization: OrganizationStore,
 	conversation: ConversationStore,
+	store: StoreStore,
 }
 
 export interface StoreFactoryMethodOptions {

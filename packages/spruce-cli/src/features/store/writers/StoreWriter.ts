@@ -1,5 +1,8 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { StoreTemplateOptions } from '@sprucelabs/spruce-templates'
+import {
+	StoreTemplateItem,
+	StoreTemplateOptions,
+} from '@sprucelabs/spruce-templates'
 import SpruceError from '../../../errors/SpruceError'
 import { GeneratedFile } from '../../../types/cli.types'
 import AbstractWriter from '../../../writers/AbstractWriter'
@@ -27,6 +30,8 @@ export default class StoreWriter extends AbstractWriter {
 
 		diskUtil.writeFile(fileDest, contents)
 
+		await this.lint(fileDest)
+
 		files.push({
 			action: 'generated',
 			name: filename,
@@ -52,5 +57,22 @@ export default class StoreWriter extends AbstractWriter {
 		)
 
 		return results
+	}
+
+	public async writeTypes(
+		destination: string,
+		options: { stores: StoreTemplateItem[] }
+	) {
+		const file = diskUtil.resolvePath(destination, 'stores.types.ts')
+
+		const typesContent = this.templates.storeTypes(options)
+
+		const files = this.writeFileIfChangedMixinResults(
+			file,
+			typesContent,
+			typesContent
+		)
+
+		return files
 	}
 }

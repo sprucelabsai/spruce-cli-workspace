@@ -110,3 +110,10 @@ export interface EventPayloadOptions {
 	nameCamel: string
 	version: string
 }
+
+export interface StoreTemplateItem {
+	namePascal: string
+	nameCamel: string
+	optionsInterfaceName?: string
+	path: string
+}

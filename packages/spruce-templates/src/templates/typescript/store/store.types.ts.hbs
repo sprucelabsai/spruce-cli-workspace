@@ -1,0 +1,14 @@
+
+{{#each stores}}
+import {{namePascal}} from '{{path}}'
+{{/each}}
+
+declare module '@sprucelabs/data-stores/build/types/stores.types' {
+	interface StoreMap {
+        {{#each stores}}
+        {{nameCamel}}: {{namePascal}}
+        {{/each}}
+	}
+
+	interface StoreOptionsMap {}
+}

@@ -27,6 +27,7 @@ import {
 	EventContractTemplateItem,
 	EventPayloadOptions,
 	StoreTemplateOptions,
+	StoreTemplateItem,
 } from './types/templates.types'
 import DirectoryTemplateUtility from './utilities/DirectoryTemplateUtility'
 import importExtractorUtil from './utilities/importExtractor.utility'
@@ -331,6 +332,11 @@ export const templates = {
 
 	store(options: StoreTemplateOptions) {
 		const template = templateImportUtil.getTemplate('store/Store.Store.ts.hbs')
+		return template(options)
+	},
+
+	storeTypes(options: { stores: StoreTemplateItem[] }) {
+		const template = templateImportUtil.getTemplate('store/store.types.ts.hbs')
 		return template(options)
 	},
 }

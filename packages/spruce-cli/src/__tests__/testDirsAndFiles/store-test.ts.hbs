@@ -1,0 +1,24 @@
+import { DatabaseFactory, StoreFactory } from '@sprucelabs/data-stores'
+
+async function test() {
+	const db = DatabaseFactory.Database({
+		dbName: 'test',
+		dbConnectionString: 'memory://',
+	})
+	const factory = StoreFactory.Factory(db)
+	const bids = await factory.Store('bids')
+	const products = await factory.Store('products')
+
+	await bids.createOne({})
+	await products.createOne({})
+
+	const match = await bids.findOne()
+
+	if (!match) {
+		throw new Error('Could not creat test record')
+	}
+}
+
+void test().then(() => {
+	console.log('done!')
+})

@@ -20,6 +20,7 @@ export default class StoreFeature extends AbstractFeature {
 	]
 	public packageDependencies = [
 		{ name: '@sprucelabs/spruce-store-plugin', isDev: false },
+		{ name: '@sprucelabs/data-stores', isDev: false },
 	]
 
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')

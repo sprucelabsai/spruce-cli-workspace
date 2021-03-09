@@ -1,25 +1,12 @@
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
-import { CliInterface } from '../../cli'
-import AbstractCliTest from '../../tests/AbstractCliTest'
 import '@sprucelabs/spruce-store-plugin'
+import AbstractSkillTest from '../../tests/AbstractSkillTest'
 import testUtil from '../../tests/utilities/test.utility'
 
-export default class CreatingDataStoresTest extends AbstractCliTest {
-	private static skill1Dir: string
-	private static cli: CliInterface
-
-	protected static async beforeAll() {
-		await super.beforeAll()
-		this.cwd = this.skill1Dir = this.freshTmpDir()
-		this.cli = await this.FeatureFixture().installCachedFeatures('stores')
-	}
-
-	protected static async beforeEach() {
-		await super.beforeEach()
-		this.cwd = this.skill1Dir
-	}
-
+export default class CreatingDataStoresTest extends AbstractSkillTest {
+	protected static skillCacheKey = 'stores'
 	@test()
 	protected static async hasCreateStoreAction() {
 		const cli = await this.Cli()
@@ -109,5 +96,22 @@ export default class CreatingDataStoresTest extends AbstractCliTest {
 
 		assert.isTruthy(results.errors)
 		errorAssertUtil.assertError(results.errors[0], 'STORE_EXISTS')
+	}
+
+	@test()
+	protected static async storeFactoryAndStoresAreTyped() {
+		await this.cli.getFeature('store').Action('create').execute({
+			nameReadable: 'Product',
+			nameReadablePlural: 'Products',
+			namePascal: 'Product',
+		})
+
+		const testFile = this.resolveTestPath('store-test.ts.hbs')
+		const testContents = diskUtil.readFile(testFile)
+
+		const dest = this.resolvePath('src', 'test.ts')
+		diskUtil.writeFile(dest, testContents)
+
+		await this.Service('typeChecker').check(dest)
 	}
 }
