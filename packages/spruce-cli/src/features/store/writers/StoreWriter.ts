@@ -73,6 +73,8 @@ export default class StoreWriter extends AbstractWriter {
 			typesContent
 		)
 
+		await this.lint(file)
+
 		return files
 	}
 }

@@ -18,6 +18,8 @@ export default class DataStoreStoreTest extends AbstractSkillTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
 		diskUtil.deleteFile(this.badStoreDest)
+
+		this.store = this.Store('store')
 	}
 
 	@test()

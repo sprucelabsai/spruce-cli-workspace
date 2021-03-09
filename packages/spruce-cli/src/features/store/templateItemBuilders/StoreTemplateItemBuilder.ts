@@ -15,9 +15,11 @@ export default class StoreTemplateItemBuilder {
 			const relativePath = pathUtil
 				.relative(destination, store.path)
 				.replace(ext, '')
+
+			const pascalPlural = store.className.replace('Store', '')
 			items.push({
-				namePascal: store.className,
-				nameCamel: namesUtil.toCamel(store.className),
+				namePascalPlural: pascalPlural,
+				nameCamelPlural: namesUtil.toCamel(pascalPlural),
 				path: relativePath,
 			})
 		}

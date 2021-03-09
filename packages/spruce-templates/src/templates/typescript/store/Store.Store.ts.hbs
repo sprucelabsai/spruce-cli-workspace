@@ -28,7 +28,7 @@ type FullSchema = typeof fullSchema
 type CreateSchema = typeof createSchema
 type UpdateSchema = typeof updateSchema
 
-export default class GoodStore extends AbstractStore<FullSchema, CreateSchema, UpdateSchema> {
+export default class {{namePascalPlural}}Store extends AbstractStore<FullSchema, CreateSchema, UpdateSchema> {
 	public name = '{{namePascalPlural}}'
 	protected collectionName = '{{nameSnakePlural}}'
 	protected createSchema = createSchema

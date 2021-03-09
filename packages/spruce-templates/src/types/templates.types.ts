@@ -112,8 +112,8 @@ export interface EventPayloadOptions {
 }
 
 export interface StoreTemplateItem {
-	namePascal: string
-	nameCamel: string
+	namePascalPlural: string
+	nameCamelPlural: string
 	optionsInterfaceName?: string
 	path: string
 }
