@@ -112,8 +112,6 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 		const dest = this.resolvePath('src', 'test.ts')
 		diskUtil.writeFile(dest, testContents)
 
-		await this.openInVsCode({ timeout: 30000 })
-
 		await this.Service('typeChecker').check(dest)
 	}
 }
