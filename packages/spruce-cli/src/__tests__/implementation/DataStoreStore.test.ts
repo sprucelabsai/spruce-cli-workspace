@@ -100,7 +100,7 @@ export default class DataStoreStoreTest extends AbstractSkillTest {
 		assert.isLength(stores, 2)
 
 		assert.doesInclude(stores, {
-			className: 'GoodStore',
+			className: 'ApplesStore',
 			path: storeFilepath,
 		})
 	}
