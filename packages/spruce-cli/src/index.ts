@@ -12,7 +12,7 @@ run(process.argv)
 	.catch((err) => {
 		const term = new TerminalInterface(
 			process.cwd(),
-			process.env.CLI_RENDER_STACK_TRACES === 'true'
+			process.env.CLI_RENDER_STACK_TRACES !== 'false'
 		)
 		term.renderError(err)
 		process.exit(1)

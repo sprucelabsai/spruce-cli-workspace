@@ -1,4 +1,5 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
+import SpruceError from '../../../errors/SpruceError'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -44,21 +45,38 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 							: {
 									stdio: [process.stdin, 'pipe', 'pipe'],
 							  },
+
 						onData: shouldRunSilently
 							? undefined
-							: (data) => {
+							: async (data) => {
 									if (!isWriting) {
-										isWriting = data.search('first message') > -1
+										isWriting = data.search(':: Skill booted') > -1
 										if (isWriting) {
 											this.ui.clear()
 											this.ui.stopLoading()
-											this.ui.renderHero('Lets chat!')
+											process.stdout?.write(
+												'? Send your first message to kick-off the conversation: '
+											)
 										}
-									}
-									if (isWriting) {
-										process.stdout?.write(data)
+									} else if (isWriting) {
+										process.stdout?.write(
+											data.replace('Skill :: Skill booted', '')
+										)
 									}
 							  },
+						onError: (data) => {
+							if (!data.includes('warning package.json')) {
+								// const err = new SpruceError({
+								// 	friendlyMessage:
+								// 		`Testing conversations failed because of the following error:\n\n` +
+								// 		data,
+								// 	code: 'EXECUTING_COMMAND_FAILED',
+								// 	cmd: 'ACTION=test.conversation yarn.boot.local',
+								// 	stderr: data,
+								// })
+								// reject(err)
+							}
+						},
 						env: {
 							ACTION: 'test.conversation',
 						},
@@ -81,6 +99,15 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 				await promise
 			}
 		} catch (err) {
+			if (
+				err.options?.stderr?.includes('SIGINT') ||
+				err.options?.code === 'CONVERSATION_ABORTED'
+			) {
+				return {
+					summaryLines: ['Conversation terminated. ✌️'],
+				}
+			}
+
 			return {
 				errors: [err],
 			}

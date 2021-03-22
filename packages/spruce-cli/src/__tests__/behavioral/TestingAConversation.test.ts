@@ -60,6 +60,31 @@ export default class TestingAConversationTest extends AbstractCliTest {
 		} while (psResults.length > 0)
 	}
 
+	// @test.skip('No longer dies on stderr')
+	// protected static async diesWithStandardError() {
+	// 	const { conversation } = await this.installAndCreateConversation()
+
+	// 	const topicFile = this.resolvePath(
+	// 		'src',
+	// 		'conversations',
+	// 		'knockKnockJoke.topic.ts'
+	// 	)
+
+	// 	const contents =
+	// 		`process.stderr.write('oh no!')\n\n` + diskUtil.readFile(topicFile)
+
+	// 	diskUtil.writeFile(topicFile, contents)
+
+	// 	const test = await conversation
+	// 		.Action('test')
+	// 		.execute({ shouldRunSilently: true })
+
+	// 	assert.isTruthy(test.errors)
+	// 	errorAssertUtil.assertError(test.errors[0], 'EXECUTING_COMMAND_FAILED', {
+	// 		stderr: 'oh no!',
+	// 	})
+	// }
+
 	private static async installAndCreateConversation() {
 		const cli = await this.FeatureFixture().installCachedFeatures(
 			'conversation'
