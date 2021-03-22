@@ -5,7 +5,7 @@
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "13.11.6",
+	"version": "13.11.7",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -64,12 +64,12 @@
 		"@sprucelabs/spruce-core-schemas": "latest",
 		"@sprucelabs/spruce-event-utils": "latest",
 		"@sprucelabs/spruce-skill-utils": "latest",
-		"@sprucelabs/spruce-templates": "^13.11.6",
+		"@sprucelabs/spruce-templates": "^13.11.7",
 		"cfonts": "^2.9.1",
 		"chalk": "^4.1.0",
 		"chokidar": "^3.5.1",
 		"cli-table3": "^0.6.0",
-		"commander": "^7.1.0",
+		"commander": "^7.2.0",
 		"core-js": "^3.9.1",
 		"emphasize": "^4.2.0",
 		"fs-extra": "^9.1.0",
@@ -82,7 +82,7 @@
 		"jsonwebtoken": "^8.5.1",
 		"lodash": "^4.17.21",
 		"md5": "^2.3.0",
-		"open": "^8.0.3",
+		"open": "^8.0.4",
 		"ora": "^5.4.0",
 		"semver": "^7.3.4",
 		"string-argv": "^0.3.1",
