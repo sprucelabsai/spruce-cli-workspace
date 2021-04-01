@@ -70,7 +70,7 @@ export default class StoreWriter extends AbstractWriter {
 		const files = this.writeFileIfChangedMixinResults(
 			file,
 			typesContent,
-			typesContent
+			'The type merging for so the StoreFactory properly types you stores.'
 		)
 
 		await this.lint(file)

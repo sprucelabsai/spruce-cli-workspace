@@ -301,11 +301,19 @@ export async function run(argv: string[] = []): Promise<void> {
 		cwd = newCwd
 	}
 
-	const terminal = new TerminalInterface(cwd)
+	const terminal = new TerminalInterface(
+		cwd,
+		process.env.CLI_RENDER_STACK_TRACES !== 'false'
+	)
 	terminal.clear()
 	terminal.renderHero('Spruce XP')
 
-	await Cli.Boot({ program, cwd, host: process.env.HOST })
+	await Cli.Boot({
+		program,
+		cwd,
+		host: process.env.HOST,
+		graphicsInterface: terminal,
+	})
 
 	await setupInGameEntertainment(terminal)
 

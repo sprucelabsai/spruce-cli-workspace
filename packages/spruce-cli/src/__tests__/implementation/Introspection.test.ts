@@ -1,0 +1,32 @@
+import { test, assert } from '@sprucelabs/test'
+import AbstractCliTest from '../../tests/AbstractCliTest'
+import introspectionUtil from '../../utilities/introspection.utility'
+
+export default class IntrospectionTest extends AbstractCliTest {
+	@test()
+	protected static doesntCrashWithBadFiles() {
+		const path = this.resolveTestPath('introspection/BadDefinition.ts')
+		const results = introspectionUtil.introspect([path])
+		assert.isEqualDeep(results, [{ classes: [], interfaces: [] }])
+	}
+
+	@test()
+	protected static canIntrospectClassThatHasNoParentButImplementsInterface() {
+		const path = this.resolveTestPath('introspection/ImplementsInterface.ts')
+		const results = introspectionUtil.introspect([path])
+		assert.isEqualDeep(results, [
+			{
+				classes: [
+					{
+						className: 'ImplementsInterface',
+						isAbstract: false,
+						optionsInterfaceName: undefined,
+						parentClassName: undefined,
+						parentClassPath: undefined,
+					},
+				],
+				interfaces: [{ interfaceName: 'TestInterface' }],
+			},
+		])
+	}
+}

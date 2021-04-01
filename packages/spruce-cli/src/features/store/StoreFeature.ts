@@ -9,7 +9,7 @@ declare module '../../features/features.types' {
 }
 
 export default class StoreFeature extends AbstractFeature {
-	public nameReadable = 'Stores'
+	public nameReadable = 'Data Stores'
 	public description = 'For working with remote places of storage.'
 	public code: FeatureCode = 'store'
 	public dependencies: FeatureDependency[] = [

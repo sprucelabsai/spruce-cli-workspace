@@ -15,6 +15,7 @@ type Options = SchemaValues<OptionsSchema>
 export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'sync.stores'
 	public optionsSchema = optionsSchema
+	public commandAliases = ['sync.stores']
 
 	public async execute(_options: Options) {
 		try {

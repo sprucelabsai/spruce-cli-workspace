@@ -4,8 +4,8 @@ import * as ts from 'typescript'
 
 interface IntrospectionClass {
 	className: string
-	parentClassName: string
-	parentClassPath: string
+	parentClassName: string | undefined
+	parentClassPath: string | undefined
 	optionsInterfaceName: string | undefined
 	isAbstract: boolean
 }
@@ -61,7 +61,6 @@ const serializeSignature = (options: {
 }
 
 const introspectionUtil = {
-	/** Gather helpful details re: a class definition */
 	introspect(tsFiles: string[]): Introspection[] {
 		const filePaths = tsFiles
 		const program = ts.createProgram(filePaths, {})
@@ -97,10 +96,10 @@ const introspectionUtil = {
 
 							const parentClassName =
 								// @ts-ignore
-								parentClassSymbol?.valueDeclaration.name.text
+								parentClassSymbol?.valueDeclaration?.name?.text
 							// @ts-ignore
 							const parentClassPath = parentClassSymbol?.parent
-								.getName()
+								?.getName()
 								.replace('"', '')
 
 							const isAbstractClass = tsutils.isModifierFlagSet(
