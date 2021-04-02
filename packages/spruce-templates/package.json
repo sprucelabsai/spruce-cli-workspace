@@ -47,7 +47,7 @@
 		"local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS",
 		"rebuild": "cd ../ && yarn rebuild",
 		"release": "semantic-release",
-		"watch.build.dev": "concurrently 'yarn build.dev' 'yarn build.tsc -w' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn resolve-paths.lint'\"",
+		"watch.build.dev": "concurrently 'yarn build.dev' 'yarn build.tsc -w' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn resolve-paths.lint'\""
 	},
 	"dependencies": {
 		"@sprucelabs/mercury-types": "latest",
