@@ -62,7 +62,8 @@ export default class SkillFeature<
 		boot: 'node build/index',
 		'boot.local':
 			'node -r ts-node/register -r tsconfig-paths/register ./src/index',
-		build: 'yarn build.tsc && yarn resolve-paths.lint',
+		build: 'yarn build.dev',
+		'build.dev': 'yarn build.tsc && yarn resolve-paths.lint',
 		'build.copy-files':
 			"mkdir -p build && rsync -avzq --exclude='*.ts' ./src/ ./build/",
 		'build.resolve-paths':
@@ -75,19 +76,19 @@ export default class SkillFeature<
 		health: 'yarn boot --health',
 		'health.local': 'yarn boot.local --health',
 		lint: "eslint '**/*.ts'",
-		rebuild: 'yarn clean.all && yarn && yarn build',
+		rebuild: 'yarn clean.all && yarn && yarn build.dev',
 		'resolve-paths.lint': 'yarn build.resolve-paths && yarn lint',
 		test: 'jest',
 		'upgrade.packages':
 			'yarn-upgrade-all && rm yarn.lock ; yarn ; yarn fix.lint | true',
 		'upgrade.packages.all': 'yarn install && yarn upgrade.packages',
 		'upgrade.packages.test':
-			'yarn upgrade.packages.all && yarn lint && yarn build && yarn test',
-		'watch.build':
-			"concurrently 'yarn build' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn build'\"",
+			'yarn upgrade.packages.all && yarn lint && yarn build.dev && yarn test',
+		'watch.build.dev':
+			"concurrently 'yarn build.dev' 'yarn build.tsc -w' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn resolve-paths.lint'\"",
 		'watch.lint':
 			"concurrently 'yarn lint' \"chokidar 'src/**/*' -c 'yarn lint.tsc'\"",
-		'watch.rebuild': 'yarn clean.all && yarn && yarn watch.build',
+		'watch.rebuild': 'yarn clean.all && yarn && yarn watch.build.dev',
 	} as const
 
 	public readonly fileDescriptions: FileDescription[] = [
