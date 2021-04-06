@@ -85,10 +85,11 @@ export default class SkillFeature<
 		'upgrade.packages.test':
 			'yarn upgrade.packages.all && yarn lint && yarn build.dev && yarn test',
 		'watch.build.dev':
-			"concurrently 'yarn build.dev' 'yarn build.tsc -w' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn resolve-paths.lint'\"",
+			"concurrently 'yarn build.dev' 'yarn watch.tsc' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn build.copy-files && build.resolve-paths'\"",
 		'watch.lint':
 			"concurrently 'yarn lint' \"chokidar 'src/**/*' -c 'yarn lint.tsc'\"",
 		'watch.rebuild': 'yarn clean.all && yarn && yarn watch.build.dev',
+		'watch.tsc': 'tsc -w',
 	} as const
 
 	public readonly fileDescriptions: FileDescription[] = [
