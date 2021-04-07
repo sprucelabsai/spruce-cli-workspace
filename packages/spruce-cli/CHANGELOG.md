@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.12.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.11.11...v13.12.0) (2021-04-07)
+
+
+### Bug Fixes
+
+* use yarn for build.resolve-paths ([885a4e0](https://github.com/sprucelabsai/spruce-cli-workspace/commit/885a4e0))
+
+
+### Features
+
+* spruce test fixtures shipped with test feature, error message improvements ([b58da4f](https://github.com/sprucelabsai/spruce-cli-workspace/commit/b58da4f))
+
+
+
+
+
 ## [13.11.11](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.11.10...v13.11.11) (2021-04-07)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
