@@ -19,6 +19,7 @@ export default class TestFeature extends AbstractFeature {
 		{ name: '@sprucelabs/test', isDev: true },
 		{ name: '@sprucelabs/test-utils', isDev: true },
 		{ name: '@sprucelabs/jest-json-reporter', isDev: true },
+		{ name: '@sprucelabs/spruce-test-fixtures', isDev: true },
 		{ name: 'jest-circus', isDev: true },
 		{ name: 'jest', isDev: true },
 	]
