@@ -19,7 +19,7 @@ export default class SettingUpANodeModuleTest extends AbstractCliTest {
 			})
 		)
 
-		errorAssertUtil.assertError(err, 'INVALID_FIELD')
+		errorAssertUtil.assertError(err, 'VALIDATION_FAILED')
 	}
 
 	@test()

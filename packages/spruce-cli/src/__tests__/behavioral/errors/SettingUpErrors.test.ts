@@ -1,19 +1,20 @@
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractErrorTest from '../../../tests/AbstractErrorTest'
 
 export default class SettingUpErrorTest extends AbstractErrorTest {
 	@test()
 	protected static async failsIfSkillIsNotInstalled() {
 		const fixture = this.FeatureFixture()
-		await assert.doesThrowAsync(
-			() =>
-				fixture.installFeatures([
-					{
-						code: 'error',
-					},
-				]),
-			/What's the name of your module/gis
+		const err = await assert.doesThrowAsync(() =>
+			fixture.installFeatures([
+				{
+					code: 'error',
+				},
+			])
 		)
+
+		errorAssertUtil.assertError(err, 'VALIDATION_FAILED')
 	}
 
 	@test()

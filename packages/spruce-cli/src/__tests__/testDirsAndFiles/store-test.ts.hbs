@@ -13,7 +13,7 @@ async function test() {
 	await bids.createOne({})
 	await products.createOne({})
 
-	const match = await bids.findOne()
+	const match = await bids.findOne({})
 
 	if (!match) {
 		throw new Error('Could not creat test record')

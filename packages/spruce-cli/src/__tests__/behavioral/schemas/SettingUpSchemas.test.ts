@@ -1,5 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractSchemaTest from '../../../tests/AbstractSchemaTest'
 import tsConfigUtil from '../../../utilities/tsConfig.utility'
 
@@ -8,17 +9,17 @@ export default class SettingUpSchemasTests extends AbstractSchemaTest {
 	protected static async failsBecauseMissingSkillInformation() {
 		const cli = await this.Cli()
 
-		await assert.doesThrowAsync(
-			() =>
-				cli.installFeatures({
-					features: [
-						{
-							code: 'schema',
-						},
-					],
-				}),
-			/What's the name of your module?/gi
+		const err = await assert.doesThrowAsync(() =>
+			cli.installFeatures({
+				features: [
+					{
+						code: 'schema',
+					},
+				],
+			})
 		)
+
+		errorAssertUtil.assertError(err, 'VALIDATION_FAILED')
 	}
 
 	@test()

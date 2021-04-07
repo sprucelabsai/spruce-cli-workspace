@@ -16,8 +16,10 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 	@test()
 	protected static async getsNoStoresBackFromHealthCheck() {
 		const health = await this.cli.checkHealth({ isRunningLocally: true })
+
 		assert.isFalsy(health.skill.errors)
 		assert.isTruthy(health.store)
+		assert.isFalsy(health.store.errors)
 		assert.isArray(health.store.stores)
 		assert.isLength(health.store.stores, 0)
 	}

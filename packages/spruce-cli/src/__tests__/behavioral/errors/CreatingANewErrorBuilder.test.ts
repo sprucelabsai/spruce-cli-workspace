@@ -23,10 +23,8 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 	@test()
 	protected static async failsWhenNotProvidedName() {
 		const createAction = await this.installErrorsAndGetCreateAction()
-		await assert.doesThrowAsync(
-			() => createAction.execute({}),
-			/'Readable name' is required!/gis
-		)
+		const err = await assert.doesThrowAsync(() => createAction.execute({}))
+		errorAssertUtil.assertError(err, 'VALIDATION_FAILED')
 	}
 
 	protected static async installErrorsAndGetCreateAction() {

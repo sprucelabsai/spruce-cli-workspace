@@ -7,7 +7,6 @@ export default class BootingASkillTest extends AbstractCliTest {
 	protected static async bootingWithoutBuildingThrowsGoodError() {
 		const cli = await this.install()
 
-		this.log('throws good error', this.cwd)
 		await assert.doesThrowAsync(
 			async () => cli.getFeature('skill').Action('boot').execute({}),
 			/You must build/gis
@@ -16,7 +15,6 @@ export default class BootingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async aSkillCanBeBootedAndKilled() {
-		this.log('skillcanbebooted', this.cwd)
 		const cli = await this.install()
 
 		await this.Service('build').build()
