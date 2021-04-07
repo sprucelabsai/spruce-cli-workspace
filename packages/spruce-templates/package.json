@@ -47,7 +47,7 @@
 		"local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS",
 		"rebuild": "cd ../ && yarn rebuild",
 		"release": "semantic-release",
-		"watch.build.dev": "concurrently 'yarn build.dev' 'yarn watch.tsc' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn build.copy-files && build.resolve-paths'\"",
+		"watch.build.dev": "concurrently 'yarn build.dev' 'yarn watch.tsc' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn build.copy-files && yarn build.resolve-paths'\"",
 		"watch.tsc": "tsc -w"
 	},
 	"dependencies": {
