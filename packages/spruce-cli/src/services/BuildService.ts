@@ -23,12 +23,12 @@ export default class BuildService {
 		if (options?.shouldFixLintFirst !== false) {
 			await this.lintService.fix('**/*.ts')
 		}
-		const results = await this.commandService.execute(`yarn build`)
+		const results = await this.commandService.execute(`yarn build.dev`)
 		return results
 	}
 
 	public async watchStart() {
-		this.activeWatch = this.commandService.execute('yarn watch.build')
+		this.activeWatch = this.commandService.execute('yarn watch.build.dev')
 		return this.activeWatch
 	}
 
