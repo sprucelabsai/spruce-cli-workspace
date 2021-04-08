@@ -46,7 +46,12 @@ export default class EventStore extends AbstractStore {
 		localNamespace: string
 	): Promise<EventContract | null> {
 		const localMatches = await globby(
-			diskUtil.resolvePath(this.cwd, 'src', 'events', '**/*.builder.ts')
+			diskUtil.resolvePath(
+				this.cwd,
+				'src',
+				'events',
+				'**/*.(builder|options).ts'
+			)
 		)
 
 		const ns = namesUtil.toKebab(localNamespace)
@@ -77,6 +82,15 @@ export default class EventStore extends AbstractStore {
 					let isSchema = false
 
 					switch (filename) {
+						case 'event.options.ts': {
+							const options = await importer.importDefault(match)
+
+							eventSignatures[fullyQualifiedEventName] = {
+								...eventSignatures[fullyQualifiedEventName],
+								...options,
+							}
+							break
+						}
 						case 'emitPayload.builder.ts':
 							key = 'emitPayloadSchema'
 							isSchema = true

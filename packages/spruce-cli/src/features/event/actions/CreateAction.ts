@@ -3,13 +3,11 @@ import {
 	normalizeSchemaValues,
 	SchemaValues,
 } from '@sprucelabs/schema'
-import { eventDiskUtil } from '@sprucelabs/spruce-event-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventOptions.schema'
 import SpruceError from '../../../errors/SpruceError'
 import namedTemplateItemBuilder from '../../../schemas/v2020_07_22/namedTemplateItem.builder'
 import syncEventActionBuilder from '../../../schemas/v2020_07_22/syncEventOptions.builder'
-import { GeneratedFile } from '../../../types/cli.types'
 import mergeUtil from '../../../utilities/merge.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
@@ -29,6 +27,12 @@ const optionsSchema = buildSchema({
 		nameCamel: {
 			...namedTemplateItemBuilder.fields.nameCamel,
 			isRequired: true,
+		},
+		isGlobal: {
+			type: 'boolean',
+			label: 'Is this a global event?',
+			hint:
+				"This will allow skills to listen without being installed at the same organization. You'll need permission to make this happen.",
 		},
 		version: {
 			type: 'text',
@@ -53,6 +57,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			nameReadable,
 			nameCamel,
 			version,
+			isGlobal,
 		} = this.validateAndNormalizeOptions(options)
 
 		const skill = await this.Store('skill').loadCurrentSkill()
@@ -64,77 +69,16 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 
 		try {
-			let response: FeatureActionResponse = {}
+			const destinationDir = diskUtil.resolvePath(this.cwd, 'src', 'events')
+			const resolvedVersion = await this.resolveVersion(version, destinationDir)
 
-			const eventsDir = diskUtil.resolvePath(this.cwd, 'src', 'events')
-
-			const resolvedVersion = await this.resolveVersion(version, eventsDir)
-
-			const files: ({
-				context?: any
-				templateMethod:
-					| 'eventEmitPayload'
-					| 'eventResponsePayload'
-					| 'permissionContractBuilder'
-			} & Omit<GeneratedFile, 'path'>)[] = [
-				{
-					templateMethod: 'eventEmitPayload',
-					name: 'emitPayload.builder.ts',
-					action: 'generated',
-					description:
-						'The payload that will be sent when you emit this event.',
-				},
-				{
-					templateMethod: 'eventResponsePayload',
-					name: 'responsePayload.builder.ts',
-					action: 'generated',
-					description:
-						'The payload that every listener will need to respond with. Delete this file for events that are fire and forget.',
-				},
-				{
-					templateMethod: 'permissionContractBuilder',
-					name: 'emitPermissions.builder.ts',
-					action: 'generated',
-					description: 'Permissions someone else will need to emit your event.',
-					context: {
-						nameCamel: nameCamel + 'Emit',
-					},
-				},
-				{
-					templateMethod: 'permissionContractBuilder',
-					name: 'listenPermissions.builder.ts',
-					action: 'generated',
-					description:
-						'Permissions someone else will need to listen to your event.',
-					context: {
-						nameCamel: nameCamel + 'Listen',
-					},
-				},
-			]
-
-			response.files = []
-
-			for (const file of files) {
-				const destination = eventDiskUtil.resolveEventPath(eventsDir, {
-					fileName: file.name as any,
-					eventName: nameKebab,
-					version: resolvedVersion,
-				})
-
-				const contents = this.templates[file.templateMethod]({
-					nameCamel,
-					nameReadable,
-					version: resolvedVersion,
-					...file.context,
-				})
-
-				diskUtil.writeFile(destination, contents)
-
-				response.files.push({
-					...file,
-					path: destination,
-				})
-			}
+			const files = await this.Writer('event').writeEvent(destinationDir, {
+				nameKebab,
+				nameCamel,
+				version: resolvedVersion,
+				nameReadable,
+				isGlobal,
+			})
 
 			const syncOptions = normalizeSchemaValues(
 				syncEventActionSchema,
@@ -146,7 +90,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 
 			const syncResponse = await this.parent.Action('sync').execute(syncOptions)
 
-			return mergeUtil.mergeActionResults(response, syncResponse)
+			return mergeUtil.mergeActionResults({ files }, syncResponse)
 		} catch (err) {
 			return {
 				errors: [err],

@@ -9,6 +9,7 @@ const {{nameCamel}}EventContract = buildEventContract({
     eventSignatures: {
         {{#each eventSignatures}}
         '{{@key}}': {
+            {{#if isGlobal}}isGlobal: true,{{/if}}
             {{#if emitPayloadSchema}}emitPayloadSchema: {{emitPayloadSchema.nameCamel}}Schema,{{/if}}
             {{#if responsePayloadSchema}}responsePayloadSchema: {{responsePayloadSchema.nameCamel}}Schema,{{/if}}
             {{#if emitPermissionContract}}emitPermissionContract: {{{ permissionContractBuilder emitPermissionContract }}},{{/if}}

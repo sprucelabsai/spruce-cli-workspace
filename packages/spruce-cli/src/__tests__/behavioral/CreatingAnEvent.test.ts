@@ -48,6 +48,20 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		await this.assertExpectedPayloadSchemas(results)
 		await this.assertReturnsEventFromHealthCheck(cli, skill)
 		await this.createsExpectedPermissionContract(results)
+		await this.assertCreatesOptionsFile(results)
+	}
+
+	private static async assertCreatesOptionsFile(
+		results: FeatureActionResponse
+	) {
+		const optionsFile = testUtil.assertsFileByNameInGeneratedFiles(
+			'event.options.ts',
+			results.files
+		)
+
+		const imported = await this.Service('import').importDefault(optionsFile)
+
+		assert.isEqualDeep(imported, { isGlobal: false })
 	}
 
 	private static async assertExpectedTargetAndPayload(

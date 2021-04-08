@@ -156,6 +156,104 @@ export default class EventWriter extends AbstractWriter {
 		return results
 	}
 
+	public async writeEvent(
+		destinationDir: string,
+		options: {
+			nameCamel: string
+			nameKebab: string
+			version: string
+			nameReadable: string
+			isGlobal?: boolean
+		}
+	) {
+		const {
+			version,
+			nameKebab,
+			nameCamel,
+			nameReadable,
+			isGlobal = false,
+		} = options
+
+		const templates: ({
+			context?: any
+			templateMethod:
+				| 'eventEmitPayload'
+				| 'eventResponsePayload'
+				| 'permissionContractBuilder'
+				| 'eventOptions'
+		} & Omit<GeneratedFile, 'path'>)[] = [
+			{
+				templateMethod: 'eventEmitPayload',
+				name: 'emitPayload.builder.ts',
+				action: 'generated',
+				description: 'The payload that will be sent when you emit this event.',
+			},
+			{
+				templateMethod: 'eventResponsePayload',
+				name: 'responsePayload.builder.ts',
+				action: 'generated',
+				description:
+					'The payload that every listener will need to respond with. Delete this file for events that are fire and forget.',
+			},
+			{
+				templateMethod: 'permissionContractBuilder',
+				name: 'emitPermissions.builder.ts',
+				action: 'generated',
+				description: 'Permissions someone else will need to emit your event.',
+				context: {
+					nameCamel: nameCamel + 'Emit',
+				},
+			},
+			{
+				templateMethod: 'permissionContractBuilder',
+				name: 'listenPermissions.builder.ts',
+				action: 'generated',
+				description:
+					'Permissions someone else will need to listen to your event.',
+				context: {
+					nameCamel: nameCamel + 'Listen',
+				},
+			},
+			{
+				templateMethod: 'eventOptions',
+				name: 'event.options.ts',
+				action: 'generated',
+				description: 'Extra options that can be set for your event',
+				context: {
+					isGlobal,
+				},
+			},
+		]
+
+		const files: GeneratedFile[] = []
+
+		for (const file of templates) {
+			const destination = eventDiskUtil.resolveEventPath(destinationDir, {
+				fileName: file.name as any,
+				eventName: nameKebab,
+				version,
+			})
+
+			const contents = this.templates[file.templateMethod]({
+				nameCamel,
+				nameReadable,
+				version,
+				...file.context,
+			})
+
+			diskUtil.writeFile(destination, contents)
+
+			files.push({
+				...file,
+				path: destination,
+			})
+		}
+
+		await this.lint(destinationDir)
+
+		return files
+	}
+
 	private resolveSchemaTypesFile(
 		schemaTypesLookupDir: string,
 		resolvedDestination: string

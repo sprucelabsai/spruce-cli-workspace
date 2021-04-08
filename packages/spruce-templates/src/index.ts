@@ -237,6 +237,17 @@ export const templates = {
 		return template(options)
 	},
 
+	eventOptions(options: { isGlobal: boolean }) {
+		const template = templateImportUtil.getTemplate(
+			'event/event.options.ts.hbs'
+		)
+
+		return template({
+			...options,
+			isGlobal: options.isGlobal ? 'true' : 'false',
+		})
+	},
+
 	permissionContractBuilder(options: {
 		nameCamel: string
 		nameReadable: string
