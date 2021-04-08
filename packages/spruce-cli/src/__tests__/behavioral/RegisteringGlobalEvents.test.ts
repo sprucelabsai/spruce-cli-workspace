@@ -1,4 +1,4 @@
-import { namesUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
+import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 import testUtil from '../../tests/utilities/test.utility'
