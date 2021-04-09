@@ -9,5 +9,10 @@ export default buildSchema({
 			type: 'phone',
 			isRequired: true,
 		},
+		favoriteColors: {
+			type: 'text',
+			isArray: true,
+			minArrayLength: 3,
+		},
 	},
 })

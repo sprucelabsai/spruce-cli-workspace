@@ -361,4 +361,31 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		assert.isFalsy(results.errors)
 		await this.assertValidActionResponseFiles(results)
 	}
+
+	@test()
+	protected static async syncingMinArrayValues() {
+		const cli = await this.syncSchemas('schemas')
+
+		const schemasDir = this.resolvePath('src', 'schemas')
+
+		await diskUtil.copyDir(this.resolveTestPath('test_builders'), schemasDir)
+
+		const results = await cli.getFeature('schema').Action('sync').execute({})
+
+		const schema = await this.importSchema(results, 'schemaTwo.schema.ts')
+
+		assert.isUndefined(schema.fields.phone.minArrayLength)
+		assert.isEqual(schema.fields.favoriteColors.minArrayLength, 3)
+	}
+
+	private static async importSchema(results: any, filename: string) {
+		const file = testUtil.assertsFileByNameInGeneratedFiles(
+			filename,
+			results.files
+		)
+
+		const schema = await this.Service('import').importDefault(file)
+
+		return schema
+	}
 }
