@@ -37,7 +37,7 @@ export default class EventStoreTest extends AbstractCliTest {
 		})
 		const { contracts, errors } = results
 
-		assert.isLength(contracts, 1)
+		assert.isTrue(contracts.length >= 1)
 
 		for (const contract of contracts) {
 			validateEventContract(contract)
@@ -89,7 +89,7 @@ export default class EventStoreTest extends AbstractCliTest {
 			localNamespace: 'my-skill',
 		})
 
-		assert.isLength(contracts, 2)
+		assert.isTrue(contracts.length >= 2)
 		const skillContract = contracts[1]
 
 		const sig = eventContractUtil.getSignatureByName(
@@ -154,7 +154,7 @@ export default class EventStoreTest extends AbstractCliTest {
 			localNamespace: skill.slug,
 		})
 
-		assert.isLength(contracts, 2)
+		assert.isTrue(contracts.length >= 2)
 		const name = eventNameUtil.join({
 			eventName: EVENT_NAME,
 			eventNamespace: skill.slug,
