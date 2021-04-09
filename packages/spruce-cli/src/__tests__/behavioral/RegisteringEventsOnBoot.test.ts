@@ -50,7 +50,8 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 			version,
 		})
 
-		assert.isLength(contracts, 2)
+		assert.isTrue(contracts.length >= 2)
+
 		const namespace = namesUtil.toPascal(currentSkill.slug)
 		const sig = eventContractUtil.getSignatureByName(contracts[1], name)
 
