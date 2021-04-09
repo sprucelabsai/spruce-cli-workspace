@@ -171,7 +171,7 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				break
 
 			case 'INVALID_EVENT_CONTRACT':
-				message = 'A invalid event contract just happened!'
+				message = `The event named \`${options.fullyQualifiedEventName}\` is not valid. Check ${options.brokenProperty}. The original error is:\n\n${options.originalError?.message}`
 				break
 
 			case 'BOOT_ERROR':
