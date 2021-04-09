@@ -54,6 +54,10 @@ jobs:
             - ~/project/packages/spruce-cli/build
             - ~/project/packages/spruce-templates/node_modules
             - ~/project/packages/spruce-templates/build
+      - run:
+          name: "Reset Sandbox"
+          command: |
+            curl -X POST https://sprucebot.com/demo/sandbox-reset.php
   test:
     docker:
       - image: circleci/node:12
@@ -85,11 +89,7 @@ jobs:
           name: "ENV file creation"
           command: |
             [ -n "$BASE64_ENV" ] && echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
-      - run:
-          name: "Reset Sandbox"
-          command: |
-            curl -X POST https://sprucebot.com/demo/sandbox-reset.php
-            sleep 10
+
       - run:
           name: "Test 💪"
           command: |
