@@ -86,6 +86,11 @@ jobs:
           command: |
             [ -n "$BASE64_ENV" ] && echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
       - run:
+          name: "Reset Sandbox"
+          command: |
+            curl -X POST https://sprucebot.com/demo/sandbox-reset.php
+            sleep 10
+      - run:
           name: "Test 💪"
           command: |
             cd packages/spruce-cli
