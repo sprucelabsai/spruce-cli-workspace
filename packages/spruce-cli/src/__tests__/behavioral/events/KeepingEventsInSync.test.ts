@@ -24,6 +24,8 @@ import testUtil from '../../../tests/utilities/test.utility'
 const EXPECTED_NUM_CONTRACTS_GENERATED = 41
 
 export default class KeepingEventsInSyncTest extends AbstractEventTest {
+	private static randomVersion = 'v2020_01_01'
+
 	private static get mercuryVersion() {
 		return versionUtil.generateVersion('2020-12-25')
 	}
@@ -206,6 +208,72 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 			'myNewEventListenPermissionContract'
 		)
 		assert.isEqual(sig.listenPermissionContract.permissions[0].id, 'can-listen')
+	}
+
+	@test()
+	protected static async twoSkillsWithSameEventCanBeSynced() {
+		const {
+			skill2,
+			skillFixture,
+			orgFixture,
+			org,
+			cli,
+		} = await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
+
+		const skill3 = await skillFixture.seedDemoSkill({ name: 'a third skill' })
+
+		await orgFixture.installSkillAtOrganization(skill3.id, org.id)
+
+		const eventName = `my-new-event::${this.todaysVersion.constValue}`
+
+		await skillFixture.registerEventContract(skill2, {
+			eventSignatures: {
+				[eventName]: {},
+			},
+		})
+
+		await skillFixture.registerEventContract(skill3, {
+			eventSignatures: {
+				[eventName]: {},
+			},
+		})
+
+		const results = await cli.getFeature('event').Action('sync').execute({})
+
+		const contract = testUtil.assertsFileByNameInGeneratedFiles(
+			'events.contract.ts',
+			results.files
+		)
+
+		await this.Service('typeChecker').check(contract)
+	}
+
+	@test()
+	protected static async skillWithSameEventNameButDifferentVersionsCanBeSynced() {
+		const {
+			skill2,
+			skillFixture,
+			cli,
+		} = await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
+
+		const eventName = `my-new-event::${this.todaysVersion.constValue}`
+		const eventName2 = `my-new-event::${this.randomVersion}`
+
+		await skillFixture.registerEventContract(skill2, {
+			eventSignatures: {
+				[eventName]: {},
+				[eventName2]: {},
+			},
+		})
+
+		const results = await cli.getFeature('event').Action('sync').execute({})
+
+		const contract = testUtil.assertsFileByNameInGeneratedFiles(
+			'events.contract.ts',
+			results.files
+		)
+
+		await this.Service('typeChecker').check(contract)
 	}
 
 	private static async assertValidEventResults(results: FeatureActionResponse) {

@@ -1,12 +1,12 @@
 {{#each contracts}}
-import {{nameCamel}}EventContract, { {{namePascal}}EventContract } from '#spruce/events/{{ namespaceCamel }}/{{ nameCamel }}.{{ version }}.contract'
+import {{namespaceCamel}}{{namePascal}}EventContract_{{version}}, { {{namePascal}}EventContract as {{namespacePascal}}{{namePascal}}EventContract_{{version}}  } from '#spruce/events/{{ namespaceCamel }}/{{ nameCamel }}.{{ version }}.contract'
 {{/each}}
 
 export default [
     {{#each contracts}}
-    {{nameCamel}}EventContract,
+    {{namespaceCamel}}{{namePascal}}EventContract_{{version}},
     {{/each}}
 ]
 
 
-export type EventContracts = {{#each contracts}}{{namePascal}}EventContract {{#unless @last}}&{{/unless}} {{/each}}
+export type EventContracts = {{#each contracts}}{{namespacePascal}}{{namePascal}}EventContract_{{version}} {{#unless @last}}&{{/unless}} {{/each}}

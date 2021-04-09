@@ -307,7 +307,7 @@
 		]
 	},
 	"jest": {
-		"maxWorkers": 4,
+		"maxWorkers": 1,
 		"testTimeout": 600000,
 		"testEnvironment": "node",
 		"testPathIgnorePatterns": [
