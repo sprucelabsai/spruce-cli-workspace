@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.13.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.12.1...v13.13.0) (2021-04-09)
+
+
+### Features
+
+* global event registeration ([8bb4b96](https://github.com/sprucelabsai/spruce-cli-workspace/commit/8bb4b96))
+
+
+
+
+
 ## [13.12.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.12.0...v13.12.1) (2021-04-08)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
