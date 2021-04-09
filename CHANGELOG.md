@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.13.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.13.0...v13.13.1) (2021-04-09)
+
+
+### Bug Fixes
+
+* only run reset once per run ([6f393ae](https://github.com/sprucelabsai/spruce-cli-workspace/commit/6f393ae))
+
+
+
+
+
 # [13.13.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.12.1...v13.13.0) (2021-04-09)
 
 
