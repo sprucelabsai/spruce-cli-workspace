@@ -14,5 +14,41 @@ export default buildSchema({
 			isArray: true,
 			minArrayLength: 3,
 		},
+		permissions: {
+			type: 'schema',
+			isRequired: true,
+			isArray: true,
+			minArrayLength: 0,
+			options: {
+				schema: {
+					id: 'permission',
+					name: 'Permission',
+					fields: {
+						id: {
+							type: 'text',
+							label: 'id',
+							isRequired: true,
+							hint:
+								'Hyphen separated di for this permission, e.g. can-unlock-doors',
+						},
+						name: {
+							type: 'text',
+							label: 'Name',
+							isRequired: true,
+							hint: 'Human readable name for this permission',
+						},
+						description: {
+							type: 'text',
+							label: 'Description',
+						},
+						requireAllStatuses: {
+							type: 'boolean',
+							label: 'Require all statuses',
+							defaultValue: false,
+						},
+					},
+				},
+			},
+		},
 	},
 })

@@ -376,6 +376,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		assert.isUndefined(schema.fields.phone.minArrayLength)
 		assert.isEqual(schema.fields.favoriteColors.minArrayLength, 3)
+		assert.isEqual(schema.fields.permissions.minArrayLength, 0)
 	}
 
 	private static async importSchema(results: any, filename: string) {
