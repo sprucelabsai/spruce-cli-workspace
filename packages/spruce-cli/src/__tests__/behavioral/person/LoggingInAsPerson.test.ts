@@ -1,4 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import { DEMO_PHONE } from '../../../fixtures/PersonFixture'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 
@@ -61,6 +62,41 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 
 	@test()
 	protected static async canLoginAsDemoPerson() {
+		await this.loginAsDemoPerson()
+
+		const person = this.Service('auth').getLoggedInPerson()
+
+		assert.isTruthy(person)
+		assert.isString(person.id)
+		assert.isString(person.token)
+		assert.isTrue(person.isLoggedIn)
+	}
+
+	@test()
+	protected static async cantLogoutWithoutBeingLoggedIn() {
+		const cli = await this.FeatureFixture().installCachedFeatures('skills')
+		const results = await cli.getFeature('person').Action('logout').execute({})
+
+		assert.isTruthy(results.errors)
+		assert.isLength(results.errors, 1)
+
+		errorAssertUtil.assertError(results.errors[0], 'NOT_LOGGED_IN')
+	}
+
+	@test()
+	protected static async canLogOut() {
+		const cli = await this.loginAsDemoPerson()
+
+		const results = await cli.getFeature('person').Action('logout').execute({})
+
+		assert.isFalsy(results.errors)
+
+		const person = this.Service('auth').getLoggedInPerson()
+
+		assert.isNull(person)
+	}
+
+	private static async loginAsDemoPerson() {
 		const cli = await this.FeatureFixture().installCachedFeatures('skills')
 
 		const promise = cli.getFeature('person').Action('login').execute({
@@ -74,11 +110,6 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 
 		assert.isFalsy(results.errors)
 
-		const person = this.Service('auth').getLoggedInPerson()
-
-		assert.isTruthy(person)
-		assert.isString(person.id)
-		assert.isString(person.token)
-		assert.isTrue(person.isLoggedIn)
+		return cli
 	}
 }

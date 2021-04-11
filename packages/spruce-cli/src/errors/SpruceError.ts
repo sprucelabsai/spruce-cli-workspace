@@ -20,11 +20,6 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				message += ' Try running `spruce --help`'
 				break
 
-			case 'USER_NOT_FOUND':
-				message = 'Could not find a user.'
-				message += ` token: "${options.token}", userId: "${options.userId}"`
-				break
-
 			case 'GENERIC':
 				message = 'Oh shoot! 🤔'
 				break
@@ -194,6 +189,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 
 			case 'STORE_EXISTS':
 				message = 'A Store exists just happened!'
+				break
+
+			case 'NOT_LOGGED_IN':
+				message = 'You have to be logged in to do that!'
 				break
 
 			default:

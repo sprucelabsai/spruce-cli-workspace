@@ -123,6 +123,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 
 			if (isSkillEvent) {
 				const builder = new EventTemplateItemBuilder()
+
 				const templateItems = builder.buildEventTemplateItemForName(
 					contracts,
 					eventNameUtil.join({
