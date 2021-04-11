@@ -44,9 +44,11 @@ console.log(testVar);
 
 		diskUtil.writeFile(destination, testFile)
 
-		await this.wait(10000)
-
 		const builtFilePath = this.resolvePath('build/test-watch.js')
+		do {
+			await this.wait(1000)
+		} while (!diskUtil.doesFileExist(builtFilePath))
+
 		const contents = diskUtil.readFile(builtFilePath)
 
 		assert.isEqual(
