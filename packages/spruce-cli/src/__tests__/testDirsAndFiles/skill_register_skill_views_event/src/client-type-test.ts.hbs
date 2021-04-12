@@ -1,0 +1,11 @@
+import { MercuryClientFactory } from '@sprucelabs/mercury-client'
+import { SkillEventContract } from '@sprucelabs/mercury-types'
+import '#spruce/events/events.contract'
+
+//@ts-ignore
+async function test() {
+	//@ts-ignore
+	const client = await MercuryClientFactory.Client<SkillEventContract>()
+	await client.emit('{{eventNamespace}}.register-skill-views::v2021_04_11')
+}
+

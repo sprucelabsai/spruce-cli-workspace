@@ -101,6 +101,7 @@ export interface EventContractTemplateItem extends EventContract {
 	namespacePascal: string
 	imports: SchemaImport[]
 	version: string
+	isLocal: boolean
 	eventSignatures: {
 		[eventName: string]: EventSignatureTemplateItem
 	}

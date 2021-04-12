@@ -5,7 +5,7 @@ import {
 	Schema,
 	SchemaTemplateItem,
 } from '@sprucelabs/schema'
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { EventContractTemplateItem } from '@sprucelabs/spruce-templates'
 import { isEqual } from 'lodash'
 import SpruceError from '../../../errors/SpruceError'
@@ -165,7 +165,10 @@ export default class EventContractWriter {
 		const {
 			eventContractTemplateItems,
 			schemaTemplateItems,
-		} = itemBuilder.buildTemplateItems(contractResults.contracts)
+		} = itemBuilder.buildTemplateItems(
+			contractResults.contracts,
+			namesUtil.toKebab(namespace)
+		)
 
 		this.cachedTemplateItems = {
 			eventContractTemplateItems,

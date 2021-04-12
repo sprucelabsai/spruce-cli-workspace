@@ -8,7 +8,7 @@ import {
 } from '@sprucelabs/spruce-skill-utils'
 import { Command, CommanderStatic } from 'commander'
 import './addons/filePrompt.addon'
-import eventsContracts, { EventContracts } from '#spruce/events/events.contract'
+import eventsContracts from '#spruce/events/events.contract'
 import SpruceError from './errors/SpruceError'
 import FeatureCommandAttacher from './features/FeatureCommandAttacher'
 import FeatureInstaller from './features/FeatureInstaller'
@@ -235,7 +235,7 @@ export default class Cli implements CliInterface {
 		const connect = bootOptions?.apiClientFactory
 			? bootOptions.apiClientFactory
 			: async () => {
-					const client = await MercuryClientFactory.Client<EventContracts>({
+					const client: ApiClient = await MercuryClientFactory.Client({
 						contracts: eventsContracts,
 						host: bootOptions?.host ?? 'https://sandbox.mercury.spruce.ai',
 						allowSelfSignedCrt: true,

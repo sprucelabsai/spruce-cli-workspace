@@ -18,7 +18,8 @@ import SchemaTemplateItemBuilder from './SchemaTemplateItemBuilder'
 
 export default class EventTemplateItemBuilder {
 	public buildTemplateItems(
-		contracts: EventContract[]
+		contracts: EventContract[],
+		localNamespace: string
 	): {
 		eventContractTemplateItems: EventContractTemplateItem[]
 		schemaTemplateItems: SchemaTemplateItem[]
@@ -30,7 +31,7 @@ export default class EventTemplateItemBuilder {
 			const {
 				schemaTemplateItems: schemaItems,
 				eventContractTemplateItems: contractItems,
-			} = this.buildTemplateItemsForContract(contract)
+			} = this.buildTemplateItemsForContract(contract, localNamespace)
 
 			eventContractTemplateItems.push(...contractItems)
 			schemaTemplateItems.push(...schemaItems)
@@ -79,7 +80,8 @@ export default class EventTemplateItemBuilder {
 	}
 
 	private buildTemplateItemsForContract(
-		contract: EventContract
+		contract: EventContract,
+		localNamespace: string
 	): {
 		eventContractTemplateItems: EventContractTemplateItem[]
 		schemaTemplateItems: SchemaTemplateItem[]
@@ -95,7 +97,8 @@ export default class EventTemplateItemBuilder {
 		for (const namedSig of namedSignatures) {
 			const item: EventContractTemplateItem = this.buildTemplateItemForEventSignature(
 				namedSig,
-				schemaTemplateItems
+				schemaTemplateItems,
+				namedSig.eventNamespace === localNamespace
 			)
 
 			eventContractTemplateItems.push(item)
@@ -109,7 +112,8 @@ export default class EventTemplateItemBuilder {
 
 	private buildTemplateItemForEventSignature(
 		namedSig: NamedEventSignature,
-		schemaTemplateItems: SchemaTemplateItem[]
+		schemaTemplateItems: SchemaTemplateItem[],
+		isLocal: boolean
 	) {
 		const namespacePascal = this.sigToNamespacePascal(namedSig)
 
@@ -122,6 +126,7 @@ export default class EventTemplateItemBuilder {
 			nameCamel: namesUtil.toCamel(namedSig.eventName),
 			namePascal: namesUtil.toPascal(namedSig.eventName),
 			version: namedSig.version ?? '***MISSING***',
+			isLocal,
 			namespace: namesUtil.toKebab(
 				namedSig.eventNamespace ?? MERCURY_API_NAMESPACE
 			),

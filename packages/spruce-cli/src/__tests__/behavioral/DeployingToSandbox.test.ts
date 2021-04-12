@@ -1,11 +1,10 @@
-import { MercuryClient } from '@sprucelabs/mercury-client'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
-import { EventContracts } from '#spruce/events/events.contract'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 import testUtil from '../../tests/utilities/test.utility'
+import { ApiClient } from '../../types/apiClient.types'
 
 export default class DeployingToSandboxTest extends AbstractCliTest {
 	private static sandboxDemoNumber = process.env.SANDBOX_DEMO_NUMBER as string
@@ -209,7 +208,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 		return { cli, client }
 	}
 
-	private static async fetchSkills(client: MercuryClient<EventContracts>) {
+	private static async fetchSkills(client: ApiClient) {
 		const results = await client.emit(`list-skills::v2020_12_25`, {
 			payload: {
 				showMineOnly: true,

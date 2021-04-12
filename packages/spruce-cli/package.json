@@ -94,7 +94,7 @@
 		"uuid": "^8.3.2"
 	},
 	"devDependencies": {
-		"@sprucelabs/babel-plugin-schema": "latest",
+		"@sprucelabs/resolve-path-aliases": "latest",
 		"@sprucelabs/data-stores": "latest",
 		"@sprucelabs/jest-sheets-reporter": "latest",
 		"@sprucelabs/spruce-conversation-plugin": "latest",
@@ -381,7 +381,7 @@
 		"ignore": [
 			"socket.io",
 			"socket.io-client",
-			"@sprucelabs/babel-plugin-schema",
+			"@sprucelabs/resolve-path-aliases",
 			"@sprucelabs/error",
 			"@sprucelabs/jest-sheets-reporter",
 			"@sprucelabs/mercury",

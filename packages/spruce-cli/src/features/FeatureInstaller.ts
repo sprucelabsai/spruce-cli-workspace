@@ -27,6 +27,8 @@ export default class FeatureInstaller implements ServiceProvider {
 		didUpdateHandler: (handler: (message: string) => void) => void
 	) => void
 	public static stopInstallIntertainmentHandler?: () => void
+	private packagesToInstall: string[] = []
+	private devPackagesToInstall: string[] = []
 
 	public constructor(cwd: string, serviceFactory: ServiceFactory) {
 		this.cwd = cwd
@@ -222,6 +224,8 @@ export default class FeatureInstaller implements ServiceProvider {
 			}
 		}
 
+		await this.installPendingModuleDependencies()
+
 		if (
 			FeatureInstaller.stopInstallIntertainmentHandler &&
 			shouldAllowEntertainment
@@ -309,17 +313,29 @@ export default class FeatureInstaller implements ServiceProvider {
 			)
 		}
 
+		await this.installPendingModuleDependencies()
+
 		if (FeatureInstaller.stopInstallIntertainmentHandler) {
 			FeatureInstaller.stopInstallIntertainmentHandler()
 		}
+	}
+
+	private async installPendingModuleDependencies() {
+		const pkgService = this.Service('pkg')
+
+		await pkgService.install(this.packagesToInstall, {})
+		await pkgService.install(this.devPackagesToInstall, {
+			isDev: true,
+		})
+
+		this.packagesToInstall = []
+		this.devPackagesToInstall = []
 	}
 
 	private async installPackageDependenciesWithoutEntertainment(
 		feature: AbstractFeature,
 		didUpdateHandler?: InternalUpdateHandler
 	) {
-		const packagesToInstall: string[] = []
-		const devPackagesToInstall: string[] = []
 		const packagesInstalled: NpmPackage[] = []
 
 		feature.packageDependencies?.forEach((pkg) => {
@@ -330,40 +346,34 @@ export default class FeatureInstaller implements ServiceProvider {
 			didUpdateHandler?.(`Checking node dependency: ${pkg.name}`)
 
 			if (pkg.isDev) {
-				devPackagesToInstall.push(packageName)
+				this.devPackagesToInstall.push(packageName)
 			} else {
-				packagesToInstall.push(packageName)
+				this.packagesToInstall.push(packageName)
 			}
 		})
 
-		const pkgService = this.Service('pkg')
-
-		if (packagesToInstall.length > 0) {
+		if (this.packagesToInstall.length > 0) {
 			didUpdateHandler?.(
-				`Installing ${packagesToInstall.length} node dependenc${
-					packagesToInstall.length === 1
+				`Installing ${this.packagesToInstall.length} node dependenc${
+					this.packagesToInstall.length === 1
 						? 'y.'
 						: 'ies for ' +
 						  this.getFeatureNameAndDesc(feature) +
 						  ' using NPM. NPM is slow, so this may take a sec....'
 				}.`
 			)
-			await pkgService.install(packagesToInstall, {})
 		}
 
-		if (devPackagesToInstall.length > 0) {
+		if (this.devPackagesToInstall.length > 0) {
 			didUpdateHandler?.(
-				`Now installing ${devPackagesToInstall.length} DEV node dependenc${
-					devPackagesToInstall.length === 1
+				`Now installing ${this.devPackagesToInstall.length} DEV node dependenc${
+					this.devPackagesToInstall.length === 1
 						? 'y.'
 						: 'ies for ' +
 						  this.getFeatureNameAndDesc(feature) +
 						  ' using NPM. NPM is still slow, so hang tight. 🤘'
 				}.`
 			)
-			await pkgService.install(devPackagesToInstall, {
-				isDev: true,
-			})
 		}
 
 		return packagesInstalled

@@ -37,6 +37,7 @@ const didBookTemplateItem: EventContractTemplateItem = {
 	version: expectedVersion,
 	namePascal: 'DidBook',
 	nameCamel: 'didBook',
+	isLocal: false,
 	namespace: namesUtil.toKebab(MERCURY_API_NAMESPACE),
 	namespaceCamel: namesUtil.toCamel(MERCURY_API_NAMESPACE),
 	namespacePascal: namesUtil.toPascal(MERCURY_API_NAMESPACE),
@@ -50,6 +51,7 @@ const willBookTemplateItem: EventContractTemplateItem = {
 	version: expectedVersion,
 	namePascal: 'WillBook',
 	nameCamel: 'willBook',
+	isLocal: false,
 	namespace: namesUtil.toKebab(MERCURY_API_NAMESPACE),
 	imports: [],
 	namespaceCamel: namesUtil.toCamel(MERCURY_API_NAMESPACE),
@@ -63,6 +65,7 @@ const didBookWithNamespaceTemplateItem: EventContractTemplateItem = {
 	version: expectedVersion,
 	namePascal: 'DidBook',
 	nameCamel: 'didBook',
+	isLocal: true,
 	namespace: 'appointments',
 	namespaceCamel: 'appointments',
 	namespacePascal: 'Appointments',
@@ -76,6 +79,7 @@ const willBookWithNamespaceTemplateItem: EventContractTemplateItem = {
 	version: expectedVersion,
 	namePascal: 'WillBook',
 	nameCamel: 'willBook',
+	isLocal: true,
 	namespace: 'appointments',
 	namespaceCamel: 'appointments',
 	namespacePascal: 'Appointments',
@@ -217,6 +221,7 @@ const expectedContractWithEmitPayloadTemplateItem: EventContractTemplateItem = {
 	namePascal: 'DidEnter',
 	nameCamel: 'didEnter',
 	namespace: 'proximity',
+	isLocal: false,
 	version: expectedVersion,
 	namespaceCamel: 'proximity',
 	namespacePascal: 'Proximity',
@@ -255,9 +260,10 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 
 	@test()
 	protected static turnsSingleContractIntoTemplateItem() {
-		const { eventContractTemplateItems } = this.itemBuilder.buildTemplateItems([
-			bookContract,
-		])
+		const { eventContractTemplateItems } = this.itemBuilder.buildTemplateItems(
+			[bookContract],
+			'test-namespace'
+		)
 
 		const actual = eventContractTemplateItems[0]
 
@@ -302,7 +308,7 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 		const {
 			eventContractTemplateItems,
 			schemaTemplateItems,
-		} = this.itemBuilder.buildTemplateItems(contracts)
+		} = this.itemBuilder.buildTemplateItems(contracts, 'appointments')
 
 		assert.isEqualDeep(
 			eventContractTemplateItems,
@@ -314,14 +320,17 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 
 	@test()
 	protected static canPullEventContractSchemaFromCoreEventContract() {
-		const { schemaTemplateItems } = this.itemBuilder.buildTemplateItems([
-			{
-				eventSignatures: {
-					'register-events':
-						coreEventContract.eventSignatures['register-events'],
+		const { schemaTemplateItems } = this.itemBuilder.buildTemplateItems(
+			[
+				{
+					eventSignatures: {
+						'register-events':
+							coreEventContract.eventSignatures['register-events'],
+					},
 				},
-			},
-		])
+			],
+			'testing'
+		)
 
 		const match = schemaTemplateItems.find(
 			(item) => item.id === 'eventContract'
