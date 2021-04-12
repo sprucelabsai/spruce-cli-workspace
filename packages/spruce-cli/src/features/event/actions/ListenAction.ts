@@ -38,7 +38,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 
 			let {
 				listenerDestinationDir,
-				version,
+				version: versionOptions,
 				eventName,
 				eventNamespace,
 				schemaTypesLookupDir,
@@ -82,8 +82,10 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 			const fqen = eventNameUtil.join({
 				eventName,
 				eventNamespace,
-				version,
+				version: versionOptions,
 			})
+
+			let { version } = eventNameUtil.split(fqen)
 
 			const isValidEvent = !!eventChoicesByNamespace[eventNamespace].find(
 				(e) => e.value === eventName || e.value === fqen
@@ -123,7 +125,6 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 
 			if (isSkillEvent) {
 				const builder = new EventTemplateItemBuilder()
-
 				const templateItems = builder.buildEventTemplateItemForName(
 					contracts,
 					eventNameUtil.join({

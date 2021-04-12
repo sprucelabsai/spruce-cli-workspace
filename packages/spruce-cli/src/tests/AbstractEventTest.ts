@@ -25,18 +25,28 @@ export default abstract class AbstractEventTest extends AbstractCliTest {
 	protected static async seedDummySkillRegisterCurrentSkillAndInstallToOrg(
 		cacheKey = 'events'
 	) {
-		const cliPromise = this.installEventFeature(cacheKey)
+		const results = await this.registerCurrentSkillAndInstallToOrg(cacheKey)
 
-		const skillFixture = this.SkillFixture()
+		const { skillFixture, orgFixture, org } = results
 
 		const skill2 = await skillFixture.seedDemoSkill({
 			name: 'my second skill',
 		})
 
-		const orgFixture = this.OrganizationFixture()
-		const org = await orgFixture.seedDemoOrg({ name: 'my org' })
-
 		await orgFixture.installSkillAtOrganization(skill2.id, org.id)
+
+		return { ...results, skill2 }
+	}
+
+	protected static async registerCurrentSkillAndInstallToOrg(
+		cacheKey = 'events'
+	) {
+		const cliPromise = this.installEventFeature(cacheKey)
+
+		const skillFixture = this.SkillFixture()
+		const orgFixture = this.OrganizationFixture()
+
+		const org = await orgFixture.seedDemoOrg({ name: 'my org' })
 
 		const cli = await cliPromise
 
@@ -46,6 +56,6 @@ export default abstract class AbstractEventTest extends AbstractCliTest {
 
 		await orgFixture.installSkillAtOrganization(skill.id, org.id)
 
-		return { skillFixture, currentSkill: skill, skill2, cli, org, orgFixture }
+		return { skillFixture, currentSkill: skill, cli, org, orgFixture }
 	}
 }
