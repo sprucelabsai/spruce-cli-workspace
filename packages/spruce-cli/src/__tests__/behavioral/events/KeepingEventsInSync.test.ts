@@ -296,7 +296,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		assert.isTruthy(imported)
 		assert.isArray(imported)
 
-		assert.isAbove(imported.length, EXPECTED_NUM_CONTRACTS_GENERATED)
+		assert.isTrue(imported.length >= EXPECTED_NUM_CONTRACTS_GENERATED)
 	}
 
 	private static async importCombinedContractsFile(

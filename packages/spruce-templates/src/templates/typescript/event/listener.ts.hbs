@@ -1,6 +1,6 @@
 import SpruceError from '#spruce/../errors/SpruceError'
 import { SpruceEvent, SpruceEventResponse } from '@sprucelabs/spruce-event-utils'
-{{#if emitPayloadSchemaTemplateItem}}import { EventContracts } from '{{contractsFile}}'{{/if}}
+{{#if emitPayloadSchemaTemplateItem}}import { SkillEventContract } from '@sprucelabs/mercury-types'{{/if}}
 {{#if emitPayloadSchemaTemplateItem}}import { {{globalSchemaNamespace}} } from '{{schemaTypesFile}}'{{/if}}
 
 {{#if emitPayloadSchemaTemplateItem}}
@@ -9,7 +9,7 @@ type EmitPayload = {{{ schemaNamespacePath schemaTemplateItem=emitPayloadSchemaT
 type ResponsePayload = {{{ schemaNamespacePath schemaTemplateItem=responsePayloadSchemaTemplateItem }}}
 {{/if}}
 
-export default (event: SpruceEvent{{#if emitPayloadSchemaTemplateItem}}<EventContracts, EmitPayload>{{/if}}): SpruceEventResponse{{#if responsePayloadSchemaTemplateItem}}<ResponsePayload>{{/if}} => {
+export default (event: SpruceEvent{{#if emitPayloadSchemaTemplateItem}}<SkillEventContract, EmitPayload>{{/if}}): SpruceEventResponse{{#if responsePayloadSchemaTemplateItem}}<ResponsePayload>{{/if}} => {
 	console.log(event)
 
 	throw new SpruceError({

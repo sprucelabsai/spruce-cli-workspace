@@ -149,7 +149,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 		assert.doesInclude(
 			contents,
-			'event: SpruceEvent<EventContracts, EmitPayload>'
+			'event: SpruceEvent<SkillEventContract, EmitPayload>'
 		)
 
 		assert.doesInclude(
