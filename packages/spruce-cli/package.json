@@ -94,9 +94,9 @@
 		"uuid": "^8.3.2"
 	},
 	"devDependencies": {
-		"@sprucelabs/resolve-path-aliases": "latest",
 		"@sprucelabs/data-stores": "latest",
 		"@sprucelabs/jest-sheets-reporter": "latest",
+		"@sprucelabs/resolve-path-aliases": "latest",
 		"@sprucelabs/spruce-conversation-plugin": "latest",
 		"@sprucelabs/spruce-deploy-plugin": "latest",
 		"@sprucelabs/spruce-store-plugin": "latest",
@@ -121,7 +121,7 @@
 		"@types/terminal-kit": "^1.28.2",
 		"@types/uuid": "^8.3.0",
 		"chokidar-cli": "^2.1.0",
-		"concurrently": "^6.0.1",
+		"concurrently": "^6.0.2",
 		"conventional-changelog-sprucelabs": "^1.1.2",
 		"dotenv": "^8.2.0",
 		"eslint": "^7.24.0",
