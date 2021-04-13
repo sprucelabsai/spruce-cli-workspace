@@ -367,7 +367,8 @@
 						"canDeploySkill": "L4",
 						"canReRegisterAndThenRegisterConversationsWithoutCrash": "I17",
 						"generatesValidTypeFile": "I39",
-						"skillWithSameEventNameButDifferentVersionsCanBeSynced": "I79"
+						"skillWithSameEventNameButDifferentVersionsCanBeSynced": "I79",
+						"canListenToEventWeCreated": "I89"
 					}
 				}
 			],
