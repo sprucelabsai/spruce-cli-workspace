@@ -4,9 +4,10 @@ import AbstractSkillTest from '../../tests/AbstractSkillTest'
 import testUtil from '../../tests/utilities/test.utility'
 import { RegisteredSkill } from '../../types/cli.types'
 
+const stamp = new Date().getTime()
 const EVENT_NAME_READABLE = 'did book appointment'
-const EVENT_NAME = 'register-skill-views'
-const EVENT_CAMEL = 'registerSkillViews'
+const EVENT_NAME = `test-register-skill-views${stamp}`
+const EVENT_CAMEL = `testRegisterSkillViews${stamp}`
 
 export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'events'
@@ -38,6 +39,8 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 				nameCamel: EVENT_CAMEL,
 			})
 
+		assert.isFalsy(results.errors)
+
 		const optionsFile = testUtil.assertsFileByNameInGeneratedFiles(
 			'event.options.ts',
 			results.files
@@ -50,7 +53,7 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 
 		const version = versionUtil.generateVersion().dirValue
 		const contractFile = testUtil.assertsFileByNameInGeneratedFiles(
-			`registerSkillViews.${version}.contract.ts`,
+			`${EVENT_CAMEL}.${version}.contract.ts`,
 			results.files
 		)
 
@@ -60,7 +63,7 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 
 		const sig =
 			importedContract.eventSignatures[
-				`${this.skill.slug}.register-skill-views::${version}`
+				`${this.skill.slug}.${EVENT_NAME}::${version}`
 			]
 		assert.isTrue(sig.isGlobal)
 	}
@@ -86,7 +89,7 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 		boot.meta?.kill()
 
 		const version = versionUtil.generateVersion().constValue
-		const eventName = `${this.skill.slug}.register-skill-views::${version}`
+		const eventName = `${this.skill.slug}.${EVENT_NAME}::${version}`
 
 		assert.isTruthy(contracts[1].eventSignatures[eventName])
 	}

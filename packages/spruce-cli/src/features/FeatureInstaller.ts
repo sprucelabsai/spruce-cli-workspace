@@ -258,7 +258,7 @@ export default class FeatureInstaller implements ServiceProvider {
 		}
 
 		didUpdateHandler?.(`Installing package dependencies...`)
-		const packagesInstalled = await this.installPackageDependenciesWithoutEntertainment(
+		const packagesInstalled = await this.queueInstallPackageDependenciesWithoutEntertainment(
 			feature,
 			didUpdateHandler
 		)
@@ -288,13 +288,13 @@ export default class FeatureInstaller implements ServiceProvider {
 		feature: AbstractFeature,
 		didUpdateHandler?: InternalUpdateHandler
 	) {
-		return this.installPackageDependenciesForManyFeatures(
+		return this.installPackageDependenciesForFeatures(
 			[feature],
 			didUpdateHandler
 		)
 	}
 
-	public async installPackageDependenciesForManyFeatures(
+	public async installPackageDependenciesForFeatures(
 		features: AbstractFeature[],
 		didUpdateHandler?: InternalUpdateHandler
 	) {
@@ -307,23 +307,38 @@ export default class FeatureInstaller implements ServiceProvider {
 		}
 
 		for (const feature of features) {
-			await this.installPackageDependenciesWithoutEntertainment(
+			await this.queueInstallPackageDependenciesWithoutEntertainment(
 				feature,
 				didUpdateHandler
 			)
 		}
 
-		await this.installPendingModuleDependencies()
+		await this.installPendingModuleDependencies(didUpdateHandler)
 
 		if (FeatureInstaller.stopInstallIntertainmentHandler) {
 			FeatureInstaller.stopInstallIntertainmentHandler()
 		}
 	}
 
-	private async installPendingModuleDependencies() {
+	private async installPendingModuleDependencies(
+		didUpdateHandler?: InternalUpdateHandler
+	) {
 		const pkgService = this.Service('pkg')
 
+		didUpdateHandler?.(
+			`Installing ${this.packagesToInstall.length} node module${
+				this.packagesToInstall.length === 1 ? '' : 's'
+			} using NPM. Please be patient.`
+		)
+
 		await pkgService.install(this.packagesToInstall, {})
+
+		didUpdateHandler?.(
+			`Lastly, installing ${this.devPackagesToInstall.length} DEV node module${
+				this.devPackagesToInstall.length === 1 ? '' : 's'
+			} using NPM. Please be patient.`
+		)
+
 		await pkgService.install(this.devPackagesToInstall, {
 			isDev: true,
 		})
@@ -332,7 +347,7 @@ export default class FeatureInstaller implements ServiceProvider {
 		this.devPackagesToInstall = []
 	}
 
-	private async installPackageDependenciesWithoutEntertainment(
+	private async queueInstallPackageDependenciesWithoutEntertainment(
 		feature: AbstractFeature,
 		didUpdateHandler?: InternalUpdateHandler
 	) {
@@ -354,24 +369,22 @@ export default class FeatureInstaller implements ServiceProvider {
 
 		if (this.packagesToInstall.length > 0) {
 			didUpdateHandler?.(
-				`Installing ${this.packagesToInstall.length} node dependenc${
+				`Queueing install of ${this.packagesToInstall.length} node dependenc${
 					this.packagesToInstall.length === 1
 						? 'y.'
-						: 'ies for ' +
-						  this.getFeatureNameAndDesc(feature) +
-						  ' using NPM. NPM is slow, so this may take a sec....'
+						: 'ies for ' + this.getFeatureNameAndDesc(feature) + '...'
 				}.`
 			)
 		}
 
 		if (this.devPackagesToInstall.length > 0) {
 			didUpdateHandler?.(
-				`Now installing ${this.devPackagesToInstall.length} DEV node dependenc${
+				`Queueing install of ${
+					this.devPackagesToInstall.length
+				} DEV node dependenc${
 					this.devPackagesToInstall.length === 1
 						? 'y.'
-						: 'ies for ' +
-						  this.getFeatureNameAndDesc(feature) +
-						  ' using NPM. NPM is still slow, so hang tight. 🤘'
+						: 'ies for ' + this.getFeatureNameAndDesc(feature) + '. 🤘'
 				}.`
 			)
 		}

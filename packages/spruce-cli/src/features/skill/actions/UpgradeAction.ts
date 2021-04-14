@@ -21,6 +21,7 @@ export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> 
 		const generatedFiles = await this.copyFiles(normalizedOptions)
 
 		await this.reInstallPackageDependencies()
+
 		const skillFeature = this.parent as SkillFeature
 		skillFeature.installScripts()
 
@@ -43,7 +44,7 @@ export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> 
 		this.ui.startLoading('Updating dependencies...')
 		const features = await this.featureInstaller.getInstalledFeatures()
 
-		await this.featureInstaller.installPackageDependenciesForManyFeatures(
+		await this.featureInstaller.installPackageDependenciesForFeatures(
 			features,
 			(message: string) => {
 				this.ui.startLoading(message)
