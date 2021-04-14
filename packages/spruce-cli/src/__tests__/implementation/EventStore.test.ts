@@ -161,8 +161,10 @@ export default class EventStoreTest extends AbstractCliTest {
 			version: this.version.constValue,
 		})
 
+		let wasFound = false
 		for (const contract of contracts) {
 			if (contract.eventSignatures[name]?.emitPayloadSchema) {
+				wasFound = true
 				assert.isEqual(
 					contract.eventSignatures[name].emitPayloadSchema?.id,
 					EVENT_CAMEL + 'EmitTargetAndPayload'
@@ -180,6 +182,8 @@ export default class EventStoreTest extends AbstractCliTest {
 				validateEventContract(contract)
 			}
 		}
+
+		assert.isTrue(wasFound)
 	}
 
 	private static async seedSkillAndInstallAtOrg(org: any, name: string) {

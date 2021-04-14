@@ -1,5 +1,5 @@
 import { eventErrorAssertUtil } from '@sprucelabs/spruce-event-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert, assertUtil } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 
@@ -99,7 +99,13 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 
 		await this.waitForInput()
 
-		assert.doesInclude(this.ui.lastInvocation().command, 'confirm')
+		assert.doesInclude(
+			this.ui.lastInvocation().command,
+			'confirm',
+			`ui didn't get back a confirm, got back \n\n${assertUtil.stringify(
+				this.ui.lastInvocation()
+			)}`
+		)
 
 		await this.ui.sendInput('')
 
