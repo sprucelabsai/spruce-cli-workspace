@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.15.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.15.0...v13.15.1) (2021-04-14)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+# [13.15.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.14.1...v13.15.0) (2021-04-14)
+
+
+### Features
+
+* clean up of deleted events ([2565ec0](https://github.com/sprucelabsai/spruce-cli-workspace/commit/2565ec0))
+
+
+
+
+
 ## [13.14.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.14.0...v13.14.1) (2021-04-14)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
