@@ -1,5 +1,9 @@
 import pathUtil from 'path'
-import { EventContract, EventSignature } from '@sprucelabs/mercury-types'
+import {
+	EventContract,
+	EventSignature,
+	SpruceSchemas,
+} from '@sprucelabs/mercury-types'
 import {
 	eventResponseUtil,
 	eventDiskUtil,
@@ -157,7 +161,6 @@ export default class EventStore extends AbstractStore {
 		eventContract: EventContract
 	}) {
 		const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
-
 		const results = await client.emit('register-events::v2020_12_25', {
 			payload: {
 				contract: options.eventContract,
@@ -167,5 +170,17 @@ export default class EventStore extends AbstractStore {
 		eventResponseUtil.getFirstResponseOrThrow(results)
 
 		return results
+	}
+
+	public async unRegisterEvents(
+		options: SpruceSchemas.MercuryApi.v2020_12_25.UnregisterEventsEmitPayload
+	) {
+		const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
+
+		const results = await client.emit('unregister-events::v2020_12_25', {
+			payload: options,
+		})
+
+		eventResponseUtil.getFirstResponseOrThrow(results)
 	}
 }

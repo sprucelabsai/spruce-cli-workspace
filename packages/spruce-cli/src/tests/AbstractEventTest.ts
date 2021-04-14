@@ -51,7 +51,7 @@ export default abstract class AbstractEventTest extends AbstractCliTest {
 		const cli = await cliPromise
 
 		const skill = await skillFixture.registerCurrentSkill({
-			name: 'my first skill',
+			name: 'current skill',
 		})
 
 		await orgFixture.installSkillAtOrganization(skill.id, org.id)

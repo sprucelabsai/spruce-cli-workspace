@@ -8,6 +8,7 @@ import { validateSchema } from '@sprucelabs/schema'
 import {
 	buildEmitTargetAndPayloadSchema,
 	eventContractUtil,
+	eventResponseUtil,
 } from '@sprucelabs/spruce-event-utils'
 import {
 	diskUtil,
@@ -16,7 +17,9 @@ import {
 	versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import unregisterSkillEmitTargetAndPayloadSchema from '#spruce/schemas/mercuryApi/v2020_12_25/unregisterSkillEmitTargetAndPayload.schema'
 import EventFeature from '../../../features/event/EventFeature'
+import { generateEventContractFileName } from '../../../features/event/writers/EventWriter'
 import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
@@ -274,6 +277,43 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		)
 
 		await this.Service('typeChecker').check(contract)
+	}
+
+	@test()
+	protected static async unRegisteredEventsAreRemoved() {
+		const {
+			skill2,
+			skillFixture,
+			cli,
+		} = await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
+
+		const stamp = new Date().getTime()
+		const eventName = `${stamp}-cleanup-event-test::${this.todaysVersion.constValue}`
+		const filename = generateEventContractFileName({
+			nameCamel: `${stamp}CleanupEventTest`,
+			version: this.todaysVersion.constValue,
+		})
+
+		await skillFixture.registerEventContract(skill2, {
+			eventSignatures: {
+				[eventName]: {},
+			},
+		})
+
+		const results = await cli.getFeature('event').Action('sync').execute({})
+
+		const eventContract = testUtil.assertsFileByNameInGeneratedFiles(
+			filename,
+			results.files
+		)
+
+		await skillFixture.unRegisterEvents(skill2, {
+			shouldUnregisterAll: true,
+		})
+
+		await cli.getFeature('event').Action('sync').execute({})
+
+		assert.isFalse(diskUtil.doesFileExist(eventContract))
 	}
 
 	private static async assertValidEventResults(results: FeatureActionResponse) {

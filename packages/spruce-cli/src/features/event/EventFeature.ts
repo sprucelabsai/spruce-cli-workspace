@@ -92,6 +92,8 @@ export default class EventFeature extends AbstractFeature {
 			})
 		}
 
+		this.contractWriter.clearCache()
+
 		return this.contractWriter
 	}
 }

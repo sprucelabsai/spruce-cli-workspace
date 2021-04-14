@@ -61,7 +61,7 @@ export default class EventWriter extends AbstractWriter {
 		const destinationFile = diskUtil.resolvePath(
 			destinationDir,
 			eventContractTemplateItem.namespaceCamel,
-			`${eventContractTemplateItem.nameCamel}.${eventContractTemplateItem.version}.contract.ts`
+			generateEventContractFileName(eventContractTemplateItem)
 		)
 
 		const eventsContractContents = this.templates.eventContract({
@@ -275,4 +275,11 @@ export default class EventWriter extends AbstractWriter {
 
 		return relativeTypesFile
 	}
+}
+
+export function generateEventContractFileName(options: {
+	nameCamel: string
+	version: string
+}): string {
+	return `${options.nameCamel}.${options.version}.contract.ts`
 }

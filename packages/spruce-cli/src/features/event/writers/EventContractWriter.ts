@@ -7,6 +7,7 @@ import {
 } from '@sprucelabs/schema'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { EventContractTemplateItem } from '@sprucelabs/spruce-templates'
+import globby from 'globby'
 import { isEqual } from 'lodash'
 import SpruceError from '../../../errors/SpruceError'
 import EventTemplateItemBuilder from '../../../templateItemBuilders/EventTemplateItemBuilder'
@@ -86,9 +87,24 @@ export default class EventContractWriter {
 			schemaTemplateItems,
 		})
 
+		await this.deleteOrphanedEventContracts(
+			resolvedDestination,
+			files.map((a) => a.path)
+		)
+
 		return {
 			files,
 		}
+	}
+
+	private async deleteOrphanedEventContracts(
+		lookupDir: string,
+		existingContracts: string[]
+	) {
+		const matches = await globby(lookupDir + '/**/*.contract.ts')
+		const diff = matches.filter((m) => !existingContracts.includes(m))
+
+		diff.forEach((f) => diskUtil.deleteFile(f))
 	}
 
 	public async fetchContractsAndGenerateUniqueSchemas(

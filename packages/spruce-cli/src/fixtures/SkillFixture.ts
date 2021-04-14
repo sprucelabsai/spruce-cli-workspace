@@ -1,4 +1,5 @@
 import { EventContract, SpruceSchemas } from '@sprucelabs/mercury-types'
+import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { RegisterSkillOptions } from '../features/skill/stores/SkillStore'
 import StoreFactory from '../stores/StoreFactory'
 import {
@@ -39,16 +40,18 @@ export default class SkillFixture {
 
 		return this.storeFactory.Store('skill').register(
 			{
-				slug: values.slug ?? this.generateSkillSlug(),
+				slug: values.slug ?? this.generateSkillSlug(values.name),
 				...values,
 			},
 			options
 		)
 	}
 
-	private generateSkillSlug(): string {
+	private generateSkillSlug(name: string): string {
 		SkillFixture.skillCount++
-		return `my-skill-${new Date().getTime()}-count-${SkillFixture.skillCount}`
+		return `${namesUtil.toKebab(name)}-${new Date().getTime()}-count-${
+			SkillFixture.skillCount
+		}`
 	}
 
 	public async registerEventContract(
@@ -67,6 +70,22 @@ export default class SkillFixture {
 		await eventStore.registerEventContract({
 			eventContract: contract,
 		})
+	}
+
+	public async unRegisterEvents(
+		auth: ApiClientFactoryOptions | SpruceSchemas.Spruce.v2020_07_22.Skill,
+		options: SpruceSchemas.MercuryApi.v2020_12_25.UnregisterEventsEmitPayload
+	) {
+		const skillAuth = apiClientUtil.skillOrAuthToAuth(auth)
+		const client = await this.apiClientFactory(skillAuth)
+
+		const eventStore = this.storeFactory.Store('event', {
+			apiClientFactory: async () => {
+				return client
+			},
+		})
+
+		await eventStore.unRegisterEvents(options)
 	}
 
 	public async clearAllSkills() {
