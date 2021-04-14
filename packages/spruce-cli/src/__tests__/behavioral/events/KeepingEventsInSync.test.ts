@@ -8,7 +8,6 @@ import { validateSchema } from '@sprucelabs/schema'
 import {
 	buildEmitTargetAndPayloadSchema,
 	eventContractUtil,
-	eventResponseUtil,
 } from '@sprucelabs/spruce-event-utils'
 import {
 	diskUtil,
@@ -17,7 +16,6 @@ import {
 	versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import unregisterSkillEmitTargetAndPayloadSchema from '#spruce/schemas/mercuryApi/v2020_12_25/unregisterSkillEmitTargetAndPayload.schema'
 import EventFeature from '../../../features/event/EventFeature'
 import { generateEventContractFileName } from '../../../features/event/writers/EventWriter'
 import { FeatureActionResponse } from '../../../features/features.types'
