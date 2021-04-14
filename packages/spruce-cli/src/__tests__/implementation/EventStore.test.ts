@@ -161,22 +161,25 @@ export default class EventStoreTest extends AbstractCliTest {
 			version: this.version.constValue,
 		})
 
-		assert.isTruthy(contracts[1].eventSignatures[name].emitPayloadSchema)
-		assert.isEqual(
-			contracts[1].eventSignatures[name].emitPayloadSchema?.id,
-			EVENT_CAMEL + 'EmitTargetAndPayload'
-		)
-		assert.isTruthy(
-			contracts[1].eventSignatures[name].emitPayloadSchema?.fields?.target
-		)
-		assert.isFalsy(
-			contracts[1].eventSignatures[name].emitPayloadSchema?.fields?.payload
-		)
-		assert.isTruthy(contracts[1].eventSignatures[name].responsePayloadSchema)
-		assert.isTruthy(contracts[1].eventSignatures[name].emitPermissionContract)
-		assert.isTruthy(contracts[1].eventSignatures[name].listenPermissionContract)
+		for (const contract of contracts) {
+			if (contract.eventSignatures[name]?.emitPayloadSchema) {
+				assert.isEqual(
+					contract.eventSignatures[name].emitPayloadSchema?.id,
+					EVENT_CAMEL + 'EmitTargetAndPayload'
+				)
+				assert.isTruthy(
+					contract.eventSignatures[name].emitPayloadSchema?.fields?.target
+				)
+				assert.isFalsy(
+					contract.eventSignatures[name].emitPayloadSchema?.fields?.payload
+				)
+				assert.isTruthy(contract.eventSignatures[name].responsePayloadSchema)
+				assert.isTruthy(contract.eventSignatures[name].emitPermissionContract)
+				assert.isTruthy(contract.eventSignatures[name].listenPermissionContract)
 
-		validateEventContract(contracts[1])
+				validateEventContract(contract)
+			}
+		}
 	}
 
 	private static async seedSkillAndInstallAtOrg(org: any, name: string) {
