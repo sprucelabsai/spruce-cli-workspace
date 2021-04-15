@@ -27,7 +27,7 @@ export default class OrganizationStoreTest extends AbstractCliTest {
 		assert.isFalse(isInstalled)
 	}
 
-	@test()
+	@test.only()
 	protected static async canDeleteOrg() {
 		await this.FeatureFixture().installCachedFeatures('organizations')
 

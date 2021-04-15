@@ -369,7 +369,8 @@
 						"generatesValidTypeFile": "I39",
 						"skillWithSameEventNameButDifferentVersionsCanBeSynced": "I79",
 						"unRegisteredEventsAreRemoved": "I86",
-						"canListenToEventWeCreated": "I89"
+						"canListenToEventWeCreated": "I89",
+						"canCreateGlobalEvent": "I91"
 					}
 				}
 			],

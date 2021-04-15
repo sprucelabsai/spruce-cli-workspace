@@ -14,6 +14,7 @@ import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractStore from '../../../stores/AbstractStore'
+import { eventContractCleanerUtil } from '../../../utilities/eventContractCleaner.utility'
 
 export interface EventStoreFetchEventContractsResponse {
 	errors: SpruceError[]
@@ -118,6 +119,7 @@ export default class EventStore extends AbstractStore {
 								emitPayloadSchema: schema,
 								eventName,
 							})
+
 							//@ts-ignore
 							targetAndPayload.version = version
 
@@ -148,10 +150,11 @@ export default class EventStore extends AbstractStore {
 				}
 			})
 		)
+
 		if (Object.keys(eventSignatures).length > 0) {
-			return {
+			return eventContractCleanerUtil.cleanTargetsForGlobalEvents({
 				eventSignatures,
-			}
+			})
 		}
 
 		return null

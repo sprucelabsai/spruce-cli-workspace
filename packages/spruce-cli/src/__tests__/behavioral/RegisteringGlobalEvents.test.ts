@@ -65,7 +65,9 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 			importedContract.eventSignatures[
 				`${this.skill.slug}.${EVENT_NAME}::${version}`
 			]
+
 		assert.isTrue(sig.isGlobal)
+		assert.isFalsy(sig.emitPayloadSchema)
 	}
 
 	@test()
