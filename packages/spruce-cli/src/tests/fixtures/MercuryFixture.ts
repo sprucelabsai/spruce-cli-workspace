@@ -1,9 +1,9 @@
-import Cli from '../cli'
-import ServiceFactory from '../services/ServiceFactory'
+import Cli from '../../cli'
+import ServiceFactory from '../../services/ServiceFactory'
 import {
 	ApiClientFactory,
 	ApiClientFactoryOptions,
-} from '../types/apiClient.types'
+} from '../../types/apiClient.types'
 require('dotenv').config()
 
 const TEST_HOST = process.env.TEST_HOST ?? 'https://sandbox.mercury.spruce.ai'

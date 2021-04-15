@@ -1,6 +1,6 @@
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
-import SpruceError from '../errors/SpruceError'
-import { ApiClientFactory } from '../types/apiClient.types'
+import SpruceError from '../../errors/SpruceError'
+import { ApiClientFactory } from '../../types/apiClient.types'
 
 require('dotenv').config()
 
