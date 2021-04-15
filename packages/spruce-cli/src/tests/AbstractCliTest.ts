@@ -9,13 +9,6 @@ import { CliBootOptions } from '../cli'
 import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
 import { FeatureActionResponse, FeatureCode } from '../features/features.types'
 import SkillStore from '../features/skill/stores/SkillStore'
-import FeatureFixture, {
-	FeatureFixtureOptions,
-} from '../fixtures/FeatureFixture'
-import MercuryFixture from '../fixtures/MercuryFixture'
-import OrganizationFixture from '../fixtures/OrganizationFixture'
-import PersonFixture from '../fixtures/PersonFixture'
-import SkillFixture from '../fixtures/SkillFixture'
 import CliGlobalEmitter, { GlobalEmitter } from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
 import ImportService from '../services/ImportService'
@@ -27,6 +20,13 @@ import StoreFactory, {
 } from '../stores/StoreFactory'
 import { ApiClientFactoryOptions } from '../types/apiClient.types'
 import AbstractWriter from '../writers/AbstractWriter'
+import FeatureFixture, {
+	FeatureFixtureOptions,
+} from './fixtures/FeatureFixture'
+import MercuryFixture from './fixtures/MercuryFixture'
+import OrganizationFixture from './fixtures/OrganizationFixture'
+import PersonFixture from './fixtures/PersonFixture'
+import SkillFixture from './fixtures/SkillFixture'
 import testUtil from './utilities/test.utility'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
