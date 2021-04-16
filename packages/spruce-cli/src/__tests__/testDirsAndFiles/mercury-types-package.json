@@ -25,7 +25,7 @@
         "build.tsc": "tsc",
         "build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
         "build.babel.debug": "node --inspect-brk=5200 ../../node_modules/.bin/babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
-        "build.resolve-paths": "resolve-path-aliases --target build --patterns **/*.js,**/*.d.ts",
+        "build.resolve-paths": "resolve-path-aliases --target build --patterns '**/*.js,**/*.d.ts'",
         "rebuild": "yarn clean && rm -rf node_modules && yarn && yarn build",
         "clean": "rm -rf build/",
         "lint": "eslint '**/*.ts' && tsc -p . --noEmit && echo 'PASS'",
