@@ -67,7 +67,7 @@ export default class SkillFeature<
 		'build.copy-files':
 			"mkdir -p build && rsync -avzq --exclude='*.ts' ./src/ ./build/",
 		'build.resolve-paths':
-			'resolve-path-aliases --target build --patterns **/*.js,**/*.d.ts',
+			"resolve-path-aliases --target build --patterns '**/*.js,**/*.d.ts'",
 		'build.tsc': 'yarn build.copy-files && tsc',
 		clean: 'rm -rf build/',
 		'clean.all':
