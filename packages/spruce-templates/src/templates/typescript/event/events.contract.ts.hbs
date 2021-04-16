@@ -14,7 +14,7 @@ declare module '@sprucelabs/mercury-types/build/types/mercury.types' {
     {{#each contracts}}
     {{#if isLocal}}
         {{#each eventSignatures}}
-        '{{@key}}': {{../namespacePascal}}{{../namePascal}}EventContract_{{../version}},
+        '{{@key}}': {{../namespacePascal}}{{../namePascal}}EventContract_{{../version}}['eventSignatures']['{{@key}}'],
         {{/each}}
     {{/if}}
     {{/each}}

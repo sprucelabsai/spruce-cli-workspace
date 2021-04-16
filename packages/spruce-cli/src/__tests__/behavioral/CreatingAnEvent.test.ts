@@ -51,6 +51,34 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		await this.assertCreatesOptionsFile(results)
 	}
 
+	@test()
+	protected static async createdEventsAreTypedCorrectly() {
+		const cli = await this.FeatureFixture().installCachedFeatures('events')
+
+		await this.SkillFixture().registerCurrentSkill({
+			name: 'my new skill',
+		})
+
+		const results = await cli.getFeature('event').Action('create').execute({
+			nameReadable: EVENT_NAME_READABLE,
+			nameKebab: EVENT_NAME,
+			nameCamel: EVENT_CAMEL,
+		})
+
+		assert.isFalsy(results.errors)
+
+		const { fqen } = results.meta ?? {}
+
+		const testFileContents = diskUtil
+			.readFile(this.resolveTestPath('client-test.ts.hbs'))
+			.replace('{{fqen}}', fqen)
+
+		const testFile = this.resolvePath('src', 'test-client.ts')
+		diskUtil.writeFile(testFile, testFileContents)
+
+		await this.Service('typeChecker').check(testFile)
+	}
+
 	private static async assertCreatesOptionsFile(
 		results: FeatureActionResponse
 	) {

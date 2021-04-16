@@ -1,0 +1,15 @@
+import '#spruce/events/events.contract'
+import { MercuryClientFactory } from '@sprucelabs/mercury-client'
+import { SkillEventContract } from '@sprucelabs/mercury-types'
+
+async function run() {
+	//@ts-ignore
+	const client = await MercuryClientFactory.Client<SkillEventContract>()
+
+	await client.emit(
+		'{{fqen}}',
+		{ target: {} }
+	)
+}
+
+console.log(run)

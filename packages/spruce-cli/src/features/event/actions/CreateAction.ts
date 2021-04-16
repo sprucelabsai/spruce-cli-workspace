@@ -3,6 +3,7 @@ import {
 	normalizeSchemaValues,
 	SchemaValues,
 } from '@sprucelabs/schema'
+import { eventNameUtil } from '@sprucelabs/spruce-event-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventOptions.schema'
 import SpruceError from '../../../errors/SpruceError'
@@ -90,7 +91,16 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 
 			const syncResponse = await this.parent.Action('sync').execute(syncOptions)
 
-			return mergeUtil.mergeActionResults({ files }, syncResponse)
+			const fqen = eventNameUtil.join({
+				eventName: nameKebab,
+				eventNamespace: skill.slug,
+				version: resolvedVersion,
+			})
+
+			return mergeUtil.mergeActionResults(
+				{ files, meta: { fqen } },
+				syncResponse
+			)
 		} catch (err) {
 			return {
 				errors: [err],
