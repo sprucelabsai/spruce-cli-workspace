@@ -1,4 +1,3 @@
-import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import setupTestsOptionsSchema from '#spruce/schemas/spruceCli/v2020_07_22/setupTestsOptions.schema'
 import mergeUtil from '../../../utilities/merge.utility'
