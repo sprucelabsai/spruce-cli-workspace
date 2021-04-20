@@ -11,6 +11,10 @@ const optionsSchema = buildSchema({
 			label: 'Phone number',
 			isRequired: true,
 		},
+		pin: {
+			type: 'text',
+			label: 'Pin',
+		},
 	},
 })
 type OptionsSchema = typeof optionsSchema
@@ -22,7 +26,9 @@ export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
 	public commandAliases = ['login']
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
-		const { phone } = this.validateAndNormalizeOptions(options)
+		const { phone, pin: suppliedPin } = this.validateAndNormalizeOptions(
+			options
+		)
 		let loggedIn = false
 
 		const client = await this.connectToApi()
@@ -38,11 +44,13 @@ export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
 		const response: FeatureActionResponse = {}
 
 		do {
-			const pin = await this.ui.prompt({
-				type: 'text',
-				label: 'Pin',
-				isRequired: true,
-			})
+			const pin =
+				suppliedPin ??
+				(await this.ui.prompt({
+					type: 'text',
+					label: 'Pin',
+					isRequired: true,
+				}))
 
 			const confirmPinResults = await client.emit('confirm-pin::v2020_12_25', {
 				payload: { challenge, pin },
@@ -59,6 +67,7 @@ export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
 
 				loggedIn = true
 
+				response.meta = { loggedInPerson }
 				response.summaryLines = [`Logged in as ${loggedInPerson.casualName}`]
 			} catch (err) {
 				this.ui.renderWarning('Oops, bad pin. Try again please! 🙏')

@@ -15,6 +15,27 @@ import { BaseWidget } from '#spruce/../widgets/types/widgets.types'
 declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schemas.types' {
 
 
+	namespace SpruceSchemas.HeartwoodTest1618929974846Count98.v2021_04_20 {
+
+		
+		interface TestRegisterSkillViews1618929972894ResponsePayload {
+			
+		}
+
+		interface TestRegisterSkillViews1618929972894ResponsePayloadSchema extends SpruceSchema.Schema {
+			id: 'testRegisterSkillViews1618929972894ResponsePayload',
+			version: 'v2021_04_20',
+			namespace: 'HeartwoodTest1618929974846Count98',
+			name: '',
+			    fields: {
+			    }
+		}
+
+		type TestRegisterSkillViews1618929972894ResponsePayloadEntity = SchemaEntity<SpruceSchemas.HeartwoodTest1618929974846Count98.v2021_04_20.TestRegisterSkillViews1618929972894ResponsePayloadSchema>
+
+	}
+
+
 
 
 
@@ -2454,6 +2475,35 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	}
 
 
+	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
+
+		
+		interface RegisterEventsEmitTargetAndPayload {
+			
+				
+				'payload': SpruceSchemas.MercuryApi.v2020_12_25.RegisterEventsEmitPayload
+		}
+
+		interface RegisterEventsEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'registerEventsEmitTargetAndPayload',
+			version: 'v2020_12_25',
+			namespace: 'MercuryApi',
+			name: '',
+			    fields: {
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.RegisterEventsEmitPayloadSchema,}
+			            },
+			    }
+		}
+
+		type RegisterEventsEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.RegisterEventsEmitTargetAndPayloadSchema>
+
+	}
+
+
 
 
 	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
@@ -2481,35 +2531,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		}
 
 		type RegisterEventsEmitPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.RegisterEventsEmitPayloadSchema>
-
-	}
-
-
-	namespace SpruceSchemas.MercuryApi.v2020_12_25 {
-
-		
-		interface RegisterEventsEmitTargetAndPayload {
-			
-				
-				'payload': SpruceSchemas.MercuryApi.v2020_12_25.RegisterEventsEmitPayload
-		}
-
-		interface RegisterEventsEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'registerEventsEmitTargetAndPayload',
-			version: 'v2020_12_25',
-			namespace: 'MercuryApi',
-			name: '',
-			    fields: {
-			            /** . */
-			            'payload': {
-			                type: 'schema',
-			                isRequired: true,
-			                options: {schema: SpruceSchemas.MercuryApi.v2020_12_25.RegisterEventsEmitPayloadSchema,}
-			            },
-			    }
-		}
-
-		type RegisterEventsEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.MercuryApi.v2020_12_25.RegisterEventsEmitTargetAndPayloadSchema>
 
 	}
 
@@ -4687,6 +4708,45 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		}
 
 		type SetupVscodeOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeOptionsSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		
+		interface SetupTestsOptions {
+			
+				/** Demo phone number. */
+				'demoNumber': string
+				/** Skill slug. */
+				'skillSlug': string
+		}
+
+		interface SetupTestsOptionsSchema extends SpruceSchema.Schema {
+			id: 'setupTestsOptions',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'Setup tests options',
+			    fields: {
+			            /** Demo phone number. */
+			            'demoNumber': {
+			                label: 'Demo phone number',
+			                type: 'phone',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** Skill slug. */
+			            'skillSlug': {
+			                label: 'Skill slug',
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			    }
+		}
+
+		type SetupTestsOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SetupTestsOptionsSchema>
 
 	}
 
