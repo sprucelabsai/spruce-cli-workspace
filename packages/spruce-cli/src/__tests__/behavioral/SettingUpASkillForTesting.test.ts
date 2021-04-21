@@ -41,5 +41,28 @@ export default class SettingUpASkillForTestingTest extends AbstractSkillTest {
 		})
 
 		assert.isFalsy(results.errors)
+
+		const auth = this.Service('auth')
+		const skill = auth.getCurrentSkill()
+
+		assert.isEqual(skill?.slug, this.skillSlug)
+	}
+
+	@test()
+	protected static async canCorrectInvalidAuth() {
+		const auth = this.Service('auth')
+		//@ts-ignore
+		auth.updateCurrentSkill({ fail: true })
+
+		const results = await this.cli.getFeature('test').Action('setup').execute({
+			demoNumber: process.env.DEMO_NUMBER,
+			skillSlug: this.skillSlug,
+		})
+
+		assert.isFalsy(results.errors)
+
+		const skill = auth.getCurrentSkill()
+
+		assert.isEqual(skill?.slug, this.skillSlug)
 	}
 }

@@ -15,27 +15,6 @@ import { BaseWidget } from '#spruce/../widgets/types/widgets.types'
 declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schemas.types' {
 
 
-	namespace SpruceSchemas.HeartwoodTest1618929974846Count98.v2021_04_20 {
-
-		
-		interface TestRegisterSkillViews1618929972894ResponsePayload {
-			
-		}
-
-		interface TestRegisterSkillViews1618929972894ResponsePayloadSchema extends SpruceSchema.Schema {
-			id: 'testRegisterSkillViews1618929972894ResponsePayload',
-			version: 'v2021_04_20',
-			namespace: 'HeartwoodTest1618929974846Count98',
-			name: '',
-			    fields: {
-			    }
-		}
-
-		type TestRegisterSkillViews1618929972894ResponsePayloadEntity = SchemaEntity<SpruceSchemas.HeartwoodTest1618929974846Count98.v2021_04_20.TestRegisterSkillViews1618929972894ResponsePayloadSchema>
-
-	}
-
-
 
 
 
@@ -1584,6 +1563,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			
 				
 				'id': string
+				
+				'shouldIncludeApiKey'?: boolean| undefined | null
 		}
 
 		interface GetSkillEmitPayloadSchema extends SpruceSchema.Schema {
@@ -1596,6 +1577,11 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            'id': {
 			                type: 'text',
 			                isRequired: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'shouldIncludeApiKey': {
+			                type: 'boolean',
 			                options: undefined
 			            },
 			    }

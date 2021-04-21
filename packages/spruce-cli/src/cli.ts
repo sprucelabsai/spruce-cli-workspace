@@ -1,5 +1,8 @@
 import osUtil from 'os'
-import { MercuryClientFactory } from '@sprucelabs/mercury-client'
+import {
+	ConnectionOptions,
+	MercuryClientFactory,
+} from '@sprucelabs/mercury-client'
 import { MercuryEventEmitter, SpruceSchemas } from '@sprucelabs/mercury-types'
 import {
 	diskUtil,
@@ -206,7 +209,7 @@ export default class Cli implements CliInterface {
 	public static buildApiClientFactory(
 		cwd: string,
 		serviceFactory: ServiceFactory,
-		bootOptions?: CliBootOptions
+		bootOptions?: CliBootOptions & ConnectionOptions
 	): ApiClientFactory {
 		const apiClientFactory = async (options?: ApiClientFactoryOptions) => {
 			const key = apiClientUtil.generateClientCacheKey(options)
@@ -230,7 +233,7 @@ export default class Cli implements CliInterface {
 		cwd: string,
 		serviceFactory: ServiceFactory,
 		options?: ApiClientFactoryOptions,
-		bootOptions?: CliBootOptions
+		bootOptions?: CliBootOptions & ConnectionOptions
 	): Promise<ApiClient> {
 		const connect = bootOptions?.apiClientFactory
 			? bootOptions.apiClientFactory
@@ -239,6 +242,7 @@ export default class Cli implements CliInterface {
 						contracts: eventsContracts,
 						host: bootOptions?.host ?? 'https://sandbox.mercury.spruce.ai',
 						allowSelfSignedCrt: true,
+						...bootOptions,
 					})
 
 					return client

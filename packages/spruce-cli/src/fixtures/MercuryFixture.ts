@@ -19,7 +19,7 @@ export default class MercuryFixture {
 		this.apiClientFactory = Cli.buildApiClientFactory(
 			this.cwd,
 			this.serviceFactory,
-			{ host: TEST_HOST }
+			{ host: TEST_HOST, shouldReconnect: false }
 		)
 	}
 

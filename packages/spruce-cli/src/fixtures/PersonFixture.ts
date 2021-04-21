@@ -1,27 +1,31 @@
+import { SpruceSchemas } from '@sprucelabs/mercury-types'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import SpruceError from '../errors/SpruceError'
 import { ApiClientFactory } from '../types/apiClient.types'
 
 require('dotenv').config()
 
-export const DEMO_PHONE = process.env.DEMO_NUMBER as string
+export const DEMO_NUMBER = process.env.DEMO_NUMBER as string
 
 export default class PersonFixture {
-	private apiClientFactory: ApiClientFactory
+	private connectToApi: ApiClientFactory
 
 	public constructor(apiClientFactory: ApiClientFactory) {
-		this.apiClientFactory = apiClientFactory
+		this.connectToApi = apiClientFactory
 	}
 
-	public async loginAsDemoPerson(phone?: string) {
-		const client = await this.apiClientFactory()
+	public async loginAsDemoPerson(
+		phone?: string
+	): Promise<SpruceSchemas.SpruceCli.v2020_07_22.PersonWithToken> {
+		const client = await this.connectToApi()
 
 		//@ts-ignore
 		if (!phone && client.auth?.person) {
-			return client
+			//@ts-ignore
+			return client.auth.person
 		}
 
-		phone = phone || DEMO_PHONE
+		phone = phone || DEMO_NUMBER
 
 		if (!phone) {
 			throw new SpruceError({
@@ -32,7 +36,8 @@ export default class PersonFixture {
 
 		//@ts-ignore
 		if (client.auth?.person?.phone === phone) {
-			return client
+			//@ts-ignore
+			return client.auth.person
 		}
 
 		const requestPinResults = await client.emit('request-pin::v2020_12_25', {
@@ -47,13 +52,21 @@ export default class PersonFixture {
 			payload: { challenge, pin: phone.substr(-4) },
 		})
 
-		const { person } = eventResponseUtil.getFirstResponseOrThrow(
+		const { person, token } = eventResponseUtil.getFirstResponseOrThrow(
 			confirmPinResults
 		)
 
-		//@ts-ignore
-		client.auth = { person }
+		const personWithToken = { ...person, token }
 
-		return person
+		//@ts-ignore
+		client.auth = { person: personWithToken }
+
+		return personWithToken
+	}
+
+	public async logout() {
+		const client = await this.connectToApi()
+		//@ts-ignore
+		delete client.auth
 	}
 }

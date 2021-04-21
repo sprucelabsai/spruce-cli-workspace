@@ -195,6 +195,14 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				message = 'You have to be logged in to do that!'
 				break
 
+			case 'SKILL_NOT_FOUND':
+				message = `I couldn't find that skill!`
+				break
+
+			case 'NO_SKILLS_REGISTERED':
+				message = `Whoa! Looks like you haven't registered your skill yet! Try \`spruce register\` to get that done!`
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}

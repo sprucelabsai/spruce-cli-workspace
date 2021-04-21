@@ -14,6 +14,9 @@ export interface StoreExistsErrorOptions extends SpruceErrors.SpruceCli.StoreExi
 export interface SkillNotRegisteredErrorOptions extends SpruceErrors.SpruceCli.SkillNotRegistered, ISpruceErrorOptions {
 	code: 'SKILL_NOT_REGISTERED'
 }
+export interface SkillNotFoundErrorOptions extends SpruceErrors.SpruceCli.SkillNotFound, ISpruceErrorOptions {
+	code: 'SKILL_NOT_FOUND'
+}
 export interface SchemaFailedToImportErrorOptions extends SpruceErrors.SpruceCli.SchemaFailedToImport, ISpruceErrorOptions {
 	code: 'SCHEMA_FAILED_TO_IMPORT'
 }
@@ -25,6 +28,9 @@ export interface NotLoggedInErrorOptions extends SpruceErrors.SpruceCli.NotLogge
 }
 export interface NotImplementedErrorOptions extends SpruceErrors.SpruceCli.NotImplemented, ISpruceErrorOptions {
 	code: 'NOT_IMPLEMENTED'
+}
+export interface NoSkillsRegisteredErrorOptions extends SpruceErrors.SpruceCli.NoSkillsRegistered, ISpruceErrorOptions {
+	code: 'NO_SKILLS_REGISTERED'
 }
 export interface NoOrganizationsFoundErrorOptions extends SpruceErrors.SpruceCli.NoOrganizationsFound, ISpruceErrorOptions {
 	code: 'NO_ORGANIZATIONS_FOUND'
@@ -90,6 +96,6 @@ export interface BootErrorErrorOptions extends SpruceErrors.SpruceCli.BootError,
 	code: 'BOOT_ERROR'
 }
 
-type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | VscodeNotInstalledErrorOptions  | TestFailedErrorOptions  | StoreExistsErrorOptions  | SkillNotRegisteredErrorOptions  | SchemaFailedToImportErrorOptions  | SchemaExistsErrorOptions  | NotLoggedInErrorOptions  | NotImplementedErrorOptions  | NoOrganizationsFoundErrorOptions  | MissingDependenciesErrorOptions  | MercuryResponseErrorErrorOptions  | LintFailedErrorOptions  | InvalidTestDirectoryErrorOptions  | InvalidFeatureCodeErrorOptions  | InvalidEventContractErrorOptions  | InvalidCommandErrorOptions  | GenericErrorOptions  | FileExistsErrorOptions  | FeatureNotInstalledErrorOptions  | FailedToImportErrorOptions  | ExecutingCommandFailedErrorOptions  | DirectoryNotSkillErrorOptions  | DirectoryEmptyErrorOptions  | DeployFailedErrorOptions  | CreateAutoloaderFailedErrorOptions  | CommandNotImplementedErrorOptions  | CommandAbortedErrorOptions  | BuildFailedErrorOptions  | BootErrorErrorOptions 
+type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | VscodeNotInstalledErrorOptions  | TestFailedErrorOptions  | StoreExistsErrorOptions  | SkillNotRegisteredErrorOptions  | SkillNotFoundErrorOptions  | SchemaFailedToImportErrorOptions  | SchemaExistsErrorOptions  | NotLoggedInErrorOptions  | NotImplementedErrorOptions  | NoSkillsRegisteredErrorOptions  | NoOrganizationsFoundErrorOptions  | MissingDependenciesErrorOptions  | MercuryResponseErrorErrorOptions  | LintFailedErrorOptions  | InvalidTestDirectoryErrorOptions  | InvalidFeatureCodeErrorOptions  | InvalidEventContractErrorOptions  | InvalidCommandErrorOptions  | GenericErrorOptions  | FileExistsErrorOptions  | FeatureNotInstalledErrorOptions  | FailedToImportErrorOptions  | ExecutingCommandFailedErrorOptions  | DirectoryNotSkillErrorOptions  | DirectoryEmptyErrorOptions  | DeployFailedErrorOptions  | CreateAutoloaderFailedErrorOptions  | CommandNotImplementedErrorOptions  | CommandAbortedErrorOptions  | BuildFailedErrorOptions  | BootErrorErrorOptions 
 
 export default ErrorOptions

@@ -1,5 +1,6 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
+import { RegisteredSkill } from '../../../types/cli.types'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -50,12 +51,7 @@ export default class RegisterAction extends AbstractFeatureAction<OptionsSchema>
 		try {
 			const { skill } = eventResponseUtil.getFirstResponseOrThrow(results)
 
-			const summaryLines = [
-				`Name: ${skill.name}`,
-				`Slug: ${skill.slug}`,
-				`ID: ${skill.id}`,
-				`API Key: ${skill.apiKey}`,
-			]
+			const summaryLines = generateSkillSummaryLines(skill)
 
 			this.Service('auth').updateCurrentSkill(skill)
 
@@ -76,4 +72,13 @@ export default class RegisterAction extends AbstractFeatureAction<OptionsSchema>
 			}
 		}
 	}
+}
+
+export function generateSkillSummaryLines(skill: RegisteredSkill) {
+	return [
+		`Name: ${skill.name}`,
+		`Slug: ${skill.slug}`,
+		`ID: ${skill.id}`,
+		`API Key: ${skill.apiKey}`,
+	]
 }

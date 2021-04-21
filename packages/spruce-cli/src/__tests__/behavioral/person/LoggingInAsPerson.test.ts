@@ -1,11 +1,11 @@
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
-import { DEMO_PHONE } from '../../../fixtures/PersonFixture'
+import { DEMO_NUMBER } from '../../../fixtures/PersonFixture'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 
 export default class LoggingInAsPersonTest extends AbstractCliTest {
 	@test()
-	protected static async hasSyncErrorAction() {
+	protected static async hasLoginAction() {
 		const cli = await this.Cli()
 		assert.isFunction(cli.getFeature('person').Action('login').execute)
 	}
@@ -15,7 +15,7 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 		const cli = await this.FeatureFixture().installCachedFeatures('skills')
 
 		void cli.getFeature('person').Action('login').execute({
-			phone: DEMO_PHONE,
+			phone: DEMO_NUMBER,
 		})
 
 		await this.waitForInput()
@@ -35,7 +35,7 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 		const cli = await this.FeatureFixture().installCachedFeatures('skills')
 
 		void cli.getFeature('person').Action('login').execute({
-			phone: DEMO_PHONE,
+			phone: DEMO_NUMBER,
 		})
 
 		await this.waitForInput()
@@ -100,11 +100,11 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 		const cli = await this.FeatureFixture().installCachedFeatures('skills')
 
 		const promise = cli.getFeature('person').Action('login').execute({
-			phone: DEMO_PHONE,
+			phone: DEMO_NUMBER,
 		})
 
 		await this.waitForInput()
-		await this.ui.sendInput(DEMO_PHONE.substr(-4))
+		await this.ui.sendInput(DEMO_NUMBER.substr(-4))
 
 		const results = await promise
 

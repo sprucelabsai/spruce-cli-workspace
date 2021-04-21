@@ -10,7 +10,7 @@ type Options = SpruceSchemas.SpruceCli.v2020_07_22.SetupTestsOptions
 export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'setup'
 	public optionsSchema = setupTestsOptionsSchema
-	public commandAliases = ['setup.tests']
+	public commandAliases = ['setup.testing']
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
@@ -33,10 +33,23 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 			err?.options?.responseErrors?.length === 1 &&
 			err?.options?.responseErrors?.[0]?.options?.code === 'DUPLICATE_SLUG'
 
+		let loginAsSkillResponse: any = {}
+
 		if (isDuplicateSlugError) {
 			delete registerResponse.errors
+
+			loginAsSkillResponse = await this.getFeature('skill')
+				.Action('login')
+				.execute({
+					skillSlug,
+				})
 		}
 
-		return mergeUtil.mergeActionResults({}, loginResponse, registerResponse)
+		return mergeUtil.mergeActionResults(
+			{},
+			loginResponse,
+			registerResponse,
+			loginAsSkillResponse
+		)
 	}
 }

@@ -118,6 +118,27 @@ export declare namespace SpruceErrors.SpruceCli {
 
 export declare namespace SpruceErrors.SpruceCli {
 
+	
+	export interface SkillNotFound {
+		
+	}
+
+	export interface SkillNotFoundSchema extends SpruceSchema.Schema {
+		id: 'skillNotFound',
+		namespace: 'SpruceCli',
+		name: 'skill not found',
+		    fields: {
+		    }
+	}
+
+	export type SkillNotFoundEntity = SchemaEntity<SpruceErrors.SpruceCli.SkillNotFoundSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
 	/** The definition file failed to import */
 	export interface SchemaFailedToImport {
 		
@@ -224,6 +245,27 @@ export declare namespace SpruceErrors.SpruceCli {
 	}
 
 	export type NotImplementedEntity = SchemaEntity<SpruceErrors.SpruceCli.NotImplementedSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
+	export interface NoSkillsRegistered {
+		
+	}
+
+	export interface NoSkillsRegisteredSchema extends SpruceSchema.Schema {
+		id: 'noSkillsRegistered',
+		namespace: 'SpruceCli',
+		name: 'No skills registered',
+		    fields: {
+		    }
+	}
+
+	export type NoSkillsRegisteredEntity = SchemaEntity<SpruceErrors.SpruceCli.NoSkillsRegisteredSchema>
 
 }
 

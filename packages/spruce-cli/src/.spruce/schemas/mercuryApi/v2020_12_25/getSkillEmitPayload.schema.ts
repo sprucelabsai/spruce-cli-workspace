@@ -15,6 +15,11 @@ const getSkillEmitPayloadSchema: SpruceSchemas.MercuryApi.v2020_12_25.GetSkillEm
 	                isRequired: true,
 	                options: undefined
 	            },
+	            /** . */
+	            'shouldIncludeApiKey': {
+	                type: 'boolean',
+	                options: undefined
+	            },
 	    }
 }
 
