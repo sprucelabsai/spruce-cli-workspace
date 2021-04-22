@@ -205,7 +205,6 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 		const env = this.Service('env')
 		env.set('SANDBOX_DEMO_NUMBER', this.sandboxDemoNumber)
-		env.set('HOST', process.env.TEST_HOST ?? '**MISSING**')
 
 		return { cli, client }
 	}
