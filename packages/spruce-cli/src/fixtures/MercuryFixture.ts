@@ -6,6 +6,7 @@ import {
 } from '../types/apiClient.types'
 require('dotenv').config()
 
+//remove this comment when found
 const TEST_HOST = process.env.TEST_HOST ?? 'https://sandbox.mercury.spruce.ai'
 
 export default class MercuryFixture {
