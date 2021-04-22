@@ -184,6 +184,9 @@ export default class FeatureFixture implements ServiceProvider {
 			let settings = this.loadCacheTracker()
 			await diskUtil.copyDir(settings[cacheKey], this.cwd)
 
+			if (process.env.TEST_HOST) {
+				this.Service('env').set('HOST', process.env.TEST_HOST)
+			}
 			FeatureFixture.dirsToDelete.push(this.cwd)
 		}
 	}
