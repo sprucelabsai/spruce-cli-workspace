@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.17.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.16.1...v13.17.0) (2021-04-22)
+
+
+### Features
+
+* skill login, setup testing ([ff5ad40](https://github.com/sprucelabsai/spruce-cli-workspace/commit/ff5ad40))
+
+
+
+
+
 ## [13.16.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.16.0...v13.16.1) (2021-04-21)
 
 **Note:** Version bump only for package spruce-cli-workspace
