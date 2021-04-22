@@ -6,7 +6,14 @@ import AbstractCliTest from '../../tests/AbstractCliTest'
 export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
+		await this.login()
 		await this.OrganizationFixture().clearAllOrgs()
+	}
+
+	private static async login() {
+		await this.PersonFixture().loginAsDemoPerson(
+			process.env.DEMO_NUMBER_INSTALL_SKILL
+		)
 	}
 
 	@test()
@@ -45,8 +52,6 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 			'organizations'
 		)
 
-		await this.PersonFixture().loginAsDemoPerson()
-
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'my amazing skill',
 		})
@@ -65,8 +70,6 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 		const cli = await this.FeatureFixture().installCachedFeatures(
 			'organizations'
 		)
-
-		await this.PersonFixture().loginAsDemoPerson()
 
 		await this.OrganizationFixture().seedDemoOrg({
 			name: 'My great org',
