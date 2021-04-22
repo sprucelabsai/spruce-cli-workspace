@@ -133,6 +133,7 @@ export default class SkillStore extends AbstractStore {
 
 	public async unregisterSkill(skillId: string) {
 		const client = await this.connectToApi()
+
 		const response = await client.emit('unregister-skill::v2020_12_25', {
 			target: {
 				skillId,

@@ -149,7 +149,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	}
 
 	@test()
-	protected static async registersSkillAndCanBootAgoin() {
+	protected static async registersSkillAndCanBootAgain() {
 		const { cli } = await this.installAndSetupForSandbox()
 
 		await this.SkillFixture().registerCurrentSkill({
@@ -203,7 +203,9 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 		await cli.getFeature('sandbox').Action('setup').execute({})
 
-		this.Service('env').set('SANDBOX_DEMO_NUMBER', this.sandboxDemoNumber)
+		const env = this.Service('env')
+		env.set('SANDBOX_DEMO_NUMBER', this.sandboxDemoNumber)
+		env.set('HOST', process.env.TEST_HOST ?? '**MISSING**')
 
 		return { cli, client }
 	}
@@ -214,6 +216,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 				showMineOnly: true,
 			},
 		})
+
 		const { skills } = eventResponseUtil.getFirstResponseOrThrow(results)
 
 		return skills
