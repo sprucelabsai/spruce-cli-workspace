@@ -5,7 +5,7 @@
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "13.17.2",
+	"version": "13.17.3",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -64,7 +64,7 @@
 		"@sprucelabs/spruce-core-schemas": "latest",
 		"@sprucelabs/spruce-event-utils": "latest",
 		"@sprucelabs/spruce-skill-utils": "latest",
-		"@sprucelabs/spruce-templates": "^13.17.2",
+		"@sprucelabs/spruce-templates": "^13.17.3",
 		"cfonts": "^2.9.1",
 		"chalk": "^4.1.1",
 		"chokidar": "^3.5.1",
