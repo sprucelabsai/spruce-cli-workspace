@@ -29,6 +29,7 @@ export default class FeatureInstaller implements ServiceProvider {
 	public static stopInstallIntertainmentHandler?: () => void
 	private packagesToInstall: string[] = []
 	private devPackagesToInstall: string[] = []
+	private featuresToMarkeAsInstalled: string[] = []
 
 	public constructor(cwd: string, serviceFactory: ServiceFactory) {
 		this.cwd = cwd
@@ -224,7 +225,9 @@ export default class FeatureInstaller implements ServiceProvider {
 			}
 		}
 
-		await this.installPendingModuleDependencies()
+		await this.installPendingModuleDependenciesAndMarkFeaturesInstalled(
+			didUpdateHandler
+		)
 
 		if (
 			FeatureInstaller.stopInstallIntertainmentHandler &&
@@ -270,7 +273,7 @@ export default class FeatureInstaller implements ServiceProvider {
 		)
 
 		if (!feature.isInstalled) {
-			this.Service('settings').markAsInstalled(feature.code)
+			this.featuresToMarkeAsInstalled.push(feature.code)
 		}
 
 		const files = [
@@ -313,14 +316,16 @@ export default class FeatureInstaller implements ServiceProvider {
 			)
 		}
 
-		await this.installPendingModuleDependencies(didUpdateHandler)
+		await this.installPendingModuleDependenciesAndMarkFeaturesInstalled(
+			didUpdateHandler
+		)
 
 		if (FeatureInstaller.stopInstallIntertainmentHandler) {
 			FeatureInstaller.stopInstallIntertainmentHandler()
 		}
 	}
 
-	private async installPendingModuleDependencies(
+	private async installPendingModuleDependenciesAndMarkFeaturesInstalled(
 		didUpdateHandler?: InternalUpdateHandler
 	) {
 		const pkgService = this.Service('pkg')
@@ -334,7 +339,7 @@ export default class FeatureInstaller implements ServiceProvider {
 		await pkgService.install(this.packagesToInstall, {})
 
 		didUpdateHandler?.(
-			`Lastly, installing ${this.devPackagesToInstall.length} DEV node module${
+			`Now installing ${this.devPackagesToInstall.length} DEV node module${
 				this.devPackagesToInstall.length === 1 ? '' : 's'
 			} using NPM. Please be patient.`
 		)
@@ -345,6 +350,14 @@ export default class FeatureInstaller implements ServiceProvider {
 
 		this.packagesToInstall = []
 		this.devPackagesToInstall = []
+
+		const settings = this.Service('settings')
+
+		for (const code of this.featuresToMarkeAsInstalled) {
+			settings.markAsInstalled(code)
+		}
+
+		this.featuresToMarkeAsInstalled = []
 	}
 
 	private async queueInstallPackageDependenciesWithoutEntertainment(

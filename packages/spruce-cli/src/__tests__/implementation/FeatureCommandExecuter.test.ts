@@ -183,6 +183,13 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 		await this.ui.sendInput('\n')
 
+		await this.wait(100)
+
+		const installer = this.FeatureInstaller()
+		let isInstalled = await installer.isInstalled('schema')
+
+		assert.isFalse(isInstalled)
+
 		await promise
 
 		await this.assertHealthySkillNamed('skill-with-1-dependency', {
@@ -201,8 +208,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 			},
 		})
 
-		const installer = this.FeatureInstaller()
-		const isInstalled = await installer.isInstalled('schema')
+		isInstalled = await installer.isInstalled('schema')
 
 		assert.isTrue(isInstalled)
 	}
