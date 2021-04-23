@@ -4830,7 +4830,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				/** mode. */
 				'mode': ("short" | "immersive" | "off")
 				/** Stage. */
-				'stage'?: ("test.create")| undefined | null
+				'stage'?: ("create.test")| undefined | null
 		}
 
 		interface OnboardingSchema extends SpruceSchema.Schema {
@@ -4851,7 +4851,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            'stage': {
 			                label: 'Stage',
 			                type: 'select',
-			                options: {choices: [{"label":"Create test","value":"test.create"}],}
+			                options: {choices: [{"label":"Create test","value":"create.test"}],}
 			            },
 			    }
 		}

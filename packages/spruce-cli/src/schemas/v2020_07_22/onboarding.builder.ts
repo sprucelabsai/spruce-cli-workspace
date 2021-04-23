@@ -33,7 +33,7 @@ export default buildSchema({
 				choices: [
 					{
 						label: 'Create test',
-						value: 'test.create',
+						value: 'create.test',
 					},
 				],
 			},

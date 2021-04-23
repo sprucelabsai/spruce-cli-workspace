@@ -1,4 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
+import featuresUtil from '../../features/feature.utilities'
 import OnboardingStore from '../../features/onboard/stores/OnboardingStore'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 
@@ -49,11 +50,16 @@ export default class OnboardingStoreTest extends AbstractCliTest {
 	}
 
 	@test()
-	protected static remembersStageBetweenBoots() {
-		this.store.setStage('test.create')
+	protected static async remembersStageBetweenBoots() {
+		const stage = featuresUtil.generateCommand(
+			'test',
+			'create'
+		) as 'create.test'
+
+		this.store.setStage(stage)
 
 		const newStore = this.OnboardingStore()
-		assert.isEqual(newStore.getStage(), 'test.create')
+		assert.isEqual(newStore.getStage(), stage)
 	}
 
 	@test()
@@ -73,14 +79,14 @@ export default class OnboardingStoreTest extends AbstractCliTest {
 
 	@test()
 	protected static stageCanBeSet() {
-		this.store.setStage('test.create')
+		this.store.setStage('create.test')
 		const stage = this.store.getStage()
-		assert.isEqual(stage, 'test.create')
+		assert.isEqual(stage, 'create.test')
 	}
 
 	@test()
 	protected static canBeReset() {
-		this.store.setStage('test.create')
+		this.store.setStage('create.test')
 		this.store.reset()
 
 		const stage = this.store.getStage()
