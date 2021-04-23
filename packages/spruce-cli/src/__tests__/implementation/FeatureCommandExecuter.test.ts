@@ -6,7 +6,6 @@ import {
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import featuresUtil from '../../features/feature.utilities'
-import FeatureCommandExecuter from '../../features/FeatureCommandExecuter'
 import {
 	FeatureActionResponse,
 	FeatureCode,
@@ -394,21 +393,5 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 			'myNewError.schema.ts',
 			secondTimeResults.files
 		)
-	}
-
-	private static Executer<F extends FeatureCode>(
-		featureCode: F,
-		actionCode: string
-	) {
-		const featureInstaller = this.FeatureInstaller()
-
-		const executer = new FeatureCommandExecuter({
-			featureCode,
-			actionCode,
-			featureInstaller,
-			term: this.ui,
-		})
-
-		return executer
 	}
 }

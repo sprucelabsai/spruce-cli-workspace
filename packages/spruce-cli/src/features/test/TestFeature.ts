@@ -2,7 +2,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import PkgService from '../../services/PkgService'
 import { NpmPackage } from '../../types/cli.types'
 import tsConfigUtil from '../../utilities/tsConfig.utility'
-import AbstractFeature from '../AbstractFeature'
+import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
 declare module '../../features/features.types' {
@@ -15,6 +15,10 @@ export default class TestFeature extends AbstractFeature {
 	public nameReadable = 'Testing'
 	public description = 'Test first. Test everything! 💪'
 	public code: FeatureCode = 'test'
+	public dependencies: FeatureDependency[] = [
+		{ code: 'skill', isRequired: false },
+		{ code: 'node', isRequired: true },
+	]
 	public packageDependencies: NpmPackage[] = [
 		{ name: '@sprucelabs/test', isDev: true },
 		{ name: '@sprucelabs/test-utils', isDev: true },

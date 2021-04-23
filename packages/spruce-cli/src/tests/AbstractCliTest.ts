@@ -6,6 +6,7 @@ import fs from 'fs-extra'
 import globby from 'globby'
 import * as uuid from 'uuid'
 import { CliBootOptions } from '../cli'
+import FeatureCommandExecuter from '../features/FeatureCommandExecuter'
 import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
 import { FeatureActionResponse, FeatureCode } from '../features/features.types'
 import SkillStore from '../features/skill/stores/SkillStore'
@@ -316,5 +317,21 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static log(...args: any[]) {
 		testUtil.log(...args)
+	}
+
+	protected static Executer<F extends FeatureCode>(
+		featureCode: F,
+		actionCode: string
+	) {
+		const featureInstaller = this.FeatureInstaller()
+
+		const executer = new FeatureCommandExecuter({
+			featureCode,
+			actionCode,
+			featureInstaller,
+			term: this.ui,
+		})
+
+		return executer
 	}
 }

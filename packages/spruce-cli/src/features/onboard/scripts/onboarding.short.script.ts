@@ -21,7 +21,7 @@ const script: Script = [
 	'Anyway... "Since all good software starts with a test, lets create one!"',
 	'"Go ahead and create a new directory anywhere on your computer, `cd` into it, and run"',
 	async (player) => {
-		renderCommand(player.ui, 'spruce test.create')
+		renderCommand(player.ui, 'spruce create.test')
 	},
 
 	'"Tip! If you ever got lost, just run"',
@@ -34,7 +34,7 @@ const script: Script = [
 
 		player.onboardingStore.setMode('short')
 		player.onboardingStore.setStage(
-			featuresUtil.generateCommand('test', 'create') as 'test.create'
+			featuresUtil.generateCommand('test', 'create') as 'create.test'
 		)
 	},
 ]
