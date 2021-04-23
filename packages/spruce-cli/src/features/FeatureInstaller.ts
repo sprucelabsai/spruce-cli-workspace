@@ -29,7 +29,8 @@ export default class FeatureInstaller implements ServiceProvider {
 	public static stopInstallIntertainmentHandler?: () => void
 	private packagesToInstall: string[] = []
 	private devPackagesToInstall: string[] = []
-	private featuresToMarkeAsInstalled: string[] = []
+	private featuresToMarkAsInstalled: string[] = []
+	private afterPackageInstalls: InstallFeature[] = []
 
 	public constructor(cwd: string, serviceFactory: ServiceFactory) {
 		this.cwd = cwd
@@ -225,9 +226,8 @@ export default class FeatureInstaller implements ServiceProvider {
 			}
 		}
 
-		await this.installPendingModuleDependenciesAndMarkFeaturesInstalled(
-			didUpdateHandler
-		)
+		const pendingResults = await this.installAllPending(didUpdateHandler)
+		results = merge(results, pendingResults)
 
 		if (
 			FeatureInstaller.stopInstallIntertainmentHandler &&
@@ -267,19 +267,13 @@ export default class FeatureInstaller implements ServiceProvider {
 		)
 
 		didUpdateHandler?.(`Running after package install hook...`)
-		const afterInstallResults = await feature.afterPackageInstall(
-			//@ts-ignore
-			installFeature.options
-		)
+		this.afterPackageInstalls.push(installFeature)
 
 		if (!feature.isInstalled) {
-			this.featuresToMarkeAsInstalled.push(feature.code)
+			this.featuresToMarkAsInstalled.push(feature.code)
 		}
 
-		const files = [
-			...(beforeInstallResults.files ?? []),
-			...(afterInstallResults.files ?? []),
-		]
+		const files = [...(beforeInstallResults.files ?? [])]
 
 		return {
 			files: files ?? undefined,
@@ -316,18 +310,16 @@ export default class FeatureInstaller implements ServiceProvider {
 			)
 		}
 
-		await this.installPendingModuleDependenciesAndMarkFeaturesInstalled(
-			didUpdateHandler
-		)
+		await this.installAllPending(didUpdateHandler)
 
 		if (FeatureInstaller.stopInstallIntertainmentHandler) {
 			FeatureInstaller.stopInstallIntertainmentHandler()
 		}
 	}
 
-	private async installPendingModuleDependenciesAndMarkFeaturesInstalled(
+	private async installAllPending(
 		didUpdateHandler?: InternalUpdateHandler
-	) {
+	): Promise<FeatureInstallResponse> {
 		const pkgService = this.Service('pkg')
 
 		didUpdateHandler?.(
@@ -353,11 +345,25 @@ export default class FeatureInstaller implements ServiceProvider {
 
 		const settings = this.Service('settings')
 
-		for (const code of this.featuresToMarkeAsInstalled) {
+		for (const code of this.featuresToMarkAsInstalled) {
 			settings.markAsInstalled(code)
 		}
 
-		this.featuresToMarkeAsInstalled = []
+		this.featuresToMarkAsInstalled = []
+
+		let results: FeatureInstallResponse = {}
+
+		for (const installFeature of this.afterPackageInstalls) {
+			const feature = this.getFeature(installFeature.code)
+			const afterInstallResults = await feature.afterPackageInstall(
+				//@ts-ignore
+				installFeature.options
+			)
+
+			results = merge(results, afterInstallResults)
+		}
+
+		return results
 	}
 
 	private async queueInstallPackageDependenciesWithoutEntertainment(
