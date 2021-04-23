@@ -43,7 +43,6 @@ export default class SettingUpSchemasTests extends AbstractSchemaTest {
 		const cli = await this.installSchemaFeature('schemas')
 		const health = await cli.checkHealth()
 
-		assert.isFalsy(health.error)
 		assert.isTruthy(health.schema)
 		assert.isEqual(health.schema.status, 'passed')
 	}

@@ -93,8 +93,6 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 		const cli = await this.Cli()
 		const health = await cli.checkHealth()
 
-		assert.isFalsy(health.error)
-
 		assert.isFalsy(health.schema?.errors)
 		assert.isTruthy(health.schema?.schemas)
 		assert.isLength(health.schema.schemas, 0)
