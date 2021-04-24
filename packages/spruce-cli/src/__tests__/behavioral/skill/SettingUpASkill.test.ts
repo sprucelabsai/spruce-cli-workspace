@@ -130,6 +130,8 @@ export default class SettingUpASkill extends AbstractCliTest {
 		})
 
 		assert.isTrue(diskUtil.doesDirExist(this.resolvePath('taco')))
+		assert.isFalse(diskUtil.doesDirExist(this.resolvePath('.env')))
+		assert.isTrue(diskUtil.doesDirExist(this.resolvePath('taco', '.env')))
 		assert.isFalse(diskUtil.doesFileExist(this.resolvePath('package.json')))
 		assert.isFalse(diskUtil.doesFileExist(this.resolvePath('src')))
 		assert.isFalse(diskUtil.doesFileExist(this.resolvePath('node_modules')))

@@ -192,7 +192,7 @@ export default class SkillFeature<
 		this.installScripts(destination)
 		this.setEngines(destination)
 
-		const env = this.Service('env')
+		const env = this.Service('env', destination)
 		env.set('SKILL_NAME', options.name)
 
 		return { files }

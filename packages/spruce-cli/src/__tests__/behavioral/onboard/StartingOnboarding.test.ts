@@ -29,7 +29,7 @@ export default class StartingOnboardingTest extends AbstractCliTest {
 	}
 
 	@test()
-	protected static async onboandingStaysOnAfterSkillInstall() {
+	protected static async onboardingThroughSkillCreateThenShutsOff() {
 		const onboardAction = this.Executer('onboard', 'onboard')
 		const onboardPromise = onboardAction.execute()
 
@@ -49,9 +49,7 @@ export default class StartingOnboardingTest extends AbstractCliTest {
 		const createSkillAction = this.Executer('skill', 'create')
 		const createPromise = createSkillAction.execute()
 
-		// skip warning about missing onboarding
-		await this.waitForInput()
-		await this.ui.sendInput('letMePass')
+		// create skill confirmation
 		await this.waitForInput()
 		await this.ui.sendInput('\n')
 
@@ -63,6 +61,6 @@ export default class StartingOnboardingTest extends AbstractCliTest {
 
 		await createPromise
 
-		assert.isEqual(onboardingStore.getMode(), 'short')
+		assert.isEqual(onboardingStore.getMode(), 'off')
 	}
 }

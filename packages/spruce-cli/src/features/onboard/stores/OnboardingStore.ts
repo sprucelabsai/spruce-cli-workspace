@@ -17,6 +17,8 @@ export type OnboardingStage = OnboardingStoreSettings['stage']
 
 export default class OnboardingStore extends AbstractLocalStore<OnboardingStoreSettings> {
 	public readonly name = 'onboarding'
+	private static cwdOverride: string
+
 	private static schemasByHome: Record<
 		string,
 		StaticSchemaEntity<OnboardingSchema>
@@ -24,6 +26,7 @@ export default class OnboardingStore extends AbstractLocalStore<OnboardingStoreS
 
 	public constructor(options: StoreOptions) {
 		super(options)
+		this.cwd = this.generateCwd()
 		this.load()
 	}
 
@@ -77,13 +80,13 @@ export default class OnboardingStore extends AbstractLocalStore<OnboardingStoreS
 		this.setMode('off')
 	}
 
-	protected getConfigPath() {
-		const home = diskUtil.resolvePath(this.homeDir, HASH_SPRUCE_DIR_NAME)
-		const filePath = diskUtil.resolvePath(home, 'settings.json')
+	public static overrideCwd(cwd: string) {
+		this.cwdOverride = cwd
+	}
 
-		return {
-			directory: home,
-			file: filePath,
-		}
+	protected generateCwd() {
+		const home =
+			OnboardingStore.cwdOverride ?? diskUtil.createTempDir('spruce-cli')
+		return home
 	}
 }

@@ -13,7 +13,6 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 	public async execute(_options: Options): Promise<FeatureActionResponse> {
 		const store = this.getParent().OnboardingStore()
 		const mode = store.getMode()
-
 		let response = {}
 
 		const player = await this.getParent().ScriptPlayer()
@@ -33,7 +32,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 			response = {
 				headline: `Lets rock!`,
 				summaryLines: [
-					`Next step: \`spruce ${stage}\``,
+					`Next step: \`spruce ${stage} todos\``,
 					'If stuck: `spruce onboard`',
 				],
 			}

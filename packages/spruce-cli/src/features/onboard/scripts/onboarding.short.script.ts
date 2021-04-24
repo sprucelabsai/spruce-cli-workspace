@@ -18,10 +18,10 @@ const script: Script = [
 		player.ui.renderLine(line, [GraphicsTextEffect.Italic])
 		player.ui.renderLine('')
 	},
-	'Anyway... "Since all good software starts with a test, lets create one!"',
-	'"Go ahead and create a new directory anywhere on your computer, `cd` into it, and run"',
+	'Anyway... "How about we create a simple todo app."',
+	'"Go ahead and and run"',
 	async (player) => {
-		renderCommand(player.ui, 'spruce create.test')
+		renderCommand(player.ui, 'spruce create.skill todos')
 	},
 
 	'"Tip! If you ever got lost, just run"',
@@ -34,7 +34,7 @@ const script: Script = [
 
 		player.onboardingStore.setMode('short')
 		player.onboardingStore.setStage(
-			featuresUtil.generateCommand('test', 'create') as 'create.test'
+			featuresUtil.generateCommand('skill', 'create') as 'create.skill'
 		)
 	},
 ]

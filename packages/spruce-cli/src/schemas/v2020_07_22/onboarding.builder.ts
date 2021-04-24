@@ -32,6 +32,10 @@ export default buildSchema({
 			options: {
 				choices: [
 					{
+						label: 'Create skill',
+						value: 'create.skill',
+					},
+					{
 						label: 'Create test',
 						value: 'create.test',
 					},

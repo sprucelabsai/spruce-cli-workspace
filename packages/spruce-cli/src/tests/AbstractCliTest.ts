@@ -10,6 +10,7 @@ import FeatureCommandExecuter from '../features/FeatureCommandExecuter'
 import FeatureInstaller from '../features/FeatureInstaller'
 import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
 import { FeatureActionResponse, FeatureCode } from '../features/features.types'
+import OnboardingStore from '../features/onboard/stores/OnboardingStore'
 import SkillStore from '../features/skill/stores/SkillStore'
 import FeatureFixture, {
 	FeatureFixtureOptions,
@@ -64,6 +65,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		this.homeDir = this.freshTmpDir()
 		this.emitter = undefined
 		this.featureInstaller = undefined
+
+		OnboardingStore.overrideCwd(diskUtil.createRandomTempDir())
 
 		this.ui.reset()
 		this.ui.invocations = []

@@ -21,7 +21,7 @@ const onboardingSchema: SpruceSchemas.SpruceCli.v2020_07_22.OnboardingSchema  = 
 	            'stage': {
 	                label: 'Stage',
 	                type: 'select',
-	                options: {choices: [{"label":"Create test","value":"create.test"}],}
+	                options: {choices: [{"label":"Create skill","value":"create.skill"},{"label":"Create test","value":"create.test"}],}
 	            },
 	    }
 }

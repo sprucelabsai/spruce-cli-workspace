@@ -6,9 +6,12 @@ export interface LocalStoreSettings {}
 export default abstract class AbstractLocalStore<
 	Settings extends LocalStoreSettings
 > extends AbstractStore {
-	private settings = this.Service('settings')
 	public constructor(options: StoreOptions) {
 		super(options)
+	}
+
+	private get settings() {
+		return this.Service('settings')
 	}
 
 	protected writeValue<F extends keyof Settings>(key: F, value: Settings[F]) {
@@ -34,6 +37,6 @@ export default abstract class AbstractLocalStore<
 	}
 
 	private readSettings() {
-		return this.Service('settings').get('stores') ?? {}
+		return this.settings.get('stores') ?? {}
 	}
 }
