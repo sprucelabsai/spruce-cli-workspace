@@ -46,7 +46,9 @@ export default class InstallCheckingActionDecorator implements FeatureAction {
 		this.emitter = emitter
 	}
 
-	public execute = async (options: any) => {
+	public execute = async (optionsArg: any) => {
+		const { shouldEmitExecuteEvents = true, ...options } = optionsArg
+
 		const dependencies = this.featureInstaller.getFeatureDependencies(
 			this.parent.code
 		)
@@ -71,26 +73,30 @@ export default class InstallCheckingActionDecorator implements FeatureAction {
 			}
 		}
 
-		await this.emitter.emit('feature.will-execute', {
-			featureCode: this.parent.code,
-			actionCode: this.code,
-		})
+		if (shouldEmitExecuteEvents) {
+			await this.emitter.emit('feature.will-execute', {
+				featureCode: this.parent.code,
+				actionCode: this.code,
+			})
+		}
 
-		const response = await this.childAction.execute(options)
+		let response = await this.childAction.execute(options)
 
-		const didExecuteResults = await this.emitter.emit('feature.did-execute', {
-			results: response,
-			featureCode: this.parent.code,
-			actionCode: this.code,
-		})
+		if (shouldEmitExecuteEvents) {
+			const didExecuteResults = await this.emitter.emit('feature.did-execute', {
+				results: response,
+				featureCode: this.parent.code,
+				actionCode: this.code,
+			})
 
-		const { payloads } = eventResponseUtil.getAllResponsePayloadsAndErrors(
-			didExecuteResults,
-			SpruceError
-		)
+			const { payloads } = eventResponseUtil.getAllResponsePayloadsAndErrors(
+				didExecuteResults,
+				SpruceError
+			)
 
-		const merged = mergeUtil.mergeActionResults(response, ...payloads)
+			response = mergeUtil.mergeActionResults(response, ...payloads)
+		}
 
-		return merged
+		return response
 	}
 }

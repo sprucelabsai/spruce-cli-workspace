@@ -7,6 +7,7 @@ import globby from 'globby'
 import * as uuid from 'uuid'
 import { CliBootOptions } from '../cli'
 import FeatureCommandExecuter from '../features/FeatureCommandExecuter'
+import FeatureInstaller from '../features/FeatureInstaller'
 import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
 import { FeatureActionResponse, FeatureCode } from '../features/features.types'
 import SkillStore from '../features/skill/stores/SkillStore'
@@ -40,6 +41,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	private static personFixture?: PersonFixture
 	private static organizationFixture?: OrganizationFixture
 	private static skillFixture?: SkillFixture
+	private static featureInstaller?: FeatureInstaller
 
 	protected static async beforeAll() {
 		await super.beforeAll()
@@ -60,6 +62,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 		this.cwd = this.freshTmpDir()
 		this.homeDir = this.freshTmpDir()
+		this.emitter = undefined
+		this.featureInstaller = undefined
 
 		this.ui.reset()
 		this.ui.invocations = []
@@ -231,19 +235,23 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static FeatureInstaller() {
-		const serviceFactory = this.ServiceFactory()
-		const storeFactory = this.StoreFactory()
-		const emitter = this.Emitter()
-		const apiClientFactory = this.MercuryFixture().getApiClientFactory()
+		if (!this.featureInstaller) {
+			const serviceFactory = this.ServiceFactory()
+			const storeFactory = this.StoreFactory()
+			const emitter = this.Emitter()
+			const apiClientFactory = this.MercuryFixture().getApiClientFactory()
 
-		return FeatureInstallerFactory.WithAllFeatures({
-			cwd: this.cwd,
-			serviceFactory,
-			storeFactory,
-			ui: this.ui,
-			emitter,
-			apiClientFactory,
-		})
+			this.featureInstaller = FeatureInstallerFactory.WithAllFeatures({
+				cwd: this.cwd,
+				serviceFactory,
+				storeFactory,
+				ui: this.ui,
+				emitter,
+				apiClientFactory,
+			})
+		}
+
+		return this.featureInstaller
 	}
 
 	protected static StoreFactory() {
@@ -330,6 +338,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			actionCode,
 			featureInstaller,
 			term: this.ui,
+			emitter: this.Emitter(),
 		})
 
 		return executer

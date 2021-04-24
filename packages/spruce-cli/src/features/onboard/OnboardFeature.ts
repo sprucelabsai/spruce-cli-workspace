@@ -68,9 +68,11 @@ export default class OnboardFeature extends AbstractFeature {
 		const store = this.Store('onboarding')
 
 		if (store.getMode() !== 'off') {
-			await this.assertExpectedCommand(payload, store)
+			await this.confirmExpectedCommand(payload, store)
+
 			const player = await this.ScriptPlayer()
-			if (payload.featureCode !== 'onboard') {
+
+			if (store.getMode() !== 'off' && this.isExpectedCommand(payload, store)) {
 				await player.playScriptWithKey('todo.test.create')
 			}
 		}
@@ -80,7 +82,20 @@ export default class OnboardFeature extends AbstractFeature {
 		return true
 	}
 
-	private async assertExpectedCommand(
+	private async confirmExpectedCommand(
+		payload: { featureCode: string; actionCode: string },
+		store: OnboardingStore
+	) {
+		const isExpectedCommand = this.isExpectedCommand(payload, store)
+
+		if (payload.featureCode !== 'onboard' && !isExpectedCommand) {
+			const player = await this.ScriptPlayer()
+
+			await player.playScriptWithKey('wrongCommand')
+		}
+	}
+
+	private isExpectedCommand(
 		payload: { featureCode: string; actionCode: string },
 		store: OnboardingStore
 	) {
@@ -91,9 +106,7 @@ export default class OnboardFeature extends AbstractFeature {
 
 		const stage = store.getStage()
 
-		if (payload.featureCode !== 'onboard' && command !== stage) {
-			const player = await this.ScriptPlayer()
-			await player.playScriptWithKey('wrongCommand')
-		}
+		const isExpectedCommand = command === stage
+		return isExpectedCommand
 	}
 }

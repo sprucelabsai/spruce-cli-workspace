@@ -183,6 +183,7 @@ export default class Cli implements CliInterface {
 				program,
 				featureInstaller,
 				ui,
+				emitter,
 			})
 			const codes = FeatureInstallerFactory.featureCodes
 

@@ -44,11 +44,14 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		let willEventCommand = ''
 		let emittedDidEvent = false
 		let didEventCommand = ''
+		let willExecuteHitCount = 0
+		let didExecuteHitCount = 0
 
 		const emitter = this.Emitter()
 
 		void emitter.on('feature.will-execute', (payload) => {
 			emittedWillEvent = true
+			willExecuteHitCount++
 			willEventCommand = featuresUtil.generateCommand(
 				payload.featureCode,
 				payload.actionCode
@@ -58,15 +61,22 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 		void emitter.on('feature.did-execute', (payload) => {
 			emittedDidEvent = true
+			didExecuteHitCount++
 			didEventCommand = featuresUtil.generateCommand(
 				payload.featureCode,
 				payload.actionCode
 			)
-			return {}
+			return {
+				meta: {
+					taco: 'bell',
+				},
+			}
 		})
 
 		assert.isFalse(emittedWillEvent)
 		assert.isFalse(emittedDidEvent)
+		assert.isEqual(willExecuteHitCount, 0)
+		assert.isEqual(didExecuteHitCount, 0)
 
 		const promise = executer.execute()
 
@@ -75,10 +85,13 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		await this.ui.sendInput('My new skill')
 		await this.ui.sendInput('So great!')
 
-		await promise
+		const results = await promise
 
+		assert.isEqual(results.meta?.taco, 'bell')
 		assert.isEqual(willEventCommand, 'create.skill')
 		assert.isEqual(didEventCommand, 'create.skill')
+		assert.isEqual(willExecuteHitCount, 1)
+		assert.isEqual(didExecuteHitCount, 1)
 	}
 
 	@test()

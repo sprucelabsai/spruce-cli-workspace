@@ -2,6 +2,7 @@ import { Schema, SchemaPartialValues, SchemaValues } from '@sprucelabs/schema'
 import merge from 'lodash/merge'
 import FormComponent from '../components/FormComponent'
 import SpruceError from '../errors/SpruceError'
+import { GlobalEmitter } from '../GlobalEmitter'
 import { GraphicsInterface } from '../types/cli.types'
 import formUtil from '../utilities/form.utility'
 import AbstractFeature, { FeatureDependency } from './AbstractFeature'
@@ -29,22 +30,30 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 	private actionCode: string
 	private ui: GraphicsInterface
 	private featureInstaller: FeatureInstaller
+	private emitter: GlobalEmitter
 
 	public constructor(options: {
 		term: GraphicsInterface
 		featureCode: F
 		actionCode: string
 		featureInstaller: FeatureInstaller
+		emitter: GlobalEmitter
 	}) {
 		this.featureCode = options.featureCode
 		this.actionCode = options.actionCode
 		this.ui = options.term
 		this.featureInstaller = options.featureInstaller
+		this.emitter = options.emitter
 	}
 
 	public async execute(
 		options?: Record<string, any> & FeatureCommandExecuteOptions<F>
 	): Promise<FeatureInstallResponse & FeatureActionResponse> {
+		await this.emitter.emit('feature.will-execute', {
+			featureCode: this.featureCode,
+			actionCode: this.actionCode,
+		})
+
 		let response = await this.installOrMarkAsSkippedMissingDependencies()
 
 		const feature = this.featureInstaller.getFeature(this.featureCode)
@@ -66,8 +75,19 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			response = merge(response, ourFeatureResults)
 		}
 
-		const executeResults = await action.execute(answers || {})
+		const executeResults = await action.execute({
+			...answers,
+			shouldEmitExecuteEvents: false,
+		})
 		response = merge(response, executeResults)
+
+		const didExecuteResults = await this.emitter.emit('feature.did-execute', {
+			results: response,
+			featureCode: this.featureCode,
+			actionCode: this.actionCode,
+		})
+
+		response = merge(response, didExecuteResults)
 
 		this.ui.stopLoading()
 
@@ -180,6 +200,8 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 				await this.ui.waitForEnter(
 					`Phew, now that we're done with that, lets get back to ${this.getCommandName()}!`
 				)
+
+				this.ui.clear()
 			}
 		}
 

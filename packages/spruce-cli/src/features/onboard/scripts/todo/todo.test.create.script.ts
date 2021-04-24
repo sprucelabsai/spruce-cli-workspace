@@ -14,6 +14,14 @@ const script: Script = [
 		player.ui.renderLine('')
 		await player.ui.waitForEnter('')
 
+		player.ui.renderLine(
+			'Before we can start testing, we need to setup a skill. Hit "yes" below. 👇'
+		)
+
+		player.ui.renderLine('')
+
+		await player.ui.waitForEnter('')
+
 		player.onboardingStore.reset()
 	},
 ]
