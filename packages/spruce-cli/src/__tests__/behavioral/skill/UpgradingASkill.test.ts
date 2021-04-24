@@ -42,7 +42,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		for (const upgradeMode of ['forceRequiredSkipRest', 'forceEverything']) {
 			for (const file of files) {
-				this.clearEmptyIfAboutToBeUpdated(file, upgradeMode)
+				this.clearFileIfAboutToBeUpdated(file, upgradeMode)
 			}
 
 			const results = await cli.getFeature('skill').Action('upgrade').execute({
@@ -78,15 +78,11 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		const passedHealthCheck = await cli.checkHealth()
 
 		assert.doesInclude(passedHealthCheck, {
-			'skill.status': 'failed',
-		})
-
-		assert.doesInclude(passedHealthCheck, {
-			'skill.errors[0].options.code': 'SKILL_NOT_INSTALLED',
+			'skill.status': 'passed',
 		})
 	}
 
-	private static clearEmptyIfAboutToBeUpdated(
+	private static clearFileIfAboutToBeUpdated(
 		file: {
 			name: string
 			path: string
