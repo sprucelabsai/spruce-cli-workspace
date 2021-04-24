@@ -1,4 +1,5 @@
 import { Schema, SchemaPartialValues, SchemaValues } from '@sprucelabs/schema'
+import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import merge from 'lodash/merge'
 import FormComponent from '../components/FormComponent'
 import SpruceError from '../errors/SpruceError'
@@ -87,7 +88,12 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			actionCode: this.actionCode,
 		})
 
-		response = merge(response, didExecuteResults)
+		const { payloads } = eventResponseUtil.getAllResponsePayloadsAndErrors(
+			didExecuteResults,
+			SpruceError
+		)
+
+		response = merge(response, didExecuteResults, ...payloads)
 
 		this.ui.stopLoading()
 
