@@ -5,7 +5,7 @@
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "13.17.3",
+	"version": "13.17.5",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -64,7 +64,7 @@
 		"@sprucelabs/spruce-core-schemas": "latest",
 		"@sprucelabs/spruce-event-utils": "latest",
 		"@sprucelabs/spruce-skill-utils": "latest",
-		"@sprucelabs/spruce-templates": "^13.17.3",
+		"@sprucelabs/spruce-templates": "^13.17.5",
 		"cfonts": "^2.9.1",
 		"chalk": "^4.1.1",
 		"chokidar": "^3.5.1",
@@ -124,7 +124,7 @@
 		"concurrently": "^6.0.2",
 		"conventional-changelog-sprucelabs": "^1.1.2",
 		"dotenv": "^8.2.0",
-		"eslint": "^7.24.0",
+		"eslint": "^7.25.0",
 		"find-process": "^1.4.4",
 		"jest": "^26.6.3",
 		"jest-circus": "^26.6.3",
