@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.18.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.17.5...v13.18.0) (2021-04-24)
+
+
+### Features
+
+* onboarding changes to setup vscode and testing ([0d8870b](https://github.com/sprucelabsai/spruce-cli-workspace/commit/0d8870b))
+
+
+
+
+
 ## [13.17.5](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.17.4...v13.17.5) (2021-04-24)
 
 **Note:** Version bump only for package spruce-cli-workspace
