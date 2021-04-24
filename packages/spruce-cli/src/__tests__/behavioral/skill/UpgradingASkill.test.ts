@@ -40,8 +40,6 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 			},
 		]
 
-		this.Service('settings').set('testing', true)
-
 		for (const upgradeMode of ['forceRequiredSkipRest', 'forceEverything']) {
 			for (const file of files) {
 				this.clearEmptyIfAboutToBeUpdated(file, upgradeMode)
@@ -55,7 +53,6 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 				const passedHealthCheck = await cli.checkHealth()
 
 				assert.isEqualDeep(passedHealthCheck, { skill: { status: 'passed' } })
-				assert.isTrue(this.Service('settings').get('testing'))
 			}
 
 			for (const file of files) {
@@ -77,8 +74,6 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 				)
 			}
 		}
-
-		assert.isUndefined(this.Service('settings').get('testing'))
 
 		const passedHealthCheck = await cli.checkHealth()
 
