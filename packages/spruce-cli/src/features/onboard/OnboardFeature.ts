@@ -1,4 +1,5 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import createTestOptionsSchema from '#spruce/schemas/spruceCli/v2020_07_22/createTestOptions.schema'
 import AbstractFeature, {
 	FeatureDependency,
 	FeatureOptions,
@@ -33,6 +34,11 @@ export default class OnboardFeature extends AbstractFeature {
 			'feature.will-execute',
 			this.handleWillExecuteCommand.bind(this)
 		)
+
+		void this.emitter.on(
+			'test.reporter-did-boot',
+			this.handleTestReporterDidBoot.bind(this)
+		)
 	}
 
 	public OnboardingStore() {
@@ -65,17 +71,52 @@ export default class OnboardFeature extends AbstractFeature {
 		featureCode: string
 		actionCode: string
 	}) {
-		const store = this.Store('onboarding')
+		const onboarding = this.Store('onboarding')
 
-		if (store.getMode() !== 'off') {
-			await this.confirmExpectedCommand(payload, store)
+		if (onboarding.getMode() !== 'off') {
+			const command = this.generateCommandFromPayload(payload)
+			await this.confirmExpectedCommand(payload, onboarding)
 
-			const player = await this.ScriptPlayer()
-
-			if (store.getMode() !== 'off' && this.isExpectedCommand(payload, store)) {
-				await player.playScriptWithKey('todo.create.skill')
+			if (
+				onboarding.getMode() !== 'off' &&
+				this.isExpectedCommand(command, onboarding)
+			) {
+				const player = await this.ScriptPlayer()
+				await player.playScriptWithKey(`todo.${command}`)
 			}
 		}
+	}
+
+	private handleTestReporterDidBoot() {
+		const onboarding = this.Store('onboarding')
+
+		if (onboarding.getMode() !== 'off') {
+			const source = diskUtil.resolvePath(
+				__dirname,
+				'templates',
+				'ManagingTodos.test.ts.hbs'
+			)
+
+			const contents = diskUtil.readFile(source)
+
+			const destination = diskUtil.resolvePath(
+				this.cwd,
+				createTestOptionsSchema.fields.testDestinationDir.defaultValue,
+				'behavioral',
+				'ManagingTodos.test.ts'
+			)
+
+			diskUtil.writeFile(destination, contents)
+
+			this.Store('onboarding').reset()
+		}
+	}
+
+	private generateCommandFromPayload(payload: {
+		featureCode: string
+		actionCode: string
+	}) {
+		return featuresUtil.generateCommand(payload.featureCode, payload.actionCode)
 	}
 
 	public isInstalled = async (): Promise<boolean> => {
@@ -86,24 +127,20 @@ export default class OnboardFeature extends AbstractFeature {
 		payload: { featureCode: string; actionCode: string },
 		store: OnboardingStore
 	) {
-		const isExpectedCommand = this.isExpectedCommand(payload, store)
+		const command = this.generateCommandFromPayload(payload)
+		const isExpectedCommand = this.isExpectedCommand(command, store)
 
-		if (payload.featureCode !== 'onboard' && !isExpectedCommand) {
+		if (
+			command !== 'setup.vscode' &&
+			payload.featureCode !== 'onboard' &&
+			!isExpectedCommand
+		) {
 			const player = await this.ScriptPlayer()
-
 			await player.playScriptWithKey('wrongCommand')
 		}
 	}
 
-	private isExpectedCommand(
-		payload: { featureCode: string; actionCode: string },
-		store: OnboardingStore
-	) {
-		const command = featuresUtil.generateCommand(
-			payload.featureCode,
-			payload.actionCode
-		)
-
+	private isExpectedCommand(command: string, store: OnboardingStore) {
 		const stage = store.getStage()
 
 		const isExpectedCommand = command === stage

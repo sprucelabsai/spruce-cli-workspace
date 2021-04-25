@@ -109,6 +109,20 @@ export const globalContract = buildEventContract({
 				},
 			}),
 		},
+		'test.reporter-did-boot': {
+			emitPayloadSchema: buildSchema({
+				id: 'testReporterDidBootEmitPayload',
+				fields: {
+					reporter: {
+						type: 'raw',
+						isRequired: true,
+						options: {
+							valueType: 'TestAction',
+						},
+					},
+				},
+			}),
+		},
 	},
 })
 

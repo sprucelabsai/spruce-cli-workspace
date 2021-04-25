@@ -51,10 +51,7 @@ export default class OnboardingStoreTest extends AbstractCliTest {
 
 	@test()
 	protected static async remembersStageBetweenBoots() {
-		const stage = featuresUtil.generateCommand(
-			'test',
-			'create'
-		) as 'create.test'
+		const stage = featuresUtil.generateCommand('test', 'create') as 'test'
 
 		this.store.setStage(stage)
 
@@ -79,14 +76,14 @@ export default class OnboardingStoreTest extends AbstractCliTest {
 
 	@test()
 	protected static stageCanBeSet() {
-		this.store.setStage('create.test')
+		this.store.setStage('test')
 		const stage = this.store.getStage()
-		assert.isEqual(stage, 'create.test')
+		assert.isEqual(stage, 'test')
 	}
 
 	@test()
 	protected static canBeReset() {
-		this.store.setStage('create.test')
+		this.store.setStage('test')
 		this.store.reset()
 
 		const stage = this.store.getStage()

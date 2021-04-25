@@ -351,10 +351,12 @@ async function setupInGameEntertainment(terminal: TerminalInterface) {
 	async function startGame() {
 		terminal.clear()
 		await new Promise((r) => setTimeout(r, 500))
-		terminal.renderLine(`I have begun installing node modules using NPM.`)
+		terminal.renderLine(
+			`I gotta install some dependencies to get things working. I'll be using NPM.`
+		)
 		await new Promise((r) => setTimeout(r, 2000))
 		terminal.renderLine(
-			`This can be slow, so in the mean time, enjoy some games! 🤩`
+			`NPM can be slow, so in the mean time, enjoy some games! 🤩`
 		)
 		await new Promise((r) => setTimeout(r, 5000))
 		terminal.clear()

@@ -36,8 +36,8 @@ export default buildSchema({
 						value: 'create.skill',
 					},
 					{
-						label: 'Create test',
-						value: 'create.test',
+						label: 'Test',
+						value: 'test',
 					},
 				],
 			},

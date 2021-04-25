@@ -113,6 +113,11 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 				},
 			}
 		}
+
+		void this.emitter.emit('test.reporter-did-boot', {
+			reporter: this,
+		})
+
 		const testResults = await promise
 
 		await this.watcher?.stopWatching()
