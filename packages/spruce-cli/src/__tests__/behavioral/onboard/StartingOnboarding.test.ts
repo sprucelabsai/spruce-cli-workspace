@@ -61,7 +61,7 @@ export default class StartingOnboardingTest extends AbstractCliTest {
 
 		await createPromise
 
-		//should still be on
+		//should still be on (will turn off after test reporter boots)
 		assert.isEqual(onboardingStore.getMode(), 'on')
 	}
 }
