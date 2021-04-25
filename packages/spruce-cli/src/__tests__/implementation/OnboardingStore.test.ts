@@ -51,7 +51,7 @@ export default class OnboardingStoreTest extends AbstractCliTest {
 
 	@test()
 	protected static async remembersStageBetweenBoots() {
-		const stage = featuresUtil.generateCommand('test', 'create') as 'test'
+		const stage = featuresUtil.generateCommand('test', 'test') as 'test'
 
 		this.store.setStage(stage)
 
