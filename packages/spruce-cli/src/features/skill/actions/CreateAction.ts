@@ -27,7 +27,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 				'This is so much fun! Lets keep moving.',
 				`When you're ready, go ahead and run \`${codeSuggestion}\` to open vscode.`,
 				'Once vscode loads, open the terminal and type `spruce setup.vscode`',
-				"Hint: You're going to want to install all extensions.",
+				"Hint: You're going to want to install all extensions and setup all features (yes for everything).",
 				'See you there! 💪',
 			],
 		}
