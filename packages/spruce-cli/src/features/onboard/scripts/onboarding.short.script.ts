@@ -14,17 +14,17 @@ const script: Script = [
 	'A familiar voice echos...',
 	'"Hey! It\'s Sprucebot again! 🌲🤖"',
 	async (player) => {
-		const line = `This is so much fun! I love playng both the narrator and a character!`
+		const line = `This is so much fun! I love playing both the narrator and a character!`
 		player.ui.renderLine(line, [GraphicsTextEffect.Italic])
 		player.ui.renderLine('')
 	},
 	'Anyway... "How about we create a simple todo app."',
-	'"Go ahead and and run"',
+	'"Go ahead and run"',
 	async (player) => {
 		renderCommand(player.ui, 'spruce create.skill todos')
 	},
 
-	'"Tip! If you ever got lost, just run"',
+	'"Tip! If you ever get lost, just run"',
 	async (player) => {
 		renderCommand(player.ui, `spruce onboard`)
 	},
