@@ -370,7 +370,8 @@
 						"skillWithSameEventNameButDifferentVersionsCanBeSynced": "I79",
 						"unRegisteredEventsAreRemoved": "I86",
 						"canListenToEventWeCreated": "I89",
-						"canCreateGlobalEvent": "I91"
+						"canCreateGlobalEvent": "I91",
+						"canChangeSkillNamespace": "I107"
 					}
 				}
 			],
