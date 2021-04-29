@@ -116,4 +116,15 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 
 		await this.Service('typeChecker').check(dest)
 	}
+
+	@test()
+	protected static async doesNotCreateAbstractTestFileBecauseTestIsNotInstalled() {
+		assert.isFalse(
+			diskUtil.doesFileExist(CreatingDataStoresTest.getAbstractTestPath())
+		)
+	}
+
+	private static getAbstractTestPath(): string {
+		return this.resolvePath('src', 'tests', 'AbstractDataStoreTest.ts')
+	}
 }

@@ -10,6 +10,7 @@ import { GeneratedFile } from '../../../types/cli.types'
 import mergeUtil from '../../../utilities/merge.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
+import schemaDiskUtil from '../utilities/schemaDisk.utility'
 import schemaGeneratorUtil from '../utilities/schemaGenerator.utility'
 import ValueTypeBuilder from '../ValueTypeBuilder'
 
@@ -180,6 +181,8 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			}
 		}
 
+		this.cleanEmptyDirs(resolvedSchemaTypesDestination)
+
 		this.ui.stopLoading()
 
 		const errors = [...schemaErrors, ...fieldErrors]
@@ -347,5 +350,9 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 		)
 
 		definitionsToDelete.forEach((def) => diskUtil.deleteFile(def))
+	}
+
+	private cleanEmptyDirs(resolvedDestination: string) {
+		schemaDiskUtil.cleanEmpty(resolvedDestination)
 	}
 }

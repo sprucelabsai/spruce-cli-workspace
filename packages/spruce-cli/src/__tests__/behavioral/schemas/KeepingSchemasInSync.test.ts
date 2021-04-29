@@ -349,6 +349,13 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		// and the schema should have been deleted
 		assert.isFalse(diskUtil.doesFileExist(schemaFile))
+
+		// and the namespace folder should have been deleted
+		const namespaceFolder = this.resolveHashSprucePath(
+			'schemas',
+			'testingSChemas'
+		)
+		assert.isFalse(diskUtil.doesDirExist(namespaceFolder))
 	}
 
 	@test()
@@ -371,12 +378,34 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		await diskUtil.copyDir(this.resolveTestPath('test_builders'), schemasDir)
 
 		const results = await cli.getFeature('schema').Action('sync').execute({})
-
 		const schema = await this.importSchema(results, 'schemaTwo.schema.ts')
 
 		assert.isUndefined(schema.fields.phone.minArrayLength)
 		assert.isEqual(schema.fields.favoriteColors.minArrayLength, 3)
 		assert.isEqual(schema.fields.permissions.minArrayLength, 0)
+	}
+
+	@test()
+	protected static async canChangeSkillNamespace() {
+		const cli = await this.syncSchemas('schemas')
+
+		await cli.getFeature('schema').Action('create').execute({
+			nameReadable: 'Test schema',
+			nameCamel: 'testSchema',
+		})
+
+		const beforeFolder = this.resolveHashSprucePath('schemas', 'testingSchemas')
+		const afterFolder = this.resolveHashSprucePath('schemas', 'newNamespace')
+
+		assert.isTrue(diskUtil.doesFileExist(beforeFolder))
+		assert.isFalse(diskUtil.doesFileExist(afterFolder))
+
+		await this.Store('skill').setCurrentSkillsNamespace('new-namespace')
+
+		await cli.getFeature('schema').Action('sync').execute({})
+
+		assert.isFalse(diskUtil.doesFileExist(beforeFolder))
+		assert.isTrue(diskUtil.doesFileExist(afterFolder))
 	}
 
 	private static async importSchema(results: any, filename: string) {

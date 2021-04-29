@@ -45,6 +45,7 @@ export default class SkillStore extends AbstractStore {
 		const { skill } = eventResponseUtil.getFirstResponseOrThrow(results)
 
 		if (isRegisteringCurrentSkill) {
+			await this.setCurrentSkillsNamespace(skill.slug)
 			this.Service('auth').updateCurrentSkill(skill)
 		}
 
@@ -88,7 +89,7 @@ export default class SkillStore extends AbstractStore {
 		}
 
 		return {
-			name: this.getSkillNameFromPkg(),
+			name: this.getNamespaceFromPkg(),
 			namespacePascal: this.getEventNamespaceForNotRegistered(),
 			description: this.getSkillDescriptionFromPkg(),
 			isRegistered: false,
@@ -100,19 +101,19 @@ export default class SkillStore extends AbstractStore {
 		return skill.isRegistered
 	}
 
-	private getSkillNameFromPkg() {
+	private getNamespaceFromPkg() {
 		const pkg = this.Service('pkg')
-		const nameFromPackage = pkg.get('name')
+		const nameFromPackage = pkg.get('skill.namespace')
 		if (!nameFromPackage) {
 			throw new Error(
-				'Need name in package.json, make this error a proper spruce error'
+				'Need skill.namespace in package.json, make this error a proper spruce error'
 			)
 		}
-		return nameFromPackage.split('/').pop()
+		return nameFromPackage
 	}
 
 	public async loadCurrentSkillsNamespace() {
-		const fallback = namesUtil.toPascal(this.getSkillNameFromPkg())
+		const fallback = namesUtil.toPascal(this.getNamespaceFromPkg())
 
 		if (this.Service('auth').getCurrentSkill()) {
 			const current = await this.loadCurrentSkill()
@@ -122,8 +123,22 @@ export default class SkillStore extends AbstractStore {
 		return fallback
 	}
 
+	public async setCurrentSkillsNamespace(namespace: string) {
+		const isRegistered = await this.isCurrentSkillRegistered()
+
+		if (isRegistered) {
+			throw new SpruceError({
+				code: 'GENERIC',
+				friendlyMessage: `You can't update the namespace of a registered skill.`,
+			})
+		}
+
+		const pkg = this.Service('pkg')
+		pkg.set({ path: 'skill.namespace', value: namesUtil.toKebab(namespace) })
+	}
+
 	private getEventNamespaceForNotRegistered() {
-		return namesUtil.toPascal(this.getSkillNameFromPkg())
+		return namesUtil.toPascal(this.getNamespaceFromPkg())
 	}
 
 	private getSkillDescriptionFromPkg() {

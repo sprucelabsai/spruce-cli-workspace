@@ -178,6 +178,11 @@ export default class SkillFeature<
 		return { files, cwd: this.resolveDestination(options) }
 	}
 
+	public async afterPackageInstall(options: SkillFeatureOptions) {
+		await this.Store('skill').setCurrentSkillsNamespace(options.name)
+		return {}
+	}
+
 	private async install(options: SkillFeatureOptions) {
 		validateSchemaValues(skillFeatureSchema, options)
 
