@@ -5,7 +5,7 @@
 		"access": "public"
 	},
 	"license": "MIT",
-	"version": "13.18.7",
+	"version": "13.18.9",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -53,7 +53,7 @@
 		"watch.tests": "yarn cache.tests && jest --watch"
 	},
 	"dependencies": {
-		"@babel/runtime": "^7.13.17",
+		"@babel/runtime": "^7.14.0",
 		"@jest/reporters": "^26.6.2",
 		"@sprucelabs/error": "latest",
 		"@sprucelabs/jest-json-reporter": "latest",
@@ -64,7 +64,7 @@
 		"@sprucelabs/spruce-core-schemas": "latest",
 		"@sprucelabs/spruce-event-utils": "latest",
 		"@sprucelabs/spruce-skill-utils": "latest",
-		"@sprucelabs/spruce-templates": "^13.18.7",
+		"@sprucelabs/spruce-templates": "^13.18.9",
 		"cfonts": "^2.9.1",
 		"chalk": "^4.1.1",
 		"chokidar": "^3.5.1",
