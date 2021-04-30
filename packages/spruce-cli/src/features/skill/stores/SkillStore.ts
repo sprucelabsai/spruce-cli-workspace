@@ -127,6 +127,7 @@ export default class SkillStore extends AbstractStore {
 		let isRegistered = false
 		try {
 			isRegistered = await this.isCurrentSkillRegistered()
+			// eslint-disable-next-line no-empty
 		} catch {}
 
 		if (isRegistered) {
