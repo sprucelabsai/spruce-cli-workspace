@@ -252,7 +252,7 @@ export default class Cli implements CliInterface {
 
 		const client = await connect()
 
-		let auth: SpruceSchemas.MercuryApi.v2020_12_25.AuthenticateEmitPayload = {}
+		let auth: SpruceSchemas.Mercury.v2020_12_25.AuthenticateEmitPayload = {}
 		if (!options) {
 			const person = serviceFactory.Service(cwd, 'auth').getLoggedInPerson()
 

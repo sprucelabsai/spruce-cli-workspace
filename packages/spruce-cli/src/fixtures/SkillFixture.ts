@@ -74,7 +74,7 @@ export default class SkillFixture {
 
 	public async unRegisterEvents(
 		auth: ApiClientFactoryOptions | SpruceSchemas.Spruce.v2020_07_22.Skill,
-		options: SpruceSchemas.MercuryApi.v2020_12_25.UnregisterEventsEmitPayload
+		options: SpruceSchemas.Mercury.v2020_12_25.UnregisterEventsEmitPayload
 	) {
 		const skillAuth = apiClientUtil.skillOrAuthToAuth(auth)
 		const client = await this.apiClientFactory(skillAuth)

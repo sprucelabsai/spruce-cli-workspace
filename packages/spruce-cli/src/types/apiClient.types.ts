@@ -1,7 +1,7 @@
 import { MercuryClient } from '@sprucelabs/mercury-client'
 import { SkillEventContract, SpruceSchemas } from '@sprucelabs/mercury-types'
 
-export type ApiClientFactoryOptions = SpruceSchemas.MercuryApi.v2020_12_25.AuthenticateEmitPayload & {
+export type ApiClientFactoryOptions = SpruceSchemas.Mercury.v2020_12_25.AuthenticateEmitPayload & {
 	shouldAuthAsCurrentSkill?: boolean
 }
 //@ts-ignore

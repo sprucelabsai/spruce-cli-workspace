@@ -176,7 +176,7 @@ export default class EventStore extends AbstractStore {
 	}
 
 	public async unRegisterEvents(
-		options: SpruceSchemas.MercuryApi.v2020_12_25.UnregisterEventsEmitPayload
+		options: SpruceSchemas.Mercury.v2020_12_25.UnregisterEventsEmitPayload
 	) {
 		const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
 
