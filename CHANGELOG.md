@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.0.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.18.9...v14.0.0) (2021-04-30)
+
+
+### Breaking Changes
+
+* namespace updates for mercury ([2f8bc88](https://github.com/sprucelabsai/spruce-cli-workspace/commit/2f8bc88))
+
+
+### Features
+
+* can override skill samespace when generating schemas and other things ([6914321](https://github.com/sprucelabsai/spruce-cli-workspace/commit/6914321))
+
+
+
+
+
 ## [13.18.9](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.18.8...v13.18.9) (2021-04-29)
 
 **Note:** Version bump only for package spruce-cli-workspace
