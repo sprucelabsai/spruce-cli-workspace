@@ -179,7 +179,10 @@ export default class SkillFeature<
 	}
 
 	public async afterPackageInstall(options: SkillFeatureOptions) {
-		await this.Store('skill').setCurrentSkillsNamespace(options.name)
+		const destination = this.resolveDestination(options)
+		await this.Store('skill', { cwd: destination }).setCurrentSkillsNamespace(
+			options.name
+		)
 		return {}
 	}
 
