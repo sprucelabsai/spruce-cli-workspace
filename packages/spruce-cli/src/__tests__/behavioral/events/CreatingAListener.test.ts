@@ -41,7 +41,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		const results = await cli
 			.getFeature('event')
 			.Action('listen')
-			.execute({ eventNamespace: 'mercuryApi', eventName: 'bad-time' })
+			.execute({ eventNamespace: 'mercury', eventName: 'bad-time' })
 
 		assert.isTruthy(results.errors)
 		const err = results.errors[0]
