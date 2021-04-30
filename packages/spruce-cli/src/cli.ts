@@ -23,6 +23,7 @@ import CliGlobalEmitter, {
 } from './GlobalEmitter'
 import TerminalInterface from './interfaces/TerminalInterface'
 import CommandService from './services/CommandService'
+import GameService from './services/GameService'
 import ServiceFactory from './services/ServiceFactory'
 import StoreFactory from './stores/StoreFactory'
 import {
@@ -326,58 +327,26 @@ export async function run(argv: string[] = []): Promise<void> {
 }
 
 async function setupInGameEntertainment(terminal: TerminalInterface) {
-	let game: any | undefined
-	let installMessage = 'Starting install...'
-	let killed = false
-
 	if (
 		process.stdout.isTTY &&
 		process.env.ENABLE_INSTALL_INTERTAINMENT !== 'false'
 	) {
+		const command = new CommandService(diskUtil.resolvePath(__dirname, '../'))
+		const game = new GameService(command, terminal)
+
 		FeatureInstaller.startInstallIntertainmentHandler = (didUpdateHandler) => {
 			didUpdateHandler((message) => {
-				installMessage = `⏱  ${message}`
+				game.setStatusMessage(`⏱  ${message}`)
 			})
-			void startGame()
+			void game.play([
+				'Starting install...',
+				`I gotta install some dependencies to get things working. I'll be using NPM.`,
+				`NPM can be slow, so in the mean time, enjoy some games! 🤩`,
+			])
 		}
 
 		FeatureInstaller.stopInstallIntertainmentHandler = () => {
-			killed = true
-			game?.kill()
-			terminal.clear()
+			game.kill()
 		}
-	}
-
-	async function startGame() {
-		terminal.clear()
-		await new Promise((r) => setTimeout(r, 500))
-		terminal.renderLine(
-			`I gotta install some dependencies to get things working. I'll be using NPM.`
-		)
-		await new Promise((r) => setTimeout(r, 2000))
-		terminal.renderLine(
-			`NPM can be slow, so in the mean time, enjoy some games! 🤩`
-		)
-		await new Promise((r) => setTimeout(r, 5000))
-		terminal.clear()
-
-		game = new CommandService(diskUtil.resolvePath(__dirname, '../'))
-
-		void game.execute('node ./node_modules/.bin/js-tetris-cli', {
-			spawnOptions: {
-				stdio: [process.stdin, 'pipe', 'pipe'],
-			},
-			onData: (data: string) => {
-				if (!killed) {
-					process.stdout?.write(data)
-					terminal.saveCursor()
-					terminal.moveCursorTo(0, 25)
-					process.stdout?.write(installMessage)
-					terminal.restoreCursor()
-				}
-			},
-		})
-
-		return game
 	}
 }

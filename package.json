@@ -33,7 +33,7 @@
     "upgrade.packages.test": "yarn upgrade.packages.all && yarn lint && yarn build.dev && yarn test",
     "watch.build.dev": "lerna run watch.build.dev --stream --parallel",
     "watch.lint": "lerna run watch.lint --stream --parallel",
-    "watch.rebuild": "yarn clean.all && yarn && yarn watch.build",
+    "watch.rebuild": "yarn clean.all && yarn && yarn watch.build.dev",
     "watch.tests": "lerna run watch.tests --parallel"
   },
   "dependencies": {},

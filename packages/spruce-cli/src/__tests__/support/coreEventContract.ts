@@ -2247,7 +2247,7 @@ const coreEventContract: EventContract = {
 											schema: {
 												id: 'eventContract',
 												version: 'v2020_09_01',
-												namespace: 'MercuryTypes',
+												namespace: 'Mercury',
 												name: 'Event contract',
 												fields: {
 													eventSignatures: {
@@ -2257,7 +2257,7 @@ const coreEventContract: EventContract = {
 															schema: {
 																id: 'eventSignaturesByName',
 																version: 'v2020_09_01',
-																namespace: 'MercuryTypes',
+																namespace: 'Mercury',
 																name: '',
 																dynamicFieldSignature: {
 																	type: 'schema',
@@ -2267,7 +2267,7 @@ const coreEventContract: EventContract = {
 																		schema: {
 																			id: 'eventSignature',
 																			version: 'v2020_09_01',
-																			namespace: 'MercuryTypes',
+																			namespace: 'Mercury',
 																			name: 'Event Signature',
 																			fields: {
 																				responsePayloadSchema: {
@@ -2288,7 +2288,7 @@ const coreEventContract: EventContract = {
 																						schema: {
 																							id: 'permissionContract',
 																							version: 'v2020_09_01',
-																							namespace: 'MercuryTypes',
+																							namespace: 'Mercury',
 																							name: 'Permission contract',
 																							fields: {
 																								id: {
@@ -2320,7 +2320,7 @@ const coreEventContract: EventContract = {
 																										schema: {
 																											id: 'permission',
 																											version: 'v2020_09_01',
-																											namespace: 'MercuryTypes',
+																											namespace: 'Mercury',
 																											name: 'Permission',
 																											fields: {
 																												id: {
@@ -2356,7 +2356,7 @@ const coreEventContract: EventContract = {
 																															version:
 																																'v2020_09_01',
 																															namespace:
-																																'MercuryTypes',
+																																'Mercury',
 																															name: '',
 																															fields: {
 																																owner: {
@@ -2371,7 +2371,7 @@ const coreEventContract: EventContract = {
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
-																																				'MercuryTypes',
+																																				'Mercury',
 																																			name: '',
 																																			fields: {
 																																				default: {
@@ -2428,7 +2428,7 @@ const coreEventContract: EventContract = {
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
-																																				'MercuryTypes',
+																																				'Mercury',
 																																			name: '',
 																																			fields: {
 																																				default: {
@@ -2485,7 +2485,7 @@ const coreEventContract: EventContract = {
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
-																																				'MercuryTypes',
+																																				'Mercury',
 																																			name: '',
 																																			fields: {
 																																				default: {
@@ -2542,7 +2542,7 @@ const coreEventContract: EventContract = {
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
-																																				'MercuryTypes',
+																																				'Mercury',
 																																			name: '',
 																																			fields: {
 																																				default: {
@@ -2599,7 +2599,7 @@ const coreEventContract: EventContract = {
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
-																																				'MercuryTypes',
+																																				'Mercury',
 																																			name: '',
 																																			fields: {
 																																				default: {
@@ -2656,7 +2656,7 @@ const coreEventContract: EventContract = {
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
-																																				'MercuryTypes',
+																																				'Mercury',
 																																			name: '',
 																																			fields: {
 																																				default: {
@@ -2713,7 +2713,7 @@ const coreEventContract: EventContract = {
 																															version:
 																																'v2020_09_01',
 																															namespace:
-																																'MercuryTypes',
+																																'Mercury',
 																															name: '',
 																															fields: {
 																																default: {
@@ -2772,7 +2772,7 @@ const coreEventContract: EventContract = {
 																						schema: {
 																							id: 'permissionContract',
 																							version: 'v2020_09_01',
-																							namespace: 'MercuryTypes',
+																							namespace: 'Mercury',
 																							name: 'Permission contract',
 																							fields: {
 																								id: {
@@ -2804,7 +2804,7 @@ const coreEventContract: EventContract = {
 																										schema: {
 																											id: 'permission',
 																											version: 'v2020_09_01',
-																											namespace: 'MercuryTypes',
+																											namespace: 'Mercury',
 																											name: 'Permission',
 																											fields: {
 																												id: {
@@ -2840,7 +2840,7 @@ const coreEventContract: EventContract = {
 																															version:
 																																'v2020_09_01',
 																															namespace:
-																																'MercuryTypes',
+																																'Mercury',
 																															name: '',
 																															fields: {
 																																owner: {
@@ -2855,7 +2855,7 @@ const coreEventContract: EventContract = {
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
-																																				'MercuryTypes',
+																																				'Mercury',
 																																			name: '',
 																																			fields: {
 																																				default: {
@@ -2912,7 +2912,7 @@ const coreEventContract: EventContract = {
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
-																																				'MercuryTypes',
+																																				'Mercury',
 																																			name: '',
 																																			fields: {
 																																				default: {
@@ -2969,7 +2969,7 @@ const coreEventContract: EventContract = {
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
-																																				'MercuryTypes',
+																																				'Mercury',
 																																			name: '',
 																																			fields: {
 																																				default: {
@@ -3026,7 +3026,7 @@ const coreEventContract: EventContract = {
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
-																																				'MercuryTypes',
+																																				'Mercury',
 																																			name: '',
 																																			fields: {
 																																				default: {
@@ -3083,7 +3083,7 @@ const coreEventContract: EventContract = {
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
-																																				'MercuryTypes',
+																																				'Mercury',
 																																			name: '',
 																																			fields: {
 																																				default: {
@@ -3140,7 +3140,7 @@ const coreEventContract: EventContract = {
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
-																																				'MercuryTypes',
+																																				'Mercury',
 																																			name: '',
 																																			fields: {
 																																				default: {
@@ -3197,7 +3197,7 @@ const coreEventContract: EventContract = {
 																															version:
 																																'v2020_09_01',
 																															namespace:
-																																'MercuryTypes',
+																																'Mercury',
 																															name: '',
 																															fields: {
 																																default: {

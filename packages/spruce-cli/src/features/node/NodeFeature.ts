@@ -80,6 +80,8 @@ export default class NodeFeature<
 		pkg.unset('main')
 		pkg.unset('license')
 
+		await this.Store('skill').setCurrentSkillsNamespace(options.name)
+
 		return {}
 	}
 

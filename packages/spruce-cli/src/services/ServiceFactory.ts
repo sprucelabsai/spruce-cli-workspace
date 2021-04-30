@@ -2,9 +2,11 @@ import { SettingsService, EnvService } from '@sprucelabs/spruce-skill-utils'
 import { FeatureCode } from '../features/features.types'
 import SchemaService from '../features/schema/services/SchemaService'
 import VsCodeService from '../features/vscode/services/VsCodeService'
+import TerminalInterface from '../interfaces/TerminalInterface'
 import AuthService from './AuthService'
 import BuildService from './BuildService'
 import CommandService from './CommandService'
+import GameService from './GameService'
 import ImportService from './ImportService'
 import LintService from './LintService'
 import PkgService from './PkgService'
@@ -22,6 +24,7 @@ export interface ServiceMap {
 	settings: SettingsService
 	env: EnvService
 	auth: AuthService
+	game: GameService
 }
 
 export type Service = keyof ServiceMap
@@ -38,6 +41,11 @@ export default class ServiceFactory {
 				return new PkgService(cwd) as ServiceMap[S]
 			case 'env':
 				return new EnvService(cwd) as ServiceMap[S]
+			case 'game':
+				return new GameService(
+					new CommandService(cwd),
+					new TerminalInterface(cwd)
+				) as ServiceMap[S]
 			case 'vsCode':
 				return new VsCodeService(cwd) as ServiceMap[S]
 			case 'schema':

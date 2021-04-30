@@ -124,7 +124,10 @@ export default class SkillStore extends AbstractStore {
 	}
 
 	public async setCurrentSkillsNamespace(namespace: string) {
-		const isRegistered = await this.isCurrentSkillRegistered()
+		let isRegistered = false
+		try {
+			isRegistered = await this.isCurrentSkillRegistered()
+		} catch {}
 
 		if (isRegistered) {
 			throw new SpruceError({

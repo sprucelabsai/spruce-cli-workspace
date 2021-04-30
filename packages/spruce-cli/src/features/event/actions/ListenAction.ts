@@ -214,7 +214,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 	}
 
 	private mapContractsToSelectChoices(
-		contracts: SpruceSchemas.MercuryTypes.v2020_09_01.EventContract[]
+		contracts: SpruceSchemas.Mercury.v2020_09_01.EventContract[]
 	) {
 		const namespaceChoices: SelectChoice[] = [
 			{

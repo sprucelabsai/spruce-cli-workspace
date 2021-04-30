@@ -1058,7 +1058,7 @@ const mercuryTemplateItems = [
 
 const localSchema = buildSchema({
 	id: 'localNamespaceSchema',
-	namespace: 'MercuryTypes',
+	namespace: 'Mercury',
 	fields: {
 		onlyField: {
 			type: 'text',
@@ -1067,7 +1067,7 @@ const localSchema = buildSchema({
 })
 
 const localSchemaTemplateItem: SchemaTemplateItem = {
-	namespace: 'MercuryTypes',
+	namespace: 'Mercury',
 	id: 'localNamespaceSchema',
 	nameCamel: 'localNamespaceSchema',
 	namePascal: 'LocalNamespaceSchema',
@@ -1181,7 +1181,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 		'import from not set if matching local namespace',
 		[localSchema],
 		[localSchemaTemplateItem],
-		'MercuryTypes'
+		'Mercury'
 	)
 	protected static async generationTests(
 		schemas: Schema[],

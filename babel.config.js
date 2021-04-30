@@ -2,7 +2,7 @@ module.exports = (api) => {
 	api.cache(true)
 	return {
 		ignore: ["**/testDirsAndFiles/**", "**/spruce-templates/src/templates/**"],
-		presets: ['@babel/preset-env', '@babel/preset-typescript'],
+		presets: [['@babel/preset-env', {loose: false}], '@babel/preset-typescript'],
 		plugins: [
 			'@babel/plugin-transform-runtime',
 			[
@@ -11,7 +11,7 @@ module.exports = (api) => {
 					legacy: true,
 				},
 			],
-			['@babel/plugin-proposal-class-properties', {loose: true}],
+			['@babel/plugin-proposal-class-properties', {loose: false}],
 			[
 				'module-resolver',
 				{

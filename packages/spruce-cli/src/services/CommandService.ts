@@ -20,6 +20,7 @@ export default class CommandService {
 	private activeChildProcess: ChildProcess | undefined
 	private ignoreCloseErrors = false
 	private static mockResponses: Record<string, MockResponse> = {}
+	private static commandsRunCapturedByMockResponses: string[] = []
 
 	public constructor(cwd: string) {
 		this.cwd = cwd
@@ -53,6 +54,7 @@ export default class CommandService {
 		const mockKey = `${executable} ${args.join(' ')}`.trim()
 		const mockResponse = CommandService.mockResponses[mockKey]
 		if (mockResponse) {
+			CommandService.commandsRunCapturedByMockResponses.push(mockKey)
 			if (mockResponse.code !== 0) {
 				throw new SpruceError({
 					code: 'EXECUTING_COMMAND_FAILED',
