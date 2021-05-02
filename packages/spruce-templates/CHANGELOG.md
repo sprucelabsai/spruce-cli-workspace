@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [14.0.3](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.0.2...v14.0.3) (2021-05-02)
+
+**Note:** Version bump only for package @sprucelabs/spruce-templates
+
+
+
+
+
+## [14.0.2](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.0.1...v14.0.2) (2021-05-01)
+
+**Note:** Version bump only for package @sprucelabs/spruce-templates
+
+
+
+
+
+## [14.0.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.0.0...v14.0.1) (2021-04-30)
+
+**Note:** Version bump only for package @sprucelabs/spruce-templates
+
+
+
+
+
+# [14.0.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.18.9...v14.0.0) (2021-04-30)
+
+
+### Features
+
+* can override skill samespace when generating schemas and other things ([6914321](https://github.com/sprucelabsai/spruce-cli-workspace/commit/6914321))
+
+
+
+
+
 ## [13.18.9](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v13.18.8...v13.18.9) (2021-04-29)
 
 **Note:** Version bump only for package @sprucelabs/spruce-templates
