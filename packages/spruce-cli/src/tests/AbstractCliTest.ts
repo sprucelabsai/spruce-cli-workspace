@@ -346,4 +346,17 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 		return executer
 	}
+
+	protected static selectOptionBasedOnLabel(label: string) {
+		const last = this.ui.lastInvocation()
+		assert.doesInclude(last.options.options.choices, {
+			label,
+		})
+
+		const match = last.options.options.choices.find(
+			(o: any) => o.label === label
+		)
+
+		void this.ui.sendInput(`${match.value}`)
+	}
 }

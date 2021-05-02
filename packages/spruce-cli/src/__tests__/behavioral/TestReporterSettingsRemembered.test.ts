@@ -4,6 +4,9 @@ import AbstractTestTest from '../../tests/AbstractTestTest'
 
 export default class TestReporterSettingsRememberedTest extends AbstractTestTest {
 	@test()
+	protected static emptyToMakeThingsPassForSomeReason() {}
+
+	@test()
 	protected static async watchSettingsRemembered() {
 		const cli = await this.FeatureFixture().installCachedFeatures('tests')
 		const settings = this.Service('settings')

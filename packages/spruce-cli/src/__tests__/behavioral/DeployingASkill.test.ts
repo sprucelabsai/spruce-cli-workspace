@@ -127,22 +127,23 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			name: 'haulted wth bad test',
 		})
 
-		await cli.getFeature('test').Action('create').execute({
+		const promise = cli.getFeature('test').Action('create').execute({
 			nameReadable: 'Test failed',
 			nameCamel: 'testFailed',
 			type: 'behavioral',
 		})
-		const promise = cli
+
+		await this.waitForInput()
+		await this.ui.sendInput('')
+
+		await promise
+
+		const results = await cli
 			.getFeature('deploy')
 			.Action('heroku')
 			.execute({
 				teamName: process.env.HEROKU_TEAM_NAME ?? '',
 			})
-
-		await this.waitForInput()
-		await this.ui.sendInput('')
-
-		const results = await promise
 
 		assert.isTruthy(results.errors)
 		assert.isArray(results.errors)

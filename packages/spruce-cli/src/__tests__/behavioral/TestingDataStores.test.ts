@@ -9,12 +9,21 @@ export default class TestingDataStoresTest extends AbstractSkillTest {
 	protected static async cantSelectAbstractStoreIfStoreFeatureNotInstalled() {
 		this.cli.getFeature('store').isInstalled = async () => false
 
-		await this.cli.getFeature('test').Action('create').execute({
+		void this.cli.getFeature('test').Action('create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can book appointment',
 			nameCamel: 'canBookAppointment',
 			namePascal: 'CanBookAppointment',
 		})
+
+		await this.waitForInput()
+
+		const last = this.ui.lastInvocation()
+		assert.doesNotInclude(last.options.options.choices, {
+			label: 'AbstractStoreTest',
+		})
+
+		this.ui.reset()
 	}
 
 	@test()
@@ -31,12 +40,11 @@ export default class TestingDataStoresTest extends AbstractSkillTest {
 		await this.waitForInput()
 
 		const last = this.ui.lastInvocation()
-
 		assert.doesInclude(last.options.options.choices, {
 			label: 'AbstractStoreTest',
 		})
 
-		await this.ui.sendInput('0')
+		await this.selectOptionBasedOnLabel('AbstractStoreTest')
 
 		const results = await promise
 
