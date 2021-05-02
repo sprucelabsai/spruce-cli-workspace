@@ -27,12 +27,17 @@ export default class RunningTestsTest extends AbstractTestTest {
 
 		this.fixBadTest(file.path)
 
-		await cli.getFeature('test').Action('create').execute({
+		const promise = cli.getFeature('test').Action('create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can cancel appointment',
 			nameCamel: 'canCancelAppointment',
 			namePascal: 'CanCancelAppointment',
 		})
+
+		await this.waitForInput()
+		await this.ui.sendInput('')
+
+		await promise
 
 		await this.Service('build').build()
 
