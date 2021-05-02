@@ -135,7 +135,7 @@ export default class TestRunnerTest extends AbstractTestTest {
 	}) {
 		const { cli, name, shouldFix = false, shouldBuild = true } = options
 
-		const results = await cli
+		const promise = cli
 			.getFeature('test')
 			.Action('create')
 			.execute({
@@ -144,6 +144,11 @@ export default class TestRunnerTest extends AbstractTestTest {
 				nameCamel: namesUtil.toCamel(name),
 				namePascal: namesUtil.toPascal(name),
 			})
+
+		await this.waitForInput()
+		await this.ui.sendInput('')
+
+		const results = await promise
 
 		if (shouldFix) {
 			const file = results.files?.[0]

@@ -12,15 +12,17 @@ export default class RunningTestsTest extends AbstractTestTest {
 	@test()
 	protected static async runningTestsActuallyRunsTests() {
 		const cli = await this.installTests()
-		const creationResults = await cli
-			.getFeature('test')
-			.Action('create')
-			.execute({
-				type: 'behavioral',
-				nameReadable: 'Can book appointment',
-				nameCamel: 'canBookAppointment',
-				namePascal: 'CanBookAppointment',
-			})
+		const creationPromise = cli.getFeature('test').Action('create').execute({
+			type: 'behavioral',
+			nameReadable: 'Can book appointment',
+			nameCamel: 'canBookAppointment',
+			namePascal: 'CanBookAppointment',
+		})
+
+		await this.waitForInput()
+		await this.ui.sendInput('')
+
+		const creationResults = await creationPromise
 
 		const file = creationResults.files?.[0]
 		assert.isTruthy(file)

@@ -29,9 +29,6 @@ export default class TestReporterSettingsRememberedTest extends AbstractTestTest
 	}
 
 	@test()
-	protected static async onlyWorkingWithEmptyTest() {}
-
-	@test()
 	protected static async watchSettingsSaved() {
 		const cli = await this.FeatureFixture().installCachedFeatures('tests')
 
