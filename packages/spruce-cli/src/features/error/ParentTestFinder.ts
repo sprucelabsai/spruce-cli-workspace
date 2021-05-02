@@ -20,7 +20,11 @@ export default class ParentTestFinder {
 		return matches
 			.map((path, idx) => {
 				const details = allDetails[idx]
-				return { path, name: details.classes?.[0]?.className }
+				return {
+					path,
+					name: details.classes?.[0]?.className,
+					isDefaultExport: true,
+				}
 			})
 			.filter((match) => !!match.name)
 	}

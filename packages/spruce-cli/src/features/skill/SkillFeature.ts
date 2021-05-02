@@ -3,7 +3,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import skillFeatureSchema from '#spruce/schemas/spruceCli/v2020_07_22/skillFeature.schema'
 import { FileDescription, NpmPackage } from '../../types/cli.types'
-import AbstractFeature from '../AbstractFeature'
+import AbstractFeature, { FeatureOptions } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
 type SkillFeatureOptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema
@@ -171,6 +171,29 @@ export default class SkillFeature<
 			shouldOverwriteWhenChanged: true,
 		},
 	]
+
+	public constructor(options: FeatureOptions) {
+		super(options)
+
+		void this.emitter.on(`test.register-abstract-test-classes`, async () => {
+			const isInstalled = await this.featureInstaller.isInstalled('skill')
+
+			if (!isInstalled) {
+				return {
+					abstractClasses: [],
+				}
+			}
+
+			return {
+				abstractClasses: [
+					{
+						name: 'AbstractSpruceFixtureTest',
+						import: '@sprucelabs/spruce-test-fixtures',
+					},
+				],
+			}
+		})
+	}
 
 	public async beforePackageInstall(options: SkillFeatureOptions) {
 		const { files } = await this.install(options)

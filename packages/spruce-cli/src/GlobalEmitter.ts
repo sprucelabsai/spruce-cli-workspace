@@ -58,6 +58,33 @@ export const globalContract = buildEventContract({
 				fields: {},
 			}),
 		},
+		'test.register-abstract-test-classes': {
+			responsePayloadSchema: buildSchema({
+				id: 'registerAbstractTestClassResponsePayload',
+				fields: {
+					abstractClasses: {
+						type: 'schema',
+						isRequired: true,
+						isArray: true,
+						options: {
+							schema: buildSchema({
+								id: 'abstractClassRegistration',
+								fields: {
+									name: {
+										type: 'text',
+										isRequired: true,
+									},
+									import: {
+										type: 'text',
+										isRequired: true,
+									},
+								},
+							}),
+						},
+					},
+				},
+			}),
+		},
 		'feature.did-execute': {
 			emitPayloadSchema: buildSchema({
 				id: 'didExecuteEmitPayload',

@@ -2,6 +2,36 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			"label": "problem.watcher",
+			"command": "yarn",
+			"group": "build",
+			"args": [
+				"watch.tsc",
+				"--noEmit",
+				"--project",
+				"tsconfig.json"
+			],
+			"runOptions": {
+				"runOn": "folderOpen"
+			},
+			"options": {
+				"cwd": "${workspaceFolder}/packages/spruce-cli"
+			},
+			"isBackground": true,
+			"presentation": {
+				"reveal": "never",
+				"focus": false
+			},
+			"problemMatcher": {
+				"base": "$tsc-watch",
+				"applyTo": "allDocuments",
+				"fileLocation": [
+					"relative",
+					"${workspaceFolder}/packages/spruce-cli"
+				]
+			}
+		},
+		{
 			"type": "npm",
 			"script": "watch.build.dev",
 			"group": "build",
@@ -15,23 +45,6 @@
 			"runOptions": {
 				"runOn": "folderOpen"
 			},
-			"problemMatcher.disabled": {
-				"pattern": {
-					"regexp": "@sprucelabs\\/spruce-cli:.*\\] (.*)\\((\\d+),(\\d+)\\):\\s+error (.*)",
-					"file": 1,
-					"line": 2,
-					"message": 4
-				},
-				"background": {
-					"activeOnStart": false,
-					"beginsPattern": "echo PASS TYPES",
-					"endsPattern": "\\] (PASS|FAIL) TYPES"
-				},
-				"fileLocation": [
-					"relative",
-					"${workspaceFolder}/packages/spruce-cli/"
-				]
-			}
 		},
 		{
 			"type": "npm",

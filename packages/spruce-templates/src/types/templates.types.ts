@@ -73,6 +73,7 @@ export interface TestOptions {
 	parentTestClass?: {
 		name: string
 		importPath: string
+		isDefaultExport: boolean
 	}
 }
 export interface EventListenerOptions {

@@ -41,7 +41,6 @@ export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> 
 	}
 
 	private async reInstallPackageDependencies() {
-		this.ui.startLoading('Updating dependencies...')
 		const features = await this.featureInstaller.getInstalledFeatures()
 
 		await this.featureInstaller.installPackageDependenciesForFeatures(
@@ -50,8 +49,6 @@ export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> 
 				this.ui.startLoading(message)
 			}
 		)
-
-		this.ui.stopLoading()
 	}
 
 	private async copyFiles(normalizedOptions: Options) {

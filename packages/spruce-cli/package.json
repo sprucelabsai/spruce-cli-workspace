@@ -53,7 +53,8 @@
 		"watch.build.dev": "concurrently 'yarn build.types.resolve-paths.lint' 'tsc --emitDeclarationOnly -w' 'yarn build.babel --watch' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn resolve-paths.lint'\"",
 		"watch.lint": "chokidar 'src/**/*' '../spruce-templates/src/**' -c 'yarn lint.tsc'",
 		"watch.rebuild": "cd ../ && yarn watch.rebuild",
-		"watch.tests": "yarn cache.tests && jest --watch"
+		"watch.tests": "yarn cache.tests && jest --watch",
+		"watch.tsc": "tsc -w"
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.14.0",
@@ -166,6 +167,18 @@
 				"code": "skill",
 				"options": {
 					"name": "testing tests",
+					"description": "test testing!"
+				}
+			},
+			{
+				"code": "test"
+			}
+		],
+		"testsInNodeModule": [
+			{
+				"code": "node",
+				"options": {
+					"name": "testing tests in node module",
 					"description": "test testing!"
 				}
 			},
@@ -288,6 +301,21 @@
 					"name": "data stores test skill",
 					"description": "go team!"
 				}
+			},
+			{
+				"code": "store"
+			}
+		],
+		"storesWithTests": [
+			{
+				"code": "skill",
+				"options": {
+					"name": "data stores test skill",
+					"description": "go team!"
+				}
+			},
+			{
+				"code": "test"
 			},
 			{
 				"code": "store"

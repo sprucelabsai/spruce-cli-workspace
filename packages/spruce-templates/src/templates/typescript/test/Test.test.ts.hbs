@@ -1,5 +1,5 @@
 import {{#unless (isDefined parentTestClass)}}AbstractSpruceTest, {{/unless}}{ test, assert } from '@sprucelabs/test'
-{{#if (isDefined parentTestClass)}}import {{parentTestClass.name}} from '{{parentTestClass.importPath}}'{{/if}}
+{{#if (isDefined parentTestClass)}}import {{#if parentTestClass.isDefaultExport}}{{parentTestClass.name}}{{else}}{ {{parentTestClass.name}} }{{/if}} from '{{parentTestClass.importPath}}'{{/if}}
 
 class {{namePascal}} {}
 
