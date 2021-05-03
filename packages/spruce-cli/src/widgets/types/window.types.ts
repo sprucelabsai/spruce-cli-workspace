@@ -27,6 +27,21 @@ export const windowEventContract = {
 				},
 			}),
 		},
+		resize: {
+			emitPayloadSchema: buildSchema({
+				id: 'resizeEmitPayload',
+				fields: {
+					width: {
+						type: 'number',
+						isRequired: true,
+					},
+					height: {
+						type: 'number',
+						isRequired: true,
+					},
+				},
+			}),
+		},
 	},
 }
 

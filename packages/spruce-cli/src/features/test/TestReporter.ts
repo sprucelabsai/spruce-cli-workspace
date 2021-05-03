@@ -34,7 +34,7 @@ type TestReporterResults = SpruceTestResults & {
 	customErrors: string[]
 }
 
-export type TestEporterOrientation = 'landscape' | 'portrait'
+export type TestReporterOrientation = 'landscape' | 'portrait'
 export type WatchMode = 'off' | 'standard' | 'smart'
 
 export default class TestReporter {
@@ -63,7 +63,7 @@ export default class TestReporter {
 	private status: TestRunnerStatus = 'ready'
 	private countDownTimeInterval?: number
 	private cwd: string | undefined
-	private orientation: TestEporterOrientation = 'landscape'
+	private orientation: TestReporterOrientation = 'landscape'
 
 	private handleStartStop?: () => void
 	private handleRestart?: () => void
@@ -75,6 +75,7 @@ export default class TestReporter {
 	private handletoggleStandardWatch?: () => void
 	private handleToggleSmartWatch?: () => any
 	private minWidth = 50
+	private orientationWhenErrorLogWasShown: TestReporterOrientation = 'landscape'
 
 	public constructor(options?: TestReporterOptions) {
 		this.cwd = options?.cwd
@@ -188,6 +189,7 @@ export default class TestReporter {
 
 		void this.window.on('key', this.handleGlobalKeypress.bind(this))
 		void this.window.on('kill', this.destroy.bind(this))
+		void this.window.on('resize', this.handleWindowResize.bind(this))
 
 		this.dropInTopLayout()
 		this.dropInProgressBar()
@@ -196,13 +198,7 @@ export default class TestReporter {
 		this.dropInTestLog()
 		this.dropInFilterControls()
 
-		const frame = this.window.getFrame()
-
-		if (frame.width * 0.6 > frame.height) {
-			this.orientation = 'landscape'
-		} else {
-			this.orientation = 'portrait'
-		}
+		this.updateOrientation()
 
 		this.setIsDebugging(this.isDebugging)
 		this.setWatchMode(this.watchMode)
@@ -212,6 +208,21 @@ export default class TestReporter {
 			this.handleUpdateInterval.bind(this),
 			1000
 		)
+	}
+
+	private handleWindowResize() {
+		this.updateOrientation()
+		throw new Error('resize')
+	}
+
+	private updateOrientation() {
+		const frame = this.window.getFrame()
+
+		if (frame.width * 0.6 > frame.height) {
+			this.orientation = 'landscape'
+		} else {
+			this.orientation = 'portrait'
+		}
 	}
 
 	private dropInMenu() {
@@ -624,6 +635,8 @@ export default class TestReporter {
 	}
 
 	private dropInErrorLog() {
+		this.orientationWhenErrorLogWasShown = this.orientation
+
 		if (this.layout.getRows().length === 1) {
 			if (this.orientation === 'portrait') {
 				this.layout.addRow({
@@ -664,7 +677,7 @@ export default class TestReporter {
 			void this.errorLog?.destroy()
 			this.errorLog = undefined
 
-			if (this.orientation === 'landscape') {
+			if (this.orientationWhenErrorLogWasShown === 'landscape') {
 				this.layout.removeColumn(0, 1)
 				this.layout.setColumnWidth({ rowIdx: 0, columnIdx: 0, width: '100%' })
 			} else {

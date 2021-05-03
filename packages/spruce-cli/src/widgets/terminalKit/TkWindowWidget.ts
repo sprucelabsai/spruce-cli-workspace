@@ -20,8 +20,13 @@ export default class TkWindowWidget
 			palette: new termKit.Palette(),
 		})
 
-		this.document.eventSource.on('resize', () => {
+		this.document.eventSource.on('resize', async () => {
 			this.handleParentResize()
+			const frame = this.getFrame()
+			await (this as WindowWidget).emit('resize', {
+				width: frame.width,
+				height: frame.height,
+			})
 		})
 
 		this.document.__widget = this
