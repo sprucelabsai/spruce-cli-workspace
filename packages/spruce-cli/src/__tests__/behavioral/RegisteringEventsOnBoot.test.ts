@@ -76,6 +76,7 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 									personId: { type: 'id' },
 									organizationId: { type: 'id' },
 									skillId: { type: 'id' },
+									roleId: { type: 'id' },
 								},
 							},
 						},

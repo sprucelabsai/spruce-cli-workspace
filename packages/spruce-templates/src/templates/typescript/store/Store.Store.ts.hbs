@@ -1,6 +1,7 @@
-import { AbstractStore, StoreOptions } from '@sprucelabs/data-stores'
-import { buildSchema, dropFields } from '@sprucelabs/schema'
+import { AbstractStore, StoreOptions, PrepareOptions } from '@sprucelabs/data-stores'
+import { buildSchema, dropFields, makeFieldsOptional, SchemaValues } from '@sprucelabs/schema'
 
+// The structure of the data you'll be returning from finds
 const fullSchema = buildSchema({
 	id: 'full{{namePascal}}',
 	fields: {
@@ -10,6 +11,7 @@ const fullSchema = buildSchema({
     },
 })
 
+// The values you will accept when creating a record
 const createSchema = buildSchema({
 	id: 'create{{namePascal}}',
 	fields: {
@@ -17,26 +19,76 @@ const createSchema = buildSchema({
     },
 })
 
+// The values you will accept when updating a record
 const updateSchema = buildSchema({
 	id: 'update{{namePascal}}',
 	fields: {
-        ...dropFields(fullSchema.fields, ['id'])
+        ...makeFieldsOptional(dropFields(fullSchema.fields, ['id']))
+    },
+})
+
+// The values you will actually save to the databases (in this case, makes id required)
+const databaseSchema = buildSchema({
+	id: 'database{{namePascal}}',
+	fields: {
+        ...fullSchema.fields,
+		 id: {
+            type: 'id',
+			isRequired: true
+        }
     },
 })
 
 type FullSchema = typeof fullSchema
 type CreateSchema = typeof createSchema
 type UpdateSchema = typeof updateSchema
+type DatabaseSchema = typeof databaseSchema
 
-export default class {{namePascalPlural}}Store extends AbstractStore<FullSchema, CreateSchema, UpdateSchema> {
+export type {{namePascal}} = SchemaValues<FullSchema>
+export type Create{{namePascal}} = SchemaValues<CreateSchema>
+export type Update{{namePascal}} = SchemaValues<UpdateSchema>
+export type Database{{namePascal}} = SchemaValues<DatabaseSchema>
+export type Query{{namePascal}} = Partial<{{namePascal}}>
+
+export default class {{namePascalPlural}}Store extends AbstractStore<
+	FullSchema, 
+	CreateSchema, 
+	UpdateSchema, 
+	DatabaseSchema, 
+	Database{{namePascal}},
+	Query{{namePascal}},
+	{{namePascal}},
+	Create{{namePascal}},
+	Update{{namePascal}}
+> {
 	public name = '{{namePascalPlural}}'
 	protected collectionName = '{{nameSnakePlural}}'
+
 	protected createSchema = createSchema
 	protected updateSchema = updateSchema
 	protected fullSchema = fullSchema
-	protected databaseSchema = fullSchema
+	protected databaseSchema = databaseSchema
 
 	public static Store(options: StoreOptions) {
 		return new this(options.db)
 	}
+
+	protected async willCreate(
+		values: Create{{namePascal}}
+	): Promise<Omit<Database{{namePascal}}, 'id'>> {
+		return values
+	}
+
+	protected async willUpdate(values: Update{{namePascal}}): Promise<Partial<Database{{namePascal}}>> {
+		return values
+	}
+
+	protected async prepareRecord<IncludePrivateFields extends boolean>(
+		values: Database{{namePascal}},
+		_options?: PrepareOptions<IncludePrivateFields>
+	): Promise<{{namePascal}}> {
+		return values
+	}
+
+
 }
