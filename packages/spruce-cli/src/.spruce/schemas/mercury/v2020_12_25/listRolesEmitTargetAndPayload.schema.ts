@@ -19,7 +19,6 @@ const listRolesEmitTargetAndPayloadSchema: SpruceSchemas.Mercury.v2020_12_25.Lis
 	            /** . */
 	            'payload': {
 	                type: 'schema',
-	                isRequired: true,
 	                options: {schema: listRolesEmitPayloadSchema,}
 	            },
 	    }

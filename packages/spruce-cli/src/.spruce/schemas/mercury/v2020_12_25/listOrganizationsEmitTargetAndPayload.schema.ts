@@ -12,7 +12,6 @@ const listOrganizationsEmitTargetAndPayloadSchema: SpruceSchemas.Mercury.v2020_1
 	            /** . */
 	            'payload': {
 	                type: 'schema',
-	                isRequired: true,
 	                options: {schema: listOrgsEmitPayloadSchema,}
 	            },
 	    }

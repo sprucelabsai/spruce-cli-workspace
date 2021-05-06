@@ -40,12 +40,6 @@ const updateRoleEmitPayloadSchema: SpruceSchemas.Mercury.v2020_12_25.UpdateRoleE
 	                hint: 'Should I let people that are not part of this organization this role?',
 	                options: undefined
 	            },
-	            /** . */
-	            'id': {
-	                type: 'id',
-	                isRequired: true,
-	                options: undefined
-	            },
 	    }
 }
 

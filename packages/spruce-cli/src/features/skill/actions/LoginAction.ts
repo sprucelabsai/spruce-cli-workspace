@@ -100,8 +100,10 @@ export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
 
 		if (skills.length === 1) {
 			const currentSkillResults = await client.emit('get-skill::v2020_12_25', {
+				target: {
+					skillId: skills[0].id,
+				},
 				payload: {
-					id: skills[0].id,
 					shouldIncludeApiKey: true,
 				},
 			})

@@ -29,6 +29,11 @@ const eventTargetSchema: SpruceSchemas.Mercury.v2020_12_25.EventTargetSchema  = 
 	                type: 'id',
 	                options: undefined
 	            },
+	            /** . */
+	            'roleId': {
+	                type: 'id',
+	                options: undefined
+	            },
 	    }
 }
 

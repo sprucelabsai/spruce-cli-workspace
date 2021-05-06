@@ -19,7 +19,6 @@ const updateRoleEmitTargetAndPayloadSchema: SpruceSchemas.Mercury.v2020_12_25.Up
 	            /** . */
 	            'payload': {
 	                type: 'schema',
-	                isRequired: true,
 	                options: {schema: updateRoleEmitPayloadSchema,}
 	            },
 	    }

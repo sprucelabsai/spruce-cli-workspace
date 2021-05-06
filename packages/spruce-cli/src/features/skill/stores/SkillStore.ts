@@ -72,8 +72,8 @@ export default class SkillStore extends AbstractStore {
 		if (currentSkill) {
 			const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
 			const response = await client.emit('get-skill::v2020_12_25', {
-				payload: {
-					id: currentSkill.id,
+				target: {
+					skillId: currentSkill.id,
 				},
 			})
 

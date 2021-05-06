@@ -44,7 +44,7 @@ export default class RegisteringASkillTest extends AbstractCliTest {
 
 		const client = await this.connectToApi()
 		const getSkillResults = await client.emit('get-skill::v2020_12_25', {
-			payload: { id: skill.id },
+			target: { skillId: skill.id },
 		})
 
 		const { skill: getSkill } = eventResponseUtil.getFirstResponseOrThrow(

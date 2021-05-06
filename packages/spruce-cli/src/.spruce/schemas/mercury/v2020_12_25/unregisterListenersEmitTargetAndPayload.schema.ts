@@ -12,7 +12,6 @@ const unregisterListenersEmitTargetAndPayloadSchema: SpruceSchemas.Mercury.v2020
 	            /** . */
 	            'payload': {
 	                type: 'schema',
-	                isRequired: true,
 	                options: {schema: unregisterListenersEmitPayloadSchema,}
 	            },
 	    }

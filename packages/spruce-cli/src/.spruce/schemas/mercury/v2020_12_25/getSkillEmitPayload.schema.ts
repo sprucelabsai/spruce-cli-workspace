@@ -10,12 +10,6 @@ const getSkillEmitPayloadSchema: SpruceSchemas.Mercury.v2020_12_25.GetSkillEmitP
 	name: '',
 	    fields: {
 	            /** . */
-	            'id': {
-	                type: 'text',
-	                isRequired: true,
-	                options: undefined
-	            },
-	            /** . */
 	            'shouldIncludeApiKey': {
 	                type: 'boolean',
 	                options: undefined

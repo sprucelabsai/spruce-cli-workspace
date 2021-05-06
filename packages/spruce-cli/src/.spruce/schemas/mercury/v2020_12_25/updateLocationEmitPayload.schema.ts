@@ -69,12 +69,6 @@ const updateLocationEmitPayloadSchema: SpruceSchemas.Mercury.v2020_12_25.UpdateL
 	                type: 'id',
 	                options: undefined
 	            },
-	            /** . */
-	            'id': {
-	                type: 'id',
-	                isRequired: true,
-	                options: undefined
-	            },
 	    }
 }
 

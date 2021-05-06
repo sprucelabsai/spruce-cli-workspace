@@ -19,7 +19,6 @@ const updateLocationEmitTargetAndPayloadSchema: SpruceSchemas.Mercury.v2020_12_2
 	            /** . */
 	            'payload': {
 	                type: 'schema',
-	                isRequired: true,
 	                options: {schema: updateLocationEmitPayloadSchema,}
 	            },
 	    }

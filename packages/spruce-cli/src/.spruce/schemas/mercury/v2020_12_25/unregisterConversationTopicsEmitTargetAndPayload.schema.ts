@@ -12,7 +12,6 @@ const unregisterConversationTopicsEmitTargetAndPayloadSchema: SpruceSchemas.Merc
 	            /** . */
 	            'payload': {
 	                type: 'schema',
-	                isRequired: true,
 	                options: {schema: unregisterConversationTopicsEmitPayloadSchema,}
 	            },
 	    }

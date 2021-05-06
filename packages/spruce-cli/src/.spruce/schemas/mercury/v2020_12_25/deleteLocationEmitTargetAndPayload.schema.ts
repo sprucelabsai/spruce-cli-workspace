@@ -2,7 +2,6 @@ import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
 
 import eventTargetSchema from '#spruce/schemas/mercury/v2020_12_25/eventTarget.schema'
-import deleteLocationEmitPayloadSchema from '#spruce/schemas/mercury/v2020_12_25/deleteLocationEmitPayload.schema'
 
 const deleteLocationEmitTargetAndPayloadSchema: SpruceSchemas.Mercury.v2020_12_25.DeleteLocationEmitTargetAndPayloadSchema  = {
 	id: 'deleteLocationEmitTargetAndPayload',
@@ -15,12 +14,6 @@ const deleteLocationEmitTargetAndPayloadSchema: SpruceSchemas.Mercury.v2020_12_2
 	                type: 'schema',
 	                isRequired: true,
 	                options: {schema: eventTargetSchema,}
-	            },
-	            /** . */
-	            'payload': {
-	                type: 'schema',
-	                isRequired: true,
-	                options: {schema: deleteLocationEmitPayloadSchema,}
 	            },
 	    }
 }

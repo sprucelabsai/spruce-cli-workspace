@@ -12,7 +12,6 @@ const listSkillsEmitTargetAndPayloadSchema: SpruceSchemas.Mercury.v2020_12_25.Li
 	            /** . */
 	            'payload': {
 	                type: 'schema',
-	                isRequired: true,
 	                options: {schema: listSkillsEmitPayloadSchema,}
 	            },
 	    }

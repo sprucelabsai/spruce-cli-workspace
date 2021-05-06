@@ -12,7 +12,6 @@ const unregisterEventsEmitTargetAndPayloadSchema: SpruceSchemas.Mercury.v2020_12
 	            /** . */
 	            'payload': {
 	                type: 'schema',
-	                isRequired: true,
 	                options: {schema: unregisterEventsEmitPayloadSchema,}
 	            },
 	    }
