@@ -342,7 +342,7 @@ export const templates = {
 	},
 
 	store(options: StoreTemplateOptions) {
-		const template = templateImportUtil.getTemplate('store/Store.Store.ts.hbs')
+		const template = templateImportUtil.getTemplate('store/Store.store.ts.hbs')
 		return template(options)
 	},
 
