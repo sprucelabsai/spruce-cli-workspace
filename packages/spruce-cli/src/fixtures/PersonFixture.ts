@@ -66,6 +66,9 @@ export default class PersonFixture {
 
 	public async logout() {
 		const client = await this.connectToApi()
+
+		await client.emit('logout::v2020_12_25')
+
 		//@ts-ignore
 		delete client.auth
 	}

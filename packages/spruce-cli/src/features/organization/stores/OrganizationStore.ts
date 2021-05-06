@@ -25,6 +25,7 @@ export default class OrganizationStore extends AbstractStore {
 		orgId: any
 	): Promise<void> {
 		const client = await this.connectToApi()
+
 		const results = await client.emit('install-skill::v2020_12_25', {
 			target: {
 				organizationId: orgId,

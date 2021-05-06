@@ -24,11 +24,17 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 
 	@test()
 	protected static async cantInstallWithoutBeingLoggedIn() {
+		const org = await this.OrganizationFixture().seedDemoOrg({
+			name: 'new org',
+		})
+
 		await this.FeatureFixture().installCachedFeatures('organizations')
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'my amazing skill',
 		})
+
+		await this.PersonFixture().logout()
 
 		const cli = await this.Cli()
 
@@ -36,7 +42,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 			.getFeature('organization')
 			.Action('install')
 			.execute({
-				organizationId: '13456',
+				organizationId: org.id,
 			})
 
 		assert.isTruthy(anonResults.errors)
