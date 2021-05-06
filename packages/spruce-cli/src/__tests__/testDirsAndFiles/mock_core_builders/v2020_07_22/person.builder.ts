@@ -32,6 +32,22 @@ export default buildSchema({
 			hint: 'A number that can be texted',
 			isPrivate: true,
 		},
+		favoriteColors: {
+			type: 'select',
+			isArray: true,
+			options: {
+				choices: [
+					{
+						value: 'blue',
+						label: 'Blue',
+					},
+					{
+						value: 'red',
+						label: 'Red',
+					},
+				],
+			},
+		},
 		profileImages: {
 			label: 'Profile photos',
 			type: 'schema',

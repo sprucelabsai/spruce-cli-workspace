@@ -108,13 +108,8 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		})
 
 		assert.isTrue(diskUtil.doesFileExist(this.coreSchemaTypesFile))
-	}
 
-	private static async copyMockCoreSchemas() {
-		const source = this.resolveTestPath('mock_core_builders')
-		const destination = this.resolvePath('src', 'schemas')
-
-		await diskUtil.copyDir(source, destination)
+		await this.assertTypesFileGeneratesArraySelect(this.coreSchemaTypesFile)
 	}
 
 	@test()
@@ -417,5 +412,17 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		const schema = await this.Service('import').importDefault(file)
 
 		return schema
+	}
+
+	private static async assertTypesFileGeneratesArraySelect(typesFile: string) {
+		const contents = diskUtil.readFile(typesFile)
+		assert.doesInclude(contents, `'favoriteColors'?: ("blue" | "red")[]`)
+	}
+
+	private static async copyMockCoreSchemas() {
+		const source = this.resolveTestPath('mock_core_builders')
+		const destination = this.resolvePath('src', 'schemas')
+
+		await diskUtil.copyDir(source, destination)
 	}
 }
