@@ -186,7 +186,6 @@ export default class EventContractWriter {
 			namesUtil.toKebab(namespace)
 		)
 
-
 		this.cachedTemplateItems = {
 			eventContractTemplateItems,
 			schemaTemplateItems,
