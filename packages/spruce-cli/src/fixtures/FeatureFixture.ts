@@ -187,6 +187,7 @@ export default class FeatureFixture implements ServiceProvider {
 			if (process.env.TEST_HOST) {
 				this.Service('env').set('HOST', process.env.TEST_HOST)
 			}
+
 			FeatureFixture.dirsToDelete.push(this.cwd)
 		}
 	}
