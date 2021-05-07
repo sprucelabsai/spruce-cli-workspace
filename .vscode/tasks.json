@@ -12,7 +12,7 @@
 				"tsconfig.json"
 			],
 			"runOptions": {
-			//	"runOn": "folderOpen"
+				"runOn": "folderOpen"
 			},
 			"options": {
 				"cwd": "${workspaceFolder}/packages/spruce-cli"
@@ -45,25 +45,6 @@
 			"runOptions": {
 				"runOn": "folderOpen"
 			},
-			"options": {
-				//"cwd": "${workspaceFolder}/packages/spruce-cli"
-			},
-			"problemMatcher": {
-				"base": "$tsc-watch",
-				"applyTo": "allDocuments",
-				"fileLocation": [
-					"relative",
-					"${workspaceFolder}/packages/spruce-cli"
-				]
-				// "background": {
-				//   "activeOnStart": true,
-				//   "beginsPattern":  "^P\\s*(?:message TS6032:|\\[?\\D*.{1,2}[:.].{1,2}[:.].{1,2}\\D*(├\\D*\\d{1,2}\\D+┤)?(?:\\]| -)) File change detected\\. Starting incremental compilation\\.\\.\\.",
-				//   "endsPattern": "^P\\s*(?:message TS6042:|\\[?\\D*.{1,2}[:.].{1,2}[:.].{1,2}\\D*(├\\D*\\d{1,2}\\D+┤)?(?:\\]| -)) (?:Compilation complete\\.|Found \\d+ errors?\\.) Watching for file changes\\.",
-				// //   "beginsPattern":
-				// // 	"File change detected\\. Starting incremental compilation\\.\\.\\.$",
-				// //   "endsPattern": "Compilation complete\\. Watching for file changes\\.$"
-				// }
-			  },
 		},
 		{
 			"type": "npm",
@@ -72,7 +53,7 @@
 			"problemMatcher": [],
 			"label": "sync.ct",
 			"runOptions": {
-				//"runOn": "folderOpen"
+				"runOn": "folderOpen"
 			},
 			"promptOnClose": false,
 			"presentation": {
@@ -97,7 +78,7 @@
 			"promptOnClose": false,
 			"group": "test",
 			"runOptions": {
-				//"runOn": "folderOpen"
+				"runOn": "folderOpen"
 			},
 			"presentation": {
 				"panel": "shared",
