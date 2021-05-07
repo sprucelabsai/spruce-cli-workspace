@@ -77,10 +77,10 @@ export default class SkillFeature<
 		'health.local': 'yarn boot.local --health',
 		lint: "eslint '**/*.ts'",
 		rebuild: 'yarn clean.all && yarn && yarn build.dev',
-		'resolve-paths.lint': 'yarn lint ; yarn build.resolve-paths',
+		'resolve-paths.lint': 'yarn build.resolve-paths ; yarn lint',
 		test: 'jest',
 		'upgrade.packages':
-			'yarn-upgrade-all && rm yarn.lock ; yarn ; yarn fix.lint | true',
+			'yarn-upgrade-all && rm yarn.lock ; yarn ; yarn fix.lint ; true',
 		'upgrade.packages.all': 'yarn install && yarn upgrade.packages',
 		'upgrade.packages.test':
 			'yarn upgrade.packages.all && yarn lint && yarn build.dev && yarn test',
