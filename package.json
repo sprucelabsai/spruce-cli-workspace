@@ -45,7 +45,7 @@
     "@babel/plugin-transform-runtime": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-typescript": "^7.12.1",
-    "@sprucelabs/babel-plugin-schema": "^4.0.1",
+    "@sprucelabs/resolve-path-aliases": "^4.0.1",
     "babel-plugin-module-resolver": "^4.0.0",
     "conventional-changelog-sprucelabs": "^1.1.2",
     "eslint": "^7.11.0",

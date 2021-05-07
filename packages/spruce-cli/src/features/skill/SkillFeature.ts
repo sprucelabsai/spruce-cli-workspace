@@ -40,7 +40,7 @@ export default class SkillFeature<
 		{
 			name: '@sprucelabs/mercury-types',
 		},
-		{ name: '@sprucelabs/babel-plugin-schema', isDev: true },
+		{ name: '@sprucelabs/resolve-path-aliases', isDev: true },
 		{ name: '@types/node', isDev: true },
 		{ name: 'typescript', isDev: true },
 		{ name: 'ts-node', isDev: true },

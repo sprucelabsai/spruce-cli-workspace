@@ -31,7 +31,7 @@ export default class SchemaFeature extends AbstractFeature {
 		{
 			name: '@sprucelabs/spruce-core-schemas',
 		},
-		{ name: '@sprucelabs/babel-plugin-schema', isDev: true },
+		{ name: '@sprucelabs/resolve-path-aliases', isDev: true },
 	]
 
 	public code: FeatureCode = 'schema'
