@@ -105,7 +105,7 @@ export default class ImportService {
 			throw new SpruceError({
 				code: 'FAILED_TO_IMPORT',
 				file,
-				friendlyMessage: `I couldn't find the definition file`,
+				friendlyMessage: `I couldn't import ${file} because I couldn't find it!`,
 			})
 		}
 

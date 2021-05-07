@@ -186,6 +186,46 @@ export default class EventStoreTest extends AbstractCliTest {
 		assert.isTrue(wasFound)
 	}
 
+	@test()
+	protected static async mixesInLocalContractWithGlobalEventsAndDoesNotReturnContractTwice() {
+		const cli = await this.FeatureFixture().installCachedFeatures('events')
+
+		const skill = await this.SkillFixture().registerCurrentSkill({
+			name: 'my new skill',
+		})
+
+		const results = await cli.getFeature('event').Action('create').execute({
+			nameReadable: EVENT_NAME_READABLE,
+			nameKebab: EVENT_NAME,
+			nameCamel: EVENT_CAMEL,
+			isGlobal: true,
+		})
+
+		const { fqen } = results.meta ?? {}
+
+		assert.isTruthy(fqen)
+
+		const boot = await cli
+			.getFeature('skill')
+			.Action('boot')
+			.execute({ local: true })
+
+		const { contracts } = await this.Store('event').fetchEventContracts({
+			localNamespace: skill.slug,
+		})
+
+		boot.meta?.kill()
+
+		const totalMatches = contracts.reduce((count, contract) => {
+			if (contract.eventSignatures[fqen]) {
+				count++
+			}
+			return count
+		}, 0)
+
+		assert.isEqual(totalMatches, 1)
+	}
+
 	private static async seedSkillAndInstallAtOrg(org: any, name: string) {
 		const skill = await this.SkillFixture().seedDemoSkill({
 			name,

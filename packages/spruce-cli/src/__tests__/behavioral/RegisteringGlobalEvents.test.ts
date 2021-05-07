@@ -95,4 +95,17 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 
 		assert.isTruthy(contracts[1].eventSignatures[eventName])
 	}
+
+	@test()
+	protected static async canSyncGlobalEvents() {
+		const results = await this.cli
+			.getFeature('event')
+			.Action('sync')
+			.execute({})
+		assert.isFalsy(results.errors)
+
+		await this.Service('typeChecker').check(
+			this.resolveHashSprucePath('events/events.contract.ts')
+		)
+	}
 }

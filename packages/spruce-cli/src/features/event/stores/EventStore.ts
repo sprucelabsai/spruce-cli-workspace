@@ -9,6 +9,7 @@ import {
 	eventDiskUtil,
 	eventNameUtil,
 	buildEmitTargetAndPayloadSchema,
+	eventContractUtil,
 } from '@sprucelabs/spruce-event-utils'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
@@ -38,12 +39,28 @@ export default class EventStore extends AbstractStore {
 			(await this.loadLocalContract(options.localNamespace))
 
 		if (localContract) {
+			this.filterOutLocalEventsFromRemoteContractsMutating(
+				contracts,
+				localContract
+			)
 			contracts.push(localContract)
 		}
 
 		return {
 			contracts,
 			errors: [],
+		}
+	}
+
+	private filterOutLocalEventsFromRemoteContractsMutating(
+		remoteContracts: EventContract[],
+		localContract: EventContract
+	) {
+		const localEventNames = eventContractUtil.getEventNames(localContract)
+		for (const remote of remoteContracts) {
+			for (const name of localEventNames) {
+				delete remote.eventSignatures[name]
+			}
 		}
 	}
 

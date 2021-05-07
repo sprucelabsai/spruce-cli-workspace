@@ -147,7 +147,7 @@ export default class SchemaStore extends AbstractStore {
 			throw new SpruceError({
 				code: 'SCHEMA_EXISTS',
 				schemaId: schema.id,
-				destination: 'schema.did-fetch-schemas listener',
+				destination: 'mixing in event contract schemas',
 			})
 		}
 
