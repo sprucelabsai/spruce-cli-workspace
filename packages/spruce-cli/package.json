@@ -8,7 +8,7 @@
 		"namespace": "spruce-cli"
 	},
 	"license": "MIT",
-	"version": "14.0.8",
+	"version": "14.0.7",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -432,6 +432,7 @@
 			"@sprucelabs/test-utils",
 			"gifwrap",
 			"terminal-kit",
+			"terminal-image",
 			"@sprucelabs/spruce-conversation-plugin",
 			"@sprucelabs/spruce-deploy-plugin",
 			"@sprucelabs/jest-json-reporter",
