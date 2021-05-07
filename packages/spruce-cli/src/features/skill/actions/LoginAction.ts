@@ -28,8 +28,8 @@ export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
 		const { skillSlug } = this.validateAndNormalizeOptions(options)
 
 		const person = this.Service('auth').getLoggedInPerson()
-		let loginResponse: any = {}
-		let skillResponse: any = {}
+		let loginResponse: FeatureActionResponse = {}
+		let skillResponse: FeatureActionResponse = {}
 
 		if (!person) {
 			this.ui.renderLine(
@@ -114,8 +114,8 @@ export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
 
 			this.Service('auth').updateCurrentSkill(skill)
 
+			skillResponse.summaryLines = generateSkillSummaryLines(skill)
 			skillResponse.meta = {
-				summaryLines: generateSkillSummaryLines(skill),
 				skill,
 			}
 		}
