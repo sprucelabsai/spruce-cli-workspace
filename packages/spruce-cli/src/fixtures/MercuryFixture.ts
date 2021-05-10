@@ -1,4 +1,5 @@
 import Cli from '../cli'
+import { DEFAULT_HOST } from '../constants'
 import ServiceFactory from '../services/ServiceFactory'
 import {
 	ApiClientFactory,
@@ -6,8 +7,7 @@ import {
 } from '../types/apiClient.types'
 require('dotenv').config()
 
-//remove this comment when found
-const TEST_HOST = process.env.TEST_HOST ?? 'https://sandbox.mercury.spruce.ai'
+const TEST_HOST = process.env.TEST_HOST ?? DEFAULT_HOST
 
 export default class MercuryFixture {
 	private cwd: string

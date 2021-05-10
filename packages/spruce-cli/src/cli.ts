@@ -12,6 +12,7 @@ import {
 import { Command, CommanderStatic } from 'commander'
 import './addons/filePrompt.addon'
 import eventsContracts from '#spruce/events/events.contract'
+import { DEFAULT_HOST } from './constants'
 import SpruceError from './errors/SpruceError'
 import FeatureCommandAttacher from './features/FeatureCommandAttacher'
 import FeatureInstaller from './features/FeatureInstaller'
@@ -242,7 +243,7 @@ export default class Cli implements CliInterface {
 			: async () => {
 					const client: ApiClient = await MercuryClientFactory.Client({
 						contracts: eventsContracts,
-						host: bootOptions?.host ?? 'https://sandbox.mercury.spruce.ai',
+						host: bootOptions?.host ?? DEFAULT_HOST,
 						allowSelfSignedCrt: true,
 						...bootOptions,
 					})
