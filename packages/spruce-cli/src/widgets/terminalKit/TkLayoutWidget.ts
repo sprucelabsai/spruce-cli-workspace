@@ -14,7 +14,8 @@ const termKit = terminal_kit as any
 
 export default class TkLayoutWidget
 	extends TkBaseWidget
-	implements LayoutWidget {
+	implements LayoutWidget
+{
 	public readonly type = 'layout'
 
 	private layout: any

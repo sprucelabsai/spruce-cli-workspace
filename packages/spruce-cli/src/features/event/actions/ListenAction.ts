@@ -23,7 +23,8 @@ import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
 const SKILL_EVENT_NAMESPACE = 'skill'
-type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.ListenEventOptionsSchema
+type OptionsSchema =
+	SpruceSchemas.SpruceCli.v2020_07_22.ListenEventOptionsSchema
 export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'listen'
 	public optionsSchema: OptionsSchema = eventListenActionSchema
@@ -61,9 +62,8 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 				eventNamespace = await this.collectNamespace(contracts)
 			}
 
-			const { eventChoicesByNamespace } = this.mapContractsToSelectChoices(
-				contracts
-			)
+			const { eventChoicesByNamespace } =
+				this.mapContractsToSelectChoices(contracts)
 
 			if (!eventChoicesByNamespace[eventNamespace]) {
 				throw new SpruceError({
@@ -182,9 +182,10 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 		contracts: EventContract[],
 		eventNamespace: string
 	): Promise<string> {
-		const eventChoices: SelectChoice[] = this.mapContractsToSelectChoices(
-			contracts
-		).eventChoicesByNamespace[eventNamespace]
+		const eventChoices: SelectChoice[] =
+			this.mapContractsToSelectChoices(contracts).eventChoicesByNamespace[
+				eventNamespace
+			]
 
 		const eventName = await this.ui.prompt({
 			type: 'select',
@@ -237,9 +238,8 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 		}
 
 		contracts.forEach((contract) => {
-			const namedSignatures = eventContractUtil.getNamedEventSignatures(
-				contract
-			)
+			const namedSignatures =
+				eventContractUtil.getNamedEventSignatures(contract)
 
 			for (const namedSig of namedSignatures) {
 				const namespace = namedSig.eventNamespace ?? MERCURY_API_NAMESPACE

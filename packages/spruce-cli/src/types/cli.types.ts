@@ -14,7 +14,8 @@ export interface GraphicsInterface extends IGraphicsInterface {
 
 export type GeneratedFile = SpruceSchemas.SpruceCli.v2020_07_22.GeneratedFile
 export type GeneratedDir = SpruceSchemas.SpruceCli.v2020_07_22.GeneratedDir
-export type GeneratedFileOrDir = SpruceSchemas.SpruceCli.v2020_07_22.WatcherDidDetectChangesEmitPayload['changes'][number]
+export type GeneratedFileOrDir =
+	SpruceSchemas.SpruceCli.v2020_07_22.WatcherDidDetectChangesEmitPayload['changes'][number]
 
 export interface NpmPackage {
 	name: string
@@ -41,7 +42,8 @@ export type RegisteredSkill = Omit<
 	'creators'
 >
 
-export type UpgradeMode = SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillOptions['upgradeMode']
+export type UpgradeMode =
+	SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillOptions['upgradeMode']
 
 export type FileDescription = {
 	path: string

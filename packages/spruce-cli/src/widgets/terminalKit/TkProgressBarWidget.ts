@@ -8,7 +8,8 @@ const termKit = terminal_kit as any
 
 export default class TkProgressBarWidget
 	extends TkBaseWidget
-	implements ProgressBarWidget {
+	implements ProgressBarWidget
+{
 	public readonly type = 'progressBar'
 
 	private bar: any

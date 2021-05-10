@@ -53,7 +53,8 @@ export interface FeatureOptions {
 
 export default abstract class AbstractFeature<
 	S extends Schema | undefined = Schema | undefined
-> implements ServiceProvider {
+> implements ServiceProvider
+{
 	public abstract description: string
 	public readonly dependencies: FeatureDependency[] = []
 	public readonly packageDependencies: NpmPackage[] = []

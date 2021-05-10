@@ -32,8 +32,7 @@ const optionsSchema = buildSchema({
 		isGlobal: {
 			type: 'boolean',
 			label: 'Is this a global event?',
-			hint:
-				"This will allow skills to listen without being installed at the same organization. You'll need permission to make this happen.",
+			hint: "This will allow skills to listen without being installed at the same organization. You'll need permission to make this happen.",
 		},
 		version: {
 			type: 'text',
@@ -53,13 +52,8 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public async execute(
 		options: SchemaValues<OptionsSchema>
 	): Promise<FeatureActionResponse> {
-		const {
-			nameKebab,
-			nameReadable,
-			nameCamel,
-			version,
-			isGlobal,
-		} = this.validateAndNormalizeOptions(options)
+		const { nameKebab, nameReadable, nameCamel, version, isGlobal } =
+			this.validateAndNormalizeOptions(options)
 
 		const skill = await this.Store('skill').loadCurrentSkill()
 

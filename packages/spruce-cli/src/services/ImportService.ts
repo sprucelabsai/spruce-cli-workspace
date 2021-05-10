@@ -12,9 +12,8 @@ export default class ImportService {
 	private errorDivider = '## SPRUCE-CLI ERROR DIVIDER ##'
 
 	private static cachedImports: Record<string, Record<string, any>> = {}
-	private static importCacheDir: string = diskUtil.createTempDir(
-		'import-service'
-	)
+	private static importCacheDir: string =
+		diskUtil.createTempDir('import-service')
 	private command: CommandService
 	private static isCachingEnabled: boolean
 

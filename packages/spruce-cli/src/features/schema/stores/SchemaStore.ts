@@ -108,13 +108,11 @@ export default class SchemaStore extends AbstractStore {
 			schemas,
 		})
 
-		const {
-			payloads,
-			errors,
-		} = eventResponseUtil.getAllResponsePayloadsAndErrors(
-			remoteResults,
-			SpruceError
-		)
+		const { payloads, errors } =
+			eventResponseUtil.getAllResponsePayloadsAndErrors(
+				remoteResults,
+				SpruceError
+			)
 
 		if (errors && errors.length > 0) {
 			results.errors.push(...errors)
@@ -303,9 +301,8 @@ export default class SchemaStore extends AbstractStore {
 					).map(async (file: string) => {
 						try {
 							const importService = this.Service('import')
-							const registration = await importService.importDefault<FieldRegistration>(
-								file
-							)
+							const registration =
+								await importService.importDefault<FieldRegistration>(file)
 
 							return {
 								path: file,

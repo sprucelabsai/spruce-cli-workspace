@@ -305,10 +305,8 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 		expectedEventContractTemplateItems: EventContractTemplateItem[],
 		expectedSchemaTemplateItems: SchemaTemplateItem[] = []
 	) {
-		const {
-			eventContractTemplateItems,
-			schemaTemplateItems,
-		} = this.itemBuilder.buildTemplateItems(contracts, 'appointments')
+		const { eventContractTemplateItems, schemaTemplateItems } =
+			this.itemBuilder.buildTemplateItems(contracts, 'appointments')
 
 		assert.isEqualDeep(
 			eventContractTemplateItems,

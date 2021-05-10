@@ -24,12 +24,8 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
-		const {
-			testDestinationDir,
-			namePascal,
-			nameCamel,
-			type,
-		} = normalizedOptions
+		const { testDestinationDir, namePascal, nameCamel, type } =
+			normalizedOptions
 
 		const resolvedDestination = diskUtil.resolvePath(
 			this.cwd,
@@ -112,7 +108,8 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 
 	private async buildParentClassCandidates(): Promise<ParentClassCandidate[]> {
 		const parentFinder = new ParentTestFinder(this.cwd)
-		const candidates: ParentClassCandidate[] = await parentFinder.findAbstractTests()
+		const candidates: ParentClassCandidate[] =
+			await parentFinder.findAbstractTests()
 
 		const results = await this.emitter.emit(
 			'test.register-abstract-test-classes'

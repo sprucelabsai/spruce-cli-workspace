@@ -97,9 +97,8 @@ export default class SchemaTemplateItemBuilder {
 		Object.keys(fields).forEach((name) => {
 			const field = fields[name]
 			if (field.type === 'schema') {
-				const schemasOrIdsWithVersion = SchemaField.mapFieldDefinitionToSchemasOrIdsWithVersion(
-					field
-				)
+				const schemasOrIdsWithVersion =
+					SchemaField.mapFieldDefinitionToSchemasOrIdsWithVersion(field)
 
 				delete field.options.schema
 				delete field.options.schemaId

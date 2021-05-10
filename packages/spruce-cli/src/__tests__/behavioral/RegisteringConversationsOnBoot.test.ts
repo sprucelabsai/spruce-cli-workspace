@@ -4,12 +4,10 @@ import AbstractEventTest from '../../tests/AbstractEventTest'
 export default class RegisteringConversationsOnBootTest extends AbstractEventTest {
 	@test()
 	protected static async canRegisterConversationsOnBoot() {
-		const {
-			cli,
-			currentSkill,
-		} = await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg(
-			'conversation'
-		)
+		const { cli, currentSkill } =
+			await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg(
+				'conversation'
+			)
 
 		await cli.getFeature('conversation').Action('create').execute({
 			nameReadable: 'book an appointment',

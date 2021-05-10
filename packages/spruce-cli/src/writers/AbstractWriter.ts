@@ -163,9 +163,8 @@ export default abstract class AbstractWriter {
 			return true
 		}
 
-		let description: FileDescription | undefined = this.getFileDescription(
-			destination
-		)
+		let description: FileDescription | undefined =
+			this.getFileDescription(destination)
 
 		return description?.shouldOverwriteWhenChanged ?? false
 	}

@@ -54,10 +54,8 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 	}
 
 	private static async generateValueTypes() {
-		const {
-			fieldTemplateItems,
-			schemaTemplateItems,
-		} = await this.fetchAllTemplateItems()
+		const { fieldTemplateItems, schemaTemplateItems } =
+			await this.fetchAllTemplateItems()
 
 		await this.generator.writeFieldTypes(
 			this.resolveHashSprucePath('schemas'),

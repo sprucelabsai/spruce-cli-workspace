@@ -17,8 +17,8 @@ const EVENT_NAME = 'my-fantastically-amazing-event'
 const EVENT_CAMEL = 'myFantasticallyAmazingEvent'
 
 export default class CreatingAnEventTest extends AbstractEventTest {
-	private static readonly expectedVersion = versionUtil.generateVersion()
-		.constValue
+	private static readonly expectedVersion =
+		versionUtil.generateVersion().constValue
 
 	@test()
 	protected static async hasCreateAction() {

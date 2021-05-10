@@ -38,8 +38,9 @@ const testUtil = {
 			skipped: number
 		}
 	) {
-		const generated = (files ?? []).filter((f) => f.action === 'generated')
-			.length
+		const generated = (files ?? []).filter(
+			(f) => f.action === 'generated'
+		).length
 		const updated = (files ?? []).filter((f) => f.action === 'updated').length
 		const skipped = (files ?? []).filter((f) => f.action === 'skipped').length
 

@@ -107,9 +107,10 @@ export default class JestJsonParser {
 				break
 
 			case 'onTestFileResult': {
-				this.testResults.totalTestFilesComplete = this.pullTestFilesCompleteFromAggregatedResults(
-					result.aggregatedResult
-				)
+				this.testResults.totalTestFilesComplete =
+					this.pullTestFilesCompleteFromAggregatedResults(
+						result.aggregatedResult
+					)
 				this.testResults.totalTestFiles =
 					result.aggregatedResult.numTotalTestSuites
 				this.testResults.totalFailed = result.aggregatedResult.numFailedTests
@@ -208,9 +209,7 @@ export default class JestJsonParser {
 		return testResult.testResults.map((test) => this.testCaseResultToTest(test))
 	}
 
-	private testCaseResultToTest(
-		test: AssertionResult
-	): {
+	private testCaseResultToTest(test: AssertionResult): {
 		name: string
 		status: AssertionResult['status']
 		errorMessages: string[]

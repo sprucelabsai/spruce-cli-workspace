@@ -57,11 +57,10 @@ handlebars.registerHelper(
 			)
 		}
 
-		const updatedOptions:
-			| Record<string, any>
-			| undefined = fieldDefinition.options && {
-			...fieldDefinition.options,
-		}
+		const updatedOptions: Record<string, any> | undefined =
+			fieldDefinition.options && {
+				...fieldDefinition.options,
+			}
 		// If this is a schema type, we need to map it to it's proper value type
 		if (fieldDefinition.type === 'schema' && updatedOptions) {
 			const value = handlebars.helpers.valueTypeLiteral(

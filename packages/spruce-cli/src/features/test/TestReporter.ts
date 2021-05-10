@@ -620,9 +620,8 @@ export default class TestReporter {
 				file,
 				this.status
 			)
-			errorContent += this.errorLogItemGenerator.generateErrorLogItemForFile(
-				file
-			)
+			errorContent +=
+				this.errorLogItemGenerator.generateErrorLogItemForFile(file)
 		})
 
 		if (this.lastResults.customErrors.length > 0) {
@@ -694,12 +693,8 @@ export default class TestReporter {
 				results.totalTestFiles - (results.totalTestFilesComplete ?? 0)
 
 			if (testsRemaining === 0) {
-				const {
-					percent,
-					totalTests,
-					totalPassedTests,
-					totalTime,
-				} = this.generateProgressStats(results)
+				const { percent, totalTests, totalPassedTests, totalTime } =
+					this.generateProgressStats(results)
 
 				this.bar.setLabel(
 					`Finished! ${totalPassedTests} of ${totalTests} (${percent}%) passed in ${durationUtil.msToFriendly(
@@ -722,9 +717,7 @@ export default class TestReporter {
 		this.bar.setProgress(this.generatePercentComplete(results) / 100)
 	}
 
-	private generateProgressStats(
-		results: SpruceTestResults
-	): {
+	private generateProgressStats(results: SpruceTestResults): {
 		percent: number
 		totalTests: number
 		totalPassedTests: number

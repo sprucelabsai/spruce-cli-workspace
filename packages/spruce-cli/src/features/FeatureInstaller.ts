@@ -261,10 +261,11 @@ export default class FeatureInstaller implements ServiceProvider {
 		}
 
 		didUpdateHandler?.(`Installing package dependencies...`)
-		const packagesInstalled = await this.queueInstallPackageDependenciesWithoutEntertainment(
-			feature,
-			didUpdateHandler
-		)
+		const packagesInstalled =
+			await this.queueInstallPackageDependenciesWithoutEntertainment(
+				feature,
+				didUpdateHandler
+			)
 
 		didUpdateHandler?.(`Running after package install hook...`)
 		this.afterPackageInstalls.push(installFeature)

@@ -144,16 +144,14 @@ export default class EventStore extends AbstractStore {
 							eventSignatures[fullyQualifiedEventName][key] = targetAndPayload
 						} else if (isSchema) {
 							//@ts-ignore
-							eventSignatures[fullyQualifiedEventName][
-								key
-							] = await schemaImporter.importSchema(match)
+							eventSignatures[fullyQualifiedEventName][key] =
+								await schemaImporter.importSchema(match)
 							//@ts-ignore
 							eventSignatures[fullyQualifiedEventName][key].version = version
 						} else {
 							//@ts-ignore
-							eventSignatures[fullyQualifiedEventName][
-								key
-							] = await importer.importDefault(match)
+							eventSignatures[fullyQualifiedEventName][key] =
+								await importer.importDefault(match)
 						}
 					}
 				} catch (err) {

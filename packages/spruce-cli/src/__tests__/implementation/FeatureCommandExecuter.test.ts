@@ -287,9 +287,8 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async canSkipOptionalDependencies() {
-		const {
-			promise: actionPromise,
-		} = await this.startBuildingNewErrorUntilOptionalDependencies('skip')
+		const { promise: actionPromise } =
+			await this.startBuildingNewErrorUntilOptionalDependencies('skip')
 
 		const results = await this.finishBuildingUpToNamingNewError(actionPromise)
 
@@ -331,8 +330,8 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 		await this.waitForInput()
 
-		const message = this.ui.invocations[this.ui.invocations.length - 2].options
-			.message
+		const message =
+			this.ui.invocations[this.ui.invocations.length - 2].options.message
 		assert.isTruthy(message)
 
 		assert.doesInclude(message, /2 required/gi)
@@ -377,9 +376,8 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async canPermanentlySkipOptionalDependencies() {
-		const {
-			promise: actionPromise,
-		} = await this.startBuildingNewErrorUntilOptionalDependencies('alwaysSkip')
+		const { promise: actionPromise } =
+			await this.startBuildingNewErrorUntilOptionalDependencies('alwaysSkip')
 
 		await this.finishBuildingUpToNamingNewError(actionPromise)
 

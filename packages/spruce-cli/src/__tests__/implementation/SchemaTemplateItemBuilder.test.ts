@@ -754,8 +754,7 @@ const mercurySchemas = [
 								type: 'text',
 								label: 'Permission name',
 								isRequired: true,
-								hint:
-									'Hyphen separated name for this permission, e.g. can-unlock-doors',
+								hint: 'Hyphen separated name for this permission, e.g. can-unlock-doors',
 							},
 							requireAllStatuses: {
 								type: 'boolean',
@@ -796,8 +795,7 @@ const mercurySchemas = [
 											},
 											onPrem: {
 												label: 'On premise',
-												hint:
-													'Are they at work (maybe working, maybe visiting).',
+												hint: 'Are they at work (maybe working, maybe visiting).',
 												type: 'boolean',
 											},
 											offPrem: {
@@ -892,8 +890,7 @@ const mercuryTemplateItems = [
 					type: 'text',
 					label: 'Permission name',
 					isRequired: true,
-					hint:
-						'Hyphen separated name for this permission, e.g. can-unlock-doors',
+					hint: 'Hyphen separated name for this permission, e.g. can-unlock-doors',
 				},
 				requireAllStatuses: {
 					type: 'boolean',

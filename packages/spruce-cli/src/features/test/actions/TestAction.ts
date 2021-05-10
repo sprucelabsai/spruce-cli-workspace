@@ -23,7 +23,8 @@ export const optionsSchema = testOptionsSchema
 
 export type OptionsSchema = typeof optionsSchema
 
-type DidChangePayload = SchemaValues<SpruceSchemas.SpruceCli.v2020_07_22.WatcherDidDetectChangesEmitPayloadSchema>
+type DidChangePayload =
+	SchemaValues<SpruceSchemas.SpruceCli.v2020_07_22.WatcherDidDetectChangesEmitPayloadSchema>
 
 export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'test'
@@ -173,9 +174,8 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 			this.testReporter?.startCountdownTimer(this.watchDelaySec)
 			this.fileChangeTimeout = setTimeout(() => {
 				if (this.watchMode === 'smart') {
-					const smartFilter = this.generateFilterFromChangedFiles(
-						filesWeCareAbout
-					)
+					const smartFilter =
+						this.generateFilterFromChangedFiles(filesWeCareAbout)
 					if (smartFilter.length > 0) {
 						this.handleFilterPatternChange(smartFilter)
 					} else {

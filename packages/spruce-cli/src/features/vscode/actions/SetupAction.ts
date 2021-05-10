@@ -6,7 +6,8 @@ import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 import { Extension } from '../services/VsCodeService'
 
-type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeOptionsSchema
+type OptionsSchema =
+	SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeOptions
 
 export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {

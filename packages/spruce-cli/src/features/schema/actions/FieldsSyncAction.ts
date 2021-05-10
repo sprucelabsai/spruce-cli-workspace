@@ -7,7 +7,8 @@ import { GeneratedFile } from '../../../types/cli.types'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
-type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemaFieldsOptionsSchema
+type OptionsSchema =
+	SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemaFieldsOptionsSchema
 
 export default class FieldsSyncAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'fields.sync'
@@ -21,11 +22,8 @@ export default class FieldsSyncAction extends AbstractFeatureAction<OptionsSchem
 
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
-		const {
-			fieldTypesDestinationDir,
-			addonsLookupDir,
-			generateFieldTypes,
-		} = normalizedOptions
+		const { fieldTypesDestinationDir, addonsLookupDir, generateFieldTypes } =
+			normalizedOptions
 
 		const resolvedFieldTypesDestination = diskUtil.resolvePath(
 			this.cwd,
@@ -42,9 +40,8 @@ export default class FieldsSyncAction extends AbstractFeatureAction<OptionsSchem
 		})
 
 		const fieldTemplateItemBuilder = new FieldTemplateItemBuilder()
-		const fieldTemplateItems = fieldTemplateItemBuilder.generateTemplateItems(
-			fields
-		)
+		const fieldTemplateItems =
+			fieldTemplateItemBuilder.generateTemplateItems(fields)
 
 		const schemaGenerator = this.Writer('schema')
 		if (generateFieldTypes) {

@@ -16,8 +16,8 @@ import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
 export default class CreatingAListenerTest extends AbstractEventTest {
-	private static readonly expectedVersion = versionUtil.generateVersion()
-		.constValue
+	private static readonly expectedVersion =
+		versionUtil.generateVersion().constValue
 
 	@test()
 	protected static async throwsWithBadNamespace() {
@@ -114,11 +114,10 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 	@test()
 	protected static async generatesTypedListenerWithoutPayloads() {
-		const {
-			contents,
-		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
-			{}
-		)
+		const { contents } =
+			await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
+				{}
+			)
 
 		assert.doesInclude(
 			contents,
@@ -128,24 +127,22 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 	@test()
 	protected static async generatesTypedListenerWithEmitPayload() {
-		const {
-			contents,
-			skill2,
-		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
-			{
-				emitPayloadSchema: buildEmitTargetAndPayloadSchema({
-					eventName: 'my-new-event',
-					emitPayloadSchema: {
-						id: 'myNewEventEmitPayload',
-						fields: {
-							booleanField: {
-								type: 'boolean',
+		const { contents, skill2 } =
+			await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
+				{
+					emitPayloadSchema: buildEmitTargetAndPayloadSchema({
+						eventName: 'my-new-event',
+						emitPayloadSchema: {
+							id: 'myNewEventEmitPayload',
+							fields: {
+								booleanField: {
+									type: 'boolean',
+								},
 							},
 						},
-					},
-				}),
-			}
-		)
+					}),
+				}
+			)
 
 		assert.doesInclude(
 			contents,
@@ -160,35 +157,30 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 	@test()
 	protected static async emittingEventTriggersListenerAndCrashesWithListenerNotImplemented() {
-		const {
-			cli,
-			currentSkill,
-			skill2,
-			eventContract,
-			org,
-		} = await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
-			{
-				emitPayloadSchema: buildEmitTargetAndPayloadSchema({
-					eventName: 'my-new-event',
-					emitPayloadSchema: {
-						id: 'myNewEventEmitPayload',
+		const { cli, currentSkill, skill2, eventContract, org } =
+			await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
+				{
+					emitPayloadSchema: buildEmitTargetAndPayloadSchema({
+						eventName: 'my-new-event',
+						emitPayloadSchema: {
+							id: 'myNewEventEmitPayload',
+							fields: {
+								booleanField: {
+									type: 'boolean',
+								},
+							},
+						},
+					}),
+					responsePayloadSchema: buildSchema({
+						id: 'myNewEventResponsePayload',
 						fields: {
 							booleanField: {
 								type: 'boolean',
 							},
 						},
-					},
-				}),
-				responsePayloadSchema: buildSchema({
-					id: 'myNewEventResponsePayload',
-					fields: {
-						booleanField: {
-							type: 'boolean',
-						},
-					},
-				}),
-			}
-		)
+					}),
+				}
+			)
 
 		const boot = await cli
 			.getFeature('skill')
@@ -253,13 +245,8 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 			},
 		} as const
 
-		const {
-			skillFixture,
-			skill2,
-			currentSkill,
-			cli,
-			org,
-		} = await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
+		const { skillFixture, skill2, currentSkill, cli, org } =
+			await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
 
 		await skillFixture.registerEventContract(skill2, eventContract)
 

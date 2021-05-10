@@ -6,7 +6,8 @@ const termKit = terminal_kit as any
 
 export default class TKButtonWidget
 	extends TkBaseWidget
-	implements ButtonWidget {
+	implements ButtonWidget
+{
 	private button: any
 
 	public readonly type = 'button'

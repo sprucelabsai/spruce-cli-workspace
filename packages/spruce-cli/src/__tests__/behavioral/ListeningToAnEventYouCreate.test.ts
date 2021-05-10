@@ -7,10 +7,8 @@ import testUtil from '../../tests/utilities/test.utility'
 export default class ListeningToAnEventYouCreateTest extends AbstractEventTest {
 	@test()
 	protected static async canListenToEventWeCreated() {
-		const {
-			currentSkill,
-			cli,
-		} = await this.registerCurrentSkillAndInstallToOrg()
+		const { currentSkill, cli } =
+			await this.registerCurrentSkillAndInstallToOrg()
 
 		const eventName = 'register-skill-views'
 		const version = 'v2021_04_11'

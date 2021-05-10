@@ -44,9 +44,8 @@ export default class EventContractCleanerUtilTest extends AbstractSpruceTest {
 
 	@test()
 	protected static async makesNoChangeToLocalContract() {
-		const cleaned = eventContractCleanerUtil.cleanTargetsForGlobalEvents(
-			didMessageContract
-		)
+		const cleaned =
+			eventContractCleanerUtil.cleanTargetsForGlobalEvents(didMessageContract)
 
 		assert.isEqualDeep(cleaned, didMessageContract)
 	}

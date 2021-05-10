@@ -29,9 +29,8 @@ handlebars.registerHelper(
 
 		fields.forEach((field) => {
 			if (field.type === 'schema') {
-				const related = SchemaField.mapFieldDefinitionToSchemaIdsWithVersion(
-					field
-				)
+				const related =
+					SchemaField.mapFieldDefinitionToSchemaIdsWithVersion(field)
 				related.forEach((idWithVersion) => {
 					const matched = schemaTemplateItems.find(
 						(t) =>

@@ -5,8 +5,10 @@ import SpruceError from '../../../errors/SpruceError'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
-type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizationOptionsSchema
-type Options = SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizationOptions
+type OptionsSchema =
+	SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizationOptionsSchema
+type Options =
+	SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizationOptions
 export default class InstallAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'install'
 	public commandAliases = ['install.skill']

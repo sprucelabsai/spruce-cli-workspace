@@ -48,20 +48,16 @@ export default class EventTemplateItemBuilder {
 		emitPayloadSchemaTemplateItem: SchemaTemplateItem | undefined
 	} {
 		for (const contract of contracts) {
-			const namedSignatures = eventContractUtil.getNamedEventSignatures(
-				contract
-			)
+			const namedSignatures =
+				eventContractUtil.getNamedEventSignatures(contract)
 
 			for (const namedSig of namedSignatures) {
 				if (namedSig.fullyQualifiedEventName === fullyQualifiedEventName) {
-					const schemaTemplateItems: SchemaTemplateItem[] = this.mapEventSigsToSchemaTemplateItems(
-						namedSignatures
-					)
+					const schemaTemplateItems: SchemaTemplateItem[] =
+						this.mapEventSigsToSchemaTemplateItems(namedSignatures)
 
-					const signatureTemplateItem: EventSignatureTemplateItem = this.buildEventSigTemplateItem(
-						namedSig,
-						schemaTemplateItems
-					)
+					const signatureTemplateItem: EventSignatureTemplateItem =
+						this.buildEventSigTemplateItem(namedSig, schemaTemplateItems)
 
 					return {
 						emitPayloadSchemaTemplateItem:
@@ -88,18 +84,18 @@ export default class EventTemplateItemBuilder {
 	} {
 		const namedSignatures = eventContractUtil.getNamedEventSignatures(contract)
 
-		const schemaTemplateItems: SchemaTemplateItem[] = this.mapEventSigsToSchemaTemplateItems(
-			namedSignatures
-		)
+		const schemaTemplateItems: SchemaTemplateItem[] =
+			this.mapEventSigsToSchemaTemplateItems(namedSignatures)
 
 		const eventContractTemplateItems: EventContractTemplateItem[] = []
 
 		for (const namedSig of namedSignatures) {
-			const item: EventContractTemplateItem = this.buildTemplateItemForEventSignature(
-				namedSig,
-				schemaTemplateItems,
-				namedSig.eventNamespace === localNamespace
-			)
+			const item: EventContractTemplateItem =
+				this.buildTemplateItemForEventSignature(
+					namedSig,
+					schemaTemplateItems,
+					namedSig.eventNamespace === localNamespace
+				)
 
 			eventContractTemplateItems.push(item)
 		}
@@ -117,10 +113,8 @@ export default class EventTemplateItemBuilder {
 	) {
 		const namespacePascal = this.sigToNamespacePascal(namedSig)
 
-		const signatureTemplateItem: EventSignatureTemplateItem = this.buildEventSigTemplateItem(
-			namedSig,
-			schemaTemplateItems
-		)
+		const signatureTemplateItem: EventSignatureTemplateItem =
+			this.buildEventSigTemplateItem(namedSig, schemaTemplateItems)
 
 		const item: EventContractTemplateItem = {
 			nameCamel: namesUtil.toCamel(namedSig.eventName),
@@ -169,11 +163,8 @@ export default class EventTemplateItemBuilder {
 		namedSig: NamedEventSignature,
 		schemaItems: SchemaTemplateItem[]
 	) {
-		const {
-			emitPayloadSchema,
-			responsePayloadSchema,
-			...signature
-		} = namedSig.signature
+		const { emitPayloadSchema, responsePayloadSchema, ...signature } =
+			namedSig.signature
 
 		const signatureTemplateItem: EventSignatureTemplateItem = { ...signature }
 
@@ -194,16 +185,15 @@ export default class EventTemplateItemBuilder {
 	private mapEventSigsToSchemaTemplateItems(
 		namedSignatures: NamedEventSignature[]
 	) {
-		const schemasByNamespace: Record<
-			string,
-			Schema[]
-		> = this.mapEventSigsToSchemasByNampace(namedSignatures)
+		const schemasByNamespace: Record<string, Schema[]> =
+			this.mapEventSigsToSchemasByNampace(namedSignatures)
 
 		const schemaTemplateItemBuilder = new SchemaTemplateItemBuilder('Cli')
-		const schemaItems: SchemaTemplateItem[] = schemaTemplateItemBuilder.buildTemplateItems(
-			schemasByNamespace,
-			'#spruce/events'
-		)
+		const schemaItems: SchemaTemplateItem[] =
+			schemaTemplateItemBuilder.buildTemplateItems(
+				schemasByNamespace,
+				'#spruce/events'
+			)
 
 		return schemaItems
 	}

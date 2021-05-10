@@ -41,9 +41,8 @@ export default class CreatingAnOrgTest extends AbstractCliTest {
 			},
 		})
 
-		const {
-			organization: getOrganization,
-		} = eventResponseUtil.getFirstResponseOrThrow(orgResults)
+		const { organization: getOrganization } =
+			eventResponseUtil.getFirstResponseOrThrow(orgResults)
 
 		assert.isEqual(getOrganization.slug, slug)
 	}
