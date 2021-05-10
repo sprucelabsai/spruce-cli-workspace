@@ -9,7 +9,7 @@ const optionsSchema = buildSchema({
 	fields: {
 		nameReadable: {
 			type: 'text',
-			label: `What is your skills name?`,
+			label: `What is your skill's name?`,
 			isRequired: true,
 		},
 		nameKebab: {
