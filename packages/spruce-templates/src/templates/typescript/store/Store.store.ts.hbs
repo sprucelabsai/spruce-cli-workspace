@@ -1,4 +1,4 @@
-import { AbstractStore, StoreOptions, PrepareOptions } from '@sprucelabs/data-stores'
+import { AbstractStore, StoreOptions, PrepareOptions, PrepareResults } from '@sprucelabs/data-stores'
 import { buildSchema, dropFields, makeFieldsOptional, SchemaValues } from '@sprucelabs/schema'
 
 // The structure of the data you'll be returning from finds
@@ -86,8 +86,8 @@ export default class {{namePascalPlural}}Store extends AbstractStore<
 	protected async prepareRecord<IncludePrivateFields extends boolean>(
 		values: Database{{namePascal}},
 		_options?: PrepareOptions<IncludePrivateFields>
-	): Promise<{{namePascal}}> {
-		return values
+	) {
+		return values as PrepareResults<FullSchema, IncludePrivateFields>
 	}
 
 
