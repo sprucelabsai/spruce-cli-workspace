@@ -26,9 +26,8 @@ export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
 	public commandAliases = ['login']
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
-		const { phone, pin: suppliedPin } = this.validateAndNormalizeOptions(
-			options
-		)
+		const { phone, pin: suppliedPin } =
+			this.validateAndNormalizeOptions(options)
 		let loggedIn = false
 
 		const client = await this.connectToApi()
@@ -37,9 +36,8 @@ export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
 			payload: { phone },
 		})
 
-		const { challenge } = eventResponseUtil.getFirstResponseOrThrow(
-			requestPinResults
-		)
+		const { challenge } =
+			eventResponseUtil.getFirstResponseOrThrow(requestPinResults)
 
 		const response: FeatureActionResponse = {}
 
@@ -57,9 +55,8 @@ export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
 			})
 
 			try {
-				const { person, token } = eventResponseUtil.getFirstResponseOrThrow(
-					confirmPinResults
-				)
+				const { person, token } =
+					eventResponseUtil.getFirstResponseOrThrow(confirmPinResults)
 
 				const loggedInPerson = { ...person, token }
 

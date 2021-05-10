@@ -52,11 +52,8 @@ export default class EventWriter extends AbstractWriter {
 		eventContractTemplateItem: EventContractTemplateItem
 		schemaTemplateItems: SchemaTemplateItem[]
 	}): Promise<GeneratedFile> {
-		const {
-			destinationDir,
-			eventContractTemplateItem,
-			schemaTemplateItems,
-		} = options
+		const { destinationDir, eventContractTemplateItem, schemaTemplateItems } =
+			options
 
 		const destinationFile = diskUtil.resolvePath(
 			destinationDir,

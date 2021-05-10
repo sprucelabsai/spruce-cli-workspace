@@ -33,11 +33,8 @@ export default class RegisterAction extends AbstractFeatureAction<OptionsSchema>
 	public commandAliases = ['register.skill', 'register']
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
-		const {
-			nameReadable,
-			nameKebab,
-			description,
-		} = this.validateAndNormalizeOptions(options)
+		const { nameReadable, nameKebab, description } =
+			this.validateAndNormalizeOptions(options)
 
 		const client = await this.connectToApi()
 		const results = await client.emit('register-skill::v2020_12_25', {

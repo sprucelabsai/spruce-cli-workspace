@@ -29,8 +29,7 @@ export default buildSchema({
 		globalSchemaNamespace: {
 			type: 'text',
 			label: 'Global namespace',
-			hint:
-				"The name you'll use when accessing these schemas, e.g. SpruceSchemas",
+			hint: "The name you'll use when accessing these schemas, e.g. SpruceSchemas",
 			isPrivate: true,
 			defaultValue: DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
 		},
@@ -59,8 +58,7 @@ export default buildSchema({
 			type: 'boolean',
 			label: 'Generate core schemas',
 			isPrivate: true,
-			hint:
-				'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile.',
+			hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile.',
 		},
 		registerBuiltSchemas: {
 			type: 'boolean',
@@ -87,8 +85,7 @@ export default buildSchema({
 			label: 'Generate standalone types file',
 			type: 'boolean',
 			isPrivate: true,
-			hint:
-				"By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file.",
+			hint: "By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file.",
 			defaultValue: false,
 		},
 		syncingMessage: {

@@ -20,7 +20,8 @@ export type TkWidgetOptions = UniversalWidgetOptions & {
 
 export default abstract class TkBaseWidget<Contract extends EventContract = any>
 	extends AbstractEventEmitter<Contract>
-	implements BaseWidget<Contract> {
+	implements BaseWidget<Contract>
+{
 	public type = 'abstract'
 	protected parent: BaseWidgetWithTermKitAddons | null
 	protected term: Terminal

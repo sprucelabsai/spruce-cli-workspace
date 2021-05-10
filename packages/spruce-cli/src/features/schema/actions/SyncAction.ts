@@ -14,7 +14,8 @@ import schemaDiskUtil from '../utilities/schemaDisk.utility'
 import schemaGeneratorUtil from '../utilities/schemaGenerator.utility'
 import ValueTypeBuilder from '../ValueTypeBuilder'
 
-type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptionsSchema
+type OptionsSchema =
+	SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptions
 export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'sync'
@@ -96,15 +97,12 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 
 		this.ui.startLoading('Generating field types...')
 
-		const {
-			fieldTemplateItems,
-			fieldErrors,
-			generateFieldFiles,
-		} = await this.generateFieldTemplateItems({
-			addonsLookupDir,
-			shouldGenerateFieldTypes: generateFieldTypes,
-			resolvedFieldTypesDestination,
-		})
+		const { fieldTemplateItems, fieldErrors, generateFieldFiles } =
+			await this.generateFieldTemplateItems({
+				addonsLookupDir,
+				shouldGenerateFieldTypes: generateFieldTypes,
+				resolvedFieldTypesDestination,
+			})
 
 		this.ui.startLoading(syncingMessage)
 
@@ -218,25 +216,24 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 
 		this.ui.startLoading('Loading builders...')
 
-		const {
-			schemasByNamespace,
-			errors: schemaErrors,
-		} = await this.schemaStore.fetchSchemas({
-			localSchemaLookupDir: schemaLookupDir,
-			fetchLocalSchemas,
-			fetchRemoteSchemas,
-			enableVersioning,
-			localNamespace,
-			fetchCoreSchemas,
-			didUpdateHandler: (message) => {
-				this.ui.startLoading(message)
-			},
-		})
+		const { schemasByNamespace, errors: schemaErrors } =
+			await this.schemaStore.fetchSchemas({
+				localSchemaLookupDir: schemaLookupDir,
+				fetchLocalSchemas,
+				fetchRemoteSchemas,
+				enableVersioning,
+				localNamespace,
+				fetchCoreSchemas,
+				didUpdateHandler: (message) => {
+					this.ui.startLoading(message)
+				},
+			})
 
-		const hashSpruceDestination = resolvedSchemaTypesDestinationDirOrFile.replace(
-			diskUtil.resolveHashSprucePath(this.cwd),
-			'#spruce'
-		)
+		const hashSpruceDestination =
+			resolvedSchemaTypesDestinationDirOrFile.replace(
+				diskUtil.resolveHashSprucePath(this.cwd),
+				'#spruce'
+			)
 
 		let total = 0
 		let totalNamespaces = 0
@@ -253,10 +250,11 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			localNamespace
 		)
 
-		const schemaTemplateItems: SchemaTemplateItem[] = schemaTemplateItemBuilder.buildTemplateItems(
-			schemasByNamespace,
-			hashSpruceDestination
-		)
+		const schemaTemplateItems: SchemaTemplateItem[] =
+			schemaTemplateItemBuilder.buildTemplateItems(
+				schemasByNamespace,
+				hashSpruceDestination
+			)
 
 		return { schemaTemplateItems, schemaErrors }
 	}
@@ -341,13 +339,14 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 		resolvedDestination: string,
 		schemaTemplateItems: SchemaTemplateItem[]
 	) {
-		const definitionsToDelete = await schemaGeneratorUtil.filterSchemaFilesBySchemaIds(
-			resolvedDestination,
-			schemaTemplateItems.map((item) => ({
-				...item,
-				version: item.schema.version,
-			}))
-		)
+		const definitionsToDelete =
+			await schemaGeneratorUtil.filterSchemaFilesBySchemaIds(
+				resolvedDestination,
+				schemaTemplateItems.map((item) => ({
+					...item,
+					version: item.schema.version,
+				}))
+			)
 
 		definitionsToDelete.forEach((def) => diskUtil.deleteFile(def))
 	}

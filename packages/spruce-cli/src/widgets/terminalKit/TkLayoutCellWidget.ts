@@ -6,7 +6,8 @@ import TkBaseWidget, { TkWidgetOptions } from './TkBaseWidget'
 
 export default class TkLayoutCellWidget
 	extends TkBaseWidget
-	implements LayoutCellWidget {
+	implements LayoutCellWidget
+{
 	public readonly type = 'layoutCell'
 
 	private cell: any

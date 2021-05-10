@@ -161,9 +161,9 @@ export default class QuizComponent<T extends Schema, Q extends QuizQuestions> {
 				case 'select':
 					// Pull the original multiple choice, we can cast it as multiple choice
 					// question with confidence
-					answers[questionName] = (this.originalQuestions[
-						questionName
-					] as QuizMultipleChoiceQuestion).answers[parseInt(idx)]
+					answers[questionName] = (
+						this.originalQuestions[questionName] as QuizMultipleChoiceQuestion
+					).answers[parseInt(idx)]
 					break
 				default:
 					// @ts-ignore TODO proper questions to schema should fix this because we only support a few fields

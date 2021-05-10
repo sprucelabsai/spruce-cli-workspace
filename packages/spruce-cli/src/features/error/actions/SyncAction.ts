@@ -22,10 +22,8 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
-		const {
-			errorTypesDestinationDir,
-			errorClassDestinationDir,
-		} = normalizedOptions
+		const { errorTypesDestinationDir, errorClassDestinationDir } =
+			normalizedOptions
 
 		const schemaSyncAction = this.getFeature('schema').Action(
 			'sync'
@@ -61,10 +59,11 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			errorTypesDestinationDir
 		)
 
-		const errorClassGeneratedFiles = await errorWriter.writeOrAppendErrorsToClass(
-			diskUtil.resolvePath(this.cwd, errorClassDestinationDir),
-			errorTemplateItems
-		)
+		const errorClassGeneratedFiles =
+			await errorWriter.writeOrAppendErrorsToClass(
+				diskUtil.resolvePath(this.cwd, errorClassDestinationDir),
+				errorTemplateItems
+			)
 
 		return {
 			files: [

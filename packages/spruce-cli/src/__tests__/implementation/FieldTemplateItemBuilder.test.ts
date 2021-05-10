@@ -4,8 +4,7 @@ import FieldTemplateItemBuilder from '../../templateItemBuilders/FieldTemplateIt
 import AbstractCliTest from '../../tests/AbstractCliTest'
 
 const localAddressField = {
-	path:
-		'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli/node_modules/@sprucelabs/schema/build/addons/addressField.addon.js',
+	path: '/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli/node_modules/@sprucelabs/schema/build/addons/addressField.addon.js',
 	registration: {
 		package: '@sprucelabs/schema',
 		className: 'AddressField',
@@ -31,8 +30,7 @@ const localAddressFieldTemplateItem: FieldTemplateItem = {
 }
 
 const remoteSchemaField = {
-	path:
-		'/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli/node_modules/@sprucelabs/schema/build/addons/schemaField.addon.js',
+	path: '/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace/packages/spruce-cli/node_modules/@sprucelabs/schema/build/addons/schemaField.addon.js',
 	registration: {
 		package: '@sprucelabs/schema',
 		className: 'SchemaField',

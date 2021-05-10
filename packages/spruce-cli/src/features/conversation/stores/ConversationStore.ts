@@ -14,10 +14,8 @@ export default class ConversationStore extends AbstractStore {
 	public async fetchRegisteredTopics() {
 		const client = await this.connectToApi()
 		const results = await client.emit('get-conversation-topics::v2020_12_25')
-		const {
-			payloads,
-			errors,
-		} = eventResponseUtil.getAllResponsePayloadsAndErrors(results, SpruceError)
+		const { payloads, errors } =
+			eventResponseUtil.getAllResponsePayloadsAndErrors(results, SpruceError)
 
 		const topics = payloads[0]?.topics ?? []
 

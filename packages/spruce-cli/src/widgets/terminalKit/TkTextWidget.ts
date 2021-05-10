@@ -23,7 +23,8 @@ export default class TkTextWidget extends TkBaseWidget implements TextWidget {
 			...rest
 		} = options
 
-		this.shouldAutoScrollWhenAppendingContent = shouldAutoScrollWhenAppendingContent
+		this.shouldAutoScrollWhenAppendingContent =
+			shouldAutoScrollWhenAppendingContent
 
 		const frame = termKitUtil.buildFrame(options, parent)
 

@@ -9,8 +9,7 @@ export default buildErrorSchema({
 		file: {
 			type: 'text',
 			label: 'File',
-			hint:
-				'File we wanted to build, if not set we wanted to build everything..',
+			hint: 'File we wanted to build, if not set we wanted to build everything..',
 		},
 	},
 })

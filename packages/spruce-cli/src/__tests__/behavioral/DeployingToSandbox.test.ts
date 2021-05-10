@@ -94,9 +94,8 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 			payload: { showMineOnly: true },
 		})
 
-		const { skills: skills2 } = eventResponseUtil.getFirstResponseOrThrow(
-			results2
-		)
+		const { skills: skills2 } =
+			eventResponseUtil.getFirstResponseOrThrow(results2)
 
 		assert.isLength(skills2, 0)
 	}

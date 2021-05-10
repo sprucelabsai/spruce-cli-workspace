@@ -45,11 +45,10 @@ export interface FeatureActionOptions {
 
 export type FeatureCode = keyof FeatureMap
 
-export type FeatureExecuteOptions<
-	F extends FeatureCode
-> = FeatureMap[F]['optionsSchema'] extends Schema
-	? SchemaValues<FeatureMap[F]['optionsSchema']>
-	: undefined
+export type FeatureExecuteOptions<F extends FeatureCode> =
+	FeatureMap[F]['optionsSchema'] extends Schema
+		? SchemaValues<FeatureMap[F]['optionsSchema']>
+		: undefined
 
 export interface InstallFeatureOptions {
 	features: InstallFeature[]

@@ -10,7 +10,8 @@ import TkBaseWidget, { TkWidgetOptions } from './TkBaseWidget'
 
 export default class TkMenuBarWidget
 	extends TkBaseWidget
-	implements MenuBarWidget {
+	implements MenuBarWidget
+{
 	public readonly type = 'menuBar'
 
 	private menu: any

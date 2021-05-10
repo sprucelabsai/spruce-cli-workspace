@@ -67,8 +67,7 @@ const coreEventContract: EventContract = {
 														label: 'Casual name',
 														type: 'text',
 														isRequired: true,
-														hint:
-															'The name you can use when talking to this person.',
+														hint: 'The name you can use when talking to this person.',
 													},
 													phone: {
 														label: 'Phone',
@@ -151,8 +150,7 @@ const coreEventContract: EventContract = {
 														type: 'schema',
 														isPrivate: true,
 														isRequired: true,
-														hint:
-															'The people or skills who created and own this skill.',
+														hint: 'The people or skills who created and own this skill.',
 														isArray: true,
 														options: {
 															schema: {
@@ -334,8 +332,7 @@ const coreEventContract: EventContract = {
 									num: {
 										label: 'Store number',
 										type: 'text',
-										hint:
-											'You can use other symbols, like # or dashes. #123 or 32-US-5',
+										hint: 'You can use other symbols, like # or dashes. #123 or 32-US-5',
 									},
 									isPublic: {
 										label: 'Public',
@@ -588,8 +585,7 @@ const coreEventContract: EventContract = {
 									num: {
 										label: 'Store number',
 										type: 'text',
-										hint:
-											'You can use other symbols, like # or dashes. #123 or 32-US-5',
+										hint: 'You can use other symbols, like # or dashes. #123 or 32-US-5',
 									},
 									slug: { label: 'Slug', type: 'text', isRequired: true },
 									isPublic: {
@@ -872,8 +868,7 @@ const coreEventContract: EventContract = {
 									base: {
 										label: 'Base',
 										type: 'select',
-										hint:
-											'Used to determine the default permissions when this role is created and the fallback for when a permission is not set on this role.',
+										hint: 'Used to determine the default permissions when this role is created and the fallback for when a permission is not set on this role.',
 										options: {
 											choices: [
 												{ label: 'Owner', value: 'owner' },
@@ -890,8 +885,7 @@ const coreEventContract: EventContract = {
 									isPublic: {
 										label: 'Public',
 										type: 'boolean',
-										hint:
-											'Should I let people that are not part of this organization this role?',
+										hint: 'Should I let people that are not part of this organization this role?',
 									},
 								},
 							},
@@ -934,8 +928,7 @@ const coreEventContract: EventContract = {
 									base: {
 										label: 'Base',
 										type: 'select',
-										hint:
-											'Used to determine the default permissions when this role is created and the fallback for when a permission is not set on this role.',
+										hint: 'Used to determine the default permissions when this role is created and the fallback for when a permission is not set on this role.',
 										options: {
 											choices: [
 												{ label: 'Owner', value: 'owner' },
@@ -954,8 +947,7 @@ const coreEventContract: EventContract = {
 									isPublic: {
 										label: 'Public',
 										type: 'boolean',
-										hint:
-											'Should I let people that are not part of this organization this role?',
+										hint: 'Should I let people that are not part of this organization this role?',
 									},
 								},
 							},
@@ -1015,8 +1007,7 @@ const coreEventContract: EventContract = {
 									num: {
 										label: 'Store number',
 										type: 'text',
-										hint:
-											'You can use other symbols, like # or dashes. #123 or 32-US-5',
+										hint: 'You can use other symbols, like # or dashes. #123 or 32-US-5',
 									},
 									slug: { label: 'Slug', type: 'text', isRequired: true },
 									isPublic: {
@@ -1339,8 +1330,7 @@ const coreEventContract: EventContract = {
 									base: {
 										label: 'Base',
 										type: 'select',
-										hint:
-											'Used to determine the default permissions when this role is created and the fallback for when a permission is not set on this role.',
+										hint: 'Used to determine the default permissions when this role is created and the fallback for when a permission is not set on this role.',
 										options: {
 											choices: [
 												{ label: 'Owner', value: 'owner' },
@@ -1359,8 +1349,7 @@ const coreEventContract: EventContract = {
 									isPublic: {
 										label: 'Public',
 										type: 'boolean',
-										hint:
-											'Should I let people that are not part of this organization this role?',
+										hint: 'Should I let people that are not part of this organization this role?',
 									},
 								},
 							},
@@ -1421,8 +1410,7 @@ const coreEventContract: EventContract = {
 									num: {
 										label: 'Store number',
 										type: 'text',
-										hint:
-											'You can use other symbols, like # or dashes. #123 or 32-US-5',
+										hint: 'You can use other symbols, like # or dashes. #123 or 32-US-5',
 									},
 									slug: { label: 'Slug', type: 'text', isRequired: true },
 									isPublic: {
@@ -1742,8 +1730,7 @@ const coreEventContract: EventContract = {
 									base: {
 										label: 'Base',
 										type: 'select',
-										hint:
-											'Used to determine the default permissions when this role is created and the fallback for when a permission is not set on this role.',
+										hint: 'Used to determine the default permissions when this role is created and the fallback for when a permission is not set on this role.',
 										options: {
 											choices: [
 												{ label: 'Owner', value: 'owner' },
@@ -1762,8 +1749,7 @@ const coreEventContract: EventContract = {
 									isPublic: {
 										label: 'Public',
 										type: 'boolean',
-										hint:
-											'Should I let people that are not part of this organization this role?',
+										hint: 'Should I let people that are not part of this organization this role?',
 									},
 								},
 							},
@@ -1896,8 +1882,7 @@ const coreEventContract: EventContract = {
 									num: {
 										label: 'Store number',
 										type: 'text',
-										hint:
-											'You can use other symbols, like # or dashes. #123 or 32-US-5',
+										hint: 'You can use other symbols, like # or dashes. #123 or 32-US-5',
 									},
 									slug: { label: 'Slug', type: 'text', isRequired: true },
 									isPublic: {
@@ -2199,8 +2184,7 @@ const coreEventContract: EventContract = {
 									base: {
 										label: 'Base',
 										type: 'select',
-										hint:
-											'Used to determine the default permissions when this role is created and the fallback for when a permission is not set on this role.',
+										hint: 'Used to determine the default permissions when this role is created and the fallback for when a permission is not set on this role.',
 										options: {
 											choices: [
 												{ label: 'Owner', value: 'owner' },
@@ -2219,8 +2203,7 @@ const coreEventContract: EventContract = {
 									isPublic: {
 										label: 'Public',
 										type: 'boolean',
-										hint:
-											'Should I let people that are not part of this organization this role?',
+										hint: 'Should I let people that are not part of this organization this role?',
 									},
 								},
 							},
@@ -2299,8 +2282,7 @@ const coreEventContract: EventContract = {
 																									label: 'Name',
 																									type: 'text',
 																									isRequired: true,
-																									hint:
-																										'Human readable name for this contract',
+																									hint: 'Human readable name for this contract',
 																								},
 																								description: {
 																									label: 'Description',
@@ -2327,15 +2309,13 @@ const coreEventContract: EventContract = {
 																													label: 'id',
 																													type: 'text',
 																													isRequired: true,
-																													hint:
-																														'Hyphen separated di for this permission, e.g. can-unlock-doors',
+																													hint: 'Hyphen separated di for this permission, e.g. can-unlock-doors',
 																												},
 																												name: {
 																													label: 'Name',
 																													type: 'text',
 																													isRequired: true,
-																													hint:
-																														'Human readable name for this permission',
+																													hint: 'Human readable name for this permission',
 																												},
 																												description: {
 																													label: 'Description',
@@ -2351,8 +2331,7 @@ const coreEventContract: EventContract = {
 																													type: 'schema',
 																													options: {
 																														schema: {
-																															id:
-																																'defaultsByRole',
+																															id: 'defaultsByRole',
 																															version:
 																																'v2020_09_01',
 																															namespace:
@@ -2362,56 +2341,49 @@ const coreEventContract: EventContract = {
 																																owner: {
 																																	label:
 																																		'Owner',
-																																	type:
-																																		'schema',
+																																	type: 'schema',
 																																	options: {
 																																		schema: {
-																																			id:
-																																				'statusFlags',
+																																			id: 'statusFlags',
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
 																																				'Mercury',
 																																			name: '',
 																																			fields: {
-																																				default: {
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'What is the fallback if no status is set?',
-																																				},
-																																				clockedIn: {
-																																					label:
-																																						'Clocked in',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Is the person clocked in and ready to rock?',
-																																				},
-																																				clockedOut: {
-																																					label:
-																																						'Clocked out',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'When someone is not working (off the clock).',
-																																				},
-																																				onPrem: {
-																																					label:
-																																						'On premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Are they at work (maybe working, maybe visiting).',
-																																				},
-																																				offPrem: {
-																																					label:
-																																						'Off premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						"They aren't at the office or shop.",
-																																				},
+																																				default:
+																																					{
+																																						type: 'boolean',
+																																						hint: 'What is the fallback if no status is set?',
+																																					},
+																																				clockedIn:
+																																					{
+																																						label:
+																																							'Clocked in',
+																																						type: 'boolean',
+																																						hint: 'Is the person clocked in and ready to rock?',
+																																					},
+																																				clockedOut:
+																																					{
+																																						label:
+																																							'Clocked out',
+																																						type: 'boolean',
+																																						hint: 'When someone is not working (off the clock).',
+																																					},
+																																				onPrem:
+																																					{
+																																						label:
+																																							'On premise',
+																																						type: 'boolean',
+																																						hint: 'Are they at work (maybe working, maybe visiting).',
+																																					},
+																																				offPrem:
+																																					{
+																																						label:
+																																							'Off premise',
+																																						type: 'boolean',
+																																						hint: "They aren't at the office or shop.",
+																																					},
 																																			},
 																																		},
 																																	},
@@ -2419,56 +2391,49 @@ const coreEventContract: EventContract = {
 																																groupManager: {
 																																	label:
 																																		'Group manager',
-																																	type:
-																																		'schema',
+																																	type: 'schema',
 																																	options: {
 																																		schema: {
-																																			id:
-																																				'statusFlags',
+																																			id: 'statusFlags',
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
 																																				'Mercury',
 																																			name: '',
 																																			fields: {
-																																				default: {
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'What is the fallback if no status is set?',
-																																				},
-																																				clockedIn: {
-																																					label:
-																																						'Clocked in',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Is the person clocked in and ready to rock?',
-																																				},
-																																				clockedOut: {
-																																					label:
-																																						'Clocked out',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'When someone is not working (off the clock).',
-																																				},
-																																				onPrem: {
-																																					label:
-																																						'On premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Are they at work (maybe working, maybe visiting).',
-																																				},
-																																				offPrem: {
-																																					label:
-																																						'Off premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						"They aren't at the office or shop.",
-																																				},
+																																				default:
+																																					{
+																																						type: 'boolean',
+																																						hint: 'What is the fallback if no status is set?',
+																																					},
+																																				clockedIn:
+																																					{
+																																						label:
+																																							'Clocked in',
+																																						type: 'boolean',
+																																						hint: 'Is the person clocked in and ready to rock?',
+																																					},
+																																				clockedOut:
+																																					{
+																																						label:
+																																							'Clocked out',
+																																						type: 'boolean',
+																																						hint: 'When someone is not working (off the clock).',
+																																					},
+																																				onPrem:
+																																					{
+																																						label:
+																																							'On premise',
+																																						type: 'boolean',
+																																						hint: 'Are they at work (maybe working, maybe visiting).',
+																																					},
+																																				offPrem:
+																																					{
+																																						label:
+																																							'Off premise',
+																																						type: 'boolean',
+																																						hint: "They aren't at the office or shop.",
+																																					},
 																																			},
 																																		},
 																																	},
@@ -2476,56 +2441,49 @@ const coreEventContract: EventContract = {
 																																manager: {
 																																	label:
 																																		'Manager',
-																																	type:
-																																		'schema',
+																																	type: 'schema',
 																																	options: {
 																																		schema: {
-																																			id:
-																																				'statusFlags',
+																																			id: 'statusFlags',
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
 																																				'Mercury',
 																																			name: '',
 																																			fields: {
-																																				default: {
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'What is the fallback if no status is set?',
-																																				},
-																																				clockedIn: {
-																																					label:
-																																						'Clocked in',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Is the person clocked in and ready to rock?',
-																																				},
-																																				clockedOut: {
-																																					label:
-																																						'Clocked out',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'When someone is not working (off the clock).',
-																																				},
-																																				onPrem: {
-																																					label:
-																																						'On premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Are they at work (maybe working, maybe visiting).',
-																																				},
-																																				offPrem: {
-																																					label:
-																																						'Off premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						"They aren't at the office or shop.",
-																																				},
+																																				default:
+																																					{
+																																						type: 'boolean',
+																																						hint: 'What is the fallback if no status is set?',
+																																					},
+																																				clockedIn:
+																																					{
+																																						label:
+																																							'Clocked in',
+																																						type: 'boolean',
+																																						hint: 'Is the person clocked in and ready to rock?',
+																																					},
+																																				clockedOut:
+																																					{
+																																						label:
+																																							'Clocked out',
+																																						type: 'boolean',
+																																						hint: 'When someone is not working (off the clock).',
+																																					},
+																																				onPrem:
+																																					{
+																																						label:
+																																							'On premise',
+																																						type: 'boolean',
+																																						hint: 'Are they at work (maybe working, maybe visiting).',
+																																					},
+																																				offPrem:
+																																					{
+																																						label:
+																																							'Off premise',
+																																						type: 'boolean',
+																																						hint: "They aren't at the office or shop.",
+																																					},
 																																			},
 																																		},
 																																	},
@@ -2533,56 +2491,49 @@ const coreEventContract: EventContract = {
 																																teammate: {
 																																	label:
 																																		'Teammate',
-																																	type:
-																																		'schema',
+																																	type: 'schema',
 																																	options: {
 																																		schema: {
-																																			id:
-																																				'statusFlags',
+																																			id: 'statusFlags',
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
 																																				'Mercury',
 																																			name: '',
 																																			fields: {
-																																				default: {
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'What is the fallback if no status is set?',
-																																				},
-																																				clockedIn: {
-																																					label:
-																																						'Clocked in',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Is the person clocked in and ready to rock?',
-																																				},
-																																				clockedOut: {
-																																					label:
-																																						'Clocked out',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'When someone is not working (off the clock).',
-																																				},
-																																				onPrem: {
-																																					label:
-																																						'On premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Are they at work (maybe working, maybe visiting).',
-																																				},
-																																				offPrem: {
-																																					label:
-																																						'Off premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						"They aren't at the office or shop.",
-																																				},
+																																				default:
+																																					{
+																																						type: 'boolean',
+																																						hint: 'What is the fallback if no status is set?',
+																																					},
+																																				clockedIn:
+																																					{
+																																						label:
+																																							'Clocked in',
+																																						type: 'boolean',
+																																						hint: 'Is the person clocked in and ready to rock?',
+																																					},
+																																				clockedOut:
+																																					{
+																																						label:
+																																							'Clocked out',
+																																						type: 'boolean',
+																																						hint: 'When someone is not working (off the clock).',
+																																					},
+																																				onPrem:
+																																					{
+																																						label:
+																																							'On premise',
+																																						type: 'boolean',
+																																						hint: 'Are they at work (maybe working, maybe visiting).',
+																																					},
+																																				offPrem:
+																																					{
+																																						label:
+																																							'Off premise',
+																																						type: 'boolean',
+																																						hint: "They aren't at the office or shop.",
+																																					},
 																																			},
 																																		},
 																																	},
@@ -2590,56 +2541,49 @@ const coreEventContract: EventContract = {
 																																guest: {
 																																	label:
 																																		'Guest',
-																																	type:
-																																		'schema',
+																																	type: 'schema',
 																																	options: {
 																																		schema: {
-																																			id:
-																																				'statusFlags',
+																																			id: 'statusFlags',
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
 																																				'Mercury',
 																																			name: '',
 																																			fields: {
-																																				default: {
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'What is the fallback if no status is set?',
-																																				},
-																																				clockedIn: {
-																																					label:
-																																						'Clocked in',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Is the person clocked in and ready to rock?',
-																																				},
-																																				clockedOut: {
-																																					label:
-																																						'Clocked out',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'When someone is not working (off the clock).',
-																																				},
-																																				onPrem: {
-																																					label:
-																																						'On premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Are they at work (maybe working, maybe visiting).',
-																																				},
-																																				offPrem: {
-																																					label:
-																																						'Off premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						"They aren't at the office or shop.",
-																																				},
+																																				default:
+																																					{
+																																						type: 'boolean',
+																																						hint: 'What is the fallback if no status is set?',
+																																					},
+																																				clockedIn:
+																																					{
+																																						label:
+																																							'Clocked in',
+																																						type: 'boolean',
+																																						hint: 'Is the person clocked in and ready to rock?',
+																																					},
+																																				clockedOut:
+																																					{
+																																						label:
+																																							'Clocked out',
+																																						type: 'boolean',
+																																						hint: 'When someone is not working (off the clock).',
+																																					},
+																																				onPrem:
+																																					{
+																																						label:
+																																							'On premise',
+																																						type: 'boolean',
+																																						hint: 'Are they at work (maybe working, maybe visiting).',
+																																					},
+																																				offPrem:
+																																					{
+																																						label:
+																																							'Off premise',
+																																						type: 'boolean',
+																																						hint: "They aren't at the office or shop.",
+																																					},
 																																			},
 																																		},
 																																	},
@@ -2647,56 +2591,49 @@ const coreEventContract: EventContract = {
 																																anonymous: {
 																																	label:
 																																		'Anonymous',
-																																	type:
-																																		'schema',
+																																	type: 'schema',
 																																	options: {
 																																		schema: {
-																																			id:
-																																				'statusFlags',
+																																			id: 'statusFlags',
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
 																																				'Mercury',
 																																			name: '',
 																																			fields: {
-																																				default: {
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'What is the fallback if no status is set?',
-																																				},
-																																				clockedIn: {
-																																					label:
-																																						'Clocked in',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Is the person clocked in and ready to rock?',
-																																				},
-																																				clockedOut: {
-																																					label:
-																																						'Clocked out',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'When someone is not working (off the clock).',
-																																				},
-																																				onPrem: {
-																																					label:
-																																						'On premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Are they at work (maybe working, maybe visiting).',
-																																				},
-																																				offPrem: {
-																																					label:
-																																						'Off premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						"They aren't at the office or shop.",
-																																				},
+																																				default:
+																																					{
+																																						type: 'boolean',
+																																						hint: 'What is the fallback if no status is set?',
+																																					},
+																																				clockedIn:
+																																					{
+																																						label:
+																																							'Clocked in',
+																																						type: 'boolean',
+																																						hint: 'Is the person clocked in and ready to rock?',
+																																					},
+																																				clockedOut:
+																																					{
+																																						label:
+																																							'Clocked out',
+																																						type: 'boolean',
+																																						hint: 'When someone is not working (off the clock).',
+																																					},
+																																				onPrem:
+																																					{
+																																						label:
+																																							'On premise',
+																																						type: 'boolean',
+																																						hint: 'Are they at work (maybe working, maybe visiting).',
+																																					},
+																																				offPrem:
+																																					{
+																																						label:
+																																							'Off premise',
+																																						type: 'boolean',
+																																						hint: "They aren't at the office or shop.",
+																																					},
 																																			},
 																																		},
 																																	},
@@ -2717,42 +2654,32 @@ const coreEventContract: EventContract = {
 																															name: '',
 																															fields: {
 																																default: {
-																																	type:
-																																		'boolean',
-																																	hint:
-																																		'What is the fallback if no status is set?',
+																																	type: 'boolean',
+																																	hint: 'What is the fallback if no status is set?',
 																																},
 																																clockedIn: {
 																																	label:
 																																		'Clocked in',
-																																	type:
-																																		'boolean',
-																																	hint:
-																																		'Is the person clocked in and ready to rock?',
+																																	type: 'boolean',
+																																	hint: 'Is the person clocked in and ready to rock?',
 																																},
 																																clockedOut: {
 																																	label:
 																																		'Clocked out',
-																																	type:
-																																		'boolean',
-																																	hint:
-																																		'When someone is not working (off the clock).',
+																																	type: 'boolean',
+																																	hint: 'When someone is not working (off the clock).',
 																																},
 																																onPrem: {
 																																	label:
 																																		'On premise',
-																																	type:
-																																		'boolean',
-																																	hint:
-																																		'Are they at work (maybe working, maybe visiting).',
+																																	type: 'boolean',
+																																	hint: 'Are they at work (maybe working, maybe visiting).',
 																																},
 																																offPrem: {
 																																	label:
 																																		'Off premise',
-																																	type:
-																																		'boolean',
-																																	hint:
-																																		"They aren't at the office or shop.",
+																																	type: 'boolean',
+																																	hint: "They aren't at the office or shop.",
 																																},
 																															},
 																														},
@@ -2783,8 +2710,7 @@ const coreEventContract: EventContract = {
 																									label: 'Name',
 																									type: 'text',
 																									isRequired: true,
-																									hint:
-																										'Human readable name for this contract',
+																									hint: 'Human readable name for this contract',
 																								},
 																								description: {
 																									label: 'Description',
@@ -2811,15 +2737,13 @@ const coreEventContract: EventContract = {
 																													label: 'id',
 																													type: 'text',
 																													isRequired: true,
-																													hint:
-																														'Hyphen separated di for this permission, e.g. can-unlock-doors',
+																													hint: 'Hyphen separated di for this permission, e.g. can-unlock-doors',
 																												},
 																												name: {
 																													label: 'Name',
 																													type: 'text',
 																													isRequired: true,
-																													hint:
-																														'Human readable name for this permission',
+																													hint: 'Human readable name for this permission',
 																												},
 																												description: {
 																													label: 'Description',
@@ -2835,8 +2759,7 @@ const coreEventContract: EventContract = {
 																													type: 'schema',
 																													options: {
 																														schema: {
-																															id:
-																																'defaultsByRole',
+																															id: 'defaultsByRole',
 																															version:
 																																'v2020_09_01',
 																															namespace:
@@ -2846,56 +2769,49 @@ const coreEventContract: EventContract = {
 																																owner: {
 																																	label:
 																																		'Owner',
-																																	type:
-																																		'schema',
+																																	type: 'schema',
 																																	options: {
 																																		schema: {
-																																			id:
-																																				'statusFlags',
+																																			id: 'statusFlags',
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
 																																				'Mercury',
 																																			name: '',
 																																			fields: {
-																																				default: {
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'What is the fallback if no status is set?',
-																																				},
-																																				clockedIn: {
-																																					label:
-																																						'Clocked in',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Is the person clocked in and ready to rock?',
-																																				},
-																																				clockedOut: {
-																																					label:
-																																						'Clocked out',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'When someone is not working (off the clock).',
-																																				},
-																																				onPrem: {
-																																					label:
-																																						'On premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Are they at work (maybe working, maybe visiting).',
-																																				},
-																																				offPrem: {
-																																					label:
-																																						'Off premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						"They aren't at the office or shop.",
-																																				},
+																																				default:
+																																					{
+																																						type: 'boolean',
+																																						hint: 'What is the fallback if no status is set?',
+																																					},
+																																				clockedIn:
+																																					{
+																																						label:
+																																							'Clocked in',
+																																						type: 'boolean',
+																																						hint: 'Is the person clocked in and ready to rock?',
+																																					},
+																																				clockedOut:
+																																					{
+																																						label:
+																																							'Clocked out',
+																																						type: 'boolean',
+																																						hint: 'When someone is not working (off the clock).',
+																																					},
+																																				onPrem:
+																																					{
+																																						label:
+																																							'On premise',
+																																						type: 'boolean',
+																																						hint: 'Are they at work (maybe working, maybe visiting).',
+																																					},
+																																				offPrem:
+																																					{
+																																						label:
+																																							'Off premise',
+																																						type: 'boolean',
+																																						hint: "They aren't at the office or shop.",
+																																					},
 																																			},
 																																		},
 																																	},
@@ -2903,56 +2819,49 @@ const coreEventContract: EventContract = {
 																																groupManager: {
 																																	label:
 																																		'Group manager',
-																																	type:
-																																		'schema',
+																																	type: 'schema',
 																																	options: {
 																																		schema: {
-																																			id:
-																																				'statusFlags',
+																																			id: 'statusFlags',
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
 																																				'Mercury',
 																																			name: '',
 																																			fields: {
-																																				default: {
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'What is the fallback if no status is set?',
-																																				},
-																																				clockedIn: {
-																																					label:
-																																						'Clocked in',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Is the person clocked in and ready to rock?',
-																																				},
-																																				clockedOut: {
-																																					label:
-																																						'Clocked out',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'When someone is not working (off the clock).',
-																																				},
-																																				onPrem: {
-																																					label:
-																																						'On premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Are they at work (maybe working, maybe visiting).',
-																																				},
-																																				offPrem: {
-																																					label:
-																																						'Off premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						"They aren't at the office or shop.",
-																																				},
+																																				default:
+																																					{
+																																						type: 'boolean',
+																																						hint: 'What is the fallback if no status is set?',
+																																					},
+																																				clockedIn:
+																																					{
+																																						label:
+																																							'Clocked in',
+																																						type: 'boolean',
+																																						hint: 'Is the person clocked in and ready to rock?',
+																																					},
+																																				clockedOut:
+																																					{
+																																						label:
+																																							'Clocked out',
+																																						type: 'boolean',
+																																						hint: 'When someone is not working (off the clock).',
+																																					},
+																																				onPrem:
+																																					{
+																																						label:
+																																							'On premise',
+																																						type: 'boolean',
+																																						hint: 'Are they at work (maybe working, maybe visiting).',
+																																					},
+																																				offPrem:
+																																					{
+																																						label:
+																																							'Off premise',
+																																						type: 'boolean',
+																																						hint: "They aren't at the office or shop.",
+																																					},
 																																			},
 																																		},
 																																	},
@@ -2960,56 +2869,49 @@ const coreEventContract: EventContract = {
 																																manager: {
 																																	label:
 																																		'Manager',
-																																	type:
-																																		'schema',
+																																	type: 'schema',
 																																	options: {
 																																		schema: {
-																																			id:
-																																				'statusFlags',
+																																			id: 'statusFlags',
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
 																																				'Mercury',
 																																			name: '',
 																																			fields: {
-																																				default: {
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'What is the fallback if no status is set?',
-																																				},
-																																				clockedIn: {
-																																					label:
-																																						'Clocked in',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Is the person clocked in and ready to rock?',
-																																				},
-																																				clockedOut: {
-																																					label:
-																																						'Clocked out',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'When someone is not working (off the clock).',
-																																				},
-																																				onPrem: {
-																																					label:
-																																						'On premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Are they at work (maybe working, maybe visiting).',
-																																				},
-																																				offPrem: {
-																																					label:
-																																						'Off premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						"They aren't at the office or shop.",
-																																				},
+																																				default:
+																																					{
+																																						type: 'boolean',
+																																						hint: 'What is the fallback if no status is set?',
+																																					},
+																																				clockedIn:
+																																					{
+																																						label:
+																																							'Clocked in',
+																																						type: 'boolean',
+																																						hint: 'Is the person clocked in and ready to rock?',
+																																					},
+																																				clockedOut:
+																																					{
+																																						label:
+																																							'Clocked out',
+																																						type: 'boolean',
+																																						hint: 'When someone is not working (off the clock).',
+																																					},
+																																				onPrem:
+																																					{
+																																						label:
+																																							'On premise',
+																																						type: 'boolean',
+																																						hint: 'Are they at work (maybe working, maybe visiting).',
+																																					},
+																																				offPrem:
+																																					{
+																																						label:
+																																							'Off premise',
+																																						type: 'boolean',
+																																						hint: "They aren't at the office or shop.",
+																																					},
 																																			},
 																																		},
 																																	},
@@ -3017,56 +2919,49 @@ const coreEventContract: EventContract = {
 																																teammate: {
 																																	label:
 																																		'Teammate',
-																																	type:
-																																		'schema',
+																																	type: 'schema',
 																																	options: {
 																																		schema: {
-																																			id:
-																																				'statusFlags',
+																																			id: 'statusFlags',
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
 																																				'Mercury',
 																																			name: '',
 																																			fields: {
-																																				default: {
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'What is the fallback if no status is set?',
-																																				},
-																																				clockedIn: {
-																																					label:
-																																						'Clocked in',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Is the person clocked in and ready to rock?',
-																																				},
-																																				clockedOut: {
-																																					label:
-																																						'Clocked out',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'When someone is not working (off the clock).',
-																																				},
-																																				onPrem: {
-																																					label:
-																																						'On premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Are they at work (maybe working, maybe visiting).',
-																																				},
-																																				offPrem: {
-																																					label:
-																																						'Off premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						"They aren't at the office or shop.",
-																																				},
+																																				default:
+																																					{
+																																						type: 'boolean',
+																																						hint: 'What is the fallback if no status is set?',
+																																					},
+																																				clockedIn:
+																																					{
+																																						label:
+																																							'Clocked in',
+																																						type: 'boolean',
+																																						hint: 'Is the person clocked in and ready to rock?',
+																																					},
+																																				clockedOut:
+																																					{
+																																						label:
+																																							'Clocked out',
+																																						type: 'boolean',
+																																						hint: 'When someone is not working (off the clock).',
+																																					},
+																																				onPrem:
+																																					{
+																																						label:
+																																							'On premise',
+																																						type: 'boolean',
+																																						hint: 'Are they at work (maybe working, maybe visiting).',
+																																					},
+																																				offPrem:
+																																					{
+																																						label:
+																																							'Off premise',
+																																						type: 'boolean',
+																																						hint: "They aren't at the office or shop.",
+																																					},
 																																			},
 																																		},
 																																	},
@@ -3074,56 +2969,49 @@ const coreEventContract: EventContract = {
 																																guest: {
 																																	label:
 																																		'Guest',
-																																	type:
-																																		'schema',
+																																	type: 'schema',
 																																	options: {
 																																		schema: {
-																																			id:
-																																				'statusFlags',
+																																			id: 'statusFlags',
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
 																																				'Mercury',
 																																			name: '',
 																																			fields: {
-																																				default: {
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'What is the fallback if no status is set?',
-																																				},
-																																				clockedIn: {
-																																					label:
-																																						'Clocked in',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Is the person clocked in and ready to rock?',
-																																				},
-																																				clockedOut: {
-																																					label:
-																																						'Clocked out',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'When someone is not working (off the clock).',
-																																				},
-																																				onPrem: {
-																																					label:
-																																						'On premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Are they at work (maybe working, maybe visiting).',
-																																				},
-																																				offPrem: {
-																																					label:
-																																						'Off premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						"They aren't at the office or shop.",
-																																				},
+																																				default:
+																																					{
+																																						type: 'boolean',
+																																						hint: 'What is the fallback if no status is set?',
+																																					},
+																																				clockedIn:
+																																					{
+																																						label:
+																																							'Clocked in',
+																																						type: 'boolean',
+																																						hint: 'Is the person clocked in and ready to rock?',
+																																					},
+																																				clockedOut:
+																																					{
+																																						label:
+																																							'Clocked out',
+																																						type: 'boolean',
+																																						hint: 'When someone is not working (off the clock).',
+																																					},
+																																				onPrem:
+																																					{
+																																						label:
+																																							'On premise',
+																																						type: 'boolean',
+																																						hint: 'Are they at work (maybe working, maybe visiting).',
+																																					},
+																																				offPrem:
+																																					{
+																																						label:
+																																							'Off premise',
+																																						type: 'boolean',
+																																						hint: "They aren't at the office or shop.",
+																																					},
 																																			},
 																																		},
 																																	},
@@ -3131,56 +3019,49 @@ const coreEventContract: EventContract = {
 																																anonymous: {
 																																	label:
 																																		'Anonymous',
-																																	type:
-																																		'schema',
+																																	type: 'schema',
 																																	options: {
 																																		schema: {
-																																			id:
-																																				'statusFlags',
+																																			id: 'statusFlags',
 																																			version:
 																																				'v2020_09_01',
 																																			namespace:
 																																				'Mercury',
 																																			name: '',
 																																			fields: {
-																																				default: {
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'What is the fallback if no status is set?',
-																																				},
-																																				clockedIn: {
-																																					label:
-																																						'Clocked in',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Is the person clocked in and ready to rock?',
-																																				},
-																																				clockedOut: {
-																																					label:
-																																						'Clocked out',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'When someone is not working (off the clock).',
-																																				},
-																																				onPrem: {
-																																					label:
-																																						'On premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						'Are they at work (maybe working, maybe visiting).',
-																																				},
-																																				offPrem: {
-																																					label:
-																																						'Off premise',
-																																					type:
-																																						'boolean',
-																																					hint:
-																																						"They aren't at the office or shop.",
-																																				},
+																																				default:
+																																					{
+																																						type: 'boolean',
+																																						hint: 'What is the fallback if no status is set?',
+																																					},
+																																				clockedIn:
+																																					{
+																																						label:
+																																							'Clocked in',
+																																						type: 'boolean',
+																																						hint: 'Is the person clocked in and ready to rock?',
+																																					},
+																																				clockedOut:
+																																					{
+																																						label:
+																																							'Clocked out',
+																																						type: 'boolean',
+																																						hint: 'When someone is not working (off the clock).',
+																																					},
+																																				onPrem:
+																																					{
+																																						label:
+																																							'On premise',
+																																						type: 'boolean',
+																																						hint: 'Are they at work (maybe working, maybe visiting).',
+																																					},
+																																				offPrem:
+																																					{
+																																						label:
+																																							'Off premise',
+																																						type: 'boolean',
+																																						hint: "They aren't at the office or shop.",
+																																					},
 																																			},
 																																		},
 																																	},
@@ -3201,42 +3082,32 @@ const coreEventContract: EventContract = {
 																															name: '',
 																															fields: {
 																																default: {
-																																	type:
-																																		'boolean',
-																																	hint:
-																																		'What is the fallback if no status is set?',
+																																	type: 'boolean',
+																																	hint: 'What is the fallback if no status is set?',
 																																},
 																																clockedIn: {
 																																	label:
 																																		'Clocked in',
-																																	type:
-																																		'boolean',
-																																	hint:
-																																		'Is the person clocked in and ready to rock?',
+																																	type: 'boolean',
+																																	hint: 'Is the person clocked in and ready to rock?',
 																																},
 																																clockedOut: {
 																																	label:
 																																		'Clocked out',
-																																	type:
-																																		'boolean',
-																																	hint:
-																																		'When someone is not working (off the clock).',
+																																	type: 'boolean',
+																																	hint: 'When someone is not working (off the clock).',
 																																},
 																																onPrem: {
 																																	label:
 																																		'On premise',
-																																	type:
-																																		'boolean',
-																																	hint:
-																																		'Are they at work (maybe working, maybe visiting).',
+																																	type: 'boolean',
+																																	hint: 'Are they at work (maybe working, maybe visiting).',
 																																},
 																																offPrem: {
 																																	label:
 																																		'Off premise',
-																																	type:
-																																		'boolean',
-																																	hint:
-																																		"They aren't at the office or shop.",
+																																	type: 'boolean',
+																																	hint: "They aren't at the office or shop.",
 																																},
 																															},
 																														},
@@ -3344,8 +3215,7 @@ const coreEventContract: EventContract = {
 										type: 'schema',
 										isPrivate: true,
 										isRequired: true,
-										hint:
-											'The people or skills who created and own this skill.',
+										hint: 'The people or skills who created and own this skill.',
 										isArray: true,
 										options: {
 											schema: {
@@ -3501,8 +3371,7 @@ const coreEventContract: EventContract = {
 									num: {
 										label: 'Store number',
 										type: 'text',
-										hint:
-											'You can use other symbols, like # or dashes. #123 or 32-US-5',
+										hint: 'You can use other symbols, like # or dashes. #123 or 32-US-5',
 										isRequired: false,
 									},
 									slug: { label: 'Slug', type: 'text', isRequired: false },
@@ -3765,8 +3634,7 @@ const coreEventContract: EventContract = {
 									num: {
 										label: 'Store number',
 										type: 'text',
-										hint:
-											'You can use other symbols, like # or dashes. #123 or 32-US-5',
+										hint: 'You can use other symbols, like # or dashes. #123 or 32-US-5',
 									},
 									slug: { label: 'Slug', type: 'text', isRequired: true },
 									isPublic: {
@@ -4058,8 +3926,7 @@ const coreEventContract: EventContract = {
 									base: {
 										label: 'Base',
 										type: 'select',
-										hint:
-											'Used to determine the default permissions when this role is created and the fallback for when a permission is not set on this role.',
+										hint: 'Used to determine the default permissions when this role is created and the fallback for when a permission is not set on this role.',
 										options: {
 											choices: [
 												{ label: 'Owner', value: 'owner' },
@@ -4081,8 +3948,7 @@ const coreEventContract: EventContract = {
 									isPublic: {
 										label: 'Public',
 										type: 'boolean',
-										hint:
-											'Should I let people that are not part of this organization this role?',
+										hint: 'Should I let people that are not part of this organization this role?',
 										isRequired: false,
 									},
 									id: { type: 'id', isRequired: true },
@@ -4127,8 +3993,7 @@ const coreEventContract: EventContract = {
 									base: {
 										label: 'Base',
 										type: 'select',
-										hint:
-											'Used to determine the default permissions when this role is created and the fallback for when a permission is not set on this role.',
+										hint: 'Used to determine the default permissions when this role is created and the fallback for when a permission is not set on this role.',
 										options: {
 											choices: [
 												{ label: 'Owner', value: 'owner' },
@@ -4147,8 +4012,7 @@ const coreEventContract: EventContract = {
 									isPublic: {
 										label: 'Public',
 										type: 'boolean',
-										hint:
-											'Should I let people that are not part of this organization this role?',
+										hint: 'Should I let people that are not part of this organization this role?',
 									},
 								},
 							},
@@ -4203,8 +4067,7 @@ const coreEventContract: EventContract = {
 														label: 'Casual name',
 														type: 'text',
 														isRequired: true,
-														hint:
-															'The name you can use when talking to this person.',
+														hint: 'The name you can use when talking to this person.',
 													},
 													phone: {
 														label: 'Phone',
@@ -4287,8 +4150,7 @@ const coreEventContract: EventContract = {
 														type: 'schema',
 														isPrivate: true,
 														isRequired: true,
-														hint:
-															'The people or skills who created and own this skill.',
+														hint: 'The people or skills who created and own this skill.',
 														isArray: true,
 														options: {
 															schema: {

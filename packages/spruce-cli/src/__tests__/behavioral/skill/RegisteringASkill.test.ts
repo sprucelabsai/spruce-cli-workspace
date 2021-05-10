@@ -47,9 +47,8 @@ export default class RegisteringASkillTest extends AbstractCliTest {
 			target: { skillId: skill.id },
 		})
 
-		const { skill: getSkill } = eventResponseUtil.getFirstResponseOrThrow(
-			getSkillResults
-		)
+		const { skill: getSkill } =
+			eventResponseUtil.getFirstResponseOrThrow(getSkillResults)
 
 		assert.isEqual(skill.id, getSkill.id)
 

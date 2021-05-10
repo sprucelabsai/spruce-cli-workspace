@@ -3,16 +3,17 @@ import createConversationTopicOptionsSchema from '#spruce/schemas/spruceCli/v202
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
-type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateConversationTopicOptionsSchema
-type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateConversationTopicOptions
+type OptionsSchema =
+	SpruceSchemas.SpruceCli.v2020_07_22.CreateConversationTopicOptionsSchema
+type Options =
+	SpruceSchemas.SpruceCli.v2020_07_22.CreateConversationTopicOptions
 export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'create'
 	public optionsSchema = createConversationTopicOptionsSchema
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
-		const { nameReadable, nameCamel } = this.validateAndNormalizeOptions(
-			options
-		)
+		const { nameReadable, nameCamel } =
+			this.validateAndNormalizeOptions(options)
 
 		const file = await this.Writer('conversation').writeDefinition(this.cwd, {
 			nameCamel,

@@ -9,8 +9,7 @@ export default buildSchema({
 		nameReadable: {
 			...namedTemplateItemBuilder.fields.nameReadable,
 			label: 'Topic',
-			hint:
-				'What should we talk about or try and get done, e.g. Book an appointment or tell a knock knock joke.',
+			hint: 'What should we talk about or try and get done, e.g. Book an appointment or tell a knock knock joke.',
 		},
 		nameCamel: namedTemplateItemBuilder.fields.nameCamel,
 	},

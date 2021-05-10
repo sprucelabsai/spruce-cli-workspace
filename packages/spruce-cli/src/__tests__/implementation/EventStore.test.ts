@@ -53,10 +53,8 @@ export default class EventStoreTest extends AbstractCliTest {
 			name: 'my new org',
 		})
 
-		const {
-			eventStore: eventStore1,
-			skill: skill1,
-		} = await this.seedSkillAndInstallAtOrg(org, 'skill 1')
+		const { eventStore: eventStore1, skill: skill1 } =
+			await this.seedSkillAndInstallAtOrg(org, 'skill 1')
 
 		const { eventStore: eventStore2 } = await this.seedSkillAndInstallAtOrg(
 			org,

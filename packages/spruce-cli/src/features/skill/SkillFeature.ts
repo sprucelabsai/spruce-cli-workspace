@@ -6,7 +6,8 @@ import { FileDescription, NpmPackage } from '../../types/cli.types'
 import AbstractFeature, { FeatureOptions } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
-type SkillFeatureOptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema
+type SkillFeatureOptionsSchema =
+	SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema
 type SkillFeatureOptions = SpruceSchemas.SpruceCli.v2020_07_22.SkillFeature
 
 declare module '../../features/features.types' {

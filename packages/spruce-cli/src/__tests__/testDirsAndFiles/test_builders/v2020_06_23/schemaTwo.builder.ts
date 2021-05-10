@@ -28,8 +28,7 @@ export default buildSchema({
 							type: 'text',
 							label: 'id',
 							isRequired: true,
-							hint:
-								'Hyphen separated di for this permission, e.g. can-unlock-doors',
+							hint: 'Hyphen separated di for this permission, e.g. can-unlock-doors',
 						},
 						name: {
 							type: 'text',

@@ -153,8 +153,9 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 
 	/** Ask a question based on a field */
 	public askQuestion<F extends SchemaFieldNames<S>>(fieldName: F) {
-		const field = this.getNamedFields().find((nf) => nf.name === fieldName)
-			?.field
+		const field = this.getNamedFields().find(
+			(nf) => nf.name === fieldName
+		)?.field
 
 		if (!field) {
 			throw new Error(`No field named ${fieldName} on form ${this.schemaId}`)
@@ -182,10 +183,10 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 				fieldName,
 				//@ts-ignore
 				definition,
-				(this.getValues({
+				this.getValues({
 					validate: false,
 					createEntityInstances: false,
-				}) as unknown) as SchemaPartialValues<S>
+				}) as unknown as SchemaPartialValues<S>
 			)
 		}
 

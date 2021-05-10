@@ -122,11 +122,8 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 	@test()
 	protected static async syncsEventsFromOtherSkills() {
-		const {
-			skillFixture,
-			skill2,
-			cli,
-		} = await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
+		const { skillFixture, skill2, cli } =
+			await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
 
 		const eventName = `my-new-event::${this.todaysVersion.constValue}`
 		const fqen = `${skill2.slug}.my-new-event::${this.todaysVersion.constValue}`
@@ -213,13 +210,8 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 	@test()
 	protected static async twoSkillsWithSameEventCanBeSynced() {
-		const {
-			skill2,
-			skillFixture,
-			orgFixture,
-			org,
-			cli,
-		} = await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
+		const { skill2, skillFixture, orgFixture, org, cli } =
+			await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
 
 		const skill3 = await skillFixture.seedDemoSkill({ name: 'a third skill' })
 
@@ -251,11 +243,8 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 	@test()
 	protected static async skillWithSameEventNameButDifferentVersionsCanBeSynced() {
-		const {
-			skill2,
-			skillFixture,
-			cli,
-		} = await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
+		const { skill2, skillFixture, cli } =
+			await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
 
 		const eventName = `my-new-event::${this.todaysVersion.constValue}`
 		const eventName2 = `my-new-event::${this.randomVersion}`
@@ -279,11 +268,8 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 	@test()
 	protected static async unRegisteredEventsAreRemoved() {
-		const {
-			skill2,
-			skillFixture,
-			cli,
-		} = await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
+		const { skill2, skillFixture, cli } =
+			await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
 
 		const stamp = new Date().getTime()
 		const eventName = `${stamp}-cleanup-event-test::${this.todaysVersion.constValue}`

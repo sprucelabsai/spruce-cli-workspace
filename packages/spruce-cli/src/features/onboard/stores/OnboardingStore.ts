@@ -32,9 +32,8 @@ export default class OnboardingStore extends AbstractLocalStore<OnboardingStoreS
 
 	private get schema() {
 		if (!OnboardingStore.schemasByHome[this.homeDir]) {
-			OnboardingStore.schemasByHome[this.homeDir] = SchemaEntityFactory.Entity(
-				onboardingSchema
-			)
+			OnboardingStore.schemasByHome[this.homeDir] =
+				SchemaEntityFactory.Entity(onboardingSchema)
 		}
 
 		return OnboardingStore.schemasByHome[this.homeDir]

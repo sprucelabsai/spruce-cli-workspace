@@ -108,9 +108,8 @@ export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
 				},
 			})
 
-			const { skill } = eventResponseUtil.getFirstResponseOrThrow(
-				currentSkillResults
-			)
+			const { skill } =
+				eventResponseUtil.getFirstResponseOrThrow(currentSkillResults)
 
 			this.Service('auth').updateCurrentSkill(skill)
 

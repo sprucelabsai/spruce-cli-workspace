@@ -24,8 +24,7 @@ export default buildSchema({
 		syncAfterCreate: {
 			type: 'boolean',
 			label: 'Sync after creation',
-			hint:
-				'This will ensure types and schemas are in sync after you create your builder.',
+			hint: 'This will ensure types and schemas are in sync after you create your builder.',
 			isPrivate: true,
 			defaultValue: true,
 		},

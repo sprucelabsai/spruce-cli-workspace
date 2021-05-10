@@ -25,10 +25,8 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	private killHandler?: () => void
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
-		const {
-			shouldReturnImmediately,
-			shouldRunSilently,
-		} = this.validateAndNormalizeOptions(options)
+		const { shouldReturnImmediately, shouldRunSilently } =
+			this.validateAndNormalizeOptions(options)
 
 		this.ui.startLoading('Booting skill...')
 

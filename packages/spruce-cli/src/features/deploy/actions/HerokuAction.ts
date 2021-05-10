@@ -59,10 +59,8 @@ export default class DeployAction extends AbstractFeatureAction<OptionsSchema> {
 			}
 		}
 
-		const {
-			shouldBuildAndLint,
-			shouldRunTests,
-		} = this.validateAndNormalizeOptions(options)
+		const { shouldBuildAndLint, shouldRunTests } =
+			this.validateAndNormalizeOptions(options)
 
 		if (shouldBuildAndLint) {
 			results = await this.buildAndLint()
@@ -275,8 +273,7 @@ export default class DeployAction extends AbstractFeatureAction<OptionsSchema> {
 		} catch {
 			missing.push({
 				name: 'heroku',
-				hint:
-					'Follow install instructions @ https://devcenter.heroku.com/articles/heroku-cli#download-and-install',
+				hint: 'Follow install instructions @ https://devcenter.heroku.com/articles/heroku-cli#download-and-install',
 			})
 		}
 

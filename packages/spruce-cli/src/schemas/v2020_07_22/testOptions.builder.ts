@@ -30,8 +30,7 @@ export default buildSchema({
 			label: 'Wait until tests are finished',
 			isPrivate: true,
 			defaultValue: false,
-			hint:
-				'For testing. Returns immediately after executing test so the running process can be managed programatically.',
+			hint: 'For testing. Returns immediately after executing test so the running process can be managed programatically.',
 		},
 		watchMode: {
 			type: 'select',

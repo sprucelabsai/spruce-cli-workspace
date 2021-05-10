@@ -67,11 +67,8 @@ export default class EventContractWriter {
 
 		this.ui.startLoading('Pulling contracts...')
 
-		const {
-			errors,
-			schemaTemplateItems,
-			eventContractTemplateItems,
-		} = await this.fetchAndBuildTemplateItems()
+		const { errors, schemaTemplateItems, eventContractTemplateItems } =
+			await this.fetchAndBuildTemplateItems()
 
 		if (errors && errors?.length > 0) {
 			return {
@@ -110,10 +107,8 @@ export default class EventContractWriter {
 	public async fetchContractsAndGenerateUniqueSchemas(
 		existingSchemas: Schema[]
 	): Promise<FeatureActionResponse & { schemas?: Schema[] }> {
-		const {
-			errors,
-			schemaTemplateItems,
-		} = await this.fetchAndBuildTemplateItems()
+		const { errors, schemaTemplateItems } =
+			await this.fetchAndBuildTemplateItems()
 
 		if (errors && errors?.length > 0) {
 			return {
@@ -178,13 +173,11 @@ export default class EventContractWriter {
 		this.ui.startLoading('Building contracts...')
 
 		const itemBuilder = new EventTemplateItemBuilder()
-		const {
-			eventContractTemplateItems,
-			schemaTemplateItems,
-		} = itemBuilder.buildTemplateItems(
-			contractResults.contracts,
-			namesUtil.toKebab(namespace)
-		)
+		const { eventContractTemplateItems, schemaTemplateItems } =
+			itemBuilder.buildTemplateItems(
+				contractResults.contracts,
+				namesUtil.toKebab(namespace)
+			)
 
 		this.cachedTemplateItems = {
 			eventContractTemplateItems,

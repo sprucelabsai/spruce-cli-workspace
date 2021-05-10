@@ -7,7 +7,8 @@ const termKit = terminal_kit as any
 
 export default class TkWindowWidget
 	extends TkBaseWidget
-	implements WindowWidget {
+	implements WindowWidget
+{
 	public readonly type = 'window'
 
 	private document: any

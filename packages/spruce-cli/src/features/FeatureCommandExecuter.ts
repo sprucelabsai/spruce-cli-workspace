@@ -63,11 +63,12 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		const isInstalled = await this.featureInstaller.isInstalled(
 			this.featureCode
 		)
-		const installOptions = await this.askAboutMissingFeatureOptionsIfFeatureIsNotInstalled(
-			isInstalled,
-			feature,
-			options
-		)
+		const installOptions =
+			await this.askAboutMissingFeatureOptionsIfFeatureIsNotInstalled(
+				isInstalled,
+				feature,
+				options
+			)
 
 		let answers = await this.askAboutMissingActionOptions(action, options)
 
@@ -192,9 +193,8 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 					!wasInstalled &&
 					!this.featureInstaller.isMarkedAsSkipped(toInstall.code)
 				) {
-					const installResults = await this.installOrMarkAsSkippedMissingDependency(
-						toInstall
-					)
+					const installResults =
+						await this.installOrMarkAsSkippedMissingDependency(toInstall)
 					response = merge(response, installResults)
 					installCount++
 				}
