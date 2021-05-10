@@ -75,10 +75,9 @@ export const templates = {
 		)
 		const rendersAs = Object.values(TemplateRenderAs)
 
-		const schemaTemplatesByNamespaceAndName =
-			templateItemUtil.groupSchemaTemplatesByNamespaceAndName(
-				options.schemaTemplateItems
-			)
+		const schemaTemplatesByNamespaceAndName = templateItemUtil.groupSchemaTemplatesByNamespaceAndName(
+			options.schemaTemplateItems
+		)
 
 		const fieldTemplatesByType = templateItemUtil.groupFieldItemsByNamespace(
 			options.fieldTemplateItems
