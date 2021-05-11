@@ -3,7 +3,7 @@ import {
 	END_DIVIDER,
 	START_DIVIDER,
 } from '@sprucelabs/jest-json-reporter'
-import JsonParser from '@sprucelabs/jest-json-reporter'
+import JsonParser, { retrocycle } from '@sprucelabs/jest-json-reporter'
 import escapeRegExp from 'lodash/escapeRegExp'
 import {
 	SpruceTestFile,
@@ -63,7 +63,9 @@ export default class JestJsonParser {
 					.replace(END_DIVIDER, '')
 					.trim()
 
-				const result = JSON.parse(cleanedSegment) as JsonParserResult
+				const result = retrocycle(
+					JSON.parse(cleanedSegment)
+				) as JsonParserResult
 
 				this.ingestJestResult(result)
 
