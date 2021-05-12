@@ -112,7 +112,7 @@
 		"@types/inflection": "^1.5.28",
 		"@types/inquirer": "^7.3.1",
 		"@types/jsonwebtoken": "^8.5.1",
-		"@types/lodash": "^4.14.168",
+		"@types/lodash": "^4.14.169",
 		"@types/md5": "^2.3.0",
 		"@types/mkdirp": "^1.0.1",
 		"@types/node": "^15.0.2",
