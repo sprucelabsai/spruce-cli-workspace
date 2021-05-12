@@ -1,9 +1,9 @@
-import {
+import JsonParser, {
 	AssertionResult,
 	END_DIVIDER,
 	START_DIVIDER,
+	retrocycle,
 } from '@sprucelabs/jest-json-reporter'
-import JsonParser, { retrocycle } from '@sprucelabs/jest-json-reporter'
 import escapeRegExp from 'lodash/escapeRegExp'
 import {
 	SpruceTestFile,
