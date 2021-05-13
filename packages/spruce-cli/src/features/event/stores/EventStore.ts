@@ -159,8 +159,6 @@ export default class EventStore extends AbstractStore {
 							isTargetRequired: requireTargetByEvent[fullyQualifiedEventName],
 						})
 
-						debugger
-
 						//@ts-ignore
 						targetAndPayload.version = version
 
