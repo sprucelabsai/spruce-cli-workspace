@@ -57,7 +57,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public async execute(
 		options: SchemaValues<OptionsSchema>
 	): Promise<FeatureActionResponse> {
-		const {
+		let {
 			nameKebab,
 			nameReadable,
 			nameCamel,
@@ -65,6 +65,10 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			isGlobal,
 			isTargetRequired,
 		} = this.validateAndNormalizeOptions(options)
+
+		if (isGlobal) {
+			isTargetRequired = false
+		}
 
 		const skill = await this.Store('skill').loadCurrentSkill()
 
