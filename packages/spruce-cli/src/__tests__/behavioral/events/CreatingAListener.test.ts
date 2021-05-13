@@ -121,7 +121,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 		assert.doesInclude(
 			contents,
-			'export default (event: SpruceEvent): SpruceEventResponse'
+			'export default async (event: SpruceEvent): SpruceEventResponse'
 		)
 	}
 

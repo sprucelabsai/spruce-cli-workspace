@@ -114,14 +114,11 @@ export default class EventStore extends AbstractStore {
 
 				switch (filename) {
 					case 'event.options.ts': {
-						const {
-							isTargetRequired,
-							isGlobal: isGlobalOption,
-							...options
-						} = await importer.importDefault(match)
+						const { isTargetRequired, isGlobal, ...options } =
+							await importer.importDefault(match)
 
 						let requireTarget = isTargetRequired
-						if (isGlobalOption) {
+						if (isGlobal) {
 							requireTarget = false
 						}
 
@@ -130,7 +127,7 @@ export default class EventStore extends AbstractStore {
 						eventSignatures[fullyQualifiedEventName] = {
 							...eventSignatures[fullyQualifiedEventName],
 							...options,
-							isGlobal: isGlobalOption,
+							isGlobal,
 						}
 						break
 					}
