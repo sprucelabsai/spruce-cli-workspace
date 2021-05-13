@@ -238,7 +238,7 @@ export const templates = {
 		return template(options)
 	},
 
-	eventOptions(options: { isGlobal: boolean }) {
+	eventOptions(options: { isGlobal: boolean; isTargetRequired: boolean }) {
 		const template = templateImportUtil.getTemplate(
 			'event/event.options.ts.hbs'
 		)
@@ -246,6 +246,7 @@ export const templates = {
 		return template({
 			...options,
 			isGlobal: options.isGlobal ? 'true' : 'false',
+			isTargetRequired: options.isTargetRequired ? 'true' : 'false',
 		})
 	},
 

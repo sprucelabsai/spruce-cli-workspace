@@ -161,6 +161,7 @@ export default class EventWriter extends AbstractWriter {
 			version: string
 			nameReadable: string
 			isGlobal?: boolean
+			isTargetRequired?: boolean
 		}
 	) {
 		const {
@@ -169,6 +170,7 @@ export default class EventWriter extends AbstractWriter {
 			nameCamel,
 			nameReadable,
 			isGlobal = false,
+			isTargetRequired = true,
 		} = options
 
 		const templates: ({
@@ -218,6 +220,7 @@ export default class EventWriter extends AbstractWriter {
 				description: 'Extra options that can be set for your event',
 				context: {
 					isGlobal,
+					isTargetRequired,
 				},
 			},
 		]

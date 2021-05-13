@@ -1,4 +1,8 @@
-import { eventDiskUtil, eventNameUtil } from '@sprucelabs/spruce-event-utils'
+import {
+	eventContractUtil,
+	eventDiskUtil,
+	eventNameUtil,
+} from '@sprucelabs/spruce-event-utils'
 import {
 	diskUtil,
 	namesUtil,
@@ -79,6 +83,52 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		await this.Service('typeChecker').check(testFile)
 	}
 
+	@test()
+	protected static async canCreateEventThatHasNoTarget() {
+		const { cli, skill2, currentSkill } =
+			await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
+
+		const results = await cli.getFeature('event').Action('create').execute({
+			nameReadable: EVENT_NAME_READABLE,
+			nameKebab: EVENT_NAME,
+			nameCamel: EVENT_CAMEL,
+			isTargetRequired: false,
+		})
+
+		assert.isFalsy(results.errors)
+
+		const boot = await cli
+			.getFeature('skill')
+			.Action('boot')
+			.execute({ local: true })
+
+		const client = await this.connectToApi({
+			skillId: skill2.id,
+			apiKey: skill2.apiKey,
+		})
+
+		const contractResults = await this.Store('event', {
+			apiClientFactory: async () => client,
+		}).fetchEventContracts()
+
+		const contracts = contractResults.contracts
+
+		boot.meta?.kill()
+
+		const version = versionUtil.generateVersion().dirValue
+		const fqen = eventNameUtil.join({
+			eventName: EVENT_NAME,
+			eventNamespace: currentSkill.slug,
+			version,
+		})
+
+		const combined = eventContractUtil.unifyContracts(contracts)
+		assert.isTruthy(combined)
+
+		const sig = eventContractUtil.getSignatureByName(combined, fqen)
+		assert.isFalsy(sig.emitPayloadSchema?.fields?.target.isRequired)
+	}
+
 	private static async assertCreatesOptionsFile(
 		results: FeatureActionResponse
 	) {
@@ -89,7 +139,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 
 		const imported = await this.Service('import').importDefault(optionsFile)
 
-		assert.isEqualDeep(imported, { isGlobal: false })
+		assert.isEqualDeep(imported, { isGlobal: false, isTargetRequired: true })
 	}
 
 	private static async assertExpectedTargetAndPayload(

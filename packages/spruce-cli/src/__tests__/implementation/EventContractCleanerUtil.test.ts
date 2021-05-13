@@ -44,15 +44,14 @@ export default class EventContractCleanerUtilTest extends AbstractSpruceTest {
 
 	@test()
 	protected static async makesNoChangeToLocalContract() {
-		const cleaned =
-			eventContractCleanerUtil.cleanTargetsForGlobalEvents(didMessageContract)
+		const cleaned = eventContractCleanerUtil.cleanPayloads(didMessageContract)
 
 		assert.isEqualDeep(cleaned, didMessageContract)
 	}
 
 	@test()
 	protected static async stripsOutTagetForGlobal() {
-		const cleaned = eventContractCleanerUtil.cleanTargetsForGlobalEvents(
+		const cleaned = eventContractCleanerUtil.cleanPayloads(
 			didMessageGlobalContract
 		)
 
@@ -64,7 +63,7 @@ export default class EventContractCleanerUtilTest extends AbstractSpruceTest {
 
 	@test()
 	protected static async stripsOutEntireEmitPayloadIfNoTargetNorPayload() {
-		const cleaned = eventContractCleanerUtil.cleanTargetsForGlobalEvents(
+		const cleaned = eventContractCleanerUtil.cleanPayloads(
 			didMessageGlobalContractWithoutPayload
 		)
 

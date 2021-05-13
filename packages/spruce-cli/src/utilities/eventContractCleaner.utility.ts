@@ -2,7 +2,7 @@ import { EventContract } from '@sprucelabs/mercury-types'
 import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
 
 export const eventContractCleanerUtil = {
-	cleanTargetsForGlobalEvents(contract: EventContract): EventContract {
+	cleanPayloads(contract: EventContract): EventContract {
 		const cleaned: EventContract = {
 			eventSignatures: {},
 		}

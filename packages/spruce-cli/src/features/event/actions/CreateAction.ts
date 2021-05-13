@@ -39,6 +39,11 @@ const optionsSchema = buildSchema({
 			label: 'Version',
 			isPrivate: true,
 		},
+		isTargetRequired: {
+			type: 'boolean',
+			label: 'Require target',
+			defaultValue: true,
+		},
 		...syncEventActionBuilder.fields,
 	},
 })
@@ -52,8 +57,14 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public async execute(
 		options: SchemaValues<OptionsSchema>
 	): Promise<FeatureActionResponse> {
-		const { nameKebab, nameReadable, nameCamel, version, isGlobal } =
-			this.validateAndNormalizeOptions(options)
+		const {
+			nameKebab,
+			nameReadable,
+			nameCamel,
+			version,
+			isGlobal,
+			isTargetRequired,
+		} = this.validateAndNormalizeOptions(options)
 
 		const skill = await this.Store('skill').loadCurrentSkill()
 
@@ -73,6 +84,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 				version: resolvedVersion,
 				nameReadable,
 				isGlobal,
+				isTargetRequired,
 			})
 
 			const syncOptions = normalizeSchemaValues(
