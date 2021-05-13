@@ -49,7 +49,10 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 		const importedOptions = await this.Service('import').importDefault(
 			optionsFile
 		)
-		assert.isEqualDeep(importedOptions, { isGlobal: true })
+		assert.isEqualDeep(importedOptions, {
+			isGlobal: true,
+			isTargetRequired: false,
+		})
 
 		const version = versionUtil.generateVersion().dirValue
 		const contractFile = testUtil.assertsFileByNameInGeneratedFiles(
