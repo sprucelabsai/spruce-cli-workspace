@@ -1,7 +1,6 @@
-import fsUtil from 'fs'
 import pathUtil from 'path'
 import { Schema } from '@sprucelabs/schema'
-import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../../../errors/SpruceError'
 
 const schemaDiskUtil = {
