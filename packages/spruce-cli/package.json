@@ -38,6 +38,7 @@
 		"build.types.resolve-paths.lint": "yarn build.types && yarn resolve-paths.lint",
 		"resolve-paths.lint": "yarn build.resolve-paths ; yarn lint",
 		"cache.tests": "node build/tests/buildTestCache",
+		"clean.test.data": "node build/tests/cleanTestData",
 		"clean": "rm -rf build/",
 		"clean.all": "rm -rf build/ && rm -rf node_modules/ && rm -f yarn.lock && yarn clean.cache",
 		"clean.cache": "rm -rf src/.spruce/tmp && node build/tests/cleanTestCache && echo '******** TEST CACHE CLEARED ********'",
