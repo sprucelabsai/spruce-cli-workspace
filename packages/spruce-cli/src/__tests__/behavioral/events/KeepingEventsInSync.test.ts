@@ -298,6 +298,9 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		await cli.getFeature('event').Action('sync').execute({})
 
 		assert.isFalse(diskUtil.doesFileExist(eventContract))
+
+		const dirname = pathUtil.dirname(eventContract)
+		assert.isFalse(diskUtil.doesDirExist(dirname))
 	}
 
 	private static async assertValidEventResults(results: FeatureActionResponse) {

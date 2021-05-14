@@ -10,7 +10,6 @@ import { GeneratedFile } from '../../../types/cli.types'
 import mergeUtil from '../../../utilities/merge.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
-import schemaDiskUtil from '../utilities/schemaDisk.utility'
 import schemaGeneratorUtil from '../utilities/schemaGenerator.utility'
 import ValueTypeBuilder from '../ValueTypeBuilder'
 
@@ -352,6 +351,6 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	}
 
 	private cleanEmptyDirs(resolvedDestination: string) {
-		schemaDiskUtil.cleanEmpty(resolvedDestination)
+		diskUtil.deleteEmptyDirs(resolvedDestination)
 	}
 }

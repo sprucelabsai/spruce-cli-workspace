@@ -102,6 +102,8 @@ export default class EventContractWriter {
 		const diff = matches.filter((m) => !existingContracts.includes(m))
 
 		diff.forEach((f) => diskUtil.deleteFile(f))
+
+		diskUtil.deleteEmptyDirs(lookupDir)
 	}
 
 	public async fetchContractsAndGenerateUniqueSchemas(
