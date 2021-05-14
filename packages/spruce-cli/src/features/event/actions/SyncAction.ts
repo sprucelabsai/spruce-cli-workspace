@@ -30,8 +30,6 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			.Action('sync')
 			.execute({})
 
-
-
 		return mergeUtil.mergeActionResults(schemaSyncResults, results)
 	}
 
