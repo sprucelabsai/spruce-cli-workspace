@@ -10,8 +10,8 @@ import {
 	diskUtil,
 	namesUtil,
 } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { test, assert } from '@sprucelabs/test'
 import fieldClassMap from '#spruce/schemas/fields/fieldClassMap'
 import AbstractSchemaTest from '../../tests/AbstractSchemaTest'
 
