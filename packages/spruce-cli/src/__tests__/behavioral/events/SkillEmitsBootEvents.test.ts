@@ -1,5 +1,5 @@
-import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { test, assert } from '@sprucelabs/test'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 
 export default class SkillEmitsBootEventsTest extends AbstractEventTest {

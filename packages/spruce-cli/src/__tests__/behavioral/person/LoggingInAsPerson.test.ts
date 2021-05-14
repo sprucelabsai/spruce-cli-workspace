@@ -1,5 +1,5 @@
-import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { test, assert } from '@sprucelabs/test'
 import { DEMO_NUMBER } from '../../../fixtures/PersonFixture'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 
