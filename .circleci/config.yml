@@ -100,6 +100,28 @@ jobs:
           name: "Max memory usage for tests"
           command: cat /sys/fs/cgroup/memory/memory.max_usage_in_bytes
           when: always
+  cleanup_test:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "ec:9f:2e:aa:1f:c9:ab:49:57:8f:c0:cd:2e:5b:f3:b0"
+      - checkout
+      - run:
+          name: "Check and skip if npm-publish"
+          command: |
+            COMMIT_MSG=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
+            if [[ $COMMIT_MSG == *"[npm-publish]"* ]]; then
+              echo "[npm-publish] detected. No publish necessary 👊"
+              circleci-agent step halt
+            fi
+      - restore_cache:
+          keys:
+            - cli-build-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Clean test data
+          command: yarn run clean.test.data
   merge_auto_upgrade:
     docker:
       - image: circleci/node:12
@@ -193,6 +215,11 @@ workflows:
       - test:
           requires:
             - setup_for_test
+          context: public_package_publish
+      - cleanup_test:
+          requires:
+            - setup_for_test
+            - test
           context: public_package_publish
       - merge_auto_upgrade:
           requires:
