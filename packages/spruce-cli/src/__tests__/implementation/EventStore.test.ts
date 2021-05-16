@@ -7,8 +7,8 @@ import {
 	eventNameUtil,
 } from '@sprucelabs/spruce-event-utils'
 import { diskUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 import testUtil from '../../tests/utilities/test.utility'
 
