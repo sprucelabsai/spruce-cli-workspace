@@ -299,8 +299,11 @@ export async function run(argv: string[] = []): Promise<void> {
 		'-d, --directory <path>',
 		'The working directory to execute the command'
 	)
+	program.option('-v, --version', 'The version of the cli')
 
-	const dirIdx = process.argv.findIndex((v) => v === '--directory')
+	const dirIdx = process.argv.findIndex(
+		(v) => v === '--directory' || v === '-d'
+	)
 
 	if (dirIdx > -1) {
 		const dir = process.argv[dirIdx + 1]
@@ -314,6 +317,15 @@ export async function run(argv: string[] = []): Promise<void> {
 	)
 	terminal.clear()
 	terminal.renderHero('Spruce XP')
+
+	const isAskingForVersion =
+		process.argv.findIndex((v) => v === '--version' || v === '-v') > -1
+
+	if (isAskingForVersion) {
+		const json = require('../package.json')
+		terminal.renderHeadline(`Version ${json.version}`)
+		return
+	}
 
 	await Cli.Boot({
 		program,

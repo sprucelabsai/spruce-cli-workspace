@@ -403,7 +403,8 @@
 						"unRegisteredEventsAreRemoved": "I86",
 						"canListenToEventWeCreated": "I89",
 						"canCreateGlobalEvent": "I91",
-						"canChangeSkillNamespace": "I107"
+						"canChangeSkillNamespace": "I107",
+						"canGetVersion": "I129"
 					}
 				}
 			],
