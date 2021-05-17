@@ -1,6 +1,6 @@
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import { CliInterface } from '../../cli'
 import { SpruceTestResults } from '../../features/test/test.types'
 import TestRunner from '../../features/test/TestRunner'

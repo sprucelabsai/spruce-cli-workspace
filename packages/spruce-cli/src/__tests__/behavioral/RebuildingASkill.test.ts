@@ -1,5 +1,5 @@
-import { errorAssertUtil } from '@sprucelabs/test-utils'
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import CommandService from '../../services/CommandService'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 

@@ -1,6 +1,6 @@
 import { diskUtil, HASH_SPRUCE_DIR } from '@sprucelabs/spruce-skill-utils'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AuthService from '../../services/AuthService'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 
