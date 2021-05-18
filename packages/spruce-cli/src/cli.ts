@@ -14,7 +14,10 @@ import './addons/filePrompt.addon'
 import eventsContracts from '#spruce/events/events.contract'
 import { DEFAULT_HOST } from './constants'
 import SpruceError from './errors/SpruceError'
-import FeatureCommandAttacher from './features/FeatureCommandAttacher'
+import FeatureCommandAttacher, {
+	BlockedCommands,
+	OptionOverrides,
+} from './features/FeatureCommandAttacher'
 import FeatureInstaller from './features/FeatureInstaller'
 import FeatureInstallerFactory from './features/FeatureInstallerFactory'
 import { FeatureCode, InstallFeatureOptions } from './features/features.types'
@@ -25,6 +28,7 @@ import CliGlobalEmitter, {
 import TerminalInterface from './interfaces/TerminalInterface'
 import CommandService from './services/CommandService'
 import GameService from './services/GameService'
+import PkgService from './services/PkgService'
 import ServiceFactory from './services/ServiceFactory'
 import StoreFactory from './stores/StoreFactory'
 import {
@@ -34,6 +38,7 @@ import {
 } from './types/apiClient.types'
 import { GraphicsInterface } from './types/cli.types'
 import apiClientUtil from './utilities/apiClient.utility'
+import { argParserUtil } from './utilities/argParser.utility'
 
 interface HealthOptions {
 	isRunningLocally?: boolean
@@ -63,17 +68,20 @@ export default class Cli implements CliInterface {
 	private serviceFactory: ServiceFactory
 	public readonly emitter: GlobalEmitter
 	private static apiClients: PromiseCache = {}
+	private attacher?: FeatureCommandAttacher
 
 	private constructor(
 		cwd: string,
 		featureInstaller: FeatureInstaller,
 		serviceFactory: ServiceFactory,
-		emitter: GlobalEmitter
+		emitter: GlobalEmitter,
+		attacher?: FeatureCommandAttacher
 	) {
 		this.cwd = cwd
 		this.featureInstaller = featureInstaller
 		this.serviceFactory = serviceFactory
 		this.emitter = emitter
+		this.attacher = attacher
 	}
 
 	public static async resetApiClients() {
@@ -82,6 +90,10 @@ export default class Cli implements CliInterface {
 		}
 
 		this.apiClients = {}
+	}
+
+	public getAttacher() {
+		return this.attacher
 	}
 
 	public async on(...args: any[]) {
@@ -180,12 +192,24 @@ export default class Cli implements CliInterface {
 			apiClientFactory,
 		})
 
+		let attacher: FeatureCommandAttacher | undefined
+
 		if (program) {
-			const attacher = new FeatureCommandAttacher({
+			const optionOverrides = this.loadOptionOverrides(
+				serviceFactory.Service(cwd, 'pkg')
+			)
+
+			const blockedCommands = this.loadCommandBlocks(
+				serviceFactory.Service(cwd, 'pkg')
+			)
+
+			attacher = new FeatureCommandAttacher({
 				program,
 				featureInstaller,
 				ui,
 				emitter,
+				optionOverrides,
+				blockedCommands,
 			})
 			const codes = FeatureInstallerFactory.featureCodes
 
@@ -204,9 +228,36 @@ export default class Cli implements CliInterface {
 			})
 		}
 
-		const cli = new Cli(cwd, featureInstaller, serviceFactory, emitter)
+		const cli = new Cli(
+			cwd,
+			featureInstaller,
+			serviceFactory,
+			emitter,
+			attacher
+		)
 
 		return cli as CliInterface
+	}
+
+	private static loadCommandBlocks(pkg: PkgService): BlockedCommands {
+		let blocks: BlockedCommands = {}
+		if (pkg.doesExist()) {
+			blocks = pkg.get('skill.blockedCommands') ?? {}
+		}
+		return blocks
+	}
+
+	private static loadOptionOverrides(pkg: PkgService): OptionOverrides {
+		const mapped: OptionOverrides = {}
+		if (pkg.doesExist()) {
+			const overrides = pkg.get('skill.commandOverrides')
+
+			Object.keys(overrides ?? {}).forEach((command) => {
+				const options = argParserUtil.parse(overrides[command])
+				mapped[command] = options
+			})
+		}
+		return mapped
 	}
 
 	public static buildApiClientFactory(

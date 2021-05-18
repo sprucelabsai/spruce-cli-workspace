@@ -9,24 +9,45 @@ import featuresUtil from './feature.utilities'
 import FeatureCommandExecuter from './FeatureCommandExecuter'
 import FeatureInstaller from './FeatureInstaller'
 
+export interface OptionOverrides {
+	[command: string]: Record<string, any>
+}
+
+export interface BlockedCommands {
+	[command: string]: string
+}
+
 export default class FeatureCommandAttacher {
 	private program: CommanderStatic['program']
 	private featureInstaller: FeatureInstaller
 	private ui: GraphicsInterface
 	private emitter: GlobalEmitter
+	private optionOverrides: OptionOverrides
+	private blockedCommands: BlockedCommands
 
 	public constructor(options: {
 		program: CommanderStatic['program']
 		featureInstaller: FeatureInstaller
 		ui: GraphicsInterface
 		emitter: GlobalEmitter
+		optionOverrides: OptionOverrides
+		blockedCommands: BlockedCommands
 	}) {
-		const { program, featureInstaller, ui: term, emitter } = options
+		const {
+			program,
+			featureInstaller,
+			ui: term,
+			emitter,
+			optionOverrides,
+			blockedCommands,
+		} = options
 
 		this.program = program
 		this.featureInstaller = featureInstaller
 		this.ui = term
 		this.emitter = emitter
+		this.optionOverrides = optionOverrides
+		this.blockedCommands = blockedCommands
 	}
 
 	public async attachFeature(feature: AbstractFeature) {
@@ -62,12 +83,17 @@ export default class FeatureCommandAttacher {
 		}
 
 		command = command.action(async (...args: any[]) => {
+			this.assertCommandIsNotBlocked(commandStr)
+
 			const options = commanderUtil.mapIncomingToOptions(
 				...args,
 				feature.optionsSchema ?? action.optionsSchema
 			)
 
-			await executer.execute(options)
+			await executer.execute({
+				...this.optionOverrides[commandStr],
+				...options,
+			})
 		})
 
 		const description = action.optionsSchema?.description
@@ -80,6 +106,15 @@ export default class FeatureCommandAttacher {
 
 		if (schema) {
 			this.attachOptions(command, schema)
+		}
+	}
+	private assertCommandIsNotBlocked(commandStr: string) {
+		if (this.blockedCommands[commandStr]) {
+			throw new SpruceError({
+				code: 'COMMAND_BLOCKED',
+				command: commandStr,
+				hint: this.blockedCommands[commandStr],
+			})
 		}
 	}
 

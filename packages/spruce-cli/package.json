@@ -404,7 +404,9 @@
 						"canListenToEventWeCreated": "I89",
 						"canCreateGlobalEvent": "I91",
 						"canChangeSkillNamespace": "I107",
-						"canGetVersion": "I129"
+						"canGetVersion": "I129",
+						"blockedCommandsThrow": "I130",
+						"overridesAreLoadedIntoAttacher": "I131"
 					}
 				}
 			],

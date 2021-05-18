@@ -1,4 +1,5 @@
 import pathUtil from 'path'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import fs from 'fs-extra'
 import { set, get } from 'lodash'
 import SpruceError from '../errors/SpruceError'
@@ -15,23 +16,27 @@ export default class PkgService extends CommandService {
 	}
 
 	public set(options: {
-		path: string
+		path: string | string[]
 		value: string | Record<string, any> | undefined
 	}) {
 		const { path, value } = options
 		const contents = this.readPackage()
 		const updated = set(contents, path, value)
-		const destination = pathUtil.join(this.cwd, 'package.json')
+		const destination = this.buildPath()
 
 		fs.outputFileSync(destination, JSON.stringify(updated, null, 2))
 	}
 
-	public unset(path: string) {
+	public doesExist() {
+		return diskUtil.doesFileExist(this.buildPath())
+	}
+
+	public unset(path: string | string[]) {
 		this.set({ path, value: undefined })
 	}
 
 	public readPackage(): Record<string, any | undefined> {
-		const packagePath = pathUtil.join(this.cwd, 'package.json')
+		const packagePath = this.buildPath()
 
 		try {
 			const contents = fs.readFileSync(packagePath).toString()
@@ -45,6 +50,10 @@ export default class PkgService extends CommandService {
 				originalError: err,
 			})
 		}
+	}
+
+	private buildPath() {
+		return pathUtil.join(this.cwd, 'package.json')
 	}
 
 	public isInstalled(pkg: string) {

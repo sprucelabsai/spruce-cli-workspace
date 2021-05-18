@@ -1,21 +1,9 @@
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import { CommanderStatic } from 'commander'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import FeatureCommandAttacher from '../../features/FeatureCommandAttacher'
 import AbstractCliTest from '../../tests/AbstractCliTest'
-
-type MockProgram = CommanderStatic['program'] & {
-	descriptionInvocations: { command: string; description: string }[]
-	optionInvocations: {
-		command: string
-		option: string
-		hint: string
-		defaultValue: string
-	}[]
-	_lastCommand: string
-	commandInvocations: string[]
-	actionInvocations: string[]
-	aliasesInvocations: string[]
-}
+import MockProgramFactory, { MockProgram } from '../../tests/MockProgramFactory'
 
 export default class FeatureCommandAttacherTest extends AbstractCliTest {
 	private static attacher: FeatureCommandAttacher
@@ -33,6 +21,12 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 			program: this.program,
 			featureInstaller: installer,
 			ui: term,
+			optionOverrides: {
+				'sync.schemas': {
+					fetchCoreSchemas: false,
+				},
+			},
+			blockedCommands: {},
 		})
 	}
 
@@ -67,13 +61,6 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		assert.doesInclude(this.program.actionInvocations, 'create.schema')
 		assert.doesInclude(this.program.actionInvocations, 'sync.schemas')
 		assert.doesInclude(this.program.actionInvocations, 'sync.fields')
-	}
-
-	private static async attachSchemaFeature() {
-		const cli = await this.Cli()
-		const schemaFeature = cli.getFeature('schema')
-
-		await this.attacher.attachFeature(schemaFeature)
 	}
 
 	@test()
@@ -151,49 +138,67 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		assert.isTruthy(match)
 	}
 
+	@test()
+	protected static async optionsCanBeOverridden() {
+		await this.FeatureFixture().installCachedFeatures('schemas')
+		await this.attachSchemaFeature()
+		await this.program.actionHandler({})
+
+		const personPath = this.resolveHashSprucePath(
+			'schemas',
+			'spruce',
+			'v2020_07_22',
+			'person.schema.ts'
+		)
+
+		assert.isFalse(diskUtil.doesFileExist(personPath))
+	}
+
+	@test()
+	protected static async overriddenCanBeIgnoredByPassingArg() {
+		await this.FeatureFixture().installCachedFeatures('schemas')
+		await this.attachSchemaFeature()
+		await this.program.actionHandler({ fetchCoreSchemas: 'true' })
+
+		const personPath = this.resolveHashSprucePath(
+			'schemas',
+			'spruce',
+			'v2020_07_22',
+			'person.schema.ts'
+		)
+
+		assert.isTrue(diskUtil.doesFileExist(personPath))
+	}
+
+	@test()
+	protected static async blockedCommandsThrow() {
+		this.attacher = new FeatureCommandAttacher({
+			emitter: this.Emitter(),
+			program: this.program,
+			featureInstaller: this.FeatureInstaller(),
+			ui: this.ui,
+			optionOverrides: {},
+			blockedCommands: {
+				'sync.schemas': 'this is blocked',
+			},
+		})
+
+		await this.attachSchemaFeature()
+		const err = await assert.doesThrowAsync(() =>
+			this.program.actionHandler({})
+		)
+
+		errorAssertUtil.assertError(err, 'COMMAND_BLOCKED')
+	}
+
+	private static async attachSchemaFeature() {
+		const cli = await this.Cli()
+		const schemaFeature = cli.getFeature('schema')
+
+		await this.attacher.attachFeature(schemaFeature)
+	}
+
 	private static MockCommanderProgram(): MockProgram {
-		// @ts-ignore
-		return {
-			_lastCommand: '',
-			commandInvocations: [],
-			descriptionInvocations: [],
-			actionInvocations: [],
-			optionInvocations: [],
-			aliasesInvocations: [],
-			command(str: string) {
-				this.commandInvocations.push(str)
-				this._lastCommand = str
-
-				return this
-			},
-			//@ts-ignore
-			description(str: string) {
-				this.descriptionInvocations.push({
-					command: this._lastCommand,
-					description: str,
-				})
-				return this
-			},
-			//@ts-ignore
-			aliases(aliases: string[]) {
-				this.aliasesInvocations.push(...aliases)
-				return this
-			},
-			action(_: any) {
-				this.actionInvocations.push(this._lastCommand)
-
-				return this
-			},
-			//@ts-ignore
-			option(option: string, hint: string, defaultValue: string) {
-				this.optionInvocations.push({
-					command: this._lastCommand,
-					option,
-					hint,
-					defaultValue,
-				})
-				return this
-			},
-		}
+		return MockProgramFactory.Program()
 	}
 }

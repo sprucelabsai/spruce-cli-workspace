@@ -203,6 +203,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				message = `Whoa! Looks like you haven't registered your skill yet! Try \`spruce register\` to get that done!`
 				break
 
+			case 'COMMAND_BLOCKED':
+				message = `${options.command} is blocked! ${options.hint}`
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}

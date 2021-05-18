@@ -923,6 +923,43 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	
+	export interface CommandBlocked {
+		
+			
+			'command': string
+			
+			'hint': string
+	}
+
+	export interface CommandBlockedSchema extends SpruceSchema.Schema {
+		id: 'commandBlocked',
+		namespace: 'SpruceCli',
+		name: 'Command blocked',
+		    fields: {
+		            /** . */
+		            'command': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		            /** . */
+		            'hint': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type CommandBlockedEntity = SchemaEntity<SpruceErrors.SpruceCli.CommandBlockedSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
 	export interface CommandAborted {
 		
 			/** Command. */
