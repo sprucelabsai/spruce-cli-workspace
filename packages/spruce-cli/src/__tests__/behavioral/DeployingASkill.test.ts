@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import CommandService from '../../services/CommandService'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 import testUtil from '../../tests/utilities/test.utility'
