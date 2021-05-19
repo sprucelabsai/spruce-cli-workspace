@@ -336,6 +336,24 @@
 			{
 				"code": "deploy"
 			}
+		],
+		"views": [
+			{
+				"code": "skill",
+				"options": {
+					"name": "testing views",
+					"description": "this too, is a great test!"
+				}
+			},
+			{
+				"code": "schema"
+			},
+			{
+				"code": "event"
+			},
+			{
+				"code": "view"
+			}
 		]
 	},
 	"jest": {
@@ -406,7 +424,8 @@
 						"canChangeSkillNamespace": "I107",
 						"canGetVersion": "I129",
 						"blockedCommandsThrow": "I130",
-						"overridesAreLoadedIntoAttacher": "I131"
+						"overridesAreLoadedIntoAttacher": "I131",
+						"skillViewExtendsAbstractViewControllerWithProperView": "I134"
 					}
 				}
 			],

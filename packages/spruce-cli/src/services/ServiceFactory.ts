@@ -59,17 +59,13 @@ export default class ServiceFactory {
 				return new CommandService(cwd) as ServiceMap[S]
 			}
 			case 'typeChecker':
-				return new TypeCheckerService({
-					cwd,
-					command: new CommandService(cwd),
-				}) as ServiceMap[S]
+				return new TypeCheckerService(
+					this.buildImportService(cwd)
+				) as ServiceMap[S]
 			case 'settings':
 				return new SettingsService<FeatureCode>(cwd) as ServiceMap[S]
 			case 'import':
-				return new ImportService({
-					cwd,
-					command: new CommandService(cwd),
-				}) as ServiceMap[S]
+				return this.buildImportService(cwd) as ServiceMap[S]
 			case 'build': {
 				const commandService = new CommandService(cwd)
 				return new BuildService(
@@ -80,5 +76,12 @@ export default class ServiceFactory {
 			default:
 				throw new Error(`Service "${type}" not found`)
 		}
+	}
+
+	private buildImportService(cwd: string): ImportService {
+		return new ImportService({
+			cwd,
+			command: new CommandService(cwd),
+		})
 	}
 }

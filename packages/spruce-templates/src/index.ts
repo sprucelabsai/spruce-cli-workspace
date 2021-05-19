@@ -352,6 +352,15 @@ export const templates = {
 		const template = templateImportUtil.getTemplate('store/stores.types.ts.hbs')
 		return template(options)
 	},
+
+	skillViewController(options: { namePascal: string }) {
+		const template = templateImportUtil.getTemplate('view/View.svc.ts.hbs')
+		return template(options)
+	},
+	viewController(options: { viewModel: string; namePascal: string }) {
+		const template = templateImportUtil.getTemplate('view/View.vc.ts.hbs')
+		return template(options)
+	},
 }
 
 export type Templates = typeof templates

@@ -21,6 +21,7 @@ import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
 import StoreFeature from './store/StoreFeature'
 import TestFeature from './test/TestFeature'
+import ViewFeature from './view/ViewFeature'
 import VsCodeFeature from './vscode/VsCodeFeature'
 import WatchFeature from './watch/WatchFeature'
 export default class FeatureInstallerFactory {
@@ -41,6 +42,7 @@ export default class FeatureInstallerFactory {
 		DeployFeature,
 		SandboxFeature,
 		StoreFeature,
+		ViewFeature,
 	]
 
 	public static readonly featureCodes: FeatureCode[] = [
@@ -60,6 +62,7 @@ export default class FeatureInstallerFactory {
 		'deploy',
 		'sandbox',
 		'store',
+		'view',
 	]
 
 	public static WithAllFeatures(options: {

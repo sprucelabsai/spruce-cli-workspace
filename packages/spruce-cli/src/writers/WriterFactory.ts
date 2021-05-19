@@ -9,6 +9,7 @@ import SchemaWriter from '../features/schema/writers/SchemaWriter'
 import SkillGenerator from '../features/skill/writers/SkillWriter'
 import StoreWriter from '../features/store/writers/StoreWriter'
 import TestGenerator from '../features/test/writers/TestWriter'
+import ViewWriter from '../features/view/writers/ViewWriter'
 import VsCodeWriter from '../features/vscode/writers/VsCodeWriter'
 import LintService from '../services/LintService'
 import { FileDescription } from '../types/cli.types'
@@ -27,6 +28,7 @@ const classMap = {
 	deploy: DeployWriter,
 	sandbox: SandboxWriter,
 	store: StoreWriter,
+	view: ViewWriter,
 }
 
 export interface WriterMap {
@@ -41,6 +43,7 @@ export interface WriterMap {
 	deploy: DeployWriter
 	sandbox: SandboxWriter
 	store: StoreWriter
+	view: ViewWriter
 }
 
 export type WriterCode = keyof WriterMap

@@ -11,6 +11,9 @@ export interface TestFailedErrorOptions extends SpruceErrors.SpruceCli.TestFaile
 export interface StoreExistsErrorOptions extends SpruceErrors.SpruceCli.StoreExists, ISpruceErrorOptions {
 	code: 'STORE_EXISTS'
 }
+export interface SkillViewExistsErrorOptions extends SpruceErrors.SpruceCli.SkillViewExists, ISpruceErrorOptions {
+	code: 'SKILL_VIEW_EXISTS'
+}
 export interface SkillNotRegisteredErrorOptions extends SpruceErrors.SpruceCli.SkillNotRegistered, ISpruceErrorOptions {
 	code: 'SKILL_NOT_REGISTERED'
 }
@@ -99,6 +102,6 @@ export interface BootErrorErrorOptions extends SpruceErrors.SpruceCli.BootError,
 	code: 'BOOT_ERROR'
 }
 
-type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | VscodeNotInstalledErrorOptions  | TestFailedErrorOptions  | StoreExistsErrorOptions  | SkillNotRegisteredErrorOptions  | SkillNotFoundErrorOptions  | SchemaFailedToImportErrorOptions  | SchemaExistsErrorOptions  | NotLoggedInErrorOptions  | NotImplementedErrorOptions  | NoSkillsRegisteredErrorOptions  | NoOrganizationsFoundErrorOptions  | MissingDependenciesErrorOptions  | MercuryResponseErrorErrorOptions  | LintFailedErrorOptions  | InvalidTestDirectoryErrorOptions  | InvalidFeatureCodeErrorOptions  | InvalidEventContractErrorOptions  | InvalidCommandErrorOptions  | GenericErrorOptions  | FileExistsErrorOptions  | FeatureNotInstalledErrorOptions  | FailedToImportErrorOptions  | ExecutingCommandFailedErrorOptions  | DirectoryNotSkillErrorOptions  | DirectoryEmptyErrorOptions  | DeployFailedErrorOptions  | CreateAutoloaderFailedErrorOptions  | CommandNotImplementedErrorOptions  | CommandBlockedErrorOptions  | CommandAbortedErrorOptions  | BuildFailedErrorOptions  | BootErrorErrorOptions 
+type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | VscodeNotInstalledErrorOptions  | TestFailedErrorOptions  | StoreExistsErrorOptions  | SkillViewExistsErrorOptions  | SkillNotRegisteredErrorOptions  | SkillNotFoundErrorOptions  | SchemaFailedToImportErrorOptions  | SchemaExistsErrorOptions  | NotLoggedInErrorOptions  | NotImplementedErrorOptions  | NoSkillsRegisteredErrorOptions  | NoOrganizationsFoundErrorOptions  | MissingDependenciesErrorOptions  | MercuryResponseErrorErrorOptions  | LintFailedErrorOptions  | InvalidTestDirectoryErrorOptions  | InvalidFeatureCodeErrorOptions  | InvalidEventContractErrorOptions  | InvalidCommandErrorOptions  | GenericErrorOptions  | FileExistsErrorOptions  | FeatureNotInstalledErrorOptions  | FailedToImportErrorOptions  | ExecutingCommandFailedErrorOptions  | DirectoryNotSkillErrorOptions  | DirectoryEmptyErrorOptions  | DeployFailedErrorOptions  | CreateAutoloaderFailedErrorOptions  | CommandNotImplementedErrorOptions  | CommandBlockedErrorOptions  | CommandAbortedErrorOptions  | BuildFailedErrorOptions  | BootErrorErrorOptions 
 
 export default ErrorOptions

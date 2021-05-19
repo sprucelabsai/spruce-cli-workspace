@@ -207,6 +207,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				message = `${options.command} is blocked! ${options.hint}`
 				break
 
+			case 'SKILL_VIEW_EXISTS':
+				message = `A skill view controller already exists named ${options.name}!`
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}

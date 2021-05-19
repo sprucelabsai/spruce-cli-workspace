@@ -98,6 +98,35 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	
+	export interface SkillViewExists {
+		
+			
+			'name': string
+	}
+
+	export interface SkillViewExistsSchema extends SpruceSchema.Schema {
+		id: 'skillViewExists',
+		namespace: 'SpruceCli',
+		name: 'Skill view exists',
+		    fields: {
+		            /** . */
+		            'name': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type SkillViewExistsEntity = SchemaEntity<SpruceErrors.SpruceCli.SkillViewExistsSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
 	export interface SkillNotRegistered {
 		
 	}

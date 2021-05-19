@@ -21,6 +21,7 @@ export default class ErrorFeature extends AbstractFeature {
 	public nameReadable = 'error handling'
 	public description =
 		'Errors: Use schemas to define your errors and get great type checking!'
+	public code: FeatureCode = 'error'
 
 	public dependencies: FeatureDependency[] = [
 		{ code: 'schema', isRequired: true },
@@ -31,7 +32,6 @@ export default class ErrorFeature extends AbstractFeature {
 			name: '@sprucelabs/error',
 		},
 	]
-	public code: FeatureCode = 'error'
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public constructor(options: FeatureOptions) {
