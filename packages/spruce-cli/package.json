@@ -8,7 +8,7 @@
 		"namespace": "spruce-cli"
 	},
 	"license": "MIT",
-	"version": "14.1.4",
+	"version": "14.2.1",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -69,7 +69,7 @@
 		"@sprucelabs/spruce-core-schemas": "latest",
 		"@sprucelabs/spruce-event-utils": "latest",
 		"@sprucelabs/spruce-skill-utils": "latest",
-		"@sprucelabs/spruce-templates": "^14.1.4",
+		"@sprucelabs/spruce-templates": "^14.2.1",
 		"cfonts": "^2.9.2",
 		"chalk": "^4.1.1",
 		"chokidar": "^3.5.1",
@@ -87,7 +87,7 @@
 		"jsonwebtoken": "^8.5.1",
 		"lodash": "^4.17.21",
 		"md5": "^2.3.0",
-		"open": "^8.0.8",
+		"open": "^8.0.9",
 		"ora": "^5.4.0",
 		"semver": "^7.3.5",
 		"string-argv": "^0.3.1",
