@@ -26,10 +26,10 @@ async function run() {
 run()
 	.then(() => {})
 	.catch((err) => {
-		if (err instanceof AbstractSpruceError) {
+		if (err instanceof AbstractSpruceError && process.env.IS_CLI) {
 			console.error(ERROR_DIVIDER + err.toJson() + ERROR_DIVIDER)
 		} else {
-			console.error(err.stack)
+			console.error(err.stack ?? err.message)
 		}
 		process.exitCode = 1
 	})

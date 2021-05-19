@@ -78,6 +78,7 @@ export default class CommandService {
 						cwd,
 						env: {
 							PATH: process.env.PATH,
+							IS_CLI: 'true',
 							FORCE_COLOR: options?.forceColor ? '1' : '0',
 							...options?.env,
 						},
@@ -86,6 +87,7 @@ export default class CommandService {
 						cwd,
 						env: {
 							PATH: process.env.PATH,
+							IS_CLI: 'true',
 							FORCE_COLOR: options?.forceColor ? '1' : '0',
 							...options?.env,
 						},
