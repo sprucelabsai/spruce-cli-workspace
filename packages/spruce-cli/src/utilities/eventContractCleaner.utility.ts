@@ -3,7 +3,6 @@ import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
 
 export const eventContractCleanerUtil = {
 	cleanPayloads(contract: EventContract): EventContract {
-		debugger
 		const cleaned: EventContract = {
 			eventSignatures: {},
 		}
