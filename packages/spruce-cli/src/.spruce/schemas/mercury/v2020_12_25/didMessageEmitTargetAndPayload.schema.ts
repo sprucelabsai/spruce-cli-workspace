@@ -1,7 +1,7 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
 
-import eventTargetSchema from '#spruce/schemas/mercury/v2020_12_25/eventTarget.schema'
+import messageTargetSchema from '#spruce/schemas/spruce/v2020_07_22/messageTarget.schema'
 import didMessageEmitPayloadSchema from '#spruce/schemas/mercury/v2020_12_25/didMessageEmitPayload.schema'
 
 const didMessageEmitTargetAndPayloadSchema: SpruceSchemas.Mercury.v2020_12_25.DidMessageEmitTargetAndPayloadSchema  = {
@@ -13,8 +13,7 @@ const didMessageEmitTargetAndPayloadSchema: SpruceSchemas.Mercury.v2020_12_25.Di
 	            /** . */
 	            'target': {
 	                type: 'schema',
-	                isRequired: true,
-	                options: {schema: eventTargetSchema,}
+	                options: {schema: messageTargetSchema,}
 	            },
 	            /** . */
 	            'payload': {

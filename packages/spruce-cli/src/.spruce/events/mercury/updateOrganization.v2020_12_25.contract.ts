@@ -12,4 +12,5 @@ const updateOrganizationEventContract = buildEventContract({
 })
 export default updateOrganizationEventContract
 
-export type UpdateOrganizationEventContract = typeof updateOrganizationEventContract
+export type UpdateOrganizationEventContract =
+	typeof updateOrganizationEventContract

@@ -1,7 +1,7 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
 
-import eventTargetSchema from '#spruce/schemas/mercury/v2020_12_25/eventTarget.schema'
+import isSkillInstalledTargetPayloadSchema from '#spruce/schemas/mercury/v2020_12_25/isSkillInstalledTargetPayload.schema'
 import isSkillInstalledEmitPayloadSchema from '#spruce/schemas/mercury/v2020_12_25/isSkillInstalledEmitPayload.schema'
 
 const isSkillInstalledEmitTargetAndPayloadSchema: SpruceSchemas.Mercury.v2020_12_25.IsSkillInstalledEmitTargetAndPayloadSchema  = {
@@ -14,7 +14,7 @@ const isSkillInstalledEmitTargetAndPayloadSchema: SpruceSchemas.Mercury.v2020_12
 	            'target': {
 	                type: 'schema',
 	                isRequired: true,
-	                options: {schema: eventTargetSchema,}
+	                options: {schema: isSkillInstalledTargetPayloadSchema,}
 	            },
 	            /** . */
 	            'payload': {

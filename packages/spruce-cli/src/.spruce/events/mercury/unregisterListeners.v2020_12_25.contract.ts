@@ -12,4 +12,5 @@ const unregisterListenersEventContract = buildEventContract({
 })
 export default unregisterListenersEventContract
 
-export type UnregisterListenersEventContract = typeof unregisterListenersEventContract
+export type UnregisterListenersEventContract =
+	typeof unregisterListenersEventContract

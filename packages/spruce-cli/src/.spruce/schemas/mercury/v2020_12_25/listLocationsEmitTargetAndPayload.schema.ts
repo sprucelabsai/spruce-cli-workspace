@@ -1,7 +1,7 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
 
-import eventTargetSchema from '#spruce/schemas/mercury/v2020_12_25/eventTarget.schema'
+import listLocationsTargetPayloadSchema from '#spruce/schemas/mercury/v2020_12_25/listLocationsTargetPayload.schema'
 import listLocationsEmitPayloadSchema from '#spruce/schemas/mercury/v2020_12_25/listLocationsEmitPayload.schema'
 
 const listLocationsEmitTargetAndPayloadSchema: SpruceSchemas.Mercury.v2020_12_25.ListLocationsEmitTargetAndPayloadSchema  = {
@@ -14,7 +14,7 @@ const listLocationsEmitTargetAndPayloadSchema: SpruceSchemas.Mercury.v2020_12_25
 	            'target': {
 	                type: 'schema',
 	                isRequired: true,
-	                options: {schema: eventTargetSchema,}
+	                options: {schema: listLocationsTargetPayloadSchema,}
 	            },
 	            /** . */
 	            'payload': {

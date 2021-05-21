@@ -10,4 +10,5 @@ const getConversationTopicsEventContract = buildEventContract({
 })
 export default getConversationTopicsEventContract
 
-export type GetConversationTopicsEventContract = typeof getConversationTopicsEventContract
+export type GetConversationTopicsEventContract =
+	typeof getConversationTopicsEventContract

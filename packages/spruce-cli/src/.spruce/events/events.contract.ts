@@ -8,6 +8,7 @@ import mercuryDeleteLocationEventContract_v2020_12_25 from '#spruce/events/mercu
 import mercuryDeleteOrganizationEventContract_v2020_12_25 from '#spruce/events/mercury/deleteOrganization.v2020_12_25.contract'
 import mercuryDeleteRoleEventContract_v2020_12_25 from '#spruce/events/mercury/deleteRole.v2020_12_25.contract'
 import mercuryDidMessageEventContract_v2020_12_25 from '#spruce/events/mercury/didMessage.v2020_12_25.contract'
+import mercuryDoesHonorPermissionContractEventContract_v2020_12_25 from '#spruce/events/mercury/doesHonorPermissionContract.v2020_12_25.contract'
 import mercuryGetConversationTopicsEventContract_v2020_12_25 from '#spruce/events/mercury/getConversationTopics.v2020_12_25.contract'
 import mercuryGetEventContractsEventContract_v2020_12_25 from '#spruce/events/mercury/getEventContracts.v2020_12_25.contract'
 import mercuryGetLocationEventContract_v2020_12_25 from '#spruce/events/mercury/getLocation.v2020_12_25.contract'
@@ -50,6 +51,7 @@ export default [
 	mercuryDeleteLocationEventContract_v2020_12_25,
 	mercuryDeleteOrganizationEventContract_v2020_12_25,
 	mercuryDeleteRoleEventContract_v2020_12_25,
+	mercuryDoesHonorPermissionContractEventContract_v2020_12_25,
 	mercuryGetConversationTopicsEventContract_v2020_12_25,
 	mercuryGetEventContractsEventContract_v2020_12_25,
 	mercuryGetLocationEventContract_v2020_12_25,

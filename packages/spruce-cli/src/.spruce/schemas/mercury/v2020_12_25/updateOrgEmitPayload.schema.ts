@@ -3,8 +3,8 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const updateOrgWithoutSlugSchemaSchema: SpruceSchemas.Mercury.v2020_12_25.UpdateOrgWithoutSlugSchemaSchema  = {
-	id: 'updateOrgWithoutSlugSchema',
+const updateOrgEmitPayloadSchema: SpruceSchemas.Mercury.v2020_12_25.UpdateOrgEmitPayloadSchema  = {
+	id: 'updateOrgEmitPayload',
 	version: 'v2020_12_25',
 	namespace: 'Mercury',
 	name: '',
@@ -28,6 +28,6 @@ const updateOrgWithoutSlugSchemaSchema: SpruceSchemas.Mercury.v2020_12_25.Update
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(updateOrgWithoutSlugSchemaSchema)
+SchemaRegistry.getInstance().trackSchema(updateOrgEmitPayloadSchema)
 
-export default updateOrgWithoutSlugSchemaSchema
+export default updateOrgEmitPayloadSchema

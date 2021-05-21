@@ -3,14 +3,14 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const unInstallSkillEmitPayloadSchema: SpruceSchemas.Mercury.v2020_12_25.UnInstallSkillEmitPayloadSchema  = {
-	id: 'unInstallSkillEmitPayload',
+const updateLocationEmitTargetSchema: SpruceSchemas.Mercury.v2020_12_25.UpdateLocationEmitTargetSchema  = {
+	id: 'updateLocationEmitTarget',
 	version: 'v2020_12_25',
 	namespace: 'Mercury',
 	name: '',
 	    fields: {
 	            /** . */
-	            'skillId': {
+	            'locationId': {
 	                type: 'id',
 	                isRequired: true,
 	                options: undefined
@@ -18,6 +18,6 @@ const unInstallSkillEmitPayloadSchema: SpruceSchemas.Mercury.v2020_12_25.UnInsta
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(unInstallSkillEmitPayloadSchema)
+SchemaRegistry.getInstance().trackSchema(updateLocationEmitTargetSchema)
 
-export default unInstallSkillEmitPayloadSchema
+export default updateLocationEmitTargetSchema

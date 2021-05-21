@@ -1,7 +1,7 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
 
-import eventTargetSchema from '#spruce/schemas/mercury/v2020_12_25/eventTarget.schema'
+import getRoleEmitTargetSchema from '#spruce/schemas/mercury/v2020_12_25/getRoleEmitTarget.schema'
 
 const getRoleEmitTargetAndPayloadSchema: SpruceSchemas.Mercury.v2020_12_25.GetRoleEmitTargetAndPayloadSchema  = {
 	id: 'getRoleEmitTargetAndPayload',
@@ -13,7 +13,7 @@ const getRoleEmitTargetAndPayloadSchema: SpruceSchemas.Mercury.v2020_12_25.GetRo
 	            'target': {
 	                type: 'schema',
 	                isRequired: true,
-	                options: {schema: eventTargetSchema,}
+	                options: {schema: getRoleEmitTargetSchema,}
 	            },
 	    }
 }

@@ -12,4 +12,5 @@ const listOrganizationsEventContract = buildEventContract({
 })
 export default listOrganizationsEventContract
 
-export type ListOrganizationsEventContract = typeof listOrganizationsEventContract
+export type ListOrganizationsEventContract =
+	typeof listOrganizationsEventContract

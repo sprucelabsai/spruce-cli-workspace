@@ -1,8 +1,8 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
 
-import eventTargetSchema from '#spruce/schemas/mercury/v2020_12_25/eventTarget.schema'
-import updateOrgWithoutSlugSchemaSchema from '#spruce/schemas/mercury/v2020_12_25/updateOrgWithoutSlugSchema.schema'
+import updateOrgEmitTargetSchema from '#spruce/schemas/mercury/v2020_12_25/updateOrgEmitTarget.schema'
+import updateOrgEmitPayloadSchema from '#spruce/schemas/mercury/v2020_12_25/updateOrgEmitPayload.schema'
 
 const updateOrganizationEmitTargetAndPayloadSchema: SpruceSchemas.Mercury.v2020_12_25.UpdateOrganizationEmitTargetAndPayloadSchema  = {
 	id: 'updateOrganizationEmitTargetAndPayload',
@@ -14,12 +14,12 @@ const updateOrganizationEmitTargetAndPayloadSchema: SpruceSchemas.Mercury.v2020_
 	            'target': {
 	                type: 'schema',
 	                isRequired: true,
-	                options: {schema: eventTargetSchema,}
+	                options: {schema: updateOrgEmitTargetSchema,}
 	            },
 	            /** . */
 	            'payload': {
 	                type: 'schema',
-	                options: {schema: updateOrgWithoutSlugSchemaSchema,}
+	                options: {schema: updateOrgEmitPayloadSchema,}
 	            },
 	    }
 }

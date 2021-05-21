@@ -12,7 +12,6 @@ const authenticateEmitTargetAndPayloadSchema: SpruceSchemas.Mercury.v2020_12_25.
 	            /** . */
 	            'payload': {
 	                type: 'schema',
-	                isRequired: true,
 	                options: {schema: authenticateEmitPayloadSchema,}
 	            },
 	    }

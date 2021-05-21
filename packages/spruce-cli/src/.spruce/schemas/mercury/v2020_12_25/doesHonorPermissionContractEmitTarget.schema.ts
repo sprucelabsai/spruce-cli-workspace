@@ -3,20 +3,16 @@ import { SpruceSchemas } from '../../schemas.types'
 
 
 
-const eventTargetSchema: SpruceSchemas.Mercury.v2020_12_25.EventTargetSchema  = {
-	id: 'eventTarget',
+const doesHonorPermissionContractEmitTargetSchema: SpruceSchemas.Mercury.v2020_12_25.DoesHonorPermissionContractEmitTargetSchema  = {
+	id: 'doesHonorPermissionContractEmitTarget',
 	version: 'v2020_12_25',
 	namespace: 'Mercury',
 	name: '',
 	    fields: {
 	            /** . */
-	            'locationId': {
-	                type: 'id',
-	                options: undefined
-	            },
-	            /** . */
 	            'personId': {
 	                type: 'id',
+	                isRequired: true,
 	                options: undefined
 	            },
 	            /** . */
@@ -25,18 +21,18 @@ const eventTargetSchema: SpruceSchemas.Mercury.v2020_12_25.EventTargetSchema  = 
 	                options: undefined
 	            },
 	            /** . */
-	            'skillId': {
+	            'locationId': {
 	                type: 'id',
 	                options: undefined
 	            },
 	            /** . */
-	            'roleId': {
+	            'skillId': {
 	                type: 'id',
 	                options: undefined
 	            },
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(eventTargetSchema)
+SchemaRegistry.getInstance().trackSchema(doesHonorPermissionContractEmitTargetSchema)
 
-export default eventTargetSchema
+export default doesHonorPermissionContractEmitTargetSchema

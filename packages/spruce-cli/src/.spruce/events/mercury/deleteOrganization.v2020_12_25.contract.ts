@@ -12,4 +12,5 @@ const deleteOrganizationEventContract = buildEventContract({
 })
 export default deleteOrganizationEventContract
 
-export type DeleteOrganizationEventContract = typeof deleteOrganizationEventContract
+export type DeleteOrganizationEventContract =
+	typeof deleteOrganizationEventContract

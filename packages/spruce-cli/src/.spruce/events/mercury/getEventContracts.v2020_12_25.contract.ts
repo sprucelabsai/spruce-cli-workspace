@@ -10,4 +10,5 @@ const getEventContractsEventContract = buildEventContract({
 })
 export default getEventContractsEventContract
 
-export type GetEventContractsEventContract = typeof getEventContractsEventContract
+export type GetEventContractsEventContract =
+	typeof getEventContractsEventContract

@@ -12,4 +12,5 @@ const unregisterConversationTopicsEventContract = buildEventContract({
 })
 export default unregisterConversationTopicsEventContract
 
-export type UnregisterConversationTopicsEventContract = typeof unregisterConversationTopicsEventContract
+export type UnregisterConversationTopicsEventContract =
+	typeof unregisterConversationTopicsEventContract
