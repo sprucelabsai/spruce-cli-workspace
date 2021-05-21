@@ -1,8 +1,4 @@
-import {
-	eventContractUtil,
-	eventDiskUtil,
-	eventNameUtil,
-} from '@sprucelabs/spruce-event-utils'
+import { eventDiskUtil, eventNameUtil } from '@sprucelabs/spruce-event-utils'
 import {
 	diskUtil,
 	namesUtil,
@@ -15,6 +11,7 @@ import { FeatureActionResponse } from '../../features/features.types'
 import AbstractEventTest from '../../tests/AbstractEventTest'
 import testUtil from '../../tests/utilities/test.utility'
 import { RegisteredSkill } from '../../types/cli.types'
+import mergeUtil from '../../utilities/merge.utility'
 
 const EVENT_NAME_READABLE = 'my fantastically amazing event'
 const EVENT_NAME = 'my-fantastically-amazing-event'
@@ -32,42 +29,63 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 	}
 
 	@test()
-	protected static async createsVersionedEventFilesDefaultingToToday() {
+	protected static async cantCreateEventWithoutBeingRegistered() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 		await this.assertCantCreateWithoutBeingRegistered(cli)
+	}
 
-		const skill = await this.SkillFixture().registerCurrentSkill({
-			name: 'my new skill',
-		})
+	@test()
+	protected static async createsExpectedPayloadsAndSkipsEmptyBuilders() {
+		const { results } = await this.createEvent()
 
-		const results = await cli.getFeature('event').Action('create').execute({
-			nameReadable: EVENT_NAME_READABLE,
-			nameKebab: EVENT_NAME,
-			nameCamel: EVENT_CAMEL,
-		})
+		const filesThatShouldNotExist = [
+			'myFantasticallyAmazingEventResponsePayload',
+			'myFantasticallyAmazingEventEmitTargetAndPayload',
+		]
 
+		for (const name of filesThatShouldNotExist) {
+			assert.doesThrow(() =>
+				testUtil.assertsFileByNameInGeneratedFiles(name, results.files)
+			)
+		}
+
+		const filesThatShouldExist = [
+			'emitPayload.builder.ts',
+			'emitTarget.builder.ts',
+		]
+
+		const checker = this.Service('typeChecker')
+		for (const name of filesThatShouldExist) {
+			const match = testUtil.assertsFileByNameInGeneratedFiles(
+				name,
+				results.files
+			)
+			await checker.check(match)
+		}
+	}
+
+	@test()
+	protected static async createsEventWitPayloadsPermissionsAndOptions() {
+		const { results, cli, skill } = await this.createEvent()
 		assert.isFalsy(results.errors)
 
-		await this.assertExpectedTargetAndPayload(results)
-		await this.assertExpectedPayloadSchemas(results)
+		await this.copyEventBuildersAndPermissions()
+
+		const syncResults = await cli.getFeature('event').Action('sync').execute({})
+		assert.isFalsy(syncResults.errors)
+
+		const mixedResults = mergeUtil.mergeActionResults(results, syncResults)
+
+		await this.assertExpectedTargetAndPayload(mixedResults)
+		await this.assertExpectedPayloadSchemas(mixedResults)
 		await this.assertReturnsEventFromHealthCheck(cli, skill)
-		await this.createsExpectedPermissionContract(results)
-		await this.assertCreatesOptionsFile(results)
+		await this.createsExpectedPermissionContract(mixedResults)
+		await this.assertCreatesOptionsFile(mixedResults)
 	}
 
 	@test()
 	protected static async createdEventsAreTypedCorrectly() {
-		const cli = await this.FeatureFixture().installCachedFeatures('events')
-
-		await this.SkillFixture().registerCurrentSkill({
-			name: 'my new skill',
-		})
-
-		const results = await cli.getFeature('event').Action('create').execute({
-			nameReadable: EVENT_NAME_READABLE,
-			nameKebab: EVENT_NAME,
-			nameCamel: EVENT_CAMEL,
-		})
+		const { results } = await this.createEvent()
 
 		assert.isFalsy(results.errors)
 
@@ -83,50 +101,19 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		await this.Service('typeChecker').check(testFile)
 	}
 
-	@test()
-	protected static async canCreateEventThatHasNoTarget() {
-		const { cli, skill2, currentSkill } =
-			await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
+	private static async createEvent() {
+		const cli = await this.FeatureFixture().installCachedFeatures('events')
+
+		const skill = await this.SkillFixture().registerCurrentSkill({
+			name: 'my new skill',
+		})
 
 		const results = await cli.getFeature('event').Action('create').execute({
 			nameReadable: EVENT_NAME_READABLE,
 			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
-			isTargetRequired: false,
 		})
-
-		assert.isFalsy(results.errors)
-
-		const boot = await cli
-			.getFeature('skill')
-			.Action('boot')
-			.execute({ local: true })
-
-		const client = await this.connectToApi({
-			skillId: skill2.id,
-			apiKey: skill2.apiKey,
-		})
-
-		const contractResults = await this.Store('event', {
-			apiClientFactory: async () => client,
-		}).fetchEventContracts()
-
-		const contracts = contractResults.contracts
-
-		boot.meta?.kill()
-
-		const version = versionUtil.generateVersion().dirValue
-		const fqen = eventNameUtil.join({
-			eventName: EVENT_NAME,
-			eventNamespace: currentSkill.slug,
-			version,
-		})
-
-		const combined = eventContractUtil.unifyContracts(contracts)
-		assert.isTruthy(combined)
-
-		const sig = eventContractUtil.getSignatureByName(combined, fqen)
-		assert.isFalsy(sig.emitPayloadSchema?.fields?.target.isRequired)
+		return { results, cli, skill }
 	}
 
 	private static async assertCreatesOptionsFile(
@@ -139,7 +126,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 
 		const imported = await this.Service('import').importDefault(optionsFile)
 
-		assert.isEqualDeep(imported, { isGlobal: false, isTargetRequired: true })
+		assert.isEqualDeep(imported, { isGlobal: false })
 	}
 
 	private static async assertExpectedTargetAndPayload(
@@ -151,6 +138,8 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		)
 		const schema = await this.Service('schema').importSchema(match)
 		assert.isEqual(schema.id, 'myFantasticallyAmazingEventEmitTargetAndPayload')
+		assert.isTruthy(schema.fields?.payload)
+		assert.isTruthy(schema.fields?.target)
 	}
 
 	protected static async createsExpectedPermissionContract(results: any) {
@@ -227,6 +216,10 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 				expectedId: 'myFantasticallyAmazingEventEmitPayload',
 			},
 			{
+				fileName: 'emitTarget.builder.ts',
+				expectedId: 'myFantasticallyAmazingEventEmitTarget',
+			},
+			{
 				fileName: 'responsePayload.builder.ts',
 				expectedId: 'myFantasticallyAmazingEventResponsePayload',
 			},
@@ -253,5 +246,15 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 
 			assert.isEqual(imported.id, payload.expectedId)
 		}
+	}
+
+	private static async copyEventBuildersAndPermissions() {
+		const source = this.resolveTestPath('event_with_emit_and_response_payloads')
+		let dest = this.resolvePath('src', 'events', EVENT_NAME)
+		const version = versionUtil.latestVersionAtPath(dest)
+		dest = this.resolvePath(dest, version.dirValue)
+		diskUtil.deleteDir(dest)
+
+		await diskUtil.copyDir(source, dest)
 	}
 }

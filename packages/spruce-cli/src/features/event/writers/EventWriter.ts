@@ -161,7 +161,6 @@ export default class EventWriter extends AbstractWriter {
 			version: string
 			nameReadable: string
 			isGlobal?: boolean
-			isTargetRequired?: boolean
 		}
 	) {
 		const {
@@ -170,13 +169,13 @@ export default class EventWriter extends AbstractWriter {
 			nameCamel,
 			nameReadable,
 			isGlobal = false,
-			isTargetRequired = true,
 		} = options
 
 		const templates: ({
 			context?: any
 			templateMethod:
 				| 'eventEmitPayload'
+				| 'eventEmitTarget'
 				| 'eventResponsePayload'
 				| 'permissionContractBuilder'
 				| 'eventOptions'
@@ -186,6 +185,12 @@ export default class EventWriter extends AbstractWriter {
 				name: 'emitPayload.builder.ts',
 				action: 'generated',
 				description: 'The payload that will be sent when you emit this event.',
+			},
+			{
+				templateMethod: 'eventEmitTarget',
+				name: 'emitTarget.builder.ts',
+				action: 'generated',
+				description: 'The target that will be sent when you emit this event.',
 			},
 			{
 				templateMethod: 'eventResponsePayload',
@@ -220,7 +225,6 @@ export default class EventWriter extends AbstractWriter {
 				description: 'Extra options that can be set for your event',
 				context: {
 					isGlobal,
-					isTargetRequired,
 				},
 			},
 		]

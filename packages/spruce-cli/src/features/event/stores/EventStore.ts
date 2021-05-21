@@ -2,8 +2,10 @@ import pathUtil from 'path'
 import {
 	EventContract,
 	EventSignature,
+	PermissionContract,
 	SpruceSchemas,
 } from '@sprucelabs/mercury-types'
+import { Schema } from '@sprucelabs/schema'
 import {
 	eventResponseUtil,
 	eventDiskUtil,
@@ -20,6 +22,32 @@ import { eventContractCleanerUtil } from '../../../utilities/eventContractCleane
 export interface EventStoreFetchEventContractsResponse {
 	errors: SpruceError[]
 	contracts: EventContract[]
+}
+
+type Options = Omit<
+	EventSignature,
+	| 'responsePayloadSchema'
+	| 'emitPayloadSchema'
+	| 'listenPermissionContract'
+	| 'emitPermissionContract'
+>
+
+interface EventImport {
+	options?: Options
+	emitPayload?: Schema
+	emitTarget?: Schema
+	responsePayload?: Schema
+	emitPermissions?: PermissionContract
+	listenPermissions?: PermissionContract
+}
+
+const eventFileNamesImportKeyMap = {
+	'event.options.ts': 'options',
+	'emitPayload.builder.ts': 'emitPayload',
+	'emitTarget.builder.ts': 'emitTarget',
+	'responsePayload.builder.ts': 'responsePayload',
+	'emitPermissions.builder.ts': 'emitPermissions',
+	'listenPermissions.builder.ts': 'listenPermissions',
 }
 
 export default class EventStore extends AbstractStore {
@@ -77,112 +105,64 @@ export default class EventStore extends AbstractStore {
 			)
 		)
 
-		localMatches.sort((a, b) => {
-			if (a.includes('options')) {
-				return -1
-			} else if (b.includes('options')) {
-				return 1
-			}
-			return 0
-		})
-
 		const ns = namesUtil.toKebab(localNamespace)
-		const requireTargetByEvent: Record<string, boolean> = {}
 		const eventSignatures: Record<string, EventSignature> = {}
+		const importsByName: Record<string, EventImport> = {}
 
-		for (const match of localMatches) {
-			const schemaImporter = this.Service('schema')
-			const importer = this.Service('import')
+		await Promise.all(
+			localMatches.map(async (match) => {
+				let fqen: string | undefined
+				let key: keyof EventImport | undefined
 
-			let key: keyof EventSignature | undefined
-			let fullyQualifiedEventName: string | undefined
-			try {
-				const { eventName, version } = eventDiskUtil.splitPathToEvent(match)
+				try {
+					const { eventName, version } = eventDiskUtil.splitPathToEvent(match)
+					fqen = eventNameUtil.join({
+						eventName,
+						version,
+						eventNamespace: ns,
+					})
 
-				fullyQualifiedEventName = eventNameUtil.join({
+					const filename = pathUtil.basename(
+						match
+					) as keyof typeof eventFileNamesImportKeyMap
+					key = eventFileNamesImportKeyMap[filename] as
+						| keyof EventImport
+						| undefined
+
+					if (key) {
+						const importer = this.Service('import')
+						if (!importsByName[fqen]) {
+							importsByName[fqen] = {}
+						}
+						//@ts-ignore
+						importsByName[fqen][key] = await importer.importDefault(match)
+					}
+				} catch (err) {
+					throw new SpruceError({
+						code: 'INVALID_EVENT_CONTRACT',
+						fullyQualifiedEventName: fqen ?? 'Bad event name',
+						brokenProperty: key ?? '*** major failure ***',
+						originalError: err,
+					})
+				}
+			})
+		)
+
+		Object.keys(importsByName).forEach((fqen) => {
+			const imported = importsByName[fqen]
+			const { eventName } = eventNameUtil.split(fqen)
+			eventSignatures[fqen] = {
+				emitPayloadSchema: buildEmitTargetAndPayloadSchema({
 					eventName,
-					version,
-					eventNamespace: ns,
-				})
-
-				if (!eventSignatures[fullyQualifiedEventName]) {
-					eventSignatures[fullyQualifiedEventName] = {}
-				}
-
-				const filename = pathUtil.basename(match)
-				let isSchema = false
-
-				switch (filename) {
-					case 'event.options.ts': {
-						const { isTargetRequired, isGlobal, ...options } =
-							await importer.importDefault(match)
-
-						let requireTarget = isTargetRequired
-						if (isGlobal) {
-							requireTarget = false
-						}
-
-						requireTargetByEvent[fullyQualifiedEventName] = requireTarget
-
-						eventSignatures[fullyQualifiedEventName] = {
-							...eventSignatures[fullyQualifiedEventName],
-							...options,
-							isGlobal,
-						}
-						break
-					}
-					case 'emitPayload.builder.ts':
-						key = 'emitPayloadSchema'
-						isSchema = true
-						break
-					case 'responsePayload.builder.ts':
-						key = 'responsePayloadSchema'
-						isSchema = true
-						break
-					case 'emitPermissions.builder.ts':
-						key = 'emitPermissionContract'
-						break
-					case 'listenPermissions.builder.ts':
-						key = 'listenPermissionContract'
-						break
-				}
-
-				if (key) {
-					if (key === 'emitPayloadSchema') {
-						const schema = await schemaImporter.importSchema(match)
-						const targetAndPayload = buildEmitTargetAndPayloadSchema({
-							emitPayloadSchema: schema,
-							eventName,
-							isTargetRequired: requireTargetByEvent[fullyQualifiedEventName],
-						})
-
-						//@ts-ignore
-						targetAndPayload.version = version
-
-						//@ts-ignore
-						eventSignatures[fullyQualifiedEventName][key] = targetAndPayload
-					} else if (isSchema) {
-						//@ts-ignore
-						eventSignatures[fullyQualifiedEventName][key] =
-							await schemaImporter.importSchema(match)
-						//@ts-ignore
-						eventSignatures[fullyQualifiedEventName][key].version = version
-					} else {
-						//@ts-ignore
-						eventSignatures[fullyQualifiedEventName][key] =
-							await importer.importDefault(match)
-					}
-				}
-			} catch (err) {
-				throw new SpruceError({
-					code: 'INVALID_EVENT_CONTRACT',
-					fullyQualifiedEventName:
-						fullyQualifiedEventName ?? '** bad event name **',
-					brokenProperty: key ?? '** never got to first key **',
-					originalError: err,
-				})
+					payloadSchema: imported.emitPayload,
+					targetSchema: imported.emitTarget,
+				}),
+				responsePayloadSchema: imported.responsePayload,
+				emitPermissionContract: imported.emitPermissions,
+				listenPermissionContract: imported.listenPermissions,
+				...imported.options,
 			}
-		}
+		})
 
 		if (Object.keys(eventSignatures).length > 0) {
 			return eventContractCleanerUtil.cleanPayloads({

@@ -238,7 +238,7 @@ export const templates = {
 		return template(options)
 	},
 
-	eventOptions(options: { isGlobal: boolean; isTargetRequired: boolean }) {
+	eventOptions(options: { isGlobal: boolean }) {
 		const template = templateImportUtil.getTemplate(
 			'event/event.options.ts.hbs'
 		)
@@ -246,7 +246,6 @@ export const templates = {
 		return template({
 			...options,
 			isGlobal: options.isGlobal ? 'true' : 'false',
-			isTargetRequired: options.isTargetRequired ? 'true' : 'false',
 		})
 	},
 
@@ -266,7 +265,15 @@ export const templates = {
 			'event/payload.builder.ts.hbs'
 		)
 
-		return template({ ...options, actionCamel: 'Emit' })
+		return template({ ...options, actionCamel: 'EmitPayload' })
+	},
+
+	eventEmitTarget(options: EventPayloadOptions) {
+		const template = templateImportUtil.getTemplate(
+			'event/payload.builder.ts.hbs'
+		)
+
+		return template({ ...options, actionCamel: 'EmitTarget' })
 	},
 
 	eventResponsePayload(options: EventPayloadOptions) {
@@ -274,7 +281,7 @@ export const templates = {
 			'event/payload.builder.ts.hbs'
 		)
 
-		return template({ ...options, actionCamel: 'Response' })
+		return template({ ...options, actionCamel: 'ResponsePayload' })
 	},
 
 	combinedEventsContract(contracts: EventContractTemplateItem[]) {

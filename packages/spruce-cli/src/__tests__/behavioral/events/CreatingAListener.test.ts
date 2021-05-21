@@ -132,7 +132,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 				{
 					emitPayloadSchema: buildEmitTargetAndPayloadSchema({
 						eventName: 'my-new-event',
-						emitPayloadSchema: {
+						payloadSchema: {
 							id: 'myNewEventEmitPayload',
 							fields: {
 								booleanField: {
@@ -162,7 +162,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 				{
 					emitPayloadSchema: buildEmitTargetAndPayloadSchema({
 						eventName: 'my-new-event',
-						emitPayloadSchema: {
+						payloadSchema: {
 							id: 'myNewEventEmitPayload',
 							fields: {
 								booleanField: {

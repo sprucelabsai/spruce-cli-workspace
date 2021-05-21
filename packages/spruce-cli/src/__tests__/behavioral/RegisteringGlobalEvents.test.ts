@@ -51,7 +51,6 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 		)
 		assert.isEqualDeep(importedOptions, {
 			isGlobal: true,
-			isTargetRequired: false,
 		})
 
 		const version = versionUtil.generateVersion().dirValue

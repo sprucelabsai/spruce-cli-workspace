@@ -3,6 +3,7 @@ import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
 
 export const eventContractCleanerUtil = {
 	cleanPayloads(contract: EventContract): EventContract {
+		debugger
 		const cleaned: EventContract = {
 			eventSignatures: {},
 		}
@@ -23,6 +24,13 @@ export const eventContractCleanerUtil = {
 				Object.keys(cleanedSig.emitPayloadSchema?.fields).length === 0
 			) {
 				delete cleanedSig.emitPayloadSchema
+			}
+
+			if (
+				cleanedSig.responsePayloadSchema?.fields &&
+				Object.keys(cleanedSig.responsePayloadSchema?.fields).length === 0
+			) {
+				delete cleanedSig.responsePayloadSchema
 			}
 
 			cleaned.eventSignatures[sig.fullyQualifiedEventName] = cleanedSig

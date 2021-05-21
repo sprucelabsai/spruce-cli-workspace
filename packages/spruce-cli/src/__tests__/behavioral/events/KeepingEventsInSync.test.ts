@@ -133,7 +133,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 				[eventName]: {
 					emitPayloadSchema: buildEmitTargetAndPayloadSchema({
 						eventName: 'my-new-event',
-						emitPayloadSchema: {
+						payloadSchema: {
 							id: 'myNewEventEmitPayloadId',
 							fields: { onlyField: { type: 'text' } },
 						},
