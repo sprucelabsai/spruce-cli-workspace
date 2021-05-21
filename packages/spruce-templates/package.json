@@ -60,8 +60,8 @@
 		"sha1": "^1.1.1"
 	},
 	"devDependencies": {
-		"@types/lodash": "^4.14.169",
-		"@types/node": "^15.3.0",
+		"@types/lodash": "^4.14.170",
+		"@types/node": "^15.6.0",
 		"chokidar-cli": "^2.1.0",
 		"concurrently": "^6.1.0",
 		"conventional-changelog-sprucelabs": "^1.1.2",
