@@ -9,14 +9,14 @@ import {
 import { diskUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
-import AbstractCliTest from '../../tests/AbstractCliTest'
+import AbstractEventTest from '../../tests/AbstractEventTest'
 import testUtil from '../../tests/utilities/test.utility'
 
 const EVENT_NAME_READABLE = 'my fantastically amazing event'
 const EVENT_NAME = 'my-fantastically-amazing-event'
 const EVENT_CAMEL = 'myFantasticallyAmazingEvent'
 
-export default class EventStoreTest extends AbstractCliTest {
+export default class EventStoreTest extends AbstractEventTest {
 	protected static get version() {
 		return versionUtil.generateVersion()
 	}
@@ -72,9 +72,6 @@ export default class EventStoreTest extends AbstractCliTest {
 								{
 									id: 'can-emit-perms',
 									name: 'can emit perm',
-									can: {
-										default: true,
-									},
 								},
 							],
 						}),
@@ -130,7 +127,7 @@ export default class EventStoreTest extends AbstractCliTest {
 			fullyQualifiedEventName: `${skill.slug}.my-fantastically-amazing-event::${
 				versionUtil.generateVersion().constValue
 			}`,
-			brokenProperty: 'emitPayloadSchema',
+			brokenProperty: 'emitPayload',
 		})
 	}
 
@@ -147,6 +144,10 @@ export default class EventStoreTest extends AbstractCliTest {
 			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
 		})
+
+		await this.copyEventBuildersAndPermissions(EVENT_NAME)
+
+		await cli.getFeature('event').Action('sync').execute({})
 
 		const { contracts } = await this.Store('event').fetchEventContracts({
 			localNamespace: skill.slug,
@@ -170,7 +171,7 @@ export default class EventStoreTest extends AbstractCliTest {
 				assert.isTruthy(
 					contract.eventSignatures[name].emitPayloadSchema?.fields?.target
 				)
-				assert.isFalsy(
+				assert.isTruthy(
 					contract.eventSignatures[name].emitPayloadSchema?.fields?.payload
 				)
 				assert.isTruthy(contract.eventSignatures[name].responsePayloadSchema)

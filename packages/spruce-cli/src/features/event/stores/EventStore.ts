@@ -42,12 +42,12 @@ interface EventImport {
 }
 
 const eventFileNamesImportKeyMap = {
-	'event.options.ts': 'options',
-	'emitPayload.builder.ts': 'emitPayload',
-	'emitTarget.builder.ts': 'emitTarget',
-	'responsePayload.builder.ts': 'responsePayload',
-	'emitPermissions.builder.ts': 'emitPermissions',
-	'listenPermissions.builder.ts': 'listenPermissions',
+	'event.options.ts': { key: 'options', isSchema: false },
+	'emitPayload.builder.ts': { key: 'emitPayload', isSchema: true },
+	'emitTarget.builder.ts': { key: 'emitTarget', isSchema: true },
+	'responsePayload.builder.ts': { key: 'responsePayload', isSchema: true },
+	'emitPermissions.builder.ts': { key: 'emitPermissions', isSchema: false },
+	'listenPermissions.builder.ts': { key: 'listenPermissions', isSchema: false },
 }
 
 export default class EventStore extends AbstractStore {
@@ -125,17 +125,25 @@ export default class EventStore extends AbstractStore {
 					const filename = pathUtil.basename(
 						match
 					) as keyof typeof eventFileNamesImportKeyMap
-					key = eventFileNamesImportKeyMap[filename] as
-						| keyof EventImport
-						| undefined
 
-					if (key) {
-						const importer = this.Service('import')
+					const map = eventFileNamesImportKeyMap[filename]
+
+					if (map) {
+						//@ts-ignore
+						key = map.key
 						if (!importsByName[fqen]) {
 							importsByName[fqen] = {}
 						}
-						//@ts-ignore
-						importsByName[fqen][key] = await importer.importDefault(match)
+
+						if (map.isSchema) {
+							const importer = this.Service('schema')
+							//@ts-ignore
+							importsByName[fqen][map.key] = await importer.importSchema(match)
+						} else {
+							const importer = this.Service('import')
+							//@ts-ignore
+							importsByName[fqen][map.key] = await importer.importDefault(match)
+						}
 					}
 				} catch (err) {
 					throw new SpruceError({
