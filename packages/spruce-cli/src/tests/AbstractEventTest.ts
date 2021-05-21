@@ -1,3 +1,4 @@
+import { diskUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractCliTest from './AbstractCliTest'
 
 export default abstract class AbstractEventTest extends AbstractCliTest {
@@ -55,5 +56,15 @@ export default abstract class AbstractEventTest extends AbstractCliTest {
 		await orgFixture.installSkillAtOrganization(skill.id, org.id)
 
 		return { skillFixture, currentSkill: skill, cli, org, orgFixture }
+	}
+
+	protected static async copyEventBuildersAndPermissions(eventName: string) {
+		const source = this.resolveTestPath('event_with_emit_and_response_payloads')
+		let dest = this.resolvePath('src', 'events', eventName)
+		const version = versionUtil.latestVersionAtPath(dest)
+		dest = this.resolvePath(dest, version.dirValue)
+		diskUtil.deleteDir(dest)
+
+		await diskUtil.copyDir(source, dest)
 	}
 }

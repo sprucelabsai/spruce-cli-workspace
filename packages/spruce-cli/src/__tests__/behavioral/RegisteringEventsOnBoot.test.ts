@@ -22,6 +22,10 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 			nameCamel: EVENT_CAMEL,
 		})
 
+		await this.copyEventBuildersAndPermissions(EVENT_NAME)
+
+		await cli.getFeature('event').Action('sync').execute({})
+
 		const boot = await cli
 			.getFeature('skill')
 			.Action('boot')
@@ -55,7 +59,7 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 		assert.isEqualDeep(sig, {
 			emitPayloadSchema: {
 				id: 'didBookAppointmentEmitTargetAndPayload',
-				version,
+				version: 'v2021_05_21',
 				namespace,
 				name: '',
 				fields: {
@@ -64,32 +68,39 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 						isRequired: true,
 						options: {
 							schema: {
-								id: 'eventTarget',
-								version,
+								id: 'myFantasticallyAmazingEventEmitTarget',
+								version: 'v2021_05_21',
 								namespace,
 								name: '',
-								fields: {
-									locationId: { type: 'id' },
-									personId: { type: 'id' },
-									organizationId: { type: 'id' },
-									skillId: { type: 'id' },
-									roleId: { type: 'id' },
-								},
+								fields: { tacoId: { type: 'id', isRequired: true } },
+							},
+						},
+					},
+					payload: {
+						type: 'schema',
+						isRequired: true,
+						options: {
+							schema: {
+								id: 'myFantasticallyAmazingEventEmitPayload',
+								version: 'v2021_05_21',
+								namespace,
+								name: '',
+								fields: { aRequiredField: { type: 'text', isRequired: true } },
 							},
 						},
 					},
 				},
 			},
 			responsePayloadSchema: {
-				id: 'didBookAppointmentResponsePayload',
-				version,
+				id: 'myFantasticallyAmazingEventResponsePayload',
+				version: 'v2021_05_21',
 				namespace,
 				name: '',
-				fields: {},
+				fields: { anotherRequiredField: { type: 'text', isRequired: true } },
 			},
 			emitPermissionContract: {
-				id: 'didBookAppointmentEmitPermissions',
-				name: 'did book appointment',
+				id: 'myFantasticallyAmazingEventEmitPermissions',
+				name: 'my fantastically amazing event',
 				requireAllPermissions: false,
 				permissions: [
 					{
@@ -101,8 +112,8 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 				],
 			},
 			listenPermissionContract: {
-				id: 'didBookAppointmentListenPermissions',
-				name: 'did book appointment',
+				id: 'myFantasticallyAmazingEventListenPermissions',
+				name: 'my fantastically amazing event',
 				requireAllPermissions: false,
 				permissions: [
 					{

@@ -69,7 +69,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		const { results, cli, skill } = await this.createEvent()
 		assert.isFalsy(results.errors)
 
-		await this.copyEventBuildersAndPermissions()
+		await this.copyEventBuildersAndPermissions(EVENT_NAME)
 
 		const syncResults = await cli.getFeature('event').Action('sync').execute({})
 		assert.isFalsy(syncResults.errors)
@@ -246,15 +246,5 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 
 			assert.isEqual(imported.id, payload.expectedId)
 		}
-	}
-
-	private static async copyEventBuildersAndPermissions() {
-		const source = this.resolveTestPath('event_with_emit_and_response_payloads')
-		let dest = this.resolvePath('src', 'events', EVENT_NAME)
-		const version = versionUtil.latestVersionAtPath(dest)
-		dest = this.resolvePath(dest, version.dirValue)
-		diskUtil.deleteDir(dest)
-
-		await diskUtil.copyDir(source, dest)
 	}
 }

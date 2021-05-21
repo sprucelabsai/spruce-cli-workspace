@@ -162,6 +162,15 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 				{
 					emitPayloadSchema: buildEmitTargetAndPayloadSchema({
 						eventName: 'my-new-event',
+						targetSchema: {
+							id: 'myNewEventEmitTarget',
+							fields: {
+								organizationId: {
+									type: 'id',
+									isRequired: true,
+								},
+							},
+						},
 						payloadSchema: {
 							id: 'myNewEventEmitPayload',
 							fields: {
