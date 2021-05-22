@@ -59,7 +59,7 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 		assert.isEqualDeep(sig, {
 			emitPayloadSchema: {
 				id: 'didBookAppointmentEmitTargetAndPayload',
-				version: 'v2021_05_21',
+				version,
 				namespace,
 				name: '',
 				fields: {
@@ -69,7 +69,7 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 						options: {
 							schema: {
 								id: 'myFantasticallyAmazingEventEmitTarget',
-								version: 'v2021_05_21',
+								version,
 								namespace,
 								name: '',
 								fields: { tacoId: { type: 'id', isRequired: true } },
@@ -82,7 +82,7 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 						options: {
 							schema: {
 								id: 'myFantasticallyAmazingEventEmitPayload',
-								version: 'v2021_05_21',
+								version,
 								namespace,
 								name: '',
 								fields: { aRequiredField: { type: 'text', isRequired: true } },
@@ -93,7 +93,7 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 			},
 			responsePayloadSchema: {
 				id: 'myFantasticallyAmazingEventResponsePayload',
-				version: 'v2021_05_21',
+				version,
 				namespace,
 				name: '',
 				fields: { anotherRequiredField: { type: 'text', isRequired: true } },

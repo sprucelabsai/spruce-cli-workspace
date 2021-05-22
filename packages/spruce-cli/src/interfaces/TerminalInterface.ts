@@ -90,6 +90,7 @@ export default class TerminalInterface implements GraphicsInterface {
 		object: Record<string, any>,
 		effects: GraphicsTextEffect[] = [GraphicsTextEffect.Green]
 	) {
+		this.renderLine('')
 		this.renderDivider()
 		this.renderLine('')
 		Object.keys(object).forEach((key) => {
@@ -104,6 +105,7 @@ export default class TerminalInterface implements GraphicsInterface {
 		})
 		this.renderLine('')
 		this.renderDivider()
+		this.renderLine('')
 	}
 
 	public renderSection(options: {
