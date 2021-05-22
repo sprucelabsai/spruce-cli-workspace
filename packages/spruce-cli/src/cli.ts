@@ -249,6 +249,7 @@ export default class Cli implements CliInterface {
 
 	private static loadOptionOverrides(pkg: PkgService): OptionOverrides {
 		const mapped: OptionOverrides = {}
+
 		if (pkg.doesExist()) {
 			const overrides = pkg.get('skill.commandOverrides')
 

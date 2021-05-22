@@ -90,9 +90,15 @@ export default class FeatureCommandAttacher {
 				feature.optionsSchema ?? action.optionsSchema
 			)
 
+			const overrides = this.optionOverrides[commandStr]
+			if (overrides) {
+				this.ui.renderLine(`Overrides found in package.json`)
+				this.ui.renderObject(overrides)
+			}
+
 			await executer.execute({
-				...this.optionOverrides[commandStr],
 				...options,
+				...overrides,
 			})
 		})
 
