@@ -5,6 +5,8 @@ import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
 	id: 'loginAction',
+	description:
+		'Authenticate as a person. From here, you can begin creating skill, organizations, conversation topics, etc.',
 	fields: {
 		phone: {
 			type: 'phone',

@@ -8,12 +8,12 @@ export default buildSchema({
 		upgradeMode: {
 			type: 'select',
 			label: 'Upgrade mode',
-			defaultValue: 'forceRequiredSkipRest',
+			defaultValue: 'askForChanged',
 			options: {
 				choices: [
 					{
-						value: 'askEverything',
-						label: 'Ask for everything',
+						value: 'askForChanged',
+						label: 'Ask for changed files',
 					},
 					{
 						value: 'forceEverything',

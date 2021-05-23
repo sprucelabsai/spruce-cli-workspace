@@ -8,6 +8,8 @@ import { generateSkillSummaryLines } from './RegisterAction'
 
 const optionsSchema = buildSchema({
 	id: 'loginSkillAction',
+	description:
+		'If you already registered your skill but lost your env or changed environments.',
 	fields: {
 		skillSlug: {
 			type: 'text',

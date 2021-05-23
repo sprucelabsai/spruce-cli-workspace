@@ -6,6 +6,8 @@ import StoreTemplateItemBuilder from '../templateItemBuilders/StoreTemplateItemB
 
 const optionsSchema = buildSchema({
 	id: 'syncDataStoreOptions',
+	description:
+		"Only needed if you change a store's name, manually add or remove one.",
 	fields: {},
 })
 

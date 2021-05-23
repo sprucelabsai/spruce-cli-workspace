@@ -4,7 +4,8 @@ import syncSchemasOptionsBuilder from './syncSchemasOptions.builder'
 export default buildSchema({
 	id: 'syncEventOptions',
 	name: 'sync event action',
-	description: '',
+	description:
+		'Pull down event contracts from Mercury to make them available in your skill.',
 	fields: {
 		contractDestinationDir: {
 			type: 'text',

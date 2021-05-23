@@ -8,6 +8,7 @@ const installSkillAtOrganizationOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
 	name: 'install skill at organization action',
+	description: 'Install your skill at any organization you are connected to.',
 	    fields: {
 	            /** Organization id. */
 	            'organizationId': {

@@ -3,6 +3,7 @@ import { buildSchema } from '@sprucelabs/schema'
 export default buildSchema({
 	id: 'testOptions',
 	name: 'Test skill',
+	description: 'Test your might! 💪',
 	fields: {
 		shouldReportWhileRunning: {
 			type: 'boolean',

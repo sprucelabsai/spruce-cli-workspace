@@ -6,6 +6,8 @@ import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
 	id: 'registerSkillAction',
+	description:
+		'Register your skill with Mercury so you can start communicating with other skills.',
 	fields: {
 		nameReadable: {
 			type: 'text',

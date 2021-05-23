@@ -8,6 +8,7 @@ const testOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.TestOptionsSchema  
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
 	name: 'Test skill',
+	description: 'Test your might! 💪',
 	    fields: {
 	            /** Report while running. Should I output the test results while they are running? */
 	            'shouldReportWhileRunning': {

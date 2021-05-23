@@ -5,6 +5,7 @@ import { FeatureActionResponse } from '../../features.types'
 export const optionsSchema = buildSchema({
 	id: 'dashboard',
 	name: 'Skill dashboard',
+	description: 'Coming soon',
 	fields: {},
 })
 
@@ -17,7 +18,7 @@ export default class DashboardAction extends AbstractFeatureAction<DashboardActi
 
 	public async execute(): Promise<FeatureActionResponse> {
 		return {
-			hints: ['Nothing to see here.'],
+			hints: ['Coming soon.'],
 		}
 	}
 }

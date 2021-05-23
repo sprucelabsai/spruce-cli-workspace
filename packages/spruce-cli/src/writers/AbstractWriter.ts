@@ -183,7 +183,7 @@ export default abstract class AbstractWriter {
 	private shouldAskForOverwrite() {
 		if (
 			this.shouldConfirmBeforeWriting &&
-			this.upgradeMode === 'askEverything'
+			this.upgradeMode === 'askForChanged'
 		) {
 			return true
 		}

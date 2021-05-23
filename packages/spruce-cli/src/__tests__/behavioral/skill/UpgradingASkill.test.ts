@@ -104,7 +104,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		const promise = cli
 			.getFeature('skill')
 			.Action('upgrade')
-			.execute({ upgradeMode: 'askEverything' })
+			.execute({ upgradeMode: 'askForChanged' })
 
 		await this.waitForInput()
 

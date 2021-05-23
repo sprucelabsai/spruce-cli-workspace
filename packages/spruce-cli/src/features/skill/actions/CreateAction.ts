@@ -6,6 +6,8 @@ import { FeatureActionResponse } from '../../features.types'
 const optionsSchema = buildSchema({
 	id: 'createSkill',
 	name: 'create skill',
+	description:
+		'A skill is a micro-app, focused on delivering personaziled (and discrete) experiences.',
 	fields: {},
 })
 

@@ -3,7 +3,12 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
-const pullOptionsSchema = buildSchema({ id: 'pullActionSchema', fields: {} })
+const pullOptionsSchema = buildSchema({
+	id: 'pullActionSchema',
+	description:
+		'Pulls the event contracts from Mercury down to a single file for easy distribution.',
+	fields: {},
+})
 type PullOptionsSchema = typeof pullOptionsSchema
 type Options = SchemaValues<PullOptionsSchema>
 

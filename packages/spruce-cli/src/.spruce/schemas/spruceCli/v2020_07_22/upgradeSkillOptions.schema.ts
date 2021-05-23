@@ -14,8 +14,8 @@ const upgradeSkillOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkil
 	            'upgradeMode': {
 	                label: 'Upgrade mode',
 	                type: 'select',
-	                defaultValue: "forceRequiredSkipRest",
-	                options: {choices: [{"value":"askEverything","label":"Ask for everything"},{"value":"forceEverything","label":"Force everything"},{"value":"forceRequiredSkipRest","label":"Force required (skipping all non-essential)"}],}
+	                defaultValue: "askForChanged",
+	                options: {choices: [{"value":"askForChanged","label":"Ask for changed files"},{"value":"forceEverything","label":"Force everything"},{"value":"forceRequiredSkipRest","label":"Force required (skipping all non-essential)"}],}
 	            },
 	    }
 }

@@ -10,6 +10,7 @@ type Options = SpruceSchemas.SpruceCli.v2020_07_22.BootSkillOptions
 export default class BootAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'boot'
 	public optionsSchema: OptionsSchema = bootSkillOptionsSchema
+	public commandAliases = ['boot']
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const command = this.Service('command')
 

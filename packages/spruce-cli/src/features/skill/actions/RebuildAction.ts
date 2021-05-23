@@ -5,6 +5,8 @@ import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
 	id: 'rebuildOptions',
+	description:
+		'Clear the build and node_modules folder and start from the top.',
 	fields: {
 		shouldPlayGames: {
 			type: 'boolean',

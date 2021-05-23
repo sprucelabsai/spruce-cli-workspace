@@ -29,6 +29,8 @@ const viewModels = [
 
 const optionsSchema = buildSchema({
 	id: 'createViewOptions',
+	description:
+		'Create a new Heartwood view to render on web enabled and mobile devices.',
 	fields: {
 		viewType: {
 			type: 'select',

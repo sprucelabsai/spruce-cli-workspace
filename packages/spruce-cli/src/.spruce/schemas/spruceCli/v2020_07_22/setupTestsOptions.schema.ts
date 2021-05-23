@@ -8,6 +8,7 @@ const setupTestsOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.SetupTestsOpt
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
 	name: 'Setup tests options',
+	description: 'Use this with in your CI/CD environment to get your skill ready to run tests.',
 	    fields: {
 	            /** Demo phone number. */
 	            'demoNumber': {

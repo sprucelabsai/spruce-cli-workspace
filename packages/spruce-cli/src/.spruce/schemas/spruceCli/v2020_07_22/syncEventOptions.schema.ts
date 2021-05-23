@@ -8,6 +8,7 @@ const syncEventOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptio
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
 	name: 'sync event action',
+	description: 'Pull down event contracts from Mercury to make them available in your skill.',
 	    fields: {
 	            /** Contract destination. Where I will generate event contracts. */
 	            'contractDestinationDir': {

@@ -8,7 +8,7 @@ import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
 	id: 'deployHeroku',
-	name: 'deploy skill to heroku',
+	description: 'Deploy your skill to Heroku.',
 	fields: {
 		teamName: {
 			type: 'text',

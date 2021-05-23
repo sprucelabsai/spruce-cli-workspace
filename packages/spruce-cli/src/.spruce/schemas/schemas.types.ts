@@ -4442,7 +4442,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		interface UpgradeSkillOptions {
 			
 				/** Upgrade mode. */
-				'upgradeMode'?: ("askEverything" | "forceEverything" | "forceRequiredSkipRest")| undefined | null
+				'upgradeMode'?: ("askForChanged" | "forceEverything" | "forceRequiredSkipRest")| undefined | null
 		}
 
 		interface UpgradeSkillOptionsSchema extends SpruceSchema.Schema {
@@ -4456,8 +4456,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            'upgradeMode': {
 			                label: 'Upgrade mode',
 			                type: 'select',
-			                defaultValue: "forceRequiredSkipRest",
-			                options: {choices: [{"value":"askEverything","label":"Ask for everything"},{"value":"forceEverything","label":"Force everything"},{"value":"forceRequiredSkipRest","label":"Force required (skipping all non-essential)"}],}
+			                defaultValue: "askForChanged",
+			                options: {choices: [{"value":"askForChanged","label":"Ask for changed files"},{"value":"forceEverything","label":"Force everything"},{"value":"forceRequiredSkipRest","label":"Force required (skipping all non-essential)"}],}
 			            },
 			    }
 		}
@@ -4469,7 +4469,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		
+		/** Test your might! 💪 */
 		interface TestOptions {
 			
 				/** Report while running. Should I output the test results while they are running? */
@@ -4491,6 +4491,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
 			name: 'Test skill',
+			description: 'Test your might! 💪',
 			    fields: {
 			            /** Report while running. Should I output the test results while they are running? */
 			            'shouldReportWhileRunning': {
@@ -4792,7 +4793,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		
+		/** Pull down event contracts from Mercury to make them available in your skill. */
 		interface SyncEventOptions {
 			
 				/** Contract destination. Where I will generate event contracts. */
@@ -4806,6 +4807,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
 			name: 'sync event action',
+			description: 'Pull down event contracts from Mercury to make them available in your skill.',
 			    fields: {
 			            /** Contract destination. Where I will generate event contracts. */
 			            'contractDestinationDir': {
@@ -5111,7 +5113,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		
+		/** Use this with in your CI/CD environment to get your skill ready to run tests. */
 		interface SetupTestsOptions {
 			
 				/** Demo phone number. */
@@ -5125,6 +5127,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
 			name: 'Setup tests options',
+			description: 'Use this with in your CI/CD environment to get your skill ready to run tests.',
 			    fields: {
 			            /** Demo phone number. */
 			            'demoNumber': {
@@ -5274,7 +5277,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		
+		/** The question is; Are you read? ⚡️ */
 		interface OnboardOptions {
 			
 		}
@@ -5284,6 +5287,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
 			name: 'Onboard action',
+			description: 'The question is; Are you read? ⚡️',
 			    fields: {
 			    }
 		}
@@ -5497,7 +5501,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		
+		/** Install your skill at any organization you are connected to. */
 		interface InstallSkillAtOrganizationOptions {
 			
 				/** Organization id. */
@@ -5509,6 +5513,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
 			name: 'install skill at organization action',
+			description: 'Install your skill at any organization you are connected to.',
 			    fields: {
 			            /** Organization id. */
 			            'organizationId': {
@@ -5868,7 +5873,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		
+		/** Skills can only communicate with people and skills associated with the same organization. This ensures people can get differentiated experiences across multiple businesses. */
 		interface CreateOrganizationOptions {
 			
 				/** Name. The name people will read */
@@ -5882,6 +5887,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
 			name: 'create organization action',
+			description: 'Skills can only communicate with people and skills associated with the same organization. This ensures people can get differentiated experiences across multiple businesses.',
 			    fields: {
 			            /** Name. The name people will read */
 			            'nameReadable': {
@@ -6159,7 +6165,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		
+		/** Define a topic you want to discuss. */
 		interface CreateConversationTopicOptions {
 			
 				/** Topic. What should we talk about or try and get done, e.g. Book an appointment or tell a knock knock joke. */
@@ -6172,7 +6178,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			id: 'createConversationTopicOptions',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
-			name: 'Define a topic you want to discuss.',
+			name: 'Create conversation options',
+			description: 'Define a topic you want to discuss.',
 			    fields: {
 			            /** Topic. What should we talk about or try and get done, e.g. Book an appointment or tell a knock knock joke. */
 			            'nameReadable': {

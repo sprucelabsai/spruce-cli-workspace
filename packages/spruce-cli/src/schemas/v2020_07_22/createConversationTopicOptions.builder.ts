@@ -3,8 +3,8 @@ import namedTemplateItemBuilder from './namedTemplateItem.builder'
 
 export default buildSchema({
 	id: 'createConversationTopicOptions',
-	name: 'Define a topic you want to discuss.',
-	description: '',
+	name: 'Create conversation options',
+	description: 'Define a topic you want to discuss.',
 	fields: {
 		nameReadable: {
 			...namedTemplateItemBuilder.fields.nameReadable,

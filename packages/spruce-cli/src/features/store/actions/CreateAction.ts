@@ -6,6 +6,8 @@ import AbstractFeatureAction from '../../AbstractFeatureAction'
 
 const optionsSchema = buildSchema({
 	id: 'createStoreOptions',
+	description:
+		'Create a place to store data. Can be a database, can be memory, can be a spreadsheet. If you need to store data, do it here.',
 	fields: {
 		nameReadable: {
 			...namedTemplateItemBuilder.fields.nameReadable,

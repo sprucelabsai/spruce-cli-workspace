@@ -4,6 +4,7 @@ import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
 	id: 'testConversationOptions',
+	description: 'Test your conversation topics.',
 	fields: {
 		shouldReturnImmediately: {
 			type: 'boolean',

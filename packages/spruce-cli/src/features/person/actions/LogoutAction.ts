@@ -5,6 +5,7 @@ import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
 	id: 'logoutAction',
+	description: 'Logout as a person.',
 	fields: {},
 })
 type OptionsSchema = typeof optionsSchema
