@@ -407,6 +407,8 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 				// @ts-ignore
 				fields: fieldsToPresent,
 			})
+
+			this.ui.renderLine('')
 		}
 
 		return { ...(cleaned ?? {}), ...answers } as SchemaValues<S>

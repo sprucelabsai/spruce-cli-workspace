@@ -69,9 +69,15 @@ export default class PkgService extends CommandService {
 	public async install(pkg: string[] | string, options?: AddOptions) {
 		const packages = Array.isArray(pkg) ? pkg : [pkg]
 		let install = false
+		const labsModules: string[] = []
+
 		for (const thisPackage of packages) {
 			if (!this.isInstalled(thisPackage)) {
 				install = true
+
+				if (thisPackage.startsWith('@sprucelabs/')) {
+					labsModules.push(thisPackage)
+				}
 				break
 			}
 		}
@@ -89,6 +95,13 @@ export default class PkgService extends CommandService {
 			await this.execute('npm', {
 				args,
 			})
+
+			for (const lm of labsModules) {
+				this.set({
+					path: `dependencies.${lm}`,
+					value: 'latest',
+				})
+			}
 		}
 	}
 

@@ -268,13 +268,36 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 	@test()
 	protected static async unRegisteredEventsAreRemoved() {
+		const { skillFixture, cli, syncResults, skill2, contractFileName } =
+			await this.registerAndSyncEvents()
+
+		await this.assertValidActionResponseFiles(syncResults)
+
+		await skillFixture.unRegisterEvents(skill2, {
+			shouldUnregisterAll: true,
+		})
+
+		const eventContract = testUtil.assertsFileByNameInGeneratedFiles(
+			contractFileName,
+			syncResults.files
+		)
+
+		await cli.getFeature('event').Action('sync').execute({})
+
+		assert.isFalse(diskUtil.doesFileExist(eventContract))
+
+		const dirname = pathUtil.dirname(eventContract)
+		assert.isFalse(diskUtil.doesDirExist(dirname))
+	}
+
+	private static async registerAndSyncEvents() {
 		const { skill2, skillFixture, cli } =
 			await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
 
 		const stamp = new Date().getTime()
-		const eventName = `${stamp}-cleanup-event-test::${this.todaysVersion.constValue}`
+		const eventName = `cleanup-event-test-${stamp}::${this.todaysVersion.constValue}`
 		const filename = generateEventContractFileName({
-			nameCamel: `${stamp}CleanupEventTest`,
+			nameCamel: `CleanupEventTest${stamp}`,
 			version: this.todaysVersion.constValue,
 		})
 
@@ -286,21 +309,13 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		const results = await cli.getFeature('event').Action('sync').execute({})
 
-		const eventContract = testUtil.assertsFileByNameInGeneratedFiles(
-			filename,
-			results.files
-		)
-
-		await skillFixture.unRegisterEvents(skill2, {
-			shouldUnregisterAll: true,
-		})
-
-		await cli.getFeature('event').Action('sync').execute({})
-
-		assert.isFalse(diskUtil.doesFileExist(eventContract))
-
-		const dirname = pathUtil.dirname(eventContract)
-		assert.isFalse(diskUtil.doesDirExist(dirname))
+		return {
+			skillFixture,
+			syncResults: results,
+			cli,
+			skill2,
+			contractFileName: filename,
+		}
 	}
 
 	private static async assertValidEventResults(results: FeatureActionResponse) {
