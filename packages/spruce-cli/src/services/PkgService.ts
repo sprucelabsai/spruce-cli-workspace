@@ -76,7 +76,7 @@ export default class PkgService extends CommandService {
 				install = true
 
 				if (thisPackage.startsWith('@sprucelabs/')) {
-					labsModules.push(thisPackage)
+					labsModules.push(thisPackage.replace('@latest', ''))
 				}
 				break
 			}
@@ -98,7 +98,7 @@ export default class PkgService extends CommandService {
 
 			for (const lm of labsModules) {
 				this.set({
-					path: `dependencies.${lm}`,
+					path: `${options?.isDev ? 'devDependencies' : 'dependencies'}.${lm}`,
 					value: 'latest',
 				})
 			}

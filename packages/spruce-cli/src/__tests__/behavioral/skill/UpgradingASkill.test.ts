@@ -113,7 +113,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		assert.doesInclude(this.ui.invocations, {
 			command: 'confirm',
-			options: `Overwrite ${this.resolvePath('src/index.ts')}?`,
+			options: `Overwrite /src/index.ts?`,
 		})
 
 		await this.ui.sendInput('\n')
@@ -319,6 +319,21 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		assert.isNotEqual(pkg.get(['scripts', 'build.dev']), 'taco')
 		assert.isNotEqual(pkg.get(['scripts', 'watch.build.dev']), 'taco')
+	}
+
+	@test()
+	protected static async doesNotAskIfNewScriptsAreAddedToSkillFeature() {
+		const cli = await this.FeatureFixture().installCachedFeatures('skills')
+
+		const pkg = this.Service('pkg')
+
+		const skillFeature = cli.getFeature('skill')
+		//@ts-ignore
+		skillFeature.scripts['taco'] = 'bravo'
+
+		await skillFeature.Action('upgrade').execute({})
+
+		assert.isEqual(pkg.get(['scripts', 'taco']), 'bravo')
 	}
 
 	private static async installAndBreakSkill(cacheKey: string) {

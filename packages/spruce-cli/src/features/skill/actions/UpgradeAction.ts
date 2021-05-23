@@ -21,10 +21,10 @@ export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> 
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 		const generatedFiles = await this.copyFiles(normalizedOptions)
 
-		await this.reInstallPackageDependencies()
 		await this.updateScripts({
 			shouldConfirm: normalizedOptions.upgradeMode !== 'forceEverything',
 		})
+		await this.reInstallPackageDependencies()
 
 		let results = { files: generatedFiles }
 

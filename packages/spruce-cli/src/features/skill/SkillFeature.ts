@@ -244,18 +244,25 @@ export default class SkillFeature<
 		const scripts = pkg.get('scripts') as Record<string, string>
 		const all = this.scripts
 		const oldScripts = pkg.get('scripts')
+
 		let shouldConfirm = options?.shouldConfirmIfScriptExistsButIsDifferent
+		let shouldSkipAll = false
 
 		for (const name in this.scripts) {
 			const script = this.scripts[name as keyof typeof all]
 			const oldScript = oldScripts[name as any]
 
-			let shouldWrite = true
+			let shouldWrite = !shouldSkipAll
 
-			if (shouldConfirm && script !== oldScript) {
-				this.ui.renderLine('Script changes detected')
+			if (
+				shouldConfirm &&
+				!shouldSkipAll &&
+				oldScript &&
+				script !== oldScript
+			) {
+				this.ui.clear()
 				this.ui.renderSection({
-					headline: `You have modified \`${name}\` in your package.json and I wanna update it.`,
+					headline: `Warning! You have modified \`${name}\` in your package.json and I'm trying to update it!`,
 					object: {
 						Current: oldScript,
 						New: script,
@@ -263,14 +270,15 @@ export default class SkillFeature<
 				})
 				const desiredAction = await this.ui.prompt({
 					type: 'select',
+					label: 'What should I do?',
 					options: {
 						choices: [
 							{
-								label: 'Skip',
+								label: 'Skip this one',
 								value: 'skip',
 							},
 							{
-								label: 'Overwrite',
+								label: 'Overwrite this one',
 								value: 'overwrite',
 							},
 							{
@@ -282,7 +290,10 @@ export default class SkillFeature<
 				})
 
 				if (desiredAction === 'skipAll') {
-					shouldConfirm = false
+					shouldSkipAll = true
+					shouldWrite = false
+				} else if (desiredAction === 'skip') {
+					shouldWrite = false
 				}
 			}
 

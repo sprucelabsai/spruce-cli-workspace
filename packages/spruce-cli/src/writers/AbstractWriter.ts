@@ -127,7 +127,9 @@ export default abstract class AbstractWriter {
 			let write = true
 
 			if (this.shouldAskForOverwrite()) {
-				write = await this.ui.confirm(`Overwrite ${destination}?`)
+				write = await this.ui.confirm(
+					`Overwrite ${destination.replace(cwd, '')}?`
+				)
 			}
 
 			if (write) {

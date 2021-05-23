@@ -25,11 +25,31 @@ export default class PkgServiceTest extends AbstractSkillTest {
 
 	@test()
 	protected static async installASpruceLabsModuleMakesItsVersionLatest() {
-		await this.pkg.install('@sprucelabs/heartwood-view-controllers')
+		await this.pkg.install('@sprucelabs/spruce-store-plugin')
+
+		const version = this.pkg.get('dependencies.@sprucelabs/spruce-store-plugin')
+
+		assert.isEqual(version, 'latest')
+	}
+
+	@test()
+	protected static async handlesAtLatestInName() {
+		await this.pkg.install('@sprucelabs/heartwood-view-controllers@latest')
 
 		const version = this.pkg.get(
 			'dependencies.@sprucelabs/heartwood-view-controllers'
 		)
+
+		assert.isEqual(version, 'latest')
+	}
+
+	@test()
+	protected static async setsLatestIfDevDpendency() {
+		await this.pkg.install('@sprucelabs/data-stores', {
+			isDev: true,
+		})
+
+		const version = this.pkg.get('devDependencies.@sprucelabs/data-stores')
 
 		assert.isEqual(version, 'latest')
 	}
