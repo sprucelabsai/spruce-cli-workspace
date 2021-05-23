@@ -220,7 +220,8 @@ export default class SkillFeature<
 		const skillGenerator = this.Writer('skill')
 
 		const files = await skillGenerator.writeSkill(destination, options)
-		this.installScripts(destination)
+
+		await this.installScripts(destination)
 		this.setEngines(destination)
 
 		const env = this.Service('env', destination)
@@ -233,13 +234,61 @@ export default class SkillFeature<
 		return diskUtil.resolvePath(this.cwd, options.destination ?? '')
 	}
 
-	public installScripts(destination = this.cwd) {
+	public async installScripts(
+		destination = this.cwd,
+		options?: {
+			shouldConfirmIfScriptExistsButIsDifferent?: boolean
+		}
+	) {
 		const pkg = this.Service('pkg', destination)
 		const scripts = pkg.get('scripts') as Record<string, string>
+		const all = this.scripts
+		const oldScripts = pkg.get('scripts')
+		let shouldConfirm = options?.shouldConfirmIfScriptExistsButIsDifferent
 
 		for (const name in this.scripts) {
-			const all = this.scripts
-			scripts[name] = this.scripts[name as keyof typeof all]
+			const script = this.scripts[name as keyof typeof all]
+			const oldScript = oldScripts[name as any]
+
+			let shouldWrite = true
+
+			if (shouldConfirm && script !== oldScript) {
+				this.ui.renderLine('Script changes detected')
+				this.ui.renderSection({
+					headline: `You have modified \`${name}\` in your package.json and I wanna update it.`,
+					object: {
+						Current: oldScript,
+						New: script,
+					},
+				})
+				const desiredAction = await this.ui.prompt({
+					type: 'select',
+					options: {
+						choices: [
+							{
+								label: 'Skip',
+								value: 'skip',
+							},
+							{
+								label: 'Overwrite',
+								value: 'overwrite',
+							},
+							{
+								label: 'Skip all',
+								value: 'skipAll',
+							},
+						],
+					},
+				})
+
+				if (desiredAction === 'skipAll') {
+					shouldConfirm = false
+				}
+			}
+
+			if (shouldWrite) {
+				scripts[name] = script
+			}
 		}
 
 		pkg.set({ path: 'scripts', value: scripts })

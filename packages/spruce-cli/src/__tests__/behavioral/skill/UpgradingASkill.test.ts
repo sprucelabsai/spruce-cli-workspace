@@ -194,6 +194,133 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		assert.isTruthy(pkg.get(path))
 	}
 
+	@test()
+	protected static async canSkipPackageScriptChanges() {
+		const cli = await this.FeatureFixture().installCachedFeatures('skills')
+
+		const pkg = this.Service('pkg')
+		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
+
+		const promise = cli.getFeature('skill').Action('upgrade').execute({})
+
+		await this.waitForInput()
+
+		const last = this.ui.lastInvocation()
+
+		assert.isEqual(last.command, 'prompt')
+		assert.doesInclude(last.options.options.choices, { value: 'skip' })
+		assert.doesInclude(last.options.options.choices, { value: 'skipAll' })
+		assert.doesInclude(last.options.options.choices, { value: 'overwrite' })
+
+		await this.ui.sendInput('skip')
+
+		await promise
+
+		assert.isEqual(pkg.get(['scripts', 'build.dev']), 'taco')
+	}
+
+	@test()
+	protected static async asksForEachScriptChange() {
+		const cli = await this.FeatureFixture().installCachedFeatures('skills')
+
+		const pkg = this.Service('pkg')
+		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
+		pkg.set({ path: ['scripts', 'watch.build.dev'], value: 'taco' })
+
+		const promise = cli.getFeature('skill').Action('upgrade').execute({})
+
+		await this.waitForInput()
+
+		let last = this.ui.lastInvocation()
+
+		assert.isEqual(last.command, 'prompt')
+		await this.ui.sendInput('skip')
+
+		await this.waitForInput()
+
+		last = this.ui.lastInvocation()
+
+		assert.isEqual(last.command, 'prompt')
+		await this.ui.sendInput('skip')
+
+		await promise
+
+		assert.isEqual(pkg.get(['scripts', 'build.dev']), 'taco')
+		assert.isEqual(pkg.get(['scripts', 'watch.build.dev']), 'taco')
+	}
+
+	@test()
+	protected static async canSkipAllScriptChanges() {
+		const cli = await this.FeatureFixture().installCachedFeatures('skills')
+
+		const pkg = this.Service('pkg')
+		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
+		pkg.set({ path: ['scripts', 'watch.build.dev'], value: 'taco' })
+
+		const promise = cli.getFeature('skill').Action('upgrade').execute({})
+
+		await this.waitForInput()
+
+		let last = this.ui.lastInvocation()
+
+		assert.isEqual(last.command, 'prompt')
+		await this.ui.sendInput('skipAll')
+
+		await promise
+
+		assert.isEqual(pkg.get(['scripts', 'build.dev']), 'taco')
+		assert.isEqual(pkg.get(['scripts', 'watch.build.dev']), 'taco')
+	}
+
+	@test()
+	protected static async canOverwriteChangedScript() {
+		const cli = await this.FeatureFixture().installCachedFeatures('skills')
+
+		const pkg = this.Service('pkg')
+		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
+
+		const promise = cli.getFeature('skill').Action('upgrade').execute({})
+
+		await this.waitForInput()
+
+		let last = this.ui.lastInvocation()
+
+		assert.isEqual(last.command, 'prompt')
+		await this.ui.sendInput('overwrite')
+
+		await promise
+
+		assert.isNotEqual(pkg.get(['scripts', 'build.dev']), 'taco')
+	}
+
+	@test()
+	protected static async canOverwriteMultipleChangedScript() {
+		const cli = await this.FeatureFixture().installCachedFeatures('skills')
+
+		const pkg = this.Service('pkg')
+		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
+		pkg.set({ path: ['scripts', 'watch.build.dev'], value: 'taco' })
+
+		const promise = cli.getFeature('skill').Action('upgrade').execute({})
+
+		await this.waitForInput()
+
+		let last = this.ui.lastInvocation()
+
+		assert.isEqual(last.command, 'prompt')
+		await this.ui.sendInput('overwrite')
+
+		last = this.ui.lastInvocation()
+
+		assert.isEqual(last.command, 'prompt')
+		await this.ui.sendInput('overwrite')
+
+		await promise
+
+		assert.isNotEqual(pkg.get(['scripts', 'build.dev']), 'taco')
+		assert.isNotEqual(pkg.get(['scripts', 'watch.build.dev']), 'taco')
+	}
+
 	private static async installAndBreakSkill(cacheKey: string) {
 		const cli = await this.installSkill(cacheKey)
 		const indexFile = this.resolvePath('src/index.ts')

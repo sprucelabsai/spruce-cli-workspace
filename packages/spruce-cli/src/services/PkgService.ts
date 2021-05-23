@@ -10,7 +10,7 @@ export interface AddOptions {
 }
 
 export default class PkgService extends CommandService {
-	public get(path: string) {
+	public get(path: string | string[]) {
 		const contents = this.readPackage()
 		return get(contents, path)
 	}

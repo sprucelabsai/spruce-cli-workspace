@@ -22,9 +22,9 @@ export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> 
 		const generatedFiles = await this.copyFiles(normalizedOptions)
 
 		await this.reInstallPackageDependencies()
-
-		const skillFeature = this.parent as SkillFeature
-		skillFeature.installScripts()
+		await this.updateScripts({
+			shouldConfirm: normalizedOptions.upgradeMode !== 'forceEverything',
+		})
 
 		let results = { files: generatedFiles }
 
@@ -39,6 +39,13 @@ export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> 
 		}
 
 		return results
+	}
+
+	private async updateScripts(options: { shouldConfirm: boolean }) {
+		const skillFeature = this.parent as SkillFeature
+		await skillFeature.installScripts(this.cwd, {
+			shouldConfirmIfScriptExistsButIsDifferent: options.shouldConfirm,
+		})
 	}
 
 	private async reInstallPackageDependencies() {
