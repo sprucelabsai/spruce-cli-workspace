@@ -113,7 +113,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		assert.doesInclude(this.ui.invocations, {
 			command: 'confirm',
-			options: `Overwrite /src/index.ts?`,
+			options: `Overwrite src/index.ts?`,
 		})
 
 		await this.ui.sendInput('\n')

@@ -241,6 +241,7 @@ export default class FeatureInstaller implements ServiceProvider {
 
 		return results
 	}
+
 	private isInstalledOrPendingInstall(code: string) {
 		return this.pendingFeatureInstalls[code] || this.isInstalled(code as any)
 	}

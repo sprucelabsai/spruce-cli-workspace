@@ -47,8 +47,6 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 			'eventsInNodeModule'
 		)
 
-		await this.openInVsCode()
-
 		const results = await cli.getFeature('event').Action('sync').execute({})
 
 		await this.assertValidEventResults(results)
@@ -299,7 +297,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		const stamp = new Date().getTime()
 		const eventName = `cleanup-event-test-${stamp}::${this.todaysVersion.constValue}`
 		const filename = generateEventContractFileName({
-			nameCamel: `CleanupEventTest${stamp}`,
+			nameCamel: `cleanupEventTest${stamp}`,
 			version: this.todaysVersion.constValue,
 		})
 
