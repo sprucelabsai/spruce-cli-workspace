@@ -107,7 +107,16 @@ export default class PkgService extends CommandService {
 			})
 		}
 
+		this.deleteLockFile()
+
 		return { totalInstalled, totalSkipped }
+	}
+
+	private deleteLockFile() {
+		const lock = pathUtil.join(this.cwd, 'package-lock.json')
+		if (diskUtil.doesFileExist(lock)) {
+			diskUtil.deleteFile(lock)
+		}
 	}
 
 	public async uninstall(pkg: string[] | string) {

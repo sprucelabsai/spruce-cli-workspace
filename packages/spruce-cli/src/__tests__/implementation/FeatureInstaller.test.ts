@@ -24,4 +24,9 @@ export default class FeatureInstallerTest extends AbstractCliTest {
 		assert.doesInclude(dependencies, { code: 'schema', isRequired: true })
 		assert.doesInclude(dependencies, { code: 'node', isRequired: true })
 	}
+
+	@test()
+	protected static async afterPackageInstallIsCalledOncePerFeature() {
+		assert.isTrue(false)
+	}
 }
