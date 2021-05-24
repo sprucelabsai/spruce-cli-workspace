@@ -295,17 +295,17 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static async assertValidActionResponseFiles(
 		results: FeatureActionResponse
 	) {
-		// for (const file of results.files ?? []) {
-		// 	const checker = this.Service('typeChecker')
-		// 	await checker.check(file.path)
-		// }
+		for (const file of results.files ?? []) {
+			const checker = this.Service('typeChecker')
+			await checker.check(file.path)
+		}
 
-		await Promise.all(
-			(results.files ?? []).map((file) => {
-				const checker = this.Service('typeChecker')
-				return checker.check(file.path)
-			})
-		)
+		// await Promise.all(
+		// 	(results.files ?? []).map((file) => {
+		// 		const checker = this.Service('typeChecker')
+		// 		return checker.check(file.path)
+		// 	})
+		// )
 	}
 
 	protected static async connectToApi(options?: ApiClientFactoryOptions) {
