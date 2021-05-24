@@ -31,6 +31,7 @@ export default class FeatureInstaller implements ServiceProvider {
 	private devPackagesToInstall: string[] = []
 	private featuresToMarkAsInstalled: string[] = []
 	private afterPackageInstalls: InstallFeature[] = []
+	private pendingFeatureInstalls: Record<string, boolean> = {}
 
 	public constructor(cwd: string, serviceFactory: ServiceFactory) {
 		this.cwd = cwd
@@ -177,6 +178,8 @@ export default class FeatureInstaller implements ServiceProvider {
 			)
 		}
 
+		this.pendingFeatureInstalls = {}
+
 		let results: FeatureInstallResponse = {}
 
 		let dependenciesToInstall: FeatureDependency[] = []
@@ -204,7 +207,7 @@ export default class FeatureInstaller implements ServiceProvider {
 		for (let i = 0; i < dependenciesToInstall.length; i += 1) {
 			const { code, isRequired } = dependenciesToInstall[i]
 
-			const isInstalled = await this.isInstalled(code)
+			const isInstalled = await this.isInstalledOrPendingInstall(code)
 
 			if (!isInstalled && isRequired) {
 				const installOptions =
@@ -238,11 +241,16 @@ export default class FeatureInstaller implements ServiceProvider {
 
 		return results
 	}
+	private isInstalledOrPendingInstall(code: string) {
+		return this.pendingFeatureInstalls[code] || this.isInstalled(code as any)
+	}
 
 	private async installFeature(
 		installFeature: InstallFeature,
 		didUpdateHandler?: InternalUpdateHandler
 	): Promise<FeatureInstallResponse> {
+		this.pendingFeatureInstalls[installFeature.code] = true
+
 		const feature = this.getFeature(installFeature.code) as AbstractFeature
 
 		if (feature.optionsSchema) {
@@ -268,6 +276,7 @@ export default class FeatureInstaller implements ServiceProvider {
 			)
 
 		didUpdateHandler?.(`Running after package install hook...`)
+
 		this.afterPackageInstalls.push(installFeature)
 
 		if (!feature.isInstalled) {

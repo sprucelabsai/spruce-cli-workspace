@@ -27,6 +27,29 @@ export default class FeatureInstallerTest extends AbstractCliTest {
 
 	@test()
 	protected static async afterPackageInstallIsCalledOncePerFeature() {
-		assert.isTrue(false)
+		let hitCount = 0
+		//@ts-ignore
+		this.installer.featureMap.schema.afterPackageInstall = () => {
+			hitCount++
+		}
+		await this.installer.install({
+			features: [
+				{
+					code: 'skill',
+					options: {
+						name: 'testing events',
+						description: 'this too, is a great test!',
+					},
+				},
+				{
+					code: 'schema',
+				},
+				{
+					code: 'event',
+				},
+			],
+		})
+
+		assert.isEqual(hitCount, 1)
 	}
 }
