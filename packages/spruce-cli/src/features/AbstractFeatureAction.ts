@@ -37,6 +37,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 	public abstract code: string
 	public abstract optionsSchema: S
 	public readonly commandAliases: string[] = []
+	public abstract invocationMessage: string
 
 	protected parent: AbstractFeature
 	protected featureInstaller: FeatureInstaller

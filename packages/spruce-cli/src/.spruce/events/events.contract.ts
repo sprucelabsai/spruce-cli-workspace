@@ -16,6 +16,7 @@ import mercuryGetOrganizationEventContract_v2020_12_25 from '#spruce/events/merc
 import mercuryGetRoleEventContract_v2020_12_25 from '#spruce/events/mercury/getRole.v2020_12_25.contract'
 import mercuryGetSkillEventContract_v2020_12_25 from '#spruce/events/mercury/getSkill.v2020_12_25.contract'
 import mercuryHealthEventContract_v2020_12_25 from '#spruce/events/mercury/health.v2020_12_25.contract'
+import mercuryHirePersonEventContract_v2020_12_25 from '#spruce/events/mercury/hirePerson.v2020_12_25.contract'
 import mercuryInstallSkillEventContract_v2020_12_25 from '#spruce/events/mercury/installSkill.v2020_12_25.contract'
 import mercuryIsSkillInstalledEventContract_v2020_12_25 from '#spruce/events/mercury/isSkillInstalled.v2020_12_25.contract'
 import mercuryListLocationsEventContract_v2020_12_25 from '#spruce/events/mercury/listLocations.v2020_12_25.contract'
@@ -59,6 +60,7 @@ export default [
 	mercuryGetRoleEventContract_v2020_12_25,
 	mercuryGetSkillEventContract_v2020_12_25,
 	mercuryHealthEventContract_v2020_12_25,
+	mercuryHirePersonEventContract_v2020_12_25,
 	mercuryInstallSkillEventContract_v2020_12_25,
 	mercuryIsSkillInstalledEventContract_v2020_12_25,
 	mercuryListLocationsEventContract_v2020_12_25,

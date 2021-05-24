@@ -2,6 +2,7 @@ import { Schema, SchemaPartialValues, SchemaValues } from '@sprucelabs/schema'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import merge from 'lodash/merge'
 import FormComponent from '../components/FormComponent'
+import { CLI_HERO } from '../constants'
 import SpruceError from '../errors/SpruceError'
 import { GlobalEmitter } from '../GlobalEmitter'
 import { GraphicsInterface } from '../types/cli.types'
@@ -77,6 +78,10 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			response = merge(response, ourFeatureResults)
 		}
 
+		this.ui.clear()
+		this.ui.renderHero(CLI_HERO)
+		this.ui.renderHeadline(action.invocationMessage)
+
 		const executeResults = await action.execute({
 			...answers,
 			shouldEmitExecuteEvents: false,
@@ -125,7 +130,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 	private async installOurFeature(installOptions: Record<string, any>) {
 		this.ui.clear()
 
-		this.ui.renderHero('Spruce XP')
+		this.ui.renderHero(CLI_HERO)
 		this.ui.startLoading(`Installing ${this.featureCode} feature...`)
 
 		const installResults = await this.featureInstaller.install({

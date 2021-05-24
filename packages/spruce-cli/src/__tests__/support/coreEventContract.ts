@@ -2327,7 +2327,7 @@ const coreEventContract: EventContract = {
 																													type: 'boolean',
 																													defaultValue: false,
 																												},
-																												defaultsByRoleBase: {
+																												defaults: {
 																													type: 'schema',
 																													options: {
 																														schema: {
@@ -2755,7 +2755,7 @@ const coreEventContract: EventContract = {
 																													type: 'boolean',
 																													defaultValue: false,
 																												},
-																												defaultsByRoleBase: {
+																												defaults: {
 																													type: 'schema',
 																													options: {
 																														schema: {

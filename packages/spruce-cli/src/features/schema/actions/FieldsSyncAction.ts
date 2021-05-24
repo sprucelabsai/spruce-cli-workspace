@@ -14,6 +14,8 @@ export default class FieldsSyncAction extends AbstractFeatureAction<OptionsSchem
 	public code = 'fields.sync'
 	public optionsSchema = syncSchemaFieldsActionSchema
 	public commandAliases = ['sync.fields']
+	public invocationMessage =
+		'Syncing schema field types (e.g. number, phone, etc.)... 📃'
 
 	public async execute(
 		options: SchemaValues<OptionsSchema>

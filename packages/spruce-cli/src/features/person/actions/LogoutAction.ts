@@ -14,6 +14,7 @@ export default class LogoutAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'logout'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['logout']
+	public invocationMessage = 'Logging out... 🤝'
 
 	public async execute(): Promise<FeatureActionResponse> {
 		const auth = this.Service('auth')

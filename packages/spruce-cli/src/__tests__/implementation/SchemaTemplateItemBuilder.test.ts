@@ -761,7 +761,7 @@ const mercurySchemas = [
 								label: 'Require all statuses',
 								defaultValue: false,
 							},
-							defaultsByRoleBase: {
+							defaults: {
 								type: 'schema',
 								options: {
 									schema: {
@@ -897,7 +897,7 @@ const mercuryTemplateItems = [
 					label: 'Require all statuses',
 					defaultValue: false,
 				},
-				defaultsByRoleBase: {
+				defaults: {
 					type: 'schema',
 					options: {
 						schemaIds: [

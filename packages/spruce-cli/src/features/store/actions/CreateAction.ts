@@ -34,6 +34,7 @@ type Options = SchemaValues<OptionsSchema>
 export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public optionsSchema = optionsSchema
 	public code = 'create'
+	public invocationMessage = 'Creating a data store... 💿'
 
 	public async execute(options: Options) {
 		const {

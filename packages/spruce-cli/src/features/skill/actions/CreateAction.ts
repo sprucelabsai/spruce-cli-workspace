@@ -18,6 +18,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'create'
 	public optionsSchema = optionsSchema
 	public commandAliases = ['create.skill [destination]']
+	public invocationMessage = 'Creating your new skill... ⚡️'
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const codeSuggestion = options.destination

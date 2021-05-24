@@ -9,6 +9,9 @@ import mergeUtil from '../utilities/merge.utility'
 export default class InstallCheckingActionDecorator implements FeatureAction {
 	public code = 'install-checking-action-facade'
 	private emitter: GlobalEmitter
+	public get invocationMessage() {
+		return this.childAction.invocationMessage
+	}
 
 	public get commandAliases() {
 		return this.childAction.commandAliases

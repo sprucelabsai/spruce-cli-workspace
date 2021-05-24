@@ -18,7 +18,7 @@ export default class PkgServiceTest extends AbstractSkillTest {
 	}
 
 	@test()
-	protected static async installANonSpruceLabsModuleMakesItsVersionLatest() {
+	protected static async installANonSpruceLabsModuleMakesItsVersionAnActualVersion() {
 		const version = this.pkg.get('dependencies.dotenv')
 		assert.isNotEqual(version, 'latest')
 	}
@@ -50,7 +50,20 @@ export default class PkgServiceTest extends AbstractSkillTest {
 		})
 
 		const version = this.pkg.get('devDependencies.@sprucelabs/data-stores')
+		assert.isEqual(version, 'latest')
+	}
 
+	@test()
+	protected static async updatesSpruceSkillsToLatestEvenIfAlreadyInstalled() {
+		const dep = 'dependencies.@sprucelabs/spruce-skill-booter'
+		this.pkg.set({
+			path: dep,
+			value: '^4.2.18',
+		})
+
+		await this.pkg.install('@sprucelabs/spruce-skill-booter')
+
+		const version = this.pkg.get(dep)
 		assert.isEqual(version, 'latest')
 	}
 }

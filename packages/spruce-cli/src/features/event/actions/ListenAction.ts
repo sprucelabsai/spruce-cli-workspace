@@ -28,6 +28,7 @@ type OptionsSchema =
 export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'listen'
 	public optionsSchema: OptionsSchema = eventListenActionSchema
+	public invocationMessage = 'Creating event listener... 🜒'
 
 	public async execute(
 		options: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventOptions

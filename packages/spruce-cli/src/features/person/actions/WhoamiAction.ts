@@ -14,6 +14,7 @@ export default class WhoAmIAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'whoami'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['whoami']
+	public invocationMessage = 'Determining identity... 🤝'
 
 	public async execute(): Promise<FeatureActionResponse> {
 		const client = await this.connectToApi()

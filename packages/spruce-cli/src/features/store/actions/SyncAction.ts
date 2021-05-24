@@ -18,6 +18,8 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'sync.stores'
 	public optionsSchema = optionsSchema
 	public commandAliases = ['sync.stores']
+	public invocationMessage =
+		'Generating store types and setting up store factory... 💿'
 
 	public async execute(_options: Options) {
 		try {

@@ -72,5 +72,6 @@ export interface FeatureAction<S extends Schema = Schema> {
 	code: string
 	optionsSchema?: S
 	commandAliases: string[]
+	invocationMessage: string
 	execute: (options: SchemaValues<S>) => Promise<FeatureActionResponse>
 }

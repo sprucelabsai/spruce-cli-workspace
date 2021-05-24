@@ -19,6 +19,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'sync'
 	public optionsSchema = syncErrorActionSchema
 	public commandAliases = ['sync.errors']
+	public invocationMessage = 'Generating error types... 🤾‍♀️'
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)

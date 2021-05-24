@@ -23,6 +23,8 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'test'
 	public optionsSchema = optionsSchema
 	public commandAliases = ['test.conversation', 'chat']
+	public invocationMessage = "Let's test talking about topics... 🎙"
+
 	private killHandler?: () => void
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {

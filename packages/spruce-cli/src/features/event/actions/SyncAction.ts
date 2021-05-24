@@ -12,6 +12,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'sync'
 	public commandAliases = ['sync.events']
 	public optionsSchema: OptionsSchema = syncEventActionSchema
+	public invocationMessage = 'Syncing event contracts... 🜒'
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const writer = this.ContractWriter()

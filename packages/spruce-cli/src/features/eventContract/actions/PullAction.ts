@@ -16,6 +16,7 @@ export default class PullAction extends AbstractFeatureAction<PullOptionsSchema>
 	public code = 'pull'
 	public commandAliases = ['pull.event.contracts']
 	public optionsSchema = pullOptionsSchema
+	public invocationMessage = 'Pulling combined event contract... 🜒'
 
 	public async execute(_options: Options): Promise<FeatureActionResponse> {
 		const filename = 'events.contract.ts'

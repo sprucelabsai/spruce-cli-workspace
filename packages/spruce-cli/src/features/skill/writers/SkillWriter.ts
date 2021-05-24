@@ -13,6 +13,8 @@ export default class SkillGenerator extends AbstractWriter {
 		return this.writeDirectoryTemplate({
 			destinationDir,
 			code: DirectoryTemplateCode.Skill,
+			firstFileWriteMessage:
+				'As I was upgrading your skill, I found some files I want to overwrite. Lemme take you through them now.',
 			context: {
 				...options,
 				name: namesUtil.toKebab(options.name),

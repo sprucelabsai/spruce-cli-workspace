@@ -9,6 +9,7 @@ type Options = SpruceSchemas.SpruceCli.v2020_07_22.OnboardOptions
 export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'onboard'
 	public optionsSchema: OptionsSchema = onboardActionSchema
+	public invocationMessage = 'All aboard... 🛤'
 
 	public async execute(_options: Options): Promise<FeatureActionResponse> {
 		const store = this.getParent().OnboardingStore()

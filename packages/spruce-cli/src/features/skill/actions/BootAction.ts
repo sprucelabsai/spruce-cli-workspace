@@ -11,6 +11,8 @@ export default class BootAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'boot'
 	public optionsSchema: OptionsSchema = bootSkillOptionsSchema
 	public commandAliases = ['boot']
+	public invocationMessage = 'Booting skill... ⚡️'
+
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const command = this.Service('command')
 

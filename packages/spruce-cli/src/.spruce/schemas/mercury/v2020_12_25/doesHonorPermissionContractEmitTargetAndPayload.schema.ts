@@ -13,7 +13,6 @@ const doesHonorPermissionContractEmitTargetAndPayloadSchema: SpruceSchemas.Mercu
 	            /** . */
 	            'target': {
 	                type: 'schema',
-	                isRequired: true,
 	                options: {schema: doesHonorPermissionContractEmitTargetSchema,}
 	            },
 	            /** . */

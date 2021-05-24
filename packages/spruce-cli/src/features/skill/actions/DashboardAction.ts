@@ -15,6 +15,7 @@ export default class DashboardAction extends AbstractFeatureAction<DashboardActi
 	public code = 'dashboard'
 	public optionsSchema = optionsSchema
 	public commandAliases = ['dashboard']
+	public invocationMessage = 'Loading dashboard... ⚡️'
 
 	public async execute(): Promise<FeatureActionResponse> {
 		return {

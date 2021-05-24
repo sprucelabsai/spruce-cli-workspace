@@ -12,7 +12,7 @@ import {
 import { Command, CommanderStatic } from 'commander'
 import './addons/filePrompt.addon'
 import eventsContracts from '#spruce/events/events.contract'
-import { DEFAULT_HOST } from './constants'
+import { CLI_HERO, DEFAULT_HOST } from './constants'
 import SpruceError from './errors/SpruceError'
 import FeatureCommandAttacher, {
 	BlockedCommands,
@@ -25,9 +25,9 @@ import CliGlobalEmitter, {
 	GlobalEmitter,
 	GlobalEventContract,
 } from './GlobalEmitter'
+import InFlightEntertainment from './InFlightEntertainment'
 import TerminalInterface from './interfaces/TerminalInterface'
 import CommandService from './services/CommandService'
-import GameService from './services/GameService'
 import PkgService from './services/PkgService'
 import ServiceFactory from './services/ServiceFactory'
 import StoreFactory from './stores/StoreFactory'
@@ -368,7 +368,7 @@ export async function run(argv: string[] = []): Promise<void> {
 		process.env.CLI_RENDER_STACK_TRACES !== 'false'
 	)
 	terminal.clear()
-	terminal.renderHero('Spruce XP')
+	terminal.renderHero(CLI_HERO)
 
 	const isAskingForVersion =
 		process.argv.findIndex((v) => v === '--version' || v === '-v') > -1
@@ -386,32 +386,28 @@ export async function run(argv: string[] = []): Promise<void> {
 		graphicsInterface: terminal,
 	})
 
-	await setupInGameEntertainment(terminal)
+	await setupInFlightEntertainment(terminal)
 
 	await program.parseAsync(argv)
 }
 
-async function setupInGameEntertainment(terminal: TerminalInterface) {
+async function setupInFlightEntertainment(ui: TerminalInterface) {
 	if (
 		process.stdout.isTTY &&
 		process.env.ENABLE_INSTALL_INTERTAINMENT !== 'false'
 	) {
 		const command = new CommandService(diskUtil.resolvePath(__dirname, '../'))
-		const game = new GameService(command, terminal)
+		InFlightEntertainment.setup({ command, ui })
 
-		FeatureInstaller.startInstallIntertainmentHandler = (didUpdateHandler) => {
+		FeatureInstaller.startInFlightIntertainmentHandler = (didUpdateHandler) => {
+			InFlightEntertainment.start()
 			didUpdateHandler((message) => {
-				game.setStatusMessage(`⏱  ${message}`)
+				InFlightEntertainment.writeStatus(message)
 			})
-			void game.play([
-				'Starting install...',
-				`I gotta install some dependencies to get things working. I'll be using NPM.`,
-				`NPM can be slow, so in the mean time, enjoy some games! 🤩`,
-			])
 		}
 
-		FeatureInstaller.stopInstallIntertainmentHandler = () => {
-			game.kill()
+		FeatureInstaller.stopInFlightIntertainmentHandler = () => {
+			InFlightEntertainment.stop()
 		}
 	}
 }

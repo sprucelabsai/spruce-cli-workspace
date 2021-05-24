@@ -49,6 +49,7 @@ type OptionsSchema = typeof optionsSchema
 export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'create'
 	public optionsSchema: OptionsSchema = optionsSchema
+	public invocationMessage = 'Creating a new event signature... 🜒'
 
 	public async execute(
 		options: SchemaValues<OptionsSchema>

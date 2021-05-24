@@ -25,6 +25,7 @@ export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'login'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['login.skill']
+	public invocationMessage = 'Logging in as skill... ⚡️'
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const { skillSlug } = this.validateAndNormalizeOptions(options)

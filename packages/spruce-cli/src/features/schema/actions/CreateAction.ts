@@ -13,6 +13,7 @@ type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaOptions
 export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'create'
 	public optionsSchema = createSchemaActionSchema
+	public invocationMessage = 'Creating your schema builder... 📃'
 
 	public async execute(options: Options) {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)

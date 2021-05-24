@@ -11,6 +11,7 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'setup'
 	public optionsSchema = setupTestsOptionsSchema
 	public commandAliases = ['setup.testing']
+	public invocationMessage = 'Setting up for testing... 🛡'
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)

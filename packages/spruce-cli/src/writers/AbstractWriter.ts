@@ -25,6 +25,8 @@ export default abstract class AbstractWriter {
 	private fileDescriptions: FileDescription[] = []
 	private shouldConfirmBeforeWriting = true
 	private static isLintingEnabled = true
+	private firstFileWriteMessage?: string
+	private hasShownFirstWriteMessage = false
 
 	public constructor(options: WriterOptions) {
 		this.templates = options.templates
@@ -55,15 +57,19 @@ export default abstract class AbstractWriter {
 		filesToWrite?: string[]
 		context: any
 		shouldConfirmBeforeWriting?: boolean
+		firstFileWriteMessage?: string
 	}) {
 		const {
 			context,
 			destinationDir,
 			filesToWrite,
 			shouldConfirmBeforeWriting = true,
+			firstFileWriteMessage,
 		} = options
 
 		this.shouldConfirmBeforeWriting = shouldConfirmBeforeWriting
+		this.firstFileWriteMessage = firstFileWriteMessage
+		this.hasShownFirstWriteMessage = false
 
 		const files = await this.templates.directoryTemplate({
 			kind: options.code,
@@ -127,9 +133,14 @@ export default abstract class AbstractWriter {
 			let write = true
 
 			if (this.shouldAskForOverwrite()) {
-				write = await this.ui.confirm(
-					`Overwrite ${destination.replace(cwd, '')}?`
-				)
+				if (!this.hasShownFirstWriteMessage && this.firstFileWriteMessage) {
+					this.hasShownFirstWriteMessage = true
+					this.ui.renderLine(this.firstFileWriteMessage)
+				}
+
+				let cleanedName = this.cleanFilename(destination, cwd)
+
+				write = await this.ui.confirm(`Overwrite ${cleanedName}?`)
 			}
 
 			if (write) {
@@ -154,6 +165,14 @@ export default abstract class AbstractWriter {
 		myResults.push({ name, description: desc, path: destination, action })
 
 		return myResults
+	}
+
+	private cleanFilename(destination: string, cwd: string) {
+		let relativeFile = destination.replace(cwd, '')
+		if (relativeFile[0] === pathUtil.sep) {
+			relativeFile = relativeFile.substr(1)
+		}
+		return relativeFile
 	}
 
 	private shouldOverwriteIfChanged(destination: string): boolean {

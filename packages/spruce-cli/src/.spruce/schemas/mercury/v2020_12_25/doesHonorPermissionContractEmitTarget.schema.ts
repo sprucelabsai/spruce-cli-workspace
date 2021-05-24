@@ -12,7 +12,6 @@ const doesHonorPermissionContractEmitTargetSchema: SpruceSchemas.Mercury.v2020_1
 	            /** . */
 	            'personId': {
 	                type: 'id',
-	                isRequired: true,
 	                options: undefined
 	            },
 	            /** . */

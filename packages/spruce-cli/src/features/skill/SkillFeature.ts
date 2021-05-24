@@ -265,7 +265,7 @@ export default class SkillFeature<
 					headline: `Warning! You have modified \`${name}\` in your package.json and I'm trying to update it!`,
 					object: {
 						Current: oldScript,
-						New: script,
+						'    New': script,
 					},
 				})
 				const desiredAction = await this.ui.prompt({
@@ -274,12 +274,12 @@ export default class SkillFeature<
 					options: {
 						choices: [
 							{
-								label: 'Skip this one',
-								value: 'skip',
-							},
-							{
 								label: 'Overwrite this one',
 								value: 'overwrite',
+							},
+							{
+								label: 'Skip this one',
+								value: 'skip',
 							},
 							{
 								label: 'Skip all',

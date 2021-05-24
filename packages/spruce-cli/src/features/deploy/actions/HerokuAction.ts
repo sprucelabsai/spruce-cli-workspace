@@ -36,8 +36,8 @@ type Options = SchemaValues<OptionsSchema>
 export default class DeployAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'deploy'
 	public optionsSchema = optionsSchema
-
 	public commandAliases = ['deploy.heroku']
+	public invocationMessage = 'Deploying to Heroku... 🚀'
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		let results: FeatureActionResponse = {}

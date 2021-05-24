@@ -20,6 +20,8 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'sync'
 	public optionsSchema = syncSchemasActionSchema
 	public commandAliases = ['sync.schemas']
+	public invocationMessage =
+		'Syncing schemas and generating `SpruceSchemas` type namespace... 📃'
 
 	private readonly schemaWriter = this.Writer('schema')
 	private readonly schemaStore = this.Store('schema')

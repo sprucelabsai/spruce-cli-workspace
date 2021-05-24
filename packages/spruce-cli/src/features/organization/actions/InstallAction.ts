@@ -13,6 +13,7 @@ export default class InstallAction extends AbstractFeatureAction<OptionsSchema> 
 	public code = 'install'
 	public commandAliases = ['install.skill']
 	public optionsSchema: OptionsSchema = installSkillAtOrganizationActionSchema
+	public invocationMessage = 'Installing skill at org... 🏙'
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		try {

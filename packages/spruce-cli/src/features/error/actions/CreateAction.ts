@@ -13,6 +13,7 @@ type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorOptions
 export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'create'
 	public optionsSchema = createErrorActionSchema
+	public invocationMessage = 'Creating a new error builder... 🤾‍♀️'
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)

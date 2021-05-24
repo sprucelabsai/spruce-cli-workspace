@@ -33,6 +33,7 @@ export default class RegisterAction extends AbstractFeatureAction<OptionsSchema>
 	public code = 'register'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['register.skill', 'register']
+	public invocationMessage = 'Registering your skill... ⚡️'
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const { nameReadable, nameKebab, description } =

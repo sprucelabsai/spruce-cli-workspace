@@ -68,20 +68,23 @@ export default class PkgService extends CommandService {
 
 	public async install(pkg: string[] | string, options?: AddOptions) {
 		const packages = Array.isArray(pkg) ? pkg : [pkg]
-		let install = false
 		const labsModules: string[] = []
+		let totalInstalled = 0
+		let totalSkipped = 0
 
 		for (const thisPackage of packages) {
-			if (!this.isInstalled(thisPackage)) {
-				install = true
+			if (thisPackage.startsWith('@sprucelabs/')) {
+				labsModules.push(thisPackage.replace('@latest', ''))
+			}
 
-				if (thisPackage.startsWith('@sprucelabs/')) {
-					labsModules.push(thisPackage.replace('@latest', ''))
-				}
-				break
+			if (!this.isInstalled(thisPackage)) {
+				totalInstalled++
+			} else {
+				totalSkipped++
 			}
 		}
-		if (install) {
+
+		if (totalInstalled > 0) {
 			const args: string[] = [
 				'-timeout=9999999',
 				'--no-progress',
@@ -95,14 +98,16 @@ export default class PkgService extends CommandService {
 			await this.execute('npm', {
 				args,
 			})
-
-			for (const lm of labsModules) {
-				this.set({
-					path: `${options?.isDev ? 'devDependencies' : 'dependencies'}.${lm}`,
-					value: 'latest',
-				})
-			}
 		}
+
+		for (const lm of labsModules) {
+			this.set({
+				path: `${options?.isDev ? 'devDependencies' : 'dependencies'}.${lm}`,
+				value: 'latest',
+			})
+		}
+
+		return { totalInstalled, totalSkipped }
 	}
 
 	public async uninstall(pkg: string[] | string) {

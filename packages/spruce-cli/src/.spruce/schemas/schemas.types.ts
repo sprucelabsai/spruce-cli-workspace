@@ -1252,7 +1252,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		interface DoesHonorPermissionContractEmitTarget {
 			
 				
-				'personId': string
+				'personId'?: string| undefined | null
 				
 				'organizationId'?: string| undefined | null
 				
@@ -1270,7 +1270,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            /** . */
 			            'personId': {
 			                type: 'id',
-			                isRequired: true,
 			                options: undefined
 			            },
 			            /** . */
@@ -1331,7 +1330,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		interface DoesHonorPermissionContractEmitTargetAndPayload {
 			
 				
-				'target': SpruceSchemas.Mercury.v2020_12_25.DoesHonorPermissionContractEmitTarget
+				'target'?: SpruceSchemas.Mercury.v2020_12_25.DoesHonorPermissionContractEmitTarget| undefined | null
 				
 				'payload': SpruceSchemas.Mercury.v2020_12_25.DoesHonorPermissionContractEmitPayload
 		}
@@ -1345,7 +1344,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            /** . */
 			            'target': {
 			                type: 'schema',
-			                isRequired: true,
 			                options: {schema: SpruceSchemas.Mercury.v2020_12_25.DoesHonorPermissionContractEmitTargetSchema,}
 			            },
 			            /** . */
@@ -1452,6 +1450,80 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 
 
+	namespace SpruceSchemas.Mercury.v2020_09_01 {
+
+		
+		interface PermissionDefaults {
+			
+				
+				'skill'?: boolean| undefined | null
+				/** Owner. */
+				'owner'?: SpruceSchemas.Mercury.v2020_09_01.StatusFlags| undefined | null
+				/** Group manager. */
+				'groupManager'?: SpruceSchemas.Mercury.v2020_09_01.StatusFlags| undefined | null
+				/** Manager. */
+				'manager'?: SpruceSchemas.Mercury.v2020_09_01.StatusFlags| undefined | null
+				/** Teammate. */
+				'teammate'?: SpruceSchemas.Mercury.v2020_09_01.StatusFlags| undefined | null
+				/** Guest. */
+				'guest'?: SpruceSchemas.Mercury.v2020_09_01.StatusFlags| undefined | null
+				/** Anonymous. */
+				'anonymous'?: SpruceSchemas.Mercury.v2020_09_01.StatusFlags| undefined | null
+		}
+
+		interface PermissionDefaultsSchema extends SpruceSchema.Schema {
+			id: 'permissionDefaults',
+			version: 'v2020_09_01',
+			namespace: 'Mercury',
+			name: '',
+			    fields: {
+			            /** . */
+			            'skill': {
+			                type: 'boolean',
+			                options: undefined
+			            },
+			            /** Owner. */
+			            'owner': {
+			                label: 'Owner',
+			                type: 'schema',
+			                options: {schema: SpruceSchemas.Mercury.v2020_09_01.StatusFlagsSchema,}
+			            },
+			            /** Group manager. */
+			            'groupManager': {
+			                label: 'Group manager',
+			                type: 'schema',
+			                options: {schema: SpruceSchemas.Mercury.v2020_09_01.StatusFlagsSchema,}
+			            },
+			            /** Manager. */
+			            'manager': {
+			                label: 'Manager',
+			                type: 'schema',
+			                options: {schema: SpruceSchemas.Mercury.v2020_09_01.StatusFlagsSchema,}
+			            },
+			            /** Teammate. */
+			            'teammate': {
+			                label: 'Teammate',
+			                type: 'schema',
+			                options: {schema: SpruceSchemas.Mercury.v2020_09_01.StatusFlagsSchema,}
+			            },
+			            /** Guest. */
+			            'guest': {
+			                label: 'Guest',
+			                type: 'schema',
+			                options: {schema: SpruceSchemas.Mercury.v2020_09_01.StatusFlagsSchema,}
+			            },
+			            /** Anonymous. */
+			            'anonymous': {
+			                label: 'Anonymous',
+			                type: 'schema',
+			                options: {schema: SpruceSchemas.Mercury.v2020_09_01.StatusFlagsSchema,}
+			            },
+			    }
+		}
+
+		type PermissionDefaultsEntity = SchemaEntity<SpruceSchemas.Mercury.v2020_09_01.PermissionDefaultsSchema>
+
+	}
 
 
 
@@ -1934,6 +2006,130 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		}
 
 		type HealthResponsePayloadEntity = SchemaEntity<SpruceSchemas.Mercury.v2020_12_25.HealthResponsePayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.Mercury.v2020_12_25 {
+
+		
+		interface HirePersonEmitTarget {
+			
+				
+				'organizationId': string
+		}
+
+		interface HirePersonEmitTargetSchema extends SpruceSchema.Schema {
+			id: 'hirePersonEmitTarget',
+			version: 'v2020_12_25',
+			namespace: 'Mercury',
+			name: '',
+			    fields: {
+			            /** . */
+			            'organizationId': {
+			                type: 'id',
+			                isRequired: true,
+			                options: undefined
+			            },
+			    }
+		}
+
+		type HirePersonEmitTargetEntity = SchemaEntity<SpruceSchemas.Mercury.v2020_12_25.HirePersonEmitTargetSchema>
+
+	}
+
+
+	namespace SpruceSchemas.Mercury.v2020_12_25 {
+
+		
+		interface HirePersonEmitPayload {
+			
+				
+				'personId': string
+				
+				'roleId': string
+		}
+
+		interface HirePersonEmitPayloadSchema extends SpruceSchema.Schema {
+			id: 'hirePersonEmitPayload',
+			version: 'v2020_12_25',
+			namespace: 'Mercury',
+			name: '',
+			    fields: {
+			            /** . */
+			            'personId': {
+			                type: 'id',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'roleId': {
+			                type: 'id',
+			                isRequired: true,
+			                options: undefined
+			            },
+			    }
+		}
+
+		type HirePersonEmitPayloadEntity = SchemaEntity<SpruceSchemas.Mercury.v2020_12_25.HirePersonEmitPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.Mercury.v2020_12_25 {
+
+		
+		interface HirePersonEmitTargetAndPayload {
+			
+				
+				'target': SpruceSchemas.Mercury.v2020_12_25.HirePersonEmitTarget
+				
+				'payload': SpruceSchemas.Mercury.v2020_12_25.HirePersonEmitPayload
+		}
+
+		interface HirePersonEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'hirePersonEmitTargetAndPayload',
+			version: 'v2020_12_25',
+			namespace: 'Mercury',
+			name: '',
+			    fields: {
+			            /** . */
+			            'target': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.Mercury.v2020_12_25.HirePersonEmitTargetSchema,}
+			            },
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.Mercury.v2020_12_25.HirePersonEmitPayloadSchema,}
+			            },
+			    }
+		}
+
+		type HirePersonEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.Mercury.v2020_12_25.HirePersonEmitTargetAndPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.Mercury.v2020_12_25 {
+
+		
+		interface HirePersonResponsePayload {
+			
+		}
+
+		interface HirePersonResponsePayloadSchema extends SpruceSchema.Schema {
+			id: 'hirePersonResponsePayload',
+			version: 'v2020_12_25',
+			namespace: 'Mercury',
+			name: '',
+			    fields: {
+			    }
+		}
+
+		type HirePersonResponsePayloadEntity = SchemaEntity<SpruceSchemas.Mercury.v2020_12_25.HirePersonResponsePayloadSchema>
 
 	}
 

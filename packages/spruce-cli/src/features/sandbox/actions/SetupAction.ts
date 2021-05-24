@@ -14,6 +14,7 @@ type OptionsSchema = typeof optionsSchema
 export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'setup'
 	public optionsSchema = setupVscodeSchema
+	public invocationMessage = 'Setting up sandbox support... 🏝'
 
 	public async execute(): Promise<FeatureActionResponse> {
 		const createListenerAction = this.getFeature('event').Action('listen')

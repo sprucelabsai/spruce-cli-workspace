@@ -14,7 +14,7 @@ const myFantasticallyAmazingEventListenPermissions = buildPermissionContract({
               Uncomment this comment to set which roles will pass by default. Keep
               in mind this is overridden by the people who install your skill.
 
-            defaultsByRoleBase: {
+            defaults: {
                 guest: { onPrem: true },
                 owner: { onPrem: true },
                 groupManager: { onPrem: true },

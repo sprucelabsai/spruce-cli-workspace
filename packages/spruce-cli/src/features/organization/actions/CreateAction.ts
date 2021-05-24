@@ -10,6 +10,7 @@ type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateOrganizationOptions
 export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'create'
 	public optionsSchema = createOrganizationActionSchema
+	public invocationMessage = 'Creating an organization... 🏙'
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const { nameReadable, nameKebab } =

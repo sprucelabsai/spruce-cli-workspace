@@ -26,6 +26,7 @@ export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'login'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['login']
+	public invocationMessage = 'Logging in... 🤝'
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const { phone, pin: suppliedPin } =

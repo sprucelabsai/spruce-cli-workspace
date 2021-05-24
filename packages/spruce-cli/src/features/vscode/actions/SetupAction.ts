@@ -11,6 +11,7 @@ type OptionsSchema =
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeOptions
 
 export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
+	public invocationMessage = 'Setting up Visual Studio Codez... 👾'
 	private recommendedExtensions: Extension[] = [
 		{
 			id: 'dbaeumer.vscode-eslint',

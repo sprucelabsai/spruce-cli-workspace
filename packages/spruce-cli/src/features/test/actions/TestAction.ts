@@ -29,6 +29,8 @@ type DidChangePayload =
 export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'test'
 	public optionsSchema = optionsSchema
+	public invocationMessage = 'Starting tests... 🛡'
+
 	private testReporter?: TestReporter | undefined
 	private testRunner?: TestRunner
 	private runnerStatus: 'hold' | 'quit' | 'run' | 'restart' = 'hold'

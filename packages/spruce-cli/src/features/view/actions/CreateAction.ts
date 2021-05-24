@@ -84,6 +84,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public code = 'create'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['create.view']
+	public invocationMessage = 'Creating your new view controller... 🌲'
 
 	public async execute(
 		options: SchemaValues<OptionsSchema>

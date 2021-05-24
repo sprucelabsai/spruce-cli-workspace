@@ -8,6 +8,7 @@ type OptionsSchema =
 type Options =
 	SpruceSchemas.SpruceCli.v2020_07_22.CreateConversationTopicOptions
 export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
+	public invocationMessage = 'Creating your new topic for conversation... 🎙'
 	public code = 'create'
 	public optionsSchema = createConversationTopicOptionsSchema
 
