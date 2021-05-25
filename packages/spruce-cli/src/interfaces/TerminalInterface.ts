@@ -215,7 +215,6 @@ export default class TerminalInterface implements GraphicsInterface {
 			if (files.length > 0) {
 				const table = new Table({
 					head: ['File', 'Description'],
-					colWidths: [40, 50],
 					wordWrap: true,
 				})
 

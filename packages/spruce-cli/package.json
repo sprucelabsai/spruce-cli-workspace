@@ -425,7 +425,8 @@
 						"canGetVersion": "I129",
 						"blockedCommandsThrow": "I130",
 						"overridesAreLoadedIntoAttacher": "I131",
-						"skillViewExtendsAbstractViewControllerWithProperView": "I134"
+						"skillViewExtendsAbstractViewControllerWithProperView": "I134",
+						"hasSetRemoteAction": "I147"
 					}
 				}
 			],
