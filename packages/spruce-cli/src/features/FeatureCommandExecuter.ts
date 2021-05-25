@@ -61,6 +61,8 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		const feature = this.featureInstaller.getFeature(this.featureCode)
 		const action = feature.Action(this.actionCode)
 
+		this.clearAndRenderHeadline(action)
+
 		const isInstalled = await this.featureInstaller.isInstalled(
 			this.featureCode
 		)
@@ -77,10 +79,6 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			const ourFeatureResults = await this.installOurFeature(installOptions)
 			response = merge(response, ourFeatureResults)
 		}
-
-		this.ui.clear()
-		this.ui.renderHero(CLI_HERO)
-		this.ui.renderHeadline(action.invocationMessage)
 
 		const executeResults = await action.execute({
 			...answers,
@@ -112,6 +110,12 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		})
 
 		return response
+	}
+
+	private clearAndRenderHeadline(action: FeatureAction<Schema>) {
+		this.ui.clear()
+		this.ui.renderHero(CLI_HERO)
+		this.ui.renderHeadline(action.invocationMessage)
 	}
 
 	private async askAboutMissingActionOptions(

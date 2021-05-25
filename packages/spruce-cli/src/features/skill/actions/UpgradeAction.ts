@@ -27,7 +27,11 @@ export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> 
 			shouldConfirm: normalizedOptions.upgradeMode !== 'forceEverything',
 		})
 
-		InFlightEntertainment.start()
+		InFlightEntertainment.start([
+			"Let's start the upgrade!",
+			'While things are going, see if you can beat 1k points!',
+			'Go!!!!',
+		])
 
 		await this.reInstallPackageDependencies()
 

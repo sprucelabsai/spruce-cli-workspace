@@ -13,18 +13,20 @@ export default class InFlightEntertainment {
 		this.game = new GameService(options.command, options.ui)
 	}
 
-	public static start() {
+	public static start(intro?: string[]) {
 		if (this.activeGameCount > 0) {
 			this.activeGameCount++
 			return
 		}
 		this.activeGameCount = 1
 
-		void this.game?.play([
-			'Starting install...',
-			`I gotta install some dependencies to get things working. I'll be using NPM.`,
-			`NPM can be slow, so in the mean time, enjoy some games! 🤩`,
-		])
+		void this.game?.play(
+			intro ?? [
+				`I gotta install some dependencies to get things working.`,
+				`I'll be using NPM.`,
+				`NPM can be slow, so in the mean time, enjoy some games! 🤩`,
+			]
+		)
 	}
 
 	public static writeStatus(message: string) {
