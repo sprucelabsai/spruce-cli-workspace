@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.5.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.4.4...v14.5.0) (2021-05-24)
+
+
+### Features
+
+* confirm script updates when upgrading skill ([77703cb](https://github.com/sprucelabsai/spruce-cli-workspace/commit/77703cb))
+* confirm script upgrades ([241f112](https://github.com/sprucelabsai/spruce-cli-workspace/commit/241f112))
+* sprucelabs modules install at latest ([d8be418](https://github.com/sprucelabsai/spruce-cli-workspace/commit/d8be418))
+
+
+
+
+
 ## [14.4.4](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.4.3...v14.4.4) (2021-05-22)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
