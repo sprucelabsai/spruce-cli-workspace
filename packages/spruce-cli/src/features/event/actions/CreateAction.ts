@@ -9,8 +9,9 @@ import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEve
 import SpruceError from '../../../errors/SpruceError'
 import namedTemplateItemBuilder from '../../../schemas/v2020_07_22/namedTemplateItem.builder'
 import syncEventActionBuilder from '../../../schemas/v2020_07_22/syncEventOptions.builder'
-import mergeUtil from '../../../utilities/merge.utility'
+import actionUtil from '../../../utilities/action.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
+import FeatureCommandExecuter from '../../FeatureCommandExecuter'
 import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
@@ -85,7 +86,10 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 				}
 			)
 
-			const syncResponse = await this.parent.Action('sync').execute(syncOptions)
+			const syncResponse = await FeatureCommandExecuter.Executer(
+				'event',
+				'sync'
+			).execute(syncOptions)
 
 			const fqen = eventNameUtil.join({
 				eventName: nameKebab,
@@ -93,7 +97,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 				version: resolvedVersion,
 			})
 
-			return mergeUtil.mergeActionResults(
+			return actionUtil.mergeActionResults(
 				{ files, meta: { fqen } },
 				syncResponse
 			)

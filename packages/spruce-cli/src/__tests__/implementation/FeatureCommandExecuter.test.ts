@@ -5,7 +5,9 @@ import {
 	versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import featuresUtil from '../../features/feature.utilities'
+import FeatureCommandExecuter from '../../features/FeatureCommandExecuter'
 import {
 	FeatureActionResponse,
 	FeatureCode,
@@ -15,6 +17,11 @@ import AbstractSchemaTest from '../../tests/AbstractSchemaTest'
 import testUtil from '../../tests/utilities/test.utility'
 
 export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
+	protected static async beforeEach() {
+		await super.beforeEach()
+		FeatureCommandExecuter.shouldAutoHandleDependencies = true
+	}
+
 	@test()
 	protected static async canInstantiateExecuter() {
 		const executer = this.Executer('schema', 'create')
@@ -22,9 +29,17 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 	}
 
 	@test()
+	protected static async throwWhenExecutingWhenMissingDependenciens() {
+		const err = await assert.doesThrowAsync(() =>
+			this.Executer('skill', 'create').execute({})
+		)
+		errorAssertUtil.assertError(err, 'EXECUTING_COMMAND_FAILED')
+	}
+
+	@test()
 	protected static async shouldAskAllQuestionsOfFeature() {
 		const executer = this.Executer('skill', 'create')
-		const promise = executer.execute()
+		const promise = executer.execute({})
 
 		await this.waitForInput()
 
@@ -78,7 +93,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		assert.isEqual(willExecuteHitCount, 0)
 		assert.isEqual(didExecuteHitCount, 0)
 
-		const promise = executer.execute()
+		const promise = executer.execute({})
 
 		await this.waitForInput()
 
@@ -108,41 +123,12 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		await this.assertHealthySkillNamed('already-answered-skill')
 	}
 
-	private static async assertHealthySkillNamed(
-		name: string,
-		expectedHealth: HealthCheckResults = { skill: { status: 'passed' } },
-		expectedInstalledSkills: FeatureCode[] = ['skill']
-	) {
-		const cli = await this.Cli()
-		await this.linkLocalPackages()
-
-		const health = await cli.checkHealth()
-
-		// @ts-ignore
-		if (health.schema?.schemas) {
-			//@ts-ignore
-			health.schema.schemas = this.sortSchemas(health.schema.schemas)
-		}
-
-		assert.isEqualDeep(health, expectedHealth)
-
-		const packageContents = diskUtil.readFile(this.resolvePath('package.json'))
-		assert.doesInclude(packageContents, name)
-
-		const installer = this.FeatureInstaller()
-
-		for (const code of expectedInstalledSkills) {
-			const isInstalled = await installer.isInstalled(code)
-			assert.isTrue(isInstalled)
-		}
-	}
-
 	@test()
 	protected static async shouldAddListenerWithoutBreakingOnSkill() {
 		await this.FeatureFixture().installCachedFeatures('schemas')
 
 		const executer = this.Executer('event', 'listen')
-		const promise = executer.execute()
+		const promise = executer.execute({})
 
 		await this.waitForInput()
 
@@ -160,7 +146,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 	@test()
 	protected static async shouldAskInstallDependentFeatures() {
 		const executer = this.Executer('schema', 'create')
-		void executer.execute()
+		void executer.execute({})
 
 		await this.waitForInput()
 
@@ -177,7 +163,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 	@test()
 	protected static async shouldInstallDependentFeatures() {
 		const executer = this.Executer('schema', 'create')
-		const promise = executer.execute()
+		const promise = executer.execute({})
 
 		await this.waitForInput()
 
@@ -228,7 +214,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 	@test()
 	protected static async shouldInstallTwoDependentFeatures() {
 		const executer = this.Executer('error', 'create')
-		const promise = executer.execute()
+		const promise = executer.execute({})
 
 		await this.waitForInput()
 
@@ -304,6 +290,35 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		)
 	}
 
+	private static async assertHealthySkillNamed(
+		name: string,
+		expectedHealth: HealthCheckResults = { skill: { status: 'passed' } },
+		expectedInstalledSkills: FeatureCode[] = ['skill']
+	) {
+		const cli = await this.Cli()
+		await this.linkLocalPackages()
+
+		const health = await cli.checkHealth()
+
+		// @ts-ignore
+		if (health.schema?.schemas) {
+			//@ts-ignore
+			health.schema.schemas = this.sortSchemas(health.schema.schemas)
+		}
+
+		assert.isEqualDeep(health, expectedHealth)
+
+		const packageContents = diskUtil.readFile(this.resolvePath('package.json'))
+		assert.doesInclude(packageContents, name)
+
+		const installer = this.FeatureInstaller()
+
+		for (const code of expectedInstalledSkills) {
+			const isInstalled = await installer.isInstalled(code)
+			assert.isTrue(isInstalled)
+		}
+	}
+
 	private static async finishBuildingUpToNamingNewError(
 		actionPromise: Promise<FeatureInstallResponse & FeatureActionResponse>
 	) {
@@ -326,7 +341,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		skillFeatureAnswer: 'skip' | 'yes' | 'alwaysSkip'
 	) {
 		const executer = this.Executer('error', 'create')
-		const promise = executer.execute()
+		const promise = executer.execute({})
 
 		await this.waitForInput()
 
@@ -382,7 +397,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		await this.finishBuildingUpToNamingNewError(actionPromise)
 
 		const executer = this.Executer('error', 'create')
-		const promise = executer.execute()
+		const promise = executer.execute({})
 
 		await this.waitForInput()
 

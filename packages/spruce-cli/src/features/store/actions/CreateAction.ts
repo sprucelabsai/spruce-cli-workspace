@@ -1,7 +1,7 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import namedTemplateItemBuilder from '../../../schemas/v2020_07_22/namedTemplateItem.builder'
-import mergeUtil from '../../../utilities/merge.utility'
+import actionUtil from '../../../utilities/action.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 
 const optionsSchema = buildSchema({
@@ -57,7 +57,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 
 			const syncResults = await this.Action('sync').execute({})
 
-			return mergeUtil.mergeActionResults(syncResults, {
+			return actionUtil.mergeActionResults(syncResults, {
 				files,
 			})
 		} catch (err) {

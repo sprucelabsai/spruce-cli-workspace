@@ -1,14 +1,21 @@
 import { Schema, SchemaPartialValues, SchemaValues } from '@sprucelabs/schema'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
+import { Templates } from '@sprucelabs/spruce-templates'
 import merge from 'lodash/merge'
 import FormComponent from '../components/FormComponent'
 import { CLI_HERO } from '../constants'
 import SpruceError from '../errors/SpruceError'
 import { GlobalEmitter } from '../GlobalEmitter'
+import ServiceFactory from '../services/ServiceFactory'
+import StoreFactory from '../stores/StoreFactory'
+import { ApiClientFactory } from '../types/apiClient.types'
 import { GraphicsInterface } from '../types/cli.types'
+import actionUtil from '../utilities/action.utility'
 import formUtil from '../utilities/form.utility'
+import WriterFactory from '../writers/WriterFactory'
 import AbstractFeature, { FeatureDependency } from './AbstractFeature'
 import featuresUtil from './feature.utilities'
+import FeatureActionFactory from './FeatureActionFactory'
 import FeatureInstaller from './FeatureInstaller'
 import {
 	FeatureCode,
@@ -27,45 +34,99 @@ type FeatureDependencyWithFeature = FeatureDependency & {
 	feature: AbstractFeature
 }
 
+interface Dependencies {
+	ui: GraphicsInterface
+	featureInstaller: FeatureInstaller
+	emitter: GlobalEmitter
+	writerFactory: WriterFactory
+	apiClientFactory: ApiClientFactory
+	cwd: string
+	serviceFactory: ServiceFactory
+	storeFactory: StoreFactory
+	templates: Templates
+}
+
+type Options<F extends FeatureCode> = {
+	featureCode: F
+	actionCode: string
+} & Dependencies
+
 export default class FeatureCommandExecuter<F extends FeatureCode> {
+	public static shouldAutoHandleDependencies = true
+	private static ui: GraphicsInterface
+
+	private actionFactory?: FeatureActionFactory
+	private writerFactory: WriterFactory
 	private featureCode: F
 	private actionCode: string
 	private ui: GraphicsInterface
 	private featureInstaller: FeatureInstaller
 	private emitter: GlobalEmitter
+	private apiClientFactory: ApiClientFactory
+	private cwd: string
+	private serviceFactory: ServiceFactory
+	private storeFactory: StoreFactory
+	private templates: Templates
+	private static dependencies: Dependencies
 
-	public constructor(options: {
-		term: GraphicsInterface
-		featureCode: F
-		actionCode: string
-		featureInstaller: FeatureInstaller
-		emitter: GlobalEmitter
-	}) {
+	private constructor(options: Options<F>) {
 		this.featureCode = options.featureCode
 		this.actionCode = options.actionCode
-		this.ui = options.term
+		this.ui = options.ui
 		this.featureInstaller = options.featureInstaller
 		this.emitter = options.emitter
+		this.apiClientFactory = options.apiClientFactory
+		this.cwd = options.cwd
+		this.serviceFactory = options.serviceFactory
+		this.storeFactory = options.storeFactory
+		this.writerFactory = options.writerFactory
+		this.templates = options.templates
+	}
+
+	public static setDependencies(dependencies: Dependencies) {
+		this.dependencies = dependencies
+	}
+
+	public static Executer(featureCode: keyof FeatureMap, actionCode: string) {
+		if (!this.ui) {
+			throw new Error(
+				'You must call FeatureCommandExecuter.setDependencies() before you can build a new executer.'
+			)
+		}
+
+		return new this({
+			...this.dependencies,
+			featureCode,
+			actionCode,
+		})
 	}
 
 	public async execute(
 		options?: Record<string, any> & FeatureCommandExecuteOptions<F>
 	): Promise<FeatureInstallResponse & FeatureActionResponse> {
-		await this.emitter.emit('feature.will-execute', {
+		const isInstalled = await this.featureInstaller.isInstalled(
+			this.featureCode
+		)
+
+		if (!isInstalled && !FeatureCommandExecuter.shouldAutoHandleDependencies) {
+			throw new SpruceError({
+				code: 'EXECUTING_COMMAND_FAILED',
+				friendlyMessage: `You need to install the \`${this.featureCode}\` feature.`,
+			})
+		}
+
+		const willExecuteResults = await this.emitter.emit('feature.will-execute', {
 			featureCode: this.featureCode,
 			actionCode: this.actionCode,
 		})
 
+		actionUtil.assertNoErrorsInResponse(willExecuteResults)
+
 		let response = await this.installOrMarkAsSkippedMissingDependencies()
 
 		const feature = this.featureInstaller.getFeature(this.featureCode)
-		const action = feature.Action(this.actionCode)
+		const action = this.Action(feature, this.actionCode)
 
-		this.clearAndRenderHeadline(action)
-
-		const isInstalled = await this.featureInstaller.isInstalled(
-			this.featureCode
-		)
 		const installOptions =
 			await this.askAboutMissingFeatureOptionsIfFeatureIsNotInstalled(
 				isInstalled,
@@ -84,6 +145,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			...answers,
 			shouldEmitExecuteEvents: false,
 		})
+
 		response = merge(response, executeResults)
 
 		const didExecuteResults = await this.emitter.emit('feature.did-execute', {
@@ -99,23 +161,44 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 
 		response = merge(response, didExecuteResults, ...payloads)
 
-		this.ui.stopLoading()
-
-		this.ui.clear()
-		this.ui.renderCommandSummary({
-			featureCode: this.featureCode,
-			actionCode: this.actionCode,
-			headline: executeResults.headline ?? `${action.code} finished!`,
-			...response,
-		})
-
 		return response
 	}
 
-	private clearAndRenderHeadline(action: FeatureAction<Schema>) {
-		this.ui.clear()
-		this.ui.renderHero(CLI_HERO)
-		this.ui.renderHeadline(action.invocationMessage)
+	private Action<S extends Schema = Schema>(
+		feature: AbstractFeature<any>,
+		code: string
+	): FeatureAction<S> {
+		const actionFactory = this.ActionFactory(feature, code)
+
+		return actionFactory.Action(code)
+	}
+
+	private ActionFactory(feature: AbstractFeature<any>, code: string) {
+		if (!this.actionFactory) {
+			//@ts-ignore
+			if (!feature.actionsDir) {
+				throw new Error(
+					`${code} Feature does not have an actions dir configured, make sure your Feature class has an actionsDir field.`
+				)
+			}
+
+			this.actionFactory = new FeatureActionFactory({
+				parent: feature,
+				writerFactory: this.writerFactory,
+				//@ts-ignore
+				actionsDir: feature.actionsDir,
+				apiClientFactory: this.apiClientFactory,
+				cwd: this.cwd,
+				serviceFactory: this.serviceFactory,
+				templates: this.templates,
+				storeFactory: this.storeFactory,
+				featureInstaller: this.featureInstaller,
+				ui: this.ui,
+				emitter: this.emitter,
+			})
+		}
+
+		return this.actionFactory
 	}
 
 	private async askAboutMissingActionOptions(
@@ -354,6 +437,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		const installedStatuses = await Promise.all(
 			dependencies.map(async (dependency) => {
 				const feature = this.featureInstaller.getFeature(dependency.code)
+
 				const isInstalled = await this.featureInstaller.isInstalled(
 					dependency.code
 				)

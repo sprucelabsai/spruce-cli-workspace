@@ -3,7 +3,7 @@ import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import createErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/createErrorOptions.schema'
 import createSchemaActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/createSchemaOptions.schema'
 import syncErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncErrorOptions.schema'
-import mergeUtil from '../../../utilities/merge.utility'
+import actionUtil from '../../../utilities/action.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -44,7 +44,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			normalizedOptions
 		)
 		const syncResults = await this.Action('sync').execute(syncOptions)
-		const mergedResults = mergeUtil.mergeActionResults(
+		const mergedResults = actionUtil.mergeActionResults(
 			createResults,
 			syncResults
 		)

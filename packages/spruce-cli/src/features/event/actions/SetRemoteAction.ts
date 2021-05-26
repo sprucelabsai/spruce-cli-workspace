@@ -1,7 +1,7 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
-import { REMOTES } from '../constants'
+import { Remote } from '../constants'
 
 const optionsSchema = buildSchema({
 	id: 'setRemoteOptions',
@@ -47,15 +47,11 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const { remote } = this.validateAndNormalizeOptions(options)
 
-		//@ts-ignore
-		const host = REMOTES[remote]
-
-		const env = this.Service('env')
-		env.set('HOST', host)
+		const r = this.Service('remote')
+		r.set(remote as Remote)
 
 		return {
-			headline: `Remote set to ${remote}!`,
-			summaryLines: [`Host: ${host}`],
+			summaryLines: [`Remote: ${remote}`, `Host: ${r.getHost()}`],
 		}
 	}
 }

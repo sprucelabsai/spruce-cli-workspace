@@ -1,6 +1,6 @@
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import setupTestsOptionsSchema from '#spruce/schemas/spruceCli/v2020_07_22/setupTestsOptions.schema'
-import mergeUtil from '../../../utilities/merge.utility'
+import actionUtil from '../../../utilities/action.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -46,7 +46,7 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 				})
 		}
 
-		return mergeUtil.mergeActionResults(
+		return actionUtil.mergeActionResults(
 			{},
 			loginResponse,
 			registerResponse,

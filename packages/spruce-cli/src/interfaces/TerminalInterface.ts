@@ -70,10 +70,19 @@ export default class TerminalInterface implements GraphicsInterface {
 	private renderStackTraces = false
 	private static loader?: ora.Ora | null
 	private progressBar: ProgressBarController | null = null
+	private static _doesSupportColor = process?.stdout?.isTTY
 
 	public constructor(cwd: string, renderStackTraces = false) {
 		this.cwd = cwd
 		this.renderStackTraces = renderStackTraces
+	}
+
+	public static doesSupportColor() {
+		return this._doesSupportColor
+	}
+
+	public static setDoesSupportColor(isTTy: boolean) {
+		this._doesSupportColor = isTTy
 	}
 
 	public async sendInput(): Promise<void> {

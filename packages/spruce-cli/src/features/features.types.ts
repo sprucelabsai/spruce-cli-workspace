@@ -38,7 +38,7 @@ export interface FeatureActionOptions {
 	storeFactory: StoreFactory
 	featureInstaller: FeatureInstaller
 	ui: GraphicsInterface
-	generatorFactory: WriterFactory
+	writerFactory: WriterFactory
 	emitter: GlobalEmitter
 	apiClientFactory: ApiClientFactory
 }

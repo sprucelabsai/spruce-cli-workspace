@@ -8,7 +8,6 @@ export default buildSchema({
 		cmd: {
 			type: 'text',
 			label: 'The command being run',
-			isRequired: true,
 		},
 		args: {
 			type: 'text',

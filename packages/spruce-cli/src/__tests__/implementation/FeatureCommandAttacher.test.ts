@@ -13,14 +13,10 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		await super.beforeEach()
 
 		this.program = this.MockCommanderProgram()
-		const installer = this.FeatureInstaller()
-		const term = this.ui
 
 		this.attacher = new FeatureCommandAttacher({
-			emitter: this.Emitter(),
 			program: this.program,
-			featureInstaller: installer,
-			ui: term,
+			ui: this.ui,
 			optionOverrides: {
 				'sync.schemas': {
 					fetchCoreSchemas: false,
@@ -176,9 +172,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 	@test()
 	protected static async blockedCommandsThrow() {
 		this.attacher = new FeatureCommandAttacher({
-			emitter: this.Emitter(),
 			program: this.program,
-			featureInstaller: this.FeatureInstaller(),
 			ui: this.ui,
 			optionOverrides: {},
 			blockedCommands: {

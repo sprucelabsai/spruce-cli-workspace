@@ -1,12 +1,14 @@
 import { Schema } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventOptions.schema'
+import TerminalInterface from '../../interfaces/TerminalInterface'
 import { FileDescription } from '../../types/cli.types'
 import AbstractFeature, {
 	FeatureDependency,
 	FeatureOptions,
 } from '../AbstractFeature'
-import { FeatureCode } from '../features.types'
+import FeatureCommandExecuter from '../FeatureCommandExecuter'
+import { FeatureActionResponse, FeatureCode } from '../features.types'
 import EventContractWriter from './writers/EventContractWriter'
 
 declare module '../../features/features.types' {
@@ -53,10 +55,47 @@ export default class EventFeature extends AbstractFeature {
 			'schema.did-fetch-schemas',
 			this.handleDidFetchSchemas.bind(this)
 		)
+
+		void this.emitter.on(
+			'feature.will-execute',
+			this.handleWillExecute.bind(this)
+		)
 	}
 
 	public async afterPackageInstall() {
 		diskUtil.createDir(diskUtil.resolvePath(this.cwd, 'src', 'events'))
+		return {}
+	}
+
+	private async handleWillExecute(payload: {
+		featureCode: string
+		actionCode: string
+	}): Promise<FeatureActionResponse> {
+		const { featureCode, actionCode } = payload
+
+		if (featureCode === 'event' && actionCode !== 'setRemote') {
+			const remote = this.Service('remote')
+			const host = remote.getRemote()
+
+			if (!host) {
+				if (!TerminalInterface.doesSupportColor()) {
+					throw new Error(
+						`Dang! I couldn't find env.HOST. Once that is set, lets try again!`
+					)
+				}
+
+				this.ui.renderLine(
+					`Uh oh! It looks like you haven't configured your remote! We gotta do that.`
+				)
+				const results = await FeatureCommandExecuter.Executer(
+					'event',
+					'setRemote'
+				).execute({})
+
+				return results
+			}
+		}
+
 		return {}
 	}
 

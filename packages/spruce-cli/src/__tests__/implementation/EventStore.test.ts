@@ -9,6 +9,7 @@ import {
 import { diskUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
+import CreateAction from '../../features/event/actions/CreateAction'
 import AbstractEventTest from '../../tests/AbstractEventTest'
 import testUtil from '../../tests/utilities/test.utility'
 
@@ -17,9 +18,16 @@ const EVENT_NAME = 'my-fantastically-amazing-event'
 const EVENT_CAMEL = 'myFantasticallyAmazingEvent'
 
 export default class EventStoreTest extends AbstractEventTest {
+	private static createAction: CreateAction
 	protected static get version() {
 		return versionUtil.generateVersion()
 	}
+
+	public static async beforeEach() {
+		await super.beforeEach()
+		this.createAction = this.Executer<CreateAction>('event', 'create')
+	}
+
 	@test()
 	protected static async canInstantiateEventStore() {
 		assert.isTruthy(this.Store('event'))
@@ -100,13 +108,13 @@ export default class EventStoreTest extends AbstractEventTest {
 
 	@test()
 	protected static async badLocalContractThrowsNiceError() {
-		const cli = await this.FeatureFixture().installCachedFeatures('events')
+		await this.FeatureFixture().installCachedFeatures('events')
 
 		const skill = await this.SkillFixture().registerCurrentSkill({
 			name: 'my new skill',
 		})
 
-		const results = await cli.getFeature('event').Action('create').execute({
+		const results = await this.createAction.execute({
 			nameReadable: EVENT_NAME_READABLE,
 			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
@@ -133,13 +141,13 @@ export default class EventStoreTest extends AbstractEventTest {
 
 	@test()
 	protected static async mixesInLocalContracts() {
-		const cli = await this.FeatureFixture().installCachedFeatures('events')
+		await this.FeatureFixture().installCachedFeatures('events')
 
 		const skill = await this.SkillFixture().registerCurrentSkill({
 			name: 'my new skill',
 		})
 
-		await cli.getFeature('event').Action('create').execute({
+		await this.createAction.execute({
 			nameReadable: EVENT_NAME_READABLE,
 			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
@@ -147,7 +155,7 @@ export default class EventStoreTest extends AbstractEventTest {
 
 		await this.copyEventBuildersAndPermissions(EVENT_NAME)
 
-		await cli.getFeature('event').Action('sync').execute({})
+		await this.Executer('event', 'sync').execute({})
 
 		const { contracts } = await this.Store('event').fetchEventContracts({
 			localNamespace: skill.slug,
@@ -193,7 +201,7 @@ export default class EventStoreTest extends AbstractEventTest {
 			name: 'my new skill',
 		})
 
-		const results = await cli.getFeature('event').Action('create').execute({
+		const results = await this.createAction.execute({
 			nameReadable: EVENT_NAME_READABLE,
 			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,

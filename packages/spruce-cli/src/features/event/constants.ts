@@ -9,3 +9,5 @@ export const REMOTES = {
 	sandbox: REMOTE_SANDBOX,
 	prod: REMOTE_PROD,
 }
+
+export type Remote = keyof typeof REMOTES

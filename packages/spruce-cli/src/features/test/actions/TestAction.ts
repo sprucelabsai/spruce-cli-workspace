@@ -192,9 +192,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 	private generateFilterFromChangedFiles(filesWeCareAbout: string[]): string {
 		const filter = filesWeCareAbout
-			.filter(
-				(file) => file.search('test.ts') > -1 || file.search('test.tsx') > -1
-			)
+			.filter((file) => file.search('test.js') > -1)
 			.map((file) => this.fileToFilterPattern(file))
 			.join(' ')
 
@@ -203,7 +201,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 
 	private doWeCareAboutThisFileChanging(path: string) {
 		const ext = pathUtil.extname(path)
-		if (path.search('/src/') > -1 && (ext === '.ts' || ext === '.tsx')) {
+		if (ext === '.js') {
 			return true
 		}
 
@@ -271,6 +269,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	private handleFilterPatternChange(filterPattern?: string) {
 		this.pattern = filterPattern
 		this.testReporter?.setFilterPattern(filterPattern)
+
 		this.restart()
 	}
 
@@ -332,6 +331,7 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 					const failed = payload.results.testFiles.find(
 						(file: any) => file.status === 'failed'
 					)
+
 					if (failed) {
 						const pattern = this.fileToFilterPattern(failed.path)
 						if (this.pattern !== pattern) {

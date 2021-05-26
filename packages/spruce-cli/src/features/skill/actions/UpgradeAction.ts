@@ -4,7 +4,7 @@ import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import upgradeSkillActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/upgradeSkillOptions.schema'
 import SpruceError from '../../../errors/SpruceError'
 import InFlightEntertainment from '../../../InFlightEntertainment'
-import mergeUtil from '../../../utilities/merge.utility'
+import actionUtil from '../../../utilities/action.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 import SkillFeature from '../SkillFeature'
@@ -37,7 +37,7 @@ export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> 
 
 		let results = await this.parent.Action('rebuild').execute({})
 
-		results = mergeUtil.mergeActionResults(results, { files: generatedFiles })
+		results = actionUtil.mergeActionResults(results, { files: generatedFiles })
 
 		const response = await this.emitter.emit('skill.did-upgrade')
 		const { payloads } = eventResponseUtil.getAllResponsePayloadsAndErrors(
@@ -46,7 +46,7 @@ export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> 
 		)
 
 		for (const p of payloads) {
-			results = mergeUtil.mergeActionResults(results, p)
+			results = actionUtil.mergeActionResults(results, p)
 		}
 
 		InFlightEntertainment.stop()

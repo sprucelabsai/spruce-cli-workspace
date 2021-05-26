@@ -26,7 +26,6 @@ import FeatureActionFactory, {
 	FeatureActionFactoryOptions,
 } from './FeatureActionFactory'
 import FeatureInstaller from './FeatureInstaller'
-import { FeatureAction } from './features.types'
 import { FeatureCode } from './features.types'
 
 export interface InstallResults {
@@ -104,7 +103,7 @@ export default abstract class AbstractFeature<
 		this.actionFactoryOptions = {
 			...options,
 			parent: this as AbstractFeature<any>,
-			generatorFactory: this.writerFactory,
+			writerFactory: this.writerFactory,
 			apiClientFactory: options.apiClientFactory,
 		}
 	}
@@ -133,26 +132,6 @@ export default abstract class AbstractFeature<
 
 	public getFeature<Code extends FeatureCode>(code: Code) {
 		return this.featureInstaller.getFeature(code)
-	}
-
-	public Action<S extends Schema = Schema>(code: string): FeatureAction<S> {
-		if (!this.actionFactory) {
-			if (!this.actionsDir) {
-				throw new Error(
-					`${this.code} Feature does not have an actions dir configured, make sure your Feature class has an actionsDir field.`
-				)
-			}
-			this.actionFactory = new FeatureActionFactory({
-				...this.actionFactoryOptions,
-				actionsDir: this.actionsDir,
-			})
-
-			if (!this.actionFactory) {
-				throw new Error(`Feature does not have an action factory!`)
-			}
-		}
-
-		return this.actionFactory.Action(code)
 	}
 
 	public async getAvailableActionCodes(): Promise<string[]> {

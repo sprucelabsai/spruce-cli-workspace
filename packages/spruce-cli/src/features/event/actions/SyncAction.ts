@@ -1,7 +1,8 @@
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventOptions.schema'
-import mergeUtil from '../../../utilities/merge.utility'
+import actionUtil from '../../../utilities/action.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
+import FeatureCommandExecuter from '../../FeatureCommandExecuter'
 import { FeatureActionResponse } from '../../features.types'
 import EventFeature from '../EventFeature'
 
@@ -27,11 +28,12 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			}
 		}
 
-		const schemaSyncResults = await this.getFeature('schema')
-			.Action('sync')
-			.execute({})
+		const schemaSyncResults = await FeatureCommandExecuter.Executer(
+			'schema',
+			'sync'
+		).execute({})
 
-		return mergeUtil.mergeActionResults(schemaSyncResults, results)
+		return actionUtil.mergeActionResults(schemaSyncResults, results)
 	}
 
 	private ContractWriter() {

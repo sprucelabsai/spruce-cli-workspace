@@ -10,6 +10,7 @@ import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import syncErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncErrorOptions.schema'
 import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasOptions.schema'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
+import FeatureCommandExecuter from '../../FeatureCommandExecuter'
 import { FeatureActionResponse, FeatureAction } from '../../features.types'
 import ErrorWriter from '../writers/ErrorWriter'
 
@@ -26,9 +27,10 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 		const { errorTypesDestinationDir, errorClassDestinationDir } =
 			normalizedOptions
 
-		const schemaSyncAction = this.getFeature('schema').Action(
+		const schemaSyncAction = FeatureCommandExecuter.Executer(
+			'schema',
 			'sync'
-		) as FeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptionsSchema>
+		) as any as FeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptionsSchema>
 
 		const errorSyncResults = await this.syncErrors(
 			schemaSyncAction,
@@ -52,6 +54,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			...item,
 			code: namesUtil.toConst(item.namePascal),
 		}))
+
 		const errorWriter = this.Writer('error')
 
 		const optionsResults = await this.generateOptionTypes(

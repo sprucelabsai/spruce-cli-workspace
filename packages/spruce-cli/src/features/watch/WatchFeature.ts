@@ -36,31 +36,34 @@ export default class WatchFeature extends AbstractFeature {
 	public async startWatching(options?: { delay?: number; sourceDir?: string }) {
 		this._isWatching = true
 
-		this.watcher = chokidar.watch(
-			diskUtil.resolvePath(this.cwd, options?.sourceDir ?? 'src'),
-			{
-				ignoreInitial: true,
-			}
-		)
+		const watchDir = diskUtil.resolvePath(this.cwd, options?.sourceDir ?? '')
+
+		this.watcher = chokidar.watch(watchDir, {
+			ignoreInitial: true,
+		})
+
+		const startsWith = diskUtil.resolvePath(watchDir, 'build')
 
 		this.watcher.on('all', async (action, path) => {
-			this.changesSinceLastChange.push({
-				schemaId: this.mapChokidarActionToSchemaId(action),
-				version: 'v2020_07_22',
-				values: {
-					action: this.mapChokidarActionToGeneratedAction(action),
-					path,
-					name: pathUtil.basename(path),
-				},
-			})
+			if (path.startsWith(startsWith)) {
+				this.changesSinceLastChange.push({
+					schemaId: this.mapChokidarActionToSchemaId(action),
+					version: 'v2020_07_22',
+					values: {
+						action: this.mapChokidarActionToGeneratedAction(action),
+						path,
+						name: pathUtil.basename(path),
+					},
+				})
 
-			if (this.timeoutId) {
-				clearTimeout(this.timeoutId)
+				if (this.timeoutId) {
+					clearTimeout(this.timeoutId)
+				}
+
+				this.timeoutId = setTimeout(async () => {
+					await this.fireChange()
+				}, options?.delay ?? 500)
 			}
-
-			this.timeoutId = setTimeout(async () => {
-				await this.fireChange()
-			}, options?.delay ?? 500)
 		})
 	}
 

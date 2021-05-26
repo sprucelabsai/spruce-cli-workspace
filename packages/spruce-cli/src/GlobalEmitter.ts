@@ -39,25 +39,7 @@ export const globalContract = buildEventContract({
 			}),
 		},
 		'skill.register-dashboard-widgets': {},
-		'feature.will-execute': {
-			emitPayloadSchema: buildSchema({
-				id: 'willExecuteEmitPayload',
-				fields: {
-					featureCode: {
-						type: 'text',
-						isRequired: true,
-					},
-					actionCode: {
-						type: 'text',
-						isRequired: true,
-					},
-				},
-			}),
-			responsePayloadSchema: buildSchema({
-				id: 'willExecuteResponsePayload',
-				fields: {},
-			}),
-		},
+
 		'test.register-abstract-test-classes': {
 			responsePayloadSchema: buildSchema({
 				id: 'registerAbstractTestClassResponsePayload',
@@ -80,6 +62,36 @@ export const globalContract = buildEventContract({
 									},
 								},
 							}),
+						},
+					},
+				},
+			}),
+		},
+		'feature.will-execute': {
+			emitPayloadSchema: buildSchema({
+				id: 'willExecuteEmitPayload',
+				importsWhenLocal: [
+					'import { FeatureActionResponse } from #spruce/../features/features/features.types',
+				],
+				fields: {
+					featureCode: {
+						type: 'text',
+						isRequired: true,
+					},
+					actionCode: {
+						type: 'text',
+						isRequired: true,
+					},
+				},
+			}),
+			responsePayloadSchema: buildSchema({
+				id: 'willExecuteResponsePayload',
+				fields: {
+					files: {
+						type: 'schema',
+						isArray: true,
+						options: {
+							schema: generatedFileSchema,
 						},
 					},
 				},

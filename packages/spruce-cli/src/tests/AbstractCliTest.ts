@@ -1,11 +1,13 @@
 import pathUtil from 'path'
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { templates } from '@sprucelabs/spruce-templates'
 import AbstractSpruceTest, { assert } from '@sprucelabs/test'
 import fs from 'fs-extra'
 import globby from 'globby'
 import * as uuid from 'uuid'
 import { CliBootOptions } from '../cli'
+import AbstractFeatureAction from '../features/AbstractFeatureAction'
 import FeatureCommandExecuter from '../features/FeatureCommandExecuter'
 import FeatureInstaller from '../features/FeatureInstaller'
 import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
@@ -75,6 +77,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		this.clearFixtures()
 
 		ImportService.clearCache()
+
+		FeatureCommandExecuter.shouldAutoHandleDependencies = false
 	}
 
 	protected static async afterEach() {
@@ -330,21 +334,26 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		testUtil.log(...args)
 	}
 
-	protected static Executer<F extends FeatureCode>(
-		featureCode: F,
-		actionCode: string
-	) {
+	protected static Executer<
+		Action extends AbstractFeatureAction = AbstractFeatureAction,
+		F extends FeatureCode = FeatureCode
+	>(featureCode: F, actionCode: string): Action {
 		const featureInstaller = this.FeatureInstaller()
 
-		const executer = new FeatureCommandExecuter({
-			featureCode,
-			actionCode,
+		FeatureCommandExecuter.setDependencies({
 			featureInstaller,
-			term: this.ui,
+			ui: this.ui,
 			emitter: this.Emitter(),
+			apiClientFactory: this.MercuryFixture().getApiClientFactory(),
+			cwd: this.cwd,
+			serviceFactory: this.ServiceFactory(),
+			storeFactory: this.StoreFactory(),
+			templates,
 		})
 
-		return executer
+		const executer = FeatureCommandExecuter.Executer(featureCode, actionCode)
+
+		return executer as any
 	}
 
 	protected static selectOptionBasedOnLabel(label: string) {

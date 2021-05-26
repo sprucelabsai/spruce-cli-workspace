@@ -18,7 +18,7 @@ import eventListenActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/liste
 import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventOptions.schema'
 import SpruceError from '../../../errors/SpruceError'
 import EventTemplateItemBuilder from '../../../templateItemBuilders/EventTemplateItemBuilder'
-import mergeUtil from '../../../utilities/merge.utility'
+import actionUtil from '../../../utilities/action.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -168,7 +168,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 
 				const syncResults = await this.Action('sync').execute(syncOptions)
 
-				response = mergeUtil.mergeActionResults(syncResults, response)
+				response = actionUtil.mergeActionResults(syncResults, response)
 			}
 
 			return response

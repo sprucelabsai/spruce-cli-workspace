@@ -2,7 +2,7 @@ import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../../../errors/SpruceError'
 import { SkillAuth } from '../../../services/AuthService'
-import mergeUtil from '../../../utilities/merge.utility'
+import actionUtil from '../../../utilities/action.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -50,7 +50,7 @@ export default class DeployAction extends AbstractFeatureAction<OptionsSchema> {
 			await this.setupGitRemote()
 
 			const procResults = await this.setupProcFile()
-			results = mergeUtil.mergeActionResults(results, procResults)
+			results = actionUtil.mergeActionResults(results, procResults)
 
 			await this.assertNoPendingGitChanges()
 		} catch (err) {
@@ -310,7 +310,7 @@ export default class DeployAction extends AbstractFeatureAction<OptionsSchema> {
 						shouldReportWhileRunning: false,
 					})
 
-				results = mergeUtil.mergeActionResults(results, testResults)
+				results = actionUtil.mergeActionResults(results, testResults)
 			} catch (err) {
 				results = {
 					errors: [
@@ -335,7 +335,7 @@ export default class DeployAction extends AbstractFeatureAction<OptionsSchema> {
 					shouldFixLintFirst: true,
 				})
 
-				results = mergeUtil.mergeActionResults(results, buildResults)
+				results = actionUtil.mergeActionResults(results, buildResults)
 			} catch (err) {
 				results = {
 					errors: [

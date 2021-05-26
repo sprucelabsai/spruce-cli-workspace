@@ -11,7 +11,7 @@ import { FeatureActionResponse } from '../../features/features.types'
 import AbstractEventTest from '../../tests/AbstractEventTest'
 import testUtil from '../../tests/utilities/test.utility'
 import { RegisteredSkill } from '../../types/cli.types'
-import mergeUtil from '../../utilities/merge.utility'
+import actionUtil from '../../utilities/action.utility'
 
 const EVENT_NAME_READABLE = 'my fantastically amazing event'
 const EVENT_NAME = 'my-fantastically-amazing-event'
@@ -74,7 +74,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		const syncResults = await cli.getFeature('event').Action('sync').execute({})
 		assert.isFalsy(syncResults.errors)
 
-		const mixedResults = mergeUtil.mergeActionResults(results, syncResults)
+		const mixedResults = actionUtil.mergeActionResults(results, syncResults)
 
 		await this.assertExpectedTargetAndPayload(mixedResults)
 		await this.assertExpectedPayloadSchemas(mixedResults)

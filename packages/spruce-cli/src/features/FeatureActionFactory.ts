@@ -56,8 +56,7 @@ export default class FeatureActionFactory {
 		const installCheckingFacade = new InstallCheckingActionDecorator(
 			action,
 			this.actionOptions.parent,
-			this.actionOptions.featureInstaller,
-			this.actionOptions.emitter
+			this.actionOptions.featureInstaller
 		)
 
 		return installCheckingFacade as FeatureAction<S>

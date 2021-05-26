@@ -9,15 +9,18 @@ import {
 	HealthCheckResults,
 	HEALTH_DIVIDER,
 } from '@sprucelabs/spruce-skill-utils'
+import { templates } from '@sprucelabs/spruce-templates'
 import { Command, CommanderStatic } from 'commander'
 import './addons/filePrompt.addon'
 import eventsContracts from '#spruce/events/events.contract'
 import { CLI_HERO, DEFAULT_HOST } from './constants'
 import SpruceError from './errors/SpruceError'
+import FeatureActionFactory from './features/FeatureActionFactory'
 import FeatureCommandAttacher, {
 	BlockedCommands,
 	OptionOverrides,
 } from './features/FeatureCommandAttacher'
+import FeatureCommandExecuter from './features/FeatureCommandExecuter'
 import FeatureInstaller from './features/FeatureInstaller'
 import FeatureInstallerFactory from './features/FeatureInstallerFactory'
 import { FeatureCode, InstallFeatureOptions } from './features/features.types'
@@ -39,6 +42,7 @@ import {
 import { GraphicsInterface } from './types/cli.types'
 import apiClientUtil from './utilities/apiClient.utility'
 import { argParserUtil } from './utilities/argParser.utility'
+import WriterFactory from './writers/WriterFactory'
 
 interface HealthOptions {
 	isRunningLocally?: boolean
@@ -203,11 +207,27 @@ export default class Cli implements CliInterface {
 				serviceFactory.Service(cwd, 'pkg')
 			)
 
-			attacher = new FeatureCommandAttacher({
-				program,
+			const writerFactory = new WriterFactory(
+				templates,
+				ui,
+				serviceFactory.Service(cwd, 'lint')
+			)
+
+			FeatureCommandExecuter.setDependencies({
+				writerFactory,
 				featureInstaller,
 				ui,
 				emitter,
+				apiClientFactory,
+				cwd,
+				serviceFactory,
+				storeFactory,
+				templates,
+			})
+
+			attacher = new FeatureCommandAttacher({
+				program,
+				ui,
 				optionOverrides,
 				blockedCommands,
 			})

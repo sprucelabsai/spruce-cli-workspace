@@ -1,13 +1,13 @@
 import { Schema, SchemaEntityFactory } from '@sprucelabs/schema'
 import { CommanderStatic } from 'commander'
+import { CLI_HERO } from '../constants'
 import SpruceError from '../errors/SpruceError'
-import { GlobalEmitter } from '../GlobalEmitter'
 import { GraphicsInterface } from '../types/cli.types'
 import commanderUtil from '../utilities/commander.utility'
 import AbstractFeature from './AbstractFeature'
 import featuresUtil from './feature.utilities'
 import FeatureCommandExecuter from './FeatureCommandExecuter'
-import FeatureInstaller from './FeatureInstaller'
+import { FeatureAction, FeatureActionResponse } from './features.types'
 
 export interface OptionOverrides {
 	[command: string]: Record<string, any>
@@ -19,33 +19,20 @@ export interface BlockedCommands {
 
 export default class FeatureCommandAttacher {
 	private program: CommanderStatic['program']
-	private featureInstaller: FeatureInstaller
 	private ui: GraphicsInterface
-	private emitter: GlobalEmitter
 	private optionOverrides: OptionOverrides
 	private blockedCommands: BlockedCommands
 
 	public constructor(options: {
 		program: CommanderStatic['program']
-		featureInstaller: FeatureInstaller
 		ui: GraphicsInterface
-		emitter: GlobalEmitter
 		optionOverrides: OptionOverrides
 		blockedCommands: BlockedCommands
 	}) {
-		const {
-			program,
-			featureInstaller,
-			ui: term,
-			emitter,
-			optionOverrides,
-			blockedCommands,
-		} = options
+		const { program, ui: term, optionOverrides, blockedCommands } = options
 
 		this.program = program
-		this.featureInstaller = featureInstaller
 		this.ui = term
-		this.emitter = emitter
 		this.optionOverrides = optionOverrides
 		this.blockedCommands = blockedCommands
 	}
@@ -68,13 +55,7 @@ export default class FeatureCommandAttacher {
 			commandStr = aliases.shift() as string
 		}
 
-		const executer = new FeatureCommandExecuter({
-			featureCode: feature.code,
-			actionCode: code,
-			featureInstaller: this.featureInstaller,
-			term: this.ui,
-			emitter: this.emitter,
-		})
+		const executer = FeatureCommandExecuter.Executer(feature.code, code)
 
 		let command = this.program.command(commandStr)
 
@@ -84,6 +65,8 @@ export default class FeatureCommandAttacher {
 
 		command = command.action(async (...args: any[]) => {
 			this.assertCommandIsNotBlocked(commandStr)
+
+			this.clearAndRenderHeadline(action)
 
 			const options = commanderUtil.mapIncomingToOptions(
 				...args,
@@ -96,9 +79,15 @@ export default class FeatureCommandAttacher {
 				this.ui.renderObject(overrides)
 			}
 
-			await executer.execute({
+			const results = await executer.execute({
 				...options,
 				...overrides,
+			})
+
+			this.clearAndReanderResults({
+				featureCode: feature.code,
+				actionCode: code,
+				results,
 			})
 		})
 
@@ -114,6 +103,31 @@ export default class FeatureCommandAttacher {
 			this.attachOptions(command, schema)
 		}
 	}
+
+	private clearAndReanderResults(options: {
+		featureCode: string
+		actionCode: string
+		results: FeatureActionResponse
+	}) {
+		const { featureCode, actionCode, results } = options
+
+		this.ui.stopLoading()
+		this.ui.clear()
+
+		this.ui.renderCommandSummary({
+			headline: `${actionCode} finished!`,
+			featureCode,
+			actionCode,
+			...results,
+		})
+	}
+
+	private clearAndRenderHeadline(action: FeatureAction<Schema>) {
+		this.ui.clear()
+		this.ui.renderHero(CLI_HERO)
+		this.ui.renderHeadline(action.invocationMessage)
+	}
+
 	private assertCommandIsNotBlocked(commandStr: string) {
 		if (this.blockedCommands[commandStr]) {
 			throw new SpruceError({

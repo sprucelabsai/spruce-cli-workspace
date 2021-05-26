@@ -1,7 +1,7 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import SpruceError from '../../../errors/SpruceError'
-import mergeUtil from '../../../utilities/merge.utility'
+import actionUtil from '../../../utilities/action.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
 import { FeatureActionResponse } from '../../features.types'
 import { generateSkillSummaryLines } from './RegisterAction'
@@ -122,6 +122,6 @@ export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
 			}
 		}
 
-		return mergeUtil.mergeActionResults(loginResponse, skillResponse)
+		return actionUtil.mergeActionResults(loginResponse, skillResponse)
 	}
 }

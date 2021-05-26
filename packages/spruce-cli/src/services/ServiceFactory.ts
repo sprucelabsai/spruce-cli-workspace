@@ -1,11 +1,11 @@
 import { SettingsService, EnvService } from '@sprucelabs/spruce-skill-utils'
+import RemoteService from '../features/event/services/RemoteService'
 import { FeatureCode } from '../features/features.types'
 import SchemaService from '../features/schema/services/SchemaService'
 import VsCodeService from '../features/vscode/services/VsCodeService'
 import AuthService from './AuthService'
 import BuildService from './BuildService'
 import CommandService from './CommandService'
-import GameService from './GameService'
 import ImportService from './ImportService'
 import LintService from './LintService'
 import PkgService from './PkgService'
@@ -23,7 +23,7 @@ export interface ServiceMap {
 	settings: SettingsService
 	env: EnvService
 	auth: AuthService
-	game: GameService
+	remote: RemoteService
 }
 
 export type Service = keyof ServiceMap
@@ -52,6 +52,8 @@ export default class ServiceFactory {
 			case 'command': {
 				return new CommandService(cwd) as ServiceMap[S]
 			}
+			case 'remote':
+				return new RemoteService(new EnvService(cwd)) as ServiceMap[S]
 			case 'typeChecker':
 				return new TypeCheckerService(
 					this.buildImportService(cwd)

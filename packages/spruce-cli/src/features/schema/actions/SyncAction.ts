@@ -7,8 +7,9 @@ import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncS
 import SpruceError from '../../../errors/SpruceError'
 import SchemaTemplateItemBuilder from '../../../templateItemBuilders/SchemaTemplateItemBuilder'
 import { GeneratedFile } from '../../../types/cli.types'
-import mergeUtil from '../../../utilities/merge.utility'
+import actionUtil from '../../../utilities/action.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
+import FeatureCommandExecuter from '../../FeatureCommandExecuter'
 import { FeatureActionResponse } from '../../features.types'
 import schemaGeneratorUtil from '../utilities/schemaGenerator.utility'
 import ValueTypeBuilder from '../ValueTypeBuilder'
@@ -186,7 +187,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 
 		const errors = [...schemaErrors, ...fieldErrors]
 
-		return mergeUtil.mergeActionResults(coreSyncResults || {}, {
+		return actionUtil.mergeActionResults(coreSyncResults || {}, {
 			files: [...typeResults, ...generateFieldFiles],
 			errors: errors.length > 0 ? errors : undefined,
 			meta: {
@@ -271,7 +272,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			resolvedFieldTypesDestination,
 		} = options
 
-		const action = this.getFeature('schema').Action('fields.sync')
+		const action = FeatureCommandExecuter.Executer('schema', 'fields.sync')
 		const results = await action.execute({
 			fieldTypesDestinationDir: resolvedFieldTypesDestination,
 			addonsLookupDir,

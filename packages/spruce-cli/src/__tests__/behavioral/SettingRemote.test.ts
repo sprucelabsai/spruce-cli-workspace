@@ -5,6 +5,7 @@ import {
 	REMOTE_PROD,
 	REMOTE_SANDBOX,
 } from '../../features/event/constants'
+import TerminalInterface from '../../interfaces/TerminalInterface'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 
 export default class SettingRemoteTest extends AbstractSkillTest {
@@ -12,7 +13,7 @@ export default class SettingRemoteTest extends AbstractSkillTest {
 
 	@test()
 	protected static async hasSetRemoteAction() {
-		assert.isFunction(this.cli.getFeature('event').Action('setRemote').execute)
+		assert.isFunction(this.Executer('event', 'setRemote').execute)
 	}
 
 	@test(`saves local as ${REMOTE_LOCAL}`, `local`, `${REMOTE_LOCAL}`)
@@ -20,11 +21,48 @@ export default class SettingRemoteTest extends AbstractSkillTest {
 	@test(`saves sandbox as ${REMOTE_SANDBOX}`, `sandbox`, `${REMOTE_SANDBOX}`)
 	@test(`saves prod as ${REMOTE_PROD}`, `prod`, `${REMOTE_PROD}`)
 	protected static async savesRemote(remote: string, expected: string) {
-		await this.cli.getFeature('event').Action('setRemote').execute({ remote })
+		await this.Executer('event', 'setRemote').execute({ remote })
 
 		const env = this.Service('env')
 		const host = env.get('HOST')
 
 		assert.isEqual(host, expected)
+	}
+
+	@test('create.event asks for remote on IS TTY', 'create')
+	@test('sync.events asks for remote on IS TTY', 'sync')
+	@test('sync.events asks for remote on IS TTY', 'creat')
+	protected static async shouldAskForRemoteBeforeEventActionIsInvokedIfTerminalSupportsIt(
+		action: string
+	) {
+		TerminalInterface.setDoesSupportColor(true)
+		const env = this.Service('env')
+		env.unset('HOST')
+
+		void this.Executer('event', action).execute({})
+
+		await this.waitForInput()
+
+		const last = this.ui.lastInvocation()
+
+		assert.doesInclude(last.options.label, 'remote')
+
+		this.ui.reset()
+	}
+
+	@test('create.event asks for remote on NOT TTY', 'create', false)
+	@test('sync.events asks for remote on NOT TTY', 'sync', false)
+	protected static async shouldThrowBeforeEventActionIsInvokedIfTerminalSupportsIt(
+		action: string
+	) {
+		TerminalInterface.setDoesSupportColor(false)
+		const env = this.Service('env')
+		env.unset('HOST')
+
+		const err = await assert.doesThrowAsync(() =>
+			this.Executer('event', action).execute({})
+		)
+
+		assert.doesInclude(err.message, 'env.HOST')
 	}
 }

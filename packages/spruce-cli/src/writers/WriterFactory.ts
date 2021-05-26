@@ -50,16 +50,16 @@ export type WriterCode = keyof WriterMap
 
 export default class WriterFactory {
 	private templates: Templates
-	private term: GraphicsInterface
+	private ui: GraphicsInterface
 	private linter?: LintService
 
 	public constructor(
 		templates: Templates,
-		term: GraphicsInterface,
+		ui: GraphicsInterface,
 		linter?: LintService
 	) {
 		this.templates = templates
-		this.term = term
+		this.ui = ui
 		this.linter = linter
 	}
 
@@ -70,7 +70,7 @@ export default class WriterFactory {
 		const Class = classMap[code]
 		return new Class({
 			templates: this.templates,
-			term: this.term,
+			term: this.ui,
 			linter: this.linter,
 			...(options || {}),
 		}) as WriterMap[C]

@@ -1,14 +1,10 @@
-import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import SpruceError from '../errors/SpruceError'
 import AbstractFeature from '../features/AbstractFeature'
 import FeatureInstaller from '../features/FeatureInstaller'
 import { FeatureAction } from '../features/features.types'
-import { GlobalEmitter } from '../GlobalEmitter'
-import mergeUtil from '../utilities/merge.utility'
 
 export default class InstallCheckingActionDecorator implements FeatureAction {
 	public code = 'install-checking-action-facade'
-	private emitter: GlobalEmitter
 	public get invocationMessage() {
 		return this.childAction.invocationMessage
 	}
@@ -32,8 +28,7 @@ export default class InstallCheckingActionDecorator implements FeatureAction {
 	public constructor(
 		childAction: FeatureAction,
 		parent: AbstractFeature,
-		featureInstaller: FeatureInstaller,
-		emitter: GlobalEmitter
+		featureInstaller: FeatureInstaller
 	) {
 		if (!childAction || !childAction.execute) {
 			throw new SpruceError({
@@ -46,11 +41,17 @@ export default class InstallCheckingActionDecorator implements FeatureAction {
 		this.code = childAction.code
 		this.parent = parent
 		this.featureInstaller = featureInstaller
-		this.emitter = emitter
 	}
 
 	public execute = async (optionsArg: any) => {
 		const { shouldEmitExecuteEvents = true, ...options } = optionsArg
+
+		if (shouldEmitExecuteEvents) {
+			debugger
+			throw new Error(
+				'use this.Executor() rather than executing your action directly.'
+			)
+		}
 
 		const dependencies = this.featureInstaller.getFeatureDependencies(
 			this.parent.code
@@ -76,29 +77,7 @@ export default class InstallCheckingActionDecorator implements FeatureAction {
 			}
 		}
 
-		if (shouldEmitExecuteEvents) {
-			await this.emitter.emit('feature.will-execute', {
-				featureCode: this.parent.code,
-				actionCode: this.code,
-			})
-		}
-
 		let response = await this.childAction.execute(options)
-
-		if (shouldEmitExecuteEvents) {
-			const didExecuteResults = await this.emitter.emit('feature.did-execute', {
-				results: response,
-				featureCode: this.parent.code,
-				actionCode: this.code,
-			})
-
-			const { payloads } = eventResponseUtil.getAllResponsePayloadsAndErrors(
-				didExecuteResults,
-				SpruceError
-			)
-
-			response = mergeUtil.mergeActionResults(response, ...payloads)
-		}
 
 		return response
 	}

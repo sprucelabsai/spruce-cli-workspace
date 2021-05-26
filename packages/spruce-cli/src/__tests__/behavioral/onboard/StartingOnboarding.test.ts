@@ -31,7 +31,7 @@ export default class StartingOnboardingTest extends AbstractCliTest {
 	@test()
 	protected static async onboardingThroughSkillCreateThenShutsOff() {
 		const onboardAction = this.Executer('onboard', 'onboard')
-		const onboardPromise = onboardAction.execute()
+		const onboardPromise = onboardAction.execute({})
 
 		// get through first onboarding script and select short onboarding
 		await this.waitForInput()
@@ -47,7 +47,7 @@ export default class StartingOnboardingTest extends AbstractCliTest {
 		assert.isEqual(onboardingStore.getMode(), 'short')
 
 		const createSkillAction = this.Executer('skill', 'create')
-		const createPromise = createSkillAction.execute()
+		const createPromise = createSkillAction.execute({})
 
 		// create skill confirmation
 		await this.waitForInput()

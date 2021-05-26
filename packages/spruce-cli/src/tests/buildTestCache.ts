@@ -35,6 +35,8 @@ const shouldRunSequentially = !!process.argv.find(
 )
 let progressInterval: any
 
+const doesSupportColor = TerminalInterface.doesSupportColor()
+
 async function run() {
 	term.clear()
 
@@ -48,7 +50,7 @@ async function run() {
 	let messages: [string, any][] = []
 
 	progressInterval =
-		process.stdout.isTTY &&
+		doesSupportColor &&
 		setInterval(async () => {
 			term.clear()
 			term.renderHeadline(`Found ${testKeys.length} skills to cache.`)
@@ -76,7 +78,7 @@ async function run() {
 	}
 
 	function renderLine(message: any, effects?: any) {
-		if (process.stdout.isTTY) {
+		if (doesSupportColor) {
 			messages.push([message, effects])
 		} else {
 			console.log(message)
@@ -84,14 +86,14 @@ async function run() {
 	}
 
 	function renderWarning(message: any, effects?: any) {
-		if (process.stdout.isTTY) {
+		if (doesSupportColor) {
 			messages.push([message, effects])
 		} else {
 			console.log(message)
 		}
 	}
 
-	if (process.stdout.isTTY) {
+	if (doesSupportColor) {
 		await term.startLoading(
 			`Building ${remaining} remaining skill${dropInS(remaining)}...`
 		)

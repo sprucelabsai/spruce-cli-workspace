@@ -13,7 +13,6 @@ const executingCommandFailedSchema: SpruceErrors.SpruceCli.ExecutingCommandFaile
 	            'cmd': {
 	                label: 'The command being run',
 	                type: 'text',
-	                isRequired: true,
 	                options: undefined
 	            },
 	            /** Args. */

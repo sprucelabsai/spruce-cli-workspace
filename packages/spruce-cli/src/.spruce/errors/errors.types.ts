@@ -707,7 +707,7 @@ export declare namespace SpruceErrors.SpruceCli {
 	export interface ExecutingCommandFailed {
 		
 			/** The command being run. */
-			'cmd': string
+			'cmd'?: string| undefined | null
 			/** Args. */
 			'args'?: string[]| undefined | null
 			/** Cwd. */
@@ -728,7 +728,6 @@ export declare namespace SpruceErrors.SpruceCli {
 		            'cmd': {
 		                label: 'The command being run',
 		                type: 'text',
-		                isRequired: true,
 		                options: undefined
 		            },
 		            /** Args. */

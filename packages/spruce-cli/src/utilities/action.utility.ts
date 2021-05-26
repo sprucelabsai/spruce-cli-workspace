@@ -1,7 +1,9 @@
+import { MercuryAggregateResponse } from '@sprucelabs/mercury-types'
+import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import isEqual from 'lodash/isEqual'
 import uniqWith from 'lodash/uniqWith'
 
-const mergeUtil = {
+const actionUtil = {
 	mergeActionResults(...objects: any[]) {
 		const isObject = (obj: any) => obj && typeof obj === 'object'
 		return objects.reduce((prev, obj) => {
@@ -26,6 +28,15 @@ const mergeUtil = {
 			return isEqual(a, b) || (a.path && b.path && a.path === b.path)
 		})
 	},
+
+	assertNoErrorsInResponse(response: MercuryAggregateResponse<any>) {
+		if (response.totalErrors > 0) {
+			throw (
+				response.responses[0]?.errors?.[0] ??
+				eventResponseUtil.getFirstResponseOrThrow(response)
+			)
+		}
+	},
 }
 
-export default mergeUtil
+export default actionUtil
