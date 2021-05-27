@@ -7,15 +7,15 @@ import testUtil from '../../../tests/utilities/test.utility'
 export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 	@test()
 	protected static async hasSyncErrorAction() {
-		const cli = await this.Cli()
-		assert.isFunction(cli.getFeature('error').Action('sync').execute)
+		await this.Cli()
+		assert.isFunction(this.Executer('error', 'sync').execute)
 	}
 
 	@test()
 	protected static async returnsHelpfulErrorWhenTsNodeIsRemoved() {
-		const cli = await this.installErrorFeature('errors')
+		await this.installErrorFeature('errors')
 
-		const createAction = cli.getFeature('error').Action('create')
+		const createAction = this.Executer('error', 'create')
 
 		await createAction.execute({
 			nameReadable: 'Test error',
@@ -27,7 +27,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 
 		ImportService.clearCache()
 
-		const results = await cli.getFeature('error').Action('sync').execute({})
+		const results = await this.Executer('error', 'sync').execute({})
 
 		assert.isTruthy(results.errors)
 		assert.isLength(results.errors, 1)
@@ -35,9 +35,9 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 
 	@test()
 	protected static async errorsStayInSyncWhenSchemasAreDeleted() {
-		const cli = await this.installErrorFeature('errors')
+		await this.installErrorFeature('errors')
 
-		const createAction = cli.getFeature('error').Action('create')
+		const createAction = this.Executer('error', 'create')
 
 		const results = await createAction.execute({
 			nameReadable: 'Test error',
@@ -75,7 +75,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		diskUtil.deleteFile(builderMatch)
 
 		// resync
-		await cli.getFeature('error').Action('sync').execute({})
+		await this.Executer('error', 'sync').execute({})
 
 		// #spruce/errors should not exist
 		assert.isFalse(diskUtil.doesFileExist(this.resolveHashSprucePath('errors')))
@@ -124,7 +124,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		assert.isFalse(diskUtil.doesFileExist(testError1BuilderMatch))
 
 		// sync
-		await cli.getFeature('error').Action('sync').execute({})
+		await this.Executer('error', 'sync').execute({})
 
 		// types should no longer include test error 1
 		typesContent = diskUtil.readFile(this.errorTypesFile)
@@ -139,13 +139,13 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 
 	@test()
 	protected static async canHandleNestedSchemasWithoutAddingThemToOptions() {
-		const cli = await this.installErrorFeature('errors')
+		await this.installErrorFeature('errors')
 		const source = this.resolveTestPath('nested_error_schemas')
 		const destination = this.resolvePath('src/errors')
 
 		await diskUtil.copyDir(source, destination)
 
-		const results = await cli.getFeature('error').Action('sync').execute({})
+		const results = await this.Executer('error', 'sync').execute({})
 		const errorTypesFile = testUtil.assertsFileByNameInGeneratedFiles(
 			/errors\.types/,
 			results.files
@@ -169,13 +169,13 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		let classContents = diskUtil.readFile(errorClassFile)
 		assert.doesNotInclude(classContents, /NESTED_SCHEMA/)
 
-		const createAction = cli.getFeature('error').Action('create')
+		const createAction = this.Executer('error', 'create')
 		await createAction.execute({
 			nameCamel: 'testError2',
 			nameReadable: 'Test error 2',
 		})
 
-		const syncResults = await cli.getFeature('error').Action('sync').execute({})
+		const syncResults = await this.Executer('error', 'sync').execute({})
 
 		classContents = diskUtil.readFile(errorClassFile)
 		assert.doesNotInclude(classContents, /NESTED_SCHEMA/)
@@ -194,9 +194,9 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 
 	@test()
 	protected static async canCreateAndSyncErrorsWithNoCoreSchemasAndNoFields() {
-		const cli = await this.installErrorFeature('errors')
+		await this.installErrorFeature('errors')
 
-		const createAction = cli.getFeature('error').Action('create')
+		const createAction = this.Executer('error', 'create')
 
 		const results = await createAction.execute({
 			nameReadable: 'Test error',
@@ -220,7 +220,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		})`
 		)
 
-		const syncAction = cli.getFeature('error').Action('sync')
+		const syncAction = this.Executer('error', 'sync')
 		const syncResults = await syncAction.execute({ fetchCoreSchemas: false })
 		assert.isFalsy(syncResults.errors)
 	}

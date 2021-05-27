@@ -18,12 +18,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
-		const schemaCreateAction =
-			this.getFeature(
-				'schema'
-			).Action<SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaOptionsSchema>(
-				'create'
-			)
+		const schemaCreateAction = this.Executer('schema', 'create')
 
 		const createSchemaOptions = normalizeSchemaValues(
 			createSchemaActionSchema,
@@ -43,7 +38,9 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			syncErrorActionSchema,
 			normalizedOptions
 		)
-		const syncResults = await this.Action('sync').execute(syncOptions)
+		const syncResults = await this.Executer('error', 'sync').execute(
+			syncOptions
+		)
 		const mergedResults = actionUtil.mergeActionResults(
 			createResults,
 			syncResults

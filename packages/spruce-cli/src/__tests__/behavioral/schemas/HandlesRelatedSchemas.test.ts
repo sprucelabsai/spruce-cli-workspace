@@ -35,17 +35,14 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 
 		await diskUtil.copyDir(source, destination)
 
-		const syncResults = await cli
-			.getFeature('schema')
-			.Action('sync')
-			.execute({})
+		const syncResults = await this.Executer('schema', 'sync').execute({})
 
 		return { cli, syncResults }
 	}
 
 	@test()
 	protected static async nestedSchemasInDynamicFields() {
-		const cli = await this.installSchemaFeature('schemas')
+		await this.installSchemaFeature('schemas')
 		const schemasDir = this.resolvePath('src', 'schemas')
 
 		await diskUtil.copyDir(
@@ -53,7 +50,7 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 			schemasDir
 		)
 
-		const results = await cli.getFeature('schema').Action('sync').execute({})
+		const results = await this.Executer('schema', 'sync').execute({})
 
 		const typesPath = this.resolveHashSprucePath('schemas', 'schemas.types.ts')
 		const typesContent = diskUtil.readFile(typesPath)

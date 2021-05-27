@@ -18,17 +18,12 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 
 	@test()
 	protected static async hasPullFeature() {
-		assert.isFunction(
-			this.cli.getFeature('eventContract').Action('pull').execute
-		)
+		assert.isFunction(this.Executer('eventContract', 'pull').execute)
 	}
 
 	@test()
 	protected static async generatesContractAtCwdWhenInNormalModule() {
-		const results = await this.cli
-			.getFeature('eventContract')
-			.Action('pull')
-			.execute({})
+		const results = await this.Executer('eventContract', 'pull').execute({})
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
 			'events.contract.ts',
@@ -54,10 +49,7 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 	protected static async generatesContractAtCwdWhenInMercuryTypes() {
 		this.copyMercuryTypesPackageJson()
 
-		const results = await this.cli
-			.getFeature('eventContract')
-			.Action('pull')
-			.execute({})
+		const results = await this.Executer('eventContract', 'pull').execute({})
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
 			'events.contract.ts',
@@ -90,10 +82,7 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 	protected static async savesContractLocallyAndImportsAsDefault() {
 		this.cli = await this.FeatureFixture().installCachedFeatures('events')
 
-		const results = await this.cli
-			.getFeature('eventContract')
-			.Action('pull')
-			.execute({})
+		const results = await this.Executer('eventContract', 'pull').execute({})
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
 			'events.contract.ts',
@@ -111,10 +100,7 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 	protected static async contractHasTypes() {
 		this.cli = await this.FeatureFixture().installCachedFeatures('node')
 
-		const results = await this.cli
-			.getFeature('eventContract')
-			.Action('pull')
-			.execute({})
+		const results = await this.Executer('eventContract', 'pull').execute({})
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
 			'events.contract.ts',
@@ -132,12 +118,9 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 
 	@test()
 	protected static async generatingASecondTimeReportsAnUpdate() {
-		await this.cli.getFeature('eventContract').Action('pull').execute({})
+		await this.Executer('eventContract', 'pull').execute({})
 
-		const results = await this.cli
-			.getFeature('eventContract')
-			.Action('pull')
-			.execute({})
+		const results = await this.Executer('eventContract', 'pull').execute({})
 
 		testUtil.assertsFileByNameInGeneratedFiles(
 			'events.contract.ts',

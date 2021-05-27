@@ -166,7 +166,9 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 					options
 				)
 
-				const syncResults = await this.Action('sync').execute(syncOptions)
+				const syncResults = await this.Executer('event', 'sync').execute(
+					syncOptions
+				)
 
 				response = actionUtil.mergeActionResults(syncResults, response)
 			}

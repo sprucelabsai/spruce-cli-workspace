@@ -17,7 +17,7 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 	public invocationMessage = 'Setting up sandbox support... 🏝'
 
 	public async execute(): Promise<FeatureActionResponse> {
-		const createListenerAction = this.getFeature('event').Action('listen')
+		const createListenerAction = this.Executer('event', 'listen')
 		const results = await createListenerAction.execute({
 			eventNamespace: 'skill',
 			eventName: 'will-boot',

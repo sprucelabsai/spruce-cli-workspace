@@ -6,7 +6,7 @@ import testUtil from '../../tests/utilities/test.utility'
 export default class CreatingSchemasWithGenericsTest extends AbstractSchemaTest {
 	@test()
 	protected static async schemaImportsLocalImports() {
-		const cli = await this.installSchemaFeature('schemas')
+		await this.installSchemaFeature('schemas')
 
 		const source = this.resolveTestPath('schemas_with_suffix')
 
@@ -14,7 +14,7 @@ export default class CreatingSchemasWithGenericsTest extends AbstractSchemaTest 
 
 		await diskUtil.copyDir(source, destination)
 
-		const results = await cli.getFeature('schema').Action('sync').execute({})
+		const results = await this.Executer('schema', 'sync').execute({})
 
 		assert.isFalsy(results.errors)
 		assert.isTruthy(results.files)

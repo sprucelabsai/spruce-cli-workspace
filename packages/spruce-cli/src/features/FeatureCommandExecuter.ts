@@ -49,38 +49,33 @@ interface Dependencies {
 type Options<F extends FeatureCode> = {
 	featureCode: F
 	actionCode: string
-} & Dependencies
+	dependencies: Dependencies
+	featureInstaller: FeatureInstaller
+	emitter: GlobalEmitter
+	ui: GraphicsInterface
+}
 
 export default class FeatureCommandExecuter<F extends FeatureCode> {
 	public static shouldAutoHandleDependencies = true
-	private static ui: GraphicsInterface
 
 	private actionFactory?: FeatureActionFactory
-	private writerFactory: WriterFactory
 	private featureCode: F
 	private actionCode: string
-	private ui: GraphicsInterface
+	private static dependencies: Dependencies
+	private dependencies: Dependencies
 	private featureInstaller: FeatureInstaller
 	private emitter: GlobalEmitter
-	private apiClientFactory: ApiClientFactory
-	private cwd: string
-	private serviceFactory: ServiceFactory
-	private storeFactory: StoreFactory
-	private templates: Templates
-	private static dependencies: Dependencies
+	private ui: GraphicsInterface
+	private feature: FeatureMap[F]
 
 	private constructor(options: Options<F>) {
 		this.featureCode = options.featureCode
 		this.actionCode = options.actionCode
-		this.ui = options.ui
+		this.dependencies = options.dependencies
 		this.featureInstaller = options.featureInstaller
 		this.emitter = options.emitter
-		this.apiClientFactory = options.apiClientFactory
-		this.cwd = options.cwd
-		this.serviceFactory = options.serviceFactory
-		this.storeFactory = options.storeFactory
-		this.writerFactory = options.writerFactory
-		this.templates = options.templates
+		this.ui = options.ui
+		this.feature = this.featureInstaller.getFeature(this.featureCode)
 	}
 
 	public static setDependencies(dependencies: Dependencies) {
@@ -88,16 +83,19 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 	}
 
 	public static Executer(featureCode: keyof FeatureMap, actionCode: string) {
-		if (!this.ui) {
+		if (!this.dependencies) {
 			throw new Error(
 				'You must call FeatureCommandExecuter.setDependencies() before you can build a new executer.'
 			)
 		}
 
 		return new this({
-			...this.dependencies,
+			dependencies: this.dependencies,
 			featureCode,
 			actionCode,
+			featureInstaller: this.dependencies.featureInstaller,
+			emitter: this.dependencies.emitter,
+			ui: this.dependencies.ui,
 		})
 	}
 
@@ -124,13 +122,11 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 
 		let response = await this.installOrMarkAsSkippedMissingDependencies()
 
-		const feature = this.featureInstaller.getFeature(this.featureCode)
-		const action = this.Action(feature, this.actionCode)
+		const action = this.Action()
 
 		const installOptions =
 			await this.askAboutMissingFeatureOptionsIfFeatureIsNotInstalled(
 				isInstalled,
-				feature,
 				options
 			)
 
@@ -159,42 +155,32 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			SpruceError
 		)
 
-		response = merge(response, didExecuteResults, ...payloads)
+		response = merge(response, ...payloads)
 
 		return response
 	}
 
-	private Action<S extends Schema = Schema>(
-		feature: AbstractFeature<any>,
-		code: string
-	): FeatureAction<S> {
-		const actionFactory = this.ActionFactory(feature, code)
-
-		return actionFactory.Action(code)
+	public Action<S extends Schema = Schema>(): FeatureAction<S> {
+		const actionFactory = this.ActionFactory()
+		return actionFactory.Action(this.actionCode)
 	}
 
-	private ActionFactory(feature: AbstractFeature<any>, code: string) {
+	private ActionFactory() {
 		if (!this.actionFactory) {
 			//@ts-ignore
-			if (!feature.actionsDir) {
+			if (!this.feature.actionsDir) {
 				throw new Error(
-					`${code} Feature does not have an actions dir configured, make sure your Feature class has an actionsDir field.`
+					`${this.featureCode} Feature does not have an actions dir configured, make sure your Feature class has an actionsDir field.`
 				)
 			}
 
+			const feature = this.feature
+
 			this.actionFactory = new FeatureActionFactory({
 				parent: feature,
-				writerFactory: this.writerFactory,
 				//@ts-ignore
 				actionsDir: feature.actionsDir,
-				apiClientFactory: this.apiClientFactory,
-				cwd: this.cwd,
-				serviceFactory: this.serviceFactory,
-				templates: this.templates,
-				storeFactory: this.storeFactory,
-				featureInstaller: this.featureInstaller,
-				ui: this.ui,
-				emitter: this.emitter,
+				...this.dependencies,
 			})
 		}
 
@@ -238,14 +224,13 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 
 	private async askAboutMissingFeatureOptionsIfFeatureIsNotInstalled(
 		isInstalled: boolean,
-		feature: FeatureMap[F],
 		options: (Record<string, any> & FeatureCommandExecuteOptions<F>) | undefined
 	) {
 		let installOptions = { ...options }
 		if (!isInstalled) {
-			if (feature.optionsSchema) {
+			if (this.feature.optionsSchema) {
 				const answers = await this.collectAnswers(
-					feature.optionsSchema,
+					this.feature.optionsSchema,
 					options
 				)
 
@@ -486,7 +471,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 		let answers = {}
 		if (fieldsToPresent.length > 0) {
 			const featureForm = new FormComponent<S>({
-				term: this.ui,
+				ui: this.ui,
 				schema,
 				//@ts-ignore
 				initialValues: cleaned,

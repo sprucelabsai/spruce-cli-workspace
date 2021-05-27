@@ -6,15 +6,15 @@ import AbstractCliTest from '../../../tests/AbstractCliTest'
 export default class LoggingInAsPersonTest extends AbstractCliTest {
 	@test()
 	protected static async hasLoginAction() {
-		const cli = await this.Cli()
-		assert.isFunction(cli.getFeature('person').Action('login').execute)
+		await this.Cli()
+		assert.isFunction(this.Executer('person', 'login').execute)
 	}
 
 	@test()
 	protected static async asksForPinWithoutBeingInstalled() {
-		const cli = await this.FeatureFixture().installCachedFeatures('skills')
+		await this.FeatureFixture().installCachedFeatures('skills')
 
-		void cli.getFeature('person').Action('login').execute({
+		void this.Executer('person', 'login').execute({
 			phone: DEMO_NUMBER,
 		})
 
@@ -32,9 +32,9 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 
 	@test.skip('enable when there are demo numbers that throw with bad pin')
 	protected static async badPinRendersWarningAndAsksForPinAgain() {
-		const cli = await this.FeatureFixture().installCachedFeatures('skills')
+		await this.FeatureFixture().installCachedFeatures('skills')
 
-		void cli.getFeature('person').Action('login').execute({
+		void this.Executer('person', 'login').execute({
 			phone: DEMO_NUMBER,
 		})
 
@@ -74,8 +74,8 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 
 	@test()
 	protected static async cantLogoutWithoutBeingLoggedIn() {
-		const cli = await this.FeatureFixture().installCachedFeatures('skills')
-		const results = await cli.getFeature('person').Action('logout').execute({})
+		await this.FeatureFixture().installCachedFeatures('skills')
+		const results = await this.Executer('person', 'logout').execute({})
 
 		assert.isTruthy(results.errors)
 		assert.isLength(results.errors, 1)
@@ -85,9 +85,9 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 
 	@test()
 	protected static async canLogOut() {
-		const cli = await this.loginAsDemoPerson()
+		await this.loginAsDemoPerson()
 
-		const results = await cli.getFeature('person').Action('logout').execute({})
+		const results = await this.Executer('person', 'logout').execute({})
 
 		assert.isFalsy(results.errors)
 
@@ -99,7 +99,7 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 	private static async loginAsDemoPerson() {
 		const cli = await this.FeatureFixture().installCachedFeatures('skills')
 
-		const promise = cli.getFeature('person').Action('login').execute({
+		const promise = this.Executer('person', 'login').execute({
 			phone: DEMO_NUMBER,
 		})
 

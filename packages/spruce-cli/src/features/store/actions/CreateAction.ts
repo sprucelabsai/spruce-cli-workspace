@@ -55,7 +55,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 					nameSnakePlural ?? namesUtil.toSnake(nameReadablePlural),
 			})
 
-			const syncResults = await this.Action('sync').execute({})
+			const syncResults = await this.Executer('store', 'sync').execute({})
 
 			return actionUtil.mergeActionResults(syncResults, {
 				files,

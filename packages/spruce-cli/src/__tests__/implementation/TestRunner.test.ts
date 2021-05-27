@@ -133,17 +133,14 @@ export default class TestRunnerTest extends AbstractTestTest {
 		shouldFix?: boolean
 		shouldBuild?: boolean
 	}) {
-		const { cli, name, shouldFix = false, shouldBuild = true } = options
+		const { name, shouldFix = false, shouldBuild = true } = options
 
-		const promise = cli
-			.getFeature('test')
-			.Action('create')
-			.execute({
-				type: 'behavioral',
-				nameReadable: name,
-				nameCamel: namesUtil.toCamel(name),
-				namePascal: namesUtil.toPascal(name),
-			})
+		const promise = this.Executer('test', 'create').execute({
+			type: 'behavioral',
+			nameReadable: name,
+			nameCamel: namesUtil.toCamel(name),
+			namePascal: namesUtil.toPascal(name),
+		})
 
 		await this.waitForInput()
 		await this.ui.sendInput('')

@@ -15,7 +15,6 @@ import './addons/filePrompt.addon'
 import eventsContracts from '#spruce/events/events.contract'
 import { CLI_HERO, DEFAULT_HOST } from './constants'
 import SpruceError from './errors/SpruceError'
-import FeatureActionFactory from './features/FeatureActionFactory'
 import FeatureCommandAttacher, {
 	BlockedCommands,
 	OptionOverrides,
@@ -61,6 +60,7 @@ export interface CliBootOptions {
 	graphicsInterface?: GraphicsInterface
 	emitter?: GlobalEmitter
 	apiClientFactory?: ApiClientFactory
+	featureInstaller?: FeatureInstaller
 	host?: string
 }
 
@@ -187,26 +187,20 @@ export default class Cli implements CliInterface {
 
 		const ui = options?.graphicsInterface ?? new TerminalInterface(cwd)
 
-		const featureInstaller = FeatureInstallerFactory.WithAllFeatures({
-			cwd,
-			serviceFactory,
-			storeFactory,
-			ui,
-			emitter,
-			apiClientFactory,
-		})
+		const featureInstaller =
+			options?.featureInstaller ??
+			FeatureInstallerFactory.WithAllFeatures({
+				cwd,
+				serviceFactory,
+				storeFactory,
+				ui,
+				emitter,
+				apiClientFactory,
+			})
 
 		let attacher: FeatureCommandAttacher | undefined
 
 		if (program) {
-			const optionOverrides = this.loadOptionOverrides(
-				serviceFactory.Service(cwd, 'pkg')
-			)
-
-			const blockedCommands = this.loadCommandBlocks(
-				serviceFactory.Service(cwd, 'pkg')
-			)
-
 			const writerFactory = new WriterFactory(
 				templates,
 				ui,
@@ -225,12 +219,21 @@ export default class Cli implements CliInterface {
 				templates,
 			})
 
+			const optionOverrides = this.loadOptionOverrides(
+				serviceFactory.Service(cwd, 'pkg')
+			)
+
+			const blockedCommands = this.loadCommandBlocks(
+				serviceFactory.Service(cwd, 'pkg')
+			)
+
 			attacher = new FeatureCommandAttacher({
 				program,
 				ui,
 				optionOverrides,
 				blockedCommands,
 			})
+
 			const codes = FeatureInstallerFactory.featureCodes
 
 			for (const code of codes) {

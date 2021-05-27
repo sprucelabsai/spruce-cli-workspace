@@ -7,12 +7,12 @@ export default class SettingUpASkillForTestingTest extends AbstractSkillTest {
 
 	@test()
 	protected static async hasSetupAction() {
-		assert.isFunction(this.cli.getFeature('test').Action('setup').execute)
+		assert.isFunction(this.Executer('test', 'setup').execute)
 	}
 
 	@test()
 	protected static async logsInAsDemoPerson() {
-		const results = await this.cli.getFeature('test').Action('setup').execute({
+		const results = await this.Executer('test', 'setup').execute({
 			demoNumber: process.env.DEMO_NUMBER,
 			skillSlug: this.skillSlug,
 		})
@@ -35,7 +35,7 @@ export default class SettingUpASkillForTestingTest extends AbstractSkillTest {
 
 	@test()
 	protected static async canRunAgainWithoutError() {
-		const results = await this.cli.getFeature('test').Action('setup').execute({
+		const results = await this.Executer('test', 'setup').execute({
 			demoNumber: process.env.DEMO_NUMBER,
 			skillSlug: this.skillSlug,
 		})
@@ -54,7 +54,7 @@ export default class SettingUpASkillForTestingTest extends AbstractSkillTest {
 		//@ts-ignore
 		auth.updateCurrentSkill({ fail: true })
 
-		const results = await this.cli.getFeature('test').Action('setup').execute({
+		const results = await this.Executer('test', 'setup').execute({
 			demoNumber: process.env.DEMO_NUMBER,
 			skillSlug: this.skillSlug,
 		})

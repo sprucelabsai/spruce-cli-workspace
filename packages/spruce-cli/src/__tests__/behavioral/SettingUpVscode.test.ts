@@ -5,14 +5,13 @@ import testUtil from '../../tests/utilities/test.utility'
 export default class SettingUpVscodeTest extends AbstractCliTest {
 	@test()
 	protected static async hasSetupAction() {
-		const cli = await this.Cli()
-		assert.isFunction(cli.getFeature('vscode').Action('setup').execute)
+		assert.isFunction(this.Executer('vscode', 'setup').execute)
 	}
 
 	@test.skip('Cant run on machine without vscode installed')
 	protected static async settingUpAsksAboutExtensonsAndSetsUpDebug() {
-		const cli = await this.FeatureFixture().installCachedFeatures('skills')
-		const promise = cli.getFeature('vscode').Action('setup').execute({})
+		await this.FeatureFixture().installCachedFeatures('skills')
+		const promise = this.Executer('vscode', 'setup').execute({})
 
 		await this.waitForInput()
 

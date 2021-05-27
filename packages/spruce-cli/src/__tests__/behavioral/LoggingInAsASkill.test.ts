@@ -24,12 +24,12 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 
 	@test()
 	protected static async hasLoginAction() {
-		assert.isFunction(this.cli.getFeature('skill').Action('login').execute)
+		assert.isFunction(this.Executer('skill', 'login').execute)
 	}
 
 	@test()
 	protected static async asksToLoginIfNotLoggedIn() {
-		void this.cli.getFeature('skill').Action('login').execute({})
+		void this.Executer('skill', 'login').execute({})
 
 		await this.waitForInput()
 
@@ -42,10 +42,7 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 	protected static async returnsErrorIfNoSkillHasEverBeenRegistered() {
 		await this.login()
 
-		const results = await this.cli
-			.getFeature('skill')
-			.Action('login')
-			.execute({})
+		const results = await this.Executer('skill', 'login').execute({})
 
 		assert.isTruthy(results.errors)
 		assert.isLength(results.errors, 1)
@@ -68,10 +65,7 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 			name: `login skill ${new Date().getTime()}`,
 		})
 
-		const results = await this.cli
-			.getFeature('skill')
-			.Action('login')
-			.execute({})
+		const results = await this.Executer('skill', 'login').execute({})
 
 		assert.isFalsy(results.errors)
 
@@ -87,7 +81,7 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 			name: `login skill 2 ${new Date().getTime()}`,
 		})
 
-		const promise = this.cli.getFeature('skill').Action('login').execute({})
+		const promise = this.Executer('skill', 'login').execute({})
 
 		await this.waitForInput()
 
@@ -112,10 +106,9 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 	@test()
 	protected static async cantLoginWithSlugYouDontOwn() {
 		await this.login()
-		const results = await this.cli
-			.getFeature('skill')
-			.Action('login')
-			.execute({ skillSlug: 'never found' })
+		const results = await this.Executer('skill', 'login').execute({
+			skillSlug: 'never found',
+		})
 
 		assert.isTruthy(results.errors)
 
@@ -130,10 +123,9 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 			name: `login skill 3 ${new Date().getTime()}`,
 		})
 
-		const results = await this.cli
-			.getFeature('skill')
-			.Action('login')
-			.execute({ skillSlug: this.skill3.slug })
+		const results = await this.Executer('skill', 'login').execute({
+			skillSlug: this.skill3.slug,
+		})
 
 		assert.isFalsy(results.errors)
 

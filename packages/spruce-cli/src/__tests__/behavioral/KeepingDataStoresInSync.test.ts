@@ -19,7 +19,7 @@ export default class KeepingDataStoresInSyncTest extends AbstractSkillTest {
 
 	@test()
 	protected static async hasSyncAction() {
-		assert.isFunction(this.cli.getFeature('store').Action('sync').execute)
+		assert.isFunction(this.Executer('store', 'sync').execute)
 	}
 
 	@test()
@@ -30,7 +30,7 @@ export default class KeepingDataStoresInSyncTest extends AbstractSkillTest {
 	}
 
 	private static async syncStores() {
-		return this.cli.getFeature('store').Action('sync').execute({})
+		return this.Executer('store', 'sync').execute({})
 	}
 
 	@test()
@@ -48,7 +48,7 @@ export default class KeepingDataStoresInSyncTest extends AbstractSkillTest {
 
 	@test()
 	protected static async generatesValidTypeFile() {
-		await this.cli.getFeature('store').Action('create').execute({
+		await this.Executer('store', 'create').execute({
 			nameReadable: 'Bid',
 			nameReadablePlural: 'Bids',
 			namePascal: 'Bid',

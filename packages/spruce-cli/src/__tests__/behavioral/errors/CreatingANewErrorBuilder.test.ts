@@ -6,15 +6,13 @@ import testUtil from '../../../tests/utilities/test.utility'
 export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 	@test()
 	protected static async hasCreateAction() {
-		const cli = await this.Cli()
-		assert.isFunction(cli.getFeature('error').Action('create').execute)
+		assert.isFunction(this.Executer('error', 'create').execute)
 	}
 
 	@test()
 	protected static async failsWhenSkillNotInstalled() {
-		const cli = await this.Cli()
 		const err = await assert.doesThrowAsync(() =>
-			cli.getFeature('error').Action('create').execute({})
+			this.Executer('error', 'create').execute({})
 		)
 
 		errorAssertUtil.assertError(err, 'FEATURE_NOT_INSTALLED')
@@ -28,8 +26,8 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 	}
 
 	protected static async installErrorsAndGetCreateAction() {
-		const cli = await this.installErrorFeature('errors')
-		return cli.getFeature('error').Action('create')
+		await this.installErrorFeature('errors')
+		return this.Executer('error', 'create')
 	}
 
 	@test()

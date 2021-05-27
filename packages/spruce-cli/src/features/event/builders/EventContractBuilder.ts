@@ -16,12 +16,12 @@ import { FeatureActionResponse } from '../../features.types'
 import SkillStore from '../../skill/stores/SkillStore'
 import validateAndNormalizeUtil from '../../validateAndNormalize.utility'
 import EventStore from '../stores/EventStore'
-import EventWriter from './EventWriter'
+import EventWriter from '../writers/EventWriter'
 
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptions
 
-export default class EventContractWriter {
+export default class EventContractBuilder {
 	private optionsSchema: OptionsSchema
 	private ui: GraphicsInterface
 	private eventWriter: EventWriter

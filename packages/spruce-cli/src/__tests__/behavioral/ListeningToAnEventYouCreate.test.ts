@@ -7,8 +7,7 @@ import testUtil from '../../tests/utilities/test.utility'
 export default class ListeningToAnEventYouCreateTest extends AbstractEventTest {
 	@test()
 	protected static async canListenToEventWeCreated() {
-		const { currentSkill, cli } =
-			await this.registerCurrentSkillAndInstallToOrg()
+		const { currentSkill } = await this.registerCurrentSkillAndInstallToOrg()
 
 		const eventName = 'register-skill-views'
 		const version = 'v2021_04_11'
@@ -24,7 +23,7 @@ export default class ListeningToAnEventYouCreateTest extends AbstractEventTest {
 
 		await diskUtil.copyDir(source, destination)
 
-		const listenPromise = cli.getFeature('event').Action('listen').execute({})
+		const listenPromise = this.Executer('event', 'listen').execute({})
 
 		await this.waitForInput()
 		await this.ui.sendInput(currentSkill.slug)

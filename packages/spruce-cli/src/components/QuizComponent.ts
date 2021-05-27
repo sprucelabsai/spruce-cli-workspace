@@ -105,7 +105,7 @@ export default class QuizComponent<T extends Schema, Q extends QuizQuestions> {
 		})
 
 		// Set state locally
-		this.term = options.term
+		this.term = options.ui
 		this.randomizeQuestions = options.randomizeQuestions ?? true
 	}
 

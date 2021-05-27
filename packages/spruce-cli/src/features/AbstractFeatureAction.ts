@@ -22,6 +22,7 @@ import { GraphicsInterface } from '../types/cli.types'
 import { WriterOptions } from '../writers/AbstractWriter'
 import WriterFactory, { WriterCode, WriterMap } from '../writers/WriterFactory'
 import AbstractFeature from './AbstractFeature'
+import FeatureCommandExecuter from './FeatureCommandExecuter'
 import FeatureInstaller from './FeatureInstaller'
 import {
 	FeatureAction,
@@ -68,8 +69,8 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 		options: SchemaValues<S>
 	): Promise<FeatureActionResponse>
 
-	protected Action<S extends Schema = Schema>(name: string) {
-		return this.parent.Action<S>(name)
+	protected Executer(featureCode: string, actionCode: string) {
+		return FeatureCommandExecuter.Executer(featureCode as any, actionCode)
 	}
 
 	public Service<S extends Service>(type: S, cwd?: string): ServiceMap[S] {

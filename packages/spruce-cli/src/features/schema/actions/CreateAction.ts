@@ -50,10 +50,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			namePascal: namePascal ?? namesUtil.toPascal(nameCamel),
 		})
 
-		const syncAction =
-			this.Action<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptionsSchema>(
-				'sync'
-			)
+		const syncAction = this.Executer('schema', 'sync')
 
 		let errors: AbstractSpruceError<any>[] | undefined
 

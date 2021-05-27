@@ -9,7 +9,7 @@ export default class TestingDataStoresTest extends AbstractSkillTest {
 	protected static async cantSelectAbstractStoreIfStoreFeatureNotInstalled() {
 		this.cli.getFeature('store').isInstalled = async () => false
 
-		void this.cli.getFeature('test').Action('create').execute({
+		void this.Executer('test', 'create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can book appointment',
 			nameCamel: 'canBookAppointment',
@@ -30,7 +30,7 @@ export default class TestingDataStoresTest extends AbstractSkillTest {
 	protected static async letsYouSelectAbstractStoreTest() {
 		this.cli.getFeature('store').isInstalled = async () => true
 
-		const promise = this.cli.getFeature('test').Action('create').execute({
+		const promise = this.Executer('test', 'create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can book appointment',
 			nameCamel: 'canBookAppointment',
@@ -57,12 +57,9 @@ export default class TestingDataStoresTest extends AbstractSkillTest {
 
 		await this.Service('build').build()
 
-		const testResults = await this.cli
-			.getFeature('test')
-			.Action('test')
-			.execute({
-				shouldReportWhileRunning: false,
-			})
+		const testResults = await this.Executer('test', 'test').execute({
+			shouldReportWhileRunning: false,
+		})
 
 		assert.isArray(testResults.errors)
 		assert.isLength(testResults.errors, 2)

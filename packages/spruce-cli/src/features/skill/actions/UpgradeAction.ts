@@ -35,7 +35,7 @@ export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> 
 
 		await this.reInstallPackageDependencies()
 
-		let results = await this.parent.Action('rebuild').execute({})
+		let results = await this.Executer('skill', 'rebuild').execute({})
 
 		results = actionUtil.mergeActionResults(results, { files: generatedFiles })
 

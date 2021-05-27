@@ -2,6 +2,7 @@ import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import setupTestsOptionsSchema from '#spruce/schemas/spruceCli/v2020_07_22/setupTestsOptions.schema'
 import actionUtil from '../../../utilities/action.utility'
 import AbstractFeatureAction from '../../AbstractFeatureAction'
+import FeatureCommandExecuter from '../../FeatureCommandExecuter'
 import { FeatureActionResponse } from '../../features.types'
 
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SetupTestsOptionsSchema
@@ -17,16 +18,21 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 		const { demoNumber, skillSlug } = normalizedOptions
 
-		const loginResponse = await this.getFeature('person')
-			.Action('login')
-			.execute({
-				phone: demoNumber,
-				pin: demoNumber.substr(demoNumber.length - 4),
-			})
+		const loginResponse = await FeatureCommandExecuter.Executer(
+			'person',
+			'login'
+		).execute({
+			phone: demoNumber,
+			pin: demoNumber.substr(demoNumber.length - 4),
+		})
 
-		const registerResponse = await this.getFeature('skill')
-			.Action('register')
-			.execute({ nameReadable: skillSlug, nameKebab: skillSlug })
+		const registerResponse = await FeatureCommandExecuter.Executer(
+			'skill',
+			'register'
+		).execute({
+			nameReadable: skillSlug,
+			nameKebab: skillSlug,
+		})
 
 		const err = registerResponse.errors?.[0]
 
@@ -39,11 +45,12 @@ export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
 		if (isDuplicateSlugError) {
 			delete registerResponse.errors
 
-			loginAsSkillResponse = await this.getFeature('skill')
-				.Action('login')
-				.execute({
-					skillSlug,
-				})
+			loginAsSkillResponse = await FeatureCommandExecuter.Executer(
+				'skill',
+				'register'
+			).execute({
+				skillSlug,
+			})
 		}
 
 		return actionUtil.mergeActionResults(

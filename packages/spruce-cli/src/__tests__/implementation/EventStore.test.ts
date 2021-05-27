@@ -106,7 +106,7 @@ export default class EventStoreTest extends AbstractEventTest {
 		)
 	}
 
-	@test()
+	@test.only()
 	protected static async badLocalContractThrowsNiceError() {
 		await this.FeatureFixture().installCachedFeatures('events')
 
@@ -119,6 +119,8 @@ export default class EventStoreTest extends AbstractEventTest {
 			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
 		})
+
+		assert.isFalsy(results.errors)
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
 			`emitPayload.builder.ts`,
@@ -195,7 +197,7 @@ export default class EventStoreTest extends AbstractEventTest {
 
 	@test()
 	protected static async mixesInLocalContractWithGlobalEventsAndDoesNotReturnContractTwice() {
-		const cli = await this.FeatureFixture().installCachedFeatures('events')
+		await this.FeatureFixture().installCachedFeatures('events')
 
 		const skill = await this.SkillFixture().registerCurrentSkill({
 			name: 'my new skill',
@@ -212,10 +214,7 @@ export default class EventStoreTest extends AbstractEventTest {
 
 		assert.isTruthy(fqen)
 
-		const boot = await cli
-			.getFeature('skill')
-			.Action('boot')
-			.execute({ local: true })
+		const boot = await this.Executer('skill', 'boot').execute({ local: true })
 
 		const { contracts } = await this.Store('event').fetchEventContracts({
 			localNamespace: skill.slug,

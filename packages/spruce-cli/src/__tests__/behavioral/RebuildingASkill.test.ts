@@ -8,19 +8,16 @@ export default class RebuildingASkillTest extends AbstractSkillTest {
 
 	@test()
 	protected static async hasRebuildCommand() {
-		assert.isFunction(this.cli.getFeature('skill').Action('rebuild').execute)
+		assert.isFunction(this.Executer('skill', 'rebuild').execute)
 	}
 
 	@test()
 	protected static async runsExpectedCommand() {
 		CommandService.setMockResponse('yarn rebuild', { code: 0 })
 
-		const results = await this.cli
-			.getFeature('skill')
-			.Action('rebuild')
-			.execute({
-				shouldPlayGames: false,
-			})
+		const results = await this.Executer('skill', 'rebuild').execute({
+			shouldPlayGames: false,
+		})
 
 		assert.isFalsy(results.errors)
 	}
@@ -29,12 +26,9 @@ export default class RebuildingASkillTest extends AbstractSkillTest {
 	protected static async handlesError() {
 		CommandService.setMockResponse('yarn rebuild', { code: 1 })
 
-		const results = await this.cli
-			.getFeature('skill')
-			.Action('rebuild')
-			.execute({
-				shouldPlayGames: false,
-			})
+		const results = await this.Executer('skill', 'rebuild').execute({
+			shouldPlayGames: false,
+		})
 
 		assert.isArray(results.errors)
 

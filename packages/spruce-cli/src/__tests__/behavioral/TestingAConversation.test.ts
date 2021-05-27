@@ -8,20 +8,17 @@ import testUtil from '../../tests/utilities/test.utility'
 export default class TestingAConversationTest extends AbstractCliTest {
 	@test()
 	protected static async hasTestConvoFeature() {
-		const cli = await this.Cli()
-		assert.isFunction(cli.getFeature('conversation').Action('test').execute)
+		assert.isFunction(this.Executer('conversation', 'test').execute)
 	}
 
 	@test()
 	protected static async shouldRunWithoutConversationShouldShutdownOnItsOwn() {
-		const cli = await this.FeatureFixture().installCachedFeatures(
-			'conversation'
-		)
+		await this.FeatureFixture().installCachedFeatures('conversation')
 
-		const test = await cli
-			.getFeature('conversation')
-			.Action('test')
-			.execute({ shouldReturnImmediately: true, shouldRunSilently: true })
+		const test = await this.Executer('conversation', 'test').execute({
+			shouldReturnImmediately: true,
+			shouldRunSilently: true,
+		})
 
 		assert.isTruthy(test.meta)
 		assert.isFunction(test.meta.kill)
@@ -37,11 +34,12 @@ export default class TestingAConversationTest extends AbstractCliTest {
 
 	@test()
 	protected static async runsUntilKilled() {
-		const { conversation } = await this.installAndCreateConversation()
+		await this.installAndCreateConversation()
 
-		const test = await conversation
-			.Action('test')
-			.execute({ shouldReturnImmediately: true, shouldRunSilently: true })
+		const test = await this.Executer('conversation', 'test').execute({
+			shouldReturnImmediately: true,
+			shouldRunSilently: true,
+		})
 
 		assert.isTruthy(test.meta)
 		assert.isFunction(test.meta.kill)
@@ -86,25 +84,22 @@ export default class TestingAConversationTest extends AbstractCliTest {
 	// }
 
 	private static async installAndCreateConversation() {
-		const cli = await this.FeatureFixture().installCachedFeatures(
-			'conversation'
-		)
+		await this.FeatureFixture().installCachedFeatures('conversation')
 
-		const conversation = cli.getFeature('conversation')
-		const results = await conversation.Action('create').execute({
+		const results = await this.Executer('conversation', 'create').execute({
 			nameReadable: 'tell a knock knock joke',
 			nameCamel: 'knockKnockJoke',
 		})
 
 		assert.isFalsy(results.errors)
-		return { conversation, createResults: results }
+		return { createResults: results }
 	}
 
 	@test()
 	protected static async doesntReturnErrorWhenKilled() {
-		const { conversation } = await this.installAndCreateConversation()
+		await this.installAndCreateConversation()
 		//@ts-ignore
-		const test = conversation.Action('test').getChild() as TestAction
+		const test = this.Executer('conversation', 'test').getChild() as TestAction
 
 		setTimeout(async () => {
 			await test.kill()
@@ -119,8 +114,7 @@ export default class TestingAConversationTest extends AbstractCliTest {
 
 	@test()
 	protected static async returnsErrorWhenScriptErrors() {
-		const { conversation, createResults } =
-			await this.installAndCreateConversation()
+		const { createResults } = await this.installAndCreateConversation()
 
 		const topic = testUtil.assertsFileByNameInGeneratedFiles(
 			'knockKnockJoke',
@@ -129,7 +123,7 @@ export default class TestingAConversationTest extends AbstractCliTest {
 
 		diskUtil.writeFile(topic, 'throw new Error("whaaa")')
 
-		const test = conversation.Action('test')
+		const test = this.Executer('conversation', 'test')
 
 		const results = await test.execute({
 			shouldRunSilently: true,

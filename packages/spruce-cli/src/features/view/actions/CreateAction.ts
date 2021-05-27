@@ -106,7 +106,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 
 		if (!isRoot && !nameReadable) {
 			const form = new FormComponent({
-				term: this.ui,
+				ui: this.ui,
 				schema: followUpSchema,
 				onWillAskQuestion: formUtil.onWillAskQuestionHandler,
 			})

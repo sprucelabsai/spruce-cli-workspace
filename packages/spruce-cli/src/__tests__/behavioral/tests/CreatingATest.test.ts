@@ -5,15 +5,14 @@ import testUtil from '../../../tests/utilities/test.utility'
 export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 	@test()
 	protected static async hasCreateAction() {
-		const cli = await this.Cli()
-		assert.isFunction(cli.getFeature('test').Action('create').execute)
+		assert.isFunction(this.Executer('test', 'create').execute)
 	}
 
 	@test()
 	protected static async doesNotAskAboutFixturesWhenInNodeModule() {
-		const cli = await this.installTests('testsInNodeModule')
+		await this.installTests('testsInNodeModule')
 
-		const results = await cli.getFeature('test').Action('create').execute({
+		const results = await this.Executer('test', 'create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can book appointment',
 			nameCamel: 'canBookAppointment',
@@ -25,8 +24,8 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 
 	@test()
 	protected static async asksAboutSpruceFixturesWhenCreatingIfSkillFeatureIsInstalled() {
-		const cli = await this.installTests()
-		const promise = cli.getFeature('test').Action('create').execute({
+		await this.installTests()
+		const promise = this.Executer('test', 'create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can book appointment',
 			nameCamel: 'canBookAppointment',
@@ -41,8 +40,8 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 
 	@test()
 	protected static async canCreateBehavioralTest() {
-		const cli = await this.installTests()
-		const promise = cli.getFeature('test').Action('create').execute({
+		await this.installTests()
+		const promise = this.Executer('test', 'create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can book appointment',
 			nameCamel: 'canBookAppointment',

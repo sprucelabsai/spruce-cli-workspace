@@ -53,14 +53,11 @@ export default class DataStoreStoreTest extends AbstractSkillTest {
 
 	@test()
 	protected static async canImportAGoodStore() {
-		const results = await this.cli
-			.getFeature('store')
-			.Action('create')
-			.execute({
-				nameReadable: 'Good',
-				nameReadablePlural: 'Good',
-				namePascal: 'Good',
-			})
+		const results = await this.Executer('store', 'create').execute({
+			nameReadable: 'Good',
+			nameReadablePlural: 'Good',
+			namePascal: 'Good',
+		})
 
 		assert.isFalsy(results.errors)
 
@@ -80,14 +77,11 @@ export default class DataStoreStoreTest extends AbstractSkillTest {
 
 	@test()
 	protected static async canImportTwoGoodStores() {
-		const results = await this.cli
-			.getFeature('store')
-			.Action('create')
-			.execute({
-				nameReadable: 'Apple',
-				nameReadablePlural: 'Apples',
-				namePascal: 'Apple',
-			})
+		const results = await this.Executer('store', 'create').execute({
+			nameReadable: 'Apple',
+			nameReadablePlural: 'Apples',
+			namePascal: 'Apple',
+		})
 
 		assert.isFalsy(results.errors)
 

@@ -5,21 +5,21 @@ import AbstractCliTest from '../../../tests/AbstractCliTest'
 export default class BootingASkillTest extends AbstractCliTest {
 	@test()
 	protected static async bootingWithoutBuildingThrowsGoodError() {
-		const cli = await this.install()
+		await this.install()
 
 		await assert.doesThrowAsync(
-			async () => cli.getFeature('skill').Action('boot').execute({}),
+			async () => this.Executer('skill', 'boot').execute({}),
 			/You must build/gis
 		)
 	}
 
 	@test()
 	protected static async aSkillCanBeBootedAndKilled() {
-		const cli = await this.install()
+		await this.install()
 
 		await this.Service('build').build()
 
-		const response = await cli.getFeature('skill').Action('boot').execute({})
+		const response = await this.Executer('skill', 'boot').execute({})
 
 		const pid = response.meta?.pid
 		assert.isAbove(pid, 0)

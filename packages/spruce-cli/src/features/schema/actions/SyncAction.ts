@@ -272,7 +272,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			resolvedFieldTypesDestination,
 		} = options
 
-		const action = FeatureCommandExecuter.Executer('schema', 'fields.sync')
+		const action = FeatureCommandExecuter.Executer('schema', 'syncFields')
 		const results = await action.execute({
 			fieldTypesDestinationDir: resolvedFieldTypesDestination,
 			addonsLookupDir,

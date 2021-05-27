@@ -47,7 +47,7 @@ export default class FeatureCommandAttacher {
 
 	private attachCode(code: string, feature: AbstractFeature) {
 		let commandStr = featuresUtil.generateCommand(feature.code, code)
-		const action = feature.Action(code)
+		const action = FeatureCommandExecuter.Executer(feature.code, code).Action()
 
 		const aliases = action.commandAliases ? [...action.commandAliases] : []
 

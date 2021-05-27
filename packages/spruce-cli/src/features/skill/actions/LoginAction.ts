@@ -46,7 +46,7 @@ export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
 				isRequired: true,
 			})
 
-			loginResponse = await this.getFeature('person').Action('login').execute({
+			loginResponse = await this.Executer('person', 'login').execute({
 				phone,
 			})
 		}

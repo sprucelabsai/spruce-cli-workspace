@@ -38,14 +38,13 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 	@test()
 	protected static async hasSetupSandboxAction() {
-		const cli = await this.Cli()
-		assert.isFunction(cli.getFeature('sandbox').Action('setup').execute)
+		assert.isFunction(this.Executer('sandbox', 'setup').execute)
 	}
 
 	@test()
 	protected static async writesWillBootListener() {
-		const cli = await this.FeatureFixture().installCachedFeatures('events')
-		const results = await cli.getFeature('sandbox').Action('setup').execute({})
+		await this.FeatureFixture().installCachedFeatures('events')
+		const results = await this.Executer('sandbox', 'setup').execute({})
 
 		assert.isFalsy(results.errors)
 		const version = versionUtil.generateVersion().dirValue
@@ -57,7 +56,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 	@test()
 	protected static async throwsHelpfulErrorWhenMissingParams() {
-		const { cli } = await this.installAndSetupForSandbox()
+		await this.installAndSetupForSandbox()
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'My new skill',
@@ -71,7 +70,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 		env.unset('SKILL_SLUG')
 
 		const err = await assert.doesThrowAsync(() =>
-			cli.getFeature('skill').Action('boot').execute({ local: true })
+			this.Executer('skill', 'boot').execute({ local: true })
 		)
 
 		errorAssertUtil.assertError(err, 'MISSING_PARAMETERS', {
@@ -81,12 +80,9 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 	@test()
 	protected static async doesNotReRegisterIfNotRegisteredFirstTime() {
-		const { cli, client } = await this.installAndSetupForSandbox()
+		const { client } = await this.installAndSetupForSandbox()
 
-		const boot = await cli
-			.getFeature('skill')
-			.Action('boot')
-			.execute({ local: true })
+		const boot = await this.Executer('skill', 'boot').execute({ local: true })
 
 		boot.meta?.kill()
 
@@ -102,16 +98,13 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 	@test()
 	protected static async skipsAlreadyRegisteredSkill() {
-		const { cli, client } = await this.installAndSetupForSandbox()
+		const { client } = await this.installAndSetupForSandbox()
 
 		const registered = await this.SkillFixture().registerCurrentSkill({
 			name: 'My new skill',
 		})
 
-		const boot = await cli
-			.getFeature('skill')
-			.Action('boot')
-			.execute({ local: true })
+		const boot = await this.Executer('skill', 'boot').execute({ local: true })
 
 		boot.meta?.kill()
 
@@ -124,7 +117,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 	@test()
 	protected static async registersSkillAgain() {
-		const { cli, client } = await this.installAndSetupForSandbox()
+		const { client } = await this.installAndSetupForSandbox()
 
 		const skill = await this.SkillFixture().registerCurrentSkill({
 			name: 'My new skill',
@@ -132,10 +125,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 		await this.resetSkills()
 
-		const boot = await cli
-			.getFeature('skill')
-			.Action('boot')
-			.execute({ local: true })
+		const boot = await this.Executer('skill', 'boot').execute({ local: true })
 
 		boot.meta?.kill()
 
@@ -149,7 +139,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 	@test()
 	protected static async registersSkillAndCanBootAgain() {
-		const { cli } = await this.installAndSetupForSandbox()
+		await this.installAndSetupForSandbox()
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'My new skill',
@@ -157,24 +147,18 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 		await this.resetSkills()
 
-		const boot = await cli
-			.getFeature('skill')
-			.Action('boot')
-			.execute({ local: true })
+		const boot = await this.Executer('skill', 'boot').execute({ local: true })
 
 		boot.meta?.kill()
 
-		const boot2 = await cli
-			.getFeature('skill')
-			.Action('boot')
-			.execute({ local: true })
+		const boot2 = await this.Executer('skill', 'boot').execute({ local: true })
 
 		boot2.meta?.kill()
 	}
 
 	@test()
 	protected static async canReRegisterAndThenRegisterConversationsWithoutCrash() {
-		const { cli } = await this.installAndSetupForSandbox('conversation')
+		await this.installAndSetupForSandbox('conversation')
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'Conversation test',
@@ -182,15 +166,12 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 		await this.resetSkills()
 
-		await cli.getFeature('conversation').Action('create').execute({
+		await this.Executer('conversation', 'create').execute({
 			nameReadable: 'book an appointment',
 			nameCamel: 'bookAnAppointment',
 		})
 
-		const boot = await cli
-			.getFeature('skill')
-			.Action('boot')
-			.execute({ local: true })
+		const boot = await this.Executer('skill', 'boot').execute({ local: true })
 
 		boot.meta?.kill()
 	}
@@ -200,7 +181,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 		const cli = await this.FeatureFixture().installCachedFeatures(cacheKey)
 
-		await cli.getFeature('sandbox').Action('setup').execute({})
+		await this.Executer('sandbox', 'setup').execute({})
 
 		const env = this.Service('env')
 		env.set('SANDBOX_DEMO_NUMBER', this.sandboxDemoNumber)

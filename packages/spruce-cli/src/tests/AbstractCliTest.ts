@@ -32,6 +32,7 @@ import StoreFactory, {
 } from '../stores/StoreFactory'
 import { ApiClientFactoryOptions } from '../types/apiClient.types'
 import AbstractWriter from '../writers/AbstractWriter'
+import WriterFactory from '../writers/WriterFactory'
 import testUtil from './utilities/test.utility'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
@@ -192,6 +193,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			ui: this.ui,
 			emitter: this.Emitter(),
 			apiClientFactory: this.MercuryFixture().getApiClientFactory(),
+			featureInstaller: this.FeatureInstaller(),
 			...options,
 		})
 	}
@@ -321,8 +323,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		dir?: string
 		timeout?: number
 	}) {
-		const cli = await this.Cli()
-		await cli.getFeature('vscode').Action('setup').execute({ all: true })
+		await this.Executer('vscode', 'setup').execute({ all: true })
 
 		await this.Service('command').execute(
 			`code ${options?.file ?? options?.dir ?? this.cwd}`
@@ -340,13 +341,22 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	>(featureCode: F, actionCode: string): Action {
 		const featureInstaller = this.FeatureInstaller()
 
+		const serviceFactory = this.ServiceFactory()
+
+		const writerFactory = new WriterFactory(
+			templates,
+			this.ui,
+			serviceFactory.Service(this.cwd, 'lint')
+		)
+
 		FeatureCommandExecuter.setDependencies({
+			writerFactory,
 			featureInstaller,
 			ui: this.ui,
 			emitter: this.Emitter(),
 			apiClientFactory: this.MercuryFixture().getApiClientFactory(),
 			cwd: this.cwd,
-			serviceFactory: this.ServiceFactory(),
+			serviceFactory,
 			storeFactory: this.StoreFactory(),
 			templates,
 		})

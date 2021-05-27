@@ -303,12 +303,10 @@ export default class DeployAction extends AbstractFeatureAction<OptionsSchema> {
 			try {
 				this.ui.startLoading('Testing your skill. Hold onto your pants. 👖')
 
-				const testResults = await this.getFeature('test')
-					.Action('test')
-					.execute({
-						watchMode: 'off',
-						shouldReportWhileRunning: false,
-					})
+				const testResults = await this.Executer('test', 'test').execute({
+					watchMode: 'off',
+					shouldReportWhileRunning: false,
+				})
 
 				results = actionUtil.mergeActionResults(results, testResults)
 			} catch (err) {

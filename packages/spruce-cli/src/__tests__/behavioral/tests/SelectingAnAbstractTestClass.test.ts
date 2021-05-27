@@ -6,10 +6,10 @@ import testUtil from '../../../tests/utilities/test.utility'
 export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 	@test()
 	protected static async asksForYouToSelectABaseClass() {
-		const cli = await this.installTests()
+		await this.installTests()
 		await this.copyTestFiles()
 
-		const response = cli.getFeature('test').Action('create').execute({
+		const response = this.Executer('test', 'create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can book appointment',
 			nameCamel: 'canBookAppointment',
@@ -83,7 +83,7 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 			}
 		})
 
-		const promise = cli.getFeature('test').Action('create').execute({
+		const promise = this.Executer('test', 'create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can book appointment',
 			nameCamel: 'canBookAppointment',

@@ -6,9 +6,9 @@ import testUtil from '../../tests/utilities/test.utility'
 export default class BootingWithBadFilesTest extends AbstractCliTest {
 	@test()
 	protected static async bootingWithAEmptySchemaThrowsErrorWithNameOfBadSchema() {
-		const cli = await this.FeatureFixture().installCachedFeatures('schemas')
+		await this.FeatureFixture().installCachedFeatures('schemas')
 
-		const results = await cli.getFeature('schema').Action('sync').execute({})
+		const results = await this.Executer('schema', 'sync').execute({})
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
 			'location.schema.ts',
@@ -18,8 +18,7 @@ export default class BootingWithBadFilesTest extends AbstractCliTest {
 		diskUtil.writeFile(match, '')
 
 		await assert.doesThrowAsync(
-			async () =>
-				cli.getFeature('skill').Action('boot').execute({ local: true }),
+			async () => this.Executer('skill', 'boot').execute({ local: true }),
 			'location.schema.ts'
 		)
 	}

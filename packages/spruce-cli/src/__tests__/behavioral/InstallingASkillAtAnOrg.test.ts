@@ -18,8 +18,8 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 
 	@test()
 	protected static async hasInstallAction() {
-		const cli = await this.Cli()
-		assert.isFunction(cli.getFeature('organization').Action('install').execute)
+		await this.Cli()
+		assert.isFunction(this.Executer('organization', 'install').execute)
 	}
 
 	@test()
@@ -36,14 +36,11 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 
 		await this.PersonFixture().logout()
 
-		const cli = await this.Cli()
+		await this.Cli()
 
-		const anonResults = await cli
-			.getFeature('organization')
-			.Action('install')
-			.execute({
-				organizationId: org.id,
-			})
+		const anonResults = await this.Executer('organization', 'install').execute({
+			organizationId: org.id,
+		})
 
 		assert.isTruthy(anonResults.errors)
 		eventErrorAssertUtil.assertError(
@@ -54,18 +51,15 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 
 	@test()
 	protected static async cantInstallWithoutAnyOrgs() {
-		const cli = await this.FeatureFixture().installCachedFeatures(
-			'organizations'
-		)
+		await this.FeatureFixture().installCachedFeatures('organizations')
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'my amazing skill',
 		})
 
-		const anonResults = await cli
-			.getFeature('organization')
-			.Action('install')
-			.execute({})
+		const anonResults = await this.Executer('organization', 'install').execute(
+			{}
+		)
 
 		assert.isTruthy(anonResults.errors)
 		errorAssertUtil.assertError(anonResults.errors[0], 'NO_ORGANIZATIONS_FOUND')
@@ -73,18 +67,15 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 
 	@test()
 	protected static async cantInstallWithoutBeingRegistered() {
-		const cli = await this.FeatureFixture().installCachedFeatures(
-			'organizations'
-		)
+		await this.FeatureFixture().installCachedFeatures('organizations')
 
 		await this.OrganizationFixture().seedDemoOrg({
 			name: 'My great org',
 		})
 
-		const anonResults = await cli
-			.getFeature('organization')
-			.Action('install')
-			.execute({})
+		const anonResults = await this.Executer('organization', 'install').execute(
+			{}
+		)
 
 		assert.isTruthy(anonResults.errors)
 		errorAssertUtil.assertError(anonResults.errors[0], 'SKILL_NOT_REGISTERED')
@@ -92,9 +83,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 
 	@test()
 	protected static async canInstallSkillAtOrg() {
-		const cli = await this.FeatureFixture().installCachedFeatures(
-			'organizations'
-		)
+		await this.FeatureFixture().installCachedFeatures('organizations')
 
 		const org = await this.OrganizationFixture().seedDemoOrg({
 			name: 'My great org',
@@ -104,7 +93,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 			name: 'my amazing skill',
 		})
 
-		const promise = cli.getFeature('organization').Action('install').execute({})
+		const promise = this.Executer('organization', 'install').execute({})
 
 		await this.waitForInput()
 
@@ -132,9 +121,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 
 	@test()
 	protected static async asksYouToSelectOrgWithMoreThanOne() {
-		const cli = await this.FeatureFixture().installCachedFeatures(
-			'organizations'
-		)
+		await this.FeatureFixture().installCachedFeatures('organizations')
 
 		await this.OrganizationFixture().seedDemoOrg({
 			name: 'My great org',
@@ -148,7 +135,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 			name: 'my amazing skill',
 		})
 
-		const promise = cli.getFeature('organization').Action('install').execute({})
+		const promise = this.Executer('organization', 'install').execute({})
 
 		await this.waitForInput()
 

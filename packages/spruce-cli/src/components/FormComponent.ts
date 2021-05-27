@@ -48,7 +48,7 @@ export interface FormPresentationOptions<
 }
 
 export interface FormOptions<T extends Schema> {
-	term: GraphicsInterface
+	ui: GraphicsInterface
 	schema: T
 	initialValues?: SchemaPartialValues<T>
 	onWillAskQuestion?: <K extends SchemaFieldNames<T>>(
@@ -63,17 +63,17 @@ interface Handlers<T extends Schema> {
 }
 
 export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
-	public term: GraphicsInterface
+	public ui: GraphicsInterface
 	public handlers: Handlers<S> = {}
 
 	public constructor(options: FormOptions<S>) {
 		// Setup schema
 		super(options.schema, options.initialValues)
 
-		const { term } = options
+		const { ui } = options
 
-		// Save term for writing, saving
-		this.term = term
+		// Save ui for writing, saving
+		this.ui = ui
 
 		// Handlers
 		const { onWillAskQuestion } = options
@@ -84,7 +84,7 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 	public async present<F extends SchemaFieldNames<S> = SchemaFieldNames<S>>(
 		options: FormPresentationOptions<S, F> = {}
 	): Promise<Pick<SchemaAllValues<S>, F>> {
-		const { term } = this
+		const { ui } = this
 		const {
 			headline,
 			showOverview,
@@ -96,8 +96,8 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 
 		do {
 			if (headline) {
-				term.renderHeadline(headline, [GraphicsTextEffect.SpruceHeader])
-				term.renderLine('')
+				ui.renderHeadline(headline, [GraphicsTextEffect.SpruceHeader])
+				ui.renderLine('')
 			}
 
 			if (showOverview) {
@@ -140,7 +140,7 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 				} catch (err) {
 					this.renderError(err)
 
-					await this.term.waitForEnter()
+					await this.ui.waitForEnter()
 				}
 			}
 		} while (!done || !valid)
@@ -190,18 +190,18 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 			)
 		}
 
-		return this.term.prompt(definition)
+		return this.ui.prompt(definition)
 	}
 
 	/** Pass it schema errors */
 	public renderError(error: Error) {
-		this.term.renderDivider()
-		this.term.renderHeadline('Please fix the following...', [
+		this.ui.renderDivider()
+		this.ui.renderHeadline('Please fix the following...', [
 			GraphicsTextEffect.Red,
 			GraphicsTextEffect.Bold,
 		])
 
-		this.term.renderLine('')
+		this.ui.renderLine('')
 
 		// Special handling for spruce errors
 		if (error instanceof SchemaError) {
@@ -213,28 +213,28 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 					// Output all errors under all fields
 					options.errors.forEach((err) => {
 						const { name, friendlyMessage, error, code } = err
-						this.term.renderWarning(
+						this.ui.renderWarning(
 							friendlyMessage ?? `${name}: ${code} ${error?.message}`
 						)
 					})
 					break
 				default:
-					this.term.renderWarning(error.friendlyMessage())
+					this.ui.renderWarning(error.friendlyMessage())
 			}
 		} else if (error instanceof AbstractSpruceError) {
-			this.term.renderWarning(error.friendlyMessage())
+			this.ui.renderWarning(error.friendlyMessage())
 		} else {
-			this.term.renderWarning(`Unexpected error ${error.message}`)
+			this.ui.renderWarning(`Unexpected error ${error.message}`)
 		}
 
-		this.term.renderLine('')
+		this.ui.renderLine('')
 	}
 
 	/** Render every field and a select to chose what to edit (or done/cancel) */
 	public async renderOverview<F extends SchemaFieldNames<S>>(
 		options: { fields?: F[] } = {}
 	): Promise<FormAction<S>> {
-		const { term } = this
+		const { ui } = this
 		const { fields = this.getNamedFields().map((nf) => nf.name) } = options
 
 		// Track actions while building choices
@@ -274,7 +274,7 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 			label: 'Done',
 		})
 
-		const response = await term.prompt({
+		const response = await ui.prompt({
 			type: 'select',
 			isRequired: true,
 			label: 'Select any field to edit',

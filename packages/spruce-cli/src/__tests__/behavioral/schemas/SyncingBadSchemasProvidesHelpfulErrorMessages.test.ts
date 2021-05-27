@@ -7,7 +7,7 @@ import AbstractSchemaTest from '../../../tests/AbstractSchemaTest'
 export default class SyncingBadSchemasProvidesHelpfulErrorMessagesTest extends AbstractSchemaTest {
 	@test()
 	protected static async syncingBadSchemasProvidesHelpfulErrorMessages() {
-		const cli = await this.syncSchemas('schemas')
+		await this.syncSchemas('schemas')
 
 		const schemasDir = this.resolvePath('src', 'schemas')
 		await diskUtil.copyDir(
@@ -15,7 +15,7 @@ export default class SyncingBadSchemasProvidesHelpfulErrorMessagesTest extends A
 			schemasDir
 		)
 
-		const results = await cli.getFeature('schema').Action('sync').execute({})
+		const results = await this.Executer('schema', 'sync').execute({})
 		assert.isArray(results.errors)
 
 		errorAssertUtil.assertError(results.errors[0], 'SCHEMA_FAILED_TO_IMPORT')

@@ -29,15 +29,12 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 
 	@test()
 	protected static async canCreateGlobalEvent() {
-		const results = await this.cli
-			.getFeature('event')
-			.Action('create')
-			.execute({
-				isGlobal: true,
-				nameReadable: EVENT_NAME_READABLE,
-				nameKebab: EVENT_NAME,
-				nameCamel: EVENT_CAMEL,
-			})
+		const results = await this.Executer('event', 'create').execute({
+			isGlobal: true,
+			nameReadable: EVENT_NAME_READABLE,
+			nameKebab: EVENT_NAME,
+			nameCamel: EVENT_CAMEL,
+		})
 
 		assert.isFalsy(results.errors)
 
@@ -74,10 +71,7 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 
 	@test()
 	protected static async registersGloballyOnBoot() {
-		const boot = await this.cli
-			.getFeature('skill')
-			.Action('boot')
-			.execute({ local: true })
+		const boot = await this.Executer('skill', 'boot').execute({ local: true })
 
 		const client = await this.connectToApi({
 			skillId: this.skill.id,
@@ -100,10 +94,7 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 
 	@test()
 	protected static async canSyncGlobalEvents() {
-		const results = await this.cli
-			.getFeature('event')
-			.Action('sync')
-			.execute({})
+		const results = await this.Executer('event', 'sync').execute({})
 		assert.isFalsy(results.errors)
 
 		await this.Service('typeChecker').check(

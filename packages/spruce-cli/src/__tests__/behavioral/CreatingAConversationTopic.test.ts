@@ -7,8 +7,7 @@ import testUtil from '../../tests/utilities/test.utility'
 export default class CreatingAConversationTopicTest extends AbstractCliTest {
 	@test()
 	protected static async hasCreateConversationAction() {
-		const cli = await this.Cli()
-		assert.isFunction(cli.getFeature('conversation').Action('create').execute)
+		assert.isFunction(this.Executer('conversation', 'create').execute)
 	}
 
 	@test()
@@ -17,13 +16,10 @@ export default class CreatingAConversationTopicTest extends AbstractCliTest {
 			'conversation'
 		)
 
-		const results = await cli
-			.getFeature('conversation')
-			.Action('create')
-			.execute({
-				nameReadable: 'book an appointment',
-				nameCamel: 'bookAnAppointment',
-			})
+		const results = await this.Executer('conversation', 'create').execute({
+			nameReadable: 'book an appointment',
+			nameCamel: 'bookAnAppointment',
+		})
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
 			'bookAnAppointment.topic.ts',

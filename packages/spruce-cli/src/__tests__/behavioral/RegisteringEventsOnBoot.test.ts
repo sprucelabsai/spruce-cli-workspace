@@ -13,10 +13,10 @@ const EVENT_CAMEL = 'didBookAppointment'
 export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 	@test()
 	protected static async registeringEventsOnBoot() {
-		const { cli, skill2, currentSkill } =
+		const { skill2, currentSkill } =
 			await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
 
-		await cli.getFeature('event').Action('create').execute({
+		await this.Executer('event', 'create').execute({
 			nameReadable: EVENT_NAME_READABLE,
 			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
@@ -24,12 +24,9 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 
 		await this.copyEventBuildersAndPermissions(EVENT_NAME)
 
-		await cli.getFeature('event').Action('sync').execute({})
+		await this.Executer('event', 'sync').execute({})
 
-		const boot = await cli
-			.getFeature('skill')
-			.Action('boot')
-			.execute({ local: true })
+		const boot = await this.Executer('skill', 'boot').execute({ local: true })
 
 		const client = await this.connectToApi({
 			skillId: skill2.id,

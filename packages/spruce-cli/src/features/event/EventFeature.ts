@@ -9,7 +9,7 @@ import AbstractFeature, {
 } from '../AbstractFeature'
 import FeatureCommandExecuter from '../FeatureCommandExecuter'
 import { FeatureActionResponse, FeatureCode } from '../features.types'
-import EventContractWriter from './writers/EventContractWriter'
+import EventContractBuilder from './builders/EventContractBuilder'
 
 declare module '../../features/features.types' {
 	interface FeatureMap {
@@ -46,7 +46,7 @@ export default class EventFeature extends AbstractFeature {
 	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public readonly fileDescriptions: FileDescription[] = []
-	private contractWriter?: EventContractWriter
+	private contractWriter?: EventContractBuilder
 
 	public constructor(options: FeatureOptions) {
 		super(options)
@@ -103,7 +103,8 @@ export default class EventFeature extends AbstractFeature {
 		const isInstalled = await this.featureInstaller.isInstalled(this.code)
 
 		if (isInstalled) {
-			const writer = this.EventContractWriter()
+			debugger
+			const writer = this.EventContractBuilder()
 
 			const uniqueSchemas = await writer.fetchContractsAndGenerateUniqueSchemas(
 				payload.schemas ?? []
@@ -119,9 +120,9 @@ export default class EventFeature extends AbstractFeature {
 		}
 	}
 
-	public EventContractWriter() {
+	public EventContractBuilder() {
 		if (!this.contractWriter) {
-			this.contractWriter = new EventContractWriter({
+			this.contractWriter = new EventContractBuilder({
 				cwd: this.cwd,
 				optionsSchema: syncEventActionSchema,
 				ui: this.ui,

@@ -21,11 +21,10 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 	@test()
 	protected static async throwsWithBadNamespace() {
-		const cli = await this.installEventFeature('events')
-		const results = await cli
-			.getFeature('event')
-			.Action('listen')
-			.execute({ eventNamespace: 'taco-bell' })
+		await this.installEventFeature('events')
+		const results = await this.Executer('event', 'listen').execute({
+			eventNamespace: 'taco-bell',
+		})
 
 		assert.isTruthy(results.errors)
 		const err = results.errors[0]
@@ -37,11 +36,11 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 	@test()
 	protected static async throwsWithBadEventName() {
-		const cli = await this.installEventFeature('events')
-		const results = await cli
-			.getFeature('event')
-			.Action('listen')
-			.execute({ eventNamespace: 'mercury', eventName: 'bad-time' })
+		await this.installEventFeature('events')
+		const results = await this.Executer('event', 'listen').execute({
+			eventNamespace: 'mercury',
+			eventName: 'bad-time',
+		})
 
 		assert.isTruthy(results.errors)
 		const err = results.errors[0]
@@ -57,7 +56,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 		const version = 'v2020_01_01'
 
-		const results = await cli.getFeature('event').Action('listen').execute({
+		const results = await this.Executer('event', 'listen').execute({
 			eventNamespace: 'skill',
 			eventName: 'will-boot',
 			version,
@@ -90,9 +89,9 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 	@test()
 	protected static async creatingANewListenerAsksWhichEventToListenTo() {
-		const cli = await this.installEventFeature('events')
+		await this.installEventFeature('events')
 
-		void cli.getFeature('event').Action('listen').execute({})
+		void this.Executer('event', 'listen').execute({})
 
 		await this.waitForInput()
 
@@ -157,7 +156,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 	@test()
 	protected static async emittingEventTriggersListenerAndCrashesWithListenerNotImplemented() {
-		const { cli, currentSkill, skill2, eventContract, org } =
+		const { currentSkill, skill2, eventContract, org } =
 			await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
 				{
 					emitPayloadSchema: buildEmitTargetAndPayloadSchema({
@@ -191,10 +190,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 				}
 			)
 
-		const boot = await cli
-			.getFeature('skill')
-			.Action('boot')
-			.execute({ local: true })
+		const boot = await this.Executer('skill', 'boot').execute({ local: true })
 
 		//give the skill time to boot
 		await this.wait(20000)
@@ -259,7 +255,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 		await skillFixture.registerEventContract(skill2, eventContract)
 
-		const results = await cli.getFeature('event').Action('listen').execute({
+		const results = await this.Executer('event', 'listen').execute({
 			eventNamespace: skill2.slug,
 			eventName: `my-new-event`,
 			version: expectedVersion,

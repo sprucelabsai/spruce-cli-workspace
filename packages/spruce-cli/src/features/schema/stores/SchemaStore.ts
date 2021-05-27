@@ -89,13 +89,13 @@ export default class SchemaStore extends AbstractStore {
 		}
 
 		if (fetchRemoteSchemas) {
-			await this.fetchAndMixinRemoteSchemas(localNamespace, results)
+			await this.emitDidFetchSchemasAndMixinResults(localNamespace, results)
 		}
 
 		return results
 	}
 
-	private async fetchAndMixinRemoteSchemas(
+	private async emitDidFetchSchemasAndMixinResults(
 		localNamespace: string,
 		results: FetchSchemasResults
 	) {
@@ -113,6 +113,8 @@ export default class SchemaStore extends AbstractStore {
 				remoteResults,
 				SpruceError
 			)
+
+		debugger
 
 		if (errors && errors.length > 0) {
 			results.errors.push(...errors)
@@ -142,10 +144,11 @@ export default class SchemaStore extends AbstractStore {
 		)
 
 		if (match) {
+			debugger
 			throw new SpruceError({
 				code: 'SCHEMA_EXISTS',
 				schemaId: schema.id,
-				destination: 'mixing in event contract schemas',
+				friendlyMessage: `A feature tried to mixin a schema that already exists with id: ${schema.id}.`,
 			})
 		}
 

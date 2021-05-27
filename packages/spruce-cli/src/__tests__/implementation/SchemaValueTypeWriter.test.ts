@@ -23,7 +23,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 			linter: this.Service('lint'),
 		})
 
-		const cli = await this.installSchemaFeature('schemas')
+		await this.installSchemaFeature('schemas')
 
 		const schemasDir = this.resolvePath('src', 'schemas')
 		await diskUtil.copyDir(this.resolveTestPath('test_builders'), schemasDir)
@@ -32,7 +32,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 			schemasDir
 		)
 
-		await cli.getFeature('schema').Action('sync').execute({})
+		await this.Executer('schema', 'sync').execute({})
 	}
 
 	@test()

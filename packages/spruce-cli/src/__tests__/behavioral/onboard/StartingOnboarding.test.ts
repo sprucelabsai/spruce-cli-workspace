@@ -15,8 +15,7 @@ class TheTestEmitter extends CliGlobalEmitter {
 export default class StartingOnboardingTest extends AbstractCliTest {
 	@test()
 	protected static async hasOnboardAction() {
-		const cli = await this.Cli()
-		assert.isFunction(cli.getFeature('onboard').Action('onboard').execute)
+		assert.isFunction(this.Executer('onboard', 'onboard').execute)
 	}
 
 	@test()

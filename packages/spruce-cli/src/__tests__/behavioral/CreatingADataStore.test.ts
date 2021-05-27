@@ -9,8 +9,7 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'stores'
 	@test()
 	protected static async hasCreateStoreAction() {
-		const cli = await this.Cli()
-		assert.isFunction(cli.getFeature('store').Action('create').execute)
+		assert.isFunction(this.Executer('store', 'create').execute)
 	}
 
 	@test()
@@ -26,14 +25,11 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 
 	@test()
 	protected static async generatesValidStoreFile() {
-		const results = await this.cli
-			.getFeature('store')
-			.Action('create')
-			.execute({
-				nameReadable: 'Person',
-				nameReadablePlural: 'People',
-				namePascal: 'Person',
-			})
+		const results = await this.Executer('store', 'create').execute({
+			nameReadable: 'Person',
+			nameReadablePlural: 'People',
+			namePascal: 'Person',
+		})
 
 		assert.isFalsy(results.errors)
 
@@ -56,14 +52,11 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 
 	@test()
 	protected static async canGenerateASecondStoreFile() {
-		const results = await this.cli
-			.getFeature('store')
-			.Action('create')
-			.execute({
-				nameReadable: 'Bid',
-				nameReadablePlural: 'Bids',
-				namePascal: 'Bid',
-			})
+		const results = await this.Executer('store', 'create').execute({
+			nameReadable: 'Bid',
+			nameReadablePlural: 'Bids',
+			namePascal: 'Bid',
+		})
 
 		assert.isFalsy(results.errors)
 
@@ -87,14 +80,11 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 
 	@test()
 	protected static async errorsWhenGeneratingAStoreWithTheSameName() {
-		const results = await this.cli
-			.getFeature('store')
-			.Action('create')
-			.execute({
-				nameReadable: 'Bid',
-				nameReadablePlural: 'Bids',
-				namePascal: 'Bid',
-			})
+		const results = await this.Executer('store', 'create').execute({
+			nameReadable: 'Bid',
+			nameReadablePlural: 'Bids',
+			namePascal: 'Bid',
+		})
 
 		assert.isTruthy(results.errors)
 		errorAssertUtil.assertError(results.errors[0], 'STORE_EXISTS')
@@ -102,7 +92,7 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 
 	@test()
 	protected static async storeFactoryAndStoresAreTyped() {
-		await this.cli.getFeature('store').Action('create').execute({
+		await this.Executer('store', 'create').execute({
 			nameReadable: 'Product',
 			nameReadablePlural: 'Products',
 			namePascal: 'Product',

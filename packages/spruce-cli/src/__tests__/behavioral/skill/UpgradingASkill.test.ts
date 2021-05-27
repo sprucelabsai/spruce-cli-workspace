@@ -45,7 +45,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 				this.clearFileIfAboutToBeUpdated(file, upgradeMode)
 			}
 
-			const results = await cli.getFeature('skill').Action('upgrade').execute({
+			const results = await this.Executer('skill', 'upgrade').execute({
 				upgradeMode,
 			})
 
@@ -101,10 +101,9 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 	protected static async upgradeWillAskIfYouWantToOverwriteFiles() {
 		const cli = await this.installAndBreakSkill('skills')
 
-		const promise = cli
-			.getFeature('skill')
-			.Action('upgrade')
-			.execute({ upgradeMode: 'askForChanged' })
+		const promise = this.Executer('skill', 'upgrade').execute({
+			upgradeMode: 'askForChanged',
+		})
 
 		await this.waitForInput()
 
@@ -140,7 +139,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 			'skill.errors[].message': '"health.local" not found',
 		})
 
-		await cli.getFeature('skill').Action('upgrade').execute({})
+		await this.Executer('skill', 'upgrade').execute({})
 
 		const passedHealth = await cli.checkHealth()
 		assert.isEqual(passedHealth.skill.status, 'passed')
@@ -154,14 +153,14 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		'conversation'
 	)
 	protected static async upgradesPlugins(pluginName: string, cacheKey: string) {
-		const cli = await this.FeatureFixture().installCachedFeatures(cacheKey)
+		await this.FeatureFixture().installCachedFeatures(cacheKey)
 
 		const pluginPath = this.resolveHashSprucePath(`features/${pluginName}`)
 		const originalContents = diskUtil.readFile(pluginPath)
 
 		diskUtil.writeFile(pluginPath, '')
 
-		const results = await cli.getFeature('skill').Action('upgrade').execute({})
+		const results = await this.Executer('skill', 'upgrade').execute({})
 
 		testUtil.assertsFileByNameInGeneratedFiles(pluginName, results.files)
 
@@ -185,7 +184,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 			didHit = true
 		})
 
-		const results = await cli.getFeature('skill').Action('upgrade').execute({})
+		const results = await this.Executer('skill', 'upgrade').execute({})
 
 		assert.isFalsy(results.errors)
 
@@ -196,12 +195,12 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async canSkipPackageScriptChanges() {
-		const cli = await this.FeatureFixture().installCachedFeatures('skills')
+		await this.FeatureFixture().installCachedFeatures('skills')
 
 		const pkg = this.Service('pkg')
 		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
 
-		const promise = cli.getFeature('skill').Action('upgrade').execute({})
+		const promise = this.Executer('skill', 'upgrade').execute({})
 
 		await this.waitForInput()
 
@@ -221,13 +220,13 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async asksForEachScriptChange() {
-		const cli = await this.FeatureFixture().installCachedFeatures('skills')
+		await this.FeatureFixture().installCachedFeatures('skills')
 
 		const pkg = this.Service('pkg')
 		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
 		pkg.set({ path: ['scripts', 'watch.build.dev'], value: 'taco' })
 
-		const promise = cli.getFeature('skill').Action('upgrade').execute({})
+		const promise = this.Executer('skill', 'upgrade').execute({})
 
 		await this.waitForInput()
 
@@ -251,13 +250,13 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async canSkipAllScriptChanges() {
-		const cli = await this.FeatureFixture().installCachedFeatures('skills')
+		await this.FeatureFixture().installCachedFeatures('skills')
 
 		const pkg = this.Service('pkg')
 		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
 		pkg.set({ path: ['scripts', 'watch.build.dev'], value: 'taco' })
 
-		const promise = cli.getFeature('skill').Action('upgrade').execute({})
+		const promise = this.Executer('skill', 'upgrade').execute({})
 
 		await this.waitForInput()
 
@@ -274,12 +273,12 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async canOverwriteChangedScript() {
-		const cli = await this.FeatureFixture().installCachedFeatures('skills')
+		await this.FeatureFixture().installCachedFeatures('skills')
 
 		const pkg = this.Service('pkg')
 		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
 
-		const promise = cli.getFeature('skill').Action('upgrade').execute({})
+		const promise = this.Executer('skill', 'upgrade').execute({})
 
 		await this.waitForInput()
 
@@ -295,13 +294,13 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async canOverwriteMultipleChangedScript() {
-		const cli = await this.FeatureFixture().installCachedFeatures('skills')
+		await this.FeatureFixture().installCachedFeatures('skills')
 
 		const pkg = this.Service('pkg')
 		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
 		pkg.set({ path: ['scripts', 'watch.build.dev'], value: 'taco' })
 
-		const promise = cli.getFeature('skill').Action('upgrade').execute({})
+		const promise = this.Executer('skill', 'upgrade').execute({})
 
 		await this.waitForInput()
 
@@ -331,7 +330,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		//@ts-ignore
 		skillFeature.scripts['taco'] = 'bravo'
 
-		await skillFeature.Action('upgrade').execute({})
+		await this.Executer('skill', 'upgrade').execute({})
 
 		assert.isEqual(pkg.get(['scripts', 'taco']), 'bravo')
 	}

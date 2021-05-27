@@ -6,15 +6,14 @@ import AbstractCliTest from '../../../tests/AbstractCliTest'
 export default class RegisteringASkillTest extends AbstractCliTest {
 	@test()
 	protected static async hasRegisterAction() {
-		const cli = await this.Cli()
-		assert.isFunction(cli.getFeature('skill').Action('register').execute)
+		assert.isFunction(this.Executer('skill', 'register').execute)
 	}
 
 	@test()
 	protected static async cantRegisterWithoutBeingLoggedIn() {
-		const cli = await this.FeatureFixture().installCachedFeatures('skills')
+		await this.FeatureFixture().installCachedFeatures('skills')
 
-		const results = await cli.getFeature('skill').Action('register').execute({
+		const results = await this.Executer('skill', 'register').execute({
 			nameReadable: 'My great skill',
 			nameKebab: 'my-great-skill',
 		})
@@ -29,11 +28,11 @@ export default class RegisteringASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async canRegisterSkill() {
-		const cli = await this.FeatureFixture().installCachedFeatures('skills')
+		await this.FeatureFixture().installCachedFeatures('skills')
 		await this.PersonFixture().loginAsDemoPerson()
 
 		const slug = `my-new-skill-${new Date().getTime()}`
-		const results = await cli.getFeature('skill').Action('register').execute({
+		const results = await this.Executer('skill', 'register').execute({
 			nameReadable: 'my new skill',
 			nameKebab: slug,
 		})

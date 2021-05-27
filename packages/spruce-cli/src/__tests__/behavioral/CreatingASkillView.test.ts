@@ -13,7 +13,7 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 
 	protected static async beforeEach() {
 		await super.beforeEach()
-		this.action = this.cli.getFeature('view').Action('create') as CreateAction
+		this.action = this.Executer('view', 'create') as CreateAction
 	}
 
 	@test()

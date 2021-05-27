@@ -23,15 +23,13 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 
 	@test()
 	protected static async hasCreateAction() {
-		assert.isFunction(
-			(await this.Cli()).getFeature('event').Action('create').execute
-		)
+		assert.isFunction(this.Executer('event', 'create').execute)
 	}
 
 	@test()
 	protected static async cantCreateEventWithoutBeingRegistered() {
-		const cli = await this.FeatureFixture().installCachedFeatures('events')
-		await this.assertCantCreateWithoutBeingRegistered(cli)
+		await this.FeatureFixture().installCachedFeatures('events')
+		await this.assertCantCreateWithoutBeingRegistered()
 	}
 
 	@test()
@@ -71,7 +69,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 
 		await this.copyEventBuildersAndPermissions(EVENT_NAME)
 
-		const syncResults = await cli.getFeature('event').Action('sync').execute({})
+		const syncResults = await this.Executer('event', 'sync').execute({})
 		assert.isFalsy(syncResults.errors)
 
 		const mixedResults = actionUtil.mergeActionResults(results, syncResults)
@@ -108,7 +106,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 			name: 'my new skill',
 		})
 
-		const results = await cli.getFeature('event').Action('create').execute({
+		const results = await this.Executer('event', 'create').execute({
 			nameReadable: EVENT_NAME_READABLE,
 			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
@@ -169,8 +167,8 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		}
 	}
 
-	protected static async assertCantCreateWithoutBeingRegistered(cli: any) {
-		const results = await cli.getFeature('event').Action('create').execute({
+	protected static async assertCantCreateWithoutBeingRegistered() {
+		const results = await this.Executer('event', 'create').execute({
 			nameReadable: EVENT_NAME_READABLE,
 			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,

@@ -5,10 +5,10 @@ import AbstractEventTest from '../../../tests/AbstractEventTest'
 export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 	@test()
 	protected static async skillEmitsWillBootEvents() {
-		const cli = await this.installEventFeature('events')
+		await this.installEventFeature('events')
 		const version = 'v2020_01_01'
 
-		await cli.getFeature('event').Action('listen').execute({
+		await this.Executer('event', 'listen').execute({
 			eventNamespace: 'skill',
 			eventName: 'will-boot',
 			version,
@@ -17,7 +17,7 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 		await this.Service('build').build()
 
 		const err = await assert.doesThrowAsync(async () => {
-			const response = await cli.getFeature('skill').Action('boot').execute({})
+			const response = await this.Executer('skill', 'boot').execute({})
 			await response.meta?.promise
 		})
 
@@ -26,10 +26,10 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 
 	@test()
 	protected static async skillEmitsDidBootEvents() {
-		const cli = await this.installEventFeature('events')
+		await this.installEventFeature('events')
 		const version = 'v2020_01_01'
 
-		await cli.getFeature('event').Action('listen').execute({
+		await this.Executer('event', 'listen').execute({
 			eventNamespace: 'skill',
 			eventName: 'did-boot',
 			version,
@@ -38,7 +38,7 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 		await this.Service('build').build()
 
 		const err = await assert.doesThrowAsync(async () => {
-			const response = await cli.getFeature('skill').Action('boot').execute({})
+			const response = await this.Executer('skill', 'boot').execute({})
 			await response.meta?.promise
 		})
 

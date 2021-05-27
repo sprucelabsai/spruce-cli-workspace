@@ -6,8 +6,8 @@ import testUtil from '../../../tests/utilities/test.utility'
 export default class KeepsErrorClassInSyncTest extends AbstractErrorTest {
 	@test()
 	protected static async errorFileShouldBeCreatedAndPassed() {
-		const cli = await this.installErrorFeature('errors')
-		const createAction = cli.getFeature('error').Action('create')
+		await this.installErrorFeature('errors')
+		const createAction = this.Executer('error', 'create')
 
 		const results = await createAction.execute({
 			nameReadable: 'Test error',
@@ -28,8 +28,8 @@ export default class KeepsErrorClassInSyncTest extends AbstractErrorTest {
 
 	@test()
 	protected static async errorFileShouldBeUpdated() {
-		const cli = await this.installErrorFeature('errors')
-		const createAction = cli.getFeature('error').Action('create')
+		await this.installErrorFeature('errors')
+		const createAction = this.Executer('error', 'create')
 		await createAction.execute({
 			nameCamel: 'testError1',
 			nameReadable: 'Test error 1',

@@ -1,6 +1,7 @@
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import Cli, { CliBootOptions, CliInterface } from '../cli'
+import FeatureInstaller from '../features/FeatureInstaller'
 import { InstallFeature } from '../features/features.types'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory, {
@@ -24,6 +25,7 @@ export interface FeatureFixtureOptions {
 	shouldGenerateCacheIfMissing?: boolean
 	apiClientFactory: ApiClientFactory
 	emitter?: GlobalEmitter
+	featureInstaller?: FeatureInstaller
 }
 
 export default class FeatureFixture implements ServiceProvider {
@@ -36,6 +38,7 @@ export default class FeatureFixture implements ServiceProvider {
 	private generateCacheIfMissing = false
 	private apiClientFactory: ApiClientFactory
 	private emitter?: GlobalEmitter
+	private featureInstaller?: FeatureInstaller
 
 	public constructor(options: FeatureFixtureOptions) {
 		if (options.cwd.search('packages/spruce-cli') > -1) {
@@ -48,6 +51,7 @@ export default class FeatureFixture implements ServiceProvider {
 		this.generateCacheIfMissing = !!options.shouldGenerateCacheIfMissing
 		this.apiClientFactory = options.apiClientFactory
 		this.emitter = options.emitter
+		this.featureInstaller = options.featureInstaller
 	}
 
 	public static deleteOldSkillDirs() {
@@ -71,6 +75,7 @@ export default class FeatureFixture implements ServiceProvider {
 			graphicsInterface: this.term,
 			apiClientFactory: this.apiClientFactory,
 			emitter: this.emitter,
+			featureInstaller: this.featureInstaller,
 			...(options ?? {}),
 		})
 

@@ -8,12 +8,12 @@ export default class TestReporterSettingsRememberedTest extends AbstractTestTest
 
 	@test()
 	protected static async watchSettingsRemembered() {
-		const cli = await this.FeatureFixture().installCachedFeatures('tests')
+		await this.FeatureFixture().installCachedFeatures('tests')
 		const settings = this.Service('settings')
 
 		settings.set('test.watchMode', 'smart')
 
-		const action = cli.getFeature('test').Action('test')
+		const action = this.Executer('test', 'test')
 
 		const results = await action.execute({
 			shouldReturnImmediately: true,
@@ -33,9 +33,9 @@ export default class TestReporterSettingsRememberedTest extends AbstractTestTest
 
 	@test()
 	protected static async watchSettingsSaved() {
-		const cli = await this.FeatureFixture().installCachedFeatures('tests')
+		await this.FeatureFixture().installCachedFeatures('tests')
 
-		const action = cli.getFeature('test').Action('test')
+		const action = this.Executer('test', 'test')
 
 		const results = await action.execute({
 			shouldReturnImmediately: true,

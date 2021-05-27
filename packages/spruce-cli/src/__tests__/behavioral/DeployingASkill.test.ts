@@ -57,22 +57,18 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async hasDeployAction() {
-		const cli = await this.Cli()
-		assert.isFunction(cli.getFeature('deploy').Action('heroku').execute)
+		assert.isFunction(this.Executer('deploy', 'heroku').execute)
 	}
 
 	@test()
 	protected static async deployHaltedBecauseNotRegistered() {
-		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+		await this.FeatureFixture().installCachedFeatures('deploy')
 
 		diskUtil.writeFile(this.resolvePath('src/index.ts'), 'aoeustahoesuntao')
 
-		const results = await cli
-			.getFeature('deploy')
-			.Action('heroku')
-			.execute({
-				teamName: process.env.HEROKU_TEAM_NAME ?? '',
-			})
+		const results = await this.Executer('deploy', 'heroku').execute({
+			teamName: process.env.HEROKU_TEAM_NAME ?? '',
+		})
 
 		assert.isTruthy(results.errors)
 		assert.isArray(results.errors)
@@ -83,7 +79,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async deployHaltedWithBadBuild() {
-		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+		await this.FeatureFixture().installCachedFeatures('deploy')
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'haulted wth bad build',
@@ -91,13 +87,9 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		diskUtil.writeFile(this.resolvePath('src/index.ts'), 'aoeustahoesuntao')
 
-		const results = await cli
-			.getFeature('deploy')
-			.Action('heroku')
-
-			.execute({
-				teamName: process.env.HEROKU_TEAM_NAME ?? '',
-			})
+		const results = await this.Executer('deploy', 'heroku').execute({
+			teamName: process.env.HEROKU_TEAM_NAME ?? '',
+		})
 
 		assert.isTruthy(results.errors)
 		assert.isArray(results.errors)
@@ -119,15 +111,13 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async deployHaltedWithBadTest() {
-		const cli = await this.FeatureFixture().installCachedFeatures(
-			'deployWithTests'
-		)
+		await this.FeatureFixture().installCachedFeatures('deployWithTests')
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'haulted wth bad test',
 		})
 
-		const promise = cli.getFeature('test').Action('create').execute({
+		const promise = this.Executer('test', 'create').execute({
 			nameReadable: 'Test failed',
 			nameCamel: 'testFailed',
 			type: 'behavioral',
@@ -138,12 +128,9 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		await promise
 
-		const results = await cli
-			.getFeature('deploy')
-			.Action('heroku')
-			.execute({
-				teamName: process.env.HEROKU_TEAM_NAME ?? '',
-			})
+		const results = await this.Executer('deploy', 'heroku').execute({
+			teamName: process.env.HEROKU_TEAM_NAME ?? '',
+		})
 
 		assert.isTruthy(results.errors)
 		assert.isArray(results.errors)
@@ -156,16 +143,15 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			code: 1,
 		})
 
-		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+		await this.FeatureFixture().installCachedFeatures('deploy')
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'heroku not installed',
 		})
 
-		const results = await cli
-			.getFeature('deploy')
-			.Action('heroku')
-			.execute(this.fastHerokuOptions)
+		const results = await this.Executer('deploy', 'heroku').execute(
+			this.fastHerokuOptions
+		)
 
 		assert.isTruthy(results.errors)
 
@@ -180,16 +166,15 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			code: 1,
 		})
 
-		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+		await this.FeatureFixture().installCachedFeatures('deploy')
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'git not installed',
 		})
 
-		const results = await cli
-			.getFeature('deploy')
-			.Action('heroku')
-			.execute(this.fastHerokuOptions)
+		const results = await this.Executer('deploy', 'heroku').execute(
+			this.fastHerokuOptions
+		)
 
 		assert.isTruthy(results.errors)
 
@@ -206,16 +191,15 @@ export default class DeployingASkillTest extends AbstractCliTest {
 				'fatal: not a git repository (or any of the parent directories): .git',
 		})
 
-		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+		await this.FeatureFixture().installCachedFeatures('deploy')
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'not in git repo',
 		})
 
-		const promise = cli
-			.getFeature('deploy')
-			.Action('heroku')
-			.execute(this.fastHerokuOptions)
+		const promise = this.Executer('deploy', 'heroku').execute(
+			this.fastHerokuOptions
+		)
 
 		await this.waitForInput()
 
@@ -235,16 +219,15 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			code: 128,
 		})
 
-		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+		await this.FeatureFixture().installCachedFeatures('deploy')
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'creates git repo',
 		})
 
-		const promise = cli
-			.getFeature('deploy')
-			.Action('heroku')
-			.execute(this.fastHerokuOptions)
+		const promise = this.Executer('deploy', 'heroku').execute(
+			this.fastHerokuOptions
+		)
 
 		await this.waitForInput()
 
@@ -265,16 +248,15 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			code: 1,
 		})
 
-		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+		await this.FeatureFixture().installCachedFeatures('deploy')
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'not logged into heroku',
 		})
 
-		const results = await cli
-			.getFeature('deploy')
-			.Action('heroku')
-			.execute(this.fastHerokuOptions)
+		const results = await this.Executer('deploy', 'heroku').execute(
+			this.fastHerokuOptions
+		)
 
 		assert.isTruthy(results.errors)
 
@@ -286,16 +268,15 @@ export default class DeployingASkillTest extends AbstractCliTest {
 	@test()
 	protected static async failsWhenDeclineToCreateProcFile() {
 		diskUtil.deleteFile(this.resolvePath('Procfile'))
-		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+		await this.FeatureFixture().installCachedFeatures('deploy')
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'decline proc file',
 		})
 
-		const promise = cli
-			.getFeature('deploy')
-			.Action('heroku')
-			.execute(this.fastHerokuOptions)
+		const promise = this.Executer('deploy', 'heroku').execute(
+			this.fastHerokuOptions
+		)
 
 		await this.waitForInput()
 
@@ -316,16 +297,15 @@ export default class DeployingASkillTest extends AbstractCliTest {
 	@test()
 	protected static async createsValidProcFile() {
 		diskUtil.deleteFile(this.resolvePath('Procfile'))
-		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+		await this.FeatureFixture().installCachedFeatures('deploy')
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'valid proc file',
 		})
 
-		const promise = cli
-			.getFeature('deploy')
-			.Action('heroku')
-			.execute(this.fastHerokuOptions)
+		const promise = this.Executer('deploy', 'heroku').execute(
+			this.fastHerokuOptions
+		)
 
 		await this.waitForInput()
 
@@ -351,16 +331,15 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			code: 128,
 		})
 
-		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+		await this.FeatureFixture().installCachedFeatures('deploy')
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'decline to create remote branch',
 		})
 
-		const promise = cli
-			.getFeature('deploy')
-			.Action('heroku')
-			.execute(this.fastHerokuOptions)
+		const promise = this.Executer('deploy', 'heroku').execute(
+			this.fastHerokuOptions
+		)
 
 		await this.waitForInput()
 
@@ -384,16 +363,15 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			code: 128,
 		})
 
-		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+		await this.FeatureFixture().installCachedFeatures('deploy')
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'ask for app name',
 		})
 
-		const promise = cli
-			.getFeature('deploy')
-			.Action('heroku')
-			.execute(this.fastHerokuOptions)
+		const promise = this.Executer('deploy', 'heroku').execute(
+			this.fastHerokuOptions
+		)
 
 		await this.waitForInput()
 
@@ -420,16 +398,15 @@ export default class DeployingASkillTest extends AbstractCliTest {
 		CommandService.setMockResponse('git ls-remote heroku', {
 			code: 128,
 		})
-		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+		await this.FeatureFixture().installCachedFeatures('deploy')
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'haulted wth bad build',
 		})
 
-		const promise = cli
-			.getFeature('deploy')
-			.Action('heroku')
-			.execute(this.fastHerokuOptions)
+		const promise = this.Executer('deploy', 'heroku').execute(
+			this.fastHerokuOptions
+		)
 
 		await this.waitForInput()
 
@@ -465,16 +442,15 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			stdout: 'Changes not staged for commit',
 		})
 
-		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+		await this.FeatureFixture().installCachedFeatures('deploy')
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'pending changes to commit',
 		})
 
-		const results = await cli
-			.getFeature('deploy')
-			.Action('heroku')
-			.execute(this.fastHerokuOptions)
+		const results = await this.Executer('deploy', 'heroku').execute(
+			this.fastHerokuOptions
+		)
 
 		assert.isTruthy(results.errors)
 
@@ -485,16 +461,15 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async canDeploySkill() {
-		const cli = await this.FeatureFixture().installCachedFeatures('deploy')
+		await this.FeatureFixture().installCachedFeatures('deploy')
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'can deploy',
 		})
 
-		const results = await cli
-			.getFeature('deploy')
-			.Action('heroku')
-			.execute(this.fastHerokuOptions)
+		const results = await this.Executer('deploy', 'heroku').execute(
+			this.fastHerokuOptions
+		)
 
 		assert.isFalsy(results.errors)
 	}
