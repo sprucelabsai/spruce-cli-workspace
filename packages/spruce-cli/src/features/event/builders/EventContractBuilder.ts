@@ -5,7 +5,12 @@ import {
 	Schema,
 	SchemaTemplateItem,
 } from '@sprucelabs/schema'
-import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
+import {
+	diskUtil,
+	MERCURY_API_NAMESPACE,
+	namesUtil,
+} from '@sprucelabs/spruce-skill-utils'
 import { EventContractTemplateItem } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import { isEqual } from 'lodash'
@@ -65,8 +70,6 @@ export default class EventContractBuilder {
 			contractDestinationDir
 		)
 
-		this.ui.startLoading('Pulling contracts...')
-
 		const { errors, schemaTemplateItems, eventContractTemplateItems } =
 			await this.fetchAndBuildTemplateItems()
 
@@ -78,10 +81,16 @@ export default class EventContractBuilder {
 
 		this.ui.startLoading('Generating contracts...')
 
+		const contract = eventContractUtil.unifyContracts(contractResults.contracts)
+		const sigs = eventContractUtil.getNamedEventSignatures(contract)
+		const allNamespaces = sigs.map(sig => sig.eventNamespace ?? MERCURY_API_NAMESPACE)
+		const namespacesToWrite = allNamespaces.filter(n => n !== MERCURY_API_NAMESPACE)
+
 		const files = await this.eventWriter.writeContracts(resolvedDestination, {
 			...normalizedOptions,
 			eventContractTemplateItems,
 			schemaTemplateItems,
+			namespaces: 
 		})
 
 		await this.deleteOrphanedEventContracts(
