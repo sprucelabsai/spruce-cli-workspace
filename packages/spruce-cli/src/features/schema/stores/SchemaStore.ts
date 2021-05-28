@@ -142,7 +142,6 @@ export default class SchemaStore extends AbstractStore {
 		)
 
 		if (match) {
-			debugger
 			throw new SpruceError({
 				code: 'SCHEMA_EXISTS',
 				schemaId: schema.id,
