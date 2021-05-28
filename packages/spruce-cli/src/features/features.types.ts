@@ -13,6 +13,7 @@ import {
 import { GraphicsInterface } from '../types/cli.types'
 import WriterFactory from '../writers/WriterFactory'
 import AbstractFeature from './AbstractFeature'
+import ActionExecuter from './ActionExecuter'
 import FeatureInstaller from './FeatureInstaller'
 
 export interface FeatureMap {}
@@ -40,6 +41,7 @@ export interface FeatureActionOptions {
 	ui: GraphicsInterface
 	writerFactory: WriterFactory
 	emitter: GlobalEmitter
+	actionExecuter: ActionExecuter
 	apiClientFactory: ApiClientFactory
 }
 

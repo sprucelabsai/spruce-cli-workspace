@@ -5,6 +5,7 @@ import StoreFactory from '../stores/StoreFactory'
 import { ApiClientFactory } from '../types/apiClient.types'
 import { GraphicsInterface } from '../types/cli.types'
 import { FeatureOptions } from './AbstractFeature'
+import ActionExecuter from './ActionExecuter'
 import ConversationFeature from './conversation/ConversationFeature'
 import DeployFeature from './deploy/DeployFeature'
 import ErrorFeature from './error/ErrorFeature'
@@ -73,8 +74,10 @@ export default class FeatureInstallerFactory {
 		ui: GraphicsInterface
 		emitter: GlobalEmitter
 		apiClientFactory: ApiClientFactory
+		actionExecuter: ActionExecuter
 	}): FeatureInstaller {
-		const { cwd, serviceFactory, storeFactory, ui, emitter } = options
+		const { cwd, serviceFactory, storeFactory, ui, emitter, actionExecuter } =
+			options
 
 		const featureInstaller =
 			options.featureInstaller ?? new FeatureInstaller(cwd, serviceFactory)
@@ -87,6 +90,7 @@ export default class FeatureInstallerFactory {
 			featureInstaller,
 			ui,
 			emitter,
+			actionExecuter,
 			apiClientFactory: options.apiClientFactory,
 		}
 

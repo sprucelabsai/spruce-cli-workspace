@@ -15,7 +15,7 @@ export default class SyncingBadSchemasProvidesHelpfulErrorMessagesTest extends A
 			schemasDir
 		)
 
-		const results = await this.Executer('schema', 'sync').execute({})
+		const results = await this.Action('schema', 'sync').execute({})
 		assert.isArray(results.errors)
 
 		errorAssertUtil.assertError(results.errors[0], 'SCHEMA_FAILED_TO_IMPORT')

@@ -25,7 +25,7 @@ export default class DeployFeature extends AbstractFeature {
 		{ name: '@sprucelabs/spruce-deploy-plugin', isDev: false },
 	]
 
-	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public async afterPackageInstall(): Promise<InstallResults> {
 		const files = await this.Writer('deploy').writePlugin(this.cwd)

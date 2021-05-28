@@ -5,14 +5,14 @@ export default class SeeWhoIsLoggedInTest extends AbstractCliTest {
 	@test()
 	protected static async hasWhoAmIAction() {
 		await this.Cli()
-		assert.isFunction(this.Executer('person', 'whoami').execute)
+		assert.isFunction(this.Action('person', 'whoami').execute)
 	}
 
 	@test()
 	protected static async noOneIsLoggedInToStart() {
 		await this.FeatureFixture().installCachedFeatures('skills')
 
-		const results = await this.Executer('person', 'whoami').execute({})
+		const results = await this.Action('person', 'whoami').execute({})
 
 		assert.isFalsy(results.errors)
 		assert.doesInclude(results.summaryLines, 'not logged in')
@@ -23,7 +23,7 @@ export default class SeeWhoIsLoggedInTest extends AbstractCliTest {
 		await this.FeatureFixture().installCachedFeatures('skills')
 		await this.PersonFixture().loginAsDemoPerson()
 
-		const results = await this.Executer('person', 'whoami').execute({})
+		const results = await this.Action('person', 'whoami').execute({})
 
 		assert.isFalsy(results.errors)
 		assert.doesInclude(results.summaryLines, 'logged in as')

@@ -1,7 +1,7 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { RegisteredSkill } from '../../../types/cli.types'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
@@ -29,7 +29,7 @@ const optionsSchema = buildSchema({
 type OptionsSchema = typeof optionsSchema
 type Options = SchemaValues<OptionsSchema>
 
-export default class RegisterAction extends AbstractFeatureAction<OptionsSchema> {
+export default class RegisterAction extends AbstractAction<OptionsSchema> {
 	public code = 'register'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['register.skill', 'register']

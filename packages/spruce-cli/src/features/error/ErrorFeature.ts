@@ -32,7 +32,7 @@ export default class ErrorFeature extends AbstractFeature {
 			name: '@sprucelabs/error',
 		},
 	]
-	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public constructor(options: FeatureOptions) {
 		super(options)

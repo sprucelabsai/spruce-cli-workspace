@@ -5,7 +5,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import createTestActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/createTestOptions.schema'
 import SpruceError from '../../../errors/SpruceError'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import ParentTestFinder from '../../error/ParentTestFinder'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -18,7 +18,7 @@ interface ParentClassCandidate {
 
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestOptions
-export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
+export default class CreateAction extends AbstractAction<OptionsSchema> {
 	public code = 'create'
 	public optionsSchema = createTestActionSchema
 	public invocationMessage = 'Creating a test... 🛡'

@@ -7,7 +7,6 @@ import AbstractFeature, {
 	FeatureDependency,
 	FeatureOptions,
 } from '../AbstractFeature'
-import FeatureCommandExecuter from '../FeatureCommandExecuter'
 import { FeatureActionResponse, FeatureCode } from '../features.types'
 import EventContractBuilder from './builders/EventContractBuilder'
 
@@ -43,7 +42,7 @@ export default class EventFeature extends AbstractFeature {
 		},
 	]
 
-	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public readonly fileDescriptions: FileDescription[] = []
 	private contractWriter?: EventContractBuilder
@@ -87,10 +86,7 @@ export default class EventFeature extends AbstractFeature {
 				this.ui.renderLine(
 					`Uh oh! It looks like you haven't configured your remote! We gotta do that.`
 				)
-				const results = await FeatureCommandExecuter.Executer(
-					'event',
-					'setRemote'
-				).execute({})
+				const results = await this.Action('event', 'setRemote').execute({})
 
 				return results
 			} else {
@@ -135,7 +131,7 @@ export default class EventFeature extends AbstractFeature {
 			})
 		}
 
-		this.contractWriter.clearCache()
+		// this.contractWriter.clearCache()
 
 		return this.contractWriter
 	}

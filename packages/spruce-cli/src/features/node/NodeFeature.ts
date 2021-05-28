@@ -54,7 +54,7 @@ export default class NodeFeature<
 		},
 	]
 
-	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public async beforePackageInstall() {
 		if (!diskUtil.doesDirExist(this.cwd)) {

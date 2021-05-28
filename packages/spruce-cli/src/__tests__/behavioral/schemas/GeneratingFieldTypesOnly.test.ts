@@ -6,14 +6,14 @@ import testUtil from '../../../tests/utilities/test.utility'
 export default class GeneratingFieldTypesOnlyTest extends AbstractSchemaTest {
 	@test()
 	protected static async syncFieldsActionExists() {
-		const action = this.Executer('schema', 'syncFields')
+		const action = this.Action('schema', 'syncFields')
 		assert.isTruthy(action)
 	}
 
 	@test()
 	protected static async generatesOnlyFieldTypes() {
 		await this.installSchemaFeature('schemas')
-		const results = await this.Executer('schema', 'syncFields').execute({})
+		const results = await this.Action('schema', 'syncFields').execute({})
 
 		assert.isFalsy(results.errors)
 

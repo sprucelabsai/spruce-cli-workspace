@@ -1,7 +1,7 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { GeneratedFile } from '../../../types/cli.types'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import StoreTemplateItemBuilder from '../templateItemBuilders/StoreTemplateItemBuilder'
 
 const optionsSchema = buildSchema({
@@ -14,7 +14,7 @@ const optionsSchema = buildSchema({
 type OptionsSchema = typeof optionsSchema
 type Options = SchemaValues<OptionsSchema>
 
-export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
+export default class SyncAction extends AbstractAction<OptionsSchema> {
 	public code = 'sync.stores'
 	public optionsSchema = optionsSchema
 	public commandAliases = ['sync.stores']

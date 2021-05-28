@@ -53,7 +53,7 @@ export default class SkillFeature<
 	]
 
 	public optionsSchema = skillFeatureSchema as S
-	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 	private engines = {
 		node: '12.x',
 		yarn: '1.x',

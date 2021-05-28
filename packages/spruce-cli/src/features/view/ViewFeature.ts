@@ -17,7 +17,7 @@ export default class ViewFeature extends AbstractFeature {
 	public nameReadable = 'views'
 	public description = 'Views: Create views using the Heartwood framework.'
 	public code: FeatureCode = 'view'
-	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public readonly packageDependencies: NpmPackage[] = [
 		{

@@ -9,14 +9,13 @@ import { ErrorTemplateItem } from '@sprucelabs/spruce-templates'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import syncErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncErrorOptions.schema'
 import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasOptions.schema'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
-import FeatureCommandExecuter from '../../FeatureCommandExecuter'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse, FeatureAction } from '../../features.types'
 import ErrorWriter from '../writers/ErrorWriter'
 
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorOptions
-export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
+export default class SyncAction extends AbstractAction<OptionsSchema> {
 	public code = 'sync'
 	public optionsSchema = syncErrorActionSchema
 	public commandAliases = ['sync.errors']
@@ -27,7 +26,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 		const { errorTypesDestinationDir, errorClassDestinationDir } =
 			normalizedOptions
 
-		const schemaSyncAction = FeatureCommandExecuter.Executer(
+		const schemaSyncAction = this.Action(
 			'schema',
 			'sync'
 		) as any as FeatureAction<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptionsSchema>

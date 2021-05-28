@@ -27,7 +27,7 @@ export default class TestFeature extends AbstractFeature {
 		{ name: 'jest-circus', isDev: true },
 		{ name: 'jest', isDev: true },
 	]
-	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public async afterPackageInstall() {
 		const service = this.Service('pkg')

@@ -8,8 +8,7 @@ import SpruceError from '../../../errors/SpruceError'
 import SchemaTemplateItemBuilder from '../../../templateItemBuilders/SchemaTemplateItemBuilder'
 import { GeneratedFile } from '../../../types/cli.types'
 import actionUtil from '../../../utilities/action.utility'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
-import FeatureCommandExecuter from '../../FeatureCommandExecuter'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 import schemaGeneratorUtil from '../utilities/schemaGenerator.utility'
 import ValueTypeBuilder from '../ValueTypeBuilder'
@@ -17,7 +16,7 @@ import ValueTypeBuilder from '../ValueTypeBuilder'
 type OptionsSchema =
 	SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptions
-export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
+export default class SyncAction extends AbstractAction<OptionsSchema> {
 	public code = 'sync'
 	public optionsSchema = syncSchemasActionSchema
 	public commandAliases = ['sync.schemas']
@@ -272,7 +271,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			resolvedFieldTypesDestination,
 		} = options
 
-		const action = FeatureCommandExecuter.Executer('schema', 'syncFields')
+		const action = this.Action('schema', 'syncFields')
 		const results = await action.execute({
 			fieldTypesDestinationDir: resolvedFieldTypesDestination,
 			addonsLookupDir,

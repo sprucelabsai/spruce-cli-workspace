@@ -15,7 +15,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 	protected static async failsWhenASkillIsNotInstalled() {
 		await this.Cli()
 		const err = await assert.doesThrowAsync(() =>
-			this.Executer('schema', 'create').execute({
+			this.Action('schema', 'create').execute({
 				nameReadable: 'Test schema!',
 				namePascal: 'AnotherTest',
 				nameCamel: 'anotherTest',
@@ -52,7 +52,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 
 	private static async syncSchemasAndGetCreateAction(cacheKey?: string) {
 		await this.syncSchemas(cacheKey)
-		const createSchema = this.Executer('schema', 'create')
+		const createSchema = this.Action('schema', 'create')
 
 		return createSchema
 	}

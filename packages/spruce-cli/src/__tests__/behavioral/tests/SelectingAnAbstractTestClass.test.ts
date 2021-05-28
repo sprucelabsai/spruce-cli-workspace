@@ -9,7 +9,7 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 		await this.installTests()
 		await this.copyTestFiles()
 
-		const response = this.Executer('test', 'create').execute({
+		const response = this.Action('test', 'create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can book appointment',
 			nameCamel: 'canBookAppointment',
@@ -83,7 +83,7 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 			}
 		})
 
-		const promise = this.Executer('test', 'create').execute({
+		const promise = this.Action('test', 'create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can book appointment',
 			nameCamel: 'canBookAppointment',

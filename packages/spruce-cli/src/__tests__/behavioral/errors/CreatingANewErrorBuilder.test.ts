@@ -6,13 +6,13 @@ import testUtil from '../../../tests/utilities/test.utility'
 export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 	@test()
 	protected static async hasCreateAction() {
-		assert.isFunction(this.Executer('error', 'create').execute)
+		assert.isFunction(this.Action('error', 'create').execute)
 	}
 
 	@test()
 	protected static async failsWhenSkillNotInstalled() {
 		const err = await assert.doesThrowAsync(() =>
-			this.Executer('error', 'create').execute({})
+			this.Action('error', 'create').execute({})
 		)
 
 		errorAssertUtil.assertError(err, 'FEATURE_NOT_INSTALLED')
@@ -27,7 +27,7 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 
 	protected static async installErrorsAndGetCreateAction() {
 		await this.installErrorFeature('errors')
-		return this.Executer('error', 'create')
+		return this.Action('error', 'create')
 	}
 
 	@test()

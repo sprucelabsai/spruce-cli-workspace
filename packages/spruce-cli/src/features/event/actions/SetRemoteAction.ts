@@ -1,5 +1,5 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 import { Remote } from '../constants'
 
@@ -38,7 +38,7 @@ const optionsSchema = buildSchema({
 type OptionsSchema = typeof optionsSchema
 type Options = SchemaValues<OptionsSchema>
 
-export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
+export default class SyncAction extends AbstractAction<OptionsSchema> {
 	public code = 'setRemote'
 	public commandAliases = ['set.remote']
 	public optionsSchema: OptionsSchema = optionsSchema

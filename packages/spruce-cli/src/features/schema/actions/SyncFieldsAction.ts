@@ -4,13 +4,13 @@ import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import syncSchemaFieldsActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemaFieldsOptions.schema'
 import FieldTemplateItemBuilder from '../../../templateItemBuilders/FieldTemplateItemBuilder'
 import { GeneratedFile } from '../../../types/cli.types'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 type OptionsSchema =
 	SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemaFieldsOptionsSchema
 
-export default class FieldsSyncAction extends AbstractFeatureAction<OptionsSchema> {
+export default class FieldsSyncAction extends AbstractAction<OptionsSchema> {
 	public code = 'syncFields'
 	public optionsSchema = syncSchemaFieldsActionSchema
 	public commandAliases = ['sync.fields']

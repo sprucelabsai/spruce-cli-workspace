@@ -6,8 +6,8 @@ import {
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
+import ActionExecuter from '../../features/ActionExecuter'
 import featuresUtil from '../../features/feature.utilities'
-import FeatureCommandExecuter from '../../features/FeatureCommandExecuter'
 import {
 	FeatureActionResponse,
 	FeatureCode,
@@ -19,26 +19,26 @@ import testUtil from '../../tests/utilities/test.utility'
 export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
-		FeatureCommandExecuter.shouldAutoHandleDependencies = true
+		ActionExecuter.shouldAutoHandleDependencies = true
 	}
 
 	@test()
 	protected static async canInstantiateExecuter() {
-		const executer = this.Executer('schema', 'create')
+		const executer = this.Action('schema', 'create')
 		assert.isTruthy(executer)
 	}
 
 	@test()
 	protected static async throwWhenExecutingWhenMissingDependenciens() {
 		const err = await assert.doesThrowAsync(() =>
-			this.Executer('skill', 'create').execute({})
+			this.Action('skill', 'create').execute({})
 		)
 		errorAssertUtil.assertError(err, 'EXECUTING_COMMAND_FAILED')
 	}
 
 	@test()
 	protected static async shouldAskAllQuestionsOfFeature() {
-		const executer = this.Executer('skill', 'create')
+		const executer = this.Action('skill', 'create')
 		const promise = executer.execute({})
 
 		await this.waitForInput()
@@ -53,7 +53,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async shouldEmitExecutionEvents() {
-		const executer = this.Executer('skill', 'create')
+		const executer = this.Action('skill', 'create')
 
 		let emittedWillEvent = false
 		let willEventCommand = ''
@@ -111,7 +111,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async shouldNotAskAlreadyAnsweredQuestions() {
-		const executer = this.Executer('skill', 'create')
+		const executer = this.Action('skill', 'create')
 		const promise = executer.execute({ description: 'go team!' })
 
 		await this.waitForInput()
@@ -127,7 +127,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 	protected static async shouldAddListenerWithoutBreakingOnSkill() {
 		await this.FeatureFixture().installCachedFeatures('schemas')
 
-		const executer = this.Executer('event', 'listen')
+		const executer = this.Action('event', 'listen')
 		const promise = executer.execute({})
 
 		await this.waitForInput()
@@ -145,7 +145,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async shouldAskInstallDependentFeatures() {
-		const executer = this.Executer('schema', 'create')
+		const executer = this.Action('schema', 'create')
 		void executer.execute({})
 
 		await this.waitForInput()
@@ -162,7 +162,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async shouldInstallDependentFeatures() {
-		const executer = this.Executer('schema', 'create')
+		const executer = this.Action('schema', 'create')
 		const promise = executer.execute({})
 
 		await this.waitForInput()
@@ -213,7 +213,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async shouldInstallTwoDependentFeatures() {
-		const executer = this.Executer('error', 'create')
+		const executer = this.Action('error', 'create')
 		const promise = executer.execute({})
 
 		await this.waitForInput()
@@ -258,7 +258,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async shouldReturnProperSummary() {
-		const executer = this.Executer('skill', 'create')
+		const executer = this.Action('skill', 'create')
 		const results = await executer.execute({
 			name: 'install summary test skill',
 			description: 'go team!',
@@ -340,7 +340,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 	private static async startBuildingNewErrorUntilOptionalDependencies(
 		skillFeatureAnswer: 'skip' | 'yes' | 'alwaysSkip'
 	) {
-		const executer = this.Executer('error', 'create')
+		const executer = this.Action('error', 'create')
 		const promise = executer.execute({})
 
 		await this.waitForInput()
@@ -396,7 +396,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 		await this.finishBuildingUpToNamingNewError(actionPromise)
 
-		const executer = this.Executer('error', 'create')
+		const executer = this.Action('error', 'create')
 		const promise = executer.execute({})
 
 		await this.waitForInput()

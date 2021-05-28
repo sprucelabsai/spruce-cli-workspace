@@ -16,7 +16,7 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 		const { skill2, currentSkill } =
 			await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
 
-		await this.Executer('event', 'create').execute({
+		await this.Action('event', 'create').execute({
 			nameReadable: EVENT_NAME_READABLE,
 			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
@@ -24,9 +24,9 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 
 		await this.copyEventBuildersAndPermissions(EVENT_NAME)
 
-		await this.Executer('event', 'sync').execute({})
+		await this.Action('event', 'sync').execute({})
 
-		const boot = await this.Executer('skill', 'boot').execute({ local: true })
+		const boot = await this.Action('skill', 'boot').execute({ local: true })
 
 		const client = await this.connectToApi({
 			skillId: skill2.id,

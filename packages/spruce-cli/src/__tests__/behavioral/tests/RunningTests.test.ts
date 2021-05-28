@@ -6,13 +6,13 @@ export default class RunningTestsTest extends AbstractTestTest {
 	@test()
 	protected static async hasTestAction() {
 		await this.Cli()
-		assert.isFunction(this.Executer('test', 'test').execute)
+		assert.isFunction(this.Action('test', 'test').execute)
 	}
 
 	@test()
 	protected static async runningTestsActuallyRunsTests() {
 		await this.installTests()
-		const creationPromise = this.Executer('test', 'create').execute({
+		const creationPromise = this.Action('test', 'create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can book appointment',
 			nameCamel: 'canBookAppointment',
@@ -29,7 +29,7 @@ export default class RunningTestsTest extends AbstractTestTest {
 
 		this.fixBadTest(file.path)
 
-		const promise = this.Executer('test', 'create').execute({
+		const promise = this.Action('test', 'create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can cancel appointment',
 			nameCamel: 'canCancelAppointment',
@@ -43,7 +43,7 @@ export default class RunningTestsTest extends AbstractTestTest {
 
 		await this.Service('build').build()
 
-		const results = await this.Executer('test', 'test').execute({
+		const results = await this.Action('test', 'test').execute({
 			shouldReportWhileRunning: false,
 		})
 

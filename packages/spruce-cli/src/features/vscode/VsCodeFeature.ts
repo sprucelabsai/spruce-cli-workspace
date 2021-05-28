@@ -14,7 +14,7 @@ export default class VsCodeFeature extends AbstractFeature {
 	public nameReadable = 'VSCode'
 	public description = 'Create settings and install VSCode extensions'
 	public code: FeatureCode = 'vscode'
-	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public readonly fileDescriptions: FileDescription[] = [
 		{

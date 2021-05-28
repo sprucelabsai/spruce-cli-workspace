@@ -38,14 +38,14 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	@test()
 	protected static async hasSyncEventsAction() {
 		await this.Cli()
-		assert.isFunction(this.Executer('event', 'sync').execute)
+		assert.isFunction(this.Action('event', 'sync').execute)
 	}
 
 	@test()
 	protected static async generatesValidContractFile() {
 		await this.FeatureFixture().installCachedFeatures('eventsInNodeModule')
 
-		const results = await this.Executer('event', 'sync').execute({})
+		const results = await this.Action('event', 'sync').execute({})
 
 		await this.assertValidEventResults(results)
 	}
@@ -53,7 +53,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	@test()
 	protected static async syncingSchemasRetainsEventPayloadSchemas() {
 		await this.FeatureFixture().installCachedFeatures('events')
-		const results = await this.Executer('schema', 'sync').execute({})
+		const results = await this.Action('schema', 'sync').execute({})
 
 		this.assertExpectedPayloadSchemasAreCreated(results)
 	}
@@ -62,7 +62,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	protected static async syncingSchemasWithBrokenConnectionStopsWithError() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 
-		const results = await this.Executer('schema', 'sync').execute({})
+		const results = await this.Action('schema', 'sync').execute({})
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
 			'sendMessageEmitPayload.schema.ts',
@@ -80,7 +80,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		const writer = eventFeature.EventContractBuilder()
 		writer.clearCache()
 
-		const results2 = await this.Executer('schema', 'sync').execute({})
+		const results2 = await this.Action('schema', 'sync').execute({})
 
 		assert.isTruthy(results2.errors)
 
@@ -90,7 +90,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	@test()
 	protected static async syncingSchemasDoesNotSyncEventSchemasIfEventsNotInstalled() {
 		await this.FeatureFixture().installCachedFeatures('schemas')
-		const results = await this.Executer('schema', 'sync').execute({})
+		const results = await this.Action('schema', 'sync').execute({})
 
 		assert.doesThrow(() => this.assertExpectedPayloadSchemasAreCreated(results))
 	}
@@ -99,7 +99,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	protected static async canGetNumberOfEventsBackFromHealthCheck() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 
-		const results = await this.Executer('event', 'sync').execute({})
+		const results = await this.Action('event', 'sync').execute({})
 
 		assert.isFalsy(results.errors)
 
@@ -164,7 +164,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 			},
 		})
 
-		const results = await this.Executer('event', 'sync').execute({})
+		const results = await this.Action('event', 'sync').execute({})
 
 		const match = testUtil.assertsFileByNameInGeneratedFiles(
 			`myNewEvent.${this.todaysVersion.dirValue}.contract.ts`,
@@ -229,7 +229,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 			},
 		})
 
-		const results = await this.Executer('event', 'sync').execute({})
+		const results = await this.Action('event', 'sync').execute({})
 
 		const contract = testUtil.assertsFileByNameInGeneratedFiles(
 			'events.contract.ts',
@@ -254,7 +254,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 			},
 		})
 
-		const results = await this.Executer('event', 'sync').execute({})
+		const results = await this.Action('event', 'sync').execute({})
 
 		const contract = testUtil.assertsFileByNameInGeneratedFiles(
 			'events.contract.ts',
@@ -280,7 +280,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 			syncResults.files
 		)
 
-		await this.Executer('event', 'sync').execute({})
+		await this.Action('event', 'sync').execute({})
 
 		assert.isFalse(diskUtil.doesFileExist(eventContract))
 
@@ -305,7 +305,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 			},
 		})
 
-		const results = await this.Executer('event', 'sync').execute({})
+		const results = await this.Action('event', 'sync').execute({})
 
 		return {
 			skillFixture,

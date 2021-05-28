@@ -7,7 +7,7 @@ import testUtil from '../../tests/utilities/test.utility'
 export default class CreatingAConversationTopicTest extends AbstractCliTest {
 	@test()
 	protected static async hasCreateConversationAction() {
-		assert.isFunction(this.Executer('conversation', 'create').execute)
+		assert.isFunction(this.Action('conversation', 'create').execute)
 	}
 
 	@test()
@@ -16,7 +16,7 @@ export default class CreatingAConversationTopicTest extends AbstractCliTest {
 			'conversation'
 		)
 
-		const results = await this.Executer('conversation', 'create').execute({
+		const results = await this.Action('conversation', 'create').execute({
 			nameReadable: 'book an appointment',
 			nameCamel: 'bookAnAppointment',
 		})

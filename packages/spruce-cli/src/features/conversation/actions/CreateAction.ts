@@ -1,13 +1,13 @@
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import createConversationTopicOptionsSchema from '#spruce/schemas/spruceCli/v2020_07_22/createConversationTopicOptions.schema'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 type OptionsSchema =
 	SpruceSchemas.SpruceCli.v2020_07_22.CreateConversationTopicOptionsSchema
 type Options =
 	SpruceSchemas.SpruceCli.v2020_07_22.CreateConversationTopicOptions
-export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
+export default class CreateAction extends AbstractAction<OptionsSchema> {
 	public invocationMessage = 'Creating your new topic for conversation... 🎙'
 	public code = 'create'
 	public optionsSchema = createConversationTopicOptionsSchema

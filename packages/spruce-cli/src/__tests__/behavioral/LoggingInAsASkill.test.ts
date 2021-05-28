@@ -24,12 +24,12 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 
 	@test()
 	protected static async hasLoginAction() {
-		assert.isFunction(this.Executer('skill', 'login').execute)
+		assert.isFunction(this.Action('skill', 'login').execute)
 	}
 
 	@test()
 	protected static async asksToLoginIfNotLoggedIn() {
-		void this.Executer('skill', 'login').execute({})
+		void this.Action('skill', 'login').execute({})
 
 		await this.waitForInput()
 
@@ -42,7 +42,7 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 	protected static async returnsErrorIfNoSkillHasEverBeenRegistered() {
 		await this.login()
 
-		const results = await this.Executer('skill', 'login').execute({})
+		const results = await this.Action('skill', 'login').execute({})
 
 		assert.isTruthy(results.errors)
 		assert.isLength(results.errors, 1)
@@ -65,7 +65,7 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 			name: `login skill ${new Date().getTime()}`,
 		})
 
-		const results = await this.Executer('skill', 'login').execute({})
+		const results = await this.Action('skill', 'login').execute({})
 
 		assert.isFalsy(results.errors)
 
@@ -81,7 +81,7 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 			name: `login skill 2 ${new Date().getTime()}`,
 		})
 
-		const promise = this.Executer('skill', 'login').execute({})
+		const promise = this.Action('skill', 'login').execute({})
 
 		await this.waitForInput()
 
@@ -106,7 +106,7 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 	@test()
 	protected static async cantLoginWithSlugYouDontOwn() {
 		await this.login()
-		const results = await this.Executer('skill', 'login').execute({
+		const results = await this.Action('skill', 'login').execute({
 			skillSlug: 'never found',
 		})
 
@@ -123,7 +123,7 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 			name: `login skill 3 ${new Date().getTime()}`,
 		})
 
-		const results = await this.Executer('skill', 'login').execute({
+		const results = await this.Action('skill', 'login').execute({
 			skillSlug: this.skill3.slug,
 		})
 

@@ -1,15 +1,14 @@
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventOptions.schema'
 import actionUtil from '../../../utilities/action.utility'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
-import FeatureCommandExecuter from '../../FeatureCommandExecuter'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 import EventFeature from '../EventFeature'
 
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptions
 
-export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
+export default class SyncAction extends AbstractAction<OptionsSchema> {
 	public code = 'sync'
 	public commandAliases = ['sync.events']
 	public optionsSchema: OptionsSchema = syncEventActionSchema
@@ -28,10 +27,7 @@ export default class SyncAction extends AbstractFeatureAction<OptionsSchema> {
 			}
 		}
 
-		const schemaSyncResults = await FeatureCommandExecuter.Executer(
-			'schema',
-			'sync'
-		).execute({})
+		const schemaSyncResults = await this.Action('schema', 'sync').execute({})
 
 		return actionUtil.mergeActionResults(schemaSyncResults, results)
 	}

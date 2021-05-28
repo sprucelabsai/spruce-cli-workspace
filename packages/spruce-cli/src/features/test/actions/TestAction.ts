@@ -5,7 +5,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import open from 'open'
 import testOptionsSchema from '#spruce/schemas/spruceCli/v2020_07_22/testOptions.schema'
 import SpruceError from '../../../errors/SpruceError'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import {
 	FeatureActionResponse,
 	FeatureActionOptions,
@@ -26,7 +26,7 @@ export type OptionsSchema = typeof optionsSchema
 type DidChangePayload =
 	SchemaValues<SpruceSchemas.SpruceCli.v2020_07_22.WatcherDidDetectChangesEmitPayloadSchema>
 
-export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
+export default class TestAction extends AbstractAction<OptionsSchema> {
 	public code = 'test'
 	public optionsSchema = optionsSchema
 	public invocationMessage = 'Starting tests... 🛡'

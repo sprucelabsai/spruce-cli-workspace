@@ -6,7 +6,7 @@ import AbstractCliTest from '../../tests/AbstractCliTest'
 import MockProgramFactory, { MockProgram } from '../../tests/MockProgramFactory'
 
 export default class FeatureCommandAttacherTest extends AbstractCliTest {
-	private static attacher: FeatureCommandAttacher
+	private static attacherWithOverride: FeatureCommandAttacher
 	private static program: MockProgram
 
 	protected static async beforeEach() {
@@ -14,7 +14,9 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 
 		this.program = this.MockCommanderProgram()
 
-		this.attacher = new FeatureCommandAttacher({
+		const actionExecuter = this.ActionExecuter()
+
+		this.attacherWithOverride = new FeatureCommandAttacher({
 			program: this.program,
 			ui: this.ui,
 			optionOverrides: {
@@ -22,18 +24,19 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 					fetchCoreSchemas: false,
 				},
 			},
+			actionExecuter,
 			blockedCommands: {},
 		})
 	}
 
 	@test()
 	protected static canInstantiateAttacher() {
-		assert.isTruthy(this.attacher)
+		assert.isTruthy(this.attacherWithOverride)
 	}
 
 	@test()
 	protected static hasAttachMethod() {
-		assert.isFunction(this.attacher.attachFeature)
+		assert.isFunction(this.attacherWithOverride.attachFeature)
 	}
 
 	@test()
@@ -105,7 +108,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		const cli = await this.Cli()
 		const vscodeFeature = cli.getFeature('vscode')
 
-		await this.attacher.attachFeature(vscodeFeature)
+		await this.attacherWithOverride.attachFeature(vscodeFeature)
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'setup.vscode',
@@ -118,7 +121,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		const cli = await this.Cli()
 		const feature = cli.getFeature('skill')
 
-		await this.attacher.attachFeature(feature)
+		await this.attacherWithOverride.attachFeature(feature)
 
 		assert.doesInclude(this.program.aliasesInvocations, 'update')
 	}
@@ -128,7 +131,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		const cli = await this.Cli()
 		const vscodeFeature = cli.getFeature('test')
 
-		await this.attacher.attachFeature(vscodeFeature)
+		await this.attacherWithOverride.attachFeature(vscodeFeature)
 
 		const match = this.program.commandInvocations.find((i) => i === 'test')
 		assert.isTruthy(match)
@@ -171,13 +174,17 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 
 	@test()
 	protected static async blockedCommandsThrow() {
-		this.attacher = new FeatureCommandAttacher({
+		const actionExecuter = this.ActionExecuter()
+
+		this.attacherWithOverride = new FeatureCommandAttacher({
 			program: this.program,
 			ui: this.ui,
 			optionOverrides: {},
 			blockedCommands: {
 				'sync.schemas': 'this is blocked',
+				'sync.fields': 'this is blocked',
 			},
+			actionExecuter,
 		})
 
 		await this.attachSchemaFeature()
@@ -192,7 +199,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		const cli = await this.Cli()
 		const schemaFeature = cli.getFeature('schema')
 
-		await this.attacher.attachFeature(schemaFeature)
+		await this.attacherWithOverride.attachFeature(schemaFeature)
 	}
 
 	private static MockCommanderProgram(): MockProgram {

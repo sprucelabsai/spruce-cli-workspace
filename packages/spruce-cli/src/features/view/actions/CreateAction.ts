@@ -3,7 +3,7 @@ import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import FormComponent from '../../../components/FormComponent'
 import namedTemplateItemBuilder from '../../../schemas/v2020_07_22/namedTemplateItem.builder'
 import formUtil from '../../../utilities/form.utility'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 const viewTypeChoices = [
@@ -80,7 +80,7 @@ const followUpSchema = buildSchema({
 
 type OptionsSchema = typeof optionsSchema
 
-export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
+export default class CreateAction extends AbstractAction<OptionsSchema> {
 	public code = 'create'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['create.view']

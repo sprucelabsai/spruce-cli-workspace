@@ -32,6 +32,7 @@ import {
 	ProgressBarOptions,
 	ProgressBarUpdateOptions,
 } from '../types/graphicsInterface.types'
+import durationUtil from '../utilities/duration.utility'
 const terminalImage = require('terminal-image')
 
 let fieldCount = 0
@@ -159,7 +160,9 @@ export default class TerminalInterface implements GraphicsInterface {
 		this.renderLine(bar, effects)
 	}
 
-	public renderCommandSummary(results: ExecutionResults) {
+	public renderCommandSummary(
+		results: ExecutionResults & { totalTime?: number }
+	) {
 		const generatedFiles =
 			results.files?.filter((f) => f.action === 'generated') ?? []
 		const updatedFiles =
@@ -245,6 +248,12 @@ export default class TerminalInterface implements GraphicsInterface {
 				headline: 'Read below 👇',
 				lines: results.hints,
 			})
+		}
+
+		if (results.totalTime) {
+			this.renderLine(
+				`Total time: ${durationUtil.msToFriendly(results.totalTime)}`
+			)
 		}
 	}
 

@@ -14,7 +14,7 @@ export default class CreatingSchemasWithGenericsTest extends AbstractSchemaTest 
 
 		await diskUtil.copyDir(source, destination)
 
-		const results = await this.Executer('schema', 'sync').execute({})
+		const results = await this.Action('schema', 'sync').execute({})
 
 		assert.isFalsy(results.errors)
 		assert.isTruthy(results.files)

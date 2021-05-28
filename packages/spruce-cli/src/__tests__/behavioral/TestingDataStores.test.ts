@@ -9,7 +9,7 @@ export default class TestingDataStoresTest extends AbstractSkillTest {
 	protected static async cantSelectAbstractStoreIfStoreFeatureNotInstalled() {
 		this.cli.getFeature('store').isInstalled = async () => false
 
-		void this.Executer('test', 'create').execute({
+		void this.Action('test', 'create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can book appointment',
 			nameCamel: 'canBookAppointment',
@@ -30,7 +30,7 @@ export default class TestingDataStoresTest extends AbstractSkillTest {
 	protected static async letsYouSelectAbstractStoreTest() {
 		this.cli.getFeature('store').isInstalled = async () => true
 
-		const promise = this.Executer('test', 'create').execute({
+		const promise = this.Action('test', 'create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can book appointment',
 			nameCamel: 'canBookAppointment',
@@ -57,7 +57,7 @@ export default class TestingDataStoresTest extends AbstractSkillTest {
 
 		await this.Service('build').build()
 
-		const testResults = await this.Executer('test', 'test').execute({
+		const testResults = await this.Action('test', 'test').execute({
 			shouldReportWhileRunning: false,
 		})
 

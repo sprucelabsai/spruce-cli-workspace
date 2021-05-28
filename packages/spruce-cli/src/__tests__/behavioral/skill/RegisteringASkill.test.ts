@@ -6,14 +6,14 @@ import AbstractCliTest from '../../../tests/AbstractCliTest'
 export default class RegisteringASkillTest extends AbstractCliTest {
 	@test()
 	protected static async hasRegisterAction() {
-		assert.isFunction(this.Executer('skill', 'register').execute)
+		assert.isFunction(this.Action('skill', 'register').execute)
 	}
 
 	@test()
 	protected static async cantRegisterWithoutBeingLoggedIn() {
 		await this.FeatureFixture().installCachedFeatures('skills')
 
-		const results = await this.Executer('skill', 'register').execute({
+		const results = await this.Action('skill', 'register').execute({
 			nameReadable: 'My great skill',
 			nameKebab: 'my-great-skill',
 		})
@@ -32,7 +32,7 @@ export default class RegisteringASkillTest extends AbstractCliTest {
 		await this.PersonFixture().loginAsDemoPerson()
 
 		const slug = `my-new-skill-${new Date().getTime()}`
-		const results = await this.Executer('skill', 'register').execute({
+		const results = await this.Action('skill', 'register').execute({
 			nameReadable: 'my new skill',
 			nameKebab: slug,
 		})

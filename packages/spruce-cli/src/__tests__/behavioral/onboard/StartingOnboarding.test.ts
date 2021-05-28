@@ -15,7 +15,7 @@ class TheTestEmitter extends CliGlobalEmitter {
 export default class StartingOnboardingTest extends AbstractCliTest {
 	@test()
 	protected static async hasOnboardAction() {
-		assert.isFunction(this.Executer('onboard', 'onboard').execute)
+		assert.isFunction(this.Action('onboard', 'onboard').execute)
 	}
 
 	@test()
@@ -29,7 +29,7 @@ export default class StartingOnboardingTest extends AbstractCliTest {
 
 	@test()
 	protected static async onboardingThroughSkillCreateThenShutsOff() {
-		const onboardAction = this.Executer('onboard', 'onboard')
+		const onboardAction = this.Action('onboard', 'onboard')
 		const onboardPromise = onboardAction.execute({})
 
 		// get through first onboarding script and select short onboarding
@@ -45,7 +45,7 @@ export default class StartingOnboardingTest extends AbstractCliTest {
 		const onboardingStore = this.Store('onboarding')
 		assert.isEqual(onboardingStore.getMode(), 'short')
 
-		const createSkillAction = this.Executer('skill', 'create')
+		const createSkillAction = this.Action('skill', 'create')
 		const createPromise = createSkillAction.execute({})
 
 		// create skill confirmation
