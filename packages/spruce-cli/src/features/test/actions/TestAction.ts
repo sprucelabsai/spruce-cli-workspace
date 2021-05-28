@@ -259,7 +259,10 @@ export default class TestAction extends AbstractFeatureAction<OptionsSchema> {
 	}
 
 	private fileToFilterPattern(file: string) {
-		const filename = pathUtil.basename(file, '.ts').replace('.tsx', '')
+		const filename = pathUtil
+			.basename(file, '.ts')
+			.replace('.tsx', '')
+			.replace('.js', '')
 		const dirname = pathUtil.dirname(file).split(pathUtil.sep).pop() ?? ''
 
 		const name = pathUtil.join(dirname, filename)

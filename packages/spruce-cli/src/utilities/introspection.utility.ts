@@ -33,15 +33,20 @@ const serializeSymbol = (options: {
 	symbol: ts.Symbol
 }): DocEntry => {
 	const { checker, symbol } = options
-	return {
+	const doc: DocEntry = {
 		name: symbol.getName(),
 		documentation: ts.displayPartsToString(
 			symbol.getDocumentationComment(checker)
 		),
-		type: checker.typeToString(
-			checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration)
-		),
 	}
+
+	if (symbol.valueDeclaration) {
+		doc.type = checker.typeToString(
+			checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration)
+		)
+	}
+
+	return doc
 }
 
 const serializeSignature = (options: {
@@ -79,7 +84,7 @@ const introspectionUtil = {
 					if (ts.isClassDeclaration(node) && node.name) {
 						const symbol = checker.getSymbolAtLocation(node.name)
 
-						if (symbol) {
+						if (symbol?.valueDeclaration) {
 							const details = serializeSymbol({ checker, symbol })
 							// Get the construct signatures
 							const constructorType = checker.getTypeOfSymbolAtLocation(

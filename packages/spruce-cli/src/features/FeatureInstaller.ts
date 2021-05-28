@@ -36,7 +36,6 @@ export default class FeatureInstaller implements ServiceProvider {
 	public constructor(cwd: string, serviceFactory: ServiceFactory) {
 		this.cwd = cwd
 		this.serviceFactory = serviceFactory
-		debugger
 	}
 
 	public async isInstalled(code: FeatureCode): Promise<boolean> {

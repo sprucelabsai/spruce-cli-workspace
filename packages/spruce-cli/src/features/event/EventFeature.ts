@@ -75,9 +75,9 @@ export default class EventFeature extends AbstractFeature {
 
 		if (featureCode === 'event' && actionCode !== 'setRemote') {
 			const remote = this.Service('remote')
-			const host = remote.getRemote()
+			const r = remote.getRemote()
 
-			if (!host) {
+			if (!r) {
 				if (!TerminalInterface.doesSupportColor()) {
 					throw new Error(
 						`Dang! I couldn't find env.HOST. Once that is set, lets try again!`
@@ -93,6 +93,10 @@ export default class EventFeature extends AbstractFeature {
 				).execute({})
 
 				return results
+			} else {
+				return {
+					summaryLines: [`Remote: ${r}`, `Host: ${remote.getHost()}`],
+				}
 			}
 		}
 
@@ -103,7 +107,6 @@ export default class EventFeature extends AbstractFeature {
 		const isInstalled = await this.featureInstaller.isInstalled(this.code)
 
 		if (isInstalled) {
-			debugger
 			const writer = this.EventContractBuilder()
 
 			const uniqueSchemas = await writer.fetchContractsAndGenerateUniqueSchemas(

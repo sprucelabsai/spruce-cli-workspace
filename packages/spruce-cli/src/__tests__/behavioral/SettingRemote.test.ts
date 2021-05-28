@@ -65,4 +65,11 @@ export default class SettingRemoteTest extends AbstractSkillTest {
 
 		assert.doesInclude(err.message, 'env.HOST')
 	}
+
+	@test()
+	protected static async resultsOfCommandHasRemoteMixedIntoSummary() {
+		const results = await this.Executer('event', 'sync').execute({})
+
+		assert.isTruthy(results.summaryLines)
+	}
 }

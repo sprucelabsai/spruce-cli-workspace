@@ -7,6 +7,32 @@ import { buildSchema } from '@sprucelabs/schema'
 import generatedFileSchema from '#spruce/schemas/spruceCli/v2020_07_22/generatedFile.schema'
 import watcherDidDetectChangesEmitPayloadSchema from '#spruce/schemas/spruceCli/v2020_07_22/watcherDidDetectChangesEmitPayload.schema'
 
+const actionResponseSchema = buildSchema({
+	id: 'actionResponse',
+	fields: {
+		files: {
+			type: 'schema',
+			isArray: true,
+			options: {
+				schema: generatedFileSchema,
+			},
+		},
+		headline: {
+			type: 'text',
+		},
+		summaryLines: {
+			type: 'text',
+			isArray: true,
+		},
+		meta: {
+			type: 'raw',
+			options: {
+				valueType: 'Record<string, any>',
+			},
+		},
+	},
+})
+
 export const globalContract = buildEventContract({
 	eventSignatures: {
 		'watcher.did-detect-change': {
@@ -87,13 +113,7 @@ export const globalContract = buildEventContract({
 			responsePayloadSchema: buildSchema({
 				id: 'willExecuteResponsePayload',
 				fields: {
-					files: {
-						type: 'schema',
-						isArray: true,
-						options: {
-							schema: generatedFileSchema,
-						},
-					},
+					...actionResponseSchema.fields,
 				},
 			}),
 		},
@@ -124,13 +144,7 @@ export const globalContract = buildEventContract({
 			responsePayloadSchema: buildSchema({
 				id: 'didExecuteResponsePayload',
 				fields: {
-					files: {
-						type: 'schema',
-						isArray: true,
-						options: {
-							schema: generatedFileSchema,
-						},
-					},
+					...actionResponseSchema.fields,
 				},
 			}),
 		},

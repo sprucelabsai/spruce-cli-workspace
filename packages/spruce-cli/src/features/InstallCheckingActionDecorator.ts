@@ -47,7 +47,6 @@ export default class InstallCheckingActionDecorator implements FeatureAction {
 		const { shouldEmitExecuteEvents = true, ...options } = optionsArg
 
 		if (shouldEmitExecuteEvents) {
-			debugger
 			throw new Error(
 				'use this.Executor() rather than executing your action directly.'
 			)

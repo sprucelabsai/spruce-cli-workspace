@@ -118,6 +118,12 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			actionCode: this.actionCode,
 		})
 
+		const { payloads: willExecutePayloads } =
+			eventResponseUtil.getAllResponsePayloadsAndErrors(
+				willExecuteResults,
+				SpruceError
+			)
+
 		actionUtil.assertNoErrorsInResponse(willExecuteResults)
 
 		let response = await this.installOrMarkAsSkippedMissingDependencies()
@@ -155,7 +161,7 @@ export default class FeatureCommandExecuter<F extends FeatureCode> {
 			SpruceError
 		)
 
-		response = merge(response, ...payloads)
+		response = merge(response, ...willExecutePayloads, ...payloads)
 
 		return response
 	}

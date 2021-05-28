@@ -71,7 +71,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 				payload.featureCode,
 				payload.actionCode
 			)
-			return {}
+			return { results: {} }
 		})
 
 		void emitter.on('feature.did-execute', (payload) => {

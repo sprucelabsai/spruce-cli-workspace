@@ -55,7 +55,11 @@ export default class ErrorFeature extends AbstractFeature {
 
 		if (payload.featureCode === 'skill' && payload.actionCode === 'upgrade') {
 			const files = await this.writePlugin()
-			return { files }
+			return {
+				actionResponse: {
+					files,
+				},
+			}
 		}
 
 		return {}

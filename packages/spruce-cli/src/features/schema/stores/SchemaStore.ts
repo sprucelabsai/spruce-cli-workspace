@@ -114,8 +114,6 @@ export default class SchemaStore extends AbstractStore {
 				SpruceError
 			)
 
-		debugger
-
 		if (errors && errors.length > 0) {
 			results.errors.push(...errors)
 		} else {

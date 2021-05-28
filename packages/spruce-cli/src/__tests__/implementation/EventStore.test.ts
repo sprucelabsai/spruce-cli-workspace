@@ -106,7 +106,7 @@ export default class EventStoreTest extends AbstractEventTest {
 		)
 	}
 
-	@test.only()
+	@test()
 	protected static async badLocalContractThrowsNiceError() {
 		await this.FeatureFixture().installCachedFeatures('events')
 
