@@ -426,7 +426,9 @@
 						"blockedCommandsThrow": "I130",
 						"overridesAreLoadedIntoAttacher": "I131",
 						"skillViewExtendsAbstractViewControllerWithProperView": "I134",
-						"hasSetRemoteAction": "I147"
+						"hasSetRemoteAction": "I147",
+						"create.event asks for remote on NOT TTY": "I148",
+						"resultsOfCommandHasRemoteMixedIntoSummary": "I149"
 					}
 				}
 			],

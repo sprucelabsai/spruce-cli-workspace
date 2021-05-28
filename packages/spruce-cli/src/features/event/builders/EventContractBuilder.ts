@@ -83,14 +83,18 @@ export default class EventContractBuilder {
 
 		const contract = eventContractUtil.unifyContracts(contractResults.contracts)
 		const sigs = eventContractUtil.getNamedEventSignatures(contract)
-		const allNamespaces = sigs.map(sig => sig.eventNamespace ?? MERCURY_API_NAMESPACE)
-		const namespacesToWrite = allNamespaces.filter(n => n !== MERCURY_API_NAMESPACE)
+		const allNamespaces = sigs.map(
+			(sig) => sig.eventNamespace ?? MERCURY_API_NAMESPACE
+		)
+		const namespacesToWrite = allNamespaces.filter(
+			(n) => n !== MERCURY_API_NAMESPACE
+		)
 
 		const files = await this.eventWriter.writeContracts(resolvedDestination, {
 			...normalizedOptions,
 			eventContractTemplateItems,
 			schemaTemplateItems,
-			namespaces: 
+			namespaces: namespacesToWrite,
 		})
 
 		await this.deleteOrphanedEventContracts(
