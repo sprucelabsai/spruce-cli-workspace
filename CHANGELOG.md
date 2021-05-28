@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [14.6.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.6.0...v14.6.1) (2021-05-26)
+
+**Note:** Version bump only for package spruce-cli-workspace
+
+
+
+
+
+# [14.6.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.5.3...v14.6.0) (2021-05-25)
+
+
+### Features
+
+* set remote action ([abb6a5d](https://github.com/sprucelabsai/spruce-cli-workspace/commit/abb6a5d))
+
+
+
+
+
 ## [14.5.3](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.5.2...v14.5.3) (2021-05-25)
 
 **Note:** Version bump only for package spruce-cli-workspace
