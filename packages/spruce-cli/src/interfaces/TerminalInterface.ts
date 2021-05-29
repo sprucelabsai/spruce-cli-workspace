@@ -72,10 +72,16 @@ export default class TerminalInterface implements GraphicsInterface {
 	private static loader?: ora.Ora | null
 	private progressBar: ProgressBarController | null = null
 	private static _doesSupportColor = process?.stdout?.isTTY
+	private log: (...args: any[]) => void
 
-	public constructor(cwd: string, renderStackTraces = false) {
+	public constructor(
+		cwd: string,
+		renderStackTraces = false,
+		log = console.log.bind(console)
+	) {
 		this.cwd = cwd
 		this.renderStackTraces = renderStackTraces
+		this.log = log
 	}
 
 	public static doesSupportColor() {
@@ -308,7 +314,7 @@ export default class TerminalInterface implements GraphicsInterface {
 			terminal.eraseLine()
 		}
 
-		console.log(effects.length > 0 ? write(message) : message)
+		this.log(effects.length > 0 ? write(message) : message)
 	}
 
 	public renderWarning(message: string) {
@@ -360,7 +366,7 @@ export default class TerminalInterface implements GraphicsInterface {
 	public renderCodeSample(code: string) {
 		try {
 			const colored = emphasize.highlight('js', code).value
-			console.log(colored)
+			this.renderLine(colored)
 		} catch (err) {
 			this.renderWarning(err)
 		}
@@ -585,7 +591,7 @@ export default class TerminalInterface implements GraphicsInterface {
 		options?: ImageDimensions
 	): Promise<void> {
 		const image = await terminalImage.file(path, options)
-		console.log(image)
+		this.renderLine(image)
 	}
 
 	public async getCursorPosition(): Promise<{ x: number; y: number } | null> {

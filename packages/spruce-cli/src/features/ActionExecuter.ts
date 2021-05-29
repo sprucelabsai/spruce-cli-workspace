@@ -14,26 +14,28 @@ import {
 	FeatureActionResponse,
 } from './features.types'
 
-type Options = {
+export interface ActionExecuterOptions {
 	ui: GraphicsInterface
 	emitter: GlobalEmitter
 	actionFactory: ActionFactory
 	featureInstallerFactory: () => FeatureInstaller
+	shouldAutoHandleDependencies?: boolean
 }
 
 export default class ActionExecuter {
-	public static shouldAutoHandleDependencies = true
-
 	private emitter: GlobalEmitter
 	private ui: GraphicsInterface
 	private actionFactory: ActionFactory
 	private featureInstallerFactory: () => FeatureInstaller
+	private shouldAutoHandleDependencies: boolean
 
-	public constructor(options: Options) {
+	public constructor(options: ActionExecuterOptions) {
 		this.featureInstallerFactory = options.featureInstallerFactory
 		this.emitter = options.emitter
 		this.ui = options.ui
 		this.actionFactory = options.actionFactory
+		this.shouldAutoHandleDependencies =
+			options.shouldAutoHandleDependencies ?? true
 	}
 
 	private getFeatureInstaller() {
@@ -58,7 +60,7 @@ export default class ActionExecuter {
 		const installer = this.getFeatureInstaller()
 		const isInstalled = await installer.isInstalled(featureCode)
 
-		if (!isInstalled && !ActionExecuter.shouldAutoHandleDependencies) {
+		if (!isInstalled && !this.shouldAutoHandleDependencies) {
 			throw new SpruceError({
 				code: 'EXECUTING_COMMAND_FAILED',
 				friendlyMessage: `You need to install the \`${featureCode}\` feature.`,

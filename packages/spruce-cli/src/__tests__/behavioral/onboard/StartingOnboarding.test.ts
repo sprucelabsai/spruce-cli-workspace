@@ -45,17 +45,25 @@ export default class StartingOnboardingTest extends AbstractCliTest {
 		const onboardingStore = this.Store('onboarding')
 		assert.isEqual(onboardingStore.getMode(), 'short')
 
-		const createSkillAction = this.Action('skill', 'create')
+		const createSkillAction = this.Action('skill', 'create', {
+			shouldAutoHandleDependencies: true,
+		})
+
 		const createPromise = createSkillAction.execute({})
 
 		// create skill confirmation
 		await this.waitForInput()
 		await this.ui.sendInput('\n')
 
+		await this.wait(100)
+
 		// install skill
 		await this.waitForInput()
+
 		await this.ui.sendInput('my new skill')
+
 		await this.waitForInput()
+
 		await this.ui.sendInput('a description')
 
 		await createPromise

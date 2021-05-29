@@ -21,10 +21,12 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 	public invocationMessage = 'Creating your new skill... ⚡️'
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
+		debugger
 		const codeSuggestion = options.destination
 			? `cd ${options.destination} && code .`
 			: `code .`
 
+		debugger
 		return {
 			hints: [
 				'This is so much fun! Lets keep moving.',

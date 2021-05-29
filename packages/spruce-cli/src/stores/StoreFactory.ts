@@ -37,6 +37,14 @@ export interface StoreFactoryMethodOptions {
 	apiClientFactory?: ApiClientFactory
 }
 
+export interface StoreFactoryOptions {
+	cwd: string
+	serviceFactory: ServiceFactory
+	homeDir: string
+	apiClientFactory: ApiClientFactory
+	emitter: GlobalEmitter
+}
+
 export default class StoreFactory {
 	private serviceFactory: ServiceFactory
 	private cwd: string
@@ -44,13 +52,7 @@ export default class StoreFactory {
 	private apiClientFactory: ApiClientFactory
 	private emitter: GlobalEmitter
 
-	public constructor(options: {
-		cwd: string
-		serviceFactory: ServiceFactory
-		homeDir: string
-		apiClientFactory: ApiClientFactory
-		emitter: GlobalEmitter
-	}) {
+	public constructor(options: StoreFactoryOptions) {
 		const { cwd, serviceFactory, homeDir, apiClientFactory, emitter } = options
 
 		this.cwd = cwd

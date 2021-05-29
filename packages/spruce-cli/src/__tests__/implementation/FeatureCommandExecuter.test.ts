@@ -6,7 +6,6 @@ import {
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
-import ActionExecuter from '../../features/ActionExecuter'
 import featuresUtil from '../../features/feature.utilities'
 import {
 	FeatureActionResponse,
@@ -17,11 +16,6 @@ import AbstractSchemaTest from '../../tests/AbstractSchemaTest'
 import testUtil from '../../tests/utilities/test.utility'
 
 export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
-	protected static async beforeEach() {
-		await super.beforeEach()
-		ActionExecuter.shouldAutoHandleDependencies = true
-	}
-
 	@test()
 	protected static async canInstantiateExecuter() {
 		const executer = this.Action('schema', 'create')

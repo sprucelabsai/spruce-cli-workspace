@@ -8,7 +8,10 @@ import globby from 'globby'
 import * as uuid from 'uuid'
 import { CliBootOptions } from '../cli'
 import AbstractAction from '../features/AbstractAction'
-import ActionExecuter from '../features/ActionExecuter'
+import { FeatureOptions } from '../features/AbstractFeature'
+import ActionExecuter, {
+	ActionExecuterOptions,
+} from '../features/ActionExecuter'
 import ActionFactory from '../features/ActionFactory'
 import FeatureInstaller from '../features/FeatureInstaller'
 import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
@@ -29,6 +32,7 @@ import ServiceFactory, { Service, ServiceMap } from '../services/ServiceFactory'
 import StoreFactory, {
 	StoreCode,
 	StoreFactoryMethodOptions,
+	StoreFactoryOptions,
 	StoreMap,
 } from '../stores/StoreFactory'
 import { ApiClientFactoryOptions } from '../types/apiClient.types'
@@ -79,8 +83,6 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		this.clearFixtures()
 
 		ImportService.clearCache()
-
-		ActionExecuter.shouldAutoHandleDependencies = false
 	}
 
 	protected static async afterEach() {
@@ -163,7 +165,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static async Cli(options?: CliBootOptions) {
-		return this.FeatureFixture().Cli({
+		return this.FeatureFixture(options).Cli({
 			cwd: this.cwd,
 			homeDir: this.homeDir,
 			...(options ?? {}),
@@ -188,13 +190,15 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static FeatureFixture(options?: Partial<FeatureFixtureOptions>) {
+		const emitter = options?.emitter ?? this.Emitter()
+
 		return new FeatureFixture({
 			cwd: this.cwd,
 			serviceFactory: this.ServiceFactory(),
 			ui: this.ui,
-			emitter: this.Emitter(),
+			emitter,
 			apiClientFactory: this.MercuryFixture().getApiClientFactory(),
-			featureInstaller: this.FeatureInstaller(),
+			featureInstaller: this.FeatureInstaller({ emitter }),
 			...options,
 		})
 	}
@@ -244,10 +248,10 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return diskUtil.resolveHashSprucePath(this.cwd, ...filePath)
 	}
 
-	protected static FeatureInstaller() {
+	protected static FeatureInstaller(options?: Partial<FeatureOptions>) {
 		if (!this.featureInstaller) {
 			const serviceFactory = this.ServiceFactory()
-			const storeFactory = this.StoreFactory()
+			const storeFactory = this.StoreFactory(options)
 			const emitter = this.Emitter()
 			const apiClientFactory = this.MercuryFixture().getApiClientFactory()
 
@@ -261,13 +265,14 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 				emitter,
 				apiClientFactory,
 				actionExecuter,
+				...options,
 			})
 		}
 
 		return this.featureInstaller
 	}
 
-	protected static StoreFactory() {
+	protected static StoreFactory(options?: Partial<StoreFactoryOptions>) {
 		const serviceFactory = this.ServiceFactory()
 
 		return new StoreFactory({
@@ -276,6 +281,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			homeDir: this.homeDir,
 			apiClientFactory: this.MercuryFixture().getApiClientFactory(),
 			emitter: this.Emitter(),
+			...options,
 		})
 	}
 
@@ -342,13 +348,20 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static Action<
 		Action extends AbstractAction = AbstractAction,
 		F extends FeatureCode = FeatureCode
-	>(featureCode: F, actionCode: string): Action {
-		const executer = this.ActionExecuter().Action(featureCode, actionCode)
+	>(
+		featureCode: F,
+		actionCode: string,
+		options?: Partial<ActionExecuterOptions>
+	): Action {
+		const executer = this.ActionExecuter(options).Action(
+			featureCode,
+			actionCode
+		)
 
 		return executer as any
 	}
 
-	protected static ActionExecuter() {
+	protected static ActionExecuter(options?: Partial<ActionExecuterOptions>) {
 		const serviceFactory = this.ServiceFactory()
 
 		const writerFactory = new WriterFactory(
@@ -377,6 +390,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			featureInstallerFactory: () => {
 				return this.FeatureInstaller()
 			},
+			shouldAutoHandleDependencies: false,
+			...options,
 		})
 
 		return executer
