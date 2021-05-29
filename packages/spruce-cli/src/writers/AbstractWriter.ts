@@ -167,9 +167,8 @@ export default abstract class AbstractWriter {
 		return myResults
 	}
 
-	private isFileDifferent(_destination: string, _contents: string) {
-		return true
-		// return diskUtil.isFileDifferent(destination, contents)
+	private isFileDifferent(destination: string, contents: string) {
+		return diskUtil.isFileDifferent(destination, contents)
 	}
 
 	private cleanFilename(destination: string, cwd: string) {
