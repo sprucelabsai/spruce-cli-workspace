@@ -27,12 +27,19 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 			}
 		}
 
+		this.Service('eventSettings').setLastSyncOptions(options)
+
 		const schemaSyncResults = await this.Action('schema', 'sync').execute({})
 
-		return actionUtil.mergeActionResults(schemaSyncResults, results)
+		const mergedResults = actionUtil.mergeActionResults(
+			schemaSyncResults,
+			results
+		)
+
+		return mergedResults
 	}
 
 	private ContractBuilder() {
-		return (this.parent as EventFeature).EventContractBuilder()
+		return (this.parent as EventFeature).getEventContractBuilder()
 	}
 }

@@ -55,6 +55,7 @@ export default class EventStore extends AbstractStore {
 
 	public async fetchEventContracts(options?: {
 		localNamespace?: string
+		shouldFetchCoreEvents?: boolean
 	}): Promise<EventStoreFetchEventContractsResponse> {
 		const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
 

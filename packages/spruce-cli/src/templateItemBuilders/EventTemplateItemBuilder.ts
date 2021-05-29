@@ -19,7 +19,7 @@ import SchemaTemplateItemBuilder from './SchemaTemplateItemBuilder'
 export default class EventTemplateItemBuilder {
 	public buildTemplateItems(
 		contracts: EventContract[],
-		localNamespace: string
+		localNamespace?: string
 	): {
 		eventContractTemplateItems: EventContractTemplateItem[]
 		schemaTemplateItems: SchemaTemplateItem[]
@@ -77,7 +77,7 @@ export default class EventTemplateItemBuilder {
 
 	private buildTemplateItemsForContract(
 		contract: EventContract,
-		localNamespace: string
+		localNamespace?: string
 	): {
 		eventContractTemplateItems: EventContractTemplateItem[]
 		schemaTemplateItems: SchemaTemplateItem[]

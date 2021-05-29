@@ -26,6 +26,13 @@ const listenEventOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventO
 	                defaultValue: "#spruce/schemas",
 	                options: undefined
 	            },
+	            /** Sync only core events. For use in @sprucelabs/mercury-types */
+	            'shouldSyncOnlyCoreEvents': {
+	                label: 'Sync only core events',
+	                type: 'boolean',
+	                hint: 'For use in @sprucelabs/mercury-types',
+	                options: undefined
+	            },
 	            /** Namespace. */
 	            'eventNamespace': {
 	                label: 'Namespace',

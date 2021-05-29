@@ -56,7 +56,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		let willExecuteHitCount = 0
 		let didExecuteHitCount = 0
 
-		const emitter = this.Emitter()
+		const emitter = this.getEmitter()
 
 		void emitter.on('feature.will-execute', (payload) => {
 			emittedWillEvent = true
@@ -177,7 +177,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 		await this.wait(100)
 
-		const installer = this.FeatureInstaller()
+		const installer = this.getFeatureInstaller()
 		let isInstalled = await installer.isInstalled('schema')
 
 		assert.isFalse(isInstalled)
@@ -244,7 +244,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 			},
 		})
 
-		const installer = this.FeatureInstaller()
+		const installer = this.getFeatureInstaller()
 		const isInstalled = await installer.isInstalled('schema')
 
 		assert.isTrue(isInstalled)
@@ -305,7 +305,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		const packageContents = diskUtil.readFile(this.resolvePath('package.json'))
 		assert.doesInclude(packageContents, name)
 
-		const installer = this.FeatureInstaller()
+		const installer = this.getFeatureInstaller()
 
 		for (const code of expectedInstalledSkills) {
 			const isInstalled = await installer.isInstalled(code)

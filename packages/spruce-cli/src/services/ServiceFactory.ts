@@ -1,4 +1,5 @@
 import { SettingsService, EnvService } from '@sprucelabs/spruce-skill-utils'
+import EventSettingsService from '../features/event/services/EventSettingsService'
 import RemoteService from '../features/event/services/RemoteService'
 import { FeatureCode } from '../features/features.types'
 import SchemaService from '../features/schema/services/SchemaService'
@@ -24,6 +25,7 @@ export interface ServiceMap {
 	env: EnvService
 	auth: AuthService
 	remote: RemoteService
+	eventSettings: EventSettingsService
 }
 
 export type Service = keyof ServiceMap
@@ -69,6 +71,10 @@ export default class ServiceFactory {
 					new LintService(cwd, commandService)
 				) as ServiceMap[S]
 			}
+			case 'eventSettings':
+				return new EventSettingsService(
+					new SettingsService(cwd)
+				) as ServiceMap[S]
 			default:
 				throw new Error(`Service "${type}" not found`)
 		}

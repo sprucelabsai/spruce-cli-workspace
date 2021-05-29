@@ -26,6 +26,13 @@ const syncEventOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptio
 	                defaultValue: "#spruce/schemas",
 	                options: undefined
 	            },
+	            /** Sync only core events. For use in @sprucelabs/mercury-types */
+	            'shouldSyncOnlyCoreEvents': {
+	                label: 'Sync only core events',
+	                type: 'boolean',
+	                hint: 'For use in @sprucelabs/mercury-types',
+	                options: undefined
+	            },
 	    }
 }
 

@@ -98,10 +98,13 @@ export default class ActionExecuter {
 			(await asker?.askAboutMissingFeatureOptionsIfFeatureIsNotInstalled(
 				isInstalled,
 				actionOptions
-			)) ?? {}
+			)) ??
+			actionOptions ??
+			{}
 
 		let answers =
-			(await asker?.askAboutMissingActionOptions(action, actionOptions)) ?? {}
+			(await asker?.askAboutMissingActionOptions(action, actionOptions)) ??
+			installOptions
 
 		if (!isInstalled) {
 			const ourFeatureResults =

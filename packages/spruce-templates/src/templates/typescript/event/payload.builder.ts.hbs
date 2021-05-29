@@ -4,7 +4,12 @@ import {
 
 const {{nameCamel}}{{actionCamel}}Builder = buildSchema({
     id: '{{nameCamel}}{{actionCamel}}',
-    fields: {}
+    fields: {
+        aTextField: {
+            type: 'text',
+            label: 'Update me',
+        }
+    }
 })
 
 export default {{nameCamel}}{{actionCamel}}Builder

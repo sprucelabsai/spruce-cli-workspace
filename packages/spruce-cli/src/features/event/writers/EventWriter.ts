@@ -20,9 +20,16 @@ export default class EventWriter extends AbstractWriter {
 		options: {
 			eventContractTemplateItems: EventContractTemplateItem[]
 			schemaTemplateItems: SchemaTemplateItem[]
+			shouldImportCoreEvents?: boolean
+			skillEventContractTypesFile: string
 		}
 	) {
-		const { eventContractTemplateItems, schemaTemplateItems } = options
+		const {
+			eventContractTemplateItems,
+			schemaTemplateItems,
+			shouldImportCoreEvents = true,
+			skillEventContractTypesFile,
+		} = options
 
 		const generated: Promise<GeneratedFile>[] = []
 
@@ -37,7 +44,12 @@ export default class EventWriter extends AbstractWriter {
 		}
 
 		generated.push(
-			this.writeCombinedEvents(destinationDir, eventContractTemplateItems)
+			this.writeCombinedEvents({
+				destinationDir,
+				templateItems: eventContractTemplateItems,
+				shouldImportCoreEvents,
+				skillEventContractTypesFile,
+			})
 		)
 
 		const all = await Promise.all(generated)
@@ -77,16 +89,29 @@ export default class EventWriter extends AbstractWriter {
 		return results[0]
 	}
 
-	private async writeCombinedEvents(
-		destinationDir: string,
+	private async writeCombinedEvents(options: {
+		destinationDir: string
 		templateItems: EventContractTemplateItem[]
-	): Promise<GeneratedFile> {
+		shouldImportCoreEvents?: boolean
+		skillEventContractTypesFile: string
+	}): Promise<GeneratedFile> {
+		const {
+			destinationDir,
+			templateItems,
+			shouldImportCoreEvents,
+			skillEventContractTypesFile,
+		} = options
+
 		const destinationFile = diskUtil.resolvePath(
 			destinationDir,
 			CONTRACT_FILE_NAME
 		)
 
-		const contents = this.templates.combinedEventsContract(templateItems)
+		const contents = this.templates.combinedEventsContract({
+			templateItems,
+			shouldImportCoreEvents,
+			skillEventContractTypesFile,
+		})
 
 		const results = await this.writeFileIfChangedMixinResults(
 			destinationFile,

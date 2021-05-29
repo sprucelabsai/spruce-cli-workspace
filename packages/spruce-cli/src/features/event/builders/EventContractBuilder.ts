@@ -4,12 +4,7 @@ import {
 	Schema,
 	SchemaTemplateItem,
 } from '@sprucelabs/schema'
-import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
-import {
-	diskUtil,
-	MERCURY_API_NAMESPACE,
-	namesUtil,
-} from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { EventContractTemplateItem } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import { isEqual } from 'lodash'
@@ -31,11 +26,6 @@ export default class EventContractBuilder {
 	private eventWriter: EventWriter
 	private cwd: string
 	private eventStore: EventStore
-	private cachedTemplateItems?: {
-		errors: SpruceError[]
-		eventContractTemplateItems: EventContractTemplateItem[]
-		schemaTemplateItems: SchemaTemplateItem[]
-	}
 	private skillStore: SkillStore
 
 	public constructor(options: {
@@ -57,12 +47,13 @@ export default class EventContractBuilder {
 	public async fetchAndWriteContracts(
 		options: Options
 	): Promise<FeatureActionResponse> {
-		debugger
 		const normalizedOptions = validateAndNormalizeUtil.validateAndNormalize(
 			this.optionsSchema,
 			options
 		)
 
+
+		debugger
 		const { contractDestinationDir } = normalizedOptions
 
 		const resolvedDestination = diskUtil.resolvePath(
@@ -71,7 +62,9 @@ export default class EventContractBuilder {
 		)
 
 		const { errors, schemaTemplateItems, eventContractTemplateItems } =
-			await this.fetchAndBuildTemplateItems()
+			await this.fetchAndBuildTemplateItems(
+				options.shouldSyncOnlyCoreEvents ?? false
+			)
 
 		if (errors && errors?.length > 0) {
 			return {
@@ -83,20 +76,11 @@ export default class EventContractBuilder {
 
 		debugger
 
-		const contract = eventContractUtil.unifyContracts(contractResults.contracts)
-		const sigs = eventContractUtil.getNamedEventSignatures(contract)
-		const allNamespaces = sigs.map(
-			(sig) => sig.eventNamespace ?? MERCURY_API_NAMESPACE
-		)
-		const namespacesToWrite = allNamespaces.filter(
-			(n) => n !== MERCURY_API_NAMESPACE
-		)
-
 		const files = await this.eventWriter.writeContracts(resolvedDestination, {
 			...normalizedOptions,
 			eventContractTemplateItems,
 			schemaTemplateItems,
-			namespaces: namespacesToWrite,
+			shouldImportCoreEvents: !options.shouldSyncOnlyCoreEvents,
 		})
 
 		await this.deleteOrphanedEventContracts(
@@ -122,10 +106,11 @@ export default class EventContractBuilder {
 	}
 
 	public async fetchContractsAndGenerateUniqueSchemas(
-		existingSchemas: Schema[]
+		existingSchemas: Schema[],
+		shouldSyncOnlyCoreEvents: boolean
 	): Promise<FeatureActionResponse & { schemas?: Schema[] }> {
 		const { errors, schemaTemplateItems } =
-			await this.fetchAndBuildTemplateItems()
+			await this.fetchAndBuildTemplateItems(shouldSyncOnlyCoreEvents)
 
 		if (errors && errors?.length > 0) {
 			return {
@@ -158,18 +143,13 @@ export default class EventContractBuilder {
 		return filteredSchemas
 	}
 
-	public clearCache() {
-		this.cachedTemplateItems = undefined
-	}
 
-	private async fetchAndBuildTemplateItems() {
-		if (this.cachedTemplateItems) {
-			return this.cachedTemplateItems
-		}
 
+	private async fetchAndBuildTemplateItems(shouldSyncOnlyCoreEvents = false) {
 		this.ui.startLoading('Loading skill details...')
 
-		const namespace = await this.skillStore.loadCurrentSkillsNamespace()
+		let namespace: string | undefined =
+			await this.skillStore.loadCurrentSkillsNamespace()
 
 		this.ui.startLoading('Fetching event contracts...')
 
@@ -178,30 +158,31 @@ export default class EventContractBuilder {
 		})
 
 		if (contractResults.errors.length > 0) {
-			this.cachedTemplateItems = {
+			return {
 				errors: contractResults.errors,
 				eventContractTemplateItems: [],
 				schemaTemplateItems: [],
 			}
+		}
 
-			return this.cachedTemplateItems
+		if (shouldSyncOnlyCoreEvents) {
+			contractResults.contracts = [contractResults.contracts[0]]
+			namespace = undefined
+		} else {
+			contractResults.contracts.shift()
+			namespace = namesUtil.toKebab(namespace)
 		}
 
 		this.ui.startLoading('Building contracts...')
 
 		const itemBuilder = new EventTemplateItemBuilder()
 		const { eventContractTemplateItems, schemaTemplateItems } =
-			itemBuilder.buildTemplateItems(
-				contractResults.contracts,
-				namesUtil.toKebab(namespace)
-			)
+			itemBuilder.buildTemplateItems(contractResults.contracts, namespace)
 
-		this.cachedTemplateItems = {
+		return {
 			eventContractTemplateItems,
 			schemaTemplateItems,
 			errors: [],
 		}
-
-		return this.cachedTemplateItems
 	}
 }

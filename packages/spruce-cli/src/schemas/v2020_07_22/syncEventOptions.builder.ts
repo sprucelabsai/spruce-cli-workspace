@@ -21,5 +21,15 @@ export default buildSchema({
 				syncSchemasOptionsBuilder.fields.schemaTypesDestinationDirOrFile
 					.defaultValue,
 		},
+		shouldSyncOnlyCoreEvents: {
+			type: 'boolean',
+			label: 'Sync only core events',
+			hint: 'For use in @sprucelabs/mercury-types',
+		},
+		eventSignatureTypesFile: {
+			type: 'text',
+			label: 'Event signature types file',
+			defaultValue: '@sprucelabs/mercury-types/build/types/mercury.types',
+		},
 	},
 })

@@ -94,7 +94,6 @@ export default class FeatureInstallerFactory {
 			apiClientFactory: options.apiClientFactory,
 		}
 
-
 		this.features.forEach((Feature) => {
 			const feature = new Feature(featureOptions)
 

@@ -39,7 +39,7 @@ export default class EventStoreTest extends AbstractEventTest {
 	}
 
 	@test()
-	protected static async fetchesEventContracts() {
+	protected static async fetchesCoreEventContracts() {
 		const results = await this.Store('event').fetchEventContracts({
 			localNamespace: 'my-skill',
 		})

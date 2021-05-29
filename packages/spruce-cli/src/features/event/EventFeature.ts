@@ -45,7 +45,7 @@ export default class EventFeature extends AbstractFeature {
 	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public readonly fileDescriptions: FileDescription[] = []
-	private contractWriter?: EventContractBuilder
+	private contractBuilder?: EventContractBuilder
 
 	public constructor(options: FeatureOptions) {
 		super(options)
@@ -102,11 +102,14 @@ export default class EventFeature extends AbstractFeature {
 	private async handleDidFetchSchemas(payload: { schemas?: Schema[] | null }) {
 		const isInstalled = await this.featureInstaller.isInstalled(this.code)
 
-		if (isInstalled) {
-			const writer = this.EventContractBuilder()
+		const lastSync = this.Service('eventSettings').getLastSyncOptions()
+
+		if (lastSync && isInstalled) {
+			const writer = this.getEventContractBuilder()
 
 			const uniqueSchemas = await writer.fetchContractsAndGenerateUniqueSchemas(
-				payload.schemas ?? []
+				payload.schemas ?? [],
+				lastSync.shouldSyncOnlyCoreEvents
 			)
 
 			return {
@@ -119,9 +122,9 @@ export default class EventFeature extends AbstractFeature {
 		}
 	}
 
-	public EventContractBuilder() {
-		if (!this.contractWriter) {
-			this.contractWriter = new EventContractBuilder({
+	public getEventContractBuilder() {
+		if (!this.contractBuilder) {
+			this.contractBuilder = new EventContractBuilder({
 				cwd: this.cwd,
 				optionsSchema: syncEventActionSchema,
 				ui: this.ui,
@@ -131,8 +134,8 @@ export default class EventFeature extends AbstractFeature {
 			})
 		}
 
-		// this.contractWriter.clearCache()
+		// this.contractBuilder.clearCache()
 
-		return this.contractWriter
+		return this.contractBuilder
 	}
 }
