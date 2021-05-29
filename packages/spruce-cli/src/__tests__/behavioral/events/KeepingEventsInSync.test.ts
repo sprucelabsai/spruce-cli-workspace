@@ -451,11 +451,18 @@ export function buildPermissionContract(..._: any[]):any { return _[0] }
 	private static async importCombinedContractsFile(): Promise<EventContract[]> {
 		const eventContractsFile = this.eventContractPath
 
-		const contents = diskUtil.readFile(eventContractsFile)
-		diskUtil.writeFile(
-			eventContractsFile,
-			`import '@sprucelabs/mercury-types'\n${contents}`
-		)
+		// hack import to bring types in when importing contract file
+		if (
+			diskUtil.doesDirExist(
+				this.resolvePath('node_modules/@sprucelabs/mercury-types')
+			)
+		) {
+			const contents = diskUtil.readFile(eventContractsFile)
+			diskUtil.writeFile(
+				eventContractsFile,
+				`import '@sprucelabs/mercury-types'\n${contents}`
+			)
+		}
 
 		const imported: EventContract[] = await this.Service(
 			'import'
