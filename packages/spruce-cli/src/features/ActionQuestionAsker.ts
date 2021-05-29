@@ -24,6 +24,14 @@ type FeatureDependencyWithFeature = FeatureDependency & {
 	feature: AbstractFeature
 }
 
+function s(array: any[]) {
+	return array.length === 1 ? '' : ''
+}
+
+function areIs(array: any[]) {
+	return array.length === 1 ? 'is' : 'are'
+}
+
 export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 	private ui: GraphicsInterface
 	private featureInstaller: FeatureInstaller
@@ -330,15 +338,17 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 			}
 		})
 
-		const requiredMessage = `I'll need to install ${required.length} feature${
-			required.length === 1 ? '' : 's'
-		}.`
+		const requiredMessage = `I'll need to install ${required.length} feature${s(
+			required
+		)}.`
 
-		const optionalMessage = `there are ${optional.length} optional feature${
-			optional.length === 1 ? '' : 's'
-		} that could be installed.`
+		const optionalMessage = `there ${areIs(optional)} ${
+			optional.length
+		} optional feature${s(optional)} that could be installed.`
 
-		const mixedMessage = `I found ${required.length} required and ${optional.length} optional features to install.`
+		const mixedMessage = `I found ${required.length} required and ${
+			optional.length
+		} optional feature${s(optional)} to install.`
 
 		let message = mixedMessage
 

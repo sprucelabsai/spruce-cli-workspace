@@ -328,7 +328,7 @@ export default class Cli implements CliInterface {
 			? bootOptions.apiClientFactory
 			: async () => {
 					const client: ApiClient = await MercuryClientFactory.Client({
-						contracts: eventsContracts,
+						contracts: eventsContracts as any,
 						host: bootOptions?.host ?? DEFAULT_HOST,
 						allowSelfSignedCrt: true,
 						...bootOptions,

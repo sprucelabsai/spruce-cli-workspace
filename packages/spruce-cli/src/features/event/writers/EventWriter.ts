@@ -22,33 +22,30 @@ export default class EventWriter extends AbstractWriter {
 			schemaTemplateItems: SchemaTemplateItem[]
 			shouldImportCoreEvents?: boolean
 			skillEventContractTypesFile: string
+			eventBuilderFile: string
 		}
 	) {
-		const {
-			eventContractTemplateItems,
-			schemaTemplateItems,
-			shouldImportCoreEvents = true,
-			skillEventContractTypesFile,
-		} = options
+		const { eventContractTemplateItems, shouldImportCoreEvents = true } =
+			options
 
 		const generated: Promise<GeneratedFile>[] = []
 
 		for (const item of eventContractTemplateItems) {
 			generated.push(
 				this.writeContract({
+					...options,
 					destinationDir,
 					eventContractTemplateItem: item,
-					schemaTemplateItems,
 				})
 			)
 		}
 
 		generated.push(
 			this.writeCombinedEvents({
+				...options,
+				shouldImportCoreEvents,
 				destinationDir,
 				templateItems: eventContractTemplateItems,
-				shouldImportCoreEvents,
-				skillEventContractTypesFile,
 			})
 		)
 
@@ -63,6 +60,7 @@ export default class EventWriter extends AbstractWriter {
 		destinationDir: string
 		eventContractTemplateItem: EventContractTemplateItem
 		schemaTemplateItems: SchemaTemplateItem[]
+		eventBuilderFile: string
 	}): Promise<GeneratedFile> {
 		const { destinationDir, eventContractTemplateItem, schemaTemplateItems } =
 			options
@@ -74,6 +72,7 @@ export default class EventWriter extends AbstractWriter {
 		)
 
 		const eventsContractContents = this.templates.eventContract({
+			...options,
 			...eventContractTemplateItem,
 			schemaTemplateItems,
 		})

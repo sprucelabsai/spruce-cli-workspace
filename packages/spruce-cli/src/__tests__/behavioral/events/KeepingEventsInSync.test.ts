@@ -18,14 +18,13 @@ import {
 	versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import EventFeature from '../../../features/event/EventFeature'
 import { generateEventContractFileName } from '../../../features/event/writers/EventWriter'
 import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
 const coreContract = eventContractUtil.unifyContracts(
-	coreEventContracts
+	coreEventContracts as any
 ) as SpruceSchemas.Mercury.v2020_09_01.EventContract
 
 export default class KeepingEventsInSyncTest extends AbstractEventTest {
@@ -70,30 +69,9 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	protected static async canSyncOnlyCoreEvents() {
 		await this.FeatureFixture().installCachedFeatures('eventsInNodeModule')
 
-		const results = await this.Action('event', 'sync').execute({
-			shouldSyncOnlyCoreEvents: true,
-		})
+		const results = await this.syncCoreEvents()
 
 		await this.assertValidSyncEventsResults(results, true)
-	}
-
-	@test.only()
-	protected static async canSetEventBuilderFile() {
-		await this.FeatureFixture().installCachedFeatures('eventsInNodeModule')
-
-		const results = await this.Action('event', 'sync').execute({
-			shouldSyncOnlyCoreEvents: true,
-			eventBuilderFile: 'testy test',
-		})
-
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
-			'createRole.v2020_12_25.contract.ts',
-			results.files
-		)
-
-		const contents = diskUtil.readFile(match)
-
-		assert.doesInclude(contents, 'testy test')
 	}
 
 	@test()
@@ -140,9 +118,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	protected static async syncingSchemasAfterSyncingCoreEventsSavesCoreEvents() {
 		await this.FeatureFixture().installCachedFeatures('events')
 
-		await this.Action('event', 'sync').execute({
-			shouldSyncOnlyCoreEvents: true,
-		})
+		await this.syncCoreEvents()
 
 		const results = await this.Action('schema', 'sync').execute({})
 		await this.assertValidSyncSchemasResults(results, true)
@@ -150,11 +126,9 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 	@test()
 	protected static async syncingSchemasWithBrokenConnectionStopsWithError() {
-		const cli = await this.FeatureFixture().installCachedFeatures('events')
+		await this.FeatureFixture().installCachedFeatures('events')
 
-		await this.Action('event', 'sync').execute({
-			shouldSyncOnlyCoreEvents: true,
-		})
+		await this.syncCoreEvents()
 
 		const results = await this.Action('schema', 'sync').execute({})
 
@@ -169,9 +143,6 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 			shouldAuthAsCurrentSkill: true,
 		})
 		await client.disconnect()
-
-		const eventFeature = cli.getFeature('event') as EventFeature
-		const writer = eventFeature.getEventContractBuilder()
 
 		const results2 = await this.Action('schema', 'sync').execute({})
 
@@ -192,9 +163,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	protected static async canGetNumberOfEventsBackFromHealthCheck() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 
-		const results = await this.Action('event', 'sync').execute({
-			shouldSyncOnlyCoreEvents: true,
-		})
+		const results = await this.Action('event', 'sync').execute({})
 
 		assert.isFalsy(results.errors)
 
@@ -208,9 +177,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		assert.isEqual(health.event.status, 'passed')
 		assert.isTruthy(health.event.contracts)
 
-		const imported = await this.importCombinedContractsFile()
-
-		assert.isLength(health.event.contracts, imported.length)
+		assert.isAbove(health.event.contracts.length, 0)
 	}
 
 	@test()
@@ -383,6 +350,28 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		assert.isFalse(diskUtil.doesDirExist(dirname))
 	}
 
+	private static async syncCoreEvents() {
+		const results = await this.Action('event', 'sync').execute({
+			shouldSyncOnlyCoreEvents: true,
+			eventBuilderFile: '../../../builder',
+			skillEventContractTypesFile: '../../builder',
+		})
+
+		const builder = `
+export function buildEventContract(..._: any[]):any { return _[0] }
+export function buildPermissionContract(..._: any[]):any { return _[0] }
+`
+
+		diskUtil.writeFile(this.resolvePath('src', 'builder.ts'), builder)
+		await this.Service('pkg').uninstall([
+			'@sprucelabs/mercury-types',
+			'@sprucelabs/mercury-client',
+			'@sprucelabs/spruce-event-utils',
+			'@sprucelabs/spruce-event-plugin',
+		])
+		return results
+	}
+
 	private static async assertValidSyncEventsResults(
 		results: FeatureActionResponse,
 		shouldSyncOnlyCoreEvents = false
@@ -398,6 +387,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	) {
 		this.assertCoreEventContractsSavedToDisk(shouldSyncOnlyCoreEvents)
 		this.assertCorePayloadSchemasAreCreated(results, shouldSyncOnlyCoreEvents)
+
 		await this.assertEventsHavePayloads(results)
 		await this.assertCombinedContractContents()
 
@@ -460,6 +450,12 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 	private static async importCombinedContractsFile(): Promise<EventContract[]> {
 		const eventContractsFile = this.eventContractPath
+
+		const contents = diskUtil.readFile(eventContractsFile)
+		diskUtil.writeFile(
+			eventContractsFile,
+			`import '@sprucelabs/mercury-types'\n${contents}`
+		)
 
 		const imported: EventContract[] = await this.Service(
 			'import'

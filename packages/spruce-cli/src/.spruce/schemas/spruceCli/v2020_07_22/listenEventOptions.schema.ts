@@ -40,6 +40,13 @@ const listenEventOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventO
 	                defaultValue: "@sprucelabs/mercury-types/build/types/mercury.types",
 	                options: undefined
 	            },
+	            /** Event builder file. */
+	            'eventBuilderFile': {
+	                label: 'Event builder file',
+	                type: 'text',
+	                defaultValue: "@sprucelabs/mercury-types",
+	                options: undefined
+	            },
 	            /** Namespace. */
 	            'eventNamespace': {
 	                label: 'Namespace',

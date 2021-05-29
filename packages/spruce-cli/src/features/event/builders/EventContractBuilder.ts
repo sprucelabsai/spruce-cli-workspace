@@ -5,10 +5,8 @@ import {
 	SchemaTemplateItem,
 } from '@sprucelabs/schema'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
-import { EventContractTemplateItem } from '@sprucelabs/spruce-templates'
 import globby from 'globby'
 import { isEqual } from 'lodash'
-import SpruceError from '../../../errors/SpruceError'
 import EventTemplateItemBuilder from '../../../templateItemBuilders/EventTemplateItemBuilder'
 import { GraphicsInterface } from '../../../types/cli.types'
 import { FeatureActionResponse } from '../../features.types'
@@ -60,9 +58,10 @@ export default class EventContractBuilder {
 		)
 
 		const { errors, schemaTemplateItems, eventContractTemplateItems } =
-			await this.fetchAndBuildTemplateItems(
-				options.shouldSyncOnlyCoreEvents ?? false
-			)
+			await this.fetchAndBuildTemplateItems({
+				shouldSyncOnlyCoreEvents: options.shouldSyncOnlyCoreEvents ?? false,
+				eventBuilderFile: normalizedOptions.eventBuilderFile,
+			})
 
 		if (errors && errors?.length > 0) {
 			return {
@@ -106,7 +105,7 @@ export default class EventContractBuilder {
 		shouldSyncOnlyCoreEvents: boolean
 	): Promise<FeatureActionResponse & { schemas?: Schema[] }> {
 		const { errors, schemaTemplateItems } =
-			await this.fetchAndBuildTemplateItems(shouldSyncOnlyCoreEvents)
+			await this.fetchAndBuildTemplateItems({ shouldSyncOnlyCoreEvents })
 
 		if (errors && errors?.length > 0) {
 			return {
@@ -139,7 +138,12 @@ export default class EventContractBuilder {
 		return filteredSchemas
 	}
 
-	private async fetchAndBuildTemplateItems(shouldSyncOnlyCoreEvents = false) {
+	private async fetchAndBuildTemplateItems(options: {
+		shouldSyncOnlyCoreEvents?: boolean
+		eventBuilderFile?: string
+	}) {
+		const { shouldSyncOnlyCoreEvents, eventBuilderFile } = options
+
 		this.ui.startLoading('Loading skill details...')
 
 		let namespace: string | undefined =
@@ -171,7 +175,11 @@ export default class EventContractBuilder {
 
 		const itemBuilder = new EventTemplateItemBuilder()
 		const { eventContractTemplateItems, schemaTemplateItems } =
-			itemBuilder.buildTemplateItems(contractResults.contracts, namespace)
+			itemBuilder.buildTemplateItems({
+				contracts: contractResults.contracts,
+				localNamespace: namespace,
+				eventBuilderFile,
+			})
 
 		return {
 			eventContractTemplateItems,

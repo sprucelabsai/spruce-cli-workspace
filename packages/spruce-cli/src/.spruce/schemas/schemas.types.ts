@@ -514,6 +514,10 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'schemaTypesLookupDir'?: string| undefined | null
 				/** Sync only core events. For use in @sprucelabs/mercury-types */
 				'shouldSyncOnlyCoreEvents'?: boolean| undefined | null
+				/** Event signature types file. */
+				'skillEventContractTypesFile'?: string| undefined | null
+				/** Event builder file. */
+				'eventBuilderFile'?: string| undefined | null
 		}
 
 		interface SyncEventOptionsSchema extends SpruceSchema.Schema {
@@ -544,6 +548,20 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                label: 'Sync only core events',
 			                type: 'boolean',
 			                hint: 'For use in @sprucelabs/mercury-types',
+			                options: undefined
+			            },
+			            /** Event signature types file. */
+			            'skillEventContractTypesFile': {
+			                label: 'Event signature types file',
+			                type: 'text',
+			                defaultValue: "@sprucelabs/mercury-types/build/types/mercury.types",
+			                options: undefined
+			            },
+			            /** Event builder file. */
+			            'eventBuilderFile': {
+			                label: 'Event builder file',
+			                type: 'text',
+			                defaultValue: "@sprucelabs/mercury-types",
 			                options: undefined
 			            },
 			    }
@@ -1153,6 +1171,10 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'schemaTypesLookupDir'?: string| undefined | null
 				/** Sync only core events. For use in @sprucelabs/mercury-types */
 				'shouldSyncOnlyCoreEvents'?: boolean| undefined | null
+				/** Event signature types file. */
+				'skillEventContractTypesFile'?: string| undefined | null
+				/** Event builder file. */
+				'eventBuilderFile'?: string| undefined | null
 				/** Namespace. */
 				'eventNamespace'?: string| undefined | null
 				/** Event name. */
@@ -1191,6 +1213,20 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                label: 'Sync only core events',
 			                type: 'boolean',
 			                hint: 'For use in @sprucelabs/mercury-types',
+			                options: undefined
+			            },
+			            /** Event signature types file. */
+			            'skillEventContractTypesFile': {
+			                label: 'Event signature types file',
+			                type: 'text',
+			                defaultValue: "@sprucelabs/mercury-types/build/types/mercury.types",
+			                options: undefined
+			            },
+			            /** Event builder file. */
+			            'eventBuilderFile': {
+			                label: 'Event builder file',
+			                type: 'text',
+			                defaultValue: "@sprucelabs/mercury-types",
 			                options: undefined
 			            },
 			            /** Namespace. */

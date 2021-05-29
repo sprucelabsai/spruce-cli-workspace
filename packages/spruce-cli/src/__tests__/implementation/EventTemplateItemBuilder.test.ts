@@ -260,10 +260,10 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 
 	@test()
 	protected static turnsSingleContractIntoTemplateItem() {
-		const { eventContractTemplateItems } = this.itemBuilder.buildTemplateItems(
-			[bookContract],
-			'test-namespace'
-		)
+		const { eventContractTemplateItems } = this.itemBuilder.buildTemplateItems({
+			contracts: [bookContract],
+			localNamespace: 'test-namespace',
+		})
 
 		const actual = eventContractTemplateItems[0]
 
@@ -306,7 +306,10 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 		expectedSchemaTemplateItems: SchemaTemplateItem[] = []
 	) {
 		const { eventContractTemplateItems, schemaTemplateItems } =
-			this.itemBuilder.buildTemplateItems(contracts, 'appointments')
+			this.itemBuilder.buildTemplateItems({
+				contracts,
+				localNamespace: 'appointments',
+			})
 
 		assert.isEqualDeep(
 			eventContractTemplateItems,
@@ -318,8 +321,8 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 
 	@test()
 	protected static canPullEventContractSchemaFromCoreEventContract() {
-		const { schemaTemplateItems } = this.itemBuilder.buildTemplateItems(
-			[
+		const { schemaTemplateItems } = this.itemBuilder.buildTemplateItems({
+			contracts: [
 				{
 					eventSignatures: {
 						'register-events':
@@ -327,8 +330,8 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 					},
 				},
 			],
-			'testing'
-		)
+			localNamespace: 'testing',
+		})
 
 		const match = schemaTemplateItems.find(
 			(item) => item.id === 'eventContract'

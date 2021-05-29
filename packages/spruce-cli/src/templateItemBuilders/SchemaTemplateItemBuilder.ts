@@ -23,6 +23,8 @@ interface SchemaWithDependencies {
 	isNested: boolean
 }
 
+const mercuryName = namesUtil.toPascal(MERCURY_API_NAMESPACE)
+
 export default class SchemaTemplateItemBuilder {
 	private schemasByKey: Record<string, SchemaWithDependencies> = {}
 	private localNamespace: string
@@ -173,7 +175,6 @@ export default class SchemaTemplateItemBuilder {
 	}
 
 	private getImportFromForSchema(schema: Schema): string | undefined {
-		const mercuryName = namesUtil.toPascal(MERCURY_API_NAMESPACE)
 		switch (schema.namespace) {
 			case CORE_NAMESPACE:
 				if (this.localNamespace !== CORE_NAMESPACE) {
@@ -183,7 +184,7 @@ export default class SchemaTemplateItemBuilder {
 			case mercuryName: {
 				const typeLookup = `${schema.id}Schema` as keyof typeof mercuryTypes
 				if (this.localNamespace !== mercuryName && mercuryTypes[typeLookup]) {
-					return '@sprucelabs/mercury-types'
+					// return '@sprucelabs/mercury-types'
 				}
 			}
 		}
