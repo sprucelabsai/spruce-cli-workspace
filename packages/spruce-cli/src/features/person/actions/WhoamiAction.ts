@@ -1,6 +1,6 @@
 import { buildSchema } from '@sprucelabs/schema'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
@@ -10,7 +10,7 @@ const optionsSchema = buildSchema({
 
 type OptionsSchema = typeof optionsSchema
 
-export default class WhoAmIAction extends AbstractFeatureAction<OptionsSchema> {
+export default class WhoAmIAction extends AbstractAction<OptionsSchema> {
 	public code = 'whoami'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['whoami']

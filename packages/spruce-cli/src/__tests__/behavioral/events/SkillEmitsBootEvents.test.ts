@@ -8,7 +8,7 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 		await this.installEventFeature('events')
 		const version = 'v2020_01_01'
 
-		await this.Executer('event', 'listen').execute({
+		await this.Action('event', 'listen').execute({
 			eventNamespace: 'skill',
 			eventName: 'will-boot',
 			version,
@@ -17,7 +17,7 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 		await this.Service('build').build()
 
 		const err = await assert.doesThrowAsync(async () => {
-			const response = await this.Executer('skill', 'boot').execute({})
+			const response = await this.Action('skill', 'boot').execute({})
 			await response.meta?.promise
 		})
 
@@ -29,7 +29,7 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 		await this.installEventFeature('events')
 		const version = 'v2020_01_01'
 
-		await this.Executer('event', 'listen').execute({
+		await this.Action('event', 'listen').execute({
 			eventNamespace: 'skill',
 			eventName: 'did-boot',
 			version,
@@ -38,7 +38,7 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 		await this.Service('build').build()
 
 		const err = await assert.doesThrowAsync(async () => {
-			const response = await this.Executer('skill', 'boot').execute({})
+			const response = await this.Action('skill', 'boot').execute({})
 			await response.meta?.promise
 		})
 

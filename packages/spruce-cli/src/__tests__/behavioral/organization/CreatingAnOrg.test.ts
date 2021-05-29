@@ -6,7 +6,7 @@ export default class CreatingAnOrgTest extends AbstractCliTest {
 	@test()
 	protected static async hasCreateAction() {
 		await this.Cli()
-		assert.isFunction(this.Executer('organization', 'create').execute)
+		assert.isFunction(this.Action('organization', 'create').execute)
 	}
 
 	@test()
@@ -17,7 +17,7 @@ export default class CreatingAnOrgTest extends AbstractCliTest {
 
 		await this.PersonFixture().loginAsDemoPerson()
 
-		const results = await this.Executer('organization', 'create').execute({
+		const results = await this.Action('organization', 'create').execute({
 			nameReadable: 'My new org',
 			nameKebab: slug,
 		})

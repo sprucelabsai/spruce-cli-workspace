@@ -10,8 +10,7 @@ import SpruceError from '../../../errors/SpruceError'
 import namedTemplateItemBuilder from '../../../schemas/v2020_07_22/namedTemplateItem.builder'
 import syncEventActionBuilder from '../../../schemas/v2020_07_22/syncEventOptions.builder'
 import actionUtil from '../../../utilities/action.utility'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
-import FeatureCommandExecuter from '../../FeatureCommandExecuter'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
@@ -47,7 +46,7 @@ const optionsSchema = buildSchema({
 
 type OptionsSchema = typeof optionsSchema
 
-export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
+export default class CreateAction extends AbstractAction<OptionsSchema> {
 	public code = 'create'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public invocationMessage = 'Creating a new event signature... 🜒'
@@ -86,10 +85,9 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 				}
 			)
 
-			const syncResponse = await FeatureCommandExecuter.Executer(
-				'event',
-				'sync'
-			).execute(syncOptions)
+			const syncResponse = await this.Action('event', 'sync').execute(
+				syncOptions
+			)
 
 			const fqen = eventNameUtil.join({
 				eventName: nameKebab,

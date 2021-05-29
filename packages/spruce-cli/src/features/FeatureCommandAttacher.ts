@@ -5,8 +5,8 @@ import SpruceError from '../errors/SpruceError'
 import { GraphicsInterface } from '../types/cli.types'
 import commanderUtil from '../utilities/commander.utility'
 import AbstractFeature from './AbstractFeature'
+import ActionExecuter from './ActionExecuter'
 import featuresUtil from './feature.utilities'
-import FeatureCommandExecuter from './FeatureCommandExecuter'
 import { FeatureAction, FeatureActionResponse } from './features.types'
 
 export interface OptionOverrides {
@@ -22,19 +22,28 @@ export default class FeatureCommandAttacher {
 	private ui: GraphicsInterface
 	private optionOverrides: OptionOverrides
 	private blockedCommands: BlockedCommands
+	private actionExecuter: ActionExecuter
 
 	public constructor(options: {
 		program: CommanderStatic['program']
 		ui: GraphicsInterface
 		optionOverrides: OptionOverrides
 		blockedCommands: BlockedCommands
+		actionExecuter: ActionExecuter
 	}) {
-		const { program, ui: term, optionOverrides, blockedCommands } = options
+		const {
+			program,
+			ui: term,
+			optionOverrides,
+			blockedCommands,
+			actionExecuter,
+		} = options
 
 		this.program = program
 		this.ui = term
 		this.optionOverrides = optionOverrides
 		this.blockedCommands = blockedCommands
+		this.actionExecuter = actionExecuter
 	}
 
 	public async attachFeature(feature: AbstractFeature) {
@@ -47,15 +56,13 @@ export default class FeatureCommandAttacher {
 
 	private attachCode(code: string, feature: AbstractFeature) {
 		let commandStr = featuresUtil.generateCommand(feature.code, code)
-		const action = FeatureCommandExecuter.Executer(feature.code, code).Action()
+		const action = this.actionExecuter.Action(feature.code, code)
 
 		const aliases = action.commandAliases ? [...action.commandAliases] : []
 
 		if (aliases.length > 0) {
 			commandStr = aliases.shift() as string
 		}
-
-		const executer = FeatureCommandExecuter.Executer(feature.code, code)
 
 		let command = this.program.command(commandStr)
 
@@ -65,8 +72,9 @@ export default class FeatureCommandAttacher {
 
 		command = command.action(async (...args: any[]) => {
 			this.assertCommandIsNotBlocked(commandStr)
-
 			this.clearAndRenderHeadline(action)
+
+			const startTime = new Date().getTime()
 
 			const options = commanderUtil.mapIncomingToOptions(
 				...args,
@@ -79,14 +87,18 @@ export default class FeatureCommandAttacher {
 				this.ui.renderObject(overrides)
 			}
 
-			const results = await executer.execute({
+			const results = await action.execute({
 				...options,
 				...overrides,
 			})
 
+			const endTime = new Date().getTime()
+			const totalTime = endTime - startTime
+
 			this.clearAndReanderResults({
 				featureCode: feature.code,
 				actionCode: code,
+				totalTime,
 				results,
 			})
 		})
@@ -107,9 +119,10 @@ export default class FeatureCommandAttacher {
 	private clearAndReanderResults(options: {
 		featureCode: string
 		actionCode: string
+		totalTime: number
 		results: FeatureActionResponse
 	}) {
-		const { featureCode, actionCode, results } = options
+		const { featureCode, actionCode, results, totalTime } = options
 
 		this.ui.stopLoading()
 		this.ui.clear()
@@ -118,6 +131,7 @@ export default class FeatureCommandAttacher {
 			headline: `${actionCode} finished!`,
 			featureCode,
 			actionCode,
+			totalTime,
 			...results,
 		})
 	}

@@ -4,13 +4,13 @@ import createErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/creat
 import createSchemaActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/createSchemaOptions.schema'
 import syncErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncErrorOptions.schema'
 import actionUtil from '../../../utilities/action.utility'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 type OptionsSchema =
 	SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorOptions
-export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
+export default class CreateAction extends AbstractAction<OptionsSchema> {
 	public code = 'create'
 	public optionsSchema = createErrorActionSchema
 	public invocationMessage = 'Creating a new error builder... 🤾‍♀️'
@@ -18,7 +18,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
-		const schemaCreateAction = this.Executer('schema', 'create')
+		const schemaCreateAction = this.Action('schema', 'create')
 
 		const createSchemaOptions = normalizeSchemaValues(
 			createSchemaActionSchema,
@@ -38,9 +38,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			syncErrorActionSchema,
 			normalizedOptions
 		)
-		const syncResults = await this.Executer('error', 'sync').execute(
-			syncOptions
-		)
+		const syncResults = await this.Action('error', 'sync').execute(syncOptions)
 		const mergedResults = actionUtil.mergeActionResults(
 			createResults,
 			syncResults

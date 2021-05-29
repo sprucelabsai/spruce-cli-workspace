@@ -32,7 +32,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 			schemasDir
 		)
 
-		await this.Executer('schema', 'sync').execute({})
+		await this.Action('schema', 'sync').execute({})
 	}
 
 	@test()

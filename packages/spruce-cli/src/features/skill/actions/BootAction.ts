@@ -2,12 +2,12 @@ import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import bootSkillOptionsSchema from '#spruce/schemas/spruceCli/v2020_07_22/bootSkillOptions.schema'
 import SpruceError from '../../../errors/SpruceError'
 import CommandService from '../../../services/CommandService'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.BootSkillOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.BootSkillOptions
-export default class BootAction extends AbstractFeatureAction<OptionsSchema> {
+export default class BootAction extends AbstractAction<OptionsSchema> {
 	public code = 'boot'
 	public optionsSchema: OptionsSchema = bootSkillOptionsSchema
 	public commandAliases = ['boot']

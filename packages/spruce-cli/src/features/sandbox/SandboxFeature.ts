@@ -21,7 +21,7 @@ export default class SandboxFeature extends AbstractFeature {
 	]
 	public packageDependencies = []
 
-	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public isInstalled = async (): Promise<boolean> => {
 		return this.featureInstaller.isInstalled('event')

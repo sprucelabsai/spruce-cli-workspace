@@ -1,12 +1,12 @@
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import onboardActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/onboardOptions.schema'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 import OnboardFeature from '../OnboardFeature'
 
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.OnboardOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.OnboardOptions
-export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
+export default class ListenAction extends AbstractAction<OptionsSchema> {
 	public code = 'onboard'
 	public optionsSchema: OptionsSchema = onboardActionSchema
 	public invocationMessage = 'All aboard... 🛤'

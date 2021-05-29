@@ -35,7 +35,7 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 
 		await diskUtil.copyDir(source, destination)
 
-		const syncResults = await this.Executer('schema', 'sync').execute({})
+		const syncResults = await this.Action('schema', 'sync').execute({})
 
 		return { cli, syncResults }
 	}
@@ -50,7 +50,7 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 			schemasDir
 		)
 
-		const results = await this.Executer('schema', 'sync').execute({})
+		const results = await this.Action('schema', 'sync').execute({})
 
 		const typesPath = this.resolveHashSprucePath('schemas', 'schemas.types.ts')
 		const typesContent = diskUtil.readFile(typesPath)

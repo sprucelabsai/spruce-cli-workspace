@@ -25,7 +25,7 @@ export default class EventStoreTest extends AbstractEventTest {
 
 	public static async beforeEach() {
 		await super.beforeEach()
-		this.createAction = this.Executer<CreateAction>('event', 'create')
+		this.createAction = this.Action<CreateAction>('event', 'create')
 	}
 
 	@test()
@@ -157,7 +157,7 @@ export default class EventStoreTest extends AbstractEventTest {
 
 		await this.copyEventBuildersAndPermissions(EVENT_NAME)
 
-		await this.Executer('event', 'sync').execute({})
+		await this.Action('event', 'sync').execute({})
 
 		const { contracts } = await this.Store('event').fetchEventContracts({
 			localNamespace: skill.slug,
@@ -214,7 +214,7 @@ export default class EventStoreTest extends AbstractEventTest {
 
 		assert.isTruthy(fqen)
 
-		const boot = await this.Executer('skill', 'boot').execute({ local: true })
+		const boot = await this.Action('skill', 'boot').execute({ local: true })
 
 		const { contracts } = await this.Store('event').fetchEventContracts({
 			localNamespace: skill.slug,

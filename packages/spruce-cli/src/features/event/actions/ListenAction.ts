@@ -19,13 +19,13 @@ import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEve
 import SpruceError from '../../../errors/SpruceError'
 import EventTemplateItemBuilder from '../../../templateItemBuilders/EventTemplateItemBuilder'
 import actionUtil from '../../../utilities/action.utility'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 const SKILL_EVENT_NAMESPACE = 'skill'
 type OptionsSchema =
 	SpruceSchemas.SpruceCli.v2020_07_22.ListenEventOptionsSchema
-export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
+export default class ListenAction extends AbstractAction<OptionsSchema> {
 	public code = 'listen'
 	public optionsSchema: OptionsSchema = eventListenActionSchema
 	public invocationMessage = 'Creating event listener... 🜒'
@@ -166,7 +166,7 @@ export default class ListenAction extends AbstractFeatureAction<OptionsSchema> {
 					options
 				)
 
-				const syncResults = await this.Executer('event', 'sync').execute(
+				const syncResults = await this.Action('event', 'sync').execute(
 					syncOptions
 				)
 

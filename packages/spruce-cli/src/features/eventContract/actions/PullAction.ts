@@ -1,6 +1,6 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 const pullOptionsSchema = buildSchema({
@@ -12,7 +12,7 @@ const pullOptionsSchema = buildSchema({
 type PullOptionsSchema = typeof pullOptionsSchema
 type Options = SchemaValues<PullOptionsSchema>
 
-export default class PullAction extends AbstractFeatureAction<PullOptionsSchema> {
+export default class PullAction extends AbstractAction<PullOptionsSchema> {
 	public code = 'pull'
 	public commandAliases = ['pull.event.contracts']
 	public optionsSchema = pullOptionsSchema

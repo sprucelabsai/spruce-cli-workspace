@@ -1,6 +1,6 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import InFlightEntertainment from '../../../InFlightEntertainment'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
@@ -19,7 +19,7 @@ const optionsSchema = buildSchema({
 type OptionsSchema = typeof optionsSchema
 type Options = SchemaValues<OptionsSchema>
 
-export default class RebuildAction extends AbstractFeatureAction<OptionsSchema> {
+export default class RebuildAction extends AbstractAction<OptionsSchema> {
 	public code = 'rebuild'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['rebuild']

@@ -2,14 +2,14 @@ import { SelectChoice } from '@sprucelabs/schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import installSkillAtOrganizationActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/installSkillAtOrganizationOptions.schema'
 import SpruceError from '../../../errors/SpruceError'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 type OptionsSchema =
 	SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizationOptionsSchema
 type Options =
 	SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizationOptions
-export default class InstallAction extends AbstractFeatureAction<OptionsSchema> {
+export default class InstallAction extends AbstractAction<OptionsSchema> {
 	public code = 'install'
 	public commandAliases = ['install.skill']
 	public optionsSchema: OptionsSchema = installSkillAtOrganizationActionSchema

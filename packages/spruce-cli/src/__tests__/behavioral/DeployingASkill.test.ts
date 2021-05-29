@@ -57,7 +57,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async hasDeployAction() {
-		assert.isFunction(this.Executer('deploy', 'heroku').execute)
+		assert.isFunction(this.Action('deploy', 'heroku').execute)
 	}
 
 	@test()
@@ -66,7 +66,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		diskUtil.writeFile(this.resolvePath('src/index.ts'), 'aoeustahoesuntao')
 
-		const results = await this.Executer('deploy', 'heroku').execute({
+		const results = await this.Action('deploy', 'heroku').execute({
 			teamName: process.env.HEROKU_TEAM_NAME ?? '',
 		})
 
@@ -87,7 +87,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		diskUtil.writeFile(this.resolvePath('src/index.ts'), 'aoeustahoesuntao')
 
-		const results = await this.Executer('deploy', 'heroku').execute({
+		const results = await this.Action('deploy', 'heroku').execute({
 			teamName: process.env.HEROKU_TEAM_NAME ?? '',
 		})
 
@@ -117,7 +117,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			name: 'haulted wth bad test',
 		})
 
-		const promise = this.Executer('test', 'create').execute({
+		const promise = this.Action('test', 'create').execute({
 			nameReadable: 'Test failed',
 			nameCamel: 'testFailed',
 			type: 'behavioral',
@@ -128,7 +128,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		await promise
 
-		const results = await this.Executer('deploy', 'heroku').execute({
+		const results = await this.Action('deploy', 'heroku').execute({
 			teamName: process.env.HEROKU_TEAM_NAME ?? '',
 		})
 
@@ -149,7 +149,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			name: 'heroku not installed',
 		})
 
-		const results = await this.Executer('deploy', 'heroku').execute(
+		const results = await this.Action('deploy', 'heroku').execute(
 			this.fastHerokuOptions
 		)
 
@@ -172,7 +172,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			name: 'git not installed',
 		})
 
-		const results = await this.Executer('deploy', 'heroku').execute(
+		const results = await this.Action('deploy', 'heroku').execute(
 			this.fastHerokuOptions
 		)
 
@@ -197,7 +197,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			name: 'not in git repo',
 		})
 
-		const promise = this.Executer('deploy', 'heroku').execute(
+		const promise = this.Action('deploy', 'heroku').execute(
 			this.fastHerokuOptions
 		)
 
@@ -225,7 +225,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			name: 'creates git repo',
 		})
 
-		const promise = this.Executer('deploy', 'heroku').execute(
+		const promise = this.Action('deploy', 'heroku').execute(
 			this.fastHerokuOptions
 		)
 
@@ -254,7 +254,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			name: 'not logged into heroku',
 		})
 
-		const results = await this.Executer('deploy', 'heroku').execute(
+		const results = await this.Action('deploy', 'heroku').execute(
 			this.fastHerokuOptions
 		)
 
@@ -274,7 +274,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			name: 'decline proc file',
 		})
 
-		const promise = this.Executer('deploy', 'heroku').execute(
+		const promise = this.Action('deploy', 'heroku').execute(
 			this.fastHerokuOptions
 		)
 
@@ -303,7 +303,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			name: 'valid proc file',
 		})
 
-		const promise = this.Executer('deploy', 'heroku').execute(
+		const promise = this.Action('deploy', 'heroku').execute(
 			this.fastHerokuOptions
 		)
 
@@ -337,7 +337,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			name: 'decline to create remote branch',
 		})
 
-		const promise = this.Executer('deploy', 'heroku').execute(
+		const promise = this.Action('deploy', 'heroku').execute(
 			this.fastHerokuOptions
 		)
 
@@ -369,7 +369,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			name: 'ask for app name',
 		})
 
-		const promise = this.Executer('deploy', 'heroku').execute(
+		const promise = this.Action('deploy', 'heroku').execute(
 			this.fastHerokuOptions
 		)
 
@@ -404,7 +404,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			name: 'haulted wth bad build',
 		})
 
-		const promise = this.Executer('deploy', 'heroku').execute(
+		const promise = this.Action('deploy', 'heroku').execute(
 			this.fastHerokuOptions
 		)
 
@@ -448,7 +448,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			name: 'pending changes to commit',
 		})
 
-		const results = await this.Executer('deploy', 'heroku').execute(
+		const results = await this.Action('deploy', 'heroku').execute(
 			this.fastHerokuOptions
 		)
 
@@ -467,7 +467,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 			name: 'can deploy',
 		})
 
-		const results = await this.Executer('deploy', 'heroku').execute(
+		const results = await this.Action('deploy', 'heroku').execute(
 			this.fastHerokuOptions
 		)
 

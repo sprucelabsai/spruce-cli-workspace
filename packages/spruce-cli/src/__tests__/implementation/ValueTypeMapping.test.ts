@@ -10,7 +10,7 @@ export default class ValueTypeMappingTest extends AbstractSchemaTest {
 
 	@test.skip('enable when enable introduction of new schema fields')
 	protected static async dropsMappersIntoFieldTypes() {
-		await this.Executer('schema', 'sync').execute({})
+		await this.Action('schema', 'sync').execute({})
 
 		const fieldTypesFile = this.resolveHashSprucePath(
 			'schemas',

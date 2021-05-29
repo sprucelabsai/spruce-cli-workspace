@@ -23,7 +23,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	@test()
 	protected static async hasSyncSchemaAction() {
 		await this.Cli()
-		assert.isFunction(this.Executer('schema', 'sync').execute)
+		assert.isFunction(this.Action('schema', 'sync').execute)
 	}
 
 	@test()
@@ -31,7 +31,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		await this.Cli()
 
 		const err = await assert.doesThrowAsync(() =>
-			this.Executer('schema', 'sync').execute({})
+			this.Action('schema', 'sync').execute({})
 		)
 
 		errorAssertUtil.assertError(err, 'FEATURE_NOT_INSTALLED')
@@ -41,7 +41,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	protected static async syncingWithNoSchemasSucceeds() {
 		await this.installSchemaFeature('schemas')
 
-		const results = await this.Executer('schema', 'sync').execute({})
+		const results = await this.Action('schema', 'sync').execute({})
 
 		assert.isFalsy(results.errors)
 
@@ -56,7 +56,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	protected static async syncingWithNoSchemasAndFetchCoreSchemasFalseSucceeds() {
 		await this.installSchemaFeature('schemas')
 
-		const results = await this.Executer('schema', 'sync').execute({
+		const results = await this.Action('schema', 'sync').execute({
 			fetchCoreSchemas: false,
 		})
 
@@ -73,7 +73,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	protected static async syncingCleansUpTempFiles() {
 		await this.installSchemaFeature('schemas')
 
-		const results = await this.Executer('schema', 'sync').execute({})
+		const results = await this.Action('schema', 'sync').execute({})
 
 		assert.isFalsy(results.errors)
 
@@ -91,7 +91,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		await this.installSchemaFeature('schemas')
 		await this.copyMockCoreSchemas()
 
-		const results = await this.Executer('schema', 'sync').execute(
+		const results = await this.Action('schema', 'sync').execute(
 			this.coreSyncOptions
 		)
 
@@ -113,7 +113,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	@test()
 	protected static async syncSchemasTwiceSkipsFiles() {
 		await this.syncSchemas('schemas', this.coreSyncOptions)
-		const results = await this.Executer('schema', 'sync').execute(
+		const results = await this.Action('schema', 'sync').execute(
 			this.coreSyncOptions
 		)
 
@@ -133,7 +133,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		await this.copyMockCoreSchemas()
 
-		const results = await this.Executer('schema', 'sync').execute(
+		const results = await this.Action('schema', 'sync').execute(
 			this.coreSyncOptions
 		)
 
@@ -155,7 +155,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		await this.copyMockCoreSchemas()
 
-		const results = await this.Executer('schema', 'sync').execute(
+		const results = await this.Action('schema', 'sync').execute(
 			this.coreSyncOptions
 		)
 
@@ -193,7 +193,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		await this.copyMockCoreSchemas()
 
-		const results = await this.Executer('schema', 'sync').execute({})
+		const results = await this.Action('schema', 'sync').execute({})
 
 		assert.isFalsy(results.errors)
 		assert.isTruthy(results.files)
@@ -222,7 +222,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	protected static async canHandleHyphenSchemaIds() {
 		await this.syncSchemas('schemas')
 
-		const createResponse = await this.Executer('schema', 'create').execute({
+		const createResponse = await this.Action('schema', 'create').execute({
 			nameReadable: 'Test schema',
 			nameCamel: 'testSchema',
 		})
@@ -238,7 +238,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		diskUtil.writeFile(builderPath, contents)
 
-		const syncResults = await this.Executer('schema', 'sync').execute({})
+		const syncResults = await this.Action('schema', 'sync').execute({})
 
 		const testSchema = testUtil.assertsFileByNameInGeneratedFiles(
 			'test-schema.schema.ts',
@@ -255,7 +255,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	protected static async coreSchemasPullFromCoreSchemasModuleDuringNormalGeneration() {
 		await this.syncSchemas('schemas')
 
-		const createResponse = await this.Executer('schema', 'create').execute({
+		const createResponse = await this.Action('schema', 'create').execute({
 			nameReadable: 'Test schema',
 			nameCamel: 'testSchema',
 		})
@@ -279,7 +279,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		await this.syncSchemas('schemas')
 		const version = versionUtil.generateVersion()
 		const typeChecker = this.Service('typeChecker')
-		const createAction = this.Executer('schema', 'create')
+		const createAction = this.Action('schema', 'create')
 
 		const matcher = new RegExp(
 			`SpruceSchemas.TestingSchemas.${version.constValue}(.*?)interface TestSchema`,
@@ -324,7 +324,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		diskUtil.deleteFile(builderFile)
 
 		// this should cleanup types and schema files
-		await this.Executer('schema', 'sync').execute({})
+		await this.Action('schema', 'sync').execute({})
 
 		assert.isTrue(diskUtil.doesFileExist(this.schemaTypesFile))
 
@@ -343,7 +343,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	protected static async canSyncSchemasWhenOnlyNodeModuleIsInstalled() {
 		await this.FeatureFixture().installCachedFeatures('schemasInNodeModule')
 
-		const results = await this.Executer('schema', 'sync').execute({})
+		const results = await this.Action('schema', 'sync').execute({})
 		assert.isFalsy(results.errors)
 		await this.assertValidActionResponseFiles(results)
 	}
@@ -356,7 +356,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		await diskUtil.copyDir(this.resolveTestPath('test_builders'), schemasDir)
 
-		const results = await this.Executer('schema', 'sync').execute({})
+		const results = await this.Action('schema', 'sync').execute({})
 		const schema = await this.importSchema(results, 'schemaTwo.schema.ts')
 
 		assert.isUndefined(schema.fields.phone.minArrayLength)
@@ -368,7 +368,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	protected static async canChangeSkillNamespace() {
 		await this.syncSchemas('schemas')
 
-		await this.Executer('schema', 'create').execute({
+		await this.Action('schema', 'create').execute({
 			nameReadable: 'Test schema',
 			nameCamel: 'testSchema',
 		})
@@ -381,7 +381,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		await this.Store('skill').setCurrentSkillsNamespace('new-namespace')
 
-		await this.Executer('schema', 'sync').execute({})
+		await this.Action('schema', 'sync').execute({})
 
 		assert.isFalse(diskUtil.doesFileExist(beforeFolder))
 		assert.isTrue(diskUtil.doesFileExist(afterFolder))

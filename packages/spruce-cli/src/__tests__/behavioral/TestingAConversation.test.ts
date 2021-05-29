@@ -8,14 +8,14 @@ import testUtil from '../../tests/utilities/test.utility'
 export default class TestingAConversationTest extends AbstractCliTest {
 	@test()
 	protected static async hasTestConvoFeature() {
-		assert.isFunction(this.Executer('conversation', 'test').execute)
+		assert.isFunction(this.Action('conversation', 'test').execute)
 	}
 
 	@test()
 	protected static async shouldRunWithoutConversationShouldShutdownOnItsOwn() {
 		await this.FeatureFixture().installCachedFeatures('conversation')
 
-		const test = await this.Executer('conversation', 'test').execute({
+		const test = await this.Action('conversation', 'test').execute({
 			shouldReturnImmediately: true,
 			shouldRunSilently: true,
 		})
@@ -36,7 +36,7 @@ export default class TestingAConversationTest extends AbstractCliTest {
 	protected static async runsUntilKilled() {
 		await this.installAndCreateConversation()
 
-		const test = await this.Executer('conversation', 'test').execute({
+		const test = await this.Action('conversation', 'test').execute({
 			shouldReturnImmediately: true,
 			shouldRunSilently: true,
 		})
@@ -86,7 +86,7 @@ export default class TestingAConversationTest extends AbstractCliTest {
 	private static async installAndCreateConversation() {
 		await this.FeatureFixture().installCachedFeatures('conversation')
 
-		const results = await this.Executer('conversation', 'create').execute({
+		const results = await this.Action('conversation', 'create').execute({
 			nameReadable: 'tell a knock knock joke',
 			nameCamel: 'knockKnockJoke',
 		})
@@ -99,7 +99,7 @@ export default class TestingAConversationTest extends AbstractCliTest {
 	protected static async doesntReturnErrorWhenKilled() {
 		await this.installAndCreateConversation()
 		//@ts-ignore
-		const test = this.Executer('conversation', 'test').getChild() as TestAction
+		const test = this.Action('conversation', 'test').getChild() as TestAction
 
 		setTimeout(async () => {
 			await test.kill()
@@ -123,7 +123,7 @@ export default class TestingAConversationTest extends AbstractCliTest {
 
 		diskUtil.writeFile(topic, 'throw new Error("whaaa")')
 
-		const test = this.Executer('conversation', 'test')
+		const test = this.Action('conversation', 'test')
 
 		const results = await test.execute({
 			shouldRunSilently: true,

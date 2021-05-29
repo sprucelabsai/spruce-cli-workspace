@@ -3,7 +3,7 @@ import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../../../errors/SpruceError'
 import { SkillAuth } from '../../../services/AuthService'
 import actionUtil from '../../../utilities/action.utility'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
@@ -33,7 +33,7 @@ const optionsSchema = buildSchema({
 type OptionsSchema = typeof optionsSchema
 type Options = SchemaValues<OptionsSchema>
 
-export default class DeployAction extends AbstractFeatureAction<OptionsSchema> {
+export default class DeployAction extends AbstractAction<OptionsSchema> {
 	public code = 'deploy'
 	public optionsSchema = optionsSchema
 	public commandAliases = ['deploy.heroku']
@@ -303,7 +303,7 @@ export default class DeployAction extends AbstractFeatureAction<OptionsSchema> {
 			try {
 				this.ui.startLoading('Testing your skill. Hold onto your pants. 👖')
 
-				const testResults = await this.Executer('test', 'test').execute({
+				const testResults = await this.Action('test', 'test').execute({
 					watchMode: 'off',
 					shouldReportWhileRunning: false,
 				})

@@ -36,7 +36,7 @@ export default class SchemaFeature extends AbstractFeature {
 
 	public code: FeatureCode = 'schema'
 
-	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public constructor(options: FeatureOptions) {
 		super(options)

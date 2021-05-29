@@ -5,14 +5,14 @@ import testUtil from '../../../tests/utilities/test.utility'
 export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 	@test()
 	protected static async hasCreateAction() {
-		assert.isFunction(this.Executer('test', 'create').execute)
+		assert.isFunction(this.Action('test', 'create').execute)
 	}
 
 	@test()
 	protected static async doesNotAskAboutFixturesWhenInNodeModule() {
 		await this.installTests('testsInNodeModule')
 
-		const results = await this.Executer('test', 'create').execute({
+		const results = await this.Action('test', 'create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can book appointment',
 			nameCamel: 'canBookAppointment',
@@ -25,7 +25,7 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 	@test()
 	protected static async asksAboutSpruceFixturesWhenCreatingIfSkillFeatureIsInstalled() {
 		await this.installTests()
-		const promise = this.Executer('test', 'create').execute({
+		const promise = this.Action('test', 'create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can book appointment',
 			nameCamel: 'canBookAppointment',
@@ -41,7 +41,7 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 	@test()
 	protected static async canCreateBehavioralTest() {
 		await this.installTests()
-		const promise = this.Executer('test', 'create').execute({
+		const promise = this.Action('test', 'create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can book appointment',
 			nameCamel: 'canBookAppointment',

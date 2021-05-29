@@ -5,12 +5,12 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import createSchemaActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/createSchemaOptions.schema'
 import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasOptions.schema'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 
 type OptionsSchema =
 	SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaOptions
-export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
+export default class CreateAction extends AbstractAction<OptionsSchema> {
 	public code = 'create'
 	public optionsSchema = createSchemaActionSchema
 	public invocationMessage = 'Creating your schema builder... 📃'
@@ -50,7 +50,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 			namePascal: namePascal ?? namesUtil.toPascal(nameCamel),
 		})
 
-		const syncAction = this.Executer('schema', 'sync')
+		const syncAction = this.Action('schema', 'sync')
 
 		let errors: AbstractSpruceError<any>[] | undefined
 

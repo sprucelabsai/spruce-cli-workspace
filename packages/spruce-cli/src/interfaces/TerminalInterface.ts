@@ -32,6 +32,7 @@ import {
 	ProgressBarOptions,
 	ProgressBarUpdateOptions,
 } from '../types/graphicsInterface.types'
+import durationUtil from '../utilities/duration.utility'
 const terminalImage = require('terminal-image')
 
 let fieldCount = 0
@@ -71,10 +72,16 @@ export default class TerminalInterface implements GraphicsInterface {
 	private static loader?: ora.Ora | null
 	private progressBar: ProgressBarController | null = null
 	private static _doesSupportColor = process?.stdout?.isTTY
+	private log: (...args: any[]) => void
 
-	public constructor(cwd: string, renderStackTraces = false) {
+	public constructor(
+		cwd: string,
+		renderStackTraces = false,
+		log = console.log.bind(console)
+	) {
 		this.cwd = cwd
 		this.renderStackTraces = renderStackTraces
+		this.log = log
 	}
 
 	public static doesSupportColor() {
@@ -159,7 +166,9 @@ export default class TerminalInterface implements GraphicsInterface {
 		this.renderLine(bar, effects)
 	}
 
-	public renderCommandSummary(results: ExecutionResults) {
+	public renderCommandSummary(
+		results: ExecutionResults & { totalTime?: number }
+	) {
 		const generatedFiles =
 			results.files?.filter((f) => f.action === 'generated') ?? []
 		const updatedFiles =
@@ -246,6 +255,12 @@ export default class TerminalInterface implements GraphicsInterface {
 				lines: results.hints,
 			})
 		}
+
+		if (results.totalTime) {
+			this.renderLine(
+				`Total time: ${durationUtil.msToFriendly(results.totalTime)}`
+			)
+		}
 	}
 
 	public renderHeadline(
@@ -299,7 +314,7 @@ export default class TerminalInterface implements GraphicsInterface {
 			terminal.eraseLine()
 		}
 
-		console.log(effects.length > 0 ? write(message) : message)
+		this.log(effects.length > 0 ? write(message) : message)
 	}
 
 	public renderWarning(message: string) {
@@ -351,7 +366,7 @@ export default class TerminalInterface implements GraphicsInterface {
 	public renderCodeSample(code: string) {
 		try {
 			const colored = emphasize.highlight('js', code).value
-			console.log(colored)
+			this.renderLine(colored)
 		} catch (err) {
 			this.renderWarning(err)
 		}
@@ -576,7 +591,7 @@ export default class TerminalInterface implements GraphicsInterface {
 		options?: ImageDimensions
 	): Promise<void> {
 		const image = await terminalImage.file(path, options)
-		console.log(image)
+		this.renderLine(image)
 	}
 
 	public async getCursorPosition(): Promise<{ x: number; y: number } | null> {

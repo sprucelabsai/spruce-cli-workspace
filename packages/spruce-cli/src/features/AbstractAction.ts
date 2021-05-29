@@ -22,7 +22,7 @@ import { GraphicsInterface } from '../types/cli.types'
 import { WriterOptions } from '../writers/AbstractWriter'
 import WriterFactory, { WriterCode, WriterMap } from '../writers/WriterFactory'
 import AbstractFeature from './AbstractFeature'
-import FeatureCommandExecuter from './FeatureCommandExecuter'
+import ActionExecuter from './ActionExecuter'
 import FeatureInstaller from './FeatureInstaller'
 import {
 	FeatureAction,
@@ -32,7 +32,7 @@ import {
 } from './features.types'
 import validateAndNormalizeUtil from './validateAndNormalize.utility'
 
-export default abstract class AbstractFeatureAction<S extends Schema = Schema>
+export default abstract class AbstractAction<S extends Schema = Schema>
 	implements FeatureAction<S>, ServiceProvider
 {
 	public abstract code: string
@@ -51,6 +51,7 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 	private storeFactory: StoreFactory
 	private writerFactory: WriterFactory
 	private apiClientFactory: ApiClientFactory
+	private actionExecuter: ActionExecuter
 
 	public constructor(options: FeatureActionOptions) {
 		this.cwd = options.cwd
@@ -63,14 +64,15 @@ export default abstract class AbstractFeatureAction<S extends Schema = Schema>
 		this.writerFactory = options.writerFactory
 		this.apiClientFactory = options.apiClientFactory
 		this.emitter = options.emitter
+		this.actionExecuter = options.actionExecuter
 	}
 
 	public abstract execute(
 		options: SchemaValues<S>
 	): Promise<FeatureActionResponse>
 
-	protected Executer(featureCode: string, actionCode: string) {
-		return FeatureCommandExecuter.Executer(featureCode as any, actionCode)
+	protected Action(featureCode: string, actionCode: string) {
+		return this.actionExecuter.Action(featureCode as any, actionCode)
 	}
 
 	public Service<S extends Service>(type: S, cwd?: string): ServiceMap[S] {

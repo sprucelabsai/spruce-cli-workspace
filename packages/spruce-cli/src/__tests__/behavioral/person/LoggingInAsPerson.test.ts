@@ -7,14 +7,14 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 	@test()
 	protected static async hasLoginAction() {
 		await this.Cli()
-		assert.isFunction(this.Executer('person', 'login').execute)
+		assert.isFunction(this.Action('person', 'login').execute)
 	}
 
 	@test()
 	protected static async asksForPinWithoutBeingInstalled() {
 		await this.FeatureFixture().installCachedFeatures('skills')
 
-		void this.Executer('person', 'login').execute({
+		void this.Action('person', 'login').execute({
 			phone: DEMO_NUMBER,
 		})
 
@@ -34,7 +34,7 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 	protected static async badPinRendersWarningAndAsksForPinAgain() {
 		await this.FeatureFixture().installCachedFeatures('skills')
 
-		void this.Executer('person', 'login').execute({
+		void this.Action('person', 'login').execute({
 			phone: DEMO_NUMBER,
 		})
 
@@ -75,7 +75,7 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 	@test()
 	protected static async cantLogoutWithoutBeingLoggedIn() {
 		await this.FeatureFixture().installCachedFeatures('skills')
-		const results = await this.Executer('person', 'logout').execute({})
+		const results = await this.Action('person', 'logout').execute({})
 
 		assert.isTruthy(results.errors)
 		assert.isLength(results.errors, 1)
@@ -87,7 +87,7 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 	protected static async canLogOut() {
 		await this.loginAsDemoPerson()
 
-		const results = await this.Executer('person', 'logout').execute({})
+		const results = await this.Action('person', 'logout').execute({})
 
 		assert.isFalsy(results.errors)
 
@@ -99,7 +99,7 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 	private static async loginAsDemoPerson() {
 		const cli = await this.FeatureFixture().installCachedFeatures('skills')
 
-		const promise = this.Executer('person', 'login').execute({
+		const promise = this.Action('person', 'login').execute({
 			phone: DEMO_NUMBER,
 		})
 

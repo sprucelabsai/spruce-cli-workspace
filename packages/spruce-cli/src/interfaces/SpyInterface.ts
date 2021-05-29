@@ -1,4 +1,5 @@
 import { FieldDefinitionValueType } from '@sprucelabs/schema'
+import { testLog } from '@sprucelabs/spruce-skill-utils'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import { ExecutionResults } from '../types/cli.types'
 import { GraphicsInterface } from '../types/cli.types'
@@ -8,9 +9,12 @@ import {
 	ProgressBarUpdateOptions,
 	ImageDimensions,
 } from '../types/graphicsInterface.types'
+import TerminalInterface from './TerminalInterface'
 
 export default class SpyInterface implements GraphicsInterface {
 	public invocations: { command: string; options?: any }[] = []
+	public static shouldRenderAsTestLogs: any = false
+
 	private cursorPosition = { x: 0, y: 0 }
 
 	private promptResolver?: (
@@ -20,18 +24,29 @@ export default class SpyInterface implements GraphicsInterface {
 	private confirmResolver?: (pass: boolean) => void | undefined
 	private waitForEnterResolver?: () => void | undefined
 	private promptDefaultValue: any
+	private term?: TerminalInterface
+
+	public constructor() {
+		this.term = SpyInterface.shouldRenderAsTestLogs
+			? new TerminalInterface(process.cwd(), true)
+			: undefined
+	}
 
 	public renderWarning(
 		message: string,
 		effects?: GraphicsTextEffect[] | undefined
 	): void {
 		this.trackInvocation('renderWarning', { message, effects })
+		this.term?.renderWarning(message)
 	}
+
 	public renderHint(
 		message: string,
 		effects?: GraphicsTextEffect[] | undefined
 	): void {
 		this.trackInvocation('renderHint', { message, effects })
+		this.optionallyRenderLine(`Hint: ${message}`)
+		this.term?.renderHint(message)
 	}
 
 	private trackInvocation(command: string, options?: any) {
@@ -59,6 +74,10 @@ export default class SpyInterface implements GraphicsInterface {
 
 	public async sendInput(input: string): Promise<void> {
 		this.trackInvocation('sendInput', input)
+
+		this.optionallyRenderLine(
+			`Sending input: "${input.length > 0 ? input : 'ENTER'}"`
+		)
 
 		if (this.waitForEnterResolver) {
 			const resolver = this.waitForEnterResolver
@@ -95,22 +114,27 @@ export default class SpyInterface implements GraphicsInterface {
 		object?: any
 	}): void {
 		this.trackInvocation('renderSection', options)
+		this.term?.renderSection(options)
 	}
 
 	public renderObject(obj: any): void {
 		this.trackInvocation('renderObject', obj)
+		this.term?.renderObject(obj)
 	}
 
 	public renderError(err: Error): void {
 		this.trackInvocation('renderError', err)
+		this.term?.renderError(err)
 	}
 
 	public renderCodeSample(code: string): void {
 		this.trackInvocation('renderCodeSample', code)
+		this.term?.renderCodeSample(code)
 	}
 
 	public renderCommandSummary(results: ExecutionResults): void {
 		this.trackInvocation('renderCommandSummary', results)
+		this.term?.renderCommandSummary(results)
 	}
 
 	public renderHero(
@@ -118,6 +142,7 @@ export default class SpyInterface implements GraphicsInterface {
 		effects?: GraphicsTextEffect[] | undefined
 	): void {
 		this.trackInvocation('renderHero', { message, effects })
+		this.term?.renderHero(message, effects)
 	}
 
 	public renderHeadline(
@@ -126,10 +151,12 @@ export default class SpyInterface implements GraphicsInterface {
 		dividerEffects: GraphicsTextEffect[]
 	): void {
 		this.trackInvocation('renderHeadline', { message, effects, dividerEffects })
+		this.term?.renderHeadline(message, effects, dividerEffects)
 	}
 
 	public renderDivider(effects?: GraphicsTextEffect[] | undefined): void {
 		this.trackInvocation('renderDivider', effects)
+		this.term?.renderDivider(effects)
 	}
 
 	public renderLine(
@@ -137,6 +164,13 @@ export default class SpyInterface implements GraphicsInterface {
 		effects?: GraphicsTextEffect[] | undefined
 	): void {
 		this.trackInvocation('renderLine', { message, effects })
+		message && message.length > 0 && this.optionallyRenderLine(message)
+	}
+
+	private optionallyRenderLine(message: string) {
+		if (SpyInterface.shouldRenderAsTestLogs) {
+			testLog.info(message)
+		}
 	}
 
 	public async renderImage(
@@ -151,6 +185,7 @@ export default class SpyInterface implements GraphicsInterface {
 		effects?: GraphicsTextEffect[] | undefined
 	): void {
 		this.trackInvocation('renderLines', { messages, effects })
+		this.term?.renderLines(messages, effects)
 	}
 
 	public async prompt<T extends FieldDefinitions>(definition: T) {
@@ -158,9 +193,11 @@ export default class SpyInterface implements GraphicsInterface {
 
 		if (this.promptResolver) {
 			throw new Error(
-				'Tried to double prompt. Try this.term.sendInput() before calling prompt next.'
+				'Tried to double prompt. Try this.term?.sendInput() before calling prompt next.'
 			)
 		}
+
+		this.optionallyRenderLine(`Prompt: ${definition.label}`)
 
 		return new Promise<FieldDefinitionValueType<FieldDefinitions>>(
 			(resolve) => {
@@ -172,14 +209,20 @@ export default class SpyInterface implements GraphicsInterface {
 
 	public startLoading(message?: string | undefined): void {
 		this.trackInvocation('startLoading', message)
+		this.optionallyRenderLine(message ? `${message}` : 'Start loading...')
 	}
 
 	public stopLoading(): void {
 		this.trackInvocation('stopLoading')
+		this.optionallyRenderLine('Stop loading...')
 	}
 
 	public async waitForEnter(message?: string | undefined): Promise<void> {
 		this.trackInvocation('waitForEnter', message)
+		this.optionallyRenderLine(
+			`${message ? ` ${message}\n\n` : ``}Waiting for enter...`
+		)
+
 		return new Promise((resolve) => {
 			this.waitForEnterResolver = resolve
 		})
@@ -187,6 +230,8 @@ export default class SpyInterface implements GraphicsInterface {
 
 	public confirm(question: string): Promise<boolean> {
 		this.trackInvocation('confirm', question)
+		this.optionallyRenderLine(`${question} :: Y/N...`)
+
 		return new Promise((resolve) => {
 			this.confirmResolver = resolve
 		})
@@ -198,6 +243,9 @@ export default class SpyInterface implements GraphicsInterface {
 
 	public renderProgressBar(options: ProgressBarOptions): void {
 		this.trackInvocation('renderProgressBar', options)
+		this.optionallyRenderLine(
+			`Showing progress${options.title ? ` ${options.title}` : ``}`
+		)
 	}
 
 	public updateProgressBar(options: ProgressBarUpdateOptions): void {
@@ -206,6 +254,7 @@ export default class SpyInterface implements GraphicsInterface {
 
 	public removeProgressBar(): void {
 		this.trackInvocation('removeProgressBar')
+		this.optionallyRenderLine(`Hiding progress`)
 	}
 
 	public async getCursorPosition(): Promise<{ x: number; y: number } | null> {

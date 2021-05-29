@@ -32,7 +32,7 @@ export default class GettingSchemasFromHealthCheckTest extends AbstractSchemaTes
 	@test()
 	protected static async getsCoreAndLocalSchemasFromHealthCheck() {
 		const cli = await this.installAndSyncSchemas()
-		const createSchema = this.Executer('schema', 'create')
+		const createSchema = this.Action('schema', 'create')
 
 		await createSchema.execute({
 			nameReadable: 'Test schema!',
@@ -57,7 +57,7 @@ export default class GettingSchemasFromHealthCheckTest extends AbstractSchemaTes
 
 	private static async installAndSyncSchemas() {
 		const cli = await this.installSchemaFeature('schemas')
-		await this.Executer('schema', 'sync').execute({})
+		await this.Action('schema', 'sync').execute({})
 		return cli
 	}
 }

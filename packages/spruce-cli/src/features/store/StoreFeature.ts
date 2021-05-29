@@ -26,7 +26,7 @@ export default class StoreFeature extends AbstractFeature {
 		{ name: '@sprucelabs/data-stores', isDev: false },
 	]
 
-	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public constructor(options: FeatureOptions) {
 		super(options)

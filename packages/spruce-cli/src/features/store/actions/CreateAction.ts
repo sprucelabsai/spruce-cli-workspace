@@ -2,7 +2,7 @@ import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import namedTemplateItemBuilder from '../../../schemas/v2020_07_22/namedTemplateItem.builder'
 import actionUtil from '../../../utilities/action.utility'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 
 const optionsSchema = buildSchema({
 	id: 'createStoreOptions',
@@ -31,7 +31,7 @@ const optionsSchema = buildSchema({
 type OptionsSchema = typeof optionsSchema
 type Options = SchemaValues<OptionsSchema>
 
-export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
+export default class CreateAction extends AbstractAction<OptionsSchema> {
 	public optionsSchema = optionsSchema
 	public code = 'create'
 	public invocationMessage = 'Creating a data store... 💿'
@@ -55,7 +55,7 @@ export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
 					nameSnakePlural ?? namesUtil.toSnake(nameReadablePlural),
 			})
 
-			const syncResults = await this.Executer('store', 'sync').execute({})
+			const syncResults = await this.Action('store', 'sync').execute({})
 
 			return actionUtil.mergeActionResults(syncResults, {
 				files,

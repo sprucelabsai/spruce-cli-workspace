@@ -1,6 +1,6 @@
 import { buildSchema } from '@sprucelabs/schema'
 import SpruceError from '../../../errors/SpruceError'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
@@ -10,7 +10,7 @@ const optionsSchema = buildSchema({
 })
 type OptionsSchema = typeof optionsSchema
 
-export default class LogoutAction extends AbstractFeatureAction<OptionsSchema> {
+export default class LogoutAction extends AbstractAction<OptionsSchema> {
 	public code = 'logout'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['logout']

@@ -24,7 +24,7 @@ export default class SettingUpTestsTest extends AbstractTestTest {
 
 	@test()
 	protected static async creatingTestWithNoSkillAsksToInstallSkill() {
-		const executer = this.Executer('test', 'create')
+		const executer = this.Action('test', 'create')
 		void executer.execute({})
 
 		await this.waitForInput()

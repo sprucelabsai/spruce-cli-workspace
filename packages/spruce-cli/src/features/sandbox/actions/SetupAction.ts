@@ -1,6 +1,6 @@
 import { buildSchema } from '@sprucelabs/schema'
 import setupVscodeSchema from '#spruce/schemas/spruceCli/v2020_07_22/setupVscodeOptions.schema'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
@@ -11,13 +11,13 @@ const optionsSchema = buildSchema({
 
 type OptionsSchema = typeof optionsSchema
 
-export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
+export default class SetupAction extends AbstractAction<OptionsSchema> {
 	public code = 'setup'
 	public optionsSchema = setupVscodeSchema
 	public invocationMessage = 'Setting up sandbox support... 🏝'
 
 	public async execute(): Promise<FeatureActionResponse> {
-		const createListenerAction = this.Executer('event', 'listen')
+		const createListenerAction = this.Action('event', 'listen')
 		const results = await createListenerAction.execute({
 			eventNamespace: 'skill',
 			eventName: 'will-boot',

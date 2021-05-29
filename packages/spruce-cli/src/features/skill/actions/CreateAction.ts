@@ -1,6 +1,6 @@
 import { SpruceSchemas } from '@sprucelabs/mercury-types'
 import { buildSchema } from '@sprucelabs/schema'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
@@ -14,17 +14,19 @@ const optionsSchema = buildSchema({
 type OptionsSchema = typeof optionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SkillFeature
 
-export default class CreateAction extends AbstractFeatureAction<OptionsSchema> {
+export default class CreateAction extends AbstractAction<OptionsSchema> {
 	public code = 'create'
 	public optionsSchema = optionsSchema
 	public commandAliases = ['create.skill [destination]']
 	public invocationMessage = 'Creating your new skill... ⚡️'
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
+		debugger
 		const codeSuggestion = options.destination
 			? `cd ${options.destination} && code .`
 			: `code .`
 
+		debugger
 		return {
 			hints: [
 				'This is so much fun! Lets keep moving.',

@@ -22,7 +22,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 	@test()
 	protected static async throwsWithBadNamespace() {
 		await this.installEventFeature('events')
-		const results = await this.Executer('event', 'listen').execute({
+		const results = await this.Action('event', 'listen').execute({
 			eventNamespace: 'taco-bell',
 		})
 
@@ -37,7 +37,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 	@test()
 	protected static async throwsWithBadEventName() {
 		await this.installEventFeature('events')
-		const results = await this.Executer('event', 'listen').execute({
+		const results = await this.Action('event', 'listen').execute({
 			eventNamespace: 'mercury',
 			eventName: 'bad-time',
 		})
@@ -56,7 +56,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 		const version = 'v2020_01_01'
 
-		const results = await this.Executer('event', 'listen').execute({
+		const results = await this.Action('event', 'listen').execute({
 			eventNamespace: 'skill',
 			eventName: 'will-boot',
 			version,
@@ -91,7 +91,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 	protected static async creatingANewListenerAsksWhichEventToListenTo() {
 		await this.installEventFeature('events')
 
-		void this.Executer('event', 'listen').execute({})
+		void this.Action('event', 'listen').execute({})
 
 		await this.waitForInput()
 
@@ -190,7 +190,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 				}
 			)
 
-		const boot = await this.Executer('skill', 'boot').execute({ local: true })
+		const boot = await this.Action('skill', 'boot').execute({ local: true })
 
 		//give the skill time to boot
 		await this.wait(20000)
@@ -255,7 +255,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 		await skillFixture.registerEventContract(skill2, eventContract)
 
-		const results = await this.Executer('event', 'listen').execute({
+		const results = await this.Action('event', 'listen').execute({
 			eventNamespace: skill2.slug,
 			eventName: `my-new-event`,
 			version: expectedVersion,

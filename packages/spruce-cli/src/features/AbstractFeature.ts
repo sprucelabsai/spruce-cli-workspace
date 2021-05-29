@@ -21,10 +21,9 @@ import {
 import { NpmPackage, GeneratedFile, FileDescription } from '../types/cli.types'
 import { GraphicsInterface } from '../types/cli.types'
 import WriterFactory, { WriterCode, WriterMap } from '../writers/WriterFactory'
+import ActionExecuter from './ActionExecuter'
+import ActionFactory from './ActionFactory'
 import featuresUtil from './feature.utilities'
-import FeatureActionFactory, {
-	FeatureActionFactoryOptions,
-} from './FeatureActionFactory'
 import FeatureInstaller from './FeatureInstaller'
 import { FeatureCode } from './features.types'
 
@@ -43,11 +42,12 @@ export interface FeatureOptions {
 	serviceFactory: ServiceFactory
 	templates: Templates
 	storeFactory: StoreFactory
-	actionFactory?: FeatureActionFactory
+	actionFactory?: ActionFactory
 	featureInstaller: FeatureInstaller
 	ui: GraphicsInterface
 	emitter: GlobalEmitter
 	apiClientFactory: ApiClientFactory
+	actionExecuter: ActionExecuter
 }
 
 export default abstract class AbstractFeature<
@@ -67,8 +67,8 @@ export default abstract class AbstractFeature<
 	public readonly installOrderWeight: number = 0
 
 	protected cwd: string
-	protected actionsDir: string | undefined
-	protected actionFactory?: FeatureActionFactory
+	public actionsDir: string | undefined
+	protected actionFactory?: ActionFactory
 	protected templates: Templates
 	protected emitter: GlobalEmitter
 	protected featureInstaller: FeatureInstaller
@@ -78,11 +78,7 @@ export default abstract class AbstractFeature<
 	private storeFactory: StoreFactory
 	private writerFactory: WriterFactory
 	private apiClientFactory: ApiClientFactory
-
-	protected actionFactoryOptions: Omit<
-		FeatureActionFactoryOptions,
-		'actionsDir'
-	>
+	private actionExecuter: ActionExecuter
 
 	public constructor(options: FeatureOptions) {
 		this.cwd = options.cwd
@@ -99,13 +95,11 @@ export default abstract class AbstractFeature<
 		this.featureInstaller = options.featureInstaller
 		this.ui = options.ui
 		this.apiClientFactory = options.apiClientFactory
+		this.actionExecuter = options.actionExecuter
+	}
 
-		this.actionFactoryOptions = {
-			...options,
-			parent: this as AbstractFeature<any>,
-			writerFactory: this.writerFactory,
-			apiClientFactory: options.apiClientFactory,
-		}
+	protected Action(featureCode: string, actionCode: string) {
+		return this.actionExecuter.Action(featureCode as any, actionCode)
 	}
 
 	public async beforePackageInstall(

@@ -2,7 +2,7 @@ import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import setupVscodeSchema from '#spruce/schemas/spruceCli/v2020_07_22/setupVscodeOptions.schema'
 import PkgService from '../../../services/PkgService'
 import { NpmPackage } from '../../../types/cli.types'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 import { Extension } from '../services/VsCodeService'
 
@@ -10,7 +10,7 @@ type OptionsSchema =
 	SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeOptions
 
-export default class SetupAction extends AbstractFeatureAction<OptionsSchema> {
+export default class SetupAction extends AbstractAction<OptionsSchema> {
 	public invocationMessage = 'Setting up Visual Studio Codez... 👾'
 	private recommendedExtensions: Extension[] = [
 		{

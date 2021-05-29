@@ -2,7 +2,7 @@ import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import SpruceError from '../../../errors/SpruceError'
 import actionUtil from '../../../utilities/action.utility'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 import { generateSkillSummaryLines } from './RegisterAction'
 
@@ -21,7 +21,7 @@ const optionsSchema = buildSchema({
 type OptionsSchema = typeof optionsSchema
 type Options = SchemaValues<OptionsSchema>
 
-export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
+export default class LoginAction extends AbstractAction<OptionsSchema> {
 	public code = 'login'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['login.skill']
@@ -46,7 +46,7 @@ export default class LoginAction extends AbstractFeatureAction<OptionsSchema> {
 				isRequired: true,
 			})
 
-			loginResponse = await this.Executer('person', 'login').execute({
+			loginResponse = await this.Action('person', 'login').execute({
 				phone,
 			})
 		}

@@ -23,7 +23,7 @@ export default class ListeningToAnEventYouCreateTest extends AbstractEventTest {
 
 		await diskUtil.copyDir(source, destination)
 
-		const listenPromise = this.Executer('event', 'listen').execute({})
+		const listenPromise = this.Action('event', 'listen').execute({})
 
 		await this.waitForInput()
 		await this.ui.sendInput(currentSkill.slug)

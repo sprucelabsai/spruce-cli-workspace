@@ -13,7 +13,7 @@ export default class TestReporterSettingsRememberedTest extends AbstractTestTest
 
 		settings.set('test.watchMode', 'smart')
 
-		const action = this.Executer('test', 'test')
+		const action = this.Action('test', 'test')
 
 		const results = await action.execute({
 			shouldReturnImmediately: true,
@@ -35,7 +35,7 @@ export default class TestReporterSettingsRememberedTest extends AbstractTestTest
 	protected static async watchSettingsSaved() {
 		await this.FeatureFixture().installCachedFeatures('tests')
 
-		const action = this.Executer('test', 'test')
+		const action = this.Action('test', 'test')
 
 		const results = await action.execute({
 			shouldReturnImmediately: true,

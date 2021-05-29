@@ -9,7 +9,7 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'stores'
 	@test()
 	protected static async hasCreateStoreAction() {
-		assert.isFunction(this.Executer('store', 'create').execute)
+		assert.isFunction(this.Action('store', 'create').execute)
 	}
 
 	@test()
@@ -25,7 +25,7 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 
 	@test()
 	protected static async generatesValidStoreFile() {
-		const results = await this.Executer('store', 'create').execute({
+		const results = await this.Action('store', 'create').execute({
 			nameReadable: 'Person',
 			nameReadablePlural: 'People',
 			namePascal: 'Person',
@@ -52,7 +52,7 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 
 	@test()
 	protected static async canGenerateASecondStoreFile() {
-		const results = await this.Executer('store', 'create').execute({
+		const results = await this.Action('store', 'create').execute({
 			nameReadable: 'Bid',
 			nameReadablePlural: 'Bids',
 			namePascal: 'Bid',
@@ -80,7 +80,7 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 
 	@test()
 	protected static async errorsWhenGeneratingAStoreWithTheSameName() {
-		const results = await this.Executer('store', 'create').execute({
+		const results = await this.Action('store', 'create').execute({
 			nameReadable: 'Bid',
 			nameReadablePlural: 'Bids',
 			namePascal: 'Bid',
@@ -92,7 +92,7 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 
 	@test()
 	protected static async storeFactoryAndStoresAreTyped() {
-		await this.Executer('store', 'create').execute({
+		await this.Action('store', 'create').execute({
 			nameReadable: 'Product',
 			nameReadablePlural: 'Products',
 			namePascal: 'Product',

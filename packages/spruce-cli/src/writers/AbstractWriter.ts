@@ -127,7 +127,7 @@ export default abstract class AbstractWriter {
 				action = 'generated'
 			}
 		} else if (
-			diskUtil.isFileDifferent(destination, contents) &&
+			this.isFileDifferent(destination, contents) &&
 			this.shouldOverwriteIfChanged(destination)
 		) {
 			let write = true
@@ -165,6 +165,11 @@ export default abstract class AbstractWriter {
 		myResults.push({ name, description: desc, path: destination, action })
 
 		return myResults
+	}
+
+	private isFileDifferent(_destination: string, _contents: string) {
+		return true
+		// return diskUtil.isFileDifferent(destination, contents)
 	}
 
 	private cleanFilename(destination: string, cwd: string) {

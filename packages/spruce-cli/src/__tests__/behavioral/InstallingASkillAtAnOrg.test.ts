@@ -19,7 +19,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 	@test()
 	protected static async hasInstallAction() {
 		await this.Cli()
-		assert.isFunction(this.Executer('organization', 'install').execute)
+		assert.isFunction(this.Action('organization', 'install').execute)
 	}
 
 	@test()
@@ -38,7 +38,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 
 		await this.Cli()
 
-		const anonResults = await this.Executer('organization', 'install').execute({
+		const anonResults = await this.Action('organization', 'install').execute({
 			organizationId: org.id,
 		})
 
@@ -57,9 +57,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 			name: 'my amazing skill',
 		})
 
-		const anonResults = await this.Executer('organization', 'install').execute(
-			{}
-		)
+		const anonResults = await this.Action('organization', 'install').execute({})
 
 		assert.isTruthy(anonResults.errors)
 		errorAssertUtil.assertError(anonResults.errors[0], 'NO_ORGANIZATIONS_FOUND')
@@ -73,9 +71,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 			name: 'My great org',
 		})
 
-		const anonResults = await this.Executer('organization', 'install').execute(
-			{}
-		)
+		const anonResults = await this.Action('organization', 'install').execute({})
 
 		assert.isTruthy(anonResults.errors)
 		errorAssertUtil.assertError(anonResults.errors[0], 'SKILL_NOT_REGISTERED')
@@ -93,7 +89,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 			name: 'my amazing skill',
 		})
 
-		const promise = this.Executer('organization', 'install').execute({})
+		const promise = this.Action('organization', 'install').execute({})
 
 		await this.waitForInput()
 
@@ -135,7 +131,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 			name: 'my amazing skill',
 		})
 
-		const promise = this.Executer('organization', 'install').execute({})
+		const promise = this.Action('organization', 'install').execute({})
 
 		await this.waitForInput()
 

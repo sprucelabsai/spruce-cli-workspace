@@ -9,12 +9,12 @@ export default class RegisteringConversationsOnBootTest extends AbstractEventTes
 				'conversation'
 			)
 
-		await this.Executer('conversation', 'create').execute({
+		await this.Action('conversation', 'create').execute({
 			nameReadable: 'book an appointment',
 			nameCamel: 'bookAnAppointment',
 		})
 
-		const boot = await this.Executer('skill', 'boot').execute({ local: true })
+		const boot = await this.Action('skill', 'boot').execute({ local: true })
 
 		const client = await this.connectToApi({
 			skillId: currentSkill.id,

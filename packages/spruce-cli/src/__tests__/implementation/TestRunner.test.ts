@@ -135,7 +135,7 @@ export default class TestRunnerTest extends AbstractTestTest {
 	}) {
 		const { name, shouldFix = false, shouldBuild = true } = options
 
-		const promise = this.Executer('test', 'create').execute({
+		const promise = this.Action('test', 'create').execute({
 			type: 'behavioral',
 			nameReadable: name,
 			nameCamel: namesUtil.toCamel(name),

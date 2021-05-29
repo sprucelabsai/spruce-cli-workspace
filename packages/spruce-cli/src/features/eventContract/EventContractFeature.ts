@@ -17,7 +17,7 @@ export default class EventContractFeature extends AbstractFeature {
 	public dependencies: FeatureDependency[] = []
 	public packageDependencies = []
 
-	protected actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 	public readonly fileDescriptions: FileDescription[] = []
 
 	public isInstalled = async () => true

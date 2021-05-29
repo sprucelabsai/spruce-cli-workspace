@@ -13,7 +13,7 @@ export default class SettingRemoteTest extends AbstractSkillTest {
 
 	@test()
 	protected static async hasSetRemoteAction() {
-		assert.isFunction(this.Executer('event', 'setRemote').execute)
+		assert.isFunction(this.Action('event', 'setRemote').execute)
 	}
 
 	@test(`saves local as ${REMOTE_LOCAL}`, `local`, `${REMOTE_LOCAL}`)
@@ -21,7 +21,7 @@ export default class SettingRemoteTest extends AbstractSkillTest {
 	@test(`saves sandbox as ${REMOTE_SANDBOX}`, `sandbox`, `${REMOTE_SANDBOX}`)
 	@test(`saves prod as ${REMOTE_PROD}`, `prod`, `${REMOTE_PROD}`)
 	protected static async savesRemote(remote: string, expected: string) {
-		await this.Executer('event', 'setRemote').execute({ remote })
+		await this.Action('event', 'setRemote').execute({ remote })
 
 		const env = this.Service('env')
 		const host = env.get('HOST')
@@ -39,7 +39,7 @@ export default class SettingRemoteTest extends AbstractSkillTest {
 		const env = this.Service('env')
 		env.unset('HOST')
 
-		void this.Executer('event', action).execute({})
+		void this.Action('event', action).execute({})
 
 		await this.waitForInput()
 
@@ -60,7 +60,7 @@ export default class SettingRemoteTest extends AbstractSkillTest {
 		env.unset('HOST')
 
 		const err = await assert.doesThrowAsync(() =>
-			this.Executer('event', action).execute({})
+			this.Action('event', action).execute({})
 		)
 
 		assert.doesInclude(err.message, 'env.HOST')
@@ -68,7 +68,7 @@ export default class SettingRemoteTest extends AbstractSkillTest {
 
 	@test()
 	protected static async resultsOfCommandHasRemoteMixedIntoSummary() {
-		const results = await this.Executer('event', 'sync').execute({})
+		const results = await this.Action('event', 'sync').execute({})
 
 		assert.isTruthy(results.summaryLines)
 	}

@@ -19,7 +19,7 @@ export default class ImportingSchemaImportsTest extends AbstractSchemaTest {
 			'export type BaseWidget = {}'
 		)
 
-		const results = await this.Executer('schema', 'sync').execute({})
+		const results = await this.Action('schema', 'sync').execute({})
 
 		assert.isFalsy(results.errors)
 		assert.isTruthy(results.files)

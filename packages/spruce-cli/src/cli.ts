@@ -15,11 +15,12 @@ import './addons/filePrompt.addon'
 import eventsContracts from '#spruce/events/events.contract'
 import { CLI_HERO, DEFAULT_HOST } from './constants'
 import SpruceError from './errors/SpruceError'
+import ActionExecuter from './features/ActionExecuter'
+import ActionFactory from './features/ActionFactory'
 import FeatureCommandAttacher, {
 	BlockedCommands,
 	OptionOverrides,
 } from './features/FeatureCommandAttacher'
-import FeatureCommandExecuter from './features/FeatureCommandExecuter'
 import FeatureInstaller from './features/FeatureInstaller'
 import FeatureInstallerFactory from './features/FeatureInstallerFactory'
 import { FeatureCode, InstallFeatureOptions } from './features/features.types'
@@ -186,8 +187,34 @@ export default class Cli implements CliInterface {
 		})
 
 		const ui = options?.graphicsInterface ?? new TerminalInterface(cwd)
+		let featureInstaller: FeatureInstaller | undefined
 
-		const featureInstaller =
+		const writerFactory = new WriterFactory(
+			templates,
+			ui,
+			serviceFactory.Service(cwd, 'lint')
+		)
+
+		const actionFactory = new ActionFactory({
+			ui,
+			emitter,
+			apiClientFactory,
+			cwd,
+			serviceFactory,
+			storeFactory,
+			templates,
+			writerFactory,
+		})
+
+		const actionExecuter = new ActionExecuter({
+			actionFactory,
+			ui,
+			emitter,
+			//@ts-ignore
+			featureInstallerFactory: () => featureInstaller,
+		})
+
+		featureInstaller =
 			options?.featureInstaller ??
 			FeatureInstallerFactory.WithAllFeatures({
 				cwd,
@@ -196,29 +223,12 @@ export default class Cli implements CliInterface {
 				ui,
 				emitter,
 				apiClientFactory,
+				actionExecuter,
 			})
 
 		let attacher: FeatureCommandAttacher | undefined
 
 		if (program) {
-			const writerFactory = new WriterFactory(
-				templates,
-				ui,
-				serviceFactory.Service(cwd, 'lint')
-			)
-
-			FeatureCommandExecuter.setDependencies({
-				writerFactory,
-				featureInstaller,
-				ui,
-				emitter,
-				apiClientFactory,
-				cwd,
-				serviceFactory,
-				storeFactory,
-				templates,
-			})
-
 			const optionOverrides = this.loadOptionOverrides(
 				serviceFactory.Service(cwd, 'pkg')
 			)
@@ -232,6 +242,7 @@ export default class Cli implements CliInterface {
 				ui,
 				optionOverrides,
 				blockedCommands,
+				actionExecuter,
 			})
 
 			const codes = FeatureInstallerFactory.featureCodes

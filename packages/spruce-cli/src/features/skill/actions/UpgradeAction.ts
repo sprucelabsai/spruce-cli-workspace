@@ -5,7 +5,7 @@ import upgradeSkillActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/upgr
 import SpruceError from '../../../errors/SpruceError'
 import InFlightEntertainment from '../../../InFlightEntertainment'
 import actionUtil from '../../../utilities/action.utility'
-import AbstractFeatureAction from '../../AbstractFeatureAction'
+import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 import SkillFeature from '../SkillFeature'
 
@@ -13,7 +13,7 @@ type OptionsSchema =
 	SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillOptionsSchema
 type Options = SchemaValues<OptionsSchema>
 
-export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> {
+export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 	public invocationMessage = 'Upgrading your skill... 💪'
 	public code = 'upgrade'
 	public optionsSchema = upgradeSkillActionSchema
@@ -35,7 +35,7 @@ export default class UpgradeAction extends AbstractFeatureAction<OptionsSchema> 
 
 		await this.reInstallPackageDependencies()
 
-		let results = await this.Executer('skill', 'rebuild').execute({})
+		let results = await this.Action('skill', 'rebuild').execute({})
 
 		results = actionUtil.mergeActionResults(results, { files: generatedFiles })
 

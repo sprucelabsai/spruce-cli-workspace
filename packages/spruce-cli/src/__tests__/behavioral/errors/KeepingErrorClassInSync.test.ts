@@ -7,7 +7,7 @@ export default class KeepsErrorClassInSyncTest extends AbstractErrorTest {
 	@test()
 	protected static async errorFileShouldBeCreatedAndPassed() {
 		await this.installErrorFeature('errors')
-		const createAction = this.Executer('error', 'create')
+		const createAction = this.Action('error', 'create')
 
 		const results = await createAction.execute({
 			nameReadable: 'Test error',
@@ -29,7 +29,7 @@ export default class KeepsErrorClassInSyncTest extends AbstractErrorTest {
 	@test()
 	protected static async errorFileShouldBeUpdated() {
 		await this.installErrorFeature('errors')
-		const createAction = this.Executer('error', 'create')
+		const createAction = this.Action('error', 'create')
 		await createAction.execute({
 			nameCamel: 'testError1',
 			nameReadable: 'Test error 1',

@@ -8,7 +8,7 @@ export default class BootingASkillTest extends AbstractCliTest {
 		await this.install()
 
 		await assert.doesThrowAsync(
-			async () => this.Executer('skill', 'boot').execute({}),
+			async () => this.Action('skill', 'boot').execute({}),
 			/You must build/gis
 		)
 	}
@@ -19,7 +19,7 @@ export default class BootingASkillTest extends AbstractCliTest {
 
 		await this.Service('build').build()
 
-		const response = await this.Executer('skill', 'boot').execute({})
+		const response = await this.Action('skill', 'boot').execute({})
 
 		const pid = response.meta?.pid
 		assert.isAbove(pid, 0)

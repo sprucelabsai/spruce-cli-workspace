@@ -23,7 +23,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 
 	@test()
 	protected static async hasCreateAction() {
-		assert.isFunction(this.Executer('event', 'create').execute)
+		assert.isFunction(this.Action('event', 'create').execute)
 	}
 
 	@test()
@@ -69,7 +69,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 
 		await this.copyEventBuildersAndPermissions(EVENT_NAME)
 
-		const syncResults = await this.Executer('event', 'sync').execute({})
+		const syncResults = await this.Action('event', 'sync').execute({})
 		assert.isFalsy(syncResults.errors)
 
 		const mixedResults = actionUtil.mergeActionResults(results, syncResults)
@@ -106,7 +106,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 			name: 'my new skill',
 		})
 
-		const results = await this.Executer('event', 'create').execute({
+		const results = await this.Action('event', 'create').execute({
 			nameReadable: EVENT_NAME_READABLE,
 			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
@@ -168,7 +168,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 	}
 
 	protected static async assertCantCreateWithoutBeingRegistered() {
-		const results = await this.Executer('event', 'create').execute({
+		const results = await this.Action('event', 'create').execute({
 			nameReadable: EVENT_NAME_READABLE,
 			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
