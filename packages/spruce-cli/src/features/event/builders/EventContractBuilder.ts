@@ -1,4 +1,3 @@
-// TODO this class does two things. Part writer, part utility (writeContracts, getUniqueSchemasFromContracts))
 import { SpruceSchemas } from '@sprucelabs/mercury-types'
 import {
 	normalizeSchemaToIdWithVersion,
@@ -58,6 +57,7 @@ export default class EventContractBuilder {
 	public async fetchAndWriteContracts(
 		options: Options
 	): Promise<FeatureActionResponse> {
+		debugger
 		const normalizedOptions = validateAndNormalizeUtil.validateAndNormalize(
 			this.optionsSchema,
 			options
@@ -80,6 +80,8 @@ export default class EventContractBuilder {
 		}
 
 		this.ui.startLoading('Generating contracts...')
+
+		debugger
 
 		const contract = eventContractUtil.unifyContracts(contractResults.contracts)
 		const sigs = eventContractUtil.getNamedEventSignatures(contract)
