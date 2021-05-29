@@ -48,18 +48,16 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	}
 
 	@test.only()
-	protected static async syncsWithoutSavingCoreEventsFirst() {
+	protected static async syncsWithoutSavingCoreEventsByDefault() {
 		await this.FeatureFixture().installCachedFeatures('eventsInNodeModule')
 
 		const results = await this.Action('event', 'sync').execute({})
-		debugger
-		assert.isFalsy(results.errors)
-		debugger
-		this.assertCoreEventsNotSavedToDisk(results, false)
-		debugger
 
+		assert.isFalsy(results.errors)
+
+		this.assertCoreFilesSavedToDisk(results, false)
 		this.assertExpectedPayloadSchemasAreCreated(results, false)
-		debugger
+
 		await this.assertCombinedContractContents(results)
 	}
 
@@ -73,7 +71,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		assert.isFalsy(results.errors)
 
-		this.assertCoreEventsNotSavedToDisk(results, true)
+		this.assertCoreFilesSavedToDisk(results, true)
 
 		this.assertExpectedPayloadSchemasAreCreated(results)
 
@@ -450,9 +448,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		}
 	}
 
-	private static assertCoreEventsNotSavedToDisk(
-		results: FeatureActionResponse
-	) {
+	private static assertCoreFilesSavedToDisk(results: FeatureActionResponse) {
 		debugger
 		const sigs = eventContractUtil.getNamedEventSignatures(coreContract)
 		const files = results.files ?? []

@@ -48,6 +48,8 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 		let response: FeatureInstallResponse = {}
 		let installCount = 0
 
+		debugger
+
 		if (notInstalled.length > 0) {
 			this.ui.renderLine(
 				this.generateConfirmInstallMessage(notInstalled) + '\n'
@@ -92,22 +94,24 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 	private async getDependenciesNotInstalled(): Promise<
 		FeatureDependencyWithFeature[]
 	> {
+		debugger
 		const dependencies = this.featureInstaller.getFeatureDependencies(
 			this.feature.code
 		)
 
 		const installedStatuses = await Promise.all(
 			dependencies.map(async (dependency) => {
+				debugger
 				const feature = this.featureInstaller.getFeature(dependency.code)
-
+				debugger
 				const isInstalled = await this.featureInstaller.isInstalled(
 					dependency.code
 				)
-
+				debugger
 				const isMarkedAsSkipped = this.featureInstaller.isMarkedAsSkipped(
 					feature.code
 				)
-
+				debugger
 				if (isMarkedAsSkipped) {
 					return null
 				}

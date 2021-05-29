@@ -10,15 +10,6 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 	}
 
 	@test()
-	protected static async failsWhenSkillNotInstalled() {
-		const err = await assert.doesThrowAsync(() =>
-			this.Action('error', 'create').execute({})
-		)
-
-		errorAssertUtil.assertError(err, 'FEATURE_NOT_INSTALLED')
-	}
-
-	@test()
 	protected static async failsWhenNotProvidedName() {
 		const createAction = await this.installErrorsAndGetCreateAction()
 		const err = await assert.doesThrowAsync(() => createAction.execute({}))

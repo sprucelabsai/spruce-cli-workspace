@@ -82,28 +82,30 @@ export default class ActionExecuter {
 
 		const feature = installer.getFeature(featureCode)
 
-		const asker = new ActionOptionAsker({
-			featureInstaller: installer,
-			feature,
-			actionCode,
-			ui: this.ui,
-		})
+		const asker = this.shouldAutoHandleDependencies
+			? new ActionOptionAsker({
+					featureInstaller: installer,
+					feature,
+					actionCode,
+					ui: this.ui,
+			  })
+			: null
 
-		let response = await asker.installOrMarkAsSkippedMissingDependencies()
+		let response =
+			(await asker?.installOrMarkAsSkippedMissingDependencies()) ?? {}
 
 		const installOptions =
-			await asker.askAboutMissingFeatureOptionsIfFeatureIsNotInstalled(
+			(await asker?.askAboutMissingFeatureOptionsIfFeatureIsNotInstalled(
 				isInstalled,
 				actionOptions
-			)
+			)) ?? {}
 
-		let answers = await asker.askAboutMissingActionOptions(
-			action,
-			actionOptions
-		)
+		let answers =
+			(await asker?.askAboutMissingActionOptions(action, actionOptions)) ?? {}
 
 		if (!isInstalled) {
-			const ourFeatureResults = await asker.installOurFeature(installOptions)
+			const ourFeatureResults =
+				(await asker?.installOurFeature(installOptions)) ?? {}
 			response = merge(response, ourFeatureResults)
 		}
 
