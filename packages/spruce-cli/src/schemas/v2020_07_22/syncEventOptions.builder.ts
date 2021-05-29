@@ -26,10 +26,15 @@ export default buildSchema({
 			label: 'Sync only core events',
 			hint: 'For use in @sprucelabs/mercury-types',
 		},
-		eventSignatureTypesFile: {
+		skillEventContractTypesFile: {
 			type: 'text',
 			label: 'Event signature types file',
 			defaultValue: '@sprucelabs/mercury-types/build/types/mercury.types',
+		},
+		eventBuilderFile: {
+			type: 'text',
+			label: 'Event builder file',
+			defaultValue: '@sprucelabs/mercury-types',
 		},
 	},
 })

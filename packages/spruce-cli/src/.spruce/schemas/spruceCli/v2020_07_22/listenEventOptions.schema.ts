@@ -33,6 +33,13 @@ const listenEventOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventO
 	                hint: 'For use in @sprucelabs/mercury-types',
 	                options: undefined
 	            },
+	            /** Event signature types file. */
+	            'skillEventContractTypesFile': {
+	                label: 'Event signature types file',
+	                type: 'text',
+	                defaultValue: "@sprucelabs/mercury-types/build/types/mercury.types",
+	                options: undefined
+	            },
 	            /** Namespace. */
 	            'eventNamespace': {
 	                label: 'Namespace',

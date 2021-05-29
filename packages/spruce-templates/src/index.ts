@@ -286,7 +286,6 @@ export const templates = {
 
 	combinedEventsContract(options: {
 		templateItems: EventContractTemplateItem[]
-		skillEventContra
 		shouldImportCoreEvents?: boolean
 		skillEventContractTypesFile: string
 	}) {

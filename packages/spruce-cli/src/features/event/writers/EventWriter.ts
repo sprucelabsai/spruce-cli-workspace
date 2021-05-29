@@ -95,23 +95,14 @@ export default class EventWriter extends AbstractWriter {
 		shouldImportCoreEvents?: boolean
 		skillEventContractTypesFile: string
 	}): Promise<GeneratedFile> {
-		const {
-			destinationDir,
-			templateItems,
-			shouldImportCoreEvents,
-			skillEventContractTypesFile,
-		} = options
+		const { destinationDir } = options
 
 		const destinationFile = diskUtil.resolvePath(
 			destinationDir,
 			CONTRACT_FILE_NAME
 		)
 
-		const contents = this.templates.combinedEventsContract({
-			templateItems,
-			shouldImportCoreEvents,
-			skillEventContractTypesFile,
-		})
+		const contents = this.templates.combinedEventsContract(options)
 
 		const results = await this.writeFileIfChangedMixinResults(
 			destinationFile,

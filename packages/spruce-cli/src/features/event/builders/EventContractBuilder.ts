@@ -52,8 +52,6 @@ export default class EventContractBuilder {
 			options
 		)
 
-
-		debugger
 		const { contractDestinationDir } = normalizedOptions
 
 		const resolvedDestination = diskUtil.resolvePath(
@@ -73,8 +71,6 @@ export default class EventContractBuilder {
 		}
 
 		this.ui.startLoading('Generating contracts...')
-
-		debugger
 
 		const files = await this.eventWriter.writeContracts(resolvedDestination, {
 			...normalizedOptions,
@@ -142,8 +138,6 @@ export default class EventContractBuilder {
 
 		return filteredSchemas
 	}
-
-
 
 	private async fetchAndBuildTemplateItems(shouldSyncOnlyCoreEvents = false) {
 		this.ui.startLoading('Loading skill details...')

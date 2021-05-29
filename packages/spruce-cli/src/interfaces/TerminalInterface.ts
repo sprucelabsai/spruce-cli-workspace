@@ -284,6 +284,7 @@ export default class TerminalInterface implements GraphicsInterface {
 			this.renderDivider(dividerEffects)
 			this.renderLine(message, effects)
 			this.renderDivider(dividerEffects)
+			this.renderLine('')
 		}
 	}
 

@@ -55,15 +55,15 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	}
 
 	@test()
-	protected static async canSetSkillSkillEventSignatureTypesFile() {
+	protected static async canSetSkillEventContractTypesFile() {
 		await this.FeatureFixture().installCachedFeatures('eventsInNodeModule')
 
 		await this.Action('event', 'sync').execute({
-			eventSignatureTypesFile: 'testy test',
+			skillEventContractTypesFile: 'testy test',
 		})
 
 		const contents = diskUtil.readFile(this.eventContractPath)
-		assert.doesInclude(contents, 'declare module `testy test`')
+		assert.doesInclude(contents, `declare module 'testy test'`)
 	}
 
 	@test()
@@ -75,6 +75,25 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		})
 
 		await this.assertValidSyncEventsResults(results, true)
+	}
+
+	@test.only()
+	protected static async canSetEventBuilderFile() {
+		await this.FeatureFixture().installCachedFeatures('eventsInNodeModule')
+
+		const results = await this.Action('event', 'sync').execute({
+			shouldSyncOnlyCoreEvents: true,
+			eventBuilderFile: 'testy test',
+		})
+
+		const match = testUtil.assertsFileByNameInGeneratedFiles(
+			'createRole.v2020_12_25.contract.ts',
+			results.files
+		)
+
+		const contents = diskUtil.readFile(match)
+
+		assert.doesInclude(contents, 'testy test')
 	}
 
 	@test()
@@ -153,7 +172,6 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		const eventFeature = cli.getFeature('event') as EventFeature
 		const writer = eventFeature.getEventContractBuilder()
-		writer.clearCache()
 
 		const results2 = await this.Action('schema', 'sync').execute({})
 
