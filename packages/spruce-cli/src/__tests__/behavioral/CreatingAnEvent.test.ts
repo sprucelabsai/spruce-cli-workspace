@@ -33,21 +33,12 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 	}
 
 	@test()
-	protected static async createsExpectedPayloadsAndSkipsEmptyBuilders() {
+	protected static async createsExpectedPayloads() {
 		const { results } = await this.createEvent()
 
-		const filesThatShouldNotExist = [
+		const filesThatShouldExist = [
 			'myFantasticallyAmazingEventResponsePayload',
 			'myFantasticallyAmazingEventEmitTargetAndPayload',
-		]
-
-		for (const name of filesThatShouldNotExist) {
-			assert.doesThrow(() =>
-				testUtil.assertsFileByNameInGeneratedFiles(name, results.files)
-			)
-		}
-
-		const filesThatShouldExist = [
 			'emitPayload.builder.ts',
 			'emitTarget.builder.ts',
 		]
