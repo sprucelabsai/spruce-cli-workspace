@@ -62,7 +62,7 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 
 	@test()
 	protected static async canLoginAsDemoPerson() {
-		await this.loginAsDemoPerson()
+		await this.installSkillAndLoginAsDemoPerson()
 
 		const person = this.Service('auth').getLoggedInPerson()
 
@@ -85,7 +85,7 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 
 	@test()
 	protected static async canLogOut() {
-		await this.loginAsDemoPerson()
+		await this.installSkillAndLoginAsDemoPerson()
 
 		const results = await this.Action('person', 'logout').execute({})
 
@@ -96,9 +96,28 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 		assert.isNull(person)
 	}
 
-	private static async loginAsDemoPerson() {
+	@test()
+	protected static async canLogInWithExpiredPinWithouHavingToLogOutFirst() {
+		await this.FeatureFixture().installCachedFeatures('skills')
+
+		this.Service('auth').setLoggedInPerson({
+			token: '234',
+			id: 'test',
+			casualName: 'casual test',
+		})
+
+		await this.loginAsPerson()
+	}
+
+	private static async installSkillAndLoginAsDemoPerson() {
 		const cli = await this.FeatureFixture().installCachedFeatures('skills')
 
+		await this.loginAsPerson()
+
+		return cli
+	}
+
+	private static async loginAsPerson() {
 		const promise = this.Action('person', 'login').execute({
 			phone: DEMO_NUMBER,
 		})
@@ -109,7 +128,5 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 		const results = await promise
 
 		assert.isFalsy(results.errors)
-
-		return cli
 	}
 }

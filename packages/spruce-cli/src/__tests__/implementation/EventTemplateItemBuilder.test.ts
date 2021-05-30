@@ -41,7 +41,12 @@ const didBookTemplateItem: EventContractTemplateItem = {
 	namespace: namesUtil.toKebab(MERCURY_API_NAMESPACE),
 	namespaceCamel: namesUtil.toCamel(MERCURY_API_NAMESPACE),
 	namespacePascal: namesUtil.toPascal(MERCURY_API_NAMESPACE),
-	imports: [],
+	imports: [
+		{
+			importAs: '{ buildEventContract }',
+			package: '@sprucelabs/mercury-types',
+		},
+	],
 	eventSignatures: {
 		[`did-book::${expectedVersion}`]: {},
 	},
@@ -53,7 +58,12 @@ const willBookTemplateItem: EventContractTemplateItem = {
 	nameCamel: 'willBook',
 	isLocal: false,
 	namespace: namesUtil.toKebab(MERCURY_API_NAMESPACE),
-	imports: [],
+	imports: [
+		{
+			importAs: '{ buildEventContract }',
+			package: '@sprucelabs/mercury-types',
+		},
+	],
 	namespaceCamel: namesUtil.toCamel(MERCURY_API_NAMESPACE),
 	namespacePascal: namesUtil.toPascal(MERCURY_API_NAMESPACE),
 	eventSignatures: {
@@ -69,7 +79,12 @@ const didBookWithNamespaceTemplateItem: EventContractTemplateItem = {
 	namespace: 'appointments',
 	namespaceCamel: 'appointments',
 	namespacePascal: 'Appointments',
-	imports: [],
+	imports: [
+		{
+			importAs: '{ buildEventContract }',
+			package: '@sprucelabs/mercury-types',
+		},
+	],
 	eventSignatures: {
 		[`appointments.did-book::${expectedVersion}`]: {},
 	},
@@ -83,7 +98,12 @@ const willBookWithNamespaceTemplateItem: EventContractTemplateItem = {
 	namespace: 'appointments',
 	namespaceCamel: 'appointments',
 	namespacePascal: 'Appointments',
-	imports: [],
+	imports: [
+		{
+			importAs: '{ buildEventContract }',
+			package: '@sprucelabs/mercury-types',
+		},
+	],
 	eventSignatures: {
 		[`appointments.will-book::${expectedVersion}`]: {},
 	},
@@ -229,6 +249,10 @@ const expectedContractWithEmitPayloadTemplateItem: EventContractTemplateItem = {
 		{
 			package: `#spruce/schemas/proximity/${expectedVersion}/proximityEmitPayload.schema`,
 			importAs: 'proximityEmitPayloadSchema',
+		},
+		{
+			importAs: '{ buildEventContract }',
+			package: '@sprucelabs/mercury-types',
 		},
 	],
 	eventSignatures: {

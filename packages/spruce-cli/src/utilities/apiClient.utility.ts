@@ -10,8 +10,12 @@ const apiClientUtil = {
 			return 'skill'
 		}
 
-		if (!options || (!options.token && !options.skillId)) {
+		if (options?.shouldAuthAsLoggedInPerson === false) {
 			return 'anon'
+		}
+
+		if (!options || (!options.token && !options.skillId)) {
+			return 'loggedInPersonOrAnon'
 		}
 
 		if (options.token) {

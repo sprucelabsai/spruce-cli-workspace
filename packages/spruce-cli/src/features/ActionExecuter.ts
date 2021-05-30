@@ -112,10 +112,16 @@ export default class ActionExecuter {
 			response = merge(response, ourFeatureResults)
 		}
 
-		const executeResults = await originalExecute({
-			...answers,
-			shouldEmitExecuteEvents: false,
-		})
+		let executeResults: FeatureActionResponse = {}
+
+		try {
+			executeResults = await originalExecute({
+				...answers,
+				shouldEmitExecuteEvents: false,
+			})
+		} catch (err) {
+			executeResults.errors = [err]
+		}
 
 		response = merge(response, executeResults)
 
