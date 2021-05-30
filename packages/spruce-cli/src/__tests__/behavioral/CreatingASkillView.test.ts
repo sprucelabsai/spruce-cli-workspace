@@ -67,14 +67,14 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 
 	@test()
 	protected static async cantCreateTwoRootSvcs() {
-		const err = await assert.doesThrowAsync(() =>
-			this.action.execute({
-				viewType: 'skillView',
-				isRoot: true,
-			})
-		)
+		const results = await this.action.execute({
+			viewType: 'skillView',
+			isRoot: true,
+		})
 
-		errorAssertUtil.assertError(err, 'SKILL_VIEW_EXISTS', {
+		assert.isTruthy(resuts.errors)
+
+		errorAssertUtil.assertError(results.errors?.[0], 'SKILL_VIEW_EXISTS', {
 			name: 'Root',
 		})
 	}

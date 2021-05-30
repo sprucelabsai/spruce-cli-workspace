@@ -62,7 +62,8 @@ export default class ActionExecuter {
 
 		if (!isInstalled && !this.shouldAutoHandleDependencies) {
 			throw new SpruceError({
-				code: 'EXECUTING_COMMAND_FAILED',
+				code: 'FEATURE_NOT_INSTALLED',
+				featureCode,
 				friendlyMessage: `You need to install the \`${featureCode}\` feature.`,
 			})
 		}

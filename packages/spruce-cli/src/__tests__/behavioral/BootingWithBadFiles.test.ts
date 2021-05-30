@@ -17,9 +17,11 @@ export default class BootingWithBadFilesTest extends AbstractCliTest {
 
 		diskUtil.writeFile(match, '')
 
-		await assert.doesThrowAsync(
-			async () => this.Action('skill', 'boot').execute({ local: true }),
-			'location.schema.ts'
-		)
+		const bootResults = await this.Action('skill', 'boot').execute({
+			local: true,
+		})
+		assert.isTruthy(bootResults.errors)
+
+		assert.doesInclude(bootResults.errors[0].message, 'location.schema.ts')
 	}
 }
