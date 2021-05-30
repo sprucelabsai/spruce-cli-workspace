@@ -72,7 +72,7 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 			isRoot: true,
 		})
 
-		assert.isTruthy(resuts.errors)
+		assert.isTruthy(results.errors)
 
 		errorAssertUtil.assertError(results.errors?.[0], 'SKILL_VIEW_EXISTS', {
 			name: 'Root',
