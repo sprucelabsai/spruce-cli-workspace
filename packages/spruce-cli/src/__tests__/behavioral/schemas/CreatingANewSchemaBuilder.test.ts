@@ -87,16 +87,15 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 	protected static async errorsWithBadVersion() {
 		const action = await this.syncSchemasAndGetCreateAction('schemas')
 
-		await assert.doesThrowAsync(
-			() =>
-				action.execute({
-					nameReadable: 'Bad schema version!',
-					namePascal: 'BadSchemaVersion',
-					nameCamel: 'badSchemaVersion',
-					version: 'v1',
-				}),
-			/must be in the form/i
-		)
+		const results = await action.execute({
+			nameReadable: 'Bad schema version!',
+			namePascal: 'BadSchemaVersion',
+			nameCamel: 'badSchemaVersion',
+			version: 'v1',
+		})
+
+		assert.isTruthy(results.errors)
+		assert.doesInclude(results.errors[0].message, /must be in the form/i)
 	}
 
 	@test()

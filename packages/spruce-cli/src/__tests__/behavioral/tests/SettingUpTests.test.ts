@@ -21,19 +21,4 @@ export default class SettingUpTestsTest extends AbstractTestTest {
 		//@ts-ignore
 		assert.doesInclude(err.options.stdout, /passWithNoTests/)
 	}
-
-	@test()
-	protected static async creatingTestWithNoSkillAsksToInstallSkill() {
-		const executer = this.Action('test', 'create')
-		void executer.execute({})
-
-		await this.waitForInput()
-
-		assert.doesInclude(
-			this.ui.lastInvocation().options.label,
-			'Install the Skill feature'
-		)
-
-		this.ui.reset()
-	}
 }
