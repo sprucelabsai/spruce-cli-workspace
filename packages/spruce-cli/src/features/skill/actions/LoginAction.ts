@@ -34,7 +34,6 @@ export default class LoginAction extends AbstractAction<OptionsSchema> {
 		let loginResponse: FeatureActionResponse = {}
 		let skillResponse: FeatureActionResponse = {}
 
-		
 		if (!person) {
 			this.ui.renderLine(
 				'You gotta login as a person before you can login as a skill.'
@@ -51,7 +50,7 @@ export default class LoginAction extends AbstractAction<OptionsSchema> {
 				phone,
 			})
 		}
-		
+
 		const client = await this.connectToApi()
 		const skillResults = await client.emit('list-skills::v2020_12_25', {
 			payload: {
@@ -62,7 +61,6 @@ export default class LoginAction extends AbstractAction<OptionsSchema> {
 		let { skills } = eventResponseUtil.getFirstResponseOrThrow(skillResults)
 
 		if (skillSlug) {
-			
 			const match = skills.find((s) => s.slug === skillSlug)
 
 			if (!match) {
