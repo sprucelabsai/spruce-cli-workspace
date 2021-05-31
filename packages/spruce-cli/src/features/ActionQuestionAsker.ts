@@ -136,6 +136,7 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 		options: (Record<string, any> & FeatureCommandExecuteOptions<F>) | undefined
 	) {
 		let installOptions = { ...options }
+
 		if (!isInstalled) {
 			if (this.feature.optionsSchema) {
 				const answers = await this.collectAnswers(

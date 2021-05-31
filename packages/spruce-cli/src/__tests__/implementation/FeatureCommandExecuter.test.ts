@@ -18,21 +18,25 @@ import testUtil from '../../tests/utilities/test.utility'
 export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 	@test()
 	protected static async canInstantiateExecuter() {
-		const executer = this.Action('schema', 'create')
+		const executer = this.Action('schema', 'create', {
+			shouldAutoHandleDependencies: true,
+		})
 		assert.isTruthy(executer)
 	}
 
 	@test()
-	protected static async throwWhenExecutingWhenMissingDependenciens() {
+	protected static async throwWhenExecutingWhenMissingDependencies() {
 		const err = await assert.doesThrowAsync(() =>
 			this.Action('skill', 'create').execute({})
 		)
-		errorAssertUtil.assertError(err, 'EXECUTING_COMMAND_FAILED')
+		errorAssertUtil.assertError(err, 'FEATURE_NOT_INSTALLED')
 	}
 
 	@test()
 	protected static async shouldAskAllQuestionsOfFeature() {
-		const executer = this.Action('skill', 'create')
+		const executer = this.Action('skill', 'create', {
+			shouldAutoHandleDependencies: true,
+		})
 		const promise = executer.execute({})
 
 		await this.waitForInput()
@@ -47,7 +51,9 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async shouldEmitExecutionEvents() {
-		const executer = this.Action('skill', 'create')
+		const executer = this.Action('skill', 'create', {
+			shouldAutoHandleDependencies: true,
+		})
 
 		let emittedWillEvent = false
 		let willEventCommand = ''
@@ -105,7 +111,9 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async shouldNotAskAlreadyAnsweredQuestions() {
-		const executer = this.Action('skill', 'create')
+		const executer = this.Action('skill', 'create', {
+			shouldAutoHandleDependencies: true,
+		})
 		const promise = executer.execute({ description: 'go team!' })
 
 		await this.waitForInput()
@@ -121,7 +129,9 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 	protected static async shouldAddListenerWithoutBreakingOnSkill() {
 		await this.FeatureFixture().installCachedFeatures('schemas')
 
-		const executer = this.Action('event', 'listen')
+		const executer = this.Action('event', 'listen', {
+			shouldAutoHandleDependencies: true,
+		})
 		const promise = executer.execute({})
 
 		await this.waitForInput()
@@ -130,6 +140,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		await this.ui.sendInput('will-boot')
 
 		const results = await promise
+
 		const version = versionUtil.generateVersion().dirValue
 		testUtil.assertFileByNameInGeneratedFiles(
 			`will-boot.${version}.listener.ts`,
@@ -139,7 +150,9 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async shouldAskInstallDependentFeatures() {
-		const executer = this.Action('schema', 'create')
+		const executer = this.Action('schema', 'create', {
+			shouldAutoHandleDependencies: true,
+		})
 		void executer.execute({})
 
 		await this.waitForInput()
@@ -156,7 +169,9 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async shouldInstallDependentFeatures() {
-		const executer = this.Action('schema', 'create')
+		const executer = this.Action('schema', 'create', {
+			shouldAutoHandleDependencies: true,
+		})
 		const promise = executer.execute({})
 
 		await this.waitForInput()
@@ -207,7 +222,9 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async shouldInstallTwoDependentFeatures() {
-		const executer = this.Action('error', 'create')
+		const executer = this.Action('error', 'create', {
+			shouldAutoHandleDependencies: true,
+		})
 		const promise = executer.execute({})
 
 		await this.waitForInput()
@@ -252,7 +269,9 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async shouldReturnProperSummary() {
-		const executer = this.Action('skill', 'create')
+		const executer = this.Action('skill', 'create', {
+			shouldAutoHandleDependencies: true,
+		})
 		const results = await executer.execute({
 			name: 'install summary test skill',
 			description: 'go team!',
@@ -334,7 +353,9 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 	private static async startBuildingNewErrorUntilOptionalDependencies(
 		skillFeatureAnswer: 'skip' | 'yes' | 'alwaysSkip'
 	) {
-		const executer = this.Action('error', 'create')
+		const executer = this.Action('error', 'create', {
+			shouldAutoHandleDependencies: true,
+		})
 		const promise = executer.execute({})
 
 		await this.waitForInput()
@@ -390,7 +411,9 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 		await this.finishBuildingUpToNamingNewError(actionPromise)
 
-		const executer = this.Action('error', 'create')
+		const executer = this.Action('error', 'create', {
+			shouldAutoHandleDependencies: true,
+		})
 		const promise = executer.execute({})
 
 		await this.waitForInput()
