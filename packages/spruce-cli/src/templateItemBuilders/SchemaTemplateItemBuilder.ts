@@ -1,4 +1,3 @@
-import * as mercuryTypes from '@sprucelabs/mercury-types'
 import {
 	Schema,
 	SchemaTemplateItem,
@@ -22,8 +21,6 @@ interface SchemaWithDependencies {
 	dependencies: SchemaIdWithVersion[]
 	isNested: boolean
 }
-
-const mercuryName = namesUtil.toPascal(MERCURY_API_NAMESPACE)
 
 export default class SchemaTemplateItemBuilder {
 	private schemasByKey: Record<string, SchemaWithDependencies> = {}
