@@ -71,6 +71,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 		this.cwd = this.freshTmpDir()
 		this.homeDir = this.freshTmpDir()
+
 		this.emitter = undefined
 		this.featureInstaller = undefined
 

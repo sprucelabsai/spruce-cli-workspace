@@ -7,7 +7,9 @@ export default class TestingDataStoresTest extends AbstractSkillTest {
 
 	@test()
 	protected static async cantSelectAbstractStoreIfStoreFeatureNotInstalled() {
-		this.cli.getFeature('store').isInstalled = async () => false
+		const storeFeature = this.cli.getFeature('store')
+
+		storeFeature.isInstalled = async () => false
 
 		void this.Action('test', 'create').execute({
 			type: 'behavioral',
