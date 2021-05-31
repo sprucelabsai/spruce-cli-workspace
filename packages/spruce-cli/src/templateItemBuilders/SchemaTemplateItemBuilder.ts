@@ -5,11 +5,7 @@ import {
 	SchemaIdWithVersion,
 	normalizeSchemaToIdWithVersion,
 } from '@sprucelabs/schema'
-import {
-	CORE_NAMESPACE,
-	MERCURY_API_NAMESPACE,
-	namesUtil,
-} from '@sprucelabs/spruce-skill-utils'
+import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import cloneDeep from 'lodash/cloneDeep'
 import isEqual from 'lodash/isEqual'
 import merge from 'lodash/merge'
