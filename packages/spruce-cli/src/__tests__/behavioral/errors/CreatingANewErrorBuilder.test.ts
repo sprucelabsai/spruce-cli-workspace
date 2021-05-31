@@ -31,7 +31,7 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 
 		assert.isFalsy(results.errors)
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			/testFailed.builder/,
 			results.files
 		)
@@ -49,12 +49,9 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 
 		assert.isFalsy(results.errors)
 
-		testUtil.assertsFileByNameInGeneratedFiles(
-			/testPass\.schema/,
-			results.files
-		)
+		testUtil.assertFileByNameInGeneratedFiles(/testPass\.schema/, results.files)
 
-		testUtil.assertsFileByNameInGeneratedFiles(/options\.types/, results.files)
+		testUtil.assertFileByNameInGeneratedFiles(/options\.types/, results.files)
 
 		await this.assertValidActionResponseFiles(results)
 	}
@@ -70,12 +67,9 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 
 		assert.isFalsy(results.errors)
 
-		testUtil.assertsFileByNameInGeneratedFiles(
-			/testPass\.schema/,
-			results.files
-		)
+		testUtil.assertFileByNameInGeneratedFiles(/testPass\.schema/, results.files)
 
-		testUtil.assertsFileByNameInGeneratedFiles(/options\.types/, results.files)
+		testUtil.assertFileByNameInGeneratedFiles(/options\.types/, results.files)
 
 		await this.assertValidActionResponseFiles(results)
 

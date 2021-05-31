@@ -66,13 +66,13 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		await checker.check(response.files?.[0].path ?? '')
 		await checker.check(this.schemaTypesFile)
 
-		const builderMatch = testUtil.assertsFileByNameInGeneratedFiles(
+		const builderMatch = testUtil.assertFileByNameInGeneratedFiles(
 			'anotherTest.builder.ts',
 			response.files
 		)
 
 		await checker.check(builderMatch)
-		const schemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
+		const schemaMatch = testUtil.assertFileByNameInGeneratedFiles(
 			'anotherTest.schema.ts',
 			response.files
 		)
@@ -218,7 +218,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 
 		const createResults = await createPromise
 
-		const schemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
+		const schemaMatch = testUtil.assertFileByNameInGeneratedFiles(
 			'secondSchema.schema.ts',
 			createResults.files
 		)
@@ -234,7 +234,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 	) {
 		assert.isUndefined(response.errors)
 
-		let schemaFile = testUtil.assertsFileByNameInGeneratedFiles(
+		let schemaFile = testUtil.assertFileByNameInGeneratedFiles(
 			expectedFileName,
 			response.files
 		)

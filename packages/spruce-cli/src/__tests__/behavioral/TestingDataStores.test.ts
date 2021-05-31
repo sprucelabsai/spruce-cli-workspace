@@ -50,7 +50,7 @@ export default class TestingDataStoresTest extends AbstractSkillTest {
 
 		assert.isFalsy(results.errors)
 
-		testUtil.assertsFileByNameInGeneratedFiles(
+		testUtil.assertFileByNameInGeneratedFiles(
 			'CanBookAppointment.test.ts',
 			results.files
 		)

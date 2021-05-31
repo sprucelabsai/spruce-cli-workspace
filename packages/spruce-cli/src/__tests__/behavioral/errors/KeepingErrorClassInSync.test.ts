@@ -14,7 +14,7 @@ export default class KeepsErrorClassInSyncTest extends AbstractErrorTest {
 			nameCamel: 'testError',
 		})
 
-		testUtil.assertsFileByNameInGeneratedFiles(/SpruceError/, results.files)
+		testUtil.assertFileByNameInGeneratedFiles(/SpruceError/, results.files)
 
 		assert.doesInclude(results.files ?? [], {
 			name: 'SpruceError.ts',
@@ -39,7 +39,7 @@ export default class KeepsErrorClassInSyncTest extends AbstractErrorTest {
 			nameReadable: 'Test Error 2',
 		})
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			/SpruceError/,
 			results.files
 		)

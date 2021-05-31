@@ -33,19 +33,36 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 	}
 
 	@test()
-	protected static async createsExpectedPayloads() {
-		const { results } = await this.createEvent()
+	protected static async createsPayloadBuildersAndSchemas() {
+		const { results, skill } = await this.createEvent()
 
 		const filesThatShouldExist = [
-			'myFantasticallyAmazingEventResponsePayload',
-			'myFantasticallyAmazingEventEmitTargetAndPayload',
+			new RegExp(
+				`${namesUtil.toCamel(skill.slug)}.*?${
+					this.expectedVersion
+				}.*?myFantasticallyAmazingEventResponsePayload`,
+				'gis'
+			),
+			new RegExp(
+				`${namesUtil.toCamel(skill.slug)}.*?${
+					this.expectedVersion
+				}.*?myFantasticallyAmazingEventEmitTargetAndPayload`,
+				'gis'
+			),
+			new RegExp(
+				`${namesUtil.toCamel(skill.slug)}.*?${
+					this.expectedVersion
+				}.*?myFantasticallyAmazingEventEmitPayload`,
+				'gis'
+			),
 			'emitPayload.builder.ts',
 			'emitTarget.builder.ts',
 		]
 
 		const checker = this.Service('typeChecker')
+
 		for (const name of filesThatShouldExist) {
-			const match = testUtil.assertsFileByNameInGeneratedFiles(
+			const match = testUtil.assertFileByPathInGeneratedFiles(
 				name,
 				results.files
 			)
@@ -65,7 +82,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 
 		const mixedResults = actionUtil.mergeActionResults(results, syncResults)
 
-		await this.assertExpectedTargetAndPayload(mixedResults)
+		await this.assertExpectedTargetAndPayload(mixedResults, skill)
 		await this.assertExpectedPayloadSchemas(mixedResults)
 		await this.assertReturnsEventFromHealthCheck(cli, skill)
 		await this.createsExpectedPermissionContract(mixedResults)
@@ -108,7 +125,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 	private static async assertCreatesOptionsFile(
 		results: FeatureActionResponse
 	) {
-		const optionsFile = testUtil.assertsFileByNameInGeneratedFiles(
+		const optionsFile = testUtil.assertFileByNameInGeneratedFiles(
 			'event.options.ts',
 			results.files
 		)
@@ -119,13 +136,21 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 	}
 
 	private static async assertExpectedTargetAndPayload(
-		results: FeatureActionResponse
+		results: FeatureActionResponse,
+		skill: RegisteredSkill
 	) {
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
-			'myFantasticallyAmazingEventEmitTargetAndPayload.schema.ts',
+		const match = testUtil.assertFileByPathInGeneratedFiles(
+			new RegExp(
+				`${namesUtil.toCamel(skill.slug)}.*?${
+					this.expectedVersion
+				}.*?myFantasticallyAmazingEventEmitTargetAndPayload`,
+				'gis'
+			),
 			results.files
 		)
+
 		const schema = await this.Service('schema').importSchema(match)
+
 		assert.isEqual(schema.id, 'myFantasticallyAmazingEventEmitTargetAndPayload')
 		assert.isTruthy(schema.fields?.payload)
 		assert.isTruthy(schema.fields?.target)
@@ -140,7 +165,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		for (const builder of builders) {
 			const { filename } = builder
 
-			const match = testUtil.assertsFileByNameInGeneratedFiles(
+			const match = testUtil.assertFileByNameInGeneratedFiles(
 				filename,
 				results.files
 			)
@@ -217,7 +242,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		const schemas = this.Service('schema')
 
 		for (const payload of payloadSchemas) {
-			const match = testUtil.assertsFileByNameInGeneratedFiles(
+			const match = testUtil.assertFileByNameInGeneratedFiles(
 				payload.fileName,
 				results.files
 			)

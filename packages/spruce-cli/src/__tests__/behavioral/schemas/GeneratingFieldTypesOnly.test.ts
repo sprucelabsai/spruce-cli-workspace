@@ -24,7 +24,7 @@ export default class GeneratingFieldTypesOnlyTest extends AbstractSchemaTest {
 
 		const typeChecker = this.Service('typeChecker')
 		for (const file of expectedFields) {
-			const match = testUtil.assertsFileByNameInGeneratedFiles(
+			const match = testUtil.assertFileByNameInGeneratedFiles(
 				file,
 				results.files ?? []
 			)

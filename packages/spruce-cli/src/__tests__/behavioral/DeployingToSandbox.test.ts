@@ -48,7 +48,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 		assert.isFalsy(results.errors)
 		const version = versionUtil.generateVersion().dirValue
-		testUtil.assertsFileByNameInGeneratedFiles(
+		testUtil.assertFileByNameInGeneratedFiles(
 			`will-boot.${version}.listener.ts`,
 			results.files
 		)

@@ -13,14 +13,14 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 		const { syncResults: results } = await this.installCopyAndSync()
 
 		assert.isUndefined(results.errors)
-		testUtil.assertsFileByNameInGeneratedFiles(
+		testUtil.assertFileByNameInGeneratedFiles(
 			/testPerson\.schema/,
 			results.files
 		)
 
-		testUtil.assertsFileByNameInGeneratedFiles(/pet\.schema/, results.files)
+		testUtil.assertFileByNameInGeneratedFiles(/pet\.schema/, results.files)
 
-		testUtil.assertsFileByNameInGeneratedFiles(
+		testUtil.assertFileByNameInGeneratedFiles(
 			/nested-schema\.schema/,
 			results.files
 		)
@@ -62,7 +62,7 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 
 		await this.Service('typeChecker').check(typesPath)
 
-		const schemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
+		const schemaMatch = testUtil.assertFileByNameInGeneratedFiles(
 			'mercuryContract.schema.ts',
 			results.files
 		)

@@ -122,7 +122,7 @@ export default class EventStoreTest extends AbstractEventTest {
 
 		assert.isFalsy(results.errors)
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			`emitPayload.builder.ts`,
 			results.files
 		)

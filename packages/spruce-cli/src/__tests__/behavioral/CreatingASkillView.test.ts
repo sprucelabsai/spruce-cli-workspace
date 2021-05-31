@@ -43,7 +43,7 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 			isRoot: true,
 		})
 
-		this.rootSvc = testUtil.assertsFileByNameInGeneratedFiles(
+		this.rootSvc = testUtil.assertFileByNameInGeneratedFiles(
 			'Root.svc.ts',
 			results.files
 		)
@@ -96,10 +96,7 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 
 		const results = await promise
 
-		testUtil.assertsFileByNameInGeneratedFiles(
-			'Dashboard.svc.ts',
-			results.files
-		)
+		testUtil.assertFileByNameInGeneratedFiles('Dashboard.svc.ts', results.files)
 
 		this.ui.reset()
 	}
@@ -124,7 +121,7 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 
 		const results = await promise
 
-		this.appointmentsCard = testUtil.assertsFileByNameInGeneratedFiles(
+		this.appointmentsCard = testUtil.assertFileByNameInGeneratedFiles(
 			'AppointmentsCard.vc.ts',
 			results.files
 		)

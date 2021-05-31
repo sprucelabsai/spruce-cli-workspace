@@ -132,7 +132,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		const results = await this.Action('schema', 'sync').execute({})
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			'sendMessageEmitPayload.schema.ts',
 			results.files
 		)
@@ -228,7 +228,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		const results = await this.Action('event', 'sync').execute({})
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			`myNewEvent.${this.todaysVersion.dirValue}.contract.ts`,
 			results.files
 		)
@@ -293,7 +293,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		const results = await this.Action('event', 'sync').execute({})
 
-		const contract = testUtil.assertsFileByNameInGeneratedFiles(
+		const contract = testUtil.assertFileByNameInGeneratedFiles(
 			'events.contract.ts',
 			results.files
 		)
@@ -318,7 +318,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		const results = await this.Action('event', 'sync').execute({})
 
-		const contract = testUtil.assertsFileByNameInGeneratedFiles(
+		const contract = testUtil.assertFileByNameInGeneratedFiles(
 			'events.contract.ts',
 			results.files
 		)
@@ -337,7 +337,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 			shouldUnregisterAll: true,
 		})
 
-		const eventContract = testUtil.assertsFileByNameInGeneratedFiles(
+		const eventContract = testUtil.assertFileByNameInGeneratedFiles(
 			contractFileName,
 			syncResults.files
 		)

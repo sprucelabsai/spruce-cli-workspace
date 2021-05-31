@@ -10,7 +10,7 @@ export default class BootingWithBadFilesTest extends AbstractCliTest {
 
 		const results = await this.Action('schema', 'sync').execute({})
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			'location.schema.ts',
 			results.files
 		)

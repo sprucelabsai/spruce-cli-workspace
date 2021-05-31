@@ -38,7 +38,7 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 
 		assert.isFalsy(results.errors)
 
-		const optionsFile = testUtil.assertsFileByNameInGeneratedFiles(
+		const optionsFile = testUtil.assertFileByNameInGeneratedFiles(
 			'event.options.ts',
 			results.files
 		)
@@ -51,7 +51,7 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 		})
 
 		const version = versionUtil.generateVersion().dirValue
-		const contractFile = testUtil.assertsFileByNameInGeneratedFiles(
+		const contractFile = testUtil.assertFileByNameInGeneratedFiles(
 			`${EVENT_CAMEL}.${version}.contract.ts`,
 			results.files
 		)

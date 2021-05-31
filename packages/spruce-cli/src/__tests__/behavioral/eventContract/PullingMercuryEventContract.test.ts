@@ -25,7 +25,7 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 	protected static async generatesContractAtCwdWhenInNormalModule() {
 		const results = await this.Action('eventContract', 'pull').execute({})
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			'events.contract.ts',
 			results.files
 		)
@@ -51,7 +51,7 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 
 		const results = await this.Action('eventContract', 'pull').execute({})
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			'events.contract.ts',
 			results.files
 		)
@@ -84,7 +84,7 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 
 		const results = await this.Action('eventContract', 'pull').execute({})
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			'events.contract.ts',
 			results.files
 		)
@@ -102,7 +102,7 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 
 		const results = await this.Action('eventContract', 'pull').execute({})
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			'events.contract.ts',
 			results.files
 		)
@@ -122,7 +122,7 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 
 		const results = await this.Action('eventContract', 'pull').execute({})
 
-		testUtil.assertsFileByNameInGeneratedFiles(
+		testUtil.assertFileByNameInGeneratedFiles(
 			'events.contract.ts',
 			results.files
 		)

@@ -53,7 +53,7 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 
 		const response = await promise
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			'CanBookAppointment.test.ts',
 			response.files
 		)

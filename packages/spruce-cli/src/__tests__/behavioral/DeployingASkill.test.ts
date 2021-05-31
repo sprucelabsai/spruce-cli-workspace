@@ -315,7 +315,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		assert.isFalsy(results.errors)
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			'Procfile',
 			results.files
 		)

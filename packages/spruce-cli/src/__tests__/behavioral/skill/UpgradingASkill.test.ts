@@ -162,7 +162,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		const results = await this.Action('skill', 'upgrade').execute({})
 
-		testUtil.assertsFileByNameInGeneratedFiles(pluginName, results.files)
+		testUtil.assertFileByNameInGeneratedFiles(pluginName, results.files)
 
 		const updatedContents = diskUtil.readFile(pluginPath)
 

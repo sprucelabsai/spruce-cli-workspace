@@ -35,7 +35,7 @@ export default class ListeningToAnEventYouCreateTest extends AbstractEventTest {
 
 		assert.isFalsy(results.errors)
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			`${eventName}.${version}.listener.ts`,
 			results.files
 		)

@@ -61,7 +61,7 @@ export default class DataStoreStoreTest extends AbstractSkillTest {
 
 		assert.isFalsy(results.errors)
 
-		const storeFilepath = testUtil.assertsFileByNameInGeneratedFiles(
+		const storeFilepath = testUtil.assertFileByNameInGeneratedFiles(
 			'Good.store.ts',
 			results.files
 		)
@@ -85,7 +85,7 @@ export default class DataStoreStoreTest extends AbstractSkillTest {
 
 		assert.isFalsy(results.errors)
 
-		const storeFilepath = testUtil.assertsFileByNameInGeneratedFiles(
+		const storeFilepath = testUtil.assertFileByNameInGeneratedFiles(
 			'Apples.store.ts',
 			results.files
 		)

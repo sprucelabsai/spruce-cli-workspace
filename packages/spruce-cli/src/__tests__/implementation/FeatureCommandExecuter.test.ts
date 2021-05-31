@@ -131,7 +131,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 		const results = await promise
 		const version = versionUtil.generateVersion().dirValue
-		testUtil.assertsFileByNameInGeneratedFiles(
+		testUtil.assertFileByNameInGeneratedFiles(
 			`will-boot.${version}.listener.ts`,
 			results.files
 		)
@@ -278,7 +278,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		const pluginsDir = this.resolveHashSprucePath('features')
 		assert.isFalse(diskUtil.doesDirExist(pluginsDir))
 
-		testUtil.assertsFileByNameInGeneratedFiles(
+		testUtil.assertFileByNameInGeneratedFiles(
 			'myNewError.schema.ts',
 			results.files
 		)
@@ -409,7 +409,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 		assert.isTruthy(secondTimeResults.files)
 
-		testUtil.assertsFileByNameInGeneratedFiles(
+		testUtil.assertFileByNameInGeneratedFiles(
 			'myNewError.schema.ts',
 			secondTimeResults.files
 		)

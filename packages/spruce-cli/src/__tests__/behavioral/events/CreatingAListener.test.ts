@@ -64,7 +64,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 		assert.isFalsy(results.errors)
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			`will-boot.${version}.listener.ts`,
 			results.files
 		)
@@ -263,7 +263,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 		assert.isFalsy(results.errors)
 
-		const listener = testUtil.assertsFileByNameInGeneratedFiles(
+		const listener = testUtil.assertFileByNameInGeneratedFiles(
 			`my-new-event.${expectedVersion}.listener.ts`,
 			results.files
 		)

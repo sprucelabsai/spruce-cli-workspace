@@ -56,7 +56,7 @@ export default class KeepingDataStoresInSyncTest extends AbstractSkillTest {
 
 		const results = await this.syncStores()
 
-		const typesFile = testUtil.assertsFileByNameInGeneratedFiles(
+		const typesFile = testUtil.assertFileByNameInGeneratedFiles(
 			'stores.types.ts',
 			results.files
 		)
