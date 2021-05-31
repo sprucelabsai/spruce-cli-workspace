@@ -7,10 +7,10 @@ export default class BootingASkillTest extends AbstractCliTest {
 	protected static async bootingWithoutBuildingThrowsGoodError() {
 		await this.install()
 
-		await assert.doesThrowAsync(
-			async () => this.Action('skill', 'boot').execute({}),
-			/You must build/gis
-		)
+		const results = await this.Action('skill', 'boot').execute({})
+
+		assert.isTruthy(results.errors)
+		assert.doesInclude(results.errors[0].message, /you must build/gis)
 	}
 
 	@test()

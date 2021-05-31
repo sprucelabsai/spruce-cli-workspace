@@ -32,18 +32,28 @@ export default class ConversationFeature extends AbstractFeature {
 	public constructor(options: FeatureOptions) {
 		super(options)
 
-		void this.emitter.on('skill.did-upgrade', async () => {
-			const isInstalled = await this.featureInstaller.isInstalled(
-				'conversation'
-			)
+		void this.emitter.on(
+			'feature.will-execute',
+			this.handleWillExecute.bind(this)
+		)
+	}
 
-			if (isInstalled) {
-				const files = await this.writePlugin()
-				return { files }
-			}
+	private async handleWillExecute(payload: {
+		actionCode: string
+		featureCode: string
+	}) {
+		const isInstalled = await this.featureInstaller.isInstalled('conversation')
 
-			return {}
-		})
+		if (
+			payload.featureCode === 'skill' &&
+			payload.actionCode === 'upgrade' &&
+			isInstalled
+		) {
+			const files = await this.writePlugin()
+			return { files }
+		}
+
+		return {}
 	}
 
 	public async afterPackageInstall(): Promise<InstallResults> {

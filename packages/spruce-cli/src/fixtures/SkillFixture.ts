@@ -97,5 +97,7 @@ export default class SkillFixture {
 		for (const skill of skills) {
 			await skillStore.unregisterSkill(skill.id)
 		}
+
+		return skills.length
 	}
 }

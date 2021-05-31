@@ -145,7 +145,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		assert.isEqual(passedHealth.skill.status, 'passed')
 	}
 
-	@test('Upgrades error.plugin', 'error.plugin.ts', 'errors')
+	@test.only('Upgrades error.plugin', 'error.plugin.ts', 'errors')
 	@test('Upgrades schema.plugin', 'schema.plugin.ts', 'schemas')
 	@test(
 		'Upgrades conversation.plugin',
@@ -155,6 +155,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 	protected static async upgradesPlugins(pluginName: string, cacheKey: string) {
 		await this.FeatureFixture().installCachedFeatures(cacheKey)
 
+		
 		const pluginPath = this.resolveHashSprucePath(`features/${pluginName}`)
 		const originalContents = diskUtil.readFile(pluginPath)
 
@@ -162,35 +163,13 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		const results = await this.Action('skill', 'upgrade').execute({})
 
+		
+
 		testUtil.assertFileByNameInGeneratedFiles(pluginName, results.files)
 
 		const updatedContents = diskUtil.readFile(pluginPath)
 
 		assert.isEqual(updatedContents, originalContents)
-	}
-
-	@test()
-	protected static async upgradeSkillEmitsDidUpdateEventAndOtherFeaturesDependenciesUpdate() {
-		const cli = await this.FeatureFixture().installCachedFeatures(
-			'conversation'
-		)
-		const pkg = this.Service('pkg')
-		const path = 'dependencies.@sprucelabs/spruce-conversation-plugin'
-		pkg.unset(path)
-
-		let didHit = false
-
-		await cli.on('skill.did-upgrade', async () => {
-			didHit = true
-		})
-
-		const results = await this.Action('skill', 'upgrade').execute({})
-
-		assert.isFalsy(results.errors)
-
-		assert.isTrue(didHit)
-
-		assert.isTruthy(pkg.get(path))
 	}
 
 	@test()

@@ -1,5 +1,4 @@
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractErrorTest from '../../../tests/AbstractErrorTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
@@ -7,13 +6,6 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 	@test()
 	protected static async hasCreateAction() {
 		assert.isFunction(this.Action('error', 'create').execute)
-	}
-
-	@test()
-	protected static async failsWhenNotProvidedName() {
-		const createAction = await this.installErrorsAndGetCreateAction()
-		const err = await assert.doesThrowAsync(() => createAction.execute({}))
-		errorAssertUtil.assertError(err, 'VALIDATION_FAILED')
 	}
 
 	protected static async installErrorsAndGetCreateAction() {

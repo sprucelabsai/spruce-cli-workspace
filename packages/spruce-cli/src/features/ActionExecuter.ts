@@ -137,7 +137,11 @@ export default class ActionExecuter {
 			SpruceError
 		)
 
-		response = merge(response, ...willExecutePayloads, ...payloads)
+		response = actionUtil.mergeActionResults(
+			response,
+			...willExecutePayloads,
+			...payloads
+		)
 
 		return response
 	}

@@ -28,6 +28,8 @@ export default class OrganizationFixture {
 		for (const org of orgs) {
 			await orgStore.deleteOrganization(org.id)
 		}
+
+		return orgs.length
 	}
 
 	public async installSkillAtOrganization(skillId: string, orgId: string) {

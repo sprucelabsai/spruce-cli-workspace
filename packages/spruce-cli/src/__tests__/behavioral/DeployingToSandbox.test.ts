@@ -69,11 +69,11 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 		env.unset('SKILL_NAME')
 		env.unset('SKILL_SLUG')
 
-		const err = await assert.doesThrowAsync(() =>
-			this.Action('skill', 'boot').execute({ local: true })
-		)
+		const results = await this.Action('skill', 'boot').execute({ local: true })
 
-		errorAssertUtil.assertError(err, 'MISSING_PARAMETERS', {
+		assert.isTruthy(results.errors)
+
+		errorAssertUtil.assertError(results.errors[0], 'MISSING_PARAMETERS', {
 			parameters: ['env.SKILL_NAME', 'env.SKILL_SLUG'],
 		})
 	}
