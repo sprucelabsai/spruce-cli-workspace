@@ -35,10 +35,13 @@ export default class SettingRemoteTest extends AbstractSkillTest {
 		action: string
 	) {
 		TerminalInterface.setDoesSupportColor(true)
+
 		const env = this.Service('env')
 		env.unset('HOST')
 
-		void this.Action('event', action).execute({})
+		void this.Action('event', action, {
+			shouldAutoHandleDependencies: true,
+		}).execute({})
 
 		await this.waitForInput()
 
@@ -49,8 +52,8 @@ export default class SettingRemoteTest extends AbstractSkillTest {
 		this.ui.reset()
 	}
 
-	@test('create.event asks for remote on NOT TTY', 'create', false)
-	@test('sync.events asks for remote on NOT TTY', 'sync', false)
+	@test('create.event throws for remote on NOT TTY', 'create', false)
+	@test('sync.events throws for remote on NOT TTY', 'sync', false)
 	protected static async shouldThrowBeforeEventActionIsInvokedIfTerminalSupportsIt(
 		action: string
 	) {
@@ -58,17 +61,18 @@ export default class SettingRemoteTest extends AbstractSkillTest {
 		const env = this.Service('env')
 		env.unset('HOST')
 
-		const err = await assert.doesThrowAsync(() =>
-			this.Action('event', action).execute({})
-		)
+		const results = await this.Action('event', action).execute({})
 
-		assert.doesInclude(err.message, 'env.HOST')
+		assert.isTruthy(results.errors)
+		assert.doesInclude(results.errors[0].stack, 'env.HOST')
 	}
 
 	@test()
 	protected static async resultsOfCommandHasRemoteMixedIntoSummary() {
+		this.Service('remote').set('dev')
 		const results = await this.Action('event', 'sync').execute({})
 
 		assert.isTruthy(results.summaryLines)
+		assert.doesInclude(results.summaryLines, 'Remote: dev')
 	}
 }

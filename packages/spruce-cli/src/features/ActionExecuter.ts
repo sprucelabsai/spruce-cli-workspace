@@ -73,30 +73,32 @@ export default class ActionExecuter {
 			actionCode,
 		})
 
-		const { payloads: willExecutePayloads } =
+		const { payloads: willExecutePayloads, errors } =
 			eventResponseUtil.getAllResponsePayloadsAndErrors(
 				willExecuteResults,
 				SpruceError
 			)
 
+		if (errors?.length ?? 0 > 0) {
+			return { errors }
+		}
+
 		actionUtil.assertNoErrorsInResponse(willExecuteResults)
 
 		const feature = installer.getFeature(featureCode)
 
-		const asker = this.shouldAutoHandleDependencies
-			? new ActionOptionAsker({
-					featureInstaller: installer,
-					feature,
-					actionCode,
-					ui: this.ui,
-			  })
-			: null
+		const asker = new ActionOptionAsker({
+			featureInstaller: installer,
+			feature,
+			actionCode,
+			ui: this.ui,
+		})
 
 		let response =
-			(await asker?.installOrMarkAsSkippedMissingDependencies()) ?? {}
+			(await asker.installOrMarkAsSkippedMissingDependencies()) ?? {}
 
 		const installOptions =
-			(await asker?.askAboutMissingFeatureOptionsIfFeatureIsNotInstalled(
+			(await asker.askAboutMissingFeatureOptionsIfFeatureIsNotInstalled(
 				isInstalled,
 				actionOptions
 			)) ??
@@ -104,12 +106,12 @@ export default class ActionExecuter {
 			{}
 
 		let answers =
-			(await asker?.askAboutMissingActionOptions(action, actionOptions)) ??
+			(await asker.askAboutMissingActionOptions(action, actionOptions)) ??
 			installOptions
 
 		if (!isInstalled) {
 			const ourFeatureResults =
-				(await asker?.installOurFeature(installOptions)) ?? {}
+				(await asker.installOurFeature(installOptions)) ?? {}
 			response = merge(response, ourFeatureResults)
 		}
 

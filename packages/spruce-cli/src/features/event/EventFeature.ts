@@ -86,6 +86,7 @@ export default class EventFeature extends AbstractFeature {
 				this.ui.renderLine(
 					`Uh oh! It looks like you haven't configured your remote! We gotta do that.`
 				)
+
 				const results = await this.Action('event', 'setRemote').execute({})
 
 				return results

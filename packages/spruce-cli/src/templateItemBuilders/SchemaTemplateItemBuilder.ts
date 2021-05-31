@@ -181,12 +181,6 @@ export default class SchemaTemplateItemBuilder {
 					return '@sprucelabs/spruce-core-schemas'
 				}
 				break
-			case mercuryName: {
-				const typeLookup = `${schema.id}Schema` as keyof typeof mercuryTypes
-				if (this.localNamespace !== mercuryName && mercuryTypes[typeLookup]) {
-					// return '@sprucelabs/mercury-types'
-				}
-			}
 		}
 
 		return undefined

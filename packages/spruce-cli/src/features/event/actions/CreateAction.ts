@@ -24,6 +24,7 @@ const optionsSchema = buildSchema({
 		nameKebab: {
 			...namedTemplateItemBuilder.fields.nameKebab,
 			label: 'Event name',
+			hint: `kebab-case`,
 			isRequired: true,
 		},
 		nameCamel: {
