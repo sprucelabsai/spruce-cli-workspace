@@ -91,6 +91,7 @@ export default class ActionExecuter {
 			featureInstaller: installer,
 			feature,
 			actionCode,
+			shouldAutoHandleDependencies: this.shouldAutoHandleDependencies,
 			ui: this.ui,
 		})
 
