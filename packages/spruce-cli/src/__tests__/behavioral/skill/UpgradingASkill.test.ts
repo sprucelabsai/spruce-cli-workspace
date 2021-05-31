@@ -145,7 +145,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		assert.isEqual(passedHealth.skill.status, 'passed')
 	}
 
-	@test.only('Upgrades error.plugin', 'error.plugin.ts', 'errors')
+	@test('Upgrades error.plugin', 'error.plugin.ts', 'errors')
 	@test('Upgrades schema.plugin', 'schema.plugin.ts', 'schemas')
 	@test(
 		'Upgrades conversation.plugin',
@@ -155,15 +155,12 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 	protected static async upgradesPlugins(pluginName: string, cacheKey: string) {
 		await this.FeatureFixture().installCachedFeatures(cacheKey)
 
-		
 		const pluginPath = this.resolveHashSprucePath(`features/${pluginName}`)
 		const originalContents = diskUtil.readFile(pluginPath)
 
 		diskUtil.writeFile(pluginPath, '')
 
 		const results = await this.Action('skill', 'upgrade').execute({})
-
-		
 
 		testUtil.assertFileByNameInGeneratedFiles(pluginName, results.files)
 

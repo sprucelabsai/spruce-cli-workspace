@@ -37,8 +37,6 @@ export default class ErrorFeature extends AbstractFeature {
 	public constructor(options: FeatureOptions) {
 		super(options)
 
-		
-
 		void this.emitter.on(
 			'feature.will-execute',
 			this.handleWillExecuteCommand.bind(this)
@@ -49,10 +47,7 @@ export default class ErrorFeature extends AbstractFeature {
 		actionCode: string
 		featureCode: string
 	}) {
-		
 		const isSkillInstalled = await this.featureInstaller.isInstalled('error')
-
-		
 
 		if (
 			payload.featureCode === 'skill' &&
