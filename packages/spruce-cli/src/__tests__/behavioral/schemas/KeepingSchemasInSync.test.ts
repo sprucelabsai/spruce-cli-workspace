@@ -340,10 +340,21 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	}
 
 	@test()
-	protected static async canSyncSchemasWhenOnlyNodeModuleIsInstalled() {
+	protected static async canSyncSchemasWhenOnlyNodeModuleIsInstalledAfterDecliningToInstallSkill() {
 		await this.FeatureFixture().installCachedFeatures('schemasInNodeModule')
 
-		const results = await this.Action('schema', 'sync').execute({})
+		const promise = this.Action('schema', 'sync').execute({})
+
+		await this.waitForInput()
+
+		await this.ui.sendInput('n')
+
+		await this.waitForInput()
+
+		await this.ui.sendInput('')
+
+		const results = await promise
+
 		assert.isFalsy(results.errors)
 		await this.assertValidActionResponseFiles(results)
 	}
