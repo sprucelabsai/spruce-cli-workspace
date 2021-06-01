@@ -15,10 +15,10 @@ import {
 } from '@sprucelabs/spruce-event-utils'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
+import { cloneDeep } from 'lodash'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractStore from '../../../stores/AbstractStore'
 import { eventContractCleanerUtil } from '../../../utilities/eventContractCleaner.utility'
-import { cloneDeep } from 'lodash'
 
 export interface EventStoreFetchEventContractsResponse {
 	errors: SpruceError[]

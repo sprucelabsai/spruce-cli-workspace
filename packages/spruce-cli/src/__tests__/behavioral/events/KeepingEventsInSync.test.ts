@@ -137,7 +137,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		await this.assertValidSyncSchemasResults(results, true)
 	}
 
-	@test.only()
+	@test()
 	protected static async syncingSchemasWithBrokenConnectionStopsWithError() {
 		await this.FeatureFixture().installCachedFeatures('events')
 
