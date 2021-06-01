@@ -48,7 +48,9 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	protected static async syncsWithoutSavingCoreEventsByDefault() {
 		await this.FeatureFixture().installCachedFeatures('eventsInNodeModule')
 
-		const results = await this.Action('event', 'sync').execute({})
+		const results = await this.skipInstallSkill(() =>
+			this.Action('event', 'sync').execute({})
+		)
 
 		await this.assertValidSyncEventsResults(results)
 	}
@@ -57,9 +59,11 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	protected static async canSetSkillEventContractTypesFile() {
 		await this.FeatureFixture().installCachedFeatures('eventsInNodeModule')
 
-		await this.Action('event', 'sync').execute({
-			skillEventContractTypesFile: 'testy test',
-		})
+		await this.skipInstallSkill(() =>
+			this.Action('event', 'sync').execute({
+				skillEventContractTypesFile: 'testy test',
+			})
+		)
 
 		const contents = diskUtil.readFile(this.eventContractPath)
 		assert.doesInclude(contents, `declare module 'testy test'`)
@@ -69,7 +73,11 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	protected static async canSyncOnlyCoreEvents() {
 		await this.FeatureFixture().installCachedFeatures('eventsInNodeModule')
 
-		const results = await this.syncCoreEvents()
+		const promise = this.syncCoreEvents()
+
+		await this.skipInstallSkill()
+
+		const results = await promise
 
 		await this.assertValidSyncEventsResults(results, true)
 	}

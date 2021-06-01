@@ -19,19 +19,11 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 			namePascal: 'CanBookAppointment',
 		})
 
-		await this.skipInistallSkill()
+		await this.skipInstallSkill()
 
 		const results = await promise
 
 		assert.isFalsy(results.errors)
-	}
-
-	private static async skipInistallSkill() {
-		await this.waitForInput()
-		await this.ui.sendInput('n')
-
-		await this.waitForInput()
-		await this.ui.sendInput('')
 	}
 
 	@test()

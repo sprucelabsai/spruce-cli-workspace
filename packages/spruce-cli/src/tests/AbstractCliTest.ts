@@ -222,6 +222,24 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return this.personFixture
 	}
 
+	protected static async skipInstallSkill<
+		E extends () => Promise<FeatureActionResponse>
+	>(
+		execute?: E
+	): Promise<E extends undefined ? undefined : FeatureActionResponse> {
+		const promise = execute?.()
+
+		await this.waitForInput()
+		await this.ui.sendInput('n')
+
+		await this.waitForInput()
+		await this.ui.sendInput('')
+
+		const results = await promise
+
+		return results as any
+	}
+
 	protected static OrganizationFixture() {
 		if (!this.organizationFixture) {
 			this.organizationFixture = new OrganizationFixture(
