@@ -80,7 +80,6 @@ export default class EventStore extends AbstractStore {
 
 	private async fetchRemoteContracts() {
 		if (!EventStore.contractCache) {
-
 			const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
 			const results = await client.emit('get-event-contracts::v2020_12_25')
 			const { contracts } = eventResponseUtil.getFirstResponseOrThrow(results)
