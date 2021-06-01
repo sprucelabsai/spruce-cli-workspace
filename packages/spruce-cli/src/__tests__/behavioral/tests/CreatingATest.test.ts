@@ -12,14 +12,26 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 	protected static async doesNotAskAboutFixturesWhenInNodeModule() {
 		await this.installTests('testsInNodeModule')
 
-		const results = await this.Action('test', 'create').execute({
+		const promise = this.Action('test', 'create').execute({
 			type: 'behavioral',
 			nameReadable: 'Can book appointment',
 			nameCamel: 'canBookAppointment',
 			namePascal: 'CanBookAppointment',
 		})
 
+		await this.skipInistallSkill()
+
+		const results = await promise
+
 		assert.isFalsy(results.errors)
+	}
+
+	private static async skipInistallSkill() {
+		await this.waitForInput()
+		await this.ui.sendInput('n')
+
+		await this.waitForInput()
+		await this.ui.sendInput('')
 	}
 
 	@test()
