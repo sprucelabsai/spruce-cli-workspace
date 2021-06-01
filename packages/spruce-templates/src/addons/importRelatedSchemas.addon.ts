@@ -40,8 +40,8 @@ handlebars.registerHelper(
 					)
 					if (matched) {
 						imports.push(
-							`import ${matched.nameCamel}Schema_${
-								matched.schema.version
+							`import ${matched.nameCamel}Schema${
+								matched.schema.version ? `_${matched.schema.version}` : ''
 							} from '${matched.destinationDir}/${camelCase(
 								matched.namespace
 							)}${matched.schema.version ? `/${matched.schema.version}` : ''}/${
