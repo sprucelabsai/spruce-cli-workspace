@@ -102,7 +102,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		assert.isFalse(diskUtil.doesFileExist(this.eventContractPath))
 	}
 
-	@test()
+	@test.only()
 	protected static async syncingSchemaAfterSyncEventsSyncsSchemasAndDoesNotWriteCoreEvents() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 
@@ -111,12 +111,17 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		const event = cli.getFeature('event')
 		let wasHit = false
 
+		const oldGetter = event.getEventContractBuilder.bind(event)
+
 		//@ts-ignore
 		event.getEventContractBuilder = () => {
 			wasHit = true
+			return oldGetter()
 		}
 
 		const results = await this.Action('schema', 'sync').execute({})
+
+		assert.isFalsy(results.errors)
 		assert.isTrue(wasHit)
 
 		await this.assertValidSyncSchemasResults(results, false)

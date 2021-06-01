@@ -2,6 +2,7 @@ import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import fs from 'fs-extra'
 import md5 from 'md5'
+import CombinedTypesImportExtractor from '../CombinedTypesImportExtractor'
 import SpruceError from '../errors/SpruceError'
 import CommandService from './CommandService'
 
@@ -108,6 +109,10 @@ export default class ImportService {
 			})
 		}
 
+		const combinedTypes = CombinedTypesImportExtractor.getDefaultDestination(
+			this.cwd
+		)
+
 		let args = [
 			'-e',
 			`"try { const imported = require('${file}');console.log('${this.divider}');console.log(JSON.stringify(imported)); } catch(err) { console.log('${this.errorDivider}');console.log(err.options ? err.toString() : err.stack); }"`,
@@ -121,6 +126,11 @@ export default class ImportService {
 				'tsconfig-paths/register',
 				...args,
 			]
+
+			if (false && diskUtil.doesFileExist(combinedTypes)) {
+				args.splice(4, 0, '-r', combinedTypes)
+				debugger
+			}
 		}
 
 		try {

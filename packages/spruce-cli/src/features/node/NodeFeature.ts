@@ -1,8 +1,9 @@
 import { buildSchema, Schema, SchemaValues } from '@sprucelabs/schema'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
+import CombinedTypesImportExtractor from '../../CombinedTypesImportExtractor'
 import { FileDescription } from '../../types/cli.types'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
-import { FeatureCode } from '../features.types'
+import { FeatureActionOptions, FeatureCode } from '../features.types'
 
 const nodeFeatureSchema = buildSchema({
 	id: 'nodeFeature',
@@ -55,6 +56,35 @@ export default class NodeFeature<
 	]
 
 	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+
+	public constructor(options: FeatureActionOptions) {
+		super(options)
+
+		void this.emitter.on(
+			'feature.did-execute',
+			this.handleDidExecute.bind(this)
+		)
+	}
+
+	private async handleDidExecute() {
+		if (!diskUtil.doesHashSprucePathExist(this.cwd)) {
+			return {}
+		}
+
+		const extractor = new CombinedTypesImportExtractor(
+			diskUtil.resolveHashSprucePath(this.cwd)
+		)
+		const extracted = await extractor.extractTypes()
+		const imports = extracted.map((e) => `import '${e}'`)
+
+		const destination = CombinedTypesImportExtractor.getDefaultDestination(
+			this.cwd
+		)
+
+		diskUtil.writeFile(destination, imports.join('\n'))
+
+		return {}
+	}
 
 	public async beforePackageInstall() {
 		if (!diskUtil.doesDirExist(this.cwd)) {
