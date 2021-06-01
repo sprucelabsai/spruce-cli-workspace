@@ -52,16 +52,13 @@ const eventFileNamesImportKeyMap = {
 
 export default class EventStore extends AbstractStore {
 	public name = 'event'
+	protected static contractCache: any
 
 	public async fetchEventContracts(options?: {
 		localNamespace?: string
 		shouldFetchCoreEvents?: boolean
 	}): Promise<EventStoreFetchEventContractsResponse> {
-		const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
-
-		const results = await client.emit('get-event-contracts::v2020_12_25')
-
-		const { contracts } = eventResponseUtil.getFirstResponseOrThrow(results)
+		const contracts = await this.fetchRemoteContracts()
 
 		const localContract =
 			options?.localNamespace &&
@@ -81,6 +78,18 @@ export default class EventStore extends AbstractStore {
 		}
 	}
 
+	private async fetchRemoteContracts() {
+		if (!EventStore.contractCache) {
+
+			const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
+			const results = await client.emit('get-event-contracts::v2020_12_25')
+			const { contracts } = eventResponseUtil.getFirstResponseOrThrow(results)
+			EventStore.contractCache = contracts
+		}
+
+		return EventStore.contractCache
+	}
+
 	private filterOutLocalEventsFromRemoteContractsMutating(
 		remoteContracts: EventContract[],
 		localContract: EventContract
@@ -93,7 +102,6 @@ export default class EventStore extends AbstractStore {
 		}
 	}
 
-	//needs to be refactored for performance, perhaps load all options files first
 	public async loadLocalContract(
 		localNamespace: string
 	): Promise<EventContract | null> {
@@ -195,6 +203,8 @@ export default class EventStore extends AbstractStore {
 
 		eventResponseUtil.getFirstResponseOrThrow(results)
 
+		EventStore.contractCache = null
+
 		return results
 	}
 
@@ -208,5 +218,7 @@ export default class EventStore extends AbstractStore {
 		})
 
 		eventResponseUtil.getFirstResponseOrThrow(results)
+
+		EventStore.contractCache = null
 	}
 }
