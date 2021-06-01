@@ -63,7 +63,7 @@ export default class SkillFeature<
 		'boot.local':
 			'node -r ts-node/register -r tsconfig-paths/register ./src/index',
 		build: 'yarn build.dev',
-		'build.dev': 'yarn build.tsc && yarn resolve-paths.lint',
+		'build.dev': 'yarn build.tsc ; yarn resolve-paths.lint',
 		'build.copy-files':
 			"mkdir -p build && rsync -avzq --exclude='*.ts' ./src/ ./build/",
 		'build.resolve-paths':

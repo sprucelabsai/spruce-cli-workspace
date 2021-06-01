@@ -18,6 +18,7 @@ import {
 	versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import EventStore from '../../../features/event/stores/EventStore'
 import { generateEventContractFileName } from '../../../features/event/writers/EventWriter'
 import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
@@ -121,7 +122,6 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		const results = await this.Action('schema', 'sync').execute({})
 
-		assert.isFalsy(results.errors)
 		assert.isTrue(wasHit)
 
 		await this.assertValidSyncSchemasResults(results, false)
@@ -137,7 +137,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		await this.assertValidSyncSchemasResults(results, true)
 	}
 
-	@test()
+	@test.only()
 	protected static async syncingSchemasWithBrokenConnectionStopsWithError() {
 		await this.FeatureFixture().installCachedFeatures('events')
 
@@ -156,6 +156,8 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 			shouldAuthAsCurrentSkill: true,
 		})
 		await client.disconnect()
+
+		EventStore.clearCache()
 
 		const results2 = await this.Action('schema', 'sync').execute({})
 
@@ -391,13 +393,25 @@ export function buildPermissionContract(..._: any[]):any { return _[0] }
 	) {
 		assert.isFalsy(results.errors)
 
+		!shouldSyncOnlyCoreEvents && (await this.assertSavesHeartwoodGlobalEvents())
 		await this.assertValidSyncSchemasResults(results, shouldSyncOnlyCoreEvents)
+	}
+
+	private static async assertSavesHeartwoodGlobalEvents() {
+		const contents = diskUtil.readFile(this.eventContractPath)
+
+		assert.doesInclude(
+			contents,
+			`'heartwood.register-skill-views::v2021_02_11':`
+		)
 	}
 
 	private static async assertValidSyncSchemasResults(
 		results: FeatureActionResponse,
 		shouldSyncOnlyCoreEvents: boolean
 	) {
+		assert.isFalsy(results.errors)
+
 		this.assertCoreEventContractsSavedToDisk(shouldSyncOnlyCoreEvents)
 		this.assertCorePayloadSchemasAreCreated(results, shouldSyncOnlyCoreEvents)
 

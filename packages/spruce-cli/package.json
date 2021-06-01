@@ -427,8 +427,9 @@
 						"overridesAreLoadedIntoAttacher": "I131",
 						"skillViewExtendsAbstractViewControllerWithProperView": "I134",
 						"hasSetRemoteAction": "I147",
-						"create.event asks for remote on NOT TTY": "I148",
-						"resultsOfCommandHasRemoteMixedIntoSummary": "I149"
+						"create.event throws for remote on NOT TTY": "I148",
+						"resultsOfCommandHasRemoteMixedIntoSummary": "I149",
+						"syncsWithoutSavingCoreEventsByDefault": "I152"
 					}
 				}
 			],

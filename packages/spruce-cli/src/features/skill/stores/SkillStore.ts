@@ -18,7 +18,7 @@ export default class SkillStore extends AbstractStore {
 	public readonly name = 'skill'
 	private static currentSkill?: CurrentSkill
 
-	public static reset() {
+	public static clearCurrentSkill() {
 		this.currentSkill = undefined
 	}
 

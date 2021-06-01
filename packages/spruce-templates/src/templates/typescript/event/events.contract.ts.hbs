@@ -1,7 +1,7 @@
 {{#if shouldImportCoreEvents}}import { coreEventContracts } from '@sprucelabs/mercury-types'{{/if}}
 
 {{#each contracts}}
-import {{namespaceCamel}}{{namePascal}}EventContract_{{version}}{{#if isLocal}}, { {{namePascal}}EventContract as {{namespacePascal}}{{namePascal}}EventContract_{{version}}  }{{/if}} from '#spruce/events/{{ namespaceCamel }}/{{ nameCamel }}.{{ version }}.contract'
+import {{namespaceCamel}}{{namePascal}}EventContract_{{version}}, { {{namePascal}}EventContract as {{namespacePascal}}{{namePascal}}EventContract_{{version}}  } from '#spruce/events/{{ namespaceCamel }}/{{ nameCamel }}.{{ version }}.contract'
 {{/each}}
 
 export default [
@@ -14,11 +14,11 @@ export default [
 declare module '{{skillEventContractTypesFile}}' {
     interface SkillEventSignatures {
     {{#each contracts}}
-    {{#if isLocal}}
-        {{#each eventSignatures}}
-        '{{@key}}': {{../namespacePascal}}{{../namePascal}}EventContract_{{../version}}['eventSignatures']['{{@key}}'],
-        {{/each}}
-    {{/if}}
+    
+    {{#each eventSignatures}}
+    '{{@key}}': {{../namespacePascal}}{{../namePascal}}EventContract_{{../version}}['eventSignatures']['{{@key}}'],
+    {{/each}}
+    
     {{/each}}
     }
 }

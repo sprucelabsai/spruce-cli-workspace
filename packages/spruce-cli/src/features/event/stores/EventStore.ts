@@ -18,6 +18,7 @@ import globby from 'globby'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractStore from '../../../stores/AbstractStore'
 import { eventContractCleanerUtil } from '../../../utilities/eventContractCleaner.utility'
+import { cloneDeep } from 'lodash'
 
 export interface EventStoreFetchEventContractsResponse {
 	errors: SpruceError[]
@@ -56,7 +57,6 @@ export default class EventStore extends AbstractStore {
 
 	public async fetchEventContracts(options?: {
 		localNamespace?: string
-		shouldFetchCoreEvents?: boolean
 	}): Promise<EventStoreFetchEventContractsResponse> {
 		const contracts = await this.fetchRemoteContracts()
 
@@ -78,6 +78,10 @@ export default class EventStore extends AbstractStore {
 		}
 	}
 
+	public static clearCache() {
+		EventStore.contractCache = null
+	}
+
 	private async fetchRemoteContracts() {
 		if (!EventStore.contractCache) {
 			const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
@@ -86,7 +90,7 @@ export default class EventStore extends AbstractStore {
 			EventStore.contractCache = contracts
 		}
 
-		return EventStore.contractCache
+		return cloneDeep(EventStore.contractCache)
 	}
 
 	private filterOutLocalEventsFromRemoteContractsMutating(

@@ -13,6 +13,7 @@ import ActionExecuter, {
 	ActionExecuterOptions,
 } from '../features/ActionExecuter'
 import ActionFactory from '../features/ActionFactory'
+import EventStore from '../features/event/stores/EventStore'
 import FeatureInstaller from '../features/FeatureInstaller'
 import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
 import { FeatureActionResponse, FeatureCode } from '../features/features.types'
@@ -84,6 +85,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		this.clearFixtures()
 
 		ImportService.clearCache()
+		SkillStore.clearCurrentSkill()
+		EventStore.clearCache()
 	}
 
 	protected static async afterEach() {
@@ -91,8 +94,6 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 		await this.organizationFixture?.clearAllOrgs()
 		await this.mercuryFixture?.disconnectAll()
-
-		SkillStore.reset()
 
 		this.clearFixtures()
 
