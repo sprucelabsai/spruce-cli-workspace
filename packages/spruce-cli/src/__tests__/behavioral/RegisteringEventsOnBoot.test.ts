@@ -4,6 +4,7 @@ import {
 } from '@sprucelabs/spruce-event-utils'
 import { namesUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import EventStore from '../../features/event/stores/EventStore'
 import AbstractEventTest from '../../tests/AbstractEventTest'
 
 const EVENT_NAME_READABLE = 'did book appointment'
@@ -40,6 +41,8 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 			skillId: skill2.id,
 			apiKey: skill2.apiKey,
 		})
+
+		EventStore.clearCache()
 
 		const contractResults = await this.Store('event', {
 			apiClientFactory: async () => client,

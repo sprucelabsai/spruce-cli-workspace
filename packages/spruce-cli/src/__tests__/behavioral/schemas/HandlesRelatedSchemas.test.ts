@@ -28,18 +28,6 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 		await this.assertValidActionResponseFiles(results)
 	}
 
-	private static async installCopyAndSync(testDir = 'related_schemas') {
-		const cli = await this.installSchemaFeature('schemas')
-		const source = this.resolveTestPath(testDir)
-		const destination = this.resolvePath('src/schemas')
-
-		await diskUtil.copyDir(source, destination)
-
-		const syncResults = await this.Action('schema', 'sync').execute({})
-
-		return { cli, syncResults }
-	}
-
 	@test()
 	protected static async nestedSchemasInDynamicFields() {
 		await this.installSchemaFeature('schemas')
@@ -66,6 +54,7 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 			'mercuryContract.schema.ts',
 			results.files
 		)
+
 		await this.Service('typeChecker').check(schemaMatch)
 	}
 
@@ -98,5 +87,17 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 		assert.doesInclude(matches[0].path, CORE_SCHEMA_VERSION.dirValue)
 		assert.doesInclude(matches[0].path, CORE_NAMESPACE.toLowerCase())
 		assert.doesNotInclude(matches[0].path, 'testing')
+	}
+
+	private static async installCopyAndSync(testDir = 'related_schemas') {
+		const cli = await this.installSchemaFeature('schemas')
+		const source = this.resolveTestPath(testDir)
+		const destination = this.resolvePath('src/schemas')
+
+		await diskUtil.copyDir(source, destination)
+
+		const syncResults = await this.Action('schema', 'sync').execute({})
+
+		return { cli, syncResults }
 	}
 }

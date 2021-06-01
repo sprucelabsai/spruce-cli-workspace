@@ -26,6 +26,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		await this.installSchemaFeature('schemas')
 
 		const schemasDir = this.resolvePath('src', 'schemas')
+		await diskUtil.copyDir(this.resolveTestPath('related_schemas'), schemasDir)
 		await diskUtil.copyDir(this.resolveTestPath('test_builders'), schemasDir)
 		await diskUtil.copyDir(
 			this.resolveTestPath('dynamic_key_schemas'),
@@ -51,6 +52,68 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 		)
 
 		assert.isTruthy(results)
+	}
+
+	@test()
+	protected static async generatesValidTypesFile() {
+		const results = await this.generateValueTypes()
+
+		assert.isAbove(results.length, 0)
+
+		const first = results[0].path
+		assert.isTrue(diskUtil.doesFileExist(first))
+
+		await this.Service('typeChecker').check(first)
+	}
+
+	@test(
+		'generates person.firstName value type (string)',
+		`${CORE_NAMESPACE}.person.${CORE_SCHEMA_VERSION.constValue}.firstName.valueTypes`,
+		{
+			type: 'string',
+			value: 'string',
+			schemaType: 'string',
+		}
+	)
+	@test(
+		'generates skill.creators value type (schema)',
+		`${CORE_NAMESPACE}.skill.${CORE_SCHEMA_VERSION.constValue}.creators.valueTypes`,
+		{
+			type: `SpruceSchemas.Spruce.v2020_07_22.SkillCreator[]`,
+			value: 'skillCreatorSchema_v2020_07_22',
+			schemaType: `SpruceSchemas.Spruce.v2020_07_22.SkillCreatorSchema`,
+		}
+	)
+	@test(
+		'generates dynamic field with nested schemas',
+		`${LOCAL_NAMESPACE}.mercuryContract.${CORE_SCHEMA_VERSION.constValue}.__dynamicFieldSignature.valueTypes`,
+		{
+			type: `{ schemaId: 'eventSignature', version: 'v2020_07_22', values: SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.EventSignature } | { schemaId: 'eventSignature2', version: 'v2020_07_22', values: SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.EventSignature2 }`,
+			value:
+				'[eventSignatureSchema_v2020_07_22, eventSignature2Schema_v2020_07_22]',
+			schemaType: `(SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.EventSignatureSchema | SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.EventSignature2Schema)[]`,
+		}
+	)
+	protected static async importsTypes(
+		path: string,
+		expected: Record<string, any>
+	) {
+		const results = await this.generateValueTypes()
+
+		const valueTypes = await this.Service('import').importDefault<ValueTypes>(
+			results[0].path
+		)
+
+		assert.isObject(valueTypes)
+		assert.isAbove(
+			Object.keys(valueTypes).length,
+			0,
+			'Value types came back as empty object'
+		)
+
+		assert.doesInclude(valueTypes, {
+			[path]: expected,
+		})
 	}
 
 	private static async generateValueTypes() {
@@ -97,64 +160,5 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 			schemaTemplateItems,
 			fieldTemplateItems,
 		}
-	}
-
-	@test()
-	protected static async generatesValidTypesFile() {
-		const results = await this.generateValueTypes()
-		assert.isAbove(results.length, 0)
-
-		const first = results[0].path
-		assert.isTrue(diskUtil.doesFileExist(first))
-
-		await this.Service('typeChecker').check(first)
-	}
-
-	@test(
-		'generates person.firstName value type (string)',
-		`${CORE_NAMESPACE}.person.${CORE_SCHEMA_VERSION.constValue}.firstName.valueTypes`,
-		{
-			type: 'string',
-			value: 'string',
-			schemaType: 'string',
-		}
-	)
-	@test(
-		'generates skill.creators value type (schema)',
-		`${CORE_NAMESPACE}.skill.${CORE_SCHEMA_VERSION.constValue}.creators.valueTypes`,
-		{
-			type: `SpruceSchemas.Spruce.v2020_07_22.SkillCreator[]`,
-			value: 'skillCreatorSchema',
-			schemaType: `SpruceSchemas.Spruce.v2020_07_22.SkillCreatorSchema`,
-		}
-	)
-	@test(
-		'generates dynamic field with nested schemas',
-		`${LOCAL_NAMESPACE}.mercuryContract.${CORE_SCHEMA_VERSION.constValue}.__dynamicFieldSignature.valueTypes`,
-		{
-			type: `{ schemaId: 'eventSignature', version: 'v2020_07_22', values: SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.EventSignature } | { schemaId: 'eventSignature2', version: 'v2020_07_22', values: SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.EventSignature2 }`,
-			value: '[eventSignatureSchema, eventSignature2Schema]',
-			schemaType: `(SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.EventSignatureSchema | SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.EventSignature2Schema)[]`,
-		}
-	)
-	protected static async importsTypes(
-		path: string,
-		expected: Record<string, any>
-	) {
-		const results = await this.generateValueTypes()
-
-		const valueTypes = await this.Service('import').importDefault<ValueTypes>(
-			results[0].path
-		)
-
-		assert.isObject(valueTypes)
-		assert.isAbove(
-			Object.keys(valueTypes).length,
-			0,
-			'Value types came back as empty object'
-		)
-		assert.doesInclude(valueTypes, {
-			[path]: expected,
-		})
 	}
 }

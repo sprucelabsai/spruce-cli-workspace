@@ -58,5 +58,23 @@ export default buildSchema({
 				},
 			},
 		},
+		nestedSchemaWithDifferentVersion: {
+			type: 'schema',
+			options: {
+				schema: {
+					id: 'nested-schema',
+					version: 'v2021_01_01',
+					name: 'nested schema',
+					fields: {
+						field1: {
+							type: 'text',
+						},
+						field2: {
+							type: 'text',
+						},
+					},
+				},
+			},
+		},
 	},
 })

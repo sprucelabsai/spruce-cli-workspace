@@ -173,9 +173,7 @@ async function run() {
 			diskUtil.deleteDir(cwd)
 		}
 
-		renderLine(`Starting to build '${cacheKey}' to ${cwd}...`, [
-			GraphicsTextEffect.Green,
-		])
+		renderLine(`Starting to build '${cacheKey}'...`, [GraphicsTextEffect.Green])
 
 		await fixture.installFeatures(options, cacheKey)
 

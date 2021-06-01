@@ -40,11 +40,13 @@ handlebars.registerHelper(
 					)
 					if (matched) {
 						imports.push(
-							`import ${matched.nameCamel}Schema from '${
-								matched.destinationDir
-							}/${camelCase(matched.namespace)}${
-								matched.schema.version ? `/${matched.schema.version}` : ''
-							}/${matched.id}.schema'`
+							`import ${matched.nameCamel}Schema_${
+								matched.schema.version
+							} from '${matched.destinationDir}/${camelCase(
+								matched.namespace
+							)}${matched.schema.version ? `/${matched.schema.version}` : ''}/${
+								matched.id
+							}.schema'`
 						)
 					}
 				})
