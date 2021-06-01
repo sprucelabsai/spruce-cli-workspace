@@ -10,6 +10,7 @@ import { validateSchema } from '@sprucelabs/schema'
 import {
 	buildEmitTargetAndPayloadSchema,
 	eventContractUtil,
+	eventNameUtil,
 } from '@sprucelabs/spruce-event-utils'
 import {
 	diskUtil,
@@ -54,6 +55,35 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		)
 
 		await this.assertValidSyncEventsResults(results)
+	}
+
+	@test()
+	protected static async mergesGlobalEvents() {
+		await this.FeatureFixture().installCachedFeatures('events')
+
+		const skills = this.SkillFixture()
+		const skill = await skills.registerCurrentSkill({
+			name: 'events in sync skill',
+		})
+
+		await skills.registerEventContract(skill, {
+			eventSignatures: {
+				'test-sync::v2021_01_01': {
+					isGlobal: true,
+				},
+			},
+		})
+
+		const results = await this.Action('event', 'sync').execute({})
+
+		await this.assertValidSyncEventsResults(results)
+
+		const fqen = eventNameUtil.join({
+			eventName: 'test-sync',
+			version: 'v2021_01_01',
+			eventNamespace: skill.slug,
+		})
+		await this.assertGlobalEventsAreTyped(fqen)
 	}
 
 	@test()
@@ -393,17 +423,13 @@ export function buildPermissionContract(..._: any[]):any { return _[0] }
 	) {
 		assert.isFalsy(results.errors)
 
-		!shouldSyncOnlyCoreEvents && (await this.assertSavesHeartwoodGlobalEvents())
 		await this.assertValidSyncSchemasResults(results, shouldSyncOnlyCoreEvents)
 	}
 
-	private static async assertSavesHeartwoodGlobalEvents() {
+	private static async assertGlobalEventsAreTyped(eventName: string) {
 		const contents = diskUtil.readFile(this.eventContractPath)
 
-		assert.doesInclude(
-			contents,
-			`'heartwood.register-skill-views::v2021_02_11':`
-		)
+		assert.doesInclude(contents, `'${eventName}':`)
 	}
 
 	private static async assertValidSyncSchemasResults(
