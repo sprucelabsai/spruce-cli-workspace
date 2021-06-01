@@ -109,10 +109,6 @@ export default class ImportService {
 			})
 		}
 
-		const combinedTypes = CombinedTypesImportExtractor.getDefaultDestination(
-			this.cwd
-		)
-
 		let args = [
 			'-e',
 			`"try { const imported = require('${file}');console.log('${this.divider}');console.log(JSON.stringify(imported)); } catch(err) { console.log('${this.errorDivider}');console.log(err.options ? err.toString() : err.stack); }"`,
@@ -126,11 +122,6 @@ export default class ImportService {
 				'tsconfig-paths/register',
 				...args,
 			]
-
-			if (false && diskUtil.doesFileExist(combinedTypes)) {
-				args.splice(4, 0, '-r', combinedTypes)
-				debugger
-			}
 		}
 
 		try {

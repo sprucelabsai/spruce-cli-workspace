@@ -102,7 +102,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		assert.isFalse(diskUtil.doesFileExist(this.eventContractPath))
 	}
 
-	@test.only()
+	@test()
 	protected static async syncingSchemaAfterSyncEventsSyncsSchemasAndDoesNotWriteCoreEvents() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 
