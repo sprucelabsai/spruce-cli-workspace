@@ -11,6 +11,14 @@ const EVENT_NAME = 'did-book-appointment'
 const EVENT_CAMEL = 'didBookAppointment'
 
 export default class RegisteringEventsOnBootTest extends AbstractEventTest {
+	protected static async beforeEach() {
+		await super.beforeEach()
+
+		await this.PersonFixture().loginAsDemoPerson(
+			process.env.DEMO_NUMBER_EVENTS_ON_BOOT
+		)
+	}
+
 	@test()
 	protected static async registeringEventsOnBoot() {
 		const { skill2, currentSkill } =
