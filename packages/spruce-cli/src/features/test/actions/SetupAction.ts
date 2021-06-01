@@ -38,7 +38,7 @@ export default class SetupAction extends AbstractAction<OptionsSchema> {
 		if (isDuplicateSlugError) {
 			delete registerResponse.errors
 
-			loginAsSkillResponse = await this.Action('skill', 'register').execute({
+			loginAsSkillResponse = await this.Action('skill', 'login').execute({
 				skillSlug,
 			})
 		}

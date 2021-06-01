@@ -16,16 +16,13 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 
 		await this.Service('build').build()
 
-		const err = await assert.doesThrowAsync(async () => {
-			const response = await this.Action('skill', 'boot').execute({})
-			await response.meta?.promise
-		})
-
-		errorAssertUtil.assertError(err, 'LISTENER_NOT_IMPLEMENTED')
+		const response = await this.Action('skill', 'boot').execute({})
+		assert.isTruthy(response.errors)
+		errorAssertUtil.assertError(response.errors[0], 'LISTENER_NOT_IMPLEMENTED')
 	}
 
 	@test()
-	protected static async skillEmitsDidBootEvents() {
+	protected static async skillEmitsDidBootEventsThatErrorAfterBoot() {
 		await this.installEventFeature('events')
 		const version = 'v2020_01_01'
 
@@ -37,11 +34,8 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 
 		await this.Service('build').build()
 
-		const err = await assert.doesThrowAsync(async () => {
-			const response = await this.Action('skill', 'boot').execute({})
-			await response.meta?.promise
-		})
-
+		const response = await this.Action('skill', 'boot').execute({})
+		const err = await assert.doesThrowAsync(() => response.meta?.promise)
 		errorAssertUtil.assertError(err, 'LISTENER_NOT_IMPLEMENTED')
 	}
 }

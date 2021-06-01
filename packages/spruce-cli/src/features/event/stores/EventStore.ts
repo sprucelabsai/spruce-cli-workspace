@@ -55,6 +55,7 @@ export default class EventStore extends AbstractStore {
 
 	public async fetchEventContracts(options?: {
 		localNamespace?: string
+		shouldFetchCoreEvents?: boolean
 	}): Promise<EventStoreFetchEventContractsResponse> {
 		const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
 
@@ -185,6 +186,7 @@ export default class EventStore extends AbstractStore {
 		eventContract: EventContract
 	}) {
 		const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
+
 		const results = await client.emit('register-events::v2020_12_25', {
 			payload: {
 				contract: options.eventContract,

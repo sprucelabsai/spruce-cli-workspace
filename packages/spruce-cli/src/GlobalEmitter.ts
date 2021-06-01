@@ -148,20 +148,6 @@ export const globalContract = buildEventContract({
 				},
 			}),
 		},
-		'skill.did-upgrade': {
-			responsePayloadSchema: buildSchema({
-				id: 'didUpgradeResponseSchema',
-				fields: {
-					files: {
-						type: 'schema',
-						isArray: true,
-						options: {
-							schema: generatedFileSchema,
-						},
-					},
-				},
-			}),
-		},
 		'test.reporter-did-boot': {
 			emitPayloadSchema: buildSchema({
 				id: 'testReporterDidBootEmitPayload',

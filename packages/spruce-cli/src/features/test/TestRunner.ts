@@ -113,9 +113,9 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
 
 	private isDebugMessage(data: string) {
 		return (
-			data.search(/^debugger attached/i) === 0 ||
-			data.search(/^debugger listening/i) === 0 ||
-			data.search(/^waiting for the debugger/i) === 0
+			data.search(/^ attached/i) === 0 ||
+			data.search(/^ listening/i) === 0 ||
+			data.search(/^waiting for the /i) === 0
 		)
 	}
 

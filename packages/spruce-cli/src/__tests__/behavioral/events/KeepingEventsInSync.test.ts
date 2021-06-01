@@ -1,7 +1,9 @@
 import pathUtil from 'path'
 import {
 	buildPermissionContract,
+	coreEventContracts,
 	EventContract,
+	SpruceSchemas,
 	validateEventContract,
 } from '@sprucelabs/mercury-types'
 import { validateSchema } from '@sprucelabs/schema'
@@ -16,23 +18,24 @@ import {
 	versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import EventFeature from '../../../features/event/EventFeature'
 import { generateEventContractFileName } from '../../../features/event/writers/EventWriter'
 import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
-const EXPECTED_NUM_CONTRACTS_GENERATED = 40
+const coreContract = eventContractUtil.unifyContracts(
+	coreEventContracts as any
+) as SpruceSchemas.Mercury.v2020_09_01.EventContract
 
 export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	private static randomVersion = 'v2020_01_01'
 
-	private static get mercuryVersion() {
-		return versionUtil.generateVersion('2020-12-25')
-	}
-
 	private static get todaysVersion() {
 		return versionUtil.generateVersion()
+	}
+
+	private static get eventContractPath() {
+		return this.resolveHashSprucePath('events', 'events.contract.ts')
 	}
 
 	@test()
@@ -42,29 +45,107 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	}
 
 	@test()
-	protected static async generatesValidContractFile() {
+	protected static async syncsWithoutSavingCoreEventsByDefault() {
 		await this.FeatureFixture().installCachedFeatures('eventsInNodeModule')
 
-		const results = await this.Action('event', 'sync').execute({})
+		const results = await this.skipInstallSkill(() =>
+			this.Action('event', 'sync').execute({})
+		)
 
-		await this.assertValidEventResults(results)
+		await this.assertValidSyncEventsResults(results)
 	}
 
 	@test()
-	protected static async syncingSchemasRetainsEventPayloadSchemas() {
-		await this.FeatureFixture().installCachedFeatures('events')
+	protected static async canSetSkillEventContractTypesFile() {
+		await this.FeatureFixture().installCachedFeatures('eventsInNodeModule')
+
+		await this.skipInstallSkill(() =>
+			this.Action('event', 'sync').execute({
+				skillEventContractTypesFile: 'testy test',
+			})
+		)
+
+		const contents = diskUtil.readFile(this.eventContractPath)
+		assert.doesInclude(contents, `declare module 'testy test'`)
+	}
+
+	@test()
+	protected static async canSyncOnlyCoreEvents() {
+		await this.FeatureFixture().installCachedFeatures('eventsInNodeModule')
+
+		const promise = this.syncCoreEvents()
+
+		await this.skipInstallSkill()
+
+		const results = await promise
+
+		await this.assertValidSyncEventsResults(results, true)
+	}
+
+	@test()
+	protected static async syncingSchemasDoesNotSyncEventSchemasIfEventsHaveNeverBeenSynced() {
+		const cli = await this.FeatureFixture().installCachedFeatures('events')
+		const event = cli.getFeature('event')
+		let wasHit = false
+
+		//@ts-ignore
+		event.getEventContractBuilder = () => {
+			wasHit = true
+		}
+
 		const results = await this.Action('schema', 'sync').execute({})
 
-		this.assertExpectedPayloadSchemasAreCreated(results)
+		this.assertCoreEventContractsSavedToDisk(false)
+		this.assertCorePayloadSchemasAreCreated(results, false)
+
+		assert.isFalse(wasHit)
+		assert.isFalse(diskUtil.doesFileExist(this.eventContractPath))
+	}
+
+	@test()
+	protected static async syncingSchemaAfterSyncEventsSyncsSchemasAndDoesNotWriteCoreEvents() {
+		const cli = await this.FeatureFixture().installCachedFeatures('events')
+
+		await this.Action('event', 'sync').execute({})
+
+		const event = cli.getFeature('event')
+		let wasHit = false
+
+		const oldGetter = event.getEventContractBuilder.bind(event)
+
+		//@ts-ignore
+		event.getEventContractBuilder = () => {
+			wasHit = true
+			return oldGetter()
+		}
+
+		const results = await this.Action('schema', 'sync').execute({})
+
+		assert.isFalsy(results.errors)
+		assert.isTrue(wasHit)
+
+		await this.assertValidSyncSchemasResults(results, false)
+	}
+
+	@test()
+	protected static async syncingSchemasAfterSyncingCoreEventsSavesCoreEvents() {
+		await this.FeatureFixture().installCachedFeatures('events')
+
+		await this.syncCoreEvents()
+
+		const results = await this.Action('schema', 'sync').execute({})
+		await this.assertValidSyncSchemasResults(results, true)
 	}
 
 	@test()
 	protected static async syncingSchemasWithBrokenConnectionStopsWithError() {
-		const cli = await this.FeatureFixture().installCachedFeatures('events')
+		await this.FeatureFixture().installCachedFeatures('events')
+
+		await this.syncCoreEvents()
 
 		const results = await this.Action('schema', 'sync').execute({})
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			'sendMessageEmitPayload.schema.ts',
 			results.files
 		)
@@ -75,10 +156,6 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 			shouldAuthAsCurrentSkill: true,
 		})
 		await client.disconnect()
-
-		const eventFeature = cli.getFeature('event') as EventFeature
-		const writer = eventFeature.EventContractBuilder()
-		writer.clearCache()
 
 		const results2 = await this.Action('schema', 'sync').execute({})
 
@@ -92,7 +169,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		await this.FeatureFixture().installCachedFeatures('schemas')
 		const results = await this.Action('schema', 'sync').execute({})
 
-		assert.doesThrow(() => this.assertExpectedPayloadSchemasAreCreated(results))
+		assert.doesThrow(() => this.assertCorePayloadSchemasAreCreated(results))
 	}
 
 	@test()
@@ -113,9 +190,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		assert.isEqual(health.event.status, 'passed')
 		assert.isTruthy(health.event.contracts)
 
-		const imported = await this.importCombinedContractsFile(results)
-
-		assert.isLength(health.event.contracts, imported.length)
+		assert.isAbove(health.event.contracts.length, 0)
 	}
 
 	@test()
@@ -166,7 +241,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		const results = await this.Action('event', 'sync').execute({})
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			`myNewEvent.${this.todaysVersion.dirValue}.contract.ts`,
 			results.files
 		)
@@ -231,7 +306,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		const results = await this.Action('event', 'sync').execute({})
 
-		const contract = testUtil.assertsFileByNameInGeneratedFiles(
+		const contract = testUtil.assertFileByNameInGeneratedFiles(
 			'events.contract.ts',
 			results.files
 		)
@@ -256,7 +331,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		const results = await this.Action('event', 'sync').execute({})
 
-		const contract = testUtil.assertsFileByNameInGeneratedFiles(
+		const contract = testUtil.assertFileByNameInGeneratedFiles(
 			'events.contract.ts',
 			results.files
 		)
@@ -275,7 +350,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 			shouldUnregisterAll: true,
 		})
 
-		const eventContract = testUtil.assertsFileByNameInGeneratedFiles(
+		const eventContract = testUtil.assertFileByNameInGeneratedFiles(
 			contractFileName,
 			syncResults.files
 		)
@@ -286,6 +361,57 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		const dirname = pathUtil.dirname(eventContract)
 		assert.isFalse(diskUtil.doesDirExist(dirname))
+	}
+
+	private static async syncCoreEvents() {
+		const results = await this.Action('event', 'sync').execute({
+			shouldSyncOnlyCoreEvents: true,
+			eventBuilderFile: '../../../builder',
+			skillEventContractTypesFile: '../../builder',
+		})
+
+		const builder = `
+export function buildEventContract(..._: any[]):any { return _[0] }
+export function buildPermissionContract(..._: any[]):any { return _[0] }
+`
+
+		diskUtil.writeFile(this.resolvePath('src', 'builder.ts'), builder)
+		await this.Service('pkg').uninstall([
+			'@sprucelabs/mercury-types',
+			'@sprucelabs/mercury-client',
+			'@sprucelabs/spruce-event-utils',
+			'@sprucelabs/spruce-event-plugin',
+		])
+		return results
+	}
+
+	private static async assertValidSyncEventsResults(
+		results: FeatureActionResponse,
+		shouldSyncOnlyCoreEvents = false
+	) {
+		assert.isFalsy(results.errors)
+
+		await this.assertValidSyncSchemasResults(results, shouldSyncOnlyCoreEvents)
+	}
+
+	private static async assertValidSyncSchemasResults(
+		results: FeatureActionResponse,
+		shouldSyncOnlyCoreEvents: boolean
+	) {
+		this.assertCoreEventContractsSavedToDisk(shouldSyncOnlyCoreEvents)
+		this.assertCorePayloadSchemasAreCreated(results, shouldSyncOnlyCoreEvents)
+
+		await this.assertEventsHavePayloads(results)
+		await this.assertCombinedContractContents()
+
+		const coreContractContents = diskUtil.readFile(this.eventContractPath)
+		const search = `did-message::v2020_12_25': MercuryDidMessageEventContract_v2020_12_25['eventSignatures']['did-message::v2020_12_25']`
+
+		if (shouldSyncOnlyCoreEvents) {
+			assert.doesInclude(coreContractContents, search)
+		} else {
+			assert.doesNotInclude(coreContractContents, search)
+		}
 	}
 
 	private static async registerAndSyncEvents() {
@@ -316,36 +442,40 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		}
 	}
 
-	private static async assertValidEventResults(results: FeatureActionResponse) {
-		assert.isFalsy(results.errors)
-
-		await this.assertsContractsHaveValidPayloads(results)
-
-		this.assertExpectedContractsAreCreated(results)
-
-		this.assertExpectedPayloadSchemasAreCreated(results)
-
-		await this.assertCombinedContractContents(results)
-	}
-
-	private static async assertCombinedContractContents(
-		results: FeatureActionResponse
-	) {
-		const imported = await this.importCombinedContractsFile(results)
+	private static async assertCombinedContractContents() {
+		const imported = await this.importCombinedContractsFile()
 
 		assert.isTruthy(imported)
 		assert.isArray(imported)
 
-		assert.isTrue(imported.length >= EXPECTED_NUM_CONTRACTS_GENERATED)
+		const localContract = eventContractUtil.unifyContracts(imported)
+		assert.isTruthy(localContract)
+
+		const sigs = eventContractUtil.getNamedEventSignatures(coreContract)
+
+		for (const sig of sigs) {
+			eventContractUtil.getSignatureByName(
+				localContract,
+				sig.fullyQualifiedEventName
+			)
+		}
 	}
 
-	private static async importCombinedContractsFile(
-		results: FeatureActionResponse
-	): Promise<EventContract[]> {
-		const eventContractsFile = testUtil.assertsFileByNameInGeneratedFiles(
-			'events.contract',
-			results.files
-		)
+	private static async importCombinedContractsFile(): Promise<EventContract[]> {
+		const eventContractsFile = this.eventContractPath
+
+		// hack import to bring types in when importing contract file
+		if (
+			diskUtil.doesDirExist(
+				this.resolvePath('node_modules/@sprucelabs/mercury-types')
+			)
+		) {
+			const contents = diskUtil.readFile(eventContractsFile)
+			diskUtil.writeFile(
+				eventContractsFile,
+				`import '@sprucelabs/mercury-types'\n${contents}`
+			)
+		}
 
 		const imported: EventContract[] = await this.Service(
 			'import'
@@ -354,26 +484,18 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		return imported
 	}
 
-	private static async assertsContractsHaveValidPayloads(
-		results: FeatureActionResponse
+	private static async assertEventsHavePayloads(
+		results: FeatureActionResponse,
+		eventName = 'authenticate'
 	) {
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
-			`authenticate.${this.mercuryVersion.dirValue}.contract.ts`,
-			results.files
-		)
-
-		const contract: EventContract = await this.Service('import').importDefault(
-			match
-		)
+		const imported = await this.importCombinedContractsFile()
+		const contract = eventContractUtil.unifyContracts(imported)
 
 		assert.isTruthy(contract)
 
 		validateEventContract(contract)
 
-		const signature = eventContractUtil.getSignatureByName(
-			contract,
-			'authenticate'
-		)
+		const signature = eventContractUtil.getSignatureByName(contract, eventName)
 
 		assert.isTruthy(signature.emitPayloadSchema)
 		validateSchema(signature.emitPayloadSchema)
@@ -382,25 +504,9 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		validateSchema(signature.responsePayloadSchema)
 	}
 
-	private static assertExpectedContractsAreCreated(
-		results: FeatureActionResponse
-	) {
-		const filesToCheck = [
-			{
-				name: `whoami.${this.mercuryVersion.dirValue}.contract.ts`,
-				path: `events${pathUtil.sep}${MERCURY_API_NAMESPACE}`,
-			},
-			{
-				name: `getEventContracts.${this.mercuryVersion.dirValue}.contract.ts`,
-				path: `events${pathUtil.sep}${MERCURY_API_NAMESPACE}`,
-			},
-		]
-
-		this.assertFilesWereGenerated(filesToCheck, results)
-	}
-
-	private static assertExpectedPayloadSchemasAreCreated(
-		results: FeatureActionResponse
+	private static assertCorePayloadSchemasAreCreated(
+		results: FeatureActionResponse,
+		shouldHaveWritten = true
 	) {
 		const filesToCheck = [
 			{
@@ -409,20 +515,48 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 			},
 		]
 
-		this.assertFilesWereGenerated(filesToCheck, results)
+		this.assertFilesWereGenerated(filesToCheck, results, shouldHaveWritten)
 	}
 
 	private static assertFilesWereGenerated(
 		filesToCheck: { name: string; path: string }[],
-		results: FeatureActionResponse
+		results: FeatureActionResponse,
+		shouldHaveWritten = true
 	) {
 		for (const file of filesToCheck) {
-			const match = testUtil.assertsFileByNameInGeneratedFiles(
-				file.name,
-				results.files
+			const expected = this.resolveHashSprucePath(
+				'schemas/mercury/v2020_12_25',
+				file.name
 			)
+			const doesExist = diskUtil.doesFileExist(expected)
 
-			assert.doesInclude(match, file.path)
+			if (shouldHaveWritten) {
+				assert.isTrue(doesExist, `Expected to find ${file} on the filesystem.`)
+			} else {
+				assert.isFalse(doesExist, `Should not have written ${file}.`)
+			}
+		}
+	}
+
+	private static assertCoreEventContractsSavedToDisk(shouldHaveWritten = true) {
+		const sigs = eventContractUtil.getNamedEventSignatures(coreContract)
+
+		for (const sig of sigs) {
+			const expected = this.resolveHashSprucePath(
+				`events/mercury/${namesUtil.toCamel(
+					sig.eventName
+				)}.v2020_12_25.contract.ts`
+			)
+			const doesExist = diskUtil.doesFileExist(expected)
+
+			if (shouldHaveWritten) {
+				assert.isTrue(doesExist, `Expected to write a file ${expected}.`)
+			} else {
+				assert.isFalse(
+					doesExist,
+					`Generated contract for ${sig.fullyQualifiedEventName} and it should not have because it's a core contract.`
+				)
+			}
 		}
 	}
 }

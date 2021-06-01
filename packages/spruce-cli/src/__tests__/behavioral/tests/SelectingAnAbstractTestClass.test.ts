@@ -52,7 +52,7 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 
 		const results = await response
 
-		testUtil.assertsFileByNameInGeneratedFiles(
+		testUtil.assertFileByNameInGeneratedFiles(
 			'CanBookAppointment.test.ts',
 			results.files
 		)
@@ -108,7 +108,7 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 
 		assert.isFalsy(results.errors)
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			'CanBookAppointment.test.ts',
 			results.files
 		)

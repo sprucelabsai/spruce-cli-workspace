@@ -20,24 +20,33 @@ export default class EventWriter extends AbstractWriter {
 		options: {
 			eventContractTemplateItems: EventContractTemplateItem[]
 			schemaTemplateItems: SchemaTemplateItem[]
+			shouldImportCoreEvents?: boolean
+			skillEventContractTypesFile: string
+			eventBuilderFile: string
 		}
 	) {
-		const { eventContractTemplateItems, schemaTemplateItems } = options
+		const { eventContractTemplateItems, shouldImportCoreEvents = true } =
+			options
 
 		const generated: Promise<GeneratedFile>[] = []
 
 		for (const item of eventContractTemplateItems) {
 			generated.push(
 				this.writeContract({
+					...options,
 					destinationDir,
 					eventContractTemplateItem: item,
-					schemaTemplateItems,
 				})
 			)
 		}
 
 		generated.push(
-			this.writeCombinedEvents(destinationDir, eventContractTemplateItems)
+			this.writeCombinedEvents({
+				...options,
+				shouldImportCoreEvents,
+				destinationDir,
+				templateItems: eventContractTemplateItems,
+			})
 		)
 
 		const all = await Promise.all(generated)
@@ -51,6 +60,7 @@ export default class EventWriter extends AbstractWriter {
 		destinationDir: string
 		eventContractTemplateItem: EventContractTemplateItem
 		schemaTemplateItems: SchemaTemplateItem[]
+		eventBuilderFile: string
 	}): Promise<GeneratedFile> {
 		const { destinationDir, eventContractTemplateItem, schemaTemplateItems } =
 			options
@@ -62,6 +72,7 @@ export default class EventWriter extends AbstractWriter {
 		)
 
 		const eventsContractContents = this.templates.eventContract({
+			...options,
 			...eventContractTemplateItem,
 			schemaTemplateItems,
 		})
@@ -77,16 +88,20 @@ export default class EventWriter extends AbstractWriter {
 		return results[0]
 	}
 
-	private async writeCombinedEvents(
-		destinationDir: string,
+	private async writeCombinedEvents(options: {
+		destinationDir: string
 		templateItems: EventContractTemplateItem[]
-	): Promise<GeneratedFile> {
+		shouldImportCoreEvents?: boolean
+		skillEventContractTypesFile: string
+	}): Promise<GeneratedFile> {
+		const { destinationDir } = options
+
 		const destinationFile = diskUtil.resolvePath(
 			destinationDir,
 			CONTRACT_FILE_NAME
 		)
 
-		const contents = this.templates.combinedEventsContract(templateItems)
+		const contents = this.templates.combinedEventsContract(options)
 
 		const results = await this.writeFileIfChangedMixinResults(
 			destinationFile,

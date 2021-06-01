@@ -5,7 +5,7 @@ import AbstractStore from '../../../stores/AbstractStore'
 
 export interface EventStoreFetchEventContractsResponse {
 	errors: SpruceError[]
-	topics: SpruceSchemas.Mercury.v2020_12_25.GetConversationTopicsResponsePayload['topics']
+	topics: SpruceSchemas.Mercury.v2020_12_25.GetConversationTopicsTopic[]
 }
 
 export default class ConversationStore extends AbstractStore {

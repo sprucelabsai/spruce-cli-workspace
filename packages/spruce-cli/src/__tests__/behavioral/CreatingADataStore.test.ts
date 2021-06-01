@@ -33,12 +33,15 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 
 		assert.isFalsy(results.errors)
 
-		const path = testUtil.assertsFileByNameInGeneratedFiles(
+		const path = testUtil.assertFileByNameInGeneratedFiles(
 			'People.store.ts',
 			results.files
 		)
 
 		await this.Service('typeChecker').check(path)
+
+		const contents = diskUtil.readFile(path)
+		assert.doesInclude(contents, `import '#spruce/stores/stores.types'`)
 	}
 
 	@test()
@@ -60,7 +63,7 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 
 		assert.isFalsy(results.errors)
 
-		const path = testUtil.assertsFileByNameInGeneratedFiles(
+		const path = testUtil.assertFileByNameInGeneratedFiles(
 			'Bids.store.ts',
 			results.files
 		)

@@ -116,7 +116,7 @@ export default class TestingAConversationTest extends AbstractCliTest {
 	protected static async returnsErrorWhenScriptErrors() {
 		const { createResults } = await this.installAndCreateConversation()
 
-		const topic = testUtil.assertsFileByNameInGeneratedFiles(
+		const topic = testUtil.assertFileByNameInGeneratedFiles(
 			'knockKnockJoke',
 			createResults.files
 		)

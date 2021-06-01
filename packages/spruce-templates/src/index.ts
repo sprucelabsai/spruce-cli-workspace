@@ -284,11 +284,15 @@ export const templates = {
 		return template({ ...options, actionCamel: 'ResponsePayload' })
 	},
 
-	combinedEventsContract(contracts: EventContractTemplateItem[]) {
+	combinedEventsContract(options: {
+		templateItems: EventContractTemplateItem[]
+		shouldImportCoreEvents?: boolean
+		skillEventContractTypesFile: string
+	}) {
 		const template = templateImportUtil.getTemplate(
 			'event/events.contract.ts.hbs'
 		)
-		return template({ contracts })
+		return template({ ...options, contracts: options.templateItems })
 	},
 
 	sandboxWillBootListener() {

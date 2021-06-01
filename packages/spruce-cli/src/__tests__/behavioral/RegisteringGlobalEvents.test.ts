@@ -1,8 +1,10 @@
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import dotenv from 'dotenv'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 import testUtil from '../../tests/utilities/test.utility'
 import { RegisteredSkill } from '../../types/cli.types'
+dotenv.config()
 
 const stamp = new Date().getTime()
 const EVENT_NAME_READABLE = 'did book appointment'
@@ -15,6 +17,13 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 
 	protected static async beforeAll() {
 		await super.beforeAll()
+
+		await this.PersonFixture().loginAsDemoPerson(
+			process.env.DEMO_NUMBER_GLOBAL_EVENTS
+		)
+
+		await this.resetAccount()
+
 		const orgFixture = this.OrganizationFixture()
 		const skillFixture = this.SkillFixture()
 
@@ -25,6 +34,16 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 		})
 
 		await orgFixture.installSkillAtOrganization(this.skill.id, org.id)
+	}
+
+	protected static async afterAll() {
+		await super.afterAll()
+		await this.resetAccount()
+	}
+
+	private static async resetAccount() {
+		await this.OrganizationFixture().clearAllOrgs()
+		await this.SkillFixture().clearAllSkills()
 	}
 
 	@test()
@@ -38,7 +57,7 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 
 		assert.isFalsy(results.errors)
 
-		const optionsFile = testUtil.assertsFileByNameInGeneratedFiles(
+		const optionsFile = testUtil.assertFileByNameInGeneratedFiles(
 			'event.options.ts',
 			results.files
 		)
@@ -51,7 +70,7 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 		})
 
 		const version = versionUtil.generateVersion().dirValue
-		const contractFile = testUtil.assertsFileByNameInGeneratedFiles(
+		const contractFile = testUtil.assertFileByNameInGeneratedFiles(
 			`${EVENT_CAMEL}.${version}.contract.ts`,
 			results.files
 		)
@@ -66,7 +85,7 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 			]
 
 		assert.isTrue(sig.isGlobal)
-		assert.isFalsy(sig.emitPayloadSchema)
+		assert.isTruthy(sig.emitPayloadSchema)
 	}
 
 	@test()

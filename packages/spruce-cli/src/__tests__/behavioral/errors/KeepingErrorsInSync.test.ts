@@ -44,14 +44,14 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 			nameCamel: 'testError',
 		})
 
-		const optionsMatch = testUtil.assertsFileByNameInGeneratedFiles(
+		const optionsMatch = testUtil.assertFileByNameInGeneratedFiles(
 			/^options\.types/,
 			results.files
 		)
 
 		await this.Service('typeChecker').check(optionsMatch)
 
-		const typesMatch = testUtil.assertsFileByNameInGeneratedFiles(
+		const typesMatch = testUtil.assertFileByNameInGeneratedFiles(
 			/^errors\.types/,
 			results.files
 		)
@@ -67,7 +67,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		)
 
 		// delete our testError
-		const builderMatch = testUtil.assertsFileByNameInGeneratedFiles(
+		const builderMatch = testUtil.assertFileByNameInGeneratedFiles(
 			/testError\.builder/,
 			results.files
 		)
@@ -86,12 +86,12 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 			nameReadable: 'Test error 1',
 		})
 
-		const testError1SchemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
+		const testError1SchemaMatch = testUtil.assertFileByNameInGeneratedFiles(
 			'testError1.schema',
 			testError1.files
 		)
 
-		const testError1BuilderMatch = testUtil.assertsFileByNameInGeneratedFiles(
+		const testError1BuilderMatch = testUtil.assertFileByNameInGeneratedFiles(
 			'testError1.builder',
 			testError1.files
 		)
@@ -146,7 +146,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		await diskUtil.copyDir(source, destination)
 
 		const results = await this.Action('error', 'sync').execute({})
-		const errorTypesFile = testUtil.assertsFileByNameInGeneratedFiles(
+		const errorTypesFile = testUtil.assertFileByNameInGeneratedFiles(
 			/errors\.types/,
 			results.files
 		)
@@ -154,7 +154,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		const typeChecker = this.Service('typeChecker')
 		await typeChecker.check(errorTypesFile)
 
-		const errorOptionsFile = testUtil.assertsFileByNameInGeneratedFiles(
+		const errorOptionsFile = testUtil.assertFileByNameInGeneratedFiles(
 			/options\.types/,
 			results.files
 		)
@@ -162,7 +162,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		const contents = diskUtil.readFile(errorOptionsFile)
 		assert.doesNotInclude(contents, 'INestedSchema')
 
-		const errorClassFile = testUtil.assertsFileByNameInGeneratedFiles(
+		const errorClassFile = testUtil.assertFileByNameInGeneratedFiles(
 			'SpruceError.ts',
 			results.files
 		)
@@ -182,7 +182,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 
 		await this.assertValidActionResponseFiles(syncResults)
 
-		const parentSchema = testUtil.assertsFileByNameInGeneratedFiles(
+		const parentSchema = testUtil.assertFileByNameInGeneratedFiles(
 			'good.schema.ts',
 			syncResults.files
 		)

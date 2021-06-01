@@ -65,13 +65,34 @@ type TerminalSpecificOptions = {
 	eraseBeforeRender?: boolean
 }
 
+function isCi() {
+	const env = process.env
+
+	if (
+		[
+			'TRAVIS',
+			'CIRCLECI',
+			'APPVEYOR',
+			'GITLAB_CI',
+			'GITHUB_ACTIONS',
+			'BUILDKITE',
+			'DRONE',
+		].some((sign) => sign in env) ||
+		env.CI_NAME === 'codeship'
+	) {
+		return true
+	}
+
+	return false
+}
+
 export default class TerminalInterface implements GraphicsInterface {
 	public isPromptActive = false
 	public cwd: string
 	private renderStackTraces = false
 	private static loader?: ora.Ora | null
 	private progressBar: ProgressBarController | null = null
-	private static _doesSupportColor = process?.stdout?.isTTY
+	private static _doesSupportColor = process?.stdout?.isTTY && !isCi()
 	private log: (...args: any[]) => void
 
 	public constructor(
@@ -284,6 +305,7 @@ export default class TerminalInterface implements GraphicsInterface {
 			this.renderDivider(dividerEffects)
 			this.renderLine(message, effects)
 			this.renderDivider(dividerEffects)
+			this.renderLine('')
 		}
 	}
 

@@ -62,7 +62,8 @@ export default class ActionExecuter {
 
 		if (!isInstalled && !this.shouldAutoHandleDependencies) {
 			throw new SpruceError({
-				code: 'EXECUTING_COMMAND_FAILED',
+				code: 'FEATURE_NOT_INSTALLED',
+				featureCode,
 				friendlyMessage: `You need to install the \`${featureCode}\` feature.`,
 			})
 		}
@@ -72,11 +73,15 @@ export default class ActionExecuter {
 			actionCode,
 		})
 
-		const { payloads: willExecutePayloads } =
+		const { payloads: willExecutePayloads, errors } =
 			eventResponseUtil.getAllResponsePayloadsAndErrors(
 				willExecuteResults,
 				SpruceError
 			)
+
+		if (errors?.length ?? 0 > 0) {
+			return { errors }
+		}
 
 		actionUtil.assertNoErrorsInResponse(willExecuteResults)
 
@@ -86,31 +91,41 @@ export default class ActionExecuter {
 			featureInstaller: installer,
 			feature,
 			actionCode,
+			shouldAutoHandleDependencies: this.shouldAutoHandleDependencies,
 			ui: this.ui,
 		})
 
-		let response = await asker.installOrMarkAsSkippedMissingDependencies()
+		let response =
+			(await asker.installOrMarkAsSkippedMissingDependencies()) ?? {}
 
 		const installOptions =
-			await asker.askAboutMissingFeatureOptionsIfFeatureIsNotInstalled(
+			(await asker.askAboutMissingFeatureOptionsIfFeatureIsNotInstalled(
 				isInstalled,
 				actionOptions
-			)
+			)) ??
+			actionOptions ??
+			{}
 
-		let answers = await asker.askAboutMissingActionOptions(
-			action,
-			actionOptions
-		)
+		let answers =
+			(await asker.askAboutMissingActionOptions(action, actionOptions)) ??
+			installOptions
 
 		if (!isInstalled) {
-			const ourFeatureResults = await asker.installOurFeature(installOptions)
+			const ourFeatureResults =
+				(await asker.installOurFeature(installOptions)) ?? {}
 			response = merge(response, ourFeatureResults)
 		}
 
-		const executeResults = await originalExecute({
-			...answers,
-			shouldEmitExecuteEvents: false,
-		})
+		let executeResults: FeatureActionResponse = {}
+
+		try {
+			executeResults = await originalExecute({
+				...answers,
+				shouldEmitExecuteEvents: false,
+			})
+		} catch (err) {
+			executeResults.errors = [err]
+		}
 
 		response = merge(response, executeResults)
 
@@ -125,7 +140,11 @@ export default class ActionExecuter {
 			SpruceError
 		)
 
-		response = merge(response, ...willExecutePayloads, ...payloads)
+		response = actionUtil.mergeActionResults(
+			response,
+			...willExecutePayloads,
+			...payloads
+		)
 
 		return response
 	}

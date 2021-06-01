@@ -66,13 +66,13 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		await checker.check(response.files?.[0].path ?? '')
 		await checker.check(this.schemaTypesFile)
 
-		const builderMatch = testUtil.assertsFileByNameInGeneratedFiles(
+		const builderMatch = testUtil.assertFileByNameInGeneratedFiles(
 			'anotherTest.builder.ts',
 			response.files
 		)
 
 		await checker.check(builderMatch)
-		const schemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
+		const schemaMatch = testUtil.assertFileByNameInGeneratedFiles(
 			'anotherTest.schema.ts',
 			response.files
 		)
@@ -87,16 +87,15 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 	protected static async errorsWithBadVersion() {
 		const action = await this.syncSchemasAndGetCreateAction('schemas')
 
-		await assert.doesThrowAsync(
-			() =>
-				action.execute({
-					nameReadable: 'Bad schema version!',
-					namePascal: 'BadSchemaVersion',
-					nameCamel: 'badSchemaVersion',
-					version: 'v1',
-				}),
-			/must be in the form/i
-		)
+		const results = await action.execute({
+			nameReadable: 'Bad schema version!',
+			namePascal: 'BadSchemaVersion',
+			nameCamel: 'badSchemaVersion',
+			version: 'v1',
+		})
+
+		assert.isTruthy(results.errors)
+		assert.doesInclude(results.errors[0].message, /must be in the form/i)
 	}
 
 	@test()
@@ -219,7 +218,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 
 		const createResults = await createPromise
 
-		const schemaMatch = testUtil.assertsFileByNameInGeneratedFiles(
+		const schemaMatch = testUtil.assertFileByNameInGeneratedFiles(
 			'secondSchema.schema.ts',
 			createResults.files
 		)
@@ -235,7 +234,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 	) {
 		assert.isUndefined(response.errors)
 
-		let schemaFile = testUtil.assertsFileByNameInGeneratedFiles(
+		let schemaFile = testUtil.assertFileByNameInGeneratedFiles(
 			expectedFileName,
 			response.files
 		)

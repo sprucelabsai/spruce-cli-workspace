@@ -1,4 +1,3 @@
-import * as mercuryTypes from '@sprucelabs/mercury-types'
 import {
 	Schema,
 	SchemaTemplateItem,
@@ -6,11 +5,7 @@ import {
 	SchemaIdWithVersion,
 	normalizeSchemaToIdWithVersion,
 } from '@sprucelabs/schema'
-import {
-	CORE_NAMESPACE,
-	MERCURY_API_NAMESPACE,
-	namesUtil,
-} from '@sprucelabs/spruce-skill-utils'
+import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import cloneDeep from 'lodash/cloneDeep'
 import isEqual from 'lodash/isEqual'
 import merge from 'lodash/merge'
@@ -173,19 +168,12 @@ export default class SchemaTemplateItemBuilder {
 	}
 
 	private getImportFromForSchema(schema: Schema): string | undefined {
-		const mercuryName = namesUtil.toPascal(MERCURY_API_NAMESPACE)
 		switch (schema.namespace) {
 			case CORE_NAMESPACE:
 				if (this.localNamespace !== CORE_NAMESPACE) {
 					return '@sprucelabs/spruce-core-schemas'
 				}
 				break
-			case mercuryName: {
-				const typeLookup = `${schema.id}Schema` as keyof typeof mercuryTypes
-				if (this.localNamespace !== mercuryName && mercuryTypes[typeLookup]) {
-					return '@sprucelabs/mercury-types'
-				}
-			}
 		}
 
 		return undefined

@@ -71,6 +71,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 		this.cwd = this.freshTmpDir()
 		this.homeDir = this.freshTmpDir()
+
 		this.emitter = undefined
 		this.featureInstaller = undefined
 
@@ -141,7 +142,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return this._ui
 	}
 
-	protected static Emitter() {
+	protected static getEmitter() {
 		if (!this.emitter) {
 			this.emitter = CliGlobalEmitter.Emitter()
 		}
@@ -190,7 +191,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static FeatureFixture(options?: Partial<FeatureFixtureOptions>) {
-		const emitter = options?.emitter ?? this.Emitter()
+		const emitter = options?.emitter ?? this.getEmitter()
 
 		return new FeatureFixture({
 			cwd: this.cwd,
@@ -198,7 +199,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			ui: this.ui,
 			emitter,
 			apiClientFactory: this.MercuryFixture().getApiClientFactory(),
-			featureInstaller: this.FeatureInstaller({ emitter }),
+			featureInstaller: this.getFeatureInstaller({ emitter }),
 			...options,
 		})
 	}
@@ -219,6 +220,24 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		}
 
 		return this.personFixture
+	}
+
+	protected static async skipInstallSkill<
+		E extends () => Promise<FeatureActionResponse>
+	>(
+		execute?: E
+	): Promise<E extends undefined ? undefined : FeatureActionResponse> {
+		const promise = execute?.()
+
+		await this.waitForInput()
+		await this.ui.sendInput('n')
+
+		await this.waitForInput()
+		await this.ui.sendInput('')
+
+		const results = await promise
+
+		return results as any
 	}
 
 	protected static OrganizationFixture() {
@@ -248,11 +267,11 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return diskUtil.resolveHashSprucePath(this.cwd, ...filePath)
 	}
 
-	protected static FeatureInstaller(options?: Partial<FeatureOptions>) {
+	protected static getFeatureInstaller(options?: Partial<FeatureOptions>) {
 		if (!this.featureInstaller) {
 			const serviceFactory = this.ServiceFactory()
 			const storeFactory = this.StoreFactory(options)
-			const emitter = this.Emitter()
+			const emitter = this.getEmitter()
 			const apiClientFactory = this.MercuryFixture().getApiClientFactory()
 
 			const actionExecuter = this.ActionExecuter()
@@ -280,7 +299,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			serviceFactory,
 			homeDir: this.homeDir,
 			apiClientFactory: this.MercuryFixture().getApiClientFactory(),
-			emitter: this.Emitter(),
+			emitter: this.getEmitter(),
 			...options,
 		})
 	}
@@ -302,7 +321,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static async assertIsFeatureInstalled(code: FeatureCode) {
-		const featureInstaller = this.FeatureInstaller()
+		const featureInstaller = this.getFeatureInstaller()
 		const isInstalled = await featureInstaller.isInstalled(code)
 
 		assert.isTrue(isInstalled)
@@ -370,7 +389,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			serviceFactory.Service(this.cwd, 'lint')
 		)
 
-		const emitter = this.Emitter()
+		const emitter = this.getEmitter()
 
 		const actionFactory = new ActionFactory({
 			writerFactory,
@@ -388,7 +407,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			emitter,
 			actionFactory,
 			featureInstallerFactory: () => {
-				return this.FeatureInstaller()
+				return this.getFeatureInstaller()
 			},
 			shouldAutoHandleDependencies: false,
 			...options,

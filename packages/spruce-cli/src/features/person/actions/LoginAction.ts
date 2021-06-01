@@ -33,7 +33,9 @@ export default class LoginAction extends AbstractAction<OptionsSchema> {
 			this.validateAndNormalizeOptions(options)
 		let loggedIn = false
 
-		const client = await this.connectToApi()
+		const client = await this.connectToApi({
+			shouldAuthAsLoggedInPerson: false,
+		})
 
 		const requestPinResults = await client.emit('request-pin::v2020_12_25', {
 			payload: { phone },

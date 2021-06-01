@@ -24,7 +24,7 @@ export default class ImportingSchemaImportsTest extends AbstractSchemaTest {
 		assert.isFalsy(results.errors)
 		assert.isTruthy(results.files)
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			'schemas.types.ts',
 			results.files
 		)

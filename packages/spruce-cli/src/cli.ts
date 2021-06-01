@@ -328,7 +328,7 @@ export default class Cli implements CliInterface {
 			? bootOptions.apiClientFactory
 			: async () => {
 					const client: ApiClient = await MercuryClientFactory.Client({
-						contracts: eventsContracts,
+						contracts: eventsContracts as any,
 						host: bootOptions?.host ?? DEFAULT_HOST,
 						allowSelfSignedCrt: true,
 						...bootOptions,
@@ -337,16 +337,21 @@ export default class Cli implements CliInterface {
 					return client
 			  }
 
+		const {
+			shouldAuthAsCurrentSkill = false,
+			shouldAuthAsLoggedInPerson = true,
+		} = options ?? {}
+
 		const client = await connect()
 
 		let auth: SpruceSchemas.Mercury.v2020_12_25.AuthenticateEmitPayload = {}
-		if (!options) {
-			const person = serviceFactory.Service(cwd, 'auth').getLoggedInPerson()
 
-			if (person) {
-				auth.token = person.token
+		if (options?.skillId && options?.apiKey) {
+			auth = {
+				skillId: options.skillId,
+				apiKey: options.apiKey,
 			}
-		} else if (options.shouldAuthAsCurrentSkill) {
+		} else if (shouldAuthAsCurrentSkill) {
 			const skill = serviceFactory.Service(cwd, 'auth').getCurrentSkill()
 
 			if (skill) {
@@ -355,10 +360,11 @@ export default class Cli implements CliInterface {
 					apiKey: skill.apiKey,
 				}
 			}
-		} else if (options.skillId && options.apiKey) {
-			auth = {
-				skillId: options.skillId,
-				apiKey: options.apiKey,
+		} else if (shouldAuthAsLoggedInPerson) {
+			const person = serviceFactory.Service(cwd, 'auth').getLoggedInPerson()
+
+			if (person) {
+				auth.token = person.token
 			}
 		}
 

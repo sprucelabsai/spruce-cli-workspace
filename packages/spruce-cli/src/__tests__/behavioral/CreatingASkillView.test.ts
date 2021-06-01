@@ -43,7 +43,7 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 			isRoot: true,
 		})
 
-		this.rootSvc = testUtil.assertsFileByNameInGeneratedFiles(
+		this.rootSvc = testUtil.assertFileByNameInGeneratedFiles(
 			'Root.svc.ts',
 			results.files
 		)
@@ -67,14 +67,14 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 
 	@test()
 	protected static async cantCreateTwoRootSvcs() {
-		const err = await assert.doesThrowAsync(() =>
-			this.action.execute({
-				viewType: 'skillView',
-				isRoot: true,
-			})
-		)
+		const results = await this.action.execute({
+			viewType: 'skillView',
+			isRoot: true,
+		})
 
-		errorAssertUtil.assertError(err, 'SKILL_VIEW_EXISTS', {
+		assert.isTruthy(results.errors)
+
+		errorAssertUtil.assertError(results.errors?.[0], 'SKILL_VIEW_EXISTS', {
 			name: 'Root',
 		})
 	}
@@ -96,10 +96,7 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 
 		const results = await promise
 
-		testUtil.assertsFileByNameInGeneratedFiles(
-			'Dashboard.svc.ts',
-			results.files
-		)
+		testUtil.assertFileByNameInGeneratedFiles('Dashboard.svc.ts', results.files)
 
 		this.ui.reset()
 	}
@@ -124,7 +121,7 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 
 		const results = await promise
 
-		this.appointmentsCard = testUtil.assertsFileByNameInGeneratedFiles(
+		this.appointmentsCard = testUtil.assertFileByNameInGeneratedFiles(
 			'AppointmentsCard.vc.ts',
 			results.files
 		)

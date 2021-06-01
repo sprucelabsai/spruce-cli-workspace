@@ -17,13 +17,16 @@ import schemaDiskUtil from '../features/schema/utilities/schemaDisk.utility'
 import SchemaTemplateItemBuilder from './SchemaTemplateItemBuilder'
 
 export default class EventTemplateItemBuilder {
-	public buildTemplateItems(
-		contracts: EventContract[],
-		localNamespace: string
-	): {
+	public buildTemplateItems(options: {
+		contracts: EventContract[]
+		localNamespace?: string
+		eventBuilderFile?: string
+	}): {
 		eventContractTemplateItems: EventContractTemplateItem[]
 		schemaTemplateItems: SchemaTemplateItem[]
 	} {
+		const { contracts, localNamespace, eventBuilderFile } = options
+
 		const eventContractTemplateItems: EventContractTemplateItem[] = []
 		const schemaTemplateItems: SchemaTemplateItem[] = []
 
@@ -31,7 +34,11 @@ export default class EventTemplateItemBuilder {
 			const {
 				schemaTemplateItems: schemaItems,
 				eventContractTemplateItems: contractItems,
-			} = this.buildTemplateItemsForContract(contract, localNamespace)
+			} = this.buildTemplateItemsForContract(
+				contract,
+				localNamespace,
+				eventBuilderFile
+			)
 
 			eventContractTemplateItems.push(...contractItems)
 			schemaTemplateItems.push(...schemaItems)
@@ -77,7 +84,8 @@ export default class EventTemplateItemBuilder {
 
 	private buildTemplateItemsForContract(
 		contract: EventContract,
-		localNamespace: string
+		localNamespace?: string,
+		eventBuilderFile?: string
 	): {
 		eventContractTemplateItems: EventContractTemplateItem[]
 		schemaTemplateItems: SchemaTemplateItem[]
@@ -94,7 +102,8 @@ export default class EventTemplateItemBuilder {
 				this.buildTemplateItemForEventSignature(
 					namedSig,
 					schemaTemplateItems,
-					namedSig.eventNamespace === localNamespace
+					namedSig.eventNamespace === localNamespace,
+					eventBuilderFile
 				)
 
 			eventContractTemplateItems.push(item)
@@ -109,7 +118,8 @@ export default class EventTemplateItemBuilder {
 	private buildTemplateItemForEventSignature(
 		namedSig: NamedEventSignature,
 		schemaTemplateItems: SchemaTemplateItem[],
-		isLocal: boolean
+		isLocal: boolean,
+		eventBuilderFile?: string
 	) {
 		const namespacePascal = this.sigToNamespacePascal(namedSig)
 
@@ -146,13 +156,18 @@ export default class EventTemplateItemBuilder {
 			},
 		}
 
+		item.imports.push({
+			importAs: '{ buildEventContract }',
+			package: eventBuilderFile ?? '@sprucelabs/mercury-types',
+		})
+
 		if (
 			namedSig.signature.listenPermissionContract ||
 			namedSig.signature.emitPermissionContract
 		) {
 			item.imports.push({
 				importAs: '{ buildPermissionContract }',
-				package: '@sprucelabs/mercury-types',
+				package: eventBuilderFile ?? '@sprucelabs/mercury-types',
 			})
 		}
 

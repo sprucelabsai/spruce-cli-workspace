@@ -26,6 +26,27 @@ const syncEventOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptio
 	                defaultValue: "#spruce/schemas",
 	                options: undefined
 	            },
+	            /** Sync only core events. For use in @sprucelabs/mercury-types */
+	            'shouldSyncOnlyCoreEvents': {
+	                label: 'Sync only core events',
+	                type: 'boolean',
+	                hint: 'For use in @sprucelabs/mercury-types',
+	                options: undefined
+	            },
+	            /** Event signature types file. */
+	            'skillEventContractTypesFile': {
+	                label: 'Event signature types file',
+	                type: 'text',
+	                defaultValue: "@sprucelabs/mercury-types/build/types/mercury.types",
+	                options: undefined
+	            },
+	            /** Event builder file. */
+	            'eventBuilderFile': {
+	                label: 'Event builder file',
+	                type: 'text',
+	                defaultValue: "@sprucelabs/mercury-types",
+	                options: undefined
+	            },
 	    }
 }
 

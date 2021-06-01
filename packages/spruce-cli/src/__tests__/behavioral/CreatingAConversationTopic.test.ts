@@ -21,7 +21,7 @@ export default class CreatingAConversationTopicTest extends AbstractCliTest {
 			nameCamel: 'bookAnAppointment',
 		})
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			'bookAnAppointment.topic.ts',
 			results.files
 		)

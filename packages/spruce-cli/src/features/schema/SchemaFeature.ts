@@ -42,22 +42,22 @@ export default class SchemaFeature extends AbstractFeature {
 		super(options)
 
 		void this.emitter.on(
-			'feature.did-execute',
-			this.handleDidExecuteFeature.bind(this)
+			'feature.will-execute',
+			this.handleWillExecute.bind(this)
 		)
 	}
 
-	private async handleDidExecuteFeature(payload: {
+	private async handleWillExecute(payload: {
 		actionCode: string
 		featureCode: string
 	}) {
 		const isSkillInstalled = await this.featureInstaller.isInstalled('schema')
 
-		if (!isSkillInstalled) {
-			return {}
-		}
-
-		if (payload.featureCode === 'skill' && payload.actionCode === 'upgrade') {
+		if (
+			payload.featureCode === 'skill' &&
+			payload.actionCode === 'upgrade' &&
+			isSkillInstalled
+		) {
 			const files = await this.writePlugin()
 			return { files }
 		}

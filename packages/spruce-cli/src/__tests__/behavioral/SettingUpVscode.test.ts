@@ -45,7 +45,7 @@ export default class SettingUpVscodeTest extends AbstractCliTest {
 
 		assert.isFalsy(results.errors)
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			'launch.json',
 			results.files ?? []
 		)

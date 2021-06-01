@@ -175,7 +175,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 			)
 		)
 
-		const orgSchema = testUtil.assertsFileByNameInGeneratedFiles(
+		const orgSchema = testUtil.assertFileByNameInGeneratedFiles(
 			'organization.schema.ts',
 			results.files
 		)
@@ -209,7 +209,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 			)
 		)
 
-		const orgSchema = testUtil.assertsFileByNameInGeneratedFiles(
+		const orgSchema = testUtil.assertFileByNameInGeneratedFiles(
 			'organization.schema.ts',
 			results.files
 		)
@@ -227,7 +227,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 			nameCamel: 'testSchema',
 		})
 
-		const builderPath = testUtil.assertsFileByNameInGeneratedFiles(
+		const builderPath = testUtil.assertFileByNameInGeneratedFiles(
 			'testSchema.builder.ts',
 			createResponse.files
 		)
@@ -240,7 +240,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		const syncResults = await this.Action('schema', 'sync').execute({})
 
-		const testSchema = testUtil.assertsFileByNameInGeneratedFiles(
+		const testSchema = testUtil.assertFileByNameInGeneratedFiles(
 			'test-schema.schema.ts',
 			syncResults.files
 		)
@@ -262,7 +262,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		for (const schema of Object.values(coreSchemas)) {
 			const id = schema.id
-			const match = testUtil.assertsFileByNameInGeneratedFiles(
+			const match = testUtil.assertFileByNameInGeneratedFiles(
 				`${id}.schema.ts`,
 				createResponse.files
 			)
@@ -293,7 +293,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 			nameCamel: 'testSchema',
 		})
 
-		const builderFile = testUtil.assertsFileByNameInGeneratedFiles(
+		const builderFile = testUtil.assertFileByNameInGeneratedFiles(
 			/testSchema\.builder/,
 			createResponse.files
 		)
@@ -301,7 +301,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		// make sure builder is versioned
 		assert.doesInclude(builderFile, version.dirValue)
 
-		const schemaFile = testUtil.assertsFileByNameInGeneratedFiles(
+		const schemaFile = testUtil.assertFileByNameInGeneratedFiles(
 			/testSchema\.schema/,
 			createResponse.files
 		)
@@ -340,10 +340,21 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	}
 
 	@test()
-	protected static async canSyncSchemasWhenOnlyNodeModuleIsInstalled() {
+	protected static async canSyncSchemasWhenOnlyNodeModuleIsInstalledAfterDecliningToInstallSkill() {
 		await this.FeatureFixture().installCachedFeatures('schemasInNodeModule')
 
-		const results = await this.Action('schema', 'sync').execute({})
+		const promise = this.Action('schema', 'sync').execute({})
+
+		await this.waitForInput()
+
+		await this.ui.sendInput('n')
+
+		await this.waitForInput()
+
+		await this.ui.sendInput('')
+
+		const results = await promise
+
 		assert.isFalsy(results.errors)
 		await this.assertValidActionResponseFiles(results)
 	}
@@ -388,7 +399,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	}
 
 	private static async importSchema(results: any, filename: string) {
-		const file = testUtil.assertsFileByNameInGeneratedFiles(
+		const file = testUtil.assertFileByNameInGeneratedFiles(
 			filename,
 			results.files
 		)

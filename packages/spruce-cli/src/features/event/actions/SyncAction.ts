@@ -15,9 +15,9 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 	public invocationMessage = 'Syncing event contracts... 🜒'
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
-		const writer = this.ContractWriter()
+		const builder = this.ContractBuilder()
 
-		const results: FeatureActionResponse = await writer.fetchAndWriteContracts(
+		const results: FeatureActionResponse = await builder.fetchAndWriteContracts(
 			options
 		)
 
@@ -27,12 +27,19 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 			}
 		}
 
+		this.Service('eventSettings').setLastSyncOptions(options)
+
 		const schemaSyncResults = await this.Action('schema', 'sync').execute({})
 
-		return actionUtil.mergeActionResults(schemaSyncResults, results)
+		const mergedResults = actionUtil.mergeActionResults(
+			schemaSyncResults,
+			results
+		)
+
+		return mergedResults
 	}
 
-	private ContractWriter() {
-		return (this.parent as EventFeature).EventContractBuilder()
+	private ContractBuilder() {
+		return (this.parent as EventFeature).getEventContractBuilder()
 	}
 }

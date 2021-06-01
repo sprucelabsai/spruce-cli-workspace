@@ -22,5 +22,6 @@ export default abstract class AbstractSkillTest extends AbstractCliTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
 		this.cwd = this.skillDir
+		this.cli = await this.Cli()
 	}
 }

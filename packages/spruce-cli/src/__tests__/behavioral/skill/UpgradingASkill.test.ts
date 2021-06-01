@@ -162,35 +162,11 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		const results = await this.Action('skill', 'upgrade').execute({})
 
-		testUtil.assertsFileByNameInGeneratedFiles(pluginName, results.files)
+		testUtil.assertFileByNameInGeneratedFiles(pluginName, results.files)
 
 		const updatedContents = diskUtil.readFile(pluginPath)
 
 		assert.isEqual(updatedContents, originalContents)
-	}
-
-	@test()
-	protected static async upgradeSkillEmitsDidUpdateEventAndOtherFeaturesDependenciesUpdate() {
-		const cli = await this.FeatureFixture().installCachedFeatures(
-			'conversation'
-		)
-		const pkg = this.Service('pkg')
-		const path = 'dependencies.@sprucelabs/spruce-conversation-plugin'
-		pkg.unset(path)
-
-		let didHit = false
-
-		await cli.on('skill.did-upgrade', async () => {
-			didHit = true
-		})
-
-		const results = await this.Action('skill', 'upgrade').execute({})
-
-		assert.isFalsy(results.errors)
-
-		assert.isTrue(didHit)
-
-		assert.isTruthy(pkg.get(path))
 	}
 
 	@test()

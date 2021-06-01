@@ -39,7 +39,7 @@ export default class EventStoreTest extends AbstractEventTest {
 	}
 
 	@test()
-	protected static async fetchesEventContracts() {
+	protected static async fetchesCoreEventContracts() {
 		const results = await this.Store('event').fetchEventContracts({
 			localNamespace: 'my-skill',
 		})
@@ -122,7 +122,7 @@ export default class EventStoreTest extends AbstractEventTest {
 
 		assert.isFalsy(results.errors)
 
-		const match = testUtil.assertsFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			`emitPayload.builder.ts`,
 			results.files
 		)

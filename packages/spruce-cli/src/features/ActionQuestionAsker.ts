@@ -24,22 +24,33 @@ type FeatureDependencyWithFeature = FeatureDependency & {
 	feature: AbstractFeature
 }
 
+function s(array: any[]) {
+	return array.length === 1 ? '' : ''
+}
+
+function areIs(array: any[]) {
+	return array.length === 1 ? 'is' : 'are'
+}
+
 export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 	private ui: GraphicsInterface
 	private featureInstaller: FeatureInstaller
 	private actionCode: string
 	private feature: AbstractFeature
+	private shouldAutoHandleDependencies = true
 
 	public constructor(options: {
 		ui: GraphicsInterface
 		featureInstaller: FeatureInstaller
 		actionCode: string
 		feature: AbstractFeature
+		shouldAutoHandleDependencies: boolean
 	}) {
 		this.ui = options.ui
 		this.featureInstaller = options.featureInstaller
 		this.actionCode = options.actionCode
 		this.feature = options.feature
+		this.shouldAutoHandleDependencies = options.shouldAutoHandleDependencies
 	}
 
 	public async installOrMarkAsSkippedMissingDependencies(): Promise<FeatureInstallResponse> {
@@ -128,6 +139,7 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 		options: (Record<string, any> & FeatureCommandExecuteOptions<F>) | undefined
 	) {
 		let installOptions = { ...options }
+
 		if (!isInstalled) {
 			if (this.feature.optionsSchema) {
 				const answers = await this.collectAnswers(
@@ -159,6 +171,14 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 
 		this.ui.renderHero(CLI_HERO)
 		this.ui.startLoading(`Installing ${this.feature.code} feature...`)
+
+		if (!this.shouldAutoHandleDependencies) {
+			throw new SpruceError({
+				code: 'FEATURE_NOT_INSTALLED',
+				featureCode: this.feature.code,
+				friendlyMessage: `You need to install the \`${this.feature.code}\` feature.`,
+			})
+		}
 
 		const installResults = await this.featureInstaller.install({
 			installFeatureDependencies: false,
@@ -244,6 +264,14 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 
 		this.ui.startLoading(`Installing ${feature.nameReadable}...`)
 
+		if (!this.shouldAutoHandleDependencies) {
+			throw new SpruceError({
+				code: 'FEATURE_NOT_INSTALLED',
+				featureCode: this.feature.code,
+				friendlyMessage: `You need to install the \`${this.feature.code}\` feature.`,
+			})
+		}
+
 		const installResults = await this.featureInstaller.install({
 			installFeatureDependencies: false,
 			didUpdateHandler: (message: string) => {
@@ -326,15 +354,17 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 			}
 		})
 
-		const requiredMessage = `I'll need to install ${required.length} feature${
-			required.length === 1 ? '' : 's'
-		}.`
+		const requiredMessage = `I'll need to install ${required.length} feature${s(
+			required
+		)}.`
 
-		const optionalMessage = `there are ${optional.length} optional feature${
-			optional.length === 1 ? '' : 's'
-		} that could be installed.`
+		const optionalMessage = `there ${areIs(optional)} ${
+			optional.length
+		} optional feature${s(optional)} that could be installed.`
 
-		const mixedMessage = `I found ${required.length} required and ${optional.length} optional features to install.`
+		const mixedMessage = `I found ${required.length} required and ${
+			optional.length
+		} optional feature${s(optional)} to install.`
 
 		let message = mixedMessage
 

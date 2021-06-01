@@ -7,7 +7,9 @@ export default class TestingDataStoresTest extends AbstractSkillTest {
 
 	@test()
 	protected static async cantSelectAbstractStoreIfStoreFeatureNotInstalled() {
-		this.cli.getFeature('store').isInstalled = async () => false
+		const storeFeature = this.cli.getFeature('store')
+
+		storeFeature.isInstalled = async () => false
 
 		void this.Action('test', 'create').execute({
 			type: 'behavioral',
@@ -50,7 +52,7 @@ export default class TestingDataStoresTest extends AbstractSkillTest {
 
 		assert.isFalsy(results.errors)
 
-		testUtil.assertsFileByNameInGeneratedFiles(
+		testUtil.assertFileByNameInGeneratedFiles(
 			'CanBookAppointment.test.ts',
 			results.files
 		)
