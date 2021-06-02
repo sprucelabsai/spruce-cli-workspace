@@ -202,6 +202,11 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
 
 	private doWeCareAboutThisFileChanging(path: string) {
 		const ext = pathUtil.extname(path)
+
+		if (path.search('testDirsAndFiles') > -1) {
+			return false
+		}
+
 		if (ext === '.js') {
 			return true
 		}
