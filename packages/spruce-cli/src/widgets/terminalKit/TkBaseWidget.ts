@@ -2,8 +2,8 @@ import { AbstractEventEmitter } from '@sprucelabs/mercury-event-emitter'
 import { EventContract } from '@sprucelabs/mercury-types'
 import { Terminal } from 'terminal-kit'
 import {
-	UniversalWidgetOptions,
 	BaseWidget,
+	UniversalWidgetOptions,
 	WidgetFrame,
 	WidgetFrameCalculated,
 	WidgetPadding,
@@ -27,9 +27,10 @@ export default abstract class TkBaseWidget<Contract extends EventContract = any>
 	protected term: Terminal
 	private id: string | null
 	private children: BaseWidget[] = []
-	protected shouldLockWidthToParent = false
-	protected shouldLockHeightToParent = false
-	protected shouldLockRightToParent = false
+	protected shouldLockWidthWithParent = false
+	protected shouldLockHeightWithParent = false
+	protected shouldLockRightWithParent = false
+	protected shouldLockBottomWithParent = false
 	protected padding: WidgetPadding = {}
 	private frameLockDeltas: {
 		leftDelta: number
@@ -37,12 +38,14 @@ export default abstract class TkBaseWidget<Contract extends EventContract = any>
 		topDelta: number
 		heightDelta: number
 		rightDelta: number
+		bottomDelta: number
 	} = {
 		leftDelta: 0,
 		widthDelta: 0,
 		topDelta: 0,
 		heightDelta: 0,
 		rightDelta: 0,
+		bottomDelta: 0,
 	}
 
 	public constructor(options: TkWidgetOptions) {
@@ -51,9 +54,12 @@ export default abstract class TkBaseWidget<Contract extends EventContract = any>
 		this.parent = options.parent ?? null
 		this.term = options.term
 		this.id = options.id ?? null
-		this.shouldLockHeightToParent = options.shouldLockHeightWithParent ?? false
-		this.shouldLockWidthToParent = options.shouldLockWidthWithParent ?? false
-		this.shouldLockRightToParent = options.shouldLockRightWithParent ?? false
+		this.shouldLockHeightWithParent =
+			options.shouldLockHeightWithParent ?? false
+		this.shouldLockWidthWithParent = options.shouldLockWidthWithParent ?? false
+		this.shouldLockRightWithParent = options.shouldLockRightWithParent ?? false
+		this.shouldLockBottomWithParent =
+			options.shouldLockBottomWithParent ?? false
 
 		this.padding = {
 			left: 0,
@@ -154,21 +160,29 @@ export default abstract class TkBaseWidget<Contract extends EventContract = any>
 		const updatedFrame = this.getFrame()
 		let shouldSetFrame = false
 
-		if (this.shouldLockHeightToParent) {
+		if (this.shouldLockHeightWithParent) {
 			shouldSetFrame = true
 			updatedFrame.height =
 				parentFrame.height - this.frameLockDeltas.heightDelta
 		}
 
-		if (this.shouldLockWidthToParent) {
+		if (this.shouldLockWidthWithParent) {
 			shouldSetFrame = true
 			updatedFrame.width = parentFrame.width - this.frameLockDeltas.widthDelta
 		}
 
-		if (this.shouldLockRightToParent) {
+		if (this.shouldLockRightWithParent) {
 			shouldSetFrame = true
 			updatedFrame.left =
 				parentFrame.width - this.frameLockDeltas.rightDelta - updatedFrame.width
+		}
+
+		if (this.shouldLockBottomWithParent) {
+			shouldSetFrame = true
+			updatedFrame.top =
+				parentFrame.height -
+				updatedFrame.height -
+				this.frameLockDeltas.bottomDelta
 		}
 
 		if (shouldSetFrame) {
@@ -198,19 +212,24 @@ export default abstract class TkBaseWidget<Contract extends EventContract = any>
 		let topDelta = 0
 		let heightDelta = 0
 		let rightDelta = 0
+		let bottomDelta = 0
 
-		if (this.shouldLockWidthToParent) {
+		if (this.shouldLockWidthWithParent) {
 			leftDelta = frame.left
 			widthDelta = parentFrame.width - frame.width
 		}
 
-		if (this.shouldLockHeightToParent) {
+		if (this.shouldLockHeightWithParent) {
 			topDelta = frame.top
 			heightDelta = parentFrame.height - frame.height
 		}
 
-		if (this.shouldLockRightToParent) {
+		if (this.shouldLockRightWithParent) {
 			rightDelta = frame.left + frame.width - parentFrame.width
+		}
+
+		if (this.shouldLockBottomWithParent) {
+			bottomDelta = parentFrame.height - (frame.top + frame.height)
 		}
 
 		this.frameLockDeltas = {
@@ -219,6 +238,7 @@ export default abstract class TkBaseWidget<Contract extends EventContract = any>
 			topDelta,
 			heightDelta,
 			rightDelta,
+			bottomDelta,
 		}
 	}
 }

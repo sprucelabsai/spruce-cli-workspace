@@ -41,7 +41,7 @@ export default class TestReporter {
 	private started = false
 	private table?: any
 	private bar!: ProgressBarWidget
-	private layout!: LayoutWidget
+	private bottomLayout!: LayoutWidget
 	private testLog!: TextWidget
 	private errorLog?: TextWidget
 	private errorLogItemGenerator: TestLogItemGenerator
@@ -51,6 +51,7 @@ export default class TestReporter {
 	}
 	private updateInterval?: any
 	private menu!: MenuBarWidget
+	private statusBar!: TextWidget
 	private window!: WindowWidget
 	private widgetFactory: WidgetFactory
 	private selectTestPopup?: PopupWidget
@@ -195,6 +196,7 @@ export default class TestReporter {
 		this.dropInProgressBar()
 		this.dropInMenu()
 		this.dropInBottomLayout()
+		this.dropInStatusBar()
 		this.dropInTestLog()
 		this.dropInFilterControls()
 
@@ -212,7 +214,6 @@ export default class TestReporter {
 
 	private handleWindowResize() {
 		this.updateOrientation()
-		throw new Error('resize')
 	}
 
 	private updateOrientation() {
@@ -233,7 +234,7 @@ export default class TestReporter {
 			shouldLockWidthWithParent: true,
 			items: [
 				{
-					label: 'Restart    ',
+					label: 'Restart   ',
 					value: 'restart',
 				},
 				{
@@ -269,28 +270,29 @@ export default class TestReporter {
 
 		this.updateMenuLabels()
 		this.closeSelectTestPopup()
-		this.layout.updateLayout()
+		this.bottomLayout.updateLayout()
 
 		if (status === 'ready') {
-			this.bar.setLabel('Loading...')
+			this.setStatusLabel('Starting...')
 		} else if (this.status === 'stopped') {
 			this.refreshResults()
+			this.setStatusLabel('')
+		} else if (this.status === 'running') {
+			this.setStatusLabel('Running tests...')
 		}
 	}
 
 	private updateMenuLabels() {
-		let restartLabel = 'Stopped ^#^r › ^'
+		let restartLabel = 'Start ^#^r › ^'
 		switch (this.status) {
 			case 'running':
-				restartLabel = 'Running ^k^#^g › ^'
+				restartLabel = 'Stop  ^k^#^g › ^'
 				break
 			case 'stopped':
-				restartLabel = `${
-					this.lastResults.totalTestFiles === 0 ? ' Start ' : 'Stopped'
-				} ^w^#^r › ^`
+				restartLabel = `Start ^w^#^r › ^`
 				break
 			case 'ready':
-				restartLabel = 'Booting ^#^K › ^'
+				restartLabel = 'Booting^#^K › ^'
 				break
 		}
 
@@ -346,7 +348,7 @@ export default class TestReporter {
 	}
 
 	private dropInTestLog() {
-		const parent = this.layout.getChildById('results')
+		const parent = this.bottomLayout.getChildById('results')
 
 		if (parent) {
 			this.testLog = this.widgetFactory.Widget('text', {
@@ -518,11 +520,11 @@ export default class TestReporter {
 	}
 
 	private dropInBottomLayout() {
-		this.layout = this.widgetFactory.Widget('layout', {
+		this.bottomLayout = this.widgetFactory.Widget('layout', {
 			parent: this.window,
 			width: '100%',
 			top: 4,
-			height: this.window.getFrame().height - 4,
+			height: this.window.getFrame().height - 5,
 			shouldLockWidthWithParent: true,
 			shouldLockHeightWithParent: true,
 			rows: [
@@ -536,6 +538,18 @@ export default class TestReporter {
 					],
 				},
 			],
+		})
+	}
+
+	private dropInStatusBar() {
+		this.statusBar = this.widgetFactory.Widget('text', {
+			parent: this.window,
+			top: this.window.getFrame().height - 1,
+			width: '100%',
+			shouldLockWidthWithParent: true,
+			shouldLockBottomWithParent: true,
+			backgroundColor: 'yellow',
+			text: '...',
 		})
 	}
 
@@ -636,23 +650,27 @@ export default class TestReporter {
 	private dropInErrorLog() {
 		this.orientationWhenErrorLogWasShown = this.orientation
 
-		if (this.layout.getRows().length === 1) {
+		if (this.bottomLayout.getRows().length === 1) {
 			if (this.orientation === 'portrait') {
-				this.layout.addRow({
+				this.bottomLayout.addRow({
 					id: 'row_2',
 					columns: [{ id: 'errors', width: '100%' }],
 				})
 
-				this.layout.setRowHeight(0, '50%')
-				this.layout.setRowHeight(1, '50%')
+				this.bottomLayout.setRowHeight(0, '50%')
+				this.bottomLayout.setRowHeight(1, '50%')
 			} else {
-				this.layout.addColumn(0, { id: 'errors', width: '50%' })
-				this.layout.setColumnWidth({ rowIdx: 0, columnIdx: 0, width: '50%' })
+				this.bottomLayout.addColumn(0, { id: 'errors', width: '50%' })
+				this.bottomLayout.setColumnWidth({
+					rowIdx: 0,
+					columnIdx: 0,
+					width: '50%',
+				})
 			}
 
-			this.layout.updateLayout()
+			this.bottomLayout.updateLayout()
 
-			const cell = this.layout.getChildById('errors')
+			const cell = this.bottomLayout.getChildById('errors')
 
 			if (!cell) {
 				throw new Error('Pulling child error')
@@ -677,13 +695,17 @@ export default class TestReporter {
 			this.errorLog = undefined
 
 			if (this.orientationWhenErrorLogWasShown === 'landscape') {
-				this.layout.removeColumn(0, 1)
-				this.layout.setColumnWidth({ rowIdx: 0, columnIdx: 0, width: '100%' })
+				this.bottomLayout.removeColumn(0, 1)
+				this.bottomLayout.setColumnWidth({
+					rowIdx: 0,
+					columnIdx: 0,
+					width: '100%',
+				})
 			} else {
-				this.layout.removeRow(1)
-				this.layout.setRowHeight(0, '100%')
+				this.bottomLayout.removeRow(1)
+				this.bottomLayout.setRowHeight(0, '100%')
 			}
-			this.layout.updateLayout()
+			this.bottomLayout.updateLayout()
 		}
 	}
 
@@ -795,6 +817,10 @@ export default class TestReporter {
 		}
 		this.destroyErrorLog()
 		this.errorLogItemGenerator.resetStartTimes()
+	}
+
+	public setStatusLabel(text: string) {
+		this.statusBar.setText(text)
 	}
 
 	public appendError(message: string) {

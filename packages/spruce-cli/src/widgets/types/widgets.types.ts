@@ -26,6 +26,24 @@ export interface BaseWidget<Contract extends EventContract = any>
 	removeChild(child: BaseWidget): void
 }
 
+export type Color =
+	| 'black'
+	| 'red'
+	| 'green'
+	| 'yellow'
+	| 'blue'
+	| 'magenta'
+	| 'cyan'
+	| 'white'
+	| 'gray'
+	| 'brightRed'
+	| 'brightGreen'
+	| 'brightYellow'
+	| 'brightBlue'
+	| 'brightMagenta'
+	| 'brightCyan'
+	| 'brightWhite'
+
 export interface UniversalWidgetOptions {
 	id?: string
 	width?: WidgetFrameAttribute
@@ -37,7 +55,9 @@ export interface UniversalWidgetOptions {
 	shouldLockWidthWithParent?: boolean
 	shouldLockHeightWithParent?: boolean
 	shouldLockRightWithParent?: boolean
+	shouldLockBottomWithParent?: boolean
 	eventContract?: EventContract
+	backgroundColor?: Color
 }
 
 export interface WidgetFrame {

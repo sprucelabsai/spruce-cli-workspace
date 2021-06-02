@@ -19,8 +19,15 @@ const termKitUtil = {
 		const ignores = [
 			'shouldLockHeightWithParent',
 			'shouldLockWidthWithParent',
+			'shouldLockBottomWithParent',
 			'term',
 		]
+
+		if (options.backgroundColor) {
+			mapped.attr = {
+				bgColor: options.backgroundColor,
+			}
+		}
 
 		for (const key of keys) {
 			const item = options[key]

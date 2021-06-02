@@ -35,7 +35,7 @@ export default class TkTextWidget extends TkBaseWidget implements TextWidget {
 			hScrollBar: enableScroll && !rest.wordWrap,
 			content: text,
 			wordWrap: true,
-			...rest,
+			...termKitUtil.mapWidgetOptionsToTermKitOptions(rest),
 			...frame,
 		})
 
