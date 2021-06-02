@@ -159,12 +159,10 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
 		const filesWeCareAbout: string[] = []
 
 		for (const change of changes) {
-			const { path } = change.values
+			const { path, name } = change.values
 
 			if (this.doWeCareAboutThisFileChanging(path)) {
-				this.testReporter?.setStatusLabel(
-					`File change: ${JSON.stringify(path)}`
-				)
+				this.testReporter?.setStatusLabel(`File change: ${name}`)
 				shouldRestart = true
 				filesWeCareAbout.push(path)
 				break
