@@ -41,7 +41,7 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 		await this.Service('typeChecker').check(path)
 
 		const contents = diskUtil.readFile(path)
-		assert.doesInclude(contents, `import '#spruce/stores/stores.types'`)
+		assert.doesInclude(contents, `import '` + `#spruce/stores/stores.types'`)
 	}
 
 	@test()
