@@ -33,6 +33,8 @@ const onlyInstall = testSkillsToCache?.split(',').map((t) => t.trim()) as
 const shouldRunSequentially = !!process.argv.find(
 	(a) => a === '--shouldRunSequentially=true' || a === '--shouldRunSequentially'
 )
+const maxSimultaneous = process.env.MAX_SIMULTANEOUS_SKILL_CACHERS ?? 5
+let totalSimultaneous = 0
 let progressInterval: any
 
 const doesSupportColor = TerminalInterface.doesSupportColor()
@@ -105,7 +107,12 @@ async function run() {
 		}
 	} else {
 		const promises = testKeys.map(async (cacheKey) => {
+			while (totalSimultaneous >= maxSimultaneous) {
+				await new Promise((resolve) => setTimeout(resolve, 1000))
+			}
+			totalSimultaneous++
 			await cacheOrSkip(cacheKey)
+			totalSimultaneous--
 		})
 		await Promise.all(promises)
 	}

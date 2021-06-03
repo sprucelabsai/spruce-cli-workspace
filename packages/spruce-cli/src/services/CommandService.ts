@@ -183,7 +183,7 @@ export default class CommandService {
 		command: string | RegExp,
 		response: MockResponse
 	) {
-		this.mockResponses.push({
+		this.mockResponses.unshift({
 			command,
 			response,
 		})
