@@ -1,10 +1,21 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { CliInterface } from '../../../cli'
+import CommandService from '../../../services/CommandService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import testUtil from '../../../tests/utilities/test.utility'
 import { GeneratedFile } from '../../../types/cli.types'
 export default class UpgradingASkillTest extends AbstractCliTest {
+	protected static async beforeEach() {
+		await super.beforeEach()
+		CommandService.setMockResponse(new RegExp(/yarn rebuild/gis), {
+			code: 0,
+		})
+		CommandService.setMockResponse(new RegExp(/npm.*?add .*?/gis), {
+			code: 0,
+		})
+	}
+
 	@test()
 	protected static async forceEverythingUpgradeOverwritesWhatHasChanged() {
 		const cli = await this.installAndBreakSkill('skills')
@@ -51,7 +62,6 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 			if (upgradeMode === 'forceRequiredSkipRest') {
 				const passedHealthCheck = await cli.checkHealth()
-
 				assert.isEqualDeep(passedHealthCheck, { skill: { status: 'passed' } })
 			}
 

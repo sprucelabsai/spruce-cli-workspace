@@ -19,7 +19,10 @@ export default class CommandService {
 	public cwd: string
 	private activeChildProcess: ChildProcess | undefined
 	private ignoreCloseErrors = false
-	private static mockResponses: Record<string, MockResponse> = {}
+	private static mockResponses: {
+		command: string | RegExp
+		response: MockResponse
+	}[] = []
 	private static commandsRunCapturedByMockResponses: string[] = []
 
 	public constructor(cwd: string) {
@@ -51,8 +54,8 @@ export default class CommandService {
 			throw new Error('Bad params sent to command service')
 		}
 
-		const mockKey = `${executable} ${args.join(' ')}`.trim()
-		const mockResponse = CommandService.mockResponses[mockKey]
+		const { mockResponse, mockKey } = this.getMockResponse(executable, args)
+
 		if (mockResponse) {
 			CommandService.commandsRunCapturedByMockResponses.push(mockKey)
 			if (mockResponse.code !== 0) {
@@ -165,7 +168,28 @@ export default class CommandService {
 		return this.activeChildProcess?.pid
 	}
 
-	public static setMockResponse(command: string, response: MockResponse) {
-		this.mockResponses[command] = response
+	private getMockResponse(executable: string, args: string[]) {
+		const mockKey = `${executable} ${args.join(' ')}`.trim()
+		const match = CommandService.mockResponses.find((r) =>
+			r.command instanceof RegExp
+				? mockKey.search(r.command) > -1
+				: r.command === mockKey
+		)
+
+		return { mockResponse: match?.response, mockKey }
+	}
+
+	public static setMockResponse(
+		command: string | RegExp,
+		response: MockResponse
+	) {
+		this.mockResponses.push({
+			command,
+			response,
+		})
+	}
+
+	public static clearMockResponses() {
+		this.mockResponses = []
 	}
 }
