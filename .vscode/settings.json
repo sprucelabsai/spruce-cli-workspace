@@ -47,7 +47,8 @@
 			".jsx",
 			".ts",
 			".tsx"
-		]
+		],
+		"cache": true
 	},
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"editor.codeActionsOnSave": {

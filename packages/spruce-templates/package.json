@@ -3,7 +3,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"version": "14.8.0",
+	"version": "14.8.1",
 	"files": [
 		"build/**/*",
 		"tsconfig.json",
@@ -42,8 +42,8 @@
 		"build.resolve-paths": "resolve-path-aliases --target build",
 		"build.tsc": "tsc",
 		"clean": "rm -rf build/",
-		"fix.lint": "eslint --fix '**/*.ts'",
-		"lint": "eslint '**/*.ts' && tsc -p . --noEmit",
+		"fix.lint": "eslint --cache --fix '**/*.ts'",
+		"lint": "eslint --cache '**/*.ts' && tsc -p . --noEmit",
 		"local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS",
 		"rebuild": "cd ../ && yarn rebuild",
 		"release": "semantic-release",

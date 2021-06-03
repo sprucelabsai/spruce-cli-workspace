@@ -8,7 +8,7 @@
 		"namespace": "spruce-cli"
 	},
 	"license": "MIT",
-	"version": "14.8.0",
+	"version": "14.8.1",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -43,8 +43,8 @@
 		"clean.all": "rm -rf build/ && rm -rf node_modules/ && rm -f yarn.lock && yarn clean.cache",
 		"clean.cache": "rm -rf src/.spruce/tmp && node build/tests/cleanTestCache && echo '******** TEST CACHE CLEARED ********'",
 		"clean.cache.disabled": "echo 'CLEAN.CACHE DISABLED'",
-		"fix.lint": "eslint --fix '**/*.ts'",
-		"lint": "eslint '**/*.ts'",
+		"fix.lint": "eslint --cache --fix '**/*.ts'",
+		"lint": "eslint --cache '**/*.ts'",
 		"lint.tsc": "tsc --noEmit && echo 'spruce-cli PASS'",
 		"local": "DEBUG=@sprucelabs/cli~debug node --inspect=5200 . $COMMANDS ; echo 'DONE'",
 		"rebuild": "cd ../ && yarn rebuild",
@@ -69,7 +69,7 @@
 		"@sprucelabs/spruce-core-schemas": "latest",
 		"@sprucelabs/spruce-event-utils": "latest",
 		"@sprucelabs/spruce-skill-utils": "latest",
-		"@sprucelabs/spruce-templates": "^14.8.0",
+		"@sprucelabs/spruce-templates": "^14.8.1",
 		"cfonts": "^2.9.2",
 		"chalk": "^4.1.1",
 		"chokidar": "^3.5.1",
