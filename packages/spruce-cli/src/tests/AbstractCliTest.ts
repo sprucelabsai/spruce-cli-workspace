@@ -28,6 +28,7 @@ import PersonFixture from '../fixtures/PersonFixture'
 import SkillFixture from '../fixtures/SkillFixture'
 import CliGlobalEmitter, { GlobalEmitter } from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
+import CommandService from '../services/CommandService'
 import ImportService from '../services/ImportService'
 import ServiceFactory, { Service, ServiceMap } from '../services/ServiceFactory'
 import StoreFactory, {
@@ -87,6 +88,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		ImportService.clearCache()
 		SkillStore.clearCurrentSkill()
 		EventStore.clearCache()
+		CommandService.clearMockResponses()
 	}
 
 	protected static async afterEach() {
