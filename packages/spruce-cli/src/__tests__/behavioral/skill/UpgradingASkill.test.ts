@@ -1,4 +1,3 @@
-import fsUtil from 'fs'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { CliInterface } from '../../../cli'

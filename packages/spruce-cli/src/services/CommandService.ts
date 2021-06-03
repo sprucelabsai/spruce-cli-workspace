@@ -157,7 +157,7 @@ export default class CommandService {
 	public kill = () => {
 		if (this.activeChildProcess) {
 			this.ignoreCloseErrors = true
-			treeKill(this.activeChildProcess?.pid, 'SIGTERM')
+			treeKill(this.activeChildProcess.pid, 'SIGTERM')
 		}
 	}
 
