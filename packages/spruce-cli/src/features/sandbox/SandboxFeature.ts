@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
-import { FeatureCode } from '../features.types'
+import { FeatureActionOptions, FeatureCode } from '../features.types'
 
 declare module '../../features/features.types' {
 	interface FeatureMap {
@@ -20,10 +20,17 @@ export default class SandboxFeature extends AbstractFeature {
 		},
 	]
 	public packageDependencies = []
-
 	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
-	public isInstalled = async (): Promise<boolean> => {
-		return this.featureInstaller.isInstalled('event')
+	public constructor(options: FeatureActionOptions) {
+		super(options)
+
+		void this.emitter.on('feature.did-execute', async (payload) => {
+			if (payload.featureCode === 'skill' && payload.actionCode === 'upgrade') {
+				return this.Action('sandbox', 'setup').execute({})
+			}
+
+			return {}
+		})
 	}
 }

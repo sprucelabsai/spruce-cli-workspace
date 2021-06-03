@@ -1183,6 +1183,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'listenerDestinationDir'?: string| undefined | null
 				/** Version. Set a version yourself instead of letting me generate one for you */
 				'version'?: string| undefined | null
+				/** Replace existing listener. Only applies to skill events */
+				'shouldReplaceExisting'?: boolean| undefined | null
 		}
 
 		interface ListenEventOptionsSchema extends SpruceSchema.Schema {
@@ -1255,6 +1257,13 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                type: 'text',
 			                isPrivate: true,
 			                hint: 'Set a version yourself instead of letting me generate one for you',
+			                options: undefined
+			            },
+			            /** Replace existing listener. Only applies to skill events */
+			            'shouldReplaceExisting': {
+			                label: 'Replace existing listener',
+			                type: 'boolean',
+			                hint: 'Only applies to skill events',
 			                options: undefined
 			            },
 			    }

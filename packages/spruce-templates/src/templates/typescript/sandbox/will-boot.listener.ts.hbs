@@ -4,8 +4,8 @@ import {
 	SpruceEventResponse,
 	eventResponseUtil,
 } from '@sprucelabs/spruce-event-utils'
-import SpruceError from '../../errors/SpruceError'
 import { EnvService } from '@sprucelabs/spruce-skill-utils'
+import SpruceError from '../../errors/SpruceError'
 
 export default async (event: SpruceEvent): SpruceEventResponse => {
 	const sandboxNumber = process.env.SANDBOX_DEMO_NUMBER
@@ -19,8 +19,10 @@ export default async (event: SpruceEvent): SpruceEventResponse => {
 
 		const env = new EnvService(event.skill.rootDir)
 
-		process.env.SKILL_ID = (env.get('SKILL_ID') ?? process.env.SKILL_ID) as string
-		process.env.SKILL_API_KEY = (env.get('SKILL_API_KEY') ?? process.env.SKILL_API_KEY) as string
+		process.env.SKILL_ID = (env.get('SKILL_ID') ??
+			process.env.SKILL_ID) as string
+		process.env.SKILL_API_KEY = (env.get('SKILL_API_KEY') ??
+			process.env.SKILL_API_KEY) as string
 
 		try {
 			await events.connectToApi({ shouldWaitForWillBoot: false })
@@ -28,39 +30,36 @@ export default async (event: SpruceEvent): SpruceEventResponse => {
 			// eslint-disable-next-line no-empty
 		} catch {}
 
-		
 		log.warn('It looks like sandbox was reset. Re-registering.')
-		
-		const name = process.env.SKILL_NAME
-		const slug = process.env.SKILL_SLUG
-		
+
+		const name = process.env.SKILL_NAME as string
+		const slug = process.env.SKILL_SLUG as string
+
 		assertRequiredParams(name, slug)
-		
+
 		delete process.env.SKILL_ID
 		delete process.env.SKILL_API_KEY
-		
+
 		const client = await events.connectToApi({ shouldWaitForWillBoot: false })
-		
+
 		const requestResults = await client.emit('request-pin::v2020_12_25', {
 			payload: {
 				phone: sandboxNumber,
 			},
 		})
-		
-		
-		const { challenge } = eventResponseUtil.getFirstResponseOrThrow(
-			requestResults
-		)
-		
+
+		const { challenge } =
+			eventResponseUtil.getFirstResponseOrThrow(requestResults)
+
 		const confirmResults = await client.emit('confirm-pin::v2020_12_25', {
 			payload: {
 				challenge,
 				pin: sandboxNumber.substr(-4),
 			},
 		})
-		
+
 		eventResponseUtil.getFirstResponseOrThrow(confirmResults)
-		
+
 		const results = await client.emit('register-skill::v2020_12_25', {
 			payload: {
 				name,
@@ -68,22 +67,21 @@ export default async (event: SpruceEvent): SpruceEventResponse => {
 				slug,
 			},
 		})
-		
+
 		const { skill } = eventResponseUtil.getFirstResponseOrThrow(results)
-		
+
 		process.env.SKILL_ID = skill.id
 		process.env.SKILL_API_KEY = skill.apiKey
-		
+
 		await client.emit(`logout::v2020_12_25`)
-		
+
 		await client.authenticate({
 			skillId: skill.id,
 			apiKey: skill.apiKey,
 		})
-		
+
 		env.set('SKILL_ID', skill.id)
 		env.set('SKILL_API_KEY', skill.apiKey)
-
 	}
 
 	return

@@ -202,6 +202,24 @@
 				"code": "event"
 			}
 		],
+		"sandbox": [
+			{
+				"code": "skill",
+				"options": {
+					"name": "testing sandbox",
+					"description": "this too, is a great test!"
+				}
+			},
+			{
+				"code": "schema"
+			},
+			{
+				"code": "event"
+			},
+			{
+				"code": "sandbox"
+			}
+		],
 		"conversation": [
 			{
 				"code": "skill",
@@ -218,6 +236,27 @@
 			},
 			{
 				"code": "conversation"
+			}
+		],
+		"conversation-with-sandbox": [
+			{
+				"code": "skill",
+				"options": {
+					"name": "testing conversations",
+					"description": "this too, is a great test!"
+				}
+			},
+			{
+				"code": "schema"
+			},
+			{
+				"code": "event"
+			},
+			{
+				"code": "conversation"
+			},
+			{
+				"code": "sandbox"
 			}
 		],
 		"errors": [

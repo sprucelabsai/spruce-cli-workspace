@@ -43,7 +43,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 	@test()
 	protected static async writesWillBootListener() {
-		await this.FeatureFixture().installCachedFeatures('events')
+		await this.FeatureFixture().installCachedFeatures('sandbox')
 		const results = await this.Action('sandbox', 'setup').execute({})
 
 		assert.isFalsy(results.errors)
@@ -158,7 +158,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 	@test()
 	protected static async canReRegisterAndThenRegisterConversationsWithoutCrash() {
-		await this.installAndSetupForSandbox('conversation')
+		await this.installAndSetupForSandbox('conversation-with-sandbox')
 
 		await this.SkillFixture().registerCurrentSkill({
 			name: 'Conversation test',
@@ -176,7 +176,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 		boot.meta?.kill()
 	}
 
-	private static async installAndSetupForSandbox(cacheKey = 'events') {
+	private static async installAndSetupForSandbox(cacheKey = 'sandbox') {
 		const client = await this.MercuryFixture().connectToApi()
 
 		const cli = await this.FeatureFixture().installCachedFeatures(cacheKey)

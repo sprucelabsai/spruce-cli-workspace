@@ -286,10 +286,10 @@ export default class TestReporter {
 		let restartLabel = 'Start ^#^r › ^'
 		switch (this.status) {
 			case 'running':
-				restartLabel = 'Stop  ^k^#^g › ^'
+				restartLabel = 'Stop   ^k^#^g › ^'
 				break
 			case 'stopped':
-				restartLabel = `Start ^w^#^r › ^`
+				restartLabel = `Start  ^w^#^r › ^`
 				break
 			case 'ready':
 				restartLabel = 'Booting^#^K › ^'

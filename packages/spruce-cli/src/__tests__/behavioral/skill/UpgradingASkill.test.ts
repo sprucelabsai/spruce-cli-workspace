@@ -1,3 +1,4 @@
+import fsUtil from 'fs'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { CliInterface } from '../../../cli'
@@ -309,6 +310,24 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		await this.Action('skill', 'upgrade').execute({})
 
 		assert.isEqual(pkg.get(['scripts', 'taco']), 'bravo')
+	}
+
+	@test()
+	protected static async upgradingSkillWithSandboxUpgradesTheListener() {
+		await this.FeatureFixture().installCachedFeatures('sandbox')
+		const results = await this.Action('sandbox', 'setup').execute({})
+		const match = testUtil.assertFileByNameInGeneratedFiles(
+			/will-boot/,
+			results.files
+		)
+
+		const originalContents = diskUtil.readFile(match)
+		diskUtil.writeFile(match, 'broken')
+
+		await this.Action('skill', 'upgrade').execute({})
+
+		const newContents = diskUtil.readFile(match)
+		assert.isEqual(originalContents, newContents)
 	}
 
 	private static async installAndBreakSkill(cacheKey: string) {
