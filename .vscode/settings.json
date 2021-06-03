@@ -21,6 +21,7 @@
 		"typescript",
 		"typescriptreact"
 	],
+	"eslint.lintTask.options": "--cache",
 	"[javascript]": {
 		"editor.formatOnSave": false
 	},
