@@ -185,7 +185,7 @@ export default class EventStore extends AbstractStore {
 		})
 
 		if (Object.keys(eventSignatures).length > 0) {
-			return eventContractCleanerUtil.cleanPayloads({
+			return eventContractCleanerUtil.cleanPayloadsAndPermissions({
 				eventSignatures,
 			})
 		}

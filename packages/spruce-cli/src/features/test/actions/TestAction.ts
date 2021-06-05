@@ -162,7 +162,7 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
 			const { path, name } = change.values
 
 			if (this.doWeCareAboutThisFileChanging(path)) {
-				this.testReporter?.setStatusLabel(`File change: ${name}`)
+				this.testReporter?.setStatusLabel(`Built file: ${name}`)
 				shouldRestart = true
 				filesWeCareAbout.push(path)
 				break

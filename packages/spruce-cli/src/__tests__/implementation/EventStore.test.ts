@@ -141,6 +141,40 @@ export default class EventStoreTest extends AbstractEventTest {
 		})
 	}
 
+	@test.only()
+	protected static async badLocalSignature() {
+		await this.FeatureFixture().installCachedFeatures('events')
+
+		const skill = await this.SkillFixture().registerCurrentSkill({
+			name: 'my new skill',
+		})
+
+		const results = await this.createAction.execute({
+			nameReadable: EVENT_NAME_READABLE,
+			nameKebab: EVENT_NAME,
+			nameCamel: EVENT_CAMEL,
+		})
+
+		assert.isFalsy(results.errors)
+
+		const match = testUtil.assertFileByNameInGeneratedFiles(
+			`event.options.ts`,
+			results.files
+		)
+
+		diskUtil.writeFile(match, 'export default {waka: true}')
+
+		const err = await assert.doesThrowAsync(() =>
+			this.Store('event').loadLocalContract(skill.slug)
+		)
+
+		errorAssertUtil.assertError(err, 'INVALID_EVENT_CONTRACT', {
+			fullyQualifiedEventName: `${skill.slug}.my-fantastically-amazing-event::${
+				versionUtil.generateVersion().constValue
+			}`,
+		})
+	}
+
 	@test()
 	protected static async mixesInLocalContracts() {
 		await this.FeatureFixture().installCachedFeatures('events')

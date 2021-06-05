@@ -1,12 +1,13 @@
-import { EventContract } from '@sprucelabs/mercury-types'
+import { EventContract, validateEventContract } from '@sprucelabs/mercury-types'
 import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
 
 export const eventContractCleanerUtil = {
-	cleanPayloads(contract: EventContract): EventContract {
+	cleanPayloadsAndPermissions(contract: EventContract): EventContract {
 		const cleaned: EventContract = {
 			eventSignatures: {},
 		}
 
+		validateEventContract(contract)
 		const signatures = eventContractUtil.getNamedEventSignatures(contract)
 
 		for (const sig of signatures) {
@@ -30,6 +31,20 @@ export const eventContractCleanerUtil = {
 				Object.keys(cleanedSig.responsePayloadSchema?.fields).length === 0
 			) {
 				delete cleanedSig.responsePayloadSchema
+			}
+
+			if (
+				cleanedSig.emitPermissionContract &&
+				cleanedSig.emitPermissionContract.permissions.length === 0
+			) {
+				delete cleanedSig.emitPermissionContract
+			}
+
+			if (
+				cleanedSig.listenPermissionContract &&
+				cleanedSig.listenPermissionContract.permissions.length === 0
+			) {
+				delete cleanedSig.listenPermissionContract
 			}
 
 			cleaned.eventSignatures[sig.fullyQualifiedEventName] = cleanedSig
