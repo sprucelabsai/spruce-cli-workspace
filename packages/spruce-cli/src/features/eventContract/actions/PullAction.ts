@@ -26,20 +26,17 @@ export default class PullAction extends AbstractAction<PullOptionsSchema> {
 		let destination = diskUtil.resolvePath(this.cwd, filename)
 		let buildEventContractImport = `import { buildEventContract } from '@sprucelabs/mercury-types'`
 
-		try {
-			const pkg = this.Service('pkg')
-			const name = pkg.get('name')
+		const contents = `${buildEventContractImport}
+const eventContracts = [${contracts
+			.map((c) => `buildEventContract(${JSON.stringify(c, null, 2)})`)
+			.join(',\n')}] as const
 
-			if (name === '@sprucelabs/mercury-types') {
-				destination = diskUtil.resolvePath(this.cwd, 'src', filename)
-				buildEventContractImport = `import buildEventContract from './utilities/buildEventContract'`
-			}
-			// eslint-disable-next-line no-empty
-		} catch {}
 
-		const contents = `${buildEventContractImport}\n\nconst coreEventContract = buildEventContract(${JSON.stringify(
-			contracts[0]
-		)})\n\nconst coreEventContracts = [coreEventContract]\n\nexport default coreEventContracts\n\nexport type CoreEventContract = typeof coreEventContract`
+export default eventContracts
+export type CoreEventContract = ${contracts
+			.map((_, idx) => `typeof eventContracts[${idx}]`)
+			.join(' & ')}
+`
 
 		const action = diskUtil.doesFileExist(destination) ? 'updated' : 'generated'
 

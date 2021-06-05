@@ -1,3 +1,4 @@
+import { EventContract } from '@sprucelabs/mercury-types'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { CliInterface } from '../../../cli'
@@ -22,7 +23,7 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 	}
 
 	@test()
-	protected static async generatesContractAtCwdWhenInNormalModule() {
+	protected static async generatesContractAtCwd() {
 		const results = await this.Action('eventContract', 'pull').execute({})
 
 		const match = testUtil.assertFileByNameInGeneratedFiles(
@@ -46,54 +47,25 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 	}
 
 	@test()
-	protected static async generatesContractAtCwdWhenInMercuryTypes() {
-		this.copyMercuryTypesPackageJson()
-
-		const results = await this.Action('eventContract', 'pull').execute({})
-
-		const match = testUtil.assertFileByNameInGeneratedFiles(
-			'events.contract.ts',
-			results.files
-		)
-
-		assert.doesInclude(match, this.resolvePath('src', 'events.contract.ts'))
-
-		assert.doesInclude(results.files ?? [], {
-			name: 'events.contract.ts',
-			action: 'generated',
-		})
-
-		const contents = diskUtil.readFile(match)
-
-		assert.doesInclude(
-			contents,
-			"import buildEventContract from './utilities/buildEventContract"
-		)
-	}
-
-	private static copyMercuryTypesPackageJson() {
-		const source = this.resolveTestPath('mercury-types-package.json')
-		const destination = this.resolvePath('package.json')
-		const contents = diskUtil.readFile(source)
-		diskUtil.writeFile(destination, contents)
-	}
-
-	@test()
 	protected static async savesContractLocallyAndImportsAsDefault() {
-		this.cli = await this.FeatureFixture().installCachedFeatures('events')
-
-		const results = await this.Action('eventContract', 'pull').execute({})
-
-		const match = testUtil.assertFileByNameInGeneratedFiles(
-			'events.contract.ts',
-			results.files
-		)
-
-		const contracts = await this.Service('import').importDefault(match)
+		const contracts = await this.pullAndLoadContracts()
 
 		assert.isArray(contracts)
 		assert.isObject(contracts[0].eventSignatures)
 		assert.isObject(contracts[0].eventSignatures[`did-message::v2020_12_25`])
+	}
+
+	@test()
+	protected static async pullsGlobalContracts() {
+		const contracts = await this.pullAndLoadContracts()
+		assert.isAbove(contracts.length, 1)
+		assert.isObject(contracts[1].eventSignatures)
+
+		assert.isObject(
+			contracts[1].eventSignatures[
+				`heartwood.register-skill-views::v2021_02_11`
+			]
+		)
 	}
 
 	@test()
@@ -109,10 +81,11 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 
 		const contents = diskUtil.readFile(match)
 
-		assert.doesInclude(contents, 'export default coreEventContracts')
+		assert.doesInclude(contents, 'export default eventContracts')
+		assert.doesInclude(contents, 'as const')
 		assert.doesInclude(
 			contents,
-			'export type CoreEventContract = typeof coreEventContract'
+			'export type CoreEventContract = typeof eventContracts[0] & typeof eventContracts[1]'
 		)
 	}
 
@@ -131,5 +104,19 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 			name: 'events.contract.ts',
 			action: 'updated',
 		})
+	}
+
+	private static async pullAndLoadContracts() {
+		this.cli = await this.FeatureFixture().installCachedFeatures('events')
+
+		const results = await this.Action('eventContract', 'pull').execute({})
+
+		const match = testUtil.assertFileByNameInGeneratedFiles(
+			'events.contract.ts',
+			results.files
+		)
+
+		const contracts = await this.Service('import').importDefault(match)
+		return contracts as EventContract[]
 	}
 }
