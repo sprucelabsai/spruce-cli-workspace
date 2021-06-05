@@ -1,4 +1,5 @@
 import { EventContract } from '@sprucelabs/mercury-types'
+import { eventNameUtil } from '@sprucelabs/spruce-event-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { CliInterface } from '../../../cli'
@@ -48,7 +49,7 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 
 	@test()
 	protected static async savesContractLocallyAndImportsAsDefault() {
-		const contracts = await this.pullAndLoadContracts()
+		const contracts = await this.installSkillAndPullContracts()
 
 		assert.isArray(contracts)
 		assert.isObject(contracts[0].eventSignatures)
@@ -57,15 +58,34 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 
 	@test()
 	protected static async pullsGlobalContracts() {
-		const contracts = await this.pullAndLoadContracts()
+		this.cli = await this.FeatureFixture().installCachedFeatures('events')
+
+		const skill = await this.SkillFixture().registerCurrentSkill({
+			name: 'heartwood test',
+		})
+
+		const events = await this.Store('event')
+		await events.registerEventContract({
+			eventContract: {
+				eventSignatures: {
+					'test-event::v2020_01_01': {
+						isGlobal: true,
+					},
+				},
+			},
+		})
+
+		const fqen = eventNameUtil.join({
+			eventName: 'test-event',
+			eventNamespace: skill.slug,
+			version: 'v2020_01_01',
+		})
+
+		const contracts = await this.installSkillAndPullContracts()
+
 		assert.isAbove(contracts.length, 1)
 		assert.isObject(contracts[1].eventSignatures)
-
-		assert.isObject(
-			contracts[1].eventSignatures[
-				`heartwood.register-skill-views::v2021_02_11`
-			]
-		)
+		assert.isObject(contracts[1].eventSignatures[fqen])
 	}
 
 	@test()
@@ -106,9 +126,13 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 		})
 	}
 
-	private static async pullAndLoadContracts() {
+	private static async installSkillAndPullContracts() {
 		this.cli = await this.FeatureFixture().installCachedFeatures('events')
 
+		return await GeneratingMercuryEventContractTest.pullContracts()
+	}
+
+	private static async pullContracts() {
 		const results = await this.Action('eventContract', 'pull').execute({})
 
 		const match = testUtil.assertFileByNameInGeneratedFiles(
