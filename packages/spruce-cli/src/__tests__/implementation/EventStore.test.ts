@@ -6,7 +6,7 @@ import {
 	eventContractUtil,
 	eventNameUtil,
 } from '@sprucelabs/spruce-event-utils'
-import { diskUtil, testLog, versionUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import CreateAction from '../../features/event/actions/CreateAction'
