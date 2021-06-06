@@ -190,7 +190,6 @@ export default class EventStore extends AbstractStore {
 				eventSignatures,
 			})
 
-			debugger
 			validateEventContract(cleaned)
 
 			return cleaned
