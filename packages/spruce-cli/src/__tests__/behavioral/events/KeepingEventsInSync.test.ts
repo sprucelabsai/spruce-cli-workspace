@@ -68,11 +68,13 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		await this.FeatureFixture().installCachedFeatures('events')
 
 		const skills = this.SkillFixture()
-		const skill = await skills.registerCurrentSkill({
+		await skills.registerCurrentSkill({
 			name: 'events in sync skill',
 		})
 
-		await skills.registerEventContract(skill, {
+		const skill2 = await skills.seedDemoSkill({ name: 'a temp skill' })
+
+		await skills.registerEventContract(skill2, {
 			eventSignatures: {
 				'test-sync::v2021_01_01': {
 					isGlobal: true,
@@ -87,7 +89,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		const fqen = eventNameUtil.join({
 			eventName: 'test-sync',
 			version: 'v2021_01_01',
-			eventNamespace: skill.slug,
+			eventNamespace: skill2.slug,
 		})
 		await this.assertGlobalEventsAreTyped(fqen)
 	}
