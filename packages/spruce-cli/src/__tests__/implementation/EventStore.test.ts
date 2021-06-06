@@ -10,12 +10,13 @@ import { diskUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import CreateAction from '../../features/event/actions/CreateAction'
+import EventStore from '../../features/event/stores/EventStore'
 import AbstractEventTest from '../../tests/AbstractEventTest'
 import testUtil from '../../tests/utilities/test.utility'
 
-const EVENT_NAME_READABLE = 'my fantastically amazing event'
-const EVENT_NAME = 'my-fantastically-amazing-event'
-const EVENT_CAMEL = 'myFantasticallyAmazingEvent'
+const EVENT_NAME_READABLE = 'my event store amazing event'
+const EVENT_NAME = 'my-event-store-amazing-event'
+const EVENT_CAMEL = 'myEventStoreAmazingEvent'
 
 export default class EventStoreTest extends AbstractEventTest {
 	private static createAction: CreateAction
@@ -129,16 +130,16 @@ export default class EventStoreTest extends AbstractEventTest {
 
 		diskUtil.writeFile(match, '')
 
-		const err = await assert.doesThrowAsync(() =>
-			this.Store('event').loadLocalContract(skill.slug)
+		const err = await assert.doesThrowAsync(
+			() => this.Store('event').loadLocalContract(skill.slug),
+			new RegExp(
+				`${skill.slug}.${EVENT_NAME}::${
+					versionUtil.generateVersion().constValue
+				}`
+			)
 		)
 
-		errorAssertUtil.assertError(err, 'INVALID_EVENT_CONTRACT', {
-			fullyQualifiedEventName: `${skill.slug}.my-fantastically-amazing-event::${
-				versionUtil.generateVersion().constValue
-			}`,
-			brokenProperty: 'emitPayload',
-		})
+		errorAssertUtil.assertError(err, 'INVALID_EVENT_CONTRACT')
 	}
 
 	@test()
@@ -167,7 +168,7 @@ export default class EventStoreTest extends AbstractEventTest {
 		const err = await assert.doesThrowAsync(
 			() => this.Store('event').loadLocalContract(skill.slug),
 			new RegExp(
-				`${skill.slug}.my-fantastically-amazing-event::${
+				`${skill.slug}.${EVENT_NAME}::${
 					versionUtil.generateVersion().constValue
 				}`
 			)
@@ -232,10 +233,44 @@ export default class EventStoreTest extends AbstractEventTest {
 
 	@test()
 	protected static async mixesInLocalContractWithGlobalEventsAndDoesNotReturnContractTwice() {
+		const { skill, fqen } = await this.installAndRegisterOneGlobalEvent()
+
+		const { contracts } = await this.Store('event').fetchEventContracts({
+			localNamespace: skill.slug,
+		})
+
+		const totalMatches = contracts.reduce((count, contract) => {
+			if (contract.eventSignatures[fqen]) {
+				count++
+			}
+			return count
+		}, 0)
+
+		assert.isEqual(totalMatches, 1)
+	}
+
+	@test()
+	protected static async doesNotLoadGlobalContractsForSelf() {
+		const { fqen, skill } = await this.installAndRegisterOneGlobalEvent()
+
+		const eventsPath = this.resolvePath('src', 'events')
+		diskUtil.deleteDir(eventsPath)
+
+		const { contracts } = await this.Store('event').fetchEventContracts({
+			localNamespace: skill.slug,
+		})
+
+		const unified = eventContractUtil.unifyContracts(contracts)
+
+		assert.isTruthy(unified)
+		assert.doesThrow(() => eventContractUtil.getSignatureByName(unified, fqen))
+	}
+
+	private static async installAndRegisterOneGlobalEvent() {
 		await this.FeatureFixture().installCachedFeatures('events')
 
 		const skill = await this.SkillFixture().registerCurrentSkill({
-			name: 'my new skill',
+			name: 'event store test skill',
 		})
 
 		const results = await this.createAction.execute({
@@ -251,20 +286,11 @@ export default class EventStoreTest extends AbstractEventTest {
 
 		const boot = await this.Action('skill', 'boot').execute({ local: true })
 
-		const { contracts } = await this.Store('event').fetchEventContracts({
-			localNamespace: skill.slug,
-		})
-
 		boot.meta?.kill()
 
-		const totalMatches = contracts.reduce((count, contract) => {
-			if (contract.eventSignatures[fqen]) {
-				count++
-			}
-			return count
-		}, 0)
+		EventStore.clearCache()
 
-		assert.isEqual(totalMatches, 1)
+		return { boot, skill, fqen, createResults: results }
 	}
 
 	private static async seedSkillAndInstallAtOrg(org: any, name: string) {
