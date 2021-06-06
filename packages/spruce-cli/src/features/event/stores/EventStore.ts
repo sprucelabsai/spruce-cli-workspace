@@ -64,7 +64,7 @@ export default class EventStore extends AbstractStore {
 		const contracts = await this.fetchRemoteContracts()
 
 		const localContract =
-			options?.localNamespace && (await this.loadLocalContract(localNamespace))
+			localNamespace && (await this.loadLocalContract(localNamespace))
 
 		if (localNamespace) {
 			this.filterOutLocalEventsFromRemoteContractsMutating(
