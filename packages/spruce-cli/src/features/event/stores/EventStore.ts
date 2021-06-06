@@ -59,17 +59,21 @@ export default class EventStore extends AbstractStore {
 	public async fetchEventContracts(options?: {
 		localNamespace?: string
 	}): Promise<EventStoreFetchEventContractsResponse> {
+		const { localNamespace } = options ?? {}
+
 		const contracts = await this.fetchRemoteContracts()
 
 		const localContract =
-			options?.localNamespace &&
-			(await this.loadLocalContract(options.localNamespace))
+			options?.localNamespace && (await this.loadLocalContract(localNamespace))
 
-		if (localContract) {
+		if (localNamespace) {
 			this.filterOutLocalEventsFromRemoteContractsMutating(
 				contracts,
-				localContract
+				localNamespace
 			)
+		}
+
+		if (localContract) {
 			contracts.push(localContract)
 		}
 
@@ -96,12 +100,16 @@ export default class EventStore extends AbstractStore {
 
 	private filterOutLocalEventsFromRemoteContractsMutating(
 		remoteContracts: EventContract[],
-		localContract: EventContract
+		localNamespace: string
 	) {
-		const localEventNames = eventContractUtil.getEventNames(localContract)
-		for (const remote of remoteContracts) {
-			for (const name of localEventNames) {
-				delete remote.eventSignatures[name]
+		const ns = namesUtil.toKebab(localNamespace)
+
+		for (const contract of remoteContracts) {
+			const sigs = eventContractUtil.getNamedEventSignatures(contract)
+			for (const sig of sigs) {
+				if (sig.eventNamespace === ns) {
+					delete contract.eventSignatures[sig.fullyQualifiedEventName]
+				}
 			}
 		}
 	}

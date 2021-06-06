@@ -3,6 +3,7 @@ import {
 	buildPermissionContract,
 	coreEventContracts,
 	EventContract,
+	EventSignature,
 	SpruceSchemas,
 	validateEventContract,
 } from '@sprucelabs/mercury-types'
@@ -22,8 +23,10 @@ import { test, assert } from '@sprucelabs/test'
 import EventStore from '../../../features/event/stores/EventStore'
 import { generateEventContractFileName } from '../../../features/event/writers/EventWriter'
 import { FeatureActionResponse } from '../../../features/features.types'
+import SkillFixture from '../../../fixtures/SkillFixture'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
+import { RegisteredSkill } from '../../../types/cli.types'
 
 const coreContract = eventContractUtil.unifyContracts(
 	coreEventContracts as any
@@ -378,7 +381,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	@test()
 	protected static async unRegisteredEventsAreRemoved() {
 		const { skillFixture, syncResults, skill2, contractFileName } =
-			await this.registerAndSyncEvents()
+			await this.seedSkillsAndRegisterAndSyncEvents()
 
 		await this.assertValidActionResponseFiles(syncResults)
 
@@ -512,24 +515,16 @@ export function buildPermissionContract(..._: any[]):any { return _[0] }
 		}
 	}
 
-	private static async registerAndSyncEvents() {
+	private static async seedSkillsAndRegisterAndSyncEvents(
+		signature?: EventSignature
+	) {
 		const { skill2, skillFixture, cli } =
 			await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
 
-		const stamp = new Date().getTime()
-		const eventName = `cleanup-event-test-${stamp}::${this.todaysVersion.constValue}`
-		const filename = generateEventContractFileName({
-			nameCamel: `cleanupEventTest${stamp}`,
-			version: this.todaysVersion.constValue,
-		})
-
-		await skillFixture.registerEventContract(skill2, {
-			eventSignatures: {
-				[eventName]: {},
-			},
-		})
-
-		const results = await this.Action('event', 'sync').execute({})
+		const { results, filename } = await this.registerEventAndSync(
+			skill2,
+			signature
+		)
 
 		return {
 			skillFixture,
@@ -538,6 +533,28 @@ export function buildPermissionContract(..._: any[]):any { return _[0] }
 			skill2,
 			contractFileName: filename,
 		}
+	}
+
+	private static async registerEventAndSync(
+		skill: RegisteredSkill,
+		signature?: SpruceSchemas.Mercury.v2020_09_01.EventSignature
+	) {
+		const skillFixture = this.SkillFixture()
+		const stamp = new Date().getTime()
+		const eventName = `cleanup-event-test-${stamp}::${this.todaysVersion.constValue}`
+		const filename = generateEventContractFileName({
+			nameCamel: `cleanupEventTest${stamp}`,
+			version: this.todaysVersion.constValue,
+		})
+
+		await skillFixture.registerEventContract(skill, {
+			eventSignatures: {
+				[eventName]: { ...signature },
+			},
+		})
+
+		const results = await this.Action('event', 'sync').execute({})
+		return { results, filename }
 	}
 
 	private static async assertCombinedContractContents() {
