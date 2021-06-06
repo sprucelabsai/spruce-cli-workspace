@@ -26,7 +26,7 @@
     "lint": "lerna run lint --parallel",
     "lint.tsc": "lerna run lint.tsc --parallel",
     "publish": "lerna publish",
-    "rebuild": "yarn clean.all && yarn && yarn build.dev; yarn cache.tests",
+    "rebuild": "yarn clean.all ; yarn && yarn build.dev; yarn cache.tests",
     "rebuild.dependencies": "yarn clean.dependencies && yarn",
     "sync.ct": "yarn chokidar \"**/*.ts\" \"**/*.js\" \"**/*.json\" --ignore \"**/build/**\" -c \"rsync . root@3.tcp.ngrok.io:/media/ramdisk/$(basename `pwd`)/ -e 'ssh -p 25956' -avz --exclude=yarn.lock --exclude=node_modules --exclude=build --exclude=.git --exclude=tmp --inplace --delete --progress\"",
     "test": "lerna run test --parallel --",

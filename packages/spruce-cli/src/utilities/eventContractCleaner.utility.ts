@@ -1,4 +1,4 @@
-import { EventContract, validateEventContract } from '@sprucelabs/mercury-types'
+import { EventContract } from '@sprucelabs/mercury-types'
 import { eventContractUtil } from '@sprucelabs/spruce-event-utils'
 
 export const eventContractCleanerUtil = {
@@ -7,7 +7,6 @@ export const eventContractCleanerUtil = {
 			eventSignatures: {},
 		}
 
-		validateEventContract(contract)
 		const signatures = eventContractUtil.getNamedEventSignatures(contract)
 
 		for (const sig of signatures) {

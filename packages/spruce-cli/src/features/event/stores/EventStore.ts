@@ -4,6 +4,7 @@ import {
 	EventSignature,
 	PermissionContract,
 	SpruceSchemas,
+	validateEventContract,
 } from '@sprucelabs/mercury-types'
 import { Schema } from '@sprucelabs/schema'
 import {
@@ -185,9 +186,14 @@ export default class EventStore extends AbstractStore {
 		})
 
 		if (Object.keys(eventSignatures).length > 0) {
-			return eventContractCleanerUtil.cleanPayloadsAndPermissions({
+			const cleaned = eventContractCleanerUtil.cleanPayloadsAndPermissions({
 				eventSignatures,
 			})
+
+			debugger
+			validateEventContract(cleaned)
+
+			return cleaned
 		}
 
 		return null

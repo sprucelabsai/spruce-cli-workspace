@@ -6,7 +6,7 @@ import {
 	eventContractUtil,
 	eventNameUtil,
 } from '@sprucelabs/spruce-event-utils'
-import { diskUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, testLog, versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import CreateAction from '../../features/event/actions/CreateAction'
@@ -141,7 +141,7 @@ export default class EventStoreTest extends AbstractEventTest {
 		})
 	}
 
-	@test.only()
+	@test()
 	protected static async badLocalSignature() {
 		await this.FeatureFixture().installCachedFeatures('events')
 
@@ -164,15 +164,16 @@ export default class EventStoreTest extends AbstractEventTest {
 
 		diskUtil.writeFile(match, 'export default {waka: true}')
 
-		const err = await assert.doesThrowAsync(() =>
-			this.Store('event').loadLocalContract(skill.slug)
+		const err = await assert.doesThrowAsync(
+			() => this.Store('event').loadLocalContract(skill.slug),
+			new RegExp(
+				`${skill.slug}.my-fantastically-amazing-event::${
+					versionUtil.generateVersion().constValue
+				}`
+			)
 		)
 
-		errorAssertUtil.assertError(err, 'INVALID_EVENT_CONTRACT', {
-			fullyQualifiedEventName: `${skill.slug}.my-fantastically-amazing-event::${
-				versionUtil.generateVersion().constValue
-			}`,
-		})
+		errorAssertUtil.assertError(err, 'INVALID_EVENT_CONTRACT')
 	}
 
 	@test()
