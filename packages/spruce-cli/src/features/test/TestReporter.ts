@@ -292,7 +292,7 @@ export default class TestReporter {
 				restartLabel = `Start  ^w^#^r › ^`
 				break
 			case 'ready':
-				restartLabel = 'Booting^#^K › ^'
+				restartLabel = 'Booting ^#^K › ^'
 				break
 		}
 
