@@ -1,5 +1,5 @@
-import { SpruceSchemas } from '@sprucelabs/mercury-types'
-import { buildSchema } from '@sprucelabs/schema'
+import { buildSchema, SchemaValues } from '@sprucelabs/schema'
+import skillFeatureSchema from '#spruce/schemas/spruceCli/v2020_07_22/skillFeature.schema'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -8,11 +8,13 @@ const optionsSchema = buildSchema({
 	name: 'create skill',
 	description:
 		'A skill is a micro-app, focused on delivering personaziled (and discrete) experiences.',
-	fields: {},
+	fields: {
+		...skillFeatureSchema.fields,
+	},
 })
 
 type OptionsSchema = typeof optionsSchema
-type Options = SpruceSchemas.SpruceCli.v2020_07_22.SkillFeature
+type Options = SchemaValues<OptionsSchema>
 
 export default class CreateAction extends AbstractAction<OptionsSchema> {
 	public code = 'create'

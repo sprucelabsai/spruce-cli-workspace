@@ -26,6 +26,7 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 	@test()
 	protected static async generatesContractAtCwd() {
 		const results = await this.Action('eventContract', 'pull').execute({})
+		assert.isFalsy(results.errors)
 
 		const match = testUtil.assertFileByNameInGeneratedFiles(
 			'events.contract.ts',
@@ -45,6 +46,21 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 			contents,
 			"import { buildEventContract } from '@sprucelabs/mercury-types'"
 		)
+	}
+
+	@test()
+	protected static async generatesAtDestination() {
+		const results = await this.Action('eventContract', 'pull').execute({
+			destination: './src/tests',
+		})
+
+		const match = testUtil.assertFileByNameInGeneratedFiles(
+			'events.contract.ts',
+			results.files
+		)
+		const expected = this.resolvePath('src/tests/events.contract.ts')
+
+		assert.isEqual(expected, match)
 	}
 
 	@test()
@@ -129,7 +145,7 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 	private static async installSkillAndPullContracts() {
 		this.cli = await this.FeatureFixture().installCachedFeatures('events')
 
-		return await GeneratingMercuryEventContractTest.pullContracts()
+		return await this.pullContracts()
 	}
 
 	private static async pullContracts() {

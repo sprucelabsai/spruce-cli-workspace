@@ -7,7 +7,13 @@ const pullOptionsSchema = buildSchema({
 	id: 'pullActionSchema',
 	description:
 		'Pulls the event contracts from Mercury down to a single file for easy distribution.',
-	fields: {},
+	fields: {
+		destination: {
+			type: 'text',
+			label: 'Destination',
+			hint: 'File is always named `events.contract.ts`.',
+		},
+	},
 })
 type PullOptionsSchema = typeof pullOptionsSchema
 type Options = SchemaValues<PullOptionsSchema>
@@ -18,12 +24,13 @@ export default class PullAction extends AbstractAction<PullOptionsSchema> {
 	public optionsSchema = pullOptionsSchema
 	public invocationMessage = 'Pulling combined event contract... 🜒'
 
-	public async execute(_options: Options): Promise<FeatureActionResponse> {
+	public async execute(options: Options): Promise<FeatureActionResponse> {
+		let { destination = '.' } = this.validateAndNormalizeOptions(options)
+
 		const filename = 'events.contract.ts'
+		destination = diskUtil.resolvePath(this.cwd, destination, filename)
 
 		const { contracts } = await this.Store('event').fetchEventContracts()
-
-		let destination = diskUtil.resolvePath(this.cwd, filename)
 		let buildEventContractImport = `import { buildEventContract } from '@sprucelabs/mercury-types'`
 
 		const contents = `${buildEventContractImport}

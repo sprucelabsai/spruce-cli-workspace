@@ -72,7 +72,13 @@ export default class EventFeature extends AbstractFeature {
 	}): Promise<FeatureActionResponse> {
 		const { featureCode, actionCode } = payload
 
-		if (featureCode === 'event' && actionCode !== 'setRemote') {
+		const isInstalled = await this.featureInstaller.isInstalled('event')
+
+		if (
+			isInstalled &&
+			(featureCode === 'event' || featureCode === 'eventContract') &&
+			actionCode !== 'setRemote'
+		) {
 			const remote = this.Service('remote')
 			const r = remote.getRemote()
 
