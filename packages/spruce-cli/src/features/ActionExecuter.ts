@@ -107,7 +107,7 @@ export default class ActionExecuter {
 			{}
 
 		let answers =
-			(await asker.askAboutMissingActionOptions(action, actionOptions)) ??
+			(await asker.askAboutMissingActionOptions(action, installOptions)) ??
 			installOptions
 
 		if (!isInstalled) {

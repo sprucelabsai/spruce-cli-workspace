@@ -13,7 +13,8 @@ import TerminalInterface from './TerminalInterface'
 
 export default class SpyInterface implements GraphicsInterface {
 	public invocations: { command: string; options?: any }[] = []
-	public static shouldRenderAsTestLogs: any = false
+	public static shouldRenderAsTestLogs: any =
+		process.env.SHOULD_RENDER_TEST_LOGS === 'true'
 
 	private cursorPosition = { x: 0, y: 0 }
 
