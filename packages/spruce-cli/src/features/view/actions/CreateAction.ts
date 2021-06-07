@@ -2,6 +2,7 @@ import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import FormComponent from '../../../components/FormComponent'
 import namedTemplateItemBuilder from '../../../schemas/v2020_07_22/namedTemplateItem.builder'
+import actionUtil from '../../../utilities/action.utility'
 import formUtil from '../../../utilities/form.utility'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
@@ -140,8 +141,15 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 			name: namePascal,
 		})
 
-		return {
-			files,
-		}
+		const syncResults = await this.Action('view', 'sync').execute({})
+
+		const merged = actionUtil.mergeActionResults(
+			{
+				files,
+			},
+			syncResults
+		)
+
+		return merged
 	}
 }

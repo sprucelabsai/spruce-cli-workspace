@@ -22,10 +22,6 @@ export default class CreatingASkillTest extends AbstractCliTest {
 		await this.ui.sendInput('adventure')
 		await this.ui.sendInput('i would not')
 
-		const last = this.ui.lastInvocation()
-
-		assert.isEqual(last.command, 'startLoading')
-
 		const results = await promise
 
 		testUtil.assertFileByPathInGeneratedFiles(

@@ -19,6 +19,19 @@ export default class ViewWriter extends AbstractWriter {
 		return this.write(path, options)
 	}
 
+	public async writeCombinedViewsFile(cwd: string) {
+		const destination = diskUtil.resolveHashSprucePath(cwd, 'views', 'views.ts')
+		const content = ''
+
+		const results = await this.writeFileIfChangedMixinResults(
+			destination,
+			content,
+			'Used to export your controllers to Heartwood.'
+		)
+
+		return results
+	}
+
 	public writeViewController(
 		cwd: string,
 		options: {
