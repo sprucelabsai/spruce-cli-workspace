@@ -1,8 +1,16 @@
 import { test, assert } from '@sprucelabs/test'
+import CommandService from '../../services/CommandService'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 import testUtil from '../../tests/utilities/test.utility'
 
 export default class CreatingASkillTest extends AbstractCliTest {
+	protected static async beforeEach() {
+		await super.beforeEach()
+		CommandService.setMockResponse(new RegExp(/npm.*?add .*?/gis), {
+			code: 0,
+		})
+	}
+
 	@test()
 	protected static async creatingAtADestinationAsksForSkillDetailsOnce() {
 		const promise = this.Action('skill', 'create', {
@@ -24,5 +32,9 @@ export default class CreatingASkillTest extends AbstractCliTest {
 			/taco\/package\.json/gis,
 			results.files
 		)
+
+		const { hints } = results
+
+		assert.doesInclude(hints, 'cd taco')
 	}
 }

@@ -167,11 +167,6 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 	}
 
 	public async installOurFeature(installOptions: Record<string, any>) {
-		this.ui.clear()
-
-		this.ui.renderHero(CLI_HERO)
-		this.ui.startLoading(`Installing ${this.feature.code} feature...`)
-
 		if (!this.shouldAutoHandleDependencies) {
 			throw new SpruceError({
 				code: 'FEATURE_NOT_INSTALLED',
@@ -190,8 +185,6 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 			],
 			didUpdateHandler: (message) => this.ui.startLoading(message),
 		})
-
-		this.ui.stopLoading()
 
 		return installResults
 	}
@@ -274,9 +267,6 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 
 		const installResults = await this.featureInstaller.install({
 			installFeatureDependencies: false,
-			didUpdateHandler: (message: string) => {
-				this.ui.startLoading(message)
-			},
 			features: [
 				{
 					code: feature.code as any,
