@@ -35,7 +35,7 @@
         "test": "jest",
         "watch.tests": "jest --watch",
         "watch.build.dev": "concurrently 'yarn run build.babel --watch' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn build.types && yarn build.resolve-paths'\"",
-        "upgrade.packages": "yarn upgrade --latest && rm -f yarn.lock ; yarn ; yarn lint.fix || true",
+        "upgrade.packages": "yarn upgrade --latest && rm -f yarn.lock ; yarn ; yarn fix.lint || true",
         "upgrade.packages.all": "yarn install && yarn upgrade.packages",
         "upgrade.packages.test": "yarn upgrade.packages.all && yarn lint && yarn build && yarn test"
     },
