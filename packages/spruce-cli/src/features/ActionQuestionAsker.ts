@@ -1,6 +1,7 @@
 import { Schema, SchemaValues, SchemaPartialValues } from '@sprucelabs/schema'
 import merge from 'lodash/merge'
 import FormComponent from '../components/FormComponent'
+import { CLI_HERO } from '../constants'
 import SpruceError from '../errors/SpruceError'
 import { GraphicsInterface } from '../types/cli.types'
 import formUtil from '../utilities/form.utility'
@@ -174,6 +175,8 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 			})
 		}
 
+		let isFirstUpdate = true
+
 		const installResults = await this.featureInstaller.install({
 			installFeatureDependencies: false,
 			features: [
@@ -182,10 +185,24 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 					options: installOptions as any,
 				},
 			],
-			didUpdateHandler: (message) => this.ui.startLoading(message),
+			didUpdateHandler: (message) => {
+				if (isFirstUpdate) {
+					this.renderHeading(this.feature.code)
+					isFirstUpdate = false
+				}
+				this.ui.startLoading(message)
+			},
 		})
 
+		this.ui.stopLoading()
+
 		return installResults
+	}
+
+	private renderHeading(code: string) {
+		this.ui.clear()
+		this.ui.renderHero(CLI_HERO)
+		this.ui.renderHeadline(`Installing ${code} feature...`)
 	}
 
 	private async installOrMarkAsSkippedMissingDependency(
@@ -254,8 +271,6 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 			)
 		}
 
-		this.ui.startLoading(`Installing ${feature.nameReadable}...`)
-
 		if (!this.shouldAutoHandleDependencies) {
 			throw new SpruceError({
 				code: 'FEATURE_NOT_INSTALLED',
@@ -264,8 +279,17 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 			})
 		}
 
+		let isFirstUpdate = true
+
 		const installResults = await this.featureInstaller.install({
 			installFeatureDependencies: false,
+			didUpdateHandler: (message: string) => {
+				if (isFirstUpdate) {
+					this.renderHeading(this.feature.code)
+					isFirstUpdate = false
+				}
+				this.ui.startLoading(message)
+			},
 			features: [
 				{
 					code: feature.code as any,
