@@ -1,7 +1,6 @@
 import { Schema, SchemaValues, SchemaPartialValues } from '@sprucelabs/schema'
 import merge from 'lodash/merge'
 import FormComponent from '../components/FormComponent'
-import { CLI_HERO } from '../constants'
 import SpruceError from '../errors/SpruceError'
 import { GraphicsInterface } from '../types/cli.types'
 import formUtil from '../utilities/form.utility'

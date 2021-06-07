@@ -95,4 +95,22 @@ export default class CommanderCommandResultMapperTest extends AbstractSpruceTest
 			email: 't@t.com',
 		})
 	}
+
+	@test()
+	protected static stringArgsOverrideDefaults() {
+		const results = commanderUtil.mapIncomingToOptions(
+			'my great skill',
+			't@t.com',
+			{
+				name: 'test',
+				email: 'test',
+			},
+			new Command(),
+			this.optionsSchema
+		)
+		assert.isEqualDeep(results, {
+			name: 'my great skill',
+			email: 't@t.com',
+		})
+	}
 }

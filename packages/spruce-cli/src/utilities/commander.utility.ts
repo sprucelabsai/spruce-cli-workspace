@@ -18,8 +18,8 @@ const commanderUtil = {
 		}
 
 		return {
-			...options,
 			...originalOptions,
+			...options,
 		}
 	},
 }
