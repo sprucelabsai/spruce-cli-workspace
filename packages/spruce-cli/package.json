@@ -42,7 +42,7 @@
 		"clean": "yarn clean.build",
 		"clean.all": "yarn clean.build && yarn clean.dependencies && yarn clean.cache",
 		"clean.build": "rm -rf build/",
-		"clean.cache": "rm -rf src/.spruce/tmp && node build/tests/cleanTestCache && echo '******** TEST CACHE CLEARED ********'",
+		"clean.cache": "rm -rf src/.spruce/tmp && node build/tests/cleanTestCache ; echo '******** TEST CACHE CLEARED ********'",
 		"clean.cache.disabled": "echo 'CLEAN.CACHE DISABLED'",
 		"clean.dependencies": "rm -rf node_modules/ yarn.lock",
 		"fix.lint": "eslint --fix '**/*.ts'",

@@ -43,6 +43,7 @@
 		"build.tsc": "tsc",
 		"clean": "yarn clean.build",
 		"clean.build": "rm -rf build/",
+		"clean.cache": "true",
 		"clean.dependencies": "rm -rf node_modules/ yarn.lock",
 		"fix.lint": "eslint --fix '**/*.ts'",
 		"lint": "eslint --cache '**/*.ts' && tsc -p . --noEmit",
