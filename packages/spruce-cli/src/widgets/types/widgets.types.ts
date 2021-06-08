@@ -58,6 +58,7 @@ export interface UniversalWidgetOptions {
 	shouldLockBottomWithParent?: boolean
 	eventContract?: EventContract
 	backgroundColor?: Color
+	foregroundColor?: Color
 }
 
 export interface WidgetFrame {

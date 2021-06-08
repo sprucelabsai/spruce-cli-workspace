@@ -549,6 +549,7 @@ export default class TestReporter {
 			shouldLockWidthWithParent: true,
 			shouldLockBottomWithParent: true,
 			backgroundColor: 'yellow',
+			foregroundColor: 'black',
 			text: '...',
 		})
 	}

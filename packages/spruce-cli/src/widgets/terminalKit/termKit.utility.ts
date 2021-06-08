@@ -25,7 +25,15 @@ const termKitUtil = {
 
 		if (options.backgroundColor) {
 			mapped.attr = {
+				...mapped.attr,
 				bgColor: options.backgroundColor,
+			}
+		}
+
+		if (options.foregroundColor) {
+			mapped.attr = {
+				...mapped.attr,
+				color: options.foregroundColor,
 			}
 		}
 
