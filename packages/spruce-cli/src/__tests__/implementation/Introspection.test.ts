@@ -14,10 +14,16 @@ export default class IntrospectionTest extends AbstractCliTest {
 	protected static canIntrospectClassThatHasNoParentButImplementsInterface() {
 		const path = this.resolveTestPath('introspection/ImplementsInterface.ts')
 		const results = introspectionUtil.introspect([path])
+
+		const classPath = this.resolveTestPath(
+			'introspection/ImplementsInterface.ts'
+		)
 		assert.isEqualDeep(results, [
 			{
 				classes: [
 					{
+						classPath,
+
 						className: 'ImplementsInterface',
 						isAbstract: false,
 						optionsInterfaceName: undefined,
