@@ -28,7 +28,6 @@ import {
 	EventPayloadOptions,
 	StoreTemplateOptions,
 	StoreTemplateItem,
-	ViewControllerImport,
 	ViewsOptions,
 } from './types/templates.types'
 import DirectoryTemplateUtility from './utilities/DirectoryTemplateUtility'
