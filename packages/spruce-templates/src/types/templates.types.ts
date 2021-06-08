@@ -119,3 +119,12 @@ export interface StoreTemplateItem {
 	optionsInterfaceName?: string
 	path: string
 }
+
+export interface ViewControllerImport {
+	namePascal: string
+	path: string
+}
+
+export interface ViewsOptions {
+	imports: ViewControllerImport[]
+}

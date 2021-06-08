@@ -4,6 +4,7 @@ import * as ts from 'typescript'
 
 interface IntrospectionClass {
 	className: string
+	classPath: string
 	parentClassName: string | undefined
 	parentClassPath: string | undefined
 	optionsInterfaceName: string | undefined
@@ -117,6 +118,7 @@ const introspectionUtil = {
 
 							results.classes.push({
 								className: node.name.text,
+								classPath: sourceFile.fileName,
 								parentClassName,
 								parentClassPath,
 								optionsInterfaceName:

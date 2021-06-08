@@ -1,4 +1,6 @@
+import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { ViewsOptions } from '../../../../../spruce-templates/build'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractWriter from '../../../writers/AbstractWriter'
 
@@ -16,16 +18,25 @@ export default class ViewWriter extends AbstractWriter {
 			options.namePascal
 		)
 
-		return this.write(path, options)
+		return this.writeController(path, options)
 	}
 
-	public async writeCombinedViewsFile(cwd: string) {
-		const destination = diskUtil.resolveHashSprucePath(cwd, 'views', 'views.ts')
-		const content = ''
+	public async writeCombinedViewsFile(cwd: string, options: ViewsOptions) {
+		let { imports, ...rest } = options
+
+		const destinationDir = diskUtil.resolveHashSprucePath(cwd, 'views')
+		const destination = diskUtil.resolvePath(destinationDir, 'views.ts')
+
+		imports = imports.map((i) => ({
+			...i,
+			path: pathUtil.relative(destinationDir, i.path).replace('.ts', ''),
+		}))
+
+		const contents = this.templates.views({ imports, ...rest })
 
 		const results = await this.writeFileIfChangedMixinResults(
 			destination,
-			content,
+			contents,
 			'Used to export your controllers to Heartwood.'
 		)
 
@@ -47,10 +58,10 @@ export default class ViewWriter extends AbstractWriter {
 			options.namePascal
 		)
 
-		return this.write(path, options)
+		return this.writeController(path, options)
 	}
 
-	private async write(path: string, options: any) {
+	private async writeController(path: string, options: any) {
 		const { namePascal, viewModel, viewType, name } = options
 
 		if (diskUtil.doesFileExist(path)) {

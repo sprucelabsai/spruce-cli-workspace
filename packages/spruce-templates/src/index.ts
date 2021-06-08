@@ -28,6 +28,8 @@ import {
 	EventPayloadOptions,
 	StoreTemplateOptions,
 	StoreTemplateItem,
+	ViewControllerImport,
+	ViewsOptions,
 } from './types/templates.types'
 import DirectoryTemplateUtility from './utilities/DirectoryTemplateUtility'
 import importExtractorUtil from './utilities/importExtractor.utility'
@@ -368,8 +370,14 @@ export const templates = {
 		const template = templateImportUtil.getTemplate('view/View.svc.ts.hbs')
 		return template(options)
 	},
+
 	viewController(options: { viewModel: string; namePascal: string }) {
 		const template = templateImportUtil.getTemplate('view/View.vc.ts.hbs')
+		return template(options)
+	},
+
+	views(options: ViewsOptions) {
+		const template = templateImportUtil.getTemplate('view/views.ts.hbs')
 		return template(options)
 	},
 }

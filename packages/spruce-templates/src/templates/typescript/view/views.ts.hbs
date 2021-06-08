@@ -1,0 +1,14 @@
+{{#each imports}}
+import {{namePascal}} from '{{path}}'
+{{/each}}
+
+const vcs = {
+    {{#each imports}}
+    {{namePascal}},
+    {{/each}}
+}
+
+//@ts-ignore
+if(typeof heartwood === 'function') { heartwood(vcs) }
+
+export default vcs

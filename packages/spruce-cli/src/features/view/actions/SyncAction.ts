@@ -1,6 +1,8 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
+import { ViewControllerImport } from '../../../../../spruce-templates/build'
+import introspectionUtil from '../../../utilities/introspection.utility'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -21,15 +23,32 @@ export default class syncAction extends AbstractAction<OptionsSchema> {
 	public async execute(
 		_options: SchemaValues<OptionsSchema>
 	): Promise<FeatureActionResponse> {
+		const targetDir = diskUtil.resolvePath(this.cwd, 'src')
 		const matches = await globby(['**/*.svc.ts', '**/*.vc.ts'], {
-			cwd: diskUtil.resolvePath(this.cwd, 'src'),
+			cwd: targetDir,
 		})
 
 		if (matches.length === 0) {
 			return {}
 		}
 
-		const files = await this.Writer('view').writeCombinedViewsFile(this.cwd)
+		const paths = matches.map((m) => diskUtil.resolvePath(targetDir, m))
+		const introspect = introspectionUtil.introspect(paths)
+
+		const imports = introspect.reduce<ViewControllerImport[]>((classes, i) => {
+			classes.push(
+				...i.classes.map((c) => ({
+					namePascal: c.className,
+					path: c.classPath,
+				}))
+			)
+
+			return classes
+		}, [])
+
+		const files = await this.Writer('view').writeCombinedViewsFile(this.cwd, {
+			imports,
+		})
 
 		return {
 			files,
