@@ -82,7 +82,6 @@ export default class ImportService {
 
 	private writeCacheFile(hash: string, contents: Record<string, any>) {
 		const destination = this.resolveCacheFile(hash)
-
 		diskUtil.writeFile(destination, JSON.stringify(contents))
 	}
 
