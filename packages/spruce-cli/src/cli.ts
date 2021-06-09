@@ -31,6 +31,7 @@ import CliGlobalEmitter, {
 import InFlightEntertainment from './InFlightEntertainment'
 import TerminalInterface from './interfaces/TerminalInterface'
 import CommandService from './services/CommandService'
+import ImportService from './services/ImportService'
 import PkgService from './services/PkgService'
 import ServiceFactory from './services/ServiceFactory'
 import StoreFactory from './stores/StoreFactory'
@@ -173,6 +174,9 @@ export default class Cli implements CliInterface {
 		const emitter = options?.emitter ?? CliGlobalEmitter.Emitter()
 
 		let cwd = options?.cwd ?? process.cwd()
+
+		ImportService.enableCaching()
+
 		const serviceFactory = new ServiceFactory()
 		const apiClientFactory =
 			options?.apiClientFactory ??
