@@ -5,7 +5,7 @@ import AbstractCliTest from '../../tests/AbstractCliTest'
 import MockProgramFactory, { MockProgram } from '../../tests/MockProgramFactory'
 
 export default class FeatureCommandAttacherTest extends AbstractCliTest {
-	private static attacherWithOverride: FeatureCommandAttacher
+	private static attacher: FeatureCommandAttacher
 	private static program: MockProgram
 
 	protected static async beforeEach() {
@@ -15,7 +15,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 
 		const actionExecuter = this.ActionExecuter()
 
-		this.attacherWithOverride = new FeatureCommandAttacher({
+		this.attacher = new FeatureCommandAttacher({
 			program: this.program,
 			ui: this.ui,
 			actionExecuter,
@@ -24,12 +24,12 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 
 	@test()
 	protected static canInstantiateAttacher() {
-		assert.isTruthy(this.attacherWithOverride)
+		assert.isTruthy(this.attacher)
 	}
 
 	@test()
 	protected static hasAttachMethod() {
-		assert.isFunction(this.attacherWithOverride.attachFeature)
+		assert.isFunction(this.attacher.attachFeature)
 	}
 
 	@test()
@@ -101,7 +101,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		const cli = await this.Cli()
 		const vscodeFeature = cli.getFeature('vscode')
 
-		await this.attacherWithOverride.attachFeature(vscodeFeature)
+		await this.attacher.attachFeature(vscodeFeature)
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'setup.vscode',
@@ -114,7 +114,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		const cli = await this.Cli()
 		const feature = cli.getFeature('skill')
 
-		await this.attacherWithOverride.attachFeature(feature)
+		await this.attacher.attachFeature(feature)
 
 		assert.doesInclude(this.program.aliasesInvocations, 'update')
 	}
@@ -124,7 +124,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		const cli = await this.Cli()
 		const vscodeFeature = cli.getFeature('test')
 
-		await this.attacherWithOverride.attachFeature(vscodeFeature)
+		await this.attacher.attachFeature(vscodeFeature)
 
 		const match = this.program.commandInvocations.find((i) => i === 'test')
 		assert.isTruthy(match)
@@ -151,7 +151,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		const cli = await this.Cli()
 		const schemaFeature = cli.getFeature('schema')
 
-		await this.attacherWithOverride.attachFeature(schemaFeature)
+		await this.attacher.attachFeature(schemaFeature)
 	}
 
 	private static MockCommanderProgram(): MockProgram {
