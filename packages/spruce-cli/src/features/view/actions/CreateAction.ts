@@ -138,7 +138,7 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 			viewType,
 			namePascal,
 			viewModel: viewModel as string,
-			name: namePascal,
+			nameKebab: namesUtil.toKebab(namePascal),
 		})
 
 		const syncResults = await this.Action('view', 'sync').execute({})

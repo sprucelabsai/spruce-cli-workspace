@@ -14,14 +14,19 @@ export const eventContractCleanerUtil = {
 				...sig.signature,
 			}
 
-			if (cleanedSig.isGlobal) {
-				delete cleanedSig.emitPayloadSchema?.fields?.target
-			}
+			const emitPayloadFields = Object.keys(
+				//@ts-ignore
+				cleanedSig.emitPayloadSchema?.fields?.payload?.options?.schema
+					?.fields ?? {}
+			).length
 
-			if (
-				cleanedSig.emitPayloadSchema?.fields &&
-				Object.keys(cleanedSig.emitPayloadSchema?.fields).length === 0
-			) {
+			const targetPayloadFields = Object.keys(
+				//@ts-ignore
+				cleanedSig.emitPayloadSchema?.fields?.target?.options?.schema?.fields ??
+					{}
+			).length
+
+			if (emitPayloadFields + targetPayloadFields === 0) {
 				delete cleanedSig.emitPayloadSchema
 			}
 

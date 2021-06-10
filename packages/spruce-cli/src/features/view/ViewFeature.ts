@@ -23,6 +23,9 @@ export default class ViewFeature extends AbstractFeature {
 		{
 			name: '@sprucelabs/heartwood-view-controllers',
 		},
+		{
+			name: '@sprucelabs/spruce-view-plugin',
+		},
 	]
 
 	public dependencies: FeatureDependency[] = [
@@ -39,4 +42,10 @@ export default class ViewFeature extends AbstractFeature {
 			isRequired: true,
 		},
 	]
+
+	public async afterPackageInstall() {
+		const files = await this.Writer('view').writePlugin(this.cwd)
+
+		return { files }
+	}
 }

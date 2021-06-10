@@ -8,8 +8,8 @@ export default class ViewWriter extends AbstractWriter {
 	public writeSkillViewController(
 		cwd: string,
 		options: {
-			name: string
 			namePascal: string
+			nameKebab: string
 		}
 	) {
 		const { path } = this.buildViewControllerPath(
@@ -49,7 +49,7 @@ export default class ViewWriter extends AbstractWriter {
 			viewType: string
 			namePascal: string
 			viewModel: string
-			name: string
+			nameKebab: string
 		}
 	) {
 		const { path } = this.buildViewControllerPath(
@@ -62,19 +62,19 @@ export default class ViewWriter extends AbstractWriter {
 	}
 
 	private async writeController(path: string, options: any) {
-		const { namePascal, viewModel, viewType, name } = options
+		const { namePascal, viewModel, viewType, nameKebab } = options
 
 		if (diskUtil.doesFileExist(path)) {
 			throw new SpruceError({
 				code: 'SKILL_VIEW_EXISTS',
-				name,
+				name: namePascal,
 			})
 		}
 
 		const contents =
 			viewType === 'skillView'
-				? this.templates.skillViewController({ namePascal })
-				: this.templates.viewController({ namePascal, viewModel })
+				? this.templates.skillViewController({ namePascal, nameKebab })
+				: this.templates.viewController({ namePascal, viewModel, nameKebab })
 
 		const results = this.writeFileIfChangedMixinResults(path, contents, 'Test')
 
@@ -86,6 +86,24 @@ export default class ViewWriter extends AbstractWriter {
 	public doesRootControllerExist(cwd: string) {
 		const { path } = this.buildViewControllerPath(cwd, 'skillView', 'Root')
 		return diskUtil.doesFileExist(path)
+	}
+
+	public writePlugin(cwd: string) {
+		const destination = diskUtil.resolveHashSprucePath(
+			cwd,
+			'features',
+			'view.plugin.ts'
+		)
+
+		const pluginContents = this.templates.viewPlugin()
+
+		const results = this.writeFileIfChangedMixinResults(
+			destination,
+			pluginContents,
+			'Supports your skill with rendering views.'
+		)
+
+		return results
 	}
 
 	private buildViewControllerPath(

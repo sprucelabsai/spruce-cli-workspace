@@ -14,6 +14,358 @@ import { BaseWidget } from '#spruce/../widgets/types/widgets.types'
 declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schemas.types' {
 
 
+	namespace SpruceSchemas.Heartwood.v2021_02_11 {
+
+		
+		interface GetViewControllersEmitTarget {
+			
+				
+				'namespace': string
+		}
+
+		interface GetViewControllersEmitTargetSchema extends SpruceSchema.Schema {
+			id: 'getViewControllersEmitTarget',
+			version: 'v2021_02_11',
+			namespace: 'Heartwood',
+			name: '',
+			    fields: {
+			            /** . */
+			            'namespace': {
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			    }
+		}
+
+		type GetViewControllersEmitTargetEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.GetViewControllersEmitTargetSchema>
+
+	}
+
+
+	namespace SpruceSchemas.Heartwood.v2021_02_11 {
+
+		
+		interface GetSkillViewsEmitTargetAndPayload {
+			
+				
+				'target': SpruceSchemas.Heartwood.v2021_02_11.GetViewControllersEmitTarget
+		}
+
+		interface GetSkillViewsEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'getSkillViewsEmitTargetAndPayload',
+			version: 'v2021_02_11',
+			namespace: 'Heartwood',
+			name: '',
+			    fields: {
+			            /** . */
+			            'target': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.Heartwood.v2021_02_11.GetViewControllersEmitTargetSchema,}
+			            },
+			    }
+		}
+
+		type GetSkillViewsEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.GetSkillViewsEmitTargetAndPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.Heartwood.v2021_02_11 {
+
+		
+		interface Theme {
+			
+				/** Color 1. Used to color anything overlayed on the background (color1Inverse or color1InverseGradient). */
+				'color1'?: string| undefined | null
+				/** Color 1 (inverse). Background color of the view if color1InverseGradient is not set */
+				'color1Inverse'?: string| undefined | null
+				/** Color 1 Gradient (inverse). Background griedent applied to view. */
+				'color1InverseGradient'?: string| undefined | null
+				/** Color 2. The color of anything overlayed on the background of a card (color2Inverse) */
+				'color2'?: string| undefined | null
+				/** Color 2 (inverse with transparency). Background color used when some transparency is needed for context. */
+				'color2InverseTransparent'?: string| undefined | null
+				/** Color. Background color of cards. */
+				'color2Inverse'?: string| undefined | null
+				/** Color 3. Subtitle and label colors. */
+				'color3'?: string| undefined | null
+				/** Color 4. Buttons, borders, outlines, and highlights */
+				'color4'?: string| undefined | null
+				/** Color. Should compliment color 4 */
+				'color4Inverse'?: string| undefined | null
+				/** Color. The background color of the control bar. */
+				'controlBarBg'?: string| undefined | null
+				/** Color. Errors overlayed on a background colored with errorColor1Inverse. */
+				'errorColor1'?: string| undefined | null
+				/** Color. The background used when rendering errors. */
+				'errorColor1Inverse'?: string| undefined | null
+		}
+
+		interface ThemeSchema extends SpruceSchema.Schema {
+			id: 'theme',
+			version: 'v2021_02_11',
+			namespace: 'Heartwood',
+			name: 'Theme',
+			    fields: {
+			            /** Color 1. Used to color anything overlayed on the background (color1Inverse or color1InverseGradient). */
+			            'color1': {
+			                label: 'Color 1',
+			                type: 'text',
+			                hint: 'Used to color anything overlayed on the background (color1Inverse or color1InverseGradient).',
+			                options: undefined
+			            },
+			            /** Color 1 (inverse). Background color of the view if color1InverseGradient is not set */
+			            'color1Inverse': {
+			                label: 'Color 1 (inverse)',
+			                type: 'text',
+			                hint: 'Background color of the view if color1InverseGradient is not set',
+			                options: undefined
+			            },
+			            /** Color 1 Gradient (inverse). Background griedent applied to view. */
+			            'color1InverseGradient': {
+			                label: 'Color 1 Gradient (inverse)',
+			                type: 'text',
+			                hint: 'Background griedent applied to view.',
+			                options: undefined
+			            },
+			            /** Color 2. The color of anything overlayed on the background of a card (color2Inverse) */
+			            'color2': {
+			                label: 'Color 2',
+			                type: 'text',
+			                hint: 'The color of anything overlayed on the background of a card (color2Inverse)',
+			                options: undefined
+			            },
+			            /** Color 2 (inverse with transparency). Background color used when some transparency is needed for context. */
+			            'color2InverseTransparent': {
+			                label: 'Color 2 (inverse with transparency)',
+			                type: 'text',
+			                hint: 'Background color used when some transparency is needed for context.',
+			                options: undefined
+			            },
+			            /** Color. Background color of cards. */
+			            'color2Inverse': {
+			                label: 'Color',
+			                type: 'text',
+			                hint: 'Background color of cards.',
+			                options: undefined
+			            },
+			            /** Color 3. Subtitle and label colors. */
+			            'color3': {
+			                label: 'Color 3',
+			                type: 'text',
+			                hint: 'Subtitle and label colors.',
+			                options: undefined
+			            },
+			            /** Color 4. Buttons, borders, outlines, and highlights */
+			            'color4': {
+			                label: 'Color 4',
+			                type: 'text',
+			                hint: 'Buttons, borders, outlines, and highlights',
+			                options: undefined
+			            },
+			            /** Color. Should compliment color 4 */
+			            'color4Inverse': {
+			                label: 'Color',
+			                type: 'text',
+			                hint: 'Should compliment color 4',
+			                options: undefined
+			            },
+			            /** Color. The background color of the control bar. */
+			            'controlBarBg': {
+			                label: 'Color',
+			                type: 'text',
+			                hint: 'The background color of the control bar.',
+			                options: undefined
+			            },
+			            /** Color. Errors overlayed on a background colored with errorColor1Inverse. */
+			            'errorColor1': {
+			                label: 'Color',
+			                type: 'text',
+			                hint: 'Errors overlayed on a background colored with errorColor1Inverse.',
+			                options: undefined
+			            },
+			            /** Color. The background used when rendering errors. */
+			            'errorColor1Inverse': {
+			                label: 'Color',
+			                type: 'text',
+			                hint: 'The background used when rendering errors.',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type ThemeEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.ThemeSchema>
+
+	}
+
+
+	namespace SpruceSchemas.Heartwood.v2021_02_11 {
+
+		
+		interface GetSkillViewsResponsePayload {
+			
+				
+				'id': string
+				
+				'namespace': string
+				
+				'ids': string[]
+				
+				'source': string
+				
+				'theme'?: SpruceSchemas.Heartwood.v2021_02_11.Theme| undefined | null
+		}
+
+		interface GetSkillViewsResponsePayloadSchema extends SpruceSchema.Schema {
+			id: 'getSkillViewsResponsePayload',
+			version: 'v2021_02_11',
+			namespace: 'Heartwood',
+			name: '',
+			    fields: {
+			            /** . */
+			            'id': {
+			                type: 'id',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'namespace': {
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'ids': {
+			                type: 'text',
+			                isRequired: true,
+			                isArray: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'source': {
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'theme': {
+			                type: 'schema',
+			                options: {schema: SpruceSchemas.Heartwood.v2021_02_11.ThemeSchema,}
+			            },
+			    }
+		}
+
+		type GetSkillViewsResponsePayloadEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.GetSkillViewsResponsePayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.Heartwood.v2021_02_11 {
+
+		
+		interface RegisterSkillViewsEmitPayload {
+			
+				
+				'ids': string[]
+				
+				'source': string
+				
+				'theme'?: SpruceSchemas.Heartwood.v2021_02_11.Theme| undefined | null
+		}
+
+		interface RegisterSkillViewsEmitPayloadSchema extends SpruceSchema.Schema {
+			id: 'registerSkillViewsEmitPayload',
+			version: 'v2021_02_11',
+			namespace: 'Heartwood',
+			name: '',
+			    fields: {
+			            /** . */
+			            'ids': {
+			                type: 'text',
+			                isRequired: true,
+			                isArray: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'source': {
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'theme': {
+			                type: 'schema',
+			                options: {schema: SpruceSchemas.Heartwood.v2021_02_11.ThemeSchema,}
+			            },
+			    }
+		}
+
+		type RegisterSkillViewsEmitPayloadEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.RegisterSkillViewsEmitPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.Heartwood.v2021_02_11 {
+
+		
+		interface RegisterSkillViewsEmitTargetAndPayload {
+			
+				
+				'payload': SpruceSchemas.Heartwood.v2021_02_11.RegisterSkillViewsEmitPayload
+		}
+
+		interface RegisterSkillViewsEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'registerSkillViewsEmitTargetAndPayload',
+			version: 'v2021_02_11',
+			namespace: 'Heartwood',
+			name: '',
+			    fields: {
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.Heartwood.v2021_02_11.RegisterSkillViewsEmitPayloadSchema,}
+			            },
+			    }
+		}
+
+		type RegisterSkillViewsEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.RegisterSkillViewsEmitTargetAndPayloadSchema>
+
+	}
+
+
+	namespace SpruceSchemas.Heartwood.v2021_02_11 {
+
+		
+		interface RegisterSkillViewsResponsePayload {
+			
+				/** . Views that were registered. Will match the number of ids you sent. */
+				'totalRegistered': number
+		}
+
+		interface RegisterSkillViewsResponsePayloadSchema extends SpruceSchema.Schema {
+			id: 'registerSkillViewsResponsePayload',
+			version: 'v2021_02_11',
+			namespace: 'Heartwood',
+			name: '',
+			    fields: {
+			            /** . Views that were registered. Will match the number of ids you sent. */
+			            'totalRegistered': {
+			                type: 'number',
+			                isRequired: true,
+			                hint: 'Views that were registered. Will match the number of ids you sent.',
+			                options: undefined
+			            },
+			    }
+		}
+
+		type RegisterSkillViewsResponsePayloadEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.RegisterSkillViewsResponsePayloadSchema>
+
+	}
+
+
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
 		
@@ -1183,8 +1535,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'listenerDestinationDir'?: string| undefined | null
 				/** Version. Set a version yourself instead of letting me generate one for you */
 				'version'?: string| undefined | null
-				/** Replace existing listener. Only applies to skill events */
-				'shouldReplaceExisting'?: boolean| undefined | null
 		}
 
 		interface ListenEventOptionsSchema extends SpruceSchema.Schema {
@@ -1257,13 +1607,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                type: 'text',
 			                isPrivate: true,
 			                hint: 'Set a version yourself instead of letting me generate one for you',
-			                options: undefined
-			            },
-			            /** Replace existing listener. Only applies to skill events */
-			            'shouldReplaceExisting': {
-			                label: 'Replace existing listener',
-			                type: 'boolean',
-			                hint: 'Only applies to skill events',
 			                options: undefined
 			            },
 			    }

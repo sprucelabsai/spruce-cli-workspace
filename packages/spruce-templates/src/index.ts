@@ -365,12 +365,16 @@ export const templates = {
 		return template(options)
 	},
 
-	skillViewController(options: { namePascal: string }) {
+	skillViewController(options: { namePascal: string; nameKebab: string }) {
 		const template = templateImportUtil.getTemplate('view/View.svc.ts.hbs')
 		return template(options)
 	},
 
-	viewController(options: { viewModel: string; namePascal: string }) {
+	viewController(options: {
+		viewModel: string
+		namePascal: string
+		nameKebab: string
+	}) {
 		const template = templateImportUtil.getTemplate('view/View.vc.ts.hbs')
 		return template(options)
 	},
@@ -378,6 +382,11 @@ export const templates = {
 	views(options: ViewsOptions) {
 		const template = templateImportUtil.getTemplate('view/views.ts.hbs')
 		return template(options)
+	},
+
+	viewPlugin() {
+		const template = templateImportUtil.getTemplate('view/view.plugin.ts.hbs')
+		return template({})
 	},
 }
 

@@ -75,13 +75,6 @@ const listenEventOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventO
 	                hint: 'Set a version yourself instead of letting me generate one for you',
 	                options: undefined
 	            },
-	            /** Replace existing listener. Only applies to skill events */
-	            'shouldReplaceExisting': {
-	                label: 'Replace existing listener',
-	                type: 'boolean',
-	                hint: 'Only applies to skill events',
-	                options: undefined
-	            },
 	    }
 }
 
