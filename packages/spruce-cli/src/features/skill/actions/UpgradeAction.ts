@@ -31,8 +31,6 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 			'Go!!!!',
 		])
 
-		await this.reInstallPackageDependencies()
-
 		let results = await this.Action('skill', 'rebuild').execute({})
 
 		results = actionUtil.mergeActionResults(results, { files: generatedFiles })
@@ -47,17 +45,6 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 		await skillFeature.installScripts(this.cwd, {
 			shouldConfirmIfScriptExistsButIsDifferent: options.shouldConfirm,
 		})
-	}
-
-	private async reInstallPackageDependencies() {
-		const features = await this.featureInstaller.getInstalledFeatures()
-
-		await this.featureInstaller.installPackageDependenciesForFeatures(
-			features,
-			(message: string) => {
-				this.ui.startLoading(message)
-			}
-		)
 	}
 
 	private async copyFiles(normalizedOptions: Options) {

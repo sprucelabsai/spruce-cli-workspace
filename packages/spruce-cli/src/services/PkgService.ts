@@ -98,6 +98,11 @@ export default class PkgService extends CommandService {
 			await this.execute('npm', {
 				args,
 			})
+		} else if (
+			!diskUtil.doesDirExist(pathUtil.join(this.cwd, 'node_modules'))
+		) {
+			totalInstalled = packages.length
+			await this.execute('yarn')
 		}
 
 		for (const lm of labsModules) {
@@ -113,9 +118,12 @@ export default class PkgService extends CommandService {
 	}
 
 	private deleteLockFile() {
-		const lock = pathUtil.join(this.cwd, 'package-lock.json')
-		if (diskUtil.doesFileExist(lock)) {
-			diskUtil.deleteFile(lock)
+		const files = ['package-lock.json', 'yarn.lock']
+		for (const file of files) {
+			const lock = pathUtil.join(this.cwd, file)
+			if (diskUtil.doesFileExist(lock)) {
+				diskUtil.deleteFile(lock)
+			}
 		}
 	}
 

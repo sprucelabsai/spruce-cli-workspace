@@ -335,23 +335,25 @@ export default class FeatureInstaller implements ServiceProvider {
 	): Promise<FeatureInstallResponse> {
 		const pkgService = this.Service('pkg')
 
-		didUpdateHandler?.(
-			`Installing ${this.packagesToInstall.length} node module${
-				this.packagesToInstall.length === 1 ? '' : 's'
-			} using NPM. Please be patient.`
-		)
+		if (this.packagesToInstall.length > 0) {
+			didUpdateHandler?.(
+				`Installing ${this.packagesToInstall.length} node module${
+					this.packagesToInstall.length === 1 ? '' : 's'
+				} using NPM. Please be patient.`
+			)
+			await pkgService.install(this.packagesToInstall, {})
+		}
 
-		await pkgService.install(this.packagesToInstall, {})
-
-		didUpdateHandler?.(
-			`Now installing ${this.devPackagesToInstall.length} DEV node module${
-				this.devPackagesToInstall.length === 1 ? '' : 's'
-			} using NPM. Please be patient.`
-		)
-
-		await pkgService.install(this.devPackagesToInstall, {
-			isDev: true,
-		})
+		if (this.devPackagesToInstall.length > 0) {
+			didUpdateHandler?.(
+				`Now installing ${this.devPackagesToInstall.length} DEV node module${
+					this.devPackagesToInstall.length === 1 ? '' : 's'
+				} using NPM. Please be patient.`
+			)
+			await pkgService.install(this.devPackagesToInstall, {
+				isDev: true,
+			})
+		}
 
 		this.packagesToInstall = []
 		this.devPackagesToInstall = []
@@ -392,9 +394,9 @@ export default class FeatureInstaller implements ServiceProvider {
 
 			didUpdateHandler?.(`Checking node dependency: ${pkg.name}`)
 
-			if (pkg.isDev) {
+			if (pkg.isDev && this.devPackagesToInstall.indexOf(packageName) === -1) {
 				this.devPackagesToInstall.push(packageName)
-			} else {
+			} else if (this.packagesToInstall.indexOf(packageName) === -1) {
 				this.packagesToInstall.push(packageName)
 			}
 		})
@@ -472,18 +474,16 @@ export default class FeatureInstaller implements ServiceProvider {
 
 	public async getInstalledFeatures() {
 		const installed = await Promise.all(
-			this.getAllCodes()
-				.map(async (code) => {
-					const isInstalled = await this.isInstalled(code)
-					if (isInstalled) {
-						return this.getFeature(code)
-					}
+			this.getAllCodes().map(async (code) => {
+				const isInstalled = await this.isInstalled(code)
+				if (isInstalled) {
+					return this.getFeature(code)
+				}
 
-					return false
-				})
-				.filter((f) => !!f)
+				return false
+			})
 		)
 
-		return installed as FeatureMap[keyof FeatureMap][]
+		return installed.filter((f) => !!f) as FeatureMap[keyof FeatureMap][]
 	}
 }
