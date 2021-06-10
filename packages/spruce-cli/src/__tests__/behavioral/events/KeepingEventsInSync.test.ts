@@ -479,7 +479,6 @@ export function buildPermissionContract(..._: any[]):any { return _[0] }
 		return results
 	}
 
-
 	private static async assertValidSyncEventsResults(
 		results: FeatureActionResponse,
 		shouldSyncOnlyCoreEvents = false
