@@ -1,6 +1,5 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
 import FeatureCommandAttacher from '../../features/FeatureCommandAttacher'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 import MockProgramFactory, { MockProgram } from '../../tests/MockProgramFactory'
@@ -19,13 +18,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		this.attacherWithOverride = new FeatureCommandAttacher({
 			program: this.program,
 			ui: this.ui,
-			optionOverrides: {
-				'sync.schemas': {
-					fetchCoreSchemas: false,
-				},
-			},
 			actionExecuter,
-			blockedCommands: {},
 		})
 	}
 
@@ -152,47 +145,6 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		)
 
 		assert.isFalse(diskUtil.doesFileExist(personPath))
-	}
-
-	@test.skip(
-		'overridding overrides is not possible without reworking attacher and this will break other tests'
-	)
-	protected static async overriddenCanBeIgnoredByPassingArg() {
-		await this.FeatureFixture().installCachedFeatures('schemas')
-		await this.attachSchemaFeature()
-		await this.program.actionHandler({ fetchCoreSchemas: 'true' })
-
-		const personPath = this.resolveHashSprucePath(
-			'schemas',
-			'spruce',
-			'v2020_07_22',
-			'person.schema.ts'
-		)
-
-		assert.isTrue(diskUtil.doesFileExist(personPath))
-	}
-
-	@test()
-	protected static async blockedCommandsThrow() {
-		const actionExecuter = this.ActionExecuter()
-
-		this.attacherWithOverride = new FeatureCommandAttacher({
-			program: this.program,
-			ui: this.ui,
-			optionOverrides: {},
-			blockedCommands: {
-				'sync.schemas': 'this is blocked',
-				'sync.fields': 'this is blocked',
-			},
-			actionExecuter,
-		})
-
-		await this.attachSchemaFeature()
-		const err = await assert.doesThrowAsync(() =>
-			this.program.actionHandler({})
-		)
-
-		errorAssertUtil.assertError(err, 'COMMAND_BLOCKED')
 	}
 
 	private static async attachSchemaFeature() {

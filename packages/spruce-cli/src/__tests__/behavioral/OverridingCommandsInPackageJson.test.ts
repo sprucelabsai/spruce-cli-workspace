@@ -1,6 +1,5 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import Cli from '../../cli'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 import MockProgramFactory from '../../tests/MockProgramFactory'
 
@@ -8,31 +7,41 @@ export default class OverridingCommandsInPackageJsonTest extends AbstractSkillTe
 	protected static skillCacheKey = 'schemas'
 
 	@test()
-	protected static async overridesAreLoadedIntoAttacher() {
+	protected static async runningCommandHonorsOverrides() {
 		this.overrideOptions()
 
-		const cli = await Cli.Boot({
+		const cli = await this.FeatureFixture().Cli({
 			program: MockProgramFactory.Program(),
-			cwd: this.cwd,
 		})
 
 		//@ts-ignore
-		const attacher = cli.getAttacher()
-		assert.isTruthy(attacher)
+		const executer = cli.getActionExecuter()
+		await executer.Action('schema', 'sync').execute()
 
-		assert.isEqualDeep(attacher.optionOverrides, {
-			'sync.schemas': {
-				fetchCoreSchemas: 'false',
-			},
-		})
+		this.assertCoreSchemasDidNotSync()
 	}
 
 	@test()
-	protected static async runningCommandHonorsOverrides() {
-		const cliPath = this.resolvePath(__dirname, '..', '..', 'index.js')
+	protected static async runningCommandHonorsOverridesWhenCommandIsForwarded() {
+		this.overrideOptions()
 
-		await this.Service('command').execute(`node ${cliPath} sync.schemas`)
+		const cli = await this.FeatureFixture().Cli({
+			program: MockProgramFactory.Program(),
+		})
 
+		//@ts-ignore
+		const executer = cli.getActionExecuter()
+		await executer.Action('schema', 'create').execute({
+			nameReadable: 'Test schema!',
+			namePascal: 'Test',
+			nameCamel: 'test',
+			description: 'this is so great!',
+		})
+
+		this.assertCoreSchemasDidNotSync()
+	}
+
+	private static assertCoreSchemasDidNotSync() {
 		const personPath = this.resolveHashSprucePath(
 			'schemas',
 			'spruce',

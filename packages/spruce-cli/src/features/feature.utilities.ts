@@ -1,6 +1,7 @@
 import pathUtil from 'path'
 import { Schema } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { FeatureAction } from './features.types'
 
 const featuresUtil = {
 	/**
@@ -24,6 +25,13 @@ const featuresUtil = {
 		}
 
 		return `${actionCode}.${featureCode}`
+	},
+
+	generateCommandsIncludingAliases(featureCode: string, action: FeatureAction) {
+		const baseCommand = this.generateCommand(featureCode, action.code)
+		const aliases = action.commandAliases ?? []
+
+		return [baseCommand, ...aliases]
 	},
 
 	generateOptionAliases(schema: Schema): Record<string, string> {

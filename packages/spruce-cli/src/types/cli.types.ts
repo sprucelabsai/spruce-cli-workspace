@@ -53,3 +53,11 @@ export type FileDescription = {
 }
 
 export type InternalUpdateHandler = (message: string) => void
+
+export interface OptionOverrides {
+	[command: string]: Record<string, any>
+}
+
+export interface BlockedCommands {
+	[command: string]: string
+}

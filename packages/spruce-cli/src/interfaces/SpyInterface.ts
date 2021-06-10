@@ -29,7 +29,9 @@ export default class SpyInterface implements GraphicsInterface {
 
 	public constructor() {
 		this.term = SpyInterface.shouldRenderAsTestLogs
-			? new TerminalInterface(process.cwd(), true)
+			? new TerminalInterface(process.cwd(), true, (...strs: []) => {
+					this.optionallyRenderLine(strs.join(' '))
+			  })
 			: undefined
 	}
 

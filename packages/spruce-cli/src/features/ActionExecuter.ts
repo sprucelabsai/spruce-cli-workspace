@@ -121,7 +121,6 @@ export default class ActionExecuter {
 		try {
 			executeResults = await originalExecute({
 				...answers,
-				shouldEmitExecuteEvents: false,
 			})
 		} catch (err) {
 			executeResults.errors = [err]

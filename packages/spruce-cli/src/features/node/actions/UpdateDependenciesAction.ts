@@ -33,6 +33,7 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 		InFlightEntertainment.stop()
 
 		return {
+			headline: 'Update Complete!',
 			summaryLines: ['All dependencies updated! 💪'],
 		}
 	}

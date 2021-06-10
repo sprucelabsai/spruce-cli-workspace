@@ -75,19 +75,22 @@ export default class Cli implements CliInterface {
 	public readonly emitter: GlobalEmitter
 	private static apiClients: PromiseCache = {}
 	private attacher?: FeatureCommandAttacher
+	private actionExecuter?: ActionExecuter
 
 	private constructor(
 		cwd: string,
 		featureInstaller: FeatureInstaller,
 		serviceFactory: ServiceFactory,
 		emitter: GlobalEmitter,
-		attacher?: FeatureCommandAttacher
+		attacher?: FeatureCommandAttacher,
+		actionExecuter?: ActionExecuter
 	) {
 		this.cwd = cwd
 		this.featureInstaller = featureInstaller
 		this.serviceFactory = serviceFactory
 		this.emitter = emitter
 		this.attacher = attacher
+		this.actionExecuter = actionExecuter
 	}
 
 	public static async resetApiClients() {
@@ -100,6 +103,10 @@ export default class Cli implements CliInterface {
 
 	public getAttacher() {
 		return this.attacher
+	}
+
+	public getActionExecuter() {
+		return this.actionExecuter
 	}
 
 	public async on(...args: any[]) {
@@ -199,6 +206,14 @@ export default class Cli implements CliInterface {
 			serviceFactory.Service(cwd, 'lint')
 		)
 
+		const optionOverrides = this.loadOptionOverrides(
+			serviceFactory.Service(cwd, 'pkg')
+		)
+
+		const blockedCommands = this.loadCommandBlocks(
+			serviceFactory.Service(cwd, 'pkg')
+		)
+
 		const actionFactory = new ActionFactory({
 			ui,
 			emitter,
@@ -208,6 +223,8 @@ export default class Cli implements CliInterface {
 			storeFactory,
 			templates,
 			writerFactory,
+			blockedCommands,
+			optionOverrides,
 		})
 
 		const actionExecuter = new ActionExecuter({
@@ -233,19 +250,9 @@ export default class Cli implements CliInterface {
 		let attacher: FeatureCommandAttacher | undefined
 
 		if (program) {
-			const optionOverrides = this.loadOptionOverrides(
-				serviceFactory.Service(cwd, 'pkg')
-			)
-
-			const blockedCommands = this.loadCommandBlocks(
-				serviceFactory.Service(cwd, 'pkg')
-			)
-
 			attacher = new FeatureCommandAttacher({
 				program,
 				ui,
-				optionOverrides,
-				blockedCommands,
 				actionExecuter,
 			})
 
@@ -271,7 +278,8 @@ export default class Cli implements CliInterface {
 			featureInstaller,
 			serviceFactory,
 			emitter,
-			attacher
+			attacher,
+			actionExecuter
 		)
 
 		return cli as CliInterface

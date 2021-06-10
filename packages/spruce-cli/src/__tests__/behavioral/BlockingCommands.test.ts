@@ -1,10 +1,10 @@
 import { test, assert } from '@sprucelabs/test'
-import Cli from '../../cli'
+import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 import MockProgramFactory from '../../tests/MockProgramFactory'
 
 export default class OverridingCommandsInPackageJsonTest extends AbstractSkillTest {
-	protected static skillCacheKey = 'node'
+	protected static skillCacheKey = 'schemas'
 
 	@test()
 	protected static async blockedCommandsThrow() {
@@ -14,17 +14,42 @@ export default class OverridingCommandsInPackageJsonTest extends AbstractSkillTe
 			value: { 'sync.schemas': `Stop now!` },
 		})
 
-		const cli = await Cli.Boot({
+		const cli = await this.FeatureFixture().Cli({
 			program: MockProgramFactory.Program(),
-			cwd: this.cwd,
 		})
 
 		//@ts-ignore
-		const attacher = cli.getAttacher()
-		assert.isTruthy(attacher)
+		const executer = cli.getActionExecuter()
+		const results = await executer.Action('schema', 'sync').execute()
 
-		assert.isEqualDeep(attacher.blockedCommands, {
-			'sync.schemas': 'Stop now!',
+		assert.isTruthy(results.errors)
+		errorAssertUtil.assertError(results.errors[0], 'COMMAND_BLOCKED')
+	}
+
+	@test()
+	protected static async blocksWhenCommandIsForwardedFromAnother() {
+		const pkg = this.Service('pkg')
+		pkg.set({
+			path: ['skill', 'blockedCommands'],
+			value: { 'sync.schemas': `Stop now!` },
 		})
+
+		const cli = await this.FeatureFixture().Cli({
+			program: MockProgramFactory.Program(),
+			cwd: this.cwd,
+			graphicsInterface: this.ui,
+		})
+
+		//@ts-ignore
+		const executer = cli.getActionExecuter()
+		const results = await executer.Action('schema', 'create').execute({
+			nameReadable: 'Test schema!',
+			namePascal: 'Test',
+			nameCamel: 'test',
+			description: 'this is so great!',
+		})
+
+		assert.isTruthy(results.errors)
+		errorAssertUtil.assertError(results.errors[0], 'COMMAND_BLOCKED')
 	}
 }

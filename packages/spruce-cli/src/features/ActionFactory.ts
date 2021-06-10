@@ -8,10 +8,11 @@ import {
 	FeatureCode,
 } from '../features/features.types'
 import { GlobalEmitter } from '../GlobalEmitter'
+import { BlockedCommands, OptionOverrides } from '../types/cli.types'
 import AbstractAction from './AbstractAction'
 import ActionExecuter from './ActionExecuter'
 import FeatureInstaller from './FeatureInstaller'
-import InstallCheckingActionDecorator from './InstallCheckingActionDecorator'
+import OverrideActionDecorator from './OverrideActionDecorator'
 
 export interface FeatureActionFactoryOptions
 	extends Omit<
@@ -19,13 +20,20 @@ export interface FeatureActionFactoryOptions
 		'parent' | 'actionExecuter' | 'featureInstaller'
 	> {
 	emitter: GlobalEmitter
+	blockedCommands?: BlockedCommands
+	optionOverrides?: OptionOverrides
 }
 
 export default class ActionFactory {
 	private actionOptions: FeatureActionFactoryOptions
+	private blockedCommands?: BlockedCommands
+	private optionOverrides?: OptionOverrides
 
 	public constructor(options: FeatureActionFactoryOptions) {
-		this.actionOptions = options
+		const { blockedCommands, optionOverrides, ...actionOptions } = options
+		this.actionOptions = actionOptions
+		this.blockedCommands = blockedCommands
+		this.optionOverrides = optionOverrides
 	}
 
 	public Action<F extends FeatureCode, S extends Schema = Schema>(options: {
@@ -82,12 +90,14 @@ export default class ActionFactory {
 			})
 		}
 
-		const installCheckingFacade = new InstallCheckingActionDecorator(
+		const actionDecorator = new OverrideActionDecorator({
 			action,
 			feature,
-			featureInstaller
-		)
+			blockedCommands: this.blockedCommands,
+			optionOverrides: this.optionOverrides,
+			ui: this.actionOptions.ui,
+		})
 
-		return installCheckingFacade as FeatureAction<S>
+		return actionDecorator as FeatureAction<S>
 	}
 }

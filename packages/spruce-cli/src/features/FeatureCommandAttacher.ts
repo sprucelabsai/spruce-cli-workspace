@@ -20,29 +20,17 @@ export interface BlockedCommands {
 export default class FeatureCommandAttacher {
 	private program: CommanderStatic['program']
 	private ui: GraphicsInterface
-	private optionOverrides: OptionOverrides
-	private blockedCommands: BlockedCommands
 	private actionExecuter: ActionExecuter
 
 	public constructor(options: {
 		program: CommanderStatic['program']
 		ui: GraphicsInterface
-		optionOverrides: OptionOverrides
-		blockedCommands: BlockedCommands
 		actionExecuter: ActionExecuter
 	}) {
-		const {
-			program,
-			ui: term,
-			optionOverrides,
-			blockedCommands,
-			actionExecuter,
-		} = options
+		const { program, ui: term, actionExecuter } = options
 
 		this.program = program
 		this.ui = term
-		this.optionOverrides = optionOverrides
-		this.blockedCommands = blockedCommands
 		this.actionExecuter = actionExecuter
 	}
 
@@ -71,7 +59,6 @@ export default class FeatureCommandAttacher {
 		}
 
 		command = command.action(async (...args: any[]) => {
-			this.assertCommandIsNotBlocked(commandStr)
 			this.clearAndRenderHeadline(action)
 
 			const startTime = new Date().getTime()
@@ -81,15 +68,8 @@ export default class FeatureCommandAttacher {
 				feature.optionsSchema ?? action.optionsSchema
 			)
 
-			const overrides = this.optionOverrides[commandStr]
-			if (overrides) {
-				this.ui.renderLine(`Overrides found in package.json`)
-				this.ui.renderObject(overrides)
-			}
-
 			const results = await action.execute({
 				...options,
-				...overrides,
 			})
 
 			const endTime = new Date().getTime()
@@ -140,16 +120,6 @@ export default class FeatureCommandAttacher {
 		this.ui.clear()
 		this.ui.renderHero(CLI_HERO)
 		this.ui.renderHeadline(action.invocationMessage)
-	}
-
-	private assertCommandIsNotBlocked(commandStr: string) {
-		if (this.blockedCommands[commandStr]) {
-			throw new SpruceError({
-				code: 'COMMAND_BLOCKED',
-				command: commandStr,
-				hint: this.blockedCommands[commandStr],
-			})
-		}
 	}
 
 	private attachOptions(command: CommanderStatic['program'], schema: Schema) {
