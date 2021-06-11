@@ -63,6 +63,7 @@ export default class SkillFeature<
 		'boot.local':
 			'node -r ts-node/register -r tsconfig-paths/register ./src/index',
 		build: 'yarn build.dev',
+		'build.ci': 'yarn build.tsc && yarn build.resolve-paths && yarn lint',
 		'build.dev': 'yarn build.tsc ; yarn resolve-paths.lint',
 		'build.copy-files':
 			"mkdir -p build && rsync -avzq --exclude='*.ts' ./src/ ./build/",
@@ -72,7 +73,7 @@ export default class SkillFeature<
 		clean: 'rm -rf build/',
 		'clean.all':
 			'yarn clean && rm -f yarn.lock package-lock.json && rm -rf node_modules/',
-		'fix.lint': "eslint --fix '**/*.ts'",
+		'fix.lint': "eslint --fix --cache '**/*.ts'",
 		health: 'yarn boot --health',
 		'health.local': 'yarn boot.local --health',
 		lint: "eslint --cache '**/*.ts'",

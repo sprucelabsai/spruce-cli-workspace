@@ -45,7 +45,7 @@
 		"clean.build": "rm -rf build/",
 		"clean.cache": "true",
 		"clean.dependencies": "rm -rf node_modules/ yarn.lock",
-		"fix.lint": "eslint --fix '**/*.ts'",
+		"fix.lint": "eslint --fix --cache '**/*.ts'",
 		"lint": "eslint --cache '**/*.ts' && tsc -p . --noEmit",
 		"local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS",
 		"rebuild": "cd ../ && yarn rebuild",
