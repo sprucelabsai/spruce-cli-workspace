@@ -35,6 +35,7 @@
 		"url": "https://github.com/sprucelabsai/spruce-cli-workspace/issues"
 	},
 	"scripts": {
+		"build.ci": "yarn build.tsc && yarn build.copy-files && yarn build.resolve-paths",
 		"build.copy-files": "mkdir -p build && rsync -avzq --exclude='*.ts' src/ build/ && rsync -avzq src/templates/ build/templates/",
 		"build.copy-files.dist": "mkdir -p build && rsync -avzq --exclude='*.ts' src/ build/dist/ && rsync -avzq src/templates/ build/esm/templates/",
 		"build.dev": "yarn build.tsc ; yarn build.copy-files && yarn build.resolve-paths",

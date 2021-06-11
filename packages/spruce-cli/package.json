@@ -30,6 +30,7 @@
 		"url": "https://github.com/sprucelabsai/spruce-cli-workspace/issues"
 	},
 	"scripts": {
+		"build.ci": "yarn build.babel && yarn build.types && yarn build.resolve-paths && yarn lint",
 		"build.dev": "yarn build.babel ; yarn build.types.resolve-paths.lint",
 		"build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
 		"build.babel.debug": "node --inspect-brk=5200 ../../node_modules/.bin/babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",

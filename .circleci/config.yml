@@ -32,7 +32,7 @@ jobs:
       - run:
           name: "Build"
           command: |
-            yarn build.dev
+            yarn build.ci
       - run:
           name: "Cache Tests"
           command: |

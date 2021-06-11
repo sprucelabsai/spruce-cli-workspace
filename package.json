@@ -13,6 +13,7 @@
     "npm": ">=6"
   },
   "scripts": {
+    "build.ci": "lerna run build.ci",
     "build.dev": "lerna run build.dev",
     "build.types": "lerna run build.types",
     "cache.tests": "lerna run cache.tests --parallel",
