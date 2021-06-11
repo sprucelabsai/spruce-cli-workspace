@@ -445,7 +445,7 @@ export async function run(argv: string[] = []): Promise<void> {
 
 async function setupInFlightEntertainment(ui: TerminalInterface) {
 	if (
-		process.stdout.isTTY &&
+		TerminalInterface.doesSupportColor() &&
 		process.env.ENABLE_INSTALL_INTERTAINMENT !== 'false'
 	) {
 		const command = new CommandService(diskUtil.resolvePath(__dirname, '../'))
