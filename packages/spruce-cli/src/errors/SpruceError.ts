@@ -211,6 +211,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				message = `A skill view controller already exists named ${options.name}!`
 				break
 
+			case 'THEME_EXISTS':
+				message = `Yikes! You can't create a new theme. One per skill for now.`
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}

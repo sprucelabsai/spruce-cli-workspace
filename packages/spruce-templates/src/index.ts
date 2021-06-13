@@ -388,6 +388,11 @@ export const templates = {
 		const template = templateImportUtil.getTemplate('view/view.plugin.ts.hbs')
 		return template({})
 	},
+
+	theme() {
+		const template = templateImportUtil.getTemplate('view/skill.theme.ts.hbs')
+		return template({})
+	},
 }
 
 export type Templates = typeof templates

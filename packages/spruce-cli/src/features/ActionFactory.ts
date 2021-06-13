@@ -58,10 +58,14 @@ export default class ActionFactory {
 			`${namesUtil.toPascal(actionCode)}Action`
 		)
 
-		const Class: new (options: FeatureActionOptions) =>
-			| AbstractAction
-			| undefined = require(classPath).default
+		let Class: new (options: FeatureActionOptions) => AbstractAction | undefined
 
+		try {
+			Class = require(classPath).default
+			// eslint-disable-next-line no-empty
+		} catch {}
+
+		//@ts-ignore
 		if (!Class) {
 			throw new SpruceError({
 				code: 'GENERIC',

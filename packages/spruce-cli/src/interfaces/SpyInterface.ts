@@ -9,6 +9,7 @@ import {
 	ProgressBarUpdateOptions,
 	ImageDimensions,
 } from '../types/graphicsInterface.types'
+import durationUtil from '../utilities/duration.utility'
 import TerminalInterface from './TerminalInterface'
 
 export default class SpyInterface implements GraphicsInterface {
@@ -26,8 +27,10 @@ export default class SpyInterface implements GraphicsInterface {
 	private waitForEnterResolver?: () => void | undefined
 	private promptDefaultValue: any
 	private term?: TerminalInterface
+	private startTime: number
 
 	public constructor() {
+		this.startTime = new Date().getTime()
 		this.term = SpyInterface.shouldRenderAsTestLogs
 			? new TerminalInterface(process.cwd(), true, (...strs: []) => {
 					this.optionallyRenderLine(strs.join(' '))
@@ -172,7 +175,10 @@ export default class SpyInterface implements GraphicsInterface {
 
 	private optionallyRenderLine(message: string) {
 		if (SpyInterface.shouldRenderAsTestLogs) {
-			testLog.info(message)
+			const duration = new Date().getTime() - this.startTime
+			const friendly = durationUtil.msToFriendly(duration)
+
+			testLog.info(`${friendly} :: ${message}`)
 		}
 	}
 

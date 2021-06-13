@@ -53,7 +53,6 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 		this.ui.startLoading('Loading details about your skill... 🧐')
 
 		let localNamespace = await this.Store('skill').loadCurrentSkillsNamespace()
-
 		let shouldImportCoreSchemas = true
 
 		if (generateCoreSchemaTypes) {

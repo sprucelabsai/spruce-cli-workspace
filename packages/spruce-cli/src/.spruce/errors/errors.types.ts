@@ -32,6 +32,27 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	
+	export interface ThemeExists {
+		
+	}
+
+	export interface ThemeExistsSchema extends SpruceSchema.Schema {
+		id: 'themeExists',
+		namespace: 'SpruceCli',
+		name: 'Theme exists',
+		    fields: {
+		    }
+	}
+
+	export type ThemeExistsEntity = SchemaEntity<SpruceErrors.SpruceCli.ThemeExistsSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
 	export interface TestFailed {
 		
 			

@@ -141,8 +141,16 @@ export default class EventFeature extends AbstractFeature {
 			})
 		}
 
-		// this.contractBuilder.clearCache()
-
 		return this.contractBuilder
+	}
+
+	public hasBeenSynced() {
+		if (diskUtil.doesHashSprucePathExist(this.cwd)) {
+			const writer = this.Writer('event')
+
+			return writer.hasCombinedContractBeenWritten(this.cwd)
+		}
+
+		return false
 	}
 }

@@ -88,6 +88,20 @@ export default class EventWriter extends AbstractWriter {
 		return results[0]
 	}
 
+	public hasCombinedContractBeenWritten(cwd: string) {
+		if (diskUtil.doesHashSprucePathExist(cwd)) {
+			const path = diskUtil.resolveHashSprucePath(
+				cwd,
+				'events',
+				CONTRACT_FILE_NAME
+			)
+
+			return diskUtil.doesFileExist(path)
+		}
+
+		return false
+	}
+
 	private async writeCombinedEvents(options: {
 		destinationDir: string
 		templateItems: EventContractTemplateItem[]

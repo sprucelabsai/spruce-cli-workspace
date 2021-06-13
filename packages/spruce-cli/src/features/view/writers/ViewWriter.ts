@@ -106,6 +106,29 @@ export default class ViewWriter extends AbstractWriter {
 		return results
 	}
 
+	public writeTheme(cwd: string) {
+		const destination = this.buildThemePath(cwd)
+
+		const contents = this.templates.theme()
+
+		const results = this.writeFileIfChangedMixinResults(
+			destination,
+			contents,
+			'Your brand new theme file!'
+		)
+
+		return results
+	}
+
+	private buildThemePath(cwd: string) {
+		return diskUtil.resolvePath(cwd, 'src', 'themes', 'skill.theme.ts')
+	}
+
+	public doesThemeFileExist(cwd: string) {
+		const destination = this.buildThemePath(cwd)
+		return diskUtil.doesFileExist(destination)
+	}
+
 	private buildViewControllerPath(
 		cwd: string,
 		viewType: string,

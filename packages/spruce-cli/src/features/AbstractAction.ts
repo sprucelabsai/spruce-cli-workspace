@@ -97,7 +97,7 @@ export default abstract class AbstractAction<S extends Schema = Schema>
 		})
 	}
 
-	protected getFeature(code: FeatureCode) {
+	protected getFeature<C extends FeatureCode>(code: C) {
 		return this.featureInstaller.getFeature(code)
 	}
 
