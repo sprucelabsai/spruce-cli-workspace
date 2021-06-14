@@ -35,6 +35,7 @@ export default class InFlightEntertainment {
 
 	public static stop() {
 		this.activeGameCount--
+
 		if (this.activeGameCount === 0) {
 			this.game?.kill()
 		}

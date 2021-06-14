@@ -41,14 +41,13 @@ export default class RebuildAction extends AbstractAction<OptionsSchema> {
 				},
 			})
 		} catch (err) {
+			this.resetUi()
 			return {
 				errors: [err],
 			}
 		}
 
-		InFlightEntertainment.stop()
-
-		this.ui.stopLoading()
+		this.resetUi()
 
 		return {
 			summaryLines: [
@@ -58,5 +57,10 @@ export default class RebuildAction extends AbstractAction<OptionsSchema> {
 				'☑️ Build complete.',
 			],
 		}
+	}
+
+	private resetUi() {
+		InFlightEntertainment.stop()
+		this.ui.stopLoading()
 	}
 }
