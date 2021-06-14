@@ -1,9 +1,13 @@
 import { Schema } from '@sprucelabs/schema'
 import {
 	CORE_SCHEMA_VERSION,
+	diskUtil,
+	HealthCheckResults,
 	SchemaHealthCheckItem,
 } from '@sprucelabs/spruce-skill-utils'
+import { assert } from '@sprucelabs/test'
 import { CliBootOptions } from '../cli'
+import { FeatureCode } from '../features/features.types'
 import AbstractCliTest from './AbstractCliTest'
 
 export default abstract class AbstractSchemaTest extends AbstractCliTest {
@@ -69,5 +73,34 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 		)
 
 		return cli
+	}
+
+	protected static async assertHealthySkillNamed(
+		name: string,
+		expectedHealth: HealthCheckResults = { skill: { status: 'passed' } },
+		expectedInstalledSkills: FeatureCode[] = ['skill']
+	) {
+		const cli = await this.Cli()
+		await this.linkLocalPackages()
+
+		const health = await cli.checkHealth()
+
+		// @ts-ignore
+		if (health.schema?.schemas) {
+			//@ts-ignore
+			health.schema.schemas = this.sortSchemas(health.schema.schemas)
+		}
+
+		assert.isEqualDeep(health, expectedHealth)
+
+		const packageContents = diskUtil.readFile(this.resolvePath('package.json'))
+		assert.doesInclude(packageContents, name)
+
+		const installer = this.getFeatureInstaller()
+
+		for (const code of expectedInstalledSkills) {
+			const isInstalled = await installer.isInstalled(code)
+			assert.isTrue(isInstalled)
+		}
 	}
 }

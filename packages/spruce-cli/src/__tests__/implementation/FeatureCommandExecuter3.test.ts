@@ -8,7 +8,7 @@ import {
 import AbstractSchemaTest from '../../tests/AbstractSchemaTest'
 import testUtil from '../../tests/utilities/test.utility'
 
-export default class FeatureCommandExecuterTestCont extends AbstractSchemaTest {
+export default class FeatureCommandExecuterContTest extends AbstractSchemaTest {
 	@test()
 	protected static async canSkipOptionalDependencies() {
 		const { promise: actionPromise } =
