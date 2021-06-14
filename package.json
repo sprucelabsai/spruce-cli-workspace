@@ -21,7 +21,7 @@
     "clean.all": "yarn clean.cache ; yarn clean.dependencies && yarn clean.build",
     "clean.build": "for d in packages/*; do echo $d; cd $d; yarn clean.build; cd ../..; done",
     "clean.cache": "for d in packages/*; do echo $d; cd $d; yarn clean.cache; cd ../..; done",
-    "clean.dependencies": "rm -rf node_modules/ yarn.lock && for d in packages/*; do echo $d; cd $d; yarn clean.dependencies; cd ../..; done",
+    "clean.dependencies": "rm -rf node_modules/ package-lock.json yarn.lock && for d in packages/*; do echo $d; cd $d; yarn clean.dependencies; cd ../..; done",
     "clean.test.data": "lerna run clean.test.data --parallel",
     "fix.lint": "lerna run fix.lint --parallel",
     "lint": "lerna run lint --parallel",
