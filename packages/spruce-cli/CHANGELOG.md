@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.13.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.12.4...v14.13.0) (2021-06-14)
+
+
+### Features
+
+* creating a theme ([2c79d32](https://github.com/sprucelabsai/spruce-cli-workspace/commit/2c79d32))
+
+
+
+
+
 ## [14.12.4](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.12.3...v14.12.4) (2021-06-11)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
