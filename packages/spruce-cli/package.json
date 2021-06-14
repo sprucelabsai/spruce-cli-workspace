@@ -45,7 +45,7 @@
 		"clean.build": "rm -rf build/",
 		"clean.cache": "rm -rf src/.spruce/tmp && node build/tests/cleanTestCache ; echo '******** TEST CACHE CLEARED ********'",
 		"clean.cache.disabled": "echo 'CLEAN.CACHE DISABLED'",
-		"clean.dependencies": "rm -rf node_modules/ yarn.lock",
+		"clean.dependencies": "rm -rf node_modules/ package-lock.json yarn.lock",
 		"fix.lint": "eslint --fix --cache '**/*.ts'",
 		"lint": "eslint --cache '**/*.ts'",
 		"lint.tsc": "tsc --noEmit && echo 'spruce-cli PASS'",
