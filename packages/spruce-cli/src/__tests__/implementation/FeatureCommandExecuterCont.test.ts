@@ -1,5 +1,6 @@
 import { diskUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import featuresUtil from '../../features/feature.utilities'
 import {
 	FeatureActionResponse,
 	FeatureInstallResponse,
@@ -25,6 +26,66 @@ export default class FeatureCommandExecuterTestCont extends AbstractSchemaTest {
 			'myNewError.schema.ts',
 			results.files
 		)
+	}
+
+	@test()
+	protected static async shouldEmitExecutionEvents() {
+		const executer = this.Action('skill', 'create', {
+			shouldAutoHandleDependencies: true,
+		})
+
+		let emittedWillEvent = false
+		let willEventCommand = ''
+		let emittedDidEvent = false
+		let didEventCommand = ''
+		let willExecuteHitCount = 0
+		let didExecuteHitCount = 0
+
+		const emitter = this.getEmitter()
+
+		void emitter.on('feature.will-execute', (payload) => {
+			emittedWillEvent = true
+			willExecuteHitCount++
+			willEventCommand = featuresUtil.generateCommand(
+				payload.featureCode,
+				payload.actionCode
+			)
+			return { results: {} }
+		})
+
+		void emitter.on('feature.did-execute', (payload) => {
+			emittedDidEvent = true
+			didExecuteHitCount++
+			didEventCommand = featuresUtil.generateCommand(
+				payload.featureCode,
+				payload.actionCode
+			)
+			return {
+				meta: {
+					taco: 'bell',
+				},
+			}
+		})
+
+		assert.isFalse(emittedWillEvent)
+		assert.isFalse(emittedDidEvent)
+		assert.isEqual(willExecuteHitCount, 0)
+		assert.isEqual(didExecuteHitCount, 0)
+
+		const promise = executer.execute({})
+
+		await this.waitForInput()
+
+		await this.ui.sendInput('My new skill')
+		await this.ui.sendInput('So great!')
+
+		const results = await promise
+
+		assert.isEqual(results.meta?.taco, 'bell')
+		assert.isEqual(willEventCommand, 'create.skill')
+		assert.isEqual(didEventCommand, 'create.skill')
+		assert.isEqual(willExecuteHitCount, 1)
+		assert.isEqual(didExecuteHitCount, 1)
 	}
 
 	@test()
