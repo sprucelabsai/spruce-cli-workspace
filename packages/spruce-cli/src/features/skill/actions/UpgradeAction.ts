@@ -31,6 +31,8 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 			'Go!!!!',
 		])
 
+		await this.reInstallPackageDependencies()
+
 		let results = await this.Action('skill', 'rebuild').execute({
 			shouldPlayGames: true,
 		})
@@ -40,6 +42,17 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 		InFlightEntertainment.stop()
 
 		return results
+	}
+
+	private async reInstallPackageDependencies() {
+		const features = await this.featureInstaller.getInstalledFeatures()
+
+		await this.featureInstaller.installPackageDependenciesForFeatures(
+			features,
+			(message: string) => {
+				InFlightEntertainment.writeStatus(message)
+			}
+		)
 	}
 
 	private async updateScripts(options: { shouldConfirm: boolean }) {

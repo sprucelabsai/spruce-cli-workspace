@@ -1,7 +1,7 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { NpmPackage } from '../../types/cli.types'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
-import { FeatureCode } from '../features.types'
+import { ActionOptions, FeatureCode } from '../features.types'
 
 declare module '../../features/features.types' {
 	interface FeatureMap {
@@ -42,6 +42,29 @@ export default class ViewFeature extends AbstractFeature {
 			isRequired: true,
 		},
 	]
+
+	public constructor(options: ActionOptions) {
+		super(options)
+
+		void this.emitter.on(
+			'feature.did-execute',
+			async ({ featureCode, actionCode }) => {
+				const isInstalled = await this.featureInstaller.isInstalled('view')
+
+				if (
+					isInstalled &&
+					featureCode === 'skill' &&
+					actionCode === 'upgrade'
+				) {
+					const files = await this.Writer('view').writePlugin(this.cwd)
+					return {
+						files,
+					}
+				}
+				return {}
+			}
+		)
+	}
 
 	public async afterPackageInstall() {
 		const files = await this.Writer('view').writePlugin(this.cwd)

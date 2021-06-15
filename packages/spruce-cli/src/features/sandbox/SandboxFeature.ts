@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
-import { FeatureActionOptions, FeatureCode } from '../features.types'
+import { ActionOptions, FeatureCode } from '../features.types'
 
 declare module '../../features/features.types' {
 	interface FeatureMap {
@@ -22,7 +22,7 @@ export default class SandboxFeature extends AbstractFeature {
 	public packageDependencies = []
 	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
-	public constructor(options: FeatureActionOptions) {
+	public constructor(options: ActionOptions) {
 		super(options)
 
 		void this.emitter.on('feature.did-execute', async (payload) => {

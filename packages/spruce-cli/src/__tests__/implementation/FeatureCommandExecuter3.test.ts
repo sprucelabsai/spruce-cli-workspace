@@ -5,6 +5,7 @@ import {
 	FeatureActionResponse,
 	FeatureInstallResponse,
 } from '../../features/features.types'
+import CommandService from '../../services/CommandService'
 import AbstractSchemaTest from '../../tests/AbstractSchemaTest'
 import testUtil from '../../tests/utilities/test.utility'
 
@@ -30,6 +31,8 @@ export default class FeatureCommandExecuterContTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async shouldEmitExecutionEvents() {
+		this.setupMockCommands()
+
 		const executer = this.Action('skill', 'create', {
 			shouldAutoHandleDependencies: true,
 		})
@@ -124,6 +127,8 @@ export default class FeatureCommandExecuterContTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async shouldReturnProperSummary() {
+		this.setupMockCommands()
+
 		const executer = this.Action('skill', 'create', {
 			shouldAutoHandleDependencies: true,
 		})
@@ -141,6 +146,8 @@ export default class FeatureCommandExecuterContTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async shouldAskInstallDependentFeatures() {
+		this.setupMockCommands()
+
 		const executer = this.Action('schema', 'create', {
 			shouldAutoHandleDependencies: true,
 		})
@@ -160,6 +167,8 @@ export default class FeatureCommandExecuterContTest extends AbstractSchemaTest {
 
 	@test()
 	protected static async shouldAddListenerWithoutBreakingOnSkill() {
+		this.setupMockCommands()
+
 		await this.FeatureFixture().installCachedFeatures('schemas')
 
 		const executer = this.Action('event', 'listen', {
@@ -251,5 +260,11 @@ export default class FeatureCommandExecuterContTest extends AbstractSchemaTest {
 		await this.waitForInput()
 
 		return { promise }
+	}
+
+	private static setupMockCommands() {
+		CommandService.setMockResponse(new RegExp(/npm.*?add .*?/gis), {
+			code: 0,
+		})
 	}
 }

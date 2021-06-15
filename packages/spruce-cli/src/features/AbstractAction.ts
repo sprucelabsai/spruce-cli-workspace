@@ -27,7 +27,7 @@ import FeatureInstaller from './FeatureInstaller'
 import {
 	FeatureAction,
 	FeatureActionResponse,
-	FeatureActionOptions,
+	ActionOptions,
 	FeatureCode,
 } from './features.types'
 import validateAndNormalizeUtil from './validateAndNormalize.utility'
@@ -53,7 +53,7 @@ export default abstract class AbstractAction<S extends Schema = Schema>
 	private apiClientFactory: ApiClientFactory
 	private actionExecuter: ActionExecuter
 
-	public constructor(options: FeatureActionOptions) {
+	public constructor(options: ActionOptions) {
 		this.cwd = options.cwd
 		this.templates = options.templates
 		this.parent = options.parent

@@ -6,10 +6,7 @@ import open from 'open'
 import testOptionsSchema from '#spruce/schemas/spruceCli/v2020_07_22/testOptions.schema'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractAction from '../../AbstractAction'
-import {
-	FeatureActionResponse,
-	FeatureActionOptions,
-} from '../../features.types'
+import { FeatureActionResponse, ActionOptions } from '../../features.types'
 import WatchFeature from '../../watch/WatchFeature'
 import {
 	SpruceTestFile,
@@ -46,7 +43,7 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
 
 	private readonly watchDelaySec = 2
 
-	public constructor(options: FeatureActionOptions) {
+	public constructor(options: ActionOptions) {
 		super(options)
 	}
 

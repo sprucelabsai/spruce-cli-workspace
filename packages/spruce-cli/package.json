@@ -397,6 +397,30 @@
 			{
 				"code": "view"
 			}
+		],
+		"everything": [
+			{
+				"code": "skill",
+				"options": {
+					"name": "everything skill",
+					"description": "this too, is a great test!"
+				}
+			},
+			{
+				"code": "schema"
+			},
+			{
+				"code": "event"
+			},
+			{
+				"code": "view"
+			},
+			{
+				"code": "deploy"
+			},
+			{
+				"code": "conversation"
+			}
 		]
 	},
 	"jest": {

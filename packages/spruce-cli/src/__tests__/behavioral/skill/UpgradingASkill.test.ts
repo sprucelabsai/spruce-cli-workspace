@@ -322,19 +322,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		assert.isEqual(pkg.get(['scripts', 'taco']), 'bravo')
 
 		this.assertSandboxListenerNotWritten()
-	}
-
-	protected static assertSandboxListenerNotWritten() {
-		const listeners = this.resolvePath('src', 'listeners')
-		if (!diskUtil.doesDirExist(listeners)) {
-			return
-		}
-		const matches = fsUtil.readdirSync(listeners)
-		assert.isLength(
-			matches,
-			0,
-			'A sandbox listeners was written and it should not have been.'
-		)
+		this.assertViewPluginNotWritten()
 	}
 
 	@test()
@@ -354,6 +342,78 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		const newContents = diskUtil.readFile(match)
 		assert.isEqual(originalContents, newContents)
+	}
+
+	@test()
+	protected static async writesViewPlugin() {
+		await this.FeatureFixture().installCachedFeatures('views')
+
+		const plugin = this.getViewsPluginPath()
+		assert.isTrue(diskUtil.doesFileExist(plugin))
+
+		diskUtil.deleteFile(plugin)
+
+		assert.isFalse(diskUtil.doesFileExist(plugin))
+
+		await this.Action('skill', 'upgrade').execute({})
+
+		assert.isTrue(diskUtil.doesFileExist(plugin))
+	}
+
+	@test()
+	protected static async restoresMissingPackagesAndPlugins() {
+		await this.FeatureFixture().installCachedFeatures('views')
+
+		const features = this.Service('pkg', process.cwd()).get(
+			'testSkillCache.everything'
+		)
+
+		const pkg = this.Service('pkg')
+		const checks: { nodeModule?: string; plugin?: string }[] = []
+
+		for (const feat of features) {
+			const { code } = feat
+			const nodeModule = `@sprucelabs/spruce-${code}-plugin`
+			const path = this.resolveHashSprucePath('features', `${code}.plugin.ts`)
+			const plugin = diskUtil.doesFileExist(path) ? path : undefined
+
+			checks.push({
+				nodeModule: pkg.get(['dependencies', nodeModule])
+					? nodeModule
+					: undefined,
+				plugin,
+			})
+		}
+
+		for (const check of checks) {
+			if (check.nodeModule) {
+				pkg.unset(['dependencies', check.nodeModule])
+			}
+			if (check.plugin) {
+				diskUtil.deleteFile(check.plugin)
+			}
+		}
+
+		await this.Action('skill', 'upgrade').execute({})
+
+		for (const check of checks) {
+			if (check.nodeModule) {
+				assert.isTruthy(
+					pkg.get(['dependencies', check.nodeModule]),
+					`${check.nodeModule} was not added back as a dependencies.`
+				)
+			}
+			if (check.plugin) {
+				assert.isTrue(
+					diskUtil.doesFileExist(check.plugin),
+					`${check.plugin} was not rewritten.`
+				)
+			}
+		}
+	}
+
+	private static getViewsPluginPath() {
+		return this.resolveHashSprucePath('features', 'view.plugin.ts')
 	}
 
 	private static async installAndBreakSkill(cacheKey: string) {
@@ -388,5 +448,22 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		assert.doesInclude(failedHealthCheck, {
 			'skill.errors[].message': 'cheese',
 		})
+	}
+
+	protected static assertViewPluginNotWritten() {
+		assert.isFalse(diskUtil.doesFileExist(this.getViewsPluginPath()))
+	}
+
+	protected static assertSandboxListenerNotWritten() {
+		const listeners = this.resolvePath('src', 'listeners')
+		if (!diskUtil.doesDirExist(listeners)) {
+			return
+		}
+		const matches = fsUtil.readdirSync(listeners)
+		assert.isLength(
+			matches,
+			0,
+			'A sandbox listeners was written and it should not have been.'
+		)
 	}
 }

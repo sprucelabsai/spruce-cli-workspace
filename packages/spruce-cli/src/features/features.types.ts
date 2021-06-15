@@ -31,7 +31,7 @@ export type InstallFeature<
 	>
 }[Keys]
 
-export interface FeatureActionOptions {
+export interface ActionOptions {
 	templates: Templates
 	serviceFactory: ServiceFactory
 	cwd: string

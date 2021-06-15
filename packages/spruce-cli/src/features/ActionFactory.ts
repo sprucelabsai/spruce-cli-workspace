@@ -4,7 +4,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../errors/SpruceError'
 import {
 	FeatureAction,
-	FeatureActionOptions,
+	ActionOptions,
 	FeatureCode,
 } from '../features/features.types'
 import { GlobalEmitter } from '../GlobalEmitter'
@@ -16,7 +16,7 @@ import OverrideActionDecorator from './OverrideActionDecorator'
 
 export interface FeatureActionFactoryOptions
 	extends Omit<
-		FeatureActionOptions,
+		ActionOptions,
 		'parent' | 'actionExecuter' | 'featureInstaller'
 	> {
 	emitter: GlobalEmitter
@@ -58,7 +58,7 @@ export default class ActionFactory {
 			`${namesUtil.toPascal(actionCode)}Action`
 		)
 
-		let Class: new (options: FeatureActionOptions) => AbstractAction | undefined
+		let Class: new (options: ActionOptions) => AbstractAction | undefined
 
 		try {
 			Class = require(classPath).default
