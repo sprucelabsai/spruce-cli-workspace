@@ -1,10 +1,18 @@
-import { AbstractSkillViewController } from '@sprucelabs/heartwood-view-controllers' 
+import {
+	AbstractSkillViewController,
+	SpruceSchemas,
+} from '@sprucelabs/heartwood-view-controllers'
 
 export default class {{namePascal}}SkillViewController extends AbstractSkillViewController {
     public static id = "{{nameKebab}}"
-    public render() {
-        return {
-            layouts: []
-        }
-    }
+
+	public render(): SpruceSchemas.Heartwood.v2021_02_11.SkillView {
+		return {
+			layouts: [
+				{
+					cards: [],
+				},
+			],
+		}
+	}
 }

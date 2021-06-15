@@ -1,3 +1,4 @@
+import fsUtil from 'fs'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { CliInterface } from '../../../cli'
@@ -319,12 +320,28 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		await this.Action('skill', 'upgrade').execute({})
 
 		assert.isEqual(pkg.get(['scripts', 'taco']), 'bravo')
+
+		this.assertSandboxListenerNotWritten()
+	}
+
+	protected static assertSandboxListenerNotWritten() {
+		const listeners = this.resolvePath('src', 'listeners')
+		if (!diskUtil.doesDirExist(listeners)) {
+			return
+		}
+		const matches = fsUtil.readdirSync(listeners)
+		assert.isLength(
+			matches,
+			0,
+			'A sandbox listeners was written and it should not have been.'
+		)
 	}
 
 	@test()
 	protected static async upgradingSkillWithSandboxUpgradesTheListener() {
 		await this.FeatureFixture().installCachedFeatures('sandbox')
 		const results = await this.Action('sandbox', 'setup').execute({})
+
 		const match = testUtil.assertFileByNameInGeneratedFiles(
 			/will-boot/,
 			results.files
