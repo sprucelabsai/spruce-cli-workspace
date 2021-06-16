@@ -86,9 +86,10 @@ export default class PkgService extends CommandService {
 
 		if (totalInstalled > 0) {
 			const args: string[] = [
-				'-timeout=9999999',
+				// '--timeout 9999999',
+				'--cache-min 9999999',
 				'--no-progress',
-				'add',
+				'install',
 				...packages,
 			]
 			if (options?.isDev) {

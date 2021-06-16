@@ -398,6 +398,27 @@
 				"code": "view"
 			}
 		],
+		"viewsWithTests": [
+			{
+				"code": "skill",
+				"options": {
+					"name": "views with tests",
+					"description": "this too, is a great test!"
+				}
+			},
+			{
+				"code": "schema"
+			},
+			{
+				"code": "event"
+			},
+			{
+				"code": "test"
+			},
+			{
+				"code": "view"
+			}
+		],
 		"everything": [
 			{
 				"code": "skill",
@@ -408,6 +429,9 @@
 			},
 			{
 				"code": "schema"
+			},
+			{
+				"code": "test"
 			},
 			{
 				"code": "event"

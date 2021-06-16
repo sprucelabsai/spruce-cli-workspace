@@ -25,7 +25,7 @@ export default class RegisteringSkillViewOnBootTest extends AbstractSkillTest {
 
 		const skillViews = await this.Store('view').fetchSkillViews()
 
-		assert.isTruthy(skillViews)
+		assert.isTruthy(skillViews, 'Skill views were not registered on boot!')
 	}
 
 	protected static async registerAndBootSkill() {

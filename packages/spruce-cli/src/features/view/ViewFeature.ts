@@ -46,24 +46,37 @@ export default class ViewFeature extends AbstractFeature {
 	public constructor(options: ActionOptions) {
 		super(options)
 
-		void this.emitter.on(
-			'feature.did-execute',
-			async ({ featureCode, actionCode }) => {
-				const isInstalled = await this.featureInstaller.isInstalled('view')
+		void this.emitter.on('feature.did-execute', async (payload) => {
+			const { featureCode, actionCode } = payload
+			const isInstalled = await this.featureInstaller.isInstalled('view')
 
-				if (
-					isInstalled &&
-					featureCode === 'skill' &&
-					actionCode === 'upgrade'
-				) {
-					const files = await this.Writer('view').writePlugin(this.cwd)
-					return {
-						files,
-					}
+			if (isInstalled && featureCode === 'skill' && actionCode === 'upgrade') {
+				const files = await this.Writer('view').writePlugin(this.cwd)
+				return {
+					files,
 				}
-				return {}
 			}
-		)
+			return {}
+		})
+
+		void this.emitter.on('test.register-abstract-test-classes', async () => {
+			const isInstalled = await this.featureInstaller.isInstalled('view')
+
+			if (!isInstalled) {
+				return {
+					abstractClasses: [],
+				}
+			}
+
+			return {
+				abstractClasses: [
+					{
+						name: 'AbstractViewControllerTest',
+						import: '@sprucelabs/spruce-view-plugin',
+					},
+				],
+			}
+		})
 	}
 
 	public async afterPackageInstall() {
