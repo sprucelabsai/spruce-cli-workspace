@@ -19,6 +19,7 @@ import globby from 'globby'
 import { cloneDeep } from 'lodash'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractStore from '../../../stores/AbstractStore'
+import { InternalUpdateHandler } from '../../../types/cli.types'
 import { eventContractCleanerUtil } from '../../../utilities/eventContractCleaner.utility'
 
 export interface EventStoreFetchEventContractsResponse {
@@ -58,13 +59,17 @@ export default class EventStore extends AbstractStore {
 
 	public async fetchEventContracts(options?: {
 		localNamespace?: string
+		didUpdateHandler?: InternalUpdateHandler
 	}): Promise<EventStoreFetchEventContractsResponse> {
-		const { localNamespace } = options ?? {}
+		const { localNamespace, didUpdateHandler } = options ?? {}
 
 		const contracts = await this.fetchRemoteContracts()
 
+		didUpdateHandler?.('Pulling remote contracts...')
+
 		const localContract =
-			localNamespace && (await this.loadLocalContract(localNamespace))
+			localNamespace &&
+			(await this.loadLocalContract(localNamespace, didUpdateHandler))
 
 		if (localNamespace) {
 			this.filterOutLocalEventsFromRemoteContractsMutating(
@@ -115,7 +120,8 @@ export default class EventStore extends AbstractStore {
 	}
 
 	public async loadLocalContract(
-		localNamespace: string
+		localNamespace: string,
+		didUpdateHandler?: InternalUpdateHandler
 	): Promise<EventContract | null> {
 		const localMatches = await globby(
 			diskUtil.resolvePath(
@@ -129,6 +135,10 @@ export default class EventStore extends AbstractStore {
 		const ns = namesUtil.toKebab(localNamespace)
 		const eventSignatures: Record<string, EventSignature> = {}
 		const importsByName: Record<string, EventImport> = {}
+
+		didUpdateHandler?.(
+			`Importing of ${localMatches.length} local event signature files...`
+		)
 
 		await Promise.all(
 			localMatches.map(async (match) => {
@@ -192,6 +202,10 @@ export default class EventStore extends AbstractStore {
 				...imported.options,
 			}
 		})
+
+		didUpdateHandler?.(
+			`Loaded ${Object.keys(eventSignatures).length} local event signatures...`
+		)
 
 		if (Object.keys(eventSignatures).length > 0) {
 			const cleaned = eventContractCleanerUtil.cleanPayloadsAndPermissions({
