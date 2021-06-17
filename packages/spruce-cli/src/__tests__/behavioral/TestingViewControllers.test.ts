@@ -70,8 +70,6 @@ export default class TestingViewControllersTest extends AbstractSkillTest {
 			shouldReportWhileRunning: false,
 		})
 
-		await this.openInVsCode()
-
 		assert.isArray(testResults.errors)
 		assert.isLength(testResults.errors, 1)
 
