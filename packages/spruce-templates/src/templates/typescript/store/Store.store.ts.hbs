@@ -1,4 +1,4 @@
-import { AbstractStore, StoreOptions, PrepareOptions, PrepareResults } from '@sprucelabs/data-stores'
+import { AbstractStore, UniversalStoreOptions, PrepareOptions, PrepareResults } from '@sprucelabs/data-stores'
 import { buildSchema, dropFields, makeFieldsOptional, SchemaValues } from '@sprucelabs/schema'
 import '#spruce/stores/stores.types'
 
@@ -51,6 +51,8 @@ export type Update{{namePascal}} = SchemaValues<UpdateSchema>
 export type Database{{namePascal}} = SchemaValues<DatabaseSchema>
 export type Query{{namePascal}} = Partial<{{namePascal}}>
 
+type {{namePascal}}StoreOptions = UniversalStoreOptions
+
 export default class {{namePascalPlural}}Store extends AbstractStore<
 	FullSchema, 
 	CreateSchema, 
@@ -70,7 +72,7 @@ export default class {{namePascalPlural}}Store extends AbstractStore<
 	protected fullSchema = fullSchema
 	protected databaseSchema = databaseSchema
 
-	public static Store(options: StoreOptions) {
+	public static Store(options: {{namePascal}}StoreOptions & UniversalStoreOptions) {
 		return new this(options.db)
 	}
 

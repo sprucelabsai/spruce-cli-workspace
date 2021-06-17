@@ -117,10 +117,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		const { contents } =
 			await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
 				{
-					emitPayloadSchema: buildEmitTargetAndPayloadSchema({
-						eventName: 'my-new-event',
-						targetSchema: eventTargetSchema,
-					}),
+					isGlobal: true,
 				}
 			)
 
