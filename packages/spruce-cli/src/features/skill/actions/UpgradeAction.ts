@@ -40,7 +40,7 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 		)
 
 		let results = await this.Action('skill', 'rebuild').execute({
-			shouldPlayGames: true,
+			shouldPlayGames: false,
 		})
 
 		results = actionUtil.mergeActionResults(results, { files: generatedFiles })
