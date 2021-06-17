@@ -33,17 +33,6 @@ jobs:
           name: "Build"
           command: |
             yarn build.ci
-      - run:
-          name: "Cache Tests"
-          command: |
-            cd packages/spruce-cli
-            yarn run cache.tests
-      - save_cache:
-          name: Save Cached Tests
-          key: cli-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - /tmp/spruce-cli
-            - ~/project/packages/spruce-cli/src/.spruce/tmp/cached-skills.json
       - save_cache:
           name: Cache node modules/build
           key: cli-build-{{ .Environment.CIRCLE_SHA1 }}
@@ -73,10 +62,6 @@ jobs:
               circleci-agent step halt
             fi
       - run: which rsync || ( sudo apt-get update -y && sudo apt-get install rsync -y )
-      - restore_cache:
-          name: Restoring Cached Tests
-          keys:
-            - cli-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
           name: Restoring Cached node modules/build
           keys:
