@@ -89,6 +89,7 @@ export default class EventFeature extends AbstractFeature {
 					)
 				}
 
+				this.ui.stopLoading()
 				this.ui.renderLine(
 					`Uh oh! It looks like you haven't configured your remote! We gotta do that.`
 				)

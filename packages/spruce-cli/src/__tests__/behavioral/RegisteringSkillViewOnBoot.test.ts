@@ -21,7 +21,9 @@ export default class RegisteringSkillViewOnBootTest extends AbstractSkillTest {
 		})
 
 		await this.buildSkill()
-		await this.bootSkill()
+		const results = await this.bootSkill()
+
+		assert.isFalsy(results.errors)
 
 		const skillViews = await this.Store('view').fetchSkillViews()
 
@@ -36,6 +38,7 @@ export default class RegisteringSkillViewOnBootTest extends AbstractSkillTest {
 	private static async bootSkill() {
 		const boot = await this.Action('skill', 'boot').execute({})
 		boot.meta?.kill()
+		return boot
 	}
 
 	private static async buildSkill() {
