@@ -12,6 +12,7 @@ import {
 	buildEmitTargetAndPayloadSchema,
 	eventContractUtil,
 	eventNameUtil,
+	eventTargetSchema,
 } from '@sprucelabs/spruce-event-utils'
 import {
 	diskUtil,
@@ -550,7 +551,13 @@ export function buildPermissionContract(..._: any[]):any { return _[0] }
 
 		await skillFixture.registerEventContract(skill, {
 			eventSignatures: {
-				[eventName]: { ...signature },
+				[eventName]: {
+					emitPayloadSchema: buildEmitTargetAndPayloadSchema({
+						eventName,
+						targetSchema: eventTargetSchema,
+					}),
+					...signature,
+				},
 			},
 		})
 
