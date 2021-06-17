@@ -4,6 +4,7 @@ import {
 	buildEmitTargetAndPayloadSchema,
 	eventErrorAssertUtil,
 	eventResponseUtil,
+	eventTargetSchema,
 } from '@sprucelabs/spruce-event-utils'
 import {
 	diskUtil,
@@ -115,7 +116,12 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 	protected static async generatesTypedListenerWithoutPayloads() {
 		const { contents } =
 			await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
-				{}
+				{
+					emitPayloadSchema: buildEmitTargetAndPayloadSchema({
+						eventName: 'my-new-event',
+						targetSchema: eventTargetSchema,
+					}),
+				}
 			)
 
 		assert.doesInclude(
@@ -131,6 +137,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 				{
 					emitPayloadSchema: buildEmitTargetAndPayloadSchema({
 						eventName: 'my-new-event',
+						targetSchema: eventTargetSchema,
 						payloadSchema: {
 							id: 'myNewEventEmitPayload',
 							fields: {

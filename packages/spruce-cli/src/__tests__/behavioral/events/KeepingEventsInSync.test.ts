@@ -247,6 +247,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 				[eventName]: {
 					emitPayloadSchema: buildEmitTargetAndPayloadSchema({
 						eventName: 'my-new-event',
+						targetSchema: eventTargetSchema,
 						payloadSchema: {
 							id: 'myNewEventEmitPayloadId',
 							fields: { onlyField: { type: 'text' } },
@@ -335,13 +336,23 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		await skillFixture.registerEventContract(skill2, {
 			eventSignatures: {
-				[eventName]: {},
+				[eventName]: {
+					emitPayloadSchema: buildEmitTargetAndPayloadSchema({
+						eventName: 'my-new-event',
+						targetSchema: eventTargetSchema,
+					}),
+				},
 			},
 		})
 
 		await skillFixture.registerEventContract(skill3, {
 			eventSignatures: {
-				[eventName]: {},
+				[eventName]: {
+					emitPayloadSchema: buildEmitTargetAndPayloadSchema({
+						eventName: 'my-new-event',
+						targetSchema: eventTargetSchema,
+					}),
+				},
 			},
 		})
 
@@ -365,8 +376,18 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		await skillFixture.registerEventContract(skill2, {
 			eventSignatures: {
-				[eventName]: {},
-				[eventName2]: {},
+				[eventName]: {
+					emitPayloadSchema: buildEmitTargetAndPayloadSchema({
+						eventName: 'my-new-event',
+						targetSchema: eventTargetSchema,
+					}),
+				},
+				[eventName2]: {
+					emitPayloadSchema: buildEmitTargetAndPayloadSchema({
+						eventName: 'my-new-event',
+						targetSchema: eventTargetSchema,
+					}),
+				},
 			},
 		})
 
@@ -395,6 +416,8 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 			contractFileName,
 			syncResults.files
 		)
+
+		assert.isTrue(diskUtil.doesFileExist(eventContract))
 
 		await this.Action('event', 'sync').execute({})
 

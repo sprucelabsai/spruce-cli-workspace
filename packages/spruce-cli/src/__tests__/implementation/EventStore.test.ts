@@ -3,8 +3,10 @@ import {
 	validateEventContract,
 } from '@sprucelabs/mercury-types'
 import {
+	buildEmitTargetAndPayloadSchema,
 	eventContractUtil,
 	eventNameUtil,
+	eventTargetSchema,
 } from '@sprucelabs/spruce-event-utils'
 import { diskUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
@@ -74,6 +76,10 @@ export default class EventStoreTest extends AbstractEventTest {
 			eventContract: {
 				eventSignatures: {
 					[`my-fantastic-event::${this.version.constValue}`]: {
+						emitPayloadSchema: buildEmitTargetAndPayloadSchema({
+							eventName: `my-fantastic-event::${this.version.constValue}`,
+							targetSchema: eventTargetSchema,
+						}),
 						emitPermissionContract: buildPermissionContract({
 							id: 'my-fantastic-event-contract',
 							name: 'Fanstastic emit perms',
