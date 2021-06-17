@@ -8,7 +8,9 @@ async function test() {
 	})
 	const factory = StoreFactory.Factory(db)
 	const bids = await factory.Store('bids')
-	const products = await factory.Store('products')
+	const products = await factory.Store('products', {
+		hello: test
+	})
 
 	await bids.createOne({})
 	await products.createOne({})

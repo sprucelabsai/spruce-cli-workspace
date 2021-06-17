@@ -1,4 +1,3 @@
-
 {{#each stores}}
 import {{namePascalPlural}}Store from '{{path}}'
 {{/each}}
@@ -6,9 +5,13 @@ import {{namePascalPlural}}Store from '{{path}}'
 declare module '@sprucelabs/data-stores/build/types/stores.types' {
 	interface StoreMap {
         {{#each stores}}
-        {{nameCamelPlural}}: {{namePascalPlural}}Store
+                {{nameCamelPlural}}: {{namePascalPlural}}Store
         {{/each}}
 	}
 
-	interface StoreOptionsMap {}
+	interface StoreOptionsMap {
+        {{#each stores}}
+                {{nameCamelPlural}}: Omit<Parameters<typeof {{namePascalPlural}}Store['Store']>[0], keyof UniversalStoreOptions>   
+        {{/each}}
+        }
 }

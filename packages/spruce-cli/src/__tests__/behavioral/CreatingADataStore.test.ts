@@ -2,6 +2,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import '@sprucelabs/spruce-store-plugin'
+import CommandService from '../../services/CommandService'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 import testUtil from '../../tests/utilities/test.utility'
 
@@ -39,9 +40,6 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 		)
 
 		await this.Service('typeChecker').check(path)
-
-		const contents = diskUtil.readFile(path)
-		assert.doesInclude(contents, `import '` + `#spruce/stores/stores.types'`)
 	}
 
 	@test()
@@ -95,11 +93,25 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 
 	@test()
 	protected static async storeFactoryAndStoresAreTyped() {
-		await this.Action('store', 'create').execute({
+		const results = await this.Action('store', 'create').execute({
 			nameReadable: 'Product',
 			nameReadablePlural: 'Products',
 			namePascal: 'Product',
 		})
+
+		const path = testUtil.assertFileByNameInGeneratedFiles(
+			'Products.store.ts',
+			results.files
+		)
+
+		const storeContents = diskUtil
+			.readFile(path)
+			.replace(
+				'type ProductsStoreOptions = UniversalStoreOptions',
+				'type ProductsStoreOptions = UniversalStoreOptions & {hello: string}'
+			)
+
+		diskUtil.writeFile(path, storeContents)
 
 		const testFile = this.resolveTestPath('store-test.ts.hbs')
 		const testContents = diskUtil.readFile(testFile)
@@ -115,6 +127,18 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 		assert.isFalse(
 			diskUtil.doesFileExist(CreatingDataStoresTest.getAbstractTestPath())
 		)
+	}
+
+	@test()
+	protected static async upgradeRestoresDataStoreTypes() {
+		CommandService.setMockResponse('yarn rebuild', {
+			code: 0,
+		})
+
+		const storesFile = this.resolveHashSprucePath('stores/stores.types.ts')
+		diskUtil.deleteFile(storesFile)
+		await this.Action('skill', 'upgrade').execute({})
+		assert.isTrue(diskUtil.doesFileExist(storesFile))
 	}
 
 	private static getAbstractTestPath(): string {

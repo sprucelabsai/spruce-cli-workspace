@@ -31,24 +31,44 @@ export default class StoreFeature extends AbstractFeature {
 	public constructor(options: FeatureOptions) {
 		super(options)
 
-		void this.emitter.on('test.register-abstract-test-classes', async () => {
-			const isInstalled = await this.featureInstaller.isInstalled('store')
+		void this.emitter.on(
+			'test.register-abstract-test-classes',
+			this.registerAbstractTestClassHandler.bind(this)
+		)
+		void this.emitter.on(
+			'feature.did-execute',
+			this.didExecuterHandler.bind(this)
+		)
+	}
 
-			if (!isInstalled) {
-				return {
-					abstractClasses: [],
-				}
-			}
+	private async registerAbstractTestClassHandler() {
+		const isInstalled = await this.featureInstaller.isInstalled('store')
 
+		if (!isInstalled) {
 			return {
-				abstractClasses: [
-					{
-						name: 'AbstractStoreTest',
-						import: '@sprucelabs/spruce-store-plugin',
-					},
-				],
+				abstractClasses: [],
 			}
-		})
+		}
+
+		return {
+			abstractClasses: [
+				{
+					name: 'AbstractStoreTest',
+					import: '@sprucelabs/spruce-store-plugin',
+				},
+			],
+		}
+	}
+
+	private async didExecuterHandler(payload: {
+		featureCode: string
+		actionCode: string
+	}) {
+		if (payload.featureCode === 'skill' && payload.actionCode === 'upgrade') {
+			return this.Action('store', 'sync').execute({})
+		}
+
+		return {}
 	}
 
 	public async afterPackageInstall() {
