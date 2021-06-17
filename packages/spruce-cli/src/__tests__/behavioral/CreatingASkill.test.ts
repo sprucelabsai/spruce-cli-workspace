@@ -6,7 +6,7 @@ import testUtil from '../../tests/utilities/test.utility'
 export default class CreatingASkillTest extends AbstractCliTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
-		CommandService.setMockResponse(new RegExp(/npm.*?add .*?/gis), {
+		CommandService.setMockResponse(new RegExp(/npm.*?install .*?/gis), {
 			code: 0,
 		})
 	}

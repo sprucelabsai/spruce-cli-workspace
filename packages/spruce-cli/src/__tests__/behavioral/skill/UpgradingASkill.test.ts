@@ -12,7 +12,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		CommandService.setMockResponse(new RegExp(/yarn rebuild/gis), {
 			code: 0,
 		})
-		CommandService.setMockResponse(new RegExp(/npm.*?add .*?/gis), {
+		CommandService.setMockResponse(new RegExp(/npm.*?install .*?/gis), {
 			code: 0,
 		})
 	}

@@ -49,11 +49,12 @@ export default class FeatureCommandExecuterContTest extends AbstractSchemaTest {
 		void emitter.on('feature.will-execute', (payload) => {
 			emittedWillEvent = true
 			willExecuteHitCount++
+
 			willEventCommand = featuresUtil.generateCommand(
 				payload.featureCode,
 				payload.actionCode
 			)
-			return { results: {} }
+			return {}
 		})
 
 		void emitter.on('feature.did-execute', (payload) => {
@@ -63,6 +64,7 @@ export default class FeatureCommandExecuterContTest extends AbstractSchemaTest {
 				payload.featureCode,
 				payload.actionCode
 			)
+
 			return {
 				meta: {
 					taco: 'bell',
@@ -263,7 +265,7 @@ export default class FeatureCommandExecuterContTest extends AbstractSchemaTest {
 	}
 
 	private static setupMockCommands() {
-		CommandService.setMockResponse(new RegExp(/npm.*?add .*?/gis), {
+		CommandService.setMockResponse(new RegExp(/npm.*?install .*?/gis), {
 			code: 0,
 		})
 	}
