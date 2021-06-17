@@ -33,13 +33,17 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 
 		await this.reInstallPackageDependencies()
 
+		InFlightEntertainment.stop()
+
+		this.ui.startLoading(
+			'Starting rebuild of code. This is too intense an operation to play games over.'
+		)
+
 		let results = await this.Action('skill', 'rebuild').execute({
 			shouldPlayGames: true,
 		})
 
 		results = actionUtil.mergeActionResults(results, { files: generatedFiles })
-
-		InFlightEntertainment.stop()
 
 		return results
 	}

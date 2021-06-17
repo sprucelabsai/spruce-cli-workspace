@@ -29,7 +29,7 @@ import { RegisteredSkill } from '../../../types/cli.types'
 
 const coreContract = eventContractUtil.unifyContracts(
 	coreEventContracts as any
-) as SpruceSchemas.Mercury.v2020_09_01.EventContract
+) as SpruceSchemas.Mercury.v2020_12_25.EventContract
 
 const EVENT_NAME_READABLE = 'my permission amazing event'
 const EVENT_NAME = 'my-permission-amazing-event'
@@ -538,7 +538,7 @@ export function buildPermissionContract(..._: any[]):any { return _[0] }
 
 	private static async registerEventAndSync(
 		skill: RegisteredSkill,
-		signature?: SpruceSchemas.Mercury.v2020_09_01.EventSignature
+		signature?: EventSignature
 	) {
 		const skillFixture = this.SkillFixture()
 		const stamp = new Date().getTime()

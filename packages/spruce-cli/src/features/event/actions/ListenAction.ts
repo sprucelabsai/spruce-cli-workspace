@@ -217,9 +217,7 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 		return eventNamespace
 	}
 
-	private mapContractsToSelectChoices(
-		contracts: SpruceSchemas.Mercury.v2020_09_01.EventContract[]
-	) {
+	private mapContractsToSelectChoices(contracts: EventContract[]) {
 		const namespaceChoices: SelectChoice[] = [
 			{
 				label: 'Skill',

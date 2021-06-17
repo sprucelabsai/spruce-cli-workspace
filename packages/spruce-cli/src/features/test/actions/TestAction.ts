@@ -381,6 +381,7 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
 			!this.testRunner?.hasSkippedTests() &&
 			(this.pattern ?? []).length > 0
 		) {
+			this.testReporter?.setStatusLabel('Restarting...')
 			this.runnerStatus = 'restart'
 			this.testReporter?.startCountdownTimer(3)
 

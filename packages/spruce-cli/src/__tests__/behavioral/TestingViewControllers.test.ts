@@ -43,7 +43,7 @@ export default class TestingViewControllersTest extends AbstractSkillTest {
 
 		await this.waitForInput()
 
-		await this.selectOptionBasedOnLabel('AbstractViewControllerTest')
+		this.selectOptionBasedOnLabel('AbstractViewControllerTest')
 
 		const results = await promise
 
@@ -69,6 +69,8 @@ export default class TestingViewControllersTest extends AbstractSkillTest {
 		const testResults = await this.Action('test', 'test').execute({
 			shouldReportWhileRunning: false,
 		})
+
+		await this.openInVsCode()
 
 		assert.isArray(testResults.errors)
 		assert.isLength(testResults.errors, 1)

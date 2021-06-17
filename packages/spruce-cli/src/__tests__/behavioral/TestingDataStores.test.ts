@@ -1,3 +1,4 @@
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 import testUtil from '../../tests/utilities/test.utility'
@@ -54,9 +55,16 @@ export default class TestingDataStoresTest extends AbstractSkillTest {
 
 		assert.isFalsy(results.errors)
 
-		testUtil.assertFileByNameInGeneratedFiles(
+		const match = testUtil.assertFileByNameInGeneratedFiles(
 			'CanBookAppointment.test.ts',
 			results.files
+		)
+
+		const contents = diskUtil.readFile(match)
+
+		assert.doesInclude(
+			contents,
+			'CanBookAppointmentTest extends AbstractStoreTest'
 		)
 
 		await this.Service('build').build()
@@ -66,13 +74,10 @@ export default class TestingDataStoresTest extends AbstractSkillTest {
 		})
 
 		assert.isArray(testResults.errors)
-		assert.isLength(testResults.errors, 2)
+		assert.isLength(testResults.errors, 1)
 
 		const first = testResults.errors[0]
 
-		assert.doesInclude(
-			first.message,
-			'AbstractStoreTest needs `protected static storeDir'
-		)
+		assert.doesInclude(first.message, 'does not equal')
 	}
 }
