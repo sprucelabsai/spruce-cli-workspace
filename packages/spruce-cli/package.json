@@ -8,7 +8,7 @@
 		"namespace": "spruce-cli"
 	},
 	"license": "MIT",
-	"version": "14.13.0",
+	"version": "14.13.2",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -62,7 +62,7 @@
 		"watch.tsc": "tsc -w"
 	},
 	"dependencies": {
-		"@babel/runtime": "^7.14.5",
+		"@babel/runtime": "^7.14.6",
 		"@jest/reporters": "^27.0.4",
 		"@sprucelabs/error": "latest",
 		"@sprucelabs/jest-json-reporter": "latest",
@@ -73,19 +73,19 @@
 		"@sprucelabs/spruce-core-schemas": "latest",
 		"@sprucelabs/spruce-event-utils": "latest",
 		"@sprucelabs/spruce-skill-utils": "latest",
-		"@sprucelabs/spruce-templates": "^14.13.0",
+		"@sprucelabs/spruce-templates": "^14.13.2",
 		"cfonts": "^2.9.3",
 		"chalk": "^4.1.1",
-		"chokidar": "^3.5.1",
+		"chokidar": "^3.5.2",
 		"cli-table3": "^0.6.0",
 		"commander": "^7.2.0",
 		"core-js": "^3.14.0",
 		"emphasize": "^4.2.0",
 		"fs-extra": "^10.0.0",
 		"gifwrap": "SimenB/gifwrap#patch-1",
-		"globby": "^11.0.3",
+		"globby": "^11.0.4",
 		"inflection": "^1.13.1",
-		"inquirer": "^8.1.0",
+		"inquirer": "^8.1.1",
 		"inquirer-file-tree-selection-prompt": "^1.0.7",
 		"js-tetris-cli": "^0.0.3",
 		"jsonwebtoken": "^8.5.1",
@@ -99,7 +99,7 @@
 		"terminal-kit": "sprucelabsai/terminal-kit",
 		"tree-kill": "^1.2.2",
 		"tsutils": "^3.21.0",
-		"typescript": "^4.3.2",
+		"typescript": "^4.3.3",
 		"uuid": "^8.3.2"
 	},
 	"devDependencies": {
