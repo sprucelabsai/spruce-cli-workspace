@@ -158,7 +158,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		)
 	}
 
-	@test()
+	@test.only()
 	protected static async emittingEventTriggersListenerAndCrashesWithListenerNotImplemented() {
 		const { currentSkill, skill2, eventContract, org } =
 			await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
@@ -196,6 +196,8 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 		const boot = await this.Action('skill', 'boot').execute({ local: true })
 
+		assert.isFalsy(boot.errors)
+
 		//give the skill time to boot
 		await this.wait(20000)
 
@@ -222,6 +224,10 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 			payload: {
 				booleanField: true,
 			},
+		})
+
+		boot.meta?.promise?.catch((err: Error) => {
+			assert.fail(err.stack)
 		})
 
 		await boot.meta?.kill()

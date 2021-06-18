@@ -57,7 +57,7 @@ async function run() {
 			term.clear()
 			term.renderHeadline(`Found ${testKeys.length} skills to cache.`)
 			term.renderLine(
-				shouldRunSequentially ? 'Running sequentionally' : 'Running in pararell'
+				shouldRunSequentially ? 'Running sequentially' : 'Running in pararell'
 			)
 
 			for (const message of messages) {
