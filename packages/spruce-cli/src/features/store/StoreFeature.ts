@@ -1,4 +1,5 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import uiUtil from '../../utilities/ui.utility'
 import AbstractFeature, {
 	FeatureDependency,
 	FeatureOptions,
@@ -71,6 +72,10 @@ export default class StoreFeature extends AbstractFeature {
 			payload.featureCode === 'skill' &&
 			payload.actionCode === 'upgrade'
 		) {
+			uiUtil.renderMasthead({
+				ui: this.ui,
+				headline: 'Resyncing data stores...',
+			})
 			return this.Action('store', 'sync').execute({})
 		}
 

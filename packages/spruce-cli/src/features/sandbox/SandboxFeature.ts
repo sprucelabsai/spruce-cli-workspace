@@ -1,4 +1,5 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import uiUtil from '../../utilities/ui.utility'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
 import { ActionOptions, FeatureCode } from '../features.types'
 
@@ -34,6 +35,11 @@ export default class SandboxFeature extends AbstractFeature {
 				payload.featureCode === 'skill' &&
 				payload.actionCode === 'upgrade'
 			) {
+				uiUtil.renderMasthead({
+					ui: this.ui,
+					headline: 'Updating sandbox support...',
+				})
+
 				return this.Action('sandbox', 'setup').execute({})
 			}
 

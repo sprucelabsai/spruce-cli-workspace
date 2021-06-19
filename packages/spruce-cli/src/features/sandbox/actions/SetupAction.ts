@@ -35,6 +35,8 @@ export default class SetupAction extends AbstractAction<OptionsSchema> {
 			throw new Error('file was not generated')
 		}
 
+		match.description = 'Used for recovering from a sandbox reset.'
+
 		await this.Writer('sandbox').writeDidBootListener(match.path)
 
 		return results

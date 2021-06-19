@@ -1,9 +1,9 @@
 import { Schema, SchemaEntityFactory } from '@sprucelabs/schema'
 import { CommanderStatic } from 'commander'
-import { CLI_HERO } from '../constants'
 import SpruceError from '../errors/SpruceError'
 import { GraphicsInterface } from '../types/cli.types'
 import commanderUtil from '../utilities/commander.utility'
+import uiUtil from '../utilities/ui.utility'
 import AbstractFeature from './AbstractFeature'
 import ActionExecuter from './ActionExecuter'
 import featuresUtil from './feature.utilities'
@@ -59,7 +59,7 @@ export default class FeatureCommandAttacher {
 		}
 
 		command = command.action(async (...args: any[]) => {
-			this.clearAndRenderHeadline(action)
+			this.clearAndRenderMasthead(action)
 
 			const startTime = new Date().getTime()
 
@@ -75,7 +75,7 @@ export default class FeatureCommandAttacher {
 			const endTime = new Date().getTime()
 			const totalTime = endTime - startTime
 
-			this.clearAndReanderResults({
+			this.clearAndRenderResults({
 				featureCode: feature.code,
 				actionCode: code,
 				totalTime,
@@ -96,7 +96,7 @@ export default class FeatureCommandAttacher {
 		}
 	}
 
-	private clearAndReanderResults(options: {
+	private clearAndRenderResults(options: {
 		featureCode: string
 		actionCode: string
 		totalTime: number
@@ -116,10 +116,8 @@ export default class FeatureCommandAttacher {
 		})
 	}
 
-	private clearAndRenderHeadline(action: FeatureAction<Schema>) {
-		this.ui.clear()
-		this.ui.renderHero(CLI_HERO)
-		this.ui.renderHeadline(action.invocationMessage)
+	private clearAndRenderMasthead(action: FeatureAction<Schema>) {
+		uiUtil.renderActionMastHead(this.ui, action)
 	}
 
 	private attachOptions(command: CommanderStatic['program'], schema: Schema) {
