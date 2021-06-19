@@ -134,16 +134,23 @@ export default class ActionExecuter {
 			actionCode,
 		})
 
-		const { payloads } = eventResponseUtil.getAllResponsePayloadsAndErrors(
-			didExecuteResults,
-			SpruceError
-		)
+		const { payloads, errors: didExecuteErrors } =
+			eventResponseUtil.getAllResponsePayloadsAndErrors(
+				didExecuteResults,
+				SpruceError
+			)
 
 		response = actionUtil.mergeActionResults(
 			response,
 			...willExecutePayloads,
 			...payloads
 		)
+
+		if (didExecuteErrors) {
+			response = actionUtil.mergeActionResults(response, {
+				errors: didExecuteErrors,
+			})
+		}
 
 		return response
 	}

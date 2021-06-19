@@ -26,6 +26,9 @@ export default class GameService {
 			const next = sentencesToPlay.shift() as string
 			this.ui.renderLine(next)
 			await new Promise((r) => setTimeout(r, 2000))
+			if (this.killed) {
+				return
+			}
 		}
 
 		await this.command.execute('node ./node_modules/.bin/js-tetris-cli', {

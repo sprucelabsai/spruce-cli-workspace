@@ -130,7 +130,9 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		await this.wait(1000)
 
-		await promise
+		const results = await promise
+
+		assert.isFalsy(results.errors)
 
 		const health = await cli.checkHealth()
 

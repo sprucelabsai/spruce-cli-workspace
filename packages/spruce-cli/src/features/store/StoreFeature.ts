@@ -64,7 +64,13 @@ export default class StoreFeature extends AbstractFeature {
 		featureCode: string
 		actionCode: string
 	}) {
-		if (payload.featureCode === 'skill' && payload.actionCode === 'upgrade') {
+		const isInstalled = await this.featureInstaller.isInstalled('store')
+
+		if (
+			isInstalled &&
+			payload.featureCode === 'skill' &&
+			payload.actionCode === 'upgrade'
+		) {
 			return this.Action('store', 'sync').execute({})
 		}
 
