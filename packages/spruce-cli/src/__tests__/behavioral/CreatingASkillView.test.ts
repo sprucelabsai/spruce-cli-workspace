@@ -10,6 +10,7 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 	private static action: CreateAction
 	private static rootSvc: string
 	public static appointmentsCard: string
+	private static dashboardVc: string
 
 	protected static async beforeEach() {
 		await super.beforeEach()
@@ -43,12 +44,14 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 			isRoot: true,
 		})
 
+		assert.isFalsy(results.errors)
+
 		this.rootSvc = testUtil.assertFileByNameInGeneratedFiles(
 			'Root.svc.ts',
 			results.files
 		)
 
-		assert.doesInclude(this.rootSvc, 'skillViews')
+		assert.doesInclude(this.rootSvc, 'skillViewControllers')
 	}
 
 	@test()
@@ -96,7 +99,14 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 
 		const results = await promise
 
-		testUtil.assertFileByNameInGeneratedFiles('Dashboard.svc.ts', results.files)
+		assert.isFalsy(results.errors)
+
+		this.dashboardVc = testUtil.assertFileByNameInGeneratedFiles(
+			'Dashboard.svc.ts',
+			results.files
+		)
+
+		assert.doesInclude(this.dashboardVc, 'skillViewControllers')
 
 		this.ui.reset()
 	}
@@ -121,6 +131,8 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 
 		const results = await promise
 
+		assert.isFalsy(results.errors)
+
 		this.appointmentsCard = testUtil.assertFileByNameInGeneratedFiles(
 			'AppointmentsCard.vc.ts',
 			results.files
@@ -134,5 +146,70 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 			contents,
 			'export default class AppointmentsCardViewController extends AbstractViewController<Card>'
 		)
+	}
+
+	@test()
+	protected static async nicelyTypesRootSkillViewController() {
+		const contents = this.buildTestfile({
+			idInterfaceName: 'SkillViewControllerId',
+			code: `
+const root = vcFactory.Controller('root', {})
+export const svcModel = root.render()
+export const svcId: SkillViewControllerId = 'root'`,
+		})
+
+		const testFile = this.resolvePath('src', 'test.ts')
+		diskUtil.writeFile(testFile, contents)
+
+		const imported = await this.Service('import').importAll(testFile)
+
+		assert.isTruthy(imported.svcModel)
+		assert.isTruthy(imported.svcId)
+	}
+
+	private static buildTestfile(options: {
+		code: string
+		idInterfaceName: 'SkillViewControllerId' | 'ViewControllerId'
+	}) {
+		const { code, idInterfaceName } = options
+
+		return (
+			`
+import ` +
+			`'#spruce/views/views'
+import {
+	ViewControllerFactory,
+	${idInterfaceName},
+} from '@sprucelabs/heartwood-view-controllers'
+import { viewControllerUtil } from '@sprucelabs/spruce-view-plugin'
+
+const vcFactory = ViewControllerFactory.Factory({
+	controllerMap: viewControllerUtil.buildControllerMap(__dirname),
+	connectToApi: async () => {
+		return 'yes' as any
+	},
+})
+${code}
+		`.trim()
+		)
+	}
+
+	@test()
+	protected static async nicelyTypesViewController() {
+		const contents = this.buildTestfile({
+			idInterfaceName: 'ViewControllerId',
+			code: `
+		const apptCard = vcFactory.Controller('appointments-card', {})
+		export const vcModel = apptCard.render()
+		export const vcId: ViewControllerId = 'appointments-card'`,
+		})
+
+		const testFile = this.resolvePath('src', 'test.ts')
+		diskUtil.writeFile(testFile, contents)
+
+		const imported = await this.Service('import').importAll(testFile)
+
+		assert.isTruthy(imported.vcModel)
+		assert.isTruthy(imported.vcId)
 	}
 }

@@ -51,7 +51,7 @@
 		"lint.tsc": "tsc --noEmit && echo 'spruce-cli PASS'",
 		"local": "DEBUG=@sprucelabs/cli~debug node --inspect=5200 . $COMMANDS ; echo 'DONE'",
 		"rebuild": "cd ../ && yarn rebuild",
-		"rebuild.dependencies": "cd ../ && yarn rebuild.dependencies",
+		"update.dependencies": "cd ../ && yarn update.dependencies",
 		"release": "semantic-release",
 		"start": "DEBUG=@sprucelabs/cli~debug node . $COMMANDS",
 		"test": "yarn cache.tests && jest",

@@ -1,8 +1,10 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
-import { ViewControllerImport } from '../../../../../spruce-templates/build'
-import introspectionUtil from '../../../utilities/introspection.utility'
+import { VcTemplateItem } from '../../../../../spruce-templates/build'
+import introspectionUtil, {
+	IntrospectionClass,
+} from '../../../utilities/introspection.utility'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -35,23 +37,50 @@ export default class syncAction extends AbstractAction<OptionsSchema> {
 		const paths = matches.map((m) => diskUtil.resolvePath(targetDir, m))
 		const introspect = introspectionUtil.introspect(paths)
 
-		const imports = introspect.reduce<ViewControllerImport[]>((classes, i) => {
-			classes.push(
-				...i.classes.map((c) => ({
-					namePascal: c.className,
-					path: c.classPath,
-				}))
-			)
+		const vcTemplateItems: VcTemplateItem[] = []
+		const svcTemplateItems: VcTemplateItem[] = []
 
-			return classes
-		}, [])
+		introspect.forEach(({ classes }) => {
+			for (const thisClass of classes) {
+				const { vc, svc } = this.mapIntrospectedClassToTemplateItem(thisClass)
+
+				if (vc) {
+					vcTemplateItems.push(vc)
+				} else if (svc) {
+					svcTemplateItems.push(svc)
+				}
+			}
+		})
 
 		const files = await this.Writer('view').writeCombinedViewsFile(this.cwd, {
-			imports,
+			vcTemplateItems,
+			svcTemplateItems,
 		})
 
 		return {
 			files,
 		}
+	}
+
+	private mapIntrospectedClassToTemplateItem(c: IntrospectionClass): {
+		vc?: VcTemplateItem
+		svc?: VcTemplateItem
+	} {
+		const item = {
+			id: c.staticProperties.id,
+			namePascal: c.className,
+			path: c.classPath,
+		}
+
+		let vc: VcTemplateItem | undefined
+		let svc: VcTemplateItem | undefined
+
+		if (c.classPath.endsWith('.svc.ts')) {
+			svc = item
+		} else {
+			vc = item
+		}
+
+		return { svc, vc }
 	}
 }

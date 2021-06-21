@@ -342,8 +342,6 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 				// @ts-ignore
 				fields: fieldsToPresent,
 			})
-
-			this.ui.renderLine('')
 		}
 
 		return { ...(cleaned ?? {}), ...answers } as SchemaValues<S>

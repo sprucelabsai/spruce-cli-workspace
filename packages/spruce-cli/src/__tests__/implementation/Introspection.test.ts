@@ -23,12 +23,12 @@ export default class IntrospectionTest extends AbstractCliTest {
 				classes: [
 					{
 						classPath,
-
 						className: 'ImplementsInterface',
 						isAbstract: false,
 						optionsInterfaceName: undefined,
 						parentClassName: undefined,
 						parentClassPath: undefined,
+						staticProperties: {},
 					},
 				],
 				interfaces: [{ interfaceName: 'TestInterface' }],

@@ -1,6 +1,9 @@
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { ViewsOptions } from '../../../../../spruce-templates/build'
+import {
+	VcTemplateItem,
+	ViewsOptions,
+} from '../../../../../spruce-templates/build'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractWriter from '../../../writers/AbstractWriter'
 
@@ -22,17 +25,26 @@ export default class ViewWriter extends AbstractWriter {
 	}
 
 	public async writeCombinedViewsFile(cwd: string, options: ViewsOptions) {
-		let { imports, ...rest } = options
+		let { vcTemplateItems, svcTemplateItems, ...rest } = options
 
 		const destinationDir = diskUtil.resolveHashSprucePath(cwd, 'views')
 		const destination = diskUtil.resolvePath(destinationDir, 'views.ts')
 
-		imports = imports.map((i) => ({
-			...i,
-			path: pathUtil.relative(destinationDir, i.path).replace('.ts', ''),
-		}))
+		vcTemplateItems = this.removeFileExtensionsFromTemplateItems(
+			vcTemplateItems,
+			destinationDir
+		)
 
-		const contents = this.templates.views({ imports, ...rest })
+		svcTemplateItems = this.removeFileExtensionsFromTemplateItems(
+			svcTemplateItems,
+			destinationDir
+		)
+
+		const contents = this.templates.views({
+			vcTemplateItems,
+			svcTemplateItems,
+			...rest,
+		})
 
 		const results = await this.writeFileIfChangedMixinResults(
 			destination,
@@ -41,6 +53,16 @@ export default class ViewWriter extends AbstractWriter {
 		)
 
 		return results
+	}
+
+	private removeFileExtensionsFromTemplateItems(
+		vcTemplateItems: VcTemplateItem[],
+		destinationDir: string
+	): VcTemplateItem[] {
+		return vcTemplateItems.map((i) => ({
+			...i,
+			path: pathUtil.relative(destinationDir, i.path).replace('.ts', ''),
+		}))
 	}
 
 	public writeViewController(
@@ -131,12 +153,17 @@ export default class ViewWriter extends AbstractWriter {
 
 	private buildViewControllerPath(
 		cwd: string,
-		viewType: string,
+		viewType: 'skillView' | 'view',
 		namePascal: string
 	) {
 		const ext = viewType === 'skillView' ? '.svc.ts' : '.vc.ts'
 		const filename = namePascal + ext
-		const path = diskUtil.resolvePath(cwd, 'src', viewType + 's', filename)
+		const path = diskUtil.resolvePath(
+			cwd,
+			'src',
+			viewType + 'Controllers',
+			filename
+		)
 		return { path, filename }
 	}
 }

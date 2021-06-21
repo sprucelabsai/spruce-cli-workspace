@@ -1,12 +1,42 @@
-{{#each imports}}
+{{#each svcTemplateItems}}
+import {{namePascal}} from '{{path}}'
+{{/each}}
+{{#each vcTemplateItems}}
 import {{namePascal}} from '{{path}}'
 {{/each}}
 
 const vcs = {
-    {{#each imports}}
+    {{#each svcTemplateItems}}
+    {{namePascal}},
+    {{/each}}
+    {{#each vcTemplateItems}}
     {{namePascal}},
     {{/each}}
 }
+
+declare module '@sprucelabs/heartwood-view-controllers/build/types/heartwood.types' {
+	interface SkillViewControllerMap {
+        {{#each svcTemplateItems}}
+		'{{id}}': typeof {{namePascal}}
+        {{/each}}
+	}
+
+	interface SkillViewControllerArgsMap {
+        {{#each svcTemplateItems}}
+		'{{id}}': Parameters<{{namePascal}}['load']>[0]['args']
+        {{/each}}
+	}
+
+	interface ViewControllerMap {
+        {{#each vcTemplateItems}}
+		'{{id}}': typeof {{namePascal}}
+        {{/each}}
+         {{#each svcTemplateItems}}
+		'{{id}}': typeof {{namePascal}}
+        {{/each}}
+	}
+}
+
 
 //@ts-ignore
 if(typeof heartwood === 'function') { heartwood(vcs) }

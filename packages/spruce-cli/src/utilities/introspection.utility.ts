@@ -2,20 +2,23 @@ import _ from 'lodash'
 import * as tsutils from 'tsutils'
 import * as ts from 'typescript'
 
-interface IntrospectionClass {
+export interface IntrospectionClass {
 	className: string
 	classPath: string
 	parentClassName: string | undefined
 	parentClassPath: string | undefined
 	optionsInterfaceName: string | undefined
 	isAbstract: boolean
+	staticProperties: StaticProperties
 }
+
+type StaticProperties = Record<string, any>
 
 interface IntrospectionInterface {
 	interfaceName: string
 }
 
-interface Introspection {
+export interface Introspection {
 	classes: IntrospectionClass[]
 	interfaces: IntrospectionInterface[]
 }
@@ -29,6 +32,7 @@ interface DocEntry {
 	parameters?: DocEntry[]
 	returnType?: string
 }
+
 const serializeSymbol = (options: {
 	checker: ts.TypeChecker
 	symbol: ts.Symbol
@@ -121,6 +125,7 @@ const introspectionUtil = {
 								classPath: sourceFile.fileName,
 								parentClassName,
 								parentClassPath,
+								staticProperties: pluckStaticProperties(node),
 								optionsInterfaceName:
 									details.constructors?.[0].parameters?.[0]?.type,
 								isAbstract: isAbstractClass,
@@ -142,3 +147,20 @@ const introspectionUtil = {
 }
 
 export default introspectionUtil
+
+function pluckStaticProperties(node: ts.ClassDeclaration): StaticProperties {
+	const staticProps: StaticProperties = {}
+
+	for (const member of node.members) {
+		//@ts-ignore
+		const name = member.name?.escapedText
+		//@ts-ignore
+		const value = member.initializer?.text
+
+		if (name && value) {
+			staticProps[name] = value
+		}
+	}
+
+	return staticProps
+}
