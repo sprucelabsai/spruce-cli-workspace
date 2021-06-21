@@ -167,8 +167,6 @@ export default class TerminalInterface implements GraphicsInterface {
 		}
 
 		if (lines) {
-			this.renderLine('')
-
 			this.renderLines(lines, bodyEffects)
 
 			this.renderLine('')
@@ -187,7 +185,7 @@ export default class TerminalInterface implements GraphicsInterface {
 		this.renderLine(bar, effects)
 	}
 
-	public renderCommandSummary(
+	public renderActionSummary(
 		results: ExecutionResults & { totalTime?: number }
 	) {
 		const generatedFiles =

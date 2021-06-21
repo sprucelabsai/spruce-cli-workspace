@@ -79,6 +79,7 @@ export default abstract class AbstractFeature<
 	private writerFactory: WriterFactory
 	private apiClientFactory: ApiClientFactory
 	private actionExecuter: ActionExecuter
+	private actionCodes?: string[]
 
 	public constructor(options: FeatureOptions) {
 		this.cwd = options.cwd
@@ -132,11 +133,23 @@ export default abstract class AbstractFeature<
 		if (!this.actionsDir) {
 			return []
 		}
-		const matches: string[] = await globby(
-			pathUtil.join(this.actionsDir, '**/*Action.js')
-		)
 
-		return matches.map((path) => featuresUtil.filePathToActionCode(path))
+		if (!this.actionCodes) {
+			const matches: string[] = await globby(
+				pathUtil.join(this.actionsDir, '**/*Action.js')
+			)
+
+			const codes: string[] = []
+
+			for (const match of matches) {
+				const generatedCode = featuresUtil.filePathToActionCode(match)
+				codes.push(generatedCode)
+			}
+
+			this.actionCodes = codes
+		}
+
+		return this.actionCodes
 	}
 
 	public Store<C extends StoreCode>(

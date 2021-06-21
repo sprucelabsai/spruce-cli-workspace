@@ -100,6 +100,7 @@ export default class ActionFactory {
 			blockedCommands: this.blockedCommands,
 			optionOverrides: this.optionOverrides,
 			ui: this.actionOptions.ui,
+			actionCode,
 		})
 
 		return actionDecorator as FeatureAction<S>

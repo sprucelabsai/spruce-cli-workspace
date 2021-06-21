@@ -138,9 +138,9 @@ export default class SpyInterface implements GraphicsInterface {
 		this.term?.renderCodeSample(code)
 	}
 
-	public renderCommandSummary(results: ExecutionResults): void {
+	public renderActionSummary(results: ExecutionResults): void {
 		this.trackInvocation('renderCommandSummary', results)
-		this.term?.renderCommandSummary(results)
+		this.term?.renderActionSummary(results)
 	}
 
 	public renderHero(

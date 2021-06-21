@@ -3,7 +3,7 @@ import { FeatureActionResponse } from '../features/features.types'
 import { GraphicsInterface as IGraphicsInterface } from './graphicsInterface.types'
 
 export interface GraphicsInterface extends IGraphicsInterface {
-	renderCommandSummary(results: ExecutionResults & { totalTime?: number }): void
+	renderActionSummary(results: ExecutionResults & { totalTime?: number }): void
 	getCursorPosition(): Promise<{ x: number; y: number } | null>
 	moveCursorTo(x: number, y: number): void
 	clearBelowCursor(): void

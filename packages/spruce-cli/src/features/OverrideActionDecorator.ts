@@ -9,6 +9,7 @@ export default class OverrideActionDecorator implements FeatureAction {
 	private blockedCommands?: BlockedCommands
 	private optionOverrides?: OptionOverrides
 	private ui?: GraphicsInterface
+	private actionCode: string
 
 	public get invocationMessage() {
 		return this.childAction.invocationMessage
@@ -25,10 +26,6 @@ export default class OverrideActionDecorator implements FeatureAction {
 		return this.childAction.optionsSchema
 	}
 
-	public get code() {
-		return this.childAction.code
-	}
-
 	public getChild() {
 		return this.childAction
 	}
@@ -39,8 +36,16 @@ export default class OverrideActionDecorator implements FeatureAction {
 		ui?: GraphicsInterface
 		blockedCommands?: BlockedCommands
 		optionOverrides?: OptionOverrides
+		actionCode: string
 	}) {
-		const { action, feature, ui, blockedCommands, optionOverrides } = options
+		const {
+			action,
+			feature,
+			ui,
+			blockedCommands,
+			optionOverrides,
+			actionCode,
+		} = options
 
 		if (!action || !action.execute) {
 			throw new SpruceError({
@@ -54,6 +59,7 @@ export default class OverrideActionDecorator implements FeatureAction {
 		this.blockedCommands = blockedCommands
 		this.optionOverrides = optionOverrides
 		this.ui = ui
+		this.actionCode = actionCode
 	}
 
 	private assertCommandIsNotBlocked() {
@@ -83,7 +89,11 @@ export default class OverrideActionDecorator implements FeatureAction {
 	}
 
 	private getCommands() {
-		return featuresUtil.generateCommandsIncludingAliases(this.parent.code, this)
+		return featuresUtil.generateCommandsIncludingAliases(
+			this.parent.code,
+			this.actionCode,
+			this
+		)
 	}
 
 	private mixinOptionOverrides(optionsArgs: any) {

@@ -60,7 +60,6 @@ export default class FeatureCommandAttacher {
 
 		command = command.action(async (...args: any[]) => {
 			this.clearAndRenderMasthead(action)
-
 			const startTime = new Date().getTime()
 
 			const options = commanderUtil.mapIncomingToOptions(
@@ -107,7 +106,7 @@ export default class FeatureCommandAttacher {
 		this.ui.stopLoading()
 		this.ui.clear()
 
-		this.ui.renderCommandSummary({
+		this.ui.renderActionSummary({
 			headline: `${actionCode} finished!`,
 			featureCode,
 			actionCode,

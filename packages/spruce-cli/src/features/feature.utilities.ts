@@ -4,9 +4,6 @@ import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { FeatureAction } from './features.types'
 
 const featuresUtil = {
-	/**
-	 * @deprecated move to code prop on action
-	 */
 	filePathToActionCode(path: string): string {
 		const parts = path.split(pathUtil.sep)
 		const name = parts.pop() ?? ''
@@ -14,9 +11,7 @@ const featuresUtil = {
 		const nameNoExt = name.substr(0, name.length - ext.length)
 		const code = nameNoExt.replace('Action', '')
 
-		const hyphened = namesUtil.toKebab(code)
-
-		return hyphened.replace(/-/g, '.').toLowerCase()
+		return namesUtil.toCamel(code)
 	},
 
 	generateCommand(featureCode: string, actionCode: string) {
@@ -27,8 +22,12 @@ const featuresUtil = {
 		return `${actionCode}.${featureCode}`
 	},
 
-	generateCommandsIncludingAliases(featureCode: string, action: FeatureAction) {
-		const baseCommand = this.generateCommand(featureCode, action.code)
+	generateCommandsIncludingAliases(
+		featureCode: string,
+		actionCode: string,
+		action: FeatureAction
+	) {
+		const baseCommand = this.generateCommand(featureCode, actionCode)
 		const aliases = action.commandAliases ?? []
 
 		return [baseCommand, ...aliases]

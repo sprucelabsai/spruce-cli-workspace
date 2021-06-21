@@ -19,8 +19,8 @@ type OptionsSchema = typeof optionsSchema
 export default class syncAction extends AbstractAction<OptionsSchema> {
 	public code = 'sync'
 	public optionsSchema: OptionsSchema = optionsSchema
-	public commandAliases = ['create.view']
-	public invocationMessage = 'Creating your new view controller... 🌲'
+	public commandAliases = ['sync.views']
+	public invocationMessage = 'Syncing view controller types... 🌲'
 
 	public async execute(
 		_options: SchemaValues<OptionsSchema>

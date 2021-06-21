@@ -29,6 +29,7 @@ export default class SettingRemoteTest extends AbstractSkillTest {
 		assert.isEqual(host, expected)
 	}
 
+
 	@test('create.event asks for remote on IS TTY', 'create')
 	@test('sync.events asks for remote on IS TTY', 'sync')
 	protected static async shouldAskForRemoteBeforeEventActionIsInvokedIfTerminalSupportsIt(

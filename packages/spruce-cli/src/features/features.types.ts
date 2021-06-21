@@ -71,7 +71,6 @@ export interface FeatureActionResponse extends FeatureInstallResponse {
 }
 
 export interface FeatureAction<S extends Schema = Schema> {
-	code: string
 	optionsSchema?: S
 	commandAliases: string[]
 	invocationMessage: string

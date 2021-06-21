@@ -35,7 +35,6 @@ import validateAndNormalizeUtil from './validateAndNormalize.utility'
 export default abstract class AbstractAction<S extends Schema = Schema>
 	implements FeatureAction<S>, ServiceProvider
 {
-	public abstract code: string
 	public abstract optionsSchema: S
 	public readonly commandAliases: string[] = []
 	public abstract invocationMessage: string
