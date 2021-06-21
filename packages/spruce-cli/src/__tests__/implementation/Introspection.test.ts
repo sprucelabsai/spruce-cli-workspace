@@ -28,7 +28,9 @@ export default class IntrospectionTest extends AbstractCliTest {
 						optionsInterfaceName: undefined,
 						parentClassName: undefined,
 						parentClassPath: undefined,
-						staticProperties: {},
+						staticProperties: {
+							name: 'test',
+						},
 					},
 				],
 				interfaces: [{ interfaceName: 'TestInterface' }],
