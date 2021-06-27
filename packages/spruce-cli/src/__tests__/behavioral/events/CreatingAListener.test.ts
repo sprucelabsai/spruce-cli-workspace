@@ -217,24 +217,30 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 			},
 		})
 
-		const results = await client.emit(eventName, {
-			target: {
-				organizationId: org.id,
-			},
-			payload: {
-				booleanField: true,
-			},
-		})
+		let results: any
+
+		do {
+			await this.wait(5000)
+
+			results = await client.emit(eventName, {
+				target: {
+					organizationId: org.id,
+				},
+				payload: {
+					booleanField: true,
+				},
+			})
+		} while (results.totalContracts < 1)
+
+		assert.isEqual(results.totalContracts, 1)
+		assert.isEqual(results.totalErrors, 1)
+		assert.isEqual(results.totalResponses, 1)
 
 		boot.meta?.promise?.catch((err: Error) => {
 			assert.fail(err.stack)
 		})
 
 		await boot.meta?.kill()
-
-		assert.isEqual(results.totalContracts, 1)
-		assert.isEqual(results.totalErrors, 1)
-		assert.isEqual(results.totalResponses, 1)
 
 		const error = assert.doesThrow(() =>
 			eventResponseUtil.getFirstResponseOrThrow(results)
