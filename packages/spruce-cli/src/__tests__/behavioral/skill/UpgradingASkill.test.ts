@@ -408,7 +408,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		const dependencies = this.Service('pkg').get('dependencies')
 
-		assert.isFalsy(dependencies['@sprucelabs/spruce-view-plugin'])
+		assert.isFalsy(dependencies['@sprucelabs/resolve-path-aliases'])
 	}
 
 	private static clearFileIfAboutToBeUpdated(
