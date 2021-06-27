@@ -93,21 +93,6 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		})
 	}
 
-	private static clearFileIfAboutToBeUpdated(
-		file: {
-			name: string
-			path: string
-			forceEverythingAction: GeneratedFile['action']
-			forceRequiredSkipRestAction: GeneratedFile['action']
-		},
-		upgradeMode: string
-	) {
-		//@ts-ignore
-		if (file[`${upgradeMode}Action`] === 'updated') {
-			diskUtil.writeFile(this.resolvePath(file.path), '')
-		}
-	}
-
 	@test()
 	protected static async upgradeWillAskIfYouWantToOverwriteFiles() {
 		const cli = await this.installAndBreakSkill('skills')
@@ -411,6 +396,33 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 					`${check.plugin} was not rewritten.`
 				)
 			}
+		}
+	}
+
+	@test()
+	protected static async doesNotAddResolvePathAliasesToDependenciesAfterUpgrade() {
+		CommandService.clearMockResponses()
+		await this.FeatureFixture().installCachedFeatures('views')
+
+		await this.Action('skill', 'upgrade').execute({})
+
+		const dependencies = this.Service('pkg').get('dependencies')
+
+		assert.isFalsy(dependencies['@sprucelabs/spruce-view-plugin'])
+	}
+
+	private static clearFileIfAboutToBeUpdated(
+		file: {
+			name: string
+			path: string
+			forceEverythingAction: GeneratedFile['action']
+			forceRequiredSkipRestAction: GeneratedFile['action']
+		},
+		upgradeMode: string
+	) {
+		//@ts-ignore
+		if (file[`${upgradeMode}Action`] === 'updated') {
+			diskUtil.writeFile(this.resolvePath(file.path), '')
 		}
 	}
 

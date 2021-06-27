@@ -215,6 +215,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				message = `Yikes! You can't create a new theme. One per skill for now.`
 				break
 
+			case 'CACHE_NOT_ENABLED':
+				message = "Cache is not enabled, so it can't be disabled!"
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}

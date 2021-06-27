@@ -60,7 +60,7 @@ export default abstract class AbstractFeature<
 	public readonly optionsSchema?: S
 	public readonly fileDescriptions: FileDescription[] = []
 
-	public isInstalled?: () => Promise<boolean>
+	public isInstalled?(): Promise<boolean>
 
 	public abstract readonly code: FeatureCode
 	public abstract readonly nameReadable: string

@@ -1,5 +1,8 @@
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
-import { FeatureActionResponse } from '../features/features.types'
+import {
+	FeatureAction,
+	FeatureActionResponse,
+} from '../features/features.types'
 import { GraphicsInterface as IGraphicsInterface } from './graphicsInterface.types'
 
 export interface GraphicsInterface extends IGraphicsInterface {
@@ -27,6 +30,7 @@ export interface ExecutionResults extends FeatureActionResponse {
 	featureCode: string
 	actionCode: string
 	headline: string
+	action: FeatureAction
 }
 
 type Skill = Omit<SpruceSchemas.Spruce.v2020_07_22.Skill, 'creators'>

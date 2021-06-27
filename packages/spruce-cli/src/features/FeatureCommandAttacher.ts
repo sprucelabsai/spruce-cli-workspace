@@ -79,6 +79,7 @@ export default class FeatureCommandAttacher {
 				actionCode: code,
 				totalTime,
 				results,
+				action,
 			})
 		})
 
@@ -99,9 +100,10 @@ export default class FeatureCommandAttacher {
 		featureCode: string
 		actionCode: string
 		totalTime: number
+		action: FeatureAction
 		results: FeatureActionResponse
 	}) {
-		const { featureCode, actionCode, results, totalTime } = options
+		const { featureCode, actionCode, results, totalTime, action } = options
 
 		this.ui.stopLoading()
 		this.ui.clear()
@@ -111,6 +113,7 @@ export default class FeatureCommandAttacher {
 			featureCode,
 			actionCode,
 			totalTime,
+			action,
 			...results,
 		})
 	}

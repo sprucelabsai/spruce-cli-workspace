@@ -170,10 +170,11 @@ export default class CommandService {
 
 	private getMockResponse(executable: string, args: string[]) {
 		const mockKey = `${executable} ${args.join(' ')}`.trim()
-		const match = CommandService.mockResponses.find((r) =>
+		const commands = CommandService.mockResponses
+		const match = commands.find((r) =>
 			r.command instanceof RegExp
 				? mockKey.search(r.command) > -1
-				: r.command === mockKey
+				: r.command.replace(/ +/gis, '') === mockKey.replace(/ +/gis, '')
 		)
 
 		return { mockResponse: match?.response, mockKey }

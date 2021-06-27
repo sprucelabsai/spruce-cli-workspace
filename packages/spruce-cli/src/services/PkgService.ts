@@ -106,14 +106,14 @@ export default class PkgService extends CommandService {
 			await this.execute('yarn')
 		}
 
+		this.deleteLockFile()
+
 		for (const lm of labsModules) {
 			this.set({
 				path: `${options?.isDev ? 'devDependencies' : 'dependencies'}.${lm}`,
 				value: 'latest',
 			})
 		}
-
-		this.deleteLockFile()
 
 		return { totalInstalled, totalSkipped }
 	}

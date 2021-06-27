@@ -396,7 +396,10 @@ export default class FeatureInstaller implements ServiceProvider {
 
 			if (pkg.isDev && this.devPackagesToInstall.indexOf(packageName) === -1) {
 				this.devPackagesToInstall.push(packageName)
-			} else if (this.packagesToInstall.indexOf(packageName) === -1) {
+			} else if (
+				!pkg.isDev &&
+				this.packagesToInstall.indexOf(packageName) === -1
+			) {
 				this.packagesToInstall.push(packageName)
 			}
 		})

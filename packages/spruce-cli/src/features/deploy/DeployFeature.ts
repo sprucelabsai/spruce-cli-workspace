@@ -12,7 +12,7 @@ declare module '../../features/features.types' {
 }
 
 export default class DeployFeature extends AbstractFeature {
-	public description = 'Deploy your skill with ease. '
+	public description = 'Deploy your skill with ease.'
 	public code: FeatureCode = 'deploy'
 	public nameReadable = 'Deploy'
 	public dependencies: FeatureDependency[] = [

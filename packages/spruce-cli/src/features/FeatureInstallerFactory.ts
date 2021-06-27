@@ -6,6 +6,7 @@ import { ApiClientFactory } from '../types/apiClient.types'
 import { GraphicsInterface } from '../types/cli.types'
 import { FeatureOptions } from './AbstractFeature'
 import ActionExecuter from './ActionExecuter'
+import CacheFeature from './cache/CacheFeature'
 import ConversationFeature from './conversation/ConversationFeature'
 import DeployFeature from './deploy/DeployFeature'
 import ErrorFeature from './error/ErrorFeature'
@@ -44,6 +45,7 @@ export default class FeatureInstallerFactory {
 		SandboxFeature,
 		StoreFeature,
 		ViewFeature,
+		CacheFeature,
 	]
 
 	public static readonly featureCodes: FeatureCode[] = [
@@ -64,6 +66,7 @@ export default class FeatureInstallerFactory {
 		'sandbox',
 		'store',
 		'view',
+		'cache',
 	]
 
 	public static WithAllFeatures(options: {

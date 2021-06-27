@@ -1038,6 +1038,27 @@ export declare namespace SpruceErrors.SpruceCli {
 
 export declare namespace SpruceErrors.SpruceCli {
 
+	
+	export interface CacheNotEnabled {
+		
+	}
+
+	export interface CacheNotEnabledSchema extends SpruceSchema.Schema {
+		id: 'cacheNotEnabled',
+		namespace: 'SpruceCli',
+		name: 'Cache not enabled',
+		    fields: {
+		    }
+	}
+
+	export type CacheNotEnabledEntity = SchemaEntity<SpruceErrors.SpruceCli.CacheNotEnabledSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
 	/** Error thrown when building or linting failed. Happens when a yarn command fails inside the package utility. */
 	export interface BuildFailed {
 		
