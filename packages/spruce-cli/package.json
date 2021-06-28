@@ -520,7 +520,8 @@
 						"hasSetRemoteAction": "I147",
 						"create.event throws for remote on NOT TTY": "I148",
 						"resultsOfCommandHasRemoteMixedIntoSummary": "I149",
-						"syncsWithoutSavingCoreEventsByDefault": "I152"
+						"syncsWithoutSavingCoreEventsByDefault": "I152",
+						"nicelyTypesViewController": "I192"
 					}
 				}
 			],
