@@ -30,7 +30,6 @@ type OptionsSchema = typeof optionsSchema
 type Options = SchemaValues<OptionsSchema>
 
 export default class RegisterAction extends AbstractAction<OptionsSchema> {
-	public code = 'register'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['register.skill', 'register']
 	public invocationMessage = 'Registering your skill... ⚡️'

@@ -9,7 +9,6 @@ type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptions
 
 export default class SyncAction extends AbstractAction<OptionsSchema> {
-	public code = 'sync'
 	public commandAliases = ['sync.events']
 	public optionsSchema: OptionsSchema = syncEventActionSchema
 	public invocationMessage = 'Syncing event contracts... 🜒'

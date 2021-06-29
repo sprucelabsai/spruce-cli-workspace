@@ -34,7 +34,6 @@ type OptionsSchema = typeof optionsSchema
 type Options = SchemaValues<OptionsSchema>
 
 export default class DeployAction extends AbstractAction<OptionsSchema> {
-	public code = 'deploy'
 	public optionsSchema = optionsSchema
 	public commandAliases = ['deploy.heroku']
 	public invocationMessage = 'Deploying to Heroku... 🚀'

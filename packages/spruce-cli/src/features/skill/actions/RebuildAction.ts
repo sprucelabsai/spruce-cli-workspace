@@ -20,7 +20,6 @@ type OptionsSchema = typeof optionsSchema
 type Options = SchemaValues<OptionsSchema>
 
 export default class RebuildAction extends AbstractAction<OptionsSchema> {
-	public code = 'rebuild'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['rebuild']
 	public invocationMessage = 'Rebuiding your skill... ⚡️'

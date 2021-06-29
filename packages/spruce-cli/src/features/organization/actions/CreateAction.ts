@@ -8,7 +8,6 @@ type OptionsSchema =
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateOrganizationOptions
 
 export default class CreateAction extends AbstractAction<OptionsSchema> {
-	public code = 'create'
 	public optionsSchema = createOrganizationActionSchema
 	public invocationMessage = 'Creating an organization... 🏙'
 

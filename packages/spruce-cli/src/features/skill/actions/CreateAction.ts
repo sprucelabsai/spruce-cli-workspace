@@ -17,7 +17,6 @@ type OptionsSchema = typeof optionsSchema
 type Options = SchemaValues<OptionsSchema>
 
 export default class CreateAction extends AbstractAction<OptionsSchema> {
-	public code = 'create'
 	public optionsSchema = optionsSchema
 	public commandAliases = ['create.skill [destination]']
 	public invocationMessage = 'Creating your new skill... ⚡️'

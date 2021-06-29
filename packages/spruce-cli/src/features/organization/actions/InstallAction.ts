@@ -10,7 +10,6 @@ type OptionsSchema =
 type Options =
 	SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizationOptions
 export default class InstallAction extends AbstractAction<OptionsSchema> {
-	public code = 'install'
 	public commandAliases = ['install.skill']
 	public optionsSchema: OptionsSchema = installSkillAtOrganizationActionSchema
 	public invocationMessage = 'Installing skill at org... 🏙'

@@ -26,7 +26,6 @@ const SKILL_EVENT_NAMESPACE = 'skill'
 type OptionsSchema =
 	SpruceSchemas.SpruceCli.v2020_07_22.ListenEventOptionsSchema
 export default class ListenAction extends AbstractAction<OptionsSchema> {
-	public code = 'listen'
 	public optionsSchema: OptionsSchema = eventListenActionSchema
 	public invocationMessage = 'Creating event listener... 🜒'
 

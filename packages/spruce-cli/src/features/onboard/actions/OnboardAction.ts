@@ -7,7 +7,6 @@ import OnboardFeature from '../OnboardFeature'
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.OnboardOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.OnboardOptions
 export default class ListenAction extends AbstractAction<OptionsSchema> {
-	public code = 'onboard'
 	public optionsSchema: OptionsSchema = onboardActionSchema
 	public invocationMessage = 'All aboard... 🛤'
 

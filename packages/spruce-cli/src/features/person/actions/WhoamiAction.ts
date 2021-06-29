@@ -11,7 +11,6 @@ const optionsSchema = buildSchema({
 type OptionsSchema = typeof optionsSchema
 
 export default class WhoAmIAction extends AbstractAction<OptionsSchema> {
-	public code = 'whoami'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['whoami']
 	public invocationMessage = 'Determining identity... 🤝'

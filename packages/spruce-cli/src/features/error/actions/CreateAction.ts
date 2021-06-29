@@ -11,7 +11,6 @@ type OptionsSchema =
 	SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorOptions
 export default class CreateAction extends AbstractAction<OptionsSchema> {
-	public code = 'create'
 	public optionsSchema = createErrorActionSchema
 	public invocationMessage = 'Creating a new error builder... 🤾‍♀️'
 

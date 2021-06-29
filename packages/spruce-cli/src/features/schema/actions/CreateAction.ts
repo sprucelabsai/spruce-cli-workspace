@@ -11,7 +11,6 @@ type OptionsSchema =
 	SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaOptions
 export default class CreateAction extends AbstractAction<OptionsSchema> {
-	public code = 'create'
 	public optionsSchema = createSchemaActionSchema
 	public invocationMessage = 'Creating your schema builder... 📃'
 

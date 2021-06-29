@@ -22,7 +22,6 @@ type OptionsSchema = typeof optionsSchema
 type Options = SchemaValues<OptionsSchema>
 
 export default class LoginAction extends AbstractAction<OptionsSchema> {
-	public code = 'login'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['login.skill']
 	public invocationMessage = 'Logging in as skill... ⚡️'
