@@ -1,5 +1,4 @@
 import path from 'path'
-import AbstractSpruceError from '@sprucelabs/error'
 import {
 	FieldFactory,
 	FieldDefinitionValueType,
@@ -33,6 +32,7 @@ import {
 	ProgressBarUpdateOptions,
 } from '../types/graphicsInterface.types'
 import durationUtil from '../utilities/duration.utility'
+import uiUtil from '../utilities/ui.utility'
 const terminalImage = require('terminal-image')
 
 let fieldCount = 0
@@ -403,7 +403,7 @@ export default class TerminalInterface implements GraphicsInterface {
 		const promptOptions: Record<string, any> = {
 			default: defaultValue,
 			name,
-			message: this.generatePromptLabel(fieldDefinition),
+			message: uiUtil.generatePromptLabel(fieldDefinition),
 		}
 
 		const field = FieldFactory.Field('prompt', fieldDefinition)
@@ -534,17 +534,6 @@ export default class TerminalInterface implements GraphicsInterface {
 
 		return result
 	}
-	private generatePromptLabel(fieldDefinition: FieldDefinitions): any {
-		let label = fieldDefinition.label
-
-		if (fieldDefinition.hint) {
-			label = `${label} ${chalk.italic.dim(`(${fieldDefinition.hint})`)}`
-		}
-
-		label = label + ': '
-
-		return label
-	}
 
 	public renderError(err: Error) {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -552,7 +541,7 @@ export default class TerminalInterface implements GraphicsInterface {
 
 		const message = err.message
 		// Remove message from stack so the message is not doubled up
-		const stackLines = this.cleanStack(err)
+		const stackLines = uiUtil.cleanStack(err)
 		this.renderSection({
 			headline: message,
 			lines: this.renderStackTraces ? stackLines.splice(0, 100) : undefined,
@@ -560,23 +549,6 @@ export default class TerminalInterface implements GraphicsInterface {
 			dividerEffects: [GraphicsTextEffect.Red],
 			bodyEffects: [GraphicsTextEffect.Red],
 		})
-	}
-
-	private cleanStack(err: Error) {
-		const message = err.message
-		let stack = err.stack ? err.stack.replace(message, '') : ''
-
-		if (err instanceof AbstractSpruceError) {
-			let original = err.originalError
-			while (original) {
-				stack = stack.replace('Error: ' + original.message, '')
-				original = (original as AbstractSpruceError).originalError
-			}
-		}
-
-		const stackLines = stack.split('\n')
-
-		return stackLines
 	}
 
 	public renderProgressBar(options: ProgressBarOptions): void {
