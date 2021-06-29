@@ -11,7 +11,6 @@ const optionsSchema = buildSchema({
 type OptionsSchema = typeof optionsSchema
 
 export default class LogoutAction extends AbstractAction<OptionsSchema> {
-	public code = 'logout'
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['logout']
 	public invocationMessage = 'Logging out... 🤝'

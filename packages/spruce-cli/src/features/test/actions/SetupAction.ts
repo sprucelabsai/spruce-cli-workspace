@@ -8,7 +8,6 @@ type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SetupTestsOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SetupTestsOptions
 
 export default class SetupAction extends AbstractAction<OptionsSchema> {
-	public code = 'setup'
 	public optionsSchema = setupTestsOptionsSchema
 	public commandAliases = ['setup.testing']
 	public invocationMessage = 'Setting up for testing... 🛡'

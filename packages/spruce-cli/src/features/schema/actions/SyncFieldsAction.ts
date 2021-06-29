@@ -11,7 +11,6 @@ type OptionsSchema =
 	SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemaFieldsOptionsSchema
 
 export default class FieldsSyncAction extends AbstractAction<OptionsSchema> {
-	public code = 'syncFields'
 	public optionsSchema = syncSchemaFieldsActionSchema
 	public commandAliases = ['sync.fields']
 	public invocationMessage =

@@ -31,7 +31,6 @@ export default class SetupAction extends AbstractAction<OptionsSchema> {
 		},
 	]
 
-	public code = 'setup'
 	public optionsSchema = setupVscodeSchema
 	private dependencies: NpmPackage[] = [
 		{

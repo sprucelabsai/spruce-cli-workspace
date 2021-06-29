@@ -12,7 +12,6 @@ export const optionsSchema = buildSchema({
 export type DashboardActionDefinition = typeof optionsSchema
 
 export default class DashboardAction extends AbstractAction<DashboardActionDefinition> {
-	public code = 'dashboard'
 	public optionsSchema = optionsSchema
 	public commandAliases = ['dashboard']
 	public invocationMessage = 'Loading dashboard... ⚡️'

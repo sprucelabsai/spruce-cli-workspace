@@ -8,7 +8,6 @@ import { FeatureActionResponse } from '../../features.types'
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.BootSkillOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.BootSkillOptions
 export default class BootAction extends AbstractAction<OptionsSchema> {
-	public code = 'boot'
 	public optionsSchema: OptionsSchema = bootSkillOptionsSchema
 	public commandAliases = ['boot']
 	public invocationMessage = 'Booting skill... ⚡️'

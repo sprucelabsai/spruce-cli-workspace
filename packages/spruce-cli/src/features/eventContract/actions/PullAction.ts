@@ -19,7 +19,6 @@ type PullOptionsSchema = typeof pullOptionsSchema
 type Options = SchemaValues<PullOptionsSchema>
 
 export default class PullAction extends AbstractAction<PullOptionsSchema> {
-	public code = 'pull'
 	public commandAliases = ['pull.event.contracts']
 	public optionsSchema = pullOptionsSchema
 	public invocationMessage = 'Pulling combined event contract... 🜒'

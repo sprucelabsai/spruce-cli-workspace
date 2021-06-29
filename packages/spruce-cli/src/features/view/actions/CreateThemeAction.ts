@@ -12,7 +12,6 @@ const optionsSchema = buildSchema({
 type OptionsSchema = typeof optionsSchema
 
 export default class CreateThemeAction extends AbstractAction<OptionsSchema> {
-	public code = 'createTheme'
 	public optionsSchema = optionsSchema
 	public commandAliases = ['create.theme']
 	public invocationMessage = `Let's get pretty! 🤩`

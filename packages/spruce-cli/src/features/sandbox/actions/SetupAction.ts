@@ -12,7 +12,6 @@ const optionsSchema = buildSchema({
 type OptionsSchema = typeof optionsSchema
 
 export default class SetupAction extends AbstractAction<OptionsSchema> {
-	public code = 'setup'
 	public optionsSchema = setupVscodeSchema
 	public invocationMessage = 'Setting up sandbox support... 🏝'
 

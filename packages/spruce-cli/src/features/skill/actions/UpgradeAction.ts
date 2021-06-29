@@ -13,7 +13,6 @@ type Options = SchemaValues<OptionsSchema>
 
 export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 	public invocationMessage = 'Upgrading your skill... 💪'
-	public code = 'upgrade'
 	public optionsSchema = upgradeSkillActionSchema
 	public commandAliases = ['upgrade', 'update']
 

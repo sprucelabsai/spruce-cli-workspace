@@ -20,7 +20,6 @@ const optionsSchema = buildSchema({
 type OptionsSchema = typeof optionsSchema
 type Options = SchemaValues<OptionsSchema>
 export default class TestAction extends AbstractAction<OptionsSchema> {
-	public code = 'test'
 	public optionsSchema = optionsSchema
 	public commandAliases = ['test.conversation', 'chat']
 	public invocationMessage = "Let's test talking about topics... 🎙"

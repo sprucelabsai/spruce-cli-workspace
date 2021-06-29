@@ -16,7 +16,6 @@ import ErrorWriter from '../writers/ErrorWriter'
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorOptions
 export default class SyncAction extends AbstractAction<OptionsSchema> {
-	public code = 'sync'
 	public optionsSchema = syncErrorActionSchema
 	public commandAliases = ['sync.errors']
 	public invocationMessage = 'Generating error types... 🤾‍♀️'

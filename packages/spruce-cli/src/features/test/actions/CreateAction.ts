@@ -19,7 +19,6 @@ interface ParentClassCandidate {
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestOptions
 export default class CreateAction extends AbstractAction<OptionsSchema> {
-	public code = 'create'
 	public optionsSchema = createTestActionSchema
 	public invocationMessage = 'Creating a test... 🛡'
 

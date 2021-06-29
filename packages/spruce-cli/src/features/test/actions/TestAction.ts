@@ -24,7 +24,6 @@ type DidChangePayload =
 	SchemaValues<SpruceSchemas.SpruceCli.v2020_07_22.WatcherDidDetectChangesEmitPayloadSchema>
 
 export default class TestAction extends AbstractAction<OptionsSchema> {
-	public code = 'test'
 	public optionsSchema = optionsSchema
 	public invocationMessage = 'Starting tests... 🛡'
 
