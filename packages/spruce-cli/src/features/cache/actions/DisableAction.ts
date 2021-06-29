@@ -25,6 +25,7 @@ export default class DisableCacheAction extends AbstractAction<OptionsSchema> {
 
 	public async execute(_options: Options): Promise<FeatureActionResponse> {
 		try {
+			await this.Service('command').execute('which docker')
 			await this.Service('command').execute(DISABLE_NPM_CACHE_COMMAND)
 
 			return {
@@ -32,28 +33,35 @@ export default class DisableCacheAction extends AbstractAction<OptionsSchema> {
 				summaryLines: ['Shutting down cache!'],
 			}
 		} catch (err) {
-			if (err.message?.toLowerCase()?.includes('no such container')) {
-				return {
-					errors: [
-						new SpruceError({
-							code: 'CACHE_NOT_ENABLED',
-						}),
+			let error = err
+			if (err.options?.cmd?.includes('which')) {
+				error = new SpruceError({
+					code: 'MISSING_DEPENDENCIES',
+					dependencies: [
+						{
+							name: 'Docker',
+							hint: 'Get Docker here: https://www.docker.com/products/docker-desktop',
+						},
 					],
-				}
+				})
+			} else if (err.message?.toLowerCase()?.includes('no such container')) {
+				error = new SpruceError({
+					code: 'CACHE_NOT_ENABLED',
+				})
+			} else {
+				error = new SpruceError({
+					code: 'MISSING_DEPENDENCIES',
+					dependencies: [
+						{
+							name: 'Docker',
+							hint: 'Get Docker here: https://www.docker.com/products/docker-desktop',
+						},
+					],
+				})
 			}
 
 			return {
-				errors: [
-					new SpruceError({
-						code: 'MISSING_DEPENDENCIES',
-						dependencies: [
-							{
-								name: 'Docker',
-								hint: 'Get Docker here: https://www.docker.com/products/docker-desktop',
-							},
-						],
-					}),
-				],
+				errors: [error],
 			}
 		}
 	}

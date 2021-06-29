@@ -18,7 +18,7 @@ export default class EnablingAndDisablingCacheTest extends AbstractCliTest {
 
 	@test()
 	protected static async returnsErrorWhenEnablingIfDockerIsNotInstalled() {
-		CommandService.setMockResponse(/npm config/gis, {
+		CommandService.setMockResponse(/which docker/gis, {
 			code: 1,
 		})
 
@@ -35,7 +35,22 @@ export default class EnablingAndDisablingCacheTest extends AbstractCliTest {
 	}
 
 	@test()
+	protected static async returnsErrorWhenDockerNotEnabled() {
+		CommandService.setMockResponse(/npm config/gis, {
+			code: 1,
+		})
+
+		const results = await this.Action('cache', 'enable').execute({})
+		assert.isTruthy(results.errors)
+
+		errorAssertUtil.assertError(results.errors[0], 'DOCKER_NOT_STARTED')
+	}
+
+	@test()
 	protected static async canEnableCache() {
+		CommandService.setMockResponse(/which docker/gis, {
+			code: 0,
+		})
 		CommandService.setMockResponse(ENABLE_NPM_CACHE_COMMAND, {
 			code: 0,
 		})
@@ -51,6 +66,27 @@ export default class EnablingAndDisablingCacheTest extends AbstractCliTest {
 
 	@test()
 	protected static async returnsErrorWhenDisablingIfDockerIsNotInstalled() {
+		CommandService.setMockResponse(/which docker/gis, {
+			code: 1,
+		})
+
+		const results = await this.Action('cache', 'disable').execute({})
+		assert.isTruthy(results.errors)
+
+		errorAssertUtil.assertError(results.errors[0], 'MISSING_DEPENDENCIES', {
+			dependencies: [
+				{
+					name: 'Docker',
+				},
+			],
+		})
+	}
+
+	@test()
+	protected static async returnsErrorWhenDisablingIfDockerIsNotStarted() {
+		CommandService.setMockResponse(/which docker/gis, {
+			code: 0,
+		})
 		CommandService.setMockResponse(/npm config/gis, {
 			code: 1,
 		})
@@ -82,6 +118,9 @@ export default class EnablingAndDisablingCacheTest extends AbstractCliTest {
 
 	@test()
 	protected static async canEnableCacheMultipleTimes() {
+		CommandService.setMockResponse(/which docker/gis, {
+			code: 0,
+		})
 		CommandService.setMockResponse(ENABLE_NPM_CACHE_COMMAND, {
 			code: 0,
 		})

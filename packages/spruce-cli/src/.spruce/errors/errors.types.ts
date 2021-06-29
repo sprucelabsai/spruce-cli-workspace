@@ -788,6 +788,27 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	
+	export interface DockerNotStarted {
+		
+	}
+
+	export interface DockerNotStartedSchema extends SpruceSchema.Schema {
+		id: 'dockerNotStarted',
+		namespace: 'SpruceCli',
+		name: 'Docker not started',
+		    fields: {
+		    }
+	}
+
+	export type DockerNotStartedEntity = SchemaEntity<SpruceErrors.SpruceCli.DockerNotStartedSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
 	export interface DirectoryNotSkill {
 		
 	}

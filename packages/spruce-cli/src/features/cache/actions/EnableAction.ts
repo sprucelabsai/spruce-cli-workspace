@@ -25,6 +25,8 @@ export default class EnableCacheAction extends AbstractAction<OptionsSchema> {
 
 	public async execute(_options: Options): Promise<FeatureActionResponse> {
 		try {
+			await this.Service('command').execute('which docker')
+
 			await this.Action('cache', 'disable').execute({})
 			await this.Service('command').execute(ENABLE_NPM_CACHE_COMMAND)
 
@@ -34,18 +36,23 @@ export default class EnableCacheAction extends AbstractAction<OptionsSchema> {
 				hints: ['Give the caching a second to boot.'],
 			}
 		} catch (err) {
+			let error = err
+			if (err.options?.cmd?.includes('which')) {
+				error = new SpruceError({
+					code: 'MISSING_DEPENDENCIES',
+					dependencies: [
+						{
+							name: 'Docker',
+							hint: 'Get Docker here: https://www.docker.com/products/docker-desktop',
+						},
+					],
+				})
+			} else {
+				error = new SpruceError({ code: 'DOCKER_NOT_STARTED' })
+			}
+
 			return {
-				errors: [
-					new SpruceError({
-						code: 'MISSING_DEPENDENCIES',
-						dependencies: [
-							{
-								name: 'Docker',
-								hint: 'Get Docker here: https://www.docker.com/products/docker-desktop',
-							},
-						],
-					}),
-				],
+				errors: [error],
 			}
 		}
 	}

@@ -219,6 +219,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				message = "Cache is not enabled, so it can't be disabled!"
 				break
 
+			case 'DOCKER_NOT_STARTED':
+				message = 'Docker has not been started! Start it and try again!'
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}
