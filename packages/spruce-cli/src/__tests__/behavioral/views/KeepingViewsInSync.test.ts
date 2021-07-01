@@ -1,7 +1,7 @@
 import { test, assert } from '@sprucelabs/test'
-import SyncAction from '../../features/view/actions/SyncAction'
-import AbstractSkillTest from '../../tests/AbstractSkillTest'
-import testUtil from '../../tests/utilities/test.utility'
+import SyncAction from '../../../features/view/actions/SyncAction'
+import AbstractSkillTest from '../../../tests/AbstractSkillTest'
+import testUtil from '../../../tests/utilities/test.utility'
 
 export default class KeepingViewsInSyncTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'views'

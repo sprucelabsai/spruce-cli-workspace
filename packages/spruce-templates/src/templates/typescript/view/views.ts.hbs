@@ -17,7 +17,7 @@ const vcs = {
 declare module '@sprucelabs/heartwood-view-controllers/build/types/heartwood.types' {
 	interface SkillViewControllerMap {
         {{#each svcTemplateItems}}
-		'{{id}}': typeof {{namePascal}}
+		'{{id}}': {{namePascal}}
         {{/each}}
 	}
 
@@ -29,10 +29,10 @@ declare module '@sprucelabs/heartwood-view-controllers/build/types/heartwood.typ
 
 	interface ViewControllerMap {
         {{#each vcTemplateItems}}
-		'{{id}}': typeof {{namePascal}}
+		'{{id}}': {{namePascal}}
         {{/each}}
          {{#each svcTemplateItems}}
-		'{{id}}': typeof {{namePascal}}
+		'{{id}}': {{namePascal}}
         {{/each}}
 	}
 }

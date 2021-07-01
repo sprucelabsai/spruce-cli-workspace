@@ -1,7 +1,7 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
-import AbstractSkillTest from '../../tests/AbstractSkillTest'
+import AbstractSkillTest from '../../../tests/AbstractSkillTest'
 
 export default class CreatingAThemeTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'views'

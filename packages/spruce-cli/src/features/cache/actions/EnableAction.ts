@@ -32,8 +32,7 @@ export default class EnableCacheAction extends AbstractAction<OptionsSchema> {
 
 			return {
 				headline: 'Starting cache',
-				summaryLines: ['Booting cache systems now....'],
-				hints: ['Give the caching a second to boot.'],
+				summaryLines: ['Booting cache systems now. Give it a sec!'],
 			}
 		} catch (err) {
 			let error = err
