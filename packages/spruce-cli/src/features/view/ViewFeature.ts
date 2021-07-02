@@ -60,19 +60,12 @@ export default class ViewFeature extends AbstractFeature {
 		})
 
 		void this.emitter.on('test.register-abstract-test-classes', async () => {
-			const isInstalled = await this.featureInstaller.isInstalled('view')
-
-			if (!isInstalled) {
-				return {
-					abstractClasses: [],
-				}
-			}
-
 			return {
 				abstractClasses: [
 					{
 						name: 'AbstractViewControllerTest',
 						import: '@sprucelabs/spruce-view-plugin',
+						featureCode: 'view',
 					},
 				],
 			}

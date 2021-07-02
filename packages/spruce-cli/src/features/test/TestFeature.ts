@@ -1,14 +1,25 @@
+import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import SpruceError from '../../errors/SpruceError'
 import PkgService from '../../services/PkgService'
 import { NpmPackage } from '../../types/cli.types'
 import tsConfigUtil from '../../utilities/tsConfig.utility'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
+import ParentTestFinder from '../error/ParentTestFinder'
 import { FeatureCode } from '../features.types'
 
 declare module '../../features/features.types' {
 	interface FeatureMap {
 		test: TestFeature
 	}
+}
+
+export interface ParentClassCandidate {
+	name: string
+	path?: string
+	import?: string
+	isDefaultExport: boolean
+	featureCode?: FeatureCode
 }
 
 export default class TestFeature extends AbstractFeature {
@@ -82,9 +93,54 @@ export default class TestFeature extends AbstractFeature {
 				'^#spruce/(.*)$': '<rootDir>/build/.spruce/$1',
 			},
 		}
+
 		const existingJest = service.get('jest') as Record<string, any>
 		if (!existingJest) {
 			service.set({ path: 'jest', value: jestConfig })
 		}
+	}
+
+	public async buildParentClassCandidates(): Promise<ParentClassCandidate[]> {
+		const parentFinder = new ParentTestFinder(this.cwd)
+		const candidates: ParentClassCandidate[] =
+			await parentFinder.findAbstractTests()
+
+		const results = await this.emitter.emit(
+			'test.register-abstract-test-classes'
+		)
+
+		const { payloads } = eventResponseUtil.getAllResponsePayloadsAndErrors(
+			results,
+			SpruceError
+		)
+
+		for (const payload of payloads) {
+			const { abstractClasses } = payload
+
+			for (const ac of abstractClasses) {
+				const a = { ...ac, isDefaultExport: false }
+
+				if (ac.featureCode) {
+					const isInstalled = await this.featureInstaller.isInstalled(
+						ac.featureCode as any
+					)
+
+					if (!isInstalled) {
+						a.name = `${a.name} (requires install)`
+					}
+				}
+				candidates.push(a as any)
+			}
+		}
+
+		candidates.sort((a, b) => {
+			if (a.name > b.name) {
+				return 1
+			} else {
+				return -1
+			}
+		})
+
+		return candidates
 	}
 }

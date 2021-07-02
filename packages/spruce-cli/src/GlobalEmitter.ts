@@ -86,6 +86,9 @@ export const globalContract = buildEventContract({
 										type: 'text',
 										isRequired: true,
 									},
+									featureCode: {
+										type: 'text',
+									},
 								},
 							}),
 						},

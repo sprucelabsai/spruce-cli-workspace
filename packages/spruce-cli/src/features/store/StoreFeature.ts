@@ -43,19 +43,12 @@ export default class StoreFeature extends AbstractFeature {
 	}
 
 	private async registerAbstractTestClassHandler() {
-		const isInstalled = await this.featureInstaller.isInstalled('store')
-
-		if (!isInstalled) {
-			return {
-				abstractClasses: [],
-			}
-		}
-
 		return {
 			abstractClasses: [
 				{
 					name: 'AbstractStoreTest',
 					import: '@sprucelabs/spruce-store-plugin',
+					featureCode: 'store',
 				},
 			],
 		}

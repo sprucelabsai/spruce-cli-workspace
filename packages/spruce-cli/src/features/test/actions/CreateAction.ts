@@ -1,20 +1,11 @@
 import pathUtil from 'path'
-import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import createTestActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/createTestOptions.schema'
-import SpruceError from '../../../errors/SpruceError'
 import AbstractAction from '../../AbstractAction'
-import ParentTestFinder from '../../error/ParentTestFinder'
 import { FeatureActionResponse } from '../../features.types'
-
-interface ParentClassCandidate {
-	name: string
-	path?: string
-	import?: string
-	isDefaultExport: boolean
-}
+import TestFeature, { ParentClassCandidate } from '../TestFeature'
 
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestOptions
@@ -35,7 +26,8 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 
 		this.ui.startLoading('Checking potential parent test classes')
 
-		const candidates = await this.buildParentClassCandidates()
+		const testFeature = this.parent as TestFeature
+		const candidates = await testFeature.buildParentClassCandidates()
 
 		this.ui.stopLoading()
 
@@ -50,7 +42,7 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 				label: 'Which abstract test class do you want to extend?',
 				options: {
 					choices: [
-						{ value: '', label: 'Default (AbstractSpruceTest)' },
+						{ value: '', label: 'AbstractSpruceTest (default)' },
 						...candidates.map((candidate, idx) => ({
 							value: `${idx}`,
 							label: candidate.name,
@@ -63,6 +55,8 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 				const match = candidates[+idx]
 
 				if (match) {
+					await this.optionallyInstallFeatureBasedOnSelection(match)
+
 					parentTestClass = this.buildParentClassFromCandidate(
 						match,
 						resolvedDestination
@@ -88,6 +82,21 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 			hints: ["run `spruce test` in your skill when you're ready!"],
 		}
 	}
+	private async optionallyInstallFeatureBasedOnSelection(
+		match: ParentClassCandidate
+	) {
+		if (match.featureCode) {
+			const isInstalled = await this.featureInstaller.isInstalled(
+				match.featureCode
+			)
+
+			if (!isInstalled) {
+				await this.featureInstaller.install({
+					features: [{ code: match.featureCode as any }],
+				})
+			}
+		}
+	}
 
 	private buildParentClassFromCandidate(
 		match: ParentClassCandidate,
@@ -104,37 +113,5 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 					match.path.replace(pathUtil.extname(match.path), '')
 				),
 		}
-	}
-
-	private async buildParentClassCandidates(): Promise<ParentClassCandidate[]> {
-		const parentFinder = new ParentTestFinder(this.cwd)
-		const candidates: ParentClassCandidate[] =
-			await parentFinder.findAbstractTests()
-
-		const results = await this.emitter.emit(
-			'test.register-abstract-test-classes'
-		)
-
-		const { payloads } = eventResponseUtil.getAllResponsePayloadsAndErrors(
-			results,
-			SpruceError
-		)
-
-		for (const payload of payloads) {
-			const { abstractClasses } = payload
-			candidates.push(
-				...abstractClasses.map((ac) => ({ ...ac, isDefaultExport: false }))
-			)
-		}
-
-		candidates.sort((a, b) => {
-			if (a.name > b.name) {
-				return 1
-			} else {
-				return -1
-			}
-		})
-
-		return candidates
 	}
 }
