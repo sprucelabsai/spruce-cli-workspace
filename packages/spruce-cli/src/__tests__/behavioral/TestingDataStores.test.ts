@@ -23,8 +23,8 @@ export default class TestingDataStoresTest extends AbstractSkillTest {
 
 		const last = this.ui.lastInvocation()
 		assert.isTruthy(last.options.options.choices)
-		assert.doesNotInclude(last.options.options.choices, {
-			label: 'AbstractStoreTest',
+		assert.doesInclude(last.options.options.choices, {
+			label: 'AbstractStoreTest (requires install)',
 		})
 
 		this.ui.reset()

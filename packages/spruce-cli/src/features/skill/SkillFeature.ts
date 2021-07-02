@@ -178,24 +178,22 @@ export default class SkillFeature<
 	public constructor(options: FeatureOptions) {
 		super(options)
 
-		void this.emitter.on(`test.register-abstract-test-classes`, async () => {
-			const isInstalled = await this.featureInstaller.isInstalled('skill')
+		void this.emitter.on(
+			`test.register-abstract-test-classes`,
+			this.handleRegisterAbstractTestClasses.bind(this)
+		)
+	}
 
-			if (!isInstalled) {
-				return {
-					abstractClasses: [],
-				}
-			}
-
-			return {
-				abstractClasses: [
-					{
-						name: 'AbstractSpruceFixtureTest',
-						import: '@sprucelabs/spruce-test-fixtures',
-					},
-				],
-			}
-		})
+	private async handleRegisterAbstractTestClasses() {
+		return {
+			abstractClasses: [
+				{
+					name: 'AbstractSpruceFixtureTest',
+					import: '@sprucelabs/spruce-test-fixtures',
+					featureCode: 'skill',
+				},
+			],
+		}
 	}
 
 	public async beforePackageInstall(options: SkillFeatureOptions) {

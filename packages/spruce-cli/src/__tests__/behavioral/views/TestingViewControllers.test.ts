@@ -7,7 +7,7 @@ export default class TestingViewControllersTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'viewsWithTests'
 
 	@test()
-	protected static async cantSelectAbstractStoreIfStoreFeatureNotInstalled() {
+	protected static async showsNotInstalled() {
 		const viewFeature = this.cli.getFeature('view')
 		viewFeature.isInstalled = async () => false
 
@@ -16,8 +16,8 @@ export default class TestingViewControllersTest extends AbstractSkillTest {
 		await this.waitForInput()
 
 		const last = this.ui.lastInvocation()
-		assert.doesNotInclude(last.options.options.choices, {
-			label: 'AbstractViewControllerTest',
+		assert.doesInclude(last.options.options.choices, {
+			label: 'AbstractViewControllerTest (requires install)',
 		})
 
 		this.ui.reset()

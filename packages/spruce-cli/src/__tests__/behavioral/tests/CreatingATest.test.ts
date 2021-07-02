@@ -9,37 +9,15 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 	}
 
 	@test()
-	protected static async doesNotAskAboutFixturesWhenInNodeModule() {
+	protected static async requiresInstallIfSkilLNotInstalled() {
 		await this.installTests('testsInNodeModule')
 
-		const promise = this.Action('test', 'create').execute({
-			type: 'behavioral',
-			nameReadable: 'Can book appointment',
-			nameCamel: 'canBookAppointment',
-			namePascal: 'CanBookAppointment',
+		const testFeature = this.getFeatureInstaller().getFeature('test')
+		const candidates = await testFeature.buildParentClassCandidates()
+
+		assert.doesInclude(candidates, {
+			name: 'AbstractSpruceFixtureTest (requires install)',
 		})
-
-		await this.skipInstallSkill()
-
-		const results = await promise
-
-		assert.isFalsy(results.errors)
-	}
-
-	@test()
-	protected static async asksAboutSpruceFixturesWhenCreatingIfSkillFeatureIsInstalled() {
-		await this.installTests()
-		const promise = this.Action('test', 'create').execute({
-			type: 'behavioral',
-			nameReadable: 'Can book appointment',
-			nameCamel: 'canBookAppointment',
-			namePascal: 'CanBookAppointment',
-		})
-
-		await this.waitForInput()
-		this.selectOptionBasedOnLabel('AbstractSpruceFixtureTest')
-
-		await promise
 	}
 
 	@test()
