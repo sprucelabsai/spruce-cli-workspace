@@ -91,7 +91,7 @@ export default class PkgServiceTest extends AbstractSkillTest {
 			code: 1,
 		})
 		const { totalInstalled } = await this.pkg.install(
-			'@sprucelabs/spruce-skill-calendar'
+			'@sprucelabs/jest-json-parser'
 		)
 
 		assert.isEqual(totalInstalled, 1)
@@ -99,7 +99,7 @@ export default class PkgServiceTest extends AbstractSkillTest {
 		const expectedPath = this.resolvePath(
 			'node_modules',
 			'@sprucelabs',
-			'spruce-skill-calendar'
+			'jest-json-parser'
 		)
 
 		assert.isTrue(
