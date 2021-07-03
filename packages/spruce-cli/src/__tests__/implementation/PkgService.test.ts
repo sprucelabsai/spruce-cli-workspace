@@ -1,4 +1,6 @@
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import CommandService from '../../services/CommandService'
 import PkgService from '../../services/PkgService'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 
@@ -25,6 +27,10 @@ export default class PkgServiceTest extends AbstractSkillTest {
 
 	@test()
 	protected static async installASpruceLabsModuleMakesItsVersionLatest() {
+		CommandService.setMockResponse(new RegExp(/yarn/gis), {
+			code: 0,
+		})
+
 		await this.pkg.install('@sprucelabs/spruce-store-plugin')
 
 		const version = this.pkg.get('dependencies.@sprucelabs/spruce-store-plugin')
@@ -34,6 +40,10 @@ export default class PkgServiceTest extends AbstractSkillTest {
 
 	@test()
 	protected static async handlesAtLatestInName() {
+		CommandService.setMockResponse(new RegExp(/yarn/gis), {
+			code: 0,
+		})
+
 		await this.pkg.install('@sprucelabs/heartwood-view-controllers@latest')
 
 		const version = this.pkg.get(
@@ -45,6 +55,10 @@ export default class PkgServiceTest extends AbstractSkillTest {
 
 	@test()
 	protected static async setsLatestIfDevDpendency() {
+		CommandService.setMockResponse(new RegExp(/yarn/gis), {
+			code: 0,
+		})
+
 		await this.pkg.install('@sprucelabs/data-stores', {
 			isDev: true,
 		})
@@ -55,6 +69,10 @@ export default class PkgServiceTest extends AbstractSkillTest {
 
 	@test()
 	protected static async updatesSpruceSkillsToLatestEvenIfAlreadyInstalled() {
+		CommandService.setMockResponse(new RegExp(/yarn/gis), {
+			code: 0,
+		})
+
 		const dep = 'dependencies.@sprucelabs/spruce-skill-booter'
 		this.pkg.set({
 			path: dep,
@@ -65,5 +83,28 @@ export default class PkgServiceTest extends AbstractSkillTest {
 
 		const version = this.pkg.get(dep)
 		assert.isEqual(version, 'latest')
+	}
+
+	@test()
+	protected static async ifInstallingOnlySpruceModulesShouldNotRunNPMAdd() {
+		CommandService.setMockResponse(new RegExp(/npm.*?install/gis), {
+			code: 1,
+		})
+		const { totalInstalled } = await this.pkg.install(
+			'@sprucelabs/spruce-skill-calendar'
+		)
+
+		assert.isEqual(totalInstalled, 1)
+
+		const expectedPath = this.resolvePath(
+			'node_modules',
+			'@sprucelabs',
+			'spruce-skill-calendar'
+		)
+
+		assert.isTrue(
+			diskUtil.doesFileExist(expectedPath),
+			`No module installed at ${expectedPath}.`
+		)
 	}
 }
