@@ -68,6 +68,7 @@ export default class PkgService extends CommandService {
 
 	public async install(pkg: string[] | string, options?: AddOptions) {
 		const packages = Array.isArray(pkg) ? pkg : [pkg]
+		const toInstall = []
 		const labsModules: string[] = []
 		let totalInstalled = 0
 		let totalSkipped = 0
@@ -83,6 +84,7 @@ export default class PkgService extends CommandService {
 					value: 'latest',
 				})
 			} else if (!this.isInstalled(thisPackage)) {
+				toInstall.push(thisPackage)
 				totalInstalled++
 			} else {
 				totalSkipped++
@@ -95,7 +97,7 @@ export default class PkgService extends CommandService {
 				'--cache-min 9999999',
 				'--no-progress',
 				'install',
-				...packages,
+				...toInstall,
 			]
 			if (options?.isDev) {
 				args.push('-D')
@@ -114,7 +116,7 @@ export default class PkgService extends CommandService {
 
 		this.deleteLockFile()
 
-		return { totalInstalled, totalSkipped }
+		return { totalInstalled: totalInstalled + labsModules.length, totalSkipped }
 	}
 
 	private deleteLockFile() {

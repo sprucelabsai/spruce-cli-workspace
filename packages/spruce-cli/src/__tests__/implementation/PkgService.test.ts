@@ -107,4 +107,20 @@ export default class PkgServiceTest extends AbstractSkillTest {
 			`No module installed at ${expectedPath}.`
 		)
 	}
+
+	@test()
+	protected static async spruceModulesNeverInstalled() {
+		CommandService.setMockResponse(
+			new RegExp(/npm.*?install.*?sprucelabs/gis),
+			{
+				code: 1,
+			}
+		)
+		const { totalInstalled } = await this.pkg.install([
+			'@sprucelabs/jest-json-parser',
+			'react',
+		])
+
+		assert.isEqual(totalInstalled, 2)
+	}
 }
