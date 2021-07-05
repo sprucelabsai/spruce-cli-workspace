@@ -115,7 +115,7 @@ export default class PkgService extends CommandService {
 			!diskUtil.doesDirExist(pathUtil.join(this.cwd, 'node_modules')) ||
 			labsModules.length > 0
 		) {
-			await this.execute('npm')
+			await this.execute('npm install')
 		}
 
 		this.deleteLockFile()
