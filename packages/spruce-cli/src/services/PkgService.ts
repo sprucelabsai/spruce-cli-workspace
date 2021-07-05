@@ -106,11 +106,12 @@ export default class PkgService extends CommandService {
 			await this.execute('npm', {
 				args,
 			})
-		} else if (
+		}
+
+		if (
 			!diskUtil.doesDirExist(pathUtil.join(this.cwd, 'node_modules')) ||
 			labsModules.length > 0
 		) {
-			totalInstalled = packages.length
 			await this.execute('yarn')
 		}
 

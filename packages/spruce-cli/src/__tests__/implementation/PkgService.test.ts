@@ -90,8 +90,9 @@ export default class PkgServiceTest extends AbstractSkillTest {
 		CommandService.setMockResponse(new RegExp(/npm.*?install/gis), {
 			code: 1,
 		})
+
 		const { totalInstalled } = await this.pkg.install(
-			'@sprucelabs/jest-json-parser'
+			'@sprucelabs/jest-json-reporter'
 		)
 
 		assert.isEqual(totalInstalled, 1)
@@ -99,7 +100,7 @@ export default class PkgServiceTest extends AbstractSkillTest {
 		const expectedPath = this.resolvePath(
 			'node_modules',
 			'@sprucelabs',
-			'jest-json-parser'
+			'jest-json-reporter'
 		)
 
 		assert.isTrue(
