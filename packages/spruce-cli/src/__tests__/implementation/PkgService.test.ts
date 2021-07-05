@@ -87,9 +87,12 @@ export default class PkgServiceTest extends AbstractSkillTest {
 
 	@test()
 	protected static async ifInstallingOnlySpruceModulesShouldNotRunNPMAdd() {
-		CommandService.setMockResponse(new RegExp(/npm.*?install/gis), {
-			code: 1,
-		})
+		CommandService.setMockResponse(
+			new RegExp(/npm.*?install.*?--no-progress/gis),
+			{
+				code: 1,
+			}
+		)
 
 		const { totalInstalled } = await this.pkg.install(
 			'@sprucelabs/jest-json-reporter'
@@ -128,26 +131,5 @@ export default class PkgServiceTest extends AbstractSkillTest {
 			diskUtil.doesFileExist(expectedPath),
 			`No module installed at ${expectedPath}.`
 		)
-	}
-
-	@test()
-	protected static async spruceModulesNeverInstalled() {
-		CommandService.setMockResponse(
-			new RegExp(/npm.*?install.*?sprucelabs/gis),
-			{
-				code: 1,
-			}
-		)
-
-		CommandService.setMockResponse(new RegExp(/yarn/gis), {
-			code: 0,
-		})
-
-		const { totalInstalled } = await this.pkg.install([
-			'@sprucelabs/jest-json-parser',
-			'react',
-		])
-
-		assert.isEqual(totalInstalled, 2)
 	}
 }
