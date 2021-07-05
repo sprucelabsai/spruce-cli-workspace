@@ -111,12 +111,8 @@ export default class PkgServiceTest extends AbstractSkillTest {
 
 	@test()
 	protected static async installingSpruceAndOtherModulesDoesntRemoveSpruceModule() {
-		CommandService.setMockResponse(new RegExp(/npm.*?install/gis), {
-			code: 1,
-		})
-
 		const { totalInstalled } = await this.pkg.install([
-			'chalk',
+			'moment',
 			'@sprucelabs/spruce-calendar-utils',
 		])
 

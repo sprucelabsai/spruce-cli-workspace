@@ -108,6 +108,8 @@ export default class PkgService extends CommandService {
 			})
 		}
 
+		this.deleteLockFile()
+
 		if (
 			!diskUtil.doesDirExist(pathUtil.join(this.cwd, 'node_modules')) ||
 			labsModules.length > 0
