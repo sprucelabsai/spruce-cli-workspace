@@ -110,6 +110,31 @@ export default class PkgServiceTest extends AbstractSkillTest {
 	}
 
 	@test()
+	protected static async installingSpruceAndOtherModulesDoesntRemoveSpruceModule() {
+		CommandService.setMockResponse(new RegExp(/npm.*?install/gis), {
+			code: 1,
+		})
+
+		const { totalInstalled } = await this.pkg.install([
+			'chalk',
+			'@sprucelabs/spruce-calendar-utils',
+		])
+
+		assert.isEqual(totalInstalled, 2)
+
+		const expectedPath = this.resolvePath(
+			'node_modules',
+			'@sprucelabs',
+			'spruce-calendar-utils'
+		)
+
+		assert.isTrue(
+			diskUtil.doesFileExist(expectedPath),
+			`No module installed at ${expectedPath}.`
+		)
+	}
+
+	@test()
 	protected static async spruceModulesNeverInstalled() {
 		CommandService.setMockResponse(
 			new RegExp(/npm.*?install.*?sprucelabs/gis),
@@ -117,6 +142,11 @@ export default class PkgServiceTest extends AbstractSkillTest {
 				code: 1,
 			}
 		)
+
+		CommandService.setMockResponse(new RegExp(/yarn/gis), {
+			code: 0,
+		})
+
 		const { totalInstalled } = await this.pkg.install([
 			'@sprucelabs/jest-json-parser',
 			'react',
