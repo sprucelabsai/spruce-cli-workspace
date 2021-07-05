@@ -99,6 +99,7 @@ export default class PkgService extends CommandService {
 				'install',
 				...toInstall,
 			]
+
 			if (options?.isDev) {
 				args.push('-D')
 			}
