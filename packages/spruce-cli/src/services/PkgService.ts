@@ -74,7 +74,8 @@ export default class PkgService extends CommandService {
 		let totalSkipped = 0
 
 		for (const thisPackage of packages) {
-			if (thisPackage.startsWith('@sprucelabs/')) {
+			const isInstalled = this.isInstalled(thisPackage)
+			if (!isInstalled && thisPackage.startsWith('@sprucelabs/')) {
 				const lm = thisPackage.replace('@latest', '')
 
 				labsModules.push(lm)
@@ -83,7 +84,7 @@ export default class PkgService extends CommandService {
 					path: `${options?.isDev ? 'devDependencies' : 'dependencies'}.${lm}`,
 					value: 'latest',
 				})
-			} else if (!this.isInstalled(thisPackage)) {
+			} else if (!isInstalled) {
 				toInstall.push(thisPackage)
 				totalInstalled++
 			} else {

@@ -1,4 +1,5 @@
 import AbstractSpruceError from '@sprucelabs/error'
+import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import upperFirst from 'lodash/upperFirst'
 import ErrorOptions from '#spruce/errors/options.types'
 
@@ -221,6 +222,16 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 
 			case 'DOCKER_NOT_STARTED':
 				message = 'Docker has not been started! Start it and try again!'
+				break
+
+			case 'SCHEMA_TEMPLATE_ITEM_BUILDING_FAILED':
+				message = `Failed to build schema template item for '${namesUtil.toPascal(
+					options.schemaNamespace
+				)}.${options.schemaId}'. The field I had an issue on was '${
+					options.fieldName
+				}'. It's options are:\n\n${JSON.stringify(
+					options.fieldOptions
+				)}.\n\nChances are you have a circular reference in your schemas. You'll need to extract shared fields to a new file and have your schemas mix those in, vs referencing eath other.`
 				break
 
 			default:

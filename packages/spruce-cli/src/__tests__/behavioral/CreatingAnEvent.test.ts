@@ -107,6 +107,35 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		await this.Service('typeChecker').check(testFile)
 	}
 
+	@test()
+	protected static async canReferenceSchemaFromOtherModule() {
+		const { results } = await this.createEvent()
+		await this.Service('pkg').install('@sprucelabs/heartwood-view-controllers')
+
+		const emitPayloadFile = testUtil.assertFileByNameInGeneratedFiles(
+			'emitPayload.builder.ts',
+			results.files
+		)
+		const newContents = `import { formBuilderImportExportObjectSchema } from '@sprucelabs/heartwood-view-controllers'
+import { buildSchema } from '@sprucelabs/schema'
+
+const createFormEmitPayloadBuilder = buildSchema({
+	id: 'myFantasticallyAmazingEventEmitPayload',
+	fields: {
+		...formBuilderImportExportObjectSchema.fields,
+	},
+})
+
+export default createFormEmitPayloadBuilder
+		`
+
+		diskUtil.writeFile(emitPayloadFile, newContents)
+
+		const syncResults = await this.Action('event', 'sync').execute({})
+
+		assert.isFalsy(syncResults.errors)
+	}
+
 	private static async createEvent() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 

@@ -201,7 +201,7 @@ export default class EventTemplateItemBuilder {
 		namedSignatures: NamedEventSignature[]
 	) {
 		const schemasByNamespace: Record<string, Schema[]> =
-			this.mapEventSigsToSchemasByNampace(namedSignatures)
+			this.mapEventSigsToSchemasByNamepace(namedSignatures)
 
 		const schemaTemplateItemBuilder = new SchemaTemplateItemBuilder('Cli')
 		const schemaItems: SchemaTemplateItem[] =
@@ -213,7 +213,7 @@ export default class EventTemplateItemBuilder {
 		return schemaItems
 	}
 
-	private mapEventSigsToSchemasByNampace(
+	private mapEventSigsToSchemasByNamepace(
 		namedSignatures: NamedEventSignature[]
 	) {
 		const schemasByNamespace: Record<string, Schema[]> = {}

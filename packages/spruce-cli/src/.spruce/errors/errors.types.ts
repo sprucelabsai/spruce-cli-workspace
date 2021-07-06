@@ -189,6 +189,59 @@ export declare namespace SpruceErrors.SpruceCli {
 
 export declare namespace SpruceErrors.SpruceCli {
 
+	
+	export interface SchemaTemplateItemBuildingFailed {
+		
+			
+			'schemaId': string
+			
+			'schemaNamespace': string
+			
+			'fieldName': string
+			
+			'fieldOptions': (Record<string, any>)
+	}
+
+	export interface SchemaTemplateItemBuildingFailedSchema extends SpruceSchema.Schema {
+		id: 'schemaTemplateItemBuildingFailed',
+		namespace: 'SpruceCli',
+		name: 'Schema template item building failed',
+		    fields: {
+		            /** . */
+		            'schemaId': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		            /** . */
+		            'schemaNamespace': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		            /** . */
+		            'fieldName': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		            /** . */
+		            'fieldOptions': {
+		                type: 'raw',
+		                isRequired: true,
+		                options: {valueType: `Record<string, any>`,}
+		            },
+		    }
+	}
+
+	export type SchemaTemplateItemBuildingFailedEntity = SchemaEntity<SpruceErrors.SpruceCli.SchemaTemplateItemBuildingFailedSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
 	/** The definition file failed to import */
 	export interface SchemaFailedToImport {
 		

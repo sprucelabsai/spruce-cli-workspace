@@ -9,6 +9,7 @@ import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import cloneDeep from 'lodash/cloneDeep'
 import isEqual from 'lodash/isEqual'
 import merge from 'lodash/merge'
+import SpruceError from '../errors/SpruceError'
 import { SchemasByNamespace } from '../features/schema/stores/SchemaStore'
 import schemaUtil from '../features/schema/utilities/schema.utility'
 
@@ -95,6 +96,7 @@ export default class SchemaTemplateItemBuilder {
 				const schemasOrIdsWithVersion =
 					SchemaField.mapFieldDefinitionToSchemasOrIdsWithVersion(field)
 
+				const { ...originalOptions } = field.options
 				delete field.options.schema
 				delete field.options.schemaId
 				delete field.options.schemaIds
@@ -119,6 +121,16 @@ export default class SchemaTemplateItemBuilder {
 
 					this.flattenSchema(related, true)
 				})
+
+				if (field.options.schemaIds.length === 0) {
+					throw new SpruceError({
+						code: 'SCHEMA_TEMPLATE_ITEM_BUILDING_FAILED',
+						schemaId: schema.id,
+						schemaNamespace: schema.namespace as string,
+						fieldName: name,
+						fieldOptions: originalOptions,
+					})
+				}
 			}
 		})
 
