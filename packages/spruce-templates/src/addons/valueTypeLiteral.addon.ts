@@ -53,7 +53,6 @@ handlebars.registerHelper(
 			valueTypes[namespace]?.[nameCamel]?.[v]?.[fieldName]?.valueTypes[renderAs]
 
 		if (!valueType) {
-			debugger
 			throw new Error(
 				`Unable to render value type for field "${namespace}.${nameCamel}.${v}.${fieldName}"`
 			)
