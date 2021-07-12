@@ -1,11 +1,13 @@
 id: '{{{escape schema.id}}}',{{#if schema.version}}
 version: '{{{escape schema.version}}}',{{/if}}{{#if namespace}}
 namespace: '{{{escape namespace}}}',{{/if}}
-name: '{{{escape schema.name}}}'{{#if schema.description}},
-description: '{{{escape schema.description}}}'{{/if}}{{#if schema.dynamicFieldSignature}},
+name: '{{{escape schema.name}}}',{{#if schema.importsWhenRemote}}
+importsWhenRemote: [{{#each schema.importsWhenRemote}}'{{{escape this}}}',{{/each}}],{{/if}}{{#if schema.moduleToImportFromWhenRemote}}
+moduleToImportFromWhenRemote: '{{{escape schema.moduleToImportFromWhenRemote}}}',{{/if}}{{#if schema.description}}
+description: '{{{escape schema.description}}}',{{/if}}{{#if schema.dynamicFieldSignature}}
 dynamicFieldSignature: { 
     {{> fieldDefinitionBody namespace=namespace schemaNameCamel=nameCamel schema=schema fieldName="__dynamicFieldSignature" field=schema.dynamicFieldSignature renderAs=renderAs}} 
-}{{/if}}{{#if schema.fields}},
+},{{/if}}{{#if schema.fields}}
     fields: {
         {{#each schema.fields}}
             /** {{{label}}}.{{#if hint}} {{{hint}}}{{/if}} */

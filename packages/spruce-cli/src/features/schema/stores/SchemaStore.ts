@@ -46,21 +46,23 @@ export default class SchemaStore extends AbstractStore {
 
 	public async fetchSchemas(options: {
 		localSchemaLookupDir?: string
-		fetchRemoteSchemas?: boolean
-		enableVersioning?: boolean
+		shouldFetchRemoteSchemas?: boolean
+		shouldEnableVersioning?: boolean
 		localNamespace: string
-		fetchCoreSchemas?: boolean
-		fetchLocalSchemas?: boolean
+		shouldFetchCoreSchemas?: boolean
+		moduleToImportFromWhenRemote?: string
+		shouldFetchLocalSchemas?: boolean
 		didUpdateHandler?: InternalUpdateHandler
 	}): Promise<FetchSchemasResults> {
 		const {
 			localSchemaLookupDir: localSchemaDir = 'src/schemas',
-			fetchLocalSchemas = true,
-			fetchRemoteSchemas = true,
-			enableVersioning = true,
+			shouldFetchLocalSchemas = true,
+			shouldFetchRemoteSchemas = true,
+			shouldEnableVersioning = true,
 			localNamespace,
-			fetchCoreSchemas = true,
+			shouldFetchCoreSchemas = true,
 			didUpdateHandler,
+			moduleToImportFromWhenRemote,
 		} = options || {}
 
 		const results: FetchSchemasResults = {
@@ -68,7 +70,7 @@ export default class SchemaStore extends AbstractStore {
 			schemasByNamespace: {},
 		}
 
-		if (fetchCoreSchemas) {
+		if (shouldFetchCoreSchemas) {
 			results.schemasByNamespace[CORE_NAMESPACE] = Object.values(
 				coreSchemas
 			).map((schema) => ({
@@ -77,18 +79,25 @@ export default class SchemaStore extends AbstractStore {
 			}))
 		}
 
-		if (fetchLocalSchemas) {
+		if (shouldFetchLocalSchemas) {
 			const locals = await this.loadLocalSchemas(
 				localSchemaDir,
 				localNamespace,
-				enableVersioning,
+				shouldEnableVersioning,
 				didUpdateHandler
 			)
+
+			if (moduleToImportFromWhenRemote) {
+				locals.schemas.forEach((local) => {
+					local.moduleToImportFromWhenRemote = moduleToImportFromWhenRemote
+				})
+			}
+
 			results.schemasByNamespace[localNamespace] = locals.schemas
 			results.errors.push(...locals.errors)
 		}
 
-		if (fetchRemoteSchemas) {
+		if (shouldFetchRemoteSchemas) {
 			await this.emitDidFetchSchemasAndMixinResults(localNamespace, results)
 		}
 
@@ -155,7 +164,7 @@ export default class SchemaStore extends AbstractStore {
 	private async loadLocalSchemas(
 		localLookupDir: string,
 		localNamespace: string,
-		enableVersioning?: boolean,
+		shouldEnableVersioning?: boolean,
 		didUpdateHandler?: InternalUpdateHandler
 	) {
 		const localMatches = await globby(
@@ -179,11 +188,11 @@ export default class SchemaStore extends AbstractStore {
 					let schema = imported[c]
 
 					let version: undefined | string = this.resolveLocalVersion(
-						enableVersioning,
+						shouldEnableVersioning,
 						local,
 						errors
 					)
-					if (version || enableVersioning === false) {
+					if (version || shouldEnableVersioning === false) {
 						schema = this.prepareLocalSchema(
 							schema,
 							localNamespace,
@@ -217,7 +226,7 @@ export default class SchemaStore extends AbstractStore {
 	}
 
 	private resolveLocalVersion(
-		enableVersioning: boolean | undefined,
+		shouldEnableVersioning: boolean | undefined,
 		local: string,
 		errors: SpruceError[]
 	) {
@@ -225,7 +234,7 @@ export default class SchemaStore extends AbstractStore {
 
 		try {
 			version =
-				enableVersioning === false
+				shouldEnableVersioning === false
 					? undefined
 					: versionUtil.extractVersion(this.cwd, local).constValue
 		} catch (err) {

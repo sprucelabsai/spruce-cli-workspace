@@ -1,7 +1,8 @@
 import pathUtil from 'path'
-import { Schema } from '@sprucelabs/schema'
-import { namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { Schema, SchemaTemplateItem } from '@sprucelabs/schema'
+import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../../../errors/SpruceError'
+import schemaGeneratorUtil from './schemaGenerator.utility'
 
 const schemaDiskUtil = {
 	resolvePath(options: {
@@ -28,6 +29,65 @@ const schemaDiskUtil = {
 			schema.version ?? '',
 			`${schema.id}.schema${includeFileExtension === false ? '' : '.ts'}`
 		)
+	},
+
+	resolveTypeFilePaths(options: {
+		cwd: string
+		generateStandaloneTypesFile: boolean
+		schemaTypesDestinationDirOrFile: string
+		fieldTypesDestinationDir: string
+	}) {
+		const {
+			cwd,
+			generateStandaloneTypesFile,
+			schemaTypesDestinationDirOrFile,
+			fieldTypesDestinationDir,
+		} = options
+
+		const resolvedSchemaTypesDestination = diskUtil.resolvePath(
+			cwd,
+			generateStandaloneTypesFile &&
+				diskUtil.isDirPath(schemaTypesDestinationDirOrFile)
+				? diskUtil.resolvePath(
+						cwd,
+						schemaTypesDestinationDirOrFile,
+						'core.schemas.types.ts'
+				  )
+				: schemaTypesDestinationDirOrFile
+		)
+
+		const resolvedSchemaTypesDestinationDirOrFile = diskUtil.isDirPath(
+			resolvedSchemaTypesDestination
+		)
+			? resolvedSchemaTypesDestination
+			: pathUtil.dirname(resolvedSchemaTypesDestination)
+
+		const resolvedFieldTypesDestination = diskUtil.resolvePath(
+			cwd,
+			fieldTypesDestinationDir ?? resolvedSchemaTypesDestinationDirOrFile
+		)
+
+		return {
+			resolvedFieldTypesDestination,
+			resolvedSchemaTypesDestinationDirOrFile,
+			resolvedSchemaTypesDestination,
+		}
+	},
+
+	async deleteOrphanedSchemas(
+		resolvedDestination: string,
+		schemaTemplateItems: SchemaTemplateItem[]
+	) {
+		const definitionsToDelete =
+			await schemaGeneratorUtil.filterSchemaFilesBySchemaIds(
+				resolvedDestination,
+				schemaTemplateItems.map((item) => ({
+					...item,
+					version: item.schema.version,
+				}))
+			)
+
+		definitionsToDelete.forEach((def) => diskUtil.deleteFile(def))
 	},
 }
 

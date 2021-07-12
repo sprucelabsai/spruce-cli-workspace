@@ -53,7 +53,7 @@ export default class SchemaWriter extends AbstractWriter {
 	public async writeBuilder(
 		destinationDir: string,
 		options: SchemaBuilderTemplateItem & {
-			enableVersioning?: boolean
+			shouldEnableVersioning?: boolean
 			version?: string
 		}
 	): Promise<WriteResults> {
@@ -62,7 +62,7 @@ export default class SchemaWriter extends AbstractWriter {
 		const filename = `${options.nameCamel}.builder.ts`
 
 		const resolvedBuilderDestination =
-			options.enableVersioning === false
+			options.shouldEnableVersioning === false
 				? pathUtil.resolve(destinationDir, filename)
 				: versionUtil.resolveNewLatestPath(
 						destinationDir,
@@ -138,23 +138,29 @@ export default class SchemaWriter extends AbstractWriter {
 		)
 
 		let results: WriteResults = []
-		this.ui.startLoading('Checking schema types...')
+		this.ui.startLoading('Generating schema types...')
 
-		const schemaTypesContents = this.templates.schemasTypes({
-			schemaTemplateItems,
-			fieldTemplateItems,
-			valueTypes,
-			globalSchemaNamespace: options.globalSchemaNamespace,
-			typesTemplate,
-		})
-
-		results = await this.writeFileIfChangedMixinResults(
-			resolvedTypesDestination,
-			schemaTypesContents,
-			'Namespace for accessing all your schemas. Type `SpruceSchemas` in your IDE to get started. ⚡️'
+		const firstMatchWithoutImportFrom = schemaTemplateItems.find(
+			(i) => !i.importFrom
 		)
 
-		await this.lint(resolvedTypesDestination)
+		if (firstMatchWithoutImportFrom) {
+			const schemaTypesContents = this.templates.schemasTypes({
+				schemaTemplateItems: schemaTemplateItems.filter((i) => !i.importFrom),
+				fieldTemplateItems,
+				valueTypes,
+				globalSchemaNamespace: options.globalSchemaNamespace,
+				typesTemplate,
+			})
+
+			results = await this.writeFileIfChangedMixinResults(
+				resolvedTypesDestination,
+				schemaTypesContents,
+				'Namespace for accessing all your schemas. Type `SpruceSchemas` in your IDE to get started. ⚡️'
+			)
+
+			await this.lint(resolvedTypesDestination)
+		}
 
 		this.ui.startLoading(
 			`Checking ${schemaTemplateItems.length} schemas for changes...`

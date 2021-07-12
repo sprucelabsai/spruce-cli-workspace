@@ -24,7 +24,7 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 			{
 				...normalizedOptions,
 				builderFunction: 'buildErrorSchema',
-				enableVersioning: false,
+				shouldEnableVersioning: false,
 				syncAfterCreate: false,
 				schemaBuilderDestinationDir:
 					normalizedOptions.errorBuilderDestinationDir,

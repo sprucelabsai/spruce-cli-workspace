@@ -23,7 +23,7 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 			namePascal,
 			nameReadable,
 			syncAfterCreate,
-			enableVersioning,
+			shouldEnableVersioning,
 			version,
 			...rest
 		} = normalizedOptions
@@ -35,15 +35,16 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 
 		let resolvedVersion: string | undefined
 
-		if (enableVersioning) {
+		if (shouldEnableVersioning) {
 			resolvedVersion = await this.resolveVersion(version, resolvedDestination)
 		}
 
 		const generator = this.Writer('schema')
+
 		const results = await generator.writeBuilder(resolvedDestination, {
 			...rest,
 			nameCamel,
-			enableVersioning: enableVersioning ?? undefined,
+			shouldEnableVersioning: shouldEnableVersioning ?? undefined,
 			version: resolvedVersion,
 			nameReadable: nameReadable ?? nameCamel,
 			namePascal: namePascal ?? namesUtil.toPascal(nameCamel),

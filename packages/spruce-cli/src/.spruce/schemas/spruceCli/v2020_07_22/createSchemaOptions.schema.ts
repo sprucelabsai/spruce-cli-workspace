@@ -51,8 +51,21 @@ const createSchemaOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateSchem
 	                defaultValue: "src/schemas",
 	                options: undefined
 	            },
+	            /** Source module. If this schema should be imported from a node module vs generated locally. */
+	            'moduleToImportFromWhenRemote': {
+	                label: 'Source module',
+	                type: 'text',
+	                hint: 'If this schema should be imported from a node module vs generated locally.',
+	                options: undefined
+	            },
+	            /** Auto install missing dependencies. */
+	            'shouldInstallMissingDependencies': {
+	                label: 'Auto install missing dependencies',
+	                type: 'boolean',
+	                options: undefined
+	            },
 	            /** Enable versioning. Should we use versioning? */
-	            'enableVersioning': {
+	            'shouldEnableVersioning': {
 	                label: 'Enable versioning',
 	                type: 'boolean',
 	                isPrivate: true,
@@ -70,7 +83,7 @@ const createSchemaOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateSchem
 	                options: undefined
 	            },
 	            /** Fetch remote schemas. I will pull in schemas from other features. */
-	            'fetchRemoteSchemas': {
+	            'shouldFetchRemoteSchemas': {
 	                label: 'Fetch remote schemas',
 	                type: 'boolean',
 	                isPrivate: true,
@@ -79,7 +92,7 @@ const createSchemaOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateSchem
 	                options: undefined
 	            },
 	            /** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
-	            'fetchLocalSchemas': {
+	            'shouldFetchLocalSchemas': {
 	                label: 'Fetch local schemas',
 	                type: 'boolean',
 	                isPrivate: true,
@@ -88,7 +101,7 @@ const createSchemaOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateSchem
 	                options: undefined
 	            },
 	            /** Fetch core schemas. Should I pull in core schemas too? */
-	            'fetchCoreSchemas': {
+	            'shouldFetchCoreSchemas': {
 	                label: 'Fetch core schemas',
 	                type: 'boolean',
 	                isPrivate: true,
@@ -96,12 +109,12 @@ const createSchemaOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateSchem
 	                defaultValue: true,
 	                options: undefined
 	            },
-	            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
-	            'generateCoreSchemaTypes': {
+	            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--shouldFetchRemoteSchemas=false --shouldFetchCoreSchemas=false --generateStandaloneTypesFile. */
+	            'shouldGenerateCoreSchemaTypes': {
 	                label: 'Generate core schemas',
 	                type: 'boolean',
 	                isPrivate: true,
-	                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile.',
+	                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--shouldFetchRemoteSchemas=false --shouldFetchCoreSchemas=false --generateStandaloneTypesFile.',
 	                options: undefined
 	            },
 	            /** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */

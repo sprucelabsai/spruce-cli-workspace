@@ -114,6 +114,16 @@ export default class SchemaTemplateItemBuilder {
 						related.namespace = schema.namespace
 					}
 
+					if (
+						localSchema.moduleToImportFromWhenRemote &&
+						//@ts-ignore
+						!related.moduleToImportFromWhenRemote
+					) {
+						//@ts-ignore
+						related.moduleToImportFromWhenRemote =
+							localSchema.moduleToImportFromWhenRemote
+					}
+
 					const relatedIdWithVersion = normalizeSchemaToIdWithVersion(related)
 
 					field.options.schemaIds?.push(relatedIdWithVersion)
@@ -180,6 +190,12 @@ export default class SchemaTemplateItemBuilder {
 	}
 
 	private getImportFromForSchema(schema: Schema): string | undefined {
+		if (
+			schema.moduleToImportFromWhenRemote &&
+			schema.namespace !== this.localNamespace
+		) {
+			return schema.moduleToImportFromWhenRemote
+		}
 		switch (schema.namespace) {
 			case CORE_NAMESPACE:
 				if (this.localNamespace !== CORE_NAMESPACE) {

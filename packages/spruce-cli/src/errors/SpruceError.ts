@@ -234,6 +234,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				)}.\n\nChances are you have a circular reference in your schemas. You'll need to extract shared fields to a new file and have your schemas mix those in, vs referencing eath other.`
 				break
 
+			case 'ACTION_CANCELLED':
+				message = 'A Action cancelled just happened!'
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}

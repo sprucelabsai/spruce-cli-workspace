@@ -3,8 +3,9 @@ import  { {{builderFunction}} } from '@sprucelabs/schema'
 
 export default {{builderFunction}}({
 	id: '{{nameCamel}}',
-	name: '{{{escape nameReadable}}}',
-    description: '{{{escape description}}}',
+	name: '{{{escape nameReadable}}}',{{#if description}}
+    description: '{{{escape description}}}',{{/if}}{{#if moduleToImportFromWhenRemote}}
+	moduleToImportFromWhenRemote: '{{{escape moduleToImportFromWhenRemote}}}',{{/if}}
 	fields: {
 		fieldName1: {
 			type: 'text',

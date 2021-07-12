@@ -17,7 +17,7 @@ const MOCK_CORE_SYNC_FILE_COUNT = 3 + TYPE_FILE_COUNT
 
 export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	private static readonly coreSyncOptions = {
-		generateCoreSchemaTypes: true,
+		shouldGenerateCoreSchemaTypes: true,
 	}
 
 	@test()
@@ -57,7 +57,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		await this.installSchemaFeature('schemas')
 
 		const results = await this.Action('schema', 'sync').execute({
-			fetchCoreSchemas: false,
+			shouldFetchCoreSchemas: false,
 		})
 
 		assert.isFalsy(results.errors)
@@ -150,7 +150,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	}
 
 	@test()
-	protected static async generateCoreSchemaTypesGeneratesValidFiles() {
+	protected static async shouldGenerateCoreSchemaTypesGeneratesValidFiles() {
 		await this.installSchemaFeature('schemas')
 
 		await this.copyMockCoreSchemas()
@@ -359,8 +359,8 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		await this.assertValidActionResponseFiles(results)
 	}
 
-	@test()
-	protected static async syncingMinArrayValues() {
+	@test('syncs minAraryLength, importsWhenRemote')
+	protected static async syncsExpectedFields() {
 		await this.syncSchemas('schemas')
 
 		const schemasDir = this.resolvePath('src', 'schemas')
@@ -396,6 +396,64 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		assert.isFalse(diskUtil.doesFileExist(beforeFolder))
 		assert.isTrue(diskUtil.doesFileExist(afterFolder))
+	}
+
+	@test.only()
+	protected static async generatedSchemasRetainImportsAndTypeSuffix() {
+		await this.installSchemaFeature('schemas')
+
+		const results = await this.Action('schema', 'create').execute({
+			nameReadable: 'Test schema',
+			nameCamel: 'testSchema',
+		})
+
+		const testSchemaPath = testUtil.assertFileByNameInGeneratedFiles(
+			'testSchema.builder.ts',
+			results.files
+		)
+
+		diskUtil.writeFile(
+			testSchemaPath,
+			`import { buildSchema } from '@sprucelabs/schema'
+
+		export default buildSchema({
+			id: 'testSchema',
+			name: 'Test schema',
+			description: '',
+			importsWhenLocal: ['import * as Local from "@sprucelabs/schema"'],
+			importsWhenRemote: ['import * as Remote from "@sprucelabs/schema"'],
+			typeSuffix: '<S extends Record<string, any> = Record<string, any>>',
+			fields: {
+				fieldName1: {
+					type: 'text',
+					label: 'First Field',
+					isRequired: true,
+				},
+				fieldName2: {
+					type: 'number',
+					label: 'Second Field',
+					isRequired: true,
+					hint: 'A hint',
+				},
+			},
+		})
+		`
+		)
+
+		const syncResults = await this.Action('schema', 'sync').execute({})
+
+		const schemaPath = testUtil.assertFileByNameInGeneratedFiles(
+			'testSchema.schema.ts',
+			syncResults.files
+		)
+
+		const imported = await this.Service('import').importDefault(schemaPath)
+
+		assert.doesInclude(imported, {
+			importsWhenLocal: ['import * as Local from "@sprucelabs/schema"'],
+			importsWhenRemote: ['import * as Remote from "@sprucelabs/schema"'],
+			typeSuffix: '<S extends Record<string, any> = Record<string, any>>',
+		})
 	}
 
 	private static async importSchema(results: any, filename: string) {

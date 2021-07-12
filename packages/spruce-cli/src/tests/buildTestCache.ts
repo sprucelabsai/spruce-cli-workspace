@@ -55,7 +55,14 @@ async function run() {
 		doesSupportColor &&
 		setInterval(async () => {
 			term.clear()
-			term.renderHeadline(`Found ${testKeys.length} skills to cache.`)
+			term.renderDivider()
+			term.renderLine(`Found ${testKeys.length} skills to cache.`)
+			if (onlyInstall) {
+				term.renderLine(
+					`TEST_SKILLS_TO_CACHE=${process.env.TEST_SKILLS_TO_CACHE}.`
+				)
+			}
+			term.renderDivider()
 			term.renderLine(
 				shouldRunSequentially ? 'Running sequentially' : 'Running in pararell'
 			)
@@ -126,9 +133,7 @@ async function run() {
 		const { cacheTracker, cwd, fixture, options } = setup(cacheKey)
 
 		if (onlyInstall && onlyInstall.indexOf(cacheKey) === -1) {
-			renderLine(
-				`Skipping '${cacheKey}' because TEST_SKILLS_TO_CACHE=${process.env.TEST_SKILLS_TO_CACHE}.`
-			)
+			renderLine(`Skipping '${cacheKey}'.`)
 			remaining--
 		} else if (
 			cacheTracker[cacheKey] &&

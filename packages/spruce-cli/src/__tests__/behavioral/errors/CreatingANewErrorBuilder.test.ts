@@ -54,7 +54,7 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 		const results = await action.execute({
 			nameReadable: 'Test pass',
 			nameCamel: 'testPass',
-			fetchCoreSchemas: false,
+			shouldFetchCoreSchemas: false,
 		})
 
 		assert.isFalsy(results.errors)

@@ -56,7 +56,7 @@ export default class OverridingCommandsInPackageJsonTest extends AbstractSkillTe
 		const pkg = this.Service('pkg')
 		pkg.set({
 			path: ['skill', 'commandOverrides', 'sync.schemas'],
-			value: '--fetchCoreSchemas false',
+			value: '--shouldFetchCoreSchemas false',
 		})
 	}
 }

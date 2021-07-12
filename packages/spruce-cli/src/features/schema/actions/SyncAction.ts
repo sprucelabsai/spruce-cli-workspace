@@ -1,4 +1,3 @@
-import pathUtil from 'path'
 import { SchemaTemplateItem, FieldTemplateItem } from '@sprucelabs/schema'
 import { CORE_NAMESPACE, diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { ValueTypes } from '@sprucelabs/spruce-templates'
@@ -10,7 +9,7 @@ import { GeneratedFile } from '../../../types/cli.types'
 import actionUtil from '../../../utilities/action.utility'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
-import schemaGeneratorUtil from '../utilities/schemaGenerator.utility'
+import schemaDiskUtil from '../utilities/schemaDisk.utility'
 import ValueTypeBuilder from '../ValueTypeBuilder'
 
 type OptionsSchema =
@@ -35,18 +34,20 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 			fieldTypesDestinationDir,
 			schemaLookupDir,
 			addonsLookupDir,
-			enableVersioning,
+			shouldEnableVersioning,
 			globalSchemaNamespace,
-			fetchRemoteSchemas,
-			generateCoreSchemaTypes = isInCoreSchemasModule,
-			fetchLocalSchemas,
+			shouldFetchRemoteSchemas,
+			shouldGenerateCoreSchemaTypes = isInCoreSchemasModule,
+			shouldFetchLocalSchemas,
 			generateFieldTypes,
 			generateStandaloneTypesFile,
 			deleteDestinationDirIfNoSchemas,
-			fetchCoreSchemas,
+			shouldFetchCoreSchemas,
 			registerBuiltSchemas,
 			syncingMessage,
 			deleteOrphanedSchemas,
+			moduleToImportFromWhenRemote,
+			shouldInstallMissingDependencies,
 		} = normalizedOptions
 
 		this.ui.startLoading('Loading details about your skill... 🧐')
@@ -54,10 +55,10 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 		let localNamespace = await this.Store('skill').loadCurrentSkillsNamespace()
 		let shouldImportCoreSchemas = true
 
-		if (generateCoreSchemaTypes) {
-			fetchRemoteSchemas = false
-			fetchLocalSchemas = true
-			fetchCoreSchemas = false
+		if (shouldGenerateCoreSchemaTypes) {
+			shouldFetchRemoteSchemas = false
+			shouldFetchLocalSchemas = true
+			shouldFetchCoreSchemas = false
 			registerBuiltSchemas = true
 			generateStandaloneTypesFile = true
 			shouldImportCoreSchemas = false
@@ -65,8 +66,8 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 		}
 
 		const shouldSyncRemoteSchemasFirst =
-			fetchLocalSchemas &&
-			fetchCoreSchemas &&
+			shouldFetchLocalSchemas &&
+			shouldFetchCoreSchemas &&
 			!diskUtil.doesDirExist(
 				diskUtil.resolveHashSprucePath(this.cwd, 'schemas', CORE_NAMESPACE)
 			)
@@ -78,8 +79,8 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 			coreSyncResults = await this.execute({
 				...normalizedOptions,
 				deleteOrphanedSchemas: false,
-				fetchLocalSchemas: false,
-				fetchRemoteSchemas: false,
+				shouldFetchLocalSchemas: false,
+				shouldFetchRemoteSchemas: false,
 			})
 			this.ui.startLoading('Done syncing core schemas...')
 		}
@@ -88,11 +89,12 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 			resolvedFieldTypesDestination,
 			resolvedSchemaTypesDestinationDirOrFile,
 			resolvedSchemaTypesDestination,
-		} = this.resolvePaths(
+		} = schemaDiskUtil.resolveTypeFilePaths({
+			cwd: this.cwd,
 			generateStandaloneTypesFile,
 			schemaTypesDestinationDirOrFile,
-			fieldTypesDestinationDir
-		)
+			fieldTypesDestinationDir,
+		})
 
 		this.ui.startLoading('Generating field types...')
 
@@ -112,11 +114,12 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 		try {
 			const templateResults = await this.generateSchemaTemplateItems({
 				schemaLookupDir,
-				fetchLocalSchemas,
+				shouldFetchLocalSchemas,
+				moduleToImportFromWhenRemote,
 				resolvedSchemaTypesDestinationDirOrFile,
-				enableVersioning,
-				fetchRemoteSchemas,
-				fetchCoreSchemas,
+				shouldEnableVersioning,
+				shouldFetchRemoteSchemas,
+				shouldFetchCoreSchemas,
 				localNamespace,
 			})
 
@@ -135,11 +138,16 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 			if (deleteOrphanedSchemas) {
 				this.ui.startLoading('Identifying orphaned schemas...')
 
-				await this.deleteOrphanedSchemas(
+				await schemaDiskUtil.deleteOrphanedSchemas(
 					resolvedSchemaTypesDestinationDirOrFile,
 					schemaTemplateItems
 				)
 			}
+
+			await this.optionallyInstallRemoteModules(
+				schemaTemplateItems,
+				shouldInstallMissingDependencies
+			)
 
 			let valueTypes: ValueTypes | undefined
 
@@ -178,7 +186,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 			}
 		}
 
-		this.cleanEmptyDirs(resolvedSchemaTypesDestination)
+		diskUtil.deleteEmptyDirs(resolvedSchemaTypesDestination)
 
 		this.ui.stopLoading()
 
@@ -194,23 +202,77 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 		})
 	}
 
+	private async optionallyInstallRemoteModules(
+		schemaTemplateItems: SchemaTemplateItem[],
+		forceInstall?: boolean
+	) {
+		const modules = schemaTemplateItems
+			.map((item) => item.importFrom)
+			.filter((i) => !!i) as string[]
+		const notInstalled: string[] = []
+
+		const pkg = this.Service('pkg')
+		for (const m of modules) {
+			if (!pkg.isInstalled(m)) {
+				notInstalled.push(m)
+			}
+		}
+
+		if (notInstalled.length > 0) {
+			if (!forceInstall) {
+				this.ui.renderSection({
+					headline: `Missing ${notInstalled.length} module${
+						notInstalled.length === 1 ? '' : 's'
+					}`,
+					lines: [
+						`Looks like I need to install the following modules to continue to sync schemas:`,
+						'',
+						...notInstalled,
+					],
+				})
+
+				const confirm = await this.ui.confirm('Should we do that now?')
+
+				if (!confirm) {
+					throw new SpruceError({
+						code: 'ACTION_CANCELLED',
+						friendlyMessage: `I can't sync schemas because of the missing modules.`,
+					})
+				}
+			}
+
+			this.ui.startLoading(
+				`Installing ${notInstalled.length} missing module${
+					notInstalled.length === 1 ? '' : 's...'
+				}`
+			)
+
+			const pkg = this.Service('pkg')
+			await pkg.install(notInstalled)
+
+			this.ui.stopLoading()
+		}
+	}
+
 	private async generateSchemaTemplateItems(options: {
 		schemaLookupDir: string | undefined
 		localNamespace: string
 		resolvedSchemaTypesDestinationDirOrFile: string
-		fetchLocalSchemas: boolean
-		enableVersioning: boolean
-		fetchRemoteSchemas: boolean
-		fetchCoreSchemas: boolean
+		shouldFetchLocalSchemas: boolean
+		moduleToImportFromWhenRemote?: string
+		shouldEnableVersioning: boolean
+		shouldFetchRemoteSchemas: boolean
+		shouldFetchCoreSchemas: boolean
 	}) {
 		const {
 			schemaLookupDir,
 			resolvedSchemaTypesDestinationDirOrFile,
-			enableVersioning,
-			fetchRemoteSchemas,
-			fetchCoreSchemas,
-			fetchLocalSchemas,
+			shouldEnableVersioning,
+			shouldFetchRemoteSchemas,
+			shouldFetchCoreSchemas,
+			shouldFetchLocalSchemas,
 			localNamespace,
+			moduleToImportFromWhenRemote,
 		} = options
 
 		this.ui.startLoading('Loading builders...')
@@ -218,11 +280,12 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 		const { schemasByNamespace, errors: schemaErrors } =
 			await this.schemaStore.fetchSchemas({
 				localSchemaLookupDir: schemaLookupDir,
-				fetchLocalSchemas,
-				fetchRemoteSchemas,
-				enableVersioning,
+				shouldFetchLocalSchemas,
+				shouldFetchRemoteSchemas,
+				shouldEnableVersioning,
+				moduleToImportFromWhenRemote,
 				localNamespace,
-				fetchCoreSchemas,
+				shouldFetchCoreSchemas,
 				didUpdateHandler: (message) => {
 					this.ui.startLoading(message)
 				},
@@ -283,41 +346,6 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 		}
 	}
 
-	private resolvePaths(
-		generateStandaloneTypesFile: boolean,
-		schemaTypesDestinationDirOrFile: string,
-		fieldTypesDestinationDir: string
-	) {
-		const resolvedSchemaTypesDestination = diskUtil.resolvePath(
-			this.cwd,
-			generateStandaloneTypesFile &&
-				diskUtil.isDirPath(schemaTypesDestinationDirOrFile)
-				? diskUtil.resolvePath(
-						this.cwd,
-						schemaTypesDestinationDirOrFile,
-						'core.schemas.types.ts'
-				  )
-				: schemaTypesDestinationDirOrFile
-		)
-
-		const resolvedSchemaTypesDestinationDirOrFile = diskUtil.isDirPath(
-			resolvedSchemaTypesDestination
-		)
-			? resolvedSchemaTypesDestination
-			: pathUtil.dirname(resolvedSchemaTypesDestination)
-
-		const resolvedFieldTypesDestination = diskUtil.resolvePath(
-			this.cwd,
-			fieldTypesDestinationDir ?? resolvedSchemaTypesDestinationDirOrFile
-		)
-
-		return {
-			resolvedFieldTypesDestination,
-			resolvedSchemaTypesDestinationDirOrFile,
-			resolvedSchemaTypesDestination,
-		}
-	}
-
 	private async generateValueTypes(options: {
 		resolvedDestination: string
 		fieldTemplateItems: FieldTemplateItem[]
@@ -332,25 +360,5 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 		)
 
 		return builder.generateValueTypes(options)
-	}
-
-	private async deleteOrphanedSchemas(
-		resolvedDestination: string,
-		schemaTemplateItems: SchemaTemplateItem[]
-	) {
-		const definitionsToDelete =
-			await schemaGeneratorUtil.filterSchemaFilesBySchemaIds(
-				resolvedDestination,
-				schemaTemplateItems.map((item) => ({
-					...item,
-					version: item.schema.version,
-				}))
-			)
-
-		definitionsToDelete.forEach((def) => diskUtil.deleteFile(def))
-	}
-
-	private cleanEmptyDirs(resolvedDestination: string) {
-		diskUtil.deleteEmptyDirs(resolvedDestination)
 	}
 }

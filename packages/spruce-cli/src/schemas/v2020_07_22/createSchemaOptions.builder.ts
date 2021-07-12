@@ -21,6 +21,11 @@ export default buildSchema({
 			defaultValue: 'buildSchema',
 			isPrivate: true,
 		},
+		moduleToImportFromWhenRemote: {
+			type: 'text',
+			label: 'Source module',
+			hint: 'If this schema should be imported from a node module vs generated locally.',
+		},
 		syncAfterCreate: {
 			type: 'boolean',
 			label: 'Sync after creation',

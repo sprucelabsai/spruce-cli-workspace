@@ -13,15 +13,19 @@ export default abstract class AbstractSkillTest extends AbstractCliTest {
 			)
 		}
 		await super.beforeAll()
-		this.cwd = this.skillDir = this.freshTmpDir()
-		this.cli = await this.FeatureFixture().installCachedFeatures(
-			this.skillCacheKey
-		)
+		await this.reInstallSkill()
 	}
 
 	protected static async beforeEach() {
 		await super.beforeEach()
 		this.cwd = this.skillDir
 		this.cli = await this.Cli()
+	}
+
+	protected static async reInstallSkill() {
+		this.cwd = this.skillDir = this.freshTmpDir()
+		this.cli = await this.FeatureFixture().installCachedFeatures(
+			this.skillCacheKey
+		)
 	}
 }

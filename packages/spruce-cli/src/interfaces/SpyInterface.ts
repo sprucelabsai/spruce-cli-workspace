@@ -1,5 +1,5 @@
 import { FieldDefinitionValueType } from '@sprucelabs/schema'
-import { testLog } from '@sprucelabs/spruce-skill-utils'
+import { namesUtil, testLog } from '@sprucelabs/spruce-skill-utils'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import { ExecutionResults } from '../types/cli.types'
 import { GraphicsInterface } from '../types/cli.types'
@@ -206,7 +206,20 @@ export default class SpyInterface implements GraphicsInterface {
 			)
 		}
 
-		this.optionallyRenderLine(`Prompt: ${definition.label}`)
+		let msg = `${namesUtil.toPascal(definition.type)} Prompt: ${
+			definition.label
+		}`
+
+		if (definition.type === 'select') {
+			msg += '\n\nChoices:\n'
+			definition.options.choices.forEach((choice) => {
+				msg += `\n${choice.value}: ${choice.label}`
+			})
+
+			msg += '\n'
+		}
+
+		this.optionallyRenderLine(msg)
 
 		return new Promise<FieldDefinitionValueType<FieldDefinitions>>(
 			(resolve) => {

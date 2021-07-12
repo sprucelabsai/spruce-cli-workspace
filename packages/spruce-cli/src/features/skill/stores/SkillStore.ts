@@ -133,7 +133,7 @@ export default class SkillStore extends AbstractStore {
 		if (isRegistered) {
 			throw new SpruceError({
 				code: 'GENERIC',
-				friendlyMessage: `You can't register a skill that is already registered!`,
+				friendlyMessage: `You can't change the namespace of a skill that is registered.`,
 			})
 		}
 

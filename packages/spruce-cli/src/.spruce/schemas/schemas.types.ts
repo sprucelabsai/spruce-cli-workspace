@@ -75,7 +75,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.Heartwood.v2021_02_11 {
 
 		
-		interface Theme {
+		interface ThemeProps {
 			
 				/** Color 1. Used to color anything overlayed on the background (color1Inverse or color1InverseGradient). */
 				'color1'?: string| undefined | null
@@ -85,29 +85,41 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'color1InverseGradient'?: string| undefined | null
 				/** Color 2. The color of anything overlayed on the background of a card (color2Inverse) */
 				'color2'?: string| undefined | null
-				/** Color 2 (inverse with transparency). Background color used when some transparency is needed for context. */
-				'color2InverseTransparent'?: string| undefined | null
+				/** Color 2. The color of overlays ontop of a card. */
+				'color2Transparent'?: string| undefined | null
 				/** Color. Background color of cards. */
 				'color2Inverse'?: string| undefined | null
-				/** Color 3. Subtitle and label colors. */
+				/** Color 2 (inverse with transparency). Background color used when some transparency is needed for context. */
+				'color2InverseTransparent'?: string| undefined | null
+				/** Color 3. Titles of cards. */
 				'color3'?: string| undefined | null
-				/** Color 4. Buttons, borders, outlines, and highlights */
+				/** Color 3 (compliment). Subtitles of cards. */
+				'color3Compliment'?: string| undefined | null
+				/** Color 3 (inverse). Background for headers of cards. */
+				'color3Inverse'?: string| undefined | null
+				/** Color 4. Foreground for buttons and menu items. */
 				'color4'?: string| undefined | null
-				/** Color. Should compliment color 4 */
+				/** Color 4 (compliment). Border, outlines and highlights */
+				'color4Compliment'?: string| undefined | null
+				/** Color 4 (inverse). Background for buttons and menu items. */
 				'color4Inverse'?: string| undefined | null
+				/** Color (inverse, compliment). Background for buttons and menu items */
+				'color4InverseCompliment'?: string| undefined | null
+				/** Color. The foreground color of the control bar. */
+				'controlBarColor1'?: string| undefined | null
 				/** Color. The background color of the control bar. */
-				'controlBarBg'?: string| undefined | null
+				'controlBarColor2'?: string| undefined | null
 				/** Color. Errors overlayed on a background colored with errorColor1Inverse. */
 				'errorColor1'?: string| undefined | null
 				/** Color. The background used when rendering errors. */
 				'errorColor1Inverse'?: string| undefined | null
 		}
 
-		interface ThemeSchema extends SpruceSchema.Schema {
-			id: 'theme',
+		interface ThemePropsSchema extends SpruceSchema.Schema {
+			id: 'themeProps',
 			version: 'v2021_02_11',
 			namespace: 'Heartwood',
-			name: 'Theme',
+			name: '',
 			    fields: {
 			            /** Color 1. Used to color anything overlayed on the background (color1Inverse or color1InverseGradient). */
 			            'color1': {
@@ -137,11 +149,11 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                hint: 'The color of anything overlayed on the background of a card (color2Inverse)',
 			                options: undefined
 			            },
-			            /** Color 2 (inverse with transparency). Background color used when some transparency is needed for context. */
-			            'color2InverseTransparent': {
-			                label: 'Color 2 (inverse with transparency)',
+			            /** Color 2. The color of overlays ontop of a card. */
+			            'color2Transparent': {
+			                label: 'Color 2',
 			                type: 'text',
-			                hint: 'Background color used when some transparency is needed for context.',
+			                hint: 'The color of overlays ontop of a card.',
 			                options: undefined
 			            },
 			            /** Color. Background color of cards. */
@@ -151,29 +163,71 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                hint: 'Background color of cards.',
 			                options: undefined
 			            },
-			            /** Color 3. Subtitle and label colors. */
+			            /** Color 2 (inverse with transparency). Background color used when some transparency is needed for context. */
+			            'color2InverseTransparent': {
+			                label: 'Color 2 (inverse with transparency)',
+			                type: 'text',
+			                hint: 'Background color used when some transparency is needed for context.',
+			                options: undefined
+			            },
+			            /** Color 3. Titles of cards. */
 			            'color3': {
 			                label: 'Color 3',
 			                type: 'text',
-			                hint: 'Subtitle and label colors.',
+			                hint: 'Titles of cards.',
 			                options: undefined
 			            },
-			            /** Color 4. Buttons, borders, outlines, and highlights */
+			            /** Color 3 (compliment). Subtitles of cards. */
+			            'color3Compliment': {
+			                label: 'Color 3 (compliment)',
+			                type: 'text',
+			                hint: 'Subtitles of cards.',
+			                options: undefined
+			            },
+			            /** Color 3 (inverse). Background for headers of cards. */
+			            'color3Inverse': {
+			                label: 'Color 3 (inverse)',
+			                type: 'text',
+			                hint: 'Background for headers of cards.',
+			                options: undefined
+			            },
+			            /** Color 4. Foreground for buttons and menu items. */
 			            'color4': {
 			                label: 'Color 4',
 			                type: 'text',
-			                hint: 'Buttons, borders, outlines, and highlights',
+			                hint: 'Foreground for buttons and menu items.',
 			                options: undefined
 			            },
-			            /** Color. Should compliment color 4 */
+			            /** Color 4 (compliment). Border, outlines and highlights */
+			            'color4Compliment': {
+			                label: 'Color 4 (compliment)',
+			                type: 'text',
+			                hint: 'Border, outlines and highlights',
+			                options: undefined
+			            },
+			            /** Color 4 (inverse). Background for buttons and menu items. */
 			            'color4Inverse': {
+			                label: 'Color 4 (inverse)',
+			                type: 'text',
+			                hint: 'Background for buttons and menu items.',
+			                options: undefined
+			            },
+			            /** Color (inverse, compliment). Background for buttons and menu items */
+			            'color4InverseCompliment': {
+			                label: 'Color (inverse, compliment)',
+			                type: 'text',
+			                hint: 'Background for buttons and menu items',
+			                options: undefined
+			            },
+			            /** Color. The foreground color of the control bar. */
+			            'controlBarColor1': {
 			                label: 'Color',
 			                type: 'text',
-			                hint: 'Should compliment color 4',
+			                hint: 'The foreground color of the control bar.',
 			                options: undefined
 			            },
 			            /** Color. The background color of the control bar. */
-			            'controlBarBg': {
+			            'controlBarColor2': {
 			                label: 'Color',
 			                type: 'text',
 			                hint: 'The background color of the control bar.',
@@ -196,7 +250,36 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type ThemeEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.ThemeSchema>
+		type ThemePropsEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.ThemePropsSchema>
+
+	}
+
+
+	namespace SpruceSchemas.Heartwood.v2021_02_11 {
+
+		
+		interface RegisterationTheme {
+			
+				
+				'props': SpruceSchemas.Heartwood.v2021_02_11.ThemeProps
+		}
+
+		interface RegisterationThemeSchema extends SpruceSchema.Schema {
+			id: 'registerationTheme',
+			version: 'v2021_02_11',
+			namespace: 'Heartwood',
+			name: '',
+			    fields: {
+			            /** . */
+			            'props': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.Heartwood.v2021_02_11.ThemePropsSchema,}
+			            },
+			    }
+		}
+
+		type RegisterationThemeEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.RegisterationThemeSchema>
 
 	}
 
@@ -209,13 +292,11 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				
 				'id': string
 				
-				'namespace': string
-				
 				'ids': string[]
 				
 				'source': string
 				
-				'theme'?: SpruceSchemas.Heartwood.v2021_02_11.Theme| undefined | null
+				'theme'?: SpruceSchemas.Heartwood.v2021_02_11.RegisterationTheme| undefined | null
 		}
 
 		interface GetSkillViewsResponsePayloadSchema extends SpruceSchema.Schema {
@@ -227,12 +308,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            /** . */
 			            'id': {
 			                type: 'id',
-			                isRequired: true,
-			                options: undefined
-			            },
-			            /** . */
-			            'namespace': {
-			                type: 'text',
 			                isRequired: true,
 			                options: undefined
 			            },
@@ -252,7 +327,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            /** . */
 			            'theme': {
 			                type: 'schema',
-			                options: {schema: SpruceSchemas.Heartwood.v2021_02_11.ThemeSchema,}
+			                options: {schema: SpruceSchemas.Heartwood.v2021_02_11.RegisterationThemeSchema,}
 			            },
 			    }
 		}
@@ -272,7 +347,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				
 				'source': string
 				
-				'theme'?: SpruceSchemas.Heartwood.v2021_02_11.Theme| undefined | null
+				'theme'?: SpruceSchemas.Heartwood.v2021_02_11.RegisterationTheme| undefined | null
 		}
 
 		interface RegisterSkillViewsEmitPayloadSchema extends SpruceSchema.Schema {
@@ -297,7 +372,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            /** . */
 			            'theme': {
 			                type: 'schema',
-			                options: {schema: SpruceSchemas.Heartwood.v2021_02_11.ThemeSchema,}
+			                options: {schema: SpruceSchemas.Heartwood.v2021_02_11.RegisterationThemeSchema,}
 			            },
 			    }
 		}
@@ -624,18 +699,22 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'schemaTypesDestinationDirOrFile'?: string| undefined | null
 				/** . Where I should look for your schema builders? */
 				'schemaLookupDir'?: string| undefined | null
+				/** Module import. When other skills use your schemas, will they import them from a module? */
+				'moduleToImportFromWhenRemote'?: string| undefined | null
+				/** Auto install missing dependencies. */
+				'shouldInstallMissingDependencies'?: boolean| undefined | null
 				/** Enable versioning. Should we use versioning? */
-				'enableVersioning'?: boolean| undefined | null
+				'shouldEnableVersioning'?: boolean| undefined | null
 				/** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
 				'globalSchemaNamespace'?: string| undefined | null
 				/** Fetch remote schemas. I will pull in schemas from other features. */
-				'fetchRemoteSchemas'?: boolean| undefined | null
+				'shouldFetchRemoteSchemas'?: boolean| undefined | null
 				/** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
-				'fetchLocalSchemas'?: boolean| undefined | null
+				'shouldFetchLocalSchemas'?: boolean| undefined | null
 				/** Fetch core schemas. Should I pull in core schemas too? */
-				'fetchCoreSchemas'?: boolean| undefined | null
-				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
-				'generateCoreSchemaTypes'?: boolean| undefined | null
+				'shouldFetchCoreSchemas'?: boolean| undefined | null
+				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--shouldFetchRemoteSchemas=false --shouldFetchCoreSchemas=false --generateStandaloneTypesFile. */
+				'shouldGenerateCoreSchemaTypes'?: boolean| undefined | null
 				/** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
 				'registerBuiltSchemas'?: boolean| undefined | null
 				/** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
@@ -696,8 +775,21 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: "src/schemas",
 			                options: undefined
 			            },
+			            /** Module import. When other skills use your schemas, will they import them from a module? */
+			            'moduleToImportFromWhenRemote': {
+			                label: 'Module import',
+			                type: 'text',
+			                hint: 'When other skills use your schemas, will they import them from a module?',
+			                options: undefined
+			            },
+			            /** Auto install missing dependencies. */
+			            'shouldInstallMissingDependencies': {
+			                label: 'Auto install missing dependencies',
+			                type: 'boolean',
+			                options: undefined
+			            },
 			            /** Enable versioning. Should we use versioning? */
-			            'enableVersioning': {
+			            'shouldEnableVersioning': {
 			                label: 'Enable versioning',
 			                type: 'boolean',
 			                isPrivate: true,
@@ -715,7 +807,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                options: undefined
 			            },
 			            /** Fetch remote schemas. I will pull in schemas from other features. */
-			            'fetchRemoteSchemas': {
+			            'shouldFetchRemoteSchemas': {
 			                label: 'Fetch remote schemas',
 			                type: 'boolean',
 			                isPrivate: true,
@@ -724,7 +816,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                options: undefined
 			            },
 			            /** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
-			            'fetchLocalSchemas': {
+			            'shouldFetchLocalSchemas': {
 			                label: 'Fetch local schemas',
 			                type: 'boolean',
 			                isPrivate: true,
@@ -733,7 +825,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                options: undefined
 			            },
 			            /** Fetch core schemas. Should I pull in core schemas too? */
-			            'fetchCoreSchemas': {
+			            'shouldFetchCoreSchemas': {
 			                label: 'Fetch core schemas',
 			                type: 'boolean',
 			                isPrivate: true,
@@ -741,12 +833,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: true,
 			                options: undefined
 			            },
-			            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
-			            'generateCoreSchemaTypes': {
+			            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--shouldFetchRemoteSchemas=false --shouldFetchCoreSchemas=false --generateStandaloneTypesFile. */
+			            'shouldGenerateCoreSchemaTypes': {
 			                label: 'Generate core schemas',
 			                type: 'boolean',
 			                isPrivate: true,
-			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile.',
+			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--shouldFetchRemoteSchemas=false --shouldFetchCoreSchemas=false --generateStandaloneTypesFile.',
 			                options: undefined
 			            },
 			            /** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
@@ -939,18 +1031,22 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'schemaTypesDestinationDirOrFile'?: string| undefined | null
 				/** . Where I should look for your schema builders? */
 				'schemaLookupDir'?: string| undefined | null
+				/** Module import. When other skills use your schemas, will they import them from a module? */
+				'moduleToImportFromWhenRemote'?: string| undefined | null
+				/** Auto install missing dependencies. */
+				'shouldInstallMissingDependencies'?: boolean| undefined | null
 				/** Enable versioning. Should we use versioning? */
-				'enableVersioning'?: boolean| undefined | null
+				'shouldEnableVersioning'?: boolean| undefined | null
 				/** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
 				'globalSchemaNamespace'?: string| undefined | null
 				/** Fetch remote schemas. I will pull in schemas from other features. */
-				'fetchRemoteSchemas'?: boolean| undefined | null
+				'shouldFetchRemoteSchemas'?: boolean| undefined | null
 				/** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
-				'fetchLocalSchemas'?: boolean| undefined | null
+				'shouldFetchLocalSchemas'?: boolean| undefined | null
 				/** Fetch core schemas. Should I pull in core schemas too? */
-				'fetchCoreSchemas'?: boolean| undefined | null
-				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
-				'generateCoreSchemaTypes'?: boolean| undefined | null
+				'shouldFetchCoreSchemas'?: boolean| undefined | null
+				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--shouldFetchRemoteSchemas=false --shouldFetchCoreSchemas=false --generateStandaloneTypesFile. */
+				'shouldGenerateCoreSchemaTypes'?: boolean| undefined | null
 				/** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
 				'registerBuiltSchemas'?: boolean| undefined | null
 				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
@@ -1013,8 +1109,21 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: "src/schemas",
 			                options: undefined
 			            },
+			            /** Module import. When other skills use your schemas, will they import them from a module? */
+			            'moduleToImportFromWhenRemote': {
+			                label: 'Module import',
+			                type: 'text',
+			                hint: 'When other skills use your schemas, will they import them from a module?',
+			                options: undefined
+			            },
+			            /** Auto install missing dependencies. */
+			            'shouldInstallMissingDependencies': {
+			                label: 'Auto install missing dependencies',
+			                type: 'boolean',
+			                options: undefined
+			            },
 			            /** Enable versioning. Should we use versioning? */
-			            'enableVersioning': {
+			            'shouldEnableVersioning': {
 			                label: 'Enable versioning',
 			                type: 'boolean',
 			                isPrivate: true,
@@ -1032,7 +1141,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                options: undefined
 			            },
 			            /** Fetch remote schemas. I will pull in schemas from other features. */
-			            'fetchRemoteSchemas': {
+			            'shouldFetchRemoteSchemas': {
 			                label: 'Fetch remote schemas',
 			                type: 'boolean',
 			                isPrivate: true,
@@ -1041,7 +1150,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                options: undefined
 			            },
 			            /** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
-			            'fetchLocalSchemas': {
+			            'shouldFetchLocalSchemas': {
 			                label: 'Fetch local schemas',
 			                type: 'boolean',
 			                isPrivate: true,
@@ -1050,7 +1159,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                options: undefined
 			            },
 			            /** Fetch core schemas. Should I pull in core schemas too? */
-			            'fetchCoreSchemas': {
+			            'shouldFetchCoreSchemas': {
 			                label: 'Fetch core schemas',
 			                type: 'boolean',
 			                isPrivate: true,
@@ -1058,12 +1167,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: true,
 			                options: undefined
 			            },
-			            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
-			            'generateCoreSchemaTypes': {
+			            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--shouldFetchRemoteSchemas=false --shouldFetchCoreSchemas=false --generateStandaloneTypesFile. */
+			            'shouldGenerateCoreSchemaTypes': {
 			                label: 'Generate core schemas',
 			                type: 'boolean',
 			                isPrivate: true,
-			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile.',
+			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--shouldFetchRemoteSchemas=false --shouldFetchCoreSchemas=false --generateStandaloneTypesFile.',
 			                options: undefined
 			            },
 			            /** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
@@ -1732,18 +1841,22 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'schemaTypesDestinationDirOrFile'?: string| undefined | null
 				/** . Where I should look for your schema builders? */
 				'schemaLookupDir'?: string| undefined | null
+				/** Source module. If this schema should be imported from a node module vs generated locally. */
+				'moduleToImportFromWhenRemote'?: string| undefined | null
+				/** Auto install missing dependencies. */
+				'shouldInstallMissingDependencies'?: boolean| undefined | null
 				/** Enable versioning. Should we use versioning? */
-				'enableVersioning'?: boolean| undefined | null
+				'shouldEnableVersioning'?: boolean| undefined | null
 				/** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
 				'globalSchemaNamespace'?: string| undefined | null
 				/** Fetch remote schemas. I will pull in schemas from other features. */
-				'fetchRemoteSchemas'?: boolean| undefined | null
+				'shouldFetchRemoteSchemas'?: boolean| undefined | null
 				/** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
-				'fetchLocalSchemas'?: boolean| undefined | null
+				'shouldFetchLocalSchemas'?: boolean| undefined | null
 				/** Fetch core schemas. Should I pull in core schemas too? */
-				'fetchCoreSchemas'?: boolean| undefined | null
-				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
-				'generateCoreSchemaTypes'?: boolean| undefined | null
+				'shouldFetchCoreSchemas'?: boolean| undefined | null
+				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--shouldFetchRemoteSchemas=false --shouldFetchCoreSchemas=false --generateStandaloneTypesFile. */
+				'shouldGenerateCoreSchemaTypes'?: boolean| undefined | null
 				/** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
 				'registerBuiltSchemas'?: boolean| undefined | null
 				/** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
@@ -1820,8 +1933,21 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: "src/schemas",
 			                options: undefined
 			            },
+			            /** Source module. If this schema should be imported from a node module vs generated locally. */
+			            'moduleToImportFromWhenRemote': {
+			                label: 'Source module',
+			                type: 'text',
+			                hint: 'If this schema should be imported from a node module vs generated locally.',
+			                options: undefined
+			            },
+			            /** Auto install missing dependencies. */
+			            'shouldInstallMissingDependencies': {
+			                label: 'Auto install missing dependencies',
+			                type: 'boolean',
+			                options: undefined
+			            },
 			            /** Enable versioning. Should we use versioning? */
-			            'enableVersioning': {
+			            'shouldEnableVersioning': {
 			                label: 'Enable versioning',
 			                type: 'boolean',
 			                isPrivate: true,
@@ -1839,7 +1965,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                options: undefined
 			            },
 			            /** Fetch remote schemas. I will pull in schemas from other features. */
-			            'fetchRemoteSchemas': {
+			            'shouldFetchRemoteSchemas': {
 			                label: 'Fetch remote schemas',
 			                type: 'boolean',
 			                isPrivate: true,
@@ -1848,7 +1974,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                options: undefined
 			            },
 			            /** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
-			            'fetchLocalSchemas': {
+			            'shouldFetchLocalSchemas': {
 			                label: 'Fetch local schemas',
 			                type: 'boolean',
 			                isPrivate: true,
@@ -1857,7 +1983,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                options: undefined
 			            },
 			            /** Fetch core schemas. Should I pull in core schemas too? */
-			            'fetchCoreSchemas': {
+			            'shouldFetchCoreSchemas': {
 			                label: 'Fetch core schemas',
 			                type: 'boolean',
 			                isPrivate: true,
@@ -1865,12 +1991,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: true,
 			                options: undefined
 			            },
-			            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
-			            'generateCoreSchemaTypes': {
+			            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--shouldFetchRemoteSchemas=false --shouldFetchCoreSchemas=false --generateStandaloneTypesFile. */
+			            'shouldGenerateCoreSchemaTypes': {
 			                label: 'Generate core schemas',
 			                type: 'boolean',
 			                isPrivate: true,
-			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile.',
+			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--shouldFetchRemoteSchemas=false --shouldFetchCoreSchemas=false --generateStandaloneTypesFile.',
 			                options: undefined
 			            },
 			            /** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
@@ -2045,18 +2171,22 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				'schemaTypesDestinationDirOrFile'?: string| undefined | null
 				/** . Where I should look for your schema builders? */
 				'schemaLookupDir'?: string| undefined | null
+				/** Module import. When other skills use your schemas, will they import them from a module? */
+				'moduleToImportFromWhenRemote'?: string| undefined | null
+				/** Auto install missing dependencies. */
+				'shouldInstallMissingDependencies'?: boolean| undefined | null
 				/** Enable versioning. Should we use versioning? */
-				'enableVersioning'?: boolean| undefined | null
+				'shouldEnableVersioning'?: boolean| undefined | null
 				/** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
 				'globalSchemaNamespace'?: string| undefined | null
 				/** Fetch remote schemas. I will pull in schemas from other features. */
-				'fetchRemoteSchemas'?: boolean| undefined | null
+				'shouldFetchRemoteSchemas'?: boolean| undefined | null
 				/** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
-				'fetchLocalSchemas'?: boolean| undefined | null
+				'shouldFetchLocalSchemas'?: boolean| undefined | null
 				/** Fetch core schemas. Should I pull in core schemas too? */
-				'fetchCoreSchemas'?: boolean| undefined | null
-				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
-				'generateCoreSchemaTypes'?: boolean| undefined | null
+				'shouldFetchCoreSchemas'?: boolean| undefined | null
+				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--shouldFetchRemoteSchemas=false --shouldFetchCoreSchemas=false --generateStandaloneTypesFile. */
+				'shouldGenerateCoreSchemaTypes'?: boolean| undefined | null
 				/** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
 				'registerBuiltSchemas'?: boolean| undefined | null
 				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
@@ -2129,8 +2259,21 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: "src/schemas",
 			                options: undefined
 			            },
+			            /** Module import. When other skills use your schemas, will they import them from a module? */
+			            'moduleToImportFromWhenRemote': {
+			                label: 'Module import',
+			                type: 'text',
+			                hint: 'When other skills use your schemas, will they import them from a module?',
+			                options: undefined
+			            },
+			            /** Auto install missing dependencies. */
+			            'shouldInstallMissingDependencies': {
+			                label: 'Auto install missing dependencies',
+			                type: 'boolean',
+			                options: undefined
+			            },
 			            /** Enable versioning. Should we use versioning? */
-			            'enableVersioning': {
+			            'shouldEnableVersioning': {
 			                label: 'Enable versioning',
 			                type: 'boolean',
 			                isPrivate: true,
@@ -2148,7 +2291,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                options: undefined
 			            },
 			            /** Fetch remote schemas. I will pull in schemas from other features. */
-			            'fetchRemoteSchemas': {
+			            'shouldFetchRemoteSchemas': {
 			                label: 'Fetch remote schemas',
 			                type: 'boolean',
 			                isPrivate: true,
@@ -2157,7 +2300,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                options: undefined
 			            },
 			            /** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
-			            'fetchLocalSchemas': {
+			            'shouldFetchLocalSchemas': {
 			                label: 'Fetch local schemas',
 			                type: 'boolean',
 			                isPrivate: true,
@@ -2166,7 +2309,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                options: undefined
 			            },
 			            /** Fetch core schemas. Should I pull in core schemas too? */
-			            'fetchCoreSchemas': {
+			            'shouldFetchCoreSchemas': {
 			                label: 'Fetch core schemas',
 			                type: 'boolean',
 			                isPrivate: true,
@@ -2174,12 +2317,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                defaultValue: true,
 			                options: undefined
 			            },
-			            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile. */
-			            'generateCoreSchemaTypes': {
+			            /** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--shouldFetchRemoteSchemas=false --shouldFetchCoreSchemas=false --generateStandaloneTypesFile. */
+			            'shouldGenerateCoreSchemaTypes': {
 			                label: 'Generate core schemas',
 			                type: 'boolean',
 			                isPrivate: true,
-			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile.',
+			                hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--shouldFetchRemoteSchemas=false --shouldFetchCoreSchemas=false --generateStandaloneTypesFile.',
 			                options: undefined
 			            },
 			            /** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
@@ -2352,33 +2495,5 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		type BootSkillOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.BootSkillOptionsSchema>
 
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

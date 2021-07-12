@@ -77,12 +77,12 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'sync.schemas',
-			option: '--fetchRemoteSchemas [true|false]',
+			option: '--shouldFetchRemoteSchemas [true|false]',
 		})
 
 		assert.doesInclude(this.program.optionInvocations, {
 			command: 'sync.schemas',
-			option: '--generateCoreSchemaTypes [true|false]',
+			option: '--shouldGenerateCoreSchemaTypes [true|false]',
 		})
 	}
 
@@ -92,7 +92,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 
 		assert.doesNotInclude(this.program.optionInvocations, {
 			command: 'create.schema',
-			option: '--enableVersioning [true|false]',
+			option: '--shouldEnableVersioning [true|false]',
 		})
 	}
 

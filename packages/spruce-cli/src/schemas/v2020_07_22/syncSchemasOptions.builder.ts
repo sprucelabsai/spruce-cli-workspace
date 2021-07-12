@@ -19,7 +19,16 @@ export default buildSchema({
 			hint: 'Where I should look for your schema builders?',
 			defaultValue: 'src/schemas',
 		},
-		enableVersioning: {
+		moduleToImportFromWhenRemote: {
+			type: 'text',
+			label: 'Module import',
+			hint: 'When other skills use your schemas, will they import them from a module?',
+		},
+		shouldInstallMissingDependencies: {
+			type: 'boolean',
+			label: 'Auto install missing dependencies',
+		},
+		shouldEnableVersioning: {
 			type: 'boolean',
 			defaultValue: true,
 			label: 'Enable versioning',
@@ -33,32 +42,32 @@ export default buildSchema({
 			isPrivate: true,
 			defaultValue: DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
 		},
-		fetchRemoteSchemas: {
+		shouldFetchRemoteSchemas: {
 			type: 'boolean',
 			label: 'Fetch remote schemas',
 			isPrivate: true,
 			hint: 'I will pull in schemas from other features.',
 			defaultValue: true,
 		},
-		fetchLocalSchemas: {
+		shouldFetchLocalSchemas: {
 			type: 'boolean',
 			label: 'Fetch local schemas',
 			isPrivate: true,
 			hint: 'I will look in schemaLookupDir to load local schemas.',
 			defaultValue: true,
 		},
-		fetchCoreSchemas: {
+		shouldFetchCoreSchemas: {
 			type: 'boolean',
 			label: 'Fetch core schemas',
 			isPrivate: true,
 			hint: 'Should I pull in core schemas too?',
 			defaultValue: true,
 		},
-		generateCoreSchemaTypes: {
+		shouldGenerateCoreSchemaTypes: {
 			type: 'boolean',
 			label: 'Generate core schemas',
 			isPrivate: true,
-			hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--fetchRemoteSchemas=false --fetchCoreSchemas=false --generateStandaloneTypesFile.',
+			hint: 'Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--shouldFetchRemoteSchemas=false --shouldFetchCoreSchemas=false --generateStandaloneTypesFile.',
 		},
 		registerBuiltSchemas: {
 			type: 'boolean',

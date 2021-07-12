@@ -201,7 +201,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		const results = await createAction.execute({
 			nameReadable: 'Test error',
 			nameCamel: 'testError',
-			fetchCoreSchemas: false,
+			shouldFetchCoreSchemas: false,
 		})
 
 		assert.isFalsy(results.errors)
@@ -221,7 +221,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
 		)
 
 		const syncAction = this.Action('error', 'sync')
-		const syncResults = await syncAction.execute({ fetchCoreSchemas: false })
+		const syncResults = await syncAction.execute({ shouldFetchCoreSchemas: false })
 		assert.isFalsy(syncResults.errors)
 	}
 }

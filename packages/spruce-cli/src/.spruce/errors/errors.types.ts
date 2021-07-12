@@ -1183,4 +1183,25 @@ export declare namespace SpruceErrors.SpruceCli {
 
 
 
+export declare namespace SpruceErrors.SpruceCli {
+
+	
+	export interface ActionCancelled {
+		
+	}
+
+	export interface ActionCancelledSchema extends SpruceSchema.Schema {
+		id: 'actionCancelled',
+		namespace: 'SpruceCli',
+		name: 'Action cancelled',
+		    fields: {
+		    }
+	}
+
+	export type ActionCancelledEntity = SchemaEntity<SpruceErrors.SpruceCli.ActionCancelledSchema>
+
+}
+
+
+
 
