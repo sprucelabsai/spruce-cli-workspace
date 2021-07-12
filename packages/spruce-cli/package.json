@@ -521,7 +521,9 @@
 						"create.event throws for remote on NOT TTY": "I148",
 						"resultsOfCommandHasRemoteMixedIntoSummary": "I149",
 						"syncsWithoutSavingCoreEventsByDefault": "I152",
-						"nicelyTypesViewController": "I192"
+						"nicelyTypesViewController": "I192",
+						"canSetImportFromModuleWithNestedSchemasWhenRemoteWhenSyncing": "I206",
+						"can reference impored from another module": "I207"
 					}
 				}
 			],
