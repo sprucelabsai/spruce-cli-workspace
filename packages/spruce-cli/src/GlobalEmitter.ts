@@ -82,6 +82,10 @@ export const globalContract = buildEventContract({
 										type: 'text',
 										isRequired: true,
 									},
+									label: {
+										type: 'text',
+										isRequired: true,
+									},
 									import: {
 										type: 'text',
 										isRequired: true,

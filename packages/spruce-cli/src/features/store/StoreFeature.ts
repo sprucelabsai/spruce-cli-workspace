@@ -47,6 +47,7 @@ export default class StoreFeature extends AbstractFeature {
 			abstractClasses: [
 				{
 					name: 'AbstractStoreTest',
+					label: 'AbstractStoreTest',
 					import: '@sprucelabs/spruce-store-plugin',
 					featureCode: 'store',
 				},

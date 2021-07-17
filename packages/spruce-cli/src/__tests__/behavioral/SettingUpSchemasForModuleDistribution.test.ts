@@ -283,6 +283,72 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 		assert.isEqual(this.schema1.moduleToImportFromWhenRemote, REMOTE_MODULE)
 	}
 
+	@test()
+	protected static async canHandleFormBuilderImportExportObject() {
+		const version = versionUtil.generateVersion().constValue
+
+		const completedFormBuilder = {
+			id: 'fullCompletedForm',
+			version,
+			moduleToImportFromWhenRemote: '@sprucelabs/heartwood-view-controllers',
+			fields: {
+				id: {
+					type: 'id',
+					isRequired: true,
+				},
+				personId: {
+					type: 'id',
+					isRequired: true,
+				},
+				values: {
+					type: 'raw',
+					isArray: true,
+					options: {
+						valueType: 'Record<string, any>',
+					},
+				},
+			},
+		}
+
+		const builderForm = {
+			id: 'builtForm',
+			version,
+			moduleToImportFromWhenRemote: '@sprucelabs/heartwood-view-controllers',
+			fields: {
+				id: {
+					type: 'id',
+					isRequired: true,
+				},
+				dateDeleted: {
+					type: 'number',
+				},
+				completedFormBuilder: {
+					type: 'schema',
+					options: {
+						schemaId: {
+							version,
+							id: 'fullCompletedForm',
+						},
+					},
+				},
+			},
+		}
+
+		const itemBuilder = new SchemaTemplateItemBuilder('TestSkill')
+
+		const results = itemBuilder.buildTemplateItems({
+			//@ts-ignore
+			TestSkill: [completedFormBuilder, builderForm],
+		})
+
+		assert.isFalsy(
+			results.find((r) => r.id === 'builtForm')?.schema.fields
+				//@ts-ignore
+				?.completedFormBuilder?.options?.schemaIds?.[0]
+				?.moduleToImportFromWhenRemote
+		)
+	}
+
 	private static async importGeneratedFile(
 		results: FeatureActionResponse,
 		fileName: string

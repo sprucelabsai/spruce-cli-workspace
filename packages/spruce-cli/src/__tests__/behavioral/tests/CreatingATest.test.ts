@@ -16,12 +16,20 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 		const candidates = await testFeature.buildParentClassCandidates()
 
 		assert.doesInclude(candidates, {
-			name: 'AbstractSpruceFixtureTest (requires install)',
+			label: 'AbstractSpruceFixtureTest (requires install)',
+			name: 'AbstractSpruceFixtureTest',
 		})
 	}
 
-	@test()
-	protected static async canCreateBehavioralTest() {
+	@test(
+		'can create behavioral test with AbstractSpruceFixtureTest',
+		'AbstractSpruceFixtureTest'
+	)
+	@test(
+		'can create behavioral test with AbstractSpruceFixtureTest',
+		'AbstractStoreTest (requires install)'
+	)
+	protected static async canCreateBehavioralTest(testName: string) {
 		await this.installTests()
 		const promise = this.Action('test', 'create').execute({
 			type: 'behavioral',
@@ -31,7 +39,8 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 		})
 
 		await this.waitForInput()
-		this.selectOptionBasedOnLabel('AbstractSpruceFixtureTest')
+
+		this.selectOptionBasedOnLabel(testName)
 
 		const response = await promise
 

@@ -62,10 +62,12 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 				abstractClasses: [
 					{
 						name: 'TestClass',
+						label: 'TestClass',
 						import: '@sprucelabs/another-lib',
 					},
 					{
 						name: 'TestClass2',
+						label: 'TestClass2',
 						import: '@sprucelabs/another-lib',
 					},
 				],

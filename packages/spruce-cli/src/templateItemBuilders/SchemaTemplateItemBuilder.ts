@@ -4,6 +4,7 @@ import {
 	SchemaField,
 	SchemaIdWithVersion,
 	normalizeSchemaToIdWithVersion,
+	isIdWithVersion,
 } from '@sprucelabs/schema'
 import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
 import cloneDeep from 'lodash/cloneDeep'
@@ -29,7 +30,7 @@ export default class SchemaTemplateItemBuilder {
 
 	public buildTemplateItems(
 		schemasByNamespace: SchemasByNamespace,
-		destinationDir: string
+		destinationDir = '#spruce/schemas'
 	) {
 		const schemas: Schema[] = []
 		const namespaces = Object.keys(schemasByNamespace)
@@ -117,7 +118,8 @@ export default class SchemaTemplateItemBuilder {
 					if (
 						localSchema.moduleToImportFromWhenRemote &&
 						//@ts-ignore
-						!related.moduleToImportFromWhenRemote
+						!related.moduleToImportFromWhenRemote &&
+						!isIdWithVersion(related)
 					) {
 						//@ts-ignore
 						related.moduleToImportFromWhenRemote =

@@ -1187,10 +1187,9 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 	) {
 		this.itemBuilder = new SchemaTemplateItemBuilder(localNamespace)
 
-		const results = this.itemBuilder.buildTemplateItems(
-			{ [CORE_NAMESPACE]: schemas },
-			'#spruce/schemas'
-		)
+		const results = this.itemBuilder.buildTemplateItems({
+			[CORE_NAMESPACE]: schemas,
+		})
 
 		assert.isLength(results, expected.length)
 

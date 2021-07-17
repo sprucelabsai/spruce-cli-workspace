@@ -189,6 +189,7 @@ export default class SkillFeature<
 			abstractClasses: [
 				{
 					name: 'AbstractSpruceFixtureTest',
+					label: 'AbstractSpruceFixtureTest',
 					import: '@sprucelabs/spruce-test-fixtures',
 					featureCode: 'skill',
 				},

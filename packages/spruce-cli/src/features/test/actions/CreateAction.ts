@@ -45,7 +45,7 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 						{ value: '', label: 'AbstractSpruceTest (default)' },
 						...candidates.map((candidate, idx) => ({
 							value: `${idx}`,
-							label: candidate.name,
+							label: candidate.label,
 						})),
 					],
 				},
@@ -91,9 +91,11 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 			)
 
 			if (!isInstalled) {
+				this.ui.startLoading(`Installing ${match.name}...`)
 				await this.featureInstaller.install({
 					features: [{ code: match.featureCode as any }],
 				})
+				this.ui.stopLoading()
 			}
 		}
 	}
@@ -101,9 +103,15 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 	private buildParentClassFromCandidate(
 		match: ParentClassCandidate,
 		resolvedDestination: string
-	): { name: string; importPath: string; isDefaultExport: boolean } {
+	): {
+		name: string
+		label: string
+		importPath: string
+		isDefaultExport: boolean
+	} {
 		return {
 			name: match.name,
+			label: match.label,
 			isDefaultExport: match.isDefaultExport,
 			importPath:
 				match.import ??

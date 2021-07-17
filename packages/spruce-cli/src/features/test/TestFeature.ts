@@ -16,6 +16,7 @@ declare module '../../features/features.types' {
 
 export interface ParentClassCandidate {
 	name: string
+	label: string
 	path?: string
 	import?: string
 	isDefaultExport: boolean
@@ -102,8 +103,9 @@ export default class TestFeature extends AbstractFeature {
 
 	public async buildParentClassCandidates(): Promise<ParentClassCandidate[]> {
 		const parentFinder = new ParentTestFinder(this.cwd)
-		const candidates: ParentClassCandidate[] =
+		const candidates: ParentClassCandidate[] = (
 			await parentFinder.findAbstractTests()
+		).map((a) => ({ ...a, label: a.name }))
 
 		const results = await this.emitter.emit(
 			'test.register-abstract-test-classes'
@@ -126,7 +128,7 @@ export default class TestFeature extends AbstractFeature {
 					)
 
 					if (!isInstalled) {
-						a.name = `${a.name} (requires install)`
+						a.label = `${a.label} (requires install)`
 					}
 				}
 				candidates.push(a as any)
@@ -134,7 +136,7 @@ export default class TestFeature extends AbstractFeature {
 		}
 
 		candidates.sort((a, b) => {
-			if (a.name > b.name) {
+			if (a.label > b.label) {
 				return 1
 			} else {
 				return -1

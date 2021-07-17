@@ -64,6 +64,7 @@ export default class ViewFeature extends AbstractFeature {
 				abstractClasses: [
 					{
 						name: 'AbstractViewControllerTest',
+						label: 'AbstractViewControllerTest',
 						import: '@sprucelabs/spruce-view-plugin',
 						featureCode: 'view',
 					},
